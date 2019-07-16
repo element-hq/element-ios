@@ -39,7 +39,7 @@
 "bug_report_description" = "Azaldu akatsa. Zer egin duzu? Zer uste zenuen gertatuko zela? Zer gertatu da benetan?";
 "bug_report_logs_description" = "Arazoak aztertzeari begira, bezero honen egunkariak arazte-txosten honekin batera bidaliko dira. Goiko testua besterik ez baduzu bidali nahi, desmarkatu:";
 "rage_shake_prompt" = "Telefonoa amorruz astintzen zabiltzala dirudi. Akats baten berri eman nahi duzu?";
-"bug_report_prompt" = "Azken aldian aplikazioa kraskatu da. Kraskatze-txostena bidali nahi duzu?";
+"bug_report_prompt" = "Aurrekoan aplikazioa kraskatu da. Kraskatze-txostena bidali nahi duzu?";
 "auth_register" = "Erregistratu";
 // Authentication
 "auth_login" = "Hasi saioa";
@@ -52,7 +52,7 @@
 "auth_password_placeholder" = "Pasahitza";
 "auth_new_password_placeholder" = "Pasahitz berria";
 "auth_user_name_placeholder" = "Erabiltzaile-izena";
-"auth_add_email_message" = "Gehitu e-mail helbide bat zure kontura erabiltzaileek zu aurkitzea baimentzeko, eta zuk pasahitza berrezarri ahal izateko.";
+"auth_add_email_message" = "Gehitu e-mail helbide bat zure kontura erabiltzaileek zu aurkitzea baimentzeko, eta zure pasahitza berrezartzeko.";
 "auth_add_phone_message" = "Gehitu telefono zenbaki bat zure kontura beste erabiltzaileek zu aurkitzea ahalbidetzeko.";
 "auth_optional_email_placeholder" = "E-mail helbidea (aukerakoa)";
 "auth_optional_phone_placeholder" = "Telefono zenbakia (aukerakoa)";
@@ -71,7 +71,7 @@
 "auth_forgot_password" = "Pasahitza ahaztu duzu?";
 "auth_use_server_options" = "Erabili zerbitzari pertsonalizatuaren ezarpenak (aurreratua)";
 "auth_email_validation_message" = "Egiaztatu zure e-mail helbidea erregistroarekin jarraitzeko";
-"auth_recaptcha_message" = "Hasiera zerbitzari honek robot bat ez zarela egiaztatu nahi du";
+"auth_recaptcha_message" = "Hasiera-zerbitzari honek robot bat ez zarela egiaztatu nahi du";
 "auth_username_in_use" = "Erabilitako erabiltzaile-izena";
 "auth_reset_password_next_step_button" = "Nire e-mail helbidea baieztatu dut";
 "auth_reset_password_message" = "Zure pasahitza berrezartzeko, idatzi zure kontura gehitutako e-mail helbidea:";
@@ -110,8 +110,8 @@
 "room_participants_action_set_default_power_level" = "Berrezarri erabiltzaile arrunt gisa";
 "room_participants_action_set_moderator" = "Bihurtu moderatzaile";
 "room_participants_action_set_admin" = "Bihurtu kudeatzaile";
-"room_participants_action_ignore" = "Ezkutatu kide honen mezu guztiak";
-"room_participants_action_unignore" = "Erakutsi kide honen mezu guztiak";
+"room_participants_action_ignore" = "Ezkutatu erabiltzaile honen mezu guztiak";
+"room_participants_action_unignore" = "Erakutsi erabiltzaile honen mezu guztiak";
 "room_participants_action_mention" = "Aipamena";
 "contacts_address_book_matrix_users_toggle" = "Matrix erabiltzaileak besterik ez";
 "encrypted_room_message_placeholder" = "Bidali zifratutako mezua…";
@@ -222,7 +222,7 @@
 "auth_untrusted_id_server" = "Identitate zerbitzaria ez da fidagarria";
 "auth_msisdn_validation_error" = "Ezin izan da telefono zenbakia egiaztatu.";
 "auth_reset_password_email_validation_message" = "E-mail bat bidali da %@ helbidera. Honek dakarren esteka jarraitu eta gero egin klik azpian.";
-"auth_reset_password_error_not_found" = "Zure e-mail helbidea ez dago antza hasiera zerbitzari honetako Matrix ID batekin lotuta.";
+"auth_reset_password_error_not_found" = "Zure e-mail helbidea ez dago antza hasiera-zerbitzari honetako Matrix ID batekin lotuta.";
 "room_creation_account" = "Kontua";
 "room_creation_appearance" = "Itxura";
 "room_creation_appearance_picture" = "Txateko irudia (aukerakoa)";
@@ -304,7 +304,7 @@
 "room_title_members" = "%@ kide";
 // Room Preview
 "room_preview_invitation_format" = "%@ erabiltzaileak gela honetara elkartzera gonbidatu zaitu";
-"room_preview_unlinked_email_warning" = "Zure gonbidapena bidali da %@ helbidera, hau ez dago kontu honetara lotuta.\nBeste kontu batekin hasi dezakezu saioa, edo e-mail hau kontu honetara gehitu.";
+"room_preview_unlinked_email_warning" = "Zure gonbidapena %@ helbidera bidali da, hau ez dago kontu honetara lotuta.\nBeste kontu batekin hasi dezakezu saioa, edo e-mail hau zure kontura gehitu.";
 "room_preview_try_join_an_unknown_room" = "%@ gelan sartzen saiatzen ari zara. Elkartu nahi duzu elkarrizketan parte hartzeko?";
 // Settings
 "settings_title" = "Ezarpenak";
@@ -312,7 +312,7 @@
 "settings_config_no_build_info" = "Konpilazio daturik ez";
 "settings_mark_all_as_read" = "Markatu mezu guztiak irakurrita gisa";
 "settings_report_bug" = "Arazte-txostena";
-"settings_config_home_server" = "Hasiera zerbitzaria %@ da";
+"settings_config_home_server" = "Hasiera-zerbitzaria %@ da";
 "settings_config_identity_server" = "Identitate zerbitzaria %@ da";
 "settings_config_user_id" = "%@ gisa hasi duzu saioa";
 "settings_user_settings" = "ERABILTZAILE EZARPENAK";
@@ -477,7 +477,7 @@
 // Groups tab
 "group_invite_section" = "GONBIDAPENAK";
 "group_section" = "KOMUNITATEAK";
-"settings_flair" = "Erakutsi ikurra non baimenduta";
+"settings_flair" = "Erakutsi ikurra baimenduta dagoen tokietan";
 "room_details_flair_section" = "Erakutsi ikurra komunitateentzat";
 "room_details_new_flair_placeholder" = "Gehitu komunitate ID berria (adib. +foo%@)";
 "room_details_flair_invalid_id_prompt_title" = "Baliogabeko formatua";
@@ -571,7 +571,7 @@
 "settings_key_backup_info_progress" = "%@ gakoen babes-kopia egiten...";
 "settings_key_backup_info_progress_done" = "Gako guztien babes-kopia egin da";
 "settings_key_backup_info_valid" = "Gailu honek zure gakoen babes-kopia egiten du.";
-"settings_key_backup_info_not_valid" = "Gailu honek ez du zure gakoen babes kopia egiten.";
+"settings_key_backup_info_not_valid" = "Gailu honek ez du zure gakoen babes kopia egiten, baina badago berreskuratu dezakezun babes-kopia bat jarraitu ahal izateko.";
 "settings_key_backup_button_create" = "Hasi 'Gakoen babes-kopia' erabiltzen";
 "settings_key_backup_button_use" = "Erabili gakoen babes-kopia";
 "key_backup_setup_passphrase_title" = "Babestu zure babeskopia pasaesaldi batekin";
@@ -633,7 +633,7 @@
 "sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Ez ditut nire zifratutako mezuak behar";
 "sign_out_key_backup_in_progress_alert_cancel_action" = "Itxaron egingo dut";
 "settings_key_backup_info" = "Zifratutako mezuak muturretik muturrerako zifratzearen bidez babestuak daude. Zuk eta hartzaileak edo hartzaileek irakurri ditzakezue mezu horiek, beste inork ez.";
-"settings_key_backup_info_signout_warning" = "Egin zure gakoen babes-kopia saioa amaitu aurretik galdu nahi ez badituzu.";
+"settings_key_backup_info_signout_warning" = "Konektatu gailu hau gakoen babes-kopiara saioa amaitu aurretik, gailu honetan bakarrik egon daitezkeen gakoak galdu nahi ez badituzu.";
 "settings_key_backup_info_trust_signature_unknown" = "Babes-kopiak gailu honen sinadura du, ID:  %@";
 "settings_key_backup_info_trust_signature_valid" = "Babes-kopiak gailu honen baliozko sinadura bat du";
 "settings_key_backup_info_trust_signature_valid_device_verified" = "Gailuak %@ gailuaren baliozko sinadura bat du";
@@ -657,3 +657,123 @@
 "key_backup_setup_intro_setup_action_with_existing_backup" = "Erabili gakoen-babes-kopia";
 "key_backup_setup_intro_manual_export_info" = "(Aurreratua)";
 "key_backup_setup_intro_manual_export_action" = "Esportatu gakoak eskuz";
+// String for App Store
+"store_short_description" = "Deszentralizatutako txat/VoIP segurua";
+"store_full_description" = "Komunikatu, zure erara.\n\nTxat aplikazio bat, zure kontrolpean eta erabat malgua. Riot-ek zuk nahi eran komunikatzea ahalbidetzen dizu. Komunikaziorako estandar ireki eta deszentralizatua den [matrix] protokolorako egina.\n\nEskuratu matrix.org kontu bat, ezarri zure zerbitzaria  https://modular.im erabiliz, edo erabili beste Matrix zerbitzari bat.\n\nZertgatik aukeratu Riot.im?\n\nERABATEKO KOMUNIKAZIOA: Sortu zure taldeentzako gelak, zure lagunentzko, zure komunitatearentzat, zuk nahi eran! Txateatu, partekatu fitxategiak, gehitu trepetak eta egin ahots eta bideo-deiak, dena doan.\n\nINTEGRAZIO AHALTSUAK: Erabili Riot.im jada ezagutu eta maite dituzun tresnekin. Riot.im erabilita beste txat aplikazioak erabiltzen dituzten erabiltzaile eta taldeekin ere aritu zaitezke.\n\nPRIBATUA ETA SEGURUA: Mantendu zure elkarrizketak sekretupean. Gaur egungo muturretik muturrerako zifratzeak pribatua dena pribatu mantentzen laguntzen du.\n\nIREKIA, EZ ITXIA: Kode irekikoa, eta Matrix protokoloan eraikia. Izan zure datuen jabe zure zerbitzaria osatatauz, edo fidagarritzat duzun bat aukeratuz.\n\nZUREKIN NONAHI: Mantendu kontaktua zauden tokian zaudela gailuetan zehar erabat sinkronizatutako mezuen historialarekin, eta web bidez https://riot.im helbidean.";
+"auth_login_single_sign_on" = "Hasi saioa urrats batean";
+"auth_autodiscover_invalid_response" = "Erantzun baliogabea hasiera-zerbitzarien bilaketari";
+"room_message_unable_open_link_error_message" = "Ezin izan da esteka ireki.";
+"room_event_action_reply" = "Erantzun";
+"room_event_action_edit" = "Editatu";
+"room_event_action_reaction_agree" = "Ados  %@";
+"room_event_action_reaction_disagree" = "Ez ados %@";
+"room_event_action_reaction_like" = "Gogokoa  %@";
+"room_event_action_reaction_dislike" = "Ez gogokoa %@";
+"room_action_reply" = "Erantzun";
+"settings_key_backup_button_connect" = "Konektatu gailu hau gakoen babes-kopiara";
+"key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Konektatu gailu hau gakoen babes-kopiara";
+"key_backup_recover_connent_banner_subtitle" = "Konektatu gailu hau gakoen babes-kopiara";
+// MARK: - Device Verification
+"device_verification_title" = "Egiaztatu gailua";
+"device_verification_error_cannot_load_device" = "Ezin izan da gailuaren informazioa kargatu.";
+// Mark: Incoming
+"device_verification_incoming_title" = "Jasotako egiaztaketa eskaria";
+"device_verification_incoming_description_1" = "Egiaztatu gailu hau fidagarri gisa markatzeko. Gailuak fidagarritzat jotzeak lasaitasuna ematen dizu muturretik muturrera zifratutako mezuak erabiltzean.";
+"device_verification_incoming_description_2" = "Gailu hau egiaztatzean fidagarri gisa markatuko da, eta zure gailua fidagarri gisa markatuko zaio ere zure kideari.";
+// MARK: Start
+"device_verification_start_title" = "Egiaztatu testu kate labur bat alderatuz";
+"device_verification_start_wait_partner" = "Kideak onartu bitartean zain...";
+"device_verification_start_use_legacy" = "Ez da ezer agertzen? Bezero guztiek ez dute onartzen egiaztaketa interaktiboa oraindik. Erabili egiaztaketa metodo zaharra.";
+"device_verification_start_verify_button" = "Hasi egiaztaketa";
+"device_verification_start_use_legacy_action" = "Erabili egiaztaketa metodo zaharra";
+// MARK: Verify
+"device_verification_verify_title_emoji" = "Egiaztatu gailu hau honako emojia kidearen pantailan agertu  dela baieztatuz";
+"device_verification_verify_title_number" = "Egiaztatu gailu hau honako zenbaki hauek kidearen pantailan agertu  direla baieztatuz";
+"device_verification_verify_wait_partner" = "Kideak baieztatzearen zain...";
+// MARK: Verified
+"device_verification_verified_title" = "Egiaztatuta!";
+"device_verification_verified_description_1" = "Ongi egiaztatu duzu gailu hau.";
+"device_verification_verified_description_2" = "Kide honekin partekatutako mezu seguruak muturretik muturrera zifratuta daude eta ezin ditu beste inork irakurri.";
+"device_verification_verified_got_it_button" = "Ulertuta";
+// MARK: Emoji
+"device_verification_emoji_dog" = "Txakurra";
+"device_verification_emoji_cat" = "Katua";
+"device_verification_emoji_lion" = "Lehoia";
+"device_verification_emoji_horse" = "Zaldia";
+"device_verification_emoji_unicorn" = "Unikornioa";
+"device_verification_emoji_pig" = "Zerria";
+"device_verification_emoji_elephant" = "Elefantea";
+"device_verification_emoji_rabbit" = "Untxia";
+"device_verification_emoji_panda" = "Panda hartza";
+"device_verification_emoji_rooster" = "Oilarra";
+"device_verification_emoji_penguin" = "Pinguinoa";
+"device_verification_emoji_turtle" = "Dortoka";
+"device_verification_emoji_fish" = "Arraina";
+"device_verification_emoji_octopus" = "Olagarroa";
+"device_verification_emoji_butterfly" = "Tximeleta";
+"device_verification_emoji_flower" = "Lorea";
+"device_verification_emoji_tree" = "Zuhaitza";
+"device_verification_emoji_cactus" = "Kaktusa";
+"device_verification_emoji_mushroom" = "Perretxikoa";
+"device_verification_emoji_globe" = "Lurra";
+"device_verification_emoji_moon" = "Ilargia";
+"device_verification_emoji_cloud" = "Hodeia";
+"device_verification_emoji_fire" = "Sua";
+"device_verification_emoji_banana" = "Banana";
+"device_verification_emoji_apple" = "Sagarra";
+"device_verification_emoji_strawberry" = "Marrubia";
+"device_verification_emoji_corn" = "Artoa";
+"device_verification_emoji_pizza" = "Pizza";
+"device_verification_emoji_cake" = "Pastela";
+"device_verification_emoji_heart" = "Bihotza";
+"device_verification_emoji_smiley" = "Irrifartxoa";
+"device_verification_emoji_robot" = "Robota";
+"device_verification_emoji_hat" = "Txanoa";
+"device_verification_emoji_glasses" = "Betaurrekoak";
+"device_verification_emoji_spanner" = "Giltza";
+"device_verification_emoji_santa" = "Santa";
+"device_verification_emoji_thumbs up" = "Ederto";
+"device_verification_emoji_umbrella" = "Aterkia";
+"settings_labs_message_reaction" = "Erreakzionatu mezuei emojiekin";
+"event_formatter_message_edited_mention" = "(editatua)";
+"device_verification_security_advice" = "Segurtasun gehiagorako, hau aurrez aurre edo bestelako komunikazio bide fidagarriak erabiliz egitea aholkatzen dizugu";
+"device_verification_cancelled" = "Beste aldeak egiaztaketa ezeztatu du.";
+"device_verification_cancelled_by_me" = "Egiaztaketa ezeztatu da. Arrazoia: %@";
+"device_verification_emoji_hourglass" = "Harea-erlojua";
+"device_verification_emoji_clock" = "Klasea";
+"device_verification_emoji_gift" = "Oparia";
+"device_verification_emoji_light bulb" = "Bonbilla";
+"device_verification_emoji_book" = "Liburua";
+"device_verification_emoji_pencil" = "Arkatza";
+"device_verification_emoji_paperclip" = "Klipa";
+"device_verification_emoji_scissors" = "Artaziak";
+"device_verification_emoji_padlock" = "Giltzarrapoa";
+"device_verification_emoji_key" = "Giltza";
+"device_verification_emoji_hammer" = "Mailua";
+"device_verification_emoji_telephone" = "Telefonoa";
+"device_verification_emoji_flag" = "Bandera";
+"device_verification_emoji_train" = "Trena";
+"device_verification_emoji_bicycle" = "Bizikleta";
+"device_verification_emoji_aeroplane" = "Hegazkina";
+"device_verification_emoji_rocket" = "Kohetea";
+"device_verification_emoji_trophy" = "Saria";
+"device_verification_emoji_ball" = "Baloia";
+"device_verification_emoji_guitar" = "Gitarra";
+"device_verification_emoji_trumpet" = "Tronpeta";
+"device_verification_emoji_bell" = "Kanpaia";
+"device_verification_emoji_anchor" = "Aingura";
+"device_verification_emoji_headphones" = "Aurikularrak";
+"device_verification_emoji_folder" = "Karpeta";
+"device_verification_emoji_pin" = "Txintxeta";
+// Widget
+"widget_no_integrations_server_configured" = "Ez da integrazio zerbitzaririk konfiguratu";
+"widget_integrations_server_failed_to_connect" = "Huts egin du integrazioen zerbitzarira konektatzean";
+"device_verification_emoji_lock" = "Giltzarrapoa";
+"close" = "Itxi";
+"room_event_action_reaction_show_all" = "Erakutsi denak";
+"room_event_action_reaction_show_less" = "Erakutsi gutxiago";
+"room_message_edits_history_title" = "Mezuaren edizioak";
+"room_action_send_file" = "Bidali fitxategia";
+// MARK: File upload
+"file_upload_error_title" = "Fitxategi igoera";
+"file_upload_error_unsupported_file_type_message" = "Fitxategi mota ez onartua.";

@@ -1,0 +1,56 @@
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ in %@";
+/* New message from a specific person, not referencing a room */
+"MSG_FROM_USER" = "%@ èt e bericht gesteurd";
+/* New message from a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM" = "%@ geplatst in %@";
+/* New message from a specific person, not referencing a room. Content included. */
+"MSG_FROM_USER_WITH_CONTENT" = "%@: %@";
+/* New message from a specific person in a named room. Content included. */
+"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ in %@: %@";
+/* New action message from a specific person, not referencing a room. */
+"ACTION_FROM_USER" = "* %@ %@";
+/* New action message from a specific person in a named room. */
+"ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
+/* New action message from a specific person, not referencing a room. */
+"IMAGE_FROM_USER" = "%@ èt e fotootje %@ gesteurd";
+/* New action message from a specific person in a named room. */
+"IMAGE_FROM_USER_IN_ROOM" = "%@ èt e fotootje %@ in %@ geplatst";
+/* A single unread message in a room */
+"SINGLE_UNREAD_IN_ROOM" = "J' èt e bericht ountvangn in %@";
+/* A single unread message */
+"SINGLE_UNREAD" = "J' èt e bericht ountvangn";
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@ èt e sticker gesteurd";
+/* Multiple unread messages in a room */
+"UNREAD_IN_ROOM" = "%@ nieuwe berichten in %@";
+/* Multiple unread messages from a specific person, not referencing a room */
+"MSGS_FROM_USER" = "%@ nieuwe berichten in %@";
+/* Multiple unread messages from two people */
+"MSGS_FROM_TWO_USERS" = "%@ nieuwe berichten van %@ en %@";
+/* Multiple unread messages from three people */
+"MSGS_FROM_THREE_USERS" = "%@ nieuwe berichten van %@, %@ en %@";
+/* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
+"MSGS_FROM_TWO_PLUS_USERS" = "%@ nieuwe berichten van %@, %@ en anderen";
+/* Multiple messages in two rooms */
+"MSGS_IN_TWO_ROOMS" = "%@ nieuwe berichten in %@ en %@";
+/* Look, stuff's happened, alright? Just open the app. */
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@ nieuwe berichten in %@, %@ en anderen";
+/* A user has invited you to a chat */
+"USER_INVITE_TO_CHAT" = "%@ èt joun voor e gesprek uutgenodigd";
+/* A user has invited you to an (unamed) group chat */
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ èt joun in e groepsgesprek uutgenodigd";
+/* A user has invited you to a named room */
+"USER_INVITE_TO_NAMED_ROOM" = "%@ èt joun in %@ uutgenodigd";
+/* Incoming one-to-one voice call */
+"VOICE_CALL_FROM_USER" = "Iproep van %@";
+/* Incoming one-to-one video call */
+"VIDEO_CALL_FROM_USER" = "Video-iproep van %@";
+/* Incoming unnamed voice conference invite from a specific person */
+"VOICE_CONF_FROM_USER" = "Groepsiproep van %@";
+/* Incoming unnamed video conference invite from a specific person */
+"VIDEO_CONF_FROM_USER" = "Video-groepsiproep van %@";
+/* Incoming named voice conference invite from a specific person */
+"VOICE_CONF_NAMED_FROM_USER" = "Groepsiproep van %@: ‘%@’";
+/* Incoming named video conference invite from a specific person */
+"VIDEO_CONF_NAMED_FROM_USER" = "Video-groepsiproep van %@: ‘%@’";

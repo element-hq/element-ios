@@ -1,3 +1,38 @@
+Changes in 0.9.0 (2019-07-16)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.10.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.10.1)).
+ * Upgrade MatrixKit version ([v0.10.0](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.10.0)).
+ * RoomVC: When replying, use a "Reply" button instead of "Send".
+ * RoomVC: New message actions (#2394).
+ * Room upgrade: Autojoin the upgraded room when the user taps on the tombstone banner (#2486).
+ * Room upgrade: Use the `server_name` parameter when joining the new room (#2550).
+ * Join Room: Support via parameters to better handle federation (#2547).
+ * Reactions: Display existing reactions below the message (#2396).
+ * Menu actions: Display message time (#2463).
+ * Reactions Menu: Fix position (#2447).
+ * Context menu polish (#2466).
+ * Upgrade Piwik/MatomoTracker (v6.0.1) (#2159).	
+ * Message Editing: Annotate edited messages in timeline (#2400).	
+ * Message Editing: Editing in the timeline (#2404).	
+ * Read receipts: They are now counted at the MatrixKit level.
+ * Migrate to Swift 5.0.
+ * Reactions: Update quick reactions (#2459).
+ * Message Editing: Handle reply edition (#2492).
+ * RoomVC: Add ability to upload a file that comes from outside the app’s sandbox (#2019).
+ * Share extension: Enable any file upload (max 5).
+ * Tools: Create filterCryptoLogs.sh to filter logs related to e2ee from Riot logs.
+
+Bug fix:
+ * Device Verification: Fix user display name and device id colors in dark theme
+ * Device Verification: Name for 🔒 is "Lock" (#2526).
+ * Device Verification: Name for ⏰ is "Clock.
+ * Registration with an email is broken (#2417).
+ * Reactions: Bad position (#2462).
+ * Reactions: It lets you react to join/leave events (#2476).
+ * Adjust size of the insert button in the People tab, thanks to @dcordero (PR #2473).
+
 Changes in 0.8.6 (2019-05-06)
 ===============================================
 
@@ -35,7 +70,7 @@ Changes in 0.8.4 (2019-03-21)
 Improvements:
  * Upgrade MatrixKit version ([v0.9.8](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.8)).
  * Share extension: Remove image large size resizing choice if output dimension is too high to prevent memory limit exception (PR #2342).
- 
+
 Bug fix:
  * Unable to open a file attachment of a room message (#2338).
 
@@ -44,7 +79,7 @@ Changes in 0.8.3 (2019-03-13)
 
 Improvements:
  * Upgrade MatrixKit version ([v0.9.7](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.7)).
- 
+
 Bug fix:
  * Widgets: Attempt to re-register for a scalar token if ours is invalid (#2326).
  * Widgets: Pass scalar_token only when required.
@@ -106,7 +141,7 @@ Improvements:
  * Key backup: Update key backup setup UI and UX (PR #2243).
  * Key backup: Logout warning (#2245).
  * Key backup: new recover method detected (#2230).
- 
+
 Bug fix:
  * Use white scroll bar on dark themes (#2158).
  * Registration: fix tap gesture on checkboxes in the terms screen.

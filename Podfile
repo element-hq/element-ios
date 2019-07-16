@@ -7,7 +7,7 @@ use_frameworks!
 
 # Different flavours of pods to MatrixKit
 # The current MatrixKit pod version
-$matrixKitVersion = '0.9.9'
+$matrixKitVersion = '0.10.1'
 
 # The develop branch version
 #$matrixKitVersion = 'develop'
@@ -60,25 +60,25 @@ end
 abstract_target 'RiotPods' do
 
     pod 'GBDeviceInfo', '~> 5.2.0'
-    pod 'Reusable', '~> 4.0'
+    pod 'Reusable', '~> 4.1'
+    pod 'SwiftUTI', :git => 'https://github.com/speramusinc/SwiftUTI.git', :branch => 'master'
 
     # Piwik for analytics
-    # While https://github.com/matomo-org/matomo-sdk-ios/pull/223 is not released, use the PR branch
-    pod 'PiwikTracker', :git => 'https://github.com/manuroe/matomo-sdk-ios.git', :branch => 'feature/CustomVariables'
-    #pod 'PiwikTracker', '~> 4.4.2'
+    pod 'MatomoTracker', '~> 6.0.1'
 
     # Remove warnings from "bad" pods
     pod 'OLMKit', :inhibit_warnings => true
     pod 'cmark', :inhibit_warnings => true
     pod 'DTCoreText', :inhibit_warnings => true
     pod 'zxcvbn-ios'
-    
+
     # Tools
     pod 'SwiftGen', '~> 6.1'
-    pod 'SwiftLint', '~> 0.30.1'
+    pod 'SwiftLint', '~> 0.33.0'
 
     target "Riot" do
         import_MatrixKit
+        pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
     end
     
     target "RiotShareExtension" do
@@ -101,12 +101,11 @@ post_install do |installer|
         target.build_configurations.each do |config|
             config.build_settings['ENABLE_BITCODE'] = 'NO'
             
-            # Required for PiwikTracker as `swift_version` is not defined in podspec. Should be removed
-            if target.name.include? 'PiwikTracker'
-                config.build_settings['SWIFT_VERSION'] = '4.0'
+            # Force SwiftUTI Swift version to 5.0 (as there is no code changes to perform for SwiftUTI fork using Swift 4.2)
+            if target.name.include? 'SwiftUTI'
+                config.build_settings['SWIFT_VERSION'] = '5.0'
             end
         end
-
     end
 end
 

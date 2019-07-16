@@ -69,6 +69,7 @@
     [super awakeFromNib];
     
     _supportCallOption = YES;
+    _sendMode = RoomInputToolbarViewSendModeSend;
     
     self.rightInputToolbarButton.hidden = YES;
     
@@ -154,11 +155,33 @@
     self.placeholder = placeholder;
 }
 
-- (void)setReplyToEnabled:(BOOL)isReplyToEnabled
+- (void)setSendMode:(RoomInputToolbarViewSendMode)sendMode
 {
-    _replyToEnabled = isReplyToEnabled;
-    
+    _sendMode = sendMode;
+
     [self updatePlaceholder];
+    [self updateToolbarButtonLabel];
+}
+
+- (void)updateToolbarButtonLabel
+{
+    NSString *title;
+
+    switch (_sendMode)
+    {
+        case RoomInputToolbarViewSendModeReply:
+            title = NSLocalizedStringFromTable(@"room_action_reply", @"Vector", nil);
+            break;
+        case RoomInputToolbarViewSendModeEdit:
+            title = NSLocalizedStringFromTable(@"save", @"Vector", nil);
+            break;
+        default:
+            title = [NSBundle mxk_localizedStringForKey:@"send"];
+            break;
+    }
+
+    [self.rightInputToolbarButton setTitle:title forState:UIControlStateNormal];
+    [self.rightInputToolbarButton setTitle:title forState:UIControlStateHighlighted];
 }
 
 - (void)updatePlaceholder
@@ -172,17 +195,44 @@
     
     if (!shouldDisplayLargePlaceholder)
     {
-        placeholder = _replyToEnabled ? NSLocalizedStringFromTable(@"room_message_reply_to_short_placeholder", @"Vector", nil) : NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil);
+        switch (_sendMode)
+        {
+            case RoomInputToolbarViewSendModeReply:
+                placeholder = NSLocalizedStringFromTable(@"room_message_reply_to_short_placeholder", @"Vector", nil);
+                break;
+
+            default:
+                placeholder = NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil);
+                break;
+        }
     }
     else
     {
         if (_isEncryptionEnabled)
         {
-            placeholder = _replyToEnabled ? NSLocalizedStringFromTable(@"encrypted_room_message_reply_to_placeholder", @"Vector", nil) : NSLocalizedStringFromTable(@"encrypted_room_message_placeholder", @"Vector", nil);
+            switch (_sendMode)
+            {
+                case RoomInputToolbarViewSendModeReply:
+                    placeholder = NSLocalizedStringFromTable(@"encrypted_room_message_reply_to_placeholder", @"Vector", nil);
+                    break;
+
+                default:
+                    placeholder = NSLocalizedStringFromTable(@"encrypted_room_message_placeholder", @"Vector", nil);
+                    break;
+            }
         }
         else
         {
-            placeholder = _replyToEnabled ? NSLocalizedStringFromTable(@"room_message_reply_to_placeholder", @"Vector", nil) : NSLocalizedStringFromTable(@"room_message_placeholder", @"Vector", nil);
+            switch (_sendMode)
+            {
+                case RoomInputToolbarViewSendModeReply:
+                    placeholder = NSLocalizedStringFromTable(@"room_message_reply_to_placeholder", @"Vector", nil);
+                    break;
+
+                default:
+                    placeholder = NSLocalizedStringFromTable(@"room_message_placeholder", @"Vector", nil);
+                    break;
+            }
         }
     }
     
@@ -298,6 +348,19 @@
                                                                   [self.delegate roomInputToolbarViewPresentStickerPicker:self];
                                                               }
 
+                                                          }]];
+            
+            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_send_file", @"Vector", nil)
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
+                                                              
+                                                              if (weakSelf)
+                                                              {
+                                                                  typeof(self) self = weakSelf;
+                                                                  self->actionSheet = nil;
+                                                                  
+                                                                  [self.delegate roomInputToolbarViewDidTapFileUpload:self];
+                                                              }
                                                           }]];
 
             [actionSheet addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]

@@ -30,7 +30,7 @@ class DefaultTheme: NSObject, Theme {
     var searchBackgroundColor: UIColor = UIColor(rgb: 0xFFFFFF)
     var searchPlaceholderColor: UIColor = UIColor(rgb: 0x61708B)
 
-    var headerBackgroundColor: UIColor = UIColor(rgb: 0xF2F5F8)
+    var headerBackgroundColor: UIColor = UIColor(rgb: 0xF3F8FD)
     var headerBorderColor: UIColor  = UIColor(rgb: 0xE9EDF1)
     var headerTextPrimaryColor: UIColor = UIColor(rgb: 0x61708B)
     var headerTextSecondaryColor: UIColor = UIColor(rgb: 0xC8C8CD)
@@ -39,6 +39,7 @@ class DefaultTheme: NSObject, Theme {
     var textSecondaryColor: UIColor = UIColor(rgb: 0x9E9E9E)
 
     var tintColor: UIColor = UIColor(rgb: 0x03B381)
+    var tintBackgroundColor: UIColor = UIColor(rgb: 0xe9fff9)
     var unreadRoomIndentColor: UIColor = UIColor(rgb: 0x2E3648)
     var lineBreakColor: UIColor = UIColor(rgb: 0xEEEFEF)
     

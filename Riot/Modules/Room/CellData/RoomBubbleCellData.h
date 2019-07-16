@@ -35,6 +35,15 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
  */
 @property(nonatomic) BOOL containsLastMessage;
 
+/**
+ Indicate true to display the timestamp of the selected component.
+ */
+@property(nonatomic) BOOL showTimestampForSelectedComponent;
+
+/**
+ Indicate true to display the timestamp of the selected component on the left if possible (YES by default).
+ */
+@property(nonatomic) BOOL displayTimestampForSelectedComponentOnLeftWhenPossible;
 
 /**
  The event id of the current selected event inside the bubble. Default is nil.
@@ -55,5 +64,30 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
  The index of the current selected component. NSNotFound by default.
  */
 @property(nonatomic, readonly) NSInteger selectedComponentIndex;
+
+/**
+ Return additional content height (read receipts, reactions).
+ */
+@property(nonatomic, readonly) CGFloat additionalContentHeight;
+
+/**
+ Indicate to update additional content height.
+ */
+- (void)setNeedsUpdateAdditionalContentHeight;
+
+/**
+ Update additional content height if needed.
+ */
+- (void)updateAdditionalContentHeightIfNeeded;
+
+/**
+ The index of the first visible component. NSNotFound by default.
+ */
+- (NSInteger)firstVisibleComponentIndex;
+
+#pragma mark - Show all reactions
+
+- (BOOL)showAllReactionsForEvent:(NSString*)eventId;
+- (void)setShowAllReactions:(BOOL)showAllReactions forEvent:(NSString*)eventId;
 
 @end

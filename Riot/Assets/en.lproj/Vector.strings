@@ -56,6 +56,7 @@
 "collapse" = "collapse";
 "send_to" = "Send to %@";
 "sending" = "Sending";
+"close" = "Close";
 
 // Authentication
 "auth_login" = "Log in";
@@ -278,10 +279,16 @@
 "room_event_action_cancel_send" = "Cancel Send";
 "room_event_action_cancel_download" = "Cancel Download";
 "room_event_action_view_encryption" = "Encryption Information";
+"room_event_action_reply" = "Reply";
+"room_event_action_edit" = "Edit";
+"room_event_action_reaction_show_all" = "Show all";
+"room_event_action_reaction_show_less" = "Show less";
 "room_warning_about_encryption" = "End-to-end encryption is in beta and may not be reliable.\n\nYou should not yet trust it to secure data.\n\nDevices will not yet be able to decrypt history from before they joined the room.\n\nEncrypted messages will not be visible on clients that do not yet implement encryption.";
 "room_event_failed_to_send" = "Failed to send";
 "room_action_send_photo_or_video" = "Send photo or video";
 "room_action_send_sticker" = "Send sticker";
+"room_action_send_file" = "Send file";
+"room_action_reply" = "Reply";
 "room_replacement_information" = "This room has been replaced and is no longer active.";
 "room_replacement_link" = "The conversation continues here.";
 "room_predecessor_information" = "This room is a continuation of another conversation.";
@@ -293,6 +300,7 @@
 "room_resource_usage_limit_reached_message_1_monthly_active_user" = "This homeserver has hit its Monthly Active User limit so ";
 "room_resource_usage_limit_reached_message_2" = "some users will not be able to log in.";
 "room_resource_usage_limit_reached_message_contact_3" = " to get this limit increased.";
+"room_message_edits_history_title" = "Message edits";
 
 // Unknown devices
 "unknown_devices_alert_title" = "Room contains unknown devices";
@@ -399,6 +407,7 @@
 "settings_labs_room_members_lazy_loading" = "Lazy load rooms members";
 "settings_labs_room_members_lazy_loading_error_message" = "Your homeserver does not support lazy loading of room members yet. Try later.";
 "settings_labs_create_conference_with_jitsi" = "Create conference calls with jitsi";
+"settings_labs_message_reaction" = "React to messages with emoji";
 
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";
@@ -571,6 +580,7 @@
 "event_formatter_jitsi_widget_removed" = "VoIP conference removed by %@";
 "event_formatter_rerequest_keys_part1_link" = "Re-request encryption keys";
 "event_formatter_rerequest_keys_part2" = " from your other devices.";
+"event_formatter_message_edited_mention" = "(edited)";
 
 // Others
 "or" = "or";
@@ -625,6 +635,8 @@
 "bug_report_send" = "Send";
 
 // Widget
+"widget_no_integrations_server_configured" = "No integrations server configured";
+"widget_integrations_server_failed_to_connect" = "Failed to connect to integrations server";
 "widget_no_power_to_manage" = "You need permission to manage widgets in this room";
 "widget_creation_failure" = "Widget creation has failed";
 "widget_sticker_picker_no_stickerpacks_alert" = "You don't currently have any stickerpacks enabled.";
@@ -863,14 +875,14 @@
 "device_verification_emoji_thumbs up" = "Thumbs up";
 "device_verification_emoji_umbrella" = "Umbrella";
 "device_verification_emoji_hourglass" = "Hourglass";
-"device_verification_emoji_clock" = "Class";
+"device_verification_emoji_clock" = "Clock";
 "device_verification_emoji_gift" = "Gift";
 "device_verification_emoji_light bulb" = "Light Bulb";
 "device_verification_emoji_book" = "Book";
 "device_verification_emoji_pencil" = "Pencil";
 "device_verification_emoji_paperclip" = "Paperclip";
 "device_verification_emoji_scissors" = "Scissors";
-"device_verification_emoji_padlock" = "Padlock";
+"device_verification_emoji_lock" = "Lock";
 "device_verification_emoji_key" = "Key";
 "device_verification_emoji_hammer" = "Hammer";
 "device_verification_emoji_telephone" = "Telephone";
@@ -888,3 +900,7 @@
 "device_verification_emoji_headphones" = "Headphones";
 "device_verification_emoji_folder" = "Folder";
 "device_verification_emoji_pin" = "Pin";
+
+// MARK: File upload
+"file_upload_error_title" = "File upload";
+"file_upload_error_unsupported_file_type_message" = "File type not supported.";

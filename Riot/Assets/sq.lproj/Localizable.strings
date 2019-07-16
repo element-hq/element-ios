@@ -1,5 +1,5 @@
 /* New message from a specific person, not referencing a room */
-"MSG_FROM_USER" = "Mesazh prej %@";
+"MSG_FROM_USER" = "%@ dërgoi një mesazh";
 /* New message from a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM" = "%@ postuar te %@";
 /* New message from a specific person, not referencing a room. Content included. */
@@ -11,7 +11,7 @@
 /* New action message from a specific person in a named room. */
 "ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
 /* New action message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@ ju dërgoi një foto %@";
+"IMAGE_FROM_USER" = "%@ dërgoi një foto %@";
 /* New action message from a specific person in a named room. */
 "IMAGE_FROM_USER_IN_ROOM" = "%@ postoi një foto %@ në %@";
 /* A single unread message in a room */
@@ -50,3 +50,7 @@
 "VOICE_CONF_NAMED_FROM_USER" = "Thirrje grupi nga %@: '%@'";
 /* Incoming named video conference invite from a specific person */
 "VIDEO_CONF_NAMED_FROM_USER" = "Thirrje video në grup nga %@: '%@'";
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ në %@";
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@ dërgoi një ngjitës";

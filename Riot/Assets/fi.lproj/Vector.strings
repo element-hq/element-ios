@@ -29,3 +29,20 @@
 "video" = "Video";
 // Room Details
 "room_details_title" = "Huoneen tiedot";
+"auth_msisdn_validation_error" = "Puhelinnumeron vahvistus epäonnistui.";
+"auth_reset_password_error_unauthorized" = "Sähköpostin vahvistus epäonnistui: varmistathan, että seurasit lähettämässämme viestissä olevaa linkkiä";
+// Room recents
+"room_recents_directory_section" = "HUONELUETTELO";
+// Directory
+"directory_cell_title" = "Selaa luetteloa";
+"directory_search_results_title" = "Selaa luettelon tuloksia";
+"directory_searching_title" = "Etsitään luettelosta…";
+"contacts_user_directory_section" = "KÄYTTÄJÄLUETTELO";
+"contacts_user_directory_offline_section" = "KÄYTTÄJÄLUETTELO (ei yhteydessä)";
+"unknown_devices_verify" = "Vahvista…";
+"room_details_access_section_directory_toggle" = "Listaa tämä huone huoneluettelossa";
+"room_details_fail_to_update_room_directory_visibility" = "Huoneen huoneluettelossa näkymisen muuttaminen epäonnistui";
+"room_details_fail_to_update_history_visibility" = "Huoneen keskusteluhistorian näkyvyyden muuttaminen epäonnistui";
+// Directory
+"directory_title" = "Luettelo";
+"directory_server_picker_title" = "Valitse luettelo";

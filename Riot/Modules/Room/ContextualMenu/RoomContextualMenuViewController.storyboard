@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2eW-Ga-w3t">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Room Contextual Menu View Controller-->
+        <scene sceneID="I8V-hb-Jea">
+            <objects>
+                <viewController id="2eW-Ga-w3t" customClass="RoomContextualMenuViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="X0o-r8-auN">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Szx-Dr-Ndt">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="793"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vdy-rp-3g9">
+                                        <rect key="frame" x="10" y="150" width="394" height="50"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="D3i-aE-kdL"/>
+                                            <constraint firstAttribute="width" relation="lessThanOrEqual" priority="999" constant="400" id="Kdn-SI-BvA"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="Vdy-rp-3g9" firstAttribute="bottom" secondItem="Szx-Dr-Ndt" secondAttribute="top" constant="200" id="0GH-Qk-vKA"/>
+                                    <constraint firstItem="Vdy-rp-3g9" firstAttribute="width" secondItem="Szx-Dr-Ndt" secondAttribute="width" priority="750" id="Io5-6N-mvK"/>
+                                    <constraint firstItem="Vdy-rp-3g9" firstAttribute="centerX" secondItem="Szx-Dr-Ndt" secondAttribute="centerX" id="epY-Ub-0d5"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0GC-JU-rI3" customClass="RoomContextualMenuToolbarView" customModule="Riot" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="793" width="414" height="69"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="69" id="ynL-KP-iB4"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Szx-Dr-Ndt" secondAttribute="trailing" id="2eB-6O-P3h"/>
+                            <constraint firstItem="Szx-Dr-Ndt" firstAttribute="leading" secondItem="X0o-r8-auN" secondAttribute="leading" id="4qK-G6-nr9"/>
+                            <constraint firstItem="Szx-Dr-Ndt" firstAttribute="top" secondItem="X0o-r8-auN" secondAttribute="top" id="GVa-P9-DcG"/>
+                            <constraint firstItem="Vdy-rp-3g9" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="225-y0-Elg" secondAttribute="leading" constant="10" id="R2Z-jH-SRN"/>
+                            <constraint firstItem="0GC-JU-rI3" firstAttribute="leading" secondItem="X0o-r8-auN" secondAttribute="leading" id="TZJ-nm-Ppz"/>
+                            <constraint firstItem="0GC-JU-rI3" firstAttribute="top" secondItem="Szx-Dr-Ndt" secondAttribute="bottom" id="Wyl-wh-kh4"/>
+                            <constraint firstItem="225-y0-Elg" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Vdy-rp-3g9" secondAttribute="trailing" constant="10" id="j9U-2p-huj"/>
+                            <constraint firstAttribute="trailing" secondItem="0GC-JU-rI3" secondAttribute="trailing" id="lzM-FD-x89"/>
+                            <constraint firstItem="225-y0-Elg" firstAttribute="bottom" secondItem="0GC-JU-rI3" secondAttribute="bottom" id="s4i-80-0iu"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="225-y0-Elg"/>
+                    </view>
+                    <connections>
+                        <outlet property="backgroundOverlayView" destination="Szx-Dr-Ndt" id="Whj-e5-bas"/>
+                        <outlet property="menuToolbarView" destination="0GC-JU-rI3" id="j0z-I8-Pcr"/>
+                        <outlet property="menuToolbarViewBottomConstraint" destination="s4i-80-0iu" id="E5w-5m-m5O"/>
+                        <outlet property="menuToolbarViewHeightConstraint" destination="ynL-KP-iB4" id="Zeb-b0-Yil"/>
+                        <outlet property="reactionsMenuContainerView" destination="Vdy-rp-3g9" id="hRj-C0-5VR"/>
+                        <outlet property="reactionsMenuViewBottomConstraint" destination="0GH-Qk-vKA" id="8lg-XL-JgW"/>
+                        <outlet property="reactionsMenuViewHeightConstraint" destination="D3i-aE-kdL" id="CCr-hW-2dv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8NV-wl-Hp0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="53.623188405797109" y="135.9375"/>
+        </scene>
+    </scenes>
+</document>

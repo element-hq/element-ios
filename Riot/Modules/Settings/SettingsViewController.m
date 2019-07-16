@@ -119,7 +119,7 @@ enum
 enum
 {
     LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX = 0,
-    LABS_USE_JITSI_WIDGET_INDEX = 0,
+    LABS_USE_JITSI_WIDGET_INDEX,
     LABS_CRYPTO_INDEX,
     LABS_COUNT
 };
@@ -2135,7 +2135,7 @@ SignOutAlertPresenterDelegate>
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleJitsiForConference:) forControlEvents:UIControlEventTouchUpInside];
 
             cell = labelAndSwitchCell;
-        }
+        }        
         else if (row == LABS_CRYPTO_INDEX)
         {
             MXSession* session = [AppDelegate theDelegate].mxSessions[0];
@@ -2874,7 +2874,11 @@ SignOutAlertPresenterDelegate>
         
         if (accountManager.pushDeviceToken)
         {
-            [account setEnablePushKitNotifications:!account.isPushKitNotificationActive];
+            [account enablePushKitNotifications:!account.isPushKitNotificationActive success:^{
+                [self stopActivityIndicator];
+            } failure:^(NSError *error) {
+                [self stopActivityIndicator];
+            }];
         }
         else
         {
@@ -2887,7 +2891,11 @@ SignOutAlertPresenterDelegate>
                 }
                 else
                 {
-                    [account setEnablePushKitNotifications:YES];
+                    [account enablePushKitNotifications:YES success:^{
+                        [self stopActivityIndicator];
+                    } failure:^(NSError *error) {
+                        [self stopActivityIndicator];
+                    }];
                 }
             }];
         }

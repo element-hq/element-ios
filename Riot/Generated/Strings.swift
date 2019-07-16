@@ -334,6 +334,10 @@ internal enum VectorL10n {
   internal static var cancel: String { 
     return VectorL10n.tr("Vector", "cancel") 
   }
+  /// Close
+  internal static var close: String { 
+    return VectorL10n.tr("Vector", "close") 
+  }
   /// collapse
   internal static var collapse: String { 
     return VectorL10n.tr("Vector", "collapse") 
@@ -482,7 +486,7 @@ internal enum VectorL10n {
   internal static var deviceVerificationEmojiCat: String { 
     return VectorL10n.tr("Vector", "device_verification_emoji_cat") 
   }
-  /// Class
+  /// Clock
   internal static var deviceVerificationEmojiClock: String { 
     return VectorL10n.tr("Vector", "device_verification_emoji_clock") 
   }
@@ -574,6 +578,10 @@ internal enum VectorL10n {
   internal static var deviceVerificationEmojiLion: String { 
     return VectorL10n.tr("Vector", "device_verification_emoji_lion") 
   }
+  /// Lock
+  internal static var deviceVerificationEmojiLock: String { 
+    return VectorL10n.tr("Vector", "device_verification_emoji_lock") 
+  }
   /// Moon
   internal static var deviceVerificationEmojiMoon: String { 
     return VectorL10n.tr("Vector", "device_verification_emoji_moon") 
@@ -585,10 +593,6 @@ internal enum VectorL10n {
   /// Octopus
   internal static var deviceVerificationEmojiOctopus: String { 
     return VectorL10n.tr("Vector", "device_verification_emoji_octopus") 
-  }
-  /// Padlock
-  internal static var deviceVerificationEmojiPadlock: String { 
-    return VectorL10n.tr("Vector", "device_verification_emoji_padlock") 
   }
   /// Panda
   internal static var deviceVerificationEmojiPanda: String { 
@@ -886,6 +890,10 @@ internal enum VectorL10n {
   internal static func eventFormatterMemberUpdates(_ p1: Int) -> String {
     return VectorL10n.tr("Vector", "event_formatter_member_updates", p1)
   }
+  /// (edited)
+  internal static var eventFormatterMessageEditedMention: String { 
+    return VectorL10n.tr("Vector", "event_formatter_message_edited_mention") 
+  }
   /// Re-request encryption keys
   internal static var eventFormatterRerequestKeysPart1Link: String { 
     return VectorL10n.tr("Vector", "event_formatter_rerequest_keys_part1_link") 
@@ -901,6 +909,14 @@ internal enum VectorL10n {
   /// %@ widget removed by %@
   internal static func eventFormatterWidgetRemoved(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_widget_removed", p1, p2)
+  }
+  /// File upload
+  internal static var fileUploadErrorTitle: String { 
+    return VectorL10n.tr("Vector", "file_upload_error_title") 
+  }
+  /// File type not supported.
+  internal static var fileUploadErrorUnsupportedFileTypeMessage: String { 
+    return VectorL10n.tr("Vector", "file_upload_error_unsupported_file_type_message") 
   }
   /// To continue using the %@ homeserver you must review and agree to the terms and conditions.
   internal static func gdprConsentNotGivenAlertMessage(_ p1: String) -> String {
@@ -1338,6 +1354,14 @@ internal enum VectorL10n {
   internal static var retry: String { 
     return VectorL10n.tr("Vector", "retry") 
   }
+  /// Reply
+  internal static var roomActionReply: String { 
+    return VectorL10n.tr("Vector", "room_action_reply") 
+  }
+  /// Send file
+  internal static var roomActionSendFile: String { 
+    return VectorL10n.tr("Vector", "room_action_send_file") 
+  }
   /// Send photo or video
   internal static var roomActionSendPhotoOrVideo: String { 
     return VectorL10n.tr("Vector", "room_action_send_photo_or_video") 
@@ -1694,6 +1718,10 @@ internal enum VectorL10n {
   internal static var roomEventActionDelete: String { 
     return VectorL10n.tr("Vector", "room_event_action_delete") 
   }
+  /// Edit
+  internal static var roomEventActionEdit: String { 
+    return VectorL10n.tr("Vector", "room_event_action_edit") 
+  }
   /// Reason for kicking this user
   internal static var roomEventActionKickPromptReason: String { 
     return VectorL10n.tr("Vector", "room_event_action_kick_prompt_reason") 
@@ -1710,9 +1738,21 @@ internal enum VectorL10n {
   internal static var roomEventActionQuote: String { 
     return VectorL10n.tr("Vector", "room_event_action_quote") 
   }
+  /// Show all
+  internal static var roomEventActionReactionShowAll: String { 
+    return VectorL10n.tr("Vector", "room_event_action_reaction_show_all") 
+  }
+  /// Show less
+  internal static var roomEventActionReactionShowLess: String { 
+    return VectorL10n.tr("Vector", "room_event_action_reaction_show_less") 
+  }
   /// Remove
   internal static var roomEventActionRedact: String { 
     return VectorL10n.tr("Vector", "room_event_action_redact") 
+  }
+  /// Reply
+  internal static var roomEventActionReply: String { 
+    return VectorL10n.tr("Vector", "room_event_action_reply") 
   }
   /// Report content
   internal static var roomEventActionReport: String { 
@@ -1761,6 +1801,10 @@ internal enum VectorL10n {
   /// %@, %@ & others are typing…
   internal static func roomManyUsersAreTyping(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "room_many_users_are_typing", p1, p2)
+  }
+  /// Message edits
+  internal static var roomMessageEditsHistoryTitle: String { 
+    return VectorL10n.tr("Vector", "room_message_edits_history_title") 
   }
   /// Send a message (unencrypted)…
   internal static var roomMessagePlaceholder: String { 
@@ -2446,6 +2490,10 @@ internal enum VectorL10n {
   internal static var settingsLabsE2eEncryptionPromptMessage: String { 
     return VectorL10n.tr("Vector", "settings_labs_e2e_encryption_prompt_message") 
   }
+  /// React to messages with emoji
+  internal static var settingsLabsMessageReaction: String { 
+    return VectorL10n.tr("Vector", "settings_labs_message_reaction") 
+  }
   /// Lazy load rooms members
   internal static var settingsLabsRoomMembersLazyLoading: String { 
     return VectorL10n.tr("Vector", "settings_labs_room_members_lazy_loading") 
@@ -2797,6 +2845,14 @@ internal enum VectorL10n {
   /// Unable to create widget.
   internal static var widgetIntegrationUnableToCreate: String { 
     return VectorL10n.tr("Vector", "widget_integration_unable_to_create") 
+  }
+  /// Failed to connect to integrations server
+  internal static var widgetIntegrationsServerFailedToConnect: String { 
+    return VectorL10n.tr("Vector", "widget_integrations_server_failed_to_connect") 
+  }
+  /// No integrations server configured
+  internal static var widgetNoIntegrationsServerConfigured: String { 
+    return VectorL10n.tr("Vector", "widget_no_integrations_server_configured") 
   }
   /// You need permission to manage widgets in this room
   internal static var widgetNoPowerToManage: String { 

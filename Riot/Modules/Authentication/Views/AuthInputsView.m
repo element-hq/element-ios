@@ -814,8 +814,24 @@
             else if ([self isFlowSupported:kMXLoginFlowTypeTerms] && ![self isFlowCompleted:kMXLoginFlowTypeTerms])
             {
                 NSLog(@"[AuthInputsView] Prepare a new terms stage");
-
-                [self prepareParameters:callback];
+                
+                if (externalRegistrationParameters)
+                {
+                    [self displayTermsView:^{
+                        
+                        NSDictionary *parameters = @{
+                                                     @"auth": @{
+                                                             @"session":self->currentSession.session,
+                                                             @"type": kMXLoginFlowTypeTerms
+                                                             }
+                                                     };
+                        callback(parameters, nil);
+                    }];
+                }
+                else
+                {
+                    [self prepareParameters:callback];
+                }
 
                 return;
             }

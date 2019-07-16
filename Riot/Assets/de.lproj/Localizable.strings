@@ -11,7 +11,7 @@
 /* New action message from a specific person in a named room. */
 "ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
 /* New action message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@ sendet dir ein Bild %@";
+"IMAGE_FROM_USER" = "%@ hat ein Bild gesendet %@";
 /* New action message from a specific person in a named room. */
 "IMAGE_FROM_USER_IN_ROOM" = "%@ sendet ein Bild %@ in %@";
 /* Multiple unread messages in a room */
@@ -50,3 +50,7 @@
 "SINGLE_UNREAD_IN_ROOM" = "Du hast eine Nachricht in %@ bekommen";
 /* A single unread message */
 "SINGLE_UNREAD" = "Du hast eine Nachricht bekommen";
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ in %@";
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@ hat einen Sticker gesendet";

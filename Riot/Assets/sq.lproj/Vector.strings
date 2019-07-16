@@ -47,8 +47,8 @@
 "auth_phone_placeholder" = "Numër telefoni";
 "auth_repeat_password_placeholder" = "Rijepeni fjalëkalimin";
 "auth_repeat_new_password_placeholder" = "Ripohoni fjalëkalimin tuaj të ri";
-"auth_home_server_placeholder" = "URL (p.sh. https://matrix.org)";
-"auth_identity_server_placeholder" = "URL (p.sh. https://matrix.org)";
+"auth_home_server_placeholder" = "URL (p.sh., https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (p.sh., https://matrix.org)";
 "auth_invalid_login_param" = "Emër përdoruesi dhe/ose fjalëkalim i pasaktë";
 "auth_invalid_password" = "Fjalëkalim shumë i shkurtër (min 6)";
 "auth_invalid_email" = "Kjo s’duket si adresë email e vlefshme";
@@ -83,7 +83,7 @@
 "room_creation_keep_private" = "Mbaje private";
 "room_creation_make_private" = "Bëje private";
 // Room recents
-"room_recents_directory_section" = "DREJTORI DHOME";
+"room_recents_directory_section" = "DREJTORI DHOMASH";
 "room_recents_directory_section_network" = "Rrjet";
 "room_recents_people_section" = "PERSONA";
 "room_recents_conversations_section" = "DHOMA";
@@ -116,16 +116,16 @@
 "directory_cell_title" = "Shfletoni në drejtori";
 "directory_cell_description" = "Dhoma %tu";
 "directory_search_results_title" = "Shfletoni përfundime drejtorie";
-"directory_search_results" = "u gjetën %tu përfundime për %@";
-"directory_search_results_more_than" = "u gjetën >%tu përfundime për %@";
+"directory_search_results" = "U gjetën %tu përfundime për %@";
+"directory_search_results_more_than" = ">%tu përfundime të gjetura për %@";
 "directory_searching_title" = "Po kërkohet në drejtori…";
 "directory_search_fail" = "S’u arrit të sillen të dhëna";
 // Contacts
 "contacts_address_book_section" = "KONTAKTE VENDORE";
 "contacts_address_book_matrix_users_toggle" = "Vetëm përdorues të Matrix-it";
 "contacts_address_book_no_contact" = "S’ka kontakte vendore";
-"contacts_user_directory_section" = "DREJTORI PËRDORUESI";
-"contacts_user_directory_offline_section" = "DREJTORI PËRDORUESI (jashtë linje)";
+"contacts_user_directory_section" = "DREJTORI PËRDORUESISH";
+"contacts_user_directory_offline_section" = "DREJTORI PËRDORUESISH (jashtë linje)";
 // Chat participants
 "room_participants_title" = "Pjesëmarrës";
 "room_participants_add_participant" = "Shtoni pjesmarrës";
@@ -138,7 +138,7 @@
 "room_participants_invite_prompt_title" = "Ripohim";
 "room_participants_invite_prompt_msg" = "Jeni i sigurt se doni të ftohet %@ te kjo fjalosje?";
 "room_participants_filter_room_members" = "Filtroni anëtarë dhome";
-"room_participants_invite_malformed_id_title" = "Gabim Ftim";
+"room_participants_invite_malformed_id_title" = "Gabim Ftimi";
 "room_participants_invited_section" = "TË FTUAR";
 "room_participants_online" = "Në linjë";
 "room_participants_offline" = "Jo në linjë";
@@ -213,7 +213,7 @@
 "settings_config_no_build_info" = "S’ka të dhëna montimi";
 "settings_mark_all_as_read" = "Vëru shenjë krejt mesazheve si të lexuar";
 "settings_report_bug" = "Njoftoni një të metë";
-"settings_config_home_server" = "Shërbyesi home është %@";
+"settings_config_home_server" = "Shërbyesi Home është %@";
 "settings_config_identity_server" = "Shërbyes identitetesh është %@";
 "settings_config_user_id" = "I futur si %@";
 "settings_user_settings" = "RREGULLIME PËRDORUESI";
@@ -319,7 +319,7 @@
 // Group Home
 "group_home_one_member_format" = "1 anëtar";
 "group_home_one_room_format" = "1 dhomë";
-"group_invitation_format" = "%s ju ftoi të bëheni pjesë e kësaj bashkësie";
+"group_invitation_format" = "%@ ju ftoi të bëheni pjesë e kësaj bashkësie";
 // Group participants
 "group_participants_add_participant" = "Shtoni pjesmarrës";
 "group_participants_leave_prompt_title" = "Braktiseni grupin";
@@ -351,7 +351,7 @@
 "you" = "Ju";
 "today" = "Sot";
 "yesterday" = "Dje";
-"network_offline_prompt" = "Lidhja Internet duket se s’funksionin.";
+"network_offline_prompt" = "Lidhja Internet duket se s’funksionon.";
 "public_room_section_title" = "Dhoma Publike (at %@):";
 "do_not_ask_again" = "Mos pyet sërish";
 // Call
@@ -390,7 +390,7 @@
 "on" = "On";
 "auth_add_phone_message" = "Shtoni te llogaria juaj një numër telefoni, për t’u dhënë mundësinë përdoruesve t’ju zbulojnë.";
 "auth_msisdn_validation_message" = "Kemi dërguar një SMS me një kod aktivizimi. Ju lutemi, jepeni këtë kod më poshtë.";
-"auth_recaptcha_message" = "Ky Shërbyes Home do të donte të sigurohej se s’jeni robot";
+"auth_recaptcha_message" = "Ky shërbyes Home do të donte të sigurohej se s’jeni robot";
 "auth_reset_password_error_unauthorized" = "Verifikimi i adresës email dështoi: sigurohuni se keni klikuar lidhjen te email-i";
 "auth_reset_password_error_not_found" = "Adresa juaj email s’duket të jetë e përshoqëruar me ID Matrix në këtë shërbyes Home.";
 "title_favourites" = "Të parapëlqyer";
@@ -460,7 +460,7 @@
 "call_jitsi_error" = "S'u arrit të hyhej në thirrjen për konferencë.";
 "widget_creation_failure" = "Krijimi i widget-it dështoi";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "Të shtohen ca tani?";
-"widget_integration_room_not_visible" = "Dhoma %s s’është e dukshme.";
+"widget_integration_room_not_visible" = "Dhoma %@ s’është e dukshme.";
 "gdpr_consent_not_given_alert_review_now_action" = "Shqyrtojini tani";
 "deactivate_account_title" = "Çaktivizoni Llogarinë";
 "deactivate_account_informations_part2_emphasize" = "Ky veprim është i paprapakthyeshëm.";
@@ -473,7 +473,7 @@
 "rerequest_keys_alert_title" = "Kërkesa u Dërgua";
 "auth_reset_password_success_message" = "Fjalëkalimi juaj u ri caktua.\n\nËshtë bërë dalja juaj nga llogaria në krejt pajisjet dhe s’do të merrni më njoftime push. Për riaktivizim të njoftimeve, ribëni hyrjen në çdo pajisje.";
 "room_creation_make_public_prompt_msg" = "Jeni i sigurt se doni ta bëni publike këtë fjalosje? Në një të tillë, mesazhet tuaj mund t’i lexojë cilido dhe mund të hyjë në bisedë.";
-"room_creation_wait_for_creation" = "Po krijohet tashmë një dhomë, Ju lutemi, prisni.";
+"room_creation_wait_for_creation" = "Po krijohet tashmë një dhomë. Ju lutemi, prisni.";
 "contacts_address_book_permission_required" = "Lypset leje për hyrje në kontaktet vendore";
 "contacts_address_book_permission_denied" = "S’e lejuat Riot-i të hyjë në kontaktet tuaja vendore";
 "room_participants_remove_third_party_invite_msg" = "Heqja e ftesave nga palë të treta nuk mbulohet ende, derisa të kihet API";
@@ -492,7 +492,7 @@
 "room_resource_usage_limit_reached_message_1_monthly_active_user" = "Ky shërbyes home ka tejkaluar kufirin Përdorues Aktivë Mujorë, ndaj ";
 "unknown_devices_alert" = "Kjo dhomë përmban pajisje të panjohura që s’janë verifikuar.\nKjo do të thotë se nuk ka garanci se pajisjet u përkasin përdoruesve që pretendojnë se u përkasin.\nPërpara se të vazhdoni, këshillojmë që të kaloni në proces verifikimi çdo pajisje, por mund të ridërgoni mesazhin pa verifikuar gjë, nëse parapëlqeni kështu.";
 "room_preview_subtitle" = "Kjo është një paraparje e kësaj dhome. Ndërveprimet në dhomë janë çaktivizuar.";
-"room_preview_unlinked_email_warning" = "Kjo ftesë i qe dërguar %@, që s’është i përshoqëruar me këtë llogari. Mund të doni të hyni me një llogari tjetër, ose ta shtoni këtë email te kjo llogari.";
+"room_preview_unlinked_email_warning" = "Kjo ftesë i qe dërguar %@, që s’është i përshoqëruar me këtë llogari. Mund të doni të hyni me një llogari tjetër, ose ta shtoni këtë email te llogaria juaj.";
 "room_preview_try_join_an_unknown_room" = "Po përpiqeni të hyni në %@. Do të donit të bëheni pjesë, që të mundni të merrni pjesë te diskutimi?";
 "settings_sign_out_e2e_warn" = "Do të humbni kyçet tuaj të fshehtëzimit skaj-më-skaj. Kjo do të thotë se s’do të jeni më në gjendje të lexoni mesazhe të vjetër te dhoma të fshehtëzuara në këtë pajisje.";
 "settings_surname" = "Mbiemër";
@@ -500,7 +500,7 @@
 "settings_on_denied_notification" = "Njoftimet për %@ s’pranohen, ju lutemi, lejojini që nga rregullimet e pajisjes tuaj";
 "settings_enable_callkit" = "Thirrje të integruara";
 "settings_callkit_info" = "Merrini thirrjet ardhëse edhe me ekran të kyçur. Shihni thirrjet tuaja nën Riot te historiku i thirrjeve të sistemit. Nëse iCloud është i aktivizuar, ky historik thirrjesh do t’i jepet kompanisë Apple.";
-"settings_ui_theme_picker_message" = "\"Auto\" përdor rregullimet Përmbysi Ngjyrat\" të pajisjes tuaj";
+"settings_ui_theme_picker_message" = "\"Auto\" përdor rregullimet \"Përmbysi Ngjyrat\" të pajisjes tuaj";
 "settings_contacts_discover_matrix_users" = "Përdorni email-e dhe numra telefoni për të gjetur përdorues";
 "settings_labs_e2e_encryption_prompt_message" = "Që të përfundohet rregullimi i fshehtëzimit duhet të ribëni hyrjen në llogari.";
 "settings_labs_room_members_lazy_loading" = "<em>Lazy-load</em> anëtarët e dhomave";
@@ -541,14 +541,14 @@
 "e2e_room_key_request_message" = "Pajisja juaj e paverifikuar '%@' po kërkon kyçe fshehtëzimi.";
 // GDPR
 "gdpr_consent_not_given_alert_message" = "Që të vazhdohet të përdoret shërbyesi home %@, duhet të shqyrtoni dhe pajtoheni me termat dhe kushtet.";
-"deactivate_account_informations_part1" = "Kjo do ta bëjë përgjithnjë të papërdorshëm llogarinë tuaj. Nuk do të jeni në gjendje të bëni hyrjen në të, dhe askush s’do të jetë në gjendje të rrregjistrohet me të njëjtën ID përdoruesi.  Kjo do të sjellë daljen e llogarisë tuaj nga krejt dhomat në të cilat po merr pjesë, dhe do të heqë nga shërbyesi i identitetit tuaj hollësitë e llogarisë tuaj. ";
+"deactivate_account_informations_part1" = "Kjo do ta bëjë përgjithnjë të papërdorshëm llogarinë tuaj. Nuk do të jeni në gjendje të bëni hyrjen në të, dhe askush s’do të jetë në gjendje të regjistrohet me të njëjtën ID përdoruesi.  Kjo do të sjellë daljen e llogarisë tuaj nga krejt dhomat në të cilat po merr pjesë, dhe do të heqë nga shërbyesi i identitetit tuaj hollësitë e llogarisë tuaj. ";
 "deactivate_account_informations_part4_emphasize" = "si parazgjedhje, nuk na bën të harrojmë mesazhet që keni dërguar. ";
 "deactivate_account_informations_part5" = "Nëse do të donit që të harrohen mesazhet tuaj, ju lutemi, i vini shenjë kutizës më poshtë\n\nDukshmëria e mesazheve në Matrix është e ngjashme me atë në email. Harrimi i mesazheve nga ana jonë do të thotë që mesazhet që keni dërguar nuk do të ndahen me çfarëdo përdoruesi të ri apo të paregjistruar, por përdoruesit e regjistruar, që kanë tashmë hyrje në këto mesazhe, do të kenë prapëseprapë hyrje te kopja e tyre.";
 "deactivate_account_forget_messages_information_part1" = "Të lutem, harro krejt mesazhet që kamë dërguar, kur të çaktivizohet llogaria ime (";
 "deactivate_account_forget_messages_information_part3" = ": kjo do të bëjë që përdorues të ardhshëm të shohin një pamje jo të plotë të bisedave)";
 "rerequest_keys_alert_message" = "Ju lutemi, niseni Riot-in në një tjetër pajisje që mundet të shfshehtëzojë mesazhin, që kështu të mund të dërgojë kyçet te kjo pajisje.";
 "room_event_action_redact" = "Hiqe";
-"e2e_need_log_in_again" = "Që të prodhohen kyçe fshehtëzimi skaj-më-skaj për këtë pajisje, lypset të ribëni hyrjen dhe të parashtroni kyçin publik te shërbyesi juaj homë.\nKjo duhet vetëm një herë; na ndjeni për belanë.";
+"e2e_need_log_in_again" = "Që të prodhohen kyçe fshehtëzimi skaj-më-skaj për këtë pajisje, lypset të ribëni hyrjen dhe të parashtroni kyçin publik te shërbyesi juaj Home.\nKjo duhet vetëm një herë; na ndjeni për belanë.";
 "room_action_send_sticker" = "Dërgoni ngjitës";
 "settings_flair" = "Shfaq simbole, kur lejohet";
 "room_details_flair_section" = "Shfaq simbole për bashkësi";
@@ -559,7 +559,7 @@
 "settings_key_backup_info_version" = "Version Kopjeruajtjeje Kyçesh: %@";
 "settings_key_backup_info_algorithm" = "Algoritëm: %@";
 "settings_key_backup_info_valid" = "Kjo pajisje po bën kopjeruajtje të kyçeve tuaja.";
-"settings_key_backup_info_not_valid" = "Kjo pajisje nuk po bën kopjeruajtje të kyçeve tuaja.";
+"settings_key_backup_info_not_valid" = "Kjo pajisje nuk po bën kopjeruajtje të kyçeve tuaja, por keni një kopjeruajtje ekzistuese që mund ta përdorni për rimarrje dhe ta shtoni më tej.";
 "settings_key_backup_info_progress" = "Po kopjeruhen kyçet për %@…";
 "settings_key_backup_info_progress_done" = "U kopjeruajtën krejt kyçet";
 "settings_key_backup_info_not_trusted_from_verifiable_device_fix_action" = "Për të përdorur Rikthim Mesazhesh të Sigurt në këtë pajisje, verifikoni tani %@.";
@@ -621,7 +621,7 @@
 "key_backup_recover_banner_title_part1" = "Xhironi Rikthim Mesazhesh të Sigurt";
 "key_backup_recover_banner_title_part2" = " që të lexoni historik mesazhesh të fshehtëzuar në këtë pajisje";
 "settings_key_backup_info" = "Mesazhet e fshehtëzuar sigurohen me fshehtëzim skaj-më-skaj. Vetëm ju dhe marrësi(t) kanë kyçet për të lexuar këto mesazhe.";
-"settings_key_backup_info_signout_warning" = "Kopjeruajini kyçet tuaj, përpara se të dilni, që të shmangni humbjen e tyre.";
+"settings_key_backup_info_signout_warning" = "Lidheni këtë pajisje me kopjeruajtje kyçesh, përpara se të dilni, që të shmangni humbje të çfarëdo kyçi që mund të gjendet vetëm në këtë pajisje.";
 "settings_key_backup_button_use" = "Përdor kopjeruajtje kyçesh";
 "key_backup_setup_intro_setup_action_without_existing_backup" = "Fillo të përdorësh Kopjeruajtje Kyçesh";
 "key_backup_setup_intro_setup_action_with_existing_backup" = "Përdor Kopjeruajtje Kyçesh";
@@ -667,6 +667,114 @@
 "key_backup_setup_intro_manual_export_action" = "Eksportoni kyçe dorazi";
 // String for App Store
 "store_short_description" = "Fjalosje /VoIP e siguruar, e decentralizuar";
-"store_full_description" = "Komunikoni sipas rrugës tuaj.\n\nNjë aplikacion fjalosjesh, nën kontrollin tuaj dhe krejtësisht i zhdërvjellët. Riot-i ju lejon të komunikoni si doni. Krijuar për [matrix] - standardi për për komunikim të hapur, të decentralizuar.\n\nMerrni një llogari matrix.org falas, merrni shërbyesin tuaj te https://modular.im, ose përdorni një tjetër shërbyes Matrix.\n\nPse të zgjidhet Riot.im?\n\nKOMUNIKIM I PLOTË: Krijoni dhoma rreth ekipeve tuaja, shokëve tuaj, bashkësisë tuaj - rreth kujtdo që doni! Bisedoni, shkëmbeni kartela, shtoni widget-e dhe bëni thirrje audio dhe video - gjithçka falas.\n\nINTEGRIME TË FUQISHME: Përdoreni Riot.im me mjetet që njihni dhe doni. Me Riot.im mundeni madje të bisedoni me përdorues dhe grupe nën aplikacione të tjera fjalosjesh.\n\nPRIVAT DHE I SIGURUAR: Mbajini bisedat tuaja të fshehta. Fshehtëzimi skaj-më-skaj i fjalës së fundit garanton që komunikimi privat mbetet privat.\n\nI HAPUR, JO I MBYLLUR: Me burim të hapur dhe i ngritur mbi Matrix. Jini zot i të dhënave tuaja, duke strehuar shërbyesin tuaj, ose duke përzgjedhur një të cilit i besoni.\n\nKUDO QOFSHI: Mbani lidhjet, kudo qofshi, me historik plotësisht të njëkohësuar mesazhesh në krejt pajisjet tuaja dhe në internet, te https://riot.im.";
+"store_full_description" = "Komunikoni sipas rrugës tuaj.\n\nNjë aplikacion fjalosjesh, nën kontrollin tuaj dhe krejtësisht i zhdërvjellët. Riot-i ju lejon të komunikoni si doni. Krijuar për [matrix] - standardi për komunikim të hapur, të decentralizuar.\n\nMerrni një llogari matrix.org falas, merrni shërbyesin tuaj te https://modular.im, ose përdorni një tjetër shërbyes Matrix.\n\nPse të zgjidhet Riot.im?\n\nKOMUNIKIM I PLOTË: Krijoni dhoma rreth ekipeve tuaja, shokëve tuaj, bashkësisë tuaj - rreth kujtdo që doni! Bisedoni, shkëmbeni kartela, shtoni widget-e dhe bëni thirrje audio dhe video - gjithçka falas.\n\nINTEGRIME TË FUQISHME: Përdoreni Riot.im me mjetet që njihni dhe doni. Me Riot.im mundeni madje të bisedoni me përdorues dhe grupe nën aplikacione të tjera fjalosjesh.\n\nPRIVAT DHE I SIGURUAR: Mbajini bisedat tuaja të fshehta. Fshehtëzimi skaj-më-skaj i fjalës së fundit garanton që komunikimi privat mbetet privat.\n\nI HAPUR, JO I MBYLLUR: Me burim të hapur dhe i ngritur mbi Matrix. Jini zot i të dhënave tuaja, duke strehuar shërbyesin tuaj, ose duke përzgjedhur një të cilit i besoni.\n\nKUDO QOFSHI: Mbani lidhjet, kudo qofshi, me historik plotësisht të njëkohësuar mesazhesh në krejt pajisjet tuaja dhe në internet, te https://riot.im.";
 "auth_login_single_sign_on" = "Hyni përmes një hyrjeje njëshe";
 "room_message_unable_open_link_error_message" = "S’arrihet të hapet lidhja.";
+"auth_autodiscover_invalid_response" = "Përgjigje e pavlefshme pikasjeje shërbyesi Home";
+"room_details_fail_to_update_room_direct" = "S’arrihet të përditësohet shenja si e drejtpërdrejtë e kësaj dhome";
+"room_event_action_reply" = "Përgjigjuni";
+"room_event_action_edit" = "Përpunoni";
+"room_event_action_reaction_agree" = "Pajtohem me %@";
+"room_event_action_reaction_disagree" = "S’pajtohem me %@";
+"room_event_action_reaction_like" = "Pëlqejeni %@";
+"room_event_action_reaction_dislike" = "Shpëlqejeni %@";
+"room_action_reply" = "Përgjigjuni";
+"settings_labs_message_reaction" = "Reagoni ndaj mesazhesh me emoji";
+"settings_key_backup_button_connect" = "Lidhe këtë pajisje me Kopjeruajtje Kyçesh";
+"key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Lidhe këtë pajisje me Kopjeruajtje Kyçesh";
+"key_backup_recover_connent_banner_subtitle" = "Lidhe këtë pajisje me Kopjeruajtje Kyçesh";
+// MARK: - Device Verification
+"device_verification_title" = "Verifikoni pajisje";
+"device_verification_security_advice" = "Për siguri maksimale, këshillojmë ta bëni këtë në prani të vetë personit, ose të përdorni një tjetër kanal të besuar komunikimesh";
+"device_verification_cancelled" = "Pala tjetër e anuloi verifikimin.";
+"device_verification_cancelled_by_me" = "Verifikimi u anulua. Arsye: %@";
+"device_verification_error_cannot_load_device" = "S’ngarkohen dot të dhëna pajisje.";
+// Mark: Incoming
+"device_verification_incoming_title" = "Kërkesë Verifikimi e Ardhur";
+"device_verification_incoming_description_1" = "Që t’i vihet shenjë si e besuar, verifikojeni këtë pajisje. Besimi i pajisjeve të partnerëve ju jep ca qetësi më tepër kur përdoren mesazhe të fshehtëzuar skaj-më-skaj.";
+"device_verification_incoming_description_2" = "Verifikimi i kësaj pajisje do ta shënojë atë të besuar, dhe tuajën si të besuar te partneri.";
+// MARK: Start
+"device_verification_start_title" = "Verifikoje duke krahasuar një varg të shkurtër teksti";
+"device_verification_start_wait_partner" = "Po pritet pranimi nga partneri…";
+"device_verification_start_use_legacy" = "S’duket gjë? Jo të tërë klientët mbulojnë verifikim ndërveprues ende. Përdorni verifikimin në stil të vjetër.";
+"device_verification_start_verify_button" = "Po Verifikohet";
+"device_verification_start_use_legacy_action" = "Përdor Verifikim të Dikurshëm";
+// MARK: Verify
+"device_verification_verify_title_emoji" = "Verifikojeni këtë pajisje duke ripohuar shfaqjen e emoji-t vijues në skenën e partnerit";
+"device_verification_verify_title_number" = "Verifikojeni këtë pajisje duke ripohuar se numri vijues shfaqet në ekranin e partnerit";
+"device_verification_verify_wait_partner" = "Po pritet ripohimi nga partneri…";
+// MARK: Verified
+"device_verification_verified_title" = "U verifikua!";
+"device_verification_verified_description_1" = "E verifikuat me sukses këtë pajisje.";
+"device_verification_verified_description_2" = "Mesazhet e sigurt me këtë përdorues fshehtëzohen skaj-më-skaj dhe janë të palexueshëm nga palë të treta.";
+"device_verification_verified_got_it_button" = "E mora vesh";
+// MARK: Emoji
+"device_verification_emoji_dog" = "Qen";
+"device_verification_emoji_cat" = "Mace";
+"device_verification_emoji_lion" = "Luan";
+"device_verification_emoji_horse" = "Kalë";
+"device_verification_emoji_unicorn" = "Njëbrirësh";
+"device_verification_emoji_pig" = "Derr";
+"device_verification_emoji_elephant" = "Elefant";
+"device_verification_emoji_rabbit" = "Lepur";
+"device_verification_emoji_panda" = "Panda";
+"device_verification_emoji_rooster" = "Këndes";
+"device_verification_emoji_penguin" = "Pinguin";
+"device_verification_emoji_turtle" = "Breshkë";
+"device_verification_emoji_fish" = "Peshk";
+"device_verification_emoji_octopus" = "Oktapod";
+"device_verification_emoji_butterfly" = "Flutur";
+"device_verification_emoji_flower" = "Lule";
+"device_verification_emoji_tree" = "Pemë";
+"device_verification_emoji_cactus" = "Kaktus";
+"device_verification_emoji_mushroom" = "Kërpudhë";
+"device_verification_emoji_globe" = "Rruzull";
+"device_verification_emoji_moon" = "Hëna";
+"device_verification_emoji_cloud" = "Re";
+"device_verification_emoji_fire" = "Zjarr";
+"device_verification_emoji_banana" = "Banane";
+"device_verification_emoji_apple" = "Mollë";
+"device_verification_emoji_strawberry" = "Luleshtrydhe";
+"device_verification_emoji_corn" = "Misër";
+"device_verification_emoji_pizza" = "Picë";
+"device_verification_emoji_cake" = "Tortë";
+"device_verification_emoji_heart" = "Zemër";
+"device_verification_emoji_smiley" = "Emotikon";
+"device_verification_emoji_robot" = "Robot";
+"device_verification_emoji_hat" = "Kapë";
+"device_verification_emoji_glasses" = "Syze";
+"device_verification_emoji_santa" = "Babagjyshi i Vitit të Ri";
+"device_verification_emoji_umbrella" = "Ombrellë";
+"device_verification_emoji_hourglass" = "Klepsidër";
+"device_verification_emoji_clock" = "Klasë";
+"device_verification_emoji_gift" = "Dhuratë";
+"device_verification_emoji_light bulb" = "Llambë";
+"device_verification_emoji_book" = "Libër";
+"device_verification_emoji_pencil" = "Laps";
+"device_verification_emoji_paperclip" = "Kapëse";
+"device_verification_emoji_scissors" = "Gërshërë";
+"device_verification_emoji_padlock" = "Dry";
+"device_verification_emoji_key" = "Kyç";
+"device_verification_emoji_hammer" = "Çekiç";
+"device_verification_emoji_telephone" = "Telefon";
+"device_verification_emoji_flag" = "Flamur";
+"device_verification_emoji_train" = "Tren";
+"device_verification_emoji_bicycle" = "Biçikletë";
+"device_verification_emoji_aeroplane" = "Avion";
+"device_verification_emoji_rocket" = "Raketë";
+"device_verification_emoji_trophy" = "Trofe";
+"device_verification_emoji_ball" = "Top";
+"device_verification_emoji_guitar" = "Kitarë";
+"device_verification_emoji_trumpet" = "Trombë";
+"device_verification_emoji_bell" = "Kambanë";
+"device_verification_emoji_anchor" = "Spirancë";
+"device_verification_emoji_headphones" = "Kufje";
+"device_verification_emoji_folder" = "Dosje";
+"event_formatter_message_edited_mention" = "(U përpunua)";
+// Widget
+"widget_no_integrations_server_configured" = "S’ka të formësuar shërbyes integrimesh";
+"widget_integrations_server_failed_to_connect" = "S’u arrit të lidhej me shërbyes integrimesh";
+"close" = "Mbylle";
+"room_event_action_reaction_show_all" = "Shfaqi krejt";
+"room_event_action_reaction_show_less" = "Shfaq më pak";
+"room_message_edits_history_title" = "Përpunime mesazhi";
