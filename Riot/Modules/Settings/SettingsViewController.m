@@ -2874,7 +2874,11 @@ SignOutAlertPresenterDelegate>
         
         if (accountManager.pushDeviceToken)
         {
-            [account setEnablePushKitNotifications:!account.isPushKitNotificationActive];
+            [account enablePushKitNotifications:!account.isPushKitNotificationActive success:^{
+                [self stopActivityIndicator];
+            } failure:^(NSError *error) {
+                [self stopActivityIndicator];
+            }];
         }
         else
         {
@@ -2887,7 +2891,11 @@ SignOutAlertPresenterDelegate>
                 }
                 else
                 {
-                    [account setEnablePushKitNotifications:YES];
+                    [account enablePushKitNotifications:YES success:^{
+                        [self stopActivityIndicator];
+                    } failure:^(NSError *error) {
+                        [self stopActivityIndicator];
+                    }];
                 }
             }];
         }
