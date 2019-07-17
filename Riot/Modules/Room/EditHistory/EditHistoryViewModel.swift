@@ -113,16 +113,7 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
             sself.nextBatch = response.nextBatch
             sself.operation = nil
 
-            sself.process(editEvents: response.chunk)
-
-            if response.nextBatch == nil {
-                // Append the original event when hitting the end of the edits history
-                if let originalEvent = response.originalEvent {
-                    sself.process(editEvents: [originalEvent])
-                } else {
-                    print("[EditHistoryViewModel] loadMoreHistory: The homeserver did not return the original event")
-                }
-            }
+            sself.process(editEvents: response.chunk,originalEvent: response.originalEvent, nextBatch: response.nextBatch)
  
         }, failure: { [weak self] error in
                 guard let sself = self else {
@@ -134,15 +125,21 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
         })
     }
 
-    private func process(editEvents: [MXEvent]) {
+    private func process(editEvents: [MXEvent], originalEvent: MXEvent?, nextBatch: String?) {
         self.messageFormattingQueue.async {
-            
-            let newMessages = editEvents.reversed()
+            var newMessages: [EditHistoryMessage] = []
+
+            let editsMessages = editEvents.reversed()
                 .compactMap { (editEvent) -> EditHistoryMessage? in
                     return self.process(editEvent: editEvent)
             }
-            
-            let allDataLoaded = self.nextBatch == nil
+
+            newMessages.append(contentsOf: editsMessages)
+
+            if nextBatch == nil, let originalEvent = originalEvent, let originalEventMessage = self.process(event: originalEvent, ts: originalEvent.originServerTs) {
+                newMessages.append(originalEventMessage)
+            }
+
             let addedCount: Int
 
             if newMessages.count > 0 {
@@ -151,11 +148,29 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
             } else {
                 addedCount = 0
             }
-            
+
+            let allDataLoaded = nextBatch == nil
             let editHistorySections = self.editHistorySections(from: self.messages)
-            
+
             DispatchQueue.main.async {
                 self.update(viewState: .loaded(sections: editHistorySections, addedCount: addedCount, allDataLoaded: allDataLoaded))
+            }
+        }
+    }
+
+    private func process(originalEvent: MXEvent) {
+        self.messageFormattingQueue.async {
+
+            var addedCount = 0
+            if let newMessage = self.process(event: originalEvent, ts: originalEvent.originServerTs) {
+                addedCount = 1
+                self.messages.append(newMessage)
+            }
+
+            let editHistorySections = self.editHistorySections(from: self.messages)
+
+            DispatchQueue.main.async {
+                self.update(viewState: .loaded(sections: editHistorySections, addedCount: addedCount, allDataLoaded: true))
             }
         }
     }
@@ -200,20 +215,25 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
             print("[EditHistoryViewModel] processEditEvent: Cannot build edited event: \(editEvent.eventId ?? "")")
             return nil
         }
+
+        return self.process(event: editedEvent, ts: editEvent.originServerTs)
+    }
+
+    private func process(event: MXEvent, ts: UInt64) -> EditHistoryMessage? {
         
-        if editedEvent.isEncrypted && editedEvent.clear == nil {
-            if self.session.decryptEvent(editedEvent, inTimeline: nil) == false {
-                print("[EditHistoryViewModel] processEditEvent: Fail to decrypt event: \(editedEvent.eventId ?? "")")
+        if event.isEncrypted && event.clear == nil {
+            if self.session.decryptEvent(event, inTimeline: nil) == false {
+                print("[EditHistoryViewModel] processEditEvent: Fail to decrypt event: \(event.eventId ?? "")")
             }
         }
 
         let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
-        guard let message = self.formatter.attributedString(from: editedEvent, with: nil, error: formatterError) else {
-            print("[EditHistoryViewModel] processEditEvent: cannot format(error: \(formatterError)) edited event: \(editedEvent.eventId ?? "")")
+        guard let message = self.formatter.attributedString(from: event, with: nil, error: formatterError) else {
+            print("[EditHistoryViewModel] processEditEvent: cannot format(error: \(formatterError)) event: \(event.eventId ?? "")")
             return nil
         }
 
-        let date = Date(timeIntervalSince1970: TimeInterval(editEvent.originServerTs) / 1000)
+        let date = Date(timeIntervalSince1970: TimeInterval(ts) / 1000)
 
         return EditHistoryMessage(date: date, message: message)
     }
