@@ -1,3 +1,11 @@
+Changes in 0.9.1 (2019-07-)
+===============================================
+
+Improvements:
+
+Bug fix:
+ * Edits history: Original event is missing (#2585).
+
 Changes in 0.9.0 (2019-07-16)
 ===============================================
 
