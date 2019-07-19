@@ -42,6 +42,7 @@
     
     // The parameters to pass to the Authentification view controller.
     NSDictionary *authViewControllerRegistrationParameters;
+    MXCredentials *softLogoutCredentials;
     
     // The recents data source shared between all the view controllers of the tab bar.
     RecentsDataSource *recentsDataSource;
@@ -142,11 +143,25 @@
     [super viewDidAppear:animated];
     
     // Check whether we're not logged in
+    BOOL authIsShown = NO;
     if (![MXKAccountManager sharedManager].accounts.count)
     {
         [self showAuthenticationScreen];
+        authIsShown = YES;
     }
-    else
+    else if (![MXKAccountManager sharedManager].activeAccounts.count)
+    {
+        // Display a login screen if the account is soft logout
+        // Note: We support only one account
+        MXKAccount *account = [MXKAccountManager sharedManager].accounts.firstObject;
+        if (account.isSoftLogout)
+        {
+            [self showAuthenticationScreenAfterSoftLogout:account.mxCredentials];
+            authIsShown = YES;
+        }
+    }
+
+    if (!authIsShown)
     {
         // Check whether the user has been already prompted to send crash reports.
         // (Check whether 'enableCrashReport' flag has been set once)        
@@ -401,6 +416,25 @@
     }
 }
 
+- (void)showAuthenticationScreenAfterSoftLogout:(MXCredentials*)credentials;
+{
+    NSLog(@"[MasterTabBarController] showAuthenticationScreenAfterSoftLogout");
+
+    softLogoutCredentials = credentials;
+
+    // Check whether an authentication screen is not already shown or preparing
+    if (!self.authViewController && !isAuthViewControllerPreparing)
+    {
+        isAuthViewControllerPreparing = YES;
+
+        [[AppDelegate theDelegate] restoreInitialDisplay:^{
+
+            [self performSegueWithIdentifier:@"showAuth" sender:self];
+
+        }];
+    }
+}
+
 - (void)selectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)matrixSession
 {
     [self selectRoomWithId:roomId andEventId:eventId inMatrixSession:matrixSession completion:nil];
@@ -636,6 +670,11 @@
             {
                 _authViewController.externalRegistrationParameters = authViewControllerRegistrationParameters;
                 authViewControllerRegistrationParameters = nil;
+            }
+            if (softLogoutCredentials)
+            {
+                _authViewController.softLogoutCredentials = softLogoutCredentials;
+                softLogoutCredentials = nil;
             }
         }
         else if ([[segue identifier] isEqualToString:@"showUnifiedSearch"])

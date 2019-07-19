@@ -1,3 +1,10 @@
+Changes in 0.9.2 (2019-07-)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.10.2](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.10.2)).
+ * Soft logout: Support soft logout (#2540).
+
 Changes in 0.9.1 (2019-07-17)
 ===============================================
 

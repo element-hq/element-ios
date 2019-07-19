@@ -54,6 +54,7 @@
 @end
 
 @implementation AuthInputsView
+@synthesize softLogoutCredentials;
 
 + (UINib *)nib
 {
@@ -487,6 +488,15 @@
                         }
                     }
                 }
+
+                // For soft logout, pass the device_id currently used
+                if (parameters && self.softLogoutCredentials)
+                {
+                    NSMutableDictionary *parametersWithDeviceId = [parameters mutableCopy];
+                    parametersWithDeviceId[@"device_id"] = self.softLogoutCredentials.deviceId;
+                    parameters = parametersWithDeviceId;
+                }
+
             }
             else if (type == MXKAuthenticationTypeRegister)
             {
@@ -725,7 +735,12 @@
                 {
                     // Note: this use case was not tested yet.
                     parameters = @{
-                                   @"auth": @{@"session":currentSession.session, @"username": self.userLoginTextField.text, @"password": self.passWordTextField.text, @"type": kMXLoginFlowTypePassword}
+                                   @"auth": @{
+                                           @"session":currentSession.session,
+                                           @"username": self.userLoginTextField.text,
+                                           @"password": self.passWordTextField.text,
+                                           @"type": kMXLoginFlowTypePassword
+                                           }
                                    };
                 }
                 else if ([self isFlowSupported:kMXLoginFlowTypeTerms] && ![self isFlowCompleted:kMXLoginFlowTypeTerms])
@@ -934,6 +949,12 @@
     [self hideInputsContainer];
     
     return YES;
+}
+
+- (void)setSoftLogoutCredentials:(MXCredentials *)credentials
+{
+    softLogoutCredentials = credentials;
+    self.userLoginTextField.text = softLogoutCredentials.userId;
 }
 
 - (BOOL)areAllRequiredFieldsSet

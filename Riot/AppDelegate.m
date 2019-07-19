@@ -2781,6 +2781,16 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             [self logoutWithConfirmation:NO completion:nil];
         }
     }];
+
+    // Add observer to handle soft logout
+    [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidSoftlogoutAccountNotification  object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+        MXKAccount *account = notif.object;
+        [self removeMatrixSession:account.mxSession];
+
+        // Return to authentication screen
+        [self.masterTabBarController showAuthenticationScreenAfterSoftLogout:account.mxCredentials];
+    }];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionIgnoredUsersDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull notif) {
         

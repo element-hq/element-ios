@@ -395,6 +395,16 @@
     }
 }
 
+- (void)setSoftLogoutCredentials:(MXCredentials *)softLogoutCredentials
+{
+    [super setSoftLogoutCredentials:softLogoutCredentials];
+
+    // Customise the screen for soft logout
+    // TODO
+    self.customServersTickButton.hidden = YES;
+}
+
+
 - (void)handleAuthenticationSession:(MXAuthenticationSession *)authSession
 {
     [super handleAuthenticationSession:authSession];
