@@ -964,21 +964,25 @@
 
 - (void)displaySoftLogoutMessage
 {
-    // Take some shortcuts and make some assumptions (Riot uses MXFileStore) to
-    // retrieve my user display name as quick as possible
+    // Take some shortcuts and make some assumptions (Riot uses MXFileStore and MXRealmCryptoStore) to
+    // retrieve data to display as quick as possible
+    MXRealmCryptoStore *cryptoStore = [[MXRealmCryptoStore alloc] initWithCredentials:self.softLogoutCredentials];
+    BOOL keyBackupNeeded = [cryptoStore inboundGroupSessionsToBackup:1].count > 0;
+
     MXFileStore *fileStore = [[MXFileStore alloc] initWithCredentials:softLogoutCredentials];
     [fileStore asyncUsersWithUserIds:@[softLogoutCredentials.userId] success:^(NSArray<MXUser *> * _Nonnull users) {
 
         MXUser *myUser = users.firstObject;
-        [self displaySoftLogoutMessageWithUserDisplayname:myUser.displayname];
+
+        [self displaySoftLogoutMessageWithUserDisplayname:myUser.displayname andKeyBackupNeeded:keyBackupNeeded];
 
     } failure:^(NSError * _Nonnull error) {
         NSLog(@"[AuthInputsView] displaySoftLogoutMessage: Cannot load displayname. Error: %@", error);
-        [self displaySoftLogoutMessageWithUserDisplayname:nil];
+        [self displaySoftLogoutMessageWithUserDisplayname:nil andKeyBackupNeeded:keyBackupNeeded];
     }];
 }
 
-- (void)displaySoftLogoutMessageWithUserDisplayname:(NSString*)userDisplayname
+- (void)displaySoftLogoutMessageWithUserDisplayname:(NSString*)userDisplayname andKeyBackupNeeded:(BOOL)keyBackupNeeded
 {
     // Use messageLabel for this message
     self.messageLabelTopConstraint.constant = 8;
@@ -999,13 +1003,15 @@
                                                                                  NSFontAttributeName: [UIFont systemFontOfSize:14]
                                                                                  }]];
 
-    // TODO: Do not display this message if no e2e keys
-    [message appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n"]];
-    string = NSLocalizedStringFromTable(@"auth_softlogout_recover_encryption_keys", @"Vector", nil);
-    [message appendAttributedString:[[NSAttributedString alloc] initWithString:string
-                                                                    attributes:@{
-                                                                                 NSFontAttributeName: [UIFont systemFontOfSize:14]
-                                                                                 }]];
+    if (keyBackupNeeded)
+    {
+        [message appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n"]];
+        string = NSLocalizedStringFromTable(@"auth_softlogout_recover_encryption_keys", @"Vector", nil);
+        [message appendAttributedString:[[NSAttributedString alloc] initWithString:string
+                                                                        attributes:@{
+                                                                                     NSFontAttributeName: [UIFont systemFontOfSize:14]
+                                                                                     }]];
+    }
 
     self.messageLabel.attributedText = message;
 }
