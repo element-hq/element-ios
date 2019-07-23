@@ -442,6 +442,47 @@
     [self refreshContentViewHeightConstraint];
 }
 
+- (void)showClearDataAfterSoftLogoutConfirmation
+{
+    // Request confirmation
+    if (alert)
+    {
+        [alert dismissViewControllerAnimated:NO completion:nil];
+    }
+
+    alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"auth_softlogout_clear_data_sign_out_title", @"Vector", nil)
+                                                message:NSLocalizedStringFromTable(@"auth_softlogout_clear_data_sign_out_msg", @"Vector", nil)
+                                         preferredStyle:UIAlertControllerStyleAlert];
+
+
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"auth_softlogout_clear_data_sign_out", @"Vector", nil)                                              style:UIAlertActionStyleDestructive
+                                            handler:^(UIAlertAction * action)
+                      {
+                          [self clearDataAfterSoftLogout];
+                      }]];
+
+    MXWeakify(self);
+    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * action)
+                      {
+                          MXStrongifyAndReturnIfNil(self);
+                          self->alert = nil;
+                      }]];
+
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)clearDataAfterSoftLogout
+{
+    NSLog(@"[AuthenticationVC] clearDataAfterSoftLogout %@", self.softLogoutCredentials.userId);
+
+    // Use AppDelegate so that we reset app settings and this auth screen
+    [[AppDelegate theDelegate] logoutSendingRequestServer:YES completion:^(BOOL isLoggedOut) {
+        NSLog(@"[AuthenticationVC] Complete. isLoggedOut: %@", @(isLoggedOut));
+    }];
+}
+
 
 - (void)handleAuthenticationSession:(MXAuthenticationSession *)authSession
 {
@@ -576,6 +617,10 @@
         [self showAuthenticationFallBackView];
 
         [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    }
+    else if (sender == self.softLogoutClearDataButton)
+    {
+        [self showClearDataAfterSoftLogoutConfirmation];
     }
     else
     {

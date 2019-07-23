@@ -39,6 +39,7 @@
     
     // Observer that checks when the Authentification view controller has gone.
     id authViewControllerObserver;
+    id authViewRemovedAccountObserver;
     
     // The parameters to pass to the Authentification view controller.
     NSDictionary *authViewControllerRegistrationParameters;
@@ -230,6 +231,11 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:authViewControllerObserver];
         authViewControllerObserver = nil;
+    }
+    if (authViewRemovedAccountObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:authViewRemovedAccountObserver];
+        authViewRemovedAccountObserver = nil;
     }
     
     if (kThemeServiceDidChangeThemeNotificationObserver)
@@ -663,6 +669,15 @@
                 
                 [[NSNotificationCenter defaultCenter] removeObserver:authViewControllerObserver];
                 authViewControllerObserver = nil;
+            }];
+
+            authViewRemovedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+                // The user has cleared data for their soft logged out account
+                _authViewController = nil;
+
+                [[NSNotificationCenter defaultCenter] removeObserver:authViewRemovedAccountObserver];
+                authViewRemovedAccountObserver = nil;
             }];
             
             // Forward parameters if any

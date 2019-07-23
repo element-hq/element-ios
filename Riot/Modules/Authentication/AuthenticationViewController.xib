@@ -378,6 +378,9 @@ Clear it if you're finished using this device, or want to sign in to another acc
                                                     <state key="normal" title="Clear all data">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </state>
+                                                    <connections>
+                                                        <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="c0b-DK-MIg"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

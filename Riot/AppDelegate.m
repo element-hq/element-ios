@@ -2770,7 +2770,10 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         
         // Remove inApp notifications toggle change
         MXKAccount *account = notif.object;
-        [account removeObserver:self forKeyPath:@"enableInAppNotifications"];
+        if (!account.isSoftLogout)
+        {
+            [account removeObserver:self forKeyPath:@"enableInAppNotifications"];
+        }
 
         // Clear Modular data
         [[WidgetManager sharedManager] deleteDataForUser:account.mxCredentials.userId];

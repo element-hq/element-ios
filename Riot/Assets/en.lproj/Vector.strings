@@ -123,6 +123,10 @@
 "auth_softlogout_clear_data_message_1" = "Warning: Your personal data (including encryption keys) is still stored on this device.";
 "auth_softlogout_clear_data_message_2" = "Clear it if you're finished using this device, or want to sign in to another account.";
 "auth_softlogout_clear_data_button" = "Clear all data";
+"auth_softlogout_clear_data_sign_out_title" = "Are you sure?";
+"auth_softlogout_clear_data_sign_out_msg" = "Are you sure you want to clear all data currently stored on this device? Sign in again to access your account data and messages.";
+"auth_softlogout_clear_data_sign_out" = "Sign out";
+
 
 // Chat creation
 "room_creation_title" = "New Chat";

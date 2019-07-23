@@ -242,6 +242,18 @@ internal enum VectorL10n {
   internal static var authSoftlogoutClearDataMessage2: String { 
     return VectorL10n.tr("Vector", "auth_softlogout_clear_data_message_2") 
   }
+  /// Sign out
+  internal static var authSoftlogoutClearDataSignOut: String { 
+    return VectorL10n.tr("Vector", "auth_softlogout_clear_data_sign_out") 
+  }
+  /// Are you sure you want to clear all data currently stored on this device? Sign in again to access your account data and messages.
+  internal static var authSoftlogoutClearDataSignOutMsg: String { 
+    return VectorL10n.tr("Vector", "auth_softlogout_clear_data_sign_out_msg") 
+  }
+  /// Are you sure?
+  internal static var authSoftlogoutClearDataSignOutTitle: String { 
+    return VectorL10n.tr("Vector", "auth_softlogout_clear_data_sign_out_title") 
+  }
   /// Your homeserver (%1$@) admin has signed you out of your account %2$@ (%3$@).
   internal static func authSoftlogoutReason(_ p1: String, _ p2: String, _ p3: String) -> String {
     return VectorL10n.tr("Vector", "auth_softlogout_reason", p1, p2, p3)
