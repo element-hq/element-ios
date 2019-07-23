@@ -226,6 +226,22 @@ internal enum VectorL10n {
   internal static var authSkip: String { 
     return VectorL10n.tr("Vector", "auth_skip") 
   }
+  /// Clear personal data
+  internal static var authSoftlogoutClearData: String { 
+    return VectorL10n.tr("Vector", "auth_softlogout_clear_data") 
+  }
+  /// Clear all data
+  internal static var authSoftlogoutClearDataButton: String { 
+    return VectorL10n.tr("Vector", "auth_softlogout_clear_data_button") 
+  }
+  /// Warning: Your personal data (including encryption keys) is still stored on this device.
+  internal static var authSoftlogoutClearDataMessage1: String { 
+    return VectorL10n.tr("Vector", "auth_softlogout_clear_data_message_1") 
+  }
+  /// Clear it if you're finished using this device, or want to sign in to another account.
+  internal static var authSoftlogoutClearDataMessage2: String { 
+    return VectorL10n.tr("Vector", "auth_softlogout_clear_data_message_2") 
+  }
   /// Your homeserver (%1$@) admin has signed you out of your account %2$@ (%3$@).
   internal static func authSoftlogoutReason(_ p1: String, _ p2: String, _ p3: String) -> String {
     return VectorL10n.tr("Vector", "auth_softlogout_reason", p1, p2, p3)

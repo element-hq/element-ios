@@ -108,6 +108,14 @@
     [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateHighlighted];
     
     [self hideCustomServers:YES];
+
+    // Soft logout section
+    self.softLogoutClearDataButton.layer.cornerRadius = 5;
+    self.softLogoutClearDataButton.clipsToBounds = YES;
+    [self.softLogoutClearDataButton setTitle:NSLocalizedStringFromTable(@"auth_softlogout_clear_data_button", @"Vector", nil) forState:UIControlStateNormal];
+    [self.softLogoutClearDataButton setTitle:NSLocalizedStringFromTable(@"auth_softlogout_clear_data_button", @"Vector", nil) forState:UIControlStateHighlighted];
+    self.softLogoutClearDataButton.enabled = YES;
+    self.softLogoutClearDataContainer.hidden = YES;
     
     // The view controller dismiss itself on successful login.
     self.delegate = self;
@@ -195,7 +203,10 @@
     self.identityServerLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
 
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
-    
+
+    self.softLogoutClearDataLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.softLogoutClearDataButton.backgroundColor = ThemeService.shared.theme.warningColor;
+
     [self.authInputsView customizeViewRendering];
     
     [self setNeedsStatusBarAppearanceUpdate];
@@ -405,7 +416,30 @@
     self.rightBarButtonItem.title = nil;
     self.mainNavigationItem.title = NSLocalizedStringFromTable(@"auth_softlogout_signed_out", @"Vector", nil);
 
-    // TODO: Clear all data button
+    [self showLogoutClearDataContainer];
+}
+
+- (void)showLogoutClearDataContainer
+{
+    NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_softlogout_clear_data", @"Vector", nil)
+                                                                                attributes:@{
+                                                                                             NSFontAttributeName: [UIFont boldSystemFontOfSize:14]
+                                                                                             }];
+
+    [message appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n"]];
+
+    NSString *string = [NSString stringWithFormat:@"%@\n\n%@",
+                        NSLocalizedStringFromTable(@"auth_softlogout_clear_data_message_1", @"Vector", nil),
+                        NSLocalizedStringFromTable(@"auth_softlogout_clear_data_message_2", @"Vector", nil)];
+    
+    [message appendAttributedString:[[NSAttributedString alloc] initWithString:string
+                                                                    attributes:@{
+                                                                                 NSFontAttributeName: [UIFont systemFontOfSize:14]
+                                                                                 }]];
+    self.softLogoutClearDataLabel.attributedText = message;
+
+    self.softLogoutClearDataContainer.hidden = NO;
+    [self refreshContentViewHeightConstraint];
 }
 
 
@@ -724,7 +758,13 @@
             }
         }
     }
-    
+
+    if (!self.softLogoutClearDataContainer.isHidden)
+    {
+        // The soft logout clear data section adds more height
+        constant += self.softLogoutClearDataContainer.frame.size.height;
+    }
+
     self.contentViewHeightConstraint.constant = constant;
 }
 
