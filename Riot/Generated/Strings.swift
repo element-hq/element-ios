@@ -226,6 +226,22 @@ internal enum VectorL10n {
   internal static var authSkip: String { 
     return VectorL10n.tr("Vector", "auth_skip") 
   }
+  /// Your homeserver (%1$@) admin has signed you out of your account %2$@ (%3$@).
+  internal static func authSoftlogoutReason(_ p1: String, _ p2: String, _ p3: String) -> String {
+    return VectorL10n.tr("Vector", "auth_softlogout_reason", p1, p2, p3)
+  }
+  /// Sign in to recover encryption keys stored exclusively on this device. You need them to read all of your secure messages on any device.
+  internal static var authSoftlogoutRecoverEncryptionKeys: String { 
+    return VectorL10n.tr("Vector", "auth_softlogout_recover_encryption_keys") 
+  }
+  /// Sign In
+  internal static var authSoftlogoutSignIn: String { 
+    return VectorL10n.tr("Vector", "auth_softlogout_sign_in") 
+  }
+  /// You’re signed out
+  internal static var authSoftlogoutSignedOut: String { 
+    return VectorL10n.tr("Vector", "auth_softlogout_signed_out") 
+  }
   /// Submit
   internal static var authSubmit: String { 
     return VectorL10n.tr("Vector", "auth_submit") 

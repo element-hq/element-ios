@@ -1,6 +1,7 @@
 /*
  Copyright 2016 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
+ Copyright 2019 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -955,6 +956,58 @@
 {
     softLogoutCredentials = credentials;
     self.userLoginTextField.text = softLogoutCredentials.userId;
+    self.userLoginContainer.hidden = YES;
+    self.phoneContainer.hidden = YES;
+
+    [self displaySoftLogoutMessage];
+}
+
+- (void)displaySoftLogoutMessage
+{
+    // Take some shortcuts and make some assumptions (Riot uses MXFileStore) to
+    // retrieve my user display name as quick as possible
+    MXFileStore *fileStore = [[MXFileStore alloc] initWithCredentials:softLogoutCredentials];
+    [fileStore asyncUsersWithUserIds:@[softLogoutCredentials.userId] success:^(NSArray<MXUser *> * _Nonnull users) {
+
+        MXUser *myUser = users.firstObject;
+        [self displaySoftLogoutMessageWithUserDisplayname:myUser.displayname];
+
+    } failure:^(NSError * _Nonnull error) {
+        NSLog(@"[AuthInputsView] displaySoftLogoutMessage: Cannot load displayname. Error: %@", error);
+        [self displaySoftLogoutMessageWithUserDisplayname:nil];
+    }];
+}
+
+- (void)displaySoftLogoutMessageWithUserDisplayname:(NSString*)userDisplayname
+{
+    // Use messageLabel for this message
+    self.messageLabelTopConstraint.constant = 8;
+    self.messageLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.messageLabel.hidden = NO;
+
+    NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_softlogout_sign_in", @"Vector", nil)
+                                                                    attributes:@{
+                                                                                 NSFontAttributeName: [UIFont boldSystemFontOfSize:14]
+                                                                                 }];
+
+    [message appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n"]];
+
+    NSString *string = [NSString stringWithFormat:NSLocalizedStringFromTable(@"auth_softlogout_reason", @"Vector", nil),
+                        softLogoutCredentials.homeServerName, userDisplayname, softLogoutCredentials.userId];
+    [message appendAttributedString:[[NSAttributedString alloc] initWithString:string
+                                                                    attributes:@{
+                                                                                 NSFontAttributeName: [UIFont systemFontOfSize:14]
+                                                                                 }]];
+
+    // TODO: Do not display this message if no e2e keys
+    [message appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n"]];
+    string = NSLocalizedStringFromTable(@"auth_softlogout_recover_encryption_keys", @"Vector", nil);
+    [message appendAttributedString:[[NSAttributedString alloc] initWithString:string
+                                                                    attributes:@{
+                                                                                 NSFontAttributeName: [UIFont systemFontOfSize:14]
+                                                                                 }]];
+
+    self.messageLabel.attributedText = message;
 }
 
 - (BOOL)areAllRequiredFieldsSet

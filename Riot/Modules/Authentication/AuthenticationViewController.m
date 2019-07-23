@@ -1,7 +1,8 @@
 /*
  Copyright 2015 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
- 
+ Copyright 2019 New Vector Ltd
+
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
@@ -366,7 +367,7 @@
         // The right bar button is used to switch the authentication type.
         if (self.authType == MXKAuthenticationTypeLogin)
         {
-            if (!authInputsview.isSingleSignOnRequired)
+            if (!authInputsview.isSingleSignOnRequired && !self.softLogoutCredentials)
             {
                 self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
             }
@@ -400,8 +401,11 @@
     [super setSoftLogoutCredentials:softLogoutCredentials];
 
     // Customise the screen for soft logout
-    // TODO
     self.customServersTickButton.hidden = YES;
+    self.rightBarButtonItem.title = nil;
+    self.mainNavigationItem.title = NSLocalizedStringFromTable(@"auth_softlogout_signed_out", @"Vector", nil);
+
+    // TODO: Clear all data button
 }
 
 

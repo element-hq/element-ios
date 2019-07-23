@@ -115,6 +115,10 @@
 "auth_add_email_and_phone_warning" = "Registration with email and phone number at once is not supported yet until the api exists. Only the phone number will be taken into account. You may add your email to your profile in settings.";
 "auth_accept_policies" = "Please review and accept the policies of this homeserver:";
 "auth_autodiscover_invalid_response" = "Invalid homeserver discovery response";
+"auth_softlogout_signed_out" = "You’re signed out";
+"auth_softlogout_sign_in" = "Sign In";
+"auth_softlogout_reason" = "Your homeserver (%1$@) admin has signed you out of your account %2$@ (%3$@).";
+"auth_softlogout_recover_encryption_keys" = "Sign in to recover encryption keys stored exclusively on this device. You need them to read all of your secure messages on any device.";
 
 // Chat creation
 "room_creation_title" = "New Chat";
