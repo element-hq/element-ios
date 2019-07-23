@@ -300,6 +300,7 @@
     }
     
     [self updateForgotPwdButtonVisibility];
+    [self updateSoftLogoutClearDataContainerVisibility];
 }
 
 - (void)setAuthInputsView:(MXKAuthInputsView *)authInputsView
@@ -416,10 +417,10 @@
     self.rightBarButtonItem.title = nil;
     self.mainNavigationItem.title = NSLocalizedStringFromTable(@"auth_softlogout_signed_out", @"Vector", nil);
 
-    [self showLogoutClearDataContainer];
+    [self showSoftLogoutClearDataContainer];
 }
 
-- (void)showLogoutClearDataContainer
+- (void)showSoftLogoutClearDataContainer
 {
     NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_softlogout_clear_data", @"Vector", nil)
                                                                                 attributes:@{
@@ -440,6 +441,19 @@
 
     self.softLogoutClearDataContainer.hidden = NO;
     [self refreshContentViewHeightConstraint];
+}
+
+- (void)updateSoftLogoutClearDataContainerVisibility
+{
+    // Do not display it in case of forget password flow
+    if (self.softLogoutCredentials && self.authType == MXKAuthenticationTypeLogin)
+    {
+        self.softLogoutClearDataContainer.hidden = NO;
+    }
+    else
+    {
+        self.softLogoutClearDataContainer.hidden = YES;
+    }
 }
 
 - (void)showClearDataAfterSoftLogoutConfirmation
@@ -490,6 +504,7 @@
 
     // Hide "Forgot password" and "Log in" buttons in case of SSO
     [self updateForgotPwdButtonVisibility];
+    [self updateSoftLogoutClearDataContainerVisibility];
 
     AuthInputsView *authInputsview;
     if ([self.authInputsView isKindOfClass:AuthInputsView.class])
@@ -626,6 +641,8 @@
     {
         [super onButtonPressed:sender];
     }
+
+    [self updateSoftLogoutClearDataContainerVisibility];
 }
 
 - (void)onFailureDuringAuthRequest:(NSError *)error
