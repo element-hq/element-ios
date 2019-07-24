@@ -740,7 +740,7 @@
 "device_verification_cancelled" = "Beste aldeak egiaztaketa ezeztatu du.";
 "device_verification_cancelled_by_me" = "Egiaztaketa ezeztatu da. Arrazoia: %@";
 "device_verification_emoji_hourglass" = "Harea-erlojua";
-"device_verification_emoji_clock" = "Klasea";
+"device_verification_emoji_clock" = "Erlojua";
 "device_verification_emoji_gift" = "Oparia";
 "device_verification_emoji_light bulb" = "Bonbilla";
 "device_verification_emoji_book" = "Liburua";
