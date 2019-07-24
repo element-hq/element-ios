@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,7 +15,7 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="200"/>
             <subviews>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ckH-mV-Yds">
-                    <rect key="frame" x="0.0" y="8.5" width="600" height="183"/>
+                    <rect key="frame" x="0.0" y="37.5" width="600" height="183"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fSJ-23-bFN">
                             <rect key="frame" x="180" y="75.5" width="240" height="32"/>
@@ -284,6 +284,7 @@
                 <constraint firstItem="rb1-L5-udI" firstAttribute="top" secondItem="x74-04-ezp" secondAttribute="top" constant="100" id="75U-tx-PsQ"/>
                 <constraint firstItem="UfH-jv-6w4" firstAttribute="leading" secondItem="x74-04-ezp" secondAttribute="leading" id="7Bk-GF-MZ0"/>
                 <constraint firstItem="IB7-1E-eeL" firstAttribute="leading" secondItem="x74-04-ezp" secondAttribute="leading" id="7Lr-fy-W8L"/>
+                <constraint firstItem="ckH-mV-Yds" firstAttribute="top" relation="greaterThanOrEqual" secondItem="68j-f9-JG4" secondAttribute="bottom" constant="10" id="7aQ-ei-TrU"/>
                 <constraint firstAttribute="trailing" secondItem="68j-f9-JG4" secondAttribute="trailing" constant="10" id="8Aa-YT-MP5"/>
                 <constraint firstAttribute="trailing" secondItem="UfH-jv-6w4" secondAttribute="trailing" id="8dz-wY-Kxx"/>
                 <constraint firstItem="whs-Ob-uzD" firstAttribute="centerX" secondItem="x74-04-ezp" secondAttribute="centerX" id="8lX-k1-85c"/>
@@ -293,7 +294,7 @@
                 <constraint firstItem="bXz-VI-5FS" firstAttribute="leading" secondItem="x74-04-ezp" secondAttribute="leading" id="Frq-sH-HZT"/>
                 <constraint firstItem="xOW-lo-QGC" firstAttribute="leading" secondItem="x74-04-ezp" secondAttribute="leading" id="NOu-LR-RvE"/>
                 <constraint firstAttribute="trailing" secondItem="bXz-VI-5FS" secondAttribute="trailing" id="NiV-pJ-PfV"/>
-                <constraint firstItem="ckH-mV-Yds" firstAttribute="centerY" secondItem="x74-04-ezp" secondAttribute="centerY" id="PNx-SK-FZY"/>
+                <constraint firstItem="ckH-mV-Yds" firstAttribute="centerY" secondItem="x74-04-ezp" secondAttribute="centerY" priority="100" id="PNx-SK-FZY"/>
                 <constraint firstAttribute="trailing" secondItem="xOW-lo-QGC" secondAttribute="trailing" id="SNm-WQ-Piu"/>
                 <constraint firstItem="xOW-lo-QGC" firstAttribute="top" secondItem="x74-04-ezp" secondAttribute="top" id="WmX-gO-hPJ"/>
                 <constraint firstItem="rb1-L5-udI" firstAttribute="leading" secondItem="x74-04-ezp" secondAttribute="leading" id="XAJ-ST-sWV"/>

@@ -502,16 +502,27 @@
 {
     [super handleAuthenticationSession:authSession];
 
-    // Hide "Forgot password" and "Log in" buttons in case of SSO
-    [self updateForgotPwdButtonVisibility];
-    [self updateSoftLogoutClearDataContainerVisibility];
-
     AuthInputsView *authInputsview;
     if ([self.authInputsView isKindOfClass:AuthInputsView.class])
     {
         authInputsview = (AuthInputsView*)self.authInputsView;
     }
+
+    // Hide "Forgot password" and "Log in" buttons in case of SSO
+    [self updateForgotPwdButtonVisibility];
+    [self updateSoftLogoutClearDataContainerVisibility];
+
     self.submitButton.hidden = authInputsview.isSingleSignOnRequired;
+
+    // Bind ssoButton again if self.authInputsView has changed
+    [authInputsview.ssoButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+
+    if (authInputsview.isSingleSignOnRequired && self.softLogoutCredentials)
+    {
+        // Remove submitButton so that the 2nd contraint on softLogoutClearDataContainer.top will be applied
+        // That makes softLogoutClearDataContainer appear upper in the screen
+        [self.submitButton removeFromSuperview];
+    }
 }
 
 - (IBAction)onButtonPressed:(id)sender
