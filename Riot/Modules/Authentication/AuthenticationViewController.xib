@@ -401,6 +401,7 @@ Clear it if you're finished using this device, or want to sign in to another acc
                                         <constraint firstItem="FIn-2w-e6H" firstAttribute="leading" secondItem="Gg0-TE-OGb" secondAttribute="leading" id="3G8-Tb-KaN"/>
                                         <constraint firstItem="wEJ-AF-rdH" firstAttribute="width" secondItem="k3J-Eg-itz" secondAttribute="width" id="7sB-YJ-eX4"/>
                                         <constraint firstAttribute="trailing" secondItem="vX2-5Y-rQc" secondAttribute="trailing" id="DPh-Jx-WP1"/>
+                                        <constraint firstItem="vX2-5Y-rQc" firstAttribute="top" secondItem="Gg0-TE-OGb" secondAttribute="top" priority="100" id="QSG-jB-VcV"/>
                                         <constraint firstItem="wEJ-AF-rdH" firstAttribute="centerY" secondItem="k3J-Eg-itz" secondAttribute="centerY" id="Vze-EI-oXj"/>
                                         <constraint firstAttribute="trailing" secondItem="k3J-Eg-itz" secondAttribute="trailing" constant="11" id="ZyA-Tq-Sfq"/>
                                         <constraint firstItem="k3J-Eg-itz" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Gg0-TE-OGb" secondAttribute="leading" constant="150" id="bEB-EO-b14"/>
