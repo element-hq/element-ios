@@ -115,6 +115,18 @@
 "auth_add_email_and_phone_warning" = "Registration with email and phone number at once is not supported yet until the api exists. Only the phone number will be taken into account. You may add your email to your profile in settings.";
 "auth_accept_policies" = "Please review and accept the policies of this homeserver:";
 "auth_autodiscover_invalid_response" = "Invalid homeserver discovery response";
+"auth_softlogout_signed_out" = "You’re signed out";
+"auth_softlogout_sign_in" = "Sign In";
+"auth_softlogout_reason" = "Your homeserver (%1$@) admin has signed you out of your account %2$@ (%3$@).";
+"auth_softlogout_recover_encryption_keys" = "Sign in to recover encryption keys stored exclusively on this device. You need them to read all of your secure messages on any device.";
+"auth_softlogout_clear_data" = "Clear personal data";
+"auth_softlogout_clear_data_message_1" = "Warning: Your personal data (including encryption keys) is still stored on this device.";
+"auth_softlogout_clear_data_message_2" = "Clear it if you're finished using this device, or want to sign in to another account.";
+"auth_softlogout_clear_data_button" = "Clear all data";
+"auth_softlogout_clear_data_sign_out_title" = "Are you sure?";
+"auth_softlogout_clear_data_sign_out_msg" = "Are you sure you want to clear all data currently stored on this device? Sign in again to access your account data and messages.";
+"auth_softlogout_clear_data_sign_out" = "Sign out";
+
 
 // Chat creation
 "room_creation_title" = "New Chat";

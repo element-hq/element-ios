@@ -1,7 +1,8 @@
 /*
  Copyright 2015 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
- 
+ Copyright 2019 New Vector Ltd
+
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
@@ -107,6 +108,14 @@
     [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateHighlighted];
     
     [self hideCustomServers:YES];
+
+    // Soft logout section
+    self.softLogoutClearDataButton.layer.cornerRadius = 5;
+    self.softLogoutClearDataButton.clipsToBounds = YES;
+    [self.softLogoutClearDataButton setTitle:NSLocalizedStringFromTable(@"auth_softlogout_clear_data_button", @"Vector", nil) forState:UIControlStateNormal];
+    [self.softLogoutClearDataButton setTitle:NSLocalizedStringFromTable(@"auth_softlogout_clear_data_button", @"Vector", nil) forState:UIControlStateHighlighted];
+    self.softLogoutClearDataButton.enabled = YES;
+    self.softLogoutClearDataContainer.hidden = YES;
     
     // The view controller dismiss itself on successful login.
     self.delegate = self;
@@ -194,7 +203,10 @@
     self.identityServerLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
 
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
-    
+
+    self.softLogoutClearDataLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.softLogoutClearDataButton.backgroundColor = ThemeService.shared.theme.warningColor;
+
     [self.authInputsView customizeViewRendering];
     
     [self setNeedsStatusBarAppearanceUpdate];
@@ -288,6 +300,7 @@
     }
     
     [self updateForgotPwdButtonVisibility];
+    [self updateSoftLogoutClearDataContainerVisibility];
 }
 
 - (void)setAuthInputsView:(MXKAuthInputsView *)authInputsView
@@ -366,7 +379,7 @@
         // The right bar button is used to switch the authentication type.
         if (self.authType == MXKAuthenticationTypeLogin)
         {
-            if (!authInputsview.isSingleSignOnRequired)
+            if (!authInputsview.isSingleSignOnRequired && !self.softLogoutCredentials)
             {
                 self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
             }
@@ -395,12 +408,103 @@
     }
 }
 
+- (void)setSoftLogoutCredentials:(MXCredentials *)softLogoutCredentials
+{
+    [super setSoftLogoutCredentials:softLogoutCredentials];
+
+    // Customise the screen for soft logout
+    self.customServersTickButton.hidden = YES;
+    self.rightBarButtonItem.title = nil;
+    self.mainNavigationItem.title = NSLocalizedStringFromTable(@"auth_softlogout_signed_out", @"Vector", nil);
+
+    [self showSoftLogoutClearDataContainer];
+}
+
+- (void)showSoftLogoutClearDataContainer
+{
+    NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_softlogout_clear_data", @"Vector", nil)
+                                                                                attributes:@{
+                                                                                             NSFontAttributeName: [UIFont boldSystemFontOfSize:14]
+                                                                                             }];
+
+    [message appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n"]];
+
+    NSString *string = [NSString stringWithFormat:@"%@\n\n%@",
+                        NSLocalizedStringFromTable(@"auth_softlogout_clear_data_message_1", @"Vector", nil),
+                        NSLocalizedStringFromTable(@"auth_softlogout_clear_data_message_2", @"Vector", nil)];
+    
+    [message appendAttributedString:[[NSAttributedString alloc] initWithString:string
+                                                                    attributes:@{
+                                                                                 NSFontAttributeName: [UIFont systemFontOfSize:14]
+                                                                                 }]];
+    self.softLogoutClearDataLabel.attributedText = message;
+
+    self.softLogoutClearDataContainer.hidden = NO;
+    [self refreshContentViewHeightConstraint];
+}
+
+- (void)updateSoftLogoutClearDataContainerVisibility
+{
+    // Do not display it in case of forget password flow
+    if (self.softLogoutCredentials && self.authType == MXKAuthenticationTypeLogin)
+    {
+        self.softLogoutClearDataContainer.hidden = NO;
+    }
+    else
+    {
+        self.softLogoutClearDataContainer.hidden = YES;
+    }
+}
+
+- (void)showClearDataAfterSoftLogoutConfirmation
+{
+    // Request confirmation
+    if (alert)
+    {
+        [alert dismissViewControllerAnimated:NO completion:nil];
+    }
+
+    alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"auth_softlogout_clear_data_sign_out_title", @"Vector", nil)
+                                                message:NSLocalizedStringFromTable(@"auth_softlogout_clear_data_sign_out_msg", @"Vector", nil)
+                                         preferredStyle:UIAlertControllerStyleAlert];
+
+
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"auth_softlogout_clear_data_sign_out", @"Vector", nil)                                              style:UIAlertActionStyleDestructive
+                                            handler:^(UIAlertAction * action)
+                      {
+                          [self clearDataAfterSoftLogout];
+                      }]];
+
+    MXWeakify(self);
+    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * action)
+                      {
+                          MXStrongifyAndReturnIfNil(self);
+                          self->alert = nil;
+                      }]];
+
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)clearDataAfterSoftLogout
+{
+    NSLog(@"[AuthenticationVC] clearDataAfterSoftLogout %@", self.softLogoutCredentials.userId);
+
+    // Use AppDelegate so that we reset app settings and this auth screen
+    [[AppDelegate theDelegate] logoutSendingRequestServer:YES completion:^(BOOL isLoggedOut) {
+        NSLog(@"[AuthenticationVC] Complete. isLoggedOut: %@", @(isLoggedOut));
+    }];
+}
+
+
 - (void)handleAuthenticationSession:(MXAuthenticationSession *)authSession
 {
     [super handleAuthenticationSession:authSession];
 
     // Hide "Forgot password" and "Log in" buttons in case of SSO
     [self updateForgotPwdButtonVisibility];
+    [self updateSoftLogoutClearDataContainerVisibility];
 
     AuthInputsView *authInputsview;
     if ([self.authInputsView isKindOfClass:AuthInputsView.class])
@@ -529,10 +633,16 @@
 
         [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
     }
+    else if (sender == self.softLogoutClearDataButton)
+    {
+        [self showClearDataAfterSoftLogoutConfirmation];
+    }
     else
     {
         [super onButtonPressed:sender];
     }
+
+    [self updateSoftLogoutClearDataContainerVisibility];
 }
 
 - (void)onFailureDuringAuthRequest:(NSError *)error
@@ -540,7 +650,7 @@
     // Homeserver migration: When the default homeserver url is different from matrix.org,
     // the login (or forgot pwd) process with an existing matrix.org accounts will then fail.
     // Patch: Falling back to matrix.org HS so we don't break everyone's logins
-    if ([self.homeServerTextField.text isEqualToString:self.defaultHomeServerUrl] && ![self.defaultHomeServerUrl isEqualToString:@"https://matrix.org"])
+    if ([self.homeServerTextField.text isEqualToString:self.defaultHomeServerUrl] && ![self.defaultHomeServerUrl isEqualToString:@"https://matrix.org"] && !self.softLogoutCredentials)
     {
         MXError *mxError = [[MXError alloc] initWithNSError:error];
         
@@ -710,7 +820,13 @@
             }
         }
     }
-    
+
+    if (!self.softLogoutClearDataContainer.isHidden)
+    {
+        // The soft logout clear data section adds more height
+        constant += self.softLogoutClearDataContainer.frame.size.height;
+    }
+
     self.contentViewHeightConstraint.constant = constant;
 }
 

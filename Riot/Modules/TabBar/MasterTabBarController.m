@@ -39,9 +39,11 @@
     
     // Observer that checks when the Authentification view controller has gone.
     id authViewControllerObserver;
+    id authViewRemovedAccountObserver;
     
     // The parameters to pass to the Authentification view controller.
     NSDictionary *authViewControllerRegistrationParameters;
+    MXCredentials *softLogoutCredentials;
     
     // The recents data source shared between all the view controllers of the tab bar.
     RecentsDataSource *recentsDataSource;
@@ -142,11 +144,25 @@
     [super viewDidAppear:animated];
     
     // Check whether we're not logged in
+    BOOL authIsShown = NO;
     if (![MXKAccountManager sharedManager].accounts.count)
     {
         [self showAuthenticationScreen];
+        authIsShown = YES;
     }
-    else
+    else if (![MXKAccountManager sharedManager].activeAccounts.count)
+    {
+        // Display a login screen if the account is soft logout
+        // Note: We support only one account
+        MXKAccount *account = [MXKAccountManager sharedManager].accounts.firstObject;
+        if (account.isSoftLogout)
+        {
+            [self showAuthenticationScreenAfterSoftLogout:account.mxCredentials];
+            authIsShown = YES;
+        }
+    }
+
+    if (!authIsShown)
     {
         // Check whether the user has been already prompted to send crash reports.
         // (Check whether 'enableCrashReport' flag has been set once)        
@@ -215,6 +231,11 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:authViewControllerObserver];
         authViewControllerObserver = nil;
+    }
+    if (authViewRemovedAccountObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:authViewRemovedAccountObserver];
+        authViewRemovedAccountObserver = nil;
     }
     
     if (kThemeServiceDidChangeThemeNotificationObserver)
@@ -397,6 +418,25 @@
                 // Reset temporary params
                 authViewControllerRegistrationParameters = nil;
             }
+        }];
+    }
+}
+
+- (void)showAuthenticationScreenAfterSoftLogout:(MXCredentials*)credentials;
+{
+    NSLog(@"[MasterTabBarController] showAuthenticationScreenAfterSoftLogout");
+
+    softLogoutCredentials = credentials;
+
+    // Check whether an authentication screen is not already shown or preparing
+    if (!self.authViewController && !isAuthViewControllerPreparing)
+    {
+        isAuthViewControllerPreparing = YES;
+
+        [[AppDelegate theDelegate] restoreInitialDisplay:^{
+
+            [self performSegueWithIdentifier:@"showAuth" sender:self];
+
         }];
     }
 }
@@ -630,12 +670,26 @@
                 [[NSNotificationCenter defaultCenter] removeObserver:authViewControllerObserver];
                 authViewControllerObserver = nil;
             }];
+
+            authViewRemovedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+                // The user has cleared data for their soft logged out account
+                _authViewController = nil;
+
+                [[NSNotificationCenter defaultCenter] removeObserver:authViewRemovedAccountObserver];
+                authViewRemovedAccountObserver = nil;
+            }];
             
             // Forward parameters if any
             if (authViewControllerRegistrationParameters)
             {
                 _authViewController.externalRegistrationParameters = authViewControllerRegistrationParameters;
                 authViewControllerRegistrationParameters = nil;
+            }
+            if (softLogoutCredentials)
+            {
+                _authViewController.softLogoutCredentials = softLogoutCredentials;
+                softLogoutCredentials = nil;
             }
         }
         else if ([[segue identifier] isEqualToString:@"showUnifiedSearch"])
