@@ -973,6 +973,7 @@
     [fileStore asyncUsersWithUserIds:@[softLogoutCredentials.userId] success:^(NSArray<MXUser *> * _Nonnull users) {
 
         MXUser *myUser = users.firstObject;
+        [fileStore close];
 
         [self displaySoftLogoutMessageWithUserDisplayname:myUser.displayname andKeyBackupNeeded:keyBackupNeeded];
 
