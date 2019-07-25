@@ -5329,7 +5329,7 @@
     UIView *sourceView;
     CGRect sourceRect = CGRectNull;
     
-    if (cellRow > 0)
+    if (cellRow >= 0)
     {
         NSIndexPath *cellIndexPath = [NSIndexPath indexPathForRow:cellRow inSection:0];        
         UITableViewCell *cell = [self.bubblesTableView cellForRowAtIndexPath:cellIndexPath];
