@@ -916,3 +916,15 @@
 // MARK: File upload
 "file_upload_error_title" = "File upload";
 "file_upload_error_unsupported_file_type_message" = "File type not supported.";
+
+// MARK: Emoji picker
+"emoji_picker_title" = "Reactions";
+
+"emoji_picker_people_category" = "Smileys & People";
+"emoji_picker_nature_category" = "Animals & Nature";
+"emoji_picker_foods_category" = "Food & Drink";
+"emoji_picker_activity_category" = "Activities";
+"emoji_picker_places_category" = "Travel & Places";
+"emoji_picker_objects_category" = "Objects";
+"emoji_picker_symbols_category" = "Symbols";
+"emoji_picker_flags_category" = "Flags";

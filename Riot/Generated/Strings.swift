@@ -914,6 +914,42 @@ internal enum VectorL10n {
   internal static var e2eRoomKeyRequestTitle: String { 
     return VectorL10n.tr("Vector", "e2e_room_key_request_title") 
   }
+  /// Activities
+  internal static var emojiPickerActivityCategory: String { 
+    return VectorL10n.tr("Vector", "emoji_picker_activity_category") 
+  }
+  /// Flags
+  internal static var emojiPickerFlagsCategory: String { 
+    return VectorL10n.tr("Vector", "emoji_picker_flags_category") 
+  }
+  /// Food & Drink
+  internal static var emojiPickerFoodsCategory: String { 
+    return VectorL10n.tr("Vector", "emoji_picker_foods_category") 
+  }
+  /// Animals & Nature
+  internal static var emojiPickerNatureCategory: String { 
+    return VectorL10n.tr("Vector", "emoji_picker_nature_category") 
+  }
+  /// Objects
+  internal static var emojiPickerObjectsCategory: String { 
+    return VectorL10n.tr("Vector", "emoji_picker_objects_category") 
+  }
+  /// Smileys & People
+  internal static var emojiPickerPeopleCategory: String { 
+    return VectorL10n.tr("Vector", "emoji_picker_people_category") 
+  }
+  /// Travel & Places
+  internal static var emojiPickerPlacesCategory: String { 
+    return VectorL10n.tr("Vector", "emoji_picker_places_category") 
+  }
+  /// Symbols
+  internal static var emojiPickerSymbolsCategory: String { 
+    return VectorL10n.tr("Vector", "emoji_picker_symbols_category") 
+  }
+  /// Reactions
+  internal static var emojiPickerTitle: String { 
+    return VectorL10n.tr("Vector", "emoji_picker_title") 
+  }
   /// Send an encrypted message…
   internal static var encryptedRoomMessagePlaceholder: String { 
     return VectorL10n.tr("Vector", "encrypted_room_message_placeholder") 
