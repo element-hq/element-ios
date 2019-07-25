@@ -56,6 +56,8 @@ import Foundation
                     self.coordinatorDelegate?.reactionsMenuViewModel(self, didAddReaction: reaction, forEventId: self.eventId)
                 }
             }
+        case .moreReactions:
+            self.coordinatorDelegate?.reactionsMenuViewModelDidTapMoreReactions(self, forEventId: self.eventId)
         }
     }
     
