@@ -789,3 +789,14 @@
 // MARK: File upload
 "file_upload_error_title" = "Envoi de fichier";
 "file_upload_error_unsupported_file_type_message" = "Type de fichier non pris en charge.";
+"auth_softlogout_signed_out" = "Vous êtes déconnecté(e)";
+"auth_softlogout_sign_in" = "Se connecter";
+"auth_softlogout_reason" = "L’administrateur de votre serveur d’accueil (%1$@) vous a déconnecté de votre compte %2$@ (%3$@).";
+"auth_softlogout_recover_encryption_keys" = "Connectez-vous pour récupérer les clés de chiffrement stockées uniquement sur cet appareil. Vous en avez besoin pour lire tous les messages sécurisés sur n’importe quel appareil.";
+"auth_softlogout_clear_data" = "Effacer les données personnelles";
+"auth_softlogout_clear_data_message_1" = "Attention : Vos données personnelles (y compris vos clés de chiffrement) sont toujours stockées sur cet appareil.";
+"auth_softlogout_clear_data_message_2" = "Effacez-les si vous n’utilisez plus cet appareil ou si vous voulez vous connecter avec un autre compte.";
+"auth_softlogout_clear_data_button" = "Effacer toutes les données";
+"auth_softlogout_clear_data_sign_out_title" = "En êtes-vous sûr(e) ?";
+"auth_softlogout_clear_data_sign_out_msg" = "Voulez vous vraiment supprimer toutes les données stockées actuellement sur cet appareil ? Reconnectez-vous pour accéder aux données et messages de votre compte.";
+"auth_softlogout_clear_data_sign_out" = "Se déconnecter";
