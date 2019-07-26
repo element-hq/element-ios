@@ -805,3 +805,13 @@
 "auth_softlogout_clear_data_sign_out_title" = "Biztos vagy benne?";
 "auth_softlogout_clear_data_sign_out_msg" = "Biztos vagy benne, hogy minden az eszközön tárolt adatot törölni szeretnél? A fiók és az üzeneteid eléréséhez jelentkezz be.";
 "auth_softlogout_clear_data_sign_out" = "Kilépés";
+// MARK: Emoji picker
+"emoji_picker_title" = "Reakciók";
+"emoji_picker_people_category" = "Smiley-k és emberek";
+"emoji_picker_nature_category" = "Állatok és természet";
+"emoji_picker_foods_category" = "Étel és ital";
+"emoji_picker_activity_category" = "Mozgás";
+"emoji_picker_places_category" = "Utazás és helyek";
+"emoji_picker_objects_category" = "Tárgyak";
+"emoji_picker_symbols_category" = "Szimbólumok";
+"emoji_picker_flags_category" = "Zászlók";
