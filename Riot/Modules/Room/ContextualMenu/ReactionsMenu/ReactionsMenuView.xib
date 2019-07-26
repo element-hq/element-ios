@@ -16,18 +16,40 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eXy-Kc-Ck7">
-                    <rect key="frame" x="0.0" y="0.0" width="459" height="59"/>
+                    <rect key="frame" x="0.0" y="0.0" width="395" height="59"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="uzd-VB-mKT">
-                            <rect key="frame" x="5" y="5" width="449" height="49"/>
+                            <rect key="frame" x="5" y="5" width="385" height="49"/>
                         </stackView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="uzd-VB-mKT" secondAttribute="trailing" constant="5" id="fDZ-NX-EyG"/>
                         <constraint firstItem="uzd-VB-mKT" firstAttribute="leading" secondItem="eXy-Kc-Ck7" secondAttribute="leading" constant="5" id="iCa-Ob-e7J"/>
+                        <constraint firstAttribute="trailing" secondItem="uzd-VB-mKT" secondAttribute="trailing" constant="5" id="lG6-Qg-UcU"/>
                         <constraint firstItem="uzd-VB-mKT" firstAttribute="top" secondItem="eXy-Kc-Ck7" secondAttribute="top" constant="5" id="msb-Ay-Bp6"/>
                         <constraint firstAttribute="bottom" secondItem="uzd-VB-mKT" secondAttribute="bottom" constant="5" id="nJE-Gm-Rf1"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="44R-pM-RoU">
+                    <rect key="frame" x="400" y="0.0" width="59" height="59"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VQg-zY-j1F">
+                            <rect key="frame" x="0.0" y="0.0" width="59" height="59"/>
+                            <state key="normal" image="more_reactions">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="moreReactionsAction:" destination="7Xq-Wy-z0M" eventType="touchUpInside" id="09O-bn-ezs"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="VQg-zY-j1F" firstAttribute="top" secondItem="44R-pM-RoU" secondAttribute="top" id="Ku5-Ra-6tc"/>
+                        <constraint firstItem="VQg-zY-j1F" firstAttribute="leading" secondItem="44R-pM-RoU" secondAttribute="leading" id="YpY-1A-KhO"/>
+                        <constraint firstAttribute="trailing" secondItem="VQg-zY-j1F" secondAttribute="trailing" id="aYC-Po-gf0"/>
+                        <constraint firstAttribute="bottom" secondItem="VQg-zY-j1F" secondAttribute="bottom" id="fkS-hS-S5L"/>
+                        <constraint firstAttribute="width" secondItem="44R-pM-RoU" secondAttribute="height" multiplier="1:1" id="vLH-qD-4s0"/>
                     </constraints>
                 </view>
             </subviews>
@@ -35,17 +57,25 @@
             <constraints>
                 <constraint firstItem="eXy-Kc-Ck7" firstAttribute="top" secondItem="7Xq-Wy-z0M" secondAttribute="top" id="43J-YM-JHg"/>
                 <constraint firstItem="eXy-Kc-Ck7" firstAttribute="leading" secondItem="7Xq-Wy-z0M" secondAttribute="leading" id="9dy-sK-ygm"/>
-                <constraint firstAttribute="trailing" secondItem="eXy-Kc-Ck7" secondAttribute="trailing" id="E4Z-bt-BRw"/>
                 <constraint firstAttribute="bottom" secondItem="eXy-Kc-Ck7" secondAttribute="bottom" id="Nb2-0z-IiS"/>
+                <constraint firstItem="44R-pM-RoU" firstAttribute="top" secondItem="7Xq-Wy-z0M" secondAttribute="top" id="aLI-UY-XKE"/>
+                <constraint firstAttribute="trailing" secondItem="44R-pM-RoU" secondAttribute="trailing" id="fKs-oS-uui"/>
+                <constraint firstAttribute="bottom" secondItem="44R-pM-RoU" secondAttribute="bottom" id="lE1-4e-whG"/>
+                <constraint firstItem="44R-pM-RoU" firstAttribute="leading" secondItem="eXy-Kc-Ck7" secondAttribute="trailing" constant="5" id="zFB-XG-OKN"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="moreReactionsBackgroundView" destination="44R-pM-RoU" id="0Y4-Pt-1Zh"/>
+                <outlet property="moreReactionsButton" destination="VQg-zY-j1F" id="ZfR-3o-lPV"/>
                 <outlet property="reactionsBackgroundView" destination="eXy-Kc-Ck7" id="VYi-YD-mb9"/>
                 <outlet property="reactionsStackView" destination="uzd-VB-mKT" id="DTV-Nh-bcm"/>
             </connections>
-            <point key="canvasLocation" x="444.20289855072468" y="-718.19196428571422"/>
+            <point key="canvasLocation" x="296" y="-854"/>
         </view>
     </objects>
+    <resources>
+        <image name="more_reactions" width="22" height="20"/>
+    </resources>
 </document>

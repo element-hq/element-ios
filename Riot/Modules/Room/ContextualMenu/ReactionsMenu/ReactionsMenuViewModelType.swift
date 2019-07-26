@@ -23,6 +23,7 @@ protocol ReactionsMenuViewModelViewDelegate: class {
 @objc protocol ReactionsMenuViewModelCoordinatorDelegate: class {
     func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModel, didAddReaction reaction: String, forEventId eventId: String)
     func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModel, didRemoveReaction reaction: String, forEventId eventId: String)
+    func reactionsMenuViewModelDidTapMoreReactions(_ viewModel: ReactionsMenuViewModel, forEventId eventId: String)
 }
 
 protocol ReactionsMenuViewModelType {

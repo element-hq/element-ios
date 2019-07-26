@@ -29,4 +29,13 @@ extension String {
         }
         return abs(hash)
     }
+    
+    /// Locale-independent case-insensitive contains
+    /// Note: Prefer use `localizedCaseInsensitiveContains` when locale matters
+    ///
+    /// - Parameter other: The other string.
+    /// - Returns: true if current string contains other string.
+    func vc_caseInsensitiveContains(_ other: String) -> Bool {
+        return self.range(of: other, options: .caseInsensitive) != nil
+    }
 }

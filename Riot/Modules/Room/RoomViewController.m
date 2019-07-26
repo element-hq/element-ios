@@ -124,7 +124,7 @@
 #import "Riot-Swift.h"
 
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
-    ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate>
+    ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate>
 {
     // The expanded header
     ExpandedRoomTitleView *expandedHeader;
@@ -223,6 +223,7 @@
 @property (nonatomic, strong) NSString *textMessageBeforeEditing;
 @property (nonatomic, strong) EditHistoryCoordinatorBridgePresenter *editHistoryPresenter;
 @property (nonatomic, strong) MXKDocumentPickerPresenter *documentPickerPresenter;
+@property (nonatomic, strong) EmojiPickerCoordinatorBridgePresenter *emojiPickerCoordinatorBridgePresenter;
 
 @end
 
@@ -2710,19 +2711,9 @@
     // Do not display empty action sheet
     if (currentAlert.actions.count > 1)
     {
-        NSArray *components = roomBubbleTableViewCell.bubbleData.bubbleComponents;
+        NSInteger bubbleComponentIndex = [roomBubbleTableViewCell.bubbleData bubbleComponentIndexForEventId:selectedEvent.eventId];
         
-        NSInteger index = 0;
-        for (MXKRoomBubbleComponent *component in components)
-        {
-            if ([component.event.eventId isEqualToString:selectedEvent.eventId])
-            {
-                break;
-            }
-            index++;
-        }
-        
-        CGRect sourceRect = [roomBubbleTableViewCell componentFrameInContentViewForIndex:index];
+        CGRect sourceRect = [roomBubbleTableViewCell componentFrameInContentViewForIndex:bubbleComponentIndex];
         
         [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCEventMenuAlert"];
         [currentAlert popoverPresentationController].sourceView = roomBubbleTableViewCell;
@@ -5200,15 +5191,7 @@
         MXKRoomBubbleCellData *bubbleCellData = roomBubbleTableViewCell.bubbleData;
         NSArray *bubbleComponents = bubbleCellData.bubbleComponents;
         
-        NSInteger foundComponentIndex = [bubbleComponents indexOfObjectPassingTest:^BOOL(MXKRoomBubbleComponent * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            if (obj.event.eventId == selectedEventId)
-            {
-                *stop = YES;
-                return YES;
-            }
-            return NO;
-        }];
-        
+        NSInteger foundComponentIndex = [bubbleCellData bubbleComponentIndexForEventId:event.eventId];
         CGRect bubbleComponentFrame;
         
         if (bubbleComponents.count > 0)
@@ -5334,6 +5317,37 @@
     }];
 }
 
+- (void)reactionsMenuViewModelDidTapMoreReactions:(ReactionsMenuViewModel *)viewModel forEventId:(NSString *)eventId
+{
+    [self hideContextualMenuAnimated:YES];
+    
+    EmojiPickerCoordinatorBridgePresenter *emojiPickerCoordinatorBridgePresenter = [[EmojiPickerCoordinatorBridgePresenter alloc] initWithSession:self.mainSession roomId:self.roomDataSource.roomId eventId:eventId];
+    emojiPickerCoordinatorBridgePresenter.delegate = self;
+    
+    NSInteger cellRow = [self.roomDataSource indexOfCellDataWithEventId:eventId];
+    
+    UIView *sourceView;
+    CGRect sourceRect = CGRectNull;
+    
+    if (cellRow >= 0)
+    {
+        NSIndexPath *cellIndexPath = [NSIndexPath indexPathForRow:cellRow inSection:0];        
+        UITableViewCell *cell = [self.bubblesTableView cellForRowAtIndexPath:cellIndexPath];
+        sourceView = cell;
+        
+        if ([cell isKindOfClass:[MXKRoomBubbleTableViewCell class]])
+        {
+            MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell*)cell;
+            NSInteger bubbleComponentIndex = [roomBubbleTableViewCell.bubbleData bubbleComponentIndexForEventId:eventId];
+            sourceRect = [roomBubbleTableViewCell componentFrameInContentViewForIndex:bubbleComponentIndex];
+        }
+        
+    }
+    
+    [emojiPickerCoordinatorBridgePresenter presentFrom:self sourceView:sourceView sourceRect:sourceRect animated:YES];
+    self.emojiPickerCoordinatorBridgePresenter = emojiPickerCoordinatorBridgePresenter;
+}
+
 #pragma mark -
 
 - (void)showEditHistoryForEventId:(NSString*)eventId animated:(BOOL)animated
@@ -5399,6 +5413,47 @@
         [[AppDelegate theDelegate] showAlertWithTitle:NSLocalizedStringFromTable(@"file_upload_error_title", @"Vector", nil)
                                               message:NSLocalizedStringFromTable(@"file_upload_error_unsupported_file_type_message", @"Vector", nil)];
     }
+}
+
+#pragma mark - EmojiPickerCoordinatorBridgePresenterDelegate
+
+- (void)emojiPickerCoordinatorBridgePresenter:(EmojiPickerCoordinatorBridgePresenter *)coordinatorBridgePresenter didAddEmoji:(NSString *)emoji forEventId:(NSString *)eventId
+{
+    MXWeakify(self);
+    
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self.roomDataSource addReaction:emoji forEventId:eventId success:^{
+            
+        } failure:^(NSError *error) {
+            MXStrongifyAndReturnIfNil(self);
+            
+            [self.errorPresenter presentErrorFromViewController:self forError:error animated:YES handler:nil];
+        }];
+    }];
+    self.emojiPickerCoordinatorBridgePresenter = nil;
+}
+
+- (void)emojiPickerCoordinatorBridgePresenter:(EmojiPickerCoordinatorBridgePresenter *)coordinatorBridgePresenter didRemoveEmoji:(NSString *)emoji forEventId:(NSString *)eventId
+{
+    MXWeakify(self);
+    
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        
+        [self.roomDataSource removeReaction:emoji forEventId:eventId success:^{
+            
+        } failure:^(NSError *error) {
+            MXStrongifyAndReturnIfNil(self);
+            
+            [self.errorPresenter presentErrorFromViewController:self forError:error animated:YES handler:nil];
+        }];
+    }];
+    self.emojiPickerCoordinatorBridgePresenter = nil;
+}
+
+- (void)emojiPickerCoordinatorBridgePresenterDidCancel:(EmojiPickerCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.emojiPickerCoordinatorBridgePresenter = nil;
 }
 
 @end

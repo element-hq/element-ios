@@ -79,6 +79,10 @@ abstract_target 'RiotPods' do
     target "Riot" do
         import_MatrixKit
         pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
+        
+        target 'RiotTests' do
+            inherit! :search_paths
+        end
     end
     
     target "RiotShareExtension" do
