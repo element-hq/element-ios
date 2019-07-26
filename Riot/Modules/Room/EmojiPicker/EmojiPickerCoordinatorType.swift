@@ -24,7 +24,7 @@ protocol EmojiPickerCoordinatorDelegate: class {
     func emojiPickerCoordinatorDidCancel(_ coordinator: EmojiPickerCoordinatorType)
 }
 
-/// `EmojiPickerCoordinatorType` is a protocol describing a Coordinator that handle key backup setup passphrase navigation flow.
+/// `EmojiPickerCoordinatorType` is a protocol describing a Coordinator that handle emoji picker navigation flow.
 protocol EmojiPickerCoordinatorType: Coordinator, Presentable {
     var delegate: EmojiPickerCoordinatorDelegate? { get }
 }

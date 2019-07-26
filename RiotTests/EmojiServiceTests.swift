@@ -103,7 +103,7 @@ class EmojiServiceTests: XCTestCase {
         
         let expectation = self.expectation(description: "get Emoji categories")
         
-        let emojiService = EmojiService()
+        let emojiService = EmojiMartService()
         emojiService.getEmojiCategories { (response) in
             switch response {
             case .success(let emojiCategories):
@@ -125,7 +125,7 @@ class EmojiServiceTests: XCTestCase {
                 
                 let grinningEmoji = peopleEmojiCategory.emojis[0]
                 
-                XCTAssertEqual(grinningEmoji.identifier, "grinning")
+                XCTAssertEqual(grinningEmoji.shortName, "grinning")
                 XCTAssertEqual(grinningEmoji.value, "😀")
                 XCTAssertEqual(grinningEmoji.keywords.count, 6)
                 

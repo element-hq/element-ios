@@ -17,10 +17,19 @@
 import Foundation
 
 extension EmojiItem: Decodable {
-    
+
+    /// JSON keys associated to EmojiItem properties.
+    /// See https://github.com/missive/emoji-mart/blob/master/src/utils/data.js for minified letters informations.
+    ///
+    /// - shortName: The commonly-agreed short name for the emoji, as supported in GitHub and others via the :short_name: syntax.
+    /// - name: The offical Unicode name.
+    /// - codepoint: The Unicode codepoint, as 4-5 hex digits. Where an emoji needs 2 or more codepoints, they are specified like 1F1EA-1F1F8.
+    /// - shortNames: An array of all the other known short names.
+    /// - keywords: Associated emoji keywords.
     enum CodingKeys: String, CodingKey {
-        case code = "b"
+        case shortName
         case name = "a"
+        case codepoint = "b"
         case shortNames = "n"
         case keywords = "j"
     }
@@ -28,11 +37,11 @@ extension EmojiItem: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        guard let identifier = decoder.codingPath.last?.stringValue else {
-            throw DecodingError.dataCorruptedError(forKey: .code, in: container, debugDescription: "Cannot initialize identifier")
+        guard let shortName = decoder.codingPath.last?.stringValue else {
+            throw DecodingError.dataCorruptedError(forKey: .shortName, in: container, debugDescription: "Cannot initialize short name")
         }
         
-        let emojiUnicodeStringValue = try container.decode(String.self, forKey: .code)
+        let emojiUnicodeStringValue = try container.decode(String.self, forKey: .codepoint)
         
         let unicodeStringComponents = emojiUnicodeStringValue.components(separatedBy: "-")
         
@@ -43,7 +52,7 @@ extension EmojiItem: Decodable {
                 let emojiUnicodeScalar = UnicodeScalar(unicodeCodePoint) {
                 emoji.append(String(emojiUnicodeScalar))
             } else {
-                throw DecodingError.dataCorruptedError(forKey: .code, in: container, debugDescription: "Cannot initialize emoji")
+                throw DecodingError.dataCorruptedError(forKey: .codepoint, in: container, debugDescription: "Cannot initialize emoji")
             }
         }
         
@@ -65,7 +74,7 @@ extension EmojiItem: Decodable {
             keywords = []
         }
         
-        self.init(identifier: identifier,
+        self.init(shortName: shortName,
                   value: emoji,
                   name: name,
                   shortNames: shortNames,

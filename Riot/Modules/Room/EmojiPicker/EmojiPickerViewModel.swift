@@ -27,8 +27,9 @@ final class EmojiPickerViewModel: EmojiPickerViewModelType {
     private let session: MXSession
     private let roomId: String
     private let eventId: String
-    private let emojiService: EmojiService
+    private let emojiService: EmojiServiceType
     private let emojiStore: EmojiStore
+    private let processingQueue: DispatchQueue
     
     private lazy var aggregatedReactionsByEmoji: [String: MXReactionCount] = {
         return self.buildAggregatedReactionsByEmoji()
@@ -45,8 +46,9 @@ final class EmojiPickerViewModel: EmojiPickerViewModelType {
         self.session = session
         self.roomId = roomId
         self.eventId = eventId
-        self.emojiService = EmojiService()
+        self.emojiService = EmojiMartService()
         self.emojiStore = EmojiStore.shared
+        self.processingQueue = DispatchQueue(label: "\(type(of: self))")
     }
     
     // MARK: - Public
@@ -99,16 +101,21 @@ final class EmojiPickerViewModel: EmojiPickerViewModelType {
     }
     
     private func searchEmojis(with searchText: String?) {
-        let filteredEmojiCategories: [EmojiCategory]
-        
-        if let searchText = searchText, searchText.isEmpty == false {
-            filteredEmojiCategories = self.emojiStore.findEmojiItemsSortedByCategory(with: searchText)
-        } else {
-            filteredEmojiCategories = self.emojiStore.getAll()
+        self.processingQueue.async {
+            let filteredEmojiCategories: [EmojiCategory]
+            
+            if let searchText = searchText, searchText.isEmpty == false {
+                filteredEmojiCategories = self.emojiStore.findEmojiItemsSortedByCategory(with: searchText)
+            } else {
+                filteredEmojiCategories = self.emojiStore.getAll()
+            }
+            
+            let emojiCatagoryViewDataList = self.emojiCatagoryViewDataList(from: filteredEmojiCategories)
+            
+            DispatchQueue.main.async {
+                self.update(viewState: .loaded(emojiCategories: emojiCatagoryViewDataList))
+            }
         }
-        
-        let emojiCatagoryViewDataList = self.emojiCatagoryViewDataList(from: filteredEmojiCategories)
-        self.update(viewState: .loaded(emojiCategories: emojiCatagoryViewDataList))
     }
     
     private func update(viewState: EmojiPickerViewState) {
@@ -119,7 +126,7 @@ final class EmojiPickerViewModel: EmojiPickerViewModelType {
         return emojiCategories.map { (emojiCategory) -> EmojiPickerCategoryViewData in
             let emojiPickerViewDataList = emojiCategory.emojis.map({ (emojiItem) -> EmojiPickerItemViewData in
                 let isSelected = self.isUserReacted(with: emojiItem.value)
-                return EmojiPickerItemViewData(identifier: emojiItem.identifier, emoji: emojiItem.value, isSelected: isSelected)
+                return EmojiPickerItemViewData(identifier: emojiItem.shortName, emoji: emojiItem.value, isSelected: isSelected)
             })
             return EmojiPickerCategoryViewData(identifier: emojiCategory.identifier, name: emojiCategory.name, emojiViewDataList: emojiPickerViewDataList)
         }

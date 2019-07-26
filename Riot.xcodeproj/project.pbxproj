@@ -508,7 +508,7 @@
 		B1DCC62422E60CA900625807 /* EmojiPickerCategoryViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DCC62322E60CA800625807 /* EmojiPickerCategoryViewData.swift */; };
 		B1DCC62622E60CC600625807 /* EmojiItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DCC62522E60CC600625807 /* EmojiItem.swift */; };
 		B1DCC62822E60CE300625807 /* EmojiCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DCC62722E60CE300625807 /* EmojiCategory.swift */; };
-		B1DCC62A22E60D1000625807 /* EmojiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DCC62922E60D1000625807 /* EmojiService.swift */; };
+		B1DCC62A22E60D1000625807 /* EmojiMartService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DCC62922E60D1000625807 /* EmojiMartService.swift */; };
 		B1DCC62D22E61EAF00625807 /* EmojiPickerViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DCC62B22E61EAF00625807 /* EmojiPickerViewCell.swift */; };
 		B1DCC62E22E61EAF00625807 /* EmojiPickerViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1DCC62C22E61EAF00625807 /* EmojiPickerViewCell.xib */; };
 		B1DCC63122E7026F00625807 /* EmojiPickerHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DCC62F22E7026F00625807 /* EmojiPickerHeaderView.swift */; };
@@ -516,9 +516,9 @@
 		B1DCC63422E72C1B00625807 /* UISearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DCC63322E72C1B00625807 /* UISearchBar.swift */; };
 		B1DCC63522E72D2200625807 /* UISearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DCC63322E72C1B00625807 /* UISearchBar.swift */; };
 		B1DCC63722E8541700625807 /* EmojiStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DCC63622E8541700625807 /* EmojiStore.swift */; };
-		B1DCC63922E85E9A00625807 /* EmojiJSONStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DCC63822E85E9A00625807 /* EmojiJSONStore.swift */; };
-		B1DCC63B22E85EF800625807 /* EmojiJSONCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DCC63A22E85EF800625807 /* EmojiJSONCategory.swift */; };
-		B1DCC63F22E9A3AE00625807 /* EmojiItem+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DCC63E22E9A3AE00625807 /* EmojiItem+Decodable.swift */; };
+		B1DCC63922E85E9A00625807 /* EmojiMartStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DCC63822E85E9A00625807 /* EmojiMartStore.swift */; };
+		B1DCC63B22E85EF800625807 /* EmojiMartCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DCC63A22E85EF800625807 /* EmojiMartCategory.swift */; };
+		B1DCC63F22E9A3AE00625807 /* EmojiItem+EmojiMart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DCC63E22E9A3AE00625807 /* EmojiItem+EmojiMart.swift */; };
 		B1E5368921FB1E20001F3AFF /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E5368821FB1E20001F3AFF /* UIButton.swift */; };
 		B1E5368D21FB7245001F3AFF /* KeyBackupRecoverFromPassphraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E5368C21FB7245001F3AFF /* KeyBackupRecoverFromPassphraseViewController.swift */; };
 		B1E5368F21FB7258001F3AFF /* KeyBackupRecoverFromPassphraseViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1E5368E21FB7258001F3AFF /* KeyBackupRecoverFromPassphraseViewController.storyboard */; };
@@ -1293,16 +1293,16 @@
 		B1DCC62322E60CA800625807 /* EmojiPickerCategoryViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPickerCategoryViewData.swift; sourceTree = "<group>"; };
 		B1DCC62522E60CC600625807 /* EmojiItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiItem.swift; sourceTree = "<group>"; };
 		B1DCC62722E60CE300625807 /* EmojiCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCategory.swift; sourceTree = "<group>"; };
-		B1DCC62922E60D1000625807 /* EmojiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiService.swift; sourceTree = "<group>"; };
+		B1DCC62922E60D1000625807 /* EmojiMartService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMartService.swift; sourceTree = "<group>"; };
 		B1DCC62B22E61EAF00625807 /* EmojiPickerViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPickerViewCell.swift; sourceTree = "<group>"; };
 		B1DCC62C22E61EAF00625807 /* EmojiPickerViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmojiPickerViewCell.xib; sourceTree = "<group>"; };
 		B1DCC62F22E7026F00625807 /* EmojiPickerHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPickerHeaderView.swift; sourceTree = "<group>"; };
 		B1DCC63022E7026F00625807 /* EmojiPickerHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmojiPickerHeaderView.xib; sourceTree = "<group>"; };
 		B1DCC63322E72C1B00625807 /* UISearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISearchBar.swift; sourceTree = "<group>"; };
 		B1DCC63622E8541700625807 /* EmojiStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiStore.swift; sourceTree = "<group>"; };
-		B1DCC63822E85E9A00625807 /* EmojiJSONStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiJSONStore.swift; sourceTree = "<group>"; };
-		B1DCC63A22E85EF800625807 /* EmojiJSONCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiJSONCategory.swift; sourceTree = "<group>"; };
-		B1DCC63E22E9A3AE00625807 /* EmojiItem+Decodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmojiItem+Decodable.swift"; sourceTree = "<group>"; };
+		B1DCC63822E85E9A00625807 /* EmojiMartStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMartStore.swift; sourceTree = "<group>"; };
+		B1DCC63A22E85EF800625807 /* EmojiMartCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMartCategory.swift; sourceTree = "<group>"; };
+		B1DCC63E22E9A3AE00625807 /* EmojiItem+EmojiMart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmojiItem+EmojiMart.swift"; sourceTree = "<group>"; };
 		B1E5368821FB1E20001F3AFF /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
 		B1E5368C21FB7245001F3AFF /* KeyBackupRecoverFromPassphraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverFromPassphraseViewController.swift; sourceTree = "<group>"; };
 		B1E5368E21FB7258001F3AFF /* KeyBackupRecoverFromPassphraseViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = KeyBackupRecoverFromPassphraseViewController.storyboard; sourceTree = "<group>"; };
@@ -1855,9 +1855,8 @@
 			isa = PBXGroup;
 			children = (
 				B1B9DEDD22E9D9890065E677 /* EmojiServiceType.swift */,
-				B1DCC62922E60D1000625807 /* EmojiService.swift */,
 				B1DCC64022E9B37400625807 /* Store */,
-				B1B9DED722E9B56C0065E677 /* JSON */,
+				B1B9DED722E9B56C0065E677 /* EmojiMart */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -3243,14 +3242,15 @@
 			path = Analytics;
 			sourceTree = "<group>";
 		};
-		B1B9DED722E9B56C0065E677 /* JSON */ = {
+		B1B9DED722E9B56C0065E677 /* EmojiMart */ = {
 			isa = PBXGroup;
 			children = (
-				B1DCC63822E85E9A00625807 /* EmojiJSONStore.swift */,
-				B1DCC63A22E85EF800625807 /* EmojiJSONCategory.swift */,
-				B1DCC63E22E9A3AE00625807 /* EmojiItem+Decodable.swift */,
+				B1DCC62922E60D1000625807 /* EmojiMartService.swift */,
+				B1DCC63822E85E9A00625807 /* EmojiMartStore.swift */,
+				B1DCC63A22E85EF800625807 /* EmojiMartCategory.swift */,
+				B1DCC63E22E9A3AE00625807 /* EmojiItem+EmojiMart.swift */,
 			);
-			path = JSON;
+			path = EmojiMart;
 			sourceTree = "<group>";
 		};
 		B1B9DED822E9B7120065E677 /* Serialization */ = {
@@ -4123,7 +4123,7 @@
 				3232ABA3225730E100AD6A5C /* DeviceVerificationStartCoordinatorType.swift in Sources */,
 				3232AB4D2256558300AD6A5C /* TemplateScreenCoordinatorType.swift in Sources */,
 				B1B5581720EF625800210D55 /* PreviewRoomTitleView.m in Sources */,
-				B1DCC63F22E9A3AE00625807 /* EmojiItem+Decodable.swift in Sources */,
+				B1DCC63F22E9A3AE00625807 /* EmojiItem+EmojiMart.swift in Sources */,
 				B1DCC61C22E5E17100625807 /* EmojiPickerViewAction.swift in Sources */,
 				B1098BDF21ECE09F000DDA48 /* Strings.swift in Sources */,
 				B1B558C420EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
@@ -4218,14 +4218,14 @@
 				32F6B96B2270623100BBA352 /* DeviceVerificationDataLoadingViewAction.swift in Sources */,
 				B1B558C920EF768F00210D55 /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				B1B5571B20EE6C4D00210D55 /* DeactivateAccountViewController.m in Sources */,
-				B1DCC63922E85E9A00625807 /* EmojiJSONStore.swift in Sources */,
+				B1DCC63922E85E9A00625807 /* EmojiMartStore.swift in Sources */,
 				B1B5590620EF768F00210D55 /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */,
 				B139C21D21FE5BF500BB68EC /* KeyBackupRecoverFromPassphraseViewModelType.swift in Sources */,
 				F083BE031E7009ED00A9B29C /* EventFormatter.m in Sources */,
 				B1DCC62422E60CA900625807 /* EmojiPickerCategoryViewData.swift in Sources */,
 				324A2056225FC571004FE8B0 /* DeviceVerificationIncomingCoordinator.swift in Sources */,
 				B16932F720F3C50E00746532 /* RecentsDataSource.m in Sources */,
-				B1DCC63B22E85EF800625807 /* EmojiJSONCategory.swift in Sources */,
+				B1DCC63B22E85EF800625807 /* EmojiMartCategory.swift in Sources */,
 				3232AB4F2256558300AD6A5C /* TemplateScreenViewController.swift in Sources */,
 				B1B558FC20EF768F00210D55 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				B1B5572920EE6C4D00210D55 /* RoomFilesViewController.m in Sources */,
@@ -4327,7 +4327,7 @@
 				B1B5575A20EE6C4D00210D55 /* UnifiedSearchViewController.m in Sources */,
 				3232AB492256558300AD6A5C /* FlowTemplateCoordinatorBridgePresenter.swift in Sources */,
 				B1B5572820EE6C4D00210D55 /* RoomViewController.m in Sources */,
-				B1DCC62A22E60D1000625807 /* EmojiService.swift in Sources */,
+				B1DCC62A22E60D1000625807 /* EmojiMartService.swift in Sources */,
 				B1B558C720EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				B1B558F020EF768F00210D55 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				926FA53F1F4C132000F826C2 /* MXSession+Riot.m in Sources */,

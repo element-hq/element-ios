@@ -16,18 +16,25 @@
 
 import Foundation
 
-struct EmojiJSONCategory {
+struct EmojiMartCategory {
+    
+    /// Emoji category identifier (e.g. "people")
     let identifier: String
+    
+    /// Emoji category name in english (e.g. "Smiley & People")
     let name: String
-    let emojiIdentifiers: [String]
+    
+    /// List of emoji short names associated to the category (e.g. "people")
+    let emojiShortNames: [String]
 }
 
 // MARK: - Decodable
-extension EmojiJSONCategory: Decodable {
+extension EmojiMartCategory: Decodable {
     
+    /// JSON keys associated to EmojiJSONCategory properties.
     enum CodingKeys: String, CodingKey {
         case identifier = "id"
         case name
-        case emojiIdentifiers = "emojis"
+        case emojiShortNames = "emojis"
     }
 }

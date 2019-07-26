@@ -20,16 +20,18 @@ enum EmojiServiceError: Error {
     case emojiJSONFileNotFound
 }
 
-final class EmojiService: EmojiServiceType {
+/// Emoji service powered by Emoji Mart data (https://github.com/missive/emoji-mart/)
+final class EmojiMartService: EmojiServiceType {
     
     // MARK: - Constants
     
+    /// Emoji data coming from https://github.com/missive/emoji-mart/blob/master/data/apple.json
     private static let jsonFilename = "apple_emojis_data"
     
     // MARK: - Properties
     
     private let serializationService: SerializationServiceType = SerializationService()
-    private let serviceQueue = DispatchQueue(label: "\(type(of: EmojiService.self))")
+    private let serviceQueue = DispatchQueue(label: "\(type(of: EmojiMartService.self))")
     
     // MARK: - Public
     
@@ -37,7 +39,7 @@ final class EmojiService: EmojiServiceType {
         self.serviceQueue.async {
             do {
                 let emojiJSONData = try self.getEmojisJSONData()
-                let emojiJSONStore: EmojiJSONStore = try self.serializationService.deserialize(emojiJSONData)
+                let emojiJSONStore: EmojiMartStore = try self.serializationService.deserialize(emojiJSONData)
                 let emojiCategories = self.emojiCategories(from: emojiJSONStore)
                 completion(MXResponse.success(emojiCategories))
             } catch {
@@ -49,19 +51,19 @@ final class EmojiService: EmojiServiceType {
     // MARK: - Private
     
     private func getEmojisJSONData() throws -> Data {
-        guard let jsonDataURL = Bundle.main.url(forResource: EmojiService.jsonFilename, withExtension: "json") else {
+        guard let jsonDataURL = Bundle.main.url(forResource: EmojiMartService.jsonFilename, withExtension: "json") else {
                 throw EmojiServiceError.emojiJSONFileNotFound
         }
         let jsonData = try Data(contentsOf: jsonDataURL)
         return jsonData
     }
     
-    private func emojiCategories(from emojiJSONStore: EmojiJSONStore) -> [EmojiCategory] {
+    private func emojiCategories(from emojiJSONStore: EmojiMartStore) -> [EmojiCategory] {
         let allEmojiItems = emojiJSONStore.emojis
         
         return emojiJSONStore.categories.map { (jsonCategory) -> EmojiCategory in
-            let emojiItems = jsonCategory.emojiIdentifiers.compactMap({ (emojiIdentifier) -> EmojiItem? in
-                return allEmojiItems.first(where: { $0.identifier == emojiIdentifier })
+            let emojiItems = jsonCategory.emojiShortNames.compactMap({ (shortName) -> EmojiItem? in
+                return allEmojiItems.first(where: { $0.shortName == shortName })
             })
             return EmojiCategory(identifier: jsonCategory.identifier, emojis: emojiItems)
         }

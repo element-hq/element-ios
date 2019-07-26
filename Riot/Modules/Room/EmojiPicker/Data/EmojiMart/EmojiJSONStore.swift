@@ -16,19 +16,21 @@
 
 import Foundation
 
-struct EmojiJSONStore {
+struct EmojiMartStore {
     let categories: [EmojiJSONCategory]
     let emojis: [EmojiItem]
 }
 
 // MARK: - Decodable
-extension EmojiJSONStore: Decodable {
+extension EmojiMartStore: Decodable {
     
+    /// JSON keys associated to EmojiJSONStore properties.
     enum CodingKeys: String, CodingKey {
         case categories
         case emojis
     }
     
+    /// JSON key associated to emoji short name.
     struct EmojiKey: CodingKey {
         var stringValue: String
         
@@ -51,7 +53,7 @@ extension EmojiJSONStore: Decodable {
             do {
                 emojiItem = try emojisContainer.decode(EmojiItem.self, forKey: emojiKey)
             } catch {
-                print(error)
+                print("[EmojiJSONStore] init(from decoder: Decoder) failed to parse emojiItem \(emojiKey) with error: \(error)")
                 emojiItem = nil
             }
             
