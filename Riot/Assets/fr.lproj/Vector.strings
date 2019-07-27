@@ -800,3 +800,13 @@
 "auth_softlogout_clear_data_sign_out_title" = "En êtes-vous sûr(e) ?";
 "auth_softlogout_clear_data_sign_out_msg" = "Voulez vous vraiment supprimer toutes les données stockées actuellement sur cet appareil ? Reconnectez-vous pour accéder aux données et messages de votre compte.";
 "auth_softlogout_clear_data_sign_out" = "Se déconnecter";
+// MARK: Emoji picker
+"emoji_picker_title" = "Réactions";
+"emoji_picker_people_category" = "Émoticônes et personnes";
+"emoji_picker_nature_category" = "Animaux et nature";
+"emoji_picker_foods_category" = "Nourriture et boisson";
+"emoji_picker_activity_category" = "Activités";
+"emoji_picker_places_category" = "Voyage et lieux";
+"emoji_picker_objects_category" = "Objets";
+"emoji_picker_symbols_category" = "Symboles";
+"emoji_picker_flags_category" = "Drapeaux";
