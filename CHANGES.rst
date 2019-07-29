@@ -5,6 +5,7 @@ Improvements:
  * Upgrade MatrixKit version ([v0.10.2](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.10.2)).
  * Soft logout: Support soft logout (#2540).
  * Reactions: Emoji picker (#2370).
+ * Widgets: Whitelist https://scalar-staging.vector.im/api (#2612).
 
 Bug fix:
 * Crash when leaving settings due to backup section refresh animation.

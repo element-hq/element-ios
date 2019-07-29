@@ -33,6 +33,7 @@
 	<key>integrationsWidgetsUrls</key>
 	<array>
 		<string>https://scalar-staging.riot.im/scalar/api</string>
+		<string>https://scalar-staging.vector.im/api</string>
 		<string>https://scalar.vector.im/api</string>
 	</array>
 	<key>piwik</key>
