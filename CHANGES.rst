@@ -6,6 +6,9 @@ Improvements:
  * Soft logout: Support soft logout (#2540).
  * Reactions: Emoji picker (#2370).
 
+Bug fix:
+* Crash when leaving settings due to backup section refresh animation.
+
 Changes in 0.9.1 (2019-07-17)
 ===============================================
 
