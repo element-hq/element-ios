@@ -54,20 +54,8 @@ final class BubbleReactionsView: UIView, NibOwnerLoadable {
     // MARK: - Setup
     
     private func commonInit() {
-        self.collectionView.isScrollEnabled = false
-        self.collectionView.delegate = self
-        self.collectionView.dataSource = self
-        self.collectionView.collectionViewLayout = DGCollectionViewLeftAlignFlowLayout()
-        
-        if let collectionViewFlowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            collectionViewFlowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-            collectionViewFlowLayout.minimumInteritemSpacing = Constants.minimumInteritemSpacing
-            collectionViewFlowLayout.minimumLineSpacing = Constants.minimumLineSpacing
-        }
-        
-        self.collectionView.register(cellType: BubbleReactionViewCell.self)
-        self.collectionView.register(cellType: BubbleReactionActionViewCell.self)
-        self.collectionView.reloadData()
+        self.setupCollectionView()
+        self.setupLongPressGestureRecognizer()
     }
     
     convenience init() {
@@ -94,6 +82,36 @@ final class BubbleReactionsView: UIView, NibOwnerLoadable {
     }
 
     // MARK: - Private
+    
+    private func setupCollectionView() {
+        self.collectionView.isScrollEnabled = false
+        self.collectionView.delegate = self
+        self.collectionView.dataSource = self
+        self.collectionView.collectionViewLayout = DGCollectionViewLeftAlignFlowLayout()
+        
+        if let collectionViewFlowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            collectionViewFlowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+            collectionViewFlowLayout.minimumInteritemSpacing = Constants.minimumInteritemSpacing
+            collectionViewFlowLayout.minimumLineSpacing = Constants.minimumLineSpacing
+        }
+        
+        self.collectionView.register(cellType: BubbleReactionViewCell.self)
+        self.collectionView.register(cellType: BubbleReactionActionViewCell.self)
+        self.collectionView.reloadData()
+    }
+    
+    private func setupLongPressGestureRecognizer() {
+        let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+        gestureRecognizer.delaysTouchesBegan = true
+        self.collectionView.addGestureRecognizer(gestureRecognizer)
+    }
+    
+    @objc private func handleLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        guard gestureRecognizer.state == .began else {
+            return
+        }
+        self.viewModel?.process(viewAction: .longPress)
+    }
     
     private func fill(reactionsViewData: [BubbleReactionViewData], showAllButtonState: BubbleReactionsViewState.ShowAllButtonState) {
         self.reactionsViewData = reactionsViewData

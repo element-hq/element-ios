@@ -69,6 +69,8 @@ import Foundation
             self.viewModelDelegate?.bubbleReactionsViewModel(self, didShowAllTappedForEventId: self.eventId)
         case .tapShowAction(.showLess):
             self.viewModelDelegate?.bubbleReactionsViewModel(self, didShowLessTappedForEventId: self.eventId)
+        case .longPress:
+            self.viewModelDelegate?.bubbleReactionsViewModel(self, didLongPressForEventId: self.eventId)
         }
     }
 

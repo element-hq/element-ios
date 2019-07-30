@@ -26,9 +26,21 @@ extern NSString *const kMXKRoomBubbleCellRiotEditButtonPressed;
 /**
  Action identifier used when the user tapped on receipts area.
  
- The 'userInfo' disctionary contains an 'MXKReceiptSendersContainer' object under the 'kMXKRoomBubbleCellReceiptsContainerKey' key, representing the receipts container which was tapped on.
+ The 'userInfo' dictionary contains an 'MXKReceiptSendersContainer' object under the 'kMXKRoomBubbleCellReceiptsContainerKey' key, representing the receipts container which was tapped on.
  */
 extern NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer;
+
+/**
+ Action identifier used when the user perform a long press on reactions view.
+ 
+ The 'userInfo' dictionary contains a 'NSString' object under the 'kMXKRoomBubbleCellEventIdKey' key, representing the event id of the event associated with the reactions.
+ */
+extern NSString *const kMXKRoomBubbleCellLongPressOnReactionView;
+
+/**
+ 'userInfo' dictionary key 'kMXKRoomBubbleCellEventIdKey' is associated to a 'NSString' object representing an event id.
+ */
+extern NSString *const kMXKRoomBubbleCellEventIdKey;
 
 /**
  Define a `MXKRoomBubbleTableViewCell` category at Riot level to handle bubble customisation.
