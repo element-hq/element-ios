@@ -145,6 +145,7 @@
 		B110872421F098F0003554A5 /* ActivityIndicatorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B110872021F098EF003554A5 /* ActivityIndicatorView.xib */; };
 		B110872521F098F0003554A5 /* ActivityIndicatorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B110872121F098EF003554A5 /* ActivityIndicatorPresenter.swift */; };
 		B110872621F098F0003554A5 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B110872221F098F0003554A5 /* ActivityIndicatorView.swift */; };
+		B120863722EF375F001F89E0 /* ReactionHistoryBridgeCoordinatorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B120863622EF375F001F89E0 /* ReactionHistoryBridgeCoordinatorPresenter.swift */; };
 		B139C21B21FE5B9200BB68EC /* KeyBackupRecoverFromPassphraseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B139C21A21FE5B9100BB68EC /* KeyBackupRecoverFromPassphraseViewModel.swift */; };
 		B139C21D21FE5BF500BB68EC /* KeyBackupRecoverFromPassphraseViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B139C21C21FE5BF500BB68EC /* KeyBackupRecoverFromPassphraseViewModelType.swift */; };
 		B139C21F21FE5D6600BB68EC /* KeyBackupRecoverFromPassphraseViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B139C21E21FE5D6600BB68EC /* KeyBackupRecoverFromPassphraseViewAction.swift */; };
@@ -463,6 +464,17 @@
 		B1B9DEDA22E9B7350065E677 /* SerializationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B9DED922E9B7350065E677 /* SerializationService.swift */; };
 		B1B9DEDC22E9B7440065E677 /* SerializationServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B9DEDB22E9B7440065E677 /* SerializationServiceType.swift */; };
 		B1B9DEDE22E9D9890065E677 /* EmojiServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B9DEDD22E9D9890065E677 /* EmojiServiceType.swift */; };
+		B1B9DEE822EB34EF0065E677 /* ReactionHistoryCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B9DEE022EB34ED0065E677 /* ReactionHistoryCoordinatorType.swift */; };
+		B1B9DEE922EB34EF0065E677 /* ReactionHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B9DEE122EB34EE0065E677 /* ReactionHistoryViewController.swift */; };
+		B1B9DEEA22EB34EF0065E677 /* ReactionHistoryViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1B9DEE222EB34EE0065E677 /* ReactionHistoryViewController.storyboard */; };
+		B1B9DEEB22EB34EF0065E677 /* ReactionHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B9DEE322EB34EE0065E677 /* ReactionHistoryViewModel.swift */; };
+		B1B9DEEC22EB34EF0065E677 /* ReactionHistoryViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B9DEE422EB34EE0065E677 /* ReactionHistoryViewModelType.swift */; };
+		B1B9DEED22EB34EF0065E677 /* ReactionHistoryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B9DEE522EB34EE0065E677 /* ReactionHistoryCoordinator.swift */; };
+		B1B9DEEE22EB34EF0065E677 /* ReactionHistoryViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B9DEE622EB34EE0065E677 /* ReactionHistoryViewAction.swift */; };
+		B1B9DEEF22EB34EF0065E677 /* ReactionHistoryViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B9DEE722EB34EE0065E677 /* ReactionHistoryViewState.swift */; };
+		B1B9DEF122EB396B0065E677 /* ReactionHistoryViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B9DEF022EB396B0065E677 /* ReactionHistoryViewData.swift */; };
+		B1B9DEF422EB426D0065E677 /* ReactionHistoryViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B9DEF222EB426D0065E677 /* ReactionHistoryViewCell.swift */; };
+		B1B9DEF522EB426D0065E677 /* ReactionHistoryViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B9DEF322EB426D0065E677 /* ReactionHistoryViewCell.xib */; };
 		B1C562CA2289C2690037F12A /* UIGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C562C92289C2690037F12A /* UIGestureRecognizer.swift */; };
 		B1C562CC228AB3510037F12A /* UIStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C562CB228AB3510037F12A /* UIStackView.swift */; };
 		B1C562D9228C0B760037F12A /* RoomContextualMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C562D8228C0B760037F12A /* RoomContextualMenuItem.swift */; };
@@ -747,6 +759,7 @@
 		B110872021F098EF003554A5 /* ActivityIndicatorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityIndicatorView.xib; sourceTree = "<group>"; };
 		B110872121F098EF003554A5 /* ActivityIndicatorPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorPresenter.swift; sourceTree = "<group>"; };
 		B110872221F098F0003554A5 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
+		B120863622EF375F001F89E0 /* ReactionHistoryBridgeCoordinatorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionHistoryBridgeCoordinatorPresenter.swift; sourceTree = "<group>"; };
 		B139C21A21FE5B9100BB68EC /* KeyBackupRecoverFromPassphraseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverFromPassphraseViewModel.swift; sourceTree = "<group>"; };
 		B139C21C21FE5BF500BB68EC /* KeyBackupRecoverFromPassphraseViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverFromPassphraseViewModelType.swift; sourceTree = "<group>"; };
 		B139C21E21FE5D6600BB68EC /* KeyBackupRecoverFromPassphraseViewAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverFromPassphraseViewAction.swift; sourceTree = "<group>"; };
@@ -1250,6 +1263,17 @@
 		B1B9DED922E9B7350065E677 /* SerializationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerializationService.swift; sourceTree = "<group>"; };
 		B1B9DEDB22E9B7440065E677 /* SerializationServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerializationServiceType.swift; sourceTree = "<group>"; };
 		B1B9DEDD22E9D9890065E677 /* EmojiServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiServiceType.swift; sourceTree = "<group>"; };
+		B1B9DEE022EB34ED0065E677 /* ReactionHistoryCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionHistoryCoordinatorType.swift; sourceTree = "<group>"; };
+		B1B9DEE122EB34EE0065E677 /* ReactionHistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionHistoryViewController.swift; sourceTree = "<group>"; };
+		B1B9DEE222EB34EE0065E677 /* ReactionHistoryViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ReactionHistoryViewController.storyboard; sourceTree = "<group>"; };
+		B1B9DEE322EB34EE0065E677 /* ReactionHistoryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionHistoryViewModel.swift; sourceTree = "<group>"; };
+		B1B9DEE422EB34EE0065E677 /* ReactionHistoryViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionHistoryViewModelType.swift; sourceTree = "<group>"; };
+		B1B9DEE522EB34EE0065E677 /* ReactionHistoryCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionHistoryCoordinator.swift; sourceTree = "<group>"; };
+		B1B9DEE622EB34EE0065E677 /* ReactionHistoryViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionHistoryViewAction.swift; sourceTree = "<group>"; };
+		B1B9DEE722EB34EE0065E677 /* ReactionHistoryViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionHistoryViewState.swift; sourceTree = "<group>"; };
+		B1B9DEF022EB396B0065E677 /* ReactionHistoryViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionHistoryViewData.swift; sourceTree = "<group>"; };
+		B1B9DEF222EB426D0065E677 /* ReactionHistoryViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionHistoryViewCell.swift; sourceTree = "<group>"; };
+		B1B9DEF322EB426D0065E677 /* ReactionHistoryViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReactionHistoryViewCell.xib; sourceTree = "<group>"; };
 		B1C562C92289C2690037F12A /* UIGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIGestureRecognizer.swift; sourceTree = "<group>"; };
 		B1C562CB228AB3510037F12A /* UIStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackView.swift; sourceTree = "<group>"; };
 		B1C562D8228C0B760037F12A /* RoomContextualMenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomContextualMenuItem.swift; sourceTree = "<group>"; };
@@ -2258,6 +2282,7 @@
 				B1C562D7228C0B4C0037F12A /* ContextualMenu */,
 				B1963B24228F1C4800CBA17F /* BubbleReactions */,
 				B152C72922DCEA670041315A /* EmojiPicker */,
+				B1B9DEDF22EB34ED0065E677 /* ReactionHistory */,
 			);
 			path = Room;
 			sourceTree = "<group>";
@@ -3262,6 +3287,25 @@
 			path = Serialization;
 			sourceTree = "<group>";
 		};
+		B1B9DEDF22EB34ED0065E677 /* ReactionHistory */ = {
+			isa = PBXGroup;
+			children = (
+				B120863622EF375F001F89E0 /* ReactionHistoryBridgeCoordinatorPresenter.swift */,
+				B1B9DEE022EB34ED0065E677 /* ReactionHistoryCoordinatorType.swift */,
+				B1B9DEE522EB34EE0065E677 /* ReactionHistoryCoordinator.swift */,
+				B1B9DEE122EB34EE0065E677 /* ReactionHistoryViewController.swift */,
+				B1B9DEE222EB34EE0065E677 /* ReactionHistoryViewController.storyboard */,
+				B1B9DEE422EB34EE0065E677 /* ReactionHistoryViewModelType.swift */,
+				B1B9DEE322EB34EE0065E677 /* ReactionHistoryViewModel.swift */,
+				B1B9DEE622EB34EE0065E677 /* ReactionHistoryViewAction.swift */,
+				B1B9DEE722EB34EE0065E677 /* ReactionHistoryViewState.swift */,
+				B1B9DEF022EB396B0065E677 /* ReactionHistoryViewData.swift */,
+				B1B9DEF222EB426D0065E677 /* ReactionHistoryViewCell.swift */,
+				B1B9DEF322EB426D0065E677 /* ReactionHistoryViewCell.xib */,
+			);
+			path = ReactionHistory;
+			sourceTree = "<group>";
+		};
 		B1C562D7228C0B4C0037F12A /* ContextualMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -3748,6 +3792,7 @@
 				B1B558F220EF768F00210D55 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				B1B558EA20EF768F00210D55 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				B1B558CD20EF768F00210D55 /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
+				B1B9DEEA22EB34EF0065E677 /* ReactionHistoryViewController.storyboard in Resources */,
 				B1B9194C2118984300FE25B5 /* RoomPredecessorBubbleCell.xib in Resources */,
 				B1C562E9228C7CF20037F12A /* ContextualMenuItemView.xib in Resources */,
 				B1B5572120EE6C4D00210D55 /* ContactsTableViewController.xib in Resources */,
@@ -3779,6 +3824,7 @@
 				B1B5590820EF768F00210D55 /* RoomMembershipWithPaginationTitleBubbleCell.xib in Resources */,
 				F083BDE81E7009ED00A9B29C /* message.mp3 in Resources */,
 				B1107ECA2200B09F0038014B /* KeyBackupRecoverSuccessViewController.storyboard in Resources */,
+				B1B9DEF522EB426D0065E677 /* ReactionHistoryViewCell.xib in Resources */,
 				B1B5579C20EF575B00210D55 /* ForgotPasswordInputsView.xib in Resources */,
 				F083BE011E7009ED00A9B29C /* third_party_licenses.html in Resources */,
 				B1098BFC21ECFE65000DDA48 /* PasswordStrengthView.xib in Resources */,
@@ -4119,6 +4165,7 @@
 				B1B558F420EF768F00210D55 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				B1B5572320EE6C4D00210D55 /* AttachmentsViewController.m in Sources */,
 				F083BDEE1E7009ED00A9B29C /* MXRoom+Riot.m in Sources */,
+				B120863722EF375F001F89E0 /* ReactionHistoryBridgeCoordinatorPresenter.swift in Sources */,
 				B1B5598620EFC3E000210D55 /* RiotSettings.swift in Sources */,
 				3232ABA3225730E100AD6A5C /* DeviceVerificationStartCoordinatorType.swift in Sources */,
 				3232AB4D2256558300AD6A5C /* TemplateScreenCoordinatorType.swift in Sources */,
@@ -4166,11 +4213,13 @@
 				B1B5593B20EF7BAC00210D55 /* TableViewCellWithCheckBoxAndLabel.m in Sources */,
 				B1B5581A20EF625800210D55 /* ExpandedRoomTitleView.m in Sources */,
 				B1107EC82200B0720038014B /* KeyBackupRecoverSuccessViewController.swift in Sources */,
+				B1B9DEEB22EB34EF0065E677 /* ReactionHistoryViewModel.swift in Sources */,
 				B1963B2F228F1C4900CBA17F /* BubbleReactionViewCell.swift in Sources */,
 				B1B558E920EF768F00210D55 /* RoomSelectedStickerBubbleCell.m in Sources */,
 				B1B558DF20EF768F00210D55 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				F083BE041E7009ED00A9B29C /* Tools.m in Sources */,
 				3275FD8C21A5A2C500B9C13D /* TermsView.swift in Sources */,
+				B1B9DEE822EB34EF0065E677 /* ReactionHistoryCoordinatorType.swift in Sources */,
 				B14F143122144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewState.swift in Sources */,
 				B1098C1121ED07E4000DDA48 /* NavigationRouterType.swift in Sources */,
 				B1B5573D20EE6C4D00210D55 /* WebViewViewController.m in Sources */,
@@ -4199,6 +4248,7 @@
 				B1D4752721EE4E630067973F /* KeyboardAvoider.swift in Sources */,
 				B1D4752821EE4E630067973F /* KeyboardNotification.swift in Sources */,
 				B1D1BDA622BBAFB500831367 /* ReactionsMenuView.swift in Sources */,
+				B1B9DEF422EB426D0065E677 /* ReactionHistoryViewCell.swift in Sources */,
 				B1B5573C20EE6C4D00210D55 /* MasterTabBarController.m in Sources */,
 				B1DCC61B22E5E17100625807 /* EmojiPickerCoordinator.swift in Sources */,
 				32F6B96E2270623100BBA352 /* DeviceVerificationDataLoadingViewModelType.swift in Sources */,
@@ -4265,6 +4315,7 @@
 				B1098BFE21ECFE65000DDA48 /* KeyBackupSetupPassphraseViewModelType.swift in Sources */,
 				B1B558BE20EF768F00210D55 /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				F083BDED1E7009ED00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m in Sources */,
+				B1B9DEEF22EB34EF0065E677 /* ReactionHistoryViewState.swift in Sources */,
 				B1DCC62022E5EDA400625807 /* EmojiPickerCoordinatorBridgePresenter.swift in Sources */,
 				B1B557A820EF5A1B00210D55 /* DeviceTableViewCell.m in Sources */,
 				B1B5572620EE6C4D00210D55 /* RoomFilesSearchViewController.m in Sources */,
@@ -4312,6 +4363,7 @@
 				324A2052225FC571004FE8B0 /* DeviceVerificationIncomingViewAction.swift in Sources */,
 				B105778D2213051E00334B1E /* KeyBackupSetupSuccessFromRecoveryKeyViewController.swift in Sources */,
 				B1B557D820EF5EA900210D55 /* RoomActivitiesView.m in Sources */,
+				B1B9DEE922EB34EF0065E677 /* ReactionHistoryViewController.swift in Sources */,
 				B1B5596620EF9E9B00210D55 /* RoomTableViewCell.m in Sources */,
 				B14F143322144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewModel.swift in Sources */,
 				32A6001822C661100042C1D9 /* EditHistoryViewModel.swift in Sources */,
@@ -4327,6 +4379,7 @@
 				B1B5575A20EE6C4D00210D55 /* UnifiedSearchViewController.m in Sources */,
 				3232AB492256558300AD6A5C /* FlowTemplateCoordinatorBridgePresenter.swift in Sources */,
 				B1B5572820EE6C4D00210D55 /* RoomViewController.m in Sources */,
+				B1B9DEED22EB34EF0065E677 /* ReactionHistoryCoordinator.swift in Sources */,
 				B1DCC62A22E60D1000625807 /* EmojiMartService.swift in Sources */,
 				B1B558C720EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				B1B558F020EF768F00210D55 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
@@ -4400,6 +4453,7 @@
 				B1098BFD21ECFE65000DDA48 /* PasswordStrengthManager.swift in Sources */,
 				B1B558F520EF768F00210D55 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				3232AB482256558300AD6A5C /* FlowTemplateCoordinatorType.swift in Sources */,
+				B1B9DEF122EB396B0065E677 /* ReactionHistoryViewData.swift in Sources */,
 				B1B558F820EF768F00210D55 /* RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				32242F0921E8B05F00725742 /* UIColor.swift in Sources */,
 				B16932E720F3C37100746532 /* HomeMessagesSearchDataSource.m in Sources */,
@@ -4411,7 +4465,9 @@
 				B1098C0021ECFE65000DDA48 /* KeyBackupSetupPassphraseViewController.swift in Sources */,
 				B1B5591020EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m in Sources */,
 				B1DB4F06223015080065DBFA /* Character.swift in Sources */,
+				B1B9DEEE22EB34EF0065E677 /* ReactionHistoryViewAction.swift in Sources */,
 				32B94DFA228EC26400716A26 /* ReactionsMenuButton.swift in Sources */,
+				B1B9DEEC22EB34EF0065E677 /* ReactionHistoryViewModelType.swift in Sources */,
 				B1C562E8228C7CF20037F12A /* ContextualMenuItemView.swift in Sources */,
 				B14F143022144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyCoordinatorType.swift in Sources */,
 				B1E5368921FB1E20001F3AFF /* UIButton.swift in Sources */,
