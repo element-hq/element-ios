@@ -113,7 +113,7 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
             sself.nextBatch = response.nextBatch
             sself.operation = nil
 
-            sself.process(editEvents: response.chunk,originalEvent: response.originalEvent, nextBatch: response.nextBatch)
+            sself.process(editEvents: response.chunk, originalEvent: response.originalEvent, nextBatch: response.nextBatch)
  
         }, failure: { [weak self] error in
                 guard let sself = self else {
