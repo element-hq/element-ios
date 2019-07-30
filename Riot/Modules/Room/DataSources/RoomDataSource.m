@@ -242,8 +242,8 @@
                     
                     BubbleReactionsView *reactionsView;
                     
-                    if (reactions && !isCollapsableCellCollapsed)
-                    {
+                    if (!component.event.isRedactedEvent && reactions && !isCollapsableCellCollapsed)
+                    {                        
                         BOOL showAllReactions = [cellData showAllReactionsForEvent:componentEventId];
                         BubbleReactionsViewModel *bubbleReactionsViewModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:reactions
                                                                                                                                    eventId:componentEventId
