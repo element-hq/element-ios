@@ -124,7 +124,8 @@
 #import "Riot-Swift.h"
 
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
-    ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate>
+    ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
+    ReactionHistoryCoordinatorBridgePresenterDelegate>
 {
     // The expanded header
     ExpandedRoomTitleView *expandedHeader;
@@ -224,6 +225,7 @@
 @property (nonatomic, strong) EditHistoryCoordinatorBridgePresenter *editHistoryPresenter;
 @property (nonatomic, strong) MXKDocumentPickerPresenter *documentPickerPresenter;
 @property (nonatomic, strong) EmojiPickerCoordinatorBridgePresenter *emojiPickerCoordinatorBridgePresenter;
+@property (nonatomic, strong) ReactionHistoryCoordinatorBridgePresenter *reactionHistoryCoordinatorBridgePresenter;
 
 @end
 
@@ -1531,6 +1533,21 @@
     }
 }
 
+- (void)showReactionHistoryForEventId:(NSString*)eventId animated:(BOOL)animated
+{
+    if (self.reactionHistoryCoordinatorBridgePresenter.isPresenting)
+    {
+        return;
+    }
+    
+    ReactionHistoryCoordinatorBridgePresenter *presenter = [[ReactionHistoryCoordinatorBridgePresenter alloc] initWithSession:self.mainSession roomId:self.roomDataSource.roomId eventId:eventId];
+    presenter.delegate = self;
+    
+    [presenter presentFrom:self animated:animated];
+    
+    self.reactionHistoryCoordinatorBridgePresenter = presenter;
+}
+
 #pragma mark - Hide/Show expanded header
 
 - (void)showExpandedHeader:(BOOL)isVisible
@@ -2173,6 +2190,14 @@
                 [self handleLongPressFromCell:cell withTappedEvent:tappedEvent];
             }
         }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellLongPressOnReactionView])
+        {
+            NSString *tappedEventId = userInfo[kMXKRoomBubbleCellEventIdKey];
+            if (tappedEventId)
+            {
+                [self showReactionHistoryForEventId:tappedEventId animated:YES];
+            }
+        }
         else
         {
             // Keep default implementation for other actions
@@ -2532,6 +2557,20 @@
                                                            }
                                                            
                                                        }]];
+        
+        // Add reaction history if event contains reactions
+        if (roomBubbleTableViewCell.bubbleData.reactions[selectedEvent.eventId].aggregatedReactionsWithNonZeroCount)
+        {
+            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_reaction_history", @"Vector", nil)
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+                                                               
+                                                               [self cancelEventSelection];
+                                                               
+                                                               // Show reaction history
+                                                               [self showReactionHistoryForEventId:selectedEvent.eventId animated:YES];
+                                                           }]];
+        }
         
         [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_view_source", @"Vector", nil)
                                                          style:UIAlertActionStyleDefault
@@ -5454,6 +5493,15 @@
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.emojiPickerCoordinatorBridgePresenter = nil;
+}
+
+#pragma mark - ReactionHistoryCoordinatorBridgePresenterDelegate
+
+- (void)reactionHistoryCoordinatorBridgePresenterDelegateDidClose:(ReactionHistoryCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        self.reactionHistoryCoordinatorBridgePresenter = nil;
+    }];
 }
 
 @end
