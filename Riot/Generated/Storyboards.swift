@@ -82,6 +82,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.KeyBackupSetupSuccessFromRecoveryKeyViewController>(storyboard: KeyBackupSetupSuccessFromRecoveryKeyViewController.self)
   }
+  internal enum ReactionHistoryViewController: StoryboardType {
+    internal static let storyboardName = "ReactionHistoryViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.ReactionHistoryViewController>(storyboard: ReactionHistoryViewController.self)
+  }
   internal enum RoomContextualMenuViewController: StoryboardType {
     internal static let storyboardName = "RoomContextualMenuViewController"
 

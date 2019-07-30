@@ -1406,6 +1406,10 @@ internal enum VectorL10n {
   internal static var rageShakePrompt: String { 
     return VectorL10n.tr("Vector", "rage_shake_prompt") 
   }
+  /// Reactions
+  internal static var reactionHistoryTitle: String { 
+    return VectorL10n.tr("Vector", "reaction_history_title") 
+  }
   /// Read Receipts List
   internal static var readReceiptsList: String { 
     return VectorL10n.tr("Vector", "read_receipts_list") 
@@ -1817,6 +1821,10 @@ internal enum VectorL10n {
   /// Quote
   internal static var roomEventActionQuote: String { 
     return VectorL10n.tr("Vector", "room_event_action_quote") 
+  }
+  /// Reaction history
+  internal static var roomEventActionReactionHistory: String { 
+    return VectorL10n.tr("Vector", "room_event_action_reaction_history") 
   }
   /// Show all
   internal static var roomEventActionReactionShowAll: String { 
