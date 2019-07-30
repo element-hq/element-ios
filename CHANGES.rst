@@ -9,7 +9,8 @@ Improvements:
  * Reactions: Show who reacted (#2591).
 
 Bug fix:
-* Crash when leaving settings due to backup section refresh animation.
+ * Crash when leaving settings due to backup section refresh animation.
+ * Reactions: Do not display reactions on redacted events in timeline.
 
 Changes in 0.9.1 (2019-07-17)
 ===============================================
