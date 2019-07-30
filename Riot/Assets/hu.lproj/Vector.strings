@@ -815,3 +815,6 @@
 "emoji_picker_objects_category" = "Tárgyak";
 "emoji_picker_symbols_category" = "Szimbólumok";
 "emoji_picker_flags_category" = "Zászlók";
+"room_event_action_reaction_history" = "Reakciók története";
+// MARK: Reaction history
+"reaction_history_title" = "Reakciók";
