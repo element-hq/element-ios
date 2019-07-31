@@ -810,3 +810,6 @@
 "emoji_picker_objects_category" = "Objets";
 "emoji_picker_symbols_category" = "Symboles";
 "emoji_picker_flags_category" = "Drapeaux";
+"room_event_action_reaction_history" = "Historique des réactions";
+// MARK: Reaction history
+"reaction_history_title" = "Réactions";
