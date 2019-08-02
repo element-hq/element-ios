@@ -812,3 +812,11 @@
 "emoji_picker_flags_category" = "Флагове";
 // MARK: Reaction history
 "reaction_history_title" = "Реакции";
+"room_action_camera" = "Направи снимка или видео";
+// Media picker
+"media_picker_title" = "Медийна библиотека";
+// Image picker
+"image_picker_action_camera" = "Направи снимка";
+"image_picker_action_library" = "Избери от библиотеката";
+"camera_unavailable" = "Не е достъпна камера на вашето устройство";
+"photo_library_access_not_granted" = "%@ няма достъп до библиотеката със снимки. Моля, променете настройките на поверителността";
