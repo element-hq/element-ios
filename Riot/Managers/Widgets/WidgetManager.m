@@ -513,6 +513,8 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     MXHTTPOperation *operation;
     NSString *userId = mxSession.myUser.userId;
 
+    NSLog(@"[WidgetManager] registerForScalarToken");
+
     WidgetManagerConfig *config = [self configForUser:userId];
     if (!config.hasUrls)
     {
@@ -538,6 +540,10 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
              NSString *scalarToken;
              MXJSONModelSetString(scalarToken, JSONResponse[@"scalar_token"])
              config.scalarToken = scalarToken;
+
+             // Validate it (this mostly checks to see if the IM needs us to agree to some terms)
+             // TODO
+             // return this._checkToken(tokenObject);
 
              self->configs[userId] = config;
              [self saveConfigs];
@@ -622,7 +628,22 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
                                      }
                                      else if (failure)
                                      {
-                                         failure(error);
+                                         MXError *mxError = [[MXError alloc] initWithNSError:error];
+                                         if ([mxError.errcode isEqualToString:kMXErrCodeStringTermsNotSigned])
+                                         {
+                                             NSLog(@"[WidgetManager] validateScalarToke. Error: Need to accept terms");
+                                             NSError *termsNotSignedError = [NSError errorWithDomain:WidgetManagerErrorDomain
+                                                                                                code:WidgetManagerErrorCodeTermsNotSigned
+                                                                                            userInfo:@{
+                                                                                                       NSLocalizedDescriptionKey:error.userInfo[NSLocalizedDescriptionKey]
+                                                                                                       }];
+
+                                             failure(termsNotSignedError);
+                                         }
+                                         else
+                                         {
+                                             failure(error);
+                                         }
                                      }
                                  }];
 }
