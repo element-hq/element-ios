@@ -7,6 +7,7 @@ Improvements:
  * Reactions: Emoji picker (#2370).
  * Widgets: Whitelist https://scalar-staging.vector.im/api (#2612).
  * Reactions: Show who reacted (#2591).
+ * Media picking: Use native camera and use separate actions for camera and media picker (#638). 
 
 Bug fix:
  * Crash when leaving settings due to backup section refresh animation.
