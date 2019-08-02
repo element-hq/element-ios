@@ -69,9 +69,9 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
     operation = nil;
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidLoad
 {
-    [super viewWillAppear:animated];
+    [super viewDidLoad];
 
     if (!self.URL && !operation)
     {
@@ -724,13 +724,14 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
                                                                                                                                                             baseUrl:baseUrl serviceType:MXServiceTypeIntegrationManager];
     serviceTermsModalCoordinatorBridgePresenter.delegate = self;
 
-    [serviceTermsModalCoordinatorBridgePresenter presentFrom:self animated:YES];
+    [serviceTermsModalCoordinatorBridgePresenter presentFrom:self animated:NO];
     self.serviceTermsModalCoordinatorBridgePresenter = serviceTermsModalCoordinatorBridgePresenter;
 }
 
 - (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
 {
-    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+    // TODO
+    [coordinatorBridgePresenter dismissWithAnimated:NO completion:^{
         [self withdrawViewControllerAnimated:YES completion:nil];
     }];
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
@@ -738,7 +739,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
 - (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
 {
-    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+    [coordinatorBridgePresenter dismissWithAnimated:NO completion:^{
         [self withdrawViewControllerAnimated:YES completion:nil];
     }];
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
@@ -746,7 +747,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
 - (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
 {
-    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+    [coordinatorBridgePresenter dismissWithAnimated:NO completion:^{
         [self withdrawViewControllerAnimated:YES completion:nil];
     }];
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
@@ -754,7 +755,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
 - (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidFail:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter error:(NSError * _Nonnull)error
 {
-    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+    [coordinatorBridgePresenter dismissWithAnimated:NO completion:^{
         [self withdrawViewControllerAnimated:YES completion:nil];
     }];
     self.serviceTermsModalCoordinatorBridgePresenter = nil;

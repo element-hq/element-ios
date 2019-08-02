@@ -83,7 +83,7 @@ final class ServiceTermsModalCoordinator: ServiceTermsModalCoordinatorType {
 
         self.add(childCoordinator: coordinator)
 
-        self.navigationRouter.push(coordinator, animated: true) {
+        self.navigationRouter.push(coordinator, animated: false) {
             self.remove(childCoordinator: coordinator)
         }
 
