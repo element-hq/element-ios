@@ -179,6 +179,8 @@
     
     self.userAlbumsTableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.recentCapturesCollectionContainerView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.recentCapturesCollectionView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.userAlbumsTableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
 }
 
