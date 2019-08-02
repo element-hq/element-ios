@@ -92,6 +92,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.RoomContextualMenuViewController>(storyboard: RoomContextualMenuViewController.self)
   }
+  internal enum ServiceTermsModalLoadTermsScreenViewController: StoryboardType {
+    internal static let storyboardName = "ServiceTermsModalLoadTermsScreenViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.ServiceTermsModalLoadTermsScreenViewController>(storyboard: ServiceTermsModalLoadTermsScreenViewController.self)
+  }
   internal enum SimpleScreenTemplateViewController: StoryboardType {
     internal static let storyboardName = "SimpleScreenTemplateViewController"
 

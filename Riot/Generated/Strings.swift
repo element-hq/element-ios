@@ -2318,6 +2318,34 @@ internal enum VectorL10n {
   internal static var sending: String { 
     return VectorL10n.tr("Vector", "sending") 
   }
+  /// Accept
+  internal static var serviceTermsModalAcceptButton: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_accept_button") 
+  }
+  /// You must accept the %@ to use bots, bridges & widgets.
+  internal static func serviceTermsModalAlertMessageIm(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "service_terms_modal_alert_message_im", p1)
+  }
+  /// Review Terms
+  internal static var serviceTermsModalAlertTitle: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_alert_title") 
+  }
+  /// Review Terms (%1$@/%2$@)
+  internal static func serviceTermsModalAlertTitleN(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "service_terms_modal_alert_title_n", p1, p2)
+  }
+  /// Decline
+  internal static var serviceTermsModalDeclineButton: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_decline_button") 
+  }
+  /// Review
+  internal static var serviceTermsModalReviewButton: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_review_button") 
+  }
+  /// Terms Of Service
+  internal static var serviceTermsModalTitle: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_title") 
+  }
   /// Add email address
   internal static var settingsAddEmailAddress: String { 
     return VectorL10n.tr("Vector", "settings_add_email_address") 

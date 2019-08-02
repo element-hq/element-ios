@@ -75,6 +75,17 @@
 		32891D712264DF7B00C82226 /* DeviceVerificationVerifiedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32891D6F2264DF7B00C82226 /* DeviceVerificationVerifiedViewController.swift */; };
 		32891D75226728EE00C82226 /* DeviceVerificationDataLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32891D73226728EE00C82226 /* DeviceVerificationDataLoadingViewController.swift */; };
 		32891D76226728EF00C82226 /* DeviceVerificationDataLoadingViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32891D74226728EE00C82226 /* DeviceVerificationDataLoadingViewController.storyboard */; };
+		3294FDB022F42897007F1E60 /* ServiceTermsModalCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3294FDA422F42896007F1E60 /* ServiceTermsModalCoordinator.swift */; };
+		3294FDB122F42897007F1E60 /* ServiceTermsModalCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3294FDA522F42897007F1E60 /* ServiceTermsModalCoordinatorType.swift */; };
+		3294FDB222F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3294FDA722F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewModelType.swift */; };
+		3294FDB322F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3294FDA822F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewModel.swift */; };
+		3294FDB422F42897007F1E60 /* ServiceTermsModalLoadTermsScreenCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3294FDA922F42897007F1E60 /* ServiceTermsModalLoadTermsScreenCoordinatorType.swift */; };
+		3294FDB522F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3294FDAA22F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewState.swift */; };
+		3294FDB622F42897007F1E60 /* ServiceTermsModalLoadTermsScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3294FDAB22F42897007F1E60 /* ServiceTermsModalLoadTermsScreenCoordinator.swift */; };
+		3294FDB722F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3294FDAC22F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewController.swift */; };
+		3294FDB822F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3294FDAD22F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewAction.swift */; };
+		3294FDB922F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3294FDAE22F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewController.storyboard */; };
+		3294FDBA22F42897007F1E60 /* ServiceTermsModalCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3294FDAF22F42897007F1E60 /* ServiceTermsModalCoordinatorBridgePresenter.swift */; };
 		329E746622CD02EA006F9797 /* BubbleReactionActionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 329E746422CD02EA006F9797 /* BubbleReactionActionViewCell.xib */; };
 		329E746722CD02EA006F9797 /* BubbleReactionActionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329E746522CD02EA006F9797 /* BubbleReactionActionViewCell.swift */; };
 		32A6001622C661100042C1D9 /* EditHistoryViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A6000D22C661100042C1D9 /* EditHistoryViewState.swift */; };
@@ -667,6 +678,17 @@
 		32891D6F2264DF7B00C82226 /* DeviceVerificationVerifiedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifiedViewController.swift; sourceTree = "<group>"; };
 		32891D73226728EE00C82226 /* DeviceVerificationDataLoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationDataLoadingViewController.swift; sourceTree = "<group>"; };
 		32891D74226728EE00C82226 /* DeviceVerificationDataLoadingViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DeviceVerificationDataLoadingViewController.storyboard; sourceTree = "<group>"; };
+		3294FDA422F42896007F1E60 /* ServiceTermsModalCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTermsModalCoordinator.swift; sourceTree = "<group>"; };
+		3294FDA522F42897007F1E60 /* ServiceTermsModalCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTermsModalCoordinatorType.swift; sourceTree = "<group>"; };
+		3294FDA722F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTermsModalLoadTermsScreenViewModelType.swift; sourceTree = "<group>"; };
+		3294FDA822F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTermsModalLoadTermsScreenViewModel.swift; sourceTree = "<group>"; };
+		3294FDA922F42897007F1E60 /* ServiceTermsModalLoadTermsScreenCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTermsModalLoadTermsScreenCoordinatorType.swift; sourceTree = "<group>"; };
+		3294FDAA22F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTermsModalLoadTermsScreenViewState.swift; sourceTree = "<group>"; };
+		3294FDAB22F42897007F1E60 /* ServiceTermsModalLoadTermsScreenCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTermsModalLoadTermsScreenCoordinator.swift; sourceTree = "<group>"; };
+		3294FDAC22F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTermsModalLoadTermsScreenViewController.swift; sourceTree = "<group>"; };
+		3294FDAD22F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTermsModalLoadTermsScreenViewAction.swift; sourceTree = "<group>"; };
+		3294FDAE22F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ServiceTermsModalLoadTermsScreenViewController.storyboard; sourceTree = "<group>"; };
+		3294FDAF22F42897007F1E60 /* ServiceTermsModalCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTermsModalCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
 		329E746422CD02EA006F9797 /* BubbleReactionActionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BubbleReactionActionViewCell.xib; sourceTree = "<group>"; };
 		329E746522CD02EA006F9797 /* BubbleReactionActionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleReactionActionViewCell.swift; sourceTree = "<group>"; };
 		32A6000D22C661100042C1D9 /* EditHistoryViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditHistoryViewState.swift; sourceTree = "<group>"; };
@@ -1630,6 +1652,40 @@
 			path = js;
 			sourceTree = "<group>";
 		};
+		3294FDA222F4269B007F1E60 /* ServiceTerms */ = {
+			isa = PBXGroup;
+			children = (
+				3294FDA322F4269B007F1E60 /* Modal */,
+			);
+			path = ServiceTerms;
+			sourceTree = "<group>";
+		};
+		3294FDA322F4269B007F1E60 /* Modal */ = {
+			isa = PBXGroup;
+			children = (
+				3294FDA622F42897007F1E60 /* Load */,
+				3294FDA422F42896007F1E60 /* ServiceTermsModalCoordinator.swift */,
+				3294FDAF22F42897007F1E60 /* ServiceTermsModalCoordinatorBridgePresenter.swift */,
+				3294FDA522F42897007F1E60 /* ServiceTermsModalCoordinatorType.swift */,
+			);
+			path = Modal;
+			sourceTree = "<group>";
+		};
+		3294FDA622F42897007F1E60 /* Load */ = {
+			isa = PBXGroup;
+			children = (
+				3294FDA722F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewModelType.swift */,
+				3294FDA822F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewModel.swift */,
+				3294FDA922F42897007F1E60 /* ServiceTermsModalLoadTermsScreenCoordinatorType.swift */,
+				3294FDAA22F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewState.swift */,
+				3294FDAB22F42897007F1E60 /* ServiceTermsModalLoadTermsScreenCoordinator.swift */,
+				3294FDAC22F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewController.swift */,
+				3294FDAD22F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewAction.swift */,
+				3294FDAE22F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewController.storyboard */,
+			);
+			path = Load;
+			sourceTree = "<group>";
+		};
 		32A6000C22C661100042C1D9 /* EditHistory */ = {
 			isa = PBXGroup;
 			children = (
@@ -2192,6 +2248,7 @@
 				B1B556FD20EE6C4C00210D55 /* RoomKeyRequest */,
 				B1B556B020EE6C4C00210D55 /* BugReport */,
 				B1098BE921ECFE64000DDA48 /* KeyBackup */,
+				3294FDA222F4269B007F1E60 /* ServiceTerms */,
 				B1B556CD20EE6C4C00210D55 /* Common */,
 			);
 			path = Modules;
@@ -3894,6 +3951,7 @@
 				B1B557B320EF5AEF00210D55 /* EventDetailsView.xib in Resources */,
 				B1963B30228F1C4900CBA17F /* BubbleReactionsView.xib in Resources */,
 				B1B557DD20EF5FBB00210D55 /* FilesSearchTableViewCell.xib in Resources */,
+				3294FDB922F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewController.storyboard in Resources */,
 				B1B5590320EF768F00210D55 /* RoomSelectedStickerBubbleCell.xib in Resources */,
 				3232ABB62257BE6400AD6A5C /* DeviceVerificationVerifyViewController.storyboard in Resources */,
 				B1B5573F20EE6C4D00210D55 /* SegmentedViewController.xib in Resources */,
@@ -4157,6 +4215,7 @@
 				B169331620F3CAFC00746532 /* PublicRoomsDirectoryDataSource.m in Sources */,
 				B110871D21F087F4003554A5 /* KeyBackupSetupPassphraseViewState.swift in Sources */,
 				B1098C0121ECFE65000DDA48 /* KeyBackupSetupPassphraseCoordinatorType.swift in Sources */,
+				3294FDB822F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewAction.swift in Sources */,
 				32242F1221E8FBA900725742 /* ThemeService.m in Sources */,
 				B1B558E820EF768F00210D55 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				B1B558F320EF768F00210D55 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
@@ -4192,6 +4251,7 @@
 				B140B4A621F89E7600E3F5FE /* KeyBackupSetupCoordinatorBridgePresenter.swift in Sources */,
 				B1B5577420EE702900210D55 /* WidgetViewController.m in Sources */,
 				B1DCC63122E7026F00625807 /* EmojiPickerHeaderView.swift in Sources */,
+				3294FDB422F42897007F1E60 /* ServiceTermsModalLoadTermsScreenCoordinatorType.swift in Sources */,
 				B139C21B21FE5B9200BB68EC /* KeyBackupRecoverFromPassphraseViewModel.swift in Sources */,
 				32A6001E22C661100042C1D9 /* EditHistoryCoordinatorBridgePresenter.swift in Sources */,
 				B1B5574A20EE6C4D00210D55 /* MediaPickerViewController.m in Sources */,
@@ -4239,9 +4299,11 @@
 				3232AB512256558300AD6A5C /* TemplateScreenViewAction.swift in Sources */,
 				3232AB4E2256558300AD6A5C /* TemplateScreenViewModelType.swift in Sources */,
 				B1B5590520EF768F00210D55 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
+				3294FDBA22F42897007F1E60 /* ServiceTermsModalCoordinatorBridgePresenter.swift in Sources */,
 				3232ABA5225730E100AD6A5C /* DeviceVerificationStartViewModelType.swift in Sources */,
 				B1B558DD20EF768F00210D55 /* RoomIncomingEncryptedTextMsgBubbleCell.m in Sources */,
 				B1098BE521ECE1FC000DDA48 /* Storyboards.swift in Sources */,
+				3294FDB022F42897007F1E60 /* ServiceTermsModalCoordinator.swift in Sources */,
 				3232ABC2225B996200AD6A5C /* Themable.swift in Sources */,
 				32A6001B22C661100042C1D9 /* EditHistoryViewAction.swift in Sources */,
 				3232ABA7225730E100AD6A5C /* DeviceVerificationStartCoordinator.swift in Sources */,
@@ -4291,11 +4353,13 @@
 				B1B5596F20EFA85D00210D55 /* EncryptionInfoView.m in Sources */,
 				B1B5573820EE6C4D00210D55 /* GroupParticipantsViewController.m in Sources */,
 				3232ABBB2257BE6500AD6A5C /* DeviceVerificationVerifyViewState.swift in Sources */,
+				3294FDB522F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewState.swift in Sources */,
 				3232ABAB225730E100AD6A5C /* DeviceVerificationCoordinator.swift in Sources */,
 				B1B5583E20EF6E7F00210D55 /* GroupRoomTableViewCell.m in Sources */,
 				B14F143522144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewController.swift in Sources */,
 				B1DCC61E22E5E17100625807 /* EmojiPickerViewModel.swift in Sources */,
 				B1B5574F20EE6C4D00210D55 /* RoomsViewController.m in Sources */,
+				3294FDB722F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewController.swift in Sources */,
 				B1B9DEDA22E9B7350065E677 /* SerializationService.swift in Sources */,
 				B1B5572520EE6C4D00210D55 /* RoomMessagesSearchViewController.m in Sources */,
 				B139C22121FE5D9D00BB68EC /* KeyBackupRecoverFromPassphraseViewState.swift in Sources */,
@@ -4338,6 +4402,8 @@
 				B1B5572020EE6C4D00210D55 /* ContactsTableViewController.m in Sources */,
 				B1B5581920EF625800210D55 /* RoomTitleView.m in Sources */,
 				B1098BE321ECE09F000DDA48 /* RiotDefaults.swift in Sources */,
+				3294FDB622F42897007F1E60 /* ServiceTermsModalLoadTermsScreenCoordinator.swift in Sources */,
+				3294FDB122F42897007F1E60 /* ServiceTermsModalCoordinatorType.swift in Sources */,
 				B1C562CA2289C2690037F12A /* UIGestureRecognizer.swift in Sources */,
 				B1C562CC228AB3510037F12A /* UIStackView.swift in Sources */,
 				B1B557BE20EF5B4500210D55 /* RoomInputToolbarView.m in Sources */,
@@ -4351,6 +4417,7 @@
 				B10B3B5B2201DD740072C76B /* KeyBackupBannerCell.swift in Sources */,
 				B1DCC61A22E5E17100625807 /* EmojiPickerViewController.swift in Sources */,
 				B1963B32228F1C6B00CBA17F /* BubbleReactionsViewModelType.swift in Sources */,
+				3294FDB222F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewModelType.swift in Sources */,
 				32A6001722C661100042C1D9 /* EditHistoryViewController.swift in Sources */,
 				B1098BFA21ECFE65000DDA48 /* KeyBackupSetupPassphraseViewModel.swift in Sources */,
 				B1B5575220EE6C4D00210D55 /* RoomKeyRequestViewController.m in Sources */,
@@ -4426,6 +4493,7 @@
 				B1B557AC20EF5A6D00210D55 /* DeviceView.m in Sources */,
 				3281BCF72201FA4200F4A383 /* UIControl.swift in Sources */,
 				B16932EE20F3C3C900746532 /* FilesSearchCellData.m in Sources */,
+				3294FDB322F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewModel.swift in Sources */,
 				B1B558E520EF768F00210D55 /* RoomMembershipExpandedBubbleCell.m in Sources */,
 				32BF995121FA29DC00698084 /* SettingsKeyBackupViewModelType.swift in Sources */,
 				B190F55922CE356800AEB493 /* EditHistoryHeaderView.swift in Sources */,
