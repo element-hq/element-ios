@@ -1,5 +1,5 @@
 // File created from ScreenTemplate
-// $ createScreen.sh Modal/Load ServiceTermsModalLoadTermsScreen
+// $ createScreen.sh Modal/Save ServiceTermsModalSaveTermsScreen
 /*
  Copyright 2019 New Vector Ltd
  
@@ -18,7 +18,7 @@
 
 import UIKit
 
-final class ServiceTermsModalLoadTermsScreenViewController: UIViewController {
+final class ServiceTermsModalSaveTermsScreenViewController: UIViewController {
     
     // MARK: - Constants
     
@@ -30,15 +30,15 @@ final class ServiceTermsModalLoadTermsScreenViewController: UIViewController {
     
     // MARK: Private
 
-    private var viewModel: ServiceTermsModalLoadTermsScreenViewModelType!
+    private var viewModel: ServiceTermsModalSaveTermsScreenViewModelType!
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
 
     // MARK: - Setup
     
-    class func instantiate(with viewModel: ServiceTermsModalLoadTermsScreenViewModelType) -> ServiceTermsModalLoadTermsScreenViewController {
-        let viewController = StoryboardScene.ServiceTermsModalLoadTermsScreenViewController.initialScene.instantiate()
+    class func instantiate(with viewModel: ServiceTermsModalSaveTermsScreenViewModelType) -> ServiceTermsModalSaveTermsScreenViewController {
+        let viewController = StoryboardScene.ServiceTermsModalSaveTermsScreenViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
         viewController.theme = ThemeService.shared().theme
         return viewController
@@ -50,7 +50,7 @@ final class ServiceTermsModalLoadTermsScreenViewController: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-
+        
         self.title = VectorL10n.serviceTermsModalTitle
         
         self.setupViews()
@@ -62,7 +62,7 @@ final class ServiceTermsModalLoadTermsScreenViewController: UIViewController {
         
         self.viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .load)
+        self.viewModel.process(viewAction: .save)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -99,7 +99,7 @@ final class ServiceTermsModalLoadTermsScreenViewController: UIViewController {
         self.scrollView.keyboardDismissMode = .interactive
     }
 
-    private func render(viewState: ServiceTermsModalLoadTermsScreenViewState) {
+    private func render(viewState: ServiceTermsModalSaveTermsScreenViewState) {
         switch viewState {
         case .loading:
             self.renderLoading()
@@ -134,10 +134,10 @@ final class ServiceTermsModalLoadTermsScreenViewController: UIViewController {
 }
 
 
-// MARK: - ServiceTermsModalLoadTermsScreenViewModelViewDelegate
-extension ServiceTermsModalLoadTermsScreenViewController: ServiceTermsModalLoadTermsScreenViewModelViewDelegate {
+// MARK: - ServiceTermsModalSaveTermsScreenViewModelViewDelegate
+extension ServiceTermsModalSaveTermsScreenViewController: ServiceTermsModalSaveTermsScreenViewModelViewDelegate {
 
-    func serviceTermsModalLoadTermsScreenViewModel(_ viewModel: ServiceTermsModalLoadTermsScreenViewModelType, didUpdateViewState viewSate: ServiceTermsModalLoadTermsScreenViewState) {
+    func serviceTermsModalSaveTermsScreenViewModel(_ viewModel: ServiceTermsModalSaveTermsScreenViewModelType, didUpdateViewState viewSate: ServiceTermsModalSaveTermsScreenViewState) {
         self.render(viewState: viewSate)
     }
 }

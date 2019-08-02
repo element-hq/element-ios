@@ -30,7 +30,7 @@ final class ServiceTermsModalCoordinator: ServiceTermsModalCoordinatorType {
     private let serviceTerms: MXServiceTerms
 
     private var policies: [MXLoginPolicyData]?
-    private var acceptedPolicies: [MXLoginPolicyData]
+    private var acceptedTermsUrls: [String]
     
     // MARK: Public
 
@@ -40,11 +40,11 @@ final class ServiceTermsModalCoordinator: ServiceTermsModalCoordinatorType {
     weak var delegate: ServiceTermsModalCoordinatorDelegate?
     
     // MARK: - Setup
-    init(session: MXSession, baseUrl: String, serviceType: MXServiceType) {
+    init(session: MXSession, baseUrl: String, serviceType: MXServiceType, accessToken: String) {
         self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
-        self.serviceTerms = MXServiceTerms(baseUrl: baseUrl, serviceType: serviceType)
-        self.acceptedPolicies = []
+        self.serviceTerms = MXServiceTerms(baseUrl: baseUrl, serviceType: serviceType, matrixSession: session, accessToken: accessToken)
+        self.acceptedTermsUrls = []
     }
     
     // MARK: - Public methods
@@ -78,11 +78,8 @@ final class ServiceTermsModalCoordinator: ServiceTermsModalCoordinatorType {
     }
 
     private func presentNextPolicy(nextPolicy: MXLoginPolicyData, progress: Progress) {
-
         let coordinator = self.createServiceTermsModalShowTermScreenCoordinator(policy: nextPolicy, progress: progress)
-
         self.add(childCoordinator: coordinator)
-
         self.navigationRouter.setRootModule(coordinator)
 
         coordinator.start()
@@ -95,17 +92,30 @@ final class ServiceTermsModalCoordinator: ServiceTermsModalCoordinatorType {
             return
         }
 
-        if self.acceptedPolicies.count == policies.count {
-            // TODO: Send the info the servers
-            self.delegate?.serviceTermsModalCoordinatorDidCancel(self)
+        if self.acceptedTermsUrls.count == policies.count {
+            self.presentSaveScreen(acceptedTermsUrls: self.acceptedTermsUrls)
         } else {
-            let nextPolicyIndex = self.acceptedPolicies.count
+            let nextPolicyIndex = self.acceptedTermsUrls.count
 
             let nextPolicy = policies[nextPolicyIndex]
             let progress = Progress(totalUnitCount: Int64(policies.count))
-            progress.completedUnitCount = Int64(self.acceptedPolicies.count) + 1
+            progress.completedUnitCount = Int64(self.acceptedTermsUrls.count) + 1
             self.presentNextPolicy(nextPolicy: nextPolicy, progress: progress)
         }
+    }
+
+    private func createServiceTermsModalSaveTermsScreenCoordinator(acceptedTermsUrls: [String]) -> ServiceTermsModalSaveTermsScreenCoordinator {
+        let coordinator = ServiceTermsModalSaveTermsScreenCoordinator(serviceTerms: self.serviceTerms, termsUrls: acceptedTermsUrls)
+        coordinator.delegate = self
+        return coordinator
+    }
+
+    private func presentSaveScreen(acceptedTermsUrls: [String]) {
+        let coordinator = self.createServiceTermsModalSaveTermsScreenCoordinator(acceptedTermsUrls: acceptedTermsUrls)
+        self.add(childCoordinator: coordinator)
+        self.navigationRouter.setRootModule(coordinator)
+
+        coordinator.start()
     }
 }
 
@@ -128,11 +138,21 @@ extension ServiceTermsModalCoordinator: ServiceTermsModalLoadTermsScreenCoordina
 
 extension ServiceTermsModalCoordinator: ServiceTermsModalShowTermScreenCoordinatorDelegate {
     func serviceTermsModalShowTermScreenCoordinator(_ coordinator: ServiceTermsModalShowTermScreenCoordinatorType, didAcceptPolicy policy: MXLoginPolicyData) {
-        self.acceptedPolicies.append(policy)
+        self.acceptedTermsUrls.append(policy.url)
         self.processNextPolicy()
     }
 
     func serviceTermsModalShowTermScreenCoordinatorDidDecline(_ coordinator: ServiceTermsModalShowTermScreenCoordinatorType) {
         self.delegate?.serviceTermsModalCoordinatorDidDecline(self)
+    }
+}
+
+extension ServiceTermsModalCoordinator: ServiceTermsModalSaveTermsScreenCoordinatorDelegate {
+    func serviceTermsModalSaveTermsScreenCoordinatorDidComplete(_ coordinator: ServiceTermsModalSaveTermsScreenCoordinatorType) {
+        self.delegate?.serviceTermsModalCoordinatorDidAccept(self)
+    }
+
+    func serviceTermsModalSaveTermsScreenCoordinatorDidCancel(_ coordinator: ServiceTermsModalSaveTermsScreenCoordinatorType) {
+        self.delegate?.serviceTermsModalCoordinatorDidCancel(self)
     }
 }

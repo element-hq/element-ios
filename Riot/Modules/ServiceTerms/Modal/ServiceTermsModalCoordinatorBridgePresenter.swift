@@ -37,6 +37,7 @@ final class ServiceTermsModalCoordinatorBridgePresenter: NSObject {
     private let session: MXSession
     private let baseUrl: String
     private let serviceType: MXServiceType
+    private let accessToken: String
     private var coordinator: ServiceTermsModalCoordinator?
     
     // MARK: Public
@@ -45,10 +46,11 @@ final class ServiceTermsModalCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Setup
     
-    init(session: MXSession, baseUrl: String, serviceType: MXServiceType) {
+    init(session: MXSession, baseUrl: String, serviceType: MXServiceType, accessToken: String) {
         self.session = session
         self.baseUrl = baseUrl
         self.serviceType = serviceType
+        self.accessToken = accessToken
         super.init()
     }
     
@@ -60,7 +62,7 @@ final class ServiceTermsModalCoordinatorBridgePresenter: NSObject {
     // }
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let serviceTermsModalCoordinator = ServiceTermsModalCoordinator(session: self.session, baseUrl: self.baseUrl, serviceType: self.serviceType)
+        let serviceTermsModalCoordinator = ServiceTermsModalCoordinator(session: self.session, baseUrl: self.baseUrl, serviceType: self.serviceType, accessToken: accessToken)
         serviceTermsModalCoordinator.delegate = self
         viewController.present(serviceTermsModalCoordinator.toPresentable(), animated: animated, completion: nil)
         serviceTermsModalCoordinator.start()

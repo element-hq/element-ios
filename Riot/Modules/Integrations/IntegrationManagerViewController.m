@@ -720,8 +720,10 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
     NSLog(@"[IntegraionManagerVC] presentTerms for %@", baseUrl);
 
-    ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:mxSession
-                                                                                                                                                            baseUrl:baseUrl serviceType:MXServiceTypeIntegrationManager];
+    ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter =
+    [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:mxSession
+                                                                 baseUrl:baseUrl serviceType:MXServiceTypeIntegrationManager
+                                                             accessToken:scalarToken];
     serviceTermsModalCoordinatorBridgePresenter.delegate = self;
 
     [serviceTermsModalCoordinatorBridgePresenter presentFrom:self animated:NO];

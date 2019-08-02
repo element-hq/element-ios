@@ -1,5 +1,5 @@
 // File created from ScreenTemplate
-// $ createScreen.sh Modal/Load ServiceTermsModalLoadTermsScreen
+// $ createScreen.sh Modal/Save ServiceTermsModalSaveTermsScreen
 /*
  Copyright 2019 New Vector Ltd
  
@@ -18,26 +18,26 @@
 
 import Foundation
 
-final class ServiceTermsModalLoadTermsScreenViewModel: ServiceTermsModalLoadTermsScreenViewModelType {
+final class ServiceTermsModalSaveTermsScreenViewModel: ServiceTermsModalSaveTermsScreenViewModelType {
     
     // MARK: - Properties
     
     // MARK: Private
 
     private let serviceTerms: MXServiceTerms
+    private let termsUrls: [String]
     private var operation: MXHTTPOperation?
 
     // MARK: Public
-    
-    var message: String?
 
-    weak var viewDelegate: ServiceTermsModalLoadTermsScreenViewModelViewDelegate?
-    weak var coordinatorDelegate: ServiceTermsModalLoadTermsScreenViewModelCoordinatorDelegate?
+    weak var viewDelegate: ServiceTermsModalSaveTermsScreenViewModelViewDelegate?
+    weak var coordinatorDelegate: ServiceTermsModalSaveTermsScreenViewModelCoordinatorDelegate?
     
     // MARK: - Setup
     
-    init(serviceTerms: MXServiceTerms) {
+    init(serviceTerms: MXServiceTerms, termsUrls: [String]) {
         self.serviceTerms = serviceTerms
+        self.termsUrls = termsUrls
     }
     
     deinit {
@@ -45,42 +45,38 @@ final class ServiceTermsModalLoadTermsScreenViewModel: ServiceTermsModalLoadTerm
     
     // MARK: - Public
     
-    func process(viewAction: ServiceTermsModalLoadTermsScreenViewAction) {
+    func process(viewAction: ServiceTermsModalSaveTermsScreenViewAction) {
         switch viewAction {
-        case .load:
-            self.loadTerms()
+        case .save:
+            self.saveTerms()
         case .cancel:
-            self.coordinatorDelegate?.serviceTermsModalLoadTermsScreenViewModelDidCancel(self)
+            self.coordinatorDelegate?.serviceTermsModalSaveTermsScreenViewModelDidCancel(self)
         }
     }
     
     // MARK: - Private
     
-    private func loadTerms() {
+    private func saveTerms() {
 
         self.update(viewState: .loading)
 
-        self.operation = self.serviceTerms.terms({ [weak self] terms in
+        self.operation = self.serviceTerms.agree(toTerms: self.termsUrls, success: { [weak self] in
             guard let self = self else {
                 return
             }
-
-            self.operation = nil
             self.update(viewState: .loaded)
+            self.coordinatorDelegate?.serviceTermsModalSaveTermsScreenViewModelDidComplete(self)
 
-            self.coordinatorDelegate?.serviceTermsModalLoadTermsScreenViewModel(self, didCompleteWithTerms: terms)
-
-        }, failure: { [weak self] error in
+        }, failure: { [weak self] (error) in
             guard let self = self else {
                 return
             }
 
-            self.operation = nil
             self.update(viewState: .error(error))
         })
     }
     
-    private func update(viewState: ServiceTermsModalLoadTermsScreenViewState) {
-        self.viewDelegate?.serviceTermsModalLoadTermsScreenViewModel(self, didUpdateViewState: viewState)
+    private func update(viewState: ServiceTermsModalSaveTermsScreenViewState) {
+        self.viewDelegate?.serviceTermsModalSaveTermsScreenViewModel(self, didUpdateViewState: viewState)
     }
 }
