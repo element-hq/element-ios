@@ -315,7 +315,7 @@
 
             __weak typeof(self) weakSelf = self;
             
-            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"Take photo or video", @"Vector", nil)
+            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_camera", @"Vector", nil)
                                                             style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {
                                                               
