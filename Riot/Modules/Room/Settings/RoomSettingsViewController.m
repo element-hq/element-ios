@@ -109,7 +109,7 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
 NSString *const kRoomSettingsAdvancedEnableE2eCellViewIdentifier = @"kRoomSettingsAdvancedEnableE2eCellViewIdentifier";
 NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSettingsAdvancedE2eEnabledCellViewIdentifier";
 
-@interface RoomSettingsViewController ()
+@interface RoomSettingsViewController () <SingleImagePickerPresenterDelegate>
 {
     // The updated user data
     NSMutableDictionary<NSString*, id> *updatedItemsDict;
@@ -159,9 +159,6 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     // listen to more events than the mother class
     id extraEventsListener;
     
-    // picker
-    MediaPickerViewController* mediaPicker;
-    
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id appDelegateDidTapStatusBarNotificationObserver;
     
@@ -171,6 +168,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
 }
+
+@property (nonatomic, strong) SingleImagePickerPresenter *imagePickerPresenter;
+
 @end
 
 @implementation RoomSettingsViewController
@@ -3279,41 +3279,6 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     [self presentViewController:currentAlert animated:YES completion:nil];
 }
 
-#pragma mark - MediaPickerViewController Delegate
-
-- (void)dismissMediaPicker
-{
-    if (mediaPicker)
-    {
-        [mediaPicker withdrawViewControllerAnimated:YES completion:nil];
-        mediaPicker = nil;
-    }
-}
-
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(NSData*)imageData withMimeType:(NSString *)mimetype isPhotoLibraryAsset:(BOOL)isPhotoLibraryAsset
-{
-    [self dismissMediaPicker];
-    
-    if (imageData)
-    {
-        UIImage *image = [UIImage imageWithData:imageData];
-        if (image)
-        {
-            [self getNavigationItem].rightBarButtonItem.enabled = YES;
-            
-            updatedItemsDict[kRoomSettingsAvatarKey] = image;
-            
-            [self refreshRoomSettings];
-        }
-    }
-}
-
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL
-{
-    // this method should not be called
-    [self dismissMediaPicker];
-}
-
 #pragma mark - MXKRoomMemberDetailsViewControllerDelegate
 
 - (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController startChatWithMemberId:(NSString *)matrixId completion:(void (^)(void))completion
@@ -3380,13 +3345,17 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
 - (void)onRoomAvatarTap:(UITapGestureRecognizer *)recognizer
 {
-    mediaPicker = [MediaPickerViewController mediaPickerViewController];
-    mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage];
-    mediaPicker.delegate = self;
-    UINavigationController *navigationController = [UINavigationController new];
-    [navigationController pushViewController:mediaPicker animated:NO];
+    SingleImagePickerPresenter *singleImagePickerPresenter = [[SingleImagePickerPresenter alloc] initWithSession:self.mainSession];
+    singleImagePickerPresenter.delegate = self;
     
-    [self presentViewController:navigationController animated:YES completion:nil];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:ROOM_SETTINGS_MAIN_SECTION_INDEX inSection:ROOM_SETTINGS_MAIN_SECTION_ROW_PHOTO];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    
+    UIView *sourceView = cell;
+    
+    [singleImagePickerPresenter presentFrom:self sourceView:sourceView sourceRect:sourceView.bounds animated:YES];
+    
+    self.imagePickerPresenter = singleImagePickerPresenter;
 }
 
 - (void)toggleRoomNotification:(UISwitch*)theSwitch
@@ -3837,6 +3806,30 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         }
         
         [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
+    }
+}
+
+#pragma mark - SingleImagePickerPresenterDelegate
+
+- (void)singleImagePickerPresenterDidCancel:(SingleImagePickerPresenter *)presenter
+{
+    [presenter dismissWithAnimated:YES completion:nil];
+    self.imagePickerPresenter = nil;
+}
+
+- (void)singleImagePickerPresenter:(SingleImagePickerPresenter *)presenter didSelectImageData:(NSData *)imageData withUTI:(MXKUTI *)uti
+{
+    [presenter dismissWithAnimated:YES completion:nil];
+    self.imagePickerPresenter = nil;
+    
+    UIImage *image = [UIImage imageWithData:imageData];
+    if (image)
+    {
+        [self getNavigationItem].rightBarButtonItem.enabled = YES;
+        
+        updatedItemsDict[kRoomSettingsAvatarKey] = image;
+        
+        [self refreshRoomSettings];
     }
 }
 
