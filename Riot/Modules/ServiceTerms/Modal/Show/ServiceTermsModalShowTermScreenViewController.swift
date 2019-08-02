@@ -32,9 +32,6 @@ final class ServiceTermsModalShowTermScreenViewController: UIViewController {
 
     private var viewModel: ServiceTermsModalShowTermScreenViewModelType!
     private var theme: Theme!
-    private var keyboardAvoider: KeyboardAvoider?
-    private var errorPresenter: MXKErrorPresentation!
-    private var activityPresenter: ActivityIndicatorPresenter!
     private weak var alertController: UIAlertController?
 
     // MARK: - Setup
@@ -56,9 +53,6 @@ final class ServiceTermsModalShowTermScreenViewController: UIViewController {
         self.title = VectorL10n.serviceTermsModalTitle
         
         self.setupViews()
-        self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
-        self.activityPresenter = ActivityIndicatorPresenter()
-        self.errorPresenter = MXKErrorAlertPresentation()
         
         self.registerThemeServiceDidChangeThemeNotification()
         self.update(theme: self.theme)
@@ -66,18 +60,6 @@ final class ServiceTermsModalShowTermScreenViewController: UIViewController {
         self.viewModel.viewDelegate = self
 
         self.viewModel.process(viewAction: .load)
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        self.keyboardAvoider?.startAvoiding()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        
-        self.keyboardAvoider?.stopAvoiding()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -122,6 +104,9 @@ final class ServiceTermsModalShowTermScreenViewController: UIViewController {
     }
 
     private func renderLoaded(policy: MXLoginPolicyData) {
+
+        // All the UI is based on a single AlertController
+
         var title = VectorL10n.serviceTermsModalAlertTitle
         if self.viewModel.progress.totalUnitCount > 1 {
             title = VectorL10n.serviceTermsModalAlertTitleN(Int(self.viewModel.progress.completedUnitCount),
@@ -147,7 +132,7 @@ final class ServiceTermsModalShowTermScreenViewController: UIViewController {
         }))
 
 
-        self.present(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: false, completion: nil)
         self.alertController = alertController
     }
     
@@ -155,13 +140,15 @@ final class ServiceTermsModalShowTermScreenViewController: UIViewController {
 
     private func reviewButtonAction() {
 
-        // Make the alert reappear
+        // The alert is automatically dismissed when the user pressed the button
+        // Reload the page to keep our AlertController-based UI still displayed
         self.viewModel.process(viewAction: .load)
 
+        // Use the external web browser for displaying the doc
         guard let url = URL(string: self.viewModel.policy.url) else {
+            print("[ServiceTermsModalShowTermScreenViewController] reviewButtonAction: Error: Cannot open policy url: \(self.viewModel.policy.url)")
             return
         }
-
         UIApplication.shared.open(url, options: [:])
     }
 

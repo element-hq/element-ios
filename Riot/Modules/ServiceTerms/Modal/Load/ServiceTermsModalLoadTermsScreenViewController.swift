@@ -32,7 +32,6 @@ final class ServiceTermsModalLoadTermsScreenViewController: UIViewController {
 
     private var viewModel: ServiceTermsModalLoadTermsScreenViewModelType!
     private var theme: Theme!
-    private var keyboardAvoider: KeyboardAvoider?
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
 
@@ -55,7 +54,6 @@ final class ServiceTermsModalLoadTermsScreenViewController: UIViewController {
         self.title = VectorL10n.serviceTermsModalTitle
         
         self.setupViews()
-        self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
         self.activityPresenter = ActivityIndicatorPresenter()
         self.errorPresenter = MXKErrorAlertPresentation()
         
@@ -65,18 +63,6 @@ final class ServiceTermsModalLoadTermsScreenViewController: UIViewController {
         self.viewModel.viewDelegate = self
 
         self.viewModel.process(viewAction: .load)
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        self.keyboardAvoider?.startAvoiding()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        
-        self.keyboardAvoider?.stopAvoiding()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

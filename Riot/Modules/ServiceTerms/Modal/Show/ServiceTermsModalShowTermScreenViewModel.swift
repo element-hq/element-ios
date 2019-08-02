@@ -58,6 +58,7 @@ final class ServiceTermsModalShowTermScreenViewModel: ServiceTermsModalShowTermS
     // MARK: - Private
     
     private func loadData() {
+        // The data is quite static on this screen
         self.update(viewState: .loaded(self.policy))
     }
     
