@@ -475,6 +475,11 @@
 		B1B9DEF122EB396B0065E677 /* ReactionHistoryViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B9DEF022EB396B0065E677 /* ReactionHistoryViewData.swift */; };
 		B1B9DEF422EB426D0065E677 /* ReactionHistoryViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B9DEF222EB426D0065E677 /* ReactionHistoryViewCell.swift */; };
 		B1B9DEF522EB426D0065E677 /* ReactionHistoryViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B9DEF322EB426D0065E677 /* ReactionHistoryViewCell.xib */; };
+		B1C335CD22F1C1320021BA8D /* CameraPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C335CC22F1C1320021BA8D /* CameraPresenter.swift */; };
+		B1C3360122F1ED600021BA8D /* MediaPickerCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C335FE22F1ED5F0021BA8D /* MediaPickerCoordinatorType.swift */; };
+		B1C3360222F1ED600021BA8D /* MediaPickerCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C335FF22F1ED5F0021BA8D /* MediaPickerCoordinatorBridgePresenter.swift */; };
+		B1C3360322F1ED600021BA8D /* MediaPickerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C3360022F1ED600021BA8D /* MediaPickerCoordinator.swift */; };
+		B1C3361C22F32B4A0021BA8D /* SingleImagePickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C3361B22F32B4A0021BA8D /* SingleImagePickerPresenter.swift */; };
 		B1C562CA2289C2690037F12A /* UIGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C562C92289C2690037F12A /* UIGestureRecognizer.swift */; };
 		B1C562CC228AB3510037F12A /* UIStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C562CB228AB3510037F12A /* UIStackView.swift */; };
 		B1C562D9228C0B760037F12A /* RoomContextualMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C562D8228C0B760037F12A /* RoomContextualMenuItem.swift */; };
@@ -1274,6 +1279,11 @@
 		B1B9DEF022EB396B0065E677 /* ReactionHistoryViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionHistoryViewData.swift; sourceTree = "<group>"; };
 		B1B9DEF222EB426D0065E677 /* ReactionHistoryViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionHistoryViewCell.swift; sourceTree = "<group>"; };
 		B1B9DEF322EB426D0065E677 /* ReactionHistoryViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReactionHistoryViewCell.xib; sourceTree = "<group>"; };
+		B1C335CC22F1C1320021BA8D /* CameraPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPresenter.swift; sourceTree = "<group>"; };
+		B1C335FE22F1ED5F0021BA8D /* MediaPickerCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerCoordinatorType.swift; sourceTree = "<group>"; };
+		B1C335FF22F1ED5F0021BA8D /* MediaPickerCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
+		B1C3360022F1ED600021BA8D /* MediaPickerCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerCoordinator.swift; sourceTree = "<group>"; };
+		B1C3361B22F32B4A0021BA8D /* SingleImagePickerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImagePickerPresenter.swift; sourceTree = "<group>"; };
 		B1C562C92289C2690037F12A /* UIGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIGestureRecognizer.swift; sourceTree = "<group>"; };
 		B1C562CB228AB3510037F12A /* UIStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackView.swift; sourceTree = "<group>"; };
 		B1C562D8228C0B760037F12A /* RoomContextualMenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomContextualMenuItem.swift; sourceTree = "<group>"; };
@@ -2187,6 +2197,7 @@
 				B1B556DC20EE6C4C00210D55 /* Call */,
 				B1B5568720EE6C4C00210D55 /* Contacts */,
 				B1B556ED20EE6C4C00210D55 /* MediaPicker */,
+				B1C3361A22F328AE0021BA8D /* Camera */,
 				B1B556E420EE6C4C00210D55 /* UserDevices */,
 				B1B5596B20EFA85C00210D55 /* EncryptionInfo */,
 				B1B556FD20EE6C4C00210D55 /* RoomKeyRequest */,
@@ -2570,11 +2581,15 @@
 		B1B556ED20EE6C4C00210D55 /* MediaPicker */ = {
 			isa = PBXGroup;
 			children = (
+				B1C335FF22F1ED5F0021BA8D /* MediaPickerCoordinatorBridgePresenter.swift */,
+				B1C335FE22F1ED5F0021BA8D /* MediaPickerCoordinatorType.swift */,
+				B1C3360022F1ED600021BA8D /* MediaPickerCoordinator.swift */,
 				B1B556F320EE6C4C00210D55 /* MediaPickerViewController.h */,
 				B1B556EF20EE6C4C00210D55 /* MediaPickerViewController.m */,
 				B1B556F220EE6C4C00210D55 /* MediaPickerViewController.xib */,
-				B1B557CD20EF5E3500210D55 /* Views */,
 				B1B5577720EE724200210D55 /* Library */,
+				B1B557CD20EF5E3500210D55 /* Views */,
+				B1C3361B22F32B4A0021BA8D /* SingleImagePickerPresenter.swift */,
 			);
 			path = MediaPicker;
 			sourceTree = "<group>";
@@ -3304,6 +3319,14 @@
 				B1B9DEF322EB426D0065E677 /* ReactionHistoryViewCell.xib */,
 			);
 			path = ReactionHistory;
+			sourceTree = "<group>";
+		};
+		B1C3361A22F328AE0021BA8D /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				B1C335CC22F1C1320021BA8D /* CameraPresenter.swift */,
+			);
+			path = Camera;
 			sourceTree = "<group>";
 		};
 		B1C562D7228C0B4C0037F12A /* ContextualMenu */ = {
@@ -4138,6 +4161,7 @@
 				B1DB4F0E22316FFF0065DBFA /* UserNameColorGenerator.swift in Sources */,
 				B1057789221304EC00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.swift in Sources */,
 				B1DCC61922E5E17100625807 /* EmojiPickerCoordinatorType.swift in Sources */,
+				B1C3360122F1ED600021BA8D /* MediaPickerCoordinatorType.swift in Sources */,
 				3232ABB72257BE6400AD6A5C /* DeviceVerificationVerifyViewModelType.swift in Sources */,
 				32F6B96D2270623100BBA352 /* DeviceVerificationDataLoadingViewModel.swift in Sources */,
 				B16932B120F3AC9200746532 /* RoomSearchDataSource.m in Sources */,
@@ -4176,6 +4200,7 @@
 				B1B558C420EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				3232ABC022594C0900AD6A5C /* VerifyEmojiCollectionViewCell.swift in Sources */,
 				B1963B2E228F1C4900CBA17F /* BubbleReactionViewData.swift in Sources */,
+				B1C3361C22F32B4A0021BA8D /* SingleImagePickerPresenter.swift in Sources */,
 				B1B5572F20EE6C4D00210D55 /* ReadReceiptsViewController.m in Sources */,
 				B1B558CB20EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				B169330B20F3CA3A00746532 /* Contact.m in Sources */,
@@ -4216,6 +4241,7 @@
 				B1B9DEEB22EB34EF0065E677 /* ReactionHistoryViewModel.swift in Sources */,
 				B1963B2F228F1C4900CBA17F /* BubbleReactionViewCell.swift in Sources */,
 				B1B558E920EF768F00210D55 /* RoomSelectedStickerBubbleCell.m in Sources */,
+				B1C3360222F1ED600021BA8D /* MediaPickerCoordinatorBridgePresenter.swift in Sources */,
 				B1B558DF20EF768F00210D55 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				F083BE041E7009ED00A9B29C /* Tools.m in Sources */,
 				3275FD8C21A5A2C500B9C13D /* TermsView.swift in Sources */,
@@ -4387,6 +4413,7 @@
 				B1B5593820EF7BAC00210D55 /* TableViewCellWithLabelAndLargeTextView.m in Sources */,
 				B1DCC62222E60BE000625807 /* EmojiPickerItemViewData.swift in Sources */,
 				3232AB502256558300AD6A5C /* TemplateScreenViewState.swift in Sources */,
+				B1C335CD22F1C1320021BA8D /* CameraPresenter.swift in Sources */,
 				B1B558C820EF768F00210D55 /* RoomIncomingEncryptedAttachmentBubbleCell.m in Sources */,
 				B1B557C620EF5CD400210D55 /* DirectoryServerDetailTableViewCell.m in Sources */,
 				B1B5590920EF768F00210D55 /* RoomEmptyBubbleCell.m in Sources */,
@@ -4413,6 +4440,7 @@
 				B14F143222144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyCoordinator.swift in Sources */,
 				B110872621F098F0003554A5 /* ActivityIndicatorView.swift in Sources */,
 				B19EFA3921F8BB2C00FC070E /* KeyBackupRecoverCoordinatorType.swift in Sources */,
+				B1C3360322F1ED600021BA8D /* MediaPickerCoordinator.swift in Sources */,
 				B1E5368D21FB7245001F3AFF /* KeyBackupRecoverFromPassphraseViewController.swift in Sources */,
 				B1963B3822933BC800CBA17F /* AutosizedCollectionView.swift in Sources */,
 				B169330320F3C98900746532 /* RoomBubbleCellData.m in Sources */,

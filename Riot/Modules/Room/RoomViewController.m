@@ -125,7 +125,7 @@
 
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
-    ReactionHistoryCoordinatorBridgePresenterDelegate>
+    ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate>
 {
     // The expanded header
     ExpandedRoomTitleView *expandedHeader;
@@ -226,6 +226,8 @@
 @property (nonatomic, strong) MXKDocumentPickerPresenter *documentPickerPresenter;
 @property (nonatomic, strong) EmojiPickerCoordinatorBridgePresenter *emojiPickerCoordinatorBridgePresenter;
 @property (nonatomic, strong) ReactionHistoryCoordinatorBridgePresenter *reactionHistoryCoordinatorBridgePresenter;
+@property (nonatomic, strong) CameraPresenter *cameraPresenter;
+@property (nonatomic, strong) MediaPickerCoordinatorBridgePresenter *mediaPickerPresenter;
 
 @end
 
@@ -1546,6 +1548,39 @@
     [presenter presentFrom:self animated:animated];
     
     self.reactionHistoryCoordinatorBridgePresenter = presenter;
+}
+
+- (void)showCameraControllerAnimated:(BOOL)animated
+{
+    CameraPresenter *cameraPresenter = [CameraPresenter new];
+    cameraPresenter.delegate = self;
+    [cameraPresenter presentCameraFrom:self with:@[MXKUTI.image, MXKUTI.movie] animated:YES];
+
+    self.cameraPresenter = cameraPresenter;
+}
+
+
+- (void)showMediaPickerAnimated:(BOOL)animated
+{
+    MediaPickerCoordinatorBridgePresenter *mediaPickerPresenter = [[MediaPickerCoordinatorBridgePresenter alloc] initWithSession:self.mainSession mediaUTIs:@[MXKUTI.image, MXKUTI.movie] allowsMultipleSelection:YES];
+    mediaPickerPresenter.delegate = self;
+    
+    UIView *sourceView;
+    
+    RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
+    
+    if (roomInputToolbarView)
+    {
+        sourceView = roomInputToolbarView.attachMediaButton;
+    }
+    else
+    {
+        sourceView = self.inputToolbarView;
+    }
+
+    [mediaPickerPresenter presentFrom:self sourceView:sourceView sourceRect:sourceView.bounds animated:YES];
+    
+    self.mediaPickerPresenter = mediaPickerPresenter;
 }
 
 #pragma mark - Hide/Show expanded header
@@ -3396,6 +3431,16 @@
     [documentPickerPresenter presentDocumentPickerWith:allowedUTIs from:self animated:YES completion:nil];
     
     self.documentPickerPresenter = documentPickerPresenter;
+}
+
+- (void)roomInputToolbarViewDidTapCamera:(MXKRoomInputToolbarView*)toolbarView
+{
+    [self showCameraControllerAnimated:YES];
+}
+
+- (void)roomInputToolbarViewDidTapMediaLibrary:(MXKRoomInputToolbarView*)toolbarView
+{
+    [self showMediaPickerAnimated:YES];
 }
 
 #pragma mark - RoomParticipantsViewControllerDelegate
@@ -5502,6 +5547,82 @@
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
         self.reactionHistoryCoordinatorBridgePresenter = nil;
     }];
+}
+
+#pragma mark - CameraPresenterDelegate
+
+- (void)cameraPresenterDidCancel:(CameraPresenter *)cameraPresenter
+{
+    [cameraPresenter dismissWithAnimated:YES completion:nil];
+    self.cameraPresenter = nil;
+}
+
+- (void)cameraPresenter:(CameraPresenter *)cameraPresenter didSelectImageData:(NSData *)imageData withUTI:(MXKUTI *)uti
+{
+    [cameraPresenter dismissWithAnimated:YES completion:nil];
+    self.cameraPresenter = nil;
+    
+    RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
+    if (roomInputToolbarView)
+    {
+        [roomInputToolbarView sendSelectedImage:imageData withMimeType:uti.mimeType andCompressionMode:MXKRoomInputToolbarCompressionModePrompt isPhotoLibraryAsset:NO];
+    }
+}
+
+- (void)cameraPresenter:(CameraPresenter *)cameraPresenter didSelectVideoAt:(NSURL *)url
+{
+    [cameraPresenter dismissWithAnimated:YES completion:nil];
+    self.cameraPresenter = nil;
+    
+    RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
+    if (roomInputToolbarView)
+    {
+        [roomInputToolbarView sendSelectedVideo:url isPhotoLibraryAsset:NO];
+    }
+}
+
+#pragma mark - MediaPickerCoordinatorBridgePresenterDelegate
+
+- (void)mediaPickerCoordinatorBridgePresenterDidCancel:(MediaPickerCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.mediaPickerPresenter = nil;
+}
+
+- (void)mediaPickerCoordinatorBridgePresenter:(MediaPickerCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectImageData:(NSData *)imageData withUTI:(MXKUTI *)uti
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.mediaPickerPresenter = nil;
+    
+    RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
+    if (roomInputToolbarView)
+    {
+        [roomInputToolbarView sendSelectedImage:imageData withMimeType:uti.mimeType andCompressionMode:MXKRoomInputToolbarCompressionModePrompt isPhotoLibraryAsset:YES];
+    }
+}
+
+- (void)mediaPickerCoordinatorBridgePresenter:(MediaPickerCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectVideoAt:(NSURL *)url
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.mediaPickerPresenter = nil;
+    
+    RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
+    if (roomInputToolbarView)
+    {
+        [roomInputToolbarView sendSelectedVideo:url isPhotoLibraryAsset:YES];
+    }
+}
+
+- (void)mediaPickerCoordinatorBridgePresenter:(MediaPickerCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectAssets:(NSArray<PHAsset *> *)assets
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.mediaPickerPresenter = nil;
+    
+    RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
+    if (roomInputToolbarView)
+    {
+        [roomInputToolbarView sendSelectedAssets:assets withCompressionMode:MXKRoomInputToolbarCompressionModePrompt];
+    }
 }
 
 @end

@@ -69,7 +69,7 @@
 /**
  The delegate for the view controller.
  */
-@property (nonatomic) id<MediaAlbumContentViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<MediaAlbumContentViewControllerDelegate> delegate;
 
 /**
  The array of the media types listed by the view controller (default value is an array containing kUTTypeImage).

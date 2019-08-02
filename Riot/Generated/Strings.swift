@@ -374,6 +374,10 @@ internal enum VectorL10n {
   internal static func cameraAccessNotGranted(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "camera_access_not_granted", p1)
   }
+  /// The camera is unavailable on your device
+  internal static var cameraUnavailable: String { 
+    return VectorL10n.tr("Vector", "camera_unavailable") 
+  }
   /// Cancel
   internal static var cancel: String { 
     return VectorL10n.tr("Vector", "cancel") 
@@ -1110,6 +1114,14 @@ internal enum VectorL10n {
   internal static var homeserverConnectionLost: String { 
     return VectorL10n.tr("Vector", "homeserver_connection_lost") 
   }
+  /// Take photo
+  internal static var imagePickerActionCamera: String { 
+    return VectorL10n.tr("Vector", "image_picker_action_camera") 
+  }
+  /// Choose from library
+  internal static var imagePickerActionLibrary: String { 
+    return VectorL10n.tr("Vector", "image_picker_action_library") 
+  }
   /// Invite
   internal static var invite: String { 
     return VectorL10n.tr("Vector", "invite") 
@@ -1354,6 +1366,10 @@ internal enum VectorL10n {
   internal static var mediaPickerSelect: String { 
     return VectorL10n.tr("Vector", "media_picker_select") 
   }
+  /// Media library
+  internal static var mediaPickerTitle: String { 
+    return VectorL10n.tr("Vector", "media_picker_title") 
+  }
   /// The Internet connection appears to be offline.
   internal static var networkOfflinePrompt: String { 
     return VectorL10n.tr("Vector", "network_offline_prompt") 
@@ -1393,6 +1409,10 @@ internal enum VectorL10n {
   /// No conversations
   internal static var peopleNoConversation: String { 
     return VectorL10n.tr("Vector", "people_no_conversation") 
+  }
+  /// %@ doesn't have permission to access photo library, please change privacy settings
+  internal static func photoLibraryAccessNotGranted(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "photo_library_access_not_granted", p1)
   }
   /// Preview
   internal static var preview: String { 
@@ -1437,6 +1457,10 @@ internal enum VectorL10n {
   /// Retry
   internal static var retry: String { 
     return VectorL10n.tr("Vector", "retry") 
+  }
+  /// Take photo or video
+  internal static var roomActionCamera: String { 
+    return VectorL10n.tr("Vector", "room_action_camera") 
   }
   /// Reply
   internal static var roomActionReply: String { 

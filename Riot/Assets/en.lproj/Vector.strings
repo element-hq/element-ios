@@ -298,6 +298,7 @@
 "room_event_action_reaction_history" = "Reaction history";
 "room_warning_about_encryption" = "End-to-end encryption is in beta and may not be reliable.\n\nYou should not yet trust it to secure data.\n\nDevices will not yet be able to decrypt history from before they joined the room.\n\nEncrypted messages will not be visible on clients that do not yet implement encryption.";
 "room_event_failed_to_send" = "Failed to send";
+"room_action_camera" = "Take photo or video";
 "room_action_send_photo_or_video" = "Send photo or video";
 "room_action_send_sticker" = "Send sticker";
 "room_action_send_file" = "Send file";
@@ -574,8 +575,13 @@
 "receipt_status_read" = "Read: ";
 
 // Media picker
+"media_picker_title" = "Media library";
 "media_picker_library" = "Library";
 "media_picker_select" = "Select";
+
+// Image picker
+"image_picker_action_camera" = "Take photo";
+"image_picker_action_library" = "Choose from library";
 
 // Directory
 "directory_title" = "Directory";
@@ -607,6 +613,8 @@
 "rage_shake_prompt" = "You seem to be shaking the phone in frustration. Would you like to submit a bug report?";
 "do_not_ask_again" = "Do not ask again";
 "camera_access_not_granted" = "%@ doesn't have permission to use Camera, please change privacy settings";
+"camera_unavailable" = "The camera is unavailable on your device";
+"photo_library_access_not_granted" = "%@ doesn't have permission to access photo library, please change privacy settings";
 "large_badge_value_k_format" = "%.1fK";
 "room_does_not_exist" = "%@ does not exist";
 

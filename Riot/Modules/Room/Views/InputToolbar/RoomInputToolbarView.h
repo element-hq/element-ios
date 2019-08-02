@@ -45,6 +45,20 @@ typedef enum : NSUInteger
  */
 - (void)roomInputToolbarViewDidTapFileUpload:(MXKRoomInputToolbarView*)toolbarView;
 
+/**
+ Tells the delegate that the user wants to take photo or video with camera.
+ 
+ @param toolbarView the room input toolbar view
+ */
+- (void)roomInputToolbarViewDidTapCamera:(MXKRoomInputToolbarView*)toolbarView;
+
+/**
+ Tells the delegate that the user wants to show media library.
+ 
+ @param toolbarView the room input toolbar view
+ */
+- (void)roomInputToolbarViewDidTapMediaLibrary:(MXKRoomInputToolbarView*)toolbarView;
+
 @end
 
 /**
