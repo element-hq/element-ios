@@ -86,6 +86,14 @@
 		3294FDB822F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3294FDAD22F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewAction.swift */; };
 		3294FDB922F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3294FDAE22F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewController.storyboard */; };
 		3294FDBA22F42897007F1E60 /* ServiceTermsModalCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3294FDAF22F42897007F1E60 /* ServiceTermsModalCoordinatorBridgePresenter.swift */; };
+		3294FDD522F45EBA007F1E60 /* ServiceTermsModalShowTermScreenCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3294FDCD22F45EBA007F1E60 /* ServiceTermsModalShowTermScreenCoordinatorType.swift */; };
+		3294FDD622F45EBA007F1E60 /* ServiceTermsModalShowTermScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3294FDCE22F45EBA007F1E60 /* ServiceTermsModalShowTermScreenCoordinator.swift */; };
+		3294FDD722F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3294FDCF22F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewModelType.swift */; };
+		3294FDD822F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3294FDD022F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewController.swift */; };
+		3294FDD922F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3294FDD122F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewController.storyboard */; };
+		3294FDDA22F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3294FDD222F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewState.swift */; };
+		3294FDDB22F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3294FDD322F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewAction.swift */; };
+		3294FDDC22F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3294FDD422F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewModel.swift */; };
 		329E746622CD02EA006F9797 /* BubbleReactionActionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 329E746422CD02EA006F9797 /* BubbleReactionActionViewCell.xib */; };
 		329E746722CD02EA006F9797 /* BubbleReactionActionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329E746522CD02EA006F9797 /* BubbleReactionActionViewCell.swift */; };
 		32A6001622C661100042C1D9 /* EditHistoryViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A6000D22C661100042C1D9 /* EditHistoryViewState.swift */; };
@@ -689,6 +697,14 @@
 		3294FDAD22F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTermsModalLoadTermsScreenViewAction.swift; sourceTree = "<group>"; };
 		3294FDAE22F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ServiceTermsModalLoadTermsScreenViewController.storyboard; sourceTree = "<group>"; };
 		3294FDAF22F42897007F1E60 /* ServiceTermsModalCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTermsModalCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
+		3294FDCD22F45EBA007F1E60 /* ServiceTermsModalShowTermScreenCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTermsModalShowTermScreenCoordinatorType.swift; sourceTree = "<group>"; };
+		3294FDCE22F45EBA007F1E60 /* ServiceTermsModalShowTermScreenCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTermsModalShowTermScreenCoordinator.swift; sourceTree = "<group>"; };
+		3294FDCF22F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTermsModalShowTermScreenViewModelType.swift; sourceTree = "<group>"; };
+		3294FDD022F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTermsModalShowTermScreenViewController.swift; sourceTree = "<group>"; };
+		3294FDD122F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ServiceTermsModalShowTermScreenViewController.storyboard; sourceTree = "<group>"; };
+		3294FDD222F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTermsModalShowTermScreenViewState.swift; sourceTree = "<group>"; };
+		3294FDD322F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTermsModalShowTermScreenViewAction.swift; sourceTree = "<group>"; };
+		3294FDD422F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTermsModalShowTermScreenViewModel.swift; sourceTree = "<group>"; };
 		329E746422CD02EA006F9797 /* BubbleReactionActionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BubbleReactionActionViewCell.xib; sourceTree = "<group>"; };
 		329E746522CD02EA006F9797 /* BubbleReactionActionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleReactionActionViewCell.swift; sourceTree = "<group>"; };
 		32A6000D22C661100042C1D9 /* EditHistoryViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditHistoryViewState.swift; sourceTree = "<group>"; };
@@ -1664,6 +1680,7 @@
 			isa = PBXGroup;
 			children = (
 				3294FDA622F42897007F1E60 /* Load */,
+				3294FDCC22F45EBA007F1E60 /* Show */,
 				3294FDA422F42896007F1E60 /* ServiceTermsModalCoordinator.swift */,
 				3294FDAF22F42897007F1E60 /* ServiceTermsModalCoordinatorBridgePresenter.swift */,
 				3294FDA522F42897007F1E60 /* ServiceTermsModalCoordinatorType.swift */,
@@ -1684,6 +1701,21 @@
 				3294FDAE22F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewController.storyboard */,
 			);
 			path = Load;
+			sourceTree = "<group>";
+		};
+		3294FDCC22F45EBA007F1E60 /* Show */ = {
+			isa = PBXGroup;
+			children = (
+				3294FDCD22F45EBA007F1E60 /* ServiceTermsModalShowTermScreenCoordinatorType.swift */,
+				3294FDCE22F45EBA007F1E60 /* ServiceTermsModalShowTermScreenCoordinator.swift */,
+				3294FDCF22F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewModelType.swift */,
+				3294FDD022F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewController.swift */,
+				3294FDD122F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewController.storyboard */,
+				3294FDD222F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewState.swift */,
+				3294FDD322F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewAction.swift */,
+				3294FDD422F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewModel.swift */,
+			);
+			path = Show;
 			sourceTree = "<group>";
 		};
 		32A6000C22C661100042C1D9 /* EditHistory */ = {
@@ -3970,6 +4002,7 @@
 				B1B5583020EF66BA00210D55 /* RoomIdOrAliasTableViewCell.xib in Resources */,
 				B1B558BF20EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				B1B558FD20EF768F00210D55 /* RoomIncomingAttachmentBubbleCell.xib in Resources */,
+				3294FDD922F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewController.storyboard in Resources */,
 				B1B558DB20EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				B1B5572B20EE6C4D00210D55 /* RoomMemberDetailsViewController.xib in Resources */,
 				B1D4752C21EE52C30067973F /* KeyBackupSetupIntroViewController.storyboard in Resources */,
@@ -4237,7 +4270,9 @@
 				B1963B2E228F1C4900CBA17F /* BubbleReactionViewData.swift in Sources */,
 				B1B5572F20EE6C4D00210D55 /* ReadReceiptsViewController.m in Sources */,
 				B1B558CB20EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
+				3294FDD522F45EBA007F1E60 /* ServiceTermsModalShowTermScreenCoordinatorType.swift in Sources */,
 				B169330B20F3CA3A00746532 /* Contact.m in Sources */,
+				3294FDDC22F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewModel.swift in Sources */,
 				B1A5B33E227ADF2A004CBA85 /* UIImage.swift in Sources */,
 				B1D4752A21EE52B10067973F /* KeyBackupSetupIntroViewController.swift in Sources */,
 				B1B5599220EFC5E400210D55 /* Analytics.m in Sources */,
@@ -4277,10 +4312,12 @@
 				B1963B2F228F1C4900CBA17F /* BubbleReactionViewCell.swift in Sources */,
 				B1B558E920EF768F00210D55 /* RoomSelectedStickerBubbleCell.m in Sources */,
 				B1B558DF20EF768F00210D55 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
+				3294FDDB22F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewAction.swift in Sources */,
 				F083BE041E7009ED00A9B29C /* Tools.m in Sources */,
 				3275FD8C21A5A2C500B9C13D /* TermsView.swift in Sources */,
 				B1B9DEE822EB34EF0065E677 /* ReactionHistoryCoordinatorType.swift in Sources */,
 				B14F143122144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewState.swift in Sources */,
+				3294FDD622F45EBA007F1E60 /* ServiceTermsModalShowTermScreenCoordinator.swift in Sources */,
 				B1098C1121ED07E4000DDA48 /* NavigationRouterType.swift in Sources */,
 				B1B5573D20EE6C4D00210D55 /* WebViewViewController.m in Sources */,
 				3209451221F1C1430088CAA2 /* BlackTheme.swift in Sources */,
@@ -4415,6 +4452,7 @@
 				B1798302211B13B3001FD722 /* OnBoardingManager.swift in Sources */,
 				B1B5573520EE6C4D00210D55 /* GroupDetailsViewController.m in Sources */,
 				B10B3B5B2201DD740072C76B /* KeyBackupBannerCell.swift in Sources */,
+				3294FDD722F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewModelType.swift in Sources */,
 				B1DCC61A22E5E17100625807 /* EmojiPickerViewController.swift in Sources */,
 				B1963B32228F1C6B00CBA17F /* BubbleReactionsViewModelType.swift in Sources */,
 				3294FDB222F42897007F1E60 /* ServiceTermsModalLoadTermsScreenViewModelType.swift in Sources */,
@@ -4476,6 +4514,7 @@
 				324A2050225FC571004FE8B0 /* DeviceVerificationIncomingViewController.swift in Sources */,
 				B1098C0D21ED07E4000DDA48 /* NavigationRouter.swift in Sources */,
 				B110872321F098F0003554A5 /* ActivityIndicatorPresenterType.swift in Sources */,
+				3294FDDA22F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewState.swift in Sources */,
 				B139C22321FF01B200BB68EC /* KeyBackupRecoverFromPassphraseCoordinatorType.swift in Sources */,
 				B14F143222144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyCoordinator.swift in Sources */,
 				B110872621F098F0003554A5 /* ActivityIndicatorView.swift in Sources */,
@@ -4485,6 +4524,7 @@
 				B169330320F3C98900746532 /* RoomBubbleCellData.m in Sources */,
 				B1B557CC20EF5D8000210D55 /* DirectoryServerTableViewCell.m in Sources */,
 				B1963B2B228F1C4900CBA17F /* BubbleReactionsView.swift in Sources */,
+				3294FDD822F45EBA007F1E60 /* ServiceTermsModalShowTermScreenViewController.swift in Sources */,
 				B1B5575C20EE6C4D00210D55 /* DirectoryViewController.m in Sources */,
 				B1B558BD20EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				B1B5577020EE702800210D55 /* WidgetPickerViewController.m in Sources */,

@@ -686,7 +686,7 @@
 // Service terms
 "service_terms_modal_title" = "Terms Of Service";
 "service_terms_modal_alert_title" = "Review Terms";
-"service_terms_modal_alert_title_n" = "Review Terms (%1$@/%2$@)";
+"service_terms_modal_alert_title_n" = "Review Terms (%1$tu/%2$tu)";
 "service_terms_modal_alert_message_im" = "You must accept the %@ to use bots, bridges & widgets.";
 "service_terms_modal_accept_button" = "Accept";
 "service_terms_modal_review_button" = "Review";

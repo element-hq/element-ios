@@ -2330,8 +2330,8 @@ internal enum VectorL10n {
   internal static var serviceTermsModalAlertTitle: String { 
     return VectorL10n.tr("Vector", "service_terms_modal_alert_title") 
   }
-  /// Review Terms (%1$@/%2$@)
-  internal static func serviceTermsModalAlertTitleN(_ p1: String, _ p2: String) -> String {
+  /// Review Terms (%1$tu/%2$tu)
+  internal static func serviceTermsModalAlertTitleN(_ p1: Int, _ p2: Int) -> String {
     return VectorL10n.tr("Vector", "service_terms_modal_alert_title_n", p1, p2)
   }
   /// Decline
