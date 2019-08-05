@@ -1,1 +1,12 @@
-
+// String for App Store
+"store_short_description" = "Veilig en gedecentraliseerd chattn en belln";
+// Titles
+"title_home" = "Thuus";
+"title_favourites" = "Favorietn";
+"title_people" = "Menschn";
+"title_rooms" = "Gesprekkn";
+"title_groups" = "Gemeenschappn";
+"warning" = "Woarschuwienge";
+// Actions
+"view" = "Toogn";
+"next" = "Volgende";
