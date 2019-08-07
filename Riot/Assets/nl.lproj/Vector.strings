@@ -784,8 +784,48 @@
 "device_verification_emoji_headphones" = "Koptelefoon";
 "device_verification_emoji_folder" = "Map";
 "device_verification_emoji_pin" = "Speld";
-"event_formatter_message_edited_mention" = "(Bewerkt)";
+"event_formatter_message_edited_mention" = "(bewerkt)";
 // Widget
 "widget_no_integrations_server_configured" = "Geen integratieserver geconfigureerd";
 "widget_integrations_server_failed_to_connect" = "Verbinden met integratieserver mislukt";
 "device_verification_emoji_lock" = "Slot";
+"close" = "Sluiten";
+"auth_softlogout_signed_out" = "U bent afgemeld";
+"auth_softlogout_sign_in" = "Aanmelden";
+"auth_softlogout_reason" = "De beheerder van uw thuisserver (%1$@) heeft u van uw account %2$@ afgemeld (%3$@).";
+"auth_softlogout_recover_encryption_keys" = "Meld u aan om de versleutelingssleutels te herstellen die uitsluitend op dit apparaat worden opgeslagen. U heeft ze nodig om uw versleutelde berichten op al uw apparaten te kunnen lezen.";
+"auth_softlogout_clear_data" = "Persoonlijke gegevens wissen";
+"auth_softlogout_clear_data_message_1" = "Let op: uw persoonlijke gegevens (inclusief versleutelingssleutels) worden nog altijd op dit apparaat opgeslagen.";
+"auth_softlogout_clear_data_message_2" = "Wis ze indien u dit apparaat niet meer gebruikt, of indien u zich wilt aanmelden met een andere account.";
+"auth_softlogout_clear_data_button" = "Alle gegevens wissen";
+"auth_softlogout_clear_data_sign_out_title" = "Weet u het zeker?";
+"auth_softlogout_clear_data_sign_out_msg" = "Weet u zeker dat u alle gegevens die op dit moment op dit apparaat worden opgeslagen wilt wissen? Meld u opnieuw aan om toegang te verkrijgen tot uw accountgegevens en berichten.";
+"auth_softlogout_clear_data_sign_out" = "Afmelden";
+"room_event_action_reaction_show_all" = "Alles tonen";
+"room_event_action_reaction_show_less" = "Minder tonen";
+"room_event_action_reaction_history" = "Reactiegeschiedenis";
+"room_action_camera" = "Foto of video maken";
+"room_action_send_file" = "Bestand versturen";
+"room_message_edits_history_title" = "Berichtbewerkingen";
+// Media picker
+"media_picker_title" = "Mediatheek";
+// Image picker
+"image_picker_action_camera" = "Foto maken";
+"image_picker_action_library" = "Kiezen uit mediatheek";
+"camera_unavailable" = "De camera is niet beschikbaar op uw apparaat";
+"photo_library_access_not_granted" = "%@ heeft geen toegang tot de fotobibliotheek, wijzig uw privacy-instellingen";
+// MARK: File upload
+"file_upload_error_title" = "Bestand uploaden";
+"file_upload_error_unsupported_file_type_message" = "Bestandstype niet ondersteund.";
+// MARK: Emoji picker
+"emoji_picker_title" = "Reacties";
+"emoji_picker_people_category" = "Smileys en personen";
+"emoji_picker_nature_category" = "Dieren en natuur";
+"emoji_picker_foods_category" = "Eten en drinken";
+"emoji_picker_activity_category" = "Activiteiten";
+"emoji_picker_places_category" = "Reizen en plaatsen";
+"emoji_picker_objects_category" = "Voorwerpen";
+"emoji_picker_symbols_category" = "Symbolen";
+"emoji_picker_flags_category" = "Vlaggen";
+// MARK: Reaction history
+"reaction_history_title" = "Reacties";

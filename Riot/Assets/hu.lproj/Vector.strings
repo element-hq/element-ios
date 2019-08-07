@@ -756,7 +756,7 @@
 "device_verification_emoji_thumbs up" = "Hüvelykujj fel";
 "device_verification_emoji_umbrella" = "Esernyő";
 "device_verification_emoji_hourglass" = "Homokóra";
-"device_verification_emoji_clock" = "Osztály";
+"device_verification_emoji_clock" = "Óra";
 "device_verification_emoji_gift" = "Ajándék";
 "device_verification_emoji_light bulb" = "Égő";
 "device_verification_emoji_book" = "Könyv";
@@ -794,3 +794,27 @@
 // MARK: File upload
 "file_upload_error_title" = "Fájl feltöltés";
 "file_upload_error_unsupported_file_type_message" = "A fájl típusa nem támogatott.";
+"auth_softlogout_signed_out" = "Kijelentkeztél";
+"auth_softlogout_sign_in" = "Bejelentkezés";
+"auth_softlogout_reason" = "A matrix szerver (%1$@) adminisztrátora kiléptetett a felhasználói fiókodból %2$@ (%3$@).";
+"auth_softlogout_recover_encryption_keys" = "A csak ezen az eszközön meglévő titkosítási kulcsokhoz való hozzáféréshez be kell jelentkezned. Ahhoz hogy bármelyik eszközön elolvashasd a titkosított üzeneteidet szükséged lesz rájuk.";
+"auth_softlogout_clear_data" = "Személyes adatok törlése";
+"auth_softlogout_clear_data_message_1" = "Figyelmeztetés: A személyes adataid (beleértve a titkosítási kulcsokat) továbbra is az eszközön tárolódnak.";
+"auth_softlogout_clear_data_message_2" = "Ha már nem akarod használni ezt az eszközt vagy másik fiókba szeretnél bejelentkezni akkor töröld őket.";
+"auth_softlogout_clear_data_button" = "Minden adat törlése";
+"auth_softlogout_clear_data_sign_out_title" = "Biztos vagy benne?";
+"auth_softlogout_clear_data_sign_out_msg" = "Biztos vagy benne, hogy minden az eszközön tárolt adatot törölni szeretnél? A fiók és az üzeneteid eléréséhez jelentkezz be.";
+"auth_softlogout_clear_data_sign_out" = "Kilépés";
+// MARK: Emoji picker
+"emoji_picker_title" = "Reakciók";
+"emoji_picker_people_category" = "Smiley-k és emberek";
+"emoji_picker_nature_category" = "Állatok és természet";
+"emoji_picker_foods_category" = "Étel és ital";
+"emoji_picker_activity_category" = "Mozgás";
+"emoji_picker_places_category" = "Utazás és helyek";
+"emoji_picker_objects_category" = "Tárgyak";
+"emoji_picker_symbols_category" = "Szimbólumok";
+"emoji_picker_flags_category" = "Zászlók";
+"room_event_action_reaction_history" = "Reakciók története";
+// MARK: Reaction history
+"reaction_history_title" = "Reakciók";
