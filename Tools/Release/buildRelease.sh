@@ -37,8 +37,9 @@ bundle update
 # Checkout the source to build
 mkdir -p $BUILD_DIR
 cd $BUILD_DIR
-git clone --single-branch --branch $TAG https://github.com/vector-im/riot-ios.git
+git clone https://github.com/vector-im/riot-ios.git
 cd riot-ios
+git checkout -b $TAG $TAG
 
 
 # Develop branch special case
