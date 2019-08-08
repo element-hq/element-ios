@@ -20,4 +20,5 @@ import UIKit
 enum ReactionsMenuViewAction {
     case loadData
     case tap(reaction: String)
+    case moreReactions
 }

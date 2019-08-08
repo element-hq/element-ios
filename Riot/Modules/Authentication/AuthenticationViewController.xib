@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -42,6 +42,9 @@
                 <outlet property="rightBarButtonItem" destination="Kwt-KN-aVL" id="Y3F-wA-tf8"/>
                 <outlet property="serverOptionsContainer" destination="FIn-2w-e6H" id="Z0e-NN-3LY"/>
                 <outlet property="skipButton" destination="wEJ-AF-rdH" id="smu-MS-2IY"/>
+                <outlet property="softLogoutClearDataButton" destination="ZRO-C2-hH1" id="PDa-aM-Hso"/>
+                <outlet property="softLogoutClearDataContainer" destination="vX2-5Y-rQc" id="mgK-41-cnX"/>
+                <outlet property="softLogoutClearDataLabel" destination="QYL-Lo-tmH" id="ks9-5X-xfs"/>
                 <outlet property="submitButton" destination="k3J-Eg-itz" id="fiZ-wK-6YM"/>
                 <outlet property="submitButtonMinLeadingConstraint" destination="bEB-EO-b14" id="Iz5-ks-nSX"/>
                 <outlet property="view" destination="5rn-KE-plm" id="bFJ-yJ-vc0"/>
@@ -345,17 +348,67 @@
                                                 <constraint firstAttribute="trailing" secondItem="6yx-o1-vbD" secondAttribute="trailing" constant="19" id="rWk-Mp-KPS"/>
                                             </constraints>
                                         </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vX2-5Y-rQc">
+                                            <rect key="frame" x="0.0" y="96" width="375" height="170"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QYL-Lo-tmH">
+                                                    <rect key="frame" x="10" y="0.0" width="355" height="121"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="jFf-id-CJn"/>
+                                                    </constraints>
+                                                    <string key="text">Clear personal data
+
+Warning: Your personal data (including encryption keys) is still stored on this device.
+
+Clear it if you're finished using this device, or want to sign in to another account.</string>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <string key="userLabel">Clear personal data  Warning: Your personal data (including encryption keys) is still stored on this device.  Clear it if you're finished using this device, or want to sign in to another account.</string>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZRO-C2-hH1">
+                                                    <rect key="frame" x="245" y="129" width="119" height="30"/>
+                                                    <color key="backgroundColor" red="0.4624713659286499" green="0.81734329462051392" blue="0.47220504283905029" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="WjZ-Bh-No3"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="dvm-Bz-pT0"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                                    <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                                    <state key="normal" title="Clear all data">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="c0b-DK-MIg"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="ZRO-C2-hH1" firstAttribute="top" secondItem="QYL-Lo-tmH" secondAttribute="bottom" constant="8" id="29j-dP-GC6"/>
+                                                <constraint firstItem="QYL-Lo-tmH" firstAttribute="leading" secondItem="vX2-5Y-rQc" secondAttribute="leading" constant="10" id="3Qr-IT-GDa"/>
+                                                <constraint firstAttribute="trailing" secondItem="ZRO-C2-hH1" secondAttribute="trailing" constant="11" id="Cj8-Kx-8vu"/>
+                                                <constraint firstAttribute="trailing" secondItem="QYL-Lo-tmH" secondAttribute="trailing" constant="10" id="JoV-ju-IhL"/>
+                                                <constraint firstItem="QYL-Lo-tmH" firstAttribute="top" secondItem="vX2-5Y-rQc" secondAttribute="top" id="Xjs-ZO-7fl"/>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="170" id="oUw-Jb-GkG"/>
+                                                <constraint firstAttribute="bottom" secondItem="ZRO-C2-hH1" secondAttribute="bottom" constant="11" id="q0c-yG-I0n"/>
+                                            </constraints>
+                                        </view>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <accessibility key="accessibilityConfiguration" identifier="AuthenticationVCOptionsContainer"/>
                                     <constraints>
                                         <constraint firstItem="FIn-2w-e6H" firstAttribute="leading" secondItem="Gg0-TE-OGb" secondAttribute="leading" id="3G8-Tb-KaN"/>
                                         <constraint firstItem="wEJ-AF-rdH" firstAttribute="width" secondItem="k3J-Eg-itz" secondAttribute="width" id="7sB-YJ-eX4"/>
+                                        <constraint firstAttribute="trailing" secondItem="vX2-5Y-rQc" secondAttribute="trailing" id="DPh-Jx-WP1"/>
+                                        <constraint firstItem="vX2-5Y-rQc" firstAttribute="top" secondItem="Gg0-TE-OGb" secondAttribute="top" priority="100" id="QSG-jB-VcV"/>
                                         <constraint firstItem="wEJ-AF-rdH" firstAttribute="centerY" secondItem="k3J-Eg-itz" secondAttribute="centerY" id="Vze-EI-oXj"/>
                                         <constraint firstAttribute="trailing" secondItem="k3J-Eg-itz" secondAttribute="trailing" constant="11" id="ZyA-Tq-Sfq"/>
                                         <constraint firstItem="k3J-Eg-itz" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Gg0-TE-OGb" secondAttribute="leading" constant="150" id="bEB-EO-b14"/>
+                                        <constraint firstItem="vX2-5Y-rQc" firstAttribute="top" secondItem="k3J-Eg-itz" secondAttribute="bottom" constant="33" id="db7-2y-vPZ"/>
                                         <constraint firstItem="AJ2-lJ-NUq" firstAttribute="centerY" secondItem="k3J-Eg-itz" secondAttribute="centerY" id="dcE-Vs-7Rt"/>
                                         <constraint firstAttribute="trailing" secondItem="FIn-2w-e6H" secondAttribute="trailing" id="kFj-6g-v3H"/>
+                                        <constraint firstItem="vX2-5Y-rQc" firstAttribute="leading" secondItem="Gg0-TE-OGb" secondAttribute="leading" id="kYN-Lj-zYP"/>
                                         <constraint firstAttribute="height" constant="300" id="lXv-gM-CjN"/>
                                         <constraint firstItem="k3J-Eg-itz" firstAttribute="top" secondItem="Gg0-TE-OGb" secondAttribute="top" constant="33" id="mor-t9-7Ke"/>
                                         <constraint firstItem="FIn-2w-e6H" firstAttribute="top" secondItem="k3J-Eg-itz" secondAttribute="bottom" constant="5" id="oTS-5o-MMW"/>

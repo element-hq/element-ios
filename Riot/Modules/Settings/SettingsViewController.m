@@ -20,10 +20,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import <MediaPlayer/MediaPlayer.h>
-#import <MobileCoreServices/MobileCoreServices.h>
 #import <OLMKit/OLMKit.h>
-#import <Photos/Photos.h>
 
 #import "AppDelegate.h"
 #import "AvatarGenerator.h"
@@ -141,7 +138,8 @@ SettingsKeyBackupTableViewSectionDelegate,
 MXKEncryptionInfoViewDelegate,
 KeyBackupSetupCoordinatorBridgePresenterDelegate,
 KeyBackupRecoverCoordinatorBridgePresenterDelegate,
-SignOutAlertPresenterDelegate>
+SignOutAlertPresenterDelegate,
+SingleImagePickerPresenterDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
@@ -154,9 +152,6 @@ SignOutAlertPresenterDelegate>
     id notificationCenterWillUpdateObserver;
     id notificationCenterDidUpdateObserver;
     id notificationCenterDidFailObserver;
-    
-    // picker
-    MediaPickerViewController* mediaPicker;
     
     // profile updates
     // avatar
@@ -252,6 +247,7 @@ SignOutAlertPresenterDelegate>
 @property (nonatomic, weak) DeactivateAccountViewController *deactivateAccountViewController;
 @property (nonatomic, strong) SignOutAlertPresenter *signOutAlertPresenter;
 @property (nonatomic, weak) UIButton *signOutButton;
+@property (nonatomic, strong) SingleImagePickerPresenter *imagePickerPresenter;
 
 @end
 
@@ -3711,13 +3707,18 @@ SignOutAlertPresenterDelegate>
 
 - (void)onProfileAvatarTap:(UITapGestureRecognizer *)recognizer
 {
-    mediaPicker = [MediaPickerViewController mediaPickerViewController];
-    mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage];
-    mediaPicker.delegate = self;
-    UINavigationController *navigationController = [UINavigationController new];
-    [navigationController pushViewController:mediaPicker animated:NO];
+    SingleImagePickerPresenter *singleImagePickerPresenter = [[SingleImagePickerPresenter alloc] initWithSession:self.mainSession];
+    singleImagePickerPresenter.delegate = self;
     
-    [self presentViewController:navigationController animated:YES completion:nil];
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:userSettingsProfilePictureIndex inSection:SETTINGS_SECTION_USER_SETTINGS_INDEX];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    
+    UIView *sourceView = cell;
+    
+    [singleImagePickerPresenter presentFrom:self sourceView:sourceView sourceRect:sourceView.bounds animated:YES];
+    
+    self.imagePickerPresenter = singleImagePickerPresenter;
 }
 
 - (void)exportEncryptionKeys:(UITapGestureRecognizer *)recognizer
@@ -3888,32 +3889,6 @@ SignOutAlertPresenterDelegate>
     deactivateAccountViewController.delegate = self;
     
     self.deactivateAccountViewController = deactivateAccountViewController;
-}
-
-#pragma mark - MediaPickerViewController Delegate
-
-- (void)dismissMediaPicker
-{
-    if (mediaPicker)
-    {
-        [mediaPicker withdrawViewControllerAnimated:YES completion:nil];
-        mediaPicker = nil;
-    }
-}
-
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(NSData*)imageData withMimeType:(NSString *)mimetype isPhotoLibraryAsset:(BOOL)isPhotoLibraryAsset
-{
-    [self dismissMediaPicker];
-    
-    newAvatarImage = [UIImage imageWithData:imageData];
-    
-    [self.tableView reloadData];
-}
-
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL
-{
-    // this method should not be called
-    [self dismissMediaPicker];
 }
 
 #pragma mark - TextField listener
@@ -4269,10 +4244,7 @@ SignOutAlertPresenterDelegate>
 
 - (void)settingsKeyBackupTableViewSectionDidUpdate:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection
 {
-    [self.tableView beginUpdates];
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SETTINGS_SECTION_KEYBACKUP_INDEX]
-                  withRowAnimation:UITableViewRowAnimationAutomatic];
-    [self.tableView endUpdates];
+    [self.tableView reloadData];
 }
 
 - (MXKTableViewCellWithTextView *)settingsKeyBackupTableViewSection:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection textCellForRow:(NSInteger)textCellForRow
@@ -4428,6 +4400,24 @@ SignOutAlertPresenterDelegate>
         self.view.userInteractionEnabled = YES;
         self.signOutButton.enabled = YES;
     }];
+}
+
+#pragma mark - SingleImagePickerPresenterDelegate
+
+- (void)singleImagePickerPresenterDidCancel:(SingleImagePickerPresenter *)presenter
+{
+    [presenter dismissWithAnimated:YES completion:nil];
+    self.imagePickerPresenter = nil;
+}
+
+- (void)singleImagePickerPresenter:(SingleImagePickerPresenter *)presenter didSelectImageData:(NSData *)imageData withUTI:(MXKUTI *)uti
+{
+    [presenter dismissWithAnimated:YES completion:nil];
+    self.imagePickerPresenter = nil;
+    
+    newAvatarImage = [UIImage imageWithData:imageData];
+    
+    [self.tableView reloadData];
 }
 
 @end

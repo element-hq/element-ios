@@ -201,6 +201,7 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
     
     func update(theme: Theme) {
         self.menuToolbarView.update(theme: theme)
+        self.reactionsMenuView?.update(theme: theme)
     }
     
     // MARK: - Private
@@ -225,6 +226,7 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
         if self.reactionsMenuContainerView.subviews.isEmpty {
             let reactionsMenuView = ReactionsMenuView.loadFromNib()
             self.reactionsMenuContainerView.vc_addSubViewMatchingParent(reactionsMenuView)
+            reactionsMenuView.update(theme: self.theme)
             self.reactionsMenuView = reactionsMenuView
         }
         

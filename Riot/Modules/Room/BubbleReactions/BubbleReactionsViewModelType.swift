@@ -21,6 +21,7 @@ enum BubbleReactionsViewAction {
     case tapReaction(index: Int)
     case addNewReaction
     case tapShowAction(action: ShowAction)
+    case longPress
 
     enum ShowAction {
         case showAll
@@ -43,6 +44,7 @@ enum BubbleReactionsViewState {
     func bubbleReactionsViewModel(_ viewModel: BubbleReactionsViewModel, didRemoveReaction reactionCount: MXReactionCount, forEventId eventId: String)
     func bubbleReactionsViewModel(_ viewModel: BubbleReactionsViewModel, didShowAllTappedForEventId eventId: String)
     func bubbleReactionsViewModel(_ viewModel: BubbleReactionsViewModel, didShowLessTappedForEventId eventId: String)
+    func bubbleReactionsViewModel(_ viewModel: BubbleReactionsViewModel, didLongPressForEventId eventId: String)
 }
 
 protocol BubbleReactionsViewModelViewDelegate: class {

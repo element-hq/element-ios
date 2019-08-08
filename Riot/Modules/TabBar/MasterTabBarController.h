@@ -64,6 +64,13 @@
 - (void)showAuthenticationScreenWithRegistrationParameters:(NSDictionary*)parameters;
 
 /**
+ Display the authentication screen in order to login back a soft logout session.
+
+ @param softLogoutCredentials the credentials of the soft logout session.
+ */
+- (void)showAuthenticationScreenAfterSoftLogout:(MXCredentials*)softLogoutCredentials;
+
+/**
  Open the room with the provided identifier in a specific matrix session.
  
  @param roomId the room identifier.

@@ -32,38 +32,13 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-static void *CapturingStillImageContext = &CapturingStillImageContext;
-static void *RecordingContext = &RecordingContext;
+@interface MediaPickerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, MediaAlbumContentViewControllerDelegate>
 
-@interface MediaPickerViewController ()
 {
     /**
      Observe UIApplicationWillEnterForegroundNotification to refresh captures collection when app leaves the background state.
      */
     id UIApplicationWillEnterForegroundNotificationObserver;
-    
-    BOOL isPictureCaptureEnabled;
-    BOOL isVideoCaptureEnabled;
-    
-    // Set up only one session at the time.
-    BOOL isCaptureSessionSetupInProgress;
-    
-    AVCaptureSession *captureSession;
-    AVCaptureDeviceInput *frontCameraInput;
-    AVCaptureDeviceInput *backCameraInput;
-    AVCaptureDeviceInput *currentCameraInput;
-    
-    AVCaptureMovieFileOutput *movieFileOutput;
-    AVCaptureStillImageOutput *stillImageOutput;
-    
-    AVCaptureVideoPreviewLayer *cameraPreviewLayer;
-    Boolean canToggleCamera;
-    
-    dispatch_queue_t cameraQueue;
-    
-    BOOL lockInterfaceRotation;
-    
-    UIAlertController *alert;
     
     PHFetchResult *recentCaptures;
     
@@ -80,9 +55,6 @@ static void *RecordingContext = &RecordingContext;
     
     BOOL isValidationInProgress;
     
-    NSTimer *updateVideoRecordingTimer;
-    NSDate *videoRecordStartDate;
-    
     /**
      Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
      */
@@ -96,17 +68,6 @@ static void *RecordingContext = &RecordingContext;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *mainScrollView;
 
-@property (weak, nonatomic) IBOutlet UIView *captureViewContainer;
-
-@property (weak, nonatomic) IBOutlet UIView *cameraPreviewContainerView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *cameraPreviewContainerAspectRatio;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *cameraActivityIndicator;
-@property (weak, nonatomic) IBOutlet UIButton *closeButton;
-@property (weak, nonatomic) IBOutlet UIButton *cameraSwitchButton;
-@property (weak, nonatomic) IBOutlet UIButton *cameraCaptureButton;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *cameraCaptureButtonWidthConstraint;
-@property (weak, nonatomic) IBOutlet MXKPieChartView *cameraVideoCaptureProgressView;
-
 @property (weak, nonatomic) IBOutlet UIView *recentCapturesCollectionContainerView;
 @property (weak, nonatomic) IBOutlet UICollectionView *recentCapturesCollectionView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *recentCapturesCollectionContainerViewHeightConstraint;
@@ -115,21 +76,13 @@ static void *RecordingContext = &RecordingContext;
 @property (weak, nonatomic) IBOutlet UITableView *userAlbumsTableView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *libraryViewContainerViewHeightConstraint;
 
-@property (nonatomic) UIBackgroundTaskIdentifier backgroundRecordingID;
-
 @end
 
 @implementation MediaPickerViewController
 
 #pragma mark - Class methods
 
-+ (UINib *)nib
-{
-    return [UINib nibWithNibName:NSStringFromClass([MediaPickerViewController class])
-                          bundle:[NSBundle bundleForClass:[MediaPickerViewController class]]];
-}
-
-+ (instancetype)mediaPickerViewController
++ (instancetype)instantiate
 {
     return [[[self class] alloc] initWithNibName:NSStringFromClass([MediaPickerViewController class])
                                           bundle:[NSBundle bundleForClass:[MediaPickerViewController class]]];
@@ -145,13 +98,28 @@ static void *RecordingContext = &RecordingContext;
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    cameraQueue = dispatch_queue_create("media.picker.vc.camera", NULL);
-    canToggleCamera = YES;
-    
     // Keep visible the status bar by default.
     isStatusBarHidden = NO;
+}
+
+- (void)dealloc
+{
+    if (kThemeServiceDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
+    }
     
-    isCaptureSessionSetupInProgress = NO;
+    if (UIApplicationWillEnterForegroundNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:UIApplicationWillEnterForegroundNotificationObserver];
+        UIApplicationWillEnterForegroundNotificationObserver = nil;
+    }
+    
+    [self dismissImageValidationView];
+    
+    userAlbumsQueue = nil;
+    userAlbums = nil;
 }
 
 - (void)viewDidLoad
@@ -159,32 +127,29 @@ static void *RecordingContext = &RecordingContext;
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    self.title = NSLocalizedStringFromTable(@"media_picker_title", @"Vector", nil);
+    
+    MXWeakify(self);
+    
+    UIBarButtonItem *closeBarButtonItem = [[MXKBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) style:UIBarButtonItemStylePlain action:^{
+        MXStrongifyAndReturnIfNil(self);
+        [self.delegate mediaPickerControllerDidCancel:self];
+    }];
+    
+    self.navigationItem.rightBarButtonItem = closeBarButtonItem;
+    
     // Register collection view cell class
-    [self.recentCapturesCollectionView registerClass:MXKMediaCollectionViewCell.class forCellWithReuseIdentifier:[MXKMediaCollectionViewCell defaultReuseIdentifier]];
+    [self.recentCapturesCollectionView registerNib:MXKMediaCollectionViewCell.nib forCellWithReuseIdentifier:[MXKMediaCollectionViewCell defaultReuseIdentifier]];
     
     // Register album table view cell class
-    [self.userAlbumsTableView registerClass:MediaAlbumTableCell.class forCellReuseIdentifier:[MediaAlbumTableCell defaultReuseIdentifier]];
+    [self.userAlbumsTableView registerNib:MediaAlbumTableCell.nib forCellReuseIdentifier:[MediaAlbumTableCell defaultReuseIdentifier]];
+    self.userAlbumsTableView.alwaysBounceVertical = NO;
     
     // Force UI refresh according to selected  media types - Set default media type if none.
     self.mediaTypes = _mediaTypes ? _mediaTypes : @[(NSString *)kUTTypeImage];
     
-    // Check camera access before set up AV capture
-    [self checkDeviceAuthorizationStatus];
-    
-    // Set camera preview background
-    self.cameraPreviewContainerView.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
-    
-    // The top buttons background is circular
-    self.closeButton.layer.cornerRadius = self.closeButton.frame.size.width / 2;
-    self.closeButton.clipsToBounds = YES;
-    self.cameraSwitchButton.layer.cornerRadius = self.cameraSwitchButton.frame.size.width / 2;
-    self.cameraSwitchButton.clipsToBounds = YES;
-    
-    self.cameraVideoCaptureProgressView.progress = 0;
-    
-    [self setBackgroundRecordingID:UIBackgroundTaskInvalid];
-    
-    MXWeakify(self);
+    // Check photo library access
+    [self checkPhotoLibraryAuthorizationStatus];
     
     // Observe UIApplicationWillEnterForegroundNotification to refresh captures collection when app leaves the background state.
     UIApplicationWillEnterForegroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -212,11 +177,10 @@ static void *RecordingContext = &RecordingContext;
 
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
-    self.cameraVideoCaptureProgressView.progressColor = ThemeService.shared.theme.backgroundColor;
-    self.cameraVideoCaptureProgressView.unprogressColor = [UIColor clearColor];
-    
     self.userAlbumsTableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.recentCapturesCollectionContainerView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.recentCapturesCollectionView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.userAlbumsTableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
 }
 
@@ -234,23 +198,8 @@ static void *RecordingContext = &RecordingContext;
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    
-    // Here the views frames are ready, set up the camera preview if it is not already done.
-    if (!captureSession)
-    {
-        // Adjust camera preview ratio
-        [self handleScreenOrientation];
-        [self setupAVCapture];
-    }
-}
 
-- (void)dealloc
-{
-    // Check whether destroy is required
-    if (captureSession)
-    {
-        [self destroy];
-    }
+    [self updateRecentCapturesCollectionViewHeightIfNeeded];
 }
 
 - (void)didReceiveMemoryWarning
@@ -262,6 +211,8 @@ static void *RecordingContext = &RecordingContext;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self userInterfaceThemeDidChange];
 
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"MediaPicker"];
@@ -273,153 +224,84 @@ static void *RecordingContext = &RecordingContext;
     
     [self reloadRecentCapturesCollection];
     [self reloadUserLibraryAlbums];
-    
-    // Hide the navigation bar, and force the preview camera to be at the top (behing the status bar)
-    self.navigationController.navigationBarHidden = YES;
-    self.mainScrollView.contentOffset = CGPointMake(0, 0);
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    self.navigationController.navigationBarHidden = NO;
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-}
-
-- (BOOL)shouldAutorotate
-{
-    // Disable autorotation of the interface when recording is in progress.
-    return !lockInterfaceRotation;
-}
-
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations
-{
-    return UIInterfaceOrientationMaskAll;
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-    
-    // Hide camera preview during transition
-    cameraPreviewLayer.hidden = YES;
-    [self.cameraActivityIndicator startAnimating];
-    
+
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(coordinator.transitionDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        
-        [self handleScreenOrientation];
-        
-        // Show camera preview with delay to hide awful animation
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            
-            [self.cameraActivityIndicator stopAnimating];
-            self->cameraPreviewLayer.hidden = NO;
-            
-        });
+
+        [self updateRecentCapturesCollectionViewHeightIfNeeded];
     });
 }
 
-// The following methods are deprecated since iOS 8
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)checkPhotoLibraryAuthorizationStatus
 {
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    
-    [[cameraPreviewLayer connection] setVideoOrientation:(AVCaptureVideoOrientation)toInterfaceOrientation];
-}
-
-- (void)checkDeviceAuthorizationStatus
-{
-    NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
-
-    [MXKTools checkAccessForMediaType:AVMediaTypeVideo
-                  manualChangeMessage:[NSString stringWithFormat:NSLocalizedStringFromTable(@"camera_access_not_granted", @"Vector", nil), appDisplayName]
-            showPopUpInViewController:self
-                    completionHandler:^(BOOL granted) {
-
-        if (granted)
-        {
-            // Load recent captures if this is not already done
-            if (!self->recentCaptures.count)
-            {
+    [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+        
+        switch (status) {
+            case PHAuthorizationStatusAuthorized:
+                // Load recent captures if this is not already done
+                if (!self->recentCaptures.count)
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        [self reloadRecentCapturesCollection];
+                        [self reloadUserLibraryAlbums];
+                        
+                    });
+                }
+                break;
+            default:
                 dispatch_async(dispatch_get_main_queue(), ^{
-
-                    [self reloadRecentCapturesCollection];
-                    [self reloadUserLibraryAlbums];
-
+                    [self presentPermissionDeniedAlert];
                 });
-            }
+                break;
         }
     }];
 }
 
-- (void)updateVideoRecordingDuration
+- (void)presentPermissionDeniedAlert
 {
-    NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:videoRecordStartDate];
+    NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
     
-    // The progress animation makes a turn in 30 sec.
-    NSUInteger loopNb = (int)(duration/30);
+    NSString *message = [NSString stringWithFormat:NSLocalizedStringFromTable(@"photo_library_access_not_granted", @"Vector", nil), appDisplayName];
     
-    // Switch progress color at each turn
-    if (loopNb & 0x01)
-    {
-        if (self.cameraVideoCaptureProgressView.progressColor != [UIColor lightGrayColor])
-        {
-            self.cameraVideoCaptureProgressView.progressColor = [UIColor lightGrayColor];
-            self.cameraVideoCaptureProgressView.unprogressColor = ThemeService.shared.theme.backgroundColor;
-        }
-    }
-    else if (self.cameraVideoCaptureProgressView.progressColor != ThemeService.shared.theme.backgroundColor)
-    {
-        self.cameraVideoCaptureProgressView.progressColor = ThemeService.shared.theme.backgroundColor;
-        self.cameraVideoCaptureProgressView.unprogressColor = [UIColor lightGrayColor];
-    }
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"media_picker_title", @"Vector", nil)
+                                                                   message:message
+                                                            preferredStyle:UIAlertControllerStyleAlert];
     
-    duration -= loopNb * 30;
+    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                              style:UIAlertActionStyleCancel
+                                            handler:^(UIAlertAction * action) {
+                                                [self.delegate mediaPickerControllerDidCancel:self];
+                                            }]];
     
-    self.cameraVideoCaptureProgressView.progress = duration / 30;
+    NSURL *settingsURL = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"settings"]
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * action) {
+                                                [UIApplication.sharedApplication openURL:settingsURL options:@{} completionHandler:^(BOOL success) {
+                                                    if (success)
+                                                    {
+                                                        [self.delegate mediaPickerControllerDidCancel:self];
+                                                    }
+                                                    else
+                                                    {
+                                                        NSLog(@"[MediaPickerVC] Fails to open settings");
+                                                    }
+                                                }];
+                                            }]];
+    
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark -
 
 - (void)setMediaTypes:(NSArray *)mediaTypes
 {
-    if ([mediaTypes indexOfObject:(NSString *)kUTTypeImage] != NSNotFound)
-    {
-        isPictureCaptureEnabled = YES;
-        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_capture"] forState:UIControlStateNormal];
-        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_capture"] forState:UIControlStateHighlighted];
-        
-        // Check whether video capture should be enabled too
-        if ([mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
-        {
-            isVideoCaptureEnabled = YES;
-        }
-        else
-        {
-            isVideoCaptureEnabled = NO;
-        }
-    }
-    else if ([mediaTypes indexOfObject:(NSString *)kUTTypeMovie] != NSNotFound)
-    {
-        isPictureCaptureEnabled = NO;
-        isVideoCaptureEnabled = YES;
-        
-        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_video_capture"] forState:UIControlStateNormal];
-        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_video_capture"] forState:UIControlStateHighlighted];
-    }
-    
-    if (isVideoCaptureEnabled)
-    {
-        // Add a long gesture recognizer on cameraCaptureButton (in order to handle video recording)
-        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPressGesture:)];
-        [self.cameraCaptureButton addGestureRecognizer:longPress];
-    }
-    
     if (_mediaTypes != mediaTypes)
     {
         _mediaTypes = mediaTypes;
@@ -429,96 +311,27 @@ static void *RecordingContext = &RecordingContext;
     }
 }
 
-#pragma mark - Camera preview layout
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    if (scrollView == _mainScrollView)
-    {
-        // Force camera preview at the top (behind the status bar)
-        if (scrollView.contentOffset.y < 0)
-        {
-            scrollView.contentOffset = CGPointMake(0, 0);
-        }
-    }
-}
-
 #pragma mark - UI Refresh/Update
 
-- (void)handleScreenOrientation
+- (void)updateRecentCapturesCollectionViewHeightIfNeeded
 {
-    UIInterfaceOrientation screenOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-    
-    // Check whether the preview ratio must be inverted
-    CGFloat ratio = 0.0;
-    switch (screenOrientation)
-    {
-        case UIInterfaceOrientationPortrait:
-        case UIInterfaceOrientationPortraitUpsideDown:
-        {
-            if (self.cameraPreviewContainerAspectRatio.multiplier > 1)
-            {
-                ratio = 15.0 / 22.0;
-            }
-            break;
-        }
-        case UIInterfaceOrientationLandscapeRight:
-        case UIInterfaceOrientationLandscapeLeft:
-        {
-            if (self.cameraPreviewContainerAspectRatio.multiplier < 1)
-            {
-                CGSize screenSize = [[UIScreen mainScreen] bounds].size;
-                ratio = screenSize.width / screenSize.height;
-            }
-            break;
-        }
-        default:
-            break;
-    }
-    
-    if (ratio)
-    {
-        // Replace the current ratio constraint by a new one
-        [NSLayoutConstraint deactivateConstraints:@[self.cameraPreviewContainerAspectRatio]];
-        
-        self.cameraPreviewContainerAspectRatio = [NSLayoutConstraint constraintWithItem:self.cameraPreviewContainerView
-                                                                              attribute:NSLayoutAttributeWidth
-                                                                              relatedBy:NSLayoutRelationEqual
-                                                                                 toItem:self.cameraPreviewContainerView
-                                                                              attribute:NSLayoutAttributeHeight
-                                                                             multiplier:ratio
-                                                                               constant:0.0f];
-        self.cameraPreviewContainerAspectRatio.priority = 750;
-        
-        [NSLayoutConstraint activateConstraints:@[self.cameraPreviewContainerAspectRatio]];
-        
-        // Force layout refresh
-        [self.view layoutIfNeeded];
-        
-        if (self.navigationController.navigationBarHidden)
-        {
-            // Force the main scroller at the top
-            _mainScrollView.contentOffset = CGPointMake(0, 0);
-        }
-    }
-    
-    // Refresh camera preview layer
-    if (cameraPreviewLayer)
-    {
-        [[cameraPreviewLayer connection] setVideoOrientation:(AVCaptureVideoOrientation)screenOrientation];
-        cameraPreviewLayer.frame = self.cameraPreviewContainerView.bounds;
-    }
-    
     // Update Captures collection display
     if (recentCaptures.count)
     {
         // recents Collection is limited to the first 12 assets
         NSInteger recentsCount = ((recentCaptures.count > 12) ? 12 : recentCaptures.count);
+
+        CGFloat collectionViewHeight = (ceil(recentsCount / 4.0) * ((self.view.frame.size.width - 6) / 4)) + 10;
         
-        self.recentCapturesCollectionContainerViewHeightConstraint.constant = (ceil(recentsCount / 4.0) * ((self.view.frame.size.width - 6) / 4)) + 10;
-        [self.recentCapturesCollectionContainerView needsUpdateConstraints];
-        
-        [self.recentCapturesCollectionView reloadData];
+        if (self.recentCapturesCollectionContainerViewHeightConstraint.constant != collectionViewHeight)
+        {
+            self.recentCapturesCollectionContainerViewHeightConstraint.constant = collectionViewHeight;
+            [self.recentCapturesCollectionView reloadData];
+        }
+    }
+    else
+    {
+        self.recentCapturesCollectionContainerViewHeightConstraint.constant = 0;
     }
 }
 
@@ -568,19 +381,16 @@ static void *RecordingContext = &RecordingContext;
     if (recentCaptures.count)
     {
         self.recentCapturesCollectionView.hidden = NO;
-        
-        // recents Collection is limited to the first 12 assets
-        NSInteger recentsCount = ((recentCaptures.count > 12) ? 12 : recentCaptures.count);
-        self.recentCapturesCollectionContainerViewHeightConstraint.constant = (ceil(recentsCount / 4.0) * ((self.view.frame.size.width - 6) / 4)) + 10;
-        [self.recentCapturesCollectionContainerView needsUpdateConstraints];
-        
         [self.recentCapturesCollectionView reloadData];
     }
     else
     {
         self.recentCapturesCollectionView.hidden = YES;
-        self.recentCapturesCollectionContainerViewHeightConstraint.constant = 0;
     }
+
+    // Force call updateRecentCapturesCollectionViewHeightIfNeeded
+    [self.recentCapturesCollectionContainerView setNeedsLayout];
+    [self.recentCapturesCollectionContainerView layoutIfNeeded];
 }
 
 - (void)reloadUserLibraryAlbums
@@ -674,41 +484,6 @@ static void *RecordingContext = &RecordingContext;
         });
         
     });
-}
-
-- (void)launchPreview
-{
-    [self.cameraActivityIndicator stopAnimating];
-    
-    self.cameraSwitchButton.enabled = YES;
-    
-    if (isPictureCaptureEnabled)
-    {
-        self.cameraCaptureButtonWidthConstraint.constant = 83;
-        
-        // Switch back to picture mode by default
-        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_capture"] forState:UIControlStateNormal];
-        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_capture"] forState:UIControlStateHighlighted];
-        
-        if (captureSession)
-        {
-            [captureSession setSessionPreset:AVCaptureSessionPresetPhoto];
-        }
-    }
-    else
-    {
-        self.cameraCaptureButtonWidthConstraint.constant = 93;
-        
-        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_video_capture"] forState:UIControlStateNormal];
-        [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_video_capture"] forState:UIControlStateHighlighted];
-        
-        if (captureSession)
-        {
-            [captureSession setSessionPreset:AVCaptureSessionPresetHigh];
-        }
-    }
-    
-    self.cameraCaptureButton.enabled = YES;
 }
 
 #pragma mark - Validation step
@@ -1030,619 +805,8 @@ static void *RecordingContext = &RecordingContext;
     }
 }
 
-#pragma mark - Override MXKViewController
-
-- (void)destroy
-{
-    [self stopAVCapture];
-    
-    if (kThemeServiceDidChangeThemeNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
-        kThemeServiceDidChangeThemeNotificationObserver = nil;
-    }
-    
-    if (UIApplicationWillEnterForegroundNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:UIApplicationWillEnterForegroundNotificationObserver];
-        UIApplicationWillEnterForegroundNotificationObserver = nil;
-    }
-    
-    [self dismissImageValidationView];
-    
-    if (updateVideoRecordingTimer)
-    {
-        [updateVideoRecordingTimer invalidate];
-        updateVideoRecordingTimer = nil;
-    }
-    
-    cameraQueue = nil;
-    userAlbumsQueue = nil;
-    userAlbums = nil;
-    
-    [super destroy];
-}
-
 #pragma mark - Action
 
-- (IBAction)onLongPressGesture:(UILongPressGestureRecognizer*)longPressGestureRecognizer
-{
-    if (longPressGestureRecognizer.state == UIGestureRecognizerStateBegan)
-    {
-        UIView* view = longPressGestureRecognizer.view;
-        
-        // Check the view on which long press has been detected
-        if (view == self.cameraCaptureButton)
-        {
-            self.cameraCaptureButtonWidthConstraint.constant = 93;
-            
-            [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_video_capture"] forState:UIControlStateNormal];
-            [self.cameraCaptureButton setImage:[UIImage imageNamed:@"camera_video_capture"] forState:UIControlStateHighlighted];
-            
-            if (captureSession)
-            {
-                [captureSession setSessionPreset:AVCaptureSessionPresetHigh];
-            }
-            
-            // Record a new video
-            [self startMovieRecording];
-        }
-    }
-    else if (longPressGestureRecognizer.state == UIGestureRecognizerStateEnded || longPressGestureRecognizer.state == UIGestureRecognizerStateCancelled || longPressGestureRecognizer.state == UIGestureRecognizerStateFailed)
-    {
-        [self stopMovieRecording];
-    }
-}
-
-- (IBAction)onButtonPressed:(id)sender
-{
-    if (sender == self.closeButton)
-    {
-        // Close has been pressed
-        [self withdrawViewControllerAnimated:YES completion:nil];
-    }
-    else if (sender == self.cameraSwitchButton)
-    {
-        [self toggleCamera];
-    }
-    else if (sender == self.cameraCaptureButton)
-    {
-        if (isPictureCaptureEnabled)
-        {
-            [self snapStillImage];
-        }
-    }
-}
-
-#pragma mark - Capture handling methods
-
-- (void)setupAVCapture
-{
-    if (captureSession || isCaptureSessionSetupInProgress)
-    {
-        NSLog(@"[MediaPickerVC] Attemping to setup AVCapture when it is already started!");
-        return;
-    }
-    if (!cameraQueue)
-    {
-        NSLog(@"[MediaPickerVC] Attemping to setup AVCapture when it is being destroyed!");
-        return;
-    }
-
-    isCaptureSessionSetupInProgress = YES;
-    
-    [self.cameraActivityIndicator startAnimating];
-    
-    MXWeakify(self);
-    
-    dispatch_async(cameraQueue, ^{
-        
-        MXStrongifyAndReturnIfNil(self);
-        
-        // Get the Camera Device
-        AVCaptureDevice *frontCamera = nil;
-        AVCaptureDevice *backCamera = nil;
-        NSArray *cameras = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
-        for (AVCaptureDevice *thisCamera in cameras)
-        {
-            if (thisCamera.position == AVCaptureDevicePositionFront)
-            {
-                frontCamera = thisCamera;
-            }
-            else if (thisCamera.position == AVCaptureDevicePositionBack)
-            {
-                backCamera = thisCamera;
-            }
-            
-            NSError *lockError = nil;
-            [thisCamera lockForConfiguration:&lockError];
-            if (!lockError)
-            {
-                if ([thisCamera isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus])
-                {
-                    [thisCamera setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
-                }
-                else if ([thisCamera isFocusModeSupported:AVCaptureFocusModeAutoFocus])
-                {
-                    [thisCamera setFocusMode:AVCaptureFocusModeAutoFocus];
-                }
-                
-                if ([thisCamera isWhiteBalanceModeSupported:AVCaptureWhiteBalanceModeContinuousAutoWhiteBalance])
-                {
-                    [thisCamera setWhiteBalanceMode:AVCaptureWhiteBalanceModeContinuousAutoWhiteBalance];
-                }
-                if ([thisCamera isExposureModeSupported:AVCaptureExposureModeContinuousAutoExposure])
-                {
-                    [thisCamera setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
-                }
-                thisCamera.videoZoomFactor = 1.0;
-                
-                [thisCamera unlockForConfiguration];
-            }
-            else
-            {
-                NSLog(@"[MediaPickerVC] Failed to take out lock on camera. Device not setup properly.");
-            }
-        }
-        
-        self->currentCameraInput = nil;
-        NSError *error = nil;
-        if (frontCamera)
-        {
-            self->frontCameraInput = [[AVCaptureDeviceInput alloc] initWithDevice:frontCamera error:&error];
-            if (error)
-            {
-                NSLog(@"[MediaPickerVC] Error: %@", error);
-            }
-            
-            if (self->frontCameraInput == nil)
-            {
-                NSLog(@"[MediaPickerVC] Error creating front camera capture input");
-            }
-            else
-            {
-                self->currentCameraInput = self->frontCameraInput;
-            }
-        }
-        
-        if (backCamera)
-        {
-            error = nil;
-            self->backCameraInput = [[AVCaptureDeviceInput alloc] initWithDevice:backCamera error:&error];
-            if (error)
-            {
-                NSLog(@"[MediaPickerVC] Error: %@", error);
-            }
-            
-            if (self->backCameraInput == nil)
-            {
-                NSLog(@"[MediaPickerVC] Error creating back camera capture input");
-            }
-            else
-            {
-                self->currentCameraInput = self->backCameraInput;
-            }
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.cameraSwitchButton.hidden = (!frontCamera || !backCamera);
-        });
-        
-        if (self->currentCameraInput)
-        {
-            // Create the AVCapture Session
-            self->captureSession = [[AVCaptureSession alloc] init];
-            
-            if (self->isPictureCaptureEnabled)
-            {
-                [self->captureSession setSessionPreset:AVCaptureSessionPresetPhoto];
-            }
-            else if (self->isVideoCaptureEnabled)
-            {
-                [self->captureSession setSessionPreset:AVCaptureSessionPresetHigh];
-            }
-            
-            self->cameraPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self->captureSession];
-            self->cameraPreviewLayer.masksToBounds = NO;
-            self->cameraPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;//AVLayerVideoGravityResizeAspect;
-            self->cameraPreviewLayer.backgroundColor = [[UIColor blackColor] CGColor];
-//            cameraPreviewLayer.borderWidth = 2;
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
-                [[self->cameraPreviewLayer connection] setVideoOrientation:(AVCaptureVideoOrientation)[[UIApplication sharedApplication] statusBarOrientation]];
-                [self->cameraPreviewLayer connection].videoScaleAndCropFactor = 1.0;
-                self->cameraPreviewLayer.frame = self.cameraPreviewContainerView.bounds;
-                self->cameraPreviewLayer.hidden = YES;
-                
-                [self.cameraPreviewContainerView.layer addSublayer:self->cameraPreviewLayer];
-                
-            });
-            
-            [self->captureSession addInput:self->currentCameraInput];
-            
-            AVCaptureDevice *audioDevice = [[AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio] firstObject];
-            AVCaptureDeviceInput *audioDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:audioDevice error:&error];
-            
-            if (error)
-            {
-                NSLog(@"[MediaPickerVC] Error: %@", error);
-            }
-            
-            if ([self->captureSession canAddInput:audioDeviceInput])
-            {
-                [self->captureSession addInput:audioDeviceInput];
-            }
-            
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(caughtAVRuntimeError:) name:AVCaptureSessionRuntimeErrorNotification object:nil];
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(AVCaptureSessionDidStartRunning:) name:AVCaptureSessionDidStartRunningNotification object:nil];
-            
-            [self->captureSession startRunning];
-            
-            self->movieFileOutput = [[AVCaptureMovieFileOutput alloc] init];
-            if ([self->captureSession canAddOutput:self->movieFileOutput])
-            {
-                [self->captureSession addOutput:self->movieFileOutput];
-                AVCaptureConnection *connection = [self->movieFileOutput connectionWithMediaType:AVMediaTypeVideo];
-                if ([connection isVideoStabilizationSupported])
-                {
-                    // Available on iOS 8 and later
-                    [connection setPreferredVideoStabilizationMode:YES];
-                }
-            }
-            [self->movieFileOutput addObserver:self forKeyPath:@"recording" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:RecordingContext];
-            
-            self->stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
-            if ([self->captureSession canAddOutput:self->stillImageOutput])
-            {
-                [self->stillImageOutput setOutputSettings:@{AVVideoCodecKey : AVVideoCodecJPEG}];
-                [self->captureSession addOutput:self->stillImageOutput];
-            }
-            [self->stillImageOutput addObserver:self forKeyPath:@"capturingStillImage" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:CapturingStillImageContext];
-        }
-        else
-        {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.cameraActivityIndicator stopAnimating];
-            });
-        }
-        
-        self->isCaptureSessionSetupInProgress = NO;
-        
-    });
-}
-
-
-- (void)stopAVCapture
-{
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    
-    if (captureSession)
-    {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(AVCaptureSessionDidStopRunning:) name:AVCaptureSessionDidStopRunningNotification object:nil];
-        
-        [captureSession stopRunning];
-    }
-}
-
-- (void)tearDownAVCapture
-{
-    if (!cameraQueue)
-    {
-        NSLog(@"[MediaPickerVC] Attemping to tear down AVCapture when it is being destroyed!");
-        return;
-    }
-
-    dispatch_sync(cameraQueue, ^{
-        
-        self->frontCameraInput = nil;
-        self->backCameraInput = nil;
-        self->captureSession = nil;
-
-        if (self->movieFileOutput)
-        {
-            [self->movieFileOutput removeObserver:self forKeyPath:@"recording" context:RecordingContext];
-            self->movieFileOutput = nil;
-        }
-
-        if (self->stillImageOutput)
-        {
-            [self->stillImageOutput removeObserver:self forKeyPath:@"capturingStillImage" context:CapturingStillImageContext];
-            self->stillImageOutput = nil;
-        }
-
-        self->currentCameraInput = nil;
-
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:AVCaptureSessionRuntimeErrorNotification object:nil];
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:AVCaptureSessionDidStartRunningNotification object:nil];
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:AVCaptureSessionDidStopRunningNotification object:nil];
-    });
-}
-
-- (void)caughtAVRuntimeError:(NSNotification*)note
-{
-    NSError *error = [note userInfo][AVCaptureSessionErrorKey];
-    NSLog(@"[MediaPickerVC] AV Session Error: %@", error);
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self tearDownAVCapture];
-        // Retry
-        [self performSelector:@selector(setupAVCapture) withObject:nil afterDelay:1.0];
-    });
-}
-
-- (void)AVCaptureSessionDidStartRunning:(NSNotification*)note
-{
-    // Show camera preview with delay to hide camera settlement
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        
-        [self.cameraActivityIndicator stopAnimating];
-        self->cameraPreviewLayer.hidden = NO;
-        
-    });
-}
-
-- (void)AVCaptureSessionDidStopRunning:(NSNotification*)note
-{
-    [self tearDownAVCapture];
-}
-
-- (void)toggleCamera
-{
-    if (frontCameraInput && backCameraInput)
-    {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (!self->canToggleCamera)
-            {
-                return;
-            }
-            self->canToggleCamera = NO;
-            
-            AVCaptureDeviceInput *newInput = nil;
-            AVCaptureDeviceInput *oldInput = nil;
-            if (self->currentCameraInput == self->frontCameraInput)
-            {
-                newInput = self->backCameraInput;
-                oldInput = self->frontCameraInput;
-            }
-            else
-            {
-                newInput = self->frontCameraInput;
-                oldInput = self->backCameraInput;
-            }
-            
-            dispatch_async(self->cameraQueue, ^{
-                
-                [self->captureSession beginConfiguration];
-                [self->captureSession removeInput:oldInput];
-                if ([self->captureSession canAddInput:newInput]) {
-                    [self->captureSession addInput:newInput];
-                    self->currentCameraInput = newInput;
-                }
-                [self->captureSession commitConfiguration];
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    
-                    [self.cameraActivityIndicator stopAnimating];
-                    self->cameraPreviewLayer.hidden = NO;
-                    self->canToggleCamera = YES;
-                });
-            });
-            
-            [self.cameraActivityIndicator startAnimating];
-            self->cameraPreviewLayer.hidden = YES;
-        });
-    }
-}
-
-- (void)startMovieRecording
-{
-    self.cameraCaptureButton.enabled = NO;
-    
-    MXWeakify(self);
-    
-    dispatch_async(cameraQueue, ^{
-        
-        MXStrongifyAndReturnIfNil(self);
-        
-        if (![self->movieFileOutput isRecording])
-        {
-            self->lockInterfaceRotation = YES;
-            
-            if ([[UIDevice currentDevice] isMultitaskingSupported])
-            {
-                // Setup background task. This is needed because the captureOutput:didFinishRecordingToOutputFileAtURL: callback is not received until the App returns to the foreground unless you request background execution time.
-                [self setBackgroundRecordingID:[[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-                    
-                    [[UIApplication sharedApplication] endBackgroundTask:self.backgroundRecordingID];
-                    self.backgroundRecordingID = UIBackgroundTaskInvalid;
-                    
-                    NSLog(@"[MediaPickerVC] pauseInBackgroundTask : %08lX expired", (unsigned long)self.backgroundRecordingID);
-                    
-                }]];
-                
-                NSLog(@"[MediaPickerVC] pauseInBackgroundTask : %08lX starts", (unsigned long)self.backgroundRecordingID);
-            }
-            
-            // Update the orientation on the movie file output video connection before starting recording.
-            [[self->movieFileOutput connectionWithMediaType:AVMediaTypeVideo] setVideoOrientation:[[self->cameraPreviewLayer connection] videoOrientation]];
-            
-            // Turning OFF flash for video recording
-            [MediaPickerViewController setFlashMode:AVCaptureFlashModeOff forDevice:[self->currentCameraInput device]];
-            
-            // Start recording to a temporary file.
-            NSString *outputFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[@"movie" stringByAppendingPathExtension:@"mov"]];
-            [self->movieFileOutput startRecordingToOutputFileURL:[NSURL fileURLWithPath:outputFilePath] recordingDelegate:self];
-        }
-    });
-}
-
-- (void)stopMovieRecording
-{
-   dispatch_async(cameraQueue, ^{
-       
-       if ([self->movieFileOutput isRecording])
-        {
-            [self->movieFileOutput stopRecording];
-        }
-    });
-}
-
-- (void)snapStillImage
-{
-    self.cameraCaptureButton.enabled = NO;
-    
-    MXWeakify(self);
-    
-    dispatch_async(cameraQueue, ^{
-        
-        MXStrongifyAndReturnIfNil(self);
-        
-        // Update the orientation on the still image output video connection before capturing.
-        [[self->stillImageOutput connectionWithMediaType:AVMediaTypeVideo] setVideoOrientation:[[self->cameraPreviewLayer connection] videoOrientation]];
-        
-        // Flash set to Auto for Still Capture
-        [MediaPickerViewController setFlashMode:AVCaptureFlashModeAuto forDevice:[self->currentCameraInput device]];
-        
-        // Capture a still image.
-        [self->stillImageOutput captureStillImageAsynchronouslyFromConnection:[self->stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-            
-            if (imageDataSampleBuffer)
-            {
-                NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
-                UIImage *image = [[UIImage alloc] initWithData:imageData];
-                
-                // Open image validation view
-                [self validateSelectedImage:image responseHandler:^(BOOL isValidated) {
-                    
-                    if (isValidated)
-                    {
-                        // Send the original image
-                        [self.delegate mediaPickerController:self didSelectImage:imageData withMimeType:@"image/jpeg" isPhotoLibraryAsset:NO];
-                    }
-                    
-                }];
-                
-                // Relaunch preview
-                [self launchPreview];
-            }
-        }];
-    });
-}
-
-+ (void)setFlashMode:(AVCaptureFlashMode)flashMode forDevice:(AVCaptureDevice *)device
-{
-    if ([device hasFlash] && [device isFlashModeSupported:flashMode])
-    {
-        NSError *error = nil;
-        if ([device lockForConfiguration:&error])
-        {
-            [device setFlashMode:flashMode];
-            [device unlockForConfiguration];
-        }
-        else
-        {
-            NSLog(@"[MediaPickerVC] %@", error);
-        }
-    }
-}
-
-- (void)runStillImageCaptureAnimation
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self->cameraPreviewLayer setOpacity:0.0];
-        
-        [UIView animateWithDuration:.25 animations:^{
-            [self->cameraPreviewLayer setOpacity:1.0];
-        }];
-    });
-}
-
-#pragma mark - KVO
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if (context == CapturingStillImageContext)
-    {
-        BOOL isCapturingStillImage = [change[NSKeyValueChangeNewKey] boolValue];
-        
-        if (isCapturingStillImage)
-        {
-            [self runStillImageCaptureAnimation];
-        }
-    }
-    else if (context == RecordingContext)
-    {
-        BOOL isRecording = [change[NSKeyValueChangeNewKey] boolValue];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            if (isRecording)
-            {
-                self.cameraSwitchButton.enabled = NO;
-                
-                self->videoRecordStartDate = [NSDate date];
-                
-                self.cameraVideoCaptureProgressView.hidden = NO;
-                self->updateVideoRecordingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updateVideoRecordingDuration) userInfo:nil repeats:YES];
-                
-                self.cameraCaptureButton.enabled = YES;
-            }
-            else
-            {
-                self.cameraVideoCaptureProgressView.hidden = YES;
-                [self->updateVideoRecordingTimer invalidate];
-                self->updateVideoRecordingTimer = nil;
-                self.cameraVideoCaptureProgressView.progress = 0;
-                
-                // The preview will be restored during captureOutput:didFinishRecordingToOutputFileAtURL: callback.
-            }
-        });
-    }
-    else
-    {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    }
-}
-
-#pragma mark - File Output Delegate
-
-- (void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error
-{
-    if (error)
-    {
-        NSLog(@"[MediaPickerVC] %@", error);
-    }
-    
-    self.cameraCaptureButton.enabled = NO;
-    
-    lockInterfaceRotation = NO;
-    
-    // Validate the new captured video
-    [self validateSelectedVideo:outputFileURL responseHandler:^(BOOL isValidated) {
-        
-        if (isValidated)
-        {
-            // Send the captured video
-            [self.delegate mediaPickerController:self didSelectVideo:outputFileURL];
-        }
-        
-        // Remove the temporary file
-        [[NSFileManager defaultManager] removeItemAtURL:outputFileURL error:nil];
-        
-    }];
-    
-    // Relaunch preview
-    [self launchPreview];
-    
-    UIBackgroundTaskIdentifier backgroundRecordingID = [self backgroundRecordingID];
-    if (backgroundRecordingID != UIBackgroundTaskInvalid)
-    {
-        [[UIApplication sharedApplication] endBackgroundTask:backgroundRecordingID];
-        [self setBackgroundRecordingID:UIBackgroundTaskInvalid];
-        NSLog(@"[MediaPickerVC] >>>>> background pause task finished");
-    }
-}
 
 #pragma mark - UICollectionViewDataSource
 
@@ -1845,7 +1009,7 @@ static void *RecordingContext = &RecordingContext;
         // Enable multiselection only if the delegate is configured to receive them
         if ([_delegate respondsToSelector:@selector(mediaPickerController:didSelectAssets:)])
         {
-            albumContentViewController.allowsMultipleSelection = YES;
+            albumContentViewController.allowsMultipleSelection = self.allowsMultipleSelection;
         }
 
         // Hide back button title

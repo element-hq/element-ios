@@ -238,12 +238,12 @@
                         continue;
                     }
                 
-                    MXAggregatedReactions* reactions = cellData.reactions[componentEventId];
+                    MXAggregatedReactions* reactions = cellData.reactions[componentEventId].aggregatedReactionsWithNonZeroCount;
                     
                     BubbleReactionsView *reactionsView;
                     
-                    if (reactions && !isCollapsableCellCollapsed)
-                    {
+                    if (!component.event.isRedactedEvent && reactions && !isCollapsableCellCollapsed)
+                    {                        
                         BOOL showAllReactions = [cellData showAllReactionsForEvent:componentEventId];
                         BubbleReactionsViewModel *bubbleReactionsViewModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:reactions
                                                                                                                                    eventId:componentEventId
@@ -605,6 +605,11 @@
 
         [self.delegate dataSource:self didCellChange:nil];
     }
+}
+
+- (void)bubbleReactionsViewModel:(BubbleReactionsViewModel *)viewModel didLongPressForEventId:(NSString *)eventId
+{
+    [self.delegate dataSource:self didRecognizeAction:kMXKRoomBubbleCellLongPressOnReactionView inCell:nil userInfo:@{ kMXKRoomBubbleCellEventIdKey: eventId }];
 }
 
 @end

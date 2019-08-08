@@ -42,6 +42,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.EditHistoryViewController>(storyboard: EditHistoryViewController.self)
   }
+  internal enum EmojiPickerViewController: StoryboardType {
+    internal static let storyboardName = "EmojiPickerViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.EmojiPickerViewController>(storyboard: EmojiPickerViewController.self)
+  }
   internal enum KeyBackupRecoverFromPassphraseViewController: StoryboardType {
     internal static let storyboardName = "KeyBackupRecoverFromPassphraseViewController"
 
@@ -76,6 +81,11 @@ internal enum StoryboardScene {
     internal static let storyboardName = "KeyBackupSetupSuccessFromRecoveryKeyViewController"
 
     internal static let initialScene = InitialSceneType<Riot.KeyBackupSetupSuccessFromRecoveryKeyViewController>(storyboard: KeyBackupSetupSuccessFromRecoveryKeyViewController.self)
+  }
+  internal enum ReactionHistoryViewController: StoryboardType {
+    internal static let storyboardName = "ReactionHistoryViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.ReactionHistoryViewController>(storyboard: ReactionHistoryViewController.self)
   }
   internal enum RoomContextualMenuViewController: StoryboardType {
     internal static let storyboardName = "RoomContextualMenuViewController"

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="EmojiPickerViewCell" customModule="Riot" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sam-a3-I0s">
+                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="👍" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9GU-d6-Cnv">
+                                <rect key="frame" x="6" y="4" width="38" height="42"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.95294117649999999" green="0.97254901959999995" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="9GU-d6-Cnv" firstAttribute="top" secondItem="Sam-a3-I0s" secondAttribute="top" constant="4" id="T08-V8-wu1"/>
+                            <constraint firstAttribute="bottom" secondItem="9GU-d6-Cnv" secondAttribute="bottom" constant="4" id="dgR-Un-bnz"/>
+                            <constraint firstAttribute="trailing" secondItem="9GU-d6-Cnv" secondAttribute="trailing" constant="6" id="gnQ-6e-N8Y"/>
+                            <constraint firstItem="9GU-d6-Cnv" firstAttribute="leading" secondItem="Sam-a3-I0s" secondAttribute="leading" constant="6" id="wHy-AN-9GI"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="Sam-a3-I0s" secondAttribute="trailing" id="5FI-St-rx2"/>
+                <constraint firstItem="Sam-a3-I0s" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="Oge-ZF-LX9"/>
+                <constraint firstAttribute="bottom" secondItem="Sam-a3-I0s" secondAttribute="bottom" id="f0f-GW-KI4"/>
+                <constraint firstItem="Sam-a3-I0s" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="vze-ak-cqC"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <connections>
+                <outlet property="emojiLabel" destination="9GU-d6-Cnv" id="5kc-lg-TpL"/>
+                <outlet property="reactionBackgroundView" destination="Sam-a3-I0s" id="x8I-E5-BRG"/>
+            </connections>
+        </collectionViewCell>
+    </objects>
+</document>

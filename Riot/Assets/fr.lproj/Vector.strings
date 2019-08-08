@@ -789,3 +789,35 @@
 // MARK: File upload
 "file_upload_error_title" = "Envoi de fichier";
 "file_upload_error_unsupported_file_type_message" = "Type de fichier non pris en charge.";
+"auth_softlogout_signed_out" = "Vous êtes déconnecté(e)";
+"auth_softlogout_sign_in" = "Se connecter";
+"auth_softlogout_reason" = "L’administrateur de votre serveur d’accueil (%1$@) vous a déconnecté de votre compte %2$@ (%3$@).";
+"auth_softlogout_recover_encryption_keys" = "Connectez-vous pour récupérer les clés de chiffrement stockées uniquement sur cet appareil. Vous en avez besoin pour lire tous les messages sécurisés sur n’importe quel appareil.";
+"auth_softlogout_clear_data" = "Effacer les données personnelles";
+"auth_softlogout_clear_data_message_1" = "Attention : Vos données personnelles (y compris vos clés de chiffrement) sont toujours stockées sur cet appareil.";
+"auth_softlogout_clear_data_message_2" = "Effacez-les si vous n’utilisez plus cet appareil ou si vous voulez vous connecter avec un autre compte.";
+"auth_softlogout_clear_data_button" = "Effacer toutes les données";
+"auth_softlogout_clear_data_sign_out_title" = "En êtes-vous sûr(e) ?";
+"auth_softlogout_clear_data_sign_out_msg" = "Voulez vous vraiment supprimer toutes les données stockées actuellement sur cet appareil ? Reconnectez-vous pour accéder aux données et messages de votre compte.";
+"auth_softlogout_clear_data_sign_out" = "Se déconnecter";
+// MARK: Emoji picker
+"emoji_picker_title" = "Réactions";
+"emoji_picker_people_category" = "Émoticônes et personnes";
+"emoji_picker_nature_category" = "Animaux et nature";
+"emoji_picker_foods_category" = "Nourriture et boisson";
+"emoji_picker_activity_category" = "Activités";
+"emoji_picker_places_category" = "Voyage et lieux";
+"emoji_picker_objects_category" = "Objets";
+"emoji_picker_symbols_category" = "Symboles";
+"emoji_picker_flags_category" = "Drapeaux";
+"room_event_action_reaction_history" = "Historique des réactions";
+// MARK: Reaction history
+"reaction_history_title" = "Réactions";
+"room_action_camera" = "Prendre une photo ou une vidéo";
+// Media picker
+"media_picker_title" = "Médiathèque";
+// Image picker
+"image_picker_action_camera" = "Prendre une photo";
+"image_picker_action_library" = "Choisir dans la médiathèque";
+"camera_unavailable" = "L’appareil photo n’est pas disponible sur votre appareil";
+"photo_library_access_not_granted" = "%@ n’a pas la permission pour accéder à la médiathèque, veuillez modifier les options de vie privée";

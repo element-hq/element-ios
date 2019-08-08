@@ -740,7 +740,7 @@
 "device_verification_cancelled" = "Beste aldeak egiaztaketa ezeztatu du.";
 "device_verification_cancelled_by_me" = "Egiaztaketa ezeztatu da. Arrazoia: %@";
 "device_verification_emoji_hourglass" = "Harea-erlojua";
-"device_verification_emoji_clock" = "Klasea";
+"device_verification_emoji_clock" = "Erlojua";
 "device_verification_emoji_gift" = "Oparia";
 "device_verification_emoji_light bulb" = "Bonbilla";
 "device_verification_emoji_book" = "Liburua";
@@ -777,3 +777,24 @@
 // MARK: File upload
 "file_upload_error_title" = "Fitxategi igoera";
 "file_upload_error_unsupported_file_type_message" = "Fitxategi mota ez onartua.";
+"auth_softlogout_signed_out" = "Saioa amaitu duzu";
+"auth_softlogout_sign_in" = "Hasi saioa";
+"auth_softlogout_reason" = "Zure hasiera zerbitzariaren administratzaileak (%1$@) zure %2$@ kontuaren saioa amaitu du (%3$@).";
+"auth_softlogout_recover_encryption_keys" = "hasi saioa gailu honetan besterik gorde ez diren zifratze gakoak berreskuratzeko. Zure mezu seguruak beste gailuetan irakurri ahal izateko behar dituzu.";
+"auth_softlogout_clear_data" = "Garbitu datu pertsonalak";
+"auth_softlogout_clear_data_message_1" = "Abisua: Zure datu pertsonalak (zure zifratze gakoak barne) gailu honetan gordeko dira.";
+"auth_softlogout_clear_data_message_2" = "Garbitu gailu honekin bukatu baduzu, edo beste saio bat hasi nahi baduzu.";
+"auth_softlogout_clear_data_button" = "Garbitu datu guztiak";
+"auth_softlogout_clear_data_sign_out_title" = "Ziur al zaude?";
+"auth_softlogout_clear_data_sign_out_msg" = "Ziur gailu honetan gordetako datu guztiak ezabatu nahi dituzula? Hasi saioa berriro zure kontuaren datuak eta mezuak atzitzeko.";
+"auth_softlogout_clear_data_sign_out" = "Amaitu saioa";
+// MARK: Emoji picker
+"emoji_picker_title" = "Erreakzioak";
+"emoji_picker_people_category" = "Irribarretxoak eta jendea";
+"emoji_picker_nature_category" = "Animaliak eta natura";
+"emoji_picker_foods_category" = "Janaria eta edaria";
+"emoji_picker_activity_category" = "Jarduerak";
+"emoji_picker_places_category" = "Bidaiak eta tokiak";
+"emoji_picker_objects_category" = "Objektuak";
+"emoji_picker_symbols_category" = "Sinboloak";
+"emoji_picker_flags_category" = "Banderak";

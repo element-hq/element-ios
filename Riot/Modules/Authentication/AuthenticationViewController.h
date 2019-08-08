@@ -41,5 +41,9 @@
 @property (weak, nonatomic) IBOutlet UIView *homeServerSeparator;
 @property (weak, nonatomic) IBOutlet UIView *identityServerSeparator;
 
+@property (weak, nonatomic) IBOutlet UIView *softLogoutClearDataContainer;
+@property (weak, nonatomic) IBOutlet UILabel *softLogoutClearDataLabel;
+@property (weak, nonatomic) IBOutlet UIButton *softLogoutClearDataButton;
+
 @end
 

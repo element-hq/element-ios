@@ -30,7 +30,9 @@ final class ReactionsMenuView: UIView, Themable, NibLoadable {
     // MARK: Outlets
 
     @IBOutlet private weak var reactionsBackgroundView: UIView!    
-    @IBOutlet private weak var reactionsStackView: UIStackView!
+    @IBOutlet private weak var reactionsStackView: UIStackView!    
+    @IBOutlet private weak var moreReactionsBackgroundView: UIView!
+    @IBOutlet private weak var moreReactionsButton: UIButton!
     
     // MARK: Private
     
@@ -57,6 +59,10 @@ final class ReactionsMenuView: UIView, Themable, NibLoadable {
         super.awakeFromNib()
         
         self.reactionsBackgroundView.layer.masksToBounds = true
+        
+        let moreReactionsImage = Asset.Images.moreReactions.image.withRenderingMode(.alwaysTemplate)
+        self.moreReactionsButton.setImage(moreReactionsImage, for: .normal)
+        
         self.update(theme: ThemeService.shared().theme)
     }
     
@@ -64,12 +70,15 @@ final class ReactionsMenuView: UIView, Themable, NibLoadable {
         super.layoutSubviews()
         
         self.reactionsBackgroundView.layer.cornerRadius = self.reactionsBackgroundView.frame.size.height/2
+        self.moreReactionsBackgroundView.layer.cornerRadius = self.moreReactionsBackgroundView.frame.size.height/2
     }
     
     // MARK: - Public
     
     func update(theme: Theme) {
         self.reactionsBackgroundView.backgroundColor = theme.headerBackgroundColor
+        self.moreReactionsBackgroundView.backgroundColor = theme.headerBackgroundColor
+        self.moreReactionsButton.tintColor = theme.textPrimaryColor
     }
     
     func selectionAnimationInstructionPart1() {
@@ -131,6 +140,10 @@ final class ReactionsMenuView: UIView, Themable, NibLoadable {
         }
         self.tappedReactionButton = sender
         self.viewModel?.process(viewAction: .tap(reaction: tappedReaction))
+    }
+    
+    @IBAction private func moreReactionsAction(_ sender: Any) {
+        self.viewModel?.process(viewAction: .moreReactions)
     }
 }
 

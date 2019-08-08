@@ -19,7 +19,7 @@ platform :ios do
 
     before_all do
         # Ensure used Xcode version
-        xcversion(version: "~> 10.2.0")
+        xcversion(version: "~> 10.3.0")
     end
 
     #### Public ####
@@ -232,7 +232,7 @@ platform :ios do
         build_number = options[:build_number]
 
         if !git_branch_name.to_s.empty?
-            preprocessor_definitions["GIT_BRANCH"] = git_branch_name.sub("origin/", "")
+            preprocessor_definitions["GIT_BRANCH"] = git_branch_name.sub("origin/", "").sub("heads/", "")
         end
 
         if !build_number.to_s.empty?

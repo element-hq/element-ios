@@ -669,7 +669,7 @@
 "room_action_reply" = "Antworten";
 "settings_labs_message_reaction" = "Mit einem Emoji reagieren";
 "settings_key_backup_button_connect" = "Schlüssel dieses Geräts sichern";
-"event_formatter_message_edited_mention" = "(geändert)";
+"event_formatter_message_edited_mention" = "(bearbeitet)";
 "key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Schlüssel dieses Geräts sichern";
 "key_backup_recover_connent_banner_subtitle" = "Schlüssel dieses Geräts sichern";
 // MARK: - Device Verification
@@ -736,3 +736,65 @@
 "device_verification_emoji_bell" = "Glocke";
 "device_verification_emoji_anchor" = "Anker";
 "device_verification_emoji_headphones" = "Kopfhörer";
+"close" = "Schließen";
+"auth_softlogout_signed_out" = "Sie sind abgemeldet";
+"auth_softlogout_sign_in" = "Einloggen";
+"auth_softlogout_reason" = "Ihr Homeserver-Administrator (%1$@) hat Sie von Ihrem Konto %2$@ (%3$@) abgemeldet.";
+"auth_softlogout_recover_encryption_keys" = "Melden Sie sich an, um Verschlüsselungsschlüssel wiederherzustellen, die ausschließlich auf diesem Gerät gespeichert sind. Sie benötigen sie, um alle Ihre sicheren Nachrichten auf jedem Gerät lesen zu können.";
+"auth_softlogout_clear_data" = "Persönliche Daten löschen";
+"auth_softlogout_clear_data_message_1" = "Warnung: Ihre persönlichen Daten (einschließlich Verschlüsselungsschlüssel) sind noch auf diesem Gerät gespeichert.";
+"auth_softlogout_clear_data_message_2" = "Deaktivieren Sie es, wenn Sie dieses Gerät nicht mehr verwenden oder sich bei einem anderen Konto anmelden möchten.";
+"auth_softlogout_clear_data_button" = "Lösche alle Daten";
+"auth_softlogout_clear_data_sign_out_title" = "Bist du sicher?";
+"auth_softlogout_clear_data_sign_out_msg" = "Möchten Sie wirklich alle derzeit auf diesem Gerät gespeicherten Daten löschen? Melden Sie sich erneut an, um auf Ihre Kontodaten und Nachrichten zuzugreifen.";
+"auth_softlogout_clear_data_sign_out" = "Ausloggen";
+"room_event_action_reaction_show_all" = "Zeige alles";
+"room_event_action_reaction_show_less" = "Zeige weniger";
+"room_event_action_reaction_history" = "Reaktionsverlauf";
+"room_action_send_file" = "Datei senden";
+"room_message_edits_history_title" = "Bearbeitungsverlauf";
+// Widget
+"widget_no_integrations_server_configured" = "Kein Integrationsserver konfiguriert";
+"widget_integrations_server_failed_to_connect" = "Verbindung zum Integrationsserver fehlgeschlagen";
+"device_verification_security_advice" = "Für maximale Sicherheit empfehlen wir, dies persönlich zu tun oder ein anderes vertrauenswürdiges Kommunikationsmittel zu verwenden";
+"device_verification_incoming_description_1" = "Überprüfen Sie dieses Gerät, um es als vertrauenswürdig zu markieren. Das Vertrauen auf Geräte von Partnern gibt Ihnen zusätzliche Sicherheit, wenn Sie verschlüsselte End-to-End-Nachrichten verwenden.";
+"device_verification_incoming_description_2" = "Wenn Sie dieses Gerät überprüfen, wird es als vertrauenswürdig und für den Partner als vertrauenswürdig gekennzeichnet.";
+// MARK: Start
+"device_verification_start_title" = "Überprüfen Sie dies, indem Sie eine kurze Textzeichenfolge vergleichen";
+"device_verification_start_wait_partner" = "Warten auf Partner zu akzeptieren ...";
+"device_verification_start_use_legacy" = "Nichts auftauchend? Nicht alle Clients unterstützen die interaktive Überprüfung. Verwenden Sie die Alte-Überprüfung.";
+"device_verification_start_use_legacy_action" = "Verwenden Sie die Alte-Überprüfung";
+// MARK: Verify
+"device_verification_verify_title_emoji" = "Überprüfen Sie dieses Gerät, indem Sie bestätigen, dass das folgende Emoji auf dem Bildschirm des Partners angezeigt wird";
+"device_verification_verify_title_number" = "Überprüfen Sie dieses Gerät, indem Sie bestätigen, dass die folgenden Zahlen auf dem Bildschirm des Partners angezeigt werden";
+"device_verification_verify_wait_partner" = "Warten auf die Bestätigung des Partners...";
+// MARK: Verified
+"device_verification_verified_title" = "Verifiziert!";
+"device_verification_verified_description_1" = "Sie haben dieses Gerät erfolgreich überprüft.";
+"device_verification_verified_description_2" = "Verschlüsselte Nachrichten mit diesem Benutzer werden durchgehend verschlüsselt und können von Dritten nicht gelesen werden.";
+"device_verification_emoji_rooster" = "Hahn";
+"device_verification_emoji_globe" = "Globus";
+"device_verification_emoji_smiley" = "Lächeln";
+"device_verification_emoji_spanner" = "Spanner";
+"device_verification_emoji_thumbs up" = "Daumen hoch";
+"device_verification_emoji_hourglass" = "Sanduhr";
+"device_verification_emoji_clock" = "Uhr";
+"device_verification_emoji_pencil" = "Bleistift";
+"device_verification_emoji_lock" = "sperren";
+"device_verification_emoji_folder" = "Ordner";
+"device_verification_emoji_pin" = "Stift";
+// MARK: File upload
+"file_upload_error_title" = "Datei hochladen";
+"file_upload_error_unsupported_file_type_message" = "Dateityp wird nicht unterstützt.";
+// MARK: Emoji picker
+"emoji_picker_title" = "Reaktionen";
+"emoji_picker_people_category" = "Smileys & Menschen";
+"emoji_picker_nature_category" = "Tiere & Natur";
+"emoji_picker_foods_category" = "Essen und Trinken";
+"emoji_picker_activity_category" = "Aktivitäten";
+"emoji_picker_places_category" = "Reisen & Orte";
+"emoji_picker_objects_category" = "Objekte";
+"emoji_picker_symbols_category" = "Symbole";
+"emoji_picker_flags_category" = "Flaggen";
+// MARK: Reaction history
+"reaction_history_title" = "Reaktionen";

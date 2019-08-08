@@ -788,3 +788,35 @@
 // MARK: File upload
 "file_upload_error_title" = "Качване на файл";
 "file_upload_error_unsupported_file_type_message" = "Типът файл не се поддържа.";
+"auth_softlogout_signed_out" = "Излезли сте от профила";
+"auth_softlogout_sign_in" = "Влез";
+"auth_softlogout_reason" = "Администратора на вашия сървър (%1$@) ви е отписал от профила %2$@ (%3$@).";
+"auth_softlogout_recover_encryption_keys" = "Влезте за да възстановите ключове за шифровани съхранени само на това устройство. Ще ви трябват за да можете да четете всички защитени съобщения на кое да е устройство.";
+"auth_softlogout_clear_data" = "Изчисти личните данни";
+"auth_softlogout_clear_data_message_1" = "Внимание: Личните ви данни (включително ключове за шифроване) все още са съхранени на това устройство.";
+"auth_softlogout_clear_data_message_2" = "Изчистете, ако сте приключили с използването на това устройство или искате да влезете с друг профил.";
+"auth_softlogout_clear_data_button" = "Изчисти всички данни";
+"auth_softlogout_clear_data_sign_out_title" = "Сигурни ли сте?";
+"auth_softlogout_clear_data_sign_out_msg" = "Сигурни ли сте, че искате да изчистите всички данни съхранени на това устройство? Влезте пак за да достъпите профила и съобщенията си.";
+"auth_softlogout_clear_data_sign_out" = "Излез";
+"room_event_action_reaction_history" = "История на реакциите";
+// MARK: Emoji picker
+"emoji_picker_title" = "Реакции";
+"emoji_picker_people_category" = "Усмивки и хора";
+"emoji_picker_nature_category" = "Животни и природа";
+"emoji_picker_foods_category" = "Храна и напитки";
+"emoji_picker_activity_category" = "Дейности";
+"emoji_picker_places_category" = "Пътуване и места";
+"emoji_picker_objects_category" = "Обекти";
+"emoji_picker_symbols_category" = "Символи";
+"emoji_picker_flags_category" = "Флагове";
+// MARK: Reaction history
+"reaction_history_title" = "Реакции";
+"room_action_camera" = "Направи снимка или видео";
+// Media picker
+"media_picker_title" = "Медийна библиотека";
+// Image picker
+"image_picker_action_camera" = "Направи снимка";
+"image_picker_action_library" = "Избери от библиотеката";
+"camera_unavailable" = "Не е достъпна камера на вашето устройство";
+"photo_library_access_not_granted" = "%@ няма достъп до библиотеката със снимки. Моля, променете настройките на поверителността";

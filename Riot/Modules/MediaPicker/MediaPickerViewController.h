@@ -43,6 +43,13 @@
  */
 - (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL;
 
+/**
+ Tells the delegate that the user wants to cancel media picking.
+ 
+ @param mediaPickerController the `MediaPickerViewController` instance.
+ */
+- (void)mediaPickerControllerDidCancel:(MediaPickerViewController *)mediaPickerController;
+
 @optional
 /**
  Tells the delegate that the user select multiple media.
@@ -55,16 +62,9 @@
 @end
 
 /**
+ * MediaPickerViewController displays recent camera captures and photo/video albums from user library.
  */
-@interface MediaPickerViewController : MXKViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, AVCaptureFileOutputRecordingDelegate, MediaAlbumContentViewControllerDelegate>
-
-/**
- *  Returns the `UINib` object initialized for a `MediaPickerViewController`.
- *
- *  @return The initialized `UINib` object or `nil` if there were errors during initialization
- *  or the nib file could not be located.
- */
-+ (UINib *)nib;
+@interface MediaPickerViewController : MXKViewController
 
 /**
  *  Creates and returns a new `MediaPickerViewController` object.
@@ -73,7 +73,7 @@
  *
  *  @return An initialized `MediaPickerViewController` object if successful, `nil` otherwise.
  */
-+ (instancetype)mediaPickerViewController;
++ (instancetype)instantiate;
 
 /**
  The delegate for the view controller.
@@ -84,6 +84,12 @@
  The array of the media types supported by the picker (default value is an array containing kUTTypeImage).
  */
 @property (nonatomic) NSArray *mediaTypes;
+
+/**
+ A Boolean value that determines whether users can select more than one item.
+ Default is NO.
+ */
+@property (nonatomic) BOOL allowsMultipleSelection;
 
 @end
 
