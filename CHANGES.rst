@@ -1,4 +1,4 @@
-Changes in 0.9.2 (2019-07-)
+Changes in 0.9.2 (2019-08-08)
 ===============================================
 
 Improvements:
@@ -12,7 +12,8 @@ Improvements:
 Bug fix:
  * Crash when leaving settings due to backup section refresh animation.
  * Reactions: Do not display reactions on redacted events in timeline.
- * Fix crash for earch bar customisation in iOS13 (#2626).
+ * Fix crash for search bar customisation in iOS13 (#2626).
+ * Build: Fix build based on git tag.
 
 Changes in 0.9.1 (2019-07-17)
 ===============================================
