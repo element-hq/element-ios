@@ -19,7 +19,11 @@ import UIKit
 extension UISearchBar {
     
     /// Returns internal UITextField
-    var vc_searchTextField: UITextField? {
-        return self.value(forKey: "searchField") as? UITextField
+    @objc var vc_searchTextField: UITextField? {
+        if #available(iOS 13.0, *) {
+            return self.searchTextField
+        } else {
+            return self.value(forKey: "searchField") as? UITextField
+        }
     }
 }
