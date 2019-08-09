@@ -22,10 +22,6 @@ final class ServiceTermsModalScreenViewController: UIViewController {
     
     // MARK: - Constants
     
-    private enum Constants {
-        static let aConstant: Int = 666
-    }
-    
     // MARK: - Properties
     
     // MARK: Outlets
@@ -33,7 +29,8 @@ final class ServiceTermsModalScreenViewController: UIViewController {
     @IBOutlet private weak var scrollView: UIScrollView!
     
     @IBOutlet private weak var messageLabel: UILabel!
-    @IBOutlet private weak var okButton: UIButton!
+    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var acceptButton: UIButton!
     
     // MARK: Private
 
@@ -41,6 +38,11 @@ final class ServiceTermsModalScreenViewController: UIViewController {
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
+
+    private var policies: [MXLoginPolicyData] = []
+
+    /// Policies checked by the end user
+    private var checkedPolicies: Set<Int> = []
 
     // MARK: - Setup
     
@@ -59,7 +61,7 @@ final class ServiceTermsModalScreenViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.title = VectorL10n.serviceTermsModalTitle
-        
+
         self.setupViews()
         self.activityPresenter = ActivityIndicatorPresenter()
         self.errorPresenter = MXKErrorAlertPresentation()
@@ -87,12 +89,10 @@ final class ServiceTermsModalScreenViewController: UIViewController {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
-
-        // TODO:
         self.messageLabel.textColor = theme.textPrimaryColor
 
-        self.okButton.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.okButton)
+        self.acceptButton.backgroundColor = theme.backgroundColor
+        theme.applyStyle(onButton: self.acceptButton)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -109,11 +109,22 @@ final class ServiceTermsModalScreenViewController: UIViewController {
         }
         
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
-        
+
+        self.setupTableView()
         self.scrollView.keyboardDismissMode = .interactive
         
-        self.messageLabel.text = "VectorL10n.ServiceTermsModalScreenTitle"
-        self.messageLabel.isHidden = true
+        self.messageLabel.text = VectorL10n.serviceTermsModalMessage
+
+        self.acceptButton.setTitle(VectorL10n.serviceTermsModalAcceptButton, for: .normal)
+        self.acceptButton.setTitle(VectorL10n.serviceTermsModalAcceptButton, for: .highlighted)
+        self.refreshAcceptButton()
+    }
+
+    private func setupTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.separatorStyle = .none
+        tableView.register(TableViewCellWithCheckBoxAndLabel.nib(), forCellReuseIdentifier: TableViewCellWithCheckBoxAndLabel.defaultReuseIdentifier())
     }
 
     private func render(viewState: ServiceTermsModalScreenViewState) {
@@ -136,8 +147,8 @@ final class ServiceTermsModalScreenViewController: UIViewController {
     private func renderLoaded(policies: [MXLoginPolicyData]) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
 
-        self.messageLabel.text = policies.first?.name
-        self.messageLabel.isHidden = false
+        self.policies = policies
+        self.refreshViews()
     }
 
     private func renderAccepting() {
@@ -153,6 +164,16 @@ final class ServiceTermsModalScreenViewController: UIViewController {
         self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
 
+    private func refreshViews() {
+        self.tableView.reloadData()
+        self.refreshAcceptButton()
+    }
+
+    private func refreshAcceptButton() {
+        // Enable the button only if the user has accepted all policies
+        self.acceptButton.isEnabled = (self.policies.count == self.checkedPolicies.count)
+    }
+
     
     // MARK: - Actions
 
@@ -163,6 +184,21 @@ final class ServiceTermsModalScreenViewController: UIViewController {
     private func cancelButtonAction() {
         self.viewModel.process(viewAction: .cancel)
     }
+
+    @objc private func didTapCheckbox(sender: UITapGestureRecognizer) {
+
+        guard let policyIndex = sender.view?.tag else {
+            return
+        }
+
+        if self.checkedPolicies.contains(policyIndex) {
+            self.checkedPolicies.remove(policyIndex)
+        } else {
+            checkedPolicies.insert(policyIndex)
+        }
+
+        self.refreshViews()
+    }
 }
 
 
@@ -171,5 +207,48 @@ extension ServiceTermsModalScreenViewController: ServiceTermsModalScreenViewMode
 
     func ServiceTermsModalScreenViewModel(_ viewModel: ServiceTermsModalScreenViewModelType, didUpdateViewState viewSate: ServiceTermsModalScreenViewState) {
         self.render(viewState: viewSate)
+    }
+}
+
+// MARK: - UITableViewDataSource
+
+extension ServiceTermsModalScreenViewController: UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.policies.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCellWithCheckBoxAndLabel.defaultReuseIdentifier(), for: indexPath) as? TableViewCellWithCheckBoxAndLabel else {
+            fatalError("\(String(describing: TableViewCellWithCheckBoxAndLabel.self)) should be registered")
+        }
+
+        let policy = policies[indexPath.row]
+        let checked = checkedPolicies.contains(indexPath.row)
+
+        cell.label.text = policy.name
+        cell.isEnabled = checked
+        cell.accessoryType = .disclosureIndicator
+        cell.backgroundColor = UIColor.clear
+
+        if let checkBox = cell.checkBox, checkBox.gestureRecognizers?.isEmpty ?? true {
+            let gesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapCheckbox))
+            gesture.numberOfTapsRequired = 1
+            gesture.numberOfTouchesRequired = 1
+
+            checkBox.isUserInteractionEnabled = true
+            checkBox.tag = indexPath.row
+            checkBox.addGestureRecognizer(gesture)
+        }
+
+        return cell
+    }
+}
+
+extension ServiceTermsModalScreenViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let policy = policies[indexPath.row]
+        self.viewModel.process(viewAction: .review(policy.url))
     }
 }

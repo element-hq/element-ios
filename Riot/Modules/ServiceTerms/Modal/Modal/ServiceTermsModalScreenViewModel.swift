@@ -48,6 +48,9 @@ final class ServiceTermsModalScreenViewModel: ServiceTermsModalScreenViewModelTy
         switch viewAction {
         case .load:
             self.loadTerms()
+        case .review(let policy):
+            // TODO
+            self.coordinatorDelegate?.ServiceTermsModalScreenViewModelDidCancel(self)
         case .accept:
             self.acceptTerms()
         case .cancel:

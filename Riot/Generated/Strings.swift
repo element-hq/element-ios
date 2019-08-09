@@ -2346,6 +2346,10 @@ internal enum VectorL10n {
   internal static var serviceTermsModalAcceptButton: String { 
     return VectorL10n.tr("Vector", "service_terms_modal_accept_button") 
   }
+  /// To continue you need to accept the Terms of this service.
+  internal static var serviceTermsModalMessage: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_message") 
+  }
   /// Terms Of Service
   internal static var serviceTermsModalTitle: String { 
     return VectorL10n.tr("Vector", "service_terms_modal_title") 

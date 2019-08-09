@@ -21,6 +21,7 @@ import Foundation
 /// ServiceTermsModalScreenViewController view actions exposed to view model
 enum ServiceTermsModalScreenViewAction {
     case load
+    case review(String)
     case accept
     case cancel
 }
