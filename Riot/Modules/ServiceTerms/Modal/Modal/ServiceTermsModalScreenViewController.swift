@@ -93,6 +93,8 @@ final class ServiceTermsModalScreenViewController: UIViewController {
 
         self.acceptButton.backgroundColor = theme.backgroundColor
         theme.applyStyle(onButton: self.acceptButton)
+
+        self.refreshViews()
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -121,10 +123,12 @@ final class ServiceTermsModalScreenViewController: UIViewController {
     }
 
     private func setupTableView() {
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.separatorStyle = .none
-        tableView.register(TableViewCellWithCheckBoxAndLabel.nib(), forCellReuseIdentifier: TableViewCellWithCheckBoxAndLabel.defaultReuseIdentifier())
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.separatorStyle = .none
+        self.tableView.alwaysBounceVertical = false
+        self.tableView.backgroundColor = .clear
+        self.tableView.register(TableViewCellWithCheckBoxAndLabel.nib(), forCellReuseIdentifier: TableViewCellWithCheckBoxAndLabel.defaultReuseIdentifier())
     }
 
     private func render(viewState: ServiceTermsModalScreenViewState) {
@@ -230,7 +234,7 @@ extension ServiceTermsModalScreenViewController: UITableViewDataSource {
         cell.label.text = policy.name
         cell.isEnabled = checked
         cell.accessoryType = .disclosureIndicator
-        cell.backgroundColor = UIColor.clear
+        cell.backgroundColor = self.theme.backgroundColor
 
         if let checkBox = cell.checkBox, checkBox.gestureRecognizers?.isEmpty ?? true {
             let gesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapCheckbox))
