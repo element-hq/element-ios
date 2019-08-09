@@ -26,7 +26,7 @@ NSString *const kIntegrationManagerMainScreen = nil;
 NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
 
-@interface IntegrationManagerViewController ()
+@interface IntegrationManagerViewController () <ServiceTermsModalCoordinatorBridgePresenterDelegate>
 {
     MXSession *mxSession;
     NSString *roomId;
@@ -36,6 +36,8 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
     MXHTTPOperation *operation;
 }
+
+@property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 
 @end
 
@@ -67,9 +69,9 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
     operation = nil;
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidLoad
 {
-    [super viewWillAppear:animated];
+    [super viewDidLoad];
 
     if (!self.URL && !operation)
     {
@@ -94,9 +96,17 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
             self->operation = nil;
             [self stopActivityIndicator];
 
-            [self withdrawViewControllerAnimated:YES completion:^{
-                [[AppDelegate theDelegate] showErrorAsAlert:error];
-            }];
+            if ([error.domain isEqualToString:WidgetManagerErrorDomain]
+                && error.code == WidgetManagerErrorCodeTermsNotSigned)
+            {
+                [self presentTerms];
+            }
+            else
+            {
+                [self withdrawViewControllerAnimated:YES completion:^{
+                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                }];
+            }
         }];
     }
 }
@@ -679,6 +689,61 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
         NSUInteger membershipCount = room.summary.membersCount.joined;
         [self sendIntegerResponse:membershipCount toRequest:requestId];
     }];
+}
+
+
+#pragma mark - Service terms
+- (void)presentTerms
+{
+    // Same comment as https://github.com/matrix-org/matrix-react-sdk/blob/1b0d8510a2ee93beddcd34c2d5770aa9fc76b1d9/src/ScalarAuthClient.js#L108
+    // The terms endpoints are new and so live on standard _matrix prefixes,
+    // but IM rest urls are currently configured with paths, so remove the
+    // path from the base URL before passing it to the js-sdk
+
+    // We continue to use the full URL for the calls done by
+    // Riot-iOS, but the standard terms API called
+    // by the matrix-ios-sdk lives on the standard _matrix path. This means we
+    // don't support running IMs on a non-root path, but it's the only
+    // realistic way of transitioning to _matrix paths since configs in
+    // the wild contain bits of the API path.
+
+    // Once we've fully transitioned to _matrix URLs, we can give people
+    // a grace period to update their configs, then use the rest url as
+    // a regular base url.
+    NSURL *imApiUrl = [NSURL URLWithString:[[WidgetManager sharedManager] configForUser:mxSession.myUser.userId].apiUrl];
+    NSString *baseUrl = [NSURL URLWithString:@"/" relativeToURL:imApiUrl].absoluteString;
+    if ([baseUrl hasSuffix:@"/"])
+    {
+        // SDK doest not like trailing /
+        baseUrl = [baseUrl substringToIndex:baseUrl.length - 1];
+    }
+
+    NSLog(@"[IntegraionManagerVC] presentTerms for %@", baseUrl);
+
+    ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:mxSession baseUrl:baseUrl
+                                                                                                                                                        serviceType:MXServiceTypeIntegrationManager
+                                                                                                                                                        accessToken:scalarToken];
+
+    serviceTermsModalCoordinatorBridgePresenter.delegate = self;
+
+    [serviceTermsModalCoordinatorBridgePresenter presentFrom:self animated:YES];
+    self.serviceTermsModalCoordinatorBridgePresenter = serviceTermsModalCoordinatorBridgePresenter;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self withdrawViewControllerAnimated:YES completion:nil];
+    }];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self withdrawViewControllerAnimated:YES completion:nil];
+    }];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 
 @end

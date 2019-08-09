@@ -691,6 +691,10 @@
 "gdpr_consent_not_given_alert_message" = "To continue using the %@ homeserver you must review and agree to the terms and conditions.";
 "gdpr_consent_not_given_alert_review_now_action" = "Review now";
 
+// Service terms
+"service_terms_modal_title" = "Terms Of Service";
+"service_terms_modal_accept_button" = "Accept";
+
 // Deactivate account
 
 "deactivate_account_title" = "Deactivate Account";

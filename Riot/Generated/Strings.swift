@@ -2342,6 +2342,14 @@ internal enum VectorL10n {
   internal static var sending: String { 
     return VectorL10n.tr("Vector", "sending") 
   }
+  /// Accept
+  internal static var serviceTermsModalAcceptButton: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_accept_button") 
+  }
+  /// Terms Of Service
+  internal static var serviceTermsModalTitle: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_title") 
+  }
   /// Add email address
   internal static var settingsAddEmailAddress: String { 
     return VectorL10n.tr("Vector", "settings_add_email_address") 
