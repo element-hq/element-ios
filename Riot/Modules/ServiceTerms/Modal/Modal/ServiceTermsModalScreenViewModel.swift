@@ -29,6 +29,9 @@ final class ServiceTermsModalScreenViewModel: ServiceTermsModalScreenViewModelTy
     // MARK: Public
     
     var policies: [MXLoginPolicyData]?
+    var serviceType: MXServiceType {
+        return serviceTerms.serviceType
+    }
 
     weak var viewDelegate: ServiceTermsModalScreenViewModelViewDelegate?
     weak var coordinatorDelegate: ServiceTermsModalScreenViewModelCoordinatorDelegate?

@@ -231,7 +231,8 @@ extension ServiceTermsModalScreenViewController: UITableViewDataSource {
         let policy = policies[indexPath.row]
         let checked = checkedPolicies.contains(indexPath.row)
 
-        cell.label.text = policy.name
+        cell.label.attributedText = self.cellLabel(for: policy)
+        cell.label.font = .systemFont(ofSize: 15)
         cell.isEnabled = checked
         cell.accessoryType = .disclosureIndicator
         cell.backgroundColor = self.theme.backgroundColor
@@ -247,6 +248,29 @@ extension ServiceTermsModalScreenViewController: UITableViewDataSource {
         }
 
         return cell
+    }
+
+    func cellLabel(for policy: MXLoginPolicyData) -> NSAttributedString {
+
+        // TableViewCellWithCheckBoxAndLabel does not have a detailTextLabel
+        // Do it by hand
+
+        var labelDetail: String = ""
+        switch self.viewModel.serviceType {
+        case MXServiceTypeIdentityService:
+            labelDetail = VectorL10n.serviceTermsModalDescriptionForIdentityServer
+        case MXServiceTypeIntegrationManager:
+            labelDetail = VectorL10n.serviceTermsModalDescriptionForIntegrationManager
+        default: break
+        }
+
+        let label = NSMutableAttributedString(string: policy.name,
+                                              attributes: [.foregroundColor: theme.textPrimaryColor])
+        label.append(NSAttributedString(string: "\n"))
+        label.append(NSAttributedString(string: labelDetail,
+                                        attributes: [.foregroundColor: theme.textSecondaryColor]))
+
+        return label
     }
 }
 

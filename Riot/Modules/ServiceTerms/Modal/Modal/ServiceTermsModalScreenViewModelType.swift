@@ -32,6 +32,7 @@ protocol ServiceTermsModalScreenViewModelCoordinatorDelegate: class {
 protocol ServiceTermsModalScreenViewModelType {
     
     var policies: [MXLoginPolicyData]? { get set }
+    var serviceType: MXServiceType { get }
         
     var viewDelegate: ServiceTermsModalScreenViewModelViewDelegate? { get set }
     var coordinatorDelegate: ServiceTermsModalScreenViewModelCoordinatorDelegate? { get set }
