@@ -66,15 +66,39 @@ final class ServiceTermsModalCoordinator: ServiceTermsModalCoordinatorType {
         coordinator.delegate = self
         return coordinator
     }
+
+    private func showPolicy(policy: MXLoginPolicyData) {
+        // Display the policy webpage into our webview
+        let webViewViewController: WebViewViewController = WebViewViewController(url: policy.url)
+        webViewViewController.title = policy.name
+
+        let leftBarButtonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "back_icon"), style: .plain, target: self, action: #selector(didTapCancelOnPolicyScreen))
+        webViewViewController.navigationItem.leftBarButtonItem = leftBarButtonItem
+
+        self.navigationRouter.push(webViewViewController, animated: true, popCompletion: nil)
+    }
+
+    private func removePolicyScreen() {
+        self.navigationRouter.popModule(animated: true)
+    }
+
+    @objc private func didTapCancelOnPolicyScreen() {
+        self.removePolicyScreen()
+    }
 }
 
 // MARK: - ServiceTermsModalLoadTermsScreenCoordinatorDelegate
 extension ServiceTermsModalCoordinator: ServiceTermsModalScreenCoordinatorDelegate {
-    func ServiceTermsModalScreenCoordinatorDidAccept(_ coordinator: ServiceTermsModalScreenCoordinatorType) {
+
+    func serviceTermsModalScreenCoordinatorDidAccept(_ coordinator: ServiceTermsModalScreenCoordinatorType) {
         self.delegate?.serviceTermsModalCoordinatorDidAccept(self)
     }
 
-    func ServiceTermsModalScreenCoordinatorDidCancel(_ coordinator: ServiceTermsModalScreenCoordinatorType) {
+    func serviceTermsModalScreenCoordinator(_ coordinator: ServiceTermsModalScreenCoordinatorType, displayPolicy policy: MXLoginPolicyData) {
+        self.showPolicy(policy: policy)
+    }
+
+    func serviceTermsModalScreenCoordinatorDidCancel(_ coordinator: ServiceTermsModalScreenCoordinatorType) {
         self.delegate?.serviceTermsModalCoordinatorDidCancel(self)
     }
 }

@@ -58,12 +58,16 @@ final class ServiceTermsModalScreenCoordinator: ServiceTermsModalScreenCoordinat
 
 // MARK: - ServiceTermsModalScreenViewModelCoordinatorDelegate
 extension ServiceTermsModalScreenCoordinator: ServiceTermsModalScreenViewModelCoordinatorDelegate {
-    
-    func ServiceTermsModalScreenViewModelDidAccept(_ viewModel: ServiceTermsModalScreenViewModelType) {
-        self.delegate?.ServiceTermsModalScreenCoordinatorDidAccept(self)
+
+    func serviceTermsModalScreenViewModelDidAccept(_ viewModel: ServiceTermsModalScreenViewModelType) {
+        self.delegate?.serviceTermsModalScreenCoordinatorDidAccept(self)
+    }
+
+    func serviceTermsModalScreenViewModel(_ coordinator: ServiceTermsModalScreenViewModelType, displayPolicy policy: MXLoginPolicyData) {
+        self.delegate?.serviceTermsModalScreenCoordinator(self, displayPolicy: policy)
     }
     
-    func ServiceTermsModalScreenViewModelDidCancel(_ viewModel: ServiceTermsModalScreenViewModelType) {
-        self.delegate?.ServiceTermsModalScreenCoordinatorDidCancel(self)
+    func serviceTermsModalScreenViewModelDidCancel(_ viewModel: ServiceTermsModalScreenViewModelType) {
+        self.delegate?.serviceTermsModalScreenCoordinatorDidCancel(self)
     }
 }

@@ -209,7 +209,7 @@ final class ServiceTermsModalScreenViewController: UIViewController {
 // MARK: - ServiceTermsModalScreenViewModelViewDelegate
 extension ServiceTermsModalScreenViewController: ServiceTermsModalScreenViewModelViewDelegate {
 
-    func ServiceTermsModalScreenViewModel(_ viewModel: ServiceTermsModalScreenViewModelType, didUpdateViewState viewSate: ServiceTermsModalScreenViewState) {
+    func serviceTermsModalScreenViewModel(_ viewModel: ServiceTermsModalScreenViewModelType, didUpdateViewState viewSate: ServiceTermsModalScreenViewState) {
         self.render(viewState: viewSate)
     }
 }
@@ -253,6 +253,6 @@ extension ServiceTermsModalScreenViewController: UITableViewDataSource {
 extension ServiceTermsModalScreenViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let policy = policies[indexPath.row]
-        self.viewModel.process(viewAction: .review(policy.url))
+        self.viewModel.process(viewAction: .display(policy))
     }
 }

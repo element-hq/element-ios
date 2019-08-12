@@ -19,12 +19,13 @@
 import Foundation
 
 protocol ServiceTermsModalScreenViewModelViewDelegate: class {
-    func ServiceTermsModalScreenViewModel(_ viewModel: ServiceTermsModalScreenViewModelType, didUpdateViewState viewSate: ServiceTermsModalScreenViewState)
+    func serviceTermsModalScreenViewModel(_ viewModel: ServiceTermsModalScreenViewModelType, didUpdateViewState viewSate: ServiceTermsModalScreenViewState)
 }
 
 protocol ServiceTermsModalScreenViewModelCoordinatorDelegate: class {
-    func ServiceTermsModalScreenViewModelDidAccept(_ viewModel: ServiceTermsModalScreenViewModelType)
-    func ServiceTermsModalScreenViewModelDidCancel(_ viewModel: ServiceTermsModalScreenViewModelType)
+    func serviceTermsModalScreenViewModel(_ coordinator: ServiceTermsModalScreenViewModelType, displayPolicy policy: MXLoginPolicyData)
+    func serviceTermsModalScreenViewModelDidAccept(_ viewModel: ServiceTermsModalScreenViewModelType)
+    func serviceTermsModalScreenViewModelDidCancel(_ viewModel: ServiceTermsModalScreenViewModelType)
 }
 
 /// Protocol describing the view model used by `ServiceTermsModalScreenViewController`

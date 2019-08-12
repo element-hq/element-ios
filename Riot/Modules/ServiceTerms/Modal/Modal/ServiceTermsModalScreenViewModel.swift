@@ -48,13 +48,12 @@ final class ServiceTermsModalScreenViewModel: ServiceTermsModalScreenViewModelTy
         switch viewAction {
         case .load:
             self.loadTerms()
-        case .review(let policy):
-            // TODO
-            self.coordinatorDelegate?.ServiceTermsModalScreenViewModelDidCancel(self)
+        case .display(let policy):
+            self.coordinatorDelegate?.serviceTermsModalScreenViewModel(self, displayPolicy: policy)
         case .accept:
             self.acceptTerms()
         case .cancel:
-            self.coordinatorDelegate?.ServiceTermsModalScreenViewModelDidCancel(self)
+            self.coordinatorDelegate?.serviceTermsModalScreenViewModelDidCancel(self)
         }
     }
     
@@ -91,7 +90,7 @@ final class ServiceTermsModalScreenViewModel: ServiceTermsModalScreenViewModelTy
                 return
             }
             self.update(viewState: .accepted)
-            self.coordinatorDelegate?.ServiceTermsModalScreenViewModelDidAccept(self)
+            self.coordinatorDelegate?.serviceTermsModalScreenViewModelDidAccept(self)
 
             }, failure: { [weak self] (error) in
                 guard let self = self else {
@@ -119,6 +118,6 @@ final class ServiceTermsModalScreenViewModel: ServiceTermsModalScreenViewModelTy
     }
 
     private func update(viewState: ServiceTermsModalScreenViewState) {
-        self.viewDelegate?.ServiceTermsModalScreenViewModel(self, didUpdateViewState: viewState)
+        self.viewDelegate?.serviceTermsModalScreenViewModel(self, didUpdateViewState: viewState)
     }
 }
