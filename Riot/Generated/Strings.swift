@@ -1498,6 +1498,10 @@ internal enum VectorL10n {
   internal static var roomCreationAppearancePicture: String { 
     return VectorL10n.tr("Vector", "room_creation_appearance_picture") 
   }
+  /// No Identity Server is configured so you cannot add a participant with an email.
+  internal static var roomCreationErrorInviteUserByEmailWithoutIdentityServer: String { 
+    return VectorL10n.tr("Vector", "room_creation_error_invite_user_by_email_without_identity_server") 
+  }
   /// Search / invite by User ID, Name or email
   internal static var roomCreationInviteAnotherUser: String { 
     return VectorL10n.tr("Vector", "room_creation_invite_another_user") 
@@ -2117,6 +2121,10 @@ internal enum VectorL10n {
   /// Remove third-party invite is not supported yet until the api exists
   internal static var roomParticipantsRemoveThirdPartyInviteMsg: String { 
     return VectorL10n.tr("Vector", "room_participants_remove_third_party_invite_msg") 
+  }
+  /// No Identity Server is configured so you cannot start a chat with a contact using an email.
+  internal static var roomParticipantsStartNewChatErrorUsingUserEmailWithoutIdentityServer: String { 
+    return VectorL10n.tr("Vector", "room_participants_start_new_chat_error_using_user_email_without_identity_server") 
   }
   /// Participants
   internal static var roomParticipantsTitle: String { 
