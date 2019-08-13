@@ -539,19 +539,22 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
              NSString *scalarToken;
              MXJSONModelSetString(scalarToken, JSONResponse[@"scalar_token"])
+
              config.scalarToken = scalarToken;
-
-             // Validate it (this mostly checks to see if the IM needs us to agree to some terms)
-             // TODO
-             // return this._checkToken(tokenObject);
-
              self->configs[userId] = config;
              [self saveConfigs];
+             
+             // Validate it (this mostly checks to see if the IM needs us to agree to some terms)
+             MXHTTPOperation *operation3 = [self validateScalarToken:scalarToken forMXSession:mxSession complete:^(BOOL valid) {
 
-             if (success)
-             {
-                 success(scalarToken);
-             }
+                 if (success)
+                 {
+                     success(scalarToken);
+                 }
+
+             } failure:failure];
+
+             [operation mutateTo:operation3];
 
          } failure:^(NSError *error) {
              NSLog(@"[WidgetManager] registerForScalarToken: Failed to register. Error: %@", error);
