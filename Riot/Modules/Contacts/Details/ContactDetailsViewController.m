@@ -1011,10 +1011,13 @@
                         // The identity server must be defined
                         if (!self.mainSession.matrixRestClient.identityServer)
                         {
-                            MXError *error = [[MXError alloc] initWithErrorCode:kMXSDKErrCodeStringMissingParameters error:@"No supplied identity server URL"];
-                            NSLog(@"[ContactDetailsViewController] Invite %@ failed", participantId);
-                            // Alert user
-                            [[AppDelegate theDelegate] showErrorAsAlert:[error createNSError]];
+                            [self removePendingActionMask];
+                            
+                            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"error"]
+                                                                                           message:NSLocalizedStringFromTable(@"room_participants_start_new_chat_error_using_user_email_without_identity_server", @"Vector", nil)
+                                                                                    preferredStyle:UIAlertControllerStyleAlert];
+                            [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:UIAlertActionStyleDefault handler:nil]];
+                            [self presentViewController:alert animated:YES completion:nil];
                             
                             return;
                         }
