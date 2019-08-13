@@ -188,6 +188,11 @@
     [forgotPasswordTitle addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.tintColor range:NSMakeRange(0, forgotPasswordTitle.length)];
     [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateNormal];
     [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateHighlighted];
+    
+    NSMutableAttributedString *forgotPasswordTitleDisabled = [[NSMutableAttributedString alloc] initWithAttributedString:forgotPasswordTitle];
+    [forgotPasswordTitleDisabled addAttribute:NSForegroundColorAttributeName value:[ThemeService.shared.theme.tintColor colorWithAlphaComponent:0.3] range:NSMakeRange(0, forgotPasswordTitle.length)];
+    [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitleDisabled forState:UIControlStateDisabled];
+    
     [self updateForgotPwdButtonVisibility];
     
     NSAttributedString *serverOptionsTitle = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_use_server_options", @"Vector", nil) attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textSecondaryColor, NSFontAttributeName: [UIFont systemFontOfSize:14]}];
@@ -783,6 +788,14 @@
         CGRect frame = self.forgotPasswordButton.frame;
         self.submitButtonMinLeadingConstraint.constant =  frame.origin.x + frame.size.width + 10;
     }
+}
+
+- (void)setIdentityServerTextFieldText:(NSString *)identityServerUrl
+{
+    // Disable forgot password button when identity server is not set
+    self.forgotPasswordButton.enabled = identityServerUrl.length > 0;
+    
+    [super setIdentityServerTextFieldText:identityServerUrl];
 }
 
 #pragma mark -
