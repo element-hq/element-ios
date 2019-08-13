@@ -30,9 +30,10 @@ protocol ServiceTermsModalScreenViewModelCoordinatorDelegate: class {
 
 /// Protocol describing the view model used by `ServiceTermsModalScreenViewController`
 protocol ServiceTermsModalScreenViewModelType {
-    
-    var policies: [MXLoginPolicyData]? { get set }
+
     var serviceType: MXServiceType { get }
+    var policies: [MXLoginPolicyData]? { get set }
+    var alreadyAcceptedPoliciesUrls: [String] { get set }
         
     var viewDelegate: ServiceTermsModalScreenViewModelViewDelegate? { get set }
     var coordinatorDelegate: ServiceTermsModalScreenViewModelCoordinatorDelegate? { get set }

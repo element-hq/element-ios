@@ -21,7 +21,7 @@ import Foundation
 /// ServiceTermsModalScreenViewController view state
 enum ServiceTermsModalScreenViewState {
     case loading
-    case loaded([MXLoginPolicyData])
+    case loaded(policies: [MXLoginPolicyData], alreadyAcceptedPoliciesUrls: [String])
     case accepted
     case error(Error)
 }

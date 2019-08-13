@@ -27,11 +27,12 @@ final class ServiceTermsModalScreenViewModel: ServiceTermsModalScreenViewModelTy
     private let serviceTerms: MXServiceTerms
     
     // MARK: Public
-    
-    var policies: [MXLoginPolicyData]?
+
     var serviceType: MXServiceType {
         return serviceTerms.serviceType
     }
+    var policies: [MXLoginPolicyData]?
+    var alreadyAcceptedPoliciesUrls: [String] = []
 
     weak var viewDelegate: ServiceTermsModalScreenViewModelViewDelegate?
     weak var coordinatorDelegate: ServiceTermsModalScreenViewModelCoordinatorDelegate?
@@ -66,14 +67,15 @@ final class ServiceTermsModalScreenViewModel: ServiceTermsModalScreenViewModelTy
 
         self.update(viewState: .loading)
 
-        self.serviceTerms.terms({ [weak self] terms in
+        self.serviceTerms.terms({ [weak self] (terms, alreadyAcceptedTermsUrls) in
             guard let self = self else {
                 return
             }
 
             let policies = self.processTerms(terms: terms)
             self.policies = policies
-            self.update(viewState: .loaded(policies))
+            self.alreadyAcceptedPoliciesUrls = alreadyAcceptedTermsUrls ?? []
+            self.update(viewState: .loaded(policies: policies, alreadyAcceptedPoliciesUrls: self.alreadyAcceptedPoliciesUrls))
 
             }, failure: { [weak self] error in
                 guard let self = self else {

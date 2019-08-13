@@ -135,8 +135,8 @@ final class ServiceTermsModalScreenViewController: UIViewController {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .loaded(let policies):
-            self.renderLoaded(policies: policies)
+        case .loaded(let policies, let alreadyAcceptedPoliciesUrls):
+            self.renderLoaded(policies: policies, alreadyAcceptedPoliciesUrls: alreadyAcceptedPoliciesUrls)
         case .accepted:
             self.renderAccepted()
         case .error(let error):
@@ -148,10 +148,12 @@ final class ServiceTermsModalScreenViewController: UIViewController {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
     }
 
-    private func renderLoaded(policies: [MXLoginPolicyData]) {
+    private func renderLoaded(policies: [MXLoginPolicyData], alreadyAcceptedPoliciesUrls: [String]) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
 
         self.policies = policies
+        self.updateCheckedPolicies(with: alreadyAcceptedPoliciesUrls)
+
         self.refreshViews()
     }
 
@@ -176,6 +178,15 @@ final class ServiceTermsModalScreenViewController: UIViewController {
     private func refreshAcceptButton() {
         // Enable the button only if the user has accepted all policies
         self.acceptButton.isEnabled = (self.policies.count == self.checkedPolicies.count)
+    }
+
+    // Pre-check policies already accepted by the user
+    private func updateCheckedPolicies(with acceptedPoliciesUrls: [String]) {
+        for url in acceptedPoliciesUrls {
+            if let policyIndex = self.policies.firstIndex(where: { $0.url == url }) {
+                checkedPolicies.insert(policyIndex)
+            }
+        }
     }
 
     
