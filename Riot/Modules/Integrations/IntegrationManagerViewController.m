@@ -73,6 +73,11 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 {
     [super viewDidLoad];
 
+    [self loadData];
+}
+
+- (void)loadData
+{
     if (!self.URL && !operation)
     {
         [self startActivityIndicator];
@@ -693,11 +698,12 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
 
 #pragma mark - Service terms
+
 - (void)presentTerms
 {
     WidgetManagerConfig *config =  [[WidgetManager sharedManager] configForUser:mxSession.myUser.userId];
 
-    NSLog(@"[IntegraionManagerVC] presentTerms for %@", config.baseUrl);
+    NSLog(@"[IntegrationManagerVC] presentTerms for %@", config.baseUrl);
 
     ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:mxSession baseUrl:config.baseUrl
                                                                                                                                                         serviceType:MXServiceTypeIntegrationManager
@@ -712,7 +718,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 - (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-        [self withdrawViewControllerAnimated:YES completion:nil];
+        [self loadData];
     }];
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
