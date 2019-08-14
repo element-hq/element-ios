@@ -48,6 +48,8 @@
     MXAutoDiscovery *autoDiscovery;
 }
 
+@property (nonatomic, readonly) BOOL isIdentityServerConfigured;
+
 @end
 
 @implementation AuthenticationViewController
@@ -259,6 +261,11 @@
     }
 
     autoDiscovery = nil;
+}
+
+- (BOOL)isIdentityServerConfigured
+{
+    return self.identityServerTextField.text.length > 0;
 }
 
 - (void)setAuthType:(MXKAuthenticationType)authType
@@ -538,8 +545,21 @@
     }
     else if (sender == self.forgotPasswordButton)
     {
-        // Update UI to reset password
-        self.authType = MXKAuthenticationTypeForgotPassword;
+        if (!self.isIdentityServerConfigured)
+        {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"error"]
+                                                                           message:NSLocalizedStringFromTable(@"auth_forgot_password_error_no_configured_identity_server", @"Vector", nil)
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:UIAlertActionStyleDefault handler:nil]];
+            [self presentViewController:alert animated:YES completion:nil];
+            
+            return;
+        }
+        else
+        {
+            // Update UI to reset password
+            self.authType = MXKAuthenticationTypeForgotPassword;
+        }
     }
     else if (sender == self.rightBarButtonItem)
     {
@@ -615,9 +635,7 @@
                             {
                                 [self.authenticationActivityIndicator stopAnimating];
                                 
-                                BOOL isIdentityServerConfigured = self.identityServerTextField.text.length > 0;
-                                
-                                if (isIdentityServerConfigured)
+                                if (self.isIdentityServerConfigured)
                                 {
                                     // Show the supported 3rd party ids which may be added to the account
                                     authInputsview.thirdPartyIdentifiersHidden = NO;
@@ -797,14 +815,6 @@
         CGRect frame = self.forgotPasswordButton.frame;
         self.submitButtonMinLeadingConstraint.constant =  frame.origin.x + frame.size.width + 10;
     }
-}
-
-- (void)setIdentityServerTextFieldText:(NSString *)identityServerUrl
-{
-    // Disable forgot password button when identity server is not set
-    self.forgotPasswordButton.enabled = identityServerUrl.length > 0;
-    
-    [super setIdentityServerTextFieldText:identityServerUrl];
 }
 
 #pragma mark -

@@ -74,6 +74,10 @@ internal enum VectorL10n {
   internal static var authForgotPassword: String { 
     return VectorL10n.tr("Vector", "auth_forgot_password") 
   }
+  /// No Identity Server is configured: add one to reset your password.
+  internal static var authForgotPasswordErrorNoConfiguredIdentityServer: String { 
+    return VectorL10n.tr("Vector", "auth_forgot_password_error_no_configured_identity_server") 
+  }
   /// URL (e.g. https://matrix.org)
   internal static var authHomeServerPlaceholder: String { 
     return VectorL10n.tr("Vector", "auth_home_server_placeholder") 
