@@ -746,7 +746,7 @@
 "device_verification_emoji_santa" = "Babagjyshi i Vitit të Ri";
 "device_verification_emoji_umbrella" = "Ombrellë";
 "device_verification_emoji_hourglass" = "Klepsidër";
-"device_verification_emoji_clock" = "Klasë";
+"device_verification_emoji_clock" = "Orë";
 "device_verification_emoji_gift" = "Dhuratë";
 "device_verification_emoji_light bulb" = "Llambë";
 "device_verification_emoji_book" = "Libër";
@@ -770,7 +770,7 @@
 "device_verification_emoji_anchor" = "Spirancë";
 "device_verification_emoji_headphones" = "Kufje";
 "device_verification_emoji_folder" = "Dosje";
-"event_formatter_message_edited_mention" = "(U përpunua)";
+"event_formatter_message_edited_mention" = "(u përpunua)";
 // Widget
 "widget_no_integrations_server_configured" = "S’ka të formësuar shërbyes integrimesh";
 "widget_integrations_server_failed_to_connect" = "S’u arrit të lidhej me shërbyes integrimesh";
@@ -778,3 +778,42 @@
 "room_event_action_reaction_show_all" = "Shfaqi krejt";
 "room_event_action_reaction_show_less" = "Shfaq më pak";
 "room_message_edits_history_title" = "Përpunime mesazhi";
+"auth_softlogout_signed_out" = "Keni bërë dalje";
+"auth_softlogout_sign_in" = "Hyni";
+"auth_softlogout_reason" = "Përgjegjësi i shërbyesit tuaj Home (%1$@) ka bërë daljen tuaj nga llogaria juaj %2$@ (%3$@).";
+"auth_softlogout_recover_encryption_keys" = "Bëni hyrjen, që të rimerrni kyçe fshehtëzimi të depozituar përjashtimisht në këtë pajisje. Do t’ju duhen për të lexuar krejt mesazhet tuaj të siguruar në çfarëdo pajisje.";
+"auth_softlogout_clear_data" = "Spastro të dhëna personale";
+"auth_softlogout_clear_data_message_1" = "Kujdes: Të dhënat tuaja personale (përfshi kyçe fshehtëzimi) janë ende të depozituara në këtë pajisje.";
+"auth_softlogout_clear_data_message_2" = "Spastrojini, nëse keni përfunduar së përdoruri këtë pajisje, ose dëshironi të hyni në një llogari tjetër.";
+"auth_softlogout_clear_data_button" = "Spastro krejt të dhënat";
+"auth_softlogout_clear_data_sign_out_title" = "Jeni i sigurt?";
+"auth_softlogout_clear_data_sign_out_msg" = "Jeni i sigurt se doni të spastrohen krejt të dhënat e depozituara në këtë pajisje? Që të mund të hyni te të dhëna të llogarisë tuaj dhe te mesazhe, bëni sërish hyrjen.";
+"auth_softlogout_clear_data_sign_out" = "Dilni";
+"room_event_action_reaction_history" = "Historik reagimesh";
+"room_action_camera" = "Bëni foto ose video";
+"room_action_send_file" = "Dërgoni kartelë";
+// Media picker
+"media_picker_title" = "Mediatekë";
+// Image picker
+"image_picker_action_camera" = "Bëni një foto";
+"image_picker_action_library" = "Zgjidhni prej biblioteke";
+"camera_unavailable" = "Kamera në pajisjen tuaj s’është e përdorshme";
+"photo_library_access_not_granted" = "%@ s’ka leje të hyjë në fototekë, ju lutemi, ndryshoni rregullimet e privatësisë";
+"device_verification_emoji_spanner" = "Çelës";
+"device_verification_emoji_lock" = "Dry";
+"device_verification_emoji_pin" = "Fiksoje";
+// MARK: File upload
+"file_upload_error_title" = "Ngarkim kartele";
+"file_upload_error_unsupported_file_type_message" = "Lloj i pambuluar kartele.";
+// MARK: Emoji picker
+"emoji_picker_title" = "Reagime";
+"emoji_picker_people_category" = "Emotikone & Njerëz";
+"emoji_picker_nature_category" = "Kafshë & Natyrë";
+"emoji_picker_foods_category" = "Ushqim & Pije";
+"emoji_picker_activity_category" = "Veprimtari";
+"emoji_picker_places_category" = "Udhëtim & Vende";
+"emoji_picker_objects_category" = "Objekte";
+"emoji_picker_symbols_category" = "Simbole";
+"emoji_picker_flags_category" = "Flamuj";
+// MARK: Reaction history
+"reaction_history_title" = "Reagime";
