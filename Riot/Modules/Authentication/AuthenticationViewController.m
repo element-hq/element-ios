@@ -643,7 +643,7 @@
                                 }
                                 else
                                 {
-                                    // Do not propose to add 3rd party ids if there is no configured Identity Server
+                                    // Do not propose to add 3rd party ids if there is no configured identity server
                                     [super onButtonPressed:sender];
                                 }
                             }

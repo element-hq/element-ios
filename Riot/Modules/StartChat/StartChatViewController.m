@@ -702,7 +702,7 @@
         
         if ([MXTools isEmailAddress:participantId])
         {
-            NSLog(@"[StartChatViewController] No Identity Server is configured, do not add participant with email");
+            NSLog(@"[StartChatViewController] No identity server is configured, do not add participant with email");
             
             [contactsTableViewController refreshCurrentSelectedCell:YES];
             

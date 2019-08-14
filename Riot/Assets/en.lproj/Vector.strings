@@ -97,7 +97,7 @@
 "auth_password_dont_match" = "Passwords don't match";
 "auth_username_in_use" = "Username in use";
 "auth_forgot_password" = "Forgot password?";
-"auth_forgot_password_error_no_configured_identity_server" = "No Identity Server is configured: add one to reset your password.";
+"auth_forgot_password_error_no_configured_identity_server" = "No identity server is configured: add one to reset your password.";
 "auth_email_not_found" = "Failed to send email: This email address was not found";
 "auth_use_server_options" = "Use custom server options (advanced)";
 "auth_email_validation_message" = "Please check your email to continue registration";
@@ -145,7 +145,7 @@
 "room_creation_make_private" = "Make private";
 "room_creation_wait_for_creation" = "A room is already being created. Please wait.";
 "room_creation_invite_another_user" = "Search / invite by User ID, Name or email";
-"room_creation_error_invite_user_by_email_without_identity_server" = "No Identity Server is configured so you cannot add a participant with an email.";
+"room_creation_error_invite_user_by_email_without_identity_server" = "No identity server is configured so you cannot add a participant with an email.";
 
 // Room recents
 "room_recents_directory_section" = "ROOM DIRECTORY";
@@ -220,7 +220,7 @@
 "room_participants_invite_malformed_id_title" = "Invite Error";
 "room_participants_invite_malformed_id" = "Malformed ID. Should be an email address or a Matrix ID like '@localpart:domain'";
 "room_participants_invited_section" = "INVITED";
-"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "No Identity Server is configured so you cannot start a chat with a contact using an email.";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "No identity server is configured so you cannot start a chat with a contact using an email.";
 
 "room_participants_online" = "Online";
 "room_participants_offline" = "Offline";
