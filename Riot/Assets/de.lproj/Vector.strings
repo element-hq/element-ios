@@ -806,3 +806,12 @@
 "image_picker_action_library" = "Aus der Mediathek auswählen";
 "camera_unavailable" = "Die Kamera ist auf Ihrem Gerät nicht verfügbar";
 "photo_library_access_not_granted" = "%@ hat keine Berechtigung zum Zugriff auf die Fotobibliothek. Bitte ändern Sie die Datenschutzeinstellungen";
+"auth_forgot_password_error_no_configured_identity_server" = "Es ist kein Identitätsserver konfiguriert: Fügen Sie einen hinzu, um Ihr Kennwort zurückzusetzen.";
+"room_creation_error_invite_user_by_email_without_identity_server" = "Es ist kein Identitätsserver konfiguriert, sodass Sie keinen Teilnehmer mit einer E-Mail hinzufügen können.";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Es ist kein Identitätsserver konfiguriert, sodass Sie keinen Chat mit einem Kontakt über eine E-Mail starten können.";
+// Service terms
+"service_terms_modal_title" = "Nutzungsbedingungen";
+"service_terms_modal_message" = "Um fortzufahren, müssen Sie die Bedingungen dieses Dienstes akzeptieren.";
+"service_terms_modal_accept_button" = "Akzeptieren";
+"service_terms_modal_description_for_identity_server" = "Für andere auffindbar sein";
+"service_terms_modal_description_for_integration_manager" = "Verwenden Sie Bots, Bridges, Widgets und Sticker-Packs";
