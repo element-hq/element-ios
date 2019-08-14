@@ -19,10 +19,13 @@
 
 #import "AppDelegate.h"
 #import "IntegrationManagerViewController.h"
+#import "Riot-Swift.h"
 
 NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse('%@', %@);";
 
-@interface WidgetViewController ()
+@interface WidgetViewController () <ServiceTermsModalCoordinatorBridgePresenterDelegate>
+
+@property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 
 @end
 
@@ -363,15 +366,71 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
         MXStrongifyAndReturnIfNil(self);
 
         NSLog(@"[WidgetVC] fixScalarToken: DONE");
-
-        self.URL = [self stringByReplacingScalarTokenInString:self.URL byScalarToken:scalarToken];
-
-        self->webView.hidden = NO;
+        [self loadDataWithScalarToken:scalarToken];
 
     } failure:^(NSError *error) {
         NSLog(@"[WidgetVC] fixScalarToken: Error: %@", error);
-        [self showErrorAsAlert:error];
+
+        if ([error.domain isEqualToString:WidgetManagerErrorDomain]
+            && error.code == WidgetManagerErrorCodeTermsNotSigned)
+        {
+            [self presentTerms];
+        }
+        else
+        {
+            [self showErrorAsAlert:error];
+        }
     }];
+}
+
+- (void)loadDataWithScalarToken:(NSString*)scalarToken
+{
+    self.URL = [self stringByReplacingScalarTokenInString:self.URL byScalarToken:scalarToken];
+
+    self->webView.hidden = NO;
+}
+
+
+
+#pragma mark - Service terms
+
+- (void)presentTerms
+{
+    if (self.serviceTermsModalCoordinatorBridgePresenter)
+    {
+        return;
+    }
+    
+    WidgetManagerConfig *config =  [[WidgetManager sharedManager] configForUser:widget.mxSession.myUser.userId];
+
+    NSLog(@"[WidgetVC] presentTerms for %@", config.baseUrl);
+
+    ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:widget.mxSession baseUrl:config.baseUrl
+                                                                                                                                                       serviceType:MXServiceTypeIntegrationManager                                                                                                                                            accessToken:config.scalarToken];
+    serviceTermsModalCoordinatorBridgePresenter.delegate = self;
+
+    [serviceTermsModalCoordinatorBridgePresenter presentFrom:self animated:YES];
+    self.serviceTermsModalCoordinatorBridgePresenter = serviceTermsModalCoordinatorBridgePresenter;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    MXWeakify(self);
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        MXStrongifyAndReturnIfNil(self);
+
+        WidgetManagerConfig *config = [[WidgetManager sharedManager] configForUser:self->widget.mxSession.myUser.userId];
+        [self loadDataWithScalarToken:config.scalarToken];
+    }];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self withdrawViewControllerAnimated:YES completion:nil];
+    }];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 
 @end
