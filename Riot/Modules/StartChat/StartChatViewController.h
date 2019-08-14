@@ -19,14 +19,7 @@
 /**
  'StartChatViewController' instance is used to prepare new room creation.
  */
-@interface StartChatViewController : ContactsTableViewController <UITableViewDataSource, UISearchBarDelegate, ContactsTableViewControllerDelegate>
-
-@property (weak, nonatomic) IBOutlet UIView *searchBarHeader;
-@property (weak, nonatomic) IBOutlet UISearchBar *searchBarView;
-@property (weak, nonatomic) IBOutlet UIView *searchBarHeaderBorder;
-
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchBarTopConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewBottomConstraint;
+@interface StartChatViewController : ContactsTableViewController
 
 /**
  Tell whether a search session is in progress

@@ -1220,22 +1220,35 @@ SingleImagePickerPresenterDelegate>
     else if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
     {
         MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-
+        
         userSettingsProfilePictureIndex = 0;
         userSettingsDisplayNameIndex = 1;
         userSettingsChangePasswordIndex = 2;
-        userSettingsEmailStartIndex = 3;
-        userSettingsNewEmailIndex = userSettingsEmailStartIndex + account.linkedEmails.count;
-        userSettingsPhoneStartIndex = userSettingsNewEmailIndex + 1;
-        userSettingsNewPhoneIndex = userSettingsPhoneStartIndex + account.linkedPhoneNumbers.count;
-
+        
         // Hide some unsupported account settings
         userSettingsFirstNameIndex = -1;
         userSettingsSurnameIndex = -1;
         userSettingsNightModeSepIndex = -1;
         userSettingsNightModeIndex = -1;
-
-        count = userSettingsNewPhoneIndex + 1;
+        
+        if (self.mainSession.matrixRestClient.identityServer.length)
+        {
+            userSettingsEmailStartIndex = 3;
+            userSettingsNewEmailIndex = userSettingsEmailStartIndex + account.linkedEmails.count;
+            userSettingsPhoneStartIndex = userSettingsNewEmailIndex + 1;
+            userSettingsNewPhoneIndex = userSettingsPhoneStartIndex + account.linkedPhoneNumbers.count;
+            
+            count = userSettingsNewPhoneIndex + 1;
+        }
+        else
+        {
+            userSettingsEmailStartIndex = -1;
+            userSettingsNewEmailIndex = -1;
+            userSettingsPhoneStartIndex = -1;
+            userSettingsNewPhoneIndex = -1;
+            
+            count = userSettingsChangePasswordIndex + 1;
+        }
     }
     else if (section == SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX)
     {

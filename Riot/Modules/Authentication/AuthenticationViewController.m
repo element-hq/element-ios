@@ -48,6 +48,8 @@
     MXAutoDiscovery *autoDiscovery;
 }
 
+@property (nonatomic, readonly) BOOL isIdentityServerConfigured;
+
 @end
 
 @implementation AuthenticationViewController
@@ -188,6 +190,11 @@
     [forgotPasswordTitle addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.tintColor range:NSMakeRange(0, forgotPasswordTitle.length)];
     [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateNormal];
     [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateHighlighted];
+    
+    NSMutableAttributedString *forgotPasswordTitleDisabled = [[NSMutableAttributedString alloc] initWithAttributedString:forgotPasswordTitle];
+    [forgotPasswordTitleDisabled addAttribute:NSForegroundColorAttributeName value:[ThemeService.shared.theme.tintColor colorWithAlphaComponent:0.3] range:NSMakeRange(0, forgotPasswordTitle.length)];
+    [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitleDisabled forState:UIControlStateDisabled];
+    
     [self updateForgotPwdButtonVisibility];
     
     NSAttributedString *serverOptionsTitle = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_use_server_options", @"Vector", nil) attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textSecondaryColor, NSFontAttributeName: [UIFont systemFontOfSize:14]}];
@@ -254,6 +261,11 @@
     }
 
     autoDiscovery = nil;
+}
+
+- (BOOL)isIdentityServerConfigured
+{
+    return self.identityServerTextField.text.length > 0;
 }
 
 - (void)setAuthType:(MXKAuthenticationType)authType
@@ -533,8 +545,21 @@
     }
     else if (sender == self.forgotPasswordButton)
     {
-        // Update UI to reset password
-        self.authType = MXKAuthenticationTypeForgotPassword;
+        if (!self.isIdentityServerConfigured)
+        {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"error"]
+                                                                           message:NSLocalizedStringFromTable(@"auth_forgot_password_error_no_configured_identity_server", @"Vector", nil)
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:UIAlertActionStyleDefault handler:nil]];
+            [self presentViewController:alert animated:YES completion:nil];
+            
+            return;
+        }
+        else
+        {
+            // Update UI to reset password
+            self.authType = MXKAuthenticationTypeForgotPassword;
+        }
     }
     else if (sender == self.rightBarButtonItem)
     {
@@ -609,11 +634,18 @@
                             else
                             {
                                 [self.authenticationActivityIndicator stopAnimating];
-
-                                // Show the supported 3rd party ids which may be added to the account
-                                authInputsview.thirdPartyIdentifiersHidden = NO;
-
-                                [self updateRegistrationScreenWithThirdPartyIdentifiersHidden:NO];
+                                
+                                if (self.isIdentityServerConfigured)
+                                {
+                                    // Show the supported 3rd party ids which may be added to the account
+                                    authInputsview.thirdPartyIdentifiersHidden = NO;
+                                    [self updateRegistrationScreenWithThirdPartyIdentifiersHidden:NO];
+                                }
+                                else
+                                {
+                                    // Do not propose to add 3rd party ids if there is no configured identity server
+                                    [super onButtonPressed:sender];
+                                }
                             }
                         }];
                     }
