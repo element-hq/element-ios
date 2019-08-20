@@ -817,3 +817,12 @@
 "emoji_picker_flags_category" = "Flamuj";
 // MARK: Reaction history
 "reaction_history_title" = "Reagime";
+"auth_forgot_password_error_no_configured_identity_server" = "S’ka shërbyes identitetesh të formësuar: shtoni një të tillë që të ricaktoni fjalëkalimin tuaj.";
+"room_creation_error_invite_user_by_email_without_identity_server" = "S’ka shërbyes identitetesh të formësua, ndaj s’mund të shtoni një pjesëmarrës me një email.";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "S’ka shërbyes identitetesh të formësuar, ndaj s’mund të nisni një fjalosje me një kontakt duke përdorur një email.";
+// Service terms
+"service_terms_modal_title" = "Kushte Shërbimi";
+"service_terms_modal_message" = "Që të vazhdohet, lypset të pranoni Kushtet e këtij shërbimi.";
+"service_terms_modal_accept_button" = "Pranoji";
+"service_terms_modal_description_for_identity_server" = "Jini i zbulueshëm nga të tjerët";
+"service_terms_modal_description_for_integration_manager" = "Përdorni Robotë, ura, widget-e dhe paketa ngjitësish";
