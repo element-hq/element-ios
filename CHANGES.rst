@@ -3,6 +3,7 @@ Changes in 0.9.3 (2019-08-)
 
 Improvements:
  * Prompt to accept integration manager policies on use (#2600).
+ * Use MXIdentityService to perform identity server requests (#2647).
 
 Changes in 0.9.2 (2019-08-08)
 ===============================================
