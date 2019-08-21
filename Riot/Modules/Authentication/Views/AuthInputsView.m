@@ -604,7 +604,7 @@
                         restClient = [self.delegate authInputsViewThirdPartyIdValidationRestClient:self];
                     }
                     
-                    if (restClient)
+                    if (restClient && restClient.identityServer)
                     {
                         // Check whether a second 3pid is available
                         _isThirdPartyIdentifierPending = (nbPhoneNumber && ![self isFlowCompleted:kMXLoginFlowTypeMSISDN]);
