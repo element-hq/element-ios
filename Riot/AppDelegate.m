@@ -2106,14 +2106,14 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         // Validate the email on the passed identity server
         NSString *identityServer = [NSString stringWithFormat:@"%@://%@", webURL.scheme, webURL.host];
-        MXRestClient *identityRestClient = [[MXRestClient alloc] initWithHomeServer:identityServer andOnUnrecognizedCertificateBlock:nil];
+        MXIdentityService *identityService = [[MXIdentityService alloc] initWithIdentityServer:identityServer];
         
         // Extract required parameters from the link
         NSArray<NSString*> *pathParams;
         NSMutableDictionary *queryParams;
         [self parseUniversalLinkFragment:webURL.absoluteString outPathParams:&pathParams outQueryParams:&queryParams];
         
-        [identityRestClient submit3PIDValidationToken:queryParams[@"token"] medium:kMX3PIDMediumEmail clientSecret:queryParams[@"client_secret"] sid:queryParams[@"sid"] success:^{
+        [identityService submit3PIDValidationToken:queryParams[@"token"] medium:kMX3PIDMediumEmail clientSecret:queryParams[@"client_secret"] sid:queryParams[@"sid"] success:^{
             
             NSLog(@"[AppDelegate] handleUniversalLink. Email successfully validated.");
             
