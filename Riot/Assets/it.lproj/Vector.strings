@@ -674,7 +674,7 @@
 "room_event_action_edit" = "Modifica";
 "room_event_action_reaction_show_all" = "Mostra tutto";
 "room_event_action_reaction_show_less" = "Mostra meno";
-"room_event_action_reaction_history" = "Storia di reazione";
+"room_event_action_reaction_history" = "Cronologia reazioni";
 "room_action_camera" = "Scatta foto o video";
 "room_action_send_file" = "Invia File";
 "room_action_reply" = "Rispondi";
