@@ -446,9 +446,9 @@
 "settings_fail_to_update_password" = "Fail to update password";
 "settings_password_updated" = "Your password has been updated";
 
-"settings_crypto_device_name" = "Device name: ";
+"settings_crypto_device_name" = "Device Public Name: ";
 "settings_crypto_device_id" = "\nDevice ID: ";
-"settings_crypto_device_key" = "\nDevice key: ";
+"settings_crypto_device_key" = "\nDevice key:\n";
 "settings_crypto_export" = "Export keys";
 "settings_crypto_blacklist_unverified_devices" = "Encrypt to verified devices only";
 

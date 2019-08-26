@@ -74,7 +74,7 @@ internal enum VectorL10n {
   internal static var authForgotPassword: String { 
     return VectorL10n.tr("Vector", "auth_forgot_password") 
   }
-  /// No Identity Server is configured: add one to reset your password.
+  /// No identity server is configured: add one to reset your password.
   internal static var authForgotPasswordErrorNoConfiguredIdentityServer: String { 
     return VectorL10n.tr("Vector", "auth_forgot_password_error_no_configured_identity_server") 
   }
@@ -1502,7 +1502,7 @@ internal enum VectorL10n {
   internal static var roomCreationAppearancePicture: String { 
     return VectorL10n.tr("Vector", "room_creation_appearance_picture") 
   }
-  /// No Identity Server is configured so you cannot add a participant with an email.
+  /// No identity server is configured so you cannot add a participant with an email.
   internal static var roomCreationErrorInviteUserByEmailWithoutIdentityServer: String { 
     return VectorL10n.tr("Vector", "room_creation_error_invite_user_by_email_without_identity_server") 
   }
@@ -2126,7 +2126,7 @@ internal enum VectorL10n {
   internal static var roomParticipantsRemoveThirdPartyInviteMsg: String { 
     return VectorL10n.tr("Vector", "room_participants_remove_third_party_invite_msg") 
   }
-  /// No Identity Server is configured so you cannot start a chat with a contact using an email.
+  /// No identity server is configured so you cannot start a chat with a contact using an email.
   internal static var roomParticipantsStartNewChatErrorUsingUserEmailWithoutIdentityServer: String { 
     return VectorL10n.tr("Vector", "room_participants_start_new_chat_error_using_user_email_without_identity_server") 
   }
@@ -2450,11 +2450,11 @@ internal enum VectorL10n {
   internal static var settingsCryptoDeviceId: String { 
     return VectorL10n.tr("Vector", "settings_crypto_device_id") 
   }
-  /// \nDevice key: 
+  /// \nDevice key:\n
   internal static var settingsCryptoDeviceKey: String { 
     return VectorL10n.tr("Vector", "settings_crypto_device_key") 
   }
-  /// Device name: 
+  /// Device Public Name: 
   internal static var settingsCryptoDeviceName: String { 
     return VectorL10n.tr("Vector", "settings_crypto_device_name") 
   }
