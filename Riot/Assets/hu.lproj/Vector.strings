@@ -818,3 +818,20 @@
 "room_event_action_reaction_history" = "Reakciók története";
 // MARK: Reaction history
 "reaction_history_title" = "Reakciók";
+"auth_forgot_password_error_no_configured_identity_server" = "Azonosítási szerver nincs beállítva: a jelszó visszaállításhoz adj hozzá egyet.";
+"room_creation_error_invite_user_by_email_without_identity_server" = "Azonosítási szerver nincs beállítva, így e-mail cím alapján nem tudsz hozzáadni résztvevőt.";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Azonosítási szerver nincs beállítva, így e-mail cím alapján nem tudsz beszélgetést kezdeményezni.";
+"room_action_camera" = "Fotó vagy videó készítése";
+// Media picker
+"media_picker_title" = "Média könyvtár";
+// Image picker
+"image_picker_action_camera" = "Fotó készítése";
+"image_picker_action_library" = "Válassz a könyvtárból";
+"camera_unavailable" = "A kamera nem érhető el az eszközödön";
+"photo_library_access_not_granted" = "A fénykép könyvár eléréséhez %@ nem rendelkezik engedéllyel, kérlek változtasd meg az adatvédelmi beállításokat";
+// Service terms
+"service_terms_modal_title" = "Felhasználási feltételek";
+"service_terms_modal_message" = "A folytatáshoz el kell fogadnod a felhasználási feltételeket.";
+"service_terms_modal_accept_button" = "Elfogad";
+"service_terms_modal_description_for_identity_server" = "Látható mások számára";
+"service_terms_modal_description_for_integration_manager" = "Használjon botokat, hidakat, kisalkalmazásokat és matrica csomagokat";

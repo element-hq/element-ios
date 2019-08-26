@@ -821,3 +821,12 @@
 "image_picker_action_library" = "Choisir dans la médiathèque";
 "camera_unavailable" = "L’appareil photo n’est pas disponible sur votre appareil";
 "photo_library_access_not_granted" = "%@ n’a pas la permission pour accéder à la médiathèque, veuillez modifier les options de vie privée";
+"auth_forgot_password_error_no_configured_identity_server" = "Aucun serveur d’identité n’est configuré : ajoutez-en un pour réinitialiser votre mot de passe.";
+"room_creation_error_invite_user_by_email_without_identity_server" = "Aucun serveur d’identité n’est configuré donc vous ne pouvez pas ajouter de participant avec un e-mail.";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Aucun serveur d’identité n’est configuré donc vous ne pouvez pas commencer de discussion avec un contact en utilisant un e-mail.";
+// Service terms
+"service_terms_modal_title" = "Conditions de service";
+"service_terms_modal_message" = "Pour continuer vous devez accepter les conditions de ce service.";
+"service_terms_modal_accept_button" = "Accepter";
+"service_terms_modal_description_for_identity_server" = "Se rendre découvrable pour les autres";
+"service_terms_modal_description_for_integration_manager" = "Utiliser des robots, des passerelles, des widgets et des packs de stickers";
