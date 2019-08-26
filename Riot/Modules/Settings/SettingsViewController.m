@@ -1008,6 +1008,10 @@ SingleImagePickerPresenterDelegate>
                                                      attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
     NSString *fingerprint = account.mxSession.crypto.deviceEd25519Key;
+    if (fingerprint)
+    {
+        fingerprint = [MXTools addWhiteSpacesToString:fingerprint every:4];
+    }
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:fingerprint ? fingerprint : @""
                                                      attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
