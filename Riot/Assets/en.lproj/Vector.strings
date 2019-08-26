@@ -479,6 +479,8 @@
 "settings_key_backup_delete_confirmation_prompt_title" = "Delete Backup";
 "settings_key_backup_delete_confirmation_prompt_msg" = "Are you sure? You will lose your encrypted messages if your keys are not backed up properly.";
 
+"settings_devices_description" = "A device's public name is visible to people you communicate with";
+
 // Room Details
 "room_details_title" = "Room Details";
 "room_details_people" = "Members";

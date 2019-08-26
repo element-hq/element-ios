@@ -2478,6 +2478,10 @@ internal enum VectorL10n {
   internal static var settingsDevices: String { 
     return VectorL10n.tr("Vector", "settings_devices") 
   }
+  /// A device's public name is visible to people you communicate with
+  internal static var settingsDevicesDescription: String { 
+    return VectorL10n.tr("Vector", "settings_devices_description") 
+  }
   /// Display Name
   internal static var settingsDisplayName: String { 
     return VectorL10n.tr("Vector", "settings_display_name") 
