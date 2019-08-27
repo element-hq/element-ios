@@ -3,8 +3,9 @@ Changes in 0.9.3 (2019-08-)
 
 Improvements:
  * Upgrade MatrixKit version ([v0.11.0](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.11.0)).
- * Prompt to accept integration manager policies on use (#2600).
- * Make clear that device names are publicly readable (#2662).
+ * Privacy: Prompt to accept integration manager policies on use (#2600).
+ * Privacy: Make clear that device names are publicly readable (#2662).
+ * Widgets: Whitelist [MSC1961](https://github.com/matrix-org/matrix-doc/pull/1961) widget urls
 
 Changes in 0.9.2 (2019-08-08)
 ===============================================
