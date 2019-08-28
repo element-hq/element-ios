@@ -26,4 +26,7 @@
 
 @property (unsafe_unretained, nonatomic) IBOutlet NSLayoutConstraint *callerImageViewWidthConstraint;
 
+// At the end of call, this flag indicates if the prompt to use the fallback should be displayed
+@property (nonatomic) BOOL shouldPromptForStunServerFallback;
+
 @end

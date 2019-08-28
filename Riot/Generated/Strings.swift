@@ -370,6 +370,22 @@ internal enum VectorL10n {
   internal static var callJitsiError: String { 
     return VectorL10n.tr("Vector", "call_jitsi_error") 
   }
+  /// Please ask the administrator of your homeserver %@ to configure a TURN server in order for calls to work reliably.
+  internal static func callNoStunServerErrorMessage1(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "call_no_stun_server_error_message_1", p1)
+  }
+  /// Alternatively, you can try to use the public server at %@, but this will not be as reliable, and it will share your IP address with that server. You can also manage this in Settings
+  internal static func callNoStunServerErrorMessage2(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "call_no_stun_server_error_message_2", p1)
+  }
+  /// Call failed due to misconfigured server
+  internal static var callNoStunServerErrorTitle: String { 
+    return VectorL10n.tr("Vector", "call_no_stun_server_error_title") 
+  }
+  /// Try using %@
+  internal static func callNoStunServerErrorUseFallbackButton(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "call_no_stun_server_error_use_fallback_button", p1)
+  }
   /// Camera
   internal static var camera: String { 
     return VectorL10n.tr("Vector", "camera") 
@@ -2393,6 +2409,14 @@ internal enum VectorL10n {
   /// CALLS
   internal static var settingsCallsSettings: String { 
     return VectorL10n.tr("Vector", "settings_calls_settings") 
+  }
+  /// Allow fallback call assist server
+  internal static var settingsCallsStunServerFallbackButton: String { 
+    return VectorL10n.tr("Vector", "settings_calls_stun_server_fallback_button") 
+  }
+  /// Allow fallback call assist server %@ when your homeserver does not offer one (your IP address would be shared during a call).
+  internal static func settingsCallsStunServerFallbackDescription(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_calls_stun_server_fallback_description", p1)
   }
   /// Change password
   internal static var settingsChangePassword: String { 

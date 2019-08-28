@@ -2605,6 +2605,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 // Let's call invite be valid for 1 minute
                 mxSession.callManager.inviteLifetime = 60000;
 
+                if (RiotSettings.shared.allowStunServerFallback)
+                {
+                    mxSession.callManager.fallbackSTUNServer = RiotSettings.shared.stunServerFallback;
+                }
+
                 // Setup CallKit
                 if ([MXCallKitAdapter callKitAvailable])
                 {
@@ -3850,6 +3855,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                     NSString *btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"active_call_details", @"Vector", nil), callViewController.callerNameLabel.text];
                     [self addCallStatusBar:btnTitle];
                 }
+
+                if ([callViewController isKindOfClass:[CallViewController class]]
+                    && ((CallViewController*)callViewController).shouldPromptForStunServerFallback)
+                {
+                    [self promptForStunServerFallback];
+                }
                 
                 if (completion)
                 {
@@ -3880,6 +3891,52 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 
             }];
         }
+    }
+}
+
+- (void)promptForStunServerFallback
+{
+    [_errorNotification dismissViewControllerAnimated:NO completion:nil];
+
+    NSString *stunFallbackHost = RiotSettings.shared.stunServerFallback;
+    // Remove "stun:"
+    stunFallbackHost = [stunFallbackHost componentsSeparatedByString:@":"].lastObject;
+
+    MXSession *mainSession = self.mxSessions.firstObject;
+    NSString *homeServerName = mainSession.matrixRestClient.credentials.homeServerName;
+
+    NSString *message = [NSString stringWithFormat:@"%@\n\n%@",
+                         [NSString stringWithFormat:NSLocalizedStringFromTable(@"call_no_stun_server_error_message_1", @"Vector", nil), homeServerName],
+                         [NSString stringWithFormat: NSLocalizedStringFromTable(@"call_no_stun_server_error_message_2", @"Vector", nil), stunFallbackHost]];
+
+    _errorNotification = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"call_no_stun_server_error_title", @"Vector", nil)
+                                                             message:message
+                                                      preferredStyle:UIAlertControllerStyleAlert];
+
+    [_errorNotification addAction:[UIAlertAction actionWithTitle:[NSString stringWithFormat: NSLocalizedStringFromTable(@"call_no_stun_server_error_use_fallback_button", @"Vector", nil), stunFallbackHost]
+                                                           style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction * action) {
+
+                                                             RiotSettings.shared.allowStunServerFallback = YES;
+                                                             mainSession.callManager.fallbackSTUNServer = RiotSettings.shared.stunServerFallback;
+
+                                                             [AppDelegate theDelegate].errorNotification = nil;
+                                                         }]];
+
+    [_errorNotification addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction * action) {
+
+                                                             RiotSettings.shared.allowStunServerFallback = NO;
+
+                                                             [AppDelegate theDelegate].errorNotification = nil;
+                                                         }]];
+
+    // Display the error notification
+    if (!isErrorNotificationSuspended)
+    {
+        [_errorNotification mxk_setAccessibilityIdentifier:@"AppDelegateErrorAlert"];
+        [self showNotificationAlert:_errorNotification];
     }
 }
 
