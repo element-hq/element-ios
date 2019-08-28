@@ -446,9 +446,9 @@
 "settings_fail_to_update_password" = "Fail to update password";
 "settings_password_updated" = "Your password has been updated";
 
-"settings_crypto_device_name" = "Device name: ";
+"settings_crypto_device_name" = "Device Public Name: ";
 "settings_crypto_device_id" = "\nDevice ID: ";
-"settings_crypto_device_key" = "\nDevice key: ";
+"settings_crypto_device_key" = "\nDevice key:\n";
 "settings_crypto_export" = "Export keys";
 "settings_crypto_blacklist_unverified_devices" = "Encrypt to verified devices only";
 
@@ -478,6 +478,8 @@
 "settings_key_backup_button_connect" = "Connect this device to Key Backup";
 "settings_key_backup_delete_confirmation_prompt_title" = "Delete Backup";
 "settings_key_backup_delete_confirmation_prompt_msg" = "Are you sure? You will lose your encrypted messages if your keys are not backed up properly.";
+
+"settings_devices_description" = "A device's public name is visible to people you communicate with";
 
 // Room Details
 "room_details_title" = "Room Details";

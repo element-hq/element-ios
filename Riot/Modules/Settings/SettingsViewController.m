@@ -128,6 +128,11 @@ enum {
     CRYPTOGRAPHY_COUNT
 };
 
+enum
+{
+    DEVICES_DESCRIPTION_INDEX = 0
+};
+
 #define SECTION_TITLE_PADDING_WHEN_HIDDEN 0.01f
 
 typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
@@ -1008,6 +1013,10 @@ SingleImagePickerPresenterDelegate>
                                                      attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
     NSString *fingerprint = account.mxSession.crypto.deviceEd25519Key;
+    if (fingerprint)
+    {
+        fingerprint = [MXTools addWhiteSpacesToString:fingerprint every:4];
+    }
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:fingerprint ? fingerprint : @""
                                                      attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
@@ -1316,6 +1325,11 @@ SingleImagePickerPresenterDelegate>
     else if (section == SETTINGS_SECTION_DEVICES_INDEX)
     {
         count = devicesArray.count;
+        if (count)
+        {
+            // For some description (DEVICES_DESCRIPTION_INDEX)
+            count++;
+        }
     }
     else if (section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
     {
@@ -1402,6 +1416,7 @@ SingleImagePickerPresenterDelegate>
     cell.textLabel.accessibilityIdentifier = nil;
     cell.textLabel.font = [UIFont systemFontOfSize:17];
     cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    cell.contentView.backgroundColor = UIColor.clearColor;
     
     return cell;
 }
@@ -2194,22 +2209,39 @@ SingleImagePickerPresenterDelegate>
     }
     else if (section == SETTINGS_SECTION_DEVICES_INDEX)
     {
-        MXKTableViewCell *deviceCell = [self getDefaultTableViewCell:tableView];
-        
-        if (row < devicesArray.count)
+        if (row == DEVICES_DESCRIPTION_INDEX)
         {
-            NSString *name = devicesArray[row].displayName;
-            NSString *deviceId = devicesArray[row].deviceId;
-            deviceCell.textLabel.text = (name.length ? [NSString stringWithFormat:@"%@ (%@)", name, deviceId] : [NSString stringWithFormat:@"(%@)", deviceId]);
-            deviceCell.textLabel.numberOfLines = 0;
-            
-            if ([deviceId isEqualToString:self.mainSession.matrixRestClient.credentials.deviceId])
-            {
-                deviceCell.textLabel.font = [UIFont boldSystemFontOfSize:17];
-            }
+            MXKTableViewCell *descriptionCell = [self getDefaultTableViewCell:tableView];
+            descriptionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_devices_description", @"Vector", nil);
+            descriptionCell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+            descriptionCell.textLabel.font = [UIFont systemFontOfSize:15];
+            descriptionCell.textLabel.numberOfLines = 0;
+            descriptionCell.contentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+            descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+            cell = descriptionCell;
         }
-        
-        cell = deviceCell;
+        else
+        {
+            NSUInteger deviceIndex = row - 1;
+
+            MXKTableViewCell *deviceCell = [self getDefaultTableViewCell:tableView];
+            if (deviceIndex < devicesArray.count)
+            {
+                NSString *name = devicesArray[deviceIndex].displayName;
+                NSString *deviceId = devicesArray[deviceIndex].deviceId;
+                deviceCell.textLabel.text = (name.length ? [NSString stringWithFormat:@"%@ (%@)", name, deviceId] : [NSString stringWithFormat:@"(%@)", deviceId]);
+                deviceCell.textLabel.numberOfLines = 0;
+
+                if ([deviceId isEqualToString:self.mainSession.matrixRestClient.credentials.deviceId])
+                {
+                    deviceCell.textLabel.font = [UIFont boldSystemFontOfSize:17];
+                }
+            }
+
+            cell = deviceCell;
+        }
+
     }
     else if (section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
     {
@@ -2696,9 +2728,13 @@ SingleImagePickerPresenterDelegate>
         }
         else if (section == SETTINGS_SECTION_DEVICES_INDEX)
         {
-            if (row < devicesArray.count)
+            if (row > DEVICES_DESCRIPTION_INDEX)
             {
-                [self showDeviceDetails:devicesArray[row]];
+                NSUInteger deviceIndex = row - 1;
+                if (deviceIndex < devicesArray.count)
+                {
+                    [self showDeviceDetails:devicesArray[deviceIndex]];
+                }
             }
         }
         else if (section == SETTINGS_SECTION_CONTACTS_INDEX)
