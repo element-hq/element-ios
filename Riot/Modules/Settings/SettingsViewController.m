@@ -86,7 +86,9 @@ enum
 enum
 {
     CALLS_ENABLE_CALLKIT_INDEX = 0,
-    CALLS_DESCRIPTION_INDEX,
+    CALLS_CALLKIT_DESCRIPTION_INDEX,
+    CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX,
+    CALLS_STUN_SERVER_FALLBACK_DESCRIPTION_INDEX,
     CALLS_COUNT
 };
 
@@ -1265,9 +1267,11 @@ SingleImagePickerPresenterDelegate>
     }
     else if (section == SETTINGS_SECTION_CALLS_INDEX)
     {
-        if ([MXCallKitAdapter callKitAvailable])
+        count = CALLS_COUNT;
+
+        if (!RiotSettings.shared.stunServerFallback)
         {
-            count = CALLS_COUNT;
+            count -= 2;
         }
     }
     else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
@@ -1827,16 +1831,52 @@ SingleImagePickerPresenterDelegate>
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleCallKit:) forControlEvents:UIControlEventTouchUpInside];
-            
+
+            if (![MXCallKitAdapter callKitAvailable])
+            {
+                labelAndSwitchCell.mxkSwitch.on = NO;
+                labelAndSwitchCell.mxkSwitch.enabled = NO;
+                labelAndSwitchCell.mxkLabel.enabled = NO;
+            }
+
             cell = labelAndSwitchCell;
         }
-        else if (row == CALLS_DESCRIPTION_INDEX)
+        else if (row == CALLS_CALLKIT_DESCRIPTION_INDEX)
         {
             MXKTableViewCell *globalInfoCell = [self getDefaultTableViewCell:tableView];
             globalInfoCell.textLabel.text = NSLocalizedStringFromTable(@"settings_callkit_info", @"Vector", nil);
             globalInfoCell.textLabel.numberOfLines = 0;
             globalInfoCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
+
+            if (![MXCallKitAdapter callKitAvailable])
+            {
+                globalInfoCell.textLabel.enabled = NO;
+            }
+
+            cell = globalInfoCell;
+        }
+        else if (row == CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_calls_stun_server_fallback_button", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.allowStunServerFallback;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleStunServerFallback:) forControlEvents:UIControlEventTouchUpInside];
+
+            cell = labelAndSwitchCell;
+        }
+        else if (row == CALLS_STUN_SERVER_FALLBACK_DESCRIPTION_INDEX)
+        {
+            NSString *stunFallbackHost = RiotSettings.shared.stunServerFallback;
+            // Remove "stun:"
+            stunFallbackHost = [stunFallbackHost componentsSeparatedByString:@":"].lastObject;
+
+            MXKTableViewCell *globalInfoCell = [self getDefaultTableViewCell:tableView];
+            globalInfoCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_calls_stun_server_fallback_description", @"Vector", nil), stunFallbackHost];
+            globalInfoCell.textLabel.numberOfLines = 0;
+            globalInfoCell.selectionStyle = UITableViewCellSelectionStyleNone;
+
             cell = globalInfoCell;
         }
     }
@@ -2337,10 +2377,7 @@ SingleImagePickerPresenterDelegate>
     }
     else if (section == SETTINGS_SECTION_CALLS_INDEX)
     {
-        if ([MXCallKitAdapter callKitAvailable])
-        {
-            return NSLocalizedStringFromTable(@"settings_calls_settings", @"Vector", nil);
-        }
+        return NSLocalizedStringFromTable(@"settings_calls_settings", @"Vector", nil);
     }
     else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
     {
@@ -2486,13 +2523,6 @@ SingleImagePickerPresenterDelegate>
             }
         }
     }
-    else if (section == SETTINGS_SECTION_CALLS_INDEX)
-    {
-        if (![MXCallKitAdapter callKitAvailable])
-        {
-            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
-        }
-    }
     else if (section == SETTINGS_SECTION_FLAIR_INDEX)
     {
         if (groupsDataSource.joinedGroupsSection == -1)
@@ -2516,13 +2546,6 @@ SingleImagePickerPresenterDelegate>
                 // Hide this section
                 return SECTION_TITLE_PADDING_WHEN_HIDDEN;
             }
-        }
-    }
-    else if (section == SETTINGS_SECTION_CALLS_INDEX)
-    {
-        if (![MXCallKitAdapter callKitAvailable])
-        {
-            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
         }
     }
     else if (section == SETTINGS_SECTION_FLAIR_INDEX)
@@ -2951,6 +2974,14 @@ SingleImagePickerPresenterDelegate>
 {
     UISwitch *switchButton = (UISwitch*)sender;
     [MXKAppSettings standardAppSettings].enableCallKit = switchButton.isOn;
+}
+
+- (void)toggleStunServerFallback:(id)sender
+{
+    UISwitch *switchButton = (UISwitch*)sender;
+    RiotSettings.shared.allowStunServerFallback = switchButton.isOn;
+
+    self.mainSession.callManager.fallbackSTUNServer = RiotSettings.shared.allowStunServerFallback ? RiotSettings.shared.stunServerFallback : nil;
 }
 
 - (void)toggleShowDecodedContent:(id)sender

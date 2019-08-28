@@ -405,6 +405,9 @@
 
 "settings_enable_callkit" = "Integrated calling";
 "settings_callkit_info" = "Receive incoming calls on your lock screen. See your Riot calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.";
+"settings_calls_stun_server_fallback_button" = "Allow fallback call assist server";
+"settings_calls_stun_server_fallback_description" = "Allow fallback call assist server %@ when your homeserver does not offer one (your IP address would be shared during a call).";
+
 "settings_ui_language" = "Language";
 "settings_ui_theme" = "Theme";
 "settings_ui_theme_auto" = "Auto";
@@ -630,6 +633,11 @@
 "call_incoming_video" = "Incoming video call...";
 "call_already_displayed" = "There is already a call in progress.";
 "call_jitsi_error" = "Failed to join the conference call.";
+
+"call_no_stun_server_error_title" ="Call failed due to misconfigured server";
+"call_no_stun_server_error_message_1" ="Please ask the administrator of your homeserver %@ to configure a TURN server in order for calls to work reliably.";
+"call_no_stun_server_error_message_2" ="Alternatively, you can try to use the public server at %@, but this will not be as reliable, and it will share your IP address with that server. You can also manage this in Settings";
+"call_no_stun_server_error_use_fallback_button" = "Try using %@";
 
 // No VoIP support
 "no_voip_title" = "Incoming call";

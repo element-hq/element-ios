@@ -30,6 +30,8 @@ final class RiotSettings: NSObject {
         static let notificationsShowDecryptedContent = "showDecryptedContent"
         static let pinRoomsWithMissedNotifications = "pinRoomsWithMissedNotif"
         static let pinRoomsWithUnreadMessages = "pinRoomsWithUnread"
+        static let allowStunServerFallback = "allowStunServerFallback"
+        static let stunServerFallback = "stunServerFallback"
     }
 
     /// Riot Standard Room Member Power Level
@@ -118,5 +120,25 @@ final class RiotSettings: NSObject {
         } set {
             UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.createConferenceCallsWithJitsi)
         }
+    }
+
+
+    // MARK: Calls
+
+    /// Indicate if `allowStunServerFallback` settings has been set once.
+    var isAllowStunServerFallbackHasBeenSetOnce: Bool {
+        return UserDefaults.standard.object(forKey: UserDefaultsKeys.allowStunServerFallback) != nil
+    }
+
+    var allowStunServerFallback: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.allowStunServerFallback)
+        } set {
+            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.allowStunServerFallback)
+        }
+    }
+
+    var stunServerFallback: String? {
+        return UserDefaults.standard.string(forKey: UserDefaultsKeys.stunServerFallback)
     }
 }
