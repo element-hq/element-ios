@@ -9,6 +9,7 @@ Improvements:
  * Privacy: Prompt to accept integration manager policies on use (#2600).
  * Privacy: Make clear that device names are publicly readable (#2662).
  * Privacy: Remove the bind true flag from 3PID calls on registration (#2648).
+ * Privacy: Remove the bind true flag from 3PID adds in settings (#2650).
 
 Changes in 0.9.2 (2019-08-08)
 ===============================================
