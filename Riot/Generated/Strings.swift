@@ -30,25 +30,25 @@ internal enum VectorL10n {
   internal static var authAcceptPolicies: String { 
     return VectorL10n.tr("Vector", "auth_accept_policies") 
   }
-  /// Add an email address and a phone number to your account to let users discover you. Email address will also let you reset your password.
-  internal static var authAddEmailAndPhoneMessage: String { 
-    return VectorL10n.tr("Vector", "auth_add_email_and_phone_message") 
+  /// Set an email and a phone number for account recovery. Use email or phone to optionally be discoverable by existing contacts.
+  internal static var authAddEmailAndPhoneMessage2: String { 
+    return VectorL10n.tr("Vector", "auth_add_email_and_phone_message_2") 
   }
   /// Registration with email and phone number at once is not supported yet until the api exists. Only the phone number will be taken into account. You may add your email to your profile in settings.
   internal static var authAddEmailAndPhoneWarning: String { 
     return VectorL10n.tr("Vector", "auth_add_email_and_phone_warning") 
   }
-  /// Add an email address to your account to let users discover you, and to reset your password.
-  internal static var authAddEmailMessage: String { 
-    return VectorL10n.tr("Vector", "auth_add_email_message") 
+  /// Set an email for account recovery. Use email to optionally be discoverable by existing contacts.
+  internal static var authAddEmailMessage2: String { 
+    return VectorL10n.tr("Vector", "auth_add_email_message_2") 
   }
-  /// Add an email address and/or a phone number to your account to let users discover you. Email address will also let you reset your password.
-  internal static var authAddEmailPhoneMessage: String { 
-    return VectorL10n.tr("Vector", "auth_add_email_phone_message") 
+  /// Set an email for account recovery. Use email or phone to optionally be discoverable by existing contacts.
+  internal static var authAddEmailPhoneMessage2: String { 
+    return VectorL10n.tr("Vector", "auth_add_email_phone_message_2") 
   }
-  /// Add a phone number to your account to let users discover you.
-  internal static var authAddPhoneMessage: String { 
-    return VectorL10n.tr("Vector", "auth_add_phone_message") 
+  /// Set a phone number for account recovery. Use phone to optionally be discoverable by existing contacts.
+  internal static var authAddPhoneMessage2: String { 
+    return VectorL10n.tr("Vector", "auth_add_phone_message_2") 
   }
   /// Invalid homeserver discovery response
   internal static var authAutodiscoverInvalidResponse: String { 

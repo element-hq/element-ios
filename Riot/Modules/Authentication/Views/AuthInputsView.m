@@ -1178,7 +1178,7 @@
             self.emailContainer.hidden = NO;
             
             self.messageLabel.hidden = NO;
-            self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_email_message", @"Vector", nil);
+            self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_email_message_2", @"Vector", nil);
             
             lastViewContainer = self.emailContainer;
         }
@@ -1210,11 +1210,11 @@
                 
                 if (self.areAllThirdPartyIdentifiersRequired)
                 {
-                    self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_email_and_phone_message", @"Vector", nil);
+                    self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_email_and_phone_message_2", @"Vector", nil);
                 }
                 else
                 {
-                    self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_email_phone_message", @"Vector", nil);
+                    self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_email_phone_message_2", @"Vector", nil);
                 }
             }
             else
@@ -1222,7 +1222,7 @@
                 self.phoneContainerTopConstraint.constant = 0;
                 
                 self.messageLabel.hidden = NO;
-                self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_phone_message", @"Vector", nil);
+                self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_phone_message_2", @"Vector", nil);
             }
             
             lastViewContainer = self.phoneContainer;
