@@ -4,6 +4,7 @@ Changes in 0.9.3 (2019-08-)
 Improvements:
  * Prompt to accept integration manager policies on use (#2600).
  * Widgets: Whitelist [MSC1961](https://github.com/matrix-org/matrix-doc/pull/1961) widget urls
+ * i18n: Enable Polish (pl).
 
 Changes in 0.9.2 (2019-08-08)
 ===============================================
