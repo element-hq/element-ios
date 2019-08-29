@@ -629,11 +629,16 @@
                              NSURL *identServerURL = [NSURL URLWithString:restClient.identityServer];
                              NSDictionary *parameters;
                              parameters = @{
-                                            @"auth": @{@"session":currentSession.session, @"threepid_creds": @{@"client_secret": submittedEmail.clientSecret, @"id_server": identServerURL.host, @"sid": submittedEmail.sid}, @"type": kMXLoginFlowTypeEmailIdentity},
+                                            @"auth": @{
+                                                    @"session":currentSession.session,
+                                                    @"threepid_creds": @{
+                                                            @"client_secret": submittedEmail.clientSecret,
+                                                            @"id_server": identServerURL.host,
+                                                            @"sid": submittedEmail.sid
+                                                            },
+                                                    @"type": kMXLoginFlowTypeEmailIdentity},
                                             @"username": self.userLoginTextField.text,
                                             @"password": self.passWordTextField.text,
-                                            @"bind_msisdn": @([self isFlowCompleted:kMXLoginFlowTypeMSISDN]),
-                                            @"bind_email": @(YES)
                                             };
                              
                              [self hideInputsContainer];
@@ -702,11 +707,13 @@
                         if (response.length)
                         {
                             NSDictionary *parameters = @{
-                                                         @"auth": @{@"session":currentSession.session, @"response": response, @"type": kMXLoginFlowTypeRecaptcha},
+                                                         @"auth": @{
+                                                                 @"session":currentSession.session,
+                                                                 @"response": response,
+                                                                 @"type": kMXLoginFlowTypeRecaptcha
+                                                                 },
                                                          @"username": self.userLoginTextField.text,
                                                          @"password": self.passWordTextField.text,
-                                                         @"bind_msisdn": @([self isFlowCompleted:kMXLoginFlowTypeMSISDN]),
-                                                         @"bind_email": @([self isFlowCompleted:kMXLoginFlowTypeEmailIdentity])
                                                          };
                             
                             callback(parameters, nil);
@@ -725,11 +732,12 @@
                 else if ([self isFlowSupported:kMXLoginFlowTypeDummy] && ![self isFlowCompleted:kMXLoginFlowTypeDummy])
                 {
                     parameters = @{
-                                   @"auth": @{@"session":currentSession.session, @"type": kMXLoginFlowTypeDummy},
+                                   @"auth": @{
+                                           @"session":currentSession.session,
+                                           @"type": kMXLoginFlowTypeDummy
+                                           },
                                    @"username": self.userLoginTextField.text,
                                    @"password": self.passWordTextField.text,
-                                   @"bind_msisdn": @(NO),
-                                   @"bind_email": @(NO)
                                    };
                 }
                 else if ([self isFlowSupported:kMXLoginFlowTypePassword] && ![self isFlowCompleted:kMXLoginFlowTypePassword])
@@ -758,9 +766,7 @@
                                                              @"type": kMXLoginFlowTypeTerms
                                                              },
                                                      @"username": self.userLoginTextField.text,
-                                                     @"password": self.passWordTextField.text,
-                                                     @"bind_msisdn": @([self isFlowCompleted:kMXLoginFlowTypeMSISDN]),
-                                                     @"bind_email": @([self isFlowCompleted:kMXLoginFlowTypeEmailIdentity])
+                                                     @"password": self.passWordTextField.text
                                                      };
                         callback(parameters, nil);
                     }];
@@ -1657,11 +1663,17 @@
                                                                   NSURL *identServerURL = [NSURL URLWithString:restClient.identityServer];
                                                                   NSDictionary *parameters;
                                                                   parameters = @{
-                                                                                 @"auth": @{@"session":self->currentSession.session, @"threepid_creds": @{@"client_secret": self->submittedMSISDN.clientSecret, @"id_server": identServerURL.host, @"sid": self->submittedMSISDN.sid}, @"type": kMXLoginFlowTypeMSISDN},
+                                                                                 @"auth": @{
+                                                                                         @"session":self->currentSession.session,
+                                                                                         @"threepid_creds": @{
+                                                                                                 @"client_secret": self->submittedMSISDN.clientSecret,
+                                                                                                 @"id_server": identServerURL.host,
+                                                                                                 @"sid": self->submittedMSISDN.sid
+                                                                                                 },
+                                                                                         @"type": kMXLoginFlowTypeMSISDN
+                                                                                         },
                                                                                  @"username": self.userLoginTextField.text,
-                                                                                 @"password": self.passWordTextField.text,
-                                                                                 @"bind_msisdn": @(YES),
-                                                                                 @"bind_email": @([self isFlowCompleted:kMXLoginFlowTypeEmailIdentity])
+                                                                                 @"password": self.passWordTextField.text
                                                                                  };
                                                                   
                                                                   callback(parameters, nil);

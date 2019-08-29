@@ -700,8 +700,8 @@ SingleImagePickerPresenterDelegate>
                                                            typeof(self) self = weakSelf;
                                                            self->is3PIDBindingInProgress = YES;
                                                            
-                                                           // We always bind emails when registering, so let's do the same here
-                                                           [threePID add3PIDToUser:YES success:^{
+                                                           // We do not bind anymore emails when registering, so let's do the same here
+                                                           [threePID add3PIDToUser:NO success:^{
                                                                
                                                                if (weakSelf)
                                                                {
@@ -823,8 +823,8 @@ SingleImagePickerPresenterDelegate>
                                                                
                                                                [threePID submitValidationToken:smsCode success:^{
                                                                    
-                                                                   // We always bind the phone numbers when registering, so let's do the same here
-                                                                   [threePID add3PIDToUser:YES success:^{
+                                                                   // We do not bind anymore the phone numbers when registering, so let's do the same here
+                                                                   [threePID add3PIDToUser:NO success:^{
                                                                        
                                                                        if (weakSelf)
                                                                        {
