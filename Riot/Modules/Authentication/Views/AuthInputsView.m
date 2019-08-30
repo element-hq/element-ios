@@ -604,20 +604,22 @@
                         restClient = [self.delegate authInputsViewThirdPartyIdValidationRestClient:self];
                     }
                     
-                    if (restClient)
+                    if (restClient && restClient.identityServer)
                     {
                         // Check whether a second 3pid is available
                         _isThirdPartyIdentifierPending = (nbPhoneNumber && ![self isFlowCompleted:kMXLoginFlowTypeMSISDN]);
                         
                         // Launch email validation
                         submittedEmail = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumEmail andAddress:self.emailTextField.text];
+                        
+                        NSString *identityServer = restClient.identityServer;
 
                         // Create the next link that is common to all Vector.im clients
                         NSString *nextLink = [NSString stringWithFormat:@"%@/#/register?client_secret=%@&hs_url=%@&is_url=%@&session_id=%@",
                                               [Tools webAppUrl],
                                               [submittedEmail.clientSecret stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]],
                                               [restClient.homeserver stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]],
-                                              [restClient.identityServer stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]],
+                                              [identityServer stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]],
                                               [currentSession.session stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]]];
 
                         [submittedEmail requestValidationTokenWithMatrixRestClient:restClient
@@ -626,7 +628,7 @@
                                                                            success:^
                          {
                              
-                             NSURL *identServerURL = [NSURL URLWithString:restClient.identityServer];
+                             NSURL *identServerURL = [NSURL URLWithString:identityServer];
                              NSDictionary *parameters;
                              parameters = @{
                                             @"auth": @{
@@ -1644,31 +1646,40 @@
                                                           {
                                                               [self->submittedMSISDN submitValidationToken:smsCode success:^{
                                                                   
-                                                                  // Retrieve the REST client from delegate
-                                                                  MXRestClient *restClient;
+                                                                  // Retrieve the identity service from delegate
+                                                                  MXIdentityService *identityService;
                                                                   
-                                                                  if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsViewThirdPartyIdValidationRestClient:)])
+                                                                  if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsViewThirdPartyIdValidationIdentityService:)])
                                                                   {
-                                                                      restClient = [self.delegate authInputsViewThirdPartyIdValidationRestClient:self];
+                                                                      identityService = [self.delegate authInputsViewThirdPartyIdValidationIdentityService:self];
                                                                   }
                                                                   
-                                                                  NSURL *identServerURL = [NSURL URLWithString:restClient.identityServer];
-                                                                  NSDictionary *parameters;
-                                                                  parameters = @{
-                                                                                 @"auth": @{
-                                                                                         @"session":self->currentSession.session,
-                                                                                         @"threepid_creds": @{
-                                                                                                 @"client_secret": self->submittedMSISDN.clientSecret,
-                                                                                                 @"id_server": identServerURL.host,
-                                                                                                 @"sid": self->submittedMSISDN.sid
-                                                                                                 },
-                                                                                         @"type": kMXLoginFlowTypeMSISDN
-                                                                                         },
-                                                                                 @"username": self.userLoginTextField.text,
-                                                                                 @"password": self.passWordTextField.text
-                                                                                 };
+                                                                  NSString *identityServer = identityService.identityServer;
                                                                   
-                                                                  callback(parameters, nil);
+                                                                  if (identityServer)
+                                                                  {
+                                                                      NSURL *identServerURL = [NSURL URLWithString:identityServer];
+                                                                      NSDictionary *parameters;
+                                                                      parameters = @{
+                                                                                     @"auth": @{
+                                                                                             @"session":self->currentSession.session,
+                                                                                             @"threepid_creds": @{
+                                                                                                     @"client_secret": self->submittedMSISDN.clientSecret,
+                                                                                                     @"id_server": identServerURL.host,
+                                                                                                     @"sid": self->submittedMSISDN.sid
+                                                                                                     },
+                                                                                             @"type": kMXLoginFlowTypeMSISDN
+                                                                                             },
+                                                                                     @"username": self.userLoginTextField.text,
+                                                                                     @"password": self.passWordTextField.text
+                                                                                     };
+                                                                      
+                                                                      callback(parameters, nil);
+                                                                  }
+                                                                  else
+                                                                  {
+                                                                      NSLog(@"[AuthInputsView] Failed to retrieve identity server URL");
+                                                                  }
                                                                   
                                                               } failure:^(NSError *error) {
                                                                   

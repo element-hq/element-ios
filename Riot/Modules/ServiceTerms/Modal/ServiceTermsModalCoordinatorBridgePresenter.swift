@@ -42,6 +42,10 @@ final class ServiceTermsModalCoordinatorBridgePresenter: NSObject {
     
     weak var delegate: ServiceTermsModalCoordinatorBridgePresenterDelegate?
     
+    var isPresenting: Bool {
+        return self.coordinator != nil
+    }
+    
     // MARK: - Setup
     
     init(session: MXSession, baseUrl: String, serviceType: MXServiceType, accessToken: String) {
