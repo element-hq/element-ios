@@ -8,6 +8,7 @@ Improvements:
  * VoIP: Fallback to matrix.org STUN server with a confirmation dialog (#2646).
  * Privacy: Prompt to accept integration manager policies on use (#2600).
  * Privacy: Make clear that device names are publicly readable (#2662).
+ * Privacy: Remove the ability to set an IS at login/registration (#2661).
  * Privacy: Remove the bind true flag from 3PID calls on registration (#2648).
  * Privacy: Remove the bind true flag from 3PID adds in settings (#2650).
  * Privacy: Email help text on registration should be updated without binding (#2675).

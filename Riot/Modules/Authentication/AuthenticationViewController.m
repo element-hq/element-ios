@@ -924,6 +924,10 @@
         {
             [self setHomeServerTextFieldText:customHomeServerURL];
         }
+        else
+        {
+            [self checkIdentityServerRequirement];
+        }
         NSString *customIdentityServerURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"customIdentityServerURL"];
         if (customIdentityServerURL.length)
         {
