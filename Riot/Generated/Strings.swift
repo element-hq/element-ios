@@ -30,25 +30,21 @@ internal enum VectorL10n {
   internal static var authAcceptPolicies: String { 
     return VectorL10n.tr("Vector", "auth_accept_policies") 
   }
-  /// Add an email address and a phone number to your account to let users discover you. Email address will also let you reset your password.
-  internal static var authAddEmailAndPhoneMessage: String { 
-    return VectorL10n.tr("Vector", "auth_add_email_and_phone_message") 
-  }
   /// Registration with email and phone number at once is not supported yet until the api exists. Only the phone number will be taken into account. You may add your email to your profile in settings.
   internal static var authAddEmailAndPhoneWarning: String { 
     return VectorL10n.tr("Vector", "auth_add_email_and_phone_warning") 
   }
-  /// Add an email address to your account to let users discover you, and to reset your password.
-  internal static var authAddEmailMessage: String { 
-    return VectorL10n.tr("Vector", "auth_add_email_message") 
+  /// Set an email for account recovery, and later to be optionally discoverable by people who know you.
+  internal static var authAddEmailMessage2: String { 
+    return VectorL10n.tr("Vector", "auth_add_email_message_2") 
   }
-  /// Add an email address and/or a phone number to your account to let users discover you. Email address will also let you reset your password.
-  internal static var authAddEmailPhoneMessage: String { 
-    return VectorL10n.tr("Vector", "auth_add_email_phone_message") 
+  /// Set an email for account recovery. Use later email or phone to be optionally discoverable by people who know you.
+  internal static var authAddEmailPhoneMessage2: String { 
+    return VectorL10n.tr("Vector", "auth_add_email_phone_message_2") 
   }
-  /// Add a phone number to your account to let users discover you.
-  internal static var authAddPhoneMessage: String { 
-    return VectorL10n.tr("Vector", "auth_add_phone_message") 
+  /// Set a phone, and later to be optionally discoverable by people who know you.
+  internal static var authAddPhoneMessage2: String { 
+    return VectorL10n.tr("Vector", "auth_add_phone_message_2") 
   }
   /// Invalid homeserver discovery response
   internal static var authAutodiscoverInvalidResponse: String { 
@@ -369,6 +365,22 @@ internal enum VectorL10n {
   /// Failed to join the conference call.
   internal static var callJitsiError: String { 
     return VectorL10n.tr("Vector", "call_jitsi_error") 
+  }
+  /// Please ask the administrator of your homeserver %@ to configure a TURN server in order for calls to work reliably.
+  internal static func callNoStunServerErrorMessage1(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "call_no_stun_server_error_message_1", p1)
+  }
+  /// Alternatively, you can try to use the public server at %@, but this will not be as reliable, and it will share your IP address with that server. You can also manage this in Settings
+  internal static func callNoStunServerErrorMessage2(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "call_no_stun_server_error_message_2", p1)
+  }
+  /// Call failed due to misconfigured server
+  internal static var callNoStunServerErrorTitle: String { 
+    return VectorL10n.tr("Vector", "call_no_stun_server_error_title") 
+  }
+  /// Try using %@
+  internal static func callNoStunServerErrorUseFallbackButton(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "call_no_stun_server_error_use_fallback_button", p1)
   }
   /// Camera
   internal static var camera: String { 
@@ -2394,6 +2406,14 @@ internal enum VectorL10n {
   internal static var settingsCallsSettings: String { 
     return VectorL10n.tr("Vector", "settings_calls_settings") 
   }
+  /// Allow fallback call assist server
+  internal static var settingsCallsStunServerFallbackButton: String { 
+    return VectorL10n.tr("Vector", "settings_calls_stun_server_fallback_button") 
+  }
+  /// Allow fallback call assist server %@ when your homeserver does not offer one (your IP address would be shared during a call).
+  internal static func settingsCallsStunServerFallbackDescription(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_calls_stun_server_fallback_description", p1)
+  }
   /// Change password
   internal static var settingsChangePassword: String { 
     return VectorL10n.tr("Vector", "settings_change_password") 
@@ -2450,11 +2470,11 @@ internal enum VectorL10n {
   internal static var settingsCryptoDeviceId: String { 
     return VectorL10n.tr("Vector", "settings_crypto_device_id") 
   }
-  /// \nDevice key: 
+  /// \nDevice key:\n
   internal static var settingsCryptoDeviceKey: String { 
     return VectorL10n.tr("Vector", "settings_crypto_device_key") 
   }
-  /// Device name: 
+  /// Device Public Name: 
   internal static var settingsCryptoDeviceName: String { 
     return VectorL10n.tr("Vector", "settings_crypto_device_name") 
   }
@@ -2477,6 +2497,10 @@ internal enum VectorL10n {
   /// DEVICES
   internal static var settingsDevices: String { 
     return VectorL10n.tr("Vector", "settings_devices") 
+  }
+  /// A device's public name is visible to people you communicate with
+  internal static var settingsDevicesDescription: String { 
+    return VectorL10n.tr("Vector", "settings_devices_description") 
   }
   /// Display Name
   internal static var settingsDisplayName: String { 

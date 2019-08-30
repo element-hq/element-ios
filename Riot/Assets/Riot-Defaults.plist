@@ -32,9 +32,11 @@
 	<string>https://jitsi.riot.im</string>
 	<key>integrationsWidgetsUrls</key>
 	<array>
-		<string>https://scalar-staging.riot.im/scalar/api</string>
-		<string>https://scalar-staging.vector.im/api</string>
+		<string>https://scalar.vector.im/_matrix/integrations/v1</string>
 		<string>https://scalar.vector.im/api</string>
+		<string>https://scalar-staging.vector.im/_matrix/integrations/v1</string>
+		<string>https://scalar-staging.vector.im/api</string>
+		<string>https://scalar-staging.riot.im/scalar/api</string>
 	</array>
 	<key>piwik</key>
 	<dict>
@@ -57,6 +59,8 @@
 	<false/>
 	<key>createConferenceCallsWithJitsi</key>
 	<true/>
+	<key>stunServerFallback</key>
+	<string>stun:turn.matrix.org</string>
 	<key>enableRageShake</key>
 	<true/>
 	<key>maxAllowedMediaCacheSize</key>

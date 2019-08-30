@@ -84,10 +84,9 @@
 "auth_invalid_email" = "This doesn't look like a valid email address";
 "auth_invalid_phone" = "This doesn't look like a valid phone number";
 "auth_missing_password" = "Missing password";
-"auth_add_email_message" = "Add an email address to your account to let users discover you, and to reset your password.";
-"auth_add_phone_message" = "Add a phone number to your account to let users discover you.";
-"auth_add_email_phone_message" = "Add an email address and/or a phone number to your account to let users discover you. Email address will also let you reset your password.";
-"auth_add_email_and_phone_message" = "Add an email address and a phone number to your account to let users discover you. Email address will also let you reset your password.";
+"auth_add_email_message_2" = "Set an email for account recovery, and later to be optionally discoverable by people who know you.";
+"auth_add_phone_message_2" = "Set a phone, and later to be optionally discoverable by people who know you.";
+"auth_add_email_phone_message_2" = "Set an email for account recovery. Use later email or phone to be optionally discoverable by people who know you.";
 "auth_missing_email" = "Missing email address";
 "auth_missing_phone" = "Missing phone number";
 "auth_missing_email_or_phone" = "Missing email address or phone number";
@@ -405,6 +404,9 @@
 
 "settings_enable_callkit" = "Integrated calling";
 "settings_callkit_info" = "Receive incoming calls on your lock screen. See your Riot calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.";
+"settings_calls_stun_server_fallback_button" = "Allow fallback call assist server";
+"settings_calls_stun_server_fallback_description" = "Allow fallback call assist server %@ when your homeserver does not offer one (your IP address would be shared during a call).";
+
 "settings_ui_language" = "Language";
 "settings_ui_theme" = "Theme";
 "settings_ui_theme_auto" = "Auto";
@@ -446,9 +448,9 @@
 "settings_fail_to_update_password" = "Fail to update password";
 "settings_password_updated" = "Your password has been updated";
 
-"settings_crypto_device_name" = "Device name: ";
+"settings_crypto_device_name" = "Device Public Name: ";
 "settings_crypto_device_id" = "\nDevice ID: ";
-"settings_crypto_device_key" = "\nDevice key: ";
+"settings_crypto_device_key" = "\nDevice key:\n";
 "settings_crypto_export" = "Export keys";
 "settings_crypto_blacklist_unverified_devices" = "Encrypt to verified devices only";
 
@@ -478,6 +480,8 @@
 "settings_key_backup_button_connect" = "Connect this device to Key Backup";
 "settings_key_backup_delete_confirmation_prompt_title" = "Delete Backup";
 "settings_key_backup_delete_confirmation_prompt_msg" = "Are you sure? You will lose your encrypted messages if your keys are not backed up properly.";
+
+"settings_devices_description" = "A device's public name is visible to people you communicate with";
 
 // Room Details
 "room_details_title" = "Room Details";
@@ -628,6 +632,11 @@
 "call_incoming_video" = "Incoming video call...";
 "call_already_displayed" = "There is already a call in progress.";
 "call_jitsi_error" = "Failed to join the conference call.";
+
+"call_no_stun_server_error_title" ="Call failed due to misconfigured server";
+"call_no_stun_server_error_message_1" ="Please ask the administrator of your homeserver %@ to configure a TURN server in order for calls to work reliably.";
+"call_no_stun_server_error_message_2" ="Alternatively, you can try to use the public server at %@, but this will not be as reliable, and it will share your IP address with that server. You can also manage this in Settings";
+"call_no_stun_server_error_use_fallback_button" = "Try using %@";
 
 // No VoIP support
 "no_voip_title" = "Incoming call";

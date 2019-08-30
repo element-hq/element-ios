@@ -631,11 +631,16 @@
                              NSURL *identServerURL = [NSURL URLWithString:identityServer];
                              NSDictionary *parameters;
                              parameters = @{
-                                            @"auth": @{@"session":currentSession.session, @"threepid_creds": @{@"client_secret": submittedEmail.clientSecret, @"id_server": identServerURL.host, @"sid": submittedEmail.sid}, @"type": kMXLoginFlowTypeEmailIdentity},
+                                            @"auth": @{
+                                                    @"session":currentSession.session,
+                                                    @"threepid_creds": @{
+                                                            @"client_secret": submittedEmail.clientSecret,
+                                                            @"id_server": identServerURL.host,
+                                                            @"sid": submittedEmail.sid
+                                                            },
+                                                    @"type": kMXLoginFlowTypeEmailIdentity},
                                             @"username": self.userLoginTextField.text,
                                             @"password": self.passWordTextField.text,
-                                            @"bind_msisdn": @([self isFlowCompleted:kMXLoginFlowTypeMSISDN]),
-                                            @"bind_email": @(YES)
                                             };
                              
                              [self hideInputsContainer];
@@ -704,11 +709,13 @@
                         if (response.length)
                         {
                             NSDictionary *parameters = @{
-                                                         @"auth": @{@"session":currentSession.session, @"response": response, @"type": kMXLoginFlowTypeRecaptcha},
+                                                         @"auth": @{
+                                                                 @"session":currentSession.session,
+                                                                 @"response": response,
+                                                                 @"type": kMXLoginFlowTypeRecaptcha
+                                                                 },
                                                          @"username": self.userLoginTextField.text,
                                                          @"password": self.passWordTextField.text,
-                                                         @"bind_msisdn": @([self isFlowCompleted:kMXLoginFlowTypeMSISDN]),
-                                                         @"bind_email": @([self isFlowCompleted:kMXLoginFlowTypeEmailIdentity])
                                                          };
                             
                             callback(parameters, nil);
@@ -727,11 +734,12 @@
                 else if ([self isFlowSupported:kMXLoginFlowTypeDummy] && ![self isFlowCompleted:kMXLoginFlowTypeDummy])
                 {
                     parameters = @{
-                                   @"auth": @{@"session":currentSession.session, @"type": kMXLoginFlowTypeDummy},
+                                   @"auth": @{
+                                           @"session":currentSession.session,
+                                           @"type": kMXLoginFlowTypeDummy
+                                           },
                                    @"username": self.userLoginTextField.text,
                                    @"password": self.passWordTextField.text,
-                                   @"bind_msisdn": @(NO),
-                                   @"bind_email": @(NO)
                                    };
                 }
                 else if ([self isFlowSupported:kMXLoginFlowTypePassword] && ![self isFlowCompleted:kMXLoginFlowTypePassword])
@@ -760,9 +768,7 @@
                                                              @"type": kMXLoginFlowTypeTerms
                                                              },
                                                      @"username": self.userLoginTextField.text,
-                                                     @"password": self.passWordTextField.text,
-                                                     @"bind_msisdn": @([self isFlowCompleted:kMXLoginFlowTypeMSISDN]),
-                                                     @"bind_email": @([self isFlowCompleted:kMXLoginFlowTypeEmailIdentity])
+                                                     @"password": self.passWordTextField.text
                                                      };
                         callback(parameters, nil);
                     }];
@@ -1174,7 +1180,7 @@
             self.emailContainer.hidden = NO;
             
             self.messageLabel.hidden = NO;
-            self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_email_message", @"Vector", nil);
+            self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_email_message_2", @"Vector", nil);
             
             lastViewContainer = self.emailContainer;
         }
@@ -1203,22 +1209,14 @@
                 self.emailTextField.returnKeyType = UIReturnKeyNext;
                 
                 self.phoneContainerTopConstraint.constant = 50;
-                
-                if (self.areAllThirdPartyIdentifiersRequired)
-                {
-                    self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_email_and_phone_message", @"Vector", nil);
-                }
-                else
-                {
-                    self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_email_phone_message", @"Vector", nil);
-                }
+                self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_email_phone_message_2", @"Vector", nil);
             }
             else
             {
                 self.phoneContainerTopConstraint.constant = 0;
                 
                 self.messageLabel.hidden = NO;
-                self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_phone_message", @"Vector", nil);
+                self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_phone_message_2", @"Vector", nil);
             }
             
             lastViewContainer = self.phoneContainer;
@@ -1663,11 +1661,17 @@
                                                                       NSURL *identServerURL = [NSURL URLWithString:identityServer];
                                                                       NSDictionary *parameters;
                                                                       parameters = @{
-                                                                                     @"auth": @{@"session":self->currentSession.session, @"threepid_creds": @{@"client_secret": self->submittedMSISDN.clientSecret, @"id_server": identServerURL.host, @"sid": self->submittedMSISDN.sid}, @"type": kMXLoginFlowTypeMSISDN},
+                                                                                     @"auth": @{
+                                                                                             @"session":self->currentSession.session,
+                                                                                             @"threepid_creds": @{
+                                                                                                     @"client_secret": self->submittedMSISDN.clientSecret,
+                                                                                                     @"id_server": identServerURL.host,
+                                                                                                     @"sid": self->submittedMSISDN.sid
+                                                                                                     },
+                                                                                             @"type": kMXLoginFlowTypeMSISDN
+                                                                                             },
                                                                                      @"username": self.userLoginTextField.text,
-                                                                                     @"password": self.passWordTextField.text,
-                                                                                     @"bind_msisdn": @(YES),
-                                                                                     @"bind_email": @([self isFlowCompleted:kMXLoginFlowTypeEmailIdentity])
+                                                                                     @"password": self.passWordTextField.text
                                                                                      };
                                                                       
                                                                       callback(parameters, nil);

@@ -2,11 +2,19 @@ Changes in 0.9.3 (2019-08-)
 ===============================================
 
 Improvements:
- * Prompt to accept integration manager policies on use (#2600).
- * Use MXIdentityService to perform identity server requests (#2647).
- * Support identity server v2 API authentication (#2603).
- * Use the hashed v2 lookup API for 3PIDs (#2652).
- * Prompt to accept identity server policies on firt use (#2602).
+ * Upgrade MatrixKit version ([v0.11.0](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.11.0)).
+ * Widgets: Whitelist [MSC1961](https://github.com/matrix-org/matrix-doc/pull/1961) widget urls.
+ * Settings: CALLS section: Always display the CallKit option but grey it out when not available (only on China).
+ * VoIP: Fallback to matrix.org STUN server with a confirmation dialog (#2646).
+ * Privacy: Prompt to accept integration manager policies on use (#2600).
+ * Privacy: Make clear that device names are publicly readable (#2662).
+ * Privacy: Remove the bind true flag from 3PID calls on registration (#2648).
+ * Privacy: Remove the bind true flag from 3PID adds in settings (#2650).
+ * Privacy: Email help text on registration should be updated without binding (#2675).
+ * Privacy: Use MXIdentityService to perform identity server requests (#2647).
+ * Privacy: Support identity server v2 API authentication (#2603).
+ * Privacy: Use the hashed v2 lookup API for 3PIDs (#2652).
+ * Privacy: Prompt to accept identity server policies on firt use (#2602).
 
 Changes in 0.9.2 (2019-08-08)
 ===============================================
