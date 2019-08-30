@@ -1207,15 +1207,7 @@
                 self.emailTextField.returnKeyType = UIReturnKeyNext;
                 
                 self.phoneContainerTopConstraint.constant = 50;
-                
-                if (self.areAllThirdPartyIdentifiersRequired)
-                {
-                    self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_email_and_phone_message_2", @"Vector", nil);
-                }
-                else
-                {
-                    self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_email_phone_message_2", @"Vector", nil);
-                }
+                self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_email_phone_message_2", @"Vector", nil);
             }
             else
             {

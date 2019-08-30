@@ -30,23 +30,19 @@ internal enum VectorL10n {
   internal static var authAcceptPolicies: String { 
     return VectorL10n.tr("Vector", "auth_accept_policies") 
   }
-  /// Set an email and a phone number for account recovery. Use email or phone to optionally be discoverable by existing contacts.
-  internal static var authAddEmailAndPhoneMessage2: String { 
-    return VectorL10n.tr("Vector", "auth_add_email_and_phone_message_2") 
-  }
   /// Registration with email and phone number at once is not supported yet until the api exists. Only the phone number will be taken into account. You may add your email to your profile in settings.
   internal static var authAddEmailAndPhoneWarning: String { 
     return VectorL10n.tr("Vector", "auth_add_email_and_phone_warning") 
   }
-  /// Set an email for account recovery. Use email to optionally be discoverable by existing contacts.
+  /// Set an email for account recovery, and later to be optionally discoverable by people who know you.
   internal static var authAddEmailMessage2: String { 
     return VectorL10n.tr("Vector", "auth_add_email_message_2") 
   }
-  /// Set an email for account recovery. Use email or phone to optionally be discoverable by existing contacts.
+  /// Set an email for account recovery. Use later email or phone to be optionally discoverable by people who know you.
   internal static var authAddEmailPhoneMessage2: String { 
     return VectorL10n.tr("Vector", "auth_add_email_phone_message_2") 
   }
-  /// Set a phone number for account recovery. Use phone to optionally be discoverable by existing contacts.
+  /// Set a phone, and later to be optionally discoverable by people who know you.
   internal static var authAddPhoneMessage2: String { 
     return VectorL10n.tr("Vector", "auth_add_phone_message_2") 
   }

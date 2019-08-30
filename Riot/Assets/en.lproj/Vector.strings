@@ -84,10 +84,9 @@
 "auth_invalid_email" = "This doesn't look like a valid email address";
 "auth_invalid_phone" = "This doesn't look like a valid phone number";
 "auth_missing_password" = "Missing password";
-"auth_add_email_message_2" = "Set an email for account recovery. Use email to optionally be discoverable by existing contacts.";
-"auth_add_phone_message_2" = "Set a phone for account recovery. Use phone to optionally be discoverable by existing contacts.";
-"auth_add_email_phone_message_2" = "Set an email for account recovery. Use email or phone to optionally be discoverable by existing contacts.";
-"auth_add_email_and_phone_message_2" = "Set an email and a phone number for account recovery. Use email or phone to optionally be discoverable by existing contacts.";
+"auth_add_email_message_2" = "Set an email for account recovery, and later to be optionally discoverable by people who know you.";
+"auth_add_phone_message_2" = "Set a phone, and later to be optionally discoverable by people who know you.";
+"auth_add_email_phone_message_2" = "Set an email for account recovery. Use later email or phone to be optionally discoverable by people who know you.";
 "auth_missing_email" = "Missing email address";
 "auth_missing_phone" = "Missing phone number";
 "auth_missing_email_or_phone" = "Missing email address or phone number";
