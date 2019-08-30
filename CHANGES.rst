@@ -4,6 +4,9 @@ Changes in 0.9.3 (2019-08-)
 Improvements:
  * Prompt to accept integration manager policies on use (#2600).
  * Use MXIdentityService to perform identity server requests (#2647).
+ * Support identity server v2 API authentication (#2603).
+ * Use the hashed v2 lookup API for 3PIDs (#2652).
+ * Prompt to accept identity server policies on firt use (#2602).
 
 Changes in 0.9.2 (2019-08-08)
 ===============================================
