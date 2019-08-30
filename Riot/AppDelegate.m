@@ -84,7 +84,7 @@
 NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapStatusBarNotification";
 NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateNetworkStatusDidChangeNotification";
 
-@interface AppDelegate () <PKPushRegistryDelegate, GDPRConsentViewControllerDelegate, DeviceVerificationCoordinatorBridgePresenterDelegate>
+@interface AppDelegate () <PKPushRegistryDelegate, GDPRConsentViewControllerDelegate, DeviceVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate>
 {
     /**
      Reachability observer
@@ -232,6 +232,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 @property (weak, nonatomic) UIAlertController *gdprConsentNotGivenAlertController;
 @property (weak, nonatomic) UIViewController *gdprConsentController;
+
+@property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 
 /**
  Used to manage on boarding steps, like create DM with riot bot
@@ -646,6 +648,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     
     // Register to GDPR consent not given notification
     [self registerUserConsentNotGivenNotification];
+    
+    // Register to identity server terms not signed notification
+    [self registerIdentityServiceTermsNotSignedNotification];
     
     // Start monitoring reachability
     [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
@@ -2101,12 +2106,30 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     // iOS Patch: fix vector.im urls before using it
     webURL = [Tools fixURLWithSeveralHashKeys:webURL];
     
+    NSString *validateEmailSubmitTokenPath = @"validate/email/submitToken";
+    
+    NSString *validateEmailSubmitTokenAPIPathV1 = [NSString stringWithFormat:@"/%@/%@", kMXIdentityAPIPrefixPathV1, validateEmailSubmitTokenPath];
+    NSString *validateEmailSubmitTokenAPIPathV2 = [NSString stringWithFormat:@"/%@/%@", kMXIdentityAPIPrefixPathV2, validateEmailSubmitTokenPath];
+    
     // Manage email validation link
-    if ([webURL.path isEqualToString:@"/_matrix/identity/api/v1/validate/email/submitToken"])
+    if ([webURL.path isEqualToString:validateEmailSubmitTokenAPIPathV1] || [webURL.path isEqualToString:validateEmailSubmitTokenAPIPathV2])
     {
         // Validate the email on the passed identity server
         NSString *identityServer = [NSString stringWithFormat:@"%@://%@", webURL.scheme, webURL.host];
-        MXIdentityService *identityService = [[MXIdentityService alloc] initWithIdentityServer:identityServer];
+        
+        MXSession *mainSession = self.mxSessions.firstObject;
+        MXRestClient *homeserverRestClient;
+        
+        if (mainSession.matrixRestClient)
+        {
+            homeserverRestClient = mainSession.matrixRestClient;
+        }
+        else
+        {
+            homeserverRestClient = [[MXRestClient alloc] initWithHomeServer:identityServer andOnUnrecognizedCertificateBlock:nil];
+        }
+        
+        MXIdentityService *identityService = [[MXIdentityService alloc] initWithIdentityServer:identityServer andHomeserverRestClient:homeserverRestClient];
         
         // Extract required parameters from the link
         NSArray<NSString*> *pathParams;
@@ -4624,6 +4647,63 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     } failure:^(NSError * _Nonnull error) {
         createRiotBotDMcompletion();
     }];
+}
+
+#pragma mark - Identity server service terms
+
+// Observe identity server terms not signed notification
+- (void)registerIdentityServiceTermsNotSignedNotification
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleIdentityServiceTermsNotSignedNotification:) name:MXIdentityServiceTermsNotSignedNotification object:nil];
+}
+
+- (void)handleIdentityServiceTermsNotSignedNotification:(NSNotification*)notification
+{
+    NSString *baseURL;
+    NSString *accessToken;
+    
+    MXJSONModelSetString(baseURL, notification.userInfo[MXIdentityServiceNotificationIdentityServerKey]);
+    MXJSONModelSetString(accessToken, notification.userInfo[MXIdentityServiceNotificationAccessTokenKey]);
+    
+    [self presentIdentityServerTermsWithBaseURL:baseURL andAccessToken:accessToken];
+}
+
+- (void)presentIdentityServerTermsWithBaseURL:(NSString*)baseURL andAccessToken:(NSString*)accessToken
+{
+    MXSession *mxSession = self.mxSessions.firstObject;
+    
+    if (!mxSession || !baseURL || !accessToken || self.serviceTermsModalCoordinatorBridgePresenter.isPresenting)
+    {
+        return;
+    }
+    
+    ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:mxSession
+                                                                                                                                                            baseUrl:baseURL
+                                                                                                                                                        serviceType:MXServiceTypeIdentityService
+                                                                                                                                                        accessToken:accessToken];
+    
+    serviceTermsModalCoordinatorBridgePresenter.delegate = self;
+    
+    UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
+    
+    [serviceTermsModalCoordinatorBridgePresenter presentFrom:presentingViewController animated:YES];
+    self.serviceTermsModalCoordinatorBridgePresenter = serviceTermsModalCoordinatorBridgePresenter;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        
+    }];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        
+    }];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 
 #pragma mark - Settings
