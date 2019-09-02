@@ -926,7 +926,7 @@
         }
         else
         {
-            [self checkIdentityServerRequirement];
+            [self checkIdentityServer];
         }
         NSString *customIdentityServerURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"customIdentityServerURL"];
         if (customIdentityServerURL.length)
