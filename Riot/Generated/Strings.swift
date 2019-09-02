@@ -78,7 +78,7 @@ internal enum VectorL10n {
   internal static var authHomeServerPlaceholder: String { 
     return VectorL10n.tr("Vector", "auth_home_server_placeholder") 
   }
-  /// URL (e.g. https://matrix.org)
+  /// URL (e.g. https://vector.im)
   internal static var authIdentityServerPlaceholder: String { 
     return VectorL10n.tr("Vector", "auth_identity_server_placeholder") 
   }
