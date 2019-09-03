@@ -54,6 +54,10 @@ internal enum VectorL10n {
   internal static var authEmailInUse: String { 
     return VectorL10n.tr("Vector", "auth_email_in_use") 
   }
+  /// No identity server is configured so you cannot add an email address in order to reset your password in the future.
+  internal static var authEmailIsRequired: String { 
+    return VectorL10n.tr("Vector", "auth_email_is_required") 
+  }
   /// Failed to send email: This email address was not found
   internal static var authEmailNotFound: String { 
     return VectorL10n.tr("Vector", "auth_email_not_found") 
@@ -161,6 +165,10 @@ internal enum VectorL10n {
   /// This phone number is already in use
   internal static var authPhoneInUse: String { 
     return VectorL10n.tr("Vector", "auth_phone_in_use") 
+  }
+  /// No identity server is configured so you cannot add a phone number in order to reset your password in the future.
+  internal static var authPhoneIsRequired: String { 
+    return VectorL10n.tr("Vector", "auth_phone_is_required") 
   }
   /// Phone number
   internal static var authPhonePlaceholder: String { 

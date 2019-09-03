@@ -1241,25 +1241,13 @@ SingleImagePickerPresenterDelegate>
         userSettingsSurnameIndex = -1;
         userSettingsNightModeSepIndex = -1;
         userSettingsNightModeIndex = -1;
-        
-        if (self.mainSession.matrixRestClient.identityServer.length)
-        {
-            userSettingsEmailStartIndex = 3;
-            userSettingsNewEmailIndex = userSettingsEmailStartIndex + account.linkedEmails.count;
-            userSettingsPhoneStartIndex = userSettingsNewEmailIndex + 1;
-            userSettingsNewPhoneIndex = userSettingsPhoneStartIndex + account.linkedPhoneNumbers.count;
-            
-            count = userSettingsNewPhoneIndex + 1;
-        }
-        else
-        {
-            userSettingsEmailStartIndex = -1;
-            userSettingsNewEmailIndex = -1;
-            userSettingsPhoneStartIndex = -1;
-            userSettingsNewPhoneIndex = -1;
-            
-            count = userSettingsChangePasswordIndex + 1;
-        }
+
+        userSettingsEmailStartIndex = 3;
+        userSettingsNewEmailIndex = userSettingsEmailStartIndex + account.linkedEmails.count;
+        userSettingsPhoneStartIndex = userSettingsNewEmailIndex + 1;
+        userSettingsNewPhoneIndex = userSettingsPhoneStartIndex + account.linkedPhoneNumbers.count;
+
+        count = userSettingsNewPhoneIndex + 1;
     }
     else if (section == SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX)
     {
@@ -3613,51 +3601,59 @@ SingleImagePickerPresenterDelegate>
 
     MXSession* session = [AppDelegate theDelegate].mxSessions[0];
 
-    MXK3PID *new3PID = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumEmail andAddress:newEmailTextField.text];
-    [new3PID requestValidationTokenWithMatrixRestClient:session.matrixRestClient isDuringRegistration:NO nextLink:nil success:^{
+    [self checkIdentityServerRequirement:session.matrixRestClient forMedium:kMX3PIDMediumEmail success:^{
 
-        [self showValidationEmailDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_email_validation_message"] for3PID:new3PID];
+        MXK3PID *new3PID = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumEmail andAddress:newEmailTextField.text];
+        [new3PID requestValidationTokenWithMatrixRestClient:session.matrixRestClient isDuringRegistration:NO nextLink:nil success:^{
+
+            [self showValidationEmailDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_email_validation_message"] for3PID:new3PID];
+
+        } failure:^(NSError *error) {
+
+            [self stopActivityIndicator];
+
+            NSLog(@"[SettingsViewController] Failed to request email token");
+
+            // Translate the potential MX error.
+            MXError *mxError = [[MXError alloc] initWithNSError:error];
+            if (mxError && ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse] || [mxError.errcode isEqualToString:kMXErrCodeStringServerNotTrusted]))
+            {
+                NSMutableDictionary *userInfo;
+                if (error.userInfo)
+                {
+                    userInfo = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
+                }
+                else
+                {
+                    userInfo = [NSMutableDictionary dictionary];
+                }
+
+                userInfo[NSLocalizedFailureReasonErrorKey] = nil;
+
+                if ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse])
+                {
+                    userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_email_in_use", @"Vector", nil);
+                    userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_email_in_use", @"Vector", nil);
+                }
+                else
+                {
+                    userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+                    userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+                }
+
+                error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
+            }
+
+            // Notify user
+            NSString *myUserId = session.myUser.userId; // TODO: Hanlde multi-account
+            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
+
+        }];
 
     } failure:^(NSError *error) {
-
-        [self stopActivityIndicator];
-
-        NSLog(@"[SettingsViewController] Failed to request email token");
-        
-        // Translate the potential MX error.
-        MXError *mxError = [[MXError alloc] initWithNSError:error];
-        if (mxError && ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse] || [mxError.errcode isEqualToString:kMXErrCodeStringServerNotTrusted]))
-        {
-            NSMutableDictionary *userInfo;
-            if (error.userInfo)
-            {
-                userInfo = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
-            }
-            else
-            {
-                userInfo = [NSMutableDictionary dictionary];
-            }
-            
-            userInfo[NSLocalizedFailureReasonErrorKey] = nil;
-            
-            if ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse])
-            {
-                userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_email_in_use", @"Vector", nil);
-                userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_email_in_use", @"Vector", nil);
-            }
-            else
-            {
-                userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
-                userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
-            }
-            
-            error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
-        }
-
         // Notify user
         NSString *myUserId = session.myUser.userId; // TODO: Hanlde multi-account
         [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
-
     }];
 }
 
@@ -3714,54 +3710,95 @@ SingleImagePickerPresenterDelegate>
     {
         msisdn = [e164 substringFromIndex:2];
     }
-    
-    MXK3PID *new3PID = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumMSISDN andAddress:msisdn];
-    
-    [new3PID requestValidationTokenWithMatrixRestClient:session.matrixRestClient isDuringRegistration:NO nextLink:nil success:^{
-        
-        [self showValidationMsisdnDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_msisdn_validation_message"] for3PID:new3PID];
-        
+
+    [self checkIdentityServerRequirement:session.matrixRestClient forMedium:kMX3PIDMediumMSISDN success:^{
+
+        MXK3PID *new3PID = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumMSISDN andAddress:msisdn];
+
+        [new3PID requestValidationTokenWithMatrixRestClient:session.matrixRestClient isDuringRegistration:NO nextLink:nil success:^{
+
+            [self showValidationMsisdnDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_msisdn_validation_message"] for3PID:new3PID];
+
+        } failure:^(NSError *error) {
+
+            [self stopActivityIndicator];
+
+            NSLog(@"[SettingsViewController] Failed to request msisdn token");
+
+            // Translate the potential MX error.
+            MXError *mxError = [[MXError alloc] initWithNSError:error];
+            if (mxError && ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse] || [mxError.errcode isEqualToString:kMXErrCodeStringServerNotTrusted]))
+            {
+                NSMutableDictionary *userInfo;
+                if (error.userInfo)
+                {
+                    userInfo = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
+                }
+                else
+                {
+                    userInfo = [NSMutableDictionary dictionary];
+                }
+
+                userInfo[NSLocalizedFailureReasonErrorKey] = nil;
+
+                if ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse])
+                {
+                    userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_phone_in_use", @"Vector", nil);
+                    userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_phone_in_use", @"Vector", nil);
+                }
+                else
+                {
+                    userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+                    userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+                }
+
+                error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
+            }
+
+            // Notify user
+            NSString *myUserId = session.myUser.userId;
+            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
+
+        }];
+
     } failure:^(NSError *error) {
-        
-        [self stopActivityIndicator];
-        
-        NSLog(@"[SettingsViewController] Failed to request msisdn token");
-        
-        // Translate the potential MX error.
-        MXError *mxError = [[MXError alloc] initWithNSError:error];
-        if (mxError && ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse] || [mxError.errcode isEqualToString:kMXErrCodeStringServerNotTrusted]))
-        {
-            NSMutableDictionary *userInfo;
-            if (error.userInfo)
-            {
-                userInfo = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
-            }
-            else
-            {
-                userInfo = [NSMutableDictionary dictionary];
-            }
-            
-            userInfo[NSLocalizedFailureReasonErrorKey] = nil;
-            
-            if ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse])
-            {
-                userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_phone_in_use", @"Vector", nil);
-                userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_phone_in_use", @"Vector", nil);
-            }
-            else
-            {
-                userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
-                userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
-            }
-            
-            error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
-        }
-        
         // Notify user
-        NSString *myUserId = session.myUser.userId;
+        NSString *myUserId = session.myUser.userId; // TODO: Hanlde multi-account
         [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
-        
     }];
+}
+
+- (void)checkIdentityServerRequirement:(MXRestClient*)mxRestClient forMedium:(NSString*)medium success:(void (^)(void))success failure:(void (^)(NSError *))failure
+{
+    [mxRestClient supportedMatrixVersions:^(MXMatrixVersions *matrixVersions) {
+
+         NSLog(@"[SettingsViewController] checkIdentityServerRequirement: %@", matrixVersions.doesServerRequireIdentityServerParam ? @"YES": @"NO");
+
+        if (matrixVersions.doesServerRequireIdentityServerParam
+            && !mxRestClient.credentials.identityServer)
+        {
+            NSString *message;
+            if ([medium isEqualToString:kMX3PIDMediumMSISDN])
+            {
+                message = [NSBundle mxk_localizedStringForKey:@"auth_phone_is_required"];
+            }
+            else
+            {
+                [NSBundle mxk_localizedStringForKey:@"auth_email_is_required"];
+            }
+
+            failure([NSError errorWithDomain:MXKAuthErrorDomain
+                                        code:0
+                                    userInfo:@{
+                                               NSLocalizedDescriptionKey:message
+                                               }]);
+        }
+        else
+        {
+            success();
+        }
+
+    } failure:failure];
 }
 
 - (void)updateSaveButtonStatus
