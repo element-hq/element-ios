@@ -835,3 +835,4 @@
 "service_terms_modal_accept_button" = "Elfogad";
 "service_terms_modal_description_for_identity_server" = "Látható mások számára";
 "service_terms_modal_description_for_integration_manager" = "Használjon botokat, hidakat, kisalkalmazásokat és matrica csomagokat";
+"room_participants_remove_third_party_invite_prompt_msg" = "Biztos vagy benne, hogy visszavonod ezt a meghívót?";
