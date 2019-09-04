@@ -1384,6 +1384,7 @@
         if (section == participantsSection && userParticipant && (0 == row) && !currentSearchText.length)
         {
             // Leave ?
+            MXWeakify(self);
             currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_participants_leave_prompt_title", @"Vector", nil)
                                                                message:NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg", @"Vector", nil)
                                                         preferredStyle:UIAlertControllerStyleAlert];
@@ -1392,11 +1393,8 @@
                                                              style:UIAlertActionStyleCancel
                                                            handler:^(UIAlertAction * action) {
                                                                
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-                                                                   self->currentAlert = nil;
-                                                               }
+                                                               MXStrongifyAndReturnIfNil(self);
+                                                               self->currentAlert = nil;
                                                                
                                                            }]];
             
@@ -1404,25 +1402,25 @@
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                                                                
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-                                                                   self->currentAlert = nil;
+                                                               MXStrongifyAndReturnIfNil(self);
+                                                               self->currentAlert = nil;
+                                                               
+                                                               [self addPendingActionMask];
+                                                               MXWeakify(self);
+                                                               [self.mxRoom leave:^{
                                                                    
-                                                                   [self addPendingActionMask];
-                                                                   [self.mxRoom leave:^{
-                                                                       
-                                                                       [self withdrawViewControllerAnimated:YES completion:nil];
-                                                                       
-                                                                   } failure:^(NSError *error) {
-                                                                       
-                                                                       [self removePendingActionMask];
-                                                                       NSLog(@"[RoomParticipantsVC] Leave room %@ failed", self.mxRoom.roomId);
-                                                                       // Alert user
-                                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                       
-                                                                   }];
-                                                               }
+                                                                   MXStrongifyAndReturnIfNil(self);
+                                                                   [self withdrawViewControllerAnimated:YES completion:nil];
+                                                                   
+                                                               } failure:^(NSError *error) {
+                                                                   
+                                                                   MXStrongifyAndReturnIfNil(self);
+                                                                   [self removePendingActionMask];
+                                                                   NSLog(@"[RoomParticipantsVC] Leave room %@ failed", self.mxRoom.roomId);
+                                                                   // Alert user
+                                                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                   
+                                                               }];
                                                                
                                                            }]];
             
