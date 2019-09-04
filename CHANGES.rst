@@ -5,6 +5,7 @@ Improvements:
  * Prompt to accept integration manager policies on use (#2600).
  * Widgets: Whitelist [MSC1961](https://github.com/matrix-org/matrix-doc/pull/1961) widget urls
  * i18n: Enable Polish (pl).
+ * Room members: third-party invites can now be revoked
 
 Changes in 0.9.2 (2019-08-08)
 ===============================================
