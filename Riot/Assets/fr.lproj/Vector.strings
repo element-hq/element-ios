@@ -830,3 +830,4 @@
 "service_terms_modal_accept_button" = "Accepter";
 "service_terms_modal_description_for_identity_server" = "Se rendre découvrable pour les autres";
 "service_terms_modal_description_for_integration_manager" = "Utiliser des robots, des passerelles, des widgets et des packs de stickers";
+"room_participants_remove_third_party_invite_prompt_msg" = "Voulez-vous vraiment retirer cette invitation ?";
