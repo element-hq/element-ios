@@ -92,6 +92,8 @@
 "auth_missing_email_or_phone" = "Missing email address or phone number";
 "auth_email_in_use" = "This email address is already in use";
 "auth_phone_in_use" = "This phone number is already in use";
+"auth_email_is_required" = "No identity server is configured so you cannot add an email address in order to reset your password in the future.";
+"auth_phone_is_required" = "No identity server is configured so you cannot add a phone number in order to reset your password in the future.";
 "auth_untrusted_id_server" = "The identity server is not trusted";
 "auth_password_dont_match" = "Passwords don't match";
 "auth_username_in_use" = "Username in use";
