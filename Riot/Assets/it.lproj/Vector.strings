@@ -372,11 +372,11 @@
 "settings_key_backup_info" = "I messaggi criptati sono protetti con la cifratura end-to-end. Solo tu e il/i destinatario/i avete le chiavi per leggere questi messaggi.";
 "settings_key_backup_info_checking" = "Verifica...";
 "settings_key_backup_info_none" = "Nessun backup programmato per le chiavi da questo dispositivo.";
-"settings_key_backup_info_signout_warning" = "Fai un backup sicuro delle tue chiavi prima di uscire per evitare di perderle.";
+"settings_key_backup_info_signout_warning" = "Connetti questo dispositivo al backup chiavi prima di disconnetterti per evitare di perdere eventuali chiavi presenti solo qui.";
 "settings_key_backup_info_version" = "Versione backup chiave: %@";
 "settings_key_backup_info_algorithm" = "Algoritmo: %@";
 "settings_key_backup_info_valid" = "Questo dispositivo sta eseguendo il backup delle tue chiavi.";
-"settings_key_backup_info_not_valid" = "Questo dispositivo non sta eseguendo il backup delle tue chiavi.";
+"settings_key_backup_info_not_valid" = "Questo dispositivo non sta eseguendo il backup delle tue chiavi, ma hai un backup esistente da cui puoi ripristinare ed usare da ora in avanti.";
 "settings_key_backup_info_progress" = "Backup di %@ chiavi…";
 "settings_key_backup_info_progress_done" = "Backup di tutte le chiavi completato";
 "settings_key_backup_info_trust_signature_unknown" = "Il backup ha una firma dal dispositivo con ID: %@";
