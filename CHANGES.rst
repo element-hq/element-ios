@@ -17,6 +17,7 @@ Improvements:
  * Privacy: Use the hashed v2 lookup API for 3PIDs (#2652).
  * Privacy: Prompt to accept identity server policies on firt use (#2602).
  * Privacy: Settings: Allow adding 3pids when no IS (#2659).
+ * Privacy: Allow password reset when no IS (#2658).
 
 Changes in 0.9.2 (2019-08-08)
 ===============================================

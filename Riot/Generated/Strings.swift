@@ -194,6 +194,10 @@ internal enum VectorL10n {
   internal static func authResetPasswordEmailValidationMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "auth_reset_password_email_validation_message", p1)
   }
+  /// No identity server is configured: add one in server options to reset your password.
+  internal static var authResetPasswordErrorIsRequired: String { 
+    return VectorL10n.tr("Vector", "auth_reset_password_error_is_required") 
+  }
   /// Your email address does not appear to be associated with a Matrix ID on this homeserver.
   internal static var authResetPasswordErrorNotFound: String { 
     return VectorL10n.tr("Vector", "auth_reset_password_error_not_found") 
