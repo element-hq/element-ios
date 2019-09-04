@@ -744,3 +744,41 @@
 "settings_key_backup_delete_confirmation_prompt_msg" = "Czy jesteś pewien? Stracisz dostęp do wszystkich swoich zaszyfrowanych wiadomości, jeżeli nie utworzyłeś poprawnej kopii zapasowej kluczy.";
 "room_details_access_section" = "Kto może dołączyć do pokoju?";
 "room_details_history_section_prompt_msg" = "Zmiany dostępu do historii będą miały zastosowanie tylko do przyszłych wiadomości w tym pokoju. Widoczność obecnych wiadomości pozostanie bez zmian.";
+"settings_key_backup_info_not_valid" = "To urządzenie nie tworzy kopii zapasowej Twoich kluczy. Ciągle jednak masz istniejącą kopię zapasową, którą możesz przywrócić i w przyszłości uzupełnić.";
+"room_details_addresses_disable_main_address_prompt_title" = "Główny adres ostrzega";
+"room_details_addresses_disable_main_address_prompt_msg" = "Nie masz adresu głównego. Domyślny główny adres zostanie wybrany losowo";
+"room_details_flair_section" = "Pokaż talent społecznościom";
+"room_details_flair_invalid_id_prompt_msg" = "%@ nie jest prawidłowym identyfikatorem społeczności";
+"group_participants_leave_prompt_msg" = "Czy jesteś pewien, że chcesz opuścić te grupę?";
+"group_participants_remove_prompt_msg" = "Czy jesteś pewien, że chcesz usunąć %@ z tej grupy?";
+"group_participants_invite_prompt_msg" = "Czy jesteś pewien, że chcesz zaprosić %@ do tej grupy?";
+"group_participants_invite_malformed_id_title" = "Błąd. Nie udało się zaprosić";
+"group_participants_invited_section" = "ZAPROSZONY";
+"receipt_status_read" = "Czytaj: ";
+// Media picker
+"media_picker_title" = "Selektor mediów";
+// Image picker
+"image_picker_action_camera" = "Zrób zdjęcie";
+"image_picker_action_library" = "Wybierz z biblioteki";
+"directory_server_all_native_rooms" = "Wszystkie rodzime pokoje Matrix";
+// Events formatter
+"event_formatter_member_updates" = "%tu zmiany członkostwa";
+"event_formatter_jitsi_widget_added" = "Konferencja VoIP dodana przez %@";
+"event_formatter_jitsi_widget_removed" = "Konferencja VoIP usunięta przez %@";
+"event_formatter_message_edited_mention" = "(edytowano)";
+"network_offline_prompt" = "Wygląda na to, że nie masz połączenia z internetem.";
+"homeserver_connection_lost" = "Nie można połączyć się z serwerem domowym.";
+"public_room_section_title" = "Pokoje Publiczne (na %@):";
+"bug_report_prompt" = "Poprzednio aplikacja uległa awarii. Czy chcesz wysłać raport?";
+"rage_shake_prompt" = "Zauważyliśmy, że potrząsasz telefonem (czyżby ze zdenerwowania?). Chciałbyś nam zgłosić jakiś problem?";
+"camera_access_not_granted" = "%@ nie ma uprawnień do korzystania z aparatu, zmień ustawienia w ustawieniach prywatności";
+"camera_unavailable" = "Aparat jest niedostępny na Twoim urządzeniu";
+"photo_library_access_not_granted" = "%@ nie ma uprawnień dostępu do biblioteki zdjęć, możesz to zmienić w ustawieniach prywatności";
+"room_does_not_exist" = "%@ nie istnieje";
+"call_already_displayed" = "Rozmowa tutaj już trwa.";
+"call_jitsi_error" = "Nie udało się dołączyć do rozmowy konferencyjnej.";
+"no_voip" = "%@ dzwoni do Ciebie ale %@ nie obsługuje jeszcze połączeń\nMożesz zignorować to powiadomienie i odebrać rozmowę na innym urządzeniu, bądź odrzucić je.";
+// Crash report
+"google_analytics_use_prompt" = "Chcesz pomóc nam w ulepszaniu %@ przez automatyczne wysyłanie anonimowych raportów o błędach i danych użytkowania?";
+// Key backup wrong version
+"e2e_key_backup_wrong_version_title" = "Nowy Klucz Kopii Zapasowej";
