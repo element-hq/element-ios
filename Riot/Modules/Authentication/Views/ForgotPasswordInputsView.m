@@ -417,7 +417,7 @@
         NSLog(@"[ForgotPasswordInputsView] checkIdentityServerRequirement: %@", matrixVersions.doesServerRequireIdentityServerParam ? @"YES": @"NO");
 
         if (matrixVersions.doesServerRequireIdentityServerParam
-            && !mxRestClient.credentials.identityServer)
+            && !mxRestClient.identityServer)
         {
             failure([NSError errorWithDomain:MXKAuthErrorDomain
                                         code:0

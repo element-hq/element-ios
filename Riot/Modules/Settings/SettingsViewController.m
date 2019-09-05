@@ -322,6 +322,8 @@ SingleImagePickerPresenterDelegate>
         [self refreshSettings];
         
     }];
+
+    [self registerAccountDataDidChangeIdentityServerNotification];
     
     // Add each matrix session, to update the view controller appearance according to mx sessions state
     NSArray *sessions = [AppDelegate theDelegate].mxSessions;
@@ -3775,7 +3777,7 @@ SingleImagePickerPresenterDelegate>
          NSLog(@"[SettingsViewController] checkIdentityServerRequirement: %@", matrixVersions.doesServerRequireIdentityServerParam ? @"YES": @"NO");
 
         if (matrixVersions.doesServerRequireIdentityServerParam
-            && !mxRestClient.credentials.identityServer)
+            && !mxRestClient.identityServer)
         {
             NSString *message;
             if ([medium isEqualToString:kMX3PIDMediumMSISDN])
@@ -4535,6 +4537,19 @@ SingleImagePickerPresenterDelegate>
     newAvatarImage = [UIImage imageWithData:imageData];
     
     [self.tableView reloadData];
+}
+
+
+#pragma mark - Identity Server updates
+
+- (void)registerAccountDataDidChangeIdentityServerNotification
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAccountDataDidChangeIdentityServerNotification:) name:kMXSessionAccountDataDidChangeIdentityServerNotification object:nil];
+}
+
+- (void)handleAccountDataDidChangeIdentityServerNotification:(NSNotification*)notification
+{
+    [self refreshSettings];
 }
 
 @end
