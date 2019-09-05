@@ -3775,7 +3775,7 @@ SingleImagePickerPresenterDelegate>
          NSLog(@"[SettingsViewController] checkIdentityServerRequirement: %@", matrixVersions.doesServerRequireIdentityServerParam ? @"YES": @"NO");
 
         if (matrixVersions.doesServerRequireIdentityServerParam
-            && !mxRestClient.credentials.identityServer)
+            && !mxRestClient.identityServer)
         {
             NSString *message;
             if ([medium isEqualToString:kMX3PIDMediumMSISDN])
