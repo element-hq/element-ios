@@ -2129,7 +2129,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             homeserverRestClient = [[MXRestClient alloc] initWithHomeServer:identityServer andOnUnrecognizedCertificateBlock:nil];
         }
         
-        MXIdentityService *identityService = [[MXIdentityService alloc] initWithIdentityServer:identityServer andHomeserverRestClient:homeserverRestClient];
+        MXIdentityService *identityService = [[MXIdentityService alloc] initWithIdentityServer:identityServer accessToken:nil andHomeserverRestClient:homeserverRestClient];
         
         // Extract required parameters from the link
         NSArray<NSString*> *pathParams;
