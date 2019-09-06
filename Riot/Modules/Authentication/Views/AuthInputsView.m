@@ -969,16 +969,31 @@
     }
     
     // Check validity of the required parameters
-    if (!homeserverURL.length || !identityURL.length || !clientSecret.length || !sid.length || !sessionId.length)
+    if (!homeserverURL.length || !clientSecret.length || !sid.length || !sessionId.length)
     {
         NSLog(@"[AuthInputsView] setExternalRegistrationParameters failed: wrong parameters");
         return NO;
     }
-    
+
     // Prepare the registration parameters (Ready to use)
-    NSURL *identServerURL = [NSURL URLWithString:identityURL];
+
+    NSMutableDictionary *threepidCreds = [NSMutableDictionary dictionaryWithDictionary:@{
+                                                                                         @"client_secret": clientSecret,
+
+                                                                                         @"sid": sid
+                                                                                         }];
+    if (identityURL)
+    {
+        NSURL *identServerURL = [NSURL URLWithString:identityURL];
+        threepidCreds[@"id_server"] = identServerURL.host;
+    }
+
     externalRegistrationParameters = @{
-                                       @"auth": @{@"session": sessionId, @"threepid_creds": @{@"client_secret": clientSecret, @"id_server": identServerURL.host, @"sid": sid}, @"type": kMXLoginFlowTypeEmailIdentity},
+                                       @"auth": @{
+                                               @"session": sessionId,
+                                               @"threepid_creds": threepidCreds,
+                                               @"type": kMXLoginFlowTypeEmailIdentity
+                                               },
                                        };
     
     // Hide all inputs by default
