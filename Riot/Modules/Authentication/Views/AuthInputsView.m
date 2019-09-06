@@ -629,29 +629,39 @@
                             NSString *identityServer = restClient.identityServer;
 
                             // Create the next link that is common to all Vector.im clients
-                            NSString *nextLink = [NSString stringWithFormat:@"%@/#/register?client_secret=%@&hs_url=%@&is_url=%@&session_id=%@",
+                            NSString *nextLink = [NSString stringWithFormat:@"%@/#/register?client_secret=%@&hs_url=%@&session_id=%@",
                                                   [Tools webAppUrl],
                                                   [self->submittedEmail.clientSecret stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]],
                                                   [restClient.homeserver stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]],
-                                                  [identityServer stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]],
                                                   [self->currentSession.session stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]]];
+
+                            if (identityServer)
+                            {
+                                nextLink = [NSString stringWithFormat:@"%@&is_url=%@", nextLink,
+                                            [identityServer stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]]];
+                            }
 
                             [self->submittedEmail requestValidationTokenWithMatrixRestClient:restClient
                                                                   isDuringRegistration:YES
                                                                               nextLink:nextLink
                                                                                success:^
                              {
+                                 NSMutableDictionary *threepidCreds = [NSMutableDictionary dictionaryWithDictionary:@{
+                                                                                                                      @"client_secret": self->submittedEmail.clientSecret,
 
-                                 NSURL *identServerURL = [NSURL URLWithString:identityServer];
+                                                                                                                      @"sid": self->submittedEmail.sid
+                                                                                                                      }];
+                                 if (identityServer)
+                                 {
+                                     NSURL *identServerURL = [NSURL URLWithString:identityServer];
+                                     threepidCreds[@"id_server"] = identServerURL.host;
+                                 }
+
                                  NSDictionary *parameters;
                                  parameters = @{
                                                 @"auth": @{
                                                         @"session":self->currentSession.session,
-                                                        @"threepid_creds": @{
-                                                                @"client_secret": self->submittedEmail.clientSecret,
-                                                                @"id_server": identServerURL.host,
-                                                                @"sid": self->submittedEmail.sid
-                                                                },
+                                                        @"threepid_creds": threepidCreds,
                                                         @"type": kMXLoginFlowTypeEmailIdentity},
                                                 @"username": self.userLoginTextField.text,
                                                 @"password": self.passWordTextField.text,
