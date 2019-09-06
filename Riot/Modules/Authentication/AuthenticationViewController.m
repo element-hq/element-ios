@@ -634,18 +634,10 @@
                             else
                             {
                                 [self.authenticationActivityIndicator stopAnimating];
-                                
-                                if (self.isIdentityServerConfigured)
-                                {
-                                    // Show the supported 3rd party ids which may be added to the account
-                                    authInputsview.thirdPartyIdentifiersHidden = NO;
-                                    [self updateRegistrationScreenWithThirdPartyIdentifiersHidden:NO];
-                                }
-                                else
-                                {
-                                    // Do not propose to add 3rd party ids if there is no configured identity server
-                                    [super onButtonPressed:sender];
-                                }
+
+                                // Show the supported 3rd party ids which may be added to the account
+                                authInputsview.thirdPartyIdentifiersHidden = NO;
+                                [self updateRegistrationScreenWithThirdPartyIdentifiersHidden:NO];
                             }
                         }];
                     }
