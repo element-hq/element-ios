@@ -725,14 +725,14 @@
 "room_participants_invited_section" = "ZAPROSZENI";
 "room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Serwer tożsamości nie został skonfigurowany, więc nie możesz rozpocząć rozmowy używając adresu email.";
 "room_message_unable_open_link_error_message" = "Nie udało się otworzyć adresu.";
-"room_conference_call_no_power" = "Nie masz uprawnień aby zarządzać konferencjami w tym pokoju.";
+"room_conference_call_no_power" = "Potrzebujesz uprawnień, aby zarządzać połączeniami konferencyjnymi w tym pokoju";
 "room_event_action_reaction_history" = "Historia reakcji";
 "room_action_camera" = "Zrób zdjęcie lub nagraj wideo";
 "settings_config_no_build_info" = "Brak informacji o buildzie";
 "settings_labs_message_reaction" = "Odpowiadaj na wiadomości używając emoji";
 "settings_key_backup_info" = "Zaszyfrowane wiadomości są zabezpieczone przy użyciu szyfrowania end-to-end. Tylko Ty oraz ich adresaci posiadają klucze do ich rozszyfrowania.";
 "settings_key_backup_info_none" = "Twoje klucze z tego urządzenia nie posiadają kopii zapasowej.";
-"settings_key_backup_info_signout_warning" = "Utwórz kopię zapasową kluczy przed wylogowaniem się aby uniknąć ich utraty.";
+"settings_key_backup_info_signout_warning" = "Podłącz to urządzenie do klucza kopii zapasowej przed wylogowaniem się, aby nie utracić kluczy, które dostępne są tylko na tym urządzeniu.";
 "settings_key_backup_info_valid" = "Kopia zapasowa twoich kluczy jest tworzona.";
 "settings_key_backup_info_trust_signature_unknown" = "Kopia zapasowa posiada podpis urządzenia o ID: %@";
 "settings_key_backup_info_trust_signature_valid" = "Kopia zapasowa posiada prawidłowy podpis tego urządzenia";
@@ -782,3 +782,27 @@
 "google_analytics_use_prompt" = "Chcesz pomóc nam w ulepszaniu %@ przez automatyczne wysyłanie anonimowych raportów o błędach i danych użytkowania?";
 // Key backup wrong version
 "e2e_key_backup_wrong_version_title" = "Nowy Klucz Kopii Zapasowej";
+"room_participants_remove_third_party_invite_prompt_msg" = "Czy jesteś pewien, że chcesz odrzucić to zaproszenie?";
+"e2e_key_backup_wrong_version" = "Wykryto nową wiadomość z kluczem zabezpieczeń. \nJeżeli to nie Ty - Prosimy, abyś zmienił swoje hasło w ustawieniach.";
+"e2e_key_backup_wrong_version_button_settings" = "Ustawienia";
+"e2e_key_backup_wrong_version_button_wasme" = "To ja";
+"bug_report_description" = "Proszę opisać błąd. Co zrobiłeś? Co miało się stać? Co się stało?";
+"bug_crash_report_description" = "Opisz, co zrobiłeś przed awarią:";
+// Widget
+"widget_no_integrations_server_configured" = "Nie skonfigurowano serwera integracji";
+"widget_integrations_server_failed_to_connect" = "Błąd łączenia z serwerem integracji";
+// Share extension
+"share_extension_auth_prompt" = "Zaloguj się do głównej aplikacji, aby udostępniać zawartość";
+"share_extension_failed_to_encrypt" = "Nie udało się wysłać. Sprawdź w głównej aplikacji ustawienia szyfrowania dla tego pokoju";
+// Service terms
+"service_terms_modal_title" = "Warunki usługi";
+"service_terms_modal_message" = "Aby kontynuować musisz zaakceptować Warunki Usługi.";
+"service_terms_modal_accept_button" = "Akceptuj";
+"service_terms_modal_description_for_identity_server" = "Być wykrywalnym dla innych";
+"service_terms_modal_description_for_integration_manager" = "Używaj Botów, mostków, widżetów i naklejek";
+"key_backup_setup_title" = "Klucz kopii zapasowej";
+"key_backup_setup_skip_alert_title" = "Jesteś pewien?";
+"key_backup_setup_skip_alert_message" = "Możesz stracić wiadomości bezpieczeństwa, jeżeli wylogujesz się z, bądź stracisz swoje urządzenie.";
+"key_backup_setup_skip_alert_skip_action" = "Pomiń";
+"key_backup_setup_intro_title" = "Nigdy nie trać zaszyfrowanych wiadomości";
+"key_backup_setup_intro_info" = "Wiadomości w szyfrowanym pokoju są zabezpieczone przez end-to-end. Tylko Ty i rozmówca macie klucze, aby odczytać te wiadomości.\nWykonaj kopię zapasową kluczy, aby ich nie zgubić.";
