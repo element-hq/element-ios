@@ -686,3 +686,32 @@
 "settings_labs_message_reaction" = "Реагировать на сообщения с Emoji";
 "settings_key_backup_button_connect" = "Подключите это устройство к ключу резервного копирования";
 "close" = "Закрыть";
+"auth_forgot_password_error_no_configured_identity_server" = "Сервер идентификации не настроен: добавьте один для сброса пароля.";
+"auth_softlogout_signed_out" = "Вы вышли";
+"auth_softlogout_sign_in" = "Войти";
+"auth_softlogout_clear_data" = "Очистить личные данные";
+"auth_softlogout_clear_data_button" = "Очистить все данные";
+"auth_softlogout_clear_data_sign_out_title" = "Вы уверены?";
+"auth_softlogout_clear_data_sign_out" = "Выйти";
+"room_event_action_reaction_show_all" = "Показать все";
+"room_event_action_reaction_show_less" = "Свернуть";
+"room_event_action_reaction_history" = "История реакций";
+"room_action_camera" = "Записать фото или видео";
+"room_action_send_file" = "Отправить файл";
+"room_message_edits_history_title" = "Редактирование сообщений";
+// Media picker
+"media_picker_title" = "Медиатека";
+// Image picker
+"image_picker_action_camera" = "Сфотографировать";
+"image_picker_action_library" = "Выбрать из библиотеки";
+"event_formatter_message_edited_mention" = "(отредактированный)";
+"widget_integrations_server_failed_to_connect" = "Не удалось подключиться к серверу интеграции";
+// Service terms
+"service_terms_modal_title" = "Условия пользования";
+"service_terms_modal_message" = "Для продолжения Вам необходимо принять Условия данного сервиса.";
+"service_terms_modal_accept_button" = "Принять";
+"service_terms_modal_description_for_identity_server" = "Быть открытыми для других";
+"service_terms_modal_description_for_integration_manager" = "Используйте боты, мосты, виджеты и стикеры";
+"key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Подключите это устройство к Key Backup";
+// MARK: - Device Verification
+"device_verification_title" = "Проверьте устройство";
