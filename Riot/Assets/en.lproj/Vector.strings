@@ -128,6 +128,8 @@
 "auth_softlogout_clear_data_sign_out_msg" = "Are you sure you want to clear all data currently stored on this device? Sign in again to access your account data and messages.";
 "auth_softlogout_clear_data_sign_out" = "Sign out";
 
+// Errors
+"error_user_already_logged_in" = "It looks like you’re trying to connect to another homeserver. Do you want to sign out?";
 
 // Chat creation
 "room_creation_title" = "New Chat";

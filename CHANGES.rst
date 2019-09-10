@@ -1,4 +1,5 @@
-Changes in 0.9.3 (2019-08-)
+
+Changes in 0.9.4 (2019-08-)
 ===============================================
 
 Improvements:
@@ -6,6 +7,13 @@ Improvements:
  * Widgets: Whitelist [MSC1961](https://github.com/matrix-org/matrix-doc/pull/1961) widget urls
  * i18n: Enable Polish (pl).
  * Room members: third-party invites can now be revoked
+
+Changes in 0.9.3 (2019-09-10)
+===============================================
+
+Improvements:
+ * Support Riot configuration link to customise HS and IS (#2703).
+ * Authentication: Create a way to filter and prioritise flows (with handleSupportedFlowsInAuthenticationSession).
 
 Changes in 0.9.2 (2019-08-08)
 ===============================================
