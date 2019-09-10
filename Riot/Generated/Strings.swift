@@ -962,6 +962,10 @@ internal enum VectorL10n {
   internal static var encryptedRoomMessageReplyToPlaceholder: String { 
     return VectorL10n.tr("Vector", "encrypted_room_message_reply_to_placeholder") 
   }
+  /// It looks like you’re trying to connect to another homeserver. Do you want to sign out?
+  internal static var errorUserAlreadyLoggedIn: String { 
+    return VectorL10n.tr("Vector", "error_user_already_logged_in") 
+  }
   /// VoIP conference added by %@
   internal static func eventFormatterJitsiWidgetAdded(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_jitsi_widget_added", p1)

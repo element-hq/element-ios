@@ -45,5 +45,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *softLogoutClearDataLabel;
 @property (weak, nonatomic) IBOutlet UIButton *softLogoutClearDataButton;
 
+- (void)showCustomHomeserver:(NSString*)homeserver andIdentityServer:(NSString*)identityServer;
+
 @end
 

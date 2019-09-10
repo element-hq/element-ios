@@ -497,9 +497,61 @@
     }];
 }
 
+/**
+ Filter and prioritise flows supported by the app.
+
+ @param authSession the auth session coming from the HS.
+ @return a new auth session
+ */
+- (MXAuthenticationSession*)handleSupportedFlowsInAuthenticationSession:(MXAuthenticationSession *)authSession
+{
+    MXLoginFlow *ssoFlow;
+    NSMutableArray *supportedFlows = [NSMutableArray array];
+
+    for (MXLoginFlow *flow in authSession.flows)
+    {
+        // Remove known flows we do not support
+        if (![flow.type isEqualToString:kMXLoginFlowTypeToken])
+        {
+            NSLog(@"[AuthenticationVC] handleSupportedFlowsInAuthenticationSession: Filter out flow %@", flow.type);
+            [supportedFlows addObject:flow];
+        }
+
+        // Prioritise SSO over other flows
+        if ([flow.type isEqualToString:kMXLoginFlowTypeSSO]
+            || [flow.type isEqualToString:kMXLoginFlowTypeCAS])
+        {
+            NSLog(@"[AuthenticationVC] handleSupportedFlowsInAuthenticationSession: Prioritise flow %@", flow.type);
+            ssoFlow = flow;
+            break;
+        }
+    }
+
+    if (ssoFlow)
+    {
+        [supportedFlows removeAllObjects];
+        [supportedFlows addObject:ssoFlow];
+    }
+
+    if (supportedFlows.count != authSession.flows.count)
+    {
+        MXAuthenticationSession *updatedAuthSession = [[MXAuthenticationSession alloc] init];
+        updatedAuthSession.session = authSession.session;
+        updatedAuthSession.params = authSession.params;
+        updatedAuthSession.flows = supportedFlows;
+        return updatedAuthSession;
+    }
+    else
+    {
+        return authSession;
+    }
+}
 
 - (void)handleAuthenticationSession:(MXAuthenticationSession *)authSession
 {
+    // Make some cleaning from the server response according to what the app supports
+    authSession = [self handleSupportedFlowsInAuthenticationSession:authSession];
+    
     [super handleAuthenticationSession:authSession];
 
     AuthInputsView *authInputsview;
