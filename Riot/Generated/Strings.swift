@@ -2514,6 +2514,66 @@ internal enum VectorL10n {
   internal static var settingsDevicesDescription: String { 
     return VectorL10n.tr("Vector", "settings_devices_description") 
   }
+  /// An error occured. Please retry.
+  internal static var settingsDiscoveryErrorMessage: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_error_message") 
+  }
+  /// You are not currently using an identity server. To be discoverable by existing contacts you known, add one.
+  internal static var settingsDiscoveryNoIdentityServer: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_no_identity_server") 
+  }
+  /// DISCOVERY
+  internal static var settingsDiscoverySettings: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_settings") 
+  }
+  /// Agree to the Identity Server (%@) Terms of Service to allow yourself to be discoverable by email address or phone number.
+  internal static func settingsDiscoveryTermsNotSigned(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_discovery_terms_not_signed", p1)
+  }
+  /// Cancel email validation
+  internal static var settingsDiscoveryThreePidDetailsCancelEmailValidationAction: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_three_pid_details_cancel_email_validation_action") 
+  }
+  /// Enter SMS activation code
+  internal static var settingsDiscoveryThreePidDetailsEnterSmsCodeAction: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_three_pid_details_enter_sms_code_action") 
+  }
+  /// Manage preferences for this email address, which other users can use to discover you and use to invite you to rooms. Add or remove email addresses in Accounts.
+  internal static var settingsDiscoveryThreePidDetailsInformationEmail: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_three_pid_details_information_email") 
+  }
+  /// Manage preferences for this phone number, which other users can use to discover you and use to invite you to rooms. Add or remove phone numbers in Accounts.
+  internal static var settingsDiscoveryThreePidDetailsInformationPhoneNumber: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_three_pid_details_information_phone_number") 
+  }
+  /// Revoke
+  internal static var settingsDiscoveryThreePidDetailsRevokeAction: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_three_pid_details_revoke_action") 
+  }
+  /// Share
+  internal static var settingsDiscoveryThreePidDetailsShareAction: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_three_pid_details_share_action") 
+  }
+  /// Manage email
+  internal static var settingsDiscoveryThreePidDetailsTitleEmail: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_three_pid_details_title_email") 
+  }
+  /// Manage phone number
+  internal static var settingsDiscoveryThreePidDetailsTitlePhoneNumber: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_three_pid_details_title_phone_number") 
+  }
+  /// Manage which email addresses or phone numbers other users can use to discover you and use to invite you to rooms. Add or remove email addresses or phone numbers from this list in 
+  internal static var settingsDiscoveryThreePidsManagementInformationPart1: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_three_pids_management_information_part1") 
+  }
+  /// User Settings
+  internal static var settingsDiscoveryThreePidsManagementInformationPart2: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_three_pids_management_information_part2") 
+  }
+  /// .
+  internal static var settingsDiscoveryThreePidsManagementInformationPart3: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_three_pids_management_information_part3") 
+  }
   /// Display Name
   internal static var settingsDisplayName: String { 
     return VectorL10n.tr("Vector", "settings_display_name") 
@@ -2793,6 +2853,18 @@ internal enum VectorL10n {
   /// Third-party Notices
   internal static var settingsThirdPartyNotices: String { 
     return VectorL10n.tr("Vector", "settings_third_party_notices") 
+  }
+  /// Manage which email addresses or phone numbers you can use to log in or recover your account here. Control who can find you in 
+  internal static var settingsThreePidsManagementInformationPart1: String { 
+    return VectorL10n.tr("Vector", "settings_three_pids_management_information_part1") 
+  }
+  /// Discovery
+  internal static var settingsThreePidsManagementInformationPart2: String { 
+    return VectorL10n.tr("Vector", "settings_three_pids_management_information_part2") 
+  }
+  /// .
+  internal static var settingsThreePidsManagementInformationPart3: String { 
+    return VectorL10n.tr("Vector", "settings_three_pids_management_information_part3") 
   }
   /// Settings
   internal static var settingsTitle: String { 
