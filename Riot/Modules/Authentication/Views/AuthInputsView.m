@@ -516,75 +516,94 @@
                     
                     if (restClient)
                     {
-                        // Check whether a second 3pid is available
-                        _isThirdPartyIdentifierPending = (!self.emailContainer.isHidden && self.emailTextField.text.length && ![self isFlowCompleted:kMXLoginFlowTypeEmailIdentity]);
-                        
-                        // Launch msisdn validation
-                        NSString *e164 = [[NBPhoneNumberUtil sharedInstance] format:nbPhoneNumber numberFormat:NBEPhoneNumberFormatE164 error:nil];
-                        NSString *msisdn;
-                        if ([e164 hasPrefix:@"+"])
-                        {
-                            msisdn = [e164 substringFromIndex:1];
-                        }
-                        else if ([e164 hasPrefix:@"00"])
-                        {
-                            msisdn = [e164 substringFromIndex:2];
-                        }
-                        submittedMSISDN = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumMSISDN andAddress:msisdn];
-                        
-                        [submittedMSISDN requestValidationTokenWithMatrixRestClient:restClient
-                                                               isDuringRegistration:YES
-                                                                           nextLink:nil
-                                                                            success:^
-                         {
-                             
-                             [self showValidationMSISDNDialogToPrepareParameters:callback];
-                             
-                         }
-                                                                            failure:^(NSError *error)
-                         {
-                             
-                             NSLog(@"[AuthInputsView] Failed to request msisdn token");
-                             
-                             // Ignore connection cancellation error
-                             if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
+                        MXWeakify(self);
+                        [self checkIdentityServerRequirement:restClient success:^(BOOL identityServerRequired) {
+                            MXStrongifyAndReturnIfNil(self);
+
+                            if (identityServerRequired && !restClient.identityServer)
+                            {
+                                callback(nil, [NSError errorWithDomain:MXKAuthErrorDomain
+                                                                  code:0
+                                                              userInfo:@{
+                                                                         NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"auth_phone_is_required"]
+                                                                         }]);
+                                return;
+                            }
+
+                            // Check whether a second 3pid is available
+                            _isThirdPartyIdentifierPending = (!self.emailContainer.isHidden && self.emailTextField.text.length && ![self isFlowCompleted:kMXLoginFlowTypeEmailIdentity]);
+
+                            // Launch msisdn validation
+                            NSString *e164 = [[NBPhoneNumberUtil sharedInstance] format:nbPhoneNumber numberFormat:NBEPhoneNumberFormatE164 error:nil];
+                            NSString *msisdn;
+                            if ([e164 hasPrefix:@"+"])
+                            {
+                                msisdn = [e164 substringFromIndex:1];
+                            }
+                            else if ([e164 hasPrefix:@"00"])
+                            {
+                                msisdn = [e164 substringFromIndex:2];
+                            }
+                            submittedMSISDN = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumMSISDN andAddress:msisdn];
+
+                            [submittedMSISDN requestValidationTokenWithMatrixRestClient:restClient
+                                                                   isDuringRegistration:YES
+                                                                               nextLink:nil
+                                                                                success:^
                              {
-                                 return;
+
+                                 [self showValidationMSISDNDialogToPrepareParameters:callback];
+
                              }
-                             
-                             // Translate the potential MX error.
-                             MXError *mxError = [[MXError alloc] initWithNSError:error];
-                             if (mxError && ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse] || [mxError.errcode isEqualToString:kMXErrCodeStringServerNotTrusted]))
+                                                                                failure:^(NSError *error)
                              {
-                                 NSMutableDictionary *userInfo;
-                                 if (error.userInfo)
+
+                                 NSLog(@"[AuthInputsView] Failed to request msisdn token");
+
+                                 // Ignore connection cancellation error
+                                 if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
                                  {
-                                     userInfo = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
+                                     return;
                                  }
-                                 else
+
+                                 // Translate the potential MX error.
+                                 MXError *mxError = [[MXError alloc] initWithNSError:error];
+                                 if (mxError && ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse] || [mxError.errcode isEqualToString:kMXErrCodeStringServerNotTrusted]))
                                  {
-                                     userInfo = [NSMutableDictionary dictionary];
+                                     NSMutableDictionary *userInfo;
+                                     if (error.userInfo)
+                                     {
+                                         userInfo = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
+                                     }
+                                     else
+                                     {
+                                         userInfo = [NSMutableDictionary dictionary];
+                                     }
+
+                                     userInfo[NSLocalizedFailureReasonErrorKey] = nil;
+
+                                     if ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse])
+                                     {
+                                         userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_phone_in_use", @"Vector", nil);
+                                         userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_phone_in_use", @"Vector", nil);
+                                     }
+                                     else
+                                     {
+                                         userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+                                         userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+                                     }
+
+                                     error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
                                  }
-                                 
-                                 userInfo[NSLocalizedFailureReasonErrorKey] = nil;
-                                 
-                                 if ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse])
-                                 {
-                                     userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_phone_in_use", @"Vector", nil);
-                                     userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_phone_in_use", @"Vector", nil);
-                                 }
-                                 else
-                                 {
-                                     userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
-                                     userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
-                                 }
-                                 
-                                 error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
-                             }
-                             
-                             callback(nil, error);
-                             
-                         }];
+
+                                 callback(nil, error);
+
+                             }];
+
+
+                        } failure:^(NSError *error) {
+                            callback(nil, error);
+                        }];
                         
                         // Async response
                         return;
