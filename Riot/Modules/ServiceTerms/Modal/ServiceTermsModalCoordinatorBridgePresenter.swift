@@ -69,6 +69,10 @@ final class ServiceTermsModalCoordinatorBridgePresenter: NSObject {
         viewController.present(serviceTermsModalCoordinator.toPresentable(), animated: animated, completion: nil)
         serviceTermsModalCoordinator.start()
         
+        if let coordinator = self.coordinator {
+            coordinator.toPresentable().dismiss(animated: false, completion: nil)
+        }
+        
         self.coordinator = serviceTermsModalCoordinator
     }
     

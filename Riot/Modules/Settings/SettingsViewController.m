@@ -53,6 +53,7 @@ enum
     SETTINGS_SECTION_USER_SETTINGS_INDEX,
     SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX,
     SETTINGS_SECTION_CALLS_INDEX,
+    SETTINGS_SECTION_DISCOVERY_INDEX,
     SETTINGS_SECTION_USER_INTERFACE_INDEX,
     SETTINGS_SECTION_IGNORED_USERS_INDEX,
     SETTINGS_SECTION_CONTACTS_INDEX,
@@ -146,7 +147,8 @@ MXKEncryptionInfoViewDelegate,
 KeyBackupSetupCoordinatorBridgePresenterDelegate,
 KeyBackupRecoverCoordinatorBridgePresenterDelegate,
 SignOutAlertPresenterDelegate,
-SingleImagePickerPresenterDelegate>
+SingleImagePickerPresenterDelegate,
+SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinatorDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
@@ -193,6 +195,7 @@ SingleImagePickerPresenterDelegate>
     NSInteger userSettingsPhoneStartIndex;  // The user can have several linked phone numbers. Hence, the dynamic section items count
     NSInteger userSettingsNewPhoneIndex;    // This index also marks the end of the phone numbers list
     NSInteger userSettingsChangePasswordIndex;
+    NSInteger userSettingsThreePidsInformation;
     NSInteger userSettingsNightModeSepIndex;
     NSInteger userSettingsNightModeIndex;
     
@@ -255,6 +258,10 @@ SingleImagePickerPresenterDelegate>
 @property (nonatomic, strong) SignOutAlertPresenter *signOutAlertPresenter;
 @property (nonatomic, weak) UIButton *signOutButton;
 @property (nonatomic, strong) SingleImagePickerPresenter *imagePickerPresenter;
+
+@property (nonatomic, strong) SettingsDiscoveryViewModel *settingsDiscoveryViewModel;
+@property (nonatomic, strong) SettingsDiscoveryTableViewSection *settingsDiscoveryTableViewSection;
+@property (nonatomic, strong) SettingsDiscoveryThreePidDetailsCoordinatorBridgePresenter *discoveryThreePidDetailsPresenter;
 
 @end
 
@@ -343,6 +350,8 @@ SingleImagePickerPresenterDelegate>
             keyBackupSection.delegate = self;
         }
     }
+    
+    [self setupDiscoverySection];
 
     groupsDataSource = [[GroupsDataSource alloc] initWithMatrixSession:self.mainSession];
     [groupsDataSource finalizeInitialization];
@@ -488,6 +497,13 @@ SingleImagePickerPresenterDelegate>
     }];
     
     newPhoneNumberCountryPicker = nil;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.settingsDiscoveryTableViewSection reload];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -962,6 +978,9 @@ SingleImagePickerPresenterDelegate>
     MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
     [account load3PIDs:^{
 
+        NSArray<MXThirdPartyIdentifier*> *thirdPartyIdentifiers = account.threePIDs ?: @[];
+        [self.settingsDiscoveryViewModel updateWithThirdPartyIdentifiers:thirdPartyIdentifiers];
+        
         // Refresh all the table (A slide down animation is observed when we limit the refresh to the concerned section).
         // Note: The use of 'reloadData' handles the case where the account has been logged out.
         [self refreshSettings];
@@ -1202,6 +1221,22 @@ SingleImagePickerPresenterDelegate>
     }
 }
 
+- (void)setupDiscoverySection
+{
+    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+    
+    NSArray<MXThirdPartyIdentifier*> *thirdPartyIdentifiers = account.threePIDs ?: @[];
+    
+    SettingsDiscoveryViewModel *viewModel = [[SettingsDiscoveryViewModel alloc] initWithSession:self.mainSession thirdPartyIdentifiers:thirdPartyIdentifiers];
+    viewModel.coordinatorDelegate = self;
+    
+    SettingsDiscoveryTableViewSection *discoverySection = [[SettingsDiscoveryTableViewSection alloc] initWithViewModel:viewModel];
+    discoverySection.delegate = self;
+    
+    self.settingsDiscoveryViewModel = viewModel;
+    self.settingsDiscoveryTableViewSection = discoverySection;
+}
+
 #pragma mark - Segues
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -1248,8 +1283,9 @@ SingleImagePickerPresenterDelegate>
         userSettingsNewEmailIndex = userSettingsEmailStartIndex + account.linkedEmails.count;
         userSettingsPhoneStartIndex = userSettingsNewEmailIndex + 1;
         userSettingsNewPhoneIndex = userSettingsPhoneStartIndex + account.linkedPhoneNumbers.count;
-
-        count = userSettingsNewPhoneIndex + 1;
+        userSettingsThreePidsInformation = userSettingsNewPhoneIndex + 1;
+        
+        count = userSettingsThreePidsInformation + 1;
     }
     else if (section == SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX)
     {
@@ -1263,6 +1299,10 @@ SingleImagePickerPresenterDelegate>
         {
             count -= 2;
         }
+    }
+    else if (section == SETTINGS_SECTION_DISCOVERY_INDEX)
+    {
+        count = self.settingsDiscoveryTableViewSection.numberOfRows;
     }
     else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
     {
@@ -1717,6 +1757,21 @@ SingleImagePickerPresenterDelegate>
                 cell = newPhoneCell;
             }
         }
+        else if (row == userSettingsThreePidsInformation)
+        {
+            MXKTableViewCell *threePidsInformationCell = [self getDefaultTableViewCell:self.tableView];
+            
+            NSMutableAttributedString *attributedString =  [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"settings_three_pids_management_information_part1", @"Vector", nil) attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor}];
+            [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"settings_three_pids_management_information_part2", @"Vector", nil) attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.tintColor}]];
+            [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"settings_three_pids_management_information_part3", @"Vector", nil) attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor}]];
+            
+            threePidsInformationCell.textLabel.attributedText = attributedString;
+            threePidsInformationCell.textLabel.numberOfLines = 0;
+            
+            threePidsInformationCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            cell = threePidsInformationCell;
+        }
         else if (row == userSettingsChangePasswordIndex)
         {
             MXKTableViewCellWithLabelAndTextField *passwordCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
@@ -1869,6 +1924,10 @@ SingleImagePickerPresenterDelegate>
 
             cell = globalInfoCell;
         }
+    }
+    else if (section == SETTINGS_SECTION_DISCOVERY_INDEX)
+    {
+        cell = [self.settingsDiscoveryTableViewSection cellForRowAtRow:row];
     }
     else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
     {
@@ -2369,6 +2428,10 @@ SingleImagePickerPresenterDelegate>
     {
         return NSLocalizedStringFromTable(@"settings_calls_settings", @"Vector", nil);
     }
+    else if (section == SETTINGS_SECTION_DISCOVERY_INDEX)
+    {
+        return NSLocalizedStringFromTable(@"settings_discovery_settings", @"Vector", nil);
+    }
     else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
     {
         return NSLocalizedStringFromTable(@"settings_user_interface", @"Vector", nil);
@@ -2601,6 +2664,15 @@ SingleImagePickerPresenterDelegate>
             {
                 [self showThemePicker];
             }
+        }
+        else if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX && row == userSettingsThreePidsInformation)
+        {
+            NSIndexPath *discoveryIndexPath = [NSIndexPath indexPathForRow:0 inSection:SETTINGS_SECTION_DISCOVERY_INDEX];
+            [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
+        else if (section == SETTINGS_SECTION_DISCOVERY_INDEX)
+        {
+            [self.settingsDiscoveryTableViewSection selectRow:indexPath.row];
         }
         else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
         {
@@ -4550,6 +4622,75 @@ SingleImagePickerPresenterDelegate>
 - (void)handleAccountDataDidChangeIdentityServerNotification:(NSNotification*)notification
 {
     [self refreshSettings];
+}
+
+#pragma mark - SettingsDiscoveryTableViewSectionDelegate
+
+- (void)settingsDiscoveryTableViewSectionDidUpdate:(SettingsDiscoveryTableViewSection *)settingsDiscoveryTableViewSection
+{
+    [self.tableView reloadData];
+}
+
+- (MXKTableViewCell *)settingsDiscoveryTableViewSection:(SettingsDiscoveryTableViewSection *)settingsDiscoveryTableViewSection tableViewCellClass:(Class)tableViewCellClass forRow:(NSInteger)forRow
+{
+    MXKTableViewCell *tableViewCell;
+    
+    if ([tableViewCellClass isEqual:[MXKTableViewCell class]])
+    {
+        tableViewCell = [self getDefaultTableViewCell:self.tableView];
+    }
+    else if ([tableViewCellClass isEqual:[MXKTableViewCellWithTextView class]])
+    {
+        tableViewCell = [self textViewCellForTableView:self.tableView atIndexPath:[NSIndexPath indexPathForRow:forRow inSection:SETTINGS_SECTION_DISCOVERY_INDEX]];
+    }
+    else if ([tableViewCellClass isEqual:[MXKTableViewCellWithButton class]])
+    {
+        MXKTableViewCellWithButton *cell = [self.tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
+        
+        if (!cell)
+        {
+            cell = [[MXKTableViewCellWithButton alloc] init];
+        }
+        else
+        {
+            // Fix https://github.com/vector-im/riot-ios/issues/1354
+            cell.mxkButton.titleLabel.text = nil;
+        }
+        
+        cell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
+        [cell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
+        
+        tableViewCell = cell;
+    }
+    else if ([tableViewCellClass isEqual:[MXKTableViewCellWithLabelAndSwitch class]])
+    {
+        tableViewCell = [self getLabelAndSwitchCell:self.tableView forIndexPath:[NSIndexPath indexPathForRow:forRow inSection:SETTINGS_SECTION_DISCOVERY_INDEX]];
+    }
+    
+    return tableViewCell;
+}
+
+#pragma mark - SettingsDiscoveryViewModelCoordinatorDelegate
+
+- (void)settingsDiscoveryViewModel:(SettingsDiscoveryViewModel *)viewModel didSelectThreePidWith:(NSString *)medium and:(NSString *)address
+{
+    SettingsDiscoveryThreePidDetailsCoordinatorBridgePresenter *discoveryThreePidDetailsPresenter = [[SettingsDiscoveryThreePidDetailsCoordinatorBridgePresenter alloc] initWithSession:self.mainSession medium:medium adress:address];
+    
+    MXWeakify(self);
+    
+    [discoveryThreePidDetailsPresenter pushFrom:self.navigationController animated:YES popCompletion:^{
+        MXStrongifyAndReturnIfNil(self);
+        
+        self.discoveryThreePidDetailsPresenter = nil;
+    }];
+    
+    self.discoveryThreePidDetailsPresenter = discoveryThreePidDetailsPresenter;
+}
+
+- (void)settingsDiscoveryViewModelDidTapUserSettingsLink:(SettingsDiscoveryViewModel *)viewModel
+{
+    NSIndexPath *discoveryIndexPath = [NSIndexPath indexPathForRow:userSettingsNewEmailIndex inSection:SETTINGS_SECTION_USER_SETTINGS_INDEX];
+    [self.tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 @end

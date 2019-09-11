@@ -360,6 +360,7 @@
 "settings_user_settings" = "USER SETTINGS";
 "settings_notifications_settings" = "NOTIFICATION SETTINGS";
 "settings_calls_settings" = "CALLS";
+"settings_discovery_settings" = "DISCOVERY";
 "settings_user_interface" = "USER INTERFACE";
 "settings_ignored_users" = "IGNORED USERS";
 "settings_contacts" = "LOCAL CONTACTS";
@@ -390,6 +391,9 @@
 "settings_change_password" = "Change password";
 "settings_night_mode" = "Night Mode";
 "settings_fail_to_update_profile" = "Fail to update profile";
+"settings_three_pids_management_information_part1" = "Manage which email addresses or phone numbers you can use to log in or recover your account here. Control who can find you in ";
+"settings_three_pids_management_information_part2" = "Discovery";
+"settings_three_pids_management_information_part3" = ".";
 
 "settings_enable_push_notif" = "Notifications on this device";
 "settings_show_decrypted_content" = "Show decrypted content";
@@ -485,6 +489,23 @@
 "settings_key_backup_delete_confirmation_prompt_msg" = "Are you sure? You will lose your encrypted messages if your keys are not backed up properly.";
 
 "settings_devices_description" = "A device's public name is visible to people you communicate with";
+
+"settings_discovery_no_identity_server" = "You are not currently using an identity server. To be discoverable by existing contacts you known, add one.";
+"settings_discovery_terms_not_signed" = "Agree to the Identity Server (%@) Terms of Service to allow yourself to be discoverable by email address or phone number.";
+"settings_discovery_three_pids_management_information_part1" = "Manage which email addresses or phone numbers other users can use to discover you and use to invite you to rooms. Add or remove email addresses or phone numbers from this list in ";
+"settings_discovery_three_pids_management_information_part2" = "User Settings";
+"settings_discovery_three_pids_management_information_part3" = ".";
+"settings_discovery_error_message" = "An error occured. Please retry.";
+
+"settings_discovery_three_pid_details_title_email" = "Manage email";
+"settings_discovery_three_pid_details_information_email" = "Manage preferences for this email address, which other users can use to discover you and use to invite you to rooms. Add or remove email addresses in Accounts.";
+"settings_discovery_three_pid_details_title_phone_number" = "Manage phone number";
+"settings_discovery_three_pid_details_information_phone_number" = "Manage preferences for this phone number, which other users can use to discover you and use to invite you to rooms. Add or remove phone numbers in Accounts.";
+
+"settings_discovery_three_pid_details_share_action" = "Share";
+"settings_discovery_three_pid_details_revoke_action" = "Revoke";
+"settings_discovery_three_pid_details_cancel_email_validation_action" = "Cancel email validation";
+"settings_discovery_three_pid_details_enter_sms_code_action" = "Enter SMS activation code";
 
 // Room Details
 "room_details_title" = "Room Details";
