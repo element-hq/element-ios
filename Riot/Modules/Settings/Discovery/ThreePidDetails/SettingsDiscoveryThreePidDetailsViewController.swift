@@ -39,6 +39,7 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
     private var keyboardAvoider: KeyboardAvoider?
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
+    private weak var presentedAlertController: UIAlertController?
     
     private var displayMode: SettingsDiscoveryThreePidDetailsDisplayMode?
 
@@ -163,33 +164,50 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
     private func renderLoaded(displayMode: SettingsDiscoveryThreePidDetailsDisplayMode) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         
-        let operationButtonTitle: String
-        let operationButtonColor: UIColor
+        let operationButtonTitle: String?
+        let operationButtonColor: UIColor?
+        let operationButtonEnabled: Bool
+        
+        self.presentedAlertController?.dismiss(animated: false, completion: nil)
         
         switch displayMode {
         case .share:
             operationButtonTitle = VectorL10n.settingsDiscoveryThreePidDetailsShareAction
             operationButtonColor = self.theme.tintColor
+            operationButtonEnabled = true
         case .revoke:
             operationButtonTitle = VectorL10n.settingsDiscoveryThreePidDetailsRevokeAction
             operationButtonColor = self.theme.warningColor
-        case .cancelEmailValidation:
-            operationButtonTitle = VectorL10n.settingsDiscoveryThreePidDetailsCancelEmailValidationAction
-            operationButtonColor = self.theme.warningColor
+            operationButtonEnabled = true
+        case .pendingEmailVerification:
+            self.presentPendingEmailVerificationAlert()
+            
+            operationButtonTitle = nil
+            operationButtonColor = nil
+            operationButtonEnabled = false
         case .enterSMSCode:
             operationButtonTitle = VectorL10n.settingsDiscoveryThreePidDetailsEnterSmsCodeAction
             operationButtonColor = self.theme.tintColor
+            operationButtonEnabled = true
         }
         
-        self.operationButton.setTitle(operationButtonTitle, for: .normal)
-        self.operationButton.setTitleColor(operationButtonColor, for: .normal)
-        self.operationButton.isEnabled = true
+        if let operationButtonTitle = operationButtonTitle {
+            self.operationButton.setTitle(operationButtonTitle, for: .normal)
+        }
+        
+        if let operationButtonColor = operationButtonColor {
+            self.operationButton.setTitleColor(operationButtonColor, for: .normal)
+        }
+        
+        self.operationButton.isEnabled = operationButtonEnabled
         
         self.displayMode = displayMode
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        if self.activityPresenter.isPresenting == false {
+            self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        }
         self.operationButton.isEnabled = false
     }
     
@@ -197,6 +215,24 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
         self.operationButton.isEnabled = true
+    }
+    
+    private func presentPendingEmailVerificationAlert() {
+        
+        let alert = UIAlertController(title: Bundle.mxk_localizedString(forKey: "account_email_validation_title"),
+                                      message: Bundle.mxk_localizedString(forKey: "account_email_validation_message"),
+                                      preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: VectorL10n.continue, style: .default, handler: { _ in
+            self.viewModel.process(viewAction: .confirmEmailValidation)
+        }))
+        
+        alert.addAction(UIAlertAction(title: Bundle.mxk_localizedString(forKey: "abort"), style: .cancel, handler: { _ in
+            self.viewModel.process(viewAction: .cancelEmailValidation)
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
+        self.presentedAlertController = alert
     }
     
     private func presentSMSActivationCodeAlert() {
@@ -210,7 +246,7 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
             textField.keyboardType = .phonePad
         }
         
-        alert.addAction(UIAlertAction(title: VectorL10n.authSubmit, style: .destructive, handler: { _ in
+        alert.addAction(UIAlertAction(title: VectorL10n.authSubmit, style: .default, handler: { _ in
             guard let textField =  alert.textFields?.first, let smsCode = textField.text, smsCode.isEmpty == false else {
                 return
             }
@@ -220,6 +256,7 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
         alert.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil))
         
         self.present(alert, animated: true, completion: nil)
+        self.presentedAlertController = alert
     }
     
     // MARK: - Actions
@@ -236,11 +273,11 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
             viewAction = .share
         case .revoke:
             viewAction = .revoke
-        case .cancelEmailValidation:
-            viewAction = .cancelEmailValidation
         case .enterSMSCode:
             viewAction = nil
             self.presentSMSActivationCodeAlert()
+        default:
+            viewAction = nil
         }
         
         if let viewAction = viewAction {

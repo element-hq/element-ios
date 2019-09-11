@@ -24,5 +24,6 @@ enum SettingsDiscoveryThreePidDetailsViewAction {
     case share
     case revoke
     case cancelEmailValidation
+    case confirmEmailValidation
     case enterSMSCode(_ code: String)
 }

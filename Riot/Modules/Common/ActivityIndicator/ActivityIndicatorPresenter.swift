@@ -34,6 +34,10 @@ final class ActivityIndicatorPresenter: ActivityIndicatorPresenterType {
     private weak var activityIndicatorView: ActivityIndicatorView?
     private weak var presentingView: UIView?
     
+    var isPresenting: Bool {
+        return self.activityIndicatorView != nil
+    }
+    
     // MARK: - Public
     
     func presentActivityIndicator(on view: UIView, animated: Bool, completion: (() -> Void)? = nil) {

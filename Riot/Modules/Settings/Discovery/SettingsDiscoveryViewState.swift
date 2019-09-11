@@ -23,6 +23,12 @@ enum SettingsDiscoveryViewState {
     case error(Error)
 }
 
+/// SettingsDiscoveryTableViewSection `loaded` view state dipslay modes
+///
+/// - noIdentityServer: No identity server configured.
+/// - termsNotSigned: Identity server terms are not signed.
+/// - noThreePidsAdded: No three pids added to the user HS account.
+/// - threePidsAdded: Three pids added to the user HS account.
 enum SettingsDiscoveryDisplayMode {
     case noIdentityServer
     case termsNotSigned(host: String)
