@@ -20,6 +20,7 @@ Improvements:
  * Privacy: Allow password reset when no IS (#2658).
  * Privacy: Allow email registration when no IS (#2657).
  * Privacy: Settings: Add a Discovery section (#2606).
+ * Privacy: Make NSContactsUsageDescription more generic and mention that 3pids are now uploaded hashed (#2521).
 
 Changes in 0.9.2 (2019-08-08)
 ===============================================
