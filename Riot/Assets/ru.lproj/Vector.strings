@@ -715,3 +715,116 @@
 "key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Подключите это устройство к Key Backup";
 // MARK: - Device Verification
 "device_verification_title" = "Проверьте устройство";
+"auth_softlogout_reason" = "Ваш домашний сервер (%1$@) админ выписал вас из вашей учетной записи %2$@ (%3$@).";
+"auth_softlogout_recover_encryption_keys" = "Войдите, чтобы восстановить ключи шифрования, хранящиеся исключительно на этом устройстве. Они нужны вам для чтения всех ваших защищенных сообщений на любом устройстве.";
+"auth_softlogout_clear_data_message_1" = "Внимание: Ваши личные данные (включая ключи шифрования) все еще хранятся на этом устройстве.";
+"auth_softlogout_clear_data_message_2" = "Очистите его, если вы закончили использовать это устройство или хотите войти в другую учетную запись.";
+"auth_softlogout_clear_data_sign_out_msg" = "Вы уверены, что хотите удалить все данные, хранящиеся в данный момент на этом устройстве? Войдите снова, чтобы получить доступ к данным и сообщениям вашей учетной записи.";
+// Errors
+"error_user_already_logged_in" = "Похоже, вы пытаетесь подключиться к другому серверу. Вы хотите выйти?";
+"room_creation_error_invite_user_by_email_without_identity_server" = "Сервер идентификации не настроен, поэтому вы не можете добавить участника с электронной почтой.";
+"room_participants_remove_third_party_invite_prompt_msg" = "Вы уверены, что хотите отозвать это приглашение?";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Сервер идентификации не настроен, поэтому вы не можете начать чат с контактом, используя электронную почту.";
+"camera_unavailable" = "Камера недоступна на вашем устройстве";
+"photo_library_access_not_granted" = "%@ не имеет доступа к библиотеке фотографий, измените настройки конфиденциальности";
+// Widget
+"widget_no_integrations_server_configured" = "Сервер интеграции не настроен";
+"key_backup_recover_connent_banner_subtitle" = "Подключите это устройство к функции резервного копирования ключей";
+"device_verification_security_advice" = "Для обеспечения максимальной безопасности мы рекомендуем делать это лично или использовать другие надежные средства связи";
+"device_verification_cancelled" = "Другая сторона отменила проверку.";
+"device_verification_cancelled_by_me" = "Проверка была отменена. Причина: %@";
+"device_verification_error_cannot_load_device" = "Невозможно загрузить информацию об устройстве.";
+// Mark: Incoming
+"device_verification_incoming_title" = "Входящий запрос на проверку";
+"device_verification_incoming_description_1" = "Проверьте это устройство, чтобы отметить его как доверенное. Доверительные устройства партнеров дают вам дополнительное спокойствие при использовании сообщений со сквозным шифрованием.";
+"device_verification_incoming_description_2" = "Убедитесь, что данное устройство является доверенным, а также проверьте, что оно доверено для вашего партнера.";
+// MARK: Start
+"device_verification_start_title" = "Проверьте, сравнив короткую текстовую строку";
+"device_verification_start_wait_partner" = "Ожидайте, пока партнер примет....";
+"device_verification_start_use_legacy" = "Ничего не появляется? Не все клиенты пока поддерживают интерактивную проверку. Используйте устаревшую проверку.";
+"device_verification_start_verify_button" = "Начать проверку";
+"device_verification_verify_wait_partner" = "Ожидайте, пока партнер подтвердит....";
+// MARK: Verified
+"device_verification_verified_title" = "Проверено!";
+"device_verification_verified_description_1" = "Вы успешно проверили это устройство.";
+"device_verification_verified_got_it_button" = "Понял";
+// MARK: Emoji
+"device_verification_emoji_dog" = "Собака";
+"device_verification_emoji_cat" = "Кот";
+"device_verification_emoji_lion" = "Лев";
+"device_verification_emoji_horse" = "Конь";
+"device_verification_emoji_unicorn" = "Единорог";
+"device_verification_emoji_pig" = "Хрюша";
+"device_verification_emoji_elephant" = "Слон";
+"device_verification_emoji_rabbit" = "Кролик";
+"device_verification_emoji_panda" = "Панда";
+"device_verification_emoji_rooster" = "Петух";
+"device_verification_emoji_penguin" = "Пингвин";
+"device_verification_emoji_turtle" = "Черепаха";
+"device_verification_emoji_fish" = "Рыба";
+"device_verification_emoji_octopus" = "Осьминог";
+"device_verification_emoji_butterfly" = "Бабочка";
+"device_verification_emoji_flower" = "Цветок";
+"device_verification_emoji_tree" = "Дерево";
+"device_verification_emoji_cactus" = "Кактус";
+"device_verification_emoji_mushroom" = "Гриб";
+"device_verification_emoji_globe" = "Глобус";
+"device_verification_emoji_moon" = "Луна";
+"device_verification_emoji_cloud" = "Облако";
+"device_verification_emoji_fire" = "Огонь";
+"device_verification_emoji_banana" = "Банан";
+"device_verification_emoji_apple" = "Яблоко";
+"device_verification_emoji_strawberry" = "Клубника";
+"device_verification_emoji_corn" = "Кукуруза";
+"device_verification_emoji_pizza" = "Пицца";
+"device_verification_emoji_cake" = "Печенье";
+"device_verification_emoji_heart" = "Сердце";
+"device_verification_emoji_smiley" = "Улыбка";
+"device_verification_emoji_robot" = "Робот";
+"device_verification_emoji_hat" = "Шапка";
+"device_verification_emoji_glasses" = "Очки";
+"device_verification_emoji_spanner" = "Ключ";
+"device_verification_emoji_santa" = "Морозко";
+"device_verification_emoji_thumbs up" = "Палец вверх";
+"device_verification_emoji_umbrella" = "Зонт";
+"device_verification_emoji_hourglass" = "Песочные часы";
+"device_verification_emoji_clock" = "Часы";
+"device_verification_emoji_gift" = "Подарок";
+"device_verification_emoji_light bulb" = "Лампочка";
+"device_verification_emoji_book" = "Книга";
+"device_verification_emoji_pencil" = "Карандаш";
+"device_verification_emoji_paperclip" = "Скрепка";
+"device_verification_emoji_scissors" = "Ножницы";
+"device_verification_emoji_lock" = "Замок";
+"device_verification_emoji_key" = "Ключ";
+"device_verification_emoji_hammer" = "Молоток";
+"device_verification_emoji_telephone" = "Телефон";
+"device_verification_emoji_flag" = "Флаг";
+"device_verification_emoji_train" = "Поезд";
+"device_verification_emoji_bicycle" = "Велосипед";
+"device_verification_emoji_aeroplane" = "Самолет";
+"device_verification_emoji_rocket" = "Ракета";
+"device_verification_emoji_trophy" = "Кубок";
+"device_verification_emoji_ball" = "Мяч";
+"device_verification_emoji_guitar" = "Гитара";
+"device_verification_emoji_trumpet" = "Труба";
+"device_verification_emoji_bell" = "Колокольчик";
+"device_verification_emoji_anchor" = "Якорь";
+"device_verification_emoji_headphones" = "Наушники";
+"device_verification_emoji_folder" = "Папка";
+"device_verification_emoji_pin" = "Ручка";
+// MARK: File upload
+"file_upload_error_title" = "Файл загрузить";
+"file_upload_error_unsupported_file_type_message" = "Тип файла не поддерживается.";
+// MARK: Emoji picker
+"emoji_picker_title" = "Реакция";
+"emoji_picker_people_category" = "Смайлики & люди";
+"emoji_picker_nature_category" = "Животные & Природа";
+"emoji_picker_foods_category" = "Еда & напитки";
+"emoji_picker_activity_category" = "Aктивность";
+"emoji_picker_places_category" = "Путешествия & Места";
+"emoji_picker_objects_category" = "Объекты";
+"emoji_picker_symbols_category" = "Символы";
+"emoji_picker_flags_category" = "Флаги";
+// MARK: Reaction history
+"reaction_history_title" = "Реакции";
