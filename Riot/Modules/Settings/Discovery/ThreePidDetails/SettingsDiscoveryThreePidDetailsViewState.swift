@@ -28,6 +28,5 @@ enum SettingsDiscoveryThreePidDetailsViewState {
 enum SettingsDiscoveryThreePidDetailsDisplayMode {
     case share
     case revoke
-    case pendingEmailVerification
-    case enterSMSCode
+    case pendingThreePidVerification
 }

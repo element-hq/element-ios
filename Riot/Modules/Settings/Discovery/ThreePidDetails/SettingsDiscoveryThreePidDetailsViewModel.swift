@@ -61,11 +61,11 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
             self.share()
         case .revoke:
             self.revoke()
-        case .cancelEmailValidation:
-            self.cancelEmailValidation()
+        case .cancelThreePidValidation:
+            self.cancelThreePidValidation()
         case .confirmEmailValidation:
             self.confirmEmailValidation()
-        case .enterSMSCode(let code):
+        case .confirmMSISDNValidation(code: let code):
             self.validatePhoneNumber(with: code)
         }
     }
@@ -108,18 +108,17 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
         }
         
         let requestThreePidToken: (() -> Void) = {
+            
             switch self.threePid.medium {
             case .email:
                 restClient.requestToken(forEmail: threePid.address, isDuringRegistration: false, clientSecret: clientSecret, sendAttempt: 1, nextLink: nil, success: { (sid) in
-                    
                     if let sid = sid {
                         self.currentThreePidRequestTokenInfo = ThreePidRequestTokenInfo(clientSecret: clientSecret, sid: sid, bind: bind)
-                        self.update(viewState: .loaded(displayMode: .pendingEmailVerification))
+                        self.update(viewState: .loaded(displayMode: .pendingThreePidVerification))
                         self.registerEmailValidationNotification()
                     } else {
                         self.update(viewState: .error(SettingsDiscoveryThreePidDetailsViewModelError.unknown))
                     }
-                    
                 }, failure: { error in
                     if let mxError = MXError(nsError: error), mxError.errcode == kMXErrCodeStringThreePIDInUse, useOlderHomeserver == false {
                         self.requestToken(for: threePid, bind: bind, useOlderHomeserver: true)
@@ -130,14 +129,12 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
             case .msisdn:
                 let formattedPhoneNumber = self.formattedPhoneNumber(from: threePid.address)
                 restClient.requestToken(forPhoneNumber: formattedPhoneNumber, isDuringRegistration: false, countryCode: nil, clientSecret: clientSecret, sendAttempt: 1, nextLink: nil, success: { (sid, msisdn) in
-                    
                     if let sid = sid {
                         self.currentThreePidRequestTokenInfo = ThreePidRequestTokenInfo(clientSecret: clientSecret, sid: sid, bind: bind)
-                        self.update(viewState: .loaded(displayMode: .enterSMSCode))
+                        self.update(viewState: .loaded(displayMode: .pendingThreePidVerification))
                     } else {
                         self.update(viewState: .error(SettingsDiscoveryThreePidDetailsViewModelError.unknown))
                     }
-                    
                 }, failure: { error in
                     if let mxError = MXError(nsError: error), mxError.errcode == kMXErrCodeStringThreePIDInUse, useOlderHomeserver == false {
                         self.requestToken(for: threePid, bind: bind, useOlderHomeserver: true)
@@ -205,7 +202,7 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
                 self.checkThreePidDiscoverability()
             case .failure(let error):
                 if let mxError = MXError(nsError: error), mxError.errcode == kMXErrCodeStringThreePIDAuthFailed {
-                    self.update(viewState: .loaded(displayMode: .pendingEmailVerification))
+                    self.update(viewState: .loaded(displayMode: .pendingThreePidVerification))
                 } else {
                     if case .email = threePid.medium {
                         self.unregisterEmailValidationNotification()
@@ -219,8 +216,12 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
     
     // MARK: Email
     
-    private func cancelEmailValidation() {
-        self.unregisterEmailValidationNotification()
+    private func cancelThreePidValidation() {
+        
+        if case .email = threePid.medium {
+            self.unregisterEmailValidationNotification()
+        }
+        
         self.currentThreePidRequestTokenInfo = nil
         self.checkThreePidDiscoverability()
     }
@@ -272,8 +273,13 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
             case .success:
                 self.bindThreePid(self.threePid, threePidRequestTokenInfo: threePidRequestTokenInfo)
             case .failure(let error):
-                self.update(viewState: .error(error))
+                
+                if let mxError = MXError(nsError: error), mxError.errcode == kMXErrCodeStringUnknownToken {
+                    self.update(viewState: .loaded(displayMode: .pendingThreePidVerification))
+                } else {
+                    self.update(viewState: .error(error))
+                }
             }
         }
-    }    
+    }
 }

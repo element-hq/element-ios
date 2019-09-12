@@ -23,7 +23,7 @@ enum SettingsDiscoveryThreePidDetailsViewAction {
     case load
     case share
     case revoke
-    case cancelEmailValidation
+    case cancelThreePidValidation
     case confirmEmailValidation
-    case enterSMSCode(_ code: String)
+    case confirmMSISDNValidation(code: String)
 }

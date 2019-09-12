@@ -179,16 +179,19 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
             operationButtonTitle = VectorL10n.settingsDiscoveryThreePidDetailsRevokeAction
             operationButtonColor = self.theme.warningColor
             operationButtonEnabled = true
-        case .pendingEmailVerification:
-            self.presentPendingEmailVerificationAlert()
+        case .pendingThreePidVerification:
+            switch self.viewModel.threePid.medium {
+            case .email:
+                self.presentPendingEmailVerificationAlert()
+            case .msisdn:
+                self.presentPendingMSISDNVerificationAlert()
+            default:
+                break
+            }
             
             operationButtonTitle = nil
             operationButtonColor = nil
             operationButtonEnabled = false
-        case .enterSMSCode:
-            operationButtonTitle = VectorL10n.settingsDiscoveryThreePidDetailsEnterSmsCodeAction
-            operationButtonColor = self.theme.tintColor
-            operationButtonEnabled = true
         }
         
         if let operationButtonTitle = operationButtonTitle {
@@ -228,17 +231,17 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
         }))
         
         alert.addAction(UIAlertAction(title: Bundle.mxk_localizedString(forKey: "abort"), style: .cancel, handler: { _ in
-            self.viewModel.process(viewAction: .cancelEmailValidation)
+            self.viewModel.process(viewAction: .cancelThreePidValidation)
         }))
         
         self.present(alert, animated: true, completion: nil)
         self.presentedAlertController = alert
     }
     
-    private func presentSMSActivationCodeAlert() {
+    private func presentPendingMSISDNVerificationAlert() {
         
-        let alert = UIAlertController(title: VectorL10n.authMsisdnValidationTitle,
-                                      message: VectorL10n.authMsisdnValidationMessage,
+        let alert = UIAlertController(title: Bundle.mxk_localizedString(forKey: "account_msisdn_validation_title"),
+                                      message: Bundle.mxk_localizedString(forKey: "account_msisdn_validation_message"),
                                       preferredStyle: .alert)
         
         alert.addTextField { (textField) in
@@ -246,14 +249,16 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
             textField.keyboardType = .phonePad
         }
         
-        alert.addAction(UIAlertAction(title: VectorL10n.authSubmit, style: .default, handler: { _ in
+        alert.addAction(UIAlertAction(title: VectorL10n.continue, style: .default, handler: { _ in
             guard let textField =  alert.textFields?.first, let smsCode = textField.text, smsCode.isEmpty == false else {
                 return
             }
-            self.viewModel.process(viewAction: .enterSMSCode(smsCode))
+            self.viewModel.process(viewAction: .confirmMSISDNValidation(code: smsCode))
         }))
         
-        alert.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: Bundle.mxk_localizedString(forKey: "abort"), style: .cancel, handler: { _ in
+            self.viewModel.process(viewAction: .cancelThreePidValidation)
+        }))
         
         self.present(alert, animated: true, completion: nil)
         self.presentedAlertController = alert
@@ -273,9 +278,6 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
             viewAction = .share
         case .revoke:
             viewAction = .revoke
-        case .enterSMSCode:
-            viewAction = nil
-            self.presentSMSActivationCodeAlert()
         default:
             viewAction = nil
         }
