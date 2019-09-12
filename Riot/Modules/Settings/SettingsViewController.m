@@ -1672,9 +1672,7 @@ SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinator
             
             phoneCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_phone_number", @"Vector", nil);
             
-            NSString *e164 = [NSString stringWithFormat:@"+%@", account.linkedPhoneNumbers[row - userSettingsPhoneStartIndex]];
-            NBPhoneNumber *phoneNb = [[NBPhoneNumberUtil sharedInstance] parse:e164 defaultRegion:nil error:nil];
-            phoneCell.mxkTextField.text = [[NBPhoneNumberUtil sharedInstance] format:phoneNb numberFormat:NBEPhoneNumberFormatINTERNATIONAL error:nil];
+            phoneCell.mxkTextField.text = [MXKTools readableMSISDN:account.linkedPhoneNumbers[row - userSettingsPhoneStartIndex]];
             phoneCell.mxkTextField.userInteractionEnabled = NO;
             
             cell = phoneCell;

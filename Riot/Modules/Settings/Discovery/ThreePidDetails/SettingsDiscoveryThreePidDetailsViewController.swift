@@ -128,25 +128,29 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
         let title: String
         let threePidTitle: String
         let informationText: String
+        let formattedThreePid: String
         
         switch threePid.medium {
         case .email:
             title = VectorL10n.settingsDiscoveryThreePidDetailsTitleEmail
             threePidTitle = VectorL10n.settingsEmailAddress
             informationText = VectorL10n.settingsDiscoveryThreePidDetailsInformationEmail
+            formattedThreePid = threePid.address
         case .msisdn:
             title = VectorL10n.settingsDiscoveryThreePidDetailsTitlePhoneNumber
             threePidTitle = VectorL10n.settingsPhoneNumber
             informationText = VectorL10n.settingsDiscoveryThreePidDetailsInformationPhoneNumber
+            formattedThreePid = MXKTools.readableMSISDN(threePid.address)
         default:
             title = ""
             threePidTitle = ""
             informationText = ""
+            formattedThreePid = ""
         }
         
         self.title = title
         self.threePidTitleLabel.text = threePidTitle
-        self.threePidAdressLabel.text = threePid.address
+        self.threePidAdressLabel.text = formattedThreePid
         self.informationLabel.text = informationText
     }
     

@@ -114,7 +114,19 @@ private enum DiscoverySectionRows {
         case .threePid(let threePid):
             if let detailCell: MXKTableViewCell = self.cellType(at: row) {
                 detailCell.accessoryType = .disclosureIndicator
-                detailCell.textLabel?.text = threePid.address
+                
+                let formattedThreePid: String?
+                
+                switch threePid.medium {
+                case .email:
+                    formattedThreePid = threePid.address                  
+                case .msisdn:
+                    formattedThreePid = MXKTools.readableMSISDN(threePid.address)
+                default:
+                    formattedThreePid = nil
+                }
+                
+                detailCell.textLabel?.text = formattedThreePid
                 detailCell.isUserInteractionEnabled = enableInteraction
                 cell = detailCell
             }
