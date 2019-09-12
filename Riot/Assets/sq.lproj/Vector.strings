@@ -827,3 +827,5 @@
 "service_terms_modal_description_for_identity_server" = "Jini i zbulueshëm nga të tjerët";
 "service_terms_modal_description_for_integration_manager" = "Përdorni Robotë, ura, widget-e dhe paketa ngjitësish";
 "room_participants_remove_third_party_invite_prompt_msg" = "Jeni i sigurt se doni të shfuqizohet kjo ftesë?";
+// Errors
+"error_user_already_logged_in" = "Duket se po rrekeni të lidheni me një tjetër shërbyes Home. Doni të dilet nga llogaria?";
