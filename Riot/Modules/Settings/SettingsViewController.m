@@ -3856,7 +3856,7 @@ SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinator
             }
             else
             {
-                [NSBundle mxk_localizedStringForKey:@"auth_email_is_required"];
+                message = [NSBundle mxk_localizedStringForKey:@"auth_email_is_required"];
             }
 
             failure([NSError errorWithDomain:MXKAuthErrorDomain
