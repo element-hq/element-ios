@@ -505,6 +505,15 @@
 		B1C3360222F1ED600021BA8D /* MediaPickerCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C335FF22F1ED5F0021BA8D /* MediaPickerCoordinatorBridgePresenter.swift */; };
 		B1C3360322F1ED600021BA8D /* MediaPickerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C3360022F1ED600021BA8D /* MediaPickerCoordinator.swift */; };
 		B1C3361C22F32B4A0021BA8D /* SingleImagePickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C3361B22F32B4A0021BA8D /* SingleImagePickerPresenter.swift */; };
+		B1C45A84232A8C2600165425 /* SettingsIdentityServerCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C45A7B232A8C2600165425 /* SettingsIdentityServerCoordinatorType.swift */; };
+		B1C45A85232A8C2600165425 /* SettingsIdentityServerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1C45A7C232A8C2600165425 /* SettingsIdentityServerViewController.storyboard */; };
+		B1C45A86232A8C2600165425 /* SettingsIdentityServerViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C45A7D232A8C2600165425 /* SettingsIdentityServerViewModelType.swift */; };
+		B1C45A87232A8C2600165425 /* SettingsIdentityServerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C45A7E232A8C2600165425 /* SettingsIdentityServerCoordinator.swift */; };
+		B1C45A88232A8C2600165425 /* SettingsIdentityServerViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C45A7F232A8C2600165425 /* SettingsIdentityServerViewState.swift */; };
+		B1C45A89232A8C2600165425 /* SettingsIdentityServerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C45A80232A8C2600165425 /* SettingsIdentityServerViewController.swift */; };
+		B1C45A8A232A8C2600165425 /* SettingsIdentityServerCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C45A81232A8C2600165425 /* SettingsIdentityServerCoordinatorBridgePresenter.swift */; };
+		B1C45A8B232A8C2600165425 /* SettingsIdentityServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C45A82232A8C2600165425 /* SettingsIdentityServerViewModel.swift */; };
+		B1C45A8C232A8C2600165425 /* SettingsIdentityServerViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C45A83232A8C2600165425 /* SettingsIdentityServerViewAction.swift */; };
 		B1C562CA2289C2690037F12A /* UIGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C562C92289C2690037F12A /* UIGestureRecognizer.swift */; };
 		B1C562CC228AB3510037F12A /* UIStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C562CB228AB3510037F12A /* UIStackView.swift */; };
 		B1C562D9228C0B760037F12A /* RoomContextualMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C562D8228C0B760037F12A /* RoomContextualMenuItem.swift */; };
@@ -1334,6 +1343,15 @@
 		B1C335FF22F1ED5F0021BA8D /* MediaPickerCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
 		B1C3360022F1ED600021BA8D /* MediaPickerCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerCoordinator.swift; sourceTree = "<group>"; };
 		B1C3361B22F32B4A0021BA8D /* SingleImagePickerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImagePickerPresenter.swift; sourceTree = "<group>"; };
+		B1C45A7B232A8C2600165425 /* SettingsIdentityServerCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsIdentityServerCoordinatorType.swift; sourceTree = "<group>"; };
+		B1C45A7C232A8C2600165425 /* SettingsIdentityServerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SettingsIdentityServerViewController.storyboard; sourceTree = "<group>"; };
+		B1C45A7D232A8C2600165425 /* SettingsIdentityServerViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsIdentityServerViewModelType.swift; sourceTree = "<group>"; };
+		B1C45A7E232A8C2600165425 /* SettingsIdentityServerCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsIdentityServerCoordinator.swift; sourceTree = "<group>"; };
+		B1C45A7F232A8C2600165425 /* SettingsIdentityServerViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsIdentityServerViewState.swift; sourceTree = "<group>"; };
+		B1C45A80232A8C2600165425 /* SettingsIdentityServerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsIdentityServerViewController.swift; sourceTree = "<group>"; };
+		B1C45A81232A8C2600165425 /* SettingsIdentityServerCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsIdentityServerCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
+		B1C45A82232A8C2600165425 /* SettingsIdentityServerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsIdentityServerViewModel.swift; sourceTree = "<group>"; };
+		B1C45A83232A8C2600165425 /* SettingsIdentityServerViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsIdentityServerViewAction.swift; sourceTree = "<group>"; };
 		B1C562C92289C2690037F12A /* UIGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIGestureRecognizer.swift; sourceTree = "<group>"; };
 		B1C562CB228AB3510037F12A /* UIStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackView.swift; sourceTree = "<group>"; };
 		B1C562D8228C0B760037F12A /* RoomContextualMenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomContextualMenuItem.swift; sourceTree = "<group>"; };
@@ -2330,6 +2348,7 @@
 				B1B5578120EF564900210D55 /* Views */,
 				32BF994D21FA1C6300698084 /* KeyBackup */,
 				B125FE19231D5B5600B72806 /* Discovery */,
+				B1C45A7A232A8C2600165425 /* IdentityServer */,
 				B1B5567B20EE6C4C00210D55 /* Language */,
 				B1B5567820EE6C4C00210D55 /* PhoneCountry */,
 				B1B5568020EE6C4C00210D55 /* DeactivateAccount */,
@@ -3444,6 +3463,22 @@
 			path = Camera;
 			sourceTree = "<group>";
 		};
+		B1C45A7A232A8C2600165425 /* IdentityServer */ = {
+			isa = PBXGroup;
+			children = (
+				B1C45A81232A8C2600165425 /* SettingsIdentityServerCoordinatorBridgePresenter.swift */,
+				B1C45A7B232A8C2600165425 /* SettingsIdentityServerCoordinatorType.swift */,
+				B1C45A7E232A8C2600165425 /* SettingsIdentityServerCoordinator.swift */,
+				B1C45A7D232A8C2600165425 /* SettingsIdentityServerViewModelType.swift */,
+				B1C45A82232A8C2600165425 /* SettingsIdentityServerViewModel.swift */,
+				B1C45A83232A8C2600165425 /* SettingsIdentityServerViewAction.swift */,
+				B1C45A7F232A8C2600165425 /* SettingsIdentityServerViewState.swift */,
+				B1C45A80232A8C2600165425 /* SettingsIdentityServerViewController.swift */,
+				B1C45A7C232A8C2600165425 /* SettingsIdentityServerViewController.storyboard */,
+			);
+			path = IdentityServer;
+			sourceTree = "<group>";
+		};
 		B1C562D7228C0B4C0037F12A /* ContextualMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -3948,6 +3983,7 @@
 				B1B558F620EF768F00210D55 /* RoomOutgoingTextMsgBubbleCell.xib in Resources */,
 				B1B5574D20EE6C4D00210D55 /* MediaPickerViewController.xib in Resources */,
 				B1B5575020EE6C4D00210D55 /* AuthenticationViewController.xib in Resources */,
+				B1C45A85232A8C2600165425 /* SettingsIdentityServerViewController.storyboard in Resources */,
 				B14F142E22144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewController.storyboard in Resources */,
 				32DB557B22FDADE50016329E /* ServiceTermsModalScreenViewController.storyboard in Resources */,
 				B1B5574320EE6C4D00210D55 /* CallViewController.xib in Resources */,
@@ -4339,6 +4375,7 @@
 				B1B5577420EE702900210D55 /* WidgetViewController.m in Sources */,
 				B1DCC63122E7026F00625807 /* EmojiPickerHeaderView.swift in Sources */,
 				B139C21B21FE5B9200BB68EC /* KeyBackupRecoverFromPassphraseViewModel.swift in Sources */,
+				B1C45A8C232A8C2600165425 /* SettingsIdentityServerViewAction.swift in Sources */,
 				32A6001E22C661100042C1D9 /* EditHistoryCoordinatorBridgePresenter.swift in Sources */,
 				B1B5574A20EE6C4D00210D55 /* MediaPickerViewController.m in Sources */,
 				B1B5598520EFC3E000210D55 /* RageShakeManager.m in Sources */,
@@ -4347,6 +4384,7 @@
 				B1B558D420EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				B169331420F3CAFC00746532 /* PublicRoomTableViewCell.m in Sources */,
 				32BF995721FB07A400698084 /* SettingsKeyBackupTableViewSection.swift in Sources */,
+				B1C45A88232A8C2600165425 /* SettingsIdentityServerViewState.swift in Sources */,
 				B14F142F22144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewModelType.swift in Sources */,
 				32DB557822FDADE50016329E /* ServiceTermsModalScreenViewState.swift in Sources */,
 				B1B558E120EF768F00210D55 /* RoomMembershipCollapsedBubbleCell.m in Sources */,
@@ -4427,6 +4465,8 @@
 				B1B5590620EF768F00210D55 /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */,
 				B139C21D21FE5BF500BB68EC /* KeyBackupRecoverFromPassphraseViewModelType.swift in Sources */,
 				B157FA9F23264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinator.swift in Sources */,
+				B1C45A8B232A8C2600165425 /* SettingsIdentityServerViewModel.swift in Sources */,
+				B1C45A86232A8C2600165425 /* SettingsIdentityServerViewModelType.swift in Sources */,
 				F083BE031E7009ED00A9B29C /* EventFormatter.m in Sources */,
 				B157FAA623264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsViewController.swift in Sources */,
 				B1DCC62422E60CA900625807 /* EmojiPickerCategoryViewData.swift in Sources */,
@@ -4461,9 +4501,11 @@
 				B1B12B2922942315002CB419 /* UITouch.swift in Sources */,
 				B1B558CC20EF768F00210D55 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				B1B5571D20EE6C4D00210D55 /* HomeViewController.m in Sources */,
+				B1C45A84232A8C2600165425 /* SettingsIdentityServerCoordinatorType.swift in Sources */,
 				B1DCC63722E8541700625807 /* EmojiStore.swift in Sources */,
 				3232ABA6225730E100AD6A5C /* DeviceVerificationStartViewController.swift in Sources */,
 				B16932EA20F3C39000746532 /* UnifiedSearchRecentsDataSource.m in Sources */,
+				B1C45A8A232A8C2600165425 /* SettingsIdentityServerCoordinatorBridgePresenter.swift in Sources */,
 				B1B557DE20EF5FBB00210D55 /* FilesSearchTableViewCell.m in Sources */,
 				B1B5574020EE6C4D00210D55 /* SegmentedViewController.m in Sources */,
 				B1B5599320EFC5E400210D55 /* DecryptionFailure.m in Sources */,
@@ -4502,6 +4544,7 @@
 				B1B557BE20EF5B4500210D55 /* RoomInputToolbarView.m in Sources */,
 				32A6001922C661100042C1D9 /* EditHistoryViewModelType.swift in Sources */,
 				B1B5573B20EE6C4D00210D55 /* FavouritesViewController.m in Sources */,
+				B1C45A87232A8C2600165425 /* SettingsIdentityServerCoordinator.swift in Sources */,
 				B1B5579920EF575B00210D55 /* AuthInputsView.m in Sources */,
 				B1B5597520EFB02A00210D55 /* InviteRecentTableViewCell.m in Sources */,
 				B1B5571E20EE6C4D00210D55 /* ContactDetailsViewController.m in Sources */,
@@ -4524,6 +4567,7 @@
 				B1B557D820EF5EA900210D55 /* RoomActivitiesView.m in Sources */,
 				B1B9DEE922EB34EF0065E677 /* ReactionHistoryViewController.swift in Sources */,
 				B1B5596620EF9E9B00210D55 /* RoomTableViewCell.m in Sources */,
+				B1C45A89232A8C2600165425 /* SettingsIdentityServerViewController.swift in Sources */,
 				B14F143322144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewModel.swift in Sources */,
 				32A6001822C661100042C1D9 /* EditHistoryViewModel.swift in Sources */,
 				B1B558D020EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
