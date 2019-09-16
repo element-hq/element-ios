@@ -58,6 +58,7 @@
 		3232ABBC2257BE6500AD6A5C /* DeviceVerificationVerifyViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABB42257BE6400AD6A5C /* DeviceVerificationVerifyViewAction.swift */; };
 		3232ABC022594C0900AD6A5C /* VerifyEmojiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABBF22594C0900AD6A5C /* VerifyEmojiCollectionViewCell.swift */; };
 		3232ABC2225B996200AD6A5C /* Themable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABC1225B996100AD6A5C /* Themable.swift */; };
+		323AB947232BD74600C1451F /* AuthFallBackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 323AB946232BD74600C1451F /* AuthFallBackViewController.m */; };
 		324A204F225FC571004FE8B0 /* DeviceVerificationIncomingViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 324A2047225FC571004FE8B0 /* DeviceVerificationIncomingViewController.storyboard */; };
 		324A2050225FC571004FE8B0 /* DeviceVerificationIncomingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324A2048225FC571004FE8B0 /* DeviceVerificationIncomingViewController.swift */; };
 		324A2051225FC571004FE8B0 /* DeviceVerificationIncomingViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324A2049225FC571004FE8B0 /* DeviceVerificationIncomingViewState.swift */; };
@@ -662,6 +663,8 @@
 		3232ABB42257BE6400AD6A5C /* DeviceVerificationVerifyViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifyViewAction.swift; sourceTree = "<group>"; };
 		3232ABBF22594C0900AD6A5C /* VerifyEmojiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyEmojiCollectionViewCell.swift; sourceTree = "<group>"; };
 		3232ABC1225B996100AD6A5C /* Themable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Themable.swift; sourceTree = "<group>"; };
+		323AB945232BD74600C1451F /* AuthFallBackViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthFallBackViewController.h; sourceTree = "<group>"; };
+		323AB946232BD74600C1451F /* AuthFallBackViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AuthFallBackViewController.m; sourceTree = "<group>"; };
 		324A2047225FC571004FE8B0 /* DeviceVerificationIncomingViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DeviceVerificationIncomingViewController.storyboard; sourceTree = "<group>"; };
 		324A2048225FC571004FE8B0 /* DeviceVerificationIncomingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingViewController.swift; sourceTree = "<group>"; };
 		324A2049225FC571004FE8B0 /* DeviceVerificationIncomingViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingViewState.swift; sourceTree = "<group>"; };
@@ -1609,6 +1612,15 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		323AB944232BD71900C1451F /* Fallback */ = {
+			isa = PBXGroup;
+			children = (
+				323AB945232BD74600C1451F /* AuthFallBackViewController.h */,
+				323AB946232BD74600C1451F /* AuthFallBackViewController.m */,
+			);
+			path = Fallback;
+			sourceTree = "<group>";
+		};
 		324A2046225FC571004FE8B0 /* Incoming */ = {
 			isa = PBXGroup;
 			children = (
@@ -2314,6 +2326,7 @@
 		B1B5568420EE6C4C00210D55 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				323AB944232BD71900C1451F /* Fallback */,
 				B1B5568620EE6C4C00210D55 /* HomeViewController.h */,
 				B1B5568520EE6C4C00210D55 /* HomeViewController.m */,
 				B1B5593D20EF7BD000210D55 /* Views */,
@@ -4497,6 +4510,7 @@
 				B1B558FA20EF768F00210D55 /* RoomMembershipBubbleCell.m in Sources */,
 				3232ABA1225730E100AD6A5C /* DeviceVerificationCoordinatorType.swift in Sources */,
 				B1C562D9228C0B760037F12A /* RoomContextualMenuItem.swift in Sources */,
+				323AB947232BD74600C1451F /* AuthFallBackViewController.m in Sources */,
 				B1C562E1228C7C8C0037F12A /* RoomContextualMenuToolbarView.swift in Sources */,
 				B1B557BF20EF5B4500210D55 /* DisabledRoomInputToolbarView.m in Sources */,
 				B1B5578620EF564900210D55 /* GroupTableViewCellWithSwitch.m in Sources */,

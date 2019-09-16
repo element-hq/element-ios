@@ -1,5 +1,4 @@
-
-Changes in 0.9.4 (2019-08-)
+Changes in 0.9.5 (2019-08-)
 ===============================================
 
 Improvements:
@@ -7,6 +6,12 @@ Improvements:
  * Widgets: Whitelist [MSC1961](https://github.com/matrix-org/matrix-doc/pull/1961) widget urls
  * i18n: Enable Polish (pl).
  * Room members: third-party invites can now be revoked
+ 
+Changes in 0.9.4 (2019-09-13)
+===============================================
+
+Improvements:
+ * Authentication: Improve the webview used for SSO (#2715).
 
 Changes in 0.9.3 (2019-09-10)
 ===============================================
