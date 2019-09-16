@@ -426,6 +426,10 @@ internal enum VectorL10n {
   internal static var contactsAddressBookNoContact: String { 
     return VectorL10n.tr("Vector", "contacts_address_book_no_contact") 
   }
+  /// No identity server configured
+  internal static var contactsAddressBookNoIdentityServer: String { 
+    return VectorL10n.tr("Vector", "contacts_address_book_no_identity_server") 
+  }
   /// You didn't allow Riot to access your local contacts
   internal static var contactsAddressBookPermissionDenied: String { 
     return VectorL10n.tr("Vector", "contacts_address_book_permission_denied") 
