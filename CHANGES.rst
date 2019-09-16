@@ -1,3 +1,9 @@
+Changes in 0.9.4 (2019-09-13)
+===============================================
+
+Improvements:
+ * Authentication: Improve the webview used for SSO (#2715).
+
 Changes in 0.9.3 (2019-09-10)
 ===============================================
 
