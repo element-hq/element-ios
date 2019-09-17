@@ -2618,6 +2618,22 @@ internal enum VectorL10n {
   internal static func settingsGlobalSettingsInfo(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_global_settings_info", p1)
   }
+  /// Using the identity server set above, you can discover and be discoverable by existing contacts you know.
+  internal static var settingsIdentityServerDescription: String { 
+    return VectorL10n.tr("Vector", "settings_identity_server_description") 
+  }
+  /// No identity server configured
+  internal static var settingsIdentityServerNoIs: String { 
+    return VectorL10n.tr("Vector", "settings_identity_server_no_is") 
+  }
+  /// You are not currently using an identity server. To discover and be discoverable by existing contacts you know, add one above.
+  internal static var settingsIdentityServerNoIsDescription: String { 
+    return VectorL10n.tr("Vector", "settings_identity_server_no_is_description") 
+  }
+  /// IDENTITY SERVER
+  internal static var settingsIdentityServerSettings: String { 
+    return VectorL10n.tr("Vector", "settings_identity_server_settings") 
+  }
   /// IGNORED USERS
   internal static var settingsIgnoredUsers: String { 
     return VectorL10n.tr("Vector", "settings_ignored_users") 

@@ -361,6 +361,7 @@
 "settings_notifications_settings" = "NOTIFICATION SETTINGS";
 "settings_calls_settings" = "CALLS";
 "settings_discovery_settings" = "DISCOVERY";
+"settings_identity_server_settings" = "IDENTITY SERVER";
 "settings_user_interface" = "USER INTERFACE";
 "settings_ignored_users" = "IGNORED USERS";
 "settings_contacts" = "LOCAL CONTACTS";
@@ -506,6 +507,10 @@
 "settings_discovery_three_pid_details_revoke_action" = "Revoke";
 "settings_discovery_three_pid_details_cancel_email_validation_action" = "Cancel email validation";
 "settings_discovery_three_pid_details_enter_sms_code_action" = "Enter SMS activation code";
+
+"settings_identity_server_description" = "Using the identity server set above, you can discover and be discoverable by existing contacts you know.";
+"settings_identity_server_no_is" = "No identity server configured";
+"settings_identity_server_no_is_description" = "You are not currently using an identity server. To discover and be discoverable by existing contacts you know, add one above.";
 
 // Room Details
 "room_details_title" = "Room Details";

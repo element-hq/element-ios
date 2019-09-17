@@ -54,9 +54,10 @@ enum
     SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX,
     SETTINGS_SECTION_CALLS_INDEX,
     SETTINGS_SECTION_DISCOVERY_INDEX,
-    SETTINGS_SECTION_USER_INTERFACE_INDEX,
-    SETTINGS_SECTION_IGNORED_USERS_INDEX,
+    SETTINGS_SECTION_IDENTITY_SERVER_INDEX,
     SETTINGS_SECTION_CONTACTS_INDEX,
+    SETTINGS_SECTION_IGNORED_USERS_INDEX,
+    SETTINGS_SECTION_USER_INTERFACE_INDEX,
     SETTINGS_SECTION_ADVANCED_INDEX,
     SETTINGS_SECTION_OTHER_INDEX,
     SETTINGS_SECTION_LABS_INDEX,
@@ -98,6 +99,13 @@ enum
     USER_INTERFACE_LANGUAGE_INDEX = 0,
     USER_INTERFACE_THEME_INDEX,
     USER_INTERFACE_COUNT
+};
+
+enum
+{
+    IDENTITY_SERVER_INDEX,
+    IDENTITY_SERVER_DESCRIPTION_INDEX,
+    IDENTITY_SERVER_COUNT
 };
 
 enum
@@ -1304,6 +1312,10 @@ SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinator
     {
         count = self.settingsDiscoveryTableViewSection.numberOfRows;
     }
+    else if (section == SETTINGS_SECTION_IDENTITY_SERVER_INDEX)
+    {
+        count = IDENTITY_SERVER_COUNT;
+    }
     else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
     {
         count = USER_INTERFACE_COUNT;
@@ -1927,6 +1939,50 @@ SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinator
     {
         cell = [self.settingsDiscoveryTableViewSection cellForRowAtRow:row];
     }
+    else if (section == SETTINGS_SECTION_IDENTITY_SERVER_INDEX)
+    {
+        switch (row)
+        {
+            case IDENTITY_SERVER_INDEX:
+            {
+                MXKTableViewCell *isCell = [self getDefaultTableViewCell:tableView];
+
+                if (account.mxSession.identityService.identityServer)
+                {
+                    isCell.textLabel.text = account.mxSession.identityService.identityServer;
+                }
+                else
+                {
+                    isCell.textLabel.text = NSLocalizedStringFromTable(@"settings_identity_server_no_is", @"Vector", nil);
+                }
+                isCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                cell = isCell;
+                break;
+            }
+
+            case IDENTITY_SERVER_DESCRIPTION_INDEX:
+            {
+                MXKTableViewCell *descriptionCell = [self getDefaultTableViewCell:tableView];
+
+                if (account.mxSession.identityService.identityServer)
+                {
+                    descriptionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_identity_server_description", @"Vector", nil);
+                }
+                else
+                {
+                    descriptionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_identity_server_no_is_description", @"Vector", nil);
+                }
+                descriptionCell.textLabel.numberOfLines = 0;
+                descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+                cell = descriptionCell;
+                break;
+            }
+
+            default:
+                break;
+        }
+    }
     else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
     {
         if (row == USER_INTERFACE_LANGUAGE_INDEX)
@@ -2429,6 +2485,10 @@ SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinator
     else if (section == SETTINGS_SECTION_DISCOVERY_INDEX)
     {
         return NSLocalizedStringFromTable(@"settings_discovery_settings", @"Vector", nil);
+    }
+    else if (section == SETTINGS_SECTION_IDENTITY_SERVER_INDEX)
+    {
+        return NSLocalizedStringFromTable(@"settings_identity_server_settings", @"Vector", nil);
     }
     else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
     {
