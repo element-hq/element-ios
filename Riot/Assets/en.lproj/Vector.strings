@@ -987,4 +987,4 @@
 
 
 // Generic errors
-"error_no_identity_server" = "Add an identity server in your settings to invite by email.";
+"error_invite_3pid_with_no_identity_server" = "Add an identity server in your settings to invite by email.";

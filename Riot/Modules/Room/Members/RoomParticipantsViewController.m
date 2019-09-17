@@ -1651,7 +1651,7 @@
                                                                        if ([error.domain isEqualToString:kMXRestClientErrorDomain]
                                                                            && error.code == MXRestClientErrorMissingIdentityServer)
                                                                        {
-                                                                           NSString *message = [NSBundle mxk_localizedStringForKey:@"error_no_identity_server"];
+                                                                           NSString *message = [NSBundle mxk_localizedStringForKey:@"error_invite_3pid_with_no_identity_server"];
                                                                            [[AppDelegate theDelegate] showAlertWithTitle:message message:nil];
                                                                        }
                                                                        else
