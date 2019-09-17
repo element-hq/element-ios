@@ -156,7 +156,8 @@ KeyBackupSetupCoordinatorBridgePresenterDelegate,
 KeyBackupRecoverCoordinatorBridgePresenterDelegate,
 SignOutAlertPresenterDelegate,
 SingleImagePickerPresenterDelegate,
-SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinatorDelegate>
+SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinatorDelegate,
+SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
@@ -250,6 +251,8 @@ SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinator
     SettingsKeyBackupTableViewSection *keyBackupSection;
     KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
     KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter;
+
+    SettingsIdentityServerCoordinatorBridgePresenter *identityServerSettingsCoordinatorBridgePresenter;
 }
 
 /**
@@ -457,6 +460,7 @@ SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinator
 
     keyBackupSetupCoordinatorBridgePresenter = nil;
     keyBackupRecoverCoordinatorBridgePresenter = nil;
+    identityServerSettingsCoordinatorBridgePresenter = nil;
 }
 
 - (void)onMatrixSessionStateDidChange:(NSNotification *)notif
@@ -2732,6 +2736,15 @@ SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinator
         {
             [self.settingsDiscoveryTableViewSection selectRow:indexPath.row];
         }
+        else if (section == SETTINGS_SECTION_IDENTITY_SERVER_INDEX)
+        {
+            switch (row)
+            {
+                case IDENTITY_SERVER_INDEX:
+                    [self showIdentityServerSettingsScreen];
+                    break;
+            }
+        }
         else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
         {
             MXSession* session = [AppDelegate theDelegate].mxSessions[0];
@@ -4749,6 +4762,25 @@ SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinator
 {
     NSIndexPath *discoveryIndexPath = [NSIndexPath indexPathForRow:userSettingsNewEmailIndex inSection:SETTINGS_SECTION_USER_SETTINGS_INDEX];
     [self.tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+}
+
+
+#pragma mark - Identity Server
+
+- (void)showIdentityServerSettingsScreen
+{
+    identityServerSettingsCoordinatorBridgePresenter = [[SettingsIdentityServerCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+
+    [identityServerSettingsCoordinatorBridgePresenter pushFrom:self.navigationController animated:YES popCompletion:nil];
+    identityServerSettingsCoordinatorBridgePresenter.delegate = self;
+}
+
+#pragma mark - SettingsIdentityServerCoordinatorBridgePresenterDelegate
+
+- (void)settingsIdentityServerCoordinatorBridgePresenterDelegateDidComplete:(SettingsIdentityServerCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    identityServerSettingsCoordinatorBridgePresenter = nil;
+    [self refreshSettings];
 }
 
 @end
