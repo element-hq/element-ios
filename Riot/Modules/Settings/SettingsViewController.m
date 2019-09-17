@@ -3723,6 +3723,8 @@ SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinator
         }];
 
     } failure:^(NSError *error) {
+        [self stopActivityIndicator];
+        
         // Notify user
         NSString *myUserId = session.myUser.userId; // TODO: Hanlde multi-account
         [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
