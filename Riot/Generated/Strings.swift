@@ -994,6 +994,10 @@ internal enum VectorL10n {
   internal static var encryptedRoomMessageReplyToPlaceholder: String { 
     return VectorL10n.tr("Vector", "encrypted_room_message_reply_to_placeholder") 
   }
+  /// Add an identity server in your settings to invite by email.
+  internal static var errorNoIdentityServer: String { 
+    return VectorL10n.tr("Vector", "error_no_identity_server") 
+  }
   /// VoIP conference added by %@
   internal static func eventFormatterJitsiWidgetAdded(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_jitsi_widget_added", p1)

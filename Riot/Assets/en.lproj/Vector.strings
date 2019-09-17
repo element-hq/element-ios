@@ -984,3 +984,7 @@
 
 // MARK: Reaction history
 "reaction_history_title" = "Reactions";
+
+
+// Generic errors
+"error_no_identity_server" = "Add an identity server in your settings to invite by email.";
