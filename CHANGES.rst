@@ -3,6 +3,7 @@ Changes in 0.9.5 (2019-09-18)
 
 Bug fix:
  * VoiceOver: RoomVC: Fix some missing accessibility labels for buttons (#2722).
+ * VoiceOver: RoomVC: Make VoiceOver focus on the contextual menu when selecting an event (#2721).
 
 Changes in 0.9.4 (2019-09-13)
 ===============================================
