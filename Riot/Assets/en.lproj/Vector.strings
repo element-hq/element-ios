@@ -317,6 +317,11 @@
 "room_resource_usage_limit_reached_message_2" = "some users will not be able to log in.";
 "room_resource_usage_limit_reached_message_contact_3" = " to get this limit increased.";
 "room_message_edits_history_title" = "Message edits";
+"room_accessibility_search" = "Search";
+"room_accessibility_integrations" = "Integrations";
+"room_accessibility_upload" = "Upload";
+"room_accessibility_call" = "Call";
+"room_accessibility_hangup" = "Hang up";
 
 // Unknown devices
 "unknown_devices_alert_title" = "Room contains unknown devices";
@@ -676,6 +681,9 @@
 "widget_integration_missing_room_id" = "Missing room_id in request.";
 "widget_integration_missing_user_id" = "Missing user_id in request.";
 "widget_integration_room_not_visible" = "Room %@ is not visible.";
+
+// Widget Picker
+"widget_picker_title" = "Integrations";
 
 // Share extension
 "share_extension_auth_prompt" = "Login in the main app to share content";

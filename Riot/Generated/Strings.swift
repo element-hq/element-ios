@@ -1462,6 +1462,26 @@ internal enum VectorL10n {
   internal static var retry: String { 
     return VectorL10n.tr("Vector", "retry") 
   }
+  /// Call
+  internal static var roomAccessibilityCall: String { 
+    return VectorL10n.tr("Vector", "room_accessibility_call") 
+  }
+  /// Hang up
+  internal static var roomAccessibilityHangup: String { 
+    return VectorL10n.tr("Vector", "room_accessibility_hangup") 
+  }
+  /// Integrations
+  internal static var roomAccessibilityIntegrations: String { 
+    return VectorL10n.tr("Vector", "room_accessibility_integrations") 
+  }
+  /// Search
+  internal static var roomAccessibilitySearch: String { 
+    return VectorL10n.tr("Vector", "room_accessibility_search") 
+  }
+  /// Upload
+  internal static var roomAccessibilityUpload: String { 
+    return VectorL10n.tr("Vector", "room_accessibility_upload") 
+  }
   /// Take photo or video
   internal static var roomActionCamera: String { 
     return VectorL10n.tr("Vector", "room_action_camera") 
@@ -2973,6 +2993,10 @@ internal enum VectorL10n {
   /// You need permission to manage widgets in this room
   internal static var widgetNoPowerToManage: String { 
     return VectorL10n.tr("Vector", "widget_no_power_to_manage") 
+  }
+  /// Integrations
+  internal static var widgetPickerTitle: String { 
+    return VectorL10n.tr("Vector", "widget_picker_title") 
   }
   /// You don't currently have any stickerpacks enabled.
   internal static var widgetStickerPickerNoStickerpacksAlert: String { 

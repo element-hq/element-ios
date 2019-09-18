@@ -1372,12 +1372,16 @@
                     icon = [icon imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 
                     self.navigationItem.rightBarButtonItems[1].image = icon;
+                    self.navigationItem.rightBarButtonItems[1].accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_integrations", @"Vector", nil);
                 }
                 else
                 {
                     // Reset original icon
                     self.navigationItem.rightBarButtonItems[1].image = [UIImage imageNamed:@"apps-icon"];
+                    self.navigationItem.rightBarButtonItems[1].accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_integrations", @"Vector", nil);
                 }
+                
+                self.navigationItem.rightBarButtonItems.firstObject.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_search", @"Vector", nil);
             }
 
             // Do not change title view class here if the expanded header is visible.
