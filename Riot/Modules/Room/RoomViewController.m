@@ -123,7 +123,7 @@
 
 #import "Riot-Swift.h"
 
-@interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
+@interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate>
 {
@@ -812,6 +812,92 @@
     
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 }
+
+#pragma mark - Accessibility
+
+// Handle scrolling when VoiceOver is on because it does not work well if we let the system do:
+// VoiceOver loses the focus on the tableview
+- (BOOL)accessibilityScroll:(UIAccessibilityScrollDirection)direction
+{
+    BOOL canScroll = YES;
+
+    // Scroll by one page
+    CGFloat tableViewHeight = self.bubblesTableView.frame.size.height;
+
+    CGPoint offset = self.bubblesTableView.contentOffset;
+    switch (direction)
+    {
+        case UIAccessibilityScrollDirectionUp:
+            offset.y -= tableViewHeight;
+            break;
+
+        case UIAccessibilityScrollDirectionDown:
+            offset.y += tableViewHeight;
+            break;
+
+        default:
+            break;
+    }
+
+    if (offset.y < 0 && ![self.roomDataSource.timeline canPaginate:MXTimelineDirectionBackwards])
+    {
+        // Can't paginate more. Let's stick on the first item
+        UIView *focusedView = [self firstCellWithAccessibilityDataInCells:self.bubblesTableView.visibleCells.objectEnumerator];
+        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, focusedView);
+        canScroll = NO;
+    }
+    else if (offset.y > self.bubblesTableView.contentSize.height - tableViewHeight
+             && ![self.roomDataSource.timeline canPaginate:MXTimelineDirectionForwards])
+    {
+        // Can't paginate more. Let's stick on the last item with accessibility
+        UIView *focusedView = [self firstCellWithAccessibilityDataInCells:self.bubblesTableView.visibleCells.reverseObjectEnumerator];
+        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, focusedView);
+        canScroll = NO;
+    }
+    else
+    {
+        // Disable VoiceOver while scrolling
+        self.bubblesTableView.accessibilityElementsHidden = YES;
+
+        [self.bubblesTableView setContentOffset:offset animated:NO];
+
+        NSEnumerator<UITableViewCell*> *cells;
+        if (direction == UIAccessibilityScrollDirectionUp)
+        {
+            cells = self.bubblesTableView.visibleCells.objectEnumerator;
+        }
+        else
+        {
+            cells = self.bubblesTableView.visibleCells.reverseObjectEnumerator;
+        }
+        UIView *cell = [self firstCellWithAccessibilityDataInCells:cells];
+
+        self.bubblesTableView.accessibilityElementsHidden = NO;
+
+        // Force VoiceOver to focus on a visible item
+        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, cell);
+    }
+
+    // If we cannot scroll, let VoiceOver indicates the border
+    return canScroll;
+}
+
+- (UIView*)firstCellWithAccessibilityDataInCells:(NSEnumerator<UITableViewCell*>*)cells
+{
+    UIView *view;
+
+    for (UITableViewCell *cell in cells)
+    {
+        if (![cell isKindOfClass:[RoomEmptyBubbleCell class]])
+        {
+            view = cell;
+            break;
+        }
+    }
+
+    return view;
+}
+
 
 #pragma mark - Override MXKRoomViewController
 
