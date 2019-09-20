@@ -556,7 +556,7 @@
 "deactivate_account_informations_part1" = "Dit zal uw account voorgoed onbruikbaar maken. U zult zich niet meer kunnen aanmelden, en niemand anders zal zich met dezelfde gebruikers-ID kunnen registreren. Dit zal er voor zorgen dat uw account alle gesprekken verlaat waar deze momenteel lid van is, en het verwijdert uw accountgegevens van de identiteitsserver. ";
 "deactivate_account_informations_part2_emphasize" = "Deze actie is onomkeerbaar.";
 "deactivate_account_informations_part3" = "\n\nHet deactiveren van uw account ";
-"deactivate_account_informations_part4_emphasize" = "zal er niet standaard voor zorgen dat de berichten die u heeft verzonden worden vergeten. ";
+"deactivate_account_informations_part4_emphasize" = "zal er standaard niet voor zorgen dat de berichten die u heeft verzonden worden vergeten. ";
 "deactivate_account_informations_part5" = "Als u wilt dat wij de berichten vergeten, vinkt u het vakje hieronder aan.\n\nDe zichtbaarheid van berichten in Matrix is gelijkaardig aan e-mails. Het vergeten van uw berichten betekent dat berichten die u heeft verstuurd niet meer gedeeld worden met nieuwe of ongeregistreerde gebruikers, maar geregistreerde gebruikers die al toegang hebben tot deze berichten zullen alsnog toegang hebben tot hun eigen kopie ervan.";
 "deactivate_account_forget_messages_information_part1" = "Vergeet alle berichten die ik heb verstuurd wanneer mijn account gedeactiveerd is (";
 "deactivate_account_forget_messages_information_part3" = ": dit zal er voor zorgen dat toekomstige gebruikers een onvolledig beeld krijgen van gesprekken)";
@@ -838,3 +838,20 @@
 "service_terms_modal_accept_button" = "Aanvaarden";
 "service_terms_modal_description_for_identity_server" = "Wees vindbaar voor anderen";
 "service_terms_modal_description_for_integration_manager" = "Gebruik bots, bruggen, widgets en stickerpakketten";
+// Errors
+"error_user_already_logged_in" = "Het lijkt alsof u probeert te verbinden met een andere thuisserver. Wilt u zich afmelden?";
+"room_participants_remove_third_party_invite_prompt_msg" = "Weet u zeker dat u deze uitnodiging wilt intrekken?";
+"room_accessiblity_scroll_to_bottom" = "Scrollen naar onderen";
+"room_accessibility_search" = "Zoeken";
+"room_accessibility_integrations" = "Integraties";
+"room_accessibility_upload" = "Uploaden";
+"room_accessibility_call" = "Bellen";
+"room_accessibility_hangup" = "Ophangen";
+"media_type_accessibility_image" = "Afbeelding";
+"media_type_accessibility_audio" = "Audio";
+"media_type_accessibility_video" = "Video";
+"media_type_accessibility_location" = "Locatie";
+"media_type_accessibility_file" = "Bestand";
+"media_type_accessibility_sticker" = "Sticker";
+// Widget Picker
+"widget_picker_title" = "Integraties";
