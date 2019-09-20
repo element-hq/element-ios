@@ -117,11 +117,15 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
     func showMenuToolbar() {
         self.menuToolbarViewBottomConstraint.constant = 0
         self.menuToolbarView.alpha = 1
+        
+        // Force VoiceOver to focus on the menu bar actions
+        UIAccessibility.post(notification: .screenChanged, argument: self.menuToolbarView)
     }
     
     func hideMenuToolbar() {
         self.menuToolbarViewBottomConstraint.constant = self.hiddenToolbarViewBottomConstant
         self.menuToolbarView.alpha = 0
+        UIAccessibility.post(notification: .screenChanged, argument: nil)
     }
     
     func prepareReactionsMenuAnimations() {

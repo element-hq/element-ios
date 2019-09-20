@@ -307,6 +307,11 @@
         self.iconImageView.image = [UIImage imageNamed:@"scrolldown"];
     }
     self.iconImageView.hidden = NO;
+
+    // Make VoiceOver consider it as a button
+    self.iconImageView.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessiblity_scroll_to_bottom", @"Vector", nil);
+    self.iconImageView.isAccessibilityElement = YES;
+    self.iconImageView.accessibilityTraits = UIAccessibilityTraitButton;
     
     if (onIconTapGesture)
     {

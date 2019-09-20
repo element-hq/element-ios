@@ -40,7 +40,7 @@
         mxSession = theMXSession;
         roomId = theRoomId;
 
-        _alertController = [UIAlertController alertControllerWithTitle:@"Matrix Apps"
+        _alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"widget_picker_title", @"Vector", nil)
                                                                message:nil
                                                         preferredStyle:UIAlertControllerStyleAlert];
     }
