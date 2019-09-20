@@ -196,6 +196,8 @@
     if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
     {
         MXKRoomBubbleTableViewCell *bubbleCell = (MXKRoomBubbleTableViewCell*)cell;
+        [self resetAccessibilityForCell:bubbleCell];
+
         RoomBubbleCellData *cellData = (RoomBubbleCellData*)bubbleCell.bubbleData;
         NSArray *bubbleComponents = cellData.bubbleComponents;
 
@@ -507,6 +509,8 @@
         
         // Auto animate the sticker in case of animated gif
         bubbleCell.isAutoAnimatedGif = (cellData.attachment && cellData.attachment.type == MXKAttachmentTypeSticker);
+
+        [self setupAccessibilityForCell:bubbleCell withCellData:cellData];
     }
 
     return cell;
@@ -561,6 +565,35 @@
 {
     UIImage *videoThumbnail = [MXKVideoThumbnailGenerator.shared generateThumbnailFrom:videoLocalURL];
     [self sendVideo:videoLocalURL withThumbnail:videoThumbnail success:success failure:failure];
+}
+
+
+#pragma - Accessibility
+
+- (void)setupAccessibilityForCell:(MXKRoomBubbleTableViewCell *)cell withCellData:(RoomBubbleCellData*)cellData
+{
+    // Set accessibility only on media. Let VoiceOver automatically manages text messages
+    if (cellData.attachment)
+    {
+        NSString *accessibilityLabel = [cellData accessibilityLabel];
+        if (cell.messageTextView.text.length)
+        {
+            // Files are presented as text with link
+            cell.messageTextView.accessibilityLabel = accessibilityLabel;
+            cell.messageTextView.isAccessibilityElement = YES;
+        }
+        else
+        {
+            cell.attachmentView.accessibilityLabel = accessibilityLabel;
+            cell.attachmentView.isAccessibilityElement = YES;
+        }
+    }
+}
+
+- (void)resetAccessibilityForCell:(MXKRoomBubbleTableViewCell *)cell
+{
+    cell.messageTextView.accessibilityLabel = nil;
+    cell.attachmentView.accessibilityLabel = nil;
 }
 
 #pragma mark - BubbleReactionsViewModelDelegate

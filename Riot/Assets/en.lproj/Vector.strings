@@ -323,6 +323,13 @@
 "room_accessibility_call" = "Call";
 "room_accessibility_hangup" = "Hang up";
 
+"media_type_accessibility_image" = "Image";
+"media_type_accessibility_audio" = "Audio";
+"media_type_accessibility_video" = "Video";
+"media_type_accessibility_location" = "Location";
+"media_type_accessibility_file" = "File";
+"media_type_accessibility_sticker" = "Sticker";
+
 // Unknown devices
 "unknown_devices_alert_title" = "Room contains unknown devices";
 "unknown_devices_alert" = "This room contains unknown devices which have not been verified.\nThis means there is no guarantee that the devices belong to the users they claim to.\nWe recommend you go through the verification process for each device before continuing, but you can resend the message without verifying if you prefer.";
