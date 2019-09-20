@@ -1506,6 +1506,10 @@ internal enum VectorL10n {
   internal static var roomAccessibilityUpload: String { 
     return VectorL10n.tr("Vector", "room_accessibility_upload") 
   }
+  /// Scroll to bottom
+  internal static var roomAccessiblityScrollToBottom: String { 
+    return VectorL10n.tr("Vector", "room_accessiblity_scroll_to_bottom") 
+  }
   /// Take photo or video
   internal static var roomActionCamera: String { 
     return VectorL10n.tr("Vector", "room_action_camera") 

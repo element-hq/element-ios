@@ -250,6 +250,7 @@
 
 // Chat
 "room_jump_to_first_unread" = "Jump to first unread message";
+"room_accessiblity_scroll_to_bottom" = "Scroll to bottom";
 "room_new_message_notification" = "%d new message";
 "room_new_messages_notification" = "%d new messages";
 "room_one_user_is_typing" = "%@ is typing…";
