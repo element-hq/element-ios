@@ -1374,6 +1374,30 @@ internal enum VectorL10n {
   internal static var mediaPickerTitle: String { 
     return VectorL10n.tr("Vector", "media_picker_title") 
   }
+  /// Audio
+  internal static var mediaTypeAccessibilityAudio: String { 
+    return VectorL10n.tr("Vector", "media_type_accessibility_audio") 
+  }
+  /// File
+  internal static var mediaTypeAccessibilityFile: String { 
+    return VectorL10n.tr("Vector", "media_type_accessibility_file") 
+  }
+  /// Image
+  internal static var mediaTypeAccessibilityImage: String { 
+    return VectorL10n.tr("Vector", "media_type_accessibility_image") 
+  }
+  /// Location
+  internal static var mediaTypeAccessibilityLocation: String { 
+    return VectorL10n.tr("Vector", "media_type_accessibility_location") 
+  }
+  /// Sticker
+  internal static var mediaTypeAccessibilitySticker: String { 
+    return VectorL10n.tr("Vector", "media_type_accessibility_sticker") 
+  }
+  /// Video
+  internal static var mediaTypeAccessibilityVideo: String { 
+    return VectorL10n.tr("Vector", "media_type_accessibility_video") 
+  }
   /// The Internet connection appears to be offline.
   internal static var networkOfflinePrompt: String { 
     return VectorL10n.tr("Vector", "network_offline_prompt") 
@@ -1461,6 +1485,30 @@ internal enum VectorL10n {
   /// Retry
   internal static var retry: String { 
     return VectorL10n.tr("Vector", "retry") 
+  }
+  /// Call
+  internal static var roomAccessibilityCall: String { 
+    return VectorL10n.tr("Vector", "room_accessibility_call") 
+  }
+  /// Hang up
+  internal static var roomAccessibilityHangup: String { 
+    return VectorL10n.tr("Vector", "room_accessibility_hangup") 
+  }
+  /// Integrations
+  internal static var roomAccessibilityIntegrations: String { 
+    return VectorL10n.tr("Vector", "room_accessibility_integrations") 
+  }
+  /// Search
+  internal static var roomAccessibilitySearch: String { 
+    return VectorL10n.tr("Vector", "room_accessibility_search") 
+  }
+  /// Upload
+  internal static var roomAccessibilityUpload: String { 
+    return VectorL10n.tr("Vector", "room_accessibility_upload") 
+  }
+  /// Scroll to bottom
+  internal static var roomAccessiblityScrollToBottom: String { 
+    return VectorL10n.tr("Vector", "room_accessiblity_scroll_to_bottom") 
   }
   /// Take photo or video
   internal static var roomActionCamera: String { 
@@ -2973,6 +3021,10 @@ internal enum VectorL10n {
   /// You need permission to manage widgets in this room
   internal static var widgetNoPowerToManage: String { 
     return VectorL10n.tr("Vector", "widget_no_power_to_manage") 
+  }
+  /// Integrations
+  internal static var widgetPickerTitle: String { 
+    return VectorL10n.tr("Vector", "widget_picker_title") 
   }
   /// You don't currently have any stickerpacks enabled.
   internal static var widgetStickerPickerNoStickerpacksAlert: String { 

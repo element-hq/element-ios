@@ -250,6 +250,7 @@
 
 // Chat
 "room_jump_to_first_unread" = "Jump to first unread message";
+"room_accessiblity_scroll_to_bottom" = "Scroll to bottom";
 "room_new_message_notification" = "%d new message";
 "room_new_messages_notification" = "%d new messages";
 "room_one_user_is_typing" = "%@ is typing…";
@@ -317,6 +318,18 @@
 "room_resource_usage_limit_reached_message_2" = "some users will not be able to log in.";
 "room_resource_usage_limit_reached_message_contact_3" = " to get this limit increased.";
 "room_message_edits_history_title" = "Message edits";
+"room_accessibility_search" = "Search";
+"room_accessibility_integrations" = "Integrations";
+"room_accessibility_upload" = "Upload";
+"room_accessibility_call" = "Call";
+"room_accessibility_hangup" = "Hang up";
+
+"media_type_accessibility_image" = "Image";
+"media_type_accessibility_audio" = "Audio";
+"media_type_accessibility_video" = "Video";
+"media_type_accessibility_location" = "Location";
+"media_type_accessibility_file" = "File";
+"media_type_accessibility_sticker" = "Sticker";
 
 // Unknown devices
 "unknown_devices_alert_title" = "Room contains unknown devices";
@@ -676,6 +689,9 @@
 "widget_integration_missing_room_id" = "Missing room_id in request.";
 "widget_integration_missing_user_id" = "Missing user_id in request.";
 "widget_integration_room_not_visible" = "Room %@ is not visible.";
+
+// Widget Picker
+"widget_picker_title" = "Integrations";
 
 // Share extension
 "share_extension_auth_prompt" = "Login in the main app to share content";

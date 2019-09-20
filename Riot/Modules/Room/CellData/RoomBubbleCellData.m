@@ -698,4 +698,58 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
     }
 }
 
+- (NSString *)accessibilityLabel
+{
+    NSString *accessibilityLabel;
+
+    // Only media require manual handling for accessibility
+    if (self.attachment)
+    {
+        NSString *mediaName = [self accessibilityLabelForAttachmentType:self.attachment.type];
+
+        MXJSONModelSetString(accessibilityLabel, self.events.firstObject.content[@"body"]);
+        if (accessibilityLabel)
+        {
+            accessibilityLabel = [NSString stringWithFormat:@"%@ %@", mediaName, accessibilityLabel];
+        }
+        else
+        {
+            accessibilityLabel = mediaName;
+        }
+    }
+
+    return accessibilityLabel;
+}
+
+- (NSString*)accessibilityLabelForAttachmentType:(MXKAttachmentType)attachmentType
+{
+    NSString *accessibilityLabel;
+    switch (attachmentType)
+    {
+        case MXKAttachmentTypeImage:
+            accessibilityLabel = NSLocalizedStringFromTable(@"media_type_accessibility_image", @"Vector", nil);
+            break;
+        case MXKAttachmentTypeAudio:
+            accessibilityLabel = NSLocalizedStringFromTable(@"media_type_accessibility_audio", @"Vector", nil);
+            break;
+        case MXKAttachmentTypeVideo:
+            accessibilityLabel = NSLocalizedStringFromTable(@"media_type_accessibility_video", @"Vector", nil);
+            break;
+        case MXKAttachmentTypeLocation:
+            accessibilityLabel = NSLocalizedStringFromTable(@"media_type_accessibility_location", @"Vector", nil);
+            break;
+        case MXKAttachmentTypeFile:
+            accessibilityLabel = NSLocalizedStringFromTable(@"media_type_accessibility_file", @"Vector", nil);
+            break;
+        case MXKAttachmentTypeSticker:
+            accessibilityLabel = NSLocalizedStringFromTable(@"media_type_accessibility_sticker", @"Vector", nil);
+            break;
+        default:
+            accessibilityLabel = @"";
+            break;
+    }
+
+    return accessibilityLabel;
+}
+
 @end

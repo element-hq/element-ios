@@ -1,3 +1,12 @@
+Changes in 0.9.5 (2019-09-20)
+===============================================
+
+Bug fix:
+ * VoiceOver: RoomVC: Fix some missing accessibility labels for buttons (#2722).
+ * VoiceOver: RoomVC: Make VoiceOver focus on the contextual menu when selecting an event (#2721).
+ * VoiceOver: RoomVC: Do not lose the focus on the timeline when paginating (with 3 fingers) (#2720).
+ * VoiceOver: RoomVC: No VoiceOver on media (#2726).
+
 Changes in 0.9.4 (2019-09-13)
 ===============================================
 

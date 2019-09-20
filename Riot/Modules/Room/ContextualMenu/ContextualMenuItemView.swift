@@ -93,20 +93,30 @@ final class ContextualMenuItemView: UIView, NibOwnerLoadable {
     }
     
     // MARK: - Public
-    
-    func fill(title: String, image: UIImage?) {
-        self.originalImage = image?.withRenderingMode(.alwaysTemplate)
-        self.titleLabel.text = title
-        self.updateView()
-    }
-    
+
     func fill(menuItem: RoomContextualMenuItem) {
         self.fill(title: menuItem.title, image: menuItem.image)
+        self.setupAccessibility(title: menuItem.title, isEnabled: menuItem.isEnabled)
         self.action = menuItem.action
         self.isEnabled = menuItem.isEnabled
     }
     
     // MARK: - Private
+
+    private func fill(title: String, image: UIImage?) {
+        self.originalImage = image?.withRenderingMode(.alwaysTemplate)
+        self.titleLabel.text = title
+        self.updateView()
+    }
+
+    private func setupAccessibility(title: String, isEnabled: Bool) {
+        self.isAccessibilityElement = true
+        self.accessibilityLabel = title
+        self.accessibilityTraits = .button
+        if !isEnabled {
+            self.accessibilityTraits.insert(.notEnabled)
+        }
+    }
     
     private func setupGestureRecognizer() {
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(buttonAction(_:)))
