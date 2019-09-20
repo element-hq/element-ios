@@ -803,3 +803,6 @@
 "emoji_picker_flags_category" = "깃발";
 // MARK: Reaction history
 "reaction_history_title" = "리액션";
+"room_participants_remove_third_party_invite_prompt_msg" = "이 초대를 취소하겠습니까?";
+// Errors
+"error_user_already_logged_in" = "다른 홈서버에 연결합니다. 로그아웃하겠습니까?";
