@@ -426,6 +426,10 @@ internal enum VectorL10n {
   internal static var contactsAddressBookNoContact: String { 
     return VectorL10n.tr("Vector", "contacts_address_book_no_contact") 
   }
+  /// No identity server configured
+  internal static var contactsAddressBookNoIdentityServer: String { 
+    return VectorL10n.tr("Vector", "contacts_address_book_no_identity_server") 
+  }
   /// You didn't allow Riot to access your local contacts
   internal static var contactsAddressBookPermissionDenied: String { 
     return VectorL10n.tr("Vector", "contacts_address_book_permission_denied") 
@@ -989,6 +993,10 @@ internal enum VectorL10n {
   /// Send an encrypted reply…
   internal static var encryptedRoomMessageReplyToPlaceholder: String { 
     return VectorL10n.tr("Vector", "encrypted_room_message_reply_to_placeholder") 
+  }
+  /// Add an identity server in your settings to invite by email.
+  internal static var errorInvite3pidWithNoIdentityServer: String { 
+    return VectorL10n.tr("Vector", "error_invite_3pid_with_no_identity_server") 
   }
   /// VoIP conference added by %@
   internal static func eventFormatterJitsiWidgetAdded(_ p1: String) -> String {
