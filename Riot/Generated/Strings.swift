@@ -1150,6 +1150,34 @@ internal enum VectorL10n {
   internal static var homeserverConnectionLost: String { 
     return VectorL10n.tr("Vector", "homeserver_connection_lost") 
   }
+  /// Add
+  internal static var identityServerSettingsAdd: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_add") 
+  }
+  /// Change
+  internal static var identityServerSettingsChange: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_change") 
+  }
+  /// You are currently using %@ to discover and be discoverable by existing contacts you know.
+  internal static func identityServerSettingsDescription(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "identity_server_settings_description", p1)
+  }
+  /// Disconnect
+  internal static var identityServerSettingsDisconnect: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_disconnect") 
+  }
+  /// Disconnecting from your identity server will mean you won’t be discoverable by other users and  be able to invite others by email or phone.
+  internal static var identityServerSettingsDisconnectInfo: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_disconnect_info") 
+  }
+  /// You are not currently using an identity server. To discover and be discoverable by existing contacts, add one.
+  internal static var identityServerSettingsNoIsDescription: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_no_is_description") 
+  }
+  /// Identity Server
+  internal static var identityServerSettingsTitle: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_title") 
+  }
   /// Take photo
   internal static var imagePickerActionCamera: String { 
     return VectorL10n.tr("Vector", "image_picker_action_camera") 

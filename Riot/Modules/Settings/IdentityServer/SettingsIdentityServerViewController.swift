@@ -29,6 +29,10 @@ final class SettingsIdentityServerViewController: UIViewController {
     @IBOutlet private weak var messageLabel: UILabel!
     @IBOutlet private weak var addOrChangeButton: UIButton!
     
+    @IBOutlet weak var disconnectMessageLabel: UILabel!
+    @IBOutlet weak var disconnectButtonContainer: UIView!
+    @IBOutlet weak var disconnectButton: UIButton!
+
     // MARK: Private
 
     private var viewModel: SettingsIdentityServerViewModelType!
@@ -56,7 +60,7 @@ final class SettingsIdentityServerViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = "Identity server"
+        self.title = VectorL10n.identityServerSettingsTitle
         
         self.setupViews()
         self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
@@ -111,14 +115,20 @@ final class SettingsIdentityServerViewController: UIViewController {
     
     private func setupViews() {
         self.scrollView.keyboardDismissMode = .interactive
+
+        self.messageLabel.text = VectorL10n.serviceTermsModalMessage
+
+        self.disconnectMessageLabel.text = VectorL10n.identityServerSettingsDisconnectInfo
+        self.disconnectButton.setTitle(VectorL10n.identityServerSettingsDisconnect, for: .normal)
+        self.disconnectButton.setTitle(VectorL10n.identityServerSettingsDisconnect, for: .highlighted)
     }
 
     private func render(viewState: SettingsIdentityServerViewState) {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .loaded:
-            self.renderLoaded()
+        case .loaded(let displayMode):
+            self.renderLoaded(displayMode: displayMode)
         case .error(let error):
             self.render(error: error)
         }
@@ -128,8 +138,34 @@ final class SettingsIdentityServerViewController: UIViewController {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
     }
     
-    private func renderLoaded() {
+    private func renderLoaded(displayMode: SettingsIdentityServerDisplayMode) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+
+        switch displayMode {
+        case .noIdentityServer:
+            self.renderNoIdentityServer()
+        case .identityServer(let host):
+            self.renderIdentityServer(host: host)
+        }
+    }
+
+    private func renderNoIdentityServer() {
+        self.messageLabel.text = VectorL10n.identityServerSettingsNoIsDescription
+        self.addOrChangeButton.setTitle(VectorL10n.identityServerSettingsAdd, for: .normal)
+        self.addOrChangeButton.setTitle(VectorL10n.identityServerSettingsAdd, for: .highlighted)
+
+        self.disconnectMessageLabel.isHidden = true
+        self.disconnectButtonContainer.isHidden = true
+    }
+
+    private func renderIdentityServer(host: String) {
+        //self.iden
+        self.messageLabel.text = VectorL10n.identityServerSettingsDescription(host)
+        self.addOrChangeButton.setTitle(VectorL10n.identityServerSettingsChange, for: .normal)
+        self.addOrChangeButton.setTitle(VectorL10n.identityServerSettingsChange, for: .highlighted)
+
+        self.disconnectMessageLabel.isHidden = false
+        self.disconnectButtonContainer.isHidden = false
     }
     
     private func render(error: Error) {
@@ -165,6 +201,10 @@ final class SettingsIdentityServerViewController: UIViewController {
             self.viewModel.process(viewAction: viewAction)
         }
     }
+
+    @IBAction private func disconnectButtonAction(_ sender: Any) {
+    }
+    
 }
 
 

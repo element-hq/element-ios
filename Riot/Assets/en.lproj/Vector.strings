@@ -513,6 +513,33 @@
 "settings_identity_server_no_is" = "No identity server configured";
 "settings_identity_server_no_is_description" = "You are not currently using an identity server. To discover and be discoverable by existing contacts you know, add one above.";
 
+
+// Identity server settings
+"identity_server_settings_title" = "Identity Server";
+
+"identity_server_settings_description" = "You are currently using %@ to discover and be discoverable by existing contacts you know.";
+"identity_server_settings_no_is_description" = "You are not currently using an identity server. To discover and be discoverable by existing contacts, add one.";
+
+"identity_server_settings_add" = "Add";
+"identity_server_settings_change" = "Change";
+
+"identity_server_settings_disconnect_info" = "Disconnecting from your identity server will mean you won’t be discoverable by other users and  be able to invite others by email or phone.";
+"identity_server_settings_disconnect" = "Disconnect";
+
+/* TODO
+"settings_discovery_enter_indentity_server" = "Enter a new identity server";
+"settings_discovery_bad_indentity_server" = "Could not connect to identity server";
+"settings_discovery_please_enter_server" = "Please enter server";
+
+"settings_discovery_no_terms_title" = "Identity server has no terms of services";
+"settings_discovery_no_terms" = "The identity server you have chosen does not have any terms of services. Only continue if you trust the owner of the string>
+
+"settings_discovery_disconnect_with_bound_pid" = "You are currently sharing email addresses or phone numbers on the identity server %@. You will need to reconnect to %s to stop sharing them.";
+*/
+
+
+
+
 // Room Details
 "room_details_title" = "Room Details";
 "room_details_people" = "Members";
