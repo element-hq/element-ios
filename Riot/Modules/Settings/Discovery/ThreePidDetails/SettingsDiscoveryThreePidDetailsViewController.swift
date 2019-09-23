@@ -234,7 +234,7 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
             self.viewModel.process(viewAction: .confirmEmailValidation)
         }))
         
-        alert.addAction(UIAlertAction(title: Bundle.mxk_localizedString(forKey: "abort"), style: .cancel, handler: { _ in
+        alert.addAction(UIAlertAction(title: Bundle.mxk_localizedString(forKey: "cancel"), style: .cancel, handler: { _ in
             self.viewModel.process(viewAction: .cancelThreePidValidation)
         }))
         
@@ -260,7 +260,7 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
             self.viewModel.process(viewAction: .confirmMSISDNValidation(code: smsCode))
         }))
         
-        alert.addAction(UIAlertAction(title: Bundle.mxk_localizedString(forKey: "abort"), style: .cancel, handler: { _ in
+        alert.addAction(UIAlertAction(title: Bundle.mxk_localizedString(forKey: "cancel"), style: .cancel, handler: { _ in
             self.viewModel.process(viewAction: .cancelThreePidValidation)
         }))
         

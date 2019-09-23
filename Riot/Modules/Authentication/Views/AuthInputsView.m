@@ -1667,7 +1667,7 @@
     
     inputsAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"auth_msisdn_validation_title", @"Vector", nil) message:NSLocalizedStringFromTable(@"auth_msisdn_validation_message", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
     
-    [inputsAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"]
+    [inputsAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
                                                     style:UIAlertActionStyleDefault
                                                   handler:^(UIAlertAction * action) {
                                                       

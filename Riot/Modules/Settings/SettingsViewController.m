@@ -702,7 +702,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"account_email_validation_title"] message:message preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
                                                 
@@ -812,7 +812,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"account_msisdn_validation_title"] message:message preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -3657,7 +3657,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         
         currentAlert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -3929,7 +3929,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             }
             else
             {
-                [NSBundle mxk_localizedStringForKey:@"auth_email_is_required"];
+                message = [NSBundle mxk_localizedStringForKey:@"auth_email_is_required"];
             }
 
             failure([NSError errorWithDomain:MXKAuthErrorDomain
