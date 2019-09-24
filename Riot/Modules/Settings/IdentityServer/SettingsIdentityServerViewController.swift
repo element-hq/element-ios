@@ -26,7 +26,13 @@ final class SettingsIdentityServerViewController: UIViewController {
 
     @IBOutlet private weak var scrollView: UIScrollView!
     
+    @IBOutlet weak var identityServerContainer: UIView!
+    @IBOutlet weak var identityServerLabel: UILabel!
+    @IBOutlet weak var identityServerTextField: UITextField!
+
     @IBOutlet private weak var messageLabel: UILabel!
+
+    @IBOutlet weak var addOrChangeButtonContainer: UIView!
     @IBOutlet private weak var addOrChangeButton: UIButton!
     
     @IBOutlet weak var disconnectMessageLabel: UILabel!
@@ -102,7 +108,19 @@ final class SettingsIdentityServerViewController: UIViewController {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
-        // TODO:
+        self.identityServerContainer.backgroundColor = theme.backgroundColor
+        self.identityServerLabel.textColor = theme.textPrimaryColor
+        theme.applyStyle(onTextField: self.identityServerTextField)
+        self.identityServerTextField.textColor = theme.textSecondaryColor
+        self.messageLabel.textColor = theme.textPrimaryColor
+
+        self.addOrChangeButtonContainer.backgroundColor = theme.backgroundColor
+        theme.applyStyle(onButton: self.addOrChangeButton)
+
+        self.disconnectMessageLabel.textColor = theme.textPrimaryColor
+        self.disconnectButtonContainer.backgroundColor = theme.backgroundColor
+        theme.applyStyle(onButton: self.disconnectButton)
+        self.disconnectButton.setTitleColor(self.theme.warningColor, for: .normal)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -116,7 +134,7 @@ final class SettingsIdentityServerViewController: UIViewController {
     private func setupViews() {
         self.scrollView.keyboardDismissMode = .interactive
 
-        self.messageLabel.text = VectorL10n.serviceTermsModalMessage
+        self.identityServerLabel.text = VectorL10n.identityServerSettingsTitle
 
         self.disconnectMessageLabel.text = VectorL10n.identityServerSettingsDisconnectInfo
         self.disconnectButton.setTitle(VectorL10n.identityServerSettingsDisconnect, for: .normal)
@@ -151,6 +169,7 @@ final class SettingsIdentityServerViewController: UIViewController {
 
     private func renderNoIdentityServer() {
         self.messageLabel.text = VectorL10n.identityServerSettingsNoIsDescription
+        
         self.addOrChangeButton.setTitle(VectorL10n.identityServerSettingsAdd, for: .normal)
         self.addOrChangeButton.setTitle(VectorL10n.identityServerSettingsAdd, for: .highlighted)
 
@@ -159,10 +178,17 @@ final class SettingsIdentityServerViewController: UIViewController {
     }
 
     private func renderIdentityServer(host: String) {
-        //self.iden
-        self.messageLabel.text = VectorL10n.identityServerSettingsDescription(host)
+
+        let hostname = URL(string: host)?.host ?? host
+
+        self.identityServerTextField.text = host
+        self.identityServerTextField.placeholder = RiotDefaults.identityserverurl
+
+        self.messageLabel.text = VectorL10n.identityServerSettingsDescription(hostname)
+
         self.addOrChangeButton.setTitle(VectorL10n.identityServerSettingsChange, for: .normal)
         self.addOrChangeButton.setTitle(VectorL10n.identityServerSettingsChange, for: .highlighted)
+        self.addOrChangeButton.isUserInteractionEnabled = false
 
         self.disconnectMessageLabel.isHidden = false
         self.disconnectButtonContainer.isHidden = false
@@ -193,8 +219,6 @@ final class SettingsIdentityServerViewController: UIViewController {
             viewAction = .add(identityServer: identityServer)
         case .identityServer:
             viewAction = .change(identityServer: identityServer)
-        default:
-            viewAction = nil
         }
         
         if let viewAction = viewAction {
