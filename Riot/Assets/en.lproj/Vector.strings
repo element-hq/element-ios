@@ -529,6 +529,11 @@
 "identity_server_settings_alert_no_terms_title" = "Identity server has no terms of services";
 "identity_server_settings_alert_no_terms" = "The identity server you have chosen does not have any terms of service. Only continue if you trust the owner of the server.";
 
+"identity_server_settings_alert_disconnect_title" = "Disconnect identity server";
+"identity_server_settings_alert_disconnect" = "Disconnect from the identity server %@?";
+"identity_server_settings_alert_disconnect_button" = "Disconnect";
+"identity_server_settings_alert_disconnect_still_sharing_3pid" = "You are still sharing your personal data on the identity server %@.\n\nWe recommend that you remove your email addresses and phone numbers from the identity server before disconnecting.";
+"identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "Disconnect anyway";
 
 /* TODO
 "settings_discovery_enter_indentity_server" = "Enter a new identity server";

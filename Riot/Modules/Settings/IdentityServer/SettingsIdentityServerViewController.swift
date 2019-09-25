@@ -210,8 +210,21 @@ final class SettingsIdentityServerViewController: UIViewController {
                            continueButtonTitle: VectorL10n.continue,
                            cancelButtonTitle: VectorL10n.cancel,
                            onContinue: onContinue)
-        }
 
+        case .disconnectActionAlert(.stillSharing3Pids(let oldHost)):
+            self.showAlert(title: VectorL10n.identityServerSettingsAlertDisconnectTitle,
+                           message: VectorL10n.identityServerSettingsAlertDisconnectStillSharing3pid(oldHost.hostname()),
+                           continueButtonTitle: VectorL10n.identityServerSettingsAlertDisconnectStillSharing3pidButton,
+                           cancelButtonTitle: VectorL10n.cancel,
+                           onContinue: onContinue)
+
+        case .disconnectActionAlert(.doubleConfirmation(let oldHost)):
+            self.showAlert(title: VectorL10n.identityServerSettingsAlertDisconnectTitle,
+                           message: VectorL10n.identityServerSettingsAlertDisconnect(oldHost.hostname()),
+                           continueButtonTitle: VectorL10n.identityServerSettingsAlertDisconnectButton,
+                           cancelButtonTitle: VectorL10n.cancel,
+                           onContinue: onContinue)
+        }
     }
 
     private func render(error: Error) {
@@ -276,6 +289,7 @@ final class SettingsIdentityServerViewController: UIViewController {
     }
 
     @IBAction private func disconnectButtonAction(_ sender: Any) {
+        self.viewModel.process(viewAction: .disconnect)
     }
     
 }

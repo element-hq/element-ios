@@ -1154,6 +1154,26 @@ internal enum VectorL10n {
   internal static var identityServerSettingsAdd: String { 
     return VectorL10n.tr("Vector", "identity_server_settings_add") 
   }
+  /// Disconnect from the identity server %@?
+  internal static func identityServerSettingsAlertDisconnect(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "identity_server_settings_alert_disconnect", p1)
+  }
+  /// Disconnect
+  internal static var identityServerSettingsAlertDisconnectButton: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_alert_disconnect_button") 
+  }
+  /// You are still sharing your personal data on the identity server %@.\n\nWe recommend that you remove your email addresses and phone numbers from the identity server before disconnecting.
+  internal static func identityServerSettingsAlertDisconnectStillSharing3pid(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "identity_server_settings_alert_disconnect_still_sharing_3pid", p1)
+  }
+  /// Disconnect anyway
+  internal static var identityServerSettingsAlertDisconnectStillSharing3pidButton: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_alert_disconnect_still_sharing_3pid_button") 
+  }
+  /// Disconnect identity server
+  internal static var identityServerSettingsAlertDisconnectTitle: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_alert_disconnect_title") 
+  }
   /// The identity server you have chosen does not have any terms of service. Only continue if you trust the owner of the server.
   internal static var identityServerSettingsAlertNoTerms: String { 
     return VectorL10n.tr("Vector", "identity_server_settings_alert_no_terms") 

@@ -33,6 +33,9 @@ enum SettingsIdentityServerDisplayMode {
 
 enum SettingsIdentityServerAlert {
     case addActionAlert(AddActionAlert)
+    //case changeActionAlert(ChangeActionAlert)
+    case disconnectActionAlert(DisconnectActionAlert)
+
     enum AddActionAlert {
         case noTerms(newHost: String)
     }
@@ -42,8 +45,9 @@ enum SettingsIdentityServerAlert {
 //        case doubleConfirmation(oldHost: String, newHost: String)
 //        case noTerms(newHost: String)
 //    }
-//    enum DisconnectActionAlert {
-//        case stillSharing3Pids(oldHost: String)
-//        case doubleConfirmation(oldHost: String)
-//    }
+
+    enum DisconnectActionAlert {
+        case stillSharing3Pids(oldHost: String)
+        case doubleConfirmation(oldHost: String)
+    }
 }

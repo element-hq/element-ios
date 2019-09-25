@@ -77,7 +77,6 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
     }
     
     private func addIdentityServer(_ newIdentityServer: String) {
-        
         self.update(viewState: .loading)
         
         self.checkIdentityServerValidity(identityServer: newIdentityServer) { (identityServerValidityResponse) in
@@ -115,10 +114,39 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
     }
     
     private func disconnect() {
-        
+        guard let identityServer = self.identityServer else {
+            return
+        }
+
+        self.update(viewState: .loading)
+
+        self.checkExistingDataOnIdentityServer { (response) in
+            switch response {
+            case .success(let existingData):
+                if existingData {
+                    self.update(viewState: .alert(alert: SettingsIdentityServerAlert.disconnectActionAlert(.stillSharing3Pids(oldHost: identityServer)), onContinue: {
+                        self.disconnect2()
+                    }))
+                } else {
+                    self.update(viewState: .alert(alert: SettingsIdentityServerAlert.disconnectActionAlert(.doubleConfirmation(oldHost: identityServer)), onContinue: {
+                        self.disconnect2()
+                    }))
+                }
+            case .failure(let error):
+                self.update(viewState: .error(error))
+            }
+        }
+    }
+
+    private func disconnect2() {
+        self.update(viewState: .loading)
+
+        // TODO: Make a /account/logout request
+
+        self.updateAccountDataAndRefreshViewState(with: nil)
     }
     
-    private func updateAccountDataAndRefreshViewState(with identityServer: String) {
+    private func updateAccountDataAndRefreshViewState(with identityServer: String?) {
         // TODO: We should get a token in intermediate step
         self.session.setIdentityServer(identityServer, andAccessToken: nil)
 
