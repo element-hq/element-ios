@@ -1170,7 +1170,7 @@ internal enum VectorL10n {
   internal static var identityServerSettingsDisconnectInfo: String { 
     return VectorL10n.tr("Vector", "identity_server_settings_disconnect_info") 
   }
-  /// You are not currently using an identity server. To discover and be discoverable by existing contacts, add one.
+  /// You are not currently using an identity server. To discover and be discoverable by existing contacts, add one above.
   internal static var identityServerSettingsNoIsDescription: String { 
     return VectorL10n.tr("Vector", "identity_server_settings_no_is_description") 
   }

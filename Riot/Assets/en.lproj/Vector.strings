@@ -518,7 +518,7 @@
 "identity_server_settings_title" = "Identity Server";
 
 "identity_server_settings_description" = "You are currently using %@ to discover and be discoverable by existing contacts you know.";
-"identity_server_settings_no_is_description" = "You are not currently using an identity server. To discover and be discoverable by existing contacts, add one.";
+"identity_server_settings_no_is_description" = "You are not currently using an identity server. To discover and be discoverable by existing contacts, add one above.";
 
 "identity_server_settings_add" = "Add";
 "identity_server_settings_change" = "Change";

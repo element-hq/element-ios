@@ -47,7 +47,8 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
     // MARK: Public
 
     weak var viewDelegate: SettingsIdentityServerViewModelViewDelegate?
-    
+    var identityServer: String?
+
     // MARK: - Setup
     
     init(session: MXSession) {
@@ -125,6 +126,7 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
     private func refreshIdentityServerViewState() {
         if let identityService = self.session.identityService {
             let host = identityService.identityServer
+            self.identityServer = host
             self.update(viewState: .loaded(displayMode: .identityServer(host: host)))
         } else {
             self.update(viewState: .loaded(displayMode: .noIdentityServer))

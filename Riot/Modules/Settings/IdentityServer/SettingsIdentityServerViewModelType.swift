@@ -26,6 +26,8 @@ protocol SettingsIdentityServerViewModelViewDelegate: class {
 protocol SettingsIdentityServerViewModelType {
         
     var viewDelegate: SettingsIdentityServerViewModelViewDelegate? { get set }
+
+    var identityServer: String? { get }
     
     func process(viewAction: SettingsIdentityServerViewAction)
 }

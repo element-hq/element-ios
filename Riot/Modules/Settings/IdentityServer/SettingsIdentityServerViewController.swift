@@ -136,6 +136,8 @@ final class SettingsIdentityServerViewController: UIViewController {
 
         self.identityServerLabel.text = VectorL10n.identityServerSettingsTitle
 
+        self.identityServerTextField.addTarget(self, action: #selector(identityServerTextFieldDidChange(_:)), for: .editingChanged)
+
         self.disconnectMessageLabel.text = VectorL10n.identityServerSettingsDisconnectInfo
         self.disconnectButton.setTitle(VectorL10n.identityServerSettingsDisconnect, for: .normal)
         self.disconnectButton.setTitle(VectorL10n.identityServerSettingsDisconnect, for: .highlighted)
@@ -159,6 +161,8 @@ final class SettingsIdentityServerViewController: UIViewController {
     private func renderLoaded(displayMode: SettingsIdentityServerDisplayMode) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
 
+        self.displayMode = displayMode
+
         switch displayMode {
         case .noIdentityServer:
             self.renderNoIdentityServer()
@@ -179,12 +183,10 @@ final class SettingsIdentityServerViewController: UIViewController {
 
     private func renderIdentityServer(host: String) {
 
-        let hostname = URL(string: host)?.host ?? host
-
         self.identityServerTextField.text = host
         self.identityServerTextField.placeholder = RiotDefaults.identityserverurl
 
-        self.messageLabel.text = VectorL10n.identityServerSettingsDescription(hostname)
+        self.messageLabel.text = VectorL10n.identityServerSettingsDescription(host.hostname())
 
         self.addOrChangeButton.setTitle(VectorL10n.identityServerSettingsChange, for: .normal)
         self.addOrChangeButton.setTitle(VectorL10n.identityServerSettingsChange, for: .highlighted)
@@ -205,12 +207,17 @@ final class SettingsIdentityServerViewController: UIViewController {
     
     // MARK: - Actions
 
+    @objc private func identityServerTextFieldDidChange(_ textField: UITextField) {
+        self.addOrChangeButton.isUserInteractionEnabled = textField.text?.count ?? 0 > 0
+            && (textField.text?.hostname() != self.viewModel.identityServer?.hostname())
+    }
+
     @IBAction private func addOrChangeButtonAction(_ sender: Any) {
-        guard let displayMode = self.displayMode else {
+        self.identityServerTextField.resignFirstResponder()
+
+        guard let displayMode = self.displayMode, let identityServer = self.identityServerTextField.text else {
             return
         }
-        
-        let identityServer = "TODO"
         
         let viewAction: SettingsIdentityServerViewAction?
         
@@ -238,5 +245,11 @@ extension SettingsIdentityServerViewController: SettingsIdentityServerViewModelV
     func settingsIdentityServerViewModel(_ viewModel: SettingsIdentityServerViewModelType, didUpdateViewState viewState: SettingsIdentityServerViewState) {
         self.viewState = viewState
         self.render(viewState: viewState)
+    }
+}
+
+fileprivate extension String {
+    func hostname() -> String {
+        return URL(string: self)?.host ?? self
     }
 }
