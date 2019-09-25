@@ -86,12 +86,15 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
                 switch identityServerValidity {
                 case .invalid:
                     // Present invalid IS alert
+                    // TODO but how to detect it?
                     break
                 case .valid(status: let termsStatus):
                     switch termsStatus {
                     case .noTerms:
-                        // Present no terms alert
-                        break
+                        self.update(viewState: .alert(alert: SettingsIdentityServerAlert.addActionAlert(.noTerms(newHost: newIdentityServer)), onContinue: {
+                            self.update(viewState: .loading)
+                            self.updateAccountDataAndRefreshViewState(with: newIdentityServer)
+                        }))
                     case .terms(agreed: let termsAgreed):
                         if termsAgreed {
                             self.updateAccountDataAndRefreshViewState(with: newIdentityServer)
@@ -116,6 +119,9 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
     }
     
     private func updateAccountDataAndRefreshViewState(with identityServer: String) {
+        // TODO: We should get a token in intermediate step
+        self.session.setIdentityServer(identityServer, andAccessToken: nil)
+
         self.session.setAccountDataIdentityServer(identityServer, success: {
             self.refreshIdentityServerViewState()
         }, failure: { error in
@@ -182,31 +188,37 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
         let restClient: MXRestClient = self.session.matrixRestClient
         
         let identityService = MXIdentityService(identityServer: identityServerURL, accessToken: nil, homeserverRestClient: restClient)
-        
-        identityService.accessToken { response in
+
+        // First, check the server
+        identityService.pingIdentityServer { response in
+            self.validationIdentityService = nil
+
             switch response {
-            case .success(let accessToken):
-                let serviceTerms = MXServiceTerms(baseUrl: identityService.identityServer, serviceType: MXServiceTypeIdentityService, matrixSession: self.session, accessToken: accessToken)
-                
-                serviceTerms.areAllTermsAgreed({ (areAllTermsAgreed) in
-                    
-                    completion(.success(IdentityServerValidity.valid(status: .terms(agreed: areAllTermsAgreed))))
-                    
+            case .success:
+                // Them, check if there are terms to accept
+                let serviceTerms = MXServiceTerms(baseUrl: identityService.identityServer, serviceType: MXServiceTypeIdentityService, matrixSession: self.session, accessToken: nil)
+
+                serviceTerms.areAllTermsAgreed({ (agreedTermsProgress) in
                     self.validationServiceTerms = nil
-                }, failure: { error in
+
+                    if agreedTermsProgress.totalUnitCount == 0 {
+                        completion(.success(IdentityServerValidity.valid(status: .noTerms)))
+                    } else {
+                        completion(.success(IdentityServerValidity.valid(status: .terms(agreed: agreedTermsProgress.isFinished))))
+                    }
+
+                }, failure: { (error) in
+                    self.validationServiceTerms = nil
                     completion(.failure(error))
-                    self.validationServiceTerms = nil
                 })
-                
+
                 self.validationServiceTerms = serviceTerms
-                
+
             case .failure(let error):
                 completion(.failure(error))
             }
-            
-            self.validationIdentityService = nil
         }
-        
+
         self.validationIdentityService = identityService
     }
     

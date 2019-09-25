@@ -50,6 +50,8 @@ final class SettingsIdentityServerViewController: UIViewController {
     
     private var displayMode: SettingsIdentityServerDisplayMode?
 
+    private weak var alertController: UIAlertController?
+
     // MARK: - Setup
     
     class func instantiate(with viewModel: SettingsIdentityServerViewModelType) -> SettingsIdentityServerViewController {
@@ -149,6 +151,8 @@ final class SettingsIdentityServerViewController: UIViewController {
             self.renderLoading()
         case .loaded(let displayMode):
             self.renderLoaded(displayMode: displayMode)
+        case .alert(let alert, let onContinue):
+            self.renderAlert(alert: alert, onContinue: onContinue)
         case .error(let error):
             self.render(error: error)
         }
@@ -195,16 +199,54 @@ final class SettingsIdentityServerViewController: UIViewController {
         self.disconnectMessageLabel.isHidden = false
         self.disconnectButtonContainer.isHidden = false
     }
-    
+
+    private func renderAlert(alert: SettingsIdentityServerAlert, onContinue: @escaping () -> Void) {
+        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        
+        switch alert {
+        case .addActionAlert(.noTerms):
+            self.showAlert(title: VectorL10n.identityServerSettingsAlertNoTermsTitle,
+                           message: VectorL10n.identityServerSettingsAlertNoTerms,
+                           continueButtonTitle: VectorL10n.continue,
+                           cancelButtonTitle: VectorL10n.cancel,
+                           onContinue: onContinue)
+        }
+
+    }
+
     private func render(error: Error) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
 
-    func presentExistingIdentityServerDataAlert(with title: String) {
-        
+
+    // MARK: - Alert
+
+    private func showAlert(title: String, message: String, continueButtonTitle: String, cancelButtonTitle: String, onContinue: @escaping () -> Void) {
+        guard self.alertController == nil else {
+            return
+        }
+
+        let alertController = UIAlertController(title: title,
+                                                message: message,
+                                                preferredStyle: .alert)
+
+        alertController.addAction(UIAlertAction(title: cancelButtonTitle, style: .cancel, handler: { action in
+        }))
+
+        alertController.addAction(UIAlertAction(title: continueButtonTitle, style: .default, handler: { action in
+            onContinue()
+        }))
+
+        self.present(alertController, animated: true, completion: nil)
+        self.alertController = alertController
     }
-    
+
+    private func hideAlert(animated: Bool) {
+        self.alertController?.dismiss(animated: true, completion: nil)
+    }
+
+
     // MARK: - Actions
 
     @objc private func identityServerTextFieldDidChange(_ textField: UITextField) {

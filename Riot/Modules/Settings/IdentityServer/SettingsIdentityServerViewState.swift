@@ -22,10 +22,28 @@ import Foundation
 enum SettingsIdentityServerViewState {
     case loading
     case loaded(displayMode: SettingsIdentityServerDisplayMode)
+    case alert(alert: SettingsIdentityServerAlert, onContinue: () -> Void)
     case error(Error)
 }
 
 enum SettingsIdentityServerDisplayMode {
     case noIdentityServer
     case identityServer(host: String)
+}
+
+enum SettingsIdentityServerAlert {
+    case addActionAlert(AddActionAlert)
+    enum AddActionAlert {
+        case noTerms(newHost: String)
+    }
+
+//    enum ChangeActionAlert {
+//        case stillSharing3Pids(oldHost: String, newHost: String)
+//        case doubleConfirmation(oldHost: String, newHost: String)
+//        case noTerms(newHost: String)
+//    }
+//    enum DisconnectActionAlert {
+//        case stillSharing3Pids(oldHost: String)
+//        case doubleConfirmation(oldHost: String)
+//    }
 }

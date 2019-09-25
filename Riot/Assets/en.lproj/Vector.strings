@@ -526,13 +526,15 @@
 "identity_server_settings_disconnect_info" = "Disconnecting from your identity server will mean you won’t be discoverable by other users and  be able to invite others by email or phone.";
 "identity_server_settings_disconnect" = "Disconnect";
 
+"identity_server_settings_alert_no_terms_title" = "Identity server has no terms of services";
+"identity_server_settings_alert_no_terms" = "The identity server you have chosen does not have any terms of service. Only continue if you trust the owner of the server.";
+
+
 /* TODO
 "settings_discovery_enter_indentity_server" = "Enter a new identity server";
 "settings_discovery_bad_indentity_server" = "Could not connect to identity server";
 "settings_discovery_please_enter_server" = "Please enter server";
 
-"settings_discovery_no_terms_title" = "Identity server has no terms of services";
-"settings_discovery_no_terms" = "The identity server you have chosen does not have any terms of services. Only continue if you trust the owner of the string>
 
 "settings_discovery_disconnect_with_bound_pid" = "You are currently sharing email addresses or phone numbers on the identity server %@. You will need to reconnect to %s to stop sharing them.";
 */

@@ -1154,6 +1154,14 @@ internal enum VectorL10n {
   internal static var identityServerSettingsAdd: String { 
     return VectorL10n.tr("Vector", "identity_server_settings_add") 
   }
+  /// The identity server you have chosen does not have any terms of service. Only continue if you trust the owner of the server.
+  internal static var identityServerSettingsAlertNoTerms: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_alert_no_terms") 
+  }
+  /// Identity server has no terms of services
+  internal static var identityServerSettingsAlertNoTermsTitle: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_alert_no_terms_title") 
+  }
   /// Change
   internal static var identityServerSettingsChange: String { 
     return VectorL10n.tr("Vector", "identity_server_settings_change") 
