@@ -52,6 +52,9 @@ final class SettingsIdentityServerViewController: UIViewController {
 
     private weak var alertController: UIAlertController?
 
+    private var serviceTermsModalCoordinatorBridgePresenter: ServiceTermsModalCoordinatorBridgePresenter?
+    private var serviceTermsModalCoordinatorBridgePresenterOnComplete: ((Bool) -> Void)?
+
     // MARK: - Setup
     
     class func instantiate(with viewModel: SettingsIdentityServerViewModelType) -> SettingsIdentityServerViewController {
@@ -151,6 +154,8 @@ final class SettingsIdentityServerViewController: UIViewController {
             self.renderLoading()
         case .loaded(let displayMode):
             self.renderLoaded(displayMode: displayMode)
+        case .presentTerms(let session, let accessToken, let baseUrl, let onComplete):
+            self.presentTerms(session: session, accessToken: accessToken, baseUrl: baseUrl, onComplete: onComplete)
         case .alert(let alert, let onContinue):
             self.renderAlert(alert: alert, onContinue: onContinue)
         case .error(let error):
@@ -198,6 +203,27 @@ final class SettingsIdentityServerViewController: UIViewController {
 
         self.disconnectMessageLabel.isHidden = false
         self.disconnectButtonContainer.isHidden = false
+    }
+
+    private func presentTerms(session: MXSession, accessToken: String, baseUrl: String, onComplete: @escaping (Bool) -> Void) {
+        let serviceTermsModalCoordinatorBridgePresenter = ServiceTermsModalCoordinatorBridgePresenter(session: session, baseUrl: baseUrl, serviceType: MXServiceTypeIdentityService, accessToken: accessToken)
+
+        serviceTermsModalCoordinatorBridgePresenter.present(from: self, animated: true)
+        serviceTermsModalCoordinatorBridgePresenter.delegate = self
+
+        self.serviceTermsModalCoordinatorBridgePresenter = serviceTermsModalCoordinatorBridgePresenter
+        self.serviceTermsModalCoordinatorBridgePresenterOnComplete = onComplete
+    }
+
+    private func hideTerms(accepted: Bool) {
+        guard let serviceTermsModalCoordinatorBridgePresenterOnComplete = self.serviceTermsModalCoordinatorBridgePresenterOnComplete else {
+            return
+        }
+        self.serviceTermsModalCoordinatorBridgePresenter?.dismiss(animated: true, completion: nil)
+        self.serviceTermsModalCoordinatorBridgePresenter = nil
+
+        serviceTermsModalCoordinatorBridgePresenterOnComplete(accepted)
+        self.serviceTermsModalCoordinatorBridgePresenterOnComplete = nil
     }
 
     private func renderAlert(alert: SettingsIdentityServerAlert, onContinue: @escaping () -> Void) {
@@ -307,5 +333,15 @@ extension SettingsIdentityServerViewController: SettingsIdentityServerViewModelV
 fileprivate extension String {
     func hostname() -> String {
         return URL(string: self)?.host ?? self
+    }
+}
+
+extension SettingsIdentityServerViewController: ServiceTermsModalCoordinatorBridgePresenterDelegate {
+    func serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept(_ coordinatorBridgePresenter: ServiceTermsModalCoordinatorBridgePresenter) {
+        self.hideTerms(accepted: true)
+    }
+
+    func serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel(_ coordinatorBridgePresenter: ServiceTermsModalCoordinatorBridgePresenter) {
+         self.hideTerms(accepted: false)
     }
 }

@@ -41,8 +41,8 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
 
     private let session: MXSession
     
-    private var validationIdentityService: MXIdentityService?
-    private var validationServiceTerms: MXServiceTerms?
+    private var identityService: MXIdentityService?
+    private var serviceTerms: MXServiceTerms?
     
     // MARK: Public
 
@@ -80,6 +80,8 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
         self.update(viewState: .loading)
         
         self.checkIdentityServerValidity(identityServer: newIdentityServer) { (identityServerValidityResponse) in
+            print("[SettingsIdentityServerViewModel] addIdentityServer: \(newIdentityServer). Validity: \(identityServerValidityResponse)")
+
             switch identityServerValidityResponse {
             case .success(let identityServerValidity):
                 switch identityServerValidity {
@@ -92,14 +94,26 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
                     case .noTerms:
                         self.update(viewState: .alert(alert: SettingsIdentityServerAlert.addActionAlert(.noTerms(newHost: newIdentityServer)), onContinue: {
                             self.update(viewState: .loading)
-                            self.updateAccountDataAndRefreshViewState(with: newIdentityServer)
+                            self.updateIdentityServerAndRefreshViewState(with: newIdentityServer)
                         }))
                     case .terms(agreed: let termsAgreed):
                         if termsAgreed {
-                            self.updateAccountDataAndRefreshViewState(with: newIdentityServer)
+                            self.updateIdentityServerAndRefreshViewState(with: newIdentityServer)
                         } else {
+                            guard let accessToken = self.session.matrixRestClient.credentials.accessToken else {
+                                print("[SettingsIdentityServerViewModel] addIdentityServer: Error: No access token")
+                                self.update(viewState: .error(SettingsIdentityServerViewModelError.unknown))
+                                return
+                            }
+
                             // Present terms
-                            break
+                            self.update(viewState: .presentTerms(session: self.session, accessToken: accessToken, baseUrl: newIdentityServer, onComplete: { (areTermsAccepted) in
+                                if areTermsAccepted {
+                                    self.updateIdentityServerAndRefreshViewState(with: newIdentityServer)
+                                } else {
+                                    //TODO
+                                }
+                            }))
                         }
                     }
                 }
@@ -143,18 +157,24 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
 
         // TODO: Make a /account/logout request
 
-        self.updateAccountDataAndRefreshViewState(with: nil)
+        self.updateIdentityServerAndRefreshViewState(with: nil)
     }
     
-    private func updateAccountDataAndRefreshViewState(with identityServer: String?) {
-        // TODO: We should get a token in intermediate step
-        self.session.setIdentityServer(identityServer, andAccessToken: nil)
+    private func updateIdentityServerAndRefreshViewState(with identityServer: String?) {
+        self.accessToken(identityServer: identityServer) { (response) in
+            switch response {
+            case .success(let accessToken):
+                self.session.setIdentityServer(identityServer, andAccessToken: accessToken)
 
-        self.session.setAccountDataIdentityServer(identityServer, success: {
-            self.refreshIdentityServerViewState()
-        }, failure: { error in
-            self.update(viewState: .error(error ?? SettingsIdentityServerViewModelError.unknown))
-        })
+                self.session.setAccountDataIdentityServer(identityServer, success: {
+                    self.refreshIdentityServerViewState()
+                }, failure: { error in
+                    self.update(viewState: .error(error ?? SettingsIdentityServerViewModelError.unknown))
+                })
+            case .failure(let error):
+                self.update(viewState: .error(error))
+            }
+        }
     }
     
     private func refreshIdentityServerViewState() {
@@ -175,7 +195,7 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
                     completion(.success(false))
                 } else {
                     let mx3Pids = SettingsIdentityServerViewModel.threePids(from: thirdPartyIdentifiers)
-                    self.isThreThreePidsDiscoverable(mx3Pids, completion: { discoverable3pidsResponse in
+                    self.areThereThreePidsDiscoverable(mx3Pids, completion: { discoverable3pidsResponse in
                         switch discoverable3pidsResponse {
                         case .success(let isThereDiscoverable3pids):
                             completion(.success(isThereDiscoverable3pids))
@@ -189,9 +209,26 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
             }
         }
     }
+
+    private func accessToken(identityServer: String?, completion: @escaping (_ response: MXResponse<String?>) -> Void) {
+        guard let identityServer = identityServer, let identityServerURL = URL(string: identityServer) else {
+            completion(.success(nil))
+            return
+        }
+
+        let restClient: MXRestClient = self.session.matrixRestClient
+        let identityService = MXIdentityService(identityServer: identityServerURL, accessToken: nil, homeserverRestClient: restClient)
+
+        identityService.accessToken { (response) in
+            self.identityService = nil
+            completion(response)
+        }
+
+        self.identityService = identityService
+    }
     
     @discardableResult
-    private func isThreThreePidsDiscoverable(_ threePids: [MX3PID], completion: @escaping (_ response: MXResponse<Bool>) -> Void) -> MXHTTPOperation? {
+    private func areThereThreePidsDiscoverable(_ threePids: [MX3PID], completion: @escaping (_ response: MXResponse<Bool>) -> Void) -> MXHTTPOperation? {
         guard let identityService = self.session.identityService else {
             completion(.failure(SettingsIdentityServerViewModelError.missingIdentityServer))
             return nil
@@ -219,7 +256,7 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
 
         // First, check the server
         identityService.pingIdentityServer { response in
-            self.validationIdentityService = nil
+            self.identityService = nil
 
             switch response {
             case .success:
@@ -227,7 +264,7 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
                 let serviceTerms = MXServiceTerms(baseUrl: identityService.identityServer, serviceType: MXServiceTypeIdentityService, matrixSession: self.session, accessToken: nil)
 
                 serviceTerms.areAllTermsAgreed({ (agreedTermsProgress) in
-                    self.validationServiceTerms = nil
+                    self.serviceTerms = nil
 
                     if agreedTermsProgress.totalUnitCount == 0 {
                         completion(.success(IdentityServerValidity.valid(status: .noTerms)))
@@ -236,18 +273,18 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
                     }
 
                 }, failure: { (error) in
-                    self.validationServiceTerms = nil
+                    self.serviceTerms = nil
                     completion(.failure(error))
                 })
 
-                self.validationServiceTerms = serviceTerms
+                self.serviceTerms = serviceTerms
 
             case .failure(let error):
                 completion(.failure(error))
             }
         }
 
-        self.validationIdentityService = identityService
+        self.identityService = identityService
     }
     
     private func update(viewState: SettingsIdentityServerViewState) {

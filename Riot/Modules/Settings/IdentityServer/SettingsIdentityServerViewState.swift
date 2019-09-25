@@ -22,6 +22,7 @@ import Foundation
 enum SettingsIdentityServerViewState {
     case loading
     case loaded(displayMode: SettingsIdentityServerDisplayMode)
+    case presentTerms(session: MXSession, accessToken: String, baseUrl: String, onComplete: (Bool) -> Void)
     case alert(alert: SettingsIdentityServerAlert, onContinue: () -> Void)
     case error(Error)
 }
