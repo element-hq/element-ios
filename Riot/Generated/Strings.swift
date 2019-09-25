@@ -1174,6 +1174,10 @@ internal enum VectorL10n {
   internal static var identityServerSettingsAlertDisconnectTitle: String { 
     return VectorL10n.tr("Vector", "identity_server_settings_alert_disconnect_title") 
   }
+  /// You must accept terms of %@ to set it as identity server.
+  internal static func identityServerSettingsAlertErrorTermsNotAccepted(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "identity_server_settings_alert_error_terms_not_accepted", p1)
+  }
   /// The identity server you have chosen does not have any terms of service. Only continue if you trust the owner of the server.
   internal static var identityServerSettingsAlertNoTerms: String { 
     return VectorL10n.tr("Vector", "identity_server_settings_alert_no_terms") 

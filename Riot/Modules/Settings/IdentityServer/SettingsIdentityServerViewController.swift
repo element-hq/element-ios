@@ -237,6 +237,13 @@ final class SettingsIdentityServerViewController: UIViewController {
                            cancelButtonTitle: VectorL10n.cancel,
                            onContinue: onContinue)
 
+        case .addActionAlert(.termsNotAccepted(let newHost)):
+            self.showAlert(title: nil,
+                           message: VectorL10n.identityServerSettingsAlertErrorTermsNotAccepted(newHost.hostname()),
+                           continueButtonTitle: nil,
+                           cancelButtonTitle: VectorL10n.cancel,
+                           onContinue: onContinue)
+
         case .disconnectActionAlert(.stillSharing3Pids(let oldHost)):
             self.showAlert(title: VectorL10n.identityServerSettingsAlertDisconnectTitle,
                            message: VectorL10n.identityServerSettingsAlertDisconnectStillSharing3pid(oldHost.hostname()),
@@ -261,7 +268,7 @@ final class SettingsIdentityServerViewController: UIViewController {
 
     // MARK: - Alert
 
-    private func showAlert(title: String, message: String, continueButtonTitle: String, cancelButtonTitle: String, onContinue: @escaping () -> Void) {
+    private func showAlert(title: String?, message: String, continueButtonTitle: String?, cancelButtonTitle: String, onContinue: @escaping () -> Void) {
         guard self.alertController == nil else {
             return
         }
@@ -273,9 +280,11 @@ final class SettingsIdentityServerViewController: UIViewController {
         alertController.addAction(UIAlertAction(title: cancelButtonTitle, style: .cancel, handler: { action in
         }))
 
-        alertController.addAction(UIAlertAction(title: continueButtonTitle, style: .default, handler: { action in
-            onContinue()
-        }))
+        if let continueButtonTitle = continueButtonTitle {
+            alertController.addAction(UIAlertAction(title: continueButtonTitle, style: .default, handler: { action in
+                onContinue()
+            }))
+        }
 
         self.present(alertController, animated: true, completion: nil)
         self.alertController = alertController

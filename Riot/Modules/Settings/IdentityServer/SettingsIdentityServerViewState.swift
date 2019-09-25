@@ -39,6 +39,7 @@ enum SettingsIdentityServerAlert {
 
     enum AddActionAlert {
         case noTerms(newHost: String)
+        case termsNotAccepted(newHost: String)
     }
 
 //    enum ChangeActionAlert {

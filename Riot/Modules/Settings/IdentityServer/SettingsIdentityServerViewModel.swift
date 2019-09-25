@@ -111,7 +111,7 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
                                 if areTermsAccepted {
                                     self.updateIdentityServerAndRefreshViewState(with: newIdentityServer)
                                 } else {
-                                    //TODO
+                                    self.update(viewState: .alert(alert: SettingsIdentityServerAlert.addActionAlert(.termsNotAccepted(newHost: newIdentityServer)), onContinue: {}))
                                 }
                             }))
                         }

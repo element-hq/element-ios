@@ -535,6 +535,8 @@
 "identity_server_settings_alert_disconnect_still_sharing_3pid" = "You are still sharing your personal data on the identity server %@.\n\nWe recommend that you remove your email addresses and phone numbers from the identity server before disconnecting.";
 "identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "Disconnect anyway";
 
+"identity_server_settings_alert_error_terms_not_accepted" = "You must accept terms of %@ to set it as identity server.";
+
 /* TODO
 "settings_discovery_enter_indentity_server" = "Enter a new identity server";
 "settings_discovery_bad_indentity_server" = "Could not connect to identity server";
