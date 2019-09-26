@@ -190,6 +190,11 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
         self.session.matrixRestClient.thirdPartyIdentifiers { (thirdPartyIDresponse) in
             switch thirdPartyIDresponse {
             case .success(let thirdPartyIdentifiers):
+                guard let thirdPartyIdentifiers = thirdPartyIdentifiers else {
+                    completion(.success(false))
+                    return
+                }
+                
                 if thirdPartyIdentifiers.isEmpty {
                     completion(.success(false))
                 } else {
