@@ -141,7 +141,10 @@ final class SettingsIdentityServerViewController: UIViewController {
 
         self.identityServerLabel.text = VectorL10n.identityServerSettingsTitle
 
+        self.identityServerTextField.placeholder = VectorL10n.identityServerSettingsPlaceHolder
+        self.identityServerTextField.keyboardType = .URL
         self.identityServerTextField.addTarget(self, action: #selector(identityServerTextFieldDidChange(_:)), for: .editingChanged)
+        self.identityServerTextField.addTarget(self, action: #selector(identityServerTextFieldDidEndOnExit(_:)), for: .editingDidEndOnExit)
 
         self.disconnectMessageLabel.text = VectorL10n.identityServerSettingsDisconnectInfo
         self.disconnectButton.setTitle(VectorL10n.identityServerSettingsDisconnect, for: .normal)
@@ -181,8 +184,9 @@ final class SettingsIdentityServerViewController: UIViewController {
     }
 
     private func renderNoIdentityServer() {
+        self.identityServerTextField.text = nil
         self.messageLabel.text = VectorL10n.identityServerSettingsNoIsDescription
-        
+
         self.addOrChangeButton.setTitle(VectorL10n.identityServerSettingsAdd, for: .normal)
         self.addOrChangeButton.setTitle(VectorL10n.identityServerSettingsAdd, for: .highlighted)
 
@@ -191,10 +195,7 @@ final class SettingsIdentityServerViewController: UIViewController {
     }
 
     private func renderIdentityServer(host: String) {
-
         self.identityServerTextField.text = host
-        self.identityServerTextField.placeholder = RiotDefaults.identityserverurl
-
         self.messageLabel.text = VectorL10n.identityServerSettingsDescription(host.hostname())
 
         self.addOrChangeButton.setTitle(VectorL10n.identityServerSettingsChange, for: .normal)
@@ -309,7 +310,16 @@ final class SettingsIdentityServerViewController: UIViewController {
             && (textField.text?.hostname() != self.viewModel.identityServer?.hostname())
     }
 
+    @objc private func identityServerTextFieldDidEndOnExit(_ textField: UITextField) {
+        self.addOrChangeAction()
+    }
+
+
     @IBAction private func addOrChangeButtonAction(_ sender: Any) {
+        self.addOrChangeAction()
+    }
+
+    private func addOrChangeAction() {
         self.identityServerTextField.resignFirstResponder()
 
         guard let displayMode = self.displayMode, let identityServer = self.identityServerTextField.text else {

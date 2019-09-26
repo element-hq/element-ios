@@ -1210,6 +1210,10 @@ internal enum VectorL10n {
   internal static var identityServerSettingsNoIsDescription: String { 
     return VectorL10n.tr("Vector", "identity_server_settings_no_is_description") 
   }
+  /// Enter an identity server
+  internal static var identityServerSettingsPlaceHolder: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_place_holder") 
+  }
   /// Identity Server
   internal static var identityServerSettingsTitle: String { 
     return VectorL10n.tr("Vector", "identity_server_settings_title") 
