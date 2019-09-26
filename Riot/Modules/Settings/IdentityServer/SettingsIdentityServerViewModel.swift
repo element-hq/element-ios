@@ -115,20 +115,27 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
                         if termsAgreed {
                             canAddcompletion()
                         } else {
-                            guard let accessToken = self.session.matrixRestClient.credentials.accessToken else {
-                                print("[SettingsIdentityServerViewModel] checkCanAddIdentityServer: Error: No access token")
-                                viewStateUpdate(.error(SettingsIdentityServerViewModelError.unknown))
-                                return
-                            }
+                            self.accessToken(identityServer: newIdentityServer) { (response) in
+                                switch response {
+                                case .success(let accessToken):
+                                    guard let accessToken = accessToken else {
+                                        print("[SettingsIdentityServerViewModel] accessToken: Error: No access token")
+                                        viewStateUpdate(.error(SettingsIdentityServerViewModelError.unknown))
+                                        return
+                                    }
 
-                            // Present terms
-                            viewStateUpdate(.presentTerms(session: self.session, accessToken: accessToken, baseUrl: newIdentityServer, onComplete: { (areTermsAccepted) in
-                                if areTermsAccepted {
-                                    canAddcompletion()
-                                } else {
-                                    viewStateUpdate(.alert(alert: SettingsIdentityServerAlert.addActionAlert(.termsNotAccepted(newHost: newIdentityServer)), onContinue: {}))
+                                    // Present terms
+                                    viewStateUpdate(.presentTerms(session: self.session, accessToken: accessToken, baseUrl: newIdentityServer, onComplete: { (areTermsAccepted) in
+                                        if areTermsAccepted {
+                                            canAddcompletion()
+                                        } else {
+                                            viewStateUpdate(.alert(alert: SettingsIdentityServerAlert.addActionAlert(.termsNotAccepted(newHost: newIdentityServer)), onContinue: {}))
+                                        }
+                                    }))
+                                case .failure(let error):
+                                    self.update(viewState: .error(error))
                                 }
-                            }))
+                            }
                         }
                     }
                 }
