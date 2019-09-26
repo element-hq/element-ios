@@ -123,7 +123,77 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
     }
     
     private func changeIdentityServer(_ newIdentityServer: String) {
-        
+        guard let identityServer = self.identityServer else {
+            return
+        }
+
+        self.update(viewState: .loading)
+
+        let disconnect: () -> Void = {
+            self.checkExistingDataOnIdentityServer { (response) in
+                switch response {
+                case .success(let existingData):
+                    if existingData {
+                        self.update(viewState: .alert(alert: SettingsIdentityServerAlert.changeActionAlert(.stillSharing3Pids(oldHost: identityServer, newHost: newIdentityServer)), onContinue: {
+                            // TODO: Make a /account/logout request
+                            self.update(viewState: .loading)
+                            self.updateIdentityServerAndRefreshViewState(with: newIdentityServer)
+                        }))
+                    } else {
+                        self.update(viewState: .alert(alert: SettingsIdentityServerAlert.changeActionAlert(.doubleConfirmation(oldHost: identityServer, newHost: newIdentityServer)), onContinue: {
+                            // TODO: Make a /account/logout request
+                            self.update(viewState: .loading)
+                            self.updateIdentityServerAndRefreshViewState(with: newIdentityServer)
+                        }))
+                    }
+                case .failure(let error):
+                    self.update(viewState: .error(error))
+                }
+            }
+        }
+
+        // Start the flow like addIdentityServer() by verifying the new IS and its terms
+        // And finish like disconnect()
+        self.checkIdentityServerValidity(identityServer: newIdentityServer) { (identityServerValidityResponse) in
+            print("[SettingsIdentityServerViewModel] changeIdentityServer: \(newIdentityServer). Validity: \(identityServerValidityResponse)")
+
+            switch identityServerValidityResponse {
+            case .success(let identityServerValidity):
+                switch identityServerValidity {
+                case .invalid:
+                    // Present invalid IS alert
+                    self.update(viewState: .alert(alert: SettingsIdentityServerAlert.changeActionAlert(.invalidIdentityServer(newHost: newIdentityServer)), onContinue: {}))
+                case .valid(status: let termsStatus):
+                    switch termsStatus {
+                    case .noTerms:
+                        self.update(viewState: .alert(alert: SettingsIdentityServerAlert.changeActionAlert(.noTerms(newHost: newIdentityServer)), onContinue: {
+                            disconnect()
+                        }))
+                    case .terms(agreed: let termsAgreed):
+                        if termsAgreed {
+                            disconnect()
+                        } else {
+                            guard let accessToken = self.session.matrixRestClient.credentials.accessToken else {
+                                print("[SettingsIdentityServerViewModel] changeIdentityServer: Error: No access token")
+                                self.update(viewState: .error(SettingsIdentityServerViewModelError.unknown))
+                                return
+                            }
+
+                            // Present terms
+                            self.update(viewState: .presentTerms(session: self.session, accessToken: accessToken, baseUrl: newIdentityServer, onComplete: { (areTermsAccepted) in
+                                if areTermsAccepted {
+                                    disconnect()
+                                } else {
+                                    self.update(viewState: .alert(alert: SettingsIdentityServerAlert.changeActionAlert(.termsNotAccepted(newHost: newIdentityServer)), onContinue: {}))
+                                }
+                            }))
+                        }
+                    }
+                }
+            case .failure(let error):
+                self.update(viewState: .error(error))
+            }
+        }
     }
     
     private func disconnect() {

@@ -531,6 +531,9 @@
 "identity_server_settings_alert_no_terms_title" = "Identity server has no terms of services";
 "identity_server_settings_alert_no_terms" = "The identity server you have chosen does not have any terms of service. Only continue if you trust the owner of the server.";
 
+"identity_server_settings_alert_change_title" = "Change identity server";
+"identity_server_settings_alert_change" = "Disconnect from the identity server %1$@ and connect to %2$@ instead?";
+
 "identity_server_settings_alert_disconnect_title" = "Disconnect identity server";
 "identity_server_settings_alert_disconnect" = "Disconnect from the identity server %@?";
 "identity_server_settings_alert_disconnect_button" = "Disconnect";
@@ -539,12 +542,6 @@
 
 "identity_server_settings_alert_error_terms_not_accepted" = "You must accept terms of %@ to set it as identity server.";
 "identity_server_settings_alert_error_invalid_identity_server" = "%@ is not a valid identity server.";
-
-/* TODO
-"settings_discovery_disconnect_with_bound_pid" = "You are currently sharing email addresses or phone numbers on the identity server %@. You will need to reconnect to %s to stop sharing them.";
-*/
-
-
 
 
 // Room Details

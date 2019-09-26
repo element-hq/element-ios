@@ -1154,6 +1154,14 @@ internal enum VectorL10n {
   internal static var identityServerSettingsAdd: String { 
     return VectorL10n.tr("Vector", "identity_server_settings_add") 
   }
+  /// Disconnect from the identity server %1$@ and connect to %2$@ instead?
+  internal static func identityServerSettingsAlertChange(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "identity_server_settings_alert_change", p1, p2)
+  }
+  /// Change identity server
+  internal static var identityServerSettingsAlertChangeTitle: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_alert_change_title") 
+  }
   /// Disconnect from the identity server %@?
   internal static func identityServerSettingsAlertDisconnect(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "identity_server_settings_alert_disconnect", p1)

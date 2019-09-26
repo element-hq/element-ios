@@ -231,26 +231,45 @@ final class SettingsIdentityServerViewController: UIViewController {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         
         switch alert {
-        case .addActionAlert(.noTerms):
+        case .addActionAlert(.invalidIdentityServer(let newHost)),
+             .changeActionAlert(.invalidIdentityServer(let newHost)):
+            self.showAlert(title: nil,
+                           message: VectorL10n.identityServerSettingsAlertErrorInvalidIdentityServer(newHost),
+                           continueButtonTitle: nil,
+                           cancelButtonTitle: VectorL10n.cancel,
+                           onContinue: onContinue)
+
+        case .addActionAlert(.noTerms),
+             .changeActionAlert(.noTerms):
             self.showAlert(title: VectorL10n.identityServerSettingsAlertNoTermsTitle,
                            message: VectorL10n.identityServerSettingsAlertNoTerms,
                            continueButtonTitle: VectorL10n.continue,
                            cancelButtonTitle: VectorL10n.cancel,
                            onContinue: onContinue)
 
-        case .addActionAlert(.termsNotAccepted(let newHost)):
+        case .addActionAlert(.termsNotAccepted(let newHost)),
+             .changeActionAlert(.termsNotAccepted(let newHost)):
             self.showAlert(title: nil,
                            message: VectorL10n.identityServerSettingsAlertErrorTermsNotAccepted(newHost.hostname()),
                            continueButtonTitle: nil,
                            cancelButtonTitle: VectorL10n.cancel,
                            onContinue: onContinue)
 
-        case .addActionAlert(.invalidIdentityServer(let newHost)):
-            self.showAlert(title: nil,
-                           message: VectorL10n.identityServerSettingsAlertErrorInvalidIdentityServer(newHost),
-                           continueButtonTitle: nil,
+
+        case .changeActionAlert(.stillSharing3Pids(let oldHost, _)):
+            self.showAlert(title: VectorL10n.identityServerSettingsAlertChangeTitle,
+                           message: VectorL10n.identityServerSettingsAlertDisconnectStillSharing3pid(oldHost.hostname()),
+                           continueButtonTitle: VectorL10n.identityServerSettingsAlertDisconnectStillSharing3pidButton,
                            cancelButtonTitle: VectorL10n.cancel,
                            onContinue: onContinue)
+
+        case .changeActionAlert(.doubleConfirmation(let oldHost, let newHost)):
+            self.showAlert(title: VectorL10n.identityServerSettingsAlertChangeTitle,
+                           message: VectorL10n.identityServerSettingsAlertChange(oldHost.hostname(), newHost.hostname()),
+                           continueButtonTitle: VectorL10n.continue,
+                           cancelButtonTitle: VectorL10n.cancel,
+                           onContinue: onContinue)
+
 
         case .disconnectActionAlert(.stillSharing3Pids(let oldHost)):
             self.showAlert(title: VectorL10n.identityServerSettingsAlertDisconnectTitle,
