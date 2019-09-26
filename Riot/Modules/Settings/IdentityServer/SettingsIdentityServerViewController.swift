@@ -191,6 +191,7 @@ final class SettingsIdentityServerViewController: UIViewController {
 
         self.addOrChangeButton.setTitle(VectorL10n.identityServerSettingsAdd, for: .normal)
         self.addOrChangeButton.setTitle(VectorL10n.identityServerSettingsAdd, for: .highlighted)
+        self.addOrChangeButton.isEnabled = false
 
         self.disconnectMessageLabel.isHidden = true
         self.disconnectButtonContainer.isHidden = true
@@ -204,7 +205,7 @@ final class SettingsIdentityServerViewController: UIViewController {
 
         self.addOrChangeButton.setTitle(VectorL10n.identityServerSettingsChange, for: .normal)
         self.addOrChangeButton.setTitle(VectorL10n.identityServerSettingsChange, for: .highlighted)
-        self.addOrChangeButton.isUserInteractionEnabled = false
+        self.addOrChangeButton.isEnabled = false
 
         self.disconnectMessageLabel.isHidden = false
         self.disconnectButtonContainer.isHidden = false
@@ -329,7 +330,7 @@ final class SettingsIdentityServerViewController: UIViewController {
     // MARK: - Actions
 
     @objc private func identityServerTextFieldDidChange(_ textField: UITextField) {
-        self.addOrChangeButton.isUserInteractionEnabled = textField.text?.count ?? 0 > 0
+        self.addOrChangeButton.isEnabled = textField.text?.count ?? 0 > 0
             && (textField.text?.hostname() != self.viewModel.identityServer?.hostname())
     }
 
