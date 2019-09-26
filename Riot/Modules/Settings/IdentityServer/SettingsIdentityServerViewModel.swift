@@ -290,7 +290,9 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
                 }
 
                 if nsError.domain == MXIdentityServerRestClientErrorDomain
-                    || (nsError.domain == NSURLErrorDomain && nsError.code == NSURLErrorCannotFindHost) {
+                    || (nsError.domain == NSURLErrorDomain
+                        && (nsError.code == NSURLErrorCannotFindHost
+                            || nsError.code == NSURLErrorCancelled)) {
                     completion(.success(.invalid))
                 } else {
                     completion(.failure(error))
