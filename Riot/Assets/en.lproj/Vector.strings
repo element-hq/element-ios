@@ -536,13 +536,9 @@
 "identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "Disconnect anyway";
 
 "identity_server_settings_alert_error_terms_not_accepted" = "You must accept terms of %@ to set it as identity server.";
+"identity_server_settings_alert_error_invalid_identity_server" = "%@ is not a valid identity server.";
 
 /* TODO
-"settings_discovery_enter_indentity_server" = "Enter a new identity server";
-"settings_discovery_bad_indentity_server" = "Could not connect to identity server";
-"settings_discovery_please_enter_server" = "Please enter server";
-
-
 "settings_discovery_disconnect_with_bound_pid" = "You are currently sharing email addresses or phone numbers on the identity server %@. You will need to reconnect to %s to stop sharing them.";
 */
 

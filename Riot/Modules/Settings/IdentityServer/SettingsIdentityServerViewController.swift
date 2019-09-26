@@ -244,6 +244,13 @@ final class SettingsIdentityServerViewController: UIViewController {
                            cancelButtonTitle: VectorL10n.cancel,
                            onContinue: onContinue)
 
+        case .addActionAlert(.invalidIdentityServer(let newHost)):
+            self.showAlert(title: nil,
+                           message: VectorL10n.identityServerSettingsAlertErrorInvalidIdentityServer(newHost),
+                           continueButtonTitle: nil,
+                           cancelButtonTitle: VectorL10n.cancel,
+                           onContinue: onContinue)
+
         case .disconnectActionAlert(.stillSharing3Pids(let oldHost)):
             self.showAlert(title: VectorL10n.identityServerSettingsAlertDisconnectTitle,
                            message: VectorL10n.identityServerSettingsAlertDisconnectStillSharing3pid(oldHost.hostname()),
@@ -313,9 +320,9 @@ final class SettingsIdentityServerViewController: UIViewController {
         
         switch displayMode {
         case .noIdentityServer:
-            viewAction = .add(identityServer: identityServer)
+            viewAction = .add(identityServer: identityServer.makeURLValid())
         case .identityServer:
-            viewAction = .change(identityServer: identityServer)
+            viewAction = .change(identityServer: identityServer.makeURLValid())
         }
         
         if let viewAction = viewAction {
@@ -339,12 +346,8 @@ extension SettingsIdentityServerViewController: SettingsIdentityServerViewModelV
     }
 }
 
-fileprivate extension String {
-    func hostname() -> String {
-        return URL(string: self)?.host ?? self
-    }
-}
 
+// MARK: - ServiceTermsModalCoordinatorBridgePresenterDelegate
 extension SettingsIdentityServerViewController: ServiceTermsModalCoordinatorBridgePresenterDelegate {
     func serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept(_ coordinatorBridgePresenter: ServiceTermsModalCoordinatorBridgePresenter) {
         self.hideTerms(accepted: true)
@@ -352,5 +355,21 @@ extension SettingsIdentityServerViewController: ServiceTermsModalCoordinatorBrid
 
     func serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel(_ coordinatorBridgePresenter: ServiceTermsModalCoordinatorBridgePresenter) {
          self.hideTerms(accepted: false)
+    }
+}
+
+
+// MARK: - Private extension
+fileprivate extension String {
+    func hostname() -> String {
+        return URL(string: self)?.host ?? self
+    }
+
+    func makeURLValid() -> String {
+        if self.hasPrefix("http://") || self.hasPrefix("https://") {
+            return self
+        } else {
+            return "https://" + self
+        }
     }
 }

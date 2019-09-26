@@ -87,8 +87,7 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
                 switch identityServerValidity {
                 case .invalid:
                     // Present invalid IS alert
-                    // TODO but how to detect it?
-                    break
+                    self.update(viewState: .alert(alert: SettingsIdentityServerAlert.addActionAlert(.invalidIdentityServer(newHost: newIdentityServer)), onContinue: {}))
                 case .valid(status: let termsStatus):
                     switch termsStatus {
                     case .noTerms:
@@ -280,7 +279,17 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
                 self.serviceTerms = serviceTerms
 
             case .failure(let error):
-                completion(.failure(error))
+                guard let nsError = error as NSError? else {
+                    completion(.failure(error))
+                    return
+                }
+
+                if nsError.domain == MXIdentityServerRestClientErrorDomain
+                    || (nsError.domain == NSURLErrorDomain && nsError.code == NSURLErrorCannotFindHost) {
+                    completion(.success(.invalid))
+                } else {
+                    completion(.failure(error))
+                }
             }
         }
 
