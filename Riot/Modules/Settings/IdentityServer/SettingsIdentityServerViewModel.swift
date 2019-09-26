@@ -70,165 +70,184 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
         }
     }
     
-    // MARK: - Private
+    // MARK: - Private -
+    // MARK: - Actions
     
     private func load() {
         self.refreshIdentityServerViewState()
     }
-    
+
+
+    // MARK: Add IS
+
     private func addIdentityServer(_ newIdentityServer: String) {
-        self.update(viewState: .loading)
-        
+        self.checkCanAddIdentityServer(newIdentityServer: newIdentityServer,
+                                       viewStateUpdate: { (viewState) in
+                                        self.update(viewState: viewState)
+        },
+                                       canAddcompletion: {
+                                        self.updateIdentityServerAndRefreshViewState(with: newIdentityServer)
+        })
+    }
+
+    private func checkCanAddIdentityServer(newIdentityServer: String,
+                                           viewStateUpdate: @escaping (SettingsIdentityServerViewState) -> Void,
+                                           canAddcompletion: @escaping(() -> Void)) {
+        viewStateUpdate(.loading)
+
         self.checkIdentityServerValidity(identityServer: newIdentityServer) { (identityServerValidityResponse) in
-            print("[SettingsIdentityServerViewModel] addIdentityServer: \(newIdentityServer). Validity: \(identityServerValidityResponse)")
+            print("[SettingsIdentityServerViewModel] checkCanAddIdentityServer: \(newIdentityServer). Validity: \(identityServerValidityResponse)")
 
             switch identityServerValidityResponse {
             case .success(let identityServerValidity):
                 switch identityServerValidity {
                 case .invalid:
                     // Present invalid IS alert
-                    self.update(viewState: .alert(alert: SettingsIdentityServerAlert.addActionAlert(.invalidIdentityServer(newHost: newIdentityServer)), onContinue: {}))
+                    viewStateUpdate(.alert(alert: SettingsIdentityServerAlert.addActionAlert(.invalidIdentityServer(newHost: newIdentityServer)), onContinue: {}))
                 case .valid(status: let termsStatus):
                     switch termsStatus {
                     case .noTerms:
-                        self.update(viewState: .alert(alert: SettingsIdentityServerAlert.addActionAlert(.noTerms(newHost: newIdentityServer)), onContinue: {
-                            self.update(viewState: .loading)
-                            self.updateIdentityServerAndRefreshViewState(with: newIdentityServer)
+                        viewStateUpdate(.alert(alert: SettingsIdentityServerAlert.addActionAlert(.noTerms(newHost: newIdentityServer)), onContinue: {
+                            viewStateUpdate(.loading)
+                            canAddcompletion()
                         }))
                     case .terms(agreed: let termsAgreed):
                         if termsAgreed {
-                            self.updateIdentityServerAndRefreshViewState(with: newIdentityServer)
+                            canAddcompletion()
                         } else {
                             guard let accessToken = self.session.matrixRestClient.credentials.accessToken else {
-                                print("[SettingsIdentityServerViewModel] addIdentityServer: Error: No access token")
-                                self.update(viewState: .error(SettingsIdentityServerViewModelError.unknown))
+                                print("[SettingsIdentityServerViewModel] checkCanAddIdentityServer: Error: No access token")
+                                viewStateUpdate(.error(SettingsIdentityServerViewModelError.unknown))
                                 return
                             }
 
                             // Present terms
-                            self.update(viewState: .presentTerms(session: self.session, accessToken: accessToken, baseUrl: newIdentityServer, onComplete: { (areTermsAccepted) in
+                            viewStateUpdate(.presentTerms(session: self.session, accessToken: accessToken, baseUrl: newIdentityServer, onComplete: { (areTermsAccepted) in
                                 if areTermsAccepted {
-                                    self.updateIdentityServerAndRefreshViewState(with: newIdentityServer)
+                                    canAddcompletion()
                                 } else {
-                                    self.update(viewState: .alert(alert: SettingsIdentityServerAlert.addActionAlert(.termsNotAccepted(newHost: newIdentityServer)), onContinue: {}))
+                                    viewStateUpdate(.alert(alert: SettingsIdentityServerAlert.addActionAlert(.termsNotAccepted(newHost: newIdentityServer)), onContinue: {}))
                                 }
                             }))
                         }
                     }
                 }
             case .failure(let error):
-                self.update(viewState: .error(error))
+                viewStateUpdate(.error(error))
             }
         }
     }
+
+
+    // MARK: Change IS
     
     private func changeIdentityServer(_ newIdentityServer: String) {
         guard let identityServer = self.identityServer else {
             return
         }
 
-        self.update(viewState: .loading)
+        let viewStateUpdate: (SettingsIdentityServerViewState) -> Void = { (viewState) in
 
-        let disconnect: () -> Void = {
-            self.checkExistingDataOnIdentityServer { (response) in
-                switch response {
-                case .success(let existingData):
-                    if existingData {
-                        self.update(viewState: .alert(alert: SettingsIdentityServerAlert.changeActionAlert(.stillSharing3Pids(oldHost: identityServer, newHost: newIdentityServer)), onContinue: {
-                            // TODO: Make a /account/logout request
-                            self.update(viewState: .loading)
-                            self.updateIdentityServerAndRefreshViewState(with: newIdentityServer)
-                        }))
-                    } else {
-                        self.update(viewState: .alert(alert: SettingsIdentityServerAlert.changeActionAlert(.doubleConfirmation(oldHost: identityServer, newHost: newIdentityServer)), onContinue: {
-                            // TODO: Make a /account/logout request
-                            self.update(viewState: .loading)
-                            self.updateIdentityServerAndRefreshViewState(with: newIdentityServer)
-                        }))
-                    }
-                case .failure(let error):
-                    self.update(viewState: .error(error))
+            // Convert states for .addActionAlert and .disconnectActionAlert to
+            //.changeActionAlert
+            var changeViewState = viewState
+            switch viewState {
+            case .alert(let alert, let onContinue):
+                switch alert {
+                case .addActionAlert(.invalidIdentityServer(let newHost)):
+                    changeViewState = .alert(
+                        alert: SettingsIdentityServerAlert.changeActionAlert(.invalidIdentityServer(newHost: newHost)),
+                        onContinue: onContinue)
+                case .addActionAlert(.noTerms(let newHost)):
+                    changeViewState = .alert(
+                        alert: SettingsIdentityServerAlert.changeActionAlert(.noTerms(newHost: newHost)),
+                        onContinue: onContinue)
+                case .addActionAlert(.termsNotAccepted(let newHost)):
+                    changeViewState = .alert(
+                        alert: SettingsIdentityServerAlert.changeActionAlert(.termsNotAccepted(newHost: newHost)),
+                        onContinue: onContinue)
+
+                case .disconnectActionAlert(.stillSharing3Pids(let oldHost)):
+                    changeViewState = .alert(
+                        alert: SettingsIdentityServerAlert.changeActionAlert(.stillSharing3Pids(oldHost: oldHost, newHost: newIdentityServer)),
+                        onContinue: onContinue)
+                case .disconnectActionAlert(.doubleConfirmation(let oldHost)):
+                    changeViewState = .alert(
+                        alert: SettingsIdentityServerAlert.changeActionAlert(.doubleConfirmation(oldHost: oldHost, newHost: newIdentityServer)),
+                        onContinue: onContinue)
+                default:
+                    break
                 }
+            default:
+                break
             }
+
+            self.update(viewState: changeViewState)
         }
 
-        // Start the flow like addIdentityServer() by verifying the new IS and its terms
-        // And finish like disconnect()
-        self.checkIdentityServerValidity(identityServer: newIdentityServer) { (identityServerValidityResponse) in
-            print("[SettingsIdentityServerViewModel] changeIdentityServer: \(newIdentityServer). Validity: \(identityServerValidityResponse)")
-
-            switch identityServerValidityResponse {
-            case .success(let identityServerValidity):
-                switch identityServerValidity {
-                case .invalid:
-                    // Present invalid IS alert
-                    self.update(viewState: .alert(alert: SettingsIdentityServerAlert.changeActionAlert(.invalidIdentityServer(newHost: newIdentityServer)), onContinue: {}))
-                case .valid(status: let termsStatus):
-                    switch termsStatus {
-                    case .noTerms:
-                        self.update(viewState: .alert(alert: SettingsIdentityServerAlert.changeActionAlert(.noTerms(newHost: newIdentityServer)), onContinue: {
-                            disconnect()
-                        }))
-                    case .terms(agreed: let termsAgreed):
-                        if termsAgreed {
-                            disconnect()
-                        } else {
-                            guard let accessToken = self.session.matrixRestClient.credentials.accessToken else {
-                                print("[SettingsIdentityServerViewModel] changeIdentityServer: Error: No access token")
-                                self.update(viewState: .error(SettingsIdentityServerViewModelError.unknown))
-                                return
-                            }
-
-                            // Present terms
-                            self.update(viewState: .presentTerms(session: self.session, accessToken: accessToken, baseUrl: newIdentityServer, onComplete: { (areTermsAccepted) in
-                                if areTermsAccepted {
-                                    disconnect()
-                                } else {
-                                    self.update(viewState: .alert(alert: SettingsIdentityServerAlert.changeActionAlert(.termsNotAccepted(newHost: newIdentityServer)), onContinue: {}))
-                                }
-                            }))
-                        }
-                    }
-                }
-            case .failure(let error):
-                self.update(viewState: .error(error))
-            }
+        self.checkCanAddIdentityServer(newIdentityServer: newIdentityServer, viewStateUpdate: viewStateUpdate) {
+            self.checkCanDisconnectIdentityServer(identityServer: identityServer, viewStateUpdate: viewStateUpdate, canDisconnectCompletion: {
+                self.update(viewState: .loading)
+                self.disconnectIdentityServer(refreshViewState: false)
+                self.updateIdentityServerAndRefreshViewState(with: newIdentityServer)
+            })
         }
     }
+
+
+    // MARK: Disconnect IS
     
     private func disconnect() {
         guard let identityServer = self.identityServer else {
             return
         }
 
+        self.checkCanDisconnectIdentityServer(identityServer: identityServer,
+                                              viewStateUpdate: { (viewState) in
+                                                self.update(viewState: viewState)
+        },
+                                              canDisconnectCompletion: {
+                                                self.update(viewState: .loading)
+                                                self.disconnectIdentityServer()
+        })
+    }
+
+    private func disconnectIdentityServer(refreshViewState: Bool = true) {
+        // TODO: Make a /account/logout request
+
+        if refreshViewState {
+            self.updateIdentityServerAndRefreshViewState(with: nil)
+        }
+    }
+
+    private func checkCanDisconnectIdentityServer(identityServer: String,
+                                                  viewStateUpdate: @escaping (SettingsIdentityServerViewState) -> Void,
+                                                  canDisconnectCompletion: @escaping(() -> Void)) {
         self.update(viewState: .loading)
 
         self.checkExistingDataOnIdentityServer { (response) in
             switch response {
             case .success(let existingData):
                 if existingData {
-                    self.update(viewState: .alert(alert: SettingsIdentityServerAlert.disconnectActionAlert(.stillSharing3Pids(oldHost: identityServer)), onContinue: {
-                        self.disconnect2()
-                    }))
+                    viewStateUpdate(.alert(alert: SettingsIdentityServerAlert.disconnectActionAlert(.stillSharing3Pids(oldHost: identityServer)),
+                                           onContinue: canDisconnectCompletion))
                 } else {
-                    self.update(viewState: .alert(alert: SettingsIdentityServerAlert.disconnectActionAlert(.doubleConfirmation(oldHost: identityServer)), onContinue: {
-                        self.disconnect2()
-                    }))
+                    viewStateUpdate(.alert(alert: SettingsIdentityServerAlert.disconnectActionAlert(.doubleConfirmation(oldHost: identityServer)),
+                                           onContinue: canDisconnectCompletion))
                 }
             case .failure(let error):
-                self.update(viewState: .error(error))
+                viewStateUpdate( .error(error))
             }
         }
     }
 
-    private func disconnect2() {
-        self.update(viewState: .loading)
 
-        // TODO: Make a /account/logout request
+    // MARK: - Model update
 
-        self.updateIdentityServerAndRefreshViewState(with: nil)
+    private func update(viewState: SettingsIdentityServerViewState) {
+        self.viewDelegate?.settingsIdentityServerViewModel(self, didUpdateViewState: viewState)
     }
-    
+
     private func updateIdentityServerAndRefreshViewState(with identityServer: String?) {
         self.accessToken(identityServer: identityServer) { (response) in
             switch response {
@@ -255,6 +274,9 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
             self.update(viewState: .loaded(displayMode: .noIdentityServer))
         }
     }
+
+
+    // MARK: - Helpers
     
     private func checkExistingDataOnIdentityServer(completion: @escaping (_ response: MXResponse<Bool>) -> Void) {
         self.session.matrixRestClient.thirdPartyIdentifiers { (thirdPartyIDresponse) in
@@ -371,10 +393,6 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
         }
 
         self.identityService = identityService
-    }
-    
-    private func update(viewState: SettingsIdentityServerViewState) {
-        self.viewDelegate?.settingsIdentityServerViewModel(self, didUpdateViewState: viewState)
     }
     
     private class func threePids(from thirdPartyIdentifiers: [MXThirdPartyIdentifier]) -> [MX3PID] {

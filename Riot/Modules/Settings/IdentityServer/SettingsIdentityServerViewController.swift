@@ -184,6 +184,8 @@ final class SettingsIdentityServerViewController: UIViewController {
     }
 
     private func renderNoIdentityServer() {
+        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+
         self.identityServerTextField.text = nil
         self.messageLabel.text = VectorL10n.identityServerSettingsNoIsDescription
 
@@ -195,6 +197,8 @@ final class SettingsIdentityServerViewController: UIViewController {
     }
 
     private func renderIdentityServer(host: String) {
+        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+
         self.identityServerTextField.text = host
         self.messageLabel.text = VectorL10n.identityServerSettingsDescription(host.hostname())
 

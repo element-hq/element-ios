@@ -32,6 +32,8 @@ enum SettingsIdentityServerDisplayMode {
     case identityServer(host: String)
 }
 
+/// Alerts that can be presented when the user triggered an action among SettingsIdentityServerViewAction.
+/// These alerts allow interaction with the user to complete the action flow.
 enum SettingsIdentityServerAlert {
     case addActionAlert(AddActionAlert)
     case changeActionAlert(ChangeActionAlert)
