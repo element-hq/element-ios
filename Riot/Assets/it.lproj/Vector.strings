@@ -808,3 +808,17 @@
 "reaction_history_title" = "Reazioni";
 // Errors
 "error_user_already_logged_in" = "Sembra tu stia tentando di connetterti ad un altro Homeserver. Vuoi disconnetterti?";
+"room_accessiblity_scroll_to_bottom" = "Scorri in fondo";
+"room_accessibility_search" = "Cerca";
+"room_accessibility_integrations" = "Integrazioni";
+"room_accessibility_upload" = "Invia";
+"room_accessibility_call" = "Chiama";
+"room_accessibility_hangup" = "Riaggancia";
+"media_type_accessibility_image" = "Immagine";
+"media_type_accessibility_audio" = "Audio";
+"media_type_accessibility_video" = "Video";
+"media_type_accessibility_location" = "Posizione";
+"media_type_accessibility_file" = "File";
+"media_type_accessibility_sticker" = "Adesivo";
+// Widget Picker
+"widget_picker_title" = "Integrazioni";
