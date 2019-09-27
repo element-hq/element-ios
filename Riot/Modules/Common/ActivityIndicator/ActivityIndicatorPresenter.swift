@@ -41,6 +41,13 @@ final class ActivityIndicatorPresenter: ActivityIndicatorPresenterType {
     // MARK: - Public
     
     func presentActivityIndicator(on view: UIView, animated: Bool, completion: (() -> Void)? = nil) {
+        if self.presentingView != nil {
+            if let completion = completion {
+                completion()
+            }
+            return
+        }
+
         self.presentingView = view
         
         view.isUserInteractionEnabled = false
@@ -89,6 +96,7 @@ final class ActivityIndicatorPresenter: ActivityIndicatorPresenterType {
         }
         
         presentingView.isUserInteractionEnabled = true
+        self.presentingView = nil
         
         let animationInstructions = {
             activityIndicatorView.alpha = 0

@@ -101,8 +101,8 @@ import Foundation
         
         self.update(viewState: .loading)
         
-        serviceTerms.areAllTermsAgreed({ (areAllTermsAgreed) in
-            if areAllTermsAgreed {
+        serviceTerms.areAllTermsAgreed({ (agreedTermsProgress) in
+            if agreedTermsProgress.isFinished || agreedTermsProgress.totalUnitCount == 0 {
                 // Display three pids if presents
                 self.updateViewStateFromCurrentThreePids()
             } else {

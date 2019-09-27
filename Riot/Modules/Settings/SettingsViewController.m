@@ -54,9 +54,10 @@ enum
     SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX,
     SETTINGS_SECTION_CALLS_INDEX,
     SETTINGS_SECTION_DISCOVERY_INDEX,
-    SETTINGS_SECTION_USER_INTERFACE_INDEX,
-    SETTINGS_SECTION_IGNORED_USERS_INDEX,
+    SETTINGS_SECTION_IDENTITY_SERVER_INDEX,
     SETTINGS_SECTION_CONTACTS_INDEX,
+    SETTINGS_SECTION_IGNORED_USERS_INDEX,
+    SETTINGS_SECTION_USER_INTERFACE_INDEX,
     SETTINGS_SECTION_ADVANCED_INDEX,
     SETTINGS_SECTION_OTHER_INDEX,
     SETTINGS_SECTION_LABS_INDEX,
@@ -98,6 +99,13 @@ enum
     USER_INTERFACE_LANGUAGE_INDEX = 0,
     USER_INTERFACE_THEME_INDEX,
     USER_INTERFACE_COUNT
+};
+
+enum
+{
+    IDENTITY_SERVER_INDEX,
+    IDENTITY_SERVER_DESCRIPTION_INDEX,
+    IDENTITY_SERVER_COUNT
 };
 
 enum
@@ -148,7 +156,8 @@ KeyBackupSetupCoordinatorBridgePresenterDelegate,
 KeyBackupRecoverCoordinatorBridgePresenterDelegate,
 SignOutAlertPresenterDelegate,
 SingleImagePickerPresenterDelegate,
-SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinatorDelegate>
+SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinatorDelegate,
+SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
@@ -242,6 +251,8 @@ SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinator
     SettingsKeyBackupTableViewSection *keyBackupSection;
     KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
     KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter;
+
+    SettingsIdentityServerCoordinatorBridgePresenter *identityServerSettingsCoordinatorBridgePresenter;
 }
 
 /**
@@ -449,6 +460,7 @@ SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinator
 
     keyBackupSetupCoordinatorBridgePresenter = nil;
     keyBackupRecoverCoordinatorBridgePresenter = nil;
+    identityServerSettingsCoordinatorBridgePresenter = nil;
 }
 
 - (void)onMatrixSessionStateDidChange:(NSNotification *)notif
@@ -690,7 +702,7 @@ SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinator
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"account_email_validation_title"] message:message preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
                                                 
@@ -800,7 +812,7 @@ SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinator
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"account_msisdn_validation_title"] message:message preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -1303,6 +1315,10 @@ SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinator
     else if (section == SETTINGS_SECTION_DISCOVERY_INDEX)
     {
         count = self.settingsDiscoveryTableViewSection.numberOfRows;
+    }
+    else if (section == SETTINGS_SECTION_IDENTITY_SERVER_INDEX)
+    {
+        count = IDENTITY_SERVER_COUNT;
     }
     else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
     {
@@ -1927,6 +1943,50 @@ SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinator
     {
         cell = [self.settingsDiscoveryTableViewSection cellForRowAtRow:row];
     }
+    else if (section == SETTINGS_SECTION_IDENTITY_SERVER_INDEX)
+    {
+        switch (row)
+        {
+            case IDENTITY_SERVER_INDEX:
+            {
+                MXKTableViewCell *isCell = [self getDefaultTableViewCell:tableView];
+
+                if (account.mxSession.identityService.identityServer)
+                {
+                    isCell.textLabel.text = account.mxSession.identityService.identityServer;
+                }
+                else
+                {
+                    isCell.textLabel.text = NSLocalizedStringFromTable(@"settings_identity_server_no_is", @"Vector", nil);
+                }
+                isCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                cell = isCell;
+                break;
+            }
+
+            case IDENTITY_SERVER_DESCRIPTION_INDEX:
+            {
+                MXKTableViewCell *descriptionCell = [self getDefaultTableViewCell:tableView];
+
+                if (account.mxSession.identityService.identityServer)
+                {
+                    descriptionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_identity_server_description", @"Vector", nil);
+                }
+                else
+                {
+                    descriptionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_identity_server_no_is_description", @"Vector", nil);
+                }
+                descriptionCell.textLabel.numberOfLines = 0;
+                descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+                cell = descriptionCell;
+                break;
+            }
+
+            default:
+                break;
+        }
+    }
     else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
     {
         if (row == USER_INTERFACE_LANGUAGE_INDEX)
@@ -2430,6 +2490,10 @@ SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinator
     {
         return NSLocalizedStringFromTable(@"settings_discovery_settings", @"Vector", nil);
     }
+    else if (section == SETTINGS_SECTION_IDENTITY_SERVER_INDEX)
+    {
+        return NSLocalizedStringFromTable(@"settings_identity_server_settings", @"Vector", nil);
+    }
     else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
     {
         return NSLocalizedStringFromTable(@"settings_user_interface", @"Vector", nil);
@@ -2671,6 +2735,15 @@ SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinator
         else if (section == SETTINGS_SECTION_DISCOVERY_INDEX)
         {
             [self.settingsDiscoveryTableViewSection selectRow:indexPath.row];
+        }
+        else if (section == SETTINGS_SECTION_IDENTITY_SERVER_INDEX)
+        {
+            switch (row)
+            {
+                case IDENTITY_SERVER_INDEX:
+                    [self showIdentityServerSettingsScreen];
+                    break;
+            }
         }
         else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
         {
@@ -3584,7 +3657,7 @@ SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinator
         
         currentAlert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -4691,6 +4764,25 @@ SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinator
 {
     NSIndexPath *discoveryIndexPath = [NSIndexPath indexPathForRow:userSettingsNewEmailIndex inSection:SETTINGS_SECTION_USER_SETTINGS_INDEX];
     [self.tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+}
+
+
+#pragma mark - Identity Server
+
+- (void)showIdentityServerSettingsScreen
+{
+    identityServerSettingsCoordinatorBridgePresenter = [[SettingsIdentityServerCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+
+    [identityServerSettingsCoordinatorBridgePresenter pushFrom:self.navigationController animated:YES popCompletion:nil];
+    identityServerSettingsCoordinatorBridgePresenter.delegate = self;
+}
+
+#pragma mark - SettingsIdentityServerCoordinatorBridgePresenterDelegate
+
+- (void)settingsIdentityServerCoordinatorBridgePresenterDelegateDidComplete:(SettingsIdentityServerCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    identityServerSettingsCoordinatorBridgePresenter = nil;
+    [self refreshSettings];
 }
 
 @end
