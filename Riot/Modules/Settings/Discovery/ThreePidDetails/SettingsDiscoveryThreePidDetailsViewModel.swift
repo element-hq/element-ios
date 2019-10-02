@@ -97,6 +97,14 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
     }
     
     private func share() {
+        self.bind(bind: true)
+    }
+
+    private func revoke() {
+        self.bind(bind: false)
+    }
+
+    private func bind(bind: Bool) {
         self.update(viewState: .loading)
 
         let completion: ((MXResponse<Void>) -> Void) = { (response) in
@@ -113,19 +121,15 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
 
         switch self.threePid.medium {
         case .email:
-            self.currentThreePidAddSession = self.threePidAddManager.startBindEmailSession(self.threePid.address, completion: completion)
+            self.currentThreePidAddSession = self.threePidAddManager.startIdentityServerSession(withEmail: self.threePid.address, bind: bind, completion: completion)
         case .msisdn:
             let formattedPhoneNumber = self.formattedPhoneNumber(from: threePid.address)
-            self.currentThreePidAddSession = self.threePidAddManager.startBindPhoneNumberSession(formattedPhoneNumber, countryCode: nil, completion: completion)
+            self.currentThreePidAddSession = self.threePidAddManager.startIdentityServerSession(withPhoneNumber: formattedPhoneNumber, countryCode: nil, bind: bind, completion: completion)
         default:
             break
         }
     }
-    
-    private func revoke() {
-    // TODO
-//        self.requestToken(for: self.threePid, bind: false)
-    }
+
     
     @discardableResult
     private func isThreePidDiscoverable(_ threePid: MX3PID, completion: @escaping (_ response: MXResponse<Bool>) -> Void) -> MXHTTPOperation? {
@@ -170,7 +174,7 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
         }
         self.update(viewState: .loading)
 
-        self.threePidAddManager.tryFinaliseBindEmailSession(threePidAddSession) { response in
+        self.threePidAddManager.tryFinaliseIdentityServerEmailSession(threePidAddSession) { response in
             switch response {
             case .success:
 
@@ -229,7 +233,7 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
         }
         self.update(viewState: .loading)
 
-        self.threePidAddManager.tryFinaliseBindPhoneNumberSession(threePidAddSession, token: activationCode) { (response) in
+        self.threePidAddManager.finaliseIdentityServerPhoneNumberSession(threePidAddSession, token: activationCode) { (response) in
             switch response {
             case .success:
                 self.checkThreePidDiscoverability()
