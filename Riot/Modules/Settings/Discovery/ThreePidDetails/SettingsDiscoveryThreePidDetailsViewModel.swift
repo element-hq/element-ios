@@ -156,8 +156,11 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
             self.unregisterEmailValidationNotification()
         }
 
-        // TODO: cancel
-        self.currentThreePidAddSession = nil
+        if let currentThreePidAddSession = self.currentThreePidAddSession {
+            self.threePidAddManager.cancel(session: currentThreePidAddSession)
+            self.currentThreePidAddSession = nil
+        }
+
         self.checkThreePidDiscoverability()
     }
     
