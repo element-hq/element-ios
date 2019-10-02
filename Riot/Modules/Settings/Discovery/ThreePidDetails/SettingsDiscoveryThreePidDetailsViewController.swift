@@ -220,7 +220,9 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
     
     private func render(error: Error) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: {
+            self.viewModel.process(viewAction: .cancelThreePidValidation)
+        })
         self.operationButton.isEnabled = true
     }
     
