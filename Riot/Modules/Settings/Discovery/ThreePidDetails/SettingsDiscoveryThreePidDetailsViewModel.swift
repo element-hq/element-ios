@@ -107,13 +107,19 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
     private func bind(bind: Bool) {
         self.update(viewState: .loading)
 
-        let completion: ((MXResponse<Void>) -> Void) = { (response) in
+        let completion: ((MXResponse<Bool>) -> Void) = { (response) in
             switch response {
-            case .success:
-                self.update(viewState: .loaded(displayMode: .pendingThreePidVerification))
-                if case .email = self.threePid.medium {
-                    self.registerEmailValidationNotification()
+            case .success(let needValidation):
+                if needValidation {
+                    self.update(viewState: .loaded(displayMode: .pendingThreePidVerification))
+
+                    if case .email = self.threePid.medium {
+                        self.registerEmailValidationNotification()
+                    }
+                } else {
+                    self.checkThreePidDiscoverability()
                 }
+
             case .failure(let error):
                 self.update(viewState: .error(error))
             }
