@@ -994,16 +994,14 @@ internal enum VectorL10n {
   internal static var encryptedRoomMessageReplyToPlaceholder: String { 
     return VectorL10n.tr("Vector", "encrypted_room_message_reply_to_placeholder") 
   }
-
   /// Add an identity server in your settings to invite by email.
   internal static var errorInvite3pidWithNoIdentityServer: String { 
     return VectorL10n.tr("Vector", "error_invite_3pid_with_no_identity_server") 
-
+  }
   /// It looks like you’re trying to connect to another homeserver. Do you want to sign out?
   internal static var errorUserAlreadyLoggedIn: String { 
-    return VectorL10n.tr("Vector", "error_user_already_logged_in")
+    return VectorL10n.tr("Vector", "error_user_already_logged_in") 
   }
-    
   /// VoIP conference added by %@
   internal static func eventFormatterJitsiWidgetAdded(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_jitsi_widget_added", p1)
@@ -2284,9 +2282,9 @@ internal enum VectorL10n {
   internal static var roomParticipantsRemovePromptTitle: String { 
     return VectorL10n.tr("Vector", "room_participants_remove_prompt_title") 
   }
-  /// Remove third-party invite is not supported yet until the api exists
-  internal static var roomParticipantsRemoveThirdPartyInviteMsg: String { 
-    return VectorL10n.tr("Vector", "room_participants_remove_third_party_invite_msg") 
+  /// Are you sure you want to revoke this invite?
+  internal static var roomParticipantsRemoveThirdPartyInvitePromptMsg: String { 
+    return VectorL10n.tr("Vector", "room_participants_remove_third_party_invite_prompt_msg") 
   }
   /// No identity server is configured so you cannot start a chat with a contact using an email.
   internal static var roomParticipantsStartNewChatErrorUsingUserEmailWithoutIdentityServer: String { 
