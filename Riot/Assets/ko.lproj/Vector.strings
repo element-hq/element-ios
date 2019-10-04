@@ -826,3 +826,4 @@
 "auth_email_is_required" = "설정된 ID 서버가 없어서 이후 비밀번호를 초기화할 이메일 주소를 추가할 수 없습니다.";
 "auth_phone_is_required" = "설정된 ID 서버가 없어서 이후 비밀번호를 초기화할 전화번호를 추가할 수 없습니다.";
 "auth_reset_password_error_is_required" = "설정된 ID 서버가 없음: 비밀번호를 초기화하려면 서버 설정에서 하나를 추가하세요.";
+"contacts_address_book_no_identity_server" = "설정된 ID 서버 없음";
