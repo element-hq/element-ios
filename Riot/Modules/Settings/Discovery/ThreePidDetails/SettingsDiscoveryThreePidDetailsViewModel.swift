@@ -34,9 +34,11 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
     
     // MARK: Private
 
-    private let session: MXSession
     private var viewState: SettingsDiscoveryThreePidDetailsViewState?
-    private var currentThreePidRequestTokenInfo: ThreePidRequestTokenInfo?
+
+    private let threePidAddManager: MX3PidAddManager
+    private let identityService: MXIdentityService?
+    private var currentThreePidAddSession: MX3PidAddSession?
     
     // MARK: Public
 
@@ -47,7 +49,8 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
     // MARK: - Setup
     
     init(session: MXSession, threePid: MX3PID) {
-        self.session = session
+        self.threePidAddManager = session.threePidAddManager
+        self.identityService = session.identityService
         self.threePid = threePid
     }
     
@@ -94,78 +97,49 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
     }
     
     private func share() {
-        self.requestToken(for: self.threePid, bind: true)
+        self.bind(bind: true)
     }
-    
+
     private func revoke() {
-        self.requestToken(for: self.threePid, bind: false)
+        self.bind(bind: false)
     }
-    
-    private func requestToken(for threePid: MX3PID, bind: Bool, useOlderHomeserver: Bool = false) {
-        guard let restClient = self.session.matrixRestClient,
-            let clientSecret = MXTools.generateSecret() else {
-            return
-        }
-        
-        let requestThreePidToken: (() -> Void) = {
-            
-            switch self.threePid.medium {
-            case .email:
-                restClient.requestToken(forEmail: threePid.address, isDuringRegistration: false, clientSecret: clientSecret, sendAttempt: 1, nextLink: nil, success: { (sid) in
-                    if let sid = sid {
-                        self.currentThreePidRequestTokenInfo = ThreePidRequestTokenInfo(clientSecret: clientSecret, sid: sid, bind: bind)
-                        self.update(viewState: .loaded(displayMode: .pendingThreePidVerification))
-                        self.registerEmailValidationNotification()
-                    } else {
-                        self.update(viewState: .error(SettingsDiscoveryThreePidDetailsViewModelError.unknown))
-                    }
-                }, failure: { error in
-                    if let mxError = MXError(nsError: error), mxError.errcode == kMXErrCodeStringThreePIDInUse, useOlderHomeserver == false {
-                        self.requestToken(for: threePid, bind: bind, useOlderHomeserver: true)
-                    } else {
-                        self.update(viewState: .error(error ?? SettingsDiscoveryThreePidDetailsViewModelError.unknown))
-                    }
-                })
-            case .msisdn:
-                let formattedPhoneNumber = self.formattedPhoneNumber(from: threePid.address)
-                restClient.requestToken(forPhoneNumber: formattedPhoneNumber, isDuringRegistration: false, countryCode: nil, clientSecret: clientSecret, sendAttempt: 1, nextLink: nil, success: { (sid, msisdn) in
-                    if let sid = sid {
-                        self.currentThreePidRequestTokenInfo = ThreePidRequestTokenInfo(clientSecret: clientSecret, sid: sid, bind: bind)
-                        self.update(viewState: .loaded(displayMode: .pendingThreePidVerification))
-                    } else {
-                        self.update(viewState: .error(SettingsDiscoveryThreePidDetailsViewModelError.unknown))
-                    }
-                }, failure: { error in
-                    if let mxError = MXError(nsError: error), mxError.errcode == kMXErrCodeStringThreePIDInUse, useOlderHomeserver == false {
-                        self.requestToken(for: threePid, bind: bind, useOlderHomeserver: true)
-                    } else {
-                        self.update(viewState: .error(error ?? SettingsDiscoveryThreePidDetailsViewModelError.unknown))
-                    }
-                })
-            default:
-                break
-            }
-        }
-        
+
+    private func bind(bind: Bool) {
         self.update(viewState: .loading)
-        
-        if useOlderHomeserver {
-            restClient.remove3PID(address: threePid.address, medium: threePid.medium.identifier) { (response) in
-                switch response {
-                case .success:
-                    requestThreePidToken()
-                case .failure(let error):
-                    self.update(viewState: .error(error))
+
+        let completion: ((MXResponse<Bool>) -> Void) = { (response) in
+            switch response {
+            case .success(let needValidation):
+                if needValidation {
+                    self.update(viewState: .loaded(displayMode: .pendingThreePidVerification))
+
+                    if case .email = self.threePid.medium {
+                        self.registerEmailValidationNotification()
+                    }
+                } else {
+                    self.checkThreePidDiscoverability()
                 }
+
+            case .failure(let error):
+                self.update(viewState: .error(error))
             }
-        } else {
-            requestThreePidToken()
+        }
+
+        switch self.threePid.medium {
+        case .email:
+            self.currentThreePidAddSession = self.threePidAddManager.startIdentityServerSession(withEmail: self.threePid.address, bind: bind, completion: completion)
+        case .msisdn:
+            let formattedPhoneNumber = self.formattedPhoneNumber(from: threePid.address)
+            self.currentThreePidAddSession = self.threePidAddManager.startIdentityServerSession(withPhoneNumber: formattedPhoneNumber, countryCode: nil, bind: bind, completion: completion)
+        default:
+            break
         }
     }
+
     
     @discardableResult
     private func isThreePidDiscoverable(_ threePid: MX3PID, completion: @escaping (_ response: MXResponse<Bool>) -> Void) -> MXHTTPOperation? {
-        guard let identityService = self.session.identityService else {
+        guard let identityService = self.identityService else {
             completion(.failure(SettingsDiscoveryThreePidDetailsViewModelError.unknown))
             return nil
         }
@@ -184,36 +158,6 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
         self.viewDelegate?.settingsDiscoveryThreePidDetailsViewModel(self, didUpdateViewState: viewState)
     }
     
-    private func bindThreePid(_ threePid: MX3PID, threePidRequestTokenInfo: ThreePidRequestTokenInfo) {
-        guard let restClient = self.session.matrixRestClient else {
-            return
-        }
-        
-        self.update(viewState: .loading)
-        
-        restClient.addThirdPartyIdentifier(threePidRequestTokenInfo.sid, clientSecret: threePidRequestTokenInfo.clientSecret, bind: threePidRequestTokenInfo.bind) { response in
-            switch response {
-            case .success:
-                
-                if case .email = threePid.medium {
-                    self.unregisterEmailValidationNotification()
-                }
-                
-                self.checkThreePidDiscoverability()
-            case .failure(let error):
-                if let mxError = MXError(nsError: error), mxError.errcode == kMXErrCodeStringThreePIDAuthFailed {
-                    self.update(viewState: .loaded(displayMode: .pendingThreePidVerification))
-                } else {
-                    if case .email = threePid.medium {
-                        self.unregisterEmailValidationNotification()
-                    }
-                    
-                    self.update(viewState: .error(error))
-                }
-            }
-        }
-    }
-    
     // MARK: Email
     
     private func cancelThreePidValidation() {
@@ -221,16 +165,42 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
         if case .email = threePid.medium {
             self.unregisterEmailValidationNotification()
         }
-        
-        self.currentThreePidRequestTokenInfo = nil
+
+        if let currentThreePidAddSession = self.currentThreePidAddSession {
+            self.threePidAddManager.cancel(session: currentThreePidAddSession)
+            self.currentThreePidAddSession = nil
+        }
+
         self.checkThreePidDiscoverability()
     }
     
     private func confirmEmailValidation() {
-        guard let threePidRequestTokenInfo = self.currentThreePidRequestTokenInfo else {
+        guard let threePidAddSession = self.currentThreePidAddSession else {
             return
         }
-        self.bindThreePid(self.threePid, threePidRequestTokenInfo: threePidRequestTokenInfo)
+        self.update(viewState: .loading)
+
+        self.threePidAddManager.tryFinaliseIdentityServerEmailSession(threePidAddSession) { response in
+            switch response {
+            case .success:
+
+                if threePidAddSession.medium == kMX3PIDMediumEmail {
+                    self.unregisterEmailValidationNotification()
+                }
+
+                self.checkThreePidDiscoverability()
+            case .failure(let error):
+                if let mxError = MXError(nsError: error), mxError.errcode == kMXErrCodeStringThreePIDAuthFailed {
+                    self.update(viewState: .loaded(displayMode: .pendingThreePidVerification))
+                } else {
+                    if threePidAddSession.medium == kMX3PIDMediumEmail {
+                        self.unregisterEmailValidationNotification()
+                    }
+
+                    self.update(viewState: .error(error))
+                }
+            }
+        }
     }
     
     private func registerEmailValidationNotification() {
@@ -245,13 +215,13 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
         guard let userInfo = notification.userInfo,
             let clientSecret = userInfo[AppDelegateDidValidateEmailNotificationClientSecretKey] as? String,
             let sid = userInfo[AppDelegateDidValidateEmailNotificationSIDKey] as? String,
-            let threePidRequestTokenInfo = self.currentThreePidRequestTokenInfo,
-            threePidRequestTokenInfo.clientSecret == clientSecret,
-            threePidRequestTokenInfo.sid == sid else {
+            let threePidAddSession = self.currentThreePidAddSession,
+            threePidAddSession.clientSecret == clientSecret,
+            threePidAddSession.sid == sid else {
                 return
         }
-        
-        self.bindThreePid(self.threePid, threePidRequestTokenInfo: threePidRequestTokenInfo)
+
+        self.confirmEmailValidation()
     }
     
     // MARK: Phone number
@@ -260,20 +230,20 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
         guard phoneNumber.starts(with: "+") == false else {
             return phoneNumber
         }
-        return "+\(threePid.address)"
+        return "+\(phoneNumber)"
     }
     
     private func validatePhoneNumber(with activationCode: String) {
-        guard let identityService = self.session.identityService, let threePidRequestTokenInfo = self.currentThreePidRequestTokenInfo else {
+        guard let threePidAddSession = self.currentThreePidAddSession else {
             return
         }
-        
-        identityService.submit3PIDValidationToken(activationCode, medium: MX3PID.Medium.msisdn.identifier, clientSecret: threePidRequestTokenInfo.clientSecret, sid: threePidRequestTokenInfo.sid) { (response) in
+        self.update(viewState: .loading)
+
+        self.threePidAddManager.finaliseIdentityServerPhoneNumberSession(threePidAddSession, token: activationCode) { (response) in
             switch response {
             case .success:
-                self.bindThreePid(self.threePid, threePidRequestTokenInfo: threePidRequestTokenInfo)
+                self.checkThreePidDiscoverability()
             case .failure(let error):
-                
                 if let mxError = MXError(nsError: error), mxError.errcode == kMXErrCodeStringUnknownToken {
                     self.update(viewState: .loaded(displayMode: .pendingThreePidVerification))
                 } else {
