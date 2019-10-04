@@ -456,7 +456,7 @@
 // Events formatter
 "event_formatter_member_updates" = "%tu modifications dans les membres";
 "auth_home_server_placeholder" = "URL (par ex. https://matrix.org)";
-"auth_identity_server_placeholder" = "URL (par ex. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (par ex. https://vector.im)";
 "room_ongoing_conference_call_with_close" = "Téléconférence en cours. Rejoindre en %@ ou %@. %@.";
 "room_ongoing_conference_call_close" = "Fermer";
 "room_conference_call_no_power" = "Permissions requises pour gérer la téléconférence dans ce salon";
@@ -830,3 +830,23 @@
 "service_terms_modal_accept_button" = "Accepter";
 "service_terms_modal_description_for_identity_server" = "Se rendre découvrable pour les autres";
 "service_terms_modal_description_for_integration_manager" = "Utiliser des robots, des passerelles, des widgets et des packs de stickers";
+"room_participants_remove_third_party_invite_prompt_msg" = "Voulez-vous vraiment retirer cette invitation ?";
+// Errors
+"error_user_already_logged_in" = "On dirait que vous essayez de vous connecter à un autre serveur d’accueil. Voulez-vous vous déconnecter ?";
+"room_accessiblity_scroll_to_bottom" = "Défiler vers le bas";
+"room_accessibility_search" = "Chercher";
+"room_accessibility_integrations" = "Intégrations";
+"room_accessibility_upload" = "Envoyer";
+"room_accessibility_call" = "Appeler";
+"room_accessibility_hangup" = "Raccrocher";
+"media_type_accessibility_image" = "Image";
+"media_type_accessibility_audio" = "Audio";
+"media_type_accessibility_video" = "Vidéo";
+"media_type_accessibility_location" = "Emplacement";
+"media_type_accessibility_file" = "Fichier";
+"media_type_accessibility_sticker" = "Sticker";
+// Widget Picker
+"widget_picker_title" = "Intégrations";
+"auth_add_email_message_2" = "Définissez une adresse e-mail pour la récupération de compte, et pour être éventuellement découvrable par les personnes qui vous connaissent.";
+"auth_add_phone_message_2" = "Définissez un numéro de téléphone pour être éventuellement découvrable par les personnes qui vous connaissent.";
+"auth_add_email_phone_message_2" = "Définissez une adresse e-mail pour la récupération de compte. Vous pouvez ensuite utiliser votre e-mail ou votre numéro de téléphone pour être découvrable par les personnes qui vous connaissent.";
