@@ -57,7 +57,7 @@
 "auth_repeat_password_placeholder" = "비밀번호 다시 입력";
 "auth_repeat_new_password_placeholder" = "새 비밀번호 확인";
 "auth_home_server_placeholder" = "URL (예: https://matrix.org)";
-"auth_identity_server_placeholder" = "URL (예: https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (예: https://vector.im)";
 "auth_invalid_login_param" = "맞지 않은 사용자 이름 혹은 비밀번호";
 "auth_invalid_user_name" = "사용자 이름에는 문자, 숫자, 점, 하이픈(-)과 밑줄(_)만 들어갑니다";
 "auth_invalid_password" = "비밀번호가 너무 짧음 (최소 6자 이상)";
@@ -820,3 +820,9 @@
 "media_type_accessibility_sticker" = "스티커";
 // Widget Picker
 "widget_picker_title" = "통합";
+"auth_add_email_message_2" = "계정 복구 용 이메일을 설정하세요, 이후 당신을 아는 사람들이 선택적으로 당신을 찾을 수 있도록 할 수 있습니다.";
+"auth_add_phone_message_2" = "전화를 설정하세요, 이후 당신을 아는 사람들이 선택적으로 당신을 찾을 수 있도록 할 수 있습니다.";
+"auth_add_email_phone_message_2" = "계정 복구 용 이메일을 설정하세요. 이후 당신을 아는 사람들이 선택적으로 당신을 찾을 수 있도록 이메일이나 전화를 사용할 수 있습니다.";
+"auth_email_is_required" = "설정된 ID 서버가 없어서 이후 비밀번호를 초기화할 이메일 주소를 추가할 수 없습니다.";
+"auth_phone_is_required" = "설정된 ID 서버가 없어서 이후 비밀번호를 초기화할 전화번호를 추가할 수 없습니다.";
+"auth_reset_password_error_is_required" = "설정된 ID 서버가 없음: 비밀번호를 초기화하려면 서버 설정에서 하나를 추가하세요.";
