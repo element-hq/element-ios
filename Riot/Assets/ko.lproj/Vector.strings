@@ -803,3 +803,20 @@
 "emoji_picker_flags_category" = "깃발";
 // MARK: Reaction history
 "reaction_history_title" = "리액션";
+"room_participants_remove_third_party_invite_prompt_msg" = "이 초대를 취소하겠습니까?";
+// Errors
+"error_user_already_logged_in" = "다른 홈서버에 연결합니다. 로그아웃하겠습니까?";
+"room_accessiblity_scroll_to_bottom" = "아래로 스크롤";
+"room_accessibility_search" = "검색";
+"room_accessibility_integrations" = "통합";
+"room_accessibility_upload" = "업로드";
+"room_accessibility_call" = "전화";
+"room_accessibility_hangup" = "끊기";
+"media_type_accessibility_image" = "사진";
+"media_type_accessibility_audio" = "소리";
+"media_type_accessibility_video" = "영상";
+"media_type_accessibility_location" = "위치";
+"media_type_accessibility_file" = "파일";
+"media_type_accessibility_sticker" = "스티커";
+// Widget Picker
+"widget_picker_title" = "통합";

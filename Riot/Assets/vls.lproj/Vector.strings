@@ -93,3 +93,5 @@
 "auth_reset_password_error_unauthorized" = "Verifieern van ’t e-mailadresse is mislukt: zorgt da j’ip de koppelienge in den e-mail geklikt ghed èt";
 "auth_reset_password_error_not_found" = "’t Ziet der nie noar uut da jen e-mailadresse met e Matrix-ID ip dezen thuusserver is verboundn.";
 "auth_reset_password_success_message" = "Je paswoord is heringesteld gewist.\n\nJe zy nu ip alle toestelln afgemeld en je goa geen pushmeldiengn nie mi ontvangn. Vo meldiengn herin te schoakeln, meld je jen ip ieder toestel heran.";
+"auth_softlogout_signed_out" = "Je zyt afgemeld";
+"auth_softlogout_sign_in" = "Anmeldn";
