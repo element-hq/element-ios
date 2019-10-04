@@ -456,7 +456,7 @@
 // Events formatter
 "event_formatter_member_updates" = "%tu modifications dans les membres";
 "auth_home_server_placeholder" = "URL (par ex. https://matrix.org)";
-"auth_identity_server_placeholder" = "URL (par ex. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (par ex. https://vector.im)";
 "room_ongoing_conference_call_with_close" = "Téléconférence en cours. Rejoindre en %@ ou %@. %@.";
 "room_ongoing_conference_call_close" = "Fermer";
 "room_conference_call_no_power" = "Permissions requises pour gérer la téléconférence dans ce salon";
@@ -847,3 +847,6 @@
 "media_type_accessibility_sticker" = "Sticker";
 // Widget Picker
 "widget_picker_title" = "Intégrations";
+"auth_add_email_message_2" = "Définissez une adresse e-mail pour la récupération de compte, et pour être éventuellement découvrable par les personnes qui vous connaissent.";
+"auth_add_phone_message_2" = "Définissez un numéro de téléphone pour être éventuellement découvrable par les personnes qui vous connaissent.";
+"auth_add_email_phone_message_2" = "Définissez une adresse e-mail pour la récupération de compte. Vous pouvez ensuite utiliser votre e-mail ou votre numéro de téléphone pour être découvrable par les personnes qui vous connaissent.";
