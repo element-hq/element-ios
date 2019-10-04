@@ -58,6 +58,7 @@
 		3232ABBC2257BE6500AD6A5C /* DeviceVerificationVerifyViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABB42257BE6400AD6A5C /* DeviceVerificationVerifyViewAction.swift */; };
 		3232ABC022594C0900AD6A5C /* VerifyEmojiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABBF22594C0900AD6A5C /* VerifyEmojiCollectionViewCell.swift */; };
 		3232ABC2225B996200AD6A5C /* Themable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3232ABC1225B996100AD6A5C /* Themable.swift */; };
+		323AB947232BD74600C1451F /* AuthFallBackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 323AB946232BD74600C1451F /* AuthFallBackViewController.m */; };
 		324A204F225FC571004FE8B0 /* DeviceVerificationIncomingViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 324A2047225FC571004FE8B0 /* DeviceVerificationIncomingViewController.storyboard */; };
 		324A2050225FC571004FE8B0 /* DeviceVerificationIncomingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324A2048225FC571004FE8B0 /* DeviceVerificationIncomingViewController.swift */; };
 		324A2051225FC571004FE8B0 /* DeviceVerificationIncomingViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324A2049225FC571004FE8B0 /* DeviceVerificationIncomingViewState.swift */; };
@@ -685,6 +686,8 @@
 		3232ABB42257BE6400AD6A5C /* DeviceVerificationVerifyViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationVerifyViewAction.swift; sourceTree = "<group>"; };
 		3232ABBF22594C0900AD6A5C /* VerifyEmojiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyEmojiCollectionViewCell.swift; sourceTree = "<group>"; };
 		3232ABC1225B996100AD6A5C /* Themable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Themable.swift; sourceTree = "<group>"; };
+		323AB945232BD74600C1451F /* AuthFallBackViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthFallBackViewController.h; sourceTree = "<group>"; };
+		323AB946232BD74600C1451F /* AuthFallBackViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AuthFallBackViewController.m; sourceTree = "<group>"; };
 		324A2047225FC571004FE8B0 /* DeviceVerificationIncomingViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DeviceVerificationIncomingViewController.storyboard; sourceTree = "<group>"; };
 		324A2048225FC571004FE8B0 /* DeviceVerificationIncomingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingViewController.swift; sourceTree = "<group>"; };
 		324A2049225FC571004FE8B0 /* DeviceVerificationIncomingViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingViewState.swift; sourceTree = "<group>"; };
@@ -735,6 +738,9 @@
 		32D7159E2146CC6F00DF59C9 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Vector.strings; sourceTree = "<group>"; };
 		32D7159F2146CC7F00DF59C9 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		32D715A02146CC8800DF59C9 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		32DAF8DB231813C800654A44 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		32DAF8DC231813D500654A44 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		32DAF8DD231813E100654A44 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Vector.strings; sourceTree = "<group>"; };
 		32DB556922FDADE50016329E /* ServiceTermsModalCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTermsModalCoordinatorType.swift; sourceTree = "<group>"; };
 		32DB556A22FDADE50016329E /* ServiceTermsModalCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTermsModalCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
 		32DB556B22FDADE50016329E /* ServiceTermsModalCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTermsModalCoordinator.swift; sourceTree = "<group>"; };
@@ -1652,6 +1658,15 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		323AB944232BD71900C1451F /* Fallback */ = {
+			isa = PBXGroup;
+			children = (
+				323AB945232BD74600C1451F /* AuthFallBackViewController.h */,
+				323AB946232BD74600C1451F /* AuthFallBackViewController.m */,
+			);
+			path = Fallback;
+			sourceTree = "<group>";
+		};
 		324A2046225FC571004FE8B0 /* Incoming */ = {
 			isa = PBXGroup;
 			children = (
@@ -2388,6 +2403,7 @@
 		B1B5568420EE6C4C00210D55 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				323AB944232BD71900C1451F /* Fallback */,
 				B1B5568620EE6C4C00210D55 /* HomeViewController.h */,
 				B1B5568520EE6C4C00210D55 /* HomeViewController.m */,
 				B1B5593D20EF7BD000210D55 /* Views */,
@@ -3896,6 +3912,7 @@
 				es,
 				ja,
 				hu,
+				pl,
 			);
 			mainGroup = F094A9991B78D8F000B1FBBF;
 			productRefGroup = F094A9A31B78D8F000B1FBBF /* Products */;
@@ -4607,6 +4624,7 @@
 				B157FAA223264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsViewAction.swift in Sources */,
 				3232ABA1225730E100AD6A5C /* DeviceVerificationCoordinatorType.swift in Sources */,
 				B1C562D9228C0B760037F12A /* RoomContextualMenuItem.swift in Sources */,
+				323AB947232BD74600C1451F /* AuthFallBackViewController.m in Sources */,
 				B1C562E1228C7C8C0037F12A /* RoomContextualMenuToolbarView.swift in Sources */,
 				B1B557BF20EF5B4500210D55 /* DisabledRoomInputToolbarView.m in Sources */,
 				B1B5578620EF564900210D55 /* GroupTableViewCellWithSwitch.m in Sources */,
@@ -4737,6 +4755,7 @@
 				32D7159E2146CC6F00DF59C9 /* es */,
 				3D78489221AC9E6500B98A7D /* ja */,
 				3D78489521ACA25300B98A7D /* hu */,
+				32DAF8DD231813E100654A44 /* pl */,
 			);
 			name = Vector.strings;
 			sourceTree = "<group>";
@@ -4759,6 +4778,7 @@
 				32D715A02146CC8800DF59C9 /* es */,
 				3D78489021AC9E6400B98A7D /* ja */,
 				3D78489321ACA25200B98A7D /* hu */,
+				32DAF8DB231813C800654A44 /* pl */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -4781,6 +4801,7 @@
 				32D7159F2146CC7F00DF59C9 /* es */,
 				3D78489121AC9E6500B98A7D /* ja */,
 				3D78489421ACA25300B98A7D /* hu */,
+				32DAF8DC231813D500654A44 /* pl */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

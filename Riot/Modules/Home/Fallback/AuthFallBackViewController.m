@@ -1,0 +1,217 @@
+/*
+ Copyright 2019 New Vector Ltd
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
+
+#import "AuthFallBackViewController.h"
+#import "AppDelegate.h"
+
+
+// Generic method to make a bridge between JS and the UIWebView
+NSString *FallBackViewControllerJavascriptSendObjectMessage = @"window.sendObjectMessage = function(parameters) {   \
+    var iframe = document.createElement('iframe');                              \
+    iframe.setAttribute('src', 'js:' + JSON.stringify(parameters));             \
+    \
+    document.documentElement.appendChild(iframe);                               \
+    iframe.parentNode.removeChild(iframe);                                      \
+    iframe = null;                                                              \
+};";
+
+// The function the fallback page calls when the registration is complete
+NSString *FallBackViewControllerJavascriptOnRegistered = @"window.matrixRegistration.onRegistered = function(homeserverUrl, userId, accessToken) {   \
+    sendObjectMessage({                     \
+        'action': 'onRegistered',           \
+        'homeServer': homeserverUrl,        \
+        'userId': userId,                   \
+        'accessToken': accessToken          \
+    });                                     \
+};";
+
+// The function the fallback page calls when the login is complete
+NSString *FallBackViewControllerJavascriptOnLogin = @"window.matrixLogin.onLogin = function(response) {   \
+    sendObjectMessage({             \
+        'action': 'onLogin',        \
+        'response': response        \
+    });                            \
+};";
+
+@interface AuthFallBackViewController ()
+
+@end
+
+@implementation AuthFallBackViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    // Due to https://developers.googleblog.com/2016/08/modernizing-oauth-interactions-in-native-apps.html, we hack
+    // the user agent to bypass the limitation of Google, as a quick fix (a proper solution will be to use the SSO SDK)
+    webView.customUserAgent = @"Mozilla/5.0";
+
+    [self clearCookies];
+}
+
+- (void)clearCookies
+{
+    // TODO: it would be better to do that at WKWebView init like below
+    // but this code is part of the kit
+    // WKWebViewConfiguration *config = [WKWebViewConfiguration new];
+    // config.websiteDataStore = [WKWebsiteDataStore nonPersistentDataStore];
+    // webView = [[WKWebView alloc] initWithFrame:self.view.frame configuration:config];
+
+    WKWebsiteDataStore *dateStore = [WKWebsiteDataStore defaultDataStore];
+    [dateStore fetchDataRecordsOfTypes:[WKWebsiteDataStore allWebsiteDataTypes]
+                     completionHandler:^(NSArray<WKWebsiteDataRecord *> * __nonnull records)
+     {
+         for (WKWebsiteDataRecord *record  in records)
+         {
+             [[WKWebsiteDataStore defaultDataStore] removeDataOfTypes:record.dataTypes
+                                                       forDataRecords:@[record]
+                                                    completionHandler:^
+              {
+                  NSLog(@"[AuthFallBackViewController] clearCookies: Cookies for %@ deleted successfully", record.displayName);
+              }];
+         }
+     }];
+}
+
+- (void)showErrorAsAlert:(NSError*)error
+{
+    NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
+    NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
+    if (!title)
+    {
+        if (msg)
+        {
+            title = msg;
+            msg = nil;
+        }
+        else
+        {
+            title = [NSBundle mxk_localizedStringForKey:@"error"];
+        }
+    }
+
+    MXWeakify(self);
+
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * action) {
+                                                MXStrongifyAndReturnIfNil(self);
+
+                                                if (self.delegate)
+                                                {
+                                                    [self.delegate authFallBackViewControllerDidClose:self];
+                                                }
+
+                                            }]];
+
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+
+#pragma mark - WKNavigationDelegate
+
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
+{
+    [super webView:webView didFinishNavigation:navigation];
+
+    // Set up JS <-> iOS bridge
+    [webView evaluateJavaScript:FallBackViewControllerJavascriptSendObjectMessage completionHandler:nil];
+    [webView evaluateJavaScript:FallBackViewControllerJavascriptOnRegistered completionHandler:nil];
+    [webView evaluateJavaScript:FallBackViewControllerJavascriptOnLogin completionHandler:nil];
+
+    // Check connectivity
+    if ([AppDelegate theDelegate].isOffline)
+    {
+        NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                             code:NSURLErrorNotConnectedToInternet
+                                         userInfo:@{
+                                                    NSLocalizedDescriptionKey : NSLocalizedStringFromTable(@"network_offline_prompt", @"Vector", nil)
+                                                    }];
+        [self showErrorAsAlert:error];
+    }
+}
+
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
+{
+    NSString *urlString = navigationAction.request.URL.absoluteString;
+
+    // TODO: We should use the WebKit PostMessage API and the
+    // `didReceiveScriptMessage` delegate to manage the JS<->Native bridge
+    if ([urlString hasPrefix:@"js:"])
+    {
+        // Listen only to scheme of the JS-UIWebView bridge
+        NSString *jsonString = [[[urlString componentsSeparatedByString:@"js:"] lastObject]  stringByReplacingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
+        NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+
+        NSError *error;
+        NSDictionary *parameters = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers
+                                                                     error:&error];
+
+        if (!error)
+        {
+            if ([@"onRegistered" isEqualToString:parameters[@"action"]])
+            {
+                // Translate the JS registration event to MXLoginResponse
+                // We cannot use [MXLoginResponse modelFromJSON:] because of https://github.com/matrix-org/synapse/issues/4756
+                // Because of this issue, we cannot get the device_id allocated by the homeserver
+                // TODO: Fix it once the homeserver issue is fixed (filed at https://github.com/vector-im/riot-meta/issues/273).
+                MXLoginResponse *loginResponse = [MXLoginResponse new];
+                loginResponse.homeserver = parameters[@"homeServer"];
+                loginResponse.userId = parameters[@"userId"];
+                loginResponse.accessToken = parameters[@"accessToken"];
+
+                // Sanity check
+                if (self.delegate
+                    && loginResponse.homeserver.length && loginResponse.userId.length && loginResponse.accessToken.length)
+                {
+                    // And inform the client
+                    [self.delegate authFallBackViewController:self didLoginWithLoginResponse:loginResponse];
+                }
+            }
+            else if ([@"onLogin" isEqualToString:parameters[@"action"]])
+            {
+                // Translate the JS login event to MXLoginResponse
+                MXLoginResponse *loginResponse;
+                MXJSONModelSetMXJSONModel(loginResponse, MXLoginResponse, parameters[@"response"]);
+
+                // Sanity check
+                if (self.delegate
+                    && loginResponse.homeserver.length && loginResponse.userId.length && loginResponse.accessToken.length)
+                {
+                    // And inform the client
+                    [self.delegate authFallBackViewController:self didLoginWithLoginResponse:loginResponse];
+                }
+            }
+        }
+        
+        decisionHandler(WKNavigationActionPolicyCancel);
+        return;
+    }
+
+    if (navigationAction.navigationType == WKNavigationTypeLinkActivated)
+    {
+        // Open links outside the app
+        [[UIApplication sharedApplication] openURL:navigationAction.request.URL options:@{} completionHandler:nil];
+        decisionHandler(WKNavigationActionPolicyCancel);
+        return;
+    }
+
+    decisionHandler(WKNavigationActionPolicyAllow);
+}
+
+@end

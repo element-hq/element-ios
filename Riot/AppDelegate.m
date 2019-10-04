@@ -2109,6 +2109,11 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     
     // iOS Patch: fix vector.im urls before using it
     webURL = [Tools fixURLWithSeveralHashKeys:webURL];
+
+    if ([webURL.path hasPrefix:@"/config"])
+    {
+        return [self handleServerProvionningLink:webURL];
+    }
     
     NSString *validateEmailSubmitTokenPath = @"validate/email/submitToken";
     
@@ -2583,6 +2588,93 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     
     *outPathParams = pathParams;
     *outQueryParams = queryParams;
+}
+
+
+- (BOOL)handleServerProvionningLink:(NSURL*)link
+{
+    NSLog(@"[AppDelegate] handleServerProvionningLink: %@", link);
+
+    NSString *homeserver, *identityServer;
+    [self parseServerProvionningLink:link homeserver:&homeserver identityServer:&identityServer];
+
+    if (homeserver)
+    {
+        if ([MXKAccountManager sharedManager].activeAccounts.count)
+        {
+            [self displayServerProvionningLinkBuyAlreadyLoggedInAlertWithCompletion:^(BOOL logout) {
+
+                NSLog(@"[AppDelegate] handleServerProvionningLink: logoutWithConfirmation: logout: %@", @(logout));
+                if (logout)
+                {
+                    [self logoutWithConfirmation:NO completion:^(BOOL isLoggedOut) {
+                        [self handleServerProvionningLink:link];
+                    }];
+                }
+            }];
+        }
+        else
+        {
+            [_masterTabBarController showAuthenticationScreen];
+            [_masterTabBarController.authViewController showCustomHomeserver:homeserver andIdentityServer:identityServer];
+        }
+
+        return YES;
+    }
+
+    return NO;
+}
+
+- (void)parseServerProvionningLink:(NSURL*)link homeserver:(NSString**)homeserver identityServer:(NSString**)identityServer
+{
+    if ([link.path isEqualToString:@"/config/config"])
+    {
+        NSURLComponents *linkURLComponents = [NSURLComponents componentsWithURL:link resolvingAgainstBaseURL:NO];
+        for (NSURLQueryItem *item in linkURLComponents.queryItems)
+        {
+            if ([item.name isEqualToString:@"hs_url"])
+            {
+                *homeserver = item.value;
+            }
+            else if ([item.name isEqualToString:@"is_url"])
+            {
+                *identityServer = item.value;
+                break;
+            }
+        }
+    }
+    else
+    {
+        NSLog(@"[AppDelegate] parseServerProvionningLink: Error: Unknown path: %@", link.path);
+    }
+
+
+    NSLog(@"[AppDelegate] parseServerProvionningLink: homeserver: %@ - identityServer: %@", *homeserver, *identityServer);
+}
+
+- (void)displayServerProvionningLinkBuyAlreadyLoggedInAlertWithCompletion:(void (^)(BOOL logout))completion
+{
+    // Ask confirmation
+    self.logoutConfirmation = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"error_user_already_logged_in", @"Vector", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
+
+    [self.logoutConfirmation addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_sign_out", @"Vector", nil)
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action)
+                                        {
+                                            self.logoutConfirmation = nil;
+                                            completion(YES);
+                                        }]];
+
+    [self.logoutConfirmation addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                                style:UIAlertActionStyleCancel
+                                                              handler:^(UIAlertAction * action)
+                                        {
+                                            self.logoutConfirmation = nil;
+                                            completion(NO);
+                                        }]];
+
+    [self.logoutConfirmation mxk_setAccessibilityIdentifier: @"AppDelegateLogoutConfirmationAlert"];
+    [self showNotificationAlert:self.logoutConfirmation];
 }
 
 #pragma mark - Matrix sessions handling

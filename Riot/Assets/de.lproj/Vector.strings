@@ -309,7 +309,7 @@
 "room_event_action_redact" = "Entfernen";
 "room_warning_about_encryption" = "Ende-zu-Ende Verschlüsselung ist in Beta und ist evtl. nicht zuverlässig.\n\nMan sollte noch nicht darauf vertrauen, dass die Daten sicher sind.\n\nGeräte werden den Verlauf vor dem Beitritt des Raumes nicht entschlüsseln können.\n\nVerschlüsselte Nachrichten sind nicht lesbar auf Clients, die Verschlüsselung noch nicht implementiert haben.";
 "unknown_devices_alert" = "Dieser Raum enthält unbekannte Geräte, die nicht verifiziert wurden.\nDas bedeutet, es gibt keine Garantie, dass sie dem User gehören, der angegeben ist.\nWir empfehlen eine Überprüfung für jedes Gerät, bevor du weitermachst, aber du kannst die Nachricht erneut senden ohne Verifikation.";
-"room_preview_unlinked_email_warning" = "Diese Einladung wurde an %@ gesendet, die Adresse ist nicht mit diesem Konto verbunden. Du kannst dich mit einem anderen Konto anmelden, oder diese E-Mail-Adresse deinem Konto hinzufügen.";
+"room_preview_unlinked_email_warning" = "Diese Einladung wurde an %@ gesendet, das diesem Konto nicht zugeordnet ist. Möglicherweise möchten Sie sich mit einem anderen Konto anmelden oder diese E-Mail zu Ihrem Konto hinzufügen.";
 "room_preview_try_join_an_unknown_room" = "Du versuchst auf %@ zuzugreifen.  Möchtest du dem Raum beitreten um teilzunehmen?";
 "settings_config_identity_server" = "Identitätsserver ist %@";
 "settings_labs" = "Labor";
@@ -511,8 +511,8 @@
 "room_do_not_have_permission_to_post" = "Du hast keine Berechtigung in diesem Raum zu posten";
 "room_event_action_kick_prompt_reason" = "Grund für den Rauswurf des Benutzers";
 "room_event_action_ban_prompt_reason" = "Grund für die Verbannung des Benutzers";
-"room_action_send_photo_or_video" = "Sende Foto oder Video";
-"room_action_send_sticker" = "Sende Sticker";
+"room_action_send_photo_or_video" = "Foto oder Video senden";
+"room_action_send_sticker" = "Sticker senden";
 "settings_deactivate_account" = "DEAKTIVIERE ACCOUNT";
 "settings_deactivate_my_account" = "Deaktivere meinen Account";
 "widget_sticker_picker_no_stickerpacks_alert" = "Du hast aktuell keine Sticker-Packete aktiviert.";
@@ -544,7 +544,7 @@
 "room_replacement_link" = "Die Konversation wird hier fortgesetzt.";
 "room_predecessor_information" = "Dieser Raum ist die Fortsetzung einer anderen Konversation.";
 "room_predecessor_link" = "Tippe hier um ältere Nachrichten zu sehen.";
-"settings_labs_room_members_lazy_loading" = "Raummitglieder nachladen";
+"settings_labs_room_members_lazy_loading" = "Raummitglieder später laden";
 "settings_labs_room_members_lazy_loading_error_message" = "Dein Heimserver unterstützt das verzögerte Laden von Raummitgliedern noch nicht. Versuche es später erneut.";
 "room_event_action_view_decrypted_source" = "Zeige entschlüsselten Quellcode";
 "room_recents_server_notice_section" = "SYSTEMBENACHRICHTIGUNGEN";
@@ -561,11 +561,11 @@
 "settings_key_backup_info" = "Verschlüsselte Nachrichten sind durch Ende-zu-Ende-Verschlüsselung gesichert. Ausschließlich du und der/die Empfänger besitzen die Schlüssel, um diese Nachrichten zu lesen.";
 "settings_key_backup_info_checking" = "Überprüfe...";
 "settings_key_backup_info_none" = "Deine Schlüssel werden von diesem Gerät nicht gesichert.";
-"settings_key_backup_info_signout_warning" = "Sichere deine Schlüssel bevor du dich abmeldest, damit du sie nicht verlierst.";
+"settings_key_backup_info_signout_warning" = "Schließen Sie dieses Gerät an die Schlüsselsicherung an, bevor Sie sich abmelden, um den Verlust von Schlüsseln zu vermeiden, die sich möglicherweise nur auf diesem Gerät befinden.";
 "settings_key_backup_info_version" = "Schlüssel Sicherheitskopie Version: %@";
 "settings_key_backup_info_algorithm" = "Algorithmus";
 "settings_key_backup_info_valid" = "Dieses Gerät sichert deine Schlüssel.";
-"settings_key_backup_info_not_valid" = "Dieses Gerät sichert deine Schlüssel nicht.";
+"settings_key_backup_info_not_valid" = "Dieses Gerät sichert Ihre Schlüssel nicht, es ist jedoch eine Sicherungskopie vorhanden, die Sie wiederherstellen und später hinzufügen können.";
 "settings_key_backup_info_progress" = "Sichere %@ Schlüssel...";
 "settings_key_backup_info_progress_done" = "Alle Schlüssel wurden gesichert";
 "settings_key_backup_info_trust_signature_unknown" = "Sicherheitskopie hat eine Signatur vom Gerät mit der ID: %@";
@@ -674,7 +674,7 @@
 "key_backup_recover_connent_banner_subtitle" = "Schlüssel dieses Geräts sichern";
 // MARK: - Device Verification
 "device_verification_title" = "Gerät verifizieren";
-"device_verification_cancelled" = "Die Gegenseite hat die Verifikation abgebrochen";
+"device_verification_cancelled" = "Die Gegenstelle hat die Überprüfung abgebrochen.";
 "device_verification_cancelled_by_me" = "Die Verifikation wurde abgebrochen. Grund: %@";
 "device_verification_error_cannot_load_device" = "Konnte Geräteinformationen nicht laden.";
 // Mark: Incoming
@@ -736,7 +736,7 @@
 "device_verification_emoji_bell" = "Glocke";
 "device_verification_emoji_anchor" = "Anker";
 "device_verification_emoji_headphones" = "Kopfhörer";
-"close" = "Schließen";
+"close" = "Beenden";
 "auth_softlogout_signed_out" = "Sie sind abgemeldet";
 "auth_softlogout_sign_in" = "Einloggen";
 "auth_softlogout_reason" = "Ihr Homeserver-Administrator (%1$@) hat Sie von Ihrem Konto %2$@ (%3$@) abgemeldet.";
@@ -775,7 +775,7 @@
 "device_verification_emoji_rooster" = "Hahn";
 "device_verification_emoji_globe" = "Globus";
 "device_verification_emoji_smiley" = "Lächeln";
-"device_verification_emoji_spanner" = "Spanner";
+"device_verification_emoji_spanner" = "Schraubenschlüssel";
 "device_verification_emoji_thumbs up" = "Daumen hoch";
 "device_verification_emoji_hourglass" = "Sanduhr";
 "device_verification_emoji_clock" = "Uhr";
@@ -798,3 +798,20 @@
 "emoji_picker_flags_category" = "Flaggen";
 // MARK: Reaction history
 "reaction_history_title" = "Reaktionen";
+"room_action_camera" = "Foto oder Video aufnehmen";
+// Media picker
+"media_picker_title" = "Mediathek";
+// Image picker
+"image_picker_action_camera" = "Foto aufnehmen";
+"image_picker_action_library" = "Aus der Mediathek auswählen";
+"camera_unavailable" = "Die Kamera ist auf Ihrem Gerät nicht verfügbar";
+"photo_library_access_not_granted" = "%@ hat keine Berechtigung zum Zugriff auf die Fotobibliothek. Bitte ändern Sie die Datenschutzeinstellungen";
+"auth_forgot_password_error_no_configured_identity_server" = "Es ist kein Identitätsserver konfiguriert: Fügen Sie einen hinzu, um Ihr Kennwort zurückzusetzen.";
+"room_creation_error_invite_user_by_email_without_identity_server" = "Es ist kein Identitätsserver konfiguriert, sodass Sie keinen Teilnehmer mit einer E-Mail hinzufügen können.";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Es ist kein Identitätsserver konfiguriert, sodass Sie keinen Chat mit einem Kontakt über eine E-Mail starten können.";
+// Service terms
+"service_terms_modal_title" = "Nutzungsbedingungen";
+"service_terms_modal_message" = "Um fortzufahren, müssen Sie die Bedingungen dieses Dienstes akzeptieren.";
+"service_terms_modal_accept_button" = "Akzeptieren";
+"service_terms_modal_description_for_identity_server" = "Für andere auffindbar sein";
+"service_terms_modal_description_for_integration_manager" = "Verwenden Sie Bots, Bridges, Widgets und Sticker-Packs";

@@ -820,3 +820,12 @@
 "image_picker_action_library" = "Избери от библиотеката";
 "camera_unavailable" = "Не е достъпна камера на вашето устройство";
 "photo_library_access_not_granted" = "%@ няма достъп до библиотеката със снимки. Моля, променете настройките на поверителността";
+"auth_forgot_password_error_no_configured_identity_server" = "Не е конфигуриран сървър за самоличност: добавете такъв за да може да възстановите паролата си.";
+"room_creation_error_invite_user_by_email_without_identity_server" = "Не е конфигуриран сървър за самоличност, така че не можете да поканите участник по имейл адрес.";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Не е конфигуриран сървър за самоличност, така че не можете да започнете чат с контакт посредством имейл адрес.";
+// Service terms
+"service_terms_modal_title" = "Условия за ползване";
+"service_terms_modal_message" = "За да продължите е необходимо да приемете Условията за ползване.";
+"service_terms_modal_accept_button" = "Приемам";
+"service_terms_modal_description_for_identity_server" = "Бъдете откриваеми от потребители";
+"service_terms_modal_description_for_integration_manager" = "Използвайте ботове, връзки към други мрежи и стикери";

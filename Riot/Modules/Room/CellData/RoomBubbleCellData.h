@@ -90,4 +90,9 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
 - (BOOL)showAllReactionsForEvent:(NSString*)eventId;
 - (void)setShowAllReactions:(BOOL)showAllReactions forEvent:(NSString*)eventId;
 
+
+#pragma mark - Accessibility
+
+- (NSString*)accessibilityLabel;
+
 @end

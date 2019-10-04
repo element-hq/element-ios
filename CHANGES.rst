@@ -1,4 +1,4 @@
-Changes in 0.9.3 (2019-08-)
+Changes in 0.10.0 (2019-10-)
 ===============================================
 
 Improvements:
@@ -6,6 +6,9 @@ Improvements:
  * Widgets: Whitelist [MSC1961](https://github.com/matrix-org/matrix-doc/pull/1961) widget urls.
  * Settings: CALLS section: Always display the CallKit option but grey it out when not available (only on China).
  * VoIP: Fallback to matrix.org STUN server with a confirmation dialog (#2646).
+ * Widgets: Whitelist [MSC1961](https://github.com/matrix-org/matrix-doc/pull/1961) widget urls
+ * i18n: Enable Polish (pl).
+ * Room members: third-party invites can now be revoked
  * Privacy: Prompt to accept integration manager policies on use (#2600).
  * Privacy: Make clear that device names are publicly readable (#2662).
  * Privacy: Remove the ability to set an IS at login/registration (#2661).
@@ -25,6 +28,28 @@ Improvements:
 
 Bug fix:
  * Theme: Make button theming work (#2734).
+
+Changes in 0.9.5 (2019-09-20)
+===============================================
+
+Bug fix:
+ * VoiceOver: RoomVC: Fix some missing accessibility labels for buttons (#2722).
+ * VoiceOver: RoomVC: Make VoiceOver focus on the contextual menu when selecting an event (#2721).
+ * VoiceOver: RoomVC: Do not lose the focus on the timeline when paginating (with 3 fingers) (#2720).
+ * VoiceOver: RoomVC: No VoiceOver on media (#2726).
+
+Changes in 0.9.4 (2019-09-13)
+===============================================
+
+Improvements:
+ * Authentication: Improve the webview used for SSO (#2715).
+
+Changes in 0.9.3 (2019-09-10)
+===============================================
+
+Improvements:
+ * Support Riot configuration link to customise HS and IS (#2703).
+ * Authentication: Create a way to filter and prioritise flows (with handleSupportedFlowsInAuthenticationSession).
 
 Changes in 0.9.2 (2019-08-08)
 ===============================================

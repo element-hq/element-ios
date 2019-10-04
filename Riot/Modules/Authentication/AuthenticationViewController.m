@@ -23,8 +23,9 @@
 
 #import "AuthInputsView.h"
 #import "ForgotPasswordInputsView.h"
+#import "AuthFallBackViewController.h"
 
-@interface AuthenticationViewController ()
+@interface AuthenticationViewController () <AuthFallBackViewControllerDelegate>
 {
     /**
      Store the potential login error received by using a default homeserver different from matrix.org
@@ -46,6 +47,8 @@
      Server discovery.
      */
     MXAutoDiscovery *autoDiscovery;
+
+    AuthFallBackViewController *authFallBackViewController;
 }
 
 @property (nonatomic, readonly) BOOL isIdentityServerConfigured;
@@ -420,6 +423,74 @@
     }
 }
 
+
+#pragma mark - Fallback URL display
+
+- (void)showAuthenticationFallBackView:(NSString*)fallbackPage
+{
+    // Skip MatrixKit and use a VC instead
+    if (self.softLogoutCredentials)
+    {
+        // Add device_id as query param of the fallback
+        NSURLComponents *components = [[NSURLComponents alloc] initWithString:fallbackPage];
+
+        NSMutableArray<NSURLQueryItem*> *queryItems = [components.queryItems mutableCopy];
+        if (!queryItems)
+        {
+            queryItems = [NSMutableArray array];
+        }
+
+        [queryItems addObject:[NSURLQueryItem queryItemWithName:@"device_id"
+                                                          value:self.softLogoutCredentials.deviceId]];
+
+        components.queryItems = queryItems;
+
+        fallbackPage = components.URL.absoluteString;
+    }
+
+    [self showAuthenticationFallBackViewController:fallbackPage];
+}
+
+- (void)showAuthenticationFallBackViewController:(NSString*)fallbackPage
+{
+    authFallBackViewController = [[AuthFallBackViewController alloc] initWithURL:fallbackPage];
+    authFallBackViewController.delegate = self;
+
+
+    authFallBackViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissFallBackViewController:)];
+
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:authFallBackViewController];
+    [self presentViewController:navigationController animated:YES completion:nil];
+}
+
+- (void)dismissFallBackViewController:(id)sender
+{
+    [authFallBackViewController dismissViewControllerAnimated:YES completion:nil];
+    authFallBackViewController = nil;
+}
+
+
+#pragma mark AuthFallBackViewControllerDelegate
+
+- (void)authFallBackViewController:(AuthFallBackViewController *)authFallBackViewController
+         didLoginWithLoginResponse:(MXLoginResponse *)loginResponse
+{
+    [authFallBackViewController dismissViewControllerAnimated:YES completion:^{
+        
+        MXCredentials *credentials = [[MXCredentials alloc] initWithLoginResponse:loginResponse andDefaultCredentials:nil];
+        [self onSuccessfulLogin:credentials];
+    }];
+
+    authFallBackViewController = nil;
+}
+
+
+- (void)authFallBackViewControllerDidClose:(AuthFallBackViewController *)authFallBackViewController
+{
+    [self dismissFallBackViewController:nil];
+}
+
+
 - (void)setSoftLogoutCredentials:(MXCredentials *)softLogoutCredentials
 {
     [super setSoftLogoutCredentials:softLogoutCredentials];
@@ -509,9 +580,61 @@
     }];
 }
 
+/**
+ Filter and prioritise flows supported by the app.
+
+ @param authSession the auth session coming from the HS.
+ @return a new auth session
+ */
+- (MXAuthenticationSession*)handleSupportedFlowsInAuthenticationSession:(MXAuthenticationSession *)authSession
+{
+    MXLoginFlow *ssoFlow;
+    NSMutableArray *supportedFlows = [NSMutableArray array];
+
+    for (MXLoginFlow *flow in authSession.flows)
+    {
+        // Remove known flows we do not support
+        if (![flow.type isEqualToString:kMXLoginFlowTypeToken])
+        {
+            NSLog(@"[AuthenticationVC] handleSupportedFlowsInAuthenticationSession: Filter out flow %@", flow.type);
+            [supportedFlows addObject:flow];
+        }
+
+        // Prioritise SSO over other flows
+        if ([flow.type isEqualToString:kMXLoginFlowTypeSSO]
+            || [flow.type isEqualToString:kMXLoginFlowTypeCAS])
+        {
+            NSLog(@"[AuthenticationVC] handleSupportedFlowsInAuthenticationSession: Prioritise flow %@", flow.type);
+            ssoFlow = flow;
+            break;
+        }
+    }
+
+    if (ssoFlow)
+    {
+        [supportedFlows removeAllObjects];
+        [supportedFlows addObject:ssoFlow];
+    }
+
+    if (supportedFlows.count != authSession.flows.count)
+    {
+        MXAuthenticationSession *updatedAuthSession = [[MXAuthenticationSession alloc] init];
+        updatedAuthSession.session = authSession.session;
+        updatedAuthSession.params = authSession.params;
+        updatedAuthSession.flows = supportedFlows;
+        return updatedAuthSession;
+    }
+    else
+    {
+        return authSession;
+    }
+}
 
 - (void)handleAuthenticationSession:(MXAuthenticationSession *)authSession
 {
+    // Make some cleaning from the server response according to what the app supports
+    authSession = [self handleSupportedFlowsInAuthenticationSession:authSession];
+    
     [super handleAuthenticationSession:authSession];
 
     AuthInputsView *authInputsview;
@@ -665,8 +788,6 @@
     {
         // Do SSO using the fallback URL
         [self showAuthenticationFallBackView];
-
-        [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
     }
     else if (sender == self.softLogoutClearDataButton)
     {

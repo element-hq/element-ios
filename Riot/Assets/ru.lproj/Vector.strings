@@ -685,3 +685,4 @@
 "room_action_reply" = "Ответ";
 "settings_labs_message_reaction" = "Реагировать на сообщения с Emoji";
 "settings_key_backup_button_connect" = "Подключите это устройство к ключу резервного копирования";
+"close" = "Закрыть";
