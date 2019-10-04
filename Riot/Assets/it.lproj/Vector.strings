@@ -36,7 +36,7 @@
 "auth_repeat_password_placeholder" = "Ripeti password";
 "auth_repeat_new_password_placeholder" = "Conferma la nuova password";
 "auth_home_server_placeholder" = "URL (es. https://matrix.org)";
-"auth_identity_server_placeholder" = "URL (es. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (es. https://vector.im)";
 "auth_invalid_login_param" = "Nome utente e/o password non corretti";
 "auth_invalid_user_name" = "Il nome utente può contenere solo lettere, numeri, punti, trattini e linee basse";
 "auth_invalid_password" = "Password troppo breve (min 6)";
@@ -363,9 +363,9 @@
 "settings_confirm_password" = "conferma password";
 "settings_fail_to_update_password" = "Aggiornamento password fallito";
 "settings_password_updated" = "La tua password è stata aggiornata";
-"settings_crypto_device_name" = "Nome dispositivo: ";
+"settings_crypto_device_name" = "Nome pubblico dispositivo: ";
 "settings_crypto_device_id" = "\nID Dispositivo: ";
-"settings_crypto_device_key" = "\nChiave dispositivo: ";
+"settings_crypto_device_key" = "\nChiave dispositivo:\n";
 "settings_crypto_export" = "Esporta chiavi";
 "settings_crypto_blacklist_unverified_devices" = "Crittografa solo per i dispositivi verificati";
 "settings_deactivate_my_account" = "Disattiva il mio account";
