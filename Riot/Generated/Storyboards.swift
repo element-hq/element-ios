@@ -97,6 +97,16 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.ServiceTermsModalScreenViewController>(storyboard: ServiceTermsModalScreenViewController.self)
   }
+  internal enum SettingsDiscoveryThreePidDetailsViewController: StoryboardType {
+    internal static let storyboardName = "SettingsDiscoveryThreePidDetailsViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SettingsDiscoveryThreePidDetailsViewController>(storyboard: SettingsDiscoveryThreePidDetailsViewController.self)
+  }
+  internal enum SettingsIdentityServerViewController: StoryboardType {
+    internal static let storyboardName = "SettingsIdentityServerViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SettingsIdentityServerViewController>(storyboard: SettingsIdentityServerViewController.self)
+  }
   internal enum SimpleScreenTemplateViewController: StoryboardType {
     internal static let storyboardName = "SimpleScreenTemplateViewController"
 

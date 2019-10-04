@@ -39,6 +39,9 @@
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
+
+    // Flag to compute self.shouldPromptForStunServerFallback
+    BOOL promptForStunServerFallback;
 }
 
 @end
@@ -52,6 +55,9 @@
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+
+    promptForStunServerFallback = NO;
+    _shouldPromptForStunServerFallback = NO;
 }
 
 - (void)viewDidLoad
@@ -229,6 +235,13 @@
 
 #pragma mark - MXCallDelegate
 
+- (void)call:(MXCall *)call stateDidChange:(MXCallState)state reason:(MXEvent *)event
+{
+    [super call:call stateDidChange:state reason:event];
+
+    [self checkStunServerFallbackWithCallState:state];
+}
+
 - (void)call:(MXCall *)call didEncounterError:(NSError *)error
 {
     if ([error.domain isEqualToString:MXEncryptingErrorDomain]
@@ -332,6 +345,41 @@
         [super call:call didEncounterError:error];
     }
 }
+
+
+#pragma mark - Fallback STUN server
+
+- (void)checkStunServerFallbackWithCallState:(MXCallState)callState
+{
+    // Detect if we should display the prompt to fallback to the STUN server defined
+    // in the app plist if the homeserver does not provide STUN or TURN servers.
+    // We should if the call ends while we were in connecting state
+    if (!self.mainSession.callManager.turnServers
+        && !self.mainSession.callManager.fallbackSTUNServer
+        && !RiotSettings.shared.isAllowStunServerFallbackHasBeenSetOnce)
+    {
+        switch (callState)
+        {
+            case MXCallStateConnecting:
+                promptForStunServerFallback = YES;
+                break;
+
+            case MXCallStateConnected:
+                promptForStunServerFallback = NO;
+                break;
+
+            case MXCallStateEnded:
+                if (promptForStunServerFallback)
+                {
+                    _shouldPromptForStunServerFallback = YES;
+                }
+
+            default:
+                break;
+        }
+    }
+}
+
 
 #pragma mark - Properties
 

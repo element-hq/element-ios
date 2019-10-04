@@ -38,6 +38,10 @@ extern NSString *const kAppDelegateDidTapStatusBarNotification;
  */
 extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 
+extern NSString *const AppDelegateDidValidateEmailNotification;
+extern NSString *const AppDelegateDidValidateEmailNotificationSIDKey;
+extern NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey;
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate, JitsiViewControllerDelegate, UNUserNotificationCenterDelegate>
 {
     BOOL isPushRegistered;

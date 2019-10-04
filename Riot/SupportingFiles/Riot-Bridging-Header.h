@@ -14,3 +14,4 @@
 #import "EncryptionInfoView.h"
 #import "EventFormatter.h"
 #import "MediaPickerViewController.h"
+#import "AppDelegate.h"

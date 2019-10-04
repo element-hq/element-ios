@@ -77,22 +77,23 @@
 "auth_repeat_password_placeholder" = "Repeat password";
 "auth_repeat_new_password_placeholder" = "Confirm your new password";
 "auth_home_server_placeholder" = "URL (e.g. https://matrix.org)";
-"auth_identity_server_placeholder" = "URL (e.g. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (e.g. https://vector.im)";
 "auth_invalid_login_param" = "Incorrect username and/or password";
 "auth_invalid_user_name" = "User names may only contain letters, numbers, dots, hyphens and underscores";
 "auth_invalid_password" = "Password too short (min 6)";
 "auth_invalid_email" = "This doesn't look like a valid email address";
 "auth_invalid_phone" = "This doesn't look like a valid phone number";
 "auth_missing_password" = "Missing password";
-"auth_add_email_message" = "Add an email address to your account to let users discover you, and to reset your password.";
-"auth_add_phone_message" = "Add a phone number to your account to let users discover you.";
-"auth_add_email_phone_message" = "Add an email address and/or a phone number to your account to let users discover you. Email address will also let you reset your password.";
-"auth_add_email_and_phone_message" = "Add an email address and a phone number to your account to let users discover you. Email address will also let you reset your password.";
+"auth_add_email_message_2" = "Set an email for account recovery, and later to be optionally discoverable by people who know you.";
+"auth_add_phone_message_2" = "Set a phone, and later to be optionally discoverable by people who know you.";
+"auth_add_email_phone_message_2" = "Set an email for account recovery. Use later email or phone to be optionally discoverable by people who know you.";
 "auth_missing_email" = "Missing email address";
 "auth_missing_phone" = "Missing phone number";
 "auth_missing_email_or_phone" = "Missing email address or phone number";
 "auth_email_in_use" = "This email address is already in use";
 "auth_phone_in_use" = "This phone number is already in use";
+"auth_email_is_required" = "No identity server is configured so you cannot add an email address in order to reset your password in the future.";
+"auth_phone_is_required" = "No identity server is configured so you cannot add a phone number in order to reset your password in the future.";
 "auth_untrusted_id_server" = "The identity server is not trusted";
 "auth_password_dont_match" = "Passwords don't match";
 "auth_username_in_use" = "Username in use";
@@ -112,6 +113,7 @@
 "auth_reset_password_next_step_button" = "I have verified my email address";
 "auth_reset_password_error_unauthorized" = "Failed to verify email address: make sure you clicked the link in the email";
 "auth_reset_password_error_not_found" = "Your email address does not appear to be associated with a Matrix ID on this homeserver.";
+"auth_reset_password_error_is_required" = "No identity server is configured: add one in server options to reset your password.";
 "auth_reset_password_success_message" = "Your password has been reset.\n\nYou have been logged out of all devices and will no longer receive push notifications. To re-enable notifications, re-log in on each device.";
 "auth_add_email_and_phone_warning" = "Registration with email and phone number at once is not supported yet until the api exists. Only the phone number will be taken into account. You may add your email to your profile in settings.";
 "auth_accept_policies" = "Please review and accept the policies of this homeserver:";
@@ -199,6 +201,7 @@
 // Contacts
 "contacts_address_book_section" = "LOCAL CONTACTS";
 "contacts_address_book_matrix_users_toggle" = "Matrix users only";
+"contacts_address_book_no_identity_server" = "No identity server configured";
 "contacts_address_book_no_contact" = "No local contacts";
 "contacts_address_book_permission_required" = "Permission required to access local contacts";
 "contacts_address_book_permission_denied" = "You didn't allow Riot to access your local contacts";
@@ -373,6 +376,8 @@
 "settings_user_settings" = "USER SETTINGS";
 "settings_notifications_settings" = "NOTIFICATION SETTINGS";
 "settings_calls_settings" = "CALLS";
+"settings_discovery_settings" = "DISCOVERY";
+"settings_identity_server_settings" = "IDENTITY SERVER";
 "settings_user_interface" = "USER INTERFACE";
 "settings_ignored_users" = "IGNORED USERS";
 "settings_contacts" = "LOCAL CONTACTS";
@@ -403,6 +408,9 @@
 "settings_change_password" = "Change password";
 "settings_night_mode" = "Night Mode";
 "settings_fail_to_update_profile" = "Fail to update profile";
+"settings_three_pids_management_information_part1" = "Manage which email addresses or phone numbers you can use to log in or recover your account here. Control who can find you in ";
+"settings_three_pids_management_information_part2" = "Discovery";
+"settings_three_pids_management_information_part3" = ".";
 
 "settings_enable_push_notif" = "Notifications on this device";
 "settings_show_decrypted_content" = "Show decrypted content";
@@ -420,6 +428,9 @@
 
 "settings_enable_callkit" = "Integrated calling";
 "settings_callkit_info" = "Receive incoming calls on your lock screen. See your Riot calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.";
+"settings_calls_stun_server_fallback_button" = "Allow fallback call assist server";
+"settings_calls_stun_server_fallback_description" = "Allow fallback call assist server %@ when your homeserver does not offer one (your IP address would be shared during a call).";
+
 "settings_ui_language" = "Language";
 "settings_ui_theme" = "Theme";
 "settings_ui_theme_auto" = "Auto";
@@ -461,9 +472,9 @@
 "settings_fail_to_update_password" = "Fail to update password";
 "settings_password_updated" = "Your password has been updated";
 
-"settings_crypto_device_name" = "Device name: ";
+"settings_crypto_device_name" = "Device Public Name: ";
 "settings_crypto_device_id" = "\nDevice ID: ";
-"settings_crypto_device_key" = "\nDevice key: ";
+"settings_crypto_device_key" = "\nDevice key:\n";
 "settings_crypto_export" = "Export keys";
 "settings_crypto_blacklist_unverified_devices" = "Encrypt to verified devices only";
 
@@ -493,6 +504,60 @@
 "settings_key_backup_button_connect" = "Connect this device to Key Backup";
 "settings_key_backup_delete_confirmation_prompt_title" = "Delete Backup";
 "settings_key_backup_delete_confirmation_prompt_msg" = "Are you sure? You will lose your encrypted messages if your keys are not backed up properly.";
+
+"settings_devices_description" = "A device's public name is visible to people you communicate with";
+
+"settings_discovery_no_identity_server" = "You are not currently using an identity server. To be discoverable by existing contacts you known, add one.";
+"settings_discovery_terms_not_signed" = "Agree to the Identity Server (%@) Terms of Service to allow yourself to be discoverable by email address or phone number.";
+"settings_discovery_three_pids_management_information_part1" = "Manage which email addresses or phone numbers other users can use to discover you and use to invite you to rooms. Add or remove email addresses or phone numbers from this list in ";
+"settings_discovery_three_pids_management_information_part2" = "User Settings";
+"settings_discovery_three_pids_management_information_part3" = ".";
+"settings_discovery_error_message" = "An error occured. Please retry.";
+
+"settings_discovery_three_pid_details_title_email" = "Manage email";
+"settings_discovery_three_pid_details_information_email" = "Manage preferences for this email address, which other users can use to discover you and use to invite you to rooms. Add or remove email addresses in Accounts.";
+"settings_discovery_three_pid_details_title_phone_number" = "Manage phone number";
+"settings_discovery_three_pid_details_information_phone_number" = "Manage preferences for this phone number, which other users can use to discover you and use to invite you to rooms. Add or remove phone numbers in Accounts.";
+
+"settings_discovery_three_pid_details_share_action" = "Share";
+"settings_discovery_three_pid_details_revoke_action" = "Revoke";
+"settings_discovery_three_pid_details_cancel_email_validation_action" = "Cancel email validation";
+"settings_discovery_three_pid_details_enter_sms_code_action" = "Enter SMS activation code";
+
+"settings_identity_server_description" = "Using the identity server set above, you can discover and be discoverable by existing contacts you know.";
+"settings_identity_server_no_is" = "No identity server configured";
+"settings_identity_server_no_is_description" = "You are not currently using an identity server. To discover and be discoverable by existing contacts you know, add one above.";
+
+
+// Identity server settings
+"identity_server_settings_title" = "Identity Server";
+
+"identity_server_settings_description" = "You are currently using %@ to discover and be discoverable by existing contacts you know.";
+"identity_server_settings_no_is_description" = "You are not currently using an identity server. To discover and be discoverable by existing contacts, add one above.";
+
+"identity_server_settings_place_holder" = "Enter an identity server";
+
+"identity_server_settings_add" = "Add";
+"identity_server_settings_change" = "Change";
+
+"identity_server_settings_disconnect_info" = "Disconnecting from your identity server will mean you won’t be discoverable by other users and  be able to invite others by email or phone.";
+"identity_server_settings_disconnect" = "Disconnect";
+
+"identity_server_settings_alert_no_terms_title" = "Identity server has no terms of services";
+"identity_server_settings_alert_no_terms" = "The identity server you have chosen does not have any terms of service. Only continue if you trust the owner of the server.";
+
+"identity_server_settings_alert_change_title" = "Change identity server";
+"identity_server_settings_alert_change" = "Disconnect from the identity server %1$@ and connect to %2$@ instead?";
+
+"identity_server_settings_alert_disconnect_title" = "Disconnect identity server";
+"identity_server_settings_alert_disconnect" = "Disconnect from the identity server %@?";
+"identity_server_settings_alert_disconnect_button" = "Disconnect";
+"identity_server_settings_alert_disconnect_still_sharing_3pid" = "You are still sharing your personal data on the identity server %@.\n\nWe recommend that you remove your email addresses and phone numbers from the identity server before disconnecting.";
+"identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "Disconnect anyway";
+
+"identity_server_settings_alert_error_terms_not_accepted" = "You must accept terms of %@ to set it as identity server.";
+"identity_server_settings_alert_error_invalid_identity_server" = "%@ is not a valid identity server.";
+
 
 // Room Details
 "room_details_title" = "Room Details";
@@ -643,6 +708,11 @@
 "call_incoming_video" = "Incoming video call...";
 "call_already_displayed" = "There is already a call in progress.";
 "call_jitsi_error" = "Failed to join the conference call.";
+
+"call_no_stun_server_error_title" ="Call failed due to misconfigured server";
+"call_no_stun_server_error_message_1" ="Please ask the administrator of your homeserver %@ to configure a TURN server in order for calls to work reliably.";
+"call_no_stun_server_error_message_2" ="Alternatively, you can try to use the public server at %@, but this will not be as reliable, and it will share your IP address with that server. You can also manage this in Settings";
+"call_no_stun_server_error_use_fallback_button" = "Try using %@";
 
 // No VoIP support
 "no_voip_title" = "Incoming call";
@@ -968,3 +1038,7 @@
 
 // MARK: Reaction history
 "reaction_history_title" = "Reactions";
+
+
+// Generic errors
+"error_invite_3pid_with_no_identity_server" = "Add an identity server in your settings to invite by email.";

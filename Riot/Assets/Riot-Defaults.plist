@@ -59,6 +59,8 @@
 	<false/>
 	<key>createConferenceCallsWithJitsi</key>
 	<true/>
+	<key>stunServerFallback</key>
+	<string>stun:turn.matrix.org</string>
 	<key>enableRageShake</key>
 	<true/>
 	<key>maxAllowedMediaCacheSize</key>

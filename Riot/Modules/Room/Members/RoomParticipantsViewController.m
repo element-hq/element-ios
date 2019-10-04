@@ -1671,8 +1671,18 @@
                                                                        [self removePendingActionMask];
                                                                        
                                                                        NSLog(@"[RoomParticipantsVC] Invite be email %@ failed", participantId);
+
                                                                        // Alert user
-                                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                       if ([error.domain isEqualToString:kMXRestClientErrorDomain]
+                                                                           && error.code == MXRestClientErrorMissingIdentityServer)
+                                                                       {
+                                                                           NSString *message = [NSBundle mxk_localizedStringForKey:@"error_invite_3pid_with_no_identity_server"];
+                                                                           [[AppDelegate theDelegate] showAlertWithTitle:message message:nil];
+                                                                       }
+                                                                       else
+                                                                       {
+                                                                           [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                       }
                                                                    }];
                                                                }
                                                                else //if ([MXTools isMatrixUserIdentifier:participantId])

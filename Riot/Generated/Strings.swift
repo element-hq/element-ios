@@ -30,25 +30,21 @@ internal enum VectorL10n {
   internal static var authAcceptPolicies: String { 
     return VectorL10n.tr("Vector", "auth_accept_policies") 
   }
-  /// Add an email address and a phone number to your account to let users discover you. Email address will also let you reset your password.
-  internal static var authAddEmailAndPhoneMessage: String { 
-    return VectorL10n.tr("Vector", "auth_add_email_and_phone_message") 
-  }
   /// Registration with email and phone number at once is not supported yet until the api exists. Only the phone number will be taken into account. You may add your email to your profile in settings.
   internal static var authAddEmailAndPhoneWarning: String { 
     return VectorL10n.tr("Vector", "auth_add_email_and_phone_warning") 
   }
-  /// Add an email address to your account to let users discover you, and to reset your password.
-  internal static var authAddEmailMessage: String { 
-    return VectorL10n.tr("Vector", "auth_add_email_message") 
+  /// Set an email for account recovery, and later to be optionally discoverable by people who know you.
+  internal static var authAddEmailMessage2: String { 
+    return VectorL10n.tr("Vector", "auth_add_email_message_2") 
   }
-  /// Add an email address and/or a phone number to your account to let users discover you. Email address will also let you reset your password.
-  internal static var authAddEmailPhoneMessage: String { 
-    return VectorL10n.tr("Vector", "auth_add_email_phone_message") 
+  /// Set an email for account recovery. Use later email or phone to be optionally discoverable by people who know you.
+  internal static var authAddEmailPhoneMessage2: String { 
+    return VectorL10n.tr("Vector", "auth_add_email_phone_message_2") 
   }
-  /// Add a phone number to your account to let users discover you.
-  internal static var authAddPhoneMessage: String { 
-    return VectorL10n.tr("Vector", "auth_add_phone_message") 
+  /// Set a phone, and later to be optionally discoverable by people who know you.
+  internal static var authAddPhoneMessage2: String { 
+    return VectorL10n.tr("Vector", "auth_add_phone_message_2") 
   }
   /// Invalid homeserver discovery response
   internal static var authAutodiscoverInvalidResponse: String { 
@@ -57,6 +53,10 @@ internal enum VectorL10n {
   /// This email address is already in use
   internal static var authEmailInUse: String { 
     return VectorL10n.tr("Vector", "auth_email_in_use") 
+  }
+  /// No identity server is configured so you cannot add an email address in order to reset your password in the future.
+  internal static var authEmailIsRequired: String { 
+    return VectorL10n.tr("Vector", "auth_email_is_required") 
   }
   /// Failed to send email: This email address was not found
   internal static var authEmailNotFound: String { 
@@ -74,7 +74,7 @@ internal enum VectorL10n {
   internal static var authForgotPassword: String { 
     return VectorL10n.tr("Vector", "auth_forgot_password") 
   }
-  /// No Identity Server is configured: add one to reset your password.
+  /// No identity server is configured: add one to reset your password.
   internal static var authForgotPasswordErrorNoConfiguredIdentityServer: String { 
     return VectorL10n.tr("Vector", "auth_forgot_password_error_no_configured_identity_server") 
   }
@@ -82,7 +82,7 @@ internal enum VectorL10n {
   internal static var authHomeServerPlaceholder: String { 
     return VectorL10n.tr("Vector", "auth_home_server_placeholder") 
   }
-  /// URL (e.g. https://matrix.org)
+  /// URL (e.g. https://vector.im)
   internal static var authIdentityServerPlaceholder: String { 
     return VectorL10n.tr("Vector", "auth_identity_server_placeholder") 
   }
@@ -166,6 +166,10 @@ internal enum VectorL10n {
   internal static var authPhoneInUse: String { 
     return VectorL10n.tr("Vector", "auth_phone_in_use") 
   }
+  /// No identity server is configured so you cannot add a phone number in order to reset your password in the future.
+  internal static var authPhoneIsRequired: String { 
+    return VectorL10n.tr("Vector", "auth_phone_is_required") 
+  }
   /// Phone number
   internal static var authPhonePlaceholder: String { 
     return VectorL10n.tr("Vector", "auth_phone_placeholder") 
@@ -189,6 +193,10 @@ internal enum VectorL10n {
   /// An email has been sent to %@. Once you've followed the link it contains, click below.
   internal static func authResetPasswordEmailValidationMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "auth_reset_password_email_validation_message", p1)
+  }
+  /// No identity server is configured: add one in server options to reset your password.
+  internal static var authResetPasswordErrorIsRequired: String { 
+    return VectorL10n.tr("Vector", "auth_reset_password_error_is_required") 
   }
   /// Your email address does not appear to be associated with a Matrix ID on this homeserver.
   internal static var authResetPasswordErrorNotFound: String { 
@@ -370,6 +378,22 @@ internal enum VectorL10n {
   internal static var callJitsiError: String { 
     return VectorL10n.tr("Vector", "call_jitsi_error") 
   }
+  /// Please ask the administrator of your homeserver %@ to configure a TURN server in order for calls to work reliably.
+  internal static func callNoStunServerErrorMessage1(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "call_no_stun_server_error_message_1", p1)
+  }
+  /// Alternatively, you can try to use the public server at %@, but this will not be as reliable, and it will share your IP address with that server. You can also manage this in Settings
+  internal static func callNoStunServerErrorMessage2(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "call_no_stun_server_error_message_2", p1)
+  }
+  /// Call failed due to misconfigured server
+  internal static var callNoStunServerErrorTitle: String { 
+    return VectorL10n.tr("Vector", "call_no_stun_server_error_title") 
+  }
+  /// Try using %@
+  internal static func callNoStunServerErrorUseFallbackButton(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "call_no_stun_server_error_use_fallback_button", p1)
+  }
   /// Camera
   internal static var camera: String { 
     return VectorL10n.tr("Vector", "camera") 
@@ -401,6 +425,10 @@ internal enum VectorL10n {
   /// No local contacts
   internal static var contactsAddressBookNoContact: String { 
     return VectorL10n.tr("Vector", "contacts_address_book_no_contact") 
+  }
+  /// No identity server configured
+  internal static var contactsAddressBookNoIdentityServer: String { 
+    return VectorL10n.tr("Vector", "contacts_address_book_no_identity_server") 
   }
   /// You didn't allow Riot to access your local contacts
   internal static var contactsAddressBookPermissionDenied: String { 
@@ -966,10 +994,16 @@ internal enum VectorL10n {
   internal static var encryptedRoomMessageReplyToPlaceholder: String { 
     return VectorL10n.tr("Vector", "encrypted_room_message_reply_to_placeholder") 
   }
+
+  /// Add an identity server in your settings to invite by email.
+  internal static var errorInvite3pidWithNoIdentityServer: String { 
+    return VectorL10n.tr("Vector", "error_invite_3pid_with_no_identity_server") 
+
   /// It looks like you’re trying to connect to another homeserver. Do you want to sign out?
   internal static var errorUserAlreadyLoggedIn: String { 
-    return VectorL10n.tr("Vector", "error_user_already_logged_in") 
+    return VectorL10n.tr("Vector", "error_user_already_logged_in")
   }
+    
   /// VoIP conference added by %@
   internal static func eventFormatterJitsiWidgetAdded(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_jitsi_widget_added", p1)
@@ -1121,6 +1155,82 @@ internal enum VectorL10n {
   /// Could not connect to the homeserver.
   internal static var homeserverConnectionLost: String { 
     return VectorL10n.tr("Vector", "homeserver_connection_lost") 
+  }
+  /// Add
+  internal static var identityServerSettingsAdd: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_add") 
+  }
+  /// Disconnect from the identity server %1$@ and connect to %2$@ instead?
+  internal static func identityServerSettingsAlertChange(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "identity_server_settings_alert_change", p1, p2)
+  }
+  /// Change identity server
+  internal static var identityServerSettingsAlertChangeTitle: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_alert_change_title") 
+  }
+  /// Disconnect from the identity server %@?
+  internal static func identityServerSettingsAlertDisconnect(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "identity_server_settings_alert_disconnect", p1)
+  }
+  /// Disconnect
+  internal static var identityServerSettingsAlertDisconnectButton: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_alert_disconnect_button") 
+  }
+  /// You are still sharing your personal data on the identity server %@.\n\nWe recommend that you remove your email addresses and phone numbers from the identity server before disconnecting.
+  internal static func identityServerSettingsAlertDisconnectStillSharing3pid(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "identity_server_settings_alert_disconnect_still_sharing_3pid", p1)
+  }
+  /// Disconnect anyway
+  internal static var identityServerSettingsAlertDisconnectStillSharing3pidButton: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_alert_disconnect_still_sharing_3pid_button") 
+  }
+  /// Disconnect identity server
+  internal static var identityServerSettingsAlertDisconnectTitle: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_alert_disconnect_title") 
+  }
+  /// %@ is not a valid identity server.
+  internal static func identityServerSettingsAlertErrorInvalidIdentityServer(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "identity_server_settings_alert_error_invalid_identity_server", p1)
+  }
+  /// You must accept terms of %@ to set it as identity server.
+  internal static func identityServerSettingsAlertErrorTermsNotAccepted(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "identity_server_settings_alert_error_terms_not_accepted", p1)
+  }
+  /// The identity server you have chosen does not have any terms of service. Only continue if you trust the owner of the server.
+  internal static var identityServerSettingsAlertNoTerms: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_alert_no_terms") 
+  }
+  /// Identity server has no terms of services
+  internal static var identityServerSettingsAlertNoTermsTitle: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_alert_no_terms_title") 
+  }
+  /// Change
+  internal static var identityServerSettingsChange: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_change") 
+  }
+  /// You are currently using %@ to discover and be discoverable by existing contacts you know.
+  internal static func identityServerSettingsDescription(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "identity_server_settings_description", p1)
+  }
+  /// Disconnect
+  internal static var identityServerSettingsDisconnect: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_disconnect") 
+  }
+  /// Disconnecting from your identity server will mean you won’t be discoverable by other users and  be able to invite others by email or phone.
+  internal static var identityServerSettingsDisconnectInfo: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_disconnect_info") 
+  }
+  /// You are not currently using an identity server. To discover and be discoverable by existing contacts, add one above.
+  internal static var identityServerSettingsNoIsDescription: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_no_is_description") 
+  }
+  /// Enter an identity server
+  internal static var identityServerSettingsPlaceHolder: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_place_holder") 
+  }
+  /// Identity Server
+  internal static var identityServerSettingsTitle: String { 
+    return VectorL10n.tr("Vector", "identity_server_settings_title") 
   }
   /// Take photo
   internal static var imagePickerActionCamera: String { 
@@ -1554,7 +1664,7 @@ internal enum VectorL10n {
   internal static var roomCreationAppearancePicture: String { 
     return VectorL10n.tr("Vector", "room_creation_appearance_picture") 
   }
-  /// No Identity Server is configured so you cannot add a participant with an email.
+  /// No identity server is configured so you cannot add a participant with an email.
   internal static var roomCreationErrorInviteUserByEmailWithoutIdentityServer: String { 
     return VectorL10n.tr("Vector", "room_creation_error_invite_user_by_email_without_identity_server") 
   }
@@ -2178,7 +2288,7 @@ internal enum VectorL10n {
   internal static var roomParticipantsRemoveThirdPartyInviteMsg: String { 
     return VectorL10n.tr("Vector", "room_participants_remove_third_party_invite_msg") 
   }
-  /// No Identity Server is configured so you cannot start a chat with a contact using an email.
+  /// No identity server is configured so you cannot start a chat with a contact using an email.
   internal static var roomParticipantsStartNewChatErrorUsingUserEmailWithoutIdentityServer: String { 
     return VectorL10n.tr("Vector", "room_participants_start_new_chat_error_using_user_email_without_identity_server") 
   }
@@ -2446,6 +2556,14 @@ internal enum VectorL10n {
   internal static var settingsCallsSettings: String { 
     return VectorL10n.tr("Vector", "settings_calls_settings") 
   }
+  /// Allow fallback call assist server
+  internal static var settingsCallsStunServerFallbackButton: String { 
+    return VectorL10n.tr("Vector", "settings_calls_stun_server_fallback_button") 
+  }
+  /// Allow fallback call assist server %@ when your homeserver does not offer one (your IP address would be shared during a call).
+  internal static func settingsCallsStunServerFallbackDescription(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_calls_stun_server_fallback_description", p1)
+  }
   /// Change password
   internal static var settingsChangePassword: String { 
     return VectorL10n.tr("Vector", "settings_change_password") 
@@ -2502,11 +2620,11 @@ internal enum VectorL10n {
   internal static var settingsCryptoDeviceId: String { 
     return VectorL10n.tr("Vector", "settings_crypto_device_id") 
   }
-  /// \nDevice key: 
+  /// \nDevice key:\n
   internal static var settingsCryptoDeviceKey: String { 
     return VectorL10n.tr("Vector", "settings_crypto_device_key") 
   }
-  /// Device name: 
+  /// Device Public Name: 
   internal static var settingsCryptoDeviceName: String { 
     return VectorL10n.tr("Vector", "settings_crypto_device_name") 
   }
@@ -2529,6 +2647,70 @@ internal enum VectorL10n {
   /// DEVICES
   internal static var settingsDevices: String { 
     return VectorL10n.tr("Vector", "settings_devices") 
+  }
+  /// A device's public name is visible to people you communicate with
+  internal static var settingsDevicesDescription: String { 
+    return VectorL10n.tr("Vector", "settings_devices_description") 
+  }
+  /// An error occured. Please retry.
+  internal static var settingsDiscoveryErrorMessage: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_error_message") 
+  }
+  /// You are not currently using an identity server. To be discoverable by existing contacts you known, add one.
+  internal static var settingsDiscoveryNoIdentityServer: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_no_identity_server") 
+  }
+  /// DISCOVERY
+  internal static var settingsDiscoverySettings: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_settings") 
+  }
+  /// Agree to the Identity Server (%@) Terms of Service to allow yourself to be discoverable by email address or phone number.
+  internal static func settingsDiscoveryTermsNotSigned(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_discovery_terms_not_signed", p1)
+  }
+  /// Cancel email validation
+  internal static var settingsDiscoveryThreePidDetailsCancelEmailValidationAction: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_three_pid_details_cancel_email_validation_action") 
+  }
+  /// Enter SMS activation code
+  internal static var settingsDiscoveryThreePidDetailsEnterSmsCodeAction: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_three_pid_details_enter_sms_code_action") 
+  }
+  /// Manage preferences for this email address, which other users can use to discover you and use to invite you to rooms. Add or remove email addresses in Accounts.
+  internal static var settingsDiscoveryThreePidDetailsInformationEmail: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_three_pid_details_information_email") 
+  }
+  /// Manage preferences for this phone number, which other users can use to discover you and use to invite you to rooms. Add or remove phone numbers in Accounts.
+  internal static var settingsDiscoveryThreePidDetailsInformationPhoneNumber: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_three_pid_details_information_phone_number") 
+  }
+  /// Revoke
+  internal static var settingsDiscoveryThreePidDetailsRevokeAction: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_three_pid_details_revoke_action") 
+  }
+  /// Share
+  internal static var settingsDiscoveryThreePidDetailsShareAction: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_three_pid_details_share_action") 
+  }
+  /// Manage email
+  internal static var settingsDiscoveryThreePidDetailsTitleEmail: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_three_pid_details_title_email") 
+  }
+  /// Manage phone number
+  internal static var settingsDiscoveryThreePidDetailsTitlePhoneNumber: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_three_pid_details_title_phone_number") 
+  }
+  /// Manage which email addresses or phone numbers other users can use to discover you and use to invite you to rooms. Add or remove email addresses or phone numbers from this list in 
+  internal static var settingsDiscoveryThreePidsManagementInformationPart1: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_three_pids_management_information_part1") 
+  }
+  /// User Settings
+  internal static var settingsDiscoveryThreePidsManagementInformationPart2: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_three_pids_management_information_part2") 
+  }
+  /// .
+  internal static var settingsDiscoveryThreePidsManagementInformationPart3: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_three_pids_management_information_part3") 
   }
   /// Display Name
   internal static var settingsDisplayName: String { 
@@ -2573,6 +2755,22 @@ internal enum VectorL10n {
   /// Global notification settings are available on your %@ web client
   internal static func settingsGlobalSettingsInfo(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_global_settings_info", p1)
+  }
+  /// Using the identity server set above, you can discover and be discoverable by existing contacts you know.
+  internal static var settingsIdentityServerDescription: String { 
+    return VectorL10n.tr("Vector", "settings_identity_server_description") 
+  }
+  /// No identity server configured
+  internal static var settingsIdentityServerNoIs: String { 
+    return VectorL10n.tr("Vector", "settings_identity_server_no_is") 
+  }
+  /// You are not currently using an identity server. To discover and be discoverable by existing contacts you know, add one above.
+  internal static var settingsIdentityServerNoIsDescription: String { 
+    return VectorL10n.tr("Vector", "settings_identity_server_no_is_description") 
+  }
+  /// IDENTITY SERVER
+  internal static var settingsIdentityServerSettings: String { 
+    return VectorL10n.tr("Vector", "settings_identity_server_settings") 
   }
   /// IGNORED USERS
   internal static var settingsIgnoredUsers: String { 
@@ -2809,6 +3007,18 @@ internal enum VectorL10n {
   /// Third-party Notices
   internal static var settingsThirdPartyNotices: String { 
     return VectorL10n.tr("Vector", "settings_third_party_notices") 
+  }
+  /// Manage which email addresses or phone numbers you can use to log in or recover your account here. Control who can find you in 
+  internal static var settingsThreePidsManagementInformationPart1: String { 
+    return VectorL10n.tr("Vector", "settings_three_pids_management_information_part1") 
+  }
+  /// Discovery
+  internal static var settingsThreePidsManagementInformationPart2: String { 
+    return VectorL10n.tr("Vector", "settings_three_pids_management_information_part2") 
+  }
+  /// .
+  internal static var settingsThreePidsManagementInformationPart3: String { 
+    return VectorL10n.tr("Vector", "settings_three_pids_management_information_part3") 
   }
   /// Settings
   internal static var settingsTitle: String { 
