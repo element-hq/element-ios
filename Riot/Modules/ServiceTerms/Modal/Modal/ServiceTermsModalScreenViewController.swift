@@ -115,7 +115,7 @@ final class ServiceTermsModalScreenViewController: UIViewController {
         self.setupTableView()
         self.scrollView.keyboardDismissMode = .interactive
         
-        self.messageLabel.text = VectorL10n.serviceTermsModalMessage
+        self.messageLabel.text = VectorL10n.serviceTermsModalMessage(self.viewModel.serviceUrl)
 
         self.acceptButton.setTitle(VectorL10n.serviceTermsModalAcceptButton, for: .normal)
         self.acceptButton.setTitle(VectorL10n.serviceTermsModalAcceptButton, for: .highlighted)

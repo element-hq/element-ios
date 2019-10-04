@@ -2526,9 +2526,9 @@ internal enum VectorL10n {
   internal static var serviceTermsModalDescriptionForIntegrationManager: String { 
     return VectorL10n.tr("Vector", "service_terms_modal_description_for_integration_manager") 
   }
-  /// To continue you need to accept the Terms of this service.
-  internal static var serviceTermsModalMessage: String { 
-    return VectorL10n.tr("Vector", "service_terms_modal_message") 
+  /// To continue you need to accept the Terms of this service (%@).
+  internal static func serviceTermsModalMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "service_terms_modal_message", p1)
   }
   /// Terms Of Service
   internal static var serviceTermsModalTitle: String { 
