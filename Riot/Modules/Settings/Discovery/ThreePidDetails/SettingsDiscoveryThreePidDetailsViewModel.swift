@@ -190,7 +190,9 @@ final class SettingsDiscoveryThreePidDetailsViewModel: SettingsDiscoveryThreePid
 
                 self.checkThreePidDiscoverability()
             case .failure(let error):
-                if let mxError = MXError(nsError: error), mxError.errcode == kMXErrCodeStringThreePIDAuthFailed {
+                if let mxError = MXError(nsError: error),
+                    (mxError.errcode == kMXErrCodeStringThreePIDAuthFailed
+                        || mxError.errcode == kMXErrCodeStringUnknown) {
                     self.update(viewState: .loaded(displayMode: .pendingThreePidVerification))
                 } else {
                     if threePidAddSession.medium == kMX3PIDMediumEmail {
