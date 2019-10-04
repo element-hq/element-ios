@@ -835,3 +835,20 @@
 "service_terms_modal_accept_button" = "Elfogad";
 "service_terms_modal_description_for_identity_server" = "Látható mások számára";
 "service_terms_modal_description_for_integration_manager" = "Használjon botokat, hidakat, kisalkalmazásokat és matrica csomagokat";
+"room_participants_remove_third_party_invite_prompt_msg" = "Biztos vagy benne, hogy visszavonod ezt a meghívót?";
+// Errors
+"error_user_already_logged_in" = "Úgy tűnik másik matrix szerverhez próbálsz csatlakozni. Ki szeretnél jelentkezni?";
+"room_accessiblity_scroll_to_bottom" = "Görgess az aljára";
+"room_accessibility_search" = "Keresés";
+"room_accessibility_integrations" = "Integrációk";
+"room_accessibility_upload" = "Feltöltés";
+"room_accessibility_call" = "Hívás";
+"room_accessibility_hangup" = "Letesz";
+"media_type_accessibility_image" = "Kép";
+"media_type_accessibility_audio" = "Hang";
+"media_type_accessibility_video" = "Videó";
+"media_type_accessibility_location" = "Helyzet";
+"media_type_accessibility_file" = "Fájl";
+"media_type_accessibility_sticker" = "Matrica";
+// Widget Picker
+"widget_picker_title" = "Integrációk";
