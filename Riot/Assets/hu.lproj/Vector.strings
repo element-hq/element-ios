@@ -831,7 +831,7 @@
 "photo_library_access_not_granted" = "A fénykép könyvár eléréséhez %@ nem rendelkezik engedéllyel, kérlek változtasd meg az adatvédelmi beállításokat";
 // Service terms
 "service_terms_modal_title" = "Felhasználási feltételek";
-"service_terms_modal_message" = "A folytatáshoz el kell fogadnod a felhasználási feltételeket.";
+"service_terms_modal_message" = "A folytatáshoz el kell fogadnod a felhasználási feltételeket (%@).";
 "service_terms_modal_accept_button" = "Elfogad";
 "service_terms_modal_description_for_identity_server" = "Látható mások számára";
 "service_terms_modal_description_for_integration_manager" = "Használjon botokat, hidakat, kisalkalmazásokat és matrica csomagokat";
