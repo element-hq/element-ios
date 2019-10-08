@@ -695,7 +695,7 @@
 "widget_integrations_server_failed_to_connect" = "La connessione al Server Integrazioni é fallita";
 // Service terms
 "service_terms_modal_title" = "Termini del servizio";
-"service_terms_modal_message" = "Per continuare devi accettare i Termini di servizio.";
+"service_terms_modal_message" = "Per continuare devi accettare i Termini di servizio (%@).";
 "service_terms_modal_accept_button" = "Accetta";
 "service_terms_modal_description_for_identity_server" = "Gli altri utenti possono trovarti";
 "service_terms_modal_description_for_integration_manager" = "Usa bot, widget e stickers";
@@ -822,3 +822,20 @@
 "media_type_accessibility_sticker" = "Adesivo";
 // Widget Picker
 "widget_picker_title" = "Integrazioni";
+"auth_add_email_message_2" = "Imposta un'email per il recupero dell'account, più tardi anche per essere trovabile dalle persone che ti conoscono.";
+"auth_add_phone_message_2" = "Imposta un telefono, più tardi anche per essere trovabile dalle persone che ti conoscono.";
+"auth_add_email_phone_message_2" = "Imposta un'email per il recupero dell'account. Più tardi usa l'email o il telefono per essere trovabile dalle persone che ti conoscono.";
+"auth_email_is_required" = "Nessun server di identità configurato, perciò non puoi aggiungere un indirizzo email per ripristinare la password in futuro.";
+"auth_phone_is_required" = "Nessun server di identità configurato, perciò non puoi aggiungere un numero di telefono per ripristinare la password in futuro.";
+"auth_reset_password_error_is_required" = "Nessun server di identità configurato: aggiungine uno nelle opzioni server per ripristinare la password.";
+"contacts_address_book_no_identity_server" = "Nessun server di identità configurato";
+"settings_discovery_settings" = "SCOPRI";
+"settings_identity_server_settings" = "SERVER IDENTITÀ";
+"settings_three_pids_management_information_part1" = "Gestisci qui quali indirizzi email o numeri di telefono puoi usare per accedere o recuperare l'account. Controlla chi può trovarti in ";
+"settings_three_pids_management_information_part2" = "Scopri";
+"settings_three_pids_management_information_part3" = ".";
+"settings_calls_stun_server_fallback_button" = "Permetti server di assistenza alle chiamate di fallback";
+"settings_calls_stun_server_fallback_description" = "Consenti server di assistenza alle chiamate di fallback %@ quando il tuo homeserver non ne offre uno (il tuo indirizzo IP verrà condiviso durante una chiamata).";
+"settings_devices_description" = "Il nome pubblico di un dispositivo è visibile dalle persone con cui comunichi";
+"settings_discovery_no_identity_server" = "Attualmente non stai usando un server di identità. Per essere trovabile dai contatti esistenti che conosci, aggiungine uno.";
+"settings_discovery_terms_not_signed" = "Accetta le condizioni di servizio del server di identità (%@) per poter essere trovabile tramite indirizzo email o numero di telefono.";
