@@ -784,7 +784,7 @@
 
 // Service terms
 "service_terms_modal_title" = "Terms Of Service";
-"service_terms_modal_message" = "To continue you need to accept the Terms of this service.";
+"service_terms_modal_message" = "To continue you need to accept the Terms of this service (%@).";
 "service_terms_modal_accept_button" = "Accept";
 "service_terms_modal_description_for_identity_server" = "Be discoverable by others";
 "service_terms_modal_description_for_integration_manager" = "Use Bots, bridges, widgets and sticker packs";

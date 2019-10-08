@@ -28,6 +28,9 @@ final class ServiceTermsModalScreenViewModel: ServiceTermsModalScreenViewModelTy
     
     // MARK: Public
 
+    var serviceUrl: String {
+        return serviceTerms.baseUrl
+    }
     var serviceType: MXServiceType {
         return serviceTerms.serviceType
     }
