@@ -829,3 +829,20 @@
 "service_terms_modal_accept_button" = "Приемам";
 "service_terms_modal_description_for_identity_server" = "Бъдете откриваеми от потребители";
 "service_terms_modal_description_for_integration_manager" = "Използвайте ботове, връзки към други мрежи и стикери";
+"room_participants_remove_third_party_invite_prompt_msg" = "Сигурни ли сте, че искате да оттеглите тази покана?";
+// Errors
+"error_user_already_logged_in" = "Изглежда се опитвате да се свържете с друг сървър. Искате ли да излезе от профила?";
+"room_accessiblity_scroll_to_bottom" = "Отиди най-долу";
+"room_accessibility_search" = "Търси";
+"room_accessibility_integrations" = "Интеграции";
+"room_accessibility_upload" = "Качи";
+"room_accessibility_call" = "Обади се";
+"room_accessibility_hangup" = "Затвори";
+"media_type_accessibility_image" = "Снимка";
+"media_type_accessibility_audio" = "Аудио";
+"media_type_accessibility_video" = "Видео";
+"media_type_accessibility_location" = "Местоположение";
+"media_type_accessibility_file" = "Файл";
+"media_type_accessibility_sticker" = "Стикер";
+// Widget Picker
+"widget_picker_title" = "Интеграции";

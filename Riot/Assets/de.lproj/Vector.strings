@@ -243,8 +243,8 @@
 "settings_new_password" = "neues Passwort";
 "settings_confirm_password" = "bestätige Passwort";
 "settings_password_updated" = "Dein Passwort wurde aktualisiert";
-"settings_crypto_device_name" = "Gerätename: ";
-"settings_crypto_device_key" = "\nGeräte-Schlüssel: ";
+"settings_crypto_device_name" = "Öffentlicher Gerätename: ";
+"settings_crypto_device_key" = "\nGeräteschlüssel:\n";
 "settings_crypto_export" = "Schlüssel exportieren";
 "room_details_settings" = "Einstellungen";
 "room_details_photo" = "Raum-Bild";
@@ -415,7 +415,7 @@
 "contacts_user_directory_section" = "NUTZER VERZEICHNIS";
 "contacts_user_directory_offline_section" = "NUTZER VERZEICHNIS (offline)";
 "auth_home_server_placeholder" = "URL (z.B. https://matrix.org)";
-"auth_identity_server_placeholder" = "URL (z.B. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (z. B. https://vector.im)";
 "room_ongoing_conference_call_close" = "Schließen";
 "room_conference_call_no_power" = "Du brauchst die Berechtigung Konferenzgespräche in diesem Raum zu verwalten";
 "settings_labs_create_conference_with_jitsi" = "Erstelle Konferenzgespräche mit Jitsi";
