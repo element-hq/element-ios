@@ -4844,6 +4844,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:mxSession
                                                                                                                                                             baseUrl:baseURL
                                                                                                                                                         serviceType:MXServiceTypeIdentityService
+                                                                                                                                                       outOfContext:YES
                                                                                                                                                         accessToken:accessToken];
     
     serviceTermsModalCoordinatorBridgePresenter.delegate = self;

@@ -25,6 +25,7 @@ Improvements:
  * Privacy: Settings: Add a Discovery section (#2606).
  * Privacy: Make NSContactsUsageDescription more generic and mention that 3pids are now uploaded hashed (#2521).
  * Privacy: Settings: Add IDENTITY SERVER section (#2604).
+ * Privacy: Make IS terms wording clearer when we fallback to vector.im (#2760).
 
 Bug fix:
  * Theme: Make button theming work (#2734).

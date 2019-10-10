@@ -19,9 +19,10 @@
 import Foundation
 
 final class ServiceTermsModalScreenViewModel: ServiceTermsModalScreenViewModelType {
-    
+
     // MARK: - Properties
-    
+    let outOfContext: Bool
+
     // MARK: Private
 
     private let serviceTerms: MXServiceTerms
@@ -42,8 +43,9 @@ final class ServiceTermsModalScreenViewModel: ServiceTermsModalScreenViewModelTy
     
     // MARK: - Setup
     
-    init(serviceTerms: MXServiceTerms) {
+    init(serviceTerms: MXServiceTerms, outOfContext: Bool) {
         self.serviceTerms = serviceTerms
+        self.outOfContext = outOfContext
     }
     
     deinit {

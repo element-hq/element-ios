@@ -2518,21 +2518,37 @@ internal enum VectorL10n {
   internal static var serviceTermsModalAcceptButton: String { 
     return VectorL10n.tr("Vector", "service_terms_modal_accept_button") 
   }
-  /// Be discoverable by others
-  internal static var serviceTermsModalDescriptionForIdentityServer: String { 
-    return VectorL10n.tr("Vector", "service_terms_modal_description_for_identity_server") 
+  /// Decline
+  internal static var serviceTermsModalDeclineButton: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_decline_button") 
+  }
+  /// Find others by phone or email
+  internal static var serviceTermsModalDescriptionForIdentityServer1: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_description_for_identity_server_1") 
+  }
+  /// Be found by phone or email
+  internal static var serviceTermsModalDescriptionForIdentityServer2: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_description_for_identity_server_2") 
   }
   /// Use Bots, bridges, widgets and sticker packs
   internal static var serviceTermsModalDescriptionForIntegrationManager: String { 
     return VectorL10n.tr("Vector", "service_terms_modal_description_for_integration_manager") 
   }
-  /// To continue you need to accept the Terms of this service (%@).
+  /// To continue you need to accept the terms of this service (%@).
   internal static func serviceTermsModalMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "service_terms_modal_message", p1)
+  }
+  /// Accept the terms of the identity server (%@) to discover contacts.
+  internal static func serviceTermsModalMessageIdentityServer(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "service_terms_modal_message_identity_server", p1)
   }
   /// Terms Of Service
   internal static var serviceTermsModalTitle: String { 
     return VectorL10n.tr("Vector", "service_terms_modal_title") 
+  }
+  /// Contact discovery
+  internal static var serviceTermsModalTitleIdentityServer: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_title_identity_server") 
   }
   /// Add email address
   internal static var settingsAddEmailAddress: String { 

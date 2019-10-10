@@ -37,9 +37,9 @@ final class ServiceTermsModalScreenCoordinator: ServiceTermsModalScreenCoordinat
     
     // MARK: - Setup
     
-    init(serviceTerms: MXServiceTerms) {
+    init(serviceTerms: MXServiceTerms, outOfContext: Bool = false) {
         
-        let serviceTermsModalScreenViewModel = ServiceTermsModalScreenViewModel(serviceTerms: serviceTerms)
+        let serviceTermsModalScreenViewModel = ServiceTermsModalScreenViewModel(serviceTerms: serviceTerms, outOfContext: outOfContext)
         let serviceTermsModalScreenViewController = ServiceTermsModalScreenViewController.instantiate(with: serviceTermsModalScreenViewModel)
         self.serviceTermsModalScreenViewModel = serviceTermsModalScreenViewModel
         self.serviceTermsModalScreenViewController = serviceTermsModalScreenViewController

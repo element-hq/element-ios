@@ -37,32 +37,46 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="swq-xw-ItG">
-                                                        <rect key="frame" x="20" y="128" width="374" height="652"/>
+                                                        <rect key="frame" x="20" y="128" width="374" height="600"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </tableView>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOt-5E-FjF">
-                                                        <rect key="frame" x="20" y="788" width="374" height="44"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="44" id="d2a-Dw-Pu5"/>
-                                                        </constraints>
-                                                        <state key="normal" title="Accept"/>
-                                                        <connections>
-                                                            <action selector="acceptButtonAction:" destination="V8j-Lb-PgC" eventType="touchUpInside" id="uvI-tt-Nfj"/>
-                                                        </connections>
-                                                    </button>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="dcx-ju-f0Q">
+                                                        <rect key="frame" x="20" y="736" width="374" height="96"/>
+                                                        <subviews>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOt-5E-FjF">
+                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="44"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="44" id="d2a-Dw-Pu5"/>
+                                                                </constraints>
+                                                                <state key="normal" title="Accept"/>
+                                                                <connections>
+                                                                    <action selector="acceptButtonAction:" destination="V8j-Lb-PgC" eventType="touchUpInside" id="uvI-tt-Nfj"/>
+                                                                </connections>
+                                                            </button>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QHr-gh-dAD">
+                                                                <rect key="frame" x="0.0" y="52" width="374" height="44"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="44" id="y6d-Vg-5PP"/>
+                                                                </constraints>
+                                                                <state key="normal" title="Decline">
+                                                                    <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                </state>
+                                                            </button>
+                                                        </subviews>
+                                                    </stackView>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstItem="bxI-mu-qng" firstAttribute="leading" secondItem="voD-3Q-ryt" secondAttribute="leading" constant="20" symbolic="YES" id="1K2-u8-QsL"/>
-                                                    <constraint firstAttribute="bottom" secondItem="DOt-5E-FjF" secondAttribute="bottom" constant="20" symbolic="YES" id="2Vt-c1-fPz"/>
                                                     <constraint firstAttribute="trailing" secondItem="bxI-mu-qng" secondAttribute="trailing" constant="20" symbolic="YES" id="41D-TP-69f"/>
-                                                    <constraint firstItem="DOt-5E-FjF" firstAttribute="leading" secondItem="voD-3Q-ryt" secondAttribute="leading" constant="20" symbolic="YES" id="43V-Ya-vks"/>
                                                     <constraint firstItem="swq-xw-ItG" firstAttribute="top" secondItem="bxI-mu-qng" secondAttribute="bottom" constant="8" symbolic="YES" id="9Gg-Xb-o2W"/>
-                                                    <constraint firstItem="DOt-5E-FjF" firstAttribute="top" secondItem="swq-xw-ItG" secondAttribute="bottom" constant="8" symbolic="YES" id="K8z-wm-8yT"/>
                                                     <constraint firstItem="bxI-mu-qng" firstAttribute="top" secondItem="voD-3Q-ryt" secondAttribute="top" constant="20" symbolic="YES" id="W1m-x0-TyS"/>
+                                                    <constraint firstItem="dcx-ju-f0Q" firstAttribute="leading" secondItem="voD-3Q-ryt" secondAttribute="leading" constant="20" symbolic="YES" id="Wcx-d6-M14"/>
                                                     <constraint firstAttribute="trailing" secondItem="swq-xw-ItG" secondAttribute="trailing" constant="20" symbolic="YES" id="Y5v-Gg-xkM"/>
+                                                    <constraint firstAttribute="bottom" secondItem="dcx-ju-f0Q" secondAttribute="bottom" constant="20" symbolic="YES" id="cpa-Lq-Mvs"/>
+                                                    <constraint firstAttribute="trailing" secondItem="dcx-ju-f0Q" secondAttribute="trailing" constant="20" symbolic="YES" id="eGO-kM-neh"/>
                                                     <constraint firstAttribute="width" priority="750" constant="500" id="glD-Sz-73O"/>
-                                                    <constraint firstAttribute="trailing" secondItem="DOt-5E-FjF" secondAttribute="trailing" constant="20" symbolic="YES" id="lpw-9u-VDG"/>
+                                                    <constraint firstItem="dcx-ju-f0Q" firstAttribute="top" secondItem="swq-xw-ItG" secondAttribute="bottom" constant="8" symbolic="YES" id="zYm-2k-kvi"/>
                                                     <constraint firstItem="swq-xw-ItG" firstAttribute="leading" secondItem="voD-3Q-ryt" secondAttribute="leading" constant="20" symbolic="YES" id="ze1-Iw-v9U"/>
                                                 </constraints>
                                             </view>
@@ -98,6 +112,7 @@
                     </view>
                     <connections>
                         <outlet property="acceptButton" destination="DOt-5E-FjF" id="ktw-U4-efQ"/>
+                        <outlet property="declineButton" destination="QHr-gh-dAD" id="QOS-rE-4SP"/>
                         <outlet property="messageLabel" destination="bxI-mu-qng" id="pbX-aZ-inC"/>
                         <outlet property="scrollView" destination="9U2-KL-ZVA" id="ojG-2y-X7b"/>
                         <outlet property="tableView" destination="swq-xw-ItG" id="Fwb-Sc-bec"/>

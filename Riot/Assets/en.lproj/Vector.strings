@@ -784,10 +784,18 @@
 
 // Service terms
 "service_terms_modal_title" = "Terms Of Service";
-"service_terms_modal_message" = "To continue you need to accept the Terms of this service (%@).";
+"service_terms_modal_message" = "To continue you need to accept the terms of this service (%@).";
 "service_terms_modal_accept_button" = "Accept";
-"service_terms_modal_description_for_identity_server" = "Be discoverable by others";
+"service_terms_modal_decline_button" = "Decline";
+
+"service_terms_modal_description_for_identity_server_1" = "Find others by phone or email";
+"service_terms_modal_description_for_identity_server_2" = "Be found by phone or email";
 "service_terms_modal_description_for_integration_manager" = "Use Bots, bridges, widgets and sticker packs";
+
+// Service terms - Variant for identity server when displayed out of a context
+"service_terms_modal_title_identity_server" = "Contact discovery";
+"service_terms_modal_message_identity_server" = "Accept the terms of the identity server (%@) to discover contacts.";
+
 
 // Deactivate account
 

@@ -31,7 +31,8 @@ final class ServiceTermsModalScreenViewController: UIViewController {
     @IBOutlet private weak var messageLabel: UILabel!
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var acceptButton: UIButton!
-    
+    @IBOutlet private weak var declineButton: UIButton!
+
     // MARK: Private
 
     private var viewModel: ServiceTermsModalScreenViewModelType!
@@ -94,6 +95,9 @@ final class ServiceTermsModalScreenViewController: UIViewController {
         self.acceptButton.backgroundColor = theme.backgroundColor
         theme.applyStyle(onButton: self.acceptButton)
 
+        theme.applyStyle(onButton: self.declineButton)
+        self.declineButton.setTitleColor(self.theme.warningColor, for: .normal)
+
         self.refreshViews()
     }
     
@@ -120,6 +124,17 @@ final class ServiceTermsModalScreenViewController: UIViewController {
         self.acceptButton.setTitle(VectorL10n.serviceTermsModalAcceptButton, for: .normal)
         self.acceptButton.setTitle(VectorL10n.serviceTermsModalAcceptButton, for: .highlighted)
         self.refreshAcceptButton()
+
+        if self.viewModel.outOfContext
+            && self.viewModel.serviceType == MXServiceTypeIdentityService {
+            self.title = VectorL10n.serviceTermsModalTitleIdentityServer
+            self.messageLabel.text = VectorL10n.serviceTermsModalMessageIdentityServer(self.viewModel.serviceUrl)
+
+            self.declineButton.setTitle(VectorL10n.serviceTermsModalDeclineButton, for: .normal)
+            self.declineButton.setTitle(VectorL10n.serviceTermsModalDeclineButton, for: .highlighted)
+        } else {
+            self.declineButton.isHidden = true
+        }
     }
 
     private func setupTableView() {
@@ -269,7 +284,9 @@ extension ServiceTermsModalScreenViewController: UITableViewDataSource {
         var labelDetail: String = ""
         switch self.viewModel.serviceType {
         case MXServiceTypeIdentityService:
-            labelDetail = VectorL10n.serviceTermsModalDescriptionForIdentityServer
+            labelDetail = VectorL10n.serviceTermsModalDescriptionForIdentityServer1
+                + "\n"
+                + VectorL10n.serviceTermsModalDescriptionForIdentityServer2
         case MXServiceTypeIntegrationManager:
             labelDetail = VectorL10n.serviceTermsModalDescriptionForIntegrationManager
         default: break
@@ -280,7 +297,6 @@ extension ServiceTermsModalScreenViewController: UITableViewDataSource {
         label.append(NSAttributedString(string: "\n"))
         label.append(NSAttributedString(string: labelDetail,
                                         attributes: [.foregroundColor: theme.textSecondaryColor]))
-
         return label
     }
 }
