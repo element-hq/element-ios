@@ -149,8 +149,10 @@
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:_screenName];
 
-    // Check whether the access to the local contacts has not been already asked.
-    if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusNotDetermined)
+    // Check whether the access to the local contacts has not been already asked
+    // and check that the user has decided to use or not to use an identity server 
+    if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusNotDetermined
+        || !contactsDataSource.mxSession.hasAccountDataIdentityServerValue)
     {
         // Allow by default the local contacts sync in order to discover matrix users.
         // This setting change will trigger the loading of the local contacts, which will automatically
