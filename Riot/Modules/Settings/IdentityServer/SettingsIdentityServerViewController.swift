@@ -387,6 +387,10 @@ extension SettingsIdentityServerViewController: ServiceTermsModalCoordinatorBrid
         self.hideTerms(accepted: true)
     }
 
+    func serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline(_ coordinatorBridgePresenter: ServiceTermsModalCoordinatorBridgePresenter, session: MXSession) {
+        self.hideTerms(accepted: false)
+    }
+
     func serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel(_ coordinatorBridgePresenter: ServiceTermsModalCoordinatorBridgePresenter) {
          self.hideTerms(accepted: false)
     }

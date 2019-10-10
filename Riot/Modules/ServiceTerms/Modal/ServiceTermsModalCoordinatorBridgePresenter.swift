@@ -20,6 +20,7 @@ import Foundation
 
 @objc protocol ServiceTermsModalCoordinatorBridgePresenterDelegate {
     func serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept(_ coordinatorBridgePresenter: ServiceTermsModalCoordinatorBridgePresenter)
+    func serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline(_ coordinatorBridgePresenter: ServiceTermsModalCoordinatorBridgePresenter, session: MXSession)
     func serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel(_ coordinatorBridgePresenter: ServiceTermsModalCoordinatorBridgePresenter)
 }
 
@@ -97,6 +98,10 @@ extension ServiceTermsModalCoordinatorBridgePresenter: ServiceTermsModalCoordina
 
     func serviceTermsModalCoordinatorDidAccept(_ coordinator: ServiceTermsModalCoordinatorType) {
         self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept(self)
+    }
+
+    func serviceTermsModalCoordinatorDidDecline(_ coordinator: ServiceTermsModalCoordinatorType) {
+        self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline(self, session: self.session)
     }
 
     func serviceTermsModalCoordinatorDidCancel(_ coordinator: ServiceTermsModalCoordinatorType) {

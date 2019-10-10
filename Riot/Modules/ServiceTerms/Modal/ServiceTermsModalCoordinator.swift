@@ -100,6 +100,10 @@ extension ServiceTermsModalCoordinator: ServiceTermsModalScreenCoordinatorDelega
         self.showPolicy(policy: policy)
     }
 
+    func serviceTermsModalScreenCoordinatorDidDecline(_ coordinator: ServiceTermsModalScreenCoordinatorType) {
+        self.delegate?.serviceTermsModalCoordinatorDidDecline(self)
+    }
+
     func serviceTermsModalScreenCoordinatorDidCancel(_ coordinator: ServiceTermsModalScreenCoordinatorType) {
         self.delegate?.serviceTermsModalCoordinatorDidCancel(self)
     }

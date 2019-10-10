@@ -4823,6 +4823,8 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
 - (void)handleIdentityServiceTermsNotSignedNotification:(NSNotification*)notification
 {
+    NSLog(@"[AppDelegate] IS Terms: handleIdentityServiceTermsNotSignedNotification.");
+
     NSString *baseURL;
     NSString *accessToken;
     
@@ -4859,6 +4861,24 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
         
+    }];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline:(ServiceTermsModalCoordinatorBridgePresenter *)coordinatorBridgePresenter session:(MXSession *)session
+{
+    NSLog(@"[AppDelegate] IS Terms: User has declined the use of the default IS.");
+
+    // The user does not want to use the proposed IS.
+    // Disable IS feature on user's account
+    [session setIdentityServer:nil andAccessToken:nil];
+    [session setAccountDataIdentityServer:nil success:^{
+    } failure:^(NSError *error) {
+        NSLog(@"[AppDelegate] IS Terms: Error: %@", error);
+    }];
+
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+
     }];
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }

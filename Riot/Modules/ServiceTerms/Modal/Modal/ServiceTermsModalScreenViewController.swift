@@ -211,6 +211,10 @@ final class ServiceTermsModalScreenViewController: UIViewController {
         self.viewModel.process(viewAction: .accept)
     }
 
+    @IBAction private func declineButtonAction(_ sender: Any) {
+        self.viewModel.process(viewAction: .decline)
+    }
+    
     private func cancelButtonAction() {
         self.viewModel.process(viewAction: .cancel)
     }

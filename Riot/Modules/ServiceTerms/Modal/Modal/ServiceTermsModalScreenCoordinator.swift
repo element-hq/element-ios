@@ -66,7 +66,11 @@ extension ServiceTermsModalScreenCoordinator: ServiceTermsModalScreenViewModelCo
     func serviceTermsModalScreenViewModel(_ coordinator: ServiceTermsModalScreenViewModelType, displayPolicy policy: MXLoginPolicyData) {
         self.delegate?.serviceTermsModalScreenCoordinator(self, displayPolicy: policy)
     }
-    
+
+    func serviceTermsModalScreenViewModelDidDecline(_ viewModel: ServiceTermsModalScreenViewModelType) {
+        self.delegate?.serviceTermsModalScreenCoordinatorDidDecline(self)
+    }
+
     func serviceTermsModalScreenViewModelDidCancel(_ viewModel: ServiceTermsModalScreenViewModelType) {
         self.delegate?.serviceTermsModalScreenCoordinatorDidCancel(self)
     }

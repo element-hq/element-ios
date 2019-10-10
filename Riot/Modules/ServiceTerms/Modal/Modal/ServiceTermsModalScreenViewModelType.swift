@@ -25,6 +25,7 @@ protocol ServiceTermsModalScreenViewModelViewDelegate: class {
 protocol ServiceTermsModalScreenViewModelCoordinatorDelegate: class {
     func serviceTermsModalScreenViewModel(_ coordinator: ServiceTermsModalScreenViewModelType, displayPolicy policy: MXLoginPolicyData)
     func serviceTermsModalScreenViewModelDidAccept(_ viewModel: ServiceTermsModalScreenViewModelType)
+    func serviceTermsModalScreenViewModelDidDecline(_ viewModel: ServiceTermsModalScreenViewModelType)
     func serviceTermsModalScreenViewModelDidCancel(_ viewModel: ServiceTermsModalScreenViewModelType)
 }
 

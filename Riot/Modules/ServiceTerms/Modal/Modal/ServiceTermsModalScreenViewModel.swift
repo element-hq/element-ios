@@ -61,6 +61,8 @@ final class ServiceTermsModalScreenViewModel: ServiceTermsModalScreenViewModelTy
             self.coordinatorDelegate?.serviceTermsModalScreenViewModel(self, displayPolicy: policy)
         case .accept:
             self.acceptTerms()
+        case .decline:
+            self.coordinatorDelegate?.serviceTermsModalScreenViewModelDidDecline(self)
         case .cancel:
             self.coordinatorDelegate?.serviceTermsModalScreenViewModelDidCancel(self)
         }

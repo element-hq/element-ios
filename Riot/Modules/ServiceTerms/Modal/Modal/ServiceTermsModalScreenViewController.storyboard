@@ -61,6 +61,9 @@
                                                                 <state key="normal" title="Decline">
                                                                     <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 </state>
+                                                                <connections>
+                                                                    <action selector="declineButtonAction:" destination="V8j-Lb-PgC" eventType="touchUpInside" id="MTU-9k-8yo"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                     </stackView>
