@@ -701,9 +701,6 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         [account resume];
     }
     
-    // Refresh local contact from the contact book.
-    [self refreshLocalContacts];
-    
     _isAppForeground = YES;
 
     if (@available(iOS 11.0, *))
@@ -3015,6 +3012,14 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         // during this blocking task.
         dispatch_after(dispatch_walltime(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [[MXKContactManager sharedManager] addMatrixSession:mxSession];
+
+            // Load the local contacts on first account
+            if ([MXKAccountManager sharedManager].accounts.count == 1)
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self refreshLocalContacts];
+                });
+            }
         });
         
         // Update home data sources
@@ -3912,8 +3917,21 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
 - (void)refreshLocalContacts
 {
+    // Do not scan local contacts in background if the user has not decided yet about using
+    // an identity server
+    BOOL doRefreshLocalContacts = NO;
+    for (MXSession *session in mxSessionArray)
+    {
+        if (session.hasAccountDataIdentityServerValue)
+        {
+            doRefreshLocalContacts = YES;
+            break;
+        }
+    }
+
     // Check whether the application is allowed to access the local contacts.
-    if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized)
+    if (doRefreshLocalContacts
+        && [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized)
     {
         // Check the user permission for syncing local contacts. This permission was handled independently on previous application version.
         if (![MXKAppSettings standardAppSettings].syncLocalContacts)
