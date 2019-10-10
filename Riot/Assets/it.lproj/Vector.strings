@@ -839,3 +839,8 @@
 "settings_devices_description" = "Il nome pubblico di un dispositivo è visibile dalle persone con cui comunichi";
 "settings_discovery_no_identity_server" = "Attualmente non stai usando un server di identità. Per essere trovabile dai contatti esistenti che conosci, aggiungine uno.";
 "settings_discovery_terms_not_signed" = "Accetta le condizioni di servizio del server di identità (%@) per poter essere trovabile tramite indirizzo email o numero di telefono.";
+"settings_discovery_three_pids_management_information_part1" = "Gestisci quali indirizzi email o numeri di telefono gli altri utenti possono usare per trovarti e invitarti nelle stanze. Aggiungi o rimuovi indirizzi email o numeri di telefono da questa lista in ";
+"settings_discovery_three_pids_management_information_part2" = "Impostazioni utente";
+"settings_discovery_three_pids_management_information_part3" = ".";
+"settings_discovery_error_message" = "C'è stato un errore. Riprova.";
+"settings_discovery_three_pid_details_title_email" = "Gestisci email";
