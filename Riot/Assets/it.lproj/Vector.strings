@@ -844,3 +844,45 @@
 "settings_discovery_three_pids_management_information_part3" = ".";
 "settings_discovery_error_message" = "C'è stato un errore. Riprova.";
 "settings_discovery_three_pid_details_title_email" = "Gestisci email";
+"settings_discovery_three_pid_details_information_email" = "Gestisci le impostazioni di questo indirizzo email che altri utenti possono usare per trovarti o invitarti in altre stanze. Aggiungi o rimuovi gli indirizzi email in Accounts.";
+"settings_discovery_three_pid_details_title_phone_number" = "Gestisci il numero di telefono";
+"settings_discovery_three_pid_details_information_phone_number" = "Gestisci le impostazioni di questo numero di telefono che altri utenti possono usare per trovarti o invitarti in altre stanze. Aggiungi o rimuovi i numeri di telefono in Accounts.";
+"settings_discovery_three_pid_details_share_action" = "Condividi";
+"settings_discovery_three_pid_details_revoke_action" = "Cancella";
+"settings_discovery_three_pid_details_cancel_email_validation_action" = "Annulla la validazione dell'email";
+"settings_discovery_three_pid_details_enter_sms_code_action" = "Inserisci il codice d'attivazione SMS";
+"settings_identity_server_description" = "Utilizzando l'Identity Server impostato potrai trovare e farti trovare dai contatti esistenti.";
+"settings_identity_server_no_is" = "Nessun Identity Server configurato";
+"settings_identity_server_no_is_description" = "Non stai usando alcun Identity Server. Selezionane uno per trovare e farti trovare dai contatti esistenti.";
+// Identity server settings
+"identity_server_settings_title" = "// Impostazioni dell'Identity Server";
+"identity_server_settings_description" = "Per trovare e farti trovare dai tuoi contatti stai usando %@.";
+"identity_server_settings_no_is_description" = "Non stai usando alcun Identity Server. Selezionane uno per trovare e farti trovare dai contatti esistenti.";
+"identity_server_settings_place_holder" = "Inserisci un Identity Server";
+"identity_server_settings_add" = "Aggiungi";
+"identity_server_settings_change" = "Cambia";
+"identity_server_settings_disconnect_info" = "Usare un Identity Server è facoltativo. Se scegli di non usarne uno gli altri utenti non potranno trovarti e tu non potrai invitarli per email o telefono.";
+"identity_server_settings_disconnect" = "Disconnetti";
+"identity_server_settings_alert_no_terms_title" = "L'Identity Server non ha Termini di servizio";
+"identity_server_settings_alert_no_terms" = "L'Identity Server che hai scelto non ha Termini di servizio. Prosegui solo se ti fidi del gestore del server.";
+"identity_server_settings_alert_change_title" = "Cambia Identity Server";
+"identity_server_settings_alert_change" = "Vuoi scollegarti dall'Identyty Server %1$@ e connetterti invece a %2$@?";
+"identity_server_settings_alert_disconnect_title" = "Scollega dall'Identity Server";
+"identity_server_settings_alert_disconnect" = "Vuoi scollegarti dall'Identity Server %@?";
+"identity_server_settings_alert_disconnect_button" = "Scollega";
+"identity_server_settings_alert_disconnect_still_sharing_3pid" = "L'Identity Server %@ può ancora condividere le tue informazioni personali.\n\nTi raccomandiamo di rimuovere tutti i tuoi indirizzi email e numeri di telefono dall'Identity Server prima di scollegarti.";
+"identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "Scollegati comunque";
+"identity_server_settings_alert_error_terms_not_accepted" = "Devi accettare le condizioni di %@ per impostarlo come tuo Identity Server.";
+"identity_server_settings_alert_error_invalid_identity_server" = "%@ non é un Identity Server valido.";
+"call_no_stun_server_error_title" = "Chiamata fallita a causa di una configurazione errata del server";
+"call_no_stun_server_error_message_1" = "Chiedi all'amministratore del tuo Homeserver %@ di configurare un server TURN in modo che le chiamate funzionino come si deve.";
+"call_no_stun_server_error_message_2" = "In alternativa puoi provare ad usare il server pubblico a %@, ma non é molto affidabile e il tuo indirizzo IP verrà condiviso con tale server. Puoi gestire questa cosa nelle Impostazioni";
+"call_no_stun_server_error_use_fallback_button" = "Prova ad usare %@";
+"service_terms_modal_decline_button" = "Rifiuta";
+"service_terms_modal_description_for_identity_server_1" = "Trova altri utenti attraverso l'email o il numero di telefono";
+"service_terms_modal_description_for_identity_server_2" = "Fatti trovare attraverso il tuo numero di telefono e la tua email";
+// Service terms - Variant for identity server when displayed out of a context
+"service_terms_modal_title_identity_server" = "Trova contatti";
+"service_terms_modal_message_identity_server" = "Accetta i Termini di servizio dell'Identity Server (%@) per trovare altri contatti.";
+// Generic errors
+"error_invite_3pid_with_no_identity_server" = "Aggiungi un Identity Server nelle Impostazioni per poter invitare utenti tramite email.";
