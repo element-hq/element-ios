@@ -23,5 +23,6 @@ enum ServiceTermsModalScreenViewAction {
     case load
     case display(MXLoginPolicyData)
     case accept
+    case decline
     case cancel
 }

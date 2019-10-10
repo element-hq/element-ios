@@ -406,7 +406,9 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     NSLog(@"[WidgetVC] presentTerms for %@", config.baseUrl);
 
     ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:widget.mxSession baseUrl:config.baseUrl
-                                                                                                                                                       serviceType:MXServiceTypeIntegrationManager                                                                                                                                            accessToken:config.scalarToken];
+                                                                                                                                                       serviceType:MXServiceTypeIntegrationManager
+                                                                                                                                                       outOfContext:NO
+                                                                                                                                                        accessToken:config.scalarToken];
     serviceTermsModalCoordinatorBridgePresenter.delegate = self;
 
     [serviceTermsModalCoordinatorBridgePresenter presentFrom:self animated:YES];

@@ -707,6 +707,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
     ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:mxSession baseUrl:config.baseUrl
                                                                                                                                                         serviceType:MXServiceTypeIntegrationManager
+                                                                                                                                                       outOfContext:NO
                                                                                                                                                         accessToken:config.scalarToken];
 
     serviceTermsModalCoordinatorBridgePresenter.delegate = self;

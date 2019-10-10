@@ -20,6 +20,7 @@ import Foundation
 
 @objc protocol ServiceTermsModalCoordinatorBridgePresenterDelegate {
     func serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept(_ coordinatorBridgePresenter: ServiceTermsModalCoordinatorBridgePresenter)
+    func serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline(_ coordinatorBridgePresenter: ServiceTermsModalCoordinatorBridgePresenter, session: MXSession)
     func serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel(_ coordinatorBridgePresenter: ServiceTermsModalCoordinatorBridgePresenter)
 }
 
@@ -35,6 +36,7 @@ final class ServiceTermsModalCoordinatorBridgePresenter: NSObject {
     private let session: MXSession
     private let baseUrl: String
     private let serviceType: MXServiceType
+    private let outOfContext: Bool
     private let accessToken: String
     private var coordinator: ServiceTermsModalCoordinator?
     
@@ -48,10 +50,11 @@ final class ServiceTermsModalCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Setup
     
-    init(session: MXSession, baseUrl: String, serviceType: MXServiceType, accessToken: String) {
+    init(session: MXSession, baseUrl: String, serviceType: MXServiceType, outOfContext: Bool = false, accessToken: String) {
         self.session = session
         self.baseUrl = baseUrl
         self.serviceType = serviceType
+        self.outOfContext = outOfContext
         self.accessToken = accessToken
         super.init()
     }
@@ -64,7 +67,7 @@ final class ServiceTermsModalCoordinatorBridgePresenter: NSObject {
     // }
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let serviceTermsModalCoordinator = ServiceTermsModalCoordinator(session: self.session, baseUrl: self.baseUrl, serviceType: self.serviceType, accessToken: accessToken)
+        let serviceTermsModalCoordinator = ServiceTermsModalCoordinator(session: self.session, baseUrl: self.baseUrl, serviceType: self.serviceType, outOfContext: self.outOfContext, accessToken: accessToken)
         serviceTermsModalCoordinator.delegate = self
         viewController.present(serviceTermsModalCoordinator.toPresentable(), animated: animated, completion: nil)
         serviceTermsModalCoordinator.start()
@@ -95,6 +98,10 @@ extension ServiceTermsModalCoordinatorBridgePresenter: ServiceTermsModalCoordina
 
     func serviceTermsModalCoordinatorDidAccept(_ coordinator: ServiceTermsModalCoordinatorType) {
         self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept(self)
+    }
+
+    func serviceTermsModalCoordinatorDidDecline(_ coordinator: ServiceTermsModalCoordinatorType) {
+        self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline(self, session: self.session)
     }
 
     func serviceTermsModalCoordinatorDidCancel(_ coordinator: ServiceTermsModalCoordinatorType) {

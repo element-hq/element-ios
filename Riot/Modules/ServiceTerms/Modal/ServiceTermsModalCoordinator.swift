@@ -28,6 +28,7 @@ final class ServiceTermsModalCoordinator: ServiceTermsModalCoordinatorType {
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
     private let serviceTerms: MXServiceTerms
+    private let outOfContext: Bool
     
     // MARK: Public
 
@@ -37,10 +38,11 @@ final class ServiceTermsModalCoordinator: ServiceTermsModalCoordinatorType {
     weak var delegate: ServiceTermsModalCoordinatorDelegate?
     
     // MARK: - Setup
-    init(session: MXSession, baseUrl: String, serviceType: MXServiceType, accessToken: String) {
+    init(session: MXSession, baseUrl: String, serviceType: MXServiceType, outOfContext: Bool, accessToken: String) {
         self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
         self.serviceTerms = MXServiceTerms(baseUrl: baseUrl, serviceType: serviceType, matrixSession: session, accessToken: accessToken)
+        self.outOfContext = outOfContext
     }
     
     // MARK: - Public methods
@@ -62,7 +64,7 @@ final class ServiceTermsModalCoordinator: ServiceTermsModalCoordinatorType {
     // MARK: - Private methods
 
     private func createServiceTermsModalLoadTermsScreenCoordinator() -> ServiceTermsModalScreenCoordinator {
-        let coordinator = ServiceTermsModalScreenCoordinator(serviceTerms: self.serviceTerms)
+        let coordinator = ServiceTermsModalScreenCoordinator(serviceTerms: self.serviceTerms, outOfContext: self.outOfContext)
         coordinator.delegate = self
         return coordinator
     }
@@ -96,6 +98,10 @@ extension ServiceTermsModalCoordinator: ServiceTermsModalScreenCoordinatorDelega
 
     func serviceTermsModalScreenCoordinator(_ coordinator: ServiceTermsModalScreenCoordinatorType, displayPolicy policy: MXLoginPolicyData) {
         self.showPolicy(policy: policy)
+    }
+
+    func serviceTermsModalScreenCoordinatorDidDecline(_ coordinator: ServiceTermsModalScreenCoordinatorType) {
+        self.delegate?.serviceTermsModalCoordinatorDidDecline(self)
     }
 
     func serviceTermsModalScreenCoordinatorDidCancel(_ coordinator: ServiceTermsModalScreenCoordinatorType) {
