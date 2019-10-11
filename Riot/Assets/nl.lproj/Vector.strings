@@ -441,7 +441,7 @@
 "event_formatter_member_updates" = "%tu lidmaatschapsaanpassingen";
 "bug_report_send" = "Versturen";
 "auth_home_server_placeholder" = "URL (bv. https://matrix.org)";
-"auth_identity_server_placeholder" = "URL (bv. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (bv. https://vector.im)";
 "room_ongoing_conference_call_with_close" = "Er is een vergadergesprek gaande. Neem deel met %@ of %@. %@ het.";
 "room_ongoing_conference_call_close" = "Sluiten";
 "room_conference_call_no_power" = "U heeft toestemming nodig om vergadergesprekken in dit groepsgesprek te beheren";

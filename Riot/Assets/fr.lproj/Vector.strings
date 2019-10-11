@@ -826,7 +826,7 @@
 "room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Aucun serveur d’identité n’est configuré donc vous ne pouvez pas commencer de discussion avec un contact en utilisant un e-mail.";
 // Service terms
 "service_terms_modal_title" = "Conditions de service";
-"service_terms_modal_message" = "Pour continuer vous devez accepter les conditions de ce service.";
+"service_terms_modal_message" = "Pour continuer vous devez accepter les conditions de ce service (%@).";
 "service_terms_modal_accept_button" = "Accepter";
 "service_terms_modal_description_for_identity_server" = "Se rendre découvrable pour les autres";
 "service_terms_modal_description_for_integration_manager" = "Utiliser des robots, des passerelles, des widgets et des packs de stickers";
@@ -905,3 +905,9 @@
 "call_no_stun_server_error_use_fallback_button" = "Essayer d’utiliser %@";
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Ajoutez un serveur d’identité dans vos paramètres pour inviter par e-mail.";
+"service_terms_modal_decline_button" = "Refuser";
+"service_terms_modal_description_for_identity_server_1" = "Trouver d’autres personnes par téléphone ou par e-mail";
+"service_terms_modal_description_for_identity_server_2" = "Être trouvé par téléphone ou par e-mail";
+// Service terms - Variant for identity server when displayed out of a context
+"service_terms_modal_title_identity_server" = "Découverte des contacts";
+"service_terms_modal_message_identity_server" = "Acceptez les conditions du serveur d’identité (%@) pour découvrir des contacts.";
