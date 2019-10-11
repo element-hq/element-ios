@@ -905,3 +905,9 @@
 "call_no_stun_server_error_use_fallback_button" = "Essayer d’utiliser %@";
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Ajoutez un serveur d’identité dans vos paramètres pour inviter par e-mail.";
+"service_terms_modal_decline_button" = "Refuser";
+"service_terms_modal_description_for_identity_server_1" = "Trouver d’autres personnes par téléphone ou par e-mail";
+"service_terms_modal_description_for_identity_server_2" = "Être trouvé par téléphone ou par e-mail";
+// Service terms - Variant for identity server when displayed out of a context
+"service_terms_modal_title_identity_server" = "Découverte des contacts";
+"service_terms_modal_message_identity_server" = "Acceptez les conditions du serveur d’identité (%@) pour découvrir des contacts.";
