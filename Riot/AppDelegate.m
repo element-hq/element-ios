@@ -84,7 +84,11 @@
 NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapStatusBarNotification";
 NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateNetworkStatusDidChangeNotification";
 
-@interface AppDelegate () <PKPushRegistryDelegate, GDPRConsentViewControllerDelegate, DeviceVerificationCoordinatorBridgePresenterDelegate>
+NSString *const AppDelegateDidValidateEmailNotification = @"AppDelegateDidValidateEmailNotification";
+NSString *const AppDelegateDidValidateEmailNotificationSIDKey = @"AppDelegateDidValidateEmailNotificationSIDKey";
+NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDelegateDidValidateEmailNotificationClientSecretKey";
+
+@interface AppDelegate () <PKPushRegistryDelegate, GDPRConsentViewControllerDelegate, DeviceVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate>
 {
     /**
      Reachability observer
@@ -232,6 +236,8 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 @property (weak, nonatomic) UIAlertController *gdprConsentNotGivenAlertController;
 @property (weak, nonatomic) UIViewController *gdprConsentController;
+
+@property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 
 /**
  Used to manage on boarding steps, like create DM with riot bot
@@ -647,6 +653,9 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     // Register to GDPR consent not given notification
     [self registerUserConsentNotGivenNotification];
     
+    // Register to identity server terms not signed notification
+    [self registerIdentityServiceTermsNotSignedNotification];
+    
     // Start monitoring reachability
     [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
         
@@ -691,9 +700,6 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     {
         [account resume];
     }
-    
-    // Refresh local contact from the contact book.
-    [self refreshLocalContacts];
     
     _isAppForeground = YES;
 
@@ -2106,19 +2112,40 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         return [self handleServerProvionningLink:webURL];
     }
     
+    NSString *validateEmailSubmitTokenPath = @"validate/email/submitToken";
+    
+    NSString *validateEmailSubmitTokenAPIPathV1 = [NSString stringWithFormat:@"/%@/%@", kMXIdentityAPIPrefixPathV1, validateEmailSubmitTokenPath];
+    NSString *validateEmailSubmitTokenAPIPathV2 = [NSString stringWithFormat:@"/%@/%@", kMXIdentityAPIPrefixPathV2, validateEmailSubmitTokenPath];
+    
     // Manage email validation link
-    if ([webURL.path isEqualToString:@"/_matrix/identity/api/v1/validate/email/submitToken"])
+    if ([webURL.path isEqualToString:validateEmailSubmitTokenAPIPathV1] || [webURL.path isEqualToString:validateEmailSubmitTokenAPIPathV2])
     {
         // Validate the email on the passed identity server
         NSString *identityServer = [NSString stringWithFormat:@"%@://%@", webURL.scheme, webURL.host];
-        MXRestClient *identityRestClient = [[MXRestClient alloc] initWithHomeServer:identityServer andOnUnrecognizedCertificateBlock:nil];
+        
+        MXSession *mainSession = self.mxSessions.firstObject;
+        MXRestClient *homeserverRestClient;
+        
+        if (mainSession.matrixRestClient)
+        {
+            homeserverRestClient = mainSession.matrixRestClient;
+        }
+        else
+        {
+            homeserverRestClient = [[MXRestClient alloc] initWithHomeServer:identityServer andOnUnrecognizedCertificateBlock:nil];
+        }
+        
+        MXIdentityService *identityService = [[MXIdentityService alloc] initWithIdentityServer:identityServer accessToken:nil andHomeserverRestClient:homeserverRestClient];
         
         // Extract required parameters from the link
         NSArray<NSString*> *pathParams;
         NSMutableDictionary *queryParams;
         [self parseUniversalLinkFragment:webURL.absoluteString outPathParams:&pathParams outQueryParams:&queryParams];
         
-        [identityRestClient submit3PIDValidationToken:queryParams[@"token"] medium:kMX3PIDMediumEmail clientSecret:queryParams[@"client_secret"] sid:queryParams[@"sid"] success:^{
+        NSString *clientSecret = queryParams[@"client_secret"];
+        NSString *sid = queryParams[@"sid"];
+        
+        [identityService submit3PIDValidationToken:queryParams[@"token"] medium:kMX3PIDMediumEmail clientSecret:clientSecret sid:sid success:^{
             
             NSLog(@"[AppDelegate] handleUniversalLink. Email successfully validated.");
             
@@ -2132,7 +2159,15 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
             else
             {
                 // No nextLink in Vector world means validation for binding a new email
-                NSLog(@"[AppDelegate] handleUniversalLink. TODO: Complete email binding");
+                
+                // Post a notification about email validation to make a chance to SettingsDiscoveryThreePidDetailsViewModel to make it discoverable or not by the identity server.
+                if (clientSecret && sid)
+                {
+                    NSDictionary *userInfo = @{ AppDelegateDidValidateEmailNotificationClientSecretKey : clientSecret,
+                                                AppDelegateDidValidateEmailNotificationSIDKey : sid };
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:AppDelegateDidValidateEmailNotification object:nil userInfo:userInfo];
+                }
             }
             
         } failure:^(NSError *error) {
@@ -2697,6 +2732,11 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 // Let's call invite be valid for 1 minute
                 mxSession.callManager.inviteLifetime = 60000;
 
+                if (RiotSettings.shared.allowStunServerFallback)
+                {
+                    mxSession.callManager.fallbackSTUNServer = RiotSettings.shared.stunServerFallback;
+                }
+
                 // Setup CallKit
                 if ([MXCallKitAdapter callKitAvailable])
                 {
@@ -2972,6 +3012,14 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
         // during this blocking task.
         dispatch_after(dispatch_walltime(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [[MXKContactManager sharedManager] addMatrixSession:mxSession];
+
+            // Load the local contacts on first account
+            if ([MXKAccountManager sharedManager].accounts.count == 1)
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self refreshLocalContacts];
+                });
+            }
         });
         
         // Update home data sources
@@ -3869,8 +3917,21 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 
 - (void)refreshLocalContacts
 {
+    // Do not scan local contacts in background if the user has not decided yet about using
+    // an identity server
+    BOOL doRefreshLocalContacts = NO;
+    for (MXSession *session in mxSessionArray)
+    {
+        if (session.hasAccountDataIdentityServerValue)
+        {
+            doRefreshLocalContacts = YES;
+            break;
+        }
+    }
+
     // Check whether the application is allowed to access the local contacts.
-    if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized)
+    if (doRefreshLocalContacts
+        && [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized)
     {
         // Check the user permission for syncing local contacts. This permission was handled independently on previous application version.
         if (![MXKAppSettings standardAppSettings].syncLocalContacts)
@@ -3942,6 +4003,12 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                     NSString *btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"active_call_details", @"Vector", nil), callViewController.callerNameLabel.text];
                     [self addCallStatusBar:btnTitle];
                 }
+
+                if ([callViewController isKindOfClass:[CallViewController class]]
+                    && ((CallViewController*)callViewController).shouldPromptForStunServerFallback)
+                {
+                    [self promptForStunServerFallback];
+                }
                 
                 if (completion)
                 {
@@ -3972,6 +4039,52 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
                 
             }];
         }
+    }
+}
+
+- (void)promptForStunServerFallback
+{
+    [_errorNotification dismissViewControllerAnimated:NO completion:nil];
+
+    NSString *stunFallbackHost = RiotSettings.shared.stunServerFallback;
+    // Remove "stun:"
+    stunFallbackHost = [stunFallbackHost componentsSeparatedByString:@":"].lastObject;
+
+    MXSession *mainSession = self.mxSessions.firstObject;
+    NSString *homeServerName = mainSession.matrixRestClient.credentials.homeServerName;
+
+    NSString *message = [NSString stringWithFormat:@"%@\n\n%@",
+                         [NSString stringWithFormat:NSLocalizedStringFromTable(@"call_no_stun_server_error_message_1", @"Vector", nil), homeServerName],
+                         [NSString stringWithFormat: NSLocalizedStringFromTable(@"call_no_stun_server_error_message_2", @"Vector", nil), stunFallbackHost]];
+
+    _errorNotification = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"call_no_stun_server_error_title", @"Vector", nil)
+                                                             message:message
+                                                      preferredStyle:UIAlertControllerStyleAlert];
+
+    [_errorNotification addAction:[UIAlertAction actionWithTitle:[NSString stringWithFormat: NSLocalizedStringFromTable(@"call_no_stun_server_error_use_fallback_button", @"Vector", nil), stunFallbackHost]
+                                                           style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction * action) {
+
+                                                             RiotSettings.shared.allowStunServerFallback = YES;
+                                                             mainSession.callManager.fallbackSTUNServer = RiotSettings.shared.stunServerFallback;
+
+                                                             [AppDelegate theDelegate].errorNotification = nil;
+                                                         }]];
+
+    [_errorNotification addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction * action) {
+
+                                                             RiotSettings.shared.allowStunServerFallback = NO;
+
+                                                             [AppDelegate theDelegate].errorNotification = nil;
+                                                         }]];
+
+    // Display the error notification
+    if (!isErrorNotificationSuspended)
+    {
+        [_errorNotification mxk_setAccessibilityIdentifier:@"AppDelegateErrorAlert"];
+        [self showNotificationAlert:_errorNotification];
     }
 }
 
@@ -4716,6 +4829,84 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
     } failure:^(NSError * _Nonnull error) {
         createRiotBotDMcompletion();
     }];
+}
+
+#pragma mark - Identity server service terms
+
+// Observe identity server terms not signed notification
+- (void)registerIdentityServiceTermsNotSignedNotification
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleIdentityServiceTermsNotSignedNotification:) name:MXIdentityServiceTermsNotSignedNotification object:nil];
+}
+
+- (void)handleIdentityServiceTermsNotSignedNotification:(NSNotification*)notification
+{
+    NSLog(@"[AppDelegate] IS Terms: handleIdentityServiceTermsNotSignedNotification.");
+
+    NSString *baseURL;
+    NSString *accessToken;
+    
+    MXJSONModelSetString(baseURL, notification.userInfo[MXIdentityServiceNotificationIdentityServerKey]);
+    MXJSONModelSetString(accessToken, notification.userInfo[MXIdentityServiceNotificationAccessTokenKey]);
+    
+    [self presentIdentityServerTermsWithBaseURL:baseURL andAccessToken:accessToken];
+}
+
+- (void)presentIdentityServerTermsWithBaseURL:(NSString*)baseURL andAccessToken:(NSString*)accessToken
+{
+    MXSession *mxSession = self.mxSessions.firstObject;
+    
+    if (!mxSession || !baseURL || !accessToken || self.serviceTermsModalCoordinatorBridgePresenter.isPresenting)
+    {
+        return;
+    }
+    
+    ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:mxSession
+                                                                                                                                                            baseUrl:baseURL
+                                                                                                                                                        serviceType:MXServiceTypeIdentityService
+                                                                                                                                                       outOfContext:YES
+                                                                                                                                                        accessToken:accessToken];
+    
+    serviceTermsModalCoordinatorBridgePresenter.delegate = self;
+    
+    UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
+    
+    [serviceTermsModalCoordinatorBridgePresenter presentFrom:presentingViewController animated:YES];
+    self.serviceTermsModalCoordinatorBridgePresenter = serviceTermsModalCoordinatorBridgePresenter;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        
+    }];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline:(ServiceTermsModalCoordinatorBridgePresenter *)coordinatorBridgePresenter session:(MXSession *)session
+{
+    NSLog(@"[AppDelegate] IS Terms: User has declined the use of the default IS.");
+
+    // The user does not want to use the proposed IS.
+    // Disable IS feature on user's account
+    [session setIdentityServer:nil andAccessToken:nil];
+    [session setAccountDataIdentityServer:nil success:^{
+    } failure:^(NSError *error) {
+        NSLog(@"[AppDelegate] IS Terms: Error: %@", error);
+    }];
+
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+
+    }];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        
+    }];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 
 #pragma mark - Settings

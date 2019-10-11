@@ -798,3 +798,23 @@
 "emoji_picker_objects_category" = "Objektuak";
 "emoji_picker_symbols_category" = "Sinboloak";
 "emoji_picker_flags_category" = "Banderak";
+"auth_forgot_password_error_no_configured_identity_server" = "Ez da identitate zerbitzaririk konfiguratu: gehitu bat zure pasahitza berrezartzeko.";
+"room_creation_error_invite_user_by_email_without_identity_server" = "Ez da identitate zerbitzaririk konfiguratu, beraz ezin duzu parte-hartzaile bat e-mail bidez gehitu.";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Ez da identitate zerbitzaririk konfiguratu, beraz ezin duzu kontaktu batekin txat bat hasi e-mail bat erabiliz.";
+"room_event_action_reaction_history" = "Erreakzioen historiala";
+"room_action_camera" = "Atera argazkia edo bideoa";
+// Media picker
+"media_picker_title" = "Multimedia liburutegia";
+// Image picker
+"image_picker_action_camera" = "Atera argazkia";
+"image_picker_action_library" = "Hautatu liburutegitik";
+"camera_unavailable" = "Kamera ez dago erabilgarri zure gailuan";
+"photo_library_access_not_granted" = "%@(e)k ez du argazki liburutegia erabiltzeko baimenik, aldatu pribatutasun ezarpenak";
+// Service terms
+"service_terms_modal_title" = "Erabilera baldintzak";
+"service_terms_modal_message" = "Jarraitzeko, zerbitzu honen erabilera baldintzak onartu behar dituzu.";
+"service_terms_modal_accept_button" = "Onartu";
+"service_terms_modal_description_for_identity_server" = "Izan besteentzat aurkigarria";
+"service_terms_modal_description_for_integration_manager" = "Erabili botak, zubiak, trepetak eta eranskailu multzoak";
+// MARK: Reaction history
+"reaction_history_title" = "Erreakzioak";

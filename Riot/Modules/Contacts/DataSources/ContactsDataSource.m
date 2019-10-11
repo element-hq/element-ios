@@ -86,13 +86,6 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactManagerDidUpdate:) name:kMXKContactManagerDidUpdateMatrixContactsNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactManagerDidUpdate:) name:kMXKContactManagerDidUpdateLocalContactsNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactManagerDidUpdate:) name:kMXKContactManagerDidUpdateLocalContactMatrixIDsNotification object:nil];
-        
-        // Refresh the matrix identifiers for all the local contacts.
-        if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] != CNAuthorizationStatusNotDetermined)
-        {
-            // Refresh the matrix identifiers for all the local contacts.
-            [[MXKContactManager sharedManager] updateMatrixIDsForAllLocalContacts];
-        }
     }
     return self;
 }
@@ -622,8 +615,16 @@
             switch ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts])
             {
                 case CNAuthorizationStatusAuthorized:
-                    // Because there is no contacts on the device
-                    tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_no_contact", @"Vector", nil);
+                    if (hideNonMatrixEnabledContacts && !self.mxSession.identityService)
+                    {
+                        // Because we cannot make lookups with no IS
+                        tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_no_identity_server", @"Vector", nil);
+                    }
+                    else
+                    {
+                        // Because there is no contacts on the device
+                        tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_no_contact", @"Vector", nil);
+                    }
                     break;
 
                 case CNAuthorizationStatusNotDetermined:

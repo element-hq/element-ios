@@ -1,0 +1,257 @@
+/*
+ Copyright 2019 New Vector Ltd
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
+
+import Foundation
+
+@objc protocol SettingsDiscoveryTableViewSectionDelegate: class {
+    
+    func settingsDiscoveryTableViewSection(_ settingsDiscoveryTableViewSection: SettingsDiscoveryTableViewSection, tableViewCellClass: MXKTableViewCell.Type, forRow: Int) -> MXKTableViewCell
+    func settingsDiscoveryTableViewSectionDidUpdate(_ settingsDiscoveryTableViewSection: SettingsDiscoveryTableViewSection)
+}
+
+private enum DiscoverySectionRows {
+    case info(text: String)
+    case attributedInfo(attributedText: NSAttributedString)
+    case button(title: String, action: () -> Void)
+    case threePid(threePid: MX3PID)
+}
+
+@objc final class SettingsDiscoveryTableViewSection: NSObject, Themable {
+    
+    // MARK: - Constants
+    
+    private enum Constants {
+        static let defaultFont = UIFont.systemFont(ofSize: 17.0)
+    }
+    
+    // MARK: - Properties
+    
+    @objc weak var delegate: SettingsDiscoveryTableViewSectionDelegate?
+    
+    // MARK: Private
+    
+    private var theme: Theme!
+    private var viewModel: SettingsDiscoveryViewModel
+    
+    // Need to know the state to make `cellForRow` deliver cells accordingly
+    private var viewState: SettingsDiscoveryViewState = .loading {
+        didSet {
+            self.updateRows()
+        }
+    }
+    
+    private var discoveryRows: [DiscoverySectionRows] = []
+    
+    // MARK: - Setup
+    
+    @objc init(viewModel: SettingsDiscoveryViewModel) {
+        self.theme = ThemeService.shared().theme
+        self.viewModel = viewModel
+        super.init()
+        self.viewModel.viewDelegate = self
+        
+        self.viewModel.process(viewAction: .load)
+        
+        self.registerThemeServiceDidChangeThemeNotification()
+    }
+    
+    // MARK: - Public
+    
+    @objc func numberOfRows() -> Int {
+        return self.discoveryRows.count
+    }
+    
+    @objc func cellForRow(atRow row: Int) -> UITableViewCell {
+
+        let discoveryRow = self.discoveryRows[row]
+
+        var cell: UITableViewCell?
+        
+        let enableInteraction: Bool
+        
+        if case .loading = self.viewState {
+            enableInteraction = false
+        } else {
+            enableInteraction = true
+        }
+        
+        switch discoveryRow {
+        case .info(let infoText):
+            if let infoCell: MXKTableViewCell = self.cellType(at: row) {
+                infoCell.textLabel?.numberOfLines = 0
+                infoCell.textLabel?.text = infoText
+                infoCell.selectionStyle = .none
+                cell = infoCell
+            }
+        case .attributedInfo(attributedText: let infoText):
+            if let infoCell: MXKTableViewCell = self.cellType(at: row) {
+                infoCell.textLabel?.numberOfLines = 0
+                infoCell.textLabel?.attributedText = infoText
+                infoCell.selectionStyle = .none
+                cell = infoCell
+            }
+        case .button(title: let title, action: let action):
+            if let buttonCell: MXKTableViewCellWithButton = self.cellType(at: row) {
+                buttonCell.mxkButton.setTitle(title, for: .normal)
+                buttonCell.mxkButton.setTitle(title, for: .highlighted)
+                buttonCell.mxkButton.vc_addAction(action: action)
+                buttonCell.mxkButton.isEnabled = enableInteraction
+                cell = buttonCell
+            }
+        case .threePid(let threePid):
+            if let detailCell: MXKTableViewCell = self.cellType(at: row) {
+                detailCell.accessoryType = .disclosureIndicator
+                
+                let formattedThreePid: String?
+                
+                switch threePid.medium {
+                case .email:
+                    formattedThreePid = threePid.address                  
+                case .msisdn:
+                    formattedThreePid = MXKTools.readableMSISDN(threePid.address)
+                default:
+                    formattedThreePid = nil
+                }
+                
+                detailCell.textLabel?.text = formattedThreePid
+                detailCell.isUserInteractionEnabled = enableInteraction
+                cell = detailCell
+            }
+        }
+        
+        return cell ?? UITableViewCell()
+    }
+    
+    @objc func reload() {
+        self.viewModel.process(viewAction: .load)
+    }
+    
+    @objc func selectRow(_ row: Int) {
+        let discoveryRow = self.discoveryRows[row]
+        
+        switch discoveryRow {
+        case .threePid(threePid: let threePid):
+            self.viewModel.process(viewAction: .select(threePid: threePid))
+        case .attributedInfo(attributedText: _):
+            if case let .loaded(displayMode) = self.viewState {
+                switch displayMode {
+                case .noThreePidsAdded, .threePidsAdded:
+                    self.viewModel.process(viewAction: .tapUserSettingsLink)
+                default:
+                    break
+                }
+            }            
+        default:
+            break
+        }
+    }
+    
+    func update(theme: Theme) {
+        self.theme = theme
+        
+        self.updateRows()
+    }
+    
+    // MARK: - Private
+    
+    private func registerThemeServiceDidChangeThemeNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
+    }
+    
+    @objc private func themeDidChange() {
+        self.update(theme: ThemeService.shared().theme)
+    }
+    
+    private func cellType<T: MXKTableViewCell>(at row: Int) -> T? {
+        let klass: T.Type = T.self
+        let tableViewCell = delegate?.settingsDiscoveryTableViewSection(self, tableViewCellClass: klass, forRow: row)
+        return tableViewCell as? T
+    }
+    
+    private func updateRows() {
+        
+        let discoveryRows: [DiscoverySectionRows]
+        
+        switch self.viewState {
+        case .loading:
+            discoveryRows = self.discoveryRows
+        case .loaded(let displayMode):
+            switch displayMode {
+            case .noIdentityServer:
+                discoveryRows = [
+                    .info(text: VectorL10n.settingsDiscoveryNoIdentityServer)
+                ]
+            case .termsNotSigned(let host):
+                discoveryRows = [
+                    .info(text: VectorL10n.settingsDiscoveryTermsNotSigned(host)),
+                    .button(title: VectorL10n.accept, action: { [weak self] in
+                        self?.viewModel.process(viewAction: .acceptTerms)
+                    })
+                ]
+            case .noThreePidsAdded:
+                discoveryRows = [
+                    .attributedInfo(attributedText: self.threePidsManagementInfoAttributedString())
+                ]
+            case .threePidsAdded(let emails, let phoneNumbers):
+                
+                let emailThreePids = emails.map { (email) -> DiscoverySectionRows in
+                    return .threePid(threePid: email)
+                }
+                
+                let phoneNumbersThreePids = phoneNumbers.map { (phoneNumber) -> DiscoverySectionRows in
+                    return .threePid(threePid: phoneNumber)
+                }
+                
+                var threePidsRows: [DiscoverySectionRows] = []
+                threePidsRows.append(contentsOf: emailThreePids)
+                threePidsRows.append(contentsOf: phoneNumbersThreePids)
+                threePidsRows.append(.attributedInfo(attributedText: self.threePidsManagementInfoAttributedString()))
+                
+                discoveryRows = threePidsRows
+            }
+        case .error:
+            discoveryRows = [
+                .info(text: VectorL10n.settingsDiscoveryErrorMessage),
+                .button(title: VectorL10n.retry, action: { [weak self] in
+                    self?.viewModel.process(viewAction: .load)
+                })
+            ]
+        }
+        
+        self.discoveryRows = discoveryRows
+    }
+    
+    private func threePidsManagementInfoAttributedString() -> NSAttributedString {
+        let attributedInfoString = NSMutableAttributedString(string: VectorL10n.settingsDiscoveryThreePidsManagementInformationPart1,
+                                                             attributes: [.foregroundColor: self.theme.textPrimaryColor, .font: Constants.defaultFont])
+        attributedInfoString.append(NSAttributedString(string: VectorL10n.settingsDiscoveryThreePidsManagementInformationPart2,
+                                                       attributes: [.foregroundColor: self.theme.tintColor, .font: Constants.defaultFont]))
+        attributedInfoString.append(NSAttributedString(string: VectorL10n.settingsDiscoveryThreePidsManagementInformationPart3,
+                                                       attributes: [.foregroundColor: self.theme.tintColor, .font: Constants.defaultFont]))
+        return attributedInfoString
+    }
+}
+
+// MARK: - SettingsDiscoveryViewModelViewDelegate
+extension SettingsDiscoveryTableViewSection: SettingsDiscoveryViewModelViewDelegate {
+    
+    func settingsDiscoveryViewModel(_ viewModel: SettingsDiscoveryViewModelType, didUpdateViewState viewState: SettingsDiscoveryViewState) {
+        self.viewState = viewState
+        
+        // The tableview datasource will call `self.cellForRow()`
+        self.delegate?.settingsDiscoveryTableViewSectionDidUpdate(self)
+    }
+}

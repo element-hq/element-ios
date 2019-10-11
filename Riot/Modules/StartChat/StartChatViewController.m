@@ -20,7 +20,7 @@
 #import "AppDelegate.h"
 #import "Riot-Swift.h"
 
-@interface StartChatViewController ()
+@interface StartChatViewController () <UITableViewDataSource, UISearchBarDelegate, ContactsTableViewControllerDelegate>
 {
     // The contact used to describe the current user.
     MXKContact *userContact;
@@ -41,6 +41,13 @@
     // This dictionary tells for each display name whether it appears several times in participants list
     NSMutableDictionary <NSString*, NSNumber*> *isMultiUseNameByDisplayName;
 }
+
+@property (weak, nonatomic) IBOutlet UIView *searchBarHeader;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBarView;
+@property (weak, nonatomic) IBOutlet UIView *searchBarHeaderBorder;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchBarTopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewBottomConstraint;
 
 @end
 
@@ -522,11 +529,7 @@
                     // The identity server must be defined
                     if (!self.mainSession.matrixRestClient.identityServer)
                     {
-                        MXError *error = [[MXError alloc] initWithErrorCode:kMXSDKErrCodeStringMissingParameters error:@"No supplied identity server URL"];
                         NSLog(@"[StartChatViewController] Invite %@ failed", participantId);
-                        // Alert user
-                        [[AppDelegate theDelegate] showErrorAsAlert:[error createNSError]];
-                        
                         continue;
                     }
                     
@@ -681,6 +684,38 @@
 
 - (void)contactsTableViewController:(ContactsTableViewController *)contactsTableViewController didSelectContact:(MXKContact*)contact
 {
+    // If contact has only an email the identity server must be defined
+    if (!self.mainSession.matrixRestClient.identityServer && contact.matrixIdentifiers.count == 0)
+    {
+        NSString *participantId;
+        
+        if (contact.emailAddresses.count)
+        {
+            MXKEmail *email = contact.emailAddresses.firstObject;
+            participantId = email.emailAddress;
+        }
+        else
+        {
+            // This is the text filled by the user.
+            participantId = contact.displayName;
+        }
+        
+        if ([MXTools isEmailAddress:participantId])
+        {
+            NSLog(@"[StartChatViewController] No identity server is configured, do not add participant with email");
+            
+            [contactsTableViewController refreshCurrentSelectedCell:YES];
+            
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"error"]
+                                                                           message:NSLocalizedStringFromTable(@"room_creation_error_invite_user_by_email_without_identity_server", @"Vector", nil)
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:UIAlertActionStyleDefault handler:nil]];
+            [self presentViewController:alert animated:YES completion:nil];
+            
+            return;
+        }
+    }
+    
     if (contact)
     {
         // Update here the mutable list of participants

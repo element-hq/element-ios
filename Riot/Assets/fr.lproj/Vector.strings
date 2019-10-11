@@ -303,9 +303,9 @@
 "settings_confirm_password" = "confirmer le mot de passe";
 "settings_fail_to_update_password" = "Échec de la modification du mot de passe";
 "settings_password_updated" = "Votre mot de passe a été modifié";
-"settings_crypto_device_name" = "Nom de l'appareil : ";
+"settings_crypto_device_name" = "Nom public de l’appareil : ";
 "settings_crypto_device_id" = "\nIdentifiant de l'appareil : ";
-"settings_crypto_device_key" = "\nClé de l'appareil : ";
+"settings_crypto_device_key" = "\nClé de l’appareil :\n";
 "settings_crypto_export" = "Exporter les clés";
 "settings_crypto_blacklist_unverified_devices" = "Chiffrer uniquement vers les appareils vérifiés";
 // Room Details
@@ -456,7 +456,7 @@
 // Events formatter
 "event_formatter_member_updates" = "%tu modifications dans les membres";
 "auth_home_server_placeholder" = "URL (par ex. https://matrix.org)";
-"auth_identity_server_placeholder" = "URL (par ex. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (par ex. https://vector.im)";
 "room_ongoing_conference_call_with_close" = "Téléconférence en cours. Rejoindre en %@ ou %@. %@.";
 "room_ongoing_conference_call_close" = "Fermer";
 "room_conference_call_no_power" = "Permissions requises pour gérer la téléconférence dans ce salon";
@@ -821,3 +821,93 @@
 "image_picker_action_library" = "Choisir dans la médiathèque";
 "camera_unavailable" = "L’appareil photo n’est pas disponible sur votre appareil";
 "photo_library_access_not_granted" = "%@ n’a pas la permission pour accéder à la médiathèque, veuillez modifier les options de vie privée";
+"auth_forgot_password_error_no_configured_identity_server" = "Aucun serveur d’identité n’est configuré : ajoutez-en un pour réinitialiser votre mot de passe.";
+"room_creation_error_invite_user_by_email_without_identity_server" = "Aucun serveur d’identité n’est configuré donc vous ne pouvez pas ajouter de participant avec un e-mail.";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Aucun serveur d’identité n’est configuré donc vous ne pouvez pas commencer de discussion avec un contact en utilisant un e-mail.";
+// Service terms
+"service_terms_modal_title" = "Conditions de service";
+"service_terms_modal_message" = "Pour continuer vous devez accepter les conditions de ce service (%@).";
+"service_terms_modal_accept_button" = "Accepter";
+"service_terms_modal_description_for_identity_server" = "Se rendre découvrable pour les autres";
+"service_terms_modal_description_for_integration_manager" = "Utiliser des robots, des passerelles, des widgets et des packs de stickers";
+"room_participants_remove_third_party_invite_prompt_msg" = "Voulez-vous vraiment retirer cette invitation ?";
+// Errors
+"error_user_already_logged_in" = "On dirait que vous essayez de vous connecter à un autre serveur d’accueil. Voulez-vous vous déconnecter ?";
+"room_accessiblity_scroll_to_bottom" = "Défiler vers le bas";
+"room_accessibility_search" = "Chercher";
+"room_accessibility_integrations" = "Intégrations";
+"room_accessibility_upload" = "Envoyer";
+"room_accessibility_call" = "Appeler";
+"room_accessibility_hangup" = "Raccrocher";
+"media_type_accessibility_image" = "Image";
+"media_type_accessibility_audio" = "Audio";
+"media_type_accessibility_video" = "Vidéo";
+"media_type_accessibility_location" = "Emplacement";
+"media_type_accessibility_file" = "Fichier";
+"media_type_accessibility_sticker" = "Sticker";
+// Widget Picker
+"widget_picker_title" = "Intégrations";
+"auth_add_email_message_2" = "Définissez une adresse e-mail pour la récupération de compte, et pour être éventuellement découvrable par les personnes qui vous connaissent.";
+"auth_add_phone_message_2" = "Définissez un numéro de téléphone pour être éventuellement découvrable par les personnes qui vous connaissent.";
+"auth_add_email_phone_message_2" = "Définissez une adresse e-mail pour la récupération de compte. Vous pouvez ensuite utiliser votre e-mail ou votre numéro de téléphone pour être découvrable par les personnes qui vous connaissent.";
+"auth_email_is_required" = "Aucun serveur d’identité n’est configuré donc vous ne pouvez pas ajouter d’adresse e-mail pour pouvoir réinitialiser votre mot de passe dans le futur.";
+"auth_phone_is_required" = "Aucun serveur d’identité n’est configuré donc vous ne pouvez pas ajouter de numéro de téléphone pour pouvoir réinitialiser votre mot de passe dans le futur.";
+"auth_reset_password_error_is_required" = "Aucun serveur d’identité n’est configuré : ajoutez-en un dans les options du serveur pour réinitialiser votre mot de passe.";
+"contacts_address_book_no_identity_server" = "Aucun serveur d’identité n’est configuré";
+"settings_discovery_settings" = "DÉCOUVERTE";
+"settings_identity_server_settings" = "SERVEUR D’IDENTITÉ";
+"settings_three_pids_management_information_part1" = "Gérez quelles adresse e-mail et quels numéros de téléphone vous pouvez utiliser pour vous connecter ou récupérer votre compte ici. Contrôlez qui vous pouvez trouver dans ";
+"settings_three_pids_management_information_part2" = "Découverte";
+"settings_three_pids_management_information_part3" = ".";
+"settings_calls_stun_server_fallback_button" = "Autoriser le serveur d’assistance d’appel de secours";
+"settings_calls_stun_server_fallback_description" = "Autorise le serveur d’assistance d’appel de secours %@ quand votre serveur d’accueil n’en offre pas (votre adresse IP serait partagée lors d’un appel).";
+"settings_devices_description" = "Le nom public de l’appareil est visible pour les personnes avec qui vous communiquez";
+"settings_discovery_no_identity_server" = "Vous n’utilisez actuellement aucun serveur d’identité. Pour être découvrable par les contacts existants que vous connaissez, ajoutez-en un.";
+"settings_discovery_terms_not_signed" = "Acceptez les conditions de service du serveur d’identité (%@) pour vous permettre d’être découvrable avec une adresse e-mail ou un numéro de téléphone.";
+"settings_discovery_three_pids_management_information_part1" = "Gérez quelles adresses e-mail ou numéros de téléphone peuvent être utilisés par les autres utilisateurs pour vous découvrir et pour vous inviter dans des salons. Ajoutez ou supprimez des adresses e-mail ou des numéros de téléphones depuis cette liste dans les ";
+"settings_discovery_three_pids_management_information_part2" = "Paramètres utilisateur";
+"settings_discovery_three_pids_management_information_part3" = ".";
+"settings_discovery_error_message" = "Une erreur est survenue. Réessayez.";
+"settings_discovery_three_pid_details_title_email" = "Gérer l’e-mail";
+"settings_discovery_three_pid_details_information_email" = "Gérer les préférences pour cette adresse e-mail, que les autres utilisateurs peuvent utiliser pour vous découvrir et pour vous inviter dans des salons. Ajoutez ou supprimez des adresses e-mail dans Comptes.";
+"settings_discovery_three_pid_details_title_phone_number" = "Gérer le numéro de téléphone";
+"settings_discovery_three_pid_details_information_phone_number" = "Gérer les préférences pour ce numéro de téléphone, que les autres utilisateurs peuvent utiliser pour vous découvrir et pour vous inviter dans des salons. Ajoutez ou supprimez des numéros de téléphone dans Comptes.";
+"settings_discovery_three_pid_details_share_action" = "Partager";
+"settings_discovery_three_pid_details_revoke_action" = "Révoquer";
+"settings_discovery_three_pid_details_cancel_email_validation_action" = "Annuler la validation de l’e-mail";
+"settings_discovery_three_pid_details_enter_sms_code_action" = "Saisir le code d’activation par SMS";
+"settings_identity_server_description" = "En utilisant le serveur d’identité ci-dessus, vous pouvez découvrir et être découvrable par les contacts existants que vous connaissez.";
+"settings_identity_server_no_is" = "Aucun serveur d’identité n’est configuré";
+"settings_identity_server_no_is_description" = "Vous n’utilisez actuellement aucun serveur d’identité. Pour découvrir et être découvrable par les contacts existants que vous connaissez, ajoutez-en un ci-dessus.";
+// Identity server settings
+"identity_server_settings_title" = "Serveur d’identité";
+"identity_server_settings_description" = "Vous utilisez actuellement %@ pour découvrir et être découvrable par les contacts existants que vous connaissez.";
+"identity_server_settings_no_is_description" = "Vous n’utilisez actuellement aucun serveur d’identité. Pour découvrir et être découvrable par vos contacts existants, ajoutez-en un ci-dessus.";
+"identity_server_settings_place_holder" = "Saisir un serveur d’identité";
+"identity_server_settings_add" = "Ajouter";
+"identity_server_settings_change" = "Modifier";
+"identity_server_settings_disconnect_info" = "La déconnexion de votre serveur d’identité signifie que vous ne pourrez pas être découvrable par les autres utilisateurs et inviter d’autres personnes par e-mail ou par téléphone.";
+"identity_server_settings_disconnect" = "Se déconnecter";
+"identity_server_settings_alert_no_terms_title" = "Le serveur d’identité n’a pas de conditions de service";
+"identity_server_settings_alert_no_terms" = "Le serveur d’identité que vous avez choisi n’a pas de conditions de service. Continuez uniquement si vous faites confiance au propriétaire de ce serveur.";
+"identity_server_settings_alert_change_title" = "Modifier le serveur d’identité";
+"identity_server_settings_alert_change" = "Se déconnecter du serveur d’identité %1$@ et se connecter à %2$@ à la place ?";
+"identity_server_settings_alert_disconnect_title" = "Se déconnecter du serveur d’identité";
+"identity_server_settings_alert_disconnect" = "Se déconnecter du serveur d’identité %@ ?";
+"identity_server_settings_alert_disconnect_button" = "Se déconnecter";
+"identity_server_settings_alert_disconnect_still_sharing_3pid" = "Vous partagez toujours vos données personnelles sur le serveur d’identité %@.\n\nNous recommandons que vous supprimiez vos adresses e-mail et vos numéros de téléphone du serveur d’identité avant de vous déconnecter.";
+"identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "Se déconnecter quand même";
+"identity_server_settings_alert_error_terms_not_accepted" = "Vous devez accepter les conditions de %@ pour le définir comme serveur d’identité.";
+"identity_server_settings_alert_error_invalid_identity_server" = "%@ n’est pas un serveur d’identité valide.";
+"call_no_stun_server_error_title" = "L’appel a échoué en raison d’un serveur mal configuré";
+"call_no_stun_server_error_message_1" = "Demandez à l’administrateur de votre serveur d’accueil %@ de configurer un serveur TURN afin que les appels fonctionnent de manière fiable.";
+"call_no_stun_server_error_message_2" = "Sinon, vous pouvez essayer d’utiliser le serveur public à %@, mais ça ne sera pas fiable et ça partagera votre adresse IP avec ce serveur. Vous pouvez aussi gérer cela dans les Paramètres";
+"call_no_stun_server_error_use_fallback_button" = "Essayer d’utiliser %@";
+// Generic errors
+"error_invite_3pid_with_no_identity_server" = "Ajoutez un serveur d’identité dans vos paramètres pour inviter par e-mail.";
+"service_terms_modal_decline_button" = "Refuser";
+"service_terms_modal_description_for_identity_server_1" = "Trouver d’autres personnes par téléphone ou par e-mail";
+"service_terms_modal_description_for_identity_server_2" = "Être trouvé par téléphone ou par e-mail";
+// Service terms - Variant for identity server when displayed out of a context
+"service_terms_modal_title_identity_server" = "Découverte des contacts";
+"service_terms_modal_message_identity_server" = "Acceptez les conditions du serveur d’identité (%@) pour découvrir des contacts.";

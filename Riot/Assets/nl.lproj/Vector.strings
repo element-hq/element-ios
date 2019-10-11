@@ -24,7 +24,7 @@
 "view" = "Weergeven";
 "next" = "Volgende";
 "back" = "Terug";
-"continue" = "Verder gaan";
+"continue" = "Verdergaan";
 "create" = "Aanmaken";
 "start" = "Starten";
 "leave" = "Verlaten";
@@ -42,8 +42,8 @@
 "camera" = "Camera";
 "voice" = "Spraak";
 "video" = "Video";
-"active_call" = "Actieve oproep";
-"active_call_details" = "Actieve oproep (%@)";
+"active_call" = "Oproep actief";
+"active_call_details" = "Oproep actief (%@)";
 "later" = "Later";
 "rename" = "Hernoemen";
 // Authentication
@@ -64,7 +64,7 @@
 "auth_repeat_password_placeholder" = "Wachtwoord herhalen";
 "auth_repeat_new_password_placeholder" = "Bevestig uw nieuwe wachtwoord";
 "auth_invalid_login_param" = "Onjuiste gebruikersnaam en/of wachtwoord";
-"auth_invalid_user_name" = "Gebruikersnamen mogen alleen letters, cijfers, punten, afbreek- en lage streepjes bevatten";
+"auth_invalid_user_name" = "Gebruikersnamen mogen alleen letters, cijfers, punten, koppeltekens en underscores bevatten";
 "auth_invalid_password" = "Het wachtwoord is te kort (min 6)";
 "auth_invalid_email" = "Dit ziet er niet uit als een geldig e-mailadres";
 "auth_invalid_phone" = "Dit ziet er niet uit als een geldig telefoonnummer";
@@ -441,7 +441,7 @@
 "event_formatter_member_updates" = "%tu lidmaatschapsaanpassingen";
 "bug_report_send" = "Versturen";
 "auth_home_server_placeholder" = "URL (bv. https://matrix.org)";
-"auth_identity_server_placeholder" = "URL (bv. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (bv. https://vector.im)";
 "room_ongoing_conference_call_with_close" = "Er is een vergadergesprek gaande. Neem deel met %@ of %@. %@ het.";
 "room_ongoing_conference_call_close" = "Sluiten";
 "room_conference_call_no_power" = "U heeft toestemming nodig om vergadergesprekken in dit groepsgesprek te beheren";
@@ -556,7 +556,7 @@
 "deactivate_account_informations_part1" = "Dit zal uw account voorgoed onbruikbaar maken. U zult zich niet meer kunnen aanmelden, en niemand anders zal zich met dezelfde gebruikers-ID kunnen registreren. Dit zal er voor zorgen dat uw account alle gesprekken verlaat waar deze momenteel lid van is, en het verwijdert uw accountgegevens van de identiteitsserver. ";
 "deactivate_account_informations_part2_emphasize" = "Deze actie is onomkeerbaar.";
 "deactivate_account_informations_part3" = "\n\nHet deactiveren van uw account ";
-"deactivate_account_informations_part4_emphasize" = "zal er niet standaard voor zorgen dat de berichten die u heeft verzonden worden vergeten. ";
+"deactivate_account_informations_part4_emphasize" = "zal er standaard niet voor zorgen dat de berichten die u heeft verzonden worden vergeten. ";
 "deactivate_account_informations_part5" = "Als u wilt dat wij de berichten vergeten, vinkt u het vakje hieronder aan.\n\nDe zichtbaarheid van berichten in Matrix is gelijkaardig aan e-mails. Het vergeten van uw berichten betekent dat berichten die u heeft verstuurd niet meer gedeeld worden met nieuwe of ongeregistreerde gebruikers, maar geregistreerde gebruikers die al toegang hebben tot deze berichten zullen alsnog toegang hebben tot hun eigen kopie ervan.";
 "deactivate_account_forget_messages_information_part1" = "Vergeet alle berichten die ik heb verstuurd wanneer mijn account gedeactiveerd is (";
 "deactivate_account_forget_messages_information_part3" = ": dit zal er voor zorgen dat toekomstige gebruikers een onvolledig beeld krijgen van gesprekken)";
@@ -829,3 +829,29 @@
 "emoji_picker_flags_category" = "Vlaggen";
 // MARK: Reaction history
 "reaction_history_title" = "Reacties";
+"auth_forgot_password_error_no_configured_identity_server" = "Er is geen identiteitsserver geconfigureerd: voeg er een toe om uw wachtwoord opnieuw in te stellen.";
+"room_creation_error_invite_user_by_email_without_identity_server" = "Er is geen identiteitsserver geconfigureerd, dus u kunt geen deelnemers toevoegen via e-mail.";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Er is geen identiteitsserver geconfigureerd, dus u kunt geen gesprek beginnen met een contact via e-mail.";
+// Service terms
+"service_terms_modal_title" = "Dienstvoorwaarden";
+"service_terms_modal_message" = "Om door te gaan dient u de dienstvoorwaarden te aanvaarden.";
+"service_terms_modal_accept_button" = "Aanvaarden";
+"service_terms_modal_description_for_identity_server" = "Wees vindbaar voor anderen";
+"service_terms_modal_description_for_integration_manager" = "Gebruik bots, bruggen, widgets en stickerpakketten";
+// Errors
+"error_user_already_logged_in" = "Het lijkt alsof u probeert te verbinden met een andere thuisserver. Wilt u zich afmelden?";
+"room_participants_remove_third_party_invite_prompt_msg" = "Weet u zeker dat u deze uitnodiging wilt intrekken?";
+"room_accessiblity_scroll_to_bottom" = "Scrollen naar onderen";
+"room_accessibility_search" = "Zoeken";
+"room_accessibility_integrations" = "Integraties";
+"room_accessibility_upload" = "Uploaden";
+"room_accessibility_call" = "Bellen";
+"room_accessibility_hangup" = "Ophangen";
+"media_type_accessibility_image" = "Afbeelding";
+"media_type_accessibility_audio" = "Audio";
+"media_type_accessibility_video" = "Video";
+"media_type_accessibility_location" = "Locatie";
+"media_type_accessibility_file" = "Bestand";
+"media_type_accessibility_sticker" = "Sticker";
+// Widget Picker
+"widget_picker_title" = "Integraties";

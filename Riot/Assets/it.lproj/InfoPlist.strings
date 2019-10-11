@@ -2,4 +2,5 @@
 "NSCameraUsageDescription" = "La fotocamera viene utilizzata per scattare fotografie, registrare video ed eseguire videochiamate.";
 "NSPhotoLibraryUsageDescription" = "La libreria fotografica viene utilizzata per inviare foto e video.";
 "NSMicrophoneUsageDescription" = "Il microfono viene utilizzato per registrare video ed effettuare chiamate.";
-"NSContactsUsageDescription" = "Per mostrare i tuoi contatti che stanno già usando Riot o Matrix, possiamo inviare gli indirizzi email e i numeri di telefono della tua rubrica al tuo server identità. New Vector non memorizza e non usa per altri scopi questi dati. Per maggiori informazioni guarda l'informativa sulla privacy presente nelle impostazioni di questa applicazione.";
+"NSContactsUsageDescription" = "Per scoprire i contatti che già usano Matrix, Riot può inviare gli indirizzi email e i numeri di telefono della tua rubrica al server identità che hai scelto. Se supportato, viene fatto un hash dei dati personali prima dell'invio - controlla la politica sulla privacy del tuo server di identità per maggiori informazioni.";
+"NSCalendarsUsageDescription" = "Vedi le tue riunioni programmate nell'app.";

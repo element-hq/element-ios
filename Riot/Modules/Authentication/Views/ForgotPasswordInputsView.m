@@ -237,99 +237,109 @@
             
             if (restClient)
             {
-                // Launch email validation
-                NSString *clientSecret = [MXTools generateSecret];
-                
-                __weak typeof(self) weakSelf = self;
-                [restClient forgetPasswordForEmail:self.emailTextField.text
-                                      clientSecret:clientSecret
-                                       sendAttempt:1
-                                           success:^(NSString *sid)
-                 {
-                     typeof(weakSelf) strongSelf = weakSelf;
-                     if (strongSelf) {
-                         strongSelf.didPrepareParametersCallback = callback;
-                         
-                         NSURL *identServerURL = [NSURL URLWithString:restClient.identityServer];
-                         strongSelf.parameters = @{
-                                                   @"auth": @{
-                                                           @"threepid_creds": @{
-                                                                   @"client_secret": clientSecret,
-                                                                   @"id_server": identServerURL.host,
-                                                                   @"sid": sid
-                                                                   },
-                                                           @"type": kMXLoginFlowTypeEmailIdentity
-                                                           },
-                                                   @"new_password": strongSelf.passWordTextField.text
-                                                   };
-                         
-                         [strongSelf hideInputsContainer];
-                         
-                         strongSelf.messageLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"auth_reset_password_email_validation_message", @"Vector", nil), strongSelf.emailTextField.text];
-                         
-                         strongSelf.messageLabel.hidden = NO;
-                         
-                         [strongSelf.nextStepButton addTarget:strongSelf
-                                                       action:@selector(didCheckEmail:)
-                                             forControlEvents:UIControlEventTouchUpInside];
-                         
-                         strongSelf.nextStepButton.hidden = NO;
-                     }
-                 }
-                                           failure:^(NSError *error)
-                 {
-                     NSLog(@"[ForgotPasswordInputsView] Failed to request email token");
-                     
-                     // Ignore connection cancellation error
-                     if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
+                [self checkIdentityServerRequirement:restClient success:^{
+
+                    // Launch email validation
+                    NSString *clientSecret = [MXTools generateSecret];
+
+                    __weak typeof(self) weakSelf = self;
+                    [restClient forgetPasswordForEmail:self.emailTextField.text
+                                          clientSecret:clientSecret
+                                           sendAttempt:1
+                                               success:^(NSString *sid)
                      {
-                         return;
-                     }
-                     
-                     NSString *errorMessage;
-                     
-                     // Translate the potential MX error.
-                     MXError *mxError = [[MXError alloc] initWithNSError:error];
-                     if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringThreePIDNotFound])
-                         errorMessage = NSLocalizedStringFromTable(@"auth_email_not_found", @"Vector", nil);
-                     else if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringServerNotTrusted])
-                         errorMessage = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
-                     else if (error.userInfo[@"error"])
-                         errorMessage = error.userInfo[@"error"];
-                     else
-                         errorMessage = error.localizedDescription;
-                     
-                     if (weakSelf)
-                     {
-                         typeof(self) self = weakSelf;
-                         
-                         if (self->inputsAlert)
-                         {
-                             [self->inputsAlert dismissViewControllerAnimated:NO completion:nil];
+                         typeof(weakSelf) strongSelf = weakSelf;
+                         if (strongSelf) {
+                             strongSelf.didPrepareParametersCallback = callback;
+
+                             NSMutableDictionary *threepidCreds = [NSMutableDictionary dictionaryWithDictionary:@{
+                                                                                                                  @"client_secret": clientSecret,
+                                                                                                                  @"sid": sid
+                                                                                                                  }];
+                             if (restClient.identityServer)
+                             {
+                                 NSURL *identServerURL = [NSURL URLWithString:restClient.identityServer];
+                                 threepidCreds[@"id_server"] = identServerURL.host;
+                             }
+
+                             strongSelf.parameters = @{
+                                                       @"auth": @{
+                                                               @"threepid_creds": threepidCreds,
+                                                               @"type": kMXLoginFlowTypeEmailIdentity
+                                                               },
+                                                       @"new_password": strongSelf.passWordTextField.text
+                                                       };
+
+                             [strongSelf hideInputsContainer];
+
+                             strongSelf.messageLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"auth_reset_password_email_validation_message", @"Vector", nil), strongSelf.emailTextField.text];
+
+                             strongSelf.messageLabel.hidden = NO;
+
+                             [strongSelf.nextStepButton addTarget:strongSelf
+                                                           action:@selector(didCheckEmail:)
+                                                 forControlEvents:UIControlEventTouchUpInside];
+
+                             strongSelf.nextStepButton.hidden = NO;
                          }
-                         
-                         self->inputsAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:errorMessage preferredStyle:UIAlertControllerStyleAlert];
-                         
-                         [self->inputsAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                                               style:UIAlertActionStyleDefault
-                                                                             handler:^(UIAlertAction * action) {
-                                                                                 
-                                                                                 if (weakSelf)
-                                                                                 {
-                                                                                     typeof(self) self = weakSelf;
-                                                                                     self->inputsAlert = nil;
-                                                                                     if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsViewDidCancelOperation:)])
-                                                                                     {
-                                                                                         [self.delegate authInputsViewDidCancelOperation:self];
-                                                                                     }
-                                                                                 }
-                                                                                 
-                                                                             }]];
-                         
-                         [self.delegate authInputsView:self presentAlertController:self->inputsAlert];
                      }
-                 }];
-                
+                                               failure:^(NSError *error)
+                     {
+                         NSLog(@"[ForgotPasswordInputsView] Failed to request email token");
+
+                         // Ignore connection cancellation error
+                         if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
+                         {
+                             return;
+                         }
+
+                         NSString *errorMessage;
+
+                         // Translate the potential MX error.
+                         MXError *mxError = [[MXError alloc] initWithNSError:error];
+                         if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringThreePIDNotFound])
+                             errorMessage = NSLocalizedStringFromTable(@"auth_email_not_found", @"Vector", nil);
+                         else if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringServerNotTrusted])
+                             errorMessage = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+                         else if (error.userInfo[@"error"])
+                             errorMessage = error.userInfo[@"error"];
+                         else
+                             errorMessage = error.localizedDescription;
+
+                         if (weakSelf)
+                         {
+                             typeof(self) self = weakSelf;
+
+                             if (self->inputsAlert)
+                             {
+                                 [self->inputsAlert dismissViewControllerAnimated:NO completion:nil];
+                             }
+
+                             self->inputsAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:errorMessage preferredStyle:UIAlertControllerStyleAlert];
+
+                             [self->inputsAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                                                   style:UIAlertActionStyleDefault
+                                                                                 handler:^(UIAlertAction * action) {
+
+                                                                                     if (weakSelf)
+                                                                                     {
+                                                                                         typeof(self) self = weakSelf;
+                                                                                         self->inputsAlert = nil;
+                                                                                         if (self.delegate && [self.delegate respondsToSelector:@selector(authInputsViewDidCancelOperation:)])
+                                                                                         {
+                                                                                             [self.delegate authInputsViewDidCancelOperation:self];
+                                                                                         }
+                                                                                     }
+
+                                                                                 }]];
+
+                             [self.delegate authInputsView:self presentAlertController:self->inputsAlert];
+                         }
+                     }];
+                } failure:^(NSError *error) {
+                    callback(nil, error);
+                }];
+
                 // Async response
                 return;
             }
@@ -398,6 +408,29 @@
     self.repeatPasswordContainer.hidden = NO;
     
     [self layoutIfNeeded];
+}
+
+- (void)checkIdentityServerRequirement:(MXRestClient*)mxRestClient success:(void (^)(void))success failure:(void (^)(NSError *))failure
+{
+    [mxRestClient supportedMatrixVersions:^(MXMatrixVersions *matrixVersions) {
+
+        NSLog(@"[ForgotPasswordInputsView] checkIdentityServerRequirement: %@", matrixVersions.doesServerRequireIdentityServerParam ? @"YES": @"NO");
+
+        if (matrixVersions.doesServerRequireIdentityServerParam
+            && !mxRestClient.identityServer)
+        {
+            failure([NSError errorWithDomain:MXKAuthErrorDomain
+                                        code:0
+                                    userInfo:@{
+                                               NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"auth_reset_password_error_is_required"]
+                                               }]);
+        }
+        else
+        {
+            success();
+        }
+
+    } failure:failure];
 }
 
 #pragma mark - actions

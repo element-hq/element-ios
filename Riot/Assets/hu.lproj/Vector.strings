@@ -54,7 +54,7 @@
 "auth_repeat_password_placeholder" = "Jelszó megerősítés";
 "auth_repeat_new_password_placeholder" = "Új jelszó megerősítés";
 "auth_home_server_placeholder" = "URL (pl. https://matrix.org)";
-"auth_identity_server_placeholder" = "URL (pl. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (pl. https://vector.im)";
 "auth_invalid_login_param" = "Hibás felhasználói név és/vagy jelszó";
 "auth_invalid_user_name" = "A felhasználói név tartalmazhat betűket, számokat, pontokat, kötőjeleket és aláhúzást";
 "auth_invalid_password" = "Jelszó túl rövid (min. 6 karakter)";
@@ -349,9 +349,9 @@
 "settings_confirm_password" = "jelszó megerősítése";
 "settings_fail_to_update_password" = "A jelszó frissítése nem sikerült";
 "settings_password_updated" = "A jelszavad frissítve";
-"settings_crypto_device_name" = "Eszköz neve: ";
+"settings_crypto_device_name" = "Eszköz nyilvános neve: ";
 "settings_crypto_device_id" = "\nEszköz azonosítója: ";
-"settings_crypto_device_key" = "\nEszköz kulcsa: ";
+"settings_crypto_device_key" = "\nEszköz kulcsa:\n";
 "settings_crypto_export" = "Kulcsok kimentése";
 "settings_crypto_blacklist_unverified_devices" = "Csak ellenőrzött eszközöknek titkosít";
 "settings_deactivate_my_account" = "Felhasználói fiókom felfüggesztése";
@@ -818,3 +818,95 @@
 "room_event_action_reaction_history" = "Reakciók története";
 // MARK: Reaction history
 "reaction_history_title" = "Reakciók";
+"auth_forgot_password_error_no_configured_identity_server" = "Azonosítási szerver nincs beállítva: a jelszó visszaállításhoz adj hozzá egyet.";
+"room_creation_error_invite_user_by_email_without_identity_server" = "Azonosítási szerver nincs beállítva, így e-mail cím alapján nem tudsz hozzáadni résztvevőt.";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Azonosítási szerver nincs beállítva, így e-mail cím alapján nem tudsz beszélgetést kezdeményezni.";
+"room_action_camera" = "Fotó vagy videó készítése";
+// Media picker
+"media_picker_title" = "Média könyvtár";
+// Image picker
+"image_picker_action_camera" = "Fotó készítése";
+"image_picker_action_library" = "Válassz a könyvtárból";
+"camera_unavailable" = "A kamera nem érhető el az eszközödön";
+"photo_library_access_not_granted" = "A fénykép könyvár eléréséhez %@ nem rendelkezik engedéllyel, kérlek változtasd meg az adatvédelmi beállításokat";
+// Service terms
+"service_terms_modal_title" = "Felhasználási feltételek";
+"service_terms_modal_message" = "A folytatáshoz el kell fogadnod a felhasználási feltételeket (%@).";
+"service_terms_modal_accept_button" = "Elfogad";
+"service_terms_modal_description_for_identity_server" = "Látható mások számára";
+"service_terms_modal_description_for_integration_manager" = "Használjon botokat, hidakat, kisalkalmazásokat és matrica csomagokat";
+"room_participants_remove_third_party_invite_prompt_msg" = "Biztos vagy benne, hogy visszavonod ezt a meghívót?";
+// Errors
+"error_user_already_logged_in" = "Úgy tűnik másik matrix szerverhez próbálsz csatlakozni. Ki szeretnél jelentkezni?";
+"room_accessiblity_scroll_to_bottom" = "Görgess az aljára";
+"room_accessibility_search" = "Keresés";
+"room_accessibility_integrations" = "Integrációk";
+"room_accessibility_upload" = "Feltöltés";
+"room_accessibility_call" = "Hívás";
+"room_accessibility_hangup" = "Letesz";
+"media_type_accessibility_image" = "Kép";
+"media_type_accessibility_audio" = "Hang";
+"media_type_accessibility_video" = "Videó";
+"media_type_accessibility_location" = "Helyzet";
+"media_type_accessibility_file" = "Fájl";
+"media_type_accessibility_sticker" = "Matrica";
+// Widget Picker
+"widget_picker_title" = "Integrációk";
+"auth_add_email_message_2" = "E-mail cím beállítása fiók visszaállításhoz és, hogy később az ismerősök megtalálhassanak.";
+"auth_add_phone_message_2" = "Telefonszám beállítása, hogy később az ismerősök megtalálhassanak.";
+"auth_add_email_phone_message_2" = "E-mail cím beállítása fiók visszaállításhoz. Használj később e-mail címet vagy telefonszámot, hogy az ismerősök megtalálhassanak.";
+"auth_email_is_required" = "Azonosítási szerver nincs beállítva, így nem tudsz hozzáadni e-mail címet amivel vissza lehetne állítani a jelszót a későbbiekben.";
+"auth_phone_is_required" = "Azonosítási szerver nincs beállítva, így nem tudsz hozzáadni telefonszámot, hogy vissza lehetne állítani a jelszót a későbbiekben.";
+"auth_reset_password_error_is_required" = "Azonosítási szerver nincs beállítva: adj hozzá egyet a szerver beállításoknál, hogy a jelszót vissza lehessen állítani.";
+"contacts_address_book_no_identity_server" = "Azonosítási szerver nincs beállítva";
+"settings_discovery_settings" = "FELDERÍTÉS";
+"settings_identity_server_settings" = "AZONOSÍTÁSI SZERVER";
+"settings_three_pids_management_information_part1" = "Állítsd be melyik e-mail címmel vagy telefonszámmal lehessen bejelentkezni vagy visszaállítani a fiókot. Add meg ki találhat meg itt: ";
+"settings_three_pids_management_information_part2" = "Felderítés";
+"settings_three_pids_management_information_part3" = ".";
+"settings_calls_stun_server_fallback_button" = "Másodlagos hívást segítő szerver engedélyezése";
+"settings_calls_stun_server_fallback_description" = "Másodlagos hívást segítő szerver (%@) engedélyezése ha a matrix szervered nem ajánl fel másikat (az IP címed a hívás ideje alatt meg lesz osztva).";
+"settings_devices_description" = "Az eszköz nyilvános neve látható azoknál az embereknél akikkel beszélgetsz";
+"settings_discovery_no_identity_server" = "Jelenleg nem használsz azonosítási szervert. Ahhoz, hogy az ismerősök megtalálhassanak adj hozzá egyet.";
+"settings_discovery_terms_not_signed" = "Egyetértés az Azonosítási Szerver (%@) Felhasználási Feltételeivel, hogy e-mail címmel vagy telefonszámmal megtalálható lehess.";
+"settings_discovery_three_pids_management_information_part1" = "E-mail címek és telefonszámok beállítása amivel más felhasználók megtalálhatnak és meghívhatna szobákba. E-mail cím és telefonszám hozzáadása és törlése a listából itt: ";
+"settings_discovery_three_pids_management_information_part2" = "Felhasználói Beállítások";
+"settings_discovery_three_pids_management_information_part3" = ".";
+"settings_discovery_error_message" = "Hiba történt. Kérlek próbáld újra.";
+"settings_discovery_three_pid_details_title_email" = "E-mail címek kezelése";
+"settings_discovery_three_pid_details_information_email" = "E-mail cím beállítások kezelése, amivel más felhasználók megtalálhatnak és meghívhatnak a szobákba. E-mail cím hozzáadása és törlése a Fiókokban.";
+"settings_discovery_three_pid_details_title_phone_number" = "Telefonszám kezelése";
+"settings_discovery_three_pid_details_information_phone_number" = "Telefonszám beállítások kezelése, amivel más felhasználók megtalálhatnak és meghívhatnak a szobákba. Telefonszám hozzáadása és törlése a Fiókokban.";
+"settings_discovery_three_pid_details_share_action" = "Megoszt";
+"settings_discovery_three_pid_details_revoke_action" = "Visszavon";
+"settings_discovery_three_pid_details_cancel_email_validation_action" = "E-mail azonosítás visszavonása";
+"settings_discovery_three_pid_details_enter_sms_code_action" = "Add meg az SMS aktiválási kódot";
+"settings_identity_server_description" = "Az alábbi azonosítási szerver használatával megtalálhatod a barátaidat és te is megtalálható leszel az ismerőseidnek.";
+"settings_identity_server_no_is" = "Azonosítási szerver nincs beállítva";
+"settings_identity_server_no_is_description" = "Jelenleg nem használsz azonosítási szervert. Ahhoz, hogy megtalálhass másokat és az ismerősök megtalálhassanak adj hozzá egyet alább.";
+// Identity server settings
+"identity_server_settings_title" = "Azonosítási Szerver";
+"identity_server_settings_description" = "Jelenleg ezt használod: %@, hogy megtalálj másokat és megtalálhassanak ismerősök.";
+"identity_server_settings_no_is_description" = "Jelenleg nem használsz azonosítási szervert. Ahhoz, hogy megtalálj másokat és megtalálhassanak ismerősök adj meg egyet alább.";
+"identity_server_settings_place_holder" = "Adj meg egy azonosítási szervet";
+"identity_server_settings_add" = "Hozzáad";
+"identity_server_settings_change" = "Módosít";
+"identity_server_settings_disconnect_info" = "Ha lecsatlakozol az azonosítási szerverről azt eredményezi, hogy mások nem fognak megtalálni és nem tudnak meghívni e-mail vagy telefonszám alapján.";
+"identity_server_settings_disconnect" = "Lecsatlakozás";
+"identity_server_settings_alert_no_terms_title" = "Az azonosítási szervernek nincs felhasználási feltétele";
+"identity_server_settings_alert_no_terms" = "Az általad választott azonosítási szervernek nincs felhasználási feltétele. Csak akkor lépj tovább ha megbízol a szolgáltatás tulajdonosában.";
+"identity_server_settings_alert_change_title" = "Azonosítási szerver megváltoztatása";
+"identity_server_settings_alert_change" = "Lecsatlakozol erről az azonosítási szerverről: %1$@ és csatlakozol ehhez: %2$@?";
+"identity_server_settings_alert_disconnect_title" = "Azonosítási szerverről lecsatlakozás";
+"identity_server_settings_alert_disconnect" = "Lecsatlakozol erről az azonosítási szerverről: %@?";
+"identity_server_settings_alert_disconnect_button" = "Lecsatlakozás";
+"identity_server_settings_alert_disconnect_still_sharing_3pid" = "Továbbra is megosztod a személyes adataidat ezzel az azonosítási szerverrel: %@.\n\nAzt javasoljuk, hogy az azonosítási szerverről való lecsatlakozás előtt először töröld az e-mail címeidet és telefonszámaidat.";
+"identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "Mindenképpen lecsatlakozás";
+"identity_server_settings_alert_error_terms_not_accepted" = "Mielőtt beállíthatnád azonosítási szervernek el kell fogadnod a feltételeket: %@.";
+"identity_server_settings_alert_error_invalid_identity_server" = "%@ nem egy érvényes azonosítási szerver.";
+"call_no_stun_server_error_title" = "A hívás a hibásan konfigurált szerver miatt sikertelen";
+"call_no_stun_server_error_message_1" = "Kérlek kérd meg a matrix szervered (%@) adminisztrátorát, hogy állítson be egy TURN szervert a hívások megbízható működéséhez.";
+"call_no_stun_server_error_message_2" = "Alternatív megoldásként használhatod a nyilvános szervert itt: %@, de ez lehet, hogy nem lesz annyira megbízható és megosztja az IP címedet a szerverrel. Ezt a Beállításokban módosíthatod";
+"call_no_stun_server_error_use_fallback_button" = "Próbáld használni ezt: %@";
+// Generic errors
+"error_invite_3pid_with_no_identity_server" = "Az e-mail címmel való meghíváshoz adj hozzá egy azonosítási szervert a beállításaidnál.";

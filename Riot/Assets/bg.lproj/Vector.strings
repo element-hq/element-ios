@@ -820,3 +820,29 @@
 "image_picker_action_library" = "Избери от библиотеката";
 "camera_unavailable" = "Не е достъпна камера на вашето устройство";
 "photo_library_access_not_granted" = "%@ няма достъп до библиотеката със снимки. Моля, променете настройките на поверителността";
+"auth_forgot_password_error_no_configured_identity_server" = "Не е конфигуриран сървър за самоличност: добавете такъв за да може да възстановите паролата си.";
+"room_creation_error_invite_user_by_email_without_identity_server" = "Не е конфигуриран сървър за самоличност, така че не можете да поканите участник по имейл адрес.";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Не е конфигуриран сървър за самоличност, така че не можете да започнете чат с контакт посредством имейл адрес.";
+// Service terms
+"service_terms_modal_title" = "Условия за ползване";
+"service_terms_modal_message" = "За да продължите е необходимо да приемете Условията за ползване.";
+"service_terms_modal_accept_button" = "Приемам";
+"service_terms_modal_description_for_identity_server" = "Бъдете откриваеми от потребители";
+"service_terms_modal_description_for_integration_manager" = "Използвайте ботове, връзки към други мрежи и стикери";
+"room_participants_remove_third_party_invite_prompt_msg" = "Сигурни ли сте, че искате да оттеглите тази покана?";
+// Errors
+"error_user_already_logged_in" = "Изглежда се опитвате да се свържете с друг сървър. Искате ли да излезе от профила?";
+"room_accessiblity_scroll_to_bottom" = "Отиди най-долу";
+"room_accessibility_search" = "Търси";
+"room_accessibility_integrations" = "Интеграции";
+"room_accessibility_upload" = "Качи";
+"room_accessibility_call" = "Обади се";
+"room_accessibility_hangup" = "Затвори";
+"media_type_accessibility_image" = "Снимка";
+"media_type_accessibility_audio" = "Аудио";
+"media_type_accessibility_video" = "Видео";
+"media_type_accessibility_location" = "Местоположение";
+"media_type_accessibility_file" = "Файл";
+"media_type_accessibility_sticker" = "Стикер";
+// Widget Picker
+"widget_picker_title" = "Интеграции";

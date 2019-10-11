@@ -26,7 +26,7 @@ NSString *const kIntegrationManagerMainScreen = nil;
 NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
 
-@interface IntegrationManagerViewController ()
+@interface IntegrationManagerViewController () <ServiceTermsModalCoordinatorBridgePresenterDelegate>
 {
     MXSession *mxSession;
     NSString *roomId;
@@ -36,6 +36,8 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
     MXHTTPOperation *operation;
 }
+
+@property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 
 @end
 
@@ -67,10 +69,15 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
     operation = nil;
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidLoad
 {
-    [super viewWillAppear:animated];
+    [super viewDidLoad];
 
+    [self loadData];
+}
+
+- (void)loadData
+{
     if (!self.URL && !operation)
     {
         [self startActivityIndicator];
@@ -94,9 +101,17 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
             self->operation = nil;
             [self stopActivityIndicator];
 
-            [self withdrawViewControllerAnimated:YES completion:^{
-                [[AppDelegate theDelegate] showErrorAsAlert:error];
-            }];
+            if ([error.domain isEqualToString:WidgetManagerErrorDomain]
+                && error.code == WidgetManagerErrorCodeTermsNotSigned)
+            {
+                [self presentTerms];
+            }
+            else
+            {
+                [self withdrawViewControllerAnimated:YES completion:^{
+                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                }];
+            }
         }];
     }
 }
@@ -679,6 +694,42 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
         NSUInteger membershipCount = room.summary.membersCount.joined;
         [self sendIntegerResponse:membershipCount toRequest:requestId];
     }];
+}
+
+
+#pragma mark - Service terms
+
+- (void)presentTerms
+{
+    WidgetManagerConfig *config =  [[WidgetManager sharedManager] configForUser:mxSession.myUser.userId];
+
+    NSLog(@"[IntegrationManagerVC] presentTerms for %@", config.baseUrl);
+
+    ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:mxSession baseUrl:config.baseUrl
+                                                                                                                                                        serviceType:MXServiceTypeIntegrationManager
+                                                                                                                                                       outOfContext:NO
+                                                                                                                                                        accessToken:config.scalarToken];
+
+    serviceTermsModalCoordinatorBridgePresenter.delegate = self;
+
+    [serviceTermsModalCoordinatorBridgePresenter presentFrom:self animated:YES];
+    self.serviceTermsModalCoordinatorBridgePresenter = serviceTermsModalCoordinatorBridgePresenter;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self loadData];
+    }];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self withdrawViewControllerAnimated:YES completion:nil];
+    }];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 
 @end

@@ -1,3 +1,36 @@
+Changes in 0.10.0 (2019-10-11)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.11.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.11.1)).
+ * Upgrade MatrixKit version ([v0.11.0](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.11.0)).
+ * Widgets: Whitelist [MSC1961](https://github.com/matrix-org/matrix-doc/pull/1961) widget urls.
+ * Settings: CALLS section: Always display the CallKit option but grey it out when not available (only on China).
+ * VoIP: Fallback to matrix.org STUN server with a confirmation dialog (#2646).
+ * Widgets: Whitelist [MSC1961](https://github.com/matrix-org/matrix-doc/pull/1961) widget urls
+ * i18n: Enable Polish (pl).
+ * Room members: third-party invites can now be revoked
+ * Privacy: Prompt to accept integration manager policies on use (#2600).
+ * Privacy: Make clear that device names are publicly readable (#2662).
+ * Privacy: Remove the ability to set an IS at login/registration (#2661).
+ * Privacy: Remove the bind true flag from 3PID calls on registration (#2648).
+ * Privacy: Remove the bind true flag from 3PID adds in settings (#2650).
+ * Privacy: Email help text on registration should be updated without binding (#2675).
+ * Privacy: Use MXIdentityService to perform identity server requests (#2647).
+ * Privacy: Support identity server v2 API authentication (#2603).
+ * Privacy: Use the hashed v2 lookup API for 3PIDs (#2652).
+ * Privacy: Prompt to accept identity server policies on firt use (#2602).
+ * Privacy: Settings: Allow adding 3pids when no IS (#2659).
+ * Privacy: Allow password reset when no IS (#2658).
+ * Privacy: Allow email registration when no IS (#2657).
+ * Privacy: Settings: Add a Discovery section (#2606).
+ * Privacy: Make NSContactsUsageDescription more generic and mention that 3pids are now uploaded hashed (#2521).
+ * Privacy: Settings: Add IDENTITY SERVER section (#2604).
+ * Privacy: Make IS terms wording clearer when we fallback to vector.im (#2760).
+
+Bug fix:
+ * Theme: Make button theming work (#2734).
+
 Changes in 0.9.5 (2019-09-20)
 ===============================================
 
@@ -29,7 +62,8 @@ Improvements:
  * Reactions: Emoji picker (#2370).
  * Widgets: Whitelist https://scalar-staging.vector.im/api (#2612).
  * Reactions: Show who reacted (#2591).
- * Media picking: Use native camera and use separate actions for camera and media picker (#638). 
+ * Media picking: Use native camera and use separate actions for camera and media picker (#638).
+ * Ability to disable all identity server functionality via the config file (#2643).
 
 Bug fix:
  * Crash when leaving settings due to backup section refresh animation.
