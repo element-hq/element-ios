@@ -1,7 +1,8 @@
-Changes in 0.10.0 (2019-10-)
+Changes in 0.10.0 (2019-10-11)
 ===============================================
 
 Improvements:
+ * Upgrade MatrixKit version ([v0.11.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.11.1)).
  * Upgrade MatrixKit version ([v0.11.0](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.11.0)).
  * Widgets: Whitelist [MSC1961](https://github.com/matrix-org/matrix-doc/pull/1961) widget urls.
  * Settings: CALLS section: Always display the CallKit option but grey it out when not available (only on China).
