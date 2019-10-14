@@ -828,3 +828,4 @@
 "emoji_picker_flags_category" = "Флаги";
 // MARK: Reaction history
 "reaction_history_title" = "Реакции";
+"contacts_address_book_no_identity_server" = "Сервер идентификации не настроен";
