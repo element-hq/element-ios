@@ -873,3 +873,20 @@
 "service_terms_modal_description_for_identity_server_2" = "Per Telefon oder E-Mail gefunden werden";
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Fügen Sie in Ihren Einstellungen einen Identitätsserver hinzu, der per E-Mail eingeladen werden soll.";
+"auth_add_email_message_2" = "Richten Sie eine E-Mail für die Kontowiederherstellung ein, die später von Personen, die Sie kennen, optional gefunden werden kann.";
+"auth_add_phone_message_2" = "Richten Sie ein Telefon ein und lassen Sie es später optional von Personen erkennen, die Sie kennen.";
+"auth_add_email_phone_message_2" = "Legen Sie eine E-Mail für die Kontowiederherstellung fest. Verwenden Sie eine spätere E-Mail oder ein späteres Telefon, um von Personen, die Sie kennen, optional gefunden zu werden.";
+"settings_calls_stun_server_fallback_description" = "Fallback Call Assist Server %@ zulassen, wenn Ihr Heimserver keinen anbietet (Ihre IP-Adresse wird während eines Anrufs weitergegeben).";
+"settings_discovery_three_pid_details_information_phone_number" = "Verwalten Sie die Einstellungen für diese Telefonnummer, die andere Benutzer verwenden können, um Sie zu entdecken und Sie in Räume einzuladen. Hinzufügen oder Entfernen von Telefonnummern in Konten.";
+"settings_identity_server_description" = "Mithilfe des oben festgelegten Identitätsservers können Sie vorhandene Kontakte erkennen und für diese sichtbar machen.";
+"settings_identity_server_no_is_description" = "Sie verwenden derzeit keinen Identitätsserver. Fügen Sie oben einen hinzu, um vorhandene Kontakte zu erkennen und für diese erkennbar zu sein.";
+"identity_server_settings_description" = "Sie verwenden derzeit %@, um vorhandene Kontakte zu erkennen und für diese erkennbar zu sein.";
+"identity_server_settings_no_is_description" = "Sie verwenden derzeit keinen Identitätsserver. Fügen Sie oben einen hinzu, um vorhandene Kontakte zu erkennen und für diese sichtbar zu machen.";
+"identity_server_settings_alert_no_terms" = "Für den von Ihnen ausgewählten Identitätsserver gelten keine Nutzungsbedingungen. Fahren Sie nur fort, wenn Sie dem Eigentümer des Servers vertrauen.";
+"identity_server_settings_alert_change" = "Trennen Sie die Verbindung zum Identitätsserver %1$@ und stellen Sie stattdessen eine Verbindung zu %2$@ her?";
+"identity_server_settings_alert_disconnect" = "Verbindung zum Identitätsserver %@ trennen?";
+"identity_server_settings_alert_error_terms_not_accepted" = "Sie müssen die Bedingungen von %@ akzeptieren, um ihn als Identitätsserver festzulegen.";
+"identity_server_settings_alert_error_invalid_identity_server" = "%@ ist kein gültiger Identitätsserver.";
+"call_no_stun_server_error_message_1" = "Bitten Sie den Administrator Ihres Heimservers %@, einen TURN-Server zu konfigurieren, damit Anrufe zuverlässig funktionieren.";
+"call_no_stun_server_error_message_2" = "Alternativ können Sie versuchen, den öffentlichen Server unter %@ zu verwenden. Dies ist jedoch nicht so zuverlässig und teilt Ihre IP-Adresse diesem Server mit. Sie können dies auch in den Einstellungen verwalten";
+"service_terms_modal_message_identity_server" = "Akzeptieren Sie die Bedingungen des Identitätsservers (%@), um Kontakte zu ermitteln.";
