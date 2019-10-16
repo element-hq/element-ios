@@ -890,3 +890,4 @@
 "call_no_stun_server_error_message_1" = "Bitten Sie den Administrator Ihres Heimservers %@, einen TURN-Server zu konfigurieren, damit Anrufe zuverlässig funktionieren.";
 "call_no_stun_server_error_message_2" = "Alternativ können Sie versuchen, den öffentlichen Server unter %@ zu verwenden. Dies ist jedoch nicht so zuverlässig und teilt Ihre IP-Adresse diesem Server mit. Sie können dies auch in den Einstellungen verwalten";
 "service_terms_modal_message_identity_server" = "Akzeptieren Sie die Bedingungen des Identitätsservers (%@), um Kontakte zu ermitteln.";
+"identity_server_settings_alert_disconnect_still_sharing_3pid" = "Du teilst noch deine persönlichen Daten mit dem Identitätsserver %@.\n\nWir empfehlen dir deine E-Mail-Adresse und Telefonnummer zu entfernen, bevor du die Verbindung zum Identitätsserver trennst.";
