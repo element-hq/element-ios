@@ -1,3 +1,9 @@
+Changes in 0.10.1 (2019-XX-XX)
+===============================================
+
+Bug fix:
+ * Room cell: The states of direct chat and favorite buttons are reversed in the menu (#2788).
+
 Changes in 0.10.0 (2019-10-11)
 ===============================================
 
