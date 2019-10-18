@@ -908,7 +908,7 @@
             }];
             
             actionIcon = [UIImage imageNamed:@"favourite"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favourite"backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favourite" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         else
@@ -920,8 +920,7 @@
             }];
             
             actionIcon = [UIImage imageNamed:@"favouriteOff"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favouriteOff"
-                                      backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favouriteOff" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         
