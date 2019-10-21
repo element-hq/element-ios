@@ -2677,8 +2677,14 @@
                                                                // Create a matrix.to permalink that is common to all matrix clients
                                                                NSString *permalink = [MXTools permalinkToEvent:selectedEvent.eventId inRoom:selectedEvent.roomId];
                                                                
-                                                               // Create a room matrix.to permalink
-                                                               [[UIPasteboard generalPasteboard] setString:permalink];
+                                                               if (permalink)
+                                                               {
+                                                                   [[UIPasteboard generalPasteboard] setString:permalink];
+                                                               }
+                                                               else
+                                                               {
+                                                                   NSLog(@"[RoomViewController] Contextual menu permalink action failed. Permalink is nil.");
+                                                               }
                                                            }
                                                            
                                                        }]];
@@ -5278,7 +5284,14 @@
             }
             NSString *textMessage = selectedComponent.textMessage;
             
-            [UIPasteboard generalPasteboard].string = textMessage;
+            if (textMessage)
+            {
+                [UIPasteboard generalPasteboard].string = textMessage;
+            }
+            else
+            {
+                NSLog(@"[RoomViewController] Contextual menu copy failed. Text is nil.");
+            }
             
             [self hideContextualMenuAnimated:YES];
         }
