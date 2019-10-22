@@ -26,7 +26,7 @@ final class EmojiPickerHeaderView: UICollectionReusableView, NibReusable {
     // MARK: - Public
     
     func update(theme: Theme) {
-        self.backgroundColor = theme.backgroundColor
+        self.backgroundColor = theme.headerBackgroundColor
         self.titleLabel.textColor = theme.headerTextPrimaryColor
     }
     
