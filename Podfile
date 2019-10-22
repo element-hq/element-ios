@@ -69,7 +69,6 @@ abstract_target 'RiotPods' do
     # Remove warnings from "bad" pods
     pod 'OLMKit', :inhibit_warnings => true
     pod 'cmark', :inhibit_warnings => true
-    pod 'DTCoreText', :inhibit_warnings => true
     pod 'zxcvbn-ios'
 
     # Tools
