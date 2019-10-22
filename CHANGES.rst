@@ -4,6 +4,7 @@ Changes in 0.10.1 (2019-XX-XX)
 Bug fix:
  * Room cell: The states of direct chat and favorite buttons are reversed in the menu (#2788).
  * Pasteboard: Fix a crash when passing a nil object to UIPasteboard.
+ * RoomVC: Fix crash occurring when tap on an unsent media with retrieved event equal to nil.
 
 Changes in 0.10.0 (2019-10-11)
 ===============================================
