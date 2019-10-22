@@ -2683,7 +2683,7 @@
                                                                }
                                                                else
                                                                {
-                                                                   NSLog(@"[RoomViewController] Contextual menu permalink action failed. Permalink is nil.");
+                                                                   NSLog(@"[RoomViewController] Contextual menu permalink action failed. Permalink is nil room id/event id: %@/%@", selectedEvent.roomId, selectedEvent.eventId);
                                                                }
                                                            }
                                                            
@@ -5290,7 +5290,7 @@
             }
             else
             {
-                NSLog(@"[RoomViewController] Contextual menu copy failed. Text is nil.");
+                NSLog(@"[RoomViewController] Contextual menu copy failed. Text is nil for room id/event id: %@/%@", selectedComponent.event.roomId, selectedComponent.event.eventId);
             }
             
             [self hideContextualMenuAnimated:YES];
