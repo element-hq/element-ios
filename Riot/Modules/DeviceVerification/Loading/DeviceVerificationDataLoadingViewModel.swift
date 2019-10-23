@@ -18,6 +18,10 @@
 
 import Foundation
 
+enum DeviceVerificationDataLoadingViewModelError: Error {
+    case unknown
+}
+
 final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadingViewModelType {
     
     // MARK: - Properties
@@ -39,8 +43,6 @@ final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadin
         self.session = session
         self.otherUserId = otherUserId
         self.otherDeviceId = otherDeviceId
-
-        self.loadData()
     }
     
     deinit {
@@ -50,6 +52,8 @@ final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadin
     
     func process(viewAction: DeviceVerificationDataLoadingViewAction) {
         switch viewAction {
+        case .loadData:
+            self.loadData()
         case .cancel:
             self.coordinatorDelegate?.deviceVerificationDataLoadingViewModelDidCancel(self)
         }
@@ -58,28 +62,36 @@ final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadin
     // MARK: - Private
 
     private func loadData() {
-        self.update(viewState: .loading)
+        guard let crypto = self.session.crypto else {
+            self.update(viewState: .errorMessage(VectorL10n.deviceVerificationErrorCannotLoadDevice))
+            NSLog("[DeviceVerificationDataLoadingViewModel] Error session.crypto is nil")
+            return
+        }
 
         if let otherUser = self.session.user(withUserId: otherUserId) {
-            self.session.crypto?.downloadKeys([self.otherUserId], forceDownload: false, success: { [weak self] (usersDevicesMap) in
+            
+            self.update(viewState: .loading)
+            
+            crypto.downloadKeys([self.otherUserId], forceDownload: false, success: { [weak self] (usersDevicesMap) in
                 guard let sself = self else {
                     return
                 }
 
-                sself.update(viewState: .loaded)
-
                 if let otherDevice = usersDevicesMap?.object(forDevice: sself.otherDeviceId, forUser: sself.otherUserId) {
+                    sself.update(viewState: .loaded)
                     sself.coordinatorDelegate?.deviceVerificationDataLoadingViewModel(sself, didLoadUser: otherUser, device: otherDevice)
                 } else {
                      sself.update(viewState: .errorMessage(VectorL10n.deviceVerificationErrorCannotLoadDevice))
                 }
 
-                }, failure: { [weak self] (error) in
-                    guard let sself = self, let error = error else {
-                        return
-                    }
-
-                    sself.update(viewState: .error(error))
+            }, failure: { [weak self] (error) in
+                guard let sself = self else {
+                    return
+                }
+                
+                let finalError = error ?? DeviceVerificationDataLoadingViewModelError.unknown
+                
+                sself.update(viewState: .error(finalError))
             })
 
         } else {

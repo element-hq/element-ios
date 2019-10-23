@@ -73,7 +73,9 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
         rootCoordinator.start()
 
         self.add(childCoordinator: rootCoordinator)
-        self.navigationRouter.setRootModule(rootCoordinator)
+        self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
+            self?.remove(childCoordinator: rootCoordinator)
+        }
     }
     
     func toPresentable() -> UIViewController {
@@ -96,7 +98,9 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
         coordinator.start()
 
         self.add(childCoordinator: coordinator)
-        self.navigationRouter.setRootModule(coordinator)
+        self.navigationRouter.setRootModule(coordinator) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
     }
 
     private func showIncoming(otherUser: MXUser, transaction: MXIncomingSASTransaction) {
@@ -105,7 +109,9 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
         coordinator.start()
 
         self.add(childCoordinator: coordinator)
-        self.navigationRouter.setRootModule(coordinator)
+        self.navigationRouter.setRootModule(coordinator) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
     }
 
     private func showVerify(transaction: MXSASTransaction, animated: Bool) {
