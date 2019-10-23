@@ -90,7 +90,7 @@ final class EmojiPickerViewCell: UICollectionViewCell, NibReusable, Themable {
             reactionBackgroundColor = self.theme?.tintBackgroundColor
             reactionBackgroundBorderWidth = Constants.selectedBorderWidth
         } else {
-            reactionBackgroundColor = self.theme?.headerBackgroundColor
+            reactionBackgroundColor = self.theme?.backgroundColor
             reactionBackgroundBorderWidth = 0.0
         }
         
