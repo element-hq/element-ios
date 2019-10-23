@@ -48,7 +48,7 @@
 "auth_repeat_password_placeholder" = "Rijepeni fjalëkalimin";
 "auth_repeat_new_password_placeholder" = "Ripohoni fjalëkalimin tuaj të ri";
 "auth_home_server_placeholder" = "URL (p.sh., https://matrix.org)";
-"auth_identity_server_placeholder" = "URL (p.sh., https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (p.sh., https://vector.im)";
 "auth_invalid_login_param" = "Emër përdoruesi dhe/ose fjalëkalim i pasaktë";
 "auth_invalid_password" = "Fjalëkalim shumë i shkurtër (min 6)";
 "auth_invalid_email" = "Kjo s’duket si adresë email e vlefshme";
@@ -266,9 +266,9 @@
 "settings_new_password" = "fjalëkalim i ri";
 "settings_confirm_password" = "ripohoni fjalëkalimin";
 "settings_password_updated" = "Fjalëkalimi juaj u përditësua";
-"settings_crypto_device_name" = "Emër pajisjeje: ";
+"settings_crypto_device_name" = "Emër Publik Pajisjeje: ";
 "settings_crypto_device_id" = "\nID pajisjeje: ";
-"settings_crypto_device_key" = "\nKyç pajisjeje: ";
+"settings_crypto_device_key" = "\nKyç pajisjeje:\n";
 "settings_crypto_export" = "Eksporto kyçe";
 "settings_crypto_blacklist_unverified_devices" = "Fshehtëzoje vetëm për pajisje të verifikuara";
 // Room Details
@@ -822,7 +822,7 @@
 "room_participants_start_new_chat_error_using_user_email_without_identity_server" = "S’ka shërbyes identitetesh të formësuar, ndaj s’mund të nisni një fjalosje me një kontakt duke përdorur një email.";
 // Service terms
 "service_terms_modal_title" = "Kushte Shërbimi";
-"service_terms_modal_message" = "Që të vazhdohet, lypset të pranoni Kushtet e këtij shërbimi.";
+"service_terms_modal_message" = "Që të vazhdohet, lypset të pranoni kushtet e këtij shërbimi (%@).";
 "service_terms_modal_accept_button" = "Pranoji";
 "service_terms_modal_description_for_identity_server" = "Jini i zbulueshëm nga të tjerët";
 "service_terms_modal_description_for_integration_manager" = "Përdorni Robotë, ura, widget-e dhe paketa ngjitësish";
@@ -841,3 +841,12 @@
 "media_type_accessibility_location" = "Vendndodhje";
 "media_type_accessibility_file" = "Kartelë";
 "media_type_accessibility_sticker" = "Ngjitës";
+"auth_add_email_message_2" = "Caktoni një email për rimarrje llogarie, dhe që më vonë të jeni (opsionale) i zbulueshëm nga persona që ju njohin.";
+"auth_add_phone_message_2" = "Caktoni një telefon, dhe jini më vonë i zbulueshëm nga persona që ju njohin.";
+"auth_add_email_phone_message_2" = "Caktoni një email për rimarrje llogarie. Përdorni më vonë email ose telefon që të jeni (opsionale) i zbulueshëm nga persona që ju njohin.";
+"auth_email_is_required" = "S’ka të formësuar shërbyes identitetesh, ndaj s’mund të shtoni adresë email që të mund të ricaktoni fjalëkalimin tuaj në të ardhmen.";
+"auth_phone_is_required" = "S’ka të formësuar shërbyes identitetesh, ndaj s’mund të shtoni numër telefoni që të mund të ricaktoni fjalëkalimin tuaj në të ardhmen.";
+"auth_reset_password_error_is_required" = "S’ka të formësuar shërbyes identitetesh: shtoni një të tillë që nga mundësitë rreth shërbyesit, që të ricaktoni fjalëkalimin tuaj.";
+"contacts_address_book_no_identity_server" = "S’ka të formësuar shërbyes identitetesh";
+"settings_discovery_settings" = "ZBULIM";
+"settings_identity_server_settings" = "SHËRBYES IDENTITETESH";
