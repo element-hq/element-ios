@@ -472,6 +472,14 @@
 "settings_fail_to_update_password" = "Fail to update password";
 "settings_password_updated" = "Your password has been updated";
 
+"settings_add_3pid_password_title_email" = "Add email adress";
+"settings_add_3pid_password_title_msidsn" = "Add phone number";
+"settings_add_3pid_password_message" = "To continue, please enter your password";
+"settings_add_3pid_invalid_password_message" = "Invalid password";
+//"settings_add_3pid_auth_flow_not_supported" = "%@ does not support the authentication required by your homeserver to add a third party identifier. Please use the web version of the app.";
+"settings_add_3pid_auth_flow_not_supported" = "%@ does not support the authentication required by your homeserver. Please use the web version of the app.";
+
+
 "settings_crypto_device_name" = "Device Public Name: ";
 "settings_crypto_device_id" = "\nDevice ID: ";
 "settings_crypto_device_key" = "\nDevice key:\n";

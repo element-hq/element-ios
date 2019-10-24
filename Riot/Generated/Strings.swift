@@ -2550,6 +2550,26 @@ internal enum VectorL10n {
   internal static var serviceTermsModalTitleIdentityServer: String { 
     return VectorL10n.tr("Vector", "service_terms_modal_title_identity_server") 
   }
+  /// %@ does not support the authentication required by your homeserver. Please use the web version of the app.
+  internal static func settingsAdd3pidAuthFlowNotSupported(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_add_3pid_auth_flow_not_supported", p1)
+  }
+  /// Invalid password
+  internal static var settingsAdd3pidInvalidPasswordMessage: String { 
+    return VectorL10n.tr("Vector", "settings_add_3pid_invalid_password_message") 
+  }
+  /// To continue, please enter your password
+  internal static var settingsAdd3pidPasswordMessage: String { 
+    return VectorL10n.tr("Vector", "settings_add_3pid_password_message") 
+  }
+  /// Add email adress
+  internal static var settingsAdd3pidPasswordTitleEmail: String { 
+    return VectorL10n.tr("Vector", "settings_add_3pid_password_title_email") 
+  }
+  /// Add phone number
+  internal static var settingsAdd3pidPasswordTitleMsidsn: String { 
+    return VectorL10n.tr("Vector", "settings_add_3pid_password_title_msidsn") 
+  }
   /// Add email address
   internal static var settingsAddEmailAddress: String { 
     return VectorL10n.tr("Vector", "settings_add_email_address") 

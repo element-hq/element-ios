@@ -1,6 +1,9 @@
 Changes in 0.10.1 (2019-XX-XX)
 ===============================================
 
+Improvements:
+ * Settings: Add User-Interactive Auth for adding email and msidsn to user's account (vector-im/riot-ios#2744).
+
 Bug fix:
  * Room cell: The states of direct chat and favorite buttons are reversed in the menu (#2788).
  * Pasteboard: Fix a crash when passing a nil object to UIPasteboard.
