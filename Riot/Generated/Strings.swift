@@ -998,6 +998,10 @@ internal enum VectorL10n {
   internal static var errorInvite3pidWithNoIdentityServer: String { 
     return VectorL10n.tr("Vector", "error_invite_3pid_with_no_identity_server") 
   }
+  /// You can't do this from %@ mobile.
+  internal static func errorNotSupportedOnMobile(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "error_not_supported_on_mobile", p1)
+  }
   /// It looks like you’re trying to connect to another homeserver. Do you want to sign out?
   internal static var errorUserAlreadyLoggedIn: String { 
     return VectorL10n.tr("Vector", "error_user_already_logged_in") 
@@ -2549,6 +2553,22 @@ internal enum VectorL10n {
   /// Contact discovery
   internal static var serviceTermsModalTitleIdentityServer: String { 
     return VectorL10n.tr("Vector", "service_terms_modal_title_identity_server") 
+  }
+  /// Invalid password
+  internal static var settingsAdd3pidInvalidPasswordMessage: String { 
+    return VectorL10n.tr("Vector", "settings_add_3pid_invalid_password_message") 
+  }
+  /// To continue, please enter your password
+  internal static var settingsAdd3pidPasswordMessage: String { 
+    return VectorL10n.tr("Vector", "settings_add_3pid_password_message") 
+  }
+  /// Add email adress
+  internal static var settingsAdd3pidPasswordTitleEmail: String { 
+    return VectorL10n.tr("Vector", "settings_add_3pid_password_title_email") 
+  }
+  /// Add phone number
+  internal static var settingsAdd3pidPasswordTitleMsidsn: String { 
+    return VectorL10n.tr("Vector", "settings_add_3pid_password_title_msidsn") 
   }
   /// Add email address
   internal static var settingsAddEmailAddress: String { 

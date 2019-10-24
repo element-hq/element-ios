@@ -472,6 +472,11 @@
 "settings_fail_to_update_password" = "Fail to update password";
 "settings_password_updated" = "Your password has been updated";
 
+"settings_add_3pid_password_title_email" = "Add email adress";
+"settings_add_3pid_password_title_msidsn" = "Add phone number";
+"settings_add_3pid_password_message" = "To continue, please enter your password";
+"settings_add_3pid_invalid_password_message" = "Invalid password";
+
 "settings_crypto_device_name" = "Device Public Name: ";
 "settings_crypto_device_id" = "\nDevice ID: ";
 "settings_crypto_device_key" = "\nDevice key:\n";
@@ -1050,3 +1055,4 @@
 
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Add an identity server in your settings to invite by email.";
+"error_not_supported_on_mobile" = "You can't do this from %@ mobile.";
