@@ -6,6 +6,7 @@ Bug fix:
  * Pasteboard: Fix a crash when passing a nil object to UIPasteboard.
  * RoomVC: Fix crash occurring when tap on an unsent media with retrieved event equal to nil.
  * Emoji Picker: Background color is not white (#2630).
+ * Device Verification: Selecting 'start verification' from a keyshare request wedges you in an entirely blank verification screen (#2504).
 
 Changes in 0.10.0 (2019-10-11)
 ===============================================

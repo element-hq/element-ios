@@ -59,6 +59,7 @@ final class DeviceVerificationDataLoadingViewController: UIViewController {
         self.update(theme: self.theme)
         
         self.viewModel.viewDelegate = self
+        self.viewModel.process(viewAction: .loadData)
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
