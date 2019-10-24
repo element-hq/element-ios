@@ -1248,15 +1248,15 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 }
             }
 
-            NSString *title = NSLocalizedStringFromTable(@"settings_add_3pid_password_title_email", @"Vector", nil);
-            if ([medium isEqualToString:kMX3PIDMediumMSISDN])
-            {
-                title = NSLocalizedStringFromTable(@"settings_add_3pid_password_title_msidsn", @"Vector", nil);
-            }
-
             if (hasPasswordFlow)
             {
                 // Ask password to the user while we are here
+                NSString *title = NSLocalizedStringFromTable(@"settings_add_3pid_password_title_email", @"Vector", nil);
+                if ([medium isEqualToString:kMX3PIDMediumMSISDN])
+                {
+                    title = NSLocalizedStringFromTable(@"settings_add_3pid_password_title_msidsn", @"Vector", nil);
+                }
+
                 [self requestAccountPasswordWithTitle:title
                                               message:NSLocalizedStringFromTable(@"settings_add_3pid_password_message", @"Vector", nil)
                                            onComplete:onComplete];
@@ -1265,8 +1265,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             {
                 // The user needs to use Riot-web
                 NSString *appName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
-                NSString *message = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_add_3pid_auth_flow_not_supported", @"Vector", nil), appName];
-                [[AppDelegate theDelegate] showAlertWithTitle:title message:message];
+                NSString *message = [NSString stringWithFormat:NSLocalizedStringFromTable(@"error_not_supported_on_mobile", @"Vector", nil), appName];
+                [[AppDelegate theDelegate] showAlertWithTitle:nil message:message];
             }
         }
         else

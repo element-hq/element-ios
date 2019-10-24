@@ -998,6 +998,10 @@ internal enum VectorL10n {
   internal static var errorInvite3pidWithNoIdentityServer: String { 
     return VectorL10n.tr("Vector", "error_invite_3pid_with_no_identity_server") 
   }
+  /// You can't do this from %@ mobile.
+  internal static func errorNotSupportedOnMobile(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "error_not_supported_on_mobile", p1)
+  }
   /// It looks like you’re trying to connect to another homeserver. Do you want to sign out?
   internal static var errorUserAlreadyLoggedIn: String { 
     return VectorL10n.tr("Vector", "error_user_already_logged_in") 
@@ -2549,10 +2553,6 @@ internal enum VectorL10n {
   /// Contact discovery
   internal static var serviceTermsModalTitleIdentityServer: String { 
     return VectorL10n.tr("Vector", "service_terms_modal_title_identity_server") 
-  }
-  /// %@ does not support the authentication required by your homeserver. Please use the web version of the app.
-  internal static func settingsAdd3pidAuthFlowNotSupported(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "settings_add_3pid_auth_flow_not_supported", p1)
   }
   /// Invalid password
   internal static var settingsAdd3pidInvalidPasswordMessage: String { 
