@@ -891,3 +891,9 @@
 "call_no_stun_server_error_message_2" = "Alternativ können Sie versuchen, den öffentlichen Server unter %@ zu verwenden. Dies ist jedoch nicht so zuverlässig und teilt Ihre IP-Adresse diesem Server mit. Sie können dies auch in den Einstellungen verwalten";
 "service_terms_modal_message_identity_server" = "Akzeptieren Sie die Bedingungen des Identitätsservers (%@), um Kontakte zu ermitteln.";
 "identity_server_settings_alert_disconnect_still_sharing_3pid" = "Du teilst noch deine persönlichen Daten mit dem Identitätsserver %@.\n\nWir empfehlen dir deine E-Mail-Adresse und Telefonnummer zu entfernen, bevor du die Verbindung zum Identitätsserver trennst.";
+"settings_add_3pid_password_title_email" = "E-Mail Adresse hinzufügen";
+"settings_add_3pid_password_title_msidsn" = "Telefonnummer hinzufügen";
+"settings_add_3pid_password_message" = "Um fortzufahren, geben Sie bitte Ihr Passwort ein";
+"settings_add_3pid_invalid_password_message" = "Ungültiges Passwort";
+"identity_server_settings_disconnect_info" = "Wenn Sie die Verbindung zu Ihrem Identitätsserver trennen, werden Sie von anderen Benutzern nicht erkannt und können andere per E-Mail oder Telefon einladen.";
+"error_not_supported_on_mobile" = "Dies ist in %@ mobile nicht möglich.";
