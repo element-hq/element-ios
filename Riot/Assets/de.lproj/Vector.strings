@@ -222,7 +222,7 @@
 "settings_remove_email_prompt_msg" = "Bist du sicher, dass du die E-Mail-Adresse %@ entfernen möchtest?";
 "settings_email_address" = "E-Mail";
 "settings_email_address_placeholder" = "Gib deine E-Mail-Adresse ein";
-"settings_add_email_address" = "Füge E-Mail-Adresse hinzu";
+"settings_add_email_address" = "E-Mail-Adresse hinzufügen";
 "settings_remove_phone_prompt_msg" = "Bist du sicher, dass du die Telefon-Nummer %@ entfernen möchtest?";
 "settings_night_mode" = "Nacht Modus";
 "settings_enable_push_notif" = "Benachrichtungen auf diesem Gerät";
@@ -317,7 +317,7 @@
 "settings_phone_number" = "Telefon";
 "settings_add_phone_number" = "Telefonnummer hinzufügen";
 "settings_fail_to_update_profile" = "Profilaktualisierung fehlgeschlagen";
-"settings_global_settings_info" = "Globale Benachrichtungseinstellungen sind verfügbar auf dem %@ Web Client";
+"settings_global_settings_info" = "Globale Benachrichtigungseinstellungen sind auf Ihrem% @ web-Client verfügbar";
 "settings_pin_rooms_with_missed_notif" = "Pinnen von Räumen mit verpassten Benachrichtigungen";
 "settings_pin_rooms_with_unread" = "Pinnen von Räumen mit ungelesenen Nachrichten";
 "settings_on_denied_notification" = "Benachrichtigungen verboten für %@, bitte in den Geräte-Einstellungen erlauben";
@@ -351,7 +351,7 @@
 "room_details_fail_to_remove_room_aliases" = "Entfernen der Raum-Adresse fehlgeschlagen";
 "room_details_fail_to_update_room_canonical_alias" = "Aktualisierung der Haupt-Adresse fehlgeschlagen";
 "room_details_fail_to_enable_encryption" = "Aktivieren der Verschlüsselung für diesen Raum fehlgeschlagen";
-"room_details_save_changes_prompt" = "Änderungen abspeichern?";
+"room_details_save_changes_prompt" = "Möchten Sie die Änderungen speichern?";
 "room_details_set_main_address" = "Als Haupt-Adresse setzen";
 "room_details_unset_main_address" = "Als Haupt-Adresse entfernen";
 "room_details_copy_room_id" = "Kopiere Raum-ID";
@@ -459,7 +459,7 @@
 "search_in_progress" = "Suche…";
 "room_event_action_cancel_send" = "Senden abbrechen";
 "settings_calls_settings" = "ANRUFE";
-"settings_show_decrypted_content" = "Zeige entschlüsselten Inhalt";
+"settings_show_decrypted_content" = "Entschlüsselten Inhalt anzeigen";
 "settings_enable_callkit" = "Eingebettetes Anrufen";
 "settings_callkit_info" = "Empfange eingehende Anrufe auf deinem Sperrbildschirm und sehe deine Riot-Anrufe in der System-Anruf-Historie. Wenn iCloud aktiviert ist, wird diese Anruf-Historie mit Apple geteilt.";
 "settings_enable_rageshake" = "Schüttle stark um einen Fehler zu melden";
@@ -605,7 +605,7 @@
 "key_backup_setup_success_title" = "Erfolgreich!";
 // Success from passphrase
 "key_backup_setup_success_from_passphrase_info" = "Deine Schlüssel werden gesichert.\n\nDein Wiederherstellungsschlüssel ist ein Sicherheitsnetzwerk - Du kannst damit den Zugriff auf deine verschlüsselten Nachrichten wiederherstellen, wenn du deine Passphrase vergisst.\n\nBewahre den Wiederherstellungsschlüssel an einem sehr sicheren Ort auf, beispielsweise einem Kennwortmanager (oder einem Tresor).";
-"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Speichere den Wiederherstellungsschlüssel";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Speichern Sie den Wiederherstellungsschlüssel";
 "key_backup_setup_success_from_passphrase_done_action" = "Erledigt";
 // Success from recovery key
 "key_backup_setup_success_from_recovery_key_info" = "Deine Schlüssel werden gesichert.\n\nErstelle eine Kopie dieses Wiederherstellungsschlüssels und bewahre ihn auf.";
@@ -811,7 +811,89 @@
 "room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Es ist kein Identitätsserver konfiguriert, sodass Sie keinen Chat mit einem Kontakt über eine E-Mail starten können.";
 // Service terms
 "service_terms_modal_title" = "Nutzungsbedingungen";
-"service_terms_modal_message" = "Um fortzufahren, müssen Sie die Bedingungen dieses Dienstes akzeptieren.";
+"service_terms_modal_message" = "Um fortzufahren, müssen Sie die Bedingungen dieses Dienstes akzeptieren (%@).";
 "service_terms_modal_accept_button" = "Akzeptieren";
 "service_terms_modal_description_for_identity_server" = "Für andere auffindbar sein";
 "service_terms_modal_description_for_integration_manager" = "Verwenden Sie Bots, Bridges, Widgets und Sticker-Packs";
+"auth_email_is_required" = "Es ist kein Identitätsserver konfiguriert, sodass Sie keine E-Mail-Adresse hinzufügen können, um Ihr Kennwort in Zukunft zurückzusetzen.";
+"auth_phone_is_required" = "Es ist kein Identitätsserver konfiguriert, sodass Sie keine Telefonnummer hinzufügen können, um Ihr Kennwort in Zukunft zurückzusetzen.";
+"auth_reset_password_error_is_required" = "Es ist kein Identitätsserver konfiguriert: Fügen Sie einen in die Serveroptionen ein, um Ihr Kennwort zurückzusetzen.";
+// Errors
+"error_user_already_logged_in" = "Sie versuchen anscheinend, eine Verbindung zu einem anderen Homeserver herzustellen. Möchten Sie sich abmelden?";
+"contacts_address_book_no_identity_server" = "Kein Integrationsserver konfiguriert";
+"room_participants_remove_third_party_invite_prompt_msg" = "Möchten Sie diese Einladung wirklich widerrufen?";
+"room_accessiblity_scroll_to_bottom" = "Zum Seitenende springen";
+"room_accessibility_search" = "Suchen";
+"room_accessibility_integrations" = "Integrationen";
+"room_accessibility_upload" = "Hochladen";
+"room_accessibility_call" = "Anrufen";
+"room_accessibility_hangup" = "Auflegen";
+"media_type_accessibility_image" = "Bild";
+"media_type_accessibility_audio" = "Audio";
+"media_type_accessibility_video" = "Video";
+"media_type_accessibility_location" = "Standort";
+"media_type_accessibility_file" = "Datei";
+"media_type_accessibility_sticker" = "Sticker";
+"settings_identity_server_settings" = "IDENTITÄT SERVER";
+"settings_three_pids_management_information_part1" = "Verwalten Sie hier, mit welchen E-Mail-Adressen oder Telefonnummern Sie sich anmelden oder Ihr Konto wiederherstellen können. Kontrollieren Sie, in wem Sie zu finden sind ";
+"settings_three_pids_management_information_part3" = ".";
+"settings_calls_stun_server_fallback_button" = "Fallback-Call-Assist-Server zulassen";
+"settings_devices_description" = "Der öffentliche Name eines Geräts ist für Personen sichtbar, mit denen Sie kommunizieren";
+"settings_discovery_no_identity_server" = "Sie verwenden derzeit keinen Identitätsserver. Fügen Sie einen hinzu, um für vorhandene, Ihnen bekannte Kontakte erkennbar zu sein.";
+"settings_discovery_terms_not_signed" = "Stimmen Sie den Nutzungsbedingungen für Identity Server (%@) zu, damit Sie anhand Ihrer E-Mail-Adresse oder Telefonnummer erkennbar sind.";
+"settings_discovery_three_pids_management_information_part1" = "Verwalten Sie, welche E-Mail-Adressen oder Telefonnummern andere Benutzer verwenden können, um Sie zu entdecken und Sie in Räume einzuladen. Fügen Sie in dieser Liste E-Mail-Adressen oder Telefonnummern hinzu oder entfernen Sie sie ";
+"settings_discovery_three_pids_management_information_part2" = "Nutzereinstellungen";
+"settings_discovery_three_pids_management_information_part3" = ".";
+"settings_discovery_error_message" = "Es ist ein Fehler aufgetreten. Bitte erneut versuchen.";
+"settings_discovery_three_pid_details_title_email" = "E-Mail verwalten";
+"settings_discovery_three_pid_details_information_email" = "Verwalten Sie die Einstellungen für diese E-Mail-Adresse, die andere Benutzer verwenden können, um Sie zu entdecken und Sie in Räume einzuladen. Hinzufügen oder Entfernen von E-Mail-Adressen in Konten.";
+"settings_discovery_three_pid_details_title_phone_number" = "Telefonnummer verwalten";
+"settings_discovery_three_pid_details_share_action" = "Teilen";
+"settings_discovery_three_pid_details_revoke_action" = "Widerrufen";
+"settings_discovery_three_pid_details_cancel_email_validation_action" = "E-Mail-Überprüfung abbrechen";
+"settings_discovery_three_pid_details_enter_sms_code_action" = "Geben Sie den SMS-Aktivierungscode ein";
+"settings_identity_server_no_is" = "Kein Integrationsserver konfiguriert";
+// Identity server settings
+"identity_server_settings_title" = "Identitätsserver";
+"identity_server_settings_place_holder" = "Geben Sie einen Identitätsserver ein";
+"identity_server_settings_add" = "Hinzufügen";
+"identity_server_settings_change" = "Ändern";
+"identity_server_settings_disconnect" = "Trennen";
+"identity_server_settings_alert_no_terms_title" = "Der Identitätsserver hat keine Nutzungsbedingungen";
+"identity_server_settings_alert_change_title" = "Identitätsserver ändern";
+"identity_server_settings_alert_disconnect_title" = "Trennen Sie den Identitätsserver";
+"identity_server_settings_alert_disconnect_button" = "Trennen";
+"identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "Trotzdem trennen";
+"call_no_stun_server_error_title" = "Anruf aufgrund eines falsch konfigurierten Servers fehlgeschlagen";
+"call_no_stun_server_error_use_fallback_button" = "Versuchen Sie es mit %@";
+// Widget Picker
+"widget_picker_title" = "Integrationen";
+"service_terms_modal_decline_button" = "Ablehnen";
+"service_terms_modal_description_for_identity_server_1" = "Finden Sie andere per Telefon oder E-Mail";
+"service_terms_modal_description_for_identity_server_2" = "Per Telefon oder E-Mail gefunden werden";
+// Generic errors
+"error_invite_3pid_with_no_identity_server" = "Fügen Sie in Ihren Einstellungen einen Identitätsserver hinzu, der per E-Mail eingeladen werden soll.";
+"auth_add_email_message_2" = "Richten Sie eine E-Mail für die Kontowiederherstellung ein, die später von Personen, die Sie kennen, optional gefunden werden kann.";
+"auth_add_phone_message_2" = "Richten Sie ein Telefon ein und lassen Sie es später optional von Personen erkennen, die Sie kennen.";
+"auth_add_email_phone_message_2" = "Legen Sie eine E-Mail für die Kontowiederherstellung fest. Verwenden Sie eine spätere E-Mail oder ein späteres Telefon, um von Personen, die Sie kennen, optional gefunden zu werden.";
+"settings_calls_stun_server_fallback_description" = "Fallback Call Assist Server %@ zulassen, wenn Ihr Heimserver keinen anbietet (Ihre IP-Adresse wird während eines Anrufs weitergegeben).";
+"settings_discovery_three_pid_details_information_phone_number" = "Verwalten Sie die Einstellungen für diese Telefonnummer, die andere Benutzer verwenden können, um Sie zu entdecken und Sie in Räume einzuladen. Hinzufügen oder Entfernen von Telefonnummern in Konten.";
+"settings_identity_server_description" = "Mithilfe des oben festgelegten Identitätsservers können Sie vorhandene Kontakte erkennen und für diese sichtbar machen.";
+"settings_identity_server_no_is_description" = "Sie verwenden derzeit keinen Identitätsserver. Fügen Sie oben einen hinzu, um vorhandene Kontakte zu erkennen und für diese erkennbar zu sein.";
+"identity_server_settings_description" = "Sie verwenden derzeit %@, um vorhandene Kontakte zu erkennen und für diese erkennbar zu sein.";
+"identity_server_settings_no_is_description" = "Sie verwenden derzeit keinen Identitätsserver. Fügen Sie oben einen hinzu, um vorhandene Kontakte zu erkennen und für diese sichtbar zu machen.";
+"identity_server_settings_alert_no_terms" = "Für den von Ihnen ausgewählten Identitätsserver gelten keine Nutzungsbedingungen. Fahren Sie nur fort, wenn Sie dem Eigentümer des Servers vertrauen.";
+"identity_server_settings_alert_change" = "Trennen Sie die Verbindung zum Identitätsserver %1$@ und stellen Sie stattdessen eine Verbindung zu %2$@ her?";
+"identity_server_settings_alert_disconnect" = "Verbindung zum Identitätsserver %@ trennen?";
+"identity_server_settings_alert_error_terms_not_accepted" = "Sie müssen die Bedingungen von %@ akzeptieren, um ihn als Identitätsserver festzulegen.";
+"identity_server_settings_alert_error_invalid_identity_server" = "%@ ist kein gültiger Identitätsserver.";
+"call_no_stun_server_error_message_1" = "Bitten Sie den Administrator Ihres Heimservers %@, einen TURN-Server zu konfigurieren, damit Anrufe zuverlässig funktionieren.";
+"call_no_stun_server_error_message_2" = "Alternativ können Sie versuchen, den öffentlichen Server unter %@ zu verwenden. Dies ist jedoch nicht so zuverlässig und teilt Ihre IP-Adresse diesem Server mit. Sie können dies auch in den Einstellungen verwalten";
+"service_terms_modal_message_identity_server" = "Akzeptieren Sie die Bedingungen des Identitätsservers (%@), um Kontakte zu ermitteln.";
+"identity_server_settings_alert_disconnect_still_sharing_3pid" = "Du teilst noch deine persönlichen Daten mit dem Identitätsserver %@.\n\nWir empfehlen dir deine E-Mail-Adresse und Telefonnummer zu entfernen, bevor du die Verbindung zum Identitätsserver trennst.";
+"settings_add_3pid_password_title_email" = "E-Mail Adresse hinzufügen";
+"settings_add_3pid_password_title_msidsn" = "Telefonnummer hinzufügen";
+"settings_add_3pid_password_message" = "Um fortzufahren, geben Sie bitte Ihr Passwort ein";
+"settings_add_3pid_invalid_password_message" = "Ungültiges Passwort";
+"identity_server_settings_disconnect_info" = "Wenn Sie die Verbindung zu Ihrem Identitätsserver trennen, werden Sie von anderen Benutzern nicht erkannt und können andere per E-Mail oder Telefon einladen.";
+"error_not_supported_on_mobile" = "Dies ist in %@ mobile nicht möglich.";
