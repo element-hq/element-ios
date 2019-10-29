@@ -282,9 +282,9 @@
 "settings_confirm_password" = "подтвердить пароль";
 "settings_fail_to_update_password" = "Не удалось обновить пароль";
 "settings_password_updated" = "Ваш пароль был обновлен";
-"settings_crypto_device_name" = "Имя устройства: ";
+"settings_crypto_device_name" = "Имя общеизвестного устройства: ";
 "settings_crypto_device_id" = "\nИдентификатор устройства: ";
-"settings_crypto_device_key" = "\nКлюч устройства: ";
+"settings_crypto_device_key" = "\nКлюч устройства:\n";
 "settings_crypto_export" = "Экспорт ключей";
 "settings_crypto_blacklist_unverified_devices" = "Шифрование только для проверенных устройств";
 "room_details_people" = "Участники";
@@ -570,11 +570,11 @@
 "settings_key_backup_info_not_trusted_from_verifiable_device_fix_action" = "Для Безопасного Восстановления Сообщений на этом устройстве, проверьте %@.";
 "settings_key_backup_info_not_trusted_fix_action" = "Для Безопасного Восстановления Сообщений на этом устройстве, требуется пароль или ключ восстановления.";
 "settings_key_backup_info_trust_signature_unknown" = "Резервная копия подписана устройством с идентификатором: %@";
-"settings_key_backup_info_trust_signature_valid" = "Резервная копия имеет валидную подпись этого устройства";
-"settings_key_backup_info_trust_signature_valid_device_verified" = "Резервная копия имеет валидную подпись %@";
+"settings_key_backup_info_trust_signature_valid" = "Резервная копия имеет действительную подпись этого устройства";
+"settings_key_backup_info_trust_signature_valid_device_verified" = "Резервная копия имеет действительную подпись %@";
 "settings_key_backup_info_trust_signature_valid_device_unverified" = "Резервная копия подписана %@";
-"settings_key_backup_info_trust_signature_invalid_device_verified" = "Резервная копия имеет невалидную подпись %@";
-"settings_key_backup_info_trust_signature_invalid_device_unverified" = "Резервная копия имеет невалидную подпись %@";
+"settings_key_backup_info_trust_signature_invalid_device_verified" = "Резервная копия имеет недействительную подпись %@";
+"settings_key_backup_info_trust_signature_invalid_device_unverified" = "Резервная копия имеет недействительную подпись %@";
 "settings_key_backup_button_create" = "Использовать резервное копирование ключей";
 "settings_key_backup_button_restore" = "Восстановить из резервной копии";
 "settings_key_backup_button_delete" = "Удалить резервную копию";
@@ -874,3 +874,20 @@
 "identity_server_settings_alert_disconnect_button" = "Отключить";
 "identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "Отключить в любом случае";
 "identity_server_settings_alert_error_invalid_identity_server" = "%@ не является действительным сервером идентификации.";
+"settings_add_3pid_password_title_email" = "Добавить адрес электронной почты";
+"settings_add_3pid_password_title_msidsn" = "Добавить номер телефона";
+"settings_add_3pid_password_message" = "Для продолжения, задайте пароль";
+"settings_add_3pid_invalid_password_message" = "Недействительный пароль";
+"settings_discovery_three_pid_details_title_phone_number" = "Управление номера телефона";
+"settings_identity_server_no_is" = "Сервер идентификации не настроен";
+"identity_server_settings_disconnect" = "Разъединить";
+"call_no_stun_server_error_use_fallback_button" = "Попробуйте использовать %@";
+// Widget Picker
+"widget_picker_title" = "Интеграция";
+"service_terms_modal_decline_button" = "Отклонить";
+"service_terms_modal_description_for_identity_server_1" = "Найти других по номеру телефона или элек. почты";
+"service_terms_modal_description_for_identity_server_2" = "Быть найденным по номеру телефона или адресу элект. почты";
+// Service terms - Variant for identity server when displayed out of a context
+"service_terms_modal_title_identity_server" = "Обнаружение контактов";
+"device_verification_start_use_legacy_action" = "Используйте устаревшую проверку";
+"error_not_supported_on_mobile" = "Вы не можете сделать это с %@ моб. телефона.";
