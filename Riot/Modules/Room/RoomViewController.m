@@ -5437,8 +5437,7 @@
                                                                        }];
     
     preventBubblesTableViewScroll = YES;
-    [self selectEventWithId:selectedEventId];
-    preventBubblesTableViewScroll = NO;
+    [self selectEventWithId:selectedEventId];    
 }
 
 - (void)hideContextualMenuAnimated:(BOOL)animated
@@ -5460,10 +5459,10 @@
     
     if (cancelEventSelection)
     {
-        preventBubblesTableViewScroll = YES;
         [self cancelEventSelection];
-        preventBubblesTableViewScroll = NO;
     }
+    
+    preventBubblesTableViewScroll = NO;
     
     [self.roomContextualMenuPresenter hideContextualMenuWithAnimated:animated completion:^{
         [self enableOverlayContainerUserInteractions:NO];
