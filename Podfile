@@ -59,7 +59,7 @@ end
 
 abstract_target 'RiotPods' do
 
-    pod 'GBDeviceInfo', '~> 5.2.0'
+    pod 'GBDeviceInfo', '~> 6.3.0'
     pod 'Reusable', '~> 4.1'
     pod 'SwiftUTI', :git => 'https://github.com/speramusinc/SwiftUTI.git', :branch => 'master'
 

@@ -38,9 +38,9 @@ PODS:
     - DTFoundation/Core
   - DTFoundation/UIKit (1.7.14):
     - DTFoundation/Core
-  - GBDeviceInfo (5.2.0):
-    - GBDeviceInfo/Core (= 5.2.0)
-  - GBDeviceInfo/Core (5.2.0)
+  - GBDeviceInfo (6.3.0):
+    - GBDeviceInfo/Core (= 6.3.0)
+  - GBDeviceInfo/Core (6.3.0)
   - GZIP (1.2.2)
   - HPGrowingTextView (1.1)
   - JitsiMeetSDK (2.1.0)
@@ -106,7 +106,7 @@ PODS:
 DEPENDENCIES:
   - cmark
   - DGCollectionViewLeftAlignFlowLayout (~> 1.0.4)
-  - GBDeviceInfo (~> 5.2.0)
+  - GBDeviceInfo (~> 6.3.0)
   - MatomoTracker (~> 6.0.1)
   - MatrixKit (= 0.11.1)
   - MatrixKit/AppExtension (= 0.11.1)
@@ -158,7 +158,7 @@ SPEC CHECKSUMS:
   DGCollectionViewLeftAlignFlowLayout: a0fa58797373ded039cafba8133e79373d048399
   DTCoreText: 67023bb51b26711d5f640c851f4845aea14c24c9
   DTFoundation: 25aa19bb7c6e225b1dfae195604fb8cf1da0ab4c
-  GBDeviceInfo: 2c65ceb9404f9079264d4c238f5b81916fdfc5e2
+  GBDeviceInfo: a3f39dba1a04dcb630abff65d6f7e8fbf319eadd
   GZIP: 12374d285e3b5d46cfcd480700fcfc7e16caf4f1
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   JitsiMeetSDK: 3e66564af7f38a19142338955dd7f581801852b3
@@ -175,6 +175,6 @@ SPEC CHECKSUMS:
   SwiftUTI: 917993c124f8eac25e88ced0202fc58d7eb50fa8
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
 
-PODFILE CHECKSUM: 2e49df3854027bc5d9cce100219f879243418dcc
+PODFILE CHECKSUM: 712a8809b593367567a014f22fab5928a2a25b82
 
-COCOAPODS: 1.8.3
+COCOAPODS: 1.8.4
