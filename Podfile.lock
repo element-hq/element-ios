@@ -99,7 +99,7 @@ PODS:
   - Reusable/Storyboard (4.1.0)
   - Reusable/View (4.1.0)
   - SwiftGen (6.1.0)
-  - SwiftLint (0.33.0)
+  - SwiftLint (0.36.0)
   - SwiftUTI (1.0.7)
   - zxcvbn-ios (1.0.4)
 
@@ -115,7 +115,7 @@ DEPENDENCIES:
   - OLMKit
   - Reusable (~> 4.1)
   - SwiftGen (~> 6.1)
-  - SwiftLint (~> 0.33.0)
+  - SwiftLint (~> 0.36.0)
   - SwiftUTI (from `https://github.com/speramusinc/SwiftUTI.git`, branch `master`)
   - zxcvbn-ios
 
@@ -171,10 +171,10 @@ SPEC CHECKSUMS:
   Realm: 50071da38fe079e0735e47c9f2eae738c68c5996
   Reusable: 82be188f29d96dc5eff0db7b2393bcc08d2cdd5b
   SwiftGen: f872ca75cbd17bf7103c17f13dcfa0d9a15667b0
-  SwiftLint: fed9c66336e41fc74dc48a73678380718f0c8b0e
+  SwiftLint: fc9859e4e1752340664851f667bb1898b9c90114
   SwiftUTI: 917993c124f8eac25e88ced0202fc58d7eb50fa8
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
 
-PODFILE CHECKSUM: 712a8809b593367567a014f22fab5928a2a25b82
+PODFILE CHECKSUM: af4a218f77a472d656ae661dfb4e5c75abcae82c
 
 COCOAPODS: 1.8.4
