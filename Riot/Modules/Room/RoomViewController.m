@@ -522,8 +522,7 @@
     // Observe kAppDelegateDidTapStatusBarNotification.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        [self.bubblesTableView setContentOffset:CGPointMake(-self.bubblesTableView.mxk_adjustedContentInset.left, -self.bubblesTableView.mxk_adjustedContentInset.top) animated:YES];
-        
+        [self setBubbleTableViewContentOffset:CGPointMake(-self.bubblesTableView.mxk_adjustedContentInset.left, -self.bubblesTableView.mxk_adjustedContentInset.top) animated:YES];
     }];
 }
 
@@ -859,7 +858,7 @@
         // Disable VoiceOver while scrolling
         self.bubblesTableView.accessibilityElementsHidden = YES;
 
-        [self.bubblesTableView setContentOffset:offset animated:NO];
+        [self setBubbleTableViewContentOffset:offset animated:NO];
 
         NSEnumerator<UITableViewCell*> *cells;
         if (direction == UIAccessibilityScrollDirectionUp)
@@ -5437,7 +5436,8 @@
                                                                        completion:^{
                                                                        }];
     
-    [self selectEventWithId:selectedEventId];
+    preventBubblesTableViewScroll = YES;
+    [self selectEventWithId:selectedEventId];    
 }
 
 - (void)hideContextualMenuAnimated:(BOOL)animated
@@ -5461,6 +5461,8 @@
     {
         [self cancelEventSelection];
     }
+    
+    preventBubblesTableViewScroll = NO;
     
     [self.roomContextualMenuPresenter hideContextualMenuWithAnimated:animated completion:^{
         [self enableOverlayContainerUserInteractions:NO];
