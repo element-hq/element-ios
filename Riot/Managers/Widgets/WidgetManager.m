@@ -237,11 +237,8 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
                                                          content:widgetContent
                                                         stateKey:widgetId
                                                          success:nil failure:failure];
-
-        if (operation2)
-        {
-            [operation mutateTo:operation2];
-        }
+        
+        [operation mutateTo:operation2];
 
     } failure:^(NSError *error) {
         if (failure)
@@ -316,11 +313,8 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
                         success();
                     }
                 } failure:failure];
-
-        if (operation2)
-        {
-            [operation mutateTo:operation2];
-        }
+        
+        [operation mutateTo:operation2];
 
     } failure:^(NSError *error) {
         if (failure)
