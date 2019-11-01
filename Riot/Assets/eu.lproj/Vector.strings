@@ -899,3 +899,8 @@
 "service_terms_modal_message_identity_server" = "Onartu %@ identitate-zerbitzariaren baldintzak kontaktuak aurkitzeko.";
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Gehitu identitate-zerbitzari bat zure ezarpenetan e-maila erabiliz gonbidatzeko.";
+"settings_add_3pid_password_title_email" = "Gehitu e-mail helbidea";
+"settings_add_3pid_password_title_msidsn" = "Gehitu telefono zenbakia";
+"settings_add_3pid_password_message" = "Jarraitzeko sartu zure pasahitza";
+"settings_add_3pid_invalid_password_message" = "Pasahitz baliogabea";
+"error_not_supported_on_mobile" = "Ezin duzu hau %@ mugikorretik egin.";
