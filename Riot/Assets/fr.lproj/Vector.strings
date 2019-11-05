@@ -911,3 +911,8 @@
 // Service terms - Variant for identity server when displayed out of a context
 "service_terms_modal_title_identity_server" = "Découverte des contacts";
 "service_terms_modal_message_identity_server" = "Acceptez les conditions du serveur d’identité (%@) pour découvrir des contacts.";
+"settings_add_3pid_password_title_email" = "Ajouter une adresse e-mail";
+"settings_add_3pid_password_title_msidsn" = "Ajouter un numéro de téléphone";
+"settings_add_3pid_password_message" = "Pour continuer, saisissez votre mot de passe";
+"settings_add_3pid_invalid_password_message" = "Mot de passe non valide";
+"error_not_supported_on_mobile" = "Vous ne pouvez pas faire cela depuis %@ mobile.";
