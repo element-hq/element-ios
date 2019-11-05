@@ -3,6 +3,7 @@ Changes in 0.10.1 (2019-XX-XX)
 
 Improvements:
  * Settings: Add User-Interactive Auth for adding email and msidsn to user's account (vector-im/riot-ios#2744).
+ * Improve UIApplication background task management.
 
 Bug fix:
  * Room cell: The states of direct chat and favorite buttons are reversed in the menu (#2788).
