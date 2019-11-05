@@ -759,11 +759,15 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         BOOL isVideoCall = [userActivity.activityType isEqualToString:INStartVideoCallIntentIdentifier];
         
         UIApplication *application = UIApplication.sharedApplication;
-        NSNumber *backgroundTaskIdentifier;
+        
+        id<MXBackgroundModeHandler> handler = [MXSDKOptions sharedInstance].backgroundModeHandler;
+        id<MXBackgroundTask> backgroundTask;
         
         // Start background task since we need time for MXSession preparasion because our app can be launched in the background
         if (application.applicationState == UIApplicationStateBackground)
-            backgroundTaskIdentifier = @([application beginBackgroundTaskWithExpirationHandler:^{}]);
+        {
+            backgroundTask = [handler startBackgroundTaskWithName:@"[AppDelegate] application:continueUserActivity:restorationHandler: Audio or video call" expirationHandler:nil];
+        }
 
         MXSession *session = mxSessionArray.firstObject;
         [session.callManager placeCallInRoom:roomID
@@ -779,15 +783,17 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                                                              usingBlock:^(NSNotification * _Nonnull note) {
                                                                  if (call.state == MXCallStateEnded)
                                                                  {
-                                                                     [application endBackgroundTask:backgroundTaskIdentifier.unsignedIntegerValue];
+                                                                     [backgroundTask stop];
                                                                      [center removeObserver:token];
                                                                  }
                                                              }];
                                          }
                                      }
                                      failure:^(NSError *error) {
-                                         if (backgroundTaskIdentifier)
-                                             [application endBackgroundTask:backgroundTaskIdentifier.unsignedIntegerValue];
+                                         if (backgroundTask)
+                                         {
+                                             [backgroundTask stop];
+                                         }
                                      }];
         
         continueUserActivity = YES;
@@ -3299,7 +3305,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                 // Without CallKit this will allow us to play vibro until the call was ended
                 // With CallKit we'll inform the system when the call is ended to let the system terminate our app to save resources
                 id<MXBackgroundModeHandler> handler = [MXSDKOptions sharedInstance].backgroundModeHandler;
-                NSUInteger callTaskIdentifier = [handler startBackgroundTaskWithName:nil completion:^{}];
+                id<MXBackgroundTask> callBackgroundTask = [handler startBackgroundTaskWithName:@"[AppDelegate] addMatrixCallObserver" expirationHandler:nil];
                 
                 // Start listening for call state change notifications
                 __weak NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -3314,8 +3320,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                                                                                          // Set call vc to nil to let our app handle new incoming calls even it wasn't killed by the system
                                                                                          currentCallViewController = nil;
                                                                                          [notificationCenter removeObserver:token];
-                                                                                         
-                                                                                         [handler endBackgrounTaskWithIdentifier:callTaskIdentifier];
+                                                                                         [callBackgroundTask stop];
                                                                                      }
                                                                                  }];
             }
