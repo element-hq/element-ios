@@ -97,7 +97,16 @@
     // Adjust the display of the icons in the tabbar.
     for (UITabBarItem *tabBarItem in self.tabBar.items)
     {
-        tabBarItem.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+        if (@available(iOS 13.0, *))
+        {
+            // Fix iOS 13 misalignment tab bar images. Some titles are nil and other empty strings. Nil title behaves as if a non-empty title was set.
+            // Note: However no need to modify imageInsets property on iOS 13.
+            tabBarItem.title = @"";            
+        }
+        else
+        {
+            tabBarItem.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+        }
     }
     
     childViewControllers = [NSMutableArray array];
