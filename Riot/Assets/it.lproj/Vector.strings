@@ -886,3 +886,8 @@
 "service_terms_modal_message_identity_server" = "Accetta i Termini di servizio dell'Identity Server (%@) per trovare altri contatti.";
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Aggiungi un Identity Server nelle Impostazioni per poter invitare utenti tramite email.";
+"settings_add_3pid_password_title_email" = "Aggiungi indirizzo email";
+"settings_add_3pid_password_title_msidsn" = "Aggiungi numero di telefono";
+"settings_add_3pid_password_message" = "Per continuare, inserisci la tua password";
+"settings_add_3pid_invalid_password_message" = "Password non valida";
+"error_not_supported_on_mobile" = "Non puoi farlo da %@ mobile.";

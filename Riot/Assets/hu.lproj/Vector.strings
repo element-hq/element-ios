@@ -831,7 +831,7 @@
 "photo_library_access_not_granted" = "A fénykép könyvár eléréséhez %@ nem rendelkezik engedéllyel, kérlek változtasd meg az adatvédelmi beállításokat";
 // Service terms
 "service_terms_modal_title" = "Felhasználási feltételek";
-"service_terms_modal_message" = "A folytatáshoz el kell fogadnod a felhasználási feltételeket (%@).";
+"service_terms_modal_message" = "A folytatáshoz el kell fogadnod a Felhasználási feltételeket (%@).";
 "service_terms_modal_accept_button" = "Elfogad";
 "service_terms_modal_description_for_identity_server" = "Látható mások számára";
 "service_terms_modal_description_for_integration_manager" = "Használjon botokat, hidakat, kisalkalmazásokat és matrica csomagokat";
@@ -910,3 +910,14 @@
 "call_no_stun_server_error_use_fallback_button" = "Próbáld használni ezt: %@";
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Az e-mail címmel való meghíváshoz adj hozzá egy azonosítási szervert a beállításaidnál.";
+"service_terms_modal_decline_button" = "Elutasít";
+"service_terms_modal_description_for_identity_server_1" = "Találj meg másokat telefonszámmal vagy e-mail címmel";
+"service_terms_modal_description_for_identity_server_2" = "Legyél megtalálható telefonszámmal vagy e-mail címmel";
+// Service terms - Variant for identity server when displayed out of a context
+"service_terms_modal_title_identity_server" = "Ismerősök keresése";
+"service_terms_modal_message_identity_server" = "Az azonosítási szerver (%@) felhasználási feltételeit el kell fogadnod, hogy ismerősöket kereshess.";
+"settings_add_3pid_password_title_email" = "E-mail cím hozzáadása";
+"settings_add_3pid_password_title_msidsn" = "Telefonszám hozzáadása";
+"settings_add_3pid_password_message" = "A folytatáshoz add meg a jelszavadat";
+"settings_add_3pid_invalid_password_message" = "Érvénytelen jelszó";
+"error_not_supported_on_mobile" = "%@ mobilról ezt nem teheted meg.";
