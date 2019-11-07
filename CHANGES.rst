@@ -10,7 +10,8 @@ Bug fix:
  * RoomVC: Fix crash occurring when tap on an unsent media with retrieved event equal to nil.
  * Emoji Picker: Background color is not white (#2630).
  * Device Verification: Selecting 'start verification' from a keyshare request wedges you in an entirely blank verification screen (#2504).
- * Integrations: Fix terms consent display when they are required
+ * Integrations: Fix terms consent display when they are required.
+ * Integrations: Use the integrations manager provided by the homeserver admin via .well-known (#2815).
 
 Changes in 0.10.0 (2019-10-11)
 ===============================================
