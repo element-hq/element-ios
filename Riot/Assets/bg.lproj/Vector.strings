@@ -50,7 +50,7 @@
 "auth_repeat_password_placeholder" = "Повтори парола";
 "auth_repeat_new_password_placeholder" = "Потвърди новата парола";
 "auth_home_server_placeholder" = "URL (напр. https://matrix.org)";
-"auth_identity_server_placeholder" = "URL (напр. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (напр. https://vector.im)";
 "auth_invalid_login_param" = "Неправилно потребителско име и/или парола";
 "auth_invalid_user_name" = "Потребителските имена могат да съдържат само букви, цифри, точки, тирета и долни черти";
 "auth_invalid_password" = "Паролата е твърде къса (мин. 6 символа)";
@@ -334,9 +334,9 @@
 "settings_confirm_password" = "потвърди парола";
 "settings_fail_to_update_password" = "Неуспешно обновяване на парола";
 "settings_password_updated" = "Вашата парола беше обновена";
-"settings_crypto_device_name" = "Име на устройството: ";
+"settings_crypto_device_name" = "Публично име на устройството: ";
 "settings_crypto_device_id" = "\nID на устройството: ";
-"settings_crypto_device_key" = "\nКлюч на устройството: ";
+"settings_crypto_device_key" = "\nКлюч на устройството:\n";
 "settings_crypto_export" = "Експортирай ключове";
 "settings_crypto_blacklist_unverified_devices" = "Шифроване само за потвърдени устройства";
 // Room Details
@@ -846,3 +846,24 @@
 "media_type_accessibility_sticker" = "Стикер";
 // Widget Picker
 "widget_picker_title" = "Интеграции";
+"auth_add_email_message_2" = "Настройте имейл за възстановяване на профила, а по-късно и по желание да бъдете открити от хора, които ви познават.";
+"auth_add_phone_message_2" = "Настройте телефон, а по-късно и по желание бъдете откриваеми от хора, които ви познават.";
+"auth_add_email_phone_message_2" = "Настройте имейл за възстановяване на профила. По-късно използвайте имейл или телефонен номер за да бъдете откривани от хора, които ви познават.";
+"auth_email_is_required" = "Не е настроен сървър за самоличност, така че не можете да добавите имейл адрес за възстановяване на паролата в бъдеще.";
+"auth_phone_is_required" = "Не е настроен сървър за самоличност, така че не можете да добавите телефонен номер за възстановяване на паролата в бъдеще.";
+"auth_reset_password_error_is_required" = "Не е настроен сървър за самоличност: добавете такъв в настройки за сървъри, за да можете да възстановявате паролата си.";
+"contacts_address_book_no_identity_server" = "Не е настроен сървър за самоличност";
+"settings_discovery_settings" = "ОТКРИВАНЕ";
+"settings_identity_server_settings" = "СЪРВЪР ЗА САМОЛИЧНОСТ";
+"settings_three_pids_management_information_part1" = "Управлявайте имейл адресите и телефонните номера, които използвате за вход или за възстановяване на профила. Контролирайте, кой може да ви намери в ";
+"settings_three_pids_management_information_part2" = "Откриване";
+"settings_three_pids_management_information_part3" = ".";
+"settings_calls_stun_server_fallback_button" = "Позволи използването на резервен сървър за свързване на обаждания";
+"settings_calls_stun_server_fallback_description" = "Позволи използването на резервен сървър за свързване на обаждания %@ когато вашия сървър не предложи такъв (IP адресът ви ще бъде споделен по време на разговор).";
+"settings_add_3pid_password_title_email" = "Добави имейл адрес";
+"settings_add_3pid_password_title_msidsn" = "Добави телефонен номер";
+"settings_add_3pid_password_message" = "За да продължите, въведете паролата си";
+"settings_add_3pid_invalid_password_message" = "Невалидна парола";
+"settings_devices_description" = "Публичното име на устройството е видимо за хората, с които общувате";
+"settings_discovery_no_identity_server" = "В момента не използвате сървър за самоличност. Добавете такъв, за да бъдете откриваеми от съществуващи познати контакти.";
+"settings_discovery_terms_not_signed" = "Съгласете се с условията за ползване на сървъра за самоличност (%@) за да бъдете откриваеми по имейл адрес или телефон.";

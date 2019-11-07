@@ -7,7 +7,7 @@ use_frameworks!
 
 # Different flavours of pods to MatrixKit
 # The current MatrixKit pod version
-$matrixKitVersion = '0.11.1'
+$matrixKitVersion = '0.11.2'
 
 # The develop branch version
 #$matrixKitVersion = 'develop'
@@ -59,7 +59,7 @@ end
 
 abstract_target 'RiotPods' do
 
-    pod 'GBDeviceInfo', '~> 5.2.0'
+    pod 'GBDeviceInfo', '~> 6.3.0'
     pod 'Reusable', '~> 4.1'
     pod 'SwiftUTI', :git => 'https://github.com/speramusinc/SwiftUTI.git', :branch => 'master'
 
@@ -69,12 +69,11 @@ abstract_target 'RiotPods' do
     # Remove warnings from "bad" pods
     pod 'OLMKit', :inhibit_warnings => true
     pod 'cmark', :inhibit_warnings => true
-    pod 'DTCoreText', :inhibit_warnings => true
     pod 'zxcvbn-ios'
 
     # Tools
     pod 'SwiftGen', '~> 6.1'
-    pod 'SwiftLint', '~> 0.33.0'
+    pod 'SwiftLint', '~> 0.36.0'
 
     target "Riot" do
         import_MatrixKit

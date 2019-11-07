@@ -674,7 +674,16 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                                typeof(self) self = weakSelf;
                                                                self->currentAlert = nil;
                                                                
-                                                               [[UIPasteboard generalPasteboard] setString:roomIdLabel.text];
+                                                               NSString *roomdId = roomIdLabel.text;
+                                                               
+                                                               if (roomdId)
+                                                               {
+                                                                   [[UIPasteboard generalPasteboard] setString:roomdId];
+                                                               }
+                                                               else
+                                                               {
+                                                                   NSLog(@"[RoomSettingsViewController] Copy room id failed. Room id is nil");
+                                                               }
                                                            }
                                                            
                                                        }]];
@@ -773,7 +782,16 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                                typeof(self) self = weakSelf;
                                                                self->currentAlert = nil;
                                                                
-                                                               [[UIPasteboard generalPasteboard] setString:roomAliasLabel.text];
+                                                               NSString *roomAlias = roomAliasLabel.text;
+                                                               
+                                                               if (roomAlias)
+                                                               {
+                                                                   [[UIPasteboard generalPasteboard] setString:roomAlias];
+                                                               }
+                                                               else
+                                                               {
+                                                                   NSLog(@"[RoomSettingsViewController] Copy room address failed. Room address is nil");
+                                                               }
                                                            }
                                                            
                                                        }]];
@@ -788,7 +806,17 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                                self->currentAlert = nil;
                                                                
                                                                // Create a matrix.to permalink to the room
-                                                               [[UIPasteboard generalPasteboard] setString:[MXTools permalinkToRoom:roomAliasLabel.text]];
+                                                               
+                                                               NSString *permalink = [MXTools permalinkToRoom:roomAliasLabel.text];
+                                                               
+                                                               if (permalink)
+                                                               {
+                                                                   [[UIPasteboard generalPasteboard] setString:permalink];
+                                                               }
+                                                               else
+                                                               {
+                                                                   NSLog(@"[RoomSettingsViewController] Copy room URL failed. Room URL is nil");
+                                                               }
                                                            }
                                                            
                                                        }]];

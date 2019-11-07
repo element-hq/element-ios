@@ -522,8 +522,7 @@
     // Observe kAppDelegateDidTapStatusBarNotification.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        [self.bubblesTableView setContentOffset:CGPointMake(-self.bubblesTableView.mxk_adjustedContentInset.left, -self.bubblesTableView.mxk_adjustedContentInset.top) animated:YES];
-        
+        [self setBubbleTableViewContentOffset:CGPointMake(-self.bubblesTableView.mxk_adjustedContentInset.left, -self.bubblesTableView.mxk_adjustedContentInset.top) animated:YES];
     }];
 }
 
@@ -859,7 +858,7 @@
         // Disable VoiceOver while scrolling
         self.bubblesTableView.accessibilityElementsHidden = YES;
 
-        [self.bubblesTableView setContentOffset:offset animated:NO];
+        [self setBubbleTableViewContentOffset:offset animated:NO];
 
         NSEnumerator<UITableViewCell*> *cells;
         if (direction == UIAccessibilityScrollDirectionUp)
@@ -2259,8 +2258,17 @@
             if (((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.eventSentState == MXEventSentStateFailed)
             {
                 // Shortcut: when clicking on an unsent media, show the action sheet to resend it
-                MXEvent *selectedEvent = [self.roomDataSource eventWithEventId:((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.eventId];
-                [self dataSource:dataSource didRecognizeAction:kMXKRoomBubbleCellRiotEditButtonPressed inCell:cell userInfo:@{kMXKRoomBubbleCellEventKey:selectedEvent}];
+                NSString *eventId = ((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.eventId;
+                MXEvent *selectedEvent = [self.roomDataSource eventWithEventId:eventId];
+                
+                if (selectedEvent)
+                {
+                    [self dataSource:dataSource didRecognizeAction:kMXKRoomBubbleCellRiotEditButtonPressed inCell:cell userInfo:@{kMXKRoomBubbleCellEventKey:selectedEvent}];
+                }
+                else
+                {
+                    NSLog(@"[RoomViewController] didRecognizeAction:inCell:userInfo tap on attachment with event state MXEventSentStateFailed. Selected event is nil for event id %@", eventId);
+                }
             }
             else if (((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.type == MXKAttachmentTypeSticker)
             {
@@ -2677,8 +2685,14 @@
                                                                // Create a matrix.to permalink that is common to all matrix clients
                                                                NSString *permalink = [MXTools permalinkToEvent:selectedEvent.eventId inRoom:selectedEvent.roomId];
                                                                
-                                                               // Create a room matrix.to permalink
-                                                               [[UIPasteboard generalPasteboard] setString:permalink];
+                                                               if (permalink)
+                                                               {
+                                                                   [[UIPasteboard generalPasteboard] setString:permalink];
+                                                               }
+                                                               else
+                                                               {
+                                                                   NSLog(@"[RoomViewController] Contextual menu permalink action failed. Permalink is nil room id/event id: %@/%@", selectedEvent.roomId, selectedEvent.eventId);
+                                                               }
                                                            }
                                                            
                                                        }]];
@@ -5278,7 +5292,14 @@
             }
             NSString *textMessage = selectedComponent.textMessage;
             
-            [UIPasteboard generalPasteboard].string = textMessage;
+            if (textMessage)
+            {
+                [UIPasteboard generalPasteboard].string = textMessage;
+            }
+            else
+            {
+                NSLog(@"[RoomViewController] Contextual menu copy failed. Text is nil for room id/event id: %@/%@", selectedComponent.event.roomId, selectedComponent.event.eventId);
+            }
             
             [self hideContextualMenuAnimated:YES];
         }
@@ -5415,7 +5436,8 @@
                                                                        completion:^{
                                                                        }];
     
-    [self selectEventWithId:selectedEventId];
+    preventBubblesTableViewScroll = YES;
+    [self selectEventWithId:selectedEventId];    
 }
 
 - (void)hideContextualMenuAnimated:(BOOL)animated
@@ -5439,6 +5461,8 @@
     {
         [self cancelEventSelection];
     }
+    
+    preventBubblesTableViewScroll = NO;
     
     [self.roomContextualMenuPresenter hideContextualMenuWithAnimated:animated completion:^{
         [self enableOverlayContainerUserInteractions:NO];

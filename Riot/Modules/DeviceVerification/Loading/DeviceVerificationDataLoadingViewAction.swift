@@ -20,5 +20,6 @@ import Foundation
 
 /// DeviceVerificationDataLoadingViewController view actions exposed to view model
 enum DeviceVerificationDataLoadingViewAction {
+    case loadData
     case cancel
 }

@@ -48,10 +48,23 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         navigationController.dismiss(animated: animated, completion: completion)
     }
     
-    func setRootModule(_ module: Presentable, hideNavigationBar: Bool = false) {
+    func setRootModule(_ module: Presentable, hideNavigationBar: Bool = false, animated: Bool = false, popCompletion: (() -> Void)? = nil) {
+        
+        let controller = module.toPresentable()
+        
+        // Avoid setting a UINavigationController onto stack
+        guard controller is UINavigationController == false else {
+            return
+        }
+        
         // Call all completions so all coordinators can be deallocated
         completions.forEach { $0.value() }
-        navigationController.setViewControllers([module.toPresentable()], animated: false)
+        
+        if let popCompletion = popCompletion {
+            completions[controller] = popCompletion
+        }
+        
+        navigationController.setViewControllers([controller], animated: animated)
         navigationController.isNavigationBarHidden = hideNavigationBar
     }
     

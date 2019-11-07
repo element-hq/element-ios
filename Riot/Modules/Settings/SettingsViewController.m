@@ -695,7 +695,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }
 }
 
-- (void)showValidationEmailDialogWithMessage:(NSString*)message for3PidAddSession:(MX3PidAddSession*)threePidAddSession threePidAddManager:(MX3PidAddManager*)threePidAddManager
+- (void)showValidationEmailDialogWithMessage:(NSString*)message for3PidAddSession:(MX3PidAddSession*)threePidAddSession threePidAddManager:(MX3PidAddManager*)threePidAddManager password:(NSString*)password
 {
     MXWeakify(self);
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
@@ -712,74 +712,104 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
     [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"continue"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
-
-        self->is3PIDBindingInProgress = YES;
-
-        [threePidAddManager tryFinaliseAddEmailSession:threePidAddSession success:^{
-
-            self->is3PIDBindingInProgress = NO;
-
-            // Check whether destroy has been called during email binding
-            if (self->onReadyToDestroyHandler)
-            {
-                // Ready to destroy
-                self->onReadyToDestroyHandler();
-                self->onReadyToDestroyHandler = nil;
-            }
-            else
-            {
-                self->currentAlert = nil;
-
-                [self stopActivityIndicator];
-
-                // Reset new email adding
-                self.newEmailEditingEnabled = NO;
-
-                // Update linked emails
-                [self loadAccount3PIDs];
-            }
-
-        } failure:^(NSError * _Nonnull error) {
-
-            NSLog(@"[SettingsViewController] Failed to bind email");
-            self->is3PIDBindingInProgress = NO;
-
-            // Check whether destroy has been called during email binding
-            if (self->onReadyToDestroyHandler)
-            {
-                // Ready to destroy
-                self->onReadyToDestroyHandler();
-                self->onReadyToDestroyHandler = nil;
-            }
-            else
-            {
-                self->currentAlert = nil;
-
-                // Display the same popup again if the error is M_THREEPID_AUTH_FAILED
-                MXError *mxError = [[MXError alloc] initWithNSError:error];
-                if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringThreePIDAuthFailed])
-                {
-                    [self showValidationEmailDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_email_validation_error"]
-                                             for3PidAddSession:threePidAddSession
-                                            threePidAddManager:threePidAddManager];
-                }
-                else
-                {
-                    [self stopActivityIndicator];
-
-                    // Notify user
-                    NSString *myUserId = self.mainSession.myUser.userId; // TODO: Hanlde multi-account
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
-                }
-            }
-        }];
+        [self tryFinaliseAddEmailSession:threePidAddSession withPassword:password threePidAddManager:threePidAddManager];
     }]];
 
     [currentAlert mxk_setAccessibilityIdentifier:@"SettingsVCEmailValidationAlert"];
     [self presentViewController:currentAlert animated:YES completion:nil];
 }
 
-- (void)showValidationMsisdnDialogWithMessage:(NSString*)message for3PidAddSession:(MX3PidAddSession*)threePidAddSession threePidAddManager:(MX3PidAddManager*)threePidAddManager
+- (void)tryFinaliseAddEmailSession:(MX3PidAddSession*)threePidAddSession withPassword:(NSString*)password threePidAddManager:(MX3PidAddManager*)threePidAddManager
+{
+    self->is3PIDBindingInProgress = YES;
+
+    [threePidAddManager tryFinaliseAddEmailSession:threePidAddSession withPassword:password success:^{
+
+        self->is3PIDBindingInProgress = NO;
+
+        // Check whether destroy has been called during email binding
+        if (self->onReadyToDestroyHandler)
+        {
+            // Ready to destroy
+            self->onReadyToDestroyHandler();
+            self->onReadyToDestroyHandler = nil;
+        }
+        else
+        {
+            self->currentAlert = nil;
+
+            [self stopActivityIndicator];
+
+            // Reset new email adding
+            self.newEmailEditingEnabled = NO;
+
+            // Update linked emails
+            [self loadAccount3PIDs];
+        }
+
+    } failure:^(NSError * _Nonnull error) {
+        NSLog(@"[SettingsViewController] tryFinaliseAddEmailSession: Failed to bind email");
+
+        MXError *mxError = [[MXError alloc] initWithNSError:error];
+        if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringForbidden])
+        {
+            NSLog(@"[SettingsViewController] tryFinaliseAddEmailSession: Wrong password");
+
+            // Ask password again
+            self->currentAlert = [UIAlertController alertControllerWithTitle:nil
+                                                                     message:NSLocalizedStringFromTable(@"settings_add_3pid_invalid_password_message", @"Vector", nil)
+                                                              preferredStyle:UIAlertControllerStyleAlert];
+
+            [self->currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"retry", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                self->currentAlert = nil;
+
+                [self requestAccountPasswordWithTitle:NSLocalizedStringFromTable(@"settings_add_3pid_password_title_email", @"Vector", nil)
+                                              message:NSLocalizedStringFromTable(@"settings_add_3pid_password_message", @"Vector", nil)
+                                           onComplete:^(NSString *password) {
+                    [self tryFinaliseAddEmailSession:threePidAddSession withPassword:password threePidAddManager:threePidAddManager];
+                }];
+            }]];
+
+            [self presentViewController:self->currentAlert animated:YES completion:nil];
+
+            return;
+        }
+
+        self->is3PIDBindingInProgress = NO;
+
+        // Check whether destroy has been called during email binding
+        if (self->onReadyToDestroyHandler)
+        {
+            // Ready to destroy
+            self->onReadyToDestroyHandler();
+            self->onReadyToDestroyHandler = nil;
+        }
+        else
+        {
+            self->currentAlert = nil;
+
+            // Display the same popup again if the error is M_THREEPID_AUTH_FAILED
+            MXError *mxError = [[MXError alloc] initWithNSError:error];
+            if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringThreePIDAuthFailed])
+            {
+                [self showValidationEmailDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_email_validation_error"]
+                                         for3PidAddSession:threePidAddSession
+                                        threePidAddManager:threePidAddManager
+                                                  password:password];
+            }
+            else
+            {
+                [self stopActivityIndicator];
+
+                // Notify user
+                NSString *myUserId = self.mainSession.myUser.userId; // TODO: Hanlde multi-account
+                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
+            }
+        }
+    }];
+}
+
+- (void)showValidationMsisdnDialogWithMessage:(NSString*)message for3PidAddSession:(MX3PidAddSession*)threePidAddSession threePidAddManager:(MX3PidAddManager*)threePidAddManager password:(NSString*)password
 {
     MXWeakify(self);
     
@@ -813,92 +843,122 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
         if (smsCode.length)
         {
-            self->is3PIDBindingInProgress = YES;
-
-            [threePidAddManager finaliseAddPhoneNumberSession:threePidAddSession withToken:smsCode success:^{
-
-                self->is3PIDBindingInProgress = NO;
-
-                // Check whether destroy has been called during the binding
-                if (self->onReadyToDestroyHandler)
-                {
-                    // Ready to destroy
-                    self->onReadyToDestroyHandler();
-                    self->onReadyToDestroyHandler = nil;
-                }
-                else
-                {
-                    [self stopActivityIndicator];
-
-                    // Reset new phone adding
-                    self.newPhoneEditingEnabled = NO;
-
-                    // Update linked 3pids
-                    [self loadAccount3PIDs];
-                }
-
-            } failure:^(NSError * _Nonnull error) {
-
-                NSLog(@"[SettingsViewController] Failed to submit the sms token");
-
-                self->is3PIDBindingInProgress = NO;
-
-                // Check whether destroy has been called during phone binding
-                if (self->onReadyToDestroyHandler)
-                {
-                    // Ready to destroy
-                    self->onReadyToDestroyHandler();
-                    self->onReadyToDestroyHandler = nil;
-                }
-                else
-                {
-                    // Ignore connection cancellation error
-                    if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
-                    {
-                        [self stopActivityIndicator];
-                        return;
-                    }
-
-                    // Alert user
-                    NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
-                    NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
-                    if (!title)
-                    {
-                        if (msg)
-                        {
-                            title = msg;
-                            msg = nil;
-                        }
-                        else
-                        {
-                            title = [NSBundle mxk_localizedStringForKey:@"error"];
-                        }
-                    }
-
-
-                    self->currentAlert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
-
-                    [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                        self->currentAlert = nil;
-
-                        // Ask again the sms token
-                        [self showValidationMsisdnDialogWithMessage:message for3PidAddSession:threePidAddSession threePidAddManager:threePidAddManager];
-                    }]];
-
-                    [self->currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCErrorAlert"];
-                    [self presentViewController:self->currentAlert animated:YES completion:nil];
-                }
-            }];
+            [self finaliseAddPhoneNumberSession:threePidAddSession withToken:smsCode andPassword:password message:message threePidAddManager:threePidAddManager];
         }
         else
         {
             // Ask again the sms token
-            [self showValidationMsisdnDialogWithMessage:message for3PidAddSession:threePidAddSession threePidAddManager:threePidAddManager];
+            [self showValidationMsisdnDialogWithMessage:message for3PidAddSession:threePidAddSession threePidAddManager:threePidAddManager password:password];
         }
     }]];
     
     [currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCMsisdnValidationAlert"];
     [self presentViewController:currentAlert animated:YES completion:nil];
+}
+
+- (void)finaliseAddPhoneNumberSession:(MX3PidAddSession*)threePidAddSession withToken:(NSString*)token andPassword:(NSString*)password message:(NSString*)message threePidAddManager:(MX3PidAddManager*)threePidAddManager
+{
+    self->is3PIDBindingInProgress = YES;
+
+    [threePidAddManager finaliseAddPhoneNumberSession:threePidAddSession withToken:token password:password success:^{
+
+        self->is3PIDBindingInProgress = NO;
+
+        // Check whether destroy has been called during the binding
+        if (self->onReadyToDestroyHandler)
+        {
+            // Ready to destroy
+            self->onReadyToDestroyHandler();
+            self->onReadyToDestroyHandler = nil;
+        }
+        else
+        {
+            [self stopActivityIndicator];
+
+            // Reset new phone adding
+            self.newPhoneEditingEnabled = NO;
+
+            // Update linked 3pids
+            [self loadAccount3PIDs];
+        }
+
+    } failure:^(NSError * _Nonnull error) {
+
+        NSLog(@"[SettingsViewController] finaliseAddPhoneNumberSession: Failed to submit the sms token");
+   
+        MXError *mxError = [[MXError alloc] initWithNSError:error];
+        if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringForbidden])
+        {
+            NSLog(@"[SettingsViewController] finaliseAddPhoneNumberSession: Wrong password");
+
+            // Ask password again
+            self->currentAlert = [UIAlertController alertControllerWithTitle:nil
+                                                                     message:NSLocalizedStringFromTable(@"settings_add_3pid_invalid_password_message", @"Vector", nil)
+                                                              preferredStyle:UIAlertControllerStyleAlert];
+
+            [self->currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"retry", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                self->currentAlert = nil;
+
+                [self requestAccountPasswordWithTitle:NSLocalizedStringFromTable(@"settings_add_3pid_password_title_msidsn", @"Vector", nil)
+                                              message:NSLocalizedStringFromTable(@"settings_add_3pid_password_message", @"Vector", nil)
+                                           onComplete:^(NSString *password) {
+                                               [self finaliseAddPhoneNumberSession:threePidAddSession withToken:token andPassword:password message:message threePidAddManager:threePidAddManager];
+                }];
+            }]];
+
+            [self presentViewController:self->currentAlert animated:YES completion:nil];
+
+            return;
+        }
+
+        self->is3PIDBindingInProgress = NO;
+
+        // Check whether destroy has been called during phone binding
+        if (self->onReadyToDestroyHandler)
+        {
+            // Ready to destroy
+            self->onReadyToDestroyHandler();
+            self->onReadyToDestroyHandler = nil;
+        }
+        else
+        {
+            // Ignore connection cancellation error
+            if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
+            {
+                [self stopActivityIndicator];
+                return;
+            }
+
+            // Alert user
+            NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
+            NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
+            if (!title)
+            {
+                if (msg)
+                {
+                    title = msg;
+                    msg = nil;
+                }
+                else
+                {
+                    title = [NSBundle mxk_localizedStringForKey:@"error"];
+                }
+            }
+
+
+            self->currentAlert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
+
+            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                self->currentAlert = nil;
+
+                // Ask again the sms token
+                [self showValidationMsisdnDialogWithMessage:message for3PidAddSession:threePidAddSession threePidAddManager:threePidAddManager password:password];
+            }]];
+
+            [self->currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCErrorAlert"];
+            [self presentViewController:self->currentAlert animated:YES completion:nil];
+        }
+    }];
 }
 
 - (void)loadAccount3PIDs
@@ -1164,6 +1224,99 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     
     self.settingsDiscoveryViewModel = viewModel;
     self.settingsDiscoveryTableViewSection = discoverySection;
+}
+
+#pragma mark - 3Pid Add
+
+-(void)checkAuthenticationFlowForAdding:(MX3PIDMedium)medium withSession:(MXSession*)session onComplete:(void (^)(NSString *password))onComplete
+{
+    [self startActivityIndicator];
+
+    [session.threePidAddManager authenticationFlowForAdd3PidWithSuccess:^(NSArray<MXLoginFlow *> * _Nullable flows) {
+        [self stopActivityIndicator];
+
+        if (flows)
+        {
+            // We support only "m.login.password"
+            BOOL hasPasswordFlow = NO;
+            for (MXLoginFlow *flow in flows)
+            {
+                if ([flow.stages containsObject:kMXLoginFlowTypePassword])
+                {
+                    hasPasswordFlow = YES;
+                    break;
+                }
+            }
+
+            if (hasPasswordFlow)
+            {
+                // Ask password to the user while we are here
+                NSString *title = NSLocalizedStringFromTable(@"settings_add_3pid_password_title_email", @"Vector", nil);
+                if ([medium isEqualToString:kMX3PIDMediumMSISDN])
+                {
+                    title = NSLocalizedStringFromTable(@"settings_add_3pid_password_title_msidsn", @"Vector", nil);
+                }
+
+                [self requestAccountPasswordWithTitle:title
+                                              message:NSLocalizedStringFromTable(@"settings_add_3pid_password_message", @"Vector", nil)
+                                           onComplete:onComplete];
+            }
+            else
+            {
+                // The user needs to use Riot-web
+                NSString *appName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
+                NSString *message = [NSString stringWithFormat:NSLocalizedStringFromTable(@"error_not_supported_on_mobile", @"Vector", nil), appName];
+                [[AppDelegate theDelegate] showAlertWithTitle:nil message:message];
+            }
+        }
+        else
+        {
+            // No auth
+            onComplete(nil);
+        }
+
+    } failure:^(NSError * _Nonnull error) {
+        [self stopActivityIndicator];
+        [[AppDelegate theDelegate] showErrorAsAlert:error];
+    }];
+}
+
+- (void)requestAccountPasswordWithTitle:(NSString*)title message:(NSString*)message onComplete:(void (^)(NSString *password))onComplete
+{
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
+
+    // Prompt the user before deleting the device.
+    currentAlert = [UIAlertController alertControllerWithTitle:title
+                                                       message:message
+                                                preferredStyle:UIAlertControllerStyleAlert];
+
+    [currentAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.secureTextEntry = YES;
+        textField.placeholder = nil;
+        textField.keyboardType = UIKeyboardTypeDefault;
+    }];
+
+    MXWeakify(self);
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action)
+                             {
+                                 MXStrongifyAndReturnIfNil(self);
+                                 self->currentAlert = nil;
+                             }]];
+
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"continue"]
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       MXStrongifyAndReturnIfNil(self);
+
+                                                       UITextField *textField = [self->currentAlert textFields].firstObject;
+                                                       self->currentAlert = nil;
+
+                                                       onComplete(textField.text);
+                                                   }]];
+
+    [self presentViewController:currentAlert animated:YES completion:nil];
 }
 
 #pragma mark - Segues
@@ -3656,20 +3809,22 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         return;
     }
 
-    [self startActivityIndicator];
-
     // Dismiss the keyboard
     [newEmailTextField resignFirstResponder];
 
     MXSession* session = [AppDelegate theDelegate].mxSessions[0];
 
+    [self checkAuthenticationFlowForAdding:kMX3PIDMediumEmail withSession:session onComplete:^(NSString *password) {
+
+        [self startActivityIndicator];
 
         __block MX3PidAddSession *thirdPidAddSession;
         thirdPidAddSession = [session.threePidAddManager startAddEmailSessionWithEmail:self->newEmailTextField.text nextLink:nil success:^{
 
             [self showValidationEmailDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_email_validation_message"]
                                      for3PidAddSession:thirdPidAddSession
-                                    threePidAddManager:session.threePidAddManager];
+                                    threePidAddManager:session.threePidAddManager
+                                              password:password];
 
         } failure:^(NSError * _Nonnull error) {
 
@@ -3723,6 +3878,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
 
         }];
+    }];
 }
 
 - (IBAction)onAddNewPhone:(id)sender
@@ -3761,8 +3917,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         return;
     }
 
-    [self startActivityIndicator];
-
     // Dismiss the keyboard
     [newPhoneNumberCell.mxkTextField resignFirstResponder];
 
@@ -3779,61 +3933,65 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         msisdn = [NSString stringWithFormat:@"+%@", [e164 substringFromIndex:2]];
     }
 
-    __block MX3PidAddSession *new3Pid;
-    new3Pid = [session.threePidAddManager startAddPhoneNumberSessionWithPhoneNumber:msisdn countryCode:nil success:^{
+    [self checkAuthenticationFlowForAdding:kMX3PIDMediumMSISDN withSession:session onComplete:^(NSString *password) {
+        [self startActivityIndicator];
 
-        [self showValidationMsisdnDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_msisdn_validation_message"] for3PidAddSession:new3Pid threePidAddManager:session.threePidAddManager];
+        __block MX3PidAddSession *new3Pid;
+        new3Pid = [session.threePidAddManager startAddPhoneNumberSessionWithPhoneNumber:msisdn countryCode:nil success:^{
 
-    } failure:^(NSError *error) {
+            [self showValidationMsisdnDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_msisdn_validation_message"] for3PidAddSession:new3Pid threePidAddManager:session.threePidAddManager password:password];
 
-        [self stopActivityIndicator];
+        } failure:^(NSError *error) {
 
-        NSLog(@"[SettingsViewController] Failed to request msisdn token");
+            [self stopActivityIndicator];
 
-        // Translate the potential MX error.
-        MXError *mxError = [[MXError alloc] initWithNSError:error];
-        if (mxError
-            && ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse]
-                || [mxError.errcode isEqualToString:kMXErrCodeStringServerNotTrusted]))
-        {
-            NSMutableDictionary *userInfo;
-            if (error.userInfo)
+            NSLog(@"[SettingsViewController] Failed to request msisdn token");
+
+            // Translate the potential MX error.
+            MXError *mxError = [[MXError alloc] initWithNSError:error];
+            if (mxError
+                && ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse]
+                    || [mxError.errcode isEqualToString:kMXErrCodeStringServerNotTrusted]))
             {
-                userInfo = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
+                NSMutableDictionary *userInfo;
+                if (error.userInfo)
+                {
+                    userInfo = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
+                }
+                else
+                {
+                    userInfo = [NSMutableDictionary dictionary];
+                }
+
+                userInfo[NSLocalizedFailureReasonErrorKey] = nil;
+
+                if ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse])
+                {
+                    userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_phone_in_use", @"Vector", nil);
+                    userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_phone_in_use", @"Vector", nil);
+                }
+                else
+                {
+                    userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+                    userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+                }
+
+                error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
             }
-            else
+            else if ([error.domain isEqualToString:MX3PidAddManagerErrorDomain]
+                     && error.code == MX3PidAddManagerErrorDomainIdentityServerRequired)
             {
-                userInfo = [NSMutableDictionary dictionary];
+                error = [NSError errorWithDomain:error.domain
+                                            code:error.code
+                                        userInfo:@{
+                                                   NSLocalizedDescriptionKey: [NSBundle mxk_localizedStringForKey:@"auth_phone_is_required"]
+                                                   }];
             }
 
-            userInfo[NSLocalizedFailureReasonErrorKey] = nil;
-
-            if ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse])
-            {
-                userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_phone_in_use", @"Vector", nil);
-                userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_phone_in_use", @"Vector", nil);
-            }
-            else
-            {
-                userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
-                userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
-            }
-
-            error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
-        }
-        else if ([error.domain isEqualToString:MX3PidAddManagerErrorDomain]
-                 && error.code == MX3PidAddManagerErrorDomainIdentityServerRequired)
-        {
-            error = [NSError errorWithDomain:error.domain
-                                        code:error.code
-                                    userInfo:@{
-                                               NSLocalizedDescriptionKey: [NSBundle mxk_localizedStringForKey:@"auth_phone_is_required"]
-                                               }];
-        }
-
-        // Notify user
-        NSString *myUserId = session.myUser.userId;
-        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
+            // Notify user
+            NSString *myUserId = session.myUser.userId;
+            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
+        }];
     }];
 }
 

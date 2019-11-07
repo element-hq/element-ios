@@ -36,7 +36,9 @@ protocol NavigationRouterType: class, Presentable {
     ///
     /// - Parameter module: The Presentable to set as root.
     /// - Parameter hideNavigationBar: Specify true to hide the UINavigationBar.
-    func setRootModule(_ module: Presentable, hideNavigationBar: Bool)
+    /// - Parameter animated: Specify true to animate the transition.
+    /// - Parameter popCompletion: Completion called when `module` is removed from the navigation stack.
+    func setRootModule(_ module: Presentable, hideNavigationBar: Bool, animated: Bool, popCompletion: (() -> Void)?)
     
     /// Pop to root view controller of navigation controller and remove all others
     ///
@@ -64,6 +66,10 @@ protocol NavigationRouterType: class, Presentable {
 // `NavigationRouterType` default implementation
 extension NavigationRouterType {
     func setRootModule(_ module: Presentable) {
-        setRootModule(module, hideNavigationBar: false)
+        setRootModule(module, hideNavigationBar: false, animated: false, popCompletion: nil)
+    }
+    
+    func setRootModule(_ module: Presentable, popCompletion: (() -> Void)?) {
+        setRootModule(module, hideNavigationBar: false, animated: false, popCompletion: popCompletion)
     }
 }

@@ -189,6 +189,8 @@ final class DeviceVerificationStartViewController: UIViewController {
             self.errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelledByMe(reason.humanReadable), animated: true) {
                 self.viewModel.process(viewAction: .cancel)
             }
+        } else {
+            self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         }
     }
     
