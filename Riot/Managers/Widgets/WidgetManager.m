@@ -619,28 +619,25 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
                                      NSLog(@"[WidgetManager] validateScalarToken. Error in modular/account request. statusCode: %@", @(urlResponse.statusCode));
 
-                                     if (urlResponse &&  urlResponse.statusCode / 100 != 2)
+                                     MXError *mxError = [[MXError alloc] initWithNSError:error];
+                                     if ([mxError.errcode isEqualToString:kMXErrCodeStringTermsNotSigned])
+                                     {
+                                         NSLog(@"[WidgetManager] validateScalarToke. Error: Need to accept terms");
+                                         NSError *termsNotSignedError = [NSError errorWithDomain:WidgetManagerErrorDomain
+                                                                                            code:WidgetManagerErrorCodeTermsNotSigned
+                                                                                        userInfo:@{
+                                                                                                NSLocalizedDescriptionKey:error.userInfo[NSLocalizedDescriptionKey]
+                                                                                                   }];
+
+                                         failure(termsNotSignedError);
+                                     }
+                                     else if (urlResponse &&  urlResponse.statusCode / 100 != 2)
                                      {
                                          complete(NO);
                                      }
                                      else if (failure)
                                      {
-                                         MXError *mxError = [[MXError alloc] initWithNSError:error];
-                                         if ([mxError.errcode isEqualToString:kMXErrCodeStringTermsNotSigned])
-                                         {
-                                             NSLog(@"[WidgetManager] validateScalarToke. Error: Need to accept terms");
-                                             NSError *termsNotSignedError = [NSError errorWithDomain:WidgetManagerErrorDomain
-                                                                                                code:WidgetManagerErrorCodeTermsNotSigned
-                                                                                            userInfo:@{
-                                                                                                       NSLocalizedDescriptionKey:error.userInfo[NSLocalizedDescriptionKey]
-                                                                                                       }];
-
-                                             failure(termsNotSignedError);
-                                         }
-                                         else
-                                         {
-                                             failure(error);
-                                         }
+                                         failure(error);
                                      }
                                  }];
 }
