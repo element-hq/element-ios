@@ -204,8 +204,8 @@
 "room_participants_action_invite" = "초대";
 "room_participants_action_leave" = "이 방 떠나기";
 "room_participants_action_remove" = "이 방에서 제거";
-"room_participants_action_ban" = "이 방에서 차단";
-"room_participants_action_unban" = "차단 풀기";
+"room_participants_action_ban" = "이 방에서 출입 금지";
+"room_participants_action_unban" = "출입 금지 풀기";
 "room_participants_action_ignore" = "이 사용자의 모든 메시지 숨기기";
 "room_participants_action_unignore" = "이 사용자의 모든 메시지 보이기";
 "room_participants_action_set_default_power_level" = "보통 사용자로 다시 설정";
@@ -252,7 +252,7 @@
 "room_event_action_report" = "내용 보고하기";
 "room_event_action_report_prompt_reason" = "이 내용을 보고하는 이유";
 "room_event_action_kick_prompt_reason" = "이 사용자를 추방하는 이유";
-"room_event_action_ban_prompt_reason" = "이 사용자를 차단하는 이유";
+"room_event_action_ban_prompt_reason" = "이 사용자를 출입 금지하는 이유";
 "room_event_action_report_prompt_ignore_user" = "이 사용자의 모든 메시지를 숨기겠습니까?";
 "room_event_action_save" = "저장";
 "room_event_action_resend" = "다시 보내기";
@@ -354,7 +354,7 @@
 "settings_pin_rooms_with_unread" = "읽지 않은 메시지가 있는 방을 고정";
 "settings_on_denied_notification" = "%@에 의해 알림이 거부됬습니다, 기기 설정에서 %@을(를) 허용해주세요";
 "settings_enable_callkit" = "통합 전화";
-"settings_callkit_info" = "잠금 화면에서 오는 전화를 받습니다. 시스템의 통화 내역에서 Riot 통화를 확인하세요. iCloud가 켜져있다면, 이 통화 기록은 Apple과 공유됩니다.";
+"settings_callkit_info" = "잠금 화면에서 수신 전화를 받습니다. 시스템의 통화 내역에서 Riot 통화를 확인하세요. iCloud가 켜져있다면, 이 통화 기록은 Apple과 공유됩니다.";
 "settings_ui_language" = "언어";
 "settings_ui_theme" = "테마";
 "settings_ui_theme_auto" = "자동";
@@ -453,7 +453,7 @@
 "room_details_new_flair_placeholder" = "새 커뮤니티 ID 추가 (예: +foo%@)";
 "room_details_flair_invalid_id_prompt_title" = "잘못된 형식";
 "room_details_flair_invalid_id_prompt_msg" = "%@은(는) 커뮤니티의 올바른 ID가 아닙니다";
-"room_details_banned_users_section" = "차단한 사용자";
+"room_details_banned_users_section" = "출입 금지한 사용자";
 "room_details_advanced_section" = "고급";
 "room_details_advanced_room_id" = "방 ID:";
 "room_details_advanced_enable_e2e_encryption" = "암호화 켜짐 (경고: 다시 끌 수 없습니다!)";
@@ -550,12 +550,12 @@
 // Call
 "call_incoming_voice_prompt" = "%@님으로부터 온 음성 통화";
 "call_incoming_video_prompt" = "%@님으로부터 온 영상 통화";
-"call_incoming_voice" = "전화 오는 중...";
-"call_incoming_video" = "오는 영상 통화...";
+"call_incoming_voice" = "전화 수신 중...";
+"call_incoming_video" = "영상 통화 수신 중...";
 "call_already_displayed" = "이미 전화가 진행 중입니다.";
 "call_jitsi_error" = "회의 전화 참가에 실패했습니다.";
 // No VoIP support
-"no_voip_title" = "전화 오는 중";
+"no_voip_title" = "수신 전화";
 "no_voip" = "%@님이 당신에게 전화를 걸고 있지만 %@은(는) 아직 전화를 지원하지 않습니다.\n이 알림을 무시하고 다른 기기에서 전화를 받거나 전화를 거절할 수 있습니다.";
 // Crash report
 "google_analytics_use_prompt" = "%@이(가) 개선하도록 자동으로 익명의 충돌 보고서와 사용 데이터를 제공하겠습니까?";
@@ -705,7 +705,7 @@
 "device_verification_cancelled_by_me" = "확인이 취소됬습니다. 이유: %@";
 "device_verification_error_cannot_load_device" = "기기 정보를 불러올 수 없습니다.";
 // Mark: Incoming
-"device_verification_incoming_title" = "오는 확인 요청";
+"device_verification_incoming_title" = "수신 확인 요청";
 "device_verification_incoming_description_1" = "이 기기를 신뢰하도록 확인합니다. 상대방의 신뢰하는 기기는 종단간 암호화된 메시지를 사용할 때 더 마음에 안심을 줍니다.";
 "device_verification_incoming_description_2" = "이 기기를 신뢰하도록 확인합니다, 그리고 상대방도 당신의 기기를 신뢰하도록 합니다.";
 // MARK: Start
@@ -884,3 +884,8 @@
 // Service terms - Variant for identity server when displayed out of a context
 "service_terms_modal_title_identity_server" = "연락처 탐색";
 "service_terms_modal_message_identity_server" = "연락처를 탐색하려면 ID 서버 (%@)의 약관에 동의해야 합니다.";
+"settings_add_3pid_password_title_email" = "이메일 주소 추가";
+"settings_add_3pid_password_title_msidsn" = "전화번호 추가";
+"settings_add_3pid_password_message" = "계속하려면 비밀번호를 입력해주세요";
+"settings_add_3pid_invalid_password_message" = "잘못된 비밀번호";
+"error_not_supported_on_mobile" = "%@ 모바일에서 할 수 없습니다.";

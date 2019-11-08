@@ -1,8 +1,19 @@
-Changes in 0.10.1 (2019-XX-XX)
+Changes in 0.10.2 (2019-xx-xx)
 ===============================================
 
 Improvements:
+ * Integrations: Use the integrations manager provided by the homeserver admin via .well-known (#2815).
+
+Bug fix:
+ * Integrations: Fix terms consent display when they are required.
+
+Changes in 0.10.1 (2019-11-06)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.11.2](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.11.2)).
  * Settings: Add User-Interactive Auth for adding email and msidsn to user's account (vector-im/riot-ios#2744).
+ * Improve UIApplication background task management.
 
 Bug fix:
  * Room cell: The states of direct chat and favorite buttons are reversed in the menu (#2788).
@@ -10,8 +21,7 @@ Bug fix:
  * RoomVC: Fix crash occurring when tap on an unsent media with retrieved event equal to nil.
  * Emoji Picker: Background color is not white (#2630).
  * Device Verification: Selecting 'start verification' from a keyshare request wedges you in an entirely blank verification screen (#2504).
- * Integrations: Fix terms consent display when they are required.
- * Integrations: Use the integrations manager provided by the homeserver admin via .well-known (#2815).
+ * Tab bar icons are not centered vertically on iOS 13 (#2802).
 
 Changes in 0.10.0 (2019-10-11)
 ===============================================

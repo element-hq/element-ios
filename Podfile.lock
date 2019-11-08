@@ -41,58 +41,58 @@ PODS:
   - GBDeviceInfo (6.3.0):
     - GBDeviceInfo/Core (= 6.3.0)
   - GBDeviceInfo/Core (6.3.0)
-  - GZIP (1.2.2)
+  - GZIP (1.2.3)
   - HPGrowingTextView (1.1)
-  - JitsiMeetSDK (2.1.0)
+  - JitsiMeetSDK (2.3.1)
   - libbase58 (0.1.4)
   - libPhoneNumber-iOS (0.9.15)
   - MatomoTracker (6.0.1):
     - MatomoTracker/Core (= 6.0.1)
   - MatomoTracker/Core (6.0.1)
-  - MatrixKit (0.11.1):
+  - MatrixKit (0.11.2):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.11.1)
-    - MatrixSDK (= 0.14.0)
+    - MatrixKit/Core (= 0.11.2)
+    - MatrixSDK (= 0.15.0)
     - SwiftUTI (~> 1.0.6)
-  - MatrixKit/AppExtension (0.11.1):
+  - MatrixKit/AppExtension (0.11.2):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - DTCoreText/Extension
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.14.0)
+    - MatrixSDK (= 0.15.0)
     - SwiftUTI (~> 1.0.6)
-  - MatrixKit/Core (0.11.1):
+  - MatrixKit/Core (0.11.2):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.14.0)
+    - MatrixSDK (= 0.15.0)
     - SwiftUTI (~> 1.0.6)
-  - MatrixSDK (0.14.0):
-    - MatrixSDK/Core (= 0.14.0)
-  - MatrixSDK/Core (0.14.0):
+  - MatrixSDK (0.15.0):
+    - MatrixSDK/Core (= 0.15.0)
+  - MatrixSDK/Core (0.15.0):
     - AFNetworking (~> 3.2.0)
     - GZIP (~> 1.2.2)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.1.0)
-    - Realm (~> 3.13.1)
-  - MatrixSDK/JingleCallStack (0.14.0):
-    - JitsiMeetSDK (~> 2.1.0)
+    - Realm (~> 3.17.3)
+  - MatrixSDK/JingleCallStack (0.15.0):
+    - JitsiMeetSDK (~> 2.3.1)
     - MatrixSDK/Core
-  - MatrixSDK/SwiftSupport (0.14.0):
+  - MatrixSDK/SwiftSupport (0.15.0):
     - MatrixSDK/Core
   - OLMKit (3.1.0):
     - OLMKit/olmc (= 3.1.0)
     - OLMKit/olmcpp (= 3.1.0)
   - OLMKit/olmc (3.1.0)
   - OLMKit/olmcpp (3.1.0)
-  - Realm (3.13.1):
-    - Realm/Headers (= 3.13.1)
-  - Realm/Headers (3.13.1)
+  - Realm (3.17.3):
+    - Realm/Headers (= 3.17.3)
+  - Realm/Headers (3.17.3)
   - Reusable (4.1.0):
     - Reusable/Storyboard (= 4.1.0)
     - Reusable/View (= 4.1.0)
@@ -108,8 +108,8 @@ DEPENDENCIES:
   - DGCollectionViewLeftAlignFlowLayout (~> 1.0.4)
   - GBDeviceInfo (~> 6.3.0)
   - MatomoTracker (~> 6.0.1)
-  - MatrixKit (= 0.11.1)
-  - MatrixKit/AppExtension (= 0.11.1)
+  - MatrixKit (= 0.11.2)
+  - MatrixKit/AppExtension (= 0.11.2)
   - MatrixSDK/JingleCallStack
   - MatrixSDK/SwiftSupport
   - OLMKit
@@ -159,22 +159,22 @@ SPEC CHECKSUMS:
   DTCoreText: 67023bb51b26711d5f640c851f4845aea14c24c9
   DTFoundation: 25aa19bb7c6e225b1dfae195604fb8cf1da0ab4c
   GBDeviceInfo: a3f39dba1a04dcb630abff65d6f7e8fbf319eadd
-  GZIP: 12374d285e3b5d46cfcd480700fcfc7e16caf4f1
+  GZIP: af5c90ef903776a7e9afe6ebebd794a84a2929d4
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
-  JitsiMeetSDK: 3e66564af7f38a19142338955dd7f581801852b3
+  JitsiMeetSDK: 69e4978fbab21f9a535d1bec3b8d43721a4c72b2
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   MatomoTracker: 3ae4f65a1f5ace8043bda7244888fee28a734de5
-  MatrixKit: db698352271a738b3c0e2f1a331088ea41f90ae1
-  MatrixSDK: 0f965f8700420696ab15bf48d827a03d98b0ffac
+  MatrixKit: 7f681c9086509a4f5e6e7172ce00f552cba1f8bc
+  MatrixSDK: 342384d62bac5d95a31a7dab79e5f687bd87ddca
   OLMKit: 4ee0159d63feeb86d836fdcfefe418e163511639
-  Realm: 50071da38fe079e0735e47c9f2eae738c68c5996
+  Realm: 5a1d9d47bfc101dd597668b1a8af4288a2557f6d
   Reusable: 82be188f29d96dc5eff0db7b2393bcc08d2cdd5b
   SwiftGen: f872ca75cbd17bf7103c17f13dcfa0d9a15667b0
   SwiftLint: fc9859e4e1752340664851f667bb1898b9c90114
   SwiftUTI: 917993c124f8eac25e88ced0202fc58d7eb50fa8
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
 
-PODFILE CHECKSUM: af4a218f77a472d656ae661dfb4e5c75abcae82c
+PODFILE CHECKSUM: 32e1f5dcb15429b0ecff04da8ebce193f145edb5
 
 COCOAPODS: 1.8.4

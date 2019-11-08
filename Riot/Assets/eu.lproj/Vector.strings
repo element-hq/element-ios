@@ -350,9 +350,9 @@
 "settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Hirugarrengoen adierazpenak";
 "settings_send_crash_report" = "Bidali kraskatze eta erabilera datu anonimoak";
-"settings_crypto_device_name" = "Gailuaren izena: ";
+"settings_crypto_device_name" = "Gailuaren izen publikoa: ";
 "settings_crypto_device_id" = "\nGailuaren IDa ";
-"settings_crypto_device_key" = "\nGailuaren gakoa: ";
+"settings_crypto_device_key" = "\nGailuaren gakoa:\n";
 "settings_crypto_export" = "Esportatu gakoak";
 "settings_crypto_blacklist_unverified_devices" = "Zifratu egiaztatutako gailuetara besterik ez";
 "room_details_people" = "Kideak";
@@ -417,7 +417,7 @@
 "bug_report_progress_uploading" = "Txostena igotzen";
 "room_details_advanced_e2e_encryption_prompt_message" = "Muturretik muturrerako zifratzea esperimentala da eta agian ez dabil behar bezala.\n\nEz zenuke datuak babesteko erabili behar oraindik.\n\nGailuek ezin izango dute gelara elakrtu aurreko historiala deszifratu.\n\nBehin gela batean zifratzea aktibatuta ez dago gero desaktibatzerik (oraingoz).\n\nZifratutako mezuak ezin izango dira ikusi oraindik zifratzea onartzen ez duten bezeroetan.";
 "auth_home_server_placeholder" = "URL (adib. https://matrix.org)";
-"auth_identity_server_placeholder" = "URL (adib. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (e.g. https://vector.im)";
 "room_ongoing_conference_call_with_close" = "Konferentzia deia abian. elkartu %@ edo %@ gisa. %@.";
 "room_ongoing_conference_call_close" = "Itxi";
 "room_conference_call_no_power" = "Baimena behar duzu konferentzia deia kudeatzeko gela honetan";
@@ -515,7 +515,7 @@
 "room_event_action_ban_prompt_reason" = "Erabiltzaile hau debekatzeko arrazoia";
 // GDPR
 "gdpr_consent_not_given_alert_message" = "%@ hasiera-zerbitzaria erabiltzen jarraitzeko erabilera baldintzak irakurri eta onartu behar dituzu.";
-"gdpr_consent_not_given_alert_review_now_action" = "Irakurri orain";
+"gdpr_consent_not_given_alert_review_now_action" = "Berrikusi orain";
 "room_action_send_photo_or_video" = "Bidali argazki edo bideoa";
 "room_action_send_sticker" = "Bidali eranskailua";
 "settings_deactivate_account" = "DESAKTIBATU KONTUA";
@@ -812,9 +812,95 @@
 "photo_library_access_not_granted" = "%@(e)k ez du argazki liburutegia erabiltzeko baimenik, aldatu pribatutasun ezarpenak";
 // Service terms
 "service_terms_modal_title" = "Erabilera baldintzak";
-"service_terms_modal_message" = "Jarraitzeko, zerbitzu honen erabilera baldintzak onartu behar dituzu.";
+"service_terms_modal_message" = "Jarraitzeko, zerbitzu honen erabilera baldintzak onartu behar dituzu (%@).";
 "service_terms_modal_accept_button" = "Onartu";
 "service_terms_modal_description_for_identity_server" = "Izan besteentzat aurkigarria";
 "service_terms_modal_description_for_integration_manager" = "Erabili botak, zubiak, trepetak eta eranskailu multzoak";
 // MARK: Reaction history
 "reaction_history_title" = "Erreakzioak";
+"auth_add_email_message_2" = "Ezarri E-mail bat kontua berreskuratzeko, eta gero aukeran zure ezagunek aurkitu zaitzaten.";
+"auth_add_phone_message_2" = "Ezarri telefono bat gero aukeran zure ezagunek aurkitu zaitzaten.";
+"auth_add_email_phone_message_2" = "Ezarri E-mail bat kontua berreskuratzeko. Erabili geroo aukeran e-maila edo telefonoa zure ezagunek aurkitu zaitzaten.";
+"auth_email_is_required" = "Ez da identitate-zerbitzaririk konfiguratu, beraz ezin duzu e-mail helbide bat gehitu zure pasahitza berrezartzeko etorkizunean.";
+"auth_phone_is_required" = "Ez da identitate-zerbitzaririk konfiguratu, beraz ezin duzu telefono bat gehitu zure pasahitza berrezartzeko etorkizunean.";
+"auth_reset_password_error_is_required" = "Eza da identitate-zerbitzaririk konfiguratu, gehitu bat zerbitzari-ezarpenetan zure pasahitza berrezartzeko.";
+// Errors
+"error_user_already_logged_in" = "Badirudi beste hasiera-zerbitzari batera konektatzen saiatzen ari zarela. Saioa amaitu nahi duzu?";
+"contacts_address_book_no_identity_server" = "Ez da identitate-zerbitzaririk konfiguratu";
+"room_participants_remove_third_party_invite_prompt_msg" = "Ziur gonbidapen hau indargabetu nahi duzula?";
+"room_accessiblity_scroll_to_bottom" = "Korritu behera arte";
+"room_accessibility_search" = "Bilatu";
+"room_accessibility_integrations" = "Integrazioak";
+"room_accessibility_upload" = "Igo";
+"room_accessibility_call" = "Deitu";
+"room_accessibility_hangup" = "Eseki";
+"media_type_accessibility_image" = "Irudia";
+"media_type_accessibility_audio" = "Audioa";
+"media_type_accessibility_video" = "Bideoa";
+"media_type_accessibility_location" = "Kokalekua";
+"media_type_accessibility_file" = "Fitxategia";
+"media_type_accessibility_sticker" = "Eranskailua";
+"settings_discovery_settings" = "AURKITZEA";
+"settings_identity_server_settings" = "IDENTITATE-ZERBITZARIA";
+"settings_three_pids_management_information_part1" = "Kudeatu zeintsu e-mail helbide edo telefono zenbaki erabili ditzakezun saioa hasteko edo hemengo kontua berreskuratzeko. Kontrolatu nork aurkitu zaitzakeen ";
+"settings_three_pids_management_information_part2" = "Aurkitzea";
+"settings_three_pids_management_information_part3" = ".";
+"settings_calls_stun_server_fallback_button" = "Baimendu lehenetsitako deien laguntzarako zerbitzaria";
+"settings_calls_stun_server_fallback_description" = "Baimendu %@ deien laguntzarako zerbitzaria erabiltzea zure hasiera-zerbitzariak bat eskaintzen ez duenean (Zure IP helbidea partekatuko da deian zehar).";
+"settings_devices_description" = "Gailu baten izen publikoa zurekin komunikatzen den jendeak ikusi dezake";
+"settings_discovery_no_identity_server" = "Orain ez duzu identitate-zerbitzaririk erabiltzen. Kontaktuak aurkitzeko eta aurkigarria izateko, gehitu bat.";
+"settings_discovery_terms_not_signed" = "Onartu %@ identitate-zerbitzariaren erabilera baldintzak besteek zu e-mail helbidea edo telefonoa erabiliz aurkitzea ahalbidetzeko.";
+"settings_discovery_three_pids_management_information_part1" = "Kudeatu zeintsu e-mail helbide edo telefono zenbaki erabili ditzaketen beste erabiltzaileek zu aurkitzeko eta zu gonbidatzeko. Gehitu edo kendu telefono zenbakiak zerrenda honetan ";
+"settings_discovery_three_pids_management_information_part2" = "Erabiltzaile-ezarpenak";
+"settings_discovery_three_pids_management_information_part3" = ".";
+"settings_discovery_error_message" = "Errore bat gertatu da. Saiatu berriro.";
+"settings_discovery_three_pid_details_title_email" = "Kudeatu e-maila";
+"settings_discovery_three_pid_details_information_email" = "Kudeatu e-mail helbide honetarako hobespenak, beste erabiltzaileek zu aurkitzeko eta gonbidatzeko erabili dezaketena. Gehitu edo kendu e-mail kontuak Kontuak atalean.";
+"settings_discovery_three_pid_details_title_phone_number" = "Kudeatu telefono zenbakia";
+"settings_discovery_three_pid_details_information_phone_number" = "Kudeatu telefono zenbaki honetarako hobespenak, beste erabiltzaileek zu aurkitzeko eta gonbidatzeko erabili dezaketena. Gehitu edo kendu telefono zenbakiak Kontuak atalean.";
+"settings_discovery_three_pid_details_share_action" = "Partekatu";
+"settings_discovery_three_pid_details_revoke_action" = "Indargabetu";
+"settings_discovery_three_pid_details_cancel_email_validation_action" = "Ezeztatu e-mail balioztapena";
+"settings_discovery_three_pid_details_enter_sms_code_action" = "Sartu SMS aktibazio kodea";
+"settings_identity_server_description" = "Goian ezarritako identitate-zerbitzaria erabilita, ezagunak aurkitu ditzakezu eta ezagunek zu aurkitu.";
+"settings_identity_server_no_is" = "Ez da identitate-zerbitzaririk konfiguratu";
+"settings_identity_server_no_is_description" = "Orain ez duzu identitate-zerbitzaririk erabiltzen. Kontaktuak aurkitzeko eta aurkigarria izateko, gehitu bat azpian.";
+// Identity server settings
+"identity_server_settings_title" = "Identitate-zerbitzaria";
+"identity_server_settings_description" = "Orain %@ erabiltzen ari zara ezagunak aurkitzeko eta ezagunek zu aurkitzeko.";
+"identity_server_settings_no_is_description" = "Orain ez duzu identitate-zerbitzaririk erabiltzen. Kontaktuak aurkitzeko eta aurkigarria izateko, gehitu bat goian.";
+"identity_server_settings_place_holder" = "Sartu identitate-zerbitzari bat";
+"identity_server_settings_add" = "Gehitu";
+"identity_server_settings_change" = "Aldatu";
+"identity_server_settings_disconnect_info" = "Zure identitate-zerbitzaritik deskonektatzean ez zara beste erabiltzaileentzat aurkigarria izango eta ezin izango dituzu besteak gonbidatu e-mail helbidea edo telefono zenbakia erabiliz.";
+"identity_server_settings_disconnect" = "Deskonektatu";
+"identity_server_settings_alert_no_terms_title" = "Identitate-zerbitzariak ez du erabilera baldintzarik";
+"identity_server_settings_alert_no_terms" = "Hautatu duzun identitate-zerbitzariak ez du erabilera baldintzarik. Jarraitu soilik zerbitzuaren jabea fidagarritzat jotzen baduzu.";
+"identity_server_settings_alert_change_title" = "Aldatu identitate-zerbitzaria";
+"identity_server_settings_alert_change" = "Deskonektatu %1$@ identitate-zerbitzaritik eta konektatu %2$@ zerbitzarira?";
+"identity_server_settings_alert_disconnect_title" = "Deskonektatu identitate-zerbitzaria";
+"identity_server_settings_alert_disconnect" = "Deskonektatu %@ identitate-zerbitzaritik?";
+"identity_server_settings_alert_disconnect_button" = "Deskonektatu";
+"identity_server_settings_alert_disconnect_still_sharing_3pid" = "Oraindik datu pertsonalak partekatzen dituzu %@ identitate-zerbitzarian.\n\nDeskonektatu aurretik identitate-zerbitzaritik e-mail helbideak eta telefonoak kentzea aholkatzen dizugu.";
+"identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "Deskonektatu hala ere";
+"identity_server_settings_alert_error_terms_not_accepted" = "%@ zerbitzariko erabilera baldintzak onartu behar dituzu identitate-zerbitzari gisa ezartzeko.";
+"identity_server_settings_alert_error_invalid_identity_server" = "%@ ez da baliozko identitate-zerbitzari bat.";
+"call_no_stun_server_error_title" = "Deiak huts egin du zerbitzaria gaizki konfiguratuta dagoelako";
+"call_no_stun_server_error_message_1" = "Eskatu zure hasiera-zerbitzariaren administratzaileari (%@) TURN zerbitzari bat konfiguratu dezala deiek ondo funtzionatzeko.";
+"call_no_stun_server_error_message_2" = "Bestela, %@ zerbitzari publikoa erabili dezakezu, baina hau ez da hain fidagarria izango, eta zure IP-a partekatuko du zerbitzari horrekin. Hau ezarpenetan ere kudeatu dezakezu";
+"call_no_stun_server_error_use_fallback_button" = "Saiatu %@ erabiltzen";
+// Widget Picker
+"widget_picker_title" = "Integrazioak";
+"service_terms_modal_decline_button" = "Ukatu";
+"service_terms_modal_description_for_identity_server_1" = "Aurkitu besteak telefonoa edo e-maila erabiliz";
+"service_terms_modal_description_for_identity_server_2" = "Izan telefonoa edo e-maila erabiliz aurkigarria";
+// Service terms - Variant for identity server when displayed out of a context
+"service_terms_modal_title_identity_server" = "Kontaktuak aurkitzea";
+"service_terms_modal_message_identity_server" = "Onartu %@ identitate-zerbitzariaren baldintzak kontaktuak aurkitzeko.";
+// Generic errors
+"error_invite_3pid_with_no_identity_server" = "Gehitu identitate-zerbitzari bat zure ezarpenetan e-maila erabiliz gonbidatzeko.";
+"settings_add_3pid_password_title_email" = "Gehitu e-mail helbidea";
+"settings_add_3pid_password_title_msidsn" = "Gehitu telefono zenbakia";
+"settings_add_3pid_password_message" = "Jarraitzeko sartu zure pasahitza";
+"settings_add_3pid_invalid_password_message" = "Pasahitz baliogabea";
+"error_not_supported_on_mobile" = "Ezin duzu hau %@ mugikorretik egin.";
