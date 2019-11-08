@@ -50,6 +50,9 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
     // User id -> scalar token
     NSMutableDictionary<NSString*, WidgetManagerConfig*> *configs;
+
+    // User id -> MXSession
+    NSMutableDictionary<NSString*, MXSession*> *matrixSessions;
 }
 
 @end
@@ -73,6 +76,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     self = [super init];
     if (self)
     {
+        matrixSessions = [NSMutableDictionary dictionary];
         widgetEventListener = [NSMutableDictionary dictionary];
         successBlockForWidgetCreation = [NSMutableDictionary dictionary];
         failureBlockForWidgetCreation = [NSMutableDictionary dictionary];
@@ -367,6 +371,8 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 {
      __weak __typeof__(self) weakSelf = self;
 
+    matrixSessions[mxSession.matrixRestClient.credentials.userId] = mxSession;
+
     NSString *hash = [NSString stringWithFormat:@"%p", mxSession];
 
     id listener = [mxSession listenToEventsOfTypes:@[kWidgetMatrixEventTypeString, kWidgetModularEventTypeString] onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {
@@ -421,6 +427,12 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
 - (void)removeMatrixSession:(MXSession *)mxSession
 {
+    // Remove by value in a dict
+    for (NSString *key in [matrixSessions allKeysForObject:mxSession])
+    {
+        [matrixSessions removeObjectForKey:key];
+    }
+
     // mxSession.myUser.userId and mxSession.matrixRestClient.credentials.userId may be nil here
     // So, use a kind of hash value instead
     NSString *hash = [NSString stringWithFormat:@"%p", mxSession];
@@ -433,10 +445,51 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     [failureBlockForWidgetCreation removeObjectForKey:hash];
 }
 
+- (MXSession*)matrixSessionForUser:(NSString*)userId
+{
+    return matrixSessions[userId];
+}
+
 - (void)deleteDataForUser:(NSString *)userId
 {
     [configs removeObjectForKey:userId];
     [self saveConfigs];
+}
+
+#pragma mark - User integrations configuration
+
+- (WidgetManagerConfig*)createWidgetManagerConfigForUser:(NSString*)userId
+{
+    WidgetManagerConfig *config;
+
+    MXSession *session = [self matrixSessionForUser:userId];
+
+    // Find the integrations settings for the user
+
+    // First, look at matrix account
+    // TODO in another user story
+    
+    // Then, try to the homeserver configuration
+    MXWellknownIntegrationsManager *integrationsManager = session.homeserverWellknown.integrations.managers.firstObject;
+    if (integrationsManager)
+    {
+        config = [[WidgetManagerConfig alloc] initWithApiUrl:integrationsManager.apiUrl uiUrl:integrationsManager.uiUrl];
+    }
+    else
+    {
+        // Fallback on app settings
+        config = [self createWidgetManagerConfigWithAppSettings];
+    }
+
+    return config;
+}
+
+- (WidgetManagerConfig*)createWidgetManagerConfigWithAppSettings
+{
+    NSString *apiUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsRestUrl"];
+    NSString *uiUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsUiUrl"];
+
+    return [[WidgetManagerConfig alloc] initWithApiUrl:apiUrl uiUrl:uiUrl];
 }
 
 #pragma mark - Modular interface
@@ -444,7 +497,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 - (WidgetManagerConfig*)configForUser:(NSString*)userId
 {
     // Return a default config by default
-    return configs[userId] ? configs[userId] : [WidgetManagerConfig new];
+    return configs[userId] ? configs[userId] : [self createWidgetManagerConfigForUser:userId];
 }
 
 - (BOOL)hasIntegrationManagerForUser:(NSString*)userId
@@ -619,28 +672,25 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
                                      NSLog(@"[WidgetManager] validateScalarToken. Error in modular/account request. statusCode: %@", @(urlResponse.statusCode));
 
-                                     if (urlResponse &&  urlResponse.statusCode / 100 != 2)
+                                     MXError *mxError = [[MXError alloc] initWithNSError:error];
+                                     if ([mxError.errcode isEqualToString:kMXErrCodeStringTermsNotSigned])
+                                     {
+                                         NSLog(@"[WidgetManager] validateScalarToke. Error: Need to accept terms");
+                                         NSError *termsNotSignedError = [NSError errorWithDomain:WidgetManagerErrorDomain
+                                                                                            code:WidgetManagerErrorCodeTermsNotSigned
+                                                                                        userInfo:@{
+                                                                                                NSLocalizedDescriptionKey:error.userInfo[NSLocalizedDescriptionKey]
+                                                                                                   }];
+
+                                         failure(termsNotSignedError);
+                                     }
+                                     else if (urlResponse &&  urlResponse.statusCode / 100 != 2)
                                      {
                                          complete(NO);
                                      }
                                      else if (failure)
                                      {
-                                         MXError *mxError = [[MXError alloc] initWithNSError:error];
-                                         if ([mxError.errcode isEqualToString:kMXErrCodeStringTermsNotSigned])
-                                         {
-                                             NSLog(@"[WidgetManager] validateScalarToke. Error: Need to accept terms");
-                                             NSError *termsNotSignedError = [NSError errorWithDomain:WidgetManagerErrorDomain
-                                                                                                code:WidgetManagerErrorCodeTermsNotSigned
-                                                                                            userInfo:@{
-                                                                                                       NSLocalizedDescriptionKey:error.userInfo[NSLocalizedDescriptionKey]
-                                                                                                       }];
-
-                                             failure(termsNotSignedError);
-                                         }
-                                         else
-                                         {
-                                             failure(error);
-                                         }
+                                         failure(error);
                                      }
                                  }];
 }
@@ -694,7 +744,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
             NSLog(@"[WidgetManager] migrate scalarTokens to integrationManagerConfigs for %@", userId);
 
-            WidgetManagerConfig *config = [WidgetManagerConfig new];
+            WidgetManagerConfig *config = [self createWidgetManagerConfigWithAppSettings];
             config.scalarToken = scalarToken;
 
             configs[userId] = config;
