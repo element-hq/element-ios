@@ -696,6 +696,9 @@
 		324A204C225FC571004FE8B0 /* DeviceVerificationIncomingCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingCoordinatorType.swift; sourceTree = "<group>"; };
 		324A204D225FC571004FE8B0 /* DeviceVerificationIncomingViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingViewModelType.swift; sourceTree = "<group>"; };
 		324A204E225FC571004FE8B0 /* DeviceVerificationIncomingCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingCoordinator.swift; sourceTree = "<group>"; };
+		325789A5237AB241009388E6 /* cy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cy; path = cy.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		325789A6237AB27F009388E6 /* cy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cy; path = cy.lproj/Localizable.strings; sourceTree = "<group>"; };
+		325789A7237AB297009388E6 /* cy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cy; path = cy.lproj/Vector.strings; sourceTree = "<group>"; };
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		3267EFB520E379FD00FF1CAA /* AUTHORS.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS.rst; sourceTree = "<group>"; };
@@ -3913,6 +3916,7 @@
 				ja,
 				hu,
 				pl,
+				cy,
 			);
 			mainGroup = F094A9991B78D8F000B1FBBF;
 			productRefGroup = F094A9A31B78D8F000B1FBBF /* Products */;
@@ -4756,6 +4760,7 @@
 				3D78489221AC9E6500B98A7D /* ja */,
 				3D78489521ACA25300B98A7D /* hu */,
 				32DAF8DD231813E100654A44 /* pl */,
+				325789A7237AB297009388E6 /* cy */,
 			);
 			name = Vector.strings;
 			sourceTree = "<group>";
@@ -4779,6 +4784,7 @@
 				3D78489021AC9E6400B98A7D /* ja */,
 				3D78489321ACA25200B98A7D /* hu */,
 				32DAF8DB231813C800654A44 /* pl */,
+				325789A5237AB241009388E6 /* cy */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -4802,6 +4808,7 @@
 				3D78489121AC9E6500B98A7D /* ja */,
 				3D78489421ACA25300B98A7D /* hu */,
 				32DAF8DC231813D500654A44 /* pl */,
+				325789A6237AB27F009388E6 /* cy */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

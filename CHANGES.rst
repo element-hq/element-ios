@@ -3,6 +3,7 @@ Changes in 0.10.2 (2019-xx-xx)
 
 Improvements:
  * Integrations: Use the integrations manager provided by the homeserver admin via .well-known (#2815).
+ * i18n: Add Welsh (cy).
 
 Bug fix:
  * Integrations: Fix terms consent display when they are required.
