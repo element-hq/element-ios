@@ -522,7 +522,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
         MXStrongifyAndReturnIfNil(self);
 
         // Exchange the token for a scalar token
-        MXHTTPClient *httpClient = [[MXHTTPClient alloc] initWithBaseURL:config.apiUrl andOnUnrecognizedCertificateBlock:nil];
+        __block MXHTTPClient *httpClient = [[MXHTTPClient alloc] initWithBaseURL:config.apiUrl andOnUnrecognizedCertificateBlock:nil];
 
         MXHTTPOperation *operation2 =
         [httpClient requestWithMethod:@"POST"
@@ -530,6 +530,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
                            parameters:tokenObject.JSONDictionary
                               success:^(NSDictionary *JSONResponse)
          {
+             httpClient = nil;
 
              NSString *scalarToken;
              MXJSONModelSetString(scalarToken, JSONResponse[@"scalar_token"])
@@ -551,6 +552,8 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
              [operation mutateTo:operation3];
 
          } failure:^(NSError *error) {
+             httpClient = nil;
+
              NSLog(@"[WidgetManager] registerForScalarToken: Failed to register. Error: %@", error);
 
              if (failure)
@@ -594,12 +597,13 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
         return nil;
     }
 
-    MXHTTPClient *httpClient = [[MXHTTPClient alloc] initWithBaseURL:config.apiUrl andOnUnrecognizedCertificateBlock:nil];
+    __block MXHTTPClient *httpClient = [[MXHTTPClient alloc] initWithBaseURL:config.apiUrl andOnUnrecognizedCertificateBlock:nil];
 
     return [httpClient requestWithMethod:@"GET"
                                     path:[NSString stringWithFormat:@"account?v=1.1&scalar_token=%@", scalarToken]
                               parameters:nil
                                  success:^(NSDictionary *JSONResponse) {
+                                     httpClient = nil;
 
                                      NSString *userId;
                                      MXJSONModelSetString(userId, JSONResponse[@"user_id"])
@@ -615,32 +619,31 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
                                      }
 
                                  } failure:^(NSError *error) {
+                                     httpClient = nil;
+
                                      NSHTTPURLResponse *urlResponse = [MXHTTPOperation urlResponseFromError:error];
 
                                      NSLog(@"[WidgetManager] validateScalarToken. Error in modular/account request. statusCode: %@", @(urlResponse.statusCode));
 
-                                     if (urlResponse &&  urlResponse.statusCode / 100 != 2)
+                                     MXError *mxError = [[MXError alloc] initWithNSError:error];
+                                     if ([mxError.errcode isEqualToString:kMXErrCodeStringTermsNotSigned])
+                                     {
+                                         NSLog(@"[WidgetManager] validateScalarToke. Error: Need to accept terms");
+                                         NSError *termsNotSignedError = [NSError errorWithDomain:WidgetManagerErrorDomain
+                                                                                            code:WidgetManagerErrorCodeTermsNotSigned
+                                                                                        userInfo:@{
+                                                                                                NSLocalizedDescriptionKey:error.userInfo[NSLocalizedDescriptionKey]
+                                                                                                   }];
+
+                                         failure(termsNotSignedError);
+                                     }
+                                     else if (urlResponse &&  urlResponse.statusCode / 100 != 2)
                                      {
                                          complete(NO);
                                      }
                                      else if (failure)
                                      {
-                                         MXError *mxError = [[MXError alloc] initWithNSError:error];
-                                         if ([mxError.errcode isEqualToString:kMXErrCodeStringTermsNotSigned])
-                                         {
-                                             NSLog(@"[WidgetManager] validateScalarToke. Error: Need to accept terms");
-                                             NSError *termsNotSignedError = [NSError errorWithDomain:WidgetManagerErrorDomain
-                                                                                                code:WidgetManagerErrorCodeTermsNotSigned
-                                                                                            userInfo:@{
-                                                                                                       NSLocalizedDescriptionKey:error.userInfo[NSLocalizedDescriptionKey]
-                                                                                                       }];
-
-                                             failure(termsNotSignedError);
-                                         }
-                                         else
-                                         {
-                                             failure(error);
-                                         }
+                                         failure(error);
                                      }
                                  }];
 }
