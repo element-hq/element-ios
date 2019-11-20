@@ -697,6 +697,15 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 }
 
 
+#pragma mark - Widget Permission
+
+- (void)checkWidgetPermissionWithCompletion:(void (^)(BOOL granted))completion
+{
+    // The integration manager widget has its own terms
+    completion(YES);
+}
+
+
 #pragma mark - Service terms
 
 - (void)presentTerms

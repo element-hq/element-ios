@@ -755,6 +755,10 @@
 "widget_creation_failure" = "Widget creation has failed";
 "widget_sticker_picker_no_stickerpacks_alert" = "You don't currently have any stickerpacks enabled.";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "Add some now?";
+"widget_menu_refresh" = "Refresh";
+"widget_menu_open_outside" = "Open outside";
+"widget_menu_revoke_permission" = "Revoke access for me";
+"widget_menu_remove" = "Remove for everyone";
 
 // Widget Integration Manager
 "widget_integration_need_to_be_able_to_invite" = "You need to be able to invite users to do that.";

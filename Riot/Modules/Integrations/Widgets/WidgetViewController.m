@@ -26,6 +26,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 @interface WidgetViewController () <ServiceTermsModalCoordinatorBridgePresenterDelegate>
 
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
+@property (nonatomic, strong) NSString *widgetUrl;
 
 @end
 
@@ -34,9 +35,12 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 
 - (instancetype)initWithUrl:(NSString*)widgetUrl forWidget:(Widget*)theWidget
 {
-    self = [super initWithURL:widgetUrl];
+    // The opening of the url is delayed in viewWillAppear where we will check
+    // the widget permission
+    self = [super initWithURL:nil];
     if (self)
     {
+        self.widgetUrl = widgetUrl;
         widget = theWidget;
     }
     return self;
@@ -54,6 +58,69 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     if (widget)
     {
         self.navigationItem.title = widget.name ? widget.name : widget.type;
+
+        UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"room_context_menu_more"] style:UIBarButtonItemStylePlain target:self action:@selector(onMenuButtonPressed:)];
+        self.navigationItem.rightBarButtonItem = menuButton;
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    // Check widget permission before opening the widget
+    [self checkWidgetPermissionWithCompletion:^(BOOL granted) {
+        if (granted)
+        {
+            self.URL = self.widgetUrl;
+        }
+        else
+        {
+            [self withdrawViewControllerAnimated:YES completion:nil];
+        }
+    }];
+}
+
+- (void)reloadWidget
+{
+    self.URL = self.widgetUrl;
+}
+
+- (BOOL)hasUserEnoughPowerToManageCurrentWidget
+{
+    BOOL hasUserEnoughPower = NO;
+
+    MXSession *session = widget.mxSession;
+    MXRoom *room = [session roomWithRoomId:self.widget.roomId];
+    MXRoomState *roomState = room.dangerousSyncState;
+    if (roomState)
+    {
+        // Check user's power in the room
+        MXRoomPowerLevels *powerLevels = roomState.powerLevels;
+        NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:session.myUser.userId];
+
+        // The user must be able to send state events to manage widgets
+        if (oneSelfPowerLevel >= powerLevels.stateDefault)
+        {
+            hasUserEnoughPower = YES;
+        }
+    }
+    
+    return hasUserEnoughPower;
+}
+
+- (void)removeCurrentWidget
+{
+    WidgetManager *widgetManager = [WidgetManager sharedManager];
+
+    MXRoom *room = [self.widget.mxSession roomWithRoomId:self.widget.roomId];
+    NSString *widgetId = self.widget.widgetId;
+    if (room && widgetId)
+    {
+        [widgetManager closeWidget:widgetId inRoom:room success:^{
+        } failure:^(NSError *error) {
+            NSLog(@"[WidgetVC] removeCurrentWidget failed. Error: %@", error);
+        }];
     }
 }
 
@@ -93,6 +160,149 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 
     [self presentViewController:alert animated:YES completion:nil];
 }
+
+
+#pragma mark - Widget Permission
+
+- (void)checkWidgetPermissionWithCompletion:(void (^)(BOOL granted))completion
+{
+    MXSession *session = widget.mxSession;
+
+    if ([widget.widgetEvent.sender isEqualToString:session.myUser.userId])
+    {
+        // No need of more permission check if the user created the widget
+        completion(YES);
+        return;
+    }
+
+    // Check permission in user Riot settings
+    __block RiotSharedSettings *sharedSettings = [[RiotSharedSettings alloc] initWithSession:session];
+
+    WidgetPermission permission = [sharedSettings permissionFor:widget];
+    if (permission == WidgetPermissionGranted)
+    {
+        completion(YES);
+    }
+    else
+    {
+        // Note: ask permission again if the user previously declined it
+        [self askPermissionWithCompletion:^(BOOL granted) {
+            // Update the settings in user account data in parallel
+            [sharedSettings setPermission:granted ? WidgetPermissionGranted : WidgetPermissionDeclined
+                                      for:self.widget
+                                           success:^
+             {
+                 sharedSettings = nil;
+             }
+                                           failure:^(NSError * _Nullable error)
+             {
+                 NSLog(@"[WidgetVC] setPermissionForWidget failed. Error: %@", error);
+                 sharedSettings = nil;
+             }];
+
+            completion(granted);
+        }];
+    }
+}
+
+- (void)askPermissionWithCompletion:(void (^)(BOOL granted))completion
+{
+    // TODO: Implement the design
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Load Widget"
+                                                                   message:@"blabla"
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+
+    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"continue"]
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * action) {
+                                                completion(YES);
+                                            }]];
+
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil)
+                                              style:UIAlertActionStyleCancel
+                                            handler:^(UIAlertAction * action) {
+                                                completion(NO);
+                                            }]];
+
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)revokePermissionForCurrentWidget
+{
+    MXSession *session = widget.mxSession;
+    __block RiotSharedSettings *sharedSettings = [[RiotSharedSettings alloc] initWithSession:session];
+
+    [sharedSettings setPermission:WidgetPermissionDeclined for:widget success:^{
+        sharedSettings = nil;
+    } failure:^(NSError * _Nullable error) {
+        NSLog(@"[WidgetVC] revokePermissionForCurrentWidget failed. Error: %@", error);
+        sharedSettings = nil;
+    }];
+}
+
+
+#pragma mark - Contextual Menu
+
+- (IBAction)onMenuButtonPressed:(id)sender
+{
+    [self showMenu];
+}
+
+-(void)showMenu
+{
+    MXSession *session = widget.mxSession;
+
+    UIAlertController *menu = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+
+    [menu addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"widget_menu_refresh", @"Vector", nil)
+                                             style:UIAlertActionStyleDefault
+                                           handler:^(UIAlertAction * action)
+                     {
+                         [self reloadWidget];
+                     }]];
+
+    NSURL *url = [NSURL URLWithString:self.widgetUrl];
+    if (url && [[UIApplication sharedApplication] canOpenURL:url])
+    {
+        [menu addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"widget_menu_open_outside", @"Vector", nil)
+                                                 style:UIAlertActionStyleDefault
+                                               handler:^(UIAlertAction * action)
+                         {
+                             [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
+                             }];
+                         }]];
+    }
+
+    if (![widget.widgetEvent.sender isEqualToString:session.myUser.userId])
+    {
+        [menu addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"widget_menu_revoke_permission", @"Vector", nil)
+                                                 style:UIAlertActionStyleDefault
+                                               handler:^(UIAlertAction * action)
+                         {
+                             [self revokePermissionForCurrentWidget];
+                             [self withdrawViewControllerAnimated:YES completion:nil];
+                         }]];
+    }
+
+    if ([self hasUserEnoughPowerToManageCurrentWidget])
+    {
+        [menu addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"widget_menu_remove", @"Vector", nil)
+                                                 style:UIAlertActionStyleDefault
+                                               handler:^(UIAlertAction * action)
+                         {
+                             [self removeCurrentWidget];
+                             [self withdrawViewControllerAnimated:YES completion:nil];
+                         }]];
+    }
+
+    [menu addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                    style:UIAlertActionStyleCancel
+                                                  handler:^(UIAlertAction * action) {
+                                                  }]];
+
+    [self presentViewController:menu animated:YES completion:nil];
+}
+
 
 #pragma mark - WKNavigationDelegate
 
