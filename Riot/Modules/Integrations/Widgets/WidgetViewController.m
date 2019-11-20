@@ -86,6 +86,44 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     self.URL = self.widgetUrl;
 }
 
+- (BOOL)hasUserEnoughPowerToManageCurrentWidget
+{
+    BOOL hasUserEnoughPower = NO;
+
+    MXSession *session = widget.mxSession;
+    MXRoom *room = [session roomWithRoomId:self.widget.roomId];
+    MXRoomState *roomState = room.dangerousSyncState;
+    if (roomState)
+    {
+        // Check user's power in the room
+        MXRoomPowerLevels *powerLevels = roomState.powerLevels;
+        NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:session.myUser.userId];
+
+        // The user must be able to send state events to manage widgets
+        if (oneSelfPowerLevel >= powerLevels.stateDefault)
+        {
+            hasUserEnoughPower = YES;
+        }
+    }
+    
+    return hasUserEnoughPower;
+}
+
+- (void)removeCurrentWidget
+{
+    WidgetManager *widgetManager = [WidgetManager sharedManager];
+
+    MXRoom *room = [self.widget.mxSession roomWithRoomId:self.widget.roomId];
+    NSString *widgetId = self.widget.widgetId;
+    if (room && widgetId)
+    {
+        [widgetManager closeWidget:widgetId inRoom:room success:^{
+        } failure:^(NSError *error) {
+            NSLog(@"[WidgetVC] removeCurrentWidget failed. Error: %@", error);
+        }];
+    }
+}
+
 - (void)showErrorAsAlert:(NSError*)error
 {
     NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
@@ -242,6 +280,17 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
                                                handler:^(UIAlertAction * action)
                          {
                              [self revokePermissionForCurrentWidget];
+                             [self withdrawViewControllerAnimated:YES completion:nil];
+                         }]];
+    }
+
+    if ([self hasUserEnoughPowerToManageCurrentWidget])
+    {
+        [menu addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"widget_menu_remove", @"Vector", nil)
+                                                 style:UIAlertActionStyleDefault
+                                               handler:^(UIAlertAction * action)
+                         {
+                             [self removeCurrentWidget];
                              [self withdrawViewControllerAnimated:YES completion:nil];
                          }]];
     }
