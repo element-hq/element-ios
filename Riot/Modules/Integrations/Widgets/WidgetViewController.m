@@ -35,6 +35,8 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 
 - (instancetype)initWithUrl:(NSString*)widgetUrl forWidget:(Widget*)theWidget
 {
+    // The opening of the url is delayed in viewWillAppear where we will check
+    // the widget permission
     self = [super initWithURL:nil];
     if (self)
     {
@@ -59,9 +61,9 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     }
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+    [super viewWillAppear:animated];
 
     // Check widget permission before opening the widget
     [self checkWidgetPermissionWithCompletion:^(BOOL granted) {
