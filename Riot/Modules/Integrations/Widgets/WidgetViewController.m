@@ -58,6 +58,9 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     if (widget)
     {
         self.navigationItem.title = widget.name ? widget.name : widget.type;
+
+        UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"room_context_menu_more"] style:UIBarButtonItemStylePlain target:self action:@selector(onMenuButtonPressed:)];
+        self.navigationItem.rightBarButtonItem = menuButton;
     }
 }
 
@@ -76,6 +79,11 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
             [self withdrawViewControllerAnimated:YES completion:nil];
         }
     }];
+}
+
+- (void)reloadWidget
+{
+    self.URL = self.widgetUrl;
 }
 
 - (void)showErrorAsAlert:(NSError*)error
@@ -179,6 +187,71 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
                                             }]];
 
     [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)revokePermissionForCurrentWidget
+{
+    MXSession *session = widget.mxSession;
+    __block RiotSharedSettings *sharedSettings = [[RiotSharedSettings alloc] initWithSession:session];
+
+    [sharedSettings setPermissionForWidget:widget permission:WidgetPermissionDeclined success:^{
+        sharedSettings = nil;
+    } failure:^(NSError * _Nullable error) {
+        NSLog(@"[WidgetVC] revokePermissionForCurrentWidget failed. Error: %@", error);
+        sharedSettings = nil;
+    }];
+}
+
+
+#pragma mark - Contextual Menu
+
+- (IBAction)onMenuButtonPressed:(id)sender
+{
+    [self showMenu];
+}
+
+-(void)showMenu
+{
+    MXSession *session = widget.mxSession;
+
+    UIAlertController *menu = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+
+    [menu addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"widget_menu_refresh", @"Vector", nil)
+                                             style:UIAlertActionStyleDefault
+                                           handler:^(UIAlertAction * action)
+                     {
+                         [self reloadWidget];
+                     }]];
+
+    NSURL *url = [NSURL URLWithString:self.widgetUrl];
+    if (url && [[UIApplication sharedApplication] canOpenURL:url])
+    {
+        [menu addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"widget_menu_open_outside", @"Vector", nil)
+                                                 style:UIAlertActionStyleDefault
+                                               handler:^(UIAlertAction * action)
+                         {
+                             [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
+                             }];
+                         }]];
+    }
+
+    if (![widget.widgetEvent.sender isEqualToString:session.myUser.userId])
+    {
+        [menu addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"widget_menu_revoke_permission", @"Vector", nil)
+                                                 style:UIAlertActionStyleDefault
+                                               handler:^(UIAlertAction * action)
+                         {
+                             [self revokePermissionForCurrentWidget];
+                             [self withdrawViewControllerAnimated:YES completion:nil];
+                         }]];
+    }
+
+    [menu addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                    style:UIAlertActionStyleCancel
+                                                  handler:^(UIAlertAction * action) {
+                                                  }]];
+
+    [self presentViewController:menu animated:YES completion:nil];
 }
 
 

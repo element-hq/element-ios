@@ -3290,6 +3290,18 @@ internal enum VectorL10n {
   internal static var widgetIntegrationsServerFailedToConnect: String { 
     return VectorL10n.tr("Vector", "widget_integrations_server_failed_to_connect") 
   }
+  /// Open outside
+  internal static var widgetMenuOpenOutside: String { 
+    return VectorL10n.tr("Vector", "widget_menu_open_outside") 
+  }
+  /// Refresh
+  internal static var widgetMenuRefresh: String { 
+    return VectorL10n.tr("Vector", "widget_menu_refresh") 
+  }
+  /// Revoke access for me
+  internal static var widgetMenuRevokePermission: String { 
+    return VectorL10n.tr("Vector", "widget_menu_revoke_permission") 
+  }
   /// No integrations server configured
   internal static var widgetNoIntegrationsServerConfigured: String { 
     return VectorL10n.tr("Vector", "widget_no_integrations_server_configured") 

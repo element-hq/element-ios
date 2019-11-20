@@ -7,6 +7,7 @@ Improvements:
  * SerializationService: Add deserialisation of Any.
  * RiotSharedSettings: New class to handle user settings shared accross Riot apps.
  * Widgets: Check user permission before opening a widget (TODO design: #2833).
+ * Widgets: Add a contextual menu to refresh, open outside and revoke the permission (#2834).
 
 Changes in 0.10.2 (2019-11-15)
 ===============================================
