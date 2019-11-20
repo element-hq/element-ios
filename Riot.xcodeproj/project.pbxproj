@@ -70,6 +70,8 @@
 		3275FD8C21A5A2C500B9C13D /* TermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3275FD8B21A5A2C500B9C13D /* TermsView.swift */; };
 		3281BCF72201FA4200F4A383 /* UIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3281BCF62201FA4200F4A383 /* UIControl.swift */; };
 		3284A35120A07C210044F922 /* postMessageAPI.js in Resources */ = {isa = PBXBuildFile; fileRef = 3284A35020A07C210044F922 /* postMessageAPI.js */; };
+		32863A5A2384070300D07C4A /* RiotSharedSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32863A592384070300D07C4A /* RiotSharedSettings.swift */; };
+		32863A5C2384074C00D07C4A /* RiotSettingAllowedWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32863A5B2384074C00D07C4A /* RiotSettingAllowedWidgets.swift */; };
 		32891D6B2264CBA300C82226 /* SimpleScreenTemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32891D692264CBA300C82226 /* SimpleScreenTemplateViewController.swift */; };
 		32891D6C2264CBA300C82226 /* SimpleScreenTemplateViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32891D6A2264CBA300C82226 /* SimpleScreenTemplateViewController.storyboard */; };
 		32891D702264DF7B00C82226 /* DeviceVerificationVerifiedViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32891D6E2264DF7B00C82226 /* DeviceVerificationVerifiedViewController.storyboard */; };
@@ -706,6 +708,8 @@
 		3275FD8B21A5A2C500B9C13D /* TermsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsView.swift; sourceTree = "<group>"; };
 		3281BCF62201FA4200F4A383 /* UIControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIControl.swift; sourceTree = "<group>"; };
 		3284A35020A07C210044F922 /* postMessageAPI.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = postMessageAPI.js; sourceTree = "<group>"; };
+		32863A592384070300D07C4A /* RiotSharedSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiotSharedSettings.swift; sourceTree = "<group>"; };
+		32863A5B2384074C00D07C4A /* RiotSettingAllowedWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiotSettingAllowedWidgets.swift; sourceTree = "<group>"; };
 		32891D692264CBA300C82226 /* SimpleScreenTemplateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleScreenTemplateViewController.swift; sourceTree = "<group>"; };
 		32891D6A2264CBA300C82226 /* SimpleScreenTemplateViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SimpleScreenTemplateViewController.storyboard; sourceTree = "<group>"; };
 		32891D6E2264DF7B00C82226 /* DeviceVerificationVerifiedViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DeviceVerificationVerifiedViewController.storyboard; sourceTree = "<group>"; };
@@ -1683,6 +1687,23 @@
 				324A204E225FC571004FE8B0 /* DeviceVerificationIncomingCoordinator.swift */,
 			);
 			path = Incoming;
+			sourceTree = "<group>";
+		};
+		32863A572384070300D07C4A /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				32863A582384070300D07C4A /* JSONModels */,
+				32863A592384070300D07C4A /* RiotSharedSettings.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		32863A582384070300D07C4A /* JSONModels */ = {
+			isa = PBXGroup;
+			children = (
+				32863A5B2384074C00D07C4A /* RiotSettingAllowedWidgets.swift */,
+			);
+			path = JSONModels;
 			sourceTree = "<group>";
 		};
 		32891D682264C6A000C82226 /* SimpleScreenTemplate */ = {
@@ -3417,6 +3438,7 @@
 		B1B5598A20EFC42100210D55 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				32863A572384070300D07C4A /* Shared */,
 				B1B5597F20EFC3DF00210D55 /* RiotSettings.swift */,
 			);
 			path = Settings;
@@ -4413,6 +4435,7 @@
 				B1CE9EFD22148703000FAE6A /* SignOutAlertPresenter.swift in Sources */,
 				32F6B9692270623100BBA352 /* DeviceVerificationDataLoadingCoordinator.swift in Sources */,
 				B125FE1D231D5DE400B72806 /* SettingsDiscoveryViewModel.swift in Sources */,
+				32863A5A2384070300D07C4A /* RiotSharedSettings.swift in Sources */,
 				B1B5594720EF7BD000210D55 /* RoomCollectionViewCell.m in Sources */,
 				B10CFBC32268D99D00A5842E /* JitsiService.swift in Sources */,
 				B1B558C120EF768F00210D55 /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
@@ -4514,6 +4537,7 @@
 				B14F143522144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewController.swift in Sources */,
 				B1DCC61E22E5E17100625807 /* EmojiPickerViewModel.swift in Sources */,
 				B1B5574F20EE6C4D00210D55 /* RoomsViewController.m in Sources */,
+				32863A5C2384074C00D07C4A /* RiotSettingAllowedWidgets.swift in Sources */,
 				B1B9DEDA22E9B7350065E677 /* SerializationService.swift in Sources */,
 				B1B5572520EE6C4D00210D55 /* RoomMessagesSearchViewController.m in Sources */,
 				B139C22121FE5D9D00BB68EC /* KeyBackupRecoverFromPassphraseViewState.swift in Sources */,

@@ -26,6 +26,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 @interface WidgetViewController () <ServiceTermsModalCoordinatorBridgePresenterDelegate>
 
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
+@property (nonatomic, strong) NSString *widgetUrl;
 
 @end
 
@@ -34,9 +35,10 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 
 - (instancetype)initWithUrl:(NSString*)widgetUrl forWidget:(Widget*)theWidget
 {
-    self = [super initWithURL:widgetUrl];
+    self = [super initWithURL:nil];
     if (self)
     {
+        self.widgetUrl = widgetUrl;
         widget = theWidget;
     }
     return self;
@@ -55,6 +57,23 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     {
         self.navigationItem.title = widget.name ? widget.name : widget.type;
     }
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    // Check widget permission before opening the widget
+    [self checkWidgetPermissionWithCompletion:^(BOOL granted) {
+        if (granted)
+        {
+            self.URL = self.widgetUrl;
+        }
+        else
+        {
+            [self withdrawViewControllerAnimated:YES completion:nil];
+        }
+    }];
 }
 
 - (void)showErrorAsAlert:(NSError*)error
@@ -93,6 +112,66 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 
     [self presentViewController:alert animated:YES completion:nil];
 }
+
+
+#pragma mark - Widget Permission
+
+- (void)checkWidgetPermissionWithCompletion:(void (^)(BOOL granted))completion
+{
+    // Check permission in user settings
+    MXSession *session = widget.mxSession;
+
+    __block RiotSharedSettings *sharedSettings = [[RiotSharedSettings alloc] initWithSession:session];
+
+    WidgetPermission permission = [sharedSettings permissionForWidget:widget];
+    if (permission == WidgetPermissionGranted)
+    {
+        completion(YES);
+    }
+    else
+    {
+        // Note: ask permission again if the user previously declined it
+        [self askPermissionWithCompletion:^(BOOL granted) {
+            // Update the settings in user account data in parallel
+            [sharedSettings setPermissionForWidget:self.widget
+                                        permission:granted ? WidgetPermissionGranted : WidgetPermissionDeclined
+                                           success:^
+             {
+                 sharedSettings = nil;
+             }
+                                           failure:^(NSError * _Nullable error)
+             {
+                 NSLog(@"[WidgetVC] setPermissionForWidget failed. Error: %@", error);
+                 sharedSettings = nil;
+             }];
+
+            completion(granted);
+        }];
+    }
+}
+
+- (void)askPermissionWithCompletion:(void (^)(BOOL granted))completion
+{
+    // TODO: Implement the design
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Load Widget"
+                                                                   message:@"blabla"
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+
+    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"continue"]
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * action) {
+                                                completion(YES);
+                                            }]];
+
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil)
+                                              style:UIAlertActionStyleCancel
+                                            handler:^(UIAlertAction * action) {
+                                                completion(NO);
+                                            }]];
+
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
 
 #pragma mark - WKNavigationDelegate
 
