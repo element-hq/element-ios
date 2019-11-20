@@ -53,7 +53,7 @@ class RiotSharedSettings: NSObject {
     // MARK: - Public
 
     // MARK: Allowed widgets
-    func permissionFor(widget: Widget) -> WidgetPermission {
+    func permission(for widget: Widget) -> WidgetPermission {
         guard let allowedWidgets = getAllowedWidgets() else {
             return .undefined
         }
@@ -74,10 +74,10 @@ class RiotSharedSettings: NSObject {
         }
     }
 
-    @discardableResult func setPermissionFor(widget: Widget,
-                          permission: WidgetPermission,
-                          success: @escaping () -> Void,
-                          failure: @escaping (Error?) -> Void)
+    @discardableResult func setPermission(_ permission: WidgetPermission,
+                                          for widget: Widget,
+                                          success: @escaping () -> Void,
+                                          failure: @escaping (Error?) -> Void)
         -> MXHTTPOperation? {
 
         guard let widgetEventId = widget.widgetEvent.eventId else {

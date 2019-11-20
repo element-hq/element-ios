@@ -178,7 +178,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     // Check permission in user Riot settings
     __block RiotSharedSettings *sharedSettings = [[RiotSharedSettings alloc] initWithSession:session];
 
-    WidgetPermission permission = [sharedSettings permissionForWidget:widget];
+    WidgetPermission permission = [sharedSettings permissionFor:widget];
     if (permission == WidgetPermissionGranted)
     {
         completion(YES);
@@ -188,8 +188,8 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
         // Note: ask permission again if the user previously declined it
         [self askPermissionWithCompletion:^(BOOL granted) {
             // Update the settings in user account data in parallel
-            [sharedSettings setPermissionForWidget:self.widget
-                                        permission:granted ? WidgetPermissionGranted : WidgetPermissionDeclined
+            [sharedSettings setPermission:granted ? WidgetPermissionGranted : WidgetPermissionDeclined
+                                      for:self.widget
                                            success:^
              {
                  sharedSettings = nil;
@@ -232,7 +232,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     MXSession *session = widget.mxSession;
     __block RiotSharedSettings *sharedSettings = [[RiotSharedSettings alloc] initWithSession:session];
 
-    [sharedSettings setPermissionForWidget:widget permission:WidgetPermissionDeclined success:^{
+    [sharedSettings setPermission:WidgetPermissionDeclined for:widget success:^{
         sharedSettings = nil;
     } failure:^(NSError * _Nullable error) {
         NSLog(@"[WidgetVC] revokePermissionForCurrentWidget failed. Error: %@", error);
