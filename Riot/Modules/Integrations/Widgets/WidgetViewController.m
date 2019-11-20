@@ -118,9 +118,16 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 
 - (void)checkWidgetPermissionWithCompletion:(void (^)(BOOL granted))completion
 {
-    // Check permission in user settings
     MXSession *session = widget.mxSession;
 
+    if ([widget.widgetEvent.sender isEqualToString:session.myUser.userId])
+    {
+        // No need of more permission check if the user created the widget
+        completion(YES);
+        return;
+    }
+
+    // Check permission in user Riot settings
     __block RiotSharedSettings *sharedSettings = [[RiotSharedSettings alloc] initWithSession:session];
 
     WidgetPermission permission = [sharedSettings permissionForWidget:widget];
