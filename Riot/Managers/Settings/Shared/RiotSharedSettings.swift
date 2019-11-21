@@ -54,7 +54,7 @@ class RiotSharedSettings: NSObject {
 
     // MARK: Integration provisioning
 
-    func hasIntegrationProvisioningEnabled() -> Bool {
+    var hasIntegrationProvisioningEnabled: Bool {
         return getIntegrationProvisioning()?.enabled ?? true
     }
 
@@ -63,12 +63,7 @@ class RiotSharedSettings: NSObject {
             return nil
         }
 
-        do {
-            let integrationProvisioning: RiotSettingIntegrationProvisioning = try serializationService.deserialize(integrationProvisioningDict)
-            return integrationProvisioning
-        } catch {
-            return nil
-        }
+        return try? serializationService.deserialize(integrationProvisioningDict)
     }
 
     @discardableResult
@@ -99,12 +94,7 @@ class RiotSharedSettings: NSObject {
             return nil
         }
 
-        do {
-            let allowedWidgets: RiotSettingAllowedWidgets = try serializationService.deserialize(allowedWidgetsDict)
-            return allowedWidgets
-        } catch {
-            return nil
-        }
+        return try? serializationService.deserialize(allowedWidgetsDict)
     }
 
     @discardableResult
