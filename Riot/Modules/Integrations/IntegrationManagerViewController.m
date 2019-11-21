@@ -69,15 +69,22 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
     operation = nil;
 }
 
-- (void)viewDidLoad
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidLoad];
+    [super viewWillAppear:animated];
 
     [self loadData];
 }
 
 - (void)loadData
 {
+    RiotSharedSettings *sharedSettings = [[RiotSharedSettings alloc] initWithSession:mxSession];
+    if (!sharedSettings.hasIntegrationProvisioningEnabled)
+    {
+        [self showDisabledIntegrationManagerError];
+        return;
+    }
+
     if (!self.URL && !operation)
     {
         [self startActivityIndicator];
@@ -705,6 +712,24 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
     completion(YES);
 }
 
+
+#pragma mark - Disabled Integrations
+
+- (void)showDisabledIntegrationManagerError
+{
+    NSString *message = NSLocalizedStringFromTable(@"widget_integration_manager_disabled", @"Vector", nil);
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                   message:message
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+
+    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * action) {
+                                                [self withdrawViewControllerAnimated:YES completion:nil];
+                                            }]];
+
+    [self presentViewController:alert animated:YES completion:nil];
+}
 
 #pragma mark - Service terms
 

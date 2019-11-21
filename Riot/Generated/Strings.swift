@@ -3262,6 +3262,10 @@ internal enum VectorL10n {
   internal static var widgetIntegrationFailedToSendRequest: String { 
     return VectorL10n.tr("Vector", "widget_integration_failed_to_send_request") 
   }
+  /// You need to enable Integration Manager in settings
+  internal static var widgetIntegrationManagerDisabled: String { 
+    return VectorL10n.tr("Vector", "widget_integration_manager_disabled") 
+  }
   /// Missing room_id in request.
   internal static var widgetIntegrationMissingRoomId: String { 
     return VectorL10n.tr("Vector", "widget_integration_missing_room_id") 

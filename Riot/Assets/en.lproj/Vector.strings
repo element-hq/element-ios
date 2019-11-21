@@ -775,6 +775,7 @@
 "widget_integration_missing_room_id" = "Missing room_id in request.";
 "widget_integration_missing_user_id" = "Missing user_id in request.";
 "widget_integration_room_not_visible" = "Room %@ is not visible.";
+"widget_integration_manager_disabled" = "You need to enable Integration Manager in settings";
 
 // Widget Picker
 "widget_picker_title" = "Integrations";

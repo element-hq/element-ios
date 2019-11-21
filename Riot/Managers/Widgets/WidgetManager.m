@@ -269,6 +269,14 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
         return nil;
     }
 
+    RiotSharedSettings *sharedSettings = [[RiotSharedSettings alloc] initWithSession:room.mxSession];
+    if (!sharedSettings.hasIntegrationProvisioningEnabled)
+    {
+        NSLog(@"[WidgetManager] createJitsiWidgetInRoom: Error: Disabled integration manager for user %@", userId);
+        failure(self.errorForDisabledIntegrationManager);
+        return nil;
+    }
+
     // Build data for a jitsi widget
     NSString *widgetId = [NSString stringWithFormat:@"%@_%@_%@", kWidgetTypeJitsi, room.mxSession.myUser.userId, @((uint64_t)([[NSDate date] timeIntervalSince1970] * 1000))];
 
@@ -789,6 +797,13 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     return [NSError errorWithDomain:WidgetManagerErrorDomain
                                code:WidgetManagerErrorCodeNoIntegrationsServerConfigured
                            userInfo:@{NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"widget_no_integrations_server_configured", @"Vector", nil)}];
+}
+
+- (NSError*)errorForDisabledIntegrationManager
+{
+    return [NSError errorWithDomain:WidgetManagerErrorDomain
+                               code:WidgetManagerErrorCodeDisabledIntegrationsServer
+                           userInfo:@{NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"widget_integration_manager_disabled", @"Vector", nil)}];
 }
 
 @end
