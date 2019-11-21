@@ -52,6 +52,39 @@ class RiotSharedSettings: NSObject {
 
     // MARK: - Public
 
+    // MARK: Integration provisioning
+
+    func hasIntegrationProvisioningEnabled() -> Bool {
+        return getIntegrationProvisioning()?.enabled ?? true
+    }
+
+    func getIntegrationProvisioning() -> RiotSettingIntegrationProvisioning? {
+        guard let integrationProvisioningDict = getAccountData(forEventType: Settings.integrationProvisioning) else {
+            return nil
+        }
+
+        do {
+            let integrationProvisioning: RiotSettingIntegrationProvisioning = try serializationService.deserialize(integrationProvisioningDict)
+            return integrationProvisioning
+        } catch {
+            return nil
+        }
+    }
+
+    @discardableResult
+    func setIntegrationProvisioning(enabled: Bool,
+                                    success: @escaping () -> Void,
+                                    failure: @escaping (Error?) -> Void)
+        -> MXHTTPOperation? {
+
+        // Update only the "widgets" field in the account data
+        var integrationProvisioningDict = getAccountData(forEventType: Settings.integrationProvisioning) ?? [:]
+        integrationProvisioningDict[RiotSettingIntegrationProvisioning.CodingKeys.enabled.rawValue] = enabled
+
+        return session.setAccountData(integrationProvisioningDict, forType: Settings.integrationProvisioning, success: success, failure: failure)
+    }
+
+
     // MARK: Allowed widgets
     func permission(for widget: Widget) -> WidgetPermission {
         guard let allowedWidgets = getAllowedWidgets() else {
@@ -74,7 +107,8 @@ class RiotSharedSettings: NSObject {
         }
     }
 
-    @discardableResult func setPermission(_ permission: WidgetPermission,
+    @discardableResult
+    func setPermission(_ permission: WidgetPermission,
                                           for widget: Widget,
                                           success: @escaping () -> Void,
                                           failure: @escaping (Error?) -> Void)

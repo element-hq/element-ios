@@ -115,6 +115,7 @@
 		32F6B96C2270623100BBA352 /* DeviceVerificationDataLoadingCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F6B9662270623100BBA352 /* DeviceVerificationDataLoadingCoordinatorType.swift */; };
 		32F6B96D2270623100BBA352 /* DeviceVerificationDataLoadingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F6B9672270623100BBA352 /* DeviceVerificationDataLoadingViewModel.swift */; };
 		32F6B96E2270623100BBA352 /* DeviceVerificationDataLoadingViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F6B9682270623100BBA352 /* DeviceVerificationDataLoadingViewModelType.swift */; };
+		32FDC1CD2386CD390084717A /* RiotSettingIntegrationProvisioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FDC1CC2386CD390084717A /* RiotSettingIntegrationProvisioning.swift */; };
 		3AF393339D2D566CE14AC200 /* Pods_RiotTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 129EB7E27E7E4AC3F5F098F5 /* Pods_RiotTests.framework */; };
 		405FD41D306133A48D9B5AA1 /* Pods_RiotPods_Riot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ACF09217ADF1D7E7A35BC02 /* Pods_RiotPods_Riot.framework */; };
 		670966FEFE120D865FD8A5B6 /* Pods_RiotPods_SiriIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51187E952D5CECF6D6F5A28E /* Pods_RiotPods_SiriIntents.framework */; };
@@ -765,6 +766,7 @@
 		32F6B9662270623100BBA352 /* DeviceVerificationDataLoadingCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationDataLoadingCoordinatorType.swift; sourceTree = "<group>"; };
 		32F6B9672270623100BBA352 /* DeviceVerificationDataLoadingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationDataLoadingViewModel.swift; sourceTree = "<group>"; };
 		32F6B9682270623100BBA352 /* DeviceVerificationDataLoadingViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationDataLoadingViewModelType.swift; sourceTree = "<group>"; };
+		32FDC1CC2386CD390084717A /* RiotSettingIntegrationProvisioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiotSettingIntegrationProvisioning.swift; sourceTree = "<group>"; };
 		3942DD65EBEB7AE647C6392A /* Pods-RiotPods-SiriIntents.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-SiriIntents.debug.xcconfig"; path = "Target Support Files/Pods-RiotPods-SiriIntents/Pods-RiotPods-SiriIntents.debug.xcconfig"; sourceTree = "<group>"; };
 		3D78489021AC9E6400B98A7D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3D78489121AC9E6500B98A7D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -1702,6 +1704,7 @@
 			isa = PBXGroup;
 			children = (
 				32863A5B2384074C00D07C4A /* RiotSettingAllowedWidgets.swift */,
+				32FDC1CC2386CD390084717A /* RiotSettingIntegrationProvisioning.swift */,
 			);
 			path = JSONModels;
 			sourceTree = "<group>";
@@ -4580,6 +4583,7 @@
 				B1B5574120EE6C4D00210D55 /* RecentsViewController.m in Sources */,
 				B1D250D82118AA0A000F4E93 /* RoomPredecessorBubbleCell.m in Sources */,
 				B1B5577120EE702800210D55 /* StickerPickerViewController.m in Sources */,
+				32FDC1CD2386CD390084717A /* RiotSettingIntegrationProvisioning.swift in Sources */,
 				B104C2942203773C00D9F496 /* KeyBackupBannerPreferences.swift in Sources */,
 				B1B5572020EE6C4D00210D55 /* ContactsTableViewController.m in Sources */,
 				B1B5581920EF625800210D55 /* RoomTitleView.m in Sources */,

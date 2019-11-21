@@ -2810,6 +2810,18 @@ internal enum VectorL10n {
   internal static var settingsIgnoredUsers: String { 
     return VectorL10n.tr("Vector", "settings_ignored_users") 
   }
+  /// INTEGRATIONS
+  internal static var settingsIntegrations: String { 
+    return VectorL10n.tr("Vector", "settings_integrations") 
+  }
+  /// Manage integrations
+  internal static var settingsIntegrationsAllowButton: String { 
+    return VectorL10n.tr("Vector", "settings_integrations_allow_button") 
+  }
+  /// Use an Integration Manager (%@) to manage bots, bridges, widgets and sticker packs.\n\nIntegration Managers receive configuration data, and can modify widgets, send room invites and set power levels on your behalf.
+  internal static func settingsIntegrationsAllowDescription(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_integrations_allow_description", p1)
+  }
   /// KEY BACKUP
   internal static var settingsKeyBackup: String { 
     return VectorL10n.tr("Vector", "settings_key_backup") 
