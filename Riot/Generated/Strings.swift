@@ -3306,7 +3306,7 @@ internal enum VectorL10n {
   internal static var widgetIntegrationsServerFailedToConnect: String { 
     return VectorL10n.tr("Vector", "widget_integrations_server_failed_to_connect") 
   }
-  /// Open outside
+  /// Open in browser
   internal static var widgetMenuOpenOutside: String { 
     return VectorL10n.tr("Vector", "widget_menu_open_outside") 
   }

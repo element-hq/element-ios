@@ -760,7 +760,7 @@
 "widget_sticker_picker_no_stickerpacks_alert" = "You don't currently have any stickerpacks enabled.";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "Add some now?";
 "widget_menu_refresh" = "Refresh";
-"widget_menu_open_outside" = "Open outside";
+"widget_menu_open_outside" = "Open in browser";
 "widget_menu_revoke_permission" = "Revoke access for me";
 "widget_menu_remove" = "Remove for everyone";
 
