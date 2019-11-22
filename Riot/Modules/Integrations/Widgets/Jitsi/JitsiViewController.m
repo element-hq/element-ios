@@ -146,12 +146,26 @@ static const NSString *kJitsiDataErrorKey = @"error";
 {
     if (conferenceId)
     {
-        // TODO: Set up user info but it is not yet available in the jitsi-meet iOS SDK
-        // See https://github.com/jitsi/jitsi-meet/issues/1880
-        
-        JitsiMeetConferenceOptions *jitsiMeetConferenceOptions = [JitsiMeetConferenceOptions fromBuilder:^(JitsiMeetConferenceOptionsBuilder * _Nonnull jitsiMeetConferenceOptionsBuilder) {
-            jitsiMeetConferenceOptionsBuilder.room = conferenceId;
-            jitsiMeetConferenceOptionsBuilder.videoMuted = !self.startWithVideo;
+        // Get info about the room and our user
+        MXSession *session = self.widget.mxSession;
+        MXRoomSummary *roomSummary = [session roomSummaryWithRoomId:self.widget.roomId];
+
+        MXRoom *room = [session roomWithRoomId:self.widget.roomId];
+        MXRoomMember *roomMember = [room.dangerousSyncState.members memberWithUserId:session.myUser.userId];
+
+        NSString *userDisplayName = roomMember.displayname;
+        NSString *avatar = [session.mediaManager urlOfContent:roomMember.avatarUrl];
+        NSURL *avatarUrl = [NSURL URLWithString:avatar];
+
+        JitsiMeetConferenceOptions *jitsiMeetConferenceOptions = [JitsiMeetConferenceOptions fromBuilder:^(JitsiMeetConferenceOptionsBuilder * _Nonnull builder) {
+
+            builder.room = conferenceId;
+            builder.videoMuted = !self.startWithVideo;
+
+            builder.subject = roomSummary.displayname;
+            builder.userInfo = [[JitsiMeetUserInfo alloc] initWithDisplayName:userDisplayName
+                                                                     andEmail:nil
+                                                                    andAvatar:avatarUrl];
         }];
         
         [self.jitsiMeetView join:jitsiMeetConferenceOptions];
