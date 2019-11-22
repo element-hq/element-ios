@@ -31,8 +31,8 @@ final class JitsiService: NSObject {
         }
     }
 
-    var serverURL: NSURL? {
-        return self.jitsiMeet.defaultConferenceOptions?.serverURL as NSURL?
+    var serverURL: URL? {
+        return self.jitsiMeet.defaultConferenceOptions?.serverURL
     }
 
     private let jitsiMeet = JitsiMeet.sharedInstance()

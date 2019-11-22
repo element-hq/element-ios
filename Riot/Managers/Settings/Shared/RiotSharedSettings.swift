@@ -140,7 +140,7 @@ class RiotSharedSettings: NSObject {
     ///   - widget: the widget
     ///   - url: the url the native implementation will open. Nil will use the url declared in the widget
     /// - Returns: the permission
-    func permission(forNative widget: Widget, fromUrl url: NSURL? = nil) -> WidgetPermission {
+    func permission(forNative widget: Widget, fromUrl url: URL? = nil) -> WidgetPermission {
         guard let allowedWidgets = getAllowedWidgets() else {
             return .undefined
         }
@@ -168,7 +168,7 @@ class RiotSharedSettings: NSObject {
     @discardableResult
     func setPermission(_ permission: WidgetPermission,
                        forNative widget: Widget,
-                       fromUrl url: NSURL?,
+                       fromUrl url: URL?,
                        success: @escaping () -> Void,
                        failure: @escaping (Error?) -> Void)
         -> MXHTTPOperation? {
@@ -204,10 +204,10 @@ class RiotSharedSettings: NSObject {
         return session.accountData.accountData(forEventType: eventType) as? [String: Any]
     }
 
-    private func domainForNativeWidget(_ widget: Widget, fromUrl url: NSURL? = nil) -> String? {
-        var widgetUrl: NSURL?
+    private func domainForNativeWidget(_ widget: Widget, fromUrl url: URL? = nil) -> String? {
+        var widgetUrl: URL?
         if let widgetUrlString = widget.url {
-            widgetUrl = NSURL(string: widgetUrlString)
+            widgetUrl = URL(string: widgetUrlString)
         }
 
         guard let url = url ?? widgetUrl, let domain = url.host else {
