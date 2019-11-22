@@ -286,7 +286,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 
     if ([self hasUserEnoughPowerToManageCurrentWidget])
     {
-        [menu addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"widget_integration_manager_disabled", @"Vector", nil)
+        [menu addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"widget_menu_remove", @"Vector", nil)
                                                  style:UIAlertActionStyleDefault
                                                handler:^(UIAlertAction * action)
                          {
