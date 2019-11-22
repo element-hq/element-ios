@@ -891,3 +891,7 @@
 "settings_add_3pid_password_message" = "Per continuare, inserisci la tua password";
 "settings_add_3pid_invalid_password_message" = "Password non valida";
 "error_not_supported_on_mobile" = "Non puoi farlo da %@ mobile.";
+"widget_menu_refresh" = "Ricarica";
+"widget_menu_open_outside" = "Apri all'esterno";
+"widget_menu_revoke_permission" = "Revoca l'accesso a me";
+"widget_menu_remove" = "Rimuovi per tutti";

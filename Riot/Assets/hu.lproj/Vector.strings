@@ -921,3 +921,7 @@
 "settings_add_3pid_password_message" = "A folytatáshoz add meg a jelszavadat";
 "settings_add_3pid_invalid_password_message" = "Érvénytelen jelszó";
 "error_not_supported_on_mobile" = "%@ mobilról ezt nem teheted meg.";
+"widget_menu_refresh" = "Frissítés";
+"widget_menu_open_outside" = "Megnyitás kívül";
+"widget_menu_revoke_permission" = "Hozzáférés megvonása magamtól";
+"widget_menu_remove" = "Visszavonás mindenkitől";

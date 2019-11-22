@@ -916,3 +916,7 @@
 "settings_add_3pid_password_message" = "Pour continuer, saisissez votre mot de passe";
 "settings_add_3pid_invalid_password_message" = "Mot de passe non valide";
 "error_not_supported_on_mobile" = "Vous ne pouvez pas faire cela depuis %@ mobile.";
+"widget_menu_refresh" = "Actualiser";
+"widget_menu_open_outside" = "Ouvrir à l’extérieur";
+"widget_menu_revoke_permission" = "Révoquer l’accès pour moi";
+"widget_menu_remove" = "Supprimer pour tout le monde";
