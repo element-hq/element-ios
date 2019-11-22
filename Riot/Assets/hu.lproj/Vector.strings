@@ -922,6 +922,10 @@
 "settings_add_3pid_invalid_password_message" = "Érvénytelen jelszó";
 "error_not_supported_on_mobile" = "%@ mobilról ezt nem teheted meg.";
 "widget_menu_refresh" = "Frissítés";
-"widget_menu_open_outside" = "Megnyitás kívül";
+"widget_menu_open_outside" = "Megnyitás böngészőben";
 "widget_menu_revoke_permission" = "Hozzáférés megvonása magamtól";
 "widget_menu_remove" = "Visszavonás mindenkitől";
+"settings_integrations" = "INTEGRÁCIÓK";
+"settings_integrations_allow_button" = "Integrációk kezelése";
+"settings_integrations_allow_description" = "Botok, hidak, kisalkalmazások és matrica csomagok kezeléséhez használj Integrációs Menedzsert (%@).\n\nIntegrációs Menedzser megkapja a konfigurációt, módosíthat kisalkalmazásokat, szobához meghívót küldhet és a hozzáférési szintet beállíthatja helyetted.";
+"widget_integration_manager_disabled" = "Az integrációs menedzsert engedélyezned kell a beállításokban";
