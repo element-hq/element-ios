@@ -7,6 +7,7 @@ Improvements:
  * SerializationService: Add deserialisation of Any.
  * RiotSharedSettings: New class to handle user settings shared accross Riot apps.
  * Widgets: Check user permission before opening a widget (TODO design: #2833).
+ * Widgets: Check user permission before opening jitsi (TODO design: #2842).
  * Widgets: Add a contextual menu to refresh, open outside, remove and revoke the permission (#2834).
  * Settings: Add an option for disabling use of the integration manager (#2843).
 

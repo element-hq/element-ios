@@ -4099,18 +4099,27 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 {
     if (!_jitsiViewController && !currentCallViewController)
     {
-        _jitsiViewController = [JitsiViewController jitsiViewController];
+        MXWeakify(self);
+        [self checkPermissionForNativeWidget:jitsiWidget fromUrl:JitsiService.shared.serverURL completion:^(BOOL granted) {
+            MXStrongifyAndReturnIfNil(self);
+            if (!granted)
+            {
+                return;
+            }
 
-        [_jitsiViewController openWidget:jitsiWidget withVideo:video success:^{
+            self->_jitsiViewController = [JitsiViewController jitsiViewController];
 
-            _jitsiViewController.delegate = self;
-            [self presentJitsiViewController:nil];
-        
-        } failure:^(NSError *error) {
+            [self->_jitsiViewController openWidget:jitsiWidget withVideo:video success:^{
 
-            _jitsiViewController = nil;
+                self->_jitsiViewController.delegate = self;
+                [self presentJitsiViewController:nil];
 
-            [self showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"call_jitsi_error", @"Vector", nil)];
+            } failure:^(NSError *error) {
+
+                self->_jitsiViewController = nil;
+
+                [self showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"call_jitsi_error", @"Vector", nil)];
+            }];
         }];
     }
     else
@@ -4163,6 +4172,73 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             }
         }];
     }
+}
+
+
+#pragma mark - Native Widget Permission
+
+- (void)checkPermissionForNativeWidget:(Widget*)widget fromUrl:(NSURL*)url completion:(void (^)(BOOL granted))completion
+{
+    MXSession *session = widget.mxSession;
+
+    if ([widget.widgetEvent.sender isEqualToString:session.myUser.userId])
+    {
+        // No need of more permission check if the user created the widget
+        completion(YES);
+        return;
+    }
+
+    // Check permission in user Riot settings
+    __block RiotSharedSettings *sharedSettings = [[RiotSharedSettings alloc] initWithSession:session];
+
+    WidgetPermission permission = [sharedSettings permissionForNative:widget fromUrl:url];
+    if (permission == WidgetPermissionGranted)
+    {
+        completion(YES);
+    }
+    else
+    {
+        // Note: ask permission again if the user previously declined it
+        [self askPermissionWithCompletion:^(BOOL granted) {
+            // Update the settings in user account data in parallel
+            [sharedSettings setPermission:granted ? WidgetPermissionGranted : WidgetPermissionDeclined
+                                forNative:widget fromUrl:url
+                                  success:^
+             {
+                 sharedSettings = nil;
+             }
+                                  failure:^(NSError * _Nullable error)
+             {
+                 NSLog(@"[WidgetVC] setPermissionForWidget failed. Error: %@", error);
+                 sharedSettings = nil;
+             }];
+
+            completion(granted);
+        }];
+    }
+}
+
+- (void)askPermissionWithCompletion:(void (^)(BOOL granted))completion
+{
+    // TODO: Implement the design
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Load a native widget?"
+                                                                   message:@"blabla"
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+
+    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"continue"]
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * action) {
+                                                completion(YES);
+                                            }]];
+
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil)
+                                              style:UIAlertActionStyleCancel
+                                            handler:^(UIAlertAction * action) {
+                                                completion(NO);
+                                            }]];
+
+    UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
+    [presentingViewController presentViewController:alert animated:YES completion:nil];
 }
 
 

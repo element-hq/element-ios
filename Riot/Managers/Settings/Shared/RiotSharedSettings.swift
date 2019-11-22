@@ -86,7 +86,11 @@ class RiotSharedSettings: NSObject {
             return .undefined
         }
 
-        return allowedWidgets.widgets[widget.widgetEvent.eventId] == true ? .granted : .declined
+        if let value = allowedWidgets.widgets[widget.widgetEvent.eventId] {
+            return value == true ? .granted : .declined
+        } else {
+            return .undefined
+        }
     }
 
     func getAllowedWidgets() -> RiotSettingAllowedWidgets? {
@@ -127,8 +131,89 @@ class RiotSharedSettings: NSObject {
     }
 
 
+    // MARK: Allowed native widgets
+
+    /// Get the permission for widget that will be displayed natively instead within
+    /// a webview.
+    ///
+    /// - Parameters:
+    ///   - widget: the widget
+    ///   - url: the url the native implementation will open. Nil will use the url declared in the widget
+    /// - Returns: the permission
+    func permission(forNative widget: Widget, fromUrl url: NSURL? = nil) -> WidgetPermission {
+        guard let allowedWidgets = getAllowedWidgets() else {
+            return .undefined
+        }
+
+        guard let type = widget.type, let domain = domainForNativeWidget(widget, fromUrl: url) else {
+            return .undefined
+        }
+
+        if let value = allowedWidgets.nativeWidgets[type]?[domain] {
+            return value == true ? .granted : .declined
+        } else {
+            return .undefined
+        }
+    }
+
+    /// Set the permission for widget that is displayed natively.
+    ///
+    /// - Parameters:
+    ///   - permission: the permission to set
+    ///   - widget: the widget
+    ///   - url: the url the native implementation opens. Nil will use the url declared in the widget
+    ///   - success: the success block
+    ///   - failure: the failure block
+    /// - Returns: a `MXHTTPOperation` instance.
+    @discardableResult
+    func setPermission(_ permission: WidgetPermission,
+                       forNative widget: Widget,
+                       fromUrl url: NSURL?,
+                       success: @escaping () -> Void,
+                       failure: @escaping (Error?) -> Void)
+        -> MXHTTPOperation? {
+
+        guard let type = widget.type, let domain = domainForNativeWidget(widget, fromUrl: url) else {
+            return nil
+        }
+
+        var nativeWidgets = getAllowedWidgets()?.nativeWidgets ?? [String: [String: Bool]]()
+        var nativeWidgetsType = nativeWidgets[type] ?? [String: Bool]()
+
+        switch permission {
+        case .undefined:
+            nativeWidgetsType.removeValue(forKey: domain)
+        case .granted:
+            nativeWidgetsType[domain] = true
+        case .declined:
+            nativeWidgetsType[domain] = false
+        }
+
+        nativeWidgets[type] = nativeWidgetsType
+
+        // Update only the "native_widgets" field in the account data
+        var allowedWidgetsDict = getAccountData(forEventType: Settings.allowedWidgets) ?? [:]
+        allowedWidgetsDict[RiotSettingAllowedWidgets.CodingKeys.nativeWidgets.rawValue] = nativeWidgets
+
+        return session.setAccountData(allowedWidgetsDict, forType: Settings.allowedWidgets, success: success, failure: failure)
+    }
+
+
     // MARK: - Private
     private func getAccountData(forEventType eventType: String) -> [String: Any]? {
         return session.accountData.accountData(forEventType: eventType) as? [String: Any]
+    }
+
+    private func domainForNativeWidget(_ widget: Widget, fromUrl url: NSURL? = nil) -> String? {
+        var widgetUrl: NSURL?
+        if let widgetUrlString = widget.url {
+            widgetUrl = NSURL(string: widgetUrlString)
+        }
+
+        guard let url = url ?? widgetUrl, let domain = url.host else {
+            return nil
+        }
+
+        return domain
     }
 }
