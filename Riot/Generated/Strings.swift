@@ -2810,6 +2810,18 @@ internal enum VectorL10n {
   internal static var settingsIgnoredUsers: String { 
     return VectorL10n.tr("Vector", "settings_ignored_users") 
   }
+  /// INTEGRATIONS
+  internal static var settingsIntegrations: String { 
+    return VectorL10n.tr("Vector", "settings_integrations") 
+  }
+  /// Manage integrations
+  internal static var settingsIntegrationsAllowButton: String { 
+    return VectorL10n.tr("Vector", "settings_integrations_allow_button") 
+  }
+  /// Use an Integration Manager (%@) to manage bots, bridges, widgets and sticker packs.\n\nIntegration Managers receive configuration data, and can modify widgets, send room invites and set power levels on your behalf.
+  internal static func settingsIntegrationsAllowDescription(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_integrations_allow_description", p1)
+  }
   /// KEY BACKUP
   internal static var settingsKeyBackup: String { 
     return VectorL10n.tr("Vector", "settings_key_backup") 
@@ -3250,6 +3262,10 @@ internal enum VectorL10n {
   internal static var widgetIntegrationFailedToSendRequest: String { 
     return VectorL10n.tr("Vector", "widget_integration_failed_to_send_request") 
   }
+  /// You need to enable Integration Manager in settings
+  internal static var widgetIntegrationManagerDisabled: String { 
+    return VectorL10n.tr("Vector", "widget_integration_manager_disabled") 
+  }
   /// Missing room_id in request.
   internal static var widgetIntegrationMissingRoomId: String { 
     return VectorL10n.tr("Vector", "widget_integration_missing_room_id") 
@@ -3290,7 +3306,7 @@ internal enum VectorL10n {
   internal static var widgetIntegrationsServerFailedToConnect: String { 
     return VectorL10n.tr("Vector", "widget_integrations_server_failed_to_connect") 
   }
-  /// Open outside
+  /// Open in browser
   internal static var widgetMenuOpenOutside: String { 
     return VectorL10n.tr("Vector", "widget_menu_open_outside") 
   }

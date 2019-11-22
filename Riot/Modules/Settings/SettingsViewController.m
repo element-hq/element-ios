@@ -57,6 +57,7 @@ enum
     SETTINGS_SECTION_IDENTITY_SERVER_INDEX,
     SETTINGS_SECTION_CONTACTS_INDEX,
     SETTINGS_SECTION_IGNORED_USERS_INDEX,
+    SETTINGS_SECTION_INTEGRATIONS_INDEX,
     SETTINGS_SECTION_USER_INTERFACE_INDEX,
     SETTINGS_SECTION_ADVANCED_INDEX,
     SETTINGS_SECTION_OTHER_INDEX,
@@ -92,6 +93,13 @@ enum
     CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX,
     CALLS_STUN_SERVER_FALLBACK_DESCRIPTION_INDEX,
     CALLS_COUNT
+};
+
+enum
+{
+    INTEGRATIONS_INDEX,
+    INTEGRATIONS_DESCRIPTION_INDEX,
+    INTEGRATIONS_COUNT
 };
 
 enum
@@ -1390,6 +1398,10 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     {
         count = IDENTITY_SERVER_COUNT;
     }
+    else if (section == SETTINGS_SECTION_INTEGRATIONS_INDEX)
+    {
+        count = INTEGRATIONS_COUNT;
+    }
     else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
     {
         count = USER_INTERFACE_COUNT;
@@ -2057,6 +2069,44 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 break;
         }
     }
+    else if (section == SETTINGS_SECTION_INTEGRATIONS_INDEX)
+    {
+        switch (row) {
+            case INTEGRATIONS_INDEX:
+            {
+                RiotSharedSettings *sharedSettings = [[RiotSharedSettings alloc] initWithSession:session];
+
+                MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+                labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_integrations_allow_button", @"Vector", nil);
+                labelAndSwitchCell.mxkSwitch.on = sharedSettings.hasIntegrationProvisioningEnabled;
+                labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+                labelAndSwitchCell.mxkSwitch.enabled = YES;
+                [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleAllowIntegrations:) forControlEvents:UIControlEventTouchUpInside];
+
+                cell = labelAndSwitchCell;
+                break;
+            }
+
+            case INTEGRATIONS_DESCRIPTION_INDEX:
+            {
+                MXKTableViewCell *descriptionCell = [self getDefaultTableViewCell:tableView];
+
+                NSString *integrationManager = [WidgetManager.sharedManager configForUser:session.myUser.userId].apiUrl;
+                NSString *integrationManagerDomain = [NSURL URLWithString:integrationManager].host;
+
+                NSString *description = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_integrations_allow_description", @"Vector", nil), integrationManagerDomain];
+                descriptionCell.textLabel.text = description;
+                descriptionCell.textLabel.numberOfLines = 0;
+                descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+                cell = descriptionCell;
+                break;
+            }
+
+            default:
+                break;
+        }
+    }
     else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
     {
         if (row == USER_INTERFACE_LANGUAGE_INDEX)
@@ -2563,6 +2613,10 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     else if (section == SETTINGS_SECTION_IDENTITY_SERVER_INDEX)
     {
         return NSLocalizedStringFromTable(@"settings_identity_server_settings", @"Vector", nil);
+    }
+    else if (section == SETTINGS_SECTION_INTEGRATIONS_INDEX)
+    {
+        return NSLocalizedStringFromTable(@"settings_integrations", @"Vector", nil);
     }
     else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
     {
@@ -3185,6 +3239,24 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     RiotSettings.shared.allowStunServerFallback = switchButton.isOn;
 
     self.mainSession.callManager.fallbackSTUNServer = RiotSettings.shared.allowStunServerFallback ? RiotSettings.shared.stunServerFallback : nil;
+}
+
+- (void)toggleAllowIntegrations:(id)sender
+{
+    UISwitch *switchButton = (UISwitch*)sender;
+
+    MXSession *session = self.mainSession;
+    [self startActivityIndicator];
+
+    __block RiotSharedSettings *sharedSettings = [[RiotSharedSettings alloc] initWithSession:session];
+    [sharedSettings setIntegrationProvisioningWithEnabled:switchButton.on success:^{
+        sharedSettings = nil;
+        [self stopActivityIndicator];
+    } failure:^(NSError * _Nullable error) {
+        sharedSettings = nil;
+        [switchButton setOn:!switchButton.on animated:YES];
+        [self stopActivityIndicator];
+    }];
 }
 
 - (void)toggleShowDecodedContent:(id)sender

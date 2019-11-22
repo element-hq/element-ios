@@ -16,14 +16,14 @@
 
 import Foundation
 
-/// Model for "im.vector.setting.allowed_widgets"
-/// https://github.com/vector-im/riot-meta/blob/master/spec/settings.md#tracking-which-widgets-the-user-has-allowed-to-load
-struct RiotSettingAllowedWidgets {
-    let widgets: [String: Bool]
+/// Model for "im.vector.setting.integration_provisioning"
+/// https://github.com/vector-im/riot-meta/blob/master/spec/settings.md#selecting-no-provisioning-for-integration-managers
+struct RiotSettingIntegrationProvisioning {
+    let enabled: Bool
 }
 
-extension RiotSettingAllowedWidgets: Decodable {
+extension RiotSettingIntegrationProvisioning: Decodable {
     enum CodingKeys: String, CodingKey {
-        case widgets
+        case enabled
     }
 }

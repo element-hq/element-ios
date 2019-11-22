@@ -378,6 +378,7 @@
 "settings_calls_settings" = "CALLS";
 "settings_discovery_settings" = "DISCOVERY";
 "settings_identity_server_settings" = "IDENTITY SERVER";
+"settings_integrations" = "INTEGRATIONS";
 "settings_user_interface" = "USER INTERFACE";
 "settings_ignored_users" = "IGNORED USERS";
 "settings_contacts" = "LOCAL CONTACTS";
@@ -430,6 +431,9 @@
 "settings_callkit_info" = "Receive incoming calls on your lock screen. See your Riot calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.";
 "settings_calls_stun_server_fallback_button" = "Allow fallback call assist server";
 "settings_calls_stun_server_fallback_description" = "Allow fallback call assist server %@ when your homeserver does not offer one (your IP address would be shared during a call).";
+
+"settings_integrations_allow_button" = "Manage integrations";
+"settings_integrations_allow_description" = "Use an Integration Manager (%@) to manage bots, bridges, widgets and sticker packs.\n\nIntegration Managers receive configuration data, and can modify widgets, send room invites and set power levels on your behalf.";
 
 "settings_ui_language" = "Language";
 "settings_ui_theme" = "Theme";
@@ -756,7 +760,7 @@
 "widget_sticker_picker_no_stickerpacks_alert" = "You don't currently have any stickerpacks enabled.";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "Add some now?";
 "widget_menu_refresh" = "Refresh";
-"widget_menu_open_outside" = "Open outside";
+"widget_menu_open_outside" = "Open in browser";
 "widget_menu_revoke_permission" = "Revoke access for me";
 "widget_menu_remove" = "Remove for everyone";
 
@@ -771,6 +775,7 @@
 "widget_integration_missing_room_id" = "Missing room_id in request.";
 "widget_integration_missing_user_id" = "Missing user_id in request.";
 "widget_integration_room_not_visible" = "Room %@ is not visible.";
+"widget_integration_manager_disabled" = "You need to enable Integration Manager in settings";
 
 // Widget Picker
 "widget_picker_title" = "Integrations";
