@@ -7,7 +7,7 @@
 "title_groups" = "Comunità";
 "warning" = "Attenzione";
 "next" = "Prossimo";
-"leave" = "Lascia";
+"leave" = "Esci";
 "remove" = "Rimuovi";
 "invite" = "Invita";
 "cancel" = "Annulla";
@@ -61,7 +61,7 @@
 // String for App Store
 "store_short_description" = "Conversazioni sicure e decentralizzate";
 // Actions
-"view" = "Vedi";
+"view" = "Visualizza";
 "back" = "Indietro";
 "continue" = "Continua";
 "create" = "Crea";
@@ -391,7 +391,7 @@
 "settings_key_backup_delete_confirmation_prompt_title" = "Elimina backup";
 "settings_key_backup_delete_confirmation_prompt_msg" = "Sei sicuro? Se non hai eseguito un Backup delle Chiavi perderai i tuoi messaggi crittografati.";
 // Room Details
-"room_details_title" = "Dettagli stanza";
+"room_details_title" = "Dettagli canale";
 "room_details_people" = "Membri";
 "room_details_files" = "File";
 "room_details_settings" = "Impostazioni";
