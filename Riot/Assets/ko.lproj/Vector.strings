@@ -889,3 +889,11 @@
 "settings_add_3pid_password_message" = "계속하려면 비밀번호를 입력해주세요";
 "settings_add_3pid_invalid_password_message" = "잘못된 비밀번호";
 "error_not_supported_on_mobile" = "%@ 모바일에서 할 수 없습니다.";
+"settings_integrations" = "통합";
+"settings_integrations_allow_button" = "통합 관리";
+"settings_integrations_allow_description" = "통합 관리자 (%@)를 사용해 봇, 브릿지, 위젯과 스티커 팩을 관리하세요.\n\n통합 관리자는 설정 데이터를 받고 위젯을 수정하거나, 방 초대를 보내고 권한 등급을 설정할 수 있습니다.";
+"widget_menu_refresh" = "새로고침";
+"widget_menu_open_outside" = "브라우저에서 열기";
+"widget_menu_revoke_permission" = "액세스 취소";
+"widget_menu_remove" = "모두를 위해 제거";
+"widget_integration_manager_disabled" = "설정에서 통합 관리자를 켜야 합니다";
