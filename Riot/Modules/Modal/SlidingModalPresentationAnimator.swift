@@ -42,7 +42,7 @@ final class SlidingModalPresentationAnimator: NSObject {
     
     // MARK: - Private
     
-    // Animate presetend view controller presentation
+    // Animate presented view controller presentation
     private func animatePresentation(using transitionContext: UIViewControllerContextTransitioning) {
         guard let presentedViewController = transitionContext.viewController(forKey: .to),
             let sourceViewController = transitionContext.viewController(forKey: .from) else {
