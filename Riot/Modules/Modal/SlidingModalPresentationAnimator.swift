@@ -91,7 +91,7 @@ final class SlidingModalPresentationAnimator: NSObject {
         })
     }
     
-    // Animate presetend view controller dismissal
+    // Animate presented view controller dismissal
     private func animateDismissal(using transitionContext: UIViewControllerContextTransitioning) {
         
         let containerView = transitionContext.containerView
