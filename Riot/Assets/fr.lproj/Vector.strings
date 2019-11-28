@@ -924,3 +924,6 @@
 "settings_integrations_allow_button" = "Gérer les intégrations";
 "settings_integrations_allow_description" = "Utilisez un gestionnaire d’intégrations (%@) pour gérer les bots, les passerelles, les widgets et les packs de stickers.\n\nLes gestionnaires d’intégration reçoivent des données de configuration et peuvent modifier les widgets, envoyer des invitations de salon et définir des rangs à votre place.";
 "widget_integration_manager_disabled" = "Vous devez activer le gestionnaire d’intégrations dans les paramètres";
+"widget_room_permission_title" = "Charger le widget";
+"widget_room_permission_creator_info_title" = "Ce widget a été ajouté par :";
+"widget_room_permission_information" = "Son utilisation peut utiliser des cookies et partager des données avec %@ :\n\n• Votre nom affiché\n• L’URL de votre avatar\n• Votre identifiant d’utilisateur\n• Votre thème\n• L’identifiant du salon\n• L’identifiant du widget";
