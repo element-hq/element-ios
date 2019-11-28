@@ -4257,7 +4257,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     
     WidgetPermissionViewModel *widgetPermissionViewModel = [[WidgetPermissionViewModel alloc] initWithCreatorUserId:widgetCreatorUserId
                                                                                                  creatorDisplayName:widgetCreatorDisplayName creatorAvatarUrl:widgetCreatorAvatarURL widgetDomain:widgetDomain
-                                                                                                    isWebviewWidget:YES
+                                                                                                    isWebviewWidget:NO
                                                                                                   widgetPermissions:permissionStrings
                                                                                                        mediaManager:mediaManager];
     
