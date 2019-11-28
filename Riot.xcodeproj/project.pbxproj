@@ -160,6 +160,8 @@
 		B110872421F098F0003554A5 /* ActivityIndicatorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B110872021F098EF003554A5 /* ActivityIndicatorView.xib */; };
 		B110872521F098F0003554A5 /* ActivityIndicatorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B110872121F098EF003554A5 /* ActivityIndicatorPresenter.swift */; };
 		B110872621F098F0003554A5 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B110872221F098F0003554A5 /* ActivityIndicatorView.swift */; };
+		B11291EA238D35590077B478 /* SlidingModalPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11291E9238D35590077B478 /* SlidingModalPresentable.swift */; };
+		B11291EC238D704C0077B478 /* FloatingPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11291EB238D704C0077B478 /* FloatingPoint.swift */; };
 		B120863722EF375F001F89E0 /* ReactionHistoryBridgeCoordinatorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B120863622EF375F001F89E0 /* ReactionHistoryBridgeCoordinatorPresenter.swift */; };
 		B125FE1B231D5BF200B72806 /* SettingsDiscoveryTableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B125FE1A231D5BF200B72806 /* SettingsDiscoveryTableViewSection.swift */; };
 		B125FE1D231D5DE400B72806 /* SettingsDiscoveryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B125FE1C231D5DE400B72806 /* SettingsDiscoveryViewModel.swift */; };
@@ -252,6 +254,12 @@
 		B19EFA3B21F8BB4100FC070E /* KeyBackupRecoverCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19EFA3A21F8BB4100FC070E /* KeyBackupRecoverCoordinator.swift */; };
 		B1A5B33E227ADF2A004CBA85 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A5B33D227ADF2A004CBA85 /* UIImage.swift */; };
 		B1A68593229E807A00D6C09A /* RoomBubbleCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A68592229E807800D6C09A /* RoomBubbleCellLayout.swift */; };
+		B1A6C10723881EF2002882FD /* SlidingModalPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A6C10623881EF2002882FD /* SlidingModalPresenter.swift */; };
+		B1A6C109238828A6002882FD /* SlidingModalPresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A6C108238828A6002882FD /* SlidingModalPresentationDelegate.swift */; };
+		B1A6C10B23882B6C002882FD /* SlidingModalPresentationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A6C10A23882B6C002882FD /* SlidingModalPresentationAnimator.swift */; };
+		B1A6C10D23882D1D002882FD /* SlidingModalPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A6C10C23882D1D002882FD /* SlidingModalPresentationController.swift */; };
+		B1A6C111238BD236002882FD /* SlidingModalContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A6C110238BD236002882FD /* SlidingModalContainerView.swift */; };
+		B1A6C113238BD245002882FD /* SlidingModalContainerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1A6C112238BD245002882FD /* SlidingModalContainerView.xib */; };
 		B1B12B2922942315002CB419 /* UITouch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B12B2822942315002CB419 /* UITouch.swift */; };
 		B1B5571820EE6C4D00210D55 /* CountryPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567A20EE6C4C00210D55 /* CountryPickerViewController.m */; };
 		B1B5571920EE6C4D00210D55 /* LanguagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567C20EE6C4C00210D55 /* LanguagePickerViewController.m */; };
@@ -504,6 +512,10 @@
 		B1B9DEF122EB396B0065E677 /* ReactionHistoryViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B9DEF022EB396B0065E677 /* ReactionHistoryViewData.swift */; };
 		B1B9DEF422EB426D0065E677 /* ReactionHistoryViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B9DEF222EB426D0065E677 /* ReactionHistoryViewCell.swift */; };
 		B1B9DEF522EB426D0065E677 /* ReactionHistoryViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B9DEF322EB426D0065E677 /* ReactionHistoryViewCell.xib */; };
+		B1BD71B5238DCBF700BA92E2 /* SlidingModalEmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BD71B4238DCBF700BA92E2 /* SlidingModalEmptyViewController.swift */; };
+		B1BD71BC238E8F9600BA92E2 /* WidgetPermissionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BD71BA238E8F9600BA92E2 /* WidgetPermissionViewController.swift */; };
+		B1BD71BF238EA56700BA92E2 /* WidgetPermissionViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1BD71BE238EA56700BA92E2 /* WidgetPermissionViewController.storyboard */; };
+		B1BD71C1238EA92100BA92E2 /* WidgetPermissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BD71C0238EA92000BA92E2 /* WidgetPermissionViewModel.swift */; };
 		B1C335CD22F1C1320021BA8D /* CameraPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C335CC22F1C1320021BA8D /* CameraPresenter.swift */; };
 		B1C3360122F1ED600021BA8D /* MediaPickerCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C335FE22F1ED5F0021BA8D /* MediaPickerCoordinatorType.swift */; };
 		B1C3360222F1ED600021BA8D /* MediaPickerCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C335FF22F1ED5F0021BA8D /* MediaPickerCoordinatorBridgePresenter.swift */; };
@@ -824,6 +836,8 @@
 		B110872021F098EF003554A5 /* ActivityIndicatorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityIndicatorView.xib; sourceTree = "<group>"; };
 		B110872121F098EF003554A5 /* ActivityIndicatorPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorPresenter.swift; sourceTree = "<group>"; };
 		B110872221F098F0003554A5 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
+		B11291E9238D35590077B478 /* SlidingModalPresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingModalPresentable.swift; sourceTree = "<group>"; };
+		B11291EB238D704C0077B478 /* FloatingPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPoint.swift; sourceTree = "<group>"; };
 		B120863622EF375F001F89E0 /* ReactionHistoryBridgeCoordinatorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionHistoryBridgeCoordinatorPresenter.swift; sourceTree = "<group>"; };
 		B125FE1A231D5BF200B72806 /* SettingsDiscoveryTableViewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDiscoveryTableViewSection.swift; sourceTree = "<group>"; };
 		B125FE1C231D5DE400B72806 /* SettingsDiscoveryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDiscoveryViewModel.swift; sourceTree = "<group>"; };
@@ -965,6 +979,12 @@
 		B19EFA3A21F8BB4100FC070E /* KeyBackupRecoverCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverCoordinator.swift; sourceTree = "<group>"; };
 		B1A5B33D227ADF2A004CBA85 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		B1A68592229E807800D6C09A /* RoomBubbleCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomBubbleCellLayout.swift; sourceTree = "<group>"; };
+		B1A6C10623881EF2002882FD /* SlidingModalPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingModalPresenter.swift; sourceTree = "<group>"; };
+		B1A6C108238828A6002882FD /* SlidingModalPresentationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingModalPresentationDelegate.swift; sourceTree = "<group>"; };
+		B1A6C10A23882B6C002882FD /* SlidingModalPresentationAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingModalPresentationAnimator.swift; sourceTree = "<group>"; };
+		B1A6C10C23882D1D002882FD /* SlidingModalPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingModalPresentationController.swift; sourceTree = "<group>"; };
+		B1A6C110238BD236002882FD /* SlidingModalContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingModalContainerView.swift; sourceTree = "<group>"; };
+		B1A6C112238BD245002882FD /* SlidingModalContainerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SlidingModalContainerView.xib; sourceTree = "<group>"; };
 		B1B12B2822942315002CB419 /* UITouch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITouch.swift; sourceTree = "<group>"; };
 		B1B5567920EE6C4C00210D55 /* CountryPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountryPickerViewController.h; sourceTree = "<group>"; };
 		B1B5567A20EE6C4C00210D55 /* CountryPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountryPickerViewController.m; sourceTree = "<group>"; };
@@ -1353,6 +1373,10 @@
 		B1B9DEF022EB396B0065E677 /* ReactionHistoryViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionHistoryViewData.swift; sourceTree = "<group>"; };
 		B1B9DEF222EB426D0065E677 /* ReactionHistoryViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionHistoryViewCell.swift; sourceTree = "<group>"; };
 		B1B9DEF322EB426D0065E677 /* ReactionHistoryViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReactionHistoryViewCell.xib; sourceTree = "<group>"; };
+		B1BD71B4238DCBF700BA92E2 /* SlidingModalEmptyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingModalEmptyViewController.swift; sourceTree = "<group>"; };
+		B1BD71BA238E8F9600BA92E2 /* WidgetPermissionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetPermissionViewController.swift; sourceTree = "<group>"; };
+		B1BD71BE238EA56700BA92E2 /* WidgetPermissionViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = WidgetPermissionViewController.storyboard; sourceTree = "<group>"; };
+		B1BD71C0238EA92000BA92E2 /* WidgetPermissionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetPermissionViewModel.swift; sourceTree = "<group>"; };
 		B1C335CC22F1C1320021BA8D /* CameraPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPresenter.swift; sourceTree = "<group>"; };
 		B1C335FE22F1ED5F0021BA8D /* MediaPickerCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerCoordinatorType.swift; sourceTree = "<group>"; };
 		B1C335FF22F1ED5F0021BA8D /* MediaPickerCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
@@ -1991,6 +2015,16 @@
 			path = ActivityIndicator;
 			sourceTree = "<group>";
 		};
+		B11291ED238DC8C80077B478 /* WidgetPermission */ = {
+			isa = PBXGroup;
+			children = (
+				B1BD71C0238EA92000BA92E2 /* WidgetPermissionViewModel.swift */,
+				B1BD71BA238E8F9600BA92E2 /* WidgetPermissionViewController.swift */,
+				B1BD71BE238EA56700BA92E2 /* WidgetPermissionViewController.storyboard */,
+			);
+			path = WidgetPermission;
+			sourceTree = "<group>";
+		};
 		B125FE19231D5B5600B72806 /* Discovery */ = {
 			isa = PBXGroup;
 			children = (
@@ -2348,9 +2382,25 @@
 			path = Riot/Modules/Common/CollectionView;
 			sourceTree = SOURCE_ROOT;
 		};
+		B1A6C10523881ECB002882FD /* Modal */ = {
+			isa = PBXGroup;
+			children = (
+				B1A6C10623881EF2002882FD /* SlidingModalPresenter.swift */,
+				B11291E9238D35590077B478 /* SlidingModalPresentable.swift */,
+				B1A6C108238828A6002882FD /* SlidingModalPresentationDelegate.swift */,
+				B1A6C10A23882B6C002882FD /* SlidingModalPresentationAnimator.swift */,
+				B1A6C10C23882D1D002882FD /* SlidingModalPresentationController.swift */,
+				B1A6C110238BD236002882FD /* SlidingModalContainerView.swift */,
+				B1A6C112238BD245002882FD /* SlidingModalContainerView.xib */,
+				B1BD71B4238DCBF700BA92E2 /* SlidingModalEmptyViewController.swift */,
+			);
+			path = Modal;
+			sourceTree = "<group>";
+		};
 		B1B5567620EE6C4C00210D55 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				B1A6C10523881ECB002882FD /* Modal */,
 				32DB556722FDADE50016329E /* ServiceTerms */,
 				3232AB94225730E100AD6A5C /* DeviceVerification */,
 				B1B556EA20EE6C4C00210D55 /* Main */,
@@ -2851,6 +2901,7 @@
 			children = (
 				B1B5576420EE702800210D55 /* IntegrationManagerViewController.h */,
 				B1B5576020EE702800210D55 /* IntegrationManagerViewController.m */,
+				B11291ED238DC8C80077B478 /* WidgetPermission */,
 				B1B5576120EE702800210D55 /* WidgetPicker */,
 				B1B5576520EE702800210D55 /* Widgets */,
 			);
@@ -3712,6 +3763,7 @@
 				B1C562CB228AB3510037F12A /* UIStackView.swift */,
 				B1B12B2822942315002CB419 /* UITouch.swift */,
 				B1DCC63322E72C1B00625807 /* UISearchBar.swift */,
+				B11291EB238D704C0077B478 /* FloatingPoint.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -3991,6 +4043,7 @@
 				B1B5592B20EF7A5D00210D55 /* TableViewCellWithButton.xib in Resources */,
 				B1B5574620EE6C4D00210D55 /* StartChatViewController.xib in Resources */,
 				B1B5590A20EF768F00210D55 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
+				B1A6C113238BD245002882FD /* SlidingModalContainerView.xib in Resources */,
 				B1B5594420EF7BD000210D55 /* TableViewCellWithCollectionView.xib in Resources */,
 				B1B558D520EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				B1B5590020EF768F00210D55 /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
@@ -4074,6 +4127,7 @@
 				3232AB4B2256558300AD6A5C /* TemplateScreenViewController.storyboard in Resources */,
 				B1D1BDA822BBAFC900831367 /* ReactionsMenuView.xib in Resources */,
 				32B1FEDB21A46F2C00637127 /* TermsView.xib in Resources */,
+				B1BD71BF238EA56700BA92E2 /* WidgetPermissionViewController.storyboard in Resources */,
 				B1DCC63222E7026F00625807 /* EmojiPickerHeaderView.xib in Resources */,
 				B1B5578E20EF568D00210D55 /* GroupInviteTableViewCell.xib in Resources */,
 				B1B5582020EF625800210D55 /* SimpleRoomTitleView.xib in Resources */,
@@ -4374,6 +4428,7 @@
 				B1B558DE20EF768F00210D55 /* RoomIncomingAttachmentBubbleCell.m in Sources */,
 				B1B5574820EE6C4D00210D55 /* PeopleViewController.m in Sources */,
 				B1B5598720EFC3E000210D55 /* Widget.m in Sources */,
+				B1BD71C1238EA92100BA92E2 /* WidgetPermissionViewModel.swift in Sources */,
 				B1B557E320EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.m in Sources */,
 				B1CE9F062216FB09000FAE6A /* EncryptionKeysExportPresenter.swift in Sources */,
 				3232ABAA225730E100AD6A5C /* DeviceVerificationCoordinatorBridgePresenter.swift in Sources */,
@@ -4404,7 +4459,9 @@
 				B1963B2E228F1C4900CBA17F /* BubbleReactionViewData.swift in Sources */,
 				B1C3361C22F32B4A0021BA8D /* SingleImagePickerPresenter.swift in Sources */,
 				B1B5572F20EE6C4D00210D55 /* ReadReceiptsViewController.m in Sources */,
+				B1BD71BC238E8F9600BA92E2 /* WidgetPermissionViewController.swift in Sources */,
 				B1B558CB20EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
+				B11291EA238D35590077B478 /* SlidingModalPresentable.swift in Sources */,
 				B157FAA823264BED00EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinatorBridgePresenter.swift in Sources */,
 				B169330B20F3CA3A00746532 /* Contact.m in Sources */,
 				B1A5B33E227ADF2A004CBA85 /* UIImage.swift in Sources */,
@@ -4425,6 +4482,7 @@
 				32A6001E22C661100042C1D9 /* EditHistoryCoordinatorBridgePresenter.swift in Sources */,
 				B1B5574A20EE6C4D00210D55 /* MediaPickerViewController.m in Sources */,
 				B1B5598520EFC3E000210D55 /* RageShakeManager.m in Sources */,
+				B1A6C111238BD236002882FD /* SlidingModalContainerView.swift in Sources */,
 				B1DCC62D22E61EAF00625807 /* EmojiPickerViewCell.swift in Sources */,
 				3232ABA8225730E100AD6A5C /* DeviceVerificationStartViewState.swift in Sources */,
 				B1B558D420EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
@@ -4441,6 +4499,7 @@
 				32863A5A2384070300D07C4A /* RiotSharedSettings.swift in Sources */,
 				B1B5594720EF7BD000210D55 /* RoomCollectionViewCell.m in Sources */,
 				B10CFBC32268D99D00A5842E /* JitsiService.swift in Sources */,
+				B1A6C10B23882B6C002882FD /* SlidingModalPresentationAnimator.swift in Sources */,
 				B1B558C120EF768F00210D55 /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				B1B5573E20EE6C4D00210D55 /* RiotNavigationController.m in Sources */,
 				B1B5593B20EF7BAC00210D55 /* TableViewCellWithCheckBoxAndLabel.m in Sources */,
@@ -4463,6 +4522,7 @@
 				3232ABBC2257BE6500AD6A5C /* DeviceVerificationVerifyViewAction.swift in Sources */,
 				F05927C91FDED836009F2A68 /* MXGroup+Riot.m in Sources */,
 				B1B5594520EF7BD000210D55 /* TableViewCellWithCollectionView.m in Sources */,
+				B1A6C109238828A6002882FD /* SlidingModalPresentationDelegate.swift in Sources */,
 				32DB557722FDADE50016329E /* ServiceTermsModalCoordinator.swift in Sources */,
 				32DB557922FDADE50016329E /* ServiceTermsModalScreenViewModel.swift in Sources */,
 				32891D75226728EE00C82226 /* DeviceVerificationDataLoadingViewController.swift in Sources */,
@@ -4570,6 +4630,7 @@
 				B1B5572620EE6C4D00210D55 /* RoomFilesSearchViewController.m in Sources */,
 				B1B5583120EF66BA00210D55 /* RoomIdOrAliasTableViewCell.m in Sources */,
 				B1CA3A2921EF692B000D1D89 /* UIView.swift in Sources */,
+				B1A6C10D23882D1D002882FD /* SlidingModalPresentationController.swift in Sources */,
 				32A6001D22C661100042C1D9 /* EditHistoryCoordinatorType.swift in Sources */,
 				F083BDFA1E7009ED00A9B29C /* RoomPreviewData.m in Sources */,
 				B1B557B420EF5AEF00210D55 /* EventDetailsView.m in Sources */,
@@ -4598,6 +4659,7 @@
 				B1B5597520EFB02A00210D55 /* InviteRecentTableViewCell.m in Sources */,
 				B1B5571E20EE6C4D00210D55 /* ContactDetailsViewController.m in Sources */,
 				B1798302211B13B3001FD722 /* OnBoardingManager.swift in Sources */,
+				B1A6C10723881EF2002882FD /* SlidingModalPresenter.swift in Sources */,
 				B1B5573520EE6C4D00210D55 /* GroupDetailsViewController.m in Sources */,
 				B10B3B5B2201DD740072C76B /* KeyBackupBannerCell.swift in Sources */,
 				B1DCC61A22E5E17100625807 /* EmojiPickerViewController.swift in Sources */,
@@ -4661,6 +4723,7 @@
 				B1B557BF20EF5B4500210D55 /* DisabledRoomInputToolbarView.m in Sources */,
 				B1B5578620EF564900210D55 /* GroupTableViewCellWithSwitch.m in Sources */,
 				B1098BE821ECFE52000DDA48 /* Coordinator.swift in Sources */,
+				B11291EC238D704C0077B478 /* FloatingPoint.swift in Sources */,
 				B1B557E920EF60F500210D55 /* MessagesSearchResultTextMsgBubbleCell.m in Sources */,
 				324A2050225FC571004FE8B0 /* DeviceVerificationIncomingViewController.swift in Sources */,
 				B1098C0D21ED07E4000DDA48 /* NavigationRouter.swift in Sources */,
@@ -4715,6 +4778,7 @@
 				3232AB482256558300AD6A5C /* FlowTemplateCoordinatorType.swift in Sources */,
 				B1B9DEF122EB396B0065E677 /* ReactionHistoryViewData.swift in Sources */,
 				B1B558F820EF768F00210D55 /* RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
+				B1BD71B5238DCBF700BA92E2 /* SlidingModalEmptyViewController.swift in Sources */,
 				B125FE1B231D5BF200B72806 /* SettingsDiscoveryTableViewSection.swift in Sources */,
 				32242F0921E8B05F00725742 /* UIColor.swift in Sources */,
 				B16932E720F3C37100746532 /* HomeMessagesSearchDataSource.m in Sources */,

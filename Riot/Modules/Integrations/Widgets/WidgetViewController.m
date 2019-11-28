@@ -23,10 +23,16 @@
 
 NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse('%@', %@);";
 
-@interface WidgetViewController () <ServiceTermsModalCoordinatorBridgePresenterDelegate>
+typedef void (^AskWidgetPermissionCompletion)(BOOL granted);
+
+@interface WidgetViewController () <ServiceTermsModalCoordinatorBridgePresenterDelegate, WidgetPermissionViewControllerDelegate>
 
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 @property (nonatomic, strong) NSString *widgetUrl;
+
+@property (nonatomic, strong) SlidingModalPresenter *slidingModalPresenter;
+
+@property (nonatomic, copy) AskWidgetPermissionCompletion widgetPermissionCompletion;
 
 @end
 
@@ -62,6 +68,8 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
         UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"room_context_menu_more"] style:UIBarButtonItemStylePlain target:self action:@selector(onMenuButtonPressed:)];
         self.navigationItem.rightBarButtonItem = menuButton;
     }
+    
+    self.slidingModalPresenter = [SlidingModalPresenter new];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -70,6 +78,11 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 
     // Check widget permission before opening the widget
     [self checkWidgetPermissionWithCompletion:^(BOOL granted) {
+        
+        self.widgetPermissionCompletion = nil;
+        
+        [self.slidingModalPresenter dismissWithAnimated:YES completion:nil];
+        
         if (granted)
         {
             self.URL = self.widgetUrl;
@@ -205,26 +218,39 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     }
 }
 
-- (void)askPermissionWithCompletion:(void (^)(BOOL granted))completion
+- (void)askPermissionWithCompletion:(AskWidgetPermissionCompletion)completion
 {
-    // TODO: Implement the design
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Load Widget"
-                                                                   message:@"blabla"
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-
-    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"continue"]
-                                              style:UIAlertActionStyleDefault
-                                            handler:^(UIAlertAction * action) {
-                                                completion(YES);
-                                            }]];
-
-    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil)
-                                              style:UIAlertActionStyleCancel
-                                            handler:^(UIAlertAction * action) {
-                                                completion(NO);
-                                            }]];
-
-    [self presentViewController:alert animated:YES completion:nil];
+    self.widgetPermissionCompletion = completion;
+    
+    NSString *widgetCreatorUserId = self.widget.widgetEvent.sender ?: NSLocalizedStringFromTable(@"room_participants_unknown", @"Vector", nil);
+    
+    MXSession *session = widget.mxSession;
+    MXRoom *room = [session roomWithRoomId:self.widget.widgetEvent.roomId];
+    MXRoomState *roomState = room.dangerousSyncState;
+    MXRoomMember *widgetCreatorRoomMember = [roomState.members memberWithUserId:widgetCreatorUserId];
+    
+    NSString *widgetDomain = @"";
+    
+    if (widget.url)
+    {
+        NSString *host = [[NSURL alloc] initWithString:widget.url].host;
+        if (host)
+        {
+            widgetDomain = host;
+        }
+    }
+    
+    MXMediaManager *mediaManager = widget.mxSession.mediaManager;
+    
+    WidgetPermissionViewModel *widgetPermissionViewModel = [[WidgetPermissionViewModel alloc] initWithCreatorUserId:widgetCreatorUserId
+                                                                                                 creatorDisplayName:widgetCreatorRoomMember.displayname
+                                                                                                   creatorAvatarUrl:widgetCreatorRoomMember.avatarUrl
+                                                                                      widgetDomain:widgetDomain                 mediaManager:mediaManager];
+    
+    WidgetPermissionViewController *widgetPermissionViewController = [WidgetPermissionViewController instantiateWith:widgetPermissionViewModel];
+    widgetPermissionViewController.delegate = self;
+    
+    [self.slidingModalPresenter present:widgetPermissionViewController from:self animated:YES completion:nil];
 }
 
 - (void)revokePermissionForCurrentWidget
@@ -643,6 +669,24 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
         [self withdrawViewControllerAnimated:YES completion:nil];
     }];
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
+}
+
+#pragma mark - WidgetPermissionViewControllerDelegate
+
+- (void)widgetPermissionViewControllerDidTapContinueButton:(WidgetPermissionViewController *)viewController
+{
+    if (self.widgetPermissionCompletion)
+    {
+        self.widgetPermissionCompletion(YES);
+    }
+}
+
+- (void)widgetPermissionViewControllerDidTapCloseButton:(WidgetPermissionViewController *)viewController
+{
+    if (self.widgetPermissionCompletion)
+    {
+        self.widgetPermissionCompletion(NO);
+    }
 }
 
 @end

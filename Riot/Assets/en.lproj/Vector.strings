@@ -780,6 +780,10 @@
 // Widget Picker
 "widget_picker_title" = "Integrations";
 
+"widget_room_permission_title" = "Load Widget";
+"widget_room_permission_creator_info_title" = "This widget was added by:";
+"widget_room_permission_information" = "Using it may set cookies and share data with %@:\n\n• Your display name\n• Your avatar URL\n• Your user ID\n• Your theme\n• Room ID\n• Widget ID";
+
 // Share extension
 "share_extension_auth_prompt" = "Login in the main app to share content";
 "share_extension_failed_to_encrypt" = "Failed to send. Check in the main app the encryption settings for this room";
