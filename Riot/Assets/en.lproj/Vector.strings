@@ -779,10 +779,21 @@
 
 // Widget Picker
 "widget_picker_title" = "Integrations";
-
-"widget_room_permission_title" = "Load Widget";
-"widget_room_permission_creator_info_title" = "This widget was added by:";
 "widget_room_permission_information" = "Using it may set cookies and share data with %@:\n\n• Your display name\n• Your avatar URL\n• Your user ID\n• Your theme\n• Room ID\n• Widget ID";
+// Room widget permissions
+"room_widget_permission_title" = "Load Widget";
+"room_widget_permission_creator_info_title" = "This widget was added by:";
+
+"room_widget_permission_webview_information_title" = "Using it may set cookies and share data with %@:\n";
+
+"room_widget_permission_information_title" = "Using it may share data with %@:\n";
+
+"room_widget_permission_display_name_permission" = "Your display name";
+"room_widget_permission_avatar_url_permission" = "Your avatar URL";
+"room_widget_permission_user_id_permission" = "Your user ID";
+"room_widget_permission_theme_permission" = "Your theme";
+"room_widget_permission_widget_id_permission" = "Widget ID";
+"room_widget_permission_room_id_permission" = "Room ID";
 
 // Share extension
 "share_extension_auth_prompt" = "Login in the main app to share content";
