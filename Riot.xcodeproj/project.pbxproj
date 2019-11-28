@@ -2382,7 +2382,7 @@
 			path = Riot/Modules/Common/CollectionView;
 			sourceTree = SOURCE_ROOT;
 		};
-		B1A6C10523881ECB002882FD /* Modal */ = {
+		B1A6C10523881ECB002882FD /* SlidingModal */ = {
 			isa = PBXGroup;
 			children = (
 				B1A6C10623881EF2002882FD /* SlidingModalPresenter.swift */,
@@ -2394,13 +2394,13 @@
 				B1A6C112238BD245002882FD /* SlidingModalContainerView.xib */,
 				B1BD71B4238DCBF700BA92E2 /* SlidingModalEmptyViewController.swift */,
 			);
-			path = Modal;
+			path = SlidingModal;
 			sourceTree = "<group>";
 		};
 		B1B5567620EE6C4C00210D55 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				B1A6C10523881ECB002882FD /* Modal */,
+				B1A6C10523881ECB002882FD /* SlidingModal */,
 				32DB556722FDADE50016329E /* ServiceTerms */,
 				3232AB94225730E100AD6A5C /* DeviceVerification */,
 				B1B556EA20EE6C4C00210D55 /* Main */,
