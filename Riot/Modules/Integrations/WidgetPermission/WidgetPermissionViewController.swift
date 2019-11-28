@@ -18,11 +18,6 @@
 
 import UIKit
 
-@objc protocol WidgetPermissionViewControllerDelegate: class {
-    func widgetPermissionViewControllerDidTapCloseButton(_ viewController: WidgetPermissionViewController)
-    func widgetPermissionViewControllerDidTapContinueButton(_ viewController: WidgetPermissionViewController)
-}
-
 @objc
 final class WidgetPermissionViewController: UIViewController {
     
@@ -36,9 +31,6 @@ final class WidgetPermissionViewController: UIViewController {
         static var viewController: WidgetPermissionViewController?
         static var widthConstraint: NSLayoutConstraint?
     }
-    
-//    private static let sizingView = WidgetPermissionView.loadFromNib()
-//    private static var sizingViewWidthConstraint: NSLayoutConstraint?
     
     // MARK: - Properties
     
@@ -69,7 +61,8 @@ final class WidgetPermissionViewController: UIViewController {
     
     // MARK: Public
     
-    @objc weak var delegate: WidgetPermissionViewControllerDelegate?
+    @objc var didTapCloseButton: (() -> Void)?
+    @objc var didTapContinueButton: (() -> Void)?
     
     // MARK: - Setup
     
@@ -145,8 +138,8 @@ final class WidgetPermissionViewController: UIViewController {
         
         self.setupCreatorAvatarImageView()
         
-        self.titleLabel.text = VectorL10n.widgetRoomPermissionTitle
-        self.creatorInfoTitleLabel.text = VectorL10n.widgetRoomPermissionCreatorInfoTitle
+        self.titleLabel.text = VectorL10n.roomWidgetPermissionTitle
+        self.creatorInfoTitleLabel.text = VectorL10n.roomWidgetPermissionCreatorInfoTitle
         self.informationLabel.text = ""
         
         self.setupContinueButton()
@@ -172,7 +165,7 @@ final class WidgetPermissionViewController: UIViewController {
         }
         
         if let informationLabel = self.informationLabel {
-            informationLabel.text = VectorL10n.widgetRoomPermissionInformation(self.viewModel.widgetDomain ?? "")
+            informationLabel.text = self.viewModel.permissionsInformationText
         }
     }
     
@@ -189,11 +182,11 @@ final class WidgetPermissionViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction private func closeButtonAction(_ sender: Any) {
-        self.delegate?.widgetPermissionViewControllerDidTapCloseButton(self)
+        self.didTapCloseButton?()
     }
     
     @IBAction private func continueButtonAction(_ sender: Any) {
-        self.delegate?.widgetPermissionViewControllerDidTapContinueButton(self)
+        self.didTapContinueButton?()
     }
 }
 
