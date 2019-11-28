@@ -916,3 +916,11 @@
 "settings_add_3pid_password_message" = "Pour continuer, saisissez votre mot de passe";
 "settings_add_3pid_invalid_password_message" = "Mot de passe non valide";
 "error_not_supported_on_mobile" = "Vous ne pouvez pas faire cela depuis %@ mobile.";
+"widget_menu_refresh" = "Actualiser";
+"widget_menu_open_outside" = "Ouvrir dans le navigateur";
+"widget_menu_revoke_permission" = "Révoquer l’accès pour moi";
+"widget_menu_remove" = "Supprimer pour tout le monde";
+"settings_integrations" = "INTÉGRATIONS";
+"settings_integrations_allow_button" = "Gérer les intégrations";
+"settings_integrations_allow_description" = "Utilisez un gestionnaire d’intégrations (%@) pour gérer les bots, les passerelles, les widgets et les packs de stickers.\n\nLes gestionnaires d’intégration reçoivent des données de configuration et peuvent modifier les widgets, envoyer des invitations de salon et définir des rangs à votre place.";
+"widget_integration_manager_disabled" = "Vous devez activer le gestionnaire d’intégrations dans les paramètres";
