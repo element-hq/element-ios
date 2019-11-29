@@ -779,7 +779,7 @@
 
 // Widget Picker
 "widget_picker_title" = "Integrations";
-"widget_room_permission_information" = "Using it may set cookies and share data with %@:\n\n• Your display name\n• Your avatar URL\n• Your user ID\n• Your theme\n• Room ID\n• Widget ID";
+
 // Room widget permissions
 "room_widget_permission_title" = "Load Widget";
 "room_widget_permission_creator_info_title" = "This widget was added by:";

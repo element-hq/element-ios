@@ -3374,10 +3374,6 @@ internal enum VectorL10n {
   internal static var widgetPickerTitle: String { 
     return VectorL10n.tr("Vector", "widget_picker_title") 
   }
-  /// Using it may set cookies and share data with %@:\n\n• Your display name\n• Your avatar URL\n• Your user ID\n• Your theme\n• Room ID\n• Widget ID
-  internal static func widgetRoomPermissionInformation(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "widget_room_permission_information", p1)
-  }
   /// You don't currently have any stickerpacks enabled.
   internal static var widgetStickerPickerNoStickerpacksAlert: String { 
     return VectorL10n.tr("Vector", "widget_sticker_picker_no_stickerpacks_alert") 
