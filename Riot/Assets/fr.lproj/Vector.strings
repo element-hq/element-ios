@@ -927,3 +927,14 @@
 "widget_room_permission_title" = "Charger le widget";
 "widget_room_permission_creator_info_title" = "Ce widget a été ajouté par :";
 "widget_room_permission_information" = "Son utilisation peut utiliser des cookies et partager des données avec %@ :\n\n• Votre nom affiché\n• L’URL de votre avatar\n• Votre identifiant d’utilisateur\n• Votre thème\n• L’identifiant du salon\n• L’identifiant du widget";
+// Room widget permissions
+"room_widget_permission_title" = "Charger un widget";
+"room_widget_permission_creator_info_title" = "Ce widget a été ajouté par :";
+"room_widget_permission_webview_information_title" = "Son utilisation peut entraîner l’utilisation de cookies et le partage de données avec %@ :\n";
+"room_widget_permission_information_title" = "Son utilisation peut entraîner le partage de données avec %@ :\n";
+"room_widget_permission_display_name_permission" = "Votre nom affiché";
+"room_widget_permission_avatar_url_permission" = "L’URL de votre avatar";
+"room_widget_permission_user_id_permission" = "Votre identifiant d’utilisateur";
+"room_widget_permission_theme_permission" = "Votre thème";
+"room_widget_permission_widget_id_permission" = "L’identifiant du widget";
+"room_widget_permission_room_id_permission" = "L’identifiant du salon";
