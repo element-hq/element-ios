@@ -238,6 +238,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 @property (weak, nonatomic) UIViewController *gdprConsentController;
 
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
+@property (nonatomic, strong) SlidingModalPresenter *slidingModalPresenter;
 
 /**
  Used to manage on boarding steps, like create DM with riot bot
@@ -4199,7 +4200,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     else
     {
         // Note: ask permission again if the user previously declined it
-        [self askPermissionWithCompletion:^(BOOL granted) {
+        [self askNativeWidgetPermissionWithWidget:widget completion:^(BOOL granted) {
             // Update the settings in user account data in parallel
             [sharedSettings setPermission:granted ? WidgetPermissionGranted : WidgetPermissionDeclined
                                 forNative:widget fromUrl:url
@@ -4212,33 +4213,83 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                  NSLog(@"[WidgetVC] setPermissionForWidget failed. Error: %@", error);
                  sharedSettings = nil;
              }];
-
+            
             completion(granted);
         }];
     }
 }
 
-- (void)askPermissionWithCompletion:(void (^)(BOOL granted))completion
+- (void)askNativeWidgetPermissionWithWidget:(Widget*)widget completion:(void (^)(BOOL granted))completion
 {
-    // TODO: Implement the design
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Load a native widget?"
-                                                                   message:@"blabla"
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-
-    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"continue"]
-                                              style:UIAlertActionStyleDefault
-                                            handler:^(UIAlertAction * action) {
-                                                completion(YES);
-                                            }]];
-
-    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil)
-                                              style:UIAlertActionStyleCancel
-                                            handler:^(UIAlertAction * action) {
-                                                completion(NO);
-                                            }]];
-
+    if (!self.slidingModalPresenter)
+    {
+        self.slidingModalPresenter = [SlidingModalPresenter new];
+    }
+    
+    [self.slidingModalPresenter dismissWithAnimated:NO completion:nil];
+    
+    NSString *widgetCreatorUserId = widget.widgetEvent.sender ?: NSLocalizedStringFromTable(@"room_participants_unknown", @"Vector", nil);
+    
+    MXSession *session = widget.mxSession;
+    MXRoom *room = [session roomWithRoomId:widget.widgetEvent.roomId];
+    MXRoomState *roomState = room.dangerousSyncState;
+    MXRoomMember *widgetCreatorRoomMember = [roomState.members memberWithUserId:widgetCreatorUserId];
+    
+    NSString *widgetDomain = @"";
+    
+    if (widget.url)
+    {
+        NSString *host = [[NSURL alloc] initWithString:widget.url].host;
+        if (host)
+        {
+            widgetDomain = host;
+        }
+    }
+    
+    MXMediaManager *mediaManager = widget.mxSession.mediaManager;
+    NSString *widgetCreatorDisplayName = widgetCreatorRoomMember.displayname;
+    NSString *widgetCreatorAvatarURL = widgetCreatorRoomMember.avatarUrl;
+    
+    NSArray<NSString*> *permissionStrings = @[
+                                              NSLocalizedStringFromTable(@"room_widget_permission_display_name_permission", @"Vector", nil),
+                                              NSLocalizedStringFromTable(@"room_widget_permission_avatar_url_permission", @"Vector", nil)
+                                              ];
+    
+    WidgetPermissionViewModel *widgetPermissionViewModel = [[WidgetPermissionViewModel alloc] initWithCreatorUserId:widgetCreatorUserId
+                                                                                                 creatorDisplayName:widgetCreatorDisplayName creatorAvatarUrl:widgetCreatorAvatarURL widgetDomain:widgetDomain
+                                                                                                    isWebviewWidget:NO
+                                                                                                  widgetPermissions:permissionStrings
+                                                                                                       mediaManager:mediaManager];
+    
+    
+    WidgetPermissionViewController *widgetPermissionViewController = [WidgetPermissionViewController instantiateWith:widgetPermissionViewModel];
+    
+    MXWeakify(self);
+    
+    widgetPermissionViewController.didTapContinueButton = ^{
+        
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self.slidingModalPresenter dismissWithAnimated:YES completion:^{
+            completion(YES);
+        }];
+    };
+    
+    widgetPermissionViewController.didTapCloseButton = ^{
+        
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self.slidingModalPresenter dismissWithAnimated:YES completion:^{
+            completion(NO);
+        }];
+    };
+    
     UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
-    [presentingViewController presentViewController:alert animated:YES completion:nil];
+    
+    [self.slidingModalPresenter present:widgetPermissionViewController
+                                   from:presentingViewController
+                               animated:YES
+                             completion:nil];
 }
 
 

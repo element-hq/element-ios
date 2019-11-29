@@ -91,7 +91,7 @@
                                                     <constraint firstAttribute="trailing" secondItem="niK-55-mG3" secondAttribute="trailing" id="qeG-IV-RJa"/>
                                                 </constraints>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d3k-sH-pkd">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d3k-sH-pkd">
                                                 <rect key="frame" x="20" y="176" width="374" height="161.5"/>
                                                 <string key="text">Using it may set cookies and share data with widget.com:
 

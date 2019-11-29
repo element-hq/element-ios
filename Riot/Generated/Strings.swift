@@ -2474,6 +2474,46 @@ internal enum VectorL10n {
   internal static var roomWarningAboutEncryption: String { 
     return VectorL10n.tr("Vector", "room_warning_about_encryption") 
   }
+  /// Your avatar URL
+  internal static var roomWidgetPermissionAvatarUrlPermission: String { 
+    return VectorL10n.tr("Vector", "room_widget_permission_avatar_url_permission") 
+  }
+  /// This widget was added by:
+  internal static var roomWidgetPermissionCreatorInfoTitle: String { 
+    return VectorL10n.tr("Vector", "room_widget_permission_creator_info_title") 
+  }
+  /// Your display name
+  internal static var roomWidgetPermissionDisplayNamePermission: String { 
+    return VectorL10n.tr("Vector", "room_widget_permission_display_name_permission") 
+  }
+  /// Using it may share data with %@:\n
+  internal static func roomWidgetPermissionInformationTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_widget_permission_information_title", p1)
+  }
+  /// Room ID
+  internal static var roomWidgetPermissionRoomIdPermission: String { 
+    return VectorL10n.tr("Vector", "room_widget_permission_room_id_permission") 
+  }
+  /// Your theme
+  internal static var roomWidgetPermissionThemePermission: String { 
+    return VectorL10n.tr("Vector", "room_widget_permission_theme_permission") 
+  }
+  /// Load Widget
+  internal static var roomWidgetPermissionTitle: String { 
+    return VectorL10n.tr("Vector", "room_widget_permission_title") 
+  }
+  /// Your user ID
+  internal static var roomWidgetPermissionUserIdPermission: String { 
+    return VectorL10n.tr("Vector", "room_widget_permission_user_id_permission") 
+  }
+  /// Using it may set cookies and share data with %@:\n
+  internal static func roomWidgetPermissionWebviewInformationTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_widget_permission_webview_information_title", p1)
+  }
+  /// Widget ID
+  internal static var roomWidgetPermissionWidgetIdPermission: String { 
+    return VectorL10n.tr("Vector", "room_widget_permission_widget_id_permission") 
+  }
   /// Save
   internal static var save: String { 
     return VectorL10n.tr("Vector", "save") 
@@ -3333,18 +3373,6 @@ internal enum VectorL10n {
   /// Integrations
   internal static var widgetPickerTitle: String { 
     return VectorL10n.tr("Vector", "widget_picker_title") 
-  }
-  /// This widget was added by:
-  internal static var widgetRoomPermissionCreatorInfoTitle: String { 
-    return VectorL10n.tr("Vector", "widget_room_permission_creator_info_title") 
-  }
-  /// Using it may set cookies and share data with %@:\n\n• Your display name\n• Your avatar URL\n• Your user ID\n• Your theme\n• Room ID\n• Widget ID
-  internal static func widgetRoomPermissionInformation(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "widget_room_permission_information", p1)
-  }
-  /// Load Widget
-  internal static var widgetRoomPermissionTitle: String { 
-    return VectorL10n.tr("Vector", "widget_room_permission_title") 
   }
   /// You don't currently have any stickerpacks enabled.
   internal static var widgetStickerPickerNoStickerpacksAlert: String { 

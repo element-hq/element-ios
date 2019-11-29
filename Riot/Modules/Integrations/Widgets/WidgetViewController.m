@@ -23,16 +23,12 @@
 
 NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse('%@', %@);";
 
-typedef void (^AskWidgetPermissionCompletion)(BOOL granted);
-
-@interface WidgetViewController () <ServiceTermsModalCoordinatorBridgePresenterDelegate, WidgetPermissionViewControllerDelegate>
+@interface WidgetViewController () <ServiceTermsModalCoordinatorBridgePresenterDelegate>
 
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 @property (nonatomic, strong) NSString *widgetUrl;
 
 @property (nonatomic, strong) SlidingModalPresenter *slidingModalPresenter;
-
-@property (nonatomic, copy) AskWidgetPermissionCompletion widgetPermissionCompletion;
 
 @end
 
@@ -78,9 +74,7 @@ typedef void (^AskWidgetPermissionCompletion)(BOOL granted);
 
     // Check widget permission before opening the widget
     [self checkWidgetPermissionWithCompletion:^(BOOL granted) {
-        
-        self.widgetPermissionCompletion = nil;
-        
+                
         [self.slidingModalPresenter dismissWithAnimated:YES completion:nil];
         
         if (granted)
@@ -218,10 +212,8 @@ typedef void (^AskWidgetPermissionCompletion)(BOOL granted);
     }
 }
 
-- (void)askPermissionWithCompletion:(AskWidgetPermissionCompletion)completion
+- (void)askPermissionWithCompletion:(void (^)(BOOL granted))completion
 {
-    self.widgetPermissionCompletion = completion;
-    
     NSString *widgetCreatorUserId = self.widget.widgetEvent.sender ?: NSLocalizedStringFromTable(@"room_participants_unknown", @"Vector", nil);
     
     MXSession *session = widget.mxSession;
@@ -241,14 +233,36 @@ typedef void (^AskWidgetPermissionCompletion)(BOOL granted);
     }
     
     MXMediaManager *mediaManager = widget.mxSession.mediaManager;
+    NSString *widgetCreatorDisplayName = widgetCreatorRoomMember.displayname;
+    NSString *widgetCreatorAvatarURL = widgetCreatorRoomMember.avatarUrl;
+    
+    NSArray<NSString*> *permissionStrings = @[
+                                              NSLocalizedStringFromTable(@"room_widget_permission_display_name_permission", @"Vector", nil),
+                                              NSLocalizedStringFromTable(@"room_widget_permission_avatar_url_permission", @"Vector", nil),
+                                              NSLocalizedStringFromTable(@"room_widget_permission_user_id_permission", @"Vector", nil),
+                                              NSLocalizedStringFromTable(@"room_widget_permission_theme_permission", @"Vector", nil),
+                                              NSLocalizedStringFromTable(@"room_widget_permission_widget_id_permission", @"Vector", nil),
+                                              NSLocalizedStringFromTable(@"room_widget_permission_room_id_permission", @"Vector", nil)
+                                            ];
+    
     
     WidgetPermissionViewModel *widgetPermissionViewModel = [[WidgetPermissionViewModel alloc] initWithCreatorUserId:widgetCreatorUserId
-                                                                                                 creatorDisplayName:widgetCreatorRoomMember.displayname
-                                                                                                   creatorAvatarUrl:widgetCreatorRoomMember.avatarUrl
-                                                                                      widgetDomain:widgetDomain                 mediaManager:mediaManager];
+                                                                                                 creatorDisplayName:widgetCreatorDisplayName creatorAvatarUrl:widgetCreatorAvatarURL widgetDomain:widgetDomain
+                                                                                                    isWebviewWidget:YES
+                                                                                                  widgetPermissions:permissionStrings
+                                                                                                       mediaManager:mediaManager];
+    
     
     WidgetPermissionViewController *widgetPermissionViewController = [WidgetPermissionViewController instantiateWith:widgetPermissionViewModel];
-    widgetPermissionViewController.delegate = self;
+    
+    widgetPermissionViewController.didTapContinueButton = ^{
+        completion(YES);
+    };
+    
+    widgetPermissionViewController.didTapCloseButton = ^{
+        completion(NO);
+    };
+        
     
     [self.slidingModalPresenter present:widgetPermissionViewController from:self animated:YES completion:nil];
 }
@@ -669,24 +683,6 @@ typedef void (^AskWidgetPermissionCompletion)(BOOL granted);
         [self withdrawViewControllerAnimated:YES completion:nil];
     }];
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
-}
-
-#pragma mark - WidgetPermissionViewControllerDelegate
-
-- (void)widgetPermissionViewControllerDidTapContinueButton:(WidgetPermissionViewController *)viewController
-{
-    if (self.widgetPermissionCompletion)
-    {
-        self.widgetPermissionCompletion(YES);
-    }
-}
-
-- (void)widgetPermissionViewControllerDidTapCloseButton:(WidgetPermissionViewController *)viewController
-{
-    if (self.widgetPermissionCompletion)
-    {
-        self.widgetPermissionCompletion(NO);
-    }
 }
 
 @end
