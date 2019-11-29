@@ -38,6 +38,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 }
 
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
+@property (nonatomic) BOOL isViewAppearedOnce;
 
 @end
 
@@ -72,8 +73,12 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    [self loadData];
+    
+    if (!self.isViewAppearedOnce)
+    {
+        self.isViewAppearedOnce = YES;
+        [self loadData];
+    }
 }
 
 - (void)loadData
@@ -759,6 +764,14 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 }
 
 - (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self withdrawViewControllerAnimated:YES completion:nil];
+    }];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter session:(MXSession * _Nonnull)session
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
         [self withdrawViewControllerAnimated:YES completion:nil];
