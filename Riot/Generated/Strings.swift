@@ -3370,6 +3370,10 @@ internal enum VectorL10n {
   internal static var widgetNoPowerToManage: String { 
     return VectorL10n.tr("Vector", "widget_no_power_to_manage") 
   }
+  /// Manage integrations...
+  internal static var widgetPickerManageIntegrations: String { 
+    return VectorL10n.tr("Vector", "widget_picker_manage_integrations") 
+  }
   /// Integrations
   internal static var widgetPickerTitle: String { 
     return VectorL10n.tr("Vector", "widget_picker_title") 
