@@ -170,6 +170,7 @@ final class WidgetPermissionViewController: UIViewController {
     }
     
     private func setupCreatorAvatarImageView() {
+        self.creatorAvatarImageView.defaultBackgroundColor = UIColor.clear
         self.creatorAvatarImageView.enableInMemoryCache = true
         self.creatorAvatarImageView.clipsToBounds = true
     }
