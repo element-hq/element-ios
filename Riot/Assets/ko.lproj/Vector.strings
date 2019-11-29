@@ -265,7 +265,7 @@
 "room_event_action_reaction_show_all" = "모두 보이기";
 "room_event_action_reaction_show_less" = "적게 보이기";
 "room_event_action_reaction_history" = "리액션 기록";
-"room_warning_about_encryption" = "종단간 암호화는 베타 버전이고 신뢰하지 못할 수 있습니다.\n\n아직 데이터를 보호한다고 신뢰하지 마세요.\n\n기기가 방에 참가하기 전에 아직 기록을 해독할 수 없습니다.\n\n아직 암호화를 구현하지 않았기 때문에 암호화된 메시지는 클라이언트에 나타나지 않습니다.";
+"room_warning_about_encryption" = "종단간 암호화는 베타 버전이고 신뢰하지 못할 수 있습니다.\n\n아직 데이터를 보호한다고 신뢰하지 마세요.\n\n기기가 방에 참가하기 전에 아직 기록을 복호화할 수 없습니다.\n\n아직 암호화를 구현하지 않았기 때문에 암호화된 메시지는 클라이언트에 나타나지 않습니다.";
 "room_event_failed_to_send" = "보내기에 실패함";
 "room_action_camera" = "사진 또는 영상 찍기";
 "room_action_send_photo_or_video" = "사진 또는 영상 보내기";
@@ -629,7 +629,7 @@
 "deactivate_account_password_alert_message" = "계속하려면, 비밀번호를 입력해주세요";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "요청을 보냈습니다";
-"rerequest_keys_alert_message" = "메시지를 해독해서 이 기기로 키를 보낼 수 있도록 Riot을 다른 기기에 설치해주세요.";
+"rerequest_keys_alert_message" = "메시지를 복호화해서 이 기기로 키를 보낼 수 있도록 Riot을 다른 기기에 설치해주세요.";
 "key_backup_setup_title" = "키 백업";
 "key_backup_setup_skip_alert_title" = "확신합니까?";
 "key_backup_setup_skip_alert_message" = "로그아웃하거나 기기를 잃어버리면 보안 메시지를 잃게 됩니다.";
@@ -665,9 +665,9 @@
 "key_backup_setup_success_from_recovery_key_made_copy_action" = "사본을 만들었습니다";
 "key_backup_recover_title" = "보안 메시지";
 "key_backup_recover_invalid_passphrase_title" = "맞지 않는 복구 암호";
-"key_backup_recover_invalid_passphrase" = "이 암호로 백업을 해독할 수 없습니다: 올바른 복구 암호를 입력해서 확인해주세요.";
+"key_backup_recover_invalid_passphrase" = "이 암호로 백업을 복호화할 수 없습니다: 올바른 복구 암호를 입력해서 확인해주세요.";
 "key_backup_recover_invalid_recovery_key_title" = "복구 키가 맞지 않음";
-"key_backup_recover_invalid_recovery_key" = "이 키로 백업을 해독할 수 없습니다: 올바른 복구 키를 입력해서 확인해주세요.";
+"key_backup_recover_invalid_recovery_key" = "이 키로 백업을 복호화할 수 없습니다: 올바른 복구 키를 입력해서 확인해주세요.";
 "key_backup_recover_from_passphrase_info" = "복구 암호를 사용해 보안 메시지 기록을 푸세요";
 "key_backup_recover_from_passphrase_passphrase_title" = "입력";
 "key_backup_recover_from_passphrase_passphrase_placeholder" = "암호 입력";
@@ -889,3 +889,11 @@
 "settings_add_3pid_password_message" = "계속하려면 비밀번호를 입력해주세요";
 "settings_add_3pid_invalid_password_message" = "잘못된 비밀번호";
 "error_not_supported_on_mobile" = "%@ 모바일에서 할 수 없습니다.";
+"settings_integrations" = "통합";
+"settings_integrations_allow_button" = "통합 관리";
+"settings_integrations_allow_description" = "통합 관리자 (%@)를 사용해 봇, 브릿지, 위젯과 스티커 팩을 관리하세요.\n\n통합 관리자는 설정 데이터를 받고 위젯을 수정하거나, 방 초대를 보내고 권한 등급을 설정할 수 있습니다.";
+"widget_menu_refresh" = "새로고침";
+"widget_menu_open_outside" = "브라우저에서 열기";
+"widget_menu_revoke_permission" = "액세스 취소";
+"widget_menu_remove" = "모두를 위해 제거";
+"widget_integration_manager_disabled" = "설정에서 통합 관리자를 켜야 합니다";
