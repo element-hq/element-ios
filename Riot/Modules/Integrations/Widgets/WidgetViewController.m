@@ -685,4 +685,12 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter session:(MXSession * _Nonnull)session
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self withdrawViewControllerAnimated:YES completion:nil];
+    }];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
+}
+
 @end

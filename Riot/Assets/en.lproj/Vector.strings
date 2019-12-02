@@ -779,6 +779,7 @@
 
 // Widget Picker
 "widget_picker_title" = "Integrations";
+"widget_picker_manage_integrations" = "Manage integrations...";
 
 // Room widget permissions
 "room_widget_permission_title" = "Load Widget";

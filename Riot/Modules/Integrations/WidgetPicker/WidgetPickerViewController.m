@@ -21,12 +21,18 @@
 #import "WidgetManager.h"
 #import "WidgetViewController.h"
 #import "IntegrationManagerViewController.h"
+#import "Riot-Swift.h"
 
-@interface WidgetPickerViewController ()
+@interface WidgetPickerViewController () <ServiceTermsModalCoordinatorBridgePresenterDelegate>
 {
     MXSession *mxSession;
     NSString *roomId;
 }
+
+@property (nonatomic, weak) UIViewController *presentingViewController;
+@property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
+@property (nonatomic, strong) MXKRoomDataSource *roomDataSource;
+@property (nonatomic, strong) Widget *selectedWidget;
 
 @end
 
@@ -67,27 +73,14 @@
                            {
                                // Hide back button title
                                mxkViewController.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-
-                               // Display the widget
-                               [widget widgetUrl:^(NSString * _Nonnull widgetUrl) {
-
-                                   WidgetViewController *widgetVC = [[WidgetViewController alloc] initWithUrl:widgetUrl forWidget:widget];
-
-                                   widgetVC.roomDataSource = roomDataSource;
-
-                                   [mxkViewController.navigationController pushViewController:widgetVC animated:YES];
-
-                               } failure:^(NSError * _Nonnull error) {
-
-                                   NSLog(@"[WidgetPickerVC] Cannot display widget %@", widget);
-                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
-                               }];
+                               
+                               [self fetchWidgetURLAndDisplayUsingWidget:widget canPresentServiceTerms:YES];
                            }];
             [self.alertController addAction:alertAction];
         }
 
         // Link to the integration manager
-        alertAction = [UIAlertAction actionWithTitle:@"Manage integrations..."
+        alertAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"widget_picker_manage_integrations", @"Vector", nil)
                                                style:UIAlertActionStyleDefault
                                              handler:^(UIAlertAction * _Nonnull action)
                        {
@@ -107,8 +100,88 @@
         [self.alertController addAction:alertAction];
 
         // And show it
-        [mxkViewController presentViewController:_alertController animated:YES completion:nil];
+        [mxkViewController presentViewController:self.alertController animated:YES completion:nil];
+        
+        self.presentingViewController = mxkViewController;
     }];
  }
+
+- (void)fetchWidgetURLAndDisplayUsingWidget:(Widget*)widget canPresentServiceTerms:(BOOL)canPresentServiceTerms
+{
+    [widget widgetUrl:^(NSString * _Nonnull widgetUrl) {
+ 
+        // Display the widget
+        
+        WidgetViewController *widgetVC = [[WidgetViewController alloc] initWithUrl:widgetUrl forWidget:widget];
+        
+        widgetVC.roomDataSource = self.roomDataSource;
+        
+        [self.presentingViewController.navigationController pushViewController:widgetVC animated:YES];
+        
+    } failure:^(NSError * _Nonnull error) {
+        
+        NSLog(@"[WidgetPickerVC] Get widget URL failed with error: %@", error);
+        
+        if (canPresentServiceTerms
+            && [error.domain isEqualToString:WidgetManagerErrorDomain]
+            && error.code == WidgetManagerErrorCodeTermsNotSigned)
+        {
+            [self presentTermsForWidget:widget];
+        }
+        else
+        {
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+        }
+    }];
+}
+
+#pragma mark - Service terms
+
+- (void)presentTermsForWidget:(Widget*)widget
+{
+    if (self.serviceTermsModalCoordinatorBridgePresenter)
+    {
+        return;
+    }
+    
+    WidgetManagerConfig *config =  [[WidgetManager sharedManager] configForUser:widget.mxSession.myUser.userId];
+    
+    NSLog(@"[WidgetVC] presentTerms for %@", config.baseUrl);
+    
+    ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:widget.mxSession baseUrl:config.baseUrl
+                                                                                                                                                        serviceType:MXServiceTypeIntegrationManager
+                                                                                                                                                       outOfContext:NO
+                                                                                                                                                        accessToken:config.scalarToken];
+    serviceTermsModalCoordinatorBridgePresenter.delegate = self;
+    
+    [serviceTermsModalCoordinatorBridgePresenter presentFrom:self.presentingViewController animated:YES];
+    self.serviceTermsModalCoordinatorBridgePresenter = serviceTermsModalCoordinatorBridgePresenter;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    MXWeakify(self);
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        MXStrongifyAndReturnIfNil(self);
+        
+        if (self.selectedWidget)
+        {
+            [self fetchWidgetURLAndDisplayUsingWidget:self.selectedWidget canPresentServiceTerms:NO];
+        }
+    }];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter session:(MXSession * _Nonnull)session
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
+}
 
 @end
