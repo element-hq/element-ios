@@ -14,6 +14,10 @@ internal enum VectorL10n {
   internal static var accept: String { 
     return VectorL10n.tr("Vector", "accept") 
   }
+  /// checkbox
+  internal static var accessibilityCheckboxLabel: String { 
+    return VectorL10n.tr("Vector", "accessibility_checkbox_label") 
+  }
   /// Logout all accounts
   internal static var accountLogoutAll: String { 
     return VectorL10n.tr("Vector", "account_logout_all") 
@@ -2585,6 +2589,10 @@ internal enum VectorL10n {
   /// Accept the terms of the identity server (%@) to discover contacts.
   internal static func serviceTermsModalMessageIdentityServer(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "service_terms_modal_message_identity_server", p1)
+  }
+  /// Check to accept %@
+  internal static func serviceTermsModalPolicyCheckboxAccessibilityHint(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "service_terms_modal_policy_checkbox_accessibility_hint", p1)
   }
   /// Terms Of Service
   internal static var serviceTermsModalTitle: String { 
