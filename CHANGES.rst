@@ -11,6 +11,7 @@ Improvements:
  * Widgets: Add a contextual menu to refresh, open outside, remove and revoke the permission (#2834).
  * Settings: Add an option for disabling use of the integration manager (#2843).
  * Jitsi: Display room name, user name and user avatar in the conference screen.
+ * Improve UNNotificationSound compatibility with MA4 (IMA/ADPCM) file.
 
 Changes in 0.10.2 (2019-11-15)
 ===============================================
