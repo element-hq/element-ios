@@ -1402,6 +1402,9 @@
 		B1C562E0228C7C8C0037F12A /* RoomContextualMenuViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RoomContextualMenuViewController.storyboard; sourceTree = "<group>"; };
 		B1C562E6228C7CF10037F12A /* ContextualMenuItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextualMenuItemView.swift; sourceTree = "<group>"; };
 		B1C562E7228C7CF20037F12A /* ContextualMenuItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContextualMenuItemView.xib; sourceTree = "<group>"; };
+		B1C6FFE723954CE70055347B /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B1C6FFE823954D3B0055347B /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B1C6FFE923954D4B0055347B /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Vector.strings; sourceTree = "<group>"; };
 		B1CA3A2621EF6913000D1D89 /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		B1CA3A2821EF692B000D1D89 /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		B1CE9EFC22148703000FAE6A /* SignOutAlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignOutAlertPresenter.swift; sourceTree = "<group>"; };
@@ -3994,6 +3997,7 @@
 				hu,
 				pl,
 				cy,
+				it,
 			);
 			mainGroup = F094A9991B78D8F000B1FBBF;
 			productRefGroup = F094A9A31B78D8F000B1FBBF /* Products */;
@@ -4853,6 +4857,7 @@
 				3D78489521ACA25300B98A7D /* hu */,
 				32DAF8DD231813E100654A44 /* pl */,
 				325789A7237AB297009388E6 /* cy */,
+				B1C6FFE923954D4B0055347B /* it */,
 			);
 			name = Vector.strings;
 			sourceTree = "<group>";
@@ -4877,6 +4882,7 @@
 				3D78489321ACA25200B98A7D /* hu */,
 				32DAF8DB231813C800654A44 /* pl */,
 				325789A5237AB241009388E6 /* cy */,
+				B1C6FFE723954CE70055347B /* it */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -4901,6 +4907,7 @@
 				3D78489421ACA25300B98A7D /* hu */,
 				32DAF8DC231813D500654A44 /* pl */,
 				325789A6237AB27F009388E6 /* cy */,
+				B1C6FFE823954D3B0055347B /* it */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

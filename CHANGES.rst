@@ -4,6 +4,7 @@ Changes in 0.10.3 (2019-xx-xx)
 Improvements:
  * Integrations: Use the integrations manager provided by the homeserver admin via .well-known (#2815).
  * i18n: Add Welsh (cy).
+ * i18n: Add Italian (it).
  * SerializationService: Add deserialisation of Any.
  * RiotSharedSettings: New class to handle user settings shared accross Riot apps.
  * Widgets: Check user permission before opening a widget (#2833).
