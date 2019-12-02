@@ -915,3 +915,11 @@
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Добавете сървър за самоличност в настройки за да каните по имейл.";
 "error_not_supported_on_mobile" = "Не може да правите това от %@ мобилен телефон.";
+"settings_integrations" = "ИНТЕГРАЦИИ";
+"settings_integrations_allow_button" = "Управлявай интеграциите";
+"settings_integrations_allow_description" = "Използвайте мениджър на интеграции (%@) за да управлявате ботове, мостове към други мрежи, приспособления и стикери.\n\nМениджърите на интеграции получават данни за конфигурация, могат да модифицират приспособления, да пращат покани в стаи и да контролират нивата на достъп вместо вас.";
+"widget_menu_refresh" = "Опресни";
+"widget_menu_open_outside" = "Отвори в браузър";
+"widget_menu_revoke_permission" = "Премахни достъпа за мен";
+"widget_menu_remove" = "Премахни за всички";
+"widget_integration_manager_disabled" = "Необходимо е да включите мениджър на интеграции от настройки";

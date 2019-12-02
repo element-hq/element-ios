@@ -921,3 +921,22 @@
 "settings_add_3pid_password_message" = "A folytatáshoz add meg a jelszavadat";
 "settings_add_3pid_invalid_password_message" = "Érvénytelen jelszó";
 "error_not_supported_on_mobile" = "%@ mobilról ezt nem teheted meg.";
+"widget_menu_refresh" = "Frissítés";
+"widget_menu_open_outside" = "Megnyitás böngészőben";
+"widget_menu_revoke_permission" = "Hozzáférés megvonása magamtól";
+"widget_menu_remove" = "Visszavonás mindenkitől";
+"settings_integrations" = "INTEGRÁCIÓK";
+"settings_integrations_allow_button" = "Integrációk kezelése";
+"settings_integrations_allow_description" = "Botok, hidak, kisalkalmazások és matrica csomagok kezeléséhez használj Integrációs Menedzsert (%@).\n\nIntegrációs Menedzser megkapja a konfigurációt, módosíthat kisalkalmazásokat, szobához meghívót küldhet és a hozzáférési szintet beállíthatja helyetted.";
+"widget_integration_manager_disabled" = "Az integrációs menedzsert engedélyezned kell a beállításokban";
+// Room widget permissions
+"room_widget_permission_title" = "Kisalkalmazás betöltése";
+"room_widget_permission_creator_info_title" = "Ezt a kisalkalmazást hozzáadta:";
+"room_widget_permission_webview_information_title" = "A használatához lehet, hogy sütiket kell használni és adat lesz megosztva ezzel: %@:\n";
+"room_widget_permission_information_title" = "A használatához lehet, hogy adat lesz megosztva ezzel: %@:\n";
+"room_widget_permission_display_name_permission" = "Megjelenítési neved";
+"room_widget_permission_avatar_url_permission" = "Profilképed URL-je";
+"room_widget_permission_user_id_permission" = "Felhasználói azonosítód";
+"room_widget_permission_theme_permission" = "Témád";
+"room_widget_permission_widget_id_permission" = "Kisalkalmazás azon.";
+"room_widget_permission_room_id_permission" = "Szoba azonosító";

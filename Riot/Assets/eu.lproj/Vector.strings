@@ -904,3 +904,22 @@
 "settings_add_3pid_password_message" = "Jarraitzeko sartu zure pasahitza";
 "settings_add_3pid_invalid_password_message" = "Pasahitz baliogabea";
 "error_not_supported_on_mobile" = "Ezin duzu hau %@ mugikorretik egin.";
+"settings_integrations" = "INTEGRAZIOAK";
+"settings_integrations_allow_button" = "Kudeatu integrazioak";
+"settings_integrations_allow_description" = "Erabili integrazio kudeatzaileren bat botak, zubiak, trepetak eta eranskailu multzoak kudeatzeko.\n\nIntegrazio kudeatzaileek konfigurazio datuak jasotzen dituzte, eta trepetak aldatu ditzakete, gelarako gonbidapenak bidali, eta botere mailak zure izenean ezarri.";
+"widget_menu_refresh" = "Freskatu";
+"widget_menu_open_outside" = "Ireki nabigatzailean";
+"widget_menu_revoke_permission" = "Indargabetu sarbidea niretzat";
+"widget_menu_remove" = "Kendu denentzat";
+"widget_integration_manager_disabled" = "Integrazio kudeatzaileak gaitu behar dituzu ezarpenetan";
+// Room widget permissions
+"room_widget_permission_title" = "Kargatu trepeta";
+"room_widget_permission_creator_info_title" = "Trepeta hau honek gehitu du:";
+"room_widget_permission_webview_information_title" = "Hau erabiltzean cookieak ezarri litezke eta %@ zerbitzariarekin datuak partekatu:\n";
+"room_widget_permission_information_title" = "Hau erabiltzean %@ zerbitzariarekin datuak partekatu litezke:\n";
+"room_widget_permission_display_name_permission" = "Zure pantaila-izena";
+"room_widget_permission_avatar_url_permission" = "Zure abatarraren URL-a";
+"room_widget_permission_user_id_permission" = "Zure erabiltzaile ID-a";
+"room_widget_permission_theme_permission" = "Zure gaia";
+"room_widget_permission_widget_id_permission" = "Trepetaren ID-a";
+"room_widget_permission_room_id_permission" = "Gelaren ID-a";

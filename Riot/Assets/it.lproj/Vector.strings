@@ -7,7 +7,7 @@
 "title_groups" = "Comunità";
 "warning" = "Attenzione";
 "next" = "Prossimo";
-"leave" = "Lascia";
+"leave" = "Esci";
 "remove" = "Rimuovi";
 "invite" = "Invita";
 "cancel" = "Annulla";
@@ -61,7 +61,7 @@
 // String for App Store
 "store_short_description" = "Conversazioni sicure e decentralizzate";
 // Actions
-"view" = "Vedi";
+"view" = "Visualizza";
 "back" = "Indietro";
 "continue" = "Continua";
 "create" = "Crea";
@@ -391,7 +391,7 @@
 "settings_key_backup_delete_confirmation_prompt_title" = "Elimina backup";
 "settings_key_backup_delete_confirmation_prompt_msg" = "Sei sicuro? Se non hai eseguito un Backup delle Chiavi perderai i tuoi messaggi crittografati.";
 // Room Details
-"room_details_title" = "Dettagli stanza";
+"room_details_title" = "Dettagli canale";
 "room_details_people" = "Membri";
 "room_details_files" = "File";
 "room_details_settings" = "Impostazioni";
@@ -891,3 +891,22 @@
 "settings_add_3pid_password_message" = "Per continuare, inserisci la tua password";
 "settings_add_3pid_invalid_password_message" = "Password non valida";
 "error_not_supported_on_mobile" = "Non puoi farlo da %@ mobile.";
+"widget_menu_refresh" = "Ricarica";
+"widget_menu_open_outside" = "Apri nel browser";
+"widget_menu_revoke_permission" = "Revoca l'accesso a me";
+"widget_menu_remove" = "Rimuovi per tutti";
+"settings_integrations" = "INTEGRAZIONI";
+"settings_integrations_allow_button" = "Gestisci le integrazioni";
+"settings_integrations_allow_description" = "Usa un gestore di integrazioni (%@) per gestire bot, bridge, widget e pacchetti di adesivi.\n\nI gestori di integrazione ricevono dati di configurazione e possono modificare widget, inviare inviti alla stanza, assegnare permessi a tuo nome.";
+"widget_integration_manager_disabled" = "Devi attivare il gestore di integrazioni nelle impostazioni";
+// Room widget permissions
+"room_widget_permission_title" = "Carica widget";
+"room_widget_permission_creator_info_title" = "Questo widget è stato aggiunto da:";
+"room_widget_permission_webview_information_title" = "Usarlo potrebbe impostare cookie e condividere dati con %@:\n";
+"room_widget_permission_information_title" = "Usarlo potrebbe condividere dati con %@:\n";
+"room_widget_permission_display_name_permission" = "Il tuo nome visualizzato";
+"room_widget_permission_avatar_url_permission" = "Il tuo URL dell'avatar";
+"room_widget_permission_user_id_permission" = "Il tuo ID utente";
+"room_widget_permission_theme_permission" = "Il tuo tema";
+"room_widget_permission_widget_id_permission" = "ID widget";
+"room_widget_permission_room_id_permission" = "ID stanza";

@@ -897,3 +897,10 @@
 "settings_add_3pid_invalid_password_message" = "Ungültiges Passwort";
 "identity_server_settings_disconnect_info" = "Wenn Sie die Verbindung zu Ihrem Identitätsserver trennen, werden Sie von anderen Benutzern nicht erkannt und können andere per E-Mail oder Telefon einladen.";
 "error_not_supported_on_mobile" = "Dies ist in %@ mobile nicht möglich.";
+"settings_integrations" = "INTEGRATIONEN";
+"settings_integrations_allow_button" = "Integrationen verwalten";
+"widget_menu_refresh" = "Aktualisierung";
+"widget_menu_open_outside" = "Im Browser öffnen";
+"widget_menu_revoke_permission" = "Zugriff für mich widerrufen";
+"widget_menu_remove" = "Für alle entfernen";
+"widget_integration_manager_disabled" = "Sie müssen den Integration Manager in den Einstellungen aktivieren";
