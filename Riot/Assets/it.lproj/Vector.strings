@@ -899,3 +899,14 @@
 "settings_integrations_allow_button" = "Gestisci le integrazioni";
 "settings_integrations_allow_description" = "Usa un gestore di integrazioni (%@) per gestire bot, bridge, widget e pacchetti di adesivi.\n\nI gestori di integrazione ricevono dati di configurazione e possono modificare widget, inviare inviti alla stanza, assegnare permessi a tuo nome.";
 "widget_integration_manager_disabled" = "Devi attivare il gestore di integrazioni nelle impostazioni";
+// Room widget permissions
+"room_widget_permission_title" = "Carica widget";
+"room_widget_permission_creator_info_title" = "Questo widget è stato aggiunto da:";
+"room_widget_permission_webview_information_title" = "Usarlo potrebbe impostare cookie e condividere dati con %@:\n";
+"room_widget_permission_information_title" = "Usarlo potrebbe condividere dati con %@:\n";
+"room_widget_permission_display_name_permission" = "Il tuo nome visualizzato";
+"room_widget_permission_avatar_url_permission" = "Il tuo URL dell'avatar";
+"room_widget_permission_user_id_permission" = "Il tuo ID utente";
+"room_widget_permission_theme_permission" = "Il tuo tema";
+"room_widget_permission_widget_id_permission" = "ID widget";
+"room_widget_permission_room_id_permission" = "ID stanza";
