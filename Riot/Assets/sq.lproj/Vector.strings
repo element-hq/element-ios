@@ -891,3 +891,22 @@
 "identity_server_settings_alert_disconnect_title" = "Shkëpute shërbyesin e identiteteve";
 "identity_server_settings_alert_disconnect" = "Të bëhet shkëputja nga shërbyesi i identiteteve %@?";
 "identity_server_settings_alert_disconnect_button" = "Shkëpute";
+"identity_server_settings_alert_disconnect_still_sharing_3pid" = "Ende ndani me të tjerët të dhëna tuajat personale në shërbyesin e identiteteve %@.\n\nKëshillojmë që të hiqni prej shërbyesit të identiteteve adresat tuaj email dhe numrat tuaj të telefonave përpara se të bëni shkëputjen.";
+"identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "Shkëputu, sido qoftë";
+"identity_server_settings_alert_error_terms_not_accepted" = "Duhet të pranoni termat e %@ që ta caktoni si shërbyes identitetesh.";
+"identity_server_settings_alert_error_invalid_identity_server" = "%@ s’është shërbyes i vlershëm identitetesh.";
+"call_no_stun_server_error_title" = "Thirrja dështoi për shkak shërbyesi të keqformësuar";
+"call_no_stun_server_error_message_1" = "Që thirrjet të funksionojnë pa probleme, ju lutemi, kërkojini përgjegjësit të shërbyesit tuaj Home %@ të formësojë një shërbyes TURN.";
+"call_no_stun_server_error_message_2" = "Ndryshe, mund të provoni të përdorni shërbyesin publik te %@, por kjo s’do të jetë edhe aq e qëndrueshme, dhe adresa juaj IP do t’i bëhet e njohur atij shërbyesi. Këtë mund ta bëni edhe që nga Rregullimet";
+"call_no_stun_server_error_use_fallback_button" = "Provoni të përdorni %@";
+// Widget Picker
+"widget_picker_title" = "Integrime";
+"service_terms_modal_decline_button" = "Hidhe poshtë";
+"service_terms_modal_description_for_identity_server_1" = "Gjeni të tjerë përmes telefoni ose email-i";
+"service_terms_modal_description_for_identity_server_2" = "Bëhuni i gjetshëm përmes telefoni  ose email-i";
+// Service terms - Variant for identity server when displayed out of a context
+"service_terms_modal_title_identity_server" = "Zbulim kontaktesh";
+"service_terms_modal_message_identity_server" = "Që të zbuloni kontakte, pranoni kushtet e shërbyesit të identiteteve (%@).";
+// Generic errors
+"error_invite_3pid_with_no_identity_server" = "Që të ftoni me email, shtoni një shërbyes identitetesh, që nga rregullimet tuaja.";
+"error_not_supported_on_mobile" = "Këtë s’mund ta bëni nga %@ për celular.";
