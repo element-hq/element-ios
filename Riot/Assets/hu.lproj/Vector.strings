@@ -940,3 +940,4 @@
 "room_widget_permission_theme_permission" = "Témád";
 "room_widget_permission_widget_id_permission" = "Kisalkalmazás azon.";
 "room_widget_permission_room_id_permission" = "Szoba azonosító";
+"widget_picker_manage_integrations" = "Integrációk kezelése…";
