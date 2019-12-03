@@ -58,6 +58,9 @@
 "sending" = "Sending";
 "close" = "Close";
 
+// Accessibility
+"accessibility_checkbox_label" = "checkbox";
+
 // Authentication
 "auth_login" = "Log in";
 "auth_register" = "Register";
@@ -826,6 +829,7 @@
 "service_terms_modal_title_identity_server" = "Contact discovery";
 "service_terms_modal_message_identity_server" = "Accept the terms of the identity server (%@) to discover contacts.";
 
+"service_terms_modal_policy_checkbox_accessibility_hint" = "Check to accept %@";
 
 // Deactivate account
 
