@@ -375,7 +375,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(nullable NSDictionary *)launchOptions
 {
     // Create message sound
-    NSURL *messageSoundURL = [[NSBundle mainBundle] URLForResource:@"message" withExtension:@"mp3"];
+    NSURL *messageSoundURL = [[NSBundle mainBundle] URLForResource:@"message" withExtension:@"caf"];
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)messageSoundURL, &_messageSound);
     
     NSLog(@"[AppDelegate] willFinishLaunchingWithOptions: Done");
@@ -1566,7 +1566,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                 soundName = action.parameters[@"value"];
                 if ([soundName isEqualToString:@"default"])
                 {
-                    soundName = @"message.mp3";
+                    soundName = @"message.caf";
                 }
             }
         }
