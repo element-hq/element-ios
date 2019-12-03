@@ -13,6 +13,9 @@ Improvements:
  * Settings: Add an option for disabling use of the integration manager (#2843).
  * Jitsi: Display room name, user name and user avatar in the conference screen.
 
+Bug fix:
+ * Accessibility: Make checkboxes accessible in terms of service screen.
+
 Changes in 0.10.2 (2019-11-15)
 ===============================================
 
