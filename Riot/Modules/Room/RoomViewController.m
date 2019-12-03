@@ -228,6 +228,7 @@
 @property (nonatomic, strong) ReactionHistoryCoordinatorBridgePresenter *reactionHistoryCoordinatorBridgePresenter;
 @property (nonatomic, strong) CameraPresenter *cameraPresenter;
 @property (nonatomic, strong) MediaPickerCoordinatorBridgePresenter *mediaPickerPresenter;
+@property (nonatomic, strong) RoomMessageURLParser *roomMessageURLParser;
 
 @end
 
@@ -423,6 +424,7 @@
     
     self.roomContextualMenuPresenter = [RoomContextualMenuPresenter new];
     self.errorPresenter = [MXKErrorAlertPresentation new];
+    self.roomMessageURLParser = [RoomMessageURLParser new];
     
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -2915,6 +2917,13 @@
         // Retrieve the type of interaction expected with the URL (See UITextItemInteraction)
         NSNumber *urlItemInteractionValue = userInfo[kMXKRoomBubbleCellUrlItemInteraction];
         
+        RoomMessageURLType roomMessageURLType = RoomMessageURLTypeUnknown;
+        
+        if (url)
+        {
+            roomMessageURLType = [self.roomMessageURLParser parseURL:url];
+        }
+        
         // When a link refers to a room alias/id, a user id or an event id, the non-ASCII characters (like '#' in room alias) has been escaped
         // to be able to convert it into a legal URL string.
         NSString *absoluteURLString = [url.absoluteString stringByRemovingPercentEncoding];
@@ -3007,19 +3016,40 @@
             // Fallback case for external links
             switch (urlItemInteractionValue.integerValue) {
                 case UITextItemInteractionInvokeDefaultAction:
-                {                    
-                    [[UIApplication sharedApplication] vc_open:url completionHandler:^(BOOL success) {
-                        if (!success)
-                        {
-                            [self showUnableToOpenLinkErrorAlert];
-                        }
-                    }];
-                    shouldDoAction = NO;
+                {
+                    switch (roomMessageURLType) {
+                        case RoomMessageURLTypeAppleDataDetector:
+                            // Keep the default OS behavior on single tap when UITextView data detector detect a known type.
+                            shouldDoAction = YES;
+                            break;
+                        case RoomMessageURLTypeDummy:
+                            // Do nothing for dummy links
+                            shouldDoAction = NO;
+                            break;
+                        default:
+                            // Try to open the link
+                            [[UIApplication sharedApplication] vc_open:url completionHandler:^(BOOL success) {
+                                if (!success)
+                                {
+                                    [self showUnableToOpenLinkErrorAlert];
+                                }
+                            }];
+                            shouldDoAction = NO;
+                            break;
+                    }                                        
                 }
                     break;
                 case UITextItemInteractionPresentActions:
                 {
-                    // Long press on link, present room contextual menu.
+                    // Retrieve the tapped event
+                    MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
+                    
+                    if (tappedEvent)
+                    {
+                        // Long press on link, present room contextual menu.
+                        [self showContextualMenuForEvent:tappedEvent fromSingleTapGesture:NO cell:cell animated:YES];
+                    }
+                    
                     shouldDoAction = NO;
                 }
                     break;
