@@ -16,6 +16,8 @@ Improvements:
 
 Bug fix:
  * Accessibility: Make checkboxes accessible in terms of service screen.
+ * RoomVC: Tapping on location links gives 'unable to open link' (#2803).
+ * RoomVC: Reply to links fail with 'unable to open link' (#2804).
 
 Changes in 0.10.2 (2019-11-15)
 ===============================================
