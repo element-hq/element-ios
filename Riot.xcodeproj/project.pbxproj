@@ -168,6 +168,7 @@
 		B125FE1F231D5DF700B72806 /* SettingsDiscoveryViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B125FE1E231D5DF700B72806 /* SettingsDiscoveryViewModelType.swift */; };
 		B125FE21231D5E1D00B72806 /* SettingsDiscoveryViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B125FE20231D5E1D00B72806 /* SettingsDiscoveryViewAction.swift */; };
 		B125FE23231D5E4300B72806 /* SettingsDiscoveryViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B125FE22231D5E4300B72806 /* SettingsDiscoveryViewState.swift */; };
+		B12C56EF2396CB5E00FAC6DE /* RoomMessageURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12C56EE2396CB5E00FAC6DE /* RoomMessageURLParser.swift */; };
 		B139C21B21FE5B9200BB68EC /* KeyBackupRecoverFromPassphraseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B139C21A21FE5B9100BB68EC /* KeyBackupRecoverFromPassphraseViewModel.swift */; };
 		B139C21D21FE5BF500BB68EC /* KeyBackupRecoverFromPassphraseViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B139C21C21FE5BF500BB68EC /* KeyBackupRecoverFromPassphraseViewModelType.swift */; };
 		B139C21F21FE5D6600BB68EC /* KeyBackupRecoverFromPassphraseViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B139C21E21FE5D6600BB68EC /* KeyBackupRecoverFromPassphraseViewAction.swift */; };
@@ -844,6 +845,7 @@
 		B125FE1E231D5DF700B72806 /* SettingsDiscoveryViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDiscoveryViewModelType.swift; sourceTree = "<group>"; };
 		B125FE20231D5E1D00B72806 /* SettingsDiscoveryViewAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDiscoveryViewAction.swift; sourceTree = "<group>"; };
 		B125FE22231D5E4300B72806 /* SettingsDiscoveryViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDiscoveryViewState.swift; sourceTree = "<group>"; };
+		B12C56EE2396CB5E00FAC6DE /* RoomMessageURLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomMessageURLParser.swift; sourceTree = "<group>"; };
 		B139C21A21FE5B9100BB68EC /* KeyBackupRecoverFromPassphraseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverFromPassphraseViewModel.swift; sourceTree = "<group>"; };
 		B139C21C21FE5BF500BB68EC /* KeyBackupRecoverFromPassphraseViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverFromPassphraseViewModelType.swift; sourceTree = "<group>"; };
 		B139C21E21FE5D6600BB68EC /* KeyBackupRecoverFromPassphraseViewAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverFromPassphraseViewAction.swift; sourceTree = "<group>"; };
@@ -2039,6 +2041,14 @@
 				B157FA9623264AE800EBFBD4 /* ThreePidDetails */,
 			);
 			path = Discovery;
+			sourceTree = "<group>";
+		};
+		B12C56ED2396CB0100FAC6DE /* RoomMessageLinkParser */ = {
+			isa = PBXGroup;
+			children = (
+				B12C56EE2396CB5E00FAC6DE /* RoomMessageURLParser.swift */,
+			);
+			path = RoomMessageLinkParser;
 			sourceTree = "<group>";
 		};
 		B14F142522144F6400FA0595 /* RecoveryKey */ = {
@@ -3459,6 +3469,7 @@
 		B1B5597C20EFC3DF00210D55 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				B12C56ED2396CB0100FAC6DE /* RoomMessageLinkParser */,
 				B1B9DED822E9B7120065E677 /* Serialization */,
 				B1FDF56321F68C0700BA3834 /* PasswordStrength */,
 				B1798300211B137B001FD722 /* OnBoarding */,
@@ -4577,6 +4588,7 @@
 				B139C21D21FE5BF500BB68EC /* KeyBackupRecoverFromPassphraseViewModelType.swift in Sources */,
 				B157FA9F23264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinator.swift in Sources */,
 				B1C45A8B232A8C2600165425 /* SettingsIdentityServerViewModel.swift in Sources */,
+				B12C56EF2396CB5E00FAC6DE /* RoomMessageURLParser.swift in Sources */,
 				B1C45A86232A8C2600165425 /* SettingsIdentityServerViewModelType.swift in Sources */,
 				F083BE031E7009ED00A9B29C /* EventFormatter.m in Sources */,
 				B157FAA623264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsViewController.swift in Sources */,
