@@ -46,44 +46,44 @@ PODS:
   - JitsiMeetSDK (2.3.1)
   - libbase58 (0.1.4)
   - libPhoneNumber-iOS (0.9.15)
-  - MatomoTracker (6.0.1):
-    - MatomoTracker/Core (= 6.0.1)
-  - MatomoTracker/Core (6.0.1)
-  - MatrixKit (0.11.2):
+  - MatomoTracker (7.2.0):
+    - MatomoTracker/Core (= 7.2.0)
+  - MatomoTracker/Core (7.2.0)
+  - MatrixKit (0.11.3):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.11.2)
-    - MatrixSDK (= 0.15.0)
+    - MatrixKit/Core (= 0.11.3)
+    - MatrixSDK (= 0.15.2)
     - SwiftUTI (~> 1.0.6)
-  - MatrixKit/AppExtension (0.11.2):
+  - MatrixKit/AppExtension (0.11.3):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - DTCoreText/Extension
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.15.0)
+    - MatrixSDK (= 0.15.2)
     - SwiftUTI (~> 1.0.6)
-  - MatrixKit/Core (0.11.2):
+  - MatrixKit/Core (0.11.3):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.15.0)
+    - MatrixSDK (= 0.15.2)
     - SwiftUTI (~> 1.0.6)
-  - MatrixSDK (0.15.0):
-    - MatrixSDK/Core (= 0.15.0)
-  - MatrixSDK/Core (0.15.0):
+  - MatrixSDK (0.15.2):
+    - MatrixSDK/Core (= 0.15.2)
+  - MatrixSDK/Core (0.15.2):
     - AFNetworking (~> 3.2.0)
     - GZIP (~> 1.2.2)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.1.0)
     - Realm (~> 3.17.3)
-  - MatrixSDK/JingleCallStack (0.15.0):
+  - MatrixSDK/JingleCallStack (0.15.2):
     - JitsiMeetSDK (~> 2.3.1)
     - MatrixSDK/Core
-  - MatrixSDK/SwiftSupport (0.15.0):
+  - MatrixSDK/SwiftSupport (0.15.2):
     - MatrixSDK/Core
   - OLMKit (3.1.0):
     - OLMKit/olmc (= 3.1.0)
@@ -107,9 +107,9 @@ DEPENDENCIES:
   - cmark
   - DGCollectionViewLeftAlignFlowLayout (~> 1.0.4)
   - GBDeviceInfo (~> 6.3.0)
-  - MatomoTracker (~> 6.0.1)
-  - MatrixKit (= 0.11.2)
-  - MatrixKit/AppExtension (= 0.11.2)
+  - MatomoTracker (~> 7.2.0)
+  - MatrixKit (= 0.11.3)
+  - MatrixKit/AppExtension (= 0.11.3)
   - MatrixSDK/JingleCallStack
   - MatrixSDK/SwiftSupport
   - OLMKit
@@ -164,9 +164,9 @@ SPEC CHECKSUMS:
   JitsiMeetSDK: 69e4978fbab21f9a535d1bec3b8d43721a4c72b2
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
-  MatomoTracker: 3ae4f65a1f5ace8043bda7244888fee28a734de5
-  MatrixKit: 7f681c9086509a4f5e6e7172ce00f552cba1f8bc
-  MatrixSDK: 342384d62bac5d95a31a7dab79e5f687bd87ddca
+  MatomoTracker: 6f89e2561083685a360e223fb663e9ccd57c1d1a
+  MatrixKit: 5a20025b05490a70694b701e607ec75e0988af21
+  MatrixSDK: f83bd3c5519c1cb9ac3998f6423574cf528f0250
   OLMKit: 4ee0159d63feeb86d836fdcfefe418e163511639
   Realm: 5a1d9d47bfc101dd597668b1a8af4288a2557f6d
   Reusable: 82be188f29d96dc5eff0db7b2393bcc08d2cdd5b
@@ -175,6 +175,6 @@ SPEC CHECKSUMS:
   SwiftUTI: 917993c124f8eac25e88ced0202fc58d7eb50fa8
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
 
-PODFILE CHECKSUM: 32e1f5dcb15429b0ecff04da8ebce193f145edb5
+PODFILE CHECKSUM: 881048fb17d68dd834b18e23929482600daca7f3
 
 COCOAPODS: 1.8.4

@@ -224,11 +224,23 @@ final class ServiceTermsModalScreenViewController: UIViewController {
         guard let policyIndex = sender.view?.tag else {
             return
         }
+        
+        let isCheckBoxSelected: Bool
 
         if self.checkedPolicies.contains(policyIndex) {
             self.checkedPolicies.remove(policyIndex)
+            isCheckBoxSelected = false
         } else {
             checkedPolicies.insert(policyIndex)
+            isCheckBoxSelected = true
+        }
+        
+        if let checkBoxImageView = sender.view as? UIImageView {
+            if isCheckBoxSelected {
+                checkBoxImageView.accessibilityTraits.insert(.selected)
+            } else {
+                checkBoxImageView.accessibilityTraits.remove(.selected)
+            }
         }
 
         self.refreshViews()
@@ -275,6 +287,11 @@ extension ServiceTermsModalScreenViewController: UITableViewDataSource {
             checkBox.isUserInteractionEnabled = true
             checkBox.tag = indexPath.row
             checkBox.addGestureRecognizer(gesture)
+            
+            checkBox.isAccessibilityElement = true
+            checkBox.accessibilityTraits = .button
+            checkBox.accessibilityLabel = VectorL10n.accessibilityCheckboxLabel
+            checkBox.accessibilityHint = VectorL10n.serviceTermsModalPolicyCheckboxAccessibilityHint(policy.name)
         }
 
         return cell

@@ -1,9 +1,35 @@
+Changes in 0.10.4 (2019-xx-xx)
+===============================================
+
+
+Changes in 0.10.3 (2019-12-05)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.11.3](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.11.3)).
+ * Integrations: Use the integrations manager provided by the homeserver admin via .well-known (#2815).
+ * i18n: Add Welsh (cy).
+ * i18n: Add Italian (it).
+ * SerializationService: Add deserialisation of Any.
+ * RiotSharedSettings: New class to handle user settings shared accross Riot apps.
+ * Widgets: Check user permission before opening a widget (#2833).
+ * Widgets: Check user permission before opening jitsi (#2842).
+ * Widgets: Add a contextual menu to refresh, open outside, remove and revoke the permission (#2834).
+ * Settings: Add an option for disabling use of the integration manager (#2843).
+ * Jitsi: Display room name, user name and user avatar in the conference screen.
+ * Improve UNNotificationSound compatibility with MA4 (IMA/ADPCM) file, thanks to @pixlwave (PR #2847).
+
+Bug fix:
+ * Accessibility: Make checkboxes accessible in terms of service screen.
+ * RoomVC: Tapping on location links gives 'unable to open link' (#2803).
+ * RoomVC: Reply to links fail with 'unable to open link' (#2804).
+
 Changes in 0.10.2 (2019-11-15)
 ===============================================
 
 Bug fix:
  * Integrations: Fix terms consent display when they are required.
- 
+
 Changes in 0.10.1 (2019-11-06)
 ===============================================
 

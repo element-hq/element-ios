@@ -7,7 +7,7 @@ use_frameworks!
 
 # Different flavours of pods to MatrixKit
 # The current MatrixKit pod version
-$matrixKitVersion = '0.11.2'
+$matrixKitVersion = '0.11.3'
 
 # The develop branch version
 #$matrixKitVersion = 'develop'
@@ -64,7 +64,7 @@ abstract_target 'RiotPods' do
     pod 'SwiftUTI', :git => 'https://github.com/speramusinc/SwiftUTI.git', :branch => 'master'
 
     # Piwik for analytics
-    pod 'MatomoTracker', '~> 6.0.1'
+    pod 'MatomoTracker', '~> 7.2.0'
 
     # Remove warnings from "bad" pods
     pod 'OLMKit', :inhibit_warnings => true

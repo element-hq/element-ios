@@ -14,6 +14,10 @@ internal enum VectorL10n {
   internal static var accept: String { 
     return VectorL10n.tr("Vector", "accept") 
   }
+  /// checkbox
+  internal static var accessibilityCheckboxLabel: String { 
+    return VectorL10n.tr("Vector", "accessibility_checkbox_label") 
+  }
   /// Logout all accounts
   internal static var accountLogoutAll: String { 
     return VectorL10n.tr("Vector", "account_logout_all") 
@@ -2474,6 +2478,46 @@ internal enum VectorL10n {
   internal static var roomWarningAboutEncryption: String { 
     return VectorL10n.tr("Vector", "room_warning_about_encryption") 
   }
+  /// Your avatar URL
+  internal static var roomWidgetPermissionAvatarUrlPermission: String { 
+    return VectorL10n.tr("Vector", "room_widget_permission_avatar_url_permission") 
+  }
+  /// This widget was added by:
+  internal static var roomWidgetPermissionCreatorInfoTitle: String { 
+    return VectorL10n.tr("Vector", "room_widget_permission_creator_info_title") 
+  }
+  /// Your display name
+  internal static var roomWidgetPermissionDisplayNamePermission: String { 
+    return VectorL10n.tr("Vector", "room_widget_permission_display_name_permission") 
+  }
+  /// Using it may share data with %@:\n
+  internal static func roomWidgetPermissionInformationTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_widget_permission_information_title", p1)
+  }
+  /// Room ID
+  internal static var roomWidgetPermissionRoomIdPermission: String { 
+    return VectorL10n.tr("Vector", "room_widget_permission_room_id_permission") 
+  }
+  /// Your theme
+  internal static var roomWidgetPermissionThemePermission: String { 
+    return VectorL10n.tr("Vector", "room_widget_permission_theme_permission") 
+  }
+  /// Load Widget
+  internal static var roomWidgetPermissionTitle: String { 
+    return VectorL10n.tr("Vector", "room_widget_permission_title") 
+  }
+  /// Your user ID
+  internal static var roomWidgetPermissionUserIdPermission: String { 
+    return VectorL10n.tr("Vector", "room_widget_permission_user_id_permission") 
+  }
+  /// Using it may set cookies and share data with %@:\n
+  internal static func roomWidgetPermissionWebviewInformationTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_widget_permission_webview_information_title", p1)
+  }
+  /// Widget ID
+  internal static var roomWidgetPermissionWidgetIdPermission: String { 
+    return VectorL10n.tr("Vector", "room_widget_permission_widget_id_permission") 
+  }
   /// Save
   internal static var save: String { 
     return VectorL10n.tr("Vector", "save") 
@@ -2545,6 +2589,10 @@ internal enum VectorL10n {
   /// Accept the terms of the identity server (%@) to discover contacts.
   internal static func serviceTermsModalMessageIdentityServer(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "service_terms_modal_message_identity_server", p1)
+  }
+  /// Check to accept %@
+  internal static func serviceTermsModalPolicyCheckboxAccessibilityHint(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "service_terms_modal_policy_checkbox_accessibility_hint", p1)
   }
   /// Terms Of Service
   internal static var serviceTermsModalTitle: String { 
@@ -2809,6 +2857,18 @@ internal enum VectorL10n {
   /// IGNORED USERS
   internal static var settingsIgnoredUsers: String { 
     return VectorL10n.tr("Vector", "settings_ignored_users") 
+  }
+  /// INTEGRATIONS
+  internal static var settingsIntegrations: String { 
+    return VectorL10n.tr("Vector", "settings_integrations") 
+  }
+  /// Manage integrations
+  internal static var settingsIntegrationsAllowButton: String { 
+    return VectorL10n.tr("Vector", "settings_integrations_allow_button") 
+  }
+  /// Use an Integration Manager (%@) to manage bots, bridges, widgets and sticker packs.\n\nIntegration Managers receive configuration data, and can modify widgets, send room invites and set power levels on your behalf.
+  internal static func settingsIntegrationsAllowDescription(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_integrations_allow_description", p1)
   }
   /// KEY BACKUP
   internal static var settingsKeyBackup: String { 
@@ -3250,6 +3310,10 @@ internal enum VectorL10n {
   internal static var widgetIntegrationFailedToSendRequest: String { 
     return VectorL10n.tr("Vector", "widget_integration_failed_to_send_request") 
   }
+  /// You need to enable Integration Manager in settings
+  internal static var widgetIntegrationManagerDisabled: String { 
+    return VectorL10n.tr("Vector", "widget_integration_manager_disabled") 
+  }
   /// Missing room_id in request.
   internal static var widgetIntegrationMissingRoomId: String { 
     return VectorL10n.tr("Vector", "widget_integration_missing_room_id") 
@@ -3290,6 +3354,22 @@ internal enum VectorL10n {
   internal static var widgetIntegrationsServerFailedToConnect: String { 
     return VectorL10n.tr("Vector", "widget_integrations_server_failed_to_connect") 
   }
+  /// Open in browser
+  internal static var widgetMenuOpenOutside: String { 
+    return VectorL10n.tr("Vector", "widget_menu_open_outside") 
+  }
+  /// Refresh
+  internal static var widgetMenuRefresh: String { 
+    return VectorL10n.tr("Vector", "widget_menu_refresh") 
+  }
+  /// Remove for everyone
+  internal static var widgetMenuRemove: String { 
+    return VectorL10n.tr("Vector", "widget_menu_remove") 
+  }
+  /// Revoke access for me
+  internal static var widgetMenuRevokePermission: String { 
+    return VectorL10n.tr("Vector", "widget_menu_revoke_permission") 
+  }
   /// No integrations server configured
   internal static var widgetNoIntegrationsServerConfigured: String { 
     return VectorL10n.tr("Vector", "widget_no_integrations_server_configured") 
@@ -3297,6 +3377,10 @@ internal enum VectorL10n {
   /// You need permission to manage widgets in this room
   internal static var widgetNoPowerToManage: String { 
     return VectorL10n.tr("Vector", "widget_no_power_to_manage") 
+  }
+  /// Manage integrations...
+  internal static var widgetPickerManageIntegrations: String { 
+    return VectorL10n.tr("Vector", "widget_picker_manage_integrations") 
   }
   /// Integrations
   internal static var widgetPickerTitle: String { 

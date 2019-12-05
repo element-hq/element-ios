@@ -238,6 +238,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 @property (weak, nonatomic) UIViewController *gdprConsentController;
 
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
+@property (nonatomic, strong) SlidingModalPresenter *slidingModalPresenter;
 
 /**
  Used to manage on boarding steps, like create DM with riot bot
@@ -374,7 +375,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(nullable NSDictionary *)launchOptions
 {
     // Create message sound
-    NSURL *messageSoundURL = [[NSBundle mainBundle] URLForResource:@"message" withExtension:@"mp3"];
+    NSURL *messageSoundURL = [[NSBundle mainBundle] URLForResource:@"message" withExtension:@"caf"];
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)messageSoundURL, &_messageSound);
     
     NSLog(@"[AppDelegate] willFinishLaunchingWithOptions: Done");
@@ -1565,7 +1566,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                 soundName = action.parameters[@"value"];
                 if ([soundName isEqualToString:@"default"])
                 {
-                    soundName = @"message.mp3";
+                    soundName = @"message.caf";
                 }
             }
         }
@@ -4099,18 +4100,27 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 {
     if (!_jitsiViewController && !currentCallViewController)
     {
-        _jitsiViewController = [JitsiViewController jitsiViewController];
+        MXWeakify(self);
+        [self checkPermissionForNativeWidget:jitsiWidget fromUrl:JitsiService.shared.serverURL completion:^(BOOL granted) {
+            MXStrongifyAndReturnIfNil(self);
+            if (!granted)
+            {
+                return;
+            }
 
-        [_jitsiViewController openWidget:jitsiWidget withVideo:video success:^{
+            self->_jitsiViewController = [JitsiViewController jitsiViewController];
 
-            _jitsiViewController.delegate = self;
-            [self presentJitsiViewController:nil];
-        
-        } failure:^(NSError *error) {
+            [self->_jitsiViewController openWidget:jitsiWidget withVideo:video success:^{
 
-            _jitsiViewController = nil;
+                self->_jitsiViewController.delegate = self;
+                [self presentJitsiViewController:nil];
 
-            [self showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"call_jitsi_error", @"Vector", nil)];
+            } failure:^(NSError *error) {
+
+                self->_jitsiViewController = nil;
+
+                [self showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"call_jitsi_error", @"Vector", nil)];
+            }];
         }];
     }
     else
@@ -4163,6 +4173,123 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             }
         }];
     }
+}
+
+
+#pragma mark - Native Widget Permission
+
+- (void)checkPermissionForNativeWidget:(Widget*)widget fromUrl:(NSURL*)url completion:(void (^)(BOOL granted))completion
+{
+    MXSession *session = widget.mxSession;
+
+    if ([widget.widgetEvent.sender isEqualToString:session.myUser.userId])
+    {
+        // No need of more permission check if the user created the widget
+        completion(YES);
+        return;
+    }
+
+    // Check permission in user Riot settings
+    __block RiotSharedSettings *sharedSettings = [[RiotSharedSettings alloc] initWithSession:session];
+
+    WidgetPermission permission = [sharedSettings permissionForNative:widget fromUrl:url];
+    if (permission == WidgetPermissionGranted)
+    {
+        completion(YES);
+    }
+    else
+    {
+        // Note: ask permission again if the user previously declined it
+        [self askNativeWidgetPermissionWithWidget:widget completion:^(BOOL granted) {
+            // Update the settings in user account data in parallel
+            [sharedSettings setPermission:granted ? WidgetPermissionGranted : WidgetPermissionDeclined
+                                forNative:widget fromUrl:url
+                                  success:^
+             {
+                 sharedSettings = nil;
+             }
+                                  failure:^(NSError * _Nullable error)
+             {
+                 NSLog(@"[WidgetVC] setPermissionForWidget failed. Error: %@", error);
+                 sharedSettings = nil;
+             }];
+            
+            completion(granted);
+        }];
+    }
+}
+
+- (void)askNativeWidgetPermissionWithWidget:(Widget*)widget completion:(void (^)(BOOL granted))completion
+{
+    if (!self.slidingModalPresenter)
+    {
+        self.slidingModalPresenter = [SlidingModalPresenter new];
+    }
+    
+    [self.slidingModalPresenter dismissWithAnimated:NO completion:nil];
+    
+    NSString *widgetCreatorUserId = widget.widgetEvent.sender ?: NSLocalizedStringFromTable(@"room_participants_unknown", @"Vector", nil);
+    
+    MXSession *session = widget.mxSession;
+    MXRoom *room = [session roomWithRoomId:widget.widgetEvent.roomId];
+    MXRoomState *roomState = room.dangerousSyncState;
+    MXRoomMember *widgetCreatorRoomMember = [roomState.members memberWithUserId:widgetCreatorUserId];
+    
+    NSString *widgetDomain = @"";
+    
+    if (widget.url)
+    {
+        NSString *host = [[NSURL alloc] initWithString:widget.url].host;
+        if (host)
+        {
+            widgetDomain = host;
+        }
+    }
+    
+    MXMediaManager *mediaManager = widget.mxSession.mediaManager;
+    NSString *widgetCreatorDisplayName = widgetCreatorRoomMember.displayname;
+    NSString *widgetCreatorAvatarURL = widgetCreatorRoomMember.avatarUrl;
+    
+    NSArray<NSString*> *permissionStrings = @[
+                                              NSLocalizedStringFromTable(@"room_widget_permission_display_name_permission", @"Vector", nil),
+                                              NSLocalizedStringFromTable(@"room_widget_permission_avatar_url_permission", @"Vector", nil)
+                                              ];
+    
+    WidgetPermissionViewModel *widgetPermissionViewModel = [[WidgetPermissionViewModel alloc] initWithCreatorUserId:widgetCreatorUserId
+                                                                                                 creatorDisplayName:widgetCreatorDisplayName creatorAvatarUrl:widgetCreatorAvatarURL widgetDomain:widgetDomain
+                                                                                                    isWebviewWidget:NO
+                                                                                                  widgetPermissions:permissionStrings
+                                                                                                       mediaManager:mediaManager];
+    
+    
+    WidgetPermissionViewController *widgetPermissionViewController = [WidgetPermissionViewController instantiateWith:widgetPermissionViewModel];
+    
+    MXWeakify(self);
+    
+    widgetPermissionViewController.didTapContinueButton = ^{
+        
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self.slidingModalPresenter dismissWithAnimated:YES completion:^{
+            completion(YES);
+        }];
+    };
+    
+    widgetPermissionViewController.didTapCloseButton = ^{
+        
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self.slidingModalPresenter dismissWithAnimated:YES completion:^{
+            completion(NO);
+        }];
+    };
+    
+    UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
+    
+    [self.slidingModalPresenter present:widgetPermissionViewController
+                                   from:presentingViewController
+                               animated:YES
+                             completion:nil];
 }
 
 
