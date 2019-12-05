@@ -1,7 +1,12 @@
-Changes in 0.10.3 (2019-xx-xx)
+Changes in 0.10.4 (2019-xx-xx)
+===============================================
+
+
+Changes in 0.10.3 (2019-12-05)
 ===============================================
 
 Improvements:
+ * Upgrade MatrixKit version ([v0.11.3](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.11.3)).
  * Integrations: Use the integrations manager provided by the homeserver admin via .well-known (#2815).
  * i18n: Add Welsh (cy).
  * i18n: Add Italian (it).
