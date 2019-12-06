@@ -458,6 +458,8 @@
 "settings_labs_room_members_lazy_loading_error_message" = "Your homeserver does not support lazy loading of room members yet. Try later.";
 "settings_labs_create_conference_with_jitsi" = "Create conference calls with jitsi";
 "settings_labs_message_reaction" = "React to messages with emoji";
+"settings_labs_dm_key_verification" = "Key verification by direct message";
+"settings_labs_cross_signing" = "Cross-Signing";
 
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";

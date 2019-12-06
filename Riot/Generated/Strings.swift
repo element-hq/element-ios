@@ -2970,6 +2970,14 @@ internal enum VectorL10n {
   internal static var settingsLabsCreateConferenceWithJitsi: String { 
     return VectorL10n.tr("Vector", "settings_labs_create_conference_with_jitsi") 
   }
+  /// Cross-Signing
+  internal static var settingsLabsCrossSigning: String { 
+    return VectorL10n.tr("Vector", "settings_labs_cross_signing") 
+  }
+  /// Key verification by direct message
+  internal static var settingsLabsDmKeyVerification: String { 
+    return VectorL10n.tr("Vector", "settings_labs_dm_key_verification") 
+  }
   /// End-to-End Encryption
   internal static var settingsLabsE2eEncryption: String { 
     return VectorL10n.tr("Vector", "settings_labs_e2e_encryption") 
