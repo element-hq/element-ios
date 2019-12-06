@@ -1,6 +1,8 @@
 Changes in 0.10.4 (2019-xx-xx)
 ===============================================
 
+Improvements:
+ * ON/OFF Cross-signing development in a Lab setting (#2855).
 
 Changes in 0.10.3 (2019-12-05)
 ===============================================
