@@ -103,11 +103,6 @@ final class DeviceVerificationVerifyViewModel: DeviceVerificationVerifyViewModel
                 return
             }
             self.update(viewState: .error(error))
-        case MXSASTransactionStateCancelled:
-            guard let reason = transaction.reasonCancelCode else {
-                return
-            }
-            self.update(viewState: .cancelled(reason))
         case MXSASTransactionStateCancelledByMe:
             guard let reason = transaction.reasonCancelCode else {
                 return

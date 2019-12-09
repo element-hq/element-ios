@@ -4,6 +4,9 @@ Changes in 0.10.4 (2019-xx-xx)
 Improvements:
  * ON/OFF Cross-signing development in a Lab setting (#2855).
 
+Bug fix:
+ * Device Verification: Stay in infinite waiting (#2878).
+
 Changes in 0.10.3 (2019-12-05)
 ===============================================
 
