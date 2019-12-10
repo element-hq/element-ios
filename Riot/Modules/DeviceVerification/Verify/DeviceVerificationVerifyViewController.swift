@@ -70,6 +70,7 @@ final class DeviceVerificationVerifyViewController: UIViewController {
         self.update(theme: self.theme)
         
         self.viewModel.viewDelegate = self
+        self.viewModel.process(viewAction: .loadData)
     }
 
     override func viewWillAppear(_ animated: Bool) {
