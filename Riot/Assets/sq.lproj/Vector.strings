@@ -910,3 +910,26 @@
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Që të ftoni me email, shtoni një shërbyes identitetesh, që nga rregullimet tuaja.";
 "error_not_supported_on_mobile" = "Këtë s’mund ta bëni nga %@ për celular.";
+// Accessibility
+"accessibility_checkbox_label" = "kutizë";
+"settings_integrations" = "INTEGRIME";
+"settings_integrations_allow_button" = "Administroni integrime";
+"settings_integrations_allow_description" = "Përdorni një Përgjegjës Integrimesh (%@) që të administroni robotë, ura, widget-e dhe paketa ngjitësish.\n\nPërgjegjësit e Integrimeve marrin të dhëna formësimi dhe mund të ndryshojnë widget-e, të dërgojnë ftesa për në dhoma dhe të caktojnë shkallë pushteti në emrin tuaj.";
+"widget_menu_refresh" = "Rifreskoje";
+"widget_menu_open_outside" = "Hape në shfletues";
+"widget_menu_revoke_permission" = "Shfuqizo hyrje për mua";
+"widget_menu_remove" = "Hiqe për këdo";
+"widget_integration_manager_disabled" = "Lypset të aktivizoni Përgjegjës Integrimesh te rregullimet";
+"widget_picker_manage_integrations" = "Administroni integrime…";
+// Room widget permissions
+"room_widget_permission_title" = "Ngarko Widget";
+"room_widget_permission_creator_info_title" = "Ky <em>widget</em> qe shtuar nga:";
+"room_widget_permission_webview_information_title" = "Përdorimi i tij mund të sjellë depozitim <em>cookies</em> dhe ndarje të dhënash me %@:\n";
+"room_widget_permission_information_title" = "Përdorimi i tij mund të sjellë ndarje të dhënash me %@:\n";
+"room_widget_permission_display_name_permission" = "Emri juaj në ekran";
+"room_widget_permission_avatar_url_permission" = "URL-ja e avatarit tuaj";
+"room_widget_permission_user_id_permission" = "ID-ja juaj e përdoruesit";
+"room_widget_permission_theme_permission" = "Tema juaj";
+"room_widget_permission_widget_id_permission" = "ID Widget-i";
+"room_widget_permission_room_id_permission" = "ID Dhome";
+"service_terms_modal_policy_checkbox_accessibility_hint" = "I vini shenjë që të pranohet %@";

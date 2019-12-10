@@ -940,3 +940,9 @@
 "room_widget_permission_theme_permission" = "Témád";
 "room_widget_permission_widget_id_permission" = "Kisalkalmazás azon.";
 "room_widget_permission_room_id_permission" = "Szoba azonosító";
+"widget_picker_manage_integrations" = "Integrációk kezelése…";
+// Accessibility
+"accessibility_checkbox_label" = "jelölőnégyzet";
+"service_terms_modal_policy_checkbox_accessibility_hint" = "Az engedélyezéshez jelöld be: %@";
+"settings_labs_dm_key_verification" = "Kulcs ellenőrzés közvetlen üzenetben";
+"settings_labs_cross_signing" = "Kereszt-aláírás";
