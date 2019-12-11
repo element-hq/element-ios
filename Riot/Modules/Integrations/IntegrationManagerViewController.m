@@ -38,6 +38,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 }
 
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
+@property (nonatomic) BOOL isViewAppearedOnce;
 
 @end
 
@@ -69,15 +70,26 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
     operation = nil;
 }
 
-- (void)viewDidLoad
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidLoad];
-
-    [self loadData];
+    [super viewWillAppear:animated];
+    
+    if (!self.isViewAppearedOnce)
+    {
+        self.isViewAppearedOnce = YES;
+        [self loadData];
+    }
 }
 
 - (void)loadData
 {
+    RiotSharedSettings *sharedSettings = [[RiotSharedSettings alloc] initWithSession:mxSession];
+    if (!sharedSettings.hasIntegrationProvisioningEnabled)
+    {
+        [self showDisabledIntegrationManagerError];
+        return;
+    }
+
     if (!self.URL && !operation)
     {
         [self startActivityIndicator];
@@ -697,6 +709,33 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 }
 
 
+#pragma mark - Widget Permission
+
+- (void)checkWidgetPermissionWithCompletion:(void (^)(BOOL granted))completion
+{
+    // The integration manager widget has its own terms
+    completion(YES);
+}
+
+
+#pragma mark - Disabled Integrations
+
+- (void)showDisabledIntegrationManagerError
+{
+    NSString *message = NSLocalizedStringFromTable(@"widget_integration_manager_disabled", @"Vector", nil);
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                   message:message
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+
+    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * action) {
+                                                [self withdrawViewControllerAnimated:YES completion:nil];
+                                            }]];
+
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
 #pragma mark - Service terms
 
 - (void)presentTerms
@@ -725,6 +764,14 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 }
 
 - (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self withdrawViewControllerAnimated:YES completion:nil];
+    }];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter session:(MXSession * _Nonnull)session
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
         [self withdrawViewControllerAnimated:YES completion:nil];

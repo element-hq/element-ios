@@ -75,15 +75,6 @@ class WidgetManagerConfig: NSObject, NSCoding {
         super.init()
     }
 
-    override convenience init () {
-        // Use app settings as default
-        let apiUrl = UserDefaults.standard.object(forKey: "integrationsRestUrl") as? NSString
-        let uiUrl = UserDefaults.standard.object(forKey: "integrationsUiUrl") as? NSString
-
-        self.init(apiUrl: apiUrl, uiUrl: uiUrl)
-    }
-
-
     /// MARK: - NSCoding
 
     enum CodingKeys: String {

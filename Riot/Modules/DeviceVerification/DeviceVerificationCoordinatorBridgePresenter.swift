@@ -53,6 +53,9 @@ final class DeviceVerificationCoordinatorBridgePresenter: NSObject {
     // }
     
     func present(from viewController: UIViewController, otherUserId: String, otherDeviceId: String, animated: Bool) {
+        
+        NSLog("[DeviceVerificationCoordinatorBridgePresenter] Present from \(viewController)")
+        
         let deviceVerificationCoordinator = DeviceVerificationCoordinator(session: self.session, otherUserId: otherUserId, otherDeviceId: otherDeviceId)
         deviceVerificationCoordinator.delegate = self
         viewController.present(deviceVerificationCoordinator.toPresentable(), animated: animated, completion: nil)
@@ -62,6 +65,9 @@ final class DeviceVerificationCoordinatorBridgePresenter: NSObject {
     }
 
     func present(from viewController: UIViewController, incomingTransaction: MXIncomingSASTransaction, animated: Bool) {
+        
+        NSLog("[DeviceVerificationCoordinatorBridgePresenter] Present incoming verification from \(viewController)")
+        
         let deviceVerificationCoordinator = DeviceVerificationCoordinator(session: self.session, incomingTransaction: incomingTransaction)
         deviceVerificationCoordinator.delegate = self
         viewController.present(deviceVerificationCoordinator.toPresentable(), animated: animated, completion: nil)
@@ -73,7 +79,10 @@ final class DeviceVerificationCoordinatorBridgePresenter: NSObject {
     func dismiss(animated: Bool, completion: (() -> Void)?) {
         guard let coordinator = self.coordinator else {
             return
-        }        
+        }
+        
+        NSLog("[DeviceVerificationCoordinatorBridgePresenter] Dismiss")
+        
         coordinator.toPresentable().dismiss(animated: animated) {
             self.coordinator = nil
 

@@ -20,6 +20,7 @@ import Foundation
 
 /// DeviceVerificationVerifyViewController view actions exposed to view model
 enum DeviceVerificationVerifyViewAction {
+    case loadData
     case confirm
     case complete
     case cancel

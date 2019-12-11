@@ -30,7 +30,11 @@ final class JitsiService: NSObject {
             JMCallKitProxy.enabled = enableCallKit
         }
     }
-    
+
+    var serverURL: URL? {
+        return self.jitsiMeet.defaultConferenceOptions?.serverURL
+    }
+
     private let jitsiMeet = JitsiMeet.sharedInstance()
     
     // MARK: - Setup

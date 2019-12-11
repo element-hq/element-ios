@@ -50,6 +50,9 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
     // User id -> scalar token
     NSMutableDictionary<NSString*, WidgetManagerConfig*> *configs;
+
+    // User id -> MXSession
+    NSMutableDictionary<NSString*, MXSession*> *matrixSessions;
 }
 
 @end
@@ -73,6 +76,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     self = [super init];
     if (self)
     {
+        matrixSessions = [NSMutableDictionary dictionary];
         widgetEventListener = [NSMutableDictionary dictionary];
         successBlockForWidgetCreation = [NSMutableDictionary dictionary];
         failureBlockForWidgetCreation = [NSMutableDictionary dictionary];
@@ -265,6 +269,14 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
         return nil;
     }
 
+    RiotSharedSettings *sharedSettings = [[RiotSharedSettings alloc] initWithSession:room.mxSession];
+    if (!sharedSettings.hasIntegrationProvisioningEnabled)
+    {
+        NSLog(@"[WidgetManager] createJitsiWidgetInRoom: Error: Disabled integration manager for user %@", userId);
+        failure(self.errorForDisabledIntegrationManager);
+        return nil;
+    }
+
     // Build data for a jitsi widget
     NSString *widgetId = [NSString stringWithFormat:@"%@_%@_%@", kWidgetTypeJitsi, room.mxSession.myUser.userId, @((uint64_t)([[NSDate date] timeIntervalSince1970] * 1000))];
 
@@ -367,6 +379,8 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 {
      __weak __typeof__(self) weakSelf = self;
 
+    matrixSessions[mxSession.matrixRestClient.credentials.userId] = mxSession;
+
     NSString *hash = [NSString stringWithFormat:@"%p", mxSession];
 
     id listener = [mxSession listenToEventsOfTypes:@[kWidgetMatrixEventTypeString, kWidgetModularEventTypeString] onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {
@@ -421,6 +435,12 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
 - (void)removeMatrixSession:(MXSession *)mxSession
 {
+    // Remove by value in a dict
+    for (NSString *key in [matrixSessions allKeysForObject:mxSession])
+    {
+        [matrixSessions removeObjectForKey:key];
+    }
+
     // mxSession.myUser.userId and mxSession.matrixRestClient.credentials.userId may be nil here
     // So, use a kind of hash value instead
     NSString *hash = [NSString stringWithFormat:@"%p", mxSession];
@@ -433,10 +453,51 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     [failureBlockForWidgetCreation removeObjectForKey:hash];
 }
 
+- (MXSession*)matrixSessionForUser:(NSString*)userId
+{
+    return matrixSessions[userId];
+}
+
 - (void)deleteDataForUser:(NSString *)userId
 {
     [configs removeObjectForKey:userId];
     [self saveConfigs];
+}
+
+#pragma mark - User integrations configuration
+
+- (WidgetManagerConfig*)createWidgetManagerConfigForUser:(NSString*)userId
+{
+    WidgetManagerConfig *config;
+
+    MXSession *session = [self matrixSessionForUser:userId];
+
+    // Find the integrations settings for the user
+
+    // First, look at matrix account
+    // TODO in another user story
+    
+    // Then, try to the homeserver configuration
+    MXWellknownIntegrationsManager *integrationsManager = session.homeserverWellknown.integrations.managers.firstObject;
+    if (integrationsManager)
+    {
+        config = [[WidgetManagerConfig alloc] initWithApiUrl:integrationsManager.apiUrl uiUrl:integrationsManager.uiUrl];
+    }
+    else
+    {
+        // Fallback on app settings
+        config = [self createWidgetManagerConfigWithAppSettings];
+    }
+
+    return config;
+}
+
+- (WidgetManagerConfig*)createWidgetManagerConfigWithAppSettings
+{
+    NSString *apiUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsRestUrl"];
+    NSString *uiUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsUiUrl"];
+
+    return [[WidgetManagerConfig alloc] initWithApiUrl:apiUrl uiUrl:uiUrl];
 }
 
 #pragma mark - Modular interface
@@ -444,7 +505,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 - (WidgetManagerConfig*)configForUser:(NSString*)userId
 {
     // Return a default config by default
-    return configs[userId] ? configs[userId] : [WidgetManagerConfig new];
+    return configs[userId] ? configs[userId] : [self createWidgetManagerConfigForUser:userId];
 }
 
 - (BOOL)hasIntegrationManagerForUser:(NSString*)userId
@@ -697,7 +758,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
             NSLog(@"[WidgetManager] migrate scalarTokens to integrationManagerConfigs for %@", userId);
 
-            WidgetManagerConfig *config = [WidgetManagerConfig new];
+            WidgetManagerConfig *config = [self createWidgetManagerConfigWithAppSettings];
             config.scalarToken = scalarToken;
 
             configs[userId] = config;
@@ -736,6 +797,13 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     return [NSError errorWithDomain:WidgetManagerErrorDomain
                                code:WidgetManagerErrorCodeNoIntegrationsServerConfigured
                            userInfo:@{NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"widget_no_integrations_server_configured", @"Vector", nil)}];
+}
+
+- (NSError*)errorForDisabledIntegrationManager
+{
+    return [NSError errorWithDomain:WidgetManagerErrorDomain
+                               code:WidgetManagerErrorCodeDisabledIntegrationsServer
+                           userInfo:@{NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"widget_integration_manager_disabled", @"Vector", nil)}];
 }
 
 @end

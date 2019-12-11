@@ -115,21 +115,22 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
         guard let transaction = notification.object as? MXOutgoingSASTransaction else {
             return
         }
-        
-        self.unregisterTransactionDidStateChangeNotification()
 
         switch transaction.state {
         case MXSASTransactionStateShowSAS:
+            self.unregisterTransactionDidStateChangeNotification()
             self.coordinatorDelegate?.deviceVerificationStartViewModel(self, didCompleteWithOutgoingTransaction: transaction)
         case MXSASTransactionStateCancelled:
             guard let reason = transaction.reasonCancelCode else {
                 return
             }
+            self.unregisterTransactionDidStateChangeNotification()
             self.update(viewState: .cancelled(reason))
         case MXSASTransactionStateCancelledByMe:
             guard let reason = transaction.reasonCancelCode else {
                 return
             }
+            self.unregisterTransactionDidStateChangeNotification()
             self.update(viewState: .cancelledByMe(reason))
         default:
             break

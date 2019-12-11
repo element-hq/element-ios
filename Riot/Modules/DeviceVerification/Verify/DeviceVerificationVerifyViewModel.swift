@@ -41,8 +41,6 @@ final class DeviceVerificationVerifyViewModel: DeviceVerificationVerifyViewModel
         self.transaction = transaction
         self.emojis = self.transaction.sasEmoji
         self.decimal = self.transaction.sasDecimal
-
-        self.registerTransactionDidStateChangeNotification(transaction: transaction)
     }
     
     deinit {
@@ -52,6 +50,8 @@ final class DeviceVerificationVerifyViewModel: DeviceVerificationVerifyViewModel
     
     func process(viewAction: DeviceVerificationVerifyViewAction) {
         switch viewAction {
+        case .loadData:
+            self.registerTransactionDidStateChangeNotification(transaction: transaction)
         case .confirm:
             self.confirmTransaction()
         case .complete:
@@ -83,6 +83,10 @@ final class DeviceVerificationVerifyViewModel: DeviceVerificationVerifyViewModel
     private func registerTransactionDidStateChangeNotification(transaction: MXSASTransaction) {
         NotificationCenter.default.addObserver(self, selector: #selector(transactionDidStateChange(notification:)), name: NSNotification.Name.MXDeviceVerificationTransactionDidChange, object: transaction)
     }
+    
+    private func unregisterTransactionDidStateChangeNotification() {
+        NotificationCenter.default.removeObserver(self, name: .MXDeviceVerificationTransactionDidChange, object: nil)
+    }
 
     @objc private func transactionDidStateChange(notification: Notification) {
         guard let transaction = notification.object as? MXSASTransaction else {
@@ -91,27 +95,26 @@ final class DeviceVerificationVerifyViewModel: DeviceVerificationVerifyViewModel
 
         switch transaction.state {
         case MXSASTransactionStateVerified:
+            self.unregisterTransactionDidStateChangeNotification()
             self.update(viewState: .loaded)
             self.coordinatorDelegate?.deviceVerificationVerifyViewModelDidComplete(self)
         case MXSASTransactionStateCancelled:
             guard let reason = transaction.reasonCancelCode else {
                 return
             }
+            self.unregisterTransactionDidStateChangeNotification()
             self.update(viewState: .cancelled(reason))
         case MXSASTransactionStateError:
             guard let error = transaction.error else {
                 return
             }
+            self.unregisterTransactionDidStateChangeNotification()
             self.update(viewState: .error(error))
-        case MXSASTransactionStateCancelled:
-            guard let reason = transaction.reasonCancelCode else {
-                return
-            }
-            self.update(viewState: .cancelled(reason))
         case MXSASTransactionStateCancelledByMe:
             guard let reason = transaction.reasonCancelCode else {
                 return
             }
+            self.unregisterTransactionDidStateChangeNotification()
             self.update(viewState: .cancelledByMe(reason))
         default:
             break

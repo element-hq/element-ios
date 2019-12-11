@@ -58,6 +58,9 @@
 "sending" = "Sending";
 "close" = "Close";
 
+// Accessibility
+"accessibility_checkbox_label" = "checkbox";
+
 // Authentication
 "auth_login" = "Log in";
 "auth_register" = "Register";
@@ -378,6 +381,7 @@
 "settings_calls_settings" = "CALLS";
 "settings_discovery_settings" = "DISCOVERY";
 "settings_identity_server_settings" = "IDENTITY SERVER";
+"settings_integrations" = "INTEGRATIONS";
 "settings_user_interface" = "USER INTERFACE";
 "settings_ignored_users" = "IGNORED USERS";
 "settings_contacts" = "LOCAL CONTACTS";
@@ -431,6 +435,9 @@
 "settings_calls_stun_server_fallback_button" = "Allow fallback call assist server";
 "settings_calls_stun_server_fallback_description" = "Allow fallback call assist server %@ when your homeserver does not offer one (your IP address would be shared during a call).";
 
+"settings_integrations_allow_button" = "Manage integrations";
+"settings_integrations_allow_description" = "Use an Integration Manager (%@) to manage bots, bridges, widgets and sticker packs.\n\nIntegration Managers receive configuration data, and can modify widgets, send room invites and set power levels on your behalf.";
+
 "settings_ui_language" = "Language";
 "settings_ui_theme" = "Theme";
 "settings_ui_theme_auto" = "Auto";
@@ -451,6 +458,8 @@
 "settings_labs_room_members_lazy_loading_error_message" = "Your homeserver does not support lazy loading of room members yet. Try later.";
 "settings_labs_create_conference_with_jitsi" = "Create conference calls with jitsi";
 "settings_labs_message_reaction" = "React to messages with emoji";
+"settings_labs_dm_key_verification" = "Key verification by direct message";
+"settings_labs_cross_signing" = "Cross-Signing";
 
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";
@@ -755,6 +764,10 @@
 "widget_creation_failure" = "Widget creation has failed";
 "widget_sticker_picker_no_stickerpacks_alert" = "You don't currently have any stickerpacks enabled.";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "Add some now?";
+"widget_menu_refresh" = "Refresh";
+"widget_menu_open_outside" = "Open in browser";
+"widget_menu_revoke_permission" = "Revoke access for me";
+"widget_menu_remove" = "Remove for everyone";
 
 // Widget Integration Manager
 "widget_integration_need_to_be_able_to_invite" = "You need to be able to invite users to do that.";
@@ -767,9 +780,26 @@
 "widget_integration_missing_room_id" = "Missing room_id in request.";
 "widget_integration_missing_user_id" = "Missing user_id in request.";
 "widget_integration_room_not_visible" = "Room %@ is not visible.";
+"widget_integration_manager_disabled" = "You need to enable Integration Manager in settings";
 
 // Widget Picker
 "widget_picker_title" = "Integrations";
+"widget_picker_manage_integrations" = "Manage integrations...";
+
+// Room widget permissions
+"room_widget_permission_title" = "Load Widget";
+"room_widget_permission_creator_info_title" = "This widget was added by:";
+
+"room_widget_permission_webview_information_title" = "Using it may set cookies and share data with %@:\n";
+
+"room_widget_permission_information_title" = "Using it may share data with %@:\n";
+
+"room_widget_permission_display_name_permission" = "Your display name";
+"room_widget_permission_avatar_url_permission" = "Your avatar URL";
+"room_widget_permission_user_id_permission" = "Your user ID";
+"room_widget_permission_theme_permission" = "Your theme";
+"room_widget_permission_widget_id_permission" = "Widget ID";
+"room_widget_permission_room_id_permission" = "Room ID";
 
 // Share extension
 "share_extension_auth_prompt" = "Login in the main app to share content";
@@ -801,6 +831,7 @@
 "service_terms_modal_title_identity_server" = "Contact discovery";
 "service_terms_modal_message_identity_server" = "Accept the terms of the identity server (%@) to discover contacts.";
 
+"service_terms_modal_policy_checkbox_accessibility_hint" = "Check to accept %@";
 
 // Deactivate account
 
