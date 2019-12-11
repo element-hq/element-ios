@@ -938,3 +938,9 @@
 "room_widget_permission_theme_permission" = "Votre thème";
 "room_widget_permission_widget_id_permission" = "L’identifiant du widget";
 "room_widget_permission_room_id_permission" = "L’identifiant du salon";
+// Accessibility
+"accessibility_checkbox_label" = "case à cocher";
+"widget_picker_manage_integrations" = "Gérer les intégrations…";
+"service_terms_modal_policy_checkbox_accessibility_hint" = "Cochez pour accepter %@";
+"settings_labs_dm_key_verification" = "Vérification de clé par message direct";
+"settings_labs_cross_signing" = "Signature croisée";

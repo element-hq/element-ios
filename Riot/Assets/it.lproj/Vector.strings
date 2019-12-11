@@ -910,3 +910,9 @@
 "room_widget_permission_theme_permission" = "Il tuo tema";
 "room_widget_permission_widget_id_permission" = "ID widget";
 "room_widget_permission_room_id_permission" = "ID stanza";
+// Accessibility
+"accessibility_checkbox_label" = "checkbox";
+"widget_picker_manage_integrations" = "Gestisci integrazioni...";
+"service_terms_modal_policy_checkbox_accessibility_hint" = "Seleziona per accettare %@";
+"settings_labs_dm_key_verification" = "Verifica chiave via messaggio diretto";
+"settings_labs_cross_signing" = "Firma incrociata";
