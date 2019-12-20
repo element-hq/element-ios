@@ -62,26 +62,46 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
     
     if (self)
     {
-        if (event.eventType == MXEventTypeRoomMember)
+        switch (event.eventType)
         {
-            // Membership events have their own cell type
-            self.tag = RoomBubbleCellDataTagMembership;
-
-            // Membership events can be collapsed together
-            self.collapsable = YES;
-
-            // Collapse them by default
-            self.collapsed = YES;
-        }
-        
-        if (event.eventType == MXEventTypeRoomCreate)
-        {
-            MXRoomCreateContent *createContent = [MXRoomCreateContent modelFromJSON:event.content];
-            
-            if (createContent.roomPredecessorInfo)
+            case MXEventTypeRoomMember:
             {
-                self.tag = RoomBubbleCellDataTagRoomCreateWithPredecessor;
+                // Membership events have their own cell type
+                self.tag = RoomBubbleCellDataTagMembership;
+                
+                // Membership events can be collapsed together
+                self.collapsable = YES;
+                
+                // Collapse them by default
+                self.collapsed = YES;
             }
+                break;
+            case MXEventTypeRoomCreate:
+            {
+                MXRoomCreateContent *createContent = [MXRoomCreateContent modelFromJSON:event.content];
+                
+                if (createContent.roomPredecessorInfo)
+                {
+                    self.tag = RoomBubbleCellDataTagRoomCreateWithPredecessor;
+                }
+            }
+                break;
+            case MXEventTypeKeyVerificationCancel:
+            case MXEventTypeKeyVerificationDone:
+                self.tag = RoomBubbleCellDataTagDeviceKeyVerificationConclusion;
+                break;                
+            case MXEventTypeRoomMessage:
+            {
+                NSString *msgType = event.content[@"msgtype"];
+                
+                if ([msgType isEqualToString:kMXMessageTypeKeyVerificationRequest])
+                {
+                    self.tag = RoomBubbleCellDataTagDeviceKeyVerificationRequest;
+                }
+            }
+                break;
+            default:
+                break;
         }
 
         // Increase maximum number of components
