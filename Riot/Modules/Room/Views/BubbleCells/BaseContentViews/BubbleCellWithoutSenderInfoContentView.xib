@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="zG5-YA-Ijy" customClass="BubbleCellWithoutSenderInfoContentView" customModule="Riot" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="595" height="43"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view clipsSubviews="YES" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="oeI-eO-mFK">
+                    <rect key="frame" x="56" y="3" width="454" height="37"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XQw-Mj-NZY">
+                    <rect key="frame" x="0.0" y="0.0" width="595" height="43"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </view>
+                <view hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Y6-Py-paB">
+                    <rect key="frame" x="510" y="3" width="70" height="40"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                    <accessibility key="accessibilityConfiguration" identifier="BubbleInfoContainer"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="70" id="LtA-zk-OCc"/>
+                    </constraints>
+                </view>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="5GX-gn-bK1">
+                    <rect key="frame" x="0.0" y="43" width="595" height="0.0"/>
+                    <subviews>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4zo-V8-CNe">
+                            <rect key="frame" x="0.0" y="0.0" width="595" height="12"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rQt-NH-Cb0">
+                                    <rect key="frame" x="439" y="0.0" width="150" height="12"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="150" id="fsY-DK-hUg"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="rQt-NH-Cb0" secondAttribute="bottom" id="6yV-vn-doj"/>
+                                <constraint firstItem="rQt-NH-Cb0" firstAttribute="top" secondItem="4zo-V8-CNe" secondAttribute="top" id="DNc-jy-Urh"/>
+                                <constraint firstAttribute="height" constant="12" id="TxZ-dJ-UI6"/>
+                                <constraint firstAttribute="trailing" secondItem="rQt-NH-Cb0" secondAttribute="trailing" constant="6" id="lq2-AY-Lus"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="4zo-V8-CNe" firstAttribute="width" secondItem="5GX-gn-bK1" secondAttribute="width" id="bdq-sQ-NQy"/>
+                    </constraints>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" red="0.95294117649999999" green="0.97254901959999995" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="5GX-gn-bK1" firstAttribute="leading" secondItem="zG5-YA-Ijy" secondAttribute="leading" id="36u-ut-l3G"/>
+                <constraint firstItem="7Y6-Py-paB" firstAttribute="leading" secondItem="oeI-eO-mFK" secondAttribute="trailing" id="C5q-bu-rML"/>
+                <constraint firstAttribute="bottom" secondItem="XQw-Mj-NZY" secondAttribute="bottom" id="HRC-R4-1Ss"/>
+                <constraint firstItem="7Y6-Py-paB" firstAttribute="top" secondItem="zG5-YA-Ijy" secondAttribute="top" constant="3" id="HdI-rE-tqM"/>
+                <constraint firstItem="XQw-Mj-NZY" firstAttribute="top" secondItem="zG5-YA-Ijy" secondAttribute="top" id="IIN-Ry-jmp"/>
+                <constraint firstAttribute="trailing" secondItem="XQw-Mj-NZY" secondAttribute="trailing" id="L7o-4d-pf4"/>
+                <constraint firstAttribute="bottom" secondItem="5GX-gn-bK1" secondAttribute="bottom" id="cNV-Or-YPg"/>
+                <constraint firstAttribute="trailing" secondItem="5GX-gn-bK1" secondAttribute="trailing" id="deR-Cu-Brh"/>
+                <constraint firstAttribute="bottom" secondItem="7Y6-Py-paB" secondAttribute="bottom" id="fsO-ah-71c"/>
+                <constraint firstItem="XQw-Mj-NZY" firstAttribute="leading" secondItem="zG5-YA-Ijy" secondAttribute="leading" id="p7f-kQ-gvx"/>
+                <constraint firstItem="oeI-eO-mFK" firstAttribute="leading" secondItem="zG5-YA-Ijy" secondAttribute="leading" constant="56" id="sNy-bf-0Kl"/>
+                <constraint firstItem="oeI-eO-mFK" firstAttribute="top" secondItem="zG5-YA-Ijy" secondAttribute="top" constant="3" id="t4K-4e-4sN"/>
+                <constraint firstAttribute="trailing" secondItem="7Y6-Py-paB" secondAttribute="trailing" constant="15" id="tMd-29-lBc"/>
+                <constraint firstItem="5GX-gn-bK1" firstAttribute="top" secondItem="oeI-eO-mFK" secondAttribute="bottom" constant="3" id="wSa-1S-2ss"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="bubbleInfoContainer" destination="7Y6-Py-paB" id="uLv-MM-HIL"/>
+                <outlet property="bubbleInfoContainerTopConstraint" destination="HdI-rE-tqM" id="YSe-s4-9WG"/>
+                <outlet property="bubbleOverlayContainer" destination="XQw-Mj-NZY" id="6d1-EN-LPY"/>
+                <outlet property="innerContentView" destination="oeI-eO-mFK" id="ap1-He-C6g"/>
+                <outlet property="readReceiptsContainerView" destination="4zo-V8-CNe" id="7ek-u4-CX8"/>
+                <outlet property="readReceiptsContentView" destination="rQt-NH-Cb0" id="tqw-je-kp9"/>
+            </connections>
+            <point key="canvasLocation" x="-218.11594202898553" y="-599.66517857142856"/>
+        </view>
+    </objects>
+</document>
