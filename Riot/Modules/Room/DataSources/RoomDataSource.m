@@ -284,7 +284,7 @@
                            ]];
                     }
                     
-                    MXKReceiptSendersContainer* avatarsContainer;
+                    MXKReceiptSendersContainer* avatarsContainer;                    
                     
                     // Handle read receipts (if any)
                     if (self.showBubbleReceipts && cellData.readReceipts.count && !isCollapsableCellCollapsed)
@@ -349,47 +349,57 @@
                             {
                                 [bubbleCell.tmpSubviews addObject:avatarsContainer];
                             }
-                            [bubbleCell.contentView addSubview:avatarsContainer];
                             
-                            // Force receipts container size
-                            NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:avatarsContainer
-                                                                                               attribute:NSLayoutAttributeWidth
-                                                                                               relatedBy:NSLayoutRelationEqual
-                                                                                                  toItem:nil
-                                                                                               attribute:NSLayoutAttributeNotAnAttribute
-                                                                                              multiplier:1.0
-                                                                                                constant:RoomBubbleCellLayout.readReceiptsViewWidth];
-                            NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:avatarsContainer
-                                                                                                attribute:NSLayoutAttributeHeight
-                                                                                                relatedBy:NSLayoutRelationEqual
-                                                                                                   toItem:nil
-                                                                                                attribute:NSLayoutAttributeNotAnAttribute
-                                                                                               multiplier:1.0
-                                                                                                 constant:RoomBubbleCellLayout.readReceiptsViewHeight];
-                            
-                            // Force receipts container position
-                            NSLayoutConstraint *trailingConstraint = [NSLayoutConstraint constraintWithItem:avatarsContainer
-                                                                                                  attribute:NSLayoutAttributeTrailing
-                                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                                     toItem:avatarsContainer.superview
-                                                                                                  attribute:NSLayoutAttributeTrailing
-                                                                                                 multiplier:1.0
-                                                                                                   constant:-RoomBubbleCellLayout.readReceiptsViewRightMargin];
-                            
-                            // At the bottom, we have reactions or nothing
-                            NSLayoutConstraint *topConstraint;
-                            if (reactionsView)
+                            if ([[bubbleCell class] conformsToProtocol:@protocol(BubbleCellReadReceiptsDisplayable)])
                             {
-                                topConstraint = [avatarsContainer.topAnchor constraintEqualToAnchor:reactionsView.bottomAnchor constant:RoomBubbleCellLayout.readReceiptsViewTopMargin];
+                                id<BubbleCellReadReceiptsDisplayable> readReceiptsDisplayable = (id<BubbleCellReadReceiptsDisplayable>)bubbleCell;
+                                
+                                [readReceiptsDisplayable addReadReceiptsView:avatarsContainer];
                             }
                             else
                             {
-                                topConstraint = [avatarsContainer.topAnchor constraintEqualToAnchor:avatarsContainer.superview.topAnchor constant:bottomPositionY + RoomBubbleCellLayout.readReceiptsViewTopMargin];
+                                [bubbleCell.contentView addSubview:avatarsContainer];
+                                
+                                // Force receipts container size
+                                NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:avatarsContainer
+                                                                                                   attribute:NSLayoutAttributeWidth
+                                                                                                   relatedBy:NSLayoutRelationEqual
+                                                                                                      toItem:nil
+                                                                                                   attribute:NSLayoutAttributeNotAnAttribute
+                                                                                                  multiplier:1.0
+                                                                                                    constant:RoomBubbleCellLayout.readReceiptsViewWidth];
+                                NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:avatarsContainer
+                                                                                                    attribute:NSLayoutAttributeHeight
+                                                                                                    relatedBy:NSLayoutRelationEqual
+                                                                                                       toItem:nil
+                                                                                                    attribute:NSLayoutAttributeNotAnAttribute
+                                                                                                   multiplier:1.0
+                                                                                                     constant:RoomBubbleCellLayout.readReceiptsViewHeight];
+                                
+                                // Force receipts container position
+                                NSLayoutConstraint *trailingConstraint = [NSLayoutConstraint constraintWithItem:avatarsContainer
+                                                                                                      attribute:NSLayoutAttributeTrailing
+                                                                                                      relatedBy:NSLayoutRelationEqual
+                                                                                                         toItem:avatarsContainer.superview
+                                                                                                      attribute:NSLayoutAttributeTrailing
+                                                                                                     multiplier:1.0
+                                                                                                       constant:-RoomBubbleCellLayout.readReceiptsViewRightMargin];
+                                
+                                // At the bottom, we have reactions or nothing
+                                NSLayoutConstraint *topConstraint;
+                                if (reactionsView)
+                                {
+                                    topConstraint = [avatarsContainer.topAnchor constraintEqualToAnchor:reactionsView.bottomAnchor constant:RoomBubbleCellLayout.readReceiptsViewTopMargin];
+                                }
+                                else
+                                {
+                                    topConstraint = [avatarsContainer.topAnchor constraintEqualToAnchor:avatarsContainer.superview.topAnchor constant:bottomPositionY + RoomBubbleCellLayout.readReceiptsViewTopMargin];
+                                }
+                                
+                                
+                                // Available on iOS 8 and later
+                                [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, topConstraint, trailingConstraint]];
                             }
-                            
-                            
-                            // Available on iOS 8 and later
-                            [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, topConstraint, trailingConstraint]];
                         }
                     }
                     
