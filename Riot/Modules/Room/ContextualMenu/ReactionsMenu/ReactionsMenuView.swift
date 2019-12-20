@@ -103,13 +103,13 @@ final class ReactionsMenuView: UIView, Themable, NibLoadable {
     private func fill(reactionsMenuViewDatas: [ReactionMenuItemViewData]) {
         self.reactionViewDatas = reactionsMenuViewDatas
         
-        self.reactionsStackView.vc_removeAllSubviews()
+        self.reactionsStackView.vc_removeAllArrangedSubviews()
         
         let reactionsStackViewCount = self.reactionsStackView.arrangedSubviews.count
         
         // Remove all menu buttons if reactions count has changed
         if reactionsStackViewCount != self.reactionViewDatas.count {
-            self.reactionsStackView.vc_removeAllSubviews()
+            self.reactionsStackView.vc_removeAllArrangedSubviews()
         }
         
         var index = 0
