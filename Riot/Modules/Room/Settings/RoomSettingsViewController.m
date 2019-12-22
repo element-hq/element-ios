@@ -38,6 +38,7 @@
 enum
 {
     ROOM_SETTINGS_MAIN_SECTION_INDEX = 0,
+    ROOM_SETTINGS_NOTIFICATIONS_SECTION_INDEX,
     ROOM_SETTINGS_ROOM_ACCESS_SECTION_INDEX,
     ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_INDEX,
     ROOM_SETTINGS_ROOM_ADDRESSES_SECTION_INDEX,
@@ -54,7 +55,6 @@ enum
     ROOM_SETTINGS_MAIN_SECTION_ROW_TOPIC,
     ROOM_SETTINGS_MAIN_SECTION_ROW_TAG ,
     ROOM_SETTINGS_MAIN_SECTION_ROW_DIRECT_CHAT,
-    ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS,
     ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE,
     ROOM_SETTINGS_MAIN_SECTION_ROW_COUNT
 };
@@ -65,6 +65,13 @@ enum
     ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_ANYONE_APART_FROM_GUEST,
     ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_ANYONE,
     ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_SUB_COUNT
+};
+
+enum {
+    ROOM_SETTINGS_NOTIFICATIONS_SECTION_ROW_ALL_MESSAGES = 0,
+    ROOM_SETTINGS_NOTIFICATIONS_SECTION_ROW_MENTIONS_ONLY,
+    ROOM_SETTINGS_NOTIFICATIONS_SECTION_ROW_MUTE,
+    ROOM_SETTINGS_NOTIFICATIONS_SECTION_ROW_COUNT,
 };
 
 enum
@@ -85,7 +92,7 @@ NSString *const kRoomSettingsAvatarURLKey = @"kRoomSettingsAvatarURLKey";
 NSString *const kRoomSettingsNameKey = @"kRoomSettingsNameKey";
 NSString *const kRoomSettingsTopicKey = @"kRoomSettingsTopicKey";
 NSString *const kRoomSettingsTagKey = @"kRoomSettingsTagKey";
-NSString *const kRoomSettingsMuteNotifKey = @"kRoomSettingsMuteNotifKey";
+NSString *const kRoomSettingsNotificationsKey = @"kRoomSettingsNotificationsKey";
 NSString *const kRoomSettingsDirectChatKey = @"kRoomSettingsDirectChatKey";
 NSString *const kRoomSettingsJoinRuleKey = @"kRoomSettingsJoinRuleKey";
 NSString *const kRoomSettingsGuestAccessKey = @"kRoomSettingsGuestAccessKey";
@@ -108,6 +115,8 @@ NSString *const kRoomSettingsAddressCellViewIdentifier = @"kRoomSettingsAddressC
 NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvancedCellViewIdentifier";
 NSString *const kRoomSettingsAdvancedEnableE2eCellViewIdentifier = @"kRoomSettingsAdvancedEnableE2eCellViewIdentifier";
 NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSettingsAdvancedE2eEnabledCellViewIdentifier";
+
+NSString *const kRoomSettingsNotificationsCellReuseIdentifier = @"kRoomSettingsNotificationsCellReuseIdentifer";
 
 @interface RoomSettingsViewController () <SingleImagePickerPresenterDelegate>
 {
@@ -144,6 +153,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     NSMutableArray<NSString *> *relatedGroups;
     NSInteger relatedGroupsNewGroupIndex;
     UITextField* addGroupTextField;
+    
+    // Notifications
+    NSInteger selectedNotificationsSetting;
     
     // The potential image loader
     MXMediaLoader *uploader;
@@ -205,6 +217,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     [super updateRoomState:newRoomState];
     
     bannedMembers = [mxRoomState.members membersWithMembership:MXMembershipBan];
+    
 }
 
 - (UINavigationItem*)getNavigationItem
@@ -247,6 +260,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     [self.tableView registerClass:MXKTableViewCellWithButton.class forCellReuseIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
     [self.tableView registerClass:TableViewCellWithCheckBoxes.class forCellReuseIdentifier:[TableViewCellWithCheckBoxes defaultReuseIdentifier]];
     [self.tableView registerClass:TableViewCellWithCheckBoxAndLabel.class forCellReuseIdentifier:[TableViewCellWithCheckBoxAndLabel defaultReuseIdentifier]];
+    [self.tableView registerClass:TableViewCellWithCheckBoxAndLabel.class forCellReuseIdentifier:kRoomSettingsNotificationsCellReuseIdentifier];
     [self.tableView registerClass:MXKTableViewCell.class forCellReuseIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
     
     // Enable self sizing cells
@@ -301,6 +315,17 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         [self.tableView setContentOffset:CGPointMake(-self.tableView.mxk_adjustedContentInset.left, -self.tableView.mxk_adjustedContentInset.top) animated:YES];
         
     }];
+    
+    
+    if (mxRoom.mute) {
+        selectedNotificationsSetting = ROOM_SETTINGS_NOTIFICATIONS_SECTION_ROW_MUTE;
+    }
+    else if (mxRoom.mentionsOnly) {
+        selectedNotificationsSetting = ROOM_SETTINGS_NOTIFICATIONS_SECTION_ROW_MENTIONS_ONLY;
+    }
+    else {
+        selectedNotificationsSetting = ROOM_SETTINGS_NOTIFICATIONS_SECTION_ROW_ALL_MESSAGES;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -1736,37 +1761,48 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             return;
         }
         
-        if (updatedItemsDict[kRoomSettingsMuteNotifKey])
+        if (updatedItemsDict[kRoomSettingsNotificationsKey])
         {
-            if (((NSNumber*) updatedItemsDict[kRoomSettingsMuteNotifKey]).boolValue)
-            {
+            NSInteger selectedSetting = ((NSNumber*)updatedItemsDict[kRoomSettingsNotificationsKey]).integerValue;
+            if (selectedSetting == ROOM_SETTINGS_NOTIFICATIONS_SECTION_ROW_MENTIONS_ONLY) {
                 [mxRoom mentionsOnly:^{
                     
                     if (weakSelf)
                     {
                         typeof(self) self = weakSelf;
                         
-                        [self->updatedItemsDict removeObjectForKey:kRoomSettingsMuteNotifKey];
+                        [self->updatedItemsDict removeObjectForKey:kRoomSettingsNotificationsKey];
                         [self onSave:nil];
                     }
                     
                 }];
             }
-            else
-            {
+            else if (selectedSetting == ROOM_SETTINGS_NOTIFICATIONS_SECTION_ROW_ALL_MESSAGES) {
                 [mxRoom allMessages:^{
                     
                     if (weakSelf)
                     {
                         typeof(self) self = weakSelf;
                         
-                        [self->updatedItemsDict removeObjectForKey:kRoomSettingsMuteNotifKey];
+                        [self->updatedItemsDict removeObjectForKey:kRoomSettingsNotificationsKey];
                         [self onSave:nil];
                     }
                     
                 }];
             }
-            return;
+            else if (selectedSetting == ROOM_SETTINGS_NOTIFICATIONS_SECTION_ROW_MUTE) {
+                [mxRoom mute:^{
+                    
+                    if (weakSelf)
+                    {
+                        typeof(self) self = weakSelf;
+                        
+                        [self->updatedItemsDict removeObjectForKey:kRoomSettingsNotificationsKey];
+                        [self onSave:nil];
+                    }
+                    
+                }];
+            }
         }
         
         if (updatedItemsDict[kRoomSettingsDirectChatKey])
@@ -1960,6 +1996,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     {
         count = ROOM_SETTINGS_MAIN_SECTION_ROW_COUNT;
     }
+    else if (section == ROOM_SETTINGS_NOTIFICATIONS_SECTION_INDEX) {
+        count = ROOM_SETTINGS_NOTIFICATIONS_SECTION_ROW_COUNT;
+    }
     else if (section == ROOM_SETTINGS_ROOM_ACCESS_SECTION_INDEX)
     {
         missingAddressWarningIndex = -1;
@@ -2038,7 +2077,10 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
 - (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section == ROOM_SETTINGS_ROOM_ACCESS_SECTION_INDEX)
+    if (section == ROOM_SETTINGS_NOTIFICATIONS_SECTION_INDEX) {
+        return NSLocalizedStringFromTable(@"room_details_notifications_section", @"Vector", nil);
+    }
+    else if (section == ROOM_SETTINGS_ROOM_ACCESS_SECTION_INDEX)
     {
         return NSLocalizedStringFromTable(@"room_details_access_section", @"Vector", nil);
     }
@@ -2148,26 +2190,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     // general settings
     if (indexPath.section == ROOM_SETTINGS_MAIN_SECTION_INDEX)
     {
-        if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS)
-        {
-            MXKTableViewCellWithLabelAndSwitch *roomNotifCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-
-            [roomNotifCell.mxkSwitch addTarget:self action:@selector(toggleRoomNotification:) forControlEvents:UIControlEventValueChanged];
-            
-            roomNotifCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_mute_notifs", @"Vector", nil);
-            
-            if (updatedItemsDict[kRoomSettingsMuteNotifKey])
-            {
-                roomNotifCell.mxkSwitch.on = ((NSNumber*) updatedItemsDict[kRoomSettingsMuteNotifKey]).boolValue;
-            }
-            else
-            {
-                roomNotifCell.mxkSwitch.on = mxRoom.isMute || mxRoom.isMentionsOnly;
-            }
-            
-            cell = roomNotifCell;
-        }
-        else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_DIRECT_CHAT)
+        if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_DIRECT_CHAT)
         {
             MXKTableViewCellWithLabelAndSwitch *roomDirectChat = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
@@ -2357,6 +2380,25 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             cell = leaveCell;
         }
+    }
+    else if (indexPath.section == ROOM_SETTINGS_NOTIFICATIONS_SECTION_INDEX) {
+        TableViewCellWithCheckBoxAndLabel *notificationCell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsNotificationsCellReuseIdentifier forIndexPath:indexPath];
+        
+        notificationCell.checkBoxLeadingConstraint.constant = notificationCell.separatorInset.left;
+        
+        if (indexPath.row == ROOM_SETTINGS_NOTIFICATIONS_SECTION_ROW_MUTE) {
+            notificationCell.label.text = NSLocalizedStringFromTable(@"room_details_notifications_section_mute", @"Vector", nil);
+        }
+        else if (indexPath.row == ROOM_SETTINGS_NOTIFICATIONS_SECTION_ROW_ALL_MESSAGES) {
+            notificationCell.label.text = NSLocalizedStringFromTable(@"room_details_notifications_section_all", @"Vector", nil);
+        }
+        else if (indexPath.row == ROOM_SETTINGS_NOTIFICATIONS_SECTION_ROW_MENTIONS_ONLY) {
+            notificationCell.label.text = NSLocalizedStringFromTable(@"room_details_notifications_section_mentions", @"Vector", nil);
+        }
+        
+        notificationCell.enabled = indexPath.row == selectedNotificationsSetting;
+        
+        cell = notificationCell;
     }
     else if (indexPath.section == ROOM_SETTINGS_ROOM_ACCESS_SECTION_INDEX)
     {
@@ -2886,6 +2928,30 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 }
             }
         }
+        else if (indexPath.section == ROOM_SETTINGS_NOTIFICATIONS_SECTION_INDEX) {
+            BOOL isUpdated = NO;
+            if(indexPath.row != selectedNotificationsSetting) {
+                selectedNotificationsSetting = indexPath.row;
+                isUpdated = YES;
+            }
+            
+            // If there were no changes, don't update
+            if((selectedNotificationsSetting == ROOM_SETTINGS_NOTIFICATIONS_SECTION_ROW_MENTIONS_ONLY && mxRoom.mentionsOnly) ||
+               (selectedNotificationsSetting == ROOM_SETTINGS_NOTIFICATIONS_SECTION_ROW_ALL_MESSAGES && (!mxRoom.mentionsOnly && !mxRoom.mute)) ||
+               (selectedNotificationsSetting == ROOM_SETTINGS_NOTIFICATIONS_SECTION_ROW_MUTE && mxRoom.mute)) {
+                
+                [updatedItemsDict removeObjectForKey:kRoomSettingsNotificationsKey];
+            }
+            else {
+                [updatedItemsDict setObject:[NSNumber numberWithInteger:selectedNotificationsSetting] forKey:kRoomSettingsNotificationsKey];
+            }
+            
+            if(isUpdated) {
+                [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
+                NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:ROOM_SETTINGS_NOTIFICATIONS_SECTION_INDEX];
+                [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
+            }
+        }
         else if (indexPath.section == ROOM_SETTINGS_ROOM_ACCESS_SECTION_INDEX)
         {
             BOOL isUpdated = NO;
@@ -3384,20 +3450,6 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     [singleImagePickerPresenter presentFrom:self sourceView:sourceView sourceRect:sourceView.bounds animated:YES];
     
     self.imagePickerPresenter = singleImagePickerPresenter;
-}
-
-- (void)toggleRoomNotification:(UISwitch*)theSwitch
-{
-    if (theSwitch.on == (mxRoom.isMute || mxRoom.isMentionsOnly))
-    {
-        [updatedItemsDict removeObjectForKey:kRoomSettingsMuteNotifKey];
-    }
-    else
-    {
-        updatedItemsDict[kRoomSettingsMuteNotifKey] = @(theSwitch.on);
-    }
-    
-    [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
 }
 
 - (void)toggleDirectChat:(UISwitch*)theSwitch

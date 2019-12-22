@@ -1,3 +1,9 @@
+Changes in 0.10.5 (TBD)
+===============================================
+
+Improvements:
+ * Improve room notifications settings UI. (#2886).
+
 Changes in 0.10.4 (2019-12-11)
 ===============================================
 
@@ -145,9 +151,9 @@ Improvements:
  * Menu actions: Display message time (#2463).
  * Reactions Menu: Fix position (#2447).
  * Context menu polish (#2466).
- * Upgrade Piwik/MatomoTracker (v6.0.1) (#2159).	
- * Message Editing: Annotate edited messages in timeline (#2400).	
- * Message Editing: Editing in the timeline (#2404).	
+ * Upgrade Piwik/MatomoTracker (v6.0.1) (#2159).
+ * Message Editing: Annotate edited messages in timeline (#2400).
+ * Message Editing: Editing in the timeline (#2404).
  * Read receipts: They are now counted at the MatrixKit level.
  * Migrate to Swift 5.0.
  * Reactions: Update quick reactions (#2459).
@@ -320,7 +326,7 @@ Improvements:
  * Replace the deprecated MXKAttachment and MXKImageView interfaces use (see matrix-org/matrix-ios-kit/pull/487).
  * i18n: Enable Japanese (ja)
  * i18n: Enable Hungarian (hu)
- 
+
 Bug fix:
  * Registration: reCAPTCHA does not work anymore on iOS 10 (#2119).
 
@@ -377,7 +383,7 @@ Changes in 0.7.2 (2018-08-24)
 Improvements:
  * Upgrade MatrixKit version (v0.8.2).
  * Server Quota Notices in Riot (#1937).
- 
+
 Bug fix:
  * User defaults: the preset application language (if any) is ignored.
  * Recents: Avoid to open a room twice (it crashed on room creation on quick HSes).
@@ -388,7 +394,7 @@ Changes in 0.7.1 (2018-08-17)
 
 Improvements:
  * Upgrade MatrixKit version (v0.8.1).
- 
+
 Bug fix:
  * Empty app if initial /sync fails (#1975).
  * Direct rooms can be lost on an initial /sync (vector-im/riot-ios/issues/1983).
@@ -454,12 +460,12 @@ Improvements:
  * Send Stickers (#1860).
  * Settings: Add deactivate account (#1870).
  * Widgets: Update from UIWebView to WKWebView to improve performance.
- 
+
 Bug fix:
  * Quotes (by themselves) render as white blocks (#1877).
  * GDPR: consent screen could not be closed (#1883).
  * GDPR: Do not display error alert when receiving GDPR Consent not given (#1886).
- 
+
 Translations:
  * Enable Icelandic.
 
@@ -472,7 +478,7 @@ Improvements:
  * Beginning of "Send sticker" support (#1860).
  * Use existing message.mp3 for notification sounds, thanks to @pixlwave (PR #1835).
  * GDPR: Display the consent tool in case of M_CONSENT_NOT_GIVEN error (#1871).
- 
+
 Bug fix:
  * Fix the display of side borders of HTML blockquotes (#1857).
  * Moved UI update to main queue, thanks to @Taiwo (PR #1854).
@@ -484,10 +490,10 @@ Changes in 0.6.15 (2018-04-23)
 
 Improvements:
  * Upgrade MatrixKit version (v0.7.11).
- 
+
 Bug fix:
  * Regression: Sending a photo from the photo library causes a crash.
- 
+
 Changes in 0.6.14 (2018-04-20)
 ===============================================
 
@@ -512,7 +518,7 @@ Improvements:
  * Make state event redaction handling gentler with homeserver (vector-im/riot-ios#1823).
 
 Bug fixes:
- * Room summary is not updated after redaction of the room display name (vector-im/riot-ios#1822). 
+ * Room summary is not updated after redaction of the room display name (vector-im/riot-ios#1822).
 
 Changes in 0.6.12 (2018-03-12)
 ===============================================
@@ -520,12 +526,12 @@ Changes in 0.6.12 (2018-03-12)
 Improvements:
  * Upgrade MatrixKit version (v0.7.8).
  * Add Catalan, thanks to @salvadorpla.
- * Add Bulgarian, thanks to @rbozhkova. 
+ * Add Bulgarian, thanks to @rbozhkova.
  * Add quick reply to notifications (#625), thanks to @joeywatts(PR #1777).
  * Room: Inform user when they cannot post to a room because of low power level.
  * Matrix Apps: Enable them by default. Remove the settings from LABS section (#1795).
  * Improve server load on event redaction (vector-im/riot-ios#1730).
- 
+
 Bug Fix:
  * Push: Missing push notifications after answering a call (vector-im/riot-ios#1757).
  * Fix screen flashing at startup (#1798).
@@ -534,7 +540,7 @@ Bug Fix:
  * MXKEventFormatter: Emotes which contain a single emoji are expanded to be enormous (vector-im/riot-ios#1558).
  * Crypto: e2e devices list not shown (#1782).
  * Direct Chat: a room was marked as direct by mistake when I joined it.
- 
+
 Changes in 0.6.11 (2018-02-27)
 ===============================================
 
@@ -577,7 +583,7 @@ Bug Fix:
  * Cancel Buttons use style Cancel (PR #1737), thanks to @tellowkrinkle.
  * Share Extension: Fix crash on a weak self (PR #1744).
  * Share: The extension crashes if you try to share a GIF image (#1759)
- 
+
 Translations:
  * Catalan, added thanks to @sim6 and @salvadorpla (PR #1767).
 
@@ -639,7 +645,7 @@ Bug Fix:
  * Dark theme: Make the keyboard dark (#1620), thanks to @aaronraimist.
  * App crashes when user wants to share a message (matrix-org/riot-ios-rageshakes#676).
  * Fix UICollectionView warning: The behavior of the UICollectionViewFlowLayout is not defined...
- 
+
 Translations:
  * Vietnamese, enabled thanks to @loulsle.
  * Simplified Chinese, updated thanks to @tonghuix.
@@ -678,7 +684,7 @@ Improvements:
  * Add support of Callkit, thanks to @morozkin
    - Matrix incoming calls are displayed by the system including on the lock screen.
    - Matrix Calls are listed in the system call history.
- * Add support of Pushkit, thanks to @morozkin: 
+ * Add support of Pushkit, thanks to @morozkin:
    - Message content in notifications does not go anymore through Apple service.
    - Riot can display decrypted message.
    - Riot shows the system incoming screen on Matrix incoming call notifications.
@@ -727,7 +733,7 @@ Improvements:
  * Add WidgetViewController (PR #1514).
  * BugReportVC: Force users to add a description in crash reports (PR #1520).
  * Jitsi: Enable the "Create conference calls with jitsi" settings by default (PR #1549).
- 
+
 Bug Fixes:
  * Fix inbound video calls don't have speakerphone turned on by default (#933).
  * Room settings: the displayed room access settings is wrong (#1494).
@@ -743,7 +749,7 @@ Bug Fixes:
  * Return key on hardware keyboards now sends messages, thanks to @vivlim (PR #1513).
  * MediaPickerViewController: Add sanity checks to avoid crashes (#1532).
  * RoomsViewController: Crash in [RoomsViewController prepareForSegue:… (#1533).
- 
+
 Translations:
  * Enable Basque, thanks to @osoitz.
  * Enable Simplified Chinese, thanks to @tonghuix (Note: the push notifications are not translated yet).
@@ -755,13 +761,13 @@ Improvements:
  * Upgrade MatrixKit version (v0.6.2).
  * Support dark theme (vector-im/riot-meta#22).
  * Set the application group identifier to be able to share userDefaults object.
- 
+
 Bug Fixes:
  * SettingsViewController: Release correctly the pushed view controller.
  * App have crashed whilst uploading photos (#1445).
  * Register for remote notifications only if user provides access to notification feature, thanks to @aramsargsyan (#1467).
  * Improvements in notification registration flow, thanks to @aramsargsyan (#1472).
- 
+
 Translations:
  * Enable Russian.
 
@@ -804,7 +810,7 @@ Translations:
  * Simplified Chinese, thanks to @tonghuix.
  * Latvian, thanks to @lauris79.
  * Spanish, thanks to @javierquevedo.
- 
+
 Bug fixes:
  * Home: On iOS <= 9.0, the rooms collection scrolls to the left on room edition.
  * Home: Fix the flickering effects observed when user edits a room on iOS < 10.
@@ -827,7 +833,7 @@ Improvements:
  * Chat: Expand read receipts when user taps on it #59, thanks to @aramsargsyan (#1341).
  * GA: Disable GA in debug as it pollutes stats and crashes.
  * Home: Display room name on 2 lines.
- 
+
 Bug fixes:
  * Fix: Crash when scrolling in the public rooms from Unified Search (#1355).
  * Chat screen: the message overlaps its timestamp.
@@ -842,7 +848,7 @@ Changes in 0.4.1 (2017-06-23)
 
 Improvements:
  * Upgrade MatrixKit version (v0.5.1).
- 
+
 Bug fixes:
  * Room Chat: Scrolling manually to the bottom of the no live timeline doesn't flip it to read/write view (#1312).
  * Enhancement - UX Rework: Update the buttons of the room expanded header (vector-im/riot-meta#76).
@@ -869,7 +875,7 @@ Improvements:
  * Add a picker to select a server directory.
  * Add an option to join room by id or alias.
  * Pods: Update Cocoapods and reduce Riot/OLM coupling, thanks to @hberenger (PR #1220).
- 
+
 Bug fixes:
  * Files search: display the attachment thumbnail (#1135).
  * Chevron to exit roomview after clicking through from search results can disappear (#841).
@@ -886,7 +892,7 @@ Changes in 0.3.13 (2017-03-23)
 
 Improvements:
  * Upgrade MatrixKit version (v0.4.11).
- 
+
 Bug fixes:
  * Chat screen: image thumbnails management is broken (#1121).
  * Image viewer repeatedly loses overlay menu (#1109).
@@ -896,8 +902,8 @@ Changes in 0.3.12 (2017-03-21)
 
 Improvements:
  * Upgrade MatrixKit version (v0.4.10).
- 
-Bug fixes: 
+
+Bug fixes:
  * Registration with email failed when the email address is validated on the mobile phone.
  * Chat screen - The missed discussions badge is missing in the navigation bar.
 
@@ -908,8 +914,8 @@ Changes in 0.3.11 (2017-03-16)
 Improvements:
  * Upgrade MatrixKit version (v0.4.9).
  * Crypto: manage unknown devices when placing or answering a call (#1058).
- 
-Bug fixes: 
+
+Bug fixes:
  * [Direct Chat] No placeholder avatar and display name from the member details view (#923).
  * MSIDSN registration.
  * [Tablet / split mode] The room member details page is not popped after signing out (#1062).
@@ -931,7 +937,7 @@ Improvements:
  * Registration: Support the login flow based on a mobile phone number (msisdn).
  * Login: Support the new login API with different types of identifiers (id, thirdparty and phone). We keep supporting the old login API.
  * Improve the people invite screens: Discover Riot/Matrix users by using the local phone numbers (#904).
- 
+
 Bug fixes:
  * Avatars (and probably other media) do not display with account on a self-signed server (#816)
  * App crashes on new start chat.
@@ -954,7 +960,7 @@ Improvements:
  * Hide/show the non-matrix-enabled contacts from the local contacts section (#904).
  * Show riot enabled local contacts in known contacts too (#1001).
  * Local contact section should be collapsable even when no search is started (#1017).
- 
+
 Bug fixes:
  * App stuck in Riot animation on cold start (#964).
  * Got stuck syncing forever (#1008).
@@ -980,7 +986,7 @@ Improvements:
  * ContactTableViewCell: Let ContactsTableViewController update the matrix ids of the local contacts.
  * Warn that logging out will lose E2E keys (#950).
  * Logs: Log versions of app, MatrixKit, MatrixSDK etc at startup.
- 
+
 Bug fixes:
  * Room details members: wrong unknown wording (#941).
  * App may crash when user rotates the device while he joins a room.
@@ -996,7 +1002,7 @@ Improvements:
  * Improve the people invite screens (#904).
  * "Add contact" button has been added on Room Member list (#905).
  * Google Analytics: enable MXSession GA stats and send stat on launch screen display time.
- 
+
 Bug fixes:
  * Resend now function doesn't work on canceled upload file (#890).
  * Riot is picking up my name within words and highlighting them (#893).
@@ -1022,7 +1028,7 @@ Changes in 0.3.5 (2016-12-19)
 
 Improvements:
  * Upgrade MatrixKit version (v0.4.4).
- * Update Riot icons. 
+ * Update Riot icons.
  * Launch screen is now animated.
  * Crypto: many improvements (including no more UI freeze) and bug fixes in sdk.
  * Crypto: Show a popup when log out and in is required.
@@ -1031,7 +1037,7 @@ Improvements:
  * User settings: Display the cryptography info before the devices list.
  * Update rageshake email content.
  * Recognise iPhone7.
- 
+
 Bug fixes:
  * Voip : decline call when room opened freeze riot (#764).
  * Wrong room name of a direct chat in user's profile (#824).
@@ -1048,7 +1054,7 @@ Changes in 0.3.4 (2016-11-23)
 Improvements:
  * Upgrade MatrixKit version (v0.4.3).
  * Settings: User Settings: List user's devices and add the ability to rename or delete them.
- 
+
 Bug fixes:
  * User settings: The toggle buttons are disabled by mistake.
  * Typing indicator should stop when the user sends his message (https://github.com/vector-im/vector-ios#809).
@@ -1061,7 +1067,7 @@ Changes in 0.3.3 (2016-11-22)
 Improvements:
  * Upgrade MatrixKit version (v0.4.2).
  * Settings: Add cryptography information.
- 
+
 Bug fixes:
  * Crypto: Do not allow to redact the event that enabled encryption in a room.
 
@@ -1070,7 +1076,7 @@ Changes in 0.3.2 (2016-11-18)
 
 Improvements:
  * Upgrade MatrixKit version (v0.4.1).
- 
+
 Bug fixes:
  * Make share/save/copy work for e2e attachments.
  * Wrong thumbnail shown whilst uploading e2e image  (https://github.com/vector-im/vector-ios#795).
@@ -1096,7 +1102,7 @@ Improvements:
  * Add ability to tag/untag direct rooms in Messages screen #715.
  * Reuse the existing direct room when hitting 'start chat' from Messages screen #715.
  * List all the current direct rooms with a user in the Member/Contact details #715.
- 
+
 Bug fixes:
  * Search messages tab: background picture covering up the tabs when device is turned horizontaly #654.
  * Changing notif setting from swipe menu should change the room apparence in the list #525
@@ -1108,7 +1114,7 @@ Improvements:
  * Upgrade MatrixKit version (v0.3.19).
  * RoomSearchDataSource: Remove the matrix session from the parameters in `initWithRoomDataSource` API.
  * Enhance the messages search display.
- 
+
 Bug fixes:
  * App crashes when user taps on room alias with multiple # in chat history #668.
  * Room message search: the message date & time are not displayed #361.
@@ -1122,7 +1128,7 @@ Improvements:
  * Media picker: Support video capture #533.
  * VoIP call screen: Update call controls icons #598.
  * Media picker: Switching camera button and exit button are not very visible #610.
- 
+
 Bug fixes:
  * Login screen: Stuck on flashing loading wheel in case of invalid credentials #637.
  * Settings screen headers slide down over the already fully displayed screen #636.
@@ -1150,7 +1156,7 @@ Improvements:
  * Messages: "Start chat" is the suggestion to replace 'invite people'.
  * Contact details: Enable voip call options.
  * People tab: support email and matrix id selection.
- 
+
 Bug fixes:
  * Tapping notifications doesn't take you to the right room in iOS 10 #599.
  * iOS10: App crashes when it wants to access user's data (Photos, Contacts, Camera, Mic) #605.
@@ -1234,7 +1240,7 @@ Improvements:
  * Display the list of ignored users in user settings #451.
  * Media Picker: Allow multi selection of pictures #301.
  * Settings: Adjust the section header display.
- 
+
 Bug fixes:
  * Redacting membership events should immediately reset the displayname & avatar of room members #443.
  * Profile changes shouldn't reorder the room list #494.
@@ -1248,7 +1254,7 @@ Bug fixes:
  * MXSession: Do not send kMXSessionIgnoredUsersDidChangeNotification when the session loads the data from the store #491.
  * MXHTTPClient: Fix crash: "Task created in a session that has been invalidated" #490.
  * Call: the remote and local video are not scaled to fill the video container #537.
- 
+
 Changes in Vector iOS in 0.1.14 (2016-08-01)
 ===============================================
 
@@ -1259,7 +1265,7 @@ Improvements:
  * Call Better handle call invites when the app resumes.
  * Call: Improve the sending of local ICE candidates to avoid HTTP 429(Too Many Requests) response
  * Crash report: In addition to GA report, prompt the user to report the crash by email.
- 
+
 Bug fixes:
  * Call: Fixed the missing return_to_call translation.
  * Call: Make audio continue to work when backgrounding the app.
@@ -1276,7 +1282,7 @@ Changes in Vector iOS in 0.1.13 (2016-07-26)
 Improvements:
  * Upgrade MatrixKit version (v0.3.12).
  * Enable VoIP for 1:1 room #454.
- 
+
 Bug fixes:
  * Confirmation prompt before opping someone to same power level #461.
  * Room Settings: The room privacy setting text doesn't fit in phone mode #429.
@@ -1292,7 +1298,7 @@ Improvements:
  * Settings: Set the right label text color.
  * Room Settings: Add "Addresses" section #412.
  * Messages: switch decline and preview buttons on invites #447.
- 
+
 Bug fixes:
  * App crashes when the user leaves Settings whereas an email binding is in progress.
  * App crashes during [AppDelegate applicationDidEnterBackground:] #452.
@@ -1324,7 +1330,7 @@ Improvements:
  * Room Settings: Prompt user to save changes when Members list tab is selected.
  * Room Settings: Add favourite/low prio toggle in room settings #218.
  * Room Settings: Have proper room settings (Room access, History visibility) #337.
- 
+
 Bug fixes:
  * Room screen:  Tap on attached video does nothing #380.
  * Hitting back after search results does not refresh results #190.
