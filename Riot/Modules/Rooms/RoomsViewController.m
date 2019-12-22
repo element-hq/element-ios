@@ -267,13 +267,12 @@
         // Preview the public room
         if (publicRoom.worldReadable)
         {
-            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:publicRoom.roomId andSession:recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
-
+            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithPublicRoom:publicRoom andSession:recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
+            
             [self startActivityIndicator];
 
             // Try to get more information about the room before opening its preview
             [roomPreviewData peekInRoom:^(BOOL succeeded) {
-
                 [self stopActivityIndicator];
 
                 [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];
