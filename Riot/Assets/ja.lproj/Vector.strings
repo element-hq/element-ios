@@ -562,3 +562,9 @@
 "room_resource_limit_exceeded_message_contact_1" = " Please ";
 "settings_ui_theme_black" = "Black";
 "settings_flair" = "特色を表示する";
+// String for App Store
+"store_short_description" = "セキュアな分散型チャット/VoIP";
+"close" = "閉じる";
+// Accessibility
+"accessibility_checkbox_label" = "チェックボックス";
+"auth_login_single_sign_on" = "シングルサインオン(SSO)でサインイン";
