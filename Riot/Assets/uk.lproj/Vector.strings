@@ -116,3 +116,20 @@
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Додайте ідентифікаційний сервер в параметрах, щоб запросити е-поштою.";
 "error_not_supported_on_mobile" = "Ви не можете робити це з %@ мобільного.";
+// Errors
+"error_user_already_logged_in" = "Схоже, ви намагаєтесь з'єднатися до іншого домашнього сервера. Хочете вийти?";
+// Chat creation
+"room_creation_title" = "Новий чат";
+"room_creation_account" = "Обліковий запис";
+"room_creation_appearance" = "Зовнішній вигляд";
+"room_creation_appearance_name" = "Назва";
+"room_creation_appearance_picture" = "Зображення чату (необов'язково)";
+"room_creation_privacy" = "Приватність";
+"room_creation_private_room" = "Цей чат є приватним";
+"room_creation_public_room" = "Цей чат є публічним";
+"room_creation_make_public" = "Зробити публічним";
+"room_creation_make_public_prompt_title" = "Зробити цей чат публічним?";
+"room_creation_make_public_prompt_msg" = "Ви справді хочете зробити цей чат публічним? Будь-хто зможе долучатися й читати повідомлення.";
+"room_creation_keep_private" = "Залишити приватним";
+"room_creation_make_private" = "Зробити приватним";
+"room_creation_wait_for_creation" = "Триває створення кімнати. Будь ласка, зачекайте.";
