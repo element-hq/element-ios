@@ -1,3 +1,12 @@
+Changes in 0.10.x (2020-xx-xx)
+===============================================
+
+Improvements:
+ * 
+
+Bug fix:
+ * Key backup banner is not hidden correctly (#2899).
+
 Changes in 0.10.4 (2019-12-11)
 ===============================================
 
