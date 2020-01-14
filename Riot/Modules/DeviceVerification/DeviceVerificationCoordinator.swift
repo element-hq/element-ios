@@ -31,6 +31,7 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
     private let otherDeviceId: String
 
     private var incomingTransaction: MXIncomingSASTransaction?
+    private var incomingKeyVerificationRequest: MXKeyVerificationRequest?
 
     // MARK: Public
 
@@ -66,12 +67,29 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
         self.incomingTransaction = incomingTransaction
     }
     
+    /// Contrustor to manage an incoming SAS device verification transaction
+    ///
+    /// - Parameters:
+    ///   - session: the MXSession
+    ///   - incomingKeyVerificationRequest: An existing incoming key verification request to accept
+    convenience init(session: MXSession, incomingKeyVerificationRequest: MXKeyVerificationRequest) {
+        self.init(session: session, otherUserId: incomingKeyVerificationRequest.sender, otherDeviceId: incomingKeyVerificationRequest.fromDevice)
+        self.incomingKeyVerificationRequest = incomingKeyVerificationRequest
+    }
+    
     // MARK: - Public methods
     
     func start() {
-        let rootCoordinator = self.createDataLoadingScreenCoordinator()
+        let rootCoordinator: Coordinator & Presentable
+            
+        if let incomingKeyVerificationRequest = self.incomingKeyVerificationRequest {
+            rootCoordinator = self.createDataLoadingScreenCoordinator(with: incomingKeyVerificationRequest)
+        } else {
+            rootCoordinator = self.createDataLoadingScreenCoordinator()
+        }
+        
         rootCoordinator.start()
-
+        
         self.add(childCoordinator: rootCoordinator)
         self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
             self?.remove(childCoordinator: rootCoordinator)
@@ -89,6 +107,14 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
         coordinator.delegate = self
         coordinator.start()
 
+        return coordinator
+    }
+    
+    private func createDataLoadingScreenCoordinator(with keyVerificationRequest: MXKeyVerificationRequest) -> DeviceVerificationDataLoadingCoordinator {
+        let coordinator = DeviceVerificationDataLoadingCoordinator(incomingKeyVerificationRequest: keyVerificationRequest)
+        coordinator.delegate = self
+        coordinator.start()
+        
         return coordinator
     }
 
@@ -139,6 +165,16 @@ extension DeviceVerificationCoordinator: DeviceVerificationDataLoadingCoordinato
             self.showIncoming(otherUser: user, transaction: incomingTransaction)
         } else {
             self.showStart(otherUser: user, otherDevice: device)
+        }
+    }
+    
+    func deviceVerificationDataLoadingCoordinator(_ coordinator: DeviceVerificationDataLoadingCoordinatorType, didAcceptKeyVerificationRequestWithTransaction transaction: MXDeviceVerificationTransaction) {
+        
+        if let sasTransaction = transaction as? MXSASTransaction {
+            self.showVerify(transaction: sasTransaction, animated: true)
+        } else {
+            NSLog("[DeviceVerificationCoordinator] Transaction \(transaction) is not supported")
+            self.delegate?.deviceVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
         }
     }
 
