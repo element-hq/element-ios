@@ -18,7 +18,7 @@ import UIKit
 import Reusable
 
 @objcMembers
-final class BubbleCellWithoutSenderInfoContentView: UIView, NibLoadable {
+final class BubbleCellContentView: UIView, NibLoadable {
     
     // MARK: - Properties
     
@@ -34,32 +34,49 @@ final class BubbleCellWithoutSenderInfoContentView: UIView, NibLoadable {
     
     @IBOutlet weak var bubbleOverlayContainer: UIView!
     
+    @IBOutlet weak var paginationTitleContainerView: UIView!
+    @IBOutlet weak var paginationLabel: UILabel!
+    @IBOutlet weak var paginationSeparatorView: UIView!
+    
     // MARK: Private
     
     private var showReadReceipts: Bool {
         get {
-            return self.readReceiptsContainerView.isHidden
+            return !self.readReceiptsContainerView.isHidden
         }
         set {
             self.readReceiptsContainerView.isHidden = !newValue
         }
     }
     
+    // MARK: Public
+    
+    var showPaginationTitle: Bool {
+        get {
+            return !self.paginationTitleContainerView.isHidden
+        }
+        set {
+            self.paginationTitleContainerView.isHidden = !newValue
+        }
+    }
+    
     // MARK: - Setup
     
-    class func instantiate() -> BubbleCellWithoutSenderInfoContentView {
-        return BubbleCellWithoutSenderInfoContentView.loadFromNib()
+    class func instantiate() -> BubbleCellContentView {
+        return BubbleCellContentView.loadFromNib()
     }
     
     // MARK: - Public
     
     func update(theme: Theme) {
         self.backgroundColor = theme.backgroundColor
+        self.paginationLabel.textColor = theme.tintColor
+        self.paginationSeparatorView.backgroundColor = theme.tintColor
     }
 }
 
 // MARK: - BubbleCellReadReceiptsDisplayable
-extension BubbleCellWithoutSenderInfoContentView: BubbleCellReadReceiptsDisplayable {
+extension BubbleCellContentView: BubbleCellReadReceiptsDisplayable {
     
     func addReadReceiptsView(_ readReceiptsView: UIView) {
         self.readReceiptsContentView.vc_removeAllSubviews()
