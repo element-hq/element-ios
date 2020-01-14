@@ -23,7 +23,7 @@ final class KeyVerificationCellInnerContentView: UIView, NibLoadable {
     
     private enum Constants {
         static let cornerRadius: CGFloat = 8.0
-        static let buttonBackgroundColorAlpha: CGFloat = 0.8
+        static let buttonBackgroundColorAlpha: CGFloat = 0.2
         static let buttonCornerRadius: CGFloat = 6.0
     }
     
@@ -34,10 +34,11 @@ final class KeyVerificationCellInnerContentView: UIView, NibLoadable {
     @IBOutlet private weak var badgeImageView: UIImageView!
     @IBOutlet private weak var titleLabel: UILabel!
     
-    @IBOutlet private weak var userInformationsLabel: UILabel!
+    @IBOutlet private weak var otherUserInformationLabel: UILabel!
     
     @IBOutlet private weak var requestStatusLabel: UILabel!
     
+    @IBOutlet private weak var buttonsContainerView: UIView!
     @IBOutlet private weak var acceptButton: UIButton!
     @IBOutlet private weak var declineButton: UIButton!
     
@@ -48,8 +49,7 @@ final class KeyVerificationCellInnerContentView: UIView, NibLoadable {
             return self.acceptButton.isHidden && self.declineButton.isHidden
         }
         set {
-            self.acceptButton.isHidden = newValue
-            self.declineButton.isHidden = newValue
+            self.buttonsContainerView.isHidden = newValue
         }
     }
     
@@ -80,6 +80,10 @@ final class KeyVerificationCellInnerContentView: UIView, NibLoadable {
         }
     }
     
+    var otherUserInfo: String? {
+        return self.otherUserInformationLabel.text
+    }
+    
     var requestStatusText: String? {
         get {
             return self.requestStatusLabel.text
@@ -106,6 +110,21 @@ final class KeyVerificationCellInnerContentView: UIView, NibLoadable {
         super.awakeFromNib()
         
         self.layer.masksToBounds = true
+        self.acceptButton.layer.masksToBounds = true
+        
+        self.acceptButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        self.acceptButton.titleLabel?.minimumScaleFactor = 0.5
+        self.acceptButton.titleLabel?.baselineAdjustment = .alignCenters
+        
+        self.acceptButton.setTitle(VectorL10n.keyVerificationTileRequestIncomingApprovalAccept, for: .normal)
+        
+        self.declineButton.layer.masksToBounds = true
+        
+        self.declineButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        self.declineButton.titleLabel?.minimumScaleFactor = 0.5
+        self.declineButton.titleLabel?.baselineAdjustment = .alignCenters
+        
+        self.declineButton.setTitle(VectorL10n.keyVerificationTileRequestIncomingApprovalDecline, for: .normal)
     }
     
     override func layoutSubviews() {
@@ -124,14 +143,14 @@ final class KeyVerificationCellInnerContentView: UIView, NibLoadable {
     func update(theme: Theme) {
         self.backgroundColor = theme.headerBackgroundColor
         self.titleLabel.textColor = theme.textPrimaryColor
-        self.userInformationsLabel.textColor = theme.textSecondaryColor
+        self.otherUserInformationLabel.textColor = theme.textSecondaryColor
         
         self.acceptButton.vc_setBackgroundColor(theme.tintColor.withAlphaComponent(Constants.buttonBackgroundColorAlpha), for: .normal)
         self.declineButton.vc_setBackgroundColor(theme.noticeColor.withAlphaComponent(Constants.buttonBackgroundColorAlpha), for: .normal)
     }
     
     func updateSenderInfo(with userId: String, userDisplayName: String?) {
-        self.userInformationsLabel.text = self.buildUserInfoText(with: userId, userDisplayName: userDisplayName)
+        self.otherUserInformationLabel.text = self.buildUserInfoText(with: userId, userDisplayName: userDisplayName)
     }
     
     // MARK: - Private
@@ -148,6 +167,8 @@ final class KeyVerificationCellInnerContentView: UIView, NibLoadable {
         
         return userInfoText
     }
+    
+    // MARK: - Action
     
     @IBAction private func declineButtonAction(_ sender: Any) {
         self.declineActionHandler?()

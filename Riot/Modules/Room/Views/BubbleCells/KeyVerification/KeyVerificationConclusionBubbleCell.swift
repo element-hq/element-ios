@@ -17,8 +17,8 @@
 import UIKit
 
 @objcMembers
-final class KeyVerificationConclusionBubbleCell: KeyVerificationBaseBubbleCell {
-    
+class KeyVerificationConclusionBubbleCell: KeyVerificationBaseBubbleCell {
+
     // MARK: - Constants
     
     private enum Sizing {
@@ -47,7 +47,7 @@ final class KeyVerificationConclusionBubbleCell: KeyVerificationBaseBubbleCell {
         super.render(cellData)
         
         guard let keyVerificationCellInnerContentView = self.keyVerificationCellInnerContentView,
-            let bubbleData = self.bubbleData,
+            let bubbleData = self.bubbleData as? RoomBubbleCellData,
             let viewData = self.viewData(from: bubbleData) else {
                 NSLog("[KeyVerificationConclusionBubbleCell] Fail to render \(String(describing: cellData))")
                 return
@@ -58,37 +58,52 @@ final class KeyVerificationConclusionBubbleCell: KeyVerificationBaseBubbleCell {
         keyVerificationCellInnerContentView.updateSenderInfo(with: viewData.senderId, userDisplayName: viewData.senderDisplayName)
     }
     
-    override class func sizingView() -> MXKRoomBubbleTableViewCell {
+    override class func sizingView() -> KeyVerificationBaseBubbleCell {
         return self.Sizing.view
     }
     
     // MARK: - Private
     
-    // TODO: Handle view data filling
-    private func viewData(from bubbleData: MXKRoomBubbleCellData) -> KeyVerificationConclusionViewData? {
-        guard let event = bubbleData.bubbleComponents.first?.event else {
+    private func viewData(from roomBubbleData: RoomBubbleCellData) -> KeyVerificationConclusionViewData? {
+        guard let event = roomBubbleData.bubbleComponents.first?.event else {
             return nil
         }
-        
+
         let viewData: KeyVerificationConclusionViewData?
-        
+
         let senderId = self.senderId(from: bubbleData)
         let senderDisplayName = self.senderDisplayName(from: bubbleData)
         let title: String?
-        let badgeImage: UIImage?                
-        
+        let badgeImage: UIImage?
+
         switch event.eventType {
         case .keyVerificationDone:
-            title = "Verified"
             badgeImage = Asset.Images.encryptionTrusted.image
+            title = VectorL10n.keyVerificationTileConclusionDoneTitle
         case .keyVerificationCancel:
-            title = "Cancelled"
             badgeImage = Asset.Images.encryptionNormal.image
+
+            // TODO: Use right titles here
+            if let keyVerification = roomBubbleData.keyVerification, let cancelCodeValue = keyVerification.transaction?.reasonCancelCode?.value {
+                switch cancelCodeValue {
+                case MXTransactionCancelCode.mismatchedSas().value:
+                    title = "TODO"
+                case MXTransactionCancelCode.unexpectedMessage().value:
+                    title = "TODO"
+                case MXTransactionCancelCode.mismatchedCommitment().value:
+                    title = "TODO"
+                default:
+                    title = nil
+                }
+            } else {
+                title = nil
+            }
+            
         default:
             badgeImage = nil
             title = nil
         }
-        
+
         if let title = title, let badgeImage = badgeImage {
             viewData = KeyVerificationConclusionViewData(badgeImage: badgeImage,
                                                          title: title,
@@ -97,7 +112,7 @@ final class KeyVerificationConclusionBubbleCell: KeyVerificationBaseBubbleCell {
         } else {
             viewData = nil
         }
-        
+
         return viewData
     }
 }

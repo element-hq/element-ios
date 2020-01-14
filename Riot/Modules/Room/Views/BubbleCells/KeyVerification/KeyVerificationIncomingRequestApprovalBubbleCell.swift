@@ -17,12 +17,12 @@
 import UIKit
 
 @objcMembers
-final class KeyVerificationIncomingRequestApprovalBubbleCell: KeyVerificationBaseBubbleCell {
-    
+class KeyVerificationIncomingRequestApprovalBubbleCell: KeyVerificationBaseBubbleCell {
+
     // MARK: - Constants
     
     private enum Sizing {
-        static let view = KeyVerificationConclusionBubbleCell(style: .default, reuseIdentifier: nil)
+        static let view = KeyVerificationIncomingRequestApprovalBubbleCell(style: .default, reuseIdentifier: nil)
     }
     
     // MARK: - Setup
@@ -68,29 +68,34 @@ final class KeyVerificationIncomingRequestApprovalBubbleCell: KeyVerificationBas
         keyVerificationCellInnerContentView.title = viewData.title
         keyVerificationCellInnerContentView.updateSenderInfo(with: viewData.senderId, userDisplayName: viewData.senderDisplayName)
         
+        let actionUserInfo: [AnyHashable: Any]?
+            
+        if let eventId = bubbleData.getFirstBubbleComponentWithDisplay()?.event.eventId {
+            actionUserInfo = [kMXKRoomBubbleCellEventIdKey: eventId]
+        } else {
+            actionUserInfo = nil
+        }
+        
         keyVerificationCellInnerContentView.acceptActionHandler = { [weak self] in
-            // TODO: Use correct action identifier
-            self?.delegate?.cell(self, didRecognizeAction: kMXKRoomBubbleCellTapOnContentView, userInfo: nil)
+            self?.delegate?.cell(self, didRecognizeAction: kMXKRoomBubbleCellKeyVerificationIncomingRequestAcceptPressed, userInfo: actionUserInfo)
         }
         
         keyVerificationCellInnerContentView.declineActionHandler = { [weak self] in
-            // TODO: Use correct action identifier
-            self?.delegate?.cell(self, didRecognizeAction: kMXKRoomBubbleCellTapOnContentView, userInfo: nil)
+            self?.delegate?.cell(self, didRecognizeAction: kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed, userInfo: actionUserInfo)
         }
     }
     
-    override class func sizingView() -> MXKRoomBubbleTableViewCell {
+    override class func sizingView() -> KeyVerificationBaseBubbleCell {
         return self.Sizing.view
     }
     
     // MARK: - Private
     
-    // TODO: Handle view data filling
     private func viewData(from bubbleData: MXKRoomBubbleCellData) -> KeyVerificationIncomingRequestApprovalViewData? {
         
         let senderId = self.senderId(from: bubbleData)
         let senderDisplayName = self.senderDisplayName(from: bubbleData)
-        let title = "Verification request"
+        let title = VectorL10n.keyVerificationTileRequestIncomingTitle
         
         return KeyVerificationIncomingRequestApprovalViewData(title: title,
                                                               senderId: senderId,

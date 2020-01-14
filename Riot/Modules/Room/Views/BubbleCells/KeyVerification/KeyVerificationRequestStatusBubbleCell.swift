@@ -17,8 +17,8 @@
 import UIKit
 
 @objcMembers
-final class KeyVerificationRequestStatusBubbleCell: KeyVerificationBaseBubbleCell {
-    
+class KeyVerificationRequestStatusBubbleCell: KeyVerificationBaseBubbleCell {
+
     // MARK: - Constants
     
     private enum Sizing {
@@ -52,8 +52,8 @@ final class KeyVerificationRequestStatusBubbleCell: KeyVerificationBaseBubbleCel
         super.render(cellData)
         
         guard let keyVerificationCellInnerContentView = self.keyVerificationCellInnerContentView,
-            let bubbleData = self.bubbleData,
-            let viewData = self.viewData(from: bubbleData) else {
+            let roomBubbleCellData = self.bubbleData as? RoomBubbleCellData,
+            let viewData = self.viewData(from: roomBubbleCellData) else {
                 NSLog("[KeyVerificationRequestStatusBubbleCell] Fail to render \(String(describing: cellData))")
                 return
         }
@@ -63,29 +63,63 @@ final class KeyVerificationRequestStatusBubbleCell: KeyVerificationBaseBubbleCel
         keyVerificationCellInnerContentView.requestStatusText = viewData.statusText
     }
     
-    override class func sizingView() -> MXKRoomBubbleTableViewCell {
+    override class func sizingView() -> KeyVerificationBaseBubbleCell {
         return self.Sizing.view
     }
     
     // MARK: - Private
     
-    // TODO: Handle view data filling
-    private func viewData(from bubbleData: MXKRoomBubbleCellData) -> KeyVerificationRequestStatusViewData? {
+    private func viewData(from roomBubbleCellData: RoomBubbleCellData) -> KeyVerificationRequestStatusViewData? {
         
         let senderId = self.senderId(from: bubbleData)
-        let senderDisplayName =  self.senderDisplayName(from: bubbleData)
+        let senderDisplayName = self.senderDisplayName(from: bubbleData)
         let title: String
-        let statusText: String = "You accepted"
+        let statusText: String?
         
-        if senderId.isEmpty == false {
-            title = "Verification request"
+        if roomBubbleCellData.isIncoming {
+            title = VectorL10n.keyVerificationTileRequestIncomingTitle
         } else {
-            title = "Verification sent"
+            title = VectorL10n.keyVerificationTileRequestOutgoingTitle
         }
         
-        return KeyVerificationRequestStatusViewData(title: title,
-                                                    senderId: senderId,
-                                                    senderDisplayName: senderDisplayName,
-                                                    statusText: statusText)
+        if let keyVerification = roomBubbleCellData.keyVerification {
+            switch keyVerification.state {
+            case .requestPending:
+                if !roomBubbleCellData.isIncoming {
+                    statusText = VectorL10n.keyVerificationTileRequestStatusWaiting
+                } else {                    
+                    if roomBubbleCellData.isKeyVerificationOperationPending {
+                        statusText = VectorL10n.keyVerificationTileRequestStatusDataLoading
+                    } else {
+                        // Should not happen, KeyVerificationIncomingRequestApprovalBubbleCell should be displayed in this case.
+                        statusText = nil
+                    }
+                }
+            case .requestExpired:
+                statusText = VectorL10n.keyVerificationTileRequestStatusExpired
+            case .requestCancelled, .transactionCancelled:
+                let userName = senderDisplayName ?? senderId
+                statusText = VectorL10n.keyVerificationTileRequestStatusCancelled(userName)
+            case .requestCancelledByMe, .transactionCancelledByMe:
+                statusText = VectorL10n.keyVerificationTileRequestStatusCancelledByMe
+            default:
+                statusText = VectorL10n.keyVerificationTileRequestStatusAccepted
+            }
+        } else {
+            statusText = VectorL10n.keyVerificationTileRequestStatusDataLoading
+        }
+        
+        let viewData: KeyVerificationRequestStatusViewData?
+        
+        if let statusText = statusText {
+            viewData = KeyVerificationRequestStatusViewData(title: title,
+                                                            senderId: senderId,
+                                                            senderDisplayName: senderDisplayName,
+                                                            statusText: statusText)
+        } else {
+            viewData = nil
+        }
+        
+        return viewData
     }
 }
