@@ -1470,6 +1470,50 @@ internal enum VectorL10n {
   internal static var keyBackupSetupTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_title") 
   }
+  /// Verified
+  internal static var keyVerificationTileConclusionDoneTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_tile_conclusion_done_title") 
+  }
+  /// Accept
+  internal static var keyVerificationTileRequestIncomingApprovalAccept: String { 
+    return VectorL10n.tr("Vector", "key_verification_tile_request_incoming_approval_accept") 
+  }
+  /// Decline
+  internal static var keyVerificationTileRequestIncomingApprovalDecline: String { 
+    return VectorL10n.tr("Vector", "key_verification_tile_request_incoming_approval_decline") 
+  }
+  /// Verification request
+  internal static var keyVerificationTileRequestIncomingTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_tile_request_incoming_title") 
+  }
+  /// Verification sent
+  internal static var keyVerificationTileRequestOutgoingTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_tile_request_outgoing_title") 
+  }
+  /// You accepted
+  internal static var keyVerificationTileRequestStatusAccepted: String { 
+    return VectorL10n.tr("Vector", "key_verification_tile_request_status_accepted") 
+  }
+  /// %@ cancelled
+  internal static func keyVerificationTileRequestStatusCancelled(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "key_verification_tile_request_status_cancelled", p1)
+  }
+  /// You cancel
+  internal static var keyVerificationTileRequestStatusCancelledByMe: String { 
+    return VectorL10n.tr("Vector", "key_verification_tile_request_status_cancelled_by_me") 
+  }
+  /// Data loading …
+  internal static var keyVerificationTileRequestStatusDataLoading: String { 
+    return VectorL10n.tr("Vector", "key_verification_tile_request_status_data_loading") 
+  }
+  /// Expired
+  internal static var keyVerificationTileRequestStatusExpired: String { 
+    return VectorL10n.tr("Vector", "key_verification_tile_request_status_expired") 
+  }
+  /// Waiting …
+  internal static var keyVerificationTileRequestStatusWaiting: String { 
+    return VectorL10n.tr("Vector", "key_verification_tile_request_status_waiting") 
+  }
   /// %.1fK
   internal static func largeBadgeValueKFormat(_ p1: Float) -> String {
     return VectorL10n.tr("Vector", "large_badge_value_k_format", p1)
