@@ -354,8 +354,12 @@
     [self.bubblesTableView registerClass:RoomPredecessorBubbleCell.class forCellReuseIdentifier:RoomPredecessorBubbleCell.defaultReuseIdentifier];
     
     [self.bubblesTableView registerClass:KeyVerificationIncomingRequestApprovalBubbleCell.class forCellReuseIdentifier:KeyVerificationIncomingRequestApprovalBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell.class forCellReuseIdentifier:KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:KeyVerificationRequestStatusBubbleCell.class forCellReuseIdentifier:KeyVerificationRequestStatusBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:KeyVerificationRequestStatusWithPaginationTitleBubbleCell.class forCellReuseIdentifier:KeyVerificationRequestStatusWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:KeyVerificationConclusionBubbleCell.class forCellReuseIdentifier:KeyVerificationConclusionBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:KeyVerificationConclusionWithPaginationTitleBubbleCell.class forCellReuseIdentifier:KeyVerificationConclusionWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    
     
     // Prepare expanded header
     expandedHeader = [ExpandedRoomTitleView roomTitleView];
@@ -2043,17 +2047,17 @@
         {
             cellViewClass = RoomPredecessorBubbleCell.class;
         }
-        else if (bubbleData.tag == RoomBubbleCellDataTagDeviceKeyVerificationRequestIncomingApproval)
+        else if (bubbleData.tag == RoomBubbleCellDataTagKeyVerificationRequestIncomingApproval)
         {
-            cellViewClass = KeyVerificationIncomingRequestApprovalBubbleCell.class;
+            cellViewClass = bubbleData.isPaginationFirstBubble ? KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell.class : KeyVerificationIncomingRequestApprovalBubbleCell.class;
         }
-        else if (bubbleData.tag == RoomBubbleCellDataTagDeviceKeyVerificationRequest)
+        else if (bubbleData.tag == RoomBubbleCellDataTagKeyVerificationRequest)
         {
-            cellViewClass = KeyVerificationRequestStatusBubbleCell.class;
+            cellViewClass = bubbleData.isPaginationFirstBubble ? KeyVerificationRequestStatusWithPaginationTitleBubbleCell.class : KeyVerificationRequestStatusBubbleCell.class;
         }
-        else if (bubbleData.tag == RoomBubbleCellDataTagDeviceKeyVerificationConclusion)
+        else if (bubbleData.tag == RoomBubbleCellDataTagKeyVerificationConclusion)
         {
-            cellViewClass = KeyVerificationConclusionBubbleCell.class;
+            cellViewClass = bubbleData.isPaginationFirstBubble ? KeyVerificationConclusionWithPaginationTitleBubbleCell.class : KeyVerificationConclusionBubbleCell.class;
         }
         else if (bubbleData.tag == RoomBubbleCellDataTagMembership)
         {
@@ -2270,6 +2274,30 @@
             {
                 [self showContextualMenuForEvent:selectedEvent fromSingleTapGesture:YES cell:cell animated:YES];
             }
+        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellKeyVerificationIncomingRequestAcceptPressed])
+        {
+            NSString *eventId = userInfo[kMXKRoomBubbleCellEventIdKey];
+            
+            RoomDataSource *roomDataSource = (RoomDataSource*)self.roomDataSource;
+            
+            [roomDataSource acceptVerificationRequestForEventId:eventId success:^{
+
+            } failure:^(NSError *error) {
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }];
+        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed])
+        {
+            NSString *eventId = userInfo[kMXKRoomBubbleCellEventIdKey];
+            
+            RoomDataSource *roomDataSource = (RoomDataSource*)self.roomDataSource;
+            
+            [roomDataSource declineVerificationRequestForEventId:eventId success:^{
+                
+            } failure:^(NSError *error) {
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }];
         }
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAttachmentView])
         {
@@ -5319,8 +5347,36 @@
     
     // Copy action
     
+    BOOL isCopyActionEnabled = !attachment || attachment.type != MXKAttachmentTypeSticker;
+    
+    if (isCopyActionEnabled)
+    {
+        switch (event.eventType) {
+            case MXEventTypeRoomMessage:
+            {
+                NSString *messageType = event.content[@"msgtype"];
+                
+                if ([messageType isEqualToString:kMXMessageTypeKeyVerificationRequest])
+                {
+                    isCopyActionEnabled = NO;
+                }
+                break;
+            }
+            case MXEventTypeKeyVerificationStart:
+            case MXEventTypeKeyVerificationAccept:
+            case MXEventTypeKeyVerificationKey:
+            case MXEventTypeKeyVerificationMac:
+            case MXEventTypeKeyVerificationDone:
+            case MXEventTypeKeyVerificationCancel:
+                isCopyActionEnabled = NO;
+                break;
+            default:
+                break;
+        }
+    }
+    
     RoomContextualMenuItem *copyMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionCopy];
-    copyMenuItem.isEnabled = !attachment || attachment.type != MXKAttachmentTypeSticker;
+    copyMenuItem.isEnabled = isCopyActionEnabled;
     copyMenuItem.action = ^{
         MXStrongifyAndReturnIfNil(self);
         
