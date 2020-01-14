@@ -35,6 +35,15 @@
     id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
+// Observe key verification request changes
+@property (nonatomic, weak) id keyVerificationRequestDidChangeNotificationObserver;
+
+// Observe key verification transaction changes
+@property (nonatomic, weak) id deviceVerificationTransactionDidChangeNotificationObserver;
+
+// Timer used to debounce cells refresh
+@property (nonatomic, strong) NSTimer *refreshCellsTimer;
+
 @end
 
 @implementation RoomDataSource
@@ -71,6 +80,9 @@
             [self reload];
             
         }];
+        
+        [self registerKeyVerificationRequestNotification];
+        [self registerDeviceVerificationTransactionNotification];
     }
     return self;
 }
@@ -115,6 +127,16 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
         kThemeServiceDidChangeThemeNotificationObserver = nil;
+    }
+    
+    if (self.keyVerificationRequestDidChangeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:self.keyVerificationRequestDidChangeNotificationObserver];
+    }
+    
+    if (self.deviceVerificationTransactionDidChangeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:self.deviceVerificationTransactionDidChangeNotificationObserver];
     }
     
     [super destroy];
@@ -189,6 +211,8 @@
     {
         roomBubbleCellData.senderAvatarPlaceholder = [AvatarGenerator generateAvatarForMatrixItem:roomBubbleCellData.senderId withDisplayName:roomBubbleCellData.senderDisplayName];
     }
+    
+    [self updateKeyVerificationIfNeededForRoomBubbleCellData:roomBubbleCellData];
 
     UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
     
@@ -526,6 +550,173 @@
     return cell;
 }
 
+- (RoomBubbleCellData*)roomBubbleCellDataForEventId:(NSString*)eventId
+{
+    id<MXKRoomBubbleCellDataStoring> cellData = [self cellDataOfEventWithEventId:eventId];
+    RoomBubbleCellData *roomBubbleCellData;
+    
+    if ([cellData isKindOfClass:RoomBubbleCellData.class])
+    {
+        roomBubbleCellData = (RoomBubbleCellData*)cellData;
+    }
+    
+    return roomBubbleCellData;
+}
+
+- (MXKeyVerificationRequest*)keyVerificationRequestFromEventId:(NSString*)eventId
+{
+    RoomBubbleCellData *roomBubbleCellData = [self roomBubbleCellDataForEventId:eventId];
+    
+    return roomBubbleCellData.keyVerification.request;
+}
+
+- (void)refreshCellsWithDelay
+{
+    if (self.refreshCellsTimer)
+    {
+        return;
+    }
+    
+    self.refreshCellsTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(refreshCellsTimerFired) userInfo:nil repeats:NO];
+}
+
+- (void)refreshCellsTimerFired
+{
+    [self refreshCells];
+    self.refreshCellsTimer = nil;
+}
+
+- (void)refreshCells
+{
+    if (self.delegate)
+    {
+        [self.delegate dataSource:self didCellChange:nil];
+    }
+}
+
+- (void)registerKeyVerificationRequestNotification
+{
+    self.keyVerificationRequestDidChangeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:MXKeyVerificationRequestDidChangeNotification
+                                                                                                                 object:nil
+                                                                                                                  queue:[NSOperationQueue mainQueue]
+                                                                                                             usingBlock:^(NSNotification *notification)
+                                                                {
+                                                                    id notificationObject = notification.object;
+                                                                    
+                                                                    if ([notificationObject isKindOfClass:MXKeyVerificationByDMRequest.class])
+                                                                    {
+                                                                        MXKeyVerificationByDMRequest *keyVerificationByDMRequest = (MXKeyVerificationByDMRequest*)notificationObject;
+                                                                        
+                                                                        if ([keyVerificationByDMRequest.roomId isEqualToString:self.roomId])
+                                                                        {
+                                                                            RoomBubbleCellData *roomBubbleCellData = [self roomBubbleCellDataForEventId:keyVerificationByDMRequest.eventId];
+                                                                            
+                                                                            roomBubbleCellData.isKeyVerificationOperationPending = NO;
+                                                                            roomBubbleCellData.keyVerification = nil;
+                                                                            
+                                                                            if (roomBubbleCellData)
+                                                                            {
+                                                                                [self refreshCellsWithDelay];
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }];
+}
+
+- (void)registerDeviceVerificationTransactionNotification
+{
+    self.deviceVerificationTransactionDidChangeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:MXDeviceVerificationTransactionDidChangeNotification
+                                                                                                                        object:nil
+                                                                                                                         queue:[NSOperationQueue mainQueue]
+                                                                                                                    usingBlock:^(NSNotification *notification)
+                                                                       {
+                                                                           MXDeviceVerificationTransaction *deviceVerificationTransaction = (MXDeviceVerificationTransaction*)notification.object;
+                                                                           
+                                                                           if ([deviceVerificationTransaction.dmRoomId isEqualToString:self.roomId])
+                                                                           {
+                                                                               RoomBubbleCellData *roomBubbleCellData = [self roomBubbleCellDataForEventId:deviceVerificationTransaction.dmEventId];
+                                                                               
+                                                                               roomBubbleCellData.isKeyVerificationOperationPending = NO;
+                                                                               roomBubbleCellData.keyVerification = nil;
+                                                                               
+                                                                               if (roomBubbleCellData)
+                                                                               {
+                                                                                   [self refreshCellsWithDelay];
+                                                                               }
+                                                                           }
+                                                                       }];
+}
+
+- (BOOL)shouldFetchKeyVerificationForEvent:(MXEvent*)event
+{
+    if (!event)
+    {
+        return NO;
+    }
+    
+    BOOL shouldFetchKeyVerification = NO;
+    
+    switch (event.eventType)
+    {
+        case MXEventTypeKeyVerificationDone:
+        case MXEventTypeKeyVerificationCancel:
+            shouldFetchKeyVerification = YES;
+            break;
+        case MXEventTypeRoomMessage:
+        {
+            NSString *msgType = event.content[@"msgtype"];
+            
+            if ([msgType isEqualToString:kMXMessageTypeKeyVerificationRequest])
+            {
+                shouldFetchKeyVerification = YES;
+            }
+        }
+            break;
+        default:
+            break;
+    }
+    
+    return shouldFetchKeyVerification;
+}
+
+- (void)updateKeyVerificationIfNeededForRoomBubbleCellData:(RoomBubbleCellData*)bubbleCellData
+{
+    MXEvent *event = bubbleCellData.getFirstBubbleComponentWithDisplay.event;
+    
+    if (![self shouldFetchKeyVerificationForEvent:event])
+    {
+        return;
+    }
+    
+    if (bubbleCellData.keyVerification != nil || bubbleCellData.isKeyVerificationOperationPending)
+    {
+        // Key verification already fetched or request is pending do nothing
+        return;
+    }
+    
+    __block MXHTTPOperation *operation = [self.mxSession.crypto.deviceVerificationManager keyVerificationFromKeyVerificationEvent:event
+                                                                                                                          success:^(MXKeyVerification * _Nonnull keyVerification)
+                                          {
+                                              BOOL shouldRefreshCells = bubbleCellData.isKeyVerificationOperationPending || bubbleCellData.keyVerification == nil;
+                                              
+                                              bubbleCellData.keyVerification = keyVerification;
+                                              bubbleCellData.isKeyVerificationOperationPending = NO;
+                                              
+                                              if (shouldRefreshCells)
+                                              {
+                                                  [self refreshCellsWithDelay];
+                                              }
+                                              
+                                          } failure:^(NSError * _Nonnull error) {
+                                              
+                                              NSLog(@"[RoomDataSource] updateKeyVerificationIfNeededForRoomBubbleCellData; keyVerificationFromKeyVerificationEvent fails with error: %@", error);
+                                              
+                                              bubbleCellData.isKeyVerificationOperationPending = NO;
+                                          }];
+    
+    bubbleCellData.isKeyVerificationOperationPending = !operation;
+}
+
 #pragma mark -
 
 - (void)setSelectedEventId:(NSString *)selectedEventId
@@ -577,6 +768,68 @@
     [self sendVideo:videoLocalURL withThumbnail:videoThumbnail success:success failure:failure];
 }
 
+- (void)acceptVerificationRequestForEventId:(NSString*)eventId success:(void(^)(void))success failure:(void(^)(NSError*))failure
+{
+    MXKeyVerificationRequest *keyVerificationRequest = [self keyVerificationRequestFromEventId:eventId];
+    
+    if (!keyVerificationRequest)
+    {
+        NSError *error;
+        
+        if (failure)
+        {
+            failure(error);
+        }
+        return;
+    }
+    
+    [[AppDelegate theDelegate] presentIncomingKeyVerificationRequest:keyVerificationRequest inSession:self.mxSession];
+    
+    if (success)
+    {
+        success();
+    }
+}
+
+- (void)declineVerificationRequestForEventId:(NSString*)eventId success:(void(^)(void))success failure:(void(^)(NSError*))failure
+{
+    MXKeyVerificationRequest *keyVerificationRequest = [self keyVerificationRequestFromEventId:eventId];
+    
+    if (!keyVerificationRequest)
+    {
+        NSError *error;
+        
+        if (failure)
+        {
+            failure(error);
+        }
+        return;
+    }
+    
+    RoomBubbleCellData *roomBubbleCellData = [self roomBubbleCellDataForEventId:eventId];
+    roomBubbleCellData.isKeyVerificationOperationPending = YES;
+    
+    [self refreshCells];
+    
+    [keyVerificationRequest cancelWithCancelCode:MXTransactionCancelCode.user success:^{
+        
+        // roomBubbleCellData.isKeyVerificationOperationPending will be set to NO by MXKeyVerificationRequestDidChangeNotification notification
+        
+        if (success)
+        {
+            success();
+        }
+        
+    } failure:^(NSError * _Nonnull error) {
+        
+        roomBubbleCellData.isKeyVerificationOperationPending = NO;
+        
+        if (failure)
+        {
+            failure(error);
+        }
+    }];
+}
 
 #pragma - Accessibility
 
