@@ -81,24 +81,8 @@ class KeyVerificationConclusionBubbleCell: KeyVerificationBaseBubbleCell {
             badgeImage = Asset.Images.encryptionTrusted.image
             title = VectorL10n.keyVerificationTileConclusionDoneTitle
         case .keyVerificationCancel:
-            badgeImage = Asset.Images.encryptionNormal.image
-
-            // TODO: Use right titles here
-            if let keyVerification = roomBubbleData.keyVerification, let cancelCodeValue = keyVerification.transaction?.reasonCancelCode?.value {
-                switch cancelCodeValue {
-                case MXTransactionCancelCode.mismatchedSas().value:
-                    title = "TODO"
-                case MXTransactionCancelCode.unexpectedMessage().value:
-                    title = "TODO"
-                case MXTransactionCancelCode.mismatchedCommitment().value:
-                    title = "TODO"
-                default:
-                    title = nil
-                }
-            } else {
-                title = nil
-            }
-            
+            badgeImage = Asset.Images.encryptionWarning.image
+            title = VectorL10n.keyVerificationTileConclusionWarningTitle
         default:
             badgeImage = nil
             title = nil

@@ -1106,3 +1106,4 @@
 "key_verification_tile_request_incoming_approval_decline" = "Decline";
 
 "key_verification_tile_conclusion_done_title" = "Verified";
+"key_verification_tile_conclusion_warning_title" = "Unstrusted sign in";

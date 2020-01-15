@@ -1474,6 +1474,10 @@ internal enum VectorL10n {
   internal static var keyVerificationTileConclusionDoneTitle: String { 
     return VectorL10n.tr("Vector", "key_verification_tile_conclusion_done_title") 
   }
+  /// Unstrusted sign in
+  internal static var keyVerificationTileConclusionWarningTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_tile_conclusion_warning_title") 
+  }
   /// Accept
   internal static var keyVerificationTileRequestIncomingApprovalAccept: String { 
     return VectorL10n.tr("Vector", "key_verification_tile_request_incoming_approval_accept") 
