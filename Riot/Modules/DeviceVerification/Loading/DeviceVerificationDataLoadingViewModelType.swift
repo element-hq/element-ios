@@ -24,6 +24,7 @@ protocol DeviceVerificationDataLoadingViewModelViewDelegate: class {
 
 protocol DeviceVerificationDataLoadingViewModelCoordinatorDelegate: class {
     func deviceVerificationDataLoadingViewModel(_ viewModel: DeviceVerificationDataLoadingViewModelType, didLoadUser user: MXUser, device: MXDeviceInfo)
+    func deviceVerificationDataLoadingViewModel(_ viewModel: DeviceVerificationDataLoadingViewModelType, didAcceptKeyVerificationWithTransaction transaction: MXDeviceVerificationTransaction)
     func deviceVerificationDataLoadingViewModelDidCancel(_ viewModel: DeviceVerificationDataLoadingViewModelType)
 }
 

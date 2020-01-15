@@ -62,4 +62,26 @@
           success:(void (^)(NSString *eventId))success
           failure:(void (^)(NSError *error))failure;
 
+/**
+ Accept incoming key verification request.
+
+ @param eventId Event id associated to the key verification request event.
+ @param success A block object called when the operation succeeds.
+ @param failure A block object called when the operation fails.
+ */
+- (void)acceptVerificationRequestForEventId:(NSString*)eventId
+                                    success:(void(^)(void))success
+                                    failure:(void(^)(NSError*))failure;
+
+/**
+ Decline incoming key verification request.
+
+ @param eventId Event id associated to the key verification request event.
+ @param success A block object called when the operation succeeds.
+ @param failure A block object called when the operation fails.
+ */
+- (void)declineVerificationRequestForEventId:(NSString*)eventId
+                                     success:(void(^)(void))success
+                                     failure:(void(^)(NSError*))failure;
+
 @end
