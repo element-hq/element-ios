@@ -72,7 +72,7 @@ final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadin
             
             self.update(viewState: .loading)
             
-            crypto.downloadKeys([self.otherUserId], forceDownload: false, success: { [weak self] (usersDevicesMap) in
+            crypto.downloadKeys([self.otherUserId], forceDownload: false, success: { [weak self] (usersDevicesMap, crossSigningKeysMap) in
                 guard let sself = self else {
                     return
                 }
