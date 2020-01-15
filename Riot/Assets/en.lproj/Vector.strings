@@ -1095,7 +1095,7 @@
 "key_verification_tile_request_incoming_title" = "Verification request";
 "key_verification_tile_request_outgoing_title" = "Verification sent";
 
-"key_verification_tile_request_status_data_loading" = "Data loading …";
+"key_verification_tile_request_status_data_loading" = "Data loading…";
 "key_verification_tile_request_status_waiting" = "Waiting…";
 "key_verification_tile_request_status_expired" = "Expired";
 "key_verification_tile_request_status_cancelled_by_me" = "You cancel";
