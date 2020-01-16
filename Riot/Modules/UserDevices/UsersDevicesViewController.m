@@ -227,12 +227,19 @@
                                       forDevice:deviceTableViewCell.deviceInfo.deviceId
                                          ofUser:deviceTableViewCell.deviceInfo.userId
                                         success:^{
-
-                                            //deviceTableViewCell.deviceInfo.verified = verificationStatus;
-                                            [self.tableView reloadData];
-
+                                            [self reloadDataforUser:deviceTableViewCell.deviceInfo.userId andDevice:deviceTableViewCell.deviceInfo.deviceId];
                                         } failure:nil];
     }
+}
+
+- (void)reloadDataforUser:(NSString *)userId andDevice:(NSString *)deviceId
+{
+    // Refresh data
+    MXDeviceInfo *device = [mxSession.crypto deviceInfoForDevice:deviceId ofUser:userId];
+    [usersDevices setObject:device forUser:userId andDevice:deviceId];
+
+    // and reload
+    [self.tableView reloadData];
 }
 
 #pragma mark - DeviceVerificationCoordinatorBridgePresenterDelegate
@@ -243,16 +250,9 @@
     deviceVerificationCoordinatorBridgePresenter = nil;
 
     // Update our map
-    MXWeakify(self);
     [mxSession.crypto downloadKeys:@[otherUserId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap, NSDictionary<NSString *,MXCrossSigningInfo *> *crossSigningKeysMap) {
-        MXStrongifyAndReturnIfNil(self);
-
-        MXDeviceInfo *deviceInfo = [usersDevicesInfoMap objectForDevice:otherDeviceId forUser:otherUserId];
-
-        MXDeviceInfo *device = [self->usersDevices objectForDevice:otherDeviceId forUser:otherUserId];
-        //device.verified = deviceInfo.verified;
-
-        [self.tableView reloadData];
+        
+        [self reloadDataforUser:otherUserId andDevice:otherDeviceId];
 
     } failure:^(NSError *error) {
         // Should not happen (the device is in the crypto db)
