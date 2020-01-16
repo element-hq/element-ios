@@ -353,6 +353,14 @@
     [self.bubblesTableView registerClass:RoomSelectedStickerBubbleCell.class forCellReuseIdentifier:RoomSelectedStickerBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomPredecessorBubbleCell.class forCellReuseIdentifier:RoomPredecessorBubbleCell.defaultReuseIdentifier];
     
+    [self.bubblesTableView registerClass:KeyVerificationIncomingRequestApprovalBubbleCell.class forCellReuseIdentifier:KeyVerificationIncomingRequestApprovalBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell.class forCellReuseIdentifier:KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:KeyVerificationRequestStatusBubbleCell.class forCellReuseIdentifier:KeyVerificationRequestStatusBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:KeyVerificationRequestStatusWithPaginationTitleBubbleCell.class forCellReuseIdentifier:KeyVerificationRequestStatusWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:KeyVerificationConclusionBubbleCell.class forCellReuseIdentifier:KeyVerificationConclusionBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:KeyVerificationConclusionWithPaginationTitleBubbleCell.class forCellReuseIdentifier:KeyVerificationConclusionWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    
+    
     // Prepare expanded header
     expandedHeader = [ExpandedRoomTitleView roomTitleView];
     expandedHeader.delegate = self;
@@ -2039,6 +2047,18 @@
         {
             cellViewClass = RoomPredecessorBubbleCell.class;
         }
+        else if (bubbleData.tag == RoomBubbleCellDataTagKeyVerificationRequestIncomingApproval)
+        {
+            cellViewClass = bubbleData.isPaginationFirstBubble ? KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell.class : KeyVerificationIncomingRequestApprovalBubbleCell.class;
+        }
+        else if (bubbleData.tag == RoomBubbleCellDataTagKeyVerificationRequest)
+        {
+            cellViewClass = bubbleData.isPaginationFirstBubble ? KeyVerificationRequestStatusWithPaginationTitleBubbleCell.class : KeyVerificationRequestStatusBubbleCell.class;
+        }
+        else if (bubbleData.tag == RoomBubbleCellDataTagKeyVerificationConclusion)
+        {
+            cellViewClass = bubbleData.isPaginationFirstBubble ? KeyVerificationConclusionWithPaginationTitleBubbleCell.class : KeyVerificationConclusionBubbleCell.class;
+        }
         else if (bubbleData.tag == RoomBubbleCellDataTagMembership)
         {
             if (bubbleData.collapsed)
@@ -2254,6 +2274,30 @@
             {
                 [self showContextualMenuForEvent:selectedEvent fromSingleTapGesture:YES cell:cell animated:YES];
             }
+        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellKeyVerificationIncomingRequestAcceptPressed])
+        {
+            NSString *eventId = userInfo[kMXKRoomBubbleCellEventIdKey];
+            
+            RoomDataSource *roomDataSource = (RoomDataSource*)self.roomDataSource;
+            
+            [roomDataSource acceptVerificationRequestForEventId:eventId success:^{
+
+            } failure:^(NSError *error) {
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }];
+        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed])
+        {
+            NSString *eventId = userInfo[kMXKRoomBubbleCellEventIdKey];
+            
+            RoomDataSource *roomDataSource = (RoomDataSource*)self.roomDataSource;
+            
+            [roomDataSource declineVerificationRequestForEventId:eventId success:^{
+                
+            } failure:^(NSError *error) {
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }];
         }
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAttachmentView])
         {
@@ -5303,8 +5347,36 @@
     
     // Copy action
     
+    BOOL isCopyActionEnabled = !attachment || attachment.type != MXKAttachmentTypeSticker;
+    
+    if (isCopyActionEnabled)
+    {
+        switch (event.eventType) {
+            case MXEventTypeRoomMessage:
+            {
+                NSString *messageType = event.content[@"msgtype"];
+                
+                if ([messageType isEqualToString:kMXMessageTypeKeyVerificationRequest])
+                {
+                    isCopyActionEnabled = NO;
+                }
+                break;
+            }
+            case MXEventTypeKeyVerificationStart:
+            case MXEventTypeKeyVerificationAccept:
+            case MXEventTypeKeyVerificationKey:
+            case MXEventTypeKeyVerificationMac:
+            case MXEventTypeKeyVerificationDone:
+            case MXEventTypeKeyVerificationCancel:
+                isCopyActionEnabled = NO;
+                break;
+            default:
+                break;
+        }
+    }
+    
     RoomContextualMenuItem *copyMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionCopy];
-    copyMenuItem.isEnabled = !attachment || attachment.type != MXKAttachmentTypeSticker;
+    copyMenuItem.isEnabled = isCopyActionEnabled;
     copyMenuItem.action = ^{
         MXStrongifyAndReturnIfNil(self);
         

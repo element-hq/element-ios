@@ -31,6 +31,8 @@ NSString *const kMXKRoomBubbleCellRiotEditButtonPressed = @"kMXKRoomBubbleCellRi
 NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellTapOnReceiptsContainer";
 NSString *const kMXKRoomBubbleCellLongPressOnReactionView = @"kMXKRoomBubbleCellLongPressOnReactionView";
 NSString *const kMXKRoomBubbleCellEventIdKey = @"kMXKRoomBubbleCellEventIdKey";
+NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestAcceptPressed = @"kMXKRoomBubbleCellKeyVerificationAcceptPressed";
+NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed = @"kMXKRoomBubbleCellKeyVerificationDeclinePressed";
 
 @implementation MXKRoomBubbleTableViewCell (Riot)
 
@@ -76,6 +78,12 @@ NSString *const kMXKRoomBubbleCellEventIdKey = @"kMXKRoomBubbleCellEventIdKey";
                                    viewTag:(NSInteger)viewTag
                              displayOnLeft:(BOOL)displayOnLeft
 {
+    if (!self.bubbleInfoContainer)
+    {
+        NSLog(@"[MXKRoomBubbleTableViewCell+Riot] bubbleInfoContainer property is missing for cell class: %@", NSStringFromClass(self.class));
+        return;
+    }
+    
     NSArray *bubbleComponents = bubbleData.bubbleComponents;
     MXKRoomBubbleComponent *component = bubbleComponents[componentIndex];
     

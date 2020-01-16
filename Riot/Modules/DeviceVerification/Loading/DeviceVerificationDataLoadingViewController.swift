@@ -112,9 +112,35 @@ final class DeviceVerificationDataLoadingViewController: UIViewController {
     }
     
     private func render(error: Error) {
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: {
-            self.viewModel.process(viewAction: .cancel)
-        })
+        
+        var shouldDisplayError = true
+        var message: String?
+        
+        switch error {
+        case DeviceVerificationDataLoadingViewModelError.transactionCancelled:
+            message = VectorL10n.deviceVerificationCancelled
+        case DeviceVerificationDataLoadingViewModelError.transactionCancelledByMe(reason: let reason):
+            if reason.value != MXTransactionCancelCode.user().value {
+                message = VectorL10n.deviceVerificationCancelledByMe(reason.humanReadable)
+            } else {
+                shouldDisplayError = false
+            }
+        default:
+            break
+        }
+        
+        if shouldDisplayError {
+            
+            let completion = {
+                self.viewModel.process(viewAction: .cancel)
+            }
+            
+            if let message = message {
+                self.errorPresenter.presentError(from: self, title: "", message: message, animated: true, handler: completion)
+            } else {
+                self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: completion)
+            }
+        }
     }
 
     private func renderError(message: String) {

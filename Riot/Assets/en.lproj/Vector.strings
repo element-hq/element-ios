@@ -1087,3 +1087,23 @@
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Add an identity server in your settings to invite by email.";
 "error_not_supported_on_mobile" = "You can't do this from %@ mobile.";
+
+// MARK: - Key Verification
+
+// Tiles
+
+"key_verification_tile_request_incoming_title" = "Verification request";
+"key_verification_tile_request_outgoing_title" = "Verification sent";
+
+"key_verification_tile_request_status_data_loading" = "Data loading…";
+"key_verification_tile_request_status_waiting" = "Waiting…";
+"key_verification_tile_request_status_expired" = "Expired";
+"key_verification_tile_request_status_cancelled_by_me" = "You cancelled";
+"key_verification_tile_request_status_cancelled" = "%@ cancelled";
+"key_verification_tile_request_status_accepted" = "You accepted";
+
+"key_verification_tile_request_incoming_approval_accept" = "Accept";
+"key_verification_tile_request_incoming_approval_decline" = "Decline";
+
+"key_verification_tile_conclusion_done_title" = "Verified";
+"key_verification_tile_conclusion_warning_title" = "Unstrusted sign in";

@@ -14,15 +14,11 @@
  limitations under the License.
  */
 
-import UIKit
+import Foundation
 
-extension UIStackView {
-    
-    func vc_removeAllArrangedSubviews() {
-        let subviews = self.arrangedSubviews
-        for subview in subviews {
-            self.removeArrangedSubview(subview)
-            subview.removeFromSuperview()
-        }
-    }
+struct KeyVerificationConclusionViewData {
+    let badgeImage: UIImage
+    let title: String
+    let senderId: String
+    let senderDisplayName: String?
 }

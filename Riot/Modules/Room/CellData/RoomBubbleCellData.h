@@ -21,7 +21,11 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
 {
     RoomBubbleCellDataTagMessage = 0, // Default value used for messages
     RoomBubbleCellDataTagMembership,
-    RoomBubbleCellDataTagRoomCreateWithPredecessor
+    RoomBubbleCellDataTagRoomCreateWithPredecessor,
+    RoomBubbleCellDataTagKeyVerificationNoDisplay,
+    RoomBubbleCellDataTagKeyVerificationRequestIncomingApproval,
+    RoomBubbleCellDataTagKeyVerificationRequest,
+    RoomBubbleCellDataTagKeyVerificationConclusion
 };
 
 /**
@@ -69,6 +73,16 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
  Return additional content height (read receipts, reactions).
  */
 @property(nonatomic, readonly) CGFloat additionalContentHeight;
+
+/**
+ MXKeyVerification object associated to key verifcation event when using key verification by direct message.
+ */
+@property(nonatomic, strong) MXKeyVerification *keyVerification;
+
+/**
+ Indicate if there is a pending operation that updates `keyVerification` property.
+ */
+@property(nonatomic) BOOL isKeyVerificationOperationPending;
 
 /**
  Indicate to update additional content height.

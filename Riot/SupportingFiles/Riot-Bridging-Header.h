@@ -15,3 +15,5 @@
 #import "EventFormatter.h"
 #import "MediaPickerViewController.h"
 #import "AppDelegate.h"
+#import "RoomBubbleCellData.h"
+#import "MXKRoomBubbleTableViewCell+Riot.h"

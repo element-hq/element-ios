@@ -20,6 +20,8 @@ import Foundation
 
 enum DeviceVerificationDataLoadingViewModelError: Error {
     case unknown
+    case transactionCancelled
+    case transactionCancelledByMe(reason: MXTransactionCancelCode)
 }
 
 final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadingViewModelType {
@@ -28,9 +30,13 @@ final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadin
     
     // MARK: Private
 
-    private let session: MXSession
-    private let otherUserId: String
-    private let otherDeviceId: String
+    private let session: MXSession?
+    private let otherUserId: String?
+    private let otherDeviceId: String?
+    
+    private let keyVerificationRequest: MXKeyVerificationRequest?
+    
+    private var currentOperation: MXHTTPOperation?
     
     // MARK: Public
 
@@ -43,9 +49,18 @@ final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadin
         self.session = session
         self.otherUserId = otherUserId
         self.otherDeviceId = otherDeviceId
+        self.keyVerificationRequest = nil
+    }
+    
+    init(keyVerificationRequest: MXKeyVerificationRequest) {
+        self.session = nil
+        self.otherUserId = nil
+        self.otherDeviceId = nil
+        self.keyVerificationRequest = keyVerificationRequest
     }
     
     deinit {
+        self.currentOperation?.cancel()
     }
     
     // MARK: - Public
@@ -60,40 +75,74 @@ final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadin
     }
     
     // MARK: - Private
-
+    
     private func loadData() {
-        guard let crypto = self.session.crypto else {
+        if let keyVerificationRequest = self.keyVerificationRequest {
+            self.acceptKeyVerificationRequest(keyVerificationRequest)
+        } else {
+            self.downloadOtherDeviceKeys()
+        }
+    }
+    
+    private func acceptKeyVerificationRequest(_ keyVerificationRequest: MXKeyVerificationRequest) {
+        
+        self.update(viewState: .loading)
+        
+        keyVerificationRequest.accept(withMethod: MXKeyVerificationMethodSAS, success: { [weak self] (deviceVerificationTransaction) in
+            guard let self = self else {
+                return
+            }
+            
+            if let outgoingSASTransaction = deviceVerificationTransaction as? MXOutgoingSASTransaction {
+                self.registerTransactionDidStateChangeNotification(transaction: outgoingSASTransaction)
+            } else {
+                self.update(viewState: .error(DeviceVerificationDataLoadingViewModelError.unknown))
+            }
+            
+        }, failure: { [weak self] (error) in
+            guard let self = self else {
+                return
+            }
+            self.update(viewState: .error(error))
+        })
+    }
+    
+    private func downloadOtherDeviceKeys() {
+        guard let session = self.session,
+            let crypto = session.crypto,
+            let otherUserId = self.otherUserId,
+            let otherDeviceId = self.otherDeviceId else {
             self.update(viewState: .errorMessage(VectorL10n.deviceVerificationErrorCannotLoadDevice))
             NSLog("[DeviceVerificationDataLoadingViewModel] Error session.crypto is nil")
             return
         }
-
-        if let otherUser = self.session.user(withUserId: otherUserId) {
+        
+        if let otherUser = session.user(withUserId: otherUserId) {
             
             self.update(viewState: .loading)
-            
-            crypto.downloadKeys([self.otherUserId], forceDownload: false, success: { [weak self] (usersDevicesMap, crossSigningKeysMap) in
+           
+            self.currentOperation = crypto.downloadKeys([otherUserId], forceDownload: false, success: { [weak self] (usersDevicesMap, crossSigningKeysMap) in
                 guard let sself = self else {
                     return
                 }
-
-                if let otherDevice = usersDevicesMap?.object(forDevice: sself.otherDeviceId, forUser: sself.otherUserId) {
+                
+                if let otherDevice = usersDevicesMap?.object(forDevice: otherDeviceId, forUser: otherUserId) {
                     sself.update(viewState: .loaded)
                     sself.coordinatorDelegate?.deviceVerificationDataLoadingViewModel(sself, didLoadUser: otherUser, device: otherDevice)
                 } else {
-                     sself.update(viewState: .errorMessage(VectorL10n.deviceVerificationErrorCannotLoadDevice))
-                }
-
-            }, failure: { [weak self] (error) in
-                guard let sself = self else {
-                    return
+                    sself.update(viewState: .errorMessage(VectorL10n.deviceVerificationErrorCannotLoadDevice))
                 }
                 
-                let finalError = error ?? DeviceVerificationDataLoadingViewModelError.unknown
-                
-                sself.update(viewState: .error(finalError))
+                }, failure: { [weak self] (error) in
+                    guard let sself = self else {
+                        return
+                    }
+                    
+                    let finalError = error ?? DeviceVerificationDataLoadingViewModelError.unknown
+                    
+                    sself.update(viewState: .error(finalError))
             })
-
+            
         } else {
             self.update(viewState: .errorMessage(VectorL10n.deviceVerificationErrorCannotLoadDevice))
         }
@@ -101,5 +150,39 @@ final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadin
     
     private func update(viewState: DeviceVerificationDataLoadingViewState) {
         self.viewDelegate?.deviceVerificationDataLoadingViewModel(self, didUpdateViewState: viewState)
+    }
+    
+    // MARK: MXDeviceVerificationTransactionDidChange
+    
+    private func registerTransactionDidStateChangeNotification(transaction: MXOutgoingSASTransaction) {
+        NotificationCenter.default.addObserver(self, selector: #selector(transactionDidStateChange(notification:)), name: NSNotification.Name.MXDeviceVerificationTransactionDidChange, object: transaction)
+    }
+    
+    private func unregisterTransactionDidStateChangeNotification() {
+        NotificationCenter.default.removeObserver(self, name: .MXDeviceVerificationTransactionDidChange, object: nil)
+    }
+    
+    @objc private func transactionDidStateChange(notification: Notification) {
+        guard let transaction = notification.object as? MXOutgoingSASTransaction else {
+            return
+        }
+        
+        switch transaction.state {
+        case MXSASTransactionStateShowSAS:
+            self.unregisterTransactionDidStateChangeNotification()
+            self.update(viewState: .loaded)
+            self.coordinatorDelegate?.deviceVerificationDataLoadingViewModel(self, didAcceptKeyVerificationWithTransaction: transaction)
+        case MXSASTransactionStateCancelled:
+            self.unregisterTransactionDidStateChangeNotification()
+            self.update(viewState: .error(DeviceVerificationDataLoadingViewModelError.transactionCancelled))
+        case MXSASTransactionStateCancelledByMe:
+            guard let reason = transaction.reasonCancelCode else {
+                return
+            }
+            self.unregisterTransactionDidStateChangeNotification()
+            self.update(viewState: .error(DeviceVerificationDataLoadingViewModelError.transactionCancelledByMe(reason: reason)))
+        default:
+            break
+        }
     }
 }
