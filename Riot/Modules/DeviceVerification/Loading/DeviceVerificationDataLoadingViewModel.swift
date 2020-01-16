@@ -120,8 +120,8 @@ final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadin
         if let otherUser = session.user(withUserId: otherUserId) {
             
             self.update(viewState: .loading)
-            
-            self.currentOperation = crypto.downloadKeys([otherUserId], forceDownload: false, success: { [weak self] (usersDevicesMap) in
+           
+            self.currentOperation = crypto.downloadKeys([otherUserId], forceDownload: false, success: { [weak self] (usersDevicesMap, crossSigningKeysMap) in
                 guard let sself = self else {
                     return
                 }

@@ -4701,12 +4701,12 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             NSString *deviceId = [pendingKeyRequests deviceIdsForUser:userId].firstObject;
 
             // Give the client a chance to refresh the device list
-            [mxSession.crypto downloadKeys:@[userId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap) {
+            [mxSession.crypto downloadKeys:@[userId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap, NSDictionary<NSString *,MXCrossSigningInfo *> *crossSigningKeysMap) {
 
                 MXDeviceInfo *deviceInfo = [usersDevicesInfoMap objectForDevice:deviceId forUser:userId];
                 if (deviceInfo)
                 {
-                    BOOL wasNewDevice = (deviceInfo.verified == MXDeviceUnknown);
+                    BOOL wasNewDevice = (deviceInfo.trustLevel.localVerificationStatus == MXDeviceUnknown);
 
                     void (^openDialog)(void) = ^void()
                     {
