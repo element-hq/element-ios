@@ -916,3 +916,15 @@
 "service_terms_modal_policy_checkbox_accessibility_hint" = "Seleziona per accettare %@";
 "settings_labs_dm_key_verification" = "Verifica chiave con messaggio diretto";
 "settings_labs_cross_signing" = "Firma incrociata";
+"key_verification_tile_request_incoming_title" = "Richiesta di verifica";
+"key_verification_tile_request_outgoing_title" = "Verifica inviata";
+"key_verification_tile_request_status_data_loading" = "Caricamento dati…";
+"key_verification_tile_request_status_waiting" = "In attesa…";
+"key_verification_tile_request_status_expired" = "Scaduta";
+"key_verification_tile_request_status_cancelled_by_me" = "Hai annullato";
+"key_verification_tile_request_status_cancelled" = "%@ ha annullato";
+"key_verification_tile_request_status_accepted" = "Hai accettato";
+"key_verification_tile_request_incoming_approval_accept" = "Accetta";
+"key_verification_tile_request_incoming_approval_decline" = "Rifiuta";
+"key_verification_tile_conclusion_done_title" = "Verificato";
+"key_verification_tile_conclusion_warning_title" = "Accesso non fidato";
