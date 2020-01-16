@@ -228,7 +228,7 @@
                                          ofUser:deviceTableViewCell.deviceInfo.userId
                                         success:^{
 
-                                            deviceTableViewCell.deviceInfo.verified = verificationStatus;
+                                            //deviceTableViewCell.deviceInfo.verified = verificationStatus;
                                             [self.tableView reloadData];
 
                                         } failure:nil];
@@ -244,13 +244,13 @@
 
     // Update our map
     MXWeakify(self);
-    [mxSession.crypto downloadKeys:@[otherUserId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap) {
+    [mxSession.crypto downloadKeys:@[otherUserId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap, NSDictionary<NSString *,MXCrossSigningInfo *> *crossSigningKeysMap) {
         MXStrongifyAndReturnIfNil(self);
 
         MXDeviceInfo *deviceInfo = [usersDevicesInfoMap objectForDevice:otherDeviceId forUser:otherUserId];
 
         MXDeviceInfo *device = [self->usersDevices objectForDevice:otherDeviceId forUser:otherUserId];
-        device.verified = deviceInfo.verified;
+        //device.verified = deviceInfo.verified;
 
         [self.tableView reloadData];
 

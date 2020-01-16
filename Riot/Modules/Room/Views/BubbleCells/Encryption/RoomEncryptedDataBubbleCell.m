@@ -51,7 +51,7 @@ NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon = @"kRoomEncrypt
         
         if (deviceInfo)
         {
-            switch (deviceInfo.verified)
+            switch (deviceInfo.trustLevel.localVerificationStatus)
             {
                 case MXDeviceUnknown:
                 case MXDeviceUnverified:

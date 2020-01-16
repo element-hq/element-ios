@@ -248,13 +248,17 @@ private enum BackupRows {
 
             if device.fingerprint == self.userDevice.fingerprint {
                 return VectorL10n.settingsKeyBackupInfoTrustSignatureValid
-            } else if signature.valid && (device.verified == MXDeviceVerified) {
+            } else if signature.valid
+                && (device.trustLevel.localVerificationStatus == .verified) {
                 return VectorL10n.settingsKeyBackupInfoTrustSignatureValidDeviceVerified(displayName)
-            } else if signature.valid && (device.verified != MXDeviceVerified) {
+            } else if signature.valid
+                && (device.trustLevel.localVerificationStatus != .verified) {
                 return VectorL10n.settingsKeyBackupInfoTrustSignatureValidDeviceUnverified(displayName)
-            } else if !signature.valid && (device.verified == MXDeviceVerified) {
+            } else if !signature.valid
+                && (device.trustLevel.localVerificationStatus == .verified) {
                 return VectorL10n.settingsKeyBackupInfoTrustSignatureInvalidDeviceVerified(displayName)
-            } else if !signature.valid && (device.verified != MXDeviceVerified) {
+            } else if !signature.valid
+                && (device.trustLevel.localVerificationStatus != .verified) {
                 return VectorL10n.settingsKeyBackupInfoTrustSignatureInvalidDeviceUnverified(displayName)
             }
 
