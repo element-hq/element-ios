@@ -235,7 +235,7 @@
 - (void)reloadDataforUser:(NSString *)userId andDevice:(NSString *)deviceId
 {
     // Refresh data
-    MXDeviceInfo *device = [mxSession.crypto deviceInfoForDevice:deviceId ofUser:userId];
+    MXDeviceInfo *device = [mxSession.crypto deviceWithDeviceId:deviceId ofUser:userId];
     [usersDevices setObject:device forUser:userId andDevice:deviceId];
 
     // and reload

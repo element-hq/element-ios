@@ -1502,11 +1502,11 @@ internal enum VectorL10n {
   internal static func keyVerificationTileRequestStatusCancelled(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "key_verification_tile_request_status_cancelled", p1)
   }
-  /// You cancel
+  /// You cancelled
   internal static var keyVerificationTileRequestStatusCancelledByMe: String { 
     return VectorL10n.tr("Vector", "key_verification_tile_request_status_cancelled_by_me") 
   }
-  /// Data loading …
+  /// Data loading…
   internal static var keyVerificationTileRequestStatusDataLoading: String { 
     return VectorL10n.tr("Vector", "key_verification_tile_request_status_data_loading") 
   }
@@ -1514,7 +1514,7 @@ internal enum VectorL10n {
   internal static var keyVerificationTileRequestStatusExpired: String { 
     return VectorL10n.tr("Vector", "key_verification_tile_request_status_expired") 
   }
-  /// Waiting …
+  /// Waiting…
   internal static var keyVerificationTileRequestStatusWaiting: String { 
     return VectorL10n.tr("Vector", "key_verification_tile_request_status_waiting") 
   }
