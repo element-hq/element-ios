@@ -958,3 +958,4 @@
 "key_verification_tile_request_incoming_approval_decline" = "Elutasít";
 "key_verification_tile_conclusion_done_title" = "Hitelesített";
 "key_verification_tile_conclusion_warning_title" = "Megbízhatatlan belépés";
+"key_verification_incoming_request_incoming_alert_message" = "%@ ellenőrizni szeretné";
