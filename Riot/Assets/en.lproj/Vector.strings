@@ -1107,3 +1107,7 @@
 
 "key_verification_tile_conclusion_done_title" = "Verified";
 "key_verification_tile_conclusion_warning_title" = "Unstrusted sign in";
+
+// Incoming key verification request
+
+"key_verification_incoming_request_incoming_alert_message" = "%@ wants to verify";
