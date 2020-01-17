@@ -944,3 +944,15 @@
 "service_terms_modal_policy_checkbox_accessibility_hint" = "Cochez pour accepter %@";
 "settings_labs_dm_key_verification" = "Vérification de clé par message direct";
 "settings_labs_cross_signing" = "Signature croisée";
+"key_verification_tile_request_incoming_title" = "Demande de vérification";
+"key_verification_tile_request_outgoing_title" = "Vérification envoyée";
+"key_verification_tile_request_status_data_loading" = "Chargement des données…";
+"key_verification_tile_request_status_waiting" = "En attente…";
+"key_verification_tile_request_status_expired" = "Expiré";
+"key_verification_tile_request_status_cancelled_by_me" = "Vous avez annulé";
+"key_verification_tile_request_status_cancelled" = "%@ a annulé";
+"key_verification_tile_request_status_accepted" = "Vous avez accepté";
+"key_verification_tile_request_incoming_approval_accept" = "Accepter";
+"key_verification_tile_request_incoming_approval_decline" = "Refuser";
+"key_verification_tile_conclusion_done_title" = "Vérifié";
+"key_verification_tile_conclusion_warning_title" = "Connexion non approuvée";
