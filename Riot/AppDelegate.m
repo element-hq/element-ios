@@ -237,6 +237,8 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 @property (weak, nonatomic) UIAlertController *gdprConsentNotGivenAlertController;
 @property (weak, nonatomic) UIViewController *gdprConsentController;
 
+@property (weak, nonatomic) UIAlertController *incomingKeyVerificationRequestAlertController;
+
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 @property (nonatomic, strong) SlidingModalPresenter *slidingModalPresenter;
 
@@ -694,6 +696,9 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
     // Observe wrong backup version
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBackupStateDidChangeNotification:) name:kMXKeyBackupDidStateChangeNotification object:nil];
+    
+    // Observe key verification request
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyVerificationRequestDidChangeNotification:) name:MXDeviceVerificationManagerNewRequestNotification object:nil];
 
     // Resume all existing matrix sessions
     NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
@@ -711,6 +716,80 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     }
     
     [self handleLaunchAnimation];
+}
+
+- (void)keyVerificationRequestDidChangeNotification:(NSNotification *)notification
+{
+    NSDictionary *userInfo = notification.userInfo;
+    
+    MXKeyVerificationRequest *keyVerificationRequest = userInfo[MXDeviceVerificationManagerNotificationRequestKey];
+    
+    if ([keyVerificationRequest isKindOfClass:MXKeyVerificationByDMRequest.class])
+    {
+        MXKeyVerificationByDMRequest *keyVerificationByDMRequest = (MXKeyVerificationByDMRequest*)keyVerificationRequest;
+        
+        if (!keyVerificationByDMRequest.isFromMyUser && keyVerificationByDMRequest.state == MXKeyVerificationRequestStatePending)
+        {
+            MXKAccount *currentAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+            MXRoom *room = [currentAccount.mxSession roomWithRoomId:keyVerificationByDMRequest.roomId];
+            if (!room)
+            {
+                NSLog(@"[AppDelegate][KeyVerification] keyVerificationRequestDidChangeNotification: Unknown room");
+                return;
+            }
+            
+            NSString *sender = keyVerificationByDMRequest.sender;
+            
+            [room state:^(MXRoomState *roomState) {
+                
+                NSString *senderName = [roomState.members memberName:sender];
+                
+                if (self.incomingKeyVerificationRequestAlertController)
+                {
+                    [self.incomingKeyVerificationRequestAlertController dismissViewControllerAnimated:NO completion:nil];
+                }
+                
+                NSMutableString *senderInfo = [NSMutableString stringWithString:sender];
+                
+                if (senderName)
+                {
+                    [senderInfo appendFormat:@" (%@)", senderName];
+                }
+                
+                NSString *alertMessage = [NSString stringWithFormat:NSLocalizedStringFromTable(@"key_verification_incoming_request_incoming_alert_message", @"Vector", nil), senderInfo];
+                
+                self.incomingKeyVerificationRequestAlertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"key_verification_tile_request_incoming_title", @"Vector", nil)
+                                                                                                         message:alertMessage
+                                                                                                  preferredStyle:UIAlertControllerStyleAlert];
+                
+                [self.incomingKeyVerificationRequestAlertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"key_verification_tile_request_incoming_approval_accept", @"Vector", nil)
+                                                                                                       style:UIAlertActionStyleDefault
+                                                                                                     handler:^(UIAlertAction * action)
+                                                                               {
+                                                                                   [self presentIncomingKeyVerificationRequest:keyVerificationByDMRequest inSession:self.mxSessions.firstObject];
+                                                                               }]];
+                
+                [self.incomingKeyVerificationRequestAlertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"key_verification_tile_request_incoming_approval_decline", @"Vector", nil)
+                                                                                                       style:UIAlertActionStyleDestructive
+                                                                                                     handler:^(UIAlertAction * action)
+                                                                               {
+                                                                                   [keyVerificationByDMRequest cancelWithCancelCode:MXTransactionCancelCode.user success:^{
+                                                                                       
+                                                                                   } failure:^(NSError * _Nonnull error) {
+                                                                                       NSLog(@"[AppDelegate][KeyVerification] Fail to cancel incoming key verification request with error: %@", error);
+                                                                                   }];
+                                                                               }]];
+                
+                [self.incomingKeyVerificationRequestAlertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
+                                                                                                       style:UIAlertActionStyleCancel
+                                                                                                     handler:^(UIAlertAction * action)
+                                                                               {
+                                                                               }]];
+                
+                [self showNotificationAlert:self.incomingKeyVerificationRequestAlertController];
+            }];
+        }
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

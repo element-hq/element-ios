@@ -1470,6 +1470,10 @@ internal enum VectorL10n {
   internal static var keyBackupSetupTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_title") 
   }
+  /// %@ wants to verify
+  internal static func keyVerificationIncomingRequestIncomingAlertMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "key_verification_incoming_request_incoming_alert_message", p1)
+  }
   /// Verified
   internal static var keyVerificationTileConclusionDoneTitle: String { 
     return VectorL10n.tr("Vector", "key_verification_tile_conclusion_done_title") 
