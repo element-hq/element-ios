@@ -720,6 +720,11 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
 - (void)keyVerificationRequestDidChangeNotification:(NSNotification *)notification
 {
+    if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground)
+    {
+        return;
+    }
+    
     NSDictionary *userInfo = notification.userInfo;
     
     MXKeyVerificationRequest *keyVerificationRequest = userInfo[MXDeviceVerificationManagerNotificationRequestKey];
