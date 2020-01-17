@@ -1679,132 +1679,6 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     return notificationUserInfo;
 }
 
-- (void)notificationBodyForEvent:(MXEvent *)event pushRule:(MXPushRule*)rule inAccount:(MXKAccount*)account onComplete:(void (^)(NSString * _Nullable notificationBody))onComplete;
-{
-    if (!event.content || !event.content.count)
-    {
-        NSLog(@"[AppDelegate][Push] notificationBodyForEvent: empty event content");
-        onComplete (nil);
-        return;
-    }
-    
-    MXRoom *room = [account.mxSession roomWithRoomId:event.roomId];
-    if (!room)
-    {
-        NSLog(@"[AppDelegate][Push] notificationBodyForEvent: Unknown room");
-        onComplete (nil);
-        return;
-    }
-
-    [room state:^(MXRoomState *roomState) {
-
-        NSString *notificationBody;
-        NSString *eventSenderName = [roomState.members memberName:event.sender];
-
-        if (event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted)
-        {
-            if (room.isMentionsOnly)
-            {
-                // A local notification will be displayed only for highlighted notification.
-                BOOL isHighlighted = NO;
-
-                // Check whether is there an highlight tweak on it
-                for (MXPushRuleAction *ruleAction in rule.actions)
-                {
-                    if (ruleAction.actionType == MXPushRuleActionTypeSetTweak)
-                    {
-                        if ([ruleAction.parameters[@"set_tweak"] isEqualToString:@"highlight"])
-                        {
-                            // Check the highlight tweak "value"
-                            // If not present, highlight. Else check its value before highlighting
-                            if (nil == ruleAction.parameters[@"value"] || YES == [ruleAction.parameters[@"value"] boolValue])
-                            {
-                                isHighlighted = YES;
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (!isHighlighted)
-                {
-                    // Ignore this notif.
-                    NSLog(@"[AppDelegate][Push] notificationBodyForEvent: Ignore non highlighted notif in mentions only room");
-                    onComplete(nil);
-                    return;
-                }
-            }
-
-            NSString *msgType = event.content[@"msgtype"];
-            NSString *content = event.content[@"body"];
-
-            if (event.isEncrypted && !RiotSettings.shared.showDecryptedContentInNotifications)
-            {
-                // Hide the content
-                msgType = nil;
-            }
-
-            NSString *roomDisplayName = room.summary.displayname;
-
-            // Display the room name only if it is different than the sender name
-            if (roomDisplayName.length && ![roomDisplayName isEqualToString:eventSenderName])
-            {
-                if ([msgType isEqualToString:@"m.text"])
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_IN_ROOM_WITH_CONTENT", nil), eventSenderName,roomDisplayName, content];
-                else if ([msgType isEqualToString:@"m.emote"])
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"ACTION_FROM_USER_IN_ROOM", nil), roomDisplayName, eventSenderName, content];
-                else if ([msgType isEqualToString:@"m.image"])
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"IMAGE_FROM_USER_IN_ROOM", nil), eventSenderName, content, roomDisplayName];
-                else
-                    // Encrypted messages falls here
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_IN_ROOM", nil), eventSenderName, roomDisplayName];
-            }
-            else
-            {
-                if ([msgType isEqualToString:@"m.text"])
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_WITH_CONTENT", nil), eventSenderName, content];
-                else if ([msgType isEqualToString:@"m.emote"])
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"ACTION_FROM_USER", nil), eventSenderName, content];
-                else if ([msgType isEqualToString:@"m.image"])
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"IMAGE_FROM_USER", nil), eventSenderName, content];
-                else
-                    // Encrypted messages falls here
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER", nil), eventSenderName];
-            }
-        }
-        else if (event.eventType == MXEventTypeCallInvite)
-        {
-            NSString *sdp = event.content[@"offer"][@"sdp"];
-            BOOL isVideoCall = [sdp rangeOfString:@"m=video"].location != NSNotFound;
-
-            if (!isVideoCall)
-                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"VOICE_CALL_FROM_USER", nil), eventSenderName];
-            else
-                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"VIDEO_CALL_FROM_USER", nil), eventSenderName];
-        }
-        else if (event.eventType == MXEventTypeRoomMember)
-        {
-            NSString *roomDisplayName = room.summary.displayname;
-
-            if (roomDisplayName.length && ![roomDisplayName isEqualToString:eventSenderName])
-                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"USER_INVITE_TO_NAMED_ROOM", nil), eventSenderName, roomDisplayName];
-            else
-                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"USER_INVITE_TO_CHAT", nil), eventSenderName];
-        }
-        else if (event.eventType == MXEventTypeSticker)
-        {
-            NSString *roomDisplayName = room.summary.displayname;
-
-            if (roomDisplayName.length && ![roomDisplayName isEqualToString:eventSenderName])
-                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_IN_ROOM", nil), eventSenderName, roomDisplayName];
-            else
-                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER", nil), eventSenderName];
-        }
-
-        onComplete(notificationBody);
-    }];
-}
-
 // iOS 10+, does the same thing as notificationBodyForEvent:pushRule:inAccount:onComplete:, except with more features
 - (void)notificationContentForEvent:(MXEvent *)event pushRule:(MXPushRule *)rule inAccount:(MXKAccount *)account onComplete:(void (^)(UNNotificationContent * _Nullable notificationContent))onComplete;
 {
@@ -1830,6 +1704,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
         NSString *threadIdentifier = room.roomId;
         NSString *eventSenderName = [roomState.members memberName:event.sender];
+        NSString *currentUserId = account.mxCredentials.userId;
 
         if (event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted)
         {
@@ -1876,6 +1751,9 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             
             NSString *roomDisplayName = room.summary.displayname;
             
+            NSString *myUserId = account.mxSession.myUser.userId;
+            BOOL isIncomingEvent = ![event.sender isEqualToString:myUserId];
+            
             // Display the room name only if it is different than the sender name
             if (roomDisplayName.length && ![roomDisplayName isEqualToString:eventSenderName])
             {
@@ -1892,6 +1770,30 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                 else if ([msgType isEqualToString:@"m.image"])
                 {
                     notificationBody = [NSString localizedUserNotificationStringForKey:@"IMAGE_FROM_USER" arguments:@[eventSenderName, messageContent]];
+                }
+                else if (room.isDirect && isIncomingEvent && [msgType isEqualToString:kMXMessageTypeKeyVerificationRequest])
+                {
+                    [account.mxSession.crypto.deviceVerificationManager keyVerificationFromKeyVerificationEvent:event
+                                                                                                        success:^(MXKeyVerification * _Nonnull keyVerification)
+                     {
+                         if (keyVerification && keyVerification.state == MXKeyVerificationRequestStatePending)
+                         {
+                             // TODO: Add accept and decline actions to notification
+                             NSString *body = [NSString localizedUserNotificationStringForKey:@"KEY_VERIFICATION_REQUEST_FROM_USER" arguments:@[eventSenderName]];
+                             
+                             UNNotificationContent *notificationContent = [self notificationContentWithTitle:notificationTitle
+                                                                                                        body:body
+                                                                                            threadIdentifier:threadIdentifier
+                                                                                                      userId:currentUserId
+                                                                                                       event:event
+                                                                                                    pushRule:rule];
+                             
+                             onComplete(notificationContent);
+                         }
+                         
+                     } failure:^(NSError * _Nonnull error) {
+                         NSLog(@"[AppDelegate][Push] notificationContentForEvent: failed to fetch key verification with error: %@", error);
+                     }];
                 }
                 else
                 {
@@ -1968,25 +1870,45 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             notificationBody = [NSString localizedUserNotificationStringForKey:@"STICKER_FROM_USER" arguments:@[eventSenderName]];
         }
         
-        UNMutableNotificationContent *notificationContent = [[UNMutableNotificationContent alloc] init];
-        
-        NSDictionary *notificationUserInfo = [self notificationUserInfoForEvent:event andUserId:account.mxCredentials.userId];
-        NSString *notificationSoundName = [self notificationSoundNameFromPushRule:rule];
-        NSString *categoryIdentifier = [self notificationCategoryIdentifierForEvent:event];
-        
-        notificationContent.title = notificationTitle;        
-        notificationContent.body = notificationBody;
-        notificationContent.threadIdentifier = threadIdentifier;
-        notificationContent.userInfo = notificationUserInfo;
-        notificationContent.categoryIdentifier = categoryIdentifier;
-        
-        if (notificationSoundName)
+        if (notificationBody)
         {
-            notificationContent.sound = [UNNotificationSound soundNamed:notificationSoundName];
+            UNNotificationContent *notificationContent = [self notificationContentWithTitle:notificationTitle
+                                                                                       body:notificationBody
+                                                                           threadIdentifier:threadIdentifier
+                                                                                     userId:currentUserId
+                                                                                      event:event
+                                                                                   pushRule:rule];
+            
+            onComplete(notificationContent);
         }
-        
-        onComplete([notificationContent copy]);
     }];
+}
+
+- (UNNotificationContent*)notificationContentWithTitle:(NSString*)title
+                                                  body:(NSString*)body
+                                      threadIdentifier:(NSString*)threadIdentifier
+                                                userId:(NSString*)userId
+                                                 event:(MXEvent*)event
+                                              pushRule:(MXPushRule*)pushRule
+{
+    UNMutableNotificationContent *notificationContent = [[UNMutableNotificationContent alloc] init];
+    
+    NSDictionary *notificationUserInfo = [self notificationUserInfoForEvent:event andUserId:userId];
+    NSString *notificationSoundName = [self notificationSoundNameFromPushRule:pushRule];
+    NSString *categoryIdentifier = [self notificationCategoryIdentifierForEvent:event];
+    
+    notificationContent.title = title;
+    notificationContent.body = body;
+    notificationContent.threadIdentifier = threadIdentifier;
+    notificationContent.userInfo = notificationUserInfo;
+    notificationContent.categoryIdentifier = categoryIdentifier;
+    
+    if (notificationSoundName)
+    {
+        notificationContent.sound = [UNNotificationSound soundNamed:notificationSoundName];
+    }
+    
+    return [notificationContent copy];
 }
 
 /**
