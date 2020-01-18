@@ -956,3 +956,4 @@
 "key_verification_tile_request_incoming_approval_decline" = "Refuser";
 "key_verification_tile_conclusion_done_title" = "Vérifié";
 "key_verification_tile_conclusion_warning_title" = "Connexion non approuvée";
+"key_verification_incoming_request_incoming_alert_message" = "%@ veut vérifier";
