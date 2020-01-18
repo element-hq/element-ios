@@ -941,3 +941,4 @@
 "key_verification_tile_request_incoming_approval_decline" = "Ukatu";
 "key_verification_tile_conclusion_done_title" = "Egiaztatuta";
 "key_verification_tile_conclusion_warning_title" = "Fidagarritasun gabeko saio hasiera";
+"key_verification_incoming_request_incoming_alert_message" = "%@(e)k egiaztatu nahi du";
