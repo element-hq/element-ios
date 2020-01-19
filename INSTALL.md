@@ -5,7 +5,7 @@
 To build Riot iOS project you need:
 
 - Xcode 10.3, if you have a newer Xcode version on your Mac you can download it from the Apple Developer Portal [here](https://download.developer.apple.com/Developer_Tools/Xcode_10.3/Xcode_10.3.xip).
-- [cmake](https://gitlab.kitware.com/cmake/cmake), used to build [OMLKit](https://gitlab.matrix.org/matrix-org/olm/tree/master/xcode) dependency.
+- [cmake](https://gitlab.kitware.com/cmake/cmake), used to build [OLMKit](https://gitlab.matrix.org/matrix-org/olm/tree/master/xcode) dependency.
 - [CocoaPods](https://cocoapods.org) 1.8.4. Manages library dependencies for Xcode projects.
 - [bundler](https://bundler.io/) (optional), is also a dependency manager used to manage build tools dependency (CocoaPods, Fastlane)
 
