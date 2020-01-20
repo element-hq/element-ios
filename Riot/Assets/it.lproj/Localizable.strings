@@ -1,5 +1,5 @@
 /* New message from a specific person, not referencing a room */
-"MSG_FROM_USER" = "Messaggio ricevuto da %@";
+"MSG_FROM_USER" = "%@ ha inviato un messaggio";
 /* New message from a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM" = "%@ ha scritto in %@";
 /* New message from a specific person, not referencing a room. Content included. */
@@ -11,7 +11,7 @@
 /* New action message from a specific person in a named room. */
 "ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
 /* New action message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@ ha inviato un'immagine %@";
+"IMAGE_FROM_USER" = "%@ ha invitato un'immagine %@";
 /* New action message from a specific person in a named room. */
 "IMAGE_FROM_USER_IN_ROOM" = "%@ ha inviato un'immagine %@ in %@";
 /* A single unread message in a room */
@@ -50,3 +50,8 @@
 "VOICE_CONF_NAMED_FROM_USER" = "Chiamata di gruppo da %@: '%@'";
 /* Incoming named video conference invite from a specific person */
 "VIDEO_CONF_NAMED_FROM_USER" = "Video chiamata di gruppo da %@: '%@'";
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ in %@";
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@ ha inviato un adesivo";
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ vuole verificare";
