@@ -928,3 +928,4 @@
 "key_verification_tile_request_incoming_approval_decline" = "Rifiuta";
 "key_verification_tile_conclusion_done_title" = "Verificato";
 "key_verification_tile_conclusion_warning_title" = "Accesso non fidato";
+"key_verification_incoming_request_incoming_alert_message" = "%@ vuole verificare";
