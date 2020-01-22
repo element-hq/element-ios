@@ -1,3 +1,10 @@
+Changes in 0.10.5 (2020-xx-xx)
+===============================================
+
+Improvements:
+ * ON/OFF Cross-signing development in a Lab setting (#2855).
+ * RoomVC: Update encryption decoration with shields (#2934, #2930, #2906).
+
 Changes in 0.10.4 (2019-12-11)
 ===============================================
 
