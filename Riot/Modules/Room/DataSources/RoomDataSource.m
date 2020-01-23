@@ -239,7 +239,7 @@
         // If user belongs to the room refresh the trust level
         if (roomMember)
         {            
-            [self.room trustLevelSummaryWithSuccess:^(MXUsersTrustLevelSummary *usersTrustLevelSummary) {
+            [self.room membersTrustLevelSummaryWithSuccess:^(MXUsersTrustLevelSummary *usersTrustLevelSummary) {
                 
                 RoomEncryptionTrustLevel roomEncryptionTrustLevel;
                 
