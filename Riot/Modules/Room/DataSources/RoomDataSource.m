@@ -238,18 +238,18 @@
         
         // If user belongs to the room refresh the trust level
         if (roomMember)
-        {
-            [self.room trustedMembersProgressWithSuccess:^(NSProgress *trustedMembersProgress) {
+        {            
+            [self.room trustLevelSummaryWithSuccess:^(MXUsersTrustLevelSummary *usersTrustLevelSummary) {
                 
                 RoomEncryptionTrustLevel roomEncryptionTrustLevel;
                 
-                double trustedMembersPercentage = trustedMembersProgress.fractionCompleted;
+                double trustedDevicesPercentage = usersTrustLevelSummary.trustedDevicesProgress.fractionCompleted;
                 
-                if (trustedMembersPercentage >= 1.0)
+                if (trustedDevicesPercentage >= 1.0)
                 {
                     roomEncryptionTrustLevel = RoomEncryptionTrustLevelTrusted;
                 }
-                else if (trustedMembersPercentage == 0.0)
+                else if (trustedDevicesPercentage == 0.0)
                 {
                     roomEncryptionTrustLevel = RoomEncryptionTrustLevelNormal;
                 }
