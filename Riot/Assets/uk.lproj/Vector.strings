@@ -52,7 +52,7 @@
 "auth_repeat_password_placeholder" = "Повторіть пароль";
 "auth_repeat_new_password_placeholder" = "Підтвердьте новий пароль";
 "auth_home_server_placeholder" = "URL (наприклад, https://matrix.org)";
-"auth_identity_server_placeholder" = "URL (наприклад, https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (наприклад, https://vector.im)";
 "auth_invalid_login_param" = "Неправильне ім'я користувача або пароль";
 "auth_invalid_user_name" = "Імена користувачів можуть містити лише літери, цифри, крапки, дефіси й підкреслення";
 "auth_invalid_password" = "Пароль надто короткий (мінімум 6 знаків)";
@@ -81,3 +81,55 @@
 "auth_recaptcha_message" = "Цей домашній сервер бажає переконатися, що ви не робот";
 "auth_reset_password_message" = "Щоб відновити пароль, введіть адресу е-пошти, пов'язану з вашим обліковим записом:";
 "auth_reset_password_missing_email" = "Необхідно ввести адресу е-пошти, пов'язану з вашим обліковим записом.";
+// String for App Store
+"store_short_description" = "Захищений, децентралізований чат/VoIP";
+"close" = "Закрити";
+// Accessibility
+"accessibility_checkbox_label" = "прапорець";
+"auth_add_email_message_2" = "Вкажіть е-пошту для відновлення облікового запису, а також для можливості знаходження вас іншими користувачами.";
+"auth_add_phone_message_2" = "Вкажіть номер телефону для можливості знаходження вас іншими користувачами.";
+"auth_add_email_phone_message_2" = "Вкажіть е-пошту для відновлення облікового запису. Використовуйте електронну пошту чи номер телефону для можливості знаходження вас іншими користувачами.";
+"auth_email_is_required" = "Ідентифікаційний сервер не налаштовано, тому ви не можете додати адресу електронної пошти, щоб мати можливість відновити пароль в майбутньому.";
+"auth_phone_is_required" = "Ідентифікаційний сервер не налаштовано, тому ви не можете додати номер телефону, щоб мати можливість відновити пароль в майбутньому.";
+"auth_forgot_password_error_no_configured_identity_server" = "Ідентифікаційний сервер не налаштовано: додайте його, щоб мати можливість відновити пароль в майбутньому.";
+"auth_reset_password_missing_password" = "Необхідно ввести новий пароль.";
+"auth_reset_password_email_validation_message" = "На адресу %@ надіслано лист. Після переходу за посиланням в листі, натисніть внизу.";
+"auth_reset_password_next_step_button" = "Я підтверджую свою адресу е-пошти";
+"auth_reset_password_error_unauthorized" = "Не вдалося перевірити е-пошту: переконайтеся, що ви перейшли за посиланням у листі";
+"auth_reset_password_error_not_found" = "Схоже, ваша адреса електронної пошти не пов'язана з жодним Matrix ID на цьому домашньому сервері.";
+"auth_reset_password_error_is_required" = "Ідентифікаційний сервер не налаштовано: додайте його в параметрах сервера, щоб мати можливість відновити пароль в майбутньому.";
+"auth_reset_password_success_message" = "Ваш пароль було відновлено.\n\nСеанс входу завершено на всіх пристроях і припинено отримання push-сповіщень. Щоб активувати сповіщення, виконайте вхід з новим паролем на кожному пристрої.";
+"auth_add_email_and_phone_warning" = "Реєстрація за допомогою електронної пошти і номера телефону водночас не підтримується, доки немає API. Лише номер телефону буде додано до облікового запису. Ви можете додати електронну пошту до свого профілю в налаштуваннях.";
+"auth_accept_policies" = "Ознайомтесь та прийміть правила цього домашнього сервера:";
+"auth_softlogout_signed_out" = "Ви вийшли";
+"auth_softlogout_sign_in" = "Увійти";
+"auth_softlogout_reason" = "Адміністратор вашого домашнього сервера (%1$@) завершив сеанс вашого облікового запису %2$@ (%3$@).";
+"auth_softlogout_recover_encryption_keys" = "Увійдіть для відновлення ключів шифрування, що зберігаються тільки на цьому пристрої. Вам вони необхідні для прочитання всіх ваших захищених повідомлень на будь-якому пристрої.";
+"auth_softlogout_clear_data" = "Стерти особисті дані";
+"auth_softlogout_clear_data_message_1" = "Попередження: Ваші особисті дані (включно з ключами шифрування) все ще зберігаються на цьому пристрої.";
+"auth_softlogout_clear_data_message_2" = "Зітріть, якщо ви припинили користуватися цим пристроєм, або хочете увійти в інший обліковий запис.";
+"auth_softlogout_clear_data_button" = "Стерти всі дані";
+"auth_softlogout_clear_data_sign_out_title" = "Ви впевнені?";
+"auth_softlogout_clear_data_sign_out_msg" = "Ви справді хочете стерти всі дані, що зберігаються на цьому пристрої? Увійдіть знову для доступу до даних і повідомлень свого облікового запису.";
+"auth_softlogout_clear_data_sign_out" = "Вийти";
+"room_resource_limit_exceeded_message_contact_1" = " Будь ласка, ";
+// Generic errors
+"error_invite_3pid_with_no_identity_server" = "Додайте ідентифікаційний сервер в параметрах, щоб запросити е-поштою.";
+"error_not_supported_on_mobile" = "Ви не можете робити це з %@ мобільного.";
+// Errors
+"error_user_already_logged_in" = "Схоже, ви намагаєтесь з'єднатися до іншого домашнього сервера. Хочете вийти?";
+// Chat creation
+"room_creation_title" = "Новий чат";
+"room_creation_account" = "Обліковий запис";
+"room_creation_appearance" = "Зовнішній вигляд";
+"room_creation_appearance_name" = "Назва";
+"room_creation_appearance_picture" = "Зображення чату (необов'язково)";
+"room_creation_privacy" = "Приватність";
+"room_creation_private_room" = "Цей чат є приватним";
+"room_creation_public_room" = "Цей чат є публічним";
+"room_creation_make_public" = "Зробити публічним";
+"room_creation_make_public_prompt_title" = "Зробити цей чат публічним?";
+"room_creation_make_public_prompt_msg" = "Ви справді хочете зробити цей чат публічним? Будь-хто зможе долучатися й читати повідомлення.";
+"room_creation_keep_private" = "Залишити приватним";
+"room_creation_make_private" = "Зробити приватним";
+"room_creation_wait_for_creation" = "Триває створення кімнати. Будь ласка, зачекайте.";
