@@ -1647,6 +1647,9 @@
             case RoomEncryptionTrustLevelTrusted:
                 encryptionIconName = @"encryption_trusted";
                 break;
+            case RoomEncryptionTrustLevelUnknown:
+                encryptionIconName = @"encryption_normal";
+                break;
             default:
                 break;
         }
