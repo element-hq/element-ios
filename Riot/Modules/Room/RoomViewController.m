@@ -125,7 +125,8 @@
 
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
-    ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate>
+    ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
+    RoomDataSourceDelegate>
 {
     // The expanded header
     ExpandedRoomTitleView *expandedHeader;
@@ -1421,6 +1422,11 @@
     return NO;
 }
 
+- (BOOL)isEncryptionEnabled
+{
+    return self.roomDataSource.room.summary.isEncrypted && self.mainSession.crypto != nil;
+}
+
 - (void)refreshRoomTitle
 {
     if (rightBarButtonItems && !self.navigationItem.rightBarButtonItems)
@@ -1541,12 +1547,8 @@
             roomInputToolbarView.supportCallOption &= ([[AppDelegate theDelegate] callStatusBarWindow] == nil);
         }
         
-        // Check whether the encryption is enabled in the room
-        if (self.roomDataSource.room.summary.isEncrypted)
-        {
-            // Encrypt the user's messages as soon as the user supports the encryption?
-            roomInputToolbarView.isEncryptionEnabled = (self.mainSession.crypto != nil);
-        }
+        // Update encryption decoration if needed
+        [self updateEncryptionDecorationForRoomInputToolbar:roomInputToolbarView];
     }
     else if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:DisabledRoomInputToolbarView.class])
     {
@@ -1624,6 +1626,64 @@
     [UIView setAnimationsEnabled:NO];
     [self roomInputToolbarView:self.inputToolbarView heightDidChanged:height completion:nil];
     [UIView setAnimationsEnabled:YES];
+}
+
+- (UIImage*)roomEncryptionBadgeImage
+{
+    NSString *encryptionIconName;
+    UIImage *encryptionIcon;
+    
+    if (self.isEncryptionEnabled)
+    {
+        RoomEncryptionTrustLevel roomEncryptionTrustLevel = ((RoomDataSource*)self.roomDataSource).encryptionTrustLevel;
+        
+        switch (roomEncryptionTrustLevel) {
+            case RoomEncryptionTrustLevelWarning:
+                encryptionIconName = @"encryption_warning";
+                break;
+            case RoomEncryptionTrustLevelNormal:
+                encryptionIconName = @"encryption_normal";
+                break;
+            case RoomEncryptionTrustLevelTrusted:
+                encryptionIconName = @"encryption_trusted";
+                break;
+            case RoomEncryptionTrustLevelUnknown:
+                encryptionIconName = @"encryption_normal";
+                break;
+            default:
+                break;
+        }
+    }
+    
+    if (encryptionIconName)
+    {
+        encryptionIcon = [UIImage imageNamed:encryptionIconName];
+    }
+    
+    return encryptionIcon;
+}
+
+- (void)updateInputToolbarEncryptionDecoration
+{
+    if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
+    {
+        RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
+        [self updateEncryptionDecorationForRoomInputToolbar:roomInputToolbarView];
+    }
+}
+
+- (void)updateExpandedHeaderEncryptionDecoration
+{
+    if (self->expandedHeader)
+    {
+        self->expandedHeader.roomAvatarBadgeImageView.image = self.roomEncryptionBadgeImage;
+    }
+}
+
+- (void)updateEncryptionDecorationForRoomInputToolbar:(RoomInputToolbarView*)roomInputToolbarView
+{
+    roomInputToolbarView.isEncryptionEnabled = self.isEncryptionEnabled;
+    roomInputToolbarView.encryptedRoomIcon.image = self.roomEncryptionBadgeImage;
 }
 
 - (void)handleLongPressFromCell:(id<MXKCellRendering>)cell withTappedEvent:(MXEvent*)event
@@ -1725,8 +1785,11 @@
             // Note the avatar title view does not define tap gesture.
             
             expandedHeader.roomAvatar.alpha = 0.0;
+            expandedHeader.roomAvatarBadgeImageView.alpha = 0.0;
             
             shadowImage = [[UIImage alloc] init];
+            
+            [self updateExpandedHeaderEncryptionDecoration];
             
             // Dismiss the keyboard when header is expanded.
             [self.inputToolbarView dismissKeyboard];
@@ -1758,7 +1821,8 @@
                              self.bubblesTableViewTopConstraint.constant = (isVisible ? self.expandedHeaderContainerHeightConstraint.constant - self.bubblesTableView.mxk_adjustedContentInset.top : 0);
                              self.jumpToLastUnreadBannerContainerTopConstraint.constant = (isVisible ? self.expandedHeaderContainerHeightConstraint.constant : self.bubblesTableView.mxk_adjustedContentInset.top);
                              
-                             expandedHeader.roomAvatar.alpha = 1;
+                             self->expandedHeader.roomAvatar.alpha = 1;
+                             self->expandedHeader.roomAvatarBadgeImageView.alpha = 1;
                              
                              // Force to render the view
                              [self forceLayoutRefresh];
@@ -3191,6 +3255,14 @@
     }
     
     return roomInputToolbarView;
+}
+
+#pragma mark - RoomDataSourceDelegate
+
+- (void)roomDataSource:(RoomDataSource *)roomDataSource didUpdateEncryptionTrustLevel:(RoomEncryptionTrustLevel)roomEncryptionTrustLevel
+{
+    [self updateInputToolbarEncryptionDecoration];
+    [self updateExpandedHeaderEncryptionDecoration];
 }
 
 #pragma mark - Segues
