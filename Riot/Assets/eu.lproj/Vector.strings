@@ -68,7 +68,7 @@
 "auth_missing_phone" = "Telefono zenbakia falta da";
 "auth_missing_email_or_phone" = "E-mail helbidea edo telefono zenbakia falta da";
 "auth_password_dont_match" = "Pasahitzak ez datoz bat";
-"auth_forgot_password" = "Pasahitza ahaztu duzu?";
+"auth_forgot_password" = "Pasahitza ahaztuta?";
 "auth_use_server_options" = "Erabili zerbitzari pertsonalizatuaren ezarpenak (aurreratua)";
 "auth_email_validation_message" = "Egiaztatu zure e-mail helbidea erregistroarekin jarraitzeko";
 "auth_recaptcha_message" = "Hasiera-zerbitzari honek robot bat ez zarela egiaztatu nahi du";
