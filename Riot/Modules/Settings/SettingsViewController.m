@@ -136,7 +136,6 @@ enum
 {
     LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX = 0,
     LABS_USE_JITSI_WIDGET_INDEX,
-    LABS_CRYPTO_INDEX,
     LABS_COUNT,     // TODO: Remove it once features exist
     LABS_DM_KEY_VERIFICATION_INDEX,
     LABS_CROSS_SIGNING_INDEX,
@@ -2429,26 +2428,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleJitsiForConference:) forControlEvents:UIControlEventTouchUpInside];
 
             cell = labelAndSwitchCell;
-        }        
-        else if (row == LABS_CRYPTO_INDEX)
-        {
-            MXSession* session = [AppDelegate theDelegate].mxSessions[0];
-
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_e2e_encryption", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = (nil != session.crypto);
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsEndToEndEncryption:) forControlEvents:UIControlEventTouchUpInside];
-
-            if (session.crypto)
-            {
-                // Once crypto is enabled, it is enabled
-                labelAndSwitchCell.mxkSwitch.enabled = NO;
-            }
-
-            cell = labelAndSwitchCell;
         }
         else if (row == LABS_DM_KEY_VERIFICATION_INDEX)
         {
@@ -3418,110 +3397,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         RiotSettings.shared.createConferenceCallsWithJitsi = switchButton.isOn;
 
         [self.tableView reloadData];
-    }
-}
-
-- (void)toggleLabsEndToEndEncryption:(id)sender
-{
-    if (sender && [sender isKindOfClass:UISwitch.class])
-    {
-        UISwitch *switchButton = (UISwitch*)sender;
-        MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-        
-        if (switchButton.isOn && !account.mxCredentials.deviceId.length)
-        {
-            // Prompt the user to log in again when no device id is available.
-            __weak typeof(self) weakSelf = self;
-            
-            // Prompt user
-            NSString *msg = NSLocalizedStringFromTable(@"settings_labs_e2e_encryption_prompt_message", @"Vector", nil);
-            
-            [currentAlert dismissViewControllerAnimated:NO completion:nil];
-            
-            currentAlert = [UIAlertController alertControllerWithTitle:nil message:msg preferredStyle:UIAlertControllerStyleAlert];
-            
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"later"]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-                                                               
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-                                                                   self->currentAlert = nil;
-                                                               }
-                                                               
-                                                               // Reset toggle button
-                                                               [switchButton setOn:NO animated:YES];
-                                                               
-                                                           }]];
-            
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-                                                               
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-                                                                   self->currentAlert = nil;
-                                                                   
-                                                                   switchButton.enabled = NO;
-                                                                   [self startActivityIndicator];
-                                                                   
-                                                                   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                                                                       
-                                                                       [[AppDelegate theDelegate] logoutWithConfirmation:NO completion:nil];
-                                                                       
-                                                                   });
-                                                               }
-                                                               
-                                                           }]];
-            
-            [currentAlert mxk_setAccessibilityIdentifier:@"SettingsVCEnableEncryptionAlert"];
-            [self presentViewController:currentAlert animated:YES completion:nil];
-        }
-        else
-        {
-            [self startActivityIndicator];
-            
-            MXSession* session = [AppDelegate theDelegate].mxSessions[0];
-            [session enableCrypto:switchButton.isOn success:^{
-
-                // When disabling crypto, reset the current device id as it cannot be reused.
-                // This means that the user will need to log in again if he wants to re-enable e2e.
-                if (!switchButton.isOn)
-                {
-                    [account resetDeviceId];
-                }
-                
-                // Reload all data source of encrypted rooms
-                MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:session];
-                
-                for (MXRoom *room in session.rooms)
-                {
-                    if (room.summary.isEncrypted)
-                    {
-                        [roomDataSourceManager roomDataSourceForRoom:room.roomId create:NO onComplete:^(MXKRoomDataSource *roomDataSource) {
-                            [roomDataSource reload];
-                        }];
-                    }
-                }
-                
-                // Once crypto is enabled, it is enabled
-                switchButton.enabled = NO;
-                
-                [self stopActivityIndicator];
-                
-                // Refresh table view to add cryptography information.
-                [self.tableView reloadData];
-                
-            } failure:^(NSError *error) {
-                
-                [self stopActivityIndicator];
-                
-                // Come back to previous state button
-                [switchButton setOn:!switchButton.isOn animated:YES];
-            }];
-        }
     }
 }
     
