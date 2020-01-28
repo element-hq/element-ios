@@ -1111,7 +1111,7 @@
         MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:userId];
 
         MXRoomCreationParameters *roomCreationParameters = [MXRoomCreationParameters parametersForDirectRoomWithUser:@"@riot-bot:matrix.org"];
-        [self.mainSession createRoomWithParameters:roomCreationParameters success:nil failure:^(NSError *error) {
+        [account.mxSession createRoomWithParameters:roomCreationParameters success:nil failure:^(NSError *error) {
             NSLog(@"[AuthenticationVC] Create chat with riot-bot failed");
         }];
     }
