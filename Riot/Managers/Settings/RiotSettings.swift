@@ -123,14 +123,6 @@ final class RiotSettings: NSObject {
             UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.createConferenceCallsWithJitsi)
         }
     }
-    
-    var enableDMKeyVerification: Bool {
-        get {
-            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.enableDMKeyVerification)
-        } set {
-            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.enableDMKeyVerification)
-        }
-    }
 
     var enableCrossSigning: Bool {
         get {
