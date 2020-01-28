@@ -136,10 +136,8 @@ enum
 {
     LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX = 0,
     LABS_USE_JITSI_WIDGET_INDEX,
-    LABS_COUNT,     // TODO: Remove it once features exist
-    LABS_DM_KEY_VERIFICATION_INDEX,
     LABS_CROSS_SIGNING_INDEX,
-//    LABS_COUNT
+    LABS_COUNT
 };
 
 enum {
@@ -2429,25 +2427,14 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
             cell = labelAndSwitchCell;
         }
-        else if (row == LABS_DM_KEY_VERIFICATION_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-            
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_dm_key_verification", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.enableDMKeyVerification;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsDMKeyVerification:) forControlEvents:UIControlEventTouchUpInside];
-            
-            cell = labelAndSwitchCell;
-        }
         else if (row == LABS_CROSS_SIGNING_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_cross_signing", @"Vector", nil);
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_enable_cross_signing", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.enableCrossSigning;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
             
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsCrossSigning:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -3398,13 +3385,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
         [self.tableView reloadData];
     }
-}
-    
-- (void)toggleLabsDMKeyVerification:(id)sender
-{
-    UISwitch *switchButton = (UISwitch*)sender;
-    
-    RiotSettings.shared.enableDMKeyVerification = switchButton.isOn;
 }
     
 - (void)toggleLabsCrossSigning:(id)sender
