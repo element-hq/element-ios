@@ -19,6 +19,7 @@
 
 #import "AppDelegate.h"
 #import "Riot-Swift.h"
+#import "MXSession+Riot.h"
 
 @interface StartChatViewController () <UITableViewDataSource, UISearchBarDelegate, ContactsTableViewControllerDelegate>
 {
@@ -571,36 +572,51 @@
         {
             // Ensure direct chat are created with equal ops on both sides (the trusted_private_chat preset)
             MXRoomPreset preset = (isDirect ? kMXRoomPresetTrustedPrivateChat : nil);
-            
-            // Create new room
-            MXRoomCreationParameters *roomCreationParameters = [MXRoomCreationParameters new];
-            roomCreationParameters.visibility = kMXRoomDirectoryVisibilityPrivate;
-            roomCreationParameters.inviteArray = inviteArray.count ? inviteArray : nil;
-            roomCreationParameters.invite3PIDArray = invite3PIDArray.count ? invite3PIDArray : nil;
-            roomCreationParameters.isDirect = isDirect;
-            roomCreationParameters.preset = preset;
 
-            roomCreationRequest = [self.mainSession createRoomWithParameters:roomCreationParameters success:^(MXRoom *room) {
+            MXWeakify(self);
+            void (^onFailure)(NSError *) = ^(NSError *error){
+                MXStrongifyAndReturnIfNil(self);
 
-                roomCreationRequest = nil;
+                self->createBarButtonItem.enabled = YES;
 
-                [self stopActivityIndicator];
-
-                [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession];
-
-            } failure:^(NSError *error) {
-
-                createBarButtonItem.enabled = YES;
-
-                roomCreationRequest = nil;
+                self->roomCreationRequest = nil;
                 [self stopActivityIndicator];
 
                 NSLog(@"[StartChatViewController] Create room failed");
 
                 // Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
+            };
 
-            }];
+            [self.mainSession canEnableE2EByDefaultInNewRoomWithUsers:inviteArray success:^(BOOL canEnableE2E) {
+                MXStrongifyAndReturnIfNil(self);
+
+                // Create new room
+                MXRoomCreationParameters *roomCreationParameters = [MXRoomCreationParameters new];
+                roomCreationParameters.visibility = kMXRoomDirectoryVisibilityPrivate;
+                roomCreationParameters.inviteArray = inviteArray.count ? inviteArray : nil;
+                roomCreationParameters.invite3PIDArray = invite3PIDArray.count ? invite3PIDArray : nil;
+                roomCreationParameters.isDirect = isDirect;
+                roomCreationParameters.preset = preset;
+
+                if (canEnableE2E && roomCreationParameters.invite3PIDArray == nil)
+                {
+                    roomCreationParameters.initialStateEvents = @[
+                                                                  [MXRoomCreationParameters initialStateEventForEncryptionWithAlgorithm:kMXCryptoMegolmAlgorithm
+                                                                   ]];
+                }
+
+                self->roomCreationRequest = [self.mainSession createRoomWithParameters:roomCreationParameters success:^(MXRoom *room) {
+
+                    self->roomCreationRequest = nil;
+
+                    [self stopActivityIndicator];
+
+                    [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession];
+
+                } failure:onFailure];
+
+            } failure:onFailure];
         }
     }
     else if (sender == self.navigationItem.leftBarButtonItem)
