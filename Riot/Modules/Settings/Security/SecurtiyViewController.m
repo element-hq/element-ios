@@ -366,10 +366,8 @@ UIDocumentInteractionControllerDelegate>
 - (void)loadDevices
 {
     // Refresh the account devices list
-    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-
     MXWeakify(self);
-    [account.mxRestClient devices:^(NSArray<MXDevice *> *devices) {
+    [self.mainSession.matrixRestClient devices:^(NSArray<MXDevice *> *devices) {
         MXStrongifyAndReturnIfNil(self);
 
         if (devices)
@@ -628,13 +626,6 @@ UIDocumentInteractionControllerDelegate>
     // set the cell to a default value to avoid application crashes
     UITableViewCell *cell = [[UITableViewCell alloc] init];
     cell.backgroundColor = [UIColor redColor];
-
-    // check if there is a valid session
-    if (([AppDelegate theDelegate].mxSessions.count == 0) || ([MXKAccountManager sharedManager].activeAccounts.count == 0))
-    {
-        // else use a default cell
-        return cell;
-    }
 
     MXSession* session = self.mainSession;
     if (section == SETTINGS_SECTION_DEVICES_INDEX)
