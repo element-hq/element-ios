@@ -18,9 +18,8 @@
 
 #import "DeviceView.h"
 
-#import "MediaPickerViewController.h"
 
-@interface SecurityViewController : MXKTableViewController<UITextFieldDelegate, MXKDeviceViewDelegate, UIDocumentInteractionControllerDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate, MXKDataSourceDelegate>
+@interface SecurityViewController : MXKTableViewController
 
 + (SecurityViewController*)instantiateWithMatrixSession:(MXSession*)matrixSession;
 

@@ -23,27 +23,10 @@
 #import "AppDelegate.h"
 #import "AvatarGenerator.h"
 
-#import "BugReportViewController.h"
-
-#import "WebViewViewController.h"
-
-#import "CountryPickerViewController.h"
-#import "LanguagePickerViewController.h"
-#import "DeactivateAccountViewController.h"
-
-#import "NBPhoneNumberUtil.h"
-#import "RageShakeManager.h"
 #import "ThemeService.h"
-#import "TableViewCellWithPhoneNumberTextField.h"
-
-#import "GroupsDataSource.h"
-#import "GroupTableViewCellWithSwitch.h"
-
-#import "GBDeviceInfo_iOS.h"
 
 #import "Riot-Swift.h"
 
-NSString* const kSettingsViewControllerPhoneBookCountryCellId2 = @"kSettingsViewControllerPhoneBookCountryCellId2";
 
 enum
 {
@@ -65,95 +48,28 @@ enum
     DEVICES_DESCRIPTION_INDEX = 0
 };
 
-#define SECTION_TITLE_PADDING_WHEN_HIDDEN 0.01f
 
-typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
-
-
-@interface SecurityViewController () <DeactivateAccountViewControllerDelegate,
+@interface SecurityViewController () <
+MXKDataSourceDelegate,
+MXKDeviceViewDelegate,
 SettingsKeyBackupTableViewSectionDelegate,
 MXKEncryptionInfoViewDelegate,
 KeyBackupSetupCoordinatorBridgePresenterDelegate,
 KeyBackupRecoverCoordinatorBridgePresenterDelegate,
-SignOutAlertPresenterDelegate,
-SingleImagePickerPresenterDelegate,
-SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinatorDelegate,
-SettingsIdentityServerCoordinatorBridgePresenterDelegate>
+UIDocumentInteractionControllerDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
 
-    // listener
-    id removedAccountObserver;
-    id accountUserInfoObserver;
-    id pushInfoUpdateObserver;
-    
-    id notificationCenterWillUpdateObserver;
-    id notificationCenterDidUpdateObserver;
-    id notificationCenterDidFailObserver;
-    
-    // profile updates
-    // avatar
-    UIImage* newAvatarImage;
-    // the avatar image has been uploaded
-    NSString* uploadedAvatarURL;
-    
-    // new display name
-    NSString* newDisplayName;
-    
-    // password update
-    UITextField* currentPasswordTextField;
-    UITextField* newPasswordTextField1;
-    UITextField* newPasswordTextField2;
-    UIAlertAction* savePasswordAction;
-
-    // New email address to bind
-    UITextField* newEmailTextField;
-    
-    // New phone number to bind
-    TableViewCellWithPhoneNumberTextField * newPhoneNumberCell;
-    CountryPickerViewController *newPhoneNumberCountryPicker;
-    NBPhoneNumber *newPhoneNumber;
-    
-    // Dynamic rows in the user settings section
-    NSInteger userSettingsProfilePictureIndex;
-    NSInteger userSettingsDisplayNameIndex;
-    NSInteger userSettingsFirstNameIndex;
-    NSInteger userSettingsSurnameIndex;
-    NSInteger userSettingsEmailStartIndex;  // The user can have several linked emails. Hence, the dynamic section items count
-    NSInteger userSettingsNewEmailIndex;    // This index also marks the end of the emails list
-    NSInteger userSettingsPhoneStartIndex;  // The user can have several linked phone numbers. Hence, the dynamic section items count
-    NSInteger userSettingsNewPhoneIndex;    // This index also marks the end of the phone numbers list
-    NSInteger userSettingsChangePasswordIndex;
-    NSInteger userSettingsThreePidsInformation;
-    NSInteger userSettingsNightModeSepIndex;
-    NSInteger userSettingsNightModeIndex;
-    
-    // Dynamic rows in the local contacts section
-    NSInteger localContactsSyncIndex;
-    NSInteger localContactsPhoneBookCountryIndex;
-    
     // Devices
     NSMutableArray<MXDevice *> *devicesArray;
     DeviceView *deviceView;
-    
-    // Flair: the groups data source
-    GroupsDataSource *groupsDataSource;
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
-    
-    // Postpone destroy operation when saving, pwd reset or email binding is in progress
-    BOOL isSavingInProgress;
-    BOOL isResetPwdInProgress;
-    BOOL is3PIDBindingInProgress;
-    blockSettingsViewController_onReadyToDestroy onReadyToDestroyHandler;
-    
-    //
-    UIAlertController *resetPwdAlertController;
 
     // The view used to export e2e keys
     MXKEncryptionKeysExportView *exportView;
@@ -163,37 +79,13 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     NSURL *keyExportsFile;
     NSTimer *keyExportsFileDeletionTimer;
     
-    BOOL keepNewEmailEditing;
-    BOOL keepNewPhoneNumberEditing;
-    
     // The current pushed view controller
     UIViewController *pushedViewController;
 
     SettingsKeyBackupTableViewSection *keyBackupSection;
     KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
     KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter;
-
-    SettingsIdentityServerCoordinatorBridgePresenter *identityServerSettingsCoordinatorBridgePresenter;
 }
-
-/**
- Flag indicating whether the user is typing an email to bind.
- */
-@property (nonatomic) BOOL newEmailEditingEnabled;
-
-/**
- Flag indicating whether the user is typing a phone number to bind.
- */
-@property (nonatomic) BOOL newPhoneEditingEnabled;
-
-@property (nonatomic, weak) DeactivateAccountViewController *deactivateAccountViewController;
-@property (nonatomic, strong) SignOutAlertPresenter *signOutAlertPresenter;
-@property (nonatomic, weak) UIButton *signOutButton;
-@property (nonatomic, strong) SingleImagePickerPresenter *imagePickerPresenter;
-
-@property (nonatomic, strong) SettingsDiscoveryViewModel *settingsDiscoveryViewModel;
-@property (nonatomic, strong) SettingsDiscoveryTableViewSection *settingsDiscoveryTableViewSection;
-@property (nonatomic, strong) SettingsDiscoveryThreePidDetailsCoordinatorBridgePresenter *discoveryThreePidDetailsPresenter;
 
 @end
 
@@ -208,18 +100,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     return viewController;
 }
 
-//- (void)destroy
-//{
-////    id<NSObject> notificationObserver = self.themeDidChangeNotificationObserver;
-////
-////    if (notificationObserver)
-////    {
-////        [[NSNotificationCenter defaultCenter] removeObserver:notificationObserver];
-////    }
-//
-//    [super destroy];
-//}
-
 
 #pragma mark - View life cycle
 
@@ -230,10 +110,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
-    
-    isSavingInProgress = NO;
-    isResetPwdInProgress = NO;
-    is3PIDBindingInProgress = NO;
 }
 
 - (void)viewDidLoad
@@ -245,12 +121,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     
     // Remove back bar button title when pushing a view controller
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    
-    [self.tableView registerClass:MXKTableViewCellWithLabelAndTextField.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndTextField defaultReuseIdentifier]];
+
     [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
-    [self.tableView registerClass:MXKTableViewCellWithLabelAndMXKImageView.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
-    [self.tableView registerClass:TableViewCellWithPhoneNumberTextField.class forCellReuseIdentifier:[TableViewCellWithPhoneNumberTextField defaultReuseIdentifier]];
-    [self.tableView registerClass:GroupTableViewCellWithSwitch.class forCellReuseIdentifier:[GroupTableViewCellWithSwitch defaultReuseIdentifier]];
     [self.tableView registerNib:MXKTableViewCellWithTextView.nib forCellReuseIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier]];
     
     // Enable self sizing cells
@@ -308,13 +180,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
 - (void)destroy
 {
-    if (groupsDataSource)
-    {
-        groupsDataSource.delegate = nil;
-        [groupsDataSource destroy];
-        groupsDataSource = nil;
-    }
-    
     // Release the potential pushed view controller
     [self releasePushedViewController];
     
@@ -331,30 +196,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
 
-    if (isSavingInProgress || isResetPwdInProgress || is3PIDBindingInProgress)
-    {
-        __weak typeof(self) weakSelf = self;
-        onReadyToDestroyHandler = ^() {
-            
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
-                [self destroy];
-            }
-            
-        };
-    }
-    else
-    {
-        // Dispose all resources
-        [self reset];
-        
-        [super destroy];
-    }
-
     keyBackupSetupCoordinatorBridgePresenter = nil;
     keyBackupRecoverCoordinatorBridgePresenter = nil;
-    identityServerSettingsCoordinatorBridgePresenter = nil;
 }
 
 - (void)onMatrixSessionStateDidChange:(NSNotification *)notif
@@ -379,34 +222,25 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"Settings"];
-    
+
     // Release the potential pushed view controller
     [self releasePushedViewController];
-    
+
     // Refresh display
     [self refreshSettings];
 
     // Refresh the current device information in parallel
     [self loadCurrentDeviceInformation];
-    
+
     // Refresh devices in parallel
     [self loadDevices];
-    
+
     // Observe kAppDelegateDidTapStatusBarNotificationObserver.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        [self.tableView setContentOffset:CGPointMake(-self.tableView.mxk_adjustedContentInset.left, -self.tableView.mxk_adjustedContentInset.top) animated:YES];
-        
-    }];
-    
-    newPhoneNumberCountryPicker = nil;
-}
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    [self.settingsDiscoveryTableViewSection reload];
+        [self.tableView setContentOffset:CGPointMake(-self.tableView.mxk_adjustedContentInset.left, -self.tableView.mxk_adjustedContentInset.top) animated:YES];
+
+    }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -418,31 +252,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         currentAlert = nil;
     }
-    
-    if (resetPwdAlertController)
-    {
-        [resetPwdAlertController dismissViewControllerAnimated:NO completion:nil];
-        resetPwdAlertController = nil;
-    }
 
-    if (notificationCenterWillUpdateObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:notificationCenterWillUpdateObserver];
-        notificationCenterWillUpdateObserver = nil;
-    }
-    
-    if (notificationCenterDidUpdateObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:notificationCenterDidUpdateObserver];
-        notificationCenterDidUpdateObserver = nil;
-    }
-    
-    if (notificationCenterDidFailObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:notificationCenterDidFailObserver];
-        notificationCenterDidFailObserver = nil;
-    }
-    
     if (kAppDelegateDidTapStatusBarNotificationObserver)
     {
         [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
@@ -456,10 +266,10 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 {
     // Keep ref on pushed view controller
     pushedViewController = viewController;
-    
+
     // Hide back button title
     self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    
+
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
@@ -482,45 +292,16 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         {
             [(id)pushedViewController destroy];
         }
-        
+
         pushedViewController = nil;
     }
-}
-
-- (void)dismissKeyboard
-{
-    [currentPasswordTextField resignFirstResponder];
-    [newPasswordTextField1 resignFirstResponder];
-    [newPasswordTextField2 resignFirstResponder];
-    [newEmailTextField resignFirstResponder];
-    [newPhoneNumberCell.mxkTextField resignFirstResponder];
 }
 
 - (void)reset
 {
     // Remove observers
-    if (removedAccountObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:removedAccountObserver];
-        removedAccountObserver = nil;
-    }
-    
-    if (accountUserInfoObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:accountUserInfoObserver];
-        accountUserInfoObserver = nil;
-    }
-    
-    if (pushInfoUpdateObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:pushInfoUpdateObserver];
-        pushInfoUpdateObserver = nil;
-    }
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    onReadyToDestroyHandler = nil;
-    
+
     if (deviceView)
     {
         [deviceView removeFromSuperview];
@@ -533,11 +314,11 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     // Refresh the current device information
     MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
     [account loadDeviceInformation:^{
-        
+
         // Refresh all the table (A slide down animation is observed when we limit the refresh to the concerned section).
         // Note: The use of 'reloadData' handles the case where the account has been logged out.
         [self refreshSettings];
-        
+
     } failure:nil];
 }
 
@@ -545,7 +326,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 {
     // TODO Handle multi accounts
     MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-    
+
     // Crypto information
     NSMutableAttributedString *cryptoInformationString = [[NSMutableAttributedString alloc]
                                                           initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_name", @"Vector", nil)
@@ -555,7 +336,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                                                      initWithString:account.device.displayName ? account.device.displayName : @""
                                                      attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
-    
+
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_id", @"Vector", nil)
                                                      attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
@@ -564,7 +345,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                                                      initWithString:account.device.deviceId ? account.device.deviceId : @""
                                                      attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
-    
+
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_key", @"Vector", nil)
                                                      attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
@@ -578,7 +359,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                                                      initWithString:fingerprint ? fingerprint : @""
                                                      attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                   NSFontAttributeName: [UIFont boldSystemFontOfSize:17]}]];
-    
+
     return cryptoInformationString;
 }
 
@@ -586,15 +367,18 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 {
     // Refresh the account devices list
     MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+
+    MXWeakify(self);
     [account.mxRestClient devices:^(NSArray<MXDevice *> *devices) {
-        
+        MXStrongifyAndReturnIfNil(self);
+
         if (devices)
         {
-            devicesArray = [NSMutableArray arrayWithArray:devices];
-            
+            self->devicesArray = [NSMutableArray arrayWithArray:devices];
+
             // Sort devices according to the last seen date.
             NSComparator comparator = ^NSComparisonResult(MXDevice *deviceA, MXDevice *deviceB) {
-                
+
                 if (deviceA.lastSeenTs > deviceB.lastSeenTs)
                 {
                     return NSOrderedAscending;
@@ -603,43 +387,41 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 {
                     return NSOrderedDescending;
                 }
-                
+
                 return NSOrderedSame;
             };
-            
+
             // Sort devices list
-            [devicesArray sortUsingComparator:comparator];
+            [self->devicesArray sortUsingComparator:comparator];
         }
         else
         {
-            devicesArray = nil;
+            self->devicesArray = nil;
 
         }
-        
+
         // Refresh all the table (A slide down animation is observed when we limit the refresh to the concerned section).
         // Note: The use of 'reloadData' handles the case where the account has been logged out.
         [self refreshSettings];
-        
+
     } failure:^(NSError *error) {
-        
+
         // Display the data that has been loaded last time
         // Note: The use of 'reloadData' handles the case where the account has been logged out.
         [self refreshSettings];
-        
+
     }];
 }
 
 - (void)showDeviceDetails:(MXDevice *)device
 {
-    [self dismissKeyboard];
-    
     deviceView = [[DeviceView alloc] initWithDevice:device andMatrixSession:self.mainSession];
     deviceView.delegate = self;
 
     // Add the view and define edge constraints
     [self.tableView.superview addSubview:deviceView];
     [self.tableView.superview bringSubviewToFront:deviceView];
-    
+
     NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:deviceView
                                                                      attribute:NSLayoutAttributeTop
                                                                      relatedBy:NSLayoutRelationEqual
@@ -647,7 +429,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                                                                      attribute:NSLayoutAttributeTop
                                                                     multiplier:1.0f
                                                                       constant:0.0f];
-    
+
     NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:deviceView
                                                                       attribute:NSLayoutAttributeLeft
                                                                       relatedBy:NSLayoutRelationEqual
@@ -655,7 +437,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                                                                       attribute:NSLayoutAttributeLeft
                                                                      multiplier:1.0f
                                                                        constant:0.0f];
-    
+
     NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:deviceView
                                                                        attribute:NSLayoutAttributeWidth
                                                                        relatedBy:NSLayoutRelationEqual
@@ -663,7 +445,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                                                                        attribute:NSLayoutAttributeWidth
                                                                       multiplier:1.0f
                                                                         constant:0.0f];
-    
+
     NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:deviceView
                                                                         attribute:NSLayoutAttributeHeight
                                                                         relatedBy:NSLayoutRelationEqual
@@ -671,14 +453,12 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                                                                         attribute:NSLayoutAttributeHeight
                                                                        multiplier:1.0f
                                                                          constant:0.0f];
-    
+
     [NSLayoutConstraint activateConstraints:@[topConstraint, leftConstraint, widthConstraint, heightConstraint]];
 }
 
 - (void)deviceView:(DeviceView*)theDeviceView presentAlertController:(UIAlertController *)alert
 {
-    [self dismissKeyboard];
-    
     [self presentViewController:alert animated:YES completion:nil];
 }
 
@@ -686,59 +466,17 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 {
     [deviceView removeFromSuperview];
     deviceView = nil;
-    
+
     if (isUpdated)
     {
         [self loadDevices];
     }
 }
 
-- (void)editNewEmailTextField
-{
-    if (newEmailTextField && ![newEmailTextField becomeFirstResponder])
-    {
-        // Retry asynchronously
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            [self editNewEmailTextField];
-            
-        });
-    }
-}
-
-- (void)editNewPhoneNumberTextField
-{
-    if (newPhoneNumberCell && ![newPhoneNumberCell.mxkTextField becomeFirstResponder])
-    {
-        // Retry asynchronously
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            [self editNewPhoneNumberTextField];
-            
-        });
-    }
-}
-
 - (void)refreshSettings
 {
-    // Check whether a text input is currently edited
-    keepNewEmailEditing = newEmailTextField ? newEmailTextField.isFirstResponder : NO;
-    keepNewPhoneNumberEditing = newPhoneNumberCell ? newPhoneNumberCell.mxkTextField.isFirstResponder : NO;
-    
     // Trigger a full table reloadData
     [self.tableView reloadData];
-    
-    // Restore the previous edited field
-    if (keepNewEmailEditing)
-    {
-        [self editNewEmailTextField];
-        keepNewEmailEditing = NO;
-    }
-    else if (keepNewPhoneNumberEditing)
-    {
-        [self editNewPhoneNumberTextField];
-        keepNewPhoneNumberEditing = NO;
-    }
 }
 
 - (void)requestAccountPasswordWithTitle:(NSString*)title message:(NSString*)message onComplete:(void (^)(NSString *password))onComplete
@@ -785,7 +523,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 {
     // Keep ref on destinationViewController
     [super prepareForSegue:segue sender:sender];
-    
+
     // FIXME add night mode
 }
 
@@ -799,7 +537,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSInteger count = 0;
-    
+
     if (section == SETTINGS_SECTION_DEVICES_INDEX)
     {
         count = devicesArray.count;
@@ -829,48 +567,20 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     return count;
 }
 
-- (MXKTableViewCellWithLabelAndTextField*)getLabelAndTextFieldCell:(UITableView*)tableview forIndexPath:(NSIndexPath *)indexPath
-{
-    MXKTableViewCellWithLabelAndTextField *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndTextField defaultReuseIdentifier] forIndexPath:indexPath];
-    
-    cell.mxkLabelLeadingConstraint.constant = cell.separatorInset.left;
-    cell.mxkTextFieldLeadingConstraint.constant = 16;
-    cell.mxkTextFieldTrailingConstraint.constant = 15;
-    
-    cell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
-    
-    cell.mxkTextField.userInteractionEnabled = YES;
-    cell.mxkTextField.borderStyle = UITextBorderStyleNone;
-    cell.mxkTextField.textAlignment = NSTextAlignmentRight;
-    cell.mxkTextField.textColor = ThemeService.shared.theme.textSecondaryColor;
-    cell.mxkTextField.font = [UIFont systemFontOfSize:16];
-    cell.mxkTextField.placeholder = nil;
-    
-    cell.accessoryType = UITableViewCellAccessoryNone;
-    cell.accessoryView = nil;
-    
-    cell.alpha = 1.0f;
-    cell.userInteractionEnabled = YES;
-    
-    [cell layoutIfNeeded];
-    
-    return cell;
-}
-
 - (MXKTableViewCellWithLabelAndSwitch*)getLabelAndSwitchCell:(UITableView*)tableview forIndexPath:(NSIndexPath *)indexPath
 {
     MXKTableViewCellWithLabelAndSwitch *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier] forIndexPath:indexPath];
-    
+
     cell.mxkLabelLeadingConstraint.constant = cell.separatorInset.left;
     cell.mxkSwitchTrailingConstraint.constant = 15;
-    
+
     cell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
-    
+
     [cell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-    
+
     // Force layout before reusing a cell (fix switch displayed outside the screen)
     [cell layoutIfNeeded];
-    
+
     return cell;
 }
 
@@ -884,7 +594,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     else
     {
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-        
+
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.accessoryView = nil;
     }
@@ -892,21 +602,21 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     cell.textLabel.font = [UIFont systemFontOfSize:17];
     cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     cell.contentView.backgroundColor = UIColor.clearColor;
-    
+
     return cell;
 }
 
 - (MXKTableViewCellWithTextView*)textViewCellForTableView:(UITableView*)tableView atIndexPath:(NSIndexPath *)indexPath
 {
     MXKTableViewCellWithTextView *textViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier] forIndexPath:indexPath];
-    
+
     textViewCell.mxkTextView.textColor = ThemeService.shared.theme.textPrimaryColor;
     textViewCell.mxkTextView.font = [UIFont systemFontOfSize:17];
     textViewCell.mxkTextView.backgroundColor = [UIColor clearColor];
     textViewCell.mxkTextViewLeadingConstraint.constant = tableView.separatorInset.left;
     textViewCell.mxkTextViewTrailingConstraint.constant = tableView.separatorInset.right;
     textViewCell.mxkTextView.accessibilityIdentifier = nil;
-    
+
     return textViewCell;
 }
 
@@ -918,17 +628,15 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     // set the cell to a default value to avoid application crashes
     UITableViewCell *cell = [[UITableViewCell alloc] init];
     cell.backgroundColor = [UIColor redColor];
-    
+
     // check if there is a valid session
     if (([AppDelegate theDelegate].mxSessions.count == 0) || ([MXKAccountManager sharedManager].activeAccounts.count == 0))
     {
         // else use a default cell
         return cell;
     }
-    
-    MXSession* session = [AppDelegate theDelegate].mxSessions[0];
-    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
 
+    MXSession* session = self.mainSession;
     if (section == SETTINGS_SECTION_DEVICES_INDEX)
     {
         if (row == DEVICES_DESCRIPTION_INDEX)
@@ -970,7 +678,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         if (row == CRYPTOGRAPHY_INFO_INDEX)
         {
             MXKTableViewCellWithTextView *cryptoCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
-            
+
             cryptoCell.mxkTextView.attributedText = [self cryptographyInformation];
 
             cell = cryptoCell;
@@ -980,7 +688,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_crypto_blacklist_unverified_devices", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = account.mxSession.crypto.globalBlacklistUnverifiedDevices;
+            labelAndSwitchCell.mxkSwitch.on = session.crypto.globalBlacklistUnverifiedDevices;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleBlacklistUnverifiedDevices:) forControlEvents:UIControlEventTouchUpInside];
@@ -1047,7 +755,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             return NSLocalizedStringFromTable(@"settings_key_backup", @"Vector", nil);
         }
     }
-    
+
     return nil;
 }
 
@@ -1068,9 +776,9 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
     cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
-    
+
     if (cell.selectionStyle != UITableViewCellSelectionStyleNone)
-    {        
+    {
         // Update the selected background view
         if (ThemeService.shared.theme.selectedBackgroundColor)
         {
@@ -1119,9 +827,22 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 }
             }
         }
-        
+
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
+}
+
+#pragma mark - UIDocumentInteractionControllerDelegate
+
+- (void)documentInteractionController:(UIDocumentInteractionController *)controller didEndSendingToApplication:(NSString *)application
+{
+    // If iOS wants to call this method, this is the right time to remove the file
+    [self deleteKeyExportFile];
+}
+
+- (void)documentInteractionControllerDidDismissOptionsMenu:(UIDocumentInteractionController *)controller
+{
+    documentInteractionController = nil;
 }
 
 #pragma mark - actions
@@ -1140,34 +861,31 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     [self deleteKeyExportFile];
 
     // Show the export dialog
-    __weak typeof(self) weakSelf = self;
+    MXWeakify(self);
     [exportView showInViewController:self toExportKeysToFile:keyExportsFile onComplete:^(BOOL success) {
+        MXStrongifyAndReturnIfNil(self);
 
-        if (weakSelf)
+        self->currentAlert = nil;
+        self->exportView = nil;
+
+        if (success)
         {
-             typeof(self) self = weakSelf;
-            self->currentAlert = nil;
-            self->exportView = nil;
+            // Let another app handling this file
+            self->documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:self->keyExportsFile];
+            [self->documentInteractionController setDelegate:self];
 
-            if (success)
+            if ([self->documentInteractionController presentOptionsMenuFromRect:self.view.bounds inView:self.view animated:YES])
             {
-                // Let another app handling this file
-                self->documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:keyExportsFile];
-                [self->documentInteractionController setDelegate:self];
-
-                if ([self->documentInteractionController presentOptionsMenuFromRect:self.view.bounds inView:self.view animated:YES])
-                {
-                    // We want to delete the temp keys file after it has been processed by the other app.
-                    // We use [UIDocumentInteractionControllerDelegate didEndSendingToApplication] for that
-                    // but it is not reliable for all cases (see http://stackoverflow.com/a/21867096).
-                    // So, arm a timer to auto delete the file after 10mins.
-                    keyExportsFileDeletionTimer = [NSTimer scheduledTimerWithTimeInterval:600 target:self selector:@selector(deleteKeyExportFile) userInfo:self repeats:NO];
-                }
-                else
-                {
-                    self->documentInteractionController = nil;
-                    [self deleteKeyExportFile];
-                }
+                // We want to delete the temp keys file after it has been processed by the other app.
+                // We use [UIDocumentInteractionControllerDelegate didEndSendingToApplication] for that
+                // but it is not reliable for all cases (see http://stackoverflow.com/a/21867096).
+                // So, arm a timer to auto delete the file after 10mins.
+                self->keyExportsFileDeletionTimer = [NSTimer scheduledTimerWithTimeInterval:600 target:self selector:@selector(deleteKeyExportFile) userInfo:self repeats:NO];
+            }
+            else
+            {
+                self->documentInteractionController = nil;
+                [self deleteKeyExportFile];
             }
         }
     }];
@@ -1189,20 +907,17 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }
 }
 
+- (void)toggleBlacklistUnverifiedDevices:(id)sender
+{
+    UISwitch *switchButton = (UISwitch*)sender;
+
+    self.mainSession.crypto.globalBlacklistUnverifiedDevices = switchButton.on;
+
+    [self.tableView reloadData];
+}
 
 
 #pragma mark - MXKDataSourceDelegate
-
-- (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
-{
-    // Return the class used to display a group with a toogle button
-    return GroupTableViewCellWithSwitch.class;
-}
-
-- (NSString *)cellReuseIdentifierForCellData:(MXKCellData*)cellData
-{
-    return GroupTableViewCellWithSwitch.defaultReuseIdentifier;
-}
 
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
 {
@@ -1305,11 +1020,11 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 - (void)showKeyBackupSetupFromSignOutFlow:(BOOL)showFromSignOutFlow
 {
     keyBackupSetupCoordinatorBridgePresenter = [[KeyBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
-    
+
     [keyBackupSetupCoordinatorBridgePresenter presentFrom:self
                                      isStartedFromSignOut:showFromSignOutFlow
                                                  animated:true];
-    
+
     keyBackupSetupCoordinatorBridgePresenter.delegate = self;
 }
 
