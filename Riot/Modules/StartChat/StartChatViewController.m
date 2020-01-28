@@ -573,35 +573,34 @@
             MXRoomPreset preset = (isDirect ? kMXRoomPresetTrustedPrivateChat : nil);
             
             // Create new room
-            roomCreationRequest = [self.mainSession createRoom:nil
-                                                    visibility:kMXRoomDirectoryVisibilityPrivate
-                                                     roomAlias:nil
-                                                         topic:nil
-                                                        invite:(inviteArray.count ? inviteArray : nil)
-                                                    invite3PID:(invite3PIDArray.count ? invite3PIDArray : nil)
-                                                      isDirect:isDirect
-                                                        preset:preset
-                                                       success:^(MXRoom *room) {
-                                                           
-                                                           roomCreationRequest = nil;
-                                                           
-                                                           [self stopActivityIndicator];
-                                                           
-                                                           [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession];
-                                                           
-                                                       } failure:^(NSError *error) {
-                                                           
-                                                           createBarButtonItem.enabled = YES;
-                                                           
-                                                           roomCreationRequest = nil;
-                                                           [self stopActivityIndicator];
-                                                           
-                                                           NSLog(@"[StartChatViewController] Create room failed");
-                                                           
-                                                           // Alert user
-                                                           [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                           
-                                                       }];
+            MXRoomCreationParameters *roomCreationParameters = [MXRoomCreationParameters new];
+            roomCreationParameters.visibility = kMXRoomDirectoryVisibilityPrivate;
+            roomCreationParameters.inviteArray = inviteArray.count ? inviteArray : nil;
+            roomCreationParameters.invite3PIDArray = invite3PIDArray.count ? invite3PIDArray : nil;
+            roomCreationParameters.isDirect = isDirect;
+            roomCreationParameters.preset = preset;
+
+            roomCreationRequest = [self.mainSession createRoomWithParameters:roomCreationParameters success:^(MXRoom *room) {
+
+                roomCreationRequest = nil;
+
+                [self stopActivityIndicator];
+
+                [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession];
+
+            } failure:^(NSError *error) {
+
+                createBarButtonItem.enabled = YES;
+
+                roomCreationRequest = nil;
+                [self stopActivityIndicator];
+
+                NSLog(@"[StartChatViewController] Create room failed");
+
+                // Alert user
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+
+            }];
         }
     }
     else if (sender == self.navigationItem.leftBarButtonItem)

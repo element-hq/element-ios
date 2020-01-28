@@ -1042,35 +1042,31 @@
                     }
                     
                     // Create a new room
-                    roomCreationRequest = [self.mainSession createRoom:nil
-                                                            visibility:kMXRoomDirectoryVisibilityPrivate
-                                                             roomAlias:nil
-                                                                 topic:nil
-                                                                invite:inviteArray
-                                                            invite3PID:invite3PIDArray
-                                                              isDirect:YES
-                                                                preset:kMXRoomPresetTrustedPrivateChat
-                                                               success:^(MXRoom *room) {
-                                                                   
-                                                                   roomCreationRequest = nil;
-                                                                   
-                                                                   [self removePendingActionMask];
-                                                                   
-                                                                   [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession];
-                                                                   
-                                                               }
-                                                               failure:^(NSError *error) {
-                                                                   
-                                                                   NSLog(@"[ContactDetailsViewController] Create room failed");
-                                                                   
-                                                                   roomCreationRequest = nil;
-                                                                   
-                                                                   [self removePendingActionMask];
-                                                                   
-                                                                   // Notify user
-                                                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                   
-                                                               }];
+                    MXRoomCreationParameters *roomCreationParameters = [MXRoomCreationParameters new];
+                    roomCreationParameters.visibility = kMXRoomDirectoryVisibilityPrivate;
+                    roomCreationParameters.inviteArray = inviteArray;
+                    roomCreationParameters.invite3PIDArray = invite3PIDArray;
+                    roomCreationParameters.isDirect = YES;
+                    roomCreationParameters.preset = kMXRoomPresetTrustedPrivateChat;
+                    roomCreationRequest = [self.mainSession createRoomWithParameters:roomCreationParameters success:^(MXRoom *room) {
+
+                        roomCreationRequest = nil;
+
+                        [self removePendingActionMask];
+
+                        [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession];
+
+                    } failure:^(NSError *error) {
+
+                        NSLog(@"[ContactDetailsViewController] Create room failed");
+
+                        roomCreationRequest = nil;
+
+                        [self removePendingActionMask];
+
+                        // Notify user
+                        [[AppDelegate theDelegate] showErrorAsAlert:error];
+                    }];
                 }
                 break;
             }
@@ -1093,36 +1089,28 @@
                 else
                 {
                     // Create a new room
-                    roomCreationRequest = [self.mainSession createRoom:nil
-                                                            visibility:kMXRoomDirectoryVisibilityPrivate
-                                                             roomAlias:nil
-                                                                 topic:nil
-                                                                invite:@[matrixId]
-                                                            invite3PID:nil
-                                                              isDirect:YES
-                                                                preset:kMXRoomPresetTrustedPrivateChat
-                                                               success:^(MXRoom *room) {
-                                                                   
-                                                                   roomCreationRequest = nil;
-                                                                   
-                                                                   // Delay the call in order to be sure that the room is ready
-                                                                   dispatch_async(dispatch_get_main_queue(), ^{
-                                                                       [room placeCallWithVideo:isVideoCall success:nil failure:nil];
-                                                                       [self removePendingActionMask];
-                                                                   });
-                                                                   
-                                                               } failure:^(NSError *error) {
-                                                                   
-                                                                   NSLog(@"[ContactDetailsViewController] Create room failed");
-                                                                   
-                                                                   roomCreationRequest = nil;
-                                                                   
-                                                                   [self removePendingActionMask];
-                                                                   
-                                                                   // Notify user
-                                                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                   
-                                                               }];
+                    MXRoomCreationParameters *roomCreationParameters = [MXRoomCreationParameters parametersForDirectRoomWithUser:matrixId];
+                    roomCreationRequest = [self.mainSession createRoomWithParameters:roomCreationParameters success:^(MXRoom *room) {
+
+                        roomCreationRequest = nil;
+
+                        // Delay the call in order to be sure that the room is ready
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [room placeCallWithVideo:isVideoCall success:nil failure:nil];
+                            [self removePendingActionMask];
+                        });
+
+                    } failure:^(NSError *error) {
+
+                        NSLog(@"[ContactDetailsViewController] Create room failed");
+
+                        roomCreationRequest = nil;
+
+                        [self removePendingActionMask];
+
+                        // Notify user
+                        [[AppDelegate theDelegate] showErrorAsAlert:error];
+                    }];
                 }
                 break;
             }

@@ -3840,38 +3840,34 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         {
             // Create a new room by inviting the other user only if it is defined and not oneself
             NSArray *invite = ((userId && ![mxSession.myUser.userId isEqualToString:userId]) ? @[userId] : nil);
-            
-            [mxSession createRoom:nil
-                       visibility:kMXRoomDirectoryVisibilityPrivate
-                        roomAlias:nil
-                            topic:nil
-                           invite:invite
-                       invite3PID:nil
-                         isDirect:(invite.count != 0)
-                           preset:kMXRoomPresetTrustedPrivateChat
-                          success:^(MXRoom *room) {
-                              
-                              // Open created room
-                              [self showRoom:room.roomId andEventId:nil withMatrixSession:mxSession];
-                              
-                              if (completion)
-                              {
-                                  completion();
-                              }
-                              
-                          }
-                          failure:^(NSError *error) {
-                              
-                              NSLog(@"[AppDelegate] Create direct chat failed");
-                              //Alert user
-                              [self showErrorAsAlert:error];
-                              
-                              if (completion)
-                              {
-                                  completion();
-                              }
-                              
-                          }];
+
+            MXRoomCreationParameters *roomCreationParameters = [MXRoomCreationParameters new];
+            roomCreationParameters.visibility = kMXRoomDirectoryVisibilityPrivate;
+            roomCreationParameters.inviteArray = invite;
+            roomCreationParameters.isDirect = (invite.count != 0);
+            roomCreationParameters.preset = kMXRoomPresetTrustedPrivateChat;
+
+            [mxSession createRoomWithParameters:roomCreationParameters success:^(MXRoom *room) {
+
+                // Open created room
+                [self showRoom:room.roomId andEventId:nil withMatrixSession:mxSession];
+
+                if (completion)
+                {
+                    completion();
+                }
+
+            } failure:^(NSError *error) {
+
+                NSLog(@"[AppDelegate] Create direct chat failed");
+                //Alert user
+                [self showErrorAsAlert:error];
+
+                if (completion)
+                {
+                    completion();
+                }
+            }];
         }
         else if (completion)
         {
