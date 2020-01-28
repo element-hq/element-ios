@@ -3841,24 +3841,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             // Create a new room by inviting the other user only if it is defined and not oneself
             NSArray *invite = ((userId && ![mxSession.myUser.userId isEqualToString:userId]) ? @[userId] : nil);
 
-            MXRoomCreationParameters *roomCreationParameters = [MXRoomCreationParameters new];
-            roomCreationParameters.visibility = kMXRoomDirectoryVisibilityPrivate;
-            roomCreationParameters.inviteArray = invite;
-            roomCreationParameters.isDirect = (invite.count != 0);
-            roomCreationParameters.preset = kMXRoomPresetTrustedPrivateChat;
-
-            [mxSession createRoomWithParameters:roomCreationParameters success:^(MXRoom *room) {
-
-                // Open created room
-                [self showRoom:room.roomId andEventId:nil withMatrixSession:mxSession];
-
-                if (completion)
-                {
-                    completion();
-                }
-
-            } failure:^(NSError *error) {
-
+            void (^onFailure)(NSError *) = ^(NSError *error){
                 NSLog(@"[AppDelegate] Create direct chat failed");
                 //Alert user
                 [self showErrorAsAlert:error];
@@ -3867,7 +3850,36 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                 {
                     completion();
                 }
-            }];
+            };
+
+            [mxSession canEnableE2EByDefaultInNewRoomWithUsers:invite success:^(BOOL canEnableE2E) {
+                
+                MXRoomCreationParameters *roomCreationParameters = [MXRoomCreationParameters new];
+                roomCreationParameters.visibility = kMXRoomDirectoryVisibilityPrivate;
+                roomCreationParameters.inviteArray = invite;
+                roomCreationParameters.isDirect = (invite.count != 0);
+                roomCreationParameters.preset = kMXRoomPresetTrustedPrivateChat;
+
+                if (canEnableE2E)
+                {
+                    roomCreationParameters.initialStateEvents = @[
+                                                                  [MXRoomCreationParameters initialStateEventForEncryptionWithAlgorithm:kMXCryptoMegolmAlgorithm
+                                                                  ]];
+                }
+
+                [mxSession createRoomWithParameters:roomCreationParameters success:^(MXRoom *room) {
+
+                    // Open created room
+                    [self showRoom:room.roomId andEventId:nil withMatrixSession:mxSession];
+
+                    if (completion)
+                    {
+                        completion();
+                    }
+
+                } failure:onFailure];
+
+            } failure:onFailure];
         }
         else if (completion)
         {
