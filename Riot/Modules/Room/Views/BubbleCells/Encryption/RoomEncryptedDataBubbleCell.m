@@ -37,10 +37,9 @@ NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon = @"kRoomEncrypt
     if (!event.isEncrypted)
     {
         if (event.isLocalEvent
+            || event.isState
             || event.contentHasBeenEdited)    // Local echo for an edit is clear but uses a true event id, the one of the edited event
         {
-            // Patch: Display the verified icon by default on pending outgoing messages in the encrypted rooms when the encryption is enabled
-            // The outgoing message are encrypted by default
             encryptionIconName = nil;
         }
         else
