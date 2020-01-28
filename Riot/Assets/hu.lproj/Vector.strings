@@ -959,3 +959,4 @@
 "key_verification_tile_conclusion_done_title" = "Hitelesített";
 "key_verification_tile_conclusion_warning_title" = "Megbízhatatlan belépés";
 "key_verification_incoming_request_incoming_alert_message" = "%@ ellenőrizni szeretné";
+"settings_labs_enable_cross_signing" = "Kereszt-aláírás engedélyezése a felhasználó alapú azonosításhoz az eszköz alapú helyett (fejlesztés alatt)";
