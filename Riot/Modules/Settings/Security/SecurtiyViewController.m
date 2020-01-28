@@ -1,7 +1,5 @@
 /*
- Copyright 2015 OpenMarket Ltd
- Copyright 2017 Vector Creations Ltd
- Copyright 2018 New Vector Ltd
+ Copyright 2019 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,7 +14,7 @@
  limitations under the License.
  */
 
-#import "SettingsViewController.h"
+#import "SecurityViewController.h"
 
 #import <MatrixKit/MatrixKit.h>
 
@@ -32,7 +30,6 @@
 #import "CountryPickerViewController.h"
 #import "LanguagePickerViewController.h"
 #import "DeactivateAccountViewController.h"
-#import "SecurityViewController.h"
 
 #import "NBPhoneNumberUtil.h"
 #import "RageShakeManager.h"
@@ -46,13 +43,12 @@
 
 #import "Riot-Swift.h"
 
-NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewControllerPhoneBookCountryCellId";
+NSString* const kSettingsViewControllerPhoneBookCountryCellId2 = @"kSettingsViewControllerPhoneBookCountryCellId2";
 
 enum
 {
     SETTINGS_SECTION_SIGN_OUT_INDEX = 0,
     SETTINGS_SECTION_USER_SETTINGS_INDEX,
-    SETTINGS_SECTION_SECURITY_INDEX,
     SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX,
     SETTINGS_SECTION_CALLS_INDEX,
     SETTINGS_SECTION_DISCOVERY_INDEX,
@@ -154,18 +150,12 @@ enum
     DEVICES_DESCRIPTION_INDEX = 0
 };
 
-enum
-{
-    SECURITY_BUTTON_INDEX = 0,
-    SECURITY_COUNT
-};
-
 #define SECTION_TITLE_PADDING_WHEN_HIDDEN 0.01f
 
 typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 
-@interface SettingsViewController () <DeactivateAccountViewControllerDelegate,
+@interface SecurityViewController () <DeactivateAccountViewControllerDelegate,
 SettingsKeyBackupTableViewSectionDelegate,
 MXKEncryptionInfoViewDelegate,
 KeyBackupSetupCoordinatorBridgePresenterDelegate,
@@ -292,7 +282,31 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
 @end
 
-@implementation SettingsViewController
+@implementation SecurityViewController
+
+#pragma mark - Setup & Teardown
+
++ (SecurityViewController*)instantiateWithMatrixSession:(MXSession*)matrixSession
+{
+    SecurityViewController* viewController = [[UIStoryboard storyboardWithName:@"Security" bundle:[NSBundle mainBundle]] instantiateInitialViewController];
+    [viewController addMatrixSession:matrixSession];
+    return viewController;
+}
+
+//- (void)destroy
+//{
+////    id<NSObject> notificationObserver = self.themeDidChangeNotificationObserver;
+////
+////    if (notificationObserver)
+////    {
+////        [[NSNotificationCenter defaultCenter] removeObserver:notificationObserver];
+////    }
+//
+//    [super destroy];
+//}
+
+
+#pragma mark - View life cycle
 
 - (void)finalizeInit
 {
@@ -1491,11 +1505,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     {
         count = 1;
     }
-    else if (section == SETTINGS_SECTION_SECURITY_INDEX)
-    {
-        count = SECURITY_COUNT;
-    }
-
     return count;
 }
 
@@ -2124,10 +2133,10 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     {
         if (row == USER_INTERFACE_LANGUAGE_INDEX)
         {
-            cell = [tableView dequeueReusableCellWithIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
+            cell = [tableView dequeueReusableCellWithIdentifier:kSettingsViewControllerPhoneBookCountryCellId2];
             if (!cell)
             {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSettingsViewControllerPhoneBookCountryCellId2];
             }
 
             NSString *language = [NSBundle mxk_language];
@@ -2151,10 +2160,10 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         }
         else if (row == USER_INTERFACE_THEME_INDEX)
         {
-            cell = [tableView dequeueReusableCellWithIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
+            cell = [tableView dequeueReusableCellWithIdentifier:kSettingsViewControllerPhoneBookCountryCellId2];
             if (!cell)
             {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSettingsViewControllerPhoneBookCountryCellId2];
             }
 
             NSString *theme = RiotSettings.shared.userInterfaceTheme;
@@ -2217,10 +2226,10 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         }
         else if (row == localContactsPhoneBookCountryIndex)
         {
-            cell = [tableView dequeueReusableCellWithIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
+            cell = [tableView dequeueReusableCellWithIdentifier:kSettingsViewControllerPhoneBookCountryCellId2];
             if (!cell)
             {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSettingsViewControllerPhoneBookCountryCellId2];
             }
             
             NSString* countryCode = [[MXKAppSettings standardAppSettings] phonebookCountryCode];
@@ -2568,17 +2577,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     {
         cell = [keyBackupSection cellForRowAtRow:row];
     }
-    else if (section == SETTINGS_SECTION_SECURITY_INDEX)
-    {
-        switch (row)
-        {
-            case SECURITY_BUTTON_INDEX:
-                cell = [self getDefaultTableViewCell:tableView];
-                cell.textLabel.text = NSLocalizedStringFromTable(@"Security", @"Vector", nil);
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                break;
-        }
-    }
     else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
     {
         MXKTableViewCellWithButton *deactivateAccountBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
@@ -2699,15 +2697,11 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             return NSLocalizedStringFromTable(@"settings_key_backup", @"Vector", nil);
         }
     }
-    else if (section == SETTINGS_SECTION_SECURITY_INDEX)
-    {
-        return NSLocalizedStringFromTable(@"SECURITY", @"Vector", nil);
-    }
     else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
     {
         return NSLocalizedStringFromTable(@"settings_deactivate_my_account", @"Vector", nil);
     }
-
+    
     return nil;
 }
 
@@ -3047,19 +3041,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 countryPicker.delegate = self;
                 countryPicker.showCountryCallingCode = YES;
                 [self pushViewController:countryPicker];
-            }
-        }
-        else if (section == SETTINGS_SECTION_SECURITY_INDEX)
-        {
-            switch (row)
-            {
-                case SECURITY_BUTTON_INDEX:
-                {
-                    SecurityViewController *securityViewController = [SecurityViewController instantiateWithMatrixSession:self.mainSession];
-
-                    [self pushViewController:securityViewController];
-                    break;
-                }
             }
         }
         
