@@ -44,6 +44,13 @@ enum {
     ADVANCED_COUNT
 };
 
+enum {
+    DEBUG_CRYPTO_INFO,
+    DEBUG_CROSSSIGNING_INFO,
+    DEBUG_CROSSSIGNING_BOOTSTRAP,
+    DEBUG_COUNT
+};
+
 
 @interface SecurityViewController () <
 MXKDataSourceDelegate,
@@ -359,6 +366,42 @@ UIDocumentInteractionControllerDelegate>
     return cryptoInformationString;
 }
 
+- (NSAttributedString*)crossSigningStatus
+{
+    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+    MXCrossSigning *crossSigning = account.mxSession.crypto.crossSigning;
+    MXCrossSigningInfo *myUserCrossSigningKeys = crossSigning.myUserCrossSigningKeys;
+
+    // Crypto information
+    NSMutableAttributedString *cryptoInformationString = [NSMutableAttributedString new];
+
+    [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
+                                                     initWithString:@"Cross-Signing\n"
+                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
+                                                                  NSFontAttributeName: [UIFont boldSystemFontOfSize:17]}]];
+
+
+    NSString *crossSigningEnabled = [NSString stringWithFormat:@"Cross-signing is %@.\n",
+                                     crossSigning.isBootstrapped ? @"enabled" :
+                                     myUserCrossSigningKeys ? @"enabled in read-only" : @"disabled"];
+
+    [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
+                                                     initWithString:crossSigningEnabled
+                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
+                                                                  NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
+
+
+    NSString *crossSigningKeysTrust = [NSString stringWithFormat:@"Keys are %@.\n",
+                                       myUserCrossSigningKeys.trustLevel.isVerified ? @"trusted" : @"not trusted"];
+
+    [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
+                                                     initWithString:crossSigningKeysTrust
+                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
+                                                                  NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
+
+    return cryptoInformationString;
+}
+
 - (void)loadDevices
 {
     // Refresh the account devices list
@@ -544,7 +587,7 @@ UIDocumentInteractionControllerDelegate>
             count = ADVANCED_COUNT;
             break;
         case SECTION_DEBUG:
-            count = 1;
+            count = DEBUG_COUNT;
             break;
     }
 
@@ -705,8 +748,8 @@ UIDocumentInteractionControllerDelegate>
                 }
                 else
                 {
-                    // Fix https://github.com/vector-im/riot-ios/issues/1354
                     exportKeysBtnCell.mxkButton.titleLabel.text = nil;
+                    exportKeysBtnCell.mxkButton.enabled = YES;
                 }
 
                 NSString *btnTitle = NSLocalizedStringFromTable(@"security_settings_export_keys_manually", @"Vector", nil);
@@ -730,9 +773,47 @@ UIDocumentInteractionControllerDelegate>
     }
     else if (section == SECTION_DEBUG)
     {
-        MXKTableViewCellWithTextView *cryptoCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
-        cryptoCell.mxkTextView.attributedText = [self cryptographyInformation];
-        cell = cryptoCell;
+        switch (row)
+        {
+            case DEBUG_CRYPTO_INFO:
+            {
+                MXKTableViewCellWithTextView *cryptoCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
+                cryptoCell.mxkTextView.attributedText = [self cryptographyInformation];
+                cell = cryptoCell;
+                break;
+            }
+            case DEBUG_CROSSSIGNING_INFO:
+            {
+                MXKTableViewCellWithTextView *cryptoCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
+                cryptoCell.mxkTextView.attributedText = [self crossSigningStatus];
+                cell = cryptoCell;
+                break;
+            }
+            case DEBUG_CROSSSIGNING_BOOTSTRAP:
+            {
+                MXKTableViewCellWithButton *exportKeysBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
+                if (!exportKeysBtnCell)
+                {
+                    exportKeysBtnCell = [[MXKTableViewCellWithButton alloc] init];
+                }
+
+                NSString *btnTitle = @"Bootstrap cross-signing";
+                [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
+                [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
+                [exportKeysBtnCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
+                exportKeysBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
+
+                [exportKeysBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+                //[exportKeysBtnCell.mxkButton addTarget:self action:@selector(bootstrapCrossSigning:) forControlEvents:UIControlEventTouchUpInside];
+                exportKeysBtnCell.mxkButton.accessibilityIdentifier = nil;
+
+                MXCrossSigning *crossSigning = self.mainSession.crypto.crossSigning;
+                exportKeysBtnCell.mxkButton.enabled = NO; //!crossSigning.myUserCrossSigningKeys;
+
+                cell = exportKeysBtnCell;
+                break;
+            }
+        }
     }
 
     return cell;
@@ -947,6 +1028,7 @@ UIDocumentInteractionControllerDelegate>
     {
         // Fix https://github.com/vector-im/riot-ios/issues/1354
         cell.mxkButton.titleLabel.text = nil;
+        cell.mxkButton.enabled = YES;
     }
 
     cell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
