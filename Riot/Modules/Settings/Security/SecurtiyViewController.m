@@ -30,22 +30,18 @@
 
 enum
 {
-    SETTINGS_SECTION_DEVICES_INDEX,
-    SETTINGS_SECTION_CRYPTOGRAPHY_INDEX,
-    SETTINGS_SECTION_KEYBACKUP_INDEX,
-    SETTINGS_SECTION_COUNT
+    SECTION_SESSIONS,
+    SECTION_KEYBACKUP,
+    SECTION_ADVANCED,
+    SECTION_DEBUG,      // TODO: To remove
+    SECTION_COUNT
 };
 
 enum {
-    CRYPTOGRAPHY_INFO_INDEX = 0,
-    CRYPTOGRAPHY_BLACKLIST_UNVERIFIED_DEVICES_INDEX,
-    CRYPTOGRAPHY_EXPORT_INDEX,
-    CRYPTOGRAPHY_COUNT
-};
-
-enum
-{
-    DEVICES_DESCRIPTION_INDEX = 0
+    ADVANCED_BLACKLIST_UNVERIFIED_DEVICES,
+    ADVANCED_BLACKLIST_UNVERIFIED_DEVICES_DESCRIPTION,
+    ADVANCED_EXPORT,    // TODO: To move to SECTION_KEYBACKUP
+    ADVANCED_COUNT
 };
 
 
@@ -117,7 +113,7 @@ UIDocumentInteractionControllerDelegate>
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    self.navigationItem.title = NSLocalizedStringFromTable(@"security_title", @"Vector", nil);
+    self.navigationItem.title = NSLocalizedStringFromTable(@"security_settings_title", @"Vector", nil);
     
     // Remove back bar button title when pushing a view controller
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -529,37 +525,27 @@ UIDocumentInteractionControllerDelegate>
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return SETTINGS_SECTION_COUNT;
+    return SECTION_COUNT;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSInteger count = 0;
 
-    if (section == SETTINGS_SECTION_DEVICES_INDEX)
+    switch (section)
     {
-        count = devicesArray.count;
-        if (count)
-        {
-            // For some description (DEVICES_DESCRIPTION_INDEX)
-            count++;
-        }
-    }
-    else if (section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
-    {
-        // Check whether this section is visible.
-        if (self.mainSession.crypto)
-        {
-            count = CRYPTOGRAPHY_COUNT;
-        }
-    }
-    else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
-    {
-        // Check whether this section is visible.
-        if (self.mainSession.crypto)
-        {
+        case SECTION_SESSIONS:
+            count = devicesArray.count + 1;
+            break;
+        case SECTION_KEYBACKUP:
             count = keyBackupSection.numberOfRows;
-        }
+            break;
+        case SECTION_ADVANCED:
+            count = ADVANCED_COUNT;
+            break;
+        case SECTION_DEBUG:
+            count = 1;
+            break;
     }
 
     return count;
@@ -604,6 +590,19 @@ UIDocumentInteractionControllerDelegate>
     return cell;
 }
 
+- (MXKTableViewCell*)descriptionCellForTableView:(UITableView*)tableView withText:(NSString*)text
+{
+    MXKTableViewCell *cell = [self getDefaultTableViewCell:tableView];
+    cell.textLabel.text = text;
+    cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    cell.textLabel.numberOfLines = 0;
+    cell.contentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+    return cell;
+}
+
+
 - (MXKTableViewCellWithTextView*)textViewCellForTableView:(UITableView*)tableView atIndexPath:(NSIndexPath *)indexPath
 {
     MXKTableViewCellWithTextView *textViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier] forIndexPath:indexPath];
@@ -628,93 +627,93 @@ UIDocumentInteractionControllerDelegate>
     cell.backgroundColor = [UIColor redColor];
 
     MXSession* session = self.mainSession;
-    if (section == SETTINGS_SECTION_DEVICES_INDEX)
+    if (section == SECTION_SESSIONS)
     {
-        if (row == DEVICES_DESCRIPTION_INDEX)
+        if (row < devicesArray.count)
         {
-            MXKTableViewCell *descriptionCell = [self getDefaultTableViewCell:tableView];
-            descriptionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_devices_description", @"Vector", nil);
-            descriptionCell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
-            descriptionCell.textLabel.font = [UIFont systemFontOfSize:15];
-            descriptionCell.textLabel.numberOfLines = 0;
-            descriptionCell.contentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
-            descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-            cell = descriptionCell;
-        }
-        else
-        {
-            NSUInteger deviceIndex = row - 1;
+            NSUInteger deviceIndex = row;
 
             MXKTableViewCell *deviceCell = [self getDefaultTableViewCell:tableView];
-            if (deviceIndex < devicesArray.count)
-            {
-                NSString *name = devicesArray[deviceIndex].displayName;
-                NSString *deviceId = devicesArray[deviceIndex].deviceId;
-                deviceCell.textLabel.text = (name.length ? [NSString stringWithFormat:@"%@ (%@)", name, deviceId] : [NSString stringWithFormat:@"(%@)", deviceId]);
-                deviceCell.textLabel.numberOfLines = 0;
+            NSString *name = devicesArray[deviceIndex].displayName;
+            NSString *deviceId = devicesArray[deviceIndex].deviceId;
+            deviceCell.textLabel.text = (name.length ? [NSString stringWithFormat:@"%@ (%@)", name, deviceId] : [NSString stringWithFormat:@"(%@)", deviceId]);
+            deviceCell.textLabel.numberOfLines = 0;
 
-                if ([deviceId isEqualToString:self.mainSession.matrixRestClient.credentials.deviceId])
-                {
-                    deviceCell.textLabel.font = [UIFont boldSystemFontOfSize:17];
-                }
+            if ([deviceId isEqualToString:self.mainSession.matrixRestClient.credentials.deviceId])
+            {
+                deviceCell.textLabel.font = [UIFont boldSystemFontOfSize:17];
             }
 
             cell = deviceCell;
         }
+        else if (row == devicesArray.count)
+        {
+            cell = [self descriptionCellForTableView:tableView
+                                            withText:NSLocalizedStringFromTable(@"security_settings_sessions_description", @"Vector", nil) ];
 
+        }
     }
-    else if (section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
+    else if (section == SECTION_ADVANCED)
     {
-        if (row == CRYPTOGRAPHY_INFO_INDEX)
+        switch (row)
         {
-            MXKTableViewCellWithTextView *cryptoCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
-
-            cryptoCell.mxkTextView.attributedText = [self cryptographyInformation];
-
-            cell = cryptoCell;
-        }
-        else if (row == CRYPTOGRAPHY_BLACKLIST_UNVERIFIED_DEVICES_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_crypto_blacklist_unverified_devices", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = session.crypto.globalBlacklistUnverifiedDevices;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleBlacklistUnverifiedDevices:) forControlEvents:UIControlEventTouchUpInside];
-
-            cell = labelAndSwitchCell;
-        }
-        else if (row == CRYPTOGRAPHY_EXPORT_INDEX)
-        {
-            MXKTableViewCellWithButton *exportKeysBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
-            if (!exportKeysBtnCell)
+            case ADVANCED_BLACKLIST_UNVERIFIED_DEVICES:
             {
-                exportKeysBtnCell = [[MXKTableViewCellWithButton alloc] init];
+                MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+
+                labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"security_settings_blacklist_unverified_devices", @"Vector", nil);
+                labelAndSwitchCell.mxkSwitch.on = session.crypto.globalBlacklistUnverifiedDevices;
+                labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+                labelAndSwitchCell.mxkSwitch.enabled = YES;
+                [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleBlacklistUnverifiedDevices:) forControlEvents:UIControlEventTouchUpInside];
+
+                cell = labelAndSwitchCell;
+                break;
             }
-            else
+            case ADVANCED_BLACKLIST_UNVERIFIED_DEVICES_DESCRIPTION:
             {
-                // Fix https://github.com/vector-im/riot-ios/issues/1354
-                exportKeysBtnCell.mxkButton.titleLabel.text = nil;
+                cell = [self descriptionCellForTableView:tableView
+                                                withText:NSLocalizedStringFromTable(@"security_settings_blacklist_unverified_devices_description", @"Vector", nil) ];
+
+                break;
             }
+            case ADVANCED_EXPORT:
+            {
+                MXKTableViewCellWithButton *exportKeysBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
+                if (!exportKeysBtnCell)
+                {
+                    exportKeysBtnCell = [[MXKTableViewCellWithButton alloc] init];
+                }
+                else
+                {
+                    // Fix https://github.com/vector-im/riot-ios/issues/1354
+                    exportKeysBtnCell.mxkButton.titleLabel.text = nil;
+                }
 
-            NSString *btnTitle = NSLocalizedStringFromTable(@"settings_crypto_export", @"Vector", nil);
-            [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
-            [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-            [exportKeysBtnCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
-            exportKeysBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
+                NSString *btnTitle = NSLocalizedStringFromTable(@"security_settings_export_keys_manually", @"Vector", nil);
+                [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
+                [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
+                [exportKeysBtnCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
+                exportKeysBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
 
-            [exportKeysBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-            [exportKeysBtnCell.mxkButton addTarget:self action:@selector(exportEncryptionKeys:) forControlEvents:UIControlEventTouchUpInside];
-            exportKeysBtnCell.mxkButton.accessibilityIdentifier = nil;
+                [exportKeysBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+                [exportKeysBtnCell.mxkButton addTarget:self action:@selector(exportEncryptionKeys:) forControlEvents:UIControlEventTouchUpInside];
+                exportKeysBtnCell.mxkButton.accessibilityIdentifier = nil;
 
-            cell = exportKeysBtnCell;
+                cell = exportKeysBtnCell;
+                break;
+            }
         }
     }
-    else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
+    else if (section == SECTION_KEYBACKUP)
     {
         cell = [keyBackupSection cellForRowAtRow:row];
+    }
+    else if (section == SECTION_DEBUG)
+    {
+        MXKTableViewCellWithTextView *cryptoCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
+        cryptoCell.mxkTextView.attributedText = [self cryptographyInformation];
+        cell = cryptoCell;
     }
 
     return cell;
@@ -722,29 +721,16 @@ UIDocumentInteractionControllerDelegate>
 
 - (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section == SETTINGS_SECTION_DEVICES_INDEX)
+    switch (section)
     {
-        // Check whether this section is visible
-        if (devicesArray.count > 0)
-        {
-            return NSLocalizedStringFromTable(@"settings_devices", @"Vector", nil);
-        }
-    }
-    else if (section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
-    {
-        // Check whether this section is visible
-        if (self.mainSession.crypto)
-        {
-            return NSLocalizedStringFromTable(@"settings_cryptography", @"Vector", nil);
-        }
-    }
-    else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
-    {
-        // Check whether this section is visible
-        if (self.mainSession.crypto)
-        {
-            return NSLocalizedStringFromTable(@"settings_key_backup", @"Vector", nil);
-        }
+        case SECTION_SESSIONS:
+            return NSLocalizedStringFromTable(@"security_settings_sessions", @"Vector", nil);
+        case SECTION_KEYBACKUP:
+            return NSLocalizedStringFromTable(@"security_settings_backup", @"Vector", nil);
+        case SECTION_ADVANCED:
+            return NSLocalizedStringFromTable(@"security_settings_advanced", @"Vector", nil);
+        case SECTION_DEBUG:
+            return @"DEBUG";
     }
 
     return nil;
@@ -792,6 +778,10 @@ UIDocumentInteractionControllerDelegate>
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    if (section == SECTION_SESSIONS)
+    {
+        return 44;
+    }
     return 24;
 }
 
@@ -807,15 +797,12 @@ UIDocumentInteractionControllerDelegate>
         NSInteger section = indexPath.section;
         NSInteger row = indexPath.row;
 
-        if (section == SETTINGS_SECTION_DEVICES_INDEX)
+        if (section == SECTION_SESSIONS)
         {
-            if (row > DEVICES_DESCRIPTION_INDEX)
+            NSUInteger deviceIndex = row;
+            if (deviceIndex < devicesArray.count)
             {
-                NSUInteger deviceIndex = row - 1;
-                if (deviceIndex < devicesArray.count)
-                {
-                    [self showDeviceDetails:devicesArray[deviceIndex]];
-                }
+                [self showDeviceDetails:devicesArray[deviceIndex]];
             }
         }
 
@@ -926,7 +913,7 @@ UIDocumentInteractionControllerDelegate>
 
 - (MXKTableViewCellWithTextView *)settingsKeyBackupTableViewSection:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection textCellForRow:(NSInteger)textCellForRow
 {
-    return [self textViewCellForTableView:self.tableView atIndexPath:[NSIndexPath indexPathForRow:textCellForRow inSection:SETTINGS_SECTION_KEYBACKUP_INDEX]];
+    return [self textViewCellForTableView:self.tableView atIndexPath:[NSIndexPath indexPathForRow:textCellForRow inSection:SECTION_KEYBACKUP]];
 }
 
 - (MXKTableViewCellWithButton *)settingsKeyBackupTableViewSection:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection buttonCellForRow:(NSInteger)buttonCellForRow

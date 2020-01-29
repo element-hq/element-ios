@@ -2574,7 +2574,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         {
             case SECURITY_BUTTON_INDEX:
                 cell = [self getDefaultTableViewCell:tableView];
-                cell.textLabel.text = NSLocalizedStringFromTable(@"Security", @"Vector", nil);
+                cell.textLabel.text = NSLocalizedStringFromTable(@"security_settings_title", @"Vector", nil);
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
         }
@@ -2701,7 +2701,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }
     else if (section == SETTINGS_SECTION_SECURITY_INDEX)
     {
-        return NSLocalizedStringFromTable(@"SECURITY", @"Vector", nil);
+        return NSLocalizedStringFromTable(@"settings_security", @"Vector", nil);
     }
     else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
     {
