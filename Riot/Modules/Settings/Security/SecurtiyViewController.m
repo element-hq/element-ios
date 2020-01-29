@@ -578,9 +578,9 @@ UIDocumentInteractionControllerDelegate>
     else
     {
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.accessoryView = nil;
+        cell.imageView.image = nil;
     }
     cell.textLabel.accessibilityIdentifier = nil;
     cell.textLabel.font = [UIFont systemFontOfSize:17];
@@ -589,6 +589,38 @@ UIDocumentInteractionControllerDelegate>
 
     return cell;
 }
+
+- (MXKTableViewCell*)deviceCellWithDevice:(MXDevice*)device forTableView:(UITableView*)tableView
+{
+    MXKTableViewCell *cell = [self getDefaultTableViewCell:tableView];
+    NSString *name = device.displayName;
+    NSString *deviceId = device.deviceId;
+    cell.textLabel.text = (name.length ? [NSString stringWithFormat:@"%@ (%@)", name, deviceId] : [NSString stringWithFormat:@"(%@)", deviceId]);
+    cell.textLabel.numberOfLines = 0;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+    if ([deviceId isEqualToString:self.mainSession.matrixRestClient.credentials.deviceId])
+    {
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:17];
+    }
+
+    cell.imageView.image = [self shieldImageForDevice:deviceId];
+
+    return cell;
+}
+
+- (UIImage*)shieldImageForDevice:(NSString*)deviceId
+{
+    UIImage* shieldImageForDevice = [UIImage imageNamed:@"encryption_warning"];
+    MXDeviceInfo *device = [self.mainSession.crypto deviceWithDeviceId:deviceId ofUser:self.mainSession.myUser.userId];
+    if (device.trustLevel.isVerified)
+    {
+        shieldImageForDevice = [UIImage imageNamed:@"encryption_trusted"];
+    }
+
+    return shieldImageForDevice;
+}
+
 
 - (MXKTableViewCell*)descriptionCellForTableView:(UITableView*)tableView withText:(NSString*)text
 {
@@ -631,20 +663,7 @@ UIDocumentInteractionControllerDelegate>
     {
         if (row < devicesArray.count)
         {
-            NSUInteger deviceIndex = row;
-
-            MXKTableViewCell *deviceCell = [self getDefaultTableViewCell:tableView];
-            NSString *name = devicesArray[deviceIndex].displayName;
-            NSString *deviceId = devicesArray[deviceIndex].deviceId;
-            deviceCell.textLabel.text = (name.length ? [NSString stringWithFormat:@"%@ (%@)", name, deviceId] : [NSString stringWithFormat:@"(%@)", deviceId]);
-            deviceCell.textLabel.numberOfLines = 0;
-
-            if ([deviceId isEqualToString:self.mainSession.matrixRestClient.credentials.deviceId])
-            {
-                deviceCell.textLabel.font = [UIFont boldSystemFontOfSize:17];
-            }
-
-            cell = deviceCell;
+            cell = [self deviceCellWithDevice:devicesArray[row] forTableView:tableView];
         }
         else if (row == devicesArray.count)
         {
