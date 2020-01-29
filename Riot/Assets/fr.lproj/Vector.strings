@@ -957,3 +957,4 @@
 "key_verification_tile_conclusion_done_title" = "Vérifié";
 "key_verification_tile_conclusion_warning_title" = "Connexion non approuvée";
 "key_verification_incoming_request_incoming_alert_message" = "%@ veut vérifier";
+"settings_labs_enable_cross_signing" = "Activer la vérification croisée pour vérifier par utilisateurs plutôt que par appareil (en développement)";
