@@ -100,6 +100,8 @@
 		32BF995321FA2A1300698084 /* SettingsKeyBackupViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF995221FA2A1300698084 /* SettingsKeyBackupViewState.swift */; };
 		32BF995521FA2AB700698084 /* SettingsKeyBackupViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF995421FA2AB700698084 /* SettingsKeyBackupViewAction.swift */; };
 		32BF995721FB07A400698084 /* SettingsKeyBackupTableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BF995621FB07A400698084 /* SettingsKeyBackupTableViewSection.swift */; };
+		32D5D16023E1EE2700E3E37C /* ManageSessionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32D5D15D23E1EE2700E3E37C /* ManageSessionViewController.m */; };
+		32D5D16123E1EE2700E3E37C /* ManageSession.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32D5D15E23E1EE2700E3E37C /* ManageSession.storyboard */; };
 		32DB557522FDADE50016329E /* ServiceTermsModalCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DB556922FDADE50016329E /* ServiceTermsModalCoordinatorType.swift */; };
 		32DB557622FDADE50016329E /* ServiceTermsModalCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DB556A22FDADE50016329E /* ServiceTermsModalCoordinatorBridgePresenter.swift */; };
 		32DB557722FDADE50016329E /* ServiceTermsModalCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DB556B22FDADE50016329E /* ServiceTermsModalCoordinator.swift */; };
@@ -777,6 +779,9 @@
 		32BF995221FA2A1300698084 /* SettingsKeyBackupViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsKeyBackupViewState.swift; sourceTree = "<group>"; };
 		32BF995421FA2AB700698084 /* SettingsKeyBackupViewAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsKeyBackupViewAction.swift; sourceTree = "<group>"; };
 		32BF995621FB07A400698084 /* SettingsKeyBackupTableViewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsKeyBackupTableViewSection.swift; sourceTree = "<group>"; };
+		32D5D15D23E1EE2700E3E37C /* ManageSessionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManageSessionViewController.m; sourceTree = "<group>"; };
+		32D5D15E23E1EE2700E3E37C /* ManageSession.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ManageSession.storyboard; sourceTree = "<group>"; };
+		32D5D15F23E1EE2700E3E37C /* ManageSessionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManageSessionViewController.h; sourceTree = "<group>"; };
 		32D7159E2146CC6F00DF59C9 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Vector.strings; sourceTree = "<group>"; };
 		32D7159F2146CC7F00DF59C9 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		32D715A02146CC8800DF59C9 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1811,6 +1816,7 @@
 		3291DC8823E0BE380009732F /* Security */ = {
 			isa = PBXGroup;
 			children = (
+				32D5D15C23E1EE2700E3E37C /* ManageSession */,
 				3291DC8B23E0BFF10009732F /* SecurityViewController.h */,
 				3291DC8C23E0BFF10009732F /* SecurtiyViewController.m */,
 				3291DC8923E0BE820009732F /* Security.storyboard */,
@@ -1873,6 +1879,16 @@
 				32BF995621FB07A400698084 /* SettingsKeyBackupTableViewSection.swift */,
 			);
 			path = KeyBackup;
+			sourceTree = "<group>";
+		};
+		32D5D15C23E1EE2700E3E37C /* ManageSession */ = {
+			isa = PBXGroup;
+			children = (
+				32D5D15D23E1EE2700E3E37C /* ManageSessionViewController.m */,
+				32D5D15E23E1EE2700E3E37C /* ManageSession.storyboard */,
+				32D5D15F23E1EE2700E3E37C /* ManageSessionViewController.h */,
+			);
+			path = ManageSession;
 			sourceTree = "<group>";
 		};
 		32DB556722FDADE50016329E /* ServiceTerms */ = {
@@ -4215,6 +4231,7 @@
 				B1B557C120EF5B4500210D55 /* DisabledRoomInputToolbarView.xib in Resources */,
 				B1DCC61722E5E17100625807 /* EmojiPickerViewController.storyboard in Resources */,
 				32891D6C2264CBA300C82226 /* SimpleScreenTemplateViewController.storyboard in Resources */,
+				32D5D16123E1EE2700E3E37C /* ManageSession.storyboard in Resources */,
 				B1963B2C228F1C4900CBA17F /* BubbleReactionViewCell.xib in Resources */,
 				B1664DA320F4F96200808783 /* Vector.strings in Resources */,
 				B1B557C720EF5CD400210D55 /* DirectoryServerDetailTableViewCell.xib in Resources */,
@@ -4753,6 +4770,7 @@
 				B1DCC62822E60CE300625807 /* EmojiCategory.swift in Sources */,
 				B14084CC23BF9DE90010F692 /* KeyVerificationConclusionWithPaginationTitleBubbleCell.swift in Sources */,
 				B1B5578F20EF568D00210D55 /* GroupTableViewCell.m in Sources */,
+				32D5D16023E1EE2700E3E37C /* ManageSessionViewController.m in Sources */,
 				B1B5573220EE6C4D00210D55 /* GroupHomeViewController.m in Sources */,
 				B1B5595220EF9A8700210D55 /* RecentTableViewCell.m in Sources */,
 				32F6B96C2270623100BBA352 /* DeviceVerificationDataLoadingCoordinatorType.swift in Sources */,

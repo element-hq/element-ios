@@ -1534,6 +1534,30 @@ internal enum VectorL10n {
   internal static var leave: String { 
     return VectorL10n.tr("Vector", "leave") 
   }
+  /// SESSION INFO
+  internal static var manageSessionInfo: String { 
+    return VectorL10n.tr("Vector", "manage_session_info") 
+  }
+  /// Device name
+  internal static var manageSessionName: String { 
+    return VectorL10n.tr("Vector", "manage_session_name") 
+  }
+  /// Not trusted
+  internal static var manageSessionNotTrusted: String { 
+    return VectorL10n.tr("Vector", "manage_session_not_trusted") 
+  }
+  /// Sign out of this device
+  internal static var manageSessionSignOut: String { 
+    return VectorL10n.tr("Vector", "manage_session_sign_out") 
+  }
+  /// Manage session
+  internal static var manageSessionTitle: String { 
+    return VectorL10n.tr("Vector", "manage_session_title") 
+  }
+  /// Trusted by you
+  internal static var manageSessionTrusted: String { 
+    return VectorL10n.tr("Vector", "manage_session_trusted") 
+  }
   /// Library
   internal static var mediaPickerLibrary: String { 
     return VectorL10n.tr("Vector", "media_picker_library") 

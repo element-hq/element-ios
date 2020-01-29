@@ -557,6 +557,15 @@
 "security_settings_export_keys_manually" = "Export keys manually";
 
 
+// Manage session
+"manage_session_title" = "Manage session";
+"manage_session_info" = "SESSION INFO";
+"manage_session_name" = "Device name";
+"manage_session_trusted" = "Trusted by you";
+"manage_session_not_trusted" = "Not trusted";
+"manage_session_sign_out" = "Sign out of this device";
+
+
 // Identity server settings
 "identity_server_settings_title" = "Identity Server";
 

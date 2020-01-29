@@ -1,0 +1,691 @@
+/*
+ Copyright 2020 New Vector Ltd
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
+
+#import "ManageSessionViewController.h"
+
+#import <MatrixKit/MatrixKit.h>
+
+#import <OLMKit/OLMKit.h>
+
+#import "AppDelegate.h"
+#import "AvatarGenerator.h"
+
+#import "ThemeService.h"
+
+#import "Riot-Swift.h"
+
+
+enum
+{
+    SECTION_SESSION_INFO,
+    SECTION_ACTION,
+    SECTION_COUNT
+};
+
+enum {
+    SESSION_INFO_SESSION_NAME,
+    SESSION_INFO_TRUST,
+    SESSION_INFO_COUNT
+};
+
+enum {
+    ACTION_REMOVE_SESSION,
+    ACTION_COUNT
+};
+
+
+@interface ManageSessionViewController () <
+MXKDataSourceDelegate,
+MXKDeviceViewDelegate,
+MXKEncryptionInfoViewDelegate>
+{
+    // The device to display
+    MXDevice *device;
+    
+    // Current alert (if any).
+    UIAlertController *currentAlert;
+
+    DeviceView *deviceView;
+    
+    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
+    id kAppDelegateDidTapStatusBarNotificationObserver;
+    
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
+
+    // The current pushed view controller
+    UIViewController *pushedViewController;
+}
+
+@end
+
+@implementation ManageSessionViewController
+
+#pragma mark - Setup & Teardown
+
++ (ManageSessionViewController*)instantiateWithMatrixSession:(MXSession*)matrixSession andDevice:(MXDevice*)device;
+{
+    ManageSessionViewController* viewController = [[UIStoryboard storyboardWithName:@"ManageSession" bundle:[NSBundle mainBundle]] instantiateInitialViewController];
+    [viewController addMatrixSession:matrixSession];
+    viewController->device = device;
+    return viewController;
+}
+
+
+#pragma mark - View life cycle
+
+- (void)finalizeInit
+{
+    [super finalizeInit];
+    
+    // Setup `MXKViewControllerHandling` properties
+    self.enableBarTintColorStatusChange = NO;
+    self.rageShakeManager = [RageShakeManager sharedManager];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
+    
+    self.navigationItem.title = NSLocalizedStringFromTable(@"manage_session_title", @"Vector", nil);
+    
+    // Remove back bar button title when pushing a view controller
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+
+    [self.tableView registerClass:MXKTableViewCellWithLabelAndTextField.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndTextField defaultReuseIdentifier]];
+    [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
+    [self.tableView registerNib:MXKTableViewCellWithTextView.nib forCellReuseIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier]];
+    
+    // Enable self sizing cells
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = 50;
+
+    // Observe user interface theme change.
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        [self userInterfaceThemeDidChange];
+        
+    }];
+    [self userInterfaceThemeDidChange];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
+    
+    // Check the table view style to select its bg color.
+    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.backgroundColor : ThemeService.shared.theme.headerBackgroundColor);
+    self.view.backgroundColor = self.tableView.backgroundColor;
+    self.tableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
+    
+    if (self.tableView.dataSource)
+    {
+        [self refreshSettings];
+    }
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return ThemeService.shared.theme.statusBarStyle;
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)destroy
+{
+    // Release the potential pushed view controller
+    [self releasePushedViewController];
+    
+    if (kThemeServiceDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
+    }
+}
+
+- (void)onMatrixSessionStateDidChange:(NSNotification *)notif
+{
+    MXSession *mxSession = notif.object;
+    
+    // Check whether the concerned session is a new one which is not already associated with this view controller.
+    if (mxSession.state == MXSessionStateInitialised && [self.mxSessions indexOfObject:mxSession] != NSNotFound)
+    {
+        // Store this new session
+        [self addMatrixSession:mxSession];
+    }
+    else
+    {
+        [super onMatrixSessionStateDidChange:notif];
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    // Screen tracking
+    [[Analytics sharedInstance] trackScreen:@"Settings"];
+
+    // Release the potential pushed view controller
+    [self releasePushedViewController];
+
+    // Refresh display
+    [self refreshSettings];
+
+    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
+    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+        [self.tableView setContentOffset:CGPointMake(-self.tableView.mxk_adjustedContentInset.left, -self.tableView.mxk_adjustedContentInset.top) animated:YES];
+
+    }];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    if (currentAlert)
+    {
+        [currentAlert dismissViewControllerAnimated:NO completion:nil];
+        currentAlert = nil;
+    }
+
+    if (kAppDelegateDidTapStatusBarNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
+        kAppDelegateDidTapStatusBarNotificationObserver = nil;
+    }
+}
+
+#pragma mark - Internal methods
+
+- (void)pushViewController:(UIViewController*)viewController
+{
+    // Keep ref on pushed view controller
+    pushedViewController = viewController;
+
+    // Hide back button title
+    self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)releasePushedViewController
+{
+    if (pushedViewController)
+    {
+        if ([pushedViewController isKindOfClass:[UINavigationController class]])
+        {
+            UINavigationController *navigationController = (UINavigationController*)pushedViewController;
+            for (id subViewController in navigationController.viewControllers)
+            {
+                if ([subViewController respondsToSelector:@selector(destroy)])
+                {
+                    [subViewController destroy];
+                }
+            }
+        }
+        else if ([pushedViewController respondsToSelector:@selector(destroy)])
+        {
+            [(id)pushedViewController destroy];
+        }
+
+        pushedViewController = nil;
+    }
+}
+
+- (void)reset
+{
+    // Remove observers
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+    if (deviceView)
+    {
+        [deviceView removeFromSuperview];
+        deviceView = nil;
+    }
+}
+
+- (void)showDeviceDetails:(MXDevice *)device
+{
+    deviceView = [[DeviceView alloc] initWithDevice:device andMatrixSession:self.mainSession];
+    deviceView.delegate = self;
+
+    // Add the view and define edge constraints
+    [self.tableView.superview addSubview:deviceView];
+    [self.tableView.superview bringSubviewToFront:deviceView];
+
+    NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:deviceView
+                                                                     attribute:NSLayoutAttributeTop
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.tableView
+                                                                     attribute:NSLayoutAttributeTop
+                                                                    multiplier:1.0f
+                                                                      constant:0.0f];
+
+    NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:deviceView
+                                                                      attribute:NSLayoutAttributeLeft
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:self.tableView
+                                                                      attribute:NSLayoutAttributeLeft
+                                                                     multiplier:1.0f
+                                                                       constant:0.0f];
+
+    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:deviceView
+                                                                       attribute:NSLayoutAttributeWidth
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:self.tableView
+                                                                       attribute:NSLayoutAttributeWidth
+                                                                      multiplier:1.0f
+                                                                        constant:0.0f];
+
+    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:deviceView
+                                                                        attribute:NSLayoutAttributeHeight
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:self.tableView
+                                                                        attribute:NSLayoutAttributeHeight
+                                                                       multiplier:1.0f
+                                                                         constant:0.0f];
+
+    [NSLayoutConstraint activateConstraints:@[topConstraint, leftConstraint, widthConstraint, heightConstraint]];
+}
+
+- (void)deviceView:(DeviceView*)theDeviceView presentAlertController:(UIAlertController *)alert
+{
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)dismissDeviceView:(MXKDeviceView *)theDeviceView didUpdate:(BOOL)isUpdated
+{
+    [deviceView removeFromSuperview];
+    deviceView = nil;
+}
+
+- (void)refreshSettings
+{
+    // Trigger a full table reloadData
+    [self.tableView reloadData];
+}
+
+- (void)requestAccountPasswordWithTitle:(NSString*)title message:(NSString*)message onComplete:(void (^)(NSString *password))onComplete
+{
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
+
+    // Prompt the user before deleting the device.
+    currentAlert = [UIAlertController alertControllerWithTitle:title
+                                                       message:message
+                                                preferredStyle:UIAlertControllerStyleAlert];
+
+    [currentAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.secureTextEntry = YES;
+        textField.placeholder = nil;
+        textField.keyboardType = UIKeyboardTypeDefault;
+    }];
+
+    MXWeakify(self);
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action)
+                             {
+                                 MXStrongifyAndReturnIfNil(self);
+                                 self->currentAlert = nil;
+                             }]];
+
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"continue"]
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       MXStrongifyAndReturnIfNil(self);
+
+                                                       UITextField *textField = [self->currentAlert textFields].firstObject;
+                                                       self->currentAlert = nil;
+
+                                                       onComplete(textField.text);
+                                                   }]];
+
+    [self presentViewController:currentAlert animated:YES completion:nil];
+}
+
+#pragma mark - Segues
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    // Keep ref on destinationViewController
+    [super prepareForSegue:segue sender:sender];
+
+    // FIXME add night mode
+}
+
+#pragma mark - UITableView data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return SECTION_COUNT;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    NSInteger count = 0;
+
+    switch (section)
+    {
+        case SECTION_SESSION_INFO:
+            count = SESSION_INFO_COUNT;
+            break;
+        case SECTION_ACTION:
+            count = ACTION_COUNT;
+            break;
+    }
+
+    return count;
+}
+
+- (MXKTableViewCellWithLabelAndTextField*)getLabelAndTextFieldCell:(UITableView*)tableview forIndexPath:(NSIndexPath *)indexPath
+{
+    MXKTableViewCellWithLabelAndTextField *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndTextField defaultReuseIdentifier] forIndexPath:indexPath];
+    
+    cell.mxkLabelLeadingConstraint.constant = cell.separatorInset.left;
+    cell.mxkTextFieldLeadingConstraint.constant = 16;
+    cell.mxkTextFieldTrailingConstraint.constant = 15;
+    
+    cell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    
+    cell.mxkTextField.userInteractionEnabled = YES;
+    cell.mxkTextField.borderStyle = UITextBorderStyleNone;
+    cell.mxkTextField.textAlignment = NSTextAlignmentRight;
+    cell.mxkTextField.textColor = ThemeService.shared.theme.textSecondaryColor;
+    cell.mxkTextField.font = [UIFont systemFontOfSize:16];
+    cell.mxkTextField.placeholder = nil;
+    
+    cell.accessoryType = UITableViewCellAccessoryNone;
+    cell.accessoryView = nil;
+    
+    cell.alpha = 1.0f;
+    cell.userInteractionEnabled = YES;
+    
+    [cell layoutIfNeeded];
+    
+    return cell;
+}
+
+- (MXKTableViewCellWithLabelAndSwitch*)getLabelAndSwitchCell:(UITableView*)tableview forIndexPath:(NSIndexPath *)indexPath
+{
+    MXKTableViewCellWithLabelAndSwitch *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier] forIndexPath:indexPath];
+
+    cell.mxkLabelLeadingConstraint.constant = cell.separatorInset.left;
+    cell.mxkSwitchTrailingConstraint.constant = 15;
+
+    cell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+
+    [cell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+
+    // Force layout before reusing a cell (fix switch displayed outside the screen)
+    [cell layoutIfNeeded];
+
+    return cell;
+}
+
+- (MXKTableViewCell*)getDefaultTableViewCell:(UITableView*)tableView
+{
+    MXKTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
+    if (!cell)
+    {
+        cell = [[MXKTableViewCell alloc] init];
+    }
+    else
+    {
+        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.accessoryView = nil;
+        cell.imageView.image = nil;
+    }
+    cell.textLabel.accessibilityIdentifier = nil;
+    cell.textLabel.font = [UIFont systemFontOfSize:17];
+    cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    cell.contentView.backgroundColor = UIColor.clearColor;
+
+    return cell;
+}
+
+- (MXKTableViewCell*)trustCellWithDevice:(MXDevice*)device forTableView:(UITableView*)tableView
+{
+    MXKTableViewCell *cell = [self getDefaultTableViewCell:tableView];
+    
+    NSString *deviceId = device.deviceId;
+    MXDeviceInfo *deviceInfo = [self.mainSession.crypto deviceWithDeviceId:deviceId ofUser:self.mainSession.myUser.userId];
+    
+    cell.textLabel.numberOfLines = 0;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+    if (deviceInfo.trustLevel.isVerified)
+    {
+        cell.textLabel.text = NSLocalizedStringFromTable(@"manage_session_trusted", @"Vector", nil);
+        cell.imageView.image = [UIImage imageNamed:@"encryption_trusted"];
+    }
+    else
+    {
+        cell.textLabel.text = NSLocalizedStringFromTable(@"manage_session_not_trusted", @"Vector", nil);
+        cell.imageView.image = [UIImage imageNamed:@"encryption_warning"];
+    }
+
+    return cell;
+}
+
+- (MXKTableViewCell*)descriptionCellForTableView:(UITableView*)tableView withText:(NSString*)text
+{
+    MXKTableViewCell *cell = [self getDefaultTableViewCell:tableView];
+    cell.textLabel.text = text;
+    cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    cell.textLabel.numberOfLines = 0;
+    cell.contentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+    return cell;
+}
+
+
+- (MXKTableViewCellWithTextView*)textViewCellForTableView:(UITableView*)tableView atIndexPath:(NSIndexPath *)indexPath
+{
+    MXKTableViewCellWithTextView *textViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier] forIndexPath:indexPath];
+
+    textViewCell.mxkTextView.textColor = ThemeService.shared.theme.textPrimaryColor;
+    textViewCell.mxkTextView.font = [UIFont systemFontOfSize:17];
+    textViewCell.mxkTextView.backgroundColor = [UIColor clearColor];
+    textViewCell.mxkTextViewLeadingConstraint.constant = tableView.separatorInset.left;
+    textViewCell.mxkTextViewTrailingConstraint.constant = tableView.separatorInset.right;
+    textViewCell.mxkTextView.accessibilityIdentifier = nil;
+
+    return textViewCell;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger section = indexPath.section;
+    NSInteger row = indexPath.row;
+
+    // set the cell to a default value to avoid application crashes
+    UITableViewCell *cell = [[UITableViewCell alloc] init];
+    cell.backgroundColor = [UIColor redColor];
+
+    MXSession* session = self.mainSession;
+    switch (section)
+    {
+        case SECTION_SESSION_INFO:
+            switch (row)
+        {
+            case SESSION_INFO_SESSION_NAME:
+            {
+                MXKTableViewCellWithLabelAndTextField *displaynameCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
+                
+                displaynameCell.mxkLabel.text = NSLocalizedStringFromTable(@"manage_session_name", @"Vector", nil);
+                displaynameCell.mxkTextField.text = device.displayName;
+                displaynameCell.mxkTextField.userInteractionEnabled = NO;
+                
+                cell = displaynameCell;
+                break;
+            }
+            case SESSION_INFO_TRUST:
+            {
+                cell = [self trustCellWithDevice:device forTableView:tableView];
+            }
+                
+        }
+            break;
+            
+        case SECTION_ACTION:
+            switch (row)
+        {
+            case ACTION_REMOVE_SESSION:
+            {
+                MXKTableViewCellWithButton *deactivateAccountBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
+                
+                if (!deactivateAccountBtnCell)
+                {
+                    deactivateAccountBtnCell = [[MXKTableViewCellWithButton alloc] init];
+                }
+                else
+                {
+                    // Fix https://github.com/vector-im/riot-ios/issues/1354
+                    deactivateAccountBtnCell.mxkButton.titleLabel.text = nil;
+                }
+                
+                NSString *btnTitle = NSLocalizedStringFromTable(@"manage_session_sign_out", @"Vector", nil);
+                [deactivateAccountBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
+                [deactivateAccountBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
+                [deactivateAccountBtnCell.mxkButton setTintColor:ThemeService.shared.theme.warningColor];
+                deactivateAccountBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
+                
+                [deactivateAccountBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+                //[deactivateAccountBtnCell.mxkButton addTarget:self action:@selector(deactivateAccountAction) forControlEvents:UIControlEventTouchUpInside];
+                deactivateAccountBtnCell.mxkButton.accessibilityIdentifier = nil;
+                
+                cell = deactivateAccountBtnCell;
+                break;
+            }
+        }
+            break;
+            
+    }
+
+    return cell;
+}
+
+- (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    switch (section)
+    {
+        case SECTION_SESSION_INFO:
+            return NSLocalizedStringFromTable(@"manage_session_info", @"Vector", nil);
+        case SECTION_ACTION:
+            return @"";
+
+    }
+
+    return nil;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    if ([view isKindOfClass:UITableViewHeaderFooterView.class])
+    {
+        // Customize label style
+        UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
+        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+        tableViewHeaderFooterView.textLabel.font = [UIFont systemFontOfSize:15];
+    }
+}
+
+
+#pragma mark - UITableView delegate
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
+
+    if (cell.selectionStyle != UITableViewCellSelectionStyleNone)
+    {
+        // Update the selected background view
+        if (ThemeService.shared.theme.selectedBackgroundColor)
+        {
+            cell.selectedBackgroundView = [[UIView alloc] init];
+            cell.selectedBackgroundView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
+        }
+        else
+        {
+            if (tableView.style == UITableViewStylePlain)
+            {
+                cell.selectedBackgroundView = nil;
+            }
+            else
+            {
+                cell.selectedBackgroundView.backgroundColor = nil;
+            }
+        }
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == SECTION_SESSION_INFO)
+    {
+        return 44;
+    }
+    return 24;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if (section == SECTION_SESSION_INFO)
+    {
+        return 0;
+    }
+    return 24;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.tableView == tableView)
+    {
+        NSInteger section = indexPath.section;
+        NSInteger row = indexPath.row;
+
+        if (section == SECTION_SESSION_INFO)
+        {
+            //[self showDeviceDetails:devicesArray[deviceIndex]];
+        }
+
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
+}
+
+#pragma mark - actions
+
+
+#pragma mark - MXKDataSourceDelegate
+
+- (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
+{
+    // Group data has been updated. Do a simple full reload
+    [self refreshSettings];
+}
+
+@end

@@ -16,6 +16,8 @@
 
 #import "SecurityViewController.h"
 
+#import "ManageSessionViewController.h"
+
 #import <MatrixKit/MatrixKit.h>
 
 #import <OLMKit/OLMKit.h>
@@ -902,7 +904,9 @@ UIDocumentInteractionControllerDelegate>
             NSUInteger deviceIndex = row;
             if (deviceIndex < devicesArray.count)
             {
-                [self showDeviceDetails:devicesArray[deviceIndex]];
+                ManageSessionViewController *viewController = [ManageSessionViewController instantiateWithMatrixSession:self.mainSession andDevice:devicesArray[deviceIndex]];
+                
+                [self pushViewController:viewController];
             }
         }
 
