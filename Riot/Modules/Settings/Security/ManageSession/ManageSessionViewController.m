@@ -266,61 +266,6 @@ MXKEncryptionInfoViewDelegate>
     }
 }
 
-- (void)showDeviceDetails:(MXDevice *)device
-{
-    deviceView = [[DeviceView alloc] initWithDevice:device andMatrixSession:self.mainSession];
-    deviceView.delegate = self;
-
-    // Add the view and define edge constraints
-    [self.tableView.superview addSubview:deviceView];
-    [self.tableView.superview bringSubviewToFront:deviceView];
-
-    NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:deviceView
-                                                                     attribute:NSLayoutAttributeTop
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self.tableView
-                                                                     attribute:NSLayoutAttributeTop
-                                                                    multiplier:1.0f
-                                                                      constant:0.0f];
-
-    NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:deviceView
-                                                                      attribute:NSLayoutAttributeLeft
-                                                                      relatedBy:NSLayoutRelationEqual
-                                                                         toItem:self.tableView
-                                                                      attribute:NSLayoutAttributeLeft
-                                                                     multiplier:1.0f
-                                                                       constant:0.0f];
-
-    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:deviceView
-                                                                       attribute:NSLayoutAttributeWidth
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:self.tableView
-                                                                       attribute:NSLayoutAttributeWidth
-                                                                      multiplier:1.0f
-                                                                        constant:0.0f];
-
-    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:deviceView
-                                                                        attribute:NSLayoutAttributeHeight
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:self.tableView
-                                                                        attribute:NSLayoutAttributeHeight
-                                                                       multiplier:1.0f
-                                                                         constant:0.0f];
-
-    [NSLayoutConstraint activateConstraints:@[topConstraint, leftConstraint, widthConstraint, heightConstraint]];
-}
-
-- (void)deviceView:(DeviceView*)theDeviceView presentAlertController:(UIAlertController *)alert
-{
-    [self presentViewController:alert animated:YES completion:nil];
-}
-
-- (void)dismissDeviceView:(MXKDeviceView *)theDeviceView didUpdate:(BOOL)isUpdated
-{
-    [deviceView removeFromSuperview];
-    deviceView = nil;
-}
-
 - (void)refreshSettings
 {
     // Trigger a full table reloadData
@@ -573,29 +518,27 @@ MXKEncryptionInfoViewDelegate>
         {
             case ACTION_REMOVE_SESSION:
             {
-                MXKTableViewCellWithButton *deactivateAccountBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
+                MXKTableViewCellWithButton *removeSessionBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
                 
-                if (!deactivateAccountBtnCell)
+                if (!removeSessionBtnCell)
                 {
-                    deactivateAccountBtnCell = [[MXKTableViewCellWithButton alloc] init];
+                    removeSessionBtnCell = [[MXKTableViewCellWithButton alloc] init];
                 }
                 else
                 {
                     // Fix https://github.com/vector-im/riot-ios/issues/1354
-                    deactivateAccountBtnCell.mxkButton.titleLabel.text = nil;
+                    removeSessionBtnCell.mxkButton.titleLabel.text = nil;
                 }
                 
                 NSString *btnTitle = NSLocalizedStringFromTable(@"manage_session_sign_out", @"Vector", nil);
-                [deactivateAccountBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
-                [deactivateAccountBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-                [deactivateAccountBtnCell.mxkButton setTintColor:ThemeService.shared.theme.warningColor];
-                deactivateAccountBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
+                [removeSessionBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
+                [removeSessionBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
+                [removeSessionBtnCell.mxkButton setTintColor:ThemeService.shared.theme.warningColor];
+                removeSessionBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
+                removeSessionBtnCell.mxkButton.userInteractionEnabled = NO;
+                removeSessionBtnCell.selectionStyle = UITableViewCellSelectionStyleDefault;
                 
-                [deactivateAccountBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-                //[deactivateAccountBtnCell.mxkButton addTarget:self action:@selector(deactivateAccountAction) forControlEvents:UIControlEventTouchUpInside];
-                deactivateAccountBtnCell.mxkButton.accessibilityIdentifier = nil;
-                
-                cell = deactivateAccountBtnCell;
+                cell = removeSessionBtnCell;
                 break;
             }
         }
@@ -693,13 +636,23 @@ MXKEncryptionInfoViewDelegate>
                 case SESSION_INFO_SESSION_NAME:
                     [self renameDevice];
                     break;
-                    
-                default:
+                case SESSION_INFO_TRUST:
+                    [self showTrustForDevice:device];
                     break;
             }
                 break;
+                
+            case SECTION_ACTION:
+            {
+                switch (row)
+                {
+                    case ACTION_REMOVE_SESSION:
+                        [self removeDevice];
+                        break;
+                }
+            }
         }
-
+        
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
@@ -755,12 +708,111 @@ MXKEncryptionInfoViewDelegate>
                                      NSLog(@"[ManageSessionVC] Rename device (%@) failed", self->device.deviceId);
                                      [self reloadDeviceWithCompletion:^{
                                          [self.activityIndicator stopAnimating];
+                                         [[AppDelegate theDelegate] showErrorAsAlert:error];
                                      }];
                                  }];
                                  
                              }]];
     
     [self presentViewController:currentAlert animated:YES completion:nil];
+}
+
+- (void)showTrustForDevice:(MXDevice *)device
+{
+    [[AppDelegate theDelegate] showAlertWithTitle:@"Device Trust" message:@"TODO with bottom sheet 😛"];
+}
+
+- (void)removeDevice
+{
+    // Get an authentication session to prepare device deletion
+    [self.activityIndicator startAnimating];
+    
+    MXWeakify(self);
+    [self.mainSession.matrixRestClient getSessionToDeleteDeviceByDeviceId:device.deviceId success:^(MXAuthenticationSession *authSession) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        // Check whether the password based type is supported
+        BOOL isPasswordBasedTypeSupported = NO;
+        for (MXLoginFlow *loginFlow in authSession.flows)
+        {
+            if ([loginFlow.type isEqualToString:kMXLoginFlowTypePassword] || [loginFlow.stages indexOfObject:kMXLoginFlowTypePassword] != NSNotFound)
+            {
+                isPasswordBasedTypeSupported = YES;
+                break;
+            }
+        }
+        
+        if (isPasswordBasedTypeSupported && authSession.session)
+        {
+            // Prompt for a password
+            [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
+            
+            // Prompt the user before deleting the device.
+            self->currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"device_details_delete_prompt_title"] message:[NSBundle mxk_localizedStringForKey:@"device_details_delete_prompt_message"] preferredStyle:UIAlertControllerStyleAlert];
+            
+            
+            [self->currentAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+                
+                textField.secureTextEntry = YES;
+                textField.placeholder = nil;
+                textField.keyboardType = UIKeyboardTypeDefault;
+            }];
+            
+            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                                   style:UIAlertActionStyleDefault
+                                                                 handler:^(UIAlertAction * action)
+                                           {
+                                               self->currentAlert = nil;
+                                               [self.activityIndicator stopAnimating];
+                                           }]];
+            
+            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"submit"]
+                                                                   style:UIAlertActionStyleDefault
+                                                                 handler:^(UIAlertAction * action)
+                                           {
+                                               
+                                               UITextField *textField = [self->currentAlert textFields].firstObject;
+                                               self->currentAlert = nil;
+                                               
+                                               NSString *userId = self.mainSession.myUser.userId;
+                                               NSDictionary *authParams;
+                                               
+                                               // Sanity check
+                                               if (userId)
+                                               {
+                                                   authParams = @{@"session":authSession.session,
+                                                                  @"user": userId,
+                                                                  @"password": textField.text,
+                                                                  @"type": kMXLoginFlowTypePassword};
+                                                   
+                                               }
+                                               
+                                               [self.mainSession.matrixRestClient deleteDeviceByDeviceId:self->device.deviceId authParams:authParams success:^{
+                                                   [self.activityIndicator stopAnimating];
+                                                   
+                                                   // We cannot stay in this screen anymore
+                                                   [self withdrawViewControllerAnimated:YES completion:nil];
+                                               } failure:^(NSError *error) {
+                                                   NSLog(@"[ManageSessionVC] Delete device (%@) failed", self->device.deviceId);
+                                                   [self.activityIndicator stopAnimating];
+                                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                               }];
+                                           }]];
+            
+            [self presentViewController:self->currentAlert animated:YES completion:nil];
+        }
+        else
+        {
+            NSLog(@"[ManageSessionVC] Delete device (%@) failed, auth session flow type is not supported", self->device.deviceId);
+            [self.activityIndicator stopAnimating];
+            //[[AppDelegate theDelegate] showErrorAsAlert:error];
+        }
+        
+    } failure:^(NSError *error) {
+        NSLog(@"[ManageSessionVC] Delete device (%@) failed, unable to get auth session", self->device.deviceId);
+        [self.activityIndicator stopAnimating];
+        [[AppDelegate theDelegate] showErrorAsAlert:error];
+    }];
 }
 
 #pragma mark - MXKDataSourceDelegate
