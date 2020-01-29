@@ -327,6 +327,23 @@ MXKEncryptionInfoViewDelegate>
     [self.tableView reloadData];
 }
 
+- (void)reloadDeviceWithCompletion:(void (^)(void))completion
+{
+    MXWeakify(self);
+    [self.mainSession.matrixRestClient deviceByDeviceId:device.deviceId success:^(MXDevice *device) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        self->device = device;
+        [self refreshSettings];
+        completion();
+        
+    } failure:^(NSError *error) {
+        NSLog(@"[ManageSessionVC] reloadDeviceWithCompletion failed. Error: %@", error);
+        [self refreshSettings];
+        completion();
+    }];
+}
+
 - (void)requestAccountPasswordWithTitle:(NSString*)title message:(NSString*)message onComplete:(void (^)(NSString *password))onComplete
 {
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
@@ -526,7 +543,6 @@ MXKEncryptionInfoViewDelegate>
     UITableViewCell *cell = [[UITableViewCell alloc] init];
     cell.backgroundColor = [UIColor redColor];
 
-    MXSession* session = self.mainSession;
     switch (section)
     {
         case SECTION_SESSION_INFO:
@@ -539,6 +555,7 @@ MXKEncryptionInfoViewDelegate>
                 displaynameCell.mxkLabel.text = NSLocalizedStringFromTable(@"manage_session_name", @"Vector", nil);
                 displaynameCell.mxkTextField.text = device.displayName;
                 displaynameCell.mxkTextField.userInteractionEnabled = NO;
+                displaynameCell.selectionStyle = UITableViewCellSelectionStyleDefault;
                 
                 cell = displaynameCell;
                 break;
@@ -667,10 +684,20 @@ MXKEncryptionInfoViewDelegate>
     {
         NSInteger section = indexPath.section;
         NSInteger row = indexPath.row;
-
-        if (section == SECTION_SESSION_INFO)
+        
+        switch (section)
         {
-            //[self showDeviceDetails:devicesArray[deviceIndex]];
+            case SECTION_SESSION_INFO:
+                switch (row)
+            {
+                case SESSION_INFO_SESSION_NAME:
+                    [self renameDevice];
+                    break;
+                    
+                default:
+                    break;
+            }
+                break;
         }
 
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -679,6 +706,62 @@ MXKEncryptionInfoViewDelegate>
 
 #pragma mark - actions
 
+- (void)renameDevice
+{
+    // Prompt the user to enter a device name.
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
+    
+    MXWeakify(self);
+    currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"device_details_rename_prompt_title"]
+                                                       message:[NSBundle mxk_localizedStringForKey:@"device_details_rename_prompt_message"] preferredStyle:UIAlertControllerStyleAlert];
+    
+    [currentAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        MXStrongifyAndReturnIfNil(self);
+        textField.secureTextEntry = NO;
+        textField.placeholder = nil;
+        textField.keyboardType = UIKeyboardTypeDefault;
+        textField.text = self->device.displayName;
+    }];
+    
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action)
+                             {
+                                 MXStrongifyAndReturnIfNil(self);
+                                 self->currentAlert = nil;
+                             }]];
+    
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action)
+                             {
+                                 MXStrongifyAndReturnIfNil(self);
+                                 
+                                 NSString *text = [self->currentAlert textFields].firstObject.text;
+                                 self->currentAlert = nil;
+                                 
+                                 
+                                 // Hot change
+                                 self->device.displayName = text;
+                                 [self refreshSettings];
+                                 [self.activityIndicator startAnimating];
+
+                                 [self.mainSession.matrixRestClient setDeviceName:text forDeviceId:self->device.deviceId success:^{
+                                     [self reloadDeviceWithCompletion:^{
+                                         [self.activityIndicator stopAnimating];
+                                     }];
+                                 } failure:^(NSError *error) {
+                                     
+                                     NSLog(@"[ManageSessionVC] Rename device (%@) failed", self->device.deviceId);
+                                     [self reloadDeviceWithCompletion:^{
+                                         [self.activityIndicator stopAnimating];
+                                     }];
+                                 }];
+                                 
+                             }]];
+    
+    [self presentViewController:currentAlert animated:YES completion:nil];
+}
 
 #pragma mark - MXKDataSourceDelegate
 
