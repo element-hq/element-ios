@@ -929,3 +929,4 @@
 "key_verification_tile_conclusion_done_title" = "Verificato";
 "key_verification_tile_conclusion_warning_title" = "Accesso non fidato";
 "key_verification_incoming_request_incoming_alert_message" = "%@ vuole verificare";
+"settings_labs_enable_cross_signing" = "Attiva la firma incrociata per la verifica per-utente invece di per-dispositivo (in sviluppo)";
