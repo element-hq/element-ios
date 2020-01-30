@@ -416,6 +416,8 @@
 "settings_three_pids_management_information_part2" = "Discovery";
 "settings_three_pids_management_information_part3" = ".";
 
+"settings_security" = "SECURITY";
+
 "settings_enable_push_notif" = "Notifications on this device";
 "settings_show_decrypted_content" = "Show decrypted content";
 "settings_global_settings_info" = "Global notification settings are available on your %@ web client";
@@ -540,6 +542,28 @@
 "settings_identity_server_description" = "Using the identity server set above, you can discover and be discoverable by existing contacts you know.";
 "settings_identity_server_no_is" = "No identity server configured";
 "settings_identity_server_no_is_description" = "You are not currently using an identity server. To discover and be discoverable by existing contacts you know, add one above.";
+
+
+// Security settings
+"security_settings_title" = "Security";
+"security_settings_crypto_sessions" = "MY SESSIONS";
+"security_settings_crypto_sessions_description" = "Trust sessions to grant access to end-to-end encrypted messages. If you don’t recognise a session, change your login password and reset your Message Password used for Message Backup.";
+
+"security_settings_backup" = "MESSAGE BACKUP";
+
+"security_settings_advanced" = "ADVANCED";
+"security_settings_blacklist_unverified_devices" = "Never send messages to untrusted sessions";
+"security_settings_blacklist_unverified_devices_description" = "Verify all of a users sessions to mark them as trusted and send messages to them.";
+"security_settings_export_keys_manually" = "Export keys manually";
+
+
+// Manage session
+"manage_session_title" = "Manage session";
+"manage_session_info" = "SESSION INFO";
+"manage_session_name" = "Device name";
+"manage_session_trusted" = "Trusted by you";
+"manage_session_not_trusted" = "Not trusted";
+"manage_session_sign_out" = "Sign out of this device";
 
 
 // Identity server settings

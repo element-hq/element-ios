@@ -1534,6 +1534,30 @@ internal enum VectorL10n {
   internal static var leave: String { 
     return VectorL10n.tr("Vector", "leave") 
   }
+  /// SESSION INFO
+  internal static var manageSessionInfo: String { 
+    return VectorL10n.tr("Vector", "manage_session_info") 
+  }
+  /// Device name
+  internal static var manageSessionName: String { 
+    return VectorL10n.tr("Vector", "manage_session_name") 
+  }
+  /// Not trusted
+  internal static var manageSessionNotTrusted: String { 
+    return VectorL10n.tr("Vector", "manage_session_not_trusted") 
+  }
+  /// Sign out of this device
+  internal static var manageSessionSignOut: String { 
+    return VectorL10n.tr("Vector", "manage_session_sign_out") 
+  }
+  /// Manage session
+  internal static var manageSessionTitle: String { 
+    return VectorL10n.tr("Vector", "manage_session_title") 
+  }
+  /// Trusted by you
+  internal static var manageSessionTrusted: String { 
+    return VectorL10n.tr("Vector", "manage_session_trusted") 
+  }
   /// Library
   internal static var mediaPickerLibrary: String { 
     return VectorL10n.tr("Vector", "media_picker_library") 
@@ -2606,6 +2630,38 @@ internal enum VectorL10n {
   internal static var searchRooms: String { 
     return VectorL10n.tr("Vector", "search_rooms") 
   }
+  /// ADVANCED
+  internal static var securitySettingsAdvanced: String { 
+    return VectorL10n.tr("Vector", "security_settings_advanced") 
+  }
+  /// MESSAGE BACKUP
+  internal static var securitySettingsBackup: String { 
+    return VectorL10n.tr("Vector", "security_settings_backup") 
+  }
+  /// Never send messages to untrusted sessions
+  internal static var securitySettingsBlacklistUnverifiedDevices: String { 
+    return VectorL10n.tr("Vector", "security_settings_blacklist_unverified_devices") 
+  }
+  /// Verify all of a users sessions to mark them as trusted and send messages to them.
+  internal static var securitySettingsBlacklistUnverifiedDevicesDescription: String { 
+    return VectorL10n.tr("Vector", "security_settings_blacklist_unverified_devices_description") 
+  }
+  /// MY SESSIONS
+  internal static var securitySettingsCryptoSessions: String { 
+    return VectorL10n.tr("Vector", "security_settings_crypto_sessions") 
+  }
+  /// Trust sessions to grant access to end-to-end encrypted messages. If you don’t recognise a session, change your login password and reset your Message Password used for Message Backup.
+  internal static var securitySettingsCryptoSessionsDescription: String { 
+    return VectorL10n.tr("Vector", "security_settings_crypto_sessions_description") 
+  }
+  /// Export keys manually
+  internal static var securitySettingsExportKeysManually: String { 
+    return VectorL10n.tr("Vector", "security_settings_export_keys_manually") 
+  }
+  /// Security
+  internal static var securitySettingsTitle: String { 
+    return VectorL10n.tr("Vector", "security_settings_title") 
+  }
   /// Send to %@
   internal static func sendTo(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "send_to", p1)
@@ -3121,6 +3177,10 @@ internal enum VectorL10n {
   /// Report bug
   internal static var settingsReportBug: String { 
     return VectorL10n.tr("Vector", "settings_report_bug") 
+  }
+  /// SECURITY
+  internal static var settingsSecurity: String { 
+    return VectorL10n.tr("Vector", "settings_security") 
   }
   /// Send anon crash & usage data
   internal static var settingsSendCrashReport: String { 

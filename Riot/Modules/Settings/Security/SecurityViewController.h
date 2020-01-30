@@ -1,5 +1,5 @@
 /*
- Copyright 2015 OpenMarket Ltd
+ Copyright 2020 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "MediaPickerViewController.h"
+@interface SecurityViewController : MXKTableViewController
 
-@interface SettingsViewController : MXKTableViewController<UITextFieldDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate, MXKDataSourceDelegate>
++ (SecurityViewController*)instantiateWithMatrixSession:(MXSession*)matrixSession;
 
 @end
 
