@@ -64,9 +64,6 @@ enum
     SETTINGS_SECTION_ADVANCED_INDEX,
     SETTINGS_SECTION_OTHER_INDEX,
     SETTINGS_SECTION_LABS_INDEX,
-    SETTINGS_SECTION_CRYPTOGRAPHY_INDEX,
-    SETTINGS_SECTION_KEYBACKUP_INDEX,
-    SETTINGS_SECTION_DEVICES_INDEX,
     SETTINGS_SECTION_FLAIR_INDEX,
     SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX,
     SETTINGS_SECTION_COUNT
@@ -142,18 +139,6 @@ enum
     LABS_COUNT
 };
 
-enum {
-    CRYPTOGRAPHY_INFO_INDEX = 0,
-    CRYPTOGRAPHY_BLACKLIST_UNVERIFIED_DEVICES_INDEX,
-    CRYPTOGRAPHY_EXPORT_INDEX,
-    CRYPTOGRAPHY_COUNT
-};
-
-enum
-{
-    DEVICES_DESCRIPTION_INDEX = 0
-};
-
 enum
 {
     SECURITY_BUTTON_INDEX = 0,
@@ -166,10 +151,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 
 @interface SettingsViewController () <DeactivateAccountViewControllerDelegate,
-SettingsKeyBackupTableViewSectionDelegate,
-MXKEncryptionInfoViewDelegate,
 KeyBackupSetupCoordinatorBridgePresenterDelegate,
-KeyBackupRecoverCoordinatorBridgePresenterDelegate,
 SignOutAlertPresenterDelegate,
 SingleImagePickerPresenterDelegate,
 SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinatorDelegate,
@@ -228,10 +210,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     NSInteger localContactsSyncIndex;
     NSInteger localContactsPhoneBookCountryIndex;
     
-    // Devices
-    NSMutableArray<MXDevice *> *devicesArray;
-    DeviceView *deviceView;
-    
     // Flair: the groups data source
     GroupsDataSource *groupsDataSource;
     
@@ -249,14 +227,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     
     //
     UIAlertController *resetPwdAlertController;
-
-    // The view used to export e2e keys
-    MXKEncryptionKeysExportView *exportView;
-
-    // The document interaction Controller used to export e2e keys
-    UIDocumentInteractionController *documentInteractionController;
-    NSURL *keyExportsFile;
-    NSTimer *keyExportsFileDeletionTimer;
     
     BOOL keepNewEmailEditing;
     BOOL keepNewPhoneNumberEditing;
@@ -264,9 +234,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     // The current pushed view controller
     UIViewController *pushedViewController;
 
-    SettingsKeyBackupTableViewSection *keyBackupSection;
     KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
-    KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter;
 
     SettingsIdentityServerCoordinatorBridgePresenter *identityServerSettingsCoordinatorBridgePresenter;
 }
@@ -365,18 +333,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     {
         [self addMatrixSession:mxSession];
     }
-
-    if (self.mainSession.crypto.backup)
-    {
-        MXDeviceInfo *deviceInfo = [self.mainSession.crypto.deviceList storedDevice:self.mainSession.matrixRestClient.credentials.userId
-                                                                           deviceId:self.mainSession.matrixRestClient.credentials.deviceId];
-
-        if (deviceInfo)
-        {
-            keyBackupSection = [[SettingsKeyBackupTableViewSection alloc] initWithKeyBackup:self.mainSession.crypto.backup userDevice:deviceInfo];
-            keyBackupSection.delegate = self;
-        }
-    }
     
     [self setupDiscoverySection];
 
@@ -440,13 +396,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     // Release the potential pushed view controller
     [self releasePushedViewController];
     
-    if (documentInteractionController)
-    {
-        [documentInteractionController dismissPreviewAnimated:NO];
-        [documentInteractionController dismissMenuAnimated:NO];
-        documentInteractionController = nil;
-    }
-    
     if (kThemeServiceDidChangeThemeNotificationObserver)
     {
         [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
@@ -475,7 +424,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }
 
     keyBackupSetupCoordinatorBridgePresenter = nil;
-    keyBackupRecoverCoordinatorBridgePresenter = nil;
     identityServerSettingsCoordinatorBridgePresenter = nil;
 }
 
@@ -510,13 +458,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
     // Refresh linked emails and phone numbers in parallel
     [self loadAccount3PIDs];
-    
-    // Refresh the current device information in parallel
-    [self loadCurrentDeviceInformation];
-    
-    // Refresh devices in parallel
-    [self loadDevices];
-    
+        
     // Observe kAppDelegateDidTapStatusBarNotificationObserver.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -645,12 +587,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     onReadyToDestroyHandler = nil;
-    
-    if (deviceView)
-    {
-        [deviceView removeFromSuperview];
-        deviceView = nil;
-    }
 }
 
 -(void)setNewEmailEditingEnabled:(BOOL)newEmailEditingEnabled
@@ -999,171 +935,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }];
 }
 
-- (void)loadCurrentDeviceInformation
-{
-    // Refresh the current device information
-    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-    [account loadDeviceInformation:^{
-        
-        // Refresh all the table (A slide down animation is observed when we limit the refresh to the concerned section).
-        // Note: The use of 'reloadData' handles the case where the account has been logged out.
-        [self refreshSettings];
-        
-    } failure:nil];
-}
-
-- (NSAttributedString*)cryptographyInformation
-{
-    // TODO Handle multi accounts
-    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-    
-    // Crypto information
-    NSMutableAttributedString *cryptoInformationString = [[NSMutableAttributedString alloc]
-                                                          initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_name", @"Vector", nil)
-                                                          attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
-                                                                       NSFontAttributeName: [UIFont systemFontOfSize:17]}];
-    [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                     initWithString:account.device.displayName ? account.device.displayName : @""
-                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
-                                                                  NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
-    
-    [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                     initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_id", @"Vector", nil)
-                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
-                                                                  NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
-    [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                     initWithString:account.device.deviceId ? account.device.deviceId : @""
-                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
-                                                                  NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
-    
-    [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                     initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_key", @"Vector", nil)
-                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
-                                                                  NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
-    NSString *fingerprint = account.mxSession.crypto.deviceEd25519Key;
-    if (fingerprint)
-    {
-        fingerprint = [MXTools addWhiteSpacesToString:fingerprint every:4];
-    }
-    [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                     initWithString:fingerprint ? fingerprint : @""
-                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
-                                                                  NSFontAttributeName: [UIFont boldSystemFontOfSize:17]}]];
-    
-    return cryptoInformationString;
-}
-
-- (void)loadDevices
-{
-    // Refresh the account devices list
-    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-    [account.mxRestClient devices:^(NSArray<MXDevice *> *devices) {
-        
-        if (devices)
-        {
-            devicesArray = [NSMutableArray arrayWithArray:devices];
-            
-            // Sort devices according to the last seen date.
-            NSComparator comparator = ^NSComparisonResult(MXDevice *deviceA, MXDevice *deviceB) {
-                
-                if (deviceA.lastSeenTs > deviceB.lastSeenTs)
-                {
-                    return NSOrderedAscending;
-                }
-                if (deviceA.lastSeenTs < deviceB.lastSeenTs)
-                {
-                    return NSOrderedDescending;
-                }
-                
-                return NSOrderedSame;
-            };
-            
-            // Sort devices list
-            [devicesArray sortUsingComparator:comparator];
-        }
-        else
-        {
-            devicesArray = nil;
-
-        }
-        
-        // Refresh all the table (A slide down animation is observed when we limit the refresh to the concerned section).
-        // Note: The use of 'reloadData' handles the case where the account has been logged out.
-        [self refreshSettings];
-        
-    } failure:^(NSError *error) {
-        
-        // Display the data that has been loaded last time
-        // Note: The use of 'reloadData' handles the case where the account has been logged out.
-        [self refreshSettings];
-        
-    }];
-}
-
-- (void)showDeviceDetails:(MXDevice *)device
-{
-    [self dismissKeyboard];
-    
-    deviceView = [[DeviceView alloc] initWithDevice:device andMatrixSession:self.mainSession];
-    deviceView.delegate = self;
-
-    // Add the view and define edge constraints
-    [self.tableView.superview addSubview:deviceView];
-    [self.tableView.superview bringSubviewToFront:deviceView];
-    
-    NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:deviceView
-                                                                     attribute:NSLayoutAttributeTop
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self.tableView
-                                                                     attribute:NSLayoutAttributeTop
-                                                                    multiplier:1.0f
-                                                                      constant:0.0f];
-    
-    NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:deviceView
-                                                                      attribute:NSLayoutAttributeLeft
-                                                                      relatedBy:NSLayoutRelationEqual
-                                                                         toItem:self.tableView
-                                                                      attribute:NSLayoutAttributeLeft
-                                                                     multiplier:1.0f
-                                                                       constant:0.0f];
-    
-    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:deviceView
-                                                                       attribute:NSLayoutAttributeWidth
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:self.tableView
-                                                                       attribute:NSLayoutAttributeWidth
-                                                                      multiplier:1.0f
-                                                                        constant:0.0f];
-    
-    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:deviceView
-                                                                        attribute:NSLayoutAttributeHeight
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:self.tableView
-                                                                        attribute:NSLayoutAttributeHeight
-                                                                       multiplier:1.0f
-                                                                         constant:0.0f];
-    
-    [NSLayoutConstraint activateConstraints:@[topConstraint, leftConstraint, widthConstraint, heightConstraint]];
-}
-
-- (void)deviceView:(DeviceView*)theDeviceView presentAlertController:(UIAlertController *)alert
-{
-    [self dismissKeyboard];
-    
-    [self presentViewController:alert animated:YES completion:nil];
-}
-
-- (void)dismissDeviceView:(MXKDeviceView *)theDeviceView didUpdate:(BOOL)isUpdated
-{
-    [deviceView removeFromSuperview];
-    deviceView = nil;
-    
-    if (isUpdated)
-    {
-        [self loadDevices];
-    }
-}
-
 - (void)editNewEmailTextField
 {
     if (newEmailTextField && ![newEmailTextField becomeFirstResponder])
@@ -1460,31 +1231,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             {
                 count = [groupsDataSource tableView:tableView numberOfRowsInSection:groupsDataSource.joinedGroupsSection];
             }
-        }
-    }
-    else if (section == SETTINGS_SECTION_DEVICES_INDEX)
-    {
-        count = devicesArray.count;
-        if (count)
-        {
-            // For some description (DEVICES_DESCRIPTION_INDEX)
-            count++;
-        }
-    }
-    else if (section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
-    {
-        // Check whether this section is visible.
-        if (self.mainSession.crypto)
-        {
-            count = CRYPTOGRAPHY_COUNT;
-        }
-    }
-    else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
-    {
-        // Check whether this section is visible.
-        if (self.mainSession.crypto)
-        {
-            count = keyBackupSection.numberOfRows;
         }
     }
     else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
@@ -2480,94 +2226,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             [groupWithSwitchCell.toggleButton addTarget:self action:@selector(toggleCommunityFlair:) forControlEvents:UIControlEventTouchUpInside];
         }
     }
-    else if (section == SETTINGS_SECTION_DEVICES_INDEX)
-    {
-        if (row == DEVICES_DESCRIPTION_INDEX)
-        {
-            MXKTableViewCell *descriptionCell = [self getDefaultTableViewCell:tableView];
-            descriptionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_devices_description", @"Vector", nil);
-            descriptionCell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
-            descriptionCell.textLabel.font = [UIFont systemFontOfSize:15];
-            descriptionCell.textLabel.numberOfLines = 0;
-            descriptionCell.contentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
-            descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-            cell = descriptionCell;
-        }
-        else
-        {
-            NSUInteger deviceIndex = row - 1;
-
-            MXKTableViewCell *deviceCell = [self getDefaultTableViewCell:tableView];
-            if (deviceIndex < devicesArray.count)
-            {
-                NSString *name = devicesArray[deviceIndex].displayName;
-                NSString *deviceId = devicesArray[deviceIndex].deviceId;
-                deviceCell.textLabel.text = (name.length ? [NSString stringWithFormat:@"%@ (%@)", name, deviceId] : [NSString stringWithFormat:@"(%@)", deviceId]);
-                deviceCell.textLabel.numberOfLines = 0;
-
-                if ([deviceId isEqualToString:self.mainSession.matrixRestClient.credentials.deviceId])
-                {
-                    deviceCell.textLabel.font = [UIFont boldSystemFontOfSize:17];
-                }
-            }
-
-            cell = deviceCell;
-        }
-
-    }
-    else if (section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
-    {
-        if (row == CRYPTOGRAPHY_INFO_INDEX)
-        {
-            MXKTableViewCellWithTextView *cryptoCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
-            
-            cryptoCell.mxkTextView.attributedText = [self cryptographyInformation];
-
-            cell = cryptoCell;
-        }
-        else if (row == CRYPTOGRAPHY_BLACKLIST_UNVERIFIED_DEVICES_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_crypto_blacklist_unverified_devices", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = account.mxSession.crypto.globalBlacklistUnverifiedDevices;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleBlacklistUnverifiedDevices:) forControlEvents:UIControlEventTouchUpInside];
-
-            cell = labelAndSwitchCell;
-        }
-        else if (row == CRYPTOGRAPHY_EXPORT_INDEX)
-        {
-            MXKTableViewCellWithButton *exportKeysBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
-            if (!exportKeysBtnCell)
-            {
-                exportKeysBtnCell = [[MXKTableViewCellWithButton alloc] init];
-            }
-            else
-            {
-                // Fix https://github.com/vector-im/riot-ios/issues/1354
-                exportKeysBtnCell.mxkButton.titleLabel.text = nil;
-            }
-
-            NSString *btnTitle = NSLocalizedStringFromTable(@"settings_crypto_export", @"Vector", nil);
-            [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
-            [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-            [exportKeysBtnCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
-            exportKeysBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
-
-            [exportKeysBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-            [exportKeysBtnCell.mxkButton addTarget:self action:@selector(exportEncryptionKeys:) forControlEvents:UIControlEventTouchUpInside];
-            exportKeysBtnCell.mxkButton.accessibilityIdentifier = nil;
-
-            cell = exportKeysBtnCell;
-        }
-    }
-    else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
-    {
-        cell = [keyBackupSection cellForRowAtRow:row];
-    }
     else if (section == SETTINGS_SECTION_SECURITY_INDEX)
     {
         switch (row)
@@ -2673,30 +2331,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         if (groupsDataSource.joinedGroupsSection != -1)
         {
             return NSLocalizedStringFromTable(@"settings_flair", @"Vector", nil);
-        }
-    }
-    else if (section == SETTINGS_SECTION_DEVICES_INDEX)
-    {
-        // Check whether this section is visible
-        if (devicesArray.count > 0)
-        {
-            return NSLocalizedStringFromTable(@"settings_devices", @"Vector", nil);
-        }
-    }
-    else if (section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
-    {
-        // Check whether this section is visible
-        if (self.mainSession.crypto)
-        {
-            return NSLocalizedStringFromTable(@"settings_cryptography", @"Vector", nil);
-        }
-    }
-    else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
-    {
-        // Check whether this section is visible
-        if (self.mainSession.crypto)
-        {
-            return NSLocalizedStringFromTable(@"settings_key_backup", @"Vector", nil);
         }
     }
     else if (section == SETTINGS_SECTION_SECURITY_INDEX)
@@ -3025,28 +2659,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 {
                     [self onAddNewPhone:newPhoneNumberCell.mxkTextField];
                 }
-            }
-        }
-        else if (section == SETTINGS_SECTION_DEVICES_INDEX)
-        {
-            if (row > DEVICES_DESCRIPTION_INDEX)
-            {
-                NSUInteger deviceIndex = row - 1;
-                if (deviceIndex < devicesArray.count)
-                {
-                    [self showDeviceDetails:devicesArray[deviceIndex]];
-                }
-            }
-        }
-        else if (section == SETTINGS_SECTION_CONTACTS_INDEX)
-        {
-            if (row == localContactsPhoneBookCountryIndex)
-            {
-                CountryPickerViewController *countryPicker = [CountryPickerViewController countryPickerViewController];
-                countryPicker.view.tag = SETTINGS_SECTION_CONTACTS_INDEX;
-                countryPicker.delegate = self;
-                countryPicker.showCountryCallingCode = YES;
-                [self pushViewController:countryPicker];
             }
         }
         else if (section == SETTINGS_SECTION_SECURITY_INDEX)
@@ -3433,16 +3045,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     UISwitch *switchButton = (UISwitch*)sender;
     
     RiotSettings.shared.enableCrossSigning = switchButton.isOn;
-}
-
-- (void)toggleBlacklistUnverifiedDevices:(id)sender
-{
-    UISwitch *switchButton = (UISwitch*)sender;
-
-    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-    account.mxSession.crypto.globalBlacklistUnverifiedDevices = switchButton.on;
-
-    [self.tableView reloadData];
 }
 
 - (void)togglePinRoomsWithMissedNotif:(id)sender
@@ -4041,69 +3643,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     self.imagePickerPresenter = singleImagePickerPresenter;
 }
 
-- (void)exportEncryptionKeys:(UITapGestureRecognizer *)recognizer
-{
-    [currentAlert dismissViewControllerAnimated:NO completion:nil];
-
-    exportView = [[MXKEncryptionKeysExportView alloc] initWithMatrixSession:self.mainSession];
-    currentAlert = exportView.alertController;
-
-    // Use a temporary file for the export
-    keyExportsFile = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"riot-keys.txt"]];
-
-    // Make sure the file is empty
-    [self deleteKeyExportFile];
-
-    // Show the export dialog
-    __weak typeof(self) weakSelf = self;
-    [exportView showInViewController:self toExportKeysToFile:keyExportsFile onComplete:^(BOOL success) {
-
-        if (weakSelf)
-        {
-             typeof(self) self = weakSelf;
-            self->currentAlert = nil;
-            self->exportView = nil;
-
-            if (success)
-            {
-                // Let another app handling this file
-                self->documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:keyExportsFile];
-                [self->documentInteractionController setDelegate:self];
-
-                if ([self->documentInteractionController presentOptionsMenuFromRect:self.view.bounds inView:self.view animated:YES])
-                {
-                    // We want to delete the temp keys file after it has been processed by the other app.
-                    // We use [UIDocumentInteractionControllerDelegate didEndSendingToApplication] for that
-                    // but it is not reliable for all cases (see http://stackoverflow.com/a/21867096).
-                    // So, arm a timer to auto delete the file after 10mins.
-                    keyExportsFileDeletionTimer = [NSTimer scheduledTimerWithTimeInterval:600 target:self selector:@selector(deleteKeyExportFile) userInfo:self repeats:NO];
-                }
-                else
-                {
-                    self->documentInteractionController = nil;
-                    [self deleteKeyExportFile];
-                }
-            }
-        }
-    }];
-}
-
-- (void)deleteKeyExportFile
-{
-    // Cancel the deletion timer if it is still here
-    if (keyExportsFileDeletionTimer)
-    {
-        [keyExportsFileDeletionTimer invalidate];
-        keyExportsFileDeletionTimer = nil;
-    }
-
-    // And delete the file
-    if (keyExportsFile && [[NSFileManager defaultManager] fileExistsAtPath:keyExportsFile.path])
-    {
-        [[NSFileManager defaultManager] removeItemAtPath:keyExportsFile.path error:nil];
-    }
-}
-
 - (void)showThemePicker
 {
     __weak typeof(self) weakSelf = self;
@@ -4465,18 +4004,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     [self presentViewController:resetPwdAlertController animated:YES completion:nil];
 }
 
-#pragma mark - UIDocumentInteractionControllerDelegate
-
-- (void)documentInteractionController:(UIDocumentInteractionController *)controller didEndSendingToApplication:(NSString *)application
-{
-    // If iOS wants to call this method, this is the right time to remove the file
-    [self deleteKeyExportFile];
-}
-
-- (void)documentInteractionControllerDidDismissOptionsMenu:(UIDocumentInteractionController *)controller
-{
-    documentInteractionController = nil;
-}
 
 #pragma mark - MXKCountryPickerViewControllerDelegate
 
@@ -4560,96 +4087,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     [deactivateAccountViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - SettingsKeyBackupTableViewSectionDelegate
 
-- (void)settingsKeyBackupTableViewSectionDidUpdate:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection
-{
-    [self.tableView reloadData];
-}
-
-- (MXKTableViewCellWithTextView *)settingsKeyBackupTableViewSection:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection textCellForRow:(NSInteger)textCellForRow
-{
-    return [self textViewCellForTableView:self.tableView atIndexPath:[NSIndexPath indexPathForRow:textCellForRow inSection:SETTINGS_SECTION_KEYBACKUP_INDEX]];
-}
-
-- (MXKTableViewCellWithButton *)settingsKeyBackupTableViewSection:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection buttonCellForRow:(NSInteger)buttonCellForRow
-{
-    MXKTableViewCellWithButton *cell = [self.tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
-
-    if (!cell)
-    {
-        cell = [[MXKTableViewCellWithButton alloc] init];
-    }
-    else
-    {
-        // Fix https://github.com/vector-im/riot-ios/issues/1354
-        cell.mxkButton.titleLabel.text = nil;
-    }
-
-    cell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
-    [cell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
-
-    return cell;
-}
-
-- (void)settingsKeyBackupTableViewSectionShowKeyBackupSetup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection
-{
-    [self showKeyBackupSetupFromSignOutFlow:NO];
-}
-
-- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showKeyBackupRecover:(MXKeyBackupVersion *)keyBackupVersion
-{
-    [self showKeyBackupRecover:keyBackupVersion];
-}
-
-- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showKeyBackupDeleteConfirm:(MXKeyBackupVersion *)keyBackupVersion
-{
-    MXWeakify(self);
-    [currentAlert dismissViewControllerAnimated:NO completion:nil];
-
-    currentAlert =
-    [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_key_backup_delete_confirmation_prompt_title", @"Vector", nil)
-                                        message:NSLocalizedStringFromTable(@"settings_key_backup_delete_confirmation_prompt_msg", @"Vector", nil)
-                                 preferredStyle:UIAlertControllerStyleAlert];
-
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                     style:UIAlertActionStyleCancel
-                                                   handler:^(UIAlertAction * action) {
-                                                       MXStrongifyAndReturnIfNil(self);
-                                                       self->currentAlert = nil;
-                                                   }]];
-
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_key_backup_button_delete", @"Vector", nil)
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                       MXStrongifyAndReturnIfNil(self);
-                                                       self->currentAlert = nil;
-
-                                                       [self->keyBackupSection deleteWithKeyBackupVersion:keyBackupVersion];
-                                                   }]];
-
-    [currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCDeleteKeyBackup"];
-    [self presentViewController:currentAlert animated:YES completion:nil];
-}
-
-- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showActivityIndicator:(BOOL)show
-{
-    if (show)
-    {
-        [self startActivityIndicator];
-    }
-    else
-    {
-        [self stopActivityIndicator];
-    }
-}
-
-- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showError:(NSError *)error
-{
-    [[AppDelegate theDelegate] showErrorAsAlert:error];
-}
-
-#pragma mark - KeyBackupRecoverCoordinatorBridgePresenter
+#pragma mark - KeyBackupSetupCoordinatorBridgePresenter
 
 - (void)showKeyBackupSetupFromSignOutFlow:(BOOL)showFromSignOutFlow
 {
@@ -4670,28 +4109,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 - (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidSetupRecoveryKey:(KeyBackupSetupCoordinatorBridgePresenter *)bridgePresenter {
     [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:true];
     keyBackupSetupCoordinatorBridgePresenter = nil;
-
-    [keyBackupSection reload];
-}
-
-#pragma mark - KeyBackupRecoverCoordinatorBridgePresenter
-
-- (void)showKeyBackupRecover:(MXKeyBackupVersion*)keyBackupVersion
-{
-    keyBackupRecoverCoordinatorBridgePresenter = [[KeyBackupRecoverCoordinatorBridgePresenter alloc] initWithSession:self.mainSession keyBackupVersion:keyBackupVersion];
-
-    [keyBackupRecoverCoordinatorBridgePresenter presentFrom:self animated:true];
-    keyBackupRecoverCoordinatorBridgePresenter.delegate = self;
-}
-
-- (void)keyBackupRecoverCoordinatorBridgePresenterDidCancel:(KeyBackupRecoverCoordinatorBridgePresenter *)bridgePresenter {
-    [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:true];
-    keyBackupRecoverCoordinatorBridgePresenter = nil;
-}
-
-- (void)keyBackupRecoverCoordinatorBridgePresenterDidRecover:(KeyBackupRecoverCoordinatorBridgePresenter *)bridgePresenter {
-    [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:true];
-    keyBackupRecoverCoordinatorBridgePresenter = nil;
 }
 
 #pragma mark - SignOutAlertPresenterDelegate
