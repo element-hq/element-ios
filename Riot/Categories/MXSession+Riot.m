@@ -53,33 +53,23 @@
                                                     success:(void (^)(BOOL canEnableE2E))success
                                                     failure:(void (^)(NSError *error))failure
 {
-    MXHTTPOperation *operation;
-    if (RiotSettings.shared.enableCrossSigning)
-    {
-        // Check whether all users have uploaded device keys before.
-        // If so, encryption can be enabled in the new room
-        operation = [self.crypto downloadKeys:userIds forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap, NSDictionary<NSString *,MXCrossSigningInfo *> *crossSigningKeysMap) {
-
-            BOOL allUsersHaveDeviceKeys = YES;
-            for (NSString *userId in userIds)
+    // Check whether all users have uploaded device keys before.
+    // If so, encryption can be enabled in the new room
+    return [self.crypto downloadKeys:userIds forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap, NSDictionary<NSString *,MXCrossSigningInfo *> *crossSigningKeysMap) {
+        
+        BOOL allUsersHaveDeviceKeys = YES;
+        for (NSString *userId in userIds)
+        {
+            if ([usersDevicesInfoMap deviceIdsForUser:userId].count == 0)
             {
-                if ([usersDevicesInfoMap deviceIdsForUser:userId].count == 0)
-                {
-                    allUsersHaveDeviceKeys = NO;
-                    break;
-                }
+                allUsersHaveDeviceKeys = NO;
+                break;
             }
-
-            success(allUsersHaveDeviceKeys);
-
-        } failure:failure];
-    }
-    else
-    {
-        success(NO);
-    }
-
-    return operation;
+        }
+        
+        success(allUsersHaveDeviceKeys);
+        
+    } failure:failure];
 }
 
 @end
