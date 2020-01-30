@@ -2,6 +2,7 @@ Changes in 0.11.0 (2020-xx-xx)
 ===============================================
 
 Improvements:
+ * E2E: Do not warn anymore for unknown devices
  * ON/OFF Cross-signing development in a Lab setting (#2855).
  * RoomVC: Update encryption decoration with shields (#2934, #2930, #2906).
  * Settings: Remove "End-to-End Encryption" from the LABS section (#2941).

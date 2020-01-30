@@ -3056,6 +3056,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     UISwitch *switchButton = (UISwitch*)sender;
     
     RiotSettings.shared.enableCrossSigning = switchButton.isOn;
+    
+    self.mainSession.crypto.warnOnUnknowDevices = !RiotSettings.shared.enableCrossSigning;
 }
 
 - (void)togglePinRoomsWithMissedNotif:(id)sender
