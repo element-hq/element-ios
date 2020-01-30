@@ -2,8 +2,9 @@ Changes in 0.11.0 (2020-xx-xx)
 ===============================================
 
 Improvements:
- * ON/OFF Cross-signing development in a Lab setting (#2855).
+ * Enable e2e by default for DM (#2943).
  * RoomVC: Update encryption decoration with shields (#2934, #2930, #2906).
+ * Settings: ON/OFF Cross-signing development in a Lab setting (#2855).
  * Settings: Remove "End-to-End Encryption" from the LABS section (#2941).
 
 Changes in 0.10.4 (2019-12-11)
