@@ -117,6 +117,21 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.TemplateScreenViewController>(storyboard: TemplateScreenViewController.self)
   }
+  internal enum UserVerificationSessionStatusViewController: StoryboardType {
+    internal static let storyboardName = "UserVerificationSessionStatusViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.UserVerificationSessionStatusViewController>(storyboard: UserVerificationSessionStatusViewController.self)
+  }
+  internal enum UserVerificationSessionsStatusViewController: StoryboardType {
+    internal static let storyboardName = "UserVerificationSessionsStatusViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.UserVerificationSessionsStatusViewController>(storyboard: UserVerificationSessionsStatusViewController.self)
+  }
+  internal enum UserVerificationStartViewController: StoryboardType {
+    internal static let storyboardName = "UserVerificationStartViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.UserVerificationStartViewController>(storyboard: UserVerificationStartViewController.self)
+  }
   internal enum WidgetPermissionViewController: StoryboardType {
     internal static let storyboardName = "WidgetPermissionViewController"
 
