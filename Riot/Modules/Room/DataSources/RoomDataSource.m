@@ -245,7 +245,8 @@
                 
                 double trustedDevicesPercentage = usersTrustLevelSummary.trustedDevicesProgress.fractionCompleted;
                 
-                if (trustedDevicesPercentage >= 1.0)
+                if (trustedDevicesPercentage >= 1.0
+                    || usersTrustLevelSummary.trustedDevicesProgress.totalUnitCount == 0)
                 {
                     roomEncryptionTrustLevel = RoomEncryptionTrustLevelTrusted;
                 }
