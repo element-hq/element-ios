@@ -136,7 +136,7 @@ MXKEncryptionInfoViewDelegate>
     
     if (self.tableView.dataSource)
     {
-        [self refreshSettings];
+        [self reloadData];
     }
 }
 
@@ -190,7 +190,7 @@ MXKEncryptionInfoViewDelegate>
     [self releasePushedViewController];
 
     // Refresh display
-    [self refreshSettings];
+    [self reloadData];
 
     // Observe kAppDelegateDidTapStatusBarNotificationObserver.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -266,7 +266,7 @@ MXKEncryptionInfoViewDelegate>
     }
 }
 
-- (void)refreshSettings
+- (void)reloadData
 {
     // Trigger a full table reloadData
     [self.tableView reloadData];
@@ -279,53 +279,16 @@ MXKEncryptionInfoViewDelegate>
         MXStrongifyAndReturnIfNil(self);
         
         self->device = device;
-        [self refreshSettings];
+        [self reloadData];
         completion();
         
     } failure:^(NSError *error) {
         NSLog(@"[ManageSessionVC] reloadDeviceWithCompletion failed. Error: %@", error);
-        [self refreshSettings];
+        [self reloadData];
         completion();
     }];
 }
 
-- (void)requestAccountPasswordWithTitle:(NSString*)title message:(NSString*)message onComplete:(void (^)(NSString *password))onComplete
-{
-    [currentAlert dismissViewControllerAnimated:NO completion:nil];
-
-    // Prompt the user before deleting the device.
-    currentAlert = [UIAlertController alertControllerWithTitle:title
-                                                       message:message
-                                                preferredStyle:UIAlertControllerStyleAlert];
-
-    [currentAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        textField.secureTextEntry = YES;
-        textField.placeholder = nil;
-        textField.keyboardType = UIKeyboardTypeDefault;
-    }];
-
-    MXWeakify(self);
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action)
-                             {
-                                 MXStrongifyAndReturnIfNil(self);
-                                 self->currentAlert = nil;
-                             }]];
-
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"continue"]
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                       MXStrongifyAndReturnIfNil(self);
-
-                                                       UITextField *textField = [self->currentAlert textFields].firstObject;
-                                                       self->currentAlert = nil;
-
-                                                       onComplete(textField.text);
-                                                   }]];
-
-    [self presentViewController:currentAlert animated:YES completion:nil];
-}
 
 #pragma mark - Segues
 
@@ -696,7 +659,7 @@ MXKEncryptionInfoViewDelegate>
                                  
                                  // Hot change
                                  self->device.displayName = text;
-                                 [self refreshSettings];
+                                 [self reloadData];
                                  [self.activityIndicator startAnimating];
 
                                  [self.mainSession.matrixRestClient setDeviceName:text forDeviceId:self->device.deviceId success:^{
@@ -820,7 +783,7 @@ MXKEncryptionInfoViewDelegate>
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
 {
     // Group data has been updated. Do a simple full reload
-    [self refreshSettings];
+    [self reloadData];
 }
 
 @end

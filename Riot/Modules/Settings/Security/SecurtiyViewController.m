@@ -165,7 +165,7 @@ UIDocumentInteractionControllerDelegate>
     
     if (self.tableView.dataSource)
     {
-        [self refreshSettings];
+        [self reloadData];
     }
 }
 
@@ -229,7 +229,7 @@ UIDocumentInteractionControllerDelegate>
     [self releasePushedViewController];
 
     // Refresh display
-    [self refreshSettings];
+    [self reloadData];
 
     // Refresh the current device information in parallel
     [self loadCurrentDeviceInformation];
@@ -313,7 +313,7 @@ UIDocumentInteractionControllerDelegate>
 
         // Refresh all the table (A slide down animation is observed when we limit the refresh to the concerned section).
         // Note: The use of 'reloadData' handles the case where the account has been logged out.
-        [self refreshSettings];
+        [self reloadData];
 
     } failure:nil];
 }
@@ -432,18 +432,18 @@ UIDocumentInteractionControllerDelegate>
 
         // Refresh all the table (A slide down animation is observed when we limit the refresh to the concerned section).
         // Note: The use of 'reloadData' handles the case where the account has been logged out.
-        [self refreshSettings];
+        [self reloadData];
 
     } failure:^(NSError *error) {
 
         // Display the data that has been loaded last time
         // Note: The use of 'reloadData' handles the case where the account has been logged out.
-        [self refreshSettings];
+        [self reloadData];
 
     }];
 }
 
-- (void)refreshSettings
+- (void)reloadData
 {
     // Trigger a full table reloadData
     [self.tableView reloadData];
@@ -897,7 +897,7 @@ UIDocumentInteractionControllerDelegate>
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
 {
     // Group data has been updated. Do a simple full reload
-    [self refreshSettings];
+    [self reloadData];
 }
 
 
