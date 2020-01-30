@@ -56,9 +56,7 @@ enum {
 
 @interface SecurityViewController () <
 MXKDataSourceDelegate,
-MXKDeviceViewDelegate,
 SettingsKeyBackupTableViewSectionDelegate,
-MXKEncryptionInfoViewDelegate,
 KeyBackupSetupCoordinatorBridgePresenterDelegate,
 KeyBackupRecoverCoordinatorBridgePresenterDelegate,
 UIDocumentInteractionControllerDelegate>
@@ -68,7 +66,6 @@ UIDocumentInteractionControllerDelegate>
 
     // Devices
     NSMutableArray<MXDevice *> *devicesArray;
-    DeviceView *deviceView;
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
     id kAppDelegateDidTapStatusBarNotificationObserver;
@@ -306,12 +303,6 @@ UIDocumentInteractionControllerDelegate>
 {
     // Remove observers
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-
-    if (deviceView)
-    {
-        [deviceView removeFromSuperview];
-        deviceView = nil;
-    }
 }
 
 - (void)loadCurrentDeviceInformation
@@ -452,108 +443,10 @@ UIDocumentInteractionControllerDelegate>
     }];
 }
 
-- (void)showDeviceDetails:(MXDevice *)device
-{
-    deviceView = [[DeviceView alloc] initWithDevice:device andMatrixSession:self.mainSession];
-    deviceView.delegate = self;
-
-    // Add the view and define edge constraints
-    [self.tableView.superview addSubview:deviceView];
-    [self.tableView.superview bringSubviewToFront:deviceView];
-
-    NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:deviceView
-                                                                     attribute:NSLayoutAttributeTop
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self.tableView
-                                                                     attribute:NSLayoutAttributeTop
-                                                                    multiplier:1.0f
-                                                                      constant:0.0f];
-
-    NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:deviceView
-                                                                      attribute:NSLayoutAttributeLeft
-                                                                      relatedBy:NSLayoutRelationEqual
-                                                                         toItem:self.tableView
-                                                                      attribute:NSLayoutAttributeLeft
-                                                                     multiplier:1.0f
-                                                                       constant:0.0f];
-
-    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:deviceView
-                                                                       attribute:NSLayoutAttributeWidth
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:self.tableView
-                                                                       attribute:NSLayoutAttributeWidth
-                                                                      multiplier:1.0f
-                                                                        constant:0.0f];
-
-    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:deviceView
-                                                                        attribute:NSLayoutAttributeHeight
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:self.tableView
-                                                                        attribute:NSLayoutAttributeHeight
-                                                                       multiplier:1.0f
-                                                                         constant:0.0f];
-
-    [NSLayoutConstraint activateConstraints:@[topConstraint, leftConstraint, widthConstraint, heightConstraint]];
-}
-
-- (void)deviceView:(DeviceView*)theDeviceView presentAlertController:(UIAlertController *)alert
-{
-    [self presentViewController:alert animated:YES completion:nil];
-}
-
-- (void)dismissDeviceView:(MXKDeviceView *)theDeviceView didUpdate:(BOOL)isUpdated
-{
-    [deviceView removeFromSuperview];
-    deviceView = nil;
-
-    if (isUpdated)
-    {
-        [self loadDevices];
-    }
-}
-
 - (void)refreshSettings
 {
     // Trigger a full table reloadData
     [self.tableView reloadData];
-}
-
-- (void)requestAccountPasswordWithTitle:(NSString*)title message:(NSString*)message onComplete:(void (^)(NSString *password))onComplete
-{
-    [currentAlert dismissViewControllerAnimated:NO completion:nil];
-
-    // Prompt the user before deleting the device.
-    currentAlert = [UIAlertController alertControllerWithTitle:title
-                                                       message:message
-                                                preferredStyle:UIAlertControllerStyleAlert];
-
-    [currentAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        textField.secureTextEntry = YES;
-        textField.placeholder = nil;
-        textField.keyboardType = UIKeyboardTypeDefault;
-    }];
-
-    MXWeakify(self);
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action)
-                             {
-                                 MXStrongifyAndReturnIfNil(self);
-                                 self->currentAlert = nil;
-                             }]];
-
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"continue"]
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                       MXStrongifyAndReturnIfNil(self);
-
-                                                       UITextField *textField = [self->currentAlert textFields].firstObject;
-                                                       self->currentAlert = nil;
-
-                                                       onComplete(textField.text);
-                                                   }]];
-
-    [self presentViewController:currentAlert animated:YES completion:nil];
 }
 
 #pragma mark - Segues
