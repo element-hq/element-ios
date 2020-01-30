@@ -4901,7 +4901,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         deviceVerificationCoordinatorBridgePresenter = [[DeviceVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
         deviceVerificationCoordinatorBridgePresenter.delegate = self;
         
-        [deviceVerificationCoordinatorBridgePresenter presentFrom:presentingViewController roomMember:roomMember animated:mxSession];
+        [deviceVerificationCoordinatorBridgePresenter presentFrom:presentingViewController roomMember:roomMember animated:YES];
         
         presented = YES;
     }
