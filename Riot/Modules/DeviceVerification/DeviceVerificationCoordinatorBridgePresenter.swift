@@ -63,6 +63,18 @@ final class DeviceVerificationCoordinatorBridgePresenter: NSObject {
         
         self.coordinator = deviceVerificationCoordinator
     }
+    
+    func present(from viewController: UIViewController, roomMember: MXRoomMember, animated: Bool) {
+        
+        NSLog("[DeviceVerificationCoordinatorBridgePresenter] Present from \(viewController)")
+        
+        let deviceVerificationCoordinator = DeviceVerificationCoordinator(session: self.session, roomMember: roomMember)
+        deviceVerificationCoordinator.delegate = self
+        viewController.present(deviceVerificationCoordinator.toPresentable(), animated: animated, completion: nil)
+        deviceVerificationCoordinator.start()
+        
+        self.coordinator = deviceVerificationCoordinator
+    }
 
     func present(from viewController: UIViewController, incomingTransaction: MXIncomingSASTransaction, animated: Bool) {
         
