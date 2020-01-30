@@ -205,7 +205,7 @@
     
     if (userId)
     {
-        [self encryptionTrustLevelDidChangeRelatedToUserId:userId];
+        [self encryptionTrustLevelDidChangeRelatedToUserId:userId forceDownload:NO];
     }
 }
 
@@ -217,16 +217,16 @@
     
     if (userId)
     {
-        [self encryptionTrustLevelDidChangeRelatedToUserId:userId];
+        [self encryptionTrustLevelDidChangeRelatedToUserId:userId forceDownload:NO];
     }
 }
 
 - (void)fetchEncryptionTrustedLevel
 {
-    [self encryptionTrustLevelDidChangeRelatedToUserId:self.mxSession.myUser.userId];
+    [self encryptionTrustLevelDidChangeRelatedToUserId:self.mxSession.myUser.userId forceDownload:YES];
 }
 
-- (void)encryptionTrustLevelDidChangeRelatedToUserId:(NSString*)userId
+- (void)encryptionTrustLevelDidChangeRelatedToUserId:(NSString*)userId forceDownload:(BOOL)forceDownload
 {
     if (!self.room.summary.isEncrypted)
     {
@@ -239,13 +239,14 @@
         // If user belongs to the room refresh the trust level
         if (roomMember)
         {            
-            [self.room membersTrustLevelSummaryWithSuccess:^(MXUsersTrustLevelSummary *usersTrustLevelSummary) {
+            [self.room membersTrustLevelSummaryWithForceDownload:forceDownload success:^(MXUsersTrustLevelSummary *usersTrustLevelSummary) {
                 
                 RoomEncryptionTrustLevel roomEncryptionTrustLevel;
                 
                 double trustedDevicesPercentage = usersTrustLevelSummary.trustedDevicesProgress.fractionCompleted;
                 
-                if (trustedDevicesPercentage >= 1.0)
+                if (trustedDevicesPercentage >= 1.0
+                    || usersTrustLevelSummary.trustedDevicesProgress.totalUnitCount == 0)
                 {
                     roomEncryptionTrustLevel = RoomEncryptionTrustLevelTrusted;
                 }
