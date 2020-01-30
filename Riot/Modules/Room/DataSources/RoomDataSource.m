@@ -238,9 +238,10 @@
         
         // If user belongs to the room refresh the trust level
         if (roomMember)
-        {            
-            [self.room membersTrustLevelSummaryWithSuccess:^(MXUsersTrustLevelSummary *usersTrustLevelSummary) {
-                
+        {
+            [self.room membersTrustLevelSummaryWithForceDownload:NO
+                                                         success:^(MXUsersTrustLevelSummary *usersTrustLevelSummary) {
+                                                             
                 RoomEncryptionTrustLevel roomEncryptionTrustLevel;
                 
                 double trustedDevicesPercentage = usersTrustLevelSummary.trustedDevicesProgress.fractionCompleted;

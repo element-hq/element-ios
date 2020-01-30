@@ -484,31 +484,27 @@
     
     if (self.mxRoom.summary.isEncrypted && self.mxRoom.mxSession.crypto)
     {
-        [self.mxRoom.mxSession.crypto trustLevelSummaryForUserIds:@[userId] success:^(MXUsersTrustLevelSummary *usersTrustLevelSummary) {
-            
-            double trustedDevicesPercentage = usersTrustLevelSummary.trustedDevicesProgress.fractionCompleted;
-            
-            UserEncryptionTrustLevel userEncryptionTrustLevel;
-            
-            if (trustedDevicesPercentage >= 1.0)
-            {
-                userEncryptionTrustLevel = UserEncryptionTrustLevelTrusted;
-            }
-            else if (trustedDevicesPercentage == 0.0)
-            {
-                userEncryptionTrustLevel = UserEncryptionTrustLevelNormal;
-            }
-            else
-            {
-                userEncryptionTrustLevel = UserEncryptionTrustLevelWarning;
-            }
-            
-            self.encryptionTrustLevel = userEncryptionTrustLevel;
-            [self updateMemberInfo];
-            
-        } failure:^(NSError *error) {
-            NSLog(@"[RoomMemberDetailsViewController] Fails to retrieve trust level summary with error: %@", error);
-        }];
+        MXUsersTrustLevelSummary *usersTrustLevelSummary = [self.mxRoom.mxSession.crypto trustLevelSummaryForUserIds:@[userId]];
+        
+        double trustedDevicesPercentage = usersTrustLevelSummary.trustedDevicesProgress.fractionCompleted;
+        
+        UserEncryptionTrustLevel userEncryptionTrustLevel;
+        
+        if (trustedDevicesPercentage >= 1.0)
+        {
+            userEncryptionTrustLevel = UserEncryptionTrustLevelTrusted;
+        }
+        else if (trustedDevicesPercentage == 0.0)
+        {
+            userEncryptionTrustLevel = UserEncryptionTrustLevelNormal;
+        }
+        else
+        {
+            userEncryptionTrustLevel = UserEncryptionTrustLevelWarning;
+        }
+        
+        self.encryptionTrustLevel = userEncryptionTrustLevel;
+        [self updateMemberInfo];
     }
     else
     {
