@@ -92,7 +92,7 @@
 "auth_reset_password_email_validation_message" = "Mae e-bost wedi'i anfon at %@. Ar ôl i chi ddilyn y ddolen sydd ynddo, cliciwch isod.";
 "auth_reset_password_next_step_button" = "Rwyf wedi gwirio fy nghyfeiriad e-bost";
 "auth_reset_password_error_unauthorized" = "Methiant gwirio cyfeiriad e-bost: gwnewch yn siŵr eich bod wedi clicio'r ddolen yn yr e-bost";
-"auth_reset_password_error_not_found" = "Nid yw'n ymddangos bod eich cyfeiriad e-bost yn gysylltiedig ag Matrix ID ar y hafanweinydd hwn.";
+"auth_reset_password_error_not_found" = "Nid yw'n ymddangos bod eich cyfeiriad e-bost yn gysylltiedig ag Dynodwr Matrix ar y hafanweinydd hwn.";
 "auth_reset_password_error_is_required" = "Nid oes unrhyw weinydd adnabod wedi'i osod: ychwanegwch un yn opsiynau'r gweinydd i ailosod eich cyfrinair.";
 "auth_reset_password_success_message" = "Mae eich cyfrinair wedi'i ailosod.\n\nRydych wedi cael eich allgofnodi o bob dyfais ac ni fyddwch yn derbyn hysbysiadau mwyach. I ail-alluogi hysbysiadau, ail-fewngofnodwch ar bob dyfais.";
 "auth_add_email_and_phone_warning" = "Ni chefnogir cofrestru gydag e-bost a rhif ffôn ar yr un pryd nes bod yr api yn bodoli. Dim ond y rhif ffôn fydd yn cael ei ystyried. Gallwch ychwanegu eich e-bost at eich proffil mewn gosodiadau.";
@@ -126,7 +126,7 @@
 "room_creation_keep_private" = "Cadw'n breifat";
 "room_creation_make_private" = "Gwneud yn breifat";
 "room_creation_wait_for_creation" = "Mae ystafell eisoes yn cael ei greu. Arhoswch os gwelwch yn dda.";
-"room_creation_invite_another_user" = "Chwilio / gwahodd yn ôl ID defnyddiwr, Enw, new e-bost";
+"room_creation_invite_another_user" = "Chwilio / gwahodd yn ôl Dynodwr Defnyddiwr, Enw, new e-bost";
 "room_creation_error_invite_user_by_email_without_identity_server" = "Nid oes unrhyw weinydd adnabod wedi'i osod felly ni allwch ychwanegu cyfranogwr gydag e-bost.";
 // Room recents
 "room_recents_directory_section" = "CYFEIRIADUR YSTAFELLOEDD";
@@ -158,7 +158,7 @@
 "search_people" = "Pobl";
 "search_files" = "Ffeiliau";
 "search_default_placeholder" = "Chwilio";
-"search_people_placeholder" = "Chwilio yn ôl ID defnyddiwr, Enw, new e-bost";
+"search_people_placeholder" = "Chwilio yn ôl Dynodwr Defnyddiwr, Enw, new e-bost";
 "search_no_result" = "Dim canlyniadau";
 "search_in_progress" = "Chwilio…";
 // Directory
@@ -191,9 +191,9 @@
 "room_participants_invite_prompt_title" = "Cadarnhad";
 "room_participants_invite_prompt_msg" = "Ydych chi'n siwr eich bod eisau ychwanegu %@ i'r sgwrs?";
 "room_participants_filter_room_members" = "Hidlo aelodau'r ystafell";
-"room_participants_invite_another_user" = "Chwilio / gwahodd yn ôl ID defnyddiwr, Enw, new e-bost";
+"room_participants_invite_another_user" = "Chwilio / gwahodd yn ôl Dynodwr Defnyddiwr, Enw, new e-bost";
 "room_participants_invite_malformed_id_title" = "Gwall gwahoddiad";
-"room_participants_invite_malformed_id" = "ID camffurfiedig. Dylai fod yn gyfeiriad e-bost neu'n ID Matrix fel '@localpart:domain'";
+"room_participants_invite_malformed_id" = "Dynodwr camffurfiedig. Dylai fod yn gyfeiriad e-bost neu'n Ddynodwr Matrix fel '@localpart:domain'";
 "room_participants_invited_section" = "GWAHODDWYD";
 "room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Nid oes unrhyw weinydd adnabod wedi'i osod felly ni allwch ddechrau sgwrs gyda chyswllt gan ddefnyddio e-bost.";
 "room_participants_online" = "Ar-lein";
@@ -417,7 +417,7 @@
 "settings_add_3pid_password_message" = "I barhau, rhowch eich cyfrinair os gwelwch yn dda";
 "settings_add_3pid_invalid_password_message" = "Cyfrinair annilys";
 "settings_crypto_device_name" = "Enw Cyhoeddus y Ddyfais: ";
-"settings_crypto_device_id" = "\nID y ddyfais: ";
+"settings_crypto_device_id" = "\nDynodwr y ddyfais: ";
 "settings_crypto_device_key" = "\nAllwedd y ddyfais:\n";
 "settings_crypto_export" = "Allfudo allweddi";
 "settings_crypto_blacklist_unverified_devices" = "Amgryptio i ddyfeisiau wedi'u gwirio yn unig";
@@ -425,14 +425,14 @@
 "settings_key_backup_info" = "Sicrheir negeseuon wedi'u hamgryptio gydag amgryptio o'r dechrau i'r diwedd. Dim ond chi a'r derbynnydd / derbynwyr sydd â'r allweddi i ddarllen y negeseuon hyn.";
 "settings_key_backup_info_checking" = "Gwirio...";
 "settings_key_backup_info_none" = "Nid yw'ch allweddi yn cael eu cadw wrth gefn o'r ddyfais hon.";
-"settings_key_backup_info_signout_warning" = "Cysylltwch y ddyfais hon â Allweddi Wrth Gefn cyn arwyddo allan er mwyn osgoi colli unrhyw allweddi a allai fod ar y ddyfais hon yn unig.";
+"settings_key_backup_info_signout_warning" = "Cysylltwch y ddyfais hon â Allweddi Wrth Gefn cyn allgofnodi er mwyn osgoi colli unrhyw allweddi a allai fod ar y ddyfais hon yn unig.";
 "settings_key_backup_info_version" = "Fersiwn Allweddi Wrth Gefn: %@";
 "settings_key_backup_info_algorithm" = "Algorithm: %@";
 "settings_key_backup_info_valid" = "Mae'r ddyfais hon yn gwneud copi wrth gefn o'ch allweddi.";
 "settings_key_backup_info_not_valid" = "Nid yw'r ddyfais hon yn gwneud copi wrth gefn o'ch allweddi, ond mae gennych gopi wrth gefn y gallwch ei adfer ac ychwanegu ato wrth symud ymlaen.";
 "settings_key_backup_info_progress" = "Creu copi wrth gefn o allweddi %@...";
 "settings_key_backup_info_progress_done" = "Pob allwedd â copi wrth gefn";
-"settings_key_backup_info_trust_signature_unknown" = "Mae gan Allweddi Wrth Gefn lofnod o'r ddyfais gydag ID: %@";
+"settings_key_backup_info_trust_signature_unknown" = "Mae gan Allweddi Wrth Gefn lofnod o'r ddyfais gyda dynodwr: %@";
 "settings_key_backup_info_trust_signature_valid" = "Mae gan Allweddi Wrth Gefn lofnod dilys o'r ddyfais hon";
 "settings_key_backup_info_trust_signature_valid_device_verified" = "Mae gan Allweddi Wrth Gefn lofnod dilys o %@";
 "settings_key_backup_info_trust_signature_valid_device_unverified" = "Mae gan Allweddi Wrth Gefn lofnod o %@";
@@ -516,12 +516,12 @@
 "room_details_addresses_disable_main_address_prompt_title" = "Rhybydd prif gyfeiriad";
 "room_details_addresses_disable_main_address_prompt_msg" = "Ni fydd gennych brif gyfeiriad wedi'i nodi. Dewisir ar hap prif gyfeiriad diofyn ar gyfer yr ystafell hon";
 "room_details_flair_section" = "Dangos dawn i gymunedau";
-"room_details_new_flair_placeholder" = "Ychwanegu ID cymunedol newydd (e.e. +foo%@)";
+"room_details_new_flair_placeholder" = "Ychwanegu dynodwr cymunedol newydd (e.e. +foo%@)";
 "room_details_flair_invalid_id_prompt_title" = "Fformat annilys";
 "room_details_flair_invalid_id_prompt_msg" = "Nid yw %@ yn ddynodwr dilys ar gyfer cymuned";
 "room_details_banned_users_section" = "Defnyddwyr gwaharddedig";
 "room_details_advanced_section" = "Uwch";
-"room_details_advanced_room_id" = "ID Ystafell:";
+"room_details_advanced_room_id" = "Dynodwr Ystafell:";
 "room_details_advanced_enable_e2e_encryption" = "Galluogi amgryptio (rhybudd: ni ellir ei anablu eto!)";
 "room_details_advanced_e2e_encryption_enabled" = "Mae amgryptio wedi'i alluogi yn yr ystafell hon";
 "room_details_advanced_e2e_encryption_disabled" = "Nid yw amgryptio wedi'i alluogi yn yr ystafell hon.";
@@ -542,7 +542,7 @@
 "room_details_save_changes_prompt" = "Hoffech chi gadw'r newidiadau?";
 "room_details_set_main_address" = "Gosod fel Prif Gyfeiriad";
 "room_details_unset_main_address" = "Dad-osod fel Prif Gyfeiriad";
-"room_details_copy_room_id" = "Copio ID Ystafell";
+"room_details_copy_room_id" = "Copio Dynodwr Ystafell";
 "room_details_copy_room_address" = "Copio Cyfeiriad Ystafell";
 "room_details_copy_room_url" = "Copio URL Ystafell";
 // Group Details
@@ -565,9 +565,9 @@
 "group_participants_invite_prompt_title" = "Cadarnhad";
 "group_participants_invite_prompt_msg" = "Ydych chi'n siwr eich bod eisau gwahodd %@ i'r grŵp?";
 "group_participants_filter_members" = "Hidlo aelodau'r cymuned";
-"group_participants_invite_another_user" = "Chwilio / gwahodd yn ôl ID Defnyddiwr neu Enw";
+"group_participants_invite_another_user" = "Chwilio / gwahodd yn ôl Dynodwr Defnyddiwr neu Enw";
 "group_participants_invite_malformed_id_title" = "Gwall gwahoddiad";
-"group_participants_invite_malformed_id" = "ID camffurfiedig. Dylai fod yn ID Matrix fel '@localpart:domain'";
+"group_participants_invite_malformed_id" = "Dynodwr camffurfiedig. Dylai fod yn Ddynodwr Matrix fel '@localpart:domain'";
 "group_participants_invited_section" = "GWAHODDWYD";
 // Group rooms
 "group_rooms_filter_rooms" = "Hidlo ystafelloedd y gymuned";
@@ -693,7 +693,7 @@
 "service_terms_modal_title_identity_server" = "Darganfod Cysylltiadau";
 "service_terms_modal_message_identity_server" = "Derbyn telerau'r gweinydd adnabod (%@) i ddarganfod cysylltiadau.";
 "deactivate_account_title" = "Dad-actifadu Cyfrif";
-"deactivate_account_informations_part1" = "Bydd hyn yn golygu na ellir defnyddio'ch cyfrif yn barhaol. Ni fyddwch yn gallu mewngofnodi, ac ni fydd unrhyw un yn gallu ailgofrestru'r un ID defnyddiwr. Bydd hyn yn achosi i'ch cyfrif adael yr holl ystafelloedd y mae'n cymryd rhan ynddynt, a bydd yn tynnu manylion eich cyfrif o'ch gweinydd adnabod. ";
+"deactivate_account_informations_part1" = "Bydd hyn yn golygu na ellir defnyddio'ch cyfrif yn barhaol. Ni fyddwch yn gallu mewngofnodi, ac ni fydd unrhyw un yn gallu ailgofrestru'r un dynodwr defnyddiwr. Bydd hyn yn achosi i'ch cyfrif adael yr holl ystafelloedd y mae'n cymryd rhan ynddynt, a bydd yn tynnu manylion eich cyfrif o'ch gweinydd adnabod. ";
 "deactivate_account_informations_part2_emphasize" = "Ni ellir gwrthdroi'r weithred hon.";
 "deactivate_account_informations_part3" = "\n\nYn dad-actifadu eich cyfrif ";
 "deactivate_account_informations_part4_emphasize" = "nid yw yn ddiofyn yn achosi inni anghofio negeseuon yr ydych wedi'u hanfon. ";
@@ -883,3 +883,28 @@
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Ychwanegwch weinydd adnabod yn eich gosodiadau i wahodd trwy e-bost.";
 "error_not_supported_on_mobile" = "Ni allwch wneud hyn o %@ ffôn symudol.";
+// Accessibility
+"accessibility_checkbox_label" = "blwch ticio";
+"settings_integrations" = "INTEGREIDDIADAU";
+"settings_integrations_allow_button" = "Rheoli integreiddiadau";
+"settings_integrations_allow_description" = "Defnyddiwch Reolwr Integreiddio (%@) i reoli bots, pontydd, teclynnau a phecynnau sticeri.\n\nMae Rheolwyr Integreiddio yn derbyn data cyfluniad, a gallant addasu teclynnau, anfon gwahoddiadau ystafell a gosod lefelau pŵer ar eich rhan.";
+"settings_labs_dm_key_verification" = "Gwirio allweddi trwy neges uniongyrchol";
+"settings_labs_cross_signing" = "Traws-arwyddo";
+"widget_menu_refresh" = "Adnewyddu";
+"widget_menu_open_outside" = "Agor mewn porwr";
+"widget_menu_revoke_permission" = "Dirymu mynediad i mi";
+"widget_menu_remove" = "Gwaredu i bawb";
+"widget_integration_manager_disabled" = "Mae angen i chi alluogi Rheolwr Integreiddio yn y gosodiadau";
+"widget_picker_manage_integrations" = "Rheoli integreiddiadau...";
+// Room widget permissions
+"room_widget_permission_title" = "Llwytho Teclyn";
+"room_widget_permission_creator_info_title" = "Ychwanegwyd y teclyn hwn gan:";
+"room_widget_permission_webview_information_title" = "Gall ei ddefnyddio osod cwcis a rhannu data gyda %@:\n";
+"room_widget_permission_information_title" = "Gall ei ddefnyddio rhannu data gyda %@:\n";
+"room_widget_permission_display_name_permission" = "Eich enw arddangos";
+"room_widget_permission_avatar_url_permission" = "Eich URL dangoslun";
+"room_widget_permission_user_id_permission" = "Eich dynodwr defnyddiwr";
+"room_widget_permission_theme_permission" = "Eich thema";
+"room_widget_permission_widget_id_permission" = "Dynodwr Teclyn";
+"room_widget_permission_room_id_permission" = "Dynodwr Ystafell";
+"service_terms_modal_policy_checkbox_accessibility_hint" = "Ticiwch i dderbyn %@";
