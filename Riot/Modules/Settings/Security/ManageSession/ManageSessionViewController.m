@@ -47,21 +47,13 @@ enum {
 };
 
 
-@interface ManageSessionViewController () <
-MXKDataSourceDelegate,
-MXKDeviceViewDelegate,
-MXKEncryptionInfoViewDelegate>
+@interface ManageSessionViewController ()
 {
     // The device to display
     MXDevice *device;
     
     // Current alert (if any).
     UIAlertController *currentAlert;
-
-    DeviceView *deviceView;
-    
-    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
-    id kAppDelegateDidTapStatusBarNotificationObserver;
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
@@ -134,10 +126,7 @@ MXKEncryptionInfoViewDelegate>
     self.view.backgroundColor = self.tableView.backgroundColor;
     self.tableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
     
-    if (self.tableView.dataSource)
-    {
-        [self reloadData];
-    }
+    [self reloadData];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -163,41 +152,18 @@ MXKEncryptionInfoViewDelegate>
     }
 }
 
-- (void)onMatrixSessionStateDidChange:(NSNotification *)notif
-{
-    MXSession *mxSession = notif.object;
-    
-    // Check whether the concerned session is a new one which is not already associated with this view controller.
-    if (mxSession.state == MXSessionStateInitialised && [self.mxSessions indexOfObject:mxSession] != NSNotFound)
-    {
-        // Store this new session
-        [self addMatrixSession:mxSession];
-    }
-    else
-    {
-        [super onMatrixSessionStateDidChange:notif];
-    }
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"Settings"];
+    [[Analytics sharedInstance] trackScreen:@"ManageSession"];
 
     // Release the potential pushed view controller
     [self releasePushedViewController];
 
     // Refresh display
     [self reloadData];
-
-    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
-    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-
-        [self.tableView setContentOffset:CGPointMake(-self.tableView.mxk_adjustedContentInset.left, -self.tableView.mxk_adjustedContentInset.top) animated:YES];
-
-    }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -208,12 +174,6 @@ MXKEncryptionInfoViewDelegate>
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         currentAlert = nil;
-    }
-
-    if (kAppDelegateDidTapStatusBarNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
-        kAppDelegateDidTapStatusBarNotificationObserver = nil;
     }
 }
 
@@ -258,12 +218,6 @@ MXKEncryptionInfoViewDelegate>
 {
     // Remove observers
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-
-    if (deviceView)
-    {
-        [deviceView removeFromSuperview];
-        deviceView = nil;
-    }
 }
 
 - (void)reloadData
@@ -776,14 +730,6 @@ MXKEncryptionInfoViewDelegate>
         [self.activityIndicator stopAnimating];
         [[AppDelegate theDelegate] showErrorAsAlert:error];
     }];
-}
-
-#pragma mark - MXKDataSourceDelegate
-
-- (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
-{
-    // Group data has been updated. Do a simple full reload
-    [self reloadData];
 }
 
 @end

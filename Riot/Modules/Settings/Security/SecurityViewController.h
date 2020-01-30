@@ -16,9 +16,6 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "DeviceView.h"
-
-
 @interface SecurityViewController : MXKTableViewController
 
 + (SecurityViewController*)instantiateWithMatrixSession:(MXSession*)matrixSession;

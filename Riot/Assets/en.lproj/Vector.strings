@@ -546,8 +546,8 @@
 
 // Security settings
 "security_settings_title" = "Security";
-"security_settings_sessions" = "MY SESSIONS";
-"security_settings_sessions_description" = "Trust sessions to grant access to end-to-end encrypted messages. If you don’t recognise a session, change your login password and reset your Message Password used for Message Backup.";
+"security_settings_crypto_sessions" = "MY SESSIONS";
+"security_settings_crypto_sessions_description" = "Trust sessions to grant access to end-to-end encrypted messages. If you don’t recognise a session, change your login password and reset your Message Password used for Message Backup.";
 
 "security_settings_backup" = "MESSAGE BACKUP";
 

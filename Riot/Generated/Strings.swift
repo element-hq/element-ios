@@ -2646,17 +2646,17 @@ internal enum VectorL10n {
   internal static var securitySettingsBlacklistUnverifiedDevicesDescription: String { 
     return VectorL10n.tr("Vector", "security_settings_blacklist_unverified_devices_description") 
   }
+  /// MY SESSIONS
+  internal static var securitySettingsCryptoSessions: String { 
+    return VectorL10n.tr("Vector", "security_settings_crypto_sessions") 
+  }
+  /// Trust sessions to grant access to end-to-end encrypted messages. If you don’t recognise a session, change your login password and reset your Message Password used for Message Backup.
+  internal static var securitySettingsCryptoSessionsDescription: String { 
+    return VectorL10n.tr("Vector", "security_settings_crypto_sessions_description") 
+  }
   /// Export keys manually
   internal static var securitySettingsExportKeysManually: String { 
     return VectorL10n.tr("Vector", "security_settings_export_keys_manually") 
-  }
-  /// MY SESSIONS
-  internal static var securitySettingsSessions: String { 
-    return VectorL10n.tr("Vector", "security_settings_sessions") 
-  }
-  /// Trust sessions to grant access to end-to-end encrypted messages. If you don’t recognise a session, change your login password and reset your Message Password used for Message Backup.
-  internal static var securitySettingsSessionsDescription: String { 
-    return VectorL10n.tr("Vector", "security_settings_sessions_description") 
   }
   /// Security
   internal static var securitySettingsTitle: String { 

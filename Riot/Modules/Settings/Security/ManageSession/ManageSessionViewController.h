@@ -16,8 +16,6 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "DeviceView.h"
-
 
 @interface ManageSessionViewController : MXKTableViewController
 

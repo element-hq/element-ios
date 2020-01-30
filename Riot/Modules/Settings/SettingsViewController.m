@@ -2661,6 +2661,17 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 }
             }
         }
+        else if (section == SETTINGS_SECTION_CONTACTS_INDEX)
+        {
+            if (row == localContactsPhoneBookCountryIndex)
+            {
+                CountryPickerViewController *countryPicker = [CountryPickerViewController countryPickerViewController];
+                countryPicker.view.tag = SETTINGS_SECTION_CONTACTS_INDEX;
+                countryPicker.delegate = self;
+                countryPicker.showCountryCallingCode = YES;
+                [self pushViewController:countryPicker];
+            }
+        }
         else if (section == SETTINGS_SECTION_SECURITY_INDEX)
         {
             switch (row)

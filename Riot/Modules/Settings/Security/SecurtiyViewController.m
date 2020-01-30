@@ -32,7 +32,7 @@
 
 enum
 {
-    SECTION_SESSIONS,
+    SECTION_CRYPTO_SESSIONS,
     SECTION_KEYBACKUP,
     SECTION_ADVANCED,
     SECTION_DEBUG,      // TODO: To remove
@@ -55,7 +55,6 @@ enum {
 
 
 @interface SecurityViewController () <
-MXKDataSourceDelegate,
 SettingsKeyBackupTableViewSectionDelegate,
 KeyBackupSetupCoordinatorBridgePresenterDelegate,
 KeyBackupRecoverCoordinatorBridgePresenterDelegate,
@@ -66,9 +65,6 @@ UIDocumentInteractionControllerDelegate>
 
     // Devices
     NSMutableArray<MXDevice *> *devicesArray;
-    
-    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
-    id kAppDelegateDidTapStatusBarNotificationObserver;
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
@@ -163,10 +159,7 @@ UIDocumentInteractionControllerDelegate>
     self.view.backgroundColor = self.tableView.backgroundColor;
     self.tableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
     
-    if (self.tableView.dataSource)
-    {
-        [self reloadData];
-    }
+    [self reloadData];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -202,28 +195,12 @@ UIDocumentInteractionControllerDelegate>
     keyBackupRecoverCoordinatorBridgePresenter = nil;
 }
 
-- (void)onMatrixSessionStateDidChange:(NSNotification *)notif
-{
-    MXSession *mxSession = notif.object;
-    
-    // Check whether the concerned session is a new one which is not already associated with this view controller.
-    if (mxSession.state == MXSessionStateInitialised && [self.mxSessions indexOfObject:mxSession] != NSNotFound)
-    {
-        // Store this new session
-        [self addMatrixSession:mxSession];
-    }
-    else
-    {
-        [super onMatrixSessionStateDidChange:notif];
-    }
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"Settings"];
+    [[Analytics sharedInstance] trackScreen:@"Security"];
 
     // Release the potential pushed view controller
     [self releasePushedViewController];
@@ -236,13 +213,6 @@ UIDocumentInteractionControllerDelegate>
 
     // Refresh devices in parallel
     [self loadDevices];
-
-    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
-    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-
-        [self.tableView setContentOffset:CGPointMake(-self.tableView.mxk_adjustedContentInset.left, -self.tableView.mxk_adjustedContentInset.top) animated:YES];
-
-    }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -253,12 +223,6 @@ UIDocumentInteractionControllerDelegate>
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         currentAlert = nil;
-    }
-
-    if (kAppDelegateDidTapStatusBarNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
-        kAppDelegateDidTapStatusBarNotificationObserver = nil;
     }
 }
 
@@ -472,7 +436,7 @@ UIDocumentInteractionControllerDelegate>
 
     switch (section)
     {
-        case SECTION_SESSIONS:
+        case SECTION_CRYPTO_SESSIONS:
             count = devicesArray.count + 1;
             break;
         case SECTION_KEYBACKUP:
@@ -597,7 +561,7 @@ UIDocumentInteractionControllerDelegate>
     cell.backgroundColor = [UIColor redColor];
 
     MXSession* session = self.mainSession;
-    if (section == SECTION_SESSIONS)
+    if (section == SECTION_CRYPTO_SESSIONS)
     {
         if (row < devicesArray.count)
         {
@@ -606,7 +570,7 @@ UIDocumentInteractionControllerDelegate>
         else if (row == devicesArray.count)
         {
             cell = [self descriptionCellForTableView:tableView
-                                            withText:NSLocalizedStringFromTable(@"security_settings_sessions_description", @"Vector", nil) ];
+                                            withText:NSLocalizedStringFromTable(@"security_settings_crypto_sessions_description", @"Vector", nil) ];
 
         }
     }
@@ -718,8 +682,8 @@ UIDocumentInteractionControllerDelegate>
 {
     switch (section)
     {
-        case SECTION_SESSIONS:
-            return NSLocalizedStringFromTable(@"security_settings_sessions", @"Vector", nil);
+        case SECTION_CRYPTO_SESSIONS:
+            return NSLocalizedStringFromTable(@"security_settings_crypto_sessions", @"Vector", nil);
         case SECTION_KEYBACKUP:
             return NSLocalizedStringFromTable(@"security_settings_backup", @"Vector", nil);
         case SECTION_ADVANCED:
@@ -773,7 +737,7 @@ UIDocumentInteractionControllerDelegate>
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == SECTION_SESSIONS)
+    if (section == SECTION_CRYPTO_SESSIONS)
     {
         return 44;
     }
@@ -792,7 +756,7 @@ UIDocumentInteractionControllerDelegate>
         NSInteger section = indexPath.section;
         NSInteger row = indexPath.row;
 
-        if (section == SECTION_SESSIONS)
+        if (section == SECTION_CRYPTO_SESSIONS)
         {
             NSUInteger deviceIndex = row;
             if (deviceIndex < devicesArray.count)
@@ -889,15 +853,6 @@ UIDocumentInteractionControllerDelegate>
     self.mainSession.crypto.globalBlacklistUnverifiedDevices = switchButton.on;
 
     [self.tableView reloadData];
-}
-
-
-#pragma mark - MXKDataSourceDelegate
-
-- (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
-{
-    // Group data has been updated. Do a simple full reload
-    [self reloadData];
 }
 
 
