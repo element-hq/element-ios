@@ -25,18 +25,4 @@
  */
 - (NSUInteger)riot_missedDiscussionsCount;
 
-/**
- Decide if E2E must be enabled in a new room with a list users
-
- @param userIds the list of users;
-
- @param success A block object called when the operation succeeds.
- @param failure A block object called when the operation fails.
-
- @return a MXHTTPOperation instance.
- */
-- (MXHTTPOperation*)canEnableE2EByDefaultInNewRoomWithUsers:(NSArray<NSString*>*)userIds
-                                                    success:(void (^)(BOOL canEnableE2E))success
-                                                    failure:(void (^)(NSError *error))failure;
-
 @end
