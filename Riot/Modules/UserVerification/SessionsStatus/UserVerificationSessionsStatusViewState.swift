@@ -1,5 +1,7 @@
+// File created from ScreenTemplate
+// $ createScreen.sh UserVerification UserVerificationSessionsStatus
 /*
- Copyright 2016 OpenMarket Ltd
+ Copyright 2020 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,10 +16,11 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+import Foundation
 
-#import "DeviceTableViewCell.h"
-
-@interface RoomMemberDetailsViewController : MXKRoomMemberDetailsViewController
-
-@end
+/// UserVerificationSessionsStatusViewController view state
+enum UserVerificationSessionsStatusViewState {
+    case loading
+    case loaded(userTrustLevel: UserEncryptionTrustLevel, sessionsStatusViewData: [UserVerificationSessionStatusViewData])
+    case error(Error)
+}

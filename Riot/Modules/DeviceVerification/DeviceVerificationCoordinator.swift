@@ -28,10 +28,13 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
     private let otherUserId: String
-    private let otherDeviceId: String
-
+    private let otherDeviceId: String    
+    
     private var incomingTransaction: MXIncomingSASTransaction?
     private var incomingKeyVerificationRequest: MXKeyVerificationRequest?
+    
+    private var verificationKind: KeyVerificationKind = .device    
+    private var roomMember: MXRoomMember?
 
     // MARK: Public
 
@@ -52,6 +55,13 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
         self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
         self.otherUserId = otherUserId
+        self.otherDeviceId = otherDeviceId
+    }
+    
+    init(navigationRouter: NavigationRouterType, session: MXSession, userId: String, otherDeviceId: String) {
+        self.navigationRouter = navigationRouter
+        self.session = session
+        self.otherUserId = userId
         self.otherDeviceId = otherDeviceId
     }
 
@@ -77,13 +87,29 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
         self.incomingKeyVerificationRequest = incomingKeyVerificationRequest
     }
     
+    /// Constructor to start a user verification.
+    ///
+    /// - Parameters:
+    ///   - session: the MXSession
+    ///   - roomMember: an other room member
+    init(session: MXSession, roomMember: MXRoomMember) {
+        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
+        self.session = session
+        self.otherUserId = roomMember.userId
+        self.otherDeviceId = ""
+        self.roomMember = roomMember
+        self.verificationKind = .user
+    }
+    
     // MARK: - Public methods
     
     func start() {
-        let rootCoordinator: Coordinator & Presentable
-            
+        let rootCoordinator: Coordinator & Presentable            
+        
         if let incomingKeyVerificationRequest = self.incomingKeyVerificationRequest {
             rootCoordinator = self.createDataLoadingScreenCoordinator(with: incomingKeyVerificationRequest)
+        } else if let roomMember = self.roomMember {
+            rootCoordinator = self.createUserVerificationStartCoordinator(with: roomMember)
         } else {
             rootCoordinator = self.createDataLoadingScreenCoordinator()
         }
@@ -91,8 +117,15 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
         rootCoordinator.start()
         
         self.add(childCoordinator: rootCoordinator)
-        self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
-            self?.remove(childCoordinator: rootCoordinator)
+        
+        if self.navigationRouter.modules.isEmpty == false {
+            self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
+                self?.remove(childCoordinator: rootCoordinator)
+            })
+        } else {
+            self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
+                self?.remove(childCoordinator: rootCoordinator)
+            }
         }
     }
     
@@ -112,6 +145,14 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
     
     private func createDataLoadingScreenCoordinator(with keyVerificationRequest: MXKeyVerificationRequest) -> DeviceVerificationDataLoadingCoordinator {
         let coordinator = DeviceVerificationDataLoadingCoordinator(incomingKeyVerificationRequest: keyVerificationRequest)
+        coordinator.delegate = self
+        coordinator.start()
+        
+        return coordinator
+    }
+    
+    private func createUserVerificationStartCoordinator(with roomMember: MXRoomMember) -> UserVerificationStartCoordinator {
+        let coordinator = UserVerificationStartCoordinator(session: self.session, roomMember: roomMember)
         coordinator.delegate = self
         coordinator.start()
         
@@ -141,7 +182,7 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
     }
 
     private func showVerify(transaction: MXSASTransaction, animated: Bool) {
-        let coordinator = DeviceVerificationVerifyCoordinator(session: self.session, transaction: transaction)
+        let coordinator = DeviceVerificationVerifyCoordinator(session: self.session, transaction: transaction, verificationKind: self.verificationKind)
         coordinator.delegate = self
         coordinator.start()
 
@@ -152,7 +193,7 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
     }
 
     private func showVerified(animated: Bool) {
-        let viewController = DeviceVerificationVerifiedViewController.instantiate()
+        let viewController = DeviceVerificationVerifiedViewController.instantiate(with: self.verificationKind)
         viewController.delegate = self
         self.navigationRouter.setRootModule(viewController)
     }
@@ -223,6 +264,20 @@ extension DeviceVerificationCoordinator: DeviceVerificationVerifiedViewControlle
     }
 
     func deviceVerificationVerifiedViewControllerDidCancel(_ viewController: DeviceVerificationVerifiedViewController) {
+        self.delegate?.deviceVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
+    }
+}
+
+extension DeviceVerificationCoordinator: UserVerificationStartCoordinatorDelegate {
+    func userVerificationStartCoordinator(_ coordinator: UserVerificationStartCoordinatorType, didCompleteWithOutgoingTransaction transaction: MXSASTransaction) {
+        self.showVerify(transaction: transaction, animated: true)
+    }
+    
+    func userVerificationStartCoordinator(_ coordinator: UserVerificationStartCoordinatorType, didTransactionCancelled transaction: MXSASTransaction) {
+        self.delegate?.deviceVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
+    }
+    
+    func userVerificationStartCoordinatorDidCancel(_ coordinator: UserVerificationStartCoordinatorType) {
         self.delegate?.deviceVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
     }
 }

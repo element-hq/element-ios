@@ -39,6 +39,7 @@ final class DeviceVerificationVerifiedViewController: UIViewController {
     // MARK: Private
     
     private var theme: Theme!
+    private var verificationKind: KeyVerificationKind = .user
     
     // MARK: Public
     
@@ -46,9 +47,10 @@ final class DeviceVerificationVerifiedViewController: UIViewController {
     
     // MARK: - Setup
     
-    class func instantiate() -> DeviceVerificationVerifiedViewController {
+    class func instantiate(with verificationKind: KeyVerificationKind) -> DeviceVerificationVerifiedViewController {
         let viewController = StoryboardScene.DeviceVerificationVerifiedViewController.initialScene.instantiate()
         viewController.theme = ThemeService.shared().theme
+        viewController.verificationKind = verificationKind
         return viewController
     }
     
@@ -59,7 +61,6 @@ final class DeviceVerificationVerifiedViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        self.title = VectorL10n.deviceVerificationTitle
         self.vc_removeBackTitle()
         
         self.setupViews()
@@ -81,9 +82,28 @@ final class DeviceVerificationVerifiedViewController: UIViewController {
     // MARK: - Private
     
     private func setupViews() {
-        self.titleLabel.text =  VectorL10n.deviceVerificationVerifiedTitle
-        self.description1Label.text = VectorL10n.deviceVerificationVerifiedDescription1
-        self.description2Label.text = VectorL10n.deviceVerificationVerifiedDescription2
+        let title: String
+        let bodyTitle: String
+        let descriptionTextPart1: String
+        let descriptionTextPart2: String
+        
+        switch self.verificationKind {
+        case .device:
+            title = VectorL10n.deviceVerificationTitle
+            bodyTitle = VectorL10n.deviceVerificationVerifiedTitle
+            descriptionTextPart1 = VectorL10n.deviceVerificationVerifiedDescription1
+            descriptionTextPart2 = VectorL10n.deviceVerificationVerifiedDescription2
+        case .user:
+            title = "Verify user"
+            bodyTitle = VectorL10n.deviceVerificationVerifiedTitle
+            descriptionTextPart1 = "You’ve successfully verified this user."
+            descriptionTextPart2 = "Messages with this user in this room are end-to-end encrypted and can’t be read by third parties."
+        }
+        
+        self.title = title
+        self.titleLabel.text =  bodyTitle
+        self.description1Label.text = descriptionTextPart1
+        self.description2Label.text = descriptionTextPart2
 
         self.okButton.setTitle(VectorL10n.deviceVerificationVerifiedGotItButton, for: .normal)
     }
@@ -103,7 +123,7 @@ final class DeviceVerificationVerifiedViewController: UIViewController {
 
         self.okButtonBackgroundView.backgroundColor = theme.backgroundColor
         theme.applyStyle(onButton: self.okButton)
-            }
+    }
     
     private func registerThemeServiceDidChangeThemeNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)

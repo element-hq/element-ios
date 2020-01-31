@@ -4890,6 +4890,29 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     return presented;
 }
 
+- (BOOL)presentUserVerificationForRoomMember:(MXRoomMember*)roomMember session:(MXSession*)mxSession
+{
+    NSLog(@"[AppDelegate][MXKeyVerification] presentUserVerificationForRoomMember: %@", roomMember);
+    
+    BOOL presented = NO;
+    if (!deviceVerificationCoordinatorBridgePresenter)
+    {
+        UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
+        
+        deviceVerificationCoordinatorBridgePresenter = [[DeviceVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
+        deviceVerificationCoordinatorBridgePresenter.delegate = self;
+        
+        [deviceVerificationCoordinatorBridgePresenter presentFrom:presentingViewController roomMember:roomMember animated:YES];
+        
+        presented = YES;
+    }
+    else
+    {
+        NSLog(@"[AppDelegate][MXKeyVerification] presentUserVerificationForRoomMember: Controller already presented.");
+    }
+    return presented;
+}
+
 - (void)deviceVerificationCoordinatorBridgePresenterDelegateDidComplete:(DeviceVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
 {
     [deviceVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:^{

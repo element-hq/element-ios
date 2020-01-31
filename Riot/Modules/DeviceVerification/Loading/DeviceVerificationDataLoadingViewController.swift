@@ -66,6 +66,13 @@ final class DeviceVerificationDataLoadingViewController: UIViewController {
         return self.theme.statusBarStyle
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Hide back button
+        self.navigationItem.setHidesBackButton(true, animated: animated)
+    }
+    
     // MARK: - Private
     
     private func update(theme: Theme) {

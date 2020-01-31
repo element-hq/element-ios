@@ -1,5 +1,5 @@
 /*
- Copyright 2016 OpenMarket Ltd
+ Copyright 2020 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,10 +14,15 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+@import Foundation;
 
-#import "DeviceTableViewCell.h"
-
-@interface RoomMemberDetailsViewController : MXKRoomMemberDetailsViewController
-
-@end
+/**
+ UserEncryptionTrustLevel represents the user trust level in an encrypted room.
+ */
+typedef NS_ENUM(NSUInteger, UserEncryptionTrustLevel) {
+    UserEncryptionTrustLevelTrusted,
+    UserEncryptionTrustLevelWarning,
+    UserEncryptionTrustLevelNormal,
+    UserEncryptionTrustLevelNone,
+    UserEncryptionTrustLevelUnknown
+};

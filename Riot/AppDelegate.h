@@ -140,6 +140,8 @@ extern NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey;
 - (BOOL)presentIncomingKeyVerificationRequest:(MXKeyVerificationRequest*)incomingKeyVerificationRequest
                                     inSession:(MXSession*)session;
 
+- (BOOL)presentUserVerificationForRoomMember:(MXRoomMember*)roomMember session:(MXSession*)mxSession;
+
 #pragma mark - Matrix Accounts handling
 
 - (void)selectMatrixAccount:(void (^)(MXKAccount *selectedAccount))onSelection;

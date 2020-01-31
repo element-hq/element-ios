@@ -59,7 +59,6 @@ final class DeviceVerificationVerifyViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = VectorL10n.deviceVerificationTitle
         self.vc_removeBackTitle()
         
         self.setupViews()
@@ -123,16 +122,33 @@ final class DeviceVerificationVerifyViewController: UIViewController {
         
         self.scrollView.keyboardDismissMode = .interactive
 
-        if viewModel.emojis != nil {
+        let isVerificationByEmoji = viewModel.emojis != nil
+        
+        if isVerificationByEmoji {
             self.decimalLabel.isHidden = true
-            self.titleLabel.text = VectorL10n.deviceVerificationVerifyTitleEmoji
         } else {
             self.emojisCollectionView.isHidden = true
-            self.titleLabel.text = VectorL10n.deviceVerificationVerifyTitleNumber
             self.decimalLabel.text = self.viewModel.decimal
         }
+        
+        let title: String
+        let instructionText: String
+        let adviceText: String
+        
+        switch viewModel.verificationKind {
+        case .device:
+            title = VectorL10n.deviceVerificationTitle
+            instructionText = isVerificationByEmoji ? VectorL10n.deviceVerificationVerifyTitleEmoji : VectorL10n.deviceVerificationVerifyTitleNumber
+            adviceText = VectorL10n.deviceVerificationSecurityAdvice
+        case .user:
+            title = "Verify user"
+            instructionText = isVerificationByEmoji ? "Verify this user by confirming the following unique emoji appears on their screen, in the same order." : "Verify this user by confirming the following numbers appear on their screen, in the same order."
+            adviceText = VectorL10n.deviceVerificationSecurityAdvice
+        }
 
-        self.informationLabel.text = VectorL10n.deviceVerificationSecurityAdvice
+        self.title = title
+        self.titleLabel.text = instructionText
+        self.informationLabel.text = adviceText
         self.waitingPartnerLabel.text = VectorL10n.deviceVerificationVerifyWaitPartner
 
         self.waitingPartnerLabel.isHidden = true
@@ -223,10 +239,8 @@ extension DeviceVerificationVerifyViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "VerifyEmojiCollectionViewCell", for: indexPath) as? VerifyEmojiCollectionViewCell else {
-            return UICollectionViewCell()
-        }
+        
+        let cell = collectionView.dequeueReusableCell(for: indexPath, cellType: VerifyEmojiCollectionViewCell.self)
 
         guard let emoji = self.viewModel.emojis?[indexPath.row] else {
             return UICollectionViewCell()
