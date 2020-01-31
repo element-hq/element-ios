@@ -90,35 +90,15 @@ final class UserVerificationCoordinator: NSObject, UserVerificationCoordinatorTy
     
     private func presentDeviceVerification(for deviceId: String) {
         
-        guard let deviceInfo = self.session.crypto.device(withDeviceId: deviceId, ofUser: self.userId) else {
-            NSLog("[UserVerificationCoordinator] Device not found")
-            return
-        }
+        let deviceVerificationCoordinator = DeviceVerificationCoordinator(navigationRouter: self.navigationRouter, session: self.session, userId: self.userId, otherDeviceId: deviceId)
+        deviceVerificationCoordinator.delegate = self
+        deviceVerificationCoordinator.start()
         
-        let encryptionInfoView: EncryptionInfoView = EncryptionInfoView(deviceInfo: deviceInfo, andMatrixSession: session)
-        encryptionInfoView.delegate = self
+        self.add(childCoordinator: deviceVerificationCoordinator)
         
-        // Skip the intro page
-        encryptionInfoView.displayLegacyVerificationScreen()
-        
-        // Display the legacy verification view in full screen
-        // TODO: Do not reuse the legacy EncryptionInfoView and create a screen from scratch
-        let viewController = UIViewController()
-        
-        viewController.view.backgroundColor = ThemeService.shared().theme.backgroundColor
-        viewController.view.addSubview(encryptionInfoView)
-        encryptionInfoView.translatesAutoresizingMaskIntoConstraints = false
-        
-        let superViewMargins = viewController.view.layoutMarginsGuide
-        
-        NSLayoutConstraint.activate([
-            encryptionInfoView.topAnchor.constraint(equalTo: superViewMargins.topAnchor),
-            encryptionInfoView.leadingAnchor.constraint(equalTo: superViewMargins.leadingAnchor),
-            encryptionInfoView.trailingAnchor.constraint(equalTo: superViewMargins.trailingAnchor),
-            encryptionInfoView.bottomAnchor.constraint(equalTo: superViewMargins.bottomAnchor)
-            ])
-        
-        self.navigationRouter.push(viewController, animated: true, popCompletion: nil)
+        self.navigationRouter.push(deviceVerificationCoordinator, animated: true, popCompletion: {
+            self.remove(childCoordinator: deviceVerificationCoordinator)
+        })
     }
 }
 
@@ -152,16 +132,12 @@ extension UserVerificationCoordinator: UserVerificationSessionStatusCoordinatorD
     }
 }
 
-// MARK: - MXKEncryptionInfoViewDelegate
-extension UserVerificationCoordinator: MXKEncryptionInfoViewDelegate {
-    func encryptionInfoView(_ encryptionInfoView: MXKEncryptionInfoView!, didDeviceInfoVerifiedChange deviceInfo: MXDeviceInfo!) {
-        
-        self.presenter.toPresentable().dismiss(animated: true) {
-        }
-    }
+// MARK: - UserVerificationCoordinatorDelegate
+extension UserVerificationCoordinator: DeviceVerificationCoordinatorDelegate {
     
-    func encryptionInfoViewDidClose(_ encryptionInfoView: MXKEncryptionInfoView!) {
+    func deviceVerificationCoordinatorDidComplete(_ coordinator: DeviceVerificationCoordinatorType, otherUserId: String, otherDeviceId: String) {
         self.presenter.toPresentable().dismiss(animated: true) {
+            self.remove(childCoordinator: coordinator)
         }
     }
 }

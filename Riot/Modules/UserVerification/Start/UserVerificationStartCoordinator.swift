@@ -67,7 +67,7 @@ extension UserVerificationStartCoordinator: UserVerificationStartViewModelCoordi
         self.delegate?.userVerificationStartCoordinatorDidCancel(self)
     }
     
-    func userVerificationStartViewModel(_ viewModel: UserVerificationStartViewModelType, didCompleteWithOutgoingTransaction transaction: MXSASTransaction) {
+    func userVerificationStartViewModel(_ viewModel: UserVerificationStartViewModelType, didCompleteWithIncomingTransaction transaction: MXSASTransaction) {
         self.delegate?.userVerificationStartCoordinator(self, didCompleteWithOutgoingTransaction: transaction)
     }
     

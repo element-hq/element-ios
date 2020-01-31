@@ -138,7 +138,7 @@ final class UserVerificationStartViewModel: UserVerificationStartViewModelType {
         switch transaction.state {
         case MXSASTransactionStateShowSAS:
             self.unregisterTransactionDidStateChangeNotification()
-            self.coordinatorDelegate?.userVerificationStartViewModel(self, didCompleteWithOutgoingTransaction: transaction)
+            self.coordinatorDelegate?.userVerificationStartViewModel(self, didCompleteWithIncomingTransaction: transaction)
         case MXSASTransactionStateCancelled:
             guard let reason = transaction.reasonCancelCode else {
                 return
