@@ -62,6 +62,8 @@ enum {
     UIViewController *pushedViewController;
 }
 
+@property (nonatomic, strong) UserVerificationCoordinatorBridgePresenter *userVerificationCoordinatorBridgePresenter;
+
 @end
 
 @implementation ManageSessionViewController
@@ -636,7 +638,13 @@ enum {
 
 - (void)showTrustForDevice:(MXDevice *)device
 {
-    [[AppDelegate theDelegate] showAlertWithTitle:@"Device Trust" message:@"TODO with bottom sheet 😛"];
+    UserVerificationCoordinatorBridgePresenter *userVerificationCoordinatorBridgePresenter = [[UserVerificationCoordinatorBridgePresenter alloc] initWithPresenter:self
+                                                                                                                                                           session:self.mainSession
+                                                                                                                                                            userId:self.mainSession.myUser.userId
+                                                                                                                                                   userDisplayName:nil
+                                                                                                                                                          deviceId:device.deviceId];
+    [userVerificationCoordinatorBridgePresenter start];
+    self.userVerificationCoordinatorBridgePresenter = userVerificationCoordinatorBridgePresenter;
 }
 
 - (void)removeDevice
