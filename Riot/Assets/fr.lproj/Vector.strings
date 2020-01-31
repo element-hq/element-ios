@@ -958,3 +958,20 @@
 "key_verification_tile_conclusion_warning_title" = "Connexion non approuvée";
 "key_verification_incoming_request_incoming_alert_message" = "%@ veut vérifier";
 "settings_labs_enable_cross_signing" = "Activer la vérification croisée pour vérifier par utilisateurs plutôt que par appareil (en développement)";
+"settings_security" = "SÉCURITÉ";
+// Security settings
+"security_settings_title" = "Sécurité";
+"security_settings_crypto_sessions" = "MES SESSIONS";
+"security_settings_crypto_sessions_description" = "Faites confiance à des sessions pour leur accorder l’accès aux messages chiffrés de bout en bout. Si vous ne reconnaissez pas une session, modifiez votre mot de passe de connexion et réinitialisez votre mot de passe de messages utilisé pour la sauvegarde des messages.";
+"security_settings_backup" = "SAUVEGARDE DES MESSAGES";
+"security_settings_advanced" = "AVANCÉ";
+"security_settings_blacklist_unverified_devices" = "Ne jamais envoyer de message aux sessions non fiables";
+"security_settings_blacklist_unverified_devices_description" = "Vérifier toutes les sessions d’un utilisateur pour les marquer comme fiables et leur envoyer des messages.";
+"security_settings_export_keys_manually" = "Exporter les clés manuellement";
+// Manage session
+"manage_session_title" = "Gérer la session";
+"manage_session_info" = "INFORMATIONS DE LA SESSION";
+"manage_session_name" = "Nom de l’appareil";
+"manage_session_trusted" = "Vous lui faites confiance";
+"manage_session_not_trusted" = "Vous ne lui faites pas confiance";
+"manage_session_sign_out" = "Se déconnecter de cet appareil";
