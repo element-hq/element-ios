@@ -17,6 +17,17 @@
 #import <MatrixKit/MatrixKit.h>
 
 /**
+ RoomEncryptionTrustLevel represents the trust level in an encrypted room.
+ */
+typedef NS_ENUM(NSUInteger, RoomEncryptionTrustLevel) {
+    RoomEncryptionTrustLevelTrusted,
+    RoomEncryptionTrustLevelWarning,
+    RoomEncryptionTrustLevelNormal,
+    RoomEncryptionTrustLevelUnknown
+};
+
+
+/**
  Define a `MXRoomSummary` category at Riot level.
  */
 @interface MXRoomSummary (Riot)
@@ -31,5 +42,12 @@
  @param mxkImageView the destinated MXKImageView.
  */
 - (void)setRoomAvatarImageIn:(MXKImageView*)mxkImageView;
+
+/**
+ Get the trust level in the room.
+ 
+ @return the trust level.
+ */
+- (RoomEncryptionTrustLevel)roomEncryptionTrustLevel;
 
 @end
