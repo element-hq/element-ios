@@ -2802,6 +2802,9 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                     break;
                 }
             }
+            
+            // Do not warn for unknown devices if cross-signing is enabled
+            mxSession.crypto.warnOnUnknowDevices = !RiotSettings.shared.enableCrossSigning;
         }
         else if (mxSession.state == MXSessionStateClosed)
         {
