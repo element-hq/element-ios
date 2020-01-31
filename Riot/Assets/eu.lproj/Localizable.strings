@@ -54,3 +54,4 @@
 "MSG_FROM_USER_IN_ROOM_TITLE" = "%@ erabiltzailea %@ gelan";
 /* Sticker from a specific person, not referencing a room. */
 "STICKER_FROM_USER" = "%@ erabiltzaileak eranskailu bat bidali du";
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@(e)k egiaztatu nahi du";
