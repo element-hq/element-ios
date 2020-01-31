@@ -38,10 +38,10 @@ final class DeviceVerificationVerifyCoordinator: DeviceVerificationVerifyCoordin
     
     // MARK: - Setup
     
-    init(session: MXSession, transaction: MXSASTransaction) {
+    init(session: MXSession, transaction: MXSASTransaction, verificationKind: KeyVerificationKind) {
         self.session = session
         
-        let deviceVerificationVerifyViewModel = DeviceVerificationVerifyViewModel(session: self.session, transaction: transaction)
+        let deviceVerificationVerifyViewModel = DeviceVerificationVerifyViewModel(session: self.session, transaction: transaction, verificationKind: verificationKind)
         let deviceVerificationVerifyViewController = DeviceVerificationVerifyViewController.instantiate(with: deviceVerificationVerifyViewModel)
         self.deviceVerificationVerifyViewModel = deviceVerificationVerifyViewModel
         self.deviceVerificationVerifyViewController = deviceVerificationVerifyViewController

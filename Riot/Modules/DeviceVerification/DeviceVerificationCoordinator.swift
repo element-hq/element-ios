@@ -28,12 +28,13 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
     private let otherUserId: String
-    private let otherDeviceId: String
-
+    private let otherDeviceId: String    
+    
     private var incomingTransaction: MXIncomingSASTransaction?
     private var incomingKeyVerificationRequest: MXKeyVerificationRequest?
     
-    var roomMember: MXRoomMember?
+    private var verificationKind: KeyVerificationKind = .device    
+    private var roomMember: MXRoomMember?
 
     // MARK: Public
 
@@ -54,6 +55,13 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
         self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
         self.otherUserId = otherUserId
+        self.otherDeviceId = otherDeviceId
+    }
+    
+    init(navigationRouter: NavigationRouterType, session: MXSession, userId: String, otherDeviceId: String) {
+        self.navigationRouter = navigationRouter
+        self.session = session
+        self.otherUserId = userId
         self.otherDeviceId = otherDeviceId
     }
 
@@ -90,6 +98,7 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
         self.otherUserId = roomMember.userId
         self.otherDeviceId = ""
         self.roomMember = roomMember
+        self.verificationKind = .user
     }
     
     // MARK: - Public methods
@@ -108,8 +117,15 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
         rootCoordinator.start()
         
         self.add(childCoordinator: rootCoordinator)
-        self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
-            self?.remove(childCoordinator: rootCoordinator)
+        
+        if self.navigationRouter.modules.isEmpty == false {
+            self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
+                self?.remove(childCoordinator: rootCoordinator)
+            })
+        } else {
+            self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
+                self?.remove(childCoordinator: rootCoordinator)
+            }
         }
     }
     
@@ -166,7 +182,7 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
     }
 
     private func showVerify(transaction: MXSASTransaction, animated: Bool) {
-        let coordinator = DeviceVerificationVerifyCoordinator(session: self.session, transaction: transaction)
+        let coordinator = DeviceVerificationVerifyCoordinator(session: self.session, transaction: transaction, verificationKind: self.verificationKind)
         coordinator.delegate = self
         coordinator.start()
 
@@ -177,7 +193,7 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
     }
 
     private func showVerified(animated: Bool) {
-        let viewController = DeviceVerificationVerifiedViewController.instantiate()
+        let viewController = DeviceVerificationVerifiedViewController.instantiate(with: self.verificationKind)
         viewController.delegate = self
         self.navigationRouter.setRootModule(viewController)
     }

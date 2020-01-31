@@ -187,6 +187,7 @@
 		B12D7A0023E2462200FACEDC /* UserVerificationStartCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12D79F823E2462200FACEDC /* UserVerificationStartCoordinatorType.swift */; };
 		B12D7A0123E2462200FACEDC /* UserVerificationStartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12D79F923E2462200FACEDC /* UserVerificationStartViewModel.swift */; };
 		B12D7A0223E2462200FACEDC /* UserVerificationStartViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12D79FA23E2462200FACEDC /* UserVerificationStartViewAction.swift */; };
+		B12D7A0423E43DCC00FACEDC /* KeyVerificationKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12D7A0323E43DCC00FACEDC /* KeyVerificationKind.swift */; };
 		B139C21B21FE5B9200BB68EC /* KeyBackupRecoverFromPassphraseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B139C21A21FE5B9100BB68EC /* KeyBackupRecoverFromPassphraseViewModel.swift */; };
 		B139C21D21FE5BF500BB68EC /* KeyBackupRecoverFromPassphraseViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B139C21C21FE5BF500BB68EC /* KeyBackupRecoverFromPassphraseViewModelType.swift */; };
 		B139C21F21FE5D6600BB68EC /* KeyBackupRecoverFromPassphraseViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B139C21E21FE5D6600BB68EC /* KeyBackupRecoverFromPassphraseViewAction.swift */; };
@@ -915,6 +916,7 @@
 		B12D79F823E2462200FACEDC /* UserVerificationStartCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserVerificationStartCoordinatorType.swift; sourceTree = "<group>"; };
 		B12D79F923E2462200FACEDC /* UserVerificationStartViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserVerificationStartViewModel.swift; sourceTree = "<group>"; };
 		B12D79FA23E2462200FACEDC /* UserVerificationStartViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserVerificationStartViewAction.swift; sourceTree = "<group>"; };
+		B12D7A0323E43DCC00FACEDC /* KeyVerificationKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyVerificationKind.swift; sourceTree = "<group>"; };
 		B139C21A21FE5B9100BB68EC /* KeyBackupRecoverFromPassphraseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverFromPassphraseViewModel.swift; sourceTree = "<group>"; };
 		B139C21C21FE5BF500BB68EC /* KeyBackupRecoverFromPassphraseViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverFromPassphraseViewModelType.swift; sourceTree = "<group>"; };
 		B139C21E21FE5D6600BB68EC /* KeyBackupRecoverFromPassphraseViewAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverFromPassphraseViewAction.swift; sourceTree = "<group>"; };
@@ -1749,8 +1751,9 @@
 				324A2046225FC571004FE8B0 /* Incoming */,
 				32891D72226728EE00C82226 /* Loading */,
 				3232AB96225730E100AD6A5C /* Start */,
-				32891D6D2264DF7B00C82226 /* Verified */,
 				3232ABAC2257BE6400AD6A5C /* Verify */,
+				32891D6D2264DF7B00C82226 /* Verified */,
+				B12D7A0323E43DCC00FACEDC /* KeyVerificationKind.swift */,
 				3232AB95225730E100AD6A5C /* DeviceVerificationCoordinatorType.swift */,
 				3232AB9F225730E100AD6A5C /* DeviceVerificationCoordinatorBridgePresenter.swift */,
 				3232ABA0225730E100AD6A5C /* DeviceVerificationCoordinator.swift */,
@@ -5082,6 +5085,7 @@
 				B1B9DEEE22EB34EF0065E677 /* ReactionHistoryViewAction.swift in Sources */,
 				B1C543A4239E98E400DCA1FA /* KeyVerificationCellInnerContentView.swift in Sources */,
 				32B94DFA228EC26400716A26 /* ReactionsMenuButton.swift in Sources */,
+				B12D7A0423E43DCC00FACEDC /* KeyVerificationKind.swift in Sources */,
 				B1B9DEEC22EB34EF0065E677 /* ReactionHistoryViewModelType.swift in Sources */,
 				B157FAA523264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsViewModel.swift in Sources */,
 				B1C562E8228C7CF20037F12A /* ContextualMenuItemView.swift in Sources */,
