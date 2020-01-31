@@ -34,6 +34,7 @@ final class UserVerificationSessionsStatusViewController: UIViewController {
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var closeButton: UIButton!
     @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private weak var sessionsTableViewTitle: UILabel!
     @IBOutlet private weak var tableView: UITableView!
     
     // MARK: Private
@@ -62,6 +63,7 @@ final class UserVerificationSessionsStatusViewController: UIViewController {
         // Do any additional setup after loading the view.
                 
         self.setupViews()
+        self.vc_removeBackTitle()
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         self.errorPresenter = MXKErrorAlertPresentation()
         
@@ -105,6 +107,7 @@ final class UserVerificationSessionsStatusViewController: UIViewController {
         self.closeButton.vc_setBackgroundColor(theme.headerTextSecondaryColor, for: .normal)
         self.titleLabel.textColor = theme.textPrimaryColor
         self.informationLabel.textColor = theme.textPrimaryColor
+        self.sessionsTableViewTitle.textColor = theme.textPrimaryColor
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -120,6 +123,7 @@ final class UserVerificationSessionsStatusViewController: UIViewController {
         self.setupTableView()
         self.updateTitleViews()
         
+        self.sessionsTableViewTitle.text = "Sessions"
         self.informationLabel.text = "Messages with this user in this room are end-to-end encrypted and can’t be read by third parties."
     }
     

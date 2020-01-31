@@ -68,8 +68,14 @@
                                     <constraint firstItem="Vfc-7p-LLs" firstAttribute="leading" secondItem="rZH-h1-WTw" secondAttribute="leading" id="zAt-yf-7HQ"/>
                                 </constraints>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sessions" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uMA-Dt-xTz">
+                                <rect key="frame" x="20" y="133" width="335" height="24"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="drr-Gd-5wA">
-                                <rect key="frame" x="0.0" y="128" width="375" height="539"/>
+                                <rect key="frame" x="0.0" y="167" width="375" height="500"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="dataSource" destination="le3-e8-C1h" id="Xmr-jN-S8s"/>
@@ -81,10 +87,13 @@
                         <constraints>
                             <constraint firstItem="drr-Gd-5wA" firstAttribute="leading" secondItem="IXd-J2-Vex" secondAttribute="leading" id="52r-4B-JdK"/>
                             <constraint firstItem="Kfr-Ho-krK" firstAttribute="trailing" secondItem="Eud-3V-Vqw" secondAttribute="trailing" id="9Zg-EV-cHL"/>
+                            <constraint firstItem="Eud-3V-Vqw" firstAttribute="trailing" secondItem="uMA-Dt-xTz" secondAttribute="trailing" constant="20" id="Amb-5F-Ors"/>
                             <constraint firstAttribute="trailing" secondItem="drr-Gd-5wA" secondAttribute="trailing" id="Awf-hM-uzJ"/>
+                            <constraint firstItem="drr-Gd-5wA" firstAttribute="top" secondItem="uMA-Dt-xTz" secondAttribute="bottom" constant="10" id="H1a-sI-AbP"/>
                             <constraint firstAttribute="bottom" secondItem="drr-Gd-5wA" secondAttribute="bottom" id="Nhh-Ps-Upr"/>
                             <constraint firstItem="Kfr-Ho-krK" firstAttribute="top" secondItem="Eud-3V-Vqw" secondAttribute="top" id="Wxs-Uw-xoA"/>
-                            <constraint firstItem="drr-Gd-5wA" firstAttribute="top" secondItem="Kfr-Ho-krK" secondAttribute="bottom" id="bvK-7D-7ms"/>
+                            <constraint firstItem="uMA-Dt-xTz" firstAttribute="leading" secondItem="Eud-3V-Vqw" secondAttribute="leading" constant="20" id="an1-BC-BP0"/>
+                            <constraint firstItem="uMA-Dt-xTz" firstAttribute="top" secondItem="Kfr-Ho-krK" secondAttribute="bottom" constant="5" id="wok-Oq-W0z"/>
                             <constraint firstItem="Eud-3V-Vqw" firstAttribute="leading" secondItem="Kfr-Ho-krK" secondAttribute="leading" id="xjg-JA-ZUT"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Eud-3V-Vqw"/>
@@ -93,13 +102,14 @@
                         <outlet property="badgeImageImageView" destination="rZH-h1-WTw" id="M2a-7i-OoW"/>
                         <outlet property="closeButton" destination="NBJ-A1-IP0" id="AYv-b7-fFp"/>
                         <outlet property="informationLabel" destination="Vfc-7p-LLs" id="em9-jE-1wo"/>
+                        <outlet property="sessionsTableViewTitle" destination="uMA-Dt-xTz" id="vFU-UV-jMO"/>
                         <outlet property="tableView" destination="drr-Gd-5wA" id="Cs0-pF-wwB"/>
                         <outlet property="titleLabel" destination="fcs-Vl-AtB" id="iGp-kn-QfJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dBA-Zm-evE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-175.19999999999999" y="124.58770614692655"/>
+            <point key="canvasLocation" x="-463.19999999999999" y="-80.50974512743629"/>
         </scene>
     </scenes>
     <resources>
