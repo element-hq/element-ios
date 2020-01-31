@@ -54,3 +54,4 @@
 "MSG_FROM_USER_IN_ROOM_TITLE" = "%@ in %@";
 /* Sticker from a specific person, not referencing a room. */
 "STICKER_FROM_USER" = "%@ hat einen Sticker gesendet";
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ möchte verifizieren";
