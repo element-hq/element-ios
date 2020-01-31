@@ -30,6 +30,7 @@ final class UserVerificationCoordinator: NSObject, UserVerificationCoordinatorTy
     private let session: MXSession
     private let userId: String
     private let userDisplayName: String?
+    private var deviceId: String?
     
     // MARK: Public
 
@@ -48,6 +49,11 @@ final class UserVerificationCoordinator: NSObject, UserVerificationCoordinatorTy
         self.userDisplayName = userDisplayName
     }
     
+    convenience init(presenter: Presentable, session: MXSession, userId: String, userDisplayName: String?, deviceId: String) {
+        self.init(presenter: presenter, session: session, userId: userId, userDisplayName: userDisplayName)
+        self.deviceId = deviceId
+    }
+    
     // MARK: - Public methods
     
     func start() {
@@ -56,8 +62,14 @@ final class UserVerificationCoordinator: NSObject, UserVerificationCoordinatorTy
             return
         }
         
-        let rootCoordinator = UserVerificationSessionsStatusCoordinator(session: self.session, userId: self.userId)
-        rootCoordinator.delegate = self
+        let rootCoordinator: Coordinator & Presentable
+        
+        if let deviceId = self.deviceId {
+            rootCoordinator = self.createSessionStatusCoordinator(with: deviceId, for: self.userId, userDisplayName: self.userDisplayName)
+        } else {
+            rootCoordinator = self.createUserVerificationSessionsStatusCoordinator()
+        }
+        
         rootCoordinator.start()
 
         self.add(childCoordinator: rootCoordinator)
@@ -70,7 +82,7 @@ final class UserVerificationCoordinator: NSObject, UserVerificationCoordinatorTy
         rootViewController.modalPresentationStyle = .formSheet
         
         self.presenter.toPresentable().present(rootViewController, animated: true, completion: nil)
-      }
+    }
     
     func toPresentable() -> UIViewController {
         return self.navigationRouter.toPresentable()
@@ -78,9 +90,20 @@ final class UserVerificationCoordinator: NSObject, UserVerificationCoordinatorTy
     
     // MARK: - Private methods
     
-    private func presentSessionStatus(with deviceId: String, for userId: String, userDisplayName: String?) {
+    private func createUserVerificationSessionsStatusCoordinator() -> UserVerificationSessionsStatusCoordinator {
+        let coordinator = UserVerificationSessionsStatusCoordinator(session: self.session, userId: self.userId)
+        coordinator.delegate = self
+        return coordinator
+    }
+    
+    private func createSessionStatusCoordinator(with deviceId: String, for userId: String, userDisplayName: String?) -> UserVerificationSessionStatusCoordinator {
         let coordinator = UserVerificationSessionStatusCoordinator(session: self.session, userId: userId, userDisplayName: userDisplayName, deviceId: deviceId)
         coordinator.delegate = self
+        return coordinator
+    }
+    
+    private func presentSessionStatus(with deviceId: String, for userId: String, userDisplayName: String?) {
+        let coordinator = self.createSessionStatusCoordinator(with: deviceId, for: userId, userDisplayName: userDisplayName)
         coordinator.start()
         
         self.navigationRouter.push(coordinator, animated: true) {

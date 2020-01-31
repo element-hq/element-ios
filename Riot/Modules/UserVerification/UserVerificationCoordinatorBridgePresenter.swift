@@ -35,6 +35,7 @@ final class UserVerificationCoordinatorBridgePresenter: NSObject {
     private let session: MXSession
     private let userId: String
     private let userDisplayName: String?
+    private var deviceId: String?
     
     private var coordinator: Coordinator?
     
@@ -52,6 +53,15 @@ final class UserVerificationCoordinatorBridgePresenter: NSObject {
         super.init()
     }
     
+    init(presenter: UIViewController, session: MXSession, userId: String, userDisplayName: String?, deviceId: String) {
+        self.presenter = presenter
+        self.session = session
+        self.userId = userId
+        self.userDisplayName = userDisplayName
+        self.deviceId = deviceId
+        super.init()
+    }
+    
     // MARK: - Public
     
     func start() {
@@ -59,7 +69,15 @@ final class UserVerificationCoordinatorBridgePresenter: NSObject {
     }
     
     func present() {
-        let userVerificationCoordinator = UserVerificationCoordinator(presenter: self.presenter, session: self.session, userId: self.userId, userDisplayName: self.userDisplayName)
+        
+        let userVerificationCoordinator: UserVerificationCoordinator
+        
+        if let deviceId = self.deviceId {
+            userVerificationCoordinator = UserVerificationCoordinator(presenter: self.presenter, session: self.session, userId: self.userId, userDisplayName: self.userDisplayName, deviceId: deviceId)
+        } else {
+            userVerificationCoordinator = UserVerificationCoordinator(presenter: self.presenter, session: self.session, userId: self.userId, userDisplayName: self.userDisplayName)
+        }
+        
         userVerificationCoordinator.start()
         self.coordinator = userVerificationCoordinator
     }

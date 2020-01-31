@@ -147,6 +147,8 @@ final class UserVerificationSessionStatusViewController: UIViewController {
         let badgeImage: UIImage
         let title: String
         
+        self.untrustedSessionContainerView.isHidden = viewData.isDeviceTrusted
+        
         if viewData.isDeviceTrusted {
             badgeImage = Asset.Images.encryptionTrusted.image
             title = "Trusted"
