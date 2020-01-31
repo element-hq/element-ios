@@ -47,4 +47,31 @@
     mxkImageView.contentMode = UIViewContentModeScaleAspectFill;
 }
 
+- (RoomEncryptionTrustLevel)roomEncryptionTrustLevel
+{
+    RoomEncryptionTrustLevel roomEncryptionTrustLevel = RoomEncryptionTrustLevelUnknown;
+    if (self.trust)
+    {
+        double trustedDevicesPercentage = self.trust.trustedDevicesProgress.fractionCompleted;
+        
+        if (trustedDevicesPercentage >= 1.0
+            || self.trust.trustedDevicesProgress.totalUnitCount == 0)
+        {
+            roomEncryptionTrustLevel = RoomEncryptionTrustLevelTrusted;
+        }
+        else if (trustedDevicesPercentage == 0.0)
+        {
+            roomEncryptionTrustLevel = RoomEncryptionTrustLevelNormal;
+        }
+        else
+        {
+            roomEncryptionTrustLevel = RoomEncryptionTrustLevelWarning;
+        }
+        
+        roomEncryptionTrustLevel = roomEncryptionTrustLevel;
+    }
+    
+    return roomEncryptionTrustLevel;
+}
+
 @end

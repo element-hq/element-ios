@@ -112,7 +112,7 @@
             NSLog(@"[MXKRoomDataSource] finalizeRoomDataSource: Cannot retrieve all room members");
         }];
     }
-    
+
     if (self.room.summary.isEncrypted)
     {
         [self fetchEncryptionTrustedLevel];
@@ -193,84 +193,26 @@
 
 - (void)registerTrustLevelDidChangeNotifications
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceInfoTrustLevelDidChange:) name:MXDeviceInfoTrustLevelDidChangeNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(crossSigningInfoTrustLevelDidChange:) name:MXCrossSigningInfoTrustLevelDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(roomSummaryDidChange:) name:kMXRoomSummaryDidChangeNotification object:self.room.summary];
 }
 
-- (void)deviceInfoTrustLevelDidChange:(NSNotification*)notification
-{
-    MXDeviceInfo *deviceInfo = notification.object;
-    
-    NSString *userId = deviceInfo.userId;
-    
-    if (userId)
-    {
-        [self encryptionTrustLevelDidChangeRelatedToUserId:userId];
-    }
-}
 
-- (void)crossSigningInfoTrustLevelDidChange:(NSNotification*)notification
-{
-    MXCrossSigningInfo *crossSigningInfo = notification.object;
-    
-    NSString *userId = crossSigningInfo.userId;
-    
-    if (userId)
-    {
-        [self encryptionTrustLevelDidChangeRelatedToUserId:userId];
-    }
-}
-
-- (void)fetchEncryptionTrustedLevel
-{
-    [self encryptionTrustLevelDidChangeRelatedToUserId:self.mxSession.myUser.userId];
-}
-
-- (void)encryptionTrustLevelDidChangeRelatedToUserId:(NSString*)userId
+- (void)roomSummaryDidChange:(NSNotification*)notification
 {
     if (!self.room.summary.isEncrypted)
     {
         return;
     }
     
-    [self.room members:^(MXRoomMembers *roomMembers) {
-        MXRoomMember *roomMember = [roomMembers memberWithUserId:userId];
-        
-        // If user belongs to the room refresh the trust level
-        if (roomMember)
-        {
-            [self.room membersTrustLevelSummaryWithForceDownload:NO
-                                                         success:^(MXUsersTrustLevelSummary *usersTrustLevelSummary) {
-                                                             
-                RoomEncryptionTrustLevel roomEncryptionTrustLevel;
-                
-                double trustedDevicesPercentage = usersTrustLevelSummary.trustedDevicesProgress.fractionCompleted;
-                
-                if (trustedDevicesPercentage >= 1.0)
-                {
-                    roomEncryptionTrustLevel = RoomEncryptionTrustLevelTrusted;
-                }
-                else if (trustedDevicesPercentage == 0.0)
-                {
-                    roomEncryptionTrustLevel = RoomEncryptionTrustLevelNormal;
-                }
-                else
-                {
-                    roomEncryptionTrustLevel = RoomEncryptionTrustLevelWarning;
-                }
-                
-                self.encryptionTrustLevel = roomEncryptionTrustLevel;
-                [self.roomDataSourceDelegate roomDataSource:self didUpdateEncryptionTrustLevel:roomEncryptionTrustLevel];
-                
-            } failure:^(NSError *error) {
-                NSLog(@"[RoomDataSource] trustLevelDidChangeRelatedToUserId fails to retrieve room members trusted progress");
-            }];
-        }
-        
-    } failure:^(NSError *error) {
-        NSLog(@"[RoomDataSource] trustLevelDidChangeRelatedToUserId fails to retrieve room members");
-    }];
+    [self fetchEncryptionTrustedLevel];
 }
+
+- (void)fetchEncryptionTrustedLevel
+{
+    self.encryptionTrustLevel = self.room.summary.roomEncryptionTrustLevel;
+    [self.roomDataSourceDelegate roomDataSource:self didUpdateEncryptionTrustLevel:self.encryptionTrustLevel];
+}
+
 
 #pragma  mark -
 

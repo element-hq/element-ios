@@ -19,15 +19,7 @@
 
 #import "WidgetManager.h"
 
-/**
- RoomEncryptionTrustLevel represents the room members trust level in an encrypted room.
- */
-typedef NS_ENUM(NSUInteger, RoomEncryptionTrustLevel) {
-    RoomEncryptionTrustLevelTrusted,
-    RoomEncryptionTrustLevelWarning,
-    RoomEncryptionTrustLevelNormal,
-    RoomEncryptionTrustLevelUnknown
-};
+#import "MXRoomSummary+Riot.h"
 
 @protocol RoomDataSourceDelegate;
 
