@@ -52,22 +52,25 @@
     RoomEncryptionTrustLevel roomEncryptionTrustLevel = RoomEncryptionTrustLevelUnknown;
     if (self.trust)
     {
+        double trustedUsersPercentage = self.trust.trustedUsersProgress.fractionCompleted;
         double trustedDevicesPercentage = self.trust.trustedDevicesProgress.fractionCompleted;
-        
-        if (trustedDevicesPercentage >= 1.0
-            || self.trust.trustedDevicesProgress.totalUnitCount == 0)
+
+        if (trustedUsersPercentage >= 1.0)
         {
-            roomEncryptionTrustLevel = RoomEncryptionTrustLevelTrusted;
-        }
-        else if (trustedDevicesPercentage == 0.0)
-        {
-            roomEncryptionTrustLevel = RoomEncryptionTrustLevelNormal;
+            if (trustedDevicesPercentage >= 1.0)
+            {
+                roomEncryptionTrustLevel = RoomEncryptionTrustLevelTrusted;
+            }
+            else
+            {
+                roomEncryptionTrustLevel = RoomEncryptionTrustLevelWarning;
+            }
         }
         else
         {
-            roomEncryptionTrustLevel = RoomEncryptionTrustLevelWarning;
+            roomEncryptionTrustLevel = RoomEncryptionTrustLevelNormal;
         }
-        
+            
         roomEncryptionTrustLevel = roomEncryptionTrustLevel;
     }
     
