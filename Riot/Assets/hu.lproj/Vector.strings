@@ -960,3 +960,20 @@
 "key_verification_tile_conclusion_warning_title" = "Megbízhatatlan belépés";
 "key_verification_incoming_request_incoming_alert_message" = "%@ ellenőrizni szeretné";
 "settings_labs_enable_cross_signing" = "Kereszt-aláírás engedélyezése a felhasználó alapú azonosításhoz az eszköz alapú helyett (fejlesztés alatt)";
+"settings_security" = "BIZTONSÁG";
+// Security settings
+"security_settings_title" = "Biztonság";
+"security_settings_crypto_sessions" = "MUNKAMENETEIM";
+"security_settings_crypto_sessions_description" = "Bízz meg a munkamenetbe a végpontok között titkosított üzenetek hozzáféréséhez. Ha nem ismered fel a munkamenetet, változtasd meg a bejelentkezési jelszavad és az Üzenet Mentéshez használt jelszavad.";
+"security_settings_backup" = "ÜZENET MENTÉS";
+"security_settings_advanced" = "HALADÓ";
+"security_settings_blacklist_unverified_devices" = "Soha ne küldj üzenetet megbízhatatlan munkamenetekbe";
+"security_settings_blacklist_unverified_devices_description" = "Ellenőrizd minden felhasználó minden munkamenetét, hogy megbízhatónak tudd jelölni azokat és üzenet küldhess nekik.";
+"security_settings_export_keys_manually" = "Kulcsok kimentése kézzel";
+// Manage session
+"manage_session_title" = "Munkamenet kezelése";
+"manage_session_info" = "MUNKAMENET INFORMÁCIÓ";
+"manage_session_name" = "Eszköznév";
+"manage_session_trusted" = "Szerinted megbízható";
+"manage_session_not_trusted" = "Megbízhatatlan";
+"manage_session_sign_out" = "Kijelentkezés erről az eszközről";
