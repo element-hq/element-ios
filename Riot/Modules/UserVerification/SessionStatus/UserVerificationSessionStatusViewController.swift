@@ -161,10 +161,10 @@ final class UserVerificationSessionStatusViewController: UIViewController {
         let verifyButtonTitle: String
         
         if viewData.isCurrentUser {
-            unstrustedInformationText = VectorL10n.userVerificationSessionDetailsInformationUntrustedCurrentUser
+            unstrustedInformationText = VectorL10n.userVerificationSessionDetailsAdditionalInformationUntrustedCurrentUser
             verifyButtonTitle = VectorL10n.userVerificationSessionDetailsVerifyActionCurrentUser
         } else {
-            unstrustedInformationText = VectorL10n.userVerificationSessionDetailsInformationUntrustedOtherUser
+            unstrustedInformationText = VectorL10n.userVerificationSessionDetailsAdditionalInformationUntrustedOtherUser
             verifyButtonTitle = VectorL10n.userVerificationSessionDetailsVerifyActionOtherUser
         }
         
