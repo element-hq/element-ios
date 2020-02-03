@@ -94,10 +94,10 @@ final class DeviceVerificationVerifiedViewController: UIViewController {
             descriptionTextPart1 = VectorL10n.deviceVerificationVerifiedDescription1
             descriptionTextPart2 = VectorL10n.deviceVerificationVerifiedDescription2
         case .user:
-            title = "Verify user"
+            title = VectorL10n.keyVerificationUserTitle
             bodyTitle = VectorL10n.deviceVerificationVerifiedTitle
-            descriptionTextPart1 = "You’ve successfully verified this user."
-            descriptionTextPart2 = "Messages with this user in this room are end-to-end encrypted and can’t be read by third parties."
+            descriptionTextPart1 = VectorL10n.keyVerificationVerifiedUserDescription1
+            descriptionTextPart2 = VectorL10n.keyVerificationVerifiedUserDescription2
         }
         
         self.title = title

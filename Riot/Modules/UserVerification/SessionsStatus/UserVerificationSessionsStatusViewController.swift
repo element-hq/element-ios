@@ -123,8 +123,8 @@ final class UserVerificationSessionsStatusViewController: UIViewController {
         self.setupTableView()
         self.updateTitleViews()
         
-        self.sessionsTableViewTitle.text = "Sessions"
-        self.informationLabel.text = "Messages with this user in this room are end-to-end encrypted and can’t be read by third parties."
+        self.sessionsTableViewTitle.text = VectorL10n.userVerificationSessionsListTableTitle
+        self.informationLabel.text = VectorL10n.userVerificationSessionsListInformation
     }
     
     private func setupTableView() {
@@ -178,13 +178,13 @@ final class UserVerificationSessionsStatusViewController: UIViewController {
         switch self.userEncryptionTrustLevel {
         case .trusted:
             badgeImage = Asset.Images.encryptionTrusted.image
-            title = "Trusted"
+            title = VectorL10n.userVerificationSessionsListUserTrustLevelTrustedTitle
         case .warning:
             badgeImage = Asset.Images.encryptionWarning.image
-            title = "Warning"
+            title = VectorL10n.userVerificationSessionsListUserTrustLevelWarningTitle
         default:
             badgeImage = Asset.Images.encryptionNormal.image
-            title = "Unknown"
+            title = VectorL10n.userVerificationSessionsListUserTrustLevelUnknownTitle
         }
         
         self.badgeImageImageView.image = badgeImage

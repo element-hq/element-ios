@@ -151,21 +151,21 @@ final class UserVerificationSessionStatusViewController: UIViewController {
         
         if viewData.isDeviceTrusted {
             badgeImage = Asset.Images.encryptionTrusted.image
-            title = "Trusted"
+            title = VectorL10n.userVerificationSessionDetailsTrustedTitle
         } else {
             badgeImage = Asset.Images.encryptionWarning.image
-            title = "Warning"
+            title = VectorL10n.userVerificationSessionDetailsUntrustedTitle
         }
         
         let unstrustedInformationText: String
         let verifyButtonTitle: String
         
         if viewData.isCurrentUser {
-            unstrustedInformationText = "If you didn’t sign in to this session, your account may be compromised."
-            verifyButtonTitle = "Verify"
+            unstrustedInformationText = VectorL10n.userVerificationSessionDetailsInformationUntrustedCurrentUser
+            verifyButtonTitle = VectorL10n.userVerificationSessionDetailsVerifyActionCurrentUser
         } else {
-            unstrustedInformationText = "Until this user trusts this device, messages sent to and from it are labelled with warnings. Alternatively, you can manually verify it."
-            verifyButtonTitle = "Manually verify"
+            unstrustedInformationText = VectorL10n.userVerificationSessionDetailsInformationUntrustedOtherUser
+            verifyButtonTitle = VectorL10n.userVerificationSessionDetailsVerifyActionOtherUser
         }
         
         self.badgeImageView.image = badgeImage
@@ -212,12 +212,12 @@ final class UserVerificationSessionStatusViewController: UIViewController {
         if viewData.isDeviceTrusted {
             
             if viewData.isCurrentUser {
-                let informationAttributedStringPart1 = NSAttributedString(string: "This session is trusted for secure messaging because you verified it:", attributes: informationTextDefaultAttributes)
+                let informationAttributedStringPart1 = NSAttributedString(string: VectorL10n.userVerificationSessionDetailsInformationTrustedCurrentUser, attributes: informationTextDefaultAttributes)
                 informationAttributedText.append(informationAttributedStringPart1)
             } else {
-                let informationAttributedStringPart1 = NSAttributedString(string: "This device is trusted for secure messaging because ", attributes: informationTextDefaultAttributes)
+                let informationAttributedStringPart1 = NSAttributedString(string: VectorL10n.userVerificationSessionDetailsInformationTrustedOtherUserPart1, attributes: informationTextDefaultAttributes)
                 let informationAttributedStringPart2 = NSAttributedString(string: userInfoText, attributes: informationTextBoldAttributes)
-                let informationAttributedStringPart3 = NSAttributedString(string: " verified it:", attributes: informationTextDefaultAttributes)
+                let informationAttributedStringPart3 = NSAttributedString(string: VectorL10n.userVerificationSessionDetailsInformationTrustedOtherUserPart2, attributes: informationTextDefaultAttributes)
                 
                 informationAttributedText.append(informationAttributedStringPart1)
                 informationAttributedText.append(informationAttributedStringPart2)
@@ -226,11 +226,11 @@ final class UserVerificationSessionStatusViewController: UIViewController {
             
         } else {
             if viewData.isCurrentUser {
-                let informationAttributedStringPart1 = NSAttributedString(string: "Verify this session to mark it as trusted & grant it access to encrypted messages:", attributes: informationTextDefaultAttributes)
+                let informationAttributedStringPart1 = NSAttributedString(string: VectorL10n.userVerificationSessionDetailsInformationUntrustedCurrentUser, attributes: informationTextDefaultAttributes)
                 informationAttributedText.append(informationAttributedStringPart1)
             } else {
                 let informationAttributedStringPart1 = NSAttributedString(string: userInfoText, attributes: informationTextBoldAttributes)
-                let informationAttributedStringPart2 = NSAttributedString(string: " signed in using a new device:", attributes: informationTextDefaultAttributes)
+                let informationAttributedStringPart2 = NSAttributedString(string: VectorL10n.userVerificationSessionDetailsInformationUntrustedOtherUser, attributes: informationTextDefaultAttributes)
                 
                 informationAttributedText.append(informationAttributedStringPart1)
                 informationAttributedText.append(informationAttributedStringPart2)
