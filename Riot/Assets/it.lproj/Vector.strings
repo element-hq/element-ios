@@ -930,3 +930,20 @@
 "key_verification_tile_conclusion_warning_title" = "Accesso non fidato";
 "key_verification_incoming_request_incoming_alert_message" = "%@ vuole verificare";
 "settings_labs_enable_cross_signing" = "Attiva la firma incrociata per la verifica per-utente invece di per-dispositivo (in sviluppo)";
+"settings_security" = "SICUREZZA";
+// Security settings
+"security_settings_title" = "Sicurezza";
+"security_settings_crypto_sessions" = "MIE SESSIONI";
+"security_settings_crypto_sessions_description" = "Verifica le sessioni per dare l'accesso ai messaggi cifrati end-to-end. Se non riconosci una sessione, modifica la password di accesso e reimposta la Password Messaggio usata per il Backup Messaggi.";
+"security_settings_backup" = "BACKUP MESSAGGI";
+"security_settings_advanced" = "AVANZATE";
+"security_settings_blacklist_unverified_devices" = "Non inviare mai messaggi a sessioni non fidate";
+"security_settings_blacklist_unverified_devices_description" = "Verifica tutte le sessioni di un utente per marcarle come fidate ed invirvi messaggi.";
+"security_settings_export_keys_manually" = "Esporta manualmente le chiavi";
+// Manage session
+"manage_session_title" = "Gestisci sessione";
+"manage_session_info" = "INFO SESSIONE";
+"manage_session_name" = "Nome dispositivo";
+"manage_session_trusted" = "Di tua fiducia";
+"manage_session_not_trusted" = "Non fidato";
+"manage_session_sign_out" = "Disconnetti da questo dispositivo";
