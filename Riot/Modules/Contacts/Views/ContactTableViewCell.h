@@ -33,6 +33,7 @@
 @property (nonatomic) IBOutlet UILabel *contactDisplayNameLabel;
 @property (nonatomic) IBOutlet UILabel *contactInformationLabel;
 @property (nonatomic) IBOutlet UIView *customAccessoryView;
+@property (weak, nonatomic) IBOutlet UIImageView *avatarBadgeImageView;
 
 @property (nonatomic) BOOL showCustomAccessoryView;
 
