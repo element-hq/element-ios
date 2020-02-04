@@ -38,7 +38,7 @@
     RoomMemberTitleView* memberTitleView;
     
     NSInteger securityIndex;
-    NSMutableArray<NSNumber*> *securityActionsArray;
+    NSArray<NSNumber*> *securityActionsArray;
     
     /**
      List of the admin actions on this member.
@@ -130,7 +130,6 @@
     self.rageShakeManager = [RageShakeManager sharedManager];
     self.encryptionTrustLevel = UserEncryptionTrustLevelUnknown;
     
-    securityActionsArray = [[NSMutableArray alloc] init];
     adminActionsArray = [[NSMutableArray alloc] init];
     otherActionsArray = [[NSMutableArray alloc] init];
     directChatsArray = [[NSMutableArray alloc] init];
@@ -607,7 +606,6 @@
     NSInteger memberPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxRoomMember.userId];
     NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
     
-    [securityActionsArray removeAllObjects];
     [adminActionsArray removeAllObjects];
     [otherActionsArray removeAllObjects];
     
@@ -750,15 +748,14 @@
     {
         switch (self.encryptionTrustLevel) {
             case UserEncryptionTrustLevelUnknown:
-                [securityActionsArray addObject:@(MXKRoomMemberDetailsActionSecurityInformation)];
+                securityActionsArray = @[@(MXKRoomMemberDetailsActionSecurityInformation)];
                 break;
             case UserEncryptionTrustLevelNone:
             case UserEncryptionTrustLevelNormal:
             case UserEncryptionTrustLevelTrusted:
             case UserEncryptionTrustLevelWarning:
-                [securityActionsArray addObjectsFromArray:@[@(MXKRoomMemberDetailsActionSecurity),
-                                                            @(MXKRoomMemberDetailsActionSecurityInformation)
-                                                            ]];
+                securityActionsArray = @[@(MXKRoomMemberDetailsActionSecurity),
+                                         @(MXKRoomMemberDetailsActionSecurityInformation)];
                 break;
             default:
                 break;
