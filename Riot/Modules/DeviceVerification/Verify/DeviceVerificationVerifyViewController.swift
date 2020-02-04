@@ -141,8 +141,8 @@ final class DeviceVerificationVerifyViewController: UIViewController {
             instructionText = isVerificationByEmoji ? VectorL10n.deviceVerificationVerifyTitleEmoji : VectorL10n.deviceVerificationVerifyTitleNumber
             adviceText = VectorL10n.deviceVerificationSecurityAdvice
         case .user:
-            title = "Verify user"
-            instructionText = isVerificationByEmoji ? "Verify this user by confirming the following unique emoji appears on their screen, in the same order." : "Verify this user by confirming the following numbers appear on their screen, in the same order."
+            title = VectorL10n.keyVerificationUserTitle
+            instructionText = isVerificationByEmoji ? VectorL10n.keyVerificationVerifyUserTitleEmoji : VectorL10n.keyVerificationVerifyUserTitleNumber
             adviceText = VectorL10n.deviceVerificationSecurityAdvice
         }
 

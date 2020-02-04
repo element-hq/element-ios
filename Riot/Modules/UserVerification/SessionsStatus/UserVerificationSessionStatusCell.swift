@@ -48,10 +48,10 @@ final class UserVerificationSessionStatusCell: UITableViewCell, NibReusable, The
         
         if viewData.isTrusted {
             statusImage = Asset.Images.encryptionTrusted.image
-            statusText = "Trusted"
+            statusText = VectorL10n.userVerificationSessionsListSessionTrusted
         } else {
             statusImage = Asset.Images.encryptionWarning.image
-            statusText = "Not trusted"
+            statusText = VectorL10n.userVerificationSessionsListSessionUntrusted            
         }
         
         self.statusImageView.image = statusImage

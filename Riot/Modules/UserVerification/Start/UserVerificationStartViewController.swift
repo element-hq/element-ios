@@ -62,7 +62,7 @@ final class UserVerificationStartViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = "Verify user"
+        self.title = VectorL10n.keyVerificationUserTitle
         
         self.setupViews()
         
@@ -120,7 +120,8 @@ final class UserVerificationStartViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         
         self.startVerificationButton.layer.masksToBounds = true
-        self.startVerificationButton.setTitle("Start verification", for: .normal)
+        self.startVerificationButton.setTitle(VectorL10n.userVerificationStartVerifyAction, for: .normal)
+        self.additionalInformationLabel.text = VectorL10n.userVerificationStartAdditionalInformation
     }
 
     private func render(viewState: UserVerificationStartViewState) {
@@ -192,9 +193,9 @@ final class UserVerificationStartViewController: UIViewController {
         let informationTextBoldAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: self.theme.textPrimaryColor,
                                                                             .font: Constants.informationTextBoldFont]
         
-        let informationAttributedStringPart1 = NSAttributedString(string: "For extra security, verify ", attributes: informationTextDefaultAttributes)
+        let informationAttributedStringPart1 = NSAttributedString(string: VectorL10n.userVerificationStartInformationPart1, attributes: informationTextDefaultAttributes)
         let informationAttributedStringPart2 = NSAttributedString(string: userId, attributes: informationTextBoldAttributes)
-        let informationAttributedStringPart3 = NSAttributedString(string: " by checking a one-time code on both your devices.", attributes: informationTextDefaultAttributes)
+        let informationAttributedStringPart3 = NSAttributedString(string: VectorL10n.userVerificationStartInformationPart2, attributes: informationTextDefaultAttributes)
         
         informationAttributedText.append(informationAttributedStringPart1)
         informationAttributedText.append(informationAttributedStringPart2)
@@ -205,7 +206,7 @@ final class UserVerificationStartViewController: UIViewController {
     
     private func buildVerificationWaitingText(with viewData: UserVerificationStartViewData) -> String {
         let userName = viewData.userDisplayName ?? viewData.userId
-        return "Waiting for \(userName)…"
+        return VectorL10n.userVerificationStartWaitingPartner(userName)
     }
     
     // MARK: - Actions

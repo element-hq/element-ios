@@ -39,7 +39,7 @@
     RoomMemberTitleView* memberTitleView;
     
     NSInteger securityIndex;
-    NSMutableArray<NSNumber*> *securityActionsArray;
+    NSArray<NSNumber*> *securityActionsArray;
     
     /**
      List of the admin actions on this member.
@@ -718,9 +718,28 @@
         }
     }
     
+    if (RiotSettings.shared.enableCrossSigning)
+    {
+        switch (self.encryptionTrustLevel) {
+            case UserEncryptionTrustLevelUnknown:
+                securityActionsArray = @[@(MXKRoomMemberDetailsActionSecurityInformation)];
+                break;
+            case UserEncryptionTrustLevelNone:
+            case UserEncryptionTrustLevelNormal:
+            case UserEncryptionTrustLevelTrusted:
+            case UserEncryptionTrustLevelWarning:
+                securityActionsArray = @[@(MXKRoomMemberDetailsActionSecurity),
+                                         @(MXKRoomMemberDetailsActionSecurityInformation)];
+                break;
+            default:
+                break;
+        }
+    }
+    
     securityIndex = adminToolsIndex = otherActionsIndex = directChatsIndex = devicesIndex = -1;
     
-    if (RiotSettings.shared.enableCrossSigning)
+    
+    if (securityActionsArray.count)
     {
         securityIndex = sectionCount++;
     }
@@ -751,19 +770,7 @@
 {
     if (section == securityIndex)
     {
-        NSInteger numberOfRows;
-        
-        switch (self.encryptionTrustLevel) {
-            case UserEncryptionTrustLevelUnknown:
-            case UserEncryptionTrustLevelNone:
-                numberOfRows = 1;
-                break;
-            default:
-                numberOfRows = 2;
-                break;
-        }
-        
-        return numberOfRows;
+        return securityActionsArray.count;
     }
     else if (section == adminToolsIndex)
     {
@@ -789,7 +796,7 @@
 {
     if (section == securityIndex)
     {
-        return @"SECURITY";
+        return NSLocalizedStringFromTable(@"room_participants_action_section_security", @"Vector", nil);
     }
     else if (section == adminToolsIndex)
     {
@@ -797,7 +804,7 @@
     }
     else if (RiotSettings.shared.enableCrossSigning && section == otherActionsIndex)
     {
-        return @"OPTIONS";
+        return NSLocalizedStringFromTable(@"room_participants_action_section_other", @"Vector", nil);
     }
     else if (section == directChatsIndex)
     {
@@ -870,42 +877,11 @@
 {
     UITableViewCell *cell;
     
-    if (indexPath.section == securityIndex)
+    if (indexPath.section == securityIndex && indexPath.row < securityActionsArray.count)
     {
-        if (indexPath.row == [self tableView:self.tableView numberOfRowsInSection:indexPath.section] - 1)
-        {
-            MXKTableViewCell *encryptionInfoCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
-            
-            NSMutableString *encryptionInformation = [NSMutableString new];
-            
-            switch (self.encryptionTrustLevel) {
-                case UserEncryptionTrustLevelUnknown:
-                    [encryptionInformation appendString:@"Loading"];
-                    break;
-                case UserEncryptionTrustLevelNone:
-                    [encryptionInformation appendString:@"Messages in this room are not end-to-end encrypted."];
-                    break;
-                default:
-                    [encryptionInformation appendString:@"Messages in this room are end-to-end encrypted.\n\nYour messages are secured with locks and only you and the recipient have the unique keys to unlock them."];
-                    break;
-            }
-            
-            [encryptionInformation appendString:@"\n"];
-            
-            encryptionInfoCell.textLabel.backgroundColor = [UIColor clearColor];
-            encryptionInfoCell.textLabel.numberOfLines = 0;
-            encryptionInfoCell.textLabel.text = encryptionInformation;
-            encryptionInfoCell.textLabel.font = [UIFont systemFontOfSize:14.0];
-            encryptionInfoCell.textLabel.textColor = ThemeService.shared.theme.headerTextPrimaryColor;
-            
-            encryptionInfoCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            encryptionInfoCell.accessoryType = UITableViewCellAccessoryNone;
-            encryptionInfoCell.contentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
-            encryptionInfoCell.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
-            
-            cell = encryptionInfoCell;
-        }
-        else
+        NSNumber *actionNumber = securityActionsArray[indexPath.row];
+        
+        if (actionNumber.unsignedIntegerValue == MXKRoomMemberDetailsActionSecurity)
         {
             MXKTableViewCell *securityStatusCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
             
@@ -913,16 +889,16 @@
             
             switch (self.encryptionTrustLevel) {
                 case UserEncryptionTrustLevelTrusted:
-                    statusText = @"Verified";
+                    statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_verified", @"Vector", nil);
                     break;
                 case UserEncryptionTrustLevelNormal:
-                    statusText = @"Verify";
+                    statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_verify", @"Vector", nil);
                     break;
                 case UserEncryptionTrustLevelWarning:
-                    statusText = @"Warning";
+                    statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_warning", @"Vector", nil);
                     break;
                 default:
-                    statusText = @"Loading";
+                    statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_loading", @"Vector", nil);
                     break;
             }
             
@@ -939,6 +915,46 @@
             securityStatusCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             
             cell = securityStatusCell;
+        }
+        else if (actionNumber.unsignedIntegerValue == MXKRoomMemberDetailsActionSecurityInformation)
+        {
+            MXKTableViewCell *encryptionInfoCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
+            
+            NSMutableString *encryptionInformation = [NSMutableString new];
+            
+            switch (self.encryptionTrustLevel) {
+                case UserEncryptionTrustLevelWarning:
+                case UserEncryptionTrustLevelNormal:
+                case UserEncryptionTrustLevelTrusted:
+                    [encryptionInformation appendString:NSLocalizedStringFromTable(@"room_participants_security_information_room_encrypted", @"Vector", nil)];
+                    break;
+                case UserEncryptionTrustLevelNone:
+                    [encryptionInformation appendString:NSLocalizedStringFromTable(@"room_participants_security_information_room_not_encrypted", @"Vector", nil)];
+                    break;
+                case UserEncryptionTrustLevelUnknown:
+                    [encryptionInformation appendString:NSLocalizedStringFromTable(@"room_participants_security_information_loading", @"Vector", nil)];
+                    break;
+                default:
+                    break;
+            }
+            
+            if (encryptionInformation.length)
+            {
+                [encryptionInformation appendString:@"\n"];
+            }
+            
+            encryptionInfoCell.textLabel.backgroundColor = [UIColor clearColor];
+            encryptionInfoCell.textLabel.numberOfLines = 0;
+            encryptionInfoCell.textLabel.text = encryptionInformation;
+            encryptionInfoCell.textLabel.font = [UIFont systemFontOfSize:14.0];
+            encryptionInfoCell.textLabel.textColor = ThemeService.shared.theme.headerTextPrimaryColor;
+            
+            encryptionInfoCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            encryptionInfoCell.accessoryType = UITableViewCellAccessoryNone;
+            encryptionInfoCell.contentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+            encryptionInfoCell.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+            
+            cell = encryptionInfoCell;
         }
     }
     else if (indexPath.section == adminToolsIndex || indexPath.section == otherActionsIndex)
