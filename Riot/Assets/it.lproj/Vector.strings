@@ -185,7 +185,7 @@
 "room_participants_action_section_admin_tools" = "Strumenti Admin";
 "room_participants_action_section_direct_chats" = "Chat dirette";
 "room_participants_action_section_devices" = "Dispositivi";
-"room_participants_action_section_other" = "Altro";
+"room_participants_action_section_other" = "Opzioni";
 "room_participants_action_invite" = "Invita";
 "room_participants_action_leave" = "Esci da questa stanza";
 "room_participants_action_remove" = "Rimuovi da questa stanza";
@@ -947,3 +947,9 @@
 "manage_session_trusted" = "Di tua fiducia";
 "manage_session_not_trusted" = "Non fidato";
 "manage_session_sign_out" = "Disconnetti da questo dispositivo";
+"room_participants_action_section_security" = "Sicurezza";
+"room_participants_action_security_status_verified" = "Verificato";
+"room_participants_action_security_status_verify" = "Verifica";
+"room_participants_action_security_status_warning" = "Attenzione";
+"room_participants_security_loading" = "Caricamento…";
+"key_verification_user_title" = "Verifica utente";
