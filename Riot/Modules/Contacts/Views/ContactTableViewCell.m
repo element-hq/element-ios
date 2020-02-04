@@ -238,7 +238,15 @@
 
 - (void)refreshContactBadgeImage
 {
-    UserEncryptionTrustLevel userEncryptionTrustLevel = [self.mxRoom encryptionTrustLevelForUserId:contact.contactID];
+    NSString *matrixId = [self firstMatrixId];
+    
+    UserEncryptionTrustLevel userEncryptionTrustLevel = UserEncryptionTrustLevelUnknown;
+    
+    if (matrixId)
+    {
+        userEncryptionTrustLevel = [self.mxRoom encryptionTrustLevelForUserId:matrixId];
+    }
+    
     self.avatarBadgeImageView.image = [self badgeImageForUserEncryptionTrustLevel:userEncryptionTrustLevel];
 }
 
