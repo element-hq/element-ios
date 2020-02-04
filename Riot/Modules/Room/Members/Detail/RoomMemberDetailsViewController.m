@@ -28,6 +28,7 @@
 
 #import "TableViewCellWithButton.h"
 #import "RoomTableViewCell.h"
+#import "MXRoom+Riot.h"
 
 #define TABLEVIEW_ROW_CELL_HEIGHT         46
 #define TABLEVIEW_SECTION_HEADER_HEIGHT   28
@@ -482,35 +483,8 @@
         return;
     }
     
-    if (self.mxRoom.summary.isEncrypted && self.mxRoom.mxSession.crypto)
-    {
-        MXUsersTrustLevelSummary *usersTrustLevelSummary = [self.mxRoom.mxSession.crypto trustLevelSummaryForUserIds:@[userId]];
-        
-        double trustedDevicesPercentage = usersTrustLevelSummary.trustedDevicesProgress.fractionCompleted;
-        
-        UserEncryptionTrustLevel userEncryptionTrustLevel;
-        
-        if (trustedDevicesPercentage >= 1.0)
-        {
-            userEncryptionTrustLevel = UserEncryptionTrustLevelTrusted;
-        }
-        else if (trustedDevicesPercentage == 0.0)
-        {
-            userEncryptionTrustLevel = UserEncryptionTrustLevelNormal;
-        }
-        else
-        {
-            userEncryptionTrustLevel = UserEncryptionTrustLevelWarning;
-        }
-        
-        self.encryptionTrustLevel = userEncryptionTrustLevel;
-        [self updateMemberInfo];
-    }
-    else
-    {
-        self.encryptionTrustLevel = UserEncryptionTrustLevelNone;
-        [self updateMemberInfo];
-    }
+    self.encryptionTrustLevel = [self.mxRoom encryptionTrustLevelForUserId:userId];
+    [self updateMemberInfo];
 }
 
 - (UIImage*)userEncryptionBadgeImage
@@ -521,13 +495,13 @@
     UserEncryptionTrustLevel userEncryptionTrustLevel = self.encryptionTrustLevel;
         
     switch (userEncryptionTrustLevel) {
-        case RoomEncryptionTrustLevelWarning:
+        case UserEncryptionTrustLevelWarning:
             encryptionIconName = @"encryption_warning";
             break;
-        case RoomEncryptionTrustLevelNormal:
+        case UserEncryptionTrustLevelNormal:
             encryptionIconName = @"encryption_normal";
             break;
-        case RoomEncryptionTrustLevelTrusted:
+        case UserEncryptionTrustLevelTrusted:
             encryptionIconName = @"encryption_trusted";
             break;
         default:
