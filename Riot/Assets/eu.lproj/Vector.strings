@@ -68,7 +68,7 @@
 "auth_missing_phone" = "Telefono zenbakia falta da";
 "auth_missing_email_or_phone" = "E-mail helbidea edo telefono zenbakia falta da";
 "auth_password_dont_match" = "Pasahitzak ez datoz bat";
-"auth_forgot_password" = "Pasahitza ahaztu duzu?";
+"auth_forgot_password" = "Pasahitza ahaztuta?";
 "auth_use_server_options" = "Erabili zerbitzari pertsonalizatuaren ezarpenak (aurreratua)";
 "auth_email_validation_message" = "Egiaztatu zure e-mail helbidea erregistroarekin jarraitzeko";
 "auth_recaptcha_message" = "Hasiera-zerbitzari honek robot bat ez zarela egiaztatu nahi du";
@@ -924,3 +924,29 @@
 "room_widget_permission_widget_id_permission" = "Trepetaren ID-a";
 "room_widget_permission_room_id_permission" = "Gelaren ID-a";
 "widget_picker_manage_integrations" = "Integrazioak kudeatu...";
+// Accessibility
+"accessibility_checkbox_label" = "egiaztaketa-koadroa";
+"settings_labs_dm_key_verification" = "Gako egiaztaketa mezu zuzenaren bidez";
+"settings_labs_cross_signing" = "Zeharkako sinadura";
+"service_terms_modal_policy_checkbox_accessibility_hint" = "Markatu %@ onartzeko";
+"key_verification_tile_request_incoming_title" = "Egiaztaketa eskaria";
+"key_verification_tile_request_outgoing_title" = "Egiaztaketa bidalita";
+"key_verification_tile_request_status_data_loading" = "Datuak kargatzen…";
+"key_verification_tile_request_status_waiting" = "Itxaroten…";
+"key_verification_tile_request_status_expired" = "Iraungita";
+"key_verification_tile_request_status_cancelled_by_me" = "Utzi duzu";
+"key_verification_tile_request_status_cancelled" = "%@(e)k utzita";
+"key_verification_tile_request_status_accepted" = "Onartu duzu";
+"key_verification_tile_request_incoming_approval_accept" = "Onartu";
+"key_verification_tile_request_incoming_approval_decline" = "Ukatu";
+"key_verification_tile_conclusion_done_title" = "Egiaztatuta";
+"key_verification_tile_conclusion_warning_title" = "Fidagarritasun gabeko saio hasiera";
+"key_verification_incoming_request_incoming_alert_message" = "%@(e)k egiaztatu nahi du";
+"settings_security" = "SEGURTASUNA";
+"settings_labs_enable_cross_signing" = "Gaitu zeharkako sinatzea erabiltzaileko egiaztatzeko eta ez saioko (garapenean)";
+// Security settings
+"security_settings_title" = "Segurtasuna";
+"security_settings_crypto_sessions" = "NIRE SAIOAK";
+"security_settings_backup" = "MEZUEN BABES-KOPIA";
+"security_settings_advanced" = "AURRERATUA";
+"security_settings_blacklist_unverified_devices" = "Ez bidali inoiz mezuak egiaztatu gabeko saioetara";
