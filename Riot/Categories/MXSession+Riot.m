@@ -17,6 +17,7 @@
 #import "MXSession+Riot.h"
 
 #import "MXRoom+Riot.h"
+#import "Riot-Swift.h"
 
 @implementation MXSession (Riot)
 

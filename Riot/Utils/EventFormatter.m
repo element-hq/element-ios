@@ -143,6 +143,13 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         }
     }
     
+    // Make event types MXEventTypeKeyVerificationCancel and MXEventTypeKeyVerificationDone visible in timeline.
+    // TODO: Find another way to keep them visible and avoid instantiate empty NSMutableAttributedString.
+    if (event.eventType == MXEventTypeKeyVerificationCancel || event.eventType == MXEventTypeKeyVerificationDone)
+    {
+        return [NSMutableAttributedString new];
+    }
+    
     NSAttributedString *attributedString = [super attributedStringFromEvent:event withRoomState:roomState error:error];
 
     if (event.sentState == MXEventSentStateSent

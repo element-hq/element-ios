@@ -17,6 +17,8 @@
 
 #import <MatrixKit/MatrixKit.h>
 
+#import "UserEncryptionTrustLevel.h"
+
 /**
  Define a `MXRoom` category at Riot level.
  */
@@ -74,5 +76,12 @@
  You may specify nil for this parameter.
  */
 - (void)allMessages:(void (^)(void))completion;
+
+/**
+ Get user encryption trust level.
+
+ @param userId The user id.
+ */
+- (UserEncryptionTrustLevel)encryptionTrustLevelForUserId:(NSString*)userId;
 
 @end

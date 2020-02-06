@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -75,10 +75,10 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OeZ-wN-eil">
-                        <rect key="frame" x="524" y="14" width="0.0" height="20"/>
+                        <rect key="frame" x="524" y="13.5" width="0.0" height="20"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mbn-A1-1Yw">
-                                <rect key="frame" x="-4" y="2" width="9" height="17"/>
+                                <rect key="frame" x="-4.5" y="1.5" width="9" height="17"/>
                                 <accessibility key="accessibilityConfiguration" identifier="MissedNotifAndUnreadBadge"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -94,11 +94,11 @@
                         </constraints>
                     </view>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_verified" translatesAutoresizingMaskIntoConstraints="NO" id="NAZ-zd-MHS">
-                        <rect key="frame" x="50" y="42" width="11" height="13"/>
+                        <rect key="frame" x="44" y="43" width="16" height="16"/>
                         <accessibility key="accessibilityConfiguration" identifier="EncryptedRoomIcon"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="13" id="QdE-73-LyZ"/>
-                            <constraint firstAttribute="width" constant="11" id="i9u-Bs-pBy"/>
+                            <constraint firstAttribute="height" constant="16" id="QdE-73-LyZ"/>
+                            <constraint firstAttribute="width" constant="16" id="i9u-Bs-pBy"/>
                         </constraints>
                     </imageView>
                 </subviews>
@@ -112,11 +112,11 @@
                     <constraint firstItem="dQt-mN-T6b" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="14" id="XFM-LG-4uJ"/>
                     <constraint firstItem="360-Go-RcG" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="16" id="XyO-tl-6SX"/>
                     <constraint firstAttribute="trailing" secondItem="360-Go-RcG" secondAttribute="trailing" constant="10" id="YqC-WC-Wqe"/>
-                    <constraint firstItem="NAZ-zd-MHS" firstAttribute="centerY" secondItem="dQt-mN-T6b" secondAttribute="centerY" id="c6L-cn-sJL"/>
+                    <constraint firstItem="NAZ-zd-MHS" firstAttribute="centerY" secondItem="dQt-mN-T6b" secondAttribute="centerY" constant="2" id="c6L-cn-sJL"/>
                     <constraint firstItem="OeZ-wN-eil" firstAttribute="centerY" secondItem="360-Go-RcG" secondAttribute="centerY" id="fYc-th-Nay"/>
                     <constraint firstItem="dQt-mN-T6b" firstAttribute="top" secondItem="Lg1-xQ-AGn" secondAttribute="bottom" constant="4" id="iaT-57-GOs"/>
                     <constraint firstItem="RX5-eD-c3c" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="15" id="mga-fG-I0L"/>
-                    <constraint firstItem="NAZ-zd-MHS" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" constant="50" id="ofi-HP-uke"/>
+                    <constraint firstItem="NAZ-zd-MHS" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" constant="44" id="ofi-HP-uke"/>
                     <constraint firstAttribute="trailing" secondItem="dQt-mN-T6b" secondAttribute="trailing" constant="10" id="t2m-pb-5zd"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="14" id="tY3-6V-A3B"/>
                     <constraint firstItem="RX5-eD-c3c" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" constant="13" id="tgy-cX-Wxm"/>

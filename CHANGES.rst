@@ -1,8 +1,18 @@
-Changes in 0.10.5 (TBD)
+Changes in 0.11.1 (TBD)
 ===============================================
 
 Bug fix:
 * Fix error when joining some public rooms. (#2888).
+
+Changes in 0.11.0 (2020-xx-xx)
+===============================================
+
+Improvements:
+ * E2E: Do not warn anymore for unknown devices
+ * ON/OFF Cross-signing development in a Lab setting (#2855).
+ * RoomVC: Update encryption decoration with shields (#2934, #2930, #2906).
+ * Settings: Remove "End-to-End Encryption" from the LABS section (#2941).
+ * Room decoration: Use shields instead of padlocks (#2906).
 
 Changes in 0.10.4 (2019-12-11)
 ===============================================

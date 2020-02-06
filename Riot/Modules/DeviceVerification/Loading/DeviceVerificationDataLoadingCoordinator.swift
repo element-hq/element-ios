@@ -25,7 +25,6 @@ final class DeviceVerificationDataLoadingCoordinator: DeviceVerificationDataLoad
     
     // MARK: Private
     
-    private let session: MXSession
     private var deviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadingViewModelType
     private let deviceVerificationDataLoadingViewController: DeviceVerificationDataLoadingViewController
     
@@ -39,9 +38,14 @@ final class DeviceVerificationDataLoadingCoordinator: DeviceVerificationDataLoad
     // MARK: - Setup
     
     init(session: MXSession, otherUserId: String, otherDeviceId: String) {
-        self.session = session
-        
-        let deviceVerificationDataLoadingViewModel = DeviceVerificationDataLoadingViewModel(session: self.session, otherUserId: otherUserId, otherDeviceId: otherDeviceId)
+        let deviceVerificationDataLoadingViewModel = DeviceVerificationDataLoadingViewModel(session: session, otherUserId: otherUserId, otherDeviceId: otherDeviceId)
+        let deviceVerificationDataLoadingViewController = DeviceVerificationDataLoadingViewController.instantiate(with: deviceVerificationDataLoadingViewModel)
+        self.deviceVerificationDataLoadingViewModel = deviceVerificationDataLoadingViewModel
+        self.deviceVerificationDataLoadingViewController = deviceVerificationDataLoadingViewController
+    }
+    
+    init(incomingKeyVerificationRequest: MXKeyVerificationRequest) {
+        let deviceVerificationDataLoadingViewModel = DeviceVerificationDataLoadingViewModel(keyVerificationRequest: incomingKeyVerificationRequest)
         let deviceVerificationDataLoadingViewController = DeviceVerificationDataLoadingViewController.instantiate(with: deviceVerificationDataLoadingViewModel)
         self.deviceVerificationDataLoadingViewModel = deviceVerificationDataLoadingViewModel
         self.deviceVerificationDataLoadingViewController = deviceVerificationDataLoadingViewController
@@ -60,6 +64,11 @@ final class DeviceVerificationDataLoadingCoordinator: DeviceVerificationDataLoad
 
 // MARK: - DeviceVerificationDataLoadingViewModelCoordinatorDelegate
 extension DeviceVerificationDataLoadingCoordinator: DeviceVerificationDataLoadingViewModelCoordinatorDelegate {
+    
+    func deviceVerificationDataLoadingViewModel(_ viewModel: DeviceVerificationDataLoadingViewModelType, didAcceptKeyVerificationWithTransaction transaction: MXDeviceVerificationTransaction) {
+        self.delegate?.deviceVerificationDataLoadingCoordinator(self, didAcceptKeyVerificationRequestWithTransaction: transaction)
+    }
+    
     func deviceVerificationDataLoadingViewModel(_ viewModel: DeviceVerificationDataLoadingViewModelType, didLoadUser user: MXUser, device: MXDeviceInfo) {
         self.delegate?.deviceVerificationDataLoadingCoordinator(self, didLoadUser: user, device: device)
     }

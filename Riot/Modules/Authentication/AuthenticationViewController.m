@@ -1109,21 +1109,11 @@
     if (self.authType == MXKAuthenticationTypeRegister)
     {
         MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:userId];
-        
-        [account.mxSession createRoom:nil
-                           visibility:kMXRoomDirectoryVisibilityPrivate
-                            roomAlias:nil
-                                topic:nil
-                               invite:@[@"@riot-bot:matrix.org"]
-                           invite3PID:nil
-                             isDirect:YES
-                               preset:kMXRoomPresetTrustedPrivateChat
-                              success:nil
-                              failure:^(NSError *error) {
-                                  
-                                  NSLog(@"[AuthenticationVC] Create chat with riot-bot failed");
-                                  
-                              }];
+
+        MXRoomCreationParameters *roomCreationParameters = [MXRoomCreationParameters parametersForDirectRoomWithUser:@"@riot-bot:matrix.org"];
+        [account.mxSession createRoomWithParameters:roomCreationParameters success:nil failure:^(NSError *error) {
+            NSLog(@"[AuthenticationVC] Create chat with riot-bot failed");
+        }];
     }
     
     // Remove auth view controller on successful login

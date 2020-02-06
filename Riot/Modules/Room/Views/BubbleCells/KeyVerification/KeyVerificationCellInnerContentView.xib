@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="KeyVerificationCellInnerContentView" customModule="Riot" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="313" height="133"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="2Sr-GM-aAU">
+                    <rect key="frame" x="10" y="10" width="293" height="113"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="5gD-pX-GFz">
+                            <rect key="frame" x="70" y="0.0" width="153.5" height="16"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="encryption_normal" translatesAutoresizingMaskIntoConstraints="NO" id="EHJ-3L-OPJ">
+                                    <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Verification request" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BOd-4B-LQX">
+                                    <rect key="frame" x="20" y="0.0" width="133.5" height="16"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                        </stackView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="751" text="User (@user:matrix.org)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e1n-WP-GTb">
+                            <rect key="frame" x="83.5" y="26" width="126" height="13.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                            <color key="textColor" red="0.1803921568627451" green="0.18431372549019609" blue="0.19607843137254902" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Waiting..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e6I-aZ-RRO">
+                            <rect key="frame" x="118" y="49.5" width="57" height="13.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <color key="textColor" red="0.38039215686274508" green="0.4392156862745098" blue="0.54509803921568623" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Tr-gP-gPB">
+                            <rect key="frame" x="0.0" y="73" width="293" height="40"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="WxG-vh-Bn0">
+                                    <rect key="frame" x="71" y="0.0" width="151" height="40"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="atD-LF-sGH">
+                                            <rect key="frame" x="0.0" y="0.0" width="72" height="40"/>
+                                            <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                            <state key="normal" title="Decline">
+                                                <color key="titleColor" red="1" green="0.29411764705882354" blue="0.33333333333333331" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="declineButtonAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="dS6-Xr-6jZ"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="irs-8W-qcs">
+                                            <rect key="frame" x="82" y="0.0" width="69" height="40"/>
+                                            <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                            <state key="normal" title="Accept">
+                                                <color key="titleColor" red="0.011764705882352941" green="0.70196078431372544" blue="0.50588235294117645" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="acceptButtonAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="IQ6-be-vJt"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="atD-LF-sGH" firstAttribute="height" secondItem="WxG-vh-Bn0" secondAttribute="height" priority="999" id="3sT-HV-Os0"/>
+                                        <constraint firstItem="irs-8W-qcs" firstAttribute="height" secondItem="WxG-vh-Bn0" secondAttribute="height" priority="999" id="CfM-Vc-MQ2"/>
+                                    </constraints>
+                                </stackView>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="WxG-vh-Bn0" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="5Tr-gP-gPB" secondAttribute="leading" id="4al-oB-NpF"/>
+                                <constraint firstAttribute="bottom" secondItem="WxG-vh-Bn0" secondAttribute="bottom" id="rCo-gP-UF5"/>
+                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="WxG-vh-Bn0" secondAttribute="trailing" id="u47-KK-aKk"/>
+                                <constraint firstAttribute="height" priority="999" constant="40" id="ujN-jh-fde"/>
+                                <constraint firstItem="WxG-vh-Bn0" firstAttribute="top" secondItem="5Tr-gP-gPB" secondAttribute="top" id="wNH-CW-iLB"/>
+                                <constraint firstItem="WxG-vh-Bn0" firstAttribute="centerX" secondItem="5Tr-gP-gPB" secondAttribute="centerX" id="yWq-qo-MY7"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="5Tr-gP-gPB" firstAttribute="width" secondItem="2Sr-GM-aAU" secondAttribute="width" id="VJx-xp-NZE"/>
+                    </constraints>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" red="0.95294117647058818" green="0.97254901960784312" blue="0.99215686274509807" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="2Sr-GM-aAU" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="M7S-MY-Jxk"/>
+                <constraint firstItem="2Sr-GM-aAU" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="SfH-5W-p30"/>
+                <constraint firstAttribute="trailing" secondItem="2Sr-GM-aAU" secondAttribute="trailing" constant="10" id="rVw-1F-ch3"/>
+                <constraint firstAttribute="bottom" secondItem="2Sr-GM-aAU" secondAttribute="bottom" constant="10" id="vL2-dm-qbe"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="acceptButton" destination="irs-8W-qcs" id="LKq-qE-bbg"/>
+                <outlet property="badgeImageView" destination="EHJ-3L-OPJ" id="eNW-bg-eYy"/>
+                <outlet property="buttonsContainerView" destination="5Tr-gP-gPB" id="aqy-vT-mu3"/>
+                <outlet property="declineButton" destination="atD-LF-sGH" id="CfI-FW-ySy"/>
+                <outlet property="otherUserInformationLabel" destination="e1n-WP-GTb" id="jhY-gH-QnO"/>
+                <outlet property="requestStatusLabel" destination="e6I-aZ-RRO" id="zQf-qy-3Rq"/>
+                <outlet property="titleLabel" destination="BOd-4B-LQX" id="4sw-3J-faF"/>
+            </connections>
+            <point key="canvasLocation" x="-828.26086956521749" y="-386.04910714285711"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="encryption_normal" width="16" height="16"/>
+    </resources>
+</document>
