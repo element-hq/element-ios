@@ -128,8 +128,6 @@
     
     if (_isEncryptionEnabled)
     {
-        self.encryptedRoomIcon.image = [UIImage imageNamed:@"e2e_verified"];
-        
         // Check the device screen size before using large placeholder
         if ([GBDeviceInfo deviceInfo].family == GBDeviceFamilyiPad || [GBDeviceInfo deviceInfo].displayInfo.display >= GBDeviceDisplay4p7Inch)
         {
@@ -138,8 +136,6 @@
     }
     else
     {
-        self.encryptedRoomIcon.image = [UIImage imageNamed:@"e2e_unencrypted"];
-        
         // Check the device screen size before using large placeholder
         if ([GBDeviceInfo deviceInfo].family == GBDeviceFamilyiPad || [GBDeviceInfo deviceInfo].displayInfo.display >= GBDeviceDisplay4p7Inch)
         {

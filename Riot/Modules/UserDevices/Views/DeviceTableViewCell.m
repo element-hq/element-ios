@@ -50,7 +50,7 @@
     self.deviceName.numberOfLines = 0;
     self.deviceName.text = (deviceInfo.displayName.length ? [NSString stringWithFormat:@"%@ (%@)", deviceInfo.displayName, deviceInfo.deviceId] : [NSString stringWithFormat:@"(%@)", deviceInfo.deviceId]);
     
-    switch (deviceInfo.verified)
+    switch (deviceInfo.trustLevel.localVerificationStatus)
     {
         case MXDeviceUnknown:
         case MXDeviceUnverified:
@@ -110,11 +110,11 @@
         
         if (sender == _verifyButton)
         {
-            verificationStatus = ((_deviceInfo.verified == MXDeviceVerified) ? MXDeviceUnverified : MXDeviceVerified);
+            verificationStatus = ((_deviceInfo.trustLevel.localVerificationStatus == MXDeviceVerified) ? MXDeviceUnverified : MXDeviceVerified);
         }
         else if (sender == _blockButton)
         {
-            verificationStatus = ((_deviceInfo.verified == MXDeviceBlocked) ? MXDeviceUnverified : MXDeviceBlocked);
+            verificationStatus = ((_deviceInfo.trustLevel.localVerificationStatus == MXDeviceBlocked) ? MXDeviceUnverified : MXDeviceBlocked);
         }
         else
         {

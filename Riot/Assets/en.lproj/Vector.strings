@@ -240,7 +240,8 @@
 "room_participants_action_section_admin_tools" = "Admin tools";
 "room_participants_action_section_direct_chats" = "Direct chats";
 "room_participants_action_section_devices" = "Devices";
-"room_participants_action_section_other" = "Other";
+"room_participants_action_section_other" = "Options";
+"room_participants_action_section_security" = "Security";
 
 "room_participants_action_invite" = "Invite";
 "room_participants_action_leave" = "Leave this room";
@@ -256,6 +257,13 @@
 "room_participants_action_start_voice_call" = "Start voice call";
 "room_participants_action_start_video_call" = "Start video call";
 "room_participants_action_mention" = "Mention";
+"room_participants_action_security_status_verified" = "Verified";
+"room_participants_action_security_status_verify" = "Verify";
+"room_participants_action_security_status_warning" = "Warning";
+
+"room_participants_security_loading" = "Loading…";
+"room_participants_security_information_room_not_encrypted" = "Messages in this room are not end-to-end encrypted.";
+"room_participants_security_information_room_encrypted" = "Messages in this room are end-to-end encrypted.\n\nYour messages are secured with locks and only you and the recipient have the unique keys to unlock them.";
 
 // Chat
 "room_jump_to_first_unread" = "Jump to first unread message";
@@ -416,6 +424,8 @@
 "settings_three_pids_management_information_part2" = "Discovery";
 "settings_three_pids_management_information_part3" = ".";
 
+"settings_security" = "SECURITY";
+
 "settings_enable_push_notif" = "Notifications on this device";
 "settings_show_decrypted_content" = "Show decrypted content";
 "settings_global_settings_info" = "Global notification settings are available on your %@ web client";
@@ -458,8 +468,7 @@
 "settings_labs_room_members_lazy_loading_error_message" = "Your homeserver does not support lazy loading of room members yet. Try later.";
 "settings_labs_create_conference_with_jitsi" = "Create conference calls with jitsi";
 "settings_labs_message_reaction" = "React to messages with emoji";
-"settings_labs_dm_key_verification" = "Key verification by direct message";
-"settings_labs_cross_signing" = "Cross-Signing";
+"settings_labs_enable_cross_signing" = "Enable cross-signing to verify per-user instead of per-device (in development)";
 
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";
@@ -541,6 +550,28 @@
 "settings_identity_server_description" = "Using the identity server set above, you can discover and be discoverable by existing contacts you know.";
 "settings_identity_server_no_is" = "No identity server configured";
 "settings_identity_server_no_is_description" = "You are not currently using an identity server. To discover and be discoverable by existing contacts you know, add one above.";
+
+
+// Security settings
+"security_settings_title" = "Security";
+"security_settings_crypto_sessions" = "MY SESSIONS";
+"security_settings_crypto_sessions_description" = "Trust sessions to grant access to end-to-end encrypted messages. If you don’t recognise a session, change your login password and reset your Message Password used for Message Backup.";
+
+"security_settings_backup" = "MESSAGE BACKUP";
+
+"security_settings_advanced" = "ADVANCED";
+"security_settings_blacklist_unverified_devices" = "Never send messages to untrusted sessions";
+"security_settings_blacklist_unverified_devices_description" = "Verify all of a users sessions to mark them as trusted and send messages to them.";
+"security_settings_export_keys_manually" = "Export keys manually";
+
+
+// Manage session
+"manage_session_title" = "Manage session";
+"manage_session_info" = "SESSION INFO";
+"manage_session_name" = "Device name";
+"manage_session_trusted" = "Trusted by you";
+"manage_session_not_trusted" = "Not trusted";
+"manage_session_sign_out" = "Sign out of this device";
 
 
 // Identity server settings
@@ -973,6 +1004,8 @@
 
 // MARK: - Device Verification
 "device_verification_title" = "Verify device";
+"key_verification_user_title" = "Verify user";
+
 "device_verification_security_advice" = "For maximum security, we recommend you do this in person or use another trusted means of communication";
 "device_verification_cancelled" = "The other party cancelled the verification.";
 "device_verification_cancelled_by_me" = "The verification has been cancelled. Reason: %@";
@@ -991,15 +1024,31 @@
 "device_verification_start_use_legacy_action" = "Use Legacy Verification";
 
 // MARK: Verify
+
+// Device
+
 "device_verification_verify_title_emoji" = "Verify this device by confirming the following emoji appear on the screen of the partner";
 "device_verification_verify_title_number" = "Verify this device by confirming the following numbers appear on the screen of the partner";
 "device_verification_verify_wait_partner" = "Waiting for partner to confirm...";
 
+// User
+
+"key_verification_verify_user_title_emoji" = "Verify this user by confirming the following unique emoji appears on their screen, in the same order.";
+"key_verification_verify_user_title_number" = "Verify this user by confirming the following numbers appear on their screen, in the same order.";
+
 // MARK: Verified
+
+// Device
+
 "device_verification_verified_title" = "Verified!";
 "device_verification_verified_description_1" = "You've successfully verified this device.";
 "device_verification_verified_description_2" = "Secure messages with this user are end-to-end encrypted and not able to be read by third parties.";
 "device_verification_verified_got_it_button" = "Got it";
+
+// User
+
+"key_verification_verified_user_description_1" = "You’ve successfully verified this user.";
+"key_verification_verified_user_description_2" = "Messages with this user in this room are end-to-end encrypted and can’t be read by third parties.";
 
 // MARK: Emoji
 "device_verification_emoji_dog" = "Dog";
@@ -1090,3 +1139,65 @@
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Add an identity server in your settings to invite by email.";
 "error_not_supported_on_mobile" = "You can't do this from %@ mobile.";
+
+// MARK: - Key Verification
+
+// Tiles
+
+"key_verification_tile_request_incoming_title" = "Verification request";
+"key_verification_tile_request_outgoing_title" = "Verification sent";
+
+"key_verification_tile_request_status_data_loading" = "Data loading…";
+"key_verification_tile_request_status_waiting" = "Waiting…";
+"key_verification_tile_request_status_expired" = "Expired";
+"key_verification_tile_request_status_cancelled_by_me" = "You cancelled";
+"key_verification_tile_request_status_cancelled" = "%@ cancelled";
+"key_verification_tile_request_status_accepted" = "You accepted";
+
+"key_verification_tile_request_incoming_approval_accept" = "Accept";
+"key_verification_tile_request_incoming_approval_decline" = "Decline";
+
+"key_verification_tile_conclusion_done_title" = "Verified";
+"key_verification_tile_conclusion_warning_title" = "Unstrusted sign in";
+
+// Incoming key verification request
+
+"key_verification_incoming_request_incoming_alert_message" = "%@ wants to verify";
+
+// MARK: - User verification
+
+// Start
+
+"user_verification_start_verify_action" = "Start verification";
+"user_verification_start_information_part1" = "For extra security, verify ";
+"user_verification_start_information_part2" = " by checking a one-time code on both your devices.";
+"user_verification_start_waiting_partner" = "Waiting for %@…";
+"user_verification_start_additional_information" = "To be secure, do this in person or use another way to communicate.";
+
+// Sessions list
+
+"user_verification_sessions_list_user_trust_level_trusted_title" = "Trusted";
+"user_verification_sessions_list_user_trust_level_warning_title" = "Warning";
+"user_verification_sessions_list_user_trust_level_unknown_title" = "Unknown";
+"user_verification_sessions_list_information" = "Messages with this user in this room are end-to-end encrypted and can’t be read by third parties.";
+"user_verification_sessions_list_table_title" = "Sessions";
+"user_verification_sessions_list_session_trusted" = "Trusted";
+"user_verification_sessions_list_session_untrusted" = "Not trusted";
+
+// Session details
+
+"user_verification_session_details_trusted_title" = "Trusted";
+"user_verification_session_details_untrusted_title" = "Warning";
+
+"user_verification_session_details_information_trusted_current_user" = "This session is trusted for secure messaging because you verified it:";
+"user_verification_session_details_information_trusted_other_user_part1" = "This device is trusted for secure messaging because ";
+"user_verification_session_details_information_trusted_other_user_part2" = " verified it:";
+
+"user_verification_session_details_information_untrusted_current_user" = "Verify this session to mark it as trusted & grant it access to encrypted messages:";
+"user_verification_session_details_information_untrusted_other_user" = " signed in using a new device:";
+
+"user_verification_session_details_additional_information_untrusted_other_user" = "Until this user trusts this device, messages sent to and from it are labelled with warnings. Alternatively, you can manually verify it.";
+"user_verification_session_details_additional_information_untrusted_current_user" = "If you didn’t sign in to this session, your account may be compromised.";
+
+"user_verification_session_details_verify_action_current_user" = "Verify";
+"user_verification_session_details_verify_action_other_user" = "Manually verify";

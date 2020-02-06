@@ -23,60 +23,51 @@ NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon = @"kRoomEncrypt
 
 + (UIImage*)encryptionIconForEvent:(MXEvent*)event andSession:(MXSession*)session
 {
-    NSString *encryptionIcon;
+    MXRoom *room = [session roomWithRoomId:event.roomId];
+    BOOL isRoomEncrypted = room.summary.isEncrypted && session.crypto;
+    
+    if (!isRoomEncrypted)
+    {
+        return nil;
+    }
+    
+    NSString *encryptionIconName;
+    UIImage* encryptionIcon;
     
     if (!event.isEncrypted)
     {
-        encryptionIcon = @"e2e_unencrypted";
-        
         if (event.isLocalEvent
-            || event.contentHasBeenEdited)    // Local echo for an edit is clear but uses a true event id, the one of the edited event 
+            || event.isState
+            || event.contentHasBeenEdited)    // Local echo for an edit is clear but uses a true event id, the one of the edited event
         {
-            // Patch: Display the verified icon by default on pending outgoing messages in the encrypted rooms when the encryption is enabled
-            MXRoom *room = [session roomWithRoomId:event.roomId];
-            if (room.summary.isEncrypted && session.crypto)
-            {
-                // The outgoing message are encrypted by default
-                encryptionIcon = @"e2e_verified";
-            }
+            encryptionIconName = nil;
+        }
+        else
+        {
+            encryptionIconName = @"encryption_warning";
         }
     }
     else if (event.decryptionError)
     {
-        encryptionIcon = @"e2e_blocked";
+        encryptionIconName = @"encryption_warning";
     }
-    else
+    else if (event.sender)
     {
+        MXUserTrustLevel *userTrustLevel = [session.crypto trustLevelForUser:event.sender];
         MXDeviceInfo *deviceInfo = [session.crypto eventDeviceInfo:event];
         
-        if (deviceInfo)
+        if (userTrustLevel.isVerified && !deviceInfo.trustLevel.isVerified)
         {
-            switch (deviceInfo.verified)
-            {
-                case MXDeviceUnknown:
-                case MXDeviceUnverified:
-                {
-                    encryptionIcon = @"e2e_warning";
-                    break;
-                }
-                case MXDeviceVerified:
-                {
-                    encryptionIcon = @"e2e_verified";
-                    break;
-                }
-                default:
-                    break;
-            }
+            encryptionIconName = @"encryption_warning";
         }
     }
     
-    if (!encryptionIcon)
+    if (encryptionIconName)
     {
-        // Use the warning icon by default
-        encryptionIcon = @"e2e_warning";
+         encryptionIcon = [UIImage imageNamed:encryptionIconName];
     }
     
-    return [UIImage imageNamed:encryptionIcon];
+    return encryptionIcon;
 }
 
 + (void)addEncryptionStatusFromBubbleData:(MXKRoomBubbleCellData *)bubbleData inContainerView:(UIView *)containerView
@@ -104,19 +95,23 @@ NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon = @"kRoomEncrypt
         }
     
         UIImage *icon = [RoomEncryptedDataBubbleCell encryptionIconForEvent:component.event andSession:bubbleData.mxSession];
-        UIImageView *encryptStatusImageView = [[UIImageView alloc] initWithImage:icon];
         
-        CGRect frame = encryptStatusImageView.frame;
-        frame.origin.y = component.position.y + 3;
-        encryptStatusImageView.frame = frame;
-        
-        CGPoint center = encryptStatusImageView.center;
-        center.x = containerView.frame.size.width / 2;
-        encryptStatusImageView.center = center;
-        
-        encryptStatusImageView.tag = componentIndex;
-        
-        [containerView addSubview:encryptStatusImageView];
+        if (icon)
+        {
+            UIImageView *encryptStatusImageView = [[UIImageView alloc] initWithImage:icon];
+            
+            CGRect frame = encryptStatusImageView.frame;
+            frame.origin.y = component.position.y + 3;
+            encryptStatusImageView.frame = frame;
+            
+            CGPoint center = encryptStatusImageView.center;
+            center.x = containerView.frame.size.width / 2;
+            encryptStatusImageView.center = center;
+            
+            encryptStatusImageView.tag = componentIndex;
+            
+            [containerView addSubview:encryptStatusImageView];
+        }        
     }
 }
 

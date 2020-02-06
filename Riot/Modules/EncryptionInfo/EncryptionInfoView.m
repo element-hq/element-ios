@@ -54,7 +54,7 @@
 - (void)onButtonPressed:(id)sender
 {
     UIViewController *rootViewController = [AppDelegate theDelegate].window.rootViewController;
-    if (sender == self.verifyButton && self.mxDeviceInfo.verified != MXDeviceVerified
+    if (sender == self.verifyButton && self.mxDeviceInfo.trustLevel.localVerificationStatus != MXDeviceVerified
         && self.mxDeviceInfo
         && rootViewController)
     {

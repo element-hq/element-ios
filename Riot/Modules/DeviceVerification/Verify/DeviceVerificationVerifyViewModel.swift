@@ -31,16 +31,19 @@ final class DeviceVerificationVerifyViewModel: DeviceVerificationVerifyViewModel
 
     weak var viewDelegate: DeviceVerificationVerifyViewModelViewDelegate?
     weak var coordinatorDelegate: DeviceVerificationVerifyViewModelCoordinatorDelegate?
-    var emojis: [MXEmojiRepresentation]?
-    var decimal: String?
+    
+    let emojis: [MXEmojiRepresentation]?
+    let decimal: String?
+    let verificationKind: KeyVerificationKind
 
     // MARK: - Setup
     
-    init(session: MXSession, transaction: MXSASTransaction) {
+    init(session: MXSession, transaction: MXSASTransaction, verificationKind: KeyVerificationKind) {
         self.session = session
         self.transaction = transaction
         self.emojis = self.transaction.sasEmoji
         self.decimal = self.transaction.sasDecimal
+        self.verificationKind = verificationKind
     }
     
     deinit {

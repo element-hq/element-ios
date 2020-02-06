@@ -62,27 +62,35 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
     
     if (self)
     {
-        if (event.eventType == MXEventTypeRoomMember)
+        switch (event.eventType)
         {
-            // Membership events have their own cell type
-            self.tag = RoomBubbleCellDataTagMembership;
-
-            // Membership events can be collapsed together
-            self.collapsable = YES;
-
-            // Collapse them by default
-            self.collapsed = YES;
+            case MXEventTypeRoomMember:
+            {
+                // Membership events have their own cell type
+                self.tag = RoomBubbleCellDataTagMembership;
+                
+                // Membership events can be collapsed together
+                self.collapsable = YES;
+                
+                // Collapse them by default
+                self.collapsed = YES;
+            }
+                break;
+            case MXEventTypeRoomCreate:
+            {
+                MXRoomCreateContent *createContent = [MXRoomCreateContent modelFromJSON:event.content];
+                
+                if (createContent.roomPredecessorInfo)
+                {
+                    self.tag = RoomBubbleCellDataTagRoomCreateWithPredecessor;
+                }
+            }
+                break;
+            default:
+                break;
         }
         
-        if (event.eventType == MXEventTypeRoomCreate)
-        {
-            MXRoomCreateContent *createContent = [MXRoomCreateContent modelFromJSON:event.content];
-            
-            if (createContent.roomPredecessorInfo)
-            {
-                self.tag = RoomBubbleCellDataTagRoomCreateWithPredecessor;
-            }
-        }
+        [self keyVerificationDidUpdate];
 
         // Increase maximum number of components
         self.maxComponentCount = 20;
@@ -145,6 +153,16 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
     }
     
     return attributedTextMessage;
+}
+
+- (BOOL)hasNoDisplay
+{
+    if (self.tag == RoomBubbleCellDataTagKeyVerificationNoDisplay)
+    {
+        return YES;
+    }
+    
+    return [super hasNoDisplay];
 }
 
 #pragma mark - Bubble collapsing
@@ -663,21 +681,154 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
 
 - (BOOL)addEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState
 {
-    if (self.tag == RoomBubbleCellDataTagMembership || event.eventType == MXEventTypeRoomMember)
+    BOOL shouldAddEvent = YES;
+    
+    switch (self.tag)
     {
-        // One single bubble per membership event
-        return NO;
+        case RoomBubbleCellDataTagKeyVerificationNoDisplay:
+        case RoomBubbleCellDataTagKeyVerificationRequest:
+        case RoomBubbleCellDataTagKeyVerificationRequestIncomingApproval:
+        case RoomBubbleCellDataTagKeyVerificationConclusion:
+            shouldAddEvent = NO;
+            break;
+        case RoomBubbleCellDataTagRoomCreateWithPredecessor:
+            // We do not want to merge room create event cells with other cell types
+            shouldAddEvent = NO;
+            break;
+        case RoomBubbleCellDataTagMembership:
+            // One single bubble per membership event
+            shouldAddEvent = NO;
+            break;
+        default:
+            break;
     }
     
-    if (self.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor || event.eventType == MXEventTypeRoomCreate)
+    if (shouldAddEvent)
     {
-        // We do not want to merge room create event cells with other cell types
-        return NO;
+        switch (event.eventType)
+        {
+            case MXEventTypeRoomMessage:
+            {
+                NSString *messageType = event.content[@"msgtype"];
+                
+                if ([messageType isEqualToString:kMXMessageTypeKeyVerificationRequest])
+                {
+                    shouldAddEvent = NO;
+                }
+            }
+                break;
+            case MXEventTypeKeyVerificationStart:
+            case MXEventTypeKeyVerificationAccept:
+            case MXEventTypeKeyVerificationKey:
+            case MXEventTypeKeyVerificationMac:
+            case MXEventTypeKeyVerificationDone:
+            case MXEventTypeKeyVerificationCancel:
+                shouldAddEvent = NO;
+                break;
+            case MXEventTypeRoomMember:
+                shouldAddEvent = NO;
+                break;
+            case MXEventTypeRoomCreate:
+                shouldAddEvent = NO;
+                break;
+            default:
+                break;
+        }
     }
-
-    return [super addEvent:event andRoomState:roomState];
+    
+    if (shouldAddEvent)
+    {
+        shouldAddEvent = [super addEvent:event andRoomState:roomState];
+    }
+    
+    return shouldAddEvent;
 }
 
+- (void)setKeyVerification:(MXKeyVerification *)keyVerification
+{
+    _keyVerification = keyVerification;
+    
+    [self keyVerificationDidUpdate];
+}
+
+- (void)keyVerificationDidUpdate
+{
+    MXEvent *event = self.getFirstBubbleComponentWithDisplay.event;
+    MXKeyVerification *keyVerification = _keyVerification;
+    
+    if (!event)
+    {
+        return;
+    }
+    
+    switch (event.eventType)
+    {
+        case MXEventTypeKeyVerificationCancel:
+        {
+            RoomBubbleCellDataTag cellDataTag;
+            
+            MXTransactionCancelCode *transactionCancelCode = keyVerification.transaction.reasonCancelCode;
+            
+            if (transactionCancelCode
+                && ([transactionCancelCode isEqual:[MXTransactionCancelCode mismatchedSas]]
+                    || [transactionCancelCode isEqual:[MXTransactionCancelCode mismatchedKeys]]
+                    || [transactionCancelCode isEqual:[MXTransactionCancelCode mismatchedCommitment]]
+                    )
+                )
+            {
+                cellDataTag = RoomBubbleCellDataTagKeyVerificationConclusion;
+            }
+            else
+            {
+                cellDataTag = RoomBubbleCellDataTagKeyVerificationNoDisplay;
+            }
+            
+            self.tag = cellDataTag;
+        }
+            break;
+        case MXEventTypeKeyVerificationDone:
+        {
+            RoomBubbleCellDataTag cellDataTag;
+            
+            // Avoid to display incoming and outgoing done, only display the incoming one.
+            if (self.isIncoming && keyVerification && (keyVerification.state == MXKeyVerificationStateVerified))
+            {
+                cellDataTag = RoomBubbleCellDataTagKeyVerificationConclusion;
+            }
+            else
+            {
+                cellDataTag = RoomBubbleCellDataTagKeyVerificationNoDisplay;
+            }
+            
+            self.tag = cellDataTag;
+        }
+            break;
+        case MXEventTypeRoomMessage:
+        {
+            NSString *msgType = event.content[@"msgtype"];
+            
+            if ([msgType isEqualToString:kMXMessageTypeKeyVerificationRequest])
+            {
+                RoomBubbleCellDataTag cellDataTag;
+                
+                if (self.isIncoming && !self.isKeyVerificationOperationPending && keyVerification && keyVerification.state == MXKeyVerificationRequestStatePending)
+                {
+                    cellDataTag = RoomBubbleCellDataTagKeyVerificationRequestIncomingApproval;
+                }
+                else
+                {
+                    cellDataTag = RoomBubbleCellDataTagKeyVerificationRequest;
+                }
+                
+                self.tag = cellDataTag;
+            }
+        }
+            break;
+        default:
+            break;
+    }
+    
+}
 
 #pragma mark - Show all reactions
 

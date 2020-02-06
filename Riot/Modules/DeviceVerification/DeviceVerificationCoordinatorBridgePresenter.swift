@@ -63,12 +63,36 @@ final class DeviceVerificationCoordinatorBridgePresenter: NSObject {
         
         self.coordinator = deviceVerificationCoordinator
     }
+    
+    func present(from viewController: UIViewController, roomMember: MXRoomMember, animated: Bool) {
+        
+        NSLog("[DeviceVerificationCoordinatorBridgePresenter] Present from \(viewController)")
+        
+        let deviceVerificationCoordinator = DeviceVerificationCoordinator(session: self.session, roomMember: roomMember)
+        deviceVerificationCoordinator.delegate = self
+        viewController.present(deviceVerificationCoordinator.toPresentable(), animated: animated, completion: nil)
+        deviceVerificationCoordinator.start()
+        
+        self.coordinator = deviceVerificationCoordinator
+    }
 
     func present(from viewController: UIViewController, incomingTransaction: MXIncomingSASTransaction, animated: Bool) {
         
         NSLog("[DeviceVerificationCoordinatorBridgePresenter] Present incoming verification from \(viewController)")
         
         let deviceVerificationCoordinator = DeviceVerificationCoordinator(session: self.session, incomingTransaction: incomingTransaction)
+        deviceVerificationCoordinator.delegate = self
+        viewController.present(deviceVerificationCoordinator.toPresentable(), animated: animated, completion: nil)
+        deviceVerificationCoordinator.start()
+
+        self.coordinator = deviceVerificationCoordinator
+    }    
+    
+    func present(from viewController: UIViewController, incomingKeyVerificationRequest: MXKeyVerificationRequest, animated: Bool) {
+        
+        NSLog("[DeviceVerificationCoordinatorBridgePresenter] Present incoming key verification request from \(viewController)")
+        
+        let deviceVerificationCoordinator = DeviceVerificationCoordinator(session: self.session, incomingKeyVerificationRequest: incomingKeyVerificationRequest)
         deviceVerificationCoordinator.delegate = self
         viewController.present(deviceVerificationCoordinator.toPresentable(), animated: animated, completion: nil)
         deviceVerificationCoordinator.start()

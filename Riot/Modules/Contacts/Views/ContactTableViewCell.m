@@ -24,6 +24,7 @@
 
 #import "AvatarGenerator.h"
 #import "Tools.h"
+#import "MXRoom+Riot.h"
 
 #import "NBPhoneNumberUtil.h"
 
@@ -171,6 +172,7 @@
         }];
         
         [self refreshContactPresence];
+        [self refreshContactBadgeImage];
     }
     else
     {
@@ -232,6 +234,47 @@
     }
     
     self.thumbnailView.image = image;
+}
+
+- (void)refreshContactBadgeImage
+{
+    NSString *matrixId = [self firstMatrixId];
+    
+    UserEncryptionTrustLevel userEncryptionTrustLevel = UserEncryptionTrustLevelUnknown;
+    
+    if (matrixId)
+    {
+        userEncryptionTrustLevel = [self.mxRoom encryptionTrustLevelForUserId:matrixId];
+    }
+    
+    self.avatarBadgeImageView.image = [self badgeImageForUserEncryptionTrustLevel:userEncryptionTrustLevel];
+}
+
+- (UIImage*)badgeImageForUserEncryptionTrustLevel:(UserEncryptionTrustLevel)userEncryptionTrustLevel
+{
+    NSString *encryptionIconName;
+    UIImage *encryptionIcon;
+    
+    switch (userEncryptionTrustLevel) {
+        case UserEncryptionTrustLevelWarning:
+            encryptionIconName = @"encryption_warning";
+            break;
+        case UserEncryptionTrustLevelNormal:
+            encryptionIconName = @"encryption_normal";
+            break;
+        case UserEncryptionTrustLevelTrusted:
+            encryptionIconName = @"encryption_trusted";
+            break;
+        default:
+            break;
+    }
+    
+    if (encryptionIconName)
+    {
+        encryptionIcon = [UIImage imageNamed:encryptionIconName];
+    }
+    
+    return encryptionIcon;
 }
 
 - (void)refreshContactDisplayName
