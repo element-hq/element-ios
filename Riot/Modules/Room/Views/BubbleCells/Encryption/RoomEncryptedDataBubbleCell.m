@@ -51,15 +51,12 @@ NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon = @"kRoomEncrypt
     {
         encryptionIconName = @"encryption_warning";
     }
-    else
+    else if (event.sender)
     {
+        MXUserTrustLevel *userTrustLevel = [session.crypto trustLevelForUser:event.sender];
         MXDeviceInfo *deviceInfo = [session.crypto eventDeviceInfo:event];
         
-        if (deviceInfo.trustLevel.isVerified)
-        {
-            encryptionIconName = nil;
-        }
-        else
+        if (userTrustLevel.isVerified && !deviceInfo.trustLevel.isVerified)
         {
             encryptionIconName = @"encryption_warning";
         }
