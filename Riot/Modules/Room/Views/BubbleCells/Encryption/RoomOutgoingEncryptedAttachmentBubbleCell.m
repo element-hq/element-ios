@@ -43,7 +43,7 @@
         MXKRoomBubbleComponent *component = bubbleData.bubbleComponents.firstObject;
         if (component)
         {
-            self.encryptionStatusView.image = [RoomEncryptedDataBubbleCell encryptionIconForEvent:component.event andSession:bubbleData.mxSession];
+            self.encryptionStatusView.image = [RoomEncryptedDataBubbleCell encryptionIconForBubbleComponent:component];
         }
     }
 }

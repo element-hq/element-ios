@@ -341,7 +341,7 @@
                         
                         CGFloat leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin;
                         
-                        if (self.room.summary.isEncrypted)
+                        if (roomBubbleCellData.containsBubbleComponentWithEncryptionBadge)
                         {
                             leftMargin+= RoomBubbleCellLayout.encryptedContentLeftMargin;
                         }
