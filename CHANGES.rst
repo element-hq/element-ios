@@ -7,6 +7,7 @@ Improvements:
  * RoomVC: Update encryption decoration with shields (#2934, #2930, #2906).
  * Settings: Remove "End-to-End Encryption" from the LABS section (#2941).
  * Room decoration: Use shields instead of padlocks (#2906).
+ * Room decoration: Remove horizontal empty space when there is no decoration badge to set on room message (#2978).
 
 Changes in 0.10.4 (2019-12-11)
 ===============================================
