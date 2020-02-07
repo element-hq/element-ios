@@ -362,7 +362,7 @@ internal enum VectorL10n {
   internal static var callAlreadyDisplayed: String { 
     return VectorL10n.tr("Vector", "call_already_displayed") 
   }
-  /// Incoming video call...
+  /// Incoming video call…
   internal static var callIncomingVideo: String { 
     return VectorL10n.tr("Vector", "call_incoming_video") 
   }
@@ -370,7 +370,7 @@ internal enum VectorL10n {
   internal static func callIncomingVideoPrompt(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "call_incoming_video_prompt", p1)
   }
-  /// Incoming call...
+  /// Incoming call…
   internal static var callIncomingVoice: String { 
     return VectorL10n.tr("Vector", "call_incoming_voice") 
   }
@@ -814,7 +814,7 @@ internal enum VectorL10n {
   internal static var deviceVerificationStartVerifyButton: String { 
     return VectorL10n.tr("Vector", "device_verification_start_verify_button") 
   }
-  /// Waiting for partner to accept...
+  /// Waiting for partner to accept…
   internal static var deviceVerificationStartWaitPartner: String { 
     return VectorL10n.tr("Vector", "device_verification_start_wait_partner") 
   }
@@ -846,7 +846,7 @@ internal enum VectorL10n {
   internal static var deviceVerificationVerifyTitleNumber: String { 
     return VectorL10n.tr("Vector", "device_verification_verify_title_number") 
   }
-  /// Waiting for partner to confirm...
+  /// Waiting for partner to confirm…
   internal static var deviceVerificationVerifyWaitPartner: String { 
     return VectorL10n.tr("Vector", "device_verification_verify_wait_partner") 
   }
@@ -946,7 +946,7 @@ internal enum VectorL10n {
   internal static var e2eRoomKeyRequestShareWithoutVerifying: String { 
     return VectorL10n.tr("Vector", "e2e_room_key_request_share_without_verifying") 
   }
-  /// Start verification...
+  /// Start verification…
   internal static var e2eRoomKeyRequestStartVerification: String { 
     return VectorL10n.tr("Vector", "e2e_room_key_request_start_verification") 
   }
@@ -3062,7 +3062,7 @@ internal enum VectorL10n {
   internal static func settingsKeyBackupInfoAlgorithm(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_key_backup_info_algorithm", p1)
   }
-  /// Checking...
+  /// Checking…
   internal static var settingsKeyBackupInfoChecking: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_checking") 
   }
@@ -3074,7 +3074,7 @@ internal enum VectorL10n {
   internal static var settingsKeyBackupInfoNotValid: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_not_valid") 
   }
-  /// Backing up %@ keys...
+  /// Backing up %@ keys…
   internal static func settingsKeyBackupInfoProgress(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_key_backup_info_progress", p1)
   }
@@ -3634,7 +3634,7 @@ internal enum VectorL10n {
   internal static var widgetNoPowerToManage: String { 
     return VectorL10n.tr("Vector", "widget_no_power_to_manage") 
   }
-  /// Manage integrations...
+  /// Manage integrations…
   internal static var widgetPickerManageIntegrations: String { 
     return VectorL10n.tr("Vector", "widget_picker_manage_integrations") 
   }

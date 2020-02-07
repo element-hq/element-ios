@@ -504,14 +504,14 @@
 "settings_deactivate_my_account" = "Deactivate my account";
 
 "settings_key_backup_info" = "Encrypted messages are secured with end-to-end encryption. Only you and the recipient(s) have the keys to read these messages.";
-"settings_key_backup_info_checking" = "Checking...";
+"settings_key_backup_info_checking" = "Checking…";
 "settings_key_backup_info_none" = "Your keys are not being backed up from this session.";
 "settings_key_backup_info_signout_warning" = "Connect this session to key backup before signing out to avoid losing any keys that may only be on this device.";
 "settings_key_backup_info_version" = "Key Backup Version: %@";
 "settings_key_backup_info_algorithm" = "Algorithm: %@";
 "settings_key_backup_info_valid" = "This session is backing up your keys.";
 "settings_key_backup_info_not_valid" = "This session is not backing up your keys, but you do have an existing backup you can restore from and add to going forward.";
-"settings_key_backup_info_progress" = "Backing up %@ keys...";
+"settings_key_backup_info_progress" = "Backing up %@ keys…";
 "settings_key_backup_info_progress_done" = "All keys backed up";
 
 "settings_key_backup_info_trust_signature_unknown" = "Backup has a signature from session with ID: %@";
@@ -749,8 +749,8 @@
 // Call
 "call_incoming_voice_prompt" = "Incoming voice call from %@";
 "call_incoming_video_prompt" = "Incoming video call from %@";
-"call_incoming_voice" = "Incoming call...";
-"call_incoming_video" = "Incoming video call...";
+"call_incoming_voice" = "Incoming call…";
+"call_incoming_video" = "Incoming video call…";
 "call_already_displayed" = "There is already a call in progress.";
 "call_jitsi_error" = "Failed to join the conference call.";
 
@@ -815,7 +815,7 @@
 
 // Widget Picker
 "widget_picker_title" = "Integrations";
-"widget_picker_manage_integrations" = "Manage integrations...";
+"widget_picker_manage_integrations" = "Manage integrations…";
 
 // Room widget permissions
 "room_widget_permission_title" = "Load Widget";
@@ -840,7 +840,7 @@
 "e2e_room_key_request_title" = "Encryption key request";
 "e2e_room_key_request_message_new_device" = "You added a new session '%@', which is requesting encryption keys.";
 "e2e_room_key_request_message" = "Your unverified session '%@' is requesting encryption keys.";
-"e2e_room_key_request_start_verification" = "Start verification...";
+"e2e_room_key_request_start_verification" = "Start verification…";
 "e2e_room_key_request_share_without_verifying" = "Share without verifying";
 "e2e_room_key_request_ignore_request" = "Ignore request";
 
@@ -1015,7 +1015,7 @@
 
 // MARK: Start
 "device_verification_start_title" = "Verify by comparing a short text string";
-"device_verification_start_wait_partner" = "Waiting for partner to accept...";
+"device_verification_start_wait_partner" = "Waiting for partner to accept…";
 "device_verification_start_use_legacy" = "Nothing appearing? Not all clients supports interactive verification yet. Use legacy verification.";
 "device_verification_start_verify_button" = "Begin Verifying";
 "device_verification_start_use_legacy_action" = "Use Legacy Verification";
@@ -1026,7 +1026,7 @@
 
 "device_verification_verify_title_emoji" = "Verify this session by confirming the following emoji appear on the screen of the partner";
 "device_verification_verify_title_number" = "Verify this session by confirming the following numbers appear on the screen of the partner";
-"device_verification_verify_wait_partner" = "Waiting for partner to confirm...";
+"device_verification_verify_wait_partner" = "Waiting for partner to confirm…";
 
 // User
 
