@@ -226,7 +226,7 @@ internal enum VectorL10n {
   internal static var authResetPasswordNextStepButton: String { 
     return VectorL10n.tr("Vector", "auth_reset_password_next_step_button") 
   }
-  /// Your password has been reset.\n\nYou have been logged out of all devices and will no longer receive push notifications. To re-enable notifications, re-log in on each device.
+  /// Your password has been reset.\n\nYou have been logged out of all sessions and will no longer receive push notifications. To re-enable notifications, re-log in on each device.
   internal static var authResetPasswordSuccessMessage: String { 
     return VectorL10n.tr("Vector", "auth_reset_password_success_message") 
   }
@@ -362,7 +362,7 @@ internal enum VectorL10n {
   internal static var callAlreadyDisplayed: String { 
     return VectorL10n.tr("Vector", "call_already_displayed") 
   }
-  /// Incoming video call...
+  /// Incoming video call…
   internal static var callIncomingVideo: String { 
     return VectorL10n.tr("Vector", "call_incoming_video") 
   }
@@ -370,7 +370,7 @@ internal enum VectorL10n {
   internal static func callIncomingVideoPrompt(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "call_incoming_video_prompt", p1)
   }
-  /// Incoming call...
+  /// Incoming call…
   internal static var callIncomingVoice: String { 
     return VectorL10n.tr("Vector", "call_incoming_voice") 
   }
@@ -778,15 +778,15 @@ internal enum VectorL10n {
   internal static var deviceVerificationEmojiUnicorn: String { 
     return VectorL10n.tr("Vector", "device_verification_emoji_unicorn") 
   }
-  /// Cannot load device information.
+  /// Cannot load session information.
   internal static var deviceVerificationErrorCannotLoadDevice: String { 
     return VectorL10n.tr("Vector", "device_verification_error_cannot_load_device") 
   }
-  /// Verify this device to mark it as trusted. Trusting devices of partners gives you extra peace of mind when using end-to-end encrypted messages.
+  /// Verify this session to mark it as trusted. Trusting sessions of partners gives you extra peace of mind when using end-to-end encrypted messages.
   internal static var deviceVerificationIncomingDescription1: String { 
     return VectorL10n.tr("Vector", "device_verification_incoming_description_1") 
   }
-  /// Verifying this device will mark it as trusted, and also mark your device as trusted to the partner.
+  /// Verifying this session will mark it as trusted, and also mark your session as trusted to the partner.
   internal static var deviceVerificationIncomingDescription2: String { 
     return VectorL10n.tr("Vector", "device_verification_incoming_description_2") 
   }
@@ -814,15 +814,15 @@ internal enum VectorL10n {
   internal static var deviceVerificationStartVerifyButton: String { 
     return VectorL10n.tr("Vector", "device_verification_start_verify_button") 
   }
-  /// Waiting for partner to accept...
+  /// Waiting for partner to accept…
   internal static var deviceVerificationStartWaitPartner: String { 
     return VectorL10n.tr("Vector", "device_verification_start_wait_partner") 
   }
-  /// Verify device
+  /// Verify session
   internal static var deviceVerificationTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_title") 
   }
-  /// You've successfully verified this device.
+  /// You've successfully verified this session.
   internal static var deviceVerificationVerifiedDescription1: String { 
     return VectorL10n.tr("Vector", "device_verification_verified_description_1") 
   }
@@ -838,15 +838,15 @@ internal enum VectorL10n {
   internal static var deviceVerificationVerifiedTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_verified_title") 
   }
-  /// Verify this device by confirming the following emoji appear on the screen of the partner
+  /// Verify this session by confirming the following emoji appear on the screen of the partner
   internal static var deviceVerificationVerifyTitleEmoji: String { 
     return VectorL10n.tr("Vector", "device_verification_verify_title_emoji") 
   }
-  /// Verify this device by confirming the following numbers appear on the screen of the partner
+  /// Verify this session by confirming the following numbers appear on the screen of the partner
   internal static var deviceVerificationVerifyTitleNumber: String { 
     return VectorL10n.tr("Vector", "device_verification_verify_title_number") 
   }
-  /// Waiting for partner to confirm...
+  /// Waiting for partner to confirm…
   internal static var deviceVerificationVerifyWaitPartner: String { 
     return VectorL10n.tr("Vector", "device_verification_verify_wait_partner") 
   }
@@ -926,7 +926,7 @@ internal enum VectorL10n {
   internal static var e2eKeyBackupWrongVersionTitle: String { 
     return VectorL10n.tr("Vector", "e2e_key_backup_wrong_version_title") 
   }
-  /// You need to log back in to generate end-to-end encryption keys for this device and submit the public key to your homeserver.\nThis is a once off; sorry for the inconvenience.
+  /// You need to log back in to generate end-to-end encryption keys for this session and submit the public key to your homeserver.\nThis is a once off; sorry for the inconvenience.
   internal static var e2eNeedLogInAgain: String { 
     return VectorL10n.tr("Vector", "e2e_need_log_in_again") 
   }
@@ -934,11 +934,11 @@ internal enum VectorL10n {
   internal static var e2eRoomKeyRequestIgnoreRequest: String { 
     return VectorL10n.tr("Vector", "e2e_room_key_request_ignore_request") 
   }
-  /// Your unverified device '%@' is requesting encryption keys.
+  /// Your unverified session '%@' is requesting encryption keys.
   internal static func e2eRoomKeyRequestMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "e2e_room_key_request_message", p1)
   }
-  /// You added a new device '%@', which is requesting encryption keys.
+  /// You added a new session '%@', which is requesting encryption keys.
   internal static func e2eRoomKeyRequestMessageNewDevice(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "e2e_room_key_request_message_new_device", p1)
   }
@@ -946,7 +946,7 @@ internal enum VectorL10n {
   internal static var e2eRoomKeyRequestShareWithoutVerifying: String { 
     return VectorL10n.tr("Vector", "e2e_room_key_request_share_without_verifying") 
   }
-  /// Start verification...
+  /// Start verification…
   internal static var e2eRoomKeyRequestStartVerification: String { 
     return VectorL10n.tr("Vector", "e2e_room_key_request_start_verification") 
   }
@@ -1030,7 +1030,7 @@ internal enum VectorL10n {
   internal static var eventFormatterRerequestKeysPart1Link: String { 
     return VectorL10n.tr("Vector", "event_formatter_rerequest_keys_part1_link") 
   }
-  ///  from your other devices.
+  ///  from your other sessions.
   internal static var eventFormatterRerequestKeysPart2: String { 
     return VectorL10n.tr("Vector", "event_formatter_rerequest_keys_part2") 
   }
@@ -1258,7 +1258,7 @@ internal enum VectorL10n {
   internal static var keyBackupRecoverBannerTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_banner_title") 
   }
-  /// Connect this device to Key Backup
+  /// Connect this session to Key Backup
   internal static var keyBackupRecoverConnentBannerSubtitle: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_connent_banner_subtitle") 
   }
@@ -1558,7 +1558,7 @@ internal enum VectorL10n {
   internal static var manageSessionInfo: String { 
     return VectorL10n.tr("Vector", "manage_session_info") 
   }
-  /// Device name
+  /// Session name
   internal static var manageSessionName: String { 
     return VectorL10n.tr("Vector", "manage_session_name") 
   }
@@ -1566,7 +1566,7 @@ internal enum VectorL10n {
   internal static var manageSessionNotTrusted: String { 
     return VectorL10n.tr("Vector", "manage_session_not_trusted") 
   }
-  /// Sign out of this device
+  /// Sign out of this session
   internal static var manageSessionSignOut: String { 
     return VectorL10n.tr("Vector", "manage_session_sign_out") 
   }
@@ -1690,7 +1690,7 @@ internal enum VectorL10n {
   internal static var rename: String { 
     return VectorL10n.tr("Vector", "rename") 
   }
-  /// Please launch Riot on another device that can decrypt the message so it can send the keys to this device.
+  /// Please launch Riot on another device that can decrypt the message so it can send the keys to this session.
   internal static var rerequestKeysAlertMessage: String { 
     return VectorL10n.tr("Vector", "rerequest_keys_alert_message") 
   }
@@ -1862,7 +1862,7 @@ internal enum VectorL10n {
   internal static var roomDetailsAddressesSection: String { 
     return VectorL10n.tr("Vector", "room_details_addresses_section") 
   }
-  /// Encrypt to verified devices only
+  /// Encrypt to verified sessions only
   internal static var roomDetailsAdvancedE2eEncryptionBlacklistUnverifiedDevices: String { 
     return VectorL10n.tr("Vector", "room_details_advanced_e2e_encryption_blacklist_unverified_devices") 
   }
@@ -2266,7 +2266,7 @@ internal enum VectorL10n {
   internal static var roomParticipantsActionSectionAdminTools: String { 
     return VectorL10n.tr("Vector", "room_participants_action_section_admin_tools") 
   }
-  /// Devices
+  /// Sessions
   internal static var roomParticipantsActionSectionDevices: String { 
     return VectorL10n.tr("Vector", "room_participants_action_section_devices") 
   }
@@ -2594,7 +2594,7 @@ internal enum VectorL10n {
   internal static func roomUnsentMessagesNotification(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "room_unsent_messages_notification", p1, p2)
   }
-  /// Message not sent due to unknown devices being present. %@ or %@ now?
+  /// Message not sent due to unknown sessions being present. %@ or %@ now?
   internal static func roomUnsentMessagesUnknownDevicesNotification(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "room_unsent_messages_unknown_devices_notification", p1, p2)
   }
@@ -2850,19 +2850,19 @@ internal enum VectorL10n {
   internal static var settingsCopyrightUrl: String { 
     return VectorL10n.tr("Vector", "settings_copyright_url") 
   }
-  /// Encrypt to verified devices only
+  /// Encrypt to verified sessions only
   internal static var settingsCryptoBlacklistUnverifiedDevices: String { 
     return VectorL10n.tr("Vector", "settings_crypto_blacklist_unverified_devices") 
   }
-  /// \nDevice ID: 
+  /// \nSession ID: 
   internal static var settingsCryptoDeviceId: String { 
     return VectorL10n.tr("Vector", "settings_crypto_device_id") 
   }
-  /// \nDevice key:\n
+  /// Session key:\n
   internal static var settingsCryptoDeviceKey: String { 
     return VectorL10n.tr("Vector", "settings_crypto_device_key") 
   }
-  /// Device Public Name: 
+  /// Session name: 
   internal static var settingsCryptoDeviceName: String { 
     return VectorL10n.tr("Vector", "settings_crypto_device_name") 
   }
@@ -2882,11 +2882,11 @@ internal enum VectorL10n {
   internal static var settingsDeactivateMyAccount: String { 
     return VectorL10n.tr("Vector", "settings_deactivate_my_account") 
   }
-  /// DEVICES
+  /// SESSIONS
   internal static var settingsDevices: String { 
     return VectorL10n.tr("Vector", "settings_devices") 
   }
-  /// A device's public name is visible to people you communicate with
+  /// A session's public name is visible to people you communicate with
   internal static var settingsDevicesDescription: String { 
     return VectorL10n.tr("Vector", "settings_devices_description") 
   }
@@ -3030,7 +3030,7 @@ internal enum VectorL10n {
   internal static var settingsKeyBackup: String { 
     return VectorL10n.tr("Vector", "settings_key_backup") 
   }
-  /// Connect this device to Key Backup
+  /// Connect this session to Key Backup
   internal static var settingsKeyBackupButtonConnect: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_button_connect") 
   }
@@ -3062,19 +3062,19 @@ internal enum VectorL10n {
   internal static func settingsKeyBackupInfoAlgorithm(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_key_backup_info_algorithm", p1)
   }
-  /// Checking...
+  /// Checking…
   internal static var settingsKeyBackupInfoChecking: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_checking") 
   }
-  /// Your keys are not being backed up from this device.
+  /// Your keys are not being backed up from this session.
   internal static var settingsKeyBackupInfoNone: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_none") 
   }
-  /// This device is not backing up your keys, but you do have an existing backup you can restore from and add to going forward.
+  /// This session is not backing up your keys, but you do have an existing backup you can restore from and add to going forward.
   internal static var settingsKeyBackupInfoNotValid: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_not_valid") 
   }
-  /// Backing up %@ keys...
+  /// Backing up %@ keys…
   internal static func settingsKeyBackupInfoProgress(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_key_backup_info_progress", p1)
   }
@@ -3082,7 +3082,7 @@ internal enum VectorL10n {
   internal static var settingsKeyBackupInfoProgressDone: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_progress_done") 
   }
-  /// Connect this device to key backup before signing out to avoid losing any keys that may only be on this device.
+  /// Connect this session to key backup before signing out to avoid losing any keys that may only be on this device.
   internal static var settingsKeyBackupInfoSignoutWarning: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_signout_warning") 
   }
@@ -3094,11 +3094,11 @@ internal enum VectorL10n {
   internal static func settingsKeyBackupInfoTrustSignatureInvalidDeviceVerified(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_key_backup_info_trust_signature_invalid_device_verified", p1)
   }
-  /// Backup has a signature from device with ID: %@
+  /// Backup has a signature from session with ID: %@
   internal static func settingsKeyBackupInfoTrustSignatureUnknown(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_key_backup_info_trust_signature_unknown", p1)
   }
-  /// Backup has a valid signature from this device
+  /// Backup has a valid signature from this session
   internal static var settingsKeyBackupInfoTrustSignatureValid: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_trust_signature_valid") 
   }
@@ -3110,7 +3110,7 @@ internal enum VectorL10n {
   internal static func settingsKeyBackupInfoTrustSignatureValidDeviceVerified(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_key_backup_info_trust_signature_valid_device_verified", p1)
   }
-  /// This device is backing up your keys.
+  /// This session is backing up your keys.
   internal static var settingsKeyBackupInfoValid: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_valid") 
   }
@@ -3422,11 +3422,11 @@ internal enum VectorL10n {
   internal static var today: String { 
     return VectorL10n.tr("Vector", "today") 
   }
-  /// This room contains unknown devices which have not been verified.\nThis means there is no guarantee that the devices belong to the users they claim to.\nWe recommend you go through the verification process for each device before continuing, but you can resend the message without verifying if you prefer.
+  /// This room contains unknown sessions which have not been verified.\nThis means there is no guarantee that the sessions belong to the users they claim to.\nWe recommend you go through the verification process for each session before continuing, but you can resend the message without verifying if you prefer.
   internal static var unknownDevicesAlert: String { 
     return VectorL10n.tr("Vector", "unknown_devices_alert") 
   }
-  /// Room contains unknown devices
+  /// Room contains unknown sessions
   internal static var unknownDevicesAlertTitle: String { 
     return VectorL10n.tr("Vector", "unknown_devices_alert_title") 
   }
@@ -3442,7 +3442,7 @@ internal enum VectorL10n {
   internal static var unknownDevicesSendAnyway: String { 
     return VectorL10n.tr("Vector", "unknown_devices_send_anyway") 
   }
-  /// Unknown devices
+  /// Unknown sessions
   internal static var unknownDevicesTitle: String { 
     return VectorL10n.tr("Vector", "unknown_devices_title") 
   }
@@ -3454,7 +3454,7 @@ internal enum VectorL10n {
   internal static var userVerificationSessionDetailsAdditionalInformationUntrustedCurrentUser: String { 
     return VectorL10n.tr("Vector", "user_verification_session_details_additional_information_untrusted_current_user") 
   }
-  /// Until this user trusts this device, messages sent to and from it are labelled with warnings. Alternatively, you can manually verify it.
+  /// Until this user trusts this session, messages sent to and from it are labelled with warnings. Alternatively, you can manually verify it.
   internal static var userVerificationSessionDetailsAdditionalInformationUntrustedOtherUser: String { 
     return VectorL10n.tr("Vector", "user_verification_session_details_additional_information_untrusted_other_user") 
   }
@@ -3462,7 +3462,7 @@ internal enum VectorL10n {
   internal static var userVerificationSessionDetailsInformationTrustedCurrentUser: String { 
     return VectorL10n.tr("Vector", "user_verification_session_details_information_trusted_current_user") 
   }
-  /// This device is trusted for secure messaging because 
+  /// This session is trusted for secure messaging because 
   internal static var userVerificationSessionDetailsInformationTrustedOtherUserPart1: String { 
     return VectorL10n.tr("Vector", "user_verification_session_details_information_trusted_other_user_part1") 
   }
@@ -3474,7 +3474,7 @@ internal enum VectorL10n {
   internal static var userVerificationSessionDetailsInformationUntrustedCurrentUser: String { 
     return VectorL10n.tr("Vector", "user_verification_session_details_information_untrusted_current_user") 
   }
-  ///  signed in using a new device:
+  ///  signed in using a new session:
   internal static var userVerificationSessionDetailsInformationUntrustedOtherUser: String { 
     return VectorL10n.tr("Vector", "user_verification_session_details_information_untrusted_other_user") 
   }
@@ -3634,7 +3634,7 @@ internal enum VectorL10n {
   internal static var widgetNoPowerToManage: String { 
     return VectorL10n.tr("Vector", "widget_no_power_to_manage") 
   }
-  /// Manage integrations...
+  /// Manage integrations…
   internal static var widgetPickerManageIntegrations: String { 
     return VectorL10n.tr("Vector", "widget_picker_manage_integrations") 
   }
