@@ -21,53 +21,14 @@ NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon = @"kRoomEncrypt
 
 @implementation RoomEncryptedDataBubbleCell
 
-+ (UIImage*)encryptionIconForEvent:(MXEvent*)event andSession:(MXSession*)session
++ (UIImage*)encryptionIconForBubbleComponent:(MXKRoomBubbleComponent *)bubbleComponent
 {
-    MXRoom *room = [session roomWithRoomId:event.roomId];
-    BOOL isRoomEncrypted = room.summary.isEncrypted && session.crypto;
-    
-    if (!isRoomEncrypted)
+    if (!bubbleComponent.showEncryptionBadge)
     {
         return nil;
     }
     
-    NSString *encryptionIconName;
-    UIImage* encryptionIcon;
-    
-    if (!event.isEncrypted)
-    {
-        if (event.isLocalEvent
-            || event.isState
-            || event.contentHasBeenEdited)    // Local echo for an edit is clear but uses a true event id, the one of the edited event
-        {
-            encryptionIconName = nil;
-        }
-        else
-        {
-            encryptionIconName = @"encryption_warning";
-        }
-    }
-    else if (event.decryptionError)
-    {
-        encryptionIconName = @"encryption_warning";
-    }
-    else if (event.sender)
-    {
-        MXUserTrustLevel *userTrustLevel = [session.crypto trustLevelForUser:event.sender];
-        MXDeviceInfo *deviceInfo = [session.crypto eventDeviceInfo:event];
-        
-        if (userTrustLevel.isVerified && !deviceInfo.trustLevel.isVerified)
-        {
-            encryptionIconName = @"encryption_warning";
-        }
-    }
-    
-    if (encryptionIconName)
-    {
-         encryptionIcon = [UIImage imageNamed:encryptionIconName];
-    }
-    
-    return encryptionIcon;
+    return [UIImage imageNamed:@"encryption_warning"];
 }
 
 + (void)addEncryptionStatusFromBubbleData:(MXKRoomBubbleCellData *)bubbleData inContainerView:(UIView *)containerView
@@ -93,8 +54,8 @@ NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon = @"kRoomEncrypt
         {
             continue;
         }
-    
-        UIImage *icon = [RoomEncryptedDataBubbleCell encryptionIconForEvent:component.event andSession:bubbleData.mxSession];
+        
+        UIImage *icon = [[self class] encryptionIconForBubbleComponent:component];
         
         if (icon)
         {
@@ -111,7 +72,7 @@ NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon = @"kRoomEncrypt
             encryptStatusImageView.tag = componentIndex;
             
             [containerView addSubview:encryptStatusImageView];
-        }        
+        }
     }
 }
 
