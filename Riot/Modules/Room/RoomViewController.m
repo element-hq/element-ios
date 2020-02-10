@@ -4025,7 +4025,12 @@
             
             // We promote here join by room alias instead of room id when an alias is available.
             NSString *roomIdOrAlias = roomPreviewData.roomId;
-            if (roomPreviewData.roomAliases.count)
+            
+            if (roomPreviewData.roomCanonicalAlias.length)
+            {
+                roomIdOrAlias = roomPreviewData.roomCanonicalAlias;
+            }
+            else if (roomPreviewData.roomAliases.count)
             {
                 roomIdOrAlias = roomPreviewData.roomAliases.firstObject;
             }
