@@ -77,7 +77,7 @@
 "auth_reset_password_next_step_button" = "J'ai vérifié mon adresse e-mail";
 "auth_reset_password_error_unauthorized" = "Impossible de vérifier l'adresse e-mail : assurez-vous de cliquer sur le lien dans l'e-mail";
 "auth_reset_password_error_not_found" = "Votre adresse e-mail ne semble pas associée à un identifiant Matrix sur ce serveur d’accueil.";
-"auth_reset_password_success_message" = "Votre mot de passe a été réinitialisé.\n\nVous avez été déconnecté de tous vos appareils et ne recevrez plus les notifications. Pour réactiver les notifications, reconnectez-vous sur chaque appareil.";
+"auth_reset_password_success_message" = "Votre mot de passe a été réinitialisé.\n\nVous avez été déconnecté de toutes vos sessions et ne recevrez plus de notifications. Pour réactiver les notifications, reconnectez-vous sur chaque appareil.";
 "auth_add_email_and_phone_warning" = "L'inscription avec un e-mail et un numéro de téléphone à la fois n'est pas supporté tant que l'API n'existe pas. Seul votre numéro de téléphone sera pris en compte. Vous pourrez ajouter l'adresse e-mail dans vos options de profil.";
 // Chat creation
 "room_creation_title" = "Nouvelle discussion";
@@ -168,7 +168,7 @@
 "room_participants_ago" = "d'inactivité";
 "room_participants_action_section_admin_tools" = "Outils d'administration";
 "room_participants_action_section_direct_chats" = "Discussions directes";
-"room_participants_action_section_devices" = "Appareils";
+"room_participants_action_section_devices" = "Sessions";
 "room_participants_action_section_other" = "Options";
 "room_participants_action_invite" = "Inviter";
 "room_participants_action_leave" = "Quitter ce salon";
@@ -196,7 +196,7 @@
 "room_message_short_placeholder" = "Envoyer un message…";
 "room_offline_notification" = "La connexion au serveur a été perdue.";
 "room_unsent_messages_notification" = "Messages non envoyés. %@ ou %@ maintenant ?";
-"room_unsent_messages_unknown_devices_notification" = "Message non envoyé car des appareils inconnus sont présents. %@ ou %@ maintenant ?";
+"room_unsent_messages_unknown_devices_notification" = "Message non envoyé car des sessions inconnues sont présentes. %@ ou %@ maintenant ?";
 "room_ongoing_conference_call" = "Téléconférence en cours. Rejoindre en %@ ou %@.";
 "room_prompt_resend" = "Tout renvoyer";
 "room_prompt_cancel" = "tout annuler";
@@ -220,13 +220,13 @@
 "room_event_action_view_encryption" = "Informations sur le chiffrement";
 "room_warning_about_encryption" = "Le chiffrement de bout en bout est en version bêta et peut ne pas être fiable.\n\nIl ne doit pas être considéré comme fiable pour sécuriser des données.\n\nLes appareils ne pourront pas encore déchiffrer l'historique de messages d'avant leur arrivée sur le salon.\n\nLes messages chiffrés ne seront pas visibles sur les clients qui n'ont pas encore implémenté le chiffrement.";
 // Unknown devices
-"unknown_devices_alert_title" = "Le salon contient des appareils inconnus";
-"unknown_devices_alert" = "Ce salon contient des appareils inconnus qui n'ont pas été vérifiés.\nCela signifie qu'il n'y a aucune garantie que les appareils appartiennent aux utilisateurs qu'ils prétendent.\nNous vous recommandons d'effectuer le processus de vérification pour chaque appareil avant de continuer, mais vous pouvez renvoyer le message sans vérifier si vous préférez.";
+"unknown_devices_alert_title" = "Le salon contient des sessions inconnues";
+"unknown_devices_alert" = "Ce salon contient des sessions inconnues qui n’ont pas été vérifiées.\nCela signifie qu’il n’y a aucune garantie que les sessions appartiennent aux utilisateurs qu’elles prétendent.\nNous vous recommandons d’effectuer le processus de vérification pour chaque session avant de continuer, mais vous pouvez renvoyer le message sans vérifier si vous préférez.";
 "unknown_devices_send_anyway" = "Envoyer quand même";
 "unknown_devices_call_anyway" = "Appeler quand même";
 "unknown_devices_answer_anyway" = "Répondre quand même";
 "unknown_devices_verify" = "Vérifier…";
-"unknown_devices_title" = "Appareils inconnus";
+"unknown_devices_title" = "Sessions inconnues";
 // Room Title
 "room_title_new_room" = "Nouveau salon";
 "room_title_multiple_active_members" = "%@/%@ membres actifs";
@@ -256,7 +256,7 @@
 "settings_advanced" = "AVANCÉ";
 "settings_other" = "AUTRES";
 "settings_labs" = "LABORATOIRE";
-"settings_devices" = "APPAREILS";
+"settings_devices" = "SESSIONS";
 "settings_cryptography" = "CHIFFREMENT";
 "settings_sign_out" = "Se déconnecter";
 "settings_sign_out_confirmation" = "Êtes-vous sûr(e) ?";
@@ -303,11 +303,11 @@
 "settings_confirm_password" = "confirmer le mot de passe";
 "settings_fail_to_update_password" = "Échec de la modification du mot de passe";
 "settings_password_updated" = "Votre mot de passe a été modifié";
-"settings_crypto_device_name" = "Nom public de l’appareil : ";
-"settings_crypto_device_id" = "\nIdentifiant de l'appareil : ";
-"settings_crypto_device_key" = "\nClé de l’appareil :\n";
+"settings_crypto_device_name" = "Nom de la session : ";
+"settings_crypto_device_id" = "\nIdentifiant de la session : ";
+"settings_crypto_device_key" = "Clé de la session :\n";
 "settings_crypto_export" = "Exporter les clés";
-"settings_crypto_blacklist_unverified_devices" = "Chiffrer uniquement vers les appareils vérifiés";
+"settings_crypto_blacklist_unverified_devices" = "Chiffrer uniquement vers les sessions vérifiées";
 // Room Details
 "room_details_title" = "Détails du salon";
 "room_details_people" = "Membres";
@@ -347,7 +347,7 @@
 "room_details_advanced_enable_e2e_encryption" = "Activer le chiffrement (attention : ne peut pas être désactivé !)";
 "room_details_advanced_e2e_encryption_enabled" = "Le chiffrement est activé sur ce salon";
 "room_details_advanced_e2e_encryption_disabled" = "Le chiffrement est désactivé sur ce salon.";
-"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Chiffrer uniquement vers les appareils vérifiés";
+"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Chiffrer uniquement vers les sessions vérifiées";
 "room_details_advanced_e2e_encryption_prompt_message" = "Le chiffrement de bout en bout est en version bêta et peut ne pas être fiable.\n\nIl ne doit pas être considéré comme fiable pour sécuriser des données.\n\nLes appareils ne pourront pas encore déchiffrer l'historique de messages d'avant leur arrivée sur le salon.\n\nUne fois le chiffrement activé pour un salon, il ne peut plus être désactivé (pour l'instant).\n\nLes messages chiffrés ne seront pas visibles sur les clients qui n'ont pas encore implémenté le chiffrement.";
 "room_details_fail_to_update_avatar" = "Échec de mise à jour de l'image du salon";
 "room_details_fail_to_update_room_name" = "Échec de mise à jour du nom du salon";
@@ -428,7 +428,7 @@
 "google_analytics_use_prompt" = "Souhaitez-vous aider à améliorer %@ en envoyant automatiquement des rapports d'erreur et des statistiques d'utilisation ?";
 // Crypto
 "e2e_enabling_on_app_update" = "Riot prend désormais en charge le chiffrement de bout en bout, mais vous devez vous reconnecter pour l'activer.\n\nVous pouvez le faire maintenant ou plus tard à partir des paramètres de l'application.";
-"e2e_need_log_in_again" = "Vous devez vous reconnecter pour générer les clés de chiffrement de bout en bout pour cet appareil et envoyer la clé publique vers votre serveur d'accueil.\nIl s'agit d'une erreur exceptionnelle. Veuillez nous excuser pour ce désagrément.";
+"e2e_need_log_in_again" = "Vous devez vous reconnecter pour générer les clés de chiffrement de bout en bout pour cette session et envoyer la clé publique vers votre serveur d’accueil.\nCeci ne se produira qu’une fois. Veuillez nous excuser pour ce désagrément.";
 // Bug report
 "bug_report_title" = "Rapport d'erreur";
 "bug_report_description" = "Veuillez décrire l'erreur. Qu'avez-vous fait ? Quel était le comportement attendu ? Que s'est-il réellement passé ?";
@@ -468,8 +468,8 @@
 "widget_creation_failure" = "Échec de la création du widget";
 "send_to" = "Envoyer à %@";
 "sending" = "Envoi";
-"call_incoming_voice" = "Appel entrant...";
-"call_incoming_video" = "Appel vidéo entrant...";
+"call_incoming_voice" = "Appel entrant…";
+"call_incoming_video" = "Appel vidéo entrant…";
 "widget_integration_must_be_in_room" = "Vous n'êtes pas dans ce salon.";
 "widget_integration_no_permission_in_room" = "Vous n’avez pas la permission de faire cela dans ce salon.";
 "widget_integration_room_not_visible" = "Le salon %@ n'est pas visible.";
@@ -497,9 +497,9 @@
 "settings_ui_theme_black" = "Noir";
 // Room key request dialog
 "e2e_room_key_request_title" = "Demande de clés de chiffrement";
-"e2e_room_key_request_message_new_device" = "Vous avez ajouté un nouvel appareil '%@', qui demande les clés de chiffrement.";
-"e2e_room_key_request_message" = "Votre appareil non vérifié '%@' demande les clés de chiffrement.";
-"e2e_room_key_request_start_verification" = "Commencer la vérification...";
+"e2e_room_key_request_message_new_device" = "Vous avez ajouté une nouvelle session « %@ », qui demande les clés de chiffrement.";
+"e2e_room_key_request_message" = "Votre session non vérifiée « %@ » demande les clés de chiffrement.";
+"e2e_room_key_request_start_verification" = "Commencer la vérification…";
 "e2e_room_key_request_share_without_verifying" = "Partager sans vérifier";
 "e2e_room_key_request_ignore_request" = "Ignorer la demande";
 "settings_flair" = "Afficher le badge aux endroits autorisés";
@@ -533,10 +533,10 @@
 "deactivate_account_password_alert_title" = "Désactiver le compte";
 "deactivate_account_password_alert_message" = "Pour continuer, veuillez renseigner votre mot de passe";
 "event_formatter_rerequest_keys_part1_link" = "Redemander les clés de chiffrement";
-"event_formatter_rerequest_keys_part2" = " depuis vos autres appareils.";
+"event_formatter_rerequest_keys_part2" = " depuis vos autres sessions.";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Demande envoyée";
-"rerequest_keys_alert_message" = "Veuillez lancer Riot sur un autre appareil qui peut déchiffrer le message pour qu'il puisse envoyer les clés sur cet appareil.";
+"rerequest_keys_alert_message" = "Lancez Riot sur un autre appareil qui peut déchiffrer le message pour qu’il puisse envoyer les clés à cette session.";
 "room_message_reply_to_placeholder" = "Envoyer une réponse (non chiffrée)…";
 "encrypted_room_message_reply_to_placeholder" = "Envoyer une réponse chiffrée…";
 "room_message_reply_to_short_placeholder" = "Envoyer une réponse…";
@@ -559,17 +559,17 @@
 "auth_accept_policies" = "Veuillez lire et accepter les politiques de ce serveur d'accueil :";
 "settings_key_backup" = "SAUVEGARDE DE CLÉS";
 "settings_key_backup_info_checking" = "Vérification…";
-"settings_key_backup_info_none" = "Vos clés ne sont pas sauvegardées depuis cet appareil.";
+"settings_key_backup_info_none" = "Vos clés ne sont pas sauvegardées depuis cette session.";
 "settings_key_backup_info_version" = "Version de sauvegarde de clé : %@";
 "settings_key_backup_info_algorithm" = "Algorithme : %@";
-"settings_key_backup_info_valid" = "Cet appareil sauvegarde vos clés.";
-"settings_key_backup_info_not_valid" = "Cet appareil ne sauvegarde pas vos clés, mais vous avez une sauvegarde que vous pouvez restaurer et joindre.";
+"settings_key_backup_info_valid" = "Cette session sauvegarde vos clés.";
+"settings_key_backup_info_not_valid" = "Cette session ne sauvegarde pas vos clés, mais vous avez une sauvegarde existante que vous pouvez restaurer et joindre.";
 "settings_key_backup_info_progress" = "Sauvegarde de %@ clés…";
 "settings_key_backup_info_progress_done" = "Toutes les clés ont été sauvegardées";
 "settings_key_backup_info_not_trusted_from_verifiable_device_fix_action" = "Pour utiliser la récupération de messages sécurisée sur cet appareil, vérifiez %@ maintenant.";
 "settings_key_backup_info_not_trusted_fix_action" = "Pour utiliser la récupération de messages sécurisée sur cet appareil, fournissez votre phrase de passe ou votre clé de récupération maintenant.";
-"settings_key_backup_info_trust_signature_unknown" = "La sauvegarde a une signature de l'appareil ayant pour identifiant : %@";
-"settings_key_backup_info_trust_signature_valid" = "La sauvegarde a une signature valide depuis cet appareil";
+"settings_key_backup_info_trust_signature_unknown" = "La sauvegarde a une signature de la session ayant pour identifiant : %@";
+"settings_key_backup_info_trust_signature_valid" = "La sauvegarde a une signature valide depuis cette session";
 "settings_key_backup_info_trust_signature_valid_device_verified" = "La sauvegarde a une signature valide depuis %@";
 "settings_key_backup_info_trust_signature_valid_device_unverified" = "La sauvegarde a une signature depuis %@";
 "settings_key_backup_info_trust_signature_invalid_device_verified" = "La sauvegarde a une signature non valide depuis %@";
@@ -625,7 +625,7 @@
 "key_backup_recover_banner_title_part1" = "Lancer la récupération de messages sécurisée";
 "key_backup_recover_banner_title_part2" = " pour lire l'historique des messages chiffrés sur cet appareil";
 "settings_key_backup_info" = "Les messages chiffrés sont sécurisés avec un chiffrement de bout en bout. Seuls vous et le(s) destinataire(s) avez les clés pour lire ces messages.";
-"settings_key_backup_info_signout_warning" = "Connectez cet appareil à la sauvegarde de clés avant de vous déconnecter pour éviter de perdre les clés qui ne seraient que sur cet appareil.";
+"settings_key_backup_info_signout_warning" = "Connectez cette session à la sauvegarde de clés avant de vous déconnecter pour éviter de perdre les clés qui ne seraient que sur cet appareil.";
 "settings_key_backup_button_use" = "Utiliser la sauvegarde de clés";
 "key_backup_setup_intro_setup_action_without_existing_backup" = "Commencer à utiliser la sauvegarde de clés";
 "key_backup_setup_intro_setup_action_with_existing_backup" = "Utiliser la sauvegarde de clés";
@@ -683,19 +683,19 @@
 "room_event_action_reaction_dislike" = "J’aime pas %@";
 "room_action_reply" = "Répondre";
 "settings_labs_message_reaction" = "Réagir aux messages avec des émojis";
-"settings_key_backup_button_connect" = "Connecter cet appareil à la sauvegarde de clés";
+"settings_key_backup_button_connect" = "Connecter cette session à la sauvegarde de clés";
 "key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Connecter cet appareil à la sauvegarde de clés";
-"key_backup_recover_connent_banner_subtitle" = "Connecter cet appareil à la sauvegarde de clés";
+"key_backup_recover_connent_banner_subtitle" = "Connecter cette session à la sauvegarde de clés";
 // MARK: - Device Verification
-"device_verification_title" = "Vérifier l’appareil";
+"device_verification_title" = "Vérifier la session";
 "device_verification_security_advice" = "Pour une sécurité maximale, nous vous recommandons de faire cela en personne ou d’utiliser un autre moyen sûr de communication";
 "device_verification_cancelled" = "L’autre personne a annulé la vérification.";
 "device_verification_cancelled_by_me" = "La vérification a été annulée. Motif : %@";
-"device_verification_error_cannot_load_device" = "Impossible de charger les informations de l’appareil.";
+"device_verification_error_cannot_load_device" = "Impossible de charger les informations de la session.";
 // Mark: Incoming
 "device_verification_incoming_title" = "Demande de vérification entrante";
-"device_verification_incoming_description_1" = "Vérifier cet appareil pour que ce soit un appareil de confiance. Faire confiance aux appareils de vos partenaires vous apporte une tranquillité d’esprit quand vous utilisez des messages chiffrés de bout en bout.";
-"device_verification_incoming_description_2" = "En vérifiant cet appareil, il sera marqué comme appareil de confiance, et le vôtre sera aussi marqué comme appareil de confiance pour votre partenaire.";
+"device_verification_incoming_description_1" = "Vérifiez cette session pour qu’elle soit marquée comme fiable. Faire confiance aux sessions de vos partenaires vous permet d’être sereins quand vous utilisez des messages chiffrés de bout en bout.";
+"device_verification_incoming_description_2" = "En vérifiant cette session, elle sera marquée comme fiable, et votre session sera aussi marquée comme fiable pour votre partenaire.";
 // MARK: Start
 "device_verification_start_title" = "Vérifier en comparant une chaîne de caractères courte";
 "device_verification_start_wait_partner" = "Nous attendons que le partenaire accepte…";
@@ -703,12 +703,12 @@
 "device_verification_start_verify_button" = "Commencer la vérification";
 "device_verification_start_use_legacy_action" = "Utiliser la vérification traditionnelle";
 // MARK: Verify
-"device_verification_verify_title_emoji" = "Vérifier cet appareil en confirmant que les émojis suivant apparaissent sur l’écran de votre partenaire";
-"device_verification_verify_title_number" = "Vérifier cet utilisateur en confirmant que les chiffres suivant apparaissent sur l’écran de votre partenaire";
+"device_verification_verify_title_emoji" = "Vérifiez cette session en confirmant que les émojis suivants apparaissent sur l’écran de votre partenaire";
+"device_verification_verify_title_number" = "Vérifiez cette session en confirmant que les chiffres suivants apparaissent sur l’écran de votre partenaire";
 "device_verification_verify_wait_partner" = "Nous attendons la confirmation de votre partenaire…";
 // MARK: Verified
 "device_verification_verified_title" = "Vérifié !";
-"device_verification_verified_description_1" = "Vous avez bien vérifié cet appareil.";
+"device_verification_verified_description_1" = "Vous avez bien vérifié cette session.";
 "device_verification_verified_description_2" = "Les messages sécurisés avec cet utilisateur sont chiffrés de bout en bout et ne peuvent être lus par d’autres personnes.";
 "device_verification_verified_got_it_button" = "Compris";
 // MARK: Emoji
@@ -861,7 +861,7 @@
 "settings_three_pids_management_information_part3" = ".";
 "settings_calls_stun_server_fallback_button" = "Autoriser le serveur d’assistance d’appel de secours";
 "settings_calls_stun_server_fallback_description" = "Autorise le serveur d’assistance d’appel de secours %@ quand votre serveur d’accueil n’en offre pas (votre adresse IP serait partagée lors d’un appel).";
-"settings_devices_description" = "Le nom public de l’appareil est visible pour les personnes avec qui vous communiquez";
+"settings_devices_description" = "Le nom public de la session est visible pour les personnes avec qui vous communiquez";
 "settings_discovery_no_identity_server" = "Vous n’utilisez actuellement aucun serveur d’identité. Pour être découvrable par les contacts existants que vous connaissez, ajoutez-en un.";
 "settings_discovery_terms_not_signed" = "Acceptez les conditions de service du serveur d’identité (%@) pour vous permettre d’être découvrable avec une adresse e-mail ou un numéro de téléphone.";
 "settings_discovery_three_pids_management_information_part1" = "Gérez quelles adresses e-mail ou numéros de téléphone peuvent être utilisés par les autres utilisateurs pour vous découvrir et pour vous inviter dans des salons. Ajoutez ou supprimez des adresses e-mail ou des numéros de téléphones depuis cette liste dans les ";
@@ -971,10 +971,10 @@
 // Manage session
 "manage_session_title" = "Gérer la session";
 "manage_session_info" = "INFORMATIONS DE LA SESSION";
-"manage_session_name" = "Nom de l’appareil";
+"manage_session_name" = "Nom de la session";
 "manage_session_trusted" = "Vous lui faites confiance";
 "manage_session_not_trusted" = "Vous ne lui faites pas confiance";
-"manage_session_sign_out" = "Se déconnecter de cet appareil";
+"manage_session_sign_out" = "Se déconnecter de cette session";
 "room_participants_action_section_security" = "Sécurité";
 "room_participants_action_security_status_verified" = "Vérifié";
 "room_participants_action_security_status_verify" = "Vérifier";
@@ -1002,11 +1002,11 @@
 "user_verification_session_details_trusted_title" = "Fiable";
 "user_verification_session_details_untrusted_title" = "Attention";
 "user_verification_session_details_information_trusted_current_user" = "Cette session est fiable pour la messagerie sécurisée car vous l’avez vérifiée :";
-"user_verification_session_details_information_trusted_other_user_part1" = "Cet appareil est fiable pour la messagerie sécurisée car ";
+"user_verification_session_details_information_trusted_other_user_part1" = "Cette session est fiable pour la messagerie sécurisée car ";
 "user_verification_session_details_information_trusted_other_user_part2" = " l’a vérifié :";
 "user_verification_session_details_information_untrusted_current_user" = "Vérifiez cette session pour la marquer comme fiable et lui permettre d’accéder aux messages sécurisés :";
-"user_verification_session_details_information_untrusted_other_user" = " s’est connecté en utilisant un nouvel appareil :";
-"user_verification_session_details_additional_information_untrusted_other_user" = "Tant que cet utilisateur ne fera pas confiance à cet appareil, les messages envoyés par et vers lui seront marqués par des avertissements. Sinon, vous pouvez le vérifier manuellement.";
+"user_verification_session_details_information_untrusted_other_user" = " s’est connecté en utilisant une nouvelle session :";
+"user_verification_session_details_additional_information_untrusted_other_user" = "Tant que cet utilisateur ne fera pas confiance à cette session, les messages envoyés par et vers elle seront marqués par des avertissements. Sinon, vous pouvez la vérifier manuellement.";
 "user_verification_session_details_additional_information_untrusted_current_user" = "Si vous ne vous êtes pas connecté à cette session, votre compte est peut-être compromis.";
 "user_verification_session_details_verify_action_current_user" = "Vérifier";
 "user_verification_session_details_verify_action_other_user" = "Vérifier manuellement";
