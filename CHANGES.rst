@@ -1,3 +1,9 @@
+Changes in 0.11.1 (TBD)
+===============================================
+
+Bug fix:
+* Fix error when joining some public rooms. (#2888).
+
 Changes in 0.11.0 (2020-xx-xx)
 ===============================================
 
