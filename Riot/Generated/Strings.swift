@@ -2702,6 +2702,10 @@ internal enum VectorL10n {
   internal static var securitySettingsCryptoSessionsDescription: String { 
     return VectorL10n.tr("Vector", "security_settings_crypto_sessions_description") 
   }
+  /// Loading sessions…
+  internal static var securitySettingsCryptoSessionsLoading: String { 
+    return VectorL10n.tr("Vector", "security_settings_crypto_sessions_loading") 
+  }
   /// Export keys manually
   internal static var securitySettingsExportKeysManually: String { 
     return VectorL10n.tr("Vector", "security_settings_export_keys_manually") 

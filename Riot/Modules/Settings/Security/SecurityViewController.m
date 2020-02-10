@@ -85,6 +85,8 @@ UIDocumentInteractionControllerDelegate>
     KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter;
 }
 
+@property (nonatomic) BOOL isLoadingDevices;
+
 @end
 
 @implementation SecurityViewController
@@ -228,6 +230,11 @@ UIDocumentInteractionControllerDelegate>
 
 #pragma mark - Internal methods
 
+- (BOOL)showLoadingDevicesInformation
+{
+    return self.isLoadingDevices && devicesArray.count == 0;
+}
+
 - (void)pushViewController:(UIViewController*)viewController
 {
     // Keep ref on pushed view controller
@@ -361,10 +368,14 @@ UIDocumentInteractionControllerDelegate>
 
 - (void)loadDevices
 {
+    self.isLoadingDevices = YES;
+    
     // Refresh the account devices list
     MXWeakify(self);
     [self.mainSession.matrixRestClient devices:^(NSArray<MXDevice *> *devices) {
         MXStrongifyAndReturnIfNil(self);
+        
+        self.isLoadingDevices = NO;
 
         if (devices)
         {
@@ -400,6 +411,8 @@ UIDocumentInteractionControllerDelegate>
 
     } failure:^(NSError *error) {
 
+        self.isLoadingDevices = NO;
+        
         // Display the data that has been loaded last time
         // Note: The use of 'reloadData' handles the case where the account has been logged out.
         [self reloadData];
@@ -437,7 +450,14 @@ UIDocumentInteractionControllerDelegate>
     switch (section)
     {
         case SECTION_CRYPTO_SESSIONS:
-            count = devicesArray.count + 1;
+            if (self.showLoadingDevicesInformation)
+            {
+                count = 2;
+            }
+            else
+            {
+                count = devicesArray.count + 1;
+            }
             break;
         case SECTION_KEYBACKUP:
             count = keyBackupSection.numberOfRows;
@@ -563,15 +583,31 @@ UIDocumentInteractionControllerDelegate>
     MXSession* session = self.mainSession;
     if (section == SECTION_CRYPTO_SESSIONS)
     {
-        if (row < devicesArray.count)
+        if (self.showLoadingDevicesInformation)
         {
-            cell = [self deviceCellWithDevice:devicesArray[row] forTableView:tableView];
+            if (indexPath.row == 0)
+            {
+                cell = [self descriptionCellForTableView:tableView
+                                                withText:NSLocalizedStringFromTable(@"security_settings_crypto_sessions_loading", @"Vector", nil) ];
+            }
+            else
+            {
+                cell = [self descriptionCellForTableView:tableView
+                                                withText:NSLocalizedStringFromTable(@"security_settings_crypto_sessions_description", @"Vector", nil) ];
+            }
         }
-        else if (row == devicesArray.count)
+        else
         {
-            cell = [self descriptionCellForTableView:tableView
-                                            withText:NSLocalizedStringFromTable(@"security_settings_crypto_sessions_description", @"Vector", nil) ];
-
+            if (row < devicesArray.count)
+            {
+                cell = [self deviceCellWithDevice:devicesArray[row] forTableView:tableView];
+            }
+            else if (row == devicesArray.count)
+            {
+                cell = [self descriptionCellForTableView:tableView
+                                                withText:NSLocalizedStringFromTable(@"security_settings_crypto_sessions_description", @"Vector", nil) ];
+                
+            }
         }
     }
     else if (section == SECTION_ADVANCED)
