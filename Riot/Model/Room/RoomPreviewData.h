@@ -62,6 +62,7 @@
 @property (nonatomic) NSString *roomName;
 @property (nonatomic, readonly) NSString *roomTopic;
 @property (nonatomic, readonly) NSString *roomAvatarUrl;
+@property (nonatomic, readonly) NSString *roomCanonicalAlias;
 @property (nonatomic, readonly) NSArray<NSString*> *roomAliases;
 @property (nonatomic, readonly) NSInteger numJoinedMembers; // -1 if unknown.
 
