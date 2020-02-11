@@ -1010,3 +1010,4 @@
 "user_verification_session_details_additional_information_untrusted_current_user" = "Si vous ne vous êtes pas connecté à cette session, votre compte est peut-être compromis.";
 "user_verification_session_details_verify_action_current_user" = "Vérifier";
 "user_verification_session_details_verify_action_other_user" = "Vérifier manuellement";
+"security_settings_crypto_sessions_loading" = "Chargement des sessions…";
