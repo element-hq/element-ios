@@ -699,7 +699,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBackupStateDidChangeNotification:) name:kMXKeyBackupDidStateChangeNotification object:nil];
     
     // Observe key verification request
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyVerificationRequestDidChangeNotification:) name:MXDeviceVerificationManagerNewRequestNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyVerificationRequestDidChangeNotification:) name:MXKeyVerificationManagerNewRequestNotification object:nil];
 
     // Resume all existing matrix sessions
     NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
@@ -728,7 +728,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     
     NSDictionary *userInfo = notification.userInfo;
     
-    MXKeyVerificationRequest *keyVerificationRequest = userInfo[MXDeviceVerificationManagerNotificationRequestKey];
+    MXKeyVerificationRequest *keyVerificationRequest = userInfo[MXKeyVerificationManagerNotificationRequestKey];
     
     if ([keyVerificationRequest isKindOfClass:MXKeyVerificationByDMRequest.class])
     {
@@ -1779,7 +1779,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                 }
                 else if (room.isDirect && isIncomingEvent && [msgType isEqualToString:kMXMessageTypeKeyVerificationRequest])
                 {
-                    [account.mxSession.crypto.deviceVerificationManager keyVerificationFromKeyVerificationEvent:event
+                    [account.mxSession.crypto.keyVerificationManager keyVerificationFromKeyVerificationEvent:event
                                                                                                         success:^(MXKeyVerification * _Nonnull keyVerification)
                      {
                          if (keyVerification && keyVerification.state == MXKeyVerificationRequestStatePending)
@@ -4785,12 +4785,12 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 - (void)enableIncomingDeviceVerificationObserver:(MXSession*)mxSession
 {
     incomingDeviceVerificationObserver =
-    [[NSNotificationCenter defaultCenter] addObserverForName:MXDeviceVerificationManagerNewTransactionNotification
-                                                      object:mxSession.crypto.deviceVerificationManager
+    [[NSNotificationCenter defaultCenter] addObserverForName:MXKeyVerificationManagerNewTransactionNotification
+                                                      object:mxSession.crypto.keyVerificationManager
                                                        queue:[NSOperationQueue mainQueue]
                                                   usingBlock:^(NSNotification *notif)
      {
-         NSObject *object = notif.userInfo[MXDeviceVerificationManagerNotificationTransactionKey];
+         NSObject *object = notif.userInfo[MXKeyVerificationManagerNotificationTransactionKey];
          if ([object isKindOfClass:MXIncomingSASTransaction.class])
          {
              [self checkPendingIncomingDeviceVerificationsInSession:mxSession];
@@ -4816,11 +4816,11 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         return;
     }
 
-    [mxSession.crypto.deviceVerificationManager transactions:^(NSArray<MXDeviceVerificationTransaction *> * _Nonnull transactions) {
+    [mxSession.crypto.keyVerificationManager transactions:^(NSArray<MXKeyVerificationTransaction *> * _Nonnull transactions) {
 
         NSLog(@"[AppDelegate][MXKeyVerification] checkPendingIncomingDeviceVerificationsInSession: transactions: %@", transactions);
 
-        for (MXDeviceVerificationTransaction *transaction in transactions)
+        for (MXKeyVerificationTransaction *transaction in transactions)
         {
             if (transaction.isIncoming)
             {

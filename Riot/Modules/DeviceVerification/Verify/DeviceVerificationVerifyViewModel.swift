@@ -81,14 +81,14 @@ final class DeviceVerificationVerifyViewModel: DeviceVerificationVerifyViewModel
         self.viewDelegate?.deviceVerificationVerifyViewModel(self, didUpdateViewState: viewState)
     }
 
-    // MARK: - MXDeviceVerificationTransactionDidChange
+    // MARK: - MXKeyVerificationTransactionDidChange
 
     private func registerTransactionDidStateChangeNotification(transaction: MXSASTransaction) {
-        NotificationCenter.default.addObserver(self, selector: #selector(transactionDidStateChange(notification:)), name: NSNotification.Name.MXDeviceVerificationTransactionDidChange, object: transaction)
+        NotificationCenter.default.addObserver(self, selector: #selector(transactionDidStateChange(notification:)), name: NSNotification.Name.MXKeyVerificationTransactionDidChange, object: transaction)
     }
     
     private func unregisterTransactionDidStateChangeNotification() {
-        NotificationCenter.default.removeObserver(self, name: .MXDeviceVerificationTransactionDidChange, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .MXKeyVerificationTransactionDidChange, object: nil)
     }
 
     @objc private func transactionDidStateChange(notification: Notification) {
