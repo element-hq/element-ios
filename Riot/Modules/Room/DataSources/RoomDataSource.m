@@ -672,12 +672,12 @@
 
 - (void)registerDeviceVerificationTransactionNotification
 {
-    self.deviceVerificationTransactionDidChangeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:MXDeviceVerificationTransactionDidChangeNotification
+    self.deviceVerificationTransactionDidChangeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:MXKeyVerificationTransactionDidChangeNotification
                                                                                                                         object:nil
                                                                                                                          queue:[NSOperationQueue mainQueue]
                                                                                                                     usingBlock:^(NSNotification *notification)
                                                                        {
-                                                                           MXDeviceVerificationTransaction *deviceVerificationTransaction = (MXDeviceVerificationTransaction*)notification.object;
+                                                                           MXKeyVerificationTransaction *deviceVerificationTransaction = (MXKeyVerificationTransaction*)notification.object;
                                                                            
                                                                            if ([deviceVerificationTransaction.dmRoomId isEqualToString:self.roomId])
                                                                            {
@@ -741,7 +741,7 @@
         return;
     }
     
-    __block MXHTTPOperation *operation = [self.mxSession.crypto.deviceVerificationManager keyVerificationFromKeyVerificationEvent:event
+    __block MXHTTPOperation *operation = [self.mxSession.crypto.keyVerificationManager keyVerificationFromKeyVerificationEvent:event
                                                                                                                           success:^(MXKeyVerification * _Nonnull keyVerification)
                                           {
                                               BOOL shouldRefreshCells = bubbleCellData.isKeyVerificationOperationPending || bubbleCellData.keyVerification == nil;

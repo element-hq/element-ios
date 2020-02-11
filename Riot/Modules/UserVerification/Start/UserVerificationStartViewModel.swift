@@ -36,7 +36,7 @@ final class UserVerificationStartViewModel: UserVerificationStartViewModelType {
 
     private let session: MXSession
     private let roomMember: MXRoomMember
-    private let verificationManager: MXDeviceVerificationManager
+    private let verificationManager: MXKeyVerificationManager
     
     private var keyVerificationRequest: MXKeyVerificationRequest?
     
@@ -53,7 +53,7 @@ final class UserVerificationStartViewModel: UserVerificationStartViewModelType {
     
     init(session: MXSession, roomMember: MXRoomMember) {
         self.session = session
-        self.verificationManager = session.crypto.deviceVerificationManager
+        self.verificationManager = session.crypto.keyVerificationManager
         self.roomMember = roomMember
     }
     
@@ -114,14 +114,14 @@ final class UserVerificationStartViewModel: UserVerificationStartViewModelType {
         keyVerificationRequest.cancel(with: MXTransactionCancelCode.user(), success: nil, failure: nil)
     }
     
-    // MARK: - MXDeviceVerificationTransactionDidChange
+    // MARK: - MXKeyVerificationTransactionDidChange
     
     private func registerTransactionDidStateChangeNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(transactionDidStateChange(notification:)), name: .MXDeviceVerificationTransactionDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(transactionDidStateChange(notification:)), name: .MXKeyVerificationTransactionDidChange, object: nil)
     }
     
     private func unregisterTransactionDidStateChangeNotification() {
-        NotificationCenter.default.removeObserver(self, name: .MXDeviceVerificationTransactionDidChange, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .MXKeyVerificationTransactionDidChange, object: nil)
     }
     
     @objc private func transactionDidStateChange(notification: Notification) {
@@ -156,7 +156,7 @@ final class UserVerificationStartViewModel: UserVerificationStartViewModelType {
         }
     }
     
-    // MARK: - MXDeviceVerificationTransactionDidChange
+    // MARK: - MXKeyVerificationTransactionDidChange
     
     private func registerKeyVerificationDidChangeNotification(keyVerificationRequest: MXKeyVerificationRequest) {
         NotificationCenter.default.addObserver(self, selector: #selector(keyVerificationRequestDidChange(notification:)), name: .MXKeyVerificationRequestDidChange, object: keyVerificationRequest)

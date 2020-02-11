@@ -25,7 +25,7 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
     // MARK: Private
 
     private let session: MXSession
-    private let verificationManager: MXDeviceVerificationManager
+    private let verificationManager: MXKeyVerificationManager
     private let otherUser: MXUser
     private let otherDevice: MXDeviceInfo
 
@@ -40,7 +40,7 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
     
     init(session: MXSession, otherUser: MXUser, otherDevice: MXDeviceInfo) {
         self.session = session
-        self.verificationManager = session.crypto.deviceVerificationManager
+        self.verificationManager = session.crypto.keyVerificationManager
         self.otherUser = otherUser
         self.otherDevice = otherDevice
     }
@@ -101,14 +101,14 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
     }
 
 
-    // MARK: - MXDeviceVerificationTransactionDidChange
+    // MARK: - MXKeyVerificationTransactionDidChange
 
     private func registerTransactionDidStateChangeNotification(transaction: MXOutgoingSASTransaction) {
-        NotificationCenter.default.addObserver(self, selector: #selector(transactionDidStateChange(notification:)), name: NSNotification.Name.MXDeviceVerificationTransactionDidChange, object: transaction)
+        NotificationCenter.default.addObserver(self, selector: #selector(transactionDidStateChange(notification:)), name: NSNotification.Name.MXKeyVerificationTransactionDidChange, object: transaction)
     }
     
     private func unregisterTransactionDidStateChangeNotification() {
-        NotificationCenter.default.removeObserver(self, name: .MXDeviceVerificationTransactionDidChange, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .MXKeyVerificationTransactionDidChange, object: nil)
     }
 
     @objc private func transactionDidStateChange(notification: Notification) {

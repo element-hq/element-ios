@@ -209,7 +209,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationDataLoadingCoordinato
         }
     }
     
-    func deviceVerificationDataLoadingCoordinator(_ coordinator: DeviceVerificationDataLoadingCoordinatorType, didAcceptKeyVerificationRequestWithTransaction transaction: MXDeviceVerificationTransaction) {
+    func deviceVerificationDataLoadingCoordinator(_ coordinator: DeviceVerificationDataLoadingCoordinatorType, didAcceptKeyVerificationRequestWithTransaction transaction: MXKeyVerificationTransaction) {
         
         if let sasTransaction = transaction as? MXSASTransaction {
             self.showVerify(transaction: sasTransaction, animated: true)
