@@ -1,9 +1,3 @@
-Changes in 0.11.1 (TBD)
-===============================================
-
-Bug fix:
-* Fix error when joining some public rooms. (#2888).
-
 Changes in 0.11.0 (2020-xx-xx)
 ===============================================
 
@@ -14,6 +8,10 @@ Improvements:
  * Settings: Remove "End-to-End Encryption" from the LABS section (#2941).
  * Room decoration: Use shields instead of padlocks (#2906).
  * Room decoration: Remove horizontal empty space when there is no decoration badge to set on room message (#2978).
+ * RoomVC: For a room preview use room canonical alias if present when joining a room.
+
+Bug fix:
+ * Fix error when joining some public rooms, thanks to @chrismoos (PR #2888).
 
 Changes in 0.10.4 (2019-12-11)
 ===============================================

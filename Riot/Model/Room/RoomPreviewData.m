@@ -54,12 +54,20 @@
         _roomName = publicRoom.displayname;
         _roomAvatarUrl = publicRoom.avatarUrl;
         _roomTopic = publicRoom.topic;
+        _roomCanonicalAlias = publicRoom.canonicalAlias;
         _roomAliases = publicRoom.aliases;
         _numJoinedMembers = publicRoom.numJoinedMembers;
         
         // First try to fallback to the name if displayname isn't present
-        if (!_roomName.length) {
+        if (!_roomName.length)
+        {
             _roomName = publicRoom.name;
+        }
+        
+        if (!_roomName.length)
+        {
+            // Use the canonical alias if present.
+            _roomName = publicRoom.canonicalAlias;
         }
         
         if (!_roomName.length)
