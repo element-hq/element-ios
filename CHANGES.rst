@@ -11,7 +11,7 @@ Improvements:
  * RoomVC: For a room preview use room canonical alias if present when joining a room.
 
 Bug fix:
- * Fix error when joining some public rooms (#2888).
+ * Fix error when joining some public rooms, thanks to @chrismoos (PR #2888).
 
 Changes in 0.10.4 (2019-12-11)
 ===============================================
