@@ -1012,3 +1012,4 @@
 "user_verification_session_details_additional_information_untrusted_current_user" = "Ha nem te jelentkeztél be ebbe a munkamenetbe akkor a fiókodat feltörték.";
 "user_verification_session_details_verify_action_current_user" = "Ellenőriz";
 "user_verification_session_details_verify_action_other_user" = "Manuális ellenőrzés";
+"security_settings_crypto_sessions_loading" = "Munkamenet információk betöltése…";
