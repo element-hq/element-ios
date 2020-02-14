@@ -44,8 +44,8 @@ final class DeviceVerificationDataLoadingCoordinator: DeviceVerificationDataLoad
         self.deviceVerificationDataLoadingViewController = deviceVerificationDataLoadingViewController
     }
     
-    init(incomingKeyVerificationRequest: MXKeyVerificationRequest) {
-        let deviceVerificationDataLoadingViewModel = DeviceVerificationDataLoadingViewModel(keyVerificationRequest: incomingKeyVerificationRequest)
+    init(session: MXSession, incomingKeyVerificationRequest: MXKeyVerificationRequest) {
+        let deviceVerificationDataLoadingViewModel = DeviceVerificationDataLoadingViewModel(session: session, keyVerificationRequest: incomingKeyVerificationRequest)
         let deviceVerificationDataLoadingViewController = DeviceVerificationDataLoadingViewController.instantiate(with: deviceVerificationDataLoadingViewModel)
         self.deviceVerificationDataLoadingViewModel = deviceVerificationDataLoadingViewModel
         self.deviceVerificationDataLoadingViewController = deviceVerificationDataLoadingViewController
