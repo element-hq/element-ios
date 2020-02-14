@@ -83,7 +83,9 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
     ///   - session: the MXSession
     ///   - incomingKeyVerificationRequest: An existing incoming key verification request to accept
     convenience init(session: MXSession, incomingKeyVerificationRequest: MXKeyVerificationRequest) {
-        self.init(session: session, otherUserId: incomingKeyVerificationRequest.sender, otherDeviceId: incomingKeyVerificationRequest.fromDevice)
+        let otherDeviceId = incomingKeyVerificationRequest.otherDevice ?? incomingKeyVerificationRequest.request.fromDevice
+        
+        self.init(session: session, otherUserId: incomingKeyVerificationRequest.otherUser, otherDeviceId: otherDeviceId)
         self.incomingKeyVerificationRequest = incomingKeyVerificationRequest
     }
     
@@ -144,7 +146,7 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
     }
     
     private func createDataLoadingScreenCoordinator(with keyVerificationRequest: MXKeyVerificationRequest) -> DeviceVerificationDataLoadingCoordinator {
-        let coordinator = DeviceVerificationDataLoadingCoordinator(incomingKeyVerificationRequest: keyVerificationRequest)
+        let coordinator = DeviceVerificationDataLoadingCoordinator(session: self.session, incomingKeyVerificationRequest: keyVerificationRequest)
         coordinator.delegate = self
         coordinator.start()
         

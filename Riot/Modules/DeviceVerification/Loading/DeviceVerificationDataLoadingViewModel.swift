@@ -30,7 +30,7 @@ final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadin
     
     // MARK: Private
 
-    private let session: MXSession?
+    private let session: MXSession
     private let otherUserId: String?
     private let otherDeviceId: String?
     
@@ -52,8 +52,8 @@ final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadin
         self.keyVerificationRequest = nil
     }
     
-    init(keyVerificationRequest: MXKeyVerificationRequest) {
-        self.session = nil
+    init(session: MXSession, keyVerificationRequest: MXKeyVerificationRequest) {
+        self.session = session
         self.otherUserId = nil
         self.otherDeviceId = nil
         self.keyVerificationRequest = keyVerificationRequest
@@ -88,16 +88,31 @@ final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadin
         
         self.update(viewState: .loading)
         
-        keyVerificationRequest.accept(withMethod: MXKeyVerificationMethodSAS, success: { [weak self] (deviceVerificationTransaction) in
+        // TODO: Advertise that we support QR code too
+        keyVerificationRequest.accept(withMethods: [MXKeyVerificationMethodSAS], success: { [weak self] in
             guard let self = self else {
                 return
             }
             
-            if let outgoingSASTransaction = deviceVerificationTransaction as? MXOutgoingSASTransaction {
-                self.registerTransactionDidStateChangeNotification(transaction: outgoingSASTransaction)
-            } else {
-                self.update(viewState: .error(DeviceVerificationDataLoadingViewModelError.unknown))
-            }
+            // TODO: Display QR code and the emoji button here (that depends of keyVerificationRequest.methods)
+            // Instead of starting the transaction right now
+            self.session.crypto.keyVerificationManager.beginKeyVerification(from: keyVerificationRequest, method: MXKeyVerificationMethodSAS, success: { [weak self] (deviceVerificationTransaction) in
+                guard let self = self else {
+                    return
+                }
+                
+                if let outgoingSASTransaction = deviceVerificationTransaction as? MXOutgoingSASTransaction {
+                    self.registerTransactionDidStateChangeNotification(transaction: outgoingSASTransaction)
+                } else {
+                    self.update(viewState: .error(DeviceVerificationDataLoadingViewModelError.unknown))
+                }
+                
+                }, failure: { [weak self] (error) in
+                    guard let self = self else {
+                        return
+                    }
+                    self.update(viewState: .error(error))
+            })
             
         }, failure: { [weak self] (error) in
             guard let self = self else {
@@ -108,8 +123,7 @@ final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadin
     }
     
     private func downloadOtherDeviceKeys() {
-        guard let session = self.session,
-            let crypto = session.crypto,
+        guard let crypto = session.crypto,
             let otherUserId = self.otherUserId,
             let otherDeviceId = self.otherDeviceId else {
             self.update(viewState: .errorMessage(VectorL10n.deviceVerificationErrorCannotLoadDevice))

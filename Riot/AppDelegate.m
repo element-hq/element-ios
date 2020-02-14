@@ -744,7 +744,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                 return;
             }
             
-            NSString *sender = keyVerificationByDMRequest.sender;
+            NSString *sender = keyVerificationByDMRequest.otherUser;
             
             [room state:^(MXRoomState *roomState) {
                 
