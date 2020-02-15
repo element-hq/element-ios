@@ -982,3 +982,4 @@
 "user_verification_session_details_additional_information_untrusted_current_user" = "Se non hai fatto l'accesso a questa sessione, il tuo account potrebbe essere compromesso.";
 "user_verification_session_details_verify_action_current_user" = "Verifica";
 "user_verification_session_details_verify_action_other_user" = "Verifica manualmente";
+"security_settings_crypto_sessions_loading" = "Caricamento sessioni…";
