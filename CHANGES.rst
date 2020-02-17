@@ -12,6 +12,7 @@ Improvements:
 
 Bug fix:
  * Fix error when joining some public rooms, thanks to @chrismoos (PR #2888).
+ * Fix crash due to malformed widget (#2997).
 
 Changes in 0.10.4 (2019-12-11)
 ===============================================
