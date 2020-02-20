@@ -83,7 +83,7 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
     ///   - session: the MXSession
     ///   - incomingKeyVerificationRequest: An existing incoming key verification request to accept
     convenience init(session: MXSession, incomingKeyVerificationRequest: MXKeyVerificationRequest) {
-        let otherDeviceId = incomingKeyVerificationRequest.otherDevice ?? incomingKeyVerificationRequest.request.fromDevice
+        let otherDeviceId = incomingKeyVerificationRequest.otherDevice ?? incomingKeyVerificationRequest.fromDevice
         
         self.init(session: session, otherUserId: incomingKeyVerificationRequest.otherUser, otherDeviceId: otherDeviceId)
         self.incomingKeyVerificationRequest = incomingKeyVerificationRequest
