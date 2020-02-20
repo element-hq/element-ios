@@ -796,6 +796,55 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             }];
         }
     }
+    else if ([keyVerificationRequest isKindOfClass:MXKeyVerificationByToDeviceRequest.class])
+    {
+        MXKeyVerificationByToDeviceRequest *keyVerificationByToDeviceRequest = (MXKeyVerificationByToDeviceRequest*)keyVerificationRequest;
+        
+        // We support only self verification
+        if (keyVerificationByToDeviceRequest.isFromMyUser
+            && !keyVerificationByToDeviceRequest.isFromMyDevice
+            && keyVerificationByToDeviceRequest.state == MXKeyVerificationRequestStatePending)
+        {
+            NSString *myUserId = keyVerificationByToDeviceRequest.otherUser;
+            MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:myUserId];
+            if (account)
+            {
+                MXUser *user = [account.mxSession userWithUserId:myUserId];
+                
+                NSString *senderInfo = [NSString stringWithFormat:@"%@ (%@)", user.displayname, user.userId];
+                
+                self.incomingKeyVerificationRequestAlertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"key_verification_tile_request_incoming_title", @"Vector", nil)
+                                                                                                         message:senderInfo
+                                                                                                  preferredStyle:UIAlertControllerStyleAlert];
+                
+                [self.incomingKeyVerificationRequestAlertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"key_verification_tile_request_incoming_approval_accept", @"Vector", nil)
+                                                                                                       style:UIAlertActionStyleDefault
+                                                                                                     handler:^(UIAlertAction * action)
+                                                                               {
+                                                                                   [self presentIncomingKeyVerificationRequest:keyVerificationRequest inSession:self.mxSessions.firstObject];
+                                                                               }]];
+                
+                [self.incomingKeyVerificationRequestAlertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"key_verification_tile_request_incoming_approval_decline", @"Vector", nil)
+                                                                                                       style:UIAlertActionStyleDestructive
+                                                                                                     handler:^(UIAlertAction * action)
+                                                                               {
+                                                                                   [keyVerificationRequest cancelWithCancelCode:MXTransactionCancelCode.user success:^{
+                                                                                       
+                                                                                   } failure:^(NSError * _Nonnull error) {
+                                                                                       NSLog(@"[AppDelegate][KeyVerification] Fail to cancel incoming key verification request with error: %@", error);
+                                                                                   }];
+                                                                               }]];
+                
+                [self.incomingKeyVerificationRequestAlertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
+                                                                                                       style:UIAlertActionStyleCancel
+                                                                                                     handler:^(UIAlertAction * action)
+                                                                               {
+                                                                               }]];
+                
+                [self showNotificationAlert:self.incomingKeyVerificationRequestAlertController];
+            }
+        }
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
