@@ -937,7 +937,7 @@
 "settings_labs_cross_signing" = "Nënshkrim kryq";
 "settings_labs" = "LABS";
 "settings_calls_stun_server_fallback_button" = "Lejoni shërbyes rrugëzgjidhje asistimi thirrjesh";
-"settings_calls_stun_server_fallback_description" = "Lejoni shërbyes rrugëzgjidhje asistimi thirrjesh %@, kur shërbyesi juaj Home nuk ofron një të tillë (gjatë thirrjes, adresa juaj IP do t’i bëhet e ditur)";
+"settings_calls_stun_server_fallback_description" = "Lejoni shërbyes rrugëzgjidhje asistimi thirrjesh %@, kur shërbyesi juaj Home nuk ofron një të tillë (gjatë thirrjes, adresa juaj IP do t’i bëhet e ditur).";
 "key_verification_tile_request_incoming_title" = "Kërkesë verifikimi";
 "key_verification_tile_request_outgoing_title" = "Email-i i verifikimit u dërgua";
 "key_verification_tile_request_status_data_loading" = "Ngarkim të dhënat…";
@@ -997,10 +997,11 @@
 "user_verification_session_details_untrusted_title" = "Kujdes";
 "user_verification_session_details_information_trusted_current_user" = "Ky sesion është besuar për shkëmbim të sigurt mesazhesh, ngaqë e verifikuat:";
 "user_verification_session_details_information_trusted_other_user_part1" = "Ky sesion është i besua për shkëmbim të sigurt mesazhesh, ngaqë ";
-"user_verification_session_details_information_trusted_other_user_part2" = "e verifikoi";
+"user_verification_session_details_information_trusted_other_user_part2" = " e verifikoi:";
 "user_verification_session_details_information_untrusted_current_user" = "Verifikojeni këtë sesion që t’i vihet shenjë si i besuar & akordohet hyrje te mesazhe të fshehtëzuar:";
 "user_verification_session_details_information_untrusted_other_user" = " bëri hyrjen duke përdorur sesion të ri:";
 "user_verification_session_details_additional_information_untrusted_other_user" = "Deri sa ky përdorues ta besojë këtë sesion, mesazhet te dhe prej tij etiketohen me sinjalizime. Ndryshe, mund ta verifikoni dorazi.";
 "user_verification_session_details_additional_information_untrusted_current_user" = "Nëse s’bëtë hyrjen te ky sesion, llogaria muaj mund të jetë komprometuar.";
 "user_verification_session_details_verify_action_current_user" = "Verifikojeni";
 "user_verification_session_details_verify_action_other_user" = "Verifikojeni dorazi";
+"security_settings_crypto_sessions_loading" = "Po ngarkohen sesione…";
