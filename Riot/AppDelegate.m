@@ -271,7 +271,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     // Redirect NSLogs to files only if we are not debugging
     if (!isatty(STDERR_FILENO))
     {
-        [MXLogger redirectNSLogToFiles:YES];
+        [MXLogger redirectNSLogToFiles:YES numberOfFiles:50];
     }
 
     NSLog(@"[AppDelegate] initialize: Done");
@@ -2125,9 +2125,13 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 {
     NSLog(@"[AppDelegate][Push] clearPushNotificationToken: Clear existing token");
     
+    // XXX: The following code has been commented to avoid automatic deactivation of push notifications
+    // There may be a race condition here where the clear happens after the update of the new push token.
+    // We have no evidence of this. This is a safety measure.
+    
     // Clear existing token
-    MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
-    [accountManager setPushDeviceToken:nil withPushOptions:nil];
+    //MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
+    //[accountManager setPushDeviceToken:nil withPushOptions:nil];
 }
 
 // Remove delivred notifications for a given room id except call notifications
