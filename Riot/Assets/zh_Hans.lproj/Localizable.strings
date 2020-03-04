@@ -1,5 +1,5 @@
 /* New message from a specific person, not referencing a room */
-"MSG_FROM_USER" = "来自 %@ 的消息";
+"MSG_FROM_USER" = "%@发送了一条消息";
 /* New message from a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM" = "%@ 在 %@ 发送了消息";
 /* New message from a specific person, not referencing a room. Content included. */
@@ -11,7 +11,7 @@
 /* New action message from a specific person in a named room. */
 "ACTION_FROM_USER_IN_ROOM" = "%@：* %@ %@";
 /* New action message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@ 向您发送了一张图片：%@";
+"IMAGE_FROM_USER" = "%@ 发送了一张图片：%@";
 /* New action message from a specific person in a named room. */
 "IMAGE_FROM_USER_IN_ROOM" = "%@ 发送了一张图片：%@（来自 %@）";
 /* A single unread message in a room */
@@ -50,3 +50,8 @@
 "VOICE_CONF_NAMED_FROM_USER" = "来自 %@ 的电话会议：“%@”";
 /* Incoming named video conference invite from a specific person */
 "VIDEO_CONF_NAMED_FROM_USER" = "来自 %@ 的视频会议：“%@”";
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@（来自 %@）";
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@发送了一张贴图";
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@想要验证";
