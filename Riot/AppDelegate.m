@@ -271,7 +271,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     // Redirect NSLogs to files only if we are not debugging
     if (!isatty(STDERR_FILENO))
     {
-        [MXLogger redirectNSLogToFiles:YES];
+        [MXLogger redirectNSLogToFiles:YES numberOfFiles:50];
     }
 
     NSLog(@"[AppDelegate] initialize: Done");
