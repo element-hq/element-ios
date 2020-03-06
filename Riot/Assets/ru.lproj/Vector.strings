@@ -897,3 +897,4 @@
 "room_participants_action_security_status_verified" = "Проверенный";
 "room_participants_action_security_status_verify" = "Проверить";
 "room_participants_action_security_status_warning" = "Предупреждение";
+"room_participants_security_loading" = "Загрузка…";
