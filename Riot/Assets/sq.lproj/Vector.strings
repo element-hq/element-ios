@@ -148,8 +148,8 @@
 "room_participants_ago" = "më parë";
 "room_participants_action_section_admin_tools" = "Mjete përgjegjësi";
 "room_participants_action_section_direct_chats" = "Fjalosje të drejtpërdrejta";
-"room_participants_action_section_devices" = "Pajisje";
-"room_participants_action_section_other" = "Të tjera";
+"room_participants_action_section_devices" = "Sesione";
+"room_participants_action_section_other" = "Mundësi";
 "room_participants_action_invite" = "Ftoje";
 "room_participants_action_leave" = "Braktiseni këtë dhomë";
 "room_participants_action_remove" = "Hiqeni prej kësaj dhome";
@@ -196,7 +196,7 @@
 "unknown_devices_call_anyway" = "Thirre Sido Qoftë";
 "unknown_devices_answer_anyway" = "Përgjigju Sido Qoftë";
 "unknown_devices_verify" = "Verifikoni…";
-"unknown_devices_title" = "Pajisje të panjohura";
+"unknown_devices_title" = "Sesione të panjohur";
 // Room Title
 "room_title_new_room" = "Dhomë e re";
 "room_title_multiple_active_members" = "%@/%@ anëtarë aktivë";
@@ -224,7 +224,7 @@
 "settings_contacts" = "KONTAKTE VENDORE";
 "settings_advanced" = "TË MËTEJSHME";
 "settings_other" = "TË TJERA";
-"settings_devices" = "PAJISJE";
+"settings_devices" = "SESIONE";
 "settings_cryptography" = "KRIPTOGRAFI";
 "settings_sign_out" = "Dilni";
 "settings_sign_out_confirmation" = "Jeni i sigurt?";
@@ -266,11 +266,11 @@
 "settings_new_password" = "fjalëkalim i ri";
 "settings_confirm_password" = "ripohoni fjalëkalimin";
 "settings_password_updated" = "Fjalëkalimi juaj u përditësua";
-"settings_crypto_device_name" = "Emër Publik Pajisjeje: ";
-"settings_crypto_device_id" = "\nID pajisjeje: ";
-"settings_crypto_device_key" = "\nKyç pajisjeje:\n";
+"settings_crypto_device_name" = "Emër sesioni: ";
+"settings_crypto_device_id" = "\nID sesioni: ";
+"settings_crypto_device_key" = "Kyç sesioni:\n";
 "settings_crypto_export" = "Eksporto kyçe";
-"settings_crypto_blacklist_unverified_devices" = "Fshehtëzoje vetëm për pajisje të verifikuara";
+"settings_crypto_blacklist_unverified_devices" = "Fshehtëzoje vetëm për sesione të verifikuar";
 // Room Details
 "room_details_title" = "Hollësi Dhome";
 "room_details_people" = "Anëtarë";
@@ -303,7 +303,7 @@
 "room_details_advanced_room_id" = "ID Dhome:";
 "room_details_advanced_e2e_encryption_enabled" = "Në këtë dhomë është i aktivizuar fshehtëzimi";
 "room_details_advanced_e2e_encryption_disabled" = "Në këtë dhomë s’është i aktivizuar fshehtëzimi.";
-"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Fshehtëzo vetëm për pajisje të verifikuara";
+"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Fshehtëzoje vetëm për sesione të verifikuara";
 "room_details_fail_to_add_room_aliases" = "S’arrihet të shtohen adresa dhomash të reja";
 "room_details_save_changes_prompt" = "Doni të ruhen ndryshimet?";
 "room_details_set_main_address" = "Caktoje si Adresë Kryesore";
@@ -380,7 +380,7 @@
 "widget_integration_missing_user_id" = "Mungon user_id te kërkesa.";
 // Room key request dialog
 "e2e_room_key_request_title" = "Kërkesë kyçi fshehtëzimesh";
-"e2e_room_key_request_start_verification" = "Fillo verifikimin…";
+"e2e_room_key_request_start_verification" = "Filloni verifikimin…";
 "e2e_room_key_request_share_without_verifying" = "Ndaje pa e verifikuar";
 "e2e_room_key_request_ignore_request" = "Shpërfille kërkesën";
 "auth_user_id_placeholder" = "Email ose emër përdoruesi";
@@ -424,7 +424,7 @@
 "room_resource_usage_limit_reached_message_2" = "disa përdorues s’do të jenë në gjendje të bëjnë hyrjen.";
 "room_resource_usage_limit_reached_message_contact_3" = " për ta zmadhuar këtë kufi.";
 // Unknown devices
-"unknown_devices_alert_title" = "Dhoma përmban pajisje të panjohura";
+"unknown_devices_alert_title" = "Dhoma përmban sesione të panjohur";
 "settings_deactivate_account" = "ÇAKTIVIZOJE LLOGARINË";
 "settings_fail_to_update_profile" = "S’arrihet të përditësohet profili";
 "settings_pin_rooms_with_missed_notif" = "Fikso dhomat me njoftime të humbura";
@@ -453,7 +453,7 @@
 "event_formatter_widget_added" = "Widget-i %@ u shtua nga %@";
 "event_formatter_widget_removed" = "Widget-i %@ u hoq nga %@";
 "event_formatter_rerequest_keys_part1_link" = "Rikërko kyçe fshehtëzimi";
-"event_formatter_rerequest_keys_part2" = " nga pajisje tuajat të tjera.";
+"event_formatter_rerequest_keys_part2" = " prej sesionesh tuaj të tjerë.";
 // Others
 "or" = "ose";
 "homeserver_connection_lost" = "S’u lidh dot te shërbyesi Home.";
@@ -471,7 +471,7 @@
 "deactivate_account_password_alert_message" = "Që të vazhdohet, ju lutemi, jepni fjalëkalimin tuaj";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Kërkesa u Dërgua";
-"auth_reset_password_success_message" = "Fjalëkalimi juaj u ri caktua.\n\nËshtë bërë dalja juaj nga llogaria në krejt pajisjet dhe s’do të merrni më njoftime push. Për riaktivizim të njoftimeve, ribëni hyrjen në çdo pajisje.";
+"auth_reset_password_success_message" = "Fjalëkalimi juaj u ri caktua.\n\nËshtë bërë dalja juaj nga llogaria në krejt sesionet dhe s’do të merrni më njoftime push. Për riaktivizim të njoftimeve, ribëni hyrjen në çdo pajisje.";
 "room_creation_make_public_prompt_msg" = "Jeni i sigurt se doni ta bëni publike këtë fjalosje? Në një të tillë, mesazhet tuaj mund t’i lexojë cilido dhe mund të hyjë në bisedë.";
 "room_creation_wait_for_creation" = "Po krijohet tashmë një dhomë. Ju lutemi, prisni.";
 "contacts_address_book_permission_required" = "Lypset leje për hyrje në kontaktet vendore";
@@ -479,7 +479,7 @@
 "room_participants_remove_third_party_invite_msg" = "Heqja e ftesave nga palë të treta nuk mbulohet ende, derisa të kihet API";
 "room_participants_invite_malformed_id" = "ID e keqformuar. Duhet të jetë një adresë email ose ID Matrix, si '@localpart:domain'";
 "room_participants_action_ban" = "Dëboje nga kjo dhomë";
-"room_unsent_messages_unknown_devices_notification" = "Mesazhi s’u dërgua, për shkak të pranisë së pajisjeve të panjohura. %@ apo %@ tani?";
+"room_unsent_messages_unknown_devices_notification" = "Mesazhi s’u dërgua, për shkak të pranisë së sesioneve të panjohur. %@ ose %@ tani?";
 "room_ongoing_conference_call" = "Thirrje konference që po zhvillohet. Merrni pjesë si %@ ose %@.";
 "room_ongoing_conference_call_with_close" = "Thirrje konference që po zhvillohet. Merrni pjesë si %@ ose %@. %@.";
 "room_conference_call_no_power" = "Ju duhen leje për të administruar thirrje konferencë në këtë dhomë";
@@ -490,7 +490,7 @@
 "room_predecessor_information" = "Kjo dhomë është një vazhdim i një bisede tjetër.";
 "room_resource_usage_limit_reached_message_1_default" = "Ky shërbyes home ka tejkaluar një nga kufijtë mbi burimet, ndaj ";
 "room_resource_usage_limit_reached_message_1_monthly_active_user" = "Ky shërbyes home ka tejkaluar kufirin Përdorues Aktivë Mujorë, ndaj ";
-"unknown_devices_alert" = "Kjo dhomë përmban pajisje të panjohura që s’janë verifikuar.\nKjo do të thotë se nuk ka garanci se pajisjet u përkasin përdoruesve që pretendojnë se u përkasin.\nPërpara se të vazhdoni, këshillojmë që të kaloni në proces verifikimi çdo pajisje, por mund të ridërgoni mesazhin pa verifikuar gjë, nëse parapëlqeni kështu.";
+"unknown_devices_alert" = "Kjo dhomë përmban sesione të panjohur që s’janë verifikuar.\nKjo do të thotë se nuk ka garanci se sesionet u përkasin përdoruesve që pretendojnë se u përkasin.\nPërpara se të vazhdoni, këshillojmë që të kaloni në proces verifikimi çdo sesion, por mund të ridërgoni mesazhin pa verifikuar gjë, nëse parapëlqeni kështu.";
 "room_preview_subtitle" = "Kjo është një paraparje e kësaj dhome. Ndërveprimet në dhomë janë çaktivizuar.";
 "room_preview_unlinked_email_warning" = "Kjo ftesë i qe dërguar %@, që s’është i përshoqëruar me këtë llogari. Mund të doni të hyni me një llogari tjetër, ose ta shtoni këtë email te llogaria juaj.";
 "room_preview_try_join_an_unknown_room" = "Po përpiqeni të hyni në %@. Do të donit të bëheni pjesë, që të mundni të merrni pjesë te diskutimi?";
@@ -537,8 +537,8 @@
 // Share extension
 "share_extension_auth_prompt" = "Që të ndani lëndë me të tjerët, bëni hyrjen te aplikacioni kryesor";
 "share_extension_failed_to_encrypt" = "S’u arrit të dërgohej. Kontrolloni te aplikacioni kryesor rregullimet e fshehtëzimit për këtë dhomë";
-"e2e_room_key_request_message_new_device" = "Shtuat një pajisje të re '%@', e cila po kërkon kyçe fshehtëzimi.";
-"e2e_room_key_request_message" = "Pajisja juaj e paverifikuar '%@' po kërkon kyçe fshehtëzimi.";
+"e2e_room_key_request_message_new_device" = "Shtuat një sesion të ri '%@', i cili po kërkon kyçe fshehtëzimi.";
+"e2e_room_key_request_message" = "Sesioni juaj i paverifikuar '%@' po kërkon kyçe fshehtëzimi.";
 // GDPR
 "gdpr_consent_not_given_alert_message" = "Që të vazhdohet të përdoret shërbyesi home %@, duhet të shqyrtoni dhe pajtoheni me termat dhe kushtet.";
 "deactivate_account_informations_part1" = "Kjo do ta bëjë përgjithnjë të papërdorshëm llogarinë tuaj. Nuk do të jeni në gjendje të bëni hyrjen në të, dhe askush s’do të jetë në gjendje të regjistrohet me të njëjtën ID përdoruesi.  Kjo do të sjellë daljen e llogarisë tuaj nga krejt dhomat në të cilat po merr pjesë, dhe do të heqë nga shërbyesi i identitetit tuaj hollësitë e llogarisë tuaj. ";
@@ -546,26 +546,26 @@
 "deactivate_account_informations_part5" = "Nëse do të donit që të harrohen mesazhet tuaj, ju lutemi, i vini shenjë kutizës më poshtë\n\nDukshmëria e mesazheve në Matrix është e ngjashme me atë në email. Harrimi i mesazheve nga ana jonë do të thotë që mesazhet që keni dërguar nuk do të ndahen me çfarëdo përdoruesi të ri apo të paregjistruar, por përdoruesit e regjistruar, që kanë tashmë hyrje në këto mesazhe, do të kenë prapëseprapë hyrje te kopja e tyre.";
 "deactivate_account_forget_messages_information_part1" = "Të lutem, harro krejt mesazhet që kamë dërguar, kur të çaktivizohet llogaria ime (";
 "deactivate_account_forget_messages_information_part3" = ": kjo do të bëjë që përdorues të ardhshëm të shohin një pamje jo të plotë të bisedave)";
-"rerequest_keys_alert_message" = "Ju lutemi, niseni Riot-in në një tjetër pajisje që mundet të shfshehtëzojë mesazhin, që kështu të mund të dërgojë kyçet te kjo pajisje.";
+"rerequest_keys_alert_message" = "Ju lutemi, niseni Riot-in në një tjetër pajisje që mund të shfshehtëzoje mesazhin, që kështu të mund të dërgojë kyçet te ky sesion.";
 "room_event_action_redact" = "Hiqe";
-"e2e_need_log_in_again" = "Që të prodhohen kyçe fshehtëzimi skaj-më-skaj për këtë pajisje, lypset të ribëni hyrjen dhe të parashtroni kyçin publik te shërbyesi juaj Home.\nKjo duhet vetëm një herë; na ndjeni për belanë.";
+"e2e_need_log_in_again" = "Që të prodhohen kyçe fshehtëzimi skaj-më-skaj për këtë sesion, lypset të ribëni hyrjen dhe të parashtroni kyçin publik te shërbyesi juaj Home.\nKjo duhet vetëm një herë; na ndjeni për belanë.";
 "room_action_send_sticker" = "Dërgoni ngjitës";
 "settings_flair" = "Shfaq simbole, kur lejohet";
 "room_details_flair_section" = "Shfaq simbole për bashkësi";
 "auth_accept_policies" = "Ju lutemi, shqyrtoni dhe pranoni rregullat e këtij shërbyesi Home:";
 "settings_key_backup" = "KOPJERUAJTE KYÇI";
 "settings_key_backup_info_checking" = "Po kontrollohet…";
-"settings_key_backup_info_none" = "Kyçet tuaj nuk po kopjeruhen nga kjo pajisje.";
+"settings_key_backup_info_none" = "Kyçet tuaj nuk po kopjeruhen nga ky sesion.";
 "settings_key_backup_info_version" = "Version Kopjeruajtjeje Kyçesh: %@";
 "settings_key_backup_info_algorithm" = "Algoritëm: %@";
-"settings_key_backup_info_valid" = "Kjo pajisje po bën kopjeruajtje të kyçeve tuaja.";
-"settings_key_backup_info_not_valid" = "Kjo pajisje nuk po bën kopjeruajtje të kyçeve tuaja, por keni një kopjeruajtje ekzistuese që mund ta përdorni për rimarrje dhe ta shtoni më tej.";
+"settings_key_backup_info_valid" = "Kjo sesion po bën kopjeruajtje të kyçeve tuaja.";
+"settings_key_backup_info_not_valid" = "Ky sesion nuk po bën kopjeruajtje të kyçeve tuaja, por keni një kopjeruajtje ekzistuese që mund ta përdorni për rimarrje dhe ta shtoni më tej.";
 "settings_key_backup_info_progress" = "Po kopjeruhen kyçet për %@…";
 "settings_key_backup_info_progress_done" = "U kopjeruajtën krejt kyçet";
 "settings_key_backup_info_not_trusted_from_verifiable_device_fix_action" = "Për të përdorur Rikthim Mesazhesh të Sigurt në këtë pajisje, verifikoni tani %@.";
 "settings_key_backup_info_not_trusted_fix_action" = "Për të përdorur Rikthim Mesazhesh të Sigurt në këtë pajisje, jepni tani një frazëkalim ose një kyç rikthimesh.";
-"settings_key_backup_info_trust_signature_unknown" = "Kopjeruajtja ka një nënshkrim nga një pajisje me ID: %@";
-"settings_key_backup_info_trust_signature_valid" = "Kopjeruajtja ka një nënshkrim të vlefshëm prej kësaj pajisjeje";
+"settings_key_backup_info_trust_signature_unknown" = "Kopjeruajtja ka një nënshkrim nga një sesion me ID: %@";
+"settings_key_backup_info_trust_signature_valid" = "Kopjeruajtja ka një nënshkrim të vlefshëm prej këtij sesioni";
 "settings_key_backup_info_trust_signature_valid_device_verified" = "Kopjeruajtja ka një nënshkrim të vlefshëm prej %@";
 "settings_key_backup_info_trust_signature_valid_device_unverified" = "Kopjeruajtja ka nënshkrim nga %@";
 "settings_key_backup_info_trust_signature_invalid_device_verified" = "Kopjeruajtja ka një nënshkrim të pavlefshëm prej %@";
@@ -621,7 +621,7 @@
 "key_backup_recover_banner_title_part1" = "Xhironi Rikthim Mesazhesh të Sigurt";
 "key_backup_recover_banner_title_part2" = " që të lexoni historik mesazhesh të fshehtëzuar në këtë pajisje";
 "settings_key_backup_info" = "Mesazhet e fshehtëzuar sigurohen me fshehtëzim skaj-më-skaj. Vetëm ju dhe marrësi(t) kanë kyçet për të lexuar këto mesazhe.";
-"settings_key_backup_info_signout_warning" = "Lidheni këtë pajisje me kopjeruajtje kyçesh, përpara se të dilni, që të shmangni humbje të çfarëdo kyçi që mund të gjendet vetëm në këtë pajisje.";
+"settings_key_backup_info_signout_warning" = "Lidheni këtë sesion me kopjeruajtje kyçesh, përpara se të dilni, që të shmangni humbje të çfarëdo kyçi që mund të gjendet vetëm në këtë pajisje.";
 "settings_key_backup_button_use" = "Përdor kopjeruajtje kyçesh";
 "key_backup_setup_intro_setup_action_without_existing_backup" = "Fillo të përdorësh Kopjeruajtje Kyçesh";
 "key_backup_setup_intro_setup_action_with_existing_backup" = "Përdor Kopjeruajtje Kyçesh";
@@ -680,19 +680,19 @@
 "room_event_action_reaction_dislike" = "Shpëlqejeni %@";
 "room_action_reply" = "Përgjigjuni";
 "settings_labs_message_reaction" = "Reagoni ndaj mesazhesh me emoji";
-"settings_key_backup_button_connect" = "Lidhe këtë pajisje me Kopjeruajtje Kyçesh";
+"settings_key_backup_button_connect" = "Lidhe këtë sesion me Kopjeruajtje Kyçesh";
 "key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Lidhe këtë pajisje me Kopjeruajtje Kyçesh";
-"key_backup_recover_connent_banner_subtitle" = "Lidhe këtë pajisje me Kopjeruajtje Kyçesh";
+"key_backup_recover_connent_banner_subtitle" = "Lidhe këtë sesion me Kopjeruajtje Kyçesh";
 // MARK: - Device Verification
-"device_verification_title" = "Verifikoni pajisje";
+"device_verification_title" = "Verifiko sesion";
 "device_verification_security_advice" = "Për siguri maksimale, këshillojmë ta bëni këtë në prani të vetë personit, ose të përdorni një tjetër kanal të besuar komunikimesh";
 "device_verification_cancelled" = "Pala tjetër e anuloi verifikimin.";
 "device_verification_cancelled_by_me" = "Verifikimi u anulua. Arsye: %@";
-"device_verification_error_cannot_load_device" = "S’ngarkohen dot të dhëna pajisje.";
+"device_verification_error_cannot_load_device" = "S’ngarkohen dot të dhëna sesioni.";
 // Mark: Incoming
 "device_verification_incoming_title" = "Kërkesë Verifikimi e Ardhur";
-"device_verification_incoming_description_1" = "Që t’i vihet shenjë si e besuar, verifikojeni këtë pajisje. Besimi i pajisjeve të partnerëve ju jep ca qetësi më tepër kur përdoren mesazhe të fshehtëzuar skaj-më-skaj.";
-"device_verification_incoming_description_2" = "Verifikimi i kësaj pajisje do ta shënojë atë të besuar, dhe tuajën si të besuar te partneri.";
+"device_verification_incoming_description_1" = "Që t’i vihet shenjë si i besuar, verifikojeni këtë sesion. Besimi i sesioneve të partnerëve ju jep ca qetësi më tepër, kur përdoren mesazhe të fshehtëzuar skaj-më-skaj.";
+"device_verification_incoming_description_2" = "Verifikimi i këtij përdoruesi do t’i vërë shenjë sesionit të tij si të besuar dhe sesionit tuaj si të besuar për partnerin.";
 // MARK: Start
 "device_verification_start_title" = "Verifikoje duke krahasuar një varg të shkurtër teksti";
 "device_verification_start_wait_partner" = "Po pritet pranimi nga partneri…";
@@ -700,12 +700,12 @@
 "device_verification_start_verify_button" = "Po Verifikohet";
 "device_verification_start_use_legacy_action" = "Përdor Verifikim të Dikurshëm";
 // MARK: Verify
-"device_verification_verify_title_emoji" = "Verifikojeni këtë pajisje duke ripohuar shfaqjen e emoji-t vijues në skenën e partnerit";
-"device_verification_verify_title_number" = "Verifikojeni këtë pajisje duke ripohuar se numri vijues shfaqet në ekranin e partnerit";
+"device_verification_verify_title_emoji" = "Verifikojeni këtë sesion duke ripohuar shfaqjen e emoji-t vijues në skenën e partnerit";
+"device_verification_verify_title_number" = "Verifikojeni këtë sesion duke ripohuar se numrat vijues shfaqen në ekranin e partnerit";
 "device_verification_verify_wait_partner" = "Po pritet ripohimi nga partneri…";
 // MARK: Verified
 "device_verification_verified_title" = "U verifikua!";
-"device_verification_verified_description_1" = "E verifikuat me sukses këtë pajisje.";
+"device_verification_verified_description_1" = "E verifikuat me sukses këtë sesion.";
 "device_verification_verified_description_2" = "Mesazhet e sigurt me këtë përdorues fshehtëzohen skaj-më-skaj dhe janë të palexueshëm nga palë të treta.";
 "device_verification_verified_got_it_button" = "E mora vesh";
 // MARK: Emoji
@@ -857,7 +857,7 @@
 "settings_add_3pid_password_title_msidsn" = "Shtoni numër telefoni";
 "settings_add_3pid_password_message" = "Që të vazhdohet, ju lutemi, jepni fjalëkalimin tuaj";
 "settings_add_3pid_invalid_password_message" = "Fjalëkalim i pavlefshëm";
-"settings_devices_description" = "Emri publik i një pajisjeje është i dukshëm për persona me të cilët komunikoni";
+"settings_devices_description" = "Emri publik i një sesioni është i dukshëm për persona me të cilët komunikoni";
 "settings_discovery_no_identity_server" = "S’po përdorni ndonjë shërbyes identitetesh. Që të jeni i zbulueshëm nga kontakte ekzistuese që njihni, shtoni një të tillë.";
 "settings_discovery_terms_not_signed" = "Pajtohuni me Kushtet e Shërbimit të Shërbyesit të Identiteteve që t’i lejoni vetes të jeni i zbulueshëm përmes adrese email ose numri telefoni.";
 "settings_discovery_three_pids_management_information_part1" = "Administroni cilat adresa email ose numra telefonash mund të përdorin përdoruesit e tjerë për t’ju zbuluar dhe ftuar në dhoma. Shtoni ose hiqni prej kësaj liste adresa email ose numra telefonash ";
@@ -937,7 +937,7 @@
 "settings_labs_cross_signing" = "Nënshkrim kryq";
 "settings_labs" = "LABS";
 "settings_calls_stun_server_fallback_button" = "Lejoni shërbyes rrugëzgjidhje asistimi thirrjesh";
-"settings_calls_stun_server_fallback_description" = "Lejoni shërbyes rrugëzgjidhje asistimi thirrjesh %@, kur shërbyesi juaj Home nuk ofron një të tillë (gjatë thirrjes, adresa juaj IP do t’i bëhet e ditur)";
+"settings_calls_stun_server_fallback_description" = "Lejoni shërbyes rrugëzgjidhje asistimi thirrjesh %@, kur shërbyesi juaj Home nuk ofron një të tillë (gjatë thirrjes, adresa juaj IP do t’i bëhet e ditur).";
 "key_verification_tile_request_incoming_title" = "Kërkesë verifikimi";
 "key_verification_tile_request_outgoing_title" = "Email-i i verifikimit u dërgua";
 "key_verification_tile_request_status_data_loading" = "Ngarkim të dhënat…";
@@ -951,3 +951,57 @@
 "key_verification_tile_conclusion_done_title" = "I verifikuar";
 "key_verification_tile_conclusion_warning_title" = "Hyrje jo e besuar në";
 "key_verification_incoming_request_incoming_alert_message" = "%s dëshiron të verifikojë";
+"room_participants_action_section_security" = "Siguri";
+"room_participants_action_security_status_verified" = "I verifikuar";
+"room_participants_action_security_status_verify" = "Verifikoje";
+"room_participants_action_security_status_warning" = "Kujdes";
+"room_participants_security_loading" = "Po ngarkohet…";
+"room_participants_security_information_room_not_encrypted" = "Mesazhet në këtë dhomë s’fshehtëzohen skaj-më-skaj.";
+"room_participants_security_information_room_encrypted" = "Mesazhet në këtë dhomë fshehtëzohen skaj-më-skaj.\n\nMesazhet tuaj sigurohen me kyçe dhe vetëm ju dhe marrësi kanë kyçet unikë për t’i shkyçur.";
+"settings_security" = "SIGURI";
+"settings_labs_enable_cross_signing" = "Aktivizoni <em>cross-signing</em> për verifikime me bazë përdorues në vend se me bazë pajisje (në zhvillim)";
+// Security settings
+"security_settings_title" = "Siguri";
+"security_settings_crypto_sessions" = "SESIONET E MI";
+"security_settings_crypto_sessions_description" = "Besoni sesione që të akordohet hyrje te mesazhe të fshehtëzuar skaj-më-skaj. Nëse nuk njihni një sesion,ndryshoni kredencialet tuaj të hyrjes dhe fjalëkalimin dhe ricaktoni Fjalëkalimin tuaj të Mesazheve që përdoret për Kopjeruajtje Mesazhesh.";
+"security_settings_backup" = "KOPJERUAJTJE MESAZHESH";
+"security_settings_advanced" = "TË MËTEJSHME";
+"security_settings_blacklist_unverified_devices" = "Mos dërgo kurrë mesazhe në sesione jo të besuar";
+"security_settings_blacklist_unverified_devices_description" = "Verifikoni krejt sesionet e një përdoruesi që t’u vihet shenjë si të besuar dhe të dërgohen mesazhe në ta.";
+"security_settings_export_keys_manually" = "Eksportoni kyçet dorazi";
+// Manage session
+"manage_session_title" = "Administroni sesion";
+"manage_session_info" = "TË DHËNA SESIONI";
+"manage_session_name" = "Emër sesioni";
+"manage_session_trusted" = "Besuar prej jush";
+"manage_session_not_trusted" = "Jo i besuar";
+"manage_session_sign_out" = "Dilni nga ky sesion";
+"key_verification_user_title" = "Verifikoni përdoruesin";
+"key_verification_verify_user_title_emoji" = "Verifikojeni këtë përdorues duke ripohuar se <em>emoji</em> unik vijues shfaqet në ekranin e tij, në të njëjtën radhë.";
+"key_verification_verify_user_title_number" = "Verifikojeni këtë përdorues duke ripohuar se numrat vijues shfaqen në ekranin e tij, në të njëjtën radhë.";
+"key_verification_verified_user_description_1" = "E verifikuat me sukses këtë përdorues.";
+"key_verification_verified_user_description_2" = "Mesazhet me këtë përdorues në këtë dhomë janë të fshehtëzuara skaj-më-skaj dhe s’mund të lexohen nga palë të treta.";
+"user_verification_start_verify_action" = "Fillo verifikimin";
+"user_verification_start_information_part1" = "Për siguri ekstra, verifikojeni ";
+"user_verification_start_information_part2" = " duke kontrolluar në të dyja pajisjet tuaja një kod njëpërdorimsh.";
+"user_verification_start_waiting_partner" = "Po pritet për %@…";
+"user_verification_start_additional_information" = "Për të qenë i sigurt, bëjeni këtë duke qenë vetë i pranishëm ose për të komunikuar përdorni një rrugë tjetër.";
+"user_verification_sessions_list_user_trust_level_trusted_title" = "I besuar";
+"user_verification_sessions_list_user_trust_level_warning_title" = "Kujdes";
+"user_verification_sessions_list_user_trust_level_unknown_title" = "E panjohur";
+"user_verification_sessions_list_information" = "Mesazhet me këtë përdorues në këtë dhomë fshehtëzohen skaj-më-skaj dhe s’mund të lexohen nga palë të treta.";
+"user_verification_sessions_list_table_title" = "Sesione";
+"user_verification_sessions_list_session_trusted" = "I besuar";
+"user_verification_sessions_list_session_untrusted" = "Jo i besuar";
+"user_verification_session_details_trusted_title" = "I besuar";
+"user_verification_session_details_untrusted_title" = "Kujdes";
+"user_verification_session_details_information_trusted_current_user" = "Ky sesion është besuar për shkëmbim të sigurt mesazhesh, ngaqë e verifikuat:";
+"user_verification_session_details_information_trusted_other_user_part1" = "Ky sesion është i besua për shkëmbim të sigurt mesazhesh, ngaqë ";
+"user_verification_session_details_information_trusted_other_user_part2" = " e verifikoi:";
+"user_verification_session_details_information_untrusted_current_user" = "Verifikojeni këtë sesion që t’i vihet shenjë si i besuar & akordohet hyrje te mesazhe të fshehtëzuar:";
+"user_verification_session_details_information_untrusted_other_user" = " bëri hyrjen duke përdorur sesion të ri:";
+"user_verification_session_details_additional_information_untrusted_other_user" = "Deri sa ky përdorues ta besojë këtë sesion, mesazhet te dhe prej tij etiketohen me sinjalizime. Ndryshe, mund ta verifikoni dorazi.";
+"user_verification_session_details_additional_information_untrusted_current_user" = "Nëse s’bëtë hyrjen te ky sesion, llogaria muaj mund të jetë komprometuar.";
+"user_verification_session_details_verify_action_current_user" = "Verifikojeni";
+"user_verification_session_details_verify_action_other_user" = "Verifikojeni dorazi";
+"security_settings_crypto_sessions_loading" = "Po ngarkohen sesione…";
