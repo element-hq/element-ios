@@ -921,7 +921,7 @@
 "security_settings_title" = "Sicherheit";
 "security_settings_crypto_sessions" = "MEINE SITZUNGEN";
 "security_settings_crypto_sessions_loading" = "Lade Sitzungen…";
-"room_participants_security_information_room_encrypted" = "Nachrichten in diesem Raum sind Ende-zu-Ende verschlüsselt.\n\nDeine Nachrichten sind gesichert und nur du und dein Gegenüber haben die eindeutigen Schlüssel, um sie zu entsperren.";
+"room_participants_security_information_room_encrypted" = "Nachrichten in diesem Raum sind Ende-zu-Ende verschlüsselt.\n\nDeine Nachrichten sind mit Schlössern gesichert, nur du und der Empfänger haben die einzigen Schlüssel, um jene zu entsperren.";
 "security_settings_crypto_sessions_description" = "Vertraue Sitzungen, um Zugriff auf Ende-zu-Ende verschlüsselte Nachrichten zu gewähren. Wenn du eine Sitzung nicht kennst, ändere dein Anmeldepasswort und setze dein Nachrichtenpasswort für die Nachrichtensicherung zurück.";
 "security_settings_backup" = "NACHRICHTENSICHERUNG";
 "security_settings_advanced" = "ERWEITERT";
