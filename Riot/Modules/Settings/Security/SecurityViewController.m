@@ -34,23 +34,28 @@ enum
 {
     SECTION_CRYPTO_SESSIONS,
     SECTION_KEYBACKUP,
+    SECTION_CROSSSIGNING,
+    SECTION_CRYPTOGRAPHY,
     SECTION_ADVANCED,
-    SECTION_DEBUG,      // TODO: To remove
     SECTION_COUNT
+};
+
+enum {
+    CROSSSIGNING_INFO,
+    CROSSSIGNING_BOOTSTRAP,
+    CROSSSIGNING_COUNT
+};
+
+enum {
+    CRYPTOGRAPHY_INFO,
+    CRYPTOGRAPHY_EXPORT,    // TODO: To move to SECTION_KEYBACKUP
+    CRYPTOGRAPHY_COUNT
 };
 
 enum {
     ADVANCED_BLACKLIST_UNVERIFIED_DEVICES,
     ADVANCED_BLACKLIST_UNVERIFIED_DEVICES_DESCRIPTION,
-    ADVANCED_EXPORT,    // TODO: To move to SECTION_KEYBACKUP
     ADVANCED_COUNT
-};
-
-enum {
-    DEBUG_CRYPTO_INFO,
-    DEBUG_CROSSSIGNING_INFO,
-    DEBUG_CROSSSIGNING_BOOTSTRAP,
-    DEBUG_COUNT
 };
 
 
@@ -339,12 +344,6 @@ UIDocumentInteractionControllerDelegate>
     // Crypto information
     NSMutableAttributedString *cryptoInformationString = [NSMutableAttributedString new];
 
-    [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                     initWithString:@"Cross-Signing\n"
-                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
-                                                                  NSFontAttributeName: [UIFont boldSystemFontOfSize:17]}]];
-
-
     NSString *crossSigningEnabled = [NSString stringWithFormat:@"Cross-signing is %@.\n",
                                      crossSigning.isBootstrapped ? @"enabled" :
                                      myUserCrossSigningKeys ? @"enabled in read-only" : @"disabled"];
@@ -355,7 +354,7 @@ UIDocumentInteractionControllerDelegate>
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
 
 
-    NSString *crossSigningKeysTrust = [NSString stringWithFormat:@"Keys are %@.\n",
+    NSString *crossSigningKeysTrust = [NSString stringWithFormat:@"Keys are %@.",
                                        myUserCrossSigningKeys.trustLevel.isVerified ? @"trusted" : @"not trusted"];
 
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
@@ -462,11 +461,14 @@ UIDocumentInteractionControllerDelegate>
         case SECTION_KEYBACKUP:
             count = keyBackupSection.numberOfRows;
             break;
+        case SECTION_CROSSSIGNING:
+            count = CROSSSIGNING_COUNT;
+            break;
+        case SECTION_CRYPTOGRAPHY:
+            count = CRYPTOGRAPHY_COUNT;
+            break;
         case SECTION_ADVANCED:
             count = ADVANCED_COUNT;
-            break;
-        case SECTION_DEBUG:
-            count = DEBUG_COUNT;
             break;
     }
 
@@ -610,31 +612,59 @@ UIDocumentInteractionControllerDelegate>
             }
         }
     }
-    else if (section == SECTION_ADVANCED)
+    else if (section == SECTION_KEYBACKUP)
+    {
+        cell = [keyBackupSection cellForRowAtRow:row];
+    }
+    else if (section == SECTION_CROSSSIGNING)
     {
         switch (row)
         {
-            case ADVANCED_BLACKLIST_UNVERIFIED_DEVICES:
+            case CROSSSIGNING_INFO:
             {
-                MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-
-                labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"security_settings_blacklist_unverified_devices", @"Vector", nil);
-                labelAndSwitchCell.mxkSwitch.on = session.crypto.globalBlacklistUnverifiedDevices;
-                labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-                labelAndSwitchCell.mxkSwitch.enabled = YES;
-                [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleBlacklistUnverifiedDevices:) forControlEvents:UIControlEventTouchUpInside];
-
-                cell = labelAndSwitchCell;
+                MXKTableViewCellWithTextView *cryptoCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
+                cryptoCell.mxkTextView.attributedText = [self crossSigningStatus];
+                cell = cryptoCell;
                 break;
             }
-            case ADVANCED_BLACKLIST_UNVERIFIED_DEVICES_DESCRIPTION:
+            case CROSSSIGNING_BOOTSTRAP:
             {
-                cell = [self descriptionCellForTableView:tableView
-                                                withText:NSLocalizedStringFromTable(@"security_settings_blacklist_unverified_devices_description", @"Vector", nil) ];
-
+                MXKTableViewCellWithButton *exportKeysBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
+                if (!exportKeysBtnCell)
+                {
+                    exportKeysBtnCell = [[MXKTableViewCellWithButton alloc] init];
+                }
+                
+                NSString *btnTitle = @"Bootstrap cross-signing";
+                [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
+                [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
+                [exportKeysBtnCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
+                exportKeysBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
+                
+                [exportKeysBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+                //[exportKeysBtnCell.mxkButton addTarget:self action:@selector(bootstrapCrossSigning:) forControlEvents:UIControlEventTouchUpInside];
+                exportKeysBtnCell.mxkButton.accessibilityIdentifier = nil;
+                
+                MXCrossSigning *crossSigning = self.mainSession.crypto.crossSigning;
+                exportKeysBtnCell.mxkButton.enabled = NO; //!crossSigning.myUserCrossSigningKeys;
+                
+                cell = exportKeysBtnCell;
                 break;
             }
-            case ADVANCED_EXPORT:
+        }
+    }
+    else if (section == SECTION_CRYPTOGRAPHY)
+    {
+        switch (row)
+        {
+            case CRYPTOGRAPHY_INFO:
+            {
+                MXKTableViewCellWithTextView *cryptoCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
+                cryptoCell.mxkTextView.attributedText = [self cryptographyInformation];
+                cell = cryptoCell;
+                break;
+            }
+            case CRYPTOGRAPHY_EXPORT:
             {
                 MXKTableViewCellWithButton *exportKeysBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
                 if (!exportKeysBtnCell)
@@ -646,71 +676,49 @@ UIDocumentInteractionControllerDelegate>
                     exportKeysBtnCell.mxkButton.titleLabel.text = nil;
                     exportKeysBtnCell.mxkButton.enabled = YES;
                 }
-
+                
                 NSString *btnTitle = NSLocalizedStringFromTable(@"security_settings_export_keys_manually", @"Vector", nil);
                 [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
                 [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
                 [exportKeysBtnCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
                 exportKeysBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
-
+                
                 [exportKeysBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
                 [exportKeysBtnCell.mxkButton addTarget:self action:@selector(exportEncryptionKeys:) forControlEvents:UIControlEventTouchUpInside];
                 exportKeysBtnCell.mxkButton.accessibilityIdentifier = nil;
-
+                
                 cell = exportKeysBtnCell;
                 break;
             }
         }
     }
-    else if (section == SECTION_KEYBACKUP)
-    {
-        cell = [keyBackupSection cellForRowAtRow:row];
-    }
-    else if (section == SECTION_DEBUG)
+    else if (section == SECTION_ADVANCED)
     {
         switch (row)
         {
-            case DEBUG_CRYPTO_INFO:
+            case ADVANCED_BLACKLIST_UNVERIFIED_DEVICES:
             {
-                MXKTableViewCellWithTextView *cryptoCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
-                cryptoCell.mxkTextView.attributedText = [self cryptographyInformation];
-                cell = cryptoCell;
+                MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+                
+                labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"security_settings_blacklist_unverified_devices", @"Vector", nil);
+                labelAndSwitchCell.mxkSwitch.on = session.crypto.globalBlacklistUnverifiedDevices;
+                labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+                labelAndSwitchCell.mxkSwitch.enabled = YES;
+                [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleBlacklistUnverifiedDevices:) forControlEvents:UIControlEventTouchUpInside];
+                
+                cell = labelAndSwitchCell;
                 break;
             }
-            case DEBUG_CROSSSIGNING_INFO:
+            case ADVANCED_BLACKLIST_UNVERIFIED_DEVICES_DESCRIPTION:
             {
-                MXKTableViewCellWithTextView *cryptoCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
-                cryptoCell.mxkTextView.attributedText = [self crossSigningStatus];
-                cell = cryptoCell;
-                break;
-            }
-            case DEBUG_CROSSSIGNING_BOOTSTRAP:
-            {
-                MXKTableViewCellWithButton *exportKeysBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
-                if (!exportKeysBtnCell)
-                {
-                    exportKeysBtnCell = [[MXKTableViewCellWithButton alloc] init];
-                }
-
-                NSString *btnTitle = @"Bootstrap cross-signing";
-                [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
-                [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-                [exportKeysBtnCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
-                exportKeysBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
-
-                [exportKeysBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-                //[exportKeysBtnCell.mxkButton addTarget:self action:@selector(bootstrapCrossSigning:) forControlEvents:UIControlEventTouchUpInside];
-                exportKeysBtnCell.mxkButton.accessibilityIdentifier = nil;
-
-                MXCrossSigning *crossSigning = self.mainSession.crypto.crossSigning;
-                exportKeysBtnCell.mxkButton.enabled = NO; //!crossSigning.myUserCrossSigningKeys;
-
-                cell = exportKeysBtnCell;
+                cell = [self descriptionCellForTableView:tableView
+                                                withText:NSLocalizedStringFromTable(@"security_settings_blacklist_unverified_devices_description", @"Vector", nil) ];
+                
                 break;
             }
         }
     }
-
+    
     return cell;
 }
 
@@ -722,10 +730,12 @@ UIDocumentInteractionControllerDelegate>
             return NSLocalizedStringFromTable(@"security_settings_crypto_sessions", @"Vector", nil);
         case SECTION_KEYBACKUP:
             return NSLocalizedStringFromTable(@"security_settings_backup", @"Vector", nil);
+        case SECTION_CROSSSIGNING:
+            return NSLocalizedStringFromTable(@"security_settings_crosssigning", @"Vector", nil);
+        case SECTION_CRYPTOGRAPHY:
+            return NSLocalizedStringFromTable(@"security_settings_cryptography", @"Vector", nil);
         case SECTION_ADVANCED:
             return NSLocalizedStringFromTable(@"security_settings_advanced", @"Vector", nil);
-        case SECTION_DEBUG:
-            return @"DEBUG";
     }
 
     return nil;
