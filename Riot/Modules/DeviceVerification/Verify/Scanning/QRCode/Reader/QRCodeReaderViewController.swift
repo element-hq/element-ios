@@ -262,7 +262,7 @@ extension QRCodeReaderViewController: ZXCaptureDelegate {
         if let bytes = result.resultMetadata.object(forKey: kResultMetadataTypeByteSegments.rawValue) as? NSArray,
             let byteArray = bytes.firstObject as? ZXByteArray {
             
-            let data =  Data(bytes: UnsafeRawPointer(byteArray.array), count: Int(byteArray.length))
+            let data = Data(bytes: UnsafeRawPointer(byteArray.array), count: Int(byteArray.length))
             
             self.delegate?.qrCodeReaderViewController(self, didFound: data)
         }
