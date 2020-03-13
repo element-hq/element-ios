@@ -62,6 +62,11 @@ final class UserVerificationCoordinator: NSObject, UserVerificationCoordinatorTy
             return
         }
         
+        guard self.session.crypto.crossSigning.isBootstrapped else {
+            self.presentBootstrapNotSetup()
+            return
+        }
+        
         let rootCoordinator: Coordinator & Presentable
         
         if let deviceId = self.deviceId {
@@ -122,6 +127,18 @@ final class UserVerificationCoordinator: NSObject, UserVerificationCoordinatorTy
         self.navigationRouter.push(deviceVerificationCoordinator, animated: true, popCompletion: {
             self.remove(childCoordinator: deviceVerificationCoordinator)
         })
+    }
+    
+    private func presentBootstrapNotSetup() {
+        let alert = UIAlertController(title: VectorL10n.keyVerificationBootstrapNotSetupTitle,
+                                      message: VectorL10n.keyVerificationBootstrapNotSetupMessage,
+                                      preferredStyle: .alert)
+        
+        let cancelAction = UIAlertAction(title: Bundle.mxk_localizedString(forKey: "ok"), style: .cancel, handler: { _ in
+        })
+        alert.addAction(cancelAction)
+        
+        self.presenter.toPresentable().present(alert, animated: true, completion: nil)        
     }
 }
 
