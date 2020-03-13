@@ -53,7 +53,7 @@ final class SingleImagePickerPresenter: NSObject {
                  sourceView: UIView?,
                  sourceRect: CGRect,
                  animated: Bool) {
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let alert = AlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         
         let cameraAction = UIAlertAction(title: VectorL10n.imagePickerActionCamera, style: .default, handler: { _ in

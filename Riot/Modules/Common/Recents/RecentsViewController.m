@@ -1636,7 +1636,7 @@
     
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
-    currentAlert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    currentAlert = [AlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
     [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_recents_start_chat_with", @"Vector", nil)
                                                      style:UIAlertActionStyleDefault

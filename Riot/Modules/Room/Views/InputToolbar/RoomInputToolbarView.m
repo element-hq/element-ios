@@ -311,7 +311,7 @@
         if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:presentViewController:)])
         {
             // Ask the user the kind of the call: voice or video?
-            actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+            actionSheet = [AlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
 
             __weak typeof(self) weakSelf = self;
             
@@ -396,7 +396,7 @@
         if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:placeCallWithVideo:)])
         {
             // Ask the user the kind of the call: voice or video?
-            actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+            actionSheet = [AlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
 
             __weak typeof(self) weakSelf = self;
             [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"voice", @"Vector", nil)

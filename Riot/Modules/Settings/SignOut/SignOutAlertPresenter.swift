@@ -64,7 +64,7 @@ final class SignOutAlertPresenter: NSObject {
     // MARK: - Private
     
     private func presentExistingBackupAlert(animated: Bool) {
-        let alertContoller = UIAlertController(title: VectorL10n.signOutExistingKeyBackupAlertTitle,
+        let alertContoller = AlertController(title: VectorL10n.signOutExistingKeyBackupAlertTitle,
                                                message: nil,
                                                preferredStyle: .actionSheet)
         
@@ -81,7 +81,7 @@ final class SignOutAlertPresenter: NSObject {
     }
     
     private func presentNonExistingBackupAlert(animated: Bool) {
-        let alertContoller = UIAlertController(title: VectorL10n.signOutNonExistingKeyBackupAlertTitle,
+        let alertContoller = AlertController(title: VectorL10n.signOutNonExistingKeyBackupAlertTitle,
                                                message: nil,
                                                preferredStyle: .actionSheet)
         
@@ -122,7 +122,7 @@ final class SignOutAlertPresenter: NSObject {
     }
     
     private func presentBackupInProgressAlert(animated: Bool) {
-        let alertContoller = UIAlertController(title: VectorL10n.signOutKeyBackupInProgressAlertTitle,
+        let alertContoller = AlertController(title: VectorL10n.signOutKeyBackupInProgressAlertTitle,
                                                message: nil,
                                                preferredStyle: .actionSheet)
         
