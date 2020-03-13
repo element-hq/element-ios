@@ -67,7 +67,7 @@
                                                                 <rect key="frame" x="0.0" y="50" width="375" height="53"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="253" text="Scan the code to securely verify each other." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y2w-7m-BE3">
-                                                                        <rect key="frame" x="20" y="15" width="335" height="18"/>
+                                                                        <rect key="frame" x="20" y="15" width="335" height="38"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -77,7 +77,7 @@
                                                                 <constraints>
                                                                     <constraint firstItem="y2w-7m-BE3" firstAttribute="top" secondItem="SLA-sa-fBw" secondAttribute="top" constant="15" id="4Hi-G4-ifY"/>
                                                                     <constraint firstAttribute="trailing" secondItem="y2w-7m-BE3" secondAttribute="trailing" constant="20" id="5xb-BK-tXG"/>
-                                                                    <constraint firstAttribute="bottom" secondItem="y2w-7m-BE3" secondAttribute="bottom" constant="20" id="NIx-Ms-nsQ"/>
+                                                                    <constraint firstAttribute="bottom" secondItem="y2w-7m-BE3" secondAttribute="bottom" id="NIx-Ms-nsQ"/>
                                                                     <constraint firstAttribute="height" priority="250" id="xbN-ph-dHU"/>
                                                                     <constraint firstItem="y2w-7m-BE3" firstAttribute="leading" secondItem="SLA-sa-fBw" secondAttribute="leading" constant="20" id="zoQ-Pi-GNl"/>
                                                                 </constraints>
