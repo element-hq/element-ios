@@ -82,6 +82,16 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.KeyBackupSetupSuccessFromRecoveryKeyViewController>(storyboard: KeyBackupSetupSuccessFromRecoveryKeyViewController.self)
   }
+  internal enum KeyVerificationVerifyByScanningViewController: StoryboardType {
+    internal static let storyboardName = "KeyVerificationVerifyByScanningViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.KeyVerificationVerifyByScanningViewController>(storyboard: KeyVerificationVerifyByScanningViewController.self)
+  }
+  internal enum QRCodeReaderViewController: StoryboardType {
+    internal static let storyboardName = "QRCodeReaderViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.QRCodeReaderViewController>(storyboard: QRCodeReaderViewController.self)
+  }
   internal enum ReactionHistoryViewController: StoryboardType {
     internal static let storyboardName = "ReactionHistoryViewController"
 
