@@ -33,6 +33,7 @@ final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadin
     private let session: MXSession
     private let otherUserId: String?
     private let otherDeviceId: String?
+    private let keyVerificationService = KeyVerificationService()
     
     private let keyVerificationRequest: MXKeyVerificationRequest?
     
@@ -88,31 +89,12 @@ final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadin
         
         self.update(viewState: .loading)
         
-        // TODO: Advertise that we support QR code too
-        keyVerificationRequest.accept(withMethods: [MXKeyVerificationMethodSAS], success: { [weak self] in
+        keyVerificationRequest.accept(withMethods: self.keyVerificationService.supportedKeyVerificationMethods(), success: { [weak self] in
             guard let self = self else {
                 return
             }
             
-            // TODO: Display QR code and the emoji button here (that depends of keyVerificationRequest.methods)
-            // Instead of starting the transaction right now
-            self.session.crypto.keyVerificationManager.beginKeyVerification(from: keyVerificationRequest, method: MXKeyVerificationMethodSAS, success: { [weak self] (deviceVerificationTransaction) in
-                guard let self = self else {
-                    return
-                }
-                
-                if let outgoingSASTransaction = deviceVerificationTransaction as? MXOutgoingSASTransaction {
-                    self.registerTransactionDidStateChangeNotification(transaction: outgoingSASTransaction)
-                } else {
-                    self.update(viewState: .error(DeviceVerificationDataLoadingViewModelError.unknown))
-                }
-                
-                }, failure: { [weak self] (error) in
-                    guard let self = self else {
-                        return
-                    }
-                    self.update(viewState: .error(error))
-            })
+            self.coordinatorDelegate?.deviceVerificationDataLoadingViewModel(self, didAcceptKeyVerificationRequest: keyVerificationRequest)
             
         }, failure: { [weak self] (error) in
             guard let self = self else {
@@ -164,39 +146,5 @@ final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadin
     
     private func update(viewState: DeviceVerificationDataLoadingViewState) {
         self.viewDelegate?.deviceVerificationDataLoadingViewModel(self, didUpdateViewState: viewState)
-    }
-    
-    // MARK: MXKeyVerificationTransactionDidChange
-    
-    private func registerTransactionDidStateChangeNotification(transaction: MXOutgoingSASTransaction) {
-        NotificationCenter.default.addObserver(self, selector: #selector(transactionDidStateChange(notification:)), name: NSNotification.Name.MXKeyVerificationTransactionDidChange, object: transaction)
-    }
-    
-    private func unregisterTransactionDidStateChangeNotification() {
-        NotificationCenter.default.removeObserver(self, name: .MXKeyVerificationTransactionDidChange, object: nil)
-    }
-    
-    @objc private func transactionDidStateChange(notification: Notification) {
-        guard let transaction = notification.object as? MXOutgoingSASTransaction else {
-            return
-        }
-        
-        switch transaction.state {
-        case MXSASTransactionStateShowSAS:
-            self.unregisterTransactionDidStateChangeNotification()
-            self.update(viewState: .loaded)
-            self.coordinatorDelegate?.deviceVerificationDataLoadingViewModel(self, didAcceptKeyVerificationWithTransaction: transaction)
-        case MXSASTransactionStateCancelled:
-            self.unregisterTransactionDidStateChangeNotification()
-            self.update(viewState: .error(DeviceVerificationDataLoadingViewModelError.transactionCancelled))
-        case MXSASTransactionStateCancelledByMe:
-            guard let reason = transaction.reasonCancelCode else {
-                return
-            }
-            self.unregisterTransactionDidStateChangeNotification()
-            self.update(viewState: .error(DeviceVerificationDataLoadingViewModelError.transactionCancelledByMe(reason: reason)))
-        default:
-            break
-        }
     }
 }

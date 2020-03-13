@@ -21,6 +21,7 @@ import Foundation
 protocol DeviceVerificationDataLoadingCoordinatorDelegate: class {
     func deviceVerificationDataLoadingCoordinator(_ coordinator: DeviceVerificationDataLoadingCoordinatorType, didLoadUser user: MXUser, device: MXDeviceInfo)
     func deviceVerificationDataLoadingCoordinator(_ coordinator: DeviceVerificationDataLoadingCoordinatorType, didAcceptKeyVerificationRequestWithTransaction transaction: MXKeyVerificationTransaction)
+    func deviceVerificationDataLoadingCoordinator(_ coordinator: DeviceVerificationDataLoadingCoordinatorType, didAcceptKeyVerificationRequest keyVerificationRequest: MXKeyVerificationRequest)
     func deviceVerificationDataLoadingCoordinatorDidCancel(_ coordinator: DeviceVerificationDataLoadingCoordinatorType)
 }
 
