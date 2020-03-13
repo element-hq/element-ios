@@ -10,6 +10,7 @@ Improvements:
  * Room decoration: Remove horizontal empty space when there is no decoration badge to set on room message (#2978).
  * RoomVC: For a room preview use room canonical alias if present when joining a room.
  * Update Matomo app id (#3001)
+ * Verification by DM: Support QR code (#2921).
 
 Bug fix:
  * Fix error when joining some public rooms, thanks to @chrismoos (PR #2888).
