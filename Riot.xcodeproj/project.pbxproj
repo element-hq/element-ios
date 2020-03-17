@@ -2316,7 +2316,6 @@
 				B1643C8A23F2BA2A008D4DC3 /* KeyVerificationVerifyByScanningViewModel.swift */,
 				B1643C8823F2BA28008D4DC3 /* KeyVerificationVerifyByScanningViewModelType.swift */,
 				B1643C8723F2BA28008D4DC3 /* KeyVerificationVerifyByScanningViewState.swift */,
-				B183226423F5554A0035B2E8 /* QRCode */,
 			);
 			path = Scanning;
 			sourceTree = "<group>";
@@ -2582,7 +2581,8 @@
 				B1643C9423F364BE008D4DC3 /* QRCodeGenerator.swift */,
 				B18521EE23F4181500301B00 /* Reader */,
 			);
-			path = QRCode;
+			name = QRCode;
+			path = DeviceVerification/Verify/Scanning/QRCode;
 			sourceTree = "<group>";
 		};
 		B183226923F59F3E0035B2E8 /* Buttons */ = {
@@ -2680,11 +2680,6 @@
 		B1B5567620EE6C4C00210D55 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				B1BEE71023DF28CA0003A4CB /* UserVerification */,
-				B1A12C64239AB74500AA2B86 /* CrossSigning */,
-				B1A6C10523881ECB002882FD /* SlidingModal */,
-				32DB556722FDADE50016329E /* ServiceTerms */,
-				3232AB94225730E100AD6A5C /* DeviceVerification */,
 				B1B556EA20EE6C4C00210D55 /* Main */,
 				B1B556CA20EE6C4C00210D55 /* TabBar */,
 				B1B556F920EE6C4C00210D55 /* Authentication */,
@@ -2709,6 +2704,12 @@
 				B1B556FD20EE6C4C00210D55 /* RoomKeyRequest */,
 				B1B556B020EE6C4C00210D55 /* BugReport */,
 				B1098BE921ECFE64000DDA48 /* KeyBackup */,
+				B1BEE71023DF28CA0003A4CB /* UserVerification */,
+				3232AB94225730E100AD6A5C /* DeviceVerification */,
+				B1A12C64239AB74500AA2B86 /* CrossSigning */,
+				B1A6C10523881ECB002882FD /* SlidingModal */,
+				32DB556722FDADE50016329E /* ServiceTerms */,
+				B183226423F5554A0035B2E8 /* QRCode */,
 				B1B556CD20EE6C4C00210D55 /* Common */,
 			);
 			path = Modules;
