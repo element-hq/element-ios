@@ -51,7 +51,7 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
     }
     
     deinit {
-        // TODO: Remove QR code transaction if needed
+        self.removePendingQRCodeTransaction()
     }
     
     // MARK: - Public
@@ -79,7 +79,7 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
         
         let qrCodePlayloadData: Data?
         let canShowScanAction: Bool
-                
+        
         self.qrCodeTransaction = self.keyVerificationManager.qrCodeTransaction(withTransactionId: self.keyVerificationRequest.requestId)
         
         if let supportedVerificationMethods = self.keyVerificationRequest.myMethods {
@@ -143,6 +143,13 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
         qrCodeTransaction.otherUserScannedMyQrCode(acknowledgeOtherScannedMyCode)
     }
     
+    private func removePendingQRCodeTransaction() {
+        guard let qrCodeTransaction = self.qrCodeTransaction else {
+            return
+        }
+        self.keyVerificationManager.removeQRCodeTransaction(withTransactionId: qrCodeTransaction.transactionId)
+    }
+    
     // MARK: SAS
     
     private func startSASVerification() {
@@ -154,7 +161,8 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
                     return
                 }
             
-                // TODO: Remove QR code transaction
+                // Remove pending QR code transaction, as we are going to use SAS verification
+                self.removePendingQRCodeTransaction()
             
                 if deviceVerificationTransaction is MXOutgoingSASTransaction == false {
                     NSLog("[KeyVerificationVerifyByScanningViewModel] SAS transaction should be outgoing")
