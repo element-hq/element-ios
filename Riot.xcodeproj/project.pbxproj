@@ -214,6 +214,9 @@
 		B14F143522144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14F142D22144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewController.swift */; };
 		B152C73122DF561E0041315A /* EmojiServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B152C73022DF561E0041315A /* EmojiServiceTests.swift */; };
 		B152C73522DF599C0041315A /* apple_emojis_data.json in Resources */ = {isa = PBXBuildFile; fileRef = B152C73422DF599B0041315A /* apple_emojis_data.json */; };
+		B1550FCA2420E8F500CE097B /* QRCodeReaderViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1550FC72420E8F400CE097B /* QRCodeReaderViewController.storyboard */; };
+		B1550FCB2420E8F500CE097B /* QRCodeReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1550FC82420E8F400CE097B /* QRCodeReaderViewController.swift */; };
+		B1550FCC2420E8F500CE097B /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1550FC92420E8F400CE097B /* QRCodeGenerator.swift */; };
 		B157FA9F23264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157FA9723264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinator.swift */; };
 		B157FAA023264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157FA9823264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsViewModelType.swift */; };
 		B157FAA123264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157FA9923264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinatorType.swift */; };
@@ -232,7 +235,6 @@
 		B1643C9123F2BA2B008D4DC3 /* KeyVerificationVerifyByScanningViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1643C8923F2BA2A008D4DC3 /* KeyVerificationVerifyByScanningViewAction.swift */; };
 		B1643C9223F2BA2B008D4DC3 /* KeyVerificationVerifyByScanningViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1643C8A23F2BA2A008D4DC3 /* KeyVerificationVerifyByScanningViewModel.swift */; };
 		B1643C9323F2BA2B008D4DC3 /* KeyVerificationVerifyByScanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1643C8B23F2BA2B008D4DC3 /* KeyVerificationVerifyByScanningViewController.swift */; };
-		B1643C9523F364BE008D4DC3 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1643C9423F364BE008D4DC3 /* QRCodeGenerator.swift */; };
 		B1664BC520F4E67600808783 /* FallbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1664BAD20F4E67500808783 /* FallbackViewController.xib */; };
 		B1664BC620F4E67600808783 /* FallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1664BAE20F4E67500808783 /* FallbackViewController.m */; };
 		B1664BC720F4E67600808783 /* SharePresentingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1664BB220F4E67500808783 /* SharePresentingViewController.m */; };
@@ -274,11 +276,9 @@
 		B169331720F3CBE000746532 /* RecentCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932F920F3C51900746532 /* RecentCellData.m */; };
 		B17982FF2119FED2001FD722 /* GDPRConsentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17982FE2119FED2001FD722 /* GDPRConsentViewController.swift */; };
 		B1798302211B13B3001FD722 /* OnBoardingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1798301211B13B3001FD722 /* OnBoardingManager.swift */; };
-		B183226323F444750035B2E8 /* QRCodeReaderViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B183226223F444750035B2E8 /* QRCodeReaderViewController.storyboard */; };
 		B183226623F55D6B0035B2E8 /* CameraAccessManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B183226523F55D6B0035B2E8 /* CameraAccessManager.swift */; };
 		B183226823F561380035B2E8 /* CameraAccessAlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B183226723F561380035B2E8 /* CameraAccessAlertPresenter.swift */; };
 		B183226C23F59F810035B2E8 /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B183226B23F59F810035B2E8 /* CloseButton.swift */; };
-		B18521ED23F4155900301B00 /* QRCodeReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18521EC23F4155900301B00 /* QRCodeReaderViewController.swift */; };
 		B190F55922CE356800AEB493 /* EditHistoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B190F55822CE356800AEB493 /* EditHistoryHeaderView.swift */; };
 		B190F55B22CE35FD00AEB493 /* EditHistoryHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B190F55A22CE35FD00AEB493 /* EditHistoryHeaderView.xib */; };
 		B190F55D22CE5A9700AEB493 /* EditHistorySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B190F55C22CE5A9600AEB493 /* EditHistorySection.swift */; };
@@ -959,6 +959,9 @@
 		B152C72D22DF55D80041315A /* RiotTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RiotTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		B152C73022DF561E0041315A /* EmojiServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiServiceTests.swift; sourceTree = "<group>"; };
 		B152C73422DF599B0041315A /* apple_emojis_data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = apple_emojis_data.json; sourceTree = "<group>"; };
+		B1550FC72420E8F400CE097B /* QRCodeReaderViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = QRCodeReaderViewController.storyboard; sourceTree = "<group>"; };
+		B1550FC82420E8F400CE097B /* QRCodeReaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeReaderViewController.swift; sourceTree = "<group>"; };
+		B1550FC92420E8F400CE097B /* QRCodeGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
 		B157FA9723264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsDiscoveryThreePidDetailsCoordinator.swift; sourceTree = "<group>"; };
 		B157FA9823264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsDiscoveryThreePidDetailsViewModelType.swift; sourceTree = "<group>"; };
 		B157FA9923264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsDiscoveryThreePidDetailsCoordinatorType.swift; sourceTree = "<group>"; };
@@ -977,7 +980,6 @@
 		B1643C8923F2BA2A008D4DC3 /* KeyVerificationVerifyByScanningViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationVerifyByScanningViewAction.swift; sourceTree = "<group>"; };
 		B1643C8A23F2BA2A008D4DC3 /* KeyVerificationVerifyByScanningViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationVerifyByScanningViewModel.swift; sourceTree = "<group>"; };
 		B1643C8B23F2BA2B008D4DC3 /* KeyVerificationVerifyByScanningViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationVerifyByScanningViewController.swift; sourceTree = "<group>"; };
-		B1643C9423F364BE008D4DC3 /* QRCodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
 		B1664BAD20F4E67500808783 /* FallbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FallbackViewController.xib; sourceTree = "<group>"; };
 		B1664BAE20F4E67500808783 /* FallbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FallbackViewController.m; sourceTree = "<group>"; };
 		B1664BAF20F4E67500808783 /* FallbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FallbackViewController.h; sourceTree = "<group>"; };
@@ -1067,11 +1069,9 @@
 		B169331320F3CAFC00746532 /* PublicRoomsDirectoryDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicRoomsDirectoryDataSource.h; sourceTree = "<group>"; };
 		B17982FE2119FED2001FD722 /* GDPRConsentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDPRConsentViewController.swift; sourceTree = "<group>"; };
 		B1798301211B13B3001FD722 /* OnBoardingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingManager.swift; sourceTree = "<group>"; };
-		B183226223F444750035B2E8 /* QRCodeReaderViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = QRCodeReaderViewController.storyboard; sourceTree = "<group>"; };
 		B183226523F55D6B0035B2E8 /* CameraAccessManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraAccessManager.swift; sourceTree = "<group>"; };
 		B183226723F561380035B2E8 /* CameraAccessAlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraAccessAlertPresenter.swift; sourceTree = "<group>"; };
 		B183226B23F59F810035B2E8 /* CloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButton.swift; sourceTree = "<group>"; };
-		B18521EC23F4155900301B00 /* QRCodeReaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeReaderViewController.swift; sourceTree = "<group>"; };
 		B190F55822CE356800AEB493 /* EditHistoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHistoryHeaderView.swift; sourceTree = "<group>"; };
 		B190F55A22CE35FD00AEB493 /* EditHistoryHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditHistoryHeaderView.xib; sourceTree = "<group>"; };
 		B190F55C22CE5A9600AEB493 /* EditHistorySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHistorySection.swift; sourceTree = "<group>"; };
@@ -2289,6 +2289,24 @@
 			path = SAS;
 			sourceTree = "<group>";
 		};
+		B1550FC52420E8F400CE097B /* QRCode */ = {
+			isa = PBXGroup;
+			children = (
+				B1550FC62420E8F400CE097B /* Reader */,
+				B1550FC92420E8F400CE097B /* QRCodeGenerator.swift */,
+			);
+			path = QRCode;
+			sourceTree = "<group>";
+		};
+		B1550FC62420E8F400CE097B /* Reader */ = {
+			isa = PBXGroup;
+			children = (
+				B1550FC72420E8F400CE097B /* QRCodeReaderViewController.storyboard */,
+				B1550FC82420E8F400CE097B /* QRCodeReaderViewController.swift */,
+			);
+			path = Reader;
+			sourceTree = "<group>";
+		};
 		B157FA9623264AE800EBFBD4 /* ThreePidDetails */ = {
 			isa = PBXGroup;
 			children = (
@@ -2575,16 +2593,6 @@
 			path = OnBoarding;
 			sourceTree = "<group>";
 		};
-		B183226423F5554A0035B2E8 /* QRCode */ = {
-			isa = PBXGroup;
-			children = (
-				B1643C9423F364BE008D4DC3 /* QRCodeGenerator.swift */,
-				B18521EE23F4181500301B00 /* Reader */,
-			);
-			name = QRCode;
-			path = DeviceVerification/Verify/Scanning/QRCode;
-			sourceTree = "<group>";
-		};
 		B183226923F59F3E0035B2E8 /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
@@ -2599,15 +2607,6 @@
 				B183226B23F59F810035B2E8 /* CloseButton.swift */,
 			);
 			path = Close;
-			sourceTree = "<group>";
-		};
-		B18521EE23F4181500301B00 /* Reader */ = {
-			isa = PBXGroup;
-			children = (
-				B18521EC23F4155900301B00 /* QRCodeReaderViewController.swift */,
-				B183226223F444750035B2E8 /* QRCodeReaderViewController.storyboard */,
-			);
-			path = Reader;
 			sourceTree = "<group>";
 		};
 		B1963B24228F1C4800CBA17F /* BubbleReactions */ = {
@@ -2709,7 +2708,7 @@
 				B1A12C64239AB74500AA2B86 /* CrossSigning */,
 				B1A6C10523881ECB002882FD /* SlidingModal */,
 				32DB556722FDADE50016329E /* ServiceTerms */,
-				B183226423F5554A0035B2E8 /* QRCode */,
+				B1550FC52420E8F400CE097B /* QRCode */,
 				B1B556CD20EE6C4C00210D55 /* Common */,
 			);
 			path = Modules;
@@ -4439,7 +4438,7 @@
 				F083BDE81E7009ED00A9B29C /* message.caf in Resources */,
 				B1107ECA2200B09F0038014B /* KeyBackupRecoverSuccessViewController.storyboard in Resources */,
 				B1B9DEF522EB426D0065E677 /* ReactionHistoryViewCell.xib in Resources */,
-				B183226323F444750035B2E8 /* QRCodeReaderViewController.storyboard in Resources */,
+				B1550FCA2420E8F500CE097B /* QRCodeReaderViewController.storyboard in Resources */,
 				B1B5579C20EF575B00210D55 /* ForgotPasswordInputsView.xib in Resources */,
 				F083BE011E7009ED00A9B29C /* third_party_licenses.html in Resources */,
 				B1098BFC21ECFE65000DDA48 /* PasswordStrengthView.xib in Resources */,
@@ -4905,7 +4904,6 @@
 				B1D4752721EE4E630067973F /* KeyboardAvoider.swift in Sources */,
 				B1D4752821EE4E630067973F /* KeyboardNotification.swift in Sources */,
 				B1D1BDA622BBAFB500831367 /* ReactionsMenuView.swift in Sources */,
-				B18521ED23F4155900301B00 /* QRCodeReaderViewController.swift in Sources */,
 				32DB557A22FDADE50016329E /* ServiceTermsModalScreenViewController.swift in Sources */,
 				B1B9DEF422EB426D0065E677 /* ReactionHistoryViewCell.swift in Sources */,
 				B1B5573C20EE6C4D00210D55 /* MasterTabBarController.m in Sources */,
@@ -4942,6 +4940,7 @@
 				F083BE031E7009ED00A9B29C /* EventFormatter.m in Sources */,
 				B157FAA623264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsViewController.swift in Sources */,
 				B1DCC62422E60CA900625807 /* EmojiPickerCategoryViewData.swift in Sources */,
+				B1550FCB2420E8F500CE097B /* QRCodeReaderViewController.swift in Sources */,
 				324A2056225FC571004FE8B0 /* DeviceVerificationIncomingCoordinator.swift in Sources */,
 				B16932F720F3C50E00746532 /* RecentsDataSource.m in Sources */,
 				B1DCC63B22E85EF800625807 /* EmojiMartCategory.swift in Sources */,
@@ -5079,6 +5078,7 @@
 				B1098BE121ECE09F000DDA48 /* Images.swift in Sources */,
 				B1BEE74A23E093260003A4CB /* UserVerificationSessionStatusCoordinatorType.swift in Sources */,
 				3232ABA4225730E100AD6A5C /* DeviceVerificationStartViewAction.swift in Sources */,
+				B1550FCC2420E8F500CE097B /* QRCodeGenerator.swift in Sources */,
 				B1B5575A20EE6C4D00210D55 /* UnifiedSearchViewController.m in Sources */,
 				3232AB492256558300AD6A5C /* FlowTemplateCoordinatorBridgePresenter.swift in Sources */,
 				B1B5572820EE6C4D00210D55 /* RoomViewController.m in Sources */,
@@ -5173,7 +5173,6 @@
 				B1098BFD21ECFE65000DDA48 /* PasswordStrengthManager.swift in Sources */,
 				B1B558F520EF768F00210D55 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				3232AB482256558300AD6A5C /* FlowTemplateCoordinatorType.swift in Sources */,
-				B1643C9523F364BE008D4DC3 /* QRCodeGenerator.swift in Sources */,
 				B1B9DEF122EB396B0065E677 /* ReactionHistoryViewData.swift in Sources */,
 				B1B558F820EF768F00210D55 /* RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				B1BD71B5238DCBF700BA92E2 /* SlidingModalEmptyViewController.swift in Sources */,
