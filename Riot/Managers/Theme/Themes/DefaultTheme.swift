@@ -94,6 +94,7 @@ class DefaultTheme: NSObject, Theme {
         searchBar.barStyle = .default
         searchBar.tintColor = self.searchPlaceholderColor
         searchBar.barTintColor = self.headerBackgroundColor
+        searchBar.keyboardAppearance = self.keyboardAppearance
         
         if let searchBarTextField = searchBar.vc_searchTextField {
             searchBarTextField.textColor = searchBar.tintColor
