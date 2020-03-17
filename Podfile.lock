@@ -102,6 +102,9 @@ PODS:
   - SwiftLint (0.36.0)
   - SwiftUTI (1.0.7)
   - zxcvbn-ios (1.0.4)
+  - ZXingObjC (3.6.5):
+    - ZXingObjC/All (= 3.6.5)
+  - ZXingObjC/All (3.6.5)
 
 DEPENDENCIES:
   - cmark
@@ -118,6 +121,7 @@ DEPENDENCIES:
   - SwiftLint (~> 0.36.0)
   - SwiftUTI (from `https://github.com/speramusinc/SwiftUTI.git`, branch `master`)
   - zxcvbn-ios
+  - ZXingObjC (~> 3.6.5)
 
 SPEC REPOS:
   trunk:
@@ -141,6 +145,7 @@ SPEC REPOS:
     - SwiftGen
     - SwiftLint
     - zxcvbn-ios
+    - ZXingObjC
 
 EXTERNAL SOURCES:
   SwiftUTI:
@@ -174,7 +179,8 @@ SPEC CHECKSUMS:
   SwiftLint: fc9859e4e1752340664851f667bb1898b9c90114
   SwiftUTI: 917993c124f8eac25e88ced0202fc58d7eb50fa8
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
+  ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 881048fb17d68dd834b18e23929482600daca7f3
+PODFILE CHECKSUM: 185f69d794948490227a5ab4ce9ce7945e3ed486
 
 COCOAPODS: 1.8.4

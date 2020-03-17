@@ -65,6 +65,10 @@ final class DeviceVerificationDataLoadingCoordinator: DeviceVerificationDataLoad
 // MARK: - DeviceVerificationDataLoadingViewModelCoordinatorDelegate
 extension DeviceVerificationDataLoadingCoordinator: DeviceVerificationDataLoadingViewModelCoordinatorDelegate {
     
+    func deviceVerificationDataLoadingViewModel(_ viewModel: DeviceVerificationDataLoadingViewModelType, didAcceptKeyVerificationRequest keyVerificationRequest: MXKeyVerificationRequest) {
+        self.delegate?.deviceVerificationDataLoadingCoordinator(self, didAcceptKeyVerificationRequest: keyVerificationRequest)
+    }    
+    
     func deviceVerificationDataLoadingViewModel(_ viewModel: DeviceVerificationDataLoadingViewModelType, didAcceptKeyVerificationWithTransaction transaction: MXKeyVerificationTransaction) {
         self.delegate?.deviceVerificationDataLoadingCoordinator(self, didAcceptKeyVerificationRequestWithTransaction: transaction)
     }

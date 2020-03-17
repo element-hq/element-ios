@@ -37,6 +37,7 @@ final class UserVerificationStartViewModel: UserVerificationStartViewModelType {
     private let session: MXSession
     private let roomMember: MXRoomMember
     private let verificationManager: MXKeyVerificationManager
+    private let keyVerificationService: KeyVerificationService
     
     private var keyVerificationRequest: MXKeyVerificationRequest?
     
@@ -55,6 +56,7 @@ final class UserVerificationStartViewModel: UserVerificationStartViewModelType {
         self.session = session
         self.verificationManager = session.crypto.keyVerificationManager
         self.roomMember = roomMember
+        self.keyVerificationService = KeyVerificationService()
     }
     
     deinit {
@@ -86,7 +88,7 @@ final class UserVerificationStartViewModel: UserVerificationStartViewModelType {
         self.verificationManager.requestVerificationByDM(withUserId: self.roomMember.userId,
                                                          roomId: nil,
                                                          fallbackText: "",
-                                                         methods: [MXKeyVerificationMethodSAS],
+                                                         methods: self.keyVerificationService.supportedKeyVerificationMethods(),
                                                          success: { [weak self] (keyVerificationRequest) in
                                                             guard let self = self else {
                                                                 return
@@ -94,9 +96,7 @@ final class UserVerificationStartViewModel: UserVerificationStartViewModelType {
                                                             
                                                             self.keyVerificationRequest = keyVerificationRequest
                                                             self.update(viewState: .loaded(self.viewData))
-                                                            self.registerKeyVerificationDidChangeNotification(keyVerificationRequest: keyVerificationRequest)
-                                                            self.registerTransactionDidStateChangeNotification()
-                
+                                                            self.registerKeyVerificationRequestDidChangeNotification(for: keyVerificationRequest)
         }, failure: { [weak self]  error in
             self?.update(viewState: .error(error))
         })
@@ -114,55 +114,13 @@ final class UserVerificationStartViewModel: UserVerificationStartViewModelType {
         keyVerificationRequest.cancel(with: MXTransactionCancelCode.user(), success: nil, failure: nil)
     }
     
-    // MARK: - MXKeyVerificationTransactionDidChange
+    // MARK: - MXKeyVerificationRequestDidChange
     
-    private func registerTransactionDidStateChangeNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(transactionDidStateChange(notification:)), name: .MXKeyVerificationTransactionDidChange, object: nil)
-    }
-    
-    private func unregisterTransactionDidStateChangeNotification() {
-        NotificationCenter.default.removeObserver(self, name: .MXKeyVerificationTransactionDidChange, object: nil)
-    }
-    
-    @objc private func transactionDidStateChange(notification: Notification) {
-        guard let transaction = notification.object as? MXIncomingSASTransaction else {
-            return
-        }
-        
-        guard let keyVerificationRequest = self.keyVerificationRequest,
-            let transactionDMEventId = transaction.dmEventId,
-            keyVerificationRequest.requestId == transactionDMEventId else {
-            return
-        }
-        
-        switch transaction.state {
-        case MXSASTransactionStateShowSAS:
-            self.unregisterTransactionDidStateChangeNotification()
-            self.coordinatorDelegate?.userVerificationStartViewModel(self, didCompleteWithIncomingTransaction: transaction)
-        case MXSASTransactionStateCancelled:
-            guard let reason = transaction.reasonCancelCode else {
-                return
-            }
-            self.unregisterTransactionDidStateChangeNotification()
-            self.update(viewState: .cancelled(reason))
-        case MXSASTransactionStateCancelledByMe:
-            guard let reason = transaction.reasonCancelCode else {
-                return
-            }
-            self.unregisterTransactionDidStateChangeNotification()
-            self.update(viewState: .cancelledByMe(reason))
-        default:
-            break
-        }
-    }
-    
-    // MARK: - MXKeyVerificationTransactionDidChange
-    
-    private func registerKeyVerificationDidChangeNotification(keyVerificationRequest: MXKeyVerificationRequest) {
+    private func registerKeyVerificationRequestDidChangeNotification(for keyVerificationRequest: MXKeyVerificationRequest) {
         NotificationCenter.default.addObserver(self, selector: #selector(keyVerificationRequestDidChange(notification:)), name: .MXKeyVerificationRequestDidChange, object: keyVerificationRequest)
     }
     
-    private func unregisterKeyVerificationDidChangeNotification() {
+    private func unregisterKeyVerificationRequestDidChangeNotification() {
         NotificationCenter.default.removeObserver(self, name: .MXKeyVerificationRequestDidChange, object: nil)
     }
     
@@ -176,22 +134,26 @@ final class UserVerificationStartViewModel: UserVerificationStartViewModelType {
         }
         
         switch keyVerificationRequest.state {
-        case MXKeyVerificationRequestStateAccepted:
-            self.unregisterKeyVerificationDidChangeNotification()
+        case MXKeyVerificationRequestStateAccepted:            
+            self.unregisterKeyVerificationRequestDidChangeNotification()
+            self.coordinatorDelegate?.userVerificationStartViewModel(self, otherDidAcceptRequest: currentKeyVerificationRequest)
+        case MXKeyVerificationRequestStateReady:
+            self.unregisterKeyVerificationRequestDidChangeNotification()
+            self.coordinatorDelegate?.userVerificationStartViewModel(self, otherDidAcceptRequest: currentKeyVerificationRequest)
         case MXKeyVerificationRequestStateCancelled:
             guard let reason = keyVerificationRequest.reasonCancelCode else {
                 return
             }
-            self.unregisterKeyVerificationDidChangeNotification()
+            self.unregisterKeyVerificationRequestDidChangeNotification()
             self.update(viewState: .cancelled(reason))
         case MXKeyVerificationRequestStateCancelledByMe:
             guard let reason = keyVerificationRequest.reasonCancelCode else {
                 return
             }
-            self.unregisterKeyVerificationDidChangeNotification()
+            self.unregisterKeyVerificationRequestDidChangeNotification()
             self.update(viewState: .cancelledByMe(reason))
         case MXKeyVerificationRequestStateExpired:
-            self.unregisterKeyVerificationDidChangeNotification()
+            self.unregisterKeyVerificationRequestDidChangeNotification()
             self.update(viewState: .error(UserVerificationStartViewModelError.keyVerificationRequestExpired))
         default:
             break
