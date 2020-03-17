@@ -63,6 +63,11 @@ final class UserVerificationStartCoordinator: UserVerificationStartCoordinatorTy
 
 // MARK: - UserVerificationStartViewModelCoordinatorDelegate
 extension UserVerificationStartCoordinator: UserVerificationStartViewModelCoordinatorDelegate {
+    
+    func userVerificationStartViewModel(_ viewModel: UserVerificationStartViewModelType, otherDidAcceptRequest request: MXKeyVerificationRequest) {
+        self.delegate?.userVerificationStartCoordinator(self, otherDidAcceptRequest: request)
+    }
+    
     func userVerificationStartViewModelDidCancel(_ viewModel: UserVerificationStartViewModelType) {
         self.delegate?.userVerificationStartCoordinatorDidCancel(self)
     }

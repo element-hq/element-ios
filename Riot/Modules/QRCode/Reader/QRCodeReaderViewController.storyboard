@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="wTo-mk-4wn">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Code Reader View Controller-->
+        <scene sceneID="yHG-c0-Vr8">
+            <objects>
+                <viewController id="wTo-mk-4wn" customClass="QRCodeReaderViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="eyK-7t-b1z">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rdg-xW-u5X">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HjZ-fK-SvP" customClass="CloseButton" customModule="Riot" customModuleProvider="target">
+                                <rect key="frame" x="357" y="57" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="HjZ-fK-SvP" secondAttribute="height" multiplier="1:1" id="csD-MZ-BJU"/>
+                                    <constraint firstAttribute="height" constant="44" id="tWy-os-fYQ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <state key="normal" image="close_button"/>
+                                <connections>
+                                    <action selector="closeButtonAction:" destination="wTo-mk-4wn" eventType="touchUpInside" id="Dyd-I3-uHS"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Rdg-xW-u5X" secondAttribute="trailing" id="DzV-SN-Iog"/>
+                            <constraint firstItem="Rdg-xW-u5X" firstAttribute="top" secondItem="eyK-7t-b1z" secondAttribute="top" id="J4V-oh-elV"/>
+                            <constraint firstAttribute="bottom" secondItem="Rdg-xW-u5X" secondAttribute="bottom" id="TD5-6H-rgZ"/>
+                            <constraint firstItem="HjZ-fK-SvP" firstAttribute="top" secondItem="Ndt-0H-a0X" secondAttribute="top" constant="13" id="gkO-XS-hSc"/>
+                            <constraint firstItem="Rdg-xW-u5X" firstAttribute="leading" secondItem="eyK-7t-b1z" secondAttribute="leading" id="iLN-43-eOy"/>
+                            <constraint firstItem="Ndt-0H-a0X" firstAttribute="trailing" secondItem="HjZ-fK-SvP" secondAttribute="trailing" constant="13" id="qyo-8y-264"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Ndt-0H-a0X"/>
+                    </view>
+                    <connections>
+                        <outlet property="closeButton" destination="HjZ-fK-SvP" id="mGR-8w-Hpt"/>
+                        <outlet property="codeReaderContainerView" destination="Rdg-xW-u5X" id="Sxz-D5-Axf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oGu-Wb-sGr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-261" y="29"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="close_button" width="16" height="16"/>
+    </resources>
+</document>

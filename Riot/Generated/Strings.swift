@@ -1470,6 +1470,14 @@ internal enum VectorL10n {
   internal static var keyBackupSetupTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_title") 
   }
+  /// You have to bootstrap cross-signing
+  internal static var keyVerificationBootstrapNotSetupMessage: String { 
+    return VectorL10n.tr("Vector", "key_verification_bootstrap_not_setup_message") 
+  }
+  /// Error
+  internal static var keyVerificationBootstrapNotSetupTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_bootstrap_not_setup_title") 
+  }
   /// %@ wants to verify
   internal static func keyVerificationIncomingRequestIncomingAlertMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "key_verification_incoming_request_incoming_alert_message", p1)
@@ -1533,6 +1541,34 @@ internal enum VectorL10n {
   /// Messages with this user in this room are end-to-end encrypted and can’t be read by third parties.
   internal static var keyVerificationVerifiedUserDescription2: String { 
     return VectorL10n.tr("Vector", "key_verification_verified_user_description_2") 
+  }
+  /// Can't scan?
+  internal static var keyVerificationVerifyQrCodeCannotScanAction: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_qr_code_cannot_scan_action") 
+  }
+  /// Scan the code to securely verify each other.
+  internal static var keyVerificationVerifyQrCodeInformation: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_qr_code_information") 
+  }
+  /// Did the other user successfully scan the QR code?
+  internal static var keyVerificationVerifyQrCodeOtherScanMyCodeTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_qr_code_other_scan_my_code_title") 
+  }
+  /// Scan their code
+  internal static var keyVerificationVerifyQrCodeScanCodeAction: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_qr_code_scan_code_action") 
+  }
+  /// QR code has been successfully validated.
+  internal static var keyVerificationVerifyQrCodeScanOtherCodeSuccessMessage: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_qr_code_scan_other_code_success_message") 
+  }
+  /// Code validated!
+  internal static var keyVerificationVerifyQrCodeScanOtherCodeSuccessTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_qr_code_scan_other_code_success_title") 
+  }
+  /// Verify by scanning
+  internal static var keyVerificationVerifyQrCodeTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_qr_code_title") 
   }
   /// Verify this user by confirming the following unique emoji appears on their screen, in the same order.
   internal static var keyVerificationVerifyUserTitleEmoji: String { 

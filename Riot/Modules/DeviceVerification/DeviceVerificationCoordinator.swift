@@ -183,11 +183,22 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
         }
     }
 
-    private func showVerify(transaction: MXSASTransaction, animated: Bool) {
+    private func showVerifyBySAS(transaction: MXSASTransaction, animated: Bool) {
         let coordinator = DeviceVerificationVerifyCoordinator(session: self.session, transaction: transaction, verificationKind: self.verificationKind)
         coordinator.delegate = self
         coordinator.start()
 
+        self.add(childCoordinator: coordinator)
+        self.navigationRouter.push(coordinator, animated: animated) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
+    
+    private func showVerifyByScanning(keyVerificationRequest: MXKeyVerificationRequest, animated: Bool) {
+        let coordinator = KeyVerificationVerifyByScanningCoordinator(session: self.session, keyVerificationRequest: keyVerificationRequest)
+        coordinator.delegate = self
+        coordinator.start()
+        
         self.add(childCoordinator: coordinator)
         self.navigationRouter.push(coordinator, animated: animated) { [weak self] in
             self?.remove(childCoordinator: coordinator)
@@ -202,6 +213,11 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
 }
 
 extension DeviceVerificationCoordinator: DeviceVerificationDataLoadingCoordinatorDelegate {
+    
+    func deviceVerificationDataLoadingCoordinator(_ coordinator: DeviceVerificationDataLoadingCoordinatorType, didAcceptKeyVerificationRequest keyVerificationRequest: MXKeyVerificationRequest) {
+        self.showVerifyByScanning(keyVerificationRequest: keyVerificationRequest, animated: true)
+    }
+    
     func deviceVerificationDataLoadingCoordinator(_ coordinator: DeviceVerificationDataLoadingCoordinatorType, didLoadUser user: MXUser, device: MXDeviceInfo) {
 
         if let incomingTransaction = self.incomingTransaction {
@@ -214,7 +230,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationDataLoadingCoordinato
     func deviceVerificationDataLoadingCoordinator(_ coordinator: DeviceVerificationDataLoadingCoordinatorType, didAcceptKeyVerificationRequestWithTransaction transaction: MXKeyVerificationTransaction) {
         
         if let sasTransaction = transaction as? MXSASTransaction {
-            self.showVerify(transaction: sasTransaction, animated: true)
+            self.showVerifyBySAS(transaction: sasTransaction, animated: true)
         } else {
             NSLog("[DeviceVerificationCoordinator] Transaction \(transaction) is not supported")
             self.delegate?.deviceVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
@@ -228,7 +244,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationDataLoadingCoordinato
 
 extension DeviceVerificationCoordinator: DeviceVerificationStartCoordinatorDelegate {
     func deviceVerificationStartCoordinator(_ coordinator: DeviceVerificationStartCoordinatorType, didCompleteWithOutgoingTransaction transaction: MXSASTransaction) {
-        self.showVerify(transaction: transaction, animated: true)
+        self.showVerifyBySAS(transaction: transaction, animated: true)
     }
 
     func deviceVerificationStartCoordinator(_ coordinator: DeviceVerificationStartCoordinatorType, didTransactionCancelled transaction: MXSASTransaction) {
@@ -242,7 +258,7 @@ extension DeviceVerificationCoordinator: DeviceVerificationStartCoordinatorDeleg
 
 extension DeviceVerificationCoordinator: DeviceVerificationIncomingCoordinatorDelegate {
     func deviceVerificationIncomingCoordinator(_ coordinator: DeviceVerificationIncomingCoordinatorType, didAcceptTransaction transaction: MXSASTransaction) {
-        self.showVerify(transaction: transaction, animated: true)
+        self.showVerifyBySAS(transaction: transaction, animated: true)
     }
 
     func deviceVerificationIncomingCoordinatorDidCancel(_ coordinator: DeviceVerificationIncomingCoordinatorType) {
@@ -271,8 +287,13 @@ extension DeviceVerificationCoordinator: DeviceVerificationVerifiedViewControlle
 }
 
 extension DeviceVerificationCoordinator: UserVerificationStartCoordinatorDelegate {
+        
+    func userVerificationStartCoordinator(_ coordinator: UserVerificationStartCoordinatorType, otherDidAcceptRequest request: MXKeyVerificationRequest) {
+        self.showVerifyByScanning(keyVerificationRequest: request, animated: true)
+    }
+    
     func userVerificationStartCoordinator(_ coordinator: UserVerificationStartCoordinatorType, didCompleteWithOutgoingTransaction transaction: MXSASTransaction) {
-        self.showVerify(transaction: transaction, animated: true)
+        self.showVerifyBySAS(transaction: transaction, animated: true)
     }
     
     func userVerificationStartCoordinator(_ coordinator: UserVerificationStartCoordinatorType, didTransactionCancelled transaction: MXSASTransaction) {
@@ -281,5 +302,24 @@ extension DeviceVerificationCoordinator: UserVerificationStartCoordinatorDelegat
     
     func userVerificationStartCoordinatorDidCancel(_ coordinator: UserVerificationStartCoordinatorType) {
         self.delegate?.deviceVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
+    }
+}
+
+extension DeviceVerificationCoordinator: KeyVerificationVerifyByScanningCoordinatorDelegate {
+    
+    func keyVerificationVerifyByScanningCoordinatorDidCancel(_ coordinator: KeyVerificationVerifyByScanningCoordinatorType) {
+         self.delegate?.deviceVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
+    }
+    
+    func keyVerificationVerifyByScanningCoordinatorCannotScan(_ coordinator: KeyVerificationVerifyByScanningCoordinatorType) {
+        self.showVerified(animated: true)
+    }
+    
+    func keyVerificationVerifyByScanningCoordinatorDidCompleteQRCodeVerification(_ coordinator: KeyVerificationVerifyByScanningCoordinatorType) {
+        self.showVerified(animated: true)
+    }
+    
+    func keyVerificationVerifyByScanningCoordinator(_ coordinator: KeyVerificationVerifyByScanningCoordinatorType, didCompleteWithSASTransaction transaction: MXSASTransaction) {
+        self.showVerifyBySAS(transaction: transaction, animated: true)
     }
 }

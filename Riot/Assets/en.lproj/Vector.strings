@@ -1140,6 +1140,9 @@
 
 // MARK: - Key Verification
 
+"key_verification_bootstrap_not_setup_title" = "Error";
+"key_verification_bootstrap_not_setup_message" = "You have to bootstrap cross-signing";
+
 // Tiles
 
 "key_verification_tile_request_incoming_title" = "Verification request";
@@ -1161,6 +1164,18 @@
 // Incoming key verification request
 
 "key_verification_incoming_request_incoming_alert_message" = "%@ wants to verify";
+
+// MARK: QR code
+
+"key_verification_verify_qr_code_title" = "Verify by scanning";
+"key_verification_verify_qr_code_information" = "Scan the code to securely verify each other.";
+"key_verification_verify_qr_code_scan_code_action" = "Scan their code";
+"key_verification_verify_qr_code_cannot_scan_action" = "Can't scan?";
+
+"key_verification_verify_qr_code_other_scan_my_code_title" = "Did the other user successfully scan the QR code?";
+
+"key_verification_verify_qr_code_scan_other_code_success_title" = "Code validated!";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "QR code has been successfully validated.";
 
 // MARK: - User verification
 
