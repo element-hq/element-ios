@@ -79,9 +79,7 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
         
         let qrCodePlayloadData: Data?
         let canShowScanAction: Bool
-        
-        // TODO: QRcode fetch existing Qr code transaction
-//        let qrCodeTransaction: MXQRCodeTransaction? = nil
+                
         self.qrCodeTransaction = self.keyVerificationManager.qrCodeTransaction(withTransactionId: self.keyVerificationRequest.requestId)
         
         if let supportedVerificationMethods = self.keyVerificationRequest.myMethods {
