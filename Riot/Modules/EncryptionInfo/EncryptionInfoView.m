@@ -22,9 +22,9 @@
 
 #import "AppDelegate.h"
 
-@interface EncryptionInfoView() <DeviceVerificationCoordinatorBridgePresenterDelegate>
+@interface EncryptionInfoView() <KeyVerificationCoordinatorBridgePresenterDelegate>
 {
-    DeviceVerificationCoordinatorBridgePresenter *deviceVerificationCoordinatorBridgePresenter;
+    KeyVerificationCoordinatorBridgePresenter *keyVerificationCoordinatorBridgePresenter;
 }
 
 @end
@@ -59,11 +59,11 @@
         && rootViewController)
     {
         // Redirect to the interactive device verification flow
-        deviceVerificationCoordinatorBridgePresenter = [[DeviceVerificationCoordinatorBridgePresenter alloc] initWithSession:self.mxSession];
-        deviceVerificationCoordinatorBridgePresenter.delegate = self;
+        keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:self.mxSession];
+        keyVerificationCoordinatorBridgePresenter.delegate = self;
 
         // Show it on the root view controller
-        [deviceVerificationCoordinatorBridgePresenter presentFrom:rootViewController otherUserId:self.mxDeviceInfo.userId otherDeviceId:self.mxDeviceInfo.deviceId animated:YES];
+        [keyVerificationCoordinatorBridgePresenter presentFrom:rootViewController otherUserId:self.mxDeviceInfo.userId otherDeviceId:self.mxDeviceInfo.deviceId animated:YES];
     }
     else
     {
@@ -71,10 +71,10 @@
     }
 }
 
-- (void)deviceVerificationCoordinatorBridgePresenterDelegateDidComplete:(DeviceVerificationCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId {
+- (void)keyVerificationCoordinatorBridgePresenterDelegateDidComplete:(KeyVerificationCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId {
 
-    [deviceVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-    deviceVerificationCoordinatorBridgePresenter = nil;
+    [keyVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    keyVerificationCoordinatorBridgePresenter = nil;
 
     // Eject like MXKEncryptionInfoView does
     [self removeFromSuperview];

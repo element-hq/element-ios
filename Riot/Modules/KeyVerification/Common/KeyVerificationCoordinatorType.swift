@@ -1,5 +1,5 @@
-// File created from ScreenTemplate
-// $ createScreen.sh DeviceVerification/Loading DeviceVerificationDataLoading
+// File created from FlowTemplate
+// $ createRootCoordinator.sh DeviceVerification DeviceVerification DeviceVerificationStart
 /*
  Copyright 2019 New Vector Ltd
  
@@ -18,10 +18,11 @@
 
 import Foundation
 
-/// DeviceVerificationDataLoadingViewController view state
-enum DeviceVerificationDataLoadingViewState {
-    case loading
-    case loaded
-    case error(Error)
-    case errorMessage(String)
+protocol KeyVerificationCoordinatorDelegate: class {
+    func keyVerificationCoordinatorDidComplete(_ coordinator: KeyVerificationCoordinatorType, otherUserId: String, otherDeviceId: String)
+}
+
+/// `KeyVerificationCoordinatorType` is a protocol describing a Coordinator that handle key verification navigation flow.
+protocol KeyVerificationCoordinatorType: Coordinator, Presentable {
+    var delegate: KeyVerificationCoordinatorDelegate? { get }
 }

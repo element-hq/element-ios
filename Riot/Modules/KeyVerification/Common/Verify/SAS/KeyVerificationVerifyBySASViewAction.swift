@@ -1,5 +1,5 @@
 // File created from ScreenTemplate
-// $ createScreen.sh DeviceVerification/Loading DeviceVerificationDataLoading
+// $ createScreen.sh DeviceVerification/Verify DeviceVerificationVerify
 /*
  Copyright 2019 New Vector Ltd
  
@@ -18,8 +18,10 @@
 
 import Foundation
 
-/// DeviceVerificationDataLoadingViewController view actions exposed to view model
-enum DeviceVerificationDataLoadingViewAction {
+/// KeyVerificationVerifyBySASViewController view actions exposed to view model
+enum KeyVerificationVerifyBySASViewAction {
     case loadData
+    case confirm
+    case complete
     case cancel
 }

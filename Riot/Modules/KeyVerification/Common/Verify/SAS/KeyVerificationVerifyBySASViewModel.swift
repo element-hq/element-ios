@@ -18,7 +18,7 @@
 
 import Foundation
 
-final class DeviceVerificationVerifyViewModel: DeviceVerificationVerifyViewModelType {
+final class KeyVerificationVerifyBySASViewModel: KeyVerificationVerifyBySASViewModelType {
     
     // MARK: - Properties
     
@@ -29,8 +29,8 @@ final class DeviceVerificationVerifyViewModel: DeviceVerificationVerifyViewModel
     
     // MARK: Public
 
-    weak var viewDelegate: DeviceVerificationVerifyViewModelViewDelegate?
-    weak var coordinatorDelegate: DeviceVerificationVerifyViewModelCoordinatorDelegate?
+    weak var viewDelegate: KeyVerificationVerifyBySASViewModelViewDelegate?
+    weak var coordinatorDelegate: KeyVerificationVerifyBySASViewModelCoordinatorDelegate?
     
     let emojis: [MXEmojiRepresentation]?
     let decimal: String?
@@ -51,17 +51,17 @@ final class DeviceVerificationVerifyViewModel: DeviceVerificationVerifyViewModel
     
     // MARK: - Public
     
-    func process(viewAction: DeviceVerificationVerifyViewAction) {
+    func process(viewAction: KeyVerificationVerifyBySASViewAction) {
         switch viewAction {
         case .loadData:
             self.registerTransactionDidStateChangeNotification(transaction: transaction)
         case .confirm:
             self.confirmTransaction()
         case .complete:
-            self.coordinatorDelegate?.deviceVerificationVerifyViewModelDidComplete(self)
+            self.coordinatorDelegate?.keyVerificationVerifyViewModelDidComplete(self)
         case .cancel:
             self.cancelTransaction()
-            self.coordinatorDelegate?.deviceVerificationVerifyViewModelDidCancel(self)
+            self.coordinatorDelegate?.keyVerificationVerifyViewModelDidCancel(self)
         }
     }
     
@@ -77,8 +77,8 @@ final class DeviceVerificationVerifyViewModel: DeviceVerificationVerifyViewModel
         self.transaction.cancel(with: MXTransactionCancelCode.user())
     }
     
-    private func update(viewState: DeviceVerificationVerifyViewState) {
-        self.viewDelegate?.deviceVerificationVerifyViewModel(self, didUpdateViewState: viewState)
+    private func update(viewState: KeyVerificationVerifyViewState) {
+        self.viewDelegate?.keyVerificationVerifyBySASViewModel(self, didUpdateViewState: viewState)
     }
 
     // MARK: - MXKeyVerificationTransactionDidChange
@@ -100,7 +100,7 @@ final class DeviceVerificationVerifyViewModel: DeviceVerificationVerifyViewModel
         case MXSASTransactionStateVerified:
             self.unregisterTransactionDidStateChangeNotification()
             self.update(viewState: .loaded)
-            self.coordinatorDelegate?.deviceVerificationVerifyViewModelDidComplete(self)
+            self.coordinatorDelegate?.keyVerificationVerifyViewModelDidComplete(self)
         case MXSASTransactionStateCancelled:
             guard let reason = transaction.reasonCancelCode else {
                 return
