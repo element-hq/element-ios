@@ -1011,3 +1011,12 @@
 "user_verification_session_details_verify_action_current_user" = "Vérifier";
 "user_verification_session_details_verify_action_other_user" = "Vérifier manuellement";
 "security_settings_crypto_sessions_loading" = "Chargement des sessions…";
+"key_verification_bootstrap_not_setup_title" = "Erreur";
+"key_verification_bootstrap_not_setup_message" = "Vous devez configurer la signature croisée";
+"key_verification_verify_qr_code_title" = "Vérifier en scannant";
+"key_verification_verify_qr_code_information" = "Scannez le code pour vous vérifier mutuellement de façon sécurisée.";
+"key_verification_verify_qr_code_scan_code_action" = "Scannez leur code";
+"key_verification_verify_qr_code_cannot_scan_action" = "Impossible de scanner ?";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "L’autre utilisateur a-t-il réussi à scanner le code QR ?";
+"key_verification_verify_qr_code_scan_other_code_success_title" = "Code validé !";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "Le code QR a bien été validé.";
