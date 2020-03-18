@@ -983,3 +983,12 @@
 "user_verification_session_details_verify_action_current_user" = "Verifica";
 "user_verification_session_details_verify_action_other_user" = "Verifica manualmente";
 "security_settings_crypto_sessions_loading" = "Caricamento sessioni…";
+"key_verification_bootstrap_not_setup_title" = "Errore";
+"key_verification_bootstrap_not_setup_message" = "Devi inizializzare la firma incrociata";
+"key_verification_verify_qr_code_title" = "Verifica scansionando";
+"key_verification_verify_qr_code_information" = "Scansiona il codice per verificarvi in modo sicuro.";
+"key_verification_verify_qr_code_scan_code_action" = "Scansiona il suo codice";
+"key_verification_verify_qr_code_cannot_scan_action" = "Non riesci a scansionare?";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "L'altro utente è riuscito a scansionare il codice QR?";
+"key_verification_verify_qr_code_scan_other_code_success_title" = "Codice validato!";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "Il codice QR è stato validato correttamente.";
