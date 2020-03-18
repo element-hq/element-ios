@@ -975,3 +975,12 @@
 "user_verification_session_details_additional_information_untrusted_current_user" = "Os nad ydych chi wedi mewn gofnodi i'r sesiwn hon, gall fod eich cyfrif mewn peryg.";
 "user_verification_session_details_verify_action_current_user" = "Gwirio";
 "user_verification_session_details_verify_action_other_user" = "Gwirio â llaw";
+"key_verification_bootstrap_not_setup_title" = "Gwall";
+"key_verification_bootstrap_not_setup_message" = "Mae'n rhaid i chi ymlwytho croes-lofnodi";
+"key_verification_verify_qr_code_title" = "Gwirio drwy sganio";
+"key_verification_verify_qr_code_information" = "Sganiwch y côd i wirio'ch gilydd yn ddiogel.";
+"key_verification_verify_qr_code_scan_code_action" = "Sganiwch eu côd";
+"key_verification_verify_qr_code_cannot_scan_action" = "Methu sganio?";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "A sganwyd y defnyddiwr arall u côd QR yn llwyddianus?";
+"key_verification_verify_qr_code_scan_other_code_success_title" = "Côd yn ddilys!";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "Mae'r côd QR wedi'i brofi'n ddilys.";
