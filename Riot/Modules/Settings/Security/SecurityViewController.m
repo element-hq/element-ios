@@ -335,34 +335,33 @@ UIDocumentInteractionControllerDelegate>
     return cryptoInformationString;
 }
 
-- (NSAttributedString*)crossSigningStatus
+- (NSAttributedString*)crossSigningInformation
 {
-    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-    MXCrossSigning *crossSigning = account.mxSession.crypto.crossSigning;
-    MXCrossSigningInfo *myUserCrossSigningKeys = crossSigning.myUserCrossSigningKeys;
+    MXCrossSigning *crossSigning = self.mainSession.crypto.crossSigning;
+    
+    NSString *crossSigningInformation;
+    switch (crossSigning.state)
+    {
+        case MXCrossSigningStateNotBootstrapped:
+            crossSigningInformation = @"Cross-signing is not yet set up.";
+            break;
+        case MXCrossSigningStateCrossSigningExists:
+            crossSigningInformation = @"Your account has a cross-signing identity, but it is not yet trusted by this session.";
+            break;
+        case MXCrossSigningStateTrustCrossSigning:
+            crossSigningInformation = @"Cross-signing is enabled. You can trust other users and your other sessions based on cross-signing but you cannot cross-sign from this session because it does not have cross-signing private keys.";
+            break;
+        case MXCrossSigningStateCanCrossSign:
+        case MXCrossSigningStateCanCrossSignAsynchronously:
+            crossSigningInformation =@"Cross-signing is enabled.";
+            break;
+    }
 
-    // Crypto information
-    NSMutableAttributedString *cryptoInformationString = [NSMutableAttributedString new];
-
-    NSString *crossSigningEnabled = [NSString stringWithFormat:@"Cross-signing is %@.\n",
-                                     crossSigning.isBootstrapped ? @"enabled" :
-                                     myUserCrossSigningKeys ? @"enabled in read-only" : @"disabled"];
-
-    [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                     initWithString:crossSigningEnabled
-                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
-                                                                  NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
-
-
-    NSString *crossSigningKeysTrust = [NSString stringWithFormat:@"Keys are %@.",
-                                       myUserCrossSigningKeys.trustLevel.isVerified ? @"trusted" : @"not trusted"];
-
-    [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                     initWithString:crossSigningKeysTrust
-                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
-                                                                  NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
-
-    return cryptoInformationString;
+    return [[NSAttributedString alloc] initWithString:crossSigningInformation
+                                           attributes:@{
+                                                        NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
+                                                        NSFontAttributeName: [UIFont systemFontOfSize:17]
+                                                        }];
 }
 
 - (void)loadDevices
@@ -623,7 +622,7 @@ UIDocumentInteractionControllerDelegate>
             case CROSSSIGNING_INFO:
             {
                 MXKTableViewCellWithTextView *cryptoCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
-                cryptoCell.mxkTextView.attributedText = [self crossSigningStatus];
+                cryptoCell.mxkTextView.attributedText = [self crossSigningInformation];
                 cell = cryptoCell;
                 break;
             }
