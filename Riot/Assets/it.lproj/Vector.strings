@@ -365,7 +365,7 @@
 "settings_password_updated" = "La tua password è stata aggiornata";
 "settings_crypto_device_name" = "Nome sessione: ";
 "settings_crypto_device_id" = "\nID sessione: ";
-"settings_crypto_device_key" = "Chiave sessione:\n";
+"settings_crypto_device_key" = "\nChiave sessione:\n";
 "settings_crypto_export" = "Esporta chiavi";
 "settings_crypto_blacklist_unverified_devices" = "Cifratura solo per le sessioni verificate";
 "settings_deactivate_my_account" = "Disattiva il mio account";
@@ -992,3 +992,5 @@
 "key_verification_verify_qr_code_other_scan_my_code_title" = "L'altro utente è riuscito a scansionare il codice QR?";
 "key_verification_verify_qr_code_scan_other_code_success_title" = "Codice validato!";
 "key_verification_verify_qr_code_scan_other_code_success_message" = "Il codice QR è stato validato correttamente.";
+"security_settings_crosssigning" = "FIRMA INCROCIATA";
+"security_settings_cryptography" = "CRITTOGRAFIA";
