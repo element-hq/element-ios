@@ -118,14 +118,14 @@ final class UserVerificationCoordinator: NSObject, UserVerificationCoordinatorTy
     
     private func presentDeviceVerification(for deviceId: String) {
         
-        let deviceVerificationCoordinator = DeviceVerificationCoordinator(navigationRouter: self.navigationRouter, session: self.session, userId: self.userId, otherDeviceId: deviceId)
-        deviceVerificationCoordinator.delegate = self
-        deviceVerificationCoordinator.start()
+        let keyVerificationCoordinator = KeyVerificationCoordinator(navigationRouter: self.navigationRouter, session: self.session, userId: self.userId, otherDeviceId: deviceId)
+        keyVerificationCoordinator.delegate = self
+        keyVerificationCoordinator.start()
         
-        self.add(childCoordinator: deviceVerificationCoordinator)
+        self.add(childCoordinator: keyVerificationCoordinator)
         
-        self.navigationRouter.push(deviceVerificationCoordinator, animated: true, popCompletion: {
-            self.remove(childCoordinator: deviceVerificationCoordinator)
+        self.navigationRouter.push(keyVerificationCoordinator, animated: true, popCompletion: {
+            self.remove(childCoordinator: keyVerificationCoordinator)
         })
     }
     
@@ -173,9 +173,9 @@ extension UserVerificationCoordinator: UserVerificationSessionStatusCoordinatorD
 }
 
 // MARK: - UserVerificationCoordinatorDelegate
-extension UserVerificationCoordinator: DeviceVerificationCoordinatorDelegate {
+extension UserVerificationCoordinator: KeyVerificationCoordinatorDelegate {
     
-    func deviceVerificationCoordinatorDidComplete(_ coordinator: DeviceVerificationCoordinatorType, otherUserId: String, otherDeviceId: String) {
+    func keyVerificationCoordinatorDidComplete(_ coordinator: KeyVerificationCoordinatorType, otherUserId: String, otherDeviceId: String) {
         self.presenter.toPresentable().dismiss(animated: true) {
             self.remove(childCoordinator: coordinator)
         }

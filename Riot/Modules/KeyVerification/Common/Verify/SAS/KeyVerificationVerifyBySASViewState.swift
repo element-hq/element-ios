@@ -18,12 +18,11 @@
 
 import Foundation
 
-protocol DeviceVerificationVerifyCoordinatorDelegate: class {
-    func deviceVerificationVerifyCoordinatorDidComplete(_ coordinator: DeviceVerificationVerifyCoordinatorType)
-    func deviceVerificationVerifyCoordinatorDidCancel(_ coordinator: DeviceVerificationVerifyCoordinatorType)
-}
-
-/// `DeviceVerificationVerifyCoordinatorType` is a protocol describing a Coordinator that handle key backup setup passphrase navigation flow.
-protocol DeviceVerificationVerifyCoordinatorType: Coordinator, Presentable {
-    var delegate: DeviceVerificationVerifyCoordinatorDelegate? { get }
+/// KeyVerificationVerifyBySASViewController view state
+enum KeyVerificationVerifyViewState {
+    case loading
+    case loaded // verified
+    case cancelled(MXTransactionCancelCode)
+    case cancelledByMe(MXTransactionCancelCode)
+    case error(Error)
 }

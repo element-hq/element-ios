@@ -34,7 +34,7 @@
 #define TABLEVIEW_SECTION_HEADER_HEIGHT   28
 #define TABLEVIEW_SECTION_HEADER_HEIGHT_WHEN_HIDDEN 0.01f
 
-@interface RoomMemberDetailsViewController () <UIGestureRecognizerDelegate, DeviceTableViewCellDelegate, RoomMemberTitleViewDelegate, DeviceVerificationCoordinatorBridgePresenterDelegate>
+@interface RoomMemberDetailsViewController () <UIGestureRecognizerDelegate, DeviceTableViewCellDelegate, RoomMemberTitleViewDelegate, KeyVerificationCoordinatorBridgePresenterDelegate>
 {
     RoomMemberTitleView* memberTitleView;
     
@@ -64,7 +64,7 @@
      */
     NSArray<MXDeviceInfo *> *devicesArray;
     NSInteger devicesIndex;
-    DeviceVerificationCoordinatorBridgePresenter *deviceVerificationCoordinatorBridgePresenter;
+    KeyVerificationCoordinatorBridgePresenter *keyVerificationCoordinatorBridgePresenter;
 
     
     /**
@@ -1350,10 +1350,10 @@
 {
     if (verificationStatus == MXDeviceVerified)
     {
-        deviceVerificationCoordinatorBridgePresenter = [[DeviceVerificationCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
-        deviceVerificationCoordinatorBridgePresenter.delegate = self;
+        keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+        keyVerificationCoordinatorBridgePresenter.delegate = self;
 
-        [deviceVerificationCoordinatorBridgePresenter presentFrom:self otherUserId:deviceTableViewCell.deviceInfo.userId otherDeviceId:deviceTableViewCell.deviceInfo.deviceId animated:YES];
+        [keyVerificationCoordinatorBridgePresenter presentFrom:self otherUserId:deviceTableViewCell.deviceInfo.userId otherDeviceId:deviceTableViewCell.deviceInfo.deviceId animated:YES];
     }
     else
     {
@@ -1373,12 +1373,12 @@
     [self viewDidLayoutSubviews];
 }
 
-#pragma mark - DeviceVerificationCoordinatorBridgePresenterDelegate
+#pragma mark - KeyVerificationCoordinatorBridgePresenterDelegate
 
-- (void)deviceVerificationCoordinatorBridgePresenterDelegateDidComplete:(DeviceVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
+- (void)keyVerificationCoordinatorBridgePresenterDelegateDidComplete:(KeyVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
 {
-    [deviceVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-    deviceVerificationCoordinatorBridgePresenter = nil;
+    [keyVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    keyVerificationCoordinatorBridgePresenter = nil;
 }
 
 @end

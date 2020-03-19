@@ -156,7 +156,7 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
         
         self.update(viewState: .loading)
         
-        self.session.crypto.keyVerificationManager.beginKeyVerification(from: self.keyVerificationRequest, method: MXKeyVerificationMethodSAS, success: { [weak self] (deviceVerificationTransaction) in
+        self.session.crypto.keyVerificationManager.beginKeyVerification(from: self.keyVerificationRequest, method: MXKeyVerificationMethodSAS, success: { [weak self] (keyVerificationTransaction) in
                 guard let self = self else {
                     return
                 }
@@ -164,7 +164,7 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
                 // Remove pending QR code transaction, as we are going to use SAS verification
                 self.removePendingQRCodeTransaction()
             
-                if deviceVerificationTransaction is MXOutgoingSASTransaction == false {
+                if keyVerificationTransaction is MXOutgoingSASTransaction == false {
                     NSLog("[KeyVerificationVerifyByScanningViewModel] SAS transaction should be outgoing")
                     self.unregisterTransactionDidStateChangeNotification()
                     self.update(viewState: .error(KeyVerificationVerifyByScanningViewModelError.unknown))

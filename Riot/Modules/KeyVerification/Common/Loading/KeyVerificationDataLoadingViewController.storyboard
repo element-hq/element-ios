@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Device Verification Data Loading View Controller-->
+        <!--Key Verification Data Loading View Controller-->
         <scene sceneID="EyC-m5-6uM">
             <objects>
-                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="dBQ-CG-VDL" customClass="DeviceVerificationDataLoadingViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="dBQ-CG-VDL" customClass="KeyVerificationDataLoadingViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ht4-fu-3rS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

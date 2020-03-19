@@ -39,7 +39,7 @@
 @property (nonatomic, weak) id keyVerificationRequestDidChangeNotificationObserver;
 
 // Observe key verification transaction changes
-@property (nonatomic, weak) id deviceVerificationTransactionDidChangeNotificationObserver;
+@property (nonatomic, weak) id keyVerificationTransactionDidChangeNotificationObserver;
 
 // Timer used to debounce cells refresh
 @property (nonatomic, strong) NSTimer *refreshCellsTimer;
@@ -86,7 +86,7 @@
         }];
         
         [self registerKeyVerificationRequestNotification];
-        [self registerDeviceVerificationTransactionNotification];
+        [self registerKeyVerificationTransactionNotification];
         [self registerTrustLevelDidChangeNotifications];
         
         self.encryptionTrustLevel = RoomEncryptionTrustLevelUnknown;
@@ -156,9 +156,9 @@
         [[NSNotificationCenter defaultCenter] removeObserver:self.keyVerificationRequestDidChangeNotificationObserver];
     }
     
-    if (self.deviceVerificationTransactionDidChangeNotificationObserver)
+    if (self.keyVerificationTransactionDidChangeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:self.deviceVerificationTransactionDidChangeNotificationObserver];
+        [[NSNotificationCenter defaultCenter] removeObserver:self.keyVerificationTransactionDidChangeNotificationObserver];
     }
     
     [super destroy];
@@ -670,18 +670,18 @@
                                                                 }];
 }
 
-- (void)registerDeviceVerificationTransactionNotification
+- (void)registerKeyVerificationTransactionNotification
 {
-    self.deviceVerificationTransactionDidChangeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:MXKeyVerificationTransactionDidChangeNotification
+    self.keyVerificationTransactionDidChangeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:MXKeyVerificationTransactionDidChangeNotification
                                                                                                                         object:nil
                                                                                                                          queue:[NSOperationQueue mainQueue]
                                                                                                                     usingBlock:^(NSNotification *notification)
                                                                        {
-                                                                           MXKeyVerificationTransaction *deviceVerificationTransaction = (MXKeyVerificationTransaction*)notification.object;
+                                                                           MXKeyVerificationTransaction *keyVerificationTransaction = (MXKeyVerificationTransaction*)notification.object;
                                                                            
-                                                                           if ([deviceVerificationTransaction.dmRoomId isEqualToString:self.roomId])
+                                                                           if ([keyVerificationTransaction.dmRoomId isEqualToString:self.roomId])
                                                                            {
-                                                                               RoomBubbleCellData *roomBubbleCellData = [self roomBubbleCellDataForEventId:deviceVerificationTransaction.dmEventId];
+                                                                               RoomBubbleCellData *roomBubbleCellData = [self roomBubbleCellDataForEventId:keyVerificationTransaction.dmEventId];
                                                                                
                                                                                roomBubbleCellData.isKeyVerificationOperationPending = NO;
                                                                                roomBubbleCellData.keyVerification = nil;
