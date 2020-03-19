@@ -268,7 +268,7 @@
 "settings_password_updated" = "Fjalëkalimi juaj u përditësua";
 "settings_crypto_device_name" = "Emër sesioni: ";
 "settings_crypto_device_id" = "\nID sesioni: ";
-"settings_crypto_device_key" = "Kyç sesioni:\n";
+"settings_crypto_device_key" = "\nKyç sesioni:\n";
 "settings_crypto_export" = "Eksporto kyçe";
 "settings_crypto_blacklist_unverified_devices" = "Fshehtëzoje vetëm për sesione të verifikuar";
 // Room Details
@@ -1005,3 +1005,12 @@
 "user_verification_session_details_verify_action_current_user" = "Verifikojeni";
 "user_verification_session_details_verify_action_other_user" = "Verifikojeni dorazi";
 "security_settings_crypto_sessions_loading" = "Po ngarkohen sesione…";
+"security_settings_cryptography" = "KRIPTOGRAFI";
+"key_verification_bootstrap_not_setup_title" = "Gabim";
+"key_verification_verify_qr_code_title" = "Verifikojeni me skanim";
+"key_verification_verify_qr_code_information" = "Skanoni kodin që të verifikoni në mënyrë të sigurt njëri-tjetrin.";
+"key_verification_verify_qr_code_scan_code_action" = "Skanoni kodin e tyre";
+"key_verification_verify_qr_code_cannot_scan_action" = "S’skanoni dot?";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "A e skanoi me sukses përdoruesi tjetër kodin QR?";
+"key_verification_verify_qr_code_scan_other_code_success_title" = "Kodi u vlerësua!";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "Kodi QR u vlerësua me sukses.";
