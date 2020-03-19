@@ -305,7 +305,7 @@
 "settings_password_updated" = "Votre mot de passe a été modifié";
 "settings_crypto_device_name" = "Nom de la session : ";
 "settings_crypto_device_id" = "\nIdentifiant de la session : ";
-"settings_crypto_device_key" = "Clé de la session :\n";
+"settings_crypto_device_key" = "\nClé de la session :\n";
 "settings_crypto_export" = "Exporter les clés";
 "settings_crypto_blacklist_unverified_devices" = "Chiffrer uniquement vers les sessions vérifiées";
 // Room Details
@@ -1020,3 +1020,5 @@
 "key_verification_verify_qr_code_other_scan_my_code_title" = "L’autre utilisateur a-t-il réussi à scanner le code QR ?";
 "key_verification_verify_qr_code_scan_other_code_success_title" = "Code validé !";
 "key_verification_verify_qr_code_scan_other_code_success_message" = "Le code QR a bien été validé.";
+"security_settings_crosssigning" = "SIGNATURE CROISÉE";
+"security_settings_cryptography" = "CRYPTOGRAPHIE";
