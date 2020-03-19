@@ -352,7 +352,7 @@
 "settings_send_crash_report" = "Bidali kraskatze eta erabilera datu anonimoak";
 "settings_crypto_device_name" = "Saioaren izena: ";
 "settings_crypto_device_id" = "\nSaioaren ID-a: ";
-"settings_crypto_device_key" = "Saioaren gakoa:\n";
+"settings_crypto_device_key" = "\nSaioaren gakoa:\n";
 "settings_crypto_export" = "Esportatu gakoak";
 "settings_crypto_blacklist_unverified_devices" = "Zifratu egiaztatutako saioentzat soilik";
 "room_details_people" = "Kideak";
@@ -996,3 +996,14 @@
 "user_verification_session_details_additional_information_untrusted_current_user" = "Ez baduzu saio hau zuk hasi, agian baten bat zure kontuan sartu da.";
 "user_verification_session_details_verify_action_current_user" = "Egiaztatu";
 "user_verification_session_details_verify_action_other_user" = "Eskuzko egiaztaketa";
+"security_settings_crosssigning" = "ZEHARKAKO SINATZEA";
+"security_settings_cryptography" = "KRIPTOGRAFIA";
+"key_verification_bootstrap_not_setup_title" = "Errorea";
+"key_verification_bootstrap_not_setup_message" = "Zeharkako sinatzea ezarri behar duzu";
+"key_verification_verify_qr_code_title" = "Egiaztatu eskaneatuz";
+"key_verification_verify_qr_code_information" = "Eskaneatu kodea elkar egiaztatzeko.";
+"key_verification_verify_qr_code_scan_code_action" = "Eskaneatu bestearen kodea";
+"key_verification_verify_qr_code_cannot_scan_action" = "Ezin eskaneatu?";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "Beste erabiltzaileak QR kodea ongi eskaneatu du?";
+"key_verification_verify_qr_code_scan_other_code_success_title" = "Kodea balioztatuta!";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "QR kodea ongi balioztatu da.";
