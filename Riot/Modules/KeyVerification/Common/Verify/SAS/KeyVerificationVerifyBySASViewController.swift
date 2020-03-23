@@ -18,7 +18,7 @@
 
 import UIKit
 
-final class DeviceVerificationVerifyViewController: UIViewController {
+final class KeyVerificationVerifyBySASViewController: UIViewController {
 
     // MARK: - Constants
     
@@ -38,15 +38,15 @@ final class DeviceVerificationVerifyViewController: UIViewController {
 
     // MARK: Private
 
-    private var viewModel: DeviceVerificationVerifyViewModelType!
+    private var viewModel: KeyVerificationVerifyBySASViewModelType!
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
 
     // MARK: - Setup
     
-    class func instantiate(with viewModel: DeviceVerificationVerifyViewModelType) -> DeviceVerificationVerifyViewController {
-        let viewController = StoryboardScene.DeviceVerificationVerifyViewController.initialScene.instantiate()
+    class func instantiate(with viewModel: KeyVerificationVerifyBySASViewModelType) -> KeyVerificationVerifyBySASViewController {
+        let viewController = StoryboardScene.KeyVerificationVerifyBySASViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
         viewController.theme = ThemeService.shared().theme
         return viewController
@@ -156,7 +156,7 @@ final class DeviceVerificationVerifyViewController: UIViewController {
         self.continueButton.setTitle(VectorL10n.continue, for: .normal)
     }
 
-    private func render(viewState: DeviceVerificationVerifyViewState) {
+    private func render(viewState: KeyVerificationVerifyViewState) {
         switch viewState {
         case .loading:
             self.renderLoading()
@@ -221,15 +221,15 @@ final class DeviceVerificationVerifyViewController: UIViewController {
 
 
 // MARK: - DeviceVerificationVerifyViewModelViewDelegate
-extension DeviceVerificationVerifyViewController: DeviceVerificationVerifyViewModelViewDelegate {
+extension KeyVerificationVerifyBySASViewController: KeyVerificationVerifyBySASViewModelViewDelegate {
 
-    func deviceVerificationVerifyViewModel(_ viewModel: DeviceVerificationVerifyViewModelType, didUpdateViewState viewSate: DeviceVerificationVerifyViewState) {
+    func keyVerificationVerifyBySASViewModel(_ viewModel: KeyVerificationVerifyBySASViewModelType, didUpdateViewState viewSate: KeyVerificationVerifyViewState) {
         self.render(viewState: viewSate)
     }
 }
 
 
-extension DeviceVerificationVerifyViewController: UICollectionViewDataSource {
+extension KeyVerificationVerifyBySASViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let emojis = self.viewModel.emojis else {

@@ -1,5 +1,5 @@
-// File created from FlowTemplate
-// $ createRootCoordinator.sh DeviceVerification DeviceVerification DeviceVerificationStart
+// File created from ScreenTemplate
+// $ createScreen.sh DeviceVerification/Loading DeviceVerificationDataLoading
 /*
  Copyright 2019 New Vector Ltd
  
@@ -18,11 +18,10 @@
 
 import Foundation
 
-protocol DeviceVerificationCoordinatorDelegate: class {
-    func deviceVerificationCoordinatorDidComplete(_ coordinator: DeviceVerificationCoordinatorType, otherUserId: String, otherDeviceId: String)
-}
-
-/// `DeviceVerificationCoordinatorType` is a protocol describing a Coordinator that handle keybackup setup navigation flow.
-protocol DeviceVerificationCoordinatorType: Coordinator, Presentable {
-    var delegate: DeviceVerificationCoordinatorDelegate? { get }
+/// KeyVerificationDataLoadingViewController view state
+enum KeyVerificationDataLoadingViewState {
+    case loading
+    case loaded
+    case error(Error)
+    case errorMessage(String)
 }

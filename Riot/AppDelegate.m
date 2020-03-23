@@ -88,7 +88,7 @@ NSString *const AppDelegateDidValidateEmailNotification = @"AppDelegateDidValida
 NSString *const AppDelegateDidValidateEmailNotificationSIDKey = @"AppDelegateDidValidateEmailNotificationSIDKey";
 NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDelegateDidValidateEmailNotificationClientSecretKey";
 
-@interface AppDelegate () <PKPushRegistryDelegate, GDPRConsentViewControllerDelegate, DeviceVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate>
+@interface AppDelegate () <PKPushRegistryDelegate, GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate>
 {
     /**
      Reachability observer
@@ -133,14 +133,14 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     RoomKeyRequestViewController *roomKeyRequestViewController;
 
     /**
-     Incoming device verification requests observers
+     Incoming key verification requests observers
      */
-    id incomingDeviceVerificationObserver;
+    id incomingKeyVerificationObserver;
 
     /**
-     If any the currently displayed device verification dialog
+     If any the currently displayed key verification dialog
      */
-    DeviceVerificationCoordinatorBridgePresenter *deviceVerificationCoordinatorBridgePresenter;
+    KeyVerificationCoordinatorBridgePresenter *keyVerificationCoordinatorBridgePresenter;
 
     /**
      Account picker used in case of multiple account.
@@ -2919,7 +2919,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             {
                 // Check if we need to display a key share dialog
                 [self checkPendingRoomKeyRequests];
-                [self checkPendingIncomingDeviceVerificationsInSession:mxSession];
+                [self checkPendingIncomingKeyVerificationsInSession:mxSession];
             }
         }
         
@@ -3111,8 +3111,8 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         // Enable listening of incoming key share requests
         [self enableRoomKeyRequestObserver:mxSession];
 
-        // Enable listening of incoming device verification requests
-        [self enableIncomingDeviceVerificationObserver:mxSession];
+        // Enable listening of incoming key verification requests
+        [self enableIncomingKeyVerificationObserver:mxSession];
     }
 }
 
@@ -3135,8 +3135,8 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     // Disable listening of incoming key share requests
     [self disableRoomKeyRequestObserver:mxSession];
 
-    // Disable listening of incoming device verification requests
-    [self disableIncomingDeviceVerificationObserver:mxSession];
+    // Disable listening of incoming key verification requests
+    [self disableIncomingKeyVerificationObserver:mxSession];
     
     [mxSessionArray removeObject:mxSession];
     
@@ -4835,11 +4835,11 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     }
 }
 
-#pragma mark - Incoming device verification requests handling
+#pragma mark - Incoming key verification handling
 
-- (void)enableIncomingDeviceVerificationObserver:(MXSession*)mxSession
+- (void)enableIncomingKeyVerificationObserver:(MXSession*)mxSession
 {
-    incomingDeviceVerificationObserver =
+    incomingKeyVerificationObserver =
     [[NSNotificationCenter defaultCenter] addObserverForName:MXKeyVerificationManagerNewTransactionNotification
                                                       object:mxSession.crypto.keyVerificationManager
                                                        queue:[NSOperationQueue mainQueue]
@@ -4848,32 +4848,32 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
          NSObject *object = notif.userInfo[MXKeyVerificationManagerNotificationTransactionKey];
          if ([object isKindOfClass:MXIncomingSASTransaction.class])
          {
-             [self checkPendingIncomingDeviceVerificationsInSession:mxSession];
+             [self checkPendingIncomingKeyVerificationsInSession:mxSession];
          }
      }];
 }
 
-- (void)disableIncomingDeviceVerificationObserver:(MXSession*)mxSession
+- (void)disableIncomingKeyVerificationObserver:(MXSession*)mxSession
 {
-    if (incomingDeviceVerificationObserver)
+    if (incomingKeyVerificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:incomingDeviceVerificationObserver];
-        incomingDeviceVerificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:incomingKeyVerificationObserver];
+        incomingKeyVerificationObserver = nil;
     }
 }
 
-// Check if an incoming device verification dialog must be displayed for the given session
-- (void)checkPendingIncomingDeviceVerificationsInSession:(MXSession*)mxSession
+// Check if an incoming key verification dialog must be displayed for the given session
+- (void)checkPendingIncomingKeyVerificationsInSession:(MXSession*)mxSession
 {
     if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive)
     {
-        NSLog(@"[AppDelegate][MXKeyVerification] checkPendingIncomingDeviceVerificationsInSession: called while the app is not active. Ignore it.");
+        NSLog(@"[AppDelegate][MXKeyVerification] checkPendingIncomingKeyVerificationsInSession: called while the app is not active. Ignore it.");
         return;
     }
 
     [mxSession.crypto.keyVerificationManager transactions:^(NSArray<MXKeyVerificationTransaction *> * _Nonnull transactions) {
 
-        NSLog(@"[AppDelegate][MXKeyVerification] checkPendingIncomingDeviceVerificationsInSession: transactions: %@", transactions);
+        NSLog(@"[AppDelegate][MXKeyVerification] checkPendingIncomingKeyVerificationsInSession: transactions: %@", transactions);
 
         for (MXKeyVerificationTransaction *transaction in transactions)
         {
@@ -4882,7 +4882,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                 MXIncomingSASTransaction *incomingTransaction = (MXIncomingSASTransaction*)transaction;
                 if (incomingTransaction.state == MXSASTransactionStateIncomingShowAccept)
                 {
-                    [self presentIncomingDeviceVerification:incomingTransaction inSession:mxSession];
+                    [self presentIncomingKeyVerification:incomingTransaction inSession:mxSession];
                     break;
                 }
             }
@@ -4890,12 +4890,12 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     }];
 }
 
-// Check all opened MXSessions for incoming device verification dialog
-- (void)checkPendingIncomingDeviceVerifications
+// Check all opened MXSessions for incoming key verification dialog
+- (void)checkPendingIncomingKeyVerifications
 {
     for (MXSession *mxSession in mxSessionArray)
     {
-        [self checkPendingIncomingDeviceVerificationsInSession:mxSession];
+        [self checkPendingIncomingKeyVerificationsInSession:mxSession];
     }
 }
 
@@ -4904,46 +4904,46 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 {
     BOOL presented = NO;
     
-    if (!deviceVerificationCoordinatorBridgePresenter)
+    if (!keyVerificationCoordinatorBridgePresenter)
     {
         NSLog(@"[AppDelegate] presentIncomingKeyVerificationRequest");
         
         UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
         
-        deviceVerificationCoordinatorBridgePresenter = [[DeviceVerificationCoordinatorBridgePresenter alloc] initWithSession:session];
-        deviceVerificationCoordinatorBridgePresenter.delegate = self;
+        keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:session];
+        keyVerificationCoordinatorBridgePresenter.delegate = self;
         
-        [deviceVerificationCoordinatorBridgePresenter presentFrom:presentingViewController incomingKeyVerificationRequest:incomingKeyVerificationRequest animated:YES];
+        [keyVerificationCoordinatorBridgePresenter presentFrom:presentingViewController incomingKeyVerificationRequest:incomingKeyVerificationRequest animated:YES];
         
         presented = YES;
     }
     else
     {
-        NSLog(@"[AppDelegate][MXKeyVerification] presentIncomingDeviceVerification: Controller already presented.");
+        NSLog(@"[AppDelegate][MXKeyVerification] presentIncomingKeyVerificationRequest: Controller already presented.");
     }
     
     return presented;
 }
 
-- (BOOL)presentIncomingDeviceVerification:(MXIncomingSASTransaction*)transaction inSession:(MXSession*)mxSession
+- (BOOL)presentIncomingKeyVerification:(MXIncomingSASTransaction*)transaction inSession:(MXSession*)mxSession
 {
-    NSLog(@"[AppDelegate][MXKeyVerification] presentIncomingDeviceVerification: %@", transaction);
+    NSLog(@"[AppDelegate][MXKeyVerification] presentIncomingKeyVerification: %@", transaction);
 
     BOOL presented = NO;
-    if (!deviceVerificationCoordinatorBridgePresenter)
+    if (!keyVerificationCoordinatorBridgePresenter)
     {
         UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
 
-        deviceVerificationCoordinatorBridgePresenter = [[DeviceVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
-        deviceVerificationCoordinatorBridgePresenter.delegate = self;
+        keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
+        keyVerificationCoordinatorBridgePresenter.delegate = self;
 
-        [deviceVerificationCoordinatorBridgePresenter presentFrom:presentingViewController incomingTransaction:transaction animated:YES];
+        [keyVerificationCoordinatorBridgePresenter presentFrom:presentingViewController incomingTransaction:transaction animated:YES];
 
         presented = YES;
     }
     else
     {
-        NSLog(@"[AppDelegate][MXKeyVerification] presentIncomingDeviceVerification: Controller already presented.");
+        NSLog(@"[AppDelegate][MXKeyVerification] presentIncomingKeyVerification: Controller already presented.");
     }
     return presented;
 }
@@ -4953,14 +4953,14 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     NSLog(@"[AppDelegate][MXKeyVerification] presentUserVerificationForRoomMember: %@", roomMember);
     
     BOOL presented = NO;
-    if (!deviceVerificationCoordinatorBridgePresenter)
+    if (!keyVerificationCoordinatorBridgePresenter)
     {
         UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
         
-        deviceVerificationCoordinatorBridgePresenter = [[DeviceVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
-        deviceVerificationCoordinatorBridgePresenter.delegate = self;
+        keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
+        keyVerificationCoordinatorBridgePresenter.delegate = self;
         
-        [deviceVerificationCoordinatorBridgePresenter presentFrom:presentingViewController roomMember:roomMember animated:YES];
+        [keyVerificationCoordinatorBridgePresenter presentFrom:presentingViewController roomMember:roomMember animated:YES];
         
         presented = YES;
     }
@@ -4971,13 +4971,13 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     return presented;
 }
 
-- (void)deviceVerificationCoordinatorBridgePresenterDelegateDidComplete:(DeviceVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
+- (void)keyVerificationCoordinatorBridgePresenterDelegateDidComplete:(KeyVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
 {
-    [deviceVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-        [self checkPendingIncomingDeviceVerifications];
+    [keyVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self checkPendingIncomingKeyVerifications];
     }];
     
-    deviceVerificationCoordinatorBridgePresenter = nil;
+    keyVerificationCoordinatorBridgePresenter = nil;
 }
 
 #pragma mark - GDPR consent

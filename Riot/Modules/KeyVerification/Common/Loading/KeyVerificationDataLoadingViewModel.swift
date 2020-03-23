@@ -18,13 +18,13 @@
 
 import Foundation
 
-enum DeviceVerificationDataLoadingViewModelError: Error {
+enum KeyVerificationDataLoadingViewModelError: Error {
     case unknown
     case transactionCancelled
     case transactionCancelledByMe(reason: MXTransactionCancelCode)
 }
 
-final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadingViewModelType {
+final class KeyVerificationDataLoadingViewModel: KeyVerificationDataLoadingViewModelType {
     
     // MARK: - Properties
     
@@ -41,8 +41,8 @@ final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadin
     
     // MARK: Public
 
-    weak var viewDelegate: DeviceVerificationDataLoadingViewModelViewDelegate?
-    weak var coordinatorDelegate: DeviceVerificationDataLoadingViewModelCoordinatorDelegate?
+    weak var viewDelegate: KeyVerificationDataLoadingViewModelViewDelegate?
+    weak var coordinatorDelegate: KeyVerificationDataLoadingViewModelCoordinatorDelegate?
     
     // MARK: - Setup
     
@@ -66,12 +66,12 @@ final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadin
     
     // MARK: - Public
     
-    func process(viewAction: DeviceVerificationDataLoadingViewAction) {
+    func process(viewAction: KeyVerificationDataLoadingViewAction) {
         switch viewAction {
         case .loadData:
             self.loadData()
         case .cancel:
-            self.coordinatorDelegate?.deviceVerificationDataLoadingViewModelDidCancel(self)
+            self.coordinatorDelegate?.keyVerificationDataLoadingViewModelDidCancel(self)
         }
     }
     
@@ -94,7 +94,7 @@ final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadin
                 return
             }
             
-            self.coordinatorDelegate?.deviceVerificationDataLoadingViewModel(self, didAcceptKeyVerificationRequest: keyVerificationRequest)
+            self.coordinatorDelegate?.keyVerificationDataLoadingViewModel(self, didAcceptKeyVerificationRequest: keyVerificationRequest)
             
         }, failure: { [weak self] (error) in
             guard let self = self else {
@@ -109,7 +109,7 @@ final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadin
             let otherUserId = self.otherUserId,
             let otherDeviceId = self.otherDeviceId else {
             self.update(viewState: .errorMessage(VectorL10n.deviceVerificationErrorCannotLoadDevice))
-            NSLog("[DeviceVerificationDataLoadingViewModel] Error session.crypto is nil")
+            NSLog("[KeyVerificationDataLoadingViewModel] Error session.crypto is nil")
             return
         }
         
@@ -124,7 +124,7 @@ final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadin
                 
                 if let otherDevice = usersDevicesMap?.object(forDevice: otherDeviceId, forUser: otherUserId) {
                     sself.update(viewState: .loaded)
-                    sself.coordinatorDelegate?.deviceVerificationDataLoadingViewModel(sself, didLoadUser: otherUser, device: otherDevice)
+                    sself.coordinatorDelegate?.keyVerificationDataLoadingViewModel(sself, didLoadUser: otherUser, device: otherDevice)
                 } else {
                     sself.update(viewState: .errorMessage(VectorL10n.deviceVerificationErrorCannotLoadDevice))
                 }
@@ -134,7 +134,7 @@ final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadin
                         return
                     }
                     
-                    let finalError = error ?? DeviceVerificationDataLoadingViewModelError.unknown
+                    let finalError = error ?? KeyVerificationDataLoadingViewModelError.unknown
                     
                     sself.update(viewState: .error(finalError))
             })
@@ -144,7 +144,7 @@ final class DeviceVerificationDataLoadingViewModel: DeviceVerificationDataLoadin
         }
     }
     
-    private func update(viewState: DeviceVerificationDataLoadingViewState) {
-        self.viewDelegate?.deviceVerificationDataLoadingViewModel(self, didUpdateViewState: viewState)
+    private func update(viewState: KeyVerificationDataLoadingViewState) {
+        self.viewDelegate?.keyVerificationDataLoadingViewModel(self, didUpdateViewState: viewState)
     }
 }

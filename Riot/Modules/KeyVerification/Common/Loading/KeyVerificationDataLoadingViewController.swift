@@ -18,7 +18,7 @@
 
 import UIKit
 
-final class DeviceVerificationDataLoadingViewController: UIViewController {
+final class KeyVerificationDataLoadingViewController: UIViewController {
     
     // MARK: - Properties
     
@@ -26,15 +26,15 @@ final class DeviceVerificationDataLoadingViewController: UIViewController {
     
     // MARK: Private
 
-    private var viewModel: DeviceVerificationDataLoadingViewModelType!
+    private var viewModel: KeyVerificationDataLoadingViewModelType!
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
 
     // MARK: - Setup
     
-    class func instantiate(with viewModel: DeviceVerificationDataLoadingViewModelType) -> DeviceVerificationDataLoadingViewController {
-        let viewController = StoryboardScene.DeviceVerificationDataLoadingViewController.initialScene.instantiate()
+    class func instantiate(with viewModel: KeyVerificationDataLoadingViewModelType) -> KeyVerificationDataLoadingViewController {
+        let viewController = StoryboardScene.KeyVerificationDataLoadingViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
         viewController.theme = ThemeService.shared().theme
         return viewController
@@ -97,7 +97,7 @@ final class DeviceVerificationDataLoadingViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
     }
 
-    private func render(viewState: DeviceVerificationDataLoadingViewState) {
+    private func render(viewState: KeyVerificationDataLoadingViewState) {
         switch viewState {
         case .loading:
             self.renderLoading()
@@ -124,9 +124,9 @@ final class DeviceVerificationDataLoadingViewController: UIViewController {
         var message: String?
         
         switch error {
-        case DeviceVerificationDataLoadingViewModelError.transactionCancelled:
+        case KeyVerificationDataLoadingViewModelError.transactionCancelled:
             message = VectorL10n.deviceVerificationCancelled
-        case DeviceVerificationDataLoadingViewModelError.transactionCancelledByMe(reason: let reason):
+        case KeyVerificationDataLoadingViewModelError.transactionCancelledByMe(reason: let reason):
             if reason.value != MXTransactionCancelCode.user().value {
                 message = VectorL10n.deviceVerificationCancelledByMe(reason.humanReadable)
             } else {
@@ -168,10 +168,10 @@ final class DeviceVerificationDataLoadingViewController: UIViewController {
 }
 
 
-// MARK: - DeviceVerificationDataLoadingViewModelViewDelegate
-extension DeviceVerificationDataLoadingViewController: DeviceVerificationDataLoadingViewModelViewDelegate {
+// MARK: - KeyVerificationDataLoadingViewModelViewDelegate
+extension KeyVerificationDataLoadingViewController: KeyVerificationDataLoadingViewModelViewDelegate {
 
-    func deviceVerificationDataLoadingViewModel(_ viewModel: DeviceVerificationDataLoadingViewModelType, didUpdateViewState viewSate: DeviceVerificationDataLoadingViewState) {
+    func keyVerificationDataLoadingViewModel(_ viewModel: KeyVerificationDataLoadingViewModelType, didUpdateViewState viewSate: KeyVerificationDataLoadingViewState) {
         self.render(viewState: viewSate)
     }
 }

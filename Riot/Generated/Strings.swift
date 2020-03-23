@@ -2730,6 +2730,10 @@ internal enum VectorL10n {
   internal static var securitySettingsBlacklistUnverifiedDevicesDescription: String { 
     return VectorL10n.tr("Vector", "security_settings_blacklist_unverified_devices_description") 
   }
+  /// CROSS-SIGNING
+  internal static var securitySettingsCrosssigning: String { 
+    return VectorL10n.tr("Vector", "security_settings_crosssigning") 
+  }
   /// MY SESSIONS
   internal static var securitySettingsCryptoSessions: String { 
     return VectorL10n.tr("Vector", "security_settings_crypto_sessions") 
@@ -2741,6 +2745,10 @@ internal enum VectorL10n {
   /// Loading sessions…
   internal static var securitySettingsCryptoSessionsLoading: String { 
     return VectorL10n.tr("Vector", "security_settings_crypto_sessions_loading") 
+  }
+  /// CRYPTOGRAPHY
+  internal static var securitySettingsCryptography: String { 
+    return VectorL10n.tr("Vector", "security_settings_cryptography") 
   }
   /// Export keys manually
   internal static var securitySettingsExportKeysManually: String { 
@@ -2898,7 +2906,7 @@ internal enum VectorL10n {
   internal static var settingsCryptoDeviceId: String { 
     return VectorL10n.tr("Vector", "settings_crypto_device_id") 
   }
-  /// Session key:\n
+  /// \nSession key:\n
   internal static var settingsCryptoDeviceKey: String { 
     return VectorL10n.tr("Vector", "settings_crypto_device_key") 
   }

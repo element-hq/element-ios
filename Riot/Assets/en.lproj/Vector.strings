@@ -497,7 +497,7 @@
 
 "settings_crypto_device_name" = "Session name: ";
 "settings_crypto_device_id" = "\nSession ID: ";
-"settings_crypto_device_key" = "\Session key:\n";
+"settings_crypto_device_key" = "\nSession key:\n";
 "settings_crypto_export" = "Export keys";
 "settings_crypto_blacklist_unverified_devices" = "Encrypt to verified sessions only";
 
@@ -560,10 +560,14 @@
 
 "security_settings_backup" = "MESSAGE BACKUP";
 
+"security_settings_crosssigning" = "CROSS-SIGNING";
+
+"security_settings_cryptography" = "CRYPTOGRAPHY";
+"security_settings_export_keys_manually" = "Export keys manually";
+
 "security_settings_advanced" = "ADVANCED";
 "security_settings_blacklist_unverified_devices" = "Never send messages to untrusted sessions";
 "security_settings_blacklist_unverified_devices_description" = "Verify all of a users sessions to mark them as trusted and send messages to them.";
-"security_settings_export_keys_manually" = "Export keys manually";
 
 
 // Manage session

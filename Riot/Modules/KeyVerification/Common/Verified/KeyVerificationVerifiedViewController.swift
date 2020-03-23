@@ -18,12 +18,12 @@
 
 import UIKit
 
-protocol DeviceVerificationVerifiedViewControllerDelegate: class {
-    func deviceVerificationVerifiedViewControllerDidTapSetupAction(_ viewController: DeviceVerificationVerifiedViewController)
-    func deviceVerificationVerifiedViewControllerDidCancel(_ viewController: DeviceVerificationVerifiedViewController)
+protocol KeyVerificationVerifiedViewControllerDelegate: class {
+    func keyVerificationVerifiedViewControllerDidTapSetupAction(_ viewController: KeyVerificationVerifiedViewController)
+    func keyVerificationVerifiedViewControllerDidCancel(_ viewController: KeyVerificationVerifiedViewController)
 }
 
-final class DeviceVerificationVerifiedViewController: UIViewController {
+final class KeyVerificationVerifiedViewController: UIViewController {
     
     // MARK: - Properties
     
@@ -43,12 +43,12 @@ final class DeviceVerificationVerifiedViewController: UIViewController {
     
     // MARK: Public
     
-    weak var delegate: DeviceVerificationVerifiedViewControllerDelegate?
+    weak var delegate: KeyVerificationVerifiedViewControllerDelegate?
     
     // MARK: - Setup
     
-    class func instantiate(with verificationKind: KeyVerificationKind) -> DeviceVerificationVerifiedViewController {
-        let viewController = StoryboardScene.DeviceVerificationVerifiedViewController.initialScene.instantiate()
+    class func instantiate(with verificationKind: KeyVerificationKind) -> KeyVerificationVerifiedViewController {
+        let viewController = StoryboardScene.KeyVerificationVerifiedViewController.initialScene.instantiate()
         viewController.theme = ThemeService.shared().theme
         viewController.verificationKind = verificationKind
         return viewController
@@ -136,6 +136,6 @@ final class DeviceVerificationVerifiedViewController: UIViewController {
     }
     
     @IBAction private func validateButtonAction(_ sender: Any) {
-        self.delegate?.deviceVerificationVerifiedViewControllerDidTapSetupAction(self)
+        self.delegate?.keyVerificationVerifiedViewControllerDidTapSetupAction(self)
     }
 }
