@@ -194,9 +194,9 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
             return
         }
         
-        guard let transactionDMEventId = transaction.dmEventId,
-            self.keyVerificationRequest.requestId == transactionDMEventId else {
-                return
+        guard self.keyVerificationRequest.requestId == transaction.transactionId else {
+            NSLog("[KeyVerificationVerifyByScanningViewModel] transactionDidStateChange: Not for our transaction (\(self.keyVerificationRequest.requestId)): \(transaction.transactionId)")
+            return
         }
         
         if let sasTransaction = transaction as? MXSASTransaction {
