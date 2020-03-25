@@ -220,6 +220,8 @@ UIDocumentInteractionControllerDelegate>
 
     // Refresh devices in parallel
     [self loadDevices];
+    
+    [self loadCrossSigning];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -397,6 +399,20 @@ UIDocumentInteractionControllerDelegate>
 
 
 #pragma mark - Cross-signing
+
+- (void)loadCrossSigning
+{
+    MXCrossSigning *crossSigning = self.mainSession.crypto.crossSigning;
+    
+    [crossSigning refreshStateWithSuccess:^(BOOL stateUpdated) {
+        if (stateUpdated)
+        {
+            [self reloadData];
+        }
+    } failure:^(NSError * _Nonnull error) {
+        NSLog(@"[SecurityVC] loadCrossSigning: Cannot refresh cross-signing state. Error: %@", error);
+    }];
+}
 
 - (NSInteger)numberOfRowsInCrossSigningSection
 {
