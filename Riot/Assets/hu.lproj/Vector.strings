@@ -351,7 +351,7 @@
 "settings_password_updated" = "A jelszavad frissítve";
 "settings_crypto_device_name" = "Munkamenet neve: ";
 "settings_crypto_device_id" = "\nMunkamenet azonosítója: ";
-"settings_crypto_device_key" = "Munkamenet kulcsa:\n";
+"settings_crypto_device_key" = "\nMunkamenet kulcsa:\n";
 "settings_crypto_export" = "Kulcsok kimentése";
 "settings_crypto_blacklist_unverified_devices" = "Csak ellenőrzött munkameneteknek titkosít";
 "settings_deactivate_my_account" = "Felhasználói fiókom felfüggesztése";
@@ -1013,3 +1013,14 @@
 "user_verification_session_details_verify_action_current_user" = "Ellenőriz";
 "user_verification_session_details_verify_action_other_user" = "Manuális ellenőrzés";
 "security_settings_crypto_sessions_loading" = "Munkamenet információk betöltése…";
+"security_settings_crosssigning" = "KERESZT-ALÁÍRÁS";
+"security_settings_cryptography" = "TITKOSÍTÁS";
+"key_verification_bootstrap_not_setup_title" = "Hiba";
+"key_verification_bootstrap_not_setup_message" = "A keresztaláírás beállításait meg kell adni";
+"key_verification_verify_qr_code_title" = "Ellenőrzés kód beolvasással";
+"key_verification_verify_qr_code_information" = "Olvasd be a kódot, hogy biztonságosan ellenőrizhessétek egymást.";
+"key_verification_verify_qr_code_scan_code_action" = "Kód beolvasása";
+"key_verification_verify_qr_code_cannot_scan_action" = "Nem lehet beolvasni?";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "A másik felhasználó sikeresen beolvasta a QR kódot?";
+"key_verification_verify_qr_code_scan_other_code_success_title" = "Kód ellenőrizve!";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "A QR kód sikeresen ellenőrizve.";
