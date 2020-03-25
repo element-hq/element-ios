@@ -573,7 +573,22 @@ UIDocumentInteractionControllerDelegate>
 
 - (void)requestCrossSigningPrivateKeys:(UITapGestureRecognizer *)recognizer
 {
-    [[AppDelegate theDelegate] showAlertWithTitle:@"Stay tuned!" message:@"USK & SSK gossiping is coming."];
+    UIButton *button;
+    if ([recognizer isKindOfClass:UIButton.class])
+    {
+        button = (UIButton*)recognizer;
+    }
+    button.enabled = NO;
+    
+    [self.mainSession.crypto.crossSigning requestPrivateKeysToDeviceIds:nil success:^{
+    } onPrivateKeysReceived:^{
+        button.enabled = YES;
+        [self loadCrossSigning];
+        [self reloadData];
+    } failure:^(NSError * _Nonnull error) {
+        NSLog(@"[SecurityVC] requestCrossSigningPrivateKeys: Cannot request cross-signing private keys. Error: %@", error);
+        button.enabled = YES;
+    }];
 }
 
 - (void)displayComingSoon
