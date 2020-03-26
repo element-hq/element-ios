@@ -26,10 +26,6 @@ protocol UserVerificationStartViewModelCoordinatorDelegate: class {
     
     func userVerificationStartViewModel(_ viewModel: UserVerificationStartViewModelType, otherDidAcceptRequest request: MXKeyVerificationRequest)
     
-    func userVerificationStartViewModel(_ viewModel: UserVerificationStartViewModelType, didCompleteWithIncomingTransaction transaction: MXSASTransaction)
-    
-    func userVerificationStartViewModel(_ viewModel: UserVerificationStartViewModelType, didTransactionCancelled transaction: MXSASTransaction)
-    
     func userVerificationStartViewModelDidCancel(_ viewModel: UserVerificationStartViewModelType)
 }
 
