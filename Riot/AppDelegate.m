@@ -253,6 +253,9 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 @property (nonatomic, strong) PKPushRegistry *pushRegistry;
 @property (nonatomic) NSMutableDictionary <NSNumber *, NSMutableArray <NSString *> *> *incomingPushEventIds;
 
+@property (nonatomic, weak) id userDidSignInOnNewDeviceObserver;
+@property (weak, nonatomic) UIAlertController *userNewSignInAlertController;
+
 @end
 
 @implementation AppDelegate
@@ -2860,6 +2863,9 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             
             // Do not warn for unknown devices if cross-signing is enabled
             mxSession.crypto.warnOnUnknowDevices = !RiotSettings.shared.enableCrossSigning;
+            
+            // Register to user new device sign in notification
+            [self registerUserDidSignInOnNewDeviceNotificationForSession:mxSession];
         }
         else if (mxSession.state == MXSessionStateClosed)
         {
@@ -4971,6 +4977,29 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     return presented;
 }
 
+- (BOOL)presentSelfVerificationForOtherDeviceId:(NSString*)deviceId inSession:(MXSession*)mxSession
+{
+    NSLog(@"[AppDelegate][MXKeyVerification] presentSelfVerificationForOtherDeviceId: %@", deviceId);
+    
+    BOOL presented = NO;
+    if (!keyVerificationCoordinatorBridgePresenter)
+    {
+        UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
+        
+        keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
+        keyVerificationCoordinatorBridgePresenter.delegate = self;
+        
+        [keyVerificationCoordinatorBridgePresenter presentFrom:presentingViewController otherUserId:mxSession.myUser.userId otherDeviceId:deviceId animated:YES];
+        
+        presented = YES;
+    }
+    else
+    {
+        NSLog(@"[AppDelegate][MXKeyVerification] presentUserVerificationForRoomMember: Controller already presented.");
+    }
+    return presented;
+}
+
 - (void)keyVerificationCoordinatorBridgePresenterDelegateDidComplete:(KeyVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
 {
     [keyVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:^{
@@ -4978,6 +5007,95 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     }];
     
     keyVerificationCoordinatorBridgePresenter = nil;
+}
+
+#pragma mark - New Sign In
+
+- (void)registerUserDidSignInOnNewDeviceNotificationForSession:(MXSession*)session
+{
+    MXCrossSigning *crossSigning = session.crypto.crossSigning;
+    
+    if (!crossSigning)
+    {
+        return;
+    }
+    
+    self.userDidSignInOnNewDeviceObserver = [NSNotificationCenter.defaultCenter addObserverForName:MXCrossSigningMyUserDidSignInOnNewDeviceNotification
+                                                    object:crossSigning
+                                                     queue:[NSOperationQueue mainQueue]
+                                                usingBlock:^(NSNotification *notification)
+     {
+         NSArray<NSString*> *deviceIds = notification.userInfo[MXCrossSigningNotificationDeviceIdsKey];
+         
+         [session.matrixRestClient devices:^(NSArray<MXDevice *> *devices) {
+             
+             NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.deviceId IN %@", deviceIds];
+             NSArray<MXDevice*> *newDevices = [devices filteredArrayUsingPredicate:predicate];
+             
+             NSArray *sortedDevices = [newDevices sortedArrayUsingComparator:^NSComparisonResult(MXDevice * _Nonnull device1, MXDevice *  _Nonnull device2) {
+                 
+                 if (device1.lastSeenTs == device2.lastSeenTs)
+                 {
+                     return NSOrderedSame;
+                 }
+                 
+                 return device1.lastSeenTs > device2.lastSeenTs ? NSOrderedDescending : NSOrderedAscending;
+             }];
+             
+             MXDevice *mostRecentDevice = sortedDevices.lastObject;
+             
+             if (mostRecentDevice)
+             {
+                 [self presentNewSignInAlertForDevice:mostRecentDevice inSession:session];
+             }
+             
+         } failure:^(NSError *error) {
+             NSLog(@"[AppDelegate][NewSignIn] Fail to fetch devices");
+         }];
+     }];
+}
+
+- (void)presentNewSignInAlertForDevice:(MXDevice*)device inSession:(MXSession*)session
+{
+    if (self.userNewSignInAlertController)
+    {
+        return;
+    }
+    
+    UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
+    
+    NSString *deviceInfo;
+    
+    if (device.displayName)
+    {
+        deviceInfo = [NSString stringWithFormat:@"%@ (%@)", device.displayName, device.deviceId];
+    }
+    else
+    {
+        deviceInfo = device.deviceId;
+    }
+    
+    NSString *alertMessage = [NSString stringWithFormat:NSLocalizedStringFromTable(@"device_verification_self_verify_alert_message", @"Vector", nil), deviceInfo];
+    
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"device_verification_self_verify_alert_title", @"Vector", nil)
+                                                                   message:alertMessage
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"continue", @"Vector", nil)
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * action) {
+                                                
+                                                [self presentSelfVerificationForOtherDeviceId:device.deviceId inSession:session];
+                                            }]];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"device_verification_self_verify_alert_cancel_action", @"Vector", nil)
+                                              style:UIAlertActionStyleCancel
+                                            handler:nil]];
+    
+    [presentingViewController presentViewController:alert animated:YES completion:nil];
+    
+    self.userNewSignInAlertController = alert;
 }
 
 #pragma mark - GDPR consent
