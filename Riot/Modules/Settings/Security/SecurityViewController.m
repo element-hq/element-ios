@@ -571,7 +571,7 @@ UIDocumentInteractionControllerDelegate>
     [buttonCell.mxkButton addTarget:self action:@selector(requestCrossSigningPrivateKeys:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (void)requestCrossSigningPrivateKeys:(UITapGestureRecognizer *)recognizer
+- (void)requestCrossSigningPrivateKeys:(id)recognizer
 {
     UIButton *button;
     if ([recognizer isKindOfClass:UIButton.class])
