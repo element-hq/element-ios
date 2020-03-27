@@ -67,7 +67,7 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
         case .acknowledgeOtherScannedMyCode(let acknowledgeOtherScannedMyCode):
             self.acknowledgeOtherScannedMyCode(acknowledgeOtherScannedMyCode)
         case .cancel:
-            self.coordinatorDelegate?.keyVerificationVerifyByScanningViewModelDidCancel(self)
+            self.cancel()
         case .acknowledgeMyUserScannedOtherCode:
             self.acknowledgeScanOtherCode()
         }
@@ -106,6 +106,20 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
     
     private func canShowScanAction(from verificationMethods: [String]) -> Bool {
         return verificationMethods.contains(MXKeyVerificationMethodQRCodeScan)
+    }
+    
+    private func cancel() {
+        self.cancelQRCodeTransaction()
+        self.keyVerificationRequest.cancel(with: MXTransactionCancelCode.user(), success: nil, failure: nil)
+        self.coordinatorDelegate?.keyVerificationVerifyByScanningViewModelDidCancel(self)
+    }
+    
+    private func cancelQRCodeTransaction() {
+        guard let transaction = self.qrCodeTransaction  else {
+            return
+        }
+        
+        transaction.cancel(with: MXTransactionCancelCode.user())
     }
     
     private func update(viewState: KeyVerificationVerifyByScanningViewState) {
