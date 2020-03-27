@@ -72,6 +72,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.KeyVerificationDataLoadingViewController>(storyboard: KeyVerificationDataLoadingViewController.self)
   }
+  internal enum KeyVerificationSelfVerifyStartViewController: StoryboardType {
+    internal static let storyboardName = "KeyVerificationSelfVerifyStartViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.KeyVerificationSelfVerifyStartViewController>(storyboard: KeyVerificationSelfVerifyStartViewController.self)
+  }
   internal enum KeyVerificationVerifiedViewController: StoryboardType {
     internal static let storyboardName = "KeyVerificationVerifiedViewController"
 
