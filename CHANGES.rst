@@ -11,6 +11,7 @@ Improvements:
  * RoomVC: For a room preview use room canonical alias if present when joining a room.
  * Update Matomo app id (#3001)
  * Verification by DM: Support QR code (#2921).
+ * Cross-Signing: Detect and expose new sign-ins (#2918).
 
 Bug fix:
  * Fix error when joining some public rooms, thanks to @chrismoos (PR #2888).

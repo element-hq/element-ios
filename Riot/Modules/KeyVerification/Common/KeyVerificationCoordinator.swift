@@ -112,6 +112,8 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
             rootCoordinator = self.createDataLoadingScreenCoordinator(with: incomingKeyVerificationRequest)
         } else if let roomMember = self.roomMember {
             rootCoordinator = self.createUserVerificationStartCoordinator(with: roomMember)
+        } else if self.session.myUser.userId == self.otherUserId {
+            rootCoordinator = self.createSelfVerificationCoordinator()
         } else {
             rootCoordinator = self.createDataLoadingScreenCoordinator()
         }
@@ -136,6 +138,14 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     }
     
     // MARK: - Private methods
+    
+    private func createSelfVerificationCoordinator() -> KeyVerificationSelfVerifyStartCoordinator {
+        let coordinator = KeyVerificationSelfVerifyStartCoordinator(session: self.session, otherDeviceId: self.otherDeviceId)
+        coordinator.delegate = self
+        coordinator.start()
+        
+        return coordinator
+    }
 
     private func createDataLoadingScreenCoordinator() -> KeyVerificationDataLoadingCoordinator {
         let coordinator = KeyVerificationDataLoadingCoordinator(session: self.session, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
@@ -321,5 +331,17 @@ extension KeyVerificationCoordinator: KeyVerificationVerifyByScanningCoordinator
     
     func keyVerificationVerifyByScanningCoordinator(_ coordinator: KeyVerificationVerifyByScanningCoordinatorType, didCompleteWithSASTransaction transaction: MXSASTransaction) {
         self.showVerifyBySAS(transaction: transaction, animated: true)
+    }
+}
+
+// MARK - KeyVerificationSelfVerifyStartCoordinatorDelegate
+extension KeyVerificationCoordinator: KeyVerificationSelfVerifyStartCoordinatorDelegate {
+    
+    func keyVerificationSelfVerifyStartCoordinator(_ coordinator: KeyVerificationSelfVerifyStartCoordinatorType, otherDidAcceptRequest request: MXKeyVerificationRequest) {
+        self.showVerifyByScanning(keyVerificationRequest: request, animated: true)
+    }
+    
+    func keyVerificationSelfVerifyStartCoordinatorDidCancel(_ coordinator: KeyVerificationSelfVerifyStartCoordinatorType) {
+        self.delegate?.keyVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
     }
 }

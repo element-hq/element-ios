@@ -279,6 +279,14 @@
 		B1A6C111238BD236002882FD /* SlidingModalContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A6C110238BD236002882FD /* SlidingModalContainerView.swift */; };
 		B1A6C113238BD245002882FD /* SlidingModalContainerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1A6C112238BD245002882FD /* SlidingModalContainerView.xib */; };
 		B1B12B2922942315002CB419 /* UITouch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B12B2822942315002CB419 /* UITouch.swift */; };
+		B1B336BE242B933700F95EC4 /* KeyVerificationSelfVerifyStartViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B336B6242B933300F95EC4 /* KeyVerificationSelfVerifyStartViewState.swift */; };
+		B1B336BF242B933700F95EC4 /* KeyVerificationSelfVerifyStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B336B7242B933300F95EC4 /* KeyVerificationSelfVerifyStartViewController.swift */; };
+		B1B336C0242B933700F95EC4 /* KeyVerificationSelfVerifyStartViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B336B8242B933400F95EC4 /* KeyVerificationSelfVerifyStartViewModelType.swift */; };
+		B1B336C1242B933700F95EC4 /* KeyVerificationSelfVerifyStartCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B336B9242B933500F95EC4 /* KeyVerificationSelfVerifyStartCoordinatorType.swift */; };
+		B1B336C2242B933700F95EC4 /* KeyVerificationSelfVerifyStartViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1B336BA242B933500F95EC4 /* KeyVerificationSelfVerifyStartViewController.storyboard */; };
+		B1B336C3242B933700F95EC4 /* KeyVerificationSelfVerifyStartCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B336BB242B933500F95EC4 /* KeyVerificationSelfVerifyStartCoordinator.swift */; };
+		B1B336C4242B933700F95EC4 /* KeyVerificationSelfVerifyStartViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B336BC242B933600F95EC4 /* KeyVerificationSelfVerifyStartViewAction.swift */; };
+		B1B336C5242B933700F95EC4 /* KeyVerificationSelfVerifyStartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B336BD242B933600F95EC4 /* KeyVerificationSelfVerifyStartViewModel.swift */; };
 		B1B5571820EE6C4D00210D55 /* CountryPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567A20EE6C4C00210D55 /* CountryPickerViewController.m */; };
 		B1B5571920EE6C4D00210D55 /* LanguagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567C20EE6C4C00210D55 /* LanguagePickerViewController.m */; };
 		B1B5571A20EE6C4D00210D55 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567E20EE6C4C00210D55 /* SettingsViewController.m */; };
@@ -1072,6 +1080,14 @@
 		B1A6C110238BD236002882FD /* SlidingModalContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingModalContainerView.swift; sourceTree = "<group>"; };
 		B1A6C112238BD245002882FD /* SlidingModalContainerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SlidingModalContainerView.xib; sourceTree = "<group>"; };
 		B1B12B2822942315002CB419 /* UITouch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITouch.swift; sourceTree = "<group>"; };
+		B1B336B6242B933300F95EC4 /* KeyVerificationSelfVerifyStartViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationSelfVerifyStartViewState.swift; sourceTree = "<group>"; };
+		B1B336B7242B933300F95EC4 /* KeyVerificationSelfVerifyStartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationSelfVerifyStartViewController.swift; sourceTree = "<group>"; };
+		B1B336B8242B933400F95EC4 /* KeyVerificationSelfVerifyStartViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationSelfVerifyStartViewModelType.swift; sourceTree = "<group>"; };
+		B1B336B9242B933500F95EC4 /* KeyVerificationSelfVerifyStartCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationSelfVerifyStartCoordinatorType.swift; sourceTree = "<group>"; };
+		B1B336BA242B933500F95EC4 /* KeyVerificationSelfVerifyStartViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = KeyVerificationSelfVerifyStartViewController.storyboard; sourceTree = "<group>"; };
+		B1B336BB242B933500F95EC4 /* KeyVerificationSelfVerifyStartCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationSelfVerifyStartCoordinator.swift; sourceTree = "<group>"; };
+		B1B336BC242B933600F95EC4 /* KeyVerificationSelfVerifyStartViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationSelfVerifyStartViewAction.swift; sourceTree = "<group>"; };
+		B1B336BD242B933600F95EC4 /* KeyVerificationSelfVerifyStartViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationSelfVerifyStartViewModel.swift; sourceTree = "<group>"; };
 		B1B5567920EE6C4C00210D55 /* CountryPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountryPickerViewController.h; sourceTree = "<group>"; };
 		B1B5567A20EE6C4C00210D55 /* CountryPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountryPickerViewController.m; sourceTree = "<group>"; };
 		B1B5567C20EE6C4C00210D55 /* LanguagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguagePickerViewController.m; sourceTree = "<group>"; };
@@ -2615,6 +2631,7 @@
 		B1B335112421496800B4A6B5 /* Device */ = {
 			isa = PBXGroup;
 			children = (
+				B1B336B5242B718B00F95EC4 /* SelfVerifyStart */,
 				324A2046225FC571004FE8B0 /* Incoming */,
 				3232AB96225730E100AD6A5C /* Start */,
 			);
@@ -2632,6 +2649,21 @@
 				B1BEE73D23E08AC30003A4CB /* SessionStatus */,
 			);
 			path = User;
+			sourceTree = "<group>";
+		};
+		B1B336B5242B718B00F95EC4 /* SelfVerifyStart */ = {
+			isa = PBXGroup;
+			children = (
+				B1B336B9242B933500F95EC4 /* KeyVerificationSelfVerifyStartCoordinatorType.swift */,
+				B1B336BB242B933500F95EC4 /* KeyVerificationSelfVerifyStartCoordinator.swift */,
+				B1B336BC242B933600F95EC4 /* KeyVerificationSelfVerifyStartViewAction.swift */,
+				B1B336B6242B933300F95EC4 /* KeyVerificationSelfVerifyStartViewState.swift */,
+				B1B336B8242B933400F95EC4 /* KeyVerificationSelfVerifyStartViewModelType.swift */,
+				B1B336BD242B933600F95EC4 /* KeyVerificationSelfVerifyStartViewModel.swift */,
+				B1B336B7242B933300F95EC4 /* KeyVerificationSelfVerifyStartViewController.swift */,
+				B1B336BA242B933500F95EC4 /* KeyVerificationSelfVerifyStartViewController.storyboard */,
+			);
+			path = SelfVerifyStart;
 			sourceTree = "<group>";
 		};
 		B1B5567620EE6C4C00210D55 /* Modules */ = {
@@ -4415,6 +4447,7 @@
 				B1B558EF20EF768F00210D55 /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.xib in Resources */,
 				B1B5573420EE6C4D00210D55 /* GroupDetailsViewController.xib in Resources */,
 				B1B557E420EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.xib in Resources */,
+				B1B336C2242B933700F95EC4 /* KeyVerificationSelfVerifyStartViewController.storyboard in Resources */,
 				B1B558F220EF768F00210D55 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				B1B558EA20EF768F00210D55 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				B1B558CD20EF768F00210D55 /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
@@ -4910,6 +4943,7 @@
 				32DB557D22FDADE50016329E /* ServiceTermsModalScreenCoordinatorType.swift in Sources */,
 				B1B5590520EF768F00210D55 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				3232ABA5225730E100AD6A5C /* DeviceVerificationStartViewModelType.swift in Sources */,
+				B1B336C1242B933700F95EC4 /* KeyVerificationSelfVerifyStartCoordinatorType.swift in Sources */,
 				B1B558DD20EF768F00210D55 /* RoomIncomingEncryptedTextMsgBubbleCell.m in Sources */,
 				B1098BE521ECE1FC000DDA48 /* Storyboards.swift in Sources */,
 				3232ABC2225B996200AD6A5C /* Themable.swift in Sources */,
@@ -5070,6 +5104,7 @@
 				329E746722CD02EA006F9797 /* BubbleReactionActionViewCell.swift in Sources */,
 				B1098BFB21ECFE65000DDA48 /* KeyBackupSetupCoordinatorType.swift in Sources */,
 				B1098BF721ECFE65000DDA48 /* PasswordStrength.swift in Sources */,
+				B1B336BE242B933700F95EC4 /* KeyVerificationSelfVerifyStartViewState.swift in Sources */,
 				B1BEE73423DF44A60003A4CB /* UserVerificationSessionsStatusViewModelType.swift in Sources */,
 				324A2052225FC571004FE8B0 /* DeviceVerificationIncomingViewAction.swift in Sources */,
 				B105778D2213051E00334B1E /* KeyBackupSetupSuccessFromRecoveryKeyViewController.swift in Sources */,
@@ -5078,6 +5113,7 @@
 				B1B5596620EF9E9B00210D55 /* RoomTableViewCell.m in Sources */,
 				B1C45A89232A8C2600165425 /* SettingsIdentityServerViewController.swift in Sources */,
 				B14F143322144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewModel.swift in Sources */,
+				B1B336C0242B933700F95EC4 /* KeyVerificationSelfVerifyStartViewModelType.swift in Sources */,
 				32A6001822C661100042C1D9 /* EditHistoryViewModel.swift in Sources */,
 				B1B558D020EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				B1B558CF20EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
@@ -5099,6 +5135,7 @@
 				B1B9DEED22EB34EF0065E677 /* ReactionHistoryCoordinator.swift in Sources */,
 				B1DCC62A22E60D1000625807 /* EmojiMartService.swift in Sources */,
 				B1B558C720EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
+				B1B336C5242B933700F95EC4 /* KeyVerificationSelfVerifyStartViewModel.swift in Sources */,
 				B1B558F020EF768F00210D55 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				926FA53F1F4C132000F826C2 /* MXSession+Riot.m in Sources */,
 				B125FE23231D5E4300B72806 /* SettingsDiscoveryViewState.swift in Sources */,
@@ -5109,10 +5146,12 @@
 				B1C335CD22F1C1320021BA8D /* CameraPresenter.swift in Sources */,
 				B1B558C820EF768F00210D55 /* RoomIncomingEncryptedAttachmentBubbleCell.m in Sources */,
 				B1B557C620EF5CD400210D55 /* DirectoryServerDetailTableViewCell.m in Sources */,
+				B1B336C4242B933700F95EC4 /* KeyVerificationSelfVerifyStartViewAction.swift in Sources */,
 				B1B5590920EF768F00210D55 /* RoomEmptyBubbleCell.m in Sources */,
 				324A2054225FC571004FE8B0 /* DeviceVerificationIncomingCoordinatorType.swift in Sources */,
 				B139C21F21FE5D6600BB68EC /* KeyBackupRecoverFromPassphraseViewAction.swift in Sources */,
 				B1DCC61822E5E17100625807 /* EmojiPickerViewState.swift in Sources */,
+				B1B336BF242B933700F95EC4 /* KeyVerificationSelfVerifyStartViewController.swift in Sources */,
 				B1CE83E32422817200D07506 /* VerifyEmojiCollectionViewCell.swift in Sources */,
 				B1C562DB228C0BB00037F12A /* RoomContextualMenuAction.swift in Sources */,
 				B1B5574720EE6C4D00210D55 /* UsersDevicesViewController.m in Sources */,
@@ -5146,6 +5185,7 @@
 				B1963B3822933BC800CBA17F /* AutosizedCollectionView.swift in Sources */,
 				B12D79FB23E2462200FACEDC /* UserVerificationStartCoordinator.swift in Sources */,
 				B169330320F3C98900746532 /* RoomBubbleCellData.m in Sources */,
+				B1B336C3242B933700F95EC4 /* KeyVerificationSelfVerifyStartCoordinator.swift in Sources */,
 				B1B557CC20EF5D8000210D55 /* DirectoryServerTableViewCell.m in Sources */,
 				B1963B2B228F1C4900CBA17F /* BubbleReactionsView.swift in Sources */,
 				B1B5575C20EE6C4D00210D55 /* DirectoryViewController.m in Sources */,

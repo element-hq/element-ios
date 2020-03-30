@@ -20,11 +20,7 @@ import Foundation
 
 protocol UserVerificationStartCoordinatorDelegate: class {
     
-    func userVerificationStartCoordinator(_ coordinator: UserVerificationStartCoordinatorType, otherDidAcceptRequest request: MXKeyVerificationRequest)
-    
-    func userVerificationStartCoordinator(_ coordinator: UserVerificationStartCoordinatorType, didCompleteWithOutgoingTransaction transaction: MXSASTransaction)
-    
-    func userVerificationStartCoordinator(_ coordinator: UserVerificationStartCoordinatorType, didTransactionCancelled transaction: MXSASTransaction)
+    func userVerificationStartCoordinator(_ coordinator: UserVerificationStartCoordinatorType, otherDidAcceptRequest request: MXKeyVerificationRequest)        
     
     func userVerificationStartCoordinatorDidCancel(_ coordinator: UserVerificationStartCoordinatorType)
 }

@@ -798,6 +798,30 @@ internal enum VectorL10n {
   internal static var deviceVerificationSecurityAdvice: String { 
     return VectorL10n.tr("Vector", "device_verification_security_advice") 
   }
+  /// This wasn't me
+  internal static var deviceVerificationSelfVerifyAlertCancelAction: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_alert_cancel_action") 
+  }
+  /// Use this session to verify your new one, granting it access to encrypted messages: %@\nIf you didn’t sign in to this session, your account may be compromised.
+  internal static func deviceVerificationSelfVerifyAlertMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "device_verification_self_verify_alert_message", p1)
+  }
+  /// New Sign In
+  internal static var deviceVerificationSelfVerifyAlertTitle: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_alert_title") 
+  }
+  /// Use this session to verify your new one, granting it access to encrypted messages.
+  internal static var deviceVerificationSelfVerifyStartInformation: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_start_information") 
+  }
+  /// Start verification
+  internal static var deviceVerificationSelfVerifyStartVerifyAction: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_start_verify_action") 
+  }
+  /// Waiting…
+  internal static var deviceVerificationSelfVerifyStartWaiting: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_start_waiting") 
+  }
   /// Verify by comparing a short text string
   internal static var deviceVerificationStartTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_start_title") 
