@@ -220,6 +220,8 @@ UIDocumentInteractionControllerDelegate>
 
     // Refresh devices in parallel
     [self loadDevices];
+    
+    [self loadCrossSigning];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -398,6 +400,20 @@ UIDocumentInteractionControllerDelegate>
 
 #pragma mark - Cross-signing
 
+- (void)loadCrossSigning
+{
+    MXCrossSigning *crossSigning = self.mainSession.crypto.crossSigning;
+    
+    [crossSigning refreshStateWithSuccess:^(BOOL stateUpdated) {
+        if (stateUpdated)
+        {
+            [self reloadData];
+        }
+    } failure:^(NSError * _Nonnull error) {
+        NSLog(@"[SecurityVC] loadCrossSigning: Cannot refresh cross-signing state. Error: %@", error);
+    }];
+}
+
 - (NSInteger)numberOfRowsInCrossSigningSection
 {
     NSInteger numberOfRowsInCrossSigningSection;
@@ -555,9 +571,24 @@ UIDocumentInteractionControllerDelegate>
     [buttonCell.mxkButton addTarget:self action:@selector(requestCrossSigningPrivateKeys:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (void)requestCrossSigningPrivateKeys:(UITapGestureRecognizer *)recognizer
+- (void)requestCrossSigningPrivateKeys:(id)recognizer
 {
-    [[AppDelegate theDelegate] showAlertWithTitle:@"Stay tuned!" message:@"USK & SSK gossiping is coming."];
+    UIButton *button;
+    if ([recognizer isKindOfClass:UIButton.class])
+    {
+        button = (UIButton*)recognizer;
+    }
+    button.enabled = NO;
+    
+    [self.mainSession.crypto.crossSigning requestPrivateKeysToDeviceIds:nil success:^{
+    } onPrivateKeysReceived:^{
+        button.enabled = YES;
+        [self loadCrossSigning];
+        [self reloadData];
+    } failure:^(NSError * _Nonnull error) {
+        NSLog(@"[SecurityVC] requestCrossSigningPrivateKeys: Cannot request cross-signing private keys. Error: %@", error);
+        button.enabled = YES;
+    }];
 }
 
 - (void)displayComingSoon
