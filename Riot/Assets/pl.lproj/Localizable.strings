@@ -54,3 +54,4 @@
 "VOICE_CONF_NAMED_FROM_USER" = "Połączenie grupowe z %@: '%@'";
 /* Incoming named video conference invite from a specific person */
 "VIDEO_CONF_NAMED_FROM_USER" = "Grupowe połączenie wideo z %@: '%@'";
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ wymaga weryfikacji";
