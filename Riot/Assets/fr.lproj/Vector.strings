@@ -1022,3 +1022,10 @@
 "key_verification_verify_qr_code_scan_other_code_success_message" = "Le code QR a bien été validé.";
 "security_settings_crosssigning" = "SIGNATURE CROISÉE";
 "security_settings_cryptography" = "CRYPTOGRAPHIE";
+"room_participants_action_security_status_loading" = "Chargement…";
+"device_verification_self_verify_alert_title" = "Nouvelle connexion";
+"device_verification_self_verify_alert_message" = "Utilisez cette session pour vérifier la nouvelle, ce qui lui permettra d’accéder aux messages chiffrés : %@\nSi vous ne vous êtes pas connecté à cette session, votre compte est peut-être compromis.";
+"device_verification_self_verify_alert_cancel_action" = "Ce n’était pas moi";
+"device_verification_self_verify_start_verify_action" = "Commencer la vérification";
+"device_verification_self_verify_start_information" = "Utilisez cette session pour vérifier la nouvelle, ce qui lui permettra d’accéder aux messages chiffrés.";
+"device_verification_self_verify_start_waiting" = "En attente…";
