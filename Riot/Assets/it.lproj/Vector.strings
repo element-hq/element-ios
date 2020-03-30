@@ -994,3 +994,10 @@
 "key_verification_verify_qr_code_scan_other_code_success_message" = "Il codice QR è stato validato correttamente.";
 "security_settings_crosssigning" = "FIRMA INCROCIATA";
 "security_settings_cryptography" = "CRITTOGRAFIA";
+"room_participants_action_security_status_loading" = "Caricamento…";
+"device_verification_self_verify_alert_title" = "Nuovo accesso";
+"device_verification_self_verify_alert_message" = "Usa questa sessione per verificare quella nuova, dandole l'accesso ai messaggi cifrati: %@\nSe non hai fatto l'accesso a questa sessione, il tuo account potrebbe essere compromesso.";
+"device_verification_self_verify_alert_cancel_action" = "Non ero io";
+"device_verification_self_verify_start_verify_action" = "Inizia la verifica";
+"device_verification_self_verify_start_information" = "Usa questa sessione per verificare quella nuova, dandole l'accesso ai messaggi cifrati.";
+"device_verification_self_verify_start_waiting" = "In attesa…";
