@@ -260,6 +260,7 @@
 "room_participants_action_security_status_verified" = "Verified";
 "room_participants_action_security_status_verify" = "Verify";
 "room_participants_action_security_status_warning" = "Warning";
+"room_participants_action_security_status_loading" = "Loading…";
 
 "room_participants_security_loading" = "Loading…";
 "room_participants_security_information_room_not_encrypted" = "Messages in this room are not end-to-end encrypted.";

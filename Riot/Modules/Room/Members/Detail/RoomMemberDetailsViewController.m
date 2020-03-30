@@ -720,19 +720,15 @@
     
     if (RiotSettings.shared.enableCrossSigning)
     {
-        switch (self.encryptionTrustLevel) {
-            case UserEncryptionTrustLevelUnknown:
-                securityActionsArray = @[@(MXKRoomMemberDetailsActionSecurityInformation)];
-                break;
-            case UserEncryptionTrustLevelNone:
-            case UserEncryptionTrustLevelNormal:
-            case UserEncryptionTrustLevelTrusted:
-            case UserEncryptionTrustLevelWarning:
-                securityActionsArray = @[@(MXKRoomMemberDetailsActionSecurity),
-                                         @(MXKRoomMemberDetailsActionSecurityInformation)];
-                break;
-            default:
-                break;
+        if (self.mxRoom.summary.isEncrypted)
+        {
+            securityActionsArray = @[@(MXKRoomMemberDetailsActionSecurity),
+                                     @(MXKRoomMemberDetailsActionSecurityInformation)];
+            
+        }
+        else
+        {
+            securityActionsArray = @[@(MXKRoomMemberDetailsActionSecurity)];
         }
     }
     
