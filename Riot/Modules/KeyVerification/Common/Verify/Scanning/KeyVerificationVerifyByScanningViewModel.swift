@@ -209,6 +209,7 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
         }
         
         guard self.keyVerificationRequest.requestId == transaction.transactionId else {
+            NSLog("[KeyVerificationVerifyByScanningViewModel] transactionDidStateChange: Not for our transaction (\(self.keyVerificationRequest.requestId)): \(transaction.transactionId)")
             return
         }
         

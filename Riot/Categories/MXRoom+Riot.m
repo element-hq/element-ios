@@ -328,7 +328,7 @@
 {
     UserEncryptionTrustLevel userEncryptionTrustLevel;
     
-    if (self.summary.isEncrypted && self.mxSession.crypto)
+    if (self.mxSession.crypto)
     {
         MXUsersTrustLevelSummary *usersTrustLevelSummary = [self.mxSession.crypto trustLevelSummaryForUserIds:@[userId]];
         
