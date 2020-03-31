@@ -1007,3 +1007,10 @@
 "key_verification_verify_qr_code_other_scan_my_code_title" = "Beste erabiltzaileak QR kodea ongi eskaneatu du?";
 "key_verification_verify_qr_code_scan_other_code_success_title" = "Kodea balioztatuta!";
 "key_verification_verify_qr_code_scan_other_code_success_message" = "QR kodea ongi balioztatu da.";
+"room_participants_action_security_status_loading" = "Kargatzen…";
+"device_verification_self_verify_alert_title" = "Saio berria";
+"device_verification_self_verify_alert_message" = "Erabili saio hau berria egiaztatzeko, zifratutako mezuetara sarbidea emanez: %@\nEz baduzu saio hau zuk hasi agian zure kontua konprometituta dago.";
+"device_verification_self_verify_alert_cancel_action" = "Ez naiz ni izan";
+"device_verification_self_verify_start_verify_action" = "Hasi egiaztaketa";
+"device_verification_self_verify_start_information" = "Erabili saio hau berria egiaztatzeko, honela mezu zifratuetara sarbidea emanez.";
+"device_verification_self_verify_start_waiting" = "Itxaroten…";
