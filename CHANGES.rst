@@ -13,6 +13,9 @@ Improvements:
  * Verification by DM: Support QR code (#2921).
  * Cross-Signing: Detect and expose new sign-ins (#2918).
 
+Changes in 0.10.5 (2020-04-01)
+===============================================
+
 Bug fix:
  * Fix error when joining some public rooms, thanks to @chrismoos (PR #2888).
  * Fix crash due to malformed widget (#2997).
