@@ -17,6 +17,7 @@ Bug fix:
  * Fix error when joining some public rooms, thanks to @chrismoos (PR #2888).
  * Fix crash due to malformed widget (#2997).
  * Push notifications: Avoid any automatic deactivation (vector-im/riot-ios#3017).
+ * Fix links breaking user out of SSO flow.
 
 Changes in 0.10.4 (2019-12-11)
 ===============================================
