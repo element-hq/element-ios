@@ -49,15 +49,15 @@ PODS:
   - MatomoTracker (7.2.0):
     - MatomoTracker/Core (= 7.2.0)
   - MatomoTracker/Core (7.2.0)
-  - MatrixKit (0.11.3):
+  - MatrixKit (0.11.4):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.11.3)
+    - MatrixKit/Core (= 0.11.4)
     - MatrixSDK (= 0.15.2)
     - SwiftUTI (~> 1.0.6)
-  - MatrixKit/AppExtension (0.11.3):
+  - MatrixKit/AppExtension (0.11.4):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - DTCoreText/Extension
@@ -65,7 +65,7 @@ PODS:
     - libPhoneNumber-iOS (~> 0.9.13)
     - MatrixSDK (= 0.15.2)
     - SwiftUTI (~> 1.0.6)
-  - MatrixKit/Core (0.11.3):
+  - MatrixKit/Core (0.11.4):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
@@ -108,8 +108,8 @@ DEPENDENCIES:
   - DGCollectionViewLeftAlignFlowLayout (~> 1.0.4)
   - GBDeviceInfo (~> 6.3.0)
   - MatomoTracker (~> 7.2.0)
-  - MatrixKit (= 0.11.3)
-  - MatrixKit/AppExtension (= 0.11.3)
+  - MatrixKit (= 0.11.4)
+  - MatrixKit/AppExtension (= 0.11.4)
   - MatrixSDK/JingleCallStack
   - MatrixSDK/SwiftSupport
   - OLMKit
@@ -165,7 +165,7 @@ SPEC CHECKSUMS:
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   MatomoTracker: 6f89e2561083685a360e223fb663e9ccd57c1d1a
-  MatrixKit: 5a20025b05490a70694b701e607ec75e0988af21
+  MatrixKit: 3db15f216e2de4d53b1405434028d44f42d4af22
   MatrixSDK: f83bd3c5519c1cb9ac3998f6423574cf528f0250
   OLMKit: 4ee0159d63feeb86d836fdcfefe418e163511639
   Realm: 5a1d9d47bfc101dd597668b1a8af4288a2557f6d
@@ -175,6 +175,6 @@ SPEC CHECKSUMS:
   SwiftUTI: 917993c124f8eac25e88ced0202fc58d7eb50fa8
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
 
-PODFILE CHECKSUM: 881048fb17d68dd834b18e23929482600daca7f3
+PODFILE CHECKSUM: c7b37d248a316ae786328d88148e3155fea6bee3
 
 COCOAPODS: 1.8.4
