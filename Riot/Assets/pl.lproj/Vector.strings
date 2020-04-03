@@ -48,7 +48,7 @@
 "auth_repeat_password_placeholder" = "Powtórz hasło";
 "auth_repeat_new_password_placeholder" = "Potwierdź swoje nowe hasło";
 "auth_home_server_placeholder" = "URL (np. https://matrix.org)";
-"auth_identity_server_placeholder" = "URL (np. https://matrix.org)";
+"auth_identity_server_placeholder" = "Adres URL (np. https://matrix.org)";
 "auth_invalid_login_param" = "Nieprawidłowa nazwa użytkownika i/lub hasło";
 "auth_invalid_user_name" = "Nazwa użytkownika może zawierać tylko litery, cyfry, kropki, myślniki i podkreślenia";
 "auth_invalid_email" = "To nie wygląda na poprawny adres e-mail";
@@ -417,7 +417,7 @@
 "room_details_access_section_invited_only" = "Tylko ludzie, którzy zostali zaproszeni";
 "room_details_new_flair_placeholder" = "Dodaj nowe ID społeczności (np. +foo%@)";
 "room_creation_keep_private" = "Zachowaj prywatny";
-"auth_email_not_found" = "Nie udało się wysłać e-maila: Ten adres e-mail nie został znaleziony";
+"auth_email_not_found" = "Nie udało się wysłać wiadomości e-mail: Adres e-mail nie został znaleziony";
 "auth_accept_policies" = "Przeczytaj i zaakceptuj zasady tego serwera domowego:";
 "room_creation_wait_for_creation" = "Pokój jest już tworzony. Proszę czekaj.";
 "room_creation_invite_another_user" = "Szukaj / zaproś przez ID Użytkownika, Nazwę lub e-mail";
