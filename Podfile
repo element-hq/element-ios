@@ -29,7 +29,7 @@ def import_MatrixKit
             pod 'MatrixSDK', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'xcode11'
             pod 'MatrixSDK/SwiftSupport', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'xcode11'
             pod 'MatrixSDK/JingleCallStack', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'xcode11'
-            pod 'MatrixKit', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => 'master'
+            pod 'MatrixKit', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => 'develop'
         else
             pod 'MatrixKit', $matrixKitVersion
             pod 'MatrixSDK/SwiftSupport'
@@ -48,7 +48,7 @@ def import_MatrixKitAppExtension
         if $matrixKitVersion == 'xcode11'
             pod 'MatrixSDK', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'xcode11'
             pod 'MatrixSDK/SwiftSupport', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'xcode11'
-            pod 'MatrixKit/AppExtension', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => 'master'
+            pod 'MatrixKit/AppExtension', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => 'develop'
         else
             pod 'MatrixKit/AppExtension', $matrixKitVersion
             pod 'MatrixSDK/SwiftSupport'
