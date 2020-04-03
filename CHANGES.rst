@@ -12,6 +12,7 @@ Improvements:
  * Update Matomo app id (#3001)
  * Verification by DM: Support QR code (#2921).
  * Cross-Signing: Detect and expose new sign-ins (#2918).
+ * Cross-signing: Complete security at the end of sign in process( #3003).
 
 Changes in 0.10.5 (2020-04-01)
 ===============================================
