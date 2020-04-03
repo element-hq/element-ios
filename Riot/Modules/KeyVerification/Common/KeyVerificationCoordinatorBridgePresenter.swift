@@ -56,47 +56,52 @@ final class KeyVerificationCoordinatorBridgePresenter: NSObject {
         
         NSLog("[KeyVerificationCoordinatorBridgePresenter] Present from \(viewController)")
         
-        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, otherUserId: otherUserId, otherDeviceId: otherDeviceId)
-        keyVerificationCoordinator.delegate = self
-        viewController.present(keyVerificationCoordinator.toPresentable(), animated: animated, completion: nil)
-        keyVerificationCoordinator.start()
-        
-        self.coordinator = keyVerificationCoordinator
+        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .verifyDevice(userId: otherUserId, deviceId: otherDeviceId))
+        self.present(coordinator: keyVerificationCoordinator, from: viewController, animated: animated)
     }
     
     func present(from viewController: UIViewController, roomMember: MXRoomMember, animated: Bool) {
         
         NSLog("[KeyVerificationCoordinatorBridgePresenter] Present from \(viewController)")
         
-        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, roomMember: roomMember)
-        keyVerificationCoordinator.delegate = self
-        viewController.present(keyVerificationCoordinator.toPresentable(), animated: animated, completion: nil)
-        keyVerificationCoordinator.start()
-        
-        self.coordinator = keyVerificationCoordinator
+        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .verifyUser(roomMember))
+        self.present(coordinator: keyVerificationCoordinator, from: viewController, animated: animated)
     }
 
     func present(from viewController: UIViewController, incomingTransaction: MXIncomingSASTransaction, animated: Bool) {
         
         NSLog("[KeyVerificationCoordinatorBridgePresenter] Present incoming verification from \(viewController)")
         
-        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, incomingTransaction: incomingTransaction)
-        keyVerificationCoordinator.delegate = self
-        viewController.present(keyVerificationCoordinator.toPresentable(), animated: animated, completion: nil)
-        keyVerificationCoordinator.start()
-
-        self.coordinator = keyVerificationCoordinator
-    }    
+        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .incomingSASTransaction(incomingTransaction))
+        self.present(coordinator: keyVerificationCoordinator, from: viewController, animated: animated)
+    }
     
     func present(from viewController: UIViewController, incomingKeyVerificationRequest: MXKeyVerificationRequest, animated: Bool) {
         
         NSLog("[KeyVerificationCoordinatorBridgePresenter] Present incoming key verification request from \(viewController)")
         
-        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, incomingKeyVerificationRequest: incomingKeyVerificationRequest)
+        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .incomingRequest(incomingKeyVerificationRequest))
+        self.present(coordinator: keyVerificationCoordinator, from: viewController, animated: animated)
+    }
+    
+    func presentCompleteSecurity(from viewController: UIViewController, animated: Bool) {
+        
+        NSLog("[KeyVerificationCoordinatorBridgePresenter] Present complete security from \(viewController)")
+        
+        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .completeSecurity)
+        self.present(coordinator: keyVerificationCoordinator, from: viewController, animated: animated)
+    }
+    
+    func pushCompleteSecurity(from navigationController: UINavigationController, animated: Bool) {
+        
+        NSLog("[KeyVerificationCoordinatorBridgePresenter] Push complete security from \(navigationController)")
+        
+        let navigationRouter = NavigationRouter(navigationController: navigationController)
+        
+        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .completeSecurity, navigationRouter: navigationRouter)
         keyVerificationCoordinator.delegate = self
-        viewController.present(keyVerificationCoordinator.toPresentable(), animated: animated, completion: nil)
-        keyVerificationCoordinator.start()
-
+        keyVerificationCoordinator.start() // Will trigger view controller push
+        
         self.coordinator = keyVerificationCoordinator
     }
 
@@ -114,6 +119,14 @@ final class KeyVerificationCoordinatorBridgePresenter: NSObject {
                 completion()
             }
         }
+    }
+    
+    private func present(coordinator keyVerificationCoordinator: KeyVerificationCoordinator, from viewController: UIViewController, animated: Bool) {
+        keyVerificationCoordinator.delegate = self
+        viewController.present(keyVerificationCoordinator.toPresentable(), animated: animated, completion: nil)
+        keyVerificationCoordinator.start()
+        
+        self.coordinator = keyVerificationCoordinator
     }
 }
 

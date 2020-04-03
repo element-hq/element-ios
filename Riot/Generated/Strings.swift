@@ -822,6 +822,18 @@ internal enum VectorL10n {
   internal static var deviceVerificationSelfVerifyStartWaiting: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_start_waiting") 
   }
+  /// Use an existing session to verify this new one, granting it access to encrypted messages.
+  internal static var deviceVerificationSelfVerifyWaitInformation: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_wait_information") 
+  }
+  /// Complete security
+  internal static var deviceVerificationSelfVerifyWaitTitle: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_wait_title") 
+  }
+  /// Waiting…
+  internal static var deviceVerificationSelfVerifyWaitWaiting: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_wait_waiting") 
+  }
   /// Verify by comparing a short text string
   internal static var deviceVerificationStartTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_start_title") 
@@ -3461,6 +3473,10 @@ internal enum VectorL10n {
   /// You'll lose your encrypted messages
   internal static var signOutNonExistingKeyBackupSignOutConfirmationAlertTitle: String { 
     return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_sign_out_confirmation_alert_title") 
+  }
+  /// Skip
+  internal static var skip: String { 
+    return VectorL10n.tr("Vector", "skip") 
   }
   /// Start
   internal static var start: String { 

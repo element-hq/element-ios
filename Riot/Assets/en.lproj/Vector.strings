@@ -57,6 +57,7 @@
 "send_to" = "Send to %@";
 "sending" = "Sending";
 "close" = "Close";
+"skip" = "Skip";
 
 // Accessibility
 "accessibility_checkbox_label" = "checkbox";
@@ -1035,6 +1036,12 @@
 "device_verification_self_verify_start_verify_action" = "Start verification";
 "device_verification_self_verify_start_information" = "Use this session to verify your new one, granting it access to encrypted messages.";
 "device_verification_self_verify_start_waiting" = "Waiting…";
+
+// MARK: Self verification wait
+
+"device_verification_self_verify_wait_title" = "Complete security";
+"device_verification_self_verify_wait_information" = "Use an existing session to verify this new one, granting it access to encrypted messages.";
+"device_verification_self_verify_wait_waiting" = "Waiting…";
 
 // MARK: Verify
 

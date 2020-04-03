@@ -700,9 +700,6 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
     // Observe wrong backup version
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBackupStateDidChangeNotification:) name:kMXKeyBackupDidStateChangeNotification object:nil];
-    
-    // Observe key verification request
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyVerificationRequestDidChangeNotification:) name:MXKeyVerificationManagerNewRequestNotification object:nil];
 
     // Resume all existing matrix sessions
     NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
@@ -720,136 +717,6 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     }
     
     [self handleLaunchAnimation];
-}
-
-- (void)keyVerificationRequestDidChangeNotification:(NSNotification *)notification
-{
-    if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground)
-    {
-        return;
-    }
-    
-    NSDictionary *userInfo = notification.userInfo;
-    
-    MXKeyVerificationRequest *keyVerificationRequest = userInfo[MXKeyVerificationManagerNotificationRequestKey];
-    
-    if ([keyVerificationRequest isKindOfClass:MXKeyVerificationByDMRequest.class])
-    {
-        MXKeyVerificationByDMRequest *keyVerificationByDMRequest = (MXKeyVerificationByDMRequest*)keyVerificationRequest;
-        
-        if (!keyVerificationByDMRequest.isFromMyUser && keyVerificationByDMRequest.state == MXKeyVerificationRequestStatePending)
-        {
-            MXKAccount *currentAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-            MXRoom *room = [currentAccount.mxSession roomWithRoomId:keyVerificationByDMRequest.roomId];
-            if (!room)
-            {
-                NSLog(@"[AppDelegate][KeyVerification] keyVerificationRequestDidChangeNotification: Unknown room");
-                return;
-            }
-            
-            NSString *sender = keyVerificationByDMRequest.otherUser;
-            
-            [room state:^(MXRoomState *roomState) {
-                
-                NSString *senderName = [roomState.members memberName:sender];
-                
-                if (self.incomingKeyVerificationRequestAlertController)
-                {
-                    [self.incomingKeyVerificationRequestAlertController dismissViewControllerAnimated:NO completion:nil];
-                }
-                
-                NSMutableString *senderInfo = [NSMutableString stringWithString:sender];
-                
-                if (senderName)
-                {
-                    [senderInfo appendFormat:@" (%@)", senderName];
-                }
-                
-                NSString *alertMessage = [NSString stringWithFormat:NSLocalizedStringFromTable(@"key_verification_incoming_request_incoming_alert_message", @"Vector", nil), senderInfo];
-                
-                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"key_verification_tile_request_incoming_title", @"Vector", nil)
-                                                                                         message:alertMessage
-                                                                                  preferredStyle:UIAlertControllerStyleAlert];
-                
-                [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"key_verification_tile_request_incoming_approval_accept", @"Vector", nil)
-                                                                    style:UIAlertActionStyleDefault
-                                                                  handler:^(UIAlertAction * action)
-                                            {
-                                                [self presentIncomingKeyVerificationRequest:keyVerificationByDMRequest inSession:self.mxSessions.firstObject];
-                                            }]];
-                
-                [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"key_verification_tile_request_incoming_approval_decline", @"Vector", nil)
-                                                                    style:UIAlertActionStyleDestructive
-                                                                  handler:^(UIAlertAction * action)
-                                            {
-                                                [keyVerificationByDMRequest cancelWithCancelCode:MXTransactionCancelCode.user success:^{
-                                                    
-                                                } failure:^(NSError * _Nonnull error) {
-                                                    NSLog(@"[AppDelegate][KeyVerification] Fail to cancel incoming key verification request with error: %@", error);
-                                                }];
-                                            }]];
-                
-                [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
-                                                                    style:UIAlertActionStyleCancel
-                                                                  handler:^(UIAlertAction * action)
-                                            {
-                                            }]];
-                
-                [self showNotificationAlert:alertController];
-                
-                self.incomingKeyVerificationRequestAlertController = alertController;
-            }];
-        }
-    }
-    else if ([keyVerificationRequest isKindOfClass:MXKeyVerificationByToDeviceRequest.class])
-    {
-        MXKeyVerificationByToDeviceRequest *keyVerificationByToDeviceRequest = (MXKeyVerificationByToDeviceRequest*)keyVerificationRequest;
-        
-        // We support only self verification
-        if (keyVerificationByToDeviceRequest.isFromMyUser
-            && !keyVerificationByToDeviceRequest.isFromMyDevice
-            && keyVerificationByToDeviceRequest.state == MXKeyVerificationRequestStatePending)
-        {
-            NSString *myUserId = keyVerificationByToDeviceRequest.otherUser;
-            MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:myUserId];
-            if (account)
-            {
-                MXUser *user = [account.mxSession userWithUserId:myUserId];
-                
-                NSString *senderInfo = [NSString stringWithFormat:@"%@ (%@)", user.displayname, user.userId];
-                
-                self.incomingKeyVerificationRequestAlertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"key_verification_tile_request_incoming_title", @"Vector", nil)
-                                                                                                         message:senderInfo
-                                                                                                  preferredStyle:UIAlertControllerStyleAlert];
-                
-                [self.incomingKeyVerificationRequestAlertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"key_verification_tile_request_incoming_approval_accept", @"Vector", nil)
-                                                                                                       style:UIAlertActionStyleDefault
-                                                                                                     handler:^(UIAlertAction * action)
-                                                                               {
-                                                                                   [self presentIncomingKeyVerificationRequest:keyVerificationRequest inSession:self.mxSessions.firstObject];
-                                                                               }]];
-                
-                [self.incomingKeyVerificationRequestAlertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"key_verification_tile_request_incoming_approval_decline", @"Vector", nil)
-                                                                                                       style:UIAlertActionStyleDestructive
-                                                                                                     handler:^(UIAlertAction * action)
-                                                                               {
-                                                                                   [keyVerificationRequest cancelWithCancelCode:MXTransactionCancelCode.user success:^{
-                                                                                       
-                                                                                   } failure:^(NSError * _Nonnull error) {
-                                                                                       NSLog(@"[AppDelegate][KeyVerification] Fail to cancel incoming key verification request with error: %@", error);
-                                                                                   }];
-                                                                               }]];
-                
-                [self.incomingKeyVerificationRequestAlertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
-                                                                                                       style:UIAlertActionStyleCancel
-                                                                                                     handler:^(UIAlertAction * action)
-                                                                               {
-                                                                               }]];
-                
-                [self showNotificationAlert:self.incomingKeyVerificationRequestAlertController];
-            }
-        }
-    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -1112,18 +979,9 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
 - (void)showNotificationAlert:(UIAlertController*)alert
 {
-    if (self.window.rootViewController.presentedViewController)
-    {
-        [alert popoverPresentationController].sourceView = self.window.rootViewController.presentedViewController.view;
-        [alert popoverPresentationController].sourceRect = self.window.rootViewController.presentedViewController.view.bounds;
-        [self.window.rootViewController.presentedViewController presentViewController:alert animated:YES completion:nil];
-    }
-    else
-    {
-        [alert popoverPresentationController].sourceView = self.window.rootViewController.view;
-        [alert popoverPresentationController].sourceRect = self.window.rootViewController.view.bounds;
-        [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
-    }
+    [alert popoverPresentationController].sourceView = self.presentedViewController.view;
+    [alert popoverPresentationController].sourceRect = self.presentedViewController.view.bounds;
+    [self.presentedViewController presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)onSessionCryptoDidCorruptData:(NSNotification *)notification
@@ -2866,6 +2724,9 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             
             // Register to user new device sign in notification
             [self registerUserDidSignInOnNewDeviceNotificationForSession:mxSession];
+            
+            // Register to new key verification request
+            [self registerNewRequestNotificationForSession:mxSession];
         }
         else if (mxSession.state == MXSessionStateClosed)
         {
@@ -3678,6 +3539,18 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     }
 }
 
+- (void)presentViewController:(UIViewController*)viewController
+                     animated:(BOOL)animated
+                   completion:(void (^)(void))completion
+{
+    [self.presentedViewController presentViewController:viewController animated:animated completion:completion];
+}
+
+- (UIViewController*)presentedViewController
+{
+    return self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
+}
+
 #pragma mark - Matrix Accounts handling
 
 - (void)enableInAppNotificationsForAccount:(MXKAccount*)account
@@ -4026,13 +3899,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             {
                 [MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested = YES;
                 
-                UIViewController *viewController = self.window.rootViewController.presentedViewController;
-                if (!viewController)
-                {
-                    viewController = self.window.rootViewController;
-                }
-                
-                [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:viewController completionHandler:^(BOOL granted) {
+                [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:self.presentedViewController completionHandler:^(BOOL granted) {
                     
                     if (granted)
                     {
@@ -4214,14 +4081,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
     if (_jitsiViewController)
     {
-        if (self.window.rootViewController.presentedViewController)
-        {
-            [self.window.rootViewController.presentedViewController presentViewController:_jitsiViewController animated:YES completion:completion];
-        }
-        else
-        {
-            [self.window.rootViewController presentViewController:_jitsiViewController animated:YES completion:completion];
-        }
+        [self presentViewController:_jitsiViewController animated:YES completion:completion];
     }
 }
 
@@ -4363,10 +4223,8 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         }];
     };
     
-    UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
-    
     [self.slidingModalPresenter present:widgetPermissionViewController
-                                   from:presentingViewController
+                                   from:self.presentedViewController
                                animated:YES
                              completion:nil];
 }
@@ -4464,14 +4322,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     
     if (currentCallViewController)
     {
-        if (self.window.rootViewController.presentedViewController)
-        {
-            [self.window.rootViewController.presentedViewController presentViewController:currentCallViewController animated:animated completion:completion];
-        }
-        else
-        {
-            [self.window.rootViewController presentViewController:currentCallViewController animated:animated completion:completion];
-        }
+        [self presentViewController:currentCallViewController animated:animated completion:completion];
     }
 }
 
@@ -4914,12 +4765,10 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     {
         NSLog(@"[AppDelegate] presentIncomingKeyVerificationRequest");
         
-        UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
-        
         keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:session];
         keyVerificationCoordinatorBridgePresenter.delegate = self;
         
-        [keyVerificationCoordinatorBridgePresenter presentFrom:presentingViewController incomingKeyVerificationRequest:incomingKeyVerificationRequest animated:YES];
+        [keyVerificationCoordinatorBridgePresenter presentFrom:self.presentedViewController incomingKeyVerificationRequest:incomingKeyVerificationRequest animated:YES];
         
         presented = YES;
     }
@@ -4938,12 +4787,10 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     BOOL presented = NO;
     if (!keyVerificationCoordinatorBridgePresenter)
     {
-        UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
-
         keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
         keyVerificationCoordinatorBridgePresenter.delegate = self;
 
-        [keyVerificationCoordinatorBridgePresenter presentFrom:presentingViewController incomingTransaction:transaction animated:YES];
+        [keyVerificationCoordinatorBridgePresenter presentFrom:self.presentedViewController incomingTransaction:transaction animated:YES];
 
         presented = YES;
     }
@@ -4961,12 +4808,10 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     BOOL presented = NO;
     if (!keyVerificationCoordinatorBridgePresenter)
     {
-        UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
-        
         keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
         keyVerificationCoordinatorBridgePresenter.delegate = self;
         
-        [keyVerificationCoordinatorBridgePresenter presentFrom:presentingViewController roomMember:roomMember animated:YES];
+        [keyVerificationCoordinatorBridgePresenter presentFrom:self.presentedViewController roomMember:roomMember animated:YES];
         
         presented = YES;
     }
@@ -4984,12 +4829,10 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     BOOL presented = NO;
     if (!keyVerificationCoordinatorBridgePresenter)
     {
-        UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
-        
         keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
         keyVerificationCoordinatorBridgePresenter.delegate = self;
         
-        [keyVerificationCoordinatorBridgePresenter presentFrom:presentingViewController otherUserId:mxSession.myUser.userId otherDeviceId:deviceId animated:YES];
+        [keyVerificationCoordinatorBridgePresenter presentFrom:self.presentedViewController otherUserId:mxSession.myUser.userId otherDeviceId:deviceId animated:YES];
         
         presented = YES;
     }
@@ -5007,6 +4850,133 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     }];
     
     keyVerificationCoordinatorBridgePresenter = nil;
+}
+
+#pragma mark - New request
+
+- (void)registerNewRequestNotificationForSession:(MXSession*)session
+{
+    MXKeyVerificationManager *keyverificationManager = session.crypto.keyVerificationManager;
+    
+    if (!keyverificationManager)
+    {
+        return;
+    }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyVerificationNewRequestNotification:) name:MXKeyVerificationManagerNewRequestNotification object:keyverificationManager];
+}
+
+- (void)keyVerificationNewRequestNotification:(NSNotification *)notification
+{
+    if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground)
+    {
+        return;
+    }
+    
+    NSDictionary *userInfo = notification.userInfo;
+    
+    MXKeyVerificationRequest *keyVerificationRequest = userInfo[MXKeyVerificationManagerNotificationRequestKey];
+    
+    if ([keyVerificationRequest isKindOfClass:MXKeyVerificationByDMRequest.class])
+    {
+        MXKeyVerificationByDMRequest *keyVerificationByDMRequest = (MXKeyVerificationByDMRequest*)keyVerificationRequest;
+        
+        if (!keyVerificationByDMRequest.isFromMyUser && keyVerificationByDMRequest.state == MXKeyVerificationRequestStatePending)
+        {
+            MXKAccount *currentAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+            MXSession *session = currentAccount.mxSession;
+            MXRoom *room = [currentAccount.mxSession roomWithRoomId:keyVerificationByDMRequest.roomId];
+            if (!room)
+            {
+                NSLog(@"[AppDelegate][KeyVerification] keyVerificationRequestDidChangeNotification: Unknown room");
+                return;
+            }
+            
+            NSString *sender = keyVerificationByDMRequest.otherUser;
+
+            [room state:^(MXRoomState *roomState) {
+
+                NSString *senderName = [roomState.members memberName:sender];
+                
+                [self presentNewKeyVerificationRequestAlertForSession:session senderName:senderName senderId:sender request:keyVerificationByDMRequest];
+            }];
+        }
+    }
+    else if ([keyVerificationRequest isKindOfClass:MXKeyVerificationByToDeviceRequest.class])
+    {
+        MXKeyVerificationByToDeviceRequest *keyVerificationByToDeviceRequest = (MXKeyVerificationByToDeviceRequest*)keyVerificationRequest;
+        
+        // We support only self verification
+        if (keyVerificationByToDeviceRequest.isFromMyUser
+            && !keyVerificationByToDeviceRequest.isFromMyDevice
+            && keyVerificationByToDeviceRequest.state == MXKeyVerificationRequestStatePending)
+        {
+            NSString *myUserId = keyVerificationByToDeviceRequest.otherUser;
+            MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:myUserId];
+            if (account)
+            {
+                MXSession *session = account.mxSession;
+                MXUser *user = [session userWithUserId:myUserId];
+                                
+                [self presentNewKeyVerificationRequestAlertForSession:session senderName:user.displayname senderId:user.userId request:keyVerificationRequest];
+            }
+        }
+    }
+}
+
+- (void)presentNewKeyVerificationRequestAlertForSession:(MXSession*)session
+                                             senderName:(NSString*)senderName
+                                               senderId:(NSString*)senderId
+                                                request:(MXKeyVerificationRequest*)keyVerificationRequest
+{
+    if (self.incomingKeyVerificationRequestAlertController)
+    {
+        [self.incomingKeyVerificationRequestAlertController dismissViewControllerAnimated:NO completion:nil];
+    }
+    
+    NSString *senderInfo;
+    
+    if (senderName)
+    {
+        senderInfo = [NSString stringWithFormat:@"%@ (%@)", senderName, senderId];
+    }
+    else
+    {
+        senderInfo = senderId;
+    }
+    
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"key_verification_tile_request_incoming_title", @"Vector", nil)
+                                                                                             message:senderInfo
+                                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"key_verification_tile_request_incoming_approval_accept", @"Vector", nil)
+                                                                                           style:UIAlertActionStyleDefault
+                                                                                         handler:^(UIAlertAction * action)
+                                                                   {
+                                                                       [self presentIncomingKeyVerificationRequest:keyVerificationRequest inSession:session];
+                                                                   }]];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"key_verification_tile_request_incoming_approval_decline", @"Vector", nil)
+                                                                                           style:UIAlertActionStyleDestructive
+                                                                                         handler:^(UIAlertAction * action)
+                                                                   {
+                                                                       [keyVerificationRequest cancelWithCancelCode:MXTransactionCancelCode.user success:^{
+                                                                           
+                                                                       } failure:^(NSError * _Nonnull error) {
+                                                                           NSLog(@"[AppDelegate][KeyVerification] Fail to cancel incoming key verification request with error: %@", error);
+                                                                       }];
+                                                                   }]];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
+                                                                                           style:UIAlertActionStyleCancel
+                                                                                         handler:^(UIAlertAction * action)
+                                                                   {
+                                                                   }]];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+    
+    self.incomingKeyVerificationRequestAlertController = alertController;
 }
 
 #pragma mark - New Sign In
@@ -5062,8 +5032,6 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         return;
     }
     
-    UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
-    
     NSString *deviceInfo;
     
     if (device.displayName)
@@ -5090,10 +5058,10 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                                             }]];
     
     [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"device_verification_self_verify_alert_cancel_action", @"Vector", nil)
-                                              style:UIAlertActionStyleCancel
-                                            handler:nil]];
-    
-    [presentingViewController presentViewController:alert animated:YES completion:nil];
+                                               style:UIAlertActionStyleCancel
+                                             handler:nil]];
+     
+    [self presentViewController:alert animated:YES completion:nil];
     
     self.userNewSignInAlertController = alert;
 }
@@ -5116,8 +5084,6 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             self.gdprConsentNotGivenAlertController = nil;
             self.gdprConsentController = nil;
             
-            UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
-            
             __weak typeof(self) weakSelf = self;
             
             MXSession *mainSession = self.mxSessions.firstObject;
@@ -5137,7 +5103,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                                                         
                                                         if (strongSelf)
                                                         {
-                                                            [strongSelf presentGDPRConsentFromViewController:presentingViewController consentURI:consentURI];
+                                                            [strongSelf presentGDPRConsentFromViewController:self.presentedViewController consentURI:consentURI];
                                                         }
                                                     }]];
             
@@ -5145,7 +5111,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                                                       style:UIAlertActionStyleCancel
                                                     handler:nil]];
             
-            [presentingViewController presentViewController:alert animated:YES completion:nil];
+            [self presentViewController:alert animated:YES completion:nil];
             
             self.gdprConsentNotGivenAlertController = alert;
         }
@@ -5241,9 +5207,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     
     serviceTermsModalCoordinatorBridgePresenter.delegate = self;
     
-    UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
-    
-    [serviceTermsModalCoordinatorBridgePresenter presentFrom:presentingViewController animated:YES];
+    [serviceTermsModalCoordinatorBridgePresenter presentFrom:self.presentedViewController animated:YES];
     self.serviceTermsModalCoordinatorBridgePresenter = serviceTermsModalCoordinatorBridgePresenter;
 }
 
