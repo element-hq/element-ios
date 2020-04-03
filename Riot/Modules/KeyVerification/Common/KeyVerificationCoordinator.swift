@@ -27,15 +27,49 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
-    private let otherUserId: String
-    private let otherDeviceId: String    
+    private let verificationFlow: KeyVerificationFlow
+    private let verificationKind: KeyVerificationKind
     
-    private var incomingTransaction: MXIncomingSASTransaction?
-    private var incomingKeyVerificationRequest: MXKeyVerificationRequest?
+    private var otherUserId: String {
+        
+        let otherUserId: String
+        
+        switch self.verificationFlow {
+        case .verifyUser(let roomMember):
+            otherUserId = roomMember.userId
+        case .verifyDevice(let userId, _):
+            otherUserId = userId
+        case .incomingRequest(let incomingKeyVerificationRequest):
+            otherUserId = incomingKeyVerificationRequest.otherUser
+        case .incomingSASTransaction(let incomingSASTransaction):
+            otherUserId = incomingSASTransaction.otherUserId
+        case .completeSecurity:
+            otherUserId = self.session.myUser.userId
+        }
+        
+        return otherUserId
+    }
     
-    private var verificationKind: KeyVerificationKind = .device    
-    private var roomMember: MXRoomMember?
-
+    private var otherDeviceId: String? {
+        
+        let otherDeviceId: String?
+        
+        switch self.verificationFlow {
+        case .verifyUser:
+            otherDeviceId = nil
+        case .verifyDevice(_, let deviceId):
+            otherDeviceId = deviceId
+        case .incomingRequest(let incomingKeyVerificationRequest):
+            otherDeviceId = incomingKeyVerificationRequest.otherDevice
+        case .incomingSASTransaction(let incomingSASTransaction):
+            otherDeviceId = incomingSASTransaction.otherDeviceId
+        case .completeSecurity:
+            otherDeviceId = nil
+        }
+        
+        return otherDeviceId
+    }
+    
     // MARK: Public
 
     // Must be used only internally
@@ -44,78 +78,46 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     weak var delegate: KeyVerificationCoordinatorDelegate?
     
     // MARK: - Setup
-
-    /// Contrustor to start a verification of another device.
-    ///
-    /// - Parameters:
-    ///   - session: the MXSession
-    ///   - otherUserId: the device user id
-    ///   - otherDevice: the device id
-    init(session: MXSession, otherUserId: String, otherDeviceId: String) {
-        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
-        self.session = session
-        self.otherUserId = otherUserId
-        self.otherDeviceId = otherDeviceId
-    }
     
-    init(navigationRouter: NavigationRouterType, session: MXSession, userId: String, otherDeviceId: String) {
-        self.navigationRouter = navigationRouter
-        self.session = session
-        self.otherUserId = userId
-        self.otherDeviceId = otherDeviceId
-    }
-
-    /// Contrustor to manage an incoming SAS device verification transaction
+    /// Creates a key verification coordinator.
     ///
     /// - Parameters:
-    ///   - session: the MXSession
-    ///   - transaction: an existing device verification transaction
-    convenience init(session: MXSession, incomingTransaction: MXIncomingSASTransaction) {
-        self.init(session: session,
-                  otherUserId: incomingTransaction.otherUserId,
-                  otherDeviceId: incomingTransaction.otherDeviceId)
-        self.incomingTransaction = incomingTransaction
-    }
-    
-    /// Contrustor to manage an incoming SAS device verification transaction
-    ///
-    /// - Parameters:
-    ///   - session: the MXSession
-    ///   - incomingKeyVerificationRequest: An existing incoming key verification request to accept
-    convenience init(session: MXSession, incomingKeyVerificationRequest: MXKeyVerificationRequest) {
-        let otherDeviceId = incomingKeyVerificationRequest.otherDevice ?? incomingKeyVerificationRequest.fromDevice
+    ///   - session: The MXSession.
+    ///   - flow: The wanted key verification flow.
+    ///   - navigationRouter: Existing NavigationRouter from which present the flow (optional).
+    init(session: MXSession, flow: KeyVerificationFlow, navigationRouter: NavigationRouterType? = nil) {
+        self.navigationRouter = navigationRouter ?? NavigationRouter(navigationController: RiotNavigationController())
         
-        self.init(session: session, otherUserId: incomingKeyVerificationRequest.otherUser, otherDeviceId: otherDeviceId)
-        self.incomingKeyVerificationRequest = incomingKeyVerificationRequest
-    }
-    
-    /// Constructor to start a user verification.
-    ///
-    /// - Parameters:
-    ///   - session: the MXSession
-    ///   - roomMember: an other room member
-    init(session: MXSession, roomMember: MXRoomMember) {
-        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
-        self.otherUserId = roomMember.userId
-        self.otherDeviceId = ""
-        self.roomMember = roomMember
-        self.verificationKind = .user
+        self.verificationFlow = flow
+        
+        if case .verifyUser = flow {
+            self.verificationKind = .user
+        } else {
+            self.verificationKind = .device
+        }
     }
     
     // MARK: - Public methods
     
     func start() {
-        let rootCoordinator: Coordinator & Presentable            
+        let rootCoordinator: Coordinator & Presentable
         
-        if let incomingKeyVerificationRequest = self.incomingKeyVerificationRequest {
-            rootCoordinator = self.createDataLoadingScreenCoordinator(with: incomingKeyVerificationRequest)
-        } else if let roomMember = self.roomMember {
+        switch self.verificationFlow {
+        case .verifyUser(let roomMember):
             rootCoordinator = self.createUserVerificationStartCoordinator(with: roomMember)
-        } else if self.session.myUser.userId == self.otherUserId {
-            rootCoordinator = self.createSelfVerificationCoordinator()
-        } else {
-            rootCoordinator = self.createDataLoadingScreenCoordinator()
+        case .verifyDevice(let userId, let deviceId):
+            if userId ==  self.session.myUser.userId {
+                rootCoordinator = self.createSelfVerificationCoordinator(otherDeviceId: deviceId)
+            } else {
+                rootCoordinator = self.createDataLoadingScreenCoordinator(otherUserId: userId, otherDeviceId: deviceId)
+            }
+        case .incomingRequest(let incomingKeyVerificationRequest):
+            rootCoordinator = self.createDataLoadingScreenCoordinator(with: incomingKeyVerificationRequest)
+        case .incomingSASTransaction(let incomingSASTransaction):
+            rootCoordinator = self.createDataLoadingScreenCoordinator(otherUserId: incomingSASTransaction.otherUserId, otherDeviceId: incomingSASTransaction.otherDeviceId)
+        case .completeSecurity:
+            rootCoordinator = self.createCompleteSecurityCoordinator()
         }
         
         rootCoordinator.start()
@@ -139,16 +141,32 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     
     // MARK: - Private methods
     
-    private func createSelfVerificationCoordinator() -> KeyVerificationSelfVerifyStartCoordinator {
-        let coordinator = KeyVerificationSelfVerifyStartCoordinator(session: self.session, otherDeviceId: self.otherDeviceId)
+    private func didComplete() {
+        self.delegate?.keyVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId ?? "")
+    }
+    
+    private func didCancel() {
+        self.didComplete()
+    }
+    
+    private func createCompleteSecurityCoordinator() -> KeyVerificationSelfVerifyWaitCoordinatorType {
+        let coordinator = KeyVerificationSelfVerifyWaitCoordinator(session: self.session)
+        coordinator.delegate = self
+        coordinator.start()
+        
+        return coordinator
+    }
+    
+    private func createSelfVerificationCoordinator(otherDeviceId: String) -> KeyVerificationSelfVerifyStartCoordinator {
+        let coordinator = KeyVerificationSelfVerifyStartCoordinator(session: self.session, otherDeviceId: otherDeviceId)
         coordinator.delegate = self
         coordinator.start()
         
         return coordinator
     }
 
-    private func createDataLoadingScreenCoordinator() -> KeyVerificationDataLoadingCoordinator {
-        let coordinator = KeyVerificationDataLoadingCoordinator(session: self.session, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
+    private func createDataLoadingScreenCoordinator(otherUserId: String, otherDeviceId: String) -> KeyVerificationDataLoadingCoordinator {
+        let coordinator = KeyVerificationDataLoadingCoordinator(session: self.session, otherUserId: otherUserId, otherDeviceId: otherDeviceId)
         coordinator.delegate = self
         coordinator.start()
 
@@ -222,6 +240,7 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     }
 }
 
+// MARK: - KeyVerificationDataLoadingCoordinatorDelegate
 extension KeyVerificationCoordinator: KeyVerificationDataLoadingCoordinatorDelegate {
     
     func keyVerificationDataLoadingCoordinator(_ coordinator: KeyVerificationDataLoadingCoordinatorType, didAcceptKeyVerificationRequest keyVerificationRequest: MXKeyVerificationRequest) {
@@ -229,8 +248,8 @@ extension KeyVerificationCoordinator: KeyVerificationDataLoadingCoordinatorDeleg
     }
     
     func keyVerificationDataLoadingCoordinator(_ coordinator: KeyVerificationDataLoadingCoordinatorType, didLoadUser user: MXUser, device: MXDeviceInfo) {
-
-        if let incomingTransaction = self.incomingTransaction {
+        
+        if case .incomingSASTransaction(let incomingTransaction) = self.verificationFlow {
             self.showIncoming(otherUser: user, transaction: incomingTransaction)
         } else {
             self.showStart(otherUser: user, otherDevice: device)
@@ -243,59 +262,64 @@ extension KeyVerificationCoordinator: KeyVerificationDataLoadingCoordinatorDeleg
             self.showVerifyBySAS(transaction: sasTransaction, animated: true)
         } else {
             NSLog("[KeyVerificationCoordinator] Transaction \(transaction) is not supported")
-            self.delegate?.keyVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
+            self.didCancel()
         }
     }
 
     func keyVerificationDataLoadingCoordinatorDidCancel(_ coordinator: KeyVerificationDataLoadingCoordinatorType) {
-        self.delegate?.keyVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
+        self.didCancel()
     }
 }
 
+// MARK: - DeviceVerificationStartCoordinatorDelegate
 extension KeyVerificationCoordinator: DeviceVerificationStartCoordinatorDelegate {
     func deviceVerificationStartCoordinator(_ coordinator: DeviceVerificationStartCoordinatorType, didCompleteWithOutgoingTransaction transaction: MXSASTransaction) {
         self.showVerifyBySAS(transaction: transaction, animated: true)
     }
 
     func deviceVerificationStartCoordinator(_ coordinator: DeviceVerificationStartCoordinatorType, didTransactionCancelled transaction: MXSASTransaction) {
-        self.delegate?.keyVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
+        self.didCancel()
     }
 
     func deviceVerificationStartCoordinatorDidCancel(_ coordinator: DeviceVerificationStartCoordinatorType) {
-        self.delegate?.keyVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
+        self.didCancel()
     }
 }
 
+// MARK: - DeviceVerificationIncomingCoordinatorDelegate
 extension KeyVerificationCoordinator: DeviceVerificationIncomingCoordinatorDelegate {
     func deviceVerificationIncomingCoordinator(_ coordinator: DeviceVerificationIncomingCoordinatorType, didAcceptTransaction transaction: MXSASTransaction) {
         self.showVerifyBySAS(transaction: transaction, animated: true)
     }
 
     func deviceVerificationIncomingCoordinatorDidCancel(_ coordinator: DeviceVerificationIncomingCoordinatorType) {
-        self.delegate?.keyVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
+        self.didCancel()
     }
 }
 
+// MARK: - KeyVerificationVerifyBySASCoordinatorDelegate
 extension KeyVerificationCoordinator: KeyVerificationVerifyBySASCoordinatorDelegate {
     func keyVerificationVerifyBySASCoordinatorDidComplete(_ coordinator: KeyVerificationVerifyBySASCoordinatorType) {
         self.showVerified(animated: true)
     }
 
     func keyVerificationVerifyBySASCoordinatorDidCancel(_ coordinator: KeyVerificationVerifyBySASCoordinatorType) {
-        self.delegate?.keyVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
+        self.didCancel()
     }
 }
 
+// MARK: - KeyVerificationVerifiedViewControllerDelegate
 extension KeyVerificationCoordinator: KeyVerificationVerifiedViewControllerDelegate {
     func keyVerificationVerifiedViewControllerDidTapSetupAction(_ viewController: KeyVerificationVerifiedViewController) {
-        self.delegate?.keyVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
+        self.didComplete()
     }
 
     func keyVerificationVerifiedViewControllerDidCancel(_ viewController: KeyVerificationVerifiedViewController) {
-        self.delegate?.keyVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
+        self.didCancel()
     }
 }
 
+// MARK: - UserVerificationStartCoordinatorDelegate
 extension KeyVerificationCoordinator: UserVerificationStartCoordinatorDelegate {
         
     func userVerificationStartCoordinator(_ coordinator: UserVerificationStartCoordinatorType, otherDidAcceptRequest request: MXKeyVerificationRequest) {
@@ -307,18 +331,19 @@ extension KeyVerificationCoordinator: UserVerificationStartCoordinatorDelegate {
     }
     
     func userVerificationStartCoordinator(_ coordinator: UserVerificationStartCoordinatorType, didTransactionCancelled transaction: MXSASTransaction) {
-        self.delegate?.keyVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
+        self.didCancel()
     }
     
     func userVerificationStartCoordinatorDidCancel(_ coordinator: UserVerificationStartCoordinatorType) {
-        self.delegate?.keyVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
+        self.didCancel()
     }
 }
 
+// MARK: - KeyVerificationVerifyByScanningCoordinatorDelegate
 extension KeyVerificationCoordinator: KeyVerificationVerifyByScanningCoordinatorDelegate {
     
     func keyVerificationVerifyByScanningCoordinatorDidCancel(_ coordinator: KeyVerificationVerifyByScanningCoordinatorType) {
-         self.delegate?.keyVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
+         self.didCancel()
     }
     
     func keyVerificationVerifyByScanningCoordinatorCannotScan(_ coordinator: KeyVerificationVerifyByScanningCoordinatorType) {
@@ -334,7 +359,7 @@ extension KeyVerificationCoordinator: KeyVerificationVerifyByScanningCoordinator
     }
 }
 
-// MARK - KeyVerificationSelfVerifyStartCoordinatorDelegate
+// MARK: - KeyVerificationSelfVerifyStartCoordinatorDelegate
 extension KeyVerificationCoordinator: KeyVerificationSelfVerifyStartCoordinatorDelegate {
     
     func keyVerificationSelfVerifyStartCoordinator(_ coordinator: KeyVerificationSelfVerifyStartCoordinatorType, otherDidAcceptRequest request: MXKeyVerificationRequest) {
@@ -342,6 +367,17 @@ extension KeyVerificationCoordinator: KeyVerificationSelfVerifyStartCoordinatorD
     }
     
     func keyVerificationSelfVerifyStartCoordinatorDidCancel(_ coordinator: KeyVerificationSelfVerifyStartCoordinatorType) {
-        self.delegate?.keyVerificationCoordinatorDidComplete(self, otherUserId: self.otherUserId, otherDeviceId: self.otherDeviceId)
+        self.didCancel()
+    }
+}
+
+// MARK: - KeyVerificationSelfVerifyWaitCoordinatorDelegate
+extension KeyVerificationCoordinator: KeyVerificationSelfVerifyWaitCoordinatorDelegate {
+    func keyVerificationSelfVerifyWaitCoordinator(_ coordinator: KeyVerificationSelfVerifyWaitCoordinatorType, didAcceptKeyVerificationRequest keyVerificationRequest: MXKeyVerificationRequest) {
+        self.showVerifyByScanning(keyVerificationRequest: keyVerificationRequest, animated: true)
+    }
+    
+    func keyVerificationSelfVerifyWaitCoordinatorDidCancel(_ coordinator: KeyVerificationSelfVerifyWaitCoordinatorType) {
+        self.didCancel()
     }
 }
