@@ -921,7 +921,7 @@
 "security_settings_title" = "Sicherheit";
 "security_settings_crypto_sessions" = "MEINE SITZUNGEN";
 "security_settings_crypto_sessions_loading" = "Lade Sitzungen…";
-"room_participants_security_information_room_encrypted" = "Nachrichten in diesem Raum sind Ende-zu-Ende verschlüsselt.\n\nDeine Nachrichten sind mit Datenverschlüsselung gesichert, nur du und der/die Empfänger!n haben die einzigen Schlüssel, um jene zu entsperren.";
+"room_participants_security_information_room_encrypted" = "Nachrichten in diesem Raum sind Ende-zu-Ende verschlüsselt.\n\nDeine Nachrichten sind mit digitalen Schlüsseln gesichert, nur du und der/die Empfänger!n haben die einzigen Schlüssel, um jene zu entsperren.";
 "security_settings_crypto_sessions_description" = "Vertraue Sitzungen, um Zugriff auf Ende-zu-Ende verschlüsselte Nachrichten zu gewähren. Wenn du eine Sitzung nicht kennst, ändere dein Anmeldepasswort und setze dein Nachrichtenpasswort für die Nachrichtensicherung zurück.";
 "security_settings_backup" = "NACHRICHTENSICHERUNG";
 "security_settings_advanced" = "ERWEITERT";
@@ -991,3 +991,6 @@
 "user_verification_session_details_additional_information_untrusted_current_user" = "Wenn du dich nicht zu dieser Sitzung angemeldet hast, ist dein Konto möglicherweise gefährdet.";
 "user_verification_session_details_verify_action_current_user" = "Verifizieren";
 "user_verification_session_details_verify_action_other_user" = "Manuell Verifizieren";
+"room_participants_action_security_status_loading" = "Lade…";
+"security_settings_crosssigning" = "CROSS-SIGNING";
+"security_settings_cryptography" = "VERSCHLÜSSELUNG";
