@@ -994,3 +994,12 @@
 "room_participants_action_security_status_loading" = "Lade…";
 "security_settings_crosssigning" = "CROSS-SIGNING";
 "security_settings_cryptography" = "VERSCHLÜSSELUNG";
+"device_verification_self_verify_alert_title" = "Neue Anmeldung";
+"device_verification_self_verify_alert_message" = "Benutze diese Sitzung um deine Neue zu verifizieren. Erlaube Zugriff auf die verschlüsselten Nachrichten: %@\nSolltest du dich nicht an diese Sitzung angemeldet haben, ist dein Konto möglicherweise kompromitiert.";
+"device_verification_self_verify_alert_cancel_action" = "Das war ich nicht";
+"device_verification_self_verify_start_verify_action" = "Überprüfung starten";
+"device_verification_self_verify_start_information" = "Benutze diese Sitzung um deine Neue zu verifizieren. Erlaube Zugriff auf die verschlüsselten Nachrichten.";
+"device_verification_self_verify_start_waiting" = "Warte…";
+"device_verification_self_verify_wait_title" = "vervollständige Sicherheit";
+"device_verification_self_verify_wait_information" = "Benutze diese Sitzung um deine Neue zu verifizieren. Erlaube Zugriff auf die verschlüsselten Nachrichten.";
+"device_verification_self_verify_wait_waiting" = "warte…";
