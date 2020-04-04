@@ -1029,3 +1029,7 @@
 "device_verification_self_verify_start_verify_action" = "Commencer la vérification";
 "device_verification_self_verify_start_information" = "Utilisez cette session pour vérifier la nouvelle, ce qui lui permettra d’accéder aux messages chiffrés.";
 "device_verification_self_verify_start_waiting" = "En attente…";
+"skip" = "Passer";
+"device_verification_self_verify_wait_title" = "Compléter la sécurité";
+"device_verification_self_verify_wait_information" = "Utilisez une session existante pour vérifier celle-ci, ce qui lui permettra d’avoir accès aux messages chiffrés.";
+"device_verification_self_verify_wait_waiting" = "En attente…";
