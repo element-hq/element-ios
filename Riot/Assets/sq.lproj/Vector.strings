@@ -1014,3 +1014,14 @@
 "key_verification_verify_qr_code_other_scan_my_code_title" = "A e skanoi me sukses përdoruesi tjetër kodin QR?";
 "key_verification_verify_qr_code_scan_other_code_success_title" = "Kodi u vlerësua!";
 "key_verification_verify_qr_code_scan_other_code_success_message" = "Kodi QR u vlerësua me sukses.";
+"skip" = "Anashkaloje";
+"room_participants_action_security_status_loading" = "Po ngarkohet…";
+"device_verification_self_verify_alert_title" = "Hyrje e Re";
+"device_verification_self_verify_alert_message" = "Përdoreni këtë sesion që të verifikoni atë të riun tuaj, duke i akorduar hyrje te mesazhe të fshehtëzuar: %@\nNëse hyrjen te ky sesion s’e keni bërë ju, llogaria juaj mund të jetë komprometuar.";
+"device_verification_self_verify_alert_cancel_action" = "Ky s’qeshë unë";
+"device_verification_self_verify_start_verify_action" = "Fillo verifikimin";
+"device_verification_self_verify_start_information" = "Përdoreni këtë sesion që të verifikoni atë të riun tuaj, duke i akorduar hyrje te mesazhe të fshehtëzuar.";
+"device_verification_self_verify_start_waiting" = "Po pritet…";
+"device_verification_self_verify_wait_title" = "Siguri e plotë";
+"device_verification_self_verify_wait_information" = "Përdorni një sesion ekzistues që të verifikoni këtë të riun, duke i akorduar hyrje te mesazhe të fshehtëzuar.";
+"device_verification_self_verify_wait_waiting" = "Po pritet…";
