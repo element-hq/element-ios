@@ -1001,3 +1001,7 @@
 "device_verification_self_verify_start_verify_action" = "Inizia la verifica";
 "device_verification_self_verify_start_information" = "Usa questa sessione per verificare quella nuova, dandole l'accesso ai messaggi cifrati.";
 "device_verification_self_verify_start_waiting" = "In attesa…";
+"skip" = "Salta";
+"device_verification_self_verify_wait_title" = "Completa la sicurezza";
+"device_verification_self_verify_wait_information" = "Usa una sessione esistente per verificare questa nuova, dandole l'accesso ai messaggi cifrati.";
+"device_verification_self_verify_wait_waiting" = "In attesa…";
