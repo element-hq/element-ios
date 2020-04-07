@@ -196,10 +196,10 @@
     }
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void)viewDidDisappear:(BOOL)animated
 {
-    [super viewWillDisappear:animated];
- 
+    [super viewDidDisappear:animated];
+
     // cancel any pending search
     [self searchBarCancelButtonClicked:_searchBarView];
 }
