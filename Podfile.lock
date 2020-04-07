@@ -1,18 +1,18 @@
 PODS:
-  - AFNetworking (3.2.1):
-    - AFNetworking/NSURLSession (= 3.2.1)
-    - AFNetworking/Reachability (= 3.2.1)
-    - AFNetworking/Security (= 3.2.1)
-    - AFNetworking/Serialization (= 3.2.1)
-    - AFNetworking/UIKit (= 3.2.1)
-  - AFNetworking/NSURLSession (3.2.1):
+  - AFNetworking (4.0.0):
+    - AFNetworking/NSURLSession (= 4.0.0)
+    - AFNetworking/Reachability (= 4.0.0)
+    - AFNetworking/Security (= 4.0.0)
+    - AFNetworking/Serialization (= 4.0.0)
+    - AFNetworking/UIKit (= 4.0.0)
+  - AFNetworking/NSURLSession (4.0.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (3.2.1)
-  - AFNetworking/Security (3.2.1)
-  - AFNetworking/Serialization (3.2.1)
-  - AFNetworking/UIKit (3.2.1):
+  - AFNetworking/Reachability (4.0.0)
+  - AFNetworking/Security (4.0.0)
+  - AFNetworking/Serialization (4.0.0)
+  - AFNetworking/UIKit (4.0.0):
     - AFNetworking/NSURLSession
   - cmark (0.24.1)
   - DGCollectionViewLeftAlignFlowLayout (1.0.4)
@@ -75,11 +75,11 @@ PODS:
   - MatrixSDK (0.15.2):
     - MatrixSDK/Core (= 0.15.2)
   - MatrixSDK/Core (0.15.2):
-    - AFNetworking (~> 3.2.0)
+    - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.2.2)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.1.0)
-    - Realm (~> 3.17.3)
+    - Realm (~> 4.4.0)
   - MatrixSDK/JingleCallStack (0.15.2):
     - JitsiMeetSDK (~> 2.4.1)
     - MatrixSDK/Core
@@ -90,9 +90,9 @@ PODS:
     - OLMKit/olmcpp (= 3.1.0)
   - OLMKit/olmc (3.1.0)
   - OLMKit/olmcpp (3.1.0)
-  - Realm (3.17.3):
-    - Realm/Headers (= 3.17.3)
-  - Realm/Headers (3.17.3)
+  - Realm (4.4.0):
+    - Realm/Headers (= 4.4.0)
+  - Realm/Headers (4.4.0)
   - Reusable (4.1.0):
     - Reusable/Storyboard (= 4.1.0)
     - Reusable/View (= 4.1.0)
@@ -162,14 +162,14 @@ CHECKOUT OPTIONS:
     :commit: 1d11c01e97fdf89b5ed5ee457fce9a6552c3ef9a
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
-    :commit: 97a22f1a98e50636faf5ac30edbf7376f09147e9
+    :commit: f011e86db576d6c7e1425a72c19f93264e655ae4
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
   SwiftUTI:
     :commit: b6b46942fb3aad819610851f62a70e17a528444e
     :git: https://github.com/speramusinc/SwiftUTI.git
 
 SPEC CHECKSUMS:
-  AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
+  AFNetworking: d9fdf484a3c723ec3c558a41cc5754c7e845ee77
   cmark: 1d9ad0375e3b9fa281732e992467903606015520
   DGCollectionViewLeftAlignFlowLayout: a0fa58797373ded039cafba8133e79373d048399
   DTCoreText: 67023bb51b26711d5f640c851f4845aea14c24c9
@@ -182,9 +182,9 @@ SPEC CHECKSUMS:
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   MatomoTracker: 6f89e2561083685a360e223fb663e9ccd57c1d1a
   MatrixKit: 3db15f216e2de4d53b1405434028d44f42d4af22
-  MatrixSDK: 89de6fe72908a482f3fc7dcb7657582b0a7bf060
+  MatrixSDK: 0e56c041cd0d452bc7e4dd119d4b6cb80cfbce91
   OLMKit: 4ee0159d63feeb86d836fdcfefe418e163511639
-  Realm: 5a1d9d47bfc101dd597668b1a8af4288a2557f6d
+  Realm: e125f464884cda953ebefe70c671b75b03b81b9b
   Reusable: 82be188f29d96dc5eff0db7b2393bcc08d2cdd5b
   SwiftGen: f872ca75cbd17bf7103c17f13dcfa0d9a15667b0
   SwiftLint: fc9859e4e1752340664851f667bb1898b9c90114
