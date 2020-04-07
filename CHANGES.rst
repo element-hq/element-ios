@@ -1,3 +1,9 @@
+Changes in 0.11.1 (2020-xx-xx)
+===============================================
+
+Bug fix:
+ * Xcode11: Fix content change error when dragging start chat page (PR #3075).
+
 Changes in 0.11.0 (2020-xx-xx)
 ===============================================
 
