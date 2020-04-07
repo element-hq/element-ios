@@ -111,8 +111,8 @@ DEPENDENCIES:
   - DGCollectionViewLeftAlignFlowLayout (~> 1.0.4)
   - GBDeviceInfo (~> 6.3.0)
   - MatomoTracker (~> 7.2.0)
-  - MatrixKit (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `develop`)
-  - MatrixKit/AppExtension (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `develop`)
+  - MatrixKit (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `xcode11`)
+  - MatrixKit/AppExtension (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `xcode11`)
   - MatrixSDK (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `xcode11`)
   - MatrixSDK/JingleCallStack (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `xcode11`)
   - MatrixSDK/SwiftSupport (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `xcode11`)
@@ -148,7 +148,7 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   MatrixKit:
-    :branch: develop
+    :branch: xcode11
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
     :branch: xcode11
@@ -192,6 +192,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 0d3c66318249a415622e2a70c16b11a0d6cd6b5d
+PODFILE CHECKSUM: d013efa2527a3b9c9c5b4fcdb71da066d5ec9701
 
 COCOAPODS: 1.8.4
