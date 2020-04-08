@@ -1252,6 +1252,13 @@
     [self cancelEventSelection];
 }
 
+- (void)setRoomTitleViewClass:(Class)roomTitleViewClass
+{
+    [super setRoomTitleViewClass:roomTitleViewClass];
+    
+    [self updateTitleViewEncryptionDecoration];
+}
+
 - (void)destroy
 {
     rightBarButtonItems = nil;
@@ -1630,34 +1637,13 @@
 
 - (UIImage*)roomEncryptionBadgeImage
 {
-    NSString *encryptionIconName;
     UIImage *encryptionIcon;
     
     if (self.isEncryptionEnabled)
     {
         RoomEncryptionTrustLevel roomEncryptionTrustLevel = ((RoomDataSource*)self.roomDataSource).encryptionTrustLevel;
         
-        switch (roomEncryptionTrustLevel) {
-            case RoomEncryptionTrustLevelWarning:
-                encryptionIconName = @"encryption_warning";
-                break;
-            case RoomEncryptionTrustLevelNormal:
-                encryptionIconName = @"encryption_normal";
-                break;
-            case RoomEncryptionTrustLevelTrusted:
-                encryptionIconName = @"encryption_trusted";
-                break;
-            case RoomEncryptionTrustLevelUnknown:
-                encryptionIconName = @"encryption_normal";
-                break;
-            default:
-                break;
-        }
-    }
-    
-    if (encryptionIconName)
-    {
-        encryptionIcon = [UIImage imageNamed:encryptionIconName];
+        encryptionIcon = [EncryptionTrustLevelBadgeImageHelper roomBadgeImageFor:roomEncryptionTrustLevel];
     }
     
     return encryptionIcon;
@@ -1678,6 +1664,17 @@
     {
         self->expandedHeader.roomAvatarBadgeImageView.image = self.roomEncryptionBadgeImage;
     }
+}
+
+- (void)updateTitleViewEncryptionDecoration
+{
+    if (![self.titleView isKindOfClass:[RoomTitleView class]])
+    {
+        return;
+    }
+    
+    RoomTitleView *roomTitleView = (RoomTitleView*)self.titleView;
+    roomTitleView.badgeImageView.image = self.roomEncryptionBadgeImage;
 }
 
 - (void)updateEncryptionDecorationForRoomInputToolbar:(RoomInputToolbarView*)roomInputToolbarView
@@ -3271,6 +3268,7 @@
 {
     [self updateInputToolbarEncryptionDecoration];
     [self updateExpandedHeaderEncryptionDecoration];
+    [self updateTitleViewEncryptionDecoration];
 }
 
 #pragma mark - Segues
