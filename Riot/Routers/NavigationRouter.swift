@@ -34,7 +34,7 @@ final class NavigationRouter: NSObject, NavigationRouterType {
     
     // MARK: - Setup
     
-    init(navigationController: UINavigationController = UINavigationController()) {
+    init(navigationController: UINavigationController = RiotNavigationController()) {
         self.navigationController = navigationController
         self.completions = [:]
         super.init()
