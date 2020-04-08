@@ -133,6 +133,8 @@
         // Force table refresh
         [self cancelEditionMode:YES];
     }
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

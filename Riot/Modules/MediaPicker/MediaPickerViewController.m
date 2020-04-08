@@ -182,6 +182,8 @@
     self.recentCapturesCollectionContainerView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.recentCapturesCollectionView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.userAlbumsTableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
