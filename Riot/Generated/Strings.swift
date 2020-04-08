@@ -2258,6 +2258,30 @@ internal enum VectorL10n {
   internal static func roomManyUsersAreTyping(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "room_many_users_are_typing", p1, p2)
   }
+  /// Admin in %@
+  internal static func roomMemberPowerLevelAdminIn(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_member_power_level_admin_in", p1)
+  }
+  /// Custom (%@) in %@
+  internal static func roomMemberPowerLevelCustomIn(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "room_member_power_level_custom_in", p1, p2)
+  }
+  /// Moderator in %@
+  internal static func roomMemberPowerLevelModeratorIn(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_member_power_level_moderator_in", p1)
+  }
+  /// Admin
+  internal static var roomMemberPowerLevelShortAdmin: String { 
+    return VectorL10n.tr("Vector", "room_member_power_level_short_admin") 
+  }
+  /// Custom
+  internal static var roomMemberPowerLevelShortCustom: String { 
+    return VectorL10n.tr("Vector", "room_member_power_level_short_custom") 
+  }
+  /// Mod
+  internal static var roomMemberPowerLevelShortModerator: String { 
+    return VectorL10n.tr("Vector", "room_member_power_level_short_moderator") 
+  }
   /// Message edits
   internal static var roomMessageEditsHistoryTitle: String { 
     return VectorL10n.tr("Vector", "room_message_edits_history_title") 

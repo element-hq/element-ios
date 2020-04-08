@@ -267,6 +267,14 @@
 "room_participants_security_information_room_not_encrypted" = "Messages in this room are not end-to-end encrypted.";
 "room_participants_security_information_room_encrypted" = "Messages in this room are end-to-end encrypted.\n\nYour messages are secured with locks and only you and the recipient have the unique keys to unlock them.";
 
+"room_member_power_level_admin_in" = "Admin in %@";
+"room_member_power_level_moderator_in" = "Moderator in %@";
+"room_member_power_level_custom_in" = "Custom (%@) in %@";
+
+"room_member_power_level_short_admin" = "Admin";
+"room_member_power_level_short_moderator" = "Mod";
+"room_member_power_level_short_custom" = "Custom";
+
 // Chat
 "room_jump_to_first_unread" = "Jump to first unread message";
 "room_accessiblity_scroll_to_bottom" = "Scroll to bottom";
