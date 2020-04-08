@@ -142,9 +142,14 @@
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle
+- (UIViewController *)childViewControllerForStatusBarStyle
 {
-    return ThemeService.shared.theme.statusBarStyle;
+    return self.selectedViewController;
+}
+
+- (UIViewController *)childViewControllerForStatusBarHidden
+{
+    return self.selectedViewController;
 }
 
 - (void)viewWillAppear:(BOOL)animated
