@@ -61,33 +61,33 @@ final class KeyBackupRecoverFromPrivateKeyViewModel: KeyBackupRecoverFromPrivate
         self.update(viewState: .loading)
         
         self.currentHTTPOperation = keyBackup.restore(usingPrivateKeyKeyBackup: keyBackupVersion, room: nil, session: nil, success: { [weak self] (_, _) in
-            guard let sself = self else {
+            guard let self = self else {
                 return
             }
             
             // Trust on decrypt
-            sself.currentHTTPOperation = sself.keyBackup.trust(sself.keyBackupVersion, trust: true, success: { [weak sself] () in
-                guard let ssself = sself else {
+            self.currentHTTPOperation = self.keyBackup.trust(self.keyBackupVersion, trust: true, success: { [weak self] () in
+                guard let self = self else {
                     return
                 }
                 
-                ssself.update(viewState: .loaded)
-                ssself.coordinatorDelegate?.keyBackupRecoverFromPrivateKeyViewModelDidRecover(ssself)
+                self.update(viewState: .loaded)
+                self.coordinatorDelegate?.keyBackupRecoverFromPrivateKeyViewModelDidRecover(self)
                 
-                }, failure: { [weak sself] error in
-                    sself?.update(viewState: .error(error))
+                }, failure: { [weak self] error in
+                    self?.update(viewState: .error(error))
             })
             
             }, failure: { [weak self] error in
-                guard let sself = self else {
+                guard let self = self else {
                     return
                 }
                 
                 if (error as NSError).domain == MXKeyBackupErrorDomain
                     && (error as NSError).code == Int(MXKeyBackupErrorInvalidOrMissingLocalPrivateKey.rawValue) {
-                    sself.coordinatorDelegate?.keyBackupRecoverFromPrivateKeyViewModelDidPrivateKeyFail(sself)
+                    self.coordinatorDelegate?.keyBackupRecoverFromPrivateKeyViewModelDidPrivateKeyFail(self)
                 } else {
-                    sself.update(viewState: .error(error))
+                    self.update(viewState: .error(error))
                 }
         })
     }
