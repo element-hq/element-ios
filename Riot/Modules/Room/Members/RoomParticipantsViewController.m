@@ -1127,19 +1127,27 @@
             {
                 MXRoomState *roomState = self.mxRoom.dangerousSyncState;
                 
-                // Update member badge
+                // Update member power level
                 MXRoomPowerLevels *powerLevels = [roomState powerLevels];
                 NSInteger powerLevel = [powerLevels powerLevelOfUserWithUserID:contact.mxMember.userId];
-                if (powerLevel >= RoomPowerLevelAdmin)
-                {
-                    participantCell.thumbnailBadgeView.image = [UIImage imageNamed:@"admin_icon"];
-                    participantCell.thumbnailBadgeView.hidden = NO;
+                
+                RoomPowerLevel roomPowerLevel = [RoomPowerLevelHelper roomPowerLevelFrom:powerLevel];
+                
+                NSString *powerLevelText;
+                
+                switch (roomPowerLevel) {
+                    case RoomPowerLevelAdmin:
+                        powerLevelText = NSLocalizedStringFromTable(@"room_member_power_level_short_admin", @"Vector", nil);
+                        break;
+                    case RoomPowerLevelModerator:
+                        powerLevelText = NSLocalizedStringFromTable(@"room_member_power_level_short_moderator", @"Vector", nil);
+                        break;
+                    default:
+                        powerLevelText = nil;
+                        break;
                 }
-                else if (powerLevel >= RoomPowerLevelModerator)
-                {
-                    participantCell.thumbnailBadgeView.image = [UIImage imageNamed:@"mod_icon"];
-                    participantCell.thumbnailBadgeView.hidden = NO;
-                }
+                
+                participantCell.powerLevelLabel.text = powerLevelText;
                 
                 // Update the contact display name by considering the current room state.
                 if (contact.mxMember.userId)
