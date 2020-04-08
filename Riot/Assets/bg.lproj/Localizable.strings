@@ -54,3 +54,4 @@
 "MSG_FROM_USER_IN_ROOM_TITLE" = "%@ в %@";
 /* Sticker from a specific person, not referencing a room. */
 "STICKER_FROM_USER" = "%@ изпрати стикер";
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ иска потвърждение";
