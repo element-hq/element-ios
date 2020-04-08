@@ -5,6 +5,7 @@ Improvements:
 
 Bug fix:
  * Xcode11: Fix content change error when dragging start chat page (PR #3075).
+ * Xcode11: Fix status bar styles for many screens (PR #3077).
 
 Changes in 0.11.5 (2020-05-18)
 ===============================================
