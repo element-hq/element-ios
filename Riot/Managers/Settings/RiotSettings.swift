@@ -35,14 +35,7 @@ final class RiotSettings: NSObject {
         static let enableCrossSigning = "enableCrossSigning"
         static let enableDMKeyVerification = "enableDMKeyVerification"
     }
-
-    /// Riot Standard Room Member Power Level
-    @objc
-    public enum RoomPowerLevel: Int {
-        case moderator = 50
-        case admin = 100
-    }
-
+    
     static let shared = RiotSettings()
     
     // MARK: - Public
