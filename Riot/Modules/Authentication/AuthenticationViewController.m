@@ -516,7 +516,7 @@
 
     authFallBackViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissFallBackViewController:)];
 
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:authFallBackViewController];
+    UINavigationController *navigationController = [[RiotNavigationController alloc] initWithRootViewController:authFallBackViewController];
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 

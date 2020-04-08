@@ -4415,7 +4415,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     gdprConsentViewController.navigationItem.leftBarButtonItem = closeBarButtonItem;
     
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:gdprConsentViewController];
+    UINavigationController *navigationController = [[RiotNavigationController alloc] initWithRootViewController:gdprConsentViewController];
     
     [viewController presentViewController:navigationController animated:YES completion:nil];
     
