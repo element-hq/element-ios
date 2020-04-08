@@ -162,7 +162,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
         if (roomCellData.roomSummary.isEncrypted)
         {
             self.encryptedRoomIcon.hidden = NO;
-            self.encryptedRoomIcon.image = [self shieldImageForTrustLevel:roomCellData.roomSummary.roomEncryptionTrustLevel];
+            self.encryptedRoomIcon.image = [EncryptionTrustLevelBadgeImageHelper roomBadgeImageFor:roomCellData.roomSummary.roomEncryptionTrustLevel];
         }
         else
         {
@@ -213,34 +213,6 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
         return roomCellData.roomSummary.roomId;
     }
     return nil;
-}
-
-- (UIImage*)shieldImageForTrustLevel:(RoomEncryptionTrustLevel)roomEncryptionTrustLevel
-{
-    UIImage *shieldImage;
-    
-    NSString *encryptionIconName;
-    switch (roomEncryptionTrustLevel)
-    {
-        case RoomEncryptionTrustLevelWarning:
-            encryptionIconName = @"encryption_warning";
-            break;
-        case RoomEncryptionTrustLevelNormal:
-            encryptionIconName = @"encryption_normal";
-            break;
-        case RoomEncryptionTrustLevelTrusted:
-            encryptionIconName = @"encryption_trusted";
-            break;
-        case RoomEncryptionTrustLevelUnknown:
-            encryptionIconName = @"encryption_normal";
-            break;
-    }
-    
-    if (encryptionIconName)
-    {
-        shieldImage = [UIImage imageNamed:encryptionIconName];
-    }
-    return shieldImage;
 }
 
 @end

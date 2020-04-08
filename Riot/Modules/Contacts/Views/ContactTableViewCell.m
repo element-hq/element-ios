@@ -247,34 +247,7 @@
         userEncryptionTrustLevel = [self.mxRoom encryptionTrustLevelForUserId:matrixId];
     }
     
-    self.avatarBadgeImageView.image = [self badgeImageForUserEncryptionTrustLevel:userEncryptionTrustLevel];
-}
-
-- (UIImage*)badgeImageForUserEncryptionTrustLevel:(UserEncryptionTrustLevel)userEncryptionTrustLevel
-{
-    NSString *encryptionIconName;
-    UIImage *encryptionIcon;
-    
-    switch (userEncryptionTrustLevel) {
-        case UserEncryptionTrustLevelWarning:
-            encryptionIconName = @"encryption_warning";
-            break;
-        case UserEncryptionTrustLevelNormal:
-            encryptionIconName = @"encryption_normal";
-            break;
-        case UserEncryptionTrustLevelTrusted:
-            encryptionIconName = @"encryption_trusted";
-            break;
-        default:
-            break;
-    }
-    
-    if (encryptionIconName)
-    {
-        encryptionIcon = [UIImage imageNamed:encryptionIconName];
-    }
-    
-    return encryptionIcon;
+    self.avatarBadgeImageView.image = [EncryptionTrustLevelBadgeImageHelper userBadgeImageFor:userEncryptionTrustLevel];
 }
 
 - (void)refreshContactDisplayName

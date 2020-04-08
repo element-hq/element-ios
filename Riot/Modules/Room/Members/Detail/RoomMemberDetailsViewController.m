@@ -440,7 +440,7 @@
         
         self.roomMemberStatusLabel.text = presenceText;
         
-        self.roomMemberAvatarBadgeImageView.image = self.userEncryptionBadgeImage;
+        self.roomMemberAvatarBadgeImageView.image = [EncryptionTrustLevelBadgeImageHelper userBadgeImageFor:self.encryptionTrustLevel];
         
         // Retrieve the existing direct chats
         [directChatsArray removeAllObjects];
@@ -501,35 +501,6 @@
     
     self.encryptionTrustLevel = [self.mxRoom encryptionTrustLevelForUserId:userId];
     [self updateMemberInfo];
-}
-
-- (UIImage*)userEncryptionBadgeImage
-{
-    NSString *encryptionIconName;
-    UIImage *encryptionIcon;
-
-    UserEncryptionTrustLevel userEncryptionTrustLevel = self.encryptionTrustLevel;
-        
-    switch (userEncryptionTrustLevel) {
-        case UserEncryptionTrustLevelWarning:
-            encryptionIconName = @"encryption_warning";
-            break;
-        case UserEncryptionTrustLevelNormal:
-            encryptionIconName = @"encryption_normal";
-            break;
-        case UserEncryptionTrustLevelTrusted:
-            encryptionIconName = @"encryption_trusted";
-            break;
-        default:
-            break;
-    }
-    
-    if (encryptionIconName)
-    {
-        encryptionIcon = [UIImage imageNamed:encryptionIconName];
-    }
-    
-    return encryptionIcon;
 }
 
 - (BOOL)isRoomMemberCurrentUser
@@ -914,7 +885,7 @@
                     break;
             }
             
-            securityStatusCell.imageView.image = self.userEncryptionBadgeImage;
+            securityStatusCell.imageView.image = [EncryptionTrustLevelBadgeImageHelper userBadgeImageFor:self.encryptionTrustLevel];
             
             securityStatusCell.textLabel.numberOfLines = 1;
             securityStatusCell.textLabel.font = [UIFont systemFontOfSize:16.0];
