@@ -118,6 +118,8 @@
     {
         [self refreshContactsTable];
     }
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

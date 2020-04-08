@@ -126,6 +126,8 @@ static CGFloat const kTextFontSize = 15.0;
     [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)setupStringAttributes

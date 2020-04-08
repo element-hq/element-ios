@@ -120,6 +120,11 @@
     [self updateSearch];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return ThemeService.shared.theme.statusBarStyle;
+}
+
 #pragma mark -
 
 - (void)setRoomDataSource:(MXKRoomDataSource *)roomDataSource

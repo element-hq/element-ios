@@ -87,7 +87,9 @@
     if (self.tableView.dataSource)
     {
         [self.tableView reloadData];
-    }  
+    }
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
