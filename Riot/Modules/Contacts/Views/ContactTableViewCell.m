@@ -56,6 +56,7 @@
     // apply the vector colours
     self.contactDisplayNameLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.contactInformationLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
+    self.powerLevelLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     
     // Clear the default background color of a MXKImageView instance
     self.thumbnailView.defaultBackgroundColor = [UIColor clearColor];
@@ -134,8 +135,6 @@
         mxPresenceObserver = nil;
     }
     
-    self.thumbnailBadgeView.hidden = YES;
-    
     // Sanity check: accept only object of MXKContact classes or sub-classes
     NSParameterAssert([cellData isKindOfClass:[MXKContact class]]);
     contact = (MXKContact*)cellData;
@@ -147,6 +146,7 @@
         self.thumbnailView.image = nil;
         self.contactDisplayNameLabel.text = nil;
         self.contactInformationLabel.text = nil;
+        self.powerLevelLabel.text = nil;
         
         return;
     }
@@ -310,18 +310,7 @@
 }
 
 - (void)refreshLocalContactInformation
-{
-    NSArray *identifiers = contact.matrixIdentifiers;
-    if (identifiers.count)
-    {
-        self.thumbnailBadgeView.image = [UIImage imageNamed:@"riot_icon"];
-        self.thumbnailBadgeView.hidden = NO;
-    }
-    else
-    {
-        self.thumbnailBadgeView.hidden = YES;
-    }
-    
+{    
     // Display the first contact method in sub label.
     NSString *subLabelText = nil;
     if (contact.emailAddresses.count)
