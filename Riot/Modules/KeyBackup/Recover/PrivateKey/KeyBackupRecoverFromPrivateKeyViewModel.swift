@@ -60,7 +60,7 @@ final class KeyBackupRecoverFromPrivateKeyViewModel: KeyBackupRecoverFromPrivate
 
         self.update(viewState: .loading)
         
-        self.currentHTTPOperation = keyBackup.restoreUsingPrivateKey(inCryptoStore: keyBackupVersion, room: nil, session: nil, success: { [weak self] (_, _) in
+        self.currentHTTPOperation = keyBackup.restore(usingPrivateKeyKeyBackup: keyBackupVersion, room: nil, session: nil, success: { [weak self] (_, _) in
             guard let sself = self else {
                 return
             }
@@ -79,7 +79,16 @@ final class KeyBackupRecoverFromPrivateKeyViewModel: KeyBackupRecoverFromPrivate
             })
             
             }, failure: { [weak self] error in
-                self?.update(viewState: .error(error))
+                guard let sself = self else {
+                    return
+                }
+                
+                if (error as NSError).domain == MXKeyBackupErrorDomain
+                    && (error as NSError).code == Int(MXKeyBackupErrorInvalidOrMissingLocalPrivateKey.rawValue) {
+                    sself.coordinatorDelegate?.keyBackupRecoverFromPrivateKeyViewModelDidPrivateKeyFail(sself)
+                } else {
+                    sself.update(viewState: .error(error))
+                }
         })
     }
     

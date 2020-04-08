@@ -58,9 +58,12 @@ final class KeyBackupRecoverFromPrivateKeyCoordinator: KeyBackupRecoverFromPriva
 
 // MARK: - KeyBackupRecoverFromPrivateKeyViewModelCoordinatorDelegate
 extension KeyBackupRecoverFromPrivateKeyCoordinator: KeyBackupRecoverFromPrivateKeyViewModelCoordinatorDelegate {
-    
     func keyBackupRecoverFromPrivateKeyViewModelDidRecover(_ viewModel: KeyBackupRecoverFromPrivateKeyViewModelType) {
         self.delegate?.keyBackupRecoverFromPrivateKeyCoordinatorDidRecover(self)
+    }
+    
+    func keyBackupRecoverFromPrivateKeyViewModelDidPrivateKeyFail(_ viewModel: KeyBackupRecoverFromPrivateKeyViewModelType) {
+        self.delegate?.keyBackupRecoverFromPrivateKeyCoordinatorDidPrivateKeyFail(self)
     }
     
     func keyBackupRecoverFromPrivateKeyViewModelDidCancel(_ viewModel: KeyBackupRecoverFromPrivateKeyViewModelType) {

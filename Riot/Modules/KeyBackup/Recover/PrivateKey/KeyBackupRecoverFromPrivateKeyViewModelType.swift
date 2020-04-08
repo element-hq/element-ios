@@ -24,6 +24,7 @@ protocol KeyBackupRecoverFromPrivateKeyViewModelViewDelegate: class {
 
 protocol KeyBackupRecoverFromPrivateKeyViewModelCoordinatorDelegate: class {
     func keyBackupRecoverFromPrivateKeyViewModelDidRecover(_ viewModel: KeyBackupRecoverFromPrivateKeyViewModelType)
+    func keyBackupRecoverFromPrivateKeyViewModelDidPrivateKeyFail(_ viewModel: KeyBackupRecoverFromPrivateKeyViewModelType)
     func keyBackupRecoverFromPrivateKeyViewModelDidCancel(_ viewModel: KeyBackupRecoverFromPrivateKeyViewModelType)
 }
 
