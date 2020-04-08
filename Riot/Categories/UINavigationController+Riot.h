@@ -19,7 +19,6 @@
 
 /**
  The `UINavigationController` category overrides the default auto rotation handling.
- Also directs status bar hidden and preferred style attributes to its topViewController.
  */
 
 @interface UINavigationController (Riot)
