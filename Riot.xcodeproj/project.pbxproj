@@ -57,6 +57,14 @@
 		324A2054225FC571004FE8B0 /* DeviceVerificationIncomingCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324A204C225FC571004FE8B0 /* DeviceVerificationIncomingCoordinatorType.swift */; };
 		324A2055225FC571004FE8B0 /* DeviceVerificationIncomingViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324A204D225FC571004FE8B0 /* DeviceVerificationIncomingViewModelType.swift */; };
 		324A2056225FC571004FE8B0 /* DeviceVerificationIncomingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324A204E225FC571004FE8B0 /* DeviceVerificationIncomingCoordinator.swift */; };
+		32607D6C243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32607D64243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewController.swift */; };
+		32607D6D243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32607D65243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyCoordinatorType.swift */; };
+		32607D6E243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32607D66243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewModelType.swift */; };
+		32607D6F243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32607D67243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewController.storyboard */; };
+		32607D70243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32607D68243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewModel.swift */; };
+		32607D71243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32607D69243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewState.swift */; };
+		32607D72243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32607D6A243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewAction.swift */; };
+		32607D73243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32607D6B243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyCoordinator.swift */; };
 		3275FD8C21A5A2C500B9C13D /* TermsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3275FD8B21A5A2C500B9C13D /* TermsView.swift */; };
 		3281BCF72201FA4200F4A383 /* UIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3281BCF62201FA4200F4A383 /* UIControl.swift */; };
 		3284A35120A07C210044F922 /* postMessageAPI.js in Resources */ = {isa = PBXBuildFile; fileRef = 3284A35020A07C210044F922 /* postMessageAPI.js */; };
@@ -787,6 +795,14 @@
 		325789A5237AB241009388E6 /* cy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cy; path = cy.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		325789A6237AB27F009388E6 /* cy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cy; path = cy.lproj/Localizable.strings; sourceTree = "<group>"; };
 		325789A7237AB297009388E6 /* cy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cy; path = cy.lproj/Vector.strings; sourceTree = "<group>"; };
+		32607D64243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverFromPrivateKeyViewController.swift; sourceTree = "<group>"; };
+		32607D65243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverFromPrivateKeyCoordinatorType.swift; sourceTree = "<group>"; };
+		32607D66243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverFromPrivateKeyViewModelType.swift; sourceTree = "<group>"; };
+		32607D67243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = KeyBackupRecoverFromPrivateKeyViewController.storyboard; sourceTree = "<group>"; };
+		32607D68243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverFromPrivateKeyViewModel.swift; sourceTree = "<group>"; };
+		32607D69243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverFromPrivateKeyViewState.swift; sourceTree = "<group>"; };
+		32607D6A243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverFromPrivateKeyViewAction.swift; sourceTree = "<group>"; };
+		32607D6B243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverFromPrivateKeyCoordinator.swift; sourceTree = "<group>"; };
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		3267EFB520E379FD00FF1CAA /* AUTHORS.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS.rst; sourceTree = "<group>"; };
@@ -1846,6 +1862,21 @@
 				324A204E225FC571004FE8B0 /* DeviceVerificationIncomingCoordinator.swift */,
 			);
 			path = Incoming;
+			sourceTree = "<group>";
+		};
+		32607D63243E0A55006674CC /* PrivateKey */ = {
+			isa = PBXGroup;
+			children = (
+				32607D64243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewController.swift */,
+				32607D65243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyCoordinatorType.swift */,
+				32607D66243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewModelType.swift */,
+				32607D67243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewController.storyboard */,
+				32607D68243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewModel.swift */,
+				32607D69243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewState.swift */,
+				32607D6A243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewAction.swift */,
+				32607D6B243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyCoordinator.swift */,
+			);
+			path = PrivateKey;
 			sourceTree = "<group>";
 		};
 		32863A572384070300D07C4A /* Shared */ = {
@@ -4074,6 +4105,7 @@
 				B19EFA3821F8BB2C00FC070E /* KeyBackupRecoverCoordinatorType.swift */,
 				B19EFA3A21F8BB4100FC070E /* KeyBackupRecoverCoordinator.swift */,
 				B140B4A721F8AB4600E3F5FE /* KeyBackupRecoverCoordinatorBridgePresenter.swift */,
+				32607D63243E0A55006674CC /* PrivateKey */,
 				B1E5368A21FB6FC0001F3AFF /* Passphrase */,
 				B14F142522144F6400FA0595 /* RecoveryKey */,
 				B1107EC62200B0190038014B /* Success */,
@@ -4544,6 +4576,7 @@
 				3232AB1522564D9100AD6A5C /* flat-swift4-vector.stencil in Resources */,
 				F083BDE61E7009ED00A9B29C /* busy.mp3 in Resources */,
 				B1B5574C20EE6C4D00210D55 /* MediaAlbumContentViewController.xib in Resources */,
+				32607D6F243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewController.storyboard in Resources */,
 				B1B557E820EF60F500210D55 /* MessagesSearchResultTextMsgBubbleCell.xib in Resources */,
 				B1B558D920EF768F00210D55 /* RoomOutgoingEncryptedAttachmentBubbleCell.xib in Resources */,
 				B1B5573020EE6C4D00210D55 /* BugReportViewController.xib in Resources */,
@@ -4823,6 +4856,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B1B557D120EF5E3500210D55 /* MediaAlbumTableCell.m in Sources */,
+				32607D71243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewState.swift in Sources */,
 				324A2053225FC571004FE8B0 /* DeviceVerificationIncomingViewModel.swift in Sources */,
 				B1B557A120EF58AD00210D55 /* ContactTableViewCell.m in Sources */,
 				B1CE83DE2422817200D07506 /* KeyVerificationVerifyBySASViewModelType.swift in Sources */,
@@ -4847,6 +4881,7 @@
 				B1B5598820EFC3E000210D55 /* WidgetManager.m in Sources */,
 				B1DB4F0E22316FFF0065DBFA /* UserNameColorGenerator.swift in Sources */,
 				B157FAA123264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinatorType.swift in Sources */,
+				32607D6C243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewController.swift in Sources */,
 				B1057789221304EC00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.swift in Sources */,
 				B1DCC61922E5E17100625807 /* EmojiPickerCoordinatorType.swift in Sources */,
 				B1C3360122F1ED600021BA8D /* MediaPickerCoordinatorType.swift in Sources */,
@@ -4863,6 +4898,7 @@
 				B1BD71C1238EA92100BA92E2 /* WidgetPermissionViewModel.swift in Sources */,
 				B1B557E320EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.m in Sources */,
 				B1CE9F062216FB09000FAE6A /* EncryptionKeysExportPresenter.swift in Sources */,
+				32607D72243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewAction.swift in Sources */,
 				B1B5574420EE6C4D00210D55 /* CallViewController.m in Sources */,
 				B12D7A0023E2462200FACEDC /* UserVerificationStartCoordinatorType.swift in Sources */,
 				B1B5572220EE6C4D00210D55 /* RoomSettingsViewController.m in Sources */,
@@ -4874,6 +4910,7 @@
 				B1B558E820EF768F00210D55 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				B1B558F320EF768F00210D55 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				B12D79FE23E2462200FACEDC /* UserVerificationStartViewController.swift in Sources */,
+				32607D73243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyCoordinator.swift in Sources */,
 				B1B557BD20EF5B4500210D55 /* KeyboardGrowingTextView.m in Sources */,
 				B1A68593229E807A00D6C09A /* RoomBubbleCellLayout.swift in Sources */,
 				B1B558F420EF768F00210D55 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
@@ -4890,6 +4927,7 @@
 				B1DCC61C22E5E17100625807 /* EmojiPickerViewAction.swift in Sources */,
 				B1098BDF21ECE09F000DDA48 /* Strings.swift in Sources */,
 				B1BEE71523DF2ACF0003A4CB /* UserVerificationCoordinator.swift in Sources */,
+				32607D70243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewModel.swift in Sources */,
 				B1B558C420EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				B1963B2E228F1C4900CBA17F /* BubbleReactionViewData.swift in Sources */,
 				B1C3361C22F32B4A0021BA8D /* SingleImagePickerPresenter.swift in Sources */,
@@ -5156,6 +5194,7 @@
 				B14F143322144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewModel.swift in Sources */,
 				B1B336C0242B933700F95EC4 /* KeyVerificationSelfVerifyStartViewModelType.swift in Sources */,
 				32A6001822C661100042C1D9 /* EditHistoryViewModel.swift in Sources */,
+				32607D6E243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewModelType.swift in Sources */,
 				B1B558D020EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				B1B558CF20EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				B140B4A221F87F7100E3F5FE /* OperationQueue.swift in Sources */,
@@ -5281,6 +5320,7 @@
 				B12D79FF23E2462200FACEDC /* UserVerificationStartViewState.swift in Sources */,
 				B1B558CE20EF768F00210D55 /* RoomOutgoingEncryptedAttachmentBubbleCell.m in Sources */,
 				B1B5577D20EE84BF00210D55 /* CircleButton.m in Sources */,
+				32607D6D243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyCoordinatorType.swift in Sources */,
 				32BF995521FA2AB700698084 /* SettingsKeyBackupViewAction.swift in Sources */,
 				B109D6F1222D8C400061B6D9 /* UIApplication.swift in Sources */,
 				B1BEE73723DF44A60003A4CB /* UserVerificationSessionsStatusViewState.swift in Sources */,

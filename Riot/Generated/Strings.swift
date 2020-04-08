@@ -1330,6 +1330,10 @@ internal enum VectorL10n {
   internal static var keyBackupRecoverFromPassphraseRecoverAction: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_from_passphrase_recover_action") 
   }
+  /// Restoring backup…
+  internal static var keyBackupRecoverFromPrivateKeyInfo: String { 
+    return VectorL10n.tr("Vector", "key_backup_recover_from_private_key_info") 
+  }
   /// Use your recovery key to unlock your secure message history
   internal static var keyBackupRecoverFromRecoveryKeyInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_from_recovery_key_info") 
