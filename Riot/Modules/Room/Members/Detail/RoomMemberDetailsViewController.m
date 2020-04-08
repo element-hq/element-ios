@@ -97,6 +97,8 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *bottomImageView;
 
+@property (weak, nonatomic) IBOutlet UILabel *roomMemberPowerLevelLabel;
+@property (weak, nonatomic) IBOutlet UIView *roomMemberPowerLevelContainerView;
 
 @property(nonatomic) UserEncryptionTrustLevel encryptionTrustLevel;
 
@@ -256,6 +258,7 @@
     self.roomMemberNameLabel.textColor = ThemeService.shared.theme.baseTextPrimaryColor;
 
     self.roomMemberStatusLabel.textColor = ThemeService.shared.theme.tintColor;
+    self.roomMemberPowerLevelLabel.textColor = ThemeService.shared.theme.baseTextPrimaryColor;
     
     // Check the table view style to select its bg color.
     self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.backgroundColor : ThemeService.shared.theme.headerBackgroundColor);
@@ -389,27 +392,40 @@
     {
         self.roomMemberNameLabel.text = self.mxRoomMember.displayname ? self.mxRoomMember.displayname : self.mxRoomMember.userId;
         
-        // Update member badge
+        // Update member power level
         MXWeakify(self);
         [self.mxRoom state:^(MXRoomState *roomState) {
             MXStrongifyAndReturnIfNil(self);
 
+            NSString *powerLevelTextFormat;
+            
             MXRoomPowerLevels *powerLevels = [roomState powerLevels];
             NSInteger powerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxRoomMember.userId];
-            if (powerLevel >= RoomPowerLevelAdmin)
-            {
-                self->memberTitleView.memberBadge.image = [UIImage imageNamed:@"admin_icon"];
-                self->memberTitleView.memberBadge.hidden = NO;
+            
+            RoomPowerLevel roomPowerLevel = [RoomPowerLevelHelper roomPowerLevelFrom:powerLevel];
+            
+            switch (roomPowerLevel) {
+                case RoomPowerLevelAdmin:
+                    powerLevelTextFormat = NSLocalizedStringFromTable(@"room_member_power_level_admin_in", @"Vector", nil);
+                    break;
+                case RoomPowerLevelModerator:
+                    powerLevelTextFormat = NSLocalizedStringFromTable(@"room_member_power_level_moderator_in", @"Vector", nil);
+                    break;
+                default:
+                    powerLevelTextFormat = nil;
+                    break;
             }
-            else if (powerLevel >= RoomPowerLevelModerator)
+            
+            NSString *powerLevelText;
+            
+            if (powerLevelTextFormat)
             {
-                self->memberTitleView.memberBadge.image = [UIImage imageNamed:@"mod_icon"];
-                self->memberTitleView.memberBadge.hidden = NO;
+                NSString *roomName = self.mxRoom.summary.displayname;
+                powerLevelText = [NSString stringWithFormat:powerLevelTextFormat, roomName];
             }
-            else
-            {
-                self->memberTitleView.memberBadge.hidden = YES;
-            }
+            
+            self.roomMemberPowerLevelLabel.text = powerLevelText;
+            self.roomMemberPowerLevelContainerView.hidden = !powerLevelTextFormat;
         }];
         
         NSString* presenceText;
@@ -424,7 +440,7 @@
         
         self.roomMemberStatusLabel.text = presenceText;
         
-        self.roomMemberAvatarBadgeImageView.image = self.userEncryptionBadgeImage;
+        self.roomMemberAvatarBadgeImageView.image = [EncryptionTrustLevelBadgeImageHelper userBadgeImageFor:self.encryptionTrustLevel];
         
         // Retrieve the existing direct chats
         [directChatsArray removeAllObjects];
@@ -485,35 +501,6 @@
     
     self.encryptionTrustLevel = [self.mxRoom encryptionTrustLevelForUserId:userId];
     [self updateMemberInfo];
-}
-
-- (UIImage*)userEncryptionBadgeImage
-{
-    NSString *encryptionIconName;
-    UIImage *encryptionIcon;
-
-    UserEncryptionTrustLevel userEncryptionTrustLevel = self.encryptionTrustLevel;
-        
-    switch (userEncryptionTrustLevel) {
-        case UserEncryptionTrustLevelWarning:
-            encryptionIconName = @"encryption_warning";
-            break;
-        case UserEncryptionTrustLevelNormal:
-            encryptionIconName = @"encryption_normal";
-            break;
-        case UserEncryptionTrustLevelTrusted:
-            encryptionIconName = @"encryption_trusted";
-            break;
-        default:
-            break;
-    }
-    
-    if (encryptionIconName)
-    {
-        encryptionIcon = [UIImage imageNamed:encryptionIconName];
-    }
-    
-    return encryptionIcon;
 }
 
 - (BOOL)isRoomMemberCurrentUser
@@ -898,7 +885,7 @@
                     break;
             }
             
-            securityStatusCell.imageView.image = self.userEncryptionBadgeImage;
+            securityStatusCell.imageView.image = [EncryptionTrustLevelBadgeImageHelper userBadgeImageFor:self.encryptionTrustLevel];
             
             securityStatusCell.textLabel.numberOfLines = 1;
             securityStatusCell.textLabel.font = [UIFont systemFontOfSize:16.0];

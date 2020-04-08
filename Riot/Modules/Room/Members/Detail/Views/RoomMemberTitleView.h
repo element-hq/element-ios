@@ -49,7 +49,6 @@
 + (instancetype)roomMemberTitleView;
 
 @property (weak, nonatomic) IBOutlet UIView *memberAvatarMask;
-@property (weak, nonatomic) IBOutlet UIImageView *memberBadge;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *memberAvatarMaskCenterXConstraint;
 
 /**

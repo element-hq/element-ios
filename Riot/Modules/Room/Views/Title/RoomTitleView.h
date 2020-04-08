@@ -39,6 +39,7 @@
 @property (weak, nonatomic) IBOutlet UIView *addParticipantMask;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *displayNameCenterXConstraint;
 @property (weak, nonatomic) IBOutlet UIImageView *roomDetailsIconImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *badgeImageView;
 
 /**
  The room preview data may be used when mxRoom instance is not available
