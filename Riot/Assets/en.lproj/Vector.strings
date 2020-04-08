@@ -959,6 +959,9 @@
 "key_backup_recover_invalid_recovery_key_title" = "Recovery Key Mismatch";
 "key_backup_recover_invalid_recovery_key" = "Backup could not be decrypted with this key: please verify that you entered the correct recovery key.";
 
+// Recover from private key
+"key_backup_recover_from_private_key_info" = "Restoring backup…";
+
 // Recover from passphrase
 
 "key_backup_recover_from_passphrase_info" = "Use your recovery passphrase to unlock your secure message history";

@@ -1,3 +1,5 @@
+// File created from ScreenTemplate
+// $ createScreen.sh .KeyBackup/Recover/PrivateKey KeyBackupRecoverFromPrivateKey
 /*
  Copyright 2020 New Vector Ltd
  
@@ -16,35 +18,29 @@
 
 import UIKit
 
-final class TemplateScreenViewController: UIViewController {
+final class KeyBackupRecoverFromPrivateKeyViewController: UIViewController {
     
     // MARK: - Constants
-    
-    private enum Constants {
-        static let aConstant: Int = 666
-    }
     
     // MARK: - Properties
     
     // MARK: Outlets
 
-    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private weak var shieldImageView: UIImageView!
     
-    @IBOutlet private weak var messageLabel: UILabel!
-    @IBOutlet private weak var okButton: UIButton!
+    @IBOutlet private weak var informationLabel: UILabel!
     
     // MARK: Private
 
-    private var viewModel: TemplateScreenViewModelType!
+    private var viewModel: KeyBackupRecoverFromPrivateKeyViewModelType!
     private var theme: Theme!
-    private var keyboardAvoider: KeyboardAvoider?
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
 
     // MARK: - Setup
     
-    class func instantiate(with viewModel: TemplateScreenViewModelType) -> TemplateScreenViewController {
-        let viewController = StoryboardScene.TemplateScreenViewController.initialScene.instantiate()
+    class func instantiate(with viewModel: KeyBackupRecoverFromPrivateKeyViewModelType) -> KeyBackupRecoverFromPrivateKeyViewController {
+        let viewController = StoryboardScene.KeyBackupRecoverFromPrivateKeyViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
         viewController.theme = ThemeService.shared().theme
         return viewController
@@ -57,10 +53,9 @@ final class TemplateScreenViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = "Template"
+        self.title = VectorL10n.keyBackupRecoverTitle
         
         self.setupViews()
-        self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
         self.activityPresenter = ActivityIndicatorPresenter()
         self.errorPresenter = MXKErrorAlertPresentation()
         
@@ -69,43 +64,23 @@ final class TemplateScreenViewController: UIViewController {
         
         self.viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .sayHello)
+        self.viewModel.process(viewAction: .recover)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        self.keyboardAvoider?.startAvoiding()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
-        self.keyboardAvoider?.stopAvoiding()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.theme.statusBarStyle
     }
     
-    // MARK: - Private
     
-    private func update(theme: Theme) {
-        self.theme = theme
-        
-        self.view.backgroundColor = theme.headerBackgroundColor
-        
-        if let navigationBar = self.navigationController?.navigationBar {
-            theme.applyStyle(onNavigationBar: navigationBar)
-        }
-
-
-        // TODO:
-        self.messageLabel.textColor = theme.textPrimaryColor
-
-        self.okButton.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.okButton)
-    }
+    // MARK: - Private
     
     private func registerThemeServiceDidChangeThemeNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
@@ -119,16 +94,29 @@ final class TemplateScreenViewController: UIViewController {
         let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
             self?.cancelButtonAction()
         }
-        
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         
-        self.scrollView.keyboardDismissMode = .interactive
+        let shieldImage = Asset.Images.keyBackupLogo.image.withRenderingMode(.alwaysTemplate)
+        self.shieldImageView.image = shieldImage
         
-        self.messageLabel.text = "VectorL10n.templateScreenTitle"
-        self.messageLabel.isHidden = true
+        self.informationLabel.text = VectorL10n.keyBackupRecoverFromPrivateKeyInfo
+    }
+    
+    private func update(theme: Theme) {
+        self.theme = theme
+        
+        self.view.backgroundColor = theme.headerBackgroundColor
+        
+        if let navigationBar = self.navigationController?.navigationBar {
+            theme.applyStyle(onNavigationBar: navigationBar)
+        }
+        
+        self.shieldImageView.tintColor = theme.textPrimaryColor
+        
+        self.informationLabel.textColor = theme.textPrimaryColor
     }
 
-    private func render(viewState: TemplateScreenViewState) {
+    private func render(viewState: KeyBackupRecoverFromPrivateKeyViewState) {
         switch viewState {
         case .loading:
             self.renderLoading()
@@ -145,9 +133,6 @@ final class TemplateScreenViewController: UIViewController {
     
     private func renderLoaded() {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-
-        self.messageLabel.text = self.viewModel.message
-        self.messageLabel.isHidden = false
     }
     
     private func render(error: Error) {
@@ -158,20 +143,16 @@ final class TemplateScreenViewController: UIViewController {
     
     // MARK: - Actions
 
-    @IBAction private func okButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .complete)
-    }
-
     private func cancelButtonAction() {
         self.viewModel.process(viewAction: .cancel)
     }
 }
 
 
-// MARK: - TemplateScreenViewModelViewDelegate
-extension TemplateScreenViewController: TemplateScreenViewModelViewDelegate {
+// MARK: - KeyBackupRecoverFromPrivateKeyViewModelViewDelegate
+extension KeyBackupRecoverFromPrivateKeyViewController: KeyBackupRecoverFromPrivateKeyViewModelViewDelegate {
 
-    func templateScreenViewModel(_ viewModel: TemplateScreenViewModelType, didUpdateViewState viewSate: TemplateScreenViewState) {
+    func keyBackupRecoverFromPrivateKeyViewModel(_ viewModel: KeyBackupRecoverFromPrivateKeyViewModelType, didUpdateViewState viewSate: KeyBackupRecoverFromPrivateKeyViewState) {
         self.render(viewState: viewSate)
     }
 }

@@ -43,16 +43,16 @@ final class KeyBackupRecoverCoordinator: KeyBackupRecoverCoordinatorType {
     // MARK: - Public
     
     func start() {
-        
+    
         let rootCoordinator: Coordinator & Presentable
         
-        // Check if a passphrase has been set for given backup
-        if let megolmBackupAuthData = MXMegolmBackupAuthData(fromJSON: self.keyBackupVersion.authData), megolmBackupAuthData.privateKeySalt != nil {
-            rootCoordinator = self.createRecoverFromPassphraseCoordinator()
+        // Check if we have the private key locally
+        if self.session.crypto.backup.hasPrivateKeyInCryptoStore {
+            rootCoordinator = self.createRecoverFromPrivateKeyCoordinator()
         } else {
-            rootCoordinator = self.createRecoverFromRecoveryKeyCoordinator()
+            rootCoordinator = self.createRecoverWithUserInteractionCoordinator()
         }
-        
+
         rootCoordinator.start()
         
         self.add(childCoordinator: rootCoordinator)
@@ -65,6 +65,24 @@ final class KeyBackupRecoverCoordinator: KeyBackupRecoverCoordinatorType {
     }
     
     // MARK: - Private
+    
+    private func createRecoverWithUserInteractionCoordinator() -> Coordinator & Presentable {
+        let coordinator: Coordinator & Presentable
+        
+        // Check if a passphrase has been set for given backup
+        if let megolmBackupAuthData = MXMegolmBackupAuthData(fromJSON: self.keyBackupVersion.authData), megolmBackupAuthData.privateKeySalt != nil {
+            coordinator = self.createRecoverFromPassphraseCoordinator()
+        } else {
+            coordinator = self.createRecoverFromRecoveryKeyCoordinator()
+        }
+        return coordinator
+    }
+    
+    private func createRecoverFromPrivateKeyCoordinator() -> KeyBackupRecoverFromPrivateKeyCoordinator {
+        let coordinator = KeyBackupRecoverFromPrivateKeyCoordinator(keyBackup: self.session.crypto.backup, keyBackupVersion: self.keyBackupVersion)
+        coordinator.delegate = self
+        return coordinator
+    }
     
     private func createRecoverFromPassphraseCoordinator() -> KeyBackupRecoverFromPassphraseCoordinator {
         let coordinator = KeyBackupRecoverFromPassphraseCoordinator(keyBackup: self.session.crypto.backup, keyBackupVersion: self.keyBackupVersion)
@@ -94,6 +112,33 @@ final class KeyBackupRecoverCoordinator: KeyBackupRecoverCoordinatorType {
         let keyBackupRecoverSuccessViewController = KeyBackupRecoverSuccessViewController.instantiate()
         keyBackupRecoverSuccessViewController.delegate = self
         self.navigationRouter.push(keyBackupRecoverSuccessViewController, animated: true, popCompletion: nil)
+    }
+    
+    private func showRecoverFallback() {
+        let coordinator = self.createRecoverWithUserInteractionCoordinator()
+        self.add(childCoordinator: coordinator)
+        
+        // Skip the previously displayed KeyBackupRecoverFromPrivateKeyCoordinator in the navigation stack
+        self.navigationRouter.setRootModule(coordinator)
+        
+        coordinator.start()
+    }
+}
+
+// MARK: - KeyBackupRecoverFromPassphraseCoordinatorDelegate
+extension KeyBackupRecoverCoordinator: KeyBackupRecoverFromPrivateKeyCoordinatorDelegate {
+    
+    func keyBackupRecoverFromPrivateKeyCoordinatorDidRecover(_ coordinator: KeyBackupRecoverFromPrivateKeyCoordinatorType) {
+        self.showRecoverSuccess()
+    }
+    
+    func keyBackupRecoverFromPrivateKeyCoordinatorDidPrivateKeyFail(_ coordinator: KeyBackupRecoverFromPrivateKeyCoordinatorType) {
+        // The private key did not work. Ask the user to enter their passphrase or recovery key
+        self.showRecoverFallback()
+    }
+    
+    func keyBackupRecoverFromPrivateKeyCoordinatorDidCancel(_ coordinator: KeyBackupRecoverFromPrivateKeyCoordinatorType) {
+        self.delegate?.keyBackupRecoverCoordinatorDidCancel(self)
     }
 }
 
@@ -125,7 +170,7 @@ extension KeyBackupRecoverCoordinator: KeyBackupRecoverFromRecoveryKeyCoordinato
 
 // MARK: - KeyBackupRecoverSuccessViewControllerDelegate
 extension KeyBackupRecoverCoordinator: KeyBackupRecoverSuccessViewControllerDelegate {
-    func KeyBackupRecoverSuccessViewControllerDidTapDone(_ keyBackupRecoverSuccessViewController: KeyBackupRecoverSuccessViewController) {
+    func keyBackupRecoverSuccessViewControllerDidTapDone(_ keyBackupRecoverSuccessViewController: KeyBackupRecoverSuccessViewController) {
         self.delegate?.keyBackupRecoverCoordinatorDidRecover(self)
     }
 }

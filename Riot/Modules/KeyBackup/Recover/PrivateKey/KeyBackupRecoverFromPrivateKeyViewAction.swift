@@ -1,3 +1,5 @@
+// File created from ScreenTemplate
+// $ createScreen.sh .KeyBackup/Recover/PrivateKey KeyBackupRecoverFromPrivateKey
 /*
  Copyright 2020 New Vector Ltd
  
@@ -16,9 +18,8 @@
 
 import Foundation
 
-/// TemplateScreenViewController view actions exposed to view model
-enum TemplateScreenViewAction {
-    case sayHello
-    case complete
+/// KeyBackupRecoverFromPrivateKeyViewController view actions exposed to view model
+enum KeyBackupRecoverFromPrivateKeyViewAction {
+    case recover
     case cancel
 }
