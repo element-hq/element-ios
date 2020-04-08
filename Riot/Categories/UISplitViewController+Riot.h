@@ -15,13 +15,12 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import <UIKit/UIKit.h>
 
 /**
- The `UINavigationController` category overrides the default auto rotation handling.
- Also directs status bar hidden and preferred style attributes to its topViewController.
+ The `UISplitViewController` category directs status bar hidden and preferred style attributes to its first children.
  */
 
-@interface UINavigationController (Riot)
+@interface UISplitViewController (Riot)
 
 @end

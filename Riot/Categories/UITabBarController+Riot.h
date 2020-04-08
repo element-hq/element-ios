@@ -1,6 +1,6 @@
 /*
- Copyright 2016 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -15,13 +15,12 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import <UIKit/UIKit.h>
 
 /**
- The `UINavigationController` category overrides the default auto rotation handling.
- Also directs status bar hidden and preferred style attributes to its topViewController.
+ The `UITabBarController` category directs status bar hidden and preferred style attributes to its first children.
  */
 
-@interface UINavigationController (Riot)
+@interface UITabBarController (Riot)
 
 @end
