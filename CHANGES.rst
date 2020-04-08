@@ -13,6 +13,7 @@ Improvements:
  * Verification by DM: Support QR code (#2921).
  * Cross-Signing: Detect and expose new sign-ins (#2918).
  * Cross-signing: Complete security at the end of sign in process( #3003).
+ * CallVC: Declined calls now properly reset call view controller (#2877).
 
 Changes in 0.10.5 (2020-04-01)
 ===============================================
