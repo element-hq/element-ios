@@ -78,7 +78,7 @@
 "auth_reset_password_missing_email" = "Zure kontura gehitutako e-mail helbidea sartu behar da.";
 "auth_reset_password_missing_password" = "Pasahitz berri bat sartu behar da.";
 "auth_reset_password_error_unauthorized" = "Huts egin du e-mail helbidearen egiaztaketak, egin klik e-mailean zetorren estekan";
-"auth_reset_password_success_message" = "Zure pasahitza berrezarri da.\n\nSaioa amaitu da zure gailu guztietan eta ez dituzu jakinarazpenak jasoko. Jakinarazpenak berriro jasotzeko hasi berriro saioa gailu bakoitzean.";
+"auth_reset_password_success_message" = "Zure pasahitza berrezarri da.\n\nSaioa guztiak amaitu dira eta ez dituzu jakinarazpenak jasoko. Jakinarazpenak berriro jasotzeko hasi berriro saioa gailu bakoitzean.";
 // Read Receipts
 "read_receipts_list" = "Irakurragirien zerrenda";
 "yesterday" = "Atzo";
@@ -102,7 +102,7 @@
 "room_participants_idle" = "Inaktibo";
 "room_participants_now" = "orain";
 "room_participants_ago" = "duela";
-"settings_devices" = "GAILUAK";
+"settings_devices" = "SAIOAK";
 "room_participants_action_invite" = "Gonbidatu";
 "room_participants_action_leave" = "Atera gela honetatik";
 "room_participants_action_remove" = "Kendu gela honetatik";
@@ -151,12 +151,12 @@
 "settings_phone_number" = "Telefonoa";
 "settings_add_phone_number" = "Gehitu telefono zenbakia";
 "settings_clear_cache" = "Garbitu cachea";
-"room_participants_action_section_other" = "Bestea";
+"room_participants_action_section_other" = "Aukerak";
 "room_details_advanced_section" = "Aurreratua";
 "settings_contacts_phonebook_country" = "Telefono-liburuaren herrialdea";
 "settings_pin_rooms_with_missed_notif" = "Finkatu ikusi gabeko jakinarazpenak dituzten gelak";
 "settings_pin_rooms_with_unread" = "Finkatu irakurri gabeko mezuak dituzten gelak";
-"room_participants_action_section_devices" = "Gailuak";
+"room_participants_action_section_devices" = "Saioak";
 "room_creation_appearance_name" = "Izena";
 "auth_msisdn_validation_title" = "Egiaztaketa egiteke";
 "auth_email_in_use" = "E-mail helbide hau erabilita dago";
@@ -197,7 +197,7 @@
 // Crypto
 "e2e_enabling_on_app_update" = "Riotek orain muturretik muturrerako zifratzea onartzen du baina berriro hasi behar duzu saioa hau gaitzeko.\n\nOrain egin dezakezu edo gero aplikazioaren ezarpenetatik.";
 // Unknown devices
-"unknown_devices_alert_title" = "Gelan gailu ezezagunak daude";
+"unknown_devices_alert_title" = "Gelan saio ezezagunak daude";
 "directory_server_type_homeserver" = "Idatzi hasiera zerbitzari bat honen gela publikoak zerrendatzeko";
 "title_people" = "Jendea";
 "title_rooms" = "Gelak";
@@ -287,16 +287,16 @@
 "room_many_users_are_typing" = "%@, %@, eta beste batzuk idazten ari dira…";
 "room_message_short_placeholder" = "Bidali mezu bat…";
 "room_unsent_messages_notification" = "Bidali gabeko mezuak daude. %@ edo %@ orain?";
-"room_unsent_messages_unknown_devices_notification" = "Mezua ez da bidali gailu ezezagunak daudelako. %@ edo %@ orain?";
+"room_unsent_messages_unknown_devices_notification" = "Mezua ez da bidali saio ezezagunak daudelako. %@ edo %@ orain?";
 "room_ongoing_conference_call" = "Konferentzia deia abioan. Elkartu %@ edo %@ erabiliz.";
 "room_event_action_more" = "Gehiago";
 "room_event_action_save" = "Gorde";
 "room_event_action_view_encryption" = "Zifratze informazioa";
-"unknown_devices_alert" = "Gela honetan egiaztatu gabeko gailu ezezagunak daude.\nEzin da bermatu Gailuak benetan dioten jabeenak direla.\nJarraitu aurretik gailu bakoitzeko egiaztaketa prozesua jarraitzea aholkatzen dugu, baina nahiago baduzu mezua egiaztatu gabe birbidali dezakezu.";
+"unknown_devices_alert" = "Gela honetan egiaztatu gabeko saio ezezagunak daude.\nEzin da bermatu saioak benetan dioten jabeenak direla.\nJarraitu aurretik saio bakoitzeko egiaztaketa prozesua jarraitzea aholkatzen dugu, baina nahiago baduzu mezua egiaztatu gabe birbidali dezakezu.";
 "unknown_devices_call_anyway" = "Deitu hala ere";
 "unknown_devices_answer_anyway" = "Erantzun hala ere";
 "unknown_devices_verify" = "Egiaztatu…";
-"unknown_devices_title" = "Gailu ezezagunak";
+"unknown_devices_title" = "Saio ezezagunak";
 // Room Title
 "room_title_new_room" = "Gela berria";
 "room_title_multiple_active_members" = "%@/%@ kide aktibo";
@@ -350,11 +350,11 @@
 "settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Hirugarrengoen adierazpenak";
 "settings_send_crash_report" = "Bidali kraskatze eta erabilera datu anonimoak";
-"settings_crypto_device_name" = "Gailuaren izen publikoa: ";
-"settings_crypto_device_id" = "\nGailuaren IDa ";
-"settings_crypto_device_key" = "\nGailuaren gakoa:\n";
+"settings_crypto_device_name" = "Saioaren izena: ";
+"settings_crypto_device_id" = "\nSaioaren ID-a: ";
+"settings_crypto_device_key" = "\nSaioaren gakoa:\n";
 "settings_crypto_export" = "Esportatu gakoak";
-"settings_crypto_blacklist_unverified_devices" = "Zifratu egiaztatutako gailuetara besterik ez";
+"settings_crypto_blacklist_unverified_devices" = "Zifratu egiaztatutako saioentzat soilik";
 "room_details_people" = "Kideak";
 "room_details_mute_notifs" = "Mututu jakinarazpenak";
 "room_details_access_section_no_address_warning" = "Gelara estekatzeko honek helbide bat izan behar du";
@@ -367,7 +367,7 @@
 "room_details_advanced_enable_e2e_encryption" = "Gaitu zifratzea (abisua: ezin da gero desgaitu!)";
 "room_details_advanced_e2e_encryption_enabled" = "Zifratzea gaitu da gela honetan";
 "room_details_advanced_e2e_encryption_disabled" = "Ez da zifratzea gaitu gela honetan.";
-"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Zifratu egiaztatutako gailuetara besterik ez";
+"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Zifratu egiaztatutako saioentzat soilik";
 "room_details_fail_to_update_avatar" = "Huts egin du gelaren argazkia eguneratzean";
 "room_details_fail_to_update_room_name" = "Huts egin du gelaren izena eguneratzean";
 "room_details_fail_to_update_topic" = "Huts egin du mintzagaia aldatzean";
@@ -410,7 +410,7 @@
 "no_voip" = "%@ zu deitzen ari da baina %@(e)k ez ditu deiak onartzen oraindik.\nJakinarazpen hau ezikusi dezakezu eta deia beste gailu batetik hartu, edo deia baztertu.";
 // Crash report
 "google_analytics_use_prompt" = "%@ hobetzen lagundu nahi duzu kraskatze-txosten era erabilera datu anonimoak automatikoki bidaliz?";
-"e2e_need_log_in_again" = "Berriro hasi behar duzu saioa muturretik muturrerako zifratzerako gailu honek gakoak sortzeko eta gako publikoa zure hasiera zerbitzarira bidali behar duzu.\nHau behin bakarrik egin behar duzu, barkatu eragozpenak.";
+"e2e_need_log_in_again" = "Berriro hasi behar duzu saioa muturretik muturrerako zifratzerako saio honek gakoak sortzeko eta gako publikoa zure hasiera zerbitzarira bidali behar duzu.\nHau behin bakarrik egin behar duzu, barkatu eragozpenak.";
 "bug_crash_report_title" = "Kraskatze-txostena";
 "bug_crash_report_description" = "Azaldu zer zeunden egiten programa kraskatu aurretik:";
 "bug_report_progress_zipping" = "Egunkariak biltzen";
@@ -450,8 +450,8 @@
 "event_formatter_jitsi_widget_added" = "VoIP konferentzia gehitu du %@ erabiltzaileak";
 "event_formatter_jitsi_widget_removed" = "VoIP konferentzia kendu du %@ erabiltzaileak";
 "do_not_ask_again" = "Ez galdetu berriro";
-"call_incoming_voice" = "Deia jasotzen...";
-"call_incoming_video" = "Bideo deia jasotzen...";
+"call_incoming_voice" = "Deia jasotzen…";
+"call_incoming_video" = "Bideo deia jasotzen…";
 // Widget Integration Manager
 "widget_integration_need_to_be_able_to_invite" = "Erabiltzaileak gonbidatzeko baimena izan behar duzu hori egin ahal izateko.";
 "widget_integration_unable_to_create" = "Ezin izan da trepeta sortu.";
@@ -469,8 +469,8 @@
 "share_extension_failed_to_encrypt" = "Huts egin du bidaltzean. Egiaztatu aplikazio nagusian gela honen zifratze-ezarpenak";
 // Room key request dialog
 "e2e_room_key_request_title" = "Zifratze-gako eskaera";
-"e2e_room_key_request_message" = "Zure egiaztatu gabeko '%@' gailua zifratze-gakoak eskatzen ari da.";
-"e2e_room_key_request_start_verification" = "Hasi egiaztatzea...";
+"e2e_room_key_request_message" = "Zure egiaztatu gabeko '%@' saioa zifratze-gakoak eskatzen ari da.";
+"e2e_room_key_request_start_verification" = "Hasi egiaztatzea…";
 "e2e_room_key_request_share_without_verifying" = "Partekatu egiaztatu gabe";
 "e2e_room_key_request_ignore_request" = "Ezikusi eskaera";
 "title_groups" = "Komunitateak";
@@ -509,7 +509,7 @@
 "group_participants_invited_section" = "GONBIDATUTA";
 // Group rooms
 "group_rooms_filter_rooms" = "Iragazi komunitateko gelak";
-"e2e_room_key_request_message_new_device" = "'%@' gailu berria gehitu duzu, eta zifratze-gakoak eskatzen ari da.";
+"e2e_room_key_request_message_new_device" = "'%@' saio berria gehitu duzu, eta zifratze-gakoak eskatzen ari da.";
 "room_do_not_have_permission_to_post" = "Ez duzu gela honetara mezuak bidaltzeko baimenik";
 "room_event_action_kick_prompt_reason" = "Erabiltzaile hau kanporatzeko arrazoia";
 "room_event_action_ban_prompt_reason" = "Erabiltzaile hau debekatzeko arrazoia";
@@ -535,7 +535,7 @@
 "deactivate_account_password_alert_title" = "Desaktibatu kontua";
 "deactivate_account_password_alert_message" = "Jarraitzeko sartu zure pasahitza";
 "event_formatter_rerequest_keys_part1_link" = "Berreskatu zifratze gakoak";
-"event_formatter_rerequest_keys_part2" = " zure beste gailuetatik.";
+"event_formatter_rerequest_keys_part2" = " zure beste saioetatik.";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Eskaria bidalita";
 "rerequest_keys_alert_message" = "Abiatu Riot mezua deszifratu dezakeen beste gailuren batean handik hona gakoak bidali ahal izateko.";
@@ -560,18 +560,18 @@
 "room_resource_usage_limit_reached_message_contact_3" = " muga hau areagotzeko.";
 "auth_accept_policies" = "Irakurri eta onartu hasiera-zerbitzariaren baldintzak:";
 "settings_key_backup" = "GAKOEN BABES-KOPIA";
-"settings_key_backup_info_checking" = "Egiaztatzen...";
-"settings_key_backup_info_none" = "Ez da zure gakoen babes-kopia egiten gailu honetatik.";
+"settings_key_backup_info_checking" = "Egiaztatzen…";
+"settings_key_backup_info_none" = "Ez da zure gakoen babes-kopia egiten saio honetatik.";
 "settings_key_backup_info_version" = "Gakoen babes-kopiaren bertsioa: %@";
 "settings_key_backup_info_algorithm" = "Algoritmoa: %@";
 "settings_key_backup_button_restore" = "Berrezarri babes-kopia";
 "settings_key_backup_button_delete" = "Ezabatu babes-kopia";
 "settings_key_backup_button_verify" = "Egiaztatu";
 "settings_key_backup_delete_confirmation_prompt_title" = "Ezabatu babes-kopia";
-"settings_key_backup_info_progress" = "%@ gakoen babes-kopia egiten...";
+"settings_key_backup_info_progress" = "%@ gakoen babes-kopia egiten…";
 "settings_key_backup_info_progress_done" = "Gako guztien babes-kopia egin da";
-"settings_key_backup_info_valid" = "Gailu honek zure gakoen babes-kopia egiten du.";
-"settings_key_backup_info_not_valid" = "Gailu honek ez du zure gakoen babes kopia egiten, baina badago berreskuratu dezakezun babes-kopia bat jarraitu ahal izateko.";
+"settings_key_backup_info_valid" = "Saio honek zure gakoen babes-kopia egiten du.";
+"settings_key_backup_info_not_valid" = "Saio honek ez du zure gakoen babes kopia egiten, baina badago berreskuratu dezakezun babes-kopia bat jarraitu ahal izateko.";
 "settings_key_backup_button_create" = "Hasi 'Gakoen babes-kopia' erabiltzen";
 "settings_key_backup_button_use" = "Erabili gakoen babes-kopia";
 "key_backup_setup_passphrase_title" = "Babestu zure babeskopia pasaesaldi batekin";
@@ -633,9 +633,9 @@
 "sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Ez ditut nire zifratutako mezuak behar";
 "sign_out_key_backup_in_progress_alert_cancel_action" = "Itxaron egingo dut";
 "settings_key_backup_info" = "Zifratutako mezuak muturretik muturrerako zifratzearen bidez babestuak daude. Zuk eta hartzaileak edo hartzaileek irakurri ditzakezue mezu horiek, beste inork ez.";
-"settings_key_backup_info_signout_warning" = "Konektatu gailu hau gakoen babes-kopiara saioa amaitu aurretik, gailu honetan bakarrik egon daitezkeen gakoak galdu nahi ez badituzu.";
-"settings_key_backup_info_trust_signature_unknown" = "Babes-kopiak gailu honen sinadura du, ID:  %@";
-"settings_key_backup_info_trust_signature_valid" = "Babes-kopiak gailu honen baliozko sinadura bat du";
+"settings_key_backup_info_signout_warning" = "Konektatu saio hau gakoen babes-kopiara saioa amaitu aurretik, gailu honetan bakarrik egon daitezkeen gakoak galdu nahi ez badituzu.";
+"settings_key_backup_info_trust_signature_unknown" = "Babes-kopiak saio honen sinadura du, ID:  %@";
+"settings_key_backup_info_trust_signature_valid" = "Babes-kopiak saio honen baliozko sinadura bat du";
 "settings_key_backup_info_trust_signature_valid_device_verified" = "Gailuak %@ gailuaren baliozko sinadura bat du";
 "settings_key_backup_info_trust_signature_valid_device_unverified" = "Babes kopiak %@ gailuaren sinadura du";
 "settings_key_backup_info_trust_signature_invalid_device_verified" = "Babes-kopiak %@ gailuaren baliogabeko sinadura bat du";
@@ -670,29 +670,29 @@
 "room_event_action_reaction_like" = "Gogokoa  %@";
 "room_event_action_reaction_dislike" = "Ez gogokoa %@";
 "room_action_reply" = "Erantzun";
-"settings_key_backup_button_connect" = "Konektatu gailu hau gakoen babes-kopiara";
+"settings_key_backup_button_connect" = "Konektatu saio hau gakoen babes-kopiara";
 "key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Konektatu gailu hau gakoen babes-kopiara";
-"key_backup_recover_connent_banner_subtitle" = "Konektatu gailu hau gakoen babes-kopiara";
+"key_backup_recover_connent_banner_subtitle" = "Konektatu saio hau gakoen babes-kopiara";
 // MARK: - Device Verification
-"device_verification_title" = "Egiaztatu gailua";
-"device_verification_error_cannot_load_device" = "Ezin izan da gailuaren informazioa kargatu.";
+"device_verification_title" = "Egiaztatu saioa";
+"device_verification_error_cannot_load_device" = "Ezin izan da saioaren informazioa kargatu.";
 // Mark: Incoming
 "device_verification_incoming_title" = "Jasotako egiaztaketa eskaria";
-"device_verification_incoming_description_1" = "Egiaztatu gailu hau fidagarri gisa markatzeko. Gailuak fidagarritzat jotzeak lasaitasuna ematen dizu muturretik muturrera zifratutako mezuak erabiltzean.";
-"device_verification_incoming_description_2" = "Gailu hau egiaztatzean fidagarri gisa markatuko da, eta zure gailua fidagarri gisa markatuko zaio ere zure kideari.";
+"device_verification_incoming_description_1" = "Egiaztatu saio hau fidagarri gisa markatzeko. Saioak fidagarritzat jotzeak lasaitasuna ematen dizu muturretik muturrera zifratutako mezuak erabiltzean.";
+"device_verification_incoming_description_2" = "Saio hau egiaztatzean fidagarri gisa markatuko da, eta zure saioa fidagarri gisa markatuko zaio ere zure kideari.";
 // MARK: Start
 "device_verification_start_title" = "Egiaztatu testu kate labur bat alderatuz";
-"device_verification_start_wait_partner" = "Kideak onartu bitartean zain...";
+"device_verification_start_wait_partner" = "Kideak onartu bitartean zain…";
 "device_verification_start_use_legacy" = "Ez da ezer agertzen? Bezero guztiek ez dute onartzen egiaztaketa interaktiboa oraindik. Erabili egiaztaketa metodo zaharra.";
 "device_verification_start_verify_button" = "Hasi egiaztaketa";
 "device_verification_start_use_legacy_action" = "Erabili egiaztaketa metodo zaharra";
 // MARK: Verify
-"device_verification_verify_title_emoji" = "Egiaztatu gailu hau honako emojia kidearen pantailan agertu  dela baieztatuz";
-"device_verification_verify_title_number" = "Egiaztatu gailu hau honako zenbaki hauek kidearen pantailan agertu  direla baieztatuz";
-"device_verification_verify_wait_partner" = "Kideak baieztatzearen zain...";
+"device_verification_verify_title_emoji" = "Egiaztatu saio hau honako emojia kidearen pantailan agertu dela baieztatuz";
+"device_verification_verify_title_number" = "Egiaztatu saio hau honako zenbaki hauek kidearen pantailan agertu direla baieztatuz";
+"device_verification_verify_wait_partner" = "Kideak baieztatzearen zain…";
 // MARK: Verified
 "device_verification_verified_title" = "Egiaztatuta!";
-"device_verification_verified_description_1" = "Ongi egiaztatu duzu gailu hau.";
+"device_verification_verified_description_1" = "Ongi egiaztatu duzu saio hau.";
 "device_verification_verified_description_2" = "Kide honekin partekatutako mezu seguruak muturretik muturrera zifratuta daude eta ezin ditu beste inork irakurri.";
 "device_verification_verified_got_it_button" = "Ulertuta";
 // MARK: Emoji
@@ -847,7 +847,7 @@
 "settings_three_pids_management_information_part3" = ".";
 "settings_calls_stun_server_fallback_button" = "Baimendu lehenetsitako deien laguntzarako zerbitzaria";
 "settings_calls_stun_server_fallback_description" = "Baimendu %@ deien laguntzarako zerbitzaria erabiltzea zure hasiera-zerbitzariak bat eskaintzen ez duenean (Zure IP helbidea partekatuko da deian zehar).";
-"settings_devices_description" = "Gailu baten izen publikoa zurekin komunikatzen den jendeak ikusi dezake";
+"settings_devices_description" = "Saio baten izen publikoa zurekin komunikatzen den jendeak ikusi dezake";
 "settings_discovery_no_identity_server" = "Orain ez duzu identitate-zerbitzaririk erabiltzen. Kontaktuak aurkitzeko eta aurkigarria izateko, gehitu bat.";
 "settings_discovery_terms_not_signed" = "Onartu %@ identitate-zerbitzariaren erabilera baldintzak besteek zu e-mail helbidea edo telefonoa erabiliz aurkitzea ahalbidetzeko.";
 "settings_discovery_three_pids_management_information_part1" = "Kudeatu zeintsu e-mail helbide edo telefono zenbaki erabili ditzaketen beste erabiltzaileek zu aurkitzeko eta zu gonbidatzeko. Gehitu edo kendu telefono zenbakiak zerrenda honetan ";
@@ -923,7 +923,7 @@
 "room_widget_permission_theme_permission" = "Zure gaia";
 "room_widget_permission_widget_id_permission" = "Trepetaren ID-a";
 "room_widget_permission_room_id_permission" = "Gelaren ID-a";
-"widget_picker_manage_integrations" = "Integrazioak kudeatu...";
+"widget_picker_manage_integrations" = "Kudeatu integrazioak…";
 // Accessibility
 "accessibility_checkbox_label" = "egiaztaketa-koadroa";
 "settings_labs_dm_key_verification" = "Gako egiaztaketa mezu zuzenaren bidez";
@@ -950,3 +950,67 @@
 "security_settings_backup" = "MEZUEN BABES-KOPIA";
 "security_settings_advanced" = "AURRERATUA";
 "security_settings_blacklist_unverified_devices" = "Ez bidali inoiz mezuak egiaztatu gabeko saioetara";
+"room_participants_action_section_security" = "Segurtasuna";
+"room_participants_action_security_status_verified" = "Egiaztatuta";
+"room_participants_action_security_status_verify" = "Egiaztatu";
+"room_participants_action_security_status_warning" = "Abisua";
+"room_participants_security_loading" = "Kargatzen…";
+"room_participants_security_information_room_not_encrypted" = "Gela honetako mezuak ez daude muturretik-muturrera zifratuta.";
+"room_participants_security_information_room_encrypted" = "Gela honetako mezuak muturretik-muturrerako zifratuta daude. \n \nZuk eta hartzaileek besterik ez dauzkazue mezu horiek irakurtzeko giltzak.";
+"security_settings_crypto_sessions_loading" = "Saioak kargatzen…";
+"security_settings_crypto_sessions_description" = "Jo saioak fidagarritzat muturretik muturrera zifratutako mezuetara sarbidea emateko. Ez baduzu saioren bat zuretzat jotzen, aldatu zure pasahitza eta berrezarri mezuen babes-kopiarako erabilitako mezu-pasahitza.";
+"security_settings_blacklist_unverified_devices_description" = "Egiaztatu erabiltzaileen saio guztiak fidagarritzat markatzeko eta mezuak bidaltzeko.";
+"security_settings_export_keys_manually" = "Esportatu gakoak eskuz";
+// Manage session
+"manage_session_title" = "Kudeatu saioak";
+"manage_session_info" = "SAIOAREN INFORMAZIOA";
+"manage_session_name" = "Saioaren izena";
+"manage_session_trusted" = "Zuk fidagarritzat jota";
+"manage_session_not_trusted" = "Ez fidagarritzat jota";
+"manage_session_sign_out" = "Amaitu saio hau";
+"key_verification_user_title" = "Egiaztatu erabiltzailea";
+"key_verification_verify_user_title_emoji" = "Egiaztatu erabiltzaile hau beheko emojiak bere pantailan, ordena berean agertzen direla baieztatuz.";
+"key_verification_verify_user_title_number" = "Egiaztatu erabiltzaile hau zenbaki hauek bere pantailan ordena berean agertzen direla baieztatuz.";
+"key_verification_verified_user_description_1" = "Ongi egiaztatu duzu erabiltzaile hau.";
+"key_verification_verified_user_description_2" = "Erabiltzaile honekin gela honetan partekatutako mezuak muturretik-muturrera zifratuta daude eta ezin ditu beste inork irakurri.";
+"user_verification_start_verify_action" = "Hasi egiaztaketa";
+"user_verification_start_information_part1" = "Segurtasun gehiagorako, egiaztatu ";
+"user_verification_start_information_part2" = " aldi-bakarrerako kode bat bi gailuetan egiaztatuz.";
+"user_verification_start_waiting_partner" = "%@ itxaroten…";
+"user_verification_start_additional_information" = "Ziurtatzeko, egin hau aurrez aurre edo komunikabide seguru baten bidez.";
+"user_verification_sessions_list_user_trust_level_trusted_title" = "Fidagarria";
+"user_verification_sessions_list_user_trust_level_warning_title" = "Abisua";
+"user_verification_sessions_list_user_trust_level_unknown_title" = "Ezezaguna";
+"user_verification_sessions_list_information" = "Erabiltzaile honekin gela honetan partekatutako mezuak muturretik-muturrera zifratuta daude eta ezin ditu beste inork irakurri.";
+"user_verification_sessions_list_table_title" = "Saioak";
+"user_verification_sessions_list_session_trusted" = "Fidagarria";
+"user_verification_sessions_list_session_untrusted" = "Ez fidagarria";
+"user_verification_session_details_trusted_title" = "Fidagarria";
+"user_verification_session_details_untrusted_title" = "Abisua";
+"user_verification_session_details_information_trusted_current_user" = "Saio hau fidagarritzat jotzen da mezu seguruetarako egiaztatu duzulako:";
+"user_verification_session_details_information_trusted_other_user_part1" = "Saio hau fidagarritzat jotzen da ";
+"user_verification_session_details_information_trusted_other_user_part2" = " egiaztatu duelako:";
+"user_verification_session_details_information_untrusted_current_user" = "Egiaztatu saio hau fidagarri gisa markatzeko eta zifratutako mezuetara sarbidea emateko:";
+"user_verification_session_details_information_untrusted_other_user" = " saio berria hasi du:";
+"user_verification_session_details_additional_information_untrusted_other_user" = "Erabiltzaile honek saio hau fidagarritzat jo arte, hara eta handik bidalitako mezuak abisu batekin markatuko dira. Bestela, eskuz egiaztatu dezakezu.";
+"user_verification_session_details_additional_information_untrusted_current_user" = "Ez baduzu saio hau zuk hasi, agian baten bat zure kontuan sartu da.";
+"user_verification_session_details_verify_action_current_user" = "Egiaztatu";
+"user_verification_session_details_verify_action_other_user" = "Eskuzko egiaztaketa";
+"security_settings_crosssigning" = "ZEHARKAKO SINATZEA";
+"security_settings_cryptography" = "KRIPTOGRAFIA";
+"key_verification_bootstrap_not_setup_title" = "Errorea";
+"key_verification_bootstrap_not_setup_message" = "Zeharkako sinatzea ezarri behar duzu";
+"key_verification_verify_qr_code_title" = "Egiaztatu eskaneatuz";
+"key_verification_verify_qr_code_information" = "Eskaneatu kodea elkar egiaztatzeko.";
+"key_verification_verify_qr_code_scan_code_action" = "Eskaneatu bestearen kodea";
+"key_verification_verify_qr_code_cannot_scan_action" = "Ezin eskaneatu?";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "Beste erabiltzaileak QR kodea ongi eskaneatu du?";
+"key_verification_verify_qr_code_scan_other_code_success_title" = "Kodea balioztatuta!";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "QR kodea ongi balioztatu da.";
+"room_participants_action_security_status_loading" = "Kargatzen…";
+"device_verification_self_verify_alert_title" = "Saio berria";
+"device_verification_self_verify_alert_message" = "Erabili saio hau berria egiaztatzeko, zifratutako mezuetara sarbidea emanez: %@\nEz baduzu saio hau zuk hasi agian zure kontua konprometituta dago.";
+"device_verification_self_verify_alert_cancel_action" = "Ez naiz ni izan";
+"device_verification_self_verify_start_verify_action" = "Hasi egiaztaketa";
+"device_verification_self_verify_start_information" = "Erabili saio hau berria egiaztatzeko, honela mezu zifratuetara sarbidea emanez.";
+"device_verification_self_verify_start_waiting" = "Itxaroten…";
