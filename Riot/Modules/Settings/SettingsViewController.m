@@ -377,6 +377,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     {
         [self refreshSettings];
     }
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

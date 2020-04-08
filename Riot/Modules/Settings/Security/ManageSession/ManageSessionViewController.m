@@ -129,6 +129,8 @@ enum {
     self.tableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
     
     [self reloadData];
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

@@ -135,6 +135,7 @@ static CGFloat const kTextFontSize = 15.0;
     [self updateDeactivateAcccountButton];
     [self updateDeactivateAccountInfosLabel];
     [self updateForgetMessagesInfoLabel];
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)updateStringAttributes

@@ -114,6 +114,8 @@
         // Force table refresh
         [self.receiptsTableView reloadData];
     }
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

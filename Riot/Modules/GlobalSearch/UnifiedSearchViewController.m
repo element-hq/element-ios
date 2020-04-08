@@ -187,6 +187,11 @@
     [self checkAndShowBackgroundImage];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return ThemeService.shared.theme.statusBarStyle;
+}
+
 #pragma mark -
 
 - (MXEvent*)selectedSearchEvent
