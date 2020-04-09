@@ -4232,11 +4232,26 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
 #pragma mark - Call status handling
 
+/// Returns a suitable height for call status bar. Considers safe area insets if available and notch status.
+- (CGFloat)calculateCallStatusBarHeight
+{
+    CGFloat result = CALL_STATUS_BAR_HEIGHT;
+    if (@available(iOS 11.0, *))
+    {
+        if (UIDevice.currentDevice.hasNotch)
+        {
+            //  this device has a notch (iPhone X +)
+            result += UIApplication.sharedApplication.keyWindow.safeAreaInsets.top;
+        }
+    }
+    return result;
+}
+
 - (void)addCallStatusBar:(NSString*)buttonTitle
 {
     // Add a call status bar
-    CGSize topBarSize = CGSizeMake([[UIScreen mainScreen] bounds].size.width, CALL_STATUS_BAR_HEIGHT);
-    
+    CGSize topBarSize = CGSizeMake([[UIScreen mainScreen] bounds].size.width, [self calculateCallStatusBarHeight]);
+
     _callStatusBarWindow = [[UIWindow alloc] initWithFrame:CGRectMake(0, 0, topBarSize.width, topBarSize.height)];
     _callStatusBarWindow.windowLevel = UIWindowLevelStatusBar;
     
@@ -4246,8 +4261,15 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateNormal];
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateHighlighted];
+    if (@available(iOS 11.0, *))
+    {
+        UIEdgeInsets safeAreaInsets = UIApplication.sharedApplication.keyWindow.safeAreaInsets;
+        safeAreaInsets.top = topBarSize.height - CALL_STATUS_BAR_HEIGHT;
+        safeAreaInsets.bottom = 0.0;
+        _callStatusBarButton.titleEdgeInsets = safeAreaInsets;
+    }
     _callStatusBarButton.titleLabel.textColor = ThemeService.shared.theme.backgroundColor;
-        
+
     _callStatusBarButton.titleLabel.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
     
     [_callStatusBarButton setBackgroundColor:ThemeService.shared.theme.tintColor];
@@ -4322,6 +4344,11 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     
     if (currentCallViewController)
     {
+        if (@available(iOS 13.0, *))
+        {
+            currentCallViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+        }
+
         [self presentViewController:currentCallViewController animated:animated completion:completion];
     }
 }
@@ -4333,7 +4360,9 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     
     // Refresh the root view controller frame
     CGRect rootControllerFrame = [[UIScreen mainScreen] bounds];
-    
+
+    CGFloat callStatusBarHeight = [self calculateCallStatusBarHeight];
+
     if (_callStatusBarWindow)
     {
         UIInterfaceOrientation statusBarOrientation = [UIApplication sharedApplication].statusBarOrientation;
@@ -4342,27 +4371,27 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         {
             case UIInterfaceOrientationLandscapeLeft:
             {
-                _callStatusBarWindow.frame = CGRectMake(-rootControllerFrame.size.width / 2, -CALL_STATUS_BAR_HEIGHT / 2, rootControllerFrame.size.width, CALL_STATUS_BAR_HEIGHT);
-                _callStatusBarWindow.transform = CGAffineTransformMake(0, -1, 1, 0, CALL_STATUS_BAR_HEIGHT / 2, rootControllerFrame.size.width / 2);
+                _callStatusBarWindow.frame = CGRectMake(-rootControllerFrame.size.width / 2, -callStatusBarHeight / 2, rootControllerFrame.size.width, callStatusBarHeight);
+                _callStatusBarWindow.transform = CGAffineTransformMake(0, -1, 1, 0, callStatusBarHeight / 2, rootControllerFrame.size.width / 2);
                 break;
             }
             case UIInterfaceOrientationLandscapeRight:
             {
-                _callStatusBarWindow.frame = CGRectMake(-rootControllerFrame.size.width / 2, -CALL_STATUS_BAR_HEIGHT / 2, rootControllerFrame.size.width, CALL_STATUS_BAR_HEIGHT);
-                _callStatusBarWindow.transform = CGAffineTransformMake(0, 1, -1, 0, rootControllerFrame.size.height - CALL_STATUS_BAR_HEIGHT / 2, rootControllerFrame.size.width / 2);
+                _callStatusBarWindow.frame = CGRectMake(-rootControllerFrame.size.width / 2, -callStatusBarHeight / 2, rootControllerFrame.size.width, callStatusBarHeight);
+                _callStatusBarWindow.transform = CGAffineTransformMake(0, 1, -1, 0, rootControllerFrame.size.height - callStatusBarHeight / 2, rootControllerFrame.size.width / 2);
                 break;
             }
             default:
             {
                 _callStatusBarWindow.transform = CGAffineTransformIdentity;
-                _callStatusBarWindow.frame = CGRectMake(0, 0, rootControllerFrame.size.width, CALL_STATUS_BAR_HEIGHT);
+                _callStatusBarWindow.frame = CGRectMake(0, 0, rootControllerFrame.size.width, callStatusBarHeight);
                 break;
             }
         }
         
         // Apply the vertical offset due to call status bar
-        rootControllerFrame.origin.y = CALL_STATUS_BAR_HEIGHT;
-        rootControllerFrame.size.height -= CALL_STATUS_BAR_HEIGHT;
+        rootControllerFrame.origin.y = callStatusBarHeight;
+        rootControllerFrame.size.height -= callStatusBarHeight;
     }
     
     rootController.view.frame = rootControllerFrame;
