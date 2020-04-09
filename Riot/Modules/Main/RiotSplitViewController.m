@@ -20,12 +20,12 @@
 
 - (UIViewController *)childViewControllerForStatusBarStyle
 {
-    return self.childViewControllers.firstObject;
+    return self.viewControllers.firstObject;
 }
 
 - (UIViewController *)childViewControllerForStatusBarHidden
 {
-    return self.childViewControllers.firstObject;
+    return self.viewControllers.firstObject;
 }
 
 @end
