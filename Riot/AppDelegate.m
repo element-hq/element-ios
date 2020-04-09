@@ -4081,6 +4081,11 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
     if (_jitsiViewController)
     {
+        if (@available(iOS 13.0, *))
+        {
+            _jitsiViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+        }
+
         [self presentViewController:_jitsiViewController animated:YES completion:completion];
     }
 }
