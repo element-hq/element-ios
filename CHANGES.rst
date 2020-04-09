@@ -27,6 +27,9 @@ Improvements:
 Bug fix:
  * Key backup banner is not hidden correctly (#2899). 
 
+Bug fix:
+ * Considered safe area insets for some screens (PR #3084).
+
 Changes in 0.10.5 (2020-04-01)
 ===============================================
 
