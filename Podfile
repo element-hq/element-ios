@@ -61,8 +61,7 @@ abstract_target 'RiotPods' do
 
     pod 'GBDeviceInfo', '~> 6.3.0'
     pod 'Reusable', '~> 4.1'
-    pod 'SwiftUTI', :git => 'https://github.com/speramusinc/SwiftUTI.git', :branch => 'master'
-
+ 
     # Piwik for analytics
     pod 'MatomoTracker', '~> 7.2.0'
 
