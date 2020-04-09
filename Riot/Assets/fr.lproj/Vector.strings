@@ -1033,3 +1033,11 @@
 "device_verification_self_verify_wait_title" = "Compléter la sécurité";
 "device_verification_self_verify_wait_information" = "Utilisez une session existante pour vérifier celle-ci, ce qui lui permettra d’avoir accès aux messages chiffrés.";
 "device_verification_self_verify_wait_waiting" = "En attente…";
+"room_member_power_level_admin_in" = "Administrateur dans %@";
+"room_member_power_level_moderator_in" = "Modérateur dans %@";
+"room_member_power_level_custom_in" = "Personnalisé (%@) dans %@";
+"room_member_power_level_short_admin" = "Admin";
+"room_member_power_level_short_moderator" = "Modo";
+"room_member_power_level_short_custom" = "Perso";
+// Recover from private key
+"key_backup_recover_from_private_key_info" = "Restauration de la sauvegarde…";
