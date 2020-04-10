@@ -1024,3 +1024,22 @@
 "key_verification_verify_qr_code_other_scan_my_code_title" = "A másik felhasználó sikeresen beolvasta a QR kódot?";
 "key_verification_verify_qr_code_scan_other_code_success_title" = "Kód ellenőrizve!";
 "key_verification_verify_qr_code_scan_other_code_success_message" = "A QR kód sikeresen ellenőrizve.";
+"skip" = "Kihagy";
+"room_participants_action_security_status_loading" = "Betöltés…";
+"room_member_power_level_admin_in" = "Admin itt: %@";
+"room_member_power_level_moderator_in" = "Moderátor itt: %@";
+"room_member_power_level_custom_in" = "Egyedi (%@) itt: %@";
+"room_member_power_level_short_admin" = "Admin";
+"room_member_power_level_short_moderator" = "Mod";
+"room_member_power_level_short_custom" = "Egyedi";
+// Recover from private key
+"key_backup_recover_from_private_key_info" = "Mentés visszaállítás…";
+"device_verification_self_verify_alert_title" = "Új Bejelentkezés";
+"device_verification_self_verify_alert_message" = "Használd ezt a munkamenetet az új ellenőrzéséhez, amivel hozzáférést biztosíthatsz a titkosított üzenethez: %@\nHa nem te jelentkeztél be ebbe a munkamenetbe akkor lehetséges, hogy a fiókodat feltörték.";
+"device_verification_self_verify_alert_cancel_action" = "Nem én voltam";
+"device_verification_self_verify_start_verify_action" = "Ellenőrzés elindítása";
+"device_verification_self_verify_start_information" = "Az új munkamenet ellenőrzéséhez használd ezt, amivel hozzáférést adsz a titkosított üzenetekhez.";
+"device_verification_self_verify_start_waiting" = "Várakozik…";
+"device_verification_self_verify_wait_title" = "Biztonság beállítása";
+"device_verification_self_verify_wait_information" = "Használj egy meglévő munkamenetet ennek az újnak az ellenőrzéséhez, amivel hozzáférést adsz a titkosított üzenetekhez.";
+"device_verification_self_verify_wait_waiting" = "Várakozik…";
