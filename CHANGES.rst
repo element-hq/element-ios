@@ -4,6 +4,7 @@ Changes in 0.11.1 (2020-xx-xx)
 Bug fix:
  * Xcode11: Fix content change error when dragging start chat page (PR #3075).
  * Xcode11: Fix status bar styles for many screens (PR #3077).
+ * Xcode11: Replace deprecated MPMoviePlayerController with AVPlayerViewController (PR #3092).
 
 Changes in 0.11.0 (2020-xx-xx)
 ===============================================
