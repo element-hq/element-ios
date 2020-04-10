@@ -4266,13 +4266,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateNormal];
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateHighlighted];
-    if (@available(iOS 11.0, *))
-    {
-        UIEdgeInsets safeAreaInsets = UIApplication.sharedApplication.keyWindow.safeAreaInsets;
-        safeAreaInsets.top = topBarSize.height - CALL_STATUS_BAR_HEIGHT;
-        safeAreaInsets.bottom = 0.0;
-        _callStatusBarButton.titleEdgeInsets = safeAreaInsets;
-    }
+
     _callStatusBarButton.titleLabel.textColor = ThemeService.shared.theme.backgroundColor;
 
     _callStatusBarButton.titleLabel.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
@@ -4366,10 +4360,10 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     // Refresh the root view controller frame
     CGRect rootControllerFrame = [[UIScreen mainScreen] bounds];
 
-    CGFloat callStatusBarHeight = [self calculateCallStatusBarHeight];
-
     if (_callStatusBarWindow)
     {
+        CGFloat callStatusBarHeight = [self calculateCallStatusBarHeight];
+
         UIInterfaceOrientation statusBarOrientation = [UIApplication sharedApplication].statusBarOrientation;
         
         switch (statusBarOrientation)
@@ -4393,6 +4387,20 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                 break;
             }
         }
+
+        UIEdgeInsets callBarButtonContentEdgeInsets = UIEdgeInsetsZero;
+
+        if (@available(iOS 11.0, *))
+        {
+            callBarButtonContentEdgeInsets = UIApplication.sharedApplication.keyWindow.safeAreaInsets;
+            //  should override top inset
+            callBarButtonContentEdgeInsets.top = callStatusBarHeight - CALL_STATUS_BAR_HEIGHT;
+            //  should ignore bottom inset
+            callBarButtonContentEdgeInsets.bottom = 0.0;
+            //  should keep left, and right insets as original
+        }
+
+        _callStatusBarButton.contentEdgeInsets = callBarButtonContentEdgeInsets;
         
         // Apply the vertical offset due to call status bar
         rootControllerFrame.origin.y = callStatusBarHeight;
