@@ -1003,3 +1003,4 @@
 "device_verification_self_verify_wait_title" = "vervollständige Sicherheit";
 "device_verification_self_verify_wait_information" = "Benutze diese Sitzung um deine Neue zu verifizieren. Erlaube Zugriff auf die verschlüsselten Nachrichten.";
 "device_verification_self_verify_wait_waiting" = "warte…";
+"skip" = "Überspringen";
