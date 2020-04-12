@@ -1005,3 +1005,11 @@
 "device_verification_self_verify_wait_title" = "Completa la sicurezza";
 "device_verification_self_verify_wait_information" = "Usa una sessione esistente per verificare questa nuova, dandole l'accesso ai messaggi cifrati.";
 "device_verification_self_verify_wait_waiting" = "In attesa…";
+"room_member_power_level_admin_in" = "Amministratore in %@";
+"room_member_power_level_moderator_in" = "Moderatore in %@";
+"room_member_power_level_custom_in" = "Personalizzato (%@) in %@";
+"room_member_power_level_short_admin" = "Admin";
+"room_member_power_level_short_moderator" = "Mod";
+"room_member_power_level_short_custom" = "Personal.";
+// Recover from private key
+"key_backup_recover_from_private_key_info" = "Recupero del backup…";
