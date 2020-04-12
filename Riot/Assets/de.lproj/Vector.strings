@@ -147,7 +147,7 @@
 "room_participants_action_start_video_call" = "Starte Video-Anruf";
 "room_participants_action_mention" = "Erwähnen";
 // Chat
-"room_jump_to_first_unread" = "Springe zur ersten ungelesenen Nachricht";
+"room_jump_to_first_unread" = "Zur ersten ungelesenen Nachricht springen";
 "room_new_message_notification" = "%d neue Nachricht";
 "room_new_messages_notification" = "%d neue Nachrichten";
 "room_one_user_is_typing" = "%@ tippt…";
@@ -244,7 +244,7 @@
 "settings_confirm_password" = "bestätige Passwort";
 "settings_password_updated" = "Dein Passwort wurde aktualisiert";
 "settings_crypto_device_name" = "Öffentlicher Sitzungs-Name: ";
-"settings_crypto_device_key" = "Sitzungs-Schlüssel:\n";
+"settings_crypto_device_key" = "\nSitzungs-Schlüssel:\n";
 "settings_crypto_export" = "Schlüssel exportieren";
 "room_details_settings" = "Einstellungen";
 "room_details_photo" = "Raum-Bild";
