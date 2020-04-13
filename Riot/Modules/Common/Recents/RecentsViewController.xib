@@ -14,6 +14,7 @@
             <connections>
                 <outlet property="recentsSearchBar" destination="Zbr-9e-VZh" id="AvH-q6-dOM"/>
                 <outlet property="recentsSearchBarHeightConstraint" destination="jCU-cq-2OA" id="w76-xb-0xq"/>
+                <outlet property="recentsSearchBarTopConstraint" destination="aiS-gd-GJ4" id="hXe-2n-DSn"/>
                 <outlet property="recentsTableView" destination="orV-HH-88x" id="lgA-2k-pXJ"/>
                 <outlet property="recentsTableViewBottomConstraint" destination="zIT-Mi-Y7K" id="iIx-a7-hPO"/>
                 <outlet property="stickyHeadersBottomContainer" destination="EXH-mK-0eB" id="95Y-KP-bwF"/>
@@ -61,19 +62,19 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="JJC-Bw-6sa" firstAttribute="leading" secondItem="4qf-KS-Fc9" secondAttribute="leading" id="49a-ue-b1b"/>
                 <constraint firstItem="Zbr-9e-VZh" firstAttribute="trailing" secondItem="4qf-KS-Fc9" secondAttribute="trailing" id="5OG-ou-iCZ"/>
-                <constraint firstItem="JJC-Bw-6sa" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="8yW-fA-QxN"/>
+                <constraint firstItem="JJC-Bw-6sa" firstAttribute="trailing" secondItem="4qf-KS-Fc9" secondAttribute="trailing" id="Eai-ES-oLe"/>
                 <constraint firstItem="orV-HH-88x" firstAttribute="top" secondItem="JJC-Bw-6sa" secondAttribute="bottom" id="IMR-dV-gUS"/>
                 <constraint firstItem="EXH-mK-0eB" firstAttribute="bottom" secondItem="orV-HH-88x" secondAttribute="bottom" id="KXF-3M-x1M"/>
-                <constraint firstAttribute="trailing" secondItem="EXH-mK-0eB" secondAttribute="trailing" id="P7b-WG-atu"/>
+                <constraint firstItem="EXH-mK-0eB" firstAttribute="leading" secondItem="4qf-KS-Fc9" secondAttribute="leading" id="NaT-6b-7Gt"/>
                 <constraint firstItem="Zbr-9e-VZh" firstAttribute="top" secondItem="4qf-KS-Fc9" secondAttribute="top" id="aiS-gd-GJ4"/>
                 <constraint firstItem="orV-HH-88x" firstAttribute="trailing" secondItem="4qf-KS-Fc9" secondAttribute="trailing" id="bte-P6-aSf"/>
+                <constraint firstItem="EXH-mK-0eB" firstAttribute="trailing" secondItem="4qf-KS-Fc9" secondAttribute="trailing" id="cgh-dZ-Xar"/>
                 <constraint firstItem="Zbr-9e-VZh" firstAttribute="leading" secondItem="4qf-KS-Fc9" secondAttribute="leading" id="iuw-U1-UQf"/>
                 <constraint firstItem="orV-HH-88x" firstAttribute="leading" secondItem="4qf-KS-Fc9" secondAttribute="leading" id="sPH-f9-tZI"/>
                 <constraint firstItem="JJC-Bw-6sa" firstAttribute="top" secondItem="Zbr-9e-VZh" secondAttribute="bottom" id="vW3-kY-qjQ"/>
-                <constraint firstItem="EXH-mK-0eB" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="wSx-rS-Lv5"/>
                 <constraint firstItem="orV-HH-88x" firstAttribute="bottom" secondItem="4qf-KS-Fc9" secondAttribute="bottom" id="zIT-Mi-Y7K"/>
-                <constraint firstAttribute="trailing" secondItem="JJC-Bw-6sa" secondAttribute="trailing" id="zTe-LM-S3a"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="4qf-KS-Fc9"/>
         </view>
