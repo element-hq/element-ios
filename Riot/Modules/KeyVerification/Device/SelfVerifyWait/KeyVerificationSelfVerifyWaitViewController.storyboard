@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="79A-qb-tmk">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Key Verification Self Verify Wait View Controller-->
+        <scene sceneID="a9K-1U-7Nm">
+            <objects>
+                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="79A-qb-tmk" customClass="KeyVerificationSelfVerifyWaitViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="tAM-kt-f0s">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IlB-Ch-LEo">
+                                <rect key="frame" x="0.0" y="284.5" width="375" height="118.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use an existing session to verify this one, granting it access to encrypted messages." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d5Y-pj-XsI">
+                                        <rect key="frame" x="20" y="10" width="335" height="36"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Waiting…" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rFM-AQ-wAB">
+                                        <rect key="frame" x="20" y="78" width="335" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="d5Y-pj-XsI" secondAttribute="trailing" constant="20" id="3Mi-wg-su3"/>
+                                    <constraint firstAttribute="bottom" secondItem="rFM-AQ-wAB" secondAttribute="bottom" constant="20" id="4Gy-0v-H5m"/>
+                                    <constraint firstAttribute="height" priority="250" id="72E-My-WHK"/>
+                                    <constraint firstItem="d5Y-pj-XsI" firstAttribute="leading" secondItem="IlB-Ch-LEo" secondAttribute="leading" constant="20" id="Okc-DX-xdE"/>
+                                    <constraint firstItem="d5Y-pj-XsI" firstAttribute="top" secondItem="IlB-Ch-LEo" secondAttribute="top" constant="10" id="Pkt-ox-zZs"/>
+                                    <constraint firstItem="rFM-AQ-wAB" firstAttribute="leading" secondItem="IlB-Ch-LEo" secondAttribute="leading" constant="20" id="PtP-G3-lC6"/>
+                                    <constraint firstAttribute="trailing" secondItem="rFM-AQ-wAB" secondAttribute="trailing" constant="20" id="Q78-Oe-Lh2"/>
+                                    <constraint firstItem="rFM-AQ-wAB" firstAttribute="top" secondItem="d5Y-pj-XsI" secondAttribute="bottom" constant="32" id="VYD-WF-CdW"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.94509803920000002" green="0.96078431369999995" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="IlB-Ch-LEo" firstAttribute="centerY" secondItem="GnW-bb-rsL" secondAttribute="centerY" id="Hh1-tV-pXA"/>
+                            <constraint firstItem="IlB-Ch-LEo" firstAttribute="trailing" secondItem="GnW-bb-rsL" secondAttribute="trailing" id="Kbx-ln-UzT"/>
+                            <constraint firstItem="IlB-Ch-LEo" firstAttribute="leading" secondItem="GnW-bb-rsL" secondAttribute="leading" id="f6d-Hi-qnR"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="GnW-bb-rsL"/>
+                    </view>
+                    <connections>
+                        <outlet property="informationLabel" destination="d5Y-pj-XsI" id="TMb-bc-58a"/>
+                        <outlet property="verificationWaitingLabel" destination="rFM-AQ-wAB" id="TDZ-Xd-gP1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OMs-Ee-CjK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3198" y="-647"/>
+        </scene>
+    </scenes>
+</document>

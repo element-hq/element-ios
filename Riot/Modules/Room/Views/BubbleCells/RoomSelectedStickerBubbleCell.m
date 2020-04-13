@@ -163,7 +163,7 @@
         {
             // Set the right device info icon
             self.encryptionStatusView.hidden = NO;
-            self.encryptionStatusView.image = [RoomEncryptedDataBubbleCell encryptionIconForEvent:component.event andSession:bubbleData.mxSession];
+            self.encryptionStatusView.image = [RoomEncryptedDataBubbleCell encryptionIconForBubbleComponent:component];
         }
         else
         {

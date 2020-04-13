@@ -391,6 +391,11 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
         {
             // stateKey = widgetId
             NSString *widgetId = event.stateKey;
+            if (!widgetId)
+            {
+                NSLog(@"[WidgetManager] Error: New widget detected with no id in %@: %@", event.roomId, event.JSONDictionary);
+                return;
+            }
 
             NSLog(@"[WidgetManager] New widget detected: %@ in %@", widgetId, event.roomId);
 

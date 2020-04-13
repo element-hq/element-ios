@@ -904,3 +904,5 @@
 "widget_menu_revoke_permission" = "Zugriff für mich widerrufen";
 "widget_menu_remove" = "Für alle entfernen";
 "widget_integration_manager_disabled" = "Sie müssen den Integration Manager in den Einstellungen aktivieren";
+"settings_discovery_settings" = "ERKENNUNG";
+"settings_three_pids_management_information_part2" = "Erkennung";

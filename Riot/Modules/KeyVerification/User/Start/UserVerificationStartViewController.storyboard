@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="V8j-Lb-PgC">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--User Verification Start View Controller-->
+        <scene sceneID="mt5-wz-YKA">
+            <objects>
+                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="V8j-Lb-PgC" customClass="UserVerificationStartViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="EL9-GA-lwo">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dQD-Vs-7h6">
+                                <rect key="frame" x="0.0" y="254" width="375" height="179"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="For extra security, verify @user:matrix.org by checking a one-time code on both your devices." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b2K-LP-jqv">
+                                        <rect key="frame" x="20" y="10" width="335" height="36"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Waiting for User…" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0QC-yi-0hN">
+                                        <rect key="frame" x="20" y="78" width="335" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3sZ-h5-05D">
+                                        <rect key="frame" x="20" y="66" width="335" height="44"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="AuthenticationVCLoginButton"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="2qO-rj-st6"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="8kK-yb-srh"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                        <inset key="contentEdgeInsets" minX="30" minY="0.0" maxX="30" maxY="0.0"/>
+                                        <state key="normal" title="Start Verification">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="startVerificationButtonAction:" destination="V8j-Lb-PgC" eventType="touchUpInside" id="3Nd-Km-ucJ"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To be secure, do this in person or use another way to communicate." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vli-IZ-UjP">
+                                        <rect key="frame" x="20" y="130" width="335" height="29"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="3sZ-h5-05D" firstAttribute="centerX" secondItem="dQD-Vs-7h6" secondAttribute="centerX" id="2OM-Zh-gnO"/>
+                                    <constraint firstAttribute="trailing" secondItem="0QC-yi-0hN" secondAttribute="trailing" constant="20" id="70Z-qZ-AG4"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="3sZ-h5-05D" secondAttribute="trailing" constant="20" id="ABg-Iy-IdN"/>
+                                    <constraint firstItem="Vli-IZ-UjP" firstAttribute="top" secondItem="3sZ-h5-05D" secondAttribute="bottom" constant="20" id="BIE-UM-I0Z"/>
+                                    <constraint firstItem="3sZ-h5-05D" firstAttribute="top" secondItem="b2K-LP-jqv" secondAttribute="bottom" constant="20" id="HCf-2F-jBr"/>
+                                    <constraint firstItem="Vli-IZ-UjP" firstAttribute="leading" secondItem="dQD-Vs-7h6" secondAttribute="leading" constant="20" id="Nz0-mv-fF5"/>
+                                    <constraint firstItem="3sZ-h5-05D" firstAttribute="width" secondItem="dQD-Vs-7h6" secondAttribute="width" priority="250" id="RuV-mq-5JZ"/>
+                                    <constraint firstAttribute="trailing" secondItem="Vli-IZ-UjP" secondAttribute="trailing" constant="20" id="XXe-5j-SxE"/>
+                                    <constraint firstAttribute="bottom" secondItem="Vli-IZ-UjP" secondAttribute="bottom" constant="20" id="Yfh-kG-UKJ"/>
+                                    <constraint firstItem="b2K-LP-jqv" firstAttribute="leading" secondItem="dQD-Vs-7h6" secondAttribute="leading" constant="20" id="dgE-c5-D4E"/>
+                                    <constraint firstItem="0QC-yi-0hN" firstAttribute="leading" secondItem="dQD-Vs-7h6" secondAttribute="leading" constant="20" id="g4e-WC-LQ7"/>
+                                    <constraint firstItem="0QC-yi-0hN" firstAttribute="centerY" secondItem="3sZ-h5-05D" secondAttribute="centerY" id="hqE-9r-yhx"/>
+                                    <constraint firstAttribute="height" priority="250" id="j1W-Y7-dYc"/>
+                                    <constraint firstItem="3sZ-h5-05D" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="dQD-Vs-7h6" secondAttribute="leading" constant="20" id="oP3-BI-kYI"/>
+                                    <constraint firstAttribute="trailing" secondItem="b2K-LP-jqv" secondAttribute="trailing" constant="20" id="uJ5-fk-7Xw"/>
+                                    <constraint firstItem="b2K-LP-jqv" firstAttribute="top" secondItem="dQD-Vs-7h6" secondAttribute="top" constant="10" id="vlb-Yg-HWD"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.94509803921568625" green="0.96078431372549022" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="dQD-Vs-7h6" firstAttribute="centerY" secondItem="bFg-jh-JZB" secondAttribute="centerY" id="GmI-7r-ejI"/>
+                            <constraint firstItem="dQD-Vs-7h6" firstAttribute="trailing" secondItem="bFg-jh-JZB" secondAttribute="trailing" id="XX2-fS-8cb"/>
+                            <constraint firstItem="dQD-Vs-7h6" firstAttribute="leading" secondItem="bFg-jh-JZB" secondAttribute="leading" id="yKt-js-MnW"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="bFg-jh-JZB"/>
+                    </view>
+                    <connections>
+                        <outlet property="additionalInformationLabel" destination="Vli-IZ-UjP" id="4UB-LL-Om3"/>
+                        <outlet property="informationLabel" destination="b2K-LP-jqv" id="O4J-7t-Dn6"/>
+                        <outlet property="startVerificationButton" destination="3sZ-h5-05D" id="vNi-m9-x7g"/>
+                        <outlet property="verificationWaitingLabel" destination="0QC-yi-0hN" id="Qoz-cV-Su7"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zK0-v6-7Wt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3198" y="-647"/>
+        </scene>
+    </scenes>
+</document>

@@ -37,6 +37,8 @@
 {
     [super awakeFromNib];
     
+    self.badgeImageView.image = nil;
+    
     if (_titleMask)
     {
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];

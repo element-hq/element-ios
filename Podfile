@@ -7,7 +7,7 @@ use_frameworks!
 
 # Different flavours of pods to MatrixKit
 # The current MatrixKit pod version
-$matrixKitVersion = '0.11.3'
+$matrixKitVersion = '0.11.4'
 
 # The develop branch version
 #$matrixKitVersion = 'develop'
@@ -61,8 +61,7 @@ abstract_target 'RiotPods' do
 
     pod 'GBDeviceInfo', '~> 6.3.0'
     pod 'Reusable', '~> 4.1'
-    pod 'SwiftUTI', :git => 'https://github.com/speramusinc/SwiftUTI.git', :branch => 'master'
-
+ 
     # Piwik for analytics
     pod 'MatomoTracker', '~> 7.2.0'
 
@@ -77,7 +76,8 @@ abstract_target 'RiotPods' do
 
     target "Riot" do
         import_MatrixKit
-        pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
+        pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'        
+        pod 'ZXingObjC', '~> 3.6.5'
         
         target 'RiotTests' do
             inherit! :search_paths

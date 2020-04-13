@@ -53,7 +53,7 @@ final class RoomContextualMenuToolbarView: MXKRoomInputToolbarView, NibOwnerLoad
     }
     
     @objc func fill(contextualMenuItems: [RoomContextualMenuItem]) {
-        self.menuItemsStackView.vc_removeAllSubviews()
+        self.menuItemsStackView.vc_removeAllArrangedSubviews()
         self.menuItemViews.removeAll()
         
         for menuItem in contextualMenuItems {

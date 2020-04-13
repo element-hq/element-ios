@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -39,7 +38,7 @@
                         <rect key="frame" x="80" y="5" width="0.0" height="20"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZUZ-tv-dVV">
-                                <rect key="frame" x="-4" y="2" width="9" height="17"/>
+                                <rect key="frame" x="-4.5" y="1.5" width="9" height="17"/>
                                 <accessibility key="accessibilityConfiguration" identifier="MissedNotifAndUnreadBadge"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -54,11 +53,11 @@
                             <constraint firstItem="ZUZ-tv-dVV" firstAttribute="centerX" secondItem="Q6g-b0-3sZ" secondAttribute="centerX" id="km0-Wj-nJ0"/>
                         </constraints>
                     </view>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_verified" translatesAutoresizingMaskIntoConstraints="NO" id="5Yd-df-HbB">
-                        <rect key="frame" x="53" y="55" width="15" height="18"/>
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="encryption_normal" translatesAutoresizingMaskIntoConstraints="NO" id="5Yd-df-HbB">
+                        <rect key="frame" x="51" y="52" width="21" height="20"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="18" id="UEZ-5S-KMf"/>
-                            <constraint firstAttribute="width" constant="15" id="bbS-D2-SZi"/>
+                            <constraint firstAttribute="height" constant="20" id="OSj-Tf-ZuJ"/>
+                            <constraint firstAttribute="width" secondItem="5Yd-df-HbB" secondAttribute="height" multiplier="1:1" constant="1" id="QGp-OT-7yA"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="RoomTitle" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oxX-IL-dG4">
@@ -93,7 +92,6 @@
                 </subviews>
             </view>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="5Yd-df-HbB" secondAttribute="trailing" constant="12" id="0gr-xn-dfD"/>
                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="oxX-IL-dG4" secondAttribute="bottom" constant="5" id="1JB-d1-zb9"/>
                 <constraint firstItem="oxX-IL-dG4" firstAttribute="top" secondItem="T1Q-RS-8o6" secondAttribute="bottom" constant="4" id="2DB-H2-E2v"/>
                 <constraint firstAttribute="bottom" secondItem="jta-3V-4wL" secondAttribute="bottom" id="3rt-Ig-1rG"/>
@@ -103,18 +101,19 @@
                 <constraint firstAttribute="trailing" secondItem="Q6g-b0-3sZ" secondAttribute="trailing" id="Mf1-H6-oH4"/>
                 <constraint firstItem="Jkz-Zp-aaG" firstAttribute="centerX" secondItem="oxX-IL-dG4" secondAttribute="centerX" id="OQy-tF-e3Z"/>
                 <constraint firstItem="jta-3V-4wL" firstAttribute="centerX" secondItem="eCk-zY-LXq" secondAttribute="centerX" id="R87-mq-SlO"/>
+                <constraint firstItem="5Yd-df-HbB" firstAttribute="bottom" secondItem="T1Q-RS-8o6" secondAttribute="bottom" constant="2" id="RQU-MS-Qfr"/>
                 <constraint firstItem="Jkz-Zp-aaG" firstAttribute="top" secondItem="X8H-1U-wc3" secondAttribute="bottom" id="XDO-yX-Zs5"/>
                 <constraint firstItem="X8H-1U-wc3" firstAttribute="leading" secondItem="eCk-zY-LXq" secondAttribute="leading" constant="7" id="XU5-Lv-9Xn"/>
                 <constraint firstItem="T1Q-RS-8o6" firstAttribute="top" secondItem="eCk-zY-LXq" secondAttribute="top" constant="10" id="cc7-bg-15Z"/>
                 <constraint firstItem="Jkz-Zp-aaG" firstAttribute="leading" secondItem="eCk-zY-LXq" secondAttribute="leading" constant="7" id="fPh-Lb-Bv9"/>
                 <constraint firstItem="xws-BR-H47" firstAttribute="centerY" secondItem="T1Q-RS-8o6" secondAttribute="centerY" id="faX-hg-WfP"/>
-                <constraint firstItem="5Yd-df-HbB" firstAttribute="top" secondItem="eCk-zY-LXq" secondAttribute="top" constant="55" id="h4R-2d-Xxn"/>
                 <constraint firstAttribute="trailing" secondItem="oxX-IL-dG4" secondAttribute="trailing" constant="4" id="hDl-X9-M4n"/>
                 <constraint firstItem="T1Q-RS-8o6" firstAttribute="centerX" secondItem="eCk-zY-LXq" secondAttribute="centerX" id="hmB-fl-oN2"/>
                 <constraint firstItem="Q6g-b0-3sZ" firstAttribute="top" secondItem="eCk-zY-LXq" secondAttribute="top" constant="5" id="jST-Ic-lsn"/>
                 <constraint firstAttribute="trailing" secondItem="X8H-1U-wc3" secondAttribute="trailing" constant="7" id="o5i-7H-n0G"/>
                 <constraint firstAttribute="trailing" secondItem="Jkz-Zp-aaG" secondAttribute="trailing" constant="7" id="uQe-FG-3lb"/>
                 <constraint firstItem="X8H-1U-wc3" firstAttribute="top" secondItem="oxX-IL-dG4" secondAttribute="top" id="uTm-3W-QoM"/>
+                <constraint firstItem="5Yd-df-HbB" firstAttribute="trailing" secondItem="T1Q-RS-8o6" secondAttribute="trailing" constant="2" id="wqP-uJ-EaY"/>
             </constraints>
             <connections>
                 <outlet property="directRoomBorderView" destination="xws-BR-H47" id="34A-hu-DXq"/>
@@ -131,6 +130,6 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="e2e_verified" width="10" height="12"/>
+        <image name="encryption_normal" width="16" height="16"/>
     </resources>
 </document>

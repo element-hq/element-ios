@@ -203,14 +203,6 @@ NSString *FallBackViewControllerJavascriptOnLogin = @"window.matrixLogin.onLogin
         return;
     }
 
-    if (navigationAction.navigationType == WKNavigationTypeLinkActivated)
-    {
-        // Open links outside the app
-        [[UIApplication sharedApplication] openURL:navigationAction.request.URL options:@{} completionHandler:nil];
-        decisionHandler(WKNavigationActionPolicyCancel);
-        return;
-    }
-
     decisionHandler(WKNavigationActionPolicyAllow);
 }
 

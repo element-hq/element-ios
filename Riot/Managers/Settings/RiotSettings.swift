@@ -35,14 +35,7 @@ final class RiotSettings: NSObject {
         static let enableCrossSigning = "enableCrossSigning"
         static let enableDMKeyVerification = "enableDMKeyVerification"
     }
-
-    /// Riot Standard Room Member Power Level
-    @objc
-    public enum RoomPowerLevel: Int {
-        case moderator = 50
-        case admin = 100
-    }
-
+    
     static let shared = RiotSettings()
     
     // MARK: - Public
@@ -121,14 +114,6 @@ final class RiotSettings: NSObject {
             return UserDefaults.standard.bool(forKey: UserDefaultsKeys.createConferenceCallsWithJitsi)
         } set {
             UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.createConferenceCallsWithJitsi)
-        }
-    }
-    
-    var enableDMKeyVerification: Bool {
-        get {
-            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.enableDMKeyVerification)
-        } set {
-            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.enableDMKeyVerification)
         }
     }
 

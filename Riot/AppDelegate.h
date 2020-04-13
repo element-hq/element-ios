@@ -130,6 +130,17 @@ extern NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey;
 - (void)logoutSendingRequestServer:(BOOL)sendLogoutServerRequest
                         completion:(void (^)(BOOL isLoggedOut))completion;
 
+/**
+ Present incoming key verification request to accept.
+
+ @param incomingKeyVerificationRequest The incoming key verification request.
+ @param The matrix session.
+ @return Indicate NO if the key verification screen could not be presented.
+ */
+- (BOOL)presentIncomingKeyVerificationRequest:(MXKeyVerificationRequest*)incomingKeyVerificationRequest
+                                    inSession:(MXSession*)session;
+
+- (BOOL)presentUserVerificationForRoomMember:(MXRoomMember*)roomMember session:(MXSession*)mxSession;
 
 #pragma mark - Matrix Accounts handling
 

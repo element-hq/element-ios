@@ -57,6 +57,7 @@
 "send_to" = "Send to %@";
 "sending" = "Sending";
 "close" = "Close";
+"skip" = "Skip";
 
 // Accessibility
 "accessibility_checkbox_label" = "checkbox";
@@ -117,7 +118,7 @@
 "auth_reset_password_error_unauthorized" = "Failed to verify email address: make sure you clicked the link in the email";
 "auth_reset_password_error_not_found" = "Your email address does not appear to be associated with a Matrix ID on this homeserver.";
 "auth_reset_password_error_is_required" = "No identity server is configured: add one in server options to reset your password.";
-"auth_reset_password_success_message" = "Your password has been reset.\n\nYou have been logged out of all devices and will no longer receive push notifications. To re-enable notifications, re-log in on each device.";
+"auth_reset_password_success_message" = "Your password has been reset.\n\nYou have been logged out of all sessions and will no longer receive push notifications. To re-enable notifications, re-log in on each device.";
 "auth_add_email_and_phone_warning" = "Registration with email and phone number at once is not supported yet until the api exists. Only the phone number will be taken into account. You may add your email to your profile in settings.";
 "auth_accept_policies" = "Please review and accept the policies of this homeserver:";
 "auth_autodiscover_invalid_response" = "Invalid homeserver discovery response";
@@ -239,8 +240,9 @@
 
 "room_participants_action_section_admin_tools" = "Admin tools";
 "room_participants_action_section_direct_chats" = "Direct chats";
-"room_participants_action_section_devices" = "Devices";
-"room_participants_action_section_other" = "Other";
+"room_participants_action_section_devices" = "Sessions";
+"room_participants_action_section_other" = "Options";
+"room_participants_action_section_security" = "Security";
 
 "room_participants_action_invite" = "Invite";
 "room_participants_action_leave" = "Leave this room";
@@ -256,6 +258,22 @@
 "room_participants_action_start_voice_call" = "Start voice call";
 "room_participants_action_start_video_call" = "Start video call";
 "room_participants_action_mention" = "Mention";
+"room_participants_action_security_status_verified" = "Verified";
+"room_participants_action_security_status_verify" = "Verify";
+"room_participants_action_security_status_warning" = "Warning";
+"room_participants_action_security_status_loading" = "Loading…";
+
+"room_participants_security_loading" = "Loading…";
+"room_participants_security_information_room_not_encrypted" = "Messages in this room are not end-to-end encrypted.";
+"room_participants_security_information_room_encrypted" = "Messages in this room are end-to-end encrypted.\n\nYour messages are secured with locks and only you and the recipient have the unique keys to unlock them.";
+
+"room_member_power_level_admin_in" = "Admin in %@";
+"room_member_power_level_moderator_in" = "Moderator in %@";
+"room_member_power_level_custom_in" = "Custom (%@) in %@";
+
+"room_member_power_level_short_admin" = "Admin";
+"room_member_power_level_short_moderator" = "Mod";
+"room_member_power_level_short_custom" = "Custom";
 
 // Chat
 "room_jump_to_first_unread" = "Jump to first unread message";
@@ -275,7 +293,7 @@
 "room_message_reply_to_short_placeholder" = "Send a reply…";
 "room_offline_notification" = "Connectivity to the server has been lost.";
 "room_unsent_messages_notification" = "Messages not sent. %@ or %@ now?";
-"room_unsent_messages_unknown_devices_notification" = "Message not sent due to unknown devices being present. %@ or %@ now?";
+"room_unsent_messages_unknown_devices_notification" = "Message not sent due to unknown sessions being present. %@ or %@ now?";
 "room_ongoing_conference_call" = "Ongoing conference call. Join as %@ or %@.";
 "room_ongoing_conference_call_with_close" = "Ongoing conference call. Join as %@ or %@. %@ it.";
 "room_ongoing_conference_call_close" = "Close";
@@ -341,13 +359,13 @@
 "media_type_accessibility_sticker" = "Sticker";
 
 // Unknown devices
-"unknown_devices_alert_title" = "Room contains unknown devices";
-"unknown_devices_alert" = "This room contains unknown devices which have not been verified.\nThis means there is no guarantee that the devices belong to the users they claim to.\nWe recommend you go through the verification process for each device before continuing, but you can resend the message without verifying if you prefer.";
+"unknown_devices_alert_title" = "Room contains unknown sessions";
+"unknown_devices_alert" = "This room contains unknown sessions which have not been verified.\nThis means there is no guarantee that the sessions belong to the users they claim to.\nWe recommend you go through the verification process for each session before continuing, but you can resend the message without verifying if you prefer.";
 "unknown_devices_send_anyway" = "Send Anyway";
 "unknown_devices_call_anyway" = "Call Anyway";
 "unknown_devices_answer_anyway" = "Answer Anyway";
 "unknown_devices_verify" = "Verify…";
-"unknown_devices_title" = "Unknown devices";
+"unknown_devices_title" = "Unknown sessions";
 
 // Room Title
 "room_title_new_room" = "New room";
@@ -389,7 +407,7 @@
 "settings_other" = "OTHER";
 "settings_labs" = "LABS";
 "settings_flair" = "Show flair where allowed";
-"settings_devices" = "DEVICES";
+"settings_devices" = "SESSIONS";
 "settings_cryptography" = "CRYPTOGRAPHY";
 "settings_key_backup" = "KEY BACKUP";
 "settings_deactivate_account" = "DEACTIVATE ACCOUNT";
@@ -415,6 +433,8 @@
 "settings_three_pids_management_information_part1" = "Manage which email addresses or phone numbers you can use to log in or recover your account here. Control who can find you in ";
 "settings_three_pids_management_information_part2" = "Discovery";
 "settings_three_pids_management_information_part3" = ".";
+
+"settings_security" = "SECURITY";
 
 "settings_enable_push_notif" = "Notifications on this device";
 "settings_show_decrypted_content" = "Show decrypted content";
@@ -458,8 +478,7 @@
 "settings_labs_room_members_lazy_loading_error_message" = "Your homeserver does not support lazy loading of room members yet. Try later.";
 "settings_labs_create_conference_with_jitsi" = "Create conference calls with jitsi";
 "settings_labs_message_reaction" = "React to messages with emoji";
-"settings_labs_dm_key_verification" = "Key verification by direct message";
-"settings_labs_cross_signing" = "Cross-Signing";
+"settings_labs_enable_cross_signing" = "Enable cross-signing to verify per-user instead of per-device (in development)";
 
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";
@@ -486,27 +505,27 @@
 "settings_add_3pid_password_message" = "To continue, please enter your password";
 "settings_add_3pid_invalid_password_message" = "Invalid password";
 
-"settings_crypto_device_name" = "Device Public Name: ";
-"settings_crypto_device_id" = "\nDevice ID: ";
-"settings_crypto_device_key" = "\nDevice key:\n";
+"settings_crypto_device_name" = "Session name: ";
+"settings_crypto_device_id" = "\nSession ID: ";
+"settings_crypto_device_key" = "\nSession key:\n";
 "settings_crypto_export" = "Export keys";
-"settings_crypto_blacklist_unverified_devices" = "Encrypt to verified devices only";
+"settings_crypto_blacklist_unverified_devices" = "Encrypt to verified sessions only";
 
 "settings_deactivate_my_account" = "Deactivate my account";
 
 "settings_key_backup_info" = "Encrypted messages are secured with end-to-end encryption. Only you and the recipient(s) have the keys to read these messages.";
-"settings_key_backup_info_checking" = "Checking...";
-"settings_key_backup_info_none" = "Your keys are not being backed up from this device.";
-"settings_key_backup_info_signout_warning" = "Connect this device to key backup before signing out to avoid losing any keys that may only be on this device.";
+"settings_key_backup_info_checking" = "Checking…";
+"settings_key_backup_info_none" = "Your keys are not being backed up from this session.";
+"settings_key_backup_info_signout_warning" = "Connect this session to key backup before signing out to avoid losing any keys that may only be on this device.";
 "settings_key_backup_info_version" = "Key Backup Version: %@";
 "settings_key_backup_info_algorithm" = "Algorithm: %@";
-"settings_key_backup_info_valid" = "This device is backing up your keys.";
-"settings_key_backup_info_not_valid" = "This device is not backing up your keys, but you do have an existing backup you can restore from and add to going forward.";
-"settings_key_backup_info_progress" = "Backing up %@ keys...";
+"settings_key_backup_info_valid" = "This session is backing up your keys.";
+"settings_key_backup_info_not_valid" = "This session is not backing up your keys, but you do have an existing backup you can restore from and add to going forward.";
+"settings_key_backup_info_progress" = "Backing up %@ keys…";
 "settings_key_backup_info_progress_done" = "All keys backed up";
 
-"settings_key_backup_info_trust_signature_unknown" = "Backup has a signature from device with ID: %@";
-"settings_key_backup_info_trust_signature_valid" = "Backup has a valid signature from this device";
+"settings_key_backup_info_trust_signature_unknown" = "Backup has a signature from session with ID: %@";
+"settings_key_backup_info_trust_signature_valid" = "Backup has a valid signature from this session";
 "settings_key_backup_info_trust_signature_valid_device_verified" = "Backup has a valid signature from %@";
 "settings_key_backup_info_trust_signature_valid_device_unverified" = "Backup has a signature from %@";
 "settings_key_backup_info_trust_signature_invalid_device_verified" = "Backup has an invalid signature from %@";
@@ -515,11 +534,11 @@
 "settings_key_backup_button_create" = "Start using Key Backup";
 "settings_key_backup_button_restore" = "Restore from Backup";
 "settings_key_backup_button_delete" = "Delete Backup";
-"settings_key_backup_button_connect" = "Connect this device to Key Backup";
+"settings_key_backup_button_connect" = "Connect this session to Key Backup";
 "settings_key_backup_delete_confirmation_prompt_title" = "Delete Backup";
 "settings_key_backup_delete_confirmation_prompt_msg" = "Are you sure? You will lose your encrypted messages if your keys are not backed up properly.";
 
-"settings_devices_description" = "A device's public name is visible to people you communicate with";
+"settings_devices_description" = "A session's public name is visible to people you communicate with";
 
 "settings_discovery_no_identity_server" = "You are not currently using an identity server. To be discoverable by existing contacts you known, add one.";
 "settings_discovery_terms_not_signed" = "Agree to the Identity Server (%@) Terms of Service to allow yourself to be discoverable by email address or phone number.";
@@ -541,6 +560,33 @@
 "settings_identity_server_description" = "Using the identity server set above, you can discover and be discoverable by existing contacts you know.";
 "settings_identity_server_no_is" = "No identity server configured";
 "settings_identity_server_no_is_description" = "You are not currently using an identity server. To discover and be discoverable by existing contacts you know, add one above.";
+
+
+// Security settings
+"security_settings_title" = "Security";
+"security_settings_crypto_sessions" = "MY SESSIONS";
+"security_settings_crypto_sessions_loading" = "Loading sessions…";
+"security_settings_crypto_sessions_description" = "Trust sessions to grant access to end-to-end encrypted messages. If you don’t recognise a session, change your login password and reset your Message Password used for Message Backup.";
+
+"security_settings_backup" = "MESSAGE BACKUP";
+
+"security_settings_crosssigning" = "CROSS-SIGNING";
+
+"security_settings_cryptography" = "CRYPTOGRAPHY";
+"security_settings_export_keys_manually" = "Export keys manually";
+
+"security_settings_advanced" = "ADVANCED";
+"security_settings_blacklist_unverified_devices" = "Never send messages to untrusted sessions";
+"security_settings_blacklist_unverified_devices_description" = "Verify all of a users sessions to mark them as trusted and send messages to them.";
+
+
+// Manage session
+"manage_session_title" = "Manage session";
+"manage_session_info" = "SESSION INFO";
+"manage_session_name" = "Session name";
+"manage_session_trusted" = "Trusted by you";
+"manage_session_not_trusted" = "Not trusted";
+"manage_session_sign_out" = "Sign out of this session";
 
 
 // Identity server settings
@@ -616,7 +662,7 @@
 "room_details_advanced_enable_e2e_encryption"="Enable encryption (warning: cannot be disabled again!)";
 "room_details_advanced_e2e_encryption_enabled"="Encryption is enabled in this room";
 "room_details_advanced_e2e_encryption_disabled"="Encryption is not enabled in this room.";
-"room_details_advanced_e2e_encryption_blacklist_unverified_devices"="Encrypt to verified devices only";
+"room_details_advanced_e2e_encryption_blacklist_unverified_devices"="Encrypt to verified sessions only";
 "room_details_fail_to_update_avatar" = "Fail to update the room photo";
 "room_details_fail_to_update_room_name" = "Fail to update the room name";
 "room_details_fail_to_update_topic" = "Fail to update the topic";
@@ -695,7 +741,7 @@
 "event_formatter_jitsi_widget_added" = "VoIP conference added by %@";
 "event_formatter_jitsi_widget_removed" = "VoIP conference removed by %@";
 "event_formatter_rerequest_keys_part1_link" = "Re-request encryption keys";
-"event_formatter_rerequest_keys_part2" = " from your other devices.";
+"event_formatter_rerequest_keys_part2" = " from your other sessions.";
 "event_formatter_message_edited_mention" = "(edited)";
 
 // Others
@@ -718,8 +764,8 @@
 // Call
 "call_incoming_voice_prompt" = "Incoming voice call from %@";
 "call_incoming_video_prompt" = "Incoming video call from %@";
-"call_incoming_voice" = "Incoming call...";
-"call_incoming_video" = "Incoming video call...";
+"call_incoming_voice" = "Incoming call…";
+"call_incoming_video" = "Incoming video call…";
 "call_already_displayed" = "There is already a call in progress.";
 "call_jitsi_error" = "Failed to join the conference call.";
 
@@ -737,7 +783,7 @@
 
 // Crypto
 "e2e_enabling_on_app_update" = "Riot now supports end-to-end encryption but you need to log in again to enable it.\n\nYou can do it now or later from the application settings.";
-"e2e_need_log_in_again" = "You need to log back in to generate end-to-end encryption keys for this device and submit the public key to your homeserver.\nThis is a once off; sorry for the inconvenience.";
+"e2e_need_log_in_again" = "You need to log back in to generate end-to-end encryption keys for this session and submit the public key to your homeserver.\nThis is a once off; sorry for the inconvenience.";
 
 // Key backup wrong version
 "e2e_key_backup_wrong_version_title" = "New Key Backup";
@@ -784,7 +830,7 @@
 
 // Widget Picker
 "widget_picker_title" = "Integrations";
-"widget_picker_manage_integrations" = "Manage integrations...";
+"widget_picker_manage_integrations" = "Manage integrations…";
 
 // Room widget permissions
 "room_widget_permission_title" = "Load Widget";
@@ -807,9 +853,9 @@
 
 // Room key request dialog
 "e2e_room_key_request_title" = "Encryption key request";
-"e2e_room_key_request_message_new_device" = "You added a new device '%@', which is requesting encryption keys.";
-"e2e_room_key_request_message" = "Your unverified device '%@' is requesting encryption keys.";
-"e2e_room_key_request_start_verification" = "Start verification...";
+"e2e_room_key_request_message_new_device" = "You added a new session '%@', which is requesting encryption keys.";
+"e2e_room_key_request_message" = "Your unverified session '%@' is requesting encryption keys.";
+"e2e_room_key_request_start_verification" = "Start verification…";
 "e2e_room_key_request_share_without_verifying" = "Share without verifying";
 "e2e_room_key_request_ignore_request" = "Ignore request";
 
@@ -854,7 +900,7 @@
 
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Request Sent";
-"rerequest_keys_alert_message" = "Please launch Riot on another device that can decrypt the message so it can send the keys to this device.";
+"rerequest_keys_alert_message" = "Please launch Riot on another device that can decrypt the message so it can send the keys to this session.";
 
 // MARK: Key backup setup
 
@@ -913,6 +959,9 @@
 "key_backup_recover_invalid_recovery_key_title" = "Recovery Key Mismatch";
 "key_backup_recover_invalid_recovery_key" = "Backup could not be decrypted with this key: please verify that you entered the correct recovery key.";
 
+// Recover from private key
+"key_backup_recover_from_private_key_info" = "Restoring backup…";
+
 // Recover from passphrase
 
 "key_backup_recover_from_passphrase_info" = "Use your recovery passphrase to unlock your secure message history";
@@ -948,7 +997,7 @@
 // Recover
 
 "key_backup_recover_banner_title" = "Never lose encrypted messages";
-"key_backup_recover_connent_banner_subtitle" = "Connect this device to Key Backup";
+"key_backup_recover_connent_banner_subtitle" = "Connect this session to Key Backup";
 
 // MARK: Sign out warning
 
@@ -969,34 +1018,68 @@
 "sign_out_key_backup_in_progress_alert_cancel_action" = "I'll wait";
 
 // MARK: - Device Verification
-"device_verification_title" = "Verify device";
+"device_verification_title" = "Verify session";
+"key_verification_user_title" = "Verify user";
+
 "device_verification_security_advice" = "For maximum security, we recommend you do this in person or use another trusted means of communication";
 "device_verification_cancelled" = "The other party cancelled the verification.";
 "device_verification_cancelled_by_me" = "The verification has been cancelled. Reason: %@";
-"device_verification_error_cannot_load_device" = "Cannot load device information.";
+"device_verification_error_cannot_load_device" = "Cannot load session information.";
 
 // Mark: Incoming
 "device_verification_incoming_title" = "Incoming Verification Request";
-"device_verification_incoming_description_1" = "Verify this device to mark it as trusted. Trusting devices of partners gives you extra peace of mind when using end-to-end encrypted messages.";
-"device_verification_incoming_description_2" = "Verifying this device will mark it as trusted, and also mark your device as trusted to the partner.";
+"device_verification_incoming_description_1" = "Verify this session to mark it as trusted. Trusting sessions of partners gives you extra peace of mind when using end-to-end encrypted messages.";
+"device_verification_incoming_description_2" = "Verifying this session will mark it as trusted, and also mark your session as trusted to the partner.";
 
 // MARK: Start
 "device_verification_start_title" = "Verify by comparing a short text string";
-"device_verification_start_wait_partner" = "Waiting for partner to accept...";
+"device_verification_start_wait_partner" = "Waiting for partner to accept…";
 "device_verification_start_use_legacy" = "Nothing appearing? Not all clients supports interactive verification yet. Use legacy verification.";
 "device_verification_start_verify_button" = "Begin Verifying";
 "device_verification_start_use_legacy_action" = "Use Legacy Verification";
 
+// MARK: Self verification start
+
+"device_verification_self_verify_alert_title" = "New Sign In";
+"device_verification_self_verify_alert_message" = "Use this session to verify your new one, granting it access to encrypted messages: %@\nIf you didn’t sign in to this session, your account may be compromised.";
+"device_verification_self_verify_alert_cancel_action" = "This wasn't me";
+
+"device_verification_self_verify_start_verify_action" = "Start verification";
+"device_verification_self_verify_start_information" = "Use this session to verify your new one, granting it access to encrypted messages.";
+"device_verification_self_verify_start_waiting" = "Waiting…";
+
+// MARK: Self verification wait
+
+"device_verification_self_verify_wait_title" = "Complete security";
+"device_verification_self_verify_wait_information" = "Use an existing session to verify this new one, granting it access to encrypted messages.";
+"device_verification_self_verify_wait_waiting" = "Waiting…";
+
 // MARK: Verify
-"device_verification_verify_title_emoji" = "Verify this device by confirming the following emoji appear on the screen of the partner";
-"device_verification_verify_title_number" = "Verify this device by confirming the following numbers appear on the screen of the partner";
-"device_verification_verify_wait_partner" = "Waiting for partner to confirm...";
+
+// Device
+
+"device_verification_verify_title_emoji" = "Verify this session by confirming the following emoji appear on the screen of the partner";
+"device_verification_verify_title_number" = "Verify this session by confirming the following numbers appear on the screen of the partner";
+"device_verification_verify_wait_partner" = "Waiting for partner to confirm…";
+
+// User
+
+"key_verification_verify_user_title_emoji" = "Verify this user by confirming the following unique emoji appears on their screen, in the same order.";
+"key_verification_verify_user_title_number" = "Verify this user by confirming the following numbers appear on their screen, in the same order.";
 
 // MARK: Verified
+
+// Device
+
 "device_verification_verified_title" = "Verified!";
-"device_verification_verified_description_1" = "You've successfully verified this device.";
+"device_verification_verified_description_1" = "You've successfully verified this session.";
 "device_verification_verified_description_2" = "Secure messages with this user are end-to-end encrypted and not able to be read by third parties.";
 "device_verification_verified_got_it_button" = "Got it";
+
+// User
+
+"key_verification_verified_user_description_1" = "You’ve successfully verified this user.";
+"key_verification_verified_user_description_2" = "Messages with this user in this room are end-to-end encrypted and can’t be read by third parties.";
 
 // MARK: Emoji
 "device_verification_emoji_dog" = "Dog";
@@ -1087,3 +1170,80 @@
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Add an identity server in your settings to invite by email.";
 "error_not_supported_on_mobile" = "You can't do this from %@ mobile.";
+
+// MARK: - Key Verification
+
+"key_verification_bootstrap_not_setup_title" = "Error";
+"key_verification_bootstrap_not_setup_message" = "You have to bootstrap cross-signing";
+
+// Tiles
+
+"key_verification_tile_request_incoming_title" = "Verification request";
+"key_verification_tile_request_outgoing_title" = "Verification sent";
+
+"key_verification_tile_request_status_data_loading" = "Data loading…";
+"key_verification_tile_request_status_waiting" = "Waiting…";
+"key_verification_tile_request_status_expired" = "Expired";
+"key_verification_tile_request_status_cancelled_by_me" = "You cancelled";
+"key_verification_tile_request_status_cancelled" = "%@ cancelled";
+"key_verification_tile_request_status_accepted" = "You accepted";
+
+"key_verification_tile_request_incoming_approval_accept" = "Accept";
+"key_verification_tile_request_incoming_approval_decline" = "Decline";
+
+"key_verification_tile_conclusion_done_title" = "Verified";
+"key_verification_tile_conclusion_warning_title" = "Unstrusted sign in";
+
+// Incoming key verification request
+
+"key_verification_incoming_request_incoming_alert_message" = "%@ wants to verify";
+
+// MARK: QR code
+
+"key_verification_verify_qr_code_title" = "Verify by scanning";
+"key_verification_verify_qr_code_information" = "Scan the code to securely verify each other.";
+"key_verification_verify_qr_code_scan_code_action" = "Scan their code";
+"key_verification_verify_qr_code_cannot_scan_action" = "Can't scan?";
+
+"key_verification_verify_qr_code_other_scan_my_code_title" = "Did the other user successfully scan the QR code?";
+
+"key_verification_verify_qr_code_scan_other_code_success_title" = "Code validated!";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "QR code has been successfully validated.";
+
+// MARK: - User verification
+
+// Start
+
+"user_verification_start_verify_action" = "Start verification";
+"user_verification_start_information_part1" = "For extra security, verify ";
+"user_verification_start_information_part2" = " by checking a one-time code on both your devices.";
+"user_verification_start_waiting_partner" = "Waiting for %@…";
+"user_verification_start_additional_information" = "To be secure, do this in person or use another way to communicate.";
+
+// Sessions list
+
+"user_verification_sessions_list_user_trust_level_trusted_title" = "Trusted";
+"user_verification_sessions_list_user_trust_level_warning_title" = "Warning";
+"user_verification_sessions_list_user_trust_level_unknown_title" = "Unknown";
+"user_verification_sessions_list_information" = "Messages with this user in this room are end-to-end encrypted and can’t be read by third parties.";
+"user_verification_sessions_list_table_title" = "Sessions";
+"user_verification_sessions_list_session_trusted" = "Trusted";
+"user_verification_sessions_list_session_untrusted" = "Not trusted";
+
+// Session details
+
+"user_verification_session_details_trusted_title" = "Trusted";
+"user_verification_session_details_untrusted_title" = "Warning";
+
+"user_verification_session_details_information_trusted_current_user" = "This session is trusted for secure messaging because you verified it:";
+"user_verification_session_details_information_trusted_other_user_part1" = "This session is trusted for secure messaging because ";
+"user_verification_session_details_information_trusted_other_user_part2" = " verified it:";
+
+"user_verification_session_details_information_untrusted_current_user" = "Verify this session to mark it as trusted & grant it access to encrypted messages:";
+"user_verification_session_details_information_untrusted_other_user" = " signed in using a new session:";
+
+"user_verification_session_details_additional_information_untrusted_other_user" = "Until this user trusts this session, messages sent to and from it are labelled with warnings. Alternatively, you can manually verify it.";
+"user_verification_session_details_additional_information_untrusted_current_user" = "If you didn’t sign in to this session, your account may be compromised.";
+
+"user_verification_session_details_verify_action_current_user" = "Verify";
+"user_verification_session_details_verify_action_other_user" = "Manually verify";

@@ -1,11 +1,31 @@
-Changes in 0.10.x (2020-xx-xx)
+Changes in 0.11.0 (2020-xx-xx)
 ===============================================
 
 Improvements:
- * 
+ * E2E: Do not warn anymore for unknown devices
+ * ON/OFF Cross-signing development in a Lab setting (#2855).
+ * RoomVC: Update encryption decoration with shields (#2934, #2930, #2906).
+ * Settings: Remove "End-to-End Encryption" from the LABS section (#2941).
+ * Room decoration: Use shields instead of padlocks (#2906).
+ * Room decoration: Remove horizontal empty space when there is no decoration badge to set on room message (#2978).
+ * RoomVC: For a room preview use room canonical alias if present when joining a room.
+ * Update Matomo app id (#3001)
+ * Verification by DM: Support QR code (#2921).
+ * Cross-Signing: Detect and expose new sign-ins (#2918).
+ * Cross-signing: Complete security at the end of sign in process( #3003).
+ * Make decoration uniform (#2972).
+ 
+Bug fix:
+ * Key backup banner is not hidden correctly (#2899). 
+
+Changes in 0.10.5 (2020-04-01)
+===============================================
 
 Bug fix:
- * Key backup banner is not hidden correctly (#2899).
+ * Fix error when joining some public rooms, thanks to @chrismoos (PR #2888).
+ * Fix crash due to malformed widget (#2997).
+ * Push notifications: Avoid any automatic deactivation (vector-im/riot-ios#3017).
+ * Fix links breaking user out of SSO flow, thanks to @schultetwin (#3039).
 
 Changes in 0.10.4 (2019-12-11)
 ===============================================

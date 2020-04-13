@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -27,11 +27,20 @@
                                 <constraint firstAttribute="width" constant="84" id="Yye-G1-hCH"/>
                             </constraints>
                         </view>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="14n-e5-ix3">
+                            <rect key="frame" x="320" y="73" width="20" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="20" id="Pkd-n4-A9M"/>
+                                <constraint firstAttribute="width" secondItem="14n-e5-ix3" secondAttribute="height" multiplier="1:1" id="g2h-P2-8gQ"/>
+                            </constraints>
+                        </imageView>
                     </subviews>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     <accessibility key="accessibilityConfiguration" identifier="RoomAvatarHeaderBackground"/>
                     <constraints>
+                        <constraint firstItem="14n-e5-ix3" firstAttribute="trailing" secondItem="eEk-n9-4dA" secondAttribute="trailing" constant="-2" id="3fH-JR-GgP"/>
                         <constraint firstAttribute="height" constant="95" id="DzD-aR-3eV"/>
+                        <constraint firstItem="14n-e5-ix3" firstAttribute="bottom" secondItem="eEk-n9-4dA" secondAttribute="bottom" constant="-2" id="Or6-Ka-Yny"/>
                         <constraint firstItem="eEk-n9-4dA" firstAttribute="centerX" secondItem="uSp-YH-L18" secondAttribute="centerX" id="W1w-ZX-f2d"/>
                         <constraint firstAttribute="bottom" secondItem="eEk-n9-4dA" secondAttribute="bottom" id="hXd-bM-Bbb"/>
                     </constraints>
@@ -148,6 +157,7 @@
                 <outlet property="displayNameTextField" destination="6uH-I3-RQg" id="MfX-LQ-C2K"/>
                 <outlet property="membersListIcon" destination="S3Y-wJ-HOe" id="hkf-a4-Ffw"/>
                 <outlet property="roomAvatar" destination="eEk-n9-4dA" id="5jd-Dx-tXE"/>
+                <outlet property="roomAvatarBadgeImageView" destination="14n-e5-ix3" id="ZSS-wz-Oi7"/>
                 <outlet property="roomAvatarHeaderBackground" destination="uSp-YH-L18" id="sfW-ED-5bD"/>
                 <outlet property="roomAvatarHeaderBackgroundHeightConstraint" destination="DzD-aR-3eV" id="SuC-mO-epX"/>
                 <outlet property="roomDetailsMask" destination="MFb-0F-eO8" id="ajK-sr-qf7"/>
@@ -155,10 +165,11 @@
                 <outlet property="roomTopic" destination="qD3-kA-DSI" id="mOj-AU-7LM"/>
                 <outlet property="titleMask" destination="8HH-9b-1yH" id="MFh-3r-I5e"/>
             </connections>
+            <point key="canvasLocation" x="129.59999999999999" y="153.37331334332833"/>
         </view>
     </objects>
     <resources>
-        <image name="add_participant" width="92.800003051757812" height="92.800003051757812"/>
-        <image name="members_list_icon" width="15" height="15"/>
+        <image name="add_participant" width="30" height="30"/>
+        <image name="members_list_icon" width="15" height="12"/>
     </resources>
 </document>
