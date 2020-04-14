@@ -20,6 +20,7 @@ import Foundation
 
 @objc protocol KeyVerificationCoordinatorBridgePresenterDelegate {
     func keyVerificationCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: KeyVerificationCoordinatorBridgePresenter, otherUserId: String, otherDeviceId: String)
+    func keyVerificationCoordinatorBridgePresenterDelegateDidCancel(_ coordinatorBridgePresenter: KeyVerificationCoordinatorBridgePresenter)
 }
 
 /// KeyVerificationCoordinatorBridgePresenter enables to start KeyVerificationCoordinator from a view controller.
@@ -31,7 +32,7 @@ final class KeyVerificationCoordinatorBridgePresenter: NSObject {
     
     // MARK: Private
     
-    private let session: MXSession
+    let session: MXSession
     private var coordinator: KeyVerificationCoordinator?
     
     // MARK: Public
@@ -132,7 +133,12 @@ final class KeyVerificationCoordinatorBridgePresenter: NSObject {
 
 // MARK: - KeyVerificationCoordinatorDelegate
 extension KeyVerificationCoordinatorBridgePresenter: KeyVerificationCoordinatorDelegate {
+    
     func keyVerificationCoordinatorDidComplete(_ coordinator: KeyVerificationCoordinatorType, otherUserId: String, otherDeviceId: String) {
         self.delegate?.keyVerificationCoordinatorBridgePresenterDelegateDidComplete(self, otherUserId: otherUserId, otherDeviceId: otherDeviceId)
+    }
+    
+    func keyVerificationCoordinatorDidCancel(_ coordinator: KeyVerificationCoordinatorType) {
+        self.delegate?.keyVerificationCoordinatorBridgePresenterDelegateDidCancel(self)
     }
 }

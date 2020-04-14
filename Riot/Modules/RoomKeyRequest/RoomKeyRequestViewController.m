@@ -147,19 +147,29 @@
 
 - (void)keyVerificationCoordinatorBridgePresenterDelegateDidComplete:(KeyVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
 {
+    [self dismissKeyVerificationCoordinatorBridgePresenter];
+}
+
+- (void)keyVerificationCoordinatorBridgePresenterDelegateDidCancel:(KeyVerificationCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    [self dismissKeyVerificationCoordinatorBridgePresenter];
+}
+
+- (void)dismissKeyVerificationCoordinatorBridgePresenter
+{
     [keyVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     keyVerificationCoordinatorBridgePresenter = nil;
-
+    
     // Check device new status
     [self.mxSession.crypto downloadKeys:@[self.device.userId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap, NSDictionary<NSString *,MXCrossSigningInfo *> *crossSigningKeysMap) {
-
+        
         MXDeviceInfo *deviceInfo = [usersDevicesInfoMap objectForDevice:self.device.deviceId forUser:self.device.userId];
         if (deviceInfo && deviceInfo.trustLevel.localVerificationStatus == MXDeviceVerified)
         {
             // Accept the received requests from this device
             // As the device is now verified, all other key requests will be automatically accepted.
             [self.mxSession.crypto acceptAllPendingKeyRequestsFromUser:self.device.userId andDevice:self.device.deviceId onComplete:^{
-
+                
                 onComplete();
             }];
         }
@@ -169,7 +179,7 @@
             [self show];
         }
     } failure:^(NSError *error) {
-
+        
         // Should not happen (the device is in the crypto db)
         [self show];
     }];
