@@ -41,12 +41,7 @@ git clone https://github.com/vector-im/riot-ios.git
 cd riot-ios
 git checkout -b $TAG $TAG
 
-
-# Develop branch special case
-if [ "$TAG" = "develop" ]; then 
-    ./use-dev-pods.sh
-fi
-
+# In Podfile check that $matrixKitPodSelectionBehavior is set to :currentGitBranch in order to use right Matrix pods branches
 
 # Build
 bundle exec fastlane app_store build_number:$BUILD_NUMBER
