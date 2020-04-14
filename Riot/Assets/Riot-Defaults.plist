@@ -10,6 +10,8 @@
 	<string>https://matrix.org/_matrix/push/v1/notify</string>
 	<key>pushKitAppIdProd</key>
 	<string>im.vector.app.ios.voip.prod</string>
+	<key>pushKitAppIdDev</key>
+	<string>im.vector.app.ios.voip.dev</string>
 	<key>identityserverurl</key>
 	<string>https://vector.im</string>
 	<key>homeserverurl</key>

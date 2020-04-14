@@ -25,6 +25,8 @@
 #import "AppDelegate.h"
 #import "AvatarGenerator.h"
 
+#import "PushNotificationService.h"
+
 #import "BugReportViewController.h"
 
 #import "WebViewViewController.h"
@@ -2858,7 +2860,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         else
         {
             // Obtain device token when user has just enabled access to notifications from system settings
-            [[AppDelegate theDelegate] registerForRemoteNotificationsWithCompletion:^(NSError * error) {
+            [[PushNotificationService sharedInstance] registerForRemoteNotificationsWithCompletion:^(NSError * error) {
                 if (error)
                 {
                     [(UISwitch *)sender setOn:NO animated:YES];
