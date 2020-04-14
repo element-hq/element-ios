@@ -1185,6 +1185,11 @@
         
         if (session.crypto.crossSigning)
         {
+            // Do not make key share requests while the "Complete security" is not complete.
+            // If the device is self-verified, the SDK will restore the existing key backup.
+            // Then, it  will re-enable outgoing key share requests
+            [session.crypto setOutgoingKeyRequestsEnabled:NO onComplete:nil];
+            
             [session.crypto.crossSigning refreshStateWithSuccess:^(BOOL stateUpdated) {
                 
                 if (session.crypto.crossSigning.state == MXCrossSigningStateCrossSigningExists)
@@ -1199,6 +1204,7 @@
                 }
                 else
                 {
+                    [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
                     [self dismiss];
                 }
                 
@@ -1354,6 +1360,8 @@
 
 - (void)keyVerificationCoordinatorBridgePresenterDelegateDidCancel:(KeyVerificationCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
 {
+    // Set outgoing key requests back
+    [coordinatorBridgePresenter.session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
     
     [self dismiss];
 }
