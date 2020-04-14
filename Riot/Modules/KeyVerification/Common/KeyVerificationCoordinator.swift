@@ -146,7 +146,7 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     }
     
     private func didCancel() {
-        self.didComplete()
+        self.delegate?.keyVerificationCoordinatorDidCancel(self)
     }
     
     private func createCompleteSecurityCoordinator() -> KeyVerificationSelfVerifyWaitCoordinatorType {

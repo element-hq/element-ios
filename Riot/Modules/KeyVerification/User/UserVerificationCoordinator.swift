@@ -176,6 +176,14 @@ extension UserVerificationCoordinator: UserVerificationSessionStatusCoordinatorD
 extension UserVerificationCoordinator: KeyVerificationCoordinatorDelegate {
     
     func keyVerificationCoordinatorDidComplete(_ coordinator: KeyVerificationCoordinatorType, otherUserId: String, otherDeviceId: String) {
+        dismissPresenter(coordinator: coordinator)
+    }
+    
+    func keyVerificationCoordinatorDidCancel(_ coordinator: KeyVerificationCoordinatorType) {
+        dismissPresenter(coordinator: coordinator)
+    }
+    
+    func dismissPresenter(coordinator: KeyVerificationCoordinatorType) {
         self.presenter.toPresentable().dismiss(animated: true) {
             self.remove(childCoordinator: coordinator)
         }
