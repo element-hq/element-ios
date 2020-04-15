@@ -80,7 +80,7 @@
 "auth_reset_password_next_step_button" = "Я подтвердил свой адрес электронной почты";
 "auth_reset_password_error_unauthorized" = "Не удалось проверить адрес электронной почты: убедитесь, что вы нажали на ссылку в письме";
 "auth_reset_password_error_not_found" = "Ваш адрес электронной почты, кажется, не связан с Matrix ID на этом домашнем сервере.";
-"auth_reset_password_success_message" = "Ваш пароль был сброшен.\n\nВы вышли на всех устройствах и больше не будете получать push-уведомления. Чтобы вновь активировать уведомления, заново авторизуйтесь на каждом устройстве.";
+"auth_reset_password_success_message" = "Ваш пароль был сброшен.\n\nВы вышли со всех сессий и больше не будете получать push-уведомления. Чтобы вновь активировать уведомления, заново авторизуйтесь на каждом устройстве.";
 "auth_add_email_and_phone_warning" = "Регистрация с электронной почтой и номером телефона одновременно не поддерживается до тех пор, пока не появится API. Будет учитываться только номер телефона. Вы можете добавить свою электронную почту в свой профиль в настройках.";
 // Chat creation
 "room_creation_title" = "Новый чат";
@@ -151,8 +151,8 @@
 "room_participants_online" = "В сети";
 "room_participants_offline" = "Не в сети";
 "room_participants_action_section_admin_tools" = "Инструменты администратора";
-"room_participants_action_section_devices" = "Устройства";
-"room_participants_action_section_other" = "Другие";
+"room_participants_action_section_devices" = "Сессии";
+"room_participants_action_section_other" = "Параметры";
 "room_participants_action_leave" = "Покинуть эту комнату";
 "room_participants_action_remove" = "Удалить из этой комнаты";
 "room_participants_action_ignore" = "Скрыть все сообщения этого пользователя";
@@ -891,3 +891,10 @@
 "service_terms_modal_title_identity_server" = "Обнаружение контактов";
 "device_verification_start_use_legacy_action" = "Используйте устаревшую проверку";
 "error_not_supported_on_mobile" = "Вы не можете сделать это с %@ моб. телефона.";
+// Accessibility
+"accessibility_checkbox_label" = "флажок";
+"room_participants_action_section_security" = "Безопасность";
+"room_participants_action_security_status_verified" = "Проверенный";
+"room_participants_action_security_status_verify" = "Проверить";
+"room_participants_action_security_status_warning" = "Предупреждение";
+"room_participants_security_loading" = "Загрузка…";

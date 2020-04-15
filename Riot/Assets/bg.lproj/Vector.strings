@@ -84,7 +84,7 @@
 "auth_reset_password_next_step_button" = "Потвърдих имейл адреса си";
 "auth_reset_password_error_unauthorized" = "Неуспешно потвърждаване на имейл адреса: уверете се, че сте кликнали върху връзката в имейла";
 "auth_reset_password_error_not_found" = "Изглежда имейл адресът Ви не принадлежи на Matrix потребител от този сървър.";
-"auth_reset_password_success_message" = "Вашата парола беше възстановена.\n\nВие сте излязли от профила си от всички устройства и вече няма да получавате известия. За да включите известията отново, влезте в профила си от всички устройства.";
+"auth_reset_password_success_message" = "Вашата парола беше възстановена.\n\nВие сте излязли от профила си от всички сесии и вече няма да получавате известия. За да включите известията отново, влезте в профила си от всяка сесия.";
 "auth_add_email_and_phone_warning" = "Регистрация с имейл и телефонен номер наведнъж не се поддържа в момента. Само телефонен номер се взима под внимание. Можете да добавите имейл към профила си в настройките.";
 // Chat creation
 "room_creation_title" = "Нов чат";
@@ -182,8 +182,8 @@
 "room_participants_ago" = "по-рано";
 "room_participants_action_section_admin_tools" = "Инструменти на администратора";
 "room_participants_action_section_direct_chats" = "Директни чатове";
-"room_participants_action_section_devices" = "Устройства";
-"room_participants_action_section_other" = "Други";
+"room_participants_action_section_devices" = "Сесии";
+"room_participants_action_section_other" = "Опции";
 "room_participants_action_invite" = "Покани";
 "room_participants_action_leave" = "Напусни тази стая";
 "room_participants_action_remove" = "Премахни от тази стая";
@@ -210,7 +210,7 @@
 "room_message_short_placeholder" = "Изпрати съобщение…";
 "room_offline_notification" = "Връзката със сървъра е изгубена.";
 "room_unsent_messages_notification" = "Съобщенията не са изпратени. %@ или %@?";
-"room_unsent_messages_unknown_devices_notification" = "Съобщението не е изпратено поради наличието на непознати устройства. %@ или %@?";
+"room_unsent_messages_unknown_devices_notification" = "Съобщението не е изпратено поради наличието на непознати сесии. %@ или %@?";
 "room_ongoing_conference_call" = "Текущ групов разговор. Присъедини се с %@ или %@.";
 "room_ongoing_conference_call_with_close" = "Текущ групов разговор. Присъедини се с %@ или %@. %@ го.";
 "room_ongoing_conference_call_close" = "Затвори";
@@ -237,13 +237,13 @@
 "room_event_action_cancel_download" = "Откажи изтеглянето";
 "room_event_failed_to_send" = "Неуспешно изпращане";
 // Unknown devices
-"unknown_devices_alert_title" = "Стаята съдържа непознати устройства";
-"unknown_devices_alert" = "Тази стая съдържа непознати устройства, който не са били потвърдени.\nТова означава, че няма гаранция, че устройствата принадлежат на потребителите, на който се твърди, че принадлежат.\nПрепоръчваме Ви да минете през процеса за потвърждение за всяко устройство, за да потвърдите, че принадлежат на легитимен собственик. Ако предпочитате, можете да изпратите съобщението без потвърждение.";
+"unknown_devices_alert_title" = "Стаята съдържа непознати сесии";
+"unknown_devices_alert" = "Тази стая съдържа непознати сесии, който не са били потвърдени.\nТова означава, че няма гаранция, че сесиите принадлежат на потребителите, на който се твърди, че принадлежат.\nПрепоръчваме Ви да минете през процеса за потвърждение за всяка сесия, за да потвърдите, че принадлежи на легитимен собственик. Ако предпочитате, можете да изпратите съобщението без потвърждение.";
 "unknown_devices_send_anyway" = "Изпрати въпреки това";
 "unknown_devices_call_anyway" = "Позвъни въпреки това";
 "unknown_devices_answer_anyway" = "Отговори въпреки това";
 "unknown_devices_verify" = "Потвърди…";
-"unknown_devices_title" = "Непознати устройства";
+"unknown_devices_title" = "Непознати сесии";
 // Room Title
 "room_title_new_room" = "Нова стая";
 "room_title_multiple_active_members" = "%@/%@ активни членове";
@@ -275,7 +275,7 @@
 "settings_other" = "ДРУГИ";
 "settings_labs" = "ЕКСПЕРИМЕНТИ";
 "settings_flair" = "Покажи значката, където е позволено";
-"settings_devices" = "УСТРОЙСТВА";
+"settings_devices" = "СЕСИИ";
 "settings_cryptography" = "КРИПТОГРАФИЯ";
 "settings_sign_out" = "Изход";
 "settings_sign_out_confirmation" = "Сигурни ли сте?";
@@ -334,11 +334,11 @@
 "settings_confirm_password" = "потвърди парола";
 "settings_fail_to_update_password" = "Неуспешно обновяване на парола";
 "settings_password_updated" = "Вашата парола беше обновена";
-"settings_crypto_device_name" = "Публично име на устройството: ";
-"settings_crypto_device_id" = "\nID на устройството: ";
-"settings_crypto_device_key" = "\nКлюч на устройството:\n";
+"settings_crypto_device_name" = "Име на сесията: ";
+"settings_crypto_device_id" = "\nID на сесията: ";
+"settings_crypto_device_key" = "\nКлюч на сесията:\n";
 "settings_crypto_export" = "Експортирай ключове";
-"settings_crypto_blacklist_unverified_devices" = "Шифроване само за потвърдени устройства";
+"settings_crypto_blacklist_unverified_devices" = "Шифроване само за потвърдени сесии";
 // Room Details
 "room_details_title" = "Информация";
 "room_details_people" = "Членове";
@@ -557,18 +557,18 @@
 "room_resource_usage_limit_reached_message_contact_3" = " за да увеличите този лимит.";
 "auth_accept_policies" = "Моля, прегледайте и приемете политиките на този сървър:";
 "settings_key_backup" = "РЕЗЕРВНО КОПИЕ НА КЛЮЧОВЕТЕ";
-"settings_key_backup_info_checking" = "Проверка...";
-"settings_key_backup_info_none" = "Не се прави резервно копие на ключовете Ви от това устройство.";
+"settings_key_backup_info_checking" = "Проверка…";
+"settings_key_backup_info_none" = "Не се прави резервно копие на ключовете Ви от тази сесия.";
 "settings_key_backup_info_version" = "Версия на резервното копие на ключовете: %@";
 "settings_key_backup_info_algorithm" = "Алгоритъм: %@";
-"settings_key_backup_info_valid" = "Това устройство прави резервно копие на ключовете Ви.";
-"settings_key_backup_info_not_valid" = "Това устройство не прави резервно копие на ключовете Ви, но имате съществуващо резервно копие, от което да възстановявате или допълвате в бъдеще.";
-"settings_key_backup_info_progress" = "Правене на резервно копие на %@ ключа...";
+"settings_key_backup_info_valid" = "Тази сесия прави резервно копие на ключовете Ви.";
+"settings_key_backup_info_not_valid" = "Тази сесия не прави резервно копие на ключовете Ви, но имате съществуващо резервно копие, от което да възстановявате или допълвате в бъдеще.";
+"settings_key_backup_info_progress" = "Правене на резервно копие на %@ ключа…";
 "settings_key_backup_info_progress_done" = "Има резервно копие на всички ключове";
 "settings_key_backup_info_not_trusted_from_verifiable_device_fix_action" = "За да използвате Възстановяване на Защитени Съобщения на това устройство, потвърдете %@ сега.";
 "settings_key_backup_info_not_trusted_fix_action" = "За да използвате Възстановяване на Защитени Съобщения на това устройство, въведете паролата си или ключа за възстановяване.";
-"settings_key_backup_info_trust_signature_unknown" = "Резервното копие има подпис от устройство с идентификатор: %@";
-"settings_key_backup_info_trust_signature_valid" = "Резервното копие има валиден подпис от текущото устройство";
+"settings_key_backup_info_trust_signature_unknown" = "Резервното копие има подпис от сесия с идентификатор: %@";
+"settings_key_backup_info_trust_signature_valid" = "Резервното копие има валиден подпис от текущата сесия";
 "settings_key_backup_info_trust_signature_valid_device_verified" = "Резервното копие има валиден подпис от %@";
 "settings_key_backup_info_trust_signature_valid_device_unverified" = "Резервното копие има валиден подпис от %@";
 "settings_key_backup_info_trust_signature_invalid_device_verified" = "Резервното копие има невалиден подпис от %@";
@@ -624,7 +624,7 @@
 "key_backup_recover_banner_title_part1" = "Стартирайте Възстановяване на Защитени Съобщения";
 "key_backup_recover_banner_title_part2" = " за да четете шифрованата история на съобщенията на това устройство";
 "settings_key_backup_info" = "Шифрованите съобщения са защитени с шифроване от край до край. Само Вие и получателят (получателите) имате ключове за прочитането им.";
-"settings_key_backup_info_signout_warning" = "Свържете това устройство с резервно копие за ключове преди да излезете от профила, за да не изгубите ключовете намиращи се само на устройството.";
+"settings_key_backup_info_signout_warning" = "Свържете тази сесия с резервно копие за ключове преди да излезете от профила, за да не изгубите ключовете намиращи се само на устройството.";
 "settings_key_backup_button_use" = "Използвай резервно копие на ключовете";
 // Key backup wrong version
 "e2e_key_backup_wrong_version_title" = "Ново резервно копие на ключовете";
@@ -682,7 +682,7 @@
 "room_event_action_reaction_dislike" = "Не харесай %@";
 "room_action_reply" = "Отговори";
 "settings_labs_message_reaction" = "Реагирай на съобщения с емоджи";
-"settings_key_backup_button_connect" = "Свържи устройството към резервно копие на ключове";
+"settings_key_backup_button_connect" = "Свържи сесията към резервно копие на ключове";
 "key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Свържи устройството към резервно копие на ключове";
 "key_backup_recover_connent_banner_subtitle" = "Свържи устройството към резервно копие на ключове";
 // MARK: - Device Verification
@@ -864,7 +864,7 @@
 "settings_add_3pid_password_title_msidsn" = "Добави телефонен номер";
 "settings_add_3pid_password_message" = "За да продължите, въведете паролата си";
 "settings_add_3pid_invalid_password_message" = "Невалидна парола";
-"settings_devices_description" = "Публичното име на устройството е видимо за хората, с които общувате";
+"settings_devices_description" = "Публичното име на сесията е видимо за хората, с които общувате";
 "settings_discovery_no_identity_server" = "В момента не използвате сървър за самоличност. Добавете такъв, за да бъдете откриваеми от съществуващи познати контакти.";
 "settings_discovery_terms_not_signed" = "Съгласете се с условията за ползване на сървъра за самоличност (%@) за да бъдете откриваеми по имейл адрес или телефон.";
 "settings_discovery_three_pids_management_information_part1" = "Управлявайте кои имейл адреси и телефонни номера други потребители могат да използват за да ви открият или поканят в стаи. Добавяйте и премахвайте имейл адреси и телефонни номера от този списък в ";
@@ -940,3 +940,18 @@
 "room_widget_permission_widget_id_permission" = "ID на приспособление";
 "room_widget_permission_room_id_permission" = "ID на стая";
 "service_terms_modal_policy_checkbox_accessibility_hint" = "Отметнете за да приемете %@";
+"skip" = "Пропусни";
+"room_participants_action_section_security" = "Сигурност";
+"room_participants_action_security_status_verified" = "Потвърден";
+"room_participants_action_security_status_verify" = "Потвърди";
+"room_participants_action_security_status_warning" = "Предупреждение";
+"room_participants_action_security_status_loading" = "Зареждане…";
+"room_participants_security_loading" = "Зареждане…";
+"room_participants_security_information_room_not_encrypted" = "Съобщенията в тази стая не са шифровани от-край-до-край.";
+"room_participants_security_information_room_encrypted" = "Съобщенията в тази стая са шифровани от-край-до-край.\n\nСъобщенията ви са защитени и само вие и получателят имате ключовете да ги отключите.";
+"settings_security" = "СИГУРНОСТ";
+"settings_labs_enable_cross_signing" = "Включи кръстосано-подписване за потвърждение на потребители, а не на индивидуалните им устройства (в процес на разработка)";
+// Security settings
+"security_settings_title" = "Сигурност";
+"security_settings_crypto_sessions" = "МОИТЕ СЕСИИ";
+"security_settings_crypto_sessions_loading" = "Зареждан на сесии…";
