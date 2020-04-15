@@ -3250,10 +3250,6 @@ internal enum VectorL10n {
   internal static var settingsLabsE2eEncryptionPromptMessage: String { 
     return VectorL10n.tr("Vector", "settings_labs_e2e_encryption_prompt_message") 
   }
-  /// Enable cross-signing to verify per-user instead of per-device (in development)
-  internal static var settingsLabsEnableCrossSigning: String { 
-    return VectorL10n.tr("Vector", "settings_labs_enable_cross_signing") 
-  }
   /// React to messages with emoji
   internal static var settingsLabsMessageReaction: String { 
     return VectorL10n.tr("Vector", "settings_labs_message_reaction") 

@@ -32,7 +32,6 @@
 
 #define TABLEVIEW_ROW_CELL_HEIGHT         46
 #define TABLEVIEW_SECTION_HEADER_HEIGHT   28
-#define TABLEVIEW_SECTION_HEADER_HEIGHT_WHEN_HIDDEN 0.01f
 
 @interface RoomMemberDetailsViewController () <UIGestureRecognizerDelegate, DeviceTableViewCellDelegate, RoomMemberTitleViewDelegate, KeyVerificationCoordinatorBridgePresenterDelegate>
 {
@@ -453,37 +452,6 @@
                 [directChatsArray addObject:directRoomId];
             }
         }
-        
-        // Retrieve member's devices
-        __weak typeof(self) weakSelf = self;
-        
-        if (!RiotSettings.shared.enableCrossSigning)
-        {
-            [self.mxRoom.mxSession.crypto downloadKeys:@[userId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap, NSDictionary<NSString *,MXCrossSigningInfo *> *crossSigningKeysMap) {
-                
-                if (weakSelf)
-                {
-                    // Restore the status bar
-                    typeof(self) self = weakSelf;
-                    self->devicesArray = usersDevicesInfoMap.map[userId].allValues;
-                    // Reload the full table to take into account a potential change on a device status.
-                    [super updateMemberInfo];
-                }
-                
-            } failure:^(NSError *error) {
-                
-                NSLog(@"[RoomMemberDetailsVC] Crypto failed to download device info for user: %@", userId);
-                if (weakSelf)
-                {
-                    // Restore the status bar
-                    typeof(self) self = weakSelf;
-                    // Notify the end user
-                    NSString *myUserId = self.mainSession.myUser.userId;
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
-                }
-                
-            }];
-        }
     }
     
     // Complete data update and reload table view
@@ -705,18 +673,15 @@
         }
     }
     
-    if (RiotSettings.shared.enableCrossSigning)
+    if (self.mxRoom.summary.isEncrypted)
     {
-        if (self.mxRoom.summary.isEncrypted)
-        {
-            securityActionsArray = @[@(MXKRoomMemberDetailsActionSecurity),
-                                     @(MXKRoomMemberDetailsActionSecurityInformation)];
-            
-        }
-        else
-        {
-            securityActionsArray = @[@(MXKRoomMemberDetailsActionSecurity)];
-        }
+        securityActionsArray = @[@(MXKRoomMemberDetailsActionSecurity),
+                                 @(MXKRoomMemberDetailsActionSecurityInformation)];
+        
+    }
+    else
+    {
+        securityActionsArray = @[@(MXKRoomMemberDetailsActionSecurity)];
     }
     
     securityIndex = adminToolsIndex = otherActionsIndex = directChatsIndex = devicesIndex = -1;
@@ -785,7 +750,7 @@
     {
         return NSLocalizedStringFromTable(@"room_participants_action_section_admin_tools", @"Vector", nil);
     }
-    else if (RiotSettings.shared.enableCrossSigning && section == otherActionsIndex)
+    else if (section == otherActionsIndex)
     {
         return NSLocalizedStringFromTable(@"room_participants_action_section_other", @"Vector", nil);
     }
@@ -1053,11 +1018,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (!RiotSettings.shared.enableCrossSigning && section == otherActionsIndex)
-    {
-        return TABLEVIEW_SECTION_HEADER_HEIGHT_WHEN_HIDDEN;
-    }
-    
     return TABLEVIEW_SECTION_HEADER_HEIGHT;
 }
 

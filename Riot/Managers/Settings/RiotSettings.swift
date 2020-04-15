@@ -32,7 +32,6 @@ final class RiotSettings: NSObject {
         static let pinRoomsWithUnreadMessages = "pinRoomsWithUnread"
         static let allowStunServerFallback = "allowStunServerFallback"
         static let stunServerFallback = "stunServerFallback"
-        static let enableCrossSigning = "enableCrossSigning"
         static let enableDMKeyVerification = "enableDMKeyVerification"
     }
     
@@ -114,14 +113,6 @@ final class RiotSettings: NSObject {
             return UserDefaults.standard.bool(forKey: UserDefaultsKeys.createConferenceCallsWithJitsi)
         } set {
             UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.createConferenceCallsWithJitsi)
-        }
-    }
-
-    var enableCrossSigning: Bool {
-        get {
-            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.enableCrossSigning)
-        } set {
-            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.enableCrossSigning)
         }
     }
 

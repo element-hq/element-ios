@@ -2719,8 +2719,8 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                 }
             }
             
-            // Do not warn for unknown devices if cross-signing is enabled
-            mxSession.crypto.warnOnUnknowDevices = !RiotSettings.shared.enableCrossSigning;
+            // Do not warn for unknown devices. We have cross-signing now
+            mxSession.crypto.warnOnUnknowDevices = NO;
             
             // Register to user new device sign in notification
             [self registerUserDidSignInOnNewDeviceNotificationForSession:mxSession];
