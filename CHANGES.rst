@@ -14,6 +14,7 @@ Improvements:
  * Cross-Signing: Detect and expose new sign-ins (#2918).
  * Cross-signing: Complete security at the end of sign in process( #3003).
  * Make decoration uniform (#2972).
+ * DeactivateAccountViewController: Respect active theme (PR #3107).
  
 Bug fix:
  * Key backup banner is not hidden correctly (#2899). 
