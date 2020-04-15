@@ -240,6 +240,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             break;
     }
     
+    [self updateKeyBackupBanner];
     [self forceRefresh];
 }
 

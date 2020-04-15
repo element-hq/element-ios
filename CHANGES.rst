@@ -14,6 +14,9 @@ Improvements:
  * Cross-Signing: Detect and expose new sign-ins (#2918).
  * Cross-signing: Complete security at the end of sign in process( #3003).
  * Make decoration uniform (#2972).
+ 
+Bug fix:
+ * Key backup banner is not hidden correctly (#2899). 
 
 Changes in 0.10.5 (2020-04-01)
 ===============================================
