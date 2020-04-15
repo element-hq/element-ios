@@ -3753,7 +3753,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 {
     DeactivateAccountViewController *deactivateAccountViewController = [DeactivateAccountViewController instantiateWithMatrixSession:self.mainSession];
     
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:deactivateAccountViewController];
+    UINavigationController *navigationController = [[RiotNavigationController alloc] initWithRootViewController:deactivateAccountViewController];
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     
     [self presentViewController:navigationController animated:YES completion:nil];

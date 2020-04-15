@@ -86,15 +86,14 @@ static CGFloat const kTextFontSize = 15.0;
     self.title = NSLocalizedStringFromTable(@"deactivate_account_title", @"Vector", nil);
     
     self.errorPresentation = [[MXKErrorAlertPresentation alloc] init];
-    [self setupStringAttributes];
-    [self setupViews];
-    [self userInterfaceThemeDidChange];
     [self registerThemeNotification];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    [self userInterfaceThemeDidChange];
     
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"DeactivateAccount"];
@@ -126,6 +125,12 @@ static CGFloat const kTextFontSize = 15.0;
     [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
+
+    self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
+
+    [self setupStringAttributes];
+
+    [self setupViews];
 }
 
 - (void)setupStringAttributes
