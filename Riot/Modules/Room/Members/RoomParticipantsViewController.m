@@ -254,20 +254,25 @@
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"RoomParticipants"];
     
+    // Refresh display
+    [self refreshTableView];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
     if (memberDetailsViewController)
     {
         [memberDetailsViewController destroy];
         memberDetailsViewController = nil;
     }
-    
+
     if (contactsPickerViewController)
     {
         [contactsPickerViewController destroy];
         contactsPickerViewController = nil;
     }
-    
-    // Refresh display
-    [self refreshTableView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
