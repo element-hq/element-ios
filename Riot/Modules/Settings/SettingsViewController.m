@@ -135,7 +135,6 @@ enum
 {
     LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX = 0,
     LABS_USE_JITSI_WIDGET_INDEX,
-    LABS_CROSS_SIGNING_INDEX,
     LABS_COUNT
 };
 
@@ -2186,19 +2185,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
             cell = labelAndSwitchCell;
         }
-        else if (row == LABS_CROSS_SIGNING_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-            
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_enable_cross_signing", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.enableCrossSigning;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            labelAndSwitchCell.mxkSwitch.enabled = YES;
-            
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsCrossSigning:) forControlEvents:UIControlEventTouchUpInside];
-            
-            cell = labelAndSwitchCell;
-        }
     }
     else if (section == SETTINGS_SECTION_FLAIR_INDEX)
     {
@@ -3049,15 +3035,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
         [self.tableView reloadData];
     }
-}
-    
-- (void)toggleLabsCrossSigning:(id)sender
-{
-    UISwitch *switchButton = (UISwitch*)sender;
-    
-    RiotSettings.shared.enableCrossSigning = switchButton.isOn;
-    
-    self.mainSession.crypto.warnOnUnknowDevices = !RiotSettings.shared.enableCrossSigning;
 }
 
 - (void)togglePinRoomsWithMissedNotif:(id)sender
