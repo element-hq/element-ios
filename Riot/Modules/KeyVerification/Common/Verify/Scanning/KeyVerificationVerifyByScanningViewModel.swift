@@ -145,16 +145,17 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
             return
         }
         
-        qrCodeTransaction.userHasScannedOtherQrCodeData(scannedQRCodeData)
         self.update(viewState: .loading)
+        self.coordinatorDelegate?.keyVerificationVerifyByScanningViewModel(self, didScanOtherQRCodeData: scannedQRCodeData, withTransaction: qrCodeTransaction)
     }
     
     private func acknowledgeOtherScannedMyCode(_ acknowledgeOtherScannedMyCode: Bool) {
         guard let qrCodeTransaction = self.qrCodeTransaction else {
             return
         }
+        
         self.update(viewState: .loading)
-        qrCodeTransaction.otherUserScannedMyQrCode(acknowledgeOtherScannedMyCode)
+        self.coordinatorDelegate?.keyVerificationVerifyByScanningViewModel(self, qrCodeDidScannedByOtherWithTransaction: qrCodeTransaction)
     }
     
     private func removePendingQRCodeTransaction() {
@@ -245,8 +246,9 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
     private func qrCodeTransactionDidStateChange(_ transaction: MXQRCodeTransaction) {
         switch transaction.state {
         case .verified:
+            // Should not happen
             self.unregisterTransactionDidStateChangeNotification()
-            self.coordinatorDelegate?.keyVerificationVerifyByScanningViewModelDidCompleteQRCodeVerification(self)
+            self.coordinatorDelegate?.keyVerificationVerifyByScanningViewModelDidCancel(self)
         case .qrScannedByOther:
             self.update(viewState: .otherUserScannedMyCode)
         case .cancelled:
