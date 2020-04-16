@@ -1025,3 +1025,11 @@
 "device_verification_self_verify_wait_title" = "Siguri e plotë";
 "device_verification_self_verify_wait_information" = "Përdorni një sesion ekzistues që të verifikoni këtë të riun, duke i akorduar hyrje te mesazhe të fshehtëzuar.";
 "device_verification_self_verify_wait_waiting" = "Po pritet…";
+"room_member_power_level_admin_in" = "Përgjegjës te %@";
+"room_member_power_level_moderator_in" = "Moderator te %@";
+"room_member_power_level_custom_in" = "Vetjak (%@) te %@";
+"room_member_power_level_short_admin" = "Përgjegjës";
+"room_member_power_level_short_moderator" = "Mod";
+"room_member_power_level_short_custom" = "Vetjak";
+// Recover from private key
+"key_backup_recover_from_private_key_info" = "Po rikthehet kopjeruajtje…";
