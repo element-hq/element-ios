@@ -86,10 +86,11 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="34i-3X-YvQ">
-                                                        <rect key="frame" x="0.0" y="215" width="375" height="180"/>
+                                                        <rect key="frame" x="27.5" y="215" width="320" height="180"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="180" id="kpT-ty-CDI"/>
+                                                            <constraint firstAttribute="width" constant="320" id="oIx-hV-VqU"/>
                                                         </constraints>
                                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="0.0" id="mHm-Tg-xbO" customClass="KTCenterFlowLayout">
                                                             <size key="itemSize" width="80" height="80"/>
@@ -141,7 +142,6 @@
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstItem="6yX-xD-4X5" firstAttribute="top" secondItem="bxI-mu-qng" secondAttribute="bottom" constant="47" id="6Bh-e4-HVr"/>
-                                                    <constraint firstItem="34i-3X-YvQ" firstAttribute="leading" secondItem="voD-3Q-ryt" secondAttribute="leading" id="Bb1-EE-rq0"/>
                                                     <constraint firstAttribute="bottom" secondItem="DtR-jx-UKY" secondAttribute="bottom" constant="20" id="Cnb-UW-hYt"/>
                                                     <constraint firstAttribute="trailing" secondItem="DtR-jx-UKY" secondAttribute="trailing" id="K7y-Df-dgz"/>
                                                     <constraint firstItem="he8-pl-xE9" firstAttribute="leading" secondItem="bxI-mu-qng" secondAttribute="leading" id="Q9n-7p-gHl"/>
@@ -153,11 +153,11 @@
                                                     <constraint firstAttribute="width" priority="750" constant="375" id="glD-Sz-73O"/>
                                                     <constraint firstItem="RD6-ue-X5c" firstAttribute="centerY" secondItem="34i-3X-YvQ" secondAttribute="centerY" id="h8F-gc-do4"/>
                                                     <constraint firstItem="DtR-jx-UKY" firstAttribute="leading" secondItem="voD-3Q-ryt" secondAttribute="leading" id="hK0-aA-d9H"/>
-                                                    <constraint firstAttribute="trailing" secondItem="34i-3X-YvQ" secondAttribute="trailing" id="hg6-kq-M6U"/>
-                                                    <constraint firstItem="RD6-ue-X5c" firstAttribute="centerX" secondItem="34i-3X-YvQ" secondAttribute="centerX" id="lVE-w6-pIa"/>
+                                                    <constraint firstItem="RD6-ue-X5c" firstAttribute="centerX" secondItem="34i-3X-YvQ" secondAttribute="centerX" id="lBM-R8-C6b"/>
                                                     <constraint firstItem="DtR-jx-UKY" firstAttribute="top" secondItem="34i-3X-YvQ" secondAttribute="bottom" constant="20" id="liF-Qn-tiw"/>
                                                     <constraint firstItem="34i-3X-YvQ" firstAttribute="top" secondItem="bxI-mu-qng" secondAttribute="bottom" constant="20" id="r7A-9g-Mmb"/>
                                                     <constraint firstItem="he8-pl-xE9" firstAttribute="top" secondItem="voD-3Q-ryt" secondAttribute="top" constant="35" id="s3k-Io-834"/>
+                                                    <constraint firstItem="34i-3X-YvQ" firstAttribute="centerX" secondItem="voD-3Q-ryt" secondAttribute="centerX" id="ydb-Fs-K0a"/>
                                                 </constraints>
                                                 <variation key="default">
                                                     <mask key="subviews">
