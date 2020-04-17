@@ -1,9 +1,11 @@
-Changes in 0.11.0 (2020-xx-xx)
+Changes in 0.11.0 (2020-04-17)
 ===============================================
 
 Improvements:
- * E2E: Do not warn anymore for unknown devices
- * ON/OFF Cross-signing development in a Lab setting (#2855).
+ * Upgrade MatrixKit version ([v0.12.0](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.0)).
+ * Crypto: Enable E2EE by default for DM
+ * Crypto: Cross-signing support
+ * Crypto: Do not warn anymore for unknown devices. Trust on First Use.
  * RoomVC: Update encryption decoration with shields (#2934, #2930, #2906).
  * Settings: Remove "End-to-End Encryption" from the LABS section (#2941).
  * Room decoration: Use shields instead of padlocks (#2906).
