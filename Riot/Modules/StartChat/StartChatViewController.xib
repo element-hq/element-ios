@@ -15,9 +15,7 @@
                 <outlet property="contactsTableView" destination="kNf-Ll-jvH" id="PDi-bW-2CG"/>
                 <outlet property="searchBarHeader" destination="Zm7-AB-ZtE" id="6ee-P0-twi"/>
                 <outlet property="searchBarHeaderBorder" destination="gcy-W7-89G" id="tsy-SP-KaJ"/>
-                <outlet property="searchBarTopConstraint" destination="i3K-lC-Qtq" id="Mgs-7H-YNH"/>
                 <outlet property="searchBarView" destination="bsq-3U-VjV" id="x3M-wX-RW8"/>
-                <outlet property="tableViewBottomConstraint" destination="l9Y-Wf-4Ln" id="qUb-fl-XQg"/>
                 <outlet property="view" destination="iN0-l3-epB" id="csR-cn-S4h"/>
             </connections>
         </placeholder>
@@ -74,13 +72,13 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="Zm7-AB-ZtE" firstAttribute="leading" secondItem="Dt9-ew-iCA" secondAttribute="leading" id="Nx0-Lw-fQM"/>
+                <constraint firstAttribute="bottom" secondItem="kNf-Ll-jvH" secondAttribute="bottom" id="0YZ-gM-dTC"/>
+                <constraint firstAttribute="trailing" secondItem="kNf-Ll-jvH" secondAttribute="trailing" id="368-4J-pgu"/>
+                <constraint firstItem="kNf-Ll-jvH" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="bzp-Cp-Z9C"/>
+                <constraint firstItem="Zm7-AB-ZtE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="dSm-kC-mhh"/>
                 <constraint firstItem="Zm7-AB-ZtE" firstAttribute="top" secondItem="Dt9-ew-iCA" secondAttribute="top" id="i3K-lC-Qtq"/>
-                <constraint firstItem="kNf-Ll-jvH" firstAttribute="bottom" secondItem="Dt9-ew-iCA" secondAttribute="bottom" id="l9Y-Wf-4Ln"/>
-                <constraint firstItem="kNf-Ll-jvH" firstAttribute="leading" secondItem="Dt9-ew-iCA" secondAttribute="leading" id="pS5-dd-82P"/>
+                <constraint firstAttribute="trailing" secondItem="Zm7-AB-ZtE" secondAttribute="trailing" id="rMP-c5-JSU"/>
                 <constraint firstItem="kNf-Ll-jvH" firstAttribute="top" secondItem="Zm7-AB-ZtE" secondAttribute="bottom" id="tYv-VV-8dI"/>
-                <constraint firstItem="kNf-Ll-jvH" firstAttribute="trailing" secondItem="Dt9-ew-iCA" secondAttribute="trailing" id="uNj-Tp-Tl4"/>
-                <constraint firstItem="Zm7-AB-ZtE" firstAttribute="trailing" secondItem="Dt9-ew-iCA" secondAttribute="trailing" id="wze-19-ZCi"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Dt9-ew-iCA"/>
         </view>
