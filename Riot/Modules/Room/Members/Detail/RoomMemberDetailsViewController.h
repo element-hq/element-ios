@@ -18,18 +18,6 @@
 
 #import "DeviceTableViewCell.h"
 
-@interface RoomMemberDetailsViewController : MXKRoomMemberDetailsViewController <UIGestureRecognizerDelegate, DeviceTableViewCellDelegate>
+@interface RoomMemberDetailsViewController : MXKRoomMemberDetailsViewController
 
-@property (weak, nonatomic) IBOutlet UIView *roomMemberAvatarHeaderBackground;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *roomMemberAvatarHeaderBackgroundHeightConstraint;
-
-@property (weak, nonatomic) IBOutlet UIView *memberHeaderView;
-@property (weak, nonatomic) IBOutlet UIView *roomMemberAvatarMask;
-@property (weak, nonatomic) IBOutlet UILabel *roomMemberNameLabel;
-@property (weak, nonatomic) IBOutlet UIView *roomMemberNameLabelMask;
-
-@property (weak, nonatomic) IBOutlet UILabel *roomMemberStatusLabel;
-
-@property (weak, nonatomic) IBOutlet UIImageView *bottomImageView;
 @end
-

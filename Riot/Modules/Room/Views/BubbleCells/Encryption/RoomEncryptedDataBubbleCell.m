@@ -21,62 +21,14 @@ NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon = @"kRoomEncrypt
 
 @implementation RoomEncryptedDataBubbleCell
 
-+ (UIImage*)encryptionIconForEvent:(MXEvent*)event andSession:(MXSession*)session
++ (UIImage*)encryptionIconForBubbleComponent:(MXKRoomBubbleComponent *)bubbleComponent
 {
-    NSString *encryptionIcon;
-    
-    if (!event.isEncrypted)
+    if (!bubbleComponent.showEncryptionBadge)
     {
-        encryptionIcon = @"e2e_unencrypted";
-        
-        if (event.isLocalEvent
-            || event.contentHasBeenEdited)    // Local echo for an edit is clear but uses a true event id, the one of the edited event 
-        {
-            // Patch: Display the verified icon by default on pending outgoing messages in the encrypted rooms when the encryption is enabled
-            MXRoom *room = [session roomWithRoomId:event.roomId];
-            if (room.summary.isEncrypted && session.crypto)
-            {
-                // The outgoing message are encrypted by default
-                encryptionIcon = @"e2e_verified";
-            }
-        }
-    }
-    else if (event.decryptionError)
-    {
-        encryptionIcon = @"e2e_blocked";
-    }
-    else
-    {
-        MXDeviceInfo *deviceInfo = [session.crypto eventDeviceInfo:event];
-        
-        if (deviceInfo)
-        {
-            switch (deviceInfo.verified)
-            {
-                case MXDeviceUnknown:
-                case MXDeviceUnverified:
-                {
-                    encryptionIcon = @"e2e_warning";
-                    break;
-                }
-                case MXDeviceVerified:
-                {
-                    encryptionIcon = @"e2e_verified";
-                    break;
-                }
-                default:
-                    break;
-            }
-        }
+        return nil;
     }
     
-    if (!encryptionIcon)
-    {
-        // Use the warning icon by default
-        encryptionIcon = @"e2e_warning";
-    }
-    
-    return [UIImage imageNamed:encryptionIcon];
+    return [UIImage imageNamed:@"encryption_warning"];
 }
 
 + (void)addEncryptionStatusFromBubbleData:(MXKRoomBubbleCellData *)bubbleData inContainerView:(UIView *)containerView
@@ -102,21 +54,25 @@ NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon = @"kRoomEncrypt
         {
             continue;
         }
-    
-        UIImage *icon = [RoomEncryptedDataBubbleCell encryptionIconForEvent:component.event andSession:bubbleData.mxSession];
-        UIImageView *encryptStatusImageView = [[UIImageView alloc] initWithImage:icon];
         
-        CGRect frame = encryptStatusImageView.frame;
-        frame.origin.y = component.position.y + 3;
-        encryptStatusImageView.frame = frame;
+        UIImage *icon = [[self class] encryptionIconForBubbleComponent:component];
         
-        CGPoint center = encryptStatusImageView.center;
-        center.x = containerView.frame.size.width / 2;
-        encryptStatusImageView.center = center;
-        
-        encryptStatusImageView.tag = componentIndex;
-        
-        [containerView addSubview:encryptStatusImageView];
+        if (icon)
+        {
+            UIImageView *encryptStatusImageView = [[UIImageView alloc] initWithImage:icon];
+            
+            CGRect frame = encryptStatusImageView.frame;
+            frame.origin.y = component.position.y + 3;
+            encryptStatusImageView.frame = frame;
+            
+            CGPoint center = encryptStatusImageView.center;
+            center.x = containerView.frame.size.width / 2;
+            encryptStatusImageView.center = center;
+            
+            encryptStatusImageView.tag = componentIndex;
+            
+            [containerView addSubview:encryptStatusImageView];
+        }
     }
 }
 

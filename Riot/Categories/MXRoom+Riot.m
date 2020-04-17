@@ -324,6 +324,37 @@
     }
 }
 
+- (UserEncryptionTrustLevel)encryptionTrustLevelForUserId:(NSString*)userId
+{
+    UserEncryptionTrustLevel userEncryptionTrustLevel;
+    
+    if (self.mxSession.crypto)
+    {
+        MXUsersTrustLevelSummary *usersTrustLevelSummary = [self.mxSession.crypto trustLevelSummaryForUserIds:@[userId]];
+        
+        double trustedDevicesPercentage = usersTrustLevelSummary.trustedDevicesProgress.fractionCompleted;
+        
+        if (trustedDevicesPercentage >= 1.0)
+        {
+            userEncryptionTrustLevel = UserEncryptionTrustLevelTrusted;
+        }
+        else if (trustedDevicesPercentage == 0.0)
+        {
+            userEncryptionTrustLevel = UserEncryptionTrustLevelNormal;
+        }
+        else
+        {
+            userEncryptionTrustLevel = UserEncryptionTrustLevelWarning;
+        }
+    }
+    else
+    {
+        userEncryptionTrustLevel = UserEncryptionTrustLevelNone;
+    }
+    
+    return userEncryptionTrustLevel;
+}
+
 #pragma mark -
 
 - (MXPushRule*)getRoomPushRule

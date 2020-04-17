@@ -29,12 +29,11 @@ extern NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon;
 @interface RoomEncryptedDataBubbleCell : NSObject
 
 /**
- Return the icon displayed in front an event in an encrypted room .
+ Return the icon displayed in front of an event in an encrypted room if needed.
  
- @param event the event.
- @param session the matrix session
+ @param event the bubble component.
  */
-+ (UIImage*)encryptionIconForEvent:(MXEvent*)event andSession:(MXSession*)session;
++ (UIImage*)encryptionIconForBubbleComponent:(MXKRoomBubbleComponent *)bubbleComponent;
 
 /**
  Set the encryption status icon in front of each bubble component.

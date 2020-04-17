@@ -28,11 +28,12 @@
     MXKContact *contact;
 }
 
-@property (nonatomic) IBOutlet MXKImageView *thumbnailView;
-@property (nonatomic) IBOutlet UIImageView *thumbnailBadgeView;
-@property (nonatomic) IBOutlet UILabel *contactDisplayNameLabel;
-@property (nonatomic) IBOutlet UILabel *contactInformationLabel;
-@property (nonatomic) IBOutlet UIView *customAccessoryView;
+@property (weak, nonatomic) IBOutlet MXKImageView *thumbnailView;
+@property (weak, nonatomic) IBOutlet UILabel *contactDisplayNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *powerLevelLabel;
+@property (weak, nonatomic) IBOutlet UILabel *contactInformationLabel;
+@property (weak, nonatomic) IBOutlet UIView *customAccessoryView;
+@property (weak, nonatomic) IBOutlet UIImageView *avatarBadgeImageView;
 
 @property (nonatomic) BOOL showCustomAccessoryView;
 

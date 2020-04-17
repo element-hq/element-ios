@@ -19,11 +19,11 @@
 #import "AppDelegate.h"
 #import "Riot-Swift.h"
 
-@interface RoomKeyRequestViewController () <DeviceVerificationCoordinatorBridgePresenterDelegate>
+@interface RoomKeyRequestViewController () <KeyVerificationCoordinatorBridgePresenterDelegate>
 {
     void (^onComplete)(void);
 
-    DeviceVerificationCoordinatorBridgePresenter *deviceVerificationCoordinatorBridgePresenter;
+    KeyVerificationCoordinatorBridgePresenter *keyVerificationCoordinatorBridgePresenter;
 
     BOOL wasNewDevice;
 }
@@ -136,30 +136,40 @@
     UIViewController *rootViewController = [AppDelegate theDelegate].window.rootViewController;
     if (rootViewController)
     {
-        deviceVerificationCoordinatorBridgePresenter = [[DeviceVerificationCoordinatorBridgePresenter alloc] initWithSession:_mxSession];
-        deviceVerificationCoordinatorBridgePresenter.delegate = self;
+        keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:_mxSession];
+        keyVerificationCoordinatorBridgePresenter.delegate = self;
 
-        [deviceVerificationCoordinatorBridgePresenter presentFrom:rootViewController otherUserId:_device.userId otherDeviceId:_device.deviceId animated:YES];
+        [keyVerificationCoordinatorBridgePresenter presentFrom:rootViewController otherUserId:_device.userId otherDeviceId:_device.deviceId animated:YES];
     }
 }
 
 #pragma mark - DeviceVerificationCoordinatorBridgePresenterDelegate
 
-- (void)deviceVerificationCoordinatorBridgePresenterDelegateDidComplete:(DeviceVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
+- (void)keyVerificationCoordinatorBridgePresenterDelegateDidComplete:(KeyVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
 {
-    [deviceVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-    deviceVerificationCoordinatorBridgePresenter = nil;
+    [self dismissKeyVerificationCoordinatorBridgePresenter];
+}
 
+- (void)keyVerificationCoordinatorBridgePresenterDelegateDidCancel:(KeyVerificationCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    [self dismissKeyVerificationCoordinatorBridgePresenter];
+}
+
+- (void)dismissKeyVerificationCoordinatorBridgePresenter
+{
+    [keyVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    keyVerificationCoordinatorBridgePresenter = nil;
+    
     // Check device new status
-    [self.mxSession.crypto downloadKeys:@[self.device.userId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap) {
-
+    [self.mxSession.crypto downloadKeys:@[self.device.userId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap, NSDictionary<NSString *,MXCrossSigningInfo *> *crossSigningKeysMap) {
+        
         MXDeviceInfo *deviceInfo = [usersDevicesInfoMap objectForDevice:self.device.deviceId forUser:self.device.userId];
-        if (deviceInfo && deviceInfo.verified == MXDeviceVerified)
+        if (deviceInfo && deviceInfo.trustLevel.localVerificationStatus == MXDeviceVerified)
         {
             // Accept the received requests from this device
             // As the device is now verified, all other key requests will be automatically accepted.
             [self.mxSession.crypto acceptAllPendingKeyRequestsFromUser:self.device.userId andDevice:self.device.deviceId onComplete:^{
-
+                
                 onComplete();
             }];
         }
@@ -169,7 +179,7 @@
             [self show];
         }
     } failure:^(NSError *error) {
-
+        
         // Should not happen (the device is in the crypto db)
         [self show];
     }];

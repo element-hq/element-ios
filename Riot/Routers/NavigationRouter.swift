@@ -24,10 +24,13 @@ final class NavigationRouter: NSObject, NavigationRouterType {
     // MARK: Private
     
     private var completions: [UIViewController : () -> Void]
+    private let navigationController: UINavigationController
     
     // MARK: Public
     
-    private let navigationController: UINavigationController    
+    var modules: [Presentable] {
+        return navigationController.viewControllers
+    }
     
     // MARK: - Setup
     

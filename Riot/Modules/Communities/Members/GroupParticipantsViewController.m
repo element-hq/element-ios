@@ -826,12 +826,15 @@
         {
             [participantCell render:contact];
             
-            // Update member badge
+            NSString *powerLevelText;
+            
+            // Update power level label
             if (contact.mxGroupUser.isPrivileged)
             {
-                participantCell.thumbnailBadgeView.image = [UIImage imageNamed:@"admin_icon"];
-                participantCell.thumbnailBadgeView.hidden = NO;
+                powerLevelText = NSLocalizedStringFromTable(@"room_member_power_level_short_admin", @"Vector", nil);
             }
+            
+            participantCell.powerLevelLabel.text = powerLevelText;
         }
         
         cell = participantCell;

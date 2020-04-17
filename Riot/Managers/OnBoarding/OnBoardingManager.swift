@@ -56,7 +56,8 @@ final public class OnBoardingManager: NSObject {
             case .success:
 
                 // Create DM room with Riot-bot
-                let httpOperation = self.session.createRoom(name: nil, visibility: .private, alias: nil, topic: nil, invite: [Constants.riotBotMatrixId], invite3PID: nil, isDirect: true, preset: .trustedPrivateChat) { (response) in
+                let roomCreationParameters = MXRoomCreationParameters(forDirectRoomWithUser: Constants.riotBotMatrixId)
+                let httpOperation = self.session.createRoom(parameters: roomCreationParameters) { (response) in
 
                     switch response {
                     case .success:
