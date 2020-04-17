@@ -15,6 +15,7 @@ Improvements:
  * Cross-signing: Complete security at the end of sign in process( #3003).
  * Make decoration uniform (#2972).
  * DeactivateAccountViewController: Respect active theme (PR #3107).
+ * Verification by emojis: Center emojis in screen horizontally (PR #3119).
  
 Bug fix:
  * Key backup banner is not hidden correctly (#2899). 
