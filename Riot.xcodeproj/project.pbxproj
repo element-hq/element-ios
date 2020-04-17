@@ -212,6 +212,14 @@
 		B1550FCA2420E8F500CE097B /* QRCodeReaderViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1550FC72420E8F400CE097B /* QRCodeReaderViewController.storyboard */; };
 		B1550FCB2420E8F500CE097B /* QRCodeReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1550FC82420E8F400CE097B /* QRCodeReaderViewController.swift */; };
 		B1550FCC2420E8F500CE097B /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1550FC92420E8F400CE097B /* QRCodeGenerator.swift */; };
+		B157A7B42445BD86008A5504 /* KeyVerificationScanConfirmationViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157A7AC2445BD85008A5504 /* KeyVerificationScanConfirmationViewState.swift */; };
+		B157A7B52445BD86008A5504 /* KeyVerificationScanConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157A7AD2445BD85008A5504 /* KeyVerificationScanConfirmationViewController.swift */; };
+		B157A7B62445BD86008A5504 /* KeyVerificationScanConfirmationViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157A7AE2445BD85008A5504 /* KeyVerificationScanConfirmationViewAction.swift */; };
+		B157A7B72445BD86008A5504 /* KeyVerificationScanConfirmationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157A7AF2445BD85008A5504 /* KeyVerificationScanConfirmationViewModel.swift */; };
+		B157A7B82445BD86008A5504 /* KeyVerificationScanConfirmationViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157A7B02445BD85008A5504 /* KeyVerificationScanConfirmationViewModelType.swift */; };
+		B157A7B92445BD86008A5504 /* KeyVerificationScanConfirmationViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B157A7B12445BD85008A5504 /* KeyVerificationScanConfirmationViewController.storyboard */; };
+		B157A7BA2445BD86008A5504 /* KeyVerificationScanConfirmationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157A7B22445BD85008A5504 /* KeyVerificationScanConfirmationCoordinator.swift */; };
+		B157A7BB2445BD86008A5504 /* KeyVerificationScanConfirmationCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157A7B32445BD85008A5504 /* KeyVerificationScanConfirmationCoordinatorType.swift */; };
 		B157FA9F23264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157FA9723264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinator.swift */; };
 		B157FAA023264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157FA9823264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsViewModelType.swift */; };
 		B157FAA123264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157FA9923264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinatorType.swift */; };
@@ -984,6 +992,14 @@
 		B1550FC72420E8F400CE097B /* QRCodeReaderViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = QRCodeReaderViewController.storyboard; sourceTree = "<group>"; };
 		B1550FC82420E8F400CE097B /* QRCodeReaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeReaderViewController.swift; sourceTree = "<group>"; };
 		B1550FC92420E8F400CE097B /* QRCodeGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
+		B157A7AC2445BD85008A5504 /* KeyVerificationScanConfirmationViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationScanConfirmationViewState.swift; sourceTree = "<group>"; };
+		B157A7AD2445BD85008A5504 /* KeyVerificationScanConfirmationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationScanConfirmationViewController.swift; sourceTree = "<group>"; };
+		B157A7AE2445BD85008A5504 /* KeyVerificationScanConfirmationViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationScanConfirmationViewAction.swift; sourceTree = "<group>"; };
+		B157A7AF2445BD85008A5504 /* KeyVerificationScanConfirmationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationScanConfirmationViewModel.swift; sourceTree = "<group>"; };
+		B157A7B02445BD85008A5504 /* KeyVerificationScanConfirmationViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationScanConfirmationViewModelType.swift; sourceTree = "<group>"; };
+		B157A7B12445BD85008A5504 /* KeyVerificationScanConfirmationViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = KeyVerificationScanConfirmationViewController.storyboard; sourceTree = "<group>"; };
+		B157A7B22445BD85008A5504 /* KeyVerificationScanConfirmationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationScanConfirmationCoordinator.swift; sourceTree = "<group>"; };
+		B157A7B32445BD85008A5504 /* KeyVerificationScanConfirmationCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationScanConfirmationCoordinatorType.swift; sourceTree = "<group>"; };
 		B157FA9723264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsDiscoveryThreePidDetailsCoordinator.swift; sourceTree = "<group>"; };
 		B157FA9823264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsDiscoveryThreePidDetailsViewModelType.swift; sourceTree = "<group>"; };
 		B157FA9923264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsDiscoveryThreePidDetailsCoordinatorType.swift; sourceTree = "<group>"; };
@@ -2325,6 +2341,21 @@
 				B1B335112421496800B4A6B5 /* Device */,
 			);
 			path = KeyVerification;
+			sourceTree = "<group>";
+		};
+		B157A7AB2445BD85008A5504 /* ScanConfirmation */ = {
+			isa = PBXGroup;
+			children = (
+				B157A7AC2445BD85008A5504 /* KeyVerificationScanConfirmationViewState.swift */,
+				B157A7AE2445BD85008A5504 /* KeyVerificationScanConfirmationViewAction.swift */,
+				B157A7AF2445BD85008A5504 /* KeyVerificationScanConfirmationViewModel.swift */,
+				B157A7B02445BD85008A5504 /* KeyVerificationScanConfirmationViewModelType.swift */,
+				B157A7AD2445BD85008A5504 /* KeyVerificationScanConfirmationViewController.swift */,
+				B157A7B12445BD85008A5504 /* KeyVerificationScanConfirmationViewController.storyboard */,
+				B157A7B22445BD85008A5504 /* KeyVerificationScanConfirmationCoordinator.swift */,
+				B157A7B32445BD85008A5504 /* KeyVerificationScanConfirmationCoordinatorType.swift */,
+			);
+			path = ScanConfirmation;
 			sourceTree = "<group>";
 		};
 		B157FA9623264AE800EBFBD4 /* ThreePidDetails */ = {
@@ -3976,6 +4007,7 @@
 			children = (
 				32891D72226728EE00C82226 /* Loading */,
 				B1CE83BE2422817100D07506 /* Verify */,
+				B157A7AB2445BD85008A5504 /* ScanConfirmation */,
 				B1CE83BB2422817000D07506 /* Verified */,
 				B1CE83B72422815900D07506 /* KeyVerificationKind.swift */,
 				B18DEDDC2433967C0075FEF7 /* KeyVerificationFlow.swift */,
@@ -4627,6 +4659,7 @@
 				B1B5573920EE6C4D00210D55 /* GroupRoomsViewController.xib in Resources */,
 				B1B5597620EFB02A00210D55 /* InviteRecentTableViewCell.xib in Resources */,
 				B1B558FB20EF768F00210D55 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
+				B157A7B92445BD86008A5504 /* KeyVerificationScanConfirmationViewController.storyboard in Resources */,
 				B1B558BB20EF768F00210D55 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				B1B557A720EF5A1B00210D55 /* DeviceTableViewCell.xib in Resources */,
 				B14084C823BF76CB0010F692 /* BubbleCellContentView.xib in Resources */,
@@ -4874,6 +4907,7 @@
 				B1B5573120EE6C4D00210D55 /* BugReportViewController.m in Sources */,
 				324A2051225FC571004FE8B0 /* DeviceVerificationIncomingViewState.swift in Sources */,
 				B16932A520F3A21C00746532 /* empty.mm in Sources */,
+				B157A7B52445BD86008A5504 /* KeyVerificationScanConfirmationViewController.swift in Sources */,
 				3232AB4A2256558300AD6A5C /* FlowTemplateCoordinator.swift in Sources */,
 				B19EFA3B21F8BB4100FC070E /* KeyBackupRecoverCoordinator.swift in Sources */,
 				B1B9DEDE22E9D9890065E677 /* EmojiServiceType.swift in Sources */,
@@ -4907,6 +4941,7 @@
 				32607D72243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewAction.swift in Sources */,
 				B1B5574420EE6C4D00210D55 /* CallViewController.m in Sources */,
 				B12D7A0023E2462200FACEDC /* UserVerificationStartCoordinatorType.swift in Sources */,
+				B157A7B62445BD86008A5504 /* KeyVerificationScanConfirmationViewAction.swift in Sources */,
 				B1B5572220EE6C4D00210D55 /* RoomSettingsViewController.m in Sources */,
 				B1B5577320EE702800210D55 /* JitsiViewController.m in Sources */,
 				B169331620F3CAFC00746532 /* PublicRoomsDirectoryDataSource.m in Sources */,
@@ -4980,6 +5015,7 @@
 				B1B5571A20EE6C4D00210D55 /* SettingsViewController.m in Sources */,
 				B1CE9EFD22148703000FAE6A /* SignOutAlertPresenter.swift in Sources */,
 				32F6B9692270623100BBA352 /* KeyVerificationDataLoadingCoordinator.swift in Sources */,
+				B157A7BA2445BD86008A5504 /* KeyVerificationScanConfirmationCoordinator.swift in Sources */,
 				B125FE1D231D5DE400B72806 /* SettingsDiscoveryViewModel.swift in Sources */,
 				32863A5A2384070300D07C4A /* RiotSharedSettings.swift in Sources */,
 				B1B5594720EF7BD000210D55 /* RoomCollectionViewCell.m in Sources */,
@@ -5002,6 +5038,7 @@
 				B1B9DEE822EB34EF0065E677 /* ReactionHistoryCoordinatorType.swift in Sources */,
 				B14F143122144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewState.swift in Sources */,
 				32DB557F22FDADE50016329E /* ServiceTermsModalScreenCoordinator.swift in Sources */,
+				B157A7B72445BD86008A5504 /* KeyVerificationScanConfirmationViewModel.swift in Sources */,
 				B1098C1121ED07E4000DDA48 /* NavigationRouterType.swift in Sources */,
 				B1B5573D20EE6C4D00210D55 /* WebViewViewController.m in Sources */,
 				3209451221F1C1430088CAA2 /* BlackTheme.swift in Sources */,
@@ -5153,6 +5190,7 @@
 				B1B5595220EF9A8700210D55 /* RecentTableViewCell.m in Sources */,
 				32F6B96C2270623100BBA352 /* KeyVerificationDataLoadingCoordinatorType.swift in Sources */,
 				B14084CA23BF89310010F692 /* KeyVerificationRequestStatusWithPaginationTitleBubbleCell.swift in Sources */,
+				B157A7B42445BD86008A5504 /* KeyVerificationScanConfirmationViewState.swift in Sources */,
 				B1DCC61D22E5E17100625807 /* EmojiPickerViewModelType.swift in Sources */,
 				B1B5574120EE6C4D00210D55 /* RecentsViewController.m in Sources */,
 				B1D250D82118AA0A000F4E93 /* RoomPredecessorBubbleCell.m in Sources */,
@@ -5233,6 +5271,7 @@
 				B1BEE74723E093260003A4CB /* UserVerificationSessionStatusViewModelType.swift in Sources */,
 				3232AB502256558300AD6A5C /* TemplateScreenViewState.swift in Sources */,
 				B1C335CD22F1C1320021BA8D /* CameraPresenter.swift in Sources */,
+				B157A7B82445BD86008A5504 /* KeyVerificationScanConfirmationViewModelType.swift in Sources */,
 				B1B558C820EF768F00210D55 /* RoomIncomingEncryptedAttachmentBubbleCell.m in Sources */,
 				B1B557C620EF5CD400210D55 /* DirectoryServerDetailTableViewCell.m in Sources */,
 				B1B336C4242B933700F95EC4 /* KeyVerificationSelfVerifyStartViewAction.swift in Sources */,
@@ -5256,6 +5295,7 @@
 				B1C562E1228C7C8C0037F12A /* RoomContextualMenuToolbarView.swift in Sources */,
 				B1CE83DF2422817200D07506 /* KeyVerificationVerifyBySASCoordinatorType.swift in Sources */,
 				B1B557BF20EF5B4500210D55 /* DisabledRoomInputToolbarView.m in Sources */,
+				B157A7BB2445BD86008A5504 /* KeyVerificationScanConfirmationCoordinatorType.swift in Sources */,
 				B1B5578620EF564900210D55 /* GroupTableViewCellWithSwitch.m in Sources */,
 				B1098BE821ECFE52000DDA48 /* Coordinator.swift in Sources */,
 				B11291EC238D704C0077B478 /* FloatingPoint.swift in Sources */,

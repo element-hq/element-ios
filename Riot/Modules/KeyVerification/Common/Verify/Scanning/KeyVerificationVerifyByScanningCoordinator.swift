@@ -76,7 +76,11 @@ extension KeyVerificationVerifyByScanningCoordinator: KeyVerificationVerifyBySca
         self.delegate?.keyVerificationVerifyByScanningCoordinator(self, didCompleteWithSASTransaction: transaction)
     }
     
-    func keyVerificationVerifyByScanningViewModelDidCompleteQRCodeVerification(_ viewModel: KeyVerificationVerifyByScanningViewModelType) {
-        self.delegate?.keyVerificationVerifyByScanningCoordinatorDidCompleteQRCodeVerification(self)
+    func keyVerificationVerifyByScanningViewModel(_ viewModel: KeyVerificationVerifyByScanningViewModelType, didScanOtherQRCodeData qrCodeData: MXQRCodeData, withTransaction transaction: MXQRCodeTransaction) {
+        self.delegate?.keyVerificationVerifyByScanningCoordinator(self, didScanOtherQRCodeData: qrCodeData, withTransaction: transaction)
+    }
+    
+    func keyVerificationVerifyByScanningViewModel(_ viewModel: KeyVerificationVerifyByScanningViewModelType, qrCodeDidScannedByOtherWithTransaction transaction: MXQRCodeTransaction) {
+        self.delegate?.keyVerificationVerifyByScanningCoordinator(self, qrCodeDidScannedByOtherWithTransaction: transaction)
     }
 }

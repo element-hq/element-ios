@@ -68,6 +68,7 @@ internal enum Asset {
     internal static let importFilesButton = ImageAsset(name: "import_files_button")
     internal static let keyBackupLogo = ImageAsset(name: "key_backup_logo")
     internal static let revealPasswordButton = ImageAsset(name: "reveal_password_button")
+    internal static let keyVerificationSuccessShield = ImageAsset(name: "key_verification_success_shield")
     internal static let launchScreenRiot = ImageAsset(name: "LaunchScreenRiot")
     internal static let cameraCapture = ImageAsset(name: "camera_capture")
     internal static let cameraPlay = ImageAsset(name: "camera_play")

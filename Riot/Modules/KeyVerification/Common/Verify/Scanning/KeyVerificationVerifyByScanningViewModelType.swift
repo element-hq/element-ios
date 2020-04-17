@@ -24,7 +24,11 @@ protocol KeyVerificationVerifyByScanningViewModelViewDelegate: class {
 
 protocol KeyVerificationVerifyByScanningViewModelCoordinatorDelegate: class {
     func keyVerificationVerifyByScanningViewModelDidCancel(_ viewModel: KeyVerificationVerifyByScanningViewModelType)
-    func keyVerificationVerifyByScanningViewModelDidCompleteQRCodeVerification(_ viewModel: KeyVerificationVerifyByScanningViewModelType)
+    
+    func keyVerificationVerifyByScanningViewModel(_ viewModel: KeyVerificationVerifyByScanningViewModelType, didScanOtherQRCodeData qrCodeData: MXQRCodeData, withTransaction transaction: MXQRCodeTransaction)
+    
+    func keyVerificationVerifyByScanningViewModel(_ viewModel: KeyVerificationVerifyByScanningViewModelType, qrCodeDidScannedByOtherWithTransaction transaction: MXQRCodeTransaction)
+    
     func keyVerificationVerifyByScanningViewModel(_ viewModel: KeyVerificationVerifyByScanningViewModelType, didStartSASVerificationWithTransaction transaction: MXSASTransaction)
 }
 

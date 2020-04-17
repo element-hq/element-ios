@@ -1522,6 +1522,30 @@ internal enum VectorL10n {
   internal static func keyVerificationIncomingRequestIncomingAlertMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "key_verification_incoming_request_incoming_alert_message", p1)
   }
+  /// Is the other device showing the same shield?
+  internal static var keyVerificationScanConfirmationScannedDeviceInformation: String { 
+    return VectorL10n.tr("Vector", "key_verification_scan_confirmation_scanned_device_information") 
+  }
+  /// Almost there!
+  internal static var keyVerificationScanConfirmationScannedTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_scan_confirmation_scanned_title") 
+  }
+  /// Is %@ showing the same shield?
+  internal static func keyVerificationScanConfirmationScannedUserInformation(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "key_verification_scan_confirmation_scanned_user_information", p1)
+  }
+  /// Waiting for other device…
+  internal static var keyVerificationScanConfirmationScanningDeviceWaitingOther: String { 
+    return VectorL10n.tr("Vector", "key_verification_scan_confirmation_scanning_device_waiting_other") 
+  }
+  /// Almost there! Waiting for confirmation…
+  internal static var keyVerificationScanConfirmationScanningTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_scan_confirmation_scanning_title") 
+  }
+  /// Waiting for %@…
+  internal static func keyVerificationScanConfirmationScanningUserWaitingOther(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "key_verification_scan_confirmation_scanning_user_waiting_other", p1)
+  }
   /// Verified
   internal static var keyVerificationTileConclusionDoneTitle: String { 
     return VectorL10n.tr("Vector", "key_verification_tile_conclusion_done_title") 
