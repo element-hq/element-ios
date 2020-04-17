@@ -77,6 +77,7 @@ abstract_target 'RiotPods' do
     target "Riot" do
         import_MatrixKit
         pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'        
+        pod 'KTCenterFlowLayout', '~> 1.3.1'
         pod 'ZXingObjC', '~> 3.6.5'
         
         target 'RiotTests' do
