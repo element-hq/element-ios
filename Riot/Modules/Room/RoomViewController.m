@@ -613,6 +613,7 @@
         }
     }];
     [self refreshMissedDiscussionsCount:YES];
+    self.keyboardHeight = MAX(self.keyboardHeight, 0);
 }
 
 - (void)viewDidDisappear:(BOOL)animated
