@@ -1043,3 +1043,11 @@
 "device_verification_self_verify_wait_title" = "Biztonság beállítása";
 "device_verification_self_verify_wait_information" = "Használj egy meglévő munkamenetet ennek az újnak az ellenőrzéséhez, amivel hozzáférést adsz a titkosított üzenetekhez.";
 "device_verification_self_verify_wait_waiting" = "Várakozik…";
+// Scanning
+"key_verification_scan_confirmation_scanning_title" = "Majdnem kész! Várakozás a megerősítésre…";
+"key_verification_scan_confirmation_scanning_user_waiting_other" = "Várakozás erre: %@…";
+"key_verification_scan_confirmation_scanning_device_waiting_other" = "Várakozás másik eszközre…";
+// Scanned
+"key_verification_scan_confirmation_scanned_title" = "Majdnem kész!";
+"key_verification_scan_confirmation_scanned_user_information" = "%s is ugyanazt a pajzsot mutatja?";
+"key_verification_scan_confirmation_scanned_device_information" = "A másik eszköz is ugyanazt a pajzsot mutatja?";
