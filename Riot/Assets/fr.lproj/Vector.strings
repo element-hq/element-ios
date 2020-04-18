@@ -1041,3 +1041,11 @@
 "room_member_power_level_short_custom" = "Perso";
 // Recover from private key
 "key_backup_recover_from_private_key_info" = "Restauration de la sauvegarde…";
+// Scanning
+"key_verification_scan_confirmation_scanning_title" = "On y est presque ! Attente de la confirmation…";
+"key_verification_scan_confirmation_scanning_user_waiting_other" = "En attente de %@…";
+"key_verification_scan_confirmation_scanning_device_waiting_other" = "En attente de l’autre appareil…";
+// Scanned
+"key_verification_scan_confirmation_scanned_title" = "On y est presque !";
+"key_verification_scan_confirmation_scanned_user_information" = "Est-ce que %@ affiche le même bouclier ?";
+"key_verification_scan_confirmation_scanned_device_information" = "Est-ce que l’autre appareil affiche le même bouclier ?";
