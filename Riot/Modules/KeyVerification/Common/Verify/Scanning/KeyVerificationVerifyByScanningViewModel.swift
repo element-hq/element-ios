@@ -111,6 +111,7 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
     private func cancel() {
         self.cancelQRCodeTransaction()
         self.keyVerificationRequest.cancel(with: MXTransactionCancelCode.user(), success: nil, failure: nil)
+        self.unregisterTransactionDidStateChangeNotification()
         self.coordinatorDelegate?.keyVerificationVerifyByScanningViewModelDidCancel(self)
     }
     
@@ -120,6 +121,7 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
         }
         
         transaction.cancel(with: MXTransactionCancelCode.user())
+        self.removePendingQRCodeTransaction()
     }
     
     private func update(viewState: KeyVerificationVerifyByScanningViewState) {
@@ -145,7 +147,7 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
             return
         }
         
-        self.update(viewState: .loading)
+        self.unregisterTransactionDidStateChangeNotification()
         self.coordinatorDelegate?.keyVerificationVerifyByScanningViewModel(self, didScanOtherQRCodeData: scannedQRCodeData, withTransaction: qrCodeTransaction)
     }
     
@@ -154,7 +156,7 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
             return
         }
         
-        self.update(viewState: .loading)
+        self.unregisterTransactionDidStateChangeNotification()
         self.coordinatorDelegate?.keyVerificationVerifyByScanningViewModel(self, qrCodeDidScannedByOtherWithTransaction: qrCodeTransaction)
     }
     
