@@ -81,7 +81,8 @@
  Get user encryption trust level.
 
  @param userId The user id.
+ @param onComplete the block providing the trust level.
  */
-- (UserEncryptionTrustLevel)encryptionTrustLevelForUserId:(NSString*)userId;
+- (void)encryptionTrustLevelForUserId:(NSString*)userId onComplete:(void (^)(UserEncryptionTrustLevel userEncryptionTrustLevel))onComplete;
 
 @end
