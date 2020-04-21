@@ -29,7 +29,7 @@
                 <outlet property="roomActivitiesContainer" destination="XX4-n6-hCm" id="uD0-ab-8s8"/>
                 <outlet property="roomActivitiesContainerHeightConstraint" destination="E8v-l2-8eV" id="ebD-oV-ttx"/>
                 <outlet property="roomInputToolbarContainer" destination="nLd-BP-JAE" id="1dp-P1-0js"/>
-                <outlet property="roomInputToolbarContainerBottomConstraint" destination="OA2-ZR-L4W" id="Oto-Js-CNI"/>
+                <outlet property="roomInputToolbarContainerBottomConstraint" destination="omU-sm-3bK" id="qaT-Ej-BdE"/>
                 <outlet property="roomInputToolbarContainerHeightConstraint" destination="5eD-Fm-RDb" id="6ny-5w-1UA"/>
                 <outlet property="view" destination="iN0-l3-epB" id="ieV-u7-rXU"/>
             </connections>
@@ -55,7 +55,7 @@
                     </constraints>
                 </view>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="54r-18-K1g">
-                    <rect key="frame" x="0.0" y="20" width="375" height="368"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="368"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <accessibility key="accessibilityConfiguration" identifier="RoomVCPreviewHeaderContainer"/>
                     <constraints>
@@ -157,28 +157,29 @@
             <accessibility key="accessibilityConfiguration" identifier="RoomVCView"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="BGD-sd-SQR" secondAttribute="bottom" constant="41" id="1SD-y2-oTg"/>
-                <constraint firstItem="S6r-bo-jxw" firstAttribute="width" secondItem="BGD-sd-SQR" secondAttribute="width" id="3Mr-fA-bfF"/>
                 <constraint firstItem="S6r-bo-jxw" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="5eM-eJ-khq"/>
+                <constraint firstItem="54r-18-K1g" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="7Ft-EV-Br0"/>
                 <constraint firstItem="gt1-EO-UVY" firstAttribute="leading" secondItem="QpJ-1u-4ii" secondAttribute="leading" id="8Ff-Ot-h3F"/>
-                <constraint firstItem="54r-18-K1g" firstAttribute="leading" secondItem="QpJ-1u-4ii" secondAttribute="leading" id="9ZF-h7-UVG"/>
-                <constraint firstItem="54r-18-K1g" firstAttribute="top" secondItem="QpJ-1u-4ii" secondAttribute="top" id="Cpt-TN-DEa"/>
+                <constraint firstItem="S6r-bo-jxw" firstAttribute="leading" secondItem="QpJ-1u-4ii" secondAttribute="leading" id="Bcq-e4-B0D"/>
+                <constraint firstItem="BGD-sd-SQR" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="ECb-mP-EOG"/>
+                <constraint firstAttribute="trailing" secondItem="BGD-sd-SQR" secondAttribute="trailing" id="EGD-cX-OGq"/>
                 <constraint firstItem="gt1-EO-UVY" firstAttribute="trailing" secondItem="QpJ-1u-4ii" secondAttribute="trailing" id="L9A-P5-xeT"/>
-                <constraint firstItem="nLd-BP-JAE" firstAttribute="bottom" secondItem="QpJ-1u-4ii" secondAttribute="bottom" id="OA2-ZR-L4W"/>
+                <constraint firstItem="uK2-9a-rZj" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="La0-tN-FQS"/>
                 <constraint firstItem="XX4-n6-hCm" firstAttribute="leading" secondItem="QpJ-1u-4ii" secondAttribute="leading" id="Os4-cU-eQb"/>
                 <constraint firstItem="XX4-n6-hCm" firstAttribute="bottom" secondItem="nLd-BP-JAE" secondAttribute="top" id="QO8-nF-xys"/>
                 <constraint firstItem="nLd-BP-JAE" firstAttribute="leading" secondItem="QpJ-1u-4ii" secondAttribute="leading" id="T1Y-r9-bYV"/>
-                <constraint firstItem="BGD-sd-SQR" firstAttribute="leading" secondItem="QpJ-1u-4ii" secondAttribute="leading" id="TSl-fQ-fpA"/>
                 <constraint firstItem="XX4-n6-hCm" firstAttribute="trailing" secondItem="QpJ-1u-4ii" secondAttribute="trailing" id="Tij-mR-KZp"/>
+                <constraint firstItem="S6r-bo-jxw" firstAttribute="trailing" secondItem="QpJ-1u-4ii" secondAttribute="trailing" id="VVn-vW-lbm"/>
                 <constraint firstItem="uK2-9a-rZj" firstAttribute="top" secondItem="QpJ-1u-4ii" secondAttribute="top" id="YYB-1t-IGE"/>
                 <constraint firstItem="gt1-EO-UVY" firstAttribute="top" secondItem="QpJ-1u-4ii" secondAttribute="top" id="YfN-0Z-0bc"/>
                 <constraint firstItem="S6r-bo-jxw" firstAttribute="centerX" secondItem="BGD-sd-SQR" secondAttribute="centerX" id="a2s-5o-q2d"/>
+                <constraint firstItem="54r-18-K1g" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="aR5-rp-1Cp"/>
                 <constraint firstItem="gt1-EO-UVY" firstAttribute="bottom" secondItem="nLd-BP-JAE" secondAttribute="bottom" id="acJ-g8-R7x"/>
                 <constraint firstItem="BGD-sd-SQR" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="bFw-dg-qEr"/>
-                <constraint firstItem="BGD-sd-SQR" firstAttribute="trailing" secondItem="QpJ-1u-4ii" secondAttribute="trailing" id="iXQ-6f-Y3Y"/>
-                <constraint firstItem="uK2-9a-rZj" firstAttribute="leading" secondItem="QpJ-1u-4ii" secondAttribute="leading" id="nge-1w-XeR"/>
+                <constraint firstAttribute="trailing" secondItem="uK2-9a-rZj" secondAttribute="trailing" id="cWS-QJ-2qP"/>
+                <constraint firstAttribute="bottom" secondItem="nLd-BP-JAE" secondAttribute="bottom" id="omU-sm-3bK"/>
                 <constraint firstItem="nLd-BP-JAE" firstAttribute="trailing" secondItem="QpJ-1u-4ii" secondAttribute="trailing" id="pRw-S0-6WL"/>
-                <constraint firstItem="54r-18-K1g" firstAttribute="trailing" secondItem="QpJ-1u-4ii" secondAttribute="trailing" id="v0D-6D-GWY"/>
-                <constraint firstItem="uK2-9a-rZj" firstAttribute="trailing" secondItem="QpJ-1u-4ii" secondAttribute="trailing" id="vTO-lg-5bl"/>
+                <constraint firstAttribute="trailing" secondItem="54r-18-K1g" secondAttribute="trailing" id="wOi-Ih-yfq"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <viewLayoutGuide key="safeArea" id="QpJ-1u-4ii"/>
