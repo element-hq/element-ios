@@ -34,10 +34,10 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="orV-HH-88x" firstAttribute="trailing" secondItem="CFH-fI-3e7" secondAttribute="trailing" id="1f6-Ct-1CP"/>
-                <constraint firstItem="orV-HH-88x" firstAttribute="leading" secondItem="CFH-fI-3e7" secondAttribute="leading" id="G1m-6X-j4K"/>
+                <constraint firstAttribute="bottom" secondItem="orV-HH-88x" secondAttribute="bottom" id="BOR-bV-H3D"/>
                 <constraint firstItem="orV-HH-88x" firstAttribute="top" secondItem="CFH-fI-3e7" secondAttribute="top" id="HI5-Oe-Wq2"/>
-                <constraint firstItem="orV-HH-88x" firstAttribute="bottom" secondItem="CFH-fI-3e7" secondAttribute="bottom" id="OPW-gv-gwW"/>
+                <constraint firstAttribute="trailing" secondItem="orV-HH-88x" secondAttribute="trailing" id="RhY-H6-X1P"/>
+                <constraint firstItem="orV-HH-88x" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="vkm-Hp-89H"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="CFH-fI-3e7"/>
             <point key="canvasLocation" x="138.40000000000001" y="153.37331334332833"/>
