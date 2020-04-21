@@ -1897,15 +1897,6 @@
             
             self.previewHeaderContainer.hidden = NO;
 
-            // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
-            UINavigationController *mainNavigationController = self.navigationController;
-            if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
-            {
-                mainNavigationController = self.splitViewController.viewControllers.firstObject;
-            }
-            mainNavigationController.navigationBar.translucent = isVisible;
-            self.navigationController.navigationBar.translucent = isVisible;
-            
             // Finalize preview header display according to the screen orientation
             [self refreshPreviewHeader:UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])];
         }
@@ -1949,6 +1940,15 @@
                              }];
         }
     }
+
+    // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
+    UINavigationController *mainNavigationController = self.navigationController;
+    if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
+    {
+        mainNavigationController = self.splitViewController.viewControllers.firstObject;
+    }
+    mainNavigationController.navigationBar.translucent = isVisible;
+    self.navigationController.navigationBar.translucent = isVisible;
 }
 
 - (void)refreshPreviewHeader:(BOOL)isLandscapeOriented
