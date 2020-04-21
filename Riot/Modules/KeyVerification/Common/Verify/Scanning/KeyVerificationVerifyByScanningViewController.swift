@@ -40,9 +40,9 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
     @IBOutlet private weak var scanCodeButton: UIButton!
     @IBOutlet private weak var cannotScanButton: UIButton!
     
-    @IBOutlet weak var qrCodeContainerView: UIView!
+    @IBOutlet private weak var qrCodeContainerView: UIView!
     
-    @IBOutlet weak var scanButtonContainerView: UIView!
+    @IBOutlet private weak var scanButtonContainerView: UIView!
     
     // MARK: Private
 
@@ -53,7 +53,11 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
     private var cameraAccessAlertPresenter: CameraAccessAlertPresenter!
     private var cameraAccessManager: CameraAccessManager!
     
-    private weak var qrCodeReaderViewController: QRCodeReaderViewController!
+    private weak var qrCodeReaderViewController: QRCodeReaderViewController?
+    
+    private var alertPresentingViewController: UIViewController {
+        return self.qrCodeReaderViewController ?? self
+    }
 
     // MARK: - Setup
     
@@ -201,10 +205,9 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
     
     private func renderScannedCode(valid: Bool) {
         if valid {
-            self.qrCodeReaderViewController.view.isUserInteractionEnabled = false
-            self.qrCodeReaderViewController.stopScanning()
+            self.stopQRCodeScanningIfPresented()
             self.presentCodeValidated(animated: true) {
-                self.dismiss(animated: true, completion: {
+                self.dismissQRCodeScanningIfPresented(animated: true, completion: {
                     self.viewModel.process(viewAction: .acknowledgeMyUserScannedOtherCode)
                 })
             }
@@ -231,8 +234,11 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
     
     private func renderCancelled(reason: MXTransactionCancelCode) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+    
+        self.stopQRCodeScanningIfPresented()
         
-        self.errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelled, animated: true) {
+        self.errorPresenter.presentError(from: self.alertPresentingViewController, title: "", message: VectorL10n.deviceVerificationCancelled, animated: true) {
+            self.dismissQRCodeScanningIfPresented(animated: false)
             self.viewModel.process(viewAction: .cancel)
         }
     }
@@ -241,7 +247,8 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
         if reason.value != MXTransactionCancelCode.user().value {
             self.activityPresenter.removeCurrentActivityIndicator(animated: true)
             
-            self.errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelledByMe(reason.humanReadable), animated: true) {
+            self.errorPresenter.presentError(from: alertPresentingViewController, title: "", message: VectorL10n.deviceVerificationCancelledByMe(reason.humanReadable), animated: true) {
+                self.dismissQRCodeScanningIfPresented(animated: false)
                 self.viewModel.process(viewAction: .cancel)
             }
         } else {
@@ -278,6 +285,21 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
                 self.cameraAccessAlertPresenter.presentPermissionDeniedAlert(from: self, animated: animated)
             }
         }
+    }
+    
+    private func stopQRCodeScanningIfPresented() {
+        guard let qrCodeReaderViewController = self.qrCodeReaderViewController else {
+            return
+        }
+        qrCodeReaderViewController.view.isUserInteractionEnabled = false
+        qrCodeReaderViewController.stopScanning()
+    }
+    
+    private func dismissQRCodeScanningIfPresented(animated: Bool, completion: (() -> Void)? = nil) {
+        guard self.qrCodeReaderViewController?.presentingViewController != nil else {
+            return
+        }
+        self.dismiss(animated: animated, completion: completion)
     }
 
     // MARK: - Actions
@@ -316,6 +338,6 @@ extension KeyVerificationVerifyByScanningViewController: QRCodeReaderViewControl
     }
     
     func qrCodeReaderViewControllerDidCancel(_ viewController: QRCodeReaderViewController) {
-        self.dismiss(animated: true, completion: nil)
+        self.dismissQRCodeScanningIfPresented(animated: true)
     }
 }
