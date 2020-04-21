@@ -467,8 +467,10 @@
         return;
     }
     
-    self.encryptionTrustLevel = [self.mxRoom encryptionTrustLevelForUserId:userId];
-    [self updateMemberInfo];
+    [self.mxRoom encryptionTrustLevelForUserId:userId onComplete:^(UserEncryptionTrustLevel userEncryptionTrustLevel) {
+        self.encryptionTrustLevel = userEncryptionTrustLevel;
+        [self updateMemberInfo];
+    }];
 }
 
 - (BOOL)isRoomMemberCurrentUser
