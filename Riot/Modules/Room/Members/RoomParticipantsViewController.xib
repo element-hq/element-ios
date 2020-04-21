@@ -17,7 +17,6 @@
                 <outlet property="searchBarTopConstraint" destination="GzV-3e-3V0" id="i4N-9m-Lq5"/>
                 <outlet property="searchBarView" destination="bsq-3U-VjV" id="x3M-wX-RW8"/>
                 <outlet property="tableView" destination="kNf-Ll-jvH" id="uzM-uQ-peQ"/>
-                <outlet property="tableViewBottomConstraint" destination="VIE-q1-fZQ" id="KNS-VZ-zcq"/>
                 <outlet property="view" destination="iN0-l3-epB" id="csR-cn-S4h"/>
             </connections>
         </placeholder>
@@ -75,13 +74,13 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <accessibility key="accessibilityConfiguration" identifier="RoomParticipantsVCView"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="kNf-Ll-jvH" secondAttribute="trailing" id="3bW-Rj-B1z"/>
                 <constraint firstItem="Zm7-AB-ZtE" firstAttribute="top" secondItem="5mW-K7-hI3" secondAttribute="top" id="GzV-3e-3V0"/>
                 <constraint firstItem="Zm7-AB-ZtE" firstAttribute="leading" secondItem="5mW-K7-hI3" secondAttribute="leading" id="U6l-bd-mjt"/>
-                <constraint firstItem="kNf-Ll-jvH" firstAttribute="bottom" secondItem="5mW-K7-hI3" secondAttribute="bottom" id="VIE-q1-fZQ"/>
-                <constraint firstItem="kNf-Ll-jvH" firstAttribute="leading" secondItem="5mW-K7-hI3" secondAttribute="leading" id="exk-wD-QAh"/>
+                <constraint firstItem="kNf-Ll-jvH" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="fG5-y3-dZ8"/>
+                <constraint firstAttribute="bottom" secondItem="kNf-Ll-jvH" secondAttribute="bottom" id="hWl-Ts-b2Y"/>
                 <constraint firstItem="Zm7-AB-ZtE" firstAttribute="trailing" secondItem="5mW-K7-hI3" secondAttribute="trailing" id="jNL-aF-QYi"/>
                 <constraint firstItem="kNf-Ll-jvH" firstAttribute="top" secondItem="Zm7-AB-ZtE" secondAttribute="bottom" id="tYv-VV-8dI"/>
-                <constraint firstItem="kNf-Ll-jvH" firstAttribute="trailing" secondItem="5mW-K7-hI3" secondAttribute="trailing" id="yeF-tl-kon"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="5mW-K7-hI3"/>
         </view>
