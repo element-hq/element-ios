@@ -905,6 +905,11 @@
             encryptionInfoCell.accessoryType = UITableViewCellAccessoryNone;
             encryptionInfoCell.contentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
             encryptionInfoCell.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+
+            //  extend background color to safe area
+            UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+            bgView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+            encryptionInfoCell.backgroundView = bgView;
             
             cell = encryptionInfoCell;
         }
