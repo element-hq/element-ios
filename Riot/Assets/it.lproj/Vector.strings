@@ -1013,3 +1013,11 @@
 "room_member_power_level_short_custom" = "Personal.";
 // Recover from private key
 "key_backup_recover_from_private_key_info" = "Recupero del backup…";
+// Scanning
+"key_verification_scan_confirmation_scanning_title" = "Quasi fatto! In attesa della conferma…";
+"key_verification_scan_confirmation_scanning_user_waiting_other" = "In attesa di %@…";
+"key_verification_scan_confirmation_scanning_device_waiting_other" = "In attesa dell'altro dispositivo…";
+// Scanned
+"key_verification_scan_confirmation_scanned_title" = "Quasi fatto!";
+"key_verification_scan_confirmation_scanned_user_information" = "%@ sta mostrando lo stesso scudo?";
+"key_verification_scan_confirmation_scanned_device_information" = "L'altro dispositivo sta mostrando lo stesso scudo?";
