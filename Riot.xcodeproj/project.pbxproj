@@ -122,6 +122,8 @@
 		6E6F1CAA244DC1E90068B78B /* SectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E6F1CA9244DC1E90068B78B /* SectionHeaderView.m */; };
 		6E6F1CAD244DDF3B0068B78B /* DirectorySectionHeaderContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E6F1CAC244DDF3B0068B78B /* DirectorySectionHeaderContainerView.m */; };
 		6E6F1CB1244E00FD0068B78B /* LocalContactsSectionHeaderContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E6F1CAF244E00FD0068B78B /* LocalContactsSectionHeaderContainerView.m */; };
+		6E6F1CB324506EC50068B78B /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6F1CB224506EC50068B78B /* UITableViewCell.swift */; };
+		6E6F1CB524506FA40068B78B /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6F1CB424506FA40068B78B /* UITableView.swift */; };
 		6E7A9E9C243E10E700FD039E /* UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7A9E9B243E10E700FD039E /* UIDevice.swift */; };
 		926FA53F1F4C132000F826C2 /* MXSession+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = 926FA53E1F4C132000F826C2 /* MXSession+Riot.m */; };
 		92726A471F58737A004AD26F /* IntentHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 92726A461F58737A004AD26F /* IntentHandler.m */; };
@@ -902,6 +904,8 @@
 		6E6F1CAC244DDF3B0068B78B /* DirectorySectionHeaderContainerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DirectorySectionHeaderContainerView.m; sourceTree = "<group>"; };
 		6E6F1CAF244E00FD0068B78B /* LocalContactsSectionHeaderContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalContactsSectionHeaderContainerView.m; sourceTree = "<group>"; };
 		6E6F1CB0244E00FD0068B78B /* LocalContactsSectionHeaderContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalContactsSectionHeaderContainerView.h; sourceTree = "<group>"; };
+		6E6F1CB224506EC50068B78B /* UITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
+		6E6F1CB424506FA40068B78B /* UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
 		6E7A9E9B243E10E700FD039E /* UIDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDevice.swift; sourceTree = "<group>"; };
 		926FA53D1F4C132000F826C2 /* MXSession+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXSession+Riot.h"; sourceTree = "<group>"; };
 		926FA53E1F4C132000F826C2 /* MXSession+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXSession+Riot.m"; sourceTree = "<group>"; };
@@ -4276,6 +4280,8 @@
 				B1B12B2822942315002CB419 /* UITouch.swift */,
 				B1DCC63322E72C1B00625807 /* UISearchBar.swift */,
 				B11291EB238D704C0077B478 /* FloatingPoint.swift */,
+				6E6F1CB224506EC50068B78B /* UITableViewCell.swift */,
+				6E6F1CB424506FA40068B78B /* UITableView.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -4946,6 +4952,7 @@
 				B1B5574B20EE6C4D00210D55 /* MediaAlbumContentViewController.m in Sources */,
 				B1B5598820EFC3E000210D55 /* WidgetManager.m in Sources */,
 				B1DB4F0E22316FFF0065DBFA /* UserNameColorGenerator.swift in Sources */,
+				6E6F1CB524506FA40068B78B /* UITableView.swift in Sources */,
 				B157FAA123264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinatorType.swift in Sources */,
 				32607D6C243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewController.swift in Sources */,
 				B1057789221304EC00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.swift in Sources */,
@@ -5005,6 +5012,7 @@
 				B157FAA823264BED00EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinatorBridgePresenter.swift in Sources */,
 				B169330B20F3CA3A00746532 /* Contact.m in Sources */,
 				B1A5B33E227ADF2A004CBA85 /* UIImage.swift in Sources */,
+				6E6F1CB324506EC50068B78B /* UITableViewCell.swift in Sources */,
 				B1D4752A21EE52B10067973F /* KeyBackupSetupIntroViewController.swift in Sources */,
 				B108931F23AB80EF00802670 /* KeyVerificationIncomingRequestApprovalBubbleCell.swift in Sources */,
 				B1CE83D42422817200D07506 /* KeyVerificationVerifiedViewController.swift in Sources */,
