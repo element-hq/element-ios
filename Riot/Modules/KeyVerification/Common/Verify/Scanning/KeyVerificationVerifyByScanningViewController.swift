@@ -156,9 +156,7 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
         case .error(let error):
             self.render(error: error)
         case .scannedCodeValidated(let isValid):
-            self.renderScannedCode(valid: isValid)
-        case .otherUserScannedMyCode:
-            self.renderOtherScannedMyCode()
+            self.renderScannedCode(valid: isValid)        
         case .cancelled(let reason):
             self.renderCancelled(reason: reason)
         case .cancelledByMe(let reason):
@@ -212,24 +210,6 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
                 })
             }
         }
-    }
-    
-    private func renderOtherScannedMyCode() {
-        let alert = UIAlertController(title: VectorL10n.keyVerificationVerifyQrCodeOtherScanMyCodeTitle,
-                                      message: nil,
-                                      preferredStyle: .alert)
-        
-        let okAction = UIAlertAction(title: Bundle.mxk_localizedString(forKey: "yes"), style: .default, handler: { _ in
-            self.viewModel.process(viewAction: .acknowledgeOtherScannedMyCode(true))
-        })
-        alert.addAction(okAction)
-        
-        let cancelAction = UIAlertAction(title: Bundle.mxk_localizedString(forKey: "no"), style: .cancel, handler: { _ in
-            self.viewModel.process(viewAction: .acknowledgeOtherScannedMyCode(false))
-        })
-        alert.addAction(cancelAction)
-        
-        self.present(alert, animated: true, completion: nil)
     }
     
     private func renderCancelled(reason: MXTransactionCancelCode) {

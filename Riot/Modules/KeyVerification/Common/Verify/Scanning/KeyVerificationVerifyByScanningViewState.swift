@@ -27,8 +27,7 @@ struct KeyVerificationVerifyByScanningViewData {
 enum KeyVerificationVerifyByScanningViewState {
     case loading
     case loaded(viewData: KeyVerificationVerifyByScanningViewData)
-    case scannedCodeValidated(isValid: Bool)
-    case otherUserScannedMyCode
+    case scannedCodeValidated(isValid: Bool)    
     case cancelled(MXTransactionCancelCode)
     case cancelledByMe(MXTransactionCancelCode)
     case error(Error)

@@ -64,8 +64,6 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
             self.scannedQRCode(payloadData: payloadData)
         case .cannotScan:
             self.startSASVerification()
-        case .acknowledgeOtherScannedMyCode(let acknowledgeOtherScannedMyCode):
-            self.acknowledgeOtherScannedMyCode(acknowledgeOtherScannedMyCode)
         case .cancel:
             self.cancel()
         case .acknowledgeMyUserScannedOtherCode:
@@ -149,16 +147,7 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
         
         self.unregisterTransactionDidStateChangeNotification()
         self.coordinatorDelegate?.keyVerificationVerifyByScanningViewModel(self, didScanOtherQRCodeData: scannedQRCodeData, withTransaction: qrCodeTransaction)
-    }
-    
-    private func acknowledgeOtherScannedMyCode(_ acknowledgeOtherScannedMyCode: Bool) {
-        guard let qrCodeTransaction = self.qrCodeTransaction else {
-            return
-        }
-        
-        self.unregisterTransactionDidStateChangeNotification()
-        self.coordinatorDelegate?.keyVerificationVerifyByScanningViewModel(self, qrCodeDidScannedByOtherWithTransaction: qrCodeTransaction)
-    }
+    }    
     
     private func removePendingQRCodeTransaction() {
         guard let qrCodeTransaction = self.qrCodeTransaction else {
@@ -252,7 +241,8 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
             self.unregisterTransactionDidStateChangeNotification()
             self.coordinatorDelegate?.keyVerificationVerifyByScanningViewModelDidCancel(self)
         case .qrScannedByOther:
-            self.update(viewState: .otherUserScannedMyCode)
+            self.unregisterTransactionDidStateChangeNotification()
+            self.coordinatorDelegate?.keyVerificationVerifyByScanningViewModel(self, qrCodeDidScannedByOtherWithTransaction: transaction)
         case .cancelled:
             guard let reason = transaction.reasonCancelCode else {
                 return
