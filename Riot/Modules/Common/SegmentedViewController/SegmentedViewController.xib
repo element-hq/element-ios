@@ -41,13 +41,13 @@
             <accessibility key="accessibilityConfiguration" identifier="SegmentedVCView"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="Hbe-uP-aJY" secondAttribute="bottom" id="8QF-68-2kk"/>
+                <constraint firstAttribute="trailing" secondItem="Hbe-uP-aJY" secondAttribute="trailing" id="A3X-4C-oj4"/>
                 <constraint firstItem="Hbe-uP-aJY" firstAttribute="leading" secondItem="ynH-uD-aQj" secondAttribute="leading" id="HTN-hD-pve"/>
-                <constraint firstItem="ynH-uD-aQj" firstAttribute="trailing" secondItem="7bG-Zq-SY7" secondAttribute="trailing" id="Kpl-1R-udg"/>
                 <constraint firstItem="Hbe-uP-aJY" firstAttribute="top" secondItem="ynH-uD-aQj" secondAttribute="bottom" id="Ovm-KQ-gUw"/>
-                <constraint firstItem="Hbe-uP-aJY" firstAttribute="trailing" secondItem="7bG-Zq-SY7" secondAttribute="trailing" id="Zf7-7o-Hha"/>
+                <constraint firstItem="ynH-uD-aQj" firstAttribute="trailing" secondItem="7bG-Zq-SY7" secondAttribute="trailing" id="UwC-jT-iGQ"/>
                 <constraint firstItem="ynH-uD-aQj" firstAttribute="top" secondItem="1TG-Rn-axS" secondAttribute="top" id="eLe-5q-IfV"/>
-                <constraint firstItem="ynH-uD-aQj" firstAttribute="leading" secondItem="7bG-Zq-SY7" secondAttribute="leading" id="rNX-dS-um7"/>
-                <constraint firstItem="Hbe-uP-aJY" firstAttribute="leading" secondItem="7bG-Zq-SY7" secondAttribute="leading" id="zce-Xb-axo"/>
+                <constraint firstItem="Hbe-uP-aJY" firstAttribute="leading" secondItem="1TG-Rn-axS" secondAttribute="leading" id="mTC-68-iGo"/>
+                <constraint firstItem="ynH-uD-aQj" firstAttribute="leading" secondItem="7bG-Zq-SY7" secondAttribute="leading" id="sLa-Wz-UVP"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="7bG-Zq-SY7"/>
             <point key="canvasLocation" x="138" y="153"/>
