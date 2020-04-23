@@ -493,6 +493,11 @@
     self.userVerificationCoordinatorBridgePresenter = userVerificationCoordinatorBridgePresenter;
 }
 
+- (void)presentCompleteSecurity
+{
+    [[AppDelegate theDelegate] presentCompleteSecurityForSession:self.mainSession];
+}
+
 #pragma mark - Hide/Show navigation bar border
 
 - (void)hideNavigationBarBorder:(BOOL)isHidden
@@ -842,7 +847,16 @@
                     statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_verified", @"Vector", nil);
                     break;
                 case UserEncryptionTrustLevelNormal:
-                    statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_verify", @"Vector", nil);
+                {
+                    if (self.isRoomMemberCurrentUser)
+                    {
+                        statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_complete_security", @"Vector", nil);
+                    }
+                    else
+                    {
+                        statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_verify", @"Vector", nil);
+                    }
+                }
                     break;
                 case UserEncryptionTrustLevelWarning:
                     statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_warning", @"Vector", nil);
@@ -1029,7 +1043,14 @@
     {
         if (self.encryptionTrustLevel == UserEncryptionTrustLevelNormal)
         {
-            [self startUserVerification];
+            if (self.isRoomMemberCurrentUser)
+            {
+                [self presentCompleteSecurity];
+            }
+            else
+            {
+                [self startUserVerification];
+            }
         }
         else
         {

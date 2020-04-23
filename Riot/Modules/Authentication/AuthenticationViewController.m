@@ -437,11 +437,11 @@
     
     if (self.navigationController)
     {
-        [keyVerificationCoordinatorBridgePresenter pushCompleteSecurityFrom:self.navigationController animated:YES];
+        [keyVerificationCoordinatorBridgePresenter pushCompleteSecurityFrom:self.navigationController isNewSignIn:YES animated:YES];
     }
     else
     {
-        [keyVerificationCoordinatorBridgePresenter presentCompleteSecurityFrom:self animated:YES];
+        [keyVerificationCoordinatorBridgePresenter presentCompleteSecurityFrom:self isNewSignIn:YES animated:YES];
     }
     
     self.keyVerificationCoordinatorBridgePresenter = keyVerificationCoordinatorBridgePresenter;

@@ -5101,6 +5101,29 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     self.userNewSignInAlertController = alert;
 }
 
+#pragma mark - Complete security
+
+- (BOOL)presentCompleteSecurityForSession:(MXSession*)mxSession
+{
+    NSLog(@"[AppDelegate][MXKeyVerification] presentCompleteSecurityForSession");
+    
+    BOOL presented = NO;
+    if (!keyVerificationCoordinatorBridgePresenter)
+    {
+        keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
+        keyVerificationCoordinatorBridgePresenter.delegate = self;
+        
+        [keyVerificationCoordinatorBridgePresenter presentCompleteSecurityFrom:self.presentedViewController isNewSignIn:NO animated:YES];
+        
+        presented = YES;
+    }
+    else
+    {
+        NSLog(@"[AppDelegate][MXKeyVerification] presentCompleteSecurityForSession: Controller already presented.");
+    }
+    return presented;
+}
+
 #pragma mark - GDPR consent
 
 // Observe user GDPR consent not given
