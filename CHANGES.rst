@@ -5,6 +5,7 @@ Improvements:
  * Cross-signing: Allow incoming device verification request from other user (#3139).
 
 Bug fix:
+ * Settings: Security, present complete security when my device is not trusted (#3127).
 
 Changes in 0.11.0 (2020-04-17)
 ===============================================
