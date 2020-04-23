@@ -122,8 +122,8 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
             rootCoordinator = self.createDataLoadingScreenCoordinator(with: incomingKeyVerificationRequest)
         case .incomingSASTransaction(let incomingSASTransaction):
             rootCoordinator = self.createDataLoadingScreenCoordinator(otherUserId: incomingSASTransaction.otherUserId, otherDeviceId: incomingSASTransaction.otherDeviceId)
-        case .completeSecurity:
-            rootCoordinator = self.createCompleteSecurityCoordinator()
+        case .completeSecurity(let isNewSignIn):
+            rootCoordinator = self.createCompleteSecurityCoordinator(isNewSignIn: isNewSignIn)
         }
 
         rootCoordinator.start()
@@ -155,8 +155,8 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
         self.delegate?.keyVerificationCoordinatorDidCancel(self)
     }
     
-    private func createCompleteSecurityCoordinator() -> KeyVerificationSelfVerifyWaitCoordinatorType {
-        let coordinator = KeyVerificationSelfVerifyWaitCoordinator(session: self.session)
+    private func createCompleteSecurityCoordinator(isNewSignIn: Bool) -> KeyVerificationSelfVerifyWaitCoordinatorType {
+        let coordinator = KeyVerificationSelfVerifyWaitCoordinator(session: self.session, isNewSignIn: isNewSignIn)
         coordinator.delegate = self
         coordinator.start()
         

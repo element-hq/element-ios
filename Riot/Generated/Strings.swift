@@ -2406,6 +2406,10 @@ internal enum VectorL10n {
   internal static var roomParticipantsActionSectionSecurity: String { 
     return VectorL10n.tr("Vector", "room_participants_action_section_security") 
   }
+  /// Complete security
+  internal static var roomParticipantsActionSecurityStatusCompleteSecurity: String { 
+    return VectorL10n.tr("Vector", "room_participants_action_security_status_complete_security") 
+  }
   /// Loading…
   internal static var roomParticipantsActionSecurityStatusLoading: String { 
     return VectorL10n.tr("Vector", "room_participants_action_security_status_loading") 

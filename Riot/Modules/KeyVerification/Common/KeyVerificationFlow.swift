@@ -26,7 +26,7 @@ import Foundation
 enum KeyVerificationFlow {
     case verifyUser(_ roomMember: MXRoomMember)
     case verifyDevice(userId: String, deviceId: String)
-    case completeSecurity
+    case completeSecurity(_ isNewSignIn: Bool)
     case incomingRequest(_ request: MXKeyVerificationRequest)
     case incomingSASTransaction(_ transaction: MXIncomingSASTransaction)
 }
