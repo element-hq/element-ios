@@ -579,6 +579,8 @@
 "security_settings_blacklist_unverified_devices" = "Never send messages to untrusted sessions";
 "security_settings_blacklist_unverified_devices_description" = "Verify all of a users sessions to mark them as trusted and send messages to them.";
 
+"security_settings_complete_security_alert_title" = "Complete security";
+"security_settings_complete_security_alert_message" = "You should complete security on your current session first";
 
 // Manage session
 "manage_session_title" = "Manage session";
