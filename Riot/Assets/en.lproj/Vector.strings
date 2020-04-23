@@ -571,6 +571,13 @@
 "security_settings_backup" = "MESSAGE BACKUP";
 
 "security_settings_crosssigning" = "CROSS-SIGNING";
+"security_settings_crosssigning_info_not_bootstrapped" = "Cross-signing is not yet set up.";
+"security_settings_crosssigning_info_exists" = "Your account has a cross-signing identity, but it is not yet trusted by this session. Complete security of this session.";
+"security_settings_crosssigning_info_trusted" = "Cross-signing is enabled. You can trust other users and your other sessions based on cross-signing but you cannot cross-sign from this session because it does not have cross-signing private keys. Complete security of this session.";
+"security_settings_crosssigning_info_ok" = "Cross-signing is enabled.";
+"security_settings_crosssigning_bootstrap" = "Bootstrap cross-signing";
+"security_settings_crosssigning_reset" = "Reset cross-signing";
+"security_settings_crosssigning_complete_security" = "Complete security";
 
 "security_settings_cryptography" = "CRYPTOGRAPHY";
 "security_settings_export_keys_manually" = "Export keys manually";
@@ -581,6 +588,8 @@
 
 "security_settings_complete_security_alert_title" = "Complete security";
 "security_settings_complete_security_alert_message" = "You should complete security on your current session first.";
+
+"security_settings_coming_soon" = "Sorry. This action is not available on Riot-iOS yet. Please use another Matrix client.";
 
 // Manage session
 "manage_session_title" = "Manage session";

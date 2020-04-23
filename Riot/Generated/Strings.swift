@@ -2826,6 +2826,10 @@ internal enum VectorL10n {
   internal static var securitySettingsBlacklistUnverifiedDevicesDescription: String { 
     return VectorL10n.tr("Vector", "security_settings_blacklist_unverified_devices_description") 
   }
+  /// Sorry. This action is not available on Riot-iOS yet. Please use another Matrix client.
+  internal static var securitySettingsComingSoon: String { 
+    return VectorL10n.tr("Vector", "security_settings_coming_soon") 
+  }
   /// You should complete security on your current session first.
   internal static var securitySettingsCompleteSecurityAlertMessage: String { 
     return VectorL10n.tr("Vector", "security_settings_complete_security_alert_message") 
@@ -2837,6 +2841,34 @@ internal enum VectorL10n {
   /// CROSS-SIGNING
   internal static var securitySettingsCrosssigning: String { 
     return VectorL10n.tr("Vector", "security_settings_crosssigning") 
+  }
+  /// Bootstrap cross-signing
+  internal static var securitySettingsCrosssigningBootstrap: String { 
+    return VectorL10n.tr("Vector", "security_settings_crosssigning_bootstrap") 
+  }
+  /// Complete security
+  internal static var securitySettingsCrosssigningCompleteSecurity: String { 
+    return VectorL10n.tr("Vector", "security_settings_crosssigning_complete_security") 
+  }
+  /// Your account has a cross-signing identity, but it is not yet trusted by this session. Complete security of this session.
+  internal static var securitySettingsCrosssigningInfoExists: String { 
+    return VectorL10n.tr("Vector", "security_settings_crosssigning_info_exists") 
+  }
+  /// Cross-signing is not yet set up.
+  internal static var securitySettingsCrosssigningInfoNotBootstrapped: String { 
+    return VectorL10n.tr("Vector", "security_settings_crosssigning_info_not_bootstrapped") 
+  }
+  /// Cross-signing is enabled.
+  internal static var securitySettingsCrosssigningInfoOk: String { 
+    return VectorL10n.tr("Vector", "security_settings_crosssigning_info_ok") 
+  }
+  /// Cross-signing is enabled. You can trust other users and your other sessions based on cross-signing but you cannot cross-sign from this session because it does not have cross-signing private keys. Complete security of this session.
+  internal static var securitySettingsCrosssigningInfoTrusted: String { 
+    return VectorL10n.tr("Vector", "security_settings_crosssigning_info_trusted") 
+  }
+  /// Reset cross-signing
+  internal static var securitySettingsCrosssigningReset: String { 
+    return VectorL10n.tr("Vector", "security_settings_crosssigning_reset") 
   }
   /// MY SESSIONS
   internal static var securitySettingsCryptoSessions: String { 

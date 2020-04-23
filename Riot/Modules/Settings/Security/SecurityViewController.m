@@ -443,17 +443,17 @@ UIDocumentInteractionControllerDelegate>
     switch (crossSigning.state)
     {
         case MXCrossSigningStateNotBootstrapped:
-            crossSigningInformation = @"Cross-signing is not yet set up.";
+            crossSigningInformation = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_info_not_bootstrapped"];
             break;
         case MXCrossSigningStateCrossSigningExists:
-            crossSigningInformation = @"Your account has a cross-signing identity, but it is not yet trusted by this session.";
+            crossSigningInformation = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_info_exists"];
             break;
         case MXCrossSigningStateTrustCrossSigning:
-            crossSigningInformation = @"Cross-signing is enabled. You can trust other users and your other sessions based on cross-signing but you cannot cross-sign from this session because it does not have cross-signing private keys.";
+            crossSigningInformation = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_info_trusted"];
             break;
         case MXCrossSigningStateCanCrossSign:
         case MXCrossSigningStateCanCrossSignAsynchronously:
-            crossSigningInformation =@"Cross-signing is enabled.";
+            crossSigningInformation = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_info_ok"];
             break;
     }
     
@@ -519,7 +519,7 @@ UIDocumentInteractionControllerDelegate>
 
 - (void)setUpcrossSigningButtonCellForBootstrap:(MXKTableViewCellWithButton*)buttonCell
 {
-    NSString *btnTitle = @"Bootstrap cross-signing";
+    NSString *btnTitle = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_bootstrap"];
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
  
@@ -533,7 +533,7 @@ UIDocumentInteractionControllerDelegate>
 
 - (void)setUpcrossSigningButtonCellForReset:(MXKTableViewCellWithButton*)buttonCell
 {
-    NSString *btnTitle = @"Reset cross-signing";
+    NSString *btnTitle = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_reset"];
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
     
@@ -593,7 +593,7 @@ UIDocumentInteractionControllerDelegate>
 
 - (void)displayComingSoon
 {
-    [[AppDelegate theDelegate] showAlertWithTitle:nil message:@"Sorry. This action is not available on Riot-iOS yet. Please use another Matrix client."];
+    [[AppDelegate theDelegate] showAlertWithTitle:nil message:[NSBundle mxk_localizedStringForKey:@"security_settings_coming_soon"]];
 }
 
 
