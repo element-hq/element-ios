@@ -3,6 +3,7 @@ Changes in 0.11.1 (2020-xx-xx)
 
 Improvements:
  * Cross-signing: Allow incoming device verification request from other user (#3139).
+ * Cross-signing: Allow to verify each device of users with no cross-signing (#3138).
 
 Bug fix:
 
