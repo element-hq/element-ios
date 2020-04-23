@@ -707,6 +707,11 @@ UIDocumentInteractionControllerDelegate>
 
 - (UIImage*)shieldImageForDevice:(NSString*)deviceId
 {
+    if (!self.mainSession.crypto.crossSigning.canCrossSign)
+    {
+        return [UIImage imageNamed:@"encryption_normal"];
+    }
+    
     UIImage* shieldImageForDevice = [UIImage imageNamed:@"encryption_warning"];
     MXDeviceInfo *device = [self.mainSession.crypto deviceWithDeviceId:deviceId ofUser:self.mainSession.myUser.userId];
     if (device.trustLevel.isVerified)
@@ -961,14 +966,58 @@ UIDocumentInteractionControllerDelegate>
             NSUInteger deviceIndex = row;
             if (deviceIndex < devicesArray.count)
             {
-                ManageSessionViewController *viewController = [ManageSessionViewController instantiateWithMatrixSession:self.mainSession andDevice:devicesArray[deviceIndex]];
+                MXDevice *device = devicesArray[deviceIndex];
                 
-                [self pushViewController:viewController];
+                if (self.mainSession.crypto.crossSigning.canCrossSign)
+                {
+                    ManageSessionViewController *viewController = [ManageSessionViewController instantiateWithMatrixSession:self.mainSession andDevice:device];
+                    
+                    [self pushViewController:viewController];
+                }
+                else
+                {
+                    if ([device.deviceId isEqualToString:self.mainSession.matrixRestClient.credentials.deviceId])
+                    {
+                        [self presentCompleteSecurity];
+                    }
+                    else
+                    {
+                        [self presentShouldCompleteSecurityAlert];
+                    }
+                }
             }
         }
 
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
+}
+
+- (void)presentCompleteSecurity
+{
+    [[AppDelegate theDelegate] presentCompleteSecurityForSession:self.mainSession];
+}
+
+- (void)presentShouldCompleteSecurityAlert
+{
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"security_settings_complete_security_alert_title", @"Vector", nil)
+                                                                             message:NSLocalizedStringFromTable(@"security_settings_complete_security_alert_message", @"Vector", nil)
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * action) {
+                                                    [self presentCompleteSecurity];
+                                            }]];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
+                                              style:UIAlertActionStyleCancel
+                                            handler:nil]];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+    currentAlert = alertController;
+    [currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCCompleteSecurity"];
 }
 
 #pragma mark - UIDocumentInteractionControllerDelegate
