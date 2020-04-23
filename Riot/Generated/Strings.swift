@@ -2826,7 +2826,7 @@ internal enum VectorL10n {
   internal static var securitySettingsBlacklistUnverifiedDevicesDescription: String { 
     return VectorL10n.tr("Vector", "security_settings_blacklist_unverified_devices_description") 
   }
-  /// You should complete security on your current session first
+  /// You should complete security on your current session first.
   internal static var securitySettingsCompleteSecurityAlertMessage: String { 
     return VectorL10n.tr("Vector", "security_settings_complete_security_alert_message") 
   }
