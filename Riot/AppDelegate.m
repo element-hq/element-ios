@@ -4916,20 +4916,45 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     {
         MXKeyVerificationByToDeviceRequest *keyVerificationByToDeviceRequest = (MXKeyVerificationByToDeviceRequest*)keyVerificationRequest;
         
-        // We support only self verification
-        if (keyVerificationByToDeviceRequest.isFromMyUser
-            && !keyVerificationByToDeviceRequest.isFromMyDevice
+        if (!keyVerificationByToDeviceRequest.isFromMyDevice
             && keyVerificationByToDeviceRequest.state == MXKeyVerificationRequestStatePending)
         {
-            NSString *myUserId = keyVerificationByToDeviceRequest.otherUser;
-            MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:myUserId];
-            if (account)
+            if (keyVerificationByToDeviceRequest.isFromMyUser)
             {
-                MXSession *session = account.mxSession;
-                MXUser *user = [session userWithUserId:myUserId];
-                                
-                [self presentNewKeyVerificationRequestAlertForSession:session senderName:user.displayname senderId:user.userId request:keyVerificationRequest];
+                // Self verification
+                NSLog(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Self verification from %@", keyVerificationByToDeviceRequest.otherDevice);
+                      
+                NSString *myUserId = keyVerificationByToDeviceRequest.otherUser;
+                MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:myUserId];
+                if (account)
+                {
+                    MXSession *session = account.mxSession;
+                    MXUser *user = [session userWithUserId:myUserId];
+                    
+                    [self presentNewKeyVerificationRequestAlertForSession:session senderName:user.displayname senderId:user.userId request:keyVerificationRequest];
+                }
             }
+            else
+            {
+                // Device verification from other user
+                // This happens when they or our user do not have cross-signing enabled
+                NSLog(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Device verification from other user %@:%@", keyVerificationByToDeviceRequest.otherUser, keyVerificationByToDeviceRequest.otherDevice);
+                
+                NSString *myUserId = keyVerificationByToDeviceRequest.to;
+                NSString *userId = keyVerificationByToDeviceRequest.otherUser;
+                MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:myUserId];
+                if (account)
+                {
+                    MXSession *session = account.mxSession;
+                    MXUser *user = [session userWithUserId:userId];
+                    
+                    [self presentNewKeyVerificationRequestAlertForSession:session senderName:user.displayname senderId:user.userId request:keyVerificationRequest];
+                }
+            }
+        }
+        else
+        {
+            NSLog(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification. Bad request state: %@", keyVerificationByToDeviceRequest);
         }
     }
 }
