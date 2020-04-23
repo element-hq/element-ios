@@ -449,7 +449,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="YOD-wg-gwf"/>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="3" image="tab_rooms" selectedImage="tab_rooms" id="7eS-Ei-00V">
+                    <tabBarItem key="tabBarItem" tag="3" image="tab_rooms" selectedImage="tab_rooms_selected" id="7eS-Ei-00V">
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="TabBarItemRooms"/>
                         </userDefinedRuntimeAttributes>
