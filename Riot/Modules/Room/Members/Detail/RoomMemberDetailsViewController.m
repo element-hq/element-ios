@@ -842,6 +842,7 @@
                     statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_verified", @"Vector", nil);
                     break;
                 case UserEncryptionTrustLevelNormal:
+                case UserEncryptionTrustLevelNoCrossSigning:
                     statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_verify", @"Vector", nil);
                     break;
                 case UserEncryptionTrustLevelWarning:
@@ -875,6 +876,7 @@
             switch (self.encryptionTrustLevel) {
                 case UserEncryptionTrustLevelWarning:
                 case UserEncryptionTrustLevelNormal:
+                case UserEncryptionTrustLevelNoCrossSigning:
                 case UserEncryptionTrustLevelTrusted:
                     [encryptionInformation appendString:NSLocalizedStringFromTable(@"room_participants_security_information_room_encrypted", @"Vector", nil)];
                     break;

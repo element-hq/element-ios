@@ -326,7 +326,7 @@
 
 - (void)encryptionTrustLevelForUserId:(NSString*)userId onComplete:(void (^)(UserEncryptionTrustLevel userEncryptionTrustLevel))onComplete
 {
-        if (self.mxSession.crypto)
+    if (self.mxSession.crypto)
     {
         [self.mxSession.crypto trustLevelSummaryForUserIds:@[userId] onComplete:^(MXUsersTrustLevelSummary *usersTrustLevelSummary) {
             
@@ -339,7 +339,15 @@
             }
             else if (trustedDevicesPercentage == 0.0)
             {
-                userEncryptionTrustLevel = UserEncryptionTrustLevelNormal;
+                // Verify if the user has the user has cross-signing enabled
+                if ([self.mxSession.crypto crossSigningKeysForUser:userId])
+                {
+                    userEncryptionTrustLevel = UserEncryptionTrustLevelNormal;
+                }
+                else
+                {
+                    userEncryptionTrustLevel = UserEncryptionTrustLevelNoCrossSigning;
+                }
             }
             else
             {

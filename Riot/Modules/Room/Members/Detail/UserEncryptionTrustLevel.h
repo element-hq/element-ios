@@ -23,6 +23,7 @@ typedef NS_ENUM(NSUInteger, UserEncryptionTrustLevel) {
     UserEncryptionTrustLevelTrusted,
     UserEncryptionTrustLevelWarning,
     UserEncryptionTrustLevelNormal,
+    UserEncryptionTrustLevelNoCrossSigning,     // The user has not bootstrapped cross-signing yet
     UserEncryptionTrustLevelNone,
     UserEncryptionTrustLevelUnknown
 };
