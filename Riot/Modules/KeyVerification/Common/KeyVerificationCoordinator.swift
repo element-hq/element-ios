@@ -91,7 +91,13 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
         self.session = session
         self.verificationFlow = flow
         
-        if case .verifyUser = flow {
+        if case let .incomingRequest(request) = flow {
+            if request.isFromMyUser {
+                self.verificationKind = .device
+            } else {
+                self.verificationKind = .user
+            }
+        } else if case .verifyUser = flow {
             self.verificationKind = .user
         } else {
             self.verificationKind = .device
