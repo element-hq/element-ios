@@ -494,7 +494,7 @@ UIDocumentInteractionControllerDelegate>
             switch (action)
             {
                 case CROSSSIGNING_FIRST_ACTION:
-                    [self setUpcrossSigningButtonCellForVerifyingThisSession:buttonCell];
+                    [self setUpcrossSigningButtonCellForCompletingSecurity:buttonCell];
                     break;
                 case CROSSSIGNING_SECOND_ACTION:
                     [self setUpcrossSigningButtonCellForReset:buttonCell];
@@ -505,7 +505,8 @@ UIDocumentInteractionControllerDelegate>
             switch (action)
             {
                 case CROSSSIGNING_FIRST_ACTION:
-                    [self setUpcrossSigningButtonCellForPrivateKeysRequest:buttonCell];
+                    // By verifying our device again, it will get cross-signing keys by gossiping
+                    [self setUpcrossSigningButtonCellForCompletingSecurity:buttonCell];
                     break;
                 case CROSSSIGNING_SECOND_ACTION:
                     [self setUpcrossSigningButtonCellForReset:buttonCell];
@@ -547,48 +548,13 @@ UIDocumentInteractionControllerDelegate>
     [self displayComingSoon];
 }
 
-- (void)setUpcrossSigningButtonCellForVerifyingThisSession:(MXKTableViewCellWithButton*)buttonCell
+- (void)setUpcrossSigningButtonCellForCompletingSecurity:(MXKTableViewCellWithButton*)buttonCell
 {
-    NSString *btnTitle = @"Verify this session";
+    NSString *btnTitle = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_complete_security"];
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
     
-    [buttonCell.mxkButton addTarget:self action:@selector(verifyThisSession:) forControlEvents:UIControlEventTouchUpInside];
-}
-
-- (void)verifyThisSession:(UITapGestureRecognizer *)recognizer
-{
-    // TODO: We should
-    [[AppDelegate theDelegate] showAlertWithTitle:nil message:@"Verify this session from a session which trusts the existing cross-sign identity"];
-}
-
-- (void)setUpcrossSigningButtonCellForPrivateKeysRequest:(MXKTableViewCellWithButton*)buttonCell
-{
-    NSString *btnTitle = @"Request keys";
-    [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
-    [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-    
-    [buttonCell.mxkButton addTarget:self action:@selector(requestCrossSigningPrivateKeys:) forControlEvents:UIControlEventTouchUpInside];
-}
-
-- (void)requestCrossSigningPrivateKeys:(id)recognizer
-{
-    UIButton *button;
-    if ([recognizer isKindOfClass:UIButton.class])
-    {
-        button = (UIButton*)recognizer;
-    }
-    button.enabled = NO;
-    
-    [self.mainSession.crypto.crossSigning requestPrivateKeysToDeviceIds:nil success:^{
-    } onPrivateKeysReceived:^{
-        button.enabled = YES;
-        [self loadCrossSigning];
-        [self reloadData];
-    } failure:^(NSError * _Nonnull error) {
-        NSLog(@"[SecurityVC] requestCrossSigningPrivateKeys: Cannot request cross-signing private keys. Error: %@", error);
-        button.enabled = YES;
-    }];
+    [buttonCell.mxkButton addTarget:self action:@selector(presentCompleteSecurity) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)displayComingSoon
