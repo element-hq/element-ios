@@ -260,6 +260,7 @@
 "room_participants_action_mention" = "Mention";
 "room_participants_action_security_status_verified" = "Verified";
 "room_participants_action_security_status_verify" = "Verify";
+"room_participants_action_security_status_complete_security" = "Complete security";
 "room_participants_action_security_status_warning" = "Warning";
 "room_participants_action_security_status_loading" = "Loading…";
 

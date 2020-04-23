@@ -35,6 +35,8 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
+    
+    private weak var cancelBarButtonItem: UIBarButtonItem?
 
     // MARK: - Setup
     
@@ -97,6 +99,7 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         }
         
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+        self.cancelBarButtonItem = cancelBarButtonItem
         
         self.title = VectorL10n.deviceVerificationSelfVerifyWaitTitle
         
@@ -108,8 +111,8 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .loaded:
-            self.renderLoaded()
+        case .loaded(let isNewSignIn):
+            self.renderLoaded(isNewSignIn: isNewSignIn)
         case .error(let error):
             self.render(error: error)
         }
@@ -119,8 +122,10 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
     }
     
-    private func renderLoaded() {
+    private func renderLoaded(isNewSignIn: Bool) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        
+        self.cancelBarButtonItem?.title = isNewSignIn ? VectorL10n.skip : VectorL10n.cancel
     }
     
     private func render(error: Error) {
