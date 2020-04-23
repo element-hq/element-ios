@@ -1587,39 +1587,17 @@
     plusButtonImageView.layer.shadowOffset = CGSizeMake(0, 3);
     
     CGFloat side = 78.0f;
-    NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:plusButtonImageView
-                                                                       attribute:NSLayoutAttributeWidth
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:nil
-                                                                       attribute:NSLayoutAttributeNotAnAttribute
-                                                                      multiplier:1
-                                                                        constant:side];
+    [plusButtonImageView.widthAnchor constraintEqualToConstant:side].active = YES;
+    [plusButtonImageView.heightAnchor constraintEqualToConstant:side].active = YES;
     
-    NSLayoutConstraint* heightConstraint = [NSLayoutConstraint constraintWithItem:plusButtonImageView
-                                                                        attribute:NSLayoutAttributeHeight
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:nil
-                                                                        attribute:NSLayoutAttributeNotAnAttribute
-                                                                       multiplier:1
-                                                                         constant:side];
-    
-    NSLayoutConstraint* trailingConstraint = [NSLayoutConstraint constraintWithItem:plusButtonImageView
-                                                                          attribute:NSLayoutAttributeTrailing
-                                                                          relatedBy:NSLayoutRelationEqual
-                                                                             toItem:self.view
-                                                                          attribute:NSLayoutAttributeTrailing
-                                                                         multiplier:1
-                                                                           constant:0];
-    
-    NSLayoutConstraint* bottomConstraint = [NSLayoutConstraint constraintWithItem:self.bottomLayoutGuide
-                                                                        attribute:NSLayoutAttributeTop
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:plusButtonImageView
-                                                                        attribute:NSLayoutAttributeBottom
-                                                                       multiplier:1
-                                                                         constant:9];
-    
-    [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, trailingConstraint, bottomConstraint]];
+    if (@available(iOS 11.0, *)) {
+        //  align to safe area
+        [plusButtonImageView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor].active = YES;
+        [self.view.safeAreaLayoutGuide.bottomAnchor constraintEqualToAnchor:plusButtonImageView.bottomAnchor constant:9].active = YES;
+    } else {
+        [plusButtonImageView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor].active = YES;
+        [self.bottomLayoutGuide.topAnchor constraintEqualToAnchor:plusButtonImageView.bottomAnchor constant:9].active = YES;
+    }
     
     plusButtonImageView.userInteractionEnabled = YES;
     

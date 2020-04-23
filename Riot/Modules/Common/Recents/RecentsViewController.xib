@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -13,9 +14,9 @@
             <connections>
                 <outlet property="recentsSearchBar" destination="Zbr-9e-VZh" id="AvH-q6-dOM"/>
                 <outlet property="recentsSearchBarHeightConstraint" destination="jCU-cq-2OA" id="w76-xb-0xq"/>
-                <outlet property="recentsSearchBarTopConstraint" destination="aRg-Nz-enq" id="gI4-54-oEm"/>
+                <outlet property="recentsSearchBarTopConstraint" destination="aiS-gd-GJ4" id="hXe-2n-DSn"/>
                 <outlet property="recentsTableView" destination="orV-HH-88x" id="lgA-2k-pXJ"/>
-                <outlet property="recentsTableViewBottomConstraint" destination="62D-eM-GTg" id="Ate-Y7-20d"/>
+                <outlet property="recentsTableViewBottomConstraint" destination="zIT-Mi-Y7K" id="iIx-a7-hPO"/>
                 <outlet property="stickyHeadersBottomContainer" destination="EXH-mK-0eB" id="95Y-KP-bwF"/>
                 <outlet property="stickyHeadersBottomContainerHeightConstraint" destination="SNq-Js-N7s" id="vom-iM-s6W"/>
                 <outlet property="stickyHeadersTopContainer" destination="JJC-Bw-6sa" id="JIy-sf-4Ya"/>
@@ -28,22 +29,12 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <searchBar contentMode="redraw" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zbr-9e-VZh">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="44" id="jCU-cq-2OA"/>
-                    </constraints>
-                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="ejZ-kN-jKv"/>
-                    </connections>
-                </searchBar>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="orV-HH-88x">
-                    <rect key="frame" x="0.0" y="44" width="375" height="623"/>
+                    <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JJC-Bw-6sa">
-                    <rect key="frame" x="0.0" y="44" width="375" height="0.0"/>
+                    <rect key="frame" x="0.0" y="64" width="375" height="0.0"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <accessibility key="accessibilityConfiguration" identifier="RecentsVCStickyHeadersTopContainer"/>
                     <constraints>
@@ -58,23 +49,34 @@
                         <constraint firstAttribute="height" id="SNq-Js-N7s"/>
                     </constraints>
                 </view>
+                <searchBar contentMode="redraw" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zbr-9e-VZh">
+                    <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="jCU-cq-2OA"/>
+                    </constraints>
+                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="ejZ-kN-jKv"/>
+                    </connections>
+                </searchBar>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="orV-HH-88x" secondAttribute="bottom" id="62D-eM-GTg"/>
-                <constraint firstItem="JJC-Bw-6sa" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="8yW-fA-QxN"/>
+                <constraint firstAttribute="trailing" secondItem="orV-HH-88x" secondAttribute="trailing" id="3Np-64-AUe"/>
+                <constraint firstItem="Zbr-9e-VZh" firstAttribute="trailing" secondItem="4qf-KS-Fc9" secondAttribute="trailing" id="5OG-ou-iCZ"/>
                 <constraint firstItem="orV-HH-88x" firstAttribute="top" secondItem="JJC-Bw-6sa" secondAttribute="bottom" id="IMR-dV-gUS"/>
                 <constraint firstItem="EXH-mK-0eB" firstAttribute="bottom" secondItem="orV-HH-88x" secondAttribute="bottom" id="KXF-3M-x1M"/>
-                <constraint firstItem="orV-HH-88x" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="NaR-eJ-WMj"/>
-                <constraint firstAttribute="trailing" secondItem="EXH-mK-0eB" secondAttribute="trailing" id="P7b-WG-atu"/>
-                <constraint firstItem="Zbr-9e-VZh" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="aRg-Nz-enq"/>
-                <constraint firstItem="Zbr-9e-VZh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="fty-XB-tTr"/>
-                <constraint firstAttribute="trailing" secondItem="Zbr-9e-VZh" secondAttribute="trailing" id="rKb-TZ-sap"/>
+                <constraint firstItem="EXH-mK-0eB" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="S3i-DW-PUB"/>
+                <constraint firstItem="Zbr-9e-VZh" firstAttribute="top" secondItem="4qf-KS-Fc9" secondAttribute="top" id="aiS-gd-GJ4"/>
+                <constraint firstAttribute="trailing" secondItem="EXH-mK-0eB" secondAttribute="trailing" id="bPP-yu-FTa"/>
+                <constraint firstItem="orV-HH-88x" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="dTn-zC-Axs"/>
+                <constraint firstItem="Zbr-9e-VZh" firstAttribute="leading" secondItem="4qf-KS-Fc9" secondAttribute="leading" id="iuw-U1-UQf"/>
+                <constraint firstItem="JJC-Bw-6sa" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="l5C-zt-Env"/>
+                <constraint firstAttribute="trailing" secondItem="JJC-Bw-6sa" secondAttribute="trailing" id="trw-3x-yjO"/>
                 <constraint firstItem="JJC-Bw-6sa" firstAttribute="top" secondItem="Zbr-9e-VZh" secondAttribute="bottom" id="vW3-kY-qjQ"/>
-                <constraint firstItem="EXH-mK-0eB" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="wSx-rS-Lv5"/>
-                <constraint firstAttribute="trailing" secondItem="orV-HH-88x" secondAttribute="trailing" id="yBp-63-kZi"/>
-                <constraint firstAttribute="trailing" secondItem="JJC-Bw-6sa" secondAttribute="trailing" id="zTe-LM-S3a"/>
+                <constraint firstItem="orV-HH-88x" firstAttribute="bottom" secondItem="4qf-KS-Fc9" secondAttribute="bottom" id="zIT-Mi-Y7K"/>
             </constraints>
+            <viewLayoutGuide key="safeArea" id="4qf-KS-Fc9"/>
         </view>
     </objects>
 </document>

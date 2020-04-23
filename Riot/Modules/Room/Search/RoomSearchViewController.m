@@ -120,6 +120,18 @@
     [self updateSearch];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    if (!self.searchBarHidden && self.extendedLayoutIncludesOpaqueBars)
+    {
+        //  if a search bar is visible, navigationBar height will be increased. Below code will force update layout on previous view controller.
+        [self.navigationController.view setNeedsLayout]; // force update layout
+        [self.navigationController.view layoutIfNeeded]; // to fix height of the navigation bar
+    }
+
+    [super viewWillDisappear:animated];
+}
+
 #pragma mark -
 
 - (void)setRoomDataSource:(MXKRoomDataSource *)roomDataSource

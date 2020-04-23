@@ -1248,7 +1248,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 {
     MXKTableViewCellWithLabelAndTextField *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndTextField defaultReuseIdentifier] forIndexPath:indexPath];
     
-    cell.mxkLabelLeadingConstraint.constant = cell.separatorInset.left;
+    cell.mxkLabelLeadingConstraint.constant = cell.vc_separatorInset.left;
     cell.mxkTextFieldLeadingConstraint.constant = 16;
     cell.mxkTextFieldTrailingConstraint.constant = 15;
     
@@ -1276,7 +1276,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 {
     MXKTableViewCellWithLabelAndSwitch *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier] forIndexPath:indexPath];
     
-    cell.mxkLabelLeadingConstraint.constant = cell.separatorInset.left;
+    cell.mxkLabelLeadingConstraint.constant = cell.vc_separatorInset.left;
     cell.mxkSwitchTrailingConstraint.constant = 15;
     
     cell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
@@ -1318,8 +1318,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     textViewCell.mxkTextView.textColor = ThemeService.shared.theme.textPrimaryColor;
     textViewCell.mxkTextView.font = [UIFont systemFontOfSize:17];
     textViewCell.mxkTextView.backgroundColor = [UIColor clearColor];
-    textViewCell.mxkTextViewLeadingConstraint.constant = tableView.separatorInset.left;
-    textViewCell.mxkTextViewTrailingConstraint.constant = tableView.separatorInset.right;
+    textViewCell.mxkTextViewLeadingConstraint.constant = tableView.vc_separatorInset.left;
+    textViewCell.mxkTextViewTrailingConstraint.constant = tableView.vc_separatorInset.right;
     textViewCell.mxkTextView.accessibilityIdentifier = nil;
     
     return textViewCell;
@@ -1379,7 +1379,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         {
             MXKTableViewCellWithLabelAndMXKImageView *profileCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier] forIndexPath:indexPath];
             
-            profileCell.mxkLabelLeadingConstraint.constant = profileCell.separatorInset.left;
+            profileCell.mxkLabelLeadingConstraint.constant = profileCell.vc_separatorInset.left;
             profileCell.mxkImageViewTrailingConstraint.constant = 10;
             
             profileCell.mxkImageViewWidthConstraint.constant = profileCell.mxkImageViewHeightConstraint.constant = 30;

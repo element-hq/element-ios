@@ -243,7 +243,6 @@
         [self userInterfaceThemeDidChange];
         
     }];
-    [self userInterfaceThemeDidChange];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -287,7 +286,9 @@
 
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"RoomMemberDetails"];
-    
+
+    [self userInterfaceThemeDidChange];
+
     // Hide the bottom border of the navigation bar to display the expander header
     [self hideNavigationBarBorder:YES];
     
@@ -526,6 +527,7 @@
     }
 
     // Main Navigation bar opacity must follow
+    self.navigationController.navigationBar.translucent = isHidden;
     mainNavigationController.navigationBar.translucent = isHidden;
 }
 
@@ -919,6 +921,11 @@
             encryptionInfoCell.accessoryType = UITableViewCellAccessoryNone;
             encryptionInfoCell.contentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
             encryptionInfoCell.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+
+            //  extend background color to safe area
+            UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+            bgView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+            encryptionInfoCell.backgroundView = bgView;
             
             cell = encryptionInfoCell;
         }
