@@ -342,7 +342,7 @@
                 // Verify if the user has the user has cross-signing enabled
                 if ([self.mxSession.crypto crossSigningKeysForUser:userId])
                 {
-                    userEncryptionTrustLevel = UserEncryptionTrustLevelNormal;
+                    userEncryptionTrustLevel = UserEncryptionTrustLevelNotVerified;
                 }
                 else
                 {

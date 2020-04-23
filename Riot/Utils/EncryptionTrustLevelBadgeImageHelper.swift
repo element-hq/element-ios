@@ -46,7 +46,7 @@ final class EncryptionTrustLevelBadgeImageHelper: NSObject {
         switch trustLevel {
         case .warning:
             badgeImage = Asset.Images.encryptionWarning.image
-        case .normal, .noCrossSigning:
+        case .notVerified, .noCrossSigning:
             badgeImage = Asset.Images.encryptionNormal.image
         case .trusted:
             badgeImage = Asset.Images.encryptionTrusted.image
