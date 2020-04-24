@@ -1049,3 +1049,14 @@
 "key_verification_scan_confirmation_scanned_title" = "On y est presque !";
 "key_verification_scan_confirmation_scanned_user_information" = "Est-ce que %@ affiche le même bouclier ?";
 "key_verification_scan_confirmation_scanned_device_information" = "Est-ce que l’autre appareil affiche le même bouclier ?";
+"room_participants_action_security_status_complete_security" = "Compléter la sécurité";
+"security_settings_crosssigning_info_not_bootstrapped" = "La signature croisée n’est pas encore configurée.";
+"security_settings_crosssigning_info_exists" = "Votre compte a une identité de signature croisée, mais cette session ne lui fait pas encore confiance. Complétez la sécurité de cette session.";
+"security_settings_crosssigning_info_trusted" = "La signature croisée est activée. Vous pouvez faire confiance à d’autres utilisateurs et à vos autres sessions selon la signature croisée mais vous ne pouvez pas effectuer des signatures croisées depuis cette session car elle n’a pas de clés privées de signature croisée. Complétez la sécurité de cette session.";
+"security_settings_crosssigning_info_ok" = "La signature croisée est activée.";
+"security_settings_crosssigning_bootstrap" = "Configurer la signature croisée";
+"security_settings_crosssigning_reset" = "Réinitialiser la signature croisée";
+"security_settings_crosssigning_complete_security" = "Compléter la sécurité";
+"security_settings_complete_security_alert_title" = "Compléter la sécurité";
+"security_settings_complete_security_alert_message" = "Vous devriez d’abord compléter la sécurité de votre session actuelle.";
+"security_settings_coming_soon" = "Désolé, cette action n’est pas encore disponible dans Riot-iOS. Utilisez un autre client Matrix.";

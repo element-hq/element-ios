@@ -1,0 +1,24 @@
+// Titles
+"title_home" = "Hemma";
+"title_favourites" = "Favoriter";
+"next" = "Nästa";
+"back" = "Tillbaka";
+"continue" = "Rum";
+"create" = "Skapa";
+"start" = "Börja";
+"leave" = "Lämna";
+"remove" = "Ta bort";
+"invite" = "Bjud in";
+"retry" = "Prova om";
+"on" = "På";
+"off" = "Av";
+"cancel" = "Avbryt";
+"save" = "Spara";
+"join" = "Ansluta";
+"decline" = "Avböj";
+"accept" = "godta";
+"preview" = "Förhandsvisning";
+"camera" = "Kamera";
+"voice" = "Röst";
+"video" = "Video";
+"later" = "Senare";
