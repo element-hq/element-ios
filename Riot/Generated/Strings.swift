@@ -414,6 +414,22 @@ internal enum VectorL10n {
   internal static var cancel: String { 
     return VectorL10n.tr("Vector", "cancel") 
   }
+  /// Riot X for Android
+  internal static var clientAndroidName: String { 
+    return VectorL10n.tr("Vector", "client_android_name") 
+  }
+  /// Riot Desktop
+  internal static var clientDesktopName: String { 
+    return VectorL10n.tr("Vector", "client_desktop_name") 
+  }
+  /// Riot iOS
+  internal static var clientIosName: String { 
+    return VectorL10n.tr("Vector", "client_ios_name") 
+  }
+  /// Riot Web
+  internal static var clientWebName: String { 
+    return VectorL10n.tr("Vector", "client_web_name") 
+  }
   /// Close
   internal static var close: String { 
     return VectorL10n.tr("Vector", "close") 
@@ -822,17 +838,21 @@ internal enum VectorL10n {
   internal static var deviceVerificationSelfVerifyStartWaiting: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_start_waiting") 
   }
-  /// Use an existing session to verify this new one, granting it access to encrypted messages.
+  /// or another cross-signing capable Matrix client
+  internal static var deviceVerificationSelfVerifyWaitAdditionalInformation: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_wait_additional_information") 
+  }
+  /// Verify this session from one of your others sessions, granting it access to encrypted messages.\n\nUse the latest Riot on your other devices:
   internal static var deviceVerificationSelfVerifyWaitInformation: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_information") 
+  }
+  /// Verify this login
+  internal static var deviceVerificationSelfVerifyWaitNewSignInTitle: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_wait_new_sign_in_title") 
   }
   /// Complete security
   internal static var deviceVerificationSelfVerifyWaitTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_title") 
-  }
-  /// Waiting…
-  internal static var deviceVerificationSelfVerifyWaitWaiting: String { 
-    return VectorL10n.tr("Vector", "device_verification_self_verify_wait_waiting") 
   }
   /// Verify by comparing a short text string
   internal static var deviceVerificationStartTitle: String { 

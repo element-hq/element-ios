@@ -62,6 +62,12 @@
 // Accessibility
 "accessibility_checkbox_label" = "checkbox";
 
+// MARK: Clients
+"client_desktop_name" = "Riot Desktop";
+"client_web_name" = "Riot Web";
+"client_ios_name" = "Riot iOS";
+"client_android_name" = "Riot X for Android";
+
 // Authentication
 "auth_login" = "Log in";
 "auth_register" = "Register";
@@ -1062,8 +1068,9 @@
 // MARK: Self verification wait
 
 "device_verification_self_verify_wait_title" = "Complete security";
-"device_verification_self_verify_wait_information" = "Use an existing session to verify this new one, granting it access to encrypted messages.";
-"device_verification_self_verify_wait_waiting" = "Waiting…";
+"device_verification_self_verify_wait_new_sign_in_title" = "Verify this login";
+"device_verification_self_verify_wait_information" = "Verify this session from one of your others sessions, granting it access to encrypted messages.\n\nUse the latest Riot on your other devices:";
+"device_verification_self_verify_wait_additional_information" = "or another cross-signing capable Matrix client";
 
 // MARK: Verify
 
