@@ -22,6 +22,9 @@
 		32242F1721E8FBE500725742 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32242F0D21E8FBA900725742 /* Theme.swift */; };
 		32242F1821E8FBF800725742 /* DefaultTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32242F0F21E8FBA900725742 /* DefaultTheme.swift */; };
 		32242F1921E8FBFB00725742 /* DarkTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32242F1021E8FBA900725742 /* DarkTheme.swift */; };
+		322504C22452C75A007C9424 /* JitsiWidgetData.m in Sources */ = {isa = PBXBuildFile; fileRef = 322504C12452C75A007C9424 /* JitsiWidgetData.m */; };
+		322504C32452C75A007C9424 /* JitsiWidgetData.m in Sources */ = {isa = PBXBuildFile; fileRef = 322504C12452C75A007C9424 /* JitsiWidgetData.m */; };
+		322504C42452C75A007C9424 /* JitsiWidgetData.m in Sources */ = {isa = PBXBuildFile; fileRef = 322504C12452C75A007C9424 /* JitsiWidgetData.m */; };
 		322C110822BBC6F80043FEAC /* WidgetManagerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322C110722BBC6F80043FEAC /* WidgetManagerConfig.swift */; };
 		3232AB1422564D9100AD6A5C /* swiftgen-config.yml in Resources */ = {isa = PBXBuildFile; fileRef = 3232AB0022564D9100AD6A5C /* swiftgen-config.yml */; };
 		3232AB1522564D9100AD6A5C /* flat-swift4-vector.stencil in Resources */ = {isa = PBXBuildFile; fileRef = 3232AB0322564D9100AD6A5C /* flat-swift4-vector.stencil */; };
@@ -772,6 +775,8 @@
 		32242F0F21E8FBA900725742 /* DefaultTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultTheme.swift; sourceTree = "<group>"; };
 		32242F1021E8FBA900725742 /* DarkTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DarkTheme.swift; sourceTree = "<group>"; };
 		32242F1121E8FBA900725742 /* ThemeService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeService.h; sourceTree = "<group>"; };
+		322504C02452C75A007C9424 /* JitsiWidgetData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JitsiWidgetData.h; sourceTree = "<group>"; };
+		322504C12452C75A007C9424 /* JitsiWidgetData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JitsiWidgetData.m; sourceTree = "<group>"; };
 		322C110722BBC6F80043FEAC /* WidgetManagerConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetManagerConfig.swift; sourceTree = "<group>"; };
 		3232AB0022564D9100AD6A5C /* swiftgen-config.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "swiftgen-config.yml"; sourceTree = "<group>"; };
 		3232AB0322564D9100AD6A5C /* flat-swift4-vector.stencil */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "flat-swift4-vector.stencil"; sourceTree = "<group>"; };
@@ -1780,6 +1785,15 @@
 				3209451121F1C1430088CAA2 /* BlackTheme.swift */,
 			);
 			path = Themes;
+			sourceTree = "<group>";
+		};
+		322504BF2452C725007C9424 /* JSONModels */ = {
+			isa = PBXGroup;
+			children = (
+				322504C02452C75A007C9424 /* JitsiWidgetData.h */,
+				322504C12452C75A007C9424 /* JitsiWidgetData.m */,
+			);
+			path = JSONModels;
 			sourceTree = "<group>";
 		};
 		3232AAFE22564D9100AD6A5C /* Tools */ = {
@@ -3877,6 +3891,7 @@
 		B1B5598020EFC3DF00210D55 /* Widgets */ = {
 			isa = PBXGroup;
 			children = (
+				322504BF2452C725007C9424 /* JSONModels */,
 				B1B5598220EFC3DF00210D55 /* WidgetManager.h */,
 				B1B5598420EFC3DF00210D55 /* WidgetManager.m */,
 				B1B5598120EFC3DF00210D55 /* Widget.h */,
@@ -4909,6 +4924,7 @@
 				B1DCC63522E72D2200625807 /* UISearchBar.swift in Sources */,
 				B1664BCD20F4E67600808783 /* RecentRoomTableViewCell.m in Sources */,
 				B1DB4F0C2231494F0065DBFA /* String.swift in Sources */,
+				322504C32452C75A007C9424 /* JitsiWidgetData.m in Sources */,
 				B169331720F3CBE000746532 /* RecentCellData.m in Sources */,
 				B1664BCC20F4E67600808783 /* RoomsListViewController.m in Sources */,
 			);
@@ -4919,6 +4935,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				92726A471F58737A004AD26F /* IntentHandler.m in Sources */,
+				322504C42452C75A007C9424 /* JitsiWidgetData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5199,6 +5216,7 @@
 				B157FAA323264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsViewState.swift in Sources */,
 				B1098BF921ECFE65000DDA48 /* KeyBackupSetupCoordinator.swift in Sources */,
 				B140B4A821F8AB4600E3F5FE /* KeyBackupRecoverCoordinatorBridgePresenter.swift in Sources */,
+				322504C22452C75A007C9424 /* JitsiWidgetData.m in Sources */,
 				B1098BFE21ECFE65000DDA48 /* KeyBackupSetupPassphraseViewModelType.swift in Sources */,
 				B1B558BE20EF768F00210D55 /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				F083BDED1E7009ED00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m in Sources */,

@@ -15,6 +15,8 @@
  */
 
 #import "JitsiViewController.h"
+#import "JitsiWidgetData.h"
+
 @import JitsiMeet;
 
 static const NSString *kJitsiDataErrorKey = @"error";
@@ -25,6 +27,7 @@ static const NSString *kJitsiDataErrorKey = @"error";
 @property (nonatomic, weak) IBOutlet JitsiMeetView *jitsiMeetView;
 
 @property (nonatomic, strong) NSString *conferenceId;
+@property (nonatomic, strong) NSURL *serverUrl;
 @property (nonatomic) BOOL startWithVideo;
 
 @end
@@ -81,28 +84,17 @@ static const NSString *kJitsiDataErrorKey = @"error";
     [_widget widgetUrl:^(NSString * _Nonnull widgetUrl) {
         
         MXStrongifyAndReturnIfNil(self);
-
-        // Extract the jitsi conference id from the widget url
-        NSString *confId;
-        NSURL *url = [NSURL URLWithString:widgetUrl];
-        if (url)
+        
+        // Use widget data from Matrix Widget API v2 first
+        [self extractWidgetDataFromWidget:widget];
+        
+        if (!self.conferenceId)
         {
-            NSURLComponents *components = [[NSURLComponents new] initWithURL:url resolvingAgainstBaseURL:NO];
-            NSArray *queryItems = [components queryItems];
-
-            for (NSURLQueryItem *item in queryItems)
-            {
-                if ([item.name isEqualToString:@"confId"])
-                {
-                    confId = item.value;
-                    break;
-                }
-            }
+            // Else try v1
+            [self extractWidgetDataFromUrlString:widgetUrl];
         }
         
-        self.conferenceId = confId;
-
-        if (confId)
+        if (self.conferenceId)
         {
             if (success)
             {
@@ -137,12 +129,52 @@ static const NSString *kJitsiDataErrorKey = @"error";
 
 #pragma mark - Private
 
-- (void)joinConference
+// Extract data based on Matrix Widget V2 widget data
+- (void)extractWidgetDataFromWidget:(Widget*)widget
 {
-    [self joinConferenceWithId:self.conferenceId];
+    JitsiWidgetData *jitsiWidgetData = [JitsiWidgetData modelFromJSON:widget.data];
+    if (jitsiWidgetData)
+    {
+        self.conferenceId = jitsiWidgetData.conferenceId;
+        if (jitsiWidgetData.domain)
+        {
+            NSString *serverUrlString = [NSString stringWithFormat:@"https://%@", jitsiWidgetData.domain];
+            self.serverUrl = [NSURL URLWithString:serverUrlString];
+        }
+        self.startWithVideo = !jitsiWidgetData.isAudioOnly;
+    }
 }
 
-- (void)joinConferenceWithId:(NSString*)conferenceId
+// Extract data based on Matrix Widget V1 URL
+- (void)extractWidgetDataFromUrlString:(NSString*)widgetUrlString
+{
+    // Extract the jitsi conference id from the widget url
+    NSString *confId;
+    NSURL *url = [NSURL URLWithString:widgetUrlString];
+    if (url)
+    {
+        NSURLComponents *components = [[NSURLComponents new] initWithURL:url resolvingAgainstBaseURL:NO];
+        NSArray *queryItems = [components queryItems];
+        
+        for (NSURLQueryItem *item in queryItems)
+        {
+            if ([item.name isEqualToString:@"confId"])
+            {
+                confId = item.value;
+                break;
+            }
+        }
+    }
+    
+    self.conferenceId = confId;
+}
+
+- (void)joinConference
+{
+    [self joinConferenceWithId:self.conferenceId andServerUrl:self.serverUrl];
+}
+
+- (void)joinConferenceWithId:(NSString*)conferenceId andServerUrl:(NSURL*)serverUrl
 {
     if (conferenceId)
     {
@@ -159,6 +191,10 @@ static const NSString *kJitsiDataErrorKey = @"error";
 
         JitsiMeetConferenceOptions *jitsiMeetConferenceOptions = [JitsiMeetConferenceOptions fromBuilder:^(JitsiMeetConferenceOptionsBuilder * _Nonnull builder) {
 
+            if (serverUrl)
+            {
+                builder.serverURL = serverUrl;
+            }
             builder.room = conferenceId;
             builder.videoMuted = !self.startWithVideo;
 
