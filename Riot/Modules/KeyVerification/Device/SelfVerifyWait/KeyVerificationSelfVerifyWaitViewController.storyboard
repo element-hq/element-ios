@@ -19,18 +19,69 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IlB-Ch-LEo">
-                                <rect key="frame" x="0.0" y="284.5" width="375" height="118.5"/>
+                                <rect key="frame" x="0.0" y="201.5" width="375" height="284"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use an existing session to verify this one, granting it access to encrypted messages." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d5Y-pj-XsI">
-                                        <rect key="frame" x="20" y="10" width="335" height="36"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d5Y-pj-XsI">
+                                        <rect key="frame" x="20" y="10" width="335" height="84"/>
+                                        <string key="text">Verify this session from one of your others sessions, granting it access to encrypted messages.
+
+Use the latest Riot on your other devices:</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Waiting…" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rFM-AQ-wAB">
-                                        <rect key="frame" x="20" y="78" width="335" height="20.5"/>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
-                                        <nil key="textColor"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="ANK-XS-dY7">
+                                        <rect key="frame" x="27.5" y="134" width="320" height="95.5"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="3at-ql-vhb">
+                                                <rect key="frame" x="0.0" y="0.0" width="160" height="95.5"/>
+                                                <subviews>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="monitor" translatesAutoresizingMaskIntoConstraints="NO" id="nrB-Kj-4zE">
+                                                        <rect key="frame" x="56" y="0.0" width="48" height="48"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="48" id="F2W-zC-UJo"/>
+                                                            <constraint firstAttribute="width" secondItem="nrB-Kj-4zE" secondAttribute="height" multiplier="1:1" id="TOT-bj-1W4"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iBP-FF-AYM">
+                                                        <rect key="frame" x="38.5" y="62" width="83" height="33.5"/>
+                                                        <string key="text">Riot Web
+Riot Desktop</string>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="coY-7W-lY7">
+                                                <rect key="frame" x="160" y="0.0" width="160" height="95.5"/>
+                                                <subviews>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="smartphone" translatesAutoresizingMaskIntoConstraints="NO" id="P0P-X4-uSQ">
+                                                        <rect key="frame" x="56" y="0.0" width="48" height="48"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="48" id="4NO-k7-6iK"/>
+                                                            <constraint firstAttribute="width" secondItem="P0P-X4-uSQ" secondAttribute="height" multiplier="1:1" id="AZP-GN-y8E"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gLH-sE-KCq">
+                                                        <rect key="frame" x="22.5" y="62" width="115" height="33.5"/>
+                                                        <string key="text">Riot iOS
+Riot X for Android</string>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="320" id="TyM-5Y-YSw"/>
+                                        </constraints>
+                                    </stackView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="or another cross-signing capable Matrix client" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rFM-AQ-wAB">
+                                        <rect key="frame" x="20" y="249.5" width="335" height="14.5"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
+                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -39,11 +90,15 @@
                                     <constraint firstAttribute="trailing" secondItem="d5Y-pj-XsI" secondAttribute="trailing" constant="20" id="3Mi-wg-su3"/>
                                     <constraint firstAttribute="bottom" secondItem="rFM-AQ-wAB" secondAttribute="bottom" constant="20" id="4Gy-0v-H5m"/>
                                     <constraint firstAttribute="height" priority="250" id="72E-My-WHK"/>
+                                    <constraint firstItem="ANK-XS-dY7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="IlB-Ch-LEo" secondAttribute="leading" id="9BR-a1-3By"/>
+                                    <constraint firstItem="rFM-AQ-wAB" firstAttribute="top" secondItem="ANK-XS-dY7" secondAttribute="bottom" constant="20" id="Goe-Tt-Jbm"/>
                                     <constraint firstItem="d5Y-pj-XsI" firstAttribute="leading" secondItem="IlB-Ch-LEo" secondAttribute="leading" constant="20" id="Okc-DX-xdE"/>
                                     <constraint firstItem="d5Y-pj-XsI" firstAttribute="top" secondItem="IlB-Ch-LEo" secondAttribute="top" constant="10" id="Pkt-ox-zZs"/>
                                     <constraint firstItem="rFM-AQ-wAB" firstAttribute="leading" secondItem="IlB-Ch-LEo" secondAttribute="leading" constant="20" id="PtP-G3-lC6"/>
                                     <constraint firstAttribute="trailing" secondItem="rFM-AQ-wAB" secondAttribute="trailing" constant="20" id="Q78-Oe-Lh2"/>
-                                    <constraint firstItem="rFM-AQ-wAB" firstAttribute="top" secondItem="d5Y-pj-XsI" secondAttribute="bottom" constant="32" id="VYD-WF-CdW"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ANK-XS-dY7" secondAttribute="trailing" id="RQI-kF-Z1h"/>
+                                    <constraint firstItem="ANK-XS-dY7" firstAttribute="top" secondItem="d5Y-pj-XsI" secondAttribute="bottom" constant="40" id="gnp-AK-DYa"/>
+                                    <constraint firstItem="ANK-XS-dY7" firstAttribute="centerX" secondItem="IlB-Ch-LEo" secondAttribute="centerX" id="nEo-IT-GtP"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -56,13 +111,21 @@
                         <viewLayoutGuide key="safeArea" id="GnW-bb-rsL"/>
                     </view>
                     <connections>
+                        <outlet property="additionalInformationLabel" destination="rFM-AQ-wAB" id="TDZ-Xd-gP1"/>
+                        <outlet property="desktopClientImageView" destination="nrB-Kj-4zE" id="yl0-Ju-luK"/>
+                        <outlet property="desktopClientLabel" destination="iBP-FF-AYM" id="6N0-AJ-rIX"/>
                         <outlet property="informationLabel" destination="d5Y-pj-XsI" id="TMb-bc-58a"/>
-                        <outlet property="verificationWaitingLabel" destination="rFM-AQ-wAB" id="TDZ-Xd-gP1"/>
+                        <outlet property="mobileClientImageView" destination="P0P-X4-uSQ" id="WtT-ix-yq8"/>
+                        <outlet property="mobileClientLabel" destination="gLH-sE-KCq" id="jQ0-7U-mr8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OMs-Ee-CjK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3198" y="-647"/>
+            <point key="canvasLocation" x="-3199.1999999999998" y="-647.22638680659679"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="monitor" width="24" height="24"/>
+        <image name="smartphone" width="24" height="24"/>
+    </resources>
 </document>
