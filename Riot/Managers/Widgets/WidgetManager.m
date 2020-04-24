@@ -25,7 +25,8 @@
 
 NSString *const kWidgetMatrixEventTypeString  = @"m.widget";
 NSString *const kWidgetModularEventTypeString = @"im.vector.modular.widgets";
-NSString *const kWidgetTypeJitsi = @"jitsi";
+NSString *const kWidgetTypeJitsiV1 = @"jitsi";
+NSString *const kWidgetTypeJitsiV2 = @"m.jitsi";
 NSString *const kWidgetTypeStickerPicker = @"m.stickerpicker";
 
 NSString *const kWidgetManagerDidUpdateWidgetNotification = @"kWidgetManagerDidUpdateWidgetNotification";
@@ -278,7 +279,8 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     }
 
     // Build data for a jitsi widget
-    NSString *widgetId = [NSString stringWithFormat:@"%@_%@_%@", kWidgetTypeJitsi, room.mxSession.myUser.userId, @((uint64_t)([[NSDate date] timeIntervalSince1970] * 1000))];
+    // Riot-Web still uses V1 type
+    NSString *widgetId = [NSString stringWithFormat:@"%@_%@_%@", kWidgetTypeJitsiV1, room.mxSession.myUser.userId, @((uint64_t)([[NSDate date] timeIntervalSince1970] * 1000))];
 
     // Create a random enough jitsi conference id
     // Note: the jitsi server automatically creates conference when the conference
@@ -295,7 +297,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     return [self createWidget:widgetId
                   withContent:@{
                                 @"url": url,
-                                @"type": kWidgetTypeJitsi,
+                                @"type": kWidgetTypeJitsiV1,
                                 @"data": @{
                                         @"widgetSessionId": widgetSessionId
                                         }

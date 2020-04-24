@@ -69,7 +69,8 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 
             if (widget.isActive)
             {
-                if ([widget.type isEqualToString:kWidgetTypeJitsi])
+                if ([widget.type isEqualToString:kWidgetTypeJitsiV1]
+                    || [widget.type isEqualToString:kWidgetTypeJitsiV2])
                 {
                     // This is an alive jitsi widget
                     displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_added", @"Vector", nil), senderDisplayName];
@@ -97,7 +98,8 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                         Widget *activeWidget = [[Widget alloc] initWithWidgetEvent:widgetStateEvent inMatrixSession:mxSession];
                         if (activeWidget.isActive)
                         {
-                            if ([activeWidget.type isEqualToString:kWidgetTypeJitsi])
+                            if ([activeWidget.type isEqualToString:kWidgetTypeJitsiV1]
+                                || [activeWidget.type isEqualToString:kWidgetTypeJitsiV2])
                             {
                                 // This was a jitsi widget
                                 displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_removed", @"Vector", nil), senderDisplayName];
