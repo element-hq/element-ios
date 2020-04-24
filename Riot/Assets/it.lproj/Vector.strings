@@ -1021,3 +1021,14 @@
 "key_verification_scan_confirmation_scanned_title" = "Quasi fatto!";
 "key_verification_scan_confirmation_scanned_user_information" = "%@ sta mostrando lo stesso scudo?";
 "key_verification_scan_confirmation_scanned_device_information" = "L'altro dispositivo sta mostrando lo stesso scudo?";
+"room_participants_action_security_status_complete_security" = "Completa la sicurezza";
+"security_settings_crosssigning_info_not_bootstrapped" = "La firma incrociata non è ancora impostata.";
+"security_settings_crosssigning_info_exists" = "Il tuo account ha un'identità a firma incrociata, ma non è ancora fidato da questa sessione. Completa la sicurezza di questa sessione.";
+"security_settings_crosssigning_info_trusted" = "La firma incrociata è attivata. Puoi fidarti di altri utenti e delle tue altre sessioni in base alla firma ma non puoi firmare da questa sessione perchè non ha le chiavi private di firma incrociata. Completa la sicurezza di questa sessione.";
+"security_settings_crosssigning_info_ok" = "La firma incrociata è attiva.";
+"security_settings_crosssigning_bootstrap" = "Inizializza firma incrociata";
+"security_settings_crosssigning_reset" = "Reimposta firma incrociata";
+"security_settings_crosssigning_complete_security" = "Completa la sicurezza";
+"security_settings_complete_security_alert_title" = "Completa la sicurezza";
+"security_settings_complete_security_alert_message" = "Dovresti completare la sicurezza prima sulla tua sessione attuale.";
+"security_settings_coming_soon" = "Spiacenti. Questa azione non è ancora disponibile su Riot-iOS. Prova ad usare un altro client Matrix.";
