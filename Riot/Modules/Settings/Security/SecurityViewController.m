@@ -934,7 +934,14 @@ UIDocumentInteractionControllerDelegate>
             {
                 MXDevice *device = devicesArray[deviceIndex];
                 
-                if (self.mainSession.crypto.crossSigning.canCrossSign)
+                if (self.mainSession.crypto.crossSigning.state == MXCrossSigningStateNotBootstrapped)
+                {
+                    // Display the device details. The verification will fail there.
+                    ManageSessionViewController *viewController = [ManageSessionViewController instantiateWithMatrixSession:self.mainSession andDevice:device];
+                    
+                    [self pushViewController:viewController];
+                }
+                else if (self.mainSession.crypto.crossSigning.canCrossSign)
                 {
                     ManageSessionViewController *viewController = [ManageSessionViewController instantiateWithMatrixSession:self.mainSession andDevice:device];
                     
