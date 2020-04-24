@@ -1051,3 +1051,4 @@
 "key_verification_scan_confirmation_scanned_title" = "Majdnem kész!";
 "key_verification_scan_confirmation_scanned_user_information" = "%s is ugyanazt a pajzsot mutatja?";
 "key_verification_scan_confirmation_scanned_device_information" = "A másik eszköz is ugyanazt a pajzsot mutatja?";
+"room_participants_action_security_status_complete_security" = "Biztonsági beállítás befejezése";
