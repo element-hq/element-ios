@@ -18,6 +18,7 @@
 #import "WidgetManager.h"
 
 #import "Riot-Swift.h"
+#import "JitsiWidgetData.h"
 
 #import <MatrixKit/MatrixKit.h>
 
@@ -289,18 +290,40 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     NSString *confId = [room.roomId substringWithRange:NSMakeRange(1, [room.roomId rangeOfString:@":"].location - 1)];
     confId = [confId stringByAppendingString:widgetSessionId];
 
-    // TODO: This url should come from modular API
-    // Note: this url can be used as is inside a web container (like iframe for Riot-web)
+    
+    // Build widget url
     // Riot-iOS does not directly use it but extracts params from it (see `[JitsiViewController openWidget:withVideo:]`)
-    NSString *url = [NSString stringWithFormat:@"%@/widgets/jitsi.html?confId=%@&isAudioConf=%@&displayName=$matrix_display_name&avatarUrl=$matrix_avatar_url&email=$matrix_user_id@", config.apiUrl, confId, video ? @"false" : @"true"];
+    // This url can be used as is inside a web container (like iframe for Riot-web)
+    
+    // Build it from the riot-web app
+    NSString *appUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrl"];
+    
+    // We mix v1 and v2 param for backward compability
+    NSString *v1Params = [NSString stringWithFormat:@"confId=%@&isAudioConf=%@&displayName=$matrix_display_name&avatarUrl=$matrix_avatar_url&email=$matrix_user_id", confId, video ? @"false" : @"true"];
+    NSString *v2Params = [NSString stringWithFormat:@"conferenceDomain=$domain&conferenceId=$conferenceId&isAudioOnly=$isAudioOnly&displayName=$matrix_display_name&avatarUrl=$matrix_avatar_url&userId=$matrix_user_id"];
+    
+    NSString *url = [NSString stringWithFormat:@"%@/widgets/jitsi.html?%@#%@", appUrlString, v1Params, v2Params];
 
+    
+    // Build widget data
+    // We mix v1 and v2 widget data for backward compability
+    NSString *preferredJitsiServerUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"jitsiServerURL"];
+    NSURL *preferredJitsiServerUrl = [NSURL URLWithString:preferredJitsiServerUrlString];
+    
+    JitsiWidgetData *jitsiWidgetData = [JitsiWidgetData new];
+    jitsiWidgetData.domain = preferredJitsiServerUrl.host;
+    jitsiWidgetData.conferenceId = confId;
+    jitsiWidgetData.isAudioOnly = !video;
+    NSDictionary *v2WidgetData = jitsiWidgetData.JSONDictionary;
+    
+    NSMutableDictionary *v1AndV2WidgetData = [v2WidgetData mutableCopy];
+    v1AndV2WidgetData[@"widgetSessionId"] = widgetSessionId;
+    
     return [self createWidget:widgetId
                   withContent:@{
                                 @"url": url,
                                 @"type": kWidgetTypeJitsiV1,
-                                @"data": @{
-                                        @"widgetSessionId": widgetSessionId
-                                        }
+                                @"data": v1AndV2WidgetData
                                 }
                        inRoom:room
                       success:success
