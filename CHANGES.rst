@@ -1,7 +1,8 @@
-Changes in 0.11.1 (2020-xx-xx)
+Changes in 0.11.1 (2020-04-24)
 ===============================================
 
 Improvements:
+ * Upgrade MatrixKit version ([v0.12.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.1)).
  * New icons.
  * Cross-signing: Allow incoming device verification request from other user (#3139).
  * Cross-signing: Allow to verify each device of users with no cross-signing (#3138).
