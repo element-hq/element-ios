@@ -20,14 +20,25 @@ import UIKit
 
 final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     
-    // MARK: - Constants    
+    // MARK: - Constants
+    
+    private enum Constants {
+        static let clientNamesLineSpacing: CGFloat = 3.0
+    }
     
     // MARK: - Properties
     
     // MARK: Outlets
     
     @IBOutlet private weak var informationLabel: UILabel!
-    @IBOutlet private weak var verificationWaitingLabel: UILabel!
+    
+    @IBOutlet private weak var desktopClientImageView: UIImageView!
+    @IBOutlet private weak var desktopClientLabel: UILabel!
+    
+    @IBOutlet private weak var mobileClientImageView: UIImageView!
+    @IBOutlet private weak var mobileClientLabel: UILabel!
+    
+    @IBOutlet private weak var additionalInformationLabel: UILabel!
     
     // MARK: Private
 
@@ -62,7 +73,6 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         self.update(theme: self.theme)
         
         self.viewModel.viewDelegate = self
-
         self.viewModel.process(viewAction: .loadData)
     }
     
@@ -82,7 +92,11 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         }
         
         self.informationLabel.textColor = theme.textPrimaryColor
-        self.verificationWaitingLabel.textColor = theme.textSecondaryColor        
+        self.desktopClientLabel.textColor = theme.textPrimaryColor
+        self.desktopClientImageView.tintColor = theme.tintColor
+        self.mobileClientLabel.textColor = theme.textPrimaryColor
+        self.mobileClientImageView.tintColor = theme.tintColor
+        self.additionalInformationLabel.textColor = theme.textSecondaryColor
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -103,8 +117,15 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         
         self.title = VectorL10n.deviceVerificationSelfVerifyWaitTitle
         
-        self.verificationWaitingLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitWaiting
         self.informationLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitInformation
+        self.desktopClientLabel.vc_setText("\(VectorL10n.clientWebName)\n\(VectorL10n.clientDesktopName)", withLineSpacing: Constants.clientNamesLineSpacing, alignement: .center)
+        self.mobileClientLabel.vc_setText("\(VectorL10n.clientIosName)\n\(VectorL10n.clientAndroidName)",
+            withLineSpacing: Constants.clientNamesLineSpacing, alignement: .center)
+        
+        self.desktopClientImageView.image = Asset.Images.monitor.image.withRenderingMode(.alwaysTemplate)
+        self.mobileClientImageView.image = Asset.Images.smartphone.image.withRenderingMode(.alwaysTemplate)
+        
+        self.additionalInformationLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitAdditionalInformation
     }
 
     private func render(viewState: KeyVerificationSelfVerifyWaitViewState) {
@@ -125,6 +146,7 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     private func renderLoaded(isNewSignIn: Bool) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         
+        self.title = isNewSignIn ? VectorL10n.deviceVerificationSelfVerifyWaitNewSignInTitle : VectorL10n.deviceVerificationSelfVerifyWaitTitle
         self.cancelBarButtonItem?.title = isNewSignIn ? VectorL10n.skip : VectorL10n.cancel
     }
     

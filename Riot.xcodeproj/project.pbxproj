@@ -177,6 +177,7 @@
 		B110872621F098F0003554A5 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B110872221F098F0003554A5 /* ActivityIndicatorView.swift */; };
 		B11291EA238D35590077B478 /* SlidingModalPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11291E9238D35590077B478 /* SlidingModalPresentable.swift */; };
 		B11291EC238D704C0077B478 /* FloatingPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11291EB238D704C0077B478 /* FloatingPoint.swift */; };
+		B117E1F22453244B0089679F /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B117E1F12453244B0089679F /* UILabel.swift */; };
 		B120863722EF375F001F89E0 /* ReactionHistoryBridgeCoordinatorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B120863622EF375F001F89E0 /* ReactionHistoryBridgeCoordinatorPresenter.swift */; };
 		B125FE1B231D5BF200B72806 /* SettingsDiscoveryTableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B125FE1A231D5BF200B72806 /* SettingsDiscoveryTableViewSection.swift */; };
 		B125FE1D231D5DE400B72806 /* SettingsDiscoveryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B125FE1C231D5DE400B72806 /* SettingsDiscoveryViewModel.swift */; };
@@ -967,6 +968,7 @@
 		B110872221F098F0003554A5 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
 		B11291E9238D35590077B478 /* SlidingModalPresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingModalPresentable.swift; sourceTree = "<group>"; };
 		B11291EB238D704C0077B478 /* FloatingPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPoint.swift; sourceTree = "<group>"; };
+		B117E1F12453244B0089679F /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		B120863622EF375F001F89E0 /* ReactionHistoryBridgeCoordinatorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionHistoryBridgeCoordinatorPresenter.swift; sourceTree = "<group>"; };
 		B125FE1A231D5BF200B72806 /* SettingsDiscoveryTableViewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDiscoveryTableViewSection.swift; sourceTree = "<group>"; };
 		B125FE1C231D5DE400B72806 /* SettingsDiscoveryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDiscoveryViewModel.swift; sourceTree = "<group>"; };
@@ -4297,6 +4299,7 @@
 				B11291EB238D704C0077B478 /* FloatingPoint.swift */,
 				6E6F1CB224506EC50068B78B /* UITableViewCell.swift */,
 				6E6F1CB424506FA40068B78B /* UITableView.swift */,
+				B117E1F12453244B0089679F /* UILabel.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -5101,6 +5104,7 @@
 				32DB557722FDADE50016329E /* ServiceTermsModalCoordinator.swift in Sources */,
 				32DB557922FDADE50016329E /* ServiceTermsModalScreenViewModel.swift in Sources */,
 				32891D75226728EE00C82226 /* KeyVerificationDataLoadingViewController.swift in Sources */,
+				B117E1F22453244B0089679F /* UILabel.swift in Sources */,
 				F083BDEF1E7009ED00A9B29C /* UINavigationController+Riot.m in Sources */,
 				B1B5581F20EF625800210D55 /* SimpleRoomTitleView.m in Sources */,
 				B1C562E2228C7C8D0037F12A /* RoomContextualMenuViewController.swift in Sources */,
