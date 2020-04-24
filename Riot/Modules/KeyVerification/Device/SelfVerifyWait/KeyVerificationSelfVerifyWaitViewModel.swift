@@ -27,8 +27,8 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     private let session: MXSession
     private let keyVerificationService: KeyVerificationService
     private let verificationManager: MXKeyVerificationManager
+    private let isNewSignIn: Bool
     
-//    private var verificationManager: MXKeyVerificationManager?
     private var keyVerificationRequest: MXKeyVerificationRequest?
     
     // MARK: Public
@@ -38,10 +38,11 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     
     // MARK: - Setup
     
-    init(session: MXSession) {
+    init(session: MXSession, isNewSignIn: Bool) {
         self.session = session
         self.verificationManager = session.crypto.keyVerificationManager
         self.keyVerificationService = KeyVerificationService()
+        self.isNewSignIn = isNewSignIn
     }
     
     deinit {
@@ -62,6 +63,7 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     
     private func loadData() {
         self.registerKeyVerificationManagerNewRequestNotification(for: self.verificationManager)
+        self.update(viewState: .loaded(self.isNewSignIn))
     }
     
     private func cancel() {

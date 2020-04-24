@@ -154,6 +154,7 @@
 
 - (void)userInterfaceThemeDidChange
 {
+    self.navigationBackView.backgroundColor = ThemeService.shared.theme.baseColor;
     [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationBar];
     self.navigationBarSeparatorView.backgroundColor = ThemeService.shared.theme.lineBreakColor;
 
@@ -163,7 +164,7 @@
     // as the main view background color.
     // Hopefully, subviews define their own background color with `theme.backgroundColor`,
     // which makes all work together.
-    self.view.backgroundColor = ThemeService.shared.theme.baseColor;
+    self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
 
     self.authenticationScrollView.backgroundColor = ThemeService.shared.theme.backgroundColor;
 
@@ -437,11 +438,11 @@
     
     if (self.navigationController)
     {
-        [keyVerificationCoordinatorBridgePresenter pushCompleteSecurityFrom:self.navigationController animated:YES];
+        [keyVerificationCoordinatorBridgePresenter pushCompleteSecurityFrom:self.navigationController isNewSignIn:YES animated:YES];
     }
     else
     {
-        [keyVerificationCoordinatorBridgePresenter presentCompleteSecurityFrom:self animated:YES];
+        [keyVerificationCoordinatorBridgePresenter presentCompleteSecurityFrom:self isNewSignIn:YES animated:YES];
     }
     
     self.keyVerificationCoordinatorBridgePresenter = keyVerificationCoordinatorBridgePresenter;

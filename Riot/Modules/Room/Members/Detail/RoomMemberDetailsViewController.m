@@ -243,7 +243,6 @@
         [self userInterfaceThemeDidChange];
         
     }];
-    [self userInterfaceThemeDidChange];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -287,7 +286,9 @@
 
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"RoomMemberDetails"];
-    
+
+    [self userInterfaceThemeDidChange];
+
     // Hide the bottom border of the navigation bar to display the expander header
     [self hideNavigationBarBorder:YES];
     
@@ -467,8 +468,10 @@
         return;
     }
     
-    self.encryptionTrustLevel = [self.mxRoom encryptionTrustLevelForUserId:userId];
-    [self updateMemberInfo];
+    [self.mxRoom encryptionTrustLevelForUserId:userId onComplete:^(UserEncryptionTrustLevel userEncryptionTrustLevel) {
+        self.encryptionTrustLevel = userEncryptionTrustLevel;
+        [self updateMemberInfo];
+    }];
 }
 
 - (BOOL)isRoomMemberCurrentUser
@@ -489,6 +492,11 @@
                                                                                                                                                    userDisplayName:self.mxRoomMember.displayname];
     [userVerificationCoordinatorBridgePresenter start];
     self.userVerificationCoordinatorBridgePresenter = userVerificationCoordinatorBridgePresenter;
+}
+
+- (void)presentCompleteSecurity
+{
+    [[AppDelegate theDelegate] presentCompleteSecurityForSession:self.mainSession];
 }
 
 #pragma mark - Hide/Show navigation bar border
@@ -519,6 +527,7 @@
     }
 
     // Main Navigation bar opacity must follow
+    self.navigationController.navigationBar.translucent = isHidden;
     mainNavigationController.navigationBar.translucent = isHidden;
 }
 
@@ -839,8 +848,18 @@
                 case UserEncryptionTrustLevelTrusted:
                     statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_verified", @"Vector", nil);
                     break;
-                case UserEncryptionTrustLevelNormal:
-                    statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_verify", @"Vector", nil);
+                case UserEncryptionTrustLevelNotVerified:
+                case UserEncryptionTrustLevelNoCrossSigning:
+                {
+                    if (self.isRoomMemberCurrentUser)
+                    {
+                        statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_complete_security", @"Vector", nil);
+                    }
+                    else
+                    {
+                        statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_verify", @"Vector", nil);
+                    }
+                }
                     break;
                 case UserEncryptionTrustLevelWarning:
                     statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_warning", @"Vector", nil);
@@ -872,7 +891,8 @@
             
             switch (self.encryptionTrustLevel) {
                 case UserEncryptionTrustLevelWarning:
-                case UserEncryptionTrustLevelNormal:
+                case UserEncryptionTrustLevelNotVerified:
+                case UserEncryptionTrustLevelNoCrossSigning:
                 case UserEncryptionTrustLevelTrusted:
                     [encryptionInformation appendString:NSLocalizedStringFromTable(@"room_participants_security_information_room_encrypted", @"Vector", nil)];
                     break;
@@ -901,6 +921,11 @@
             encryptionInfoCell.accessoryType = UITableViewCellAccessoryNone;
             encryptionInfoCell.contentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
             encryptionInfoCell.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+
+            //  extend background color to safe area
+            UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+            bgView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+            encryptionInfoCell.backgroundView = bgView;
             
             cell = encryptionInfoCell;
         }
@@ -1025,9 +1050,16 @@
 {
     if (indexPath.section == securityIndex)
     {
-        if (self.encryptionTrustLevel == UserEncryptionTrustLevelNormal)
+        if (self.encryptionTrustLevel == UserEncryptionTrustLevelNotVerified)
         {
-            [self startUserVerification];
+            if (self.isRoomMemberCurrentUser)
+            {
+                [self presentCompleteSecurity];
+            }
+            else
+            {
+                [self startUserVerification];
+            }
         }
         else
         {

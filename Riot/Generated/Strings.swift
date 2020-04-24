@@ -414,6 +414,22 @@ internal enum VectorL10n {
   internal static var cancel: String { 
     return VectorL10n.tr("Vector", "cancel") 
   }
+  /// Riot X for Android
+  internal static var clientAndroidName: String { 
+    return VectorL10n.tr("Vector", "client_android_name") 
+  }
+  /// Riot Desktop
+  internal static var clientDesktopName: String { 
+    return VectorL10n.tr("Vector", "client_desktop_name") 
+  }
+  /// Riot iOS
+  internal static var clientIosName: String { 
+    return VectorL10n.tr("Vector", "client_ios_name") 
+  }
+  /// Riot Web
+  internal static var clientWebName: String { 
+    return VectorL10n.tr("Vector", "client_web_name") 
+  }
   /// Close
   internal static var close: String { 
     return VectorL10n.tr("Vector", "close") 
@@ -822,17 +838,21 @@ internal enum VectorL10n {
   internal static var deviceVerificationSelfVerifyStartWaiting: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_start_waiting") 
   }
-  /// Use an existing session to verify this new one, granting it access to encrypted messages.
+  /// or another cross-signing capable Matrix client
+  internal static var deviceVerificationSelfVerifyWaitAdditionalInformation: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_wait_additional_information") 
+  }
+  /// Verify this session from one of your others sessions, granting it access to encrypted messages.\n\nUse the latest Riot on your other devices:
   internal static var deviceVerificationSelfVerifyWaitInformation: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_information") 
+  }
+  /// Verify this login
+  internal static var deviceVerificationSelfVerifyWaitNewSignInTitle: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_wait_new_sign_in_title") 
   }
   /// Complete security
   internal static var deviceVerificationSelfVerifyWaitTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_title") 
-  }
-  /// Waiting…
-  internal static var deviceVerificationSelfVerifyWaitWaiting: String { 
-    return VectorL10n.tr("Vector", "device_verification_self_verify_wait_waiting") 
   }
   /// Verify by comparing a short text string
   internal static var deviceVerificationStartTitle: String { 
@@ -1510,7 +1530,7 @@ internal enum VectorL10n {
   internal static var keyBackupSetupTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_title") 
   }
-  /// You have to bootstrap cross-signing
+  /// You need to bootstrap cross-signing first.
   internal static var keyVerificationBootstrapNotSetupMessage: String { 
     return VectorL10n.tr("Vector", "key_verification_bootstrap_not_setup_message") 
   }
@@ -2406,6 +2426,10 @@ internal enum VectorL10n {
   internal static var roomParticipantsActionSectionSecurity: String { 
     return VectorL10n.tr("Vector", "room_participants_action_section_security") 
   }
+  /// Complete security
+  internal static var roomParticipantsActionSecurityStatusCompleteSecurity: String { 
+    return VectorL10n.tr("Vector", "room_participants_action_security_status_complete_security") 
+  }
   /// Loading…
   internal static var roomParticipantsActionSecurityStatusLoading: String { 
     return VectorL10n.tr("Vector", "room_participants_action_security_status_loading") 
@@ -2822,9 +2846,49 @@ internal enum VectorL10n {
   internal static var securitySettingsBlacklistUnverifiedDevicesDescription: String { 
     return VectorL10n.tr("Vector", "security_settings_blacklist_unverified_devices_description") 
   }
+  /// Sorry. This action is not available on Riot-iOS yet. Please use another Matrix client to set it up. Riot-iOS will use it.
+  internal static var securitySettingsComingSoon: String { 
+    return VectorL10n.tr("Vector", "security_settings_coming_soon") 
+  }
+  /// You should complete security on your current session first.
+  internal static var securitySettingsCompleteSecurityAlertMessage: String { 
+    return VectorL10n.tr("Vector", "security_settings_complete_security_alert_message") 
+  }
+  /// Complete security
+  internal static var securitySettingsCompleteSecurityAlertTitle: String { 
+    return VectorL10n.tr("Vector", "security_settings_complete_security_alert_title") 
+  }
   /// CROSS-SIGNING
   internal static var securitySettingsCrosssigning: String { 
     return VectorL10n.tr("Vector", "security_settings_crosssigning") 
+  }
+  /// Bootstrap cross-signing
+  internal static var securitySettingsCrosssigningBootstrap: String { 
+    return VectorL10n.tr("Vector", "security_settings_crosssigning_bootstrap") 
+  }
+  /// Complete security
+  internal static var securitySettingsCrosssigningCompleteSecurity: String { 
+    return VectorL10n.tr("Vector", "security_settings_crosssigning_complete_security") 
+  }
+  /// Your account has a cross-signing identity, but it is not yet trusted by this session. Complete security of this session.
+  internal static var securitySettingsCrosssigningInfoExists: String { 
+    return VectorL10n.tr("Vector", "security_settings_crosssigning_info_exists") 
+  }
+  /// Cross-signing is not yet set up.
+  internal static var securitySettingsCrosssigningInfoNotBootstrapped: String { 
+    return VectorL10n.tr("Vector", "security_settings_crosssigning_info_not_bootstrapped") 
+  }
+  /// Cross-signing is enabled.
+  internal static var securitySettingsCrosssigningInfoOk: String { 
+    return VectorL10n.tr("Vector", "security_settings_crosssigning_info_ok") 
+  }
+  /// Cross-signing is enabled. You can trust other users and your other sessions based on cross-signing but you cannot cross-sign from this session because it does not have cross-signing private keys. Complete security of this session.
+  internal static var securitySettingsCrosssigningInfoTrusted: String { 
+    return VectorL10n.tr("Vector", "security_settings_crosssigning_info_trusted") 
+  }
+  /// Reset cross-signing
+  internal static var securitySettingsCrosssigningReset: String { 
+    return VectorL10n.tr("Vector", "security_settings_crosssigning_reset") 
   }
   /// MY SESSIONS
   internal static var securitySettingsCryptoSessions: String { 

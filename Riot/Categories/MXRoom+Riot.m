@@ -324,35 +324,44 @@
     }
 }
 
-- (UserEncryptionTrustLevel)encryptionTrustLevelForUserId:(NSString*)userId
+- (void)encryptionTrustLevelForUserId:(NSString*)userId onComplete:(void (^)(UserEncryptionTrustLevel userEncryptionTrustLevel))onComplete
 {
-    UserEncryptionTrustLevel userEncryptionTrustLevel;
-    
     if (self.mxSession.crypto)
     {
-        MXUsersTrustLevelSummary *usersTrustLevelSummary = [self.mxSession.crypto trustLevelSummaryForUserIds:@[userId]];
-        
-        double trustedDevicesPercentage = usersTrustLevelSummary.trustedDevicesProgress.fractionCompleted;
-        
-        if (trustedDevicesPercentage >= 1.0)
-        {
-            userEncryptionTrustLevel = UserEncryptionTrustLevelTrusted;
-        }
-        else if (trustedDevicesPercentage == 0.0)
-        {
-            userEncryptionTrustLevel = UserEncryptionTrustLevelNormal;
-        }
-        else
-        {
-            userEncryptionTrustLevel = UserEncryptionTrustLevelWarning;
-        }
+        [self.mxSession.crypto trustLevelSummaryForUserIds:@[userId] onComplete:^(MXUsersTrustLevelSummary *usersTrustLevelSummary) {
+            
+            UserEncryptionTrustLevel userEncryptionTrustLevel;
+            double trustedDevicesPercentage = usersTrustLevelSummary.trustedDevicesProgress.fractionCompleted;
+            
+            if (trustedDevicesPercentage >= 1.0)
+            {
+                userEncryptionTrustLevel = UserEncryptionTrustLevelTrusted;
+            }
+            else if (trustedDevicesPercentage == 0.0)
+            {
+                // Verify if the user has the user has cross-signing enabled
+                if ([self.mxSession.crypto crossSigningKeysForUser:userId])
+                {
+                    userEncryptionTrustLevel = UserEncryptionTrustLevelNotVerified;
+                }
+                else
+                {
+                    userEncryptionTrustLevel = UserEncryptionTrustLevelNoCrossSigning;
+                }
+            }
+            else
+            {
+                userEncryptionTrustLevel = UserEncryptionTrustLevelWarning;
+            }
+            
+            onComplete(userEncryptionTrustLevel);
+            
+        }];
     }
     else
     {
-        userEncryptionTrustLevel = UserEncryptionTrustLevelNone;
+        onComplete(UserEncryptionTrustLevelNone);
     }
-    
-    return userEncryptionTrustLevel;
 }
 
 #pragma mark -

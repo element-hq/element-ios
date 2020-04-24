@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -64,14 +64,11 @@
         <scene sceneID="eq5-qi-gDd">
             <objects>
                 <viewController id="nDS-pp-sWM" customClass="RoomMemberDetailsViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="AgI-3V-llt"/>
-                        <viewControllerLayoutGuide type="bottom" id="6ie-9b-cBo"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="N8z-LO-417">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="XYt-EG-3Qa"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e8Z-uW-oDv" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -105,14 +102,11 @@
         <scene sceneID="rUg-1s-vHX">
             <objects>
                 <viewController id="KDg-aD-xlK" customClass="RoomSearchViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="F5n-wr-hGG"/>
-                        <viewControllerLayoutGuide type="bottom" id="BxE-Q4-YjP"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Kg1-rX-y7X">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="6da-hc-v3U"/>
                     </view>
                     <connections>
                         <segue destination="Too-LV-OLW" kind="show" identifier="showTimeline" id="P1V-0d-mYL"/>
@@ -126,10 +120,6 @@
         <scene sceneID="fKQ-Tq-qUc">
             <objects>
                 <viewController storyboardIdentifier="UsersDevicesViewControllerStoryboardId" id="z83-KC-trJ" customClass="UsersDevicesViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="KBN-JV-gSS"/>
-                        <viewControllerLayoutGuide type="bottom" id="lAN-yJ-zNI"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="b5v-sy-iSu">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -141,11 +131,12 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="43F-4t-lHi" secondAttribute="trailing" id="6FJ-ku-UE3"/>
-                            <constraint firstItem="43F-4t-lHi" firstAttribute="bottom" secondItem="lAN-yJ-zNI" secondAttribute="top" id="GK2-7h-FE0"/>
-                            <constraint firstItem="43F-4t-lHi" firstAttribute="leading" secondItem="b5v-sy-iSu" secondAttribute="leading" id="Qda-BV-cf8"/>
+                            <constraint firstItem="pwd-ur-GXQ" firstAttribute="trailing" secondItem="43F-4t-lHi" secondAttribute="trailing" id="6FJ-ku-UE3"/>
+                            <constraint firstItem="43F-4t-lHi" firstAttribute="bottom" secondItem="pwd-ur-GXQ" secondAttribute="bottom" id="GK2-7h-FE0"/>
+                            <constraint firstItem="43F-4t-lHi" firstAttribute="leading" secondItem="pwd-ur-GXQ" secondAttribute="leading" id="Qda-BV-cf8"/>
                             <constraint firstItem="43F-4t-lHi" firstAttribute="top" secondItem="b5v-sy-iSu" secondAttribute="top" id="uhO-a4-0iq"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="pwd-ur-GXQ"/>
                     </view>
                     <navigationItem key="navigationItem" id="Wgm-wm-4Qq"/>
                     <connections>
@@ -168,14 +159,11 @@
         <scene sceneID="Qba-PP-lco">
             <objects>
                 <viewController id="IGB-jr-yFz" customClass="PeopleViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Mhy-d3-Jh6"/>
-                        <viewControllerLayoutGuide type="bottom" id="Hkk-qB-8tq"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="zXV-CY-rLP">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="301-pa-jS8"/>
                     </view>
                     <tabBarItem key="tabBarItem" tag="2" image="tab_people" selectedImage="tab_people_selected" id="edr-fK-bgM">
                         <userDefinedRuntimeAttributes>
@@ -194,14 +182,11 @@
         <scene sceneID="z6B-k5-ano">
             <objects>
                 <viewController id="HnD-LA-psC" customClass="FavouritesViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="pOc-AC-QkD"/>
-                        <viewControllerLayoutGuide type="bottom" id="W6L-Au-CaZ"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Caq-TK-JOm">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="xOw-nN-oAQ"/>
                     </view>
                     <tabBarItem key="tabBarItem" tag="1" image="tab_favourites" selectedImage="tab_favourites_selected" id="UVh-Xd-zDZ">
                         <userDefinedRuntimeAttributes>
@@ -217,14 +202,11 @@
         <scene sceneID="ijO-nb-yi4">
             <objects>
                 <viewController id="nJt-uq-tV9" customClass="UnifiedSearchViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="V3l-gx-WNN"/>
-                        <viewControllerLayoutGuide type="bottom" id="fYW-Kr-Hqf"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="laS-bb-xrK">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="GMh-GI-xDk"/>
                     </view>
                     <connections>
                         <segue destination="aHG-CH-koI" kind="show" identifier="showDirectory" id="ndE-eu-9lm"/>
@@ -238,14 +220,11 @@
         <scene sceneID="SZi-Ac-WJp">
             <objects>
                 <viewController id="pBa-To-3YT" customClass="HomeViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="m3s-18-JgR"/>
-                        <viewControllerLayoutGuide type="bottom" id="2lp-r9-RR5"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="hxX-1O-zT8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="DdT-DO-t4t"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="tab_home" selectedImage="tab_home_selected" id="hNI-yH-EXj">
                         <userDefinedRuntimeAttributes>
@@ -310,14 +289,11 @@
         <scene sceneID="FoA-N2-3aF">
             <objects>
                 <viewController hidesBottomBarWhenPushed="YES" id="ZlD-EU-ncw" customClass="AuthenticationViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="crg-iM-twR"/>
-                        <viewControllerLayoutGuide type="bottom" id="gbK-Nm-HUT"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="wIi-Yi-2pi">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="RKa-GQ-Ryt"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mvZ-se-pqQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -395,14 +371,11 @@
         <scene sceneID="grY-bt-CcD">
             <objects>
                 <viewController id="gkO-rP-nGK" customClass="ContactDetailsViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="0f8-Tg-Zlw"/>
-                        <viewControllerLayoutGuide type="bottom" id="GF2-be-Jca"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="eRR-tG-G8a">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="wd9-gg-o2J"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="01q-h6-40E" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -429,23 +402,20 @@
         <scene sceneID="2wP-Cu-Wca">
             <objects>
                 <viewController storyboardIdentifier="EmptyDetailsViewControllerStoryboardId" id="Cpr-Tz-Az0" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="yS4-RU-AsN"/>
-                        <viewControllerLayoutGuide type="bottom" id="VKG-pW-vMU"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="FdE-yP-vzj">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="6LG-qc-7jf">
-                                <rect key="frame" x="127" y="283" width="120" height="101"/>
+                                <rect key="frame" x="127.5" y="283" width="120" height="101"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="6LG-qc-7jf" firstAttribute="centerY" secondItem="FdE-yP-vzj" secondAttribute="centerY" id="AF1-hZ-uOX"/>
-                            <constraint firstItem="6LG-qc-7jf" firstAttribute="centerX" secondItem="FdE-yP-vzj" secondAttribute="centerX" id="WGk-oE-AqR"/>
+                            <constraint firstItem="6LG-qc-7jf" firstAttribute="centerX" secondItem="1GN-I8-XbV" secondAttribute="centerX" id="WGk-oE-AqR"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="1GN-I8-XbV"/>
                     </view>
                     <navigationItem key="navigationItem" id="c9s-dM-eEg"/>
                 </viewController>
@@ -457,14 +427,11 @@
         <scene sceneID="Rqp-Ti-qpu">
             <objects>
                 <viewController id="SLx-Wj-p7E" customClass="GroupsViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="N1j-ye-uQa"/>
-                        <viewControllerLayoutGuide type="bottom" id="FYD-2t-u4k"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Sl8-9u-7yE">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="18c-VY-z2J"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="tab_groups" selectedImage="tab_groups_selected" id="5x2-xc-uIB"/>
                 </viewController>
@@ -476,16 +443,13 @@
         <scene sceneID="SDg-Pp-8Uj">
             <objects>
                 <viewController id="HPQ-zg-lZR" customClass="RoomsViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Hkg-kw-ioH"/>
-                        <viewControllerLayoutGuide type="bottom" id="UI8-oQ-9M9"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="rNJ-Yf-mVB">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="YOD-wg-gwf"/>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="3" image="tab_rooms" selectedImage="tab_rooms" id="7eS-Ei-00V">
+                    <tabBarItem key="tabBarItem" tag="3" image="tab_rooms" selectedImage="tab_rooms_selected" id="7eS-Ei-00V">
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="TabBarItemRooms"/>
                         </userDefinedRuntimeAttributes>
@@ -521,14 +485,11 @@
         <scene sceneID="rVX-eZ-8XT">
             <objects>
                 <viewController id="NCJ-FV-8di" customClass="StartChatViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="ybc-ex-KQ3"/>
-                        <viewControllerLayoutGuide type="bottom" id="0pc-6H-UO9"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="rVj-X8-v0f">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="Vxa-5E-kHs"/>
                     </view>
                     <navigationItem key="navigationItem" id="Sre-eV-Crk"/>
                 </viewController>
@@ -558,14 +519,11 @@
         <scene sceneID="2zi-xJ-RQo">
             <objects>
                 <viewController id="udm-55-AMb" customClass="ContactsTableViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Jch-ZS-1Mm"/>
-                        <viewControllerLayoutGuide type="bottom" id="7q1-ig-sPp"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="6G9-nj-ktC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="Hpk-d1-xH9"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uv3-zI-b3q" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -608,7 +566,7 @@
         <image name="tab_rooms" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Tfl-tq-LQp"/>
+        <segue reference="bwO-oZ-2vj"/>
         <segue reference="fIR-e3-ssz"/>
         <segue reference="f5u-Y1-7nt"/>
         <segue reference="vCz-dl-6xQ"/>

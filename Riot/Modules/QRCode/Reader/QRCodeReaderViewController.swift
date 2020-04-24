@@ -58,7 +58,8 @@ final class QRCodeReaderViewController: UIViewController {
     }
     
     deinit {
-        self.stopScanning()
+        self.zxCapture.layer.removeFromSuperlayer()
+        self.zxCapture.hard_stop()
     }
     
     // MARK: - Life cycle

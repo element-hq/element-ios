@@ -85,21 +85,21 @@ final class KeyVerificationCoordinatorBridgePresenter: NSObject {
         self.present(coordinator: keyVerificationCoordinator, from: viewController, animated: animated)
     }
     
-    func presentCompleteSecurity(from viewController: UIViewController, animated: Bool) {
+    func presentCompleteSecurity(from viewController: UIViewController, isNewSignIn: Bool, animated: Bool) {
         
         NSLog("[KeyVerificationCoordinatorBridgePresenter] Present complete security from \(viewController)")
         
-        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .completeSecurity)
+        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .completeSecurity(isNewSignIn))
         self.present(coordinator: keyVerificationCoordinator, from: viewController, animated: animated)
     }
     
-    func pushCompleteSecurity(from navigationController: UINavigationController, animated: Bool) {
+    func pushCompleteSecurity(from navigationController: UINavigationController, isNewSignIn: Bool, animated: Bool) {
         
         NSLog("[KeyVerificationCoordinatorBridgePresenter] Push complete security from \(navigationController)")
         
         let navigationRouter = NavigationRouter(navigationController: navigationController)
         
-        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .completeSecurity, navigationRouter: navigationRouter)
+        let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .completeSecurity(isNewSignIn), navigationRouter: navigationRouter)
         keyVerificationCoordinator.delegate = self
         keyVerificationCoordinator.start() // Will trigger view controller push
         

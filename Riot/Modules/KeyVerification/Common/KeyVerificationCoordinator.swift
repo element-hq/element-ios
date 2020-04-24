@@ -91,7 +91,13 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
         self.session = session
         self.verificationFlow = flow
         
-        if case .verifyUser = flow {
+        if case let .incomingRequest(request) = flow {
+            if request.isFromMyUser {
+                self.verificationKind = .device
+            } else {
+                self.verificationKind = .user
+            }
+        } else if case .verifyUser = flow {
             self.verificationKind = .user
         } else {
             self.verificationKind = .device
@@ -116,8 +122,8 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
             rootCoordinator = self.createDataLoadingScreenCoordinator(with: incomingKeyVerificationRequest)
         case .incomingSASTransaction(let incomingSASTransaction):
             rootCoordinator = self.createDataLoadingScreenCoordinator(otherUserId: incomingSASTransaction.otherUserId, otherDeviceId: incomingSASTransaction.otherDeviceId)
-        case .completeSecurity:
-            rootCoordinator = self.createCompleteSecurityCoordinator()
+        case .completeSecurity(let isNewSignIn):
+            rootCoordinator = self.createCompleteSecurityCoordinator(isNewSignIn: isNewSignIn)
         }
 
         rootCoordinator.start()
@@ -149,8 +155,8 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
         self.delegate?.keyVerificationCoordinatorDidCancel(self)
     }
     
-    private func createCompleteSecurityCoordinator() -> KeyVerificationSelfVerifyWaitCoordinatorType {
-        let coordinator = KeyVerificationSelfVerifyWaitCoordinator(session: self.session)
+    private func createCompleteSecurityCoordinator(isNewSignIn: Bool) -> KeyVerificationSelfVerifyWaitCoordinatorType {
+        let coordinator = KeyVerificationSelfVerifyWaitCoordinator(session: self.session, isNewSignIn: isNewSignIn)
         coordinator.delegate = self
         coordinator.start()
         

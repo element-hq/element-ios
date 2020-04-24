@@ -1,3 +1,17 @@
+Changes in 0.11.1 (2020-04-24)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.1)).
+ * New icons.
+ * Cross-signing: Allow incoming device verification request from other user (#3139).
+ * Cross-signing: Allow to verify each device of users with no cross-signing (#3138).
+ * Jitsi: Make Jitsi widgets compatible with Matrix Widget API v2. This allows to use any Jitsi servers (#3150).
+
+Bug fix:
+ * Settings: Security, present complete security when my device is not trusted (#3127).
+ * Settings: Security: Do not ask to complete security if there is no cross-signing (#3147).
+
 Changes in 0.11.0 (2020-04-17)
 ===============================================
 
@@ -21,6 +35,9 @@ Improvements:
  
 Bug fix:
  * Key backup banner is not hidden correctly (#2899). 
+
+Bug fix:
+ * Considered safe area insets for some screens (PR #3084).
 
 Changes in 0.10.5 (2020-04-01)
 ===============================================

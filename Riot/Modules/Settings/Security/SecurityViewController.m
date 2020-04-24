@@ -33,9 +33,9 @@
 enum
 {
     SECTION_CRYPTO_SESSIONS,
-    SECTION_KEYBACKUP,
     SECTION_CROSSSIGNING,
     SECTION_CRYPTOGRAPHY,
+    SECTION_KEYBACKUP,
     SECTION_ADVANCED,
     SECTION_COUNT
 };
@@ -443,17 +443,17 @@ UIDocumentInteractionControllerDelegate>
     switch (crossSigning.state)
     {
         case MXCrossSigningStateNotBootstrapped:
-            crossSigningInformation = @"Cross-signing is not yet set up.";
+            crossSigningInformation = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_info_not_bootstrapped"];
             break;
         case MXCrossSigningStateCrossSigningExists:
-            crossSigningInformation = @"Your account has a cross-signing identity, but it is not yet trusted by this session.";
+            crossSigningInformation = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_info_exists"];
             break;
         case MXCrossSigningStateTrustCrossSigning:
-            crossSigningInformation = @"Cross-signing is enabled. You can trust other users and your other sessions based on cross-signing but you cannot cross-sign from this session because it does not have cross-signing private keys.";
+            crossSigningInformation = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_info_trusted"];
             break;
         case MXCrossSigningStateCanCrossSign:
         case MXCrossSigningStateCanCrossSignAsynchronously:
-            crossSigningInformation =@"Cross-signing is enabled.";
+            crossSigningInformation = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_info_ok"];
             break;
     }
     
@@ -494,7 +494,7 @@ UIDocumentInteractionControllerDelegate>
             switch (action)
             {
                 case CROSSSIGNING_FIRST_ACTION:
-                    [self setUpcrossSigningButtonCellForVerifyingThisSession:buttonCell];
+                    [self setUpcrossSigningButtonCellForCompletingSecurity:buttonCell];
                     break;
                 case CROSSSIGNING_SECOND_ACTION:
                     [self setUpcrossSigningButtonCellForReset:buttonCell];
@@ -505,7 +505,8 @@ UIDocumentInteractionControllerDelegate>
             switch (action)
             {
                 case CROSSSIGNING_FIRST_ACTION:
-                    [self setUpcrossSigningButtonCellForPrivateKeysRequest:buttonCell];
+                    // By verifying our device again, it will get cross-signing keys by gossiping
+                    [self setUpcrossSigningButtonCellForCompletingSecurity:buttonCell];
                     break;
                 case CROSSSIGNING_SECOND_ACTION:
                     [self setUpcrossSigningButtonCellForReset:buttonCell];
@@ -519,7 +520,7 @@ UIDocumentInteractionControllerDelegate>
 
 - (void)setUpcrossSigningButtonCellForBootstrap:(MXKTableViewCellWithButton*)buttonCell
 {
-    NSString *btnTitle = @"Bootstrap cross-signing";
+    NSString *btnTitle = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_bootstrap"];
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
  
@@ -533,7 +534,7 @@ UIDocumentInteractionControllerDelegate>
 
 - (void)setUpcrossSigningButtonCellForReset:(MXKTableViewCellWithButton*)buttonCell
 {
-    NSString *btnTitle = @"Reset cross-signing";
+    NSString *btnTitle = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_reset"];
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
     
@@ -547,53 +548,18 @@ UIDocumentInteractionControllerDelegate>
     [self displayComingSoon];
 }
 
-- (void)setUpcrossSigningButtonCellForVerifyingThisSession:(MXKTableViewCellWithButton*)buttonCell
+- (void)setUpcrossSigningButtonCellForCompletingSecurity:(MXKTableViewCellWithButton*)buttonCell
 {
-    NSString *btnTitle = @"Verify this session";
+    NSString *btnTitle = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_complete_security"];
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
     
-    [buttonCell.mxkButton addTarget:self action:@selector(verifyThisSession:) forControlEvents:UIControlEventTouchUpInside];
-}
-
-- (void)verifyThisSession:(UITapGestureRecognizer *)recognizer
-{
-    // TODO: We should
-    [[AppDelegate theDelegate] showAlertWithTitle:nil message:@"Verify this session from a session which trusts the existing cross-sign identity"];
-}
-
-- (void)setUpcrossSigningButtonCellForPrivateKeysRequest:(MXKTableViewCellWithButton*)buttonCell
-{
-    NSString *btnTitle = @"Request keys";
-    [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
-    [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-    
-    [buttonCell.mxkButton addTarget:self action:@selector(requestCrossSigningPrivateKeys:) forControlEvents:UIControlEventTouchUpInside];
-}
-
-- (void)requestCrossSigningPrivateKeys:(id)recognizer
-{
-    UIButton *button;
-    if ([recognizer isKindOfClass:UIButton.class])
-    {
-        button = (UIButton*)recognizer;
-    }
-    button.enabled = NO;
-    
-    [self.mainSession.crypto.crossSigning requestPrivateKeysToDeviceIds:nil success:^{
-    } onPrivateKeysReceived:^{
-        button.enabled = YES;
-        [self loadCrossSigning];
-        [self reloadData];
-    } failure:^(NSError * _Nonnull error) {
-        NSLog(@"[SecurityVC] requestCrossSigningPrivateKeys: Cannot request cross-signing private keys. Error: %@", error);
-        button.enabled = YES;
-    }];
+    [buttonCell.mxkButton addTarget:self action:@selector(presentCompleteSecurity) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)displayComingSoon
 {
-    [[AppDelegate theDelegate] showAlertWithTitle:nil message:@"Sorry. This action is not available on Riot-iOS yet. Please use another Matrix client."];
+    [[AppDelegate theDelegate] showAlertWithTitle:nil message:[NSBundle mxk_localizedStringForKey:@"security_settings_coming_soon"]];
 }
 
 
@@ -651,7 +617,7 @@ UIDocumentInteractionControllerDelegate>
 {
     MXKTableViewCellWithLabelAndSwitch *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier] forIndexPath:indexPath];
 
-    cell.mxkLabelLeadingConstraint.constant = cell.separatorInset.left;
+    cell.mxkLabelLeadingConstraint.constant = cell.vc_separatorInset.left;
     cell.mxkSwitchTrailingConstraint.constant = 15;
 
     cell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
@@ -707,6 +673,11 @@ UIDocumentInteractionControllerDelegate>
 
 - (UIImage*)shieldImageForDevice:(NSString*)deviceId
 {
+    if (!self.mainSession.crypto.crossSigning.canCrossSign)
+    {
+        return [UIImage imageNamed:@"encryption_normal"];
+    }
+    
     UIImage* shieldImageForDevice = [UIImage imageNamed:@"encryption_warning"];
     MXDeviceInfo *device = [self.mainSession.crypto deviceWithDeviceId:deviceId ofUser:self.mainSession.myUser.userId];
     if (device.trustLevel.isVerified)
@@ -738,8 +709,8 @@ UIDocumentInteractionControllerDelegate>
     textViewCell.mxkTextView.textColor = ThemeService.shared.theme.textPrimaryColor;
     textViewCell.mxkTextView.font = [UIFont systemFontOfSize:17];
     textViewCell.mxkTextView.backgroundColor = [UIColor clearColor];
-    textViewCell.mxkTextViewLeadingConstraint.constant = tableView.separatorInset.left;
-    textViewCell.mxkTextViewTrailingConstraint.constant = tableView.separatorInset.right;
+    textViewCell.mxkTextViewLeadingConstraint.constant = tableView.vc_separatorInset.left;
+    textViewCell.mxkTextViewTrailingConstraint.constant = tableView.vc_separatorInset.right;
     textViewCell.mxkTextView.accessibilityIdentifier = nil;
 
     return textViewCell;
@@ -961,14 +932,65 @@ UIDocumentInteractionControllerDelegate>
             NSUInteger deviceIndex = row;
             if (deviceIndex < devicesArray.count)
             {
-                ManageSessionViewController *viewController = [ManageSessionViewController instantiateWithMatrixSession:self.mainSession andDevice:devicesArray[deviceIndex]];
+                MXDevice *device = devicesArray[deviceIndex];
                 
-                [self pushViewController:viewController];
+                if (self.mainSession.crypto.crossSigning.state == MXCrossSigningStateNotBootstrapped)
+                {
+                    // Display the device details. The verification will fail there.
+                    ManageSessionViewController *viewController = [ManageSessionViewController instantiateWithMatrixSession:self.mainSession andDevice:device];
+                    
+                    [self pushViewController:viewController];
+                }
+                else if (self.mainSession.crypto.crossSigning.canCrossSign)
+                {
+                    ManageSessionViewController *viewController = [ManageSessionViewController instantiateWithMatrixSession:self.mainSession andDevice:device];
+                    
+                    [self pushViewController:viewController];
+                }
+                else
+                {
+                    if ([device.deviceId isEqualToString:self.mainSession.matrixRestClient.credentials.deviceId])
+                    {
+                        [self presentCompleteSecurity];
+                    }
+                    else
+                    {
+                        [self presentShouldCompleteSecurityAlert];
+                    }
+                }
             }
         }
 
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
+}
+
+- (void)presentCompleteSecurity
+{
+    [[AppDelegate theDelegate] presentCompleteSecurityForSession:self.mainSession];
+}
+
+- (void)presentShouldCompleteSecurityAlert
+{
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"security_settings_complete_security_alert_title", @"Vector", nil)
+                                                                             message:NSLocalizedStringFromTable(@"security_settings_complete_security_alert_message", @"Vector", nil)
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * action) {
+                                                    [self presentCompleteSecurity];
+                                            }]];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
+                                              style:UIAlertActionStyleCancel
+                                            handler:nil]];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+    currentAlert = alertController;
+    [currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCCompleteSecurity"];
 }
 
 #pragma mark - UIDocumentInteractionControllerDelegate
