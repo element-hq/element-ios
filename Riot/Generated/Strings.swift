@@ -1530,7 +1530,7 @@ internal enum VectorL10n {
   internal static var keyBackupSetupTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_title") 
   }
-  /// You have to bootstrap cross-signing first.
+  /// You need to bootstrap cross-signing first.
   internal static var keyVerificationBootstrapNotSetupMessage: String { 
     return VectorL10n.tr("Vector", "key_verification_bootstrap_not_setup_message") 
   }
