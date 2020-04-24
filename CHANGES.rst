@@ -2,8 +2,10 @@ Changes in 0.11.1 (2020-xx-xx)
 ===============================================
 
 Improvements:
+ * New icons.
  * Cross-signing: Allow incoming device verification request from other user (#3139).
  * Cross-signing: Allow to verify each device of users with no cross-signing (#3138).
+ * Jitsi: Make Jitsi widgets compatible with Matrix Widget API v2. This allows to use any Jitsi servers (#3150).
 
 Bug fix:
  * Settings: Security, present complete security when my device is not trusted (#3127).
