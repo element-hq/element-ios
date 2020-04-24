@@ -1530,7 +1530,7 @@ internal enum VectorL10n {
   internal static var keyBackupSetupTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_title") 
   }
-  /// You have to bootstrap cross-signing
+  /// You have to bootstrap cross-signing first.
   internal static var keyVerificationBootstrapNotSetupMessage: String { 
     return VectorL10n.tr("Vector", "key_verification_bootstrap_not_setup_message") 
   }
@@ -2846,7 +2846,7 @@ internal enum VectorL10n {
   internal static var securitySettingsBlacklistUnverifiedDevicesDescription: String { 
     return VectorL10n.tr("Vector", "security_settings_blacklist_unverified_devices_description") 
   }
-  /// Sorry. This action is not available on Riot-iOS yet. Please use another Matrix client.
+  /// Sorry. This action is not available on Riot-iOS yet. Please use another Matrix client to set it up. Riot-iOS will use it.
   internal static var securitySettingsComingSoon: String { 
     return VectorL10n.tr("Vector", "security_settings_coming_soon") 
   }

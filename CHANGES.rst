@@ -9,6 +9,7 @@ Improvements:
 
 Bug fix:
  * Settings: Security, present complete security when my device is not trusted (#3127).
+ * Settings: Security: Do not ask to complete security if there is no cross-signing (#3147).
 
 Changes in 0.11.0 (2020-04-17)
 ===============================================
