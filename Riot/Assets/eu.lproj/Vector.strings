@@ -1026,3 +1026,8 @@
 "device_verification_self_verify_wait_title" = "Segurtasun osoa";
 "device_verification_self_verify_wait_information" = "Erabili badagoen beste saio bat berri hau egiaztatzeko, honela mezu zifratuetara sarbidea emanez.";
 "device_verification_self_verify_wait_waiting" = "Itxaroten…";
+// MARK: Clients
+"client_desktop_name" = "Riot Desktop";
+"client_web_name" = "Riot Web";
+"client_ios_name" = "Riot iOS";
+"client_android_name" = "Riot X Androidentzat";
