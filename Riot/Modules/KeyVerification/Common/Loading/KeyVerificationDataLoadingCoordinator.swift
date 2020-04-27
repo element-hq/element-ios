@@ -37,15 +37,15 @@ final class KeyVerificationDataLoadingCoordinator: KeyVerificationDataLoadingCoo
     
     // MARK: - Setup
     
-    init(session: MXSession, otherUserId: String, otherDeviceId: String) {
-        let keyVerificationDataLoadingViewModel = KeyVerificationDataLoadingViewModel(session: session, otherUserId: otherUserId, otherDeviceId: otherDeviceId)
+    init(session: MXSession, verificationKind: KeyVerificationKind, otherUserId: String, otherDeviceId: String) {
+        let keyVerificationDataLoadingViewModel = KeyVerificationDataLoadingViewModel(session: session, verificationKind: verificationKind, otherUserId: otherUserId, otherDeviceId: otherDeviceId)
         let keyVerificationDataLoadingViewController = KeyVerificationDataLoadingViewController.instantiate(with: keyVerificationDataLoadingViewModel)
         self.keyVerificationDataLoadingViewModel = keyVerificationDataLoadingViewModel
         self.keyVerificationDataLoadingViewController = keyVerificationDataLoadingViewController
     }
     
-    init(session: MXSession, incomingKeyVerificationRequest: MXKeyVerificationRequest) {
-        let keyVerificationDataLoadingViewModel = KeyVerificationDataLoadingViewModel(session: session, keyVerificationRequest: incomingKeyVerificationRequest)
+    init(session: MXSession, verificationKind: KeyVerificationKind, incomingKeyVerificationRequest: MXKeyVerificationRequest) {
+        let keyVerificationDataLoadingViewModel = KeyVerificationDataLoadingViewModel(session: session, verificationKind: verificationKind, keyVerificationRequest: incomingKeyVerificationRequest)
         let keyVerificationDataLoadingViewController = KeyVerificationDataLoadingViewController.instantiate(with: keyVerificationDataLoadingViewModel)
         self.keyVerificationDataLoadingViewModel = keyVerificationDataLoadingViewModel
         self.keyVerificationDataLoadingViewController = keyVerificationDataLoadingViewController

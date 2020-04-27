@@ -40,11 +40,11 @@ final class KeyVerificationVerifyByScanningCoordinator: KeyVerificationVerifyByS
     
     // MARK: - Setup
     
-    init(session: MXSession, keyVerificationRequest: MXKeyVerificationRequest) {
+    init(session: MXSession, verificationKind: KeyVerificationKind, keyVerificationRequest: MXKeyVerificationRequest) {
         self.session = session
         self.keyVerificationRequest = keyVerificationRequest
         
-        let keyVerificationVerifyByScanningViewModel = KeyVerificationVerifyByScanningViewModel(session: self.session, keyVerificationRequest: keyVerificationRequest)
+        let keyVerificationVerifyByScanningViewModel = KeyVerificationVerifyByScanningViewModel(session: self.session, verificationKind: verificationKind, keyVerificationRequest: keyVerificationRequest)
         let keyVerificationVerifyByScanningViewController = KeyVerificationVerifyByScanningViewController.instantiate(with: keyVerificationVerifyByScanningViewModel)
         self.keyVerificationVerifyByScanningViewModel = keyVerificationVerifyByScanningViewModel
         self.keyVerificationVerifyByScanningViewController = keyVerificationVerifyByScanningViewController

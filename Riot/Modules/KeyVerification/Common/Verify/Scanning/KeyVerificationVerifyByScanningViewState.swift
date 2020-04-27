@@ -19,6 +19,7 @@
 import Foundation
 
 struct KeyVerificationVerifyByScanningViewData {
+    let verificationKind: KeyVerificationKind
     let qrCodeData: Data?
     let showScanAction: Bool
 }

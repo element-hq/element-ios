@@ -82,25 +82,22 @@ final class KeyVerificationVerifiedViewController: UIViewController {
     // MARK: - Private
     
     private func setupViews() {
-        let title: String
         let bodyTitle: String
         let descriptionTextPart1: String
         let descriptionTextPart2: String
         
         switch self.verificationKind {
-        case .device:
-            title = VectorL10n.deviceVerificationTitle
+        case .otherSession, .thisSession, .newSession:
             bodyTitle = VectorL10n.deviceVerificationVerifiedTitle
             descriptionTextPart1 = VectorL10n.deviceVerificationVerifiedDescription1
             descriptionTextPart2 = VectorL10n.deviceVerificationVerifiedDescription2
         case .user:
-            title = VectorL10n.keyVerificationUserTitle
             bodyTitle = VectorL10n.deviceVerificationVerifiedTitle
             descriptionTextPart1 = VectorL10n.keyVerificationVerifiedUserDescription1
             descriptionTextPart2 = VectorL10n.keyVerificationVerifiedUserDescription2
         }
         
-        self.title = title
+        self.title = self.verificationKind.verificationTitle
         self.titleLabel.text =  bodyTitle
         self.description1Label.text = descriptionTextPart1
         self.description2Label.text = descriptionTextPart2

@@ -169,7 +169,7 @@ final class KeyVerificationScanConfirmationViewController: UIViewController {
             title = VectorL10n.keyVerificationScanConfirmationScanningTitle
             
             switch viewData.verificationKind {
-            case .device:
+            case .otherSession, .thisSession, .newSession:
                 waitingInfo = VectorL10n.keyVerificationScanConfirmationScanningDeviceWaitingOther
             case .user:
                 waitingInfo = VectorL10n.keyVerificationScanConfirmationScanningUserWaitingOther(viewData.otherDisplayName)
@@ -178,13 +178,14 @@ final class KeyVerificationScanConfirmationViewController: UIViewController {
             title = VectorL10n.keyVerificationScanConfirmationScannedTitle
             
             switch viewData.verificationKind {
-            case .device:
+            case .otherSession, .thisSession, .newSession:
                 scannedInfo = VectorL10n.keyVerificationScanConfirmationScannedDeviceInformation
             case .user:
                 scannedInfo = VectorL10n.keyVerificationScanConfirmationScannedUserInformation(viewData.otherDisplayName)
             }
         }
         
+        self.title = viewData.verificationKind.verificationTitle
         self.titleLabel.text = title
         self.waitingLabel.text = waitingInfo
         self.scannedInformationLabel.text = scannedInfo

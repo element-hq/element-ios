@@ -59,7 +59,7 @@ final class DeviceVerificationStartViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = VectorL10n.deviceVerificationTitle
+        self.title = VectorL10n.keyVerificationOtherSessionTitle
         self.vc_removeBackTitle()
         
         self.setupViews()
@@ -116,7 +116,7 @@ final class DeviceVerificationStartViewController: UIViewController {
         self.scrollView.keyboardDismissMode = .interactive
 
         self.titleLabel.text = VectorL10n.deviceVerificationStartTitle
-        self.informationLabel.text = VectorL10n.deviceVerificationSecurityAdvice
+        self.informationLabel.text = VectorL10n.deviceVerificationSecurityAdviceNumber
         self.waitingPartnerLabel.text = VectorL10n.deviceVerificationStartWaitPartner
         self.useLegacyVerificationLabel.text = VectorL10n.deviceVerificationStartUseLegacy
 

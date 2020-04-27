@@ -47,7 +47,7 @@ final class KeyVerificationDataLoadingViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = VectorL10n.deviceVerificationTitle
+        self.title = self.viewModel.verificationKind.verificationTitle
         self.vc_removeBackTitle()
         
         self.setupViews()

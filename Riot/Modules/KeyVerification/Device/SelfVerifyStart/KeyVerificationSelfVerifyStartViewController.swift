@@ -60,7 +60,7 @@ final class KeyVerificationSelfVerifyStartViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = VectorL10n.deviceVerificationTitle
+        self.title = VectorL10n.keyVerificationNewSessionTitle
         
         self.setupViews()
         self.activityPresenter = ActivityIndicatorPresenter()
