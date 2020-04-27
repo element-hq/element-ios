@@ -1035,10 +1035,12 @@
 "sign_out_key_backup_in_progress_alert_cancel_action" = "I'll wait";
 
 // MARK: - Device Verification
-"device_verification_title" = "Verify session";
-"key_verification_user_title" = "Verify user";
-
-"device_verification_security_advice" = "For maximum security, we recommend you do this in person or use another trusted means of communication";
+"key_verification_other_session_title" = "Verify the other session";
+"key_verification_new_session_title" = "Verify your new session";
+"key_verification_this_session_title" = "Verify this session";
+"key_verification_user_title" = "verify them";
+"device_verification_security_advice_emoji" = "Compare the unique emoji, ensuring they appear in the same order.";
+"device_verification_security_advice_number" = "Compare the numbers, ensuring they appear in the same order.";
 "device_verification_cancelled" = "The other party cancelled the verification.";
 "device_verification_cancelled_by_me" = "The verification has been cancelled. Reason: %@";
 "device_verification_error_cannot_load_device" = "Cannot load session information.";
@@ -1074,16 +1076,12 @@
 
 // MARK: Verify
 
+"key_verification_verify_title_emoji" = "Compare emoji";
+"key_verification_verify_title_number" = "Compare numbers";
+
 // Device
 
-"device_verification_verify_title_emoji" = "Verify this session by confirming the following emoji appear on the screen of the partner";
-"device_verification_verify_title_number" = "Verify this session by confirming the following numbers appear on the screen of the partner";
 "device_verification_verify_wait_partner" = "Waiting for partner to confirm…";
-
-// User
-
-"key_verification_verify_user_title_emoji" = "Verify this user by confirming the following unique emoji appears on their screen, in the same order.";
-"key_verification_verify_user_title_number" = "Verify this user by confirming the following numbers appear on their screen, in the same order.";
 
 // MARK: Verified
 
