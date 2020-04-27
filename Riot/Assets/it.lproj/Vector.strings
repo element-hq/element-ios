@@ -984,7 +984,7 @@
 "user_verification_session_details_verify_action_other_user" = "Verifica manualmente";
 "security_settings_crypto_sessions_loading" = "Caricamento sessioni…";
 "key_verification_bootstrap_not_setup_title" = "Errore";
-"key_verification_bootstrap_not_setup_message" = "Devi inizializzare la firma incrociata";
+"key_verification_bootstrap_not_setup_message" = "Devi prima inizializzare la firma incrociata.";
 "key_verification_verify_qr_code_title" = "Verifica scansionando";
 "key_verification_verify_qr_code_information" = "Scansiona il codice per verificarvi in modo sicuro.";
 "key_verification_verify_qr_code_scan_code_action" = "Scansiona il suo codice";
@@ -1003,7 +1003,7 @@
 "device_verification_self_verify_start_waiting" = "In attesa…";
 "skip" = "Salta";
 "device_verification_self_verify_wait_title" = "Completa la sicurezza";
-"device_verification_self_verify_wait_information" = "Usa una sessione esistente per verificare questa nuova, dandole l'accesso ai messaggi cifrati.";
+"device_verification_self_verify_wait_information" = "Verifica questa sessione da una delle tue altre sessioni, dandole l'accesso ai messaggi cifrati.\n\nUsa la versione più recente di Riot sui tuoi altri dispositivi:";
 "device_verification_self_verify_wait_waiting" = "In attesa…";
 "room_member_power_level_admin_in" = "Amministratore in %@";
 "room_member_power_level_moderator_in" = "Moderatore in %@";
@@ -1031,4 +1031,11 @@
 "security_settings_crosssigning_complete_security" = "Completa la sicurezza";
 "security_settings_complete_security_alert_title" = "Completa la sicurezza";
 "security_settings_complete_security_alert_message" = "Dovresti completare la sicurezza prima sulla tua sessione attuale.";
-"security_settings_coming_soon" = "Spiacenti. Questa azione non è ancora disponibile su Riot-iOS. Prova ad usare un altro client Matrix.";
+"security_settings_coming_soon" = "Spiacenti. Questa azione non è ancora disponibile su Riot-iOS. Prova ad usare un altro client Matrix per farlo. Riot-iOS lo userà.";
+// MARK: Clients
+"client_desktop_name" = "Riot Desktop";
+"client_web_name" = "Riot Web";
+"client_ios_name" = "Riot iOS";
+"client_android_name" = "Riot X per Android";
+"device_verification_self_verify_wait_new_sign_in_title" = "Verifica questo accesso";
+"device_verification_self_verify_wait_additional_information" = "o un altro client Matrix che supporti la firma incrociata";
