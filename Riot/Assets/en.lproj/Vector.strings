@@ -1038,7 +1038,7 @@
 "key_verification_other_session_title" = "Verify session";
 "key_verification_new_session_title" = "Verify your new session";
 "key_verification_this_session_title" = "Verify this session";
-"key_verification_user_title" = "verify them";
+"key_verification_user_title" = "Verify them";
 "device_verification_security_advice_emoji" = "Compare the unique emoji, ensuring they appear in the same order.";
 "device_verification_security_advice_number" = "Compare the numbers, ensuring they appear in the same order.";
 "device_verification_cancelled" = "The other party cancelled the verification.";
@@ -1093,14 +1093,16 @@
 // Device
 
 "device_verification_verified_title" = "Verified!";
-"device_verification_verified_description_1" = "You've successfully verified this session.";
-"device_verification_verified_description_2" = "Secure messages with this user are end-to-end encrypted and not able to be read by third parties.";
 "device_verification_verified_got_it_button" = "Got it";
+"key_verification_verified_new_session_title" = "New session verified!";
+
+"key_verification_verified_other_session_information" = "You can now read secure messages on your other session, and other users will know they can trust it.";
+"key_verification_verified_new_session_information" = "You can now read secure messages on your new device, and other users will know they can trust it.";
+"key_verification_verified_this_session_information" = "You can now read secure messages on this device, and other users will know they can trust it.";
 
 // User
 
-"key_verification_verified_user_description_1" = "You’ve successfully verified this user.";
-"key_verification_verified_user_description_2" = "Messages with this user in this room are end-to-end encrypted and can’t be read by third parties.";
+"key_verification_verified_user_information" = "Messages with this user are end-to-end encrypted and can't be read by third parties.";
 
 // MARK: Emoji
 "device_verification_emoji_dog" = "Dog";

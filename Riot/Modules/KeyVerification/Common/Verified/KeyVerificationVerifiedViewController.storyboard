@@ -22,10 +22,10 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c4q-B8-hPy">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="432.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="345"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fNE-v3-2lx">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="432.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="345"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Verified!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Nw-CZ-lKr">
                                                         <rect key="frame" x="20" y="60" width="335" height="20.5"/>
@@ -33,73 +33,49 @@
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="12d-Dc-Rlv">
-                                                        <rect key="frame" x="20" y="160.5" width="335" height="102"/>
-                                                        <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You've successfully verified this device." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5dj-7z-eH5">
-                                                                <rect key="frame" x="0.0" y="0.0" width="335" height="18"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                                <nil key="textColor"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Secure messages with this user are end-to-end encrypted and not able to be read by third parties." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="spd-ah-EYp">
-                                                                <rect key="frame" x="0.0" y="48" width="335" height="54"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                                <nil key="textColor"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                        </subviews>
-                                                    </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="4Ll-vk-JLe">
-                                                        <rect key="frame" x="0.0" y="362.5" width="375" height="50"/>
-                                                        <subviews>
-                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wbk-EX-kTs">
-                                                                <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
-                                                                <subviews>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kgv-EZ-dF9">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
-                                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                        <constraints>
-                                                                            <constraint firstAttribute="height" constant="50" id="WcJ-IL-5KV"/>
-                                                                        </constraints>
-                                                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
-                                                                        <state key="normal" title="Got it">
-                                                                            <color key="titleColor" red="0.47843137250000001" green="0.78823529410000004" blue="0.63137254899999995" alpha="1" colorSpace="calibratedRGB"/>
-                                                                        </state>
-                                                                        <state key="disabled">
-                                                                            <color key="titleColor" red="0.47843137250000001" green="0.78823529410000004" blue="0.63137254899999995" alpha="0.5" colorSpace="calibratedRGB"/>
-                                                                        </state>
-                                                                        <connections>
-                                                                            <action selector="validateButtonAction:" destination="dBQ-CG-VDL" eventType="touchUpInside" id="kpR-g5-ogv"/>
-                                                                        </connections>
-                                                                    </button>
-                                                                </subviews>
-                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                <constraints>
-                                                                    <constraint firstItem="kgv-EZ-dF9" firstAttribute="top" secondItem="Wbk-EX-kTs" secondAttribute="top" id="1mu-8N-etF"/>
-                                                                    <constraint firstAttribute="bottom" secondItem="kgv-EZ-dF9" secondAttribute="bottom" id="2ce-b1-aV5"/>
-                                                                    <constraint firstAttribute="trailing" secondItem="kgv-EZ-dF9" secondAttribute="trailing" id="OHz-zo-Uvl"/>
-                                                                    <constraint firstAttribute="width" priority="750" constant="500" id="eud-Ba-XSx"/>
-                                                                    <constraint firstItem="kgv-EZ-dF9" firstAttribute="leading" secondItem="Wbk-EX-kTs" secondAttribute="leading" id="gPb-HX-NWn"/>
-                                                                </constraints>
-                                                            </view>
-                                                        </subviews>
-                                                    </stackView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You've successfully verified this device." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sql-oR-dMk">
+                                                        <rect key="frame" x="20" y="103" width="335" height="18"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="key_verification_success_shield" translatesAutoresizingMaskIntoConstraints="NO" id="ie2-LW-ek2">
+                                                        <rect key="frame" x="127.5" y="141" width="120" height="120"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" secondItem="ie2-LW-ek2" secondAttribute="height" multiplier="1:1" id="Re6-8V-peU"/>
+                                                            <constraint firstAttribute="width" constant="120" id="qg0-4Z-ffM"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4i8-Se-1Ae" customClass="RoundedButton" customModule="Riot" customModuleProvider="target">
+                                                        <rect key="frame" x="20" y="281" width="335" height="44"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="44" id="XNP-zj-OmI"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                                        <state key="normal" title="Got it">
+                                                            <color key="titleColor" red="0.01176470588" green="0.70196078429999997" blue="0.50588235290000005" alpha="1" colorSpace="calibratedRGB"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="doneButtonAction:" destination="dBQ-CG-VDL" eventType="touchUpInside" id="LL5-rw-xwL"/>
+                                                        </connections>
+                                                    </button>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstItem="12d-Dc-Rlv" firstAttribute="leading" secondItem="1Nw-CZ-lKr" secondAttribute="leading" id="5Kb-MI-4lP"/>
                                                     <constraint firstAttribute="width" priority="750" constant="500" id="9am-iX-rzi"/>
-                                                    <constraint firstAttribute="trailing" secondItem="4Ll-vk-JLe" secondAttribute="trailing" id="CU4-Sr-hLT"/>
-                                                    <constraint firstItem="12d-Dc-Rlv" firstAttribute="trailing" secondItem="1Nw-CZ-lKr" secondAttribute="trailing" id="Cax-X9-xf8"/>
-                                                    <constraint firstItem="4Ll-vk-JLe" firstAttribute="leading" secondItem="fNE-v3-2lx" secondAttribute="leading" id="FGu-8C-v1U"/>
-                                                    <constraint firstItem="4Ll-vk-JLe" firstAttribute="top" secondItem="12d-Dc-Rlv" secondAttribute="bottom" constant="100" id="Hue-GK-ORf"/>
+                                                    <constraint firstItem="ie2-LW-ek2" firstAttribute="centerX" secondItem="fNE-v3-2lx" secondAttribute="centerX" id="BN9-ZW-6DE"/>
+                                                    <constraint firstAttribute="trailing" secondItem="Sql-oR-dMk" secondAttribute="trailing" constant="20" id="JtB-5o-vhc"/>
+                                                    <constraint firstAttribute="bottom" secondItem="4i8-Se-1Ae" secondAttribute="bottom" constant="20" id="KB5-ba-4Rb"/>
                                                     <constraint firstItem="1Nw-CZ-lKr" firstAttribute="leading" secondItem="fNE-v3-2lx" secondAttribute="leading" constant="20" id="LK5-9b-xDf"/>
                                                     <constraint firstItem="1Nw-CZ-lKr" firstAttribute="top" secondItem="fNE-v3-2lx" secondAttribute="top" constant="60" id="MUK-4D-vke"/>
-                                                    <constraint firstAttribute="bottom" secondItem="4Ll-vk-JLe" secondAttribute="bottom" constant="20" id="Vn1-zQ-G8t"/>
+                                                    <constraint firstItem="4i8-Se-1Ae" firstAttribute="leading" secondItem="fNE-v3-2lx" secondAttribute="leading" constant="20" id="WK8-b7-t31"/>
                                                     <constraint firstAttribute="trailing" secondItem="1Nw-CZ-lKr" secondAttribute="trailing" constant="20" id="WKJ-Ta-cVg"/>
-                                                    <constraint firstItem="12d-Dc-Rlv" firstAttribute="centerX" secondItem="fNE-v3-2lx" secondAttribute="centerX" id="ksz-nC-DeX"/>
-                                                    <constraint firstItem="12d-Dc-Rlv" firstAttribute="top" secondItem="1Nw-CZ-lKr" secondAttribute="bottom" constant="80" id="rhF-BF-2cR"/>
+                                                    <constraint firstItem="Sql-oR-dMk" firstAttribute="leading" secondItem="fNE-v3-2lx" secondAttribute="leading" constant="20" id="kev-re-wea"/>
+                                                    <constraint firstItem="Sql-oR-dMk" firstAttribute="top" secondItem="1Nw-CZ-lKr" secondAttribute="bottom" constant="22.5" id="kjt-Ha-so6"/>
+                                                    <constraint firstItem="4i8-Se-1Ae" firstAttribute="top" secondItem="ie2-LW-ek2" secondAttribute="bottom" constant="20" id="miU-BN-TBQ"/>
+                                                    <constraint firstItem="ie2-LW-ek2" firstAttribute="top" secondItem="Sql-oR-dMk" secondAttribute="bottom" constant="20" id="w1A-1P-Q9Q"/>
+                                                    <constraint firstAttribute="trailing" secondItem="4i8-Se-1Ae" secondAttribute="trailing" constant="20" id="wEW-BU-RMg"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -134,16 +110,17 @@
                         <viewLayoutGuide key="safeArea" id="6ex-OQ-2sZ"/>
                     </view>
                     <connections>
-                        <outlet property="description1Label" destination="5dj-7z-eH5" id="y4w-i9-5hB"/>
-                        <outlet property="description2Label" destination="spd-ah-EYp" id="TXD-8P-gF0"/>
-                        <outlet property="okButton" destination="kgv-EZ-dF9" id="do0-Ot-OKn"/>
-                        <outlet property="okButtonBackgroundView" destination="Wbk-EX-kTs" id="2gv-gg-ROL"/>
+                        <outlet property="doneButton" destination="4i8-Se-1Ae" id="K4a-4m-cU2"/>
+                        <outlet property="informationLabel" destination="Sql-oR-dMk" id="aIw-XY-wP1"/>
                         <outlet property="titleLabel" destination="1Nw-CZ-lKr" id="zXP-Xt-Zl9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bLY-II-iJ3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1703" y="255"/>
+            <point key="canvasLocation" x="-1703.2" y="254.12293853073464"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="key_verification_success_shield" width="120" height="120"/>
+    </resources>
 </document>
