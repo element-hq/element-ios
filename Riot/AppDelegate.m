@@ -493,6 +493,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     NSAssert(_masterTabBarController, @"Something wrong in Main.storyboard");
     
     _isAppForeground = NO;
+    _handleSelfVerificationRequest = YES;
     
     // Configure our analytics. It will indeed start if the option is enabled
     [MXSDKOptions sharedInstance].analyticsDelegate = [Analytics sharedInstance];
@@ -4996,6 +4997,12 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             {
                 // Self verification
                 NSLog(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Self verification from %@", keyVerificationByToDeviceRequest.otherDevice);
+                
+                if (!self.handleSelfVerificationRequest)
+                {
+                    NSLog(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Self verification handled elsewhere");
+                    return;
+                }
                       
                 NSString *myUserId = keyVerificationByToDeviceRequest.otherUser;
                 MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:myUserId];
@@ -5037,6 +5044,12 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                                                senderId:(NSString*)senderId
                                                 request:(MXKeyVerificationRequest*)keyVerificationRequest
 {
+    if (keyVerificationRequest.state != MXKeyVerificationRequestStatePending)
+    {
+        NSLog(@"[AppDelegate] presentNewKeyVerificationRequest: Request already accepted. Do not display it");
+        return;
+    }
+    
     if (self.incomingKeyVerificationRequestAlertController)
     {
         [self.incomingKeyVerificationRequestAlertController dismissViewControllerAnimated:NO completion:nil];
@@ -5052,7 +5065,17 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     {
         senderInfo = senderId;
     }
+
     
+    __block id observer;
+    void (^removeObserver)(void) = ^() {
+        if (observer)
+        {
+            [[NSNotificationCenter defaultCenter] removeObserver:observer];
+            observer = nil;
+        }
+    };
+
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"key_verification_tile_request_incoming_title", @"Vector", nil)
                                                                                              message:senderInfo
@@ -5062,6 +5085,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                                                                                            style:UIAlertActionStyleDefault
                                                                                          handler:^(UIAlertAction * action)
                                                                    {
+                                                                       removeObserver();
                                                                        [self presentIncomingKeyVerificationRequest:keyVerificationRequest inSession:session];
                                                                    }]];
     
@@ -5069,6 +5093,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                                                                                            style:UIAlertActionStyleDestructive
                                                                                          handler:^(UIAlertAction * action)
                                                                    {
+                                                                       removeObserver();
                                                                        [keyVerificationRequest cancelWithCancelCode:MXTransactionCancelCode.user success:^{
                                                                            
                                                                        } failure:^(NSError * _Nonnull error) {
@@ -5080,11 +5105,26 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                                                                                            style:UIAlertActionStyleCancel
                                                                                          handler:^(UIAlertAction * action)
                                                                    {
+                                                                       removeObserver();
                                                                    }]];
     
     [self presentViewController:alertController animated:YES completion:nil];
-    
     self.incomingKeyVerificationRequestAlertController = alertController;
+    
+    observer = [[NSNotificationCenter defaultCenter] addObserverForName:MXKeyVerificationRequestDidChangeNotification
+                                                                 object:keyVerificationRequest
+                                                                  queue:[NSOperationQueue mainQueue]
+                                                             usingBlock:^(NSNotification * _Nonnull note)
+                {
+                    if (keyVerificationRequest.state != MXKeyVerificationRequestStatePending)
+                    {
+                        if (self.incomingKeyVerificationRequestAlertController == alertController)
+                        {
+                            [self.incomingKeyVerificationRequestAlertController dismissViewControllerAnimated:NO completion:nil];
+                            removeObserver();
+                        }
+                    }
+                }];
 }
 
 #pragma mark - New Sign In
