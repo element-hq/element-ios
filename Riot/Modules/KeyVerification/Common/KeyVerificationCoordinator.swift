@@ -116,67 +116,39 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     
     // MARK: - Public methods
     
-//    func start() {
-//        let rootCoordinator: Coordinator & Presentable
-//
-//        switch self.verificationFlow {
-//        case .verifyUser(let roomMember):
-//            rootCoordinator = self.createUserVerificationStartCoordinator(with: roomMember)
-//        case .verifyDevice(let userId, let deviceId):
-//            if userId ==  self.session.myUser.userId {
-//                rootCoordinator = self.createSelfVerificationCoordinator(otherDeviceId: deviceId)
-//            } else {
-//                rootCoordinator = self.createDataLoadingScreenCoordinator(otherUserId: userId, otherDeviceId: deviceId)
-//            }
-//        case .incomingRequest(let incomingKeyVerificationRequest):
-//            rootCoordinator = self.createDataLoadingScreenCoordinator(with: incomingKeyVerificationRequest)
-//        case .incomingSASTransaction(let incomingSASTransaction):
-//            rootCoordinator = self.createDataLoadingScreenCoordinator(otherUserId: incomingSASTransaction.otherUserId, otherDeviceId: incomingSASTransaction.otherDeviceId)
-//        case .completeSecurity(let isNewSignIn):
-//            rootCoordinator = self.createCompleteSecurityCoordinator(isNewSignIn: isNewSignIn)
-//        }
-//
-//        rootCoordinator.start()
-//
-//        self.add(childCoordinator: rootCoordinator)
-//
-//        if self.navigationRouter.modules.isEmpty == false {
-//            self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
-//                self?.remove(childCoordinator: rootCoordinator)
-//            })
-//        } else {
-//            self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
-//                self?.remove(childCoordinator: rootCoordinator)
-//            }
-//        }
-//    }
-    
     func start() {
-//        let rootCoordinator: Coordinator & Presentable
-//
-//
-//            let coordinator = KeyVerificationScanConfirmationCoordinator(session: self.session, transaction: MXQRCodeTransaction(), codeScanning: .myQRCodeScanned, verificationKind: self.verificationKind)
-//            coordinator.delegate = self
-//
-//            rootCoordinator = coordinator
-//
-//        rootCoordinator.start()
-//
-//        self.add(childCoordinator: rootCoordinator)
-//
-//        if self.navigationRouter.modules.isEmpty == false {
-//            self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
-//                self?.remove(childCoordinator: rootCoordinator)
-//            })
-//        } else {
-//            self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
-//                self?.remove(childCoordinator: rootCoordinator)
-//            }
-//        }
-        
-        let viewController = KeyVerificationVerifiedViewController.instantiate(with: self.verificationKind)
-        viewController.delegate = self
-        self.navigationRouter.setRootModule(viewController)
+        let rootCoordinator: Coordinator & Presentable
+
+        switch self.verificationFlow {
+        case .verifyUser(let roomMember):
+            rootCoordinator = self.createUserVerificationStartCoordinator(with: roomMember)
+        case .verifyDevice(let userId, let deviceId):
+            if userId ==  self.session.myUser.userId {
+                rootCoordinator = self.createSelfVerificationCoordinator(otherDeviceId: deviceId)
+            } else {
+                rootCoordinator = self.createDataLoadingScreenCoordinator(otherUserId: userId, otherDeviceId: deviceId)
+            }
+        case .incomingRequest(let incomingKeyVerificationRequest):
+            rootCoordinator = self.createDataLoadingScreenCoordinator(with: incomingKeyVerificationRequest)
+        case .incomingSASTransaction(let incomingSASTransaction):
+            rootCoordinator = self.createDataLoadingScreenCoordinator(otherUserId: incomingSASTransaction.otherUserId, otherDeviceId: incomingSASTransaction.otherDeviceId)
+        case .completeSecurity(let isNewSignIn):
+            rootCoordinator = self.createCompleteSecurityCoordinator(isNewSignIn: isNewSignIn)
+        }
+
+        rootCoordinator.start()
+
+        self.add(childCoordinator: rootCoordinator)
+
+        if self.navigationRouter.modules.isEmpty == false {
+            self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
+                self?.remove(childCoordinator: rootCoordinator)
+            })
+        } else {
+            self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
+                self?.remove(childCoordinator: rootCoordinator)
+            }
+        }
     }
     
     func toPresentable() -> UIViewController {
