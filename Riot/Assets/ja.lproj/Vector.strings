@@ -212,7 +212,7 @@
 "room_delete_unsent_messages" = "未送信の文を削除";
 "room_event_action_copy" = "複写";
 "room_event_action_quote" = "引用";
-"room_event_action_redact" = "編集";
+"room_event_action_redact" = "移動して削除";
 "room_event_action_more" = "さらに";
 "room_event_action_share" = "共有";
 "room_event_action_permalink" = "直リンク";
@@ -568,3 +568,6 @@
 // Accessibility
 "accessibility_checkbox_label" = "チェックボックス";
 "auth_login_single_sign_on" = "シングルサインオン(SSO)でサインイン";
+"auth_softlogout_clear_data_sign_out" = "サインアウト";
+"room_message_unable_open_link_error_message" = "リンクを開くことができません。";
+"user_verification_session_details_verify_action_other_user" = "手動で確認";
