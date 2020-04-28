@@ -1634,6 +1634,10 @@ internal enum VectorL10n {
   internal static var keyVerificationVerifyQrCodeCannotScanAction: String { 
     return VectorL10n.tr("Vector", "key_verification_verify_qr_code_cannot_scan_action") 
   }
+  /// Compare unique emoji.
+  internal static var keyVerificationVerifyQrCodeEmojiInformation: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_qr_code_emoji_information") 
+  }
   /// Scan the code to securely verify each other.
   internal static var keyVerificationVerifyQrCodeInformation: String { 
     return VectorL10n.tr("Vector", "key_verification_verify_qr_code_information") 
@@ -1653,6 +1657,10 @@ internal enum VectorL10n {
   /// Code validated!
   internal static var keyVerificationVerifyQrCodeScanOtherCodeSuccessTitle: String { 
     return VectorL10n.tr("Vector", "key_verification_verify_qr_code_scan_other_code_success_title") 
+  }
+  /// Start
+  internal static var keyVerificationVerifyQrCodeStartEmojiAction: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_qr_code_start_emoji_action") 
   }
   /// Verify by scanning
   internal static var keyVerificationVerifyQrCodeTitle: String { 
