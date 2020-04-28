@@ -2047,8 +2047,38 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     NSString *validateEmailSubmitTokenAPIPathV1 = [NSString stringWithFormat:@"/%@/%@", kMXIdentityAPIPrefixPathV1, validateEmailSubmitTokenPath];
     NSString *validateEmailSubmitTokenAPIPathV2 = [NSString stringWithFormat:@"/%@/%@", kMXIdentityAPIPrefixPathV2, validateEmailSubmitTokenPath];
     
-    // Manage email validation link
-    if ([webURL.path isEqualToString:validateEmailSubmitTokenAPIPathV1] || [webURL.path isEqualToString:validateEmailSubmitTokenAPIPathV2])
+    // Manage email validation links from homeserver
+    // They look like https://matrix.org/_matrix/client/unstable/registration/email/submit_token?token=vtQjQIZfwdoREDACTEDozrmKYSWlCXsJ&client_secret=53e679ea-oRED-ACTED-92b8-3012c49c6cfa&sid=qlBCREDACTEDEtgxD
+    if ([webURL.path hasSuffix:@"registration/email/submit_token"])
+    {
+        NSLog(@"[AppDelegate] handleUniversalLink: Validate link");
+        
+        // We just need to ping the link.
+        // The app should be in the registration flow at the "waiting for email validation" polling state. The server
+        // will indicate the email is validated through this polling API. Then, the app will go to the next flow step.
+        NSURLSessionConfiguration *conf = [NSURLSessionConfiguration defaultSessionConfiguration];
+        NSURLSession *urlSession = [NSURLSession sessionWithConfiguration:conf];
+        
+        NSURLSessionDataTask * task = [urlSession dataTaskWithURL:webURL completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            
+            NSLog(@"[AppDelegate] handleUniversalLink: Link validation response: %@\nData: %@", response,
+                  [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+            
+            if (error)
+            {
+                NSLog(@"[AppDelegate] handleUniversalLink: Link validation error: %@", error);
+                [self showErrorAsAlert:error];
+            }
+        }];
+        
+        [task resume];
+        
+        return YES;
+    }
+    
+    // Manage email validation link from Identity Server v1 or v2
+    else if ([webURL.path isEqualToString:validateEmailSubmitTokenAPIPathV1]
+             || [webURL.path isEqualToString:validateEmailSubmitTokenAPIPathV2])
     {
         // Validate the email on the passed identity server
         NSString *identityServer = [NSString stringWithFormat:@"%@://%@", webURL.scheme, webURL.host];
