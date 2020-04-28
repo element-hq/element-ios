@@ -1223,8 +1223,10 @@
 
 "key_verification_verify_qr_code_title" = "Verify by scanning";
 "key_verification_verify_qr_code_information" = "Scan the code to securely verify each other.";
+"key_verification_verify_qr_code_emoji_information" = "Compare unique emoji.";
 "key_verification_verify_qr_code_scan_code_action" = "Scan their code";
 "key_verification_verify_qr_code_cannot_scan_action" = "Can't scan?";
+"key_verification_verify_qr_code_start_emoji_action" = "Start";
 
 "key_verification_verify_qr_code_other_scan_my_code_title" = "Did the other user successfully scan the QR code?";
 
