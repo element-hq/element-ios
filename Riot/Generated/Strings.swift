@@ -810,9 +810,13 @@ internal enum VectorL10n {
   internal static var deviceVerificationIncomingTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_incoming_title") 
   }
-  /// For maximum security, we recommend you do this in person or use another trusted means of communication
-  internal static var deviceVerificationSecurityAdvice: String { 
-    return VectorL10n.tr("Vector", "device_verification_security_advice") 
+  /// Compare the unique emoji, ensuring they appear in the same order.
+  internal static var deviceVerificationSecurityAdviceEmoji: String { 
+    return VectorL10n.tr("Vector", "device_verification_security_advice_emoji") 
+  }
+  /// Compare the numbers, ensuring they appear in the same order.
+  internal static var deviceVerificationSecurityAdviceNumber: String { 
+    return VectorL10n.tr("Vector", "device_verification_security_advice_number") 
   }
   /// This wasn't me
   internal static var deviceVerificationSelfVerifyAlertCancelAction: String { 
@@ -874,10 +878,6 @@ internal enum VectorL10n {
   internal static var deviceVerificationStartWaitPartner: String { 
     return VectorL10n.tr("Vector", "device_verification_start_wait_partner") 
   }
-  /// Verify session
-  internal static var deviceVerificationTitle: String { 
-    return VectorL10n.tr("Vector", "device_verification_title") 
-  }
   /// You've successfully verified this session.
   internal static var deviceVerificationVerifiedDescription1: String { 
     return VectorL10n.tr("Vector", "device_verification_verified_description_1") 
@@ -893,14 +893,6 @@ internal enum VectorL10n {
   /// Verified!
   internal static var deviceVerificationVerifiedTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_verified_title") 
-  }
-  /// Verify this session by confirming the following emoji appear on the screen of the partner
-  internal static var deviceVerificationVerifyTitleEmoji: String { 
-    return VectorL10n.tr("Vector", "device_verification_verify_title_emoji") 
-  }
-  /// Verify this session by confirming the following numbers appear on the screen of the partner
-  internal static var deviceVerificationVerifyTitleNumber: String { 
-    return VectorL10n.tr("Vector", "device_verification_verify_title_number") 
   }
   /// Waiting for partner to confirm…
   internal static var deviceVerificationVerifyWaitPartner: String { 
@@ -1542,6 +1534,14 @@ internal enum VectorL10n {
   internal static func keyVerificationIncomingRequestIncomingAlertMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "key_verification_incoming_request_incoming_alert_message", p1)
   }
+  /// Verify your new session
+  internal static var keyVerificationNewSessionTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_new_session_title") 
+  }
+  /// Verify session
+  internal static var keyVerificationOtherSessionTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_other_session_title") 
+  }
   /// Is the other device showing the same shield?
   internal static var keyVerificationScanConfirmationScannedDeviceInformation: String { 
     return VectorL10n.tr("Vector", "key_verification_scan_confirmation_scanned_device_information") 
@@ -1565,6 +1565,10 @@ internal enum VectorL10n {
   /// Waiting for %@…
   internal static func keyVerificationScanConfirmationScanningUserWaitingOther(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "key_verification_scan_confirmation_scanning_user_waiting_other", p1)
+  }
+  /// Verify this session
+  internal static var keyVerificationThisSessionTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_this_session_title") 
   }
   /// Verified
   internal static var keyVerificationTileConclusionDoneTitle: String { 
@@ -1614,7 +1618,7 @@ internal enum VectorL10n {
   internal static var keyVerificationTileRequestStatusWaiting: String { 
     return VectorL10n.tr("Vector", "key_verification_tile_request_status_waiting") 
   }
-  /// Verify user
+  /// verify them
   internal static var keyVerificationUserTitle: String { 
     return VectorL10n.tr("Vector", "key_verification_user_title") 
   }
@@ -1654,13 +1658,13 @@ internal enum VectorL10n {
   internal static var keyVerificationVerifyQrCodeTitle: String { 
     return VectorL10n.tr("Vector", "key_verification_verify_qr_code_title") 
   }
-  /// Verify this user by confirming the following unique emoji appears on their screen, in the same order.
-  internal static var keyVerificationVerifyUserTitleEmoji: String { 
-    return VectorL10n.tr("Vector", "key_verification_verify_user_title_emoji") 
+  /// Compare emoji
+  internal static var keyVerificationVerifyTitleEmoji: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_title_emoji") 
   }
-  /// Verify this user by confirming the following numbers appear on their screen, in the same order.
-  internal static var keyVerificationVerifyUserTitleNumber: String { 
-    return VectorL10n.tr("Vector", "key_verification_verify_user_title_number") 
+  /// Compare numbers
+  internal static var keyVerificationVerifyTitleNumber: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_title_number") 
   }
   /// %.1fK
   internal static func largeBadgeValueKFormat(_ p1: Float) -> String {

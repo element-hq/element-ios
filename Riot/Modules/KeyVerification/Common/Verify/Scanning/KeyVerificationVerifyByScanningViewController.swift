@@ -180,6 +180,8 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
             hideQRCodeImage = true
         }
         
+        self.title = viewData.verificationKind.verificationTitle
+        self.titleLabel.text = viewData.verificationKind.verificationTitle
         self.qrCodeContainerView.isHidden = hideQRCodeImage
         self.scanButtonContainerView.isHidden = !viewData.showScanAction
     }

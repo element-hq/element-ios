@@ -131,22 +131,18 @@ final class KeyVerificationVerifyBySASViewController: UIViewController {
             self.decimalLabel.text = self.viewModel.decimal
         }
         
-        let title: String
         let instructionText: String
         let adviceText: String
         
-        switch viewModel.verificationKind {
-        case .device:
-            title = VectorL10n.deviceVerificationTitle
-            instructionText = isVerificationByEmoji ? VectorL10n.deviceVerificationVerifyTitleEmoji : VectorL10n.deviceVerificationVerifyTitleNumber
-            adviceText = VectorL10n.deviceVerificationSecurityAdvice
-        case .user:
-            title = VectorL10n.keyVerificationUserTitle
-            instructionText = isVerificationByEmoji ? VectorL10n.keyVerificationVerifyUserTitleEmoji : VectorL10n.keyVerificationVerifyUserTitleNumber
-            adviceText = VectorL10n.deviceVerificationSecurityAdvice
+        if isVerificationByEmoji {
+            instructionText = VectorL10n.keyVerificationVerifyTitleEmoji
+            adviceText = VectorL10n.deviceVerificationSecurityAdviceEmoji
+        } else {
+            instructionText = VectorL10n.keyVerificationVerifyTitleNumber
+            adviceText = VectorL10n.deviceVerificationSecurityAdviceNumber
         }
 
-        self.title = title
+        self.title = self.viewModel.verificationKind.verificationTitle
         self.titleLabel.text = instructionText
         self.informationLabel.text = adviceText
         self.waitingPartnerLabel.text = VectorL10n.deviceVerificationVerifyWaitPartner
