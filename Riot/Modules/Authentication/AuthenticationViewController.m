@@ -28,12 +28,6 @@
 @interface AuthenticationViewController () <AuthFallBackViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate>
 {
     /**
-     Store the potential login error received by using a default homeserver different from matrix.org
-     while we retry a login process against the matrix.org HS.
-     */
-    NSError *loginError;
-    
-    /**
      The default country code used to initialize the mobile phone number input.
      */
     NSString *defaultCountryCode;
@@ -288,16 +282,7 @@
     }
     
     super.authType = authType;
-    
-    // Check a potential stored error.
-    if (loginError)
-    {
-        // Restore the default HS
-        NSLog(@"[AuthenticationVC] Switch back to default homeserver");
-        [self setHomeServerTextFieldText:nil];
-        loginError = nil;
-    }
-    
+
     if (authType == MXKAuthenticationTypeLogin)
     {
         [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateNormal];
@@ -845,76 +830,14 @@
 
 - (void)onFailureDuringAuthRequest:(NSError *)error
 {
-    // Homeserver migration: When the default homeserver url is different from matrix.org,
-    // the login (or forgot pwd) process with an existing matrix.org accounts will then fail.
-    // Patch: Falling back to matrix.org HS so we don't break everyone's logins
-    if ([self.homeServerTextField.text isEqualToString:self.defaultHomeServerUrl] && ![self.defaultHomeServerUrl isEqualToString:@"https://matrix.org"] && !self.softLogoutCredentials)
+    MXError *mxError = [[MXError alloc] initWithNSError:error];
+    if ([mxError.errcode isEqualToString:kMXErrCodeStringResourceLimitExceeded])
     {
-        MXError *mxError = [[MXError alloc] initWithNSError:error];
-        
-        if (self.authType == MXKAuthenticationTypeLogin)
-        {
-            if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringForbidden])
-            {
-                // Falling back to matrix.org HS
-                NSLog(@"[AuthenticationVC] Retry login against matrix.org");
-                
-                // Store the current error, and change the homeserver url
-                loginError = error;
-                [self setHomeServerTextFieldText:@"https://matrix.org"];
-                
-                // Trigger a new request
-                [self onButtonPressed:self.submitButton];
-                return;
-            }
-        }
-        else if (self.authType == MXKAuthenticationTypeForgotPassword)
-        {
-            if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringNotFound])
-            {
-                // Sanity check
-                if ([self.authInputsView isKindOfClass:ForgotPasswordInputsView.class])
-                {
-                    // Falling back to matrix.org HS
-                    NSLog(@"[AuthenticationVC] Retry forgot password against matrix.org");
-                    
-                    // Store the current error, and change the homeserver url
-                    loginError = error;
-                    [self setHomeServerTextFieldText:@"https://matrix.org"];
-                    
-                    // Trigger a new request
-                    ForgotPasswordInputsView *authInputsView = (ForgotPasswordInputsView*)self.authInputsView;
-                    [authInputsView.nextStepButton sendActionsForControlEvents:UIControlEventTouchUpInside];
-                    return;
-                }
-            }
-        }
-    }
-    
-    // Check whether we were retrying against matrix.org HS
-    if (loginError)
-    {
-        // This is not an existing matrix.org accounts
-        NSLog(@"[AuthenticationVC] This is not an existing matrix.org accounts");
-        
-        // Restore the default HS
-        [self setHomeServerTextFieldText:nil];
-        
-        // Consider the original login error
-        [super onFailureDuringAuthRequest:loginError];
-        loginError = nil;
+        [self showResourceLimitExceededError:mxError.userInfo];
     }
     else
     {
-        MXError *mxError = [[MXError alloc] initWithNSError:error];
-        if ([mxError.errcode isEqualToString:kMXErrCodeStringResourceLimitExceeded])
-        {
-            [self showResourceLimitExceededError:mxError.userInfo];
-        }
-        else
-        {
-            [super onFailureDuringAuthRequest:error];
-        }
+        [super onFailureDuringAuthRequest:error];
     }
 }
 
