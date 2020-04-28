@@ -2045,8 +2045,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     NSMutableDictionary *queryParams;
     [self parseUniversalLinkFragment:webURL.absoluteString outPathParams:&pathParams outQueryParams:&queryParams];
 
-    //  Storing now as if it's a supported url
-    //  If it's not, it will be nilled again after this method finishes.
     UniversalLink *newLink = [[UniversalLink alloc] initWithUrl:webURL pathParams:pathParams queryParams:queryParams];
     if (![_lastHandledUniversalLink isEqual:newLink])
     {
