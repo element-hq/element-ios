@@ -5,6 +5,7 @@ Improvements:
  * Registration / Email addition: Support email verification link from homeserver (#3167).
  * Verification requests: Hide incoming request modal when it is no more pending (#3033).
  * Self-verification: Do not display incoming self verification requests at the top of the Complete Security screen.
+ * Verification: Do not talk about QR code if only emoji is possible (#3035).
 
 Bug fix:
  * AuthenticationViewController: Remove fallback to matrix.org when authentication failed (PR #3165).

@@ -629,6 +629,7 @@
 		B1C562E5228C7C8D0037F12A /* RoomContextualMenuViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1C562E0228C7C8C0037F12A /* RoomContextualMenuViewController.storyboard */; };
 		B1C562E8228C7CF20037F12A /* ContextualMenuItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C562E6228C7CF10037F12A /* ContextualMenuItemView.swift */; };
 		B1C562E9228C7CF20037F12A /* ContextualMenuItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1C562E7228C7CF20037F12A /* ContextualMenuItemView.xib */; };
+		B1C960F02458308D00C5704B /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C960EF2458308D00C5704B /* RoundedButton.swift */; };
 		B1CA3A2721EF6914000D1D89 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CA3A2621EF6913000D1D89 /* UIViewController.swift */; };
 		B1CA3A2921EF692B000D1D89 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CA3A2821EF692B000D1D89 /* UIView.swift */; };
 		B1CE83B62422812100D07506 /* KeyVerificationCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CE83B52422812000D07506 /* KeyVerificationCoordinatorBridgePresenter.swift */; };
@@ -1609,6 +1610,7 @@
 		B1C6FFE723954CE70055347B /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B1C6FFE823954D3B0055347B /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B1C6FFE923954D4B0055347B /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Vector.strings; sourceTree = "<group>"; };
+		B1C960EF2458308D00C5704B /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		B1CA3A2621EF6913000D1D89 /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		B1CA3A2821EF692B000D1D89 /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		B1CE83B52422812000D07506 /* KeyVerificationCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
@@ -2681,6 +2683,7 @@
 			isa = PBXGroup;
 			children = (
 				B183226B23F59F810035B2E8 /* CloseButton.swift */,
+				B1C960EF2458308D00C5704B /* RoundedButton.swift */,
 			);
 			path = Close;
 			sourceTree = "<group>";
@@ -5013,6 +5016,7 @@
 				F083BDEE1E7009ED00A9B29C /* MXRoom+Riot.m in Sources */,
 				B120863722EF375F001F89E0 /* ReactionHistoryBridgeCoordinatorPresenter.swift in Sources */,
 				B1B5598620EFC3E000210D55 /* RiotSettings.swift in Sources */,
+				B1C960F02458308D00C5704B /* RoundedButton.swift in Sources */,
 				B1CE83D52422817200D07506 /* KeyVerificationVerifyByScanningViewController.swift in Sources */,
 				3232ABA3225730E100AD6A5C /* DeviceVerificationStartCoordinatorType.swift in Sources */,
 				3232AB4D2256558300AD6A5C /* TemplateScreenCoordinatorType.swift in Sources */,
