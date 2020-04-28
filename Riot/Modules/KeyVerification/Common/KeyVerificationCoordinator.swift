@@ -373,10 +373,6 @@ extension KeyVerificationCoordinator: KeyVerificationVerifyByScanningCoordinator
          self.didCancel()
     }
     
-    func keyVerificationVerifyByScanningCoordinatorCannotScan(_ coordinator: KeyVerificationVerifyByScanningCoordinatorType) {
-        self.showVerified(animated: true)
-    }
-    
     func keyVerificationVerifyByScanningCoordinator(_ coordinator: KeyVerificationVerifyByScanningCoordinatorType, didScanOtherQRCodeData qrCodeData: MXQRCodeData, withTransaction transaction: MXQRCodeTransaction) {
         self.showScanConfirmation(for: transaction, codeScanning: .scannedOtherQRCode(qrCodeData), animated: true)
     }

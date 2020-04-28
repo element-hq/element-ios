@@ -66,11 +66,7 @@ extension KeyVerificationVerifyByScanningCoordinator: KeyVerificationVerifyBySca
     
     func keyVerificationVerifyByScanningViewModelDidCancel(_ viewModel: KeyVerificationVerifyByScanningViewModelType) {
         self.delegate?.keyVerificationVerifyByScanningCoordinatorDidCancel(self)
-    }
-    
-    func keyVerificationVerifyByScanningViewModelCannotScan(_ viewModel: KeyVerificationVerifyByScanningViewModelType) {
-        self.delegate?.keyVerificationVerifyByScanningCoordinatorCannotScan(self)
-    }
+    }    
     
     func keyVerificationVerifyByScanningViewModel(_ viewModel: KeyVerificationVerifyByScanningViewModelType, didStartSASVerificationWithTransaction transaction: MXSASTransaction) {
         self.delegate?.keyVerificationVerifyByScanningCoordinator(self, didCompleteWithSASTransaction: transaction)
