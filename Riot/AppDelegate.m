@@ -2047,9 +2047,10 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     NSString *validateEmailSubmitTokenAPIPathV1 = [NSString stringWithFormat:@"/%@/%@", kMXIdentityAPIPrefixPathV1, validateEmailSubmitTokenPath];
     NSString *validateEmailSubmitTokenAPIPathV2 = [NSString stringWithFormat:@"/%@/%@", kMXIdentityAPIPrefixPathV2, validateEmailSubmitTokenPath];
     
-    // Manage email validation links from homeserver
+    // Manage email validation links from homeserver for registration (/registration/email/submit_token)
+    // and email addition (/add_threepid/email/submit_token)
     // They look like https://matrix.org/_matrix/client/unstable/registration/email/submit_token?token=vtQjQIZfwdoREDACTEDozrmKYSWlCXsJ&client_secret=53e679ea-oRED-ACTED-92b8-3012c49c6cfa&sid=qlBCREDACTEDEtgxD
-    if ([webURL.path hasSuffix:@"registration/email/submit_token"])
+    if ([webURL.path hasSuffix:@"/email/submit_token"])
     {
         NSLog(@"[AppDelegate] handleUniversalLink: Validate link");
         

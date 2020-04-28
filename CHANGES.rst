@@ -2,7 +2,7 @@ Changes in 0.11.2 (2020-xx-xx)
 ===============================================
 
 Improvements:
-* Registration: Support email verification link from homeserver (#3167).
+* Registration / Email addition: Support email verification link from homeserver (#3167).
 
 Bug fix:
  * AuthenticationViewController: Remove fallback to matrix.org when authentication failed (PR #3165).
