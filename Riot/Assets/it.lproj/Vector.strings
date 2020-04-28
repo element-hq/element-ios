@@ -952,7 +952,7 @@
 "room_participants_action_security_status_verify" = "Verifica";
 "room_participants_action_security_status_warning" = "Attenzione";
 "room_participants_security_loading" = "Caricamento…";
-"key_verification_user_title" = "Verifica utente";
+"key_verification_user_title" = "verificale";
 "room_participants_security_information_room_not_encrypted" = "I messaggi in questa stanza non sono cifrati end-to-end.";
 "room_participants_security_information_room_encrypted" = "I messaggi in questa stanza sono cifrati end-to-end.\n\nI tuoi messaggi sono protetti con lucchetti e solo te ed il destinatario avete le chiavi univoche per sbloccarli.";
 "key_verification_verify_user_title_emoji" = "Verifica questo utente confermando che le seguenti emoji appaiono sul suo schermo, nello stesso ordine.";
@@ -1039,3 +1039,11 @@
 "client_android_name" = "Riot X per Android";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verifica questo accesso";
 "device_verification_self_verify_wait_additional_information" = "o un altro client Matrix che supporti la firma incrociata";
+// MARK: - Device Verification
+"key_verification_other_session_title" = "Verifica sessione";
+"key_verification_new_session_title" = "Verifica la tua nuova sessione";
+"key_verification_this_session_title" = "Verifica questa sessione";
+"device_verification_security_advice_emoji" = "Confronta gli emoji univoci, assicurandoti che compaiono nello stesso ordine.";
+"device_verification_security_advice_number" = "Confronta i numeri, assicurandoti che compaiono nello stesso ordine.";
+"key_verification_verify_title_emoji" = "Confronta emoji";
+"key_verification_verify_title_number" = "Confronta numeri";
