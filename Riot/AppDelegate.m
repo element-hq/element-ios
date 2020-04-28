@@ -88,6 +88,8 @@ NSString *const AppDelegateDidValidateEmailNotification = @"AppDelegateDidValida
 NSString *const AppDelegateDidValidateEmailNotificationSIDKey = @"AppDelegateDidValidateEmailNotificationSIDKey";
 NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDelegateDidValidateEmailNotificationClientSecretKey";
 
+NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUniversalLinkDidChangeNotification";
+
 @interface AppDelegate () <PKPushRegistryDelegate, GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate>
 {
     /**
@@ -737,6 +739,10 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     if ([userActivity.activityType isEqualToString:NSUserActivityTypeBrowsingWeb])
     {
         continueUserActivity = [self handleUniversalLink:userActivity];
+        if (!continueUserActivity)
+        {
+            _lastHandledUniversalLink = nil;
+        }
     }
     else if ([userActivity.activityType isEqualToString:INStartAudioCallIntentIdentifier] ||
              [userActivity.activityType isEqualToString:INStartVideoCallIntentIdentifier])
@@ -2037,6 +2043,21 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     // iOS Patch: fix vector.im urls before using it
     webURL = [Tools fixURLWithSeveralHashKeys:webURL];
 
+    // Extract required parameters from the link
+    NSArray<NSString*> *pathParams;
+    NSMutableDictionary *queryParams;
+    [self parseUniversalLinkFragment:webURL.absoluteString outPathParams:&pathParams outQueryParams:&queryParams];
+
+    //  Storing now as if it's a supported url
+    //  If it's not, it will be nilled again after this method finishes.
+    UniversalLink *newLink = [[UniversalLink alloc] initWithUrl:webURL pathParams:pathParams queryParams:queryParams];
+    if (![_lastHandledUniversalLink isEqual:newLink])
+    {
+        _lastHandledUniversalLink = [[UniversalLink alloc] initWithUrl:webURL pathParams:pathParams queryParams:queryParams];
+        //  notify this change
+        [[NSNotificationCenter defaultCenter] postNotificationName:AppDelegateUniversalLinkDidChangeNotification object:nil];
+    }
+
     if ([webURL.path hasPrefix:@"/config"])
     {
         return [self handleServerProvionningLink:webURL];
@@ -2097,12 +2118,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         }
         
         MXIdentityService *identityService = [[MXIdentityService alloc] initWithIdentityServer:identityServer accessToken:nil andHomeserverRestClient:homeserverRestClient];
-        
-        // Extract required parameters from the link
-        NSArray<NSString*> *pathParams;
-        NSMutableDictionary *queryParams;
-        [self parseUniversalLinkFragment:webURL.absoluteString outPathParams:&pathParams outQueryParams:&queryParams];
-        
+
         NSString *clientSecret = queryParams[@"client_secret"];
         NSString *sid = queryParams[@"sid"];
         

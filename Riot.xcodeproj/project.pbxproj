@@ -127,6 +127,7 @@
 		6E6F1CB1244E00FD0068B78B /* LocalContactsSectionHeaderContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E6F1CAF244E00FD0068B78B /* LocalContactsSectionHeaderContainerView.m */; };
 		6E6F1CB324506EC50068B78B /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6F1CB224506EC50068B78B /* UITableViewCell.swift */; };
 		6E6F1CB524506FA40068B78B /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6F1CB424506FA40068B78B /* UITableView.swift */; };
+		6E75C3E32458797D00AF497D /* UniversalLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E75C3E22458797D00AF497D /* UniversalLink.m */; };
 		6E7A9E9C243E10E700FD039E /* UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7A9E9B243E10E700FD039E /* UIDevice.swift */; };
 		926FA53F1F4C132000F826C2 /* MXSession+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = 926FA53E1F4C132000F826C2 /* MXSession+Riot.m */; };
 		92726A471F58737A004AD26F /* IntentHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 92726A461F58737A004AD26F /* IntentHandler.m */; };
@@ -912,6 +913,8 @@
 		6E6F1CB0244E00FD0068B78B /* LocalContactsSectionHeaderContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalContactsSectionHeaderContainerView.h; sourceTree = "<group>"; };
 		6E6F1CB224506EC50068B78B /* UITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
 		6E6F1CB424506FA40068B78B /* UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
+		6E75C3E12458797D00AF497D /* UniversalLink.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UniversalLink.h; sourceTree = "<group>"; };
+		6E75C3E22458797D00AF497D /* UniversalLink.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UniversalLink.m; sourceTree = "<group>"; };
 		6E7A9E9B243E10E700FD039E /* UIDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDevice.swift; sourceTree = "<group>"; };
 		926FA53D1F4C132000F826C2 /* MXSession+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXSession+Riot.h"; sourceTree = "<group>"; };
 		926FA53E1F4C132000F826C2 /* MXSession+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXSession+Riot.m"; sourceTree = "<group>"; };
@@ -4336,6 +4339,8 @@
 				F083BC151E7009EC00A9B29C /* Tools.m */,
 				B1DB4F0D22316FFF0065DBFA /* UserNameColorGenerator.swift */,
 				B197B7C5243DE947005ABBF3 /* EncryptionTrustLevelBadgeImageHelper.swift */,
+				6E75C3E12458797D00AF497D /* UniversalLink.h */,
+				6E75C3E22458797D00AF497D /* UniversalLink.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -5123,6 +5128,7 @@
 				3232ABC2225B996200AD6A5C /* Themable.swift in Sources */,
 				32A6001B22C661100042C1D9 /* EditHistoryViewAction.swift in Sources */,
 				3232ABA7225730E100AD6A5C /* DeviceVerificationStartCoordinator.swift in Sources */,
+				6E75C3E32458797D00AF497D /* UniversalLink.m in Sources */,
 				B1D4752721EE4E630067973F /* KeyboardAvoider.swift in Sources */,
 				B1D4752821EE4E630067973F /* KeyboardNotification.swift in Sources */,
 				B1D1BDA622BBAFB500831367 /* ReactionsMenuView.swift in Sources */,
