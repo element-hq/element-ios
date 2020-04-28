@@ -1035,7 +1035,7 @@
 "sign_out_key_backup_in_progress_alert_cancel_action" = "I'll wait";
 
 // MARK: - Device Verification
-"key_verification_other_session_title" = "Verify the other session";
+"key_verification_other_session_title" = "Verify session";
 "key_verification_new_session_title" = "Verify your new session";
 "key_verification_this_session_title" = "Verify this session";
 "key_verification_user_title" = "verify them";

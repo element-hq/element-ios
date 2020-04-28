@@ -1538,7 +1538,7 @@ internal enum VectorL10n {
   internal static var keyVerificationNewSessionTitle: String { 
     return VectorL10n.tr("Vector", "key_verification_new_session_title") 
   }
-  /// Verify the other session
+  /// Verify session
   internal static var keyVerificationOtherSessionTitle: String { 
     return VectorL10n.tr("Vector", "key_verification_other_session_title") 
   }
