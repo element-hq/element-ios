@@ -120,28 +120,28 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
      The current call view controller (if any).
      */
     CallViewController *currentCallViewController;
-
+    
     /**
      Incoming room key requests observers
      */
     id roomKeyRequestObserver;
     id roomKeyRequestCancellationObserver;
-
+    
     /**
      If any the currently displayed sharing key dialog
      */
     RoomKeyRequestViewController *roomKeyRequestViewController;
-
+    
     /**
      Incoming key verification requests observers
      */
     id incomingKeyVerificationObserver;
-
+    
     /**
      If any the currently displayed key verification dialog
      */
     KeyVerificationCoordinatorBridgePresenter *keyVerificationCoordinatorBridgePresenter;
-
+    
     /**
      Account picker used in case of multiple account.
      */
@@ -201,13 +201,13 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
      The key is an identifier of the MXSession. The value, an array of dictionaries (eventId, roomId... for each event).
      */
     NSMutableDictionary <NSNumber *, NSMutableArray <NSDictionary *> *> *eventsToNotify;
-
+    
     /**
      Cache for payloads received with incoming push notifications.
      The key is the event id. The value, the payload.
      */
     NSMutableDictionary <NSString*, NSDictionary*> *incomingPushPayloads;
-
+    
     /**
      Currently displayed "Call not supported" alert.
      */
@@ -217,12 +217,12 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
      Prompt to ask the user to log in again.
      */
     UIAlertController *cryptoDataCorruptedAlert;
-
+    
     /**
      Prompt to warn the user about a new backup on the homeserver.
      */
     UIAlertController *wrongBackupVersionAlert;
-
+    
     /**
      The launch animation container view
      */
@@ -276,7 +276,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     {
         [MXLogger redirectNSLogToFiles:YES numberOfFiles:50];
     }
-
+    
     NSLog(@"[AppDelegate] initialize: Done");
 }
 
@@ -385,7 +385,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)messageSoundURL, &_messageSound);
     
     NSLog(@"[AppDelegate] willFinishLaunchingWithOptions: Done");
-
+    
     return YES;
 }
 
@@ -399,26 +399,26 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 #else
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions");
 #endif
-
+    
     // User credentials (in MXKAccount) are no more stored in NSUserDefaults but in a file
     // as advised at https://forums.developer.apple.com/thread/15685#45849.
     // So, there is no more need to loop (sometimes forever) until
     // [application isProtectedDataAvailable] becomes YES.
     // But, as we are not so sure, loop but no more than 10s.
-//    // TODO: Remove this loop.
-//    NSUInteger loopCount = 0;
-//
-//    // Check whether the content protection is active before going further.
-//    // Should fix the spontaneous logout.
-//    while (![application isProtectedDataAvailable] && loopCount++ < 50)
-//    {
-//        // Wait for protected data.
-//        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.2f]];
-//    }
-//
-//    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@ (%tu)", @([application isProtectedDataAvailable]), loopCount);
+    //    // TODO: Remove this loop.
+    //    NSUInteger loopCount = 0;
+    //
+    //    // Check whether the content protection is active before going further.
+    //    // Should fix the spontaneous logout.
+    //    while (![application isProtectedDataAvailable] && loopCount++ < 50)
+    //    {
+    //        // Wait for protected data.
+    //        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.2f]];
+    //    }
+    //
+    //    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@ (%tu)", @([application isProtectedDataAvailable]), loopCount);
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@", @([application isProtectedDataAvailable]));
-
+    
     // Log app information
     NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
     NSString* appVersion = [AppDelegate theDelegate].appVersion;
@@ -433,10 +433,10 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     NSLog(@"------------------------------\n");
     
     [self setupUserDefaults];
-
+    
     // Set up theme
     ThemeService.shared.themeId = RiotSettings.shared.userInterfaceTheme;
-
+    
     // Set up runtime language and fallback by considering the userDefaults object shared within the application group.
     NSUserDefaults *sharedUserDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
     NSString *language = [sharedUserDefaults objectForKey:@"appLanguage"];
@@ -448,13 +448,13 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         {
             // Move this setting into the shared userDefaults object to apply it to the extensions.
             [sharedUserDefaults setObject:language forKey:@"appLanguage"];
-
+            
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"appLanguage"];
         }
     }
     [NSBundle mxk_setLanguage:language];
     [NSBundle mxk_setFallbackLanguage:@"en"];
-
+    
     
     // Customize the localized string table
     [NSBundle mxk_customizeLocalizedStringTableName:@"Vector"];
@@ -511,11 +511,11 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     NSURL *jitsiServerURL = [NSURL URLWithString:jitsiServerStringURL];
     
     [JitsiService.shared configureDefaultConferenceOptionsWith:jitsiServerURL];
-
+    
     [JitsiService.shared application:application didFinishLaunchingWithOptions:launchOptions];
-
+    
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: Done in %.0fms", [[NSDate date] timeIntervalSinceDate:startDate] * 1000);
-
+    
     return YES;
 }
 
@@ -556,7 +556,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         [cryptoDataCorruptedAlert dismissViewControllerAnimated:NO completion:nil];
         cryptoDataCorruptedAlert = nil;
     }
-
+    
     if (wrongBackupVersionAlert)
     {
         [wrongBackupVersionAlert dismissViewControllerAnimated:NO completion:nil];
@@ -644,7 +644,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     }
     
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-
+    
     // Check if an initial sync failure occured while the app was in background
     MXSession *mainSession = self.mxSessions.firstObject;
     if (mainSession.state == MXSessionStateInitialSyncFailed)
@@ -653,7 +653,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         NSError *error = [NSError errorWithDomain:NSURLErrorDomain
                                              code:NSURLErrorCannotConnectToHost
                                          userInfo:@{NSLocalizedDescriptionKey : NSLocalizedStringFromTable(@"homeserver_connection_lost", @"Vector", nil)}];
-
+        
         [self showErrorAsAlert:error];
     }
     
@@ -697,10 +697,10 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     
     // Observe crypto data storage corruption
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSessionCryptoDidCorruptData:) name:kMXSessionCryptoDidCorruptDataNotification object:nil];
-
+    
     // Observe wrong backup version
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBackupStateDidChangeNotification:) name:kMXKeyBackupDidStateChangeNotification object:nil];
-
+    
     // Resume all existing matrix sessions
     NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
     for (MXKAccount *account in mxAccounts)
@@ -709,7 +709,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     }
     
     _isAppForeground = YES;
-
+    
     if (@available(iOS 11.0, *))
     {
         // Riot has its own dark theme. Prevent iOS from applying its one
@@ -775,7 +775,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         {
             backgroundTask = [handler startBackgroundTaskWithName:@"[AppDelegate] application:continueUserActivity:restorationHandler: Audio or video call" expirationHandler:nil];
         }
-
+        
         MXSession *session = mxSessionArray.firstObject;
         [session.callManager placeCallInRoom:roomID
                                    withVideo:isVideoCall
@@ -846,7 +846,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                 {
                     NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible wrongBackupVersionAlert");
                     [self showNotificationAlert:wrongBackupVersionAlert];
-
+                    
                 }
                 // Check whether an error notification is pending
                 else if (_errorNotification)
@@ -930,7 +930,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             return nil;
         }
     }
-
+    
     NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
     NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
     if (!title)
@@ -951,21 +951,21 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     {
         self.isOffline = YES;
     }
-
+    
     return [self showAlertWithTitle:title message:msg];
 }
 
 - (UIAlertController*)showAlertWithTitle:(NSString*)title message:(NSString*)message
 {
     [_errorNotification dismissViewControllerAnimated:NO completion:nil];
-
+    
     _errorNotification = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     [_errorNotification addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
                                                            style:UIAlertActionStyleDefault
                                                          handler:^(UIAlertAction * action) {
-
+                                                             
                                                              [AppDelegate theDelegate].errorNotification = nil;
-
+                                                             
                                                          }]];
     // Display the error notification
     if (!isErrorNotificationSuspended)
@@ -973,7 +973,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         [_errorNotification mxk_setAccessibilityIdentifier:@"AppDelegateErrorAlert"];
         [self showNotificationAlert:_errorNotification];
     }
-
+    
     return self.errorNotification;
 }
 
@@ -1035,40 +1035,40 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 - (void)keyBackupStateDidChangeNotification:(NSNotification *)notification
 {
     MXKeyBackup *keyBackup = notification.object;
-
+    
     if (keyBackup.state == MXKeyBackupStateWrongBackUpVersion)
     {
         if (wrongBackupVersionAlert)
         {
             [wrongBackupVersionAlert dismissViewControllerAnimated:NO completion:nil];
         }
-
+        
         wrongBackupVersionAlert = [UIAlertController
                                    alertControllerWithTitle:NSLocalizedStringFromTable(@"e2e_key_backup_wrong_version_title", @"Vector", nil)
-
+                                   
                                    message:NSLocalizedStringFromTable(@"e2e_key_backup_wrong_version", @"Vector", nil)
-
+                                   
                                    preferredStyle:UIAlertControllerStyleAlert];
-
+        
         MXWeakify(self);
         [wrongBackupVersionAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"e2e_key_backup_wrong_version_button_settings"]
-                                                                     style:UIAlertActionStyleDefault
-                                                                   handler:^(UIAlertAction * action)
-                                             {
-                                                 MXStrongifyAndReturnIfNil(self);
-                                                 self->wrongBackupVersionAlert = nil;
-
-                                                 // TODO: Open settings
-                                             }]];
-
+                                                                    style:UIAlertActionStyleDefault
+                                                                  handler:^(UIAlertAction * action)
+                                            {
+                                                MXStrongifyAndReturnIfNil(self);
+                                                self->wrongBackupVersionAlert = nil;
+                                                
+                                                // TODO: Open settings
+                                            }]];
+        
         [wrongBackupVersionAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"e2e_key_backup_wrong_version_button_wasme"]
-                                                                     style:UIAlertActionStyleDefault
-                                                                   handler:^(UIAlertAction * action)
-                                             {
-                                                 MXStrongifyAndReturnIfNil(self);
-                                                 self->wrongBackupVersionAlert = nil;
-                                             }]];
-
+                                                                    style:UIAlertActionStyleDefault
+                                                                  handler:^(UIAlertAction * action)
+                                            {
+                                                MXStrongifyAndReturnIfNil(self);
+                                                self->wrongBackupVersionAlert = nil;
+                                            }]];
+        
         [self showNotificationAlert:wrongBackupVersionAlert];
     }
 }
@@ -1155,7 +1155,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                                                                    error:nil];
         
         NSLog(@"[AppDelegate] Promt user to report crash:\n%@", description);
-
+        
         // Ask the user to send a crash report
         [[RageShakeManager sharedManager] promptCrashReportInViewController:self.window.rootViewController];
     }
@@ -1166,7 +1166,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 - (void)registerUserNotificationSettings
 {
     NSLog(@"[AppDelegate][Push] registerUserNotificationSettings: isPushRegistered: %@", @(isPushRegistered));
-
+    
     if (!isPushRegistered)
     {
         UNTextInputNotificationAction *quickReply = [UNTextInputNotificationAction
@@ -1205,7 +1205,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 - (void)registerForRemoteNotificationsWithCompletion:(nullable void (^)(NSError *))completion
 {
     NSLog(@"[AppDelegate][Push] registerForRemoteNotificationsWithCompletion");
-
+    
     self.registrationForRemoteNotificationsCompletion = completion;
     
     self.pushRegistry = [[PKPushRegistry alloc] initWithQueue:nil];
@@ -1220,31 +1220,31 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     UNNotificationContent *content = notification.request.content;
     NSString *actionIdentifier = [response actionIdentifier];
     NSString *roomId = content.userInfo[@"room_id"];
-
+    
     if ([actionIdentifier isEqualToString:@"inline-reply"])
     {
         if ([response isKindOfClass:[UNTextInputNotificationResponse class]])
         {
             UNTextInputNotificationResponse *textInputNotificationResponse = (UNTextInputNotificationResponse *)response;
             NSString *responseText = [textInputNotificationResponse userText];
-
+            
             [self handleNotificationInlineReplyForRoomId:roomId withResponseText:responseText success:^(NSString *eventId) {
                 completionHandler();
             } failure:^(NSError *error) {
-
+                
                 UNMutableNotificationContent *failureNotificationContent = [[UNMutableNotificationContent alloc] init];
                 failureNotificationContent.userInfo = content.userInfo;
                 failureNotificationContent.body = NSLocalizedStringFromTable(@"room_event_failed_to_send", @"Vector", nil);
                 failureNotificationContent.threadIdentifier = roomId;
-
+                
                 NSString *uuid = [[NSUUID UUID] UUIDString];
                 UNNotificationRequest *failureNotificationRequest = [UNNotificationRequest requestWithIdentifier:uuid
                                                                                                          content:failureNotificationContent
                                                                                                          trigger:nil];
-
+                
                 [center addNotificationRequest:failureNotificationRequest withCompletionHandler:nil];
                 NSLog(@"[AppDelegate][Push] didReceiveNotificationResponse: error sending text message: %@", error);
-
+                
                 completionHandler();
             }];
         }
@@ -1270,7 +1270,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
 {
     NSLog(@"[AppDelegate][Push] willPresentNotification: applicationState: %@", @([UIApplication sharedApplication].applicationState));
-
+    
     completionHandler(UNNotificationPresentationOptionNone);
 }
 
@@ -1280,13 +1280,13 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     {
         // TODO retrieve the right matrix session
         // We can use the "user_id" value in notification.userInfo
-
+        
         //**************
         // Patch consider the first session which knows the room id
         MXKAccount *dedicatedAccount = nil;
-
+        
         NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
-
+        
         if (mxAccounts.count == 1)
         {
             dedicatedAccount = mxAccounts.firstObject;
@@ -1302,12 +1302,12 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                 }
             }
         }
-
+        
         // sanity checks
         if (dedicatedAccount && dedicatedAccount.mxSession)
         {
             NSLog(@"[AppDelegate][Push] navigateToRoomById: open the roomViewController %@", roomId);
-
+            
             [self showRoom:roomId andEventId:nil withMatrixSession:dedicatedAccount.mxSession];
         }
         else
@@ -1320,7 +1320,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 - (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)credentials forType:(PKPushType)type
 {
     NSData *token = credentials.token;
-
+    
     NSLog(@"[AppDelegate][Push] didUpdatePushCredentials: Got Push token: %@. Type: %@", [MXKTools logForPushToken:token], type);
     
     MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
@@ -1338,14 +1338,14 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 - (void)pushRegistry:(PKPushRegistry *)registry didInvalidatePushTokenForType:(PKPushType)type
 {
     NSLog(@"[AppDelegate][Push] didInvalidatePushTokenForType: Type: %@", type);
-
+    
     [self clearPushNotificationToken];
 }
 
 - (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type
 {
     NSLog(@"[AppDelegate][Push] didReceiveIncomingPushWithPayload: applicationState: %tu - type: %@ - payload: %@", [UIApplication sharedApplication].applicationState, payload.type, payload.dictionaryPayload);
-
+    
     // Display local notifications only when the app is running in background.
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
     {
@@ -1360,7 +1360,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             {
                 [array addObject:eventId];
             }
-
+            
             // Cache payload for further usage
             incomingPushPayloads[eventId] = payload.dictionaryPayload;
         }
@@ -1385,7 +1385,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         {
             NSLog(@"[AppDelegate][Push] launchBackgroundSync");
             __weak typeof(self) weakSelf = self;
-
+            
             NSMutableArray<NSString *> *incomingPushEventIds = self.incomingPushEventIds[@(account.mxSession.hash)];
             NSMutableArray<NSString *> *incomingPushEventIdsCopy = [incomingPushEventIds copy];
             
@@ -1412,13 +1412,13 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             } failure:^(NSError *error) {
                 
                 NSLog(@"[AppDelegate][Push] launchBackgroundSync: the background sync failed. Error: %@ (%@). incomingPushEventIdsCopy: %@ - self.incomingPushEventIds: %@", error.domain, @(error.code), incomingPushEventIdsCopy, incomingPushEventIds);
-
+                
                 // Trigger limited local notifications when the sync with HS fails
                 [self handleLimitedLocalNotifications:account.mxSession events:incomingPushEventIdsCopy];
-
+                
                 // Update app icon badge number
                 [self refreshApplicationIconBadgeNumber];
-
+                
             }];
         }
     }
@@ -1606,7 +1606,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         onComplete (nil);
         return;
     }
-
+    
     MXRoom *room = [account.mxSession roomWithRoomId:event.roomId];
     if (!room)
     {
@@ -1614,23 +1614,23 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         onComplete (nil);
         return;
     }
-
+    
     [room state:^(MXRoomState *roomState) {
-
+        
         NSString *notificationTitle;
         NSString *notificationBody;
-
+        
         NSString *threadIdentifier = room.roomId;
         NSString *eventSenderName = [roomState.members memberName:event.sender];
         NSString *currentUserId = account.mxCredentials.userId;
-
+        
         if (event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted)
         {
             if (room.isMentionsOnly)
             {
                 // A local notification will be displayed only for highlighted notification.
                 BOOL isHighlighted = NO;
-
+                
                 // Check whether is there an highlight tweak on it
                 for (MXPushRuleAction *ruleAction in rule.actions)
                 {
@@ -1648,7 +1648,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                         }
                     }
                 }
-
+                
                 if (!isHighlighted)
                 {
                     // Ignore this notif.
@@ -1692,7 +1692,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                 else if (room.isDirect && isIncomingEvent && [msgType isEqualToString:kMXMessageTypeKeyVerificationRequest])
                 {
                     [account.mxSession.crypto.keyVerificationManager keyVerificationFromKeyVerificationEvent:event
-                                                                                                        success:^(MXKeyVerification * _Nonnull keyVerification)
+                                                                                                     success:^(MXKeyVerification * _Nonnull keyVerification)
                      {
                          if (keyVerification && keyVerification.state == MXKeyVerificationRequestStatePending)
                          {
@@ -1832,26 +1832,26 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 /**
  Display "limited" notifications for events the app was not able to get data
  (because of /sync failure).
-
+ 
  In this situation, we are only able to display "You received a message in %@".
-
+ 
  @param mxSession the matrix session where the /sync failed.
  @param events the list of events id we did not get data.
  */
 - (void)handleLimitedLocalNotifications:(MXSession*)mxSession events:(NSArray<NSString *> *)events
 {
     NSString *userId = mxSession.matrixRestClient.credentials.userId;
-
+    
     NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: %@", userId);
     NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: eventsToNotify: %@", eventsToNotify[@(mxSession.hash)]);
     NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: incomingPushEventIds: %@", self.incomingPushEventIds[@(mxSession.hash)]);
     NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: events: %@", events);
-
+    
     if (!events.count)
     {
         return;
     }
-
+    
     for (NSString *eventId in events)
     {
         // Build notification user info
@@ -1860,7 +1860,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                                                                                         @"event_id": eventId,
                                                                                         @"user_id": userId
                                                                                         }];
-
+        
         // Add the room_id so that user will open the room when tapping on the notif
         NSDictionary *payload = incomingPushPayloads[eventId];
         NSString *roomId = payload[@"room_id"];
@@ -1872,7 +1872,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         {
             NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: room_id is missing for event %@ in payload %@", eventId, payload);
         }
-
+        
         UNMutableNotificationContent *localNotificationContentForFailedSync = [[UNMutableNotificationContent alloc] init];
         localNotificationContentForFailedSync.userInfo = userInfo;
         localNotificationContentForFailedSync.body = [self limitedNotificationBodyForEvent:eventId inMatrixSession:mxSession];
@@ -1887,7 +1887,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
 /**
  Build the body for the "limited" notification to display to the user.
-
+ 
  @param eventId the id of the event the app failed to get data.
  @param mxSession the matrix session where the /sync failed.
  @return the string to display in the local notification.
@@ -1895,9 +1895,9 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 - (nullable NSString *)limitedNotificationBodyForEvent:(NSString *)eventId inMatrixSession:(MXSession*)mxSession
 {
     NSString *notificationBody;
-
+    
     NSString *roomDisplayName;
-
+    
     NSDictionary *payload = incomingPushPayloads[eventId];
     NSString *roomId = payload[@"room_id"];
     if (roomId)
@@ -1908,7 +1908,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             roomDisplayName = roomSummary.displayname;
         }
     }
-
+    
     if (roomDisplayName.length)
     {
         notificationBody = [NSString stringWithFormat:NSLocalizedString(@"SINGLE_UNREAD_IN_ROOM", nil), roomDisplayName];
@@ -1917,7 +1917,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     {
         notificationBody = NSLocalizedString(@"SINGLE_UNREAD", nil);
     }
-
+    
     return notificationBody;
 }
 
@@ -1941,11 +1941,11 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         failure(nil);
         return;
     }
-
+    
     NSArray* mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
-
+    
     MXKRoomDataSourceManager* manager;
-
+    
     for (MXKAccount* account in mxAccounts)
     {
         MXRoom* room = [account.mxSession roomWithRoomId:roomId];
@@ -1958,7 +1958,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             }
         }
     }
-
+    
     if (manager == nil)
     {
         NSLog(@"[AppDelegate][Push] didReceiveNotificationResponse: room with id %@ not found", roomId);
@@ -2036,7 +2036,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     
     // iOS Patch: fix vector.im urls before using it
     webURL = [Tools fixURLWithSeveralHashKeys:webURL];
-
+    
     if ([webURL.path hasPrefix:@"/config"])
     {
         return [self handleServerProvionningLink:webURL];
@@ -2047,8 +2047,38 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     NSString *validateEmailSubmitTokenAPIPathV1 = [NSString stringWithFormat:@"/%@/%@", kMXIdentityAPIPrefixPathV1, validateEmailSubmitTokenPath];
     NSString *validateEmailSubmitTokenAPIPathV2 = [NSString stringWithFormat:@"/%@/%@", kMXIdentityAPIPrefixPathV2, validateEmailSubmitTokenPath];
     
-    // Manage email validation link
-    if ([webURL.path isEqualToString:validateEmailSubmitTokenAPIPathV1] || [webURL.path isEqualToString:validateEmailSubmitTokenAPIPathV2])
+    // Manage email validation links from homeserver
+    // They look like https://matrix.org/_matrix/client/unstable/registration/email/submit_token?token=vtQjQIZfwdoREDACTEDozrmKYSWlCXsJ&client_secret=53e679ea-oRED-ACTED-92b8-3012c49c6cfa&sid=qlBCREDACTEDEtgxD
+    if ([webURL.path hasSuffix:@"registration/email/submit_token"])
+    {
+        NSLog(@"[AppDelegate] handleUniversalLink: Validate link");
+        
+        // We just need to ping the link.
+        // The app should be in the registration flow at the "waiting for email validation" polling state. The server
+        // will indicate the email is validated through this polling API. Then, the app will go to the next flow step.
+        NSURLSessionConfiguration *conf = [NSURLSessionConfiguration defaultSessionConfiguration];
+        NSURLSession *urlSession = [NSURLSession sessionWithConfiguration:conf];
+        
+        NSURLSessionDataTask * task = [urlSession dataTaskWithURL:webURL completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            
+            NSLog(@"[AppDelegate] handleUniversalLink: Link validation response: %@\nData: %@", response,
+                  [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+            
+            if (error)
+            {
+                NSLog(@"[AppDelegate] handleUniversalLink: Link validation error: %@", error);
+                [self showErrorAsAlert:error];
+            }
+        }];
+        
+        [task resume];
+        
+        return YES;
+    }
+    
+    // Manage email validation link from Identity Server v1 or v2
+    else if ([webURL.path isEqualToString:validateEmailSubmitTokenAPIPathV1]
+             || [webURL.path isEqualToString:validateEmailSubmitTokenAPIPathV2])
     {
         // Validate the email on the passed identity server
         NSString *identityServer = [NSString stringWithFormat:@"%@://%@", webURL.scheme, webURL.host];
@@ -2065,7 +2095,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             homeserverRestClient = [[MXRestClient alloc] initWithHomeServer:identityServer andOnUnrecognizedCertificateBlock:nil];
         }
         
-        MXIdentityService *identityService = [[MXIdentityService alloc] initWithIdentityServer:identityServer accessToken:nil andHomeserverRestClient:homeserverRestClient];
+        __block MXIdentityService *identityService = [[MXIdentityService alloc] initWithIdentityServer:identityServer accessToken:nil andHomeserverRestClient:homeserverRestClient];
         
         // Extract required parameters from the link
         NSArray<NSString*> *pathParams;
@@ -2100,11 +2130,13 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                 }
             }
             
+            identityService = nil;
+            
         } failure:^(NSError *error) {
             
             NSLog(@"[AppDelegate] handleUniversalLink. Error: submitToken failed");
             [self showErrorAsAlert:error];
-            
+            identityService = nil;
         }];
         
         return YES;
@@ -2237,9 +2269,9 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                                 {
                                     // Retry opening the link but with the returned room id
                                     NSString *newUniversalLinkFragment =
-                                            [fragment stringByReplacingOccurrencesOfString:[MXTools encodeURIComponent:roomIdOrAlias]
-                                                                                withString:[MXTools encodeURIComponent:roomId]
-                                            ];
+                                    [fragment stringByReplacingOccurrencesOfString:[MXTools encodeURIComponent:roomIdOrAlias]
+                                                                        withString:[MXTools encodeURIComponent:roomId]
+                                     ];
                                     
                                     universalLinkFragmentPendingRoomAlias = @{roomId: roomIdOrAlias};
                                     
@@ -2248,11 +2280,11 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                                 
                             } failure:^(NSError *error) {
                                 NSLog(@"[AppDelegate] Universal link: Error: The homeserver failed to resolve the room alias (%@)", roomIdOrAlias);
-
+                                
                                 [homeViewController stopActivityIndicator];
-
+                                
                                 NSString *errorMessage = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_does_not_exist", @"Vector", nil), roomIdOrAlias];
-
+                                
                                 [self showAlertWithTitle:nil message:errorMessage];
                             }];
                         }
@@ -2358,7 +2390,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         {
             mxUser = [account.mxSession userWithUserId:userId];
         }
-
+        
         // Prepare the display name of this user
         NSString *displayName;
         if (mxUser)
@@ -2369,11 +2401,11 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         {
             displayName = userId;
         }
-
+        
         // Create the contact related to this member
         MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:userId];
         [self showContact:contact];
-
+        
         continueUserActivity = YES;
     }
     else if (groupId)
@@ -2493,7 +2525,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             {
                 value = [value stringByReplacingOccurrencesOfString:@"+" withString:@" "];
                 value = [value stringByRemovingPercentEncoding];
-
+                
                 if ([key isEqualToString:@"via"])
                 {
                     // Special case the via parameter
@@ -2502,7 +2534,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                     {
                         queryParams[key] = [NSMutableArray array];
                     }
-
+                    
                     [queryParams[key] addObject:value];
                 }
                 else
@@ -2521,16 +2553,16 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 - (BOOL)handleServerProvionningLink:(NSURL*)link
 {
     NSLog(@"[AppDelegate] handleServerProvionningLink: %@", link);
-
+    
     NSString *homeserver, *identityServer;
     [self parseServerProvionningLink:link homeserver:&homeserver identityServer:&identityServer];
-
+    
     if (homeserver)
     {
         if ([MXKAccountManager sharedManager].activeAccounts.count)
         {
             [self displayServerProvionningLinkBuyAlreadyLoggedInAlertWithCompletion:^(BOOL logout) {
-
+                
                 NSLog(@"[AppDelegate] handleServerProvionningLink: logoutWithConfirmation: logout: %@", @(logout));
                 if (logout)
                 {
@@ -2545,10 +2577,10 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             [_masterTabBarController showAuthenticationScreen];
             [_masterTabBarController.authViewController showCustomHomeserver:homeserver andIdentityServer:identityServer];
         }
-
+        
         return YES;
     }
-
+    
     return NO;
 }
 
@@ -2574,8 +2606,8 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     {
         NSLog(@"[AppDelegate] parseServerProvionningLink: Error: Unknown path: %@", link.path);
     }
-
-
+    
+    
     NSLog(@"[AppDelegate] parseServerProvionningLink: homeserver: %@ - identityServer: %@", *homeserver, *identityServer);
 }
 
@@ -2583,7 +2615,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 {
     // Ask confirmation
     self.logoutConfirmation = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"error_user_already_logged_in", @"Vector", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
-
+    
     [self.logoutConfirmation addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_sign_out", @"Vector", nil)
                                                                 style:UIAlertActionStyleDefault
                                                               handler:^(UIAlertAction * action)
@@ -2591,7 +2623,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                                             self.logoutConfirmation = nil;
                                             completion(YES);
                                         }]];
-
+    
     [self.logoutConfirmation addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
                                                                 style:UIAlertActionStyleCancel
                                                               handler:^(UIAlertAction * action)
@@ -2599,7 +2631,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                                             self.logoutConfirmation = nil;
                                             completion(NO);
                                         }]];
-
+    
     [self.logoutConfirmation mxk_setAccessibilityIdentifier: @"AppDelegateLogoutConfirmationAlert"];
     [self showNotificationAlert:self.logoutConfirmation];
 }
@@ -2623,7 +2655,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     
     // Use UIKit BackgroundTask for handling background tasks in the SDK
     sdkOptions.backgroundModeHandler = [[MXUIKitBackgroundModeHandler alloc] init];
-
+    
     // Get modular widget events in rooms histories
     [[MXKAppSettings standardAppSettings] addSupportedEventTypes:@[kWidgetMatrixEventTypeString, kWidgetModularEventTypeString]];
     
@@ -2658,15 +2690,15 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             if (callStack)
             {
                 [mxSession enableVoIPWithCallStack:callStack];
-
+                
                 // Let's call invite be valid for 1 minute
                 mxSession.callManager.inviteLifetime = 60000;
-
+                
                 if (RiotSettings.shared.allowStunServerFallback)
                 {
                     mxSession.callManager.fallbackSTUNServer = RiotSettings.shared.stunServerFallback;
                 }
-
+                
                 // Setup CallKit
                 if ([MXCallKitAdapter callKitAvailable])
                 {
@@ -2692,7 +2724,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             
             // Each room member will be considered as a potential contact.
             [MXKContactManager sharedManager].contactManagerMXRoomSource = MXKContactManagerMXRoomSourceAll;
-
+            
             // Send read receipts for widgets events too
             NSMutableArray<MXEventTypeString> *acknowledgableEventTypes = [NSMutableArray arrayWithArray:mxSession.acknowledgableEventTypes];
             [acknowledgableEventTypes addObject:kWidgetMatrixEventTypeString];
@@ -2771,14 +2803,14 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                 if (self.incomingPushEventIds[@(mxSession.hash)].count)
                 {
                     NSLog(@"[AppDelegate][Push] initial sync failed with %tu pending incoming pushes", self.incomingPushEventIds[@(mxSession.hash)].count);
-
+                    
                     // Trigger limited local notifications when the sync with HS fails
                     [self handleLimitedLocalNotifications:mxSession events:self.incomingPushEventIds[@(mxSession.hash)]];
-
+                    
                     // Update app icon badge number
                     [self refreshApplicationIconBadgeNumber];
                 }
-             }
+            }
         }
         else if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
         {
@@ -2807,9 +2839,9 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             
             // Set the push gateway URL.
             account.pushGatewayURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"pushGatewayURL"];
-
+            
             NSLog(@"[AppDelegate][Push] didAddAccountNotification: isPushRegistered: %@", @(isPushRegistered));
-
+            
             if (isPushRegistered)
             {
                 // Enable push notifications by default on new added account
@@ -2845,7 +2877,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         {
             [account removeObserver:self forKeyPath:@"enableInAppNotifications"];
         }
-
+        
         // Clear Modular data
         [[WidgetManager sharedManager] deleteDataForUser:account.mxCredentials.userId];
         
@@ -2855,13 +2887,13 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             [self logoutWithConfirmation:NO completion:nil];
         }
     }];
-
+    
     // Add observer to handle soft logout
     [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidSoftlogoutAccountNotification  object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-
+        
         MXKAccount *account = notif.object;
         [self removeMatrixSession:account.mxSession];
-
+        
         // Return to authentication screen
         [self.masterTabBarController showAuthenticationScreenAfterSoftLogout:account.mxCredentials];
     }];
@@ -2951,7 +2983,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         // during this blocking task.
         dispatch_after(dispatch_walltime(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [[MXKContactManager sharedManager] addMatrixSession:mxSession];
-
+            
             // Load the local contacts on first account
             if ([MXKAccountManager sharedManager].accounts.count == 1)
             {
@@ -2963,7 +2995,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         
         // Update home data sources
         [_masterTabBarController addMatrixSession:mxSession];
-
+        
         // Register the session to the widgets manager
         [[WidgetManager sharedManager] addMatrixSession:mxSession];
         
@@ -2974,10 +3006,10 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         
         // Add an array to handle incoming push
         self.incomingPushEventIds[@(mxSession.hash)] = [NSMutableArray array];
-
+        
         // Enable listening of incoming key share requests
         [self enableRoomKeyRequestObserver:mxSession];
-
+        
         // Enable listening of incoming key verification requests
         [self enableIncomingKeyVerificationObserver:mxSession];
     }
@@ -2989,19 +3021,19 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     
     // Update home data sources
     [_masterTabBarController removeMatrixSession:mxSession];
-
+    
     // Update the widgets manager
-    [[WidgetManager sharedManager] removeMatrixSession:mxSession]; 
+    [[WidgetManager sharedManager] removeMatrixSession:mxSession];
     
     // If any, disable the no VoIP support workaround
     [self disableNoVoIPOnMatrixSession:mxSession];
     
     // Disable local notifications from this session
     [self disableLocalNotificationsFromMatrixSession:mxSession];
-
+    
     // Disable listening of incoming key share requests
     [self disableRoomKeyRequestObserver:mxSession];
-
+    
     // Disable listening of incoming key verification requests
     [self disableIncomingKeyVerificationObserver:mxSession];
     
@@ -3078,39 +3110,39 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         self.logoutConfirmation = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_sign_out", @"Vector", nil) message:message preferredStyle:UIAlertControllerStyleAlert];
         
         [self.logoutConfirmation addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_sign_out", @"Vector", nil)
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
-                                                           
-                                                           if (weakSelf)
-                                                           {
-                                                               typeof(self) self = weakSelf;
-                                                               self.logoutConfirmation = nil;
-                                                               
-                                                               dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                                                                   
-                                                                   [self logoutWithConfirmation:NO completion:completion];
-                                                                   
-                                                               });
-                                                           }
-                                                           
-                                                       }]];
+                                                                    style:UIAlertActionStyleDefault
+                                                                  handler:^(UIAlertAction * action) {
+                                                                      
+                                                                      if (weakSelf)
+                                                                      {
+                                                                          typeof(self) self = weakSelf;
+                                                                          self.logoutConfirmation = nil;
+                                                                          
+                                                                          dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                                                                              
+                                                                              [self logoutWithConfirmation:NO completion:completion];
+                                                                              
+                                                                          });
+                                                                      }
+                                                                      
+                                                                  }]];
         
         [self.logoutConfirmation addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                         style:UIAlertActionStyleCancel
-                                                       handler:^(UIAlertAction * action) {
-                                                           
-                                                           if (weakSelf)
-                                                           {
-                                                               typeof(self) self = weakSelf;
-                                                               self.logoutConfirmation = nil;
-                                                               
-                                                               if (completion)
-                                                               {
-                                                                   completion(NO);
-                                                               }
-                                                           }
-                                                           
-                                                       }]];
+                                                                    style:UIAlertActionStyleCancel
+                                                                  handler:^(UIAlertAction * action) {
+                                                                      
+                                                                      if (weakSelf)
+                                                                      {
+                                                                          typeof(self) self = weakSelf;
+                                                                          self.logoutConfirmation = nil;
+                                                                          
+                                                                          if (completion)
+                                                                          {
+                                                                              completion(NO);
+                                                                          }
+                                                                      }
+                                                                      
+                                                                  }]];
         
         [self.logoutConfirmation mxk_setAccessibilityIdentifier: @"AppDelegateLogoutConfirmationAlert"];
         [self showNotificationAlert:self.logoutConfirmation];
@@ -3215,77 +3247,77 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                                                                            object:nil
                                                                             queue:[NSOperationQueue mainQueue]
                                                                        usingBlock:^(NSNotification *notif)
-    {
-        // Ignore the call if a call is already in progress
-        if (!currentCallViewController && !_jitsiViewController)
-        {
-            MXCall *mxCall = (MXCall*)notif.object;
-            
-            BOOL isCallKitEnabled = [MXCallKitAdapter callKitAvailable] && [MXKAppSettings standardAppSettings].isCallKitEnabled;
-            
-            // Prepare the call view controller
-            currentCallViewController = [CallViewController callViewController:nil];
-            currentCallViewController.playRingtone = !isCallKitEnabled;
-            currentCallViewController.mxCall = mxCall;
-            currentCallViewController.delegate = self;
-
-            UIApplicationState applicationState = UIApplication.sharedApplication.applicationState;
-            
-            // App has been woken by PushKit notification in the background
-            if (applicationState == UIApplicationStateBackground && mxCall.isIncoming)
-            {
-                // Create backgound task.
-                // Without CallKit this will allow us to play vibro until the call was ended
-                // With CallKit we'll inform the system when the call is ended to let the system terminate our app to save resources
-                id<MXBackgroundModeHandler> handler = [MXSDKOptions sharedInstance].backgroundModeHandler;
-                id<MXBackgroundTask> callBackgroundTask = [handler startBackgroundTaskWithName:@"[AppDelegate] addMatrixCallObserver" expirationHandler:nil];
-                
-                // Start listening for call state change notifications
-                __weak NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-                __block id token = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallStateDidChange
-                                                                                     object:mxCall
-                                                                                      queue:nil
-                                                                                 usingBlock:^(NSNotification * _Nonnull note) {
-                                                                                     MXCall *call = (MXCall *)note.object;
-                                                                                     
-                                                                                     if (call.state == MXCallStateEnded)
-                                                                                     {
-                                                                                         // Set call vc to nil to let our app handle new incoming calls even it wasn't killed by the system
-                                                                                         currentCallViewController = nil;
-                                                                                         [notificationCenter removeObserver:token];
-                                                                                         [callBackgroundTask stop];
-                                                                                     }
-                                                                                 }];
-            }
-
-            if (mxCall.isIncoming && isCallKitEnabled)
-            {
-                // Let's CallKit display the system incoming call screen
-                // Show the callVC only after the user answered the call
-                __weak NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-                __block id token = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallStateDidChange
-                                                                                     object:mxCall
-                                                                                      queue:nil
-                                                                                 usingBlock:^(NSNotification * _Nonnull note) {
-                                                                                     MXCall *call = (MXCall *)note.object;
-
-                                                                                     NSLog(@"[AppDelegate] call.state: %@", call);
-
-                                                                                     if (call.state == MXCallStateCreateAnswer)
-                                                                                     {
-                                                                                         [notificationCenter removeObserver:token];
-
-                                                                                         NSLog(@"[AppDelegate] presentCallViewController");
-                                                                                         [self presentCallViewController:NO completion:nil];
-                                                                                     }
-                                                                                 }];
-            }
-            else
-            {
-                [self presentCallViewController:YES completion:nil];
-            }
-        }
-    }];
+                          {
+                              // Ignore the call if a call is already in progress
+                              if (!currentCallViewController && !_jitsiViewController)
+                              {
+                                  MXCall *mxCall = (MXCall*)notif.object;
+                                  
+                                  BOOL isCallKitEnabled = [MXCallKitAdapter callKitAvailable] && [MXKAppSettings standardAppSettings].isCallKitEnabled;
+                                  
+                                  // Prepare the call view controller
+                                  currentCallViewController = [CallViewController callViewController:nil];
+                                  currentCallViewController.playRingtone = !isCallKitEnabled;
+                                  currentCallViewController.mxCall = mxCall;
+                                  currentCallViewController.delegate = self;
+                                  
+                                  UIApplicationState applicationState = UIApplication.sharedApplication.applicationState;
+                                  
+                                  // App has been woken by PushKit notification in the background
+                                  if (applicationState == UIApplicationStateBackground && mxCall.isIncoming)
+                                  {
+                                      // Create backgound task.
+                                      // Without CallKit this will allow us to play vibro until the call was ended
+                                      // With CallKit we'll inform the system when the call is ended to let the system terminate our app to save resources
+                                      id<MXBackgroundModeHandler> handler = [MXSDKOptions sharedInstance].backgroundModeHandler;
+                                      id<MXBackgroundTask> callBackgroundTask = [handler startBackgroundTaskWithName:@"[AppDelegate] addMatrixCallObserver" expirationHandler:nil];
+                                      
+                                      // Start listening for call state change notifications
+                                      __weak NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+                                      __block id token = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallStateDidChange
+                                                                                                           object:mxCall
+                                                                                                            queue:nil
+                                                                                                       usingBlock:^(NSNotification * _Nonnull note) {
+                                                                                                           MXCall *call = (MXCall *)note.object;
+                                                                                                           
+                                                                                                           if (call.state == MXCallStateEnded)
+                                                                                                           {
+                                                                                                               // Set call vc to nil to let our app handle new incoming calls even it wasn't killed by the system
+                                                                                                               currentCallViewController = nil;
+                                                                                                               [notificationCenter removeObserver:token];
+                                                                                                               [callBackgroundTask stop];
+                                                                                                           }
+                                                                                                       }];
+                                  }
+                                  
+                                  if (mxCall.isIncoming && isCallKitEnabled)
+                                  {
+                                      // Let's CallKit display the system incoming call screen
+                                      // Show the callVC only after the user answered the call
+                                      __weak NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+                                      __block id token = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallStateDidChange
+                                                                                                           object:mxCall
+                                                                                                            queue:nil
+                                                                                                       usingBlock:^(NSNotification * _Nonnull note) {
+                                                                                                           MXCall *call = (MXCall *)note.object;
+                                                                                                           
+                                                                                                           NSLog(@"[AppDelegate] call.state: %@", call);
+                                                                                                           
+                                                                                                           if (call.state == MXCallStateCreateAnswer)
+                                                                                                           {
+                                                                                                               [notificationCenter removeObserver:token];
+                                                                                                               
+                                                                                                               NSLog(@"[AppDelegate] presentCallViewController");
+                                                                                                               [self presentCallViewController:NO completion:nil];
+                                                                                                           }
+                                                                                                       }];
+                                  }
+                                  else
+                                  {
+                                      [self presentCallViewController:YES completion:nil];
+                                  }
+                              }
+                          }];
 }
 
 - (void)handleLaunchAnimation
@@ -3375,10 +3407,10 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     {
         NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:launchAnimationStart];
         NSLog(@"[AppDelegate] LaunchAnimation was shown for %.3fms", duration * 1000);
-
+        
         // Track it on our analytics
         [[Analytics sharedInstance] trackLaunchScreenDisplayDuration:duration];
-
+        
         // TODO: Send durationMs to Piwik
         // Such information should be the same on all platforms
         
@@ -3433,7 +3465,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         {
             return;
         }
-
+        
         // If the app is doing an initial sync, ignore all events from which we
         // did not receive a notification from APNS/PushKit
         if (!mxSession.isEventStreamInitialised && !self->incomingPushPayloads[event.eventId])
@@ -3441,12 +3473,12 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             NSLog(@"[AppDelegate][Push] enableLocalNotificationsFromMatrixSession: Initial sync in progress. Ignore event %@", event.eventId);
             return;
         }
-
+        
         // Sanity check
         if (event.eventId && event.roomId && rule)
         {
             NSLog(@"[AppDelegate][Push] enableLocalNotificationsFromMatrixSession: got event %@ to notify", event.eventId);
-
+            
             // Check whether this event corresponds to a pending push for this session.
             NSUInteger index = [self.incomingPushEventIds[@(mxSession.hash)] indexOfObject:event.eventId];
             if (index != NSNotFound)
@@ -3457,10 +3489,10 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             
             // Add it to the list of the events to notify.
             [self->eventsToNotify[@(mxSession.hash)] addObject:@{
-                                                           @"event_id": event.eventId,
-                                                           @"room_id": event.roomId,
-                                                           @"push_rule": rule
-                                                           }];
+                                                                 @"event_id": event.eventId,
+                                                                 @"room_id": event.roomId,
+                                                                 @"push_rule": rule
+                                                                 }];
         }
         else
         {
@@ -3778,18 +3810,18 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         {
             // Create a new room by inviting the other user only if it is defined and not oneself
             NSArray *invite = ((userId && ![mxSession.myUser.userId isEqualToString:userId]) ? @[userId] : nil);
-
+            
             void (^onFailure)(NSError *) = ^(NSError *error){
                 NSLog(@"[AppDelegate] Create direct chat failed");
                 //Alert user
                 [self showErrorAsAlert:error];
-
+                
                 if (completion)
                 {
                     completion();
                 }
             };
-
+            
             [mxSession canEnableE2EByDefaultInNewRoomWithUsers:invite success:^(BOOL canEnableE2E) {
                 
                 MXRoomCreationParameters *roomCreationParameters = [MXRoomCreationParameters new];
@@ -3797,26 +3829,26 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                 roomCreationParameters.inviteArray = invite;
                 roomCreationParameters.isDirect = (invite.count != 0);
                 roomCreationParameters.preset = kMXRoomPresetTrustedPrivateChat;
-
+                
                 if (canEnableE2E)
                 {
                     roomCreationParameters.initialStateEvents = @[
                                                                   [MXRoomCreationParameters initialStateEventForEncryptionWithAlgorithm:kMXCryptoMegolmAlgorithm
-                                                                  ]];
+                                                                   ]];
                 }
-
+                
                 [mxSession createRoomWithParameters:roomCreationParameters success:^(MXRoom *room) {
-
+                    
                     // Open created room
                     [self showRoom:room.roomId andEventId:nil withMatrixSession:mxSession];
-
+                    
                     if (completion)
                     {
                         completion();
                     }
-
+                    
                 } failure:onFailure];
-
+                
             } failure:onFailure];
         }
         else if (completion)
@@ -3867,9 +3899,9 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 - (void)showContact:(MXKContact*)contact
 {
     [self restoreInitialDisplay:^{
-
+        
         [self.masterTabBarController selectContact:contact];
-
+        
     }];
 }
 
@@ -3886,7 +3918,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             break;
         }
     }
-
+    
     // Check whether the application is allowed to access the local contacts.
     if (doRefreshLocalContacts
         && [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized)
@@ -3955,7 +3987,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                     NSString *btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"active_call_details", @"Vector", nil), callViewController.callerNameLabel.text];
                     [self addCallStatusBar:btnTitle];
                 }
-
+                
                 if ([callViewController isKindOfClass:[CallViewController class]]
                     && ((CallViewController*)callViewController).shouldPromptForStunServerFallback)
                 {
@@ -3997,41 +4029,41 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 - (void)promptForStunServerFallback
 {
     [_errorNotification dismissViewControllerAnimated:NO completion:nil];
-
+    
     NSString *stunFallbackHost = RiotSettings.shared.stunServerFallback;
     // Remove "stun:"
     stunFallbackHost = [stunFallbackHost componentsSeparatedByString:@":"].lastObject;
-
+    
     MXSession *mainSession = self.mxSessions.firstObject;
     NSString *homeServerName = mainSession.matrixRestClient.credentials.homeServerName;
-
+    
     NSString *message = [NSString stringWithFormat:@"%@\n\n%@",
                          [NSString stringWithFormat:NSLocalizedStringFromTable(@"call_no_stun_server_error_message_1", @"Vector", nil), homeServerName],
                          [NSString stringWithFormat: NSLocalizedStringFromTable(@"call_no_stun_server_error_message_2", @"Vector", nil), stunFallbackHost]];
-
+    
     _errorNotification = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"call_no_stun_server_error_title", @"Vector", nil)
                                                              message:message
                                                       preferredStyle:UIAlertControllerStyleAlert];
-
+    
     [_errorNotification addAction:[UIAlertAction actionWithTitle:[NSString stringWithFormat: NSLocalizedStringFromTable(@"call_no_stun_server_error_use_fallback_button", @"Vector", nil), stunFallbackHost]
                                                            style:UIAlertActionStyleDefault
                                                          handler:^(UIAlertAction * action) {
-
+                                                             
                                                              RiotSettings.shared.allowStunServerFallback = YES;
                                                              mainSession.callManager.fallbackSTUNServer = RiotSettings.shared.stunServerFallback;
-
+                                                             
                                                              [AppDelegate theDelegate].errorNotification = nil;
                                                          }]];
-
+    
     [_errorNotification addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
                                                            style:UIAlertActionStyleCancel
                                                          handler:^(UIAlertAction * action) {
-
+                                                             
                                                              RiotSettings.shared.allowStunServerFallback = NO;
-
+                                                             
                                                              [AppDelegate theDelegate].errorNotification = nil;
                                                          }]];
-
+    
     // Display the error notification
     if (!isErrorNotificationSuspended)
     {
@@ -4053,18 +4085,18 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             {
                 return;
             }
-
+            
             self->_jitsiViewController = [JitsiViewController jitsiViewController];
-
+            
             [self->_jitsiViewController openWidget:jitsiWidget withVideo:video success:^{
-
+                
                 self->_jitsiViewController.delegate = self;
                 [self presentJitsiViewController:nil];
-
+                
             } failure:^(NSError *error) {
-
+                
                 self->_jitsiViewController = nil;
-
+                
                 [self showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"call_jitsi_error", @"Vector", nil)];
             }];
         }];
@@ -4078,14 +4110,14 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 - (void)presentJitsiViewController:(void (^)(void))completion
 {
     [self removeCallStatusBar];
-
+    
     if (_jitsiViewController)
     {
         if (@available(iOS 13.0, *))
         {
             _jitsiViewController.modalPresentationStyle = UIModalPresentationFullScreen;
         }
-
+        
         [self presentViewController:_jitsiViewController animated:YES completion:completion];
     }
 }
@@ -4096,7 +4128,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     {
         [_jitsiViewController dismissViewControllerAnimated:YES completion:completion];
         _jitsiViewController = nil;
-
+        
         [self removeCallStatusBar];
     }
 }
@@ -4106,11 +4138,11 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     if (jitsiViewController == _jitsiViewController)
     {
         [_jitsiViewController dismissViewControllerAnimated:YES completion:^{
-
+            
             MXRoom *room = [_jitsiViewController.widget.mxSession roomWithRoomId:_jitsiViewController.widget.roomId];
             NSString *btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"active_call_details", @"Vector", nil), room.summary.displayname];
             [self addCallStatusBar:btnTitle];
-
+            
             if (completion)
             {
                 completion();
@@ -4125,17 +4157,17 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 - (void)checkPermissionForNativeWidget:(Widget*)widget fromUrl:(NSURL*)url completion:(void (^)(BOOL granted))completion
 {
     MXSession *session = widget.mxSession;
-
+    
     if ([widget.widgetEvent.sender isEqualToString:session.myUser.userId])
     {
         // No need of more permission check if the user created the widget
         completion(YES);
         return;
     }
-
+    
     // Check permission in user Riot settings
     __block RiotSharedSettings *sharedSettings = [[RiotSharedSettings alloc] initWithSession:session];
-
+    
     WidgetPermission permission = [sharedSettings permissionForNative:widget fromUrl:url];
     if (permission == WidgetPermissionGranted)
     {
@@ -4256,7 +4288,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 {
     // Add a call status bar
     CGSize topBarSize = CGSizeMake([[UIScreen mainScreen] bounds].size.width, [self calculateCallStatusBarHeight]);
-
+    
     _callStatusBarWindow = [[UIWindow alloc] initWithFrame:CGRectMake(0, 0, topBarSize.width, topBarSize.height)];
     _callStatusBarWindow.windowLevel = UIWindowLevelStatusBar;
     
@@ -4266,9 +4298,9 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateNormal];
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateHighlighted];
-
+    
     _callStatusBarButton.titleLabel.textColor = ThemeService.shared.theme.backgroundColor;
-
+    
     _callStatusBarButton.titleLabel.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
     
     [_callStatusBarButton setBackgroundColor:ThemeService.shared.theme.tintColor];
@@ -4347,7 +4379,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         {
             currentCallViewController.modalPresentationStyle = UIModalPresentationFullScreen;
         }
-
+        
         [self presentViewController:currentCallViewController animated:animated completion:completion];
     }
 }
@@ -4359,11 +4391,11 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     
     // Refresh the root view controller frame
     CGRect rootControllerFrame = [[UIScreen mainScreen] bounds];
-
+    
     if (_callStatusBarWindow)
     {
         CGFloat callStatusBarHeight = [self calculateCallStatusBarHeight];
-
+        
         UIInterfaceOrientation statusBarOrientation = [UIApplication sharedApplication].statusBarOrientation;
         
         switch (statusBarOrientation)
@@ -4387,9 +4419,9 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                 break;
             }
         }
-
+        
         UIEdgeInsets callBarButtonContentEdgeInsets = UIEdgeInsetsZero;
-
+        
         if (@available(iOS 11.0, *))
         {
             callBarButtonContentEdgeInsets = UIApplication.sharedApplication.keyWindow.safeAreaInsets;
@@ -4399,7 +4431,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             callBarButtonContentEdgeInsets.bottom = 0.0;
             //  should keep left, and right insets as original
         }
-
+        
         _callStatusBarButton.contentEdgeInsets = callBarButtonContentEdgeInsets;
         
         // Apply the vertical offset due to call status bar
@@ -4589,7 +4621,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
 - (void)disableNoVoIPOnMatrixSession:(MXSession*)mxSession
 {
-    // Stop listening to the call events of this session 
+    // Stop listening to the call events of this session
     [mxSession removeListener:callEventsListeners[@(mxSession.hash)]];
     [callEventsListeners removeObjectForKey:@(mxSession.hash)];
 }
@@ -4606,7 +4638,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
      {
          [self checkPendingRoomKeyRequestsInSession:mxSession];
      }];
-
+    
     roomKeyRequestCancellationObserver  =
     [[NSNotificationCenter defaultCenter] addObserverForName:kMXCryptoRoomKeyRequestCancellationNotification
                                                       object:mxSession.crypto
@@ -4624,7 +4656,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         [[NSNotificationCenter defaultCenter] removeObserver:roomKeyRequestObserver];
         roomKeyRequestObserver = nil;
     }
-
+    
     if (roomKeyRequestCancellationObserver)
     {
         [[NSNotificationCenter defaultCenter] removeObserver:roomKeyRequestCancellationObserver];
@@ -4640,61 +4672,61 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession called while the app is not active. Ignore it.");
         return;
     }
-
+    
     [mxSession.crypto pendingKeyRequests:^(MXUsersDevicesMap<NSArray<MXIncomingRoomKeyRequest *> *> *pendingKeyRequests) {
-
+        
         NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: pendingKeyRequests.count: %@. Already displayed: %@",
               @(pendingKeyRequests.count),
               roomKeyRequestViewController ? @"YES" : @"NO");
-
+        
         if (roomKeyRequestViewController)
         {
             // Check if the current RoomKeyRequestViewController is still valid
             MXSession *currentMXSession = roomKeyRequestViewController.mxSession;
             NSString *currentUser = roomKeyRequestViewController.device.userId;
             NSString *currentDevice = roomKeyRequestViewController.device.deviceId;
-
+            
             NSArray<MXIncomingRoomKeyRequest *> *currentPendingRequest = [pendingKeyRequests objectForDevice:currentDevice forUser:currentUser];
-
+            
             if (currentMXSession == mxSession && currentPendingRequest.count == 0)
             {
                 NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Cancel current dialog");
-
+                
                 // The key request has been probably cancelled, remove the popup
                 [roomKeyRequestViewController hide];
                 roomKeyRequestViewController = nil;
             }
         }
-
+        
         if (!roomKeyRequestViewController && pendingKeyRequests.count)
         {
             // Pick the first coming user/device pair
             NSString *userId = pendingKeyRequests.userIds.firstObject;
             NSString *deviceId = [pendingKeyRequests deviceIdsForUser:userId].firstObject;
-
+            
             // Give the client a chance to refresh the device list
             [mxSession.crypto downloadKeys:@[userId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap, NSDictionary<NSString *,MXCrossSigningInfo *> *crossSigningKeysMap) {
-
+                
                 MXDeviceInfo *deviceInfo = [usersDevicesInfoMap objectForDevice:deviceId forUser:userId];
                 if (deviceInfo)
                 {
                     BOOL wasNewDevice = (deviceInfo.trustLevel.localVerificationStatus == MXDeviceUnknown);
-
+                    
                     void (^openDialog)(void) = ^void()
                     {
                         NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Open dialog for %@", deviceInfo);
-
+                        
                         roomKeyRequestViewController = [[RoomKeyRequestViewController alloc] initWithDeviceInfo:deviceInfo wasNewDevice:wasNewDevice andMatrixSession:mxSession onComplete:^{
-
+                            
                             roomKeyRequestViewController = nil;
-
+                            
                             // Check next pending key request, if any
                             [self checkPendingRoomKeyRequests];
                         }];
-
+                        
                         [roomKeyRequestViewController show];
                     };
-
+                    
                     // If the device was new before, it's not any more.
                     if (wasNewDevice)
                     {
@@ -4708,14 +4740,14 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                 else
                 {
                     NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: No details found for device %@:%@", userId, deviceId);
-
+                    
                     // Ignore this device to avoid to loop on it
                     [mxSession.crypto ignoreAllPendingKeyRequestsFromUser:userId andDevice:deviceId onComplete:^{
                         // And check next requests
                         [self checkPendingRoomKeyRequests];
                     }];
                 }
-
+                
             } failure:^(NSError *error) {
                 // Retry later
                 NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Failed to download device keys. Retry");
@@ -4725,7 +4757,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     }];
 }
 
-// Check all opened MXSessions for key share dialog 
+// Check all opened MXSessions for key share dialog
 - (void)checkPendingRoomKeyRequests
 {
     for (MXSession *mxSession in mxSessionArray)
@@ -4769,11 +4801,11 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
         NSLog(@"[AppDelegate][MXKeyVerification] checkPendingIncomingKeyVerificationsInSession: called while the app is not active. Ignore it.");
         return;
     }
-
+    
     [mxSession.crypto.keyVerificationManager transactions:^(NSArray<MXKeyVerificationTransaction *> * _Nonnull transactions) {
-
+        
         NSLog(@"[AppDelegate][MXKeyVerification] checkPendingIncomingKeyVerificationsInSession: transactions: %@", transactions);
-
+        
         for (MXKeyVerificationTransaction *transaction in transactions)
         {
             if (transaction.isIncoming)
@@ -4825,15 +4857,15 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 - (BOOL)presentIncomingKeyVerification:(MXIncomingSASTransaction*)transaction inSession:(MXSession*)mxSession
 {
     NSLog(@"[AppDelegate][MXKeyVerification] presentIncomingKeyVerification: %@", transaction);
-
+    
     BOOL presented = NO;
     if (!keyVerificationCoordinatorBridgePresenter)
     {
         keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
         keyVerificationCoordinatorBridgePresenter.delegate = self;
-
+        
         [keyVerificationCoordinatorBridgePresenter presentFrom:self.presentedViewController incomingTransaction:transaction animated:YES];
-
+        
         presented = YES;
     }
     else
@@ -4945,9 +4977,9 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             }
             
             NSString *sender = keyVerificationByDMRequest.otherUser;
-
+            
             [room state:^(MXRoomState *roomState) {
-
+                
                 NSString *senderName = [roomState.members memberName:sender];
                 
                 [self presentNewKeyVerificationRequestAlertForSession:session senderName:senderName senderId:sender request:keyVerificationByDMRequest];
@@ -4965,7 +4997,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
             {
                 // Self verification
                 NSLog(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Self verification from %@", keyVerificationByToDeviceRequest.otherDevice);
-                      
+                
                 NSString *myUserId = keyVerificationByToDeviceRequest.otherUser;
                 MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:myUserId];
                 if (account)
@@ -5024,32 +5056,32 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"key_verification_tile_request_incoming_title", @"Vector", nil)
-                                                                                             message:senderInfo
-                                                                                      preferredStyle:UIAlertControllerStyleAlert];
+                                                                             message:senderInfo
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
     
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"key_verification_tile_request_incoming_approval_accept", @"Vector", nil)
-                                                                                           style:UIAlertActionStyleDefault
-                                                                                         handler:^(UIAlertAction * action)
-                                                                   {
-                                                                       [self presentIncomingKeyVerificationRequest:keyVerificationRequest inSession:session];
-                                                                   }]];
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * action)
+                                {
+                                    [self presentIncomingKeyVerificationRequest:keyVerificationRequest inSession:session];
+                                }]];
     
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"key_verification_tile_request_incoming_approval_decline", @"Vector", nil)
-                                                                                           style:UIAlertActionStyleDestructive
-                                                                                         handler:^(UIAlertAction * action)
-                                                                   {
-                                                                       [keyVerificationRequest cancelWithCancelCode:MXTransactionCancelCode.user success:^{
-                                                                           
-                                                                       } failure:^(NSError * _Nonnull error) {
-                                                                           NSLog(@"[AppDelegate][KeyVerification] Fail to cancel incoming key verification request with error: %@", error);
-                                                                       }];
-                                                                   }]];
+                                                        style:UIAlertActionStyleDestructive
+                                                      handler:^(UIAlertAction * action)
+                                {
+                                    [keyVerificationRequest cancelWithCancelCode:MXTransactionCancelCode.user success:^{
+                                        
+                                    } failure:^(NSError * _Nonnull error) {
+                                        NSLog(@"[AppDelegate][KeyVerification] Fail to cancel incoming key verification request with error: %@", error);
+                                    }];
+                                }]];
     
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
-                                                                                           style:UIAlertActionStyleCancel
-                                                                                         handler:^(UIAlertAction * action)
-                                                                   {
-                                                                   }]];
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:^(UIAlertAction * action)
+                                {
+                                }]];
     
     [self presentViewController:alertController animated:YES completion:nil];
     
@@ -5068,38 +5100,38 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     }
     
     self.userDidSignInOnNewDeviceObserver = [NSNotificationCenter.defaultCenter addObserverForName:MXCrossSigningMyUserDidSignInOnNewDeviceNotification
-                                                    object:crossSigning
-                                                     queue:[NSOperationQueue mainQueue]
-                                                usingBlock:^(NSNotification *notification)
-     {
-         NSArray<NSString*> *deviceIds = notification.userInfo[MXCrossSigningNotificationDeviceIdsKey];
-         
-         [session.matrixRestClient devices:^(NSArray<MXDevice *> *devices) {
-             
-             NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.deviceId IN %@", deviceIds];
-             NSArray<MXDevice*> *newDevices = [devices filteredArrayUsingPredicate:predicate];
-             
-             NSArray *sortedDevices = [newDevices sortedArrayUsingComparator:^NSComparisonResult(MXDevice * _Nonnull device1, MXDevice *  _Nonnull device2) {
-                 
-                 if (device1.lastSeenTs == device2.lastSeenTs)
-                 {
-                     return NSOrderedSame;
-                 }
-                 
-                 return device1.lastSeenTs > device2.lastSeenTs ? NSOrderedDescending : NSOrderedAscending;
-             }];
-             
-             MXDevice *mostRecentDevice = sortedDevices.lastObject;
-             
-             if (mostRecentDevice)
-             {
-                 [self presentNewSignInAlertForDevice:mostRecentDevice inSession:session];
-             }
-             
-         } failure:^(NSError *error) {
-             NSLog(@"[AppDelegate][NewSignIn] Fail to fetch devices");
-         }];
-     }];
+                                                                                            object:crossSigning
+                                                                                             queue:[NSOperationQueue mainQueue]
+                                                                                        usingBlock:^(NSNotification *notification)
+                                             {
+                                                 NSArray<NSString*> *deviceIds = notification.userInfo[MXCrossSigningNotificationDeviceIdsKey];
+                                                 
+                                                 [session.matrixRestClient devices:^(NSArray<MXDevice *> *devices) {
+                                                     
+                                                     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.deviceId IN %@", deviceIds];
+                                                     NSArray<MXDevice*> *newDevices = [devices filteredArrayUsingPredicate:predicate];
+                                                     
+                                                     NSArray *sortedDevices = [newDevices sortedArrayUsingComparator:^NSComparisonResult(MXDevice * _Nonnull device1, MXDevice *  _Nonnull device2) {
+                                                         
+                                                         if (device1.lastSeenTs == device2.lastSeenTs)
+                                                         {
+                                                             return NSOrderedSame;
+                                                         }
+                                                         
+                                                         return device1.lastSeenTs > device2.lastSeenTs ? NSOrderedDescending : NSOrderedAscending;
+                                                     }];
+                                                     
+                                                     MXDevice *mostRecentDevice = sortedDevices.lastObject;
+                                                     
+                                                     if (mostRecentDevice)
+                                                     {
+                                                         [self presentNewSignInAlertForDevice:mostRecentDevice inSession:session];
+                                                     }
+                                                     
+                                                 } failure:^(NSError *error) {
+                                                     NSLog(@"[AppDelegate][NewSignIn] Fail to fetch devices");
+                                                 }];
+                                             }];
 }
 
 - (void)presentNewSignInAlertForDevice:(MXDevice*)device inSession:(MXSession*)session
@@ -5135,9 +5167,9 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                                             }]];
     
     [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"device_verification_self_verify_alert_cancel_action", @"Vector", nil)
-                                               style:UIAlertActionStyleCancel
-                                             handler:nil]];
-     
+                                              style:UIAlertActionStyleCancel
+                                            handler:nil]];
+    
     [self presentViewController:alert animated:YES completion:nil];
     
     self.userNewSignInAlertController = alert;
@@ -5175,52 +5207,52 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
                                                     object:nil
                                                      queue:[NSOperationQueue mainQueue]
                                                 usingBlock:^(NSNotification *notification)
-    {
-        NSString *consentURI = notification.userInfo[kMXHTTPClientUserConsentNotGivenErrorNotificationConsentURIKey];
-        if (consentURI
-            && self.gdprConsentNotGivenAlertController.presentingViewController == nil
-            && self.gdprConsentController.presentingViewController == nil)
-        {
-            self.gdprConsentNotGivenAlertController = nil;
-            self.gdprConsentController = nil;
-            
-            __weak typeof(self) weakSelf = self;
-            
-            MXSession *mainSession = self.mxSessions.firstObject;
-            NSString *homeServerName = mainSession.matrixRestClient.credentials.homeServerName;
-            
-            NSString *alertMessage = [NSString stringWithFormat:NSLocalizedStringFromTable(@"gdpr_consent_not_given_alert_message", @"Vector", nil), homeServerName];
-            
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil)                                        
-                                                                           message:alertMessage
-                                                                    preferredStyle:UIAlertControllerStyleAlert];
-            
-            [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"gdpr_consent_not_given_alert_review_now_action", @"Vector", nil)
-                                                      style:UIAlertActionStyleDefault
-                                                    handler:^(UIAlertAction * action) {
-                                                        
-                                                        typeof(weakSelf) strongSelf = weakSelf;
-                                                        
-                                                        if (strongSelf)
-                                                        {
-                                                            [strongSelf presentGDPRConsentFromViewController:self.presentedViewController consentURI:consentURI];
-                                                        }
-                                                    }]];
-            
-            [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
-                                                      style:UIAlertActionStyleCancel
-                                                    handler:nil]];
-            
-            [self presentViewController:alert animated:YES completion:nil];
-            
-            self.gdprConsentNotGivenAlertController = alert;
-        }
-    }];
+     {
+         NSString *consentURI = notification.userInfo[kMXHTTPClientUserConsentNotGivenErrorNotificationConsentURIKey];
+         if (consentURI
+             && self.gdprConsentNotGivenAlertController.presentingViewController == nil
+             && self.gdprConsentController.presentingViewController == nil)
+         {
+             self.gdprConsentNotGivenAlertController = nil;
+             self.gdprConsentController = nil;
+             
+             __weak typeof(self) weakSelf = self;
+             
+             MXSession *mainSession = self.mxSessions.firstObject;
+             NSString *homeServerName = mainSession.matrixRestClient.credentials.homeServerName;
+             
+             NSString *alertMessage = [NSString stringWithFormat:NSLocalizedStringFromTable(@"gdpr_consent_not_given_alert_message", @"Vector", nil), homeServerName];
+             
+             UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil)
+                                                                            message:alertMessage
+                                                                     preferredStyle:UIAlertControllerStyleAlert];
+             
+             [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"gdpr_consent_not_given_alert_review_now_action", @"Vector", nil)
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:^(UIAlertAction * action) {
+                                                         
+                                                         typeof(weakSelf) strongSelf = weakSelf;
+                                                         
+                                                         if (strongSelf)
+                                                         {
+                                                             [strongSelf presentGDPRConsentFromViewController:self.presentedViewController consentURI:consentURI];
+                                                         }
+                                                     }]];
+             
+             [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
+                                                       style:UIAlertActionStyleCancel
+                                                     handler:nil]];
+             
+             [self presentViewController:alert animated:YES completion:nil];
+             
+             self.gdprConsentNotGivenAlertController = alert;
+         }
+     }];
 }
 
 - (void)presentGDPRConsentFromViewController:(UIViewController*)viewController consentURI:(NSString*)consentURI
 {
-    GDPRConsentViewController *gdprConsentViewController = [[GDPRConsentViewController alloc] initWithURL:consentURI];    
+    GDPRConsentViewController *gdprConsentViewController = [[GDPRConsentViewController alloc] initWithURL:consentURI];
     
     UIBarButtonItem *closeBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"close"]
                                                                            style:UIBarButtonItemStylePlain
@@ -5239,7 +5271,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 }
 
 - (void)dismissGDPRConsent
-{    
+{
     [self.gdprConsentController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -5248,17 +5280,17 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 - (void)gdprConsentViewControllerDidConsentToGDPRWithSuccess:(GDPRConsentViewController *)gdprConsentViewController
 {
     MXSession *session = mxSessionArray.firstObject;
-
+    
     // Leave the GDPR consent right now
     [self dismissGDPRConsent];
-
+    
     // And create the room with riot bot in //
     self.onBoardingManager = [[OnBoardingManager alloc] initWithSession:session];
     
     MXWeakify(self);
     void (^createRiotBotDMcompletion)(void) = ^() {
         MXStrongifyAndReturnIfNil(self);
-
+        
         self.onBoardingManager = nil;
     };
     
@@ -5280,7 +5312,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 - (void)handleIdentityServiceTermsNotSignedNotification:(NSNotification*)notification
 {
     NSLog(@"[AppDelegate] IS Terms: handleIdentityServiceTermsNotSignedNotification.");
-
+    
     NSString *baseURL;
     NSString *accessToken;
     
@@ -5322,7 +5354,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 - (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline:(ServiceTermsModalCoordinatorBridgePresenter *)coordinatorBridgePresenter session:(MXSession *)session
 {
     NSLog(@"[AppDelegate] IS Terms: User has declined the use of the default IS.");
-
+    
     // The user does not want to use the proposed IS.
     // Disable IS feature on user's account
     [session setIdentityServer:nil andAccessToken:nil];
@@ -5330,9 +5362,9 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
     } failure:^(NSError *error) {
         NSLog(@"[AppDelegate] IS Terms: Error: %@", error);
     }];
-
+    
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-
+        
     }];
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
