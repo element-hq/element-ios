@@ -1076,8 +1076,13 @@
 
 // MARK: Verify
 
-"key_verification_verify_title_emoji" = "Compare emoji";
-"key_verification_verify_title_number" = "Compare numbers";
+"key_verification_verify_sas_title_emoji" = "Compare emoji";
+"key_verification_verify_sas_title_number" = "Compare numbers";
+
+"key_verification_verify_sas_cancel_action" = "They don't match";
+"key_verification_verify_sas_validate_action" = "They match";
+
+"key_verification_verify_sas_additional_information" = "For ultimate security, use another trusted means of communication or do this in person.";
 
 // Device
 

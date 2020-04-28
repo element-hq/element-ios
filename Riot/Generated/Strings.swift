@@ -1658,13 +1658,25 @@ internal enum VectorL10n {
   internal static var keyVerificationVerifyQrCodeTitle: String { 
     return VectorL10n.tr("Vector", "key_verification_verify_qr_code_title") 
   }
+  /// For ultimate security, use another trusted means of communication or do this in person.
+  internal static var keyVerificationVerifySasAdditionalInformation: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_sas_additional_information") 
+  }
+  /// They don't match
+  internal static var keyVerificationVerifySasCancelAction: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_sas_cancel_action") 
+  }
   /// Compare emoji
-  internal static var keyVerificationVerifyTitleEmoji: String { 
-    return VectorL10n.tr("Vector", "key_verification_verify_title_emoji") 
+  internal static var keyVerificationVerifySasTitleEmoji: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_sas_title_emoji") 
   }
   /// Compare numbers
-  internal static var keyVerificationVerifyTitleNumber: String { 
-    return VectorL10n.tr("Vector", "key_verification_verify_title_number") 
+  internal static var keyVerificationVerifySasTitleNumber: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_sas_title_number") 
+  }
+  /// They match
+  internal static var keyVerificationVerifySasValidateAction: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_sas_validate_action") 
   }
   /// %.1fK
   internal static func largeBadgeValueKFormat(_ p1: Float) -> String {
