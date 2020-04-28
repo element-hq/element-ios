@@ -46,6 +46,7 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     }
     
     deinit {
+        self.unregisterKeyVerificationManagerNewRequestNotification()
     }
     
     // MARK: - Public
@@ -101,9 +102,11 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     
     private func registerKeyVerificationManagerNewRequestNotification(for verificationManager: MXKeyVerificationManager) {
         NotificationCenter.default.addObserver(self, selector: #selector(keyVerificationManagerNewRequestNotification(notification:)), name: .MXKeyVerificationManagerNewRequest, object: verificationManager)
+        AppDelegate.the()?.handleSelfVerificationRequest = false
     }
     
     private func unregisterKeyVerificationManagerNewRequestNotification() {
+        AppDelegate.the()?.handleSelfVerificationRequest = true
         NotificationCenter.default.removeObserver(self, name: .MXKeyVerificationManagerNewRequest, object: nil)
     }
     

@@ -65,6 +65,13 @@ extern NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey;
 @property (nonatomic) BOOL isAppForeground;
 @property (nonatomic) BOOL isOffline;
 
+
+/**
+ Let the AppDelegate handle and display self verification requests.
+ Default is YES;
+ */
+@property (nonatomic) BOOL handleSelfVerificationRequest;
+
 /**
  The navigation controller of the master view controller of the main split view controller.
  */
