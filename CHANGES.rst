@@ -1,3 +1,9 @@
+Changes in 0.11.2 (2020-xx-xx)
+===============================================
+
+Bug fix:
+ * AuthenticationViewController: Remove fallback to matrix.org when authentication failed (PR #3165).
+
 Changes in 0.11.1 (2020-04-24)
 ===============================================
 
