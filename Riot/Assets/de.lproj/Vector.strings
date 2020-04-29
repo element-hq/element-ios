@@ -1004,3 +1004,6 @@
 "device_verification_self_verify_wait_information" = "Benutze diese Sitzung um deine Neue zu verifizieren. Erlaube Zugriff auf die verschlüsselten Nachrichten.";
 "device_verification_self_verify_wait_waiting" = "warte…";
 "skip" = "Überspringen";
+// MARK: Clients
+"client_desktop_name" = "Riot Desktop";
+"security_settings_crosssigning_info_not_bootstrapped" = "Cross-signing ist bisher nicht konfiguriert.";

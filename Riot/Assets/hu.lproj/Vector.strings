@@ -1016,7 +1016,7 @@
 "security_settings_crosssigning" = "KERESZT-ALÁÍRÁS";
 "security_settings_cryptography" = "TITKOSÍTÁS";
 "key_verification_bootstrap_not_setup_title" = "Hiba";
-"key_verification_bootstrap_not_setup_message" = "A keresztaláírás beállításait meg kell adni";
+"key_verification_bootstrap_not_setup_message" = "A keresztaláírás beállításait először meg kell adni.";
 "key_verification_verify_qr_code_title" = "Ellenőrzés kód beolvasással";
 "key_verification_verify_qr_code_information" = "Olvasd be a kódot, hogy biztonságosan ellenőrizhessétek egymást.";
 "key_verification_verify_qr_code_scan_code_action" = "Kód beolvasása";
@@ -1041,7 +1041,7 @@
 "device_verification_self_verify_start_information" = "Az új munkamenet ellenőrzéséhez használd ezt, amivel hozzáférést adsz a titkosított üzenetekhez.";
 "device_verification_self_verify_start_waiting" = "Várakozik…";
 "device_verification_self_verify_wait_title" = "Biztonság beállítása";
-"device_verification_self_verify_wait_information" = "Használj egy meglévő munkamenetet ennek az újnak az ellenőrzéséhez, amivel hozzáférést adsz a titkosított üzenetekhez.";
+"device_verification_self_verify_wait_information" = "Ennek a munkamenet ellenőrzéséhez használd valamelyik másik munkamenetedet, amivel hozzáférést adsz a titkosított üzenetekhez.\n\nHasználd a legfrissebb Riotot valamelyik eszközödön:";
 "device_verification_self_verify_wait_waiting" = "Várakozik…";
 // Scanning
 "key_verification_scan_confirmation_scanning_title" = "Majdnem kész! Várakozás a megerősítésre…";
@@ -1052,3 +1052,20 @@
 "key_verification_scan_confirmation_scanned_user_information" = "%s is ugyanazt a pajzsot mutatja?";
 "key_verification_scan_confirmation_scanned_device_information" = "A másik eszköz is ugyanazt a pajzsot mutatja?";
 "room_participants_action_security_status_complete_security" = "Biztonsági beállítás befejezése";
+// MARK: Clients
+"client_desktop_name" = "Asztali Riot";
+"client_web_name" = "Riot Web";
+"client_ios_name" = "Riot iOS";
+"client_android_name" = "RiotX Android";
+"security_settings_crosssigning_info_not_bootstrapped" = "Az eszközök közötti hitelesítés nincs még beállítva.";
+"security_settings_crosssigning_info_exists" = "A fiókodban az eszközök közötti aláírás be van állítva, de ebben a munkamenetben még nem ellenőrizted. Végezd el a munkamenet biztonsági beállításait.";
+"security_settings_crosssigning_info_trusted" = "Eszközök közötti hitelesítés engedélyezve van. Megbízhatsz más felhasználókban és a munkameneteidben az aláírást felhasználva de ebből a munkamenetből nem tudsz aláírni mert az eszközök közötti aláíráshoz hiányzik a privát kulcs. Fejezd be a munkamenet biztonsági beállításait.";
+"security_settings_crosssigning_info_ok" = "Eszközök közti hitelesítés engedélyezve.";
+"security_settings_crosssigning_bootstrap" = "Eszközök közötti hitelesítés beállítása";
+"security_settings_crosssigning_reset" = "Eszközök közötti hitelesítés alaphelyzetbe állítása";
+"security_settings_crosssigning_complete_security" = "Biztonsági beállítás befejezése";
+"security_settings_complete_security_alert_title" = "Biztonsági beállítás befejezése";
+"security_settings_complete_security_alert_message" = "Először be kell fejezned ennek a munkamenetnek a biztonsági beállítását.";
+"security_settings_coming_soon" = "Bocsánat. Riot-iOS-n ez a művelet egyenlőre nem érhető el. Kérlek használj másik Matrix klienst a beállításához. Riot-iOS használni fogja.";
+"device_verification_self_verify_wait_new_sign_in_title" = "Belépés ellenőrzése";
+"device_verification_self_verify_wait_additional_information" = "vagy másik eszközök közötti hitelesítésre alkalmas Matrix kliensre";
