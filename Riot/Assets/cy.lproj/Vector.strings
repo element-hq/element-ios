@@ -281,7 +281,7 @@
 "room_replacement_information" = "Mae'r ystafell hon wedi'i newid ac nid yw'n weithredol mwyach.";
 "room_replacement_link" = "Mae'r sgwrs yn parhau yma.";
 "room_predecessor_information" = "Mae'r ystafell hon yn barhad o sgwrs arall.";
-"room_predecessor_link" = "Cyffyrddwch yma i weld negeseuon hŷn.";
+"room_predecessor_link" = "Tapiwch yma i weld negeseuon hŷn.";
 "room_resource_limit_exceeded_message_contact_1" = " Os gwelwch yn dda ";
 "room_resource_limit_exceeded_message_contact_2_link" = "cysylltwch â'ch gweinyddwr gwasanaeth";
 "room_resource_limit_exceeded_message_contact_3" = " i barhau i ddefnyddio'r gwasanaeth hwn.";
@@ -418,7 +418,7 @@
 "settings_add_3pid_invalid_password_message" = "Cyfrinair annilys";
 "settings_crypto_device_name" = "Enw Sesiwn: ";
 "settings_crypto_device_id" = "\nDynodwr y sesiwn: ";
-"settings_crypto_device_key" = "Allwedd y sesiwn:\n";
+"settings_crypto_device_key" = "\nAllwedd y sesiwn:\n";
 "settings_crypto_export" = "Allfudo allweddi";
 "settings_crypto_blacklist_unverified_devices" = "Amgryptio i sesiynau wedi'u gwirio yn unig";
 "settings_deactivate_my_account" = "Dad-actifadu fy nghyfrif";
@@ -984,3 +984,35 @@
 "key_verification_verify_qr_code_other_scan_my_code_title" = "A sganwyd y defnyddiwr arall u côd QR yn llwyddianus?";
 "key_verification_verify_qr_code_scan_other_code_success_title" = "Côd yn ddilys!";
 "key_verification_verify_qr_code_scan_other_code_success_message" = "Mae'r côd QR wedi'i brofi'n ddilys.";
+"skip" = "Hepgor";
+// MARK: Clients
+"client_desktop_name" = "Riot Cyfrifiadur";
+"client_web_name" = "Riot Gwê";
+"client_ios_name" = "Riot iOS";
+"client_android_name" = "Riot X i Android";
+"room_participants_action_security_status_complete_security" = "Cwblhewch diogelwch";
+"room_participants_action_security_status_loading" = "Yn llwytho…";
+"room_member_power_level_admin_in" = "Gweinyddwr yn %@";
+"room_member_power_level_moderator_in" = "Cymedrolwrm yn %@";
+"room_member_power_level_custom_in" = "Addasiedig (%@) yn %@";
+"room_member_power_level_short_admin" = "Gweinyddwr";
+"room_member_power_level_short_moderator" = "Cymedrolwr";
+"room_member_power_level_short_custom" = "Addasiedig";
+"security_settings_crosssigning" = "CROES-LOFNODI";
+"security_settings_crosssigning_info_not_bootstrapped" = "Nid yw croes-lofnodi eto wedi ei gyflunio.";
+"security_settings_crosssigning_info_exists" = "Mae gan eich cyfrif hunaniaeth croes-lofnodi, ond nid yw'r sesiwn hon yn ymddiried ynddo eto. Cwblhewch diogelwch y sesiwn hon.";
+"security_settings_crosssigning_info_trusted" = "Mae croes-lofnodi wedi'i alluogi. Gallwch ymddiried yn defnyddwyr eraill a'ch sesiynau eraill yn seiliedig ar groes-lofnodi ond ni allwch groes-lofnodi o'r sesiwn hon oherwydd nad oes ganddo allweddi preifat traws-lofnodi. Cwblhewch diogelwch y sesiwn hon.";
+"security_settings_crosssigning_info_ok" = "Mae croes-lofnodi yn weithredol.";
+"security_settings_crosssigning_bootstrap" = "Ymlwytho croes-lofnodi";
+"security_settings_crosssigning_reset" = "Ailosod croes-lofnodi";
+"security_settings_crosssigning_complete_security" = "Cwblhewch diogelwch";
+"security_settings_cryptography" = "CRYPTOGRAFFEG";
+"security_settings_complete_security_alert_title" = "Cwblhewch diogelwch";
+"security_settings_complete_security_alert_message" = "Dylech gwblhau diogelwch ar eich sesiwn gyfredol yn gyntaf.";
+"security_settings_coming_soon" = "Sori. Nid yw'r weithred hon ar gael ar Riot-iOS eto. Defnyddiwch gleient Matrix arall i'w osod. Bydd Riot-iOS yn ei ddefnyddio.";
+// Recover from private key
+"key_backup_recover_from_private_key_info" = "Yn adfer copi wrth gefn…";
+"device_verification_self_verify_alert_title" = "Mewngofnodiad Newydd";
+"device_verification_self_verify_alert_message" = "Defnyddiwch y sesiwn hon i wirio'ch un newydd, gan roi mynediad iddo i negeseuon wedi'u hamgryptio :%@\nOs na wnaethoch fewngofnodi i'r sesiwn hon, mae'n bosibl y bydd eich cyfrif mewn perygl..";
+"device_verification_self_verify_alert_cancel_action" = "Nid fi oedd hwn";
+"device_verification_self_verify_start_verify_action" = "Dechrau gwirio";

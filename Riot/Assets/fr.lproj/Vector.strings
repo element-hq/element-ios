@@ -1012,7 +1012,7 @@
 "user_verification_session_details_verify_action_other_user" = "Vérifier manuellement";
 "security_settings_crypto_sessions_loading" = "Chargement des sessions…";
 "key_verification_bootstrap_not_setup_title" = "Erreur";
-"key_verification_bootstrap_not_setup_message" = "Vous devez configurer la signature croisée";
+"key_verification_bootstrap_not_setup_message" = "Vous devez d’abord configurer la signature croisée.";
 "key_verification_verify_qr_code_title" = "Vérifier en scannant";
 "key_verification_verify_qr_code_information" = "Scannez le code pour vous vérifier mutuellement de façon sécurisée.";
 "key_verification_verify_qr_code_scan_code_action" = "Scannez leur code";
@@ -1031,7 +1031,7 @@
 "device_verification_self_verify_start_waiting" = "En attente…";
 "skip" = "Passer";
 "device_verification_self_verify_wait_title" = "Compléter la sécurité";
-"device_verification_self_verify_wait_information" = "Utilisez une session existante pour vérifier celle-ci, ce qui lui permettra d’avoir accès aux messages chiffrés.";
+"device_verification_self_verify_wait_information" = "Vérifiez cette session depuis une de vos autres sessions, ce qui lui permettra d’avoir accès aux messages chiffrés.\n\nUtilisez la dernière version de Riot sur vos autres appareils :";
 "device_verification_self_verify_wait_waiting" = "En attente…";
 "room_member_power_level_admin_in" = "Administrateur dans %@";
 "room_member_power_level_moderator_in" = "Modérateur dans %@";
@@ -1059,4 +1059,11 @@
 "security_settings_crosssigning_complete_security" = "Compléter la sécurité";
 "security_settings_complete_security_alert_title" = "Compléter la sécurité";
 "security_settings_complete_security_alert_message" = "Vous devriez d’abord compléter la sécurité de votre session actuelle.";
-"security_settings_coming_soon" = "Désolé, cette action n’est pas encore disponible dans Riot-iOS. Utilisez un autre client Matrix.";
+"security_settings_coming_soon" = "Désolé, cette action n’est pas encore disponible dans Riot-iOS. Utilisez un autre client Matrix pour le configurer. Riot-iOS l’utilisera.";
+// MARK: Clients
+"client_desktop_name" = "Riot pour ordinateur";
+"client_web_name" = "Riot web";
+"client_ios_name" = "Riot iOS";
+"client_android_name" = "Riot X pour Android";
+"device_verification_self_verify_wait_new_sign_in_title" = "Vérifier cette connexion";
+"device_verification_self_verify_wait_additional_information" = "ou un autre client Matrix qui prend en charge la signature croisée";
