@@ -38,6 +38,11 @@
     id kThemeServiceDidChangeThemeNotificationObserver;
 
     /**
+     Observe AppDelegateUniversalLinkDidChangeNotification to handle universal link changes.
+     */
+    id universalLinkDidChangeNotificationObserver;
+
+    /**
      Server discovery.
      */
     MXAutoDiscovery *autoDiscovery;
@@ -143,7 +148,12 @@
         [self userInterfaceThemeDidChange];
         
     }];
+    universalLinkDidChangeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AppDelegateUniversalLinkDidChangeNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull notification) {
+        [self updateUniversalLink];
+    }];
+
     [self userInterfaceThemeDidChange];
+    [self updateUniversalLink];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -218,6 +228,20 @@
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
+- (void)updateUniversalLink
+{
+    UniversalLink *link = [AppDelegate theDelegate].lastHandledUniversalLink;
+    if (link)
+    {
+        NSString *emailAddress = link.queryParams[@"email"];
+        if (emailAddress && self.authInputsView)
+        {
+            AuthInputsView *inputsView = (AuthInputsView *)self.authInputsView;
+            inputsView.emailTextField.text = emailAddress;
+        }
+    }
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return ThemeService.shared.theme.statusBarStyle;
@@ -262,6 +286,12 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
         kThemeServiceDidChangeThemeNotificationObserver = nil;
+    }
+
+    if (universalLinkDidChangeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:universalLinkDidChangeNotificationObserver];
+        universalLinkDidChangeNotificationObserver = nil;
     }
 
     autoDiscovery = nil;
@@ -668,6 +698,7 @@
     if ([self.authInputsView isKindOfClass:AuthInputsView.class])
     {
         authInputsview = (AuthInputsView*)self.authInputsView;
+        [self updateUniversalLink];
     }
 
     // Hide "Forgot password" and "Log in" buttons in case of SSO

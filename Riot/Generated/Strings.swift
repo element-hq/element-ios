@@ -878,14 +878,6 @@ internal enum VectorL10n {
   internal static var deviceVerificationStartWaitPartner: String { 
     return VectorL10n.tr("Vector", "device_verification_start_wait_partner") 
   }
-  /// You've successfully verified this session.
-  internal static var deviceVerificationVerifiedDescription1: String { 
-    return VectorL10n.tr("Vector", "device_verification_verified_description_1") 
-  }
-  /// Secure messages with this user are end-to-end encrypted and not able to be read by third parties.
-  internal static var deviceVerificationVerifiedDescription2: String { 
-    return VectorL10n.tr("Vector", "device_verification_verified_description_2") 
-  }
   /// Got it
   internal static var deviceVerificationVerifiedGotItButton: String { 
     return VectorL10n.tr("Vector", "device_verification_verified_got_it_button") 
@@ -1618,17 +1610,29 @@ internal enum VectorL10n {
   internal static var keyVerificationTileRequestStatusWaiting: String { 
     return VectorL10n.tr("Vector", "key_verification_tile_request_status_waiting") 
   }
-  /// verify them
+  /// Verify them
   internal static var keyVerificationUserTitle: String { 
     return VectorL10n.tr("Vector", "key_verification_user_title") 
   }
-  /// You’ve successfully verified this user.
-  internal static var keyVerificationVerifiedUserDescription1: String { 
-    return VectorL10n.tr("Vector", "key_verification_verified_user_description_1") 
+  /// You can now read secure messages on your new device, and other users will know they can trust it.
+  internal static var keyVerificationVerifiedNewSessionInformation: String { 
+    return VectorL10n.tr("Vector", "key_verification_verified_new_session_information") 
   }
-  /// Messages with this user in this room are end-to-end encrypted and can’t be read by third parties.
-  internal static var keyVerificationVerifiedUserDescription2: String { 
-    return VectorL10n.tr("Vector", "key_verification_verified_user_description_2") 
+  /// New session verified!
+  internal static var keyVerificationVerifiedNewSessionTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_verified_new_session_title") 
+  }
+  /// You can now read secure messages on your other session, and other users will know they can trust it.
+  internal static var keyVerificationVerifiedOtherSessionInformation: String { 
+    return VectorL10n.tr("Vector", "key_verification_verified_other_session_information") 
+  }
+  /// You can now read secure messages on this device, and other users will know they can trust it.
+  internal static var keyVerificationVerifiedThisSessionInformation: String { 
+    return VectorL10n.tr("Vector", "key_verification_verified_this_session_information") 
+  }
+  /// Messages with this user are end-to-end encrypted and can't be read by third parties.
+  internal static var keyVerificationVerifiedUserInformation: String { 
+    return VectorL10n.tr("Vector", "key_verification_verified_user_information") 
   }
   /// Can't scan?
   internal static var keyVerificationVerifyQrCodeCannotScanAction: String { 
