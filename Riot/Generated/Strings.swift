@@ -846,7 +846,7 @@ internal enum VectorL10n {
   internal static var deviceVerificationSelfVerifyWaitAdditionalInformation: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_additional_information") 
   }
-  /// Verify this session from one of your others sessions, granting it access to encrypted messages.\n\nUse the latest Riot on your other devices:
+  /// Verify this session from one of your other sessions, granting it access to encrypted messages.\n\nUse the latest Riot on your other devices:
   internal static var deviceVerificationSelfVerifyWaitInformation: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_information") 
   }
