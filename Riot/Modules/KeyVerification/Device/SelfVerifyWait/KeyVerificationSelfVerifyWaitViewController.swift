@@ -134,6 +134,10 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
             self.renderLoading()
         case .loaded(let isNewSignIn):
             self.renderLoaded(isNewSignIn: isNewSignIn)
+        case .cancelled(let reason):
+            self.renderCancelled(reason: reason)
+        case .cancelledByMe(let reason):
+            self.renderCancelledByMe(reason: reason)
         case .error(let error):
             self.render(error: error)
         }
@@ -148,6 +152,26 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         
         self.title = isNewSignIn ? VectorL10n.deviceVerificationSelfVerifyWaitNewSignInTitle : VectorL10n.deviceVerificationSelfVerifyWaitTitle
         self.cancelBarButtonItem?.title = isNewSignIn ? VectorL10n.skip : VectorL10n.cancel
+    }
+    
+    private func renderCancelled(reason: MXTransactionCancelCode) {
+        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        
+        self.errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelled, animated: true) {
+            self.viewModel.process(viewAction: .cancel)
+        }
+    }
+    
+    private func renderCancelledByMe(reason: MXTransactionCancelCode) {
+        if reason.value != MXTransactionCancelCode.user().value {
+            self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+            
+            self.errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelledByMe(reason.humanReadable), animated: true) {
+                self.viewModel.process(viewAction: .cancel)
+            }
+        } else {
+            self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        }
     }
     
     private func render(error: Error) {

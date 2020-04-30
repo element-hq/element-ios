@@ -400,8 +400,13 @@ extension KeyVerificationCoordinator: KeyVerificationSelfVerifyStartCoordinatorD
 
 // MARK: - KeyVerificationSelfVerifyWaitCoordinatorDelegate
 extension KeyVerificationCoordinator: KeyVerificationSelfVerifyWaitCoordinatorDelegate {
+    
     func keyVerificationSelfVerifyWaitCoordinator(_ coordinator: KeyVerificationSelfVerifyWaitCoordinatorType, didAcceptKeyVerificationRequest keyVerificationRequest: MXKeyVerificationRequest) {
         self.showVerifyByScanning(keyVerificationRequest: keyVerificationRequest, animated: true)
+    }
+    
+    func keyVerificationSelfVerifyWaitCoordinator(_ coordinator: KeyVerificationSelfVerifyWaitCoordinatorType, didAcceptIncomingSASTransaction incomingSASTransaction: MXIncomingSASTransaction) {
+        self.showVerifyBySAS(transaction: incomingSASTransaction, animated: true)                
     }
     
     func keyVerificationSelfVerifyWaitCoordinatorDidCancel(_ coordinator: KeyVerificationSelfVerifyWaitCoordinatorType) {
