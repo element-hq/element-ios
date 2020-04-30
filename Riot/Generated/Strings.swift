@@ -1558,6 +1558,18 @@ internal enum VectorL10n {
   internal static func keyVerificationScanConfirmationScanningUserWaitingOther(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "key_verification_scan_confirmation_scanning_user_waiting_other", p1)
   }
+  /// Other users may not trust it.
+  internal static var keyVerificationSelfVerifyCurrentSessionAlertMessage: String { 
+    return VectorL10n.tr("Vector", "key_verification_self_verify_current_session_alert_message") 
+  }
+  /// Verify this session
+  internal static var keyVerificationSelfVerifyCurrentSessionAlertTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_self_verify_current_session_alert_title") 
+  }
+  /// Verify
+  internal static var keyVerificationSelfVerifyCurrentSessionAlertValidateAction: String { 
+    return VectorL10n.tr("Vector", "key_verification_self_verify_current_session_alert_validate_action") 
+  }
   /// Verify this session
   internal static var keyVerificationThisSessionTitle: String { 
     return VectorL10n.tr("Vector", "key_verification_this_session_title") 
