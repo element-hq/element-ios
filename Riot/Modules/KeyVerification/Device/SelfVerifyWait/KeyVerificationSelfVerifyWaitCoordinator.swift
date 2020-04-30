@@ -60,8 +60,13 @@ final class KeyVerificationSelfVerifyWaitCoordinator: KeyVerificationSelfVerifyW
 
 // MARK: - KeyVerificationSelfVerifyWaitViewModelCoordinatorDelegate
 extension KeyVerificationSelfVerifyWaitCoordinator: KeyVerificationSelfVerifyWaitViewModelCoordinatorDelegate {
+    
     func keyVerificationSelfVerifyWaitViewModel(_ viewModel: KeyVerificationSelfVerifyWaitViewModelType, didAcceptKeyVerificationRequest keyVerificationRequest: MXKeyVerificationRequest) {
         self.delegate?.keyVerificationSelfVerifyWaitCoordinator(self, didAcceptKeyVerificationRequest: keyVerificationRequest)
+    }
+    
+    func keyVerificationSelfVerifyWaitViewModel(_ viewModel: KeyVerificationSelfVerifyWaitViewModelType, didAcceptIncomingSASTransaction incomingSASTransaction: MXIncomingSASTransaction) {
+        self.delegate?.keyVerificationSelfVerifyWaitCoordinator(self, didAcceptIncomingSASTransaction: incomingSASTransaction)
     }
     
     func keyVerificationSelfVerifyWaitViewModelDidCancel(_ viewModel: KeyVerificationSelfVerifyWaitViewModelType) {

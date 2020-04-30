@@ -22,5 +22,7 @@ import Foundation
 enum KeyVerificationSelfVerifyWaitViewState {
     case loading
     case loaded(_ isNewSignIn: Bool)
+    case cancelled(MXTransactionCancelCode)
+    case cancelledByMe(MXTransactionCancelCode)
     case error(Error)
 }

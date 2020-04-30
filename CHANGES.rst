@@ -8,6 +8,7 @@ Improvements:
  * Verification: Do not talk about QR code if only emoji is possible (#3035).
  * Registration: Prefill email field when opened with universal link (PR #3173).
  * Cross-signing: Display "Verify this session" modal at every startup if needed (#3179).
+ * Complete Security: Support SAS verification start (#3183).
 
 Bug fix:
  * AuthenticationViewController: Remove fallback to matrix.org when authentication failed (PR #3165).
