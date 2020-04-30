@@ -210,11 +210,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
      */
     UIView *launchAnimationContainerView;
     NSDate *launchAnimationStart;
-
-    /**
-     Related push notification service instance. Will be created when launch finished.
-     */
-    PushNotificationService *pushNotificationService;
 }
 
 @property (strong, nonatomic) UIAlertController *mxInAppNotification;
@@ -236,6 +231,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 @property (nonatomic, weak) id userDidSignInOnNewDeviceObserver;
 @property (weak, nonatomic) UIAlertController *userNewSignInAlertController;
+
+/**
+ Related push notification service instance. Will be created when launch finished.
+ */
+@property (nonatomic, strong) PushNotificationService *pushNotificationService;
 
 @end
 
@@ -270,7 +270,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)registerForRemoteNotificationsWithCompletion:(nullable void (^)(NSError *))completion
 {
-    [pushNotificationService registerForRemoteNotificationsWithCompletion:completion];
+    [self.pushNotificationService registerForRemoteNotificationsWithCompletion:completion];
 }
 
 #pragma mark -
@@ -485,8 +485,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [DecryptionFailureTracker sharedInstance].delegate = [Analytics sharedInstance];
     [[Analytics sharedInstance] start];
 
-    pushNotificationService = [PushNotificationService new];
-    pushNotificationService.delegate = self;
+    self.pushNotificationService = [PushNotificationService new];
+    self.pushNotificationService.delegate = self;
 
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
@@ -603,7 +603,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 
     // Notify push notification service
-    [pushNotificationService applicationWillEnterForeground];
+    [self.pushNotificationService applicationWillEnterForeground];
 
     // Force each session to refresh here their publicised groups by user dictionary.
     // When these publicised groups are retrieved for a user, they are cached and reused until the app is backgrounded and enters in the foreground again
@@ -1884,7 +1884,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             [self addMatrixCallObserver];
             
             // Enable local notifications
-            [pushNotificationService enableLocalNotificationsFromMatrixSession:mxSession];
+            [self.pushNotificationService enableLocalNotificationsFromMatrixSession:mxSession];
             
             // Look for the account related to this session.
             NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
@@ -1916,7 +1916,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         // Consider here the case where the app is running in background.
         else if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground)
         {
-            [pushNotificationService handleSessionStateChangesInBackgroundFor:mxSession];
+            [self.pushNotificationService handleSessionStateChangesInBackgroundFor:mxSession];
         }
         else if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
         {
@@ -1946,7 +1946,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             // Set the push gateway URL.
             account.pushGatewayURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"pushGatewayURL"];
 
-            BOOL isPushRegistered = pushNotificationService.isPushRegistered;
+            BOOL isPushRegistered = self.pushNotificationService.isPushRegistered;
 
             NSLog(@"[AppDelegate][Push] didAddAccountNotification: isPushRegistered: %@", @(isPushRegistered));
 
@@ -1958,7 +1958,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             else
             {
                 // Set up push notifications
-                [pushNotificationService registerUserNotificationSettings];
+                [self.pushNotificationService registerUserNotificationSettings];
             }
             
             // Observe inApp notifications toggle change
@@ -2065,7 +2065,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         }
         
         // Set up push notifications
-        [pushNotificationService registerUserNotificationSettings];
+        [self.pushNotificationService registerUserNotificationSettings];
         
         // Observe inApp notifications toggle change for each account
         for (MXKAccount *account in mxAccounts)
@@ -2112,7 +2112,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         // Do the one time check on device id
         [self checkDeviceId:mxSession];
 
-        [pushNotificationService addMatrixSession:mxSession];
+        [self.pushNotificationService addMatrixSession:mxSession];
 
         // Enable listening of incoming key share requests
         [self enableRoomKeyRequestObserver:mxSession];
@@ -2136,7 +2136,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self disableNoVoIPOnMatrixSession:mxSession];
     
     // Disable local notifications from this session
-    [pushNotificationService disableLocalNotificationsFromMatrixSession:mxSession];
+    [self.pushNotificationService disableLocalNotificationsFromMatrixSession:mxSession];
 
     // Disable listening of incoming key share requests
     [self disableRoomKeyRequestObserver:mxSession];
@@ -2144,7 +2144,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // Disable listening of incoming key verification requests
     [self disableIncomingKeyVerificationObserver:mxSession];
 
-    [pushNotificationService removeMatrixSession:mxSession];
+    [self.pushNotificationService removeMatrixSession:mxSession];
     
     [mxSessionArray removeObject:mxSession];
     
@@ -2282,7 +2282,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 - (void)logoutSendingRequestServer:(BOOL)sendLogoutServerRequest
                         completion:(void (^)(BOOL isLoggedOut))completion
 {
-    [pushNotificationService deregisterRemoteNotifications];
+    [self.pushNotificationService deregisterRemoteNotifications];
 
     // Clear cache
     [MXMediaManager clearCache];
@@ -2859,7 +2859,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         [self.masterTabBarController selectRoomWithId:roomId andEventId:eventId inMatrixSession:mxSession completion:^{
             
             // Remove delivered notifications for this room
-            [pushNotificationService removeDeliveredNotificationsWithRoomId:roomId completion:nil];
+            [self.pushNotificationService removeDeliveredNotificationsWithRoomId:roomId completion:nil];
             
             if (completion)
             {
