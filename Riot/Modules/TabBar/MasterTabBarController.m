@@ -66,6 +66,8 @@
 
 @property(nonatomic,getter=isHidden) BOOL hidden;
 
+@property(nonatomic) BOOL verifyCurrentSessionAlertHasBeenDisplayed;
+
 @end
 
 @implementation MasterTabBarController
@@ -206,6 +208,8 @@
             
             [childViewControllers removeAllObjects];
         }
+        
+        [self presentVerifyCurrentSessionAlertIfNeeded];
     }
     
     if (unifiedSearchViewController)
@@ -213,6 +217,55 @@
         [unifiedSearchViewController destroy];
         unifiedSearchViewController = nil;
     }
+}
+
+- (void)presentVerifyCurrentSessionAlertIfNeeded
+{
+    if (RiotSettings.shared.hideVerifyThisSessionAlert || self.verifyCurrentSessionAlertHasBeenDisplayed)
+    {
+        return;
+    }
+    
+    MXSession *mainSession = self.mxSessions.firstObject;
+    
+    if (self.viewLoaded
+        && mainSession.state >= MXSessionStateStoreDataReady
+        && mainSession.crypto.crossSigning
+        && mainSession.crypto.crossSigning.state == MXCrossSigningStateCrossSigningExists)
+    {
+        self.verifyCurrentSessionAlertHasBeenDisplayed = YES;
+        [self presentVerifyCurrentSessionAlertWithSession:mainSession];
+    }
+}
+
+- (void)presentVerifyCurrentSessionAlertWithSession:(MXSession*)session
+{
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"key_verification_self_verify_current_session_alert_title", @"Vector", nil)
+                                                                   message:NSLocalizedStringFromTable(@"key_verification_self_verify_current_session_alert_message", @"Vector", nil)
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"key_verification_self_verify_current_session_alert_validate_action", @"Vector", nil)
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * action) {
+                                                [[AppDelegate theDelegate] presentCompleteSecurityForSession:session];
+                                            }]];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
+                                              style:UIAlertActionStyleCancel
+                                            handler:nil]];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"do_not_ask_again", @"Vector", nil)
+                                              style:UIAlertActionStyleDestructive
+                                            handler:^(UIAlertAction * action) {
+                                                RiotSettings.shared.hideVerifyThisSessionAlert = YES;
+                                            }]];
+    
+    
+    [self presentViewController:alert animated:YES completion:nil];
+    
+    currentAlert = alert;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -339,6 +392,9 @@
             
             // Prepare data sources and return
             [self initializeDataSources];
+            
+            // Add matrix sessions observer on first added session
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMatrixSessionStateDidChange:) name:kMXSessionStateDidChangeNotification object:nil];
             return;
         }
         else
@@ -387,6 +443,8 @@
 - (void)onMatrixSessionStateDidChange:(NSNotification *)notif
 {
     [self refreshTabBarBadges];
+    
+    [self presentVerifyCurrentSessionAlertIfNeeded];
 }
 
 - (void)showAuthenticationScreen
