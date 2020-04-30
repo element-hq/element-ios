@@ -1067,3 +1067,21 @@
 "client_android_name" = "Riot X pour Android";
 "device_verification_self_verify_wait_new_sign_in_title" = "Vérifier cette connexion";
 "device_verification_self_verify_wait_additional_information" = "ou un autre client Matrix qui prend en charge la signature croisée";
+// MARK: - Device Verification
+"key_verification_other_session_title" = "Vérifier la session";
+"key_verification_new_session_title" = "Vérifiez votre nouvelle session";
+"key_verification_this_session_title" = "Vérifier cette session";
+"device_verification_security_advice_emoji" = "Comparez les émojis uniques, en vérifiant qu’ils apparaissent bien dans le même ordre.";
+"device_verification_security_advice_number" = "Comparez les nombres, en vérifiant qu’ils apparaissent bien dans le même ordre.";
+"key_verification_verify_sas_title_emoji" = "Comparer les émojis";
+"key_verification_verify_sas_title_number" = "Comparer les nombres";
+"key_verification_verify_sas_cancel_action" = "Ils ne correspondent pas";
+"key_verification_verify_sas_validate_action" = "Ils correspondent";
+"key_verification_verify_sas_additional_information" = "Pour une sécurité optimale, utilisez un autre moyen de communication fiable ou faites cela en personne.";
+"key_verification_verified_new_session_title" = "Nouvelle session vérifiée !";
+"key_verification_verified_other_session_information" = "Vous pouvez à présent lire les messages sécurisés sur votre autre session, et les autres utilisateurs sauront qu’ils peuvent lui faire confiance.";
+"key_verification_verified_new_session_information" = "Vous pouvez à présent lire les messages sécurisés sur votre nouvel appareil et les autres utilisateurs sauront qu’ils peuvent lui faire confiance.";
+"key_verification_verified_this_session_information" = "Vous pouvez à présent lire les messages sécurisés sur cet appareil et les autres utilisateurs sauront qu’ils peuvent lui faire confiance.";
+"key_verification_verified_user_information" = "Les messages avec cet utilisateurs sont chiffrés de bout en bout et ne peuvent être lus par des tiers.";
+"key_verification_verify_qr_code_emoji_information" = "Vérifier en comparant des émojis uniques.";
+"key_verification_verify_qr_code_start_emoji_action" = "Vérifier par émojis";
