@@ -100,6 +100,15 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 
 + (AppDelegate*)theDelegate;
 
+#pragma mark - Push Notifications
+
+/**
+ Perform registration for remote notifications.
+
+ @param completion the block to be executed when registration finished.
+ */
+- (void)registerForRemoteNotificationsWithCompletion:(nullable void (^)(NSError *))completion;
+
 #pragma mark - Application layout handling
 
 - (void)restoreInitialDisplay:(void (^)(void))completion;

@@ -27,23 +27,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PushNotificationService : NSObject <PKPushRegistryDelegate, UNUserNotificationCenterDelegate>
 
 /**
- Return the shared Push Notificatoin service.
-
- @return the shared Push Notificatoin service.
- */
-+ (instancetype)sharedInstance;
-
-/**
- *  Unavailable initializer. Use sharedInstance.
- */
-+ (instancetype)new NS_UNAVAILABLE;
-
-/**
- *  Unavailable initializer. Use sharedInstance.
- */
-- (instancetype)init NS_UNAVAILABLE;
-
-/**
  Is push really registered.
  */
 @property (nonatomic, assign, readonly) BOOL isPushRegistered;

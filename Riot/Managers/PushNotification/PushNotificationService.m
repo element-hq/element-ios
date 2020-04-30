@@ -56,19 +56,7 @@
 
 @implementation PushNotificationService
 
-+ (instancetype)sharedInstance
-{
-    static PushNotificationService *sharedInstance = nil;
-    static dispatch_once_t onceToken;
-
-    dispatch_once(&onceToken, ^{
-        sharedInstance = [[PushNotificationService alloc] initPrivate];
-    });
-
-    return sharedInstance;
-}
-
-- (instancetype)initPrivate
+- (instancetype)init
 {
     self = [super init];
     if (self) {
