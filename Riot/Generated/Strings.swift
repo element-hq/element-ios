@@ -818,17 +818,17 @@ internal enum VectorL10n {
   internal static var deviceVerificationSecurityAdviceNumber: String { 
     return VectorL10n.tr("Vector", "device_verification_security_advice_number") 
   }
-  /// This wasn't me
-  internal static var deviceVerificationSelfVerifyAlertCancelAction: String { 
-    return VectorL10n.tr("Vector", "device_verification_self_verify_alert_cancel_action") 
-  }
-  /// Use this session to verify your new one, granting it access to encrypted messages: %@\nIf you didn’t sign in to this session, your account may be compromised.
+  /// Verify the new login accessing your account: %@
   internal static func deviceVerificationSelfVerifyAlertMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "device_verification_self_verify_alert_message", p1)
   }
-  /// New Sign In
+  /// New login. Was this you?
   internal static var deviceVerificationSelfVerifyAlertTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_alert_title") 
+  }
+  /// Verify
+  internal static var deviceVerificationSelfVerifyAlertValidateAction: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_alert_validate_action") 
   }
   /// Use this session to verify your new one, granting it access to encrypted messages.
   internal static var deviceVerificationSelfVerifyStartInformation: String { 

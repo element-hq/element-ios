@@ -1060,9 +1060,9 @@
 // MARK: Self verification start
 
 // New login
-"device_verification_self_verify_alert_title" = "New Sign In";
-"device_verification_self_verify_alert_message" = "Use this session to verify your new one, granting it access to encrypted messages: %@\nIf you didn’t sign in to this session, your account may be compromised.";
-"device_verification_self_verify_alert_cancel_action" = "This wasn't me";
+"device_verification_self_verify_alert_title" = "New login. Was this you?";
+"device_verification_self_verify_alert_message" = "Verify the new login accessing your account: %@";
+"device_verification_self_verify_alert_validate_action" = "Verify";
 
 "device_verification_self_verify_start_verify_action" = "Start verification";
 "device_verification_self_verify_start_information" = "Use this session to verify your new one, granting it access to encrypted messages.";
