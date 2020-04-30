@@ -4845,7 +4845,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     BOOL presented = NO;
     
-    if (!keyVerificationCoordinatorBridgePresenter)
+    if (!keyVerificationCoordinatorBridgePresenter.isPresenting)
     {
         NSLog(@"[AppDelegate] presentIncomingKeyVerificationRequest");
         
@@ -4869,7 +4869,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     NSLog(@"[AppDelegate][MXKeyVerification] presentIncomingKeyVerification: %@", transaction);
 
     BOOL presented = NO;
-    if (!keyVerificationCoordinatorBridgePresenter)
+    if (!keyVerificationCoordinatorBridgePresenter.isPresenting)
     {
         keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
         keyVerificationCoordinatorBridgePresenter.delegate = self;
@@ -4890,7 +4890,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     NSLog(@"[AppDelegate][MXKeyVerification] presentUserVerificationForRoomMember: %@", roomMember);
     
     BOOL presented = NO;
-    if (!keyVerificationCoordinatorBridgePresenter)
+    if (!keyVerificationCoordinatorBridgePresenter.isPresenting)
     {
         keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
         keyVerificationCoordinatorBridgePresenter.delegate = self;
@@ -4911,7 +4911,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     NSLog(@"[AppDelegate][MXKeyVerification] presentSelfVerificationForOtherDeviceId: %@", deviceId);
     
     BOOL presented = NO;
-    if (!keyVerificationCoordinatorBridgePresenter)
+    if (!keyVerificationCoordinatorBridgePresenter.isPresenting)
     {
         keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
         keyVerificationCoordinatorBridgePresenter.delegate = self;
@@ -5231,7 +5231,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     NSLog(@"[AppDelegate][MXKeyVerification] presentCompleteSecurityForSession");
     
     BOOL presented = NO;
-    if (!keyVerificationCoordinatorBridgePresenter)
+    if (!keyVerificationCoordinatorBridgePresenter.isPresenting)
     {
         keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
         keyVerificationCoordinatorBridgePresenter.delegate = self;
