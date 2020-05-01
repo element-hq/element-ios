@@ -35,5 +35,7 @@ protocol KeyVerificationDataLoadingViewModelType {
     var viewDelegate: KeyVerificationDataLoadingViewModelViewDelegate? { get set }
     var coordinatorDelegate: KeyVerificationDataLoadingViewModelCoordinatorDelegate? { get set }
     
+    var verificationKind: KeyVerificationKind { get }
+    
     func process(viewAction: KeyVerificationDataLoadingViewAction)
 }

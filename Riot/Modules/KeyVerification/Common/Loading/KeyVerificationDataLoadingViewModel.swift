@@ -31,6 +31,7 @@ final class KeyVerificationDataLoadingViewModel: KeyVerificationDataLoadingViewM
     // MARK: Private
 
     private let session: MXSession
+    private(set) var verificationKind: KeyVerificationKind
     private let otherUserId: String?
     private let otherDeviceId: String?
     private let keyVerificationService = KeyVerificationService()
@@ -46,15 +47,17 @@ final class KeyVerificationDataLoadingViewModel: KeyVerificationDataLoadingViewM
     
     // MARK: - Setup
     
-    init(session: MXSession, otherUserId: String, otherDeviceId: String) {
+    init(session: MXSession, verificationKind: KeyVerificationKind, otherUserId: String, otherDeviceId: String) {
         self.session = session
+        self.verificationKind = verificationKind
         self.otherUserId = otherUserId
         self.otherDeviceId = otherDeviceId
         self.keyVerificationRequest = nil
     }
     
-    init(session: MXSession, keyVerificationRequest: MXKeyVerificationRequest) {
+    init(session: MXSession, verificationKind: KeyVerificationKind, keyVerificationRequest: MXKeyVerificationRequest) {
         self.session = session
+        self.verificationKind = verificationKind
         self.otherUserId = nil
         self.otherDeviceId = nil
         self.keyVerificationRequest = keyVerificationRequest

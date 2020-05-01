@@ -1,3 +1,19 @@
+Changes in 0.11.2 (2020-05-01)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.2](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.2)).
+ * Registration / Email addition: Support email verification link from homeserver (#3167).
+ * Verification requests: Hide incoming request modal when it is no more pending (#3033).
+ * Self-verification: Do not display incoming self verification requests at the top of the Complete Security screen.
+ * Verification: Do not talk about QR code if only emoji is possible (#3035).
+ * Registration: Prefill email field when opened with universal link (PR #3173).
+ * Cross-signing: Display "Verify this session" modal at every startup if needed (#3179).
+ * Complete Security: Support SAS verification start (#3183).
+
+Bug fix:
+ * AuthenticationViewController: Remove fallback to matrix.org when authentication failed (PR #3165).
+
 Changes in 0.11.1 (2020-04-24)
 ===============================================
 

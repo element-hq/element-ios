@@ -40,11 +40,11 @@ final class KeyVerificationVerifyByScanningCoordinator: KeyVerificationVerifyByS
     
     // MARK: - Setup
     
-    init(session: MXSession, keyVerificationRequest: MXKeyVerificationRequest) {
+    init(session: MXSession, verificationKind: KeyVerificationKind, keyVerificationRequest: MXKeyVerificationRequest) {
         self.session = session
         self.keyVerificationRequest = keyVerificationRequest
         
-        let keyVerificationVerifyByScanningViewModel = KeyVerificationVerifyByScanningViewModel(session: self.session, keyVerificationRequest: keyVerificationRequest)
+        let keyVerificationVerifyByScanningViewModel = KeyVerificationVerifyByScanningViewModel(session: self.session, verificationKind: verificationKind, keyVerificationRequest: keyVerificationRequest)
         let keyVerificationVerifyByScanningViewController = KeyVerificationVerifyByScanningViewController.instantiate(with: keyVerificationVerifyByScanningViewModel)
         self.keyVerificationVerifyByScanningViewModel = keyVerificationVerifyByScanningViewModel
         self.keyVerificationVerifyByScanningViewController = keyVerificationVerifyByScanningViewController
@@ -66,11 +66,7 @@ extension KeyVerificationVerifyByScanningCoordinator: KeyVerificationVerifyBySca
     
     func keyVerificationVerifyByScanningViewModelDidCancel(_ viewModel: KeyVerificationVerifyByScanningViewModelType) {
         self.delegate?.keyVerificationVerifyByScanningCoordinatorDidCancel(self)
-    }
-    
-    func keyVerificationVerifyByScanningViewModelCannotScan(_ viewModel: KeyVerificationVerifyByScanningViewModelType) {
-        self.delegate?.keyVerificationVerifyByScanningCoordinatorCannotScan(self)
-    }
+    }    
     
     func keyVerificationVerifyByScanningViewModel(_ viewModel: KeyVerificationVerifyByScanningViewModelType, didStartSASVerificationWithTransaction transaction: MXSASTransaction) {
         self.delegate?.keyVerificationVerifyByScanningCoordinator(self, didCompleteWithSASTransaction: transaction)

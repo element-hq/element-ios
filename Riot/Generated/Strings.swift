@@ -810,21 +810,25 @@ internal enum VectorL10n {
   internal static var deviceVerificationIncomingTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_incoming_title") 
   }
-  /// For maximum security, we recommend you do this in person or use another trusted means of communication
-  internal static var deviceVerificationSecurityAdvice: String { 
-    return VectorL10n.tr("Vector", "device_verification_security_advice") 
+  /// Compare the unique emoji, ensuring they appear in the same order.
+  internal static var deviceVerificationSecurityAdviceEmoji: String { 
+    return VectorL10n.tr("Vector", "device_verification_security_advice_emoji") 
   }
-  /// This wasn't me
-  internal static var deviceVerificationSelfVerifyAlertCancelAction: String { 
-    return VectorL10n.tr("Vector", "device_verification_self_verify_alert_cancel_action") 
+  /// Compare the numbers, ensuring they appear in the same order.
+  internal static var deviceVerificationSecurityAdviceNumber: String { 
+    return VectorL10n.tr("Vector", "device_verification_security_advice_number") 
   }
-  /// Use this session to verify your new one, granting it access to encrypted messages: %@\nIf you didn’t sign in to this session, your account may be compromised.
+  /// Verify the new login accessing your account: %@
   internal static func deviceVerificationSelfVerifyAlertMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "device_verification_self_verify_alert_message", p1)
   }
-  /// New Sign In
+  /// New login. Was this you?
   internal static var deviceVerificationSelfVerifyAlertTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_alert_title") 
+  }
+  /// Verify
+  internal static var deviceVerificationSelfVerifyAlertValidateAction: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_alert_validate_action") 
   }
   /// Use this session to verify your new one, granting it access to encrypted messages.
   internal static var deviceVerificationSelfVerifyStartInformation: String { 
@@ -842,7 +846,7 @@ internal enum VectorL10n {
   internal static var deviceVerificationSelfVerifyWaitAdditionalInformation: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_additional_information") 
   }
-  /// Verify this session from one of your others sessions, granting it access to encrypted messages.\n\nUse the latest Riot on your other devices:
+  /// Verify this session from one of your other sessions, granting it access to encrypted messages.\n\nUse the latest Riot on your other devices:
   internal static var deviceVerificationSelfVerifyWaitInformation: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_information") 
   }
@@ -874,18 +878,6 @@ internal enum VectorL10n {
   internal static var deviceVerificationStartWaitPartner: String { 
     return VectorL10n.tr("Vector", "device_verification_start_wait_partner") 
   }
-  /// Verify session
-  internal static var deviceVerificationTitle: String { 
-    return VectorL10n.tr("Vector", "device_verification_title") 
-  }
-  /// You've successfully verified this session.
-  internal static var deviceVerificationVerifiedDescription1: String { 
-    return VectorL10n.tr("Vector", "device_verification_verified_description_1") 
-  }
-  /// Secure messages with this user are end-to-end encrypted and not able to be read by third parties.
-  internal static var deviceVerificationVerifiedDescription2: String { 
-    return VectorL10n.tr("Vector", "device_verification_verified_description_2") 
-  }
   /// Got it
   internal static var deviceVerificationVerifiedGotItButton: String { 
     return VectorL10n.tr("Vector", "device_verification_verified_got_it_button") 
@@ -893,14 +885,6 @@ internal enum VectorL10n {
   /// Verified!
   internal static var deviceVerificationVerifiedTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_verified_title") 
-  }
-  /// Verify this session by confirming the following emoji appear on the screen of the partner
-  internal static var deviceVerificationVerifyTitleEmoji: String { 
-    return VectorL10n.tr("Vector", "device_verification_verify_title_emoji") 
-  }
-  /// Verify this session by confirming the following numbers appear on the screen of the partner
-  internal static var deviceVerificationVerifyTitleNumber: String { 
-    return VectorL10n.tr("Vector", "device_verification_verify_title_number") 
   }
   /// Waiting for partner to confirm…
   internal static var deviceVerificationVerifyWaitPartner: String { 
@@ -1542,6 +1526,14 @@ internal enum VectorL10n {
   internal static func keyVerificationIncomingRequestIncomingAlertMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "key_verification_incoming_request_incoming_alert_message", p1)
   }
+  /// Verify your new session
+  internal static var keyVerificationNewSessionTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_new_session_title") 
+  }
+  /// Verify session
+  internal static var keyVerificationOtherSessionTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_other_session_title") 
+  }
   /// Is the other device showing the same shield?
   internal static var keyVerificationScanConfirmationScannedDeviceInformation: String { 
     return VectorL10n.tr("Vector", "key_verification_scan_confirmation_scanned_device_information") 
@@ -1565,6 +1557,22 @@ internal enum VectorL10n {
   /// Waiting for %@…
   internal static func keyVerificationScanConfirmationScanningUserWaitingOther(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "key_verification_scan_confirmation_scanning_user_waiting_other", p1)
+  }
+  /// Other users may not trust it.
+  internal static var keyVerificationSelfVerifyCurrentSessionAlertMessage: String { 
+    return VectorL10n.tr("Vector", "key_verification_self_verify_current_session_alert_message") 
+  }
+  /// Verify this session
+  internal static var keyVerificationSelfVerifyCurrentSessionAlertTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_self_verify_current_session_alert_title") 
+  }
+  /// Verify
+  internal static var keyVerificationSelfVerifyCurrentSessionAlertValidateAction: String { 
+    return VectorL10n.tr("Vector", "key_verification_self_verify_current_session_alert_validate_action") 
+  }
+  /// Verify this session
+  internal static var keyVerificationThisSessionTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_this_session_title") 
   }
   /// Verified
   internal static var keyVerificationTileConclusionDoneTitle: String { 
@@ -1614,21 +1622,37 @@ internal enum VectorL10n {
   internal static var keyVerificationTileRequestStatusWaiting: String { 
     return VectorL10n.tr("Vector", "key_verification_tile_request_status_waiting") 
   }
-  /// Verify user
+  /// Verify them
   internal static var keyVerificationUserTitle: String { 
     return VectorL10n.tr("Vector", "key_verification_user_title") 
   }
-  /// You’ve successfully verified this user.
-  internal static var keyVerificationVerifiedUserDescription1: String { 
-    return VectorL10n.tr("Vector", "key_verification_verified_user_description_1") 
+  /// You can now read secure messages on your new device, and other users will know they can trust it.
+  internal static var keyVerificationVerifiedNewSessionInformation: String { 
+    return VectorL10n.tr("Vector", "key_verification_verified_new_session_information") 
   }
-  /// Messages with this user in this room are end-to-end encrypted and can’t be read by third parties.
-  internal static var keyVerificationVerifiedUserDescription2: String { 
-    return VectorL10n.tr("Vector", "key_verification_verified_user_description_2") 
+  /// New session verified!
+  internal static var keyVerificationVerifiedNewSessionTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_verified_new_session_title") 
+  }
+  /// You can now read secure messages on your other session, and other users will know they can trust it.
+  internal static var keyVerificationVerifiedOtherSessionInformation: String { 
+    return VectorL10n.tr("Vector", "key_verification_verified_other_session_information") 
+  }
+  /// You can now read secure messages on this device, and other users will know they can trust it.
+  internal static var keyVerificationVerifiedThisSessionInformation: String { 
+    return VectorL10n.tr("Vector", "key_verification_verified_this_session_information") 
+  }
+  /// Messages with this user are end-to-end encrypted and can't be read by third parties.
+  internal static var keyVerificationVerifiedUserInformation: String { 
+    return VectorL10n.tr("Vector", "key_verification_verified_user_information") 
   }
   /// Can't scan?
   internal static var keyVerificationVerifyQrCodeCannotScanAction: String { 
     return VectorL10n.tr("Vector", "key_verification_verify_qr_code_cannot_scan_action") 
+  }
+  /// Verify by comparing unique emoji.
+  internal static var keyVerificationVerifyQrCodeEmojiInformation: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_qr_code_emoji_information") 
   }
   /// Scan the code to securely verify each other.
   internal static var keyVerificationVerifyQrCodeInformation: String { 
@@ -1650,17 +1674,33 @@ internal enum VectorL10n {
   internal static var keyVerificationVerifyQrCodeScanOtherCodeSuccessTitle: String { 
     return VectorL10n.tr("Vector", "key_verification_verify_qr_code_scan_other_code_success_title") 
   }
+  /// Verify by emoji
+  internal static var keyVerificationVerifyQrCodeStartEmojiAction: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_qr_code_start_emoji_action") 
+  }
   /// Verify by scanning
   internal static var keyVerificationVerifyQrCodeTitle: String { 
     return VectorL10n.tr("Vector", "key_verification_verify_qr_code_title") 
   }
-  /// Verify this user by confirming the following unique emoji appears on their screen, in the same order.
-  internal static var keyVerificationVerifyUserTitleEmoji: String { 
-    return VectorL10n.tr("Vector", "key_verification_verify_user_title_emoji") 
+  /// For ultimate security, use another trusted means of communication or do this in person.
+  internal static var keyVerificationVerifySasAdditionalInformation: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_sas_additional_information") 
   }
-  /// Verify this user by confirming the following numbers appear on their screen, in the same order.
-  internal static var keyVerificationVerifyUserTitleNumber: String { 
-    return VectorL10n.tr("Vector", "key_verification_verify_user_title_number") 
+  /// They don't match
+  internal static var keyVerificationVerifySasCancelAction: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_sas_cancel_action") 
+  }
+  /// Compare emoji
+  internal static var keyVerificationVerifySasTitleEmoji: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_sas_title_emoji") 
+  }
+  /// Compare numbers
+  internal static var keyVerificationVerifySasTitleNumber: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_sas_title_number") 
+  }
+  /// They match
+  internal static var keyVerificationVerifySasValidateAction: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_sas_validate_action") 
   }
   /// %.1fK
   internal static func largeBadgeValueKFormat(_ p1: Float) -> String {

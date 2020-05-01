@@ -22,11 +22,6 @@ final class KeyVerificationScanConfirmationViewController: UIViewController {
     
     // MARK: - Constants
     
-    private enum Constants {
-        static let buttonBackgroundColorAlpha: CGFloat = 0.2
-        static let buttonCornerRadius: CGFloat = 6.0
-    }
-    
     // MARK: - Properties
     
     // MARK: Outlets
@@ -39,8 +34,8 @@ final class KeyVerificationScanConfirmationViewController: UIViewController {
     
     @IBOutlet private weak var scannedContentView: UIView!
     @IBOutlet private weak var scannedInformationLabel: UILabel!
-    @IBOutlet private weak var rejectButton: UIButton!
-    @IBOutlet private weak var confirmButton: UIButton!
+    @IBOutlet private weak var rejectButton: RoundedButton!
+    @IBOutlet private weak var confirmButton: RoundedButton!
     
     // MARK: Private
 
@@ -76,15 +71,6 @@ final class KeyVerificationScanConfirmationViewController: UIViewController {
 
         self.viewModel.process(viewAction: .loadData)
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        if self.scannedContentView.isHidden == false {
-            self.confirmButton.layer.cornerRadius = Constants.buttonCornerRadius
-            self.rejectButton.layer.cornerRadius = Constants.buttonCornerRadius
-        }
-    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -111,8 +97,8 @@ final class KeyVerificationScanConfirmationViewController: UIViewController {
         self.titleLabel.textColor = theme.textPrimaryColor
         self.waitingLabel.textColor = theme.textSecondaryColor
         self.scannedInformationLabel.textColor = theme.textPrimaryColor
-        self.confirmButton.vc_setBackgroundColor(theme.tintColor.withAlphaComponent(Constants.buttonBackgroundColorAlpha), for: .normal)
-        self.rejectButton.vc_setBackgroundColor(theme.noticeColor.withAlphaComponent(Constants.buttonBackgroundColorAlpha), for: .normal)
+        self.confirmButton.update(theme: theme)
+        self.rejectButton.update(theme: theme)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -130,10 +116,12 @@ final class KeyVerificationScanConfirmationViewController: UIViewController {
         
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         
-        self.title = VectorL10n.keyVerificationVerifyQrCodeTitle
-        
         self.confirmButton.layer.masksToBounds = true
         self.rejectButton.layer.masksToBounds = true
+        
+        self.confirmButton.setTitle(Bundle.mxk_localizedString(forKey: "yes"), for: .normal)
+        self.rejectButton.setTitle(Bundle.mxk_localizedString(forKey: "no"), for: .normal)
+        self.rejectButton.actionStyle = .cancel
     }
 
     private func render(viewState: KeyVerificationScanConfirmationViewState) {
@@ -169,7 +157,7 @@ final class KeyVerificationScanConfirmationViewController: UIViewController {
             title = VectorL10n.keyVerificationScanConfirmationScanningTitle
             
             switch viewData.verificationKind {
-            case .device:
+            case .otherSession, .thisSession, .newSession:
                 waitingInfo = VectorL10n.keyVerificationScanConfirmationScanningDeviceWaitingOther
             case .user:
                 waitingInfo = VectorL10n.keyVerificationScanConfirmationScanningUserWaitingOther(viewData.otherDisplayName)
@@ -178,13 +166,14 @@ final class KeyVerificationScanConfirmationViewController: UIViewController {
             title = VectorL10n.keyVerificationScanConfirmationScannedTitle
             
             switch viewData.verificationKind {
-            case .device:
+            case .otherSession, .thisSession, .newSession:
                 scannedInfo = VectorL10n.keyVerificationScanConfirmationScannedDeviceInformation
             case .user:
                 scannedInfo = VectorL10n.keyVerificationScanConfirmationScannedUserInformation(viewData.otherDisplayName)
             }
         }
         
+        self.title = viewData.verificationKind.verificationTitle
         self.titleLabel.text = title
         self.waitingLabel.text = waitingInfo
         self.scannedInformationLabel.text = scannedInfo

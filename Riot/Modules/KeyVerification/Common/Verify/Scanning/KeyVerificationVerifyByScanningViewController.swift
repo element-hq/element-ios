@@ -180,8 +180,16 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
             hideQRCodeImage = true
         }
         
+        self.title = viewData.verificationKind.verificationTitle
+        self.titleLabel.text = viewData.verificationKind.verificationTitle
         self.qrCodeContainerView.isHidden = hideQRCodeImage
         self.scanButtonContainerView.isHidden = !viewData.showScanAction
+        
+        if viewData.qrCodeData == nil && viewData.showScanAction == false {
+            // Update the copy if QR code scanning is not possible at all
+            self.informationLabel.text = VectorL10n.keyVerificationVerifyQrCodeEmojiInformation
+            self.cannotScanButton.setTitle(VectorL10n.keyVerificationVerifyQrCodeStartEmojiAction, for: .normal)
+        }
     }
     
     private func render(error: Error) {

@@ -61,7 +61,7 @@
                                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="8Ou-Xh-0rC">
                                                                         <rect key="frame" x="0.0" y="48" width="374" height="40"/>
                                                                         <subviews>
-                                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kBt-2D-25V">
+                                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kBt-2D-25V" customClass="RoundedButton" customModule="Riot" customModuleProvider="target">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="182" height="40"/>
                                                                                 <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                                                                                 <state key="normal" title="No">
@@ -71,7 +71,7 @@
                                                                                     <action selector="rejectButtonAction:" destination="V8j-Lb-PgC" eventType="touchUpInside" id="qCV-Oh-YAG"/>
                                                                                 </connections>
                                                                             </button>
-                                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="03A-fe-h3s">
+                                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="03A-fe-h3s" customClass="RoundedButton" customModule="Riot" customModuleProvider="target">
                                                                                 <rect key="frame" x="192" y="0.0" width="182" height="40"/>
                                                                                 <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                                                                                 <state key="normal" title="Yes">

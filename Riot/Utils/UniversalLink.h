@@ -1,7 +1,5 @@
-// File created from ScreenTemplate
-// $ createScreen.sh KeyVerification KeyVerificationSelfVerifyWait
 /*
- Copyright 2020 New Vector Ltd
+ Copyright 2020 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,13 +14,22 @@
  limitations under the License.
  */
 
-import Foundation
+#import <Foundation/Foundation.h>
 
-/// KeyVerificationSelfVerifyWaitViewController view state
-enum KeyVerificationSelfVerifyWaitViewState {
-    case loading
-    case loaded(_ isNewSignIn: Bool)
-    case cancelled(MXTransactionCancelCode)
-    case cancelledByMe(MXTransactionCancelCode)
-    case error(Error)
-}
+NS_ASSUME_NONNULL_BEGIN
+
+@interface UniversalLink : NSObject
+
+@property (nonatomic, copy, readonly) NSURL *url;
+
+@property (nonatomic, copy, readonly) NSArray<NSString*> *pathParams;
+
+@property (nonatomic, copy, readonly) NSDictionary<NSString*, NSString*> *queryParams;
+
+- (id)initWithUrl:(NSURL *)url
+       pathParams:(NSArray<NSString*> *)pathParams
+      queryParams:(NSDictionary<NSString*, NSString*> *)queryParams;
+
+@end
+
+NS_ASSUME_NONNULL_END
