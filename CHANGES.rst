@@ -1,7 +1,8 @@
-Changes in 0.11.2 (2020-xx-xx)
+Changes in 0.11.2 (2020-05-01)
 ===============================================
 
 Improvements:
+ * Upgrade MatrixKit version ([v0.12.2](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.2)).
  * Registration / Email addition: Support email verification link from homeserver (#3167).
  * Verification requests: Hide incoming request modal when it is no more pending (#3033).
  * Self-verification: Do not display incoming self verification requests at the top of the Complete Security screen.
