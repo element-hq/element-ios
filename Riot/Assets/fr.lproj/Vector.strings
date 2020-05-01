@@ -1023,8 +1023,8 @@
 "security_settings_crosssigning" = "SIGNATURE CROISÉE";
 "security_settings_cryptography" = "CRYPTOGRAPHIE";
 "room_participants_action_security_status_loading" = "Chargement…";
-"device_verification_self_verify_alert_title" = "Nouvelle connexion";
-"device_verification_self_verify_alert_message" = "Utilisez cette session pour vérifier la nouvelle, ce qui lui permettra d’accéder aux messages chiffrés : %@\nSi vous ne vous êtes pas connecté à cette session, votre compte est peut-être compromis.";
+"device_verification_self_verify_alert_title" = "Nouvelle connexion. Était-ce vous ?";
+"device_verification_self_verify_alert_message" = "Vérifiez la nouvelle connexion pour accéder à votre compte : %@";
 "device_verification_self_verify_alert_cancel_action" = "Ce n’était pas moi";
 "device_verification_self_verify_start_verify_action" = "Commencer la vérification";
 "device_verification_self_verify_start_information" = "Utilisez cette session pour vérifier la nouvelle, ce qui lui permettra d’accéder aux messages chiffrés.";
@@ -1085,3 +1085,7 @@
 "key_verification_verified_user_information" = "Les messages avec cet utilisateurs sont chiffrés de bout en bout et ne peuvent être lus par des tiers.";
 "key_verification_verify_qr_code_emoji_information" = "Vérifier en comparant des émojis uniques.";
 "key_verification_verify_qr_code_start_emoji_action" = "Vérifier par émojis";
+"device_verification_self_verify_alert_validate_action" = "Vérifier";
+"key_verification_self_verify_current_session_alert_title" = "Vérifier cette session";
+"key_verification_self_verify_current_session_alert_message" = "Les autres utilisateurs peuvent ne pas lui faire confiance.";
+"key_verification_self_verify_current_session_alert_validate_action" = "Vérifier";
