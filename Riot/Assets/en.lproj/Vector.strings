@@ -1074,6 +1074,12 @@
 "key_verification_self_verify_current_session_alert_message" = "Other users may not trust it.";
 "key_verification_self_verify_current_session_alert_validate_action" = "Verify";
 
+// Unverified sessions
+
+"key_verification_self_verify_unverified_sessions_alert_title" = "Review where you're logged in";
+"key_verification_self_verify_unverified_sessions_alert_message" = "Verify your other sessions.";
+"key_verification_self_verify_unverified_sessions_alert_validate_action" = "Review";
+
 // MARK: Self verification wait
 
 "device_verification_self_verify_wait_title" = "Complete security";

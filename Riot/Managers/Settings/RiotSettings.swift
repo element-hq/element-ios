@@ -33,6 +33,7 @@ final class RiotSettings: NSObject {
         static let allowStunServerFallback = "allowStunServerFallback"
         static let stunServerFallback = "stunServerFallback"
         static let hideVerifyThisSessionAlert = "hideVerifyThisSessionAlert"
+        static let hideReviewSessionsAlert = "hideReviewSessionsAlert"
     }
     
     static let shared = RiotSettings()
@@ -142,6 +143,14 @@ final class RiotSettings: NSObject {
             return UserDefaults.standard.bool(forKey: UserDefaultsKeys.hideVerifyThisSessionAlert)
         } set {
             UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.hideVerifyThisSessionAlert)
+        }
+    }
+    
+    var hideReviewSessionsAlert: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.hideReviewSessionsAlert)
+        } set {
+            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.hideReviewSessionsAlert)
         }
     }
 }
