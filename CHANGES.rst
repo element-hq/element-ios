@@ -1,3 +1,9 @@
+Changes in 0.11.3 (2020-05-xx)
+===============================================
+
+Improvements:
+ * Cross-signing: Display "Verify your other sessions" modal at every startup if needed (#3180).
+
 Changes in 0.11.2 (2020-05-01)
 ===============================================
 
