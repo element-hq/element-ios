@@ -69,8 +69,16 @@ final class KeyVerificationDataLoadingViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Hide back button
-        self.navigationItem.setHidesBackButton(true, animated: animated)
+        if let navigationController = self.navigationController {
+            if navigationController.navigationBar.isHidden == true {
+                self.navigationItem.hidesBackButton = true
+                // Show navigation bar if needed
+                navigationController.setNavigationBarHidden(false, animated: animated)
+            } else {
+                // Hide back button
+                self.navigationItem.setHidesBackButton(true, animated: animated)
+            }
+        }
     }
     
     // MARK: - Private
