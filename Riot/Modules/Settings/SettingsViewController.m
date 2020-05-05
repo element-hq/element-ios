@@ -261,6 +261,13 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
 @implementation SettingsViewController
 
++ (instancetype)instantiate
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    SettingsViewController *settingsViewController = [storyboard instantiateViewControllerWithIdentifier:@"SettingsViewController"];
+    return settingsViewController;
+}
+
 - (void)finalizeInit
 {
     [super finalizeInit];

@@ -1570,6 +1570,18 @@ internal enum VectorL10n {
   internal static var keyVerificationSelfVerifyCurrentSessionAlertValidateAction: String { 
     return VectorL10n.tr("Vector", "key_verification_self_verify_current_session_alert_validate_action") 
   }
+  /// Verify your other sessions.
+  internal static var keyVerificationSelfVerifyUnverifiedSessionsAlertMessage: String { 
+    return VectorL10n.tr("Vector", "key_verification_self_verify_unverified_sessions_alert_message") 
+  }
+  /// Review where you're logged in
+  internal static var keyVerificationSelfVerifyUnverifiedSessionsAlertTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_self_verify_unverified_sessions_alert_title") 
+  }
+  /// Review
+  internal static var keyVerificationSelfVerifyUnverifiedSessionsAlertValidateAction: String { 
+    return VectorL10n.tr("Vector", "key_verification_self_verify_unverified_sessions_alert_validate_action") 
+  }
   /// Verify this session
   internal static var keyVerificationThisSessionTitle: String { 
     return VectorL10n.tr("Vector", "key_verification_this_session_title") 
