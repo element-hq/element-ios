@@ -1570,7 +1570,7 @@ internal enum VectorL10n {
   internal static var keyVerificationSelfVerifyCurrentSessionAlertValidateAction: String { 
     return VectorL10n.tr("Vector", "key_verification_self_verify_current_session_alert_validate_action") 
   }
-  /// Verify your other sessions.
+  /// Verify all your sessions to ensure your account & messages are safe.
   internal static var keyVerificationSelfVerifyUnverifiedSessionsAlertMessage: String { 
     return VectorL10n.tr("Vector", "key_verification_self_verify_unverified_sessions_alert_message") 
   }
