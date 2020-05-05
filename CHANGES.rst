@@ -6,6 +6,7 @@ Improvements:
 
 Bug fix:
  * KeyVerificationSelfVerifyStartViewController has no navigation (#3195).
+ * Self-verification: QR code scanning screen refers to other-person scanning (#3189).
 
 Changes in 0.11.2 (2020-05-01)
 ===============================================

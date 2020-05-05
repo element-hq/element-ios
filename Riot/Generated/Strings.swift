@@ -1670,6 +1670,10 @@ internal enum VectorL10n {
   internal static var keyVerificationVerifyQrCodeInformation: String { 
     return VectorL10n.tr("Vector", "key_verification_verify_qr_code_information") 
   }
+  /// Scan the code below to verify:
+  internal static var keyVerificationVerifyQrCodeInformationOtherDevice: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_qr_code_information_other_device") 
+  }
   /// Did the other user successfully scan the QR code?
   internal static var keyVerificationVerifyQrCodeOtherScanMyCodeTitle: String { 
     return VectorL10n.tr("Vector", "key_verification_verify_qr_code_other_scan_my_code_title") 

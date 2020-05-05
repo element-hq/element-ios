@@ -1238,6 +1238,7 @@
 
 "key_verification_verify_qr_code_title" = "Verify by scanning";
 "key_verification_verify_qr_code_information" = "Scan the code to securely verify each other.";
+"key_verification_verify_qr_code_information_other_device" = "Scan the code below to verify:";
 "key_verification_verify_qr_code_emoji_information" = "Verify by comparing unique emoji.";
 "key_verification_verify_qr_code_scan_code_action" = "Scan their code";
 "key_verification_verify_qr_code_cannot_scan_action" = "Can't scan?";
