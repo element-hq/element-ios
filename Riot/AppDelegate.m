@@ -1150,7 +1150,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self refreshApplicationIconBadgeNumber];
 }
 
-- (void)pushNotificationServiceShouldNavigateToRoom:(PushNotificationService *)pushNotificationService roomId:(NSString *)roomId
+- (void)pushNotificationService:(PushNotificationService *)pushNotificationService shouldNavigateToRoomWithId:(NSString *)roomId
 {
     [self navigateToRoomById:roomId];
 }

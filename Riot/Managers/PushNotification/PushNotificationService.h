@@ -121,8 +121,8 @@ NS_ASSUME_NONNULL_BEGIN
  @param pushNotificationService PushNotificationService object.
  @param roomId Room identifier to be navigated.
  */
-- (void)pushNotificationServiceShouldNavigateToRoom:(PushNotificationService *)pushNotificationService
-                                             roomId:(NSString *)roomId;
+- (void)pushNotificationService:(PushNotificationService *)pushNotificationService
+     shouldNavigateToRoomWithId:(NSString *)roomId;
 
 @end;
 

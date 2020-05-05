@@ -1038,9 +1038,9 @@
 
 - (void)notifyNavigateToRoomById:(NSString *)roomId
 {
-    if ([_delegate respondsToSelector:@selector(pushNotificationServiceShouldNavigateToRoom:roomId:)])
+    if ([_delegate respondsToSelector:@selector(pushNotificationService:shouldNavigateToRoomWithId:)])
     {
-        [_delegate pushNotificationServiceShouldNavigateToRoom:self roomId:roomId];
+        [_delegate pushNotificationService:self shouldNavigateToRoomWithId:roomId];
     }
 }
 
