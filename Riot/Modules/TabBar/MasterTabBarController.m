@@ -79,6 +79,9 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    // Note: UITabBarViewController shoud not be embed in a UINavigationController (https://github.com/vector-im/riot-ios/issues/3086)
+    [self vc_removeBackTitle];
 
     // Retrieve the all view controllers
     _homeViewController = self.viewControllers[TABBAR_HOME_INDEX];
@@ -1120,7 +1123,7 @@
     SecurityViewController *securityViewController = [SecurityViewController instantiateWithMatrixSession:session];
     
     [[AppDelegate theDelegate] restoreInitialDisplay:^{
-        self.navigationController.viewControllers = @[settingsViewController, securityViewController];
+        self.navigationController.viewControllers = @[self, settingsViewController, securityViewController];
     }];
 }
 
