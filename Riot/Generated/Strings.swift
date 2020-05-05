@@ -3742,7 +3742,7 @@ internal enum VectorL10n {
   internal static var userVerificationSessionDetailsTrustedTitle: String { 
     return VectorL10n.tr("Vector", "user_verification_session_details_trusted_title") 
   }
-  /// Warning
+  /// Not Trusted
   internal static var userVerificationSessionDetailsUntrustedTitle: String { 
     return VectorL10n.tr("Vector", "user_verification_session_details_untrusted_title") 
   }

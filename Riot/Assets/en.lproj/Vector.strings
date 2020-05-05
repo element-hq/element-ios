@@ -1284,7 +1284,7 @@
 // Session details
 
 "user_verification_session_details_trusted_title" = "Trusted";
-"user_verification_session_details_untrusted_title" = "Warning";
+"user_verification_session_details_untrusted_title" = "Not Trusted";
 
 "user_verification_session_details_information_trusted_current_user" = "This session is trusted for secure messaging because you verified it:";
 "user_verification_session_details_information_trusted_other_user_part1" = "This session is trusted for secure messaging because ";
