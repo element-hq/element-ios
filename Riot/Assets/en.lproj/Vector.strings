@@ -1296,5 +1296,6 @@
 "user_verification_session_details_additional_information_untrusted_other_user" = "Until this user trusts this session, messages sent to and from it are labelled with warnings. Alternatively, you can manually verify it.";
 "user_verification_session_details_additional_information_untrusted_current_user" = "If you didn’t sign in to this session, your account may be compromised.";
 
-"user_verification_session_details_verify_action_current_user" = "Verify";
+"user_verification_session_details_verify_action_current_user" = "Interactively Verify";
+"user_verification_session_details_verify_action_current_user_manually" = "Manually Verify by Text";
 "user_verification_session_details_verify_action_other_user" = "Manually verify";

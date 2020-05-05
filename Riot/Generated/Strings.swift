@@ -3746,9 +3746,13 @@ internal enum VectorL10n {
   internal static var userVerificationSessionDetailsUntrustedTitle: String { 
     return VectorL10n.tr("Vector", "user_verification_session_details_untrusted_title") 
   }
-  /// Verify
+  /// Interactively Verify
   internal static var userVerificationSessionDetailsVerifyActionCurrentUser: String { 
     return VectorL10n.tr("Vector", "user_verification_session_details_verify_action_current_user") 
+  }
+  /// Manually Verify by Text
+  internal static var userVerificationSessionDetailsVerifyActionCurrentUserManually: String { 
+    return VectorL10n.tr("Vector", "user_verification_session_details_verify_action_current_user_manually") 
   }
   /// Manually verify
   internal static var userVerificationSessionDetailsVerifyActionOtherUser: String { 

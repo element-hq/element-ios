@@ -45,6 +45,7 @@ final class UserVerificationSessionStatusViewController: UIViewController {
     @IBOutlet private weak var untrustedSessionContainerView: UIView!
     @IBOutlet private weak var untrustedSessionInformationLabel: UILabel!
     @IBOutlet private weak var verifyButton: UIButton!
+    @IBOutlet private weak var manuallyVerifyButton: UIButton!
     
     // MARK: Private
 
@@ -111,6 +112,8 @@ final class UserVerificationSessionStatusViewController: UIViewController {
         
         self.untrustedSessionInformationLabel.textColor = theme.textPrimaryColor
         self.verifyButton.vc_setBackgroundColor(theme.tintColor, for: .normal)
+        
+        theme.applyStyle(onButton: self.manuallyVerifyButton)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -124,6 +127,8 @@ final class UserVerificationSessionStatusViewController: UIViewController {
     private func setupViews() {
         self.closeButton.layer.masksToBounds = true
         self.verifyButton.layer.masksToBounds = true
+        
+        self.manuallyVerifyButton.setTitle(VectorL10n.userVerificationSessionDetailsVerifyActionCurrentUserManually, for: .normal)
     }
 
     private func render(viewState: UserVerificationSessionStatusViewState) {
@@ -148,6 +153,8 @@ final class UserVerificationSessionStatusViewController: UIViewController {
         let title: String
         
         self.untrustedSessionContainerView.isHidden = viewData.isDeviceTrusted
+        
+        self.manuallyVerifyButton.isHidden = !viewData.isCurrentUser
         
         if viewData.isDeviceTrusted {
             badgeImage = Asset.Images.encryptionTrusted.image
@@ -257,6 +264,10 @@ final class UserVerificationSessionStatusViewController: UIViewController {
     
     @IBAction private func verifyButtonAction(_ sender: Any) {
         self.viewModel.process(viewAction: .verify)
+    }
+    
+    @IBAction private func manuallyVerifyButtonAction(_ sender: Any) {
+        // TODO
     }
 }
 
