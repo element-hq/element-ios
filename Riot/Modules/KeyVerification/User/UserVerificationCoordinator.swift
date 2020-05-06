@@ -159,9 +159,12 @@ extension UserVerificationCoordinator: UserVerificationSessionsStatusCoordinator
 // MARK: - UserVerificationSessionStatusCoordinatorDelegate
 extension UserVerificationCoordinator: UserVerificationSessionStatusCoordinatorDelegate {
     
-    func userVerificationSessionStatusCoordinator(_ coordinator: UserVerificationSessionStatusCoordinatorType, wantsToManuallyVerifyDeviceWithId deviceId: String, for userId: String) {
-        
+    func userVerificationSessionStatusCoordinator(_ coordinator: UserVerificationSessionStatusCoordinatorType, wantsToVerifyDeviceWithId deviceId: String, for userId: String) {
         self.presentDeviceVerification(for: deviceId)
+    }
+    
+    func userVerificationSessionStatusCoordinator(_ coordinator: UserVerificationSessionStatusCoordinatorType, wantsToManuallyVerifyDeviceWithId deviceId: String, for userId: String) {
+        // TODO: Steve
     }
     
     func userVerificationSessionStatusCoordinatorDidClose(_ coordinator: UserVerificationSessionStatusCoordinatorType) {

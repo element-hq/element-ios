@@ -267,7 +267,7 @@ final class UserVerificationSessionStatusViewController: UIViewController {
     }
     
     @IBAction private func manuallyVerifyButtonAction(_ sender: Any) {
-        // TODO
+        self.viewModel.process(viewAction: .verifyManually)
     }
 }
 
