@@ -1091,3 +1091,7 @@
 "key_verification_verified_user_information" = "Az üzenetek ezzel a felhasználóval a végpontok között titkosítva vannak és más nem tudja elolvasni.";
 "key_verification_verify_qr_code_emoji_information" = "Ellenőrzés egyedi emodzsik összehasonlításával.";
 "key_verification_verify_qr_code_start_emoji_action" = "Ellenőrzés emodzsival";
+"key_verification_self_verify_unverified_sessions_alert_title" = "Tekintsd át hol vagy bejelentkezve";
+"key_verification_self_verify_unverified_sessions_alert_message" = "Ellenőrizd minden munkamenetedet, hogy a fiókod és az üzeneteid biztonságban legyenek.";
+"key_verification_self_verify_unverified_sessions_alert_validate_action" = "Átnézés";
+"key_verification_verify_qr_code_information_other_device" = "Ellenőrzéshez olvasd be a kódot alább:";
