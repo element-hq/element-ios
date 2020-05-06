@@ -3,6 +3,7 @@ Changes in 0.11.3 (2020-05-xx)
 
 Improvements:
  * Cross-signing: Display "Verify your other sessions" modal at every startup if needed (#3180).
+ * Cross-signing: The "Complete Security" button now triggers a verification request to all user devices.
 
 Bug fix:
  * KeyVerificationSelfVerifyStartViewController has no navigation (#3195).
