@@ -1001,7 +1001,7 @@
 "device_verification_self_verify_start_information" = "Benutze diese Sitzung um deine Neue zu verifizieren. Erlaube Zugriff auf die verschlüsselten Nachrichten.";
 "device_verification_self_verify_start_waiting" = "Warte…";
 "device_verification_self_verify_wait_title" = "vervollständige Sicherheit";
-"device_verification_self_verify_wait_information" = "Benutze diese Sitzung um deine Neue zu verifizieren. Erlaube Zugriff auf die verschlüsselten Nachrichten.";
+"device_verification_self_verify_wait_information" = "Verifiziere diese Sitzung mithilfe einer deiner anderen, um Zugriff auf die verschlüsselten Nachrichten zu erlauben.\n\nVerwende das neuste Riot auf deinen anderen Geräten:";
 "device_verification_self_verify_wait_waiting" = "warte…";
 "skip" = "Überspringen";
 // MARK: Clients
