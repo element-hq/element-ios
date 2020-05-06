@@ -1089,3 +1089,7 @@
 "key_verification_self_verify_current_session_alert_title" = "Vérifier cette session";
 "key_verification_self_verify_current_session_alert_message" = "Les autres utilisateurs peuvent ne pas lui faire confiance.";
 "key_verification_self_verify_current_session_alert_validate_action" = "Vérifier";
+"key_verification_self_verify_unverified_sessions_alert_title" = "Vérifiez où vous vous êtes connecté";
+"key_verification_self_verify_unverified_sessions_alert_message" = "Vérifiez toutes vos sessions pour vous assurer que votre compte et vos message sont en sécurité.";
+"key_verification_self_verify_unverified_sessions_alert_validate_action" = "Vérifier";
+"key_verification_verify_qr_code_information_other_device" = "Scannez le code ci-dessous pour vérifier :";
