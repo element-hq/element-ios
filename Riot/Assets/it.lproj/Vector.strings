@@ -1063,3 +1063,7 @@
 "key_verification_verified_user_information" = "I messaggi con questo utente sono cifrati end-to-end e non possono essere letti da terze parti.";
 "key_verification_verify_qr_code_emoji_information" = "Verifica confrontando emoji univoci.";
 "key_verification_verify_qr_code_start_emoji_action" = "Verifica con emoji";
+"key_verification_self_verify_unverified_sessions_alert_title" = "Controlla dove hai fatto l'accesso";
+"key_verification_self_verify_unverified_sessions_alert_message" = "Verifica tutte le tue sessioni per assicurarti che l'account e i messaggi siano protetti.";
+"key_verification_self_verify_unverified_sessions_alert_validate_action" = "Controlla";
+"key_verification_verify_qr_code_information_other_device" = "Scansiona il codice sotto per verificare:";

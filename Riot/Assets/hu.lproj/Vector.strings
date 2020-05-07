@@ -984,7 +984,7 @@
 "room_participants_security_loading" = "Betöltés…";
 "room_participants_security_information_room_not_encrypted" = "Az üzenetek a szobában nincsenek végponttól végpontig titkosítva.";
 "room_participants_security_information_room_encrypted" = "A szobában az üzenetek végponttól végpontig titkosítva vannak.\n\nAz üzeneteidet lakattal vannak biztosítva és csak neked és a címzetteknek van meg a kulcs hozzá.";
-"key_verification_user_title" = "Felhasználó ellenőrzése";
+"key_verification_user_title" = "Ezek ellenőrzése";
 "key_verification_verify_user_title_emoji" = "Hitelesítheted a felhasználót, ha megerősíted, hogy az alábbi egyedi emoji-k azok amik megjelentek a képernyőjén.";
 "key_verification_verify_user_title_number" = "Hitelesítheted a felhasználót, ha megerősíted, hogy az alábbi számok jelentek meg az ő képernyőjén is.";
 "key_verification_verified_user_description_1" = "Sikeresen ellenőrizted ezt a felhasználót.";
@@ -1034,8 +1034,8 @@
 "room_member_power_level_short_custom" = "Egyedi";
 // Recover from private key
 "key_backup_recover_from_private_key_info" = "Mentés visszaállítás…";
-"device_verification_self_verify_alert_title" = "Új Bejelentkezés";
-"device_verification_self_verify_alert_message" = "Használd ezt a munkamenetet az új ellenőrzéséhez, amivel hozzáférést biztosíthatsz a titkosított üzenethez: %@\nHa nem te jelentkeztél be ebbe a munkamenetbe akkor lehetséges, hogy a fiókodat feltörték.";
+"device_verification_self_verify_alert_title" = "Új bejelentkezés. Ez te vagy?";
+"device_verification_self_verify_alert_message" = "Ellenőrizd ezt az új bejelentkezést ami hozzáfér a fiókodhoz: %@";
 "device_verification_self_verify_alert_cancel_action" = "Nem én voltam";
 "device_verification_self_verify_start_verify_action" = "Ellenőrzés elindítása";
 "device_verification_self_verify_start_information" = "Az új munkamenet ellenőrzéséhez használd ezt, amivel hozzáférést adsz a titkosított üzenetekhez.";
@@ -1069,3 +1069,29 @@
 "security_settings_coming_soon" = "Bocsánat. Riot-iOS-n ez a művelet egyenlőre nem érhető el. Kérlek használj másik Matrix klienst a beállításához. Riot-iOS használni fogja.";
 "device_verification_self_verify_wait_new_sign_in_title" = "Belépés ellenőrzése";
 "device_verification_self_verify_wait_additional_information" = "vagy másik eszközök közötti hitelesítésre alkalmas Matrix kliensre";
+// MARK: - Device Verification
+"key_verification_other_session_title" = "Munkamenet hitelesítése";
+"key_verification_new_session_title" = "Új munkamenet ellenőrzése";
+"key_verification_this_session_title" = "Munkamenet ellenőrzése";
+"device_verification_security_advice_emoji" = "Hasonlítsd össze ezeket az egyedi emodzsikat és győződj meg arról, hogy ugyanabban a sorrendben jelentek meg.";
+"device_verification_security_advice_number" = "Hasonlítsd össze a számokat, győződj meg arról, hogy ugyanabban a sorrendben jelennek meg.";
+"device_verification_self_verify_alert_validate_action" = "Ellenőriz";
+"key_verification_self_verify_current_session_alert_title" = "Munkamenet ellenőrzése";
+"key_verification_self_verify_current_session_alert_message" = "Más felhasználók lehet, hogy nem bíznak benne.";
+"key_verification_self_verify_current_session_alert_validate_action" = "Ellenőriz";
+"key_verification_verify_sas_title_emoji" = "Emodzsik összehasonlítása";
+"key_verification_verify_sas_title_number" = "Számok összehasonlítása";
+"key_verification_verify_sas_cancel_action" = "Nem egyeznek";
+"key_verification_verify_sas_validate_action" = "Egyeznek";
+"key_verification_verify_sas_additional_information" = "A legnagyobb biztonság érdekében használj megbízható kommunikációs csatornát vagy tedd meg személyesen.";
+"key_verification_verified_new_session_title" = "Új munkamenet hitelesítve!";
+"key_verification_verified_other_session_information" = "A másik munkamenetekben is el tudod olvasni a titkosított üzeneteket és más felhasználók tudni fogják, hogy megbízhatnak benne.";
+"key_verification_verified_new_session_information" = "Az új eszközödön is el tudod olvasni a titkosított üzeneteket és más felhasználók tudni fogják, hogy megbízhatnak benne.";
+"key_verification_verified_this_session_information" = "Ezen az eszközödön is el tudod olvasni a titkosított üzeneteket és más felhasználók tudni fogják, hogy megbízhatnak benne.";
+"key_verification_verified_user_information" = "Az üzenetek ezzel a felhasználóval a végpontok között titkosítva vannak és más nem tudja elolvasni.";
+"key_verification_verify_qr_code_emoji_information" = "Ellenőrzés egyedi emodzsik összehasonlításával.";
+"key_verification_verify_qr_code_start_emoji_action" = "Ellenőrzés emodzsival";
+"key_verification_self_verify_unverified_sessions_alert_title" = "Tekintsd át hol vagy bejelentkezve";
+"key_verification_self_verify_unverified_sessions_alert_message" = "Ellenőrizd minden munkamenetedet, hogy a fiókod és az üzeneteid biztonságban legyenek.";
+"key_verification_self_verify_unverified_sessions_alert_validate_action" = "Átnézés";
+"key_verification_verify_qr_code_information_other_device" = "Ellenőrzéshez olvasd be a kódot alább:";
