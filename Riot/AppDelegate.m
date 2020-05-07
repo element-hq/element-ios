@@ -3542,7 +3542,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         keysCount++;
     }
     
-    if (keysCount > 0 && keysCount < 3)
+    if ((keysCount > 0 && keysCount < 3)
+        || (mxSession.crypto.crossSigning.canTrustCrossSigning && !mxSession.crypto.crossSigning.canCrossSign))
     {
         // We should have 3 of them. If not, request them again as mitigation
         NSLog(@"[AppDelegate] checkLocalPrivateKeysInSession: request keys because keysCount = %@", @(keysCount));
