@@ -188,7 +188,12 @@ final class UserVerificationSessionStatusViewController: UIViewController {
     
     private func render(error: Error) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: {
+            
+            if case UserVerificationSessionStatusViewModelError.deviceNotFound = error {
+                self.viewModel.process(viewAction: .close)
+            }
+        })
     }
     
     private func buildUserInfoText(with userId: String, userDisplayName: String?) -> String {
