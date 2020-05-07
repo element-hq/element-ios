@@ -23,6 +23,7 @@ protocol UserVerificationSessionStatusViewModelViewDelegate: class {
 }
 
 protocol UserVerificationSessionStatusViewModelCoordinatorDelegate: class {
+    func userVerificationSessionStatusViewModel(_ viewModel: UserVerificationSessionStatusViewModelType, wantsToVerifyDeviceWithId deviceId: String, for userId: String)
     func userVerificationSessionStatusViewModel(_ viewModel: UserVerificationSessionStatusViewModelType, wantsToManuallyVerifyDeviceWithId deviceId: String, for userId: String)
     func userVerificationSessionStatusViewModelDidClose(_ viewModel: UserVerificationSessionStatusViewModelType)
 }

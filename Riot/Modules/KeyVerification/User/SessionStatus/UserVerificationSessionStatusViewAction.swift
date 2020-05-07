@@ -22,5 +22,6 @@ import Foundation
 enum UserVerificationSessionStatusViewAction {
     case loadData
     case verify
+    case verifyManually
     case close
 }
