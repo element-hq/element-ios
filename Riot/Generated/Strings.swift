@@ -1526,6 +1526,34 @@ internal enum VectorL10n {
   internal static func keyVerificationIncomingRequestIncomingAlertMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "key_verification_incoming_request_incoming_alert_message", p1)
   }
+  /// If they don't match, the security of your communication may be compromised.
+  internal static var keyVerificationManuallyVerifyDeviceAdditionalInformation: String { 
+    return VectorL10n.tr("Vector", "key_verification_manually_verify_device_additional_information") 
+  }
+  /// Session ID
+  internal static var keyVerificationManuallyVerifyDeviceIdTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_manually_verify_device_id_title") 
+  }
+  /// Confirm by comparing the following with the User Settings in your other session:
+  internal static var keyVerificationManuallyVerifyDeviceInstruction: String { 
+    return VectorL10n.tr("Vector", "key_verification_manually_verify_device_instruction") 
+  }
+  /// Session key
+  internal static var keyVerificationManuallyVerifyDeviceKeyTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_manually_verify_device_key_title") 
+  }
+  /// Session name
+  internal static var keyVerificationManuallyVerifyDeviceNameTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_manually_verify_device_name_title") 
+  }
+  /// Manually Verify by Text
+  internal static var keyVerificationManuallyVerifyDeviceTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_manually_verify_device_title") 
+  }
+  /// Verify
+  internal static var keyVerificationManuallyVerifyDeviceValidateAction: String { 
+    return VectorL10n.tr("Vector", "key_verification_manually_verify_device_validate_action") 
+  }
   /// Verify your new session
   internal static var keyVerificationNewSessionTitle: String { 
     return VectorL10n.tr("Vector", "key_verification_new_session_title") 
