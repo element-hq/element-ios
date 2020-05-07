@@ -140,6 +140,16 @@ final class UserVerificationCoordinator: NSObject, UserVerificationCoordinatorTy
         
         self.presenter.toPresentable().present(alert, animated: true, completion: nil)        
     }
+    
+    private func presentManualDeviceVerification(for deviceId: String, of userId: String) {
+        let coordinator = KeyVerificationManuallyVerifyCoordinator(session: self.session, deviceId: deviceId, userId: userId)
+        coordinator.delegate = self
+        coordinator.start()
+        
+        self.navigationRouter.push(coordinator, animated: true) {
+            self.remove(childCoordinator: coordinator)
+        }
+    }
 }
 
 // MARK: - UserVerificationSessionsStatusCoordinatorDelegate
@@ -164,7 +174,7 @@ extension UserVerificationCoordinator: UserVerificationSessionStatusCoordinatorD
     }
     
     func userVerificationSessionStatusCoordinator(_ coordinator: UserVerificationSessionStatusCoordinatorType, wantsToManuallyVerifyDeviceWithId deviceId: String, for userId: String) {
-        // TODO: Steve
+        self.presentManualDeviceVerification(for: deviceId, of: userId)
     }
     
     func userVerificationSessionStatusCoordinatorDidClose(_ coordinator: UserVerificationSessionStatusCoordinatorType) {
@@ -187,6 +197,22 @@ extension UserVerificationCoordinator: KeyVerificationCoordinatorDelegate {
     }
     
     func dismissPresenter(coordinator: KeyVerificationCoordinatorType) {
+        self.presenter.toPresentable().dismiss(animated: true) {
+            self.remove(childCoordinator: coordinator)
+        }
+    }
+}
+
+// MARK: - KeyVerificationManuallyVerifyCoordinatorDelegate
+extension UserVerificationCoordinator: KeyVerificationManuallyVerifyCoordinatorDelegate {
+    
+    func keyVerificationManuallyVerifyCoordinator(_ coordinator: KeyVerificationManuallyVerifyCoordinatorType, didVerifiedDeviceWithId deviceId: String, of userId: String) {
+        self.presenter.toPresentable().dismiss(animated: true) {
+            self.remove(childCoordinator: coordinator)
+        }
+    }
+    
+    func keyVerificationManuallyVerifyCoordinatorDidCancel(_ coordinator: KeyVerificationManuallyVerifyCoordinatorType) {
         self.presenter.toPresentable().dismiss(animated: true) {
             self.remove(childCoordinator: coordinator)
         }
