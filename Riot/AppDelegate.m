@@ -2769,6 +2769,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             
             // Register to new key verification request
             [self registerNewRequestNotificationForSession:mxSession];
+            
+            [self checkLocalPrivateKeysInSession:mxSession];
         }
         else if (mxSession.state == MXSessionStateClosed)
         {
@@ -3522,6 +3524,33 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [notificationListenerBlocks removeObjectForKey:@(mxSession.hash)];
     [eventsToNotify removeObjectForKey:@(mxSession.hash)];
 }
+
+- (void)checkLocalPrivateKeysInSession:(MXSession*)mxSession
+{
+    id<MXCryptoStore> cryptoStore = mxSession.crypto.store;
+    NSUInteger keysCount = 0;
+    if ([cryptoStore secretWithSecretId:MXSecretId.keyBackup])
+    {
+        keysCount++;
+    }
+    if ([cryptoStore secretWithSecretId:MXSecretId.crossSigningUserSigning])
+    {
+        keysCount++;
+    }
+    if ([cryptoStore secretWithSecretId:MXSecretId.crossSigningSelfSigning])
+    {
+        keysCount++;
+    }
+    
+    if ((keysCount > 0 && keysCount < 3)
+        || (mxSession.crypto.crossSigning.canTrustCrossSigning && !mxSession.crypto.crossSigning.canCrossSign))
+    {
+        // We should have 3 of them. If not, request them again as mitigation
+        NSLog(@"[AppDelegate] checkLocalPrivateKeysInSession: request keys because keysCount = %@", @(keysCount));
+        [mxSession.crypto requestAllPrivateKeys];
+    }
+}
+
 
 #pragma mark -
 
