@@ -955,3 +955,14 @@
 "security_settings_title" = "Сигурност";
 "security_settings_crypto_sessions" = "МОИТЕ СЕСИИ";
 "security_settings_crypto_sessions_loading" = "Зареждан на сесии…";
+// MARK: Clients
+"client_desktop_name" = "Riot Desktop";
+"client_web_name" = "Riot Web";
+"client_ios_name" = "Riot iOS";
+"client_android_name" = "Riot X за Android";
+"room_member_power_level_admin_in" = "Админ в %@";
+"room_member_power_level_moderator_in" = "Модератор в %@";
+"room_member_power_level_custom_in" = "Собствен (%@) в %@";
+"room_member_power_level_short_admin" = "Админ";
+"room_member_power_level_short_moderator" = "Модератор";
+"room_member_power_level_short_custom" = "Собствен";
