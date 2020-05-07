@@ -21,14 +21,12 @@ protocol TemplateScreenViewModelViewDelegate: class {
 }
 
 protocol TemplateScreenViewModelCoordinatorDelegate: class {
-    func templateScreenViewModel(_ viewModel: TemplateScreenViewModelType, didCompleteWithMessage message: String)    
+    func templateScreenViewModel(_ viewModel: TemplateScreenViewModelType, didCompleteWithUserDisplayName userDisplayName: String?)
     func templateScreenViewModelDidCancel(_ viewModel: TemplateScreenViewModelType)
 }
 
 /// Protocol describing the view model used by `TemplateScreenViewController`
-protocol TemplateScreenViewModelType {
-    
-    var message: String? { get set }
+protocol TemplateScreenViewModelType {        
         
     var viewDelegate: TemplateScreenViewModelViewDelegate? { get set }
     var coordinatorDelegate: TemplateScreenViewModelCoordinatorDelegate? { get set }

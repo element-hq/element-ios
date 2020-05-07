@@ -68,10 +68,10 @@ final class FlowTemplateCoordinator: FlowTemplateCoordinatorType {
 
 // MARK: - TemplateScreenCoordinatorDelegate
 extension FlowTemplateCoordinator: TemplateScreenCoordinatorDelegate {
-    func templateScreenCoordinator(_ coordinator: TemplateScreenCoordinatorType, didCompleteWithMessage message: String) {
+    func templateScreenCoordinator(_ coordinator: TemplateScreenCoordinatorType, didCompleteWithUserDisplayName userDisplayName: String?) {
         self.delegate?.flowTemplateCoordinatorDidComplete(self)
     }
-
+    
     func templateScreenCoordinatorDidCancel(_ coordinator: TemplateScreenCoordinatorType) {
         self.delegate?.flowTemplateCoordinatorDidComplete(self)
     }
