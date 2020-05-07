@@ -1,5 +1,5 @@
 // File created from ScreenTemplate
-// $ createScreen.sh KeyVerification KeyVerificationSelfVerifyStart
+// $ createScreen.sh KeyVerification/Device/ManuallyVerify KeyVerificationManuallyVerify
 /*
  Copyright 2020 New Vector Ltd
  
@@ -18,36 +18,43 @@
 
 import UIKit
 
-final class KeyVerificationSelfVerifyStartViewController: UIViewController {
+final class KeyVerificationManuallyVerifyViewController: UIViewController {
     
     // MARK: - Constants
-    
-    private enum Constants {
-        static let verifyButtonCornerRadius: CGFloat = 8.0        
-    }
     
     // MARK: - Properties
     
     // MARK: Outlets
 
+    @IBOutlet private weak var scrollView: UIScrollView!
+    
     @IBOutlet private weak var informationLabel: UILabel!
     
-    @IBOutlet private weak var startVerificationButton: UIButton!
-    @IBOutlet private weak var verificationWaitingLabel: UILabel!
+    @IBOutlet private weak var deviceNameTitleLabel: UILabel!
+    @IBOutlet private weak var deviceNameLabel: UILabel!
+    
+    @IBOutlet private weak var deviceIdTitleLabel: UILabel!
+    @IBOutlet private weak var deviceIdLabel: UILabel!
+    
+    @IBOutlet private weak var deviceKeyTitleLabel: UILabel!
+    @IBOutlet private weak var deviceKeyLabel: UILabel!
     
     @IBOutlet private weak var additionalInformationLabel: UILabel!
     
+    @IBOutlet private weak var verifyButton: RoundedButton!
+    @IBOutlet private weak var cancelButton: RoundedButton!
+    
     // MARK: Private
 
-    private var viewModel: KeyVerificationSelfVerifyStartViewModelType!
+    private var viewModel: KeyVerificationManuallyVerifyViewModelType!
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
 
     // MARK: - Setup
     
-    class func instantiate(with viewModel: KeyVerificationSelfVerifyStartViewModelType) -> KeyVerificationSelfVerifyStartViewController {
-        let viewController = StoryboardScene.KeyVerificationSelfVerifyStartViewController.initialScene.instantiate()
+    class func instantiate(with viewModel: KeyVerificationManuallyVerifyViewModelType) -> KeyVerificationManuallyVerifyViewController {
+        let viewController = StoryboardScene.KeyVerificationManuallyVerifyViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
         viewController.theme = ThemeService.shared().theme
         return viewController
@@ -60,8 +67,6 @@ final class KeyVerificationSelfVerifyStartViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = VectorL10n.keyVerificationNewSessionTitle
-        
         self.setupViews()
         self.activityPresenter = ActivityIndicatorPresenter()
         self.errorPresenter = MXKErrorAlertPresentation()
@@ -73,7 +78,7 @@ final class KeyVerificationSelfVerifyStartViewController: UIViewController {
 
         self.viewModel.process(viewAction: .loadData)
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -92,7 +97,17 @@ final class KeyVerificationSelfVerifyStartViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        self.startVerificationButton.layer.cornerRadius = Constants.verifyButtonCornerRadius
+        // Fix label height after orientation change. See here https://www.objc.io/issues/3-views/advanced-auto-layout-toolbox/#intrinsic-content-size-of-multi-line-text for more information.
+        self.informationLabel.vc_fixMultilineHeight()
+        self.deviceNameTitleLabel.vc_fixMultilineHeight()
+        self.deviceNameLabel.vc_fixMultilineHeight()
+        self.deviceIdLabel.vc_fixMultilineHeight()
+        self.deviceIdTitleLabel.vc_fixMultilineHeight()
+        self.deviceKeyTitleLabel.vc_fixMultilineHeight()
+        self.deviceKeyLabel.vc_fixMultilineHeight()
+        self.additionalInformationLabel.vc_fixMultilineHeight()
+        
+        self.view.layoutIfNeeded()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -109,11 +124,22 @@ final class KeyVerificationSelfVerifyStartViewController: UIViewController {
         if let navigationBar = self.navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
-        
+
         self.informationLabel.textColor = theme.textPrimaryColor
-        self.startVerificationButton.vc_setBackgroundColor(theme.tintColor, for: .normal)
-        self.verificationWaitingLabel.textColor = theme.textSecondaryColor
-        self.additionalInformationLabel.textColor = theme.textSecondaryColor
+        
+        self.deviceNameTitleLabel.textColor = theme.textPrimaryColor
+        self.deviceNameLabel.textColor = theme.textPrimaryColor
+        
+        self.deviceIdTitleLabel.textColor = theme.textPrimaryColor
+        self.deviceIdLabel.textColor = theme.textPrimaryColor
+        
+        self.deviceKeyTitleLabel.textColor = theme.textPrimaryColor
+        self.deviceKeyLabel.textColor = theme.textPrimaryColor
+        
+        self.additionalInformationLabel.textColor = theme.textPrimaryColor
+        
+        self.cancelButton.update(theme: theme)
+        self.verifyButton.update(theme: theme)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -126,32 +152,33 @@ final class KeyVerificationSelfVerifyStartViewController: UIViewController {
     
     private func setupViews() {
         let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
-            self?.cancelButtonAction()
+            self?.cancelAction()
         }
         
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         
-        self.startVerificationButton.layer.masksToBounds = true
-        self.startVerificationButton.setTitle(VectorL10n.deviceVerificationSelfVerifyStartVerifyAction, for: .normal)
-        self.verificationWaitingLabel.text = VectorL10n.deviceVerificationSelfVerifyStartWaiting
-        self.informationLabel.text = VectorL10n.deviceVerificationSelfVerifyStartInformation
-        self.additionalInformationLabel.text = nil
+        self.title = VectorL10n.keyVerificationManuallyVerifyDeviceTitle
+        self.informationLabel.text = VectorL10n.keyVerificationManuallyVerifyDeviceInstruction
+        self.deviceNameTitleLabel.text = VectorL10n.keyVerificationManuallyVerifyDeviceNameTitle
+        self.deviceIdTitleLabel.text = VectorL10n.keyVerificationManuallyVerifyDeviceIdTitle
+        self.deviceKeyTitleLabel.text = VectorL10n.keyVerificationManuallyVerifyDeviceKeyTitle
+        self.additionalInformationLabel.text = VectorL10n.keyVerificationManuallyVerifyDeviceAdditionalInformation
+        
+        self.deviceNameLabel.text = nil
+        self.deviceIdLabel.text = nil
+        self.deviceKeyLabel.text = nil
+        
+        self.cancelButton.actionStyle = .cancel
     }
 
-    private func render(viewState: KeyVerificationSelfVerifyStartViewState) {
+    private func render(viewState: KeyVerificationManuallyVerifyViewState) {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .loaded:
-            self.renderLoaded()
+        case .loaded(let viewData):
+            self.renderLoaded(viewData: viewData)
         case .error(let error):
             self.render(error: error)
-        case .verificationPending:
-            self.renderVerificationPending()
-        case .cancelled(let reason):
-            self.renderCancelled(reason: reason)
-        case .cancelledByMe(let reason):
-            self.renderCancelledByMe(reason: reason)
         }
     }
     
@@ -159,57 +186,39 @@ final class KeyVerificationSelfVerifyStartViewController: UIViewController {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
     }
     
-    private func renderLoaded() {
+    private func renderLoaded(viewData: KeyVerificationManuallyVerifyViewData) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-    }
-    
-    private func renderVerificationPending() {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.startVerificationButton.isHidden = true
-        self.verificationWaitingLabel.isHidden = false
+        
+        self.deviceNameLabel.text = viewData.deviceName
+        self.deviceIdLabel.text = viewData.deviceId
+        self.deviceKeyLabel.text = viewData.deviceKey
     }
     
     private func render(error: Error) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
-
-    private func renderCancelled(reason: MXTransactionCancelCode) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        
-        self.errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelled, animated: true) {
-            self.viewModel.process(viewAction: .cancel)
-        }
-    }
-    
-    private func renderCancelledByMe(reason: MXTransactionCancelCode) {
-        if reason.value != MXTransactionCancelCode.user().value {
-            self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-            
-            self.errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelledByMe(reason.humanReadable), animated: true) {
-                self.viewModel.process(viewAction: .cancel)
-            }
-        } else {
-            self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        }
-    }
     
     // MARK: - Actions
 
-    @IBAction private func startVerificationButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .startVerification)
+    @IBAction private func verifyButtonAction(_ sender: Any) {
+        self.viewModel.process(viewAction: .verify)
     }
     
-    private func cancelButtonAction() {
+    @IBAction private func cancelButtonAction(_ sender: Any) {
+        self.cancelAction()
+    }
+
+    private func cancelAction() {
         self.viewModel.process(viewAction: .cancel)
     }
 }
 
 
-// MARK: - KeyVerificationSelfVerifyStartViewModelViewDelegate
-extension KeyVerificationSelfVerifyStartViewController: KeyVerificationSelfVerifyStartViewModelViewDelegate {
+// MARK: - KeyVerificationManuallyVerifyViewModelViewDelegate
+extension KeyVerificationManuallyVerifyViewController: KeyVerificationManuallyVerifyViewModelViewDelegate {
 
-    func keyVerificationSelfVerifyStartViewModel(_ viewModel: KeyVerificationSelfVerifyStartViewModelType, didUpdateViewState viewSate: KeyVerificationSelfVerifyStartViewState) {
+    func keyVerificationManuallyVerifyViewModel(_ viewModel: KeyVerificationManuallyVerifyViewModelType, didUpdateViewState viewSate: KeyVerificationManuallyVerifyViewState) {
         self.render(viewState: viewSate)
     }
 }

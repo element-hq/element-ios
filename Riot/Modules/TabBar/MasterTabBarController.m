@@ -27,6 +27,9 @@
 #import "MXRoom+Riot.h"
 #import "MXSession+Riot.h"
 
+#import "SettingsViewController.h"
+#import "SecurityViewController.h"
+
 #import "Riot-Swift.h"
 
 @interface MasterTabBarController ()
@@ -66,7 +69,7 @@
 
 @property(nonatomic,getter=isHidden) BOOL hidden;
 
-@property(nonatomic) BOOL verifyCurrentSessionAlertHasBeenDisplayed;
+@property(nonatomic) BOOL reviewSessionAlertHasBeenDisplayed;
 
 @end
 
@@ -76,6 +79,9 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    // Note: UITabBarViewController shoud not be embed in a UINavigationController (https://github.com/vector-im/riot-ios/issues/3086)
+    [self vc_removeBackTitle];
 
     // Retrieve the all view controllers
     _homeViewController = self.viewControllers[TABBAR_HOME_INDEX];
@@ -209,7 +215,7 @@
             [childViewControllers removeAllObjects];
         }
         
-        [self presentVerifyCurrentSessionAlertIfNeeded];
+        [self presentReviewSessionsAlertIfNeeded];
     }
     
     if (unifiedSearchViewController)
@@ -217,55 +223,6 @@
         [unifiedSearchViewController destroy];
         unifiedSearchViewController = nil;
     }
-}
-
-- (void)presentVerifyCurrentSessionAlertIfNeeded
-{
-    if (RiotSettings.shared.hideVerifyThisSessionAlert || self.verifyCurrentSessionAlertHasBeenDisplayed)
-    {
-        return;
-    }
-    
-    MXSession *mainSession = self.mxSessions.firstObject;
-    
-    if (self.viewLoaded
-        && mainSession.state >= MXSessionStateStoreDataReady
-        && mainSession.crypto.crossSigning
-        && mainSession.crypto.crossSigning.state == MXCrossSigningStateCrossSigningExists)
-    {
-        self.verifyCurrentSessionAlertHasBeenDisplayed = YES;
-        [self presentVerifyCurrentSessionAlertWithSession:mainSession];
-    }
-}
-
-- (void)presentVerifyCurrentSessionAlertWithSession:(MXSession*)session
-{
-    [currentAlert dismissViewControllerAnimated:NO completion:nil];
-    
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"key_verification_self_verify_current_session_alert_title", @"Vector", nil)
-                                                                   message:NSLocalizedStringFromTable(@"key_verification_self_verify_current_session_alert_message", @"Vector", nil)
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-    
-    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"key_verification_self_verify_current_session_alert_validate_action", @"Vector", nil)
-                                              style:UIAlertActionStyleDefault
-                                            handler:^(UIAlertAction * action) {
-                                                [[AppDelegate theDelegate] presentCompleteSecurityForSession:session];
-                                            }]];
-    
-    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
-                                              style:UIAlertActionStyleCancel
-                                            handler:nil]];
-    
-    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"do_not_ask_again", @"Vector", nil)
-                                              style:UIAlertActionStyleDestructive
-                                            handler:^(UIAlertAction * action) {
-                                                RiotSettings.shared.hideVerifyThisSessionAlert = YES;
-                                            }]];
-    
-    
-    [self presentViewController:alert animated:YES completion:nil];
-    
-    currentAlert = alert;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -444,7 +401,7 @@
 {
     [self refreshTabBarBadges];
     
-    [self presentVerifyCurrentSessionAlertIfNeeded];
+    [self presentReviewSessionsAlertIfNeeded];
 }
 
 - (void)showAuthenticationScreen
@@ -455,6 +412,8 @@
     if (!self.authViewController && !isAuthViewControllerPreparing)
     {
         isAuthViewControllerPreparing = YES;
+        
+        [self resetReviewSessionsFlags];
         
         [[AppDelegate theDelegate] restoreInitialDisplay:^{
             
@@ -1032,6 +991,147 @@
     
     [currentAlert mxk_setAccessibilityIdentifier: @"HomeVCUseAnalyticsAlert"];
     [self presentViewController:currentAlert animated:YES completion:nil];
+}
+
+#pragma mark - Review session
+
+- (void)presentReviewSessionsAlertIfNeeded
+{
+    MXSession *mainSession = self.mxSessions.firstObject;
+    
+    if (!(self.viewLoaded
+          && mainSession.state >= MXSessionStateStoreDataReady
+          && mainSession.crypto.crossSigning))
+    {
+        return;
+    }
+    
+    switch (mainSession.crypto.crossSigning.state) {
+        case MXCrossSigningStateCrossSigningExists:
+            [self presentVerifyCurrentSessionAlertIfNeededWithSession:mainSession];
+            break;
+        case MXCrossSigningStateCanCrossSign:
+            [self presentReviewUnverifiedSessionsAlertIfNeededWithSession:mainSession];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)presentVerifyCurrentSessionAlertIfNeededWithSession:(MXSession*)session
+{
+    if (RiotSettings.shared.hideVerifyThisSessionAlert || self.reviewSessionAlertHasBeenDisplayed)
+    {
+        return;
+    }
+    
+    self.reviewSessionAlertHasBeenDisplayed = YES;
+    [self presentVerifyCurrentSessionAlertWithSession:session];
+}
+
+- (void)presentVerifyCurrentSessionAlertWithSession:(MXSession*)session
+{
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"key_verification_self_verify_current_session_alert_title", @"Vector", nil)
+                                                                   message:NSLocalizedStringFromTable(@"key_verification_self_verify_current_session_alert_message", @"Vector", nil)
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"key_verification_self_verify_current_session_alert_validate_action", @"Vector", nil)
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * action) {
+                                                [[AppDelegate theDelegate] presentCompleteSecurityForSession:session];
+                                            }]];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
+                                              style:UIAlertActionStyleCancel
+                                            handler:nil]];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"do_not_ask_again", @"Vector", nil)
+                                              style:UIAlertActionStyleDestructive
+                                            handler:^(UIAlertAction * action) {
+                                                RiotSettings.shared.hideVerifyThisSessionAlert = YES;
+                                            }]];
+    
+    
+    [self presentViewController:alert animated:YES completion:nil];
+    
+    currentAlert = alert;
+}
+
+- (void)presentReviewUnverifiedSessionsAlertIfNeededWithSession:(MXSession*)session
+{
+    if (RiotSettings.shared.hideReviewSessionsAlert || self.reviewSessionAlertHasBeenDisplayed)
+    {
+        return;
+    }
+    
+    NSArray<MXDeviceInfo*> *devices = [session.crypto.store devicesForUser:session.myUserId].allValues;
+    
+    BOOL isUserHasOneUnverifiedDevice = NO;
+    
+    for (MXDeviceInfo *device in devices)
+    {
+        if (device.trustLevel.localVerificationStatus == MXDeviceUnknown)
+        {
+            isUserHasOneUnverifiedDevice = YES;
+            break;
+        }
+    }
+    
+    if (isUserHasOneUnverifiedDevice)
+    {
+        self.reviewSessionAlertHasBeenDisplayed = YES;
+        [self presentReviewUnverifiedSessionsAlertWithSession:session];
+    }
+}
+
+- (void)presentReviewUnverifiedSessionsAlertWithSession:(MXSession*)session
+{
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"key_verification_self_verify_unverified_sessions_alert_title", @"Vector", nil)
+                                                                   message:NSLocalizedStringFromTable(@"key_verification_self_verify_unverified_sessions_alert_message", @"Vector", nil)
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"key_verification_self_verify_unverified_sessions_alert_validate_action", @"Vector", nil)
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * action) {
+                                                [self showSettingsSecurityScreenForSession:session];
+                                            }]];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
+                                              style:UIAlertActionStyleCancel
+                                            handler:nil]];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"do_not_ask_again", @"Vector", nil)
+                                              style:UIAlertActionStyleDestructive
+                                            handler:^(UIAlertAction * action) {
+                                                RiotSettings.shared.hideReviewSessionsAlert = YES;
+                                            }]];
+    
+    
+    [self presentViewController:alert animated:YES completion:nil];
+    
+    currentAlert = alert;
+}
+
+- (void)showSettingsSecurityScreenForSession:(MXSession*)session
+{
+    SettingsViewController *settingsViewController = [SettingsViewController instantiate];
+    [settingsViewController loadViewIfNeeded];
+    SecurityViewController *securityViewController = [SecurityViewController instantiateWithMatrixSession:session];
+    
+    [[AppDelegate theDelegate] restoreInitialDisplay:^{
+        self.navigationController.viewControllers = @[self, settingsViewController, securityViewController];
+    }];
+}
+
+- (void)resetReviewSessionsFlags
+{
+    self.reviewSessionAlertHasBeenDisplayed = NO;
+    RiotSettings.shared.hideVerifyThisSessionAlert = NO;
+    RiotSettings.shared.hideReviewSessionsAlert = NO;
 }
 
 #pragma mark - UITabBarDelegate

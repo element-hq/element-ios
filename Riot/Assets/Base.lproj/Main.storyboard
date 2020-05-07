@@ -303,7 +303,7 @@
         <!--Settings-->
         <scene sceneID="9we-7Q-LBo">
             <objects>
-                <tableViewController title="Settings" id="taU-5Q-sdv" customClass="SettingsViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="SettingsViewController" title="Settings" id="taU-5Q-sdv" customClass="SettingsViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="egL-pK-Xhr">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -555,15 +555,16 @@
         <image name="logo" width="120" height="101"/>
         <image name="search_icon" width="22" height="22"/>
         <image name="settings_icon" width="24" height="24"/>
-        <image name="tab_favourites" width="25" height="25"/>
-        <image name="tab_favourites_selected" width="25" height="25"/>
-        <image name="tab_groups" width="25" height="25"/>
-        <image name="tab_groups_selected" width="25" height="25"/>
-        <image name="tab_home" width="25" height="25"/>
-        <image name="tab_home_selected" width="25" height="25"/>
-        <image name="tab_people" width="25" height="25"/>
-        <image name="tab_people_selected" width="25" height="25"/>
-        <image name="tab_rooms" width="25" height="25"/>
+        <image name="tab_favourites" width="30" height="30"/>
+        <image name="tab_favourites_selected" width="30" height="30"/>
+        <image name="tab_groups" width="30" height="30"/>
+        <image name="tab_groups_selected" width="30" height="30"/>
+        <image name="tab_home" width="30" height="30"/>
+        <image name="tab_home_selected" width="30" height="30"/>
+        <image name="tab_people" width="30" height="30"/>
+        <image name="tab_people_selected" width="30" height="30"/>
+        <image name="tab_rooms" width="30" height="30"/>
+        <image name="tab_rooms_selected" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="bwO-oZ-2vj"/>

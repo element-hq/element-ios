@@ -1,3 +1,5 @@
+// File created from ScreenTemplate
+// $ createScreen.sh KeyVerification/Device/ManuallyVerify KeyVerificationManuallyVerify
 /*
  Copyright 2020 New Vector Ltd
  
@@ -16,9 +18,9 @@
 
 import Foundation
 
-/// TemplateScreenViewController view actions exposed to view model
-enum TemplateScreenViewAction {
+/// KeyVerificationManuallyVerifyViewController view actions exposed to view model
+enum KeyVerificationManuallyVerifyViewAction {
     case loadData
-    case complete
+    case verify
     case cancel
 }

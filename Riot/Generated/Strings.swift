@@ -1526,6 +1526,34 @@ internal enum VectorL10n {
   internal static func keyVerificationIncomingRequestIncomingAlertMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "key_verification_incoming_request_incoming_alert_message", p1)
   }
+  /// If they don't match, the security of your communication may be compromised.
+  internal static var keyVerificationManuallyVerifyDeviceAdditionalInformation: String { 
+    return VectorL10n.tr("Vector", "key_verification_manually_verify_device_additional_information") 
+  }
+  /// Session ID
+  internal static var keyVerificationManuallyVerifyDeviceIdTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_manually_verify_device_id_title") 
+  }
+  /// Confirm by comparing the following with the User Settings in your other session:
+  internal static var keyVerificationManuallyVerifyDeviceInstruction: String { 
+    return VectorL10n.tr("Vector", "key_verification_manually_verify_device_instruction") 
+  }
+  /// Session key
+  internal static var keyVerificationManuallyVerifyDeviceKeyTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_manually_verify_device_key_title") 
+  }
+  /// Session name
+  internal static var keyVerificationManuallyVerifyDeviceNameTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_manually_verify_device_name_title") 
+  }
+  /// Manually Verify by Text
+  internal static var keyVerificationManuallyVerifyDeviceTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_manually_verify_device_title") 
+  }
+  /// Verify
+  internal static var keyVerificationManuallyVerifyDeviceValidateAction: String { 
+    return VectorL10n.tr("Vector", "key_verification_manually_verify_device_validate_action") 
+  }
   /// Verify your new session
   internal static var keyVerificationNewSessionTitle: String { 
     return VectorL10n.tr("Vector", "key_verification_new_session_title") 
@@ -1569,6 +1597,18 @@ internal enum VectorL10n {
   /// Verify
   internal static var keyVerificationSelfVerifyCurrentSessionAlertValidateAction: String { 
     return VectorL10n.tr("Vector", "key_verification_self_verify_current_session_alert_validate_action") 
+  }
+  /// Verify all your sessions to ensure your account & messages are safe.
+  internal static var keyVerificationSelfVerifyUnverifiedSessionsAlertMessage: String { 
+    return VectorL10n.tr("Vector", "key_verification_self_verify_unverified_sessions_alert_message") 
+  }
+  /// Review where you're logged in
+  internal static var keyVerificationSelfVerifyUnverifiedSessionsAlertTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_self_verify_unverified_sessions_alert_title") 
+  }
+  /// Review
+  internal static var keyVerificationSelfVerifyUnverifiedSessionsAlertValidateAction: String { 
+    return VectorL10n.tr("Vector", "key_verification_self_verify_unverified_sessions_alert_validate_action") 
   }
   /// Verify this session
   internal static var keyVerificationThisSessionTitle: String { 
@@ -1657,6 +1697,10 @@ internal enum VectorL10n {
   /// Scan the code to securely verify each other.
   internal static var keyVerificationVerifyQrCodeInformation: String { 
     return VectorL10n.tr("Vector", "key_verification_verify_qr_code_information") 
+  }
+  /// Scan the code below to verify:
+  internal static var keyVerificationVerifyQrCodeInformationOtherDevice: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_qr_code_information_other_device") 
   }
   /// Did the other user successfully scan the QR code?
   internal static var keyVerificationVerifyQrCodeOtherScanMyCodeTitle: String { 
@@ -3726,13 +3770,17 @@ internal enum VectorL10n {
   internal static var userVerificationSessionDetailsTrustedTitle: String { 
     return VectorL10n.tr("Vector", "user_verification_session_details_trusted_title") 
   }
-  /// Warning
+  /// Not Trusted
   internal static var userVerificationSessionDetailsUntrustedTitle: String { 
     return VectorL10n.tr("Vector", "user_verification_session_details_untrusted_title") 
   }
-  /// Verify
+  /// Interactively Verify
   internal static var userVerificationSessionDetailsVerifyActionCurrentUser: String { 
     return VectorL10n.tr("Vector", "user_verification_session_details_verify_action_current_user") 
+  }
+  /// Manually Verify by Text
+  internal static var userVerificationSessionDetailsVerifyActionCurrentUserManually: String { 
+    return VectorL10n.tr("Vector", "user_verification_session_details_verify_action_current_user_manually") 
   }
   /// Manually verify
   internal static var userVerificationSessionDetailsVerifyActionOtherUser: String { 

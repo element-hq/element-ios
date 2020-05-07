@@ -189,6 +189,17 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
             // Update the copy if QR code scanning is not possible at all
             self.informationLabel.text = VectorL10n.keyVerificationVerifyQrCodeEmojiInformation
             self.cannotScanButton.setTitle(VectorL10n.keyVerificationVerifyQrCodeStartEmojiAction, for: .normal)
+        } else {
+            let informationText: String
+            
+            switch viewData.verificationKind {
+            case .user:
+                informationText = VectorL10n.keyVerificationVerifyQrCodeInformation
+            default:
+                informationText = VectorL10n.keyVerificationVerifyQrCodeInformationOtherDevice
+            }
+            
+            self.informationLabel.text = informationText
         }
     }
     

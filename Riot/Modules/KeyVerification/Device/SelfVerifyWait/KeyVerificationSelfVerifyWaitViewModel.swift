@@ -63,6 +63,23 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     // MARK: - Private
     
     private func loadData() {
+        
+        if !self.isNewSignIn {
+            print("[KeyVerificationSelfVerifyWaitViewModel] loadData: Send a verification request to all devices")
+            
+            let keyVerificationService = KeyVerificationService()
+            self.verificationManager.requestVerificationByToDevice(withUserId: self.session.myUserId, deviceIds: nil, methods: keyVerificationService.supportedKeyVerificationMethods(), success: { [weak self] (keyVerificationRequest) in
+                guard let self = self else {
+                    return
+                }
+                
+                self.keyVerificationRequest = keyVerificationRequest
+                
+            }, failure: { [weak self] error in
+                self?.update(viewState: .error(error))
+            })
+        }
+        
         self.registerKeyVerificationManagerNewRequestNotification(for: self.verificationManager)
         self.update(viewState: .loaded(self.isNewSignIn))
         self.registerTransactionDidStateChangeNotification()

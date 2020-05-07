@@ -1074,6 +1074,12 @@
 "key_verification_self_verify_current_session_alert_message" = "Other users may not trust it.";
 "key_verification_self_verify_current_session_alert_validate_action" = "Verify";
 
+// Unverified sessions
+
+"key_verification_self_verify_unverified_sessions_alert_title" = "Review where you're logged in";
+"key_verification_self_verify_unverified_sessions_alert_message" = "Verify all your sessions to ensure your account & messages are safe.";
+"key_verification_self_verify_unverified_sessions_alert_validate_action" = "Review";
+
 // MARK: Self verification wait
 
 "device_verification_self_verify_wait_title" = "Complete security";
@@ -1090,6 +1096,16 @@
 "key_verification_verify_sas_validate_action" = "They match";
 
 "key_verification_verify_sas_additional_information" = "For ultimate security, use another trusted means of communication or do this in person.";
+
+// MARK: Manually Verify Device
+
+"key_verification_manually_verify_device_title" = "Manually Verify by Text";
+"key_verification_manually_verify_device_instruction" = "Confirm by comparing the following with the User Settings in your other session:";
+"key_verification_manually_verify_device_name_title" = "Session name";
+"key_verification_manually_verify_device_id_title" = "Session ID";
+"key_verification_manually_verify_device_key_title" = "Session key";
+"key_verification_manually_verify_device_additional_information" = "If they don't match, the security of your communication may be compromised.";
+"key_verification_manually_verify_device_validate_action" = "Verify";
 
 // Device
 
@@ -1232,6 +1248,7 @@
 
 "key_verification_verify_qr_code_title" = "Verify by scanning";
 "key_verification_verify_qr_code_information" = "Scan the code to securely verify each other.";
+"key_verification_verify_qr_code_information_other_device" = "Scan the code below to verify:";
 "key_verification_verify_qr_code_emoji_information" = "Verify by comparing unique emoji.";
 "key_verification_verify_qr_code_scan_code_action" = "Scan their code";
 "key_verification_verify_qr_code_cannot_scan_action" = "Can't scan?";
@@ -1277,7 +1294,7 @@
 // Session details
 
 "user_verification_session_details_trusted_title" = "Trusted";
-"user_verification_session_details_untrusted_title" = "Warning";
+"user_verification_session_details_untrusted_title" = "Not Trusted";
 
 "user_verification_session_details_information_trusted_current_user" = "This session is trusted for secure messaging because you verified it:";
 "user_verification_session_details_information_trusted_other_user_part1" = "This session is trusted for secure messaging because ";
@@ -1289,5 +1306,6 @@
 "user_verification_session_details_additional_information_untrusted_other_user" = "Until this user trusts this session, messages sent to and from it are labelled with warnings. Alternatively, you can manually verify it.";
 "user_verification_session_details_additional_information_untrusted_current_user" = "If you didn’t sign in to this session, your account may be compromised.";
 
-"user_verification_session_details_verify_action_current_user" = "Verify";
+"user_verification_session_details_verify_action_current_user" = "Interactively Verify";
+"user_verification_session_details_verify_action_current_user_manually" = "Manually Verify by Text";
 "user_verification_session_details_verify_action_other_user" = "Manually verify";
