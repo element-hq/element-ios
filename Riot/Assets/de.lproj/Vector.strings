@@ -1011,3 +1011,8 @@
 "client_ios_name" = "Riot iOS";
 "client_android_name" = "Riot X für Android";
 "room_member_power_level_admin_in" = "Admin in %@";
+"room_member_power_level_moderator_in" = "Moderator in %@";
+"room_member_power_level_custom_in" = "Benutzerdefiniert (%@) in %@";
+"room_member_power_level_short_admin" = "Admin";
+"room_member_power_level_short_moderator" = "Mod";
+"room_member_power_level_short_custom" = "Benutzerdefiniert";
