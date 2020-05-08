@@ -994,7 +994,7 @@
 "user_verification_sessions_list_session_trusted" = "I besuar";
 "user_verification_sessions_list_session_untrusted" = "Jo i besuar";
 "user_verification_session_details_trusted_title" = "I besuar";
-"user_verification_session_details_untrusted_title" = "Kujdes";
+"user_verification_session_details_untrusted_title" = "Jo i Besuar";
 "user_verification_session_details_information_trusted_current_user" = "Ky sesion është besuar për shkëmbim të sigurt mesazhesh, ngaqë e verifikuat:";
 "user_verification_session_details_information_trusted_other_user_part1" = "Ky sesion është i besua për shkëmbim të sigurt mesazhesh, ngaqë ";
 "user_verification_session_details_information_trusted_other_user_part2" = " e verifikoi:";
@@ -1002,7 +1002,7 @@
 "user_verification_session_details_information_untrusted_other_user" = " bëri hyrjen duke përdorur sesion të ri:";
 "user_verification_session_details_additional_information_untrusted_other_user" = "Deri sa ky përdorues ta besojë këtë sesion, mesazhet te dhe prej tij etiketohen me sinjalizime. Ndryshe, mund ta verifikoni dorazi.";
 "user_verification_session_details_additional_information_untrusted_current_user" = "Nëse s’bëtë hyrjen te ky sesion, llogaria muaj mund të jetë komprometuar.";
-"user_verification_session_details_verify_action_current_user" = "Verifikojeni";
+"user_verification_session_details_verify_action_current_user" = "Verifikojeni Në Mënyrë Ndërvepruese";
 "user_verification_session_details_verify_action_other_user" = "Verifikojeni dorazi";
 "security_settings_crypto_sessions_loading" = "Po ngarkohen sesione…";
 "security_settings_cryptography" = "KRIPTOGRAFI";
@@ -1083,3 +1083,11 @@
 "key_verification_scan_confirmation_scanned_title" = "Thuajse mbërritëm!";
 "key_verification_scan_confirmation_scanned_user_information" = "A shfaq %@ të njëjtën mburojë?";
 "key_verification_scan_confirmation_scanned_device_information" = "A shfaq pajisja juaj tjetër të njëjtën mburojë?";
+"key_verification_manually_verify_device_title" = "Verifikojeni Dorazi përmes Teksti";
+"key_verification_manually_verify_device_instruction" = "Ripohojeni duke krahasuar sa vijon me Rregullime Përdoruesi te sesioni juaj tjetër:";
+"key_verification_manually_verify_device_name_title" = "Emër sesioni";
+"key_verification_manually_verify_device_id_title" = "ID sesioni";
+"key_verification_manually_verify_device_key_title" = "Kyç sesioni";
+"key_verification_manually_verify_device_additional_information" = "Nëse s’përputhen, siguria e komunikimeve tuaja mund të jetë komprometuar.";
+"key_verification_manually_verify_device_validate_action" = "Verifikoje";
+"user_verification_session_details_verify_action_current_user_manually" = "Verifikojeni Dorazi përmes Teksti";
