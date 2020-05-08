@@ -1000,7 +1000,7 @@
 "user_verification_sessions_list_session_trusted" = "Fiable";
 "user_verification_sessions_list_session_untrusted" = "Non fiable";
 "user_verification_session_details_trusted_title" = "Fiable";
-"user_verification_session_details_untrusted_title" = "Attention";
+"user_verification_session_details_untrusted_title" = "Non fiable";
 "user_verification_session_details_information_trusted_current_user" = "Cette session est fiable pour la messagerie sécurisée car vous l’avez vérifiée :";
 "user_verification_session_details_information_trusted_other_user_part1" = "Cette session est fiable pour la messagerie sécurisée car ";
 "user_verification_session_details_information_trusted_other_user_part2" = " l’a vérifié :";
@@ -1008,7 +1008,7 @@
 "user_verification_session_details_information_untrusted_other_user" = " s’est connecté en utilisant une nouvelle session :";
 "user_verification_session_details_additional_information_untrusted_other_user" = "Tant que cet utilisateur ne fera pas confiance à cette session, les messages envoyés par et vers elle seront marqués par des avertissements. Sinon, vous pouvez la vérifier manuellement.";
 "user_verification_session_details_additional_information_untrusted_current_user" = "Si vous ne vous êtes pas connecté à cette session, votre compte est peut-être compromis.";
-"user_verification_session_details_verify_action_current_user" = "Vérifier";
+"user_verification_session_details_verify_action_current_user" = "Vérifier de façon interactive";
 "user_verification_session_details_verify_action_other_user" = "Vérifier manuellement";
 "security_settings_crypto_sessions_loading" = "Chargement des sessions…";
 "key_verification_bootstrap_not_setup_title" = "Erreur";
@@ -1093,3 +1093,11 @@
 "key_verification_self_verify_unverified_sessions_alert_message" = "Vérifiez toutes vos sessions pour vous assurer que votre compte et vos message sont en sécurité.";
 "key_verification_self_verify_unverified_sessions_alert_validate_action" = "Vérifier";
 "key_verification_verify_qr_code_information_other_device" = "Scannez le code ci-dessous pour vérifier :";
+"key_verification_manually_verify_device_title" = "Vérifier manuellement avec un texte";
+"key_verification_manually_verify_device_instruction" = "Confirmez en comparant le texte suivant avec les paramètres utilisateur de votre autre session :";
+"key_verification_manually_verify_device_name_title" = "Nom de la session";
+"key_verification_manually_verify_device_id_title" = "Identifiant de la session";
+"key_verification_manually_verify_device_key_title" = "Clé de la session";
+"key_verification_manually_verify_device_additional_information" = "S’ils ne correspondent pas, la sécurité de vos communications est peut-être compromise.";
+"key_verification_manually_verify_device_validate_action" = "Vérifier";
+"user_verification_session_details_verify_action_current_user_manually" = "Vérifier manuellement avec un texte";
