@@ -32,7 +32,8 @@ final class RiotSettings: NSObject {
         static let pinRoomsWithUnreadMessages = "pinRoomsWithUnread"
         static let allowStunServerFallback = "allowStunServerFallback"
         static let stunServerFallback = "stunServerFallback"
-        static let enableDMKeyVerification = "enableDMKeyVerification"
+        static let hideVerifyThisSessionAlert = "hideVerifyThisSessionAlert"
+        static let hideReviewSessionsAlert = "hideReviewSessionsAlert"
     }
     
     static let shared = RiotSettings()
@@ -133,5 +134,23 @@ final class RiotSettings: NSObject {
 
     var stunServerFallback: String? {
         return UserDefaults.standard.string(forKey: UserDefaultsKeys.stunServerFallback)
+    }
+    
+    // MARK: Key verification
+    
+    var hideVerifyThisSessionAlert: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.hideVerifyThisSessionAlert)
+        } set {
+            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.hideVerifyThisSessionAlert)
+        }
+    }
+    
+    var hideReviewSessionsAlert: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.hideReviewSessionsAlert)
+        } set {
+            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.hideReviewSessionsAlert)
+        }
     }
 }

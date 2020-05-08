@@ -30,11 +30,8 @@ final class KeyVerificationVerifiedViewController: UIViewController {
     // MARK: Outlets
 
     @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var description1Label: UILabel!
-    @IBOutlet private weak var description2Label: UILabel!
-
-    @IBOutlet private weak var okButtonBackgroundView: UIView!
-    @IBOutlet private weak var okButton: UIButton!
+    @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private weak var doneButton: RoundedButton!
     
     // MARK: Private
     
@@ -82,30 +79,29 @@ final class KeyVerificationVerifiedViewController: UIViewController {
     // MARK: - Private
     
     private func setupViews() {
-        let title: String
         let bodyTitle: String
-        let descriptionTextPart1: String
-        let descriptionTextPart2: String
+        let informationText: String
         
         switch self.verificationKind {
-        case .device:
-            title = VectorL10n.deviceVerificationTitle
+        case .otherSession:
             bodyTitle = VectorL10n.deviceVerificationVerifiedTitle
-            descriptionTextPart1 = VectorL10n.deviceVerificationVerifiedDescription1
-            descriptionTextPart2 = VectorL10n.deviceVerificationVerifiedDescription2
+            informationText = VectorL10n.keyVerificationVerifiedOtherSessionInformation
+        case .newSession:
+            bodyTitle = VectorL10n.keyVerificationVerifiedNewSessionTitle
+            informationText = VectorL10n.keyVerificationVerifiedNewSessionInformation
+        case .thisSession:
+            bodyTitle = VectorL10n.deviceVerificationVerifiedTitle
+            informationText = VectorL10n.keyVerificationVerifiedThisSessionInformation
         case .user:
-            title = VectorL10n.keyVerificationUserTitle
             bodyTitle = VectorL10n.deviceVerificationVerifiedTitle
-            descriptionTextPart1 = VectorL10n.keyVerificationVerifiedUserDescription1
-            descriptionTextPart2 = VectorL10n.keyVerificationVerifiedUserDescription2
+            informationText = VectorL10n.keyVerificationVerifiedUserInformation
         }
         
-        self.title = title
+        self.title = self.verificationKind.verificationTitle
         self.titleLabel.text =  bodyTitle
-        self.description1Label.text = descriptionTextPart1
-        self.description2Label.text = descriptionTextPart2
+        self.informationLabel.text = informationText
 
-        self.okButton.setTitle(VectorL10n.deviceVerificationVerifiedGotItButton, for: .normal)
+        self.doneButton.setTitle(VectorL10n.deviceVerificationVerifiedGotItButton, for: .normal)
     }
     
     private func update(theme: Theme) {
@@ -118,11 +114,8 @@ final class KeyVerificationVerifiedViewController: UIViewController {
         }
         
         self.titleLabel.textColor = theme.textPrimaryColor
-        self.description1Label.textColor = theme.textPrimaryColor
-        self.description2Label.textColor = theme.textPrimaryColor
-
-        self.okButtonBackgroundView.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.okButton)
+        self.informationLabel.textColor = theme.textPrimaryColor
+        self.doneButton.update(theme: theme)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -135,7 +128,7 @@ final class KeyVerificationVerifiedViewController: UIViewController {
         self.update(theme: ThemeService.shared().theme)
     }
     
-    @IBAction private func validateButtonAction(_ sender: Any) {
+    @IBAction private func doneButtonAction(_ sender: Any) {
         self.delegate?.keyVerificationVerifiedViewControllerDidTapSetupAction(self)
     }
 }

@@ -60,7 +60,7 @@ final class KeyVerificationSelfVerifyStartViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = VectorL10n.deviceVerificationTitle
+        self.title = VectorL10n.keyVerificationNewSessionTitle
         
         self.setupViews()
         self.activityPresenter = ActivityIndicatorPresenter()
@@ -72,6 +72,21 @@ final class KeyVerificationSelfVerifyStartViewController: UIViewController {
         self.viewModel.viewDelegate = self
 
         self.viewModel.process(viewAction: .loadData)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if let navigationController = self.navigationController {
+            if navigationController.navigationBar.isHidden == true {
+                self.navigationItem.hidesBackButton = true
+                // Show navigation bar if needed
+                navigationController.setNavigationBarHidden(false, animated: animated)
+            } else {
+                // Hide back button
+                self.navigationItem.setHidesBackButton(true, animated: animated)
+            }
+        }
     }
     
     override func viewDidLayoutSubviews() {

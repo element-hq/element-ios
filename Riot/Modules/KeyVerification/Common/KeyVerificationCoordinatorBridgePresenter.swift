@@ -39,6 +39,10 @@ final class KeyVerificationCoordinatorBridgePresenter: NSObject {
     
     weak var delegate: KeyVerificationCoordinatorBridgePresenterDelegate?
     
+    var isPresenting: Bool {
+        return self.coordinator != nil
+    }
+    
     // MARK: - Setup
     
     init(session: MXSession) {

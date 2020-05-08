@@ -1035,10 +1035,12 @@
 "sign_out_key_backup_in_progress_alert_cancel_action" = "I'll wait";
 
 // MARK: - Device Verification
-"device_verification_title" = "Verify session";
-"key_verification_user_title" = "Verify user";
-
-"device_verification_security_advice" = "For maximum security, we recommend you do this in person or use another trusted means of communication";
+"key_verification_other_session_title" = "Verify session";
+"key_verification_new_session_title" = "Verify your new session";
+"key_verification_this_session_title" = "Verify this session";
+"key_verification_user_title" = "Verify them";
+"device_verification_security_advice_emoji" = "Compare the unique emoji, ensuring they appear in the same order.";
+"device_verification_security_advice_number" = "Compare the numbers, ensuring they appear in the same order.";
 "device_verification_cancelled" = "The other party cancelled the verification.";
 "device_verification_cancelled_by_me" = "The verification has been cancelled. Reason: %@";
 "device_verification_error_cannot_load_device" = "Cannot load session information.";
@@ -1057,47 +1059,73 @@
 
 // MARK: Self verification start
 
-"device_verification_self_verify_alert_title" = "New Sign In";
-"device_verification_self_verify_alert_message" = "Use this session to verify your new one, granting it access to encrypted messages: %@\nIf you didn’t sign in to this session, your account may be compromised.";
-"device_verification_self_verify_alert_cancel_action" = "This wasn't me";
+// New login
+"device_verification_self_verify_alert_title" = "New login. Was this you?";
+"device_verification_self_verify_alert_message" = "Verify the new login accessing your account: %@";
+"device_verification_self_verify_alert_validate_action" = "Verify";
 
 "device_verification_self_verify_start_verify_action" = "Start verification";
 "device_verification_self_verify_start_information" = "Use this session to verify your new one, granting it access to encrypted messages.";
 "device_verification_self_verify_start_waiting" = "Waiting…";
 
+// Current session
+
+"key_verification_self_verify_current_session_alert_title" = "Verify this session";
+"key_verification_self_verify_current_session_alert_message" = "Other users may not trust it.";
+"key_verification_self_verify_current_session_alert_validate_action" = "Verify";
+
+// Unverified sessions
+
+"key_verification_self_verify_unverified_sessions_alert_title" = "Review where you're logged in";
+"key_verification_self_verify_unverified_sessions_alert_message" = "Verify all your sessions to ensure your account & messages are safe.";
+"key_verification_self_verify_unverified_sessions_alert_validate_action" = "Review";
+
 // MARK: Self verification wait
 
 "device_verification_self_verify_wait_title" = "Complete security";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verify this login";
-"device_verification_self_verify_wait_information" = "Verify this session from one of your others sessions, granting it access to encrypted messages.\n\nUse the latest Riot on your other devices:";
+"device_verification_self_verify_wait_information" = "Verify this session from one of your other sessions, granting it access to encrypted messages.\n\nUse the latest Riot on your other devices:";
 "device_verification_self_verify_wait_additional_information" = "or another cross-signing capable Matrix client";
 
 // MARK: Verify
 
+"key_verification_verify_sas_title_emoji" = "Compare emoji";
+"key_verification_verify_sas_title_number" = "Compare numbers";
+
+"key_verification_verify_sas_cancel_action" = "They don't match";
+"key_verification_verify_sas_validate_action" = "They match";
+
+"key_verification_verify_sas_additional_information" = "For ultimate security, use another trusted means of communication or do this in person.";
+
+// MARK: Manually Verify Device
+
+"key_verification_manually_verify_device_title" = "Manually Verify by Text";
+"key_verification_manually_verify_device_instruction" = "Confirm by comparing the following with the User Settings in your other session:";
+"key_verification_manually_verify_device_name_title" = "Session name";
+"key_verification_manually_verify_device_id_title" = "Session ID";
+"key_verification_manually_verify_device_key_title" = "Session key";
+"key_verification_manually_verify_device_additional_information" = "If they don't match, the security of your communication may be compromised.";
+"key_verification_manually_verify_device_validate_action" = "Verify";
+
 // Device
 
-"device_verification_verify_title_emoji" = "Verify this session by confirming the following emoji appear on the screen of the partner";
-"device_verification_verify_title_number" = "Verify this session by confirming the following numbers appear on the screen of the partner";
 "device_verification_verify_wait_partner" = "Waiting for partner to confirm…";
-
-// User
-
-"key_verification_verify_user_title_emoji" = "Verify this user by confirming the following unique emoji appears on their screen, in the same order.";
-"key_verification_verify_user_title_number" = "Verify this user by confirming the following numbers appear on their screen, in the same order.";
 
 // MARK: Verified
 
 // Device
 
 "device_verification_verified_title" = "Verified!";
-"device_verification_verified_description_1" = "You've successfully verified this session.";
-"device_verification_verified_description_2" = "Secure messages with this user are end-to-end encrypted and not able to be read by third parties.";
 "device_verification_verified_got_it_button" = "Got it";
+"key_verification_verified_new_session_title" = "New session verified!";
+
+"key_verification_verified_other_session_information" = "You can now read secure messages on your other session, and other users will know they can trust it.";
+"key_verification_verified_new_session_information" = "You can now read secure messages on your new device, and other users will know they can trust it.";
+"key_verification_verified_this_session_information" = "You can now read secure messages on this device, and other users will know they can trust it.";
 
 // User
 
-"key_verification_verified_user_description_1" = "You’ve successfully verified this user.";
-"key_verification_verified_user_description_2" = "Messages with this user in this room are end-to-end encrypted and can’t be read by third parties.";
+"key_verification_verified_user_information" = "Messages with this user are end-to-end encrypted and can't be read by third parties.";
 
 // MARK: Emoji
 "device_verification_emoji_dog" = "Dog";
@@ -1220,8 +1248,11 @@
 
 "key_verification_verify_qr_code_title" = "Verify by scanning";
 "key_verification_verify_qr_code_information" = "Scan the code to securely verify each other.";
+"key_verification_verify_qr_code_information_other_device" = "Scan the code below to verify:";
+"key_verification_verify_qr_code_emoji_information" = "Verify by comparing unique emoji.";
 "key_verification_verify_qr_code_scan_code_action" = "Scan their code";
 "key_verification_verify_qr_code_cannot_scan_action" = "Can't scan?";
+"key_verification_verify_qr_code_start_emoji_action" = "Verify by emoji";
 
 "key_verification_verify_qr_code_other_scan_my_code_title" = "Did the other user successfully scan the QR code?";
 
@@ -1263,7 +1294,7 @@
 // Session details
 
 "user_verification_session_details_trusted_title" = "Trusted";
-"user_verification_session_details_untrusted_title" = "Warning";
+"user_verification_session_details_untrusted_title" = "Not Trusted";
 
 "user_verification_session_details_information_trusted_current_user" = "This session is trusted for secure messaging because you verified it:";
 "user_verification_session_details_information_trusted_other_user_part1" = "This session is trusted for secure messaging because ";
@@ -1275,5 +1306,6 @@
 "user_verification_session_details_additional_information_untrusted_other_user" = "Until this user trusts this session, messages sent to and from it are labelled with warnings. Alternatively, you can manually verify it.";
 "user_verification_session_details_additional_information_untrusted_current_user" = "If you didn’t sign in to this session, your account may be compromised.";
 
-"user_verification_session_details_verify_action_current_user" = "Verify";
+"user_verification_session_details_verify_action_current_user" = "Interactively Verify";
+"user_verification_session_details_verify_action_current_user_manually" = "Manually Verify by Text";
 "user_verification_session_details_verify_action_other_user" = "Manually verify";

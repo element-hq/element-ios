@@ -46,6 +46,7 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     }
     
     deinit {
+        self.unregisterKeyVerificationManagerNewRequestNotification()
     }
     
     // MARK: - Public
@@ -62,8 +63,26 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     // MARK: - Private
     
     private func loadData() {
+        
+        if !self.isNewSignIn {
+            print("[KeyVerificationSelfVerifyWaitViewModel] loadData: Send a verification request to all devices")
+            
+            let keyVerificationService = KeyVerificationService()
+            self.verificationManager.requestVerificationByToDevice(withUserId: self.session.myUserId, deviceIds: nil, methods: keyVerificationService.supportedKeyVerificationMethods(), success: { [weak self] (keyVerificationRequest) in
+                guard let self = self else {
+                    return
+                }
+                
+                self.keyVerificationRequest = keyVerificationRequest
+                
+            }, failure: { [weak self] error in
+                self?.update(viewState: .error(error))
+            })
+        }
+        
         self.registerKeyVerificationManagerNewRequestNotification(for: self.verificationManager)
         self.update(viewState: .loaded(self.isNewSignIn))
+        self.registerTransactionDidStateChangeNotification()
     }
     
     private func cancel() {
@@ -87,6 +106,7 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
                 return
             }
             
+            self.unregisterKeyVerificationManagerNewRequestNotification()
             self.coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModel(self, didAcceptKeyVerificationRequest: keyVerificationRequest)
             
             }, failure: { [weak self] (error) in
@@ -101,9 +121,11 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     
     private func registerKeyVerificationManagerNewRequestNotification(for verificationManager: MXKeyVerificationManager) {
         NotificationCenter.default.addObserver(self, selector: #selector(keyVerificationManagerNewRequestNotification(notification:)), name: .MXKeyVerificationManagerNewRequest, object: verificationManager)
+        AppDelegate.the()?.handleSelfVerificationRequest = false
     }
     
     private func unregisterKeyVerificationManagerNewRequestNotification() {
+        AppDelegate.the()?.handleSelfVerificationRequest = true
         NotificationCenter.default.removeObserver(self, name: .MXKeyVerificationManagerNewRequest, object: nil)
     }
     
@@ -119,6 +141,51 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
             return
         }
         
+        self.unregisterTransactionDidStateChangeNotification()
         self.acceptKeyVerificationRequest(keyVerificationRequest)
+    }
+    
+    // MARK: MXKeyVerificationTransactionDidChange
+    
+    private func registerTransactionDidStateChangeNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(transactionDidStateChange(notification:)), name: .MXKeyVerificationTransactionDidChange, object: nil)
+    }
+
+    private func unregisterTransactionDidStateChangeNotification() {
+        NotificationCenter.default.removeObserver(self, name: .MXKeyVerificationTransactionDidChange, object: nil)
+    }
+
+    @objc private func transactionDidStateChange(notification: Notification) {
+        guard let sasTransaction = notification.object as? MXIncomingSASTransaction,
+            sasTransaction.otherUserId == self.session.myUserId else {
+            return
+        }
+        self.sasTransactionDidStateChange(sasTransaction)
+    }
+
+    private func sasTransactionDidStateChange(_ transaction: MXIncomingSASTransaction) {
+        switch transaction.state {
+        case MXSASTransactionStateIncomingShowAccept:
+            // Stop listening for incoming request
+            self.unregisterKeyVerificationManagerNewRequestNotification()
+            transaction.accept()
+        case MXSASTransactionStateShowSAS:
+            self.unregisterTransactionDidStateChangeNotification()
+            self.coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModel(self, didAcceptIncomingSASTransaction: transaction)
+        case MXSASTransactionStateCancelled:
+            guard let reason = transaction.reasonCancelCode else {
+                return
+            }
+            self.unregisterTransactionDidStateChangeNotification()
+            self.update(viewState: .cancelled(reason))
+        case MXSASTransactionStateCancelledByMe:
+            guard let reason = transaction.reasonCancelCode else {
+                return
+            }
+            self.unregisterTransactionDidStateChangeNotification()
+            self.update(viewState: .cancelledByMe(reason))
+        default:
+            break
+        }
     }
 }

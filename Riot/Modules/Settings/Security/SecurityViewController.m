@@ -675,7 +675,14 @@ UIDocumentInteractionControllerDelegate>
 {
     if (!self.mainSession.crypto.crossSigning.canCrossSign)
     {
-        return [UIImage imageNamed:@"encryption_normal"];
+        if ([deviceId isEqualToString:self.mainSession.myDeviceId])
+        {
+            return [UIImage imageNamed:@"encryption_warning"];
+        }
+        else
+        {
+            return [UIImage imageNamed:@"encryption_normal"];
+        }
     }
     
     UIImage* shieldImageForDevice = [UIImage imageNamed:@"encryption_warning"];

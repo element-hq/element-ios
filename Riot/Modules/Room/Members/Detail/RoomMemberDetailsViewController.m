@@ -468,9 +468,16 @@
         return;
     }
     
-    [self.mxRoom encryptionTrustLevelForUserId:userId onComplete:^(UserEncryptionTrustLevel userEncryptionTrustLevel) {
-        self.encryptionTrustLevel = userEncryptionTrustLevel;
-        [self updateMemberInfo];
+    [self.mxRoom.mxSession.crypto downloadKeys:@[userId] forceDownload:YES success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap, NSDictionary<NSString *,MXCrossSigningInfo *> *crossSigningKeysMap) {
+        [self.mxRoom encryptionTrustLevelForUserId:userId onComplete:^(UserEncryptionTrustLevel userEncryptionTrustLevel) {
+            self.encryptionTrustLevel = userEncryptionTrustLevel;
+            [self updateMemberInfo];
+        }];
+    } failure:^(NSError *error) {
+        [self.mxRoom encryptionTrustLevelForUserId:userId onComplete:^(UserEncryptionTrustLevel userEncryptionTrustLevel) {
+            self.encryptionTrustLevel = userEncryptionTrustLevel;
+            [self updateMemberInfo];
+        }];
     }];
 }
 

@@ -63,7 +63,7 @@ final class DeviceVerificationIncomingViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = VectorL10n.deviceVerificationTitle
+        self.title = VectorL10n.keyVerificationOtherSessionTitle
         self.vc_removeBackTitle()
         
         self.setupViews()

@@ -20,5 +20,7 @@
 
 @interface SettingsViewController : MXKTableViewController<UITextFieldDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate, MXKDataSourceDelegate>
 
++ (instancetype)instantiate;
+
 @end
 

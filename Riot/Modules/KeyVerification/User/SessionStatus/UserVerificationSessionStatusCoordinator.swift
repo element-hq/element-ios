@@ -65,6 +65,10 @@ final class UserVerificationSessionStatusCoordinator: UserVerificationSessionSta
 // MARK: - UserVerificationSessionStatusViewModelCoordinatorDelegate
 extension UserVerificationSessionStatusCoordinator: UserVerificationSessionStatusViewModelCoordinatorDelegate {
     
+    func userVerificationSessionStatusViewModel(_ viewModel: UserVerificationSessionStatusViewModelType, wantsToVerifyDeviceWithId deviceId: String, for userId: String) {
+        self.delegate?.userVerificationSessionStatusCoordinator(self, wantsToVerifyDeviceWithId: deviceId, for: userId)
+    }
+    
     func userVerificationSessionStatusViewModel(_ viewModel: UserVerificationSessionStatusViewModelType, wantsToManuallyVerifyDeviceWithId deviceId: String, for userId: String) {
         self.delegate?.userVerificationSessionStatusCoordinator(self, wantsToManuallyVerifyDeviceWithId: deviceId, for: userId)
     }

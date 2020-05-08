@@ -29,6 +29,7 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
     // MARK: Private
 
     private let session: MXSession
+    private let verificationKind: KeyVerificationKind
     private let keyVerificationRequest: MXKeyVerificationRequest
     private let qrCodeDataCoder: MXQRCodeDataCoder
     private let keyVerificationManager: MXKeyVerificationManager
@@ -43,8 +44,9 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
     
     // MARK: - Setup
     
-    init(session: MXSession, keyVerificationRequest: MXKeyVerificationRequest) {
+    init(session: MXSession, verificationKind: KeyVerificationKind, keyVerificationRequest: MXKeyVerificationRequest) {
         self.session = session
+        self.verificationKind = verificationKind
         self.keyVerificationManager = self.session.crypto.keyVerificationManager
         self.keyVerificationRequest = keyVerificationRequest
         self.qrCodeDataCoder = MXQRCodeDataCoder()
@@ -94,7 +96,8 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
             canShowScanAction = false
         }
         
-        let viewData = KeyVerificationVerifyByScanningViewData(qrCodeData: qrCodePlayloadData,
+        let viewData = KeyVerificationVerifyByScanningViewData(verificationKind: self.verificationKind,
+                                                               qrCodeData: qrCodePlayloadData,
                                                                showScanAction: canShowScanAction)
         
         self.update(viewState: .loaded(viewData: viewData))
