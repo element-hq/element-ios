@@ -972,7 +972,7 @@
 "user_verification_sessions_list_session_trusted" = "Fidate";
 "user_verification_sessions_list_session_untrusted" = "Non fidate";
 "user_verification_session_details_trusted_title" = "Fidata";
-"user_verification_session_details_untrusted_title" = "Attenzione";
+"user_verification_session_details_untrusted_title" = "Non fidato";
 "user_verification_session_details_information_trusted_current_user" = "Questa sessione è fidata per comunicazioni sicure perchè l'hai verificata:";
 "user_verification_session_details_information_trusted_other_user_part1" = "Questa sessione è fidata per comunicazioni sicure perchè ";
 "user_verification_session_details_information_trusted_other_user_part2" = " ha verificato:";
@@ -980,7 +980,7 @@
 "user_verification_session_details_information_untrusted_other_user" = " ha fatto l'accesso usando una nuova sessione:";
 "user_verification_session_details_additional_information_untrusted_other_user" = "Fino a quando questo utente non si fida di questa sessione, i messaggi inviati da e verso di esso sono marcati da avvisi. In alternativa, puoi verificarlo manualmente.";
 "user_verification_session_details_additional_information_untrusted_current_user" = "Se non hai fatto l'accesso a questa sessione, il tuo account potrebbe essere compromesso.";
-"user_verification_session_details_verify_action_current_user" = "Verifica";
+"user_verification_session_details_verify_action_current_user" = "Verifica interattivamente";
 "user_verification_session_details_verify_action_other_user" = "Verifica manualmente";
 "security_settings_crypto_sessions_loading" = "Caricamento sessioni…";
 "key_verification_bootstrap_not_setup_title" = "Errore";
@@ -1067,3 +1067,11 @@
 "key_verification_self_verify_unverified_sessions_alert_message" = "Verifica tutte le tue sessioni per assicurarti che l'account e i messaggi siano protetti.";
 "key_verification_self_verify_unverified_sessions_alert_validate_action" = "Controlla";
 "key_verification_verify_qr_code_information_other_device" = "Scansiona il codice sotto per verificare:";
+"key_verification_manually_verify_device_title" = "Verifica manualmente con testo";
+"key_verification_manually_verify_device_instruction" = "Conferma confrontando il seguente con le impostazioni utente nella tua altra sessione:";
+"key_verification_manually_verify_device_name_title" = "Nome sessione";
+"key_verification_manually_verify_device_id_title" = "ID sessione";
+"key_verification_manually_verify_device_key_title" = "Chiave sessione";
+"key_verification_manually_verify_device_additional_information" = "Se non corrispondono, la sicurezza delle tue comunicazioni potrebbe essere compromessa.";
+"key_verification_manually_verify_device_validate_action" = "Verifica";
+"user_verification_session_details_verify_action_current_user_manually" = "Verifica manualmente con testo";
