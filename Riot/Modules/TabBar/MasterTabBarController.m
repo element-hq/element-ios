@@ -1072,7 +1072,7 @@
     
     for (MXDeviceInfo *device in devices)
     {
-        if (device.trustLevel.localVerificationStatus == MXDeviceUnknown)
+        if (!device.trustLevel.isCrossSigningVerified)
         {
             isUserHasOneUnverifiedDevice = YES;
             break;

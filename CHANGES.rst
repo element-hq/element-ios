@@ -1,3 +1,9 @@
+Changes in 0.11.4 (2020-05-08)
+===============================================
+
+Bug fix:
+ * App asks to verify all devices on every startup for no valid reason (#3221).
+
 Changes in 0.11.3 (2020-05-07)
 ===============================================
 
