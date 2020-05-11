@@ -466,7 +466,7 @@ Clear it if you're finished using this device, or want to sign in to another acc
                                 <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="Pxo-2q-AdE"/>
                             </connections>
                         </button>
-                        <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vhh-m0-nXN" userLabel="fallback WebView" customClass="MXKAuthenticationFallbackWebView">
+                        <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vhh-m0-nXN" userLabel="fallback WebView" customClass="MXKAuthenticationFallbackWebView" customModule="Riot" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="40" width="375" height="694"/>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <userDefinedRuntimeAttributes>
