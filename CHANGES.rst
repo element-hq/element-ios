@@ -1,3 +1,9 @@
+Changes in 0.11.5 (2020-xx-xx)
+===============================================
+
+Bug fix:
+ * AuthenticationViewController: Adapt UIWebView changes in MatrixKit (PR #3242).
+
 Changes in 0.11.4 (2020-05-08)
 ===============================================
 
