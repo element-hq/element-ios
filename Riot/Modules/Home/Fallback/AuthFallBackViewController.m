@@ -18,7 +18,7 @@
 #import "AppDelegate.h"
 
 
-// Generic method to make a bridge between JS and the UIWebView
+// Generic method to make a bridge between JS and the WKWebView
 NSString *FallBackViewControllerJavascriptSendObjectMessage = @"window.sendObjectMessage = function(parameters) {   \
     var iframe = document.createElement('iframe');                              \
     iframe.setAttribute('src', 'js:' + JSON.stringify(parameters));             \
@@ -154,7 +154,7 @@ NSString *FallBackViewControllerJavascriptOnLogin = @"window.matrixLogin.onLogin
     // `didReceiveScriptMessage` delegate to manage the JS<->Native bridge
     if ([urlString hasPrefix:@"js:"])
     {
-        // Listen only to scheme of the JS-UIWebView bridge
+        // Listen only to scheme of the JS-WKWebView bridge
         NSString *jsonString = [[[urlString componentsSeparatedByString:@"js:"] lastObject]  stringByReplacingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
         NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
 

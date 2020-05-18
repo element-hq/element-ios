@@ -13,7 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AuthenticationViewController">
             <connections>
                 <outlet property="authFallbackContentView" destination="q1e-Wg-6t7" id="mR6-hS-5YB"/>
-                <outlet property="authFallbackWebView" destination="Vhh-m0-nXN" id="YWJ-8T-74t"/>
+                <outlet property="authFallbackWebViewContainer" destination="7cW-ZD-oAh" id="wjo-Ig-s4T"/>
                 <outlet property="authInputContainerViewHeightConstraint" destination="e04-1Y-4gZ" id="5qa-cu-M8v"/>
                 <outlet property="authInputContainerViewMinHeightConstraint" destination="8K0-es-Aee" id="PVf-si-yet"/>
                 <outlet property="authInputsContainerView" destination="xWb-IJ-v7F" id="DEo-Ji-wPT"/>
@@ -466,23 +466,20 @@ Clear it if you're finished using this device, or want to sign in to another acc
                                 <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="Pxo-2q-AdE"/>
                             </connections>
                         </button>
-                        <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vhh-m0-nXN" userLabel="fallback WebView" customClass="MXKAuthenticationFallbackWebView">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7cW-ZD-oAh">
                             <rect key="frame" x="0.0" y="40" width="375" height="694"/>
-                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="AuthenticationVCFallbackWebView"/>
-                            </userDefinedRuntimeAttributes>
-                        </webView>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <accessibility key="accessibilityConfiguration" identifier="AuthenticationVCFallbackContentView"/>
                     <constraints>
-                        <constraint firstItem="Vhh-m0-nXN" firstAttribute="leading" secondItem="q1e-Wg-6t7" secondAttribute="leading" id="8zH-1r-Jgh"/>
                         <constraint firstAttribute="trailing" secondItem="9qj-5c-Sfb" secondAttribute="trailing" constant="8" id="AUi-MV-V60"/>
-                        <constraint firstAttribute="trailing" secondItem="Vhh-m0-nXN" secondAttribute="trailing" id="K9n-rL-E72"/>
+                        <constraint firstItem="7cW-ZD-oAh" firstAttribute="top" secondItem="9qj-5c-Sfb" secondAttribute="bottom" id="Cg8-VV-NX8"/>
+                        <constraint firstItem="7cW-ZD-oAh" firstAttribute="leading" secondItem="q1e-Wg-6t7" secondAttribute="leading" id="Gu8-un-KH7"/>
+                        <constraint firstAttribute="trailing" secondItem="7cW-ZD-oAh" secondAttribute="trailing" id="Wzc-lt-TK8"/>
                         <constraint firstItem="9qj-5c-Sfb" firstAttribute="top" secondItem="q1e-Wg-6t7" secondAttribute="top" constant="5" id="ZKZ-pg-xzV"/>
-                        <constraint firstAttribute="bottom" secondItem="Vhh-m0-nXN" secondAttribute="bottom" id="qEl-Dd-BlB"/>
-                        <constraint firstItem="Vhh-m0-nXN" firstAttribute="top" secondItem="9qj-5c-Sfb" secondAttribute="bottom" id="uCo-aG-Xa8"/>
+                        <constraint firstAttribute="bottom" secondItem="7cW-ZD-oAh" secondAttribute="bottom" id="skp-lD-KuH"/>
                     </constraints>
                 </view>
             </subviews>

@@ -475,7 +475,7 @@
 // Groups tab
 "group_invite_section" = "EINLADUNGEN";
 "group_section" = "COMMUNITIES";
-"settings_flair" = "Zeig Fingerspitzengefühl, wo es erlaubt ist";
+"settings_flair" = "Zeige Abzeichen, wo es erlaubt ist";
 "room_details_flair_section" = "Zeige Flair für Communities";
 "room_details_new_flair_placeholder" = "Füge neue Community-ID hinzu (z.B. +foo%@)";
 "room_details_flair_invalid_id_prompt_title" = "Ungültiges Format";
@@ -1007,3 +1007,12 @@
 // MARK: Clients
 "client_desktop_name" = "Riot Desktop";
 "security_settings_crosssigning_info_not_bootstrapped" = "Cross-signing ist bisher nicht konfiguriert.";
+"client_web_name" = "Riot Web";
+"client_ios_name" = "Riot iOS";
+"client_android_name" = "Riot X für Android";
+"room_member_power_level_admin_in" = "Admin in %@";
+"room_member_power_level_moderator_in" = "Moderator in %@";
+"room_member_power_level_custom_in" = "Benutzerdefiniert (%@) in %@";
+"room_member_power_level_short_admin" = "Admin";
+"room_member_power_level_short_moderator" = "Mod";
+"room_member_power_level_short_custom" = "Benutzerdefiniert";

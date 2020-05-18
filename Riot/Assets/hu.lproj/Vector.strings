@@ -1002,7 +1002,7 @@
 "user_verification_sessions_list_session_trusted" = "Megbízható";
 "user_verification_sessions_list_session_untrusted" = "Megbízhatatlan";
 "user_verification_session_details_trusted_title" = "Megbízható";
-"user_verification_session_details_untrusted_title" = "Figyelmeztetés";
+"user_verification_session_details_untrusted_title" = "Megbízhatatlan";
 "user_verification_session_details_information_trusted_current_user" = "Ez a munkamenet megbízhatónak van jelölve a biztonságos üzenetküldéshez, mert ellenőrizted:";
 "user_verification_session_details_information_trusted_other_user_part1" = "Ez a munkamenet megbízhatónak van jelölve a biztonságos üzenetküldéshez, mert ";
 "user_verification_session_details_information_trusted_other_user_part2" = " ellenőrizve:";
@@ -1010,7 +1010,7 @@
 "user_verification_session_details_information_untrusted_other_user" = " új munkamenettel bejelentkezve:";
 "user_verification_session_details_additional_information_untrusted_other_user" = "Amíg a felhasználó nem jelöli megbízhatónak ezt a munkamenetet addig a munkamenetből küldött és a munkamenetbe érkező üzenetek figyelmeztetéssel lesznek ellátva. Vagy te is ellenőrizheted a munkamenetet.";
 "user_verification_session_details_additional_information_untrusted_current_user" = "Ha nem te jelentkeztél be ebbe a munkamenetbe akkor a fiókodat feltörték.";
-"user_verification_session_details_verify_action_current_user" = "Ellenőriz";
+"user_verification_session_details_verify_action_current_user" = "Kézi ellenőrzés";
 "user_verification_session_details_verify_action_other_user" = "Manuális ellenőrzés";
 "security_settings_crypto_sessions_loading" = "Munkamenet információk betöltése…";
 "security_settings_crosssigning" = "KERESZT-ALÁÍRÁS";
@@ -1095,3 +1095,11 @@
 "key_verification_self_verify_unverified_sessions_alert_message" = "Ellenőrizd minden munkamenetedet, hogy a fiókod és az üzeneteid biztonságban legyenek.";
 "key_verification_self_verify_unverified_sessions_alert_validate_action" = "Átnézés";
 "key_verification_verify_qr_code_information_other_device" = "Ellenőrzéshez olvasd be a kódot alább:";
+"key_verification_manually_verify_device_title" = "Manuális szöveges ellenőrzés";
+"key_verification_manually_verify_device_instruction" = "Erősítsd meg a felhasználói beállítások összehasonlításával a többi munkamenetedben:";
+"key_verification_manually_verify_device_name_title" = "Munkamenet neve";
+"key_verification_manually_verify_device_id_title" = "Munkamenet azonosító";
+"key_verification_manually_verify_device_key_title" = "Munkamenet kulcs";
+"key_verification_manually_verify_device_additional_information" = "Ha nem egyeznek akkor a kommunikációtok biztonsága veszélyben lehet.";
+"key_verification_manually_verify_device_validate_action" = "Ellenőriz";
+"user_verification_session_details_verify_action_current_user_manually" = "Manuális szöveges ellenőrzés";

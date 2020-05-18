@@ -226,6 +226,9 @@
                                             MXStrongifyAndReturnIfNil(session);
                                             
                                             MXRoom *room = [MXRoom loadRoomFromStore:fileStore withRoomId:roomID matrixSession:session];
+                                            
+                                            // Do not warn for unknown devices. We have cross-signing now
+                                            session.crypto.warnOnUnknowDevices = NO;
 
                                             [room sendTextMessage:intent.content
                                                           success:^(NSString *eventId) {
