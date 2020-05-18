@@ -1,5 +1,8 @@
-Changes in 0.11.5 (2020-xx-xx)
+Changes in 0.11.5 (2020-05-18)
 ===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.6](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.6)).
 
 Bug fix:
  * AuthenticationViewController: Adapt UIWebView changes in MatrixKit (PR #3242).
