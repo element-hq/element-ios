@@ -298,7 +298,7 @@
 "settings_password_updated" = "您的密码已经更新";
 "settings_crypto_device_name" = "会话名称： ";
 "settings_crypto_device_id" = "\n会话ID： ";
-"settings_crypto_device_key" = "会话密钥：\n";
+"settings_crypto_device_key" = "\n会话密钥：\n";
 "settings_crypto_export" = "导出密钥";
 "settings_crypto_blacklist_unverified_devices" = "只加密到已验证的会话";
 // Room Details
@@ -986,3 +986,17 @@
 "user_verification_session_details_additional_information_untrusted_current_user" = "如果你没有登录到这个会话，你的账号可能在被盗用。";
 "user_verification_session_details_verify_action_current_user" = "验证";
 "user_verification_session_details_verify_action_other_user" = "手动验证";
+// MARK: Clients
+"client_desktop_name" = "Riot 桌面版";
+"client_web_name" = "Riot Web";
+"client_ios_name" = "Riot iOS";
+"client_android_name" = "Riot X for Android";
+"room_participants_action_security_status_complete_security" = "完整安全性";
+"room_participants_action_security_status_loading" = "加载中……";
+"room_member_power_level_admin_in" = "在 %@ 的管理员";
+"room_member_power_level_moderator_in" = "在 %@ 的主持人";
+"room_member_power_level_short_admin" = "管理员";
+"room_member_power_level_short_moderator" = "主持人";
+"security_settings_crosssigning" = "交叉签名";
+"security_settings_crosssigning_info_not_bootstrapped" = "交叉签名还没有被设置。";
+"security_settings_crosssigning_info_exists" = "您的帐户有一个交叉签名身份，但是还没有被这个会话信任。完全安全的会话。";

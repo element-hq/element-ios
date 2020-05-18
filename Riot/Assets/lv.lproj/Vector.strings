@@ -43,3 +43,4 @@
 "auth_user_name_placeholder" = "Lietotājvārds";
 "auth_optional_email_placeholder" = "Epasta adrese (pēc izvēles)";
 "auth_email_placeholder" = "Epasta adrese";
+"close" = "Aizvērt";
