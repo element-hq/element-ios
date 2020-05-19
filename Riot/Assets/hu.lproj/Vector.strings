@@ -88,7 +88,7 @@
 "auth_reset_password_next_step_button" = "Ellenőriztem az e-mail címet";
 "auth_reset_password_error_unauthorized" = "E-mail cím ellenőrzése nem sikerült: bizonyosodj meg róla, hogy az e-mailben lévő linkre rákattintottál";
 "auth_reset_password_error_not_found" = "Úgy tűnik az e-mail címed nincs összekötve a Matrix azonosítóddal a Matrix szerveren.";
-"auth_reset_password_success_message" = "Visszaállítottuk a jelszavad.\n\nKijelentkeztettünk minden eszközödből és nem kapsz értesítéseket sem. Az értesítések újra engedélyezéséhez jelentkezz be újra az eszközökön.";
+"auth_reset_password_success_message" = "Visszaállítottuk a jelszavad.\n\nKijelentkeztettünk minden munkamenetedből és nem kapsz értesítéseket sem. Az értesítések újra engedélyezéséhez jelentkezz be újra az eszközökön.";
 // Chat creation
 "room_creation_title" = "Új csevegés";
 "room_creation_account" = "Fiók";
@@ -179,7 +179,7 @@
 "room_participants_ago" = "óta";
 "room_participants_action_section_admin_tools" = "Adminisztrátori eszközök";
 "room_participants_action_section_direct_chats" = "Közvetlen csevegések";
-"room_participants_action_section_devices" = "Eszközök";
+"room_participants_action_section_devices" = "Munkamenetek";
 "room_participants_action_section_other" = "Opciók";
 "room_participants_action_invite" = "Meghívó";
 "room_participants_action_leave" = "Szoba elhagyása";
@@ -211,7 +211,7 @@
 "room_message_reply_to_short_placeholder" = "Válasz küldése…";
 "room_offline_notification" = "A szerverrel megszakadt a kapcsolat.";
 "room_unsent_messages_notification" = "Üzenet nincs elküldve. Most %@ vagy %@?";
-"room_unsent_messages_unknown_devices_notification" = "Az üzenet nincs elküldve, mert ismeretlen eszköz van jelen. Most %@ vagy %@?";
+"room_unsent_messages_unknown_devices_notification" = "Az üzenet nincs elküldve, mert ismeretlen munkamenet van jelen. Most %@ vagy %@?";
 "room_ongoing_conference_call" = "Konferencia hívás van folyamatban. Csatlakozol mint %@ vagy %@.";
 "room_ongoing_conference_call_with_close" = "Konferencia hívás van folyamatban. Csatlakozol mint %@ vagy %@. %@.";
 "room_ongoing_conference_call_close" = "Bezár";
@@ -248,13 +248,13 @@
 "room_predecessor_information" = "Ez a szoba egy másik megbeszélés folytatása.";
 "room_predecessor_link" = "Koppints ide a régi üzenetek megtekintéséhez.";
 // Unknown devices
-"unknown_devices_alert_title" = "A szoba ismeretlen eszközöket tartalmaz";
-"unknown_devices_alert" = "A szobában vannak ellenőrizetlen eszközök.\nEz azt jelenti, hogy nem garantálható, hogy az eszköz azé akiének mondja magát.\nJavasoljuk, hogy menj végig az ellenőrzési folyamaton mielőtt folytatod, de ha azt szeretnéd újraküldheted az üzenetet ellenőrzés nélkül is.";
+"unknown_devices_alert_title" = "A szoba ismeretlen munkameneteket tartalmaz";
+"unknown_devices_alert" = "A szobában ellenőrizetlen munkamenetek vannak .\nEz azt jelenti, hogy nem garantálható, hogy a munkamenet azé akiének jelzi magát.\nJavasoljuk, hogy menj végig az ellenőrzési folyamaton mielőtt folytatod, de ha azt szeretnéd újraküldheted az üzenetet ellenőrzés nélkül is.";
 "unknown_devices_send_anyway" = "Mindenképpen küld";
 "unknown_devices_call_anyway" = "Mindenképpen hív";
 "unknown_devices_answer_anyway" = "Mindenképpen válaszol";
 "unknown_devices_verify" = "Ellenőriz…";
-"unknown_devices_title" = "Ismeretlen eszközök";
+"unknown_devices_title" = "Ismeretlen munkamenetek";
 // Room Title
 "room_title_new_room" = "Új szoba";
 "room_title_multiple_active_members" = "%@/%@ aktív felhasználó";
@@ -287,7 +287,7 @@
 "settings_other" = "MÁS";
 "settings_labs" = "LABOR";
 "settings_flair" = "Kitűző mutatása ahol lehet";
-"settings_devices" = "ESZKÖZÖK";
+"settings_devices" = "MUNKAMENETEK";
 "settings_cryptography" = "TITKOSÍTÁS";
 "settings_deactivate_account" = "FELFÜGGESZTETT FIÓK";
 "settings_sign_out" = "Kijelentkezés";
@@ -349,11 +349,11 @@
 "settings_confirm_password" = "jelszó megerősítése";
 "settings_fail_to_update_password" = "A jelszó frissítése nem sikerült";
 "settings_password_updated" = "A jelszavad frissítve";
-"settings_crypto_device_name" = "Eszköz nyilvános neve: ";
-"settings_crypto_device_id" = "\nEszköz azonosítója: ";
-"settings_crypto_device_key" = "\nEszköz kulcsa:\n";
+"settings_crypto_device_name" = "Munkamenet neve: ";
+"settings_crypto_device_id" = "\nMunkamenet azonosítója: ";
+"settings_crypto_device_key" = "\nMunkamenet kulcsa:\n";
 "settings_crypto_export" = "Kulcsok kimentése";
-"settings_crypto_blacklist_unverified_devices" = "Csak ellenőrzött eszközöknek titkosít";
+"settings_crypto_blacklist_unverified_devices" = "Csak ellenőrzött munkameneteknek titkosít";
 "settings_deactivate_my_account" = "Felhasználói fiókom felfüggesztése";
 "room_details_people" = "Tagok";
 "room_details_files" = "Fájlok";
@@ -396,7 +396,7 @@
 "room_details_advanced_enable_e2e_encryption" = "Titkosítás engedélyezése (figyelmeztetés: utána már nem lehet kikapcsolni!)";
 "room_details_advanced_e2e_encryption_enabled" = "A titkosítás a szobához be van kapcsolva";
 "room_details_advanced_e2e_encryption_disabled" = "A titkosítás a szobához nincs engedélyezve.";
-"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Csak ellenőrzött eszközre titkosít";
+"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Csak ellenőrzött munkamenetre titkosít";
 "room_details_advanced_e2e_encryption_prompt_message" = "A végponttól végpontig titkosítás kísérleti állapotban van és lehet, hogy nem elég megbízható.\n\nNe bízz rá titkos adatot.\n\nJelenleg az eszközök nem lesznek képesek visszafejteni üzeneteket azelőttről, hogy a szobához csatlakoztak.\n\nHa egy szobához be lett kapcsolva a titkosítás már nem lehet újra kikapcsolni (egyenlőre).\n\nTitkosított üzeneteket a titkosítást nem támogató kliensek nem tudják megjeleníteni.";
 "room_details_fail_to_update_avatar" = "A szoba képét nem sikerült frissíteni";
 "room_details_fail_to_update_room_name" = "A szoba nevét nem sikerült frissíteni";
@@ -463,7 +463,7 @@
 "event_formatter_jitsi_widget_added" = "VoIP konferenciát hozzáadta: %@";
 "event_formatter_jitsi_widget_removed" = "VoIP konferenciát törölte: %@";
 "event_formatter_rerequest_keys_part1_link" = "Titkosító kulcsok újrakérése";
-"event_formatter_rerequest_keys_part2" = " a többi eszközödtől.";
+"event_formatter_rerequest_keys_part2" = " a többi munkamenetedből.";
 // Others
 "or" = "vagy";
 "you" = "Te";
@@ -485,8 +485,8 @@
 // Call
 "call_incoming_voice_prompt" = "Bejövő hanghívás innen: %@";
 "call_incoming_video_prompt" = "Beérkező videó hívás innen: %@";
-"call_incoming_voice" = "Bejövő hívás...";
-"call_incoming_video" = "Bejövő videó hívás...";
+"call_incoming_voice" = "Bejövő hívás…";
+"call_incoming_video" = "Bejövő videó hívás…";
 "call_already_displayed" = "Egy hívás már folyamatban van.";
 "call_jitsi_error" = "Nem sikerült a konferenciához csatlakozni.";
 // No VoIP support
@@ -496,7 +496,7 @@
 "google_analytics_use_prompt" = "Szeretnél segíteni személytelen összeomlás és felhasználási adatok küldésével a(z) %@ fejlesztésében?";
 // Crypto
 "e2e_enabling_on_app_update" = "Riot most már támogatja a végponttól végpontig titkosítást de újra be kell jelentkezned.\n\nMegteheted most vagy később az alkalmazás beállításainál.";
-"e2e_need_log_in_again" = "Vissza kell jelentkezned, hogy az eszközödhöz a végponttól végpontig titkosítási kulcsokat létrehozzuk és a nyilvános kulcsokat elküldjük a Matrix szerverednek.\nEz egy egyszeri alkalom; elnézést a kellemetlenségért.";
+"e2e_need_log_in_again" = "Vissza kell jelentkezned, hogy a munkamenetedhez a végponttól végpontig titkosítási kulcsokat létrehozzuk és a nyilvános kulcsokat elküldjük a Matrix szerverednek.\nEz egy egyszeri alkalom; elnézést a kellemetlenségért.";
 // Bug report
 "bug_report_title" = "Hiba bejelentés";
 "bug_report_description" = "Kérlek írd le a hibát. Mit csináltál? Mit szerettél volna, hogy történjen? Végül mi történt?";
@@ -529,9 +529,9 @@
 "share_extension_failed_to_encrypt" = "Küldés sikertelen. Ellenőrizd a titkosítási beállításokat a fő alkalmazásban ehhez a szobához";
 // Room key request dialog
 "e2e_room_key_request_title" = "Titkosítási kulcs kérése";
-"e2e_room_key_request_message_new_device" = "Új eszközt '%@' adtál hozzá, ami most titkosítási kulcsokat kér.";
-"e2e_room_key_request_message" = "Az ellenőrizetlen eszközöd '%@' titkosítási kulcsokat kér.";
-"e2e_room_key_request_start_verification" = "Ellenőrzés indítása...";
+"e2e_room_key_request_message_new_device" = "Új munkamenetet '%@' adtál hozzá, ami most titkosítási kulcsokat kér.";
+"e2e_room_key_request_message" = "Az ellenőrizetlen munkameneted '%@' titkosítási kulcsokat kér.";
+"e2e_room_key_request_start_verification" = "Ellenőrzés indítása…";
 "e2e_room_key_request_share_without_verifying" = "Megosztás ellenőrzés nélkül";
 "e2e_room_key_request_ignore_request" = "Kérés figyelmen kívül hagyása";
 // GDPR
@@ -551,7 +551,7 @@
 "deactivate_account_password_alert_message" = "A folytatáshoz add meg a jelszavadat";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Kérés elküldve";
-"rerequest_keys_alert_message" = "Kérlek indítsd el a Riot-ot egy másik eszközödön amelyik vissza tudja fejteni az üzenetet, hogy el tudja küldeni a kulcsokat ennek az eszköznek.";
+"rerequest_keys_alert_message" = "Kérlek indítsd el a Riot-ot egy másik eszközödön amelyik vissza tudja fejteni az üzenetet, hogy el tudja küldeni a kulcsokat ennek a munkamenetnek.";
 "room_recents_server_notice_section" = "RENDSZER FIGYELMEZTETÉSEK";
 "room_resource_limit_exceeded_message_contact_1" = " Kérlek ";
 "room_resource_limit_exceeded_message_contact_2_link" = "vedd fel a kapcsolatot a szolgáltatás adminisztrátorával";
@@ -563,18 +563,18 @@
 "room_resource_usage_limit_reached_message_contact_3" = " hogy korlátot megemeljék.";
 "auth_accept_policies" = "A Matrix szerver felhasználási feltételeit kérlek nézd át és fogadd el:";
 "settings_key_backup" = "KULCS MENTÉS";
-"settings_key_backup_info_checking" = "Ellenőrzés...";
-"settings_key_backup_info_none" = "A kulcsaid nem kerülnek elmentésre erről az eszközről.";
+"settings_key_backup_info_checking" = "Ellenőrzés…";
+"settings_key_backup_info_none" = "A kulcsaid nem kerülnek elmentésre erről a munkamenetről.";
 "settings_key_backup_info_version" = "Kulcs mentés verzió: %@";
 "settings_key_backup_info_algorithm" = "Algoritmus: %@";
-"settings_key_backup_info_valid" = "Ez az eszköz elmenti a kulcsaidat.";
-"settings_key_backup_info_not_valid" = "Ez az eszköz nem menti el a kulcsaidat, de van létező mentésed ahonnan vissza  tudsz állni és továbbléphetsz.";
-"settings_key_backup_info_progress" = "%@ kulcsok mentése...";
+"settings_key_backup_info_valid" = "Ez a munkamenet elmenti a kulcsaidat.";
+"settings_key_backup_info_not_valid" = "Ez a munkamenet nem menti el a kulcsaidat, de van létező mentésed ahonnan vissza  tudsz állni és továbbléphetsz.";
+"settings_key_backup_info_progress" = "%@ kulcsok mentése…";
 "settings_key_backup_info_progress_done" = "Minden kulcs elmentve";
 "settings_key_backup_info_not_trusted_from_verifiable_device_fix_action" = "A Biztonságos Üzenet Visszaállítás használatához ellenőrizd ezt: %@.";
 "settings_key_backup_info_not_trusted_fix_action" = "Ha a Biztonságos Üzenete Visszaállítást ezen az eszközön használni szeretnéd, akkor most add meg a jelmondatodat vagy a visszaállítási kulcsot.";
-"settings_key_backup_info_trust_signature_unknown" = "A mentés aláírással rendelkezik az alábbi eszköz azonosítóval: %@";
-"settings_key_backup_info_trust_signature_valid" = "A mentés érvényes aláírással rendelkezik ettől az eszköztől";
+"settings_key_backup_info_trust_signature_unknown" = "A mentés aláírással rendelkezik az alábbi munkamenet azonosítóval: %@";
+"settings_key_backup_info_trust_signature_valid" = "A mentés érvényes aláírással rendelkezik ettől a munkamenetről";
 "settings_key_backup_info_trust_signature_valid_device_verified" = "A mentés érvényes aláírással rendelkezik ettől: %@";
 "settings_key_backup_info_trust_signature_valid_device_unverified" = "A mentés rendelkezik aláírással ettől: %@";
 "settings_key_backup_info_trust_signature_invalid_device_verified" = "A mentésnek érvénytelen aláírása van ettől: %@";
@@ -630,7 +630,7 @@
 "key_backup_recover_banner_title_part1" = "Biztonságos Üzenet Visszaállítás futtatása";
 "key_backup_recover_banner_title_part2" = " , hogy elolvashasd a titkosított üzeneteidet ezen az eszközön";
 "settings_key_backup_info" = "Titkosított üzenetek végponttól-végpontig vannak titkosítva. Csak te és a címzettek rendelkeznek a visszafejtéshez szükséges kulcsokkal.";
-"settings_key_backup_info_signout_warning" = "Állítsd be ezen az eszközön a Kulcs Mentést kijelentkezés előtt, hogy ne veszíts el olyan kulcsot ami csak ezen az eszközön van meg.";
+"settings_key_backup_info_signout_warning" = "Állítsd be ezen az munkameneten a Kulcs Mentést kijelentkezés előtt, hogy ne veszíts el olyan kulcsot ami csak ezen az eszközön van meg.";
 "settings_key_backup_button_use" = "Kulcs mentés használata";
 "key_backup_setup_intro_setup_action_without_existing_backup" = "Kulcs mentés használata";
 "key_backup_setup_intro_setup_action_with_existing_backup" = "Használd a Kulcs mentést";
@@ -688,32 +688,32 @@
 "room_event_action_reaction_dislike" = "Nem kedveli %@";
 "room_action_reply" = "Válasz";
 "settings_labs_message_reaction" = "Emoji reakció az üzenetre";
-"settings_key_backup_button_connect" = "Eszköz csatlakoztatása a Kulcs Mentéshez";
+"settings_key_backup_button_connect" = "Munkamenet csatlakoztatása a Kulcs Mentéshez";
 "key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Eszköz csatlakoztatása a Kulcs Mentéshez";
-"key_backup_recover_connent_banner_subtitle" = "Eszköz csatlakoztatása a Kulcs Mentéshez";
+"key_backup_recover_connent_banner_subtitle" = "Munkamenet csatlakoztatása a Kulcs Mentéshez";
 // MARK: - Device Verification
-"device_verification_title" = "Eszköz ellenőrzése";
+"device_verification_title" = "Munkamenet ellenőrzése";
 "device_verification_security_advice" = "A legnagyobb biztonság érdekében javasoljuk, hogy ezt személyesen vagy egy másik biztonságos kommunikációs csatornán tedd meg";
 "device_verification_cancelled" = "A másik fél megszakította az ellenőrzést.";
 "device_verification_cancelled_by_me" = "Az ellenőrzés megszakadt. Ok: %@";
-"device_verification_error_cannot_load_device" = "Az eszköz információk nem tölthetők be.";
+"device_verification_error_cannot_load_device" = "A munkamenet információk nem tölthetők be.";
 // Mark: Incoming
 "device_verification_incoming_title" = "Beérkező Ellenőrzési Kérés";
-"device_verification_incoming_description_1" = "Eszköz ellenőrzése és beállítás megbízhatónak. A partnerek eszközeiben való megbízás megnyugtató lehet, ha végponttól végpontig titkosítást használsz.";
-"device_verification_incoming_description_2" = "Az eszköz ellenőrzése megbízhatónak fogja jelezni az eszközt és a partnernél a te eszközödet szintén megbízhatónak fogja jelezni.";
+"device_verification_incoming_description_1" = "Munkamenet ellenőrzése és beállítás megbízhatónak. A partnerek munkameneteiben való megbízás megnyugtató lehet, ha végponttól végpontig titkosítást használsz.";
+"device_verification_incoming_description_2" = "A munkamenet ellenőrzése megbízhatónak fogja jelezni a munkamenetet és a partnernél a te munkamenetedet szintén megbízhatónak fogja jelezni.";
 // MARK: Start
 "device_verification_start_title" = "Rövid szöveggel ellenőriz";
-"device_verification_start_wait_partner" = "Várakozás a partner általi elfogadásra...";
+"device_verification_start_wait_partner" = "Várakozás a partner általi elfogadásra…";
 "device_verification_start_use_legacy" = "Nem jelenik meg semmi? Nem minden kliens támogatja az interaktív ellenőrzést. Használd a hagyományos ellenőrzést.";
 "device_verification_start_verify_button" = "Ellenőrzés megkezdése";
 "device_verification_start_use_legacy_action" = "Használd a hagyományos ellenőrzést";
 // MARK: Verify
-"device_verification_verify_title_emoji" = "Eszköz ellenőrzése az alábbi emojik a partner képernyőjén való megjelenésének megerősítésével történik";
-"device_verification_verify_title_number" = "Eszköz ellenőrzése az alábbi számok a partner képernyőjén való megjelenésének megerősítésével történik";
-"device_verification_verify_wait_partner" = "Várakozás a partner megerősítésére...";
+"device_verification_verify_title_emoji" = "Munkamenet ellenőrzése az alábbi emodzsik a partner képernyőjén való megjelenésének megerősítésével történik";
+"device_verification_verify_title_number" = "Munkamenet ellenőrzése az alábbi számok a partner képernyőjén való megjelenésének megerősítésével történik";
+"device_verification_verify_wait_partner" = "Várakozás a partner megerősítésére…";
 // MARK: Verified
 "device_verification_verified_title" = "Ellenőrizve!";
-"device_verification_verified_description_1" = "Ezt az eszközt sikeresen ellenőrizted.";
+"device_verification_verified_description_1" = "Ezt a munkamenetet sikeresen ellenőrizted.";
 "device_verification_verified_description_2" = "Az biztonságos üzentküldés ezzel a felhasználóval végponttól végpontig titkosított és harmadik fél nem tudja elolvasni.";
 "device_verification_verified_got_it_button" = "Értem";
 // MARK: Emoji
@@ -866,7 +866,7 @@
 "settings_three_pids_management_information_part3" = ".";
 "settings_calls_stun_server_fallback_button" = "Másodlagos hívást segítő szerver engedélyezése";
 "settings_calls_stun_server_fallback_description" = "Másodlagos hívást segítő szerver (%@) engedélyezése ha a matrix szervered nem ajánl fel másikat (az IP címed a hívás ideje alatt meg lesz osztva).";
-"settings_devices_description" = "Az eszköz nyilvános neve látható azoknál az embereknél akikkel beszélgetsz";
+"settings_devices_description" = "Az munkamenet nyilvános neve látható azoknál az embereknél akikkel beszélgetsz";
 "settings_discovery_no_identity_server" = "Jelenleg nem használsz azonosítási szervert. Ahhoz, hogy az ismerősök megtalálhassanak adj hozzá egyet.";
 "settings_discovery_terms_not_signed" = "Egyetértés az Azonosítási Szerver (%@) Felhasználási Feltételeivel, hogy e-mail címmel vagy telefonszámmal megtalálható lehess.";
 "settings_discovery_three_pids_management_information_part1" = "E-mail címek és telefonszámok beállítása amivel más felhasználók megtalálhatnak és meghívhatna szobákba. E-mail cím és telefonszám hozzáadása és törlése a listából itt: ";
@@ -973,10 +973,10 @@
 // Manage session
 "manage_session_title" = "Munkamenet kezelése";
 "manage_session_info" = "MUNKAMENET INFORMÁCIÓ";
-"manage_session_name" = "Eszköznév";
+"manage_session_name" = "Munkamenet neve";
 "manage_session_trusted" = "Szerinted megbízható";
 "manage_session_not_trusted" = "Megbízhatatlan";
-"manage_session_sign_out" = "Kijelentkezés erről az eszközről";
+"manage_session_sign_out" = "Kijelentkezés ebből a munkamenetből";
 "room_participants_action_section_security" = "Biztonság";
 "room_participants_action_security_status_verified" = "Hitelesített";
 "room_participants_action_security_status_verify" = "Ellenőriz";
@@ -984,7 +984,7 @@
 "room_participants_security_loading" = "Betöltés…";
 "room_participants_security_information_room_not_encrypted" = "Az üzenetek a szobában nincsenek végponttól végpontig titkosítva.";
 "room_participants_security_information_room_encrypted" = "A szobában az üzenetek végponttól végpontig titkosítva vannak.\n\nAz üzeneteidet lakattal vannak biztosítva és csak neked és a címzetteknek van meg a kulcs hozzá.";
-"key_verification_user_title" = "Felhasználó ellenőrzése";
+"key_verification_user_title" = "Ezek ellenőrzése";
 "key_verification_verify_user_title_emoji" = "Hitelesítheted a felhasználót, ha megerősíted, hogy az alábbi egyedi emoji-k azok amik megjelentek a képernyőjén.";
 "key_verification_verify_user_title_number" = "Hitelesítheted a felhasználót, ha megerősíted, hogy az alábbi számok jelentek meg az ő képernyőjén is.";
 "key_verification_verified_user_description_1" = "Sikeresen ellenőrizted ezt a felhasználót.";
@@ -1004,11 +1004,94 @@
 "user_verification_session_details_trusted_title" = "Megbízható";
 "user_verification_session_details_untrusted_title" = "Figyelmeztetés";
 "user_verification_session_details_information_trusted_current_user" = "Ez a munkamenet megbízhatónak van jelölve a biztonságos üzenetküldéshez, mert ellenőrizted:";
-"user_verification_session_details_information_trusted_other_user_part1" = "Ez az eszköz megbízhatónak van jelölve a biztonságos üzenetküldéshez, mert ";
+"user_verification_session_details_information_trusted_other_user_part1" = "Ez a munkamenet megbízhatónak van jelölve a biztonságos üzenetküldéshez, mert ";
 "user_verification_session_details_information_trusted_other_user_part2" = " ellenőrizve:";
 "user_verification_session_details_information_untrusted_current_user" = "A munkamenet megbízhatónak való jelöléséhez és a titkosított üzenetekhez való hozzáférés engedélyezéséhez hitelesítsd azt:";
-"user_verification_session_details_information_untrusted_other_user" = " új eszközzel bejelentkezve:";
-"user_verification_session_details_additional_information_untrusted_other_user" = "Amíg a felhasználó nem jelöli megbízhatónak ezt az eszközt addig az eszközről küldött és az eszközre érkező üzenetek figyelmeztetéssel lesznek ellátva. Vagy te is ellenőrizheted az eszközt.";
+"user_verification_session_details_information_untrusted_other_user" = " új munkamenettel bejelentkezve:";
+"user_verification_session_details_additional_information_untrusted_other_user" = "Amíg a felhasználó nem jelöli megbízhatónak ezt a munkamenetet addig a munkamenetből küldött és a munkamenetbe érkező üzenetek figyelmeztetéssel lesznek ellátva. Vagy te is ellenőrizheted a munkamenetet.";
 "user_verification_session_details_additional_information_untrusted_current_user" = "Ha nem te jelentkeztél be ebbe a munkamenetbe akkor a fiókodat feltörték.";
 "user_verification_session_details_verify_action_current_user" = "Ellenőriz";
 "user_verification_session_details_verify_action_other_user" = "Manuális ellenőrzés";
+"security_settings_crypto_sessions_loading" = "Munkamenet információk betöltése…";
+"security_settings_crosssigning" = "KERESZT-ALÁÍRÁS";
+"security_settings_cryptography" = "TITKOSÍTÁS";
+"key_verification_bootstrap_not_setup_title" = "Hiba";
+"key_verification_bootstrap_not_setup_message" = "A keresztaláírás beállításait először meg kell adni.";
+"key_verification_verify_qr_code_title" = "Ellenőrzés kód beolvasással";
+"key_verification_verify_qr_code_information" = "Olvasd be a kódot, hogy biztonságosan ellenőrizhessétek egymást.";
+"key_verification_verify_qr_code_scan_code_action" = "Kód beolvasása";
+"key_verification_verify_qr_code_cannot_scan_action" = "Nem lehet beolvasni?";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "A másik felhasználó sikeresen beolvasta a QR kódot?";
+"key_verification_verify_qr_code_scan_other_code_success_title" = "Kód ellenőrizve!";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "A QR kód sikeresen ellenőrizve.";
+"skip" = "Kihagy";
+"room_participants_action_security_status_loading" = "Betöltés…";
+"room_member_power_level_admin_in" = "Admin itt: %@";
+"room_member_power_level_moderator_in" = "Moderátor itt: %@";
+"room_member_power_level_custom_in" = "Egyedi (%@) itt: %@";
+"room_member_power_level_short_admin" = "Admin";
+"room_member_power_level_short_moderator" = "Mod";
+"room_member_power_level_short_custom" = "Egyedi";
+// Recover from private key
+"key_backup_recover_from_private_key_info" = "Mentés visszaállítás…";
+"device_verification_self_verify_alert_title" = "Új bejelentkezés. Ez te vagy?";
+"device_verification_self_verify_alert_message" = "Ellenőrizd ezt az új bejelentkezést ami hozzáfér a fiókodhoz: %@";
+"device_verification_self_verify_alert_cancel_action" = "Nem én voltam";
+"device_verification_self_verify_start_verify_action" = "Ellenőrzés elindítása";
+"device_verification_self_verify_start_information" = "Az új munkamenet ellenőrzéséhez használd ezt, amivel hozzáférést adsz a titkosított üzenetekhez.";
+"device_verification_self_verify_start_waiting" = "Várakozik…";
+"device_verification_self_verify_wait_title" = "Biztonság beállítása";
+"device_verification_self_verify_wait_information" = "Ennek a munkamenet ellenőrzéséhez használd valamelyik másik munkamenetedet, amivel hozzáférést adsz a titkosított üzenetekhez.\n\nHasználd a legfrissebb Riotot valamelyik eszközödön:";
+"device_verification_self_verify_wait_waiting" = "Várakozik…";
+// Scanning
+"key_verification_scan_confirmation_scanning_title" = "Majdnem kész! Várakozás a megerősítésre…";
+"key_verification_scan_confirmation_scanning_user_waiting_other" = "Várakozás erre: %@…";
+"key_verification_scan_confirmation_scanning_device_waiting_other" = "Várakozás másik eszközre…";
+// Scanned
+"key_verification_scan_confirmation_scanned_title" = "Majdnem kész!";
+"key_verification_scan_confirmation_scanned_user_information" = "%s is ugyanazt a pajzsot mutatja?";
+"key_verification_scan_confirmation_scanned_device_information" = "A másik eszköz is ugyanazt a pajzsot mutatja?";
+"room_participants_action_security_status_complete_security" = "Biztonsági beállítás befejezése";
+// MARK: Clients
+"client_desktop_name" = "Asztali Riot";
+"client_web_name" = "Riot Web";
+"client_ios_name" = "Riot iOS";
+"client_android_name" = "RiotX Android";
+"security_settings_crosssigning_info_not_bootstrapped" = "Az eszközök közötti hitelesítés nincs még beállítva.";
+"security_settings_crosssigning_info_exists" = "A fiókodban az eszközök közötti aláírás be van állítva, de ebben a munkamenetben még nem ellenőrizted. Végezd el a munkamenet biztonsági beállításait.";
+"security_settings_crosssigning_info_trusted" = "Eszközök közötti hitelesítés engedélyezve van. Megbízhatsz más felhasználókban és a munkameneteidben az aláírást felhasználva de ebből a munkamenetből nem tudsz aláírni mert az eszközök közötti aláíráshoz hiányzik a privát kulcs. Fejezd be a munkamenet biztonsági beállításait.";
+"security_settings_crosssigning_info_ok" = "Eszközök közti hitelesítés engedélyezve.";
+"security_settings_crosssigning_bootstrap" = "Eszközök közötti hitelesítés beállítása";
+"security_settings_crosssigning_reset" = "Eszközök közötti hitelesítés alaphelyzetbe állítása";
+"security_settings_crosssigning_complete_security" = "Biztonsági beállítás befejezése";
+"security_settings_complete_security_alert_title" = "Biztonsági beállítás befejezése";
+"security_settings_complete_security_alert_message" = "Először be kell fejezned ennek a munkamenetnek a biztonsági beállítását.";
+"security_settings_coming_soon" = "Bocsánat. Riot-iOS-n ez a művelet egyenlőre nem érhető el. Kérlek használj másik Matrix klienst a beállításához. Riot-iOS használni fogja.";
+"device_verification_self_verify_wait_new_sign_in_title" = "Belépés ellenőrzése";
+"device_verification_self_verify_wait_additional_information" = "vagy másik eszközök közötti hitelesítésre alkalmas Matrix kliensre";
+// MARK: - Device Verification
+"key_verification_other_session_title" = "Munkamenet hitelesítése";
+"key_verification_new_session_title" = "Új munkamenet ellenőrzése";
+"key_verification_this_session_title" = "Munkamenet ellenőrzése";
+"device_verification_security_advice_emoji" = "Hasonlítsd össze ezeket az egyedi emodzsikat és győződj meg arról, hogy ugyanabban a sorrendben jelentek meg.";
+"device_verification_security_advice_number" = "Hasonlítsd össze a számokat, győződj meg arról, hogy ugyanabban a sorrendben jelennek meg.";
+"device_verification_self_verify_alert_validate_action" = "Ellenőriz";
+"key_verification_self_verify_current_session_alert_title" = "Munkamenet ellenőrzése";
+"key_verification_self_verify_current_session_alert_message" = "Más felhasználók lehet, hogy nem bíznak benne.";
+"key_verification_self_verify_current_session_alert_validate_action" = "Ellenőriz";
+"key_verification_verify_sas_title_emoji" = "Emodzsik összehasonlítása";
+"key_verification_verify_sas_title_number" = "Számok összehasonlítása";
+"key_verification_verify_sas_cancel_action" = "Nem egyeznek";
+"key_verification_verify_sas_validate_action" = "Egyeznek";
+"key_verification_verify_sas_additional_information" = "A legnagyobb biztonság érdekében használj megbízható kommunikációs csatornát vagy tedd meg személyesen.";
+"key_verification_verified_new_session_title" = "Új munkamenet hitelesítve!";
+"key_verification_verified_other_session_information" = "A másik munkamenetekben is el tudod olvasni a titkosított üzeneteket és más felhasználók tudni fogják, hogy megbízhatnak benne.";
+"key_verification_verified_new_session_information" = "Az új eszközödön is el tudod olvasni a titkosított üzeneteket és más felhasználók tudni fogják, hogy megbízhatnak benne.";
+"key_verification_verified_this_session_information" = "Ezen az eszközödön is el tudod olvasni a titkosított üzeneteket és más felhasználók tudni fogják, hogy megbízhatnak benne.";
+"key_verification_verified_user_information" = "Az üzenetek ezzel a felhasználóval a végpontok között titkosítva vannak és más nem tudja elolvasni.";
+"key_verification_verify_qr_code_emoji_information" = "Ellenőrzés egyedi emodzsik összehasonlításával.";
+"key_verification_verify_qr_code_start_emoji_action" = "Ellenőrzés emodzsival";
+"key_verification_self_verify_unverified_sessions_alert_title" = "Tekintsd át hol vagy bejelentkezve";
+"key_verification_self_verify_unverified_sessions_alert_message" = "Ellenőrizd minden munkamenetedet, hogy a fiókod és az üzeneteid biztonságban legyenek.";
+"key_verification_self_verify_unverified_sessions_alert_validate_action" = "Átnézés";
+"key_verification_verify_qr_code_information_other_device" = "Ellenőrzéshez olvasd be a kódot alább:";

@@ -32,7 +32,6 @@
 
 #define TABLEVIEW_ROW_CELL_HEIGHT         46
 #define TABLEVIEW_SECTION_HEADER_HEIGHT   28
-#define TABLEVIEW_SECTION_HEADER_HEIGHT_WHEN_HIDDEN 0.01f
 
 @interface RoomMemberDetailsViewController () <UIGestureRecognizerDelegate, DeviceTableViewCellDelegate, RoomMemberTitleViewDelegate, KeyVerificationCoordinatorBridgePresenterDelegate>
 {
@@ -244,7 +243,6 @@
         [self userInterfaceThemeDidChange];
         
     }];
-    [self userInterfaceThemeDidChange];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -290,7 +288,9 @@
 
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"RoomMemberDetails"];
-    
+
+    [self userInterfaceThemeDidChange];
+
     // Hide the bottom border of the navigation bar to display the expander header
     [self hideNavigationBarBorder:YES];
     
@@ -455,37 +455,6 @@
                 [directChatsArray addObject:directRoomId];
             }
         }
-        
-        // Retrieve member's devices
-        __weak typeof(self) weakSelf = self;
-        
-        if (!RiotSettings.shared.enableCrossSigning)
-        {
-            [self.mxRoom.mxSession.crypto downloadKeys:@[userId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap, NSDictionary<NSString *,MXCrossSigningInfo *> *crossSigningKeysMap) {
-                
-                if (weakSelf)
-                {
-                    // Restore the status bar
-                    typeof(self) self = weakSelf;
-                    self->devicesArray = usersDevicesInfoMap.map[userId].allValues;
-                    // Reload the full table to take into account a potential change on a device status.
-                    [super updateMemberInfo];
-                }
-                
-            } failure:^(NSError *error) {
-                
-                NSLog(@"[RoomMemberDetailsVC] Crypto failed to download device info for user: %@", userId);
-                if (weakSelf)
-                {
-                    // Restore the status bar
-                    typeof(self) self = weakSelf;
-                    // Notify the end user
-                    NSString *myUserId = self.mainSession.myUser.userId;
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
-                }
-                
-            }];
-        }
     }
     
     // Complete data update and reload table view
@@ -501,8 +470,17 @@
         return;
     }
     
-    self.encryptionTrustLevel = [self.mxRoom encryptionTrustLevelForUserId:userId];
-    [self updateMemberInfo];
+    [self.mxRoom.mxSession.crypto downloadKeys:@[userId] forceDownload:YES success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap, NSDictionary<NSString *,MXCrossSigningInfo *> *crossSigningKeysMap) {
+        [self.mxRoom encryptionTrustLevelForUserId:userId onComplete:^(UserEncryptionTrustLevel userEncryptionTrustLevel) {
+            self.encryptionTrustLevel = userEncryptionTrustLevel;
+            [self updateMemberInfo];
+        }];
+    } failure:^(NSError *error) {
+        [self.mxRoom encryptionTrustLevelForUserId:userId onComplete:^(UserEncryptionTrustLevel userEncryptionTrustLevel) {
+            self.encryptionTrustLevel = userEncryptionTrustLevel;
+            [self updateMemberInfo];
+        }];
+    }];
 }
 
 - (BOOL)isRoomMemberCurrentUser
@@ -523,6 +501,11 @@
                                                                                                                                                    userDisplayName:self.mxRoomMember.displayname];
     [userVerificationCoordinatorBridgePresenter start];
     self.userVerificationCoordinatorBridgePresenter = userVerificationCoordinatorBridgePresenter;
+}
+
+- (void)presentCompleteSecurity
+{
+    [[AppDelegate theDelegate] presentCompleteSecurityForSession:self.mainSession];
 }
 
 #pragma mark - Hide/Show navigation bar border
@@ -553,6 +536,7 @@
     }
 
     // Main Navigation bar opacity must follow
+    self.navigationController.navigationBar.translucent = isHidden;
     mainNavigationController.navigationBar.translucent = isHidden;
 }
 
@@ -707,18 +691,15 @@
         }
     }
     
-    if (RiotSettings.shared.enableCrossSigning)
+    if (self.mxRoom.summary.isEncrypted)
     {
-        if (self.mxRoom.summary.isEncrypted)
-        {
-            securityActionsArray = @[@(MXKRoomMemberDetailsActionSecurity),
-                                     @(MXKRoomMemberDetailsActionSecurityInformation)];
-            
-        }
-        else
-        {
-            securityActionsArray = @[@(MXKRoomMemberDetailsActionSecurity)];
-        }
+        securityActionsArray = @[@(MXKRoomMemberDetailsActionSecurity),
+                                 @(MXKRoomMemberDetailsActionSecurityInformation)];
+        
+    }
+    else
+    {
+        securityActionsArray = @[@(MXKRoomMemberDetailsActionSecurity)];
     }
     
     securityIndex = adminToolsIndex = otherActionsIndex = directChatsIndex = devicesIndex = -1;
@@ -787,7 +768,7 @@
     {
         return NSLocalizedStringFromTable(@"room_participants_action_section_admin_tools", @"Vector", nil);
     }
-    else if (RiotSettings.shared.enableCrossSigning && section == otherActionsIndex)
+    else if (section == otherActionsIndex)
     {
         return NSLocalizedStringFromTable(@"room_participants_action_section_other", @"Vector", nil);
     }
@@ -876,8 +857,18 @@
                 case UserEncryptionTrustLevelTrusted:
                     statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_verified", @"Vector", nil);
                     break;
-                case UserEncryptionTrustLevelNormal:
-                    statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_verify", @"Vector", nil);
+                case UserEncryptionTrustLevelNotVerified:
+                case UserEncryptionTrustLevelNoCrossSigning:
+                {
+                    if (self.isRoomMemberCurrentUser)
+                    {
+                        statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_complete_security", @"Vector", nil);
+                    }
+                    else
+                    {
+                        statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_verify", @"Vector", nil);
+                    }
+                }
                     break;
                 case UserEncryptionTrustLevelWarning:
                     statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_warning", @"Vector", nil);
@@ -909,7 +900,8 @@
             
             switch (self.encryptionTrustLevel) {
                 case UserEncryptionTrustLevelWarning:
-                case UserEncryptionTrustLevelNormal:
+                case UserEncryptionTrustLevelNotVerified:
+                case UserEncryptionTrustLevelNoCrossSigning:
                 case UserEncryptionTrustLevelTrusted:
                     [encryptionInformation appendString:NSLocalizedStringFromTable(@"room_participants_security_information_room_encrypted", @"Vector", nil)];
                     break;
@@ -938,6 +930,11 @@
             encryptionInfoCell.accessoryType = UITableViewCellAccessoryNone;
             encryptionInfoCell.contentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
             encryptionInfoCell.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+
+            //  extend background color to safe area
+            UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+            bgView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+            encryptionInfoCell.backgroundView = bgView;
             
             cell = encryptionInfoCell;
         }
@@ -1055,11 +1052,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (!RiotSettings.shared.enableCrossSigning && section == otherActionsIndex)
-    {
-        return TABLEVIEW_SECTION_HEADER_HEIGHT_WHEN_HIDDEN;
-    }
-    
     return TABLEVIEW_SECTION_HEADER_HEIGHT;
 }
 
@@ -1067,9 +1059,16 @@
 {
     if (indexPath.section == securityIndex)
     {
-        if (self.encryptionTrustLevel == UserEncryptionTrustLevelNormal)
+        if (self.encryptionTrustLevel == UserEncryptionTrustLevelNotVerified)
         {
-            [self startUserVerification];
+            if (self.isRoomMemberCurrentUser)
+            {
+                [self presentCompleteSecurity];
+            }
+            else
+            {
+                [self startUserVerification];
+            }
         }
         else
         {
@@ -1361,6 +1360,16 @@
 #pragma mark - KeyVerificationCoordinatorBridgePresenterDelegate
 
 - (void)keyVerificationCoordinatorBridgePresenterDelegateDidComplete:(KeyVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
+{
+    [self dismissKeyVerificationCoordinatorBridgePresenter];
+}
+
+- (void)keyVerificationCoordinatorBridgePresenterDelegateDidCancel:(KeyVerificationCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    [self dismissKeyVerificationCoordinatorBridgePresenter];
+}
+
+- (void)dismissKeyVerificationCoordinatorBridgePresenter
 {
     [keyVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     keyVerificationCoordinatorBridgePresenter = nil;

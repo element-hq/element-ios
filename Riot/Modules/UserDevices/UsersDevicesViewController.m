@@ -248,17 +248,27 @@
 
 - (void)keyVerificationCoordinatorBridgePresenterDelegateDidComplete:(KeyVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
 {
-    [keyVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-    keyVerificationCoordinatorBridgePresenter = nil;
-
     // Update our map
     [mxSession.crypto downloadKeys:@[otherUserId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap, NSDictionary<NSString *,MXCrossSigningInfo *> *crossSigningKeysMap) {
         
         [self reloadDataforUser:otherUserId andDevice:otherDeviceId];
-
+        
     } failure:^(NSError *error) {
         // Should not happen (the device is in the crypto db)
     }];
+    
+    [self dismissKeyVerificationCoordinatorBridgePresenter];
+}
+
+- (void)keyVerificationCoordinatorBridgePresenterDelegateDidCancel:(KeyVerificationCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    [self dismissKeyVerificationCoordinatorBridgePresenter];
+}
+
+- (void)dismissKeyVerificationCoordinatorBridgePresenter
+{
+    [keyVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    keyVerificationCoordinatorBridgePresenter = nil;
 }
 
 

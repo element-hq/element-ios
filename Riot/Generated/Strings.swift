@@ -414,6 +414,22 @@ internal enum VectorL10n {
   internal static var cancel: String { 
     return VectorL10n.tr("Vector", "cancel") 
   }
+  /// Riot X for Android
+  internal static var clientAndroidName: String { 
+    return VectorL10n.tr("Vector", "client_android_name") 
+  }
+  /// Riot Desktop
+  internal static var clientDesktopName: String { 
+    return VectorL10n.tr("Vector", "client_desktop_name") 
+  }
+  /// Riot iOS
+  internal static var clientIosName: String { 
+    return VectorL10n.tr("Vector", "client_ios_name") 
+  }
+  /// Riot Web
+  internal static var clientWebName: String { 
+    return VectorL10n.tr("Vector", "client_web_name") 
+  }
   /// Close
   internal static var close: String { 
     return VectorL10n.tr("Vector", "close") 
@@ -794,21 +810,25 @@ internal enum VectorL10n {
   internal static var deviceVerificationIncomingTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_incoming_title") 
   }
-  /// For maximum security, we recommend you do this in person or use another trusted means of communication
-  internal static var deviceVerificationSecurityAdvice: String { 
-    return VectorL10n.tr("Vector", "device_verification_security_advice") 
+  /// Compare the unique emoji, ensuring they appear in the same order.
+  internal static var deviceVerificationSecurityAdviceEmoji: String { 
+    return VectorL10n.tr("Vector", "device_verification_security_advice_emoji") 
   }
-  /// This wasn't me
-  internal static var deviceVerificationSelfVerifyAlertCancelAction: String { 
-    return VectorL10n.tr("Vector", "device_verification_self_verify_alert_cancel_action") 
+  /// Compare the numbers, ensuring they appear in the same order.
+  internal static var deviceVerificationSecurityAdviceNumber: String { 
+    return VectorL10n.tr("Vector", "device_verification_security_advice_number") 
   }
-  /// Use this session to verify your new one, granting it access to encrypted messages: %@\nIf you didn’t sign in to this session, your account may be compromised.
+  /// Verify the new login accessing your account: %@
   internal static func deviceVerificationSelfVerifyAlertMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "device_verification_self_verify_alert_message", p1)
   }
-  /// New Sign In
+  /// New login. Was this you?
   internal static var deviceVerificationSelfVerifyAlertTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_alert_title") 
+  }
+  /// Verify
+  internal static var deviceVerificationSelfVerifyAlertValidateAction: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_alert_validate_action") 
   }
   /// Use this session to verify your new one, granting it access to encrypted messages.
   internal static var deviceVerificationSelfVerifyStartInformation: String { 
@@ -822,17 +842,21 @@ internal enum VectorL10n {
   internal static var deviceVerificationSelfVerifyStartWaiting: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_start_waiting") 
   }
-  /// Use an existing session to verify this new one, granting it access to encrypted messages.
+  /// or another cross-signing capable Matrix client
+  internal static var deviceVerificationSelfVerifyWaitAdditionalInformation: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_wait_additional_information") 
+  }
+  /// Verify this session from one of your other sessions, granting it access to encrypted messages.\n\nUse the latest Riot on your other devices:
   internal static var deviceVerificationSelfVerifyWaitInformation: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_information") 
+  }
+  /// Verify this login
+  internal static var deviceVerificationSelfVerifyWaitNewSignInTitle: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_wait_new_sign_in_title") 
   }
   /// Complete security
   internal static var deviceVerificationSelfVerifyWaitTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_title") 
-  }
-  /// Waiting…
-  internal static var deviceVerificationSelfVerifyWaitWaiting: String { 
-    return VectorL10n.tr("Vector", "device_verification_self_verify_wait_waiting") 
   }
   /// Verify by comparing a short text string
   internal static var deviceVerificationStartTitle: String { 
@@ -854,18 +878,6 @@ internal enum VectorL10n {
   internal static var deviceVerificationStartWaitPartner: String { 
     return VectorL10n.tr("Vector", "device_verification_start_wait_partner") 
   }
-  /// Verify session
-  internal static var deviceVerificationTitle: String { 
-    return VectorL10n.tr("Vector", "device_verification_title") 
-  }
-  /// You've successfully verified this session.
-  internal static var deviceVerificationVerifiedDescription1: String { 
-    return VectorL10n.tr("Vector", "device_verification_verified_description_1") 
-  }
-  /// Secure messages with this user are end-to-end encrypted and not able to be read by third parties.
-  internal static var deviceVerificationVerifiedDescription2: String { 
-    return VectorL10n.tr("Vector", "device_verification_verified_description_2") 
-  }
   /// Got it
   internal static var deviceVerificationVerifiedGotItButton: String { 
     return VectorL10n.tr("Vector", "device_verification_verified_got_it_button") 
@@ -873,14 +885,6 @@ internal enum VectorL10n {
   /// Verified!
   internal static var deviceVerificationVerifiedTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_verified_title") 
-  }
-  /// Verify this session by confirming the following emoji appear on the screen of the partner
-  internal static var deviceVerificationVerifyTitleEmoji: String { 
-    return VectorL10n.tr("Vector", "device_verification_verify_title_emoji") 
-  }
-  /// Verify this session by confirming the following numbers appear on the screen of the partner
-  internal static var deviceVerificationVerifyTitleNumber: String { 
-    return VectorL10n.tr("Vector", "device_verification_verify_title_number") 
   }
   /// Waiting for partner to confirm…
   internal static var deviceVerificationVerifyWaitPartner: String { 
@@ -1510,7 +1514,7 @@ internal enum VectorL10n {
   internal static var keyBackupSetupTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_title") 
   }
-  /// You have to bootstrap cross-signing
+  /// You need to bootstrap cross-signing first.
   internal static var keyVerificationBootstrapNotSetupMessage: String { 
     return VectorL10n.tr("Vector", "key_verification_bootstrap_not_setup_message") 
   }
@@ -1521,6 +1525,94 @@ internal enum VectorL10n {
   /// %@ wants to verify
   internal static func keyVerificationIncomingRequestIncomingAlertMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "key_verification_incoming_request_incoming_alert_message", p1)
+  }
+  /// If they don't match, the security of your communication may be compromised.
+  internal static var keyVerificationManuallyVerifyDeviceAdditionalInformation: String { 
+    return VectorL10n.tr("Vector", "key_verification_manually_verify_device_additional_information") 
+  }
+  /// Session ID
+  internal static var keyVerificationManuallyVerifyDeviceIdTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_manually_verify_device_id_title") 
+  }
+  /// Confirm by comparing the following with the User Settings in your other session:
+  internal static var keyVerificationManuallyVerifyDeviceInstruction: String { 
+    return VectorL10n.tr("Vector", "key_verification_manually_verify_device_instruction") 
+  }
+  /// Session key
+  internal static var keyVerificationManuallyVerifyDeviceKeyTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_manually_verify_device_key_title") 
+  }
+  /// Session name
+  internal static var keyVerificationManuallyVerifyDeviceNameTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_manually_verify_device_name_title") 
+  }
+  /// Manually Verify by Text
+  internal static var keyVerificationManuallyVerifyDeviceTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_manually_verify_device_title") 
+  }
+  /// Verify
+  internal static var keyVerificationManuallyVerifyDeviceValidateAction: String { 
+    return VectorL10n.tr("Vector", "key_verification_manually_verify_device_validate_action") 
+  }
+  /// Verify your new session
+  internal static var keyVerificationNewSessionTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_new_session_title") 
+  }
+  /// Verify session
+  internal static var keyVerificationOtherSessionTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_other_session_title") 
+  }
+  /// Is the other device showing the same shield?
+  internal static var keyVerificationScanConfirmationScannedDeviceInformation: String { 
+    return VectorL10n.tr("Vector", "key_verification_scan_confirmation_scanned_device_information") 
+  }
+  /// Almost there!
+  internal static var keyVerificationScanConfirmationScannedTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_scan_confirmation_scanned_title") 
+  }
+  /// Is %@ showing the same shield?
+  internal static func keyVerificationScanConfirmationScannedUserInformation(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "key_verification_scan_confirmation_scanned_user_information", p1)
+  }
+  /// Waiting for other device…
+  internal static var keyVerificationScanConfirmationScanningDeviceWaitingOther: String { 
+    return VectorL10n.tr("Vector", "key_verification_scan_confirmation_scanning_device_waiting_other") 
+  }
+  /// Almost there! Waiting for confirmation…
+  internal static var keyVerificationScanConfirmationScanningTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_scan_confirmation_scanning_title") 
+  }
+  /// Waiting for %@…
+  internal static func keyVerificationScanConfirmationScanningUserWaitingOther(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "key_verification_scan_confirmation_scanning_user_waiting_other", p1)
+  }
+  /// Other users may not trust it.
+  internal static var keyVerificationSelfVerifyCurrentSessionAlertMessage: String { 
+    return VectorL10n.tr("Vector", "key_verification_self_verify_current_session_alert_message") 
+  }
+  /// Verify this session
+  internal static var keyVerificationSelfVerifyCurrentSessionAlertTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_self_verify_current_session_alert_title") 
+  }
+  /// Verify
+  internal static var keyVerificationSelfVerifyCurrentSessionAlertValidateAction: String { 
+    return VectorL10n.tr("Vector", "key_verification_self_verify_current_session_alert_validate_action") 
+  }
+  /// Verify all your sessions to ensure your account & messages are safe.
+  internal static var keyVerificationSelfVerifyUnverifiedSessionsAlertMessage: String { 
+    return VectorL10n.tr("Vector", "key_verification_self_verify_unverified_sessions_alert_message") 
+  }
+  /// Review where you're logged in
+  internal static var keyVerificationSelfVerifyUnverifiedSessionsAlertTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_self_verify_unverified_sessions_alert_title") 
+  }
+  /// Review
+  internal static var keyVerificationSelfVerifyUnverifiedSessionsAlertValidateAction: String { 
+    return VectorL10n.tr("Vector", "key_verification_self_verify_unverified_sessions_alert_validate_action") 
+  }
+  /// Verify this session
+  internal static var keyVerificationThisSessionTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_this_session_title") 
   }
   /// Verified
   internal static var keyVerificationTileConclusionDoneTitle: String { 
@@ -1570,25 +1662,45 @@ internal enum VectorL10n {
   internal static var keyVerificationTileRequestStatusWaiting: String { 
     return VectorL10n.tr("Vector", "key_verification_tile_request_status_waiting") 
   }
-  /// Verify user
+  /// Verify them
   internal static var keyVerificationUserTitle: String { 
     return VectorL10n.tr("Vector", "key_verification_user_title") 
   }
-  /// You’ve successfully verified this user.
-  internal static var keyVerificationVerifiedUserDescription1: String { 
-    return VectorL10n.tr("Vector", "key_verification_verified_user_description_1") 
+  /// You can now read secure messages on your new device, and other users will know they can trust it.
+  internal static var keyVerificationVerifiedNewSessionInformation: String { 
+    return VectorL10n.tr("Vector", "key_verification_verified_new_session_information") 
   }
-  /// Messages with this user in this room are end-to-end encrypted and can’t be read by third parties.
-  internal static var keyVerificationVerifiedUserDescription2: String { 
-    return VectorL10n.tr("Vector", "key_verification_verified_user_description_2") 
+  /// New session verified!
+  internal static var keyVerificationVerifiedNewSessionTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_verified_new_session_title") 
+  }
+  /// You can now read secure messages on your other session, and other users will know they can trust it.
+  internal static var keyVerificationVerifiedOtherSessionInformation: String { 
+    return VectorL10n.tr("Vector", "key_verification_verified_other_session_information") 
+  }
+  /// You can now read secure messages on this device, and other users will know they can trust it.
+  internal static var keyVerificationVerifiedThisSessionInformation: String { 
+    return VectorL10n.tr("Vector", "key_verification_verified_this_session_information") 
+  }
+  /// Messages with this user are end-to-end encrypted and can't be read by third parties.
+  internal static var keyVerificationVerifiedUserInformation: String { 
+    return VectorL10n.tr("Vector", "key_verification_verified_user_information") 
   }
   /// Can't scan?
   internal static var keyVerificationVerifyQrCodeCannotScanAction: String { 
     return VectorL10n.tr("Vector", "key_verification_verify_qr_code_cannot_scan_action") 
   }
+  /// Verify by comparing unique emoji.
+  internal static var keyVerificationVerifyQrCodeEmojiInformation: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_qr_code_emoji_information") 
+  }
   /// Scan the code to securely verify each other.
   internal static var keyVerificationVerifyQrCodeInformation: String { 
     return VectorL10n.tr("Vector", "key_verification_verify_qr_code_information") 
+  }
+  /// Scan the code below to verify:
+  internal static var keyVerificationVerifyQrCodeInformationOtherDevice: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_qr_code_information_other_device") 
   }
   /// Did the other user successfully scan the QR code?
   internal static var keyVerificationVerifyQrCodeOtherScanMyCodeTitle: String { 
@@ -1606,17 +1718,33 @@ internal enum VectorL10n {
   internal static var keyVerificationVerifyQrCodeScanOtherCodeSuccessTitle: String { 
     return VectorL10n.tr("Vector", "key_verification_verify_qr_code_scan_other_code_success_title") 
   }
+  /// Verify by emoji
+  internal static var keyVerificationVerifyQrCodeStartEmojiAction: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_qr_code_start_emoji_action") 
+  }
   /// Verify by scanning
   internal static var keyVerificationVerifyQrCodeTitle: String { 
     return VectorL10n.tr("Vector", "key_verification_verify_qr_code_title") 
   }
-  /// Verify this user by confirming the following unique emoji appears on their screen, in the same order.
-  internal static var keyVerificationVerifyUserTitleEmoji: String { 
-    return VectorL10n.tr("Vector", "key_verification_verify_user_title_emoji") 
+  /// For ultimate security, use another trusted means of communication or do this in person.
+  internal static var keyVerificationVerifySasAdditionalInformation: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_sas_additional_information") 
   }
-  /// Verify this user by confirming the following numbers appear on their screen, in the same order.
-  internal static var keyVerificationVerifyUserTitleNumber: String { 
-    return VectorL10n.tr("Vector", "key_verification_verify_user_title_number") 
+  /// They don't match
+  internal static var keyVerificationVerifySasCancelAction: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_sas_cancel_action") 
+  }
+  /// Compare emoji
+  internal static var keyVerificationVerifySasTitleEmoji: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_sas_title_emoji") 
+  }
+  /// Compare numbers
+  internal static var keyVerificationVerifySasTitleNumber: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_sas_title_number") 
+  }
+  /// They match
+  internal static var keyVerificationVerifySasValidateAction: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_sas_validate_action") 
   }
   /// %.1fK
   internal static func largeBadgeValueKFormat(_ p1: Float) -> String {
@@ -2382,6 +2510,10 @@ internal enum VectorL10n {
   internal static var roomParticipantsActionSectionSecurity: String { 
     return VectorL10n.tr("Vector", "room_participants_action_section_security") 
   }
+  /// Complete security
+  internal static var roomParticipantsActionSecurityStatusCompleteSecurity: String { 
+    return VectorL10n.tr("Vector", "room_participants_action_security_status_complete_security") 
+  }
   /// Loading…
   internal static var roomParticipantsActionSecurityStatusLoading: String { 
     return VectorL10n.tr("Vector", "room_participants_action_security_status_loading") 
@@ -2798,9 +2930,49 @@ internal enum VectorL10n {
   internal static var securitySettingsBlacklistUnverifiedDevicesDescription: String { 
     return VectorL10n.tr("Vector", "security_settings_blacklist_unverified_devices_description") 
   }
+  /// Sorry. This action is not available on Riot-iOS yet. Please use another Matrix client to set it up. Riot-iOS will use it.
+  internal static var securitySettingsComingSoon: String { 
+    return VectorL10n.tr("Vector", "security_settings_coming_soon") 
+  }
+  /// You should complete security on your current session first.
+  internal static var securitySettingsCompleteSecurityAlertMessage: String { 
+    return VectorL10n.tr("Vector", "security_settings_complete_security_alert_message") 
+  }
+  /// Complete security
+  internal static var securitySettingsCompleteSecurityAlertTitle: String { 
+    return VectorL10n.tr("Vector", "security_settings_complete_security_alert_title") 
+  }
   /// CROSS-SIGNING
   internal static var securitySettingsCrosssigning: String { 
     return VectorL10n.tr("Vector", "security_settings_crosssigning") 
+  }
+  /// Bootstrap cross-signing
+  internal static var securitySettingsCrosssigningBootstrap: String { 
+    return VectorL10n.tr("Vector", "security_settings_crosssigning_bootstrap") 
+  }
+  /// Complete security
+  internal static var securitySettingsCrosssigningCompleteSecurity: String { 
+    return VectorL10n.tr("Vector", "security_settings_crosssigning_complete_security") 
+  }
+  /// Your account has a cross-signing identity, but it is not yet trusted by this session. Complete security of this session.
+  internal static var securitySettingsCrosssigningInfoExists: String { 
+    return VectorL10n.tr("Vector", "security_settings_crosssigning_info_exists") 
+  }
+  /// Cross-signing is not yet set up.
+  internal static var securitySettingsCrosssigningInfoNotBootstrapped: String { 
+    return VectorL10n.tr("Vector", "security_settings_crosssigning_info_not_bootstrapped") 
+  }
+  /// Cross-signing is enabled.
+  internal static var securitySettingsCrosssigningInfoOk: String { 
+    return VectorL10n.tr("Vector", "security_settings_crosssigning_info_ok") 
+  }
+  /// Cross-signing is enabled. You can trust other users and your other sessions based on cross-signing but you cannot cross-sign from this session because it does not have cross-signing private keys. Complete security of this session.
+  internal static var securitySettingsCrosssigningInfoTrusted: String { 
+    return VectorL10n.tr("Vector", "security_settings_crosssigning_info_trusted") 
+  }
+  /// Reset cross-signing
+  internal static var securitySettingsCrosssigningReset: String { 
+    return VectorL10n.tr("Vector", "security_settings_crosssigning_reset") 
   }
   /// MY SESSIONS
   internal static var securitySettingsCryptoSessions: String { 
@@ -3250,10 +3422,6 @@ internal enum VectorL10n {
   internal static var settingsLabsE2eEncryptionPromptMessage: String { 
     return VectorL10n.tr("Vector", "settings_labs_e2e_encryption_prompt_message") 
   }
-  /// Enable cross-signing to verify per-user instead of per-device (in development)
-  internal static var settingsLabsEnableCrossSigning: String { 
-    return VectorL10n.tr("Vector", "settings_labs_enable_cross_signing") 
-  }
   /// React to messages with emoji
   internal static var settingsLabsMessageReaction: String { 
     return VectorL10n.tr("Vector", "settings_labs_message_reaction") 
@@ -3602,13 +3770,17 @@ internal enum VectorL10n {
   internal static var userVerificationSessionDetailsTrustedTitle: String { 
     return VectorL10n.tr("Vector", "user_verification_session_details_trusted_title") 
   }
-  /// Warning
+  /// Not Trusted
   internal static var userVerificationSessionDetailsUntrustedTitle: String { 
     return VectorL10n.tr("Vector", "user_verification_session_details_untrusted_title") 
   }
-  /// Verify
+  /// Interactively Verify
   internal static var userVerificationSessionDetailsVerifyActionCurrentUser: String { 
     return VectorL10n.tr("Vector", "user_verification_session_details_verify_action_current_user") 
+  }
+  /// Manually Verify by Text
+  internal static var userVerificationSessionDetailsVerifyActionCurrentUserManually: String { 
+    return VectorL10n.tr("Vector", "user_verification_session_details_verify_action_current_user_manually") 
   }
   /// Manually verify
   internal static var userVerificationSessionDetailsVerifyActionOtherUser: String { 

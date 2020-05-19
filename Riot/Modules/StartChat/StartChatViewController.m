@@ -47,9 +47,6 @@
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBarView;
 @property (weak, nonatomic) IBOutlet UIView *searchBarHeaderBorder;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchBarTopConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewBottomConstraint;
-
 @end
 
 @implementation StartChatViewController
@@ -89,28 +86,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
-    // Adjust Top and Bottom constraints to take into account potential navBar and tabBar.
-    [NSLayoutConstraint deactivateConstraints:@[_searchBarTopConstraint, _tableViewBottomConstraint]];
-    
-    _searchBarTopConstraint = [NSLayoutConstraint constraintWithItem:self.topLayoutGuide
-                                                                  attribute:NSLayoutAttributeBottom
-                                                                  relatedBy:NSLayoutRelationEqual
-                                                                     toItem:self.searchBarHeader
-                                                                  attribute:NSLayoutAttributeTop
-                                                                 multiplier:1.0f
-                                                                   constant:0.0f];
-    
-    _tableViewBottomConstraint = [NSLayoutConstraint constraintWithItem:self.bottomLayoutGuide
-                                                                     attribute:NSLayoutAttributeTop
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self.contactsTableView
-                                                                     attribute:NSLayoutAttributeBottom
-                                                                    multiplier:1.0f
-                                                                      constant:0.0f];
-    
-    [NSLayoutConstraint activateConstraints:@[_searchBarTopConstraint, _tableViewBottomConstraint]];
-    
+
     self.navigationItem.title = NSLocalizedStringFromTable(@"room_creation_title", @"Vector", nil);
     
     // Add each matrix session by default.

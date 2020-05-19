@@ -33,9 +33,12 @@ final class KeyVerificationVerifyBySASViewController: UIViewController {
     @IBOutlet private weak var decimalLabel: UILabel!
     @IBOutlet private weak var emojisCollectionView: UICollectionView!
     @IBOutlet private weak var waitingPartnerLabel: UILabel!
-    @IBOutlet private weak var continueButtonBackgroundView: UIView!
-    @IBOutlet private weak var continueButton: UIButton!
-
+    
+    @IBOutlet private weak var buttonsStackView: UIStackView!
+    @IBOutlet private weak var cancelButton: RoundedButton!
+    @IBOutlet private weak var validateButton: RoundedButton!
+    @IBOutlet private weak var additionalInformationLabel: UILabel!
+    
     // MARK: Private
 
     private var viewModel: KeyVerificationVerifyBySASViewModelType!
@@ -99,8 +102,8 @@ final class KeyVerificationVerifyBySASViewController: UIViewController {
         self.decimalLabel.textColor = theme.textPrimaryColor
         self.waitingPartnerLabel.textColor = theme.textPrimaryColor
 
-        self.continueButtonBackgroundView.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.continueButton)
+        self.cancelButton.update(theme: theme)
+        self.validateButton.update(theme: theme)
 
         emojisCollectionView.reloadData()
     }
@@ -115,7 +118,7 @@ final class KeyVerificationVerifyBySASViewController: UIViewController {
     
     private func setupViews() {
         let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
-            self?.cancelButtonAction()
+            self?.cancelAction()
         }
         
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
@@ -131,29 +134,29 @@ final class KeyVerificationVerifyBySASViewController: UIViewController {
             self.decimalLabel.text = self.viewModel.decimal
         }
         
-        let title: String
         let instructionText: String
         let adviceText: String
         
-        switch viewModel.verificationKind {
-        case .device:
-            title = VectorL10n.deviceVerificationTitle
-            instructionText = isVerificationByEmoji ? VectorL10n.deviceVerificationVerifyTitleEmoji : VectorL10n.deviceVerificationVerifyTitleNumber
-            adviceText = VectorL10n.deviceVerificationSecurityAdvice
-        case .user:
-            title = VectorL10n.keyVerificationUserTitle
-            instructionText = isVerificationByEmoji ? VectorL10n.keyVerificationVerifyUserTitleEmoji : VectorL10n.keyVerificationVerifyUserTitleNumber
-            adviceText = VectorL10n.deviceVerificationSecurityAdvice
+        if isVerificationByEmoji {
+            instructionText = VectorL10n.keyVerificationVerifySasTitleEmoji
+            adviceText = VectorL10n.deviceVerificationSecurityAdviceEmoji
+        } else {
+            instructionText = VectorL10n.keyVerificationVerifySasTitleNumber
+            adviceText = VectorL10n.deviceVerificationSecurityAdviceNumber
         }
 
-        self.title = title
+        self.title = self.viewModel.verificationKind.verificationTitle
         self.titleLabel.text = instructionText
         self.informationLabel.text = adviceText
         self.waitingPartnerLabel.text = VectorL10n.deviceVerificationVerifyWaitPartner
 
         self.waitingPartnerLabel.isHidden = true
 
-        self.continueButton.setTitle(VectorL10n.continue, for: .normal)
+        self.cancelButton.setTitle(VectorL10n.keyVerificationVerifySasCancelAction, for: .normal)
+        self.cancelButton.actionStyle = .cancel
+        self.validateButton.setTitle(VectorL10n.keyVerificationVerifySasValidateAction, for: .normal)
+        
+        self.additionalInformationLabel.text = VectorL10n.keyVerificationVerifySasAdditionalInformation
     }
 
     private func render(viewState: KeyVerificationVerifyViewState) {
@@ -177,8 +180,8 @@ final class KeyVerificationVerifyBySASViewController: UIViewController {
     
     private func renderVerified() {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-
-        self.continueButtonBackgroundView.isHidden = true
+        
+        self.buttonsStackView.isHidden = true
         self.waitingPartnerLabel.isHidden = false
     }
 
@@ -210,12 +213,16 @@ final class KeyVerificationVerifyBySASViewController: UIViewController {
     
     // MARK: - Actions
 
-    @IBAction private func continueButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .confirm)
-    }
-
-    private func cancelButtonAction() {
+    private func cancelAction() {
         self.viewModel.process(viewAction: .cancel)
+    }
+    
+    @IBAction private func cancelButtonAction(_ sender: Any) {
+        self.cancelAction()
+    }
+    
+    @IBAction private func validateButtonAction(_ sender: Any) {
+        self.viewModel.process(viewAction: .confirm)
     }
 }
 

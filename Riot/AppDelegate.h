@@ -26,6 +26,7 @@
 #import "Analytics.h"
 
 #import "ThemeService.h"
+#import "UniversalLink.h"
 
 #pragma mark - Notifications
 /**
@@ -41,6 +42,11 @@ extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;
 extern NSString *const AppDelegateDidValidateEmailNotification;
 extern NSString *const AppDelegateDidValidateEmailNotificationSIDKey;
 extern NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey;
+
+/**
+ Posted when the property 'lastHandledUniversalLink' has changed. Notification object and userInfo will be nil.
+ */
+extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate, JitsiViewControllerDelegate, UNUserNotificationCenterDelegate>
 {
@@ -65,6 +71,13 @@ extern NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey;
 @property (nonatomic) BOOL isAppForeground;
 @property (nonatomic) BOOL isOffline;
 
+
+/**
+ Let the AppDelegate handle and display self verification requests.
+ Default is YES;
+ */
+@property (nonatomic) BOOL handleSelfVerificationRequest;
+
 /**
  The navigation controller of the master view controller of the main split view controller.
  */
@@ -79,6 +92,11 @@ extern NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey;
 
 // Current selected room id. nil if no room is presently visible.
 @property (strong, nonatomic) NSString *visibleRoomId;
+
+/**
+ Last handled universal link (url will be formatted for several hash keys).
+ */
+@property (nonatomic, readonly) UniversalLink *lastHandledUniversalLink;
 
 // New message sound id.
 @property (nonatomic, readonly) SystemSoundID messageSound;
@@ -141,6 +159,8 @@ extern NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey;
                                     inSession:(MXSession*)session;
 
 - (BOOL)presentUserVerificationForRoomMember:(MXRoomMember*)roomMember session:(MXSession*)mxSession;
+
+- (BOOL)presentCompleteSecurityForSession:(MXSession*)mxSession;
 
 #pragma mark - Matrix Accounts handling
 

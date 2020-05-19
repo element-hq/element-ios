@@ -21,6 +21,8 @@ import Foundation
 /// KeyVerificationSelfVerifyWaitViewController view state
 enum KeyVerificationSelfVerifyWaitViewState {
     case loading
-    case loaded
+    case loaded(_ isNewSignIn: Bool)
+    case cancelled(MXTransactionCancelCode)
+    case cancelledByMe(MXTransactionCancelCode)
     case error(Error)
 }

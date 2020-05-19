@@ -7,7 +7,7 @@ use_frameworks!
 
 # Different flavours of pods to MatrixKit
 # The current MatrixKit pod version
-$matrixKitVersion = '0.11.4'
+$matrixKitVersion = '0.12.3'
 
 # The specific branch version (supported: develop, xcode11)
 $matrixKitVersion = 'xcode11'
@@ -77,6 +77,7 @@ abstract_target 'RiotPods' do
     target "Riot" do
         import_MatrixKit
         pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'        
+        pod 'KTCenterFlowLayout', '~> 1.3.1'
         pod 'ZXingObjC', '~> 3.6.5'
         
         target 'RiotTests' do

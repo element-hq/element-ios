@@ -17,6 +17,8 @@
 #import <Contacts/Contacts.h>
 #import "ContactsDataSource.h"
 #import "ContactTableViewCell.h"
+#import "SectionHeaderView.h"
+#import "LocalContactsSectionHeaderContainerView.h"
 
 #import "ThemeService.h"
 #import "Riot-Swift.h"
@@ -47,7 +49,7 @@
     // Shrinked sections.
     NSInteger shrinkedSectionsBitMask;
     
-    UIView *localContactsCheckboxContainer;
+    LocalContactsSectionHeaderContainerView *localContactsCheckboxContainer;
     UILabel *checkboxLabel;
     UIImageView *localContactsCheckbox;
 }
@@ -764,22 +766,19 @@
 
 - (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
 {
-    UIView* sectionHeader;
-    
     NSInteger sectionBitwise = 0;
     
-    sectionHeader = [[UIView alloc] initWithFrame:frame];
+    SectionHeaderView *sectionHeader = [[SectionHeaderView alloc] initWithFrame:frame];
     sectionHeader.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
-    
-    frame.origin.x = 20;
-    frame.origin.y = 5;
-    frame.size.width = sectionHeader.frame.size.width - 10;
-    frame.size.height = CONTACTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT -10;
+    sectionHeader.topViewHeight = CONTACTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT;
+
+    frame.size.height = CONTACTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT - 10;
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
     headerLabel.attributedText = [self attributedStringForHeaderTitleInSection:section];
     headerLabel.backgroundColor = [UIColor clearColor];
     [sectionHeader addSubview:headerLabel];
-    
+    sectionHeader.headerLabel = headerLabel;
+
     if (_areSectionsShrinkable)
     {
         if (section == filteredLocalContactsSection)
@@ -803,14 +802,11 @@
     {
         // Add shrink button
         UIButton *shrinkButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        frame = sectionHeader.frame;
-        frame.origin.x = frame.origin.y = 0;
-        frame.size.height = CONTACTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT;
-        shrinkButton.frame = frame;
         shrinkButton.backgroundColor = [UIColor clearColor];
         [shrinkButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         shrinkButton.tag = sectionBitwise;
         [sectionHeader addSubview:shrinkButton];
+        sectionHeader.topSpanningView = shrinkButton;
         sectionHeader.userInteractionEnabled = YES;
         
         // Add shrink icon
@@ -825,41 +821,33 @@
         }
         UIImageView *chevronView = [[UIImageView alloc] initWithImage:chevron];
         chevronView.contentMode = UIViewContentModeCenter;
-        frame = chevronView.frame;
-        frame.origin.x = shrinkButton.frame.size.width - frame.size.width - 16;
-        frame.origin.y = (shrinkButton.frame.size.height - frame.size.height) / 2;
-        chevronView.frame = frame;
         [sectionHeader addSubview:chevronView];
-        chevronView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+        sectionHeader.accessoryView = chevronView;
     }
     
     if (section == filteredLocalContactsSection && !(shrinkedSectionsBitMask & CONTACTSDATASOURCE_LOCALCONTACTS_BITWISE))
     {
-        NSLayoutConstraint *leadingConstraint, *trailingConstraint, *topConstraint, *bottomConstraint;
-        NSLayoutConstraint *widthConstraint, *heightConstraint, *centerYConstraint;
-        
         if (!localContactsCheckboxContainer)
         {
-            CGFloat containerWidth = sectionHeader.frame.size.width;
-            
-            localContactsCheckboxContainer = [[UIView alloc] initWithFrame:CGRectMake(0, CONTACTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT, containerWidth, sectionHeader.frame.size.height - CONTACTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT)];
+            localContactsCheckboxContainer = [[LocalContactsSectionHeaderContainerView alloc] initWithFrame:CGRectZero];
             localContactsCheckboxContainer.backgroundColor = [UIColor clearColor];
-            localContactsCheckboxContainer.translatesAutoresizingMaskIntoConstraints = NO;
-            
+
             // Add Checkbox and Label
-            localContactsCheckbox = [[UIImageView alloc] initWithFrame:CGRectMake(23, 5, 22, 22)];
-            localContactsCheckbox.translatesAutoresizingMaskIntoConstraints = NO;
+            localContactsCheckbox = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 22, 22)];
             [localContactsCheckboxContainer addSubview:localContactsCheckbox];
+            localContactsCheckboxContainer.checkboxView = localContactsCheckbox;
             
-            checkboxLabel = [[UILabel alloc] initWithFrame:CGRectMake(54, 5, containerWidth - 64, 30)];
-            checkboxLabel.translatesAutoresizingMaskIntoConstraints = NO;
+            checkboxLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 30)];
             checkboxLabel.font = [UIFont systemFontOfSize:16.0];
             checkboxLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_matrix_users_toggle", @"Vector", nil);
             [localContactsCheckboxContainer addSubview:checkboxLabel];
+            localContactsCheckboxContainer.checkboxLabel = checkboxLabel;
             
-            UIView *checkboxMask = [[UIView alloc] initWithFrame:CGRectMake(16, -2, 36, 36)];
+            UIView *checkboxMask = [[UIView alloc] initWithFrame:CGRectZero];
             checkboxMask.translatesAutoresizingMaskIntoConstraints = NO;
             [localContactsCheckboxContainer addSubview:checkboxMask];
+            localContactsCheckboxContainer.maskView = checkboxMask;
+
             // Listen to check box tap
             checkboxMask.userInteractionEnabled = YES;
             UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onCheckBoxTap:)];
@@ -867,108 +855,6 @@
             [tapGesture setNumberOfTapsRequired:1];
             [tapGesture setDelegate:self];
             [checkboxMask addGestureRecognizer:tapGesture];
-            
-            // Add switch constraints
-            leadingConstraint = [NSLayoutConstraint constraintWithItem:localContactsCheckbox
-                                                             attribute:NSLayoutAttributeLeading
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:localContactsCheckboxContainer
-                                                             attribute:NSLayoutAttributeLeading
-                                                            multiplier:1
-                                                              constant:23];
-            
-            topConstraint = [NSLayoutConstraint constraintWithItem:localContactsCheckbox
-                                                         attribute:NSLayoutAttributeTop
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:localContactsCheckboxContainer
-                                                         attribute:NSLayoutAttributeTop
-                                                        multiplier:1
-                                                          constant:5];
-            
-            widthConstraint = [NSLayoutConstraint constraintWithItem:localContactsCheckbox
-                                                           attribute:NSLayoutAttributeWidth
-                                                           relatedBy:NSLayoutRelationEqual
-                                                              toItem:nil
-                                                           attribute:NSLayoutAttributeNotAnAttribute
-                                                          multiplier:1
-                                                            constant:22];
-            heightConstraint = [NSLayoutConstraint constraintWithItem:localContactsCheckbox
-                                                            attribute:NSLayoutAttributeHeight
-                                                            relatedBy:NSLayoutRelationEqual
-                                                               toItem:nil
-                                                            attribute:NSLayoutAttributeNotAnAttribute
-                                                           multiplier:1
-                                                             constant:22];
-            
-            [NSLayoutConstraint activateConstraints:@[leadingConstraint, topConstraint, widthConstraint, heightConstraint]];
-            
-            
-            // Add Label constraints
-            centerYConstraint = [NSLayoutConstraint constraintWithItem:checkboxLabel
-                                                             attribute:NSLayoutAttributeCenterY
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:localContactsCheckbox
-                                                             attribute:NSLayoutAttributeCenterY
-                                                            multiplier:1
-                                                              constant:0.0f];
-            heightConstraint = [NSLayoutConstraint constraintWithItem:checkboxLabel
-                                                            attribute:NSLayoutAttributeHeight
-                                                            relatedBy:NSLayoutRelationEqual
-                                                               toItem:nil
-                                                            attribute:NSLayoutAttributeNotAnAttribute
-                                                           multiplier:1
-                                                             constant:30];
-            leadingConstraint = [NSLayoutConstraint constraintWithItem:checkboxLabel
-                                                             attribute:NSLayoutAttributeLeading
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:localContactsCheckbox
-                                                             attribute:NSLayoutAttributeTrailing
-                                                            multiplier:1
-                                                              constant:10];
-            trailingConstraint = [NSLayoutConstraint constraintWithItem:checkboxLabel
-                                                              attribute:NSLayoutAttributeTrailing
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:localContactsCheckboxContainer
-                                                              attribute:NSLayoutAttributeTrailing
-                                                             multiplier:1
-                                                               constant:-10];
-            
-            [NSLayoutConstraint activateConstraints:@[centerYConstraint, heightConstraint, leadingConstraint, trailingConstraint]];
-            
-            // Add check box mask constraints
-            heightConstraint = [NSLayoutConstraint constraintWithItem:checkboxMask
-                                                            attribute:NSLayoutAttributeHeight
-                                                            relatedBy:NSLayoutRelationEqual
-                                                               toItem:nil
-                                                            attribute:NSLayoutAttributeNotAnAttribute
-                                                           multiplier:1
-                                                             constant:36];
-            
-            centerYConstraint = [NSLayoutConstraint constraintWithItem:checkboxMask
-                                                             attribute:NSLayoutAttributeCenterY
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:localContactsCheckbox
-                                                             attribute:NSLayoutAttributeCenterY
-                                                            multiplier:1
-                                                              constant:0.0f];
-            
-            leadingConstraint = [NSLayoutConstraint constraintWithItem:checkboxMask
-                                                             attribute:NSLayoutAttributeLeading
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:localContactsCheckbox
-                                                             attribute:NSLayoutAttributeLeading
-                                                            multiplier:1
-                                                              constant:-7];
-            
-            trailingConstraint = [NSLayoutConstraint constraintWithItem:checkboxMask
-                                                              attribute:NSLayoutAttributeTrailing
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:checkboxLabel
-                                                              attribute:NSLayoutAttributeTrailing
-                                                             multiplier:1
-                                                               constant:0];
-            
-            [NSLayoutConstraint activateConstraints:@[heightConstraint, centerYConstraint, leadingConstraint, trailingConstraint]];
         }
         
         // Apply UI theme
@@ -979,36 +865,7 @@
         
         // Add the check box container
         [sectionHeader addSubview:localContactsCheckboxContainer];
-        leadingConstraint = [NSLayoutConstraint constraintWithItem:localContactsCheckboxContainer
-                                                         attribute:NSLayoutAttributeLeading
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:sectionHeader
-                                                         attribute:NSLayoutAttributeLeading
-                                                        multiplier:1
-                                                          constant:0];
-        widthConstraint = [NSLayoutConstraint constraintWithItem:localContactsCheckboxContainer
-                                                       attribute:NSLayoutAttributeWidth
-                                                       relatedBy:NSLayoutRelationEqual
-                                                          toItem:sectionHeader
-                                                       attribute:NSLayoutAttributeWidth
-                                                      multiplier:1
-                                                        constant:0];
-        topConstraint = [NSLayoutConstraint constraintWithItem:localContactsCheckboxContainer
-                                                     attribute:NSLayoutAttributeTop
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:sectionHeader
-                                                     attribute:NSLayoutAttributeTop
-                                                    multiplier:1
-                                                      constant:CONTACTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT];
-        bottomConstraint = [NSLayoutConstraint constraintWithItem:localContactsCheckboxContainer
-                                                        attribute:NSLayoutAttributeBottom
-                                                        relatedBy:NSLayoutRelationEqual
-                                                           toItem:sectionHeader
-                                                        attribute:NSLayoutAttributeBottom
-                                                       multiplier:1
-                                                         constant:0];
-        
-        [NSLayoutConstraint activateConstraints:@[leadingConstraint, widthConstraint, topConstraint, bottomConstraint]];
+        sectionHeader.bottomView = localContactsCheckboxContainer;
     }
     
     return sectionHeader;

@@ -19,6 +19,6 @@ import Foundation
 /// TemplateScreenViewController view state
 enum TemplateScreenViewState {
     case loading
-    case loaded
+    case loaded(_ displayName: String)
     case error(Error)
 }

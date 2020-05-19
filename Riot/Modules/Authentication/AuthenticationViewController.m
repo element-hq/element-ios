@@ -28,12 +28,6 @@
 @interface AuthenticationViewController () <AuthFallBackViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate>
 {
     /**
-     Store the potential login error received by using a default homeserver different from matrix.org
-     while we retry a login process against the matrix.org HS.
-     */
-    NSError *loginError;
-    
-    /**
      The default country code used to initialize the mobile phone number input.
      */
     NSString *defaultCountryCode;
@@ -42,6 +36,11 @@
      Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
      */
     id kThemeServiceDidChangeThemeNotificationObserver;
+
+    /**
+     Observe AppDelegateUniversalLinkDidChangeNotification to handle universal link changes.
+     */
+    id universalLinkDidChangeNotificationObserver;
 
     /**
      Server discovery.
@@ -149,11 +148,17 @@
         [self userInterfaceThemeDidChange];
         
     }];
+    universalLinkDidChangeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AppDelegateUniversalLinkDidChangeNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull notification) {
+        [self updateUniversalLink];
+    }];
+
     [self userInterfaceThemeDidChange];
+    [self updateUniversalLink];
 }
 
 - (void)userInterfaceThemeDidChange
 {
+    self.navigationBackView.backgroundColor = ThemeService.shared.theme.baseColor;
     [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationBar];
     self.navigationBarSeparatorView.backgroundColor = ThemeService.shared.theme.lineBreakColor;
 
@@ -163,7 +168,7 @@
     // as the main view background color.
     // Hopefully, subviews define their own background color with `theme.backgroundColor`,
     // which makes all work together.
-    self.view.backgroundColor = ThemeService.shared.theme.baseColor;
+    self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
 
     self.authenticationScrollView.backgroundColor = ThemeService.shared.theme.backgroundColor;
 
@@ -223,6 +228,20 @@
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
+- (void)updateUniversalLink
+{
+    UniversalLink *link = [AppDelegate theDelegate].lastHandledUniversalLink;
+    if (link)
+    {
+        NSString *emailAddress = link.queryParams[@"email"];
+        if (emailAddress && self.authInputsView)
+        {
+            AuthInputsView *inputsView = (AuthInputsView *)self.authInputsView;
+            inputsView.emailTextField.text = emailAddress;
+        }
+    }
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return ThemeService.shared.theme.statusBarStyle;
@@ -269,6 +288,12 @@
         kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
 
+    if (universalLinkDidChangeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:universalLinkDidChangeNotificationObserver];
+        universalLinkDidChangeNotificationObserver = nil;
+    }
+
     autoDiscovery = nil;
     _keyVerificationCoordinatorBridgePresenter = nil;
 }
@@ -287,16 +312,7 @@
     }
     
     super.authType = authType;
-    
-    // Check a potential stored error.
-    if (loginError)
-    {
-        // Restore the default HS
-        NSLog(@"[AuthenticationVC] Switch back to default homeserver");
-        [self setHomeServerTextFieldText:nil];
-        loginError = nil;
-    }
-    
+
     if (authType == MXKAuthenticationTypeLogin)
     {
         [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateNormal];
@@ -437,11 +453,11 @@
     
     if (self.navigationController)
     {
-        [keyVerificationCoordinatorBridgePresenter pushCompleteSecurityFrom:self.navigationController animated:YES];
+        [keyVerificationCoordinatorBridgePresenter pushCompleteSecurityFrom:self.navigationController isNewSignIn:YES animated:YES];
     }
     else
     {
-        [keyVerificationCoordinatorBridgePresenter presentCompleteSecurityFrom:self animated:YES];
+        [keyVerificationCoordinatorBridgePresenter presentCompleteSecurityFrom:self isNewSignIn:YES animated:YES];
     }
     
     self.keyVerificationCoordinatorBridgePresenter = keyVerificationCoordinatorBridgePresenter;
@@ -682,6 +698,7 @@
     if ([self.authInputsView isKindOfClass:AuthInputsView.class])
     {
         authInputsview = (AuthInputsView*)self.authInputsView;
+        [self updateUniversalLink];
     }
 
     // Hide "Forgot password" and "Log in" buttons in case of SSO
@@ -844,76 +861,14 @@
 
 - (void)onFailureDuringAuthRequest:(NSError *)error
 {
-    // Homeserver migration: When the default homeserver url is different from matrix.org,
-    // the login (or forgot pwd) process with an existing matrix.org accounts will then fail.
-    // Patch: Falling back to matrix.org HS so we don't break everyone's logins
-    if ([self.homeServerTextField.text isEqualToString:self.defaultHomeServerUrl] && ![self.defaultHomeServerUrl isEqualToString:@"https://matrix.org"] && !self.softLogoutCredentials)
+    MXError *mxError = [[MXError alloc] initWithNSError:error];
+    if ([mxError.errcode isEqualToString:kMXErrCodeStringResourceLimitExceeded])
     {
-        MXError *mxError = [[MXError alloc] initWithNSError:error];
-        
-        if (self.authType == MXKAuthenticationTypeLogin)
-        {
-            if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringForbidden])
-            {
-                // Falling back to matrix.org HS
-                NSLog(@"[AuthenticationVC] Retry login against matrix.org");
-                
-                // Store the current error, and change the homeserver url
-                loginError = error;
-                [self setHomeServerTextFieldText:@"https://matrix.org"];
-                
-                // Trigger a new request
-                [self onButtonPressed:self.submitButton];
-                return;
-            }
-        }
-        else if (self.authType == MXKAuthenticationTypeForgotPassword)
-        {
-            if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringNotFound])
-            {
-                // Sanity check
-                if ([self.authInputsView isKindOfClass:ForgotPasswordInputsView.class])
-                {
-                    // Falling back to matrix.org HS
-                    NSLog(@"[AuthenticationVC] Retry forgot password against matrix.org");
-                    
-                    // Store the current error, and change the homeserver url
-                    loginError = error;
-                    [self setHomeServerTextFieldText:@"https://matrix.org"];
-                    
-                    // Trigger a new request
-                    ForgotPasswordInputsView *authInputsView = (ForgotPasswordInputsView*)self.authInputsView;
-                    [authInputsView.nextStepButton sendActionsForControlEvents:UIControlEventTouchUpInside];
-                    return;
-                }
-            }
-        }
-    }
-    
-    // Check whether we were retrying against matrix.org HS
-    if (loginError)
-    {
-        // This is not an existing matrix.org accounts
-        NSLog(@"[AuthenticationVC] This is not an existing matrix.org accounts");
-        
-        // Restore the default HS
-        [self setHomeServerTextFieldText:nil];
-        
-        // Consider the original login error
-        [super onFailureDuringAuthRequest:loginError];
-        loginError = nil;
+        [self showResourceLimitExceededError:mxError.userInfo];
     }
     else
     {
-        MXError *mxError = [[MXError alloc] initWithNSError:error];
-        if ([mxError.errcode isEqualToString:kMXErrCodeStringResourceLimitExceeded])
-        {
-            [self showResourceLimitExceededError:mxError.userInfo];
-        }
-        else
-        {
-            [super onFailureDuringAuthRequest:error];
-        }
+        [super onFailureDuringAuthRequest:error];
     }
 }
 
@@ -1185,6 +1140,11 @@
         
         if (session.crypto.crossSigning)
         {
+            // Do not make key share requests while the "Complete security" is not complete.
+            // If the device is self-verified, the SDK will restore the existing key backup.
+            // Then, it  will re-enable outgoing key share requests
+            [session.crypto setOutgoingKeyRequestsEnabled:NO onComplete:nil];
+            
             [session.crypto.crossSigning refreshStateWithSuccess:^(BOOL stateUpdated) {
                 
                 if (session.crypto.crossSigning.state == MXCrossSigningStateCrossSigningExists)
@@ -1199,6 +1159,7 @@
                 }
                 else
                 {
+                    [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
                     [self dismiss];
                 }
                 
@@ -1347,7 +1308,15 @@
 
 #pragma mark - KeyVerificationCoordinatorBridgePresenterDelegate
 
-- (void)keyVerificationCoordinatorBridgePresenterDelegateDidComplete:(KeyVerificationCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId {
+- (void)keyVerificationCoordinatorBridgePresenterDelegateDidComplete:(KeyVerificationCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
+{
+    [self dismiss];
+}
+
+- (void)keyVerificationCoordinatorBridgePresenterDelegateDidCancel:(KeyVerificationCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    // Set outgoing key requests back
+    [coordinatorBridgePresenter.session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
     
     [self dismiss];
 }

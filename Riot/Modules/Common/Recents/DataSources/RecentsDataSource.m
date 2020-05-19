@@ -18,6 +18,8 @@
 #import "RecentsDataSource.h"
 
 #import "RecentCellData.h"
+#import "SectionHeaderView.h"
+#import "DirectorySectionHeaderContainerView.h"
 
 #import "ThemeService.h"
 
@@ -51,7 +53,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     
     NSInteger shrinkedSectionsBitMask;
 
-    UIView *directorySectionContainer;
+    DirectorySectionHeaderContainerView *directorySectionContainer;
     UILabel *networkLabel;
     UILabel *directoryServerLabel;
 
@@ -240,6 +242,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             break;
     }
     
+    [self updateKeyBackupBanner];
     [self forceRefresh];
 }
 
@@ -617,23 +620,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         
         [missedNotifAndUnreadBadgeBgView addSubview:missedNotifAndUnreadBadgeLabel];
         missedNotifAndUnreadBadgeLabel.center = missedNotifAndUnreadBadgeBgView.center;
-        NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:missedNotifAndUnreadBadgeLabel
-                                                                             attribute:NSLayoutAttributeCenterX
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:missedNotifAndUnreadBadgeBgView
-                                                                             attribute:NSLayoutAttributeCenterX
-                                                                            multiplier:1
-                                                                              constant:0.0f];
-        NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:missedNotifAndUnreadBadgeLabel
-                                                                             attribute:NSLayoutAttributeCenterY
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:missedNotifAndUnreadBadgeBgView
-                                                                             attribute:NSLayoutAttributeCenterY
-                                                                            multiplier:1
-                                                                              constant:0.0f];
-        
-        [NSLayoutConstraint activateConstraints:@[centerXConstraint, centerYConstraint]];
-        
+        [missedNotifAndUnreadBadgeLabel.centerXAnchor constraintEqualToAnchor:missedNotifAndUnreadBadgeBgView.centerXAnchor
+                                                                     constant:0].active = YES;
+        [missedNotifAndUnreadBadgeLabel.centerYAnchor constraintEqualToAnchor:missedNotifAndUnreadBadgeBgView.centerYAnchor
+                                                                     constant:0].active = YES;
     }
     
     return missedNotifAndUnreadBadgeBgView;
@@ -647,12 +637,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         return nil;
     }
     
-    UIView *sectionHeader = [[UIView alloc] initWithFrame:frame];
+    SectionHeaderView *sectionHeader = [[SectionHeaderView alloc] initWithFrame:frame];
     sectionHeader.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    sectionHeader.topViewHeight = RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT;
     NSInteger sectionBitwise = 0;
-    UIImageView *chevronView;
-    UIView *accessoryView;
-    
+
     if (_areSectionsShrinkable)
     {
         if (section == favoritesSection)
@@ -689,12 +678,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         // Add shrink button
         UIButton *shrinkButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        frame.origin.x = frame.origin.y = 0;
-        shrinkButton.frame = frame;
         shrinkButton.backgroundColor = [UIColor clearColor];
         [shrinkButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         shrinkButton.tag = sectionBitwise;
         [sectionHeader addSubview:shrinkButton];
+        sectionHeader.topSpanningView = shrinkButton;
         sectionHeader.userInteractionEnabled = YES;
         
         // Add shrink icon
@@ -707,182 +695,64 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         {
             chevron = [UIImage imageNamed:@"shrink_icon"];
         }
-        chevronView = [[UIImageView alloc] initWithImage:chevron];
+        UIImageView *chevronView = [[UIImageView alloc] initWithImage:chevron];
         chevronView.contentMode = UIViewContentModeCenter;
-        frame = chevronView.frame;
-        frame.origin.x = sectionHeader.frame.size.width - frame.size.width - 16;
-        frame.origin.y = (sectionHeader.frame.size.height - frame.size.height) / 2;
-        chevronView.frame = frame;
         [sectionHeader addSubview:chevronView];
-        chevronView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
-        
-        accessoryView = chevronView;
+        sectionHeader.accessoryView = chevronView;
     }
     else if (_recentsDataSourceMode == RecentsDataSourceModeHome)
     {
         // Add a badge to display the total of missed notifications by section.
-        accessoryView = [self badgeViewForHeaderTitleInHomeSection:section];
+        UIView *badgeView = [self badgeViewForHeaderTitleInHomeSection:section];
         
-        if (accessoryView)
+        if (badgeView)
         {
-            frame = accessoryView.frame;
-            frame.origin.x = sectionHeader.frame.size.width - frame.size.width - 16;
-            frame.origin.y = (sectionHeader.frame.size.height - frame.size.height) / 2;
-            accessoryView.frame = frame;
-            [sectionHeader addSubview:accessoryView];
-            accessoryView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+            [sectionHeader addSubview:badgeView];
+            sectionHeader.accessoryView = badgeView;
         }
     }
     
     // Add label
-    frame = sectionHeader.frame;
-    frame.origin.x = 20;
-    frame.origin.y = 5;
-    frame.size.width = accessoryView ? accessoryView.frame.origin.x - 10 : sectionHeader.frame.size.width - 10;
     frame.size.height = RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT - 10;
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
     headerLabel.backgroundColor = [UIColor clearColor];
     headerLabel.attributedText = [self attributedStringForHeaderTitleInSection:section];
     [sectionHeader addSubview:headerLabel];
+    sectionHeader.headerLabel = headerLabel;
 
     if (section == directorySection && _recentsDataSourceMode == RecentsDataSourceModeRooms && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
     {
-        NSLayoutConstraint *leadingConstraint, *trailingConstraint, *topConstraint, *bottomConstraint;
-        NSLayoutConstraint *widthConstraint, *heightConstraint, *centerYConstraint;
-
         if (!directorySectionContainer)
         {
-            CGFloat containerWidth = sectionHeader.frame.size.width;
-
-            directorySectionContainer = [[UIView alloc] initWithFrame:CGRectMake(0, RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT, containerWidth, sectionHeader.frame.size.height - RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT)];
+            directorySectionContainer = [[DirectorySectionHeaderContainerView alloc] initWithFrame:CGRectZero];
             directorySectionContainer.backgroundColor = [UIColor clearColor];
-            directorySectionContainer.translatesAutoresizingMaskIntoConstraints = NO;
 
             // Add the "Network" label at the left
-            networkLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 100, 30)];
-            networkLabel.translatesAutoresizingMaskIntoConstraints = NO;
+            networkLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
             networkLabel.font = [UIFont systemFontOfSize:16.0];
             networkLabel.text = NSLocalizedStringFromTable(@"room_recents_directory_section_network", @"Vector", nil);
             [directorySectionContainer addSubview:networkLabel];
+            directorySectionContainer.networkLabel = networkLabel;
 
             // Add label for selected directory server
-            directoryServerLabel = [[UILabel alloc] initWithFrame:CGRectMake(120, 0, containerWidth - 32, 30)];
-            directoryServerLabel.translatesAutoresizingMaskIntoConstraints = NO;
+            directoryServerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 30)];
             directoryServerLabel.font = [UIFont systemFontOfSize:16.0];
             directoryServerLabel.textAlignment = NSTextAlignmentRight;
             [directorySectionContainer addSubview:directoryServerLabel];
+            directorySectionContainer.directoryServerLabel = directoryServerLabel;
 
             // Chevron
-            UIImageView *chevronImageView = [[UIImageView alloc] initWithFrame:CGRectMake(containerWidth - 26, 5, 6, 12)];
+            UIImageView *chevronImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 6, 12)];
+            chevronImageView.contentMode = UIViewContentModeScaleAspectFit;
             chevronImageView.image = [UIImage imageNamed:@"disclosure_icon"];
-            chevronImageView.translatesAutoresizingMaskIntoConstraints = NO;
             [directorySectionContainer addSubview:chevronImageView];
+            directorySectionContainer.disclosureView = chevronImageView;
 
             // Set a tap listener on all the container
             UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onDirectoryServerPickerTap:)];
             [tapGesture setNumberOfTouchesRequired:1];
             [tapGesture setNumberOfTapsRequired:1];
             [directorySectionContainer addGestureRecognizer:tapGesture];
-
-            // Add networkLabel constraints
-            centerYConstraint = [NSLayoutConstraint constraintWithItem:networkLabel
-                                                             attribute:NSLayoutAttributeCenterY
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:directorySectionContainer
-                                                             attribute:NSLayoutAttributeCenterY
-                                                            multiplier:1
-                                                              constant:0.0f];
-
-            heightConstraint = [NSLayoutConstraint constraintWithItem:networkLabel
-                                                            attribute:NSLayoutAttributeHeight
-                                                            relatedBy:NSLayoutRelationEqual
-                                                               toItem:nil
-                                                            attribute:NSLayoutAttributeNotAnAttribute
-                                                           multiplier:1
-                                                             constant:30];
-            leadingConstraint = [NSLayoutConstraint constraintWithItem:networkLabel
-                                                             attribute:NSLayoutAttributeLeading
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:directorySectionContainer
-                                                             attribute:NSLayoutAttributeLeading
-                                                            multiplier:1
-                                                              constant:20];
-            widthConstraint = [NSLayoutConstraint constraintWithItem:networkLabel
-                                                              attribute:NSLayoutAttributeWidth
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:nil
-                                                              attribute:NSLayoutAttributeNotAnAttribute
-                                                             multiplier:1
-                                                               constant:100];
-
-            [NSLayoutConstraint activateConstraints:@[centerYConstraint, heightConstraint, leadingConstraint, widthConstraint]];
-
-            // Add directoryServerLabel constraints
-            centerYConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
-                                                             attribute:NSLayoutAttributeCenterY
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:directorySectionContainer
-                                                             attribute:NSLayoutAttributeCenterY
-                                                            multiplier:1
-                                                              constant:0.0f];
-
-            heightConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
-                                                            attribute:NSLayoutAttributeHeight
-                                                            relatedBy:NSLayoutRelationEqual
-                                                               toItem:nil
-                                                            attribute:NSLayoutAttributeNotAnAttribute
-                                                           multiplier:1
-                                                             constant:30];
-            leadingConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
-                                                             attribute:NSLayoutAttributeLeading
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:networkLabel
-                                                             attribute:NSLayoutAttributeTrailing
-                                                            multiplier:1
-                                                              constant:20];
-            trailingConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
-                                                              attribute:NSLayoutAttributeTrailing
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:chevronImageView
-                                                              attribute:NSLayoutAttributeLeading
-                                                             multiplier:1
-                                                               constant:-8];
-
-            [NSLayoutConstraint activateConstraints:@[centerYConstraint, heightConstraint, leadingConstraint, trailingConstraint]];
-
-            // Add chevron constraints
-            trailingConstraint = [NSLayoutConstraint constraintWithItem:chevronImageView
-                                                              attribute:NSLayoutAttributeTrailing
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:directorySectionContainer
-                                                              attribute:NSLayoutAttributeTrailing
-                                                             multiplier:1
-                                                               constant:-20];
-
-            centerYConstraint = [NSLayoutConstraint constraintWithItem:chevronImageView
-                                                             attribute:NSLayoutAttributeCenterY
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:directorySectionContainer
-                                                             attribute:NSLayoutAttributeCenterY
-                                                            multiplier:1
-                                                              constant:0.0f];
-
-            widthConstraint = [NSLayoutConstraint constraintWithItem:chevronImageView
-                                                           attribute:NSLayoutAttributeWidth
-                                                           relatedBy:NSLayoutRelationEqual
-                                                              toItem:nil
-                                                           attribute:NSLayoutAttributeNotAnAttribute
-                                                          multiplier:1
-                                                            constant:6];
-            heightConstraint = [NSLayoutConstraint constraintWithItem:chevronImageView
-                                                            attribute:NSLayoutAttributeHeight
-                                                            relatedBy:NSLayoutRelationEqual
-                                                               toItem:nil
-                                                            attribute:NSLayoutAttributeNotAnAttribute
-                                                           multiplier:1
-                                                             constant:12];
-
-            [NSLayoutConstraint activateConstraints:@[trailingConstraint, centerYConstraint, widthConstraint, heightConstraint]];
         }
         
         // Apply the current UI theme.
@@ -894,36 +764,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
         // Add the check box container
         [sectionHeader addSubview:directorySectionContainer];
-        leadingConstraint = [NSLayoutConstraint constraintWithItem:directorySectionContainer
-                                                         attribute:NSLayoutAttributeLeading
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:sectionHeader
-                                                         attribute:NSLayoutAttributeLeading
-                                                        multiplier:1
-                                                          constant:0];
-        widthConstraint = [NSLayoutConstraint constraintWithItem:directorySectionContainer
-                                                       attribute:NSLayoutAttributeWidth
-                                                       relatedBy:NSLayoutRelationEqual
-                                                          toItem:sectionHeader
-                                                       attribute:NSLayoutAttributeWidth
-                                                      multiplier:1
-                                                        constant:0];
-        topConstraint = [NSLayoutConstraint constraintWithItem:directorySectionContainer
-                                                     attribute:NSLayoutAttributeTop
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:sectionHeader
-                                                     attribute:NSLayoutAttributeTop
-                                                    multiplier:1
-                                                      constant:RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT];
-        bottomConstraint = [NSLayoutConstraint constraintWithItem:directorySectionContainer
-                                                        attribute:NSLayoutAttributeBottom
-                                                        relatedBy:NSLayoutRelationEqual
-                                                           toItem:sectionHeader
-                                                        attribute:NSLayoutAttributeBottom
-                                                       multiplier:1
-                                                         constant:0];
-
-        [NSLayoutConstraint activateConstraints:@[leadingConstraint, widthConstraint, topConstraint, bottomConstraint]];
+        sectionHeader.bottomView = directorySectionContainer;
     }
 
     return sectionHeader;

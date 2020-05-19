@@ -20,6 +20,7 @@ import Foundation
 
 protocol KeyVerificationCoordinatorDelegate: class {
     func keyVerificationCoordinatorDidComplete(_ coordinator: KeyVerificationCoordinatorType, otherUserId: String, otherDeviceId: String)
+    func keyVerificationCoordinatorDidCancel(_ coordinator: KeyVerificationCoordinatorType)
 }
 
 /// `KeyVerificationCoordinatorType` is a protocol describing a Coordinator that handle key verification navigation flow.

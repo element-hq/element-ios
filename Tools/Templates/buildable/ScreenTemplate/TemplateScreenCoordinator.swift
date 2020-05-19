@@ -59,8 +59,8 @@ final class TemplateScreenCoordinator: TemplateScreenCoordinatorType {
 // MARK: - TemplateScreenViewModelCoordinatorDelegate
 extension TemplateScreenCoordinator: TemplateScreenViewModelCoordinatorDelegate {
     
-    func templateScreenViewModel(_ viewModel: TemplateScreenViewModelType, didCompleteWithMessage message: String) {
-        self.delegate?.templateScreenCoordinator(self, didCompleteWithMessage: message)
+    func templateScreenViewModel(_ viewModel: TemplateScreenViewModelType, didCompleteWithUserDisplayName userDisplayName: String?) {
+        self.delegate?.templateScreenCoordinator(self, didCompleteWithUserDisplayName: userDisplayName)
     }
     
     func templateScreenViewModelDidCancel(_ viewModel: TemplateScreenViewModelType) {

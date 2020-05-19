@@ -135,7 +135,6 @@ enum
 {
     LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX = 0,
     LABS_USE_JITSI_WIDGET_INDEX,
-    LABS_CROSS_SIGNING_INDEX,
     LABS_COUNT
 };
 
@@ -261,6 +260,13 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 @end
 
 @implementation SettingsViewController
+
++ (instancetype)instantiate
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    SettingsViewController *settingsViewController = [storyboard instantiateViewControllerWithIdentifier:@"SettingsViewController"];
+    return settingsViewController;
+}
 
 - (void)finalizeInit
 {
@@ -1251,7 +1257,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 {
     MXKTableViewCellWithLabelAndTextField *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndTextField defaultReuseIdentifier] forIndexPath:indexPath];
     
-    cell.mxkLabelLeadingConstraint.constant = cell.separatorInset.left;
+    cell.mxkLabelLeadingConstraint.constant = cell.vc_separatorInset.left;
     cell.mxkTextFieldLeadingConstraint.constant = 16;
     cell.mxkTextFieldTrailingConstraint.constant = 15;
     
@@ -1279,7 +1285,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 {
     MXKTableViewCellWithLabelAndSwitch *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier] forIndexPath:indexPath];
     
-    cell.mxkLabelLeadingConstraint.constant = cell.separatorInset.left;
+    cell.mxkLabelLeadingConstraint.constant = cell.vc_separatorInset.left;
     cell.mxkSwitchTrailingConstraint.constant = 15;
     
     cell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
@@ -1321,8 +1327,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     textViewCell.mxkTextView.textColor = ThemeService.shared.theme.textPrimaryColor;
     textViewCell.mxkTextView.font = [UIFont systemFontOfSize:17];
     textViewCell.mxkTextView.backgroundColor = [UIColor clearColor];
-    textViewCell.mxkTextViewLeadingConstraint.constant = tableView.separatorInset.left;
-    textViewCell.mxkTextViewTrailingConstraint.constant = tableView.separatorInset.right;
+    textViewCell.mxkTextViewLeadingConstraint.constant = tableView.vc_separatorInset.left;
+    textViewCell.mxkTextViewTrailingConstraint.constant = tableView.vc_separatorInset.right;
     textViewCell.mxkTextView.accessibilityIdentifier = nil;
     
     return textViewCell;
@@ -1382,7 +1388,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         {
             MXKTableViewCellWithLabelAndMXKImageView *profileCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier] forIndexPath:indexPath];
             
-            profileCell.mxkLabelLeadingConstraint.constant = profileCell.separatorInset.left;
+            profileCell.mxkLabelLeadingConstraint.constant = profileCell.vc_separatorInset.left;
             profileCell.mxkImageViewTrailingConstraint.constant = 10;
             
             profileCell.mxkImageViewWidthConstraint.constant = profileCell.mxkImageViewHeightConstraint.constant = 30;
@@ -2186,19 +2192,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleJitsiForConference:) forControlEvents:UIControlEventTouchUpInside];
 
-            cell = labelAndSwitchCell;
-        }
-        else if (row == LABS_CROSS_SIGNING_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-            
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_enable_cross_signing", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.enableCrossSigning;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            labelAndSwitchCell.mxkSwitch.enabled = YES;
-            
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsCrossSigning:) forControlEvents:UIControlEventTouchUpInside];
-            
             cell = labelAndSwitchCell;
         }
     }
@@ -3051,15 +3044,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
         [self.tableView reloadData];
     }
-}
-    
-- (void)toggleLabsCrossSigning:(id)sender
-{
-    UISwitch *switchButton = (UISwitch*)sender;
-    
-    RiotSettings.shared.enableCrossSigning = switchButton.isOn;
-    
-    self.mainSession.crypto.warnOnUnknowDevices = !RiotSettings.shared.enableCrossSigning;
 }
 
 - (void)togglePinRoomsWithMissedNotif:(id)sender

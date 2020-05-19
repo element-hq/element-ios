@@ -64,6 +64,8 @@ final class UserVerificationSessionStatusViewModel: UserVerificationSessionStatu
         case .loadData:
             self.loadData()
         case .verify:
+             self.coordinatorDelegate?.userVerificationSessionStatusViewModel(self, wantsToVerifyDeviceWithId: self.deviceId, for: self.userId)
+        case .verifyManually:
             self.coordinatorDelegate?.userVerificationSessionStatusViewModel(self, wantsToManuallyVerifyDeviceWithId: self.deviceId, for: self.userId)
         case .close:
             self.coordinatorDelegate?.userVerificationSessionStatusViewModelDidClose(self)

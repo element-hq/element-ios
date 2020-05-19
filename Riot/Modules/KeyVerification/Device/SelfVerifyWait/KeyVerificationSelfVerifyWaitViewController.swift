@@ -20,14 +20,25 @@ import UIKit
 
 final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     
-    // MARK: - Constants    
+    // MARK: - Constants
+    
+    private enum Constants {
+        static let clientNamesLineSpacing: CGFloat = 3.0
+    }
     
     // MARK: - Properties
     
     // MARK: Outlets
     
     @IBOutlet private weak var informationLabel: UILabel!
-    @IBOutlet private weak var verificationWaitingLabel: UILabel!
+    
+    @IBOutlet private weak var desktopClientImageView: UIImageView!
+    @IBOutlet private weak var desktopClientLabel: UILabel!
+    
+    @IBOutlet private weak var mobileClientImageView: UIImageView!
+    @IBOutlet private weak var mobileClientLabel: UILabel!
+    
+    @IBOutlet private weak var additionalInformationLabel: UILabel!
     
     // MARK: Private
 
@@ -35,6 +46,8 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
+    
+    private weak var cancelBarButtonItem: UIBarButtonItem?
 
     // MARK: - Setup
     
@@ -60,7 +73,6 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         self.update(theme: self.theme)
         
         self.viewModel.viewDelegate = self
-
         self.viewModel.process(viewAction: .loadData)
     }
     
@@ -80,7 +92,11 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         }
         
         self.informationLabel.textColor = theme.textPrimaryColor
-        self.verificationWaitingLabel.textColor = theme.textSecondaryColor        
+        self.desktopClientLabel.textColor = theme.textPrimaryColor
+        self.desktopClientImageView.tintColor = theme.tintColor
+        self.mobileClientLabel.textColor = theme.textPrimaryColor
+        self.mobileClientImageView.tintColor = theme.tintColor
+        self.additionalInformationLabel.textColor = theme.textSecondaryColor
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -97,19 +113,31 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         }
         
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+        self.cancelBarButtonItem = cancelBarButtonItem
         
         self.title = VectorL10n.deviceVerificationSelfVerifyWaitTitle
         
-        self.verificationWaitingLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitWaiting
         self.informationLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitInformation
+        self.desktopClientLabel.vc_setText("\(VectorL10n.clientWebName)\n\(VectorL10n.clientDesktopName)", withLineSpacing: Constants.clientNamesLineSpacing, alignement: .center)
+        self.mobileClientLabel.vc_setText("\(VectorL10n.clientIosName)\n\(VectorL10n.clientAndroidName)",
+            withLineSpacing: Constants.clientNamesLineSpacing, alignement: .center)
+        
+        self.desktopClientImageView.image = Asset.Images.monitor.image.withRenderingMode(.alwaysTemplate)
+        self.mobileClientImageView.image = Asset.Images.smartphone.image.withRenderingMode(.alwaysTemplate)
+        
+        self.additionalInformationLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitAdditionalInformation
     }
 
     private func render(viewState: KeyVerificationSelfVerifyWaitViewState) {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .loaded:
-            self.renderLoaded()
+        case .loaded(let isNewSignIn):
+            self.renderLoaded(isNewSignIn: isNewSignIn)
+        case .cancelled(let reason):
+            self.renderCancelled(reason: reason)
+        case .cancelledByMe(let reason):
+            self.renderCancelledByMe(reason: reason)
         case .error(let error):
             self.render(error: error)
         }
@@ -119,8 +147,31 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
     }
     
-    private func renderLoaded() {
+    private func renderLoaded(isNewSignIn: Bool) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        
+        self.title = isNewSignIn ? VectorL10n.deviceVerificationSelfVerifyWaitNewSignInTitle : VectorL10n.deviceVerificationSelfVerifyWaitTitle
+        self.cancelBarButtonItem?.title = isNewSignIn ? VectorL10n.skip : VectorL10n.cancel
+    }
+    
+    private func renderCancelled(reason: MXTransactionCancelCode) {
+        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        
+        self.errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelled, animated: true) {
+            self.viewModel.process(viewAction: .cancel)
+        }
+    }
+    
+    private func renderCancelledByMe(reason: MXTransactionCancelCode) {
+        if reason.value != MXTransactionCancelCode.user().value {
+            self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+            
+            self.errorPresenter.presentError(from: self, title: "", message: VectorL10n.deviceVerificationCancelledByMe(reason.humanReadable), animated: true) {
+                self.viewModel.process(viewAction: .cancel)
+            }
+        } else {
+            self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        }
     }
     
     private func render(error: Error) {

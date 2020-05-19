@@ -24,6 +24,7 @@ protocol KeyVerificationSelfVerifyWaitViewModelViewDelegate: class {
 
 protocol KeyVerificationSelfVerifyWaitViewModelCoordinatorDelegate: class {
     func keyVerificationSelfVerifyWaitViewModel(_ viewModel: KeyVerificationSelfVerifyWaitViewModelType, didAcceptKeyVerificationRequest keyVerificationRequest: MXKeyVerificationRequest)
+    func keyVerificationSelfVerifyWaitViewModel(_ viewModel: KeyVerificationSelfVerifyWaitViewModelType, didAcceptIncomingSASTransaction incomingSASTransaction: MXIncomingSASTransaction)
     func keyVerificationSelfVerifyWaitViewModelDidCancel(_ viewModel: KeyVerificationSelfVerifyWaitViewModelType)
 }
 

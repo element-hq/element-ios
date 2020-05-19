@@ -1,18 +1,76 @@
-Changes in 0.11.1 (2020-xx-xx)
+Changes in 0.12.0 (2020-xx-xx)
 ===============================================
 
 Bug fix:
- * Xcode11: Fix content change error when dragging start chat page (PR #3075).
- * Xcode11: Fix status bar styles for many screens (PR #3077).
- * Xcode11: Replace deprecated MPMoviePlayerController with AVPlayerViewController (PR #3092).
- * Xcode11: Show AuthenticationViewController fullscreen (PR #3093).
+* Xcode11: Fix content change error when dragging start chat page (PR #3075).
+* Xcode11: Fix status bar styles for many screens (PR #3077).
+* Xcode11: Replace deprecated MPMoviePlayerController with AVPlayerViewController (PR #3092).
+* Xcode11: Show AuthenticationViewController fullscreen (PR #3093).
 
-Changes in 0.11.0 (2020-xx-xx)
+Changes in 0.11.5 (2020-xx-xx)
+===============================================
+
+Bug fix:
+ * AuthenticationViewController: Adapt UIWebView changes in MatrixKit (PR #3242).
+ * Share extension & Siri intent: Do not fail when sending to locally unverified devices (#3252).
+
+Changes in 0.11.4 (2020-05-08)
+===============================================
+
+Bug fix:
+ * App asks to verify all devices on every startup for no valid reason (#3221).
+
+Changes in 0.11.3 (2020-05-07)
 ===============================================
 
 Improvements:
- * E2E: Do not warn anymore for unknown devices
- * ON/OFF Cross-signing development in a Lab setting (#2855).
+ * Upgrade MatrixKit version ([v0.12.3](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.3)).
+ * Cross-signing: Display "Verify your other sessions" modal at every startup if needed (#3180).
+ * Cross-signing: The "Complete Security" button now triggers a verification request to all user devices.
+ * Secrets: On startup, request again private keys we are missing locally.
+
+Bug fix:
+ * KeyVerificationSelfVerifyStartViewController has no navigation (#3195).
+ * Self-verification: QR code scanning screen refers to other-person scanning (#3189).
+
+Changes in 0.11.2 (2020-05-01)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.2](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.2)).
+ * Registration / Email addition: Support email verification link from homeserver (#3167).
+ * Verification requests: Hide incoming request modal when it is no more pending (#3033).
+ * Self-verification: Do not display incoming self verification requests at the top of the Complete Security screen.
+ * Verification: Do not talk about QR code if only emoji is possible (#3035).
+ * Registration: Prefill email field when opened with universal link (PR #3173).
+ * Cross-signing: Display "Verify this session" modal at every startup if needed (#3179).
+ * Complete Security: Support SAS verification start (#3183).
+
+Bug fix:
+ * AuthenticationViewController: Remove fallback to matrix.org when authentication failed (PR #3165).
+
+Changes in 0.11.1 (2020-04-24)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.1)).
+ * New icons.
+ * Cross-signing: Allow incoming device verification request from other user (#3139).
+ * Cross-signing: Allow to verify each device of users with no cross-signing (#3138).
+ * Jitsi: Make Jitsi widgets compatible with Matrix Widget API v2. This allows to use any Jitsi servers (#3150).
+
+Bug fix:
+ * Settings: Security, present complete security when my device is not trusted (#3127).
+ * Settings: Security: Do not ask to complete security if there is no cross-signing (#3147).
+
+Changes in 0.11.0 (2020-04-17)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.0](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.0)).
+ * Crypto: Enable E2EE by default for DM
+ * Crypto: Cross-signing support
+ * Crypto: Do not warn anymore for unknown devices. Trust on First Use.
  * RoomVC: Update encryption decoration with shields (#2934, #2930, #2906).
  * Settings: Remove "End-to-End Encryption" from the LABS section (#2941).
  * Room decoration: Use shields instead of padlocks (#2906).
@@ -23,6 +81,14 @@ Improvements:
  * Cross-Signing: Detect and expose new sign-ins (#2918).
  * Cross-signing: Complete security at the end of sign in process( #3003).
  * Make decoration uniform (#2972).
+ * DeactivateAccountViewController: Respect active theme (PR #3107).
+ * Verification by emojis: Center emojis in screen horizontally (PR #3119).
+ 
+Bug fix:
+ * Key backup banner is not hidden correctly (#2899). 
+
+Bug fix:
+ * Considered safe area insets for some screens (PR #3084).
 
 Changes in 0.10.5 (2020-04-01)
 ===============================================
