@@ -25,6 +25,8 @@
 #import "MXDecryptionResult.h"
 #import "DecryptionFailureTracker.h"
 
+#import "EventFormatter+DTCoreTextFix.h"
+
 #pragma mark - Constants definitions
 
 NSString *const EventFormatterOnReRequestKeysLinkAction = @"EventFormatterOnReRequestKeysLinkAction";
@@ -43,6 +45,11 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 @end
 
 @implementation EventFormatter
+
++ (void)load
+{
+    [self fixDTCoreTextFont];
+}
 
 - (void)initDateTimeFormatters
 {
