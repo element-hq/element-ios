@@ -273,6 +273,28 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self.pushNotificationService registerForRemoteNotificationsWithCompletion:completion];
 }
 
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    [self.pushNotificationService didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+    
+    NSString * deviceTokenString = [[[[deviceToken description]
+                                      stringByReplacingOccurrencesOfString: @"<" withString: @""]
+                                     stringByReplacingOccurrencesOfString: @">" withString: @""]
+                                    stringByReplacingOccurrencesOfString: @" " withString: @""];
+    
+    NSLog(@"The generated device token string is : %@",deviceTokenString);
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    [self.pushNotificationService didFailToRegisterForRemoteNotificationsWithError:error];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+    [self.pushNotificationService didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
+}
+
 #pragma mark -
 
 - (NSString*)appVersion
@@ -484,6 +506,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [MXSDKOptions sharedInstance].analyticsDelegate = [Analytics sharedInstance];
     [DecryptionFailureTracker sharedInstance].delegate = [Analytics sharedInstance];
     [[Analytics sharedInstance] start];
+    
+    // Disable CallKit
+    [MXKAppSettings standardAppSettings].enableCallKit = NO;
 
     self.pushNotificationService = [PushNotificationService new];
     self.pushNotificationService.delegate = self;
@@ -1953,7 +1978,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             if (isPushRegistered)
             {
                 // Enable push notifications by default on new added account
-                [account enablePushKitNotifications:YES success:nil failure:nil];
+                [account enablePushNotifications:YES success:nil failure:nil];
             }
             else
             {
@@ -2034,13 +2059,13 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     accountManager.storeClass = [MXFileStore class];
     
     // Disable APNS use.
-    if (accountManager.apnsDeviceToken)
-    {
-        // We use now Pushkit, unregister for all remote notifications received via Apple Push Notification service.
-        [[UIApplication sharedApplication] unregisterForRemoteNotifications];
-        [accountManager setApnsDeviceToken:nil];
-    }
-    
+//    if (accountManager.apnsDeviceToken)
+//    {
+//        // We use now Pushkit, unregister for all remote notifications received via Apple Push Notification service.
+//        [[UIApplication sharedApplication] unregisterForRemoteNotifications];
+//        [accountManager setApnsDeviceToken:nil];
+//    }
+
     // Observers have been defined, we can start a matrix session for each enabled accounts.
     NSLog(@"[AppDelegate] initMatrixSessions: prepareSessionForActiveAccounts (app state: %tu)", [[UIApplication sharedApplication] applicationState]);
     [accountManager prepareSessionForActiveAccounts];
@@ -4540,6 +4565,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     NSString *defaultsPathFromApp = [[NSBundle mainBundle] pathForResource:userDefaults ofType:@"plist"];
     NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsPathFromApp];
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
+    
+    if (!RiotSettings.shared.isUserDefaultsMigrated)
+    {
+        [RiotSettings.shared migrate];
+    }
     
     // Now use RiotSettings and NSUserDefaults to store `showDecryptedContentInNotifications` setting option
     // Migrate this information from main MXKAccount to RiotSettings, if value is not in UserDefaults
