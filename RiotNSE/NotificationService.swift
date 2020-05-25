@@ -216,7 +216,7 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func notificationContent(forEvent event: MXEvent, inAccount account: MXKAccount, onComplete: @escaping (UNNotificationContent?) -> Void) {
-        if event.content == nil || event.content!.count == 0 {
+        guard let content = event.content, content.count > 0 else {
             NSLog("[NotificationService][Push] notificationContentForEvent: empty event content")
             onComplete(nil)
             return
@@ -229,7 +229,7 @@ class NotificationService: UNNotificationServiceExtension {
         }
         let pushRule = room.getRoomPushRule()
         
-        room.state({ (roomState:MXRoomState!) in
+        room.state({ (roomState: MXRoomState!) in
             
             var notificationTitle: String?
             var notificationBody: String?
@@ -238,27 +238,26 @@ class NotificationService: UNNotificationServiceExtension {
             let eventSenderName = roomState.members.memberName(event.sender)
             let currentUserId = account.mxCredentials.userId
             
-            if event.eventType == .roomMessage || event.eventType == .roomEncrypted {
+            switch event.eventType {
+            case .roomMessage, .roomEncrypted:
                 if room.isMentionsOnly {
                     // A local notification will be displayed only for highlighted notification.
-                    var isHighlighted:Bool = false
+                    var isHighlighted = false
                     
                     // Check whether is there an highlight tweak on it
                     for ruleAction in pushRule?.actions ?? [] {
                         guard let action = ruleAction as? MXPushRuleAction else { continue }
-                        if action.actionType == MXPushRuleActionTypeSetTweak {
-                            if action.parameters["set_tweak"] as? String == "highlight" {
-                                // Check the highlight tweak "value"
-                                // If not present, highlight. Else check its value before highlighting
-                                if nil == action.parameters["value"] || true == (action.parameters["value"] as? Bool) {
-                                    isHighlighted = true
-                                    break
-                                }
-                            }
+                        guard action.actionType == MXPushRuleActionTypeSetTweak else { continue }
+                        guard action.parameters["set_tweak"] as? String == "highlight" else { continue }
+                        // Check the highlight tweak "value"
+                        // If not present, highlight. Else check its value before highlighting
+                        if nil == action.parameters["value"] || true == (action.parameters["value"] as? Bool) {
+                            isHighlighted = true
+                            break
                         }
                     }
                     
-                    if !isHighlighted {
+                    guard isHighlighted else {
                         // Ignore this notif.
                         NSLog("[NotificationService][Push] notificationBodyForEvent: Ignore non highlighted notif in mentions only room")
                         onComplete(nil)
@@ -275,105 +274,113 @@ class NotificationService: UNNotificationServiceExtension {
                 }
                 
                 let roomDisplayName = room.summary.displayname
-                
-                let myUserId:String! = account.mxSession.myUser.userId
-                let isIncomingEvent:Bool = !(event.sender == myUserId)
+                let myUserId = account.mxSession.myUser.userId
+                let isIncomingEvent = event.sender != myUserId
                 
                 // Display the room name only if it is different than the sender name
-                if roomDisplayName != nil && !(roomDisplayName == eventSenderName) {
-                    notificationTitle = NSString.localizedUserNotificationString(forKey: "MSG_FROM_USER_IN_ROOM_TITLE", arguments:[eventSenderName as Any, roomDisplayName as Any])
+                if roomDisplayName != nil && roomDisplayName != eventSenderName {
+                    notificationTitle = NSString.localizedUserNotificationString(forKey: "MSG_FROM_USER_IN_ROOM_TITLE", arguments: [eventSenderName as Any, roomDisplayName as Any])
                     
-                    if (msgType == "m.text") {
+                    if msgType == kMXMessageTypeText {
                         notificationBody = messageContent
-                    } else if (msgType == "m.emote") {
-                        notificationBody = NSString.localizedUserNotificationString(forKey: "ACTION_FROM_USER", arguments:[eventSenderName as Any, messageContent as Any])
-                    } else if (msgType == "m.image") {
-                        notificationBody = NSString.localizedUserNotificationString(forKey: "IMAGE_FROM_USER", arguments:[eventSenderName as Any, messageContent as Any])
-                    } else if room.isDirect && isIncomingEvent && (msgType == kMXMessageTypeKeyVerificationRequest) {
+                    } else if msgType == kMXMessageTypeEmote {
+                        notificationBody = NSString.localizedUserNotificationString(forKey: "ACTION_FROM_USER", arguments: [eventSenderName as Any, messageContent as Any])
+                    } else if msgType == kMXMessageTypeImage {
+                        notificationBody = NSString.localizedUserNotificationString(forKey: "IMAGE_FROM_USER", arguments: [eventSenderName as Any, messageContent as Any])
+                    } else if room.isDirect && isIncomingEvent && msgType == kMXMessageTypeKeyVerificationRequest {
                         account.mxSession.crypto.keyVerificationManager.keyVerification(fromKeyVerificationEvent: event,
                                                                                         success:{ (keyVerification) in
-                            if keyVerification.request != nil && keyVerification.request!.state == MXKeyVerificationRequestStatePending {
-                                // TODO: Add accept and decline actions to notification
-                                let body:String! = NSString.localizedUserNotificationString(forKey: "KEY_VERIFICATION_REQUEST_FROM_USER", arguments:[eventSenderName as Any])
-                                
-                                let notificationContent:UNNotificationContent! = self.notificationContent(withTitle: notificationTitle,
-                                                                                                          body: body,
-                                                                                                          threadIdentifier: threadIdentifier,
-                                                                                                          userId: currentUserId,
-                                                                                                          event: event,
-                                                                                                          pushRule: pushRule)
-                                
-                                onComplete(notificationContent)
-                            } else {
+                            guard let request = keyVerification.request, request.state == MXKeyVerificationRequestStatePending else {
                                 onComplete(nil)
-                                                                                            }
+                                return
+                            }
+                            // TODO: Add accept and decline actions to notification
+                            let body = NSString.localizedUserNotificationString(forKey: "KEY_VERIFICATION_REQUEST_FROM_USER", arguments: [eventSenderName as Any])
+                            
+                            let notificationContent = self.notificationContent(withTitle: notificationTitle,
+                                                                               body: body,
+                                                                               threadIdentifier: threadIdentifier,
+                                                                               userId: currentUserId,
+                                                                               event: event,
+                                                                               pushRule: pushRule)
+                            
+                            onComplete(notificationContent)
                         }, failure:{ (error) in
                             NSLog("[NotificationService][Push] notificationContentForEvent: failed to fetch key verification with error: \(error)")
                             onComplete(nil)
                         })
                     } else {
                         // Encrypted messages falls here
-                        notificationBody = NSString.localizedUserNotificationString(forKey: "MSG_FROM_USER", arguments:[eventSenderName as Any])
+                        notificationBody = NSString.localizedUserNotificationString(forKey: "MSG_FROM_USER", arguments: [eventSenderName as Any])
                     }
                 } else {
                     notificationTitle = eventSenderName
                     
-                    if (msgType == "m.text") {
+                    switch msgType {
+                    case kMXMessageTypeText:
                         notificationBody = messageContent
-                    } else if (msgType == "m.emote") {
-                        notificationBody = NSString.localizedUserNotificationString(forKey: "ACTION_FROM_USER", arguments:[eventSenderName as Any, messageContent as Any])
-                    } else if (msgType == "m.image") {
-                        notificationBody = NSString.localizedUserNotificationString(forKey: "IMAGE_FROM_USER", arguments:[eventSenderName as Any, messageContent as Any])
-                    } else {
+                        break
+                    case kMXMessageTypeEmote:
+                        notificationBody = NSString.localizedUserNotificationString(forKey: "ACTION_FROM_USER", arguments: [eventSenderName as Any, messageContent as Any])
+                        break
+                    case kMXMessageTypeImage:
+                        notificationBody = NSString.localizedUserNotificationString(forKey: "IMAGE_FROM_USER", arguments: [eventSenderName as Any, messageContent as Any])
+                        break
+                    default:
                         // Encrypted messages falls here
-                        notificationBody = NSString.localizedUserNotificationString(forKey: "MSG_FROM_USER", arguments:[eventSenderName as Any])
+                        notificationBody = NSString.localizedUserNotificationString(forKey: "MSG_FROM_USER", arguments: [eventSenderName as Any])
+                        break
                     }
                 }
-            } else if event.eventType == .callInvite {
+                break
+            case .callInvite:
                 let offer = event.content["offer"] as? [AnyHashable: Any]
                 let sdp = offer?["sdp"] as? String
                 let isVideoCall = sdp?.contains("m=video") ?? false
                 
                 if isVideoCall {
-                    notificationBody = NSString.localizedUserNotificationString(forKey: "VIDEO_CALL_FROM_USER", arguments:[eventSenderName as Any])
+                    notificationBody = NSString.localizedUserNotificationString(forKey: "VIDEO_CALL_FROM_USER", arguments: [eventSenderName as Any])
                 } else {
-                    notificationBody = NSString.localizedUserNotificationString(forKey: "VOICE_CALL_FROM_USER", arguments:[eventSenderName as Any])
+                    notificationBody = NSString.localizedUserNotificationString(forKey: "VOICE_CALL_FROM_USER", arguments: [eventSenderName as Any])
                 }
                 
                 // call notifications should stand out from normal messages, so we don't stack them
                 threadIdentifier = nil
-            } else if event.eventType == .roomMember {
-                let roomDisplayName:String! = room.summary.displayname
+            case .roomMember:
+                let roomDisplayName = room.summary.displayname
                 
-                if roomDisplayName != nil && !(roomDisplayName == eventSenderName) {
-                    notificationBody = NSString.localizedUserNotificationString(forKey: "USER_INVITE_TO_NAMED_ROOM", arguments:[eventSenderName as Any, roomDisplayName as Any])
+                if roomDisplayName != nil && roomDisplayName != eventSenderName {
+                    notificationBody = NSString.localizedUserNotificationString(forKey: "USER_INVITE_TO_NAMED_ROOM", arguments: [eventSenderName as Any, roomDisplayName as Any])
                 } else {
-                    notificationBody = NSString.localizedUserNotificationString(forKey: "USER_INVITE_TO_CHAT", arguments:[eventSenderName as Any])
+                    notificationBody = NSString.localizedUserNotificationString(forKey: "USER_INVITE_TO_CHAT", arguments: [eventSenderName as Any])
                 }
-            } else if event.eventType == .sticker {
-                let roomDisplayName:String! = room.summary.displayname
+            case .sticker:
+                let roomDisplayName = room.summary.displayname
                 
-                if roomDisplayName != nil && !(roomDisplayName == eventSenderName) {
-                    notificationTitle = NSString.localizedUserNotificationString(forKey: "MSG_FROM_USER_IN_ROOM_TITLE", arguments:[eventSenderName as Any, roomDisplayName as Any])
+                if roomDisplayName != nil && roomDisplayName != eventSenderName {
+                    notificationTitle = NSString.localizedUserNotificationString(forKey: "MSG_FROM_USER_IN_ROOM_TITLE", arguments: [eventSenderName as Any, roomDisplayName as Any])
                 } else {
                     notificationTitle = eventSenderName
                 }
                 
-                notificationBody = NSString.localizedUserNotificationString(forKey: "STICKER_FROM_USER", arguments:[eventSenderName as Any])
+                notificationBody = NSString.localizedUserNotificationString(forKey: "STICKER_FROM_USER", arguments: [eventSenderName as Any])
+            default:
+                break
             }
             
-            if (notificationBody != nil) {
-                let notificationContent = self.notificationContent(withTitle: notificationTitle,
-                                                                   body: notificationBody,
-                                                                   threadIdentifier: threadIdentifier,
-                                                                   userId: currentUserId,
-                                                                   event: event,
-                                                                   pushRule: pushRule)
-                
-                onComplete(notificationContent)
-            } else {
+            guard (notificationBody != nil) else {
                 onComplete(nil)
+                return
             }
+            
+            let notificationContent = self.notificationContent(withTitle: notificationTitle,
+                                                               body: notificationBody,
+                                                               threadIdentifier: threadIdentifier,
+                                                               userId: currentUserId,
+                                                               event: event,
+                                                               pushRule: pushRule)
+            
+            onComplete(notificationContent)
         })
     }
     
