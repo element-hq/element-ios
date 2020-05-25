@@ -710,6 +710,10 @@
 		EC85D7462477E5F7002C44C9 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D7452477E5F7002C44C9 /* NotificationService.swift */; };
 		EC85D74A2477E5F7002C44C9 /* RiotNSE.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = EC85D7432477E5F7002C44C9 /* RiotNSE.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		EC85D74F2477E8EB002C44C9 /* RiotSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597F20EFC3DF00210D55 /* RiotSettings.swift */; };
+		EC85D751247C0E8F002C44C9 /* UNUserNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D750247C0E8F002C44C9 /* UNUserNotificationCenter.swift */; };
+		EC85D752247C0F52002C44C9 /* UNUserNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D750247C0E8F002C44C9 /* UNUserNotificationCenter.swift */; };
+		EC85D754247C0F5B002C44C9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D753247C0F5B002C44C9 /* Constants.swift */; };
+		EC85D755247C0F84002C44C9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D753247C0F5B002C44C9 /* Constants.swift */; };
 		ECB101302477CFDB00CF8C11 /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1012C2477CFDB00CF8C11 /* UITableView.swift */; };
 		ECB101312477CFDB00CF8C11 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1012D2477CFDB00CF8C11 /* UILabel.swift */; };
 		ECB101322477CFDB00CF8C11 /* UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1012E2477CFDB00CF8C11 /* UIDevice.swift */; };
@@ -1719,6 +1723,8 @@
 		EC85D7452477E5F7002C44C9 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		EC85D7472477E5F7002C44C9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EC85D74E2477E614002C44C9 /* RiotNSE.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RiotNSE.entitlements; sourceTree = "<group>"; };
+		EC85D750247C0E8F002C44C9 /* UNUserNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNUserNotificationCenter.swift; sourceTree = "<group>"; };
+		EC85D753247C0F5B002C44C9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		ECB1012C2477CFDB00CF8C11 /* UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
 		ECB1012D2477CFDB00CF8C11 /* UILabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		ECB1012E2477CFDB00CF8C11 /* UIDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIDevice.swift; sourceTree = "<group>"; };
@@ -4378,6 +4384,7 @@
 				926FA53D1F4C132000F826C2 /* MXSession+Riot.h */,
 				926FA53E1F4C132000F826C2 /* MXSession+Riot.m */,
 				32242F0821E8B05F00725742 /* UIColor.swift */,
+				EC85D750247C0E8F002C44C9 /* UNUserNotificationCenter.swift */,
 				B1CA3A2621EF6913000D1D89 /* UIViewController.swift */,
 				B1CA3A2821EF692B000D1D89 /* UIView.swift */,
 				B140B4A121F87F7100E3F5FE /* OperationQueue.swift */,
@@ -4420,6 +4427,7 @@
 		F083BC0F1E7009EC00A9B29C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				EC85D753247C0F5B002C44C9 /* Constants.swift */,
 				ECB101342477D00700CF8C11 /* UniversalLink.h */,
 				ECB101352477D00700CF8C11 /* UniversalLink.m */,
 				F083BC101E7009EC00A9B29C /* AvatarGenerator.h */,
@@ -5099,6 +5107,8 @@
 			files = (
 				EC85D74F2477E8EB002C44C9 /* RiotSettings.swift in Sources */,
 				EC85D7462477E5F7002C44C9 /* NotificationService.swift in Sources */,
+				EC85D752247C0F52002C44C9 /* UNUserNotificationCenter.swift in Sources */,
+				EC85D755247C0F84002C44C9 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5397,6 +5407,7 @@
 				32A6001D22C661100042C1D9 /* EditHistoryCoordinatorType.swift in Sources */,
 				F083BDFA1E7009ED00A9B29C /* RoomPreviewData.m in Sources */,
 				B1B557B420EF5AEF00210D55 /* EventDetailsView.m in Sources */,
+				EC85D751247C0E8F002C44C9 /* UNUserNotificationCenter.swift in Sources */,
 				B1BEE73823DF44A60003A4CB /* UserVerificationSessionsStatusViewAction.swift in Sources */,
 				B1B5577E20EE84BF00210D55 /* IncomingCallView.m in Sources */,
 				B1CE83E22422817200D07506 /* KeyVerificationVerifyBySASViewState.swift in Sources */,
@@ -5500,6 +5511,7 @@
 				B1B558C820EF768F00210D55 /* RoomIncomingEncryptedAttachmentBubbleCell.m in Sources */,
 				B1B557C620EF5CD400210D55 /* DirectoryServerDetailTableViewCell.m in Sources */,
 				EC85D71A2477DCD7002C44C9 /* KeyVerificationScanConfirmationCoordinator.swift in Sources */,
+				EC85D754247C0F5B002C44C9 /* Constants.swift in Sources */,
 				B1B336C4242B933700F95EC4 /* KeyVerificationSelfVerifyStartViewAction.swift in Sources */,
 				B1B5590920EF768F00210D55 /* RoomEmptyBubbleCell.m in Sources */,
 				324A2054225FC571004FE8B0 /* DeviceVerificationIncomingCoordinatorType.swift in Sources */,

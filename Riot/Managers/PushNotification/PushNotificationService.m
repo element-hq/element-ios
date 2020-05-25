@@ -198,6 +198,8 @@
         [array removeAllObjects];
     }
     [incomingPushPayloads removeAllObjects];
+    
+    [[UNUserNotificationCenter currentNotificationCenter] removeUnwantedNotifications];
 }
 
 - (void)addMatrixSession:(MXSession *)mxSession

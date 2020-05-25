@@ -19,7 +19,6 @@ import MatrixKit
 
 class NotificationService: UNNotificationServiceExtension {
     
-    var requestIdentifier: String?
     var contentHandler: ((UNNotificationContent) -> Void)?
     var originalContent: UNMutableNotificationContent?
     
@@ -31,17 +30,18 @@ class NotificationService: UNNotificationServiceExtension {
     
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         self.contentHandler = contentHandler
-        requestIdentifier = request.identifier
         //  save this content as fallback content
         originalContent = request.content.mutableCopy() as? UNMutableNotificationContent
+        
+        UNUserNotificationCenter.current().removeUnwantedNotifications()
         
         //  check if this is a Matrix notification
         if let content = originalContent {
             let userInfo = content.userInfo
-            NSLog("[NotificationService] Payload came: \(userInfo) with identifier: \(requestIdentifier!)")
+            NSLog("[NotificationService] Payload came: \(userInfo)")
             let roomId = userInfo["room_id"] as? String
             let eventId = userInfo["event_id"] as? String
-            
+
             guard roomId != nil, eventId != nil else {
                 //  it's not a Matrix notification, do not change the content
                 NSLog("[NotificationService] Fallback case 7")
@@ -179,25 +179,24 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func processEvent(_ event: MXEvent) {
-        if let content = originalContent, let userAccount = userAccount, let requestIdentifier = requestIdentifier {
+        if let content = originalContent, let userAccount = userAccount {
             
             self.notificationContent(forEvent: event, inAccount: userAccount) { (notificationContent) in
                 self.store?.close()
                 
                 // Modify the notification content here...
-                guard let newContent = notificationContent else {
-                    //  remove
-                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [requestIdentifier])
-                    return
+                if let newContent = notificationContent {
+                    content.title = newContent.title
+                    content.subtitle = newContent.subtitle
+                    content.body = newContent.body
+                    content.threadIdentifier = newContent.threadIdentifier
+                    content.categoryIdentifier = newContent.categoryIdentifier
+                    content.userInfo = newContent.userInfo
+                    content.sound = newContent.sound
+                } else {
+                    //  this is an unwanted notification, mark as to be deleted when app is foregrounded again OR a new push came
+                    content.categoryIdentifier = Constants.toBeRemovedNotificationCategoryIdentifier
                 }
-                
-                content.title = newContent.title
-                content.subtitle = newContent.subtitle
-                content.body = newContent.body
-                content.threadIdentifier = newContent.threadIdentifier
-                content.categoryIdentifier = newContent.categoryIdentifier
-                content.userInfo = newContent.userInfo
-                content.sound = newContent.sound
                 
                 self.contentHandler?(content)
             }
