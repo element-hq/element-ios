@@ -36,18 +36,20 @@ class NotificationService: UNNotificationServiceExtension {
         UNUserNotificationCenter.current().removeUnwantedNotifications()
         
         //  check if this is a Matrix notification
-        if let content = originalContent {
-            let userInfo = content.userInfo
-            NSLog("[NotificationService] Payload came: \(userInfo)")
-            let roomId = userInfo["room_id"] as? String
-            let eventId = userInfo["event_id"] as? String
+        guard let content = originalContent else {
+            return
+        }
+        
+        let userInfo = content.userInfo
+        NSLog("[NotificationService] Payload came: \(userInfo)")
+        let roomId = userInfo["room_id"] as? String
+        let eventId = userInfo["event_id"] as? String
 
-            guard roomId != nil, eventId != nil else {
-                //  it's not a Matrix notification, do not change the content
-                NSLog("[NotificationService] Fallback case 7")
-                contentHandler(content)
-                return
-            }
+        guard roomId != nil, eventId != nil else {
+            //  it's not a Matrix notification, do not change the content
+            NSLog("[NotificationService] Fallback case 7")
+            contentHandler(content)
+            return
         }
         
         //  setup user account
