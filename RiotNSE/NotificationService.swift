@@ -464,14 +464,16 @@ class NotificationService: UNNotificationServiceExtension {
 extension MXRoom {
     
     func getRoomPushRule() -> MXPushRule? {
-        if let rules = self.mxSession.notificationCenter.rules.global.room {
-            for rule in rules {
-                guard let pushRule = rule as? MXPushRule else { continue }
-                // the rule id is the room Id
-                // it is the server trick to avoid duplicated rule on the same room.
-                if (pushRule.ruleId == self.roomId) {
-                    return pushRule
-                }
+        guard let rules = self.mxSession.notificationCenter.rules.global.room else {
+            return nil
+        }
+        
+        for rule in rules {
+            guard let pushRule = rule as? MXPushRule else { continue }
+            // the rule id is the room Id
+            // it is the server trick to avoid duplicated rule on the same room.
+            if pushRule.ruleId == self.roomId {
+                return pushRule
             }
         }
 
@@ -480,12 +482,14 @@ extension MXRoom {
 
     var isMentionsOnly: Bool {
         // Check push rules at room level
-        if let rule = self.getRoomPushRule() {
-            for ruleAction in rule.actions {
-                guard let action = ruleAction as? MXPushRuleAction else { continue }
-                if action.actionType == MXPushRuleActionTypeDontNotify {
-                    return rule.enabled
-                }
+        guard let rule = self.getRoomPushRule() else {
+            return false
+        }
+        
+        for ruleAction in rule.actions {
+            guard let action = ruleAction as? MXPushRuleAction else { continue }
+            if action.actionType == MXPushRuleActionTypeDontNotify {
+                return rule.enabled
             }
         }
 
