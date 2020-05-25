@@ -161,25 +161,21 @@ class NotificationService: UNNotificationServiceExtension {
         if userAccount.mxSession == nil {
             userAccount.openSession(with: store)
         }
-        let sessionState = userAccount.mxSession.state
-        if sessionState == MXSessionStateInitialised || sessionState == MXSessionStatePaused {
-            userAccount.initialBackgroundSync(20000, success: { [weak self] in
-                guard let self = self else {
-                    NSLog("[NotificationService] Fallback case 12")
-                    return
-                }
-                self.fetchEvent()
-            }) { [weak self] (error) in
-                guard let self = self else {
-                    NSLog("[NotificationService] Fallback case 11")
-                    return
-                }
-                NSLog("[NotificationService] Fallback case 6")
-                self.fallbackToOriginalContent()
+
+        //  launch an initial background sync
+        userAccount.initialBackgroundSync(20000, success: { [weak self] in
+            guard let self = self else {
+                NSLog("[NotificationService] Fallback case 12")
+                return
             }
-        } else {
-            NSLog("[NotificationService] Fallback case 8")
-            fallbackToOriginalContent()
+            self.fetchEvent()
+        }) { [weak self] (error) in
+            guard let self = self else {
+                NSLog("[NotificationService] Fallback case 11")
+                return
+            }
+            NSLog("[NotificationService] Fallback case 6")
+            self.fallbackToOriginalContent()
         }
     }
     
