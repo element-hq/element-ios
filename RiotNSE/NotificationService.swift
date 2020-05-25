@@ -91,64 +91,67 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func fetchEvent() {
-        if let content = originalContent, let userAccount = self.userAccount {
-            let userInfo = content.userInfo
-            
-            guard let roomId = userInfo["room_id"] as? String, let eventId = userInfo["event_id"] as? String else {
-                //  it's not a Matrix notification, do not change the content
-                NSLog("[NotificationService] Fallback case 1")
-                contentHandler?(content)
-                return
-            }
-            
-            userAccount.mxSession.event(withEventId: eventId, inRoom: roomId, success: { [weak self] (event) in
-                guard let self = self else {
-                    NSLog("[NotificationService] Fallback case 9")
-                    return
-                }
-                
-                guard let event = event else {
-                    return
-                }
-                
-                if event.isEncrypted {
-                    //  encrypted
-                    if self.showDecryptedContentInNotifications {
-                        //  should show decrypted content in notification
-                        if event.clear == nil {
-                            //  should decrypt it first
-                            if userAccount.mxSession.decryptEvent(event, inTimeline: nil) {
-                                //  decryption succeeded
-                                self.processEvent(event)
-                            } else {
-                                //  decryption failed
-                                NSLog("[NotificationService] Event needs to be decrpyted, but we don't have the keys to decrypt it. Launching a background sync.")
-                                self.launchBackgroundSync()
-                            }
-                        } else {
-                            //  already decrypted
-                            self.processEvent(event)
-                        }
-                    } else {
-                        //  do not show decrypted content in notification
-                        self.fallbackToOriginalContent()
-                    }
-                } else {
-                    //  not encrypted, go on
-                    self.processEvent(event)
-                }
-            }) { [weak self] (error) in
-                guard let self = self else {
-                    NSLog("[NotificationService] Fallback case 10")
-                    return
-                }
-                NSLog("[NotificationService] Fallback case 3")
-                self.fallbackToOriginalContent()
-            }
-        } else {
+        guard let content = originalContent, let userAccount = self.userAccount else {
             //  there is something wrong, do not change the content
             NSLog("[NotificationService] Fallback case 4")
             fallbackToOriginalContent()
+            return
+        }
+        let userInfo = content.userInfo
+        
+        guard let roomId = userInfo["room_id"] as? String, let eventId = userInfo["event_id"] as? String else {
+            //  it's not a Matrix notification, do not change the content
+            NSLog("[NotificationService] Fallback case 1")
+            contentHandler?(content)
+            return
+        }
+        
+        userAccount.mxSession.event(withEventId: eventId, inRoom: roomId, success: { [weak self] (event) in
+            guard let self = self else {
+                NSLog("[NotificationService] Fallback case 9")
+                return
+            }
+            
+            guard let event = event else {
+                return
+            }
+            
+            guard event.isEncrypted else {
+                //  not encrypted, go on processing
+                self.processEvent(event)
+                return
+            }
+            
+            //  encrypted
+            guard self.showDecryptedContentInNotifications else {
+                //  do not show decrypted content in notification
+                self.fallbackToOriginalContent()
+                return
+            }
+            
+            //  should show decrypted content in notification
+            guard event.clear == nil else {
+                //  already decrypted
+                self.processEvent(event)
+                return
+            }
+            
+            //  should decrypt it first
+            if userAccount.mxSession.decryptEvent(event, inTimeline: nil) {
+                //  decryption succeeded
+                self.processEvent(event)
+            } else {
+                //  decryption failed
+                NSLog("[NotificationService] Event needs to be decrpyted, but we don't have the keys to decrypt it. Launching a background sync.")
+                self.launchBackgroundSync()
+            }
+        }) { [weak self] (error) in
+            guard let self = self else {
+                NSLog("[NotificationService] Fallback case 10")
+                return
+            }
+            NSLog("[NotificationService] Fallback case 3")
+            self.fallbackToOriginalContent()
         }
     }
     
