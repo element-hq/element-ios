@@ -73,8 +73,8 @@ class NotificationService: UNNotificationServiceExtension {
         Bundle.mxk_customizeLocalizedStringTableName("Vector")
         
         if isatty(STDERR_FILENO) == 0 {
-//            MXLogger.setSubLogName("nse")
-//            MXLogger.redirectNSLog(toFiles: true)
+            MXLogger.setSubLogName("nse")
+            MXLogger.redirectNSLog(toFiles: true)
         }
         
         userAccount = MXKAccountManager.shared()?.activeAccounts.first
