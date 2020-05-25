@@ -79,71 +79,69 @@ class NotificationService: UNNotificationServiceExtension {
         
         userAccount = MXKAccountManager.shared()?.activeAccounts.first
         
-        if let theUserAccount = userAccount {
-            store = MXFileStore(credentials: theUserAccount.mxCredentials)
+        if let userAccount = userAccount {
+            store = MXFileStore(credentials: userAccount.mxCredentials)
             
-            if theUserAccount.mxSession == nil {
-                theUserAccount.openSession(with: store!)
+            if userAccount.mxSession == nil {
+                userAccount.openSession(with: store!)
             }
         }
     }
     
     func fetchEvent() {
-        if let content = originalContent, let theUserAccount = self.userAccount {
+        if let content = originalContent, let userAccount = self.userAccount {
             let userInfo = content.userInfo
-            let roomId = userInfo["room_id"] as? String
-            let eventId = userInfo["event_id"] as? String
             
-            guard let theRoomId = roomId, let theEventId = eventId else {
+            guard let roomId = userInfo["room_id"] as? String, let eventId = userInfo["event_id"] as? String else {
                 //  it's not a Matrix notification, do not change the content
                 NSLog("[NotificationService] Fallback case 1")
                 contentHandler?(content)
                 return
             }
             
-            theUserAccount.mxSession.event(withEventId: theEventId, inRoom: theRoomId, success: { [weak self] (event) in
-                guard let strongSelf = self else {
+            userAccount.mxSession.event(withEventId: eventId, inRoom: roomId, success: { [weak self] (event) in
+                guard let self = self else {
                     NSLog("[NotificationService] Fallback case 9")
                     return
                 }
                 
-                guard let theEvent = event else {
+                guard let event = event else {
                     return
                 }
                 
-                if theEvent.isEncrypted {
+                if event.isEncrypted {
                     //  encrypted
-                    if strongSelf.showDecryptedContentInNotifications {
+                    if self.showDecryptedContentInNotifications {
                         //  should show decrypted content in notification
-                        if theEvent.clear == nil {
+                        if event.clear == nil {
                             //  should decrypt it first
-                            if theUserAccount.mxSession.decryptEvent(theEvent, inTimeline: nil) {
+                            if userAccount.mxSession.decryptEvent(event, inTimeline: nil) {
                                 //  decryption succeeded
-                                strongSelf.processEvent(theEvent)
+                                self.processEvent(event)
                             } else {
                                 //  decryption failed
                                 NSLog("[NotificationService] Event needs to be decrpyted, but we don't have the keys to decrypt it. Launching a background sync.")
-                                strongSelf.launchBackgroundSync()
+                                self.launchBackgroundSync()
                             }
                         } else {
                             //  already decrypted
-                            strongSelf.processEvent(theEvent)
+                            self.processEvent(event)
                         }
                     } else {
                         //  do not show decrypted content in notification
-                        strongSelf.fallbackToOriginalContent()
+                        self.fallbackToOriginalContent()
                     }
                 } else {
                     //  not encrypted, go on
-                    strongSelf.processEvent(theEvent)
+                    self.processEvent(event)
                 }
             }) { [weak self] (error) in
-                guard let strongSelf = self else {
+                guard let self = self else {
                     NSLog("[NotificationService] Fallback case 10")
                     return
                 }
                 NSLog("[NotificationService] Fallback case 3")
-                strongSelf.fallbackToOriginalContent()
+                self.fallbackToOriginalContent()
             }
         } else {
             //  there is something wrong, do not change the content
@@ -153,26 +151,26 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func launchBackgroundSync() {
-        guard let theUserAccount = userAccount else { return }
-        guard let theFileStore = store else { return }
-        if theUserAccount.mxSession == nil {
-            theUserAccount.openSession(with: theFileStore)
+        guard let userAccount = userAccount else { return }
+        guard let store = store else { return }
+        if userAccount.mxSession == nil {
+            userAccount.openSession(with: store)
         }
-        let sessionState = theUserAccount.mxSession.state
+        let sessionState = userAccount.mxSession.state
         if sessionState == MXSessionStateInitialised || sessionState == MXSessionStatePaused {
-            theUserAccount.initialBackgroundSync(20000, success: { [weak self] in
-                guard let strongSelf = self else {
+            userAccount.initialBackgroundSync(20000, success: { [weak self] in
+                guard let self = self else {
                     NSLog("[NotificationService] Fallback case 12")
                     return
                 }
-                strongSelf.fetchEvent()
+                self.fetchEvent()
             }) { [weak self] (error) in
-                guard let strongSelf = self else {
+                guard let self = self else {
                     NSLog("[NotificationService] Fallback case 11")
                     return
                 }
                 NSLog("[NotificationService] Fallback case 6")
-                strongSelf.fallbackToOriginalContent()
+                self.fallbackToOriginalContent()
             }
         } else {
             NSLog("[NotificationService] Fallback case 8")
@@ -181,15 +179,15 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func processEvent(_ event: MXEvent) {
-        if let content = originalContent, let theUserAccount = userAccount {
+        if let content = originalContent, let userAccount = userAccount, let requestIdentifier = requestIdentifier {
             
-            self.notificationContent(forEvent: event, inAccount: theUserAccount) { (notificationContent) in
+            self.notificationContent(forEvent: event, inAccount: userAccount) { (notificationContent) in
                 self.store?.close()
                 
                 // Modify the notification content here...
                 guard let newContent = notificationContent else {
                     //  remove
-                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [self.requestIdentifier!])
+                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [requestIdentifier])
                     return
                 }
                 
