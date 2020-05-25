@@ -181,27 +181,29 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func processEvent(_ event: MXEvent) {
-        if let content = originalContent, let userAccount = userAccount {
+        guard let content = originalContent, let userAccount = userAccount else {
+            return
+        }
+
+        self.notificationContent(forEvent: event, inAccount: userAccount) { (notificationContent) in
+            //  close store
+            self.store?.close()
             
-            self.notificationContent(forEvent: event, inAccount: userAccount) { (notificationContent) in
-                self.store?.close()
-                
-                // Modify the notification content here...
-                if let newContent = notificationContent {
-                    content.title = newContent.title
-                    content.subtitle = newContent.subtitle
-                    content.body = newContent.body
-                    content.threadIdentifier = newContent.threadIdentifier
-                    content.categoryIdentifier = newContent.categoryIdentifier
-                    content.userInfo = newContent.userInfo
-                    content.sound = newContent.sound
-                } else {
-                    //  this is an unwanted notification, mark as to be deleted when app is foregrounded again OR a new push came
-                    content.categoryIdentifier = Constants.toBeRemovedNotificationCategoryIdentifier
-                }
-                
-                self.contentHandler?(content)
+            // Modify the notification content here...
+            if let newContent = notificationContent {
+                content.title = newContent.title
+                content.subtitle = newContent.subtitle
+                content.body = newContent.body
+                content.threadIdentifier = newContent.threadIdentifier
+                content.categoryIdentifier = newContent.categoryIdentifier
+                content.userInfo = newContent.userInfo
+                content.sound = newContent.sound
+            } else {
+                //  this is an unwanted notification, mark as to be deleted when app is foregrounded again OR a new push came
+                content.categoryIdentifier = Constants.toBeRemovedNotificationCategoryIdentifier
             }
+            
+            self.contentHandler?(content)
         }
     }
     
