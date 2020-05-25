@@ -208,11 +208,13 @@ class NotificationService: UNNotificationServiceExtension {
     
     func fallbackToOriginalContent() {
         store?.close()
-        if let content = originalContent {
-            contentHandler?(content)
-        } else {
+        guard let content = originalContent else {
             NSLog("[NotificationService] Fallback case 13")
+            return
         }
+        
+        //  call contentHandler
+        contentHandler?(content)
     }
     
     func notificationContent(forEvent event: MXEvent, inAccount account: MXKAccount, onComplete: @escaping (UNNotificationContent?) -> Void) {
@@ -384,7 +386,12 @@ class NotificationService: UNNotificationServiceExtension {
         })
     }
     
-    func notificationContent(withTitle title: String?, body: String?, threadIdentifier: String?, userId: String?, event: MXEvent, pushRule: MXPushRule?) -> UNNotificationContent {
+    func notificationContent(withTitle title: String?,
+                             body: String?,
+                             threadIdentifier: String?,
+                             userId: String?,
+                             event: MXEvent,
+                             pushRule: MXPushRule?) -> UNNotificationContent {
         let notificationContent = UNMutableNotificationContent()
         
         if let title = title {
@@ -427,14 +434,11 @@ class NotificationService: UNNotificationServiceExtension {
         // Set sound name based on the value provided in action of MXPushRule
         for ruleAction in pushRule?.actions ?? [] {
             guard let action = ruleAction as? MXPushRuleAction else { continue }
-            
-            if action.actionType == MXPushRuleActionTypeSetTweak {
-                if (action.parameters["set_tweak"] as? String == "sound") {
-                    soundName = action.parameters["value"] as? String
-                    if (soundName == "default") {
-                        soundName = "message.caf"
-                    }
-                }
+            guard action.actionType == MXPushRuleActionTypeSetTweak else { continue }
+            guard action.parameters["set_tweak"] as? String == "sound" else { continue }
+            soundName = action.parameters["value"] as? String
+            if soundName == "default" {
+                soundName = "message.caf"
             }
         }
         
@@ -444,13 +448,15 @@ class NotificationService: UNNotificationServiceExtension {
     func notificationCategoryIdentifier(forEvent event: MXEvent) -> String? {
         let isNotificationContentShown = !event.isEncrypted || self.showDecryptedContentInNotifications
         
-        var categoryIdentifier: String?
-        
-        if (event.eventType == .roomMessage || event.eventType == .roomEncrypted) && isNotificationContentShown {
-            categoryIdentifier = "QUICK_REPLY"
+        guard isNotificationContentShown else {
+            return nil
         }
         
-        return categoryIdentifier
+        guard event.eventType == .roomMessage || event.eventType == .roomEncrypted else {
+            return nil
+        }
+        
+        return "QUICK_REPLY"
     }
     
 }
