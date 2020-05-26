@@ -16,7 +16,7 @@
 
 import Foundation
 
-struct Constants {
+enum Constants {
     
     static let toBeRemovedNotificationCategoryIdentifier = "TO_BE_REMOVED"
     
