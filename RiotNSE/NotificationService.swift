@@ -148,10 +148,10 @@ class NotificationService: UNNotificationServiceExtension {
             }
         }) { [weak self] (error) in
             guard let self = self else {
-                NSLog("[NotificationService] fetchEvent: MXSession.event method returned too late with error: \(String(describing: error))");
+                NSLog("[NotificationService] fetchEvent: MXSession.event method returned too late with error: \(String(describing: error))")
                 return
             }
-            NSLog("[NotificationService] fetchEvent: MXSession.event method returned error: \(String(describing: error))");
+            NSLog("[NotificationService] fetchEvent: MXSession.event method returned error: \(String(describing: error))")
             self.fallbackToOriginalContent()
         }
     }
