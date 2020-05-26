@@ -131,7 +131,7 @@ class NotificationService: UNNotificationServiceExtension {
             }
             
             //  should show decrypted content in notification
-            guard event.clear == nil else {
+            if event.clear != nil {
                 //  already decrypted
                 self.processEvent(event)
                 return
