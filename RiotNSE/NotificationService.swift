@@ -142,7 +142,7 @@ class NotificationService: UNNotificationServiceExtension {
                 self.processEvent(event)
             } else {
                 //  decryption failed
-                NSLog("[NotificationService] Event needs to be decrpyted, but we don't have the keys to decrypt it. Launching a background sync.")
+                NSLog("[NotificationService] fetchEvent: Event needs to be decrpyted, but we don't have the keys to decrypt it. Launching a background sync.")
                 self.launchBackgroundSync()
             }
         }) { [weak self] (error) in
