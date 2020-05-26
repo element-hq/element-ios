@@ -267,7 +267,7 @@ class NotificationService: UNNotificationServiceExtension {
                         }
                     }
                     
-                    guard isHighlighted else {
+                    if !isHighlighted {
                         // Ignore this notif.
                         NSLog("[NotificationService][Push] notificationBodyForEvent: Ignore non highlighted notif in mentions only room")
                         onComplete(nil)
