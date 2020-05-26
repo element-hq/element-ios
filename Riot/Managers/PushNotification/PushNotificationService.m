@@ -154,34 +154,7 @@
               fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
     NSLog(@"[PushNotificationService][Push] didReceiveRemoteNotification: applicationState: %tu - payload: %@", [UIApplication sharedApplication].applicationState, userInfo);
-//
-//    // Display local notifications only when the app is running in background.
-//    if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
-//    {
-//        NSLog(@"[PushNotificationService][Push] didReceiveRemoteNotification while app is in background");
-//
-//        // Check whether an event id is provided.
-//        NSString *eventId = userInfo[@"event_id"];
-//        if (eventId)
-//        {
-//            // Add this event identifier in the pending push array for each session.
-//            for (NSMutableArray *array in self.incomingPushEventIds.allValues)
-//            {
-//                [array addObject:eventId];
-//            }
-//
-//            // Cache payload for further usage
-//            incomingPushPayloads[eventId] = userInfo;
-//        }
-//        else
-//        {
-//            NSLog(@"[PushNotificationService][Push] didReceiveRemoteNotification - Unexpected payload %@", userInfo);
-//        }
-//
-//        // Trigger a background sync to handle notifications.
-//        [self launchBackgroundSync];
-//    }
-//
+
     completionHandler(UIBackgroundFetchResultNewData);
 }
 
@@ -328,65 +301,6 @@
     }
 }
 
-//#pragma mark - PKPushRegistryDelegate
-//
-//- (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)credentials forType:(PKPushType)type
-//{
-//    NSData *token = credentials.token;
-//
-//    NSLog(@"[PushNotificationService][Push] didUpdatePushCredentials: Got Push token: %@. Type: %@", [MXKTools logForPushToken:token], type);
-//
-//    MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
-//    [accountManager setPushDeviceToken:token withPushOptions:@{@"format": @"event_id_only"}];
-//
-//    _isPushRegistered = YES;
-//
-//    if (self.registrationForRemoteNotificationsCompletion)
-//    {
-//        self.registrationForRemoteNotificationsCompletion(nil);
-//        self.registrationForRemoteNotificationsCompletion = nil;
-//    }
-//}
-//
-//- (void)pushRegistry:(PKPushRegistry *)registry didInvalidatePushTokenForType:(PKPushType)type
-//{
-//    NSLog(@"[PushNotificationService][Push] didInvalidatePushTokenForType: Type: %@", type);
-//
-//    [self clearPushNotificationToken];
-//}
-
-//- (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type
-//{
-//    NSLog(@"[PushNotificationService][Push] didReceiveIncomingPushWithPayload: applicationState: %tu - type: %@ - payload: %@", [UIApplication sharedApplication].applicationState, payload.type, payload.dictionaryPayload);
-//
-//    // Display local notifications only when the app is running in background.
-//    if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
-//    {
-//        NSLog(@"[PushNotificationService][Push] didReceiveIncomingPushWithPayload while app is in background");
-//
-//        // Check whether an event id is provided.
-//        NSString *eventId = payload.dictionaryPayload[@"event_id"];
-//        if (eventId)
-//        {
-//            // Add this event identifier in the pending push array for each session.
-//            for (NSMutableArray *array in self.incomingPushEventIds.allValues)
-//            {
-//                [array addObject:eventId];
-//            }
-//
-//            // Cache payload for further usage
-//            incomingPushPayloads[eventId] = payload.dictionaryPayload;
-//        }
-//        else
-//        {
-//            NSLog(@"[PushNotificationService][Push] didReceiveIncomingPushWithPayload - Unexpected payload %@", payload.dictionaryPayload);
-//        }
-//
-//        // Trigger a background sync to handle notifications.
-//        [self launchBackgroundSync];
-//    }
-//}
-
 #pragma mark - UNUserNotificationCenterDelegate
 
 // iOS 10+, see application:handleActionWithIdentifier:forLocalNotification:withResponseInfo:completionHandler:
@@ -441,15 +355,6 @@
         completionHandler();
     }
 }
-
-// iOS 10+, this is called when a notification is about to display in foreground.
-//- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
-//{
-//    NSLog(@"[PushNotificationService][Push] willPresentNotification: applicationState: %@", @([UIApplication sharedApplication].applicationState));
-//
-////    completionHandler(UNNotificationPresentationOptionNone);
-//    completionHandler(UNNotificationPresentationOptionBadge | UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert);
-//}
 
 #pragma mark - Other Methods
 

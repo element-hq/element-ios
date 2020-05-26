@@ -87,8 +87,6 @@ enum
 
 enum
 {
-    //CALLS_ENABLE_CALLKIT_INDEX = 0,
-    //CALLS_CALLKIT_DESCRIPTION_INDEX,
     CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX=0,
     CALLS_STUN_SERVER_FALLBACK_DESCRIPTION_INDEX,
     CALLS_COUNT
@@ -1731,39 +1729,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }
     else if (section == SETTINGS_SECTION_CALLS_INDEX)
     {
-//        if (row == CALLS_ENABLE_CALLKIT_INDEX)
-//        {
-//            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-//            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_callkit", @"Vector", nil);
-//            labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].isCallKitEnabled;
-//            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-//            labelAndSwitchCell.mxkSwitch.enabled = YES;
-//            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleCallKit:) forControlEvents:UIControlEventTouchUpInside];
-//
-//            if (![MXCallKitAdapter callKitAvailable])
-//            {
-//                labelAndSwitchCell.mxkSwitch.on = NO;
-//                labelAndSwitchCell.mxkSwitch.enabled = NO;
-//                labelAndSwitchCell.mxkLabel.enabled = NO;
-//            }
-//
-//            cell = labelAndSwitchCell;
-//        }
-//        else if (row == CALLS_CALLKIT_DESCRIPTION_INDEX)
-//        {
-//            MXKTableViewCell *globalInfoCell = [self getDefaultTableViewCell:tableView];
-//            globalInfoCell.textLabel.text = NSLocalizedStringFromTable(@"settings_callkit_info", @"Vector", nil);
-//            globalInfoCell.textLabel.numberOfLines = 0;
-//            globalInfoCell.selectionStyle = UITableViewCellSelectionStyleNone;
-//
-//            if (![MXCallKitAdapter callKitAvailable])
-//            {
-//                globalInfoCell.textLabel.enabled = NO;
-//            }
-//
-//            cell = globalInfoCell;
-//        }
-//        else
         if (row == CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
