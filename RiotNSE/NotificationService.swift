@@ -124,7 +124,7 @@ class NotificationService: UNNotificationServiceExtension {
             }
             
             //  encrypted
-            guard self.showDecryptedContentInNotifications else {
+            if !self.showDecryptedContentInNotifications {
                 //  do not show decrypted content in notification
                 self.fallbackToOriginalContent()
                 return
