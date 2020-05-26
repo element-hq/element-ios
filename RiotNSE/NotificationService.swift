@@ -117,7 +117,7 @@ class NotificationService: UNNotificationServiceExtension {
                 return
             }
             
-            guard event.isEncrypted else {
+            if !event.isEncrypted {
                 //  not encrypted, go on processing
                 self.processEvent(event)
                 return
