@@ -47,7 +47,7 @@ class NotificationService: UNNotificationServiceExtension {
 
         guard roomId != nil, eventId != nil else {
             //  it's not a Matrix notification, do not change the content
-            NSLog("[NotificationService] Fallback case 7")
+            NSLog("[NotificationService] didReceiveRequest: This is not a Matrix notification.")
             contentHandler(content)
             return
         }
@@ -62,7 +62,7 @@ class NotificationService: UNNotificationServiceExtension {
     override func serviceExtensionTimeWillExpire() {
         // Called just before the extension will be terminated by the system.
         // Use this as an opportunity to deliver your "best attempt" at modified content, otherwise the original push payload will be used.
-        NSLog("[NotificationService] Fallback case 5")
+        NSLog("[NotificationService] serviceExtensionTimeWillExpire")
         fallbackToOriginalContent()
     }
     
@@ -93,7 +93,7 @@ class NotificationService: UNNotificationServiceExtension {
     func fetchEvent() {
         guard let content = originalContent, let userAccount = self.userAccount else {
             //  there is something wrong, do not change the content
-            NSLog("[NotificationService] Fallback case 4")
+            NSLog("[NotificationService] fetchEvent: Either originalContent or userAccount is missing.")
             fallbackToOriginalContent()
             return
         }
@@ -101,14 +101,14 @@ class NotificationService: UNNotificationServiceExtension {
         
         guard let roomId = userInfo["room_id"] as? String, let eventId = userInfo["event_id"] as? String else {
             //  it's not a Matrix notification, do not change the content
-            NSLog("[NotificationService] Fallback case 1")
+            NSLog("[NotificationService] fetchEvent: This is not a Matrix notification.")
             contentHandler?(content)
             return
         }
         
         userAccount.mxSession.event(withEventId: eventId, inRoom: roomId, success: { [weak self] (event) in
             guard let self = self else {
-                NSLog("[NotificationService] Fallback case 9")
+                NSLog("[NotificationService] fetchEvent: MXSession.event method returned too late successfully.")
                 return
             }
             
@@ -147,10 +147,10 @@ class NotificationService: UNNotificationServiceExtension {
             }
         }) { [weak self] (error) in
             guard let self = self else {
-                NSLog("[NotificationService] Fallback case 10")
+                NSLog("[NotificationService] fetchEvent: MXSession.event method returned too late with error: \(String(describing: error))");
                 return
             }
-            NSLog("[NotificationService] Fallback case 3")
+            NSLog("[NotificationService] fetchEvent: MXSession.event method returned error: \(String(describing: error))");
             self.fallbackToOriginalContent()
         }
     }
@@ -165,16 +165,16 @@ class NotificationService: UNNotificationServiceExtension {
         //  launch an initial background sync
         userAccount.initialBackgroundSync(20000, success: { [weak self] in
             guard let self = self else {
-                NSLog("[NotificationService] Fallback case 12")
+                NSLog("[NotificationService] launchBackgroundSync: MXKAccount.initialBackgroundSync returned too late successfully")
                 return
             }
             self.fetchEvent()
         }) { [weak self] (error) in
             guard let self = self else {
-                NSLog("[NotificationService] Fallback case 11")
+                NSLog("[NotificationService] launchBackgroundSync: MXKAccount.initialBackgroundSync returned too late with error: \(String(describing: error))")
                 return
             }
-            NSLog("[NotificationService] Fallback case 6")
+            NSLog("[NotificationService] launchBackgroundSync: MXKAccount.initialBackgroundSync returned with error: \(String(describing: error))")
             self.fallbackToOriginalContent()
         }
     }
@@ -209,7 +209,7 @@ class NotificationService: UNNotificationServiceExtension {
     func fallbackToOriginalContent() {
         store?.close()
         guard let content = originalContent else {
-            NSLog("[NotificationService] Fallback case 13")
+            NSLog("[NotificationService] fallbackToOriginalContent: Original content is missing.")
             return
         }
         
