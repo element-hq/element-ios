@@ -113,6 +113,7 @@ class NotificationService: UNNotificationServiceExtension {
             }
             
             guard let event = event else {
+                self.fallbackToOriginalContent()
                 return
             }
             
@@ -156,8 +157,14 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func launchBackgroundSync() {
-        guard let userAccount = userAccount else { return }
-        guard let store = store else { return }
+        guard let userAccount = userAccount else {
+            self.fallbackToOriginalContent()
+            return
+        }
+        guard let store = store else {
+            self.fallbackToOriginalContent()
+            return
+        }
         if userAccount.mxSession == nil {
             userAccount.openSession(with: store)
         }
@@ -181,6 +188,7 @@ class NotificationService: UNNotificationServiceExtension {
     
     func processEvent(_ event: MXEvent) {
         guard let content = originalContent, let userAccount = userAccount else {
+            self.fallbackToOriginalContent()
             return
         }
 
