@@ -22,8 +22,8 @@ class NotificationService: UNNotificationServiceExtension {
     var contentHandler: ((UNNotificationContent) -> Void)?
     var originalContent: UNMutableNotificationContent?
     
-    var userAccount: MXKAccount?
-    var store: MXFileStore?
+    var mxSession: MXSession?
+    var store: NSEMemoryStore!
     var showDecryptedContentInNotifications: Bool {
         return RiotSettings.shared.showDecryptedContentInNotifications
     }
@@ -42,10 +42,8 @@ class NotificationService: UNNotificationServiceExtension {
         
         let userInfo = content.userInfo
         NSLog("[NotificationService] Payload came: \(userInfo)")
-        let roomId = userInfo["room_id"] as? String
-        let eventId = userInfo["event_id"] as? String
 
-        guard roomId != nil, eventId != nil else {
+        guard let roomId = userInfo["room_id"] as? String, let _ = userInfo["event_id"] as? String else {
             //  it's not a Matrix notification, do not change the content
             NSLog("[NotificationService] didReceiveRequest: This is not a Matrix notification.")
             contentHandler(content)
@@ -53,10 +51,10 @@ class NotificationService: UNNotificationServiceExtension {
         }
         
         //  setup user account
-        setup()
-        
-        //  fetch the event first
-        fetchEvent()
+        setup(withRoomId: roomId) {
+            //  fetch the event first
+            self.fetchEvent()
+        }
     }
     
     override func serviceExtensionTimeWillExpire() {
@@ -66,7 +64,7 @@ class NotificationService: UNNotificationServiceExtension {
         fallbackToOriginalContent()
     }
     
-    func setup() {
+    func setup(withRoomId roomId: String, completion: @escaping () -> Void) {
         let sdkOptions = MXSDKOptions.sharedInstance()
         sdkOptions.applicationGroupIdentifier = "group.im.vector"
         sdkOptions.disableIdenticonUseForUserAvatar = true
@@ -79,21 +77,30 @@ class NotificationService: UNNotificationServiceExtension {
             MXLogger.redirectNSLog(toFiles: true)
         }
         
-        userAccount = MXKAccountManager.shared()?.activeAccounts.first
-        
-        if let userAccount = userAccount {
-            store = MXFileStore(credentials: userAccount.mxCredentials)
+        if let userAccount = MXKAccountManager.shared()?.activeAccounts.first {
+            store = NSEMemoryStore(withCredentials: userAccount.mxCredentials)
+            store.open(with: userAccount.mxCredentials, onComplete: nil, failure: nil)
+            store.getOrCreateRoomStore(roomId)
             
-            if userAccount.mxSession == nil {
-                userAccount.openSession(with: store!)
-            }
+            mxSession = MXSession(matrixRestClient: MXRestClient(credentials: userAccount.mxCredentials, unrecognizedCertificateHandler: nil))
+            mxSession?.setStore(store, completion: { (response) in
+                switch response {
+                case .success:
+                    completion()
+                    break
+                case .failure(let error):
+                    NSLog("[NotificationService] setup: MXSession.setStore method returned error: \(String(describing: error))")
+                    self.fallbackToOriginalContent()
+                    break
+                }
+            })
         }
     }
     
     func fetchEvent() {
-        guard let content = originalContent, let userAccount = self.userAccount else {
+        guard let content = originalContent, let mxSession = mxSession else {
             //  there is something wrong, do not change the content
-            NSLog("[NotificationService] fetchEvent: Either originalContent or userAccount is missing.")
+            NSLog("[NotificationService] fetchEvent: Either originalContent or mxSession is missing.")
             fallbackToOriginalContent()
             return
         }
@@ -106,7 +113,7 @@ class NotificationService: UNNotificationServiceExtension {
             return
         }
         
-        userAccount.mxSession.event(withEventId: eventId, inRoom: roomId, success: { [weak self] (event) in
+        mxSession.event(withEventId: eventId, inRoom: roomId, success: { [weak self] (event) in
             guard let self = self else {
                 NSLog("[NotificationService] fetchEvent: MXSession.event method returned too late successfully.")
                 return
@@ -138,7 +145,7 @@ class NotificationService: UNNotificationServiceExtension {
             }
             
             //  should decrypt it first
-            if userAccount.mxSession.decryptEvent(event, inTimeline: nil) {
+            if mxSession.decryptEvent(event, inTimeline: nil) {
                 //  decryption succeeded
                 self.processEvent(event)
             } else {
@@ -157,44 +164,43 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func launchBackgroundSync() {
-        guard let userAccount = userAccount else {
+        guard let mxSession = mxSession else {
+            NSLog("[NotificationService] launchBackgroundSync: mxSession is missing.")
             self.fallbackToOriginalContent()
             return
-        }
-        guard let store = store else {
-            self.fallbackToOriginalContent()
-            return
-        }
-        if userAccount.mxSession == nil {
-            userAccount.openSession(with: store)
         }
 
         //  launch an initial background sync
-        userAccount.initialBackgroundSync(20000, success: { [weak self] in
-            guard let self = self else {
-                NSLog("[NotificationService] launchBackgroundSync: MXKAccount.initialBackgroundSync returned too late successfully")
-                return
+        mxSession.initialBackgroundSync(withTimeout: 20000) { [weak self] (response) in
+            switch response {
+            case .success:
+                guard let self = self else {
+                    NSLog("[NotificationService] launchBackgroundSync: MXSession.initialBackgroundSync returned too late successfully")
+                    return
+                }
+                self.fetchEvent()
+                break
+            case .failure(let error):
+                guard let self = self else {
+                    NSLog("[NotificationService] launchBackgroundSync: MXSession.initialBackgroundSync returned too late with error: \(String(describing: error))")
+                    return
+                }
+                NSLog("[NotificationService] launchBackgroundSync: MXSession.initialBackgroundSync returned with error: \(String(describing: error))")
+                self.fallbackToOriginalContent()
+                break
             }
-            self.fetchEvent()
-        }) { [weak self] (error) in
-            guard let self = self else {
-                NSLog("[NotificationService] launchBackgroundSync: MXKAccount.initialBackgroundSync returned too late with error: \(String(describing: error))")
-                return
-            }
-            NSLog("[NotificationService] launchBackgroundSync: MXKAccount.initialBackgroundSync returned with error: \(String(describing: error))")
-            self.fallbackToOriginalContent()
         }
     }
     
     func processEvent(_ event: MXEvent) {
-        guard let content = originalContent, let userAccount = userAccount else {
+        guard let content = originalContent, let mxSession = mxSession else {
             self.fallbackToOriginalContent()
             return
         }
 
-        self.notificationContent(forEvent: event, inAccount: userAccount) { (notificationContent) in
+        self.notificationContent(forEvent: event, inSession: mxSession) { (notificationContent) in
             //  close store
-            self.store?.close()
+            self.store.close()
             
             // Modify the notification content here...
             if let newContent = notificationContent {
@@ -215,7 +221,7 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func fallbackToOriginalContent() {
-        store?.close()
+        store.close()
         guard let content = originalContent else {
             NSLog("[NotificationService] fallbackToOriginalContent: Original content is missing.")
             return
@@ -225,28 +231,37 @@ class NotificationService: UNNotificationServiceExtension {
         contentHandler?(content)
     }
     
-    func notificationContent(forEvent event: MXEvent, inAccount account: MXKAccount, onComplete: @escaping (UNNotificationContent?) -> Void) {
+    func notificationContent(forEvent event: MXEvent, inSession session: MXSession, onComplete: @escaping (UNNotificationContent?) -> Void) {
         guard let content = event.content, content.count > 0 else {
             NSLog("[NotificationService][Push] notificationContentForEvent: empty event content")
             onComplete(nil)
             return
         }
         
-        guard let room = account.mxSession.room(withRoomId: event.roomId) else {
+        guard let room = MXRoom(roomId: event.roomId, matrixSession: session, andStore: store) else {
             NSLog("[NotificationService][Push] notificationBodyForEvent: Unknown room")
             onComplete(nil)
             return
         }
+        
         let pushRule = room.getRoomPushRule()
         
-        room.state({ (roomState: MXRoomState!) in
-            
+        //  initialize a temporary file store, just to load the room state
+        let fileStore = MXFileStore(credentials: session.credentials)
+        
+        MXRoomState.load(from: fileStore, withRoomId: event.roomId, matrixSession: session) { (roomState) in
+            guard let roomState = roomState else {
+                NSLog("[NotificationService] notificationContentForEvent: Could not load the room state")
+                onComplete(nil)
+                return
+            }
+
             var notificationTitle: String?
             var notificationBody: String?
             
             var threadIdentifier = room.roomId
             let eventSenderName = roomState.members.memberName(event.sender)
-            let currentUserId = account.mxCredentials.userId
+            let currentUserId = session.credentials.userId
             
             switch event.eventType {
             case .roomMessage, .roomEncrypted:
@@ -284,7 +299,7 @@ class NotificationService: UNNotificationServiceExtension {
                 }
                 
                 let roomDisplayName = room.summary.displayname
-                let myUserId = account.mxSession.myUser.userId
+                let myUserId = session.myUser.userId
                 let isIncomingEvent = event.sender != myUserId
                 
                 // Display the room name only if it is different than the sender name
@@ -298,8 +313,8 @@ class NotificationService: UNNotificationServiceExtension {
                     } else if msgType == kMXMessageTypeImage {
                         notificationBody = NSString.localizedUserNotificationString(forKey: "IMAGE_FROM_USER", arguments: [eventSenderName as Any, messageContent as Any])
                     } else if room.isDirect && isIncomingEvent && msgType == kMXMessageTypeKeyVerificationRequest {
-                        account.mxSession.crypto.keyVerificationManager.keyVerification(fromKeyVerificationEvent: event,
-                                                                                        success:{ (keyVerification) in
+                        session.crypto.keyVerificationManager.keyVerification(fromKeyVerificationEvent: event,
+                                                                              success:{ (keyVerification) in
                             guard let request = keyVerification.request, request.state == MXKeyVerificationRequestStatePending else {
                                 onComplete(nil)
                                 return
@@ -391,7 +406,7 @@ class NotificationService: UNNotificationServiceExtension {
                                                                pushRule: pushRule)
             
             onComplete(notificationContent)
-        })
+        }
     }
     
     func notificationContent(withTitle title: String?,
