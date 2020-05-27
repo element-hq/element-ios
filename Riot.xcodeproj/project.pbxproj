@@ -714,6 +714,7 @@
 		EC85D752247C0F52002C44C9 /* UNUserNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D750247C0E8F002C44C9 /* UNUserNotificationCenter.swift */; };
 		EC85D754247C0F5B002C44C9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D753247C0F5B002C44C9 /* Constants.swift */; };
 		EC85D755247C0F84002C44C9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D753247C0F5B002C44C9 /* Constants.swift */; };
+		EC85D757247E700F002C44C9 /* NSEMemoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D756247E700F002C44C9 /* NSEMemoryStore.swift */; };
 		ECB101302477CFDB00CF8C11 /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1012C2477CFDB00CF8C11 /* UITableView.swift */; };
 		ECB101312477CFDB00CF8C11 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1012D2477CFDB00CF8C11 /* UILabel.swift */; };
 		ECB101322477CFDB00CF8C11 /* UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1012E2477CFDB00CF8C11 /* UIDevice.swift */; };
@@ -1725,6 +1726,7 @@
 		EC85D74E2477E614002C44C9 /* RiotNSE.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RiotNSE.entitlements; sourceTree = "<group>"; };
 		EC85D750247C0E8F002C44C9 /* UNUserNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNUserNotificationCenter.swift; sourceTree = "<group>"; };
 		EC85D753247C0F5B002C44C9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		EC85D756247E700F002C44C9 /* NSEMemoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSEMemoryStore.swift; sourceTree = "<group>"; };
 		ECB1012C2477CFDB00CF8C11 /* UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
 		ECB1012D2477CFDB00CF8C11 /* UILabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		ECB1012E2477CFDB00CF8C11 /* UIDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIDevice.swift; sourceTree = "<group>"; };
@@ -4288,6 +4290,7 @@
 			children = (
 				EC85D74E2477E614002C44C9 /* RiotNSE.entitlements */,
 				EC85D7452477E5F7002C44C9 /* NotificationService.swift */,
+				EC85D756247E700F002C44C9 /* NSEMemoryStore.swift */,
 				EC85D7472477E5F7002C44C9 /* Info.plist */,
 			);
 			path = RiotNSE;
@@ -5106,6 +5109,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EC85D74F2477E8EB002C44C9 /* RiotSettings.swift in Sources */,
+				EC85D757247E700F002C44C9 /* NSEMemoryStore.swift in Sources */,
 				EC85D7462477E5F7002C44C9 /* NotificationService.swift in Sources */,
 				EC85D752247C0F52002C44C9 /* UNUserNotificationCenter.swift in Sources */,
 				EC85D755247C0F84002C44C9 /* Constants.swift in Sources */,
