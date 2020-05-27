@@ -961,7 +961,7 @@
 "key_verification_tile_request_status_waiting" = "Warten…";
 "key_verification_tile_request_status_expired" = "Abgelaufen";
 "key_verification_tile_request_status_cancelled_by_me" = "Du hast abgebrochen";
-"key_verification_tile_request_status_cancelled" = "%s brach ab";
+"key_verification_tile_request_status_cancelled" = "%@ brach ab";
 "key_verification_tile_request_status_accepted" = "Du hast akzeptiert";
 "key_verification_tile_request_incoming_approval_accept" = "Akzeptieren";
 "key_verification_tile_request_incoming_approval_decline" = "Ablehnen";
