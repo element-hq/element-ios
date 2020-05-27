@@ -2396,6 +2396,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                                                                  }];
             }
 
+            __weak typeof(self) weakSelf = self;
             if (mxCall.isIncoming && isCallKitEnabled)
             {
                 // Let's CallKit display the system incoming call screen
@@ -2415,6 +2416,16 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
                                                                                          NSLog(@"[AppDelegate] presentCallViewController");
                                                                                          [self presentCallViewController:NO completion:nil];
+                                                                                     }
+                                                                                     else if (call.state == MXCallStateEnded)
+                                                                                     {
+                                                                                         // Set call vc to nil to let our app handle new incoming calls even it wasn't killed by the system
+                                                                                         
+                                                                                         if (weakSelf)
+                                                                                         {
+                                                                                             typeof(self) self = weakSelf;
+                                                                                             [self dismissCallViewController:self->currentCallViewController completion:nil];
+                                                                                         }
                                                                                      }
                                                                                  }];
             }
@@ -3137,6 +3148,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 [self dismissCallViewController:currentCallViewController completion:completion];
                 
             }];
+        }
+        else
+        {
+            // Release properly
+            [currentCallViewController destroy];
+            currentCallViewController = nil;
         }
     }
 }
