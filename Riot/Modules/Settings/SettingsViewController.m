@@ -1565,6 +1565,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 newPhoneCell.countryCodeButton.accessibilityIdentifier = @"SettingsVCPhoneCountryButton";
                 
                 newPhoneCell.mxkLabel.font = newPhoneCell.mxkTextField.font = [UIFont systemFontOfSize:16];
+                newPhoneCell.mxkTextField.textColor = ThemeService.shared.theme.textSecondaryColor;                
                 
                 newPhoneCell.mxkTextField.userInteractionEnabled = YES;
                 newPhoneCell.mxkTextField.keyboardType = UIKeyboardTypePhonePad;
