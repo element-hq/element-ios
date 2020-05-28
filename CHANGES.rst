@@ -1,10 +1,8 @@
-Changes in 0.11.6 (2020-xx-xx)
+Changes in 0.11.x (2020-xx-xx)
+===============================================
 
 Improvements:
- * PushNotificationService: Move all notification related code to a new class (PR #3100).
- 
-Bug fix:
- * CallVC: Declined calls now properly reset call view controller, thanks to @Legi429 (#2877).
+ * Update deployment target to iOS 11.0. Required for Jitsi > 2.8.x.
 
 Bug fix:
  * Xcode11: Fix content change error when dragging start chat page (PR #3075).
@@ -12,6 +10,15 @@ Bug fix:
  * Xcode11: Replace deprecated MPMoviePlayerController with AVPlayerViewController (PR #3092).
  * Xcode11: Show AuthenticationViewController fullscreen (PR #3093).
  * Xcode11: Fix font used for `org.matrix.custom.html`messages in timeline (#3241).
+ 
+ Changes in 0.11.6 (2020-xx-xx)
+ ===============================================
+
+ Improvements:
+  * PushNotificationService: Move all notification related code to a new class (PR #3100).
+  
+ Bug fix:
+  * CallVC: Declined calls now properly reset call view controller, thanks to @Legi429 (#2877).
 
 Changes in 0.11.5 (2020-05-18)
 ===============================================
