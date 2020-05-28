@@ -120,7 +120,7 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
     [[UINavigationBar appearance] setTintColor:self.theme.tintColor];
     
     // Define the UISearchBar cancel button color
-    [[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class]]] setTitleTextAttributes:@{ NSForegroundColorAttributeName : self.theme.searchPlaceholderColor }                                                                                                        forState: UIControlStateNormal];
+    [[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class]]] setTitleTextAttributes:@{ NSForegroundColorAttributeName : self.theme.tintColor }                                                                                                        forState: UIControlStateNormal];
 }
 
 @end
