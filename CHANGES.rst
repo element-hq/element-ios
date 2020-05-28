@@ -11,6 +11,7 @@ Bug fix:
  * Xcode11: Replace deprecated MPMoviePlayerController with AVPlayerViewController (PR #3092).
  * Xcode11: Show AuthenticationViewController fullscreen (PR #3093).
  * Xcode11: Fix font used for `org.matrix.custom.html`messages in timeline (#3241).
+ * Settings: New phone number is invisible in dark theme (#3218).
  
  Changes in 0.11.6 (2020-xx-xx)
  ===============================================
