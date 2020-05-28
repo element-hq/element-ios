@@ -2,6 +2,9 @@ Changes in 0.11.6 (2020-xx-xx)
 
 Improvements:
  * PushNotificationService: Move all notification related code to a new class (PR #3100).
+ 
+Bug fix:
+ * CallVC: Declined calls now properly reset call view controller, thanks to @Legi429 (#2877).
 
 Bug fix:
  * Xcode11: Fix content change error when dragging start chat page (PR #3075).
