@@ -3,6 +3,7 @@ Changes in 0.11.x (2020-xx-xx)
 
 Improvements:
  * Update deployment target to iOS 11.0. Required for Jitsi > 2.8.x.
+ * Theme: Customize UISearchBar with new iOS 13 properties (#3270).
 
 Bug fix:
  * Xcode11: Fix content change error when dragging start chat page (PR #3075).
