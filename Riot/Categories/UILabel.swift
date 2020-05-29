@@ -29,7 +29,8 @@ extension UILabel {
         self.attributedText = attributeString
     }
     
-    // Fix multiline label height with auto layout. After performing orientation multiline label text appears on one line. For more information see https://www.objc.io/issues/3-views/advanced-auto-layout-toolbox/#intrinsic-content-size-of-multi-line-text
+    // Fix multiline label height with auto layout. After performing orientation multiline label text appears on one line.
+    // For more information see https://www.objc.io/issues/3-views/advanced-auto-layout-toolbox/#intrinsic-content-size-of-multi-line-text
     @objc func vc_fixMultilineHeight() {
         let width = self.frame.size.width
         
