@@ -173,7 +173,7 @@ class NotificationService: UNNotificationServiceExtension {
         }
 
         //  launch an initial background sync
-        mxSession.initialBackgroundSync(withTimeout: 20000) { [weak self] (response) in
+        mxSession.backgroundSync(withTimeout: 20, ignoreSessionState: true) { [weak self] (response) in
             switch response {
             case .success:
                 guard let self = self else {
