@@ -57,7 +57,7 @@ class NSEMemoryStore: MXMemoryStore {
     }
     
     override func state(ofRoom roomId: String, success: @escaping ([MXEvent]) -> Void, failure: ((Error) -> Void)? = nil) {
-        
+        fileStore.state(ofRoom: roomId, success: success, failure: failure)
     }
     
     override func summary(ofRoom roomId: String) -> MXRoomSummary? {

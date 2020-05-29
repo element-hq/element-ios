@@ -79,7 +79,9 @@ class NotificationService: UNNotificationServiceExtension {
         
         if let userAccount = MXKAccountManager.shared()?.activeAccounts.first {
             store = NSEMemoryStore(withCredentials: userAccount.mxCredentials)
-            store.open(with: userAccount.mxCredentials, onComplete: nil, failure: nil)
+            //  Fake roomStores in memory store. This is for both -[MXMemoryStore rooms] and -[MXSession rooms] to return some rooms.
+            //  Also roomsSummaries will be filled with the room summary for this roomId.
+            //  They all will be used afterwards.
             store.getOrCreateRoomStore(roomId)
             
             mxSession = MXSession(matrixRestClient: MXRestClient(credentials: userAccount.mxCredentials, unrecognizedCertificateHandler: nil))
@@ -237,8 +239,7 @@ class NotificationService: UNNotificationServiceExtension {
             onComplete(nil)
             return
         }
-        
-        guard let room = MXRoom(roomId: event.roomId, matrixSession: session, andStore: store) else {
+        guard let room = session.room(withRoomId: event.roomId) else {
             NSLog("[NotificationService][Push] notificationBodyForEvent: Unknown room")
             onComplete(nil)
             return
@@ -246,10 +247,7 @@ class NotificationService: UNNotificationServiceExtension {
         
         let pushRule = room.getRoomPushRule()
         
-        //  initialize a temporary file store, just to load the room state
-        let fileStore = MXFileStore(credentials: session.credentials)
-        
-        MXRoomState.load(from: fileStore, withRoomId: event.roomId, matrixSession: session) { (roomState) in
+        room.state { (roomState) in
             guard let roomState = roomState else {
                 NSLog("[NotificationService] notificationContentForEvent: Could not load the room state")
                 onComplete(nil)
