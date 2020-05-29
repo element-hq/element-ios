@@ -131,8 +131,8 @@ platform :ios do
                 provisioningProfiles: {
                     ENV["MAIN_BUNDLE_ID"] => main_provisioning_profile,
                     ENV["SHARE_EXTENSION_BUNDLE_ID"] => share_extension_provisioning_profile,
-                    ENV["SIRI_INTENTS_EXTENSION_BUNDLE_ID"] => siri_intents_provisioning_profile
 		    ENV["NSE_BUNDLE_ID"] => nse_provisioning_profile
+                    ENV["SIRI_INTENTS_EXTENSION_BUNDLE_ID"] => siri_intents_provisioning_profile,
                 },
                 iCloudContainerEnvironment: 'Production'
             }
