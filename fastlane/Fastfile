@@ -175,7 +175,7 @@ platform :ios do
             filename: ENV["SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_FILENAME"],
             readonly: true
         )
-		# NSE
+        # NSE
         get_provisioning_profile(
             app_identifier: ENV["NSE_BUNDLE_ID"],
             adhoc: adhoc,
