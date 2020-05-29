@@ -93,6 +93,10 @@ abstract_target 'RiotPods' do
         import_MatrixKitAppExtension
     end
     
+    target "RiotNSE" do
+        import_MatrixKitAppExtension
+    end
+    
 end
 
 

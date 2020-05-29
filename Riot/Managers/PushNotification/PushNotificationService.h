@@ -15,16 +15,19 @@
  limitations under the License.
  */
 
+#import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
-#import <PushKit/PushKit.h>
 #import <UserNotifications/UserNotifications.h>
 
 @class MXSession;
+@class MXEvent;
+@class MXPushRule;
+@class MXKAccount;
 @protocol PushNotificationServiceDelegate;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PushNotificationService : NSObject <PKPushRegistryDelegate, UNUserNotificationCenterDelegate>
+@interface PushNotificationService : NSObject <UNUserNotificationCenterDelegate>
 
 /**
  Is push really registered.
@@ -47,6 +50,13 @@ NS_ASSUME_NONNULL_BEGIN
  @param completion the block to be executed when registration finished.
  */
 - (void)registerForRemoteNotificationsWithCompletion:(nullable void (^)(NSError *))completion;
+
+- (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken;
+
+- (void)didFailToRegisterForRemoteNotificationsWithError:(NSError *)error;
+
+- (void)didReceiveRemoteNotification:(NSDictionary *)userInfo
+              fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler;
 
 /**
  Perform deregistration for remote notifications.

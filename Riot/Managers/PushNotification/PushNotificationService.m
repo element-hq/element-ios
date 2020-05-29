@@ -46,7 +46,7 @@
     NSMutableDictionary <NSNumber *, MXOnNotification> *notificationListenerBlocks;
 }
 
-@property (nonatomic, strong) PKPushRegistry *pushRegistry;
+//@property (nonatomic, strong) PKPushRegistry *pushRegistry;
 
 @property (nonatomic) NSMutableDictionary <NSNumber *, NSMutableArray <NSString *> *> *incomingPushEventIds;
 
@@ -110,16 +110,56 @@
 
 - (void)registerForRemoteNotificationsWithCompletion:(nullable void (^)(NSError *))completion
 {
-    self.pushRegistry = [[PKPushRegistry alloc] initWithQueue:nil];
-    self.pushRegistry.delegate = self;
-    self.pushRegistry.desiredPushTypes = [NSSet setWithObject:PKPushTypeVoIP];
-
     self.registrationForRemoteNotificationsCompletion = completion;
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+    });
+}
+
+- (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
+    [accountManager setApnsDeviceToken:deviceToken];
+    //  remove PushKit pusher if exists
+    if (accountManager.pushDeviceToken)
+    {
+        [accountManager setPushDeviceToken:nil withPushOptions:nil];
+    }
+    // Sanity check: Make sure the Pushkit push token is deleted
+    NSParameterAssert(!accountManager.isPushAvailable);
+    NSParameterAssert(!accountManager.pushDeviceToken);
+
+    _isPushRegistered = YES;
+
+    if (self.registrationForRemoteNotificationsCompletion)
+    {
+        self.registrationForRemoteNotificationsCompletion(nil);
+        self.registrationForRemoteNotificationsCompletion = nil;
+    }
+}
+
+- (void)didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    [self clearPushNotificationToken];
+
+    if (self.registrationForRemoteNotificationsCompletion)
+    {
+        self.registrationForRemoteNotificationsCompletion(error);
+        self.registrationForRemoteNotificationsCompletion = nil;
+    }
+}
+
+- (void)didReceiveRemoteNotification:(NSDictionary *)userInfo
+              fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+    NSLog(@"[PushNotificationService][Push] didReceiveRemoteNotification: applicationState: %tu - payload: %@", [UIApplication sharedApplication].applicationState, userInfo);
+
+    completionHandler(UIBackgroundFetchResultNewData);
 }
 
 - (void)deregisterRemoteNotifications
 {
-    self.pushRegistry = nil;
     _isPushRegistered = NO;
 }
 
@@ -131,6 +171,8 @@
         [array removeAllObjects];
     }
     [incomingPushPayloads removeAllObjects];
+    
+    [[UNUserNotificationCenter currentNotificationCenter] removeUnwantedNotifications];
 }
 
 - (void)addMatrixSession:(MXSession *)mxSession
@@ -259,65 +301,6 @@
     }
 }
 
-#pragma mark - PKPushRegistryDelegate
-
-- (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)credentials forType:(PKPushType)type
-{
-    NSData *token = credentials.token;
-
-    NSLog(@"[PushNotificationService][Push] didUpdatePushCredentials: Got Push token: %@. Type: %@", [MXKTools logForPushToken:token], type);
-
-    MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
-    [accountManager setPushDeviceToken:token withPushOptions:@{@"format": @"event_id_only"}];
-
-    _isPushRegistered = YES;
-
-    if (self.registrationForRemoteNotificationsCompletion)
-    {
-        self.registrationForRemoteNotificationsCompletion(nil);
-        self.registrationForRemoteNotificationsCompletion = nil;
-    }
-}
-
-- (void)pushRegistry:(PKPushRegistry *)registry didInvalidatePushTokenForType:(PKPushType)type
-{
-    NSLog(@"[PushNotificationService][Push] didInvalidatePushTokenForType: Type: %@", type);
-
-    [self clearPushNotificationToken];
-}
-
-- (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type
-{
-    NSLog(@"[PushNotificationService][Push] didReceiveIncomingPushWithPayload: applicationState: %tu - type: %@ - payload: %@", [UIApplication sharedApplication].applicationState, payload.type, payload.dictionaryPayload);
-
-    // Display local notifications only when the app is running in background.
-    if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
-    {
-        NSLog(@"[PushNotificationService][Push] didReceiveIncomingPushWithPayload while app is in background");
-
-        // Check whether an event id is provided.
-        NSString *eventId = payload.dictionaryPayload[@"event_id"];
-        if (eventId)
-        {
-            // Add this event identifier in the pending push array for each session.
-            for (NSMutableArray *array in self.incomingPushEventIds.allValues)
-            {
-                [array addObject:eventId];
-            }
-
-            // Cache payload for further usage
-            incomingPushPayloads[eventId] = payload.dictionaryPayload;
-        }
-        else
-        {
-            NSLog(@"[PushNotificationService][Push] didReceiveIncomingPushWithPayload - Unexpected payload %@", payload.dictionaryPayload);
-        }
-
-        // Trigger a background sync to handle notifications.
-        [self launchBackgroundSync];
-    }
-}
-
 #pragma mark - UNUserNotificationCenterDelegate
 
 // iOS 10+, see application:handleActionWithIdentifier:forLocalNotification:withResponseInfo:completionHandler:
@@ -371,14 +354,6 @@
         NSLog(@"[PushNotificationService][Push] didReceiveNotificationResponse: unhandled identifier %@", actionIdentifier);
         completionHandler();
     }
-}
-
-// iOS 10+, this is called when a notification is about to display in foreground.
-- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
-{
-    NSLog(@"[PushNotificationService][Push] willPresentNotification: applicationState: %@", @([UIApplication sharedApplication].applicationState));
-
-    completionHandler(UNNotificationPresentationOptionNone);
 }
 
 #pragma mark - Other Methods
@@ -607,7 +582,7 @@
 }
 
 // iOS 10+, does the same thing as notificationBodyForEvent:pushRule:inAccount:onComplete:, except with more features
-- (void)notificationContentForEvent:(MXEvent *)event pushRule:(MXPushRule *)rule inAccount:(MXKAccount *)account onComplete:(void (^)(UNNotificationContent * _Nullable notificationContent))onComplete;
+- (void)notificationContentForEvent:(MXEvent *)event pushRule:(MXPushRule *)rule inAccount:(MXKAccount *)account onComplete:(void (^)(UNNotificationContent * _Nullable notificationContent))onComplete
 {
     if (!event.content || !event.content.count)
     {

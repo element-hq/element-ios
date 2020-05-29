@@ -34,6 +34,8 @@ internal enum RiotDefaults {
   internal static let pushGatewayURL: String = _document["pushGatewayURL"]
   internal static let pushKitAppIdDev: String = _document["pushKitAppIdDev"]
   internal static let pushKitAppIdProd: String = _document["pushKitAppIdProd"]
+  internal static let pusherAppIdDev: String = _document["pusherAppIdDev"]
+  internal static let pusherAppIdProd: String = _document["pusherAppIdProd"]
   internal static let roomDirectoryServers: [String: Any] = _document["roomDirectoryServers"]
   internal static let showAllEventsInRoomHistory: Bool = _document["showAllEventsInRoomHistory"]
   internal static let showLeftMembersInRoomMemberList: Bool = _document["showLeftMembersInRoomMemberList"]
