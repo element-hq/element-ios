@@ -19,7 +19,7 @@ platform :ios do
 
     before_all do
         # Ensure used Xcode version
-        xcversion(version: "~> 10.3.0")
+        xcversion(version: "~> 11.4.0")
     end
 
     #### Public ####
@@ -175,7 +175,7 @@ platform :ios do
             filename: ENV["SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_FILENAME"],
             readonly: true
         )
-	# NSE
+        # NSE
         get_provisioning_profile(
             app_identifier: ENV["NSE_BUNDLE_ID"],
             adhoc: adhoc,
@@ -213,7 +213,7 @@ platform :ios do
             target_filter: ENV["SIRI_INTENTS_EXTENSION_TARGET"],
             build_configuration: build_configuration
         )
-	# NSE
+        # NSE
         update_project_provisioning(
             xcodeproj: xcodeproj,
             profile: "#{provisioning_profiles_path}#{ENV["NSE_PROVISIONING_PROFILE_FILENAME"]}",
@@ -226,25 +226,8 @@ platform :ios do
     private_lane :update_build_number do |options|
         build_number = options[:build_number]
 
-        # Main application
-        increment_build_number_in_plist(
-            build_number: build_number,
-            target: ENV["MAIN_TARGET"]
-        )
-        # Share extension
-        increment_build_number_in_plist(
-            build_number: build_number,
-            target: ENV["SHARE_EXTENSION_TARGET"]
-        )
-        # Siri Intents extension
-        increment_build_number_in_plist(
-            build_number: build_number,
-            target: ENV["SIRI_INTENTS_EXTENSION_TARGET"]
-        )
-	# NSE
-        increment_build_number_in_plist(
-            build_number: build_number,
-            target: ENV["NSE_TARGET"]
+        increment_build_number_in_xcodeproj(
+            build_number: build_number
         )
     end
 
