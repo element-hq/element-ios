@@ -17,14 +17,17 @@
 import Foundation
 import MatrixSDK
 
+/// Fake memory store implementation. Uses some real values from an MXFileStore instance.
 class NSEMemoryStore: MXMemoryStore {
 
     private var credentials: MXCredentials
+    //  real store
     private var fileStore: MXFileStore
     
     init(withCredentials credentials: MXCredentials) {
         self.credentials = credentials
         fileStore = MXFileStore(credentials: credentials)
+        //  load real eventStreamToken
         fileStore.loadMetaData()
     }
     
@@ -53,17 +56,20 @@ class NSEMemoryStore: MXMemoryStore {
     
     //  Some mandatory methods to implement to be permanent
     override func storeState(forRoom roomId: String, stateEvents: [MXEvent]) {
-        
+        //  no-op
     }
     
+    //  Fetch real room state
     override func state(ofRoom roomId: String, success: @escaping ([MXEvent]) -> Void, failure: ((Error) -> Void)? = nil) {
         fileStore.state(ofRoom: roomId, success: success, failure: failure)
     }
     
+    //  Fetch real soom summary
     override func summary(ofRoom roomId: String) -> MXRoomSummary? {
         return fileStore.summary(ofRoom: roomId)
     }
     
+    //  Fetch real room account data
     override func accountData(ofRoom roomId: String) -> MXRoomAccountData? {
         return fileStore.accountData(ofRoom: roomId)
     }
@@ -77,6 +83,7 @@ class NSEMemoryStore: MXMemoryStore {
     }
     
     override func close() {
+        //  close real store
         fileStore.close()
     }
     
