@@ -224,7 +224,7 @@ platform :ios do
 
     desc "Update application build number for all targets"
     private_lane :update_build_number do |options|
-        build_number = options[:build_number]        
+        build_number = options[:build_number]
 
         increment_build_number_in_xcodeproj(
             build_number: build_number
