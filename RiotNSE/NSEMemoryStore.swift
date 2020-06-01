@@ -20,6 +20,8 @@ import MatrixSDK
 /// Fake memory store implementation. Uses some real values from an MXFileStore instance.
 class NSEMemoryStore: MXMemoryStore {
 
+    //  In-memory value for eventStreamToken. Will be used as eventStreamToken if provided.
+    private var lastStoredEventStreamToken: String?
     private var credentials: MXCredentials
     //  real store
     private var fileStore: MXFileStore
@@ -34,9 +36,14 @@ class NSEMemoryStore: MXMemoryStore {
     //  Return real eventStreamToken, to be able to launch a meaningful background sync
     override var eventStreamToken: String? {
         get {
+            //  if more up-to-date token exists, use it
+            if let token = lastStoredEventStreamToken {
+                return token
+            }
             return fileStore.eventStreamToken
         } set {
-            //  no-op
+            //  store new token values in memory, and return these values in future reads
+            lastStoredEventStreamToken = newValue
         }
     }
     

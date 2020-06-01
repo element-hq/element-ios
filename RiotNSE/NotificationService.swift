@@ -22,6 +22,7 @@ class NotificationService: UNNotificationServiceExtension {
     var contentHandler: ((UNNotificationContent) -> Void)?
     var originalContent: UNMutableNotificationContent?
     
+    var cachedEvent: MXEvent?
     var mxSession: MXSession?
     var store: NSEMemoryStore!
     var showDecryptedContentInNotifications: Bool {
@@ -115,17 +116,9 @@ class NotificationService: UNNotificationServiceExtension {
             return
         }
         
-        mxSession.event(withEventId: eventId, inRoom: roomId, success: { [weak self] (event) in
-            guard let self = self else {
-                NSLog("[NotificationService] fetchEvent: MXSession.event method returned too late successfully.")
-                return
-            }
-            
-            guard let event = event else {
-                self.fallbackToOriginalContent()
-                return
-            }
-            
+        /// Inline function to handle encryption for event, either from cache or from the backend
+        /// - Parameter event: The event to be handled
+        func handleEncryption(forEvent event: MXEvent) {
             if !event.isEncrypted {
                 //  not encrypted, go on processing
                 self.processEvent(event)
@@ -155,13 +148,39 @@ class NotificationService: UNNotificationServiceExtension {
                 NSLog("[NotificationService] fetchEvent: Event needs to be decrpyted, but we don't have the keys to decrypt it. Launching a background sync.")
                 self.launchBackgroundSync()
             }
-        }) { [weak self] (error) in
-            guard let self = self else {
-                NSLog("[NotificationService] fetchEvent: MXSession.event method returned too late with error: \(String(describing: error))")
-                return
+        }
+        
+        //  check if we've fetched the event before
+        if let cachedEvent = self.cachedEvent {
+            //  use cached event
+            handleEncryption(forEvent: cachedEvent)
+        } else {
+            //  attempt to fetch the event
+            mxSession.event(withEventId: eventId, inRoom: roomId, success: { [weak self] (event) in
+                guard let self = self else {
+                    NSLog("[NotificationService] fetchEvent: MXSession.event method returned too late successfully.")
+                    return
+                }
+                
+                guard let event = event else {
+                    NSLog("[NotificationService] fetchEvent: MXSession.event method returned successfully with no event.")
+                    self.fallbackToOriginalContent()
+                    return
+                }
+                
+                //  cache this event
+                self.cachedEvent = event
+                
+                //  handle encryption for this event
+                handleEncryption(forEvent: event)
+            }) { [weak self] (error) in
+                guard let self = self else {
+                    NSLog("[NotificationService] fetchEvent: MXSession.event method returned too late with error: \(String(describing: error))")
+                    return
+                }
+                NSLog("[NotificationService] fetchEvent: MXSession.event method returned error: \(String(describing: error))")
+                self.fallbackToOriginalContent()
             }
-            NSLog("[NotificationService] fetchEvent: MXSession.event method returned error: \(String(describing: error))")
-            self.fallbackToOriginalContent()
         }
     }
     
@@ -201,8 +220,8 @@ class NotificationService: UNNotificationServiceExtension {
         }
 
         self.notificationContent(forEvent: event, inSession: mxSession) { (notificationContent) in
-            //  close store
-            self.store.close()
+            //  close session
+            self.mxSession?.close()
             
             // Modify the notification content here...
             if let newContent = notificationContent {
@@ -223,7 +242,10 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func fallbackToOriginalContent() {
-        store.close()
+        NSLog("[NotificationService] fallbackToOriginalContent: method called.")
+        //  close session
+        mxSession?.close()
+        
         guard let content = originalContent else {
             NSLog("[NotificationService] fallbackToOriginalContent: Original content is missing.")
             return
