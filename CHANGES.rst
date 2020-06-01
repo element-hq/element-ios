@@ -13,7 +13,7 @@ Bug fix:
  * Xcode11: Fix font used for `org.matrix.custom.html`messages in timeline (#3241).
  * Settings: New phone number is invisible in dark theme (#3218).
  * SettingsViewController: Fix notifications on this device setting to use APNS pusher (#3291).
- * Xcode11: Fix decryption on notifications when the key is not present (PR #3297).
+ * Xcode11: Fix decryption on notifications when the key is not present (#3295).
  * SettingsViewController: Fix PushKit references with APNS correspondents (PR #3298).
  
  Changes in 0.11.6 (2020-xx-xx)
