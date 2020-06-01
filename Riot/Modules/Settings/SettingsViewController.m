@@ -321,7 +321,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }];
     
     // Add observer to push settings
-    pushInfoUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountPushKitActivityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    pushInfoUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountAPNSActivityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self stopActivityIndicator];
         
@@ -1684,7 +1684,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_decrypted_content", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.showDecryptedContentInNotifications;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            labelAndSwitchCell.mxkSwitch.enabled = account.isPushKitNotificationActive;
+            labelAndSwitchCell.mxkSwitch.enabled = account.pushNotificationServiceIsActive;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowDecodedContent:) forControlEvents:UIControlEventTouchUpInside];
             
             
