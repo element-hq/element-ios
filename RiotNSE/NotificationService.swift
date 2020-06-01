@@ -220,8 +220,8 @@ class NotificationService: UNNotificationServiceExtension {
         }
 
         self.notificationContent(forEvent: event, inSession: mxSession) { (notificationContent) in
-            //  close store
-            self.store.close()
+            //  close session
+            self.mxSession?.close()
             
             // Modify the notification content here...
             if let newContent = notificationContent {
@@ -242,7 +242,10 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func fallbackToOriginalContent() {
-        store.close()
+        NSLog("[NotificationService] fallbackToOriginalContent: method called.")
+        //  close session
+        mxSession?.close()
+        
         guard let content = originalContent else {
             NSLog("[NotificationService] fallbackToOriginalContent: Original content is missing.")
             return
