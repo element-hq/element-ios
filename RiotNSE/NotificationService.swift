@@ -320,7 +320,7 @@ class NotificationService: UNNotificationServiceExtension {
                     
                     if !isHighlighted {
                         // Ignore this notif.
-                        NSLog("[NotificationService] notificationBodyForEvent: Ignore non highlighted notif in mentions only room")
+                        NSLog("[NotificationService] notificationContentForEvent: Ignore non highlighted notif in mentions only room")
                         onComplete(nil)
                         return
                     }
