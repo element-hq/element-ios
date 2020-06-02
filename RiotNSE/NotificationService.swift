@@ -30,13 +30,15 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
+        //  setup logs as first thing
+        setupLogger()
+        
         self.contentHandler = contentHandler
         //  save this content as fallback content
         originalContent = request.content.mutableCopy() as? UNMutableNotificationContent
         
         UNUserNotificationCenter.current().removeUnwantedNotifications()
         
-        //  check if this is a Matrix notification
         guard let content = originalContent else {
             return
         }
@@ -44,6 +46,7 @@ class NotificationService: UNNotificationServiceExtension {
         let userInfo = content.userInfo
         NSLog("[NotificationService] Payload came: \(userInfo)")
 
+        //  check if this is a Matrix notification
         guard let roomId = userInfo["room_id"] as? String, let _ = userInfo["event_id"] as? String else {
             //  it's not a Matrix notification, do not change the content
             NSLog("[NotificationService] didReceiveRequest: This is not a Matrix notification.")
@@ -65,6 +68,13 @@ class NotificationService: UNNotificationServiceExtension {
         fallbackToOriginalContent()
     }
     
+    func setupLogger() {
+        if isatty(STDERR_FILENO) == 0 {
+            MXLogger.setSubLogName("nse")
+            MXLogger.redirectNSLog(toFiles: true)
+        }
+    }
+    
     func setup(withRoomId roomId: String, completion: @escaping () -> Void) {
         let sdkOptions = MXSDKOptions.sharedInstance()
         sdkOptions.applicationGroupIdentifier = "group.im.vector"
@@ -72,11 +82,6 @@ class NotificationService: UNNotificationServiceExtension {
         sdkOptions.enableCryptoWhenStartingMXSession = true
         sdkOptions.backgroundModeHandler = MXUIKitBackgroundModeHandler()
         Bundle.mxk_customizeLocalizedStringTableName("Vector")
-        
-        if isatty(STDERR_FILENO) == 0 {
-            MXLogger.setSubLogName("nse")
-            MXLogger.redirectNSLog(toFiles: true)
-        }
         
         if let userAccount = MXKAccountManager.shared()?.activeAccounts.first {
             store = NSEMemoryStore(withCredentials: userAccount.mxCredentials)
@@ -97,6 +102,9 @@ class NotificationService: UNNotificationServiceExtension {
                     break
                 }
             })
+        } else {
+            NSLog("[NotificationService] setup: No active accounts")
+            fallbackToOriginalContent()
         }
     }
     
@@ -121,6 +129,7 @@ class NotificationService: UNNotificationServiceExtension {
         func handleEncryption(forEvent event: MXEvent) {
             if !event.isEncrypted {
                 //  not encrypted, go on processing
+                NSLog("[NotificationService] fetchEvent: Event not encrypted.")
                 self.processEvent(event)
                 return
             }
@@ -128,6 +137,7 @@ class NotificationService: UNNotificationServiceExtension {
             //  encrypted
             if !self.showDecryptedContentInNotifications {
                 //  do not show decrypted content in notification
+                NSLog("[NotificationService] fetchEvent: Do not show decrypted content in notifications.")
                 self.fallbackToOriginalContent()
                 return
             }
@@ -135,6 +145,7 @@ class NotificationService: UNNotificationServiceExtension {
             //  should show decrypted content in notification
             if event.clear != nil {
                 //  already decrypted
+                NSLog("[NotificationService] fetchEvent: Event already decrypted.")
                 self.processEvent(event)
                 return
             }
@@ -142,6 +153,7 @@ class NotificationService: UNNotificationServiceExtension {
             //  should decrypt it first
             if mxSession.decryptEvent(event, inTimeline: nil) {
                 //  decryption succeeded
+                NSLog("[NotificationService] fetchEvent: Event decrypted successfully.")
                 self.processEvent(event)
             } else {
                 //  decryption failed
@@ -222,6 +234,7 @@ class NotificationService: UNNotificationServiceExtension {
         self.notificationContent(forEvent: event, inSession: mxSession) { (notificationContent) in
             //  close session
             self.mxSession?.close()
+            var isUnwantedNotification = false
             
             // Modify the notification content here...
             if let newContent = notificationContent {
@@ -235,8 +248,10 @@ class NotificationService: UNNotificationServiceExtension {
             } else {
                 //  this is an unwanted notification, mark as to be deleted when app is foregrounded again OR a new push came
                 content.categoryIdentifier = Constants.toBeRemovedNotificationCategoryIdentifier
+                isUnwantedNotification = true
             }
             
+            NSLog("[NotificationService] processEvent: Calling content handler, isUnwanted notification: \(isUnwantedNotification)")
             self.contentHandler?(content)
         }
     }
@@ -257,21 +272,22 @@ class NotificationService: UNNotificationServiceExtension {
     
     func notificationContent(forEvent event: MXEvent, inSession session: MXSession, onComplete: @escaping (UNNotificationContent?) -> Void) {
         guard let content = event.content, content.count > 0 else {
-            NSLog("[NotificationService][Push] notificationContentForEvent: empty event content")
+            NSLog("[NotificationService] notificationContentForEvent: empty event content")
             onComplete(nil)
             return
         }
         guard let room = session.room(withRoomId: event.roomId) else {
-            NSLog("[NotificationService][Push] notificationBodyForEvent: Unknown room")
+            NSLog("[NotificationService] notificationContentForEvent: Unknown room")
             onComplete(nil)
             return
         }
         
         let pushRule = room.getRoomPushRule()
         
+        NSLog("[NotificationService] notificationContentForEvent: Attempt to fetch the room state")
         room.state { (roomState) in
             guard let roomState = roomState else {
-                NSLog("[NotificationService] notificationContentForEvent: Could not load the room state")
+                NSLog("[NotificationService] notificationContentForEvent: Could not fetch the room state")
                 onComplete(nil)
                 return
             }
@@ -304,7 +320,7 @@ class NotificationService: UNNotificationServiceExtension {
                     
                     if !isHighlighted {
                         // Ignore this notif.
-                        NSLog("[NotificationService][Push] notificationBodyForEvent: Ignore non highlighted notif in mentions only room")
+                        NSLog("[NotificationService] notificationContentForEvent: Ignore non highlighted notif in mentions only room")
                         onComplete(nil)
                         return
                     }
@@ -351,7 +367,7 @@ class NotificationService: UNNotificationServiceExtension {
                             
                             onComplete(notificationContent)
                         }, failure:{ (error) in
-                            NSLog("[NotificationService][Push] notificationContentForEvent: failed to fetch key verification with error: \(error)")
+                            NSLog("[NotificationService] notificationContentForEvent: failed to fetch key verification with error: \(error)")
                             onComplete(nil)
                         })
                     } else {
@@ -413,7 +429,8 @@ class NotificationService: UNNotificationServiceExtension {
                 break
             }
             
-            guard (notificationBody != nil) else {
+            guard notificationBody != nil else {
+                NSLog("[NotificationService] notificationContentForEvent: notificationBody is nil")
                 onComplete(nil)
                 return
             }
@@ -425,6 +442,7 @@ class NotificationService: UNNotificationServiceExtension {
                                                                event: event,
                                                                pushRule: pushRule)
             
+            NSLog("[NotificationService] notificationContentForEvent: Calling onComplete.")
             onComplete(notificationContent)
         }
     }
