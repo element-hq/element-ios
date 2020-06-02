@@ -1146,26 +1146,68 @@
             [session.crypto setOutgoingKeyRequestsEnabled:NO onComplete:nil];
             
             [session.crypto.crossSigning refreshStateWithSuccess:^(BOOL stateUpdated) {
-                
-                if (session.crypto.crossSigning.state == MXCrossSigningStateCrossSigningExists)
+
+                NSLog(@"[AuthenticationVC] sessionStateDidChange: crossSigning.state: %@", @(session.crypto.crossSigning.state));
+
+                switch (session.crypto.crossSigning.state)
                 {
-                    dispatch_async(dispatch_get_main_queue(), ^{
+                    case MXCrossSigningStateNotBootstrapped:
+                    {
+                        // Bootstrap cross-signing on user's account
+                        // We do it for both registration and new login as long as cross-signing does not exist yet
+                        if (self.authInputsView.password.length)
+                        {
+                            NSLog(@"[AuthenticationVC] sessionStateDidChange: Bootstrap with password");
+                            
+                            [session.crypto.crossSigning bootstrapWithPassword:self.authInputsView.password success:^{
+                                NSLog(@"[AuthenticationVC] sessionStateDidChange: Bootstrap succeeded");
+                                [self dismiss];
+                            } failure:^(NSError * _Nonnull error) {
+                                NSLog(@"[AuthenticationVC] sessionStateDidChange: Bootstrap failed. Error: %@", error);
+                                [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+                                [self dismiss];
+                            }];
+                        }
+                        else if (self.externalRegistrationParameters)
+                        {
+                            // TODO
+                        }
+                        else
+                        {
+                            NSLog(@"[AuthenticationVC] sessionStateDidChange: Do not know how to bootstrap");
+                            
+                            [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+                            [self dismiss];
+                        }
+                        break;
+                    }
+                    case MXCrossSigningStateCrossSigningExists:
+                    {
+                        NSLog(@"[AuthenticationVC] sessionStateDidChange: Complete security");
                         
-                        self.userInteractionEnabled = YES;
-                        [self.authenticationActivityIndicator stopAnimating];
+                        // Ask the user to verify this session
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            
+                            self.userInteractionEnabled = YES;
+                            [self.authenticationActivityIndicator stopAnimating];
+                            
+                            [self presentCompleteSecurityWithSession:session];
+                        });
+                        break;
+                    }
                         
-                        [self presentCompleteSecurityWithSession:session];
-                    });
-                }
-                else
-                {
-                    [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
-                    [self dismiss];
+                    default:
+                        NSLog(@"[AuthenticationVC] sessionStateDidChange: Nothing to do");
+                        
+                        [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+                        [self dismiss];
+                        break;
                 }
                 
             } failure:^(NSError * _Nonnull error) {
-                NSLog(@"[AuthenticationVC] Fail to refresh crypto state with error: %@", error);
+                NSLog(@"[AuthenticationVC] sessionStateDidChange: Fail to refresh crypto state with error: %@", error);
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
                     [self dismiss];
                 });
             }];
