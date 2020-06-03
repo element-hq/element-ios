@@ -69,41 +69,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)applicationWillEnterForeground;
 
 /**
- Add Matrix session to be handled for incoming pushes.
-
- @param mxSession Matrix session.
- */
-- (void)addMatrixSession:(MXSession *)mxSession;
-
-/**
- Remove Matrix session to incoming push handling.
-
- @param mxSession Matrix session.
- */
-- (void)removeMatrixSession:(MXSession *)mxSession;
-
-/**
- Enable local notifications for the passed Matrix session.
-
- @param mxSession Matrix session.
- */
-- (void)enableLocalNotificationsFromMatrixSession:(MXSession*)mxSession;
-
-/**
- Disable local notifications for the passed Matrix session.
-
- @param mxSession Matrix session.
- */
-- (void)disableLocalNotificationsFromMatrixSession:(MXSession*)mxSession;
-
-/**
- Handle state changes for a Matrix session, when in background. If this method called when the application is not in background, it has no effect.
-
- @param mxSession Matrix session.
- */
-- (void)handleSessionStateChangesInBackgroundFor:(MXSession *)mxSession;
-
-/**
  Remove delivered notifications for a given room id except call notifications
 
  @param roomId Room identifier
@@ -117,13 +82,6 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol PushNotificationServiceDelegate <NSObject>
 
 @optional
-
-/**
- Will be called when it's a good idea to update application badge number.
-
- @param pushNotificationService PushNotificationService object.
- */
-- (void)pushNotificationServiceShouldRefreshApplicationBadgeNumber:(PushNotificationService *)pushNotificationService;
 
 /**
  Will be called when the user interacts with a notification, which will be led the user to navigate to a specific room.

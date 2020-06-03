@@ -1170,11 +1170,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 #pragma mark - PushNotificationServiceDelegate
 
-- (void)pushNotificationServiceShouldRefreshApplicationBadgeNumber:(PushNotificationService *)pushNotificationService
-{
-    [self refreshApplicationIconBadgeNumber];
-}
-
 - (void)pushNotificationService:(PushNotificationService *)pushNotificationService shouldNavigateToRoomWithId:(NSString *)roomId
 {
     [self navigateToRoomById:roomId];
@@ -1908,9 +1903,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             // A new call observer may be added here
             [self addMatrixCallObserver];
             
-            // Enable local notifications
-            [self.pushNotificationService enableLocalNotificationsFromMatrixSession:mxSession];
-            
             // Look for the account related to this session.
             NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
             for (MXKAccount *account in mxAccounts)
@@ -1937,11 +1929,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         else if (mxSession.state == MXSessionStateClosed)
         {
             [self removeMatrixSession:mxSession];
-        }
-        // Consider here the case where the app is running in background.
-        else if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground)
-        {
-            [self.pushNotificationService handleSessionStateChangesInBackgroundFor:mxSession];
         }
         else if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
         {
@@ -2137,8 +2124,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         // Do the one time check on device id
         [self checkDeviceId:mxSession];
 
-        [self.pushNotificationService addMatrixSession:mxSession];
-
         // Enable listening of incoming key share requests
         [self enableRoomKeyRequestObserver:mxSession];
 
@@ -2159,9 +2144,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     // If any, disable the no VoIP support workaround
     [self disableNoVoIPOnMatrixSession:mxSession];
-    
-    // Disable local notifications from this session
-    [self.pushNotificationService disableLocalNotificationsFromMatrixSession:mxSession];
 
     // Disable listening of incoming key share requests
     [self disableRoomKeyRequestObserver:mxSession];
@@ -2169,8 +2151,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // Disable listening of incoming key verification requests
     [self disableIncomingKeyVerificationObserver:mxSession];
 
-    [self.pushNotificationService removeMatrixSession:mxSession];
-    
     [mxSessionArray removeObject:mxSession];
     
     if (!mxSessionArray.count && matrixCallObserver)
