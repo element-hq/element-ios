@@ -1170,7 +1170,16 @@
                         }
                         else if (self.externalRegistrationParameters)
                         {
-                            // TODO
+                            NSLog(@"[AuthenticationVC] sessionStateDidChange: Bootstrap with external (like SSO) parameters");
+                            
+                            [session.crypto.crossSigning bootstrapWithAuthParams:self.externalRegistrationParameters success:^{
+                                NSLog(@"[AuthenticationVC] sessionStateDidChange: Bootstrap succeeded");
+                                [self dismiss];
+                            } failure:^(NSError * _Nonnull error) {
+                                NSLog(@"[AuthenticationVC] sessionStateDidChange: Bootstrap failed. Error: %@", error);
+                                [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+                                [self dismiss];
+                            }];
                         }
                         else
                         {
