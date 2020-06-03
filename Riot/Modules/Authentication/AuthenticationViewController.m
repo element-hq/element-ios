@@ -1200,13 +1200,10 @@
                         NSLog(@"[AuthenticationVC] sessionStateDidChange: Complete security");
                         
                         // Ask the user to verify this session
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            
-                            self.userInteractionEnabled = YES;
-                            [self.authenticationActivityIndicator stopAnimating];
-                            
-                            [self presentCompleteSecurityWithSession:session];
-                        });
+                        self.userInteractionEnabled = YES;
+                        [self.authenticationActivityIndicator stopAnimating];
+                        
+                        [self presentCompleteSecurityWithSession:session];
                         break;
                     }
                         
@@ -1220,10 +1217,8 @@
                 
             } failure:^(NSError * _Nonnull error) {
                 NSLog(@"[AuthenticationVC] sessionStateDidChange: Fail to refresh crypto state with error: %@", error);
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
-                    [self dismiss];
-                });
+                [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+                [self dismiss];
             }];
         }
         else
