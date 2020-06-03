@@ -918,44 +918,75 @@
 
     NSArray* mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
 
-    MXKRoomDataSourceManager* manager;
+    __block MXKRoomDataSourceManager* manager;
+    dispatch_group_t group = dispatch_group_create();
 
     for (MXKAccount* account in mxAccounts)
     {
-        MXRoom* room = [account.mxSession roomWithRoomId:roomId];
-        if (room)
+        void(^storeDataReadyBlock)(void) = ^{
+            MXRoom* room = [account.mxSession roomWithRoomId:roomId];
+            if (room)
+            {
+                manager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:account.mxSession];
+            }
+        };
+        
+        if (account.mxSession.state >= MXSessionStateStoreDataReady)
         {
-            manager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:account.mxSession];
+            storeDataReadyBlock();
             if (manager)
             {
                 break;
             }
         }
+        else
+        {
+            dispatch_group_enter(group);
+            
+            //  wait for session state to be store data ready
+            id sessionStateObserver = nil;
+            sessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:account.mxSession queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+                if (manager)
+                {
+                    [[NSNotificationCenter defaultCenter] removeObserver:sessionStateObserver];
+                    return;
+                }
+                
+                if (account.mxSession.state >= MXSessionStateStoreDataReady)
+                {
+                    [[NSNotificationCenter defaultCenter] removeObserver:sessionStateObserver];
+                    storeDataReadyBlock();
+                    dispatch_group_leave(group);
+                }
+            }];
+        }
     }
-
-    if (manager == nil)
-    {
-        NSLog(@"[PushNotificationService][Push] didReceiveNotificationResponse: room with id %@ not found", roomId);
-        failure(nil);
-    }
-    else
-    {
-        [manager roomDataSourceForRoom:roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
-            if (responseText != nil && responseText.length != 0)
-            {
-                NSLog(@"[PushNotificationService][Push] didReceiveNotificationResponse: sending message to room: %@", roomId);
-                [roomDataSource sendTextMessage:responseText success:^(NSString* eventId) {
-                    success(eventId);
-                } failure:^(NSError* error) {
-                    failure(error);
-                }];
-            }
-            else
-            {
-                failure(nil);
-            }
-        }];
-    }
+    
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        if (manager == nil)
+        {
+            NSLog(@"[PushNotificationService][Push] didReceiveNotificationResponse: room with id %@ not found", roomId);
+            failure(nil);
+        }
+        else
+        {
+            [manager roomDataSourceForRoom:roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
+                if (responseText != nil && responseText.length != 0)
+                {
+                    NSLog(@"[PushNotificationService][Push] didReceiveNotificationResponse: sending message to room: %@", roomId);
+                    [roomDataSource sendTextMessage:responseText success:^(NSString* eventId) {
+                        success(eventId);
+                    } failure:^(NSError* error) {
+                        failure(error);
+                    }];
+                }
+                else
+                {
+                    failure(nil);
+                }
+            }];
+        }
+    });
 }
 
 - (void)clearPushNotificationToken
