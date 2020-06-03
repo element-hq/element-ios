@@ -16,6 +16,7 @@ Bug fix:
  * Xcode11: Fix decryption on notifications when the key is not present (#3295).
  * SettingsViewController: Fix PushKit references with APNS correspondents (PR #3298).
  * Xcode11: Fix notification reply with new pushes (#3301).
+ * Xcode11: Fix notification doubling on replies (#3308).
  
  Changes in 0.11.6 (2020-xx-xx)
  ===============================================
