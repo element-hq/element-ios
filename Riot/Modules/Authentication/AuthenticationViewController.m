@@ -1153,6 +1153,7 @@
                 {
                     case MXCrossSigningStateNotBootstrapped:
                     {
+#ifdef NEW_CROSS_SIGNING_FLOW
                         // Bootstrap cross-signing on user's account
                         // We do it for both registration and new login as long as cross-signing does not exist yet
                         if (self.authInputsView.password.length)
@@ -1188,6 +1189,10 @@
                             [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
                             [self dismiss];
                         }
+#else
+                        [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+                        [self dismiss];
+#endif
                         break;
                     }
                     case MXCrossSigningStateCrossSigningExists:
