@@ -65,6 +65,7 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
     {
         if (@available(iOS 13, *))
         {
+            // Translate "auto" into a theme with UITraitCollection
             themeId = ([UITraitCollection currentTraitCollection].userInterfaceStyle == UIUserInterfaceStyleDark) ? @"dark" : @"light";
         }
         else
@@ -104,19 +105,37 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
         _riotColorIndigo = [[UIColor alloc] initWithRgb:0xBD79CC];
         _riotColorOrange = [[UIColor alloc] initWithRgb:0xF8A15F];
 
-        // Observe "Invert Colours" settings changes (available since iOS 11)
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accessibilityInvertColorsStatusDidChange) name:UIAccessibilityInvertColorsStatusDidChangeNotification object:nil];
+        if (@available(iOS 13, *))
+        {
+            //  Observe application did become active for iOS appearance setting changes
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+        }
+        else
+        {
+            // Observe "Invert Colours" settings changes (available since iOS 11)
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accessibilityInvertColorsStatusDidChange) name:UIAccessibilityInvertColorsStatusDidChangeNotification object:nil];
+        }
     }
     return self;
 }
 
-- (void)accessibilityInvertColorsStatusDidChange
+- (void)refreshThemeIfAuto
 {
     // Refresh the theme only for "auto"
     if ([self.themeId isEqualToString:@"auto"])
     {
          self.theme = [self themeWithThemeId:self.themeId];
     }
+}
+
+- (void)accessibilityInvertColorsStatusDidChange
+{
+    [self refreshThemeIfAuto];
+}
+
+- (void)applicationDidBecomeActive
+{
+    [self refreshThemeIfAuto];
 }
 
 - (void)updateAppearance
