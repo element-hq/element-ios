@@ -26,6 +26,13 @@
 
 NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChangeThemeNotification";
 
+@interface ThemeService()
+
+/// Evaluated theme identifier from themeId.
+@property (nonatomic, copy) NSString *evaluatedThemeId;
+
+@end
+
 @implementation ThemeService
 @synthesize themeId = _themeId;
 
@@ -43,9 +50,17 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
 
 - (void)setThemeId:(NSString *)theThemeId
 {
-    // Update the current theme
     _themeId = theThemeId;
-    self.theme = [self themeWithThemeId:self.themeId];
+    [self reEvaluateTheme];
+}
+
+- (void)setEvaluatedThemeId:(NSString *)evaluatedThemeId
+{
+    if (![_evaluatedThemeId isEqualToString:evaluatedThemeId])
+    {
+        _evaluatedThemeId = evaluatedThemeId;
+        self.theme = [self themeWithEvaluatedThemeId:self.evaluatedThemeId];
+    }
 }
 
 - (void)setTheme:(id<Theme> _Nonnull)theme
@@ -57,39 +72,51 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
     [[NSNotificationCenter defaultCenter] postNotificationName:kThemeServiceDidChangeThemeNotification object:nil];
 }
 
-- (id<Theme>)themeWithThemeId:(NSString*)themeId
+/// Eliminated themeId into 3 values: "dark", "black" or "light"
+/// @param themeId Theme identifier setting value. Can be "auto" to respect system settings.
+- (NSString *)evaluateThemeIdFromThemeId:(NSString *)themeId
 {
-    id<Theme> theme;
-
+    NSString *resultThemeId = themeId;
+    
     if ([themeId isEqualToString:@"auto"])
     {
         if (@available(iOS 13, *))
         {
             // Translate "auto" into a theme with UITraitCollection
-            themeId = ([UITraitCollection currentTraitCollection].userInterfaceStyle == UIUserInterfaceStyleDark) ? @"dark" : @"light";
+            resultThemeId = ([UITraitCollection currentTraitCollection].userInterfaceStyle == UIUserInterfaceStyleDark) ? @"dark" : @"light";
         }
         else
         {
             // Translate "auto" into a theme
-            themeId = UIAccessibilityIsInvertColorsEnabled() ? @"dark" : @"light";
+            resultThemeId = UIAccessibilityIsInvertColorsEnabled() ? @"dark" : @"light";
         }
     }
+    else if (![themeId isEqualToString:@"dark"] && ![themeId isEqualToString:@"black"])
+    {
+        // Use light theme by default
+        resultThemeId = @"light";
+    }
+    
+    return resultThemeId;
+}
 
+/// Gets the theme from evaluated theme id ("dark", "black" or "light")
+/// @param themeId Evaluated theme id. Do not pass "auto" for this parameter
+- (id<Theme>)themeWithEvaluatedThemeId:(NSString*)themeId
+{
     if ([themeId isEqualToString:@"dark"])
     {
-        theme = [DarkTheme new];
+        return [DarkTheme new];
     }
     else if ([themeId isEqualToString:@"black"])
     {
-        theme = [BlackTheme new];
+        return [BlackTheme new];
     }
     else
     {
-        // Use light theme by default
-        theme = [DefaultTheme new];
+        //  "light" or something else
+        return [DefaultTheme new];
     }
-
-    return theme;
 }
 
 #pragma mark - Private methods
@@ -119,23 +146,19 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
     return self;
 }
 
-- (void)refreshThemeIfAuto
+- (void)reEvaluateTheme
 {
-    // Refresh the theme only for "auto"
-    if ([self.themeId isEqualToString:@"auto"])
-    {
-         self.theme = [self themeWithThemeId:self.themeId];
-    }
+     self.evaluatedThemeId = [self evaluateThemeIdFromThemeId:self.themeId];
 }
 
 - (void)accessibilityInvertColorsStatusDidChange
 {
-    [self refreshThemeIfAuto];
+    [self reEvaluateTheme];
 }
 
 - (void)applicationDidBecomeActive
 {
-    [self refreshThemeIfAuto];
+    [self reEvaluateTheme];
 }
 
 - (void)updateAppearance
