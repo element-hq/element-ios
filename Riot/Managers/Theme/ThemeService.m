@@ -63,8 +63,15 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
 
     if ([themeId isEqualToString:@"auto"])
     {
-        // Translate "auto" into a theme
-        themeId = UIAccessibilityIsInvertColorsEnabled() ? @"dark" : @"light";
+        if (@available(iOS 13, *))
+        {
+            themeId = ([UITraitCollection currentTraitCollection].userInterfaceStyle == UIUserInterfaceStyleDark) ? @"dark" : @"light";
+        }
+        else
+        {
+            // Translate "auto" into a theme
+            themeId = UIAccessibilityIsInvertColorsEnabled() ? @"dark" : @"light";
+        }
     }
 
     if ([themeId isEqualToString:@"dark"])
