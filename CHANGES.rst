@@ -17,6 +17,7 @@ Bug fix:
  * SettingsViewController: Fix PushKit references with APNS correspondents (PR #3298).
  * Xcode11: Fix notification reply with new pushes (#3301).
  * Xcode11: Fix notification doubling on replies (#3308).
+ * Xcode11: Fix selected background color on cells, for iOS 13+ (#3309).
  
  Changes in 0.11.6 (2020-xx-xx)
  ===============================================
