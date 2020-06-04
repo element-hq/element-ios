@@ -69,7 +69,13 @@ class DefaultTheme: NSObject, Theme {
     var keyboardAppearance: UIKeyboardAppearance = .light
 
     var placeholderTextColor: UIColor = UIColor(white: 0.7, alpha: 1.0) // Use default 70% gray color
-    var selectedBackgroundColor: UIColor?  // Use the default selection color
+    var selectedBackgroundColor: UIColor? {
+        // Use a color close to the iOS default selection gray on iOS 13+
+        if #available(iOS 13, *) {
+            return UIColor(rgb: 0xD1D1D6)
+        }
+        return nil
+    }
     var overlayBackgroundColor: UIColor = UIColor(white: 0.7, alpha: 0.5)
     var matrixSearchBackgroundImageTintColor: UIColor = UIColor(rgb: 0xE7E7E7)
     
