@@ -5,6 +5,7 @@ Improvements:
  * PushNotificationService: Move all notification related code to a new class (PR #3100).
  * Cross-signing: Bootstrap cross-sign on registration (and login if applicable). This action is now invisible to the user (#3292).
  * Authentication: Redirect the webview (SSO) javascript logs to iOS native logs.
+ * Timeline: Hide encrypted history (pre-invite) (#3239).
  
 Bug fix:
  * CallVC: Declined calls now properly reset call view controller, thanks to @Legi429 (#2877).
