@@ -24,6 +24,7 @@ Bug fix:
  * Xcode11: Fix selected background color on cells, for iOS 13+ (#3309).
  * Xcode11: Respect system dark mode setting (#2628).
  * Xcode11: Fix noisy notifications (#3316).
+ * Xcode11: Temporary workaround for navigation bar bg color on emoji selection screen (#3271).
  
  Changes in 0.11.6 (2020-xx-xx)
  ===============================================
