@@ -91,7 +91,7 @@ final class EmojiPickerViewController: UIViewController {
         super.viewDidAppear(animated)
         
         // Enable to hide search bar on scrolling after first time view appear
-        // Commenting out below code for now. It broke the navigation bar background. For details: https://stackoverflow.com/questions/59716249/ios13-uitableview-uisearchcontroller-with-custom-hidessearchbarwhenscrolling#:~:text=On%20iOS%2013%2C%20if%20you,and%20it%20won%27t%20disappear
+        // Commenting out below code for now. It broke the navigation bar background. For details: https://github.com/vector-im/riot-ios/issues/3271
 //        if #available(iOS 11.0, *) {
 //            self.navigationItem.hidesSearchBarWhenScrolling = true
 //        }
