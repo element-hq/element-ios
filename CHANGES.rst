@@ -4,7 +4,11 @@ Changes in 0.12.0 (2020-xx-xx)
 Improvements:
  * Update deployment target to iOS 11.0. Required for Jitsi > 2.8.x.
  * Theme: Customize UISearchBar with new iOS 13 properties (#3270).
-
+ * PushNotificationService: Move all notification related code to a new class (PR #3100).
+ * Cross-signing: Bootstrap cross-sign on registration (and login if applicable). This action is now invisible to the user (#3292).
+ * Authentication: Redirect the webview (SSO) javascript logs to iOS native logs.
+ * Timeline: Hide encrypted history (pre-invite) (#3239).
+ 
 Bug fix:
  * Xcode11: Fix content change error when dragging start chat page (PR #3075).
  * Xcode11: Fix status bar styles for many screens (PR #3077).

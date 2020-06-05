@@ -425,7 +425,6 @@ UIDocumentInteractionControllerDelegate>
     {
         case MXCrossSigningStateNotBootstrapped:                // Action: Bootstrap
         case MXCrossSigningStateCanCrossSign:                   // Action: Reset
-        case MXCrossSigningStateCanCrossSignAsynchronously:     // Action: Reset
             numberOfRowsInCrossSigningSection = CROSSSIGNING_FIRST_ACTION + 1;
             break;
         case MXCrossSigningStateCrossSigningExists:             // Actions: Verify this session, Reset
@@ -454,7 +453,6 @@ UIDocumentInteractionControllerDelegate>
             crossSigningInformation = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_info_trusted"];
             break;
         case MXCrossSigningStateCanCrossSign:
-        case MXCrossSigningStateCanCrossSignAsynchronously:
             crossSigningInformation = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_info_ok"];
             break;
     }
@@ -489,7 +487,6 @@ UIDocumentInteractionControllerDelegate>
             [self setUpcrossSigningButtonCellForBootstrap:buttonCell];
             break;
         case MXCrossSigningStateCanCrossSign:                   // Action: Reset
-        case MXCrossSigningStateCanCrossSignAsynchronously:     // Action: Reset
             [self setUpcrossSigningButtonCellForReset:buttonCell];
             break;
         case MXCrossSigningStateCrossSigningExists:             // Actions: Verify this session, Reset

@@ -1826,6 +1826,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // Get modular widget events in rooms histories
     [[MXKAppSettings standardAppSettings] addSupportedEventTypes:@[kWidgetMatrixEventTypeString, kWidgetModularEventTypeString]];
     
+    // Hide undecryptable messages that were sent while the user was not in the room
+    [MXKAppSettings standardAppSettings].hidePreJoinedUndecryptableEvents = YES;
+    
     // Enable long press on event in bubble cells
     [MXKRoomBubbleTableViewCell disableLongPressGestureOnEvent:NO];
     
