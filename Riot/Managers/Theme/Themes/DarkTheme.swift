@@ -20,6 +20,8 @@ import UIKit
 /// Color constants for the dark theme
 @objcMembers
 class DarkTheme: NSObject, Theme {
+    
+    var identifier: String = "dark"
 
     var backgroundColor: UIColor = UIColor(rgb: 0x181B21)
 
