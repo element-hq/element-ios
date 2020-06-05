@@ -43,18 +43,21 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
 
 - (void)setThemeId:(NSString *)theThemeId
 {
-    // Update the current theme
     _themeId = theThemeId;
-    self.theme = [self themeWithThemeId:self.themeId];
+    [self reEvaluateTheme];
 }
 
 - (void)setTheme:(id<Theme> _Nonnull)theme
 {
-    _theme = theme;
-    
-    [self updateAppearance];
+    //  update only if really changed
+    if (![_theme.identifier isEqualToString:theme.identifier])
+    {
+        _theme = theme;
+        
+        [self updateAppearance];
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:kThemeServiceDidChangeThemeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kThemeServiceDidChangeThemeNotification object:nil];
+    }
 }
 
 - (id<Theme>)themeWithThemeId:(NSString*)themeId
@@ -63,8 +66,16 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
 
     if ([themeId isEqualToString:@"auto"])
     {
-        // Translate "auto" into a theme
-        themeId = UIAccessibilityIsInvertColorsEnabled() ? @"dark" : @"light";
+        if (@available(iOS 13, *))
+        {
+            // Translate "auto" into a theme with UITraitCollection
+            themeId = ([UITraitCollection currentTraitCollection].userInterfaceStyle == UIUserInterfaceStyleDark) ? @"dark" : @"light";
+        }
+        else
+        {
+            // Translate "auto" into a theme
+            themeId = UIAccessibilityIsInvertColorsEnabled() ? @"dark" : @"light";
+        }
     }
 
     if ([themeId isEqualToString:@"dark"])
@@ -97,19 +108,33 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
         _riotColorIndigo = [[UIColor alloc] initWithRgb:0xBD79CC];
         _riotColorOrange = [[UIColor alloc] initWithRgb:0xF8A15F];
 
-        // Observe "Invert Colours" settings changes (available since iOS 11)
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accessibilityInvertColorsStatusDidChange) name:UIAccessibilityInvertColorsStatusDidChangeNotification object:nil];
+        if (@available(iOS 13, *))
+        {
+            //  Observe application did become active for iOS appearance setting changes
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+        }
+        else
+        {
+            // Observe "Invert Colours" settings changes (available since iOS 11)
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accessibilityInvertColorsStatusDidChange) name:UIAccessibilityInvertColorsStatusDidChangeNotification object:nil];
+        }
     }
     return self;
 }
 
+- (void)reEvaluateTheme
+{
+     self.theme = [self themeWithThemeId:self.themeId];
+}
+
 - (void)accessibilityInvertColorsStatusDidChange
 {
-    // Refresh the theme only for "auto"
-    if ([self.themeId isEqualToString:@"auto"])
-    {
-         self.theme = [self themeWithThemeId:self.themeId];
-    }
+    [self reEvaluateTheme];
+}
+
+- (void)applicationDidBecomeActive
+{
+    [self reEvaluateTheme];
 }
 
 - (void)updateAppearance
