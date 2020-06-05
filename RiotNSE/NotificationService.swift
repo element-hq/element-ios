@@ -469,8 +469,6 @@ class NotificationService: UNNotificationServiceExtension {
         }
         if let soundName = notificationSoundName(fromPushRule: pushRule) {
             notificationContent.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: soundName))
-        } else {
-            notificationContent.sound = UNNotificationSound.default
         }
         notificationContent.userInfo = notificationUserInfo(forEvent: event, andUserId: userId)
         
