@@ -51,6 +51,14 @@ extern NSString *const kThemeServiceDidChangeThemeNotification;
  */
 @property (nonatomic, readonly) id<Theme> theme;
 
+/**
+ Get the theme with the given id.
+
+ @param themeId the theme id.
+ @return the theme.
+ */
+- (id<Theme>)themeWithThemeId:(NSString*)themeId;
+
 #pragma mark - Riot Colors not yet themeable
 
 @property (nonatomic, readonly) UIColor *riotColorBlue;
