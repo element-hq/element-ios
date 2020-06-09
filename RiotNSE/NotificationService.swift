@@ -71,7 +71,7 @@ class NotificationService: UNNotificationServiceExtension {
     func setupLogger() {
         if isatty(STDERR_FILENO) == 0 {
             MXLogger.setSubLogName("nse")
-            MXLogger.redirectNSLog(toFiles: true)
+            MXLogger.redirectNSLog(toFiles: true, numberOfFiles: 100)
         }
     }
     
