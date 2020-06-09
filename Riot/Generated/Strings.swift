@@ -2935,8 +2935,8 @@ internal enum VectorL10n {
     return VectorL10n.tr("Vector", "secrets_recovery_with_key_information") 
   }
   /// Please verify that you entered the correct recovery key.
-  internal static var secretsRecoveryWithKeyInvalidRecoveryKey: String { 
-    return VectorL10n.tr("Vector", "secrets_recovery_with_key_invalid_recovery_key") 
+  internal static var secretsRecoveryWithKeyInvalidRecoveryKeyMessage: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_key_invalid_recovery_key_message") 
   }
   /// Unable to access secret storage
   internal static var secretsRecoveryWithKeyInvalidRecoveryKeyTitle: String { 
