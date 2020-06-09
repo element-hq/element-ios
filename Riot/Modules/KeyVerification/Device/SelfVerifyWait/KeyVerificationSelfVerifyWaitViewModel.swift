@@ -28,6 +28,9 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     private let keyVerificationService: KeyVerificationService
     private let verificationManager: MXKeyVerificationManager
     private let isNewSignIn: Bool
+    private lazy var secretsRecoveryAvailability: SecretsRecoveryAvailability = {
+        return self.secretsRecoveryAvailability(from: self.session.crypto.recoveryService)
+    }()
     
     private var keyVerificationRequest: MXKeyVerificationRequest?
     
@@ -57,6 +60,12 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
             self.loadData()
         case .cancel:
             self.cancel()
+        case .recoverSecrets:
+            switch self.secretsRecoveryAvailability {
+            case .notAvailable:
+                fatalError("Should not happen: When recovery is not available button is hidden")
+            case .available(let secretsRecoveryMode):                self.coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModel(self, wantsToRecoverSecretsWith: secretsRecoveryMode)
+            }
         }
     }
     
@@ -80,9 +89,20 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
             })
         }
         
+//        let recoverySecretsStatus = self.recoveryStatus(from: self.session.crypto.recoveryService)
+        let viewData = KeyVerificationSelfVerifyWaitViewData(isNewSignIn: self.isNewSignIn, secretsRecoveryAvailability: self.secretsRecoveryAvailability)
+        
         self.registerKeyVerificationManagerNewRequestNotification(for: self.verificationManager)
-        self.update(viewState: .loaded(self.isNewSignIn))
+        self.update(viewState: .loaded(viewData))
         self.registerTransactionDidStateChangeNotification()
+    }
+    
+    private func secretsRecoveryAvailability(from recoveryService: MXRecoveryService) -> SecretsRecoveryAvailability {
+        guard recoveryService.hasRecovery() else {
+            return .notAvailable
+        }
+        let secretsRecoveryMode: SecretsRecoveryMode = recoveryService.usePassphrase() ? .passphraseOrKey : .onlyKey
+        return .available(secretsRecoveryMode)
     }
     
     private func cancel() {
