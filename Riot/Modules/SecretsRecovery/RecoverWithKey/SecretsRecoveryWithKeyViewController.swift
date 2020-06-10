@@ -216,7 +216,7 @@ final class SecretsRecoveryWithKeyViewController: UIViewController {
         do {
             documentContent = try String(contentsOf: documentURL)
         } catch {
-            print("Error: \(error)")
+            print("[SecretsRecoveryWithKeyViewController] Error: \(error)")
             documentContent = nil
         }
         
