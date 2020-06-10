@@ -2815,8 +2815,8 @@
 			children = (
 				B19C4E6D248F79EE009A423F /* SecretsRecoveryCoordinatorType.swift */,
 				B19C4E6E248F79EF009A423F /* SecretsRecoveryCoordinator.swift */,
-				B19C4E6C248E994D009A423F /* RecoverWithKey */,
 				B19C4E6B248E993F009A423F /* RecoverWithPassphrase */,
+				B19C4E6C248E994D009A423F /* RecoverWithKey */,
 			);
 			path = SecretsRecovery;
 			sourceTree = "<group>";

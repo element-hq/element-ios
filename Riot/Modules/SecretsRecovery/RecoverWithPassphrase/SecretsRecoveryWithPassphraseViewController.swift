@@ -34,7 +34,7 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
     
     @IBOutlet private weak var passphraseVisibilityButton: UIButton!
     
-    @IBOutlet private weak var unknownPassphraseButton: UIButton!
+    @IBOutlet private weak var useRecoveryKeyButton: UIButton!
     
     @IBOutlet private weak var recoverButtonBackgroundView: UIView!
     @IBOutlet private weak var recoverButton: UIButton!
@@ -105,7 +105,7 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
         self.passphraseTitleLabel.text = VectorL10n.secretsRecoveryWithPassphrasePassphraseTitle
         self.passphraseTextField.addTarget(self, action: #selector(passphraseTextFieldDidChange(_:)), for: .editingChanged)
         
-        self.unknownPassphraseButton.vc_enableMultiLinesTitle()
+        self.useRecoveryKeyButton.vc_enableMultiLinesTitle()
         
         self.recoverButton.vc_enableMultiLinesTitle()
         self.recoverButton.setTitle(VectorL10n.secretsRecoveryWithPassphraseRecoverAction, for: .normal)
@@ -137,14 +137,14 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
         self.recoverButtonBackgroundView.backgroundColor = theme.backgroundColor
         theme.applyStyle(onButton: self.recoverButton)
         
-        let unknownRecoveryKeyAttributedString = NSMutableAttributedString(string: VectorL10n.secretsRecoveryWithPassphraseLostPassphraseActionPart1, attributes: [.foregroundColor: self.theme.textPrimaryColor])
+        let useRecoveryKeyAttributedString = NSMutableAttributedString(string: VectorL10n.secretsRecoveryWithPassphraseLostPassphraseActionPart1, attributes: [.foregroundColor: self.theme.textPrimaryColor])
         let unknownRecoveryKeyAttributedStringPart2 = NSAttributedString(string: VectorL10n.secretsRecoveryWithPassphraseLostPassphraseActionPart2, attributes: [.foregroundColor: self.theme.tintColor])
         let unknownRecoveryKeyAttributedStringPart3 = NSAttributedString(string: VectorL10n.secretsRecoveryWithPassphraseLostPassphraseActionPart3, attributes: [.foregroundColor: self.theme.textPrimaryColor])
         
-        unknownRecoveryKeyAttributedString.append(unknownRecoveryKeyAttributedStringPart2)
-        unknownRecoveryKeyAttributedString.append(unknownRecoveryKeyAttributedStringPart3)
+        useRecoveryKeyAttributedString.append(unknownRecoveryKeyAttributedStringPart2)
+        useRecoveryKeyAttributedString.append(unknownRecoveryKeyAttributedStringPart3)
         
-        self.unknownPassphraseButton.setAttributedTitle(unknownRecoveryKeyAttributedString, for: .normal)
+        self.useRecoveryKeyButton.setAttributedTitle(useRecoveryKeyAttributedString, for: .normal)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -211,8 +211,8 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
         self.viewModel.process(viewAction: .recover)
     }
     
-    @IBAction private func unknownPassphraseButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .unknownPassphrase)
+    @IBAction private func useRecoveryKeyButtonAction(_ sender: Any) {
+        self.viewModel.process(viewAction: .useRecoveryKey)
     }
 }
 

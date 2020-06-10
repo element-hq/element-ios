@@ -53,7 +53,7 @@ final class SecretsRecoveryWithPassphraseCoordinator: SecretsRecoveryWithPassphr
 
 // MARK: - SecretsRecoveryWithPassphraseViewModelCoordinatorDelegate
 extension SecretsRecoveryWithPassphraseCoordinator: SecretsRecoveryWithPassphraseViewModelCoordinatorDelegate {
-    func secretsRecoveryWithPassphraseViewModelDoNotKnowPassphrase(_ viewModel: SecretsRecoveryWithPassphraseViewModelType) {
+    func secretsRecoveryWithPassphraseViewModelWantsToRecoverByKey(_ viewModel: SecretsRecoveryWithPassphraseViewModelType) {
         self.delegate?.secretsRecoveryWithPassphraseCoordinatorDoNotKnowPassphrase(self)
     }
     

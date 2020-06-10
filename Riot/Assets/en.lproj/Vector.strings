@@ -1337,7 +1337,6 @@
 "secrets_recovery_with_key_recovery_key_title" = "Enter";
 "secrets_recovery_with_key_recovery_key_placeholder" = "Enter Recovery Key";
 "secrets_recovery_with_key_recover_action" = "Recover secrets";
-"secrets_recovery_with_key_lost_recovery_key_action" = "If you've forgotten your recovery key you can set up new recovery options from the Web client.";
 
 "secrets_recovery_with_key_invalid_recovery_key_title" = "Unable to access secret storage";
 "secrets_recovery_with_key_invalid_recovery_key_message" = "Please verify that you entered the correct recovery key.";

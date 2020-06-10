@@ -2942,10 +2942,6 @@ internal enum VectorL10n {
   internal static var secretsRecoveryWithKeyInvalidRecoveryKeyTitle: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_key_invalid_recovery_key_title") 
   }
-  /// If you've forgotten your recovery key you can set up new recovery options from the Web client.
-  internal static var secretsRecoveryWithKeyLostRecoveryKeyAction: String { 
-    return VectorL10n.tr("Vector", "secrets_recovery_with_key_lost_recovery_key_action") 
-  }
   /// Recover secrets
   internal static var secretsRecoveryWithKeyRecoverAction: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_key_recover_action") 

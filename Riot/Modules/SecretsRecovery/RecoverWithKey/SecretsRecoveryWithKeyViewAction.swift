@@ -18,7 +18,6 @@ import Foundation
 
 /// SecretsRecoveryWithKeyViewController view actions exposed to view model
 enum SecretsRecoveryWithKeyViewAction {
-    case recover
-    case unknownRecoveryKey
+    case recover    
     case cancel
 }

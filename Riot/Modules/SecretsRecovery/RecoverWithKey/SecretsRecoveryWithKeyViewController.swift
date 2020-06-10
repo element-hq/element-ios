@@ -34,9 +34,7 @@ final class SecretsRecoveryWithKeyViewController: UIViewController {
     @IBOutlet private weak var recoveryKeyTextFieldBackgroundView: UIView!
     
     @IBOutlet private weak var importFileButton: UIButton!
-    
-    @IBOutlet private weak var unknownRecoveryKeyButton: UIButton!
-    
+        
     @IBOutlet private weak var recoverButtonBackgroundView: UIView!
     @IBOutlet private weak var recoverButton: UIButton!
     
@@ -106,12 +104,7 @@ final class SecretsRecoveryWithKeyViewController: UIViewController {
         
         let importFileImage = Asset.Images.importFilesButton.image.withRenderingMode(.alwaysTemplate)
         self.importFileButton.setImage(importFileImage, for: .normal)
-        
-        self.unknownRecoveryKeyButton.vc_enableMultiLinesTitle()
-        self.unknownRecoveryKeyButton.setTitle(VectorL10n.secretsRecoveryWithKeyLostRecoveryKeyAction, for: .normal)
-        // Interaction is disabled for the moment
-        self.unknownRecoveryKeyButton.isUserInteractionEnabled = false
-        
+                
         self.recoverButton.vc_enableMultiLinesTitle()
         self.recoverButton.setTitle(VectorL10n.secretsRecoveryWithKeyRecoverAction, for: .normal)
         
@@ -141,8 +134,6 @@ final class SecretsRecoveryWithKeyViewController: UIViewController {
         
         self.recoverButtonBackgroundView.backgroundColor = theme.backgroundColor
         theme.applyStyle(onButton: self.recoverButton)
-        
-        self.unknownRecoveryKeyButton.setTitleColor(theme.textPrimaryColor, for: .normal)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -236,14 +227,10 @@ final class SecretsRecoveryWithKeyViewController: UIViewController {
     @objc private func recoveryKeyTextFieldDidChange(_ textField: UITextField) {
         self.viewModel.recoveryKey = textField.text
         self.updateRecoverButton()
-    }
+    }        
     
-    @IBAction private func usePassphraseButtonAction(_ sender: Any) {
+    @IBAction private func recoverButtonAction(_ sender: Any) {
         self.viewModel.process(viewAction: .recover)
-    }
-    
-    @IBAction private func unknownPassphraseButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .unknownRecoveryKey)
     }
 }
 

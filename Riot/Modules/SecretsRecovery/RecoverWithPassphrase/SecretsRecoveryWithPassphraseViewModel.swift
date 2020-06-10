@@ -23,7 +23,6 @@ final class SecretsRecoveryWithPassphraseViewModel: SecretsRecoveryWithPassphras
     // MARK: Private
     
     private let recoveryService: MXRecoveryService
-    private var currentHTTPOperation: MXHTTPOperation?
     
     // MARK: Public
     
@@ -42,10 +41,6 @@ final class SecretsRecoveryWithPassphraseViewModel: SecretsRecoveryWithPassphras
         self.recoveryService = recoveryService
     }
     
-    deinit {
-        self.currentHTTPOperation?.cancel()
-    }
-    
     // MARK: - Public
     
     func process(viewAction: SecretsRecoveryWithPassphraseViewAction) {
@@ -54,8 +49,8 @@ final class SecretsRecoveryWithPassphraseViewModel: SecretsRecoveryWithPassphras
             self.recoverWithPassphrase()
         case .cancel:
             self.coordinatorDelegate?.secretsRecoveryWithPassphraseViewModelDidCancel(self)
-        case .unknownPassphrase:
-            self.coordinatorDelegate?.secretsRecoveryWithPassphraseViewModelDoNotKnowPassphrase(self)
+        case .useRecoveryKey:
+            self.coordinatorDelegate?.secretsRecoveryWithPassphraseViewModelWantsToRecoverByKey(self)
         }
     }
     
@@ -76,7 +71,7 @@ final class SecretsRecoveryWithPassphraseViewModel: SecretsRecoveryWithPassphras
             self.recoveryService.recoverSecrets(nil, withPrivateKey: privateKey, recoverServices: true, success: { [weak self] recoveryResult in
                 guard let self = self else {
                     return
-                }                
+                }
                 self.update(viewState: .loaded)
                 self.coordinatorDelegate?.secretsRecoveryWithPassphraseViewModelDidRecover(self)
             }, failure: { [weak self] error in

@@ -23,7 +23,6 @@ final class SecretsRecoveryWithKeyViewModel: SecretsRecoveryWithKeyViewModelType
     // MARK: Private
     
     private let recoveryService: MXRecoveryService
-    private var currentHTTPOperation: MXHTTPOperation?
     
     // MARK: Public
     
@@ -41,11 +40,7 @@ final class SecretsRecoveryWithKeyViewModel: SecretsRecoveryWithKeyViewModelType
     init(recoveryService: MXRecoveryService) {
         self.recoveryService = recoveryService
     }
-    
-    deinit {
-        self.currentHTTPOperation?.cancel()
-    }
-    
+
     // MARK: - Public
     
     func process(viewAction: SecretsRecoveryWithKeyViewAction) {
@@ -54,8 +49,6 @@ final class SecretsRecoveryWithKeyViewModel: SecretsRecoveryWithKeyViewModelType
             self.recover()
         case .cancel:
             self.coordinatorDelegate?.secretsRecoveryWithKeyViewModelDidCancel(self)
-        case .unknownRecoveryKey:
-            break
         }
     }
     
@@ -80,7 +73,7 @@ final class SecretsRecoveryWithKeyViewModel: SecretsRecoveryWithKeyViewModelType
             }, failure: { [weak self] error in
                 guard let self = self else {
                     return
-                }                
+                }
                 self.update(viewState: .error(error))
             })
         } catch {
