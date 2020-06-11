@@ -9,6 +9,7 @@ Improvements:
  * Authentication: Redirect the webview (SSO) javascript logs to iOS native logs.
  * Timeline: Hide encrypted history (pre-invite) (#3239).
  * NSE: Increase number of log files to 100.
+ * NSE: Make extension reusable (#3326).
  
 Bug fix:
  * Xcode11: Fix content change error when dragging start chat page (PR #3075).
