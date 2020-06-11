@@ -67,8 +67,9 @@ class NotificationService: UNNotificationServiceExtension {
     override func serviceExtensionTimeWillExpire() {
         // Called just before the extension will be terminated by the system.
         // Use this as an opportunity to deliver your "best attempt" at modified content, otherwise the original push payload will be used.
+        
         NSLog("[NotificationService] serviceExtensionTimeWillExpire")
-        fallbackToOriginalContent(forEventId: "")
+        //  No-op here. If the process is killed by the OS due to time limit, it will also show the notification with the original content.
     }
     
     func setupLogger() {
