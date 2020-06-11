@@ -25,7 +25,8 @@ class NotificationService: UNNotificationServiceExtension {
     /// Original contents. Keys are eventId's
     var originalContents: [String: UNMutableNotificationContent] = [:]
     
-    var cachedEvent: MXEvent?
+    /// Cached events. Keys are eventId's
+    var cachedEvents: [String: MXEvent] = [:]
     var mxSession: MXSession?
     var store: NSEMemoryStore!
     var showDecryptedContentInNotifications: Bool {
@@ -165,7 +166,7 @@ class NotificationService: UNNotificationServiceExtension {
         }
         
         //  check if we've fetched the event before
-        if let cachedEvent = self.cachedEvent {
+        if let cachedEvent = self.cachedEvents[eventId] {
             //  use cached event
             handleEncryption(forEvent: cachedEvent)
         } else {
@@ -183,7 +184,7 @@ class NotificationService: UNNotificationServiceExtension {
                 }
                 
                 //  cache this event
-                self.cachedEvent = event
+                self.cachedEvents[eventId] = event
                 
                 //  handle encryption for this event
                 handleEncryption(forEvent: event)
