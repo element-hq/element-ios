@@ -16,11 +16,6 @@
 
 import Foundation
 
-enum SecretsRecoveryMode {
-    case passphraseOrKey
-    case onlyKey
-}
-
 final class SecretsRecoveryCoordinator: SecretsRecoveryCoordinatorType {
     
     // MARK: - Properties
@@ -30,6 +25,7 @@ final class SecretsRecoveryCoordinator: SecretsRecoveryCoordinatorType {
     private let session: MXSession
     private let navigationRouter: NavigationRouterType
     private let recoveryMode: SecretsRecoveryMode
+    private let recoveryGoal: SecretsRecoveryGoal
     
     // MARK: Public
     
@@ -39,9 +35,10 @@ final class SecretsRecoveryCoordinator: SecretsRecoveryCoordinatorType {
     
     // MARK: - Setup
     
-    init(session: MXSession, recoveryMode: SecretsRecoveryMode, navigationRouter: NavigationRouterType? = nil) {
+    init(session: MXSession, recoveryMode: SecretsRecoveryMode, recoveryGoal: SecretsRecoveryGoal, navigationRouter: NavigationRouterType? = nil) {
         self.session = session
         self.recoveryMode = recoveryMode
+        self.recoveryGoal = recoveryGoal
         
         if let navigationRouter = navigationRouter {
             self.navigationRouter = navigationRouter
@@ -85,13 +82,13 @@ final class SecretsRecoveryCoordinator: SecretsRecoveryCoordinatorType {
     // MARK: - Private
     
     private func createRecoverFromKeyCoordinator() -> SecretsRecoveryWithKeyCoordinator {
-        let coordinator = SecretsRecoveryWithKeyCoordinator(recoveryService: self.session.crypto.recoveryService)
+        let coordinator = SecretsRecoveryWithKeyCoordinator(recoveryService: self.session.crypto.recoveryService, recoveryGoal: self.recoveryGoal)
         coordinator.delegate = self
         return coordinator
     }
     
     private func createRecoverFromPassphraseCoordinator() -> SecretsRecoveryWithPassphraseCoordinator {
-        let coordinator = SecretsRecoveryWithPassphraseCoordinator(recoveryService: self.session.crypto.recoveryService)
+        let coordinator = SecretsRecoveryWithPassphraseCoordinator(recoveryService: self.session.crypto.recoveryService, recoveryGoal: self.recoveryGoal)
         coordinator.delegate = self
         return coordinator
     }

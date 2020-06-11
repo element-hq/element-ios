@@ -26,6 +26,8 @@ final class SecretsRecoveryWithPassphraseViewModel: SecretsRecoveryWithPassphras
     
     // MARK: Public
     
+    let recoveryGoal: SecretsRecoveryGoal
+    
     var passphrase: String?
     
     var isFormValid: Bool {
@@ -37,8 +39,9 @@ final class SecretsRecoveryWithPassphraseViewModel: SecretsRecoveryWithPassphras
     
     // MARK: - Setup
     
-    init(recoveryService: MXRecoveryService) {
+    init(recoveryService: MXRecoveryService, recoveryGoal: SecretsRecoveryGoal) {
         self.recoveryService = recoveryService
+        self.recoveryGoal = recoveryGoal
     }
     
     // MARK: - Public

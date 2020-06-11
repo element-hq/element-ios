@@ -35,8 +35,7 @@ final class SecretsRecoveryWithKeyViewController: UIViewController {
     
     @IBOutlet private weak var importFileButton: UIButton!
         
-    @IBOutlet private weak var recoverButtonBackgroundView: UIView!
-    @IBOutlet private weak var recoverButton: UIButton!
+    @IBOutlet private weak var recoverButton: RoundedButton!
     
     // MARK: Private
     
@@ -90,14 +89,23 @@ final class SecretsRecoveryWithKeyViewController: UIViewController {
         }
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         
-        self.title = VectorL10n.secretsRecoveryTitle
+        self.title = VectorL10n.secretsRecoveryWithKeyTitle
         
         self.scrollView.keyboardDismissMode = .interactive
         
-        let shieldImage = Asset.Images.keyBackupLogo.image.withRenderingMode(.alwaysTemplate)
+        let shieldImage = Asset.Images.secretsRecoveryKey.image.withRenderingMode(.alwaysTemplate)
         self.shieldImageView.image = shieldImage
         
-        self.informationLabel.text = VectorL10n.secretsRecoveryWithKeyInformation
+        let informationText: String
+        
+        switch self.viewModel.recoveryGoal {
+        case .default:
+            informationText = VectorL10n.secretsRecoveryWithKeyInformationDefault
+        case .verifyDevice:
+            informationText = VectorL10n.secretsRecoveryWithKeyInformationVerifyDevice
+        }
+        
+        self.informationLabel.text = informationText
         
         self.recoveryKeyTitleLabel.text = VectorL10n.secretsRecoveryWithKeyRecoveryKeyTitle
         self.recoveryKeyTextField.addTarget(self, action: #selector(recoveryKeyTextFieldDidChange(_:)), for: .editingChanged)
@@ -129,11 +137,9 @@ final class SecretsRecoveryWithKeyViewController: UIViewController {
         theme.applyStyle(onTextField: self.recoveryKeyTextField)
         self.recoveryKeyTextField.attributedPlaceholder = NSAttributedString(string: VectorL10n.secretsRecoveryWithKeyRecoveryKeyPlaceholder,
                                                                             attributes: [.foregroundColor: theme.placeholderTextColor])
+        theme.applyStyle(onButton: self.importFileButton)
         
-        theme.applyStyle(onButton: self.importFileButton)        
-        
-        self.recoverButtonBackgroundView.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.recoverButton)
+        self.recoverButton.update(theme: theme)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {

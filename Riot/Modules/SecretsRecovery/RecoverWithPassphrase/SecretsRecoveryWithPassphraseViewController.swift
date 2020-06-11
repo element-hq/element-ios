@@ -35,9 +35,8 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
     @IBOutlet private weak var passphraseVisibilityButton: UIButton!
     
     @IBOutlet private weak var useRecoveryKeyButton: UIButton!
-    
-    @IBOutlet private weak var recoverButtonBackgroundView: UIView!
-    @IBOutlet private weak var recoverButton: UIButton!
+        
+    @IBOutlet private weak var recoverButton: RoundedButton!
     
     // MARK: Private
     
@@ -90,17 +89,26 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
         }
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         
-        self.title = VectorL10n.secretsRecoveryTitle
+        self.title = VectorL10n.secretsRecoveryWithPassphraseTitle
         
         self.scrollView.keyboardDismissMode = .interactive
         
-        let shieldImage = Asset.Images.keyBackupLogo.image.withRenderingMode(.alwaysTemplate)
+        let shieldImage = Asset.Images.secretsRecoveryPassphrase.image.withRenderingMode(.alwaysTemplate)
         self.shieldImageView.image = shieldImage
         
         let visibilityImage = Asset.Images.revealPasswordButton.image.withRenderingMode(.alwaysTemplate)
         self.passphraseVisibilityButton.setImage(visibilityImage, for: .normal)
         
-        self.informationLabel.text = VectorL10n.secretsRecoveryWithPassphraseInformation
+        let informationText: String        
+        
+        switch self.viewModel.recoveryGoal {
+        case .default:
+            informationText = VectorL10n.secretsRecoveryWithPassphraseInformationDefault
+        case .verifyDevice:
+            informationText = VectorL10n.secretsRecoveryWithPassphraseInformationVerifyDevice
+        }
+        
+        self.informationLabel.text = informationText
         
         self.passphraseTitleLabel.text = VectorL10n.secretsRecoveryWithPassphrasePassphraseTitle
         self.passphraseTextField.addTarget(self, action: #selector(passphraseTextFieldDidChange(_:)), for: .editingChanged)
@@ -134,8 +142,7 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
         
         self.theme.applyStyle(onButton: self.passphraseVisibilityButton)
         
-        self.recoverButtonBackgroundView.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.recoverButton)
+        self.recoverButton.update(theme: theme)
         
         let useRecoveryKeyAttributedString = NSMutableAttributedString(string: VectorL10n.secretsRecoveryWithPassphraseLostPassphraseActionPart1, attributes: [.foregroundColor: self.theme.textPrimaryColor])
         let unknownRecoveryKeyAttributedStringPart2 = NSAttributedString(string: VectorL10n.secretsRecoveryWithPassphraseLostPassphraseActionPart2, attributes: [.foregroundColor: self.theme.tintColor])

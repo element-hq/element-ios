@@ -31,6 +31,7 @@ protocol SecretsRecoveryWithPassphraseViewModelType {
     
     var passphrase: String? { get set }
     var isFormValid: Bool { get }
+    var recoveryGoal: SecretsRecoveryGoal { get }
     
     var viewDelegate: SecretsRecoveryWithPassphraseViewModelViewDelegate? { get set }
     var coordinatorDelegate: SecretsRecoveryWithPassphraseViewModelCoordinatorDelegate? { get set }

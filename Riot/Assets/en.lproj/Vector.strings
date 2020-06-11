@@ -1315,14 +1315,14 @@
 
 // MARK: - Secrets recovery
 
-"secrets_recovery_title" = "Recover secrets";
-
 // Recover with passphrase
 
-"secrets_recovery_with_passphrase_information" = "Access your secure message history and your cross-signing identity for verifying other sessions by entering your recovery passphrase.";
+"secrets_recovery_with_passphrase_title" = "Recovery Passphrase";
+"secrets_recovery_with_passphrase_information_default" = "Access your secure message history and your cross-signing identity for verifying other sessions by entering your recovery passphrase.";
+"secrets_recovery_with_passphrase_information_verify_device" = "Use your Recovery Passphrase to verify this device.";
 "secrets_recovery_with_passphrase_passphrase_title" = "Enter";
-"secrets_recovery_with_passphrase_passphrase_placeholder" = "Enter Passphrase";
-"secrets_recovery_with_passphrase_recover_action" = "Recover secrets";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Enter Recovery Passphrase";
+"secrets_recovery_with_passphrase_recover_action" = "Use Passphrase";
 
 "secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Don’t know your recovery passphrase? You can ";
 "secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "use your recovery key";
@@ -1333,10 +1333,12 @@
 
 // Recover with key
 
-"secrets_recovery_with_key_information" = "Access your secure message history and your cross-signing identity for verifying other sessions by entering your recovery key.";
+"secrets_recovery_with_key_title" = "Recovery Key";
+"secrets_recovery_with_key_information_default" = "Access your secure message history and your cross-signing identity for verifying other sessions by entering your recovery key.";
+"secrets_recovery_with_key_information_verify_device" = "Use your Recovery Key to verify this device.";
 "secrets_recovery_with_key_recovery_key_title" = "Enter";
 "secrets_recovery_with_key_recovery_key_placeholder" = "Enter Recovery Key";
-"secrets_recovery_with_key_recover_action" = "Recover secrets";
+"secrets_recovery_with_key_recover_action" = "Use Key";
 
 "secrets_recovery_with_key_invalid_recovery_key_title" = "Unable to access secret storage";
 "secrets_recovery_with_key_invalid_recovery_key_message" = "Please verify that you entered the correct recovery key.";

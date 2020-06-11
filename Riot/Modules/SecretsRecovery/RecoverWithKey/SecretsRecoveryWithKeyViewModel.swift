@@ -26,6 +26,8 @@ final class SecretsRecoveryWithKeyViewModel: SecretsRecoveryWithKeyViewModelType
     
     // MARK: Public
     
+    let recoveryGoal: SecretsRecoveryGoal
+    
     var recoveryKey: String?
     
     var isFormValid: Bool {
@@ -37,8 +39,9 @@ final class SecretsRecoveryWithKeyViewModel: SecretsRecoveryWithKeyViewModelType
     
     // MARK: - Setup
     
-    init(recoveryService: MXRecoveryService) {
+    init(recoveryService: MXRecoveryService, recoveryGoal: SecretsRecoveryGoal) {
         self.recoveryService = recoveryService
+        self.recoveryGoal = recoveryGoal
     }
 
     // MARK: - Public

@@ -2926,13 +2926,13 @@ internal enum VectorL10n {
   internal static var searchRooms: String { 
     return VectorL10n.tr("Vector", "search_rooms") 
   }
-  /// Recover secrets
-  internal static var secretsRecoveryTitle: String { 
-    return VectorL10n.tr("Vector", "secrets_recovery_title") 
-  }
   /// Access your secure message history and your cross-signing identity for verifying other sessions by entering your recovery key.
-  internal static var secretsRecoveryWithKeyInformation: String { 
-    return VectorL10n.tr("Vector", "secrets_recovery_with_key_information") 
+  internal static var secretsRecoveryWithKeyInformationDefault: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_key_information_default") 
+  }
+  /// Use your Recovery Key to verify this device.
+  internal static var secretsRecoveryWithKeyInformationVerifyDevice: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_key_information_verify_device") 
   }
   /// Please verify that you entered the correct recovery key.
   internal static var secretsRecoveryWithKeyInvalidRecoveryKeyMessage: String { 
@@ -2942,7 +2942,7 @@ internal enum VectorL10n {
   internal static var secretsRecoveryWithKeyInvalidRecoveryKeyTitle: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_key_invalid_recovery_key_title") 
   }
-  /// Recover secrets
+  /// Use Key
   internal static var secretsRecoveryWithKeyRecoverAction: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_key_recover_action") 
   }
@@ -2954,9 +2954,17 @@ internal enum VectorL10n {
   internal static var secretsRecoveryWithKeyRecoveryKeyTitle: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_key_recovery_key_title") 
   }
+  /// Recovery Key
+  internal static var secretsRecoveryWithKeyTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_key_title") 
+  }
   /// Access your secure message history and your cross-signing identity for verifying other sessions by entering your recovery passphrase.
-  internal static var secretsRecoveryWithPassphraseInformation: String { 
-    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_information") 
+  internal static var secretsRecoveryWithPassphraseInformationDefault: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_information_default") 
+  }
+  /// Use your Recovery Passphrase to verify this device.
+  internal static var secretsRecoveryWithPassphraseInformationVerifyDevice: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_information_verify_device") 
   }
   /// Please verify that you entered the correct recovery passphrase.
   internal static var secretsRecoveryWithPassphraseInvalidPassphraseMessage: String { 
@@ -2978,7 +2986,7 @@ internal enum VectorL10n {
   internal static var secretsRecoveryWithPassphraseLostPassphraseActionPart3: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_lost_passphrase_action_part3") 
   }
-  /// Enter Passphrase
+  /// Enter Recovery Passphrase
   internal static var secretsRecoveryWithPassphrasePassphrasePlaceholder: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_passphrase_placeholder") 
   }
@@ -2986,9 +2994,13 @@ internal enum VectorL10n {
   internal static var secretsRecoveryWithPassphrasePassphraseTitle: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_passphrase_title") 
   }
-  /// Recover secrets
+  /// Use Passphrase
   internal static var secretsRecoveryWithPassphraseRecoverAction: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_recover_action") 
+  }
+  /// Recovery Passphrase
+  internal static var secretsRecoveryWithPassphraseTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_title") 
   }
   /// ADVANCED
   internal static var securitySettingsAdvanced: String { 

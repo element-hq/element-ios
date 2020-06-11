@@ -174,7 +174,7 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     }
     
     private func showSecretsRecovery(with recoveryMode: SecretsRecoveryMode) {
-        let coordinator = SecretsRecoveryCoordinator(session: self.session, recoveryMode: recoveryMode, navigationRouter: self.navigationRouter)
+        let coordinator = SecretsRecoveryCoordinator(session: self.session, recoveryMode: recoveryMode, recoveryGoal: .verifyDevice, navigationRouter: self.navigationRouter)
         coordinator.delegate = self
         coordinator.start()
         

@@ -30,6 +30,7 @@ protocol SecretsRecoveryWithKeyViewModelType {
     
     var recoveryKey: String? { get set }
     var isFormValid: Bool { get }
+    var recoveryGoal: SecretsRecoveryGoal { get }
     
     var viewDelegate: SecretsRecoveryWithKeyViewModelViewDelegate? { get set }
     var coordinatorDelegate: SecretsRecoveryWithKeyViewModelCoordinatorDelegate? { get set }
