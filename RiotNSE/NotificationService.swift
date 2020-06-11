@@ -279,7 +279,7 @@ class NotificationService: UNNotificationServiceExtension {
             onComplete(nil)
             return
         }
-        guard let room = session.room(withRoomId: event.roomId) else {
+        guard let room = MXRoom.load(from: store, withRoomId: event.roomId, matrixSession: session) as? MXRoom else {
             NSLog("[NotificationService] notificationContentForEvent: Unknown room")
             onComplete(nil)
             return
@@ -337,7 +337,7 @@ class NotificationService: UNNotificationServiceExtension {
                     msgType = nil
                 }
                 
-                let roomDisplayName = room.summary.displayname
+                let roomDisplayName = self.store.summary(ofRoom: room.roomId)?.displayname
                 let myUserId = session.myUser.userId
                 let isIncomingEvent = event.sender != myUserId
                 
