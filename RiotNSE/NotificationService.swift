@@ -87,24 +87,24 @@ class NotificationService: UNNotificationServiceExtension {
         Bundle.mxk_customizeLocalizedStringTableName("Vector")
         
         if let userAccount = MXKAccountManager.shared()?.activeAccounts.first {
-            store = NSEMemoryStore(withCredentials: userAccount.mxCredentials)
-            //  Fake roomStores in memory store. This is for both -[MXMemoryStore rooms] and -[MXSession rooms] to return some rooms.
-            //  Also roomsSummaries will be filled with the room summary for this roomId.
-            //  They all will be used afterwards.
-            store.getOrCreateRoomStore(roomId)
+            if store == nil {
+                store = NSEMemoryStore(withCredentials: userAccount.mxCredentials)
+            }
             
-            mxSession = MXSession(matrixRestClient: MXRestClient(credentials: userAccount.mxCredentials, unrecognizedCertificateHandler: nil))
-            mxSession?.setStore(store, completion: { (response) in
-                switch response {
-                case .success:
-                    completion()
-                    break
-                case .failure(let error):
-                    NSLog("[NotificationService] setup: MXSession.setStore method returned error: \(String(describing: error))")
-                    self.fallbackToOriginalContent(forEventId: eventId)
-                    break
-                }
-            })
+            if mxSession == nil {
+                mxSession = MXSession(matrixRestClient: MXRestClient(credentials: userAccount.mxCredentials, unrecognizedCertificateHandler: nil))
+                mxSession?.setStore(store, completion: { (response) in
+                    switch response {
+                    case .success:
+                        completion()
+                        break
+                    case .failure(let error):
+                        NSLog("[NotificationService] setup: MXSession.setStore method returned error: \(String(describing: error))")
+                        self.fallbackToOriginalContent(forEventId: eventId)
+                        break
+                    }
+                })
+            }
         } else {
             NSLog("[NotificationService] setup: No active accounts")
             fallbackToOriginalContent(forEventId: eventId)
