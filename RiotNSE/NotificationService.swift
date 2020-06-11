@@ -19,8 +19,11 @@ import MatrixKit
 
 class NotificationService: UNNotificationServiceExtension {
     
+    /// Content handlers. Keys are eventId's
     var contentHandlers: [String: ((UNNotificationContent) -> Void)] = [:]
-    var originalContent: UNMutableNotificationContent?
+    
+    /// Original contents. Keys are eventId's
+    var originalContents: [String: UNMutableNotificationContent] = [:]
     
     var cachedEvent: MXEvent?
     var mxSession: MXSession?
@@ -50,7 +53,7 @@ class NotificationService: UNNotificationServiceExtension {
         guard let content = request.content.mutableCopy() as? UNMutableNotificationContent else {
             return
         }
-        originalContent = content
+        originalContents[eventId] = content
         contentHandlers[eventId] = contentHandler
         
         //  setup user account
@@ -108,7 +111,7 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func fetchEvent(withEventId eventId: String) {
-        guard let content = originalContent, let mxSession = mxSession else {
+        guard let content = originalContents[eventId], let mxSession = mxSession else {
             //  there is something wrong, do not change the content
             NSLog("[NotificationService] fetchEvent: Either originalContent or mxSession is missing.")
             fallbackToOriginalContent(forEventId: eventId)
@@ -225,7 +228,7 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func processEvent(_ event: MXEvent) {
-        guard let content = originalContent, let mxSession = mxSession else {
+        guard let content = originalContents[event.eventId], let mxSession = mxSession else {
             self.fallbackToOriginalContent(forEventId: event.eventId)
             return
         }
@@ -260,7 +263,7 @@ class NotificationService: UNNotificationServiceExtension {
         //  close session
         mxSession?.close()
         
-        guard let content = originalContent else {
+        guard let content = originalContents[eventId] else {
             NSLog("[NotificationService] fallbackToOriginalContent: Original content is missing.")
             return
         }
