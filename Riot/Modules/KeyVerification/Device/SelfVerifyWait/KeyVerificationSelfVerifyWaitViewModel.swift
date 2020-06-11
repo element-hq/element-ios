@@ -89,7 +89,6 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
             })
         }
         
-//        let recoverySecretsStatus = self.recoveryStatus(from: self.session.crypto.recoveryService)
         let viewData = KeyVerificationSelfVerifyWaitViewData(isNewSignIn: self.isNewSignIn, secretsRecoveryAvailability: self.secretsRecoveryAvailability)
         
         self.registerKeyVerificationManagerNewRequestNotification(for: self.verificationManager)

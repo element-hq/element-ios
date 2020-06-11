@@ -189,9 +189,10 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
     private func render(error: Error) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         
-        // TODO: Use appropriate error codes
-        if (error as NSError).domain == MXSecretStorageErrorDomain
-            && (error as NSError).code == Int(MXSecretStorageErrorCode.badMacCode.rawValue) {
+        let nsError = error as NSError
+        
+        if nsError.domain == MXRecoveryServiceErrorDomain
+            && nsError.code == Int(MXRecoveryServiceErrorCode.badRecoveryKeyErrorCode.rawValue) {
 
             self.errorPresenter.presentError(from: self,
                                              title: VectorL10n.secretsRecoveryWithPassphraseInvalidPassphraseTitle,
