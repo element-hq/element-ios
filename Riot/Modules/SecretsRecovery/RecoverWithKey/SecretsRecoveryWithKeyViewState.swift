@@ -1,5 +1,3 @@
-// File created from ScreenTemplate
-// $ createScreen.sh KeyVerification KeyVerificationSelfVerifyWait
 /*
  Copyright 2020 New Vector Ltd
  
@@ -18,21 +16,9 @@
 
 import Foundation
 
-enum SecretsRecoveryAvailability {
-    case notAvailable
-    case available(_ mode: SecretsRecoveryMode)
-}
-
-struct KeyVerificationSelfVerifyWaitViewData {
-    let isNewSignIn: Bool
-    let secretsRecoveryAvailability: SecretsRecoveryAvailability
-}
-
-/// KeyVerificationSelfVerifyWaitViewController view state
-enum KeyVerificationSelfVerifyWaitViewState {
+/// SecretsRecoveryWithKeyViewController view state
+enum SecretsRecoveryWithKeyViewState {
     case loading
-    case loaded(_ viewData: KeyVerificationSelfVerifyWaitViewData)
-    case cancelled(MXTransactionCancelCode)
-    case cancelledByMe(MXTransactionCancelCode)
+    case loaded
     case error(Error)
 }

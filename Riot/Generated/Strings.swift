@@ -854,6 +854,18 @@ internal enum VectorL10n {
   internal static var deviceVerificationSelfVerifyWaitNewSignInTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_new_sign_in_title") 
   }
+  /// If you can't accessing an existing session
+  internal static var deviceVerificationSelfVerifyWaitRecoverSecretsAdditionalInformation: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_wait_recover_secrets_additional_information") 
+  }
+  /// Use Recovery Passphrase or Key
+  internal static var deviceVerificationSelfVerifyWaitRecoverSecretsWithPassphrase: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_wait_recover_secrets_with_passphrase") 
+  }
+  /// Use Recovery Key
+  internal static var deviceVerificationSelfVerifyWaitRecoverSecretsWithoutPassphrase: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_wait_recover_secrets_without_passphrase") 
+  }
   /// Complete security
   internal static var deviceVerificationSelfVerifyWaitTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_title") 
@@ -2913,6 +2925,82 @@ internal enum VectorL10n {
   /// Rooms
   internal static var searchRooms: String { 
     return VectorL10n.tr("Vector", "search_rooms") 
+  }
+  /// Access your secure message history and your cross-signing identity for verifying other sessions by entering your recovery key.
+  internal static var secretsRecoveryWithKeyInformationDefault: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_key_information_default") 
+  }
+  /// Use your Recovery Key to verify this device.
+  internal static var secretsRecoveryWithKeyInformationVerifyDevice: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_key_information_verify_device") 
+  }
+  /// Please verify that you entered the correct recovery key.
+  internal static var secretsRecoveryWithKeyInvalidRecoveryKeyMessage: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_key_invalid_recovery_key_message") 
+  }
+  /// Unable to access secret storage
+  internal static var secretsRecoveryWithKeyInvalidRecoveryKeyTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_key_invalid_recovery_key_title") 
+  }
+  /// Use Key
+  internal static var secretsRecoveryWithKeyRecoverAction: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_key_recover_action") 
+  }
+  /// Enter Recovery Key
+  internal static var secretsRecoveryWithKeyRecoveryKeyPlaceholder: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_key_recovery_key_placeholder") 
+  }
+  /// Enter
+  internal static var secretsRecoveryWithKeyRecoveryKeyTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_key_recovery_key_title") 
+  }
+  /// Recovery Key
+  internal static var secretsRecoveryWithKeyTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_key_title") 
+  }
+  /// Access your secure message history and your cross-signing identity for verifying other sessions by entering your recovery passphrase.
+  internal static var secretsRecoveryWithPassphraseInformationDefault: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_information_default") 
+  }
+  /// Use your Recovery Passphrase to verify this device.
+  internal static var secretsRecoveryWithPassphraseInformationVerifyDevice: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_information_verify_device") 
+  }
+  /// Please verify that you entered the correct recovery passphrase.
+  internal static var secretsRecoveryWithPassphraseInvalidPassphraseMessage: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_invalid_passphrase_message") 
+  }
+  /// Unable to access secret storage
+  internal static var secretsRecoveryWithPassphraseInvalidPassphraseTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_invalid_passphrase_title") 
+  }
+  /// Don’t know your recovery passphrase? You can 
+  internal static var secretsRecoveryWithPassphraseLostPassphraseActionPart1: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_lost_passphrase_action_part1") 
+  }
+  /// use your recovery key
+  internal static var secretsRecoveryWithPassphraseLostPassphraseActionPart2: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_lost_passphrase_action_part2") 
+  }
+  /// .
+  internal static var secretsRecoveryWithPassphraseLostPassphraseActionPart3: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_lost_passphrase_action_part3") 
+  }
+  /// Enter Recovery Passphrase
+  internal static var secretsRecoveryWithPassphrasePassphrasePlaceholder: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_passphrase_placeholder") 
+  }
+  /// Enter
+  internal static var secretsRecoveryWithPassphrasePassphraseTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_passphrase_title") 
+  }
+  /// Use Passphrase
+  internal static var secretsRecoveryWithPassphraseRecoverAction: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_recover_action") 
+  }
+  /// Recovery Passphrase
+  internal static var secretsRecoveryWithPassphraseTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_title") 
   }
   /// ADVANCED
   internal static var securitySettingsAdvanced: String { 

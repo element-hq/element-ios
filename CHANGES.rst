@@ -6,6 +6,7 @@ Improvements:
  * Cross-signing: Bootstrap cross-sign on registration (and login if applicable). This action is now invisible to the user (#3292).
  * Authentication: Redirect the webview (SSO) javascript logs to iOS native logs.
  * Timeline: Hide encrypted history (pre-invite) (#3239).
+ * Complete security: Add recovery from 4S (#3304).
  
 Bug fix:
  * CallVC: Declined calls now properly reset call view controller, thanks to @Legi429 (#2877).

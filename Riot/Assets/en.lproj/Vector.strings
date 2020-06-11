@@ -1086,6 +1086,9 @@
 "device_verification_self_verify_wait_new_sign_in_title" = "Verify this login";
 "device_verification_self_verify_wait_information" = "Verify this session from one of your other sessions, granting it access to encrypted messages.\n\nUse the latest Riot on your other devices:";
 "device_verification_self_verify_wait_additional_information" = "or another cross-signing capable Matrix client";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Use Recovery Key";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Use Recovery Passphrase or Key";
+"device_verification_self_verify_wait_recover_secrets_additional_information" = "If you can't accessing an existing session";
 
 // MARK: Verify
 
@@ -1309,3 +1312,33 @@
 "user_verification_session_details_verify_action_current_user" = "Interactively Verify";
 "user_verification_session_details_verify_action_current_user_manually" = "Manually Verify by Text";
 "user_verification_session_details_verify_action_other_user" = "Manually verify";
+
+// MARK: - Secrets recovery
+
+// Recover with passphrase
+
+"secrets_recovery_with_passphrase_title" = "Recovery Passphrase";
+"secrets_recovery_with_passphrase_information_default" = "Access your secure message history and your cross-signing identity for verifying other sessions by entering your recovery passphrase.";
+"secrets_recovery_with_passphrase_information_verify_device" = "Use your Recovery Passphrase to verify this device.";
+"secrets_recovery_with_passphrase_passphrase_title" = "Enter";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Enter Recovery Passphrase";
+"secrets_recovery_with_passphrase_recover_action" = "Use Passphrase";
+
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Don’t know your recovery passphrase? You can ";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "use your recovery key";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
+
+"secrets_recovery_with_passphrase_invalid_passphrase_title" = "Unable to access secret storage";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Please verify that you entered the correct recovery passphrase.";
+
+// Recover with key
+
+"secrets_recovery_with_key_title" = "Recovery Key";
+"secrets_recovery_with_key_information_default" = "Access your secure message history and your cross-signing identity for verifying other sessions by entering your recovery key.";
+"secrets_recovery_with_key_information_verify_device" = "Use your Recovery Key to verify this device.";
+"secrets_recovery_with_key_recovery_key_title" = "Enter";
+"secrets_recovery_with_key_recovery_key_placeholder" = "Enter Recovery Key";
+"secrets_recovery_with_key_recover_action" = "Use Key";
+
+"secrets_recovery_with_key_invalid_recovery_key_title" = "Unable to access secret storage";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "Please verify that you entered the correct recovery key.";

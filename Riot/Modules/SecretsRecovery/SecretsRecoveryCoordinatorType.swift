@@ -1,5 +1,3 @@
-// File created from ScreenTemplate
-// $ createScreen.sh KeyVerification KeyVerificationSelfVerifyWait
 /*
  Copyright 2020 New Vector Ltd
  
@@ -18,9 +16,12 @@
 
 import Foundation
 
-/// KeyVerificationSelfVerifyWaitViewController view actions exposed to view model
-enum KeyVerificationSelfVerifyWaitViewAction {
-    case loadData
-    case cancel
-    case recoverSecrets
+protocol SecretsRecoveryCoordinatorDelegate: class {
+    func secretsRecoveryCoordinatorDidRecover(_ coordinator: SecretsRecoveryCoordinatorType)
+    func secretsRecoveryCoordinatorDidCancel(_ coordinator: SecretsRecoveryCoordinatorType)
+}
+
+/// `SecretsRecoveryCoordinatorType` is a protocol describing a Coordinator that handle secrets recovery navigation flow.
+protocol SecretsRecoveryCoordinatorType: Coordinator, Presentable {
+    var delegate: SecretsRecoveryCoordinatorDelegate? { get }
 }

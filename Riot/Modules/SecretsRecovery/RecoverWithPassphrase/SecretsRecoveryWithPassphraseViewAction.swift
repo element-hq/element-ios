@@ -1,5 +1,3 @@
-// File created from ScreenTemplate
-// $ createScreen.sh KeyVerification KeyVerificationSelfVerifyWait
 /*
  Copyright 2020 New Vector Ltd
  
@@ -18,9 +16,9 @@
 
 import Foundation
 
-/// KeyVerificationSelfVerifyWaitViewController view actions exposed to view model
-enum KeyVerificationSelfVerifyWaitViewAction {
-    case loadData
+/// SecretsRecoveryWithPassphraseViewController view actions exposed to view model
+enum SecretsRecoveryWithPassphraseViewAction {
+    case recover
+    case useRecoveryKey
     case cancel
-    case recoverSecrets
 }
