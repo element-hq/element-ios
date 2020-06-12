@@ -28,6 +28,7 @@ Bug fix:
  * Xcode11: Fix noisy notifications (#3316).
  * Xcode11: Temporary workaround for navigation bar bg color on emoji selection screen (#3271).
  * Xcode11: Pass eventId when navigating to room from notification (#3321).
+ * Project: Remove GoogleService-Info.plist (#3329).
  
  Changes in 0.11.6 (2020-xx-xx)
  ===============================================
