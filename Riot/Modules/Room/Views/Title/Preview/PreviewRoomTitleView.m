@@ -183,29 +183,21 @@
         {
             MXStrongifyAndReturnIfNil(self);
 
-            NSArray *members = roomMembers.members;
-            NSUInteger activeCount = 0;
-            NSUInteger memberCount = self.mxRoom.summary.membersCount.joined;
-            NSString *inviter = nil;
-
-            for (MXRoomMember *mxMember in members)
+            MXSession *mxSession = self.mxRoom.mxSession;
+            MXRoomMember *myMember = [roomMembers memberWithUserId:mxSession.myUserId];
+            NSString *inviterUserId = myMember.originalEvent.sender;
+            NSString *inviter = [roomMembers memberName:inviterUserId];
+            //  if not found, check the user in session
+            if (inviter.length == 0)
             {
-                if (mxMember.membership == MXMembershipJoin)
-                {
-                    // Get the user that corresponds to this member
-                    MXUser *user = [self.mxRoom.mxSession userWithUserId:mxMember.userId];
-                    // existing user ?
-                    if (user && user.presence == MXPresenceOnline)
-                    {
-                        activeCount ++;
-                    }
-
-                    // Presently only one member is available from invited room data
-                    // This is the inviter
-                    inviter = mxMember.displayname.length ? mxMember.displayname : mxMember.userId;
-                }
+                inviter = [mxSession userWithUserId:inviterUserId].displayname;
             }
-
+            //  if still not found, use the user ID
+            if (inviter.length == 0)
+            {
+                inviter = inviterUserId;
+            }
+            
             // FIXME: Display members status when it will be available
             self.roomMembers.text = nil;
             //                    if (memberCount)
