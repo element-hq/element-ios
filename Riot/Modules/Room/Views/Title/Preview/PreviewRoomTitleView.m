@@ -183,9 +183,20 @@
         {
             MXStrongifyAndReturnIfNil(self);
 
-            MXRoomMember *myMember = [roomMembers memberWithUserId:self.mxRoom.mxSession.myUserId];
+            MXSession *mxSession = self.mxRoom.mxSession;
+            MXRoomMember *myMember = [roomMembers memberWithUserId:mxSession.myUserId];
             NSString *inviterUserId = myMember.originalEvent.sender;
-            NSString *inviter = [roomMembers memberName:inviterUserId] ?: inviterUserId;
+            NSString *inviter = [roomMembers memberName:inviterUserId];
+            //  if not found, check the user in session
+            if (inviter.length == 0)
+            {
+                inviter = [mxSession userWithUserId:inviterUserId].displayname;
+            }
+            //  if still not found, use the user ID
+            if (inviter.length == 0)
+            {
+                inviter = inviterUserId;
+            }
             
             // FIXME: Display members status when it will be available
             self.roomMembers.text = nil;
