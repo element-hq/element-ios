@@ -16,7 +16,8 @@
 
 import Foundation
 
-enum SecretsRecoveryMode {
+@objc
+enum SecretsRecoveryMode: Int {
     case passphraseOrKey
     case onlyKey
 }
