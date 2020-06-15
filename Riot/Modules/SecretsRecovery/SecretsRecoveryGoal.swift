@@ -16,7 +16,9 @@
 
 import Foundation
 
-enum SecretsRecoveryGoal {
+@objc
+enum SecretsRecoveryGoal: Int {
     case `default`
+    case keyBackup
     case verifyDevice
 }

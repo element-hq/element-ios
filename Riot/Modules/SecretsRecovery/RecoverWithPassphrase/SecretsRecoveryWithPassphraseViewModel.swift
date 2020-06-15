@@ -71,7 +71,15 @@ final class SecretsRecoveryWithPassphraseViewModel: SecretsRecoveryWithPassphras
                 return
             }
             
-            self.recoveryService.recoverSecrets(nil, withPrivateKey: privateKey, recoverServices: true, success: { [weak self] recoveryResult in
+            let secretIds: [String]?
+            
+            if case SecretsRecoveryGoal.keyBackup = self.recoveryGoal {
+                secretIds = [MXSecretId.keyBackup.takeUnretainedValue() as String]
+            } else {
+                secretIds = nil
+            }
+            
+            self.recoveryService.recoverSecrets(secretIds, withPrivateKey: privateKey, recoverServices: true, success: { [weak self] _ in
                 guard let self = self else {
                     return
                 }

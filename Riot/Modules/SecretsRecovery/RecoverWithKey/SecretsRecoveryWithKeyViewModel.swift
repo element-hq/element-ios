@@ -65,9 +65,17 @@ final class SecretsRecoveryWithKeyViewModel: SecretsRecoveryWithKeyViewModelType
         self.update(viewState: .loading)
         
         do {
+            let secretIds: [String]?
+            
+            if case SecretsRecoveryGoal.keyBackup = self.recoveryGoal {
+                secretIds = [MXSecretId.keyBackup.takeUnretainedValue() as String]
+            } else {
+                secretIds = nil
+            }
+            
             let privateKey = try self.recoveryService.privateKey(fromRecoveryKey: recoveryKey)
             
-            self.recoveryService.recoverSecrets(nil, withPrivateKey: privateKey, recoverServices: true, success: { [weak self] _ in
+            self.recoveryService.recoverSecrets(secretIds, withPrivateKey: privateKey, recoverServices: true, success: { [weak self] _ in
                 guard let self = self else {
                     return
                 }
