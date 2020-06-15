@@ -91,8 +91,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param eventId Event identifier to be navigated around.
  */
 - (void)pushNotificationService:(PushNotificationService *)pushNotificationService
-     shouldNavigateToRoomWithId:(NSString *)roomId
-                        eventId:(NSString *)eventId;
+     shouldNavigateToRoomWithId:(NSString *)roomId;
 
 @end;
 

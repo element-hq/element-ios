@@ -140,7 +140,6 @@
     UNNotificationContent *content = notification.request.content;
     NSString *actionIdentifier = [response actionIdentifier];
     NSString *roomId = content.userInfo[@"room_id"];
-    NSString *eventId = content.userInfo[@"event_id"];
 
     if ([actionIdentifier isEqualToString:@"inline-reply"])
     {
@@ -177,7 +176,7 @@
     }
     else if ([actionIdentifier isEqualToString:UNNotificationDefaultActionIdentifier])
     {
-        [self notifyNavigateToRoomById:roomId eventId:eventId];
+        [self notifyNavigateToRoomById:roomId];
         completionHandler();
     }
     else
@@ -318,11 +317,11 @@
 
 #pragma mark - Delegate Notifiers
 
-- (void)notifyNavigateToRoomById:(NSString *)roomId eventId:(NSString *)eventId
+- (void)notifyNavigateToRoomById:(NSString *)roomId
 {
-    if ([_delegate respondsToSelector:@selector(pushNotificationService:shouldNavigateToRoomWithId:eventId:)])
+    if ([_delegate respondsToSelector:@selector(pushNotificationService:shouldNavigateToRoomWithId:)])
     {
-        [_delegate pushNotificationService:self shouldNavigateToRoomWithId:roomId eventId:eventId];
+        [_delegate pushNotificationService:self shouldNavigateToRoomWithId:roomId];
     }
 }
 

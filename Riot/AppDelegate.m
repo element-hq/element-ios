@@ -1170,9 +1170,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 #pragma mark - PushNotificationServiceDelegate
 
-- (void)pushNotificationService:(PushNotificationService *)pushNotificationService shouldNavigateToRoomWithId:(NSString *)roomId eventId:(nonnull NSString *)eventId
+- (void)pushNotificationService:(PushNotificationService *)pushNotificationService shouldNavigateToRoomWithId:(NSString *)roomId
 {
-    [self navigateToRoomById:roomId eventId:eventId];
+    [self navigateToRoomById:roomId];
 }
 
 #pragma mark - Badge Count
@@ -2839,7 +2839,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 #pragma mark - Matrix Rooms handling
 
-- (void)navigateToRoomById:(NSString *)roomId eventId:(NSString *)eventId
+- (void)navigateToRoomById:(NSString *)roomId
 {
     if (roomId.length)
     {
@@ -2873,7 +2873,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         {
             NSLog(@"[AppDelegate][Push] navigateToRoomById: open the roomViewController %@", roomId);
 
-            [self showRoom:roomId andEventId:eventId withMatrixSession:dedicatedAccount.mxSession];
+            [self showRoom:roomId andEventId:nil withMatrixSession:dedicatedAccount.mxSession];
         }
         else
         {
