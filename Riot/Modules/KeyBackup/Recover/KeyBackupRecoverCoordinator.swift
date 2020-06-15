@@ -34,16 +34,21 @@ final class KeyBackupRecoverCoordinator: KeyBackupRecoverCoordinatorType {
     
     // MARK: - Setup
     
-    init(session: MXSession, keyBackupVersion: MXKeyBackupVersion) {
+    init(session: MXSession, keyBackupVersion: MXKeyBackupVersion, navigationRouter: NavigationRouterType? = nil) {
         self.session = session
         self.keyBackupVersion = keyBackupVersion
-        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
+        
+        if let navigationRouter = navigationRouter {
+            self.navigationRouter = navigationRouter
+        } else {
+            self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
+        }
     }
     
     // MARK: - Public
-    
+        
     func start() {
-    
+        
         let rootCoordinator: Coordinator & Presentable
         
         // Check if we have the private key locally
@@ -52,13 +57,22 @@ final class KeyBackupRecoverCoordinator: KeyBackupRecoverCoordinatorType {
         } else {
             rootCoordinator = self.createRecoverWithUserInteractionCoordinator()
         }
-
+        
         rootCoordinator.start()
         
         self.add(childCoordinator: rootCoordinator)
         
-        self.navigationRouter.setRootModule(rootCoordinator)
+        if self.navigationRouter.modules.isEmpty == false {
+            self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
+                self?.remove(childCoordinator: rootCoordinator)
+            })
+        } else {
+            self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
+                self?.remove(childCoordinator: rootCoordinator)
+            }
+        }
     }
+    
     
     func toPresentable() -> UIViewController {
         return self.navigationRouter.toPresentable()
