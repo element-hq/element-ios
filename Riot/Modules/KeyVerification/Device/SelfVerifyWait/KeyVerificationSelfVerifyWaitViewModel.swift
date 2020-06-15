@@ -28,10 +28,7 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     private let keyVerificationService: KeyVerificationService
     private let verificationManager: MXKeyVerificationManager
     private let isNewSignIn: Bool
-    private lazy var secretsRecoveryAvailability: SecretsRecoveryAvailability = {
-        return self.secretsRecoveryAvailability(from: self.session.crypto.recoveryService)
-    }()
-    
+    private let secretsRecoveryAvailability: SecretsRecoveryAvailability
     private var keyVerificationRequest: MXKeyVerificationRequest?
     
     // MARK: Public
@@ -46,6 +43,7 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
         self.verificationManager = session.crypto.keyVerificationManager
         self.keyVerificationService = KeyVerificationService()
         self.isNewSignIn = isNewSignIn
+        self.secretsRecoveryAvailability = session.crypto.recoveryService.vc_availability
     }
     
     deinit {
@@ -94,14 +92,6 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
         self.registerKeyVerificationManagerNewRequestNotification(for: self.verificationManager)
         self.update(viewState: .loaded(viewData))
         self.registerTransactionDidStateChangeNotification()
-    }
-    
-    private func secretsRecoveryAvailability(from recoveryService: MXRecoveryService) -> SecretsRecoveryAvailability {
-        guard recoveryService.hasRecovery() else {
-            return .notAvailable
-        }
-        let secretsRecoveryMode: SecretsRecoveryMode = recoveryService.usePassphrase() ? .passphraseOrKey : .onlyKey
-        return .available(secretsRecoveryMode)
     }
     
     private func cancel() {
