@@ -24,13 +24,15 @@ class NSEMemoryStore: MXMemoryStore {
     private var lastStoredEventStreamToken: String?
     private var credentials: MXCredentials
     //  real store
-    private var fileStore: MXFileStore
+    private static var fileStore: MXFileStore!
     
     init(withCredentials credentials: MXCredentials) {
         self.credentials = credentials
-        fileStore = MXFileStore(credentials: credentials)
-        //  load real eventStreamToken
-        fileStore.loadMetaData()
+        if NSEMemoryStore.fileStore == nil {
+            NSEMemoryStore.fileStore = MXFileStore(credentials: credentials)
+            //  load real eventStreamToken
+            NSEMemoryStore.fileStore.loadMetaData()
+        }
     }
     
     //  Return real eventStreamToken, to be able to launch a meaningful background sync
@@ -40,7 +42,7 @@ class NSEMemoryStore: MXMemoryStore {
             if let token = lastStoredEventStreamToken {
                 return token
             }
-            return fileStore.eventStreamToken
+            return NSEMemoryStore.fileStore.eventStreamToken
         } set {
             //  store new token values in memory, and return these values in future reads
             lastStoredEventStreamToken = newValue
@@ -50,7 +52,7 @@ class NSEMemoryStore: MXMemoryStore {
     //  Return real userAccountData, to be able to use push rules
     override var userAccountData: [AnyHashable : Any]? {
         get {
-            return fileStore.userAccountData
+            return NSEMemoryStore.fileStore.userAccountData
         } set {
             //  no-op
         }
@@ -68,17 +70,17 @@ class NSEMemoryStore: MXMemoryStore {
     
     //  Fetch real room state
     override func state(ofRoom roomId: String, success: @escaping ([MXEvent]) -> Void, failure: ((Error) -> Void)? = nil) {
-        fileStore.state(ofRoom: roomId, success: success, failure: failure)
+        NSEMemoryStore.fileStore.state(ofRoom: roomId, success: success, failure: failure)
     }
     
     //  Fetch real soom summary
     override func summary(ofRoom roomId: String) -> MXRoomSummary? {
-        return fileStore.summary(ofRoom: roomId)
+        return NSEMemoryStore.fileStore.summary(ofRoom: roomId)
     }
     
     //  Fetch real room account data
     override func accountData(ofRoom roomId: String) -> MXRoomAccountData? {
-        return fileStore.accountData(ofRoom: roomId)
+        return NSEMemoryStore.fileStore.accountData(ofRoom: roomId)
     }
     
     //  Override and return a user to be stored on session.myUser
@@ -91,7 +93,7 @@ class NSEMemoryStore: MXMemoryStore {
     
     override func close() {
         //  close real store
-        fileStore.close()
+        NSEMemoryStore.fileStore.close()
     }
     
 }
