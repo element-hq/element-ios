@@ -32,6 +32,7 @@ class NotificationService: UNNotificationServiceExtension {
     lazy var showDecryptedContentInNotifications: Bool = {
         return RiotSettings.shared.showDecryptedContentInNotifications
     }()
+    static var isLoggerInitialized: Bool = false
     
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         //  set app-group identifier first
@@ -76,9 +77,12 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func setupLogger() {
-        if isatty(STDERR_FILENO) == 0 {
-            MXLogger.setSubLogName("nse")
-            MXLogger.redirectNSLog(toFiles: true, numberOfFiles: 100)
+        if !NotificationService.isLoggerInitialized {
+            if isatty(STDERR_FILENO) == 0 {
+                MXLogger.setSubLogName("nse")
+                MXLogger.redirectNSLog(toFiles: true, numberOfFiles: 100)
+            }
+            NotificationService.isLoggerInitialized = true
         }
     }
     
