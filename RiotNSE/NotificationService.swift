@@ -34,9 +34,12 @@ class NotificationService: UNNotificationServiceExtension {
     }()
     
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-        //  setup logs as first thing
-        setupLogger()
+        //  set app-group identifier first
+        MXSDKOptions.sharedInstance().applicationGroupIdentifier = "group.im.vector"
         
+        //  setup logs
+        setupLogger()
+
         UNUserNotificationCenter.current().removeUnwantedNotifications()
         
         let userInfo = request.content.userInfo
@@ -81,7 +84,6 @@ class NotificationService: UNNotificationServiceExtension {
     
     func setup(withRoomId roomId: String, eventId: String, completion: @escaping () -> Void) {
         let sdkOptions = MXSDKOptions.sharedInstance()
-        sdkOptions.applicationGroupIdentifier = "group.im.vector"
         sdkOptions.disableIdenticonUseForUserAvatar = true
         sdkOptions.enableCryptoWhenStartingMXSession = true
         sdkOptions.backgroundModeHandler = MXUIKitBackgroundModeHandler()
