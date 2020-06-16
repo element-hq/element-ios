@@ -91,6 +91,17 @@ class NSEMemoryStore: MXMemoryStore {
         return MXUser(userId: userId)
     }
     
+    override var syncFilterId: String? {
+        get {
+            let filter = MXFilterJSONModel()
+            filter.room = MXRoomFilter()
+            filter.room.rooms = []
+            return filter.jsonString()
+        } set {
+            //  no-op
+        }
+    }
+    
     override func close() {
         //  close real store
         NSEMemoryStore.fileStore.close()
