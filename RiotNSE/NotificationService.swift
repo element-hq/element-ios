@@ -292,8 +292,6 @@ class NotificationService: UNNotificationServiceExtension {
             return
         }
         
-        let pushRule = room.getRoomPushRule()
-        
         NSLog("[NotificationService] notificationContentForEvent: Attempt to fetch the room state")
         room.state { (roomState) in
             guard let roomState = roomState else {
@@ -308,6 +306,8 @@ class NotificationService: UNNotificationServiceExtension {
             var threadIdentifier = room.roomId
             let eventSenderName = roomState.members.memberName(event.sender)
             let currentUserId = session.credentials.userId
+            
+            let pushRule = session.notificationCenter.rule(matching: event, roomState: roomState)
             
             switch event.eventType {
             case .roomMessage, .roomEncrypted:
