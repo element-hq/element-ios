@@ -24,14 +24,14 @@ class NSEMemoryStore: MXMemoryStore {
     private var lastStoredEventStreamToken: String?
     private var credentials: MXCredentials
     //  real store
-    private static var fileStore: MXFileStore!
+    private var fileStore: MXFileStore!
     
     init(withCredentials credentials: MXCredentials) {
         self.credentials = credentials
-        if NSEMemoryStore.fileStore == nil {
-            NSEMemoryStore.fileStore = MXFileStore(credentials: credentials)
+        if fileStore == nil {
+            fileStore = MXFileStore(credentials: credentials)
             //  load real eventStreamToken
-            NSEMemoryStore.fileStore.loadMetaData()
+            fileStore.loadMetaData()
         }
     }
     
@@ -42,7 +42,7 @@ class NSEMemoryStore: MXMemoryStore {
             if let token = lastStoredEventStreamToken {
                 return token
             }
-            return NSEMemoryStore.fileStore.eventStreamToken
+            return fileStore.eventStreamToken
         } set {
             //  store new token values in memory, and return these values in future reads
             lastStoredEventStreamToken = newValue
@@ -52,7 +52,7 @@ class NSEMemoryStore: MXMemoryStore {
     //  Return real userAccountData, to be able to use push rules
     override var userAccountData: [AnyHashable : Any]? {
         get {
-            return NSEMemoryStore.fileStore.userAccountData
+            return fileStore.userAccountData
         } set {
             //  no-op
         }
@@ -70,17 +70,17 @@ class NSEMemoryStore: MXMemoryStore {
     
     //  Fetch real room state
     override func state(ofRoom roomId: String, success: @escaping ([MXEvent]) -> Void, failure: ((Error) -> Void)? = nil) {
-        NSEMemoryStore.fileStore.state(ofRoom: roomId, success: success, failure: failure)
+        fileStore.state(ofRoom: roomId, success: success, failure: failure)
     }
     
     //  Fetch real soom summary
     override func summary(ofRoom roomId: String) -> MXRoomSummary? {
-        return NSEMemoryStore.fileStore.summary(ofRoom: roomId)
+        return fileStore.summary(ofRoom: roomId)
     }
     
     //  Fetch real room account data
     override func accountData(ofRoom roomId: String) -> MXRoomAccountData? {
-        return NSEMemoryStore.fileStore.accountData(ofRoom: roomId)
+        return fileStore.accountData(ofRoom: roomId)
     }
     
     //  Override and return a user to be stored on session.myUser

@@ -28,7 +28,7 @@ class NotificationService: UNNotificationServiceExtension {
     /// Cached events. Keys are eventId's
     var cachedEvents: [String: MXEvent] = [:]
     var mxSession: MXSession?
-    var store: NSEMemoryStore!
+    static var store: NSEMemoryStore!
     lazy var showDecryptedContentInNotifications: Bool = {
         return RiotSettings.shared.showDecryptedContentInNotifications
     }()
@@ -96,15 +96,15 @@ class NotificationService: UNNotificationServiceExtension {
         Bundle.mxk_customizeLocalizedStringTableName("Vector")
         
         if let userAccount = MXKAccountManager.shared()?.activeAccounts.first {
-            if store == nil {
-                store = NSEMemoryStore(withCredentials: userAccount.mxCredentials)
+            if NotificationService.store == nil {
+                NotificationService.store = NSEMemoryStore(withCredentials: userAccount.mxCredentials)
             } else {
                 NSLog("[NotificationService] Instance: Reusing store")
             }
             
             if mxSession == nil {
                 mxSession = MXSession(matrixRestClient: MXRestClient(credentials: userAccount.mxCredentials, unrecognizedCertificateHandler: nil))
-                mxSession?.setStore(store, completion: { (response) in
+                mxSession?.setStore(NotificationService.store, completion: { (response) in
                     switch response {
                     case .success:
                         completion()
@@ -292,7 +292,7 @@ class NotificationService: UNNotificationServiceExtension {
             onComplete(nil)
             return
         }
-        guard let room = MXRoom.load(from: store, withRoomId: event.roomId, matrixSession: session) as? MXRoom else {
+        guard let room = MXRoom.load(from: session.store, withRoomId: event.roomId, matrixSession: session) as? MXRoom else {
             NSLog("[NotificationService] notificationContentForEvent: Unknown room")
             onComplete(nil)
             return
@@ -350,7 +350,7 @@ class NotificationService: UNNotificationServiceExtension {
                     msgType = nil
                 }
                 
-                let roomDisplayName = self.store.summary(ofRoom: room.roomId)?.displayname
+                let roomDisplayName = NotificationService.store.summary(ofRoom: room.roomId)?.displayname
                 let myUserId = session.myUser.userId
                 let isIncomingEvent = event.sender != myUserId
                 
