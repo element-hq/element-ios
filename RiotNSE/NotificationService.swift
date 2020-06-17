@@ -347,7 +347,7 @@ class NotificationService: UNNotificationServiceExtension {
                     msgType = nil
                 }
                 
-                let roomDisplayName = NotificationService.store.summary(ofRoom: room.roomId)?.displayname
+                let roomDisplayName = session.store.summary(ofRoom: room.roomId)?.displayname
                 let myUserId = session.myUser.userId
                 let isIncomingEvent = event.sender != myUserId
                 
