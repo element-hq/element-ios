@@ -7,6 +7,7 @@ Improvements:
  * Authentication: Redirect the webview (SSO) javascript logs to iOS native logs.
  * Timeline: Hide encrypted history (pre-invite) (#3239).
  * Complete security: Add recovery from 4S (#3304).
+ * Key backup: Connect/restore backup created with SSSS (#3124).
  
 Bug fix:
  * CallVC: Declined calls now properly reset call view controller, thanks to @Legi429 (#2877).

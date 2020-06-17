@@ -63,7 +63,8 @@ enum {
 SettingsKeyBackupTableViewSectionDelegate,
 KeyBackupSetupCoordinatorBridgePresenterDelegate,
 KeyBackupRecoverCoordinatorBridgePresenterDelegate,
-UIDocumentInteractionControllerDelegate>
+UIDocumentInteractionControllerDelegate,
+SecretsRecoveryCoordinatorBridgePresenterDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
@@ -88,9 +89,11 @@ UIDocumentInteractionControllerDelegate>
     SettingsKeyBackupTableViewSection *keyBackupSection;
     KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
     KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter;
+    SecretsRecoveryCoordinatorBridgePresenter *secretsRecoveryCoordinatorBridgePresenter;
 }
 
 @property (nonatomic) BOOL isLoadingDevices;
+@property (nonatomic, strong) MXKeyBackupVersion *currentkeyBackupVersion;
 
 @end
 
@@ -1122,7 +1125,19 @@ UIDocumentInteractionControllerDelegate>
 
 - (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showKeyBackupRecover:(MXKeyBackupVersion *)keyBackupVersion
 {
-    [self showKeyBackupRecover:keyBackupVersion];
+    self.currentkeyBackupVersion = keyBackupVersion;
+    
+    // If key backup key is stored in SSSS ask for secrets recovery before restoring key backup.
+    if (!self.mainSession.crypto.backup.hasPrivateKeyInCryptoStore
+        && self.mainSession.crypto.recoveryService.hasRecovery
+        && [self.mainSession.crypto.recoveryService hasSecretWithSecretId:MXSecretId.keyBackup])
+    {
+        [self showSecretsRecovery];
+    }
+    else
+    {
+        [self showKeyBackupRecover:keyBackupVersion fromViewController:self];
+    }
 }
 
 - (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showKeyBackupDeleteConfirm:(MXKeyBackupVersion *)keyBackupVersion
@@ -1199,22 +1214,63 @@ UIDocumentInteractionControllerDelegate>
 
 #pragma mark - KeyBackupRecoverCoordinatorBridgePresenter
 
-- (void)showKeyBackupRecover:(MXKeyBackupVersion*)keyBackupVersion
+- (void)showKeyBackupRecover:(MXKeyBackupVersion*)keyBackupVersion fromViewController:(UIViewController*)presentingViewController
 {
     keyBackupRecoverCoordinatorBridgePresenter = [[KeyBackupRecoverCoordinatorBridgePresenter alloc] initWithSession:self.mainSession keyBackupVersion:keyBackupVersion];
 
-    [keyBackupRecoverCoordinatorBridgePresenter presentFrom:self animated:true];
+    [keyBackupRecoverCoordinatorBridgePresenter presentFrom:presentingViewController animated:true];
+    keyBackupRecoverCoordinatorBridgePresenter.delegate = self;
+}
+    
+- (void)pushKeyBackupRecover:(MXKeyBackupVersion*)keyBackupVersion fromNavigationController:(UINavigationController*)navigationController
+{
+    keyBackupRecoverCoordinatorBridgePresenter = [[KeyBackupRecoverCoordinatorBridgePresenter alloc] initWithSession:self.mainSession keyBackupVersion:keyBackupVersion];
+    
+    [keyBackupRecoverCoordinatorBridgePresenter pushFrom:navigationController animated:YES];
     keyBackupRecoverCoordinatorBridgePresenter.delegate = self;
 }
 
 - (void)keyBackupRecoverCoordinatorBridgePresenterDidCancel:(KeyBackupRecoverCoordinatorBridgePresenter *)bridgePresenter {
     [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:true];
     keyBackupRecoverCoordinatorBridgePresenter = nil;
+    secretsRecoveryCoordinatorBridgePresenter = nil;
 }
 
 - (void)keyBackupRecoverCoordinatorBridgePresenterDidRecover:(KeyBackupRecoverCoordinatorBridgePresenter *)bridgePresenter {
     [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:true];
     keyBackupRecoverCoordinatorBridgePresenter = nil;
+    secretsRecoveryCoordinatorBridgePresenter = nil;
+}
+    
+#pragma mark - KeyBackupRecoverCoordinatorBridgePresenter
+    
+- (void)showSecretsRecovery
+{
+    secretsRecoveryCoordinatorBridgePresenter = [[SecretsRecoveryCoordinatorBridgePresenter alloc] initWithSession:self.mainSession recoveryGoal:SecretsRecoveryGoalKeyBackup];
+    
+    [secretsRecoveryCoordinatorBridgePresenter presentFrom:self animated:true];
+    secretsRecoveryCoordinatorBridgePresenter.delegate = self;
+}
+
+- (void)secretsRecoveryCoordinatorBridgePresenterDelegateDidCancel:(SecretsRecoveryCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [secretsRecoveryCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    secretsRecoveryCoordinatorBridgePresenter = nil;
+}
+
+- (void)secretsRecoveryCoordinatorBridgePresenterDelegateDidComplete:(SecretsRecoveryCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    UIViewController *presentedViewController = [coordinatorBridgePresenter toPresentable];
+    
+    if ([presentedViewController isKindOfClass:UINavigationController.class])
+    {
+        UINavigationController *navigationController = (UINavigationController*)self.presentedViewController;
+        [self pushKeyBackupRecover:self.currentkeyBackupVersion fromNavigationController:navigationController];
+    }
+    else
+    {
+        [self showKeyBackupRecover:self.currentkeyBackupVersion fromViewController:presentedViewController];
+    }
 }
 
 @end

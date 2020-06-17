@@ -16,9 +16,13 @@
 
 import Foundation
 
-@objc
-enum SecretsRecoveryGoal: Int {
-    case `default`
-    case keyBackup
-    case verifyDevice
+extension MXRecoveryService {
+    
+    var vc_availability: SecretsRecoveryAvailability {
+        guard self.hasRecovery() else {
+            return .notAvailable
+        }
+        let secretsRecoveryMode: SecretsRecoveryMode = self.usePassphrase() ? .passphraseOrKey : .onlyKey
+        return .available(secretsRecoveryMode)
+    }
 }

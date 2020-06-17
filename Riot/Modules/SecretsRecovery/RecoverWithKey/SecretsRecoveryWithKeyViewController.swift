@@ -99,7 +99,7 @@ final class SecretsRecoveryWithKeyViewController: UIViewController {
         let informationText: String
         
         switch self.viewModel.recoveryGoal {
-        case .default:
+        case .default, .keyBackup:
             informationText = VectorL10n.secretsRecoveryWithKeyInformationDefault
         case .verifyDevice:
             informationText = VectorL10n.secretsRecoveryWithKeyInformationVerifyDevice
