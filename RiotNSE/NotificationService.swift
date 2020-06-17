@@ -40,6 +40,8 @@ class NotificationService: UNNotificationServiceExtension {
         
         //  setup logs
         setupLogger()
+        
+        NSLog("[NotificationService] Instance: \(self), thread: \(Thread.current)")
 
         UNUserNotificationCenter.current().removeUnwantedNotifications()
         
@@ -96,6 +98,8 @@ class NotificationService: UNNotificationServiceExtension {
         if let userAccount = MXKAccountManager.shared()?.activeAccounts.first {
             if store == nil {
                 store = NSEMemoryStore(withCredentials: userAccount.mxCredentials)
+            } else {
+                NSLog("[NotificationService] Instance: Reusing store")
             }
             
             if mxSession == nil {
@@ -111,6 +115,8 @@ class NotificationService: UNNotificationServiceExtension {
                         break
                     }
                 })
+            } else {
+                NSLog("[NotificationService] Instance: Reusing session")
             }
         } else {
             NSLog("[NotificationService] setup: No active accounts")
