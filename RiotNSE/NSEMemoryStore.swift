@@ -102,9 +102,4 @@ class NSEMemoryStore: MXMemoryStore {
         }
     }
     
-    override func close() {
-        //  close real store
-        NSEMemoryStore.fileStore.close()
-    }
-    
 }
