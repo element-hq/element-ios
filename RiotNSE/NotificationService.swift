@@ -27,7 +27,7 @@ class NotificationService: UNNotificationServiceExtension {
     
     /// Cached events. Keys are eventId's
     var cachedEvents: [String: MXEvent] = [:]
-    var mxSession: MXSession?
+    static var mxSession: MXSession?
     static var store: NSEMemoryStore!
     lazy var showDecryptedContentInNotifications: Bool = {
         return RiotSettings.shared.showDecryptedContentInNotifications
@@ -102,9 +102,9 @@ class NotificationService: UNNotificationServiceExtension {
                 NSLog("[NotificationService] Instance: Reusing store")
             }
             
-            if mxSession == nil {
-                mxSession = MXSession(matrixRestClient: MXRestClient(credentials: userAccount.mxCredentials, unrecognizedCertificateHandler: nil))
-                mxSession?.setStore(NotificationService.store, completion: { (response) in
+            if NotificationService.mxSession == nil {
+                NotificationService.mxSession = MXSession(matrixRestClient: MXRestClient(credentials: userAccount.mxCredentials, unrecognizedCertificateHandler: nil))
+                NotificationService.mxSession?.setStore(NotificationService.store, completion: { (response) in
                     switch response {
                     case .success:
                         completion()
@@ -117,6 +117,7 @@ class NotificationService: UNNotificationServiceExtension {
                 })
             } else {
                 NSLog("[NotificationService] Instance: Reusing session")
+                completion()
             }
         } else {
             NSLog("[NotificationService] setup: No active accounts")
@@ -125,7 +126,7 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func fetchEvent(withEventId eventId: String) {
-        guard let content = originalContents[eventId], let mxSession = mxSession else {
+        guard let content = originalContents[eventId], let mxSession = NotificationService.mxSession else {
             //  there is something wrong, do not change the content
             NSLog("[NotificationService] fetchEvent: Either originalContent or mxSession is missing.")
             fallbackToOriginalContent(forEventId: eventId)
@@ -213,7 +214,7 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func launchBackgroundSync(forEventId eventId: String) {
-        guard let mxSession = mxSession else {
+        guard let mxSession = NotificationService.mxSession else {
             NSLog("[NotificationService] launchBackgroundSync: mxSession is missing.")
             self.fallbackToOriginalContent(forEventId: eventId)
             return
@@ -242,7 +243,7 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func processEvent(_ event: MXEvent) {
-        guard let content = originalContents[event.eventId], let mxSession = mxSession else {
+        guard let content = originalContents[event.eventId], let mxSession = NotificationService.mxSession else {
             self.fallbackToOriginalContent(forEventId: event.eventId)
             return
         }
