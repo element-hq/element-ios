@@ -28,7 +28,6 @@ class NotificationService: UNNotificationServiceExtension {
     /// Cached events. Keys are eventId's
     var cachedEvents: [String: MXEvent] = [:]
     static var mxSession: MXSession?
-    static var store: NSEMemoryStore!
     lazy var showDecryptedContentInNotifications: Bool = {
         return RiotSettings.shared.showDecryptedContentInNotifications
     }()
@@ -96,15 +95,10 @@ class NotificationService: UNNotificationServiceExtension {
         Bundle.mxk_customizeLocalizedStringTableName("Vector")
         
         if let userAccount = MXKAccountManager.shared()?.activeAccounts.first {
-            if NotificationService.store == nil {
-                NotificationService.store = NSEMemoryStore(withCredentials: userAccount.mxCredentials)
-            } else {
-                NSLog("[NotificationService] Instance: Reusing store")
-            }
-            
             if NotificationService.mxSession == nil {
+                let store = NSEMemoryStore(withCredentials: userAccount.mxCredentials)
                 NotificationService.mxSession = MXSession(matrixRestClient: MXRestClient(credentials: userAccount.mxCredentials, unrecognizedCertificateHandler: nil))
-                NotificationService.mxSession?.setStore(NotificationService.store, completion: { (response) in
+                NotificationService.mxSession?.setStore(store, completion: { (response) in
                     switch response {
                     case .success:
                         completion()
@@ -347,7 +341,7 @@ class NotificationService: UNNotificationServiceExtension {
                     msgType = nil
                 }
                 
-                let roomDisplayName = session.store.summary(ofRoom: room.roomId)?.displayname
+                let roomDisplayName = session.store.summary?(ofRoom: room.roomId)?.displayname
                 let myUserId = session.myUser.userId
                 let isIncomingEvent = event.sender != myUserId
                 
