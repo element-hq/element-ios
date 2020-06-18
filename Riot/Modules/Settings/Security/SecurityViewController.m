@@ -34,6 +34,7 @@ enum
 {
     SECTION_CRYPTO_SESSIONS,
     SECTION_CROSSSIGNING,
+    SECTION_SECURE_BACKUP,
     SECTION_CRYPTOGRAPHY,
     SECTION_KEYBACKUP,
     SECTION_ADVANCED,
@@ -45,6 +46,22 @@ enum {
     CROSSSIGNING_FIRST_ACTION,      // Bootstrap, Reset, Verify this session, Request keys
     CROSSSIGNING_SECOND_ACTION,     // Reset
 };
+
+enum {
+    SECURE_BACKUP_DESCRIPTION,
+    // TODO: We can display the state of 4S both locally and on the server. Then, provide actions according to all combinations.
+    // - Does the 4S contains all the 4 keys server side?
+    // - Advice the user to do a recovery if there is less keys locally
+    // - Advice them to do a recovery if local keys are obsolete
+    // - Advice them to fix a secure backup if there is 4S but no key backup
+    // - Warm them if there is no 4S and they do not have all 3 signing keys locally. They will set up a not complete secure backup
+    SECURE_BACKUP_INFO,
+    SECURE_BACKUP_SETUP,
+    SECURE_BACKUP_RESTORE,
+    SECURE_BACKUP_DELETE,
+    SECURE_BACKUP_MANAGE_MANUALLY,  // TODO: What to do with that?
+};
+
 
 enum {
     CRYPTOGRAPHY_INFO,
@@ -71,6 +88,9 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
 
     // Devices
     NSMutableArray<MXDevice *> *devicesArray;
+    
+    // SECURE_BACKUP_* rows to display
+    NSArray<NSNumber *> *secureBackupSectionState;
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
@@ -397,6 +417,8 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
 
 - (void)reloadData
 {
+    [self refreshSecureBackupSectionData];
+    
     // Trigger a full table reloadData
     [self.tableView reloadData];
 }
@@ -564,6 +586,56 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
 }
 
 
+#pragma mark - SSSS
+
+- (void)refreshSecureBackupSectionData
+{
+    // TODO
+    if (self.mainSession.crypto.recoveryService.hasRecovery)
+    {
+        secureBackupSectionState = @[
+                                     //@(SECURE_BACKUP_INFO),
+                                     @(SECURE_BACKUP_RESTORE),
+                                     @(SECURE_BACKUP_DELETE),
+                                     @(SECURE_BACKUP_DESCRIPTION),
+                                     //@(SECURE_BACKUP_MANAGE_MANUALLY),
+                                     ];
+    }
+    else
+    {
+        secureBackupSectionState = @[
+                                     //@(SECURE_BACKUP_INFO),
+                                     @(SECURE_BACKUP_SETUP),    // TODO: Check we have all keys locally (at least MSK, SSK & SSK)
+                                     @(SECURE_BACKUP_DESCRIPTION),
+                                     //@(SECURE_BACKUP_MANAGE_MANUALLY),
+                                     ];
+    }
+}
+
+- (NSUInteger)secureBackupSectionEnumForRow:(NSUInteger)row
+{
+    if (row < secureBackupSectionState.count)
+    {
+        return secureBackupSectionState[row].unsignedIntegerValue;
+    }
+    
+    return SECURE_BACKUP_DESCRIPTION;
+}
+
+- (NSUInteger)numberOfRowsInSecureBackupSection
+{
+    return secureBackupSectionState.count;
+}
+
+- (void)restoreFromSecureBackup
+{
+    secretsRecoveryCoordinatorBridgePresenter = [[SecretsRecoveryCoordinatorBridgePresenter alloc] initWithSession:self.mainSession recoveryGoal:SecretsRecoveryGoalRestoreSecureBackup];
+    
+    [secretsRecoveryCoordinatorBridgePresenter presentFrom:self animated:true];
+    secretsRecoveryCoordinatorBridgePresenter.delegate = self;
+}
+
+
 #pragma mark - Segues
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -596,6 +668,9 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
             {
                 count = devicesArray.count + 1;
             }
+            break;
+        case SECTION_SECURE_BACKUP:
+            count = [self numberOfRowsInSecureBackupSection];
             break;
         case SECTION_KEYBACKUP:
             count = keyBackupSection.numberOfRows;
@@ -802,6 +877,70 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
             }
         }
     }
+    else if (section == SECTION_SECURE_BACKUP)
+    {
+        switch ([self secureBackupSectionEnumForRow:row])
+        {
+            case SECURE_BACKUP_DESCRIPTION:
+            {
+                // TODO
+                cell = [self descriptionCellForTableView:tableView
+                                                //withText:@"Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server."];
+                                                //withText:@"Back up your encryption keys with your account data in case you lose access to your logins. Your keys will be secured with a unique Recovery Key."];
+                                                withText:@"Back up your encryption keys with your account data in case you lose access to your logins. Your keys are secured with a Recovery Key or a Secret Phrase."];
+                break;
+            }
+            case SECURE_BACKUP_SETUP:
+            {
+                // TODO: Button or cell?
+//                MXKTableViewCellWithTextView *textCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
+//                textCell.mxkTextView.text = @"Set up Secure Backup";    // TODO
+//                textCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//
+//                cell = textCell;
+                
+                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:@"Set up Secure Backup"    // TODO
+                                                                            action:@selector(displayComingSoon) // TODO
+                                                                      forTableView:tableView
+                                                                       atIndexPath:indexPath];
+                
+                cell = buttonCell;
+                break;
+            }
+            case SECURE_BACKUP_RESTORE:
+            {
+                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:@"Restore from Secure Backup"    // TODO
+                                                                                   action:@selector(restoreFromSecureBackup)
+                                                                             forTableView:tableView
+                                                                              atIndexPath:indexPath];
+                
+                cell = buttonCell;
+                break;
+            }
+            case SECURE_BACKUP_DELETE:
+            {
+                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:@"Delete Secure Backup"  // TODO
+                                                                            action:@selector(displayComingSoon)
+                                                                      forTableView:tableView
+                                                                       atIndexPath:indexPath];
+                buttonCell.mxkButton.tintColor = ThemeService.shared.theme.warningColor;
+                
+                cell = buttonCell;
+                break;
+            }
+            
+            case SECURE_BACKUP_MANAGE_MANUALLY:
+            {
+                MXKTableViewCellWithTextView *textCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
+                textCell.mxkTextView.text = @"Advanced: Manually manage keys";  // TODO
+                textCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                
+                cell = textCell;
+                break;
+            }
+        }
+
+    }
     else if (section == SECTION_KEYBACKUP)
     {
         cell = [keyBackupSection cellForRowAtRow:row];
@@ -883,6 +1022,8 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
     {
         case SECTION_CRYPTO_SESSIONS:
             return NSLocalizedStringFromTable(@"security_settings_crypto_sessions", @"Vector", nil);
+        case SECTION_SECURE_BACKUP:
+            return @"SECURE BACKUP";    // TODO
         case SECTION_KEYBACKUP:
             return NSLocalizedStringFromTable(@"security_settings_backup", @"Vector", nil);
         case SECTION_CROSSSIGNING:
@@ -1270,14 +1411,23 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
 {
     UIViewController *presentedViewController = [coordinatorBridgePresenter toPresentable];
     
-    if ([presentedViewController isKindOfClass:UINavigationController.class])
+    if (coordinatorBridgePresenter.recoveryGoal == SecretsRecoveryGoalKeyBackup)
     {
-        UINavigationController *navigationController = (UINavigationController*)self.presentedViewController;
-        [self pushKeyBackupRecover:self.currentkeyBackupVersion fromNavigationController:navigationController];
+        // Go to the true key backup recovery screen
+        if ([presentedViewController isKindOfClass:UINavigationController.class])
+        {
+            UINavigationController *navigationController = (UINavigationController*)self.presentedViewController;
+            [self pushKeyBackupRecover:self.currentkeyBackupVersion fromNavigationController:navigationController];
+        }
+        else
+        {
+            [self showKeyBackupRecover:self.currentkeyBackupVersion fromViewController:presentedViewController];
+        }
     }
     else
     {
-        [self showKeyBackupRecover:self.currentkeyBackupVersion fromViewController:presentedViewController];
+        [secretsRecoveryCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+        secretsRecoveryCoordinatorBridgePresenter = nil;
     }
 }
 

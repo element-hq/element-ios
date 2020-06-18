@@ -21,4 +21,5 @@ enum SecretsRecoveryGoal: Int {
     case `default`
     case keyBackup
     case verifyDevice
+    case restoreSecureBackup
 }
