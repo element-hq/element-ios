@@ -28,6 +28,7 @@ Bug fix:
  * Xcode11: Fix noisy notifications (#3316).
  * Xcode11: Temporary workaround for navigation bar bg color on emoji selection screen (#3271).
  * Project: Remove GoogleService-Info.plist (#3329).
+ * Xcode11: Various bug fixes about NSE (PR #3345).
  
  Changes in 0.11.6 (2020-xx-xx)
  ===============================================

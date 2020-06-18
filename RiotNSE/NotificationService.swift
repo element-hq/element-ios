@@ -27,16 +27,21 @@ class NotificationService: UNNotificationServiceExtension {
     
     /// Cached events. Keys are eventId's
     var cachedEvents: [String: MXEvent] = [:]
-    var mxSession: MXSession?
-    var store: NSEMemoryStore!
+    static var mxSession: MXSession?
     lazy var showDecryptedContentInNotifications: Bool = {
         return RiotSettings.shared.showDecryptedContentInNotifications
     }()
+    static var isLoggerInitialized: Bool = false
     
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-        //  setup logs as first thing
+        //  set app-group identifier first
+        MXSDKOptions.sharedInstance().applicationGroupIdentifier = "group.im.vector"
+        
+        //  setup logs
         setupLogger()
         
+        NSLog("[NotificationService] Instance: \(self), thread: \(Thread.current)")
+
         UNUserNotificationCenter.current().removeUnwantedNotifications()
         
         let userInfo = request.content.userInfo
@@ -73,28 +78,27 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func setupLogger() {
-        if isatty(STDERR_FILENO) == 0 {
-            MXLogger.setSubLogName("nse")
-            MXLogger.redirectNSLog(toFiles: true, numberOfFiles: 100)
+        if !NotificationService.isLoggerInitialized {
+            if isatty(STDERR_FILENO) == 0 {
+                MXLogger.setSubLogName("nse")
+                MXLogger.redirectNSLog(toFiles: true)
+            }
+            NotificationService.isLoggerInitialized = true
         }
     }
     
     func setup(withRoomId roomId: String, eventId: String, completion: @escaping () -> Void) {
         let sdkOptions = MXSDKOptions.sharedInstance()
-        sdkOptions.applicationGroupIdentifier = "group.im.vector"
         sdkOptions.disableIdenticonUseForUserAvatar = true
         sdkOptions.enableCryptoWhenStartingMXSession = true
         sdkOptions.backgroundModeHandler = MXUIKitBackgroundModeHandler()
         Bundle.mxk_customizeLocalizedStringTableName("Vector")
         
         if let userAccount = MXKAccountManager.shared()?.activeAccounts.first {
-            if store == nil {
-                store = NSEMemoryStore(withCredentials: userAccount.mxCredentials)
-            }
-            
-            if mxSession == nil {
-                mxSession = MXSession(matrixRestClient: MXRestClient(credentials: userAccount.mxCredentials, unrecognizedCertificateHandler: nil))
-                mxSession?.setStore(store, completion: { (response) in
+            if NotificationService.mxSession == nil {
+                let store = NSEMemoryStore(withCredentials: userAccount.mxCredentials)
+                NotificationService.mxSession = MXSession(matrixRestClient: MXRestClient(credentials: userAccount.mxCredentials, unrecognizedCertificateHandler: nil))
+                NotificationService.mxSession?.setStore(store, completion: { (response) in
                     switch response {
                     case .success:
                         completion()
@@ -105,6 +109,9 @@ class NotificationService: UNNotificationServiceExtension {
                         break
                     }
                 })
+            } else {
+                NSLog("[NotificationService] Instance: Reusing session")
+                completion()
             }
         } else {
             NSLog("[NotificationService] setup: No active accounts")
@@ -113,7 +120,7 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func fetchEvent(withEventId eventId: String) {
-        guard let content = originalContents[eventId], let mxSession = mxSession else {
+        guard let content = originalContents[eventId], let mxSession = NotificationService.mxSession else {
             //  there is something wrong, do not change the content
             NSLog("[NotificationService] fetchEvent: Either originalContent or mxSession is missing.")
             fallbackToOriginalContent(forEventId: eventId)
@@ -201,7 +208,7 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func launchBackgroundSync(forEventId eventId: String) {
-        guard let mxSession = mxSession else {
+        guard let mxSession = NotificationService.mxSession else {
             NSLog("[NotificationService] launchBackgroundSync: mxSession is missing.")
             self.fallbackToOriginalContent(forEventId: eventId)
             return
@@ -230,14 +237,12 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func processEvent(_ event: MXEvent) {
-        guard let content = originalContents[event.eventId], let mxSession = mxSession else {
+        guard let content = originalContents[event.eventId], let mxSession = NotificationService.mxSession else {
             self.fallbackToOriginalContent(forEventId: event.eventId)
             return
         }
 
         self.notificationContent(forEvent: event, inSession: mxSession) { (notificationContent) in
-            //  close session
-            self.mxSession?.close()
             var isUnwantedNotification = false
             
             // Modify the notification content here...
@@ -262,8 +267,6 @@ class NotificationService: UNNotificationServiceExtension {
     
     func fallbackToOriginalContent(forEventId eventId: String) {
         NSLog("[NotificationService] fallbackToOriginalContent: method called.")
-        //  close session
-        mxSession?.close()
         
         guard let content = originalContents[eventId] else {
             NSLog("[NotificationService] fallbackToOriginalContent: Original content is missing.")
@@ -280,13 +283,11 @@ class NotificationService: UNNotificationServiceExtension {
             onComplete(nil)
             return
         }
-        guard let room = MXRoom.load(from: store, withRoomId: event.roomId, matrixSession: session) as? MXRoom else {
+        guard let room = MXRoom.load(from: session.store, withRoomId: event.roomId, matrixSession: session) as? MXRoom else {
             NSLog("[NotificationService] notificationContentForEvent: Unknown room")
             onComplete(nil)
             return
         }
-        
-        let pushRule = room.getRoomPushRule()
         
         NSLog("[NotificationService] notificationContentForEvent: Attempt to fetch the room state")
         room.state { (roomState) in
@@ -302,6 +303,8 @@ class NotificationService: UNNotificationServiceExtension {
             var threadIdentifier = room.roomId
             let eventSenderName = roomState.members.memberName(event.sender)
             let currentUserId = session.credentials.userId
+            
+            let pushRule = session.notificationCenter.rule(matching: event, roomState: roomState)
             
             switch event.eventType {
             case .roomMessage, .roomEncrypted:
@@ -338,7 +341,7 @@ class NotificationService: UNNotificationServiceExtension {
                     msgType = nil
                 }
                 
-                let roomDisplayName = self.store.summary(ofRoom: room.roomId)?.displayname
+                let roomDisplayName = session.store.summary?(ofRoom: room.roomId)?.displayname
                 let myUserId = session.myUser.userId
                 let isIncomingEvent = event.sender != myUserId
                 

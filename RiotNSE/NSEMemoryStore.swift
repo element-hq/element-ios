@@ -24,13 +24,15 @@ class NSEMemoryStore: MXMemoryStore {
     private var lastStoredEventStreamToken: String?
     private var credentials: MXCredentials
     //  real store
-    private var fileStore: MXFileStore
+    private var fileStore: MXFileStore!
     
     init(withCredentials credentials: MXCredentials) {
         self.credentials = credentials
-        fileStore = MXFileStore(credentials: credentials)
-        //  load real eventStreamToken
-        fileStore.loadMetaData()
+        if fileStore == nil {
+            fileStore = MXFileStore(credentials: credentials)
+            //  load real eventStreamToken
+            fileStore.loadMetaData()
+        }
     }
     
     //  Return real eventStreamToken, to be able to launch a meaningful background sync
@@ -89,9 +91,15 @@ class NSEMemoryStore: MXMemoryStore {
         return MXUser(userId: userId)
     }
     
-    override func close() {
-        //  close real store
-        fileStore.close()
+    override var syncFilterId: String? {
+        get {
+            let filter = MXFilterJSONModel()
+            filter.room = MXRoomFilter()
+            filter.room.rooms = []
+            return filter.jsonString()
+        } set {
+            //  no-op
+        }
     }
     
 }
