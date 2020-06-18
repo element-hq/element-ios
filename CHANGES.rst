@@ -29,6 +29,7 @@ Bug fix:
  * Xcode11: Temporary workaround for navigation bar bg color on emoji selection screen (#3271).
  * Project: Remove GoogleService-Info.plist (#3329).
  * Xcode11: Various bug fixes about NSE (PR #3345).
+ * Xcode11: New localization keys for push notifications (#3325).
  
  Changes in 0.11.6 (2020-xx-xx)
  ===============================================
