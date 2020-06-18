@@ -132,7 +132,8 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
 
     [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
     [self.tableView registerNib:MXKTableViewCellWithTextView.nib forCellReuseIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier]];
-    
+    [self.tableView registerNib:MXKTableViewCellWithButton.nib forCellReuseIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
+
     // Enable self sizing cells
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 50;
@@ -723,6 +724,45 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
     return textViewCell;
 }
 
+- (MXKTableViewCellWithButton *)buttonCellForTableView:(UITableView*)tableView atIndexPath:(NSIndexPath *)indexPath
+{
+    MXKTableViewCellWithButton *cell = [self.tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier] forIndexPath:indexPath];
+    
+    if (!cell)
+    {
+        cell = [[MXKTableViewCellWithButton alloc] init];
+    }
+    else
+    {
+        // Fix https://github.com/vector-im/riot-ios/issues/1354
+        cell.mxkButton.titleLabel.text = nil;
+        cell.mxkButton.enabled = YES;
+    }
+    
+    cell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
+    [cell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
+    
+    return cell;
+}
+
+- (MXKTableViewCellWithButton *)buttonCellWithTitle:(NSString*)title
+                                           action:(SEL)action
+                                       forTableView:(UITableView*)tableView
+                                        atIndexPath:(NSIndexPath *)indexPath
+{
+    MXKTableViewCellWithButton *cell = [self buttonCellForTableView:tableView atIndexPath:indexPath];
+    
+    
+    [cell.mxkButton setTitle:title forState:UIControlStateNormal];
+    [cell.mxkButton setTitle:title forState:UIControlStateHighlighted];
+    
+    [cell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+    [cell.mxkButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
+    cell.mxkButton.accessibilityIdentifier = nil;
+    
+    return cell;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger section = indexPath.section;
@@ -798,27 +838,10 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
             }
             case CRYPTOGRAPHY_EXPORT:
             {
-                MXKTableViewCellWithButton *exportKeysBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
-                if (!exportKeysBtnCell)
-                {
-                    exportKeysBtnCell = [[MXKTableViewCellWithButton alloc] init];
-                }
-                else
-                {
-                    exportKeysBtnCell.mxkButton.titleLabel.text = nil;
-                    exportKeysBtnCell.mxkButton.enabled = YES;
-                }
-                
-                NSString *btnTitle = NSLocalizedStringFromTable(@"security_settings_export_keys_manually", @"Vector", nil);
-                [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
-                [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-                [exportKeysBtnCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
-                exportKeysBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
-                
-                [exportKeysBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-                [exportKeysBtnCell.mxkButton addTarget:self action:@selector(exportEncryptionKeys:) forControlEvents:UIControlEventTouchUpInside];
-                exportKeysBtnCell.mxkButton.accessibilityIdentifier = nil;
-                
+                MXKTableViewCellWithButton *exportKeysBtnCell = [self buttonCellWithTitle:NSLocalizedStringFromTable(@"security_settings_export_keys_manually", @"Vector", nil)
+                                                                                   action:@selector(exportEncryptionKeys:)
+                                                                             forTableView:tableView
+                                                                              atIndexPath:indexPath];
                 cell = exportKeysBtnCell;
                 break;
             }
@@ -1099,23 +1122,8 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
 
 - (MXKTableViewCellWithButton *)settingsKeyBackupTableViewSection:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection buttonCellForRow:(NSInteger)buttonCellForRow
 {
-    MXKTableViewCellWithButton *cell = [self.tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
-
-    if (!cell)
-    {
-        cell = [[MXKTableViewCellWithButton alloc] init];
-    }
-    else
-    {
-        // Fix https://github.com/vector-im/riot-ios/issues/1354
-        cell.mxkButton.titleLabel.text = nil;
-        cell.mxkButton.enabled = YES;
-    }
-
-    cell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
-    [cell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
-
-    return cell;
+    return [self buttonCellForTableView:self.tableView
+                             atIndexPath:[NSIndexPath indexPathForRow:buttonCellForRow inSection:SECTION_KEYBACKUP]] ;
 }
 
 - (void)settingsKeyBackupTableViewSectionShowKeyBackupSetup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection
