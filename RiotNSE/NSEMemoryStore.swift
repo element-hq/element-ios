@@ -33,7 +33,7 @@ class NSEMemoryStore: MXMemoryStore {
     private var credentials: MXCredentials
     //  real store
     private var fileStore: MXFileStore!
-    private var myUser: MXMyUser?
+    private var myUser: MXUser?
     
     init(withCredentials credentials: MXCredentials) {
         self.credentials = credentials
@@ -54,7 +54,7 @@ class NSEMemoryStore: MXMemoryStore {
             }
             //  load session user before calling onComplete
             self.fileStore.asyncUsers(withUserIds: [userId], success: { (users) in
-                if let user = users.first as? MXMyUser {
+                if let user = users.first {
                     self.myUser = user
                 }
                 onComplete?()
@@ -112,12 +112,9 @@ class NSEMemoryStore: MXMemoryStore {
     
     //  Override and return a user to be stored on session.myUser
     override func user(withUserId userId: String) -> MXUser? {
-        if userId == credentials.userId {
-            //  if myUser is set, return that
-            if let myUser = myUser {
-                return myUser
-            }
-            return MXMyUser(userId: userId)
+        if userId == credentials.userId, let myUser = myUser {
+            //  if asking for session user and myUser is set, return that
+            return myUser
         }
         return MXUser(userId: userId)
     }
