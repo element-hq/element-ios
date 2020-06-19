@@ -508,6 +508,8 @@ class NotificationService: UNNotificationServiceExtension {
             }
         }
         
+        NSLog("Sound name: \(String(describing: soundName))")
+        
         return soundName
     }
     
