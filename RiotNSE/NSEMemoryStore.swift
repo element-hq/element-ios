@@ -17,6 +17,14 @@
 import Foundation
 import MatrixSDK
 
+//  error domain
+let NSEMemoryStoreErrorDomain: String = "NSEMemoryStoreErrorDomain"
+
+//  error codes
+enum NSEMemoryStoreErrorCode: Int {
+    case userIDMissing = 1001   // User ID is missing in credentials
+}
+
 /// Fake memory store implementation. Uses some real values from an MXFileStore instance.
 class NSEMemoryStore: MXMemoryStore {
 
@@ -39,7 +47,9 @@ class NSEMemoryStore: MXMemoryStore {
     override func open(with credentials: MXCredentials, onComplete: (() -> Void)?, failure: ((Error?) -> Void)? = nil) {
         super.open(with: credentials, onComplete: {
             guard let userId = credentials.userId else {
-                failure?(NSError(domain: "NSEMemoryStoreErrorDomain", code: 1001, userInfo: nil))
+                failure?(NSError(domain: NSEMemoryStoreErrorDomain,
+                                 code: NSEMemoryStoreErrorCode.userIDMissing.rawValue,
+                                 userInfo: nil))
                 return
             }
             //  load session user before calling onComplete
