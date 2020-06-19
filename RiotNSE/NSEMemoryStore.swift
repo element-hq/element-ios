@@ -25,6 +25,7 @@ class NSEMemoryStore: MXMemoryStore {
     private var credentials: MXCredentials
     //  real store
     private var fileStore: MXFileStore!
+    private var myUser: MXMyUser?
     
     init(withCredentials credentials: MXCredentials) {
         self.credentials = credentials
@@ -33,6 +34,22 @@ class NSEMemoryStore: MXMemoryStore {
             //  load real eventStreamToken
             fileStore.loadMetaData()
         }
+    }
+    
+    override func open(with credentials: MXCredentials, onComplete: (() -> Void)?, failure: ((Error?) -> Void)? = nil) {
+        super.open(with: credentials, onComplete: {
+            guard let userId = credentials.userId else {
+                failure?(NSError(domain: "NSEMemoryStoreErrorDomain", code: 1001, userInfo: nil))
+                return
+            }
+            //  load session user before calling onComplete
+            self.fileStore.asyncUsers(withUserIds: [userId], success: { (users) in
+                if let user = users.first as? MXMyUser {
+                    self.myUser = user
+                }
+                onComplete?()
+            }, failure: failure)
+        }, failure: failure)
     }
     
     //  Return real eventStreamToken, to be able to launch a meaningful background sync
@@ -86,6 +103,10 @@ class NSEMemoryStore: MXMemoryStore {
     //  Override and return a user to be stored on session.myUser
     override func user(withUserId userId: String) -> MXUser? {
         if userId == credentials.userId {
+            //  if myUser is set, return that
+            if let myUser = myUser {
+                return myUser
+            }
             return MXMyUser(userId: userId)
         }
         return MXUser(userId: userId)
