@@ -635,6 +635,24 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
     secretsRecoveryCoordinatorBridgePresenter.delegate = self;
 }
 
+- (void)deleteSecureBackup
+{
+    MXRecoveryService *recoveryService =  self.mainSession.crypto.recoveryService;
+    if (recoveryService)
+    {
+        [self startActivityIndicator];
+        [recoveryService deleteRecoveryWithSuccess:^{
+            [self stopActivityIndicator];
+            [self reloadData];
+        } failure:^(NSError * _Nonnull error) {
+            [self stopActivityIndicator];
+            [self reloadData];
+            
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+        }];
+    }
+}
+
 
 #pragma mark - Segues
 
@@ -920,7 +938,7 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
             case SECURE_BACKUP_DELETE:
             {
                 MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:@"Delete Secure Backup"  // TODO
-                                                                            action:@selector(displayComingSoon)
+                                                                            action:@selector(deleteSecureBackup)
                                                                       forTableView:tableView
                                                                        atIndexPath:indexPath];
                 buttonCell.mxkButton.tintColor = ThemeService.shared.theme.warningColor;
