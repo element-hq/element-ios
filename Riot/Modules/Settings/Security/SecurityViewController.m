@@ -547,12 +547,55 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
  
-    [buttonCell.mxkButton addTarget:self action:@selector(bootstrapCrossSigning:) forControlEvents:UIControlEventTouchUpInside];
+    [buttonCell.mxkButton addTarget:self action:@selector(setupCrossSigning:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (void)bootstrapCrossSigning:(UITapGestureRecognizer *)recognizer
+- (void)setupCrossSigning:(UITapGestureRecognizer *)recognizer
 {
+#ifdef NEW_CROSS_SIGNING_FLOW
+    // TODO: Implement the true setup flow
+    MXCrossSigning *crossSigning =  self.mainSession.crypto.crossSigning;
+    if (crossSigning)
+    {
+        [self startActivityIndicator];
+        [crossSigning bootstrapWithPassword:@"password" success:^{
+            [self stopActivityIndicator];
+            [self reloadData];
+        } failure:^(NSError * _Nonnull error) {
+            [self stopActivityIndicator];
+            [self reloadData];
+            
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+        }];
+    }
+#else
     [self displayComingSoon];
+#endif
+}
+
+- (void)resetCrossSigning:(UITapGestureRecognizer *)recognizer
+{
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
+    
+    // Double confirmation
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Are you sure?"  // TODO
+                                                                             message:@"You will need to verify trusted users again. Users who trusted you will need to verify you again."     // TODO
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Reset"
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * action)
+                                {
+                                    // Setup and reset are the same thing
+                                    [self setupCrossSigning:recognizer];
+                                }]];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                                style:UIAlertActionStyleCancel
+                                                              handler:nil]];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+    currentAlert = alertController;
 }
 
 - (void)setUpcrossSigningButtonCellForReset:(MXKTableViewCellWithButton*)buttonCell
@@ -564,11 +607,6 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
     buttonCell.mxkButton.tintColor = ThemeService.shared.theme.warningColor;
     
     [buttonCell.mxkButton addTarget:self action:@selector(resetCrossSigning:) forControlEvents:UIControlEventTouchUpInside];
-}
-
-- (void)resetCrossSigning:(UITapGestureRecognizer *)recognizer
-{
-    [self displayComingSoon];
 }
 
 - (void)setUpcrossSigningButtonCellForCompletingSecurity:(MXKTableViewCellWithButton*)buttonCell
@@ -625,6 +663,32 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
 - (NSUInteger)numberOfRowsInSecureBackupSection
 {
     return secureBackupSectionState.count;
+}
+
+- (void)setupSecureBackup
+{
+#ifdef NEW_CROSS_SIGNING_FLOW
+    // TODO: Implement the true setup flow
+    MXRecoveryService *recoveryService =  self.mainSession.crypto.recoveryService;
+    if (recoveryService)
+    {
+        [self startActivityIndicator];
+        [recoveryService createRecoveryForSecrets:nil
+                                   withPassphrase:@"passphrase"
+                                          success:^(MXSecretStorageKeyCreationInfo * _Nonnull keyCreationInfo)
+         {
+             [self stopActivityIndicator];
+             [self reloadData];
+         } failure:^(NSError * _Nonnull error) {
+             [self stopActivityIndicator];
+             [self reloadData];
+             
+             [[AppDelegate theDelegate] showErrorAsAlert:error];
+         }];
+    }
+#else
+    [self displayComingSoon];
+#endif
 }
 
 - (void)restoreFromSecureBackup
@@ -918,7 +982,7 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
 //                cell = textCell;
                 
                 MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:@"Set up Secure Backup"    // TODO
-                                                                            action:@selector(displayComingSoon) // TODO
+                                                                            action:@selector(setupSecureBackup)
                                                                       forTableView:tableView
                                                                        atIndexPath:indexPath];
                 
