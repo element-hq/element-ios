@@ -2226,10 +2226,6 @@ internal enum VectorL10n {
   internal static var roomDetailsLowPriorityTag: String { 
     return VectorL10n.tr("Vector", "room_details_low_priority_tag") 
   }
-  /// Mute notifications
-  internal static var roomDetailsMuteNotifs: String { 
-    return VectorL10n.tr("Vector", "room_details_mute_notifs") 
-  }
   /// Add new address
   internal static var roomDetailsNewAddress: String { 
     return VectorL10n.tr("Vector", "room_details_new_address") 
@@ -2245,6 +2241,14 @@ internal enum VectorL10n {
   /// This room has no local addresses
   internal static var roomDetailsNoLocalAddresses: String { 
     return VectorL10n.tr("Vector", "room_details_no_local_addresses") 
+  }
+  /// Notifications
+  internal static var roomDetailsNotificationsRowTitle: String { 
+    return VectorL10n.tr("Vector", "room_details_notifications_row_title") 
+  }
+  /// Notifications
+  internal static var roomDetailsNotificationsSectionTitle: String { 
+    return VectorL10n.tr("Vector", "room_details_notifications_section_title") 
   }
   /// Members
   internal static var roomDetailsPeople: String { 
