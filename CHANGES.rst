@@ -30,6 +30,7 @@ Bug fix:
  * Project: Remove GoogleService-Info.plist (#3329).
  * Xcode11: Various bug fixes about NSE (PR #3345).
  * Xcode11: Fix session user display name (PR #3349).
+ * Xcode11: Fix rebooted and unlocked case for NSE (PR #3353).
  
  Changes in 0.11.6 (2020-xx-xx)
  ===============================================
