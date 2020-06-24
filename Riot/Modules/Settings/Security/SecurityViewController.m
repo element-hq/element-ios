@@ -478,6 +478,13 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
             break;
         case MXCrossSigningStateCanCrossSign:
             crossSigningInformation = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_info_ok"];
+            
+#ifdef NEW_CROSS_SIGNING_FLOW
+            if (![self.mainSession.crypto.recoveryService hasSecretLocally:MXSecretId.crossSigningMaster])
+            {
+                crossSigningInformation = [crossSigningInformation stringByAppendingString:@"\n\n⚠️ The MSK is missing. Verify this device again or use the Secure Backup below to synchronise your keys accross your devices"];
+            }
+#endif
             break;
     }
     
@@ -762,7 +769,7 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
         }
         else
         {
-            information = [NSString stringWithFormat:@"\n ✅ %@. ⚠️ This key is not stored locally. Tap Synchronise", secretName];
+            information = [NSString stringWithFormat:@"\n ⚠️ %@ is in the backup but not locally. Tap Synchronise", secretName];
             *hasWarning |= YES;
         }
     }
