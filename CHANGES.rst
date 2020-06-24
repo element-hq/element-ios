@@ -8,6 +8,7 @@ Improvements:
  * Timeline: Hide encrypted history (pre-invite) (#3239).
  * Complete security: Add recovery from 4S (#3304).
  * Key backup: Connect/restore backup created with SSSS (#3124).
+ * E2E by default: Disable it if the HS admin disabled it (#3305).
  
 Bug fix:
  * CallVC: Declined calls now properly reset call view controller, thanks to @Legi429 (#2877).
