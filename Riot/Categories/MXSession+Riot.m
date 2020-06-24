@@ -49,4 +49,33 @@
     return missedDiscussionsCount;
 }
 
+- (BOOL)riot_isE2EByDefaultEnabledByHSAdmin
+{
+    BOOL isE2EByDefaultEnabledByHSAdmin = YES;
+    
+    MXWellKnown *wellKnown = self.homeserverWellknown;
+    
+    if (wellKnown.JSONDictionary[@"im.vector.riot.e2ee"][@"default"])
+    {
+        MXJSONModelSetBoolean(isE2EByDefaultEnabledByHSAdmin, wellKnown.JSONDictionary[@"im.vector.riot.e2ee"][@"default"]);
+    }
+    
+    return isE2EByDefaultEnabledByHSAdmin;
+}
+
+- (MXHTTPOperation*)riot_canEnableE2EByDefaultInNewRoomWithUsers:(NSArray<NSString*>*)userIds
+                                                         success:(void (^)(BOOL canEnableE2E))success
+                                                         failure:(void (^)(NSError *error))failure;
+{
+    if (self.riot_isE2EByDefaultEnabledByHSAdmin)
+    {
+        return [self canEnableE2EByDefaultInNewRoomWithUsers:userIds success:success failure:failure];
+    }
+    else
+    {
+        success(NO);
+        return [MXHTTPOperation new];
+    }
+}
+
 @end
