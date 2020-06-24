@@ -25,4 +25,22 @@
  */
 - (NSUInteger)riot_missedDiscussionsCount;
 
+/**
+ Check if E2E by default is welcomed on the user's HS.
+ The default value is YES.
+ 
+ HS admins can disable it in /.well-known/matrix/client by returning:
+ "im.vector.riot.e2ee": {
+ "default": false
+ }
+ */
+- (BOOL)riot_isE2EByDefaultEnabledByHSAdmin;
+
+/**
+ Riot version of [MXSession canEnableE2EByDefaultInNewRoomWithUsers:]
+ */
+- (MXHTTPOperation*)riot_canEnableE2EByDefaultInNewRoomWithUsers:(NSArray<NSString*>*)userIds
+                                                         success:(void (^)(BOOL canEnableE2E))success
+                                                         failure:(void (^)(NSError *error))failure;
+
 @end
