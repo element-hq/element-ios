@@ -52,7 +52,7 @@ enum {
     // TODO: We can display the state of 4S both locally and on the server. Then, provide actions according to all combinations.
     // - Does the 4S contains all the 4 keys server side?
     // - Advice the user to do a recovery if there is less keys locally
-    // - Advice them to do a recovery if local keys are obsolete
+    // - Advice them to do a recovery if local keys are obsolete -> We cannot know know
     // - Advice them to fix a secure backup if there is 4S but no key backup
     // - Warm them if there is no 4S and they do not have all 3 signing keys locally. They will set up a not complete secure backup
     SECURE_BACKUP_INFO,
@@ -629,10 +629,11 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
 - (void)refreshSecureBackupSectionData
 {
     // TODO
-    if (self.mainSession.crypto.recoveryService.hasRecovery)
+    MXRecoveryService *recoveryService =  self.mainSession.crypto.recoveryService;
+    if (recoveryService.hasRecovery)
     {
         secureBackupSectionState = @[
-                                     //@(SECURE_BACKUP_INFO),
+                                     @(SECURE_BACKUP_INFO),
                                      @(SECURE_BACKUP_RESTORE),
                                      @(SECURE_BACKUP_DELETE),
                                      @(SECURE_BACKUP_DESCRIPTION),
@@ -641,12 +642,23 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
     }
     else
     {
-        secureBackupSectionState = @[
-                                     //@(SECURE_BACKUP_INFO),
-                                     @(SECURE_BACKUP_SETUP),    // TODO: Check we have all keys locally (at least MSK, SSK & SSK)
-                                     @(SECURE_BACKUP_DESCRIPTION),
-                                     //@(SECURE_BACKUP_MANAGE_MANUALLY),
-                                     ];
+        if (self.canSetupSecureBackup)
+        {
+            secureBackupSectionState = @[
+                                         @(SECURE_BACKUP_INFO),
+                                         @(SECURE_BACKUP_SETUP),    // TODO: Check we have all keys locally (at least MSK, SSK & SSK)
+                                         @(SECURE_BACKUP_DESCRIPTION),
+                                         //@(SECURE_BACKUP_MANAGE_MANUALLY),
+                                         ];
+        }
+        else
+        {
+            secureBackupSectionState = @[
+                                         @(SECURE_BACKUP_INFO),
+                                         @(SECURE_BACKUP_DESCRIPTION),
+                                         //@(SECURE_BACKUP_MANAGE_MANUALLY),
+                                         ];
+        }
     }
 }
 
@@ -663,6 +675,124 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
 - (NSUInteger)numberOfRowsInSecureBackupSection
 {
     return secureBackupSectionState.count;
+}
+
+- (NSString*)secureBackupInformation
+{
+    NSString *secureBackupInformation;
+    
+    MXRecoveryService *recoveryService =  self.mainSession.crypto.recoveryService;
+    
+    if (recoveryService.hasRecovery)
+    {
+        NSMutableString *mutableString = [@"Your account has a Secure Backup.\n" mutableCopy];
+        
+        // Check all keys that should be in the SSSSS
+        // TODO: Check obsoletes ones but need spec update
+        
+        BOOL hasWarning = NO;
+        NSString *keyState = [self informationForSecret:MXSecretId.crossSigningMaster secretName:@"Cross-signing" hasWarning:&hasWarning];
+        if (keyState)
+        {
+            [mutableString appendString:keyState];
+        }
+        
+        keyState = [self informationForSecret:MXSecretId.crossSigningSelfSigning secretName:@"Self signing" hasWarning:&hasWarning];
+        if (keyState)
+        {
+            [mutableString appendString:keyState];
+        }
+
+        keyState = [self informationForSecret:MXSecretId.crossSigningUserSigning secretName:@"User signing" hasWarning:&hasWarning];
+        if (keyState)
+        {
+            [mutableString appendString:keyState];
+        }
+        
+        keyState = [self informationForSecret:MXSecretId.keyBackup secretName:@"Message Backup" hasWarning:&hasWarning];
+        if (keyState)
+        {
+            [mutableString appendString:keyState];
+        }
+        else
+        {
+            if (self.mainSession.crypto.backup.keyBackupVersion)
+            {
+                [mutableString appendString:@"\n\n⚠️ The key of your current Message backup is not in the Secure Backup. Restore it first (see below)."];
+            }
+            else
+            {
+                [mutableString appendString:@"\n\n⚠️ Consider create a Message Backup (see below)."];
+            }
+        }
+        
+        if (!hasWarning)
+        {
+            [mutableString appendFormat:@"\n\nIf you are facing an issue, synchronise your Secure Backup."];
+        }
+        
+        secureBackupInformation = mutableString;
+    }
+    else
+    {
+        if (self.canSetupSecureBackup)
+        {
+            secureBackupInformation = [NSString stringWithFormat:@"No Secure Backup. Create one.\n-----\nKeys to back up: %@", recoveryService.secretsStoredLocally];
+        }
+        else
+        {
+            secureBackupInformation = [NSString stringWithFormat:@"No Secure Backup. Set up cross-signing first (see above)"];
+        }
+    }
+
+    return secureBackupInformation;
+}
+
+- (nullable NSString*)informationForSecret:(NSString*)secretId secretName:(NSString*)secretName hasWarning:(BOOL*)hasWarning
+{
+    NSString *information;
+    
+    MXRecoveryService *recoveryService =  self.mainSession.crypto.recoveryService;
+    
+    if ([recoveryService hasSecretWithSecretId:secretId])
+    {
+        if ([recoveryService hasSecretLocally:secretId])
+        {
+            information = [NSString stringWithFormat:@"\n ✅ %@ is in the backup", secretName];
+        }
+        else
+        {
+            information = [NSString stringWithFormat:@"\n ✅ %@. ⚠️ This key is not stored locally. Tap Synchronise", secretName];
+            *hasWarning |= YES;
+        }
+    }
+    else
+    {
+        if ([recoveryService hasSecretLocally:secretId])
+        {
+            information = [NSString stringWithFormat:@"\n ⚠️ %@ is not in the backup. Tap Synchronise", secretName];
+            *hasWarning |= YES;
+        }
+    }
+    
+    return information;
+}
+
+- (BOOL)canSetupSecureBackup
+{
+    // Accept to create a setup only if we have the 3 cross-signing keys
+    // This is the path to have a sane state
+    // TODO: What about missing MSK that was not gossiped before?
+    
+    MXRecoveryService *recoveryService = self.mainSession.crypto.recoveryService;
+    
+    NSArray *crossSigningServiceSecrets = @[
+                                            MXSecretId.crossSigningMaster,
+                                            MXSecretId.crossSigningSelfSigning,
+                                            MXSecretId.crossSigningUserSigning];
+    
+    return ([recoveryService.secretsStoredLocally mx_intersectArray:crossSigningServiceSecrets].count
+            == crossSigningServiceSecrets.count);
 }
 
 - (void)setupSecureBackup
@@ -972,6 +1102,13 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
                                                 withText:@"Back up your encryption keys with your account data in case you lose access to your logins. Your keys are secured with a Recovery Key or a Secret Phrase."];
                 break;
             }
+            case SECURE_BACKUP_INFO:
+            {
+                // TODO
+                cell = [self descriptionCellForTableView:tableView
+                                                withText:self.secureBackupInformation];
+                break;
+            }
             case SECURE_BACKUP_SETUP:
             {
                 // TODO: Button or cell?
@@ -991,7 +1128,7 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
             }
             case SECURE_BACKUP_RESTORE:
             {
-                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:@"Restore from Secure Backup"    // TODO
+                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:@"Synchronise (Restore and/or Back up)"    // TODO
                                                                                    action:@selector(restoreFromSecureBackup)
                                                                              forTableView:tableView
                                                                               atIndexPath:indexPath];
