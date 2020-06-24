@@ -1394,7 +1394,7 @@ internal enum VectorL10n {
   internal static var keyBackupRecoverTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_title") 
   }
-  /// Start using Key Backup
+  /// Safeguard against losing access to encrypted messages & data
   internal static var keyBackupSetupBannerSubtitle: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_banner_subtitle") 
   }
@@ -3001,6 +3001,94 @@ internal enum VectorL10n {
   /// Recovery Passphrase
   internal static var secretsRecoveryWithPassphraseTitle: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_title") 
+  }
+  /// Done
+  internal static var secretsSetupRecoveryKeyDoneAction: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_key_done_action") 
+  }
+  /// Save
+  internal static var secretsSetupRecoveryKeyExportAction: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_key_export_action") 
+  }
+  /// Store your Recovery Key somewhere safe. It can be used to unlock your encrypted messages & data.
+  internal static var secretsSetupRecoveryKeyInformation: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_key_information") 
+  }
+  /// Loading…
+  internal static var secretsSetupRecoveryKeyLoading: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_key_loading") 
+  }
+  /// ✓ Print it and store it somewhere safe\n✓ Save it on a USB key or backup drive\n✓ Copy it to your personal cloud storage
+  internal static var secretsSetupRecoveryKeyStorageAlertMessage: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_key_storage_alert_message") 
+  }
+  /// Keep it safe
+  internal static var secretsSetupRecoveryKeyStorageAlertTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_key_storage_alert_title") 
+  }
+  /// Save your Security Key
+  internal static var secretsSetupRecoveryKeyTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_key_title") 
+  }
+  /// Don't use your account password.
+  internal static var secretsSetupRecoveryPassphraseAdditionalInformation: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_additional_information") 
+  }
+  /// Enter your Security Phrase again to confirm it.
+  internal static var secretsSetupRecoveryPassphraseConfirmInformation: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_confirm_information") 
+  }
+  /// Confirm passphrase
+  internal static var secretsSetupRecoveryPassphraseConfirmPassphrasePlaceholder: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder") 
+  }
+  /// Confirm
+  internal static var secretsSetupRecoveryPassphraseConfirmPassphraseTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_confirm_passphrase_title") 
+  }
+  /// Enter a security phrase only you know, used to secure secrets on your server.
+  internal static var secretsSetupRecoveryPassphraseInformation: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_information") 
+  }
+  /// Set a Security Phrase
+  internal static var secretsSetupRecoveryPassphraseTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_title") 
+  }
+  /// Done
+  internal static var secretsSetupRecoveryPassphraseValidateAction: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_validate_action") 
+  }
+  /// If you cancel now, you may lose encrypted messages & data if you lose access to your logins.\n\nYou can also set up Secure Backup & manage your keys in Settings.
+  internal static var secureKeyBackupSetupCancelAlertMessage: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_cancel_alert_message") 
+  }
+  /// Are your sure?
+  internal static var secureKeyBackupSetupCancelAlertTitle: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_cancel_alert_title") 
+  }
+  /// Safe guard against losing access to encrypted messages & data by backing up encryption keys on your server.
+  internal static var secureKeyBackupSetupIntroInfo: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_intro_info") 
+  }
+  /// Secure Backup
+  internal static var secureKeyBackupSetupIntroTitle: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_intro_title") 
+  }
+  /// Generate a security key to store somewhere safe like a password manager or a safe.
+  internal static var secureKeyBackupSetupIntroUseSecurityKeyInfo: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_intro_use_security_key_info") 
+  }
+  /// Use a Security Key
+  internal static var secureKeyBackupSetupIntroUseSecurityKeyTitle: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_intro_use_security_key_title") 
+  }
+  /// Enter a secret phrase only you know, and generate a key for backup.
+  internal static var secureKeyBackupSetupIntroUseSecurityPassphraseInfo: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_intro_use_security_passphrase_info") 
+  }
+  /// Use a Security Passphrase
+  internal static var secureKeyBackupSetupIntroUseSecurityPassphraseTitle: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_intro_use_security_passphrase_title") 
   }
   /// ADVANCED
   internal static var securitySettingsAdvanced: String { 
