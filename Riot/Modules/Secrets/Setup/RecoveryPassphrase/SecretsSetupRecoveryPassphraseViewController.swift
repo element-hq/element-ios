@@ -140,6 +140,8 @@ final class SecretsSetupRecoveryPassphraseViewController: UIViewController {
         self.passphraseVisibilityButton.setImage(visibilityImage, for: .normal)
         
         self.additionalInformationLabel.text = VectorL10n.secretsSetupRecoveryPassphraseAdditionalInformation
+        
+        self.validateButton.setTitle(VectorL10n.continue, for: .normal)
     }
     
     private func update(theme: Theme) {

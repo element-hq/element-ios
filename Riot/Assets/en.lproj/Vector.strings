@@ -924,7 +924,7 @@
 // Intro
 
 "secure_key_backup_setup_intro_title" = "Secure Backup";
-"secure_key_backup_setup_intro_info" = "Safe guard against losing access to encrypted messages & data by backing up encryption keys on your server.";
+"secure_key_backup_setup_intro_info" = "Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server.";
 
 "secure_key_backup_setup_intro_use_security_key_title" = "Use a Security Key";
 "secure_key_backup_setup_intro_use_security_key_info" = "Generate a security key to store somewhere safe like a password manager or a safe.";

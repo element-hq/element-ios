@@ -1394,7 +1394,7 @@ internal enum VectorL10n {
   internal static var keyBackupRecoverTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_title") 
   }
-  /// Start using Key Backup
+  /// Safeguard against losing access to encrypted messages & data
   internal static var keyBackupSetupBannerSubtitle: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_banner_subtitle") 
   }
