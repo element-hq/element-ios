@@ -29,12 +29,17 @@
 
 #import "Riot-Swift.h"
 
+// Dev flag for demoing what could be the settings
+// There is still a lot of TODO behind
+//#define NEW_CROSS_SIGNING_FLOW
 
 enum
 {
     SECTION_CRYPTO_SESSIONS,
     SECTION_CROSSSIGNING,
+#ifdef NEW_CROSS_SIGNING_FLOW
     SECTION_SECURE_BACKUP,
+#endif
     SECTION_CRYPTOGRAPHY,
     SECTION_KEYBACKUP,
     SECTION_ADVANCED,
@@ -888,9 +893,11 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
                 count = devicesArray.count + 1;
             }
             break;
+#ifdef NEW_CROSS_SIGNING_FLOW
         case SECTION_SECURE_BACKUP:
             count = [self numberOfRowsInSecureBackupSection];
             break;
+#endif
         case SECTION_KEYBACKUP:
             count = keyBackupSection.numberOfRows;
             break;
@@ -1096,6 +1103,7 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
             }
         }
     }
+#ifdef NEW_CROSS_SIGNING_FLOW
     else if (section == SECTION_SECURE_BACKUP)
     {
         switch ([self secureBackupSectionEnumForRow:row])
@@ -1167,6 +1175,7 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
         }
 
     }
+#endif
     else if (section == SECTION_KEYBACKUP)
     {
         cell = [keyBackupSection cellForRowAtRow:row];
@@ -1248,8 +1257,10 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
     {
         case SECTION_CRYPTO_SESSIONS:
             return NSLocalizedStringFromTable(@"security_settings_crypto_sessions", @"Vector", nil);
+#ifdef NEW_CROSS_SIGNING_FLOW
         case SECTION_SECURE_BACKUP:
             return @"SECURE BACKUP";    // TODO
+#endif
         case SECTION_KEYBACKUP:
             return NSLocalizedStringFromTable(@"security_settings_backup", @"Vector", nil);
         case SECTION_CROSSSIGNING:
