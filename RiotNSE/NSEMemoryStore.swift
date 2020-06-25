@@ -17,6 +17,14 @@
 import Foundation
 import MatrixSDK
 
+//  error domain
+let NSEMemoryStoreErrorDomain: String = "NSEMemoryStoreErrorDomain"
+
+//  error codes
+enum NSEMemoryStoreErrorCode: Int {
+    case userIDMissing = 1001   // User ID is missing in credentials
+}
+
 /// Fake memory store implementation. Uses some real values from an MXFileStore instance.
 class NSEMemoryStore: MXMemoryStore {
 
@@ -25,6 +33,7 @@ class NSEMemoryStore: MXMemoryStore {
     private var credentials: MXCredentials
     //  real store
     private var fileStore: MXFileStore!
+    private var myUser: MXUser?
     
     init(withCredentials credentials: MXCredentials) {
         self.credentials = credentials
@@ -33,6 +42,24 @@ class NSEMemoryStore: MXMemoryStore {
             //  load real eventStreamToken
             fileStore.loadMetaData()
         }
+    }
+    
+    override func open(with credentials: MXCredentials, onComplete: (() -> Void)?, failure: ((Error?) -> Void)? = nil) {
+        super.open(with: credentials, onComplete: {
+            guard let userId = credentials.userId else {
+                failure?(NSError(domain: NSEMemoryStoreErrorDomain,
+                                 code: NSEMemoryStoreErrorCode.userIDMissing.rawValue,
+                                 userInfo: nil))
+                return
+            }
+            //  load session user before calling onComplete
+            self.fileStore.asyncUsers(withUserIds: [userId], success: { (users) in
+                if let user = users.first {
+                    self.myUser = user
+                }
+                onComplete?()
+            }, failure: failure)
+        }, failure: failure)
     }
     
     //  Return real eventStreamToken, to be able to launch a meaningful background sync
@@ -85,8 +112,9 @@ class NSEMemoryStore: MXMemoryStore {
     
     //  Override and return a user to be stored on session.myUser
     override func user(withUserId userId: String) -> MXUser? {
-        if userId == credentials.userId {
-            return MXMyUser(userId: userId)
+        if userId == credentials.userId, let myUser = myUser {
+            //  if asking for session user and myUser is set, return that
+            return myUser
         }
         return MXUser(userId: userId)
     }

@@ -37,6 +37,11 @@ class NotificationService: UNNotificationServiceExtension {
         //  set app-group identifier first
         MXSDKOptions.sharedInstance().applicationGroupIdentifier = "group.im.vector"
         
+        if DataProtectionHelper.isDeviceInRebootedAndLockedState(appGroupIdentifier: MXSDKOptions.sharedInstance().applicationGroupIdentifier) {
+            //  kill the process in this state, this leads for the notification to be displayed as came from APNS
+            exit(0)
+        }
+        
         //  setup logs
         setupLogger()
         
@@ -516,6 +521,8 @@ class NotificationService: UNNotificationServiceExtension {
                 soundName = "message.caf"
             }
         }
+        
+        NSLog("Sound name: \(String(describing: soundName))")
         
         return soundName
     }
