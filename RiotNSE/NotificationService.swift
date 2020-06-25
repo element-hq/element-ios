@@ -59,6 +59,11 @@ class NotificationService: UNNotificationServiceExtension {
         guard let content = request.content.mutableCopy() as? UNMutableNotificationContent else {
             return
         }
+        
+        //  read badge from "unread_count"
+        //  no need to check before, if it's nil, the badge will remain unchanged
+        content.badge = userInfo["unread_count"] as? NSNumber
+        
         originalContents[eventId] = content
         contentHandlers[eventId] = contentHandler
         
