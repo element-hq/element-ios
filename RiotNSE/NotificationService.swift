@@ -22,8 +22,8 @@ class NotificationService: UNNotificationServiceExtension {
     /// Content handlers. Keys are eventId's
     var contentHandlers: [String: ((UNNotificationContent) -> Void)] = [:]
     
-    /// Original contents. Keys are eventId's
-    var originalContents: [String: UNMutableNotificationContent] = [:]
+    /// Best attempt contents. Will be updated incrementally, if something fails during the process, this best attempt content will be showed as notification. Keys are eventId's
+    var bestAttemptContents: [String: UNMutableNotificationContent] = [:]
     
     /// Cached events. Keys are eventId's
     var cachedEvents: [String: MXEvent] = [:]
@@ -64,7 +64,7 @@ class NotificationService: UNNotificationServiceExtension {
         //  no need to check before, if it's nil, the badge will remain unchanged
         content.badge = userInfo["unread_count"] as? NSNumber
         
-        originalContents[eventId] = content
+        bestAttemptContents[eventId] = content
         contentHandlers[eventId] = contentHandler
         
         //  setup user account
@@ -133,7 +133,7 @@ class NotificationService: UNNotificationServiceExtension {
     func preprocessPayload(forEventId eventId: String, roomId: String) {
         guard let session = NotificationService.mxSession else { return }
         guard let roomDisplayName = session.store.summary?(ofRoom: roomId)?.displayname else { return }
-        originalContents[eventId]?.title = roomDisplayName
+        bestAttemptContents[eventId]?.title = roomDisplayName
     }
     
     func fetchEvent(withEventId eventId: String, roomId: String) {
@@ -246,7 +246,7 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func processEvent(_ event: MXEvent) {
-        guard let content = originalContents[event.eventId], let mxSession = NotificationService.mxSession else {
+        guard let content = bestAttemptContents[event.eventId], let mxSession = NotificationService.mxSession else {
             self.fallbackToOriginalContent(forEventId: event.eventId)
             return
         }
@@ -277,8 +277,8 @@ class NotificationService: UNNotificationServiceExtension {
     func fallbackToOriginalContent(forEventId eventId: String) {
         NSLog("[NotificationService] fallbackToOriginalContent: method called.")
         
-        guard let content = originalContents[eventId] else {
-            NSLog("[NotificationService] fallbackToOriginalContent: Original content is missing.")
+        guard let content = bestAttemptContents[eventId] else {
+            NSLog("[NotificationService] fallbackToBestAttemptContent: Best attempt content is missing.")
             return
         }
         
