@@ -57,7 +57,7 @@ enum {
     // TODO: We can display the state of 4S both locally and on the server. Then, provide actions according to all combinations.
     // - Does the 4S contains all the 4 keys server side?
     // - Advice the user to do a recovery if there is less keys locally
-    // - Advice them to do a recovery if local keys are obsolete -> We cannot know know
+    // - Advice them to do a recovery if local keys are obsolete -> We cannot know now
     // - Advice them to fix a secure backup if there is 4S but no key backup
     // - Warm them if there is no 4S and they do not have all 3 signing keys locally. They will set up a not complete secure backup
     SECURE_BACKUP_INFO,
