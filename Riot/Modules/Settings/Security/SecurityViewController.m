@@ -599,7 +599,7 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
                                                       handler:^(UIAlertAction * action)
                                 {
                                     // Setup and reset are the same thing
-                                    [self setupCrossSigning:recognizer];
+                                    [self setupCrossSigning:nil];
                                 }]];
     
     [alertController addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
