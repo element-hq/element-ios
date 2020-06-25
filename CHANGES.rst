@@ -10,6 +10,7 @@ Improvements:
  * Key backup: Connect/restore backup created with SSSS (#3124).
  * E2E by default: Disable it if the HS admin disabled it (#3305).
  * Key backup: Add secure backup creation flow (#3344).
+ * Set up SSSS from banners (#3293).
  
 Bug fix:
  * CallVC: Declined calls now properly reset call view controller, thanks to @Legi429 (#2877).
