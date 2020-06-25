@@ -2962,7 +2962,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 }
             };
 
-            [mxSession riot_canEnableE2EByDefaultInNewRoomWithUsers:invite success:^(BOOL canEnableE2E) {
+            [mxSession vc_canEnableE2EByDefaultInNewRoomWithUsers:invite success:^(BOOL canEnableE2E) {
                 
                 MXRoomCreationParameters *roomCreationParameters = [MXRoomCreationParameters new];
                 roomCreationParameters.visibility = kMXRoomDirectoryVisibilityPrivate;

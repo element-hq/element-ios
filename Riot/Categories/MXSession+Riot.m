@@ -21,7 +21,7 @@
 
 @implementation MXSession (Riot)
 
-- (NSUInteger)riot_missedDiscussionsCount
+- (NSUInteger)vc_missedDiscussionsCount
 {
     NSUInteger missedDiscussionsCount = 0;
     
@@ -49,7 +49,7 @@
     return missedDiscussionsCount;
 }
 
-- (BOOL)riot_isE2EByDefaultEnabledByHSAdmin
+- (BOOL)vc_isE2EByDefaultEnabledByHSAdmin
 {
     BOOL isE2EByDefaultEnabledByHSAdmin = YES;
     
@@ -63,11 +63,11 @@
     return isE2EByDefaultEnabledByHSAdmin;
 }
 
-- (MXHTTPOperation*)riot_canEnableE2EByDefaultInNewRoomWithUsers:(NSArray<NSString*>*)userIds
+- (MXHTTPOperation*)vc_canEnableE2EByDefaultInNewRoomWithUsers:(NSArray<NSString*>*)userIds
                                                          success:(void (^)(BOOL canEnableE2E))success
                                                          failure:(void (^)(NSError *error))failure;
 {
-    if (self.riot_isE2EByDefaultEnabledByHSAdmin)
+    if (self.vc_isE2EByDefaultEnabledByHSAdmin)
     {
         return [self canEnableE2EByDefaultInNewRoomWithUsers:userIds success:success failure:failure];
     }
