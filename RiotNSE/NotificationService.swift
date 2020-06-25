@@ -112,7 +112,7 @@ class NotificationService: UNNotificationServiceExtension {
                         break
                     case .failure(let error):
                         NSLog("[NotificationService] setup: MXSession.setStore method returned error: \(String(describing: error))")
-                        self.fallbackToOriginalContent(forEventId: eventId)
+                        self.fallbackToBestAttemptContent(forEventId: eventId)
                         break
                     }
                 })
@@ -122,7 +122,7 @@ class NotificationService: UNNotificationServiceExtension {
             }
         } else {
             NSLog("[NotificationService] setup: No active accounts")
-            fallbackToOriginalContent(forEventId: eventId)
+            fallbackToBestAttemptContent(forEventId: eventId)
         }
     }
     
@@ -140,7 +140,7 @@ class NotificationService: UNNotificationServiceExtension {
         guard let mxSession = NotificationService.mxSession else {
             //  there is something wrong, do not change the content
             NSLog("[NotificationService] fetchEvent: Either originalContent or mxSession is missing.")
-            fallbackToOriginalContent(forEventId: eventId)
+            fallbackToBestAttemptContent(forEventId: eventId)
             return
         }
 
@@ -158,7 +158,7 @@ class NotificationService: UNNotificationServiceExtension {
             if !self.showDecryptedContentInNotifications {
                 //  do not show decrypted content in notification
                 NSLog("[NotificationService] fetchEvent: Do not show decrypted content in notifications.")
-                self.fallbackToOriginalContent(forEventId: event.eventId)
+                self.fallbackToBestAttemptContent(forEventId: event.eventId)
                 return
             }
             
@@ -196,7 +196,7 @@ class NotificationService: UNNotificationServiceExtension {
                 
                 guard let event = event else {
                     NSLog("[NotificationService] fetchEvent: MXSession.event method returned successfully with no event.")
-                    self.fallbackToOriginalContent(forEventId: eventId)
+                    self.fallbackToBestAttemptContent(forEventId: eventId)
                     return
                 }
                 
@@ -211,7 +211,7 @@ class NotificationService: UNNotificationServiceExtension {
                     return
                 }
                 NSLog("[NotificationService] fetchEvent: MXSession.event method returned error: \(String(describing: error))")
-                self.fallbackToOriginalContent(forEventId: eventId)
+                self.fallbackToBestAttemptContent(forEventId: eventId)
             }
         }
     }
@@ -219,7 +219,7 @@ class NotificationService: UNNotificationServiceExtension {
     func launchBackgroundSync(forEventId eventId: String, roomId: String) {
         guard let mxSession = NotificationService.mxSession else {
             NSLog("[NotificationService] launchBackgroundSync: mxSession is missing.")
-            self.fallbackToOriginalContent(forEventId: eventId)
+            self.fallbackToBestAttemptContent(forEventId: eventId)
             return
         }
 
@@ -239,7 +239,7 @@ class NotificationService: UNNotificationServiceExtension {
                     return
                 }
                 NSLog("[NotificationService] launchBackgroundSync: MXSession.initialBackgroundSync returned with error: \(String(describing: error))")
-                self.fallbackToOriginalContent(forEventId: eventId)
+                self.fallbackToBestAttemptContent(forEventId: eventId)
                 break
             }
         }
@@ -247,7 +247,7 @@ class NotificationService: UNNotificationServiceExtension {
     
     func processEvent(_ event: MXEvent) {
         guard let content = bestAttemptContents[event.eventId], let mxSession = NotificationService.mxSession else {
-            self.fallbackToOriginalContent(forEventId: event.eventId)
+            self.fallbackToBestAttemptContent(forEventId: event.eventId)
             return
         }
 
@@ -274,8 +274,8 @@ class NotificationService: UNNotificationServiceExtension {
         }
     }
     
-    func fallbackToOriginalContent(forEventId eventId: String) {
-        NSLog("[NotificationService] fallbackToOriginalContent: method called.")
+    func fallbackToBestAttemptContent(forEventId eventId: String) {
+        NSLog("[NotificationService] fallbackToBestAttemptContent: method called.")
         
         guard let content = bestAttemptContents[eventId] else {
             NSLog("[NotificationService] fallbackToBestAttemptContent: Best attempt content is missing.")
