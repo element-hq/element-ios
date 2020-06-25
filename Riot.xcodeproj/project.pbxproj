@@ -741,6 +741,9 @@
 		EC4968B624A38EF0004AE47B /* RoomNotificationSettingsSoundViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC4968B024A38EF0004AE47B /* RoomNotificationSettingsSoundViewController.storyboard */; };
 		EC4968B724A38EF0004AE47B /* RoomNotificationSettingsSoundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC4968B124A38EF0004AE47B /* RoomNotificationSettingsSoundViewController.swift */; };
 		EC8B26BC24A4D8B300025FEA /* MXKTableViewCellWithLabelAndSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8B26BB24A4D8B300025FEA /* MXKTableViewCellWithLabelAndSwitch.swift */; };
+		EC8B26BE24A5131E00025FEA /* RoomNotificationSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8B26BD24A5131E00025FEA /* RoomNotificationSetting.swift */; };
+		EC8B26C024A515A000025FEA /* MXRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8B26BF24A515A000025FEA /* MXRoom.swift */; };
+		EC8B26C224A54DD900025FEA /* RiotTableViewHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8B26C124A54DD900025FEA /* RiotTableViewHeaderFooterView.swift */; };
 		F05927C91FDED836009F2A68 /* MXGroup+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F05927C71FDED835009F2A68 /* MXGroup+Riot.m */; };
 		F083BD1E1E7009ED00A9B29C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB0D1E7009EC00A9B29C /* AppDelegate.m */; };
 		F083BDE61E7009ED00A9B29C /* busy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDB1E7009EC00A9B29C /* busy.mp3 */; };
@@ -1763,6 +1766,9 @@
 		EC4968B024A38EF0004AE47B /* RoomNotificationSettingsSoundViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RoomNotificationSettingsSoundViewController.storyboard; sourceTree = "<group>"; };
 		EC4968B124A38EF0004AE47B /* RoomNotificationSettingsSoundViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomNotificationSettingsSoundViewController.swift; sourceTree = "<group>"; };
 		EC8B26BB24A4D8B300025FEA /* MXKTableViewCellWithLabelAndSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MXKTableViewCellWithLabelAndSwitch.swift; sourceTree = "<group>"; };
+		EC8B26BD24A5131E00025FEA /* RoomNotificationSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomNotificationSetting.swift; sourceTree = "<group>"; };
+		EC8B26BF24A515A000025FEA /* MXRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MXRoom.swift; sourceTree = "<group>"; };
+		EC8B26C124A54DD900025FEA /* RiotTableViewHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiotTableViewHeaderFooterView.swift; sourceTree = "<group>"; };
 		F05927C71FDED835009F2A68 /* MXGroup+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXGroup+Riot.m"; sourceTree = "<group>"; };
 		F05927C81FDED835009F2A68 /* MXGroup+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXGroup+Riot.h"; sourceTree = "<group>"; };
 		F083BB031E7005FD00A9B29C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -2193,13 +2199,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		6E6F1CAE244DFB840068B78B /* SectionHeaders */ = {
+		6E6F1CAE244DFB840068B78B /* SectionHeaderFooters */ = {
 			isa = PBXGroup;
 			children = (
 				6E6F1CA8244DC1E90068B78B /* SectionHeaderView.h */,
 				6E6F1CA9244DC1E90068B78B /* SectionHeaderView.m */,
+				EC8B26C124A54DD900025FEA /* RiotTableViewHeaderFooterView.swift */,
 			);
-			path = SectionHeaders;
+			path = SectionHeaderFooters;
 			sourceTree = "<group>";
 		};
 		6E75C3E4245AF60500AF497D /* PushNotification */ = {
@@ -3261,7 +3268,7 @@
 		B1B556CD20EE6C4C00210D55 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				6E6F1CAE244DFB840068B78B /* SectionHeaders */,
+				6E6F1CAE244DFB840068B78B /* SectionHeaderFooters */,
 				B183226923F59F3E0035B2E8 /* Buttons */,
 				B1963B3622933B9500CBA17F /* CollectionView */,
 				B1B556CE20EE6C4C00210D55 /* WebViewController */,
@@ -4486,6 +4493,7 @@
 				B117E1F12453244B0089679F /* UILabel.swift */,
 				B1CA93752493CBF200575122 /* MXRecoveryService.swift */,
 				EC8B26BB24A4D8B300025FEA /* MXKTableViewCellWithLabelAndSwitch.swift */,
+				EC8B26BF24A515A000025FEA /* MXRoom.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -4507,6 +4515,7 @@
 				F083BBFD1E7009EC00A9B29C /* RoomPreviewData.h */,
 				F083BBFE1E7009EC00A9B29C /* RoomPreviewData.m */,
 				B1D44998243CD73700959523 /* RoomPowerLevel.swift */,
+				EC8B26BD24A5131E00025FEA /* RoomNotificationSetting.swift */,
 			);
 			path = Room;
 			sourceTree = "<group>";
@@ -5268,7 +5277,9 @@
 				B1B558E120EF768F00210D55 /* RoomMembershipCollapsedBubbleCell.m in Sources */,
 				B1B5571A20EE6C4D00210D55 /* SettingsViewController.m in Sources */,
 				B1CE9EFD22148703000FAE6A /* SignOutAlertPresenter.swift in Sources */,
+				EC8B26C024A515A000025FEA /* MXRoom.swift in Sources */,
 				32F6B9692270623100BBA352 /* KeyVerificationDataLoadingCoordinator.swift in Sources */,
+				EC8B26C224A54DD900025FEA /* RiotTableViewHeaderFooterView.swift in Sources */,
 				B157A7BA2445BD86008A5504 /* KeyVerificationScanConfirmationCoordinator.swift in Sources */,
 				B125FE1D231D5DE400B72806 /* SettingsDiscoveryViewModel.swift in Sources */,
 				32863A5A2384070300D07C4A /* RiotSharedSettings.swift in Sources */,
@@ -5590,6 +5601,7 @@
 				B1E5368D21FB7245001F3AFF /* KeyBackupRecoverFromPassphraseViewController.swift in Sources */,
 				B1963B3822933BC800CBA17F /* AutosizedCollectionView.swift in Sources */,
 				B12D79FB23E2462200FACEDC /* UserVerificationStartCoordinator.swift in Sources */,
+				EC8B26BE24A5131E00025FEA /* RoomNotificationSetting.swift in Sources */,
 				B169330320F3C98900746532 /* RoomBubbleCellData.m in Sources */,
 				B1B336C3242B933700F95EC4 /* KeyVerificationSelfVerifyStartCoordinator.swift in Sources */,
 				B1B557CC20EF5D8000210D55 /* DirectoryServerTableViewCell.m in Sources */,

@@ -20,8 +20,7 @@ import UIKit
 import Reusable
 
 protocol RoomNotificationSettingsHomeViewControllerDelegate: class {
-    func roomNotificationSettingsHomeViewControllerDidTapSetupAction(_ viewController: RoomNotificationSettingsHomeViewController)
-    func roomNotificationSettingsHomeViewControllerDidCancel(_ viewController: RoomNotificationSettingsHomeViewController)
+    
 }
 
 final class RoomNotificationSettingsHomeViewController: UIViewController {
@@ -37,6 +36,7 @@ final class RoomNotificationSettingsHomeViewController: UIViewController {
     private var theme: Theme!
     private var mxRoom: MXRoom!
     private let value1StyleCellReuseIdentifier = "value1"
+    private let linkToAccountSettings = "linkToAccountSettings"
     
     private enum RowType {
         case withRightValue(_ value: String?)
@@ -53,7 +53,7 @@ final class RoomNotificationSettingsHomeViewController: UIViewController {
     private struct Section {
         var header: String?
         var rows: [Row]
-        var footer: String?
+        var footer: NSAttributedString?
     }
     
     private var sections: [Section] = [] {
@@ -63,8 +63,10 @@ final class RoomNotificationSettingsHomeViewController: UIViewController {
     }
     
     private func updateSections() {
-        let row_0_0 = Row(type: .withRightValue("All messages"), text: "Notify me with", accessoryType: .disclosureIndicator) {
-            
+        let row_0_0 = Row(type: .withRightValue(mxRoom.notifySettingForNotifications.shortTitle), text: "Notify me with", accessoryType: .disclosureIndicator) { [weak self] in
+            guard let self = self else { return }
+            let controller = RoomNotificationSettingsNotifyViewController.instantiate(withRoom: self.mxRoom)
+            self.navigationController?.pushViewController(controller, animated: true)
         }
         
         let section0 = Section(header: "General", rows: [row_0_0], footer: nil)
@@ -83,8 +85,10 @@ final class RoomNotificationSettingsHomeViewController: UIViewController {
         
         let section1 = Section(header: "Appearance & Sound", rows: [row_1_0, row_1_1], footer: nil)
         
-        let row_2_0 = Row(type: .withRightValue("All messages"), text: "Play a sound", accessoryType: .disclosureIndicator) {
-            
+        let row_2_0 = Row(type: .withRightValue(mxRoom.soundSettingForNotifications.shortTitle), text: "Play a sound", accessoryType: .disclosureIndicator) { [weak self] in
+            guard let self = self else { return }
+            let controller = RoomNotificationSettingsSoundViewController.instantiate(withRoom: self.mxRoom)
+            self.navigationController?.pushViewController(controller, animated: true)
         }
         
         let section2 = Section(header: nil, rows: [row_2_0], footer: nil)
@@ -93,7 +97,20 @@ final class RoomNotificationSettingsHomeViewController: UIViewController {
             
         }
         
-        let section3 = Section(header: "Custom Sounds", rows: [row_3_0], footer: "Set a custom sound for this room. Manage global settings in ...")
+        let formatStr = "Set a custom sound for this room. Manage global settings in the %@"
+        let linkStr = "Account Settings"
+        let formattedStr = String(format: formatStr, arguments: [linkStr])
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.16
+        let footer_3 = NSMutableAttributedString(string: formattedStr, attributes: [
+            NSAttributedString.Key.kern: -0.08,
+            NSAttributedString.Key.paragraphStyle: paragraphStyle,
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13.0)
+            ])
+        let linkRange = (footer_3.string as NSString).range(of: linkStr)
+        footer_3.addAttribute(NSAttributedString.Key.link, value: linkToAccountSettings, range: linkRange)
+        let section3 = Section(header: "Custom Sounds", rows: [row_3_0], footer: footer_3)
         
         sections = [
             section0,
@@ -141,6 +158,9 @@ final class RoomNotificationSettingsHomeViewController: UIViewController {
     
     private func setupViews() {
         mainTableView.register(cellType: MXKTableViewCellWithLabelAndSwitch.self)
+        mainTableView.register(headerFooterViewType: RiotTableViewHeaderFooterView.self)
+        mainTableView.sectionFooterHeight = UITableView.automaticDimension
+        mainTableView.estimatedSectionFooterHeight = 50
     }
     
     private func update(theme: Theme) {
@@ -164,14 +184,9 @@ final class RoomNotificationSettingsHomeViewController: UIViewController {
         self.update(theme: ThemeService.shared().theme)
     }
     
-    @IBAction private func validateButtonAction(_ sender: Any) {
-        self.delegate?.roomNotificationSettingsHomeViewControllerDidTapSetupAction(self)
-    }
-
-    private func cancelButtonAction() {
-        self.delegate?.roomNotificationSettingsHomeViewControllerDidCancel(self)
-    }
 }
+
+// MARK: - UITableViewDataSource
 
 extension RoomNotificationSettingsHomeViewController: UITableViewDataSource {
     
@@ -218,15 +233,9 @@ extension RoomNotificationSettingsHomeViewController: UITableViewDataSource {
         }
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section].header
-    }
-    
-    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return sections[section].footer
-    }
-    
 }
+
+// MARK: - UITableViewDelegate
 
 extension RoomNotificationSettingsHomeViewController: UITableViewDelegate {
     
@@ -245,11 +254,54 @@ extension RoomNotificationSettingsHomeViewController: UITableViewDelegate {
         }
     }
     
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sections[section].header
+    }
+    
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return sections[section].footer?.string
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if sections[section].footer == nil {
+            return nil
+        }
+        
+        let view = tableView.dequeueReusableHeaderFooterView(RiotTableViewHeaderFooterView.self)
+        
+        view?.textView.attributedText = sections[section].footer
+        view?.update(theme: theme)
+        view?.delegate = self
+        
+        return view
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
         let row = sections[indexPath.section].rows[indexPath.row]
         row.action?()
+    }
+    
+}
+
+// MARK - RiotTableViewHeaderFooterViewDelegate
+
+extension RoomNotificationSettingsHomeViewController: RiotTableViewHeaderFooterViewDelegate {
+    
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        if interaction == .invokeDefaultAction {
+            if URL.absoluteString == linkToAccountSettings {
+                let alert = UIAlertController(title: "Info", message: "Will go to Account Settings", preferredStyle: .alert)
+                
+                alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                
+                self.present(alert, animated: true)
+                return true
+            }
+            return false
+        }
+        return false
     }
     
 }
