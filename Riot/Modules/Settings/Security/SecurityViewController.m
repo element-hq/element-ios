@@ -562,7 +562,7 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
     [buttonCell.mxkButton addTarget:self action:@selector(setupCrossSigning:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (void)setupCrossSigning:(UITapGestureRecognizer *)recognizer
+- (void)setupCrossSigning:(id)sender
 {
 #ifdef NEW_CROSS_SIGNING_FLOW
     // TODO: Implement the true setup flow
