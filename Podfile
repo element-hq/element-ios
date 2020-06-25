@@ -4,13 +4,15 @@ platform :ios, '10.0'
 # Use frameforks to allow usage of pod written in Swift (like PiwikTracker)
 use_frameworks!
 
+# Suppress all warnings for now
+inhibit_all_warnings!
 
 # Different flavours of pods to MatrixKit
 # The current MatrixKit pod version
 $matrixKitVersion = '0.12.6'
 
 # The develop branch version
-#$matrixKitVersion = 'develop'
+$matrixKitVersion = 'develop'
 
 # The one used for developing both MatrixSDK and MatrixKit
 # Note that MatrixSDK must be cloned into a folder called matrix-ios-sdk next to the MatrixKit folder

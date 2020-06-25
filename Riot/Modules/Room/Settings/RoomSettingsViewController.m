@@ -2850,14 +2850,8 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             else if (indexPath.row == ROOM_SETTINGS_MAIN_SECTION_ROW_NOTIFICATIONS)
             {
-                UIAlertController *controller = [UIAlertController alertControllerWithTitle:@"" message:@"Coming soon" preferredStyle:UIAlertControllerStyleAlert];
-                UIAlertAction *done = [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                    
-                }];
-                [controller addAction:done];
-                [self presentViewController:controller animated:YES completion:^{
-                    
-                }];
+                RoomNotificationSettingsHomeViewController *controller = [RoomNotificationSettingsHomeViewController instantiateWithRoom:self->mxRoom];
+                [self.navigationController pushViewController:controller animated:YES];
             }
         }
         else if (indexPath.section == ROOM_SETTINGS_ROOM_ACCESS_SECTION_INDEX)

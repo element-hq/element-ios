@@ -700,6 +700,9 @@
 "room_details_copy_room_address" = "Copy Room Address";
 "room_details_copy_room_url" = "Copy Room URL";
 
+// Notifications
+"room_notification_settings_home_title" = "Room Notifications";
+
 // Group Details
 "group_details_title" = "Community Details";
 "group_details_home" = "Home";

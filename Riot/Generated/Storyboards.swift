@@ -127,6 +127,21 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.RoomContextualMenuViewController>(storyboard: RoomContextualMenuViewController.self)
   }
+  internal enum RoomNotificationSettingsHomeViewController: StoryboardType {
+    internal static let storyboardName = "RoomNotificationSettingsHomeViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.RoomNotificationSettingsHomeViewController>(storyboard: RoomNotificationSettingsHomeViewController.self)
+  }
+  internal enum RoomNotificationSettingsNotifyViewController: StoryboardType {
+    internal static let storyboardName = "RoomNotificationSettingsNotifyViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.RoomNotificationSettingsNotifyViewController>(storyboard: RoomNotificationSettingsNotifyViewController.self)
+  }
+  internal enum RoomNotificationSettingsSoundViewController: StoryboardType {
+    internal static let storyboardName = "RoomNotificationSettingsSoundViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.RoomNotificationSettingsSoundViewController>(storyboard: RoomNotificationSettingsSoundViewController.self)
+  }
   internal enum SecretsRecoveryWithKeyViewController: StoryboardType {
     internal static let storyboardName = "SecretsRecoveryWithKeyViewController"
 

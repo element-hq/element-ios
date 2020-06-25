@@ -734,6 +734,12 @@
 		B1E5368D21FB7245001F3AFF /* KeyBackupRecoverFromPassphraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E5368C21FB7245001F3AFF /* KeyBackupRecoverFromPassphraseViewController.swift */; };
 		B1E5368F21FB7258001F3AFF /* KeyBackupRecoverFromPassphraseViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1E5368E21FB7258001F3AFF /* KeyBackupRecoverFromPassphraseViewController.storyboard */; };
 		B1FDF56021F5FE5500BA3834 /* KeyBackupSetupPassphraseViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FDF55F21F5FE5500BA3834 /* KeyBackupSetupPassphraseViewAction.swift */; };
+		EC4968B224A38EF0004AE47B /* RoomNotificationSettingsHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC4968AA24A38EF0004AE47B /* RoomNotificationSettingsHomeViewController.swift */; };
+		EC4968B324A38EF0004AE47B /* RoomNotificationSettingsHomeViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC4968AB24A38EF0004AE47B /* RoomNotificationSettingsHomeViewController.storyboard */; };
+		EC4968B424A38EF0004AE47B /* RoomNotificationSettingsNotifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC4968AD24A38EF0004AE47B /* RoomNotificationSettingsNotifyViewController.swift */; };
+		EC4968B524A38EF0004AE47B /* RoomNotificationSettingsNotifyViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC4968AE24A38EF0004AE47B /* RoomNotificationSettingsNotifyViewController.storyboard */; };
+		EC4968B624A38EF0004AE47B /* RoomNotificationSettingsSoundViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC4968B024A38EF0004AE47B /* RoomNotificationSettingsSoundViewController.storyboard */; };
+		EC4968B724A38EF0004AE47B /* RoomNotificationSettingsSoundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC4968B124A38EF0004AE47B /* RoomNotificationSettingsSoundViewController.swift */; };
 		F05927C91FDED836009F2A68 /* MXGroup+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F05927C71FDED835009F2A68 /* MXGroup+Riot.m */; };
 		F083BD1E1E7009ED00A9B29C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB0D1E7009EC00A9B29C /* AppDelegate.m */; };
 		F083BDE61E7009ED00A9B29C /* busy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDB1E7009EC00A9B29C /* busy.mp3 */; };
@@ -1749,6 +1755,12 @@
 		B43DC75D1590BB8A4243BD4D /* Pods-RiotPods-Riot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-Riot.release.xcconfig"; path = "Target Support Files/Pods-RiotPods-Riot/Pods-RiotPods-Riot.release.xcconfig"; sourceTree = "<group>"; };
 		BABB6681FBD79219B1213D6C /* Pods-RiotTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotTests.debug.xcconfig"; path = "Target Support Files/Pods-RiotTests/Pods-RiotTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E2599D0ECB8DD206624E450B /* Pods-RiotPods-SiriIntents.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-SiriIntents.release.xcconfig"; path = "Target Support Files/Pods-RiotPods-SiriIntents/Pods-RiotPods-SiriIntents.release.xcconfig"; sourceTree = "<group>"; };
+		EC4968AA24A38EF0004AE47B /* RoomNotificationSettingsHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomNotificationSettingsHomeViewController.swift; sourceTree = "<group>"; };
+		EC4968AB24A38EF0004AE47B /* RoomNotificationSettingsHomeViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RoomNotificationSettingsHomeViewController.storyboard; sourceTree = "<group>"; };
+		EC4968AD24A38EF0004AE47B /* RoomNotificationSettingsNotifyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomNotificationSettingsNotifyViewController.swift; sourceTree = "<group>"; };
+		EC4968AE24A38EF0004AE47B /* RoomNotificationSettingsNotifyViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RoomNotificationSettingsNotifyViewController.storyboard; sourceTree = "<group>"; };
+		EC4968B024A38EF0004AE47B /* RoomNotificationSettingsSoundViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RoomNotificationSettingsSoundViewController.storyboard; sourceTree = "<group>"; };
+		EC4968B124A38EF0004AE47B /* RoomNotificationSettingsSoundViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomNotificationSettingsSoundViewController.swift; sourceTree = "<group>"; };
 		F05927C71FDED835009F2A68 /* MXGroup+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXGroup+Riot.m"; sourceTree = "<group>"; };
 		F05927C81FDED835009F2A68 /* MXGroup+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXGroup+Riot.h"; sourceTree = "<group>"; };
 		F083BB031E7005FD00A9B29C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -3071,6 +3083,7 @@
 		B1B5569020EE6C4C00210D55 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				EC4968A824A38EF0004AE47B /* Notifications */,
 				B1B5569120EE6C4C00210D55 /* RoomSettingsViewController.h */,
 				B1B5569220EE6C4C00210D55 /* RoomSettingsViewController.m */,
 				B1B5592D20EF7BAC00210D55 /* Views */,
@@ -4327,6 +4340,43 @@
 			path = Recover;
 			sourceTree = "<group>";
 		};
+		EC4968A824A38EF0004AE47B /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				EC4968A924A38EF0004AE47B /* Home */,
+				EC4968AC24A38EF0004AE47B /* Notify */,
+				EC4968AF24A38EF0004AE47B /* Sound */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
+		EC4968A924A38EF0004AE47B /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				EC4968AA24A38EF0004AE47B /* RoomNotificationSettingsHomeViewController.swift */,
+				EC4968AB24A38EF0004AE47B /* RoomNotificationSettingsHomeViewController.storyboard */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		EC4968AC24A38EF0004AE47B /* Notify */ = {
+			isa = PBXGroup;
+			children = (
+				EC4968AD24A38EF0004AE47B /* RoomNotificationSettingsNotifyViewController.swift */,
+				EC4968AE24A38EF0004AE47B /* RoomNotificationSettingsNotifyViewController.storyboard */,
+			);
+			path = Notify;
+			sourceTree = "<group>";
+		};
+		EC4968AF24A38EF0004AE47B /* Sound */ = {
+			isa = PBXGroup;
+			children = (
+				EC4968B024A38EF0004AE47B /* RoomNotificationSettingsSoundViewController.storyboard */,
+				EC4968B124A38EF0004AE47B /* RoomNotificationSettingsSoundViewController.swift */,
+			);
+			path = Sound;
+			sourceTree = "<group>";
+		};
 		F083BB021E7005FD00A9B29C /* RiotTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -4730,6 +4780,7 @@
 				B105778B221304FA00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.storyboard in Resources */,
 				B1664DA220F4F95800808783 /* Localizable.strings in Resources */,
 				B169328720F3954A00746532 /* SharedImages.xcassets in Resources */,
+				EC4968B524A38EF0004AE47B /* RoomNotificationSettingsNotifyViewController.storyboard in Resources */,
 				B1664DA120F4F94F00808783 /* InfoPlist.strings in Resources */,
 				B1B5579B20EF575B00210D55 /* AuthInputsView.xib in Resources */,
 				B1B5594620EF7BD000210D55 /* RoomCollectionViewCell.xib in Resources */,
@@ -4781,6 +4832,7 @@
 				B1550FCA2420E8F500CE097B /* QRCodeReaderViewController.storyboard in Resources */,
 				B1B5579C20EF575B00210D55 /* ForgotPasswordInputsView.xib in Resources */,
 				F083BE011E7009ED00A9B29C /* third_party_licenses.html in Resources */,
+				EC4968B324A38EF0004AE47B /* RoomNotificationSettingsHomeViewController.storyboard in Resources */,
 				B1098BFC21ECFE65000DDA48 /* PasswordStrengthView.xib in Resources */,
 				B1B5573720EE6C4D00210D55 /* GroupParticipantsViewController.xib in Resources */,
 				B110872421F098F0003554A5 /* ActivityIndicatorView.xib in Resources */,
@@ -4860,6 +4912,7 @@
 				B1B557B320EF5AEF00210D55 /* EventDetailsView.xib in Resources */,
 				B1963B30228F1C4900CBA17F /* BubbleReactionsView.xib in Resources */,
 				B1B557DD20EF5FBB00210D55 /* FilesSearchTableViewCell.xib in Resources */,
+				EC4968B624A38EF0004AE47B /* RoomNotificationSettingsSoundViewController.storyboard in Resources */,
 				B1B5590320EF768F00210D55 /* RoomSelectedStickerBubbleCell.xib in Resources */,
 				B1B5573F20EE6C4D00210D55 /* SegmentedViewController.xib in Resources */,
 				B1B5581E20EF625800210D55 /* RoomTitleView.xib in Resources */,
@@ -5094,6 +5147,7 @@
 				B1B5573A20EE6C4D00210D55 /* GroupRoomsViewController.m in Sources */,
 				B1B558F920EF768F00210D55 /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				B1FDF56021F5FE5500BA3834 /* KeyBackupSetupPassphraseViewAction.swift in Sources */,
+				EC4968B224A38EF0004AE47B /* RoomNotificationSettingsHomeViewController.swift in Sources */,
 				B1B5573120EE6C4D00210D55 /* BugReportViewController.m in Sources */,
 				324A2051225FC571004FE8B0 /* DeviceVerificationIncomingViewState.swift in Sources */,
 				B16932A520F3A21C00746532 /* empty.mm in Sources */,
@@ -5252,6 +5306,7 @@
 				32DB557922FDADE50016329E /* ServiceTermsModalScreenViewModel.swift in Sources */,
 				B19C4E8B248F7A0E009A423F /* SecretsRecoveryWithPassphraseCoordinator.swift in Sources */,
 				32891D75226728EE00C82226 /* KeyVerificationDataLoadingViewController.swift in Sources */,
+				EC4968B724A38EF0004AE47B /* RoomNotificationSettingsSoundViewController.swift in Sources */,
 				B117E1F22453244B0089679F /* UILabel.swift in Sources */,
 				F083BDEF1E7009ED00A9B29C /* UINavigationController+Riot.m in Sources */,
 				B1B5581F20EF625800210D55 /* SimpleRoomTitleView.m in Sources */,
@@ -5495,6 +5550,7 @@
 				B1DCC61822E5E17100625807 /* EmojiPickerViewState.swift in Sources */,
 				B1B336BF242B933700F95EC4 /* KeyVerificationSelfVerifyStartViewController.swift in Sources */,
 				B1CE83E32422817200D07506 /* VerifyEmojiCollectionViewCell.swift in Sources */,
+				EC4968B424A38EF0004AE47B /* RoomNotificationSettingsNotifyViewController.swift in Sources */,
 				B1C562DB228C0BB00037F12A /* RoomContextualMenuAction.swift in Sources */,
 				B1B5574720EE6C4D00210D55 /* UsersDevicesViewController.m in Sources */,
 				B1098BFF21ECFE65000DDA48 /* PasswordStrengthView.swift in Sources */,

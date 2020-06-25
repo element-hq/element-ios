@@ -2458,6 +2458,10 @@ internal enum VectorL10n {
   internal static func roomNewMessagesNotification(_ p1: Int) -> String {
     return VectorL10n.tr("Vector", "room_new_messages_notification", p1)
   }
+  /// Room Notifications
+  internal static var roomNotificationSettingsHomeTitle: String { 
+    return VectorL10n.tr("Vector", "room_notification_settings_home_title") 
+  }
   /// Connectivity to the server has been lost.
   internal static var roomOfflineNotification: String { 
     return VectorL10n.tr("Vector", "room_offline_notification") 
