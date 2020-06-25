@@ -69,6 +69,8 @@ class NotificationService: UNNotificationServiceExtension {
         
         //  setup user account
         setup(withRoomId: roomId, eventId: eventId) {
+            //  preprocess the payload, will attempt to fetch room display name
+            self.preprocessPayload(forEventId: eventId, roomId: roomId)
             //  fetch the event first
             self.fetchEvent(withEventId: eventId, roomId: roomId)
         }
@@ -122,6 +124,16 @@ class NotificationService: UNNotificationServiceExtension {
             NSLog("[NotificationService] setup: No active accounts")
             fallbackToOriginalContent(forEventId: eventId)
         }
+    }
+    
+    /// Attempts to preprocess payload and attach room display name to the best attempt content
+    /// - Parameters:
+    ///   - eventId: Event identifier to mutate best attempt content
+    ///   - roomId: Room identifier to fetch display name
+    func preprocessPayload(forEventId eventId: String, roomId: String) {
+        guard let session = NotificationService.mxSession else { return }
+        guard let roomDisplayName = session.store.summary?(ofRoom: roomId)?.displayname else { return }
+        originalContents[eventId]?.title = roomDisplayName
     }
     
     func fetchEvent(withEventId eventId: String, roomId: String) {
