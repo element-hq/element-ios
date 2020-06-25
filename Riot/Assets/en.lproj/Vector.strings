@@ -1023,12 +1023,14 @@
 "key_backup_recover_success_info" = "Backup Restored!";
 "key_backup_recover_done_action" = "Done";
 
-// MARK: Key backup banners
+// MARK: Secure Key backup banners
 
 // Setup
 
-"key_backup_setup_banner_title" = "Secure Backup";
-"key_backup_setup_banner_subtitle" = "Safeguard against losing access to encrypted messages & data";
+"secure_key_backup_setup_banner_title" = "Secure Backup";
+"secure_key_backup_setup_banner_subtitle" = "Safeguard against losing access to encrypted messages & data";
+
+// MARK: Key backup banners
 
 // Recover
 

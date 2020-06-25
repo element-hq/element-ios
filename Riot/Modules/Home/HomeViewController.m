@@ -385,7 +385,7 @@
         CGFloat height = 0.0;
         KeyBackupBannerCell *sizingCell = self.keyBackupBannerPrototypeCell;
         
-        [sizingCell configureFor:recentsDataSource.keyBackupBanner];
+        [sizingCell configureFor:recentsDataSource.secureKeyBackupBannerDisplay];
         
         [sizingCell layoutIfNeeded];
         
@@ -437,11 +437,11 @@
 {
     if (indexPath.section == recentsDataSource.keyBackupBannerSection)
     {
-        switch (recentsDataSource.keyBackupBanner) {
-            case KeyBackupBannerSetup:
+        switch (recentsDataSource.secureKeyBackupBannerDisplay) {
+            case SecureKeyBackupBannerDisplaySetup:
                 [self presentKeyBackupSetup];
                 break;
-            case KeyBackupBannerRecover:
+            case SecureKeyBackupBannerDisplayRecover:
                 [self presentKeyBackupRecover];
                 break;
             default:

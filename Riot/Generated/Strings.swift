@@ -1394,14 +1394,6 @@ internal enum VectorL10n {
   internal static var keyBackupRecoverTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_title") 
   }
-  /// Safeguard against losing access to encrypted messages & data
-  internal static var keyBackupSetupBannerSubtitle: String { 
-    return VectorL10n.tr("Vector", "key_backup_setup_banner_subtitle") 
-  }
-  /// Secure Backup
-  internal static var keyBackupSetupBannerTitle: String { 
-    return VectorL10n.tr("Vector", "key_backup_setup_banner_title") 
-  }
   /// Messages in encrypted rooms are secured with end-to-end encryption. Only you and the recipient(s) have the keys to read these messages.\n\nSecurely back up your keys to avoid losing them.
   internal static var keyBackupSetupIntroInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_intro_info") 
@@ -3057,6 +3049,14 @@ internal enum VectorL10n {
   /// Done
   internal static var secretsSetupRecoveryPassphraseValidateAction: String { 
     return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_validate_action") 
+  }
+  /// Safeguard against losing access to encrypted messages & data
+  internal static var secureKeyBackupSetupBannerSubtitle: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_banner_subtitle") 
+  }
+  /// Secure Backup
+  internal static var secureKeyBackupSetupBannerTitle: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_banner_title") 
   }
   /// If you cancel now, you may lose encrypted messages & data if you lose access to your logins.\n\nYou can also set up Secure Backup & manage your keys in Settings.
   internal static var secureKeyBackupSetupCancelAlertMessage: String { 
