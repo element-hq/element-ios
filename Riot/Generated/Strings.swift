@@ -1398,7 +1398,7 @@ internal enum VectorL10n {
   internal static var keyBackupSetupBannerSubtitle: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_banner_subtitle") 
   }
-  /// Never lose encrypted messages
+  /// Secure Backup
   internal static var keyBackupSetupBannerTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_banner_title") 
   }
@@ -3066,7 +3066,7 @@ internal enum VectorL10n {
   internal static var secureKeyBackupSetupCancelAlertTitle: String { 
     return VectorL10n.tr("Vector", "secure_key_backup_setup_cancel_alert_title") 
   }
-  /// Safe guard against losing access to encrypted messages & data by backing up encryption keys on your server.
+  /// Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server.
   internal static var secureKeyBackupSetupIntroInfo: String { 
     return VectorL10n.tr("Vector", "secure_key_backup_setup_intro_info") 
   }

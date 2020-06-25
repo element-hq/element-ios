@@ -1027,8 +1027,8 @@
 
 // Setup
 
-"key_backup_setup_banner_title" = "Never lose encrypted messages";
-"key_backup_setup_banner_subtitle" = "Start using Key Backup";
+"key_backup_setup_banner_title" = "Secure Backup";
+"key_backup_setup_banner_subtitle" = "Safeguard against losing access to encrypted messages & data";
 
 // Recover
 
