@@ -27,7 +27,7 @@
 
 #import "MXRoom+Riot.h"
 
-@interface HomeViewController () <KeyBackupSetupCoordinatorBridgePresenterDelegate, KeyBackupRecoverCoordinatorBridgePresenterDelegate>
+@interface HomeViewController () <SecureKeyBackupSetupCoordinatorBridgePresenterDelegate, KeyBackupRecoverCoordinatorBridgePresenterDelegate>
 {
     RecentsDataSource *recentsDataSource;
     
@@ -41,7 +41,7 @@
     CGFloat selectedCollectionViewContentOffset;
 }
 
-@property (nonatomic, strong) KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
+@property (nonatomic, strong) SecureKeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
 @property (nonatomic, strong) KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter;
 @property (nonatomic, strong) KeyBackupBannerCell *keyBackupBannerPrototypeCell;
 
@@ -156,11 +156,11 @@
 
 - (void)presentKeyBackupSetup
 {
-    KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter = [[KeyBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    SecureKeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter = [[SecureKeyBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
     keyBackupSetupCoordinatorBridgePresenter.delegate = self;
-    
+
     [keyBackupSetupCoordinatorBridgePresenter presentFrom:self animated:YES];
-    
+
     self.keyBackupSetupCoordinatorBridgePresenter = keyBackupSetupCoordinatorBridgePresenter;
 }
 
@@ -695,19 +695,21 @@
     [self leaveEditedRoom];
 }
 
+#pragma mark - SecureKeyBackupSetupCoordinatorBridgePresenterDelegate
+
+- (void)secureKeyBackupSetupCoordinatorBridgePresenterDelegateDidComplete:(SecureKeyBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self.keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.keyBackupSetupCoordinatorBridgePresenter = nil;
+}
+
+- (void)secureKeyBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(SecureKeyBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self.keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.keyBackupSetupCoordinatorBridgePresenter = nil;
+}
+
 #pragma mark - KeyBackupSetupCoordinatorBridgePresenterDelegate
-
-- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(KeyBackupSetupCoordinatorBridgePresenter * _Nonnull)keyBackupSetupCoordinatorBridgePresenter
-{
-    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES];
-    self.keyBackupSetupCoordinatorBridgePresenter = nil;
-}
-
-- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidSetupRecoveryKey:(KeyBackupSetupCoordinatorBridgePresenter * _Nonnull)keyBackupSetupCoordinatorBridgePresenter
-{
-    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES];
-    self.keyBackupSetupCoordinatorBridgePresenter = nil;
-}
 
 - (void)keyBackupRecoverCoordinatorBridgePresenterDidCancel:(KeyBackupRecoverCoordinatorBridgePresenter * _Nonnull)keyBackupRecoverCoordinatorBridgePresenter {
     [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:YES];
