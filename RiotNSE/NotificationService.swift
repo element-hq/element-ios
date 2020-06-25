@@ -70,7 +70,7 @@ class NotificationService: UNNotificationServiceExtension {
         //  setup user account
         setup(withRoomId: roomId, eventId: eventId) {
             //  fetch the event first
-            self.fetchEvent(withEventId: eventId)
+            self.fetchEvent(withEventId: eventId, roomId: roomId)
         }
     }
     
@@ -124,22 +124,14 @@ class NotificationService: UNNotificationServiceExtension {
         }
     }
     
-    func fetchEvent(withEventId eventId: String) {
-        guard let content = originalContents[eventId], let mxSession = NotificationService.mxSession else {
+    func fetchEvent(withEventId eventId: String, roomId: String) {
+        guard let mxSession = NotificationService.mxSession else {
             //  there is something wrong, do not change the content
             NSLog("[NotificationService] fetchEvent: Either originalContent or mxSession is missing.")
             fallbackToOriginalContent(forEventId: eventId)
             return
         }
-        let userInfo = content.userInfo
-        
-        guard let roomId = userInfo["room_id"] as? String else {
-            //  it's not a Matrix notification, do not change the content
-            NSLog("[NotificationService] fetchEvent: This is not a Matrix notification.")
-            contentHandlers[eventId]?(content)
-            return
-        }
-        
+
         /// Inline function to handle encryption for event, either from cache or from the backend
         /// - Parameter event: The event to be handled
         func handleEncryption(forEvent event: MXEvent) {
@@ -174,7 +166,7 @@ class NotificationService: UNNotificationServiceExtension {
             } else {
                 //  decryption failed
                 NSLog("[NotificationService] fetchEvent: Event needs to be decrpyted, but we don't have the keys to decrypt it. Launching a background sync.")
-                self.launchBackgroundSync(forEventId: eventId)
+                self.launchBackgroundSync(forEventId: eventId, roomId: roomId)
             }
         }
         
@@ -212,7 +204,7 @@ class NotificationService: UNNotificationServiceExtension {
         }
     }
     
-    func launchBackgroundSync(forEventId eventId: String) {
+    func launchBackgroundSync(forEventId eventId: String, roomId: String) {
         guard let mxSession = NotificationService.mxSession else {
             NSLog("[NotificationService] launchBackgroundSync: mxSession is missing.")
             self.fallbackToOriginalContent(forEventId: eventId)
@@ -227,7 +219,7 @@ class NotificationService: UNNotificationServiceExtension {
                     NSLog("[NotificationService] launchBackgroundSync: MXSession.initialBackgroundSync returned too late successfully")
                     return
                 }
-                self.fetchEvent(withEventId: eventId)
+                self.fetchEvent(withEventId: eventId, roomId: roomId)
                 break
             case .failure(let error):
                 guard let self = self else {
