@@ -24,6 +24,7 @@
 #import "ThemeService.h"
 
 #import "MXRoom+Riot.h"
+#import "MXSession+Riot.h"
 
 #import "AppDelegate.h"
 
@@ -177,47 +178,21 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 - (BOOL)updateKeyBackupBanner
 {
     KeyBackupBanner keyBackupBanner = KeyBackupBannerNone;
-        
-    if (self.recentsDataSourceMode == RecentsDataSourceModeHome && self.mxSession.crypto.backup.hasKeysToBackup)
+    
+    if (self.recentsDataSourceMode == RecentsDataSourceModeHome)
     {
         KeyBackupBannerPreferences *keyBackupBannersPreferences = KeyBackupBannerPreferences.shared;
         
-        NSString *keyBackupVersion = self.mxSession.crypto.backup.keyBackupVersion.version;
-        
-        switch (self.mxSession.crypto.backup.state) {
-            case MXKeyBackupStateDisabled:
-                // Show key backup setup banner only if user has not hidden it once.
-                if (keyBackupBannersPreferences.hideSetupBanner)
-                {
-                    keyBackupBanner = KeyBackupBannerNone;
-                }
-                else
-                {
-                    keyBackupBanner = KeyBackupBannerSetup;
-                }
-                break;
-            case MXKeyBackupStateNotTrusted:
-            case MXKeyBackupStateWrongBackUpVersion:
-                // Show key backup recover banner only if user has not hidden it for the given version.
-                if (keyBackupVersion && [keyBackupBannersPreferences isRecoverBannerHiddenFor:keyBackupVersion])
-                {
-                    keyBackupBanner = KeyBackupBannerNone;
-                }
-                else
-                {
-                    keyBackupBanner = KeyBackupBannerRecover;
-                }
-                break;
-            default:
-                keyBackupBanner = KeyBackupBannerNone;
-                break;
+        if (!keyBackupBannersPreferences.hideSetupBanner && [self.mxSession vc_canSetupSecureKeyBackup])
+        {
+            keyBackupBanner = KeyBackupBannerSetup;
         }
     }
-
+    
     BOOL updated = (self.keyBackupBanner != keyBackupBanner);
-
+    
     self.keyBackupBanner = keyBackupBanner;
-
+    
     return updated;
 }
 
