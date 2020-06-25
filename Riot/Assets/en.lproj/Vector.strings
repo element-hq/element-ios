@@ -919,6 +919,25 @@
 "rerequest_keys_alert_title" = "Request Sent";
 "rerequest_keys_alert_message" = "Please launch Riot on another device that can decrypt the message so it can send the keys to this session.";
 
+// MARK: Secure Key backup setup
+
+// Intro
+
+"secure_key_backup_setup_intro_title" = "Secure Backup";
+"secure_key_backup_setup_intro_info" = "Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server.";
+
+"secure_key_backup_setup_intro_use_security_key_title" = "Use a Security Key";
+"secure_key_backup_setup_intro_use_security_key_info" = "Generate a security key to store somewhere safe like a password manager or a safe.";
+
+"secure_key_backup_setup_intro_use_security_passphrase_title" = "Use a Security Passphrase";
+"secure_key_backup_setup_intro_use_security_passphrase_info" = "Enter a secret phrase only you know, and generate a key for backup.";
+
+// Cancel
+
+"secure_key_backup_setup_cancel_alert_title" = "Are your sure?";
+"secure_key_backup_setup_cancel_alert_message" = "If you cancel now, you may lose encrypted messages & data if you lose access to your logins.\n\nYou can also set up Secure Backup & manage your keys in Settings.";
+
+
 // MARK: Key backup setup
 
 "key_backup_setup_title" = "Key Backup";
@@ -1342,3 +1361,31 @@
 
 "secrets_recovery_with_key_invalid_recovery_key_title" = "Unable to access secret storage";
 "secrets_recovery_with_key_invalid_recovery_key_message" = "Please verify that you entered the correct recovery key.";
+
+// MARK: - Secrets set up
+
+// Recovery Key
+
+"secrets_setup_recovery_key_title" = "Save your Security Key";
+"secrets_setup_recovery_key_information" = "Store your Recovery Key somewhere safe. It can be used to unlock your encrypted messages & data.";
+"secrets_setup_recovery_key_loading" = "Loading…";
+"secrets_setup_recovery_key_export_action" = "Save";
+"secrets_setup_recovery_key_done_action" = "Done";
+
+"secrets_setup_recovery_key_storage_alert_title" = "Keep it safe";
+"secrets_setup_recovery_key_storage_alert_message" = "✓ Print it and store it somewhere safe\n✓ Save it on a USB key or backup drive\n✓ Copy it to your personal cloud storage";
+
+// Recovery passphrase
+
+"secrets_setup_recovery_passphrase_title" = "Set a Security Phrase";
+"secrets_setup_recovery_passphrase_information" = "Enter a security phrase only you know, used to secure secrets on your server.";
+"secrets_setup_recovery_passphrase_additional_information" = "Don't use your account password.";
+"secrets_setup_recovery_passphrase_validate_action" = "Done";
+
+"secrets_setup_recovery_passphrase_confirm_information" = "Enter your Security Phrase again to confirm it.";
+"secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Confirm";
+"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Confirm passphrase";
+
+"key_backup_setup_passphrase_confirm_passphrase_valid" = "Great!";
+"key_backup_setup_passphrase_confirm_passphrase_invalid" = "Passphrase doesn’t match";
+
