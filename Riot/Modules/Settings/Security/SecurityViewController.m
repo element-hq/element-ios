@@ -86,7 +86,8 @@ SettingsKeyBackupTableViewSectionDelegate,
 KeyBackupSetupCoordinatorBridgePresenterDelegate,
 KeyBackupRecoverCoordinatorBridgePresenterDelegate,
 UIDocumentInteractionControllerDelegate,
-SecretsRecoveryCoordinatorBridgePresenterDelegate>
+SecretsRecoveryCoordinatorBridgePresenterDelegate,
+SecureKeyBackupSetupCoordinatorBridgePresenterDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
@@ -119,6 +120,7 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
 
 @property (nonatomic) BOOL isLoadingDevices;
 @property (nonatomic, strong) MXKeyBackupVersion *currentkeyBackupVersion;
+@property (nonatomic, strong) SecureKeyBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
 
 @end
 
@@ -810,24 +812,32 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
 - (void)setupSecureBackup
 {
 #ifdef NEW_CROSS_SIGNING_FLOW
-    // TODO: Implement the true setup flow
-    MXRecoveryService *recoveryService =  self.mainSession.crypto.recoveryService;
-    if (recoveryService)
-    {
-        [self startActivityIndicator];
-        [recoveryService createRecoveryForSecrets:nil
-                                   withPassphrase:@"passphrase"
-                                          success:^(MXSecretStorageKeyCreationInfo * _Nonnull keyCreationInfo)
-         {
-             [self stopActivityIndicator];
-             [self reloadData];
-         } failure:^(NSError * _Nonnull error) {
-             [self stopActivityIndicator];
-             [self reloadData];
-             
-             [[AppDelegate theDelegate] showErrorAsAlert:error];
-         }];
-    }
+
+    // TODO: To clean with NEW_CROSS_SIGNING_FLOW cleaning
+//    MXRecoveryService *recoveryService =  self.mainSession.crypto.recoveryService;
+//    if (recoveryService)
+//    {
+//        [self startActivityIndicator];
+//        [recoveryService createRecoveryForSecrets:nil
+//                                   withPassphrase:@"passphrase"
+//                                          success:^(MXSecretStorageKeyCreationInfo * _Nonnull keyCreationInfo)
+//         {
+//             [self stopActivityIndicator];
+//             [self reloadData];
+//         } failure:^(NSError * _Nonnull error) {
+//             [self stopActivityIndicator];
+//             [self reloadData];
+//
+//             [[AppDelegate theDelegate] showErrorAsAlert:error];
+//         }];
+//    }
+    
+    SecureKeyBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter = [[SecureKeyBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    secureBackupSetupCoordinatorBridgePresenter.delegate = self;
+    
+    [secureBackupSetupCoordinatorBridgePresenter presentFrom:self animated:YES];
+    
+    self.secureBackupSetupCoordinatorBridgePresenter = secureBackupSetupCoordinatorBridgePresenter;
 #else
     [self displayComingSoon];
 #endif
