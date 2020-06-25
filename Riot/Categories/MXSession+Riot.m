@@ -78,4 +78,32 @@
     }
 }
 
+- (BOOL)vc_canSetupSecureKeyBackup
+{
+    MXRecoveryService *recoveryService = self.crypto.recoveryService;
+    
+    if (recoveryService.hasRecovery)
+    {
+        // Can't create secure backup if SSSS has already been set.
+        return NO;
+    }
+    
+    if (!self.crypto.backup.hasKeysToBackup)
+    {
+        // Do not create secure key backup if they are no keys to backup.
+        return NO;
+    }
+    
+    // Accept to create a setup only if we have the 3 cross-signing keys
+    // This is the path to have a sane state
+    // TODO: What about missing MSK that was not gossiped before?
+    NSArray *crossSigningServiceSecrets = @[
+                                            MXSecretId.crossSigningMaster,
+                                            MXSecretId.crossSigningSelfSigning,
+                                            MXSecretId.crossSigningUserSigning];
+    
+    return ([recoveryService.secretsStoredLocally mx_intersectArray:crossSigningServiceSecrets].count
+            == crossSigningServiceSecrets.count);
+}
+
 @end

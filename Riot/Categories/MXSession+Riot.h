@@ -43,4 +43,9 @@
                                                          success:(void (^)(BOOL canEnableE2E))success
                                                          failure:(void (^)(NSError *error))failure;
 
+/**
+ Indicate YES if secure key backup can be setup
+ */
+- (BOOL)vc_canSetupSecureKeyBackup;
+
 @end
