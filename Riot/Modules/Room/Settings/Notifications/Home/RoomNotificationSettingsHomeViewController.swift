@@ -36,6 +36,7 @@ final class RoomNotificationSettingsHomeViewController: UIViewController {
     
     private var theme: Theme!
     private var mxRoom: MXRoom!
+    private let value1StyleCellReuseIdentifier = "value1"
     
     private enum RowType {
         case withRightValue(_ value: String?)
@@ -140,13 +141,6 @@ final class RoomNotificationSettingsHomeViewController: UIViewController {
     
     private func setupViews() {
         mainTableView.register(cellType: MXKTableViewCellWithLabelAndSwitch.self)
-//        let logoImage = Asset.Images.*
-//        self.logoImageView.image = keybackupLogoImage
-
-//        self.titleLabel.text =  VectorL10n.xxxxTitle
-//        self.informationLabel.text = VectorL10n.xxxxDescription
-//
-//        self.okButton.setTitle(VectorL10n.xxxxAction, for: .normal)
     }
     
     private func update(theme: Theme) {
@@ -158,14 +152,6 @@ final class RoomNotificationSettingsHomeViewController: UIViewController {
         if let navigationBar = self.navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
-        
-//        self.logoImageView.tintColor = theme.textPrimaryColor
-//
-//        self.titleLabel.textColor = theme.textPrimaryColor
-//        self.informationLabel.textColor = theme.textPrimaryColor
-//
-//        self.okButtonBackgroundView.backgroundColor = theme.backgroundColor
-//        theme.applyStyle(onButton: self.okButton)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -202,7 +188,10 @@ extension RoomNotificationSettingsHomeViewController: UITableViewDataSource {
         
         switch row.type {
         case .withRightValue(let rightValue):
-            let cell = UITableViewCell(style: .value1, reuseIdentifier: "value1")
+            var cell: UITableViewCell! = tableView.dequeueReusableCell(withIdentifier: value1StyleCellReuseIdentifier)
+            if cell == nil {
+                cell = UITableViewCell(style: .value1, reuseIdentifier: value1StyleCellReuseIdentifier)
+            }
             cell.textLabel?.font = .systemFont(ofSize: 17)
             cell.detailTextLabel?.font = .systemFont(ofSize: 16)
             cell.textLabel?.text = row.text
@@ -259,16 +248,8 @@ extension RoomNotificationSettingsHomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-    }
-    
-}
-
-extension MXKTableViewCellWithLabelAndSwitch: Reusable, Themable {
-    
-    func update(theme: Theme) {
-        mxkLabel.textColor = theme.textPrimaryColor
-        backgroundColor = theme.backgroundColor
-        contentView.backgroundColor = .clear
+        let row = sections[indexPath.section].rows[indexPath.row]
+        row.action?()
     }
     
 }

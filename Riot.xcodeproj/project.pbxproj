@@ -740,6 +740,7 @@
 		EC4968B524A38EF0004AE47B /* RoomNotificationSettingsNotifyViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC4968AE24A38EF0004AE47B /* RoomNotificationSettingsNotifyViewController.storyboard */; };
 		EC4968B624A38EF0004AE47B /* RoomNotificationSettingsSoundViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC4968B024A38EF0004AE47B /* RoomNotificationSettingsSoundViewController.storyboard */; };
 		EC4968B724A38EF0004AE47B /* RoomNotificationSettingsSoundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC4968B124A38EF0004AE47B /* RoomNotificationSettingsSoundViewController.swift */; };
+		EC8B26BC24A4D8B300025FEA /* MXKTableViewCellWithLabelAndSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8B26BB24A4D8B300025FEA /* MXKTableViewCellWithLabelAndSwitch.swift */; };
 		F05927C91FDED836009F2A68 /* MXGroup+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F05927C71FDED835009F2A68 /* MXGroup+Riot.m */; };
 		F083BD1E1E7009ED00A9B29C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB0D1E7009EC00A9B29C /* AppDelegate.m */; };
 		F083BDE61E7009ED00A9B29C /* busy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDB1E7009EC00A9B29C /* busy.mp3 */; };
@@ -1761,6 +1762,7 @@
 		EC4968AE24A38EF0004AE47B /* RoomNotificationSettingsNotifyViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RoomNotificationSettingsNotifyViewController.storyboard; sourceTree = "<group>"; };
 		EC4968B024A38EF0004AE47B /* RoomNotificationSettingsSoundViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RoomNotificationSettingsSoundViewController.storyboard; sourceTree = "<group>"; };
 		EC4968B124A38EF0004AE47B /* RoomNotificationSettingsSoundViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomNotificationSettingsSoundViewController.swift; sourceTree = "<group>"; };
+		EC8B26BB24A4D8B300025FEA /* MXKTableViewCellWithLabelAndSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MXKTableViewCellWithLabelAndSwitch.swift; sourceTree = "<group>"; };
 		F05927C71FDED835009F2A68 /* MXGroup+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXGroup+Riot.m"; sourceTree = "<group>"; };
 		F05927C81FDED835009F2A68 /* MXGroup+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXGroup+Riot.h"; sourceTree = "<group>"; };
 		F083BB031E7005FD00A9B29C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -4483,6 +4485,7 @@
 				6E6F1CB424506FA40068B78B /* UITableView.swift */,
 				B117E1F12453244B0089679F /* UILabel.swift */,
 				B1CA93752493CBF200575122 /* MXRecoveryService.swift */,
+				EC8B26BB24A4D8B300025FEA /* MXKTableViewCellWithLabelAndSwitch.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -5392,6 +5395,7 @@
 				B1BEE71423DF2ACF0003A4CB /* UserVerificationCoordinatorType.swift in Sources */,
 				B1B5596F20EFA85D00210D55 /* EncryptionInfoView.m in Sources */,
 				B1B5573820EE6C4D00210D55 /* GroupParticipantsViewController.m in Sources */,
+				EC8B26BC24A4D8B300025FEA /* MXKTableViewCellWithLabelAndSwitch.swift in Sources */,
 				3232ABAB225730E100AD6A5C /* KeyVerificationCoordinator.swift in Sources */,
 				B1BEE73B23DF44A60003A4CB /* UserVerificationSessionsStatusCoordinator.swift in Sources */,
 				B1B5583E20EF6E7F00210D55 /* GroupRoomTableViewCell.m in Sources */,
