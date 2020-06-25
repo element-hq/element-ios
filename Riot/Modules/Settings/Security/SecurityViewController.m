@@ -764,7 +764,7 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
 {
     NSString *information;
     
-    MXRecoveryService *recoveryService =  self.mainSession.crypto.recoveryService;
+    MXRecoveryService *recoveryService = self.mainSession.crypto.recoveryService;
     
     if ([recoveryService hasSecretWithSecretId:secretId])
     {
