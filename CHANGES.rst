@@ -31,9 +31,10 @@ Bug fix:
  * Xcode11: Various bug fixes about NSE (PR #3345).
  * Xcode11: Fix session user display name (PR #3349).
  * Xcode11: Fix rebooted and unlocked case for NSE (PR #3353).
- 
- Changes in 0.11.6 (2020-xx-xx)
- ===============================================
+ * Xcode11: New localization keys for push notifications, include room display name in fallback content (#3325).
+
+Changes in 0.11.6 (2020-xx-xx)
+===============================================
 
  Improvements:
   * PushNotificationService: Move all notification related code to a new class (PR #3100).
