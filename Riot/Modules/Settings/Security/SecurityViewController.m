@@ -585,7 +585,7 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
 #endif
 }
 
-- (void)resetCrossSigning:(UITapGestureRecognizer *)recognizer
+- (void)resetCrossSigning:(id)sender
 {
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
