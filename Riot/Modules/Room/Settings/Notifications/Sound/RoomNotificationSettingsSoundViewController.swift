@@ -19,8 +19,7 @@
 import UIKit
 
 protocol RoomNotificationSettingsSoundViewControllerDelegate: class {
-    func roomNotificationSettingsSoundViewControllerDidTapSetupAction(_ viewController: RoomNotificationSettingsSoundViewController)
-    func roomNotificationSettingsSoundViewControllerDidCancel(_ viewController: RoomNotificationSettingsSoundViewController)
+    
 }
 
 final class RoomNotificationSettingsSoundViewController: UIViewController {
@@ -29,16 +28,48 @@ final class RoomNotificationSettingsSoundViewController: UIViewController {
     
     // MARK: Outlets
     
-    @IBOutlet private weak var logoImageView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var informationLabel: UILabel!
-    
-    @IBOutlet private weak var okButtonBackgroundView: UIView!
-    @IBOutlet private weak var okButton: UIButton!
+    @IBOutlet private weak var mainTableView: UITableView!
     
     // MARK: Private
     
     private var theme: Theme!
+    private var mxRoom: MXRoom!
+    private let plainStyleCellReuseIdentifier = "plain"
+    
+    private enum RowType {
+        case plain
+    }
+    
+    private struct Row {
+        var type: RowType
+        var text: String?
+        var accessoryType: UITableViewCell.AccessoryType = .none
+        var action: (() -> Void)?
+    }
+    
+    private struct Section {
+        var header: String?
+        var rows: [Row]
+        var footer: NSAttributedString?
+    }
+    
+    private var sections: [Section] = [] {
+        didSet {
+            mainTableView.reloadData()
+        }
+    }
+    
+    private func updateSections() {
+        let rows = RoomNotificationSetting.allCases.map { Row(type: .plain, text: $0.longTitle, accessoryType: mxRoom.soundSettingForNotifications == $0 ? .checkmark : .none) {
+            
+            } }
+        
+        let section0 = Section(header: nil, rows: rows, footer: nil)
+        
+        sections = [
+            section0
+        ]
+    }
     
     // MARK: Public
     
@@ -46,9 +77,10 @@ final class RoomNotificationSettingsSoundViewController: UIViewController {
     
     // MARK: - Setup
     
-    class func instantiate() -> RoomNotificationSettingsSoundViewController {
+    class func instantiate(withRoom room: MXRoom) -> RoomNotificationSettingsSoundViewController {
         let viewController = StoryboardScene.RoomNotificationSettingsSoundViewController.initialScene.instantiate()
         viewController.theme = ThemeService.shared().theme
+        viewController.mxRoom = room
         return viewController
     }
     
@@ -59,12 +91,14 @@ final class RoomNotificationSettingsSoundViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        self.title = "Template"
+        self.title = "Play a sound"
         self.vc_removeBackTitle()
         
         self.setupViews()
         self.registerThemeServiceDidChangeThemeNotification()
         self.update(theme: self.theme)
+        
+        updateSections()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -74,32 +108,19 @@ final class RoomNotificationSettingsSoundViewController: UIViewController {
     // MARK: - Private
     
     private func setupViews() {
-//        let logoImage = Asset.Images.*
-//        self.logoImageView.image = keybackupLogoImage
-
-//        self.titleLabel.text =  VectorL10n.xxxxTitle
-//        self.informationLabel.text = VectorL10n.xxxxDescription
-//
-//        self.okButton.setTitle(VectorL10n.xxxxAction, for: .normal)
+        
     }
     
     private func update(theme: Theme) {
         self.theme = theme
         
         self.view.backgroundColor = theme.headerBackgroundColor
+        self.mainTableView.backgroundColor = theme.headerBackgroundColor
         
         if let navigationBar = self.navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
-        
-        self.logoImageView.tintColor = theme.textPrimaryColor
-        
-        self.titleLabel.textColor = theme.textPrimaryColor
-        self.informationLabel.textColor = theme.textPrimaryColor
-        
-        self.okButtonBackgroundView.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.okButton)
-            }
+    }
     
     private func registerThemeServiceDidChangeThemeNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
@@ -111,11 +132,69 @@ final class RoomNotificationSettingsSoundViewController: UIViewController {
         self.update(theme: ThemeService.shared().theme)
     }
     
-    @IBAction private func validateButtonAction(_ sender: Any) {
-        self.delegate?.roomNotificationSettingsSoundViewControllerDidTapSetupAction(self)
-    }
+}
 
-    private func cancelButtonAction() {
-        self.delegate?.roomNotificationSettingsSoundViewControllerDidCancel(self)
+
+// MARK - UITableViewDataSource
+
+extension RoomNotificationSettingsSoundViewController: UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return sections.count
     }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return sections[section].rows.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let row = sections[indexPath.section].rows[indexPath.row]
+        
+        switch row.type {
+        case .plain:
+            var cell: UITableViewCell! = tableView.dequeueReusableCell(withIdentifier: plainStyleCellReuseIdentifier)
+            if cell == nil {
+                cell = UITableViewCell(style: .value1, reuseIdentifier: plainStyleCellReuseIdentifier)
+            }
+            cell.textLabel?.font = .systemFont(ofSize: 17)
+            cell.detailTextLabel?.font = .systemFont(ofSize: 16)
+            cell.textLabel?.text = row.text
+            cell.accessoryType = row.accessoryType
+            cell.textLabel?.textColor = theme.textPrimaryColor
+            cell.detailTextLabel?.textColor = theme.textSecondaryColor
+            cell.backgroundColor = theme.backgroundColor
+            cell.contentView.backgroundColor = .clear
+            cell.tintColor = theme.tintColor
+            return cell
+        }
+    }
+    
+}
+
+// MARK - UITableViewDelegate
+
+extension RoomNotificationSettingsSoundViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = theme.backgroundColor
+        
+        if let selectedBackgroundColor = theme.selectedBackgroundColor {
+            cell.selectedBackgroundView = UIView()
+            cell.selectedBackgroundView?.backgroundColor = selectedBackgroundColor
+        } else {
+            if tableView.style == .plain {
+                cell.selectedBackgroundView = nil
+            } else {
+                cell.selectedBackgroundView?.backgroundColor = nil
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let row = sections[indexPath.section].rows[indexPath.row]
+        row.action?()
+    }
+    
 }
