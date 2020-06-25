@@ -72,15 +72,15 @@ final class KeyBackupBannerCell: MXKTableViewCell {
     
     // MARK: - Public
     
-    func configure(for bannerDisplay: SecureKeyBackupBannerDisplay) {
+    func configure(for bannerDisplay: SecureBackupBannerDisplay) {
         
         let title: String?
         let subtitle: String?
         
         switch bannerDisplay {
         case .setup:
-            title = VectorL10n.secureKeyBackupSetupBannerTitle
-            subtitle = VectorL10n.secureKeyBackupSetupBannerSubtitle
+            title = VectorL10n.secureBackupSetupBannerTitle
+            subtitle = VectorL10n.secureBackupSetupBannerSubtitle
         case .recover:
             title = VectorL10n.keyBackupRecoverBannerTitle
             subtitle = VectorL10n.keyBackupRecoverConnentBannerSubtitle

@@ -3051,12 +3051,12 @@ internal enum VectorL10n {
     return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_validate_action") 
   }
   /// Safeguard against losing access to encrypted messages & data
-  internal static var secureKeyBackupSetupBannerSubtitle: String { 
-    return VectorL10n.tr("Vector", "secure_key_backup_setup_banner_subtitle") 
+  internal static var secureBackupSetupBannerSubtitle: String { 
+    return VectorL10n.tr("Vector", "secure_backup_setup_banner_subtitle") 
   }
   /// Secure Backup
-  internal static var secureKeyBackupSetupBannerTitle: String { 
-    return VectorL10n.tr("Vector", "secure_key_backup_setup_banner_title") 
+  internal static var secureBackupSetupBannerTitle: String { 
+    return VectorL10n.tr("Vector", "secure_backup_setup_banner_title") 
   }
   /// If you cancel now, you may lose encrypted messages & data if you lose access to your logins.\n\nYou can also set up Secure Backup & manage your keys in Settings.
   internal static var secureKeyBackupSetupCancelAlertMessage: String { 
