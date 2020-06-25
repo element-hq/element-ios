@@ -1105,3 +1105,9 @@
 "secrets_recovery_with_passphrase_invalid_passphrase_title" = "S’arrihet të hyhet në depo të fshehtë";
 "secrets_recovery_with_passphrase_invalid_passphrase_message" = "Ju lutemi, verifikoni që keni dhënë frazëkalimin e saktë të rimarrjeve.";
 "secrets_recovery_with_key_title" = "Kyç Rimarrjesh";
+"secrets_recovery_with_key_information_default" = "Hyni te historiku i mesazheve tuaj të sigurt dhe te identiteti juaj për cross-signing për verifikim sesionesh të tjerë përmes dhënies së kyçit të rimarrjeve.";
+"secrets_recovery_with_key_information_verify_device" = "Që të verifikoni këtë pajisje, përdorni Kyç Rimarrjesh.";
+"secrets_recovery_with_key_recovery_key_placeholder" = "Jepni Kyç Rimarrjesh";
+"secrets_recovery_with_key_recover_action" = "Përdor Kyç";
+"secrets_recovery_with_key_invalid_recovery_key_title" = "S’arrihet të hyhet në depozitë të fshehtë";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "Ju lutemi, verifikoni se dhatë kyçin e saktë të rimarrjeve.";
