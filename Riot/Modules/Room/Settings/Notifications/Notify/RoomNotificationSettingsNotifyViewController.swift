@@ -19,8 +19,7 @@
 import UIKit
 
 protocol RoomNotificationSettingsNotifyViewControllerDelegate: class {
-    func roomNotificationSettingsNotifyViewControllerDidTapSetupAction(_ viewController: RoomNotificationSettingsNotifyViewController)
-    func roomNotificationSettingsNotifyViewControllerDidCancel(_ viewController: RoomNotificationSettingsNotifyViewController)
+    
 }
 
 final class RoomNotificationSettingsNotifyViewController: UIViewController {
@@ -35,10 +34,11 @@ final class RoomNotificationSettingsNotifyViewController: UIViewController {
     
     private var theme: Theme!
     private var mxRoom: MXRoom!
+    private let plainStyleCellReuseIdentifier = "plain"
+    private let linkToAccountSettings = "linkToAccountSettings"
     
     private enum RowType {
-        case withRightValue(_ value: String?)
-        case withSwitch(_ isOn: Bool, onValueChanged: ((UISwitch) -> Void)?)
+        case plain
     }
     
     private struct Row {
@@ -51,7 +51,7 @@ final class RoomNotificationSettingsNotifyViewController: UIViewController {
     private struct Section {
         var header: String?
         var rows: [Row]
-        var footer: String?
+        var footer: NSAttributedString?
     }
     
     private var sections: [Section] = [] {
@@ -61,43 +61,27 @@ final class RoomNotificationSettingsNotifyViewController: UIViewController {
     }
     
     private func updateSections() {
-        let row_0_0 = Row(type: .withRightValue("All messages"), text: "Notify me with", accessoryType: .disclosureIndicator) {
+        let rows = RoomNotificationSetting.allCases.map { Row(type: .plain, text: $0.longTitle, accessoryType: mxRoom.notifySettingForNotifications == $0 ? .checkmark : .none) {
             
-        }
+            } }
         
-        let section0 = Section(header: "General", rows: [row_0_0], footer: nil)
+        let formatStr = "You can manage keywords in the %@"
+        let linkStr = "Account Settings"
+        let formattedStr = String(format: formatStr, arguments: [linkStr])
         
-        let row_1_0 = Row(type: .withSwitch(true, onValueChanged: { (switch) in
-            
-        }), text: "Notify me when @room is used", accessoryType: .none) {
-            
-        }
-        
-        let row_1_1 = Row(type: .withSwitch(false, onValueChanged: { (switch) in
-            
-        }), text: "Show number of messages", accessoryType: .none) {
-            
-        }
-        
-        let section1 = Section(header: "Appearance & Sound", rows: [row_1_0, row_1_1], footer: nil)
-        
-        let row_2_0 = Row(type: .withRightValue("All messages"), text: "Play a sound", accessoryType: .disclosureIndicator) {
-            
-        }
-        
-        let section2 = Section(header: nil, rows: [row_2_0], footer: nil)
-        
-        let row_3_0 = Row(type: .withRightValue("Off"), text: "Custom Sounds", accessoryType: .disclosureIndicator) {
-            
-        }
-        
-        let section3 = Section(header: "Custom Sounds", rows: [row_3_0], footer: "Set a custom sound for this room. Manage global settings in ...")
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 1.16
+        let footer_0 = NSMutableAttributedString(string: formattedStr, attributes: [
+            NSAttributedString.Key.kern: -0.08,
+            NSAttributedString.Key.paragraphStyle: paragraphStyle,
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13.0)
+            ])
+        let linkRange = (footer_0.string as NSString).range(of: linkStr)
+        footer_0.addAttribute(NSAttributedString.Key.link, value: linkToAccountSettings, range: linkRange)
+        let section0 = Section(header: nil, rows: rows, footer: footer_0)
         
         sections = [
-            section0,
-            section1,
-            section2,
-            section3
+            section0
         ]
     }
     
@@ -107,9 +91,10 @@ final class RoomNotificationSettingsNotifyViewController: UIViewController {
     
     // MARK: - Setup
     
-    class func instantiate() -> RoomNotificationSettingsNotifyViewController {
+    class func instantiate(withRoom room: MXRoom) -> RoomNotificationSettingsNotifyViewController {
         let viewController = StoryboardScene.RoomNotificationSettingsNotifyViewController.initialScene.instantiate()
         viewController.theme = ThemeService.shared().theme
+        viewController.mxRoom = room
         return viewController
     }
     
@@ -120,12 +105,14 @@ final class RoomNotificationSettingsNotifyViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        self.title = "Template"
+        self.title = "Notify me with"
         self.vc_removeBackTitle()
         
         self.setupViews()
         self.registerThemeServiceDidChangeThemeNotification()
         self.update(theme: self.theme)
+        
+        updateSections()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -135,13 +122,16 @@ final class RoomNotificationSettingsNotifyViewController: UIViewController {
     // MARK: - Private
     
     private func setupViews() {
-        
+        mainTableView.register(headerFooterViewType: RiotTableViewHeaderFooterView.self)
+        mainTableView.sectionFooterHeight = UITableView.automaticDimension
+        mainTableView.estimatedSectionFooterHeight = 50
     }
     
     private func update(theme: Theme) {
         self.theme = theme
         
         self.view.backgroundColor = theme.headerBackgroundColor
+        self.mainTableView.backgroundColor = theme.headerBackgroundColor
         
         if let navigationBar = self.navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
@@ -158,15 +148,9 @@ final class RoomNotificationSettingsNotifyViewController: UIViewController {
         self.update(theme: ThemeService.shared().theme)
     }
     
-    @IBAction private func validateButtonAction(_ sender: Any) {
-        self.delegate?.roomNotificationSettingsNotifyViewControllerDidTapSetupAction(self)
-    }
-
-    private func cancelButtonAction() {
-        self.delegate?.roomNotificationSettingsNotifyViewControllerDidCancel(self)
-    }
 }
 
+// MARK - UITableViewDataSource
 
 extension RoomNotificationSettingsNotifyViewController: UITableViewDataSource {
     
@@ -182,46 +166,27 @@ extension RoomNotificationSettingsNotifyViewController: UITableViewDataSource {
         let row = sections[indexPath.section].rows[indexPath.row]
         
         switch row.type {
-        case .withRightValue(let rightValue):
-            let cell = tableView.dequeueReusableCell(withIdentifier: "value1", for: indexPath)
-            //            let cell = UITableViewCell(style: .value1, reuseIdentifier: "value1")
+        case .plain:
+            var cell: UITableViewCell! = tableView.dequeueReusableCell(withIdentifier: plainStyleCellReuseIdentifier)
+            if cell == nil {
+                cell = UITableViewCell(style: .value1, reuseIdentifier: plainStyleCellReuseIdentifier)
+            }
             cell.textLabel?.font = .systemFont(ofSize: 17)
             cell.detailTextLabel?.font = .systemFont(ofSize: 16)
             cell.textLabel?.text = row.text
-            cell.detailTextLabel?.text = rightValue
             cell.accessoryType = row.accessoryType
             cell.textLabel?.textColor = theme.textPrimaryColor
             cell.detailTextLabel?.textColor = theme.textSecondaryColor
             cell.backgroundColor = theme.backgroundColor
             cell.contentView.backgroundColor = .clear
-            return cell
-        case .withSwitch(let isOn, let onValueChanged):
-            let cell: MXKTableViewCellWithLabelAndSwitch = tableView.dequeueReusableCell(for: indexPath)
-            cell.mxkLabel.font = .systemFont(ofSize: 17)
-            cell.mxkLabel.text = row.text
-            cell.mxkSwitch.isOn = isOn
-            cell.mxkSwitch.vc_addAction(for: .valueChanged) {
-                onValueChanged?(cell.mxkSwitch)
-            }
-            cell.mxkLabelLeadingConstraint.constant = cell.vc_separatorInset.left
-            cell.mxkSwitchTrailingConstraint.constant = 15
-            cell.mxkLabel.textColor = theme.textPrimaryColor
-            cell.backgroundColor = theme.backgroundColor
-            cell.contentView.backgroundColor = .clear
-            
+            cell.tintColor = theme.tintColor
             return cell
         }
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section].header
-    }
-    
-    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return sections[section].footer
-    }
-    
 }
+
+// MARK - UITableViewDelegate
 
 extension RoomNotificationSettingsNotifyViewController: UITableViewDelegate {
     
@@ -240,11 +205,54 @@ extension RoomNotificationSettingsNotifyViewController: UITableViewDelegate {
         }
     }
     
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sections[section].header
+    }
+    
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return sections[section].footer?.string
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if sections[section].footer == nil {
+            return nil
+        }
+        
+        let view = tableView.dequeueReusableHeaderFooterView(RiotTableViewHeaderFooterView.self)
+        
+        view?.textView.attributedText = sections[section].footer
+        view?.update(theme: theme)
+        view?.delegate = self
+        
+        return view
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
         let row = sections[indexPath.section].rows[indexPath.row]
         row.action?()
+    }
+    
+}
+
+// MARK - RiotTableViewHeaderFooterViewDelegate
+
+extension RoomNotificationSettingsNotifyViewController: RiotTableViewHeaderFooterViewDelegate {
+    
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        if interaction == .invokeDefaultAction {
+            if URL.absoluteString == linkToAccountSettings {
+                let alert = UIAlertController(title: "Info", message: "Will go to Account Settings", preferredStyle: .alert)
+                
+                alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                
+                self.present(alert, animated: true)
+                return true
+            }
+            return false
+        }
+        return false
     }
     
 }
