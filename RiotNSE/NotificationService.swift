@@ -138,7 +138,12 @@ class NotificationService: UNNotificationServiceExtension {
     func preprocessPayload(forEventId eventId: String, roomId: String) {
         guard let session = NotificationService.mxSession else { return }
         guard let roomDisplayName = session.store.summary?(ofRoom: roomId)?.displayname else { return }
-        bestAttemptContents[eventId]?.title = roomDisplayName
+        let isDirect = session.directUserId(inRoom: roomId) != nil
+        if isDirect {
+            bestAttemptContents[eventId]?.body = NSString.localizedUserNotificationString(forKey: "MESSAGE_FROM_X", arguments: [roomDisplayName as Any])
+        } else {
+            bestAttemptContents[eventId]?.body = NSString.localizedUserNotificationString(forKey: "MESSAGE_IN_X", arguments: [roomDisplayName as Any])
+        }
     }
     
     func fetchEvent(withEventId eventId: String, roomId: String) {
