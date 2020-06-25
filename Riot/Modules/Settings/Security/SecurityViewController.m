@@ -843,7 +843,7 @@ SecretsRecoveryCoordinatorBridgePresenterDelegate>
 
 - (void)deleteSecureBackup
 {
-    MXRecoveryService *recoveryService =  self.mainSession.crypto.recoveryService;
+    MXRecoveryService *recoveryService = self.mainSession.crypto.recoveryService;
     if (recoveryService)
     {
         [self startActivityIndicator];
