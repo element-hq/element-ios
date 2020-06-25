@@ -398,7 +398,7 @@ class NotificationService: UNNotificationServiceExtension {
                         })
                     } else {
                         // Encrypted messages falls here
-                        notificationBody = NSString.localizedUserNotificationString(forKey: "MSG_FROM_USER", arguments: [eventSenderName as Any])
+                        notificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE_IN_X", arguments: [eventSenderName as Any])
                     }
                 } else {
                     notificationTitle = eventSenderName
@@ -415,7 +415,7 @@ class NotificationService: UNNotificationServiceExtension {
                         break
                     default:
                         // Encrypted messages falls here
-                        notificationBody = NSString.localizedUserNotificationString(forKey: "MSG_FROM_USER", arguments: [eventSenderName as Any])
+                        notificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE_FROM_X", arguments: [eventSenderName as Any])
                         break
                     }
                 }
