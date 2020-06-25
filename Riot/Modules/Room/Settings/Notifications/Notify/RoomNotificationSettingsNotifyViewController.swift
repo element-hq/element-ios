@@ -174,7 +174,11 @@ extension RoomNotificationSettingsNotifyViewController: UITableViewDataSource {
             cell.textLabel?.font = .systemFont(ofSize: 17)
             cell.detailTextLabel?.font = .systemFont(ofSize: 16)
             cell.textLabel?.text = row.text
-            cell.accessoryType = row.accessoryType
+            if row.accessoryType == .checkmark {
+                cell.accessoryView = UIImageView(image: Asset.Images.checkmark.image)
+            } else {
+                cell.accessoryType = row.accessoryType
+            }
             cell.textLabel?.textColor = theme.textPrimaryColor
             cell.detailTextLabel?.textColor = theme.textSecondaryColor
             cell.backgroundColor = theme.backgroundColor
