@@ -121,6 +121,7 @@ SecureKeyBackupSetupCoordinatorBridgePresenterDelegate>
 @property (nonatomic) BOOL isLoadingDevices;
 @property (nonatomic, strong) MXKeyBackupVersion *currentkeyBackupVersion;
 @property (nonatomic, strong) SecureKeyBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
+@property (nonatomic, strong) AuthenticatedSessionViewControllerFactory *authenticatedSessionViewControllerFactory;
 
 @end
 
@@ -567,21 +568,70 @@ SecureKeyBackupSetupCoordinatorBridgePresenterDelegate>
 - (void)setupCrossSigning:(id)sender
 {
 #ifdef NEW_CROSS_SIGNING_FLOW
-    // TODO: Implement the true setup flow
-    MXCrossSigning *crossSigning =  self.mainSession.crypto.crossSigning;
-    if (crossSigning)
-    {
-        [self startActivityIndicator];
-        [crossSigning bootstrapWithPassword:@"password" success:^{
-            [self stopActivityIndicator];
-            [self reloadData];
-        } failure:^(NSError * _Nonnull error) {
-            [self stopActivityIndicator];
-            [self reloadData];
-            
-            [[AppDelegate theDelegate] showErrorAsAlert:error];
-        }];
-    }
+    // TODO: To clean with NEW_CROSS_SIGNING_FLOW cleaning
+//    MXCrossSigning *crossSigning =  self.mainSession.crypto.crossSigning;
+//    if (crossSigning)
+//    {
+//        [self startActivityIndicator];
+//        [crossSigning bootstrapWithPassword:@"password" success:^{
+//            [self stopActivityIndicator];
+//            [self reloadData];
+//        } failure:^(NSError * _Nonnull error) {
+//            [self stopActivityIndicator];
+//            [self reloadData];
+//
+//            [[AppDelegate theDelegate] showErrorAsAlert:error];
+//        }];
+//    }
+    
+    __block UIViewController *viewController;
+    [self startActivityIndicator];
+    
+    // Get credentials to set up cross-signing
+    NSString *path = [NSString stringWithFormat:@"%@/keys/device_signing/upload", kMXAPIPrefixPathUnstable];
+    _authenticatedSessionViewControllerFactory = [[AuthenticatedSessionViewControllerFactory alloc] initWithSession:self.mainSession];
+    [_authenticatedSessionViewControllerFactory viewControllerForPath:path
+                                                           httpMethod:@"POST"
+                                                                title:@"Set up cross-signing"   // TODO
+                                                              message:@"Confirm your identity by entering your account password"    // TODO
+                                                     onViewController:^(UIViewController * _Nonnull theViewController)
+     {
+         viewController = theViewController;
+         [self presentViewController:viewController animated:YES completion:nil];
+         
+     } onAuthenticated:^(NSDictionary * _Nonnull authParams) {
+         
+         [viewController dismissViewControllerAnimated:NO completion:nil];
+         viewController = nil;
+         
+         MXCrossSigning *crossSigning = self.mainSession.crypto.crossSigning;
+         if (crossSigning)
+         {
+             [crossSigning setupWithAuthParams:authParams success:^{
+                 [self stopActivityIndicator];
+                 [self reloadData];
+             } failure:^(NSError * _Nonnull error) {
+                 [self stopActivityIndicator];
+                 [self reloadData];
+                 
+                 [[AppDelegate theDelegate] showErrorAsAlert:error];
+             }];
+         }
+
+     } onCancelled:^{
+         [self stopActivityIndicator];
+         
+         [viewController dismissViewControllerAnimated:NO completion:nil];
+         viewController = nil;
+     } onFailure:^(NSError * _Nonnull error) {
+         
+         [self stopActivityIndicator];
+         [[AppDelegate theDelegate] showErrorAsAlert:error];
+         
+         [viewController dismissViewControllerAnimated:NO completion:nil];
+         viewController = nil;
+    }];
+    
 #else
     [self displayComingSoon];
 #endif
@@ -593,7 +643,7 @@ SecureKeyBackupSetupCoordinatorBridgePresenterDelegate>
     
     // Double confirmation
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Are you sure?"  // TODO
-                                                                             message:@"You will need to verify trusted users again. Users who trusted you will need to verify you again."     // TODO
+                                                                             message:@"Anyone you have verified with will see security alerts. You almost certainly don't want to do this, unless you've lost every device you can cross-sign from."     // TODO
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     
     [alertController addAction:[UIAlertAction actionWithTitle:@"Reset"
@@ -1676,6 +1726,20 @@ SecureKeyBackupSetupCoordinatorBridgePresenterDelegate>
         [secretsRecoveryCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
         secretsRecoveryCoordinatorBridgePresenter = nil;
     }
+}
+
+#pragma mark - SecureKeyBackupSetupCoordinatorBridgePresenterDelegate
+
+- (void)secureKeyBackupSetupCoordinatorBridgePresenterDelegateDidComplete:(SecureKeyBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.secureBackupSetupCoordinatorBridgePresenter = nil;
+}
+
+- (void)secureKeyBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(SecureKeyBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.secureBackupSetupCoordinatorBridgePresenter = nil;
 }
 
 @end

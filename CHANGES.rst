@@ -4,6 +4,7 @@ Changes in 0.11.6 (2020-xx-xx)
 Improvements:
  * PushNotificationService: Move all notification related code to a new class (PR #3100).
  * Cross-signing: Bootstrap cross-sign on registration (and login if applicable). This action is now invisible to the user (#3292).
+ * Cross-signing: Setup cross-signing for existing users (#3299).
  * Authentication: Redirect the webview (SSO) javascript logs to iOS native logs.
  * Timeline: Hide encrypted history (pre-invite) (#3239).
  * Complete security: Add recovery from 4S (#3304).
