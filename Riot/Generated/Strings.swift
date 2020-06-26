@@ -310,6 +310,10 @@ internal enum VectorL10n {
   internal static var authUsernameInUse: String { 
     return VectorL10n.tr("Vector", "auth_username_in_use") 
   }
+  /// This app does not support the authentication mechanism on your homeserver.
+  internal static var authenticatedSessionFlowNotSupported: String { 
+    return VectorL10n.tr("Vector", "authenticated_session_flow_not_supported") 
+  }
   /// Back
   internal static var back: String { 
     return VectorL10n.tr("Vector", "back") 
@@ -1394,7 +1398,7 @@ internal enum VectorL10n {
   internal static var keyBackupRecoverTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_title") 
   }
-  /// Safeguard against losing access to encrypted messages & data
+  /// Start using Key Backup
   internal static var keyBackupSetupBannerSubtitle: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_banner_subtitle") 
   }
@@ -3066,7 +3070,7 @@ internal enum VectorL10n {
   internal static var secureKeyBackupSetupCancelAlertTitle: String { 
     return VectorL10n.tr("Vector", "secure_key_backup_setup_cancel_alert_title") 
   }
-  /// Safe guard against losing access to encrypted messages & data by backing up encryption keys on your server.
+  /// Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server.
   internal static var secureKeyBackupSetupIntroInfo: String { 
     return VectorL10n.tr("Vector", "secure_key_backup_setup_intro_info") 
   }
