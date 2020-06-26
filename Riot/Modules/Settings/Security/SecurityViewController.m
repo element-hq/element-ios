@@ -567,23 +567,7 @@ SecureKeyBackupSetupCoordinatorBridgePresenterDelegate>
 
 - (void)setupCrossSigning:(id)sender
 {
-#ifdef NEW_CROSS_SIGNING_FLOW
-    // TODO: To clean with NEW_CROSS_SIGNING_FLOW cleaning
-//    MXCrossSigning *crossSigning =  self.mainSession.crypto.crossSigning;
-//    if (crossSigning)
-//    {
-//        [self startActivityIndicator];
-//        [crossSigning bootstrapWithPassword:@"password" success:^{
-//            [self stopActivityIndicator];
-//            [self reloadData];
-//        } failure:^(NSError * _Nonnull error) {
-//            [self stopActivityIndicator];
-//            [self reloadData];
-//
-//            [[AppDelegate theDelegate] showErrorAsAlert:error];
-//        }];
-//    }
-    
+#ifdef NEW_CROSS_SIGNING_FLOW    
     __block UIViewController *viewController;
     [self startActivityIndicator];
     
@@ -862,26 +846,6 @@ SecureKeyBackupSetupCoordinatorBridgePresenterDelegate>
 - (void)setupSecureBackup
 {
 #ifdef NEW_CROSS_SIGNING_FLOW
-
-    // TODO: To clean with NEW_CROSS_SIGNING_FLOW cleaning
-//    MXRecoveryService *recoveryService =  self.mainSession.crypto.recoveryService;
-//    if (recoveryService)
-//    {
-//        [self startActivityIndicator];
-//        [recoveryService createRecoveryForSecrets:nil
-//                                   withPassphrase:@"passphrase"
-//                                          success:^(MXSecretStorageKeyCreationInfo * _Nonnull keyCreationInfo)
-//         {
-//             [self stopActivityIndicator];
-//             [self reloadData];
-//         } failure:^(NSError * _Nonnull error) {
-//             [self stopActivityIndicator];
-//             [self reloadData];
-//
-//             [[AppDelegate theDelegate] showErrorAsAlert:error];
-//         }];
-//    }
-    
     SecureKeyBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter = [[SecureKeyBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
     secureBackupSetupCoordinatorBridgePresenter.delegate = self;
     
