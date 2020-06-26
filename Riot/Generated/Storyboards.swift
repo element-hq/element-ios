@@ -147,10 +147,10 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.SecretsSetupRecoveryPassphraseViewController>(storyboard: SecretsSetupRecoveryPassphraseViewController.self)
   }
-  internal enum SecureKeyBackupSetupIntroViewController: StoryboardType {
-    internal static let storyboardName = "SecureKeyBackupSetupIntroViewController"
+  internal enum SecureBackupSetupIntroViewController: StoryboardType {
+    internal static let storyboardName = "SecureBackupSetupIntroViewController"
 
-    internal static let initialScene = InitialSceneType<Riot.SecureKeyBackupSetupIntroViewController>(storyboard: SecureKeyBackupSetupIntroViewController.self)
+    internal static let initialScene = InitialSceneType<Riot.SecureBackupSetupIntroViewController>(storyboard: SecureBackupSetupIntroViewController.self)
   }
   internal enum ServiceTermsModalScreenViewController: StoryboardType {
     internal static let storyboardName = "ServiceTermsModalScreenViewController"

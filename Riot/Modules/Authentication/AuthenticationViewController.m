@@ -1158,7 +1158,7 @@
                         // TODO: This is still not sure we want to disable the automatic cross-signing bootstrap
                         // if the admin disabled e2e by default.
                         // Do like riot-web for the moment
-                        if (session.riot_isE2EByDefaultEnabledByHSAdmin)
+                        if (session.vc_isE2EByDefaultEnabledByHSAdmin)
 #else
                         if (0)
 #endif

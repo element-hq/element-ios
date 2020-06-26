@@ -19,7 +19,7 @@
 import UIKit
 
 @objcMembers
-final class SecureKeyBackupSetupCoordinator: SecureKeyBackupSetupCoordinatorType {
+final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     
     // MARK: - Properties
     
@@ -33,7 +33,7 @@ final class SecureKeyBackupSetupCoordinator: SecureKeyBackupSetupCoordinatorType
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
     
-    weak var delegate: SecureKeyBackupSetupCoordinatorDelegate?
+    weak var delegate: SecureBackupSetupCoordinatorDelegate?
     
     // MARK: - Setup
     
@@ -55,8 +55,8 @@ final class SecureKeyBackupSetupCoordinator: SecureKeyBackupSetupCoordinatorType
     
     // MARK: - Private methods
 
-    private func createIntro() -> SecureKeyBackupSetupIntroViewController {
-        let introViewController = SecureKeyBackupSetupIntroViewController.instantiate()
+    private func createIntro() -> SecureBackupSetupIntroViewController {
+        let introViewController = SecureBackupSetupIntroViewController.instantiate()
         introViewController.delegate = self
         return introViewController
     }
@@ -103,7 +103,7 @@ final class SecureKeyBackupSetupCoordinator: SecureKeyBackupSetupCoordinatorType
         }))
         
         alertController.addAction(UIAlertAction(title: VectorL10n.keyBackupSetupSkipAlertSkipAction, style: .default, handler: { action in
-            self.delegate?.secureKeyBackupSetupCoordinatorDidCancel(self)
+            self.delegate?.secureBackupSetupCoordinatorDidCancel(self)
         }))
         
         self.navigationRouter.present(alertController, animated: true)
@@ -113,33 +113,33 @@ final class SecureKeyBackupSetupCoordinator: SecureKeyBackupSetupCoordinatorType
         if showSkipAlert {
             self.showCancelAlert()
         } else {
-            self.delegate?.secureKeyBackupSetupCoordinatorDidCancel(self)
+            self.delegate?.secureBackupSetupCoordinatorDidCancel(self)
         }
     }
     
     private func didComplete() {
-        self.delegate?.secureKeyBackupSetupCoordinatorDidComplete(self)
+        self.delegate?.secureBackupSetupCoordinatorDidComplete(self)
     }
 }
 
-// MARK: - SecureKeyBackupSetupIntroViewControllerDelegate
-extension SecureKeyBackupSetupCoordinator: SecureKeyBackupSetupIntroViewControllerDelegate {
+// MARK: - SecureBackupSetupIntroViewControllerDelegate
+extension SecureBackupSetupCoordinator: SecureBackupSetupIntroViewControllerDelegate {
     
-    func secureKeyBackupSetupIntroViewControllerDidTapUseKey(_ secureKeyBackupSetupIntroViewController: SecureKeyBackupSetupIntroViewController) {
+    func secureBackupSetupIntroViewControllerDidTapUseKey(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController) {
         self.showSetupKey()
     }
     
-    func secureKeyBackupSetupIntroViewControllerDidTapUsePassphrase(_ secureKeyBackupSetupIntroViewController: SecureKeyBackupSetupIntroViewController) {
+    func secureBackupSetupIntroViewControllerDidTapUsePassphrase(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController) {
         self.showSetupPassphrase()
     }
     
-    func secureKeyBackupSetupIntroViewControllerDidCancel(_ secureKeyBackupSetupIntroViewController: SecureKeyBackupSetupIntroViewController) {
+    func secureBackupSetupIntroViewControllerDidCancel(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController) {
         self.didCancel()
     }
 }
 
 // MARK: - SecretsSetupRecoveryKeyCoordinatorDelegate
-extension SecureKeyBackupSetupCoordinator: SecretsSetupRecoveryKeyCoordinatorDelegate {
+extension SecureBackupSetupCoordinator: SecretsSetupRecoveryKeyCoordinatorDelegate {
     
     func secretsSetupRecoveryKeyCoordinatorDidComplete(_ coordinator: SecretsSetupRecoveryKeyCoordinatorType) {
         self.didComplete()
@@ -155,7 +155,7 @@ extension SecureKeyBackupSetupCoordinator: SecretsSetupRecoveryKeyCoordinatorDel
 }
 
 // MARK: - SecretsSetupRecoveryPassphraseCoordinatorDelegate
-extension SecureKeyBackupSetupCoordinator: SecretsSetupRecoveryPassphraseCoordinatorDelegate {
+extension SecureBackupSetupCoordinator: SecretsSetupRecoveryPassphraseCoordinatorDelegate {
     
     func secretsSetupRecoveryPassphraseCoordinator(_ coordinator: SecretsSetupRecoveryPassphraseCoordinatorType, didEnterNewPassphrase passphrase: String) {
         self.showSetupPassphraseConfirmation(with: passphrase)

@@ -1310,14 +1310,6 @@ internal enum VectorL10n {
   internal static var join: String { 
     return VectorL10n.tr("Vector", "join") 
   }
-  /// Never lose encrypted messages
-  internal static var keyBackupRecoverBannerTitle: String { 
-    return VectorL10n.tr("Vector", "key_backup_recover_banner_title") 
-  }
-  /// Connect this session to Key Backup
-  internal static var keyBackupRecoverConnentBannerSubtitle: String { 
-    return VectorL10n.tr("Vector", "key_backup_recover_connent_banner_subtitle") 
-  }
   /// Done
   internal static var keyBackupRecoverDoneAction: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_done_action") 
@@ -1397,14 +1389,6 @@ internal enum VectorL10n {
   /// Secure Messages
   internal static var keyBackupRecoverTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_title") 
-  }
-  /// Start using Key Backup
-  internal static var keyBackupSetupBannerSubtitle: String { 
-    return VectorL10n.tr("Vector", "key_backup_setup_banner_subtitle") 
-  }
-  /// Never lose encrypted messages
-  internal static var keyBackupSetupBannerTitle: String { 
-    return VectorL10n.tr("Vector", "key_backup_setup_banner_title") 
   }
   /// Messages in encrypted rooms are secured with end-to-end encryption. Only you and the recipient(s) have the keys to read these messages.\n\nSecurely back up your keys to avoid losing them.
   internal static var keyBackupSetupIntroInfo: String { 
@@ -3061,6 +3045,14 @@ internal enum VectorL10n {
   /// Done
   internal static var secretsSetupRecoveryPassphraseValidateAction: String { 
     return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_validate_action") 
+  }
+  /// Safeguard against losing access to encrypted messages & data
+  internal static var secureBackupSetupBannerSubtitle: String { 
+    return VectorL10n.tr("Vector", "secure_backup_setup_banner_subtitle") 
+  }
+  /// Secure Backup
+  internal static var secureBackupSetupBannerTitle: String { 
+    return VectorL10n.tr("Vector", "secure_backup_setup_banner_title") 
   }
   /// If you cancel now, you may lose encrypted messages & data if you lose access to your logins.\n\nYou can also set up Secure Backup & manage your keys in Settings.
   internal static var secureKeyBackupSetupCancelAlertMessage: String { 

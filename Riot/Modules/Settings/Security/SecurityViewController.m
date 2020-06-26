@@ -87,7 +87,7 @@ KeyBackupSetupCoordinatorBridgePresenterDelegate,
 KeyBackupRecoverCoordinatorBridgePresenterDelegate,
 UIDocumentInteractionControllerDelegate,
 SecretsRecoveryCoordinatorBridgePresenterDelegate,
-SecureKeyBackupSetupCoordinatorBridgePresenterDelegate>
+SecureBackupSetupCoordinatorBridgePresenterDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
@@ -120,7 +120,7 @@ SecureKeyBackupSetupCoordinatorBridgePresenterDelegate>
 
 @property (nonatomic) BOOL isLoadingDevices;
 @property (nonatomic, strong) MXKeyBackupVersion *currentkeyBackupVersion;
-@property (nonatomic, strong) SecureKeyBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
+@property (nonatomic, strong) SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
 @property (nonatomic, strong) AuthenticatedSessionViewControllerFactory *authenticatedSessionViewControllerFactory;
 
 @end
@@ -846,7 +846,7 @@ SecureKeyBackupSetupCoordinatorBridgePresenterDelegate>
 - (void)setupSecureBackup
 {
 #ifdef NEW_CROSS_SIGNING_FLOW
-    SecureKeyBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter = [[SecureKeyBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter = [[SecureBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
     secureBackupSetupCoordinatorBridgePresenter.delegate = self;
     
     [secureBackupSetupCoordinatorBridgePresenter presentFrom:self animated:YES];
@@ -1692,15 +1692,15 @@ SecureKeyBackupSetupCoordinatorBridgePresenterDelegate>
     }
 }
 
-#pragma mark - SecureKeyBackupSetupCoordinatorBridgePresenterDelegate
+#pragma mark - SecureBackupSetupCoordinatorBridgePresenterDelegate
 
-- (void)secureKeyBackupSetupCoordinatorBridgePresenterDelegateDidComplete:(SecureKeyBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
+- (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidComplete:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
     [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.secureBackupSetupCoordinatorBridgePresenter = nil;
 }
 
-- (void)secureKeyBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(SecureKeyBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
+- (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
     [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.secureBackupSetupCoordinatorBridgePresenter = nil;

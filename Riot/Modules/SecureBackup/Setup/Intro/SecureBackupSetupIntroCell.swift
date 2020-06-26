@@ -17,7 +17,7 @@
 import UIKit
 import Reusable
 
-final class SecureKeyBackupSetupIntroCell: UIView, NibOwnerLoadable, Themable {
+final class SecureBackupSetupIntroCell: UIView, NibOwnerLoadable, Themable {
     
     // MARK: - Constants
     

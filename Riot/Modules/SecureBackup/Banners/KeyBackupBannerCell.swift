@@ -17,11 +17,11 @@
 import UIKit
 
 @objc protocol KeyBackupBannerCellDelegate: class {
-    func keyBackupBannerCellDidTapCloseAction(_ cell: KeyBackupBannerCell)
+    func keyBackupBannerCellDidTapCloseAction(_ cell: SecureBackupBannerCell)
 }
 
 @objcMembers
-final class KeyBackupBannerCell: MXKTableViewCell {
+final class SecureBackupBannerCell: MXKTableViewCell {
     
     // MARK: - Properties
 
@@ -55,7 +55,7 @@ final class KeyBackupBannerCell: MXKTableViewCell {
         self.closeButton.tintColor = theme.textPrimaryColor
         
         self.titleLabel.textColor = theme.textPrimaryColor
-        self.subtitleLabel.textColor = theme.tintColor
+        self.subtitleLabel.textColor = theme.textPrimaryColor
     }
     
     // MARK: - Life cycle
@@ -63,8 +63,8 @@ final class KeyBackupBannerCell: MXKTableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        let shieldImage = Asset.Images.keyBackupLogo.image.withRenderingMode(.alwaysTemplate)
-        self.shieldImageView.image = shieldImage
+        let shieldImage = Asset.Images.secretsSetupKey.image.withRenderingMode(.alwaysTemplate)
+        self.shieldImageView.image = shieldImage 
         
         let closeImage = Asset.Images.closeBanner.image.withRenderingMode(.alwaysTemplate)
         self.closeButton.setImage(closeImage, for: .normal)
@@ -72,19 +72,19 @@ final class KeyBackupBannerCell: MXKTableViewCell {
     
     // MARK: - Public
     
-    func configure(for banner: KeyBackupBanner) {
+    func configure(for bannerDisplay: SecureBackupBannerDisplay) {
         
         let title: String?
         let subtitle: String?
         
-        switch banner {
+        switch bannerDisplay {
         case .setup:
-            title = VectorL10n.keyBackupSetupBannerTitle
-            subtitle = VectorL10n.keyBackupSetupBannerSubtitle
+            title = VectorL10n.secureBackupSetupBannerTitle
+            subtitle = VectorL10n.secureBackupSetupBannerSubtitle
         case .recover:
             title = VectorL10n.keyBackupRecoverBannerTitle
             subtitle = VectorL10n.keyBackupRecoverConnentBannerSubtitle
-        case .none:
+        default:
             title = nil
             subtitle = nil
         }

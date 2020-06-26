@@ -16,14 +16,14 @@
 
 import UIKit
 
-protocol SecureKeyBackupSetupIntroViewControllerDelegate: class {
-    func secureKeyBackupSetupIntroViewControllerDidTapUseKey(_ secureKeyBackupSetupIntroViewController: SecureKeyBackupSetupIntroViewController)
-    func secureKeyBackupSetupIntroViewControllerDidTapUsePassphrase(_ secureKeyBackupSetupIntroViewController: SecureKeyBackupSetupIntroViewController)
-    func secureKeyBackupSetupIntroViewControllerDidCancel(_ secureKeyBackupSetupIntroViewController: SecureKeyBackupSetupIntroViewController)
+protocol SecureBackupSetupIntroViewControllerDelegate: class {
+    func secureBackupSetupIntroViewControllerDidTapUseKey(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController)
+    func secureBackupSetupIntroViewControllerDidTapUsePassphrase(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController)
+    func secureBackupSetupIntroViewControllerDidCancel(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController)
 }
 
 @objcMembers
-final class SecureKeyBackupSetupIntroViewController: UIViewController {
+final class SecureBackupSetupIntroViewController: UIViewController {
     
     // MARK: - Properties
     
@@ -32,8 +32,8 @@ final class SecureKeyBackupSetupIntroViewController: UIViewController {
     @IBOutlet private weak var informationLabel: UILabel!    
     
     @IBOutlet private weak var topSeparatorView: UIView!
-    @IBOutlet private weak var secureKeyCell: SecureKeyBackupSetupIntroCell!
-    @IBOutlet private weak var securePassphraseCell: SecureKeyBackupSetupIntroCell!
+    @IBOutlet private weak var secureKeyCell: SecureBackupSetupIntroCell!
+    @IBOutlet private weak var securePassphraseCell: SecureBackupSetupIntroCell!
     
     // MARK: Private
     
@@ -41,12 +41,12 @@ final class SecureKeyBackupSetupIntroViewController: UIViewController {
     
     // MARK: Public
     
-    weak var delegate: SecureKeyBackupSetupIntroViewControllerDelegate?
+    weak var delegate: SecureBackupSetupIntroViewControllerDelegate?
     
     // MARK: - Setup
     
-    class func instantiate() -> SecureKeyBackupSetupIntroViewController {
-        let viewController = StoryboardScene.SecureKeyBackupSetupIntroViewController.initialScene.instantiate()
+    class func instantiate() -> SecureBackupSetupIntroViewController {
+        let viewController = StoryboardScene.SecureBackupSetupIntroViewController.initialScene.instantiate()
         viewController.theme = ThemeService.shared().theme
         return viewController
     }
@@ -76,7 +76,7 @@ final class SecureKeyBackupSetupIntroViewController: UIViewController {
             guard let self = self else {
                 return
             }
-            self.delegate?.secureKeyBackupSetupIntroViewControllerDidCancel(self)
+            self.delegate?.secureBackupSetupIntroViewControllerDidCancel(self)
         }
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         
@@ -92,7 +92,7 @@ final class SecureKeyBackupSetupIntroViewController: UIViewController {
             guard let self = self else {
                 return
             }
-            self.delegate?.secureKeyBackupSetupIntroViewControllerDidTapUseKey(self)
+            self.delegate?.secureBackupSetupIntroViewControllerDidTapUseKey(self)
         }
         
         self.securePassphraseCell.fill(title: VectorL10n.secureKeyBackupSetupIntroUseSecurityPassphraseTitle,
@@ -103,7 +103,7 @@ final class SecureKeyBackupSetupIntroViewController: UIViewController {
             guard let self = self else {
                 return
             }
-            self.delegate?.secureKeyBackupSetupIntroViewControllerDidTapUsePassphrase(self)
+            self.delegate?.secureBackupSetupIntroViewControllerDidTapUsePassphrase(self)
         }
     }
     
