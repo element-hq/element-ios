@@ -310,6 +310,10 @@ internal enum VectorL10n {
   internal static var authUsernameInUse: String { 
     return VectorL10n.tr("Vector", "auth_username_in_use") 
   }
+  /// This app does not support the authentication mechanism on your homeserver.
+  internal static var authenticatedSessionFlowNotSupported: String { 
+    return VectorL10n.tr("Vector", "authenticated_session_flow_not_supported") 
+  }
   /// Back
   internal static var back: String { 
     return VectorL10n.tr("Vector", "back") 

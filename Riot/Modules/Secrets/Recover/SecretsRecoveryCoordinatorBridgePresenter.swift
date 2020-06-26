@@ -32,7 +32,7 @@ final class SecretsRecoveryCoordinatorBridgePresenter: NSObject {
     
     private let session: MXSession
     private let recoveryMode: SecretsRecoveryMode
-    private let recoveryGoal: SecretsRecoveryGoal
+    let recoveryGoal: SecretsRecoveryGoal
     
     private var coordinator: SecretsRecoveryCoordinator?
     

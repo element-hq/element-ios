@@ -1169,7 +1169,7 @@
                             {
                                 NSLog(@"[AuthenticationVC] sessionStateDidChange: Bootstrap with password");
                                 
-                                [session.crypto.crossSigning bootstrapWithPassword:self.authInputsView.password success:^{
+                                [session.crypto.crossSigning setupWithPassword:self.authInputsView.password success:^{
                                     NSLog(@"[AuthenticationVC] sessionStateDidChange: Bootstrap succeeded");
                                     [self dismiss];
                                 } failure:^(NSError * _Nonnull error) {
