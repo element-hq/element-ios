@@ -43,7 +43,7 @@
 
 NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSourceTapOnDirectoryServerChange";
 
-@interface RecentsDataSource() <KeyBackupBannerCellDelegate>
+@interface RecentsDataSource() <SecureBackupBannerCellDelegate>
 {
     NSMutableArray* invitesCellDataArray;
     NSMutableArray* favoriteCellDataArray;
@@ -130,7 +130,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         [self unregisterKeyBackupStateDidChangeNotification];
     }
 
-    [self updateSecureKeyBackupBanner];
+    [self updateSecureBackupBanner];
     [self forceRefresh];
 }
 
@@ -169,55 +169,46 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (void)keyBackupStateDidChangeNotification:(NSNotification*)notification
 {
-    if ([self updateSecureKeyBackupBanner])
+    if ([self updateSecureBackupBanner])
     {
         [self forceRefresh];
     }
 }
 
-- (BOOL)updateSecureKeyBackupBanner
+- (BOOL)updateSecureBackupBanner
 {
-    SecureBackupBannerDisplay keyBackupBanner = SecureBackupBannerDisplayNone;
+    SecureBackupBannerDisplay secureBackupBanner = SecureBackupBannerDisplayNone;
     
     if (self.recentsDataSourceMode == RecentsDataSourceModeHome)
     {
-        KeyBackupBannerPreferences *keyBackupBannersPreferences = KeyBackupBannerPreferences.shared;
+        SecureBackupBannerPreferences *secureBackupBannersPreferences = SecureBackupBannerPreferences.shared;
         
-        if (!keyBackupBannersPreferences.hideSetupBanner && [self.mxSession vc_canSetupSecureKeyBackup])
+        if (!secureBackupBannersPreferences.hideSetupBanner && [self.mxSession vc_canSetupSecureKeyBackup])
         {
-            keyBackupBanner = SecureBackupBannerDisplaySetup;
+            secureBackupBanner = SecureBackupBannerDisplaySetup;
         }
     }
     
-    BOOL updated = (self.secureBackupBannerDisplay != keyBackupBanner);
+    BOOL updated = (self.secureBackupBannerDisplay != secureBackupBanner);
     
-    self.secureBackupBannerDisplay = keyBackupBanner;
+    self.secureBackupBannerDisplay = secureBackupBanner;
     
     return updated;
 }
 
 - (void)hideKeyBackupBannerWithDisplay:(SecureBackupBannerDisplay)secureKeyBackupBannerDisplay
 {
-    KeyBackupBannerPreferences *keyBackupBannersPreferences = KeyBackupBannerPreferences.shared;
+    SecureBackupBannerPreferences *keyBackupBannersPreferences = SecureBackupBannerPreferences.shared;
     
     switch (secureKeyBackupBannerDisplay) {
         case SecureBackupBannerDisplaySetup:
             keyBackupBannersPreferences.hideSetupBanner = YES;
             break;
-        case SecureBackupBannerDisplayRecover:
-        {
-            NSString *keyBackupVersion = self.mxSession.crypto.backup.keyBackupVersion.version;
-            if (keyBackupVersion)
-            {
-                [keyBackupBannersPreferences hideRecoverBannerFor:keyBackupVersion];
-            }
-        }
-            break;
         default:
             break;
     }
     
-    [self updateSecureKeyBackupBanner];
+    [self updateSecureBackupBanner];
     [self forceRefresh];
 }
 
@@ -757,7 +748,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     
     if (indexPath.section == self.secureBackupBannerSection)
     {
-        KeyBackupBannerCell* keyBackupBannerCell = [tableView dequeueReusableCellWithIdentifier:KeyBackupBannerCell.defaultReuseIdentifier forIndexPath:indexPath];
+        SecureBackupBannerCell* keyBackupBannerCell = [tableView dequeueReusableCellWithIdentifier:SecureBackupBannerCell.defaultReuseIdentifier forIndexPath:indexPath];
         [keyBackupBannerCell configureFor:self.secureBackupBannerDisplay];
         keyBackupBannerCell.delegate = self;
         return keyBackupBannerCell;
@@ -1551,9 +1542,9 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
 }
 
-#pragma mark - KeyBackupSetupBannerCellDelegate
+#pragma mark - secureBackupSetupBannerCellDelegate
 
-- (void)keyBackupBannerCellDidTapCloseAction:(KeyBackupBannerCell * _Nonnull)cell
+- (void)secureBackupBannerCellDidTapCloseAction:(SecureBackupBannerCell * _Nonnull)cell
 {
     [self hideKeyBackupBannerWithDisplay:self.secureBackupBannerDisplay];
 }

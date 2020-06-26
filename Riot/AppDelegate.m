@@ -2291,7 +2291,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [MXMediaManager clearCache];
     
     // Reset key backup banner preferences
-    [KeyBackupBannerPreferences.shared reset];
+    [SecureBackupBannerPreferences.shared reset];
     
 #ifdef MX_CALL_STACK_ENDPOINT
     // Erase all created certificates and private keys by MXEndpointCallStack

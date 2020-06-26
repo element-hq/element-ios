@@ -135,7 +135,7 @@
 		92726A4B1F58737A004AD26F /* SiriIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 92726A431F58737A004AD26F /* SiriIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		92726A511F587410004AD26F /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92726A501F587410004AD26F /* Intents.framework */; };
 		933A7148CE5984940344006C /* Pods_RiotPods_RiotShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97151D7F0F892081250D50A3 /* Pods_RiotPods_RiotShareExtension.framework */; };
-		B104C2942203773C00D9F496 /* KeyBackupBannerPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B104C2932203773B00D9F496 /* KeyBackupBannerPreferences.swift */; };
+		B104C2942203773C00D9F496 /* SecureBackupBannerPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B104C2932203773B00D9F496 /* SecureBackupBannerPreferences.swift */; };
 		B1057789221304EC00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1057788221304EB00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.swift */; };
 		B105778B221304FA00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B105778A221304FA00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.storyboard */; };
 		B105778D2213051E00334B1E /* KeyBackupSetupSuccessFromRecoveryKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B105778C2213051E00334B1E /* KeyBackupSetupSuccessFromRecoveryKeyViewController.swift */; };
@@ -167,8 +167,8 @@
 		B1098C1021ED07E4000DDA48 /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1098C0B21ED07E4000DDA48 /* Presentable.swift */; };
 		B1098C1121ED07E4000DDA48 /* NavigationRouterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1098C0C21ED07E4000DDA48 /* NavigationRouterType.swift */; };
 		B109D6F1222D8C400061B6D9 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = B109D6F0222D8C400061B6D9 /* UIApplication.swift */; };
-		B10B3B5B2201DD740072C76B /* KeyBackupBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10B3B592201DD740072C76B /* KeyBackupBannerCell.swift */; };
-		B10B3B5C2201DD740072C76B /* KeyBackupBannerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B10B3B5A2201DD740072C76B /* KeyBackupBannerCell.xib */; };
+		B10B3B5B2201DD740072C76B /* SecureBackupBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10B3B592201DD740072C76B /* SecureBackupBannerCell.swift */; };
+		B10B3B5C2201DD740072C76B /* SecureBackupBannerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B10B3B5A2201DD740072C76B /* SecureBackupBannerCell.xib */; };
 		B10CFBC32268D99D00A5842E /* JitsiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10CFBC22268D99D00A5842E /* JitsiService.swift */; };
 		B1107EC82200B0720038014B /* KeyBackupRecoverSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1107EC72200B0720038014B /* KeyBackupRecoverSuccessViewController.swift */; };
 		B1107ECA2200B09F0038014B /* KeyBackupRecoverSuccessViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1107EC92200B09F0038014B /* KeyBackupRecoverSuccessViewController.storyboard */; };
@@ -985,7 +985,7 @@
 		97151D7F0F892081250D50A3 /* Pods_RiotPods_RiotShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_RiotShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C3242E3FE95BCDA9562C75D /* Pods-RiotPods-RiotShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-RiotShareExtension.debug.xcconfig"; path = "Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		AC34BF67FD21A9D01C16AE5D /* Pods-RiotTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotTests.release.xcconfig"; path = "Target Support Files/Pods-RiotTests/Pods-RiotTests.release.xcconfig"; sourceTree = "<group>"; };
-		B104C2932203773B00D9F496 /* KeyBackupBannerPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyBackupBannerPreferences.swift; sourceTree = "<group>"; };
+		B104C2932203773B00D9F496 /* SecureBackupBannerPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureBackupBannerPreferences.swift; sourceTree = "<group>"; };
 		B1057788221304EB00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupSetupSuccessFromPassphraseViewController.swift; sourceTree = "<group>"; };
 		B105778A221304FA00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = KeyBackupSetupSuccessFromPassphraseViewController.storyboard; sourceTree = "<group>"; };
 		B105778C2213051E00334B1E /* KeyBackupSetupSuccessFromRecoveryKeyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupSetupSuccessFromRecoveryKeyViewController.swift; sourceTree = "<group>"; };
@@ -1017,8 +1017,8 @@
 		B1098C0B21ED07E4000DDA48 /* Presentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
 		B1098C0C21ED07E4000DDA48 /* NavigationRouterType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationRouterType.swift; sourceTree = "<group>"; };
 		B109D6F0222D8C400061B6D9 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
-		B10B3B592201DD740072C76B /* KeyBackupBannerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupBannerCell.swift; sourceTree = "<group>"; };
-		B10B3B5A2201DD740072C76B /* KeyBackupBannerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KeyBackupBannerCell.xib; sourceTree = "<group>"; };
+		B10B3B592201DD740072C76B /* SecureBackupBannerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureBackupBannerCell.swift; sourceTree = "<group>"; };
+		B10B3B5A2201DD740072C76B /* SecureBackupBannerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SecureBackupBannerCell.xib; sourceTree = "<group>"; };
 		B10CFBC22268D99D00A5842E /* JitsiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JitsiService.swift; sourceTree = "<group>"; };
 		B1107EC72200B0720038014B /* KeyBackupRecoverSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverSuccessViewController.swift; sourceTree = "<group>"; };
 		B1107EC92200B09F0038014B /* KeyBackupRecoverSuccessViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = KeyBackupRecoverSuccessViewController.storyboard; sourceTree = "<group>"; };
@@ -2299,10 +2299,8 @@
 		B1098BE921ECFE64000DDA48 /* KeyBackup */ = {
 			isa = PBXGroup;
 			children = (
-				B1DE85E3249A51F7006454AF /* SecureSetup */,
 				B1098C0221ECFEAF000DDA48 /* Setup */,
 				B1FDF56421F726AD00BA3834 /* Recover */,
-				B1107ECB2201BE800038014B /* Banners */,
 				B1CE9F042216FB09000FAE6A /* ManualExport */,
 			);
 			path = KeyBackup;
@@ -2369,9 +2367,9 @@
 		B1107ECB2201BE800038014B /* Banners */ = {
 			isa = PBXGroup;
 			children = (
-				B104C2932203773B00D9F496 /* KeyBackupBannerPreferences.swift */,
-				B10B3B592201DD740072C76B /* KeyBackupBannerCell.swift */,
-				B10B3B5A2201DD740072C76B /* KeyBackupBannerCell.xib */,
+				B104C2932203773B00D9F496 /* SecureBackupBannerPreferences.swift */,
+				B10B3B592201DD740072C76B /* SecureBackupBannerCell.swift */,
+				B10B3B5A2201DD740072C76B /* SecureBackupBannerCell.xib */,
 			);
 			path = Banners;
 			sourceTree = "<group>";
@@ -2461,6 +2459,15 @@
 				B14F142D22144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewController.swift */,
 			);
 			path = RecoveryKey;
+			sourceTree = "<group>";
+		};
+		B1520C6C24A60ACD006F102F /* SecureBackup */ = {
+			isa = PBXGroup;
+			children = (
+				B1DE85E3249A51F7006454AF /* Setup */,
+				B1107ECB2201BE800038014B /* Banners */,
+			);
+			path = SecureBackup;
 			sourceTree = "<group>";
 		};
 		B152C72922DCEA670041315A /* EmojiPicker */ = {
@@ -3037,6 +3044,7 @@
 				B1B5596B20EFA85C00210D55 /* EncryptionInfo */,
 				B1B556FD20EE6C4C00210D55 /* RoomKeyRequest */,
 				B1B556B020EE6C4C00210D55 /* BugReport */,
+				B1520C6C24A60ACD006F102F /* SecureBackup */,
 				B1098BE921ECFE64000DDA48 /* KeyBackup */,
 				B1550FCF242148FA00CE097B /* KeyVerification */,
 				B19C4E6A248E98B9009A423F /* Secrets */,
@@ -4387,7 +4395,7 @@
 			path = RecoveryKey;
 			sourceTree = "<group>";
 		};
-		B1DE85E3249A51F7006454AF /* SecureSetup */ = {
+		B1DE85E3249A51F7006454AF /* Setup */ = {
 			isa = PBXGroup;
 			children = (
 				B1DE85E6249A5732006454AF /* SecureKeyBackupSetupCoordinatorBridgePresenter.swift */,
@@ -4395,7 +4403,7 @@
 				B1DE85E5249A5732006454AF /* SecureKeyBackupSetupCoordinator.swift */,
 				B1DE85EA249A5737006454AF /* Intro */,
 			);
-			path = SecureSetup;
+			path = Setup;
 			sourceTree = "<group>";
 		};
 		B1DE85EA249A5737006454AF /* Intro */ = {
@@ -4995,7 +5003,7 @@
 				3284A35120A07C210044F922 /* postMessageAPI.js in Resources */,
 				B1B557A220EF58AD00210D55 /* ContactTableViewCell.xib in Resources */,
 				B1B558EB20EF768F00210D55 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
-				B10B3B5C2201DD740072C76B /* KeyBackupBannerCell.xib in Resources */,
+				B10B3B5C2201DD740072C76B /* SecureBackupBannerCell.xib in Resources */,
 				B1C543A6239E999700DCA1FA /* KeyVerificationCellInnerContentView.xib in Resources */,
 				32891D76226728EF00C82226 /* KeyVerificationDataLoadingViewController.storyboard in Resources */,
 				B1B5581820EF625800210D55 /* PreviewRoomTitleView.xib in Resources */,
@@ -5544,7 +5552,7 @@
 				B1B5577120EE702800210D55 /* StickerPickerViewController.m in Sources */,
 				32FDC1CD2386CD390084717A /* RiotSettingIntegrationProvisioning.swift in Sources */,
 				B1BEE73523DF44A60003A4CB /* UserVerificationSessionsStatusViewModel.swift in Sources */,
-				B104C2942203773C00D9F496 /* KeyBackupBannerPreferences.swift in Sources */,
+				B104C2942203773C00D9F496 /* SecureBackupBannerPreferences.swift in Sources */,
 				B1B5572020EE6C4D00210D55 /* ContactsTableViewController.m in Sources */,
 				B1B5581920EF625800210D55 /* RoomTitleView.m in Sources */,
 				B1098BE321ECE09F000DDA48 /* RiotDefaults.swift in Sources */,
@@ -5563,7 +5571,7 @@
 				B1A6C10723881EF2002882FD /* SlidingModalPresenter.swift in Sources */,
 				B1B5573520EE6C4D00210D55 /* GroupDetailsViewController.m in Sources */,
 				B12D7A0223E2462200FACEDC /* UserVerificationStartViewAction.swift in Sources */,
-				B10B3B5B2201DD740072C76B /* KeyBackupBannerCell.swift in Sources */,
+				B10B3B5B2201DD740072C76B /* SecureBackupBannerCell.swift in Sources */,
 				B1DCC61A22E5E17100625807 /* EmojiPickerViewController.swift in Sources */,
 				B1963B32228F1C6B00CBA17F /* BubbleReactionsViewModelType.swift in Sources */,
 				32A6001722C661100042C1D9 /* EditHistoryViewController.swift in Sources */,

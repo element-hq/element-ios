@@ -38,8 +38,7 @@ typedef enum : NSUInteger
 typedef NS_ENUM(NSInteger, SecureBackupBannerDisplay)
 {
     SecureBackupBannerDisplayNone,
-    SecureBackupBannerDisplaySetup,
-    SecureBackupBannerDisplayRecover
+    SecureBackupBannerDisplaySetup    
 };
 
 /**

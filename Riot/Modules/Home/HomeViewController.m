@@ -41,8 +41,8 @@
     CGFloat selectedCollectionViewContentOffset;
 }
 
-@property (nonatomic, strong) SecureKeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
-@property (nonatomic, strong) KeyBackupBannerCell *keyBackupBannerPrototypeCell;
+@property (nonatomic, strong) SecureKeyBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
+@property (nonatomic, strong) SecureBackupBannerCell *keyBackupBannerPrototypeCell;
 
 @end
 
@@ -77,7 +77,7 @@
     [self.recentsTableView registerClass:TableViewCellWithCollectionView.class forCellReuseIdentifier:TableViewCellWithCollectionView.defaultReuseIdentifier];
 
     // Register key backup banner cells
-    [self.recentsTableView registerNib:KeyBackupBannerCell.nib forCellReuseIdentifier:KeyBackupBannerCell.defaultReuseIdentifier];
+    [self.recentsTableView registerNib:SecureBackupBannerCell.nib forCellReuseIdentifier:SecureBackupBannerCell.defaultReuseIdentifier];
     
     // Change the table data source. It must be the home view controller itself.
     self.recentsTableView.dataSource = self;
@@ -144,11 +144,11 @@
     }
 }
 
-- (KeyBackupBannerCell *)keyBackupBannerPrototypeCell
+- (SecureBackupBannerCell *)keyBackupBannerPrototypeCell
 {
     if (!_keyBackupBannerPrototypeCell)
     {
-        _keyBackupBannerPrototypeCell = [self.recentsTableView dequeueReusableCellWithIdentifier:KeyBackupBannerCell.defaultReuseIdentifier];
+        _keyBackupBannerPrototypeCell = [self.recentsTableView dequeueReusableCellWithIdentifier:SecureBackupBannerCell.defaultReuseIdentifier];
     }
     return _keyBackupBannerPrototypeCell;
 }
@@ -160,12 +160,7 @@
 
     [keyBackupSetupCoordinatorBridgePresenter presentFrom:self animated:YES];
 
-    self.keyBackupSetupCoordinatorBridgePresenter = keyBackupSetupCoordinatorBridgePresenter;
-}
-
-- (void)presentSecureBackupRecover
-{
-    // TODO: Handle secure backup recover
+    self.secureBackupSetupCoordinatorBridgePresenter = keyBackupSetupCoordinatorBridgePresenter;
 }
 
 #pragma mark - Override RecentsViewController
@@ -373,7 +368,7 @@
     else if (indexPath.section == recentsDataSource.secureBackupBannerSection)
     {
         CGFloat height = 0.0;
-        KeyBackupBannerCell *sizingCell = self.keyBackupBannerPrototypeCell;
+        SecureBackupBannerCell *sizingCell = self.keyBackupBannerPrototypeCell;
         
         [sizingCell configureFor:recentsDataSource.secureBackupBannerDisplay];
         
@@ -430,9 +425,6 @@
         switch (recentsDataSource.secureBackupBannerDisplay) {
             case SecureBackupBannerDisplaySetup:
                 [self presentSecureBackupSetup];
-                break;
-            case SecureBackupBannerDisplayRecover:
-                [self presentSecureBackupRecover];
                 break;
             default:
                 break;
@@ -689,14 +681,14 @@
 
 - (void)secureKeyBackupSetupCoordinatorBridgePresenterDelegateDidComplete:(SecureKeyBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
-    [self.keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-    self.keyBackupSetupCoordinatorBridgePresenter = nil;
+    [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.secureBackupSetupCoordinatorBridgePresenter = nil;
 }
 
 - (void)secureKeyBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(SecureKeyBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
-    [self.keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-    self.keyBackupSetupCoordinatorBridgePresenter = nil;
+    [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.secureBackupSetupCoordinatorBridgePresenter = nil;
 }
 
 @end

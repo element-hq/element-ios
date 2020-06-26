@@ -17,11 +17,11 @@
 import UIKit
 
 @objc protocol KeyBackupBannerCellDelegate: class {
-    func keyBackupBannerCellDidTapCloseAction(_ cell: KeyBackupBannerCell)
+    func keyBackupBannerCellDidTapCloseAction(_ cell: SecureBackupBannerCell)
 }
 
 @objcMembers
-final class KeyBackupBannerCell: MXKTableViewCell {
+final class SecureBackupBannerCell: MXKTableViewCell {
     
     // MARK: - Properties
 
