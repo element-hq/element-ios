@@ -63,10 +63,10 @@ final class AuthenticatedSessionViewControllerFactory: NSObject {
                         onViewController: @escaping (UIViewController) -> Void,
                         onAuthenticated: @escaping (NSDictionary) -> Void,
                         onCancelled: @escaping () -> Void,
-                        onFailure: @escaping (NSError) -> Void) {
+                        onFailure: @escaping (NSError) -> Void) -> MXHTTPOperation {
         
         // Get the authentication flow required for this API
-        session.matrixRestClient.authSessionForRequest(withMethod: httpMethod, path: path, parameters: [:], success: { [weak self] (authenticationSession) in
+        return session.matrixRestClient.authSessionForRequest(withMethod: httpMethod, path: path, parameters: [:], success: { [weak self] (authenticationSession) in
             guard let self = self else {
                 return
             }
@@ -96,6 +96,46 @@ final class AuthenticatedSessionViewControllerFactory: NSObject {
             }
             
             onFailure(error)
+        })
+    }
+    
+    /// Check if we support the authentication flow for a given request.
+    ///
+    /// - Parameters:
+    ///   - path: the request path.
+    ///   - httpMethod: the request http method.
+    ///   - onCancelled: the block called when the user cancelled the authentication.
+    ///   - onFailure: the blocked called on error.
+    func hasSupport(forPath path: String,
+                    httpMethod: String,
+                    success: @escaping (Bool) -> Void,
+                    failure: @escaping (NSError) -> Void) -> MXHTTPOperation {
+        
+        // Get the authentication flow required for this API
+        return session.matrixRestClient.authSessionForRequest(withMethod: httpMethod, path: path, parameters: [:], success: { [weak self] (authenticationSession) in
+            guard let self = self else {
+                return
+            }
+            
+            guard let authenticationSession = authenticationSession, let flows = authenticationSession.flows else {
+                success(false)
+                return
+            }
+            
+            // Return the corresponding VC
+            if self.hasPasswordFlow(inFlows: flows) {
+                success(true)
+            } else {
+                // Flow not supported yet
+                success(false)
+            }
+            
+            }, failure: { (error) in
+                guard let error = error as NSError? else {
+                    return
+                }
+                
+                failure(error)
         })
     }
     
