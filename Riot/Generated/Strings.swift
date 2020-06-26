@@ -1306,14 +1306,6 @@ internal enum VectorL10n {
   internal static var join: String { 
     return VectorL10n.tr("Vector", "join") 
   }
-  /// Never lose encrypted messages
-  internal static var keyBackupRecoverBannerTitle: String { 
-    return VectorL10n.tr("Vector", "key_backup_recover_banner_title") 
-  }
-  /// Connect this session to Key Backup
-  internal static var keyBackupRecoverConnentBannerSubtitle: String { 
-    return VectorL10n.tr("Vector", "key_backup_recover_connent_banner_subtitle") 
-  }
   /// Done
   internal static var keyBackupRecoverDoneAction: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_done_action") 

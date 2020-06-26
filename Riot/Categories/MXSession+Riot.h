@@ -46,6 +46,6 @@
 /**
  Indicate YES if secure key backup can be setup
  */
-- (BOOL)vc_canSetupSecureKeyBackup;
+- (BOOL)vc_canSetupSecureBackup;
 
 @end

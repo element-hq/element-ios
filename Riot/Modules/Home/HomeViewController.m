@@ -677,7 +677,7 @@
     [self leaveEditedRoom];
 }
 
-#pragma mark - SecureKeyBackupSetupCoordinatorBridgePresenterDelegate
+#pragma mark - SecureBackupSetupCoordinatorBridgePresenterDelegate
 
 - (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidComplete:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {

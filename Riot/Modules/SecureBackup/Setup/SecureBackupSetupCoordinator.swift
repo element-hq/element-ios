@@ -55,8 +55,8 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     
     // MARK: - Private methods
 
-    private func createIntro() -> SecureKeyBackupSetupIntroViewController {
-        let introViewController = SecureKeyBackupSetupIntroViewController.instantiate()
+    private func createIntro() -> SecureBackupSetupIntroViewController {
+        let introViewController = SecureBackupSetupIntroViewController.instantiate()
         introViewController.delegate = self
         return introViewController
     }
@@ -122,18 +122,18 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     }
 }
 
-// MARK: - SecureKeyBackupSetupIntroViewControllerDelegate
-extension SecureBackupSetupCoordinator: SecureKeyBackupSetupIntroViewControllerDelegate {
+// MARK: - SecureBackupSetupIntroViewControllerDelegate
+extension SecureBackupSetupCoordinator: SecureBackupSetupIntroViewControllerDelegate {
     
-    func secureKeyBackupSetupIntroViewControllerDidTapUseKey(_ secureKeyBackupSetupIntroViewController: SecureKeyBackupSetupIntroViewController) {
+    func secureBackupSetupIntroViewControllerDidTapUseKey(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController) {
         self.showSetupKey()
     }
     
-    func secureKeyBackupSetupIntroViewControllerDidTapUsePassphrase(_ secureKeyBackupSetupIntroViewController: SecureKeyBackupSetupIntroViewController) {
+    func secureBackupSetupIntroViewControllerDidTapUsePassphrase(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController) {
         self.showSetupPassphrase()
     }
     
-    func secureKeyBackupSetupIntroViewControllerDidCancel(_ secureKeyBackupSetupIntroViewController: SecureKeyBackupSetupIntroViewController) {
+    func secureBackupSetupIntroViewControllerDidCancel(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController) {
         self.didCancel()
     }
 }

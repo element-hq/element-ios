@@ -183,7 +183,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         SecureBackupBannerPreferences *secureBackupBannersPreferences = SecureBackupBannerPreferences.shared;
         
-        if (!secureBackupBannersPreferences.hideSetupBanner && [self.mxSession vc_canSetupSecureKeyBackup])
+        if (!secureBackupBannersPreferences.hideSetupBanner && [self.mxSession vc_canSetupSecureBackup])
         {
             secureBackupBanner = SecureBackupBannerDisplaySetup;
         }
@@ -196,11 +196,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     return updated;
 }
 
-- (void)hideKeyBackupBannerWithDisplay:(SecureBackupBannerDisplay)secureKeyBackupBannerDisplay
+- (void)hideKeyBackupBannerWithDisplay:(SecureBackupBannerDisplay)secureBackupBannerDisplay
 {
     SecureBackupBannerPreferences *keyBackupBannersPreferences = SecureBackupBannerPreferences.shared;
     
-    switch (secureKeyBackupBannerDisplay) {
+    switch (secureBackupBannerDisplay) {
         case SecureBackupBannerDisplaySetup:
             keyBackupBannersPreferences.hideSetupBanner = YES;
             break;

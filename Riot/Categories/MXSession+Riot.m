@@ -78,7 +78,7 @@
     }
 }
 
-- (BOOL)vc_canSetupSecureKeyBackup
+- (BOOL)vc_canSetupSecureBackup
 {
     MXRecoveryService *recoveryService = self.crypto.recoveryService;
     

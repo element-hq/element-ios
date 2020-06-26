@@ -919,7 +919,7 @@
 "rerequest_keys_alert_title" = "Request Sent";
 "rerequest_keys_alert_message" = "Please launch Riot on another device that can decrypt the message so it can send the keys to this session.";
 
-// MARK: Secure Key backup setup
+// MARK: Secure backup setup
 
 // Intro
 
@@ -936,6 +936,11 @@
 
 "secure_key_backup_setup_cancel_alert_title" = "Are your sure?";
 "secure_key_backup_setup_cancel_alert_message" = "If you cancel now, you may lose encrypted messages & data if you lose access to your logins.\n\nYou can also set up Secure Backup & manage your keys in Settings.";
+
+// Banner
+
+"secure_backup_setup_banner_title" = "Secure Backup";
+"secure_backup_setup_banner_subtitle" = "Safeguard against losing access to encrypted messages & data";
 
 
 // MARK: Key backup setup
@@ -1022,20 +1027,6 @@
 
 "key_backup_recover_success_info" = "Backup Restored!";
 "key_backup_recover_done_action" = "Done";
-
-// MARK: Secure backup banners
-
-// Setup
-
-"secure_backup_setup_banner_title" = "Secure Backup";
-"secure_backup_setup_banner_subtitle" = "Safeguard against losing access to encrypted messages & data";
-
-// MARK: Key backup banners
-
-// Recover
-
-"key_backup_recover_banner_title" = "Never lose encrypted messages";
-"key_backup_recover_connent_banner_subtitle" = "Connect this session to Key Backup";
 
 // MARK: Sign out warning
 
