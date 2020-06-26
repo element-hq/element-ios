@@ -41,8 +41,6 @@ final class AuthenticatedSessionViewControllerFactory: NSObject {
     
     // MARK: - Constants
     
-    static let errorDomain = "AuthenticatedSessionViewControllerFactoryErrorDomain"
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -88,7 +86,7 @@ final class AuthenticatedSessionViewControllerFactory: NSObject {
             }
             
             guard let authenticationSession = authenticationSession, let flows = authenticationSession.flows else {
-                onFailure(self.unsupportedFlowError())
+                onFailure(AuthenticatedSessionViewControllerFactoryError.flowNotSupported)
                 return
             }
             
@@ -103,7 +101,7 @@ final class AuthenticatedSessionViewControllerFactory: NSObject {
                 onViewController(authViewController)
             } else {
                 // Flow not supported yet
-                onFailure(self.unsupportedFlowError())
+                onFailure(AuthenticatedSessionViewControllerFactoryError.flowNotSupported)
             }
             
         }, failure: { (error) in
@@ -158,13 +156,6 @@ final class AuthenticatedSessionViewControllerFactory: NSObject {
     
     // MARK: - Private methods
     
-    private func unsupportedFlowError() -> NSError {
-        return NSError(domain: AuthenticatedSessionViewControllerFactory.errorDomain,
-                       code: AuthenticatedSessionViewControllerFactoryErrorCode.flowNotSupported.rawValue,
-                       userInfo: [NSLocalizedDescriptionKey: VectorL10n.authenticatedSessionFlowNotSupported])
-    }
-    
-    
     // MARK: - Password flow
     
     private func hasPasswordFlow(inFlows flows: [MXLoginFlow]) -> Bool {
@@ -183,7 +174,7 @@ final class AuthenticatedSessionViewControllerFactory: NSObject {
                         authenticationSession: MXAuthenticationSession,
                         onAuthenticated: @escaping ([String: Any]) -> Void,
                         onCancelled: @escaping () -> Void,
-                        onFailure: @escaping (NSError) -> Void) -> UIViewController {
+                        onFailure: @escaping (Error) -> Void) -> UIViewController {
         
         // Use a simple UIAlertController as before
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -206,7 +197,7 @@ final class AuthenticatedSessionViewControllerFactory: NSObject {
             }
             
             guard let authParams = self.createAuthParams(password: password, authenticationSession: authenticationSession) else {
-                onFailure(self.unsupportedFlowError())
+                onFailure(AuthenticatedSessionViewControllerFactoryError.flowNotSupported)
                 return
             }
             
