@@ -229,7 +229,7 @@
 "room_event_action_view_encryption" = "Versleutelingsinformatie";
 "room_warning_about_encryption" = "Eind-tot-eindversleuteling is in bèta en kan onbetrouwbaar zijn.\n\nHet is beter om het nog niet met gevoelige gegevens te vertrouwen.\n\nApparaten kunnen de geschiedenis van vóór ze het gesprek betraden nog niet ontsleutelen.\n\nVersleutelde berichten zullen niet zichtbaar zijn op cliënten die nog geen versleuteling ondersteunen.";
 // Unknown devices
-"unknown_devices_alert_title" = "Gesprek bevat onbekende apparaten";
+"unknown_devices_alert_title" = "Gesprek bevat onbekende sessies";
 "unknown_devices_alert" = "Dit gesprek bevat onbekende apparaten die niet geverifieerd zijn.\nDit betekent dat er geen garantie is dat de apparaten bij de gebruikers horen waarbij ze beweren te horen.\nWe raden u aan om bij elk apparaat door het verificatieproces heen te gaan voordat u verdergaat, maar u kunt het bericht ook zonder verificatie opnieuw versturen.";
 "unknown_devices_send_anyway" = "Alsnog versturen";
 "unknown_devices_call_anyway" = "Alsnog bellen";
@@ -855,3 +855,17 @@
 "media_type_accessibility_sticker" = "Sticker";
 // Widget Picker
 "widget_picker_title" = "Integraties";
+"skip" = "Overslaan";
+// Accessibility
+"accessibility_checkbox_label" = "aanvinkvak";
+// MARK: Clients
+"client_desktop_name" = "Riot Desktop";
+"client_web_name" = "Riot Web";
+"client_ios_name" = "Riot iOS";
+"client_android_name" = "Riot X voor Android";
+"auth_add_email_message_2" = "Stel een e-mailadres in voor accountherstel en om later optioneel vindbaar te zijn voor mensen die u kennen.";
+"auth_add_phone_message_2" = "Stel een telefoon in om later optioneel vindbaar te zijn voor mensen die u kennen.";
+"auth_add_email_phone_message_2" = "Stel een e-mailadres in voor accountherstel. Gebruik later e-mail of telefoon om optioneel vindbaar te zijn voor mensen die u kennen.";
+"auth_email_is_required" = "Er is geen identiteitsserver geconfigureerd, dus u kunt geen e-mailadres toevoegen om uw wachtwoord in de toekomst opnieuw in te stellen.";
+"auth_phone_is_required" = "Er is geen identiteitsserver geconfigureerd, dus u kunt geen telefoonnummer toevoegen om uw wachtwoord in de toekomst opnieuw in te stellen.";
+"auth_reset_password_error_is_required" = "Geen identiteitsserver ingesteld: voeg er één toe bij server opties om uw wachtwoord te wijzigen.";
