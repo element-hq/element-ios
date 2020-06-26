@@ -61,7 +61,7 @@ final class AuthenticatedSessionViewControllerFactory: NSObject {
                         title: String?,
                         message: String?,
                         onViewController: @escaping (UIViewController) -> Void,
-                        onAuthenticated: @escaping (NSDictionary) -> Void,
+                        onAuthenticated: @escaping ([String: Any]) -> Void,
                         onCancelled: @escaping () -> Void,
                         onFailure: @escaping (NSError) -> Void) -> MXHTTPOperation {
         
