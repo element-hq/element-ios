@@ -105,7 +105,7 @@ final class AuthenticatedSessionViewControllerFactory: NSObject {
             }
             
         }, failure: { (error) in
-            guard let error = error as NSError? else {
+            guard let error = error else {
                 return
             }
             
