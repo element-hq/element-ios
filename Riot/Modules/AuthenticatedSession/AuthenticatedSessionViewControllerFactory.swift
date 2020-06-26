@@ -63,7 +63,7 @@ final class AuthenticatedSessionViewControllerFactory: NSObject {
                         onViewController: @escaping (UIViewController) -> Void,
                         onAuthenticated: @escaping ([String: Any]) -> Void,
                         onCancelled: @escaping () -> Void,
-                        onFailure: @escaping (NSError) -> Void) -> MXHTTPOperation {
+                        onFailure: @escaping (Error) -> Void) -> MXHTTPOperation {
         
         // Get the authentication flow required for this API
         return session.matrixRestClient.authSessionForRequest(withMethod: httpMethod, path: path, parameters: [:], success: { [weak self] (authenticationSession) in
