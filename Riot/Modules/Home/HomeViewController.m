@@ -27,7 +27,7 @@
 
 #import "MXRoom+Riot.h"
 
-@interface HomeViewController () <KeyBackupSetupCoordinatorBridgePresenterDelegate, KeyBackupRecoverCoordinatorBridgePresenterDelegate>
+@interface HomeViewController () <SecureBackupSetupCoordinatorBridgePresenterDelegate>
 {
     RecentsDataSource *recentsDataSource;
     
@@ -41,9 +41,8 @@
     CGFloat selectedCollectionViewContentOffset;
 }
 
-@property (nonatomic, strong) KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
-@property (nonatomic, strong) KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter;
-@property (nonatomic, strong) KeyBackupBannerCell *keyBackupBannerPrototypeCell;
+@property (nonatomic, strong) SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
+@property (nonatomic, strong) SecureBackupBannerCell *secureBackupBannerPrototypeCell;
 
 @end
 
@@ -78,7 +77,7 @@
     [self.recentsTableView registerClass:TableViewCellWithCollectionView.class forCellReuseIdentifier:TableViewCellWithCollectionView.defaultReuseIdentifier];
 
     // Register key backup banner cells
-    [self.recentsTableView registerNib:KeyBackupBannerCell.nib forCellReuseIdentifier:KeyBackupBannerCell.defaultReuseIdentifier];
+    [self.recentsTableView registerNib:SecureBackupBannerCell.nib forCellReuseIdentifier:SecureBackupBannerCell.defaultReuseIdentifier];
     
     // Change the table data source. It must be the home view controller itself.
     self.recentsTableView.dataSource = self;
@@ -145,37 +144,23 @@
     }
 }
 
-- (KeyBackupBannerCell *)keyBackupBannerPrototypeCell
+- (SecureBackupBannerCell *)secureBackupBannerPrototypeCell
 {
-    if (!_keyBackupBannerPrototypeCell)
+    if (!_secureBackupBannerPrototypeCell)
     {
-        _keyBackupBannerPrototypeCell = [self.recentsTableView dequeueReusableCellWithIdentifier:KeyBackupBannerCell.defaultReuseIdentifier];
+        _secureBackupBannerPrototypeCell = [self.recentsTableView dequeueReusableCellWithIdentifier:SecureBackupBannerCell.defaultReuseIdentifier];
     }
-    return _keyBackupBannerPrototypeCell;
+    return _secureBackupBannerPrototypeCell;
 }
 
-- (void)presentKeyBackupSetup
+- (void)presentSecureBackupSetup
 {
-    KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter = [[KeyBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    SecureBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter = [[SecureBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
     keyBackupSetupCoordinatorBridgePresenter.delegate = self;
-    
-    [keyBackupSetupCoordinatorBridgePresenter presentFrom:self animated:YES];
-    
-    self.keyBackupSetupCoordinatorBridgePresenter = keyBackupSetupCoordinatorBridgePresenter;
-}
 
-- (void)presentKeyBackupRecover
-{
-    MXKeyBackupVersion *keyBackupVersion = self.mainSession.crypto.backup.keyBackupVersion;
-    if (keyBackupVersion)
-    {
-        KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter = [[KeyBackupRecoverCoordinatorBridgePresenter alloc] initWithSession:self.mainSession keyBackupVersion:keyBackupVersion];
-        keyBackupRecoverCoordinatorBridgePresenter.delegate = self;
-        
-        [keyBackupRecoverCoordinatorBridgePresenter presentFrom:self animated:YES];
-        
-        self.keyBackupRecoverCoordinatorBridgePresenter = keyBackupRecoverCoordinatorBridgePresenter;
-    }
+    [keyBackupSetupCoordinatorBridgePresenter presentFrom:self animated:YES];
+
+    self.secureBackupSetupCoordinatorBridgePresenter = keyBackupSetupCoordinatorBridgePresenter;
 }
 
 #pragma mark - Override RecentsViewController
@@ -304,7 +289,7 @@
 {
     if ((indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.conversationCellDataArray.count)
         || (indexPath.section == recentsDataSource.peopleSection && !recentsDataSource.peopleCellDataArray.count)
-        || (indexPath.section == recentsDataSource.keyBackupBannerSection))
+        || (indexPath.section == recentsDataSource.secureBackupBannerSection))
     {
         return [recentsDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
     }
@@ -380,12 +365,12 @@
     {
         return [recentsDataSource cellHeightAtIndexPath:indexPath];
     }
-    else if (indexPath.section == recentsDataSource.keyBackupBannerSection)
+    else if (indexPath.section == recentsDataSource.secureBackupBannerSection)
     {
         CGFloat height = 0.0;
-        KeyBackupBannerCell *sizingCell = self.keyBackupBannerPrototypeCell;
+        SecureBackupBannerCell *sizingCell = self.secureBackupBannerPrototypeCell;
         
-        [sizingCell configureFor:recentsDataSource.keyBackupBanner];
+        [sizingCell configureFor:recentsDataSource.secureBackupBannerDisplay];
         
         [sizingCell layoutIfNeeded];
         
@@ -423,7 +408,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     // No header in key banner section
-    if (section == recentsDataSource.keyBackupBannerSection)
+    if (section == recentsDataSource.secureBackupBannerSection)
     {
         return 0.0;
     }
@@ -435,14 +420,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == recentsDataSource.keyBackupBannerSection)
+    if (indexPath.section == recentsDataSource.secureBackupBannerSection)
     {
-        switch (recentsDataSource.keyBackupBanner) {
-            case KeyBackupBannerSetup:
-                [self presentKeyBackupSetup];
-                break;
-            case KeyBackupBannerRecover:
-                [self presentKeyBackupRecover];
+        switch (recentsDataSource.secureBackupBannerDisplay) {
+            case SecureBackupBannerDisplaySetup:
+                [self presentSecureBackupSetup];
                 break;
             default:
                 break;
@@ -695,28 +677,18 @@
     [self leaveEditedRoom];
 }
 
-#pragma mark - KeyBackupSetupCoordinatorBridgePresenterDelegate
+#pragma mark - SecureBackupSetupCoordinatorBridgePresenterDelegate
 
-- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(KeyBackupSetupCoordinatorBridgePresenter * _Nonnull)keyBackupSetupCoordinatorBridgePresenter
+- (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidComplete:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
-    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES];
-    self.keyBackupSetupCoordinatorBridgePresenter = nil;
+    [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.secureBackupSetupCoordinatorBridgePresenter = nil;
 }
 
-- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidSetupRecoveryKey:(KeyBackupSetupCoordinatorBridgePresenter * _Nonnull)keyBackupSetupCoordinatorBridgePresenter
+- (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
-    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES];
-    self.keyBackupSetupCoordinatorBridgePresenter = nil;
-}
-
-- (void)keyBackupRecoverCoordinatorBridgePresenterDidCancel:(KeyBackupRecoverCoordinatorBridgePresenter * _Nonnull)keyBackupRecoverCoordinatorBridgePresenter {
-    [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:YES];
-    self.keyBackupRecoverCoordinatorBridgePresenter = nil;
-}
-
-- (void)keyBackupRecoverCoordinatorBridgePresenterDidRecover:(KeyBackupRecoverCoordinatorBridgePresenter * _Nonnull)keyBackupRecoverCoordinatorBridgePresenter {
-    [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:YES];
-    self.keyBackupRecoverCoordinatorBridgePresenter = nil;
+    [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.secureBackupSetupCoordinatorBridgePresenter = nil;
 }
 
 @end

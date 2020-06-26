@@ -173,6 +173,17 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
         return coordinator
     }
     
+    private func showSecretsRecovery(with recoveryMode: SecretsRecoveryMode) {
+        let coordinator = SecretsRecoveryCoordinator(session: self.session, recoveryMode: recoveryMode, recoveryGoal: .verifyDevice, navigationRouter: self.navigationRouter)
+        coordinator.delegate = self
+        coordinator.start()
+        
+        self.add(childCoordinator: coordinator)
+        self.navigationRouter.setRootModule(coordinator) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
+    
     private func createSelfVerificationCoordinator(otherDeviceId: String) -> KeyVerificationSelfVerifyStartCoordinator {
         let coordinator = KeyVerificationSelfVerifyStartCoordinator(session: self.session, otherDeviceId: otherDeviceId)
         coordinator.delegate = self
@@ -412,6 +423,10 @@ extension KeyVerificationCoordinator: KeyVerificationSelfVerifyWaitCoordinatorDe
     func keyVerificationSelfVerifyWaitCoordinatorDidCancel(_ coordinator: KeyVerificationSelfVerifyWaitCoordinatorType) {
         self.didCancel()
     }
+    
+    func keyVerificationSelfVerifyWaitCoordinator(_ coordinator: KeyVerificationSelfVerifyWaitCoordinatorType, wantsToRecoverSecretsWith secretsRecoveryMode: SecretsRecoveryMode) {        
+        self.showSecretsRecovery(with: secretsRecoveryMode)
+    }
 }
 
 // MARK: - KeyVerificationScanConfirmationCoordinatorDelegate
@@ -422,6 +437,18 @@ extension KeyVerificationCoordinator: KeyVerificationScanConfirmationCoordinator
     }
     
     func keyVerificationScanConfirmationCoordinatorDidCancel(_ coordinator: KeyVerificationScanConfirmationCoordinatorType) {
+        self.didCancel()
+    }
+}
+
+// MARK: - SecretsRecoveryCoordinatorDelegate
+extension KeyVerificationCoordinator: SecretsRecoveryCoordinatorDelegate {
+    
+    func secretsRecoveryCoordinatorDidRecover(_ coordinator: SecretsRecoveryCoordinatorType) {
+        self.showVerified(animated: true)
+    }
+    
+    func secretsRecoveryCoordinatorDidCancel(_ coordinator: SecretsRecoveryCoordinatorType) {
         self.didCancel()
     }
 }

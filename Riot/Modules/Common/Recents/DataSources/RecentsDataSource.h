@@ -33,13 +33,12 @@ typedef enum : NSUInteger
 } RecentsDataSourceMode;
 
 /**
- List the different key backup banners that could be displayed.
+ List the different secure backup banners that could be displayed.
  */
-typedef NS_ENUM(NSInteger, KeyBackupBanner)
+typedef NS_ENUM(NSInteger, SecureBackupBannerDisplay)
 {
-    KeyBackupBannerNone,
-    KeyBackupBannerSetup,
-    KeyBackupBannerRecover
+    SecureBackupBannerDisplayNone,
+    SecureBackupBannerDisplaySetup    
 };
 
 /**
@@ -55,7 +54,7 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
  */
 @interface RecentsDataSource : MXKInterleavedRecentsDataSource
 
-@property (nonatomic) NSInteger keyBackupBannerSection;
+@property (nonatomic) NSInteger secureBackupBannerSection;
 @property (nonatomic) NSInteger directorySection;
 @property (nonatomic) NSInteger invitesSection;
 @property (nonatomic) NSInteger favoritesSection;
@@ -71,7 +70,7 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
 @property (nonatomic, readonly) NSArray* lowPriorityCellDataArray;
 @property (nonatomic, readonly) NSArray* serverNoticeCellDataArray;
 
-@property (nonatomic, readonly) KeyBackupBanner keyBackupBanner;
+@property (nonatomic, readonly) SecureBackupBannerDisplay secureBackupBannerDisplay;
 
 /**
  Set the delegate by specifying the selected display mode.

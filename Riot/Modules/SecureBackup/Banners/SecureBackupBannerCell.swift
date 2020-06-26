@@ -16,12 +16,12 @@
 
 import UIKit
 
-@objc protocol KeyBackupBannerCellDelegate: class {
-    func keyBackupBannerCellDidTapCloseAction(_ cell: KeyBackupBannerCell)
+@objc protocol SecureBackupBannerCellDelegate: class {
+    func secureBackupBannerCellDidTapCloseAction(_ cell: SecureBackupBannerCell)
 }
 
 @objcMembers
-final class KeyBackupBannerCell: MXKTableViewCell {
+final class SecureBackupBannerCell: MXKTableViewCell, Themable {
     
     // MARK: - Properties
 
@@ -34,7 +34,7 @@ final class KeyBackupBannerCell: MXKTableViewCell {
     
     // MARK: Public
     
-    weak var delegate: KeyBackupBannerCellDelegate?
+    weak var delegate: SecureBackupBannerCellDelegate?
     
     // MARK: - Overrides
     
@@ -50,12 +50,7 @@ final class KeyBackupBannerCell: MXKTableViewCell {
         super.customizeRendering()
         
         let theme = ThemeService.shared().theme
-        
-        self.shieldImageView.tintColor = theme.textPrimaryColor
-        self.closeButton.tintColor = theme.textPrimaryColor
-        
-        self.titleLabel.textColor = theme.textPrimaryColor
-        self.subtitleLabel.textColor = theme.tintColor
+        self.update(theme: theme)
     }
     
     // MARK: - Life cycle
@@ -63,8 +58,8 @@ final class KeyBackupBannerCell: MXKTableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        let shieldImage = Asset.Images.keyBackupLogo.image.withRenderingMode(.alwaysTemplate)
-        self.shieldImageView.image = shieldImage
+        let shieldImage = Asset.Images.secretsSetupKey.image.withRenderingMode(.alwaysTemplate)
+        self.shieldImageView.image = shieldImage 
         
         let closeImage = Asset.Images.closeBanner.image.withRenderingMode(.alwaysTemplate)
         self.closeButton.setImage(closeImage, for: .normal)
@@ -72,19 +67,16 @@ final class KeyBackupBannerCell: MXKTableViewCell {
     
     // MARK: - Public
     
-    func configure(for banner: KeyBackupBanner) {
+    func configure(for bannerDisplay: SecureBackupBannerDisplay) {
         
         let title: String?
         let subtitle: String?
         
-        switch banner {
+        switch bannerDisplay {
         case .setup:
-            title = VectorL10n.keyBackupSetupBannerTitle
-            subtitle = VectorL10n.keyBackupSetupBannerSubtitle
-        case .recover:
-            title = VectorL10n.keyBackupRecoverBannerTitle
-            subtitle = VectorL10n.keyBackupRecoverConnentBannerSubtitle
-        case .none:
+            title = VectorL10n.secureBackupSetupBannerTitle
+            subtitle = VectorL10n.secureBackupSetupBannerSubtitle
+        default:
             title = nil
             subtitle = nil
         }
@@ -93,9 +85,17 @@ final class KeyBackupBannerCell: MXKTableViewCell {
         self.subtitleLabel.text = subtitle
     }
     
+    func update(theme: Theme) {
+        self.shieldImageView.tintColor = theme.textPrimaryColor
+        self.closeButton.tintColor = theme.textPrimaryColor
+        
+        self.titleLabel.textColor = theme.textPrimaryColor
+        self.subtitleLabel.textColor = theme.textPrimaryColor
+    }
+    
     // MARK: - Actions
     
     @IBAction private func closeButtonAction(_ sender: Any) {
-        self.delegate?.keyBackupBannerCellDidTapCloseAction(self)
+        self.delegate?.secureBackupBannerCellDidTapCloseAction(self)
     }
 }

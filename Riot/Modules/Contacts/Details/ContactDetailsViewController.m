@@ -1060,7 +1060,7 @@
 
 
                     // Create a new room
-                    [self.mainSession canEnableE2EByDefaultInNewRoomWithUsers:inviteArray success:^(BOOL canEnableE2E) {
+                    [self.mainSession vc_canEnableE2EByDefaultInNewRoomWithUsers:inviteArray success:^(BOOL canEnableE2E) {
                         MXStrongifyAndReturnIfNil(self);
 
                         MXRoomCreationParameters *roomCreationParameters = [MXRoomCreationParameters new];

@@ -1091,3 +1091,17 @@
 "key_verification_manually_verify_device_additional_information" = "Nëse s’përputhen, siguria e komunikimeve tuaja mund të jetë komprometuar.";
 "key_verification_manually_verify_device_validate_action" = "Verifikoje";
 "user_verification_session_details_verify_action_current_user_manually" = "Verifikojeni Dorazi përmes Teksti";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Përdor Kyç Rimarrjesh";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Përdor Frazëkalim ose Kyç Rimarrjesh";
+"device_verification_self_verify_wait_recover_secrets_additional_information" = "Nëse s’hyni dot në një sesion ekzistues";
+"secrets_recovery_with_passphrase_title" = "Frazëkalim Rimarrjesh";
+"secrets_recovery_with_passphrase_information_default" = "Hyni në historikun tuaj të mesazheve të sigurt dhe përdorni identitetin tuaj “cross-signing” për të verifikuar sesione të tjerë duke dhënë frazëkalimin tuaj të rimarrjeve.";
+"secrets_recovery_with_passphrase_information_verify_device" = "Që të verifikoni këtë pajisje, përdorni Frazëkalimin tuaj të Rimarrjeve.";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Jepni Frazëkalim Rimarrjesh";
+"secrets_recovery_with_passphrase_recover_action" = "Përdor Frazëkalim";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "S’e din frazëkalimin tuaj të rimarrjeve? Mundeni të ";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "përdorni kyçin tuaj të rimarrjeve";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
+"secrets_recovery_with_passphrase_invalid_passphrase_title" = "S’arrihet të hyhet në depo të fshehtë";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Ju lutemi, verifikoni që keni dhënë frazëkalimin e saktë të rimarrjeve.";
+"secrets_recovery_with_key_title" = "Kyç Rimarrjesh";
