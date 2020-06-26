@@ -36,6 +36,8 @@ final class RoomNotificationSettingsNotifyViewController: UIViewController {
     private var mxRoom: MXRoom!
     private let plainStyleCellReuseIdentifier = "plain"
     private let linkToAccountSettings = "linkToAccountSettings"
+    private var errorPresenter: MXKErrorPresentation!
+    private var activityPresenter: ActivityIndicatorPresenter!
     
     private enum RowType {
         case plain
@@ -43,6 +45,7 @@ final class RoomNotificationSettingsNotifyViewController: UIViewController {
     
     private struct Row {
         var type: RowType
+        var setting: RoomNotificationSetting
         var text: String?
         var accessoryType: UITableViewCell.AccessoryType = .none
         var action: (() -> Void)?
@@ -60,10 +63,38 @@ final class RoomNotificationSettingsNotifyViewController: UIViewController {
         }
     }
     
+    private func showActivityIndicator() {
+        if self.activityPresenter.isPresenting == false {
+            self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        }
+    }
+    
+    private func hideActivityIndicator() {
+        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+    }
+    
     private func updateSections() {
-        let rows = RoomNotificationSetting.allCases.map { Row(type: .plain, text: $0.longTitle, accessoryType: mxRoom.notifySettingForNotifications == $0 ? .checkmark : .none) {
-            
-            } }
+        let rows = RoomNotificationSetting.allCases.map({ (setting) -> Row in
+            return Row(type: .plain,
+                       setting: setting,
+                       text: setting.longTitle,
+                       accessoryType: mxRoom.notifySettingForNotifications == setting ? .checkmark : .none,
+                       action: {
+                        self.showActivityIndicator()
+                self.mxRoom.updateNotifySetting(to: setting, completion: { (response) in
+                    self.hideActivityIndicator()
+                    
+                    switch response {
+                    case .success:
+                        self.updateSections()
+                    case .failure(let error):
+                        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: {
+                            
+                        })
+                    }
+                })
+            })
+        })
         
         let formatStr = "You can manage keywords in the %@"
         let linkStr = "Account Settings"
@@ -109,6 +140,9 @@ final class RoomNotificationSettingsNotifyViewController: UIViewController {
         self.vc_removeBackTitle()
         
         self.setupViews()
+        self.activityPresenter = ActivityIndicatorPresenter()
+        self.errorPresenter = MXKErrorAlertPresentation()
+        
         self.registerThemeServiceDidChangeThemeNotification()
         self.update(theme: self.theme)
         
@@ -177,6 +211,7 @@ extension RoomNotificationSettingsNotifyViewController: UITableViewDataSource {
             if row.accessoryType == .checkmark {
                 cell.accessoryView = UIImageView(image: Asset.Images.checkmark.image)
             } else {
+                cell.accessoryView = nil
                 cell.accessoryType = row.accessoryType
             }
             cell.textLabel?.textColor = theme.textPrimaryColor

@@ -37,6 +37,8 @@ final class RoomNotificationSettingsHomeViewController: UIViewController {
     private var mxRoom: MXRoom!
     private let value1StyleCellReuseIdentifier = "value1"
     private let linkToAccountSettings = "linkToAccountSettings"
+    private var errorPresenter: MXKErrorPresentation!
+    private var activityPresenter: ActivityIndicatorPresenter!
     
     private enum RowType {
         case withRightValue(_ value: String?)
@@ -62,6 +64,16 @@ final class RoomNotificationSettingsHomeViewController: UIViewController {
         }
     }
     
+    private func showActivityIndicator() {
+        if self.activityPresenter.isPresenting == false {
+            self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        }
+    }
+    
+    private func hideActivityIndicator() {
+        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+    }
+    
     private func updateSections() {
         let row_0_0 = Row(type: .withRightValue(mxRoom.notifySettingForNotifications.shortTitle), text: "Notify me with", accessoryType: .disclosureIndicator) { [weak self] in
             guard let self = self else { return }
@@ -71,14 +83,42 @@ final class RoomNotificationSettingsHomeViewController: UIViewController {
         
         let section0 = Section(header: "General", rows: [row_0_0], footer: nil)
         
-        let row_1_0 = Row(type: .withSwitch(true, onValueChanged: { (switch) in
-            
+        let row_1_0 = Row(type: .withSwitch(mxRoom.notifyOnRoomMentions, onValueChanged: { [weak self] (_switch) in
+            guard let self = self else { return }
+            self.showActivityIndicator()
+            self.mxRoom.updateNotifyOnRoomMentionsSetting(to: _switch.isOn, completion: { (response) in
+                self.hideActivityIndicator()
+                self.updateSections()
+                
+                switch response {
+                case .success:
+                    break
+                case .failure(let error):
+                    self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: {
+                        
+                    })
+                }
+            })
         }), text: "Notify me when @room is used", accessoryType: .none) {
             
         }
         
-        let row_1_1 = Row(type: .withSwitch(false, onValueChanged: { (switch) in
-            
+        let row_1_1 = Row(type: .withSwitch(mxRoom.showNumberOfMessages, onValueChanged: { [weak self] (_switch) in
+            guard let self = self else { return }
+            self.showActivityIndicator()
+            self.mxRoom.updateShowNumberOfMessagesSetting(to: _switch.isOn, completion: { (response) in
+                self.hideActivityIndicator()
+                self.updateSections()
+                
+                switch response {
+                case .success:
+                    break
+                case .failure(let error):
+                    self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: {
+                        
+                    })
+                }
+            })
         }), text: "Show number of messages", accessoryType: .none) {
             
         }
@@ -144,8 +184,15 @@ final class RoomNotificationSettingsHomeViewController: UIViewController {
         self.vc_removeBackTitle()
         
         self.setupViews()
+        self.activityPresenter = ActivityIndicatorPresenter()
+        self.errorPresenter = MXKErrorAlertPresentation()
+        
         self.registerThemeServiceDidChangeThemeNotification()
         self.update(theme: self.theme)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         updateSections()
     }
@@ -222,6 +269,7 @@ extension RoomNotificationSettingsHomeViewController: UITableViewDataSource {
             cell.mxkLabel.font = .systemFont(ofSize: 17)
             cell.mxkLabel.text = row.text
             cell.mxkSwitch.isOn = isOn
+            cell.mxkSwitch.removeTarget(nil, action: nil, for: .valueChanged)
             cell.mxkSwitch.vc_addAction(for: .valueChanged) {
                 onValueChanged?(cell.mxkSwitch)
             }

@@ -16,14 +16,83 @@
 
 import Foundation
 
+private var _notifySettingForNotifications: RoomNotificationSetting?
+private var _soundSettingForNotifications: RoomNotificationSetting?
+private var _notifyOnRoomMentions: Bool?
+private var _showNumberOfMessages: Bool?
+
 extension MXRoom {
     
     var notifySettingForNotifications: RoomNotificationSetting {
-        return .mentionsKeywords
+        return _notifySettingForNotifications ?? .mentionsKeywords
     }
     
     var soundSettingForNotifications: RoomNotificationSetting {
-        return .dmsMentionsKeywords
+        return _soundSettingForNotifications ?? .dmsMentionsKeywords
+    }
+    
+    var notifyOnRoomMentions: Bool {
+        return _notifyOnRoomMentions ?? true
+    }
+    
+    var showNumberOfMessages: Bool {
+        return _showNumberOfMessages ?? false
+    }
+    
+    func updateNotifySetting(to newSetting: RoomNotificationSetting, completion: @escaping (_ response: MXResponse<Void>) -> Void) {
+        let isSuccess = Bool.random()
+        if isSuccess {
+            _notifySettingForNotifications = newSetting
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            if isSuccess {
+                completion(MXResponse<Void>.success(Void()))
+            } else {
+                completion(MXResponse<Void>.failure(NSError(domain: "Some domain", code: 1002, userInfo: nil)))
+            }
+        }
+    }
+    
+    func updateSoundSetting(to newSetting: RoomNotificationSetting, completion: @escaping (_ response: MXResponse<Void>) -> Void) {
+        let isSuccess = Bool.random()
+        if isSuccess {
+            _soundSettingForNotifications = newSetting
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            if isSuccess {
+                completion(MXResponse<Void>.success(Void()))
+            } else {
+                completion(MXResponse<Void>.failure(NSError(domain: "Some domain", code: 1002, userInfo: nil)))
+            }
+        }
+    }
+    
+    func updateNotifyOnRoomMentionsSetting(to newSetting: Bool, completion: @escaping (_ response: MXResponse<Void>) -> Void) {
+        let isSuccess = Bool.random()
+        if isSuccess {
+            _notifyOnRoomMentions = newSetting
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            if isSuccess {
+                completion(MXResponse<Void>.success(Void()))
+            } else {
+                completion(MXResponse<Void>.failure(NSError(domain: "Some domain", code: 1002, userInfo: nil)))
+            }
+        }
+    }
+    
+    func updateShowNumberOfMessagesSetting(to newSetting: Bool, completion: @escaping (_ response: MXResponse<Void>) -> Void) {
+        let isSuccess = Bool.random()
+        if isSuccess {
+            _showNumberOfMessages = newSetting
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            if isSuccess {
+                completion(MXResponse<Void>.success(Void()))
+            } else {
+                completion(MXResponse<Void>.failure(NSError(domain: "Some domain", code: 1002, userInfo: nil)))
+            }
+        }
     }
     
 }
