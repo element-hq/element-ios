@@ -123,7 +123,7 @@ final class AuthenticatedSessionViewControllerFactory: NSObject {
     func hasSupport(forPath path: String,
                     httpMethod: String,
                     success: @escaping (Bool) -> Void,
-                    failure: @escaping (NSError) -> Void) -> MXHTTPOperation {
+                    failure: @escaping (Error) -> Void) -> MXHTTPOperation {
         
         // Get the authentication flow required for this API
         return session.matrixRestClient.authSessionForRequest(withMethod: httpMethod, path: path, parameters: [:], success: { [weak self] (authenticationSession) in
