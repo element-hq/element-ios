@@ -15,8 +15,24 @@
  */
 import Foundation
 
-enum AuthenticatedSessionViewControllerFactoryErrorCode: Int {
+enum AuthenticatedSessionViewControllerFactoryError: Int, Error, CustomNSError {
     case flowNotSupported = 0
+    
+    // MARK: - CustomNSError
+    
+    static let errorDomain = "AuthenticatedSessionViewControllerFactoryErrorDomain"
+    
+    var errorCode: Int { return self.rawValue }
+    
+    var errorUserInfo: [String: Any] {
+        let userInfo: [String: Any]
+
+        switch self {
+        case .flowNotSupported:
+            userInfo = [NSLocalizedDescriptionKey: VectorL10n.authenticatedSessionFlowNotSupported]
+        }
+        return userInfo
+    }
 }
 
 /// This class creates view controllers that can handle an authentication flow for given requests.
