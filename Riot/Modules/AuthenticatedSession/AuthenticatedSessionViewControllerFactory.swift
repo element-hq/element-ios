@@ -201,7 +201,7 @@ final class AuthenticatedSessionViewControllerFactory: NSObject {
     }
     
     private func createAuthParams(password: String,
-                                  authenticationSession: MXAuthenticationSession) -> NSDictionary? {
+                                  authenticationSession: MXAuthenticationSession) -> [String: Any]? {
         guard let userId = self.session.myUserId, let session = authenticationSession.session  else {
             return nil
         }
