@@ -18,12 +18,12 @@
 
 import Foundation
 
-protocol SecureKeyBackupSetupCoordinatorDelegate: class {
-    func secureKeyBackupSetupCoordinatorDidComplete(_ coordinator: SecureKeyBackupSetupCoordinatorType)
-    func secureKeyBackupSetupCoordinatorDidCancel(_ coordinator: SecureKeyBackupSetupCoordinatorType)
+protocol SecureBackupSetupCoordinatorDelegate: class {
+    func secureBackupSetupCoordinatorDidComplete(_ coordinator: SecureBackupSetupCoordinatorType)
+    func secureBackupSetupCoordinatorDidCancel(_ coordinator: SecureBackupSetupCoordinatorType)
 }
 
-/// `SecureKeyBackupSetupCoordinatorType` is a protocol describing a Coordinator that handle keybackup setup navigation flow.
-protocol SecureKeyBackupSetupCoordinatorType: Coordinator, Presentable {
-    var delegate: SecureKeyBackupSetupCoordinatorDelegate? { get }
+/// `SecureBackupSetupCoordinatorType` is a protocol describing a Coordinator that handle keybackup setup navigation flow.
+protocol SecureBackupSetupCoordinatorType: Coordinator, Presentable {
+    var delegate: SecureBackupSetupCoordinatorDelegate? { get }
 }

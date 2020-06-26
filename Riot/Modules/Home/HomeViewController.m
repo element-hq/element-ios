@@ -27,7 +27,7 @@
 
 #import "MXRoom+Riot.h"
 
-@interface HomeViewController () <SecureKeyBackupSetupCoordinatorBridgePresenterDelegate>
+@interface HomeViewController () <SecureBackupSetupCoordinatorBridgePresenterDelegate>
 {
     RecentsDataSource *recentsDataSource;
     
@@ -41,8 +41,8 @@
     CGFloat selectedCollectionViewContentOffset;
 }
 
-@property (nonatomic, strong) SecureKeyBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
-@property (nonatomic, strong) SecureBackupBannerCell *keyBackupBannerPrototypeCell;
+@property (nonatomic, strong) SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
+@property (nonatomic, strong) SecureBackupBannerCell *secureBackupBannerPrototypeCell;
 
 @end
 
@@ -144,18 +144,18 @@
     }
 }
 
-- (SecureBackupBannerCell *)keyBackupBannerPrototypeCell
+- (SecureBackupBannerCell *)secureBackupBannerPrototypeCell
 {
-    if (!_keyBackupBannerPrototypeCell)
+    if (!_secureBackupBannerPrototypeCell)
     {
-        _keyBackupBannerPrototypeCell = [self.recentsTableView dequeueReusableCellWithIdentifier:SecureBackupBannerCell.defaultReuseIdentifier];
+        _secureBackupBannerPrototypeCell = [self.recentsTableView dequeueReusableCellWithIdentifier:SecureBackupBannerCell.defaultReuseIdentifier];
     }
-    return _keyBackupBannerPrototypeCell;
+    return _secureBackupBannerPrototypeCell;
 }
 
 - (void)presentSecureBackupSetup
 {
-    SecureKeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter = [[SecureKeyBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    SecureBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter = [[SecureBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
     keyBackupSetupCoordinatorBridgePresenter.delegate = self;
 
     [keyBackupSetupCoordinatorBridgePresenter presentFrom:self animated:YES];
@@ -368,7 +368,7 @@
     else if (indexPath.section == recentsDataSource.secureBackupBannerSection)
     {
         CGFloat height = 0.0;
-        SecureBackupBannerCell *sizingCell = self.keyBackupBannerPrototypeCell;
+        SecureBackupBannerCell *sizingCell = self.secureBackupBannerPrototypeCell;
         
         [sizingCell configureFor:recentsDataSource.secureBackupBannerDisplay];
         
@@ -679,13 +679,13 @@
 
 #pragma mark - SecureKeyBackupSetupCoordinatorBridgePresenterDelegate
 
-- (void)secureKeyBackupSetupCoordinatorBridgePresenterDelegateDidComplete:(SecureKeyBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
+- (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidComplete:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
     [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.secureBackupSetupCoordinatorBridgePresenter = nil;
 }
 
-- (void)secureKeyBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(SecureKeyBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
+- (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
     [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.secureBackupSetupCoordinatorBridgePresenter = nil;
