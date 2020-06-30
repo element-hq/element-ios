@@ -1,3 +1,24 @@
+Changes in 0.11.6 (2020-06-30)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.7](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.7)).
+ * PushNotificationService: Move all notification related code to a new class (PR #3100).
+ * Cross-signing: Bootstrap cross-sign on registration (and login if applicable). This action is now invisible to the user (#3292).
+ * Cross-signing: Setup cross-signing for existing users (#3299).
+ * Authentication: Redirect the webview (SSO) javascript logs to iOS native logs.
+ * Timeline: Hide encrypted history (pre-invite) (#3239).
+ * Complete security: Add recovery from 4S (#3304).
+ * Key backup: Connect/restore backup created with SSSS (#3124).
+ * E2E by default: Disable it if the HS admin disabled it (#3305).
+ * Key backup: Add secure backup creation flow (#3344).
+ * Add AuthenticatedSessionViewControllerFactory to set up a authenticated flow for a given CS API request.
+ * Set up SSSS from banners (#3293).
+ 
+Bug fix:
+ * CallVC: Declined calls now properly reset call view controller, thanks to @Legi429 (#2877).
+ * PreviewRoomTitleView: Fix inviter display name (#2520).
+
 Changes in 0.11.5 (2020-05-18)
 ===============================================
 
@@ -7,6 +28,7 @@ Improvements:
 Bug fix:
  * AuthenticationViewController: Adapt UIWebView changes in MatrixKit (PR #3242).
  * Share extension & Siri intent: Do not fail when sending to locally unverified devices (#3252).
+ * CountryPickerVC: Search field is invisible in dark theme (#3219).
 
 Changes in 0.11.4 (2020-05-08)
 ===============================================

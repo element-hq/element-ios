@@ -114,7 +114,7 @@ final class UserVerificationSessionsStatusViewModel: UserVerificationSessionsSta
         
         let httpOperation: MXHTTPOperation?
         
-        httpOperation = self.session.crypto.downloadKeys([self.userId], forceDownload: false, success: { ( usersDeviceMap: MXUsersDevicesMap<MXDeviceInfo>?, usersCrossSigningMap: [String : MXCrossSigningInfo]?) in
+        httpOperation = self.session.crypto.downloadKeys([self.userId], forceDownload: false, success: { ( usersDeviceMap: MXUsersDevicesMap<MXDeviceInfo>?, usersCrossSigningMap: [String: MXCrossSigningInfo]?) in
             
             let sessionsViewData: [UserVerificationSessionStatusViewData]
             

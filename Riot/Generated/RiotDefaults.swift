@@ -32,6 +32,7 @@ internal enum RiotDefaults {
   internal static let presenceColorForOnlineUser: Int = _document["presenceColorForOnlineUser"]
   internal static let presenceColorForUnavailableUser: Int = _document["presenceColorForUnavailableUser"]
   internal static let pushGatewayURL: String = _document["pushGatewayURL"]
+  internal static let pushKitAppIdDev: String = _document["pushKitAppIdDev"]
   internal static let pushKitAppIdProd: String = _document["pushKitAppIdProd"]
   internal static let roomDirectoryServers: [String: Any] = _document["roomDirectoryServers"]
   internal static let showAllEventsInRoomHistory: Bool = _document["showAllEventsInRoomHistory"]

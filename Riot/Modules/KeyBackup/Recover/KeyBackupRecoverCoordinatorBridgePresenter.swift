@@ -57,6 +57,19 @@ final class KeyBackupRecoverCoordinatorBridgePresenter: NSObject {
         self.coordinator = keyBackupSetupCoordinator
     }
     
+    func push(from navigationController: UINavigationController, animated: Bool) {
+        
+        NSLog("[KeyBackupRecoverCoordinatorBridgePresenter] Push complete security from \(navigationController)")
+        
+        let navigationRouter = NavigationRouter(navigationController: navigationController)
+        
+        let keyBackupSetupCoordinator = KeyBackupRecoverCoordinator(session: self.session, keyBackupVersion: keyBackupVersion, navigationRouter: navigationRouter)
+        keyBackupSetupCoordinator.delegate = self
+        keyBackupSetupCoordinator.start() // Will trigger view controller push
+        
+        self.coordinator = keyBackupSetupCoordinator
+    }
+    
     func dismiss(animated: Bool) {
         guard let coordinator = self.coordinator else {
             return
