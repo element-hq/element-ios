@@ -1301,6 +1301,11 @@
 "key_verification_scan_confirmation_scanned_user_information" = "Is %@ showing the same shield?";
 "key_verification_scan_confirmation_scanned_device_information" = "Is the other device showing the same shield?";
 
+// Banner
+
+"key_verification_setup_banner_title" = "Set up encryption";
+"key_verification_setup_banner_subtitle" = "Verify your other devices easier";
+
 // MARK: - User verification
 
 // Start

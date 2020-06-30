@@ -1610,6 +1610,14 @@ internal enum VectorL10n {
   internal static var keyVerificationSelfVerifyUnverifiedSessionsAlertValidateAction: String { 
     return VectorL10n.tr("Vector", "key_verification_self_verify_unverified_sessions_alert_validate_action") 
   }
+  /// Verify your other devices easier
+  internal static var keyVerificationSetupBannerSubtitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_setup_banner_subtitle") 
+  }
+  /// Set up encryption
+  internal static var keyVerificationSetupBannerTitle: String { 
+    return VectorL10n.tr("Vector", "key_verification_setup_banner_title") 
+  }
   /// Verify this session
   internal static var keyVerificationThisSessionTitle: String { 
     return VectorL10n.tr("Vector", "key_verification_this_session_title") 
