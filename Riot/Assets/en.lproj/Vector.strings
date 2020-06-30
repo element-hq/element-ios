@@ -574,6 +574,9 @@
 "security_settings_crypto_sessions_loading" = "Loading sessions…";
 "security_settings_crypto_sessions_description" = "Trust sessions to grant access to end-to-end encrypted messages. If you don’t recognise a session, change your login password and reset your Message Password used for Message Backup.";
 
+"security_settings_secure_backup" = "SECURE BACKUP";
+"security_settings_secure_backup_description" =  "Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server.";
+
 "security_settings_backup" = "MESSAGE BACKUP";
 
 "security_settings_crosssigning" = "CROSS-SIGNING";

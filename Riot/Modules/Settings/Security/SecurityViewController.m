@@ -29,19 +29,18 @@
 
 #import "Riot-Swift.h"
 
-// Dev flag for demoing what could be the settings
-// There is still a lot of TODO behind
-//#define NEW_CROSS_SIGNING_FLOW
+// Dev flag to have more options
+//#define CROSS_SIGNING_AND_BACKUP_DEV
 
 enum
 {
     SECTION_CRYPTO_SESSIONS,
     SECTION_CROSSSIGNING,
-#ifdef NEW_CROSS_SIGNING_FLOW
     SECTION_SECURE_BACKUP,
-#endif
     SECTION_CRYPTOGRAPHY,
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
     SECTION_KEYBACKUP,
+#endif
     SECTION_ADVANCED,
     SECTION_COUNT
 };
@@ -82,9 +81,11 @@ enum {
 
 
 @interface SecurityViewController () <
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
 SettingsKeyBackupTableViewSectionDelegate,
 KeyBackupSetupCoordinatorBridgePresenterDelegate,
 KeyBackupRecoverCoordinatorBridgePresenterDelegate,
+#endif
 UIDocumentInteractionControllerDelegate,
 SecretsRecoveryCoordinatorBridgePresenterDelegate,
 SecureBackupSetupCoordinatorBridgePresenterDelegate>
@@ -112,9 +113,12 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
     // The current pushed view controller
     UIViewController *pushedViewController;
 
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
     SettingsKeyBackupTableViewSection *keyBackupSection;
     KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
+#endif
     KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter;
+
     SecretsRecoveryCoordinatorBridgePresenter *secretsRecoveryCoordinatorBridgePresenter;
 }
 
@@ -166,6 +170,7 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 50;
 
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
     if (self.mainSession.crypto.backup)
     {
         MXDeviceInfo *deviceInfo = [self.mainSession.crypto.deviceList storedDevice:self.mainSession.matrixRestClient.credentials.userId
@@ -177,6 +182,7 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
             keyBackupSection.delegate = self;
         }
     }
+#endif
     
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -230,8 +236,11 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
         kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
 
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
     keyBackupSetupCoordinatorBridgePresenter = nil;
+#endif
     keyBackupRecoverCoordinatorBridgePresenter = nil;
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -487,12 +496,10 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
         case MXCrossSigningStateCanCrossSign:
             crossSigningInformation = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_info_ok"];
             
-#ifdef NEW_CROSS_SIGNING_FLOW
             if (![self.mainSession.crypto.recoveryService hasSecretLocally:MXSecretId.crossSigningMaster])
             {
                 crossSigningInformation = [crossSigningInformation stringByAppendingString:@"\n\n⚠️ The MSK is missing. Verify this device again or use the Secure Backup below to synchronise your keys accross your devices"];
             }
-#endif
             break;
     }
     
@@ -567,7 +574,6 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
 
 - (void)setupCrossSigning:(id)sender
 {
-#ifdef NEW_CROSS_SIGNING_FLOW    
     __block UIViewController *viewController;
     [self startActivityIndicator];
     
@@ -615,10 +621,6 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
          [viewController dismissViewControllerAnimated:NO completion:nil];
          viewController = nil;
     }];
-    
-#else
-    [self displayComingSoon];
-#endif
 }
 
 - (void)resetCrossSigning:(id)sender
@@ -845,16 +847,12 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
 
 - (void)setupSecureBackup
 {
-#ifdef NEW_CROSS_SIGNING_FLOW
     SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter = [[SecureBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
     secureBackupSetupCoordinatorBridgePresenter.delegate = self;
     
     [secureBackupSetupCoordinatorBridgePresenter presentFrom:self animated:YES];
     
     self.secureBackupSetupCoordinatorBridgePresenter = secureBackupSetupCoordinatorBridgePresenter;
-#else
-    [self displayComingSoon];
-#endif
 }
 
 - (void)restoreFromSecureBackup
@@ -917,14 +915,14 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
                 count = devicesArray.count + 1;
             }
             break;
-#ifdef NEW_CROSS_SIGNING_FLOW
         case SECTION_SECURE_BACKUP:
             count = [self numberOfRowsInSecureBackupSection];
             break;
-#endif
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
         case SECTION_KEYBACKUP:
             count = keyBackupSection.numberOfRows;
             break;
+#endif
         case SECTION_CROSSSIGNING:
             count = [self numberOfRowsInCrossSigningSection];
             break;
@@ -1127,18 +1125,14 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
             }
         }
     }
-#ifdef NEW_CROSS_SIGNING_FLOW
     else if (section == SECTION_SECURE_BACKUP)
     {
         switch ([self secureBackupSectionEnumForRow:row])
         {
             case SECURE_BACKUP_DESCRIPTION:
             {
-                // TODO
                 cell = [self descriptionCellForTableView:tableView
-                                                //withText:@"Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server."];
-                                                //withText:@"Back up your encryption keys with your account data in case you lose access to your logins. Your keys will be secured with a unique Recovery Key."];
-                                                withText:@"Back up your encryption keys with your account data in case you lose access to your logins. Your keys are secured with a Recovery Key or a Secret Phrase."];
+                                                withText:NSLocalizedStringFromTable(@"security_settings_secure_backup_description", @"Vector", nil)];
                 break;
             }
             case SECURE_BACKUP_INFO:
@@ -1199,11 +1193,12 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
         }
 
     }
-#endif
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
     else if (section == SECTION_KEYBACKUP)
     {
         cell = [keyBackupSection cellForRowAtRow:row];
     }
+#endif
     else if (section == SECTION_CROSSSIGNING)
     {
         switch (row)
@@ -1281,12 +1276,12 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
     {
         case SECTION_CRYPTO_SESSIONS:
             return NSLocalizedStringFromTable(@"security_settings_crypto_sessions", @"Vector", nil);
-#ifdef NEW_CROSS_SIGNING_FLOW
         case SECTION_SECURE_BACKUP:
-            return @"SECURE BACKUP";    // TODO
-#endif
+            return NSLocalizedStringFromTable(@"security_settings_secure_backup", @"Vector", nil);
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
         case SECTION_KEYBACKUP:
             return NSLocalizedStringFromTable(@"security_settings_backup", @"Vector", nil);
+#endif
         case SECTION_CROSSSIGNING:
             return NSLocalizedStringFromTable(@"security_settings_crosssigning", @"Vector", nil);
         case SECTION_CRYPTOGRAPHY:
@@ -1511,7 +1506,7 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
 
 
 #pragma mark - SettingsKeyBackupTableViewSectionDelegate
-
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
 - (void)settingsKeyBackupTableViewSectionDidUpdate:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection
 {
     [self.tableView reloadData];
@@ -1621,6 +1616,8 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
 
     [keyBackupSection reload];
 }
+
+#endif
 
 #pragma mark - KeyBackupRecoverCoordinatorBridgePresenter
 

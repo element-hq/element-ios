@@ -3182,6 +3182,14 @@ internal enum VectorL10n {
   internal static var securitySettingsExportKeysManually: String { 
     return VectorL10n.tr("Vector", "security_settings_export_keys_manually") 
   }
+  /// SECURE BACKUP
+  internal static var securitySettingsSecureBackup: String { 
+    return VectorL10n.tr("Vector", "security_settings_secure_backup") 
+  }
+  /// Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server.
+  internal static var securitySettingsSecureBackupDescription: String { 
+    return VectorL10n.tr("Vector", "security_settings_secure_backup_description") 
+  }
   /// Security
   internal static var securitySettingsTitle: String { 
     return VectorL10n.tr("Vector", "security_settings_title") 
