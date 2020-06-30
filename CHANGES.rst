@@ -42,6 +42,7 @@ Bug fix:
  * CallVC: Declined calls now properly reset call view controller, thanks to @Legi429 (#2877).
  * PreviewRoomTitleView: Fix inviter display name (#2520).
  * Xcode11: Disable voip background mode to avoid VoIP pushes (#3369).
+ * Xcode11: Disable key backup on push extension (#3371).
 
 Changes in 0.11.5 (2020-05-18)
 ===============================================

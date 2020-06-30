@@ -103,6 +103,7 @@ class NotificationService: UNNotificationServiceExtension {
         let sdkOptions = MXSDKOptions.sharedInstance()
         sdkOptions.disableIdenticonUseForUserAvatar = true
         sdkOptions.enableCryptoWhenStartingMXSession = true
+        sdkOptions.enableKeyBackupWhenStartingMXCrypto = false
         sdkOptions.backgroundModeHandler = MXUIKitBackgroundModeHandler()
         Bundle.mxk_customizeLocalizedStringTableName("Vector")
         
