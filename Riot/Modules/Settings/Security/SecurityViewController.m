@@ -841,8 +841,6 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
 {
     // Accept to create a setup only if we have the 3 cross-signing keys
     // This is the path to have a sane state
-    // TODO: What about missing MSK that was not gossiped before?
-    
     MXRecoveryService *recoveryService = self.mainSession.crypto.recoveryService;
     
     NSArray *crossSigningServiceSecrets = @[
@@ -1135,7 +1133,7 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
             else
             {
                 cell = [self descriptionCellForTableView:tableView
-                                                withText:NSLocalizedStringFromTable(@"security_settings_crypto_sessions_description", @"Vector", nil) ];
+                                                withText:NSLocalizedStringFromTable(@"security_settings_crypto_sessions_description_2", @"Vector", nil) ];
             }
         }
         else
@@ -1147,7 +1145,7 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
             else if (row == devicesArray.count)
             {
                 cell = [self descriptionCellForTableView:tableView
-                                                withText:NSLocalizedStringFromTable(@"security_settings_crypto_sessions_description", @"Vector", nil) ];
+                                                withText:NSLocalizedStringFromTable(@"security_settings_crypto_sessions_description_2", @"Vector", nil) ];
                 
             }
         }

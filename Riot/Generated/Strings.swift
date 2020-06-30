@@ -3166,9 +3166,9 @@ internal enum VectorL10n {
   internal static var securitySettingsCryptoSessions: String { 
     return VectorL10n.tr("Vector", "security_settings_crypto_sessions") 
   }
-  /// Trust sessions to grant access to end-to-end encrypted messages. If you don’t recognise a session, change your login password and reset your Message Password used for Message Backup.
-  internal static var securitySettingsCryptoSessionsDescription: String { 
-    return VectorL10n.tr("Vector", "security_settings_crypto_sessions_description") 
+  /// If you don’t recognise a login, change your password and reset Secure Backup.
+  internal static var securitySettingsCryptoSessionsDescription2: String { 
+    return VectorL10n.tr("Vector", "security_settings_crypto_sessions_description_2") 
   }
   /// Loading sessions…
   internal static var securitySettingsCryptoSessionsLoading: String { 
