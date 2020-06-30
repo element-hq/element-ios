@@ -43,7 +43,7 @@
 
 NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSourceTapOnDirectoryServerChange";
 
-@interface RecentsDataSource() <SecureBackupBannerCellDelegate>
+@interface RecentsDataSource() <SecureBackupBannerCellDelegate, KeyVerificationSetupBannerCellDelegate>
 {
     NSMutableArray* invitesCellDataArray;
     NSMutableArray* favoriteCellDataArray;
@@ -65,11 +65,14 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 }
 
 @property (nonatomic, assign, readwrite) SecureBackupBannerDisplay secureBackupBannerDisplay;
+@property (nonatomic, assign, readwrite) KeyVerificationBannerDisplay keyVerificationBannerDisplay;
+
+@property (nonatomic, strong) KeyVerificationService *keyVerificationService;
 
 @end
 
 @implementation RecentsDataSource
-@synthesize directorySection, invitesSection, favoritesSection, peopleSection, conversationSection, lowPrioritySection, serverNoticeSection, secureBackupBannerSection;
+@synthesize directorySection, invitesSection, favoritesSection, peopleSection, conversationSection, lowPrioritySection, serverNoticeSection, secureBackupBannerSection, keyVerificationBannerSection;
 @synthesize hiddenCellIndexPath, droppingCellIndexPath, droppingCellBackGroundView;
 @synthesize invitesCellDataArray, favoriteCellDataArray, peopleCellDataArray, conversationCellDataArray, lowPriorityCellDataArray, serverNoticeCellDataArray;
 
@@ -84,7 +87,9 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         lowPriorityCellDataArray = [[NSMutableArray alloc] init];
         serverNoticeCellDataArray = [[NSMutableArray alloc] init];
         conversationCellDataArray = [[NSMutableArray alloc] init];
-
+        
+        _keyVerificationBannerDisplay = KeyVerificationBannerDisplayNone;
+        keyVerificationBannerSection = -1;
         
         _secureBackupBannerDisplay = SecureBackupBannerDisplayNone;
         secureBackupBannerSection = -1;
@@ -100,6 +105,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         shrinkedSectionsBitMask = 0;
         
         roomTagsListenerByUserId = [[NSMutableDictionary alloc] init];
+        
+        _keyVerificationService = [KeyVerificationService new];
         
         // Set default data and view classes
         [self registerCellDataClass:RecentCellData.class forCellIdentifier:kMXKRecentCellIdentifier];
@@ -132,6 +139,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
     [self updateSecureBackupBanner];
     [self forceRefresh];
+    [self refreshKeyVerificationBannerDisplay];
 }
 
 - (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
@@ -210,6 +218,64 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     
     [self updateSecureBackupBanner];
     [self forceRefresh];
+}
+
+#pragma mark - Key verification setup banner
+
+- (void)refreshKeyVerificationBannerDisplay
+{
+    if (self.recentsDataSourceMode == RecentsDataSourceModeHome)
+    {
+        KeyVerificationBannerPreferences *keyVerificationBannerPreferences = KeyVerificationBannerPreferences.shared;
+        
+        if (!keyVerificationBannerPreferences.hideSetupBanner)
+        {
+            [self.keyVerificationService canSetupKeyVerificationFor:self.mxSession success:^(BOOL canSetupKeyVerification) {
+
+                KeyVerificationBannerDisplay keyVerificationBannerDisplay = canSetupKeyVerification ? KeyVerificationBannerDisplaySetup : KeyVerificationBannerDisplayNone;
+                
+                [self updateKeyVerificationBannerDisplay:keyVerificationBannerDisplay];
+                
+            } failure:^(NSError * _Nonnull error) {
+                NSLog(@"[RecentsDataSource] refreshKeyVerificationBannerDisplay: Fail to verify if key verification banner can be displayed");
+            }];
+        }
+        else
+        {
+            [self updateKeyVerificationBannerDisplay:KeyVerificationBannerDisplayNone];
+        }
+    }
+    else
+    {
+        [self updateKeyVerificationBannerDisplay:KeyVerificationBannerDisplayNone];
+    }
+}
+
+- (void)updateKeyVerificationBannerDisplay:(KeyVerificationBannerDisplay)keyVerificationBannerDisplay
+{
+    if (self.keyVerificationBannerDisplay == keyVerificationBannerDisplay)
+    {
+        return;
+    }
+    
+    self.keyVerificationBannerDisplay = keyVerificationBannerDisplay;
+    [self forceRefresh];
+}
+
+
+- (void)hideKeyVerificationBannerWithDisplay:(KeyVerificationBannerDisplay)keyVerificationBannerDisplay
+{
+    KeyVerificationBannerPreferences *keyVerificationBannerPreferences = KeyVerificationBannerPreferences.shared;
+    
+    switch (keyVerificationBannerDisplay) {
+        case KeyVerificationBannerDisplaySetup:
+            keyVerificationBannerPreferences.hideSetupBanner = YES;
+            break;
+        default:
+            break;
+    }
+    
+    [self refreshKeyVerificationBannerDisplay];
 }
 
 #pragma mark -
@@ -326,11 +392,15 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     // Check whether all data sources are ready before rendering recents
     if (self.state == MXKDataSourceStateReady)
     {
-        secureBackupBannerSection = directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = invitesSection = serverNoticeSection = -1;
+        keyVerificationBannerSection = secureBackupBannerSection = directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = invitesSection = serverNoticeSection = -1;
         
-        if (self.secureBackupBannerDisplay != SecureBackupBannerDisplayNone)
+        if (self.keyVerificationBannerDisplay != KeyVerificationBannerDisplayNone)
         {
-            self.secureBackupBannerSection = sectionsCount++;
+            keyVerificationBannerSection = sectionsCount++;
+        }
+        else if (self.secureBackupBannerDisplay != SecureBackupBannerDisplayNone)
+        {
+            secureBackupBannerSection = sectionsCount++;
         }
         
         if (invitesCellDataArray.count > 0)
@@ -385,7 +455,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     
     NSUInteger count = 0;
 
-    if (section == self.secureBackupBannerSection && self.secureBackupBannerDisplay != SecureBackupBannerDisplayNone)
+    if (section == self.keyVerificationBannerSection && self.keyVerificationBannerDisplay != KeyVerificationBannerDisplayNone)
+    {
+        count = 1;
+    }
+    else if (section == self.secureBackupBannerSection && self.secureBackupBannerDisplay != SecureBackupBannerDisplayNone)
     {
         count = 1;
     }
@@ -434,7 +508,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (CGFloat)heightForHeaderInSection:(NSInteger)section
 {
-    if (section == self.secureBackupBannerSection)
+    if (section == self.secureBackupBannerSection || section == self.keyVerificationBannerSection)
     {
         return 0.0;
     }
@@ -598,7 +672,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 - (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
 {
     // No header view in key backup banner section
-    if (section == self.secureBackupBannerSection)
+    if (section == self.secureBackupBannerSection || section == self.keyVerificationBannerSection)
     {
         return nil;
     }
@@ -746,7 +820,13 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         return [[UITableViewCell alloc] init];
     }
     
-    if (indexPath.section == self.secureBackupBannerSection)
+    if (indexPath.section == self.keyVerificationBannerSection)
+    {
+        KeyVerificationSetupBannerCell* keyVerificationSetupBannerCell = [tableView dequeueReusableCellWithIdentifier:KeyVerificationSetupBannerCell.defaultReuseIdentifier forIndexPath:indexPath];
+        keyVerificationSetupBannerCell.delegate = self;
+        return keyVerificationSetupBannerCell;
+    }
+    else if (indexPath.section == self.secureBackupBannerSection)
     {
         SecureBackupBannerCell* keyBackupBannerCell = [tableView dequeueReusableCellWithIdentifier:SecureBackupBannerCell.defaultReuseIdentifier forIndexPath:indexPath];
         [keyBackupBannerCell configureFor:self.secureBackupBannerDisplay];
@@ -1542,11 +1622,18 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
 }
 
-#pragma mark - secureBackupSetupBannerCellDelegate
+#pragma mark - SecureBackupSetupBannerCellDelegate
 
 - (void)secureBackupBannerCellDidTapCloseAction:(SecureBackupBannerCell * _Nonnull)cell
 {
     [self hideKeyBackupBannerWithDisplay:self.secureBackupBannerDisplay];
+}
+
+#pragma mark - KeyVerificationSetupBannerCellDelegate
+
+- (void)keyVerificationSetupBannerCellDidTapCloseAction:(KeyVerificationSetupBannerCell *)cell
+{
+    [self hideKeyVerificationBannerWithDisplay:self.keyVerificationBannerDisplay];
 }
 
 @end
