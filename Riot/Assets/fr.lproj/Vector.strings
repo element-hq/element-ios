@@ -1145,3 +1145,7 @@
 "secrets_setup_recovery_passphrase_confirm_information" = "Saisissez à nouveau votre phrase de sécurité pour la confirmer.";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Confirmer";
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Confirmer la phrase secrète";
+// AuthenticatedSessionViewControllerFactory
+"authenticated_session_flow_not_supported" = "Cette application ne prend par en charge le mécanisme d’authentification de votre serveur d’accueil.";
+"secure_backup_setup_banner_title" = "Sauvegarde sécurisée";
+"secure_backup_setup_banner_subtitle" = "Protection afin d’éviter de perdre l’accès aux messages et données chiffrés";

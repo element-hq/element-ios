@@ -1119,3 +1119,7 @@
 "secrets_setup_recovery_passphrase_confirm_information" = "Inserisci la frase di sicurezza di nuovo per confermarla.";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Conferma";
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Conferma frase di sicurezza";
+// AuthenticatedSessionViewControllerFactory
+"authenticated_session_flow_not_supported" = "Questa app non supporta il metodo di autenticazione del tuo homeserver.";
+"secure_backup_setup_banner_title" = "Backup Sicuro";
+"secure_backup_setup_banner_subtitle" = "Proteggiti dalla perdita dei messaggi e dati crittografati";
