@@ -16,12 +16,17 @@
 
 import Foundation
 
-final class KeyVerificationService {
+@objcMembers
+final class KeyVerificationService: NSObject {
     
     private let cameraAccessManager: CameraAccessManager
     
-    init() {
+    private var authenticatedSessionFactory: AuthenticatedSessionViewControllerFactory?
+    private var supportSetupKeyVerificationByUser: [String: Bool] = [:] // Cached server response
+    
+    override init() {
         self.cameraAccessManager = CameraAccessManager()
+        super.init()
     }
     
     func supportedKeyVerificationMethods() -> [String] {
@@ -36,5 +41,44 @@ final class KeyVerificationService {
         }
         
         return supportedMethods
+    }
+    
+    @discardableResult
+    func canSetupKeyVerification(for session: MXSession, success: @escaping ((Bool) -> Void), failure: @escaping ((Error) -> Void)) -> MXHTTPOperation? {
+        
+        if let crossSigning = session.crypto?.crossSigning, crossSigning.state != .notBootstrapped {
+            // Cross-signing already setup
+            success(false)
+            return nil
+        }
+        
+        let userId: String = session.myUserId
+        
+        if let supportSetupKeyVerification = self.supportSetupKeyVerificationByUser[userId] {
+            // Return cached response
+            success(supportSetupKeyVerification)
+            return nil
+        }
+        
+        let authenticatedSessionFactory = AuthenticatedSessionViewControllerFactory(session: session)
+        
+        self.authenticatedSessionFactory = authenticatedSessionFactory
+        
+        let path = "\(kMXAPIPrefixPathUnstable)/keys/device_signing/upload"
+        
+        return authenticatedSessionFactory.hasSupport(forPath: path, httpMethod: "POST", success: { [weak self] succeeded in
+            guard let self = self else {
+                return
+            }
+            self.authenticatedSessionFactory = nil
+            self.supportSetupKeyVerificationByUser[userId] = succeeded
+            success(succeeded)
+            }, failure: { [weak self] error in
+                guard let self = self else {
+                    return
+                }
+                self.authenticatedSessionFactory = nil
+                failure(error)
+        })
     }
 }
