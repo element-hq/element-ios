@@ -3062,6 +3062,22 @@ internal enum VectorL10n {
   internal static var secureKeyBackupSetupCancelAlertTitle: String { 
     return VectorL10n.tr("Vector", "secure_key_backup_setup_cancel_alert_title") 
   }
+  /// Delete it
+  internal static var secureKeyBackupSetupExistingBackupErrorDeleteIt: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_existing_backup_error_delete_it") 
+  }
+  /// Unlock it to reuse it in the secure backup or delete it to create a new messages backup in the secure backup.
+  internal static var secureKeyBackupSetupExistingBackupErrorInfo: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_existing_backup_error_info") 
+  }
+  /// A backup for messages already exists
+  internal static var secureKeyBackupSetupExistingBackupErrorTitle: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_existing_backup_error_title") 
+  }
+  /// Unlock it
+  internal static var secureKeyBackupSetupExistingBackupErrorUnlockIt: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_existing_backup_error_unlock_it") 
+  }
   /// Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server.
   internal static var secureKeyBackupSetupIntroInfo: String { 
     return VectorL10n.tr("Vector", "secure_key_backup_setup_intro_info") 

@@ -871,7 +871,7 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
     if (recoveryService)
     {
         [self startActivityIndicator];
-        [recoveryService deleteRecoveryWithSuccess:^{
+        [recoveryService deleteRecoveryWithDeleteServicesBackups:YES success:^{
             [self stopActivityIndicator];
             [self reloadData];
         } failure:^(NSError * _Nonnull error) {

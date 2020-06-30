@@ -59,7 +59,7 @@ final class SecretsSetupRecoveryKeyViewModel: SecretsSetupRecoveryKeyViewModelTy
     private func createSecureKey() {
         self.update(viewState: .loading)
                 
-        self.recoveryService.createRecovery(forSecrets: nil, withPassphrase: self.passphrase, success: { secretStorageKeyCreationInfo in
+        self.recoveryService.createRecovery(forSecrets: nil, withPassphrase: self.passphrase, createServicesBackups: true, success: { secretStorageKeyCreationInfo in
             self.update(viewState: .loaded(secretStorageKeyCreationInfo.recoveryKey))
         }, failure: { error in
             self.update(viewState: .error(error))
