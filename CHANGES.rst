@@ -1,7 +1,8 @@
-Changes in 0.11.6 (2020-xx-xx)
+Changes in 0.11.6 (2020-06-30)
 ===============================================
 
 Improvements:
+ * Upgrade MatrixKit version ([v0.12.7](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.7)).
  * PushNotificationService: Move all notification related code to a new class (PR #3100).
  * Cross-signing: Bootstrap cross-sign on registration (and login if applicable). This action is now invisible to the user (#3292).
  * Cross-signing: Setup cross-signing for existing users (#3299).
