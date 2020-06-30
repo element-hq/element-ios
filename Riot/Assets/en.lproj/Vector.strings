@@ -1397,3 +1397,9 @@
 "key_backup_setup_passphrase_confirm_passphrase_valid" = "Great!";
 "key_backup_setup_passphrase_confirm_passphrase_invalid" = "Passphrase doesn’t match";
 
+// MARK: - Cross-signing
+
+// Banner
+
+"cross_signing_setup_banner_title" = "Set up encryption";
+"cross_signing_setup_banner_subtitle" = "Verify your other devices easier";

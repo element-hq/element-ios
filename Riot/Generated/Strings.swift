@@ -482,6 +482,14 @@ internal enum VectorL10n {
   internal static var create: String { 
     return VectorL10n.tr("Vector", "create") 
   }
+  /// Verify your other devices easier
+  internal static var crossSigningSetupBannerSubtitle: String { 
+    return VectorL10n.tr("Vector", "cross_signing_setup_banner_subtitle") 
+  }
+  /// Set up encryption
+  internal static var crossSigningSetupBannerTitle: String { 
+    return VectorL10n.tr("Vector", "cross_signing_setup_banner_title") 
+  }
   /// Please forget all messages I have sent when my account is deactivated (
   internal static var deactivateAccountForgetMessagesInformationPart1: String { 
     return VectorL10n.tr("Vector", "deactivate_account_forget_messages_information_part1") 
