@@ -3858,9 +3858,9 @@ internal enum VectorL10n {
   internal static var signOutNonExistingKeyBackupAlertDiscardKeyBackupAction: String { 
     return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_alert_discard_key_backup_action") 
   }
-  /// Start using Key Backup
-  internal static var signOutNonExistingKeyBackupAlertSetupKeyBackupAction: String { 
-    return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_alert_setup_key_backup_action") 
+  /// Start using Secure Backup
+  internal static var signOutNonExistingKeyBackupAlertSetupSecureBackupAction: String { 
+    return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_alert_setup_secure_backup_action") 
   }
   /// You’ll lose access to your encrypted messages if you sign out now
   internal static var signOutNonExistingKeyBackupAlertTitle: String { 

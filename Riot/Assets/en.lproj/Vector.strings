@@ -1049,7 +1049,7 @@
 "sign_out_existing_key_backup_alert_sign_out_action" = "Sign out";
 
 "sign_out_non_existing_key_backup_alert_title" = "You’ll lose access to your encrypted messages if you sign out now";
-"sign_out_non_existing_key_backup_alert_setup_key_backup_action" = "Start using Key Backup";
+"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Start using Secure Backup";
 "sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "I don't want my encrypted messages";
 
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "You'll lose your encrypted messages";
