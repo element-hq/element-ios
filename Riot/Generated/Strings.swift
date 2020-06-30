@@ -3186,9 +3186,21 @@ internal enum VectorL10n {
   internal static var securitySettingsSecureBackup: String { 
     return VectorL10n.tr("Vector", "security_settings_secure_backup") 
   }
+  /// Delete
+  internal static var securitySettingsSecureBackupDelete: String { 
+    return VectorL10n.tr("Vector", "security_settings_secure_backup_delete") 
+  }
   /// Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server.
   internal static var securitySettingsSecureBackupDescription: String { 
     return VectorL10n.tr("Vector", "security_settings_secure_backup_description") 
+  }
+  /// Set up
+  internal static var securitySettingsSecureBackupSetup: String { 
+    return VectorL10n.tr("Vector", "security_settings_secure_backup_setup") 
+  }
+  /// Synchronise
+  internal static var securitySettingsSecureBackupSynchronise: String { 
+    return VectorL10n.tr("Vector", "security_settings_secure_backup_synchronise") 
   }
   /// Security
   internal static var securitySettingsTitle: String { 

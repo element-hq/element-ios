@@ -680,7 +680,6 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
 
 - (void)refreshSecureBackupSectionData
 {
-    // TODO
     MXRecoveryService *recoveryService =  self.mainSession.crypto.recoveryService;
     if (recoveryService.hasRecovery)
     {
@@ -1149,7 +1148,7 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
 #endif
             case SECURE_BACKUP_SETUP:
             {
-                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:@"Set up"    // TODO
+                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:NSLocalizedStringFromTable(@"security_settings_secure_backup_setup", @"Vector", nil)
                                                                             action:@selector(setupSecureBackup)
                                                                       forTableView:tableView
                                                                        atIndexPath:indexPath];
@@ -1159,17 +1158,17 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
             }
             case SECURE_BACKUP_RESTORE:
             {
-                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:@"Synchronise"    // TODO
-                                                                                   action:@selector(restoreFromSecureBackup)
-                                                                             forTableView:tableView
-                                                                              atIndexPath:indexPath];
+                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:NSLocalizedStringFromTable(@"security_settings_secure_backup_synchronise", @"Vector", nil)
+                                                                            action:@selector(restoreFromSecureBackup)
+                                                                      forTableView:tableView
+                                                                       atIndexPath:indexPath];
                 
                 cell = buttonCell;
                 break;
             }
             case SECURE_BACKUP_DELETE:
             {
-                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:@"Delete"  // TODO
+                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:NSLocalizedStringFromTable(@"security_settings_secure_backup_delete", @"Vector", nil)
                                                                             action:@selector(deleteSecureBackup)
                                                                       forTableView:tableView
                                                                        atIndexPath:indexPath];

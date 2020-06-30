@@ -576,6 +576,9 @@
 
 "security_settings_secure_backup" = "SECURE BACKUP";
 "security_settings_secure_backup_description" =  "Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server.";
+"security_settings_secure_backup_setup" = "Set up";
+"security_settings_secure_backup_synchronise" = "Synchronise";
+"security_settings_secure_backup_delete" = "Delete";
 
 "security_settings_backup" = "MESSAGE BACKUP";
 
