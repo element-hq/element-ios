@@ -574,6 +574,12 @@
 "security_settings_crypto_sessions_loading" = "Loading sessions…";
 "security_settings_crypto_sessions_description" = "Trust sessions to grant access to end-to-end encrypted messages. If you don’t recognise a session, change your login password and reset your Message Password used for Message Backup.";
 
+"security_settings_secure_backup" = "SECURE BACKUP";
+"security_settings_secure_backup_description" =  "Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server.";
+"security_settings_secure_backup_setup" = "Set up";
+"security_settings_secure_backup_synchronise" = "Synchronise";
+"security_settings_secure_backup_delete" = "Delete";
+
 "security_settings_backup" = "MESSAGE BACKUP";
 
 "security_settings_crosssigning" = "CROSS-SIGNING";
@@ -596,6 +602,7 @@
 "security_settings_complete_security_alert_message" = "You should complete security on your current session first.";
 
 "security_settings_coming_soon" = "Sorry. This action is not available on Riot-iOS yet. Please use another Matrix client to set it up. Riot-iOS will use it.";
+"security_settings_user_password_description" = "Confirm your identity by entering your account password";
 
 // Manage session
 "manage_session_title" = "Manage session";
