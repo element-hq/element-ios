@@ -46,7 +46,7 @@ final class KeyVerificationService: NSObject {
     @discardableResult
     func canSetupKeyVerification(for session: MXSession, success: @escaping ((Bool) -> Void), failure: @escaping ((Error) -> Void)) -> MXHTTPOperation? {
         
-        if let crossSigning = session.crypto?.crossSigning, crossSigning.state != .notBootstrapped {
+        guard let crossSigning = session.crypto?.crossSigning, crossSigning.state == .notBootstrapped else {
             // Cross-signing already setup
             success(false)
             return nil
