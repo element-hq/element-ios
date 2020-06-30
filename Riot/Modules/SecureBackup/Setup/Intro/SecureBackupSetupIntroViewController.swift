@@ -161,7 +161,7 @@ final class SecureBackupSetupIntroViewController: UIViewController {
     
     // TODO: To remove
     private func checkKeyBackup() {
-        guard  let keyBackup = self.keyBackup else {
+        guard let keyBackup = self.keyBackup else {
             return
         }
         
