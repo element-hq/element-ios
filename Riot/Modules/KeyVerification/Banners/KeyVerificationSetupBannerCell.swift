@@ -58,6 +58,7 @@ final class KeyVerificationSetupBannerCell: MXKTableViewCell, Themable {
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        // TODO: Image size is too small, use an higher resolution one.
         let shieldImage = Asset.Images.encryptionNormal.image.withRenderingMode(.alwaysTemplate)
         self.shieldImageView.image = shieldImage
         
