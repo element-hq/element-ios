@@ -42,12 +42,12 @@ typedef NS_ENUM(NSInteger, SecureBackupBannerDisplay)
 };
 
 /**
- List the different key verification banners that could be displayed.
+ List the different cross-signing banners that could be displayed.
  */
-typedef NS_ENUM(NSInteger, KeyVerificationBannerDisplay)
+typedef NS_ENUM(NSInteger, CrossSigningBannerDisplay)
 {
-    KeyVerificationBannerDisplayNone,
-    KeyVerificationBannerDisplaySetup
+    CrossSigningBannerDisplayNone,
+    CrossSigningBannerDisplaySetup
 };
 
 /**
@@ -63,7 +63,7 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
  */
 @interface RecentsDataSource : MXKInterleavedRecentsDataSource
 
-@property (nonatomic) NSInteger keyVerificationBannerSection;
+@property (nonatomic) NSInteger crossSigningBannerSection;
 @property (nonatomic) NSInteger secureBackupBannerSection;
 @property (nonatomic) NSInteger directorySection;
 @property (nonatomic) NSInteger invitesSection;
@@ -81,7 +81,7 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
 @property (nonatomic, readonly) NSArray* serverNoticeCellDataArray;
 
 @property (nonatomic, readonly) SecureBackupBannerDisplay secureBackupBannerDisplay;
-@property (nonatomic, readonly) KeyVerificationBannerDisplay keyVerificationBannerDisplay;
+@property (nonatomic, readonly) CrossSigningBannerDisplay crossSigningBannerDisplay;
 
 /**
  Set the delegate by specifying the selected display mode.

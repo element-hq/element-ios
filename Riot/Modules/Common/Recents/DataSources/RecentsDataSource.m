@@ -43,7 +43,7 @@
 
 NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSourceTapOnDirectoryServerChange";
 
-@interface RecentsDataSource() <SecureBackupBannerCellDelegate, KeyVerificationSetupBannerCellDelegate>
+@interface RecentsDataSource() <SecureBackupBannerCellDelegate, CrossSigningSetupBannerCellDelegate>
 {
     NSMutableArray* invitesCellDataArray;
     NSMutableArray* favoriteCellDataArray;
@@ -65,14 +65,14 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 }
 
 @property (nonatomic, assign, readwrite) SecureBackupBannerDisplay secureBackupBannerDisplay;
-@property (nonatomic, assign, readwrite) KeyVerificationBannerDisplay keyVerificationBannerDisplay;
+@property (nonatomic, assign, readwrite) CrossSigningBannerDisplay crossSigningBannerDisplay;
 
-@property (nonatomic, strong) KeyVerificationService *keyVerificationService;
+@property (nonatomic, strong) CrossSigningService *crossSigningService;
 
 @end
 
 @implementation RecentsDataSource
-@synthesize directorySection, invitesSection, favoritesSection, peopleSection, conversationSection, lowPrioritySection, serverNoticeSection, secureBackupBannerSection, keyVerificationBannerSection;
+@synthesize directorySection, invitesSection, favoritesSection, peopleSection, conversationSection, lowPrioritySection, serverNoticeSection, secureBackupBannerSection, crossSigningBannerSection;
 @synthesize hiddenCellIndexPath, droppingCellIndexPath, droppingCellBackGroundView;
 @synthesize invitesCellDataArray, favoriteCellDataArray, peopleCellDataArray, conversationCellDataArray, lowPriorityCellDataArray, serverNoticeCellDataArray;
 
@@ -88,8 +88,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         serverNoticeCellDataArray = [[NSMutableArray alloc] init];
         conversationCellDataArray = [[NSMutableArray alloc] init];
         
-        _keyVerificationBannerDisplay = KeyVerificationBannerDisplayNone;
-        keyVerificationBannerSection = -1;
+        _crossSigningBannerDisplay = CrossSigningBannerDisplayNone;
+        crossSigningBannerSection = -1;
         
         _secureBackupBannerDisplay = SecureBackupBannerDisplayNone;
         secureBackupBannerSection = -1;
@@ -106,7 +106,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         
         roomTagsListenerByUserId = [[NSMutableDictionary alloc] init];
         
-        _keyVerificationService = [KeyVerificationService new];
+        _crossSigningService = [CrossSigningService new];
         
         // Set default data and view classes
         [self registerCellDataClass:RecentCellData.class forCellIdentifier:kMXKRecentCellIdentifier];
@@ -139,7 +139,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
     [self updateSecureBackupBanner];
     [self forceRefresh];
-    [self refreshKeyVerificationBannerDisplay];
+    [self refreshCrossSigningBannerDisplay];
 }
 
 - (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
@@ -220,62 +220,62 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     [self forceRefresh];
 }
 
-#pragma mark - Key verification setup banner
+#pragma mark - Cross-signing setup banner
 
-- (void)refreshKeyVerificationBannerDisplay
+- (void)refreshCrossSigningBannerDisplay
 {
     if (self.recentsDataSourceMode == RecentsDataSourceModeHome)
     {
-        KeyVerificationBannerPreferences *keyVerificationBannerPreferences = KeyVerificationBannerPreferences.shared;
+        CrossSigningBannerPreferences *crossSigningBannerPreferences = CrossSigningBannerPreferences.shared;
         
-        if (!keyVerificationBannerPreferences.hideSetupBanner)
+        if (!crossSigningBannerPreferences.hideSetupBanner)
         {
-            [self.keyVerificationService canSetupKeyVerificationFor:self.mxSession success:^(BOOL canSetupKeyVerification) {
+            [self.crossSigningService canSetupCrossSigningFor:self.mxSession success:^(BOOL canSetupCrossSigning) {
 
-                KeyVerificationBannerDisplay keyVerificationBannerDisplay = canSetupKeyVerification ? KeyVerificationBannerDisplaySetup : KeyVerificationBannerDisplayNone;
+                CrossSigningBannerDisplay crossSigningBannerDisplay = canSetupCrossSigning ? CrossSigningBannerDisplaySetup : CrossSigningBannerDisplayNone;
                 
-                [self updateKeyVerificationBannerDisplay:keyVerificationBannerDisplay];
+                [self updateCrossSigningBannerDisplay:crossSigningBannerDisplay];
                 
             } failure:^(NSError * _Nonnull error) {
-                NSLog(@"[RecentsDataSource] refreshKeyVerificationBannerDisplay: Fail to verify if key verification banner can be displayed");
+                NSLog(@"[RecentsDataSource] refreshCrossSigningBannerDisplay: Fail to verify if cross signing banner can be displayed");
             }];
         }
         else
         {
-            [self updateKeyVerificationBannerDisplay:KeyVerificationBannerDisplayNone];
+            [self updateCrossSigningBannerDisplay:CrossSigningBannerDisplayNone];
         }
     }
     else
     {
-        [self updateKeyVerificationBannerDisplay:KeyVerificationBannerDisplayNone];
+        [self updateCrossSigningBannerDisplay:CrossSigningBannerDisplayNone];
     }
 }
 
-- (void)updateKeyVerificationBannerDisplay:(KeyVerificationBannerDisplay)keyVerificationBannerDisplay
+- (void)updateCrossSigningBannerDisplay:(CrossSigningBannerDisplay)crossSigningBannerDisplay
 {
-    if (self.keyVerificationBannerDisplay == keyVerificationBannerDisplay)
+    if (self.crossSigningBannerDisplay == crossSigningBannerDisplay)
     {
         return;
     }
     
-    self.keyVerificationBannerDisplay = keyVerificationBannerDisplay;
+    self.crossSigningBannerDisplay = crossSigningBannerDisplay;
     [self forceRefresh];
 }
 
 
-- (void)hideKeyVerificationBannerWithDisplay:(KeyVerificationBannerDisplay)keyVerificationBannerDisplay
+- (void)hideCrossSigningBannerWithDisplay:(CrossSigningBannerDisplay)crossSigningBannerDisplay
 {
-    KeyVerificationBannerPreferences *keyVerificationBannerPreferences = KeyVerificationBannerPreferences.shared;
+    CrossSigningBannerPreferences *crossSigningBannerPreferences = CrossSigningBannerPreferences.shared;
     
-    switch (keyVerificationBannerDisplay) {
-        case KeyVerificationBannerDisplaySetup:
-            keyVerificationBannerPreferences.hideSetupBanner = YES;
+    switch (crossSigningBannerDisplay) {
+        case CrossSigningBannerDisplaySetup:
+            crossSigningBannerPreferences.hideSetupBanner = YES;
             break;
         default:
             break;
     }
     
-    [self refreshKeyVerificationBannerDisplay];
+    [self refreshCrossSigningBannerDisplay];
 }
 
 #pragma mark -
@@ -392,11 +392,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     // Check whether all data sources are ready before rendering recents
     if (self.state == MXKDataSourceStateReady)
     {
-        keyVerificationBannerSection = secureBackupBannerSection = directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = invitesSection = serverNoticeSection = -1;
+        crossSigningBannerSection = secureBackupBannerSection = directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = invitesSection = serverNoticeSection = -1;
         
-        if (self.keyVerificationBannerDisplay != KeyVerificationBannerDisplayNone)
+        if (self.crossSigningBannerDisplay != CrossSigningBannerDisplayNone)
         {
-            keyVerificationBannerSection = sectionsCount++;
+            crossSigningBannerSection = sectionsCount++;
         }
         else if (self.secureBackupBannerDisplay != SecureBackupBannerDisplayNone)
         {
@@ -455,7 +455,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     
     NSUInteger count = 0;
 
-    if (section == self.keyVerificationBannerSection && self.keyVerificationBannerDisplay != KeyVerificationBannerDisplayNone)
+    if (section == self.crossSigningBannerSection && self.crossSigningBannerDisplay != CrossSigningBannerDisplayNone)
     {
         count = 1;
     }
@@ -508,7 +508,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (CGFloat)heightForHeaderInSection:(NSInteger)section
 {
-    if (section == self.secureBackupBannerSection || section == self.keyVerificationBannerSection)
+    if (section == self.secureBackupBannerSection || section == self.crossSigningBannerSection)
     {
         return 0.0;
     }
@@ -672,7 +672,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 - (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
 {
     // No header view in key backup banner section
-    if (section == self.secureBackupBannerSection || section == self.keyVerificationBannerSection)
+    if (section == self.secureBackupBannerSection || section == self.crossSigningBannerSection)
     {
         return nil;
     }
@@ -820,11 +820,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         return [[UITableViewCell alloc] init];
     }
     
-    if (indexPath.section == self.keyVerificationBannerSection)
+    if (indexPath.section == self.crossSigningBannerSection)
     {
-        KeyVerificationSetupBannerCell* keyVerificationSetupBannerCell = [tableView dequeueReusableCellWithIdentifier:KeyVerificationSetupBannerCell.defaultReuseIdentifier forIndexPath:indexPath];
-        keyVerificationSetupBannerCell.delegate = self;
-        return keyVerificationSetupBannerCell;
+        CrossSigningSetupBannerCell* crossSigningSetupBannerCell = [tableView dequeueReusableCellWithIdentifier:CrossSigningSetupBannerCell.defaultReuseIdentifier forIndexPath:indexPath];
+        crossSigningSetupBannerCell.delegate = self;
+        return crossSigningSetupBannerCell;
     }
     else if (indexPath.section == self.secureBackupBannerSection)
     {
@@ -1629,11 +1629,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     [self hideKeyBackupBannerWithDisplay:self.secureBackupBannerDisplay];
 }
 
-#pragma mark - KeyVerificationSetupBannerCellDelegate
+#pragma mark - CrossSigningSetupBannerCellDelegate
 
-- (void)keyVerificationSetupBannerCellDidTapCloseAction:(KeyVerificationSetupBannerCell *)cell
+- (void)crossSigningSetupBannerCellDidTapCloseAction:(CrossSigningSetupBannerCell *)cell
 {
-    [self hideKeyVerificationBannerWithDisplay:self.keyVerificationBannerDisplay];
+    [self hideCrossSigningBannerWithDisplay:self.crossSigningBannerDisplay];
 }
 
 @end

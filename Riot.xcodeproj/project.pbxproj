@@ -324,9 +324,10 @@
 		B1963B30228F1C4900CBA17F /* BubbleReactionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1963B2A228F1C4800CBA17F /* BubbleReactionsView.xib */; };
 		B1963B32228F1C6B00CBA17F /* BubbleReactionsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1963B31228F1C6B00CBA17F /* BubbleReactionsViewModelType.swift */; };
 		B1963B3822933BC800CBA17F /* AutosizedCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1963B3722933BC800CBA17F /* AutosizedCollectionView.swift */; };
-		B19664BC24AB4B0900C9DE90 /* KeyVerificationSetupBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19664BB24AB4B0900C9DE90 /* KeyVerificationSetupBannerCell.swift */; };
-		B19664BE24AB531000C9DE90 /* KeyVerificationSetupBannerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B19664BD24AB531000C9DE90 /* KeyVerificationSetupBannerCell.xib */; };
-		B19664C024AB62CD00C9DE90 /* KeyVerificationBannerPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19664BF24AB62CD00C9DE90 /* KeyVerificationBannerPreferences.swift */; };
+		B19664BC24AB4B0900C9DE90 /* CrossSigningSetupBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19664BB24AB4B0900C9DE90 /* CrossSigningSetupBannerCell.swift */; };
+		B19664BE24AB531000C9DE90 /* CrossSigningSetupBannerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B19664BD24AB531000C9DE90 /* CrossSigningSetupBannerCell.xib */; };
+		B19664C024AB62CD00C9DE90 /* CrossSigningBannerPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19664BF24AB62CD00C9DE90 /* CrossSigningBannerPreferences.swift */; };
+		B19664C324ABC6C900C9DE90 /* CrossSigningService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19664C224ABC6C900C9DE90 /* CrossSigningService.swift */; };
 		B197B7C6243DE947005ABBF3 /* EncryptionTrustLevelBadgeImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B197B7C5243DE947005ABBF3 /* EncryptionTrustLevelBadgeImageHelper.swift */; };
 		B19C4E6F248F79EF009A423F /* SecretsRecoveryCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19C4E6D248F79EE009A423F /* SecretsRecoveryCoordinatorType.swift */; };
 		B19C4E70248F79EF009A423F /* SecretsRecoveryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19C4E6E248F79EF009A423F /* SecretsRecoveryCoordinator.swift */; };
@@ -1227,9 +1228,10 @@
 		B1963B2A228F1C4800CBA17F /* BubbleReactionsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BubbleReactionsView.xib; sourceTree = "<group>"; };
 		B1963B31228F1C6B00CBA17F /* BubbleReactionsViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleReactionsViewModelType.swift; sourceTree = "<group>"; };
 		B1963B3722933BC800CBA17F /* AutosizedCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutosizedCollectionView.swift; sourceTree = "<group>"; };
-		B19664BB24AB4B0900C9DE90 /* KeyVerificationSetupBannerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyVerificationSetupBannerCell.swift; sourceTree = "<group>"; };
-		B19664BD24AB531000C9DE90 /* KeyVerificationSetupBannerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KeyVerificationSetupBannerCell.xib; sourceTree = "<group>"; };
-		B19664BF24AB62CD00C9DE90 /* KeyVerificationBannerPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyVerificationBannerPreferences.swift; sourceTree = "<group>"; };
+		B19664BB24AB4B0900C9DE90 /* CrossSigningSetupBannerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossSigningSetupBannerCell.swift; sourceTree = "<group>"; };
+		B19664BD24AB531000C9DE90 /* CrossSigningSetupBannerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CrossSigningSetupBannerCell.xib; sourceTree = "<group>"; };
+		B19664BF24AB62CD00C9DE90 /* CrossSigningBannerPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossSigningBannerPreferences.swift; sourceTree = "<group>"; };
+		B19664C224ABC6C900C9DE90 /* CrossSigningService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossSigningService.swift; sourceTree = "<group>"; };
 		B197B7C5243DE947005ABBF3 /* EncryptionTrustLevelBadgeImageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionTrustLevelBadgeImageHelper.swift; sourceTree = "<group>"; };
 		B19C4E6D248F79EE009A423F /* SecretsRecoveryCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryCoordinatorType.swift; sourceTree = "<group>"; };
 		B19C4E6E248F79EF009A423F /* SecretsRecoveryCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryCoordinator.swift; sourceTree = "<group>"; };
@@ -2543,7 +2545,6 @@
 				B1CE83B4242259ED00D07506 /* Common */,
 				B1B335122421497000B4A6B5 /* User */,
 				B1B335112421496800B4A6B5 /* Device */,
-				B19664BA24AB39F500C9DE90 /* Banners */,
 			);
 			path = KeyVerification;
 			sourceTree = "<group>";
@@ -2910,11 +2911,20 @@
 		B19664BA24AB39F500C9DE90 /* Banners */ = {
 			isa = PBXGroup;
 			children = (
-				B19664BF24AB62CD00C9DE90 /* KeyVerificationBannerPreferences.swift */,
-				B19664BB24AB4B0900C9DE90 /* KeyVerificationSetupBannerCell.swift */,
-				B19664BD24AB531000C9DE90 /* KeyVerificationSetupBannerCell.xib */,
+				B19664BF24AB62CD00C9DE90 /* CrossSigningBannerPreferences.swift */,
+				B19664BB24AB4B0900C9DE90 /* CrossSigningSetupBannerCell.swift */,
+				B19664BD24AB531000C9DE90 /* CrossSigningSetupBannerCell.xib */,
 			);
 			path = Banners;
+			sourceTree = "<group>";
+		};
+		B19664C124ABB92900C9DE90 /* CrossSigning */ = {
+			isa = PBXGroup;
+			children = (
+				B19664C224ABC6C900C9DE90 /* CrossSigningService.swift */,
+				B19664BA24AB39F500C9DE90 /* Banners */,
+			);
+			path = CrossSigning;
 			sourceTree = "<group>";
 		};
 		B19C4E6A248E98B9009A423F /* Secrets */ = {
@@ -3072,6 +3082,7 @@
 				B1B5596B20EFA85C00210D55 /* EncryptionInfo */,
 				B1B556FD20EE6C4C00210D55 /* RoomKeyRequest */,
 				B1B556B020EE6C4C00210D55 /* BugReport */,
+				B19664C124ABB92900C9DE90 /* CrossSigning */,
 				B1520C6C24A60ACD006F102F /* SecureBackup */,
 				B1098BE921ECFE64000DDA48 /* KeyBackup */,
 				B1550FCF242148FA00CE097B /* KeyVerification */,
@@ -4998,7 +5009,7 @@
 				B1C562E4228C7C8D0037F12A /* RoomContextualMenuToolbarView.xib in Resources */,
 				B1DCC62E22E61EAF00625807 /* EmojiPickerViewCell.xib in Resources */,
 				B1B5590720EF768F00210D55 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
-				B19664BE24AB531000C9DE90 /* KeyVerificationSetupBannerCell.xib in Resources */,
+				B19664BE24AB531000C9DE90 /* CrossSigningSetupBannerCell.xib in Resources */,
 				B169329920F39E6300746532 /* LaunchScreen.storyboard in Resources */,
 				B1B5595320EF9A8700210D55 /* RecentTableViewCell.xib in Resources */,
 				B1B557AD20EF5A6D00210D55 /* DeviceView.xib in Resources */,
@@ -5400,7 +5411,7 @@
 				B1C543B023A2871300DCA1FA /* KeyVerificationBaseBubbleCell.swift in Sources */,
 				B19C4E8E248F7A0E009A423F /* SecretsRecoveryWithPassphraseCoordinatorType.swift in Sources */,
 				B1963B2F228F1C4900CBA17F /* BubbleReactionViewCell.swift in Sources */,
-				B19664BC24AB4B0900C9DE90 /* KeyVerificationSetupBannerCell.swift in Sources */,
+				B19664BC24AB4B0900C9DE90 /* CrossSigningSetupBannerCell.swift in Sources */,
 				B1B558E920EF768F00210D55 /* RoomSelectedStickerBubbleCell.m in Sources */,
 				B1C3360222F1ED600021BA8D /* MediaPickerCoordinatorBridgePresenter.swift in Sources */,
 				B1B558DF20EF768F00210D55 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
@@ -5534,7 +5545,7 @@
 				B1B5571D20EE6C4D00210D55 /* HomeViewController.m in Sources */,
 				B1CE83DD2422817200D07506 /* KeyVerificationVerifyBySASViewAction.swift in Sources */,
 				B185AF4F24A2672D00EE7D30 /* SecretsRecoveryCoordinatorBridgePresenter.swift in Sources */,
-				B19664C024AB62CD00C9DE90 /* KeyVerificationBannerPreferences.swift in Sources */,
+				B19664C024AB62CD00C9DE90 /* CrossSigningBannerPreferences.swift in Sources */,
 				B1C45A84232A8C2600165425 /* SettingsIdentityServerCoordinatorType.swift in Sources */,
 				B1DCC63722E8541700625807 /* EmojiStore.swift in Sources */,
 				3232ABA6225730E100AD6A5C /* DeviceVerificationStartViewController.swift in Sources */,
@@ -5741,6 +5752,7 @@
 				B1B5572C20EE6C4D00210D55 /* RoomParticipantsViewController.m in Sources */,
 				6E6F1CAA244DC1E90068B78B /* SectionHeaderView.m in Sources */,
 				B1B558EE20EF768F00210D55 /* RoomOutgoingAttachmentBubbleCell.m in Sources */,
+				B19664C324ABC6C900C9DE90 /* CrossSigningService.swift in Sources */,
 				32BF994F21FA29A400698084 /* SettingsKeyBackupViewModel.swift in Sources */,
 				B19C4E7B248F79FD009A423F /* SecretsRecoveryWithKeyViewController.swift in Sources */,
 				B14B17602462C69000C2751E /* KeyVerificationManuallyVerifyViewAction.swift in Sources */,

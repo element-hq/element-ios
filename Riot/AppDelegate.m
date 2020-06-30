@@ -2294,7 +2294,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [SecureBackupBannerPreferences.shared reset];
     
     // Reset key verification banner preferences
-    [KeyVerificationBannerPreferences.shared reset];
+    [CrossSigningBannerPreferences.shared reset];
     
 #ifdef MX_CALL_STACK_ENDPOINT
     // Erase all created certificates and private keys by MXEndpointCallStack

@@ -16,12 +16,12 @@
 
 import UIKit
 
-@objc protocol KeyVerificationSetupBannerCellDelegate: class {
-    func keyVerificationSetupBannerCellDidTapCloseAction(_ cell: KeyVerificationSetupBannerCell)
+@objc protocol CrossSigningSetupBannerCellDelegate: class {
+    func crossSigningSetupBannerCellDidTapCloseAction(_ cell: CrossSigningSetupBannerCell)
 }
 
 @objcMembers
-final class KeyVerificationSetupBannerCell: MXKTableViewCell, Themable {
+final class CrossSigningSetupBannerCell: MXKTableViewCell, Themable {
     
     // MARK: - Properties
     
@@ -34,7 +34,7 @@ final class KeyVerificationSetupBannerCell: MXKTableViewCell, Themable {
     
     // MARK: Public
     
-    weak var delegate: KeyVerificationSetupBannerCellDelegate?
+    weak var delegate: CrossSigningSetupBannerCellDelegate?
     
     // MARK: - Overrides
     
@@ -65,8 +65,8 @@ final class KeyVerificationSetupBannerCell: MXKTableViewCell, Themable {
         let closeImage = Asset.Images.closeBanner.image.withRenderingMode(.alwaysTemplate)
         self.closeButton.setImage(closeImage, for: .normal)
         
-        self.titleLabel.text = VectorL10n.keyVerificationSetupBannerTitle
-        self.subtitleLabel.text = VectorL10n.keyVerificationSetupBannerSubtitle
+        self.titleLabel.text = VectorL10n.crossSigningSetupBannerTitle
+        self.subtitleLabel.text = VectorL10n.crossSigningSetupBannerSubtitle
     }
     
     // MARK: - Public
@@ -82,6 +82,6 @@ final class KeyVerificationSetupBannerCell: MXKTableViewCell, Themable {
     // MARK: - Actions
     
     @IBAction private func closeButtonAction(_ sender: Any) {
-        self.delegate?.keyVerificationSetupBannerCellDidTapCloseAction(self)
+        self.delegate?.crossSigningSetupBannerCellDidTapCloseAction(self)
     }
 }

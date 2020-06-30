@@ -16,17 +16,17 @@
 
 import Foundation
 
-/// Key verification banner user preferences.
+/// Cross-Signing banner user preferences.
 @objcMembers
-final class KeyVerificationBannerPreferences: NSObject {
+final class CrossSigningBannerPreferences: NSObject {
     
     // MARK: - Constants
     
     private enum UserDefaultsKeys {
-        static let hideSetupBanner = "KeyVerificationBannerPreferencesHideSetupBanner"
+        static let hideSetupBanner = "CrossSigningBannerPreferencesHideSetupBanner"
     }
     
-    static let shared = KeyVerificationBannerPreferences()
+    static let shared = CrossSigningBannerPreferences()
     
     // MARK: - Properties
     

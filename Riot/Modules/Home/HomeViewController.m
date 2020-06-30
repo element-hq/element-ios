@@ -44,7 +44,7 @@
 @property (nonatomic, strong) SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
 @property (nonatomic, strong) SecureBackupBannerCell *secureBackupBannerPrototypeCell;
 
-@property (nonatomic, strong) KeyVerificationSetupBannerCell *keyVerificationSetupBannerPrototypeCell;
+@property (nonatomic, strong) CrossSigningSetupBannerCell *keyVerificationSetupBannerPrototypeCell;
 @property (nonatomic, strong) AuthenticatedSessionViewControllerFactory *authenticatedSessionViewControllerFactory;
 
 @end
@@ -83,7 +83,7 @@
     [self.recentsTableView registerNib:SecureBackupBannerCell.nib forCellReuseIdentifier:SecureBackupBannerCell.defaultReuseIdentifier];
     
     // Register key verification banner cells
-    [self.recentsTableView registerNib:KeyVerificationSetupBannerCell.nib forCellReuseIdentifier:KeyVerificationSetupBannerCell.defaultReuseIdentifier];
+    [self.recentsTableView registerNib:CrossSigningSetupBannerCell.nib forCellReuseIdentifier:CrossSigningSetupBannerCell.defaultReuseIdentifier];
     
     // Change the table data source. It must be the home view controller itself.
     self.recentsTableView.dataSource = self;
@@ -159,11 +159,11 @@
     return _secureBackupBannerPrototypeCell;
 }
 
-- (KeyVerificationSetupBannerCell *)keyVerificationSetupBannerPrototypeCell
+- (CrossSigningSetupBannerCell *)keyVerificationSetupBannerPrototypeCell
 {
     if (!_keyVerificationSetupBannerPrototypeCell)
     {
-        _keyVerificationSetupBannerPrototypeCell = [self.recentsTableView dequeueReusableCellWithIdentifier:KeyVerificationSetupBannerCell.defaultReuseIdentifier];
+        _keyVerificationSetupBannerPrototypeCell = [self.recentsTableView dequeueReusableCellWithIdentifier:CrossSigningSetupBannerCell.defaultReuseIdentifier];
     }
     return _keyVerificationSetupBannerPrototypeCell;
 }
@@ -305,7 +305,7 @@
     if ((indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.conversationCellDataArray.count)
         || (indexPath.section == recentsDataSource.peopleSection && !recentsDataSource.peopleCellDataArray.count)
         || (indexPath.section == recentsDataSource.secureBackupBannerSection)
-        || (indexPath.section == recentsDataSource.keyVerificationBannerSection)
+        || (indexPath.section == recentsDataSource.crossSigningBannerSection)
         )
     {
         return [recentsDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
@@ -382,7 +382,7 @@
     {
         return [recentsDataSource cellHeightAtIndexPath:indexPath];
     }
-    else if (indexPath.section == recentsDataSource.secureBackupBannerSection || indexPath.section == recentsDataSource.keyVerificationBannerSection)
+    else if (indexPath.section == recentsDataSource.secureBackupBannerSection || indexPath.section == recentsDataSource.crossSigningBannerSection)
     {
         CGFloat height = 0.0;
         
@@ -394,7 +394,7 @@
             [secureBackupBannerCell configureFor:recentsDataSource.secureBackupBannerDisplay];
             sizingCell = secureBackupBannerCell;
         }
-        else if (indexPath.section == recentsDataSource.keyVerificationBannerSection)
+        else if (indexPath.section == recentsDataSource.crossSigningBannerSection)
         {
             sizingCell = self.keyVerificationSetupBannerPrototypeCell;
         }
@@ -436,7 +436,7 @@
 {
     // No header in key banner section
     if (section == recentsDataSource.secureBackupBannerSection
-        || section == recentsDataSource.keyVerificationBannerSection)
+        || section == recentsDataSource.crossSigningBannerSection)
     {
         return 0.0;
     }
@@ -458,9 +458,9 @@
                 break;
         }
     }
-    else if (indexPath.section == recentsDataSource.keyVerificationBannerSection)
+    else if (indexPath.section == recentsDataSource.crossSigningBannerSection)
     {
-        [self showKeyVerificationSetup];
+        [self showCrossSigningSetup];
     }
 }
 
@@ -723,11 +723,11 @@
     self.secureBackupSetupCoordinatorBridgePresenter = nil;
 }
 
-#pragma mark - Key verification setup
+#pragma mark - Cross-signing setup
 
-- (void)showKeyVerificationSetup
+- (void)showCrossSigningSetup
 {
-    [self setupCrossSigningWithTitle:NSLocalizedStringFromTable(@"key_verification_setup_banner_title", @"Vector", nil) message:NSLocalizedStringFromTable(@"security_settings_user_password_description", @"Vector", nil) success:^{
+    [self setupCrossSigningWithTitle:NSLocalizedStringFromTable(@"cross_signing_setup_banner_title", @"Vector", nil) message:NSLocalizedStringFromTable(@"security_settings_user_password_description", @"Vector", nil) success:^{
         
     } failure:^(NSError *error) {
         
