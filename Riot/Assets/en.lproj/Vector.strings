@@ -602,6 +602,7 @@
 "security_settings_complete_security_alert_message" = "You should complete security on your current session first.";
 
 "security_settings_coming_soon" = "Sorry. This action is not available on Riot-iOS yet. Please use another Matrix client to set it up. Riot-iOS will use it.";
+"security_settings_user_password_description" = "Confirm your identity by entering your account password";
 
 // Manage session
 "manage_session_title" = "Manage session";

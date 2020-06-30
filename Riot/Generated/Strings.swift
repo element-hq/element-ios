@@ -3206,6 +3206,10 @@ internal enum VectorL10n {
   internal static var securitySettingsTitle: String { 
     return VectorL10n.tr("Vector", "security_settings_title") 
   }
+  /// Confirm your identity by entering your account password
+  internal static var securitySettingsUserPasswordDescription: String { 
+    return VectorL10n.tr("Vector", "security_settings_user_password_description") 
+  }
   /// Send to %@
   internal static func sendTo(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "send_to", p1)

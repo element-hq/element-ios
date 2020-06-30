@@ -576,6 +576,18 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
 
 - (void)setupCrossSigning:(id)sender
 {
+    [self setupCrossSigningWithTitle:@"Set up cross-signing"    // TODO
+                             message:NSLocalizedStringFromTable(@"security_settings_user_password_description", @"Vector", nil)
+                             success:^{
+                             } failure:^(NSError *error) {
+                             }];
+}
+
+- (void)setupCrossSigningWithTitle:(NSString*)title
+                           message:(NSString*)message
+                           success:(void (^)(void))success
+                             failure:(void (^)(NSError *error))failure
+{
     __block UIViewController *viewController;
     [self startActivityIndicator];
     
@@ -584,8 +596,8 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
     _authenticatedSessionViewControllerFactory = [[AuthenticatedSessionViewControllerFactory alloc] initWithSession:self.mainSession];
     [_authenticatedSessionViewControllerFactory viewControllerForPath:path
                                                            httpMethod:@"POST"
-                                                                title:@"Set up cross-signing"   // TODO
-                                                              message:@"Confirm your identity by entering your account password"    // TODO
+                                                                title:title
+                                                              message:message
                                                      onViewController:^(UIViewController * _Nonnull theViewController)
      {
          viewController = theViewController;
@@ -602,11 +614,13 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
              [crossSigning setupWithAuthParams:authParams success:^{
                  [self stopActivityIndicator];
                  [self reloadData];
+                 success();
              } failure:^(NSError * _Nonnull error) {
                  [self stopActivityIndicator];
                  [self reloadData];
                  
                  [[AppDelegate theDelegate] showErrorAsAlert:error];
+                 failure(error);
              }];
          }
 
@@ -615,6 +629,7 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
          
          [viewController dismissViewControllerAnimated:NO completion:nil];
          viewController = nil;
+         failure(nil);
      } onFailure:^(NSError * _Nonnull error) {
          
          [self stopActivityIndicator];
@@ -622,6 +637,7 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
          
          [viewController dismissViewControllerAnimated:NO completion:nil];
          viewController = nil;
+         failure(error);
     }];
 }
 
@@ -692,21 +708,11 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
     }
     else
     {
-        if (self.canSetupSecureBackup)
-        {
-            secureBackupSectionState = @[
-                                         @(SECURE_BACKUP_SETUP),    // TODO: Check we have all keys locally (at least MSK, SSK & SSK)
-                                         @(SECURE_BACKUP_DESCRIPTION),
-                                         //@(SECURE_BACKUP_MANAGE_MANUALLY),
-                                         ];
-        }
-        else
-        {
-            secureBackupSectionState = @[
-                                         @(SECURE_BACKUP_DESCRIPTION),
-                                         //@(SECURE_BACKUP_MANAGE_MANUALLY),
-                                         ];
-        }
+        secureBackupSectionState = @[
+                                     @(SECURE_BACKUP_SETUP),
+                                     @(SECURE_BACKUP_DESCRIPTION),
+                                     //@(SECURE_BACKUP_MANAGE_MANUALLY),
+                                     ];
     }
     
 #ifdef CROSS_SIGNING_AND_BACKUP_DEV
@@ -849,6 +855,24 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
 }
 
 - (void)setupSecureBackup
+{
+    if (self.canSetupSecureBackup)
+    {
+        [self setupSecureBackup2];
+    }
+    else
+    {
+        // Set up cross-signing first
+        [self setupCrossSigningWithTitle:NSLocalizedStringFromTable(@"secure_key_backup_setup_intro_title", @"Vector", nil)
+                                 message:NSLocalizedStringFromTable(@"security_settings_user_password_description", @"Vector", nil)
+                                 success:^{
+                                     [self setupSecureBackup2];
+                                 } failure:^(NSError *error) {
+                                 }];
+    }
+}
+
+- (void)setupSecureBackup2
 {
     SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter = [[SecureBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
     secureBackupSetupCoordinatorBridgePresenter.delegate = self;
