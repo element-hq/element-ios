@@ -146,7 +146,7 @@ platform :ios do
         adhoc = options.fetch(:adhoc, false)
 
         output_path = ENV["PROVISIONING_PROFILES_PATH"]
-        skip_certificate_verification = true
+        skip_certificate_verification = false
 
         # Main application
         get_provisioning_profile(
