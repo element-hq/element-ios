@@ -35,10 +35,10 @@
 enum
 {
     SECTION_CRYPTO_SESSIONS,
-    SECTION_CROSSSIGNING,
     SECTION_SECURE_BACKUP,
     SECTION_CRYPTOGRAPHY,
 #ifdef CROSS_SIGNING_AND_BACKUP_DEV
+    SECTION_CROSSSIGNING,
     SECTION_KEYBACKUP,
 #endif
     SECTION_ADVANCED,
@@ -59,7 +59,9 @@ enum {
     // - Advice them to do a recovery if local keys are obsolete -> We cannot know now
     // - Advice them to fix a secure backup if there is 4S but no key backup
     // - Warm them if there is no 4S and they do not have all 3 signing keys locally. They will set up a not complete secure backup
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
     SECURE_BACKUP_INFO,
+#endif
     SECURE_BACKUP_SETUP,
     SECURE_BACKUP_RESTORE,
     SECURE_BACKUP_DELETE,
@@ -683,7 +685,6 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
     if (recoveryService.hasRecovery)
     {
         secureBackupSectionState = @[
-                                     @(SECURE_BACKUP_INFO),
                                      @(SECURE_BACKUP_RESTORE),
                                      @(SECURE_BACKUP_DELETE),
                                      @(SECURE_BACKUP_DESCRIPTION),
@@ -695,7 +696,6 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
         if (self.canSetupSecureBackup)
         {
             secureBackupSectionState = @[
-                                         @(SECURE_BACKUP_INFO),
                                          @(SECURE_BACKUP_SETUP),    // TODO: Check we have all keys locally (at least MSK, SSK & SSK)
                                          @(SECURE_BACKUP_DESCRIPTION),
                                          //@(SECURE_BACKUP_MANAGE_MANUALLY),
@@ -704,12 +704,16 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
         else
         {
             secureBackupSectionState = @[
-                                         @(SECURE_BACKUP_INFO),
                                          @(SECURE_BACKUP_DESCRIPTION),
                                          //@(SECURE_BACKUP_MANAGE_MANUALLY),
                                          ];
         }
     }
+    
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
+    secureBackupSectionState = [@[@(SECURE_BACKUP_INFO)] arrayByAddingObjectsFromArray:secureBackupSectionState];
+#endif
+    
 }
 
 - (NSUInteger)secureBackupSectionEnumForRow:(NSUInteger)row
@@ -922,10 +926,10 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
         case SECTION_KEYBACKUP:
             count = keyBackupSection.numberOfRows;
             break;
-#endif
         case SECTION_CROSSSIGNING:
             count = [self numberOfRowsInCrossSigningSection];
             break;
+#endif
         case SECTION_CRYPTOGRAPHY:
             count = CRYPTOGRAPHY_COUNT;
             break;
@@ -1135,23 +1139,17 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
                                                 withText:NSLocalizedStringFromTable(@"security_settings_secure_backup_description", @"Vector", nil)];
                 break;
             }
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
             case SECURE_BACKUP_INFO:
             {
-                // TODO
                 cell = [self descriptionCellForTableView:tableView
                                                 withText:self.secureBackupInformation];
                 break;
             }
+#endif
             case SECURE_BACKUP_SETUP:
             {
-                // TODO: Button or cell?
-//                MXKTableViewCellWithTextView *textCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
-//                textCell.mxkTextView.text = @"Set up Secure Backup";    // TODO
-//                textCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//
-//                cell = textCell;
-                
-                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:@"Set up Secure Backup"    // TODO
+                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:@"Set up"    // TODO
                                                                             action:@selector(setupSecureBackup)
                                                                       forTableView:tableView
                                                                        atIndexPath:indexPath];
@@ -1161,7 +1159,7 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
             }
             case SECURE_BACKUP_RESTORE:
             {
-                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:@"Synchronise (Restore and/or Back up)"    // TODO
+                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:@"Synchronise"    // TODO
                                                                                    action:@selector(restoreFromSecureBackup)
                                                                              forTableView:tableView
                                                                               atIndexPath:indexPath];
@@ -1171,7 +1169,7 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
             }
             case SECURE_BACKUP_DELETE:
             {
-                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:@"Delete Secure Backup"  // TODO
+                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:@"Delete"  // TODO
                                                                             action:@selector(deleteSecureBackup)
                                                                       forTableView:tableView
                                                                        atIndexPath:indexPath];
@@ -1198,7 +1196,6 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
     {
         cell = [keyBackupSection cellForRowAtRow:row];
     }
-#endif
     else if (section == SECTION_CROSSSIGNING)
     {
         switch (row)
@@ -1218,6 +1215,7 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
                 break;
         }
     }
+#endif
     else if (section == SECTION_CRYPTOGRAPHY)
     {
         switch (row)
@@ -1281,9 +1279,9 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
 #ifdef CROSS_SIGNING_AND_BACKUP_DEV
         case SECTION_KEYBACKUP:
             return NSLocalizedStringFromTable(@"security_settings_backup", @"Vector", nil);
-#endif
         case SECTION_CROSSSIGNING:
             return NSLocalizedStringFromTable(@"security_settings_crosssigning", @"Vector", nil);
+#endif
         case SECTION_CRYPTOGRAPHY:
             return NSLocalizedStringFromTable(@"security_settings_cryptography", @"Vector", nil);
         case SECTION_ADVANCED:
