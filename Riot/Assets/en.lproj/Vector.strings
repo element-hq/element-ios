@@ -934,6 +934,12 @@
 "secure_key_backup_setup_intro_use_security_passphrase_title" = "Use a Security Passphrase";
 "secure_key_backup_setup_intro_use_security_passphrase_info" = "Enter a secret phrase only you know, and generate a key for backup.";
 
+"secure_key_backup_setup_existing_backup_error_title" = "A backup for messages already exists";
+"secure_key_backup_setup_existing_backup_error_info" = "Unlock it to reuse it in the secure backup or delete it to create a new messages backup in the secure backup.";
+"secure_key_backup_setup_existing_backup_error_unlock_it" = "Unlock it";
+"secure_key_backup_setup_existing_backup_error_delete_it" = "Delete it";
+
+
 // Cancel
 
 "secure_key_backup_setup_cancel_alert_title" = "Are your sure?";

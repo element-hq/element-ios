@@ -19,7 +19,8 @@ import UIKit
 protocol SecureBackupSetupIntroViewControllerDelegate: class {
     func secureBackupSetupIntroViewControllerDidTapUseKey(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController)
     func secureBackupSetupIntroViewControllerDidTapUsePassphrase(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController)
-    func secureBackupSetupIntroViewControllerDidCancel(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController)
+    func secureBackupSetupIntroViewControllerDidCancel(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController, showSkipAlert: Bool)
+    func secureBackupSetupIntroViewControllerDidTapConnectToKeyBackup(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController)
 }
 
 @objcMembers
@@ -39,9 +40,16 @@ final class SecureBackupSetupIntroViewController: UIViewController {
     
     private var theme: Theme!
     
+    private var activityIndicatorPresenter: ActivityIndicatorPresenter!
+    private var errorPresenter: MXKErrorPresentation!
+    
     // MARK: Public
     
     weak var delegate: SecureBackupSetupIntroViewControllerDelegate?
+    
+    // This is evil
+    // TODO: refactor it
+    weak var keyBackup: MXKeyBackup?
     
     // MARK: - Setup
     
@@ -61,8 +69,15 @@ final class SecureBackupSetupIntroViewController: UIViewController {
         self.vc_removeBackTitle()
         
         self.setupViews()
+        self.activityIndicatorPresenter = ActivityIndicatorPresenter()
+        self.errorPresenter = MXKErrorAlertPresentation()
+        
         self.registerThemeServiceDidChangeThemeNotification()
         self.update(theme: self.theme)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.checkKeyBackup()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -76,7 +91,7 @@ final class SecureBackupSetupIntroViewController: UIViewController {
             guard let self = self else {
                 return
             }
-            self.delegate?.secureBackupSetupIntroViewControllerDidCancel(self)
+            self.delegate?.secureBackupSetupIntroViewControllerDidCancel(self, showSkipAlert: true)
         }
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         
@@ -107,6 +122,19 @@ final class SecureBackupSetupIntroViewController: UIViewController {
         }
     }
     
+    private func renderLoading() {
+        self.activityIndicatorPresenter.presentActivityIndicator(on: self.view, animated: true)
+    }
+    
+    private func renderLoaded() {
+        self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+    }
+    
+    private func render(error: Error) {
+        self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+    }
+    
     private func update(theme: Theme) {
         self.theme = theme
         
@@ -129,5 +157,60 @@ final class SecureBackupSetupIntroViewController: UIViewController {
     
     @objc private func themeDidChange() {
         self.update(theme: ThemeService.shared().theme)
+    }
+    
+    // TODO: To remove
+    private func checkKeyBackup() {
+        guard  let keyBackup = self.keyBackup else {
+            return
+        }
+        
+        // If a backup already exists and we do not have the private key,
+        // we need to get this private key first. Ask the user to make a key backup restore to catch it
+        if keyBackup.keyBackupVersion != nil && keyBackup.hasPrivateKeyInCryptoStore == false {
+            
+            let alertContoller = UIAlertController(title: VectorL10n.secureKeyBackupSetupExistingBackupErrorTitle,
+                                                   message: VectorL10n.secureKeyBackupSetupExistingBackupErrorInfo,
+                                                   preferredStyle: .alert)
+
+            let connectAction = UIAlertAction(title: VectorL10n.secureKeyBackupSetupExistingBackupErrorUnlockIt, style: .default) { (_) in
+                self.delegate?.secureBackupSetupIntroViewControllerDidTapConnectToKeyBackup(self)
+            }
+            
+            let resetAction = UIAlertAction(title: VectorL10n.secureKeyBackupSetupExistingBackupErrorDeleteIt, style: .destructive) { (_) in
+                self.deleteKeybackup()
+            }
+            
+            let cancelAction = UIAlertAction(title: VectorL10n.cancel, style: .cancel) { (_) in
+                self.delegate?.secureBackupSetupIntroViewControllerDidCancel(self, showSkipAlert: false)
+            }
+            
+            alertContoller.addAction(connectAction)
+            alertContoller.addAction(resetAction)
+            alertContoller.addAction(cancelAction)
+            
+            self.present(alertContoller, animated: true)
+        }
+    }
+    
+    func deleteKeybackup() {
+        guard let keyBackup = self.keyBackup, let keybackupVersion = keyBackup.keyBackupVersion?.version else {
+            return
+        }
+        
+        self.renderLoading()
+        keyBackup.deleteVersion(keybackupVersion, success: { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.renderLoaded()
+            self.checkKeyBackup()
+        }, failure: { [weak self] (error) in
+            guard let self = self else {
+                return
+            }
+            
+            self.render(error: error)
+        })
     }
 }
