@@ -1148,3 +1148,6 @@
 "secure_key_backup_setup_existing_backup_error_unlock_it" = "Shkyçe";
 "secure_key_backup_setup_existing_backup_error_delete_it" = "Fshije";
 "sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Fillo të përdorësh Kojperuajtje të Sigurt";
+"security_settings_crypto_sessions_description_2" = "Nëse nuk njihni një palë kredenciale, ndryshoni fjalëkalimin tuaj dhe riujdisni Kopjeruajtjen e Sigurt.";
+"cross_signing_setup_banner_title" = "Ujdisni fshehtëzim";
+"cross_signing_setup_banner_subtitle" = "Verifikoni më me lehtësi pajisje të tjera";
