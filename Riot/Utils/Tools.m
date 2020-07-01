@@ -72,13 +72,14 @@
 {
     BOOL isUniversalLink = NO;
 
-    if ([url.host isEqualToString:@"vector.im"] || [url.host isEqualToString:@"www.vector.im"]
+    if ([url.host isEqualToString:@"element.io"] || [url.host isEqualToString:@"www.element.io"]
+        || [url.host isEqualToString:@"vector.im"] || [url.host isEqualToString:@"www.vector.im"]
         || [url.host isEqualToString:@"riot.im"] || [url.host isEqualToString:@"www.riot.im"])
     {
         // iOS Patch: fix vector.im/riot.im urls before using it
         NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
 
-        if (NSNotFound != [@[@"/app", @"/staging", @"/beta", @"/develop"] indexOfObject:fixedURL.path])
+        if (NSNotFound != [@[@"app.", @"staging.", @"develop."] indexOfObject:fixedURL.path])
         {
             isUniversalLink = YES;
         }
