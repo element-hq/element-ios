@@ -67,6 +67,8 @@
 /* New message indicator on a room */
 "MESSAGE_IN_X" = "Message in %@";
 
+"X_REACTED_WITH_X" = "%@ reacted with %@";
+
 /** Coalesced messages **/
 
 /* Multiple unread messages in a room */

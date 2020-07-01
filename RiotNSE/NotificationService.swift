@@ -452,6 +452,18 @@ class NotificationService: UNNotificationServiceExtension {
                 }
                 
                 notificationBody = NSString.localizedUserNotificationString(forKey: "STICKER_FROM_USER", arguments: [eventSenderName as Any])
+            case .reaction:
+                if let relatesTo = event.relatesTo, relatesTo.relationType == MXEventRelationTypeAnnotation, let reaction = relatesTo.key {
+                    let roomDisplayName = room.summary.displayname
+                    
+                    if roomDisplayName != nil && roomDisplayName != eventSenderName {
+                        notificationTitle = NSString.localizedUserNotificationString(forKey: "MSG_FROM_USER_IN_ROOM_TITLE", arguments: [eventSenderName as Any, roomDisplayName as Any])
+                    } else {
+                        notificationTitle = eventSenderName
+                    }
+                    
+                    notificationBody = NSString.localizedUserNotificationString(forKey: "X_REACTED_WITH_X", arguments: [eventSenderName as Any, reaction as Any])
+                }
             default:
                 break
             }
