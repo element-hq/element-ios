@@ -232,11 +232,11 @@
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm-Version %@";
 "settings_copyright" = "Kopierrecht";
-"settings_copyright_url" = "https://riot.im/copyright";
+"settings_copyright_url" = "https://element.io/copyright";
 "settings_term_conditions" = "Geschäftsbedingungen";
 "settings_privacy_policy" = "Datenschutzerklärung";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
+"settings_privacy_policy_url" = "https://element.io/privacy";
+"settings_term_conditions_url" = "https://element.io/tac_apple";
 "settings_send_crash_report" = "Sende anonyme Absturz- & Nutzungsdaten";
 "settings_change_password" = "Passwort ändern";
 "settings_old_password" = "altes Passwort";
@@ -656,7 +656,7 @@
 "key_backup_setup_intro_manual_export_action" = "Manueller Schlüssel Export";
 // String for App Store
 "store_short_description" = "Sicherer, dezentralisierter Chat/VoIP";
-"store_full_description" = "Kommuniziere - auf deine Art.\n\nEine Chat-App - unter deiner Kontrolle und komplett flexibel. Riot lässt dich so kommunizieren wie du willst. Gebaut für [matrix] - dem Standard für offene, dezentrale Kommunikation.\n\nHol dir ein kostenloses Konto auf matrix.org, deinen eigenen Server auf https://modular.im oder nutze einen anderen Matrix-Server.\n\nWarum Riot.im nutzen?\n\nLÜCKENLOSE KOMMUNIKATION: Baue Räume um deine Teams, deine Freunde, deine Community - ganz nach deinen Vorstellungen! Chatte, teile Dateien, füge Widgets hinzu und führe Sprach- sowie Videogespräche - alles kostenlos.\n\nMÄCHTIGE INTEGRATIONEN: Nutze Riot.im mit den Werkzeugen die du kennst und liebst. Mit Riot.im kannst du sogar mit Nutzern und Gruppen anderer Chat-Apps in Kontakt bleiben.\n\nPRIVAT UND SICHER: Halte deine Gespräche geheim. Modernste Verschlüsselung sogt dafür, dass private Kommunikation auch privat bleibt.\n\nOFFEN, NICHT VERSCHLOSSEN: Open Source - basierend auf [matrix]. Behalte die Hoheit über deine Daten indem du deinen eigenen Server betreibst - oder einen wählst, dem du vertraust.\n\nWO AUCH IMMER DU BIST: Halte den Kontakt - mit einem Nachrichtenverlauf der vollständig synchronisiert wird - auf all deinen Geräten oder Online unter https://riot.im";
+"store_full_description" = "Kommuniziere - auf deine Art.\n\nEine Chat-App - unter deiner Kontrolle und komplett flexibel. Riot lässt dich so kommunizieren wie du willst. Gebaut für [matrix] - dem Standard für offene, dezentrale Kommunikation.\n\nHol dir ein kostenloses Konto auf matrix.org, deinen eigenen Server auf https://modular.im oder nutze einen anderen Matrix-Server.\n\nWarum Riot.im nutzen?\n\nLÜCKENLOSE KOMMUNIKATION: Baue Räume um deine Teams, deine Freunde, deine Community - ganz nach deinen Vorstellungen! Chatte, teile Dateien, füge Widgets hinzu und führe Sprach- sowie Videogespräche - alles kostenlos.\n\nMÄCHTIGE INTEGRATIONEN: Nutze Riot.im mit den Werkzeugen die du kennst und liebst. Mit Riot.im kannst du sogar mit Nutzern und Gruppen anderer Chat-Apps in Kontakt bleiben.\n\nPRIVAT UND SICHER: Halte deine Gespräche geheim. Modernste Verschlüsselung sogt dafür, dass private Kommunikation auch privat bleibt.\n\nOFFEN, NICHT VERSCHLOSSEN: Open Source - basierend auf [matrix]. Behalte die Hoheit über deine Daten indem du deinen eigenen Server betreibst - oder einen wählst, dem du vertraust.\n\nWO AUCH IMMER DU BIST: Halte den Kontakt - mit einem Nachrichtenverlauf der vollständig synchronisiert wird - auf all deinen Geräten oder Online unter https://element.io";
 "auth_login_single_sign_on" = "Anmelden mit Single Sign-On";
 "auth_autodiscover_invalid_response" = "Ungültige Antwort beim Entdecken des Heimservers";
 "room_message_unable_open_link_error_message" = "Konnte Link nicht öffnen.";

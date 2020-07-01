@@ -282,11 +282,11 @@
 "settings_version" = "版本 %@";
 "settings_olm_version" = "Olm 版本 %@";
 "settings_copyright" = "版权";
-"settings_copyright_url" = "https://riot.im/copyright";
+"settings_copyright_url" = "https://element.io/copyright";
 "settings_term_conditions" = "条款和条件";
 "settings_privacy_policy" = "隐私政策";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
+"settings_term_conditions_url" = "https://element.io/tac_apple";
+"settings_privacy_policy_url" = "https://element.io/privacy";
 "settings_third_party_notices" = "第三方通知";
 "settings_send_crash_report" = "发送崩溃和使用数据";
 "settings_clear_cache" = "清空缓存";
@@ -530,7 +530,7 @@
 "room_resource_usage_limit_reached_message_contact_3" = " 以提高限制。";
 // String for App Store
 "store_short_description" = "安全、去中心化的聊天及 VoIP 应用";
-"store_full_description" = "沟通，由你掌控。\n\n一个聊天应用，由你掌控且完全灵活。Riot 让你以你的方式沟通。为 [matrix] - 开放、去中心化的沟通而打造。\n\n获取一个免费的 matrix.org 账号，在 https://modular.im 获取一个你自己的服务器，或者使用其他 Matrix 服务器。\n\n为什么选择 Riot.im?\n\n完整的沟通：围绕你的团队、你的朋友、你的社区创建聊天室 - 随你喜欢！聊天、分享文件、添加插件和语音视频通话 - 全部免费。\n\n强大的集成度：通过你了解和喜欢的工具来使用 Riot.im 。你甚至可以在 Riot.im 上与其他聊天应用的用户和群组聊天。\n\n隐私和安全：保守你对话的秘密。最先进的端到端加密技术可确保私密通信保持私密性。\n\n开放，而非封闭：开源，基于 Matrix。通过自己开设的服务器来拥有你自己的数据，或者选择你信赖的服务器。\n\n随处可及：在你所有的设备和线上页面 https://riot.im 上通过完整的历史信息同步让你随处可及。";
+"store_full_description" = "沟通，由你掌控。\n\n一个聊天应用，由你掌控且完全灵活。Riot 让你以你的方式沟通。为 [matrix] - 开放、去中心化的沟通而打造。\n\n获取一个免费的 matrix.org 账号，在 https://modular.im 获取一个你自己的服务器，或者使用其他 Matrix 服务器。\n\n为什么选择 Riot.im?\n\n完整的沟通：围绕你的团队、你的朋友、你的社区创建聊天室 - 随你喜欢！聊天、分享文件、添加插件和语音视频通话 - 全部免费。\n\n强大的集成度：通过你了解和喜欢的工具来使用 Riot.im 。你甚至可以在 Riot.im 上与其他聊天应用的用户和群组聊天。\n\n隐私和安全：保守你对话的秘密。最先进的端到端加密技术可确保私密通信保持私密性。\n\n开放，而非封闭：开源，基于 Matrix。通过自己开设的服务器来拥有你自己的数据，或者选择你信赖的服务器。\n\n随处可及：在你所有的设备和线上页面 https://element.io 上通过完整的历史信息同步让你随处可及。";
 "auth_accept_policies" = "请查看并接受此主页服务器的服务条款：";
 "room_replacement_information" = "这个聊天室已被替换，不再有效。";
 "settings_flair" = "在允许的地方显示个性徽章";

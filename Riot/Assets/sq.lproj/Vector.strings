@@ -254,11 +254,11 @@
 "settings_labs_e2e_encryption" = "Fshehtëzim Skaj-Më-Skaj";
 "settings_version" = "Version %@";
 "settings_copyright" = "Të drejta kopjimi";
-"settings_copyright_url" = "https://riot.im/copyright";
+"settings_copyright_url" = "https://element.io/copyright";
 "settings_term_conditions" = "Terma & Kushte";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
+"settings_term_conditions_url" = "https://element.io/tac_apple";
 "settings_privacy_policy" = "Rregulla Privatësie";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
+"settings_privacy_policy_url" = "https://element.io/privacy";
 "settings_third_party_notices" = "Njoftime Palësh të Treta";
 "settings_clear_cache" = "Pastroje fshehtinën";
 "settings_change_password" = "Ndryshoni fjalëkalimin";
@@ -667,7 +667,7 @@
 "key_backup_setup_intro_manual_export_action" = "Eksportoni kyçe dorazi";
 // String for App Store
 "store_short_description" = "Fjalosje /VoIP e siguruar, e decentralizuar";
-"store_full_description" = "Komunikoni sipas rrugës tuaj.\n\nNjë aplikacion fjalosjesh, nën kontrollin tuaj dhe krejtësisht i zhdërvjellët. Riot-i ju lejon të komunikoni si doni. Krijuar për [matrix] - standardi për komunikim të hapur, të decentralizuar.\n\nMerrni një llogari matrix.org falas, merrni shërbyesin tuaj te https://modular.im, ose përdorni një tjetër shërbyes Matrix.\n\nPse të zgjidhet Riot.im?\n\nKOMUNIKIM I PLOTË: Krijoni dhoma rreth ekipeve tuaja, shokëve tuaj, bashkësisë tuaj - rreth kujtdo që doni! Bisedoni, shkëmbeni kartela, shtoni widget-e dhe bëni thirrje audio dhe video - gjithçka falas.\n\nINTEGRIME TË FUQISHME: Përdoreni Riot.im me mjetet që njihni dhe doni. Me Riot.im mundeni madje të bisedoni me përdorues dhe grupe nën aplikacione të tjera fjalosjesh.\n\nPRIVAT DHE I SIGURUAR: Mbajini bisedat tuaja të fshehta. Fshehtëzimi skaj-më-skaj i fjalës së fundit garanton që komunikimi privat mbetet privat.\n\nI HAPUR, JO I MBYLLUR: Me burim të hapur dhe i ngritur mbi Matrix. Jini zot i të dhënave tuaja, duke strehuar shërbyesin tuaj, ose duke përzgjedhur një të cilit i besoni.\n\nKUDO QOFSHI: Mbani lidhjet, kudo qofshi, me historik plotësisht të njëkohësuar mesazhesh në krejt pajisjet tuaja dhe në internet, te https://riot.im.";
+"store_full_description" = "Komunikoni sipas rrugës tuaj.\n\nNjë aplikacion fjalosjesh, nën kontrollin tuaj dhe krejtësisht i zhdërvjellët. Riot-i ju lejon të komunikoni si doni. Krijuar për [matrix] - standardi për komunikim të hapur, të decentralizuar.\n\nMerrni një llogari matrix.org falas, merrni shërbyesin tuaj te https://modular.im, ose përdorni një tjetër shërbyes Matrix.\n\nPse të zgjidhet Riot.im?\n\nKOMUNIKIM I PLOTË: Krijoni dhoma rreth ekipeve tuaja, shokëve tuaj, bashkësisë tuaj - rreth kujtdo që doni! Bisedoni, shkëmbeni kartela, shtoni widget-e dhe bëni thirrje audio dhe video - gjithçka falas.\n\nINTEGRIME TË FUQISHME: Përdoreni Riot.im me mjetet që njihni dhe doni. Me Riot.im mundeni madje të bisedoni me përdorues dhe grupe nën aplikacione të tjera fjalosjesh.\n\nPRIVAT DHE I SIGURUAR: Mbajini bisedat tuaja të fshehta. Fshehtëzimi skaj-më-skaj i fjalës së fundit garanton që komunikimi privat mbetet privat.\n\nI HAPUR, JO I MBYLLUR: Me burim të hapur dhe i ngritur mbi Matrix. Jini zot i të dhënave tuaja, duke strehuar shërbyesin tuaj, ose duke përzgjedhur një të cilit i besoni.\n\nKUDO QOFSHI: Mbani lidhjet, kudo qofshi, me historik plotësisht të njëkohësuar mesazhesh në krejt pajisjet tuaja dhe në internet, te https://element.io.";
 "auth_login_single_sign_on" = "Hyni përmes një hyrjeje njëshe";
 "room_message_unable_open_link_error_message" = "S’arrihet të hapet lidhja.";
 "auth_autodiscover_invalid_response" = "Përgjigje e pavlefshme pikasjeje shërbyesi Home";

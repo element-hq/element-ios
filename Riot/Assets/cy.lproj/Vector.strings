@@ -1,6 +1,6 @@
 // String for App Store
 "store_short_description" = "Sgwrs/VoIP datgonoledig a diogel";
-"store_full_description" = "Cyfathrebu, eich ffordd eich hyn.\n\nAp sgwrsio, o dan eich rheolaeth ac yn hollol hyblyg. Mae Riot yn gadael ichi gyfathrebu'r ffordd rydych chi ei eisiau. Wedi'i wneud ar gyfer [matrix] - y safon ar gyfer cyfathrebu agored, datganoledig.\n\nSicrhewch gyfrif matrix.org am ddim, mynnwch eich gweinydd eich hun yn https://modular.im, neu defnyddiwch weinydd Matrix arall.\n\nPam dewis Riot.im?\n\nCYFATHREBU LLAWN: Adeiladwch ystafelloedd o amgylch eich timau, eich ffrindiau, eich cymuned - sut bynnag yr ydych chi'n hoffi! Sgwrsiwch, rhannwch ffeiliau, ychwanegwch teclynnau a gwnewch galwadau llais a fideo - i gyd yn rhad ac am ddim.\n\nINTEGREIDDIAU GRYMUS: Defnyddiwch Riot.im gyda'r offer rydych chi'n eu hadnabod ac yn eu caru. Gyda Riot.im gallwch hyd yn oed sgwrsio â defnyddwyr a grwpiau ar apiau sgwrsio eraill.\n\nPREIFAT A DIOGEL: Cadwch eich sgyrsiau yn gyfrinachol. Mae amgryptio o'r dechrau i'r diwedd o'r radd flaenaf yn sicrhau bod cyfathrebu preifat yn aros yn breifat.\n\nAGORED, NID YN GAËDIG: Ffynhonnell agor, ac wedi'i adeiladu ar Matrix. ––Byddwch yn berchen ar eich data eich hun trwy gynnal eich gweinydd eich hun, neu ddewis un rydych chi'n ymddiried ynddo.\n\nBOB MAN YDYCH CHI: Cadwch mewn cysylltiad ble bynnag yr ydych â hanes negeseuon wedi'i gydamseru'n llawn ar draws eich holl ddyfeisiau ac ar-lein yn https://riot.im.";
+"store_full_description" = "Cyfathrebu, eich ffordd eich hyn.\n\nAp sgwrsio, o dan eich rheolaeth ac yn hollol hyblyg. Mae Riot yn gadael ichi gyfathrebu'r ffordd rydych chi ei eisiau. Wedi'i wneud ar gyfer [matrix] - y safon ar gyfer cyfathrebu agored, datganoledig.\n\nSicrhewch gyfrif matrix.org am ddim, mynnwch eich gweinydd eich hun yn https://modular.im, neu defnyddiwch weinydd Matrix arall.\n\nPam dewis Riot.im?\n\nCYFATHREBU LLAWN: Adeiladwch ystafelloedd o amgylch eich timau, eich ffrindiau, eich cymuned - sut bynnag yr ydych chi'n hoffi! Sgwrsiwch, rhannwch ffeiliau, ychwanegwch teclynnau a gwnewch galwadau llais a fideo - i gyd yn rhad ac am ddim.\n\nINTEGREIDDIAU GRYMUS: Defnyddiwch Riot.im gyda'r offer rydych chi'n eu hadnabod ac yn eu caru. Gyda Riot.im gallwch hyd yn oed sgwrsio â defnyddwyr a grwpiau ar apiau sgwrsio eraill.\n\nPREIFAT A DIOGEL: Cadwch eich sgyrsiau yn gyfrinachol. Mae amgryptio o'r dechrau i'r diwedd o'r radd flaenaf yn sicrhau bod cyfathrebu preifat yn aros yn breifat.\n\nAGORED, NID YN GAËDIG: Ffynhonnell agor, ac wedi'i adeiladu ar Matrix. ––Byddwch yn berchen ar eich data eich hun trwy gynnal eich gweinydd eich hun, neu ddewis un rydych chi'n ymddiried ynddo.\n\nBOB MAN YDYCH CHI: Cadwch mewn cysylltiad ble bynnag yr ydych â hanes negeseuon wedi'i gydamseru'n llawn ar draws eich holl ddyfeisiau ac ar-lein yn https://element.io.";
 // Titles
 "title_home" = "Hafan";
 "title_favourites" = "Ffefrynnau";
@@ -399,11 +399,11 @@
 "settings_version" = "Fersiwn %@";
 "settings_olm_version" = "Fersiwn Olm %@";
 "settings_copyright" = "Hawlfraint";
-"settings_copyright_url" = "https://riot.im/copyright";
+"settings_copyright_url" = "https://element.io/copyright";
 "settings_term_conditions" = "Telerau ac Amodau";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
+"settings_term_conditions_url" = "https://element.io/tac_apple";
 "settings_privacy_policy" = "Polisi Preifatrwydd";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
+"settings_privacy_policy_url" = "https://element.io/privacy";
 "settings_third_party_notices" = "Hysbysiadau Trydydd Parti";
 "settings_send_crash_report" = "Anfonwch ddata namau a defnydd dienw";
 "settings_enable_rageshake" = "Ysgwydiad blin i roi gwybod am nam";

@@ -309,11 +309,11 @@
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";
 "settings_copyright" = "著作権";
-"settings_copyright_url" = "https://riot.im/copyright";
+"settings_copyright_url" = "https://element.io/copyright";
 "settings_term_conditions" = "利用規約";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
+"settings_term_conditions_url" = "https://element.io/tac_apple";
 "settings_privacy_policy" = "個人情報保護方針";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
+"settings_privacy_policy_url" = "https://element.io/privacy";
 "settings_third_party_notices" = "外部ライブラリの規約";
 "settings_send_crash_report" = "匿名利用状況と誤動作情報を送信";
 "settings_enable_rageshake" = "バグ報告のため端末を揺さぶる";

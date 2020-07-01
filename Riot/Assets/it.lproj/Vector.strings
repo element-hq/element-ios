@@ -3,7 +3,7 @@
 "title_favourites" = "Preferiti";
 "title_people" = "Chat dirette";
 "title_rooms" = "Stanze";
-"store_full_description" = "Comunica, a modo tuo.\n\nUn'app di messaggistica, sotto il tuo controllo e interamente flessibile. Riot ti permette di comunicare a modo tuo. Creata per [matrix] - lo standard per le comunicazioni aperte, decentralizzate.\n\nOttieni un account matrix.org gratuito, ottieni il tuo server su https://modular.im, o usa un altro server Matrix.\n\nPerché scegliere Riot.im?\n\n• COMUNICAZIONE COMPLETA: crea stanze per i tuoi team, i tuoi amici, la tua comunità - come preferisci! Chatta, condividi file, aggiungi widget e fai videochiamate vocali - tutto gratuito.\n\n• GRANDI INTEGRAZIONI: usa Riot.im con gli strumenti che conosci ed ami. Con Riot.im puoi addirittura chattare con utenti e gruppi su altre applicazioni di messaggistica.\n\n• PRIVATO E SICURO: tieni segrete le tue conversazioni. Una crittografia end-to-end allo stato dell'arte assicura che le comunicazioni private restino tali.\n\n• APERTO, NON CHIUSO: open source e costruito su Matrix. Possiedi i tuoi dati ospitando il tuo server personale, o scegliendone uno di cui ti fidi.\n\n• OVUNQUE TU SIA: resta in contatto ovunque tu sia con la cronologia dei messaggi totalmente sincronizzata tra i tuoi dispositivi ed online su https://riot.im.";
+"store_full_description" = "Comunica, a modo tuo.\n\nUn'app di messaggistica, sotto il tuo controllo e interamente flessibile. Riot ti permette di comunicare a modo tuo. Creata per [matrix] - lo standard per le comunicazioni aperte, decentralizzate.\n\nOttieni un account matrix.org gratuito, ottieni il tuo server su https://modular.im, o usa un altro server Matrix.\n\nPerché scegliere Riot.im?\n\n• COMUNICAZIONE COMPLETA: crea stanze per i tuoi team, i tuoi amici, la tua comunità - come preferisci! Chatta, condividi file, aggiungi widget e fai videochiamate vocali - tutto gratuito.\n\n• GRANDI INTEGRAZIONI: usa Riot.im con gli strumenti che conosci ed ami. Con Riot.im puoi addirittura chattare con utenti e gruppi su altre applicazioni di messaggistica.\n\n• PRIVATO E SICURO: tieni segrete le tue conversazioni. Una crittografia end-to-end allo stato dell'arte assicura che le comunicazioni private restino tali.\n\n• APERTO, NON CHIUSO: open source e costruito su Matrix. Possiedi i tuoi dati ospitando il tuo server personale, o scegliendone uno di cui ti fidi.\n\n• OVUNQUE TU SIA: resta in contatto ovunque tu sia con la cronologia dei messaggi totalmente sincronizzata tra i tuoi dispositivi ed online su https://element.io.";
 "title_groups" = "Comunità";
 "warning" = "Attenzione";
 "next" = "Prossimo";
@@ -350,11 +350,11 @@
 "settings_version" = "Versione %@";
 "settings_olm_version" = "Versione Olm %@";
 "settings_copyright" = "Copyright";
-"settings_copyright_url" = "https://riot.im/copyright";
+"settings_copyright_url" = "https://element.io/copyright";
 "settings_term_conditions" = "Termini e condizioni";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
+"settings_term_conditions_url" = "https://element.io/tac_apple";
 "settings_privacy_policy" = "Privacy Policy";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
+"settings_privacy_policy_url" = "https://element.io/privacy";
 "settings_third_party_notices" = "Avvisi di terze parti";
 "settings_send_crash_report" = "Invia dati di utilizzo anonimi";
 "settings_enable_rageshake" = "Per segnalare un errore agita il dispositivo con rabbia";
