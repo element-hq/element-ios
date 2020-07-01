@@ -44,6 +44,9 @@
 @property (nonatomic, strong) SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
 @property (nonatomic, strong) SecureBackupBannerCell *secureBackupBannerPrototypeCell;
 
+@property (nonatomic, strong) CrossSigningSetupBannerCell *keyVerificationSetupBannerPrototypeCell;
+@property (nonatomic, strong) AuthenticatedSessionViewControllerFactory *authenticatedSessionViewControllerFactory;
+
 @end
 
 @implementation HomeViewController
@@ -78,6 +81,9 @@
 
     // Register key backup banner cells
     [self.recentsTableView registerNib:SecureBackupBannerCell.nib forCellReuseIdentifier:SecureBackupBannerCell.defaultReuseIdentifier];
+    
+    // Register key verification banner cells
+    [self.recentsTableView registerNib:CrossSigningSetupBannerCell.nib forCellReuseIdentifier:CrossSigningSetupBannerCell.defaultReuseIdentifier];
     
     // Change the table data source. It must be the home view controller itself.
     self.recentsTableView.dataSource = self;
@@ -151,6 +157,15 @@
         _secureBackupBannerPrototypeCell = [self.recentsTableView dequeueReusableCellWithIdentifier:SecureBackupBannerCell.defaultReuseIdentifier];
     }
     return _secureBackupBannerPrototypeCell;
+}
+
+- (CrossSigningSetupBannerCell *)keyVerificationSetupBannerPrototypeCell
+{
+    if (!_keyVerificationSetupBannerPrototypeCell)
+    {
+        _keyVerificationSetupBannerPrototypeCell = [self.recentsTableView dequeueReusableCellWithIdentifier:CrossSigningSetupBannerCell.defaultReuseIdentifier];
+    }
+    return _keyVerificationSetupBannerPrototypeCell;
 }
 
 - (void)presentSecureBackupSetup
@@ -289,7 +304,9 @@
 {
     if ((indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.conversationCellDataArray.count)
         || (indexPath.section == recentsDataSource.peopleSection && !recentsDataSource.peopleCellDataArray.count)
-        || (indexPath.section == recentsDataSource.secureBackupBannerSection))
+        || (indexPath.section == recentsDataSource.secureBackupBannerSection)
+        || (indexPath.section == recentsDataSource.crossSigningBannerSection)
+        )
     {
         return [recentsDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
     }
@@ -365,12 +382,22 @@
     {
         return [recentsDataSource cellHeightAtIndexPath:indexPath];
     }
-    else if (indexPath.section == recentsDataSource.secureBackupBannerSection)
+    else if (indexPath.section == recentsDataSource.secureBackupBannerSection || indexPath.section == recentsDataSource.crossSigningBannerSection)
     {
         CGFloat height = 0.0;
-        SecureBackupBannerCell *sizingCell = self.secureBackupBannerPrototypeCell;
         
-        [sizingCell configureFor:recentsDataSource.secureBackupBannerDisplay];
+        UITableViewCell *sizingCell;
+        
+        if (indexPath.section == recentsDataSource.secureBackupBannerSection)
+        {
+            SecureBackupBannerCell *secureBackupBannerCell = self.secureBackupBannerPrototypeCell;
+            [secureBackupBannerCell configureFor:recentsDataSource.secureBackupBannerDisplay];
+            sizingCell = secureBackupBannerCell;
+        }
+        else if (indexPath.section == recentsDataSource.crossSigningBannerSection)
+        {
+            sizingCell = self.keyVerificationSetupBannerPrototypeCell;
+        }
         
         [sizingCell layoutIfNeeded];
         
@@ -408,7 +435,8 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     // No header in key banner section
-    if (section == recentsDataSource.secureBackupBannerSection)
+    if (section == recentsDataSource.secureBackupBannerSection
+        || section == recentsDataSource.crossSigningBannerSection)
     {
         return 0.0;
     }
@@ -429,6 +457,10 @@
             default:
                 break;
         }
+    }
+    else if (indexPath.section == recentsDataSource.crossSigningBannerSection)
+    {
+        [self showCrossSigningSetup];
     }
 }
 
@@ -689,6 +721,85 @@
 {
     [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.secureBackupSetupCoordinatorBridgePresenter = nil;
+}
+
+#pragma mark - Cross-signing setup
+
+- (void)showCrossSigningSetup
+{
+    [self setupCrossSigningWithTitle:NSLocalizedStringFromTable(@"cross_signing_setup_banner_title", @"Vector", nil) message:NSLocalizedStringFromTable(@"security_settings_user_password_description", @"Vector", nil) success:^{
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+- (void)setupCrossSigningWithTitle:(NSString*)title
+                           message:(NSString*)message
+                           success:(void (^)(void))success
+                           failure:(void (^)(NSError *error))failure
+{
+    __block UIViewController *viewController;
+    [self startActivityIndicator];
+    self.view.userInteractionEnabled = NO;
+    
+    void (^animationCompletion)(void) = ^void () {
+        [self stopActivityIndicator];
+        self.view.userInteractionEnabled = YES;
+    };
+    
+    // Get credentials to set up cross-signing
+    NSString *path = [NSString stringWithFormat:@"%@/keys/device_signing/upload", kMXAPIPrefixPathUnstable];
+    self.authenticatedSessionViewControllerFactory = [[AuthenticatedSessionViewControllerFactory alloc] initWithSession:self.mainSession];
+    [self.authenticatedSessionViewControllerFactory viewControllerForPath:path
+                                                           httpMethod:@"POST"
+                                                                title:title
+                                                              message:message
+                                                     onViewController:^(UIViewController * _Nonnull theViewController)
+     {
+         viewController = theViewController;
+         [self presentViewController:viewController animated:YES completion:nil];
+         
+     } onAuthenticated:^(NSDictionary * _Nonnull authParams) {
+         
+         [viewController dismissViewControllerAnimated:NO completion:nil];
+         viewController = nil;
+         
+         MXCrossSigning *crossSigning = self.mainSession.crypto.crossSigning;
+         if (crossSigning)
+         {
+             [crossSigning setupWithAuthParams:authParams success:^{
+                 animationCompletion();
+                 
+                 // TODO: Remove this line and refresh key verification setup banner by listening to a local notification cross-signing state change (Add this behavior into the SDK).
+                 [self->recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeHome];
+                 
+                 [self refreshRecentsTable];
+                 success();
+             } failure:^(NSError * _Nonnull error) {
+                 animationCompletion();
+                 [self refreshRecentsTable];
+                 
+                 [[AppDelegate theDelegate] showErrorAsAlert:error];
+                 failure(error);
+             }];
+         }
+         
+     } onCancelled:^{
+         animationCompletion();
+         
+         [viewController dismissViewControllerAnimated:NO completion:nil];
+         viewController = nil;
+         failure(nil);
+     } onFailure:^(NSError * _Nonnull error) {
+         
+         animationCompletion();
+         [[AppDelegate theDelegate] showErrorAsAlert:error];
+         
+         [viewController dismissViewControllerAnimated:NO completion:nil];
+         viewController = nil;
+         failure(error);
+     }];
 }
 
 @end

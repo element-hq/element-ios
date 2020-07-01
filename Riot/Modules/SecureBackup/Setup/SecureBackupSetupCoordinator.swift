@@ -26,8 +26,10 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     // MARK: Private
     
     private let navigationRouter: NavigationRouterType
+    private let session: MXSession
     private let recoveryService: MXRecoveryService
-    
+    private let keyBackup: MXKeyBackup?
+
     // MARK: Public
 
     // Must be used only internally
@@ -39,7 +41,9 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     
     init(session: MXSession) {
         self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
+        self.session = session
         self.recoveryService = session.crypto.recoveryService
+        self.keyBackup = session.crypto.backup
     }    
     
     // MARK: - Public methods
@@ -58,6 +62,7 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     private func createIntro() -> SecureBackupSetupIntroViewController {
         let introViewController = SecureBackupSetupIntroViewController.instantiate()
         introViewController.delegate = self
+        introViewController.keyBackup = self.keyBackup
         return introViewController
     }
     
@@ -109,6 +114,18 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
         self.navigationRouter.present(alertController, animated: true)
     }
     
+    private func showKeyBackupRestore() {
+        guard let keyBackupVersion = self.keyBackup?.keyBackupVersion else {
+            return
+        }
+        
+        let coordinator = KeyBackupRecoverCoordinator(session: self.session, keyBackupVersion: keyBackupVersion, navigationRouter: self.navigationRouter)
+        
+        self.add(childCoordinator: coordinator)
+        coordinator.delegate = self
+        coordinator.start() // Will trigger view controller push
+    }
+    
     private func didCancel(showSkipAlert: Bool = true) {
         if showSkipAlert {
             self.showCancelAlert()
@@ -133,8 +150,12 @@ extension SecureBackupSetupCoordinator: SecureBackupSetupIntroViewControllerDele
         self.showSetupPassphrase()
     }
     
-    func secureBackupSetupIntroViewControllerDidCancel(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController) {
-        self.didCancel()
+    func secureBackupSetupIntroViewControllerDidCancel(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController, showSkipAlert: Bool) {
+        self.didCancel(showSkipAlert: showSkipAlert)
+    }
+    
+    func secureBackupSetupIntroViewControllerDidTapConnectToKeyBackup(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController) {
+        self.showKeyBackupRestore()
     }
 }
 
@@ -167,5 +188,16 @@ extension SecureBackupSetupCoordinator: SecretsSetupRecoveryPassphraseCoordinato
     
     func secretsSetupRecoveryPassphraseCoordinatorDidCancel(_ coordinator: SecretsSetupRecoveryPassphraseCoordinatorType) {
         self.didCancel()
+    }
+}
+
+// MARK: - KeyBackupRecoverCoordinatorDelegate
+extension SecureBackupSetupCoordinator: KeyBackupRecoverCoordinatorDelegate {
+    func keyBackupRecoverCoordinatorDidCancel(_ keyBackupRecoverCoordinator: KeyBackupRecoverCoordinatorType) {
+        self.navigationRouter.popToRootModule(animated: true)
+    }
+    
+    func keyBackupRecoverCoordinatorDidRecover(_ keyBackupRecoverCoordinator: KeyBackupRecoverCoordinatorType) {
+        self.navigationRouter.popToRootModule(animated: true)
     }
 }

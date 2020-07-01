@@ -572,7 +572,13 @@
 "security_settings_title" = "Security";
 "security_settings_crypto_sessions" = "MY SESSIONS";
 "security_settings_crypto_sessions_loading" = "Loading sessions…";
-"security_settings_crypto_sessions_description" = "Trust sessions to grant access to end-to-end encrypted messages. If you don’t recognise a session, change your login password and reset your Message Password used for Message Backup.";
+"security_settings_crypto_sessions_description_2" = "If you don’t recognise a login, change your password and reset Secure Backup.";
+
+"security_settings_secure_backup" = "SECURE BACKUP";
+"security_settings_secure_backup_description" =  "Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server.";
+"security_settings_secure_backup_setup" = "Set up";
+"security_settings_secure_backup_synchronise" = "Synchronise";
+"security_settings_secure_backup_delete" = "Delete";
 
 "security_settings_backup" = "MESSAGE BACKUP";
 
@@ -596,6 +602,7 @@
 "security_settings_complete_security_alert_message" = "You should complete security on your current session first.";
 
 "security_settings_coming_soon" = "Sorry. This action is not available on Riot-iOS yet. Please use another Matrix client to set it up. Riot-iOS will use it.";
+"security_settings_user_password_description" = "Confirm your identity by entering your account password";
 
 // Manage session
 "manage_session_title" = "Manage session";
@@ -934,6 +941,12 @@
 "secure_key_backup_setup_intro_use_security_passphrase_title" = "Use a Security Passphrase";
 "secure_key_backup_setup_intro_use_security_passphrase_info" = "Enter a secret phrase only you know, and generate a key for backup.";
 
+"secure_key_backup_setup_existing_backup_error_title" = "A backup for messages already exists";
+"secure_key_backup_setup_existing_backup_error_info" = "Unlock it to reuse it in the secure backup or delete it to create a new messages backup in the secure backup.";
+"secure_key_backup_setup_existing_backup_error_unlock_it" = "Unlock it";
+"secure_key_backup_setup_existing_backup_error_delete_it" = "Delete it";
+
+
 // Cancel
 
 "secure_key_backup_setup_cancel_alert_title" = "Are your sure?";
@@ -1036,7 +1049,7 @@
 "sign_out_existing_key_backup_alert_sign_out_action" = "Sign out";
 
 "sign_out_non_existing_key_backup_alert_title" = "You’ll lose access to your encrypted messages if you sign out now";
-"sign_out_non_existing_key_backup_alert_setup_key_backup_action" = "Start using Key Backup";
+"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Start using Secure Backup";
 "sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "I don't want my encrypted messages";
 
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "You'll lose your encrypted messages";
@@ -1384,3 +1397,9 @@
 "key_backup_setup_passphrase_confirm_passphrase_valid" = "Great!";
 "key_backup_setup_passphrase_confirm_passphrase_invalid" = "Passphrase doesn’t match";
 
+// MARK: - Cross-signing
+
+// Banner
+
+"cross_signing_setup_banner_title" = "Set up encryption";
+"cross_signing_setup_banner_subtitle" = "Verify your other devices easier";

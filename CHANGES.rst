@@ -4,18 +4,6 @@ Changes in 0.12.0 (2020-xx-xx)
 Improvements:
  * Update deployment target to iOS 11.0. Required for Jitsi > 2.8.x.
  * Theme: Customize UISearchBar with new iOS 13 properties (#3270).
- * PushNotificationService: Move all notification related code to a new class (PR #3100).
- * Cross-signing: Bootstrap cross-sign on registration (and login if applicable). This action is now invisible to the user (#3292).
- * Cross-signing: Setup cross-signing for existing users (#3299).
- * Authentication: Redirect the webview (SSO) javascript logs to iOS native logs.
- * Timeline: Hide encrypted history (pre-invite) (#3239).
- * Complete security: Add recovery from 4S (#3304).
- * Key backup: Connect/restore backup created with SSSS (#3124).
- * E2E by default: Disable it if the HS admin disabled it (#3305).
- * Key backup: Add secure backup creation flow (#3344).
- * Add AuthenticatedSessionViewControllerFactory to set up a authenticated flow for a given CS API request.
- * Set up SSSS from banners (#3293).
- * NSE: Increase number of log files to 100.
  * NSE: Make extension reusable (#3326).
  
 Bug fix:
@@ -39,10 +27,29 @@ Bug fix:
  * Xcode11: Fix session user display name (PR #3349).
  * Xcode11: Fix rebooted and unlocked case for NSE (PR #3353).
  * Xcode11: New localization keys for push notifications, include room display name in fallback content (#3325).
- * CallVC: Declined calls now properly reset call view controller, thanks to @Legi429 (#2877).
- * PreviewRoomTitleView: Fix inviter display name (#2520).
  * Xcode11: Disable voip background mode to avoid VoIP pushes (#3369).
  * Xcode11: Disable key backup on push extension (#3371).
+
+Changes in 0.11.6 (2020-06-30)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.7](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.7)).
+ * PushNotificationService: Move all notification related code to a new class (PR #3100).
+ * Cross-signing: Bootstrap cross-sign on registration (and login if applicable). This action is now invisible to the user (#3292).
+ * Cross-signing: Setup cross-signing for existing users (#3299).
+ * Authentication: Redirect the webview (SSO) javascript logs to iOS native logs.
+ * Timeline: Hide encrypted history (pre-invite) (#3239).
+ * Complete security: Add recovery from 4S (#3304).
+ * Key backup: Connect/restore backup created with SSSS (#3124).
+ * E2E by default: Disable it if the HS admin disabled it (#3305).
+ * Key backup: Add secure backup creation flow (#3344).
+ * Add AuthenticatedSessionViewControllerFactory to set up a authenticated flow for a given CS API request.
+ * Set up SSSS from banners (#3293).
+
+Bug fix:
+ * CallVC: Declined calls now properly reset call view controller, thanks to @Legi429 (#2877).
+ * PreviewRoomTitleView: Fix inviter display name (#2520).
 
 Changes in 0.11.5 (2020-05-18)
 ===============================================

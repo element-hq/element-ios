@@ -482,6 +482,14 @@ internal enum VectorL10n {
   internal static var create: String { 
     return VectorL10n.tr("Vector", "create") 
   }
+  /// Verify your other devices easier
+  internal static var crossSigningSetupBannerSubtitle: String { 
+    return VectorL10n.tr("Vector", "cross_signing_setup_banner_subtitle") 
+  }
+  /// Set up encryption
+  internal static var crossSigningSetupBannerTitle: String { 
+    return VectorL10n.tr("Vector", "cross_signing_setup_banner_title") 
+  }
   /// Please forget all messages I have sent when my account is deactivated (
   internal static var deactivateAccountForgetMessagesInformationPart1: String { 
     return VectorL10n.tr("Vector", "deactivate_account_forget_messages_information_part1") 
@@ -3062,6 +3070,22 @@ internal enum VectorL10n {
   internal static var secureKeyBackupSetupCancelAlertTitle: String { 
     return VectorL10n.tr("Vector", "secure_key_backup_setup_cancel_alert_title") 
   }
+  /// Delete it
+  internal static var secureKeyBackupSetupExistingBackupErrorDeleteIt: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_existing_backup_error_delete_it") 
+  }
+  /// Unlock it to reuse it in the secure backup or delete it to create a new messages backup in the secure backup.
+  internal static var secureKeyBackupSetupExistingBackupErrorInfo: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_existing_backup_error_info") 
+  }
+  /// A backup for messages already exists
+  internal static var secureKeyBackupSetupExistingBackupErrorTitle: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_existing_backup_error_title") 
+  }
+  /// Unlock it
+  internal static var secureKeyBackupSetupExistingBackupErrorUnlockIt: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_existing_backup_error_unlock_it") 
+  }
   /// Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server.
   internal static var secureKeyBackupSetupIntroInfo: String { 
     return VectorL10n.tr("Vector", "secure_key_backup_setup_intro_info") 
@@ -3150,9 +3174,9 @@ internal enum VectorL10n {
   internal static var securitySettingsCryptoSessions: String { 
     return VectorL10n.tr("Vector", "security_settings_crypto_sessions") 
   }
-  /// Trust sessions to grant access to end-to-end encrypted messages. If you don’t recognise a session, change your login password and reset your Message Password used for Message Backup.
-  internal static var securitySettingsCryptoSessionsDescription: String { 
-    return VectorL10n.tr("Vector", "security_settings_crypto_sessions_description") 
+  /// If you don’t recognise a login, change your password and reset Secure Backup.
+  internal static var securitySettingsCryptoSessionsDescription2: String { 
+    return VectorL10n.tr("Vector", "security_settings_crypto_sessions_description_2") 
   }
   /// Loading sessions…
   internal static var securitySettingsCryptoSessionsLoading: String { 
@@ -3166,9 +3190,33 @@ internal enum VectorL10n {
   internal static var securitySettingsExportKeysManually: String { 
     return VectorL10n.tr("Vector", "security_settings_export_keys_manually") 
   }
+  /// SECURE BACKUP
+  internal static var securitySettingsSecureBackup: String { 
+    return VectorL10n.tr("Vector", "security_settings_secure_backup") 
+  }
+  /// Delete
+  internal static var securitySettingsSecureBackupDelete: String { 
+    return VectorL10n.tr("Vector", "security_settings_secure_backup_delete") 
+  }
+  /// Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server.
+  internal static var securitySettingsSecureBackupDescription: String { 
+    return VectorL10n.tr("Vector", "security_settings_secure_backup_description") 
+  }
+  /// Set up
+  internal static var securitySettingsSecureBackupSetup: String { 
+    return VectorL10n.tr("Vector", "security_settings_secure_backup_setup") 
+  }
+  /// Synchronise
+  internal static var securitySettingsSecureBackupSynchronise: String { 
+    return VectorL10n.tr("Vector", "security_settings_secure_backup_synchronise") 
+  }
   /// Security
   internal static var securitySettingsTitle: String { 
     return VectorL10n.tr("Vector", "security_settings_title") 
+  }
+  /// Confirm your identity by entering your account password
+  internal static var securitySettingsUserPasswordDescription: String { 
+    return VectorL10n.tr("Vector", "security_settings_user_password_description") 
   }
   /// Send to %@
   internal static func sendTo(_ p1: String) -> String {
@@ -3818,9 +3866,9 @@ internal enum VectorL10n {
   internal static var signOutNonExistingKeyBackupAlertDiscardKeyBackupAction: String { 
     return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_alert_discard_key_backup_action") 
   }
-  /// Start using Key Backup
-  internal static var signOutNonExistingKeyBackupAlertSetupKeyBackupAction: String { 
-    return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_alert_setup_key_backup_action") 
+  /// Start using Secure Backup
+  internal static var signOutNonExistingKeyBackupAlertSetupSecureBackupAction: String { 
+    return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_alert_setup_secure_backup_action") 
   }
   /// You’ll lose access to your encrypted messages if you sign out now
   internal static var signOutNonExistingKeyBackupAlertTitle: String { 

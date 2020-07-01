@@ -29,19 +29,18 @@
 
 #import "Riot-Swift.h"
 
-// Dev flag for demoing what could be the settings
-// There is still a lot of TODO behind
-//#define NEW_CROSS_SIGNING_FLOW
+// Dev flag to have more options
+//#define CROSS_SIGNING_AND_BACKUP_DEV
 
 enum
 {
     SECTION_CRYPTO_SESSIONS,
-    SECTION_CROSSSIGNING,
-#ifdef NEW_CROSS_SIGNING_FLOW
     SECTION_SECURE_BACKUP,
-#endif
     SECTION_CRYPTOGRAPHY,
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
+    SECTION_CROSSSIGNING,
     SECTION_KEYBACKUP,
+#endif
     SECTION_ADVANCED,
     SECTION_COUNT
 };
@@ -60,7 +59,9 @@ enum {
     // - Advice them to do a recovery if local keys are obsolete -> We cannot know now
     // - Advice them to fix a secure backup if there is 4S but no key backup
     // - Warm them if there is no 4S and they do not have all 3 signing keys locally. They will set up a not complete secure backup
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
     SECURE_BACKUP_INFO,
+#endif
     SECURE_BACKUP_SETUP,
     SECURE_BACKUP_RESTORE,
     SECURE_BACKUP_DELETE,
@@ -82,9 +83,11 @@ enum {
 
 
 @interface SecurityViewController () <
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
 SettingsKeyBackupTableViewSectionDelegate,
 KeyBackupSetupCoordinatorBridgePresenterDelegate,
 KeyBackupRecoverCoordinatorBridgePresenterDelegate,
+#endif
 UIDocumentInteractionControllerDelegate,
 SecretsRecoveryCoordinatorBridgePresenterDelegate,
 SecureBackupSetupCoordinatorBridgePresenterDelegate>
@@ -112,9 +115,12 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
     // The current pushed view controller
     UIViewController *pushedViewController;
 
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
     SettingsKeyBackupTableViewSection *keyBackupSection;
     KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
+#endif
     KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter;
+
     SecretsRecoveryCoordinatorBridgePresenter *secretsRecoveryCoordinatorBridgePresenter;
 }
 
@@ -166,6 +172,7 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 50;
 
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
     if (self.mainSession.crypto.backup)
     {
         MXDeviceInfo *deviceInfo = [self.mainSession.crypto.deviceList storedDevice:self.mainSession.matrixRestClient.credentials.userId
@@ -177,6 +184,7 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
             keyBackupSection.delegate = self;
         }
     }
+#endif
     
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -232,8 +240,11 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
         kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
 
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
     keyBackupSetupCoordinatorBridgePresenter = nil;
+#endif
     keyBackupRecoverCoordinatorBridgePresenter = nil;
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -489,12 +500,10 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
         case MXCrossSigningStateCanCrossSign:
             crossSigningInformation = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_info_ok"];
             
-#ifdef NEW_CROSS_SIGNING_FLOW
             if (![self.mainSession.crypto.recoveryService hasSecretLocally:MXSecretId.crossSigningMaster])
             {
                 crossSigningInformation = [crossSigningInformation stringByAppendingString:@"\n\n⚠️ The MSK is missing. Verify this device again or use the Secure Backup below to synchronise your keys accross your devices"];
             }
-#endif
             break;
     }
     
@@ -569,7 +578,18 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
 
 - (void)setupCrossSigning:(id)sender
 {
-#ifdef NEW_CROSS_SIGNING_FLOW    
+    [self setupCrossSigningWithTitle:@"Set up cross-signing"    // TODO
+                             message:NSLocalizedStringFromTable(@"security_settings_user_password_description", @"Vector", nil)
+                             success:^{
+                             } failure:^(NSError *error) {
+                             }];
+}
+
+- (void)setupCrossSigningWithTitle:(NSString*)title
+                           message:(NSString*)message
+                           success:(void (^)(void))success
+                             failure:(void (^)(NSError *error))failure
+{
     __block UIViewController *viewController;
     [self startActivityIndicator];
     
@@ -578,8 +598,8 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
     _authenticatedSessionViewControllerFactory = [[AuthenticatedSessionViewControllerFactory alloc] initWithSession:self.mainSession];
     [_authenticatedSessionViewControllerFactory viewControllerForPath:path
                                                            httpMethod:@"POST"
-                                                                title:@"Set up cross-signing"   // TODO
-                                                              message:@"Confirm your identity by entering your account password"    // TODO
+                                                                title:title
+                                                              message:message
                                                      onViewController:^(UIViewController * _Nonnull theViewController)
      {
          viewController = theViewController;
@@ -596,11 +616,13 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
              [crossSigning setupWithAuthParams:authParams success:^{
                  [self stopActivityIndicator];
                  [self reloadData];
+                 success();
              } failure:^(NSError * _Nonnull error) {
                  [self stopActivityIndicator];
                  [self reloadData];
                  
                  [[AppDelegate theDelegate] showErrorAsAlert:error];
+                 failure(error);
              }];
          }
 
@@ -609,6 +631,7 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
          
          [viewController dismissViewControllerAnimated:NO completion:nil];
          viewController = nil;
+         failure(nil);
      } onFailure:^(NSError * _Nonnull error) {
          
          [self stopActivityIndicator];
@@ -616,11 +639,8 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
          
          [viewController dismissViewControllerAnimated:NO completion:nil];
          viewController = nil;
+         failure(error);
     }];
-    
-#else
-    [self displayComingSoon];
-#endif
 }
 
 - (void)resetCrossSigning:(id)sender
@@ -678,12 +698,10 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
 
 - (void)refreshSecureBackupSectionData
 {
-    // TODO
     MXRecoveryService *recoveryService =  self.mainSession.crypto.recoveryService;
     if (recoveryService.hasRecovery)
     {
         secureBackupSectionState = @[
-                                     @(SECURE_BACKUP_INFO),
                                      @(SECURE_BACKUP_RESTORE),
                                      @(SECURE_BACKUP_DELETE),
                                      @(SECURE_BACKUP_DESCRIPTION),
@@ -692,24 +710,17 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
     }
     else
     {
-        if (self.canSetupSecureBackup)
-        {
-            secureBackupSectionState = @[
-                                         @(SECURE_BACKUP_INFO),
-                                         @(SECURE_BACKUP_SETUP),    // TODO: Check we have all keys locally (at least MSK, SSK & SSK)
-                                         @(SECURE_BACKUP_DESCRIPTION),
-                                         //@(SECURE_BACKUP_MANAGE_MANUALLY),
-                                         ];
-        }
-        else
-        {
-            secureBackupSectionState = @[
-                                         @(SECURE_BACKUP_INFO),
-                                         @(SECURE_BACKUP_DESCRIPTION),
-                                         //@(SECURE_BACKUP_MANAGE_MANUALLY),
-                                         ];
-        }
+        secureBackupSectionState = @[
+                                     @(SECURE_BACKUP_SETUP),
+                                     @(SECURE_BACKUP_DESCRIPTION),
+                                     //@(SECURE_BACKUP_MANAGE_MANUALLY),
+                                     ];
     }
+    
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
+    secureBackupSectionState = [@[@(SECURE_BACKUP_INFO)] arrayByAddingObjectsFromArray:secureBackupSectionState];
+#endif
+    
 }
 
 - (NSUInteger)secureBackupSectionEnumForRow:(NSUInteger)row
@@ -832,8 +843,6 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
 {
     // Accept to create a setup only if we have the 3 cross-signing keys
     // This is the path to have a sane state
-    // TODO: What about missing MSK that was not gossiped before?
-    
     MXRecoveryService *recoveryService = self.mainSession.crypto.recoveryService;
     
     NSArray *crossSigningServiceSecrets = @[
@@ -847,16 +856,30 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
 
 - (void)setupSecureBackup
 {
-#ifdef NEW_CROSS_SIGNING_FLOW
+    if (self.canSetupSecureBackup)
+    {
+        [self setupSecureBackup2];
+    }
+    else
+    {
+        // Set up cross-signing first
+        [self setupCrossSigningWithTitle:NSLocalizedStringFromTable(@"secure_key_backup_setup_intro_title", @"Vector", nil)
+                                 message:NSLocalizedStringFromTable(@"security_settings_user_password_description", @"Vector", nil)
+                                 success:^{
+                                     [self setupSecureBackup2];
+                                 } failure:^(NSError *error) {
+                                 }];
+    }
+}
+
+- (void)setupSecureBackup2
+{
     SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter = [[SecureBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
     secureBackupSetupCoordinatorBridgePresenter.delegate = self;
     
     [secureBackupSetupCoordinatorBridgePresenter presentFrom:self animated:YES];
     
     self.secureBackupSetupCoordinatorBridgePresenter = secureBackupSetupCoordinatorBridgePresenter;
-#else
-    [self displayComingSoon];
-#endif
 }
 
 - (void)restoreFromSecureBackup
@@ -873,7 +896,7 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
     if (recoveryService)
     {
         [self startActivityIndicator];
-        [recoveryService deleteRecoveryWithSuccess:^{
+        [recoveryService deleteRecoveryWithDeleteServicesBackups:YES success:^{
             [self stopActivityIndicator];
             [self reloadData];
         } failure:^(NSError * _Nonnull error) {
@@ -919,17 +942,17 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
                 count = devicesArray.count + 1;
             }
             break;
-#ifdef NEW_CROSS_SIGNING_FLOW
         case SECTION_SECURE_BACKUP:
             count = [self numberOfRowsInSecureBackupSection];
             break;
-#endif
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
         case SECTION_KEYBACKUP:
             count = keyBackupSection.numberOfRows;
             break;
         case SECTION_CROSSSIGNING:
             count = [self numberOfRowsInCrossSigningSection];
             break;
+#endif
         case SECTION_CRYPTOGRAPHY:
             count = CRYPTOGRAPHY_COUNT;
             break;
@@ -1112,7 +1135,7 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
             else
             {
                 cell = [self descriptionCellForTableView:tableView
-                                                withText:NSLocalizedStringFromTable(@"security_settings_crypto_sessions_description", @"Vector", nil) ];
+                                                withText:NSLocalizedStringFromTable(@"security_settings_crypto_sessions_description_2", @"Vector", nil) ];
             }
         }
         else
@@ -1124,42 +1147,32 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
             else if (row == devicesArray.count)
             {
                 cell = [self descriptionCellForTableView:tableView
-                                                withText:NSLocalizedStringFromTable(@"security_settings_crypto_sessions_description", @"Vector", nil) ];
+                                                withText:NSLocalizedStringFromTable(@"security_settings_crypto_sessions_description_2", @"Vector", nil) ];
                 
             }
         }
     }
-#ifdef NEW_CROSS_SIGNING_FLOW
     else if (section == SECTION_SECURE_BACKUP)
     {
         switch ([self secureBackupSectionEnumForRow:row])
         {
             case SECURE_BACKUP_DESCRIPTION:
             {
-                // TODO
                 cell = [self descriptionCellForTableView:tableView
-                                                //withText:@"Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server."];
-                                                //withText:@"Back up your encryption keys with your account data in case you lose access to your logins. Your keys will be secured with a unique Recovery Key."];
-                                                withText:@"Back up your encryption keys with your account data in case you lose access to your logins. Your keys are secured with a Recovery Key or a Secret Phrase."];
+                                                withText:NSLocalizedStringFromTable(@"security_settings_secure_backup_description", @"Vector", nil)];
                 break;
             }
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
             case SECURE_BACKUP_INFO:
             {
-                // TODO
                 cell = [self descriptionCellForTableView:tableView
                                                 withText:self.secureBackupInformation];
                 break;
             }
+#endif
             case SECURE_BACKUP_SETUP:
             {
-                // TODO: Button or cell?
-//                MXKTableViewCellWithTextView *textCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
-//                textCell.mxkTextView.text = @"Set up Secure Backup";    // TODO
-//                textCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//
-//                cell = textCell;
-                
-                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:@"Set up Secure Backup"    // TODO
+                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:NSLocalizedStringFromTable(@"security_settings_secure_backup_setup", @"Vector", nil)
                                                                             action:@selector(setupSecureBackup)
                                                                       forTableView:tableView
                                                                        atIndexPath:indexPath];
@@ -1169,17 +1182,17 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
             }
             case SECURE_BACKUP_RESTORE:
             {
-                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:@"Synchronise (Restore and/or Back up)"    // TODO
-                                                                                   action:@selector(restoreFromSecureBackup)
-                                                                             forTableView:tableView
-                                                                              atIndexPath:indexPath];
+                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:NSLocalizedStringFromTable(@"security_settings_secure_backup_synchronise", @"Vector", nil)
+                                                                            action:@selector(restoreFromSecureBackup)
+                                                                      forTableView:tableView
+                                                                       atIndexPath:indexPath];
                 
                 cell = buttonCell;
                 break;
             }
             case SECURE_BACKUP_DELETE:
             {
-                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:@"Delete Secure Backup"  // TODO
+                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:NSLocalizedStringFromTable(@"security_settings_secure_backup_delete", @"Vector", nil)
                                                                             action:@selector(deleteSecureBackup)
                                                                       forTableView:tableView
                                                                        atIndexPath:indexPath];
@@ -1201,7 +1214,7 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
         }
 
     }
-#endif
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
     else if (section == SECTION_KEYBACKUP)
     {
         cell = [keyBackupSection cellForRowAtRow:row];
@@ -1225,6 +1238,7 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
                 break;
         }
     }
+#endif
     else if (section == SECTION_CRYPTOGRAPHY)
     {
         switch (row)
@@ -1283,14 +1297,14 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
     {
         case SECTION_CRYPTO_SESSIONS:
             return NSLocalizedStringFromTable(@"security_settings_crypto_sessions", @"Vector", nil);
-#ifdef NEW_CROSS_SIGNING_FLOW
         case SECTION_SECURE_BACKUP:
-            return @"SECURE BACKUP";    // TODO
-#endif
+            return NSLocalizedStringFromTable(@"security_settings_secure_backup", @"Vector", nil);
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
         case SECTION_KEYBACKUP:
             return NSLocalizedStringFromTable(@"security_settings_backup", @"Vector", nil);
         case SECTION_CROSSSIGNING:
             return NSLocalizedStringFromTable(@"security_settings_crosssigning", @"Vector", nil);
+#endif
         case SECTION_CRYPTOGRAPHY:
             return NSLocalizedStringFromTable(@"security_settings_cryptography", @"Vector", nil);
         case SECTION_ADVANCED:
@@ -1513,7 +1527,7 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
 
 
 #pragma mark - SettingsKeyBackupTableViewSectionDelegate
-
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
 - (void)settingsKeyBackupTableViewSectionDidUpdate:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection
 {
     [self.tableView reloadData];
@@ -1623,6 +1637,8 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
 
     [keyBackupSection reload];
 }
+
+#endif
 
 #pragma mark - KeyBackupRecoverCoordinatorBridgePresenter
 

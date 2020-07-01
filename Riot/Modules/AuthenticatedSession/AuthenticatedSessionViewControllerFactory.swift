@@ -70,6 +70,7 @@ final class AuthenticatedSessionViewControllerFactory: NSObject {
     ///   - onAuthenticated: the block called when the user finished to enter their credentials.
     ///   - onCancelled: the block called when the user cancelled the authentication.
     ///   - onFailure: the blocked called on error.
+    @discardableResult
     func viewController(forPath path: String,
                         httpMethod: String,
                         title: String?,

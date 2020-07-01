@@ -148,11 +148,17 @@ platform :ios do
         output_path = ENV["PROVISIONING_PROFILES_PATH"]
         skip_certificate_verification = false
 
+        main_provisioning_name = adhoc ? ENV["ADHOC_MAIN_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER"]
+        share_extension_provisioning_name = adhoc ? ENV["ADHOC_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
+        siri_intents_provisioning_name = adhoc ? ENV["ADHOC_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
+
         # Main application
         get_provisioning_profile(
             app_identifier: ENV["MAIN_BUNDLE_ID"],
+            provisioning_name: main_provisioning_name,
+            ignore_profiles_with_different_name: true,
             adhoc: adhoc,
-            skip_certificate_verification: skip_certificate_verification,
+            skip_certificate_verification: skip_certificate_verification,            
             output_path: output_path,
             filename: ENV["MAIN_PROVISIONING_PROFILE_FILENAME"],
             readonly: true
@@ -160,6 +166,8 @@ platform :ios do
         # Share extension
         get_provisioning_profile(
             app_identifier: ENV["SHARE_EXTENSION_BUNDLE_ID"],
+            provisioning_name: share_extension_provisioning_name,
+            ignore_profiles_with_different_name: true,
             adhoc: adhoc,
             skip_certificate_verification: skip_certificate_verification,
             output_path: output_path,
@@ -169,6 +177,8 @@ platform :ios do
         # Siri Intents extension
         get_provisioning_profile(
             app_identifier: ENV["SIRI_INTENTS_EXTENSION_BUNDLE_ID"],
+            provisioning_name: siri_intents_provisioning_name,
+            ignore_profiles_with_different_name: true,
             adhoc: adhoc,
             skip_certificate_verification: skip_certificate_verification,
             output_path: output_path,

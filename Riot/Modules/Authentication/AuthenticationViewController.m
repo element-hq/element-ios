@@ -1154,14 +1154,10 @@
                 {
                     case MXCrossSigningStateNotBootstrapped:
                     {
-#ifdef NEW_CROSS_SIGNING_FLOW
                         // TODO: This is still not sure we want to disable the automatic cross-signing bootstrap
                         // if the admin disabled e2e by default.
                         // Do like riot-web for the moment
                         if (session.vc_isE2EByDefaultEnabledByHSAdmin)
-#else
-                        if (0)
-#endif
                         {
                             // Bootstrap cross-signing on user's account
                             // We do it for both registration and new login as long as cross-signing does not exist yet
