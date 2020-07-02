@@ -5,6 +5,7 @@ Improvements:
  * Update deployment target to iOS 11.0. Required for Jitsi > 2.8.x.
  * Theme: Customize UISearchBar with new iOS 13 properties (#3270).
  * NSE: Make extension reusable (#3326).
+ * Strings: Use you instead of display name on notice events (#3282).
  
 Bug fix:
  * Xcode11: Fix content change error when dragging start chat page (PR #3075).
