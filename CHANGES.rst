@@ -29,6 +29,7 @@ Bug fix:
  * Xcode11: New localization keys for push notifications, include room display name in fallback content (#3325).
  * Xcode11: Disable voip background mode to avoid VoIP pushes (#3369).
  * Xcode11: Disable key backup on push extension (#3371).
+ * RoomMembershipBubbleCell: Fix message textview leading constraint (#3226).
 
 Changes in 0.11.6 (2020-06-30)
 ===============================================
