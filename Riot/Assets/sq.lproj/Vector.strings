@@ -1137,3 +1137,17 @@
 "secrets_setup_recovery_passphrase_confirm_information" = "Që ta ripohoni, rijepeni Frazën e Sigurisë.";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Ripohojeni";
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Ripohoni frazëkalimin";
+"security_settings_secure_backup" = "KOPJERUAJTJE E SIGURT";
+"security_settings_secure_backup_description" = "Mbrohuni kundër humbjes së hyrjes në mesazhe & të dhëna të fshehtëzuara, duke kopjeruajtur kyçe fshehtëzimi në shërbyesin tuaj.";
+"security_settings_secure_backup_setup" = "Ujdiseni";
+"security_settings_secure_backup_synchronise" = "Njëkohësoje";
+"security_settings_secure_backup_delete" = "Fshije";
+"security_settings_user_password_description" = "Ripohoni identitetin tuaj duke dhënë fjalëkalimin e llogarisë tuaj";
+"secure_key_backup_setup_existing_backup_error_title" = "Një kopjeruajtje për mesazhe që ekzistojnë tashmë";
+"secure_key_backup_setup_existing_backup_error_info" = "Shkyçeni, që ta ripërdorni te kopjeruajtja e sigurt ose për ta fshirë që të krijoni një kopjeruajtje të re mesazhesh te kopjeruajtja e sigurt.";
+"secure_key_backup_setup_existing_backup_error_unlock_it" = "Shkyçe";
+"secure_key_backup_setup_existing_backup_error_delete_it" = "Fshije";
+"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Fillo të përdorësh Kojperuajtje të Sigurt";
+"security_settings_crypto_sessions_description_2" = "Nëse nuk njihni një palë kredenciale, ndryshoni fjalëkalimin tuaj dhe riujdisni Kopjeruajtjen e Sigurt.";
+"cross_signing_setup_banner_title" = "Ujdisni fshehtëzim";
+"cross_signing_setup_banner_subtitle" = "Verifikoni më me lehtësi pajisje të tjera";
