@@ -111,15 +111,10 @@ internal enum Asset {
     internal static let removeIconPink = ImageAsset(name: "remove_icon_pink")
     internal static let settingsIcon = ImageAsset(name: "settings_icon")
     internal static let tabFavourites = ImageAsset(name: "tab_favourites")
-    internal static let tabFavouritesSelected = ImageAsset(name: "tab_favourites_selected")
     internal static let tabGroups = ImageAsset(name: "tab_groups")
-    internal static let tabGroupsSelected = ImageAsset(name: "tab_groups_selected")
     internal static let tabHome = ImageAsset(name: "tab_home")
-    internal static let tabHomeSelected = ImageAsset(name: "tab_home_selected")
     internal static let tabPeople = ImageAsset(name: "tab_people")
-    internal static let tabPeopleSelected = ImageAsset(name: "tab_people_selected")
     internal static let tabRooms = ImageAsset(name: "tab_rooms")
-    internal static let tabRoomsSelected = ImageAsset(name: "tab_rooms_selected")
   }
   internal enum SharedImages {
     internal static let animatedLogo0 = ImageAsset(name: "animatedLogo-0")
