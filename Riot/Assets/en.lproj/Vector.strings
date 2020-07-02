@@ -770,6 +770,12 @@
 "event_formatter_rerequest_keys_part2" = " from your other sessions.";
 "event_formatter_message_edited_mention" = "(edited)";
 
+// Events formatter with you
+"event_formatter_widget_added_by_you" = "You added the widget: %@";
+"event_formatter_widget_removed_by_you" = "You removed the widget: %@";
+"event_formatter_jitsi_widget_added_by_you" = "You added VoIP conference";
+"event_formatter_jitsi_widget_removed_by_you" = "You removed VoIP conference";
+
 // Others
 "or" = "or";
 "you" = "You";
