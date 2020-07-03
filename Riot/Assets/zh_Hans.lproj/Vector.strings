@@ -282,8 +282,11 @@
 "settings_version" = "版本 %@";
 "settings_olm_version" = "Olm 版本 %@";
 "settings_copyright" = "版权";
+"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "条款和条件";
 "settings_privacy_policy" = "隐私政策";
+"settings_term_conditions_url" = "https://riot.im/tac_apple";
+"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "第三方通知";
 "settings_send_crash_report" = "发送崩溃和使用数据";
 "settings_clear_cache" = "清空缓存";

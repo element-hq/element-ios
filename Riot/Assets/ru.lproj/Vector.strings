@@ -268,8 +268,11 @@
 "settings_version" = "Версия %@";
 "settings_olm_version" = "Версия Olm %@";
 "settings_copyright" = "Авторские права";
+"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Условия и положения";
+"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Политика конфиденциальности";
+"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Уведомления сторонних разработчиков";
 "settings_send_crash_report" = "Отправка данных о сбоях и использовании";
 "settings_clear_cache" = "Очистить кэш";

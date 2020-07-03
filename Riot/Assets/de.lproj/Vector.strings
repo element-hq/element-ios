@@ -232,8 +232,11 @@
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm-Version %@";
 "settings_copyright" = "Kopierrecht";
+"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Geschäftsbedingungen";
 "settings_privacy_policy" = "Datenschutzerklärung";
+"settings_privacy_policy_url" = "https://riot.im/privacy";
+"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_send_crash_report" = "Sende anonyme Absturz- & Nutzungsdaten";
 "settings_change_password" = "Passwort ändern";
 "settings_old_password" = "altes Passwort";

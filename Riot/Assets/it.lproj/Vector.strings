@@ -350,8 +350,11 @@
 "settings_version" = "Versione %@";
 "settings_olm_version" = "Versione Olm %@";
 "settings_copyright" = "Copyright";
+"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Termini e condizioni";
+"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Privacy Policy";
+"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Avvisi di terze parti";
 "settings_send_crash_report" = "Invia dati di utilizzo anonimi";
 "settings_enable_rageshake" = "Per segnalare un errore agita il dispositivo con rabbia";

@@ -186,8 +186,11 @@
 "settings_version" = "Útgáfa %@";
 "settings_olm_version" = "Útgáfa olm %@";
 "settings_copyright" = "Höfundarréttur";
+"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Skilmálar og kvaðir";
+"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Stefna vegna meðferðar persónuupplýsinga";
+"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Athugasemdir frá þriðja aðila";
 "settings_send_crash_report" = "Senda nafnlausar hrunskýrslur og upplýsingar um notkun";
 "settings_clear_cache" = "Hreinsa skyndiminni";
