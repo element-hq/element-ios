@@ -1122,6 +1122,14 @@ internal enum VectorL10n {
   internal static func eventFormatterWidgetRemovedByYou(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_widget_removed_by_you", p1)
   }
+  /// The link %@ is taking you to another site: %@\n\nAre you sure you want to continue?
+  internal static func externalLinkConfirmationMessage(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "external_link_confirmation_message", p1, p2)
+  }
+  /// Double-check this link
+  internal static var externalLinkConfirmationTitle: String { 
+    return VectorL10n.tr("Vector", "external_link_confirmation_title") 
+  }
   /// File upload
   internal static var fileUploadErrorTitle: String { 
     return VectorL10n.tr("Vector", "file_upload_error_title") 
