@@ -1078,9 +1078,17 @@ internal enum VectorL10n {
   internal static func eventFormatterJitsiWidgetAdded(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_jitsi_widget_added", p1)
   }
+  /// You added VoIP conference
+  internal static var eventFormatterJitsiWidgetAddedByYou: String { 
+    return VectorL10n.tr("Vector", "event_formatter_jitsi_widget_added_by_you") 
+  }
   /// VoIP conference removed by %@
   internal static func eventFormatterJitsiWidgetRemoved(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_jitsi_widget_removed", p1)
+  }
+  /// You removed VoIP conference
+  internal static var eventFormatterJitsiWidgetRemovedByYou: String { 
+    return VectorL10n.tr("Vector", "event_formatter_jitsi_widget_removed_by_you") 
   }
   /// %tu membership changes
   internal static func eventFormatterMemberUpdates(_ p1: Int) -> String {
@@ -1102,9 +1110,17 @@ internal enum VectorL10n {
   internal static func eventFormatterWidgetAdded(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_widget_added", p1, p2)
   }
+  /// You added the widget: %@
+  internal static func eventFormatterWidgetAddedByYou(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "event_formatter_widget_added_by_you", p1)
+  }
   /// %@ widget removed by %@
   internal static func eventFormatterWidgetRemoved(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_widget_removed", p1, p2)
+  }
+  /// You removed the widget: %@
+  internal static func eventFormatterWidgetRemovedByYou(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "event_formatter_widget_removed_by_you", p1)
   }
   /// File upload
   internal static var fileUploadErrorTitle: String { 
