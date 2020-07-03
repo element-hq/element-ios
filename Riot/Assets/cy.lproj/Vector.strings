@@ -399,11 +399,8 @@
 "settings_version" = "Fersiwn %@";
 "settings_olm_version" = "Fersiwn Olm %@";
 "settings_copyright" = "Hawlfraint";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Telerau ac Amodau";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Polisi Preifatrwydd";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Hysbysiadau Trydydd Parti";
 "settings_send_crash_report" = "Anfonwch ddata namau a defnydd dienw";
 "settings_enable_rageshake" = "Ysgwydiad blin i roi gwybod am nam";

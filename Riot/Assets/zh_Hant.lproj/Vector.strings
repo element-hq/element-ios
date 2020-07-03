@@ -365,11 +365,8 @@
 "settings_version" = "版本 %@";
 "settings_olm_version" = "Olm 版本 %@";
 "settings_copyright" = "版權";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "合約條款";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "隱私權政策";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "第三方通知";
 "settings_send_crash_report" = "傳送崩潰和使用數據";
 "settings_enable_rageshake" = "透過大力搖晃回報錯誤";

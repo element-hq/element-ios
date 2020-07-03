@@ -343,11 +343,8 @@
 "settings_labs_e2e_encryption_prompt_message" = "Zifratzea ezartzen bukatzeko saioa berriro hasi behar duzu.";
 "settings_version" = "%@ bertsioa";
 "settings_olm_version" = "%@ Olm bertsioa";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Termino eta baldintzak";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Pribatutasun politika";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Hirugarrengoen adierazpenak";
 "settings_send_crash_report" = "Bidali kraskatze eta erabilera datu anonimoak";
 "settings_crypto_device_name" = "Saioaren izena: ";

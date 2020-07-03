@@ -307,11 +307,8 @@
 "settings_version" = "Versie %@";
 "settings_olm_version" = "Olm-versie %@";
 "settings_copyright" = "Copyright";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Algemene voorwaarden";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Privacybeleid";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Derdepartijmeldingen";
 "settings_send_crash_report" = "Anonieme crash- en gebruiksgegevens versturen";
 "settings_clear_cache" = "Cache verwijderen";
