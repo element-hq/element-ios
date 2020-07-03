@@ -1149,3 +1149,17 @@
 "authenticated_session_flow_not_supported" = "Cette application ne prend par en charge le mécanisme d’authentification de votre serveur d’accueil.";
 "secure_backup_setup_banner_title" = "Sauvegarde sécurisée";
 "secure_backup_setup_banner_subtitle" = "Protection afin d’éviter de perdre l’accès aux messages et données chiffrés";
+"security_settings_crypto_sessions_description_2" = "Si vous ne reconnaissez pas une connexion, changez votre mot de passe et réinitialisez la sauvegarde sécurisée.";
+"security_settings_secure_backup" = "SAUVEGARDE SÉCURISÉE";
+"security_settings_secure_backup_description" = "Protection afin d’éviter de perdre l’accès aux messages et données chiffrés en sauvegardant les clés de chiffrement sur votre serveur.";
+"security_settings_secure_backup_setup" = "Configurer";
+"security_settings_secure_backup_synchronise" = "Synchroniser";
+"security_settings_secure_backup_delete" = "Supprimer";
+"security_settings_user_password_description" = "Confirmez votre identité en saisissant le mot de passe de votre compte";
+"secure_key_backup_setup_existing_backup_error_title" = "Une sauvegarde pour les messages existe déjà";
+"secure_key_backup_setup_existing_backup_error_info" = "Déverrouillez-la pour la réutiliser dans la sauvegarde sécurisée ou supprimez-la pour créer une nouvelle sauvegarde de messages dans la sauvegarde sécurisée.";
+"secure_key_backup_setup_existing_backup_error_unlock_it" = "La déverrouiller";
+"secure_key_backup_setup_existing_backup_error_delete_it" = "La supprimer";
+"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Commencer à utiliser la sauvegarde sécurisée";
+"cross_signing_setup_banner_title" = "Configurer le chiffrement";
+"cross_signing_setup_banner_subtitle" = "Vérifiez vos autres appareils plus facilement";
