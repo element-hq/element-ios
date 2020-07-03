@@ -254,11 +254,11 @@
 "settings_labs_e2e_encryption" = "Fshehtëzim Skaj-Më-Skaj";
 "settings_version" = "Version %@";
 "settings_copyright" = "Të drejta kopjimi";
-"settings_copyright_url" = "https://element.io/copyright";
+"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Terma & Kushte";
-"settings_term_conditions_url" = "https://element.io/tac_apple";
+"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Rregulla Privatësie";
-"settings_privacy_policy_url" = "https://element.io/privacy";
+"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Njoftime Palësh të Treta";
 "settings_clear_cache" = "Pastroje fshehtinën";
 "settings_change_password" = "Ndryshoni fjalëkalimin";

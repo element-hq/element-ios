@@ -334,11 +334,11 @@
 "settings_version" = "Verzió %@";
 "settings_olm_version" = "Olm verzió %@";
 "settings_copyright" = "Szerzői jog";
-"settings_copyright_url" = "https://element.io/copyright";
+"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Felhasználási feltételek";
-"settings_term_conditions_url" = "https://element.io/tac_apple";
+"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Adatvédelmi szabályok";
-"settings_privacy_policy_url" = "https://element.io/privacy";
+"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Harmadik fél jegyzetek";
 "settings_send_crash_report" = "Személytelen összeomlás és felhasználási adatok küldése";
 "settings_enable_rageshake" = "Eszköz megrázása a hiba bejelentéséhez";

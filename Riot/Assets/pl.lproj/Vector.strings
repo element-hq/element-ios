@@ -243,11 +243,11 @@
 "settings_version" = "Wersja %@";
 "settings_olm_version" = "Wersja Olm %@";
 "settings_copyright" = "Prawa autorskie";
-"settings_copyright_url" = "https://element.io/copyright";
+"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Warunki użytkowania";
-"settings_term_conditions_url" = "https://element.io/tac_apple";
+"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Polityka prywatności";
-"settings_privacy_policy_url" = "https://element.io/privacy";
+"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Informacje o stronach trzecich";
 "settings_enable_rageshake" = "Potrząśnij wściekle, aby zgłosić błąd";
 "settings_clear_cache" = "Wyczyść pamięć podręczną";

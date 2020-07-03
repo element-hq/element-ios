@@ -310,11 +310,11 @@
 "settings_version" = "Phiên bản %@";
 "settings_olm_version" = "Phiên bản Olm %@";
 "settings_copyright" = "Bản quyền";
-"settings_copyright_url" = "https://element.io/copyright";
+"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Điều khoản và điều kiện";
-"settings_term_conditions_url" = "https://element.io/tac_apple";
+"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Chính sách bảo mật";
-"settings_privacy_policy_url" = "https://element.io/privacy";
+"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Thông báo từ bên thứ ba";
 "settings_send_crash_report" = "Gửi lỗi & dữ liệu sử dụng";
 "settings_enable_rageshake" = "Lắc điện thoại để báo cáo lỗi";
