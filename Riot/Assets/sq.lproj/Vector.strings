@@ -1151,3 +1151,8 @@
 "security_settings_crypto_sessions_description_2" = "Nëse nuk njihni një palë kredenciale, ndryshoni fjalëkalimin tuaj dhe riujdisni Kopjeruajtjen e Sigurt.";
 "cross_signing_setup_banner_title" = "Ujdisni fshehtëzim";
 "cross_signing_setup_banner_subtitle" = "Verifikoni më me lehtësi pajisje të tjera";
+// Events formatter with you
+"event_formatter_widget_added_by_you" = "Shtuat widget-in: %@";
+"event_formatter_widget_removed_by_you" = "Hoqët widget-in: %@";
+"event_formatter_jitsi_widget_added_by_you" = "Shtuat konferencë VoIP";
+"event_formatter_jitsi_widget_removed_by_you" = "Hoqët konferencë VoIP";
