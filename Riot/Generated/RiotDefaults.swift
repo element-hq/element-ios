@@ -45,8 +45,8 @@ internal enum RiotDefaults {
   internal static let stunServerFallback: String = _document["stunServerFallback"]
   internal static let syncLocalContacts: Bool = _document["syncLocalContacts"]
   internal static let webAppUrl: String = _document["webAppUrl"]
-  internal static let webAppUrlBeta: String = _document["webAppUrlBeta"]
   internal static let webAppUrlDev: String = _document["webAppUrlDev"]
+  internal static let webAppUrlStaging: String = _document["webAppUrlStaging"]
 }
 // swiftlint:enable identifier_name line_length type_body_length
 

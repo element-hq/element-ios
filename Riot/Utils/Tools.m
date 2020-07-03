@@ -64,7 +64,7 @@
 + (NSString *)webAppUrl
 {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrl"];
-    //return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrlBeta"];
+    //return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrlStaging"];
     //return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrlDev"];
 }
 

@@ -24,7 +24,7 @@
 	<string>matrix.org</string>
 	<key>webAppUrlDev</key>
 	<string>https://develop.element.io</string>
-	<key>webAppUrlBeta</key>
+	<key>webAppUrlStaging</key>
 	<string>https://staging.element.io</string>
 	<key>webAppUrl</key>
 	<string>https://app.element.io</string>
