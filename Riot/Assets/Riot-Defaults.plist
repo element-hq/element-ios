@@ -86,5 +86,11 @@
 		<key>matrix.org</key>
 		<string></string>
 	</dict>
+	<key>settingsCopyrightUrl</key>
+	<string>https://riot.im/copyright</string>
+	<key>settingsPrivacyPolicyUrl</key>
+	<string>https://riot.im/privacy</string>
+	<key>settingsTermsConditionsUrl</key>
+	<string>https://riot.im/tac_apple</string>
 </dict>
 </plist>
