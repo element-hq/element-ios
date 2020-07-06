@@ -25,7 +25,7 @@ class DarkTheme: NSObject, Theme {
 
     var backgroundColor: UIColor = UIColor(rgb: 0x15191E)
 
-    var baseColor: UIColor = UIColor(rgb: 0x22282F)
+    var baseColor: UIColor = UIColor(rgb: 0x21262C)
     var baseIconPrimaryColor: UIColor = UIColor(rgb: 0xEDF3FF)
     var baseTextPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
     var baseTextSecondaryColor: UIColor = UIColor(rgb: 0xA9B2BC)
@@ -33,7 +33,7 @@ class DarkTheme: NSObject, Theme {
     var searchBackgroundColor: UIColor = UIColor(rgb: 0x15191E)
     var searchPlaceholderColor: UIColor = UIColor(rgb: 0xA9B2BC)
 
-    var headerBackgroundColor: UIColor = UIColor(rgb: 0x22262E)
+    var headerBackgroundColor: UIColor = UIColor(rgb: 0x21262C)
     var headerBorderColor: UIColor  = UIColor(rgb: 0x15191E)
     var headerTextPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
     var headerTextSecondaryColor: UIColor = UIColor(rgb: 0xA9B2BC)
@@ -41,11 +41,11 @@ class DarkTheme: NSObject, Theme {
     var textPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
     var textSecondaryColor: UIColor = UIColor(rgb: 0xA9B2BC)
 
-    var tintColor: UIColor = UIColor(rgb: 0x00BE8A)
+    var tintColor: UIColor = UIColor(rgb: 0x0DBD8B)
     var tintBackgroundColor: UIColor = UIColor(rgb: 0x1F6954)
     var tabBarUnselectedItemTintColor: UIColor = UIColor(rgb: 0x8E99A4)
     var unreadRoomIndentColor: UIColor = UIColor(rgb: 0x2E3648)
-    var lineBreakColor: UIColor = UIColor(rgb: 0x61708B)
+    var lineBreakColor: UIColor = UIColor(rgb: 0x363D49)
     
     var noticeColor: UIColor = UIColor(rgb: 0xFF4B55)
     var noticeSecondaryColor: UIColor = UIColor(rgb: 0x61708B)

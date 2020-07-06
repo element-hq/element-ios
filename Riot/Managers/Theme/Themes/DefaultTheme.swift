@@ -41,11 +41,11 @@ class DefaultTheme: NSObject, Theme {
     var textPrimaryColor: UIColor = UIColor(rgb: 0x171910)
     var textSecondaryColor: UIColor = UIColor(rgb: 0x8F97A3)
 
-    var tintColor: UIColor = UIColor(rgb: 0x00BE8A)
+    var tintColor: UIColor = UIColor(rgb: 0x0DBD8B)
     var tintBackgroundColor: UIColor = UIColor(rgb: 0xe9fff9)
     var tabBarUnselectedItemTintColor: UIColor = UIColor(rgb: 0xC1C6CD)
     var unreadRoomIndentColor: UIColor = UIColor(rgb: 0x2E3648)
-    var lineBreakColor: UIColor = UIColor(rgb: 0xEEEFEF)
+    var lineBreakColor: UIColor = UIColor(rgb: 0xDDE4EE)        
     
     var noticeColor: UIColor = UIColor(rgb: 0xFF4B55)
     var noticeSecondaryColor: UIColor = UIColor(rgb: 0x61708B)
