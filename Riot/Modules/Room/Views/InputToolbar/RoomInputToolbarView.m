@@ -69,6 +69,8 @@
     [self.rightInputToolbarButton setTitleColor:ThemeService.shared.theme.tintColor forState:UIControlStateHighlighted];
     
     self.isEncryptionEnabled = _isEncryptionEnabled;
+    
+    self.separatorView.hidden = YES;
 }
 
 #pragma mark - Override MXKView
@@ -79,9 +81,7 @@
     
     // Remove default toolbar background color
     self.backgroundColor = [UIColor clearColor];
-    
-    self.separatorView.backgroundColor = ThemeService.shared.theme.lineBreakColor;
-    
+        
     // Custom the growingTextView display
     growingTextView.layer.cornerRadius = 0;
     growingTextView.layer.borderWidth = 0;
