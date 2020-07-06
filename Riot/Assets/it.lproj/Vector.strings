@@ -1098,7 +1098,7 @@
 "secrets_recovery_with_key_invalid_recovery_key_title" = "Impossibile accedere all'archivio segreto";
 "secrets_recovery_with_key_invalid_recovery_key_message" = "Controlla di avere inserito la chiave di recupero corretta.";
 "secure_key_backup_setup_intro_title" = "Backup sicuro";
-"secure_key_backup_setup_intro_info" = "Salvaguardia contro la perdita dell'accesso ai messaggi e dati cifrati facendo un backup delle chiavi crittografiche sul tuo server.";
+"secure_key_backup_setup_intro_info" = "Proteggiti contro la perdita dell'accesso ai messaggi e dati cifrati facendo un backup delle chiavi crittografiche sul tuo server.";
 "secure_key_backup_setup_intro_use_security_key_title" = "Usa una chiave di sicurezza";
 "secure_key_backup_setup_intro_use_security_key_info" = "Genera una chiave di sicurezza da conservare in qualche posto sicuro, come un gestore di password o una cassaforte.";
 "secure_key_backup_setup_intro_use_security_passphrase_title" = "Usa una frase di sicurezza";
@@ -1123,3 +1123,22 @@
 "authenticated_session_flow_not_supported" = "Questa app non supporta il metodo di autenticazione del tuo homeserver.";
 "secure_backup_setup_banner_title" = "Backup Sicuro";
 "secure_backup_setup_banner_subtitle" = "Proteggiti dalla perdita dei messaggi e dati crittografati";
+"security_settings_crypto_sessions_description_2" = "Se non riconosci un accesso, modifica la password e reimposta il Backup Sicuro.";
+"security_settings_secure_backup" = "BACKUP SICURO";
+"security_settings_secure_backup_description" = "Proteggiti contro la perdita dell'accesso ai messaggi e dati cifrati facendo un backup delle chiavi crittografiche sul tuo server.";
+"security_settings_secure_backup_setup" = "Configura";
+"security_settings_secure_backup_synchronise" = "Sincronizza";
+"security_settings_secure_backup_delete" = "Elimina";
+"security_settings_user_password_description" = "Conferma la tua identità inserendo la password del tuo account";
+// Events formatter with you
+"event_formatter_widget_added_by_you" = "Hai aggiunto il widget: %@";
+"event_formatter_widget_removed_by_you" = "Hai rimosso il widget: %@";
+"event_formatter_jitsi_widget_added_by_you" = "Hai aggiunto la conferenza VoIP";
+"event_formatter_jitsi_widget_removed_by_you" = "Hai rimosso la conferenza VoIP";
+"secure_key_backup_setup_existing_backup_error_title" = "Esiste già un backup per i messaggi";
+"secure_key_backup_setup_existing_backup_error_info" = "Sbloccalo per usarlo nel backup sicuro o eliminalo per creare un backup di messaggi nuovo nel backup sicuro.";
+"secure_key_backup_setup_existing_backup_error_unlock_it" = "Sbloccalo";
+"secure_key_backup_setup_existing_backup_error_delete_it" = "Eliminalo";
+"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Inizia ad usare il Backup Sicuro";
+"cross_signing_setup_banner_title" = "Imposta la crittografia";
+"cross_signing_setup_banner_subtitle" = "Verifica più facilmente i tuoi altri dispositivi";
