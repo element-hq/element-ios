@@ -92,12 +92,14 @@ class DefaultTheme: NSObject, Theme {
         tabBar.isTranslucent = false
     }
     
+    // Note: We are not using UINavigationBarAppearance on iOS 13+ atm because of UINavigationBar directly include UISearchBar on their titleView that cause crop issues with UINavigationController pop.
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
         navigationBar.tintColor = self.textSecondaryColor
         navigationBar.titleTextAttributes = [
             NSAttributedString.Key.foregroundColor: self.textPrimaryColor
         ]
         navigationBar.barTintColor = self.baseColor
+        navigationBar.shadowImage = UIImage() // Remove bottom shadow
 
         // The navigation bar needs to be opaque so that its background color is the expected one
         navigationBar.isTranslucent = false
