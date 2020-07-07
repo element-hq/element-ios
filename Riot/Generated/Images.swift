@@ -56,7 +56,6 @@ internal enum Asset {
     internal static let encryptionNormal = ImageAsset(name: "encryption_normal")
     internal static let encryptionTrusted = ImageAsset(name: "encryption_trusted")
     internal static let encryptionWarning = ImageAsset(name: "encryption_warning")
-    internal static let leave = ImageAsset(name: "leave")
     internal static let roomActionDirectChat = ImageAsset(name: "room_action_direct_chat")
     internal static let roomActionFavourite = ImageAsset(name: "room_action_favourite")
     internal static let roomActionLeave = ImageAsset(name: "room_action_leave")
