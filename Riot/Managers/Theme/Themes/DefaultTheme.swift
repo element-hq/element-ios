@@ -105,7 +105,6 @@ class DefaultTheme: NSObject, Theme {
     
     func applyStyle(onSearchBar searchBar: UISearchBar) {
         searchBar.searchBarStyle = .default
-        searchBar.barStyle = .black
         searchBar.barTintColor = self.baseColor
         searchBar.isTranslucent = false
         searchBar.backgroundImage = UIImage() // Remove top and bottom shadow
