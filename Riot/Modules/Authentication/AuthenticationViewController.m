@@ -1108,8 +1108,10 @@
     MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:userId];
     MXSession *session = account.mxSession;
     
+    BOOL botCreationEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"enableBotCreation"];
+    
     // Create DM with Riot-bot on new account creation.
-    if (self.authType == MXKAuthenticationTypeRegister)
+    if (self.authType == MXKAuthenticationTypeRegister && botCreationEnabled)
     {
         MXRoomCreationParameters *roomCreationParameters = [MXRoomCreationParameters parametersForDirectRoomWithUser:@"@riot-bot:matrix.org"];
         [session createRoomWithParameters:roomCreationParameters success:nil failure:^(NSError *error) {

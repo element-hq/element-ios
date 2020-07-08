@@ -23,11 +23,11 @@
 	<key>homeserver</key>
 	<string>matrix.org</string>
 	<key>webAppUrlDev</key>
-	<string>https://riot.im/develop</string>
-	<key>webAppUrlBeta</key>
-	<string>https://riot.im/beta</string>
+	<string>https://develop.element.io</string>
+	<key>webAppUrlStaging</key>
+	<string>https://staging.element.io</string>
 	<key>webAppUrl</key>
-	<string>https://riot.im/app</string>
+	<string>https://app.element.io</string>
 	<key>matrixApps</key>
 	<true/>
 	<key>integrationsUiUrl</key>
@@ -92,5 +92,7 @@
 	<string>https://riot.im/privacy</string>
 	<key>settingsTermsConditionsUrl</key>
 	<string>https://riot.im/tac_apple</string>
+	<key>enableBotCreation</key>
+	<false/>
 </dict>
 </plist>
