@@ -48,7 +48,6 @@ internal enum Asset {
     internal static let addGroupParticipant = ImageAsset(name: "add_group_participant")
     internal static let createGroup = ImageAsset(name: "create_group")
     internal static let removeIconBlue = ImageAsset(name: "remove_icon_blue")
-    internal static let riotIcon = ImageAsset(name: "riot_icon")
     internal static let e2eBlocked = ImageAsset(name: "e2e_blocked")
     internal static let e2eUnencrypted = ImageAsset(name: "e2e_unencrypted")
     internal static let e2eWarning = ImageAsset(name: "e2e_warning")
