@@ -2487,54 +2487,14 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             
             if (!launchAnimationContainerView && window)
             {
-                launchAnimationContainerView = [[UIView alloc] initWithFrame:window.bounds];
-                launchAnimationContainerView.backgroundColor = ThemeService.shared.theme.backgroundColor;
-                launchAnimationContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-                [window addSubview:launchAnimationContainerView];
+                LaunchLoadingView *launchLoadingView = [LaunchLoadingView instantiate];               
+                launchLoadingView.frame = window.bounds;
+                [launchLoadingView updateWithTheme:ThemeService.shared.theme];
+                launchLoadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
                 
-                // Add animation view
-                UIImageView *animationView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 170, 170)];
-                animationView.image = [UIImage animatedImageNamed:@"animatedLogo-" duration:2];
+                [window addSubview:launchLoadingView];
                 
-                animationView.center = CGPointMake(launchAnimationContainerView.center.x, 3 * launchAnimationContainerView.center.y / 4);
-                
-                animationView.translatesAutoresizingMaskIntoConstraints = NO;
-                [launchAnimationContainerView addSubview:animationView];
-                
-                NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:animationView
-                                                                                   attribute:NSLayoutAttributeWidth
-                                                                                   relatedBy:NSLayoutRelationEqual
-                                                                                      toItem:nil
-                                                                                   attribute:NSLayoutAttributeNotAnAttribute
-                                                                                  multiplier:1
-                                                                                    constant:170];
-                
-                NSLayoutConstraint* heightConstraint = [NSLayoutConstraint constraintWithItem:animationView
-                                                                                    attribute:NSLayoutAttributeHeight
-                                                                                    relatedBy:NSLayoutRelationEqual
-                                                                                       toItem:nil
-                                                                                    attribute:NSLayoutAttributeNotAnAttribute
-                                                                                   multiplier:1
-                                                                                     constant:170];
-                
-                NSLayoutConstraint* centerXConstraint = [NSLayoutConstraint constraintWithItem:animationView
-                                                                                     attribute:NSLayoutAttributeCenterX
-                                                                                     relatedBy:NSLayoutRelationEqual
-                                                                                        toItem:launchAnimationContainerView
-                                                                                     attribute:NSLayoutAttributeCenterX
-                                                                                    multiplier:1
-                                                                                      constant:0];
-                
-                NSLayoutConstraint* centerYConstraint = [NSLayoutConstraint constraintWithItem:animationView
-                                                                                     attribute:NSLayoutAttributeCenterY
-                                                                                     relatedBy:NSLayoutRelationEqual
-                                                                                        toItem:launchAnimationContainerView
-                                                                                     attribute:NSLayoutAttributeCenterY
-                                                                                    multiplier:3.0/4.0
-                                                                                      constant:0];
-                
-                [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, centerXConstraint, centerYConstraint]];
-                
+                launchAnimationContainerView = launchLoadingView;
                 launchAnimationStart = [NSDate date];
             }
             

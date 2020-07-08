@@ -209,6 +209,8 @@
 		B1550FCA2420E8F500CE097B /* QRCodeReaderViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1550FC72420E8F400CE097B /* QRCodeReaderViewController.storyboard */; };
 		B1550FCB2420E8F500CE097B /* QRCodeReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1550FC82420E8F400CE097B /* QRCodeReaderViewController.swift */; };
 		B1550FCC2420E8F500CE097B /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1550FC92420E8F400CE097B /* QRCodeGenerator.swift */; };
+		B1560DA224B65AFA00490F50 /* LaunchLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1560DA124B65AFA00490F50 /* LaunchLoadingView.swift */; };
+		B1560DA424B65B3700490F50 /* LaunchLoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1560DA324B65B3700490F50 /* LaunchLoadingView.xib */; };
 		B157FA9F23264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157FA9723264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinator.swift */; };
 		B157FAA023264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157FA9823264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsViewModelType.swift */; };
 		B157FAA123264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157FA9923264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinatorType.swift */; };
@@ -1080,6 +1082,8 @@
 		B1550FC72420E8F400CE097B /* QRCodeReaderViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = QRCodeReaderViewController.storyboard; sourceTree = "<group>"; };
 		B1550FC82420E8F400CE097B /* QRCodeReaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeReaderViewController.swift; sourceTree = "<group>"; };
 		B1550FC92420E8F400CE097B /* QRCodeGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
+		B1560DA124B65AFA00490F50 /* LaunchLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchLoadingView.swift; sourceTree = "<group>"; };
+		B1560DA324B65B3700490F50 /* LaunchLoadingView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LaunchLoadingView.xib; sourceTree = "<group>"; };
 		B157FA9723264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsDiscoveryThreePidDetailsCoordinator.swift; sourceTree = "<group>"; };
 		B157FA9823264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsDiscoveryThreePidDetailsViewModelType.swift; sourceTree = "<group>"; };
 		B157FA9923264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsDiscoveryThreePidDetailsCoordinatorType.swift; sourceTree = "<group>"; };
@@ -2520,6 +2524,15 @@
 			path = KeyVerification;
 			sourceTree = "<group>";
 		};
+		B1560DA024B65A9500490F50 /* LaunchLoading */ = {
+			isa = PBXGroup;
+			children = (
+				B1560DA124B65AFA00490F50 /* LaunchLoadingView.swift */,
+				B1560DA324B65B3700490F50 /* LaunchLoadingView.xib */,
+			);
+			path = LaunchLoading;
+			sourceTree = "<group>";
+		};
 		B157FA9623264AE800EBFBD4 /* ThreePidDetails */ = {
 			isa = PBXGroup;
 			children = (
@@ -2938,6 +2951,7 @@
 				EC711B9A24A63B58008F830C /* SecureBackup */,
 				EC711B4724A63B36008F830C /* Secrets */,
 				B1B556EA20EE6C4C00210D55 /* Main */,
+				B1560DA024B65A9500490F50 /* LaunchLoading */,
 				B1B556CA20EE6C4C00210D55 /* TabBar */,
 				B1B556F920EE6C4C00210D55 /* Authentication */,
 				B17982FD2119FEA7001FD722 /* GDPR */,
@@ -5011,6 +5025,7 @@
 				B1B9DEEA22EB34EF0065E677 /* ReactionHistoryViewController.storyboard in Resources */,
 				B1B9194C2118984300FE25B5 /* RoomPredecessorBubbleCell.xib in Resources */,
 				B1C562E9228C7CF20037F12A /* ContextualMenuItemView.xib in Resources */,
+				B1560DA424B65B3700490F50 /* LaunchLoadingView.xib in Resources */,
 				B1BEE73A23DF44A60003A4CB /* UserVerificationSessionsStatusViewController.storyboard in Resources */,
 				B1B5572120EE6C4D00210D55 /* ContactsTableViewController.xib in Resources */,
 				B1B5593A20EF7BAC00210D55 /* TableViewCellWithLabelAndLargeTextView.xib in Resources */,
@@ -5590,6 +5605,7 @@
 				32242F1321E8FBA900725742 /* Theme.swift in Sources */,
 				B108932523AB93A200802670 /* KeyVerificationConclusionViewData.swift in Sources */,
 				B1B5582520EF638A00210D55 /* RoomMemberTitleView.m in Sources */,
+				B1560DA224B65AFA00490F50 /* LaunchLoadingView.swift in Sources */,
 				B1B5582C20EF666100210D55 /* DirectoryRecentTableViewCell.m in Sources */,
 				B1B558E420EF768F00210D55 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
 				B18DEDD8243377C10075FEF7 /* KeyVerificationSelfVerifyWaitCoordinatorType.swift in Sources */,

@@ -36,8 +36,6 @@ internal enum Asset {
     internal static let closeButton = ImageAsset(name: "close_button")
     internal static let disclosureIcon = ImageAsset(name: "disclosure_icon")
     internal static let group = ImageAsset(name: "group")
-    internal static let horizontalLogo = ImageAsset(name: "horizontal_logo")
-    internal static let logo = ImageAsset(name: "logo")
     internal static let monitor = ImageAsset(name: "monitor")
     internal static let placeholder = ImageAsset(name: "placeholder")
     internal static let plusIcon = ImageAsset(name: "plus_icon")
@@ -69,7 +67,6 @@ internal enum Asset {
     internal static let keyBackupLogo = ImageAsset(name: "key_backup_logo")
     internal static let revealPasswordButton = ImageAsset(name: "reveal_password_button")
     internal static let keyVerificationSuccessShield = ImageAsset(name: "key_verification_success_shield")
-    internal static let launchScreenRiot = ImageAsset(name: "LaunchScreenRiot")
     internal static let cameraCapture = ImageAsset(name: "camera_capture")
     internal static let cameraPlay = ImageAsset(name: "camera_play")
     internal static let cameraStop = ImageAsset(name: "camera_stop")
@@ -116,13 +113,9 @@ internal enum Asset {
     internal static let launchScreenLogo = ImageAsset(name: "launch_screen_logo")
   }
   internal enum SharedImages {
-    internal static let animatedLogo0 = ImageAsset(name: "animatedLogo-0")
-    internal static let animatedLogo1 = ImageAsset(name: "animatedLogo-1")
-    internal static let animatedLogo2 = ImageAsset(name: "animatedLogo-2")
-    internal static let animatedLogo3 = ImageAsset(name: "animatedLogo-3")
-    internal static let animatedLogo4 = ImageAsset(name: "animatedLogo-4")
     internal static let cancel = ImageAsset(name: "cancel")
     internal static let e2eVerified = ImageAsset(name: "e2e_verified")
+    internal static let horizontalLogo = ImageAsset(name: "horizontal_logo")
   }
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
