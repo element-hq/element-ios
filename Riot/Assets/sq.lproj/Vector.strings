@@ -475,7 +475,7 @@
 "room_creation_make_public_prompt_msg" = "Jeni i sigurt se doni ta bëni publike këtë fjalosje? Në një të tillë, mesazhet tuaj mund t’i lexojë cilido dhe mund të hyjë në bisedë.";
 "room_creation_wait_for_creation" = "Po krijohet tashmë një dhomë. Ju lutemi, prisni.";
 "contacts_address_book_permission_required" = "Lypset leje për hyrje në kontaktet vendore";
-"contacts_address_book_permission_denied" = "S’e lejuat Riot-i të hyjë në kontaktet tuaja vendore";
+"contacts_address_book_permission_denied" = "S’e lejuat Element-i të hyjë në kontaktet tuaja vendore";
 "room_participants_remove_third_party_invite_msg" = "Heqja e ftesave nga palë të treta nuk mbulohet ende, derisa të kihet API";
 "room_participants_invite_malformed_id" = "ID e keqformuar. Duhet të jetë një adresë email ose ID Matrix, si '@localpart:domain'";
 "room_participants_action_ban" = "Dëboje nga kjo dhomë";
@@ -499,7 +499,7 @@
 "settings_global_settings_info" = "Rregullimet globale për njoftime i gjeni te klienti juaj %@ web";
 "settings_on_denied_notification" = "Njoftimet për %@ s’pranohen, ju lutemi, lejojini që nga rregullimet e pajisjes tuaj";
 "settings_enable_callkit" = "Thirrje të integruara";
-"settings_callkit_info" = "Merrini thirrjet ardhëse edhe me ekran të kyçur. Shihni thirrjet tuaja nën Riot te historiku i thirrjeve të sistemit. Nëse iCloud është i aktivizuar, ky historik thirrjesh do t’i jepet kompanisë Apple.";
+"settings_callkit_info" = "Merrini thirrjet ardhëse edhe me ekran të kyçur. Shihni thirrjet tuaja nën Element te historiku i thirrjeve të sistemit. Nëse iCloud është i aktivizuar, ky historik thirrjesh do t’i jepet kompanisë Apple.";
 "settings_ui_theme_picker_message" = "\"Auto\" përdor rregullimet \"Përmbysi Ngjyrat\" të pajisjes tuaj";
 "settings_contacts_discover_matrix_users" = "Përdorni email-e dhe numra telefoni për të gjetur përdorues";
 "settings_labs_e2e_encryption_prompt_message" = "Që të përfundohet rregullimi i fshehtëzimit duhet të ribëni hyrjen në llogari.";
@@ -525,7 +525,7 @@
 // Crash report
 "google_analytics_use_prompt" = "Do të donit të ndihmoni në përmirësimin e %@-it duke parashtruar automatikisht dhe në mënyrë anonime raporte vithisjesh dhe të dhëna përdorimi?";
 // Crypto
-"e2e_enabling_on_app_update" = "Riot tani mbulon fshehtëzim skaj-më-skaj, por lypset të ribëni hyrjen që ta aktivizoni.\n\nMund ta bëni tani ose më vonë, që prej rregullimeve të aplikacionit.";
+"e2e_enabling_on_app_update" = "Element tani mbulon fshehtëzim skaj-më-skaj, por lypset të ribëni hyrjen që ta aktivizoni.\n\nMund ta bëni tani ose më vonë, që prej rregullimeve të aplikacionit.";
 "bug_report_description" = "Ju lutemi, përshkruajeni të metën. Ç’po bënit? Ç’prisnit të ndodhte? Ç’ndodhi në fakt?";
 "bug_crash_report_description" = "Ju lutemi, përshkruani ç’po bënit para vithisjes:";
 "bug_report_logs_description" = "Që të mund të diagnostikohen probleme, regjistra prej këtij klienti do të dërgohen tok me këtë njoftim të metash. Nëse do të parapëlqenit të dërgohej vetëm teksti më sipër, ju lutemi, hiqjani shenjën kutizës:";
@@ -546,7 +546,7 @@
 "deactivate_account_informations_part5" = "Nëse do të donit që të harrohen mesazhet tuaj, ju lutemi, i vini shenjë kutizës më poshtë\n\nDukshmëria e mesazheve në Matrix është e ngjashme me atë në email. Harrimi i mesazheve nga ana jonë do të thotë që mesazhet që keni dërguar nuk do të ndahen me çfarëdo përdoruesi të ri apo të paregjistruar, por përdoruesit e regjistruar, që kanë tashmë hyrje në këto mesazhe, do të kenë prapëseprapë hyrje te kopja e tyre.";
 "deactivate_account_forget_messages_information_part1" = "Të lutem, harro krejt mesazhet që kamë dërguar, kur të çaktivizohet llogaria ime (";
 "deactivate_account_forget_messages_information_part3" = ": kjo do të bëjë që përdorues të ardhshëm të shohin një pamje jo të plotë të bisedave)";
-"rerequest_keys_alert_message" = "Ju lutemi, niseni Riot-in në një tjetër pajisje që mund të shfshehtëzoje mesazhin, që kështu të mund të dërgojë kyçet te ky sesion.";
+"rerequest_keys_alert_message" = "Ju lutemi, niseni Element-in në një tjetër pajisje që mund të shfshehtëzoje mesazhin, që kështu të mund të dërgojë kyçet te ky sesion.";
 "room_event_action_redact" = "Hiqe";
 "e2e_need_log_in_again" = "Që të prodhohen kyçe fshehtëzimi skaj-më-skaj për këtë sesion, lypset të ribëni hyrjen dhe të parashtroni kyçin publik te shërbyesi juaj Home.\nKjo duhet vetëm një herë; na ndjeni për belanë.";
 "room_action_send_sticker" = "Dërgoni ngjitës";
@@ -1023,7 +1023,7 @@
 "device_verification_self_verify_start_information" = "Përdoreni këtë sesion që të verifikoni atë të riun tuaj, duke i akorduar hyrje te mesazhe të fshehtëzuar.";
 "device_verification_self_verify_start_waiting" = "Po pritet…";
 "device_verification_self_verify_wait_title" = "Siguri e plotë";
-"device_verification_self_verify_wait_information" = "Verifikoni këtë sesion prej një nga sesionet tuaj të tjera, duke i akorduar hyrje te mesazhe të fshehtëzuar.\n\nPërdorni Riot-in më të ri në pajisjet tuaja të tjera:";
+"device_verification_self_verify_wait_information" = "Verifikoni këtë sesion prej një nga sesionet tuaj të tjera, duke i akorduar hyrje te mesazhe të fshehtëzuar.\n\nPërdorni Element-in më të ri në pajisjet tuaja të tjera:";
 "device_verification_self_verify_wait_waiting" = "Po pritet…";
 "room_member_power_level_admin_in" = "Përgjegjës te %@";
 "room_member_power_level_moderator_in" = "Moderator te %@";
@@ -1034,10 +1034,10 @@
 // Recover from private key
 "key_backup_recover_from_private_key_info" = "Po rikthehet kopjeruajtje…";
 // MARK: Clients
-"client_desktop_name" = "Riot Desktop";
-"client_web_name" = "Riot Web";
-"client_ios_name" = "Riot iOS";
-"client_android_name" = "Riot X për Android";
+"client_desktop_name" = "Element Desktop";
+"client_web_name" = "Element Web";
+"client_ios_name" = "Element iOS";
+"client_android_name" = "Element Android";
 "room_participants_action_security_status_complete_security" = "Siguri e plotë";
 "security_settings_crosssigning_info_not_bootstrapped" = "<em>Cross-signing</em> s’është ujdisur ende.";
 "security_settings_crosssigning_info_exists" = "Llogaria juaj ka një identitet <em>cross-signing</em>, por s’është ende i besuar nga ky sesion. Plotësoni sigurinë e këtij sesioni.";
@@ -1046,7 +1046,7 @@
 "security_settings_crosssigning_complete_security" = "Siguri e plotë";
 "security_settings_complete_security_alert_title" = "Siguri e plotë";
 "security_settings_complete_security_alert_message" = "Së pari duhet të plotësoni sigurinë në sesionin tuaj të tanishëm.";
-"security_settings_coming_soon" = "Na ndjeni. Ky veprim s’është ende pjesë e Riot-iOS-it. Ju lutemi, për ta pasur, përdorni një klient tjetër Matrix. Riot-iOS-i do ta përdorë.";
+"security_settings_coming_soon" = "Na ndjeni. Ky veprim s’është ende pjesë e Element iOS-it. Ju lutemi, për ta pasur, përdorni një klient tjetër Matrix. Element iOS-i do ta përdorë.";
 // MARK: - Device Verification
 "key_verification_other_session_title" = "Verifiko sesion";
 "key_verification_new_session_title" = "Verifikoni sesionin tuaj të ri";
