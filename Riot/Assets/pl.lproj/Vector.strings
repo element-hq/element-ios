@@ -356,7 +356,7 @@
 "deactivate_account_password_alert_message" = "Aby kontynuować, proszę wprowadzić swoje hasło";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Prośba wysłana";
-"rerequest_keys_alert_message" = "Uruchom proszę Riot na innym urządzeniu, które może odszyfrować wiadomość, aby wysłać klucze do tego urządzenia.";
+"rerequest_keys_alert_message" = "Uruchom proszę Element na innym urządzeniu, które może odszyfrować wiadomość, aby wysłać klucze do tego urządzenia.";
 "on" = "Włączone";
 "video" = "Obraz";
 "auth_forgot_password" = "Zapomniałeś(-aś) hasło?";
@@ -463,7 +463,7 @@
 "bug_report_title" = "Zgłoś błąd";
 "e2e_need_log_in_again" = "Należy się ponownie zalogować w celu wygenerowania kluczy szyfrowania end-to-end dla tego urządzenia i wysłania klucza publicznego do Twojego serwera domowego.\nJest to jednorazowe działanie; przepraszamy za trudności.";
 // Crypto
-"e2e_enabling_on_app_update" = "Riot obsługuje już szyfrowanie end-to-end (E2E), ale musisz zalogować się ponownie, aby je włączyć.\n\nMożesz to zrobić teraz lub później z poziomu ustawień aplikacji.";
+"e2e_enabling_on_app_update" = "Element obsługuje już szyfrowanie end-to-end (E2E), ale musisz zalogować się ponownie, aby je włączyć.\n\nMożesz to zrobić teraz lub później z poziomu ustawień aplikacji.";
 // No VoIP support
 "no_voip_title" = "Połączenie przychodzące";
 "call_incoming_video" = "Przychodzące połączenie wideo…";
@@ -508,7 +508,7 @@
 "settings_enable_push_notif" = "Powiadomienia na tym urządzeniu";
 "settings_global_settings_info" = "Globalne ustawienia powiadomień są dostępne na Twoim kliencie internetowym %@";
 "settings_on_denied_notification" = "Powiadomienia są odrzucane w %@, proszę zezwól na nie w ustawieniach urządzenia";
-"settings_callkit_info" = "Odbieraj połączenia przychodzące na ekranie blokady. Zobacz swoje połęczenia Riot w historii połączeń w systemie. Jeśli usługa iCloud jest włączona, historia połączeń zostanie udostępniona Apple.";
+"settings_callkit_info" = "Odbieraj połączenia przychodzące na ekranie blokady. Zobacz swoje połęczenia Element w historii połączeń w systemie. Jeśli usługa iCloud jest włączona, historia połączeń zostanie udostępniona Apple.";
 "settings_ui_theme_picker_message" = "\"Auto\" używa ustawienia \"Odwróć kolory\" urządzenia";
 "close" = "Zamknij";
 "auth_softlogout_sign_in" = "Zaloguj się";
