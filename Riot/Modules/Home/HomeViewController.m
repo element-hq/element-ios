@@ -365,11 +365,11 @@
             tableViewCell.priorityButton.tag = (currentTag && [kMXRoomTagLowPriority isEqualToString:currentTag.name]);
             [tableViewCell.priorityButton addTarget:self action:@selector(onPriorityButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
             tableViewCell.priorityImageView.image = tableViewCell.priorityButton.tag ? [UIImage imageNamed:@"room_action_priority_high"] : [UIImage imageNamed:@"room_action_priority_low"];
-            tableViewCell.priorityImageView.tintColor = selectedColor;
+            tableViewCell.priorityImageView.tintColor = unselectedColor;
             
             [tableViewCell.leaveButton addTarget:self action:@selector(onLeaveButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
             tableViewCell.leaveImageView.image = [UIImage imageNamed:@"room_action_leave"];
-            tableViewCell.leaveImageView.tintColor = selectedColor;
+            tableViewCell.leaveImageView.tintColor = unselectedColor;
         }
     }
     
