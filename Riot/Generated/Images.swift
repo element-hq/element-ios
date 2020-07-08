@@ -36,6 +36,7 @@ internal enum Asset {
     internal static let closeButton = ImageAsset(name: "close_button")
     internal static let disclosureIcon = ImageAsset(name: "disclosure_icon")
     internal static let group = ImageAsset(name: "group")
+    internal static let horizontalLogo = ImageAsset(name: "horizontal_logo")
     internal static let logo = ImageAsset(name: "logo")
     internal static let monitor = ImageAsset(name: "monitor")
     internal static let placeholder = ImageAsset(name: "placeholder")
