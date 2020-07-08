@@ -140,7 +140,7 @@
     [super customizeViewRendering];
 
     self.backgroundColor = UIColor.clearColor;
-    self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? ThemeService.shared.theme.baseTextPrimaryColor : ThemeService.shared.theme.textSecondaryColor);
+    self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? ThemeService.shared.theme.textPrimaryColor : ThemeService.shared.theme.textSecondaryColor);
 }
 
 - (void)setRoomPreviewData:(RoomPreviewData *)roomPreviewData
@@ -169,7 +169,7 @@
         }
         else
         {
-            self.displayNameTextField.textColor = ThemeService.shared.theme.baseTextPrimaryColor;
+            self.displayNameTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
         }
     }
 }

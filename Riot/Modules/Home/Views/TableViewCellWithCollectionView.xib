@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,11 +13,11 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="181"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="20U-7H-xmi" id="cFw-g7-Cgn">
-                <rect key="frame" x="0.0" y="0.0" width="600" height="180.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="600" height="181"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="iXt-1Y-bEu">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="115"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="116"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="zZI-Za-2q1">
                             <size key="itemSize" width="50" height="50"/>
@@ -29,7 +27,7 @@
                         </collectionViewFlowLayout>
                     </collectionView>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K7T-mO-6FZ">
-                        <rect key="frame" x="15" y="115.5" width="570" height="60"/>
+                        <rect key="frame" x="15" y="116" width="570" height="60"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R8G-pa-NMv">
                                 <rect key="frame" x="160" y="0.0" width="50" height="60"/>
@@ -37,7 +35,7 @@
                                     <constraint firstAttribute="width" constant="50" id="UaQ-bI-bWg"/>
                                 </constraints>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="directChatOff" translatesAutoresizingMaskIntoConstraints="NO" id="zv7-4U-qzL">
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="room_action_direct_chat" translatesAutoresizingMaskIntoConstraints="NO" id="zv7-4U-qzL">
                                 <rect key="frame" x="165" y="10" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="HVn-3g-jMX"/>
@@ -47,7 +45,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dsz-Yx-goM">
                                 <rect key="frame" x="210" y="0.0" width="50" height="60"/>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="notificationsOff" translatesAutoresizingMaskIntoConstraints="NO" id="LJb-Om-aCu">
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="room_action_notification" translatesAutoresizingMaskIntoConstraints="NO" id="LJb-Om-aCu">
                                 <rect key="frame" x="215" y="10" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="Bxy-g5-Fm8"/>
@@ -57,7 +55,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MbR-Oe-6k1">
                                 <rect key="frame" x="260" y="0.0" width="50" height="60"/>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="favouriteOff" translatesAutoresizingMaskIntoConstraints="NO" id="f0O-Nh-XqH">
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="room_action_favourite" translatesAutoresizingMaskIntoConstraints="NO" id="f0O-Nh-XqH">
                                 <rect key="frame" x="265" y="10" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="hss-6b-AOg"/>
@@ -67,8 +65,8 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BsI-jp-frH">
                                 <rect key="frame" x="310" y="0.0" width="50" height="60"/>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="priorityLow" translatesAutoresizingMaskIntoConstraints="NO" id="uJK-LE-Vkz">
-                                <rect key="frame" x="320" y="10" width="40" height="40"/>
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="room_action_priority_low" translatesAutoresizingMaskIntoConstraints="NO" id="uJK-LE-Vkz">
+                                <rect key="frame" x="315" y="10" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="YvB-as-G5U"/>
                                     <constraint firstAttribute="width" constant="40" id="ez7-fJ-00U"/>
@@ -77,7 +75,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uG0-u6-BBj">
                                 <rect key="frame" x="360" y="0.0" width="50" height="60"/>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="leave" translatesAutoresizingMaskIntoConstraints="NO" id="cgb-3x-9qQ">
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="room_action_leave" translatesAutoresizingMaskIntoConstraints="NO" id="cgb-3x-9qQ">
                                 <rect key="frame" x="365" y="10" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="52j-He-vyg"/>
@@ -115,8 +113,8 @@
                             <constraint firstItem="BsI-jp-frH" firstAttribute="width" secondItem="R8G-pa-NMv" secondAttribute="width" id="mig-Wk-n7S"/>
                             <constraint firstItem="dsz-Yx-goM" firstAttribute="leading" secondItem="R8G-pa-NMv" secondAttribute="trailing" id="pfB-6o-vIr"/>
                             <constraint firstItem="MbR-Oe-6k1" firstAttribute="width" secondItem="R8G-pa-NMv" secondAttribute="width" id="sBc-Ow-YIB"/>
+                            <constraint firstItem="uJK-LE-Vkz" firstAttribute="centerX" secondItem="BsI-jp-frH" secondAttribute="centerX" id="sx8-P7-a7K"/>
                             <constraint firstItem="BsI-jp-frH" firstAttribute="height" secondItem="R8G-pa-NMv" secondAttribute="height" id="ub9-qy-AoE"/>
-                            <constraint firstItem="uJK-LE-Vkz" firstAttribute="trailing" secondItem="BsI-jp-frH" secondAttribute="trailing" id="yTj-PM-CTK"/>
                             <constraint firstItem="uG0-u6-BBj" firstAttribute="leading" secondItem="BsI-jp-frH" secondAttribute="trailing" id="zU8-FO-eQH"/>
                         </constraints>
                     </view>
@@ -152,10 +150,10 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="directChatOff" width="32" height="32"/>
-        <image name="favouriteOff" width="33" height="29"/>
-        <image name="leave" width="25" height="24"/>
-        <image name="notificationsOff" width="29" height="32"/>
-        <image name="priorityLow" width="31" height="24"/>
+        <image name="room_action_direct_chat" width="24" height="24"/>
+        <image name="room_action_favourite" width="24" height="24"/>
+        <image name="room_action_leave" width="24" height="24"/>
+        <image name="room_action_notification" width="24" height="24"/>
+        <image name="room_action_priority_low" width="24" height="24"/>
     </resources>
 </document>

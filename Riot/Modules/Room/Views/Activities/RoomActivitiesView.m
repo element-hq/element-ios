@@ -103,6 +103,8 @@
     // Reset textContainer.lineFragmentPadding to remove horizontal margin.
     self.messageTextView.textContainerInset = UIEdgeInsetsZero;
     self.messageTextView.textContainer.lineFragmentPadding = 0;
+    
+    self.separatorView.hidden = YES;
 
     xibMainHeightConstraint = self.mainHeightConstraint.constant;
 }
@@ -112,8 +114,7 @@
 -(void)customizeViewRendering
 {
     [super customizeViewRendering];
-    
-    self.separatorView.backgroundColor = ThemeService.shared.theme.lineBreakColor;
+        
     if (self.messageLabel.textColor != ThemeService.shared.theme.warningColor)
     {
         self.messageLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
@@ -271,9 +272,6 @@
 
     self.backgroundColor = ThemeService.shared.theme.tintColor;
     self.messageTextView.backgroundColor = ThemeService.shared.theme.tintColor;
-
-    // Hide the separator to display correctly the red pink conf call banner
-    self.separatorView.hidden = YES;
 
     [self checkHeight:YES];
 }
@@ -502,17 +500,12 @@
         self.messageTextView.backgroundColor = ThemeService.shared.riotColorCuriousBlue;
     }
 
-    // Hide the separator to display correctly the banner
-    self.separatorView.hidden = YES;
-
     [self checkHeight:YES];
 }
 
 - (void)reset
 {
-    self.separatorView.hidden = NO;
-
-    self.backgroundColor = UIColor.clearColor;
+    self.backgroundColor = ThemeService.shared.theme.baseColor;
 
     [self resetIcon];
     [self resetMessage];
