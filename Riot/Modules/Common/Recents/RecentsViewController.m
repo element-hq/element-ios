@@ -952,7 +952,7 @@
     priorityAction.backgroundColor = actionBackgroundColor;
     
     UIImage *priorityImage = isInLowPriority ? [UIImage imageNamed:@"room_action_priority_high"] : [UIImage imageNamed:@"room_action_priority_low"];
-    priorityImage = [priorityImage vc_tintedImageUsingColor:selectedColor];
+    priorityImage = [priorityImage vc_tintedImageUsingColor:unselectedColor];
     priorityAction.image = priorityImage;
     
     // Leave action
@@ -966,7 +966,7 @@
     leaveAction.backgroundColor = actionBackgroundColor;
     
     UIImage *leaveImage = [UIImage imageNamed:@"room_action_leave"];
-    leaveImage = [leaveImage vc_tintedImageUsingColor:selectedColor];
+    leaveImage = [leaveImage vc_tintedImageUsingColor:unselectedColor];
     leaveAction.image = leaveImage;
         
     // Create swipe action configuration
