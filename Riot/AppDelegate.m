@@ -4476,22 +4476,27 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
     // Leave the GDPR consent right now
     [self dismissGDPRConsent];
+        
+    BOOL botCreationEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"enableBotCreation"];
 
-    // And create the room with riot bot in //
-    self.onBoardingManager = [[OnBoardingManager alloc] initWithSession:session];
-    
-    MXWeakify(self);
-    void (^createRiotBotDMcompletion)(void) = ^() {
-        MXStrongifyAndReturnIfNil(self);
+    if (botCreationEnabled)
+    {
+        // And create the room with riot bot in //
+        self.onBoardingManager = [[OnBoardingManager alloc] initWithSession:session];
+        
+        MXWeakify(self);
+        void (^createRiotBotDMcompletion)(void) = ^() {
+            MXStrongifyAndReturnIfNil(self);
 
-        self.onBoardingManager = nil;
-    };
-    
-    [self.onBoardingManager createRiotBotDirectMessageIfNeededWithSuccess:^{
-        createRiotBotDMcompletion();
-    } failure:^(NSError * _Nonnull error) {
-        createRiotBotDMcompletion();
-    }];
+            self.onBoardingManager = nil;
+        };
+        
+        [self.onBoardingManager createRiotBotDirectMessageIfNeededWithSuccess:^{
+            createRiotBotDMcompletion();
+        } failure:^(NSError * _Nonnull error) {
+            createRiotBotDMcompletion();
+        }];
+    }
 }
 
 #pragma mark - Identity server service terms

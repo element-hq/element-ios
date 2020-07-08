@@ -86,5 +86,7 @@
 		<key>matrix.org</key>
 		<string></string>
 	</dict>
+	<key>enableBotCreation</key>
+	<false/>
 </dict>
 </plist>
