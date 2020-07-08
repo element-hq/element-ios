@@ -15,6 +15,7 @@ internal enum RiotDefaults {
   internal static let bugReportApp: String = _document["bugReportApp"]
   internal static let bugReportEndpointUrl: String = _document["bugReportEndpointUrl"]
   internal static let createConferenceCallsWithJitsi: Bool = _document["createConferenceCallsWithJitsi"]
+  internal static let enableBotCreation: Bool = _document["enableBotCreation"]
   internal static let enableRageShake: Bool = _document["enableRageShake"]
   internal static let homeserver: String = _document["homeserver"]
   internal static let homeserverurl: String = _document["homeserverurl"]
