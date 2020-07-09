@@ -163,6 +163,9 @@
     self.cancelButton.tintColor = ThemeService.shared.theme.tintColor;
     
     _bugReportDescriptionTextView.layer.borderColor = ThemeService.shared.theme.headerBackgroundColor.CGColor;
+    
+    self.sendLogsButtonImage.tintColor = ThemeService.shared.theme.tintColor;
+    self.sendScreenshotButtonImage.tintColor = ThemeService.shared.theme.tintColor;
 
     [self setNeedsStatusBarAppearanceUpdate];
 }

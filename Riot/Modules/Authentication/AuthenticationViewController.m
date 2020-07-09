@@ -225,6 +225,8 @@
 
     self.softLogoutClearDataLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.softLogoutClearDataButton.backgroundColor = ThemeService.shared.theme.warningColor;
+    
+    self.customServersTickButton.tintColor = ThemeService.shared.theme.tintColor;
 
     [self.authInputsView customizeViewRendering];
     
