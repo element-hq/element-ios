@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -46,7 +44,7 @@
                     </constraints>
                 </view>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Room Name" textAlignment="center" adjustsFontSizeToFit="NO" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="6uH-I3-RQg">
-                    <rect key="frame" x="247.5" y="103" width="105" height="23"/>
+                    <rect key="frame" x="249.5" y="103" width="101" height="23"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     <accessibility key="accessibilityConfiguration" identifier="DisplayNameTextField"/>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
@@ -69,12 +67,12 @@
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="members_list_icon" translatesAutoresizingMaskIntoConstraints="NO" id="S3Y-wJ-HOe">
-                    <rect key="frame" x="260" y="163" width="15" height="15"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="members_list_icon" translatesAutoresizingMaskIntoConstraints="NO" id="S3Y-wJ-HOe">
+                    <rect key="frame" x="252" y="160.5" width="20" height="20"/>
                     <accessibility key="accessibilityConfiguration" identifier="RoomMembersDetailsIcon"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="15" id="XTx-6p-2wB"/>
-                        <constraint firstAttribute="height" constant="15" id="tXh-eB-ave"/>
+                        <constraint firstAttribute="width" constant="20" id="XTx-6p-2wB"/>
+                        <constraint firstAttribute="height" constant="20" id="tXh-eB-ave"/>
                     </constraints>
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ckb-7c-sTg">
@@ -95,10 +93,10 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tsg-nl-P3k">
                     <rect key="frame" x="322" y="151.5" width="38" height="38"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add_participant" translatesAutoresizingMaskIntoConstraints="NO" id="i40-fd-AlH">
-                            <rect key="frame" x="10" y="10" width="18" height="18"/>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add_participant" translatesAutoresizingMaskIntoConstraints="NO" id="i40-fd-AlH">
+                            <rect key="frame" x="9" y="9" width="20" height="20"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="18" id="Jxs-fk-U04"/>
+                                <constraint firstAttribute="width" constant="20" id="Jxs-fk-U04"/>
                                 <constraint firstAttribute="width" secondItem="i40-fd-AlH" secondAttribute="height" multiplier="1:1" id="cuB-Hn-Dl3"/>
                             </constraints>
                         </imageView>
@@ -141,7 +139,7 @@
                 <constraint firstItem="uSp-YH-L18" firstAttribute="top" secondItem="BkF-x3-7fX" secondAttribute="top" id="dn3-Hv-OyX"/>
                 <constraint firstAttribute="trailing" secondItem="Ckb-7c-sTg" secondAttribute="trailing" id="erV-R4-LXD"/>
                 <constraint firstItem="6uH-I3-RQg" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="BkF-x3-7fX" secondAttribute="leading" constant="31" id="gnq-cO-l4Y"/>
-                <constraint firstItem="ou0-3Z-weL" firstAttribute="leading" secondItem="S3Y-wJ-HOe" secondAttribute="trailing" constant="7" id="iAL-UV-5nu"/>
+                <constraint firstItem="ou0-3Z-weL" firstAttribute="leading" secondItem="S3Y-wJ-HOe" secondAttribute="trailing" constant="10" id="iAL-UV-5nu"/>
                 <constraint firstItem="qD3-kA-DSI" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="BkF-x3-7fX" secondAttribute="leading" constant="31" id="jjG-gN-eIv"/>
                 <constraint firstItem="6uH-I3-RQg" firstAttribute="top" secondItem="uSp-YH-L18" secondAttribute="bottom" constant="8" id="rAh-mV-nb5"/>
                 <constraint firstItem="ou0-3Z-weL" firstAttribute="top" secondItem="qD3-kA-DSI" secondAttribute="bottom" constant="14" id="sJB-Wr-gFl"/>
@@ -170,6 +168,6 @@
     </objects>
     <resources>
         <image name="add_participant" width="30" height="30"/>
-        <image name="members_list_icon" width="15" height="12"/>
+        <image name="members_list_icon" width="24" height="24"/>
     </resources>
 </document>
