@@ -2526,7 +2526,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         // Create adapter for Riot
         MXCallKitConfiguration *callKitConfiguration = [[MXCallKitConfiguration alloc] init];
-        callKitConfiguration.iconName = @"riot_icon_callkit";
+        callKitConfiguration.iconName = @"callkit_icon";
         
         NSData *riotCallKitIconData = UIImagePNGRepresentation([UIImage imageNamed:callKitConfiguration.iconName]);
         
