@@ -87,11 +87,11 @@
 		<string></string>
 	</dict>
 	<key>settingsCopyrightUrl</key>
-	<string>https://riot.im/copyright</string>
+	<string>https://element.io/copyright</string>
 	<key>settingsPrivacyPolicyUrl</key>
-	<string>https://riot.im/privacy</string>
+	<string>https://element.io/privacy</string>
 	<key>settingsTermsConditionsUrl</key>
-	<string>https://riot.im/tac_apple</string>
+	<string>https://element.io/terms-of-service</string>
 	<key>enableBotCreation</key>
 	<false/>
 </dict>
