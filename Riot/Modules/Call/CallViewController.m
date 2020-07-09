@@ -107,13 +107,13 @@
     
     // Chat
     
-    UIImage *chatButtonImage = [[UIImage imageNamed:@"call_chat_icon"] vc_tintedImageUsingColor:selectedColor];
+    UIImage *chatButtonImage = [[UIImage imageNamed:@"call_chat_icon"] vc_tintedImageUsingColor:unselectedColor];
     [self.chatButton setImage:chatButtonImage forState:UIControlStateNormal];
     [self.chatButton setImage:chatButtonImage forState:UIControlStateHighlighted];
     
     // Hang up
     
-    UIImage *hangUpButtonImage = [[UIImage imageNamed:@"call_hangup_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.noticeColor];
+    UIImage *hangUpButtonImage = [[UIImage imageNamed:@"call_hangup_large"] vc_tintedImageUsingColor:ThemeService.shared.theme.noticeColor];
     
     [self.endCallButton setTitle:nil forState:UIControlStateNormal];
     [self.endCallButton setTitle:nil forState:UIControlStateHighlighted];
@@ -177,6 +177,8 @@
     // it seems only being supported on Mac OS.
     // so viewDidLayoutSubviews will refresh the layout bounds.
     [self.gradientMaskContainerView.layer addSublayer:gradientMaskLayer];
+    
+    self.callControlsBackgroundView.backgroundColor = ThemeService.shared.theme.baseColor;
 }
 
 - (BOOL)prefersStatusBarHidden
