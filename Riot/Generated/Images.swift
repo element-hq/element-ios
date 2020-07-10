@@ -85,7 +85,6 @@ internal enum Asset {
     internal static let voiceCallHangupIcon = ImageAsset(name: "voice_call_hangup_icon")
     internal static let voiceCallIcon = ImageAsset(name: "voice_call_icon")
     internal static let addParticipant = ImageAsset(name: "add_participant")
-    internal static let appsIcon = ImageAsset(name: "apps-icon")
     internal static let detailsIcon = ImageAsset(name: "details_icon")
     internal static let editIcon = ImageAsset(name: "edit_icon")
     internal static let integrationsIcon = ImageAsset(name: "integrations_icon")
