@@ -162,6 +162,7 @@
     }
     
     self.iconImageView.image = [UIImage imageNamed:@"error"];
+    self.iconImageView.tintColor = ThemeService.shared.theme.tintColor;
     self.iconImageView.hidden = NO;
     
     if (onIconTapGesture)
@@ -187,6 +188,7 @@
     if (labelText.length)
     {
         self.iconImageView.image = [UIImage imageNamed:@"error"];
+        self.iconImageView.tintColor = ThemeService.shared.theme.noticeColor;
         self.messageLabel.text = labelText;
         self.messageLabel.textColor = ThemeService.shared.theme.warningColor;
         
@@ -378,6 +380,7 @@
     self.messageTextView.backgroundColor = [UIColor clearColor];
     
     self.iconImageView.image = [UIImage imageNamed:@"error"];
+    self.iconImageView.tintColor = ThemeService.shared.theme.noticeColor;
     self.iconImageView.hidden = NO;
     
     [self checkHeight:YES];
