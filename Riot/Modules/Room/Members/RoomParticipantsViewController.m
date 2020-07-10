@@ -169,6 +169,8 @@
     CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
     tableViewMaskLayer.colors = @[(__bridge id) transparentWhiteColor, (__bridge id) transparentWhiteColor, (__bridge id) opaqueWhiteColor];
     
+    addParticipantButtonImageView.tintColor = ThemeService.shared.theme.tintColor;
+    
     if (self.tableView.dataSource)
     {
         [self.tableView reloadData];
