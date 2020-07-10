@@ -94,7 +94,7 @@ class DefaultTheme: NSObject, Theme {
     
     // Note: We are not using UINavigationBarAppearance on iOS 13+ atm because of UINavigationBar directly include UISearchBar on their titleView that cause crop issues with UINavigationController pop.
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
-        navigationBar.tintColor = self.textSecondaryColor
+        navigationBar.tintColor = self.tintColor
         navigationBar.titleTextAttributes = [
             NSAttributedString.Key.foregroundColor: self.textPrimaryColor
         ]
