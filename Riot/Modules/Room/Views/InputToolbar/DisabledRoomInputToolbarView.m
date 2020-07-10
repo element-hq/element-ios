@@ -39,13 +39,6 @@
     }
 }
 
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    self.separatorView.hidden = YES;
-}
-
 #pragma mark - Override MXKView
 
 -(void)customizeViewRendering
@@ -55,6 +48,8 @@
     // Remove default toolbar background color
     self.backgroundColor = [UIColor clearColor];
     
+    self.separatorView.backgroundColor = ThemeService.shared.theme.lineBreakColor;
+
     self.disabledReasonTextView.font = [UIFont systemFontOfSize:15];
     self.disabledReasonTextView.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.disabledReasonTextView.tintColor = ThemeService.shared.theme.tintColor;
