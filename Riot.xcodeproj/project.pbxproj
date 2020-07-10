@@ -265,6 +265,9 @@
 		B183226623F55D6B0035B2E8 /* CameraAccessManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B183226523F55D6B0035B2E8 /* CameraAccessManager.swift */; };
 		B183226823F561380035B2E8 /* CameraAccessAlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B183226723F561380035B2E8 /* CameraAccessAlertPresenter.swift */; };
 		B183226C23F59F810035B2E8 /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B183226B23F59F810035B2E8 /* CloseButton.swift */; };
+		B185145524B7CFA700EE19EA /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = B185145424B7CFA700EE19EA /* AppVersion.swift */; };
+		B185145B24B8C98200EE19EA /* MajorUpdateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B185145A24B8C98200EE19EA /* MajorUpdateViewController.swift */; };
+		B185145D24B8C9A400EE19EA /* MajorUpdateViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B185145C24B8C9A400EE19EA /* MajorUpdateViewController.storyboard */; };
 		B18DEDD4243377C10075FEF7 /* KeyVerificationSelfVerifyWaitViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18DEDCC243377C00075FEF7 /* KeyVerificationSelfVerifyWaitViewModelType.swift */; };
 		B18DEDD5243377C10075FEF7 /* KeyVerificationSelfVerifyWaitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18DEDCD243377C00075FEF7 /* KeyVerificationSelfVerifyWaitViewModel.swift */; };
 		B18DEDD6243377C10075FEF7 /* KeyVerificationSelfVerifyWaitCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18DEDCE243377C00075FEF7 /* KeyVerificationSelfVerifyWaitCoordinator.swift */; };
@@ -289,6 +292,7 @@
 		B19EFA3921F8BB2C00FC070E /* KeyBackupRecoverCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19EFA3821F8BB2C00FC070E /* KeyBackupRecoverCoordinatorType.swift */; };
 		B19EFA3B21F8BB4100FC070E /* KeyBackupRecoverCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19EFA3A21F8BB4100FC070E /* KeyBackupRecoverCoordinator.swift */; };
 		B1A5B33E227ADF2A004CBA85 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A5B33D227ADF2A004CBA85 /* UIImage.swift */; };
+		B1A6805424B7C65200E312CC /* MajorUpdateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A6805324B7C65200E312CC /* MajorUpdateManager.swift */; };
 		B1A68593229E807A00D6C09A /* RoomBubbleCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A68592229E807800D6C09A /* RoomBubbleCellLayout.swift */; };
 		B1A6C10723881EF2002882FD /* SlidingModalPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A6C10623881EF2002882FD /* SlidingModalPresenter.swift */; };
 		B1A6C109238828A6002882FD /* SlidingModalPresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A6C108238828A6002882FD /* SlidingModalPresentationDelegate.swift */; };
@@ -1187,6 +1191,9 @@
 		B183226523F55D6B0035B2E8 /* CameraAccessManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraAccessManager.swift; sourceTree = "<group>"; };
 		B183226723F561380035B2E8 /* CameraAccessAlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraAccessAlertPresenter.swift; sourceTree = "<group>"; };
 		B183226B23F59F810035B2E8 /* CloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButton.swift; sourceTree = "<group>"; };
+		B185145424B7CFA700EE19EA /* AppVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
+		B185145A24B8C98200EE19EA /* MajorUpdateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MajorUpdateViewController.swift; sourceTree = "<group>"; };
+		B185145C24B8C9A400EE19EA /* MajorUpdateViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MajorUpdateViewController.storyboard; sourceTree = "<group>"; };
 		B18DEDCC243377C00075FEF7 /* KeyVerificationSelfVerifyWaitViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationSelfVerifyWaitViewModelType.swift; sourceTree = "<group>"; };
 		B18DEDCD243377C00075FEF7 /* KeyVerificationSelfVerifyWaitViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationSelfVerifyWaitViewModel.swift; sourceTree = "<group>"; };
 		B18DEDCE243377C00075FEF7 /* KeyVerificationSelfVerifyWaitCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationSelfVerifyWaitCoordinator.swift; sourceTree = "<group>"; };
@@ -1211,6 +1218,7 @@
 		B19EFA3821F8BB2C00FC070E /* KeyBackupRecoverCoordinatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverCoordinatorType.swift; sourceTree = "<group>"; };
 		B19EFA3A21F8BB4100FC070E /* KeyBackupRecoverCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverCoordinator.swift; sourceTree = "<group>"; };
 		B1A5B33D227ADF2A004CBA85 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		B1A6805324B7C65200E312CC /* MajorUpdateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MajorUpdateManager.swift; sourceTree = "<group>"; };
 		B1A68592229E807800D6C09A /* RoomBubbleCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomBubbleCellLayout.swift; sourceTree = "<group>"; };
 		B1A6C10623881EF2002882FD /* SlidingModalPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingModalPresenter.swift; sourceTree = "<group>"; };
 		B1A6C108238828A6002882FD /* SlidingModalPresentationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingModalPresentationDelegate.swift; sourceTree = "<group>"; };
@@ -2821,6 +2829,14 @@
 			path = Close;
 			sourceTree = "<group>";
 		};
+		B185145324B7CF9500EE19EA /* AppVersion */ = {
+			isa = PBXGroup;
+			children = (
+				B185145424B7CFA700EE19EA /* AppVersion.swift */,
+			);
+			path = AppVersion;
+			sourceTree = "<group>";
+		};
 		B18DEDAB243372560075FEF7 /* SelfVerifyWait */ = {
 			isa = PBXGroup;
 			children = (
@@ -2886,6 +2902,16 @@
 				B14084CB23BF9DE90010F692 /* KeyVerificationConclusionWithPaginationTitleBubbleCell.swift */,
 			);
 			path = KeyVerification;
+			sourceTree = "<group>";
+		};
+		B1A6805224B7C60900E312CC /* MajorUpdate */ = {
+			isa = PBXGroup;
+			children = (
+				B1A6805324B7C65200E312CC /* MajorUpdateManager.swift */,
+				B185145A24B8C98200EE19EA /* MajorUpdateViewController.swift */,
+				B185145C24B8C9A400EE19EA /* MajorUpdateViewController.storyboard */,
+			);
+			path = MajorUpdate;
 			sourceTree = "<group>";
 		};
 		B1A6C10523881ECB002882FD /* SlidingModal */ = {
@@ -2955,6 +2981,7 @@
 				B1B556CA20EE6C4C00210D55 /* TabBar */,
 				B1B556F920EE6C4C00210D55 /* Authentication */,
 				B17982FD2119FEA7001FD722 /* GDPR */,
+				B1A6805224B7C60900E312CC /* MajorUpdate */,
 				B1B5568420EE6C4C00210D55 /* Home */,
 				B1B556C720EE6C4C00210D55 /* Favorites */,
 				B1B556E720EE6C4C00210D55 /* People */,
@@ -4019,6 +4046,7 @@
 		B1B5597C20EFC3DF00210D55 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				B185145324B7CF9500EE19EA /* AppVersion */,
 				EC85D73B2477DDD0002C44C9 /* PushNotification */,
 				B12C56ED2396CB0100FAC6DE /* RoomMessageLinkParser */,
 				B1B9DED822E9B7120065E677 /* Serialization */,
@@ -5163,6 +5191,7 @@
 				B1B558BF20EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				B1B558FD20EF768F00210D55 /* RoomIncomingAttachmentBubbleCell.xib in Resources */,
 				B1B558DB20EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
+				B185145D24B8C9A400EE19EA /* MajorUpdateViewController.storyboard in Resources */,
 				B1CE83E42422817200D07506 /* KeyVerificationVerifyBySASViewController.storyboard in Resources */,
 				B1B5572B20EE6C4D00210D55 /* RoomMemberDetailsViewController.xib in Resources */,
 				B1D4752C21EE52C30067973F /* KeyBackupSetupIntroViewController.storyboard in Resources */,
@@ -5566,6 +5595,7 @@
 				B1B5594520EF7BD000210D55 /* TableViewCellWithCollectionView.m in Sources */,
 				B1A6C109238828A6002882FD /* SlidingModalPresentationDelegate.swift in Sources */,
 				32DB557722FDADE50016329E /* ServiceTermsModalCoordinator.swift in Sources */,
+				B185145B24B8C98200EE19EA /* MajorUpdateViewController.swift in Sources */,
 				32DB557922FDADE50016329E /* ServiceTermsModalScreenViewModel.swift in Sources */,
 				32891D75226728EE00C82226 /* KeyVerificationDataLoadingViewController.swift in Sources */,
 				F083BDEF1E7009ED00A9B29C /* UINavigationController+Riot.m in Sources */,
@@ -5576,6 +5606,7 @@
 				B1B5571920EE6C4D00210D55 /* LanguagePickerViewController.m in Sources */,
 				B183226823F561380035B2E8 /* CameraAccessAlertPresenter.swift in Sources */,
 				3232AB512256558300AD6A5C /* TemplateScreenViewAction.swift in Sources */,
+				B1A6805424B7C65200E312CC /* MajorUpdateManager.swift in Sources */,
 				3232AB4E2256558300AD6A5C /* TemplateScreenViewModelType.swift in Sources */,
 				32DB557D22FDADE50016329E /* ServiceTermsModalScreenCoordinatorType.swift in Sources */,
 				B1B5590520EF768F00210D55 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
@@ -5598,6 +5629,7 @@
 				B1DCC61B22E5E17100625807 /* EmojiPickerCoordinator.swift in Sources */,
 				EC85D7292477DCF2002C44C9 /* KeyVerificationManuallyVerifyViewModelType.swift in Sources */,
 				32F6B96E2270623100BBA352 /* KeyVerificationDataLoadingViewModelType.swift in Sources */,
+				B185145524B7CFA700EE19EA /* AppVersion.swift in Sources */,
 				EC711B7E24A63B37008F830C /* SecretsSetupRecoveryPassphraseCoordinatorType.swift in Sources */,
 				B1B5592C20EF7A5D00210D55 /* TableViewCellWithButton.m in Sources */,
 				32242F1421E8FBA900725742 /* DefaultTheme.swift in Sources */,

@@ -237,6 +237,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
  */
 @property (nonatomic, strong) PushNotificationService *pushNotificationService;
 
+@property (nonatomic, strong) MajorUpdateManager *majorUpdateManager;
+
 @end
 
 @implementation AppDelegate
@@ -524,6 +526,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [JitsiService.shared configureDefaultConferenceOptionsWith:jitsiServerURL];
 
     [JitsiService.shared application:application didFinishLaunchingWithOptions:launchOptions];
+    
+    self.majorUpdateManager = [MajorUpdateManager new];
 
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: Done in %.0fms", [[NSDate date] timeIntervalSinceDate:startDate] * 1000);
 
@@ -4559,5 +4563,60 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         RiotSettings.shared.showDecryptedContentInNotifications = currentAccount.showDecryptedContentInNotifications;
     }
 }
+
+#pragma mark - App version management
+
+- (void)checkAppVersion
+{
+    // Check if we should display a major update alert
+    [self checkMajorUpdate];
+    
+    // Update the last app version used
+    [AppVersion updateLastUsedVersion];
+}
+
+- (void)checkMajorUpdate
+{
+    if (self.majorUpdateManager.shouldShowMajorUpdate)
+    {
+        [self showMajorUpdate];
+    }
+}
+
+- (void)showMajorUpdate
+{
+    if (!self.slidingModalPresenter)
+    {
+        self.slidingModalPresenter = [SlidingModalPresenter new];
+    }
+    
+    [self.slidingModalPresenter dismissWithAnimated:NO completion:nil];
+    
+    MajorUpdateViewController *majorUpdateViewController = [MajorUpdateViewController instantiate];
+    
+    MXWeakify(self);
+    
+    majorUpdateViewController.didTapLearnMoreButton = ^{
+        
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self.slidingModalPresenter dismissWithAnimated:YES completion:^{
+        }];
+    };
+    
+    majorUpdateViewController.didTapDoneButton = ^{
+        
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self.slidingModalPresenter dismissWithAnimated:YES completion:^{
+        }];
+    };
+    
+    [self.slidingModalPresenter present:majorUpdateViewController
+                                   from:self.presentedViewController
+                               animated:YES
+                             completion:nil];
+}
+
 
 @end
