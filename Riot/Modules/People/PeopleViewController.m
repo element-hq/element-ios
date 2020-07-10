@@ -69,7 +69,7 @@
     [self addPlusButton];
     
     // Apply tintColor on the (+) button
-    plusButtonImageView.image = [UIImage imageNamed:@"create_direct_chat"];
+    plusButtonImageView.image = [UIImage imageNamed:@"plus_floating_action"];
     
     // Register table view cell for contacts.
     [self.recentsTableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:ContactTableViewCell.defaultReuseIdentifier];
