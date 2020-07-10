@@ -57,7 +57,7 @@ internal enum RiotDefaults {
 // MARK: - Implementation Details
 
 private func arrayFromPlist<T>(at path: String) -> [T] {
-  let bundle = BundleToken.bundle
+  let bundle = Bundle(for: BundleToken.self)
   guard let url = bundle.url(forResource: path, withExtension: nil),
     let data = NSArray(contentsOf: url) as? [T] else {
     fatalError("Unable to load PLIST at path: \(path)")
@@ -69,7 +69,7 @@ private struct PlistDocument {
   let data: [String: Any]
 
   init(path: String) {
-    let bundle = BundleToken.bundle
+    let bundle = Bundle(for: BundleToken.self)
     guard let url = bundle.url(forResource: path, withExtension: nil),
       let data = NSDictionary(contentsOf: url) as? [String: Any] else {
         fatalError("Unable to load PLIST at path: \(path)")
@@ -85,10 +85,4 @@ private struct PlistDocument {
   }
 }
 
-// swiftlint:disable convenience_type
-private final class BundleToken {
-  static let bundle: Bundle = {
-    Bundle(for: BundleToken.self)
-  }()
-}
-// swiftlint:enable convenience_type
+private final class BundleToken {}
