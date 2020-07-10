@@ -29,6 +29,8 @@
 
 #import "ContactTableViewCell.h"
 
+#import "Riot-Swift.h"
+
 @interface PeopleViewController ()
 {
     NSInteger          directRoomsSectionNumber;
@@ -114,7 +116,7 @@
     [[MXKContactManager sharedManager] refreshLocalContacts];
 
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_people", @"Vector", nil);
-    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.riotColorOrange;
+    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
     if (recentsDataSource)
     {
