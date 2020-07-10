@@ -63,8 +63,8 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
 - (id<Theme>)themeWithThemeId:(NSString*)themeId
 {
     id<Theme> theme;
-
-    if ([themeId isEqualToString:@"auto"])
+    
+    if (themeId == nil || [themeId isEqualToString:@"auto"])
     {
         if (@available(iOS 13, *))
         {
