@@ -83,7 +83,7 @@
     
     UIImage *audioMuteOffButtonImage = [[UIImage imageNamed:@"call_audio_mute_off_icon"] vc_tintedImageUsingColor:unselectedColor];
     
-    UIImage *audioMuteOnButtonImage = [[UIImage imageNamed:@"call_audio_mute_on_icon"] vc_tintedImageUsingColor:selectedColor];
+    UIImage *audioMuteOnButtonImage = [[UIImage imageNamed:@"call_audio_mute_on_icon"] vc_tintedImageUsingColor:unselectedColor];
     
     [self.audioMuteButton setImage:audioMuteOffButtonImage forState:UIControlStateNormal];
     [self.audioMuteButton setImage:audioMuteOffButtonImage forState:UIControlStateHighlighted];
@@ -92,7 +92,7 @@
     // Video mute
     
     UIImage *videoOffButtonImage = [[UIImage imageNamed:@"call_video_mute_off_icon"] vc_tintedImageUsingColor:unselectedColor];
-    UIImage *videoOnButtonImage = [[UIImage imageNamed:@"call_video_mute_on_icon"] vc_tintedImageUsingColor:selectedColor];
+    UIImage *videoOnButtonImage = [[UIImage imageNamed:@"call_video_mute_on_icon"] vc_tintedImageUsingColor:unselectedColor];
     
     [self.videoMuteButton setImage:videoOffButtonImage forState:UIControlStateNormal];
     [self.videoMuteButton setImage:videoOffButtonImage forState:UIControlStateHighlighted];
@@ -101,7 +101,7 @@
     // Speaker
     
     UIImage *speakerOffButtonImage = [[UIImage imageNamed:@"call_speaker_off_icon"] vc_tintedImageUsingColor:unselectedColor];
-    UIImage *speakerOnButtonImage = [[UIImage imageNamed:@"call_speaker_on_icon"] vc_tintedImageUsingColor:selectedColor];
+    UIImage *speakerOnButtonImage = [[UIImage imageNamed:@"call_speaker_on_icon"] vc_tintedImageUsingColor:unselectedColor];
     [self.speakerButton setImage:speakerOffButtonImage forState:UIControlStateNormal];
     [self.speakerButton setImage:speakerOnButtonImage forState:UIControlStateSelected];
     

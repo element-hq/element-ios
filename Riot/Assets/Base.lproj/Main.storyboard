@@ -38,7 +38,7 @@
                             <barButtonItem image="search_icon" id="wyR-qv-IxC" userLabel="Menu Bar Button Item">
                                 <inset key="imageInsets" minX="-5" minY="0.0" maxX="5" maxY="0.0"/>
                             </barButtonItem>
-                            <barButtonItem image="apps-icon" id="cal-D0-6Fw">
+                            <barButtonItem image="integrations_icon" id="cal-D0-6Fw">
                                 <inset key="imageInsets" minX="10" minY="0.0" maxX="-10" maxY="0.0"/>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -597,9 +597,9 @@
         <segue reference="cUw-vU-gJq"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="apps-icon" width="24" height="24"/>
+        <image name="integrations_icon" width="24" height="24"/>
         <image name="logo" width="120" height="101"/>
-        <image name="search_icon" width="22" height="22"/>
+        <image name="search_icon" width="24" height="24"/>
         <image name="settings_icon" width="24" height="24"/>
         <image name="tab_favourites" width="24" height="24"/>
         <image name="tab_groups" width="24" height="24"/>

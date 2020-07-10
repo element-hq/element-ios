@@ -74,8 +74,7 @@
 {
     [super layoutSubviews];
 
-    self.roomDetailsIconImageView.image = [MXKTools paintImage:self.roomDetailsIconImageView.image
-                                                     withColor:ThemeService.shared.theme.tintColor];
+    self.roomDetailsIconImageView.image = self.roomDetailsIconImageView.image;
     
     if (self.superview)
     {
@@ -141,6 +140,7 @@
 
     self.backgroundColor = UIColor.clearColor;
     self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? ThemeService.shared.theme.textPrimaryColor : ThemeService.shared.theme.textSecondaryColor);
+    self.roomDetailsIconImageView.tintColor = ThemeService.shared.theme.textPrimaryColor;
 }
 
 - (void)setRoomPreviewData:(RoomPreviewData *)roomPreviewData

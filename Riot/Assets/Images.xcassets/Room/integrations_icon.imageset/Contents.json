@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "call_audio_mute_off_icon.png",
+      "filename" : "integrations_icon.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "call_audio_mute_off_icon@2x.png",
+      "filename" : "integrations_icon@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "call_audio_mute_off_icon@3x.png",
+      "filename" : "integrations_icon@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
