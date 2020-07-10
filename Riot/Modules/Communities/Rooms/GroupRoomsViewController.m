@@ -623,10 +623,7 @@
     effectBackgroundBottom.hidden = YES;
     
     // place holder
-    searchBarTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:searchBarTextField.placeholder
-                                                                               attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
-                                                                                            NSUnderlineColorAttributeName: ThemeService.shared.riotColorBlue,
-                                                                                            NSForegroundColorAttributeName: ThemeService.shared.riotColorBlue}];
+    searchBarTextField.textColor = ThemeService.shared.theme.placeholderTextColor;
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText

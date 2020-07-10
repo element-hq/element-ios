@@ -1216,7 +1216,7 @@
     // Magnifying glass icon.
     UIImageView *leftImageView = (UIImageView *)searchBarTextField.leftView;
     leftImageView.image = [leftImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    leftImageView.tintColor = ThemeService.shared.riotColorBlue;
+    leftImageView.tintColor = ThemeService.shared.theme.tintColor;
     
     // remove the gray background color
     UIView *effectBackgroundTop =  [searchBarTextField valueForKey:@"_effectBackgroundTop"];
@@ -1225,10 +1225,7 @@
     effectBackgroundBottom.hidden = YES;
     
     // place holder
-    searchBarTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:searchBarTextField.placeholder
-                                                                               attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
-                                                                                            NSUnderlineColorAttributeName: ThemeService.shared.riotColorBlue,
-                                                                                            NSForegroundColorAttributeName: ThemeService.shared.riotColorBlue}];
+    searchBarTextField.textColor = ThemeService.shared.theme.placeholderTextColor;
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
