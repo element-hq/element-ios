@@ -9,7 +9,7 @@ import UIKit
 public class ElementView: UIView {
     public struct Defaults {
         public static let size = CGSize(width: 130.22, height: 130.02)
-        public static let backgroundColor = UIColor(DisplayP3Red: 0.052, green: 0.743, blue: 0.543, alpha: 0)
+        public static let backgroundColor = UIColor(displayP3Red: 0.052, green: 0.743, blue: 0.543, alpha: 0)
     }
 
     public var element: UIView!
@@ -122,7 +122,7 @@ public class ElementView: UIView {
         path.layer.bounds = CGRect(x: 0, y: 0, width: 55.2, height: 55.2)
         path.layer.masksToBounds = false
         path.shapeLayer.fillRule = CAShapeLayerFillRule.evenOdd
-        path.shapeLayer.fillColor = UIColor(DisplayP3Red: 0.052, green: 0.743, blue: 0.543, alpha: 1).cgColor
+        path.shapeLayer.fillColor = UIColor(displayP3Red: 0.052, green: 0.743, blue: 0.543, alpha: 1).cgColor
         path.shapeLayer.lineDashPattern = []
         path.shapeLayer.lineDashPhase = 0
         path.shapeLayer.lineWidth = 0
@@ -140,7 +140,7 @@ public class ElementView: UIView {
         path_1.layer.bounds = CGRect(x: 0, y: 0, width: 55.2, height: 55.2)
         path_1.layer.masksToBounds = false
         path_1.shapeLayer.fillRule = CAShapeLayerFillRule.evenOdd
-        path_1.shapeLayer.fillColor = UIColor(DisplayP3Red: 0.052, green: 0.743, blue: 0.543, alpha: 1).cgColor
+        path_1.shapeLayer.fillColor = UIColor(displayP3Red: 0.052, green: 0.743, blue: 0.543, alpha: 1).cgColor
         path_1.shapeLayer.lineDashPattern = []
         path_1.shapeLayer.lineDashPhase = 0
         path_1.shapeLayer.lineWidth = 0
@@ -158,7 +158,7 @@ public class ElementView: UIView {
         path_2.layer.bounds = CGRect(x: 0, y: 0, width: 55.2, height: 55.2)
         path_2.layer.masksToBounds = false
         path_2.shapeLayer.fillRule = CAShapeLayerFillRule.evenOdd
-        path_2.shapeLayer.fillColor = UIColor(DisplayP3Red: 0.052, green: 0.743, blue: 0.543, alpha: 1).cgColor
+        path_2.shapeLayer.fillColor = UIColor(displayP3Red: 0.052, green: 0.743, blue: 0.543, alpha: 1).cgColor
         path_2.shapeLayer.lineDashPattern = []
         path_2.shapeLayer.lineDashPhase = 0
         path_2.shapeLayer.lineWidth = 0
@@ -176,7 +176,7 @@ public class ElementView: UIView {
         path_3.layer.bounds = CGRect(x: 0, y: 0, width: 55.2, height: 55.2)
         path_3.layer.masksToBounds = false
         path_3.shapeLayer.fillRule = CAShapeLayerFillRule.evenOdd
-        path_3.shapeLayer.fillColor = UIColor(DisplayP3Red: 0.052, green: 0.743, blue: 0.543, alpha: 1).cgColor
+        path_3.shapeLayer.fillColor = UIColor(displayP3Red: 0.052, green: 0.743, blue: 0.543, alpha: 1).cgColor
         path_3.shapeLayer.lineDashPattern = []
         path_3.shapeLayer.lineDashPhase = 0
         path_3.shapeLayer.lineWidth = 0
