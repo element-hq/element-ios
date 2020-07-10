@@ -15,13 +15,13 @@
                         <viewControllerLayoutGuide type="top" id="Llm-lL-Icb"/>
                         <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                    <view key="view" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch_screen_logo" translatesAutoresizingMaskIntoConstraints="NO" id="IcW-17-3Qq">
-                                <rect key="frame" x="147" y="272.33333333333331" width="120" height="120"/>
-                                <color key="tintColor" red="0.050980392159999999" green="0.74117647060000003" blue="0.5450980392" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <imageView clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" image="launch_screen_logo" translatesAutoresizingMaskIntoConstraints="NO" id="IcW-17-3Qq">
+                                <rect key="frame" x="147" y="308" width="120" height="120"/>
+                                <color key="tintColor" red="0.051999999999999998" green="0.74299999999999999" blue="0.54300000000000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="IcW-17-3Qq" secondAttribute="height" multiplier="1:1" id="nyP-l5-s1B"/>
                                     <constraint firstAttribute="width" constant="120" id="v1s-rq-3ay"/>
@@ -30,8 +30,8 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="IcW-17-3Qq" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" multiplier="9:10" constant="1" id="F7e-z4-CXI"/>
-                            <constraint firstItem="IcW-17-3Qq" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="nPP-aG-NuB"/>
+                            <constraint firstItem="IcW-17-3Qq" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="F70-sn-ghB"/>
+                            <constraint firstItem="IcW-17-3Qq" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="nJz-qK-nMP"/>
                         </constraints>
                     </view>
                 </viewController>

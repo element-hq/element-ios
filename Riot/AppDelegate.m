@@ -2487,7 +2487,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             
             if (!launchAnimationContainerView && window)
             {
-                LaunchLoadingView *launchLoadingView = [LaunchLoadingView instantiate];               
+                LaunchLoadingView *launchLoadingView = [LaunchLoadingView instantiate];
                 launchLoadingView.frame = window.bounds;
                 [launchLoadingView updateWithTheme:ThemeService.shared.theme];
                 launchLoadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -2509,12 +2509,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
         // Track it on our analytics
         [[Analytics sharedInstance] trackLaunchScreenDisplayDuration:duration];
-
+        
         // TODO: Send durationMs to Piwik
         // Such information should be the same on all platforms
         
-        [launchAnimationContainerView removeFromSuperview];
-        launchAnimationContainerView = nil;
+        [self->launchAnimationContainerView removeFromSuperview];
+        self->launchAnimationContainerView = nil;
     }
 }
 
