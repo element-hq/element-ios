@@ -209,7 +209,7 @@ internal protocol StoryboardType {
 internal extension StoryboardType {
   static var storyboard: UIStoryboard {
     let name = self.storyboardName
-    return UIStoryboard(name: name, bundle: BundleToken.bundle)
+    return UIStoryboard(name: name, bundle: Bundle(for: BundleToken.self))
   }
 }
 
@@ -237,10 +237,4 @@ internal struct InitialSceneType<T: UIViewController> {
   }
 }
 
-// swiftlint:disable convenience_type
-private final class BundleToken {
-  static let bundle: Bundle = {
-    Bundle(for: BundleToken.self)
-  }()
-}
-// swiftlint:enable convenience_type
+private final class BundleToken {}
