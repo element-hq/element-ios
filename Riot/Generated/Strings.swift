@@ -1766,6 +1766,22 @@ internal enum VectorL10n {
   internal static var leave: String { 
     return VectorL10n.tr("Vector", "leave") 
   }
+  /// Got it
+  internal static var majorUpdateDoneAction: String { 
+    return VectorL10n.tr("Vector", "major_update_done_action") 
+  }
+  /// We're excited to announce we've changed name! Your app is up to date and you're signed in to your account.
+  internal static var majorUpdateInformation: String { 
+    return VectorL10n.tr("Vector", "major_update_information") 
+  }
+  /// Learn more
+  internal static var majorUpdateLearnMoreAction: String { 
+    return VectorL10n.tr("Vector", "major_update_learn_more_action") 
+  }
+  /// Riot is now Element
+  internal static var majorUpdateTitle: String { 
+    return VectorL10n.tr("Vector", "major_update_title") 
+  }
   /// SESSION INFO
   internal static var manageSessionInfo: String { 
     return VectorL10n.tr("Vector", "manage_session_info") 

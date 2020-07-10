@@ -1400,3 +1400,10 @@
 
 "cross_signing_setup_banner_title" = "Set up encryption";
 "cross_signing_setup_banner_subtitle" = "Verify your other devices easier";
+
+// MARK: - Major update
+
+"major_update_title" = "Riot is now Element";
+"major_update_information" = "We're excited to announce we've changed name! Your app is up to date and you're signed in to your account.";
+"major_update_learn_more_action" = "Learn more";
+"major_update_done_action" = "Got it";
