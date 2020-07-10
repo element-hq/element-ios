@@ -1488,7 +1488,7 @@
                 else
                 {
                     // Reset original icon
-                    self.navigationItem.rightBarButtonItems[1].image = [UIImage imageNamed:@"apps-icon"];
+                    self.navigationItem.rightBarButtonItems[1].image = [UIImage imageNamed:@"integrations_icon"];
                     self.navigationItem.rightBarButtonItems[1].accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_integrations", @"Vector", nil);
                 }
                 
