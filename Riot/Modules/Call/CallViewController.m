@@ -81,9 +81,9 @@
     
     // Audio mute
     
-    UIImage *audioMuteOffButtonImage = [[UIImage imageNamed:@"call_audio_mute_off_icon"] vc_tintedImageUsingColor:unselectedColor];
+    UIImage *audioMuteOffButtonImage = [[UIImage imageNamed:@"call_audio_mute_off_icon"] vc_tintedImageUsingColor:selectedColor];
     
-    UIImage *audioMuteOnButtonImage = [[UIImage imageNamed:@"call_audio_mute_on_icon"] vc_tintedImageUsingColor:selectedColor];
+    UIImage *audioMuteOnButtonImage = [[UIImage imageNamed:@"call_audio_mute_on_icon"] vc_tintedImageUsingColor:unselectedColor];
     
     [self.audioMuteButton setImage:audioMuteOffButtonImage forState:UIControlStateNormal];
     [self.audioMuteButton setImage:audioMuteOffButtonImage forState:UIControlStateHighlighted];
@@ -91,8 +91,8 @@
     
     // Video mute
     
-    UIImage *videoOffButtonImage = [[UIImage imageNamed:@"call_video_mute_off_icon"] vc_tintedImageUsingColor:unselectedColor];
-    UIImage *videoOnButtonImage = [[UIImage imageNamed:@"call_video_mute_on_icon"] vc_tintedImageUsingColor:selectedColor];
+    UIImage *videoOffButtonImage = [[UIImage imageNamed:@"call_video_mute_off_icon"] vc_tintedImageUsingColor:selectedColor];
+    UIImage *videoOnButtonImage = [[UIImage imageNamed:@"call_video_mute_on_icon"] vc_tintedImageUsingColor:unselectedColor];
     
     [self.videoMuteButton setImage:videoOffButtonImage forState:UIControlStateNormal];
     [self.videoMuteButton setImage:videoOffButtonImage forState:UIControlStateHighlighted];
