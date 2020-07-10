@@ -22,21 +22,23 @@ final class LaunchLoadingView: UIView, NibLoadable, Themable {
     
     // MARK: - Properties
     
-    @IBOutlet private weak var logoImageView: UIImageView!
+    @IBOutlet private weak var animationView: ElementView!
     @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
     
     // MARK: - Setup
     
     static func instantiate() -> LaunchLoadingView {
         let view = LaunchLoadingView.loadFromNib()
+        let timeline = Timeline_1(view: view.animationView, duration: 3)
+        timeline.play()
         return view
     }
     
     // MARK: - Public
     
     func update(theme: Theme) {
-        self.backgroundColor = theme.backgroundColor
-        self.logoImageView.tintColor = theme.tintColor
-        self.activityIndicatorView.color = theme.tabBarUnselectedItemTintColor
+        //self.backgroundColor = theme.backgroundColor
+        //self.logoImageView.tintColor = theme.tintColor
+        //self.activityIndicatorView.color = theme.tabBarUnselectedItemTintColor
     }
 }
