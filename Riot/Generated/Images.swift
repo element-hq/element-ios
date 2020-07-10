@@ -64,6 +64,7 @@ internal enum Asset {
     internal static let keyBackupLogo = ImageAsset(name: "key_backup_logo")
     internal static let revealPasswordButton = ImageAsset(name: "reveal_password_button")
     internal static let keyVerificationSuccessShield = ImageAsset(name: "key_verification_success_shield")
+    internal static let oldLogo = ImageAsset(name: "old_logo")
     internal static let cameraCapture = ImageAsset(name: "camera_capture")
     internal static let cameraPlay = ImageAsset(name: "camera_play")
     internal static let cameraStop = ImageAsset(name: "camera_stop")
