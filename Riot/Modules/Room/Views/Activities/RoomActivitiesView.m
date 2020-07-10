@@ -206,6 +206,7 @@
     if (labelText.length)
     {
         self.iconImageView.image = [UIImage imageNamed:@"typing"];
+        self.iconImageView.tintColor = ThemeService.shared.theme.tintColor;
         self.messageLabel.text = labelText;
         
         self.iconImageView.hidden = NO;
