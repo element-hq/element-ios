@@ -1204,8 +1204,8 @@
 - (void)refreshSearchBarItemsColor:(UISearchBar *)searchBar
 {
     // bar tint color
-    searchBar.barTintColor = searchBar.tintColor = ThemeService.shared.riotColorBlue;
-    searchBar.tintColor = ThemeService.shared.riotColorBlue;
+    searchBar.barTintColor = searchBar.tintColor = ThemeService.shared.theme.tintColor;
+    searchBar.tintColor = ThemeService.shared.theme.tintColor;
     
     // FIXME: this all seems incredibly fragile and tied to gutwrenching the current UISearchBar internals.
     
