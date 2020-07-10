@@ -19,6 +19,7 @@
                 <outlet property="jumpToLastUnreadBannerContainerTopConstraint" destination="5eM-eJ-khq" id="b1J-aM-ZcT"/>
                 <outlet property="jumpToLastUnreadBannerSeparatorView" destination="knN-q1-QkJ" id="hHJ-c8-QfN"/>
                 <outlet property="jumpToLastUnreadButton" destination="ISb-UT-u0O" id="fs0-sQ-lRe"/>
+                <outlet property="jumpToLastUnreadImageView" destination="Vlz-UJ-Jz8" id="8iM-Go-SqC"/>
                 <outlet property="jumpToLastUnreadLabel" destination="S1q-B4-Df3" id="McV-gv-bUa"/>
                 <outlet property="overlayContainerView" destination="gt1-EO-UVY" id="5q6-pW-UyZ"/>
                 <outlet property="previewHeaderContainer" destination="54r-18-K1g" id="Klt-RV-V1E"/>
@@ -72,7 +73,7 @@
                                 <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="7pe-19-Zxc"/>
                             </connections>
                         </button>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jump_to_unread" translatesAutoresizingMaskIntoConstraints="NO" id="Vlz-UJ-Jz8">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="scrollup" translatesAutoresizingMaskIntoConstraints="NO" id="Vlz-UJ-Jz8">
                             <rect key="frame" x="13" y="7" width="30" height="30"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="30" id="JCI-mP-w3F"/>
@@ -186,6 +187,6 @@
     </objects>
     <resources>
         <image name="cancel" width="20" height="20"/>
-        <image name="jump_to_unread" width="30" height="30"/>
+        <image name="scrollup" width="30" height="30"/>
     </resources>
 </document>
