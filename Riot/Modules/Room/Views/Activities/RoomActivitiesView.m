@@ -284,7 +284,8 @@
     {
         [self reset];
         
-        self.iconImageView.image = [UIImage imageNamed:@"newmessages"];
+        self.iconImageView.image = [UIImage imageNamed:@"scrolldown"];
+        self.iconImageView.tintColor = ThemeService.shared.theme.noticeColor;
         
         NSString *notification;
         if (newMessagesCount > 1)
@@ -305,6 +306,7 @@
         [self resetIcon];
         
         self.iconImageView.image = [UIImage imageNamed:@"scrolldown"];
+        self.iconImageView.tintColor = ThemeService.shared.theme.textPrimaryColor;
     }
     self.iconImageView.hidden = NO;
 
