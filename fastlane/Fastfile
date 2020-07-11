@@ -151,6 +151,7 @@ platform :ios do
         main_provisioning_name = adhoc ? ENV["ADHOC_MAIN_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER"]
         share_extension_provisioning_name = adhoc ? ENV["ADHOC_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
         siri_intents_provisioning_name = adhoc ? ENV["ADHOC_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
+        notification_service_extension_provisioning_name = adhoc ? ENV["ADHOC_NSE_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_NSE_PROVISIONING_PROFILE_SPECIFIER"]
 
         # Main application
         get_provisioning_profile(
@@ -188,6 +189,8 @@ platform :ios do
         # NSE
         get_provisioning_profile(
             app_identifier: ENV["NSE_BUNDLE_ID"],
+            provisioning_name: notification_service_extension_provisioning_name,
+            ignore_profiles_with_different_name: true,
             adhoc: adhoc,
             skip_certificate_verification: skip_certificate_verification,
             output_path: output_path,
