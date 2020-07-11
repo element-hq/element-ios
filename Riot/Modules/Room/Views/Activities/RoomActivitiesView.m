@@ -162,6 +162,7 @@
     }
     
     self.iconImageView.image = [UIImage imageNamed:@"error"];
+    self.iconImageView.tintColor = ThemeService.shared.theme.tintColor;
     self.iconImageView.hidden = NO;
     
     if (onIconTapGesture)
@@ -187,6 +188,7 @@
     if (labelText.length)
     {
         self.iconImageView.image = [UIImage imageNamed:@"error"];
+        self.iconImageView.tintColor = ThemeService.shared.theme.noticeColor;
         self.messageLabel.text = labelText;
         self.messageLabel.textColor = ThemeService.shared.theme.warningColor;
         
@@ -204,6 +206,7 @@
     if (labelText.length)
     {
         self.iconImageView.image = [UIImage imageNamed:@"typing"];
+        self.iconImageView.tintColor = ThemeService.shared.theme.tintColor;
         self.messageLabel.text = labelText;
         
         self.iconImageView.hidden = NO;
@@ -284,7 +287,8 @@
     {
         [self reset];
         
-        self.iconImageView.image = [UIImage imageNamed:@"newmessages"];
+        self.iconImageView.image = [UIImage imageNamed:@"scrolldown"];
+        self.iconImageView.tintColor = ThemeService.shared.theme.noticeColor;
         
         NSString *notification;
         if (newMessagesCount > 1)
@@ -305,6 +309,7 @@
         [self resetIcon];
         
         self.iconImageView.image = [UIImage imageNamed:@"scrolldown"];
+        self.iconImageView.tintColor = ThemeService.shared.theme.textPrimaryColor;
     }
     self.iconImageView.hidden = NO;
 
@@ -376,6 +381,7 @@
     self.messageTextView.backgroundColor = [UIColor clearColor];
     
     self.iconImageView.image = [UIImage imageNamed:@"error"];
+    self.iconImageView.tintColor = ThemeService.shared.theme.noticeColor;
     self.iconImageView.hidden = NO;
     
     [self checkHeight:YES];

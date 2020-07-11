@@ -40,6 +40,7 @@
 // The jump to last unread banner
 @property (weak, nonatomic) IBOutlet UIView *jumpToLastUnreadBannerContainer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *jumpToLastUnreadBannerContainerTopConstraint;
+@property (weak, nonatomic) IBOutlet UIImageView *jumpToLastUnreadImageView;
 @property (weak, nonatomic) IBOutlet UIButton *jumpToLastUnreadButton;
 @property (weak, nonatomic) IBOutlet UILabel *jumpToLastUnreadLabel;
 @property (weak, nonatomic) IBOutlet UIButton *resetReadMarkerButton;
