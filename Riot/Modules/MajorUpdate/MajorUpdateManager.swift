@@ -17,25 +17,29 @@
 import Foundation
 
 /// `MajorUpdateManager` is used to indicate if a major update alert should be displayed.
-@objc
+@objcMembers
 final public class MajorUpdateManager: NSObject {
     
     // MARK: - Constants
     
     private enum Constants {
         static var lastMajorAppVersion = AppVersion(bundleShortVersion: "1.0.0", bundleVersion: "0")
+        static var learnMoreStringURL = "https://element.io/previously-riot"
     }
     
     // MARK: - Properties
     
-    // MARK: - Setup & Teardown
-    
-    // MARK: - Public
-    
-    @objc public func shouldShowMajorUpdate() -> Bool {
+    var shouldShowMajorUpdate: Bool {
         guard let lastUsedAppVersion = AppVersion.lastUsed else {
             return true
         }
         return lastUsedAppVersion.compare(Constants.lastMajorAppVersion) == .orderedAscending
+    }
+    
+    var learnMoreURL: URL {
+        guard let url = URL(string: Constants.learnMoreStringURL) else {
+            fatalError("[MajorUpdateManager] learn more URL should be valid")
+        }
+        return url
     }
 }

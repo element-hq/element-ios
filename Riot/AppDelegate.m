@@ -4600,6 +4600,13 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         
         MXStrongifyAndReturnIfNil(self);
         
+        [[UIApplication sharedApplication] vc_open:self.majorUpdateManager.learnMoreURL completionHandler:^(BOOL success) {
+            if (!success)
+            {
+                [self showAlertWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:NSLocalizedStringFromTable(@"room_message_unable_open_link_error_message", @"Vector", nil)];
+            }
+        }];
+        
         [self.slidingModalPresenter dismissWithAnimated:YES completion:^{
         }];
     };
