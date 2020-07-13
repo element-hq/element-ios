@@ -1,1 +1,33 @@
-
+/* New message from a specific person, not referencing a room */
+"MSG_FROM_USER" = "%@ saatis sõnumi";
+/* New message from a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM" = "%@ kirjutas jututoas %@";
+/* New message from a specific person, not referencing a room. Content included. */
+"MSG_FROM_USER_WITH_CONTENT" = "%@: %@";
+/* New message from a specific person in a named room. Content included. */
+"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ kirjutas jututoas %@: %@";
+/* New action message from a specific person, not referencing a room. */
+"IMAGE_FROM_USER" = "%@ saatis pildi %@";
+/* A single unread message in a room */
+"SINGLE_UNREAD_IN_ROOM" = "Sa said sõnumi jututoas %@";
+/* A single unread message */
+"SINGLE_UNREAD" = "Sa said sõnumi";
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@ saatis kleepsu";
+/* New message indicator on unknown room */
+"MESSAGE" = "Sõnum";
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "Sõnum kasutajalt %@";
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "Sõnum jututoas %@";
+/* Multiple unread messages in a room */
+"UNREAD_IN_ROOM" = "%@ lugemata sõnumit jututoas %@";
+/* Multiple unread messages from a specific person, not referencing a room */
+"MSGS_FROM_USER" = "%@ lugemata sõnumit jututoas %@";
+/* Multiple unread messages from two people */
+"MSGS_FROM_TWO_USERS" = "%@ lugemata sõnumit kasutajatelt %@ ja %@";
+/* Multiple unread messages from three people */
+"MSGS_FROM_THREE_USERS" = "%@ lugemata sõnumit kasutajatelt %@, %@ ja %@";
+/* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
+"MSGS_FROM_TWO_PLUS_USERS" = "%@ lugemata sõnumit kasutajatelt %@, %@ ja veel teisteltki";
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ soovib verifitseerida";
