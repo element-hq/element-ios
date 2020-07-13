@@ -8,13 +8,12 @@ import UIKit
 @IBDesignable
 public class ElementView: UIView {
     public struct Defaults {
-        public static let size = CGSize(width: 130.22, height: 130.02)
-        public static let backgroundColor = UIColor(displayP3Red: 0.052, green: 0.743, blue: 0.543, alpha: 0)
+        public static let size = CGSize(width: 130.16, height: 127.75)
+        public static let backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.021)
     }
 
-    public var element: UIView!
-    public var rectangle: ShapeView!
-    public var element_1: UIView!
+    public var icon: UIView!
+    public var _10242x: UIView!
     public var path: ShapeView!
     public var path_1: ShapeView!
     public var path_2: ShapeView!
@@ -61,9 +60,8 @@ public class ElementView: UIView {
 
     private func createViews() {
         CATransaction.suppressAnimations {
-            createElement()
-            createRectangle()
-            createElement1()
+            createIcon()
+            create_10242x()
             createPath()
             createPath1()
             createPath2()
@@ -71,54 +69,35 @@ public class ElementView: UIView {
         }
     }
 
-    private func createElement() {
-        element = UIView(frame: CGRect(x: 66, y: 65, width: 120, height: 120))
-        element.backgroundColor = UIColor.clear
-        element.layer.shadowOffset = CGSize(width: 0, height: 0)
-        element.layer.shadowColor = UIColor.clear.cgColor
-        element.layer.shadowOpacity = 1
-        element.layer.position = CGPoint(x: 66, y: 65)
-        element.layer.bounds = CGRect(x: 0, y: 0, width: 120, height: 120)
-        element.layer.masksToBounds = false
+    private func createIcon() {
+        icon = UIView(frame: CGRect(x: 65.21, y: 63.27, width: 120.77, height: 120.77))
+        icon.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0)
+        icon.layer.shadowOffset = CGSize(width: 0, height: 0)
+        icon.layer.shadowColor = UIColor.clear.cgColor
+        icon.layer.shadowOpacity = 1
+        icon.layer.position = CGPoint(x: 65.21, y: 63.27)
+        icon.layer.bounds = CGRect(x: 0, y: 0, width: 120.77, height: 120.77)
+        icon.layer.masksToBounds = false
     }
 
-    private func createRectangle() {
-        rectangle = ShapeView(frame: CGRect(x: 60, y: 60, width: 120.4, height: 120.4))
-        rectangle.backgroundColor = UIColor.clear
-        rectangle.alpha = 0
-        rectangle.layer.shadowOffset = CGSize(width: 0, height: 0)
-        rectangle.layer.shadowColor = UIColor.clear.cgColor
-        rectangle.layer.shadowOpacity = 1
-        rectangle.layer.position = CGPoint(x: 60, y: 60)
-        rectangle.layer.bounds = CGRect(x: 0, y: 0, width: 120.4, height: 120.4)
-        rectangle.layer.masksToBounds = false
-        rectangle.shapeLayer.fillRule = CAShapeLayerFillRule.evenOdd
-        rectangle.shapeLayer.fillColor = nil
-        rectangle.shapeLayer.lineDashPattern = []
-        rectangle.shapeLayer.lineDashPhase = 0
-        rectangle.shapeLayer.lineWidth = 0
-        rectangle.shapeLayer.path = CGPathCreateWithSVGString("M0.003,0.003l120.4,0 0,120.4 -120.4,0 0,-120.4zM0.003,0.003")!
-
-    }
-
-    private func createElement1() {
-        element_1 = UIView(frame: CGRect(x: 60, y: 60, width: 120, height: 120))
-        element_1.backgroundColor = UIColor.clear
-        element_1.layer.shadowOffset = CGSize(width: 0, height: 0)
-        element_1.layer.shadowColor = UIColor.clear.cgColor
-        element_1.layer.shadowOpacity = 1
-        element_1.layer.position = CGPoint(x: 60, y: 60)
-        element_1.layer.bounds = CGRect(x: 0, y: 0, width: 120, height: 120)
-        element_1.layer.masksToBounds = false
+    private func create_10242x() {
+        _10242x = UIView(frame: CGRect(x: 60.39, y: 60.39, width: 120, height: 120))
+        _10242x.backgroundColor = UIColor.clear
+        _10242x.layer.shadowOffset = CGSize(width: 0, height: 0)
+        _10242x.layer.shadowColor = UIColor.clear.cgColor
+        _10242x.layer.shadowOpacity = 1
+        _10242x.layer.position = CGPoint(x: 60.39, y: 60.39)
+        _10242x.layer.bounds = CGRect(x: 0, y: 0, width: 120, height: 120)
+        _10242x.layer.masksToBounds = false
     }
 
     private func createPath() {
-        path = ShapeView(frame: CGRect(x: 70.8, y: 27.6, width: 55.2, height: 55.2))
+        path = ShapeView(frame: CGRect(x: 70.81, y: 27.59, width: 55.2, height: 55.2))
         path.backgroundColor = UIColor.clear
         path.layer.shadowOffset = CGSize(width: 0, height: 0)
         path.layer.shadowColor = UIColor.clear.cgColor
         path.layer.shadowOpacity = 1
-        path.layer.position = CGPoint(x: 70.8, y: 27.6)
+        path.layer.position = CGPoint(x: 70.81, y: 27.59)
         path.layer.bounds = CGRect(x: 0, y: 0, width: 55.2, height: 55.2)
         path.layer.masksToBounds = false
         path.shapeLayer.fillRule = CAShapeLayerFillRule.evenOdd
@@ -131,12 +110,12 @@ public class ElementView: UIView {
     }
 
     private func createPath1() {
-        path_1 = ShapeView(frame: CGRect(x: 49.2, y: 92.4, width: 55.2, height: 55.2))
+        path_1 = ShapeView(frame: CGRect(x: 49.2, y: 92.41, width: 55.2, height: 55.2))
         path_1.backgroundColor = UIColor.clear
         path_1.layer.shadowOffset = CGSize(width: 0, height: 0)
         path_1.layer.shadowColor = UIColor.clear.cgColor
         path_1.layer.shadowOpacity = 1
-        path_1.layer.position = CGPoint(x: 49.2, y: 92.4)
+        path_1.layer.position = CGPoint(x: 49.2, y: 92.41)
         path_1.layer.bounds = CGRect(x: 0, y: 0, width: 55.2, height: 55.2)
         path_1.layer.masksToBounds = false
         path_1.shapeLayer.fillRule = CAShapeLayerFillRule.evenOdd
@@ -149,12 +128,12 @@ public class ElementView: UIView {
     }
 
     private func createPath2() {
-        path_2 = ShapeView(frame: CGRect(x: 27.6, y: 49.2, width: 55.2, height: 55.2))
+        path_2 = ShapeView(frame: CGRect(x: 27.59, y: 49.2, width: 55.2, height: 55.2))
         path_2.backgroundColor = UIColor.clear
         path_2.layer.shadowOffset = CGSize(width: 0, height: 0)
         path_2.layer.shadowColor = UIColor.clear.cgColor
         path_2.layer.shadowOpacity = 1
-        path_2.layer.position = CGPoint(x: 27.6, y: 49.2)
+        path_2.layer.position = CGPoint(x: 27.59, y: 49.2)
         path_2.layer.bounds = CGRect(x: 0, y: 0, width: 55.2, height: 55.2)
         path_2.layer.masksToBounds = false
         path_2.shapeLayer.fillRule = CAShapeLayerFillRule.evenOdd
@@ -167,12 +146,12 @@ public class ElementView: UIView {
     }
 
     private func createPath3() {
-        path_3 = ShapeView(frame: CGRect(x: 92.4, y: 70.8, width: 55.2, height: 55.2))
+        path_3 = ShapeView(frame: CGRect(x: 92.41, y: 70.81, width: 55.2, height: 55.2))
         path_3.backgroundColor = UIColor.clear
         path_3.layer.shadowOffset = CGSize(width: 0, height: 0)
         path_3.layer.shadowColor = UIColor.clear.cgColor
         path_3.layer.shadowOpacity = 1
-        path_3.layer.position = CGPoint(x: 92.4, y: 70.8)
+        path_3.layer.position = CGPoint(x: 92.41, y: 70.81)
         path_3.layer.bounds = CGRect(x: 0, y: 0, width: 55.2, height: 55.2)
         path_3.layer.masksToBounds = false
         path_3.shapeLayer.fillRule = CAShapeLayerFillRule.evenOdd
@@ -185,12 +164,11 @@ public class ElementView: UIView {
     }
 
     private func addSubviews() {
-        element_1.addSubview(path)
-        element_1.addSubview(path_1)
-        element_1.addSubview(path_2)
-        element_1.addSubview(path_3)
-        element.addSubview(rectangle)
-        element.addSubview(element_1)
-        addSubview(element)
+        _10242x.addSubview(path)
+        _10242x.addSubview(path_1)
+        _10242x.addSubview(path_2)
+        _10242x.addSubview(path_3)
+        icon.addSubview(_10242x)
+        addSubview(icon)
     }
 }
