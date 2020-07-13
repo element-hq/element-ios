@@ -1,1 +1,5 @@
-
+// Permissions usage explanations
+"NSCameraUsageDescription" = "Kaameraga salvestatakse pilte ning videosid ja tehakse videokõnesid.";
+"NSPhotoLibraryUsageDescription" = "Fotogaleriid kasutatakse fotode ja videote saatmiseks teistele kasutajatele.";
+"NSMicrophoneUsageDescription" = "Mikrofoni kasutatakse videote salvestamisel ning kõnede tegemisel.";
+"NSCalendarsUsageDescription" = "Vaata päevakavasse lisatud koosolekuid vastvast rakendusest.";
