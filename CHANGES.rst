@@ -31,6 +31,7 @@ Bug fix:
  * Xcode11: Disable voip background mode to avoid VoIP pushes (#3369).
  * Xcode11: Disable key backup on push extension (#3371).
  * RoomMembershipBubbleCell: Fix message textview leading constraint (#3226).
+ * SettingsViewController: Fix pan gesture crash (#3396).
 
 Changes in 0.11.6 (2020-06-30)
 ===============================================
