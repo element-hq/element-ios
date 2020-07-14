@@ -6,6 +6,7 @@ Improvements:
  * Theme: Customize UISearchBar with new iOS 13 properties (#3270).
  * NSE: Make extension reusable (#3326).
  * Strings: Use you instead of display name on notice events (#3282).
+ * Lazy-loading: Remove lazy loading labs setting, enable it by default (#3389).
  
 Bug fix:
  * Xcode11: Fix content change error when dragging start chat page (PR #3075).
