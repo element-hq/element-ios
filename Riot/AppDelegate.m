@@ -509,6 +509,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     // Disable CallKit
     [MXKAppSettings standardAppSettings].enableCallKit = NO;
+    
+    // Enable lazy loading
+    [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = YES;
 
     self.pushNotificationService = [PushNotificationService new];
     self.pushNotificationService.delegate = self;
