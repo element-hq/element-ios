@@ -3169,9 +3169,7 @@
                                         }];
                                     }];
                                     
-                                    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                                        //  no-op
-                                    }];
+                                    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) style:UIAlertActionStyleCancel handler:nil];
                                     
                                     [alert addAction:continueAction];
                                     [alert addAction:cancelAction];
@@ -5976,4 +5974,3 @@
 }
 
 @end
-
