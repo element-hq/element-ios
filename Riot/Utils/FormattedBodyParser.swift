@@ -28,7 +28,7 @@ final class FormattedBodyParser: NSObject {
         static let htmlURLAnchorTagRegexPattern = "<a href=\"(.*?)\">([^<]*)</a>"
     }
 
-    lazy var htmlURLAnchorRegex: NSRegularExpression? = {
+    private lazy var htmlURLAnchorRegex: NSRegularExpression? = {
         return try? NSRegularExpression(pattern: Constants.htmlURLAnchorTagRegexPattern, options: .caseInsensitive)
     }()
 
