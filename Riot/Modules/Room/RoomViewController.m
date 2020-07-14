@@ -3174,9 +3174,7 @@
                                     [alert addAction:continueAction];
                                     [alert addAction:cancelAction];
                                     
-                                    [self presentViewController:alert animated:YES completion:^{
-                                        //  no-op
-                                    }];
+                                    [self presentViewController:alert animated:YES completion:nil];
                                     return NO;
                                 }
                             }
