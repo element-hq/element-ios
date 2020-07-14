@@ -214,6 +214,9 @@
 
     // Homeserver notices
     MXServerNotices *serverNotices;
+    
+    // Formatted body parser for events
+    FormattedBodyParser *formattedBodyParser;
 }
 
 @property (nonatomic, weak) IBOutlet UIView *overlayContainerView;
@@ -291,6 +294,7 @@
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+    formattedBodyParser = [FormattedBodyParser new];
     
     _showExpandedHeader = NO;
     _showMissedDiscussionsBadge = YES;
@@ -3150,8 +3154,7 @@
                             //  if an html formatted body exists
                             if ([format isEqualToString:kMXRoomMessageFormatHTML] && formattedBody)
                             {
-                                FormattedBodyParser *parser = [[FormattedBodyParser alloc] initWithFormattedBody:formattedBody];
-                                NSURL *visibleURL = [parser getVisibleURLForURL:url];
+                                NSURL *visibleURL = [formattedBodyParser getVisibleURLForURL:url inFormattedBody:formattedBody];
                                 
                                 if (visibleURL && ![url isEqual:visibleURL])
                                 {

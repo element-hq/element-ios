@@ -18,49 +18,47 @@ import Foundation
 
 @objcMembers
 final class FormattedBodyParser: NSObject {
-    
-    private var formattedBody: String
-    
-    /// Initialize parser
-    /// - Parameter formattedBody: html formatted body
-    init(withFormattedBody formattedBody: String) {
-        self.formattedBody = formattedBody
+
+    private struct HTMLURLAnchor {
+        let link: URL
+        let content: String
     }
-    
-    /// Gets visible url for a given url. Assumes formattedBody has a link like: '<a href="https://example.com/given">https://example.com/visible</a>'
-    /// - Parameter url: the url given as target
-    /// - Returns: visible url if found, otherwise nil
-    func getVisibleURL(forURL url: URL) -> URL? {
-        let rangeOfLink = (formattedBody as NSString).range(of: String(format: "href=\"%@\"", url.absoluteString))
-        if rangeOfLink.location != NSNotFound {
-            let rangeAfterLink = NSRange(location: rangeOfLink.upperBound, length: formattedBody.count - rangeOfLink.upperBound)
-            var startOfVisibleLink = NSNotFound
-            var endOfVisibleLink = NSNotFound
 
-            //  try to find the beginning
-            let rangeOfLinkBeginning = (formattedBody as NSString).range(of: ">", range: rangeAfterLink)
-            if rangeOfLinkBeginning.location != NSNotFound {
-                startOfVisibleLink = rangeOfLinkBeginning.upperBound
-            } else {
-                return nil
-            }
-            
-            //  try to find the end
-            let rangeOfLinkEnd = (formattedBody as NSString).range(of: "</a>", range: rangeAfterLink)
-            if rangeOfLinkEnd.location != NSNotFound {
-                endOfVisibleLink = rangeOfLinkEnd.location
-            } else {
-                return nil
-            }
+    private enum Constants {
+        static let htmlURLAnchorTagRegexPattern = "<a href=\"(.*?)\">([^<]*)</a>"
+    }
 
-            if startOfVisibleLink != NSNotFound && endOfVisibleLink != NSNotFound {
-                //  get the visible link
-                let rangeOfVisibleLink = NSRange(location: startOfVisibleLink, length: endOfVisibleLink - startOfVisibleLink)
-                let visibleLink = (formattedBody as NSString).substring(with: rangeOfVisibleLink)
-                return URL(string: visibleLink)
-            }
+    lazy var htmlURLAnchorRegex: NSRegularExpression? = {
+        return try? NSRegularExpression(pattern: Constants.htmlURLAnchorTagRegexPattern, options: .caseInsensitive)
+    }()
+
+    private func getHTMLURLAnchors(forURL url: URL, inFormattedBody formattedBody: String) -> [HTMLURLAnchor] {
+        // Use regex here self.htmlURLAnchorRegex
+        // build and return list with `HTMLURLAnchor`
+        
+        guard let regex = htmlURLAnchorRegex else {
+            return []
         }
-        return nil
+
+        return regex.matches(in: formattedBody, options: .init(rawValue: 0), range: NSRange(location: 0, length: formattedBody.count)).compactMap { (result) -> HTMLURLAnchor? in
+            guard result.numberOfRanges > 2 else { return nil }
+            let urlString = (formattedBody as NSString).substring(with: result.range(at: 1))
+            let content = (formattedBody as NSString).substring(with: result.range(at: 2))
+            //  ignore invalid urls
+            guard let link = URL(string: urlString) else { return nil }
+            //  ignore other links
+            guard link == url else { return nil }
+            return HTMLURLAnchor(link: link, content: content)
+        }
+    }
+
+    /// Gets visible url for a given url. Assumes formattedBody has one or more links like: '<a href="https://example.com/given">https://example.com/visible</a>'
+    /// - Parameter url: the url given as target
+    /// - Parameter formattedBody: html formatted body
+    /// - Returns: visible url if found, otherwise nil
+    func getVisibleURL(forURL url: URL, inFormattedBody formattedBody: String) -> URL? {
+        //  TODO: returning first link here. Get url range in formattedBody to detect which link is actually tapped.
+        return self.getHTMLURLAnchors(forURL: url, inFormattedBody: formattedBody).compactMap { URL(string: $0.content) }.first
     }
     
 }
