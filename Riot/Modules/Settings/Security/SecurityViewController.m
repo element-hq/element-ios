@@ -1368,8 +1368,7 @@ TableViewSectionsDelegate>
     {
         // Customize label style
         UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
-        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
-        tableViewHeaderFooterView.textLabel.font = [UIFont systemFontOfSize:15];
+        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.headerTextPrimaryColor;
     }
 }
 
