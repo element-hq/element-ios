@@ -132,7 +132,7 @@
 "contacts_address_book_matrix_users_toggle" = "Только пользователи Matrix";
 "contacts_address_book_no_contact" = "Нет локальных контактов";
 "contacts_address_book_permission_required" = "Разрешение на доступ к локальным контактам";
-"contacts_address_book_permission_denied" = "Вы не разрешили Element получить доступ к локальным контактам";
+"contacts_address_book_permission_denied" = "Вы не разрешили Riot получить доступ к локальным контактам";
 // Chat participants
 "room_participants_title" = "Участники";
 "room_participants_add_participant" = "Добавить участника";
@@ -376,7 +376,7 @@
 // Crash report
 "google_analytics_use_prompt" = "Вы хотите помочь улучшить %@, автоматически отправляя анонимные отчеты о сбоях и данные об использовании?";
 // Crypto
-"e2e_enabling_on_app_update" = "Element теперь поддерживает сквозное шифрование, но вам нужно снова войти в систему, чтобы включить его.\n\nВы можете сделать это сейчас или позже из настроек приложения.";
+"e2e_enabling_on_app_update" = "Riot теперь поддерживает сквозное шифрование, но вам нужно снова войти в систему, чтобы включить его.\n\nВы можете сделать это сейчас или позже из настроек приложения.";
 "e2e_need_log_in_again" = "Вам нужно войти в систему, чтобы сгенерировать ключи шифрования для этого устройства и отправлять публичный ключ вашему серверу.\nЭто необходимо только один раз; извините за неудобства.";
 // Bug report
 "bug_report_title" = "Сообщить об ошибке";
@@ -451,7 +451,7 @@
 "settings_calls_settings" = "ВЫЗОВЫ";
 "settings_show_decrypted_content" = "Показать расшифрованное содержимое";
 "settings_enable_callkit" = "Интегрированный вызов";
-"settings_callkit_info" = "Прием входящих звонков на экране блокировки. Журнал вызовов Element будет доступен в истории звонков вашего телефона. Если включен iCloud , то журнал вызовов будет доступен в том числе и Apple.";
+"settings_callkit_info" = "Прием входящих звонков на экране блокировки. Журнал вызовов Riot будет доступен в истории звонков вашего телефона. Если включен iCloud , то журнал вызовов будет доступен в том числе и Apple.";
 "settings_ui_theme" = "Тема";
 "settings_ui_theme_auto" = "Авто";
 "settings_ui_theme_light" = "Светлая";
@@ -537,7 +537,7 @@
 "event_formatter_rerequest_keys_part2" = " с других устройств.";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Запрос отправлен";
-"rerequest_keys_alert_message" = "Запустите Element на другом устройстве, которое может расшифровать сообщение, чтобы оно могло отправить ключи этому устройству.";
+"rerequest_keys_alert_message" = "Запустите Riot на другом устройстве, которое может расшифровать сообщение, чтобы оно могло отправить ключи этому устройству.";
 "room_message_reply_to_placeholder" = "Отправить ответ (незашифрованный)…";
 "encrypted_room_message_reply_to_placeholder" = "Отправить зашифрованный ответ…";
 "room_message_reply_to_short_placeholder" = "Отправить ответ…";

@@ -295,7 +295,7 @@
 "directory_cell_description" = "%tu Räume";
 "directory_search_results" = "%tu Treffer gefunden für %@";
 "directory_search_results_more_than" = ">%tu Treffer gefunden für %@";
-"contacts_address_book_permission_denied" = "Element fehlt die Berechtigung auf die lokalen Kontakte zuzugreifen";
+"contacts_address_book_permission_denied" = "Riot fehlt die Berechtigung auf die lokalen Kontakte zuzugreifen";
 "room_participants_remove_third_party_invite_msg" = "Entfernen der Einladung von Dritten ist noch nicht unterstützt";
 "room_participants_invite_another_user" = "Suchen/Einladen mittels Benutzer-ID, Name oder E-Mail-Adresse";
 "room_participants_invite_malformed_id" = "Ungültige ID. Sollte eine E-Mail-Adresse oder Matrix-ID wie \"@thomas:matrix.org' sein";
@@ -390,7 +390,7 @@
 // Crash report
 "google_analytics_use_prompt" = "Möchtest du helfen %@ zu verbessern, indem du anonyme Crash Reports und Daten über die Verwendung sendest?";
 // Crypto
-"e2e_enabling_on_app_update" = "Element unterstützt nun Ende-zu-Ende Verschlüsselung, um es zu aktivieren musst du dich erneut anmelden.\n\nDu kannst es nun machen oder später in den Einstellungen.";
+"e2e_enabling_on_app_update" = "Riot unterstützt nun Ende-zu-Ende Verschlüsselung, um es zu aktivieren musst du dich erneut anmelden.\n\nDu kannst es nun machen oder später in den Einstellungen.";
 "e2e_need_log_in_again" = "Du musst dich erneut anmelden um Ende-zu-Ende Schlüssel für diese Sitzung zu erstellen und zum Server zu senden.\nDies ist nur einmal notwendig.";
 // Bug report
 "bug_report_title" = "Bug Report";
@@ -461,7 +461,7 @@
 "settings_calls_settings" = "ANRUFE";
 "settings_show_decrypted_content" = "Entschlüsselten Inhalt anzeigen";
 "settings_enable_callkit" = "Eingebettetes Anrufen";
-"settings_callkit_info" = "Empfange eingehende Anrufe auf deinem Sperrbildschirm und sehe deine Element-Anrufe in der System-Anruf-Historie. Wenn iCloud aktiviert ist, wird diese Anruf-Historie mit Apple geteilt.";
+"settings_callkit_info" = "Empfange eingehende Anrufe auf deinem Sperrbildschirm und sehe deine Riot-Anrufe in der System-Anruf-Historie. Wenn iCloud aktiviert ist, wird diese Anruf-Historie mit Apple geteilt.";
 "settings_enable_rageshake" = "Schüttle stark um einen Fehler zu melden";
 "do_not_ask_again" = "Nicht erneut fragen";
 "settings_ui_theme_black" = "Schwarz";
@@ -536,7 +536,7 @@
 "event_formatter_rerequest_keys_part2" = " von deinen anderen Sitzungen anfragen.";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Anfrage gesendet";
-"rerequest_keys_alert_message" = "Öffne Element bitte in einer anderen Sitzung, die die Nachricht entschlüsseln kann, damit es die Schlüssel an dieses Gerät übertragen kann.";
+"rerequest_keys_alert_message" = "Öffne Riot bitte in einer anderen Sitzung, die die Nachricht entschlüsseln kann, damit es die Schlüssel an dieses Gerät übertragen kann.";
 "room_message_reply_to_placeholder" = "Sende eine unverschlüsselte Antwort…";
 "encrypted_room_message_reply_to_placeholder" = "Sende eine verschlüsselte Antwort…";
 "room_message_reply_to_short_placeholder" = "Sende eine Antwort…";
@@ -1005,11 +1005,11 @@
 "device_verification_self_verify_wait_waiting" = "warte…";
 "skip" = "Überspringen";
 // MARK: Clients
-"client_desktop_name" = "Element Desktop";
+"client_desktop_name" = "Riot Desktop";
 "security_settings_crosssigning_info_not_bootstrapped" = "Cross-signing ist bisher nicht konfiguriert.";
-"client_web_name" = "Element Web";
-"client_ios_name" = "Element iOS";
-"client_android_name" = "Element Android";
+"client_web_name" = "Riot Web";
+"client_ios_name" = "Riot iOS";
+"client_android_name" = "Riot X für Android";
 "room_member_power_level_admin_in" = "Admin in %@";
 "room_member_power_level_moderator_in" = "Moderator in %@";
 "room_member_power_level_custom_in" = "Benutzerdefiniert (%@) in %@";
