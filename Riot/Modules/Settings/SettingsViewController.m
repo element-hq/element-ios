@@ -1524,6 +1524,18 @@ TableViewSectionsDelegate>
     return cell;
 }
 
+- (MXKTableViewCell*)descriptionCellForTableView:(UITableView*)tableView
+{
+    MXKTableViewCell *cell = [self getDefaultTableViewCell:tableView];
+    cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+    cell.textLabel.textColor = ThemeService.shared.theme.headerTextPrimaryColor;
+    cell.textLabel.numberOfLines = 0;
+    cell.contentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+    return cell;
+}
+
 - (MXKTableViewCellWithTextView*)textViewCellForTableView:(UITableView*)tableView atIndexPath:(NSIndexPath *)indexPath
 {
     MXKTableViewCellWithTextView *textViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier] forIndexPath:indexPath];
@@ -1828,7 +1840,7 @@ TableViewSectionsDelegate>
         }
         else if (row == USER_SETTINGS_THREEPIDS_INFORMATION_INDEX)
         {
-            MXKTableViewCell *threePidsInformationCell = [self getDefaultTableViewCell:self.tableView];
+            MXKTableViewCell *threePidsInformationCell = [self descriptionCellForTableView:self.tableView];
             
             NSMutableAttributedString *attributedString =  [[NSMutableAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart1] attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor}];
             [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart2] attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.tintColor}]];
@@ -1968,7 +1980,7 @@ TableViewSectionsDelegate>
         }
         else if (row == NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX)
         {
-            MXKTableViewCell *globalInfoCell = [self getDefaultTableViewCell:tableView];
+            MXKTableViewCell *globalInfoCell = [self descriptionCellForTableView:tableView];
 
             NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
 
@@ -2040,7 +2052,7 @@ TableViewSectionsDelegate>
             // Remove "stun:"
             stunFallbackHost = [stunFallbackHost componentsSeparatedByString:@":"].lastObject;
 
-            MXKTableViewCell *globalInfoCell = [self getDefaultTableViewCell:tableView];
+            MXKTableViewCell *globalInfoCell = [self descriptionCellForTableView:tableView];
             globalInfoCell.textLabel.text = [VectorL10n settingsCallsStunServerFallbackDescription:stunFallbackHost];
             globalInfoCell.textLabel.numberOfLines = 0;
             globalInfoCell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -2075,7 +2087,7 @@ TableViewSectionsDelegate>
 
             case IDENTITY_SERVER_DESCRIPTION_INDEX:
             {
-                MXKTableViewCell *descriptionCell = [self getDefaultTableViewCell:tableView];
+                MXKTableViewCell *descriptionCell = [self descriptionCellForTableView:tableView];
 
                 if (account.mxSession.identityService.identityServer)
                 {
@@ -2116,7 +2128,7 @@ TableViewSectionsDelegate>
 
             case INTEGRATIONS_DESCRIPTION_INDEX:
             {
-                MXKTableViewCell *descriptionCell = [self getDefaultTableViewCell:tableView];
+                MXKTableViewCell *descriptionCell = [self descriptionCellForTableView:tableView];
 
                 NSString *integrationManager = [WidgetManager.sharedManager configForUser:session.myUser.userId].apiUrl;
                 NSString *integrationManagerDomain = [NSURL URLWithString:integrationManager].host;

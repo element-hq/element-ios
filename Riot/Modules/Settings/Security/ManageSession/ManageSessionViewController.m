@@ -403,7 +403,8 @@ enum {
 {
     MXKTableViewCell *cell = [self getDefaultTableViewCell:tableView];
     cell.textLabel.text = text;
-    cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+    cell.textLabel.textColor = ThemeService.shared.theme.headerTextPrimaryColor;
     cell.textLabel.numberOfLines = 0;
     cell.contentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
