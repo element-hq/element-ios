@@ -1156,3 +1156,17 @@
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Jelmondat megerősítése";
 "cross_signing_setup_banner_title" = "Titkosítás beállítása";
 "cross_signing_setup_banner_subtitle" = "A többi eszközödet ellenőrizd egyszerűen";
+"security_settings_crypto_sessions_description_2" = "Ha ez a bejelentkezés nem ismerős, akkor változtasd meg a jelszavad és újra állítsd be a Biztonsági Mentést.";
+"security_settings_secure_backup_description" = "A titkosított üzenetekhez és adatokhoz való hozzáférés elvesztése esetén használható biztonsági tartalék a titkosított kulcsok a szerveredre való elmentésével.";
+// AuthenticatedSessionViewControllerFactory
+"authenticated_session_flow_not_supported" = "Ez az alkalmazás nem támogatja a matrix szervered azonosítási mechanizmusát.";
+// Events formatter with you
+"event_formatter_widget_added_by_you" = "Hozzáadtad ezt a kisalkalmazást: %@";
+"event_formatter_widget_removed_by_you" = "Törölted ezt a kisalkalmazást: %@";
+"event_formatter_jitsi_widget_added_by_you" = "VoIP konferenciát adtál hozzá";
+"event_formatter_jitsi_widget_removed_by_you" = "Törölted a VoIP konferenciát";
+"secure_key_backup_setup_intro_use_security_passphrase_info" = "Adj meg olyan biztonsági jelmondatot amit csak te ismersz és generálj egy kulcsot a mentéshez.";
+"secure_key_backup_setup_existing_backup_error_info" = "Old fel, hogy a biztonsági mentéshez tudd használni vagy töröld, hogy új üzenet mentést állíthass be a biztonsági mentésben.";
+"secrets_setup_recovery_key_information" = "A Visszaállítási Kulcsot tárold valahol biztonságos helyen. Felhasználható a titkosított üzenetek és adatok hozzáféréshez.";
+"secrets_setup_recovery_key_storage_alert_message" = "✓Nyomtasd ki és tárold biztonságos helyen\n✓Mentsd egy USB kulcsra vagy biztonsági mentésbe\n✓Másold a saját felhő tárhelyedre";
+"secrets_setup_recovery_passphrase_information" = "Add meg a biztonsági jelmondatot amit csak te tudsz és a titkok biztosításához használod a szervereden.";
