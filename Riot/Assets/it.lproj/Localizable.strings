@@ -41,17 +41,23 @@
 /* Incoming one-to-one voice call */
 "VOICE_CALL_FROM_USER" = "Chiamata da %@";
 /* Incoming one-to-one video call */
-"VIDEO_CALL_FROM_USER" = "Video chiamata da %@";
+"VIDEO_CALL_FROM_USER" = "Videochiamata da %@";
 /* Incoming unnamed voice conference invite from a specific person */
 "VOICE_CONF_FROM_USER" = "Chiamata di gruppo da %@";
 /* Incoming unnamed video conference invite from a specific person */
-"VIDEO_CONF_FROM_USER" = "Video chiamata di gruppo da %@";
+"VIDEO_CONF_FROM_USER" = "Videochiamata di gruppo da %@";
 /* Incoming named voice conference invite from a specific person */
 "VOICE_CONF_NAMED_FROM_USER" = "Chiamata di gruppo da %@: '%@'";
 /* Incoming named video conference invite from a specific person */
-"VIDEO_CONF_NAMED_FROM_USER" = "Video chiamata di gruppo da %@: '%@'";
+"VIDEO_CONF_NAMED_FROM_USER" = "Videochiamata di gruppo da %@: '%@'";
 /* Message title for a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM_TITLE" = "%@ in %@";
 /* Sticker from a specific person, not referencing a room. */
 "STICKER_FROM_USER" = "%@ ha inviato un adesivo";
 "KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ vuole verificare";
+/* New message indicator on unknown room */
+"MESSAGE" = "Messaggio";
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "Messaggio da %@";
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "Messaggio in %@";
