@@ -206,3 +206,7 @@
 "device_verification_emoji_headphones" = "Kõrvaklapid";
 "device_verification_emoji_folder" = "Kaust";
 "device_verification_emoji_pin" = "Knopka";
+"deactivate_account_forget_messages_information_part2_emphasize" = "Hoiatus";
+"deactivate_account_validate_action" = "Kas eemaldame selle konto kasutusest";
+"deactivate_account_password_alert_title" = "Eemalda konto";
+"deactivate_account_password_alert_message" = "Jätkamiseks palun sisesta oma salasõna";
