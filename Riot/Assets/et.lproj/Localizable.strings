@@ -31,3 +31,33 @@
 /* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
 "MSGS_FROM_TWO_PLUS_USERS" = "%@ lugemata sõnumit kasutajatelt %@, %@ ja veel teisteltki";
 "KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ soovib verifitseerida";
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ jututoas %@";
+/* New action message from a specific person, not referencing a room. */
+"ACTION_FROM_USER" = "* %@ %@";
+/* New action message from a specific person in a named room. */
+"ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
+/* New action message from a specific person in a named room. */
+"IMAGE_FROM_USER_IN_ROOM" = "%@ saatis pildi %@ jututoas %@";
+/* Multiple messages in two rooms */
+"MSGS_IN_TWO_ROOMS" = "%@ uut sõnumit jututubades %@ ja %@";
+/* Look, stuff's happened, alright? Just open the app. */
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@ uut sõnumit %@, %@ ja muudes jututubades";
+/* A user has invited you to a chat */
+"USER_INVITE_TO_CHAT" = "%@ kutsus sind vestlema";
+/* A user has invited you to an (unamed) group chat */
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ kutsus sind rühmavestlusele";
+/* A user has invited you to a named room */
+"USER_INVITE_TO_NAMED_ROOM" = "%@ kutsus sind %@ jututuppa";
+/* Incoming one-to-one voice call */
+"VOICE_CALL_FROM_USER" = "Kõne %@'lt";
+/* Incoming one-to-one video call */
+"VIDEO_CALL_FROM_USER" = "Videokõne %@'lt";
+/* Incoming unnamed voice conference invite from a specific person */
+"VOICE_CONF_FROM_USER" = "Rühmakõne %@'lt";
+/* Incoming unnamed video conference invite from a specific person */
+"VIDEO_CONF_FROM_USER" = "Video rühmakõne %@'lt";
+/* Incoming named voice conference invite from a specific person */
+"VOICE_CONF_NAMED_FROM_USER" = "Rühmakõne %@'lt: \"%@\"";
+/* Incoming named video conference invite from a specific person */
+"VIDEO_CONF_NAMED_FROM_USER" = "Video rühmakõne %@'lt: \"%@\"";
