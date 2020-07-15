@@ -1319,6 +1319,18 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     return cell;
 }
 
+- (MXKTableViewCell*)descriptionCellForTableView:(UITableView*)tableView
+{
+    MXKTableViewCell *cell = [self getDefaultTableViewCell:tableView];
+    cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+    cell.textLabel.textColor = ThemeService.shared.theme.headerTextPrimaryColor;
+    cell.textLabel.numberOfLines = 0;
+    cell.contentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+    return cell;
+}
+
 - (MXKTableViewCellWithTextView*)textViewCellForTableView:(UITableView*)tableView atIndexPath:(NSIndexPath *)indexPath
 {
     MXKTableViewCellWithTextView *textViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier] forIndexPath:indexPath];
@@ -1621,7 +1633,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         }
         else if (row == userSettingsThreePidsInformation)
         {
-            MXKTableViewCell *threePidsInformationCell = [self getDefaultTableViewCell:self.tableView];
+            MXKTableViewCell *threePidsInformationCell = [self descriptionCellForTableView:self.tableView];
             
             NSMutableAttributedString *attributedString =  [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"settings_three_pids_management_information_part1", @"Vector", nil) attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor}];
             [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"settings_three_pids_management_information_part2", @"Vector", nil) attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.tintColor}]];
@@ -1692,7 +1704,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         }
         else if (row == NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX)
         {
-            MXKTableViewCell *globalInfoCell = [self getDefaultTableViewCell:tableView];
+            MXKTableViewCell *globalInfoCell = [self descriptionCellForTableView:tableView];
 
             NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
 
@@ -1747,7 +1759,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             // Remove "stun:"
             stunFallbackHost = [stunFallbackHost componentsSeparatedByString:@":"].lastObject;
 
-            MXKTableViewCell *globalInfoCell = [self getDefaultTableViewCell:tableView];
+            MXKTableViewCell *globalInfoCell = [self descriptionCellForTableView:tableView];
             globalInfoCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_calls_stun_server_fallback_description", @"Vector", nil), stunFallbackHost];
             globalInfoCell.textLabel.numberOfLines = 0;
             globalInfoCell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -1782,7 +1794,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
             case IDENTITY_SERVER_DESCRIPTION_INDEX:
             {
-                MXKTableViewCell *descriptionCell = [self getDefaultTableViewCell:tableView];
+                MXKTableViewCell *descriptionCell = [self descriptionCellForTableView:tableView];
 
                 if (account.mxSession.identityService.identityServer)
                 {
@@ -1823,7 +1835,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
             case INTEGRATIONS_DESCRIPTION_INDEX:
             {
-                MXKTableViewCell *descriptionCell = [self getDefaultTableViewCell:tableView];
+                MXKTableViewCell *descriptionCell = [self descriptionCellForTableView:tableView];
 
                 NSString *integrationManager = [WidgetManager.sharedManager configForUser:session.myUser.userId].apiUrl;
                 NSString *integrationManagerDomain = [NSURL URLWithString:integrationManager].host;
