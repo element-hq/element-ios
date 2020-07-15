@@ -18,6 +18,6 @@
 "NSCameraUsageDescription" = "The camera is used to take photos and videos, make video calls.";
 "NSPhotoLibraryUsageDescription" = "The photo library is used to send photos and videos.";
 "NSMicrophoneUsageDescription" = "The microphone is used to take videos, make calls.";
-"NSContactsUsageDescription" = "To discover contacts already using Matrix, Riot can send email addresses and phone numbers in your address book to your chosen Matrix identity server. Where supported, personal data is hashed before sending - please check your identity server's privacy policy for more details.";
+"NSContactsUsageDescription" = "To discover contacts already using Matrix, Element can send email addresses and phone numbers in your address book to your chosen Matrix identity server. Where supported, personal data is hashed before sending - please check your identity server's privacy policy for more details.";
 "NSCalendarsUsageDescription" = "See your scheduled meetings in the app.";
 

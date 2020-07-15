@@ -27,6 +27,7 @@
     [super customizeTableViewCellRendering];
     
     _label.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.checkBox.tintColor = ThemeService.shared.theme.tintColor;
 }
 
 - (void)setEnabled:(BOOL)enabled
