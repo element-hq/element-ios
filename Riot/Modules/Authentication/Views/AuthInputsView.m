@@ -113,6 +113,8 @@
     self.isoCountryCodeLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.callingCodeLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     
+    self.countryCodeButton.tintColor = ThemeService.shared.theme.textSecondaryColor;
+    
     self.messageLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.messageLabel.numberOfLines = 0;
     
