@@ -42,7 +42,10 @@ final class FormattedBodyParser: NSObject {
 
         return regex.matches(in: formattedBody, options: [], range: NSRange(formattedBody.startIndex..., in: formattedBody)).compactMap { (result) -> HTMLURLAnchor? in
             guard result.numberOfRanges > 2 else { return nil }
-            let urlString = (formattedBody as NSString).substring(with: result.range(at: 1))
+            guard let urlRange = Range(result.range(at: 1), in: formattedBody) else {
+                return nil
+            }
+            let urlString = String(formattedBody[urlRange])
             let content = (formattedBody as NSString).substring(with: result.range(at: 2))
             //  ignore invalid urls
             guard let link = URL(string: urlString) else { return nil }
