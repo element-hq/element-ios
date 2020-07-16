@@ -24,6 +24,8 @@
 @property (weak, nonatomic) IBOutlet UIView *gradientMaskContainerView;
 @property (weak, nonatomic) IBOutlet UIButton *chatButton;
 
+@property (weak, nonatomic) IBOutlet UIView *callControlsBackgroundView;
+
 @property (unsafe_unretained, nonatomic) IBOutlet NSLayoutConstraint *callerImageViewWidthConstraint;
 
 // At the end of call, this flag indicates if the prompt to use the fallback should be displayed

@@ -221,6 +221,8 @@
         }
         
         [self presentReviewSessionsAlertIfNeeded];
+        
+        [[AppDelegate theDelegate] checkAppVersion];
     }
     
     if (unifiedSearchViewController)

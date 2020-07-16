@@ -418,19 +418,19 @@ internal enum VectorL10n {
   internal static var cancel: String { 
     return VectorL10n.tr("Vector", "cancel") 
   }
-  /// Riot X for Android
+  /// Element Android
   internal static var clientAndroidName: String { 
     return VectorL10n.tr("Vector", "client_android_name") 
   }
-  /// Riot Desktop
+  /// Element Desktop
   internal static var clientDesktopName: String { 
     return VectorL10n.tr("Vector", "client_desktop_name") 
   }
-  /// Riot iOS
+  /// Element iOS
   internal static var clientIosName: String { 
     return VectorL10n.tr("Vector", "client_ios_name") 
   }
-  /// Riot Web
+  /// Element Web
   internal static var clientWebName: String { 
     return VectorL10n.tr("Vector", "client_web_name") 
   }
@@ -454,7 +454,7 @@ internal enum VectorL10n {
   internal static var contactsAddressBookNoIdentityServer: String { 
     return VectorL10n.tr("Vector", "contacts_address_book_no_identity_server") 
   }
-  /// You didn't allow Riot to access your local contacts
+  /// You didn't allow Element to access your local contacts
   internal static var contactsAddressBookPermissionDenied: String { 
     return VectorL10n.tr("Vector", "contacts_address_book_permission_denied") 
   }
@@ -858,7 +858,7 @@ internal enum VectorL10n {
   internal static var deviceVerificationSelfVerifyWaitAdditionalInformation: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_additional_information") 
   }
-  /// Verify this session from one of your other sessions, granting it access to encrypted messages.\n\nUse the latest Riot on your other devices:
+  /// Verify this session from one of your other sessions, granting it access to encrypted messages.\n\nUse the latest Element on your other devices:
   internal static var deviceVerificationSelfVerifyWaitInformation: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_information") 
   }
@@ -970,7 +970,7 @@ internal enum VectorL10n {
   internal static var doNotAskAgain: String { 
     return VectorL10n.tr("Vector", "do_not_ask_again") 
   }
-  /// Riot now supports end-to-end encryption but you need to log in again to enable it.\n\nYou can do it now or later from the application settings.
+  /// Element now supports end-to-end encryption but you need to log in again to enable it.\n\nYou can do it now or later from the application settings.
   internal static var e2eEnablingOnAppUpdate: String { 
     return VectorL10n.tr("Vector", "e2e_enabling_on_app_update") 
   }
@@ -1790,6 +1790,22 @@ internal enum VectorL10n {
   internal static var leave: String { 
     return VectorL10n.tr("Vector", "leave") 
   }
+  /// Got it
+  internal static var majorUpdateDoneAction: String { 
+    return VectorL10n.tr("Vector", "major_update_done_action") 
+  }
+  /// We're excited to announce we've changed name! Your app is up to date and you're signed in to your account.
+  internal static var majorUpdateInformation: String { 
+    return VectorL10n.tr("Vector", "major_update_information") 
+  }
+  /// Learn more
+  internal static var majorUpdateLearnMoreAction: String { 
+    return VectorL10n.tr("Vector", "major_update_learn_more_action") 
+  }
+  /// Riot is now Element
+  internal static var majorUpdateTitle: String { 
+    return VectorL10n.tr("Vector", "major_update_title") 
+  }
   /// SESSION INFO
   internal static var manageSessionInfo: String { 
     return VectorL10n.tr("Vector", "manage_session_info") 
@@ -1926,7 +1942,7 @@ internal enum VectorL10n {
   internal static var rename: String { 
     return VectorL10n.tr("Vector", "rename") 
   }
-  /// Please launch Riot on another device that can decrypt the message so it can send the keys to this session.
+  /// Please launch Element on another device that can decrypt the message so it can send the keys to this session.
   internal static var rerequestKeysAlertMessage: String { 
     return VectorL10n.tr("Vector", "rerequest_keys_alert_message") 
   }
@@ -3150,7 +3166,7 @@ internal enum VectorL10n {
   internal static var securitySettingsBlacklistUnverifiedDevicesDescription: String { 
     return VectorL10n.tr("Vector", "security_settings_blacklist_unverified_devices_description") 
   }
-  /// Sorry. This action is not available on Riot-iOS yet. Please use another Matrix client to set it up. Riot-iOS will use it.
+  /// Sorry. This action is not available on Element iOS yet. Please use another Matrix client to set it up. Element iOS will use it.
   internal static var securitySettingsComingSoon: String { 
     return VectorL10n.tr("Vector", "security_settings_coming_soon") 
   }
@@ -3318,7 +3334,7 @@ internal enum VectorL10n {
   internal static var settingsAdvanced: String { 
     return VectorL10n.tr("Vector", "settings_advanced") 
   }
-  /// Receive incoming calls on your lock screen. See your Riot calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.
+  /// Receive incoming calls on your lock screen. See your Element calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.
   internal static var settingsCallkitInfo: String { 
     return VectorL10n.tr("Vector", "settings_callkit_info") 
   }
@@ -3377,10 +3393,6 @@ internal enum VectorL10n {
   /// Copyright
   internal static var settingsCopyright: String { 
     return VectorL10n.tr("Vector", "settings_copyright") 
-  }
-  /// https://riot.im/copyright
-  internal static var settingsCopyrightUrl: String { 
-    return VectorL10n.tr("Vector", "settings_copyright_url") 
   }
   /// Encrypt to verified sessions only
   internal static var settingsCryptoBlacklistUnverifiedDevices: String { 
@@ -3730,10 +3742,6 @@ internal enum VectorL10n {
   internal static var settingsPrivacyPolicy: String { 
     return VectorL10n.tr("Vector", "settings_privacy_policy") 
   }
-  /// https://riot.im/privacy
-  internal static var settingsPrivacyPolicyUrl: String { 
-    return VectorL10n.tr("Vector", "settings_privacy_policy_url") 
-  }
   /// Profile Picture
   internal static var settingsProfilePicture: String { 
     return VectorL10n.tr("Vector", "settings_profile_picture") 
@@ -3785,10 +3793,6 @@ internal enum VectorL10n {
   /// Terms & Conditions
   internal static var settingsTermConditions: String { 
     return VectorL10n.tr("Vector", "settings_term_conditions") 
-  }
-  /// https://riot.im/tac_apple
-  internal static var settingsTermConditionsUrl: String { 
-    return VectorL10n.tr("Vector", "settings_term_conditions_url") 
   }
   /// Third-party Notices
   internal static var settingsThirdPartyNotices: String { 
@@ -3922,7 +3926,7 @@ internal enum VectorL10n {
   internal static var start: String { 
     return VectorL10n.tr("Vector", "start") 
   }
-  /// Communicate, your way.\n\nA chat app, under your control and entirely flexible. Riot lets you communicate the way you want. Made for [matrix] - the standard for open, decentralised communication.\n\nGet a free matrix.org account, get your own server at https://modular.im, or use another Matrix server.\n\nWhy choose Riot.im?\n\nCOMPLETE COMMUNICATION: Build rooms around your teams, your friends, your community - however you like! Chat, share files, add widgets and make voice and video calls - all free of charge.\n\nPOWERFUL INTEGRATIONS: Use Riot.im with the tools you know and love. With Riot.im you can even chat with users and groups on other chat apps.\n\nPRIVATE AND SECURE: Keep your conversations secret. State of the art end-to-end encryption ensures that private communication stays private.\n\nOPEN, NOT CLOSED: Open source, and built on Matrix. Own your own data by hosting your own server, or selecting one you trust.\n\nEVERYWHERE YOU ARE: Stay in touch wherever you are with fully synchronised message history across all your devices and online at https://riot.im.
+  /// Communicate, your way.\n\nA chat app, under your control and entirely flexible. Riot lets you communicate the way you want. Made for [matrix] - the standard for open, decentralised communication.\n\nGet a free matrix.org account, get your own server at https://modular.im, or use another Matrix server.\n\nWhy choose Riot.im?\n\nCOMPLETE COMMUNICATION: Build rooms around your teams, your friends, your community - however you like! Chat, share files, add widgets and make voice and video calls - all free of charge.\n\nPOWERFUL INTEGRATIONS: Use Riot.im with the tools you know and love. With Riot.im you can even chat with users and groups on other chat apps.\n\nPRIVATE AND SECURE: Keep your conversations secret. State of the art end-to-end encryption ensures that private communication stays private.\n\nOPEN, NOT CLOSED: Open source, and built on Matrix. Own your own data by hosting your own server, or selecting one you trust.\n\nEVERYWHERE YOU ARE: Stay in touch wherever you are with fully synchronised message history across all your devices and online at https://element.io.
   internal static var storeFullDescription: String { 
     return VectorL10n.tr("Vector", "store_full_description") 
   }

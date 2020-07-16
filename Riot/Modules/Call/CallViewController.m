@@ -64,27 +64,61 @@
 {
     [super viewDidLoad];
     
-    [self.backToAppButton setImage:[UIImage imageNamed:@"back_icon"] forState:UIControlStateNormal];
-    [self.backToAppButton setImage:[UIImage imageNamed:@"back_icon"] forState:UIControlStateHighlighted];
+    UIColor *unselectedColor = ThemeService.shared.theme.tabBarUnselectedItemTintColor;
+    UIColor *selectedColor = ThemeService.shared.theme.tintColor;
     
-    [self.cameraSwitchButton setImage:[UIImage imageNamed:@"camera_switch"] forState:UIControlStateNormal];
-    [self.cameraSwitchButton setImage:[UIImage imageNamed:@"camera_switch"] forState:UIControlStateHighlighted];
+    // Back button
     
-    [self.audioMuteButton setImage:[UIImage imageNamed:@"call_audio_mute_off_icon"] forState:UIControlStateNormal];
-    [self.audioMuteButton setImage:[UIImage imageNamed:@"call_audio_mute_off_icon"] forState:UIControlStateHighlighted];
-    [self.audioMuteButton setImage:[UIImage imageNamed:@"call_audio_mute_on_icon"] forState:UIControlStateSelected];
-    [self.videoMuteButton setImage:[UIImage imageNamed:@"call_video_mute_off_icon"] forState:UIControlStateNormal];
-    [self.videoMuteButton setImage:[UIImage imageNamed:@"call_video_mute_off_icon"] forState:UIControlStateHighlighted];
-    [self.videoMuteButton setImage:[UIImage imageNamed:@"call_video_mute_on_icon"] forState:UIControlStateSelected];
-    [self.speakerButton setImage:[UIImage imageNamed:@"call_speaker_off_icon"] forState:UIControlStateNormal];
-    [self.speakerButton setImage:[UIImage imageNamed:@"call_speaker_on_icon"] forState:UIControlStateSelected];
-    [self.chatButton setImage:[UIImage imageNamed:@"call_chat_icon"] forState:UIControlStateNormal];
-    [self.chatButton setImage:[UIImage imageNamed:@"call_chat_icon"] forState:UIControlStateHighlighted];
+    UIImage *backButtonImage = [[UIImage imageNamed:@"back_icon"] vc_tintedImageUsingColor:selectedColor];
+    [self.backToAppButton setImage:backButtonImage forState:UIControlStateNormal];
+    [self.backToAppButton setImage:backButtonImage forState:UIControlStateHighlighted];
+    
+    // Camera switch
+    
+    UIImage *cameraSwitchButtonImage = [[UIImage imageNamed:@"camera_switch"] vc_tintedImageUsingColor:selectedColor];
+    [self.cameraSwitchButton setImage:cameraSwitchButtonImage forState:UIControlStateNormal];
+    [self.cameraSwitchButton setImage:cameraSwitchButtonImage forState:UIControlStateHighlighted];
+    
+    // Audio mute
+    
+    UIImage *audioMuteOffButtonImage = [[UIImage imageNamed:@"call_audio_mute_off_icon"] vc_tintedImageUsingColor:unselectedColor];
+    
+    UIImage *audioMuteOnButtonImage = [[UIImage imageNamed:@"call_audio_mute_on_icon"] vc_tintedImageUsingColor:unselectedColor];
+    
+    [self.audioMuteButton setImage:audioMuteOffButtonImage forState:UIControlStateNormal];
+    [self.audioMuteButton setImage:audioMuteOffButtonImage forState:UIControlStateHighlighted];
+    [self.audioMuteButton setImage:audioMuteOnButtonImage forState:UIControlStateSelected];
+    
+    // Video mute
+    
+    UIImage *videoOffButtonImage = [[UIImage imageNamed:@"call_video_mute_off_icon"] vc_tintedImageUsingColor:unselectedColor];
+    UIImage *videoOnButtonImage = [[UIImage imageNamed:@"call_video_mute_on_icon"] vc_tintedImageUsingColor:unselectedColor];
+    
+    [self.videoMuteButton setImage:videoOffButtonImage forState:UIControlStateNormal];
+    [self.videoMuteButton setImage:videoOffButtonImage forState:UIControlStateHighlighted];
+    [self.videoMuteButton setImage:videoOnButtonImage forState:UIControlStateSelected];
+    
+    // Speaker
+    
+    UIImage *speakerOffButtonImage = [[UIImage imageNamed:@"call_speaker_off_icon"] vc_tintedImageUsingColor:unselectedColor];
+    UIImage *speakerOnButtonImage = [[UIImage imageNamed:@"call_speaker_on_icon"] vc_tintedImageUsingColor:unselectedColor];
+    [self.speakerButton setImage:speakerOffButtonImage forState:UIControlStateNormal];
+    [self.speakerButton setImage:speakerOnButtonImage forState:UIControlStateSelected];
+    
+    // Chat
+    
+    UIImage *chatButtonImage = [[UIImage imageNamed:@"call_chat_icon"] vc_tintedImageUsingColor:unselectedColor];
+    [self.chatButton setImage:chatButtonImage forState:UIControlStateNormal];
+    [self.chatButton setImage:chatButtonImage forState:UIControlStateHighlighted];
+    
+    // Hang up
+    
+    UIImage *hangUpButtonImage = [[UIImage imageNamed:@"call_hangup_large"] vc_tintedImageUsingColor:ThemeService.shared.theme.noticeColor];
     
     [self.endCallButton setTitle:nil forState:UIControlStateNormal];
     [self.endCallButton setTitle:nil forState:UIControlStateHighlighted];
-    [self.endCallButton setImage:[UIImage imageNamed:@"call_hangup_icon"] forState:UIControlStateNormal];
-    [self.endCallButton setImage:[UIImage imageNamed:@"call_hangup_icon"] forState:UIControlStateHighlighted];
+    [self.endCallButton setImage:hangUpButtonImage forState:UIControlStateNormal];
+    [self.endCallButton setImage:hangUpButtonImage forState:UIControlStateHighlighted];
     
     // Define caller image view size
     CGSize size = [[UIScreen mainScreen] bounds].size;
@@ -143,6 +177,8 @@
     // it seems only being supported on Mac OS.
     // so viewDidLayoutSubviews will refresh the layout bounds.
     [self.gradientMaskContainerView.layer addSublayer:gradientMaskLayer];
+    
+    self.callControlsBackgroundView.backgroundColor = ThemeService.shared.theme.baseColor;
 }
 
 - (BOOL)prefersStatusBarHidden

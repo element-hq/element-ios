@@ -15,6 +15,7 @@ internal enum RiotDefaults {
   internal static let bugReportApp: String = _document["bugReportApp"]
   internal static let bugReportEndpointUrl: String = _document["bugReportEndpointUrl"]
   internal static let createConferenceCallsWithJitsi: Bool = _document["createConferenceCallsWithJitsi"]
+  internal static let enableBotCreation: Bool = _document["enableBotCreation"]
   internal static let enableRageShake: Bool = _document["enableRageShake"]
   internal static let homeserver: String = _document["homeserver"]
   internal static let homeserverurl: String = _document["homeserverurl"]
@@ -37,6 +38,9 @@ internal enum RiotDefaults {
   internal static let pusherAppIdDev: String = _document["pusherAppIdDev"]
   internal static let pusherAppIdProd: String = _document["pusherAppIdProd"]
   internal static let roomDirectoryServers: [String: Any] = _document["roomDirectoryServers"]
+  internal static let settingsCopyrightUrl: String = _document["settingsCopyrightUrl"]
+  internal static let settingsPrivacyPolicyUrl: String = _document["settingsPrivacyPolicyUrl"]
+  internal static let settingsTermsConditionsUrl: String = _document["settingsTermsConditionsUrl"]
   internal static let showAllEventsInRoomHistory: Bool = _document["showAllEventsInRoomHistory"]
   internal static let showLeftMembersInRoomMemberList: Bool = _document["showLeftMembersInRoomMemberList"]
   internal static let showRedactionsInRoomHistory: Bool = _document["showRedactionsInRoomHistory"]
@@ -45,8 +49,8 @@ internal enum RiotDefaults {
   internal static let stunServerFallback: String = _document["stunServerFallback"]
   internal static let syncLocalContacts: Bool = _document["syncLocalContacts"]
   internal static let webAppUrl: String = _document["webAppUrl"]
-  internal static let webAppUrlBeta: String = _document["webAppUrlBeta"]
   internal static let webAppUrlDev: String = _document["webAppUrlDev"]
+  internal static let webAppUrlStaging: String = _document["webAppUrlStaging"]
 }
 // swiftlint:enable identifier_name line_length type_body_length
 
