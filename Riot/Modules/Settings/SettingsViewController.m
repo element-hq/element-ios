@@ -456,9 +456,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"Settings"];
     
-    // Release the potential pushed view controller
-    [self releasePushedViewController];
-    
     // Refresh display
     [self refreshSettings];
 
@@ -478,6 +475,9 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    // Release the potential pushed view controller
+    [self releasePushedViewController];
     
     [self.settingsDiscoveryTableViewSection reload];
 }

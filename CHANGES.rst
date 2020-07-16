@@ -36,6 +36,7 @@ Bug fix:
  * SettingsViewController: Fix crash when scrolling to Discovery (#3401).
  * Main.storyboard: Set storyboard identifier for SettingsViewController (#3398).
  * Universal links: Fix broken links for web apps (#3420).
+ * SettingsViewController: Fix pan gesture crash (#3396).
 
 Changes in 0.11.6 (2020-06-30)
 ===============================================
