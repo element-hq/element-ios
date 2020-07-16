@@ -1,0 +1,6 @@
+// Permissions usage explanations
+"NSCameraUsageDescription" = "Kaameraga salvestatakse pilte ning videosid ja tehakse videokõnesid.";
+"NSPhotoLibraryUsageDescription" = "Fotogaleriid kasutatakse fotode ja videote saatmiseks teistele kasutajatele.";
+"NSMicrophoneUsageDescription" = "Mikrofoni kasutatakse videote salvestamisel ning kõnede tegemisel.";
+"NSCalendarsUsageDescription" = "Vaata päevakavasse lisatud koosolekuid vastvast rakendusest.";
+"NSContactsUsageDescription" = "Selleks, et leida Matrixi võrgu kasutajaid, võib Element saata sinu aadressiraamatus leiduvad e-posti aadressid ja telefoninumbrid sinu valitud Matrixi isikutuvastusserverile. Kui server seda toetab, siis andmed muudetakse enne saatmist räsideks - täpsema teabe leiad oma isikutuvastusserveri privaatsuspoliitikast.";
