@@ -46,7 +46,10 @@ final class FormattedBodyParser: NSObject {
                 return nil
             }
             let urlString = String(formattedBody[urlRange])
-            let content = (formattedBody as NSString).substring(with: result.range(at: 2))
+            guard let contentRange = Range(result.range(at: 2), in: formattedBody) else {
+                return nil
+            }
+            let content = String(formattedBody[contentRange])
             //  ignore invalid urls
             guard let link = URL(string: urlString) else { return nil }
             //  ignore other links
