@@ -212,3 +212,17 @@
 "deactivate_account_password_alert_message" = "Jätkamiseks palun sisesta oma salasõna";
 // MARK: Clients
 "client_desktop_name" = "Element Desktop";
+"client_web_name" = "Element Web";
+"client_ios_name" = "Element iOS";
+"client_android_name" = "Element Android";
+"auth_login_single_sign_on" = "Logi sisse ühekordse sisselogimise abil";
+// Room recents
+"room_recents_directory_section" = "JUTUTUBADE LOEND";
+"room_recents_directory_section_network" = "Võrk";
+"room_recents_favourites_section" = "LEMMIKUD";
+"room_recents_people_section" = "INIMESED";
+"room_recents_conversations_section" = "JUTUTOAD";
+"room_recents_no_conversation" = "Jututube ei leidu";
+"contacts_address_book_permission_denied" = "Sa pole Element'ile andnud ligipääsu kohalikele kontaktidele";
+"security_settings_coming_soon" = "Vabandust. See tegevus pole veel kasutatav Element iOS rakenduses. Palun kasuta seadistamiseks mõnda muud Matrix'i klienti ning Element iOS oskab seda kasutada.";
+"major_update_title" = "Riot'i uus nimi on Element";
