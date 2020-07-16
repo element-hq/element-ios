@@ -398,3 +398,28 @@
 "user_verification_session_details_trusted_title" = "Betrodd";
 "user_verification_session_details_untrusted_title" = "Advarsel";
 "user_verification_session_details_verify_action_current_user" = "Bekreft";
+// String for App Store
+"store_short_description" = "Sikker desentralisert chat/IP-telefoni";
+"store_full_description" = "Kommuniser. På din måte.\n\nEn chatte-app som er fleksibel og fullstendig under din kontroll. Riot lar deg kommunisere slik du vil. Laget for [matrix] - standarden for åpen, desentralisert kommunikasjon.\n\nSkaff deg en gratis matrix.org-konto og din egen server på https://modular.im, eller bruk en annen Matrix-server.\n\nHvorfor velge Riot.im?\n\nKOMPLETT KOMMUNIKASJON: Bygg et eget rom til laget ditt, vennene dine, samfunnet ditt - akkurat på den måten du ønsker! Chat, del filer, legg til widgeter og foreta tale- og videosamtaler - alt sammen helt gratis.\n\nKRAFTIGE INTEGRASJONER: Bruk Riot.im med verktøyene du kjenner og elsker. Med Riot.im kan du til og med chatte med brukere og grupper på andre chatte-apper.\n\nPRIVAT OG SIKKER: Hold samtalene hemmelige. Topp moderne ende-til-ende-kryptering sikrer at privat kommunikasjon forblir privat.\n\nÅPEN, IKKE LUKKET: Åpen kildekode, og bygd på Matrix. Ei dine egne data ved å være vert for din egen server, eller velg en server du stoler på.\n\nUansett hvor du er: Hold kontakten hvor enn du er med synkronisert meldingshistorikk på alle enhetene dine, samt på nettet på https://riot.im.";
+"title_favourites" = "Favoritter";
+"on" = "På";
+"skip" = "Hopp over";
+// Accessibility
+"accessibility_checkbox_label" = "avkrysningsboks";
+// MARK: Clients
+"client_desktop_name" = "Riot Desktop";
+"client_web_name" = "Riot Web";
+"client_ios_name" = "Riot iOS";
+"client_android_name" = "Riot X til Android";
+"auth_login_single_sign_on" = "Logg inn med én innlogging";
+"auth_invalid_login_param" = "Feil brukernavn og/eller passord";
+"auth_invalid_user_name" = "Brukernavn kan bare inneholde bokstaver, tall, punktum, bindestrek og understrek";
+"auth_invalid_password" = "Passordet er for kort (minimum 6 tegn)";
+"auth_invalid_email" = "Dette ser ikke ut som en gyldig e-postadresse";
+"auth_invalid_phone" = "Dette ser ikke ut som et gyldig telefonnummer";
+"auth_add_email_message_2" = "Angi en e-postadresse for gjenoppretting av kontoer. Valgfritt kan du benytte e-postadressen din til å bli oppdaget av folk som kjenner deg.";
+"auth_add_phone_message_2" = "Angi et telefonnummer, som du valgfritt kan benytte til å bli oppdaget av folk som kjenner deg.";
+"auth_add_email_phone_message_2" = "Angi en e-postadresse for kontogjenoppretting. Senere kan du, helt valgfritt, benytte e-postadressen din eller telefonnummeret ditt til å bli oppdaget av folk som kjenner deg.";
+"auth_missing_email_or_phone" = "Manglende e-postadresse eller telefonnummer";
+"auth_email_in_use" = "Denne e-postadressen er allerede i bruk";
+"auth_phone_in_use" = "Dette telefonnummeret er allerede i bruk";
