@@ -2,5 +2,5 @@
 "NSCameraUsageDescription" = "Die Kamera wird verwendet, um Fotos und Videos aufzunehmen sowie Videoanrufe durchzuführen.";
 "NSPhotoLibraryUsageDescription" = "Die Fotobibliothek wird verwendet, um Fotos und Videos zu versenden.";
 "NSMicrophoneUsageDescription" = "Das Mikrofon wird verwendet, um Videos aufzunehmen sowie Gespräche zu führen.";
-"NSContactsUsageDescription" = "Riot kann E-Mail-Adressen und Telefonnummern aus deinem Adressbuch zu deinem Matrix-Identitätsserver schicken, um Kontakte zu finden, die bereits Matrix verwenden. Wenn verfügbar, werden persönliche Daten vor dem Versand gehasht. Für weitere Informationen schaue bitte in die Datenschutzerklärung deines Identitätsservers.";
+"NSContactsUsageDescription" = "Element kann E-Mail-Adressen und Telefonnummern aus deinem Adressbuch zu deinem Matrix-Identitätsserver schicken, um Kontakte zu finden, die bereits Matrix verwenden. Wenn verfügbar, werden persönliche Daten vor dem Versand gehasht. Für weitere Informationen schaue bitte in die Datenschutzerklärung deines Identitätsservers.";
 "NSCalendarsUsageDescription" = "Sieh dir deine geplanten Meetings in der App an.";
