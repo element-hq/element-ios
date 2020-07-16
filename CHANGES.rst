@@ -6,6 +6,8 @@ Improvements:
  * Theme: Customize UISearchBar with new iOS 13 properties (#3270).
  * NSE: Make extension reusable (#3326).
  * Strings: Use you instead of display name on notice events (#3282).
+ * Third-party licences: Add license for FlowCommoniOS (#3415).
+ * Lazy-loading: Remove lazy loading labs setting, enable it by default (#3389).
  
 Bug fix:
  * Xcode11: Fix content change error when dragging start chat page (PR #3075).
@@ -31,6 +33,8 @@ Bug fix:
  * Xcode11: Disable voip background mode to avoid VoIP pushes (#3369).
  * Xcode11: Disable key backup on push extension (#3371).
  * RoomMembershipBubbleCell: Fix message textview leading constraint (#3226).
+ * SettingsViewController: Fix crash when scrolling to Discovery (#3401).
+ * Main.storyboard: Set storyboard identifier for SettingsViewController (#3398).
  * SettingsViewController: Fix pan gesture crash (#3396).
 
 Changes in 0.11.6 (2020-06-30)
