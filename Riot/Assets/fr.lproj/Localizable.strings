@@ -55,3 +55,9 @@
 /* Sticker from a specific person, not referencing a room. */
 "STICKER_FROM_USER" = "%@ a envoyé un sticker";
 "KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ veut vérifier";
+/* New message indicator on unknown room */
+"MESSAGE" = "Message";
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "Message de %@";
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "Message dans %@";
