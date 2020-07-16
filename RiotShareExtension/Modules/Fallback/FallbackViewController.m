@@ -26,6 +26,7 @@
 @interface FallbackViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *logoImageView;
 
 @end
 
@@ -37,6 +38,7 @@
     
     self.titleLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.titleLabel.text = NSLocalizedStringFromTable(@"share_extension_auth_prompt", @"Vector", nil);
+    self.logoImageView.tintColor = ThemeService.shared.theme.tintColor;
 }
 
 - (void)didReceiveMemoryWarning

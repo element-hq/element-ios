@@ -2526,7 +2526,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             addAddressCell.mxkLabel.text = nil;
             
             addAddressCell.accessoryType = UITableViewCellAccessoryNone;
-            addAddressCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
+            addAddressCell.accessoryView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
             
             addAddressTextField = addAddressCell.mxkTextField;
             addAddressTextField.placeholder = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_details_new_address_placeholder", @"Vector", nil), self.mainSession.matrixRestClient.homeserverSuffix];
@@ -2614,7 +2614,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             addCommunityCell.mxkLabel.text = nil;
 
             addCommunityCell.accessoryType = UITableViewCellAccessoryNone;
-            addCommunityCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
+            addCommunityCell.accessoryView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
 
             addGroupTextField = addCommunityCell.mxkTextField;
             addGroupTextField.placeholder = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_details_new_flair_placeholder", @"Vector", nil), self.mainSession.matrixRestClient.homeserverSuffix];

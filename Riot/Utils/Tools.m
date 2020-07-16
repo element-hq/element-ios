@@ -64,7 +64,7 @@
 + (NSString *)webAppUrl
 {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrl"];
-    //return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrlBeta"];
+    //return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrlStaging"];
     //return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrlDev"];
 }
 
@@ -78,10 +78,16 @@
         // iOS Patch: fix vector.im/riot.im urls before using it
         NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
 
-        if (NSNotFound != [@[@"/app", @"/staging", @"/beta", @"/develop"] indexOfObject:fixedURL.path])
+        if (NSNotFound != [@[@"/app", @"/staging", @"/develop"] indexOfObject:fixedURL.path])
         {
             isUniversalLink = YES;
         }
+    }
+    else if ([url.host isEqualToString:@"staging.element.io"]
+             || [url.host isEqualToString:@"develop.element.io"]
+             || [url.host isEqualToString:@"app.element.io"])
+    {
+        isUniversalLink = YES;
     }
     else if ([url.host isEqualToString:@"matrix.to"] || [url.host isEqualToString:@"www.matrix.to"])
     {
