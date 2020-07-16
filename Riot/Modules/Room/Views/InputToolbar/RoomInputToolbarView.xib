@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -92,10 +89,10 @@
                                 <constraint firstAttribute="width" secondItem="Owf-M8-qJi" secondAttribute="height" multiplier="1:1" id="1Ni-y7-Nsa"/>
                                 <constraint firstAttribute="width" constant="46" id="9FZ-CI-diT"/>
                             </constraints>
-                            <state key="normal" image="voice_call_icon">
+                            <state key="normal" image="voice_call_hangon_icon">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
-                            <state key="highlighted" image="voice_call_icon"/>
+                            <state key="highlighted" image="voice_call_hangon_icon"/>
                             <connections>
                                 <action selector="onTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="Cxg-BO-TfK"/>
                             </connections>
@@ -106,10 +103,10 @@
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="2nY-YP-BvA" secondAttribute="height" multiplier="1:1" id="59L-Jf-tXO"/>
                             </constraints>
-                            <state key="normal" image="call_hangup_icon">
+                            <state key="normal" image="voice_call_hangup_icon">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
-                            <state key="highlighted" image="call_hangup_icon"/>
+                            <state key="highlighted" image="voice_call_hangup_icon"/>
                             <connections>
                                 <action selector="onTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="PB3-d8-Kbf"/>
                             </connections>
@@ -173,12 +170,13 @@
                 <outlet property="voiceCallButton" destination="Owf-M8-qJi" id="krT-w1-mfT"/>
                 <outlet property="voiceCallButtonWidthConstraint" destination="9FZ-CI-diT" id="jYt-Pe-8DY"/>
             </connections>
+            <point key="canvasLocation" x="139" y="152"/>
         </view>
     </objects>
     <resources>
-        <image name="call_hangup_icon" width="26" height="27"/>
         <image name="e2e_unencrypted" width="14" height="12"/>
-        <image name="upload_icon" width="21" height="26"/>
-        <image name="voice_call_icon" width="24" height="27"/>
+        <image name="upload_icon" width="24" height="24"/>
+        <image name="voice_call_hangon_icon" width="24" height="24"/>
+        <image name="voice_call_hangup_icon" width="24" height="24"/>
     </resources>
 </document>

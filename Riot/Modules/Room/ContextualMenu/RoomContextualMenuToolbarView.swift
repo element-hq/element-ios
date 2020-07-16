@@ -44,7 +44,6 @@ final class RoomContextualMenuToolbarView: MXKRoomInputToolbarView, NibOwnerLoad
         self.theme = theme
         self.backgroundColor = theme.backgroundColor
         self.tintColor = theme.tintColor
-        self.separatorView.backgroundColor = theme.lineBreakColor
         
         for menuItemView in self.menuItemViews {
             menuItemView.titleColor = theme.tintColor
@@ -74,6 +73,7 @@ final class RoomContextualMenuToolbarView: MXKRoomInputToolbarView, NibOwnerLoad
     // MARK: - Setup
     
     private func commonInit() {
+        self.separatorView.isHidden = true
     }
     
     convenience init() {

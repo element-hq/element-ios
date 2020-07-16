@@ -30,29 +30,14 @@
                           bundle:[NSBundle bundleForClass:[self class]]];
 }
 
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-
-    self.membersListIcon.image = [MXKTools paintImage:self.membersListIcon.image
-                                            withColor:ThemeService.shared.theme.tintColor];
-
-    // TODO: paintImage does not work here because addParticipantIcon has 2 colors
-//    self.addParticipantIcon.image = [MXKTools paintImage:self.addParticipantIcon.image
-//                                            withColor:ThemeService.shared.theme.accent];
-}
-
 -(void)customizeViewRendering
 {
     [super customizeViewRendering];
     
     self.roomTopic.textColor = ThemeService.shared.theme.baseTextSecondaryColor;
     self.roomMembers.textColor = ThemeService.shared.theme.tintColor;
+    self.membersListIcon.tintColor = ThemeService.shared.theme.tintColor;
+    self.addParticipantIcon.tintColor = ThemeService.shared.theme.tintColor;
 }
 
 - (void)refreshDisplay
