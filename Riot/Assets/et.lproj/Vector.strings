@@ -226,3 +226,14 @@
 "contacts_address_book_permission_denied" = "Sa pole Element'ile andnud ligipääsu kohalikele kontaktidele";
 "security_settings_coming_soon" = "Vabandust. See tegevus pole veel kasutatav Element iOS rakenduses. Palun kasuta seadistamiseks mõnda muud Matrix'i klienti ning Element iOS oskab seda kasutada.";
 "major_update_title" = "Riot'i uus nimi on Element";
+"security_settings_secure_backup_synchronise" = "Sünkroniseeri";
+"security_settings_secure_backup_delete" = "Kustuta";
+"security_settings_backup" = "SÕNUMITE VARUNDUS";
+"security_settings_crosssigning" = "RISTTUNNUSTAMINE";
+"security_settings_crosssigning_info_not_bootstrapped" = "Risttunnustamine pole veel seadistatud.";
+"security_settings_crosssigning_info_ok" = "Risttunnustamine on kasutusel.";
+"security_settings_cryptography" = "KRÜPTOGRAAFIA";
+"security_settings_export_keys_manually" = "Ekspordi võtmed käsitsi";
+"group_participants_leave_prompt_title" = "Lahku grupist";
+"group_participants_leave_prompt_msg" = "Kas sa oled kindel, et soovid grupist lahkuda?";
+"group_participants_remove_prompt_title" = "Kinnitus";
