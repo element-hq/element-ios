@@ -1016,3 +1016,13 @@
 "room_member_power_level_short_admin" = "Admin";
 "room_member_power_level_short_moderator" = "Mod";
 "room_member_power_level_short_custom" = "Benutzerdefiniert";
+"security_settings_secure_backup" = "SICHERES BACKUP";
+"security_settings_secure_backup_synchronise" = "Synchronisiere";
+"security_settings_secure_backup_delete" = "Lösche";
+"security_settings_crosssigning_info_ok" = "Cross-signing ist angeschaltet.";
+"security_settings_crosssigning_reset" = "Cross-signing zurücksetzen";
+"security_settings_coming_soon" = "Entschuldigung, diese Funktion ist noch nicht für Element iOS verfügbar. Bitte nutze einen anderen Matrix Client, um es einzurichten. Element iOS wird es benutzen.";
+"security_settings_user_password_description" = "Bestätigen Sie Ihre Identität durch Eingabe von deinem Kontopasswort";
+// AuthenticatedSessionViewControllerFactory
+"authenticated_session_flow_not_supported" = "Diese App unterstützt nicht diese Authentifizierungsmethode für deinen Home-Server.";
+"secure_key_backup_setup_intro_title" = "Sicheres Backup";
