@@ -3674,14 +3674,6 @@ internal enum VectorL10n {
   internal static var settingsLabsMessageReaction: String { 
     return VectorL10n.tr("Vector", "settings_labs_message_reaction") 
   }
-  /// Lazy load rooms members
-  internal static var settingsLabsRoomMembersLazyLoading: String { 
-    return VectorL10n.tr("Vector", "settings_labs_room_members_lazy_loading") 
-  }
-  /// Your homeserver does not support lazy loading of room members yet. Try later.
-  internal static var settingsLabsRoomMembersLazyLoadingErrorMessage: String { 
-    return VectorL10n.tr("Vector", "settings_labs_room_members_lazy_loading_error_message") 
-  }
   /// Mark all messages as read
   internal static var settingsMarkAllAsRead: String { 
     return VectorL10n.tr("Vector", "settings_mark_all_as_read") 

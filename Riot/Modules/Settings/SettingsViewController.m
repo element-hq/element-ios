@@ -131,8 +131,7 @@ enum
 
 enum
 {
-    LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX = 0,
-    LABS_USE_JITSI_WIDGET_INDEX,
+    LABS_USE_JITSI_WIDGET_INDEX = 0,
     LABS_COUNT
 };
 
@@ -2135,21 +2134,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }
     else if (section == SETTINGS_SECTION_LABS_INDEX)
     {
-        if (row == LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_room_members_lazy_loading", @"Vector", nil);
-
-            MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-            labelAndSwitchCell.mxkSwitch.on = account.mxSession.syncWithLazyLoadOfRoomMembers;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleSyncWithLazyLoadOfRoomMembers:) forControlEvents:UIControlEventTouchUpInside];
-
-            cell = labelAndSwitchCell;
-        }
-        else if (row == LABS_USE_JITSI_WIDGET_INDEX)
+        if (row == LABS_USE_JITSI_WIDGET_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
@@ -2953,66 +2938,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         [self.tableView reloadData];
     }
 }
-
-- (void)toggleSyncWithLazyLoadOfRoomMembers:(id)sender
-{
-    if (sender && [sender isKindOfClass:UISwitch.class])
-    {
-        UISwitch *switchButton = (UISwitch*)sender;
-
-        if (!switchButton.isOn)
-        {
-            // Disable LL and reload
-            [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = NO;
-            [self launchClearCache];
-        }
-        else
-        {
-            switchButton.enabled = NO;
-            [self startActivityIndicator];
-
-            // Check the user homeserver supports lazy-loading
-            MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-
-            MXWeakify(self);
-            [account supportLazyLoadOfRoomMembers:^(BOOL supportLazyLoadOfRoomMembers) {
-                MXStrongifyAndReturnIfNil(self);
-
-                if (supportLazyLoadOfRoomMembers)
-                {
-                    // Lazy-loading is fully supported, enable it
-                    [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = YES;
-                    [self launchClearCache];
-                }
-                else
-                {
-                    [switchButton setOn:NO animated:YES];
-                    switchButton.enabled = YES;
-                    [self stopActivityIndicator];
-
-                    // No support of lazy-loading, do not engage it and warn the user
-                    [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
-
-                    self->currentAlert = [UIAlertController alertControllerWithTitle:nil
-                                                                             message:NSLocalizedStringFromTable(@"settings_labs_room_members_lazy_loading_error_message", @"Vector", nil)
-                                                                      preferredStyle:UIAlertControllerStyleAlert];
-
-                    MXWeakify(self);
-                    [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                                           style:UIAlertActionStyleDefault
-                                                                         handler:^(UIAlertAction * action) {
-                                                                             MXStrongifyAndReturnIfNil(self);
-                                                                             self->currentAlert = nil;
-                                                                         }]];
-
-                    [self->currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCNoHSSupportOfLazyLoading"];
-                    [self presentViewController:self->currentAlert animated:YES completion:nil];
-                }
-            }];
-        }
-    }
-}
-
 
 - (void)toggleJitsiForConference:(id)sender
 {
