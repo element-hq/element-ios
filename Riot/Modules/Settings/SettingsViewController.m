@@ -2470,8 +2470,18 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         }
         else if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX && row == userSettingsThreePidsInformation)
         {
-            NSIndexPath *discoveryIndexPath = [NSIndexPath indexPathForRow:0 inSection:SETTINGS_SECTION_DISCOVERY_INDEX];
-            [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            // settingsDiscoveryTableViewSection is a dynamic section, so check number of rows before scroll to avoid crashes
+            if (self.settingsDiscoveryTableViewSection.numberOfRows > 0)
+            {
+                NSIndexPath *discoveryIndexPath = [NSIndexPath indexPathForRow:0 inSection:SETTINGS_SECTION_DISCOVERY_INDEX];
+                [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            }
+            else
+            {
+                //  this won't be precise in scroll location, but seems the best option for now
+                NSIndexPath *discoveryIndexPath = [NSIndexPath indexPathForRow:0 inSection:SETTINGS_SECTION_DISCOVERY_INDEX + 1];
+                [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+            }
         }
         else if (section == SETTINGS_SECTION_DISCOVERY_INDEX)
         {
