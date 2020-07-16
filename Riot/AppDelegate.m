@@ -237,6 +237,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
  */
 @property (nonatomic, strong) PushNotificationService *pushNotificationService;
 
+@property (nonatomic, strong) MajorUpdateManager *majorUpdateManager;
+
 @end
 
 @implementation AppDelegate
@@ -527,6 +529,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [JitsiService.shared configureDefaultConferenceOptionsWith:jitsiServerURL];
 
     [JitsiService.shared application:application didFinishLaunchingWithOptions:launchOptions];
+    
+    self.majorUpdateManager = [MajorUpdateManager new];
 
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: Done in %.0fms", [[NSDate date] timeIntervalSinceDate:startDate] * 1000);
 
@@ -2490,54 +2494,14 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             
             if (!launchAnimationContainerView && window)
             {
-                launchAnimationContainerView = [[UIView alloc] initWithFrame:window.bounds];
-                launchAnimationContainerView.backgroundColor = ThemeService.shared.theme.backgroundColor;
-                launchAnimationContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-                [window addSubview:launchAnimationContainerView];
+                LaunchLoadingView *launchLoadingView = [LaunchLoadingView instantiate];
+                launchLoadingView.frame = window.bounds;
+                [launchLoadingView updateWithTheme:ThemeService.shared.theme];
+                launchLoadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
                 
-                // Add animation view
-                UIImageView *animationView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 170, 170)];
-                animationView.image = [UIImage animatedImageNamed:@"animatedLogo-" duration:2];
+                [window addSubview:launchLoadingView];
                 
-                animationView.center = CGPointMake(launchAnimationContainerView.center.x, 3 * launchAnimationContainerView.center.y / 4);
-                
-                animationView.translatesAutoresizingMaskIntoConstraints = NO;
-                [launchAnimationContainerView addSubview:animationView];
-                
-                NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:animationView
-                                                                                   attribute:NSLayoutAttributeWidth
-                                                                                   relatedBy:NSLayoutRelationEqual
-                                                                                      toItem:nil
-                                                                                   attribute:NSLayoutAttributeNotAnAttribute
-                                                                                  multiplier:1
-                                                                                    constant:170];
-                
-                NSLayoutConstraint* heightConstraint = [NSLayoutConstraint constraintWithItem:animationView
-                                                                                    attribute:NSLayoutAttributeHeight
-                                                                                    relatedBy:NSLayoutRelationEqual
-                                                                                       toItem:nil
-                                                                                    attribute:NSLayoutAttributeNotAnAttribute
-                                                                                   multiplier:1
-                                                                                     constant:170];
-                
-                NSLayoutConstraint* centerXConstraint = [NSLayoutConstraint constraintWithItem:animationView
-                                                                                     attribute:NSLayoutAttributeCenterX
-                                                                                     relatedBy:NSLayoutRelationEqual
-                                                                                        toItem:launchAnimationContainerView
-                                                                                     attribute:NSLayoutAttributeCenterX
-                                                                                    multiplier:1
-                                                                                      constant:0];
-                
-                NSLayoutConstraint* centerYConstraint = [NSLayoutConstraint constraintWithItem:animationView
-                                                                                     attribute:NSLayoutAttributeCenterY
-                                                                                     relatedBy:NSLayoutRelationEqual
-                                                                                        toItem:launchAnimationContainerView
-                                                                                     attribute:NSLayoutAttributeCenterY
-                                                                                    multiplier:3.0/4.0
-                                                                                      constant:0];
-                
-                [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, centerXConstraint, centerYConstraint]];
-                
+                launchAnimationContainerView = launchLoadingView;
                 launchAnimationStart = [NSDate date];
             }
             
@@ -2552,12 +2516,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
         // Track it on our analytics
         [[Analytics sharedInstance] trackLaunchScreenDisplayDuration:duration];
-
+        
         // TODO: Send durationMs to Piwik
         // Such information should be the same on all platforms
         
-        [launchAnimationContainerView removeFromSuperview];
-        launchAnimationContainerView = nil;
+        [self->launchAnimationContainerView removeFromSuperview];
+        self->launchAnimationContainerView = nil;
     }
 }
 
@@ -2569,7 +2533,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         // Create adapter for Riot
         MXCallKitConfiguration *callKitConfiguration = [[MXCallKitConfiguration alloc] init];
-        callKitConfiguration.iconName = @"riot_icon_callkit";
+        callKitConfiguration.iconName = @"callkit_icon";
         
         NSData *riotCallKitIconData = UIImagePNGRepresentation([UIImage imageNamed:callKitConfiguration.iconName]);
         
@@ -4479,22 +4443,27 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
     // Leave the GDPR consent right now
     [self dismissGDPRConsent];
+        
+    BOOL botCreationEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"enableBotCreation"];
 
-    // And create the room with riot bot in //
-    self.onBoardingManager = [[OnBoardingManager alloc] initWithSession:session];
-    
-    MXWeakify(self);
-    void (^createRiotBotDMcompletion)(void) = ^() {
-        MXStrongifyAndReturnIfNil(self);
+    if (botCreationEnabled)
+    {
+        // And create the room with riot bot in //
+        self.onBoardingManager = [[OnBoardingManager alloc] initWithSession:session];
+        
+        MXWeakify(self);
+        void (^createRiotBotDMcompletion)(void) = ^() {
+            MXStrongifyAndReturnIfNil(self);
 
-        self.onBoardingManager = nil;
-    };
-    
-    [self.onBoardingManager createRiotBotDirectMessageIfNeededWithSuccess:^{
-        createRiotBotDMcompletion();
-    } failure:^(NSError * _Nonnull error) {
-        createRiotBotDMcompletion();
-    }];
+            self.onBoardingManager = nil;
+        };
+        
+        [self.onBoardingManager createRiotBotDirectMessageIfNeededWithSuccess:^{
+            createRiotBotDMcompletion();
+        } failure:^(NSError * _Nonnull error) {
+            createRiotBotDMcompletion();
+        }];
+    }
 }
 
 #pragma mark - Identity server service terms
@@ -4597,5 +4566,67 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         RiotSettings.shared.showDecryptedContentInNotifications = currentAccount.showDecryptedContentInNotifications;
     }
 }
+
+#pragma mark - App version management
+
+- (void)checkAppVersion
+{
+    // Check if we should display a major update alert
+    [self checkMajorUpdate];
+    
+    // Update the last app version used
+    [AppVersion updateLastUsedVersion];
+}
+
+- (void)checkMajorUpdate
+{
+    if (self.majorUpdateManager.shouldShowMajorUpdate)
+    {
+        [self showMajorUpdate];
+    }
+}
+
+- (void)showMajorUpdate
+{
+    if (!self.slidingModalPresenter)
+    {
+        self.slidingModalPresenter = [SlidingModalPresenter new];
+    }
+    
+    [self.slidingModalPresenter dismissWithAnimated:NO completion:nil];
+    
+    MajorUpdateViewController *majorUpdateViewController = [MajorUpdateViewController instantiate];
+    
+    MXWeakify(self);
+    
+    majorUpdateViewController.didTapLearnMoreButton = ^{
+        
+        MXStrongifyAndReturnIfNil(self);
+        
+        [[UIApplication sharedApplication] vc_open:self.majorUpdateManager.learnMoreURL completionHandler:^(BOOL success) {
+            if (!success)
+            {
+                [self showAlertWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:NSLocalizedStringFromTable(@"room_message_unable_open_link_error_message", @"Vector", nil)];
+            }
+        }];
+        
+        [self.slidingModalPresenter dismissWithAnimated:YES completion:^{
+        }];
+    };
+    
+    majorUpdateViewController.didTapDoneButton = ^{
+        
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self.slidingModalPresenter dismissWithAnimated:YES completion:^{
+        }];
+    };
+    
+    [self.slidingModalPresenter present:majorUpdateViewController
+                                   from:self.presentedViewController
+                               animated:YES
+                             completion:nil];
+}
+
 
 @end

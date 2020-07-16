@@ -129,6 +129,8 @@ static CGFloat const kTextFontSize = 15.0;
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
 
     self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    
+    self.forgetMessageButton.tintColor = ThemeService.shared.theme.tintColor;
 
     [self updateStringAttributes];
     [self updateNavigationBar];

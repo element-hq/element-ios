@@ -11,6 +11,9 @@
 		<string>applinks:riot.im</string>
 		<string>applinks:www.riot.im</string>
 		<string>webcredentials:riot.im</string>
+		<string>applinks:element.io</string>
+		<string>applinks:*.element.io</string>
+		<string>webcredentials:*.element.io</string>
 	</array>
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array>

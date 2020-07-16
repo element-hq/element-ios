@@ -18,6 +18,8 @@
 #import "ThemeService.h"
 #import "Riot-Swift.h"
 
+static CGFloat const kEditionViewCornerRadius = 10.0;
+
 @implementation TableViewCellWithCollectionView
 
 - (void)awakeFromNib
@@ -26,6 +28,8 @@
     
     self.editionViewHeightConstraint.constant = 0;
     self.editionViewBottomConstraint.constant = 0;
+    
+    self.editionView.layer.masksToBounds = YES;
 }
 
 - (void)customizeTableViewCellRendering
@@ -48,6 +52,13 @@
     self.editionView.hidden = YES;
     
     self.collectionView.scrollEnabled = YES;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    self.editionView.layer.cornerRadius = kEditionViewCornerRadius;
 }
 
 @end

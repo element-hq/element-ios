@@ -19,6 +19,7 @@
 #import "AppDelegate.h"
 
 #import "RecentsDataSource.h"
+#import "Riot-Swift.h"
 
 @interface FavouritesViewController ()
 {    
@@ -55,7 +56,7 @@
     [super viewWillAppear:animated];
     
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_favourites", @"Vector", nil);
-    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.riotColorIndigo;
+    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
     if (recentsDataSource)
     {

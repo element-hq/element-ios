@@ -862,6 +862,7 @@
         
         // Set the right value of the tick box
         localContactsCheckbox.image = hideNonMatrixEnabledContacts ? [UIImage imageNamed:@"selection_tick"] : [UIImage imageNamed:@"selection_untick"];
+        localContactsCheckbox.tintColor = ThemeService.shared.theme.tintColor;
         
         // Add the check box container
         [sectionHeader addSubview:localContactsCheckboxContainer];
