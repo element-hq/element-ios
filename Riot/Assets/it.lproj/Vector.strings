@@ -197,8 +197,8 @@
 "room_participants_action_set_moderator" = "Nomina moderatore";
 "room_participants_action_set_admin" = "Nomina amministratore";
 "room_participants_action_start_new_chat" = "Inizia nuova chat";
-"room_participants_action_start_voice_call" = "Avvia chiamata audio";
-"room_participants_action_start_video_call" = "Avvia chiamata video";
+"room_participants_action_start_voice_call" = "Nuova telefonata";
+"room_participants_action_start_video_call" = "Nuova videochiamata";
 "room_participants_action_mention" = "Citazione";
 // Chat
 "room_jump_to_first_unread" = "Vai al primo messaggio non letto";
@@ -515,7 +515,7 @@
 "large_badge_value_k_format" = "%.1fK";
 "room_does_not_exist" = "%@ non esiste";
 // Call
-"call_incoming_voice_prompt" = "Chiamata vocale in arrivo da %@";
+"call_incoming_voice_prompt" = "Telefonata in arrivo da %@";
 "call_incoming_video_prompt" = "Videochiamata in arrivo da %@";
 "call_incoming_voice" = "Chiamata in arrivo…";
 "call_incoming_video" = "Videochiamata in arrivo…";
