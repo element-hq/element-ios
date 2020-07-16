@@ -210,3 +210,5 @@
 "deactivate_account_validate_action" = "Kas eemaldame selle konto kasutusest";
 "deactivate_account_password_alert_title" = "Eemalda konto";
 "deactivate_account_password_alert_message" = "Jätkamiseks palun sisesta oma salasõna";
+// MARK: Clients
+"client_desktop_name" = "Element Desktop";
