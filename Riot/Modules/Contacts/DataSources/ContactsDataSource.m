@@ -820,6 +820,7 @@
             chevron = [UIImage imageNamed:@"shrink_icon"];
         }
         UIImageView *chevronView = [[UIImageView alloc] initWithImage:chevron];
+        chevronView.tintColor = ThemeService.shared.theme.textSecondaryColor;
         chevronView.contentMode = UIViewContentModeCenter;
         [sectionHeader addSubview:chevronView];
         sectionHeader.accessoryView = chevronView;
