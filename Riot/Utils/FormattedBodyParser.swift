@@ -40,7 +40,7 @@ final class FormattedBodyParser: NSObject {
             return []
         }
 
-        return regex.matches(in: formattedBody, options: .init(rawValue: 0), range: NSRange(location: 0, length: formattedBody.count)).compactMap { (result) -> HTMLURLAnchor? in
+        return regex.matches(in: formattedBody, options: [], range: NSRange(formattedBody.startIndex..., in: formattedBody)).compactMap { (result) -> HTMLURLAnchor? in
             guard result.numberOfRanges > 2 else { return nil }
             let urlString = (formattedBody as NSString).substring(with: result.range(at: 1))
             let content = (formattedBody as NSString).substring(with: result.range(at: 2))
