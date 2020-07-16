@@ -4,6 +4,7 @@
 //
 
 import UIKit
+import FlowCommoniOS
 
 @IBDesignable
 public class ElementView: UIView {
