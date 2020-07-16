@@ -25,6 +25,7 @@ import UIKit
     var backgroundColor: UIColor { get }
     var baseColor: UIColor { get }
 
+    var baseIconPrimaryColor: UIColor { get }
     var baseTextPrimaryColor: UIColor { get }
     var baseTextSecondaryColor: UIColor { get }
 
@@ -41,6 +42,8 @@ import UIKit
 
     var tintColor: UIColor { get }
     var tintBackgroundColor: UIColor { get }
+    
+    var tabBarUnselectedItemTintColor: UIColor { get }
 
     var unreadRoomIndentColor: UIColor { get }
 
@@ -55,6 +58,10 @@ import UIKit
     var avatarColors: [UIColor] { get }
     
     var userNameColors: [UIColor] { get }
+    
+    var placeholderTextColor: UIColor { get }
+
+    var selectedBackgroundColor: UIColor { get }
 
     // MARK: - Appearance and style
 
@@ -68,13 +75,6 @@ import UIKit
 
 
     // MARK: - Colors not defined in the design palette
-
-
-    /// nil is used to keep the default color
-    var placeholderTextColor: UIColor { get }
-
-    /// nil is used to keep the default color
-    var selectedBackgroundColor: UIColor? { get }
 
     /// fading behind dialog modals
     var overlayBackgroundColor: UIColor { get }

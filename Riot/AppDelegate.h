@@ -218,4 +218,11 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 @property (nonatomic, readonly) UIWindow* callStatusBarWindow;
 @property (nonatomic, readonly) UIButton* callStatusBarButton;
 
+#pragma mark - App version management
+
+/**
+ Check for app version related informations to display
+*/
+- (void)checkAppVersion;
+
 @end

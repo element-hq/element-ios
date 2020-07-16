@@ -89,22 +89,24 @@ static const CGFloat kButtonSize = 80.0;
         
         UIColor *answerButtonBorderColor = ThemeService.shared.theme.tintColor;
         
-        self.answerButton = [[CircleButton alloc] initWithImage:[UIImage imageNamed:@"voice_call_icon"]
+        self.answerButton = [[CircleButton alloc] initWithImage:[UIImage imageNamed:@"voice_call_hangon_icon"]
                                                     borderColor:answerButtonBorderColor];
         self.answerButton.defaultBackgroundColor = ThemeService.shared.theme.backgroundColor;
+        self.answerButton.tintColor = answerButtonBorderColor;
         [self.answerButton addTarget:self action:@selector(didTapAnswerButton) forControlEvents:UIControlEventTouchUpInside];
         
         self.answerTitleLabel = [[UILabel alloc] init];
-        self.answerTitleLabel.backgroundColor = ThemeService.shared.theme.backgroundColor;
+        self.answerTitleLabel.backgroundColor = ThemeService.shared.theme.backgroundColor;        
         self.answerTitleLabel.textColor = answerButtonBorderColor;
         self.answerTitleLabel.font = [UIFont systemFontOfSize:18.0 weight:UIFontWeightRegular];
         self.answerTitleLabel.text = NSLocalizedStringFromTable(@"accept", @"Vector", nil);
         
         UIColor *rejectButtonBorderColor = ThemeService.shared.theme.warningColor;
         
-        self.rejectButton = [[CircleButton alloc] initWithImage:[UIImage imageNamed:@"call_hangup_icon"]
+        self.rejectButton = [[CircleButton alloc] initWithImage:[UIImage imageNamed:@"voice_call_hangup_icon"]
                                                     borderColor:rejectButtonBorderColor];
         self.rejectButton.defaultBackgroundColor = ThemeService.shared.theme.backgroundColor;
+        self.rejectButton.tintColor = rejectButtonBorderColor;
         [self.rejectButton addTarget:self action:@selector(didTapRejectButton) forControlEvents:UIControlEventTouchUpInside];
         
         self.rejectTitleLabel = [[UILabel alloc] init];
