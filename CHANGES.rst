@@ -33,6 +33,7 @@ Bug fix:
  * Xcode11: Disable key backup on push extension (#3371).
  * RoomMembershipBubbleCell: Fix message textview leading constraint (#3226).
  * SettingsViewController: Fix crash when scrolling to Discovery (#3401).
+  * Main.storyboard: Set storyboard identifier for SettingsViewController (#3398).
 
 Changes in 0.11.6 (2020-06-30)
 ===============================================
