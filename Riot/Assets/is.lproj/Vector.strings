@@ -186,11 +186,8 @@
 "settings_version" = "Útgáfa %@";
 "settings_olm_version" = "Útgáfa olm %@";
 "settings_copyright" = "Höfundarréttur";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Skilmálar og kvaðir";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Stefna vegna meðferðar persónuupplýsinga";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Athugasemdir frá þriðja aðila";
 "settings_send_crash_report" = "Senda nafnlausar hrunskýrslur og upplýsingar um notkun";
 "settings_clear_cache" = "Hreinsa skyndiminni";
@@ -400,7 +397,7 @@
 "auth_reset_password_success_message" = "Lykilorðið þitt hefur verið endurstillt.\n\nÞú hefur verið skráður út af öllum tækjum og munt ekki lengur fá ýti-tilkynningar. Til að endurvirkja tilkynningar, þarf að skrá sig aftur inn á hverju tæki fyrir sig.";
 "directory_search_results" = "%tu niðurstöður fundust fyrir %@";
 "directory_search_results_more_than" = ">%tu niðurstöður fundust fyrir %@";
-"contacts_address_book_permission_denied" = "Þú heimilaðir Riot ekki aðgang að tengiliðum á tækinu";
+"contacts_address_book_permission_denied" = "Þú heimilaðir Element ekki aðgang að tengiliðum á tækinu";
 "room_participants_remove_prompt_msg" = "Ertu viss um að þú viljir fjarlægja %@ úr þessu spjalli?";
 "room_participants_invite_prompt_msg" = "Ertu viss um að þú viljir bjóða %@ á þetta spjall?";
 "room_participants_invite_malformed_id" = "Rangt formað auðkenni. Ætti að vera tölvupóstfang eða Matrix-auðkenni á borð við'@sérheiti:lén'";

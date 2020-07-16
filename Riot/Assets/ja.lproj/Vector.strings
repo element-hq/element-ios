@@ -145,7 +145,7 @@
 "contacts_address_book_matrix_users_toggle" = "Matrix利用者のみ";
 "contacts_address_book_no_contact" = "端末内電話帳に連絡先がありません";
 "contacts_address_book_permission_required" = "端末内電話帳へのアクセス権限が必要です";
-"contacts_address_book_permission_denied" = "端末の電話帳をRiotアプリが読み取ることは許可されていません";
+"contacts_address_book_permission_denied" = "端末の電話帳をElementアプリが読み取ることは許可されていません";
 "contacts_user_directory_section" = "利用者一覧";
 "contacts_user_directory_offline_section" = "利用者一覧 (切断中)";
 // Chat participants
@@ -291,7 +291,7 @@
 "settings_global_settings_info" = "あなたの %@ webクライアント上で、全体の通知設定が可能です";
 "settings_pin_rooms_with_missed_notif" = "通知の届かなかった部屋をピン止めする";
 "settings_on_denied_notification" = "%@で通知されないように設定されています。あなたの端末設定で許可してください";
-"settings_callkit_info" = "画面がロックされているときに着信がありました。Riotの着信はシステムの通話履歴で確認してください。 iCloudが有効になっている場合、この通話履歴はAppleと共有されます。";
+"settings_callkit_info" = "画面がロックされているときに着信がありました。Elementの着信はシステムの通話履歴で確認してください。 iCloudが有効になっている場合、この通話履歴はAppleと共有されます。";
 "settings_ui_language" = "言語";
 "settings_ui_theme" = "外観";
 "settings_ui_theme_auto" = "自動";
@@ -309,11 +309,8 @@
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";
 "settings_copyright" = "著作権";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "利用規約";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "個人情報保護方針";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "外部ライブラリの規約";
 "settings_send_crash_report" = "匿名利用状況と誤動作情報を送信";
 "settings_enable_rageshake" = "バグ報告のため端末を揺さぶる";
@@ -437,14 +434,14 @@
 // Crash report
 "google_analytics_use_prompt" = "匿名の誤動作報告と使用状況データを自動的に報告して%@の改善に役立てますか？";
 // Crypto
-"e2e_enabling_on_app_update" = "Riotはend-to-end暗号化をサポートするようになりましたが、再度有効にするにはログインする必要があります。\n\nアプリの設定から再ログインできます。今すぐ、または後からでも構いません。";
+"e2e_enabling_on_app_update" = "Elementはend-to-end暗号化をサポートするようになりましたが、再度有効にするにはログインする必要があります。\n\nアプリの設定から再ログインできます。今すぐ、または後からでも構いません。";
 "e2e_need_log_in_again" = "この端末のエンドツーエンド暗号鍵を生成し、接続先サーバに公開鍵を送信するには、再度ログインする必要があります。\n一度回線を切断します。ご不便おかけしてすみません。";
 // Bug report
 "bug_report_title" = "不具合報告";
 "bug_report_description" = "誤動作の内容と状況の説明をお願い致します。あなたは何をしましたか？何が起こると思いますか？実際何が起こったのですか？";
 "bug_crash_report_title" = "異常終了報告";
 "bug_crash_report_description" = "異常停止する前にあなたがしていたことを記してください:";
-"bug_report_logs_description" = "開発者が問題を診断するために、このRiotの動作記録が不具合報告と一緒に送信されます。上記文章のみを送信したい場合は以下のチェックを解除してください：";
+"bug_report_logs_description" = "開発者が問題を診断するために、このElementの動作記録が不具合報告と一緒に送信されます。上記文章のみを送信したい場合は以下のチェックを解除してください：";
 "bug_report_send_logs" = "動作記録を送信";
 "bug_report_send_screenshot" = "画面のスクリーンショット画像を送信";
 "bug_report_progress_zipping" = "動作記録を収集する";
@@ -557,7 +554,7 @@
 "deactivate_account_password_alert_message" = "続行するには、パスワードを入力してください";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "リクエスト送信";
-"rerequest_keys_alert_message" = "この端末にキーを送信できるように、メッセージを復号化できる別の端末でRiotを起動してください。";
+"rerequest_keys_alert_message" = "この端末にキーを送信できるように、メッセージを復号化できる別の端末でElementを起動してください。";
 "room_event_action_ban_prompt_reason" = "このユーザーをブロックする理由";
 "room_resource_limit_exceeded_message_contact_1" = " Please ";
 "settings_ui_theme_black" = "Black";

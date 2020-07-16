@@ -243,11 +243,8 @@
 "settings_version" = "Wersja %@";
 "settings_olm_version" = "Wersja Olm %@";
 "settings_copyright" = "Prawa autorskie";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Warunki użytkowania";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Polityka prywatności";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Informacje o stronach trzecich";
 "settings_enable_rageshake" = "Potrząśnij wściekle, aby zgłosić błąd";
 "settings_clear_cache" = "Wyczyść pamięć podręczną";
@@ -356,7 +353,7 @@
 "deactivate_account_password_alert_message" = "Aby kontynuować, proszę wprowadzić swoje hasło";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Prośba wysłana";
-"rerequest_keys_alert_message" = "Uruchom proszę Riot na innym urządzeniu, które może odszyfrować wiadomość, aby wysłać klucze do tego urządzenia.";
+"rerequest_keys_alert_message" = "Uruchom proszę Element na innym urządzeniu, które może odszyfrować wiadomość, aby wysłać klucze do tego urządzenia.";
 "on" = "Włączone";
 "video" = "Obraz";
 "auth_forgot_password" = "Zapomniałeś(-aś) hasło?";
@@ -463,7 +460,7 @@
 "bug_report_title" = "Zgłoś błąd";
 "e2e_need_log_in_again" = "Należy się ponownie zalogować w celu wygenerowania kluczy szyfrowania end-to-end dla tego urządzenia i wysłania klucza publicznego do Twojego serwera domowego.\nJest to jednorazowe działanie; przepraszamy za trudności.";
 // Crypto
-"e2e_enabling_on_app_update" = "Riot obsługuje już szyfrowanie end-to-end (E2E), ale musisz zalogować się ponownie, aby je włączyć.\n\nMożesz to zrobić teraz lub później z poziomu ustawień aplikacji.";
+"e2e_enabling_on_app_update" = "Element obsługuje już szyfrowanie end-to-end (E2E), ale musisz zalogować się ponownie, aby je włączyć.\n\nMożesz to zrobić teraz lub później z poziomu ustawień aplikacji.";
 // No VoIP support
 "no_voip_title" = "Połączenie przychodzące";
 "call_incoming_video" = "Przychodzące połączenie wideo…";
@@ -490,7 +487,7 @@
 "bug_crash_report_title" = "Raport o awarii";
 // String for App Store
 "store_short_description" = "Bezpieczny, zdecentralizowany czat/VoIP";
-"store_full_description" = "Komunikuj się, po swojemu.\n\nAplikacja do czatowania, pod Twoją kontrolą i całkowicie elastyczna. Riot pozwala Ci komunikować się tak, jak chcesz. Stworzona dla [matrixa] - otwartego standardu, zdecentralizowanej komunikacji.\n\nZałóż darmowe konto na matrix.org, załatw swój własny serwer na https://modular.im lub skorzystaj z innego serwera Matrix.\n\nDlaczego warto wybrać Riot.im?\n\nPEŁNA KOMUNIKACJA: Zbuduj pokoje wokół swoich zespołów, przyjaciół, społeczności - jak chcesz! Czat, udostępnianie plików, dodawanie widgetów i wykonywanie połączeń głosowych i wideo - wszystko to za darmo.\n\n\nPOTĘŻNA INTEGRACJA: Użyj Riot.im z narzędziami, które znasz i kochasz. Dzięki Riot.im możesz nawet rozmawiać z użytkownikami i grupami z innymi aplikacjami do czatowania.\n\nPRYWATNY I BEZPIECZNY: Trzymaj swoje rozmowy w tajemnicy. Najnowocześniejsze szyfrowanie typu end-to-end zapewnia prywatną komunikację.\n\nOTWARTY, NIE ZAMKNIĘTY: Open source i zbudowany na Matrixie. Miej swoje dane pod kontrolą poprzez hosting własnego serwera lub wybranie serwera, któremu ufasz.\n\nGDZIEKOLWIEK JESTEŚ: Bądź w kontakcie gdziekolwiek jesteś, dzięki w pełni zsynchronizowanej historii wiadomości na wszystkich Twoich urządzeniach i online na https://riot.im.";
+"store_full_description" = "Komunikuj się, po swojemu.\n\nAplikacja do czatowania, pod Twoją kontrolą i całkowicie elastyczna. Element pozwala Ci komunikować się tak, jak chcesz. Stworzona dla [matrixa] - otwartego standardu, zdecentralizowanej komunikacji.\n\nZałóż darmowe konto na matrix.org, załatw swój własny serwer na https://ems.element.io lub skorzystaj z innego serwera Matrix.\n\nDlaczego warto wybrać Element?\n\nPEŁNA KOMUNIKACJA: Zbuduj pokoje wokół swoich zespołów, przyjaciół, społeczności - jak chcesz! Czat, udostępnianie plików, dodawanie widgetów i wykonywanie połączeń głosowych i wideo - wszystko to za darmo.\n\n\nPOTĘŻNA INTEGRACJA: Użyj Element z narzędziami, które znasz i kochasz. Dzięki Element możesz nawet rozmawiać z użytkownikami i grupami z innymi aplikacjami do czatowania.\n\nPRYWATNY I BEZPIECZNY: Trzymaj swoje rozmowy w tajemnicy. Najnowocześniejsze szyfrowanie typu end-to-end zapewnia prywatną komunikację.\n\nOTWARTY, NIE ZAMKNIĘTY: Open source i zbudowany na Matrixie. Miej swoje dane pod kontrolą poprzez hosting własnego serwera lub wybranie serwera, któremu ufasz.\n\nGDZIEKOLWIEK JESTEŚ: Bądź w kontakcie gdziekolwiek jesteś, dzięki w pełni zsynchronizowanej historii wiadomości na wszystkich Twoich urządzeniach i online na https://app.element.io.";
 "room_creation_make_public_prompt_msg" = "Jesteś pewien, że chcesz zrobić ten czat publiczny? Każdy może czytać Twoje wiadomości i dołączyć do czatu.";
 "directory_search_fail" = "Nie udało się pobrać danych";
 "contacts_address_book_permission_required" = "Uprawnienie jest wymagane żeby uzyskać dostęp do kontaktów lokalnych";
@@ -508,7 +505,7 @@
 "settings_enable_push_notif" = "Powiadomienia na tym urządzeniu";
 "settings_global_settings_info" = "Globalne ustawienia powiadomień są dostępne na Twoim kliencie internetowym %@";
 "settings_on_denied_notification" = "Powiadomienia są odrzucane w %@, proszę zezwól na nie w ustawieniach urządzenia";
-"settings_callkit_info" = "Odbieraj połączenia przychodzące na ekranie blokady. Zobacz swoje połęczenia Riot w historii połączeń w systemie. Jeśli usługa iCloud jest włączona, historia połączeń zostanie udostępniona Apple.";
+"settings_callkit_info" = "Odbieraj połączenia przychodzące na ekranie blokady. Zobacz swoje połęczenia Element w historii połączeń w systemie. Jeśli usługa iCloud jest włączona, historia połączeń zostanie udostępniona Apple.";
 "settings_ui_theme_picker_message" = "\"Auto\" używa ustawienia \"Odwróć kolory\" urządzenia";
 "close" = "Zamknij";
 "auth_softlogout_sign_in" = "Zaloguj się";
