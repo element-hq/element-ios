@@ -5,6 +5,7 @@ Improvements:
  * Update deployment target to iOS 11.0. Required for Jitsi > 2.8.x.
  * Theme: Customize UISearchBar with new iOS 13 properties (#3270).
  * NSE: Make extension reusable (#3326).
+ * Strings: Use you instead of display name on notice events (#3282).
  
 Bug fix:
  * Xcode11: Fix content change error when dragging start chat page (PR #3075).
@@ -29,6 +30,7 @@ Bug fix:
  * Xcode11: New localization keys for push notifications, include room display name in fallback content (#3325).
  * Xcode11: Disable voip background mode to avoid VoIP pushes (#3369).
  * Xcode11: Disable key backup on push extension (#3371).
+ * RoomMembershipBubbleCell: Fix message textview leading constraint (#3226).
 
 Changes in 0.11.6 (2020-06-30)
 ===============================================
