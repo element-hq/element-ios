@@ -8,6 +8,7 @@ Improvements:
  * Strings: Use you instead of display name on notice events (#3282).
  * Third-party licences: Add license for FlowCommoniOS (#3415).
  * Lazy-loading: Remove lazy loading labs setting, enable it by default (#3389).
+ * Room: Show alert if link text does not match link target (#3137).
  
 Bug fix:
  * Xcode11: Fix content change error when dragging start chat page (PR #3075).
