@@ -2,5 +2,5 @@
 "NSCameraUsageDescription" = "Kamera argazkiak eta bideoak ateratzeko eta bideo deiak egiteko erabiltzen da.";
 "NSPhotoLibraryUsageDescription" = "Argazkien liburutegia argazkiak eta bideoak bidaltzeko erabiltzen da.";
 "NSMicrophoneUsageDescription" = "Mikrofonoa bideoak atera eta deiak egiteko erabiltzen da.";
-"NSContactsUsageDescription" = "Matrix darabilten kontaktuak erakusteko, Riot-ek zure kontaktu liburuko e-mail helbideak eta telefono zenbakiak bidali ditzake hautatutako Matrix identitate-zerbitzarira. Ahal denean datuak hasheatu egiten dira bidali aurretik, egiaztatu zure identitate zerbitzariaren pribatutasun politika xehetasun gehiagorako.";
+"NSContactsUsageDescription" = "Matrix darabilten kontaktuak erakusteko, Element-ek zure kontaktu liburuko e-mail helbideak eta telefono zenbakiak bidali ditzake hautatutako Matrix identitate-zerbitzarira. Ahal denean datuak hasheatu egiten dira bidali aurretik, egiaztatu zure identitate zerbitzariaren pribatutasun politika xehetasun gehiagorako.";
 "NSCalendarsUsageDescription" = "Ikusi zure programatutako batzarrak aplikazioan.";

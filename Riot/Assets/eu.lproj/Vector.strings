@@ -27,7 +27,7 @@
 "room_details_low_priority_tag" = "Lehentasun baxua";
 "people_no_conversation" = "Elkarrizketarik ez";
 "contacts_address_book_no_contact" = "Gailuko kontakturik ez";
-"contacts_address_book_permission_denied" = "Ez diozu baimena eman Riot aplikazioari zure gailuko kontaktuak atzitzeko";
+"contacts_address_book_permission_denied" = "Ez diozu baimena eman Element aplikazioari zure gailuko kontaktuak atzitzeko";
 "search_no_result" = "Emaitzarik ez";
 "room_recents_no_conversation" = "Gelarik ez";
 // Rooms tab
@@ -195,7 +195,7 @@
 // Directory
 "directory_title" = "Direktorioa";
 // Crypto
-"e2e_enabling_on_app_update" = "Riotek orain muturretik muturrerako zifratzea onartzen du baina berriro hasi behar duzu saioa hau gaitzeko.\n\nOrain egin dezakezu edo gero aplikazioaren ezarpenetatik.";
+"e2e_enabling_on_app_update" = "Elementek orain muturretik muturrerako zifratzea onartzen du baina berriro hasi behar duzu saioa hau gaitzeko.\n\nOrain egin dezakezu edo gero aplikazioaren ezarpenetatik.";
 // Unknown devices
 "unknown_devices_alert_title" = "Gelan saio ezezagunak daude";
 "directory_server_type_homeserver" = "Idatzi hasiera zerbitzari bat honen gela publikoak zerrendatzeko";
@@ -343,11 +343,8 @@
 "settings_labs_e2e_encryption_prompt_message" = "Zifratzea ezartzen bukatzeko saioa berriro hasi behar duzu.";
 "settings_version" = "%@ bertsioa";
 "settings_olm_version" = "%@ Olm bertsioa";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Termino eta baldintzak";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Pribatutasun politika";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Hirugarrengoen adierazpenak";
 "settings_send_crash_report" = "Bidali kraskatze eta erabilera datu anonimoak";
 "settings_crypto_device_name" = "Saioaren izena: ";
@@ -435,7 +432,7 @@
 "settings_calls_settings" = "DEIAK";
 "settings_show_decrypted_content" = "Erakutsi deszifratutako edukia";
 "settings_enable_callkit" = "Dei integratuak";
-"settings_callkit_info" = "Jaso deiak zure blokeo-pantailan. Ikusi Riot deiak sistemaren deian historialean. Cloud gaituta badago, deien historiala Apple-ekin partekatuko da.";
+"settings_callkit_info" = "Jaso deiak zure blokeo-pantailan. Ikusi Element deiak sistemaren deian historialean. Cloud gaituta badago, deien historiala Apple-ekin partekatuko da.";
 "settings_ui_theme" = "Azala";
 "settings_ui_theme_auto" = "Automatikoa";
 "settings_ui_theme_light" = "Argia";
@@ -538,7 +535,7 @@
 "event_formatter_rerequest_keys_part2" = " zure beste saioetatik.";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Eskaria bidalita";
-"rerequest_keys_alert_message" = "Abiatu Riot mezua deszifratu dezakeen beste gailuren batean handik hona gakoak bidali ahal izateko.";
+"rerequest_keys_alert_message" = "Abiatu Element mezua deszifratu dezakeen beste gailuren batean handik hona gakoak bidali ahal izateko.";
 "room_message_reply_to_placeholder" = "Bidali erantzun bat (zifratu gabea)…";
 "encrypted_room_message_reply_to_placeholder" = "Bidali zifratutako erantzun bat…";
 "room_message_reply_to_short_placeholder" = "Bidali erantzun bat…";
@@ -659,7 +656,7 @@
 "key_backup_setup_intro_manual_export_action" = "Esportatu gakoak eskuz";
 // String for App Store
 "store_short_description" = "Deszentralizatutako txat/VoIP segurua";
-"store_full_description" = "Komunikatu, zure erara.\n\nTxat aplikazio bat, zure kontrolpean eta erabat malgua. Riot-ek zuk nahi eran komunikatzea ahalbidetzen dizu. Komunikaziorako estandar ireki eta deszentralizatua den [matrix] protokolorako egina.\n\nEskuratu matrix.org kontu bat, ezarri zure zerbitzaria  https://modular.im erabiliz, edo erabili beste Matrix zerbitzari bat.\n\nZertgatik aukeratu Riot.im?\n\nERABATEKO KOMUNIKAZIOA: Sortu zure taldeentzako gelak, zure lagunentzko, zure komunitatearentzat, zuk nahi eran! Txateatu, partekatu fitxategiak, gehitu trepetak eta egin ahots eta bideo-deiak, dena doan.\n\nINTEGRAZIO AHALTSUAK: Erabili Riot.im jada ezagutu eta maite dituzun tresnekin. Riot.im erabilita beste txat aplikazioak erabiltzen dituzten erabiltzaile eta taldeekin ere aritu zaitezke.\n\nPRIBATUA ETA SEGURUA: Mantendu zure elkarrizketak sekretupean. Gaur egungo muturretik muturrerako zifratzeak pribatua dena pribatu mantentzen laguntzen du.\n\nIREKIA, EZ ITXIA: Kode irekikoa, eta Matrix protokoloan eraikia. Izan zure datuen jabe zure zerbitzaria osatatauz, edo fidagarritzat duzun bat aukeratuz.\n\nZUREKIN NONAHI: Mantendu kontaktua zauden tokian zaudela gailuetan zehar erabat sinkronizatutako mezuen historialarekin, eta web bidez https://riot.im helbidean.";
+"store_full_description" = "Komunikatu, zure erara.\n\nTxat aplikazio bat, zure kontrolpean eta erabat malgua. Element-ek zuk nahi eran komunikatzea ahalbidetzen dizu. Komunikaziorako estandar ireki eta deszentralizatua den [matrix] protokolorako egina.\n\nEskuratu matrix.org kontu bat, ezarri zure zerbitzaria  https://ems.element.io erabiliz, edo erabili beste Matrix zerbitzari bat.\n\nZertgatik aukeratu Element?\n\nERABATEKO KOMUNIKAZIOA: Sortu zure taldeentzako gelak, zure lagunentzko, zure komunitatearentzat, zuk nahi eran! Txateatu, partekatu fitxategiak, gehitu trepetak eta egin ahots eta bideo-deiak, dena doan.\n\nINTEGRAZIO AHALTSUAK: Erabili Element jada ezagutu eta maite dituzun tresnekin. Element erabilita beste txat aplikazioak erabiltzen dituzten erabiltzaile eta taldeekin ere aritu zaitezke.\n\nPRIBATUA ETA SEGURUA: Mantendu zure elkarrizketak sekretupean. Gaur egungo muturretik muturrerako zifratzeak pribatua dena pribatu mantentzen laguntzen du.\n\nIREKIA, EZ ITXIA: Kode irekikoa, eta Matrix protokoloan eraikia. Izan zure datuen jabe zure zerbitzaria osatatauz, edo fidagarritzat duzun bat aukeratuz.\n\nZUREKIN NONAHI: Mantendu kontaktua zauden tokian zaudela gailuetan zehar erabat sinkronizatutako mezuen historialarekin, eta web bidez https://app.element.io helbidean.";
 "auth_login_single_sign_on" = "Hasi saioa Single sign-on bidez";
 "auth_autodiscover_invalid_response" = "Erantzun baliogabea hasiera-zerbitzarien bilaketari";
 "room_message_unable_open_link_error_message" = "Ezin izan da esteka ireki.";
@@ -1024,13 +1021,13 @@
 // Recover from private key
 "key_backup_recover_from_private_key_info" = "Babes-kopia berrezartzen…";
 "device_verification_self_verify_wait_title" = "Segurtasun osoa";
-"device_verification_self_verify_wait_information" = "Egiaztatu saio hau zure beste saio batetik, honela mezu zifratuetara sarbidea emanez.\n\nErabili azken Riot bertsioa zure beste gailuetan:";
+"device_verification_self_verify_wait_information" = "Egiaztatu saio hau zure beste saio batetik, honela mezu zifratuetara sarbidea emanez.\n\nErabili azken Element bertsioa zure beste gailuetan:";
 "device_verification_self_verify_wait_waiting" = "Itxaroten…";
 // MARK: Clients
-"client_desktop_name" = "Riot Desktop";
-"client_web_name" = "Riot Web";
-"client_ios_name" = "Riot iOS";
-"client_android_name" = "Riot X Androidentzat";
+"client_desktop_name" = "Element Desktop";
+"client_web_name" = "Element Web";
+"client_ios_name" = "Element iOS";
+"client_android_name" = "Element Androidentzat";
 "room_participants_action_security_status_complete_security" = "Segurtasun osoa";
 "security_settings_crosssigning_info_not_bootstrapped" = "Zeharkako sinadura ez dago ezarrita.";
 "security_settings_crosssigning_info_exists" = "Zure kontuak zeharkako sinatze identitate bat du biltegi sekretuan, baina saio honek ez du oraindik fidagarritzat. Osatu saio honen segurtasuna.";
@@ -1041,7 +1038,7 @@
 "security_settings_crosssigning_complete_security" = "Segurtasun osoa";
 "security_settings_complete_security_alert_title" = "Segurtasun osoa";
 "security_settings_complete_security_alert_message" = "Aurretik segurtasuna osatu beharko zenuke oraingo saioan.";
-"security_settings_coming_soon" = "Sentitzen dugu. Ekintza hau ez dago iOS plataformarako Riot bezeroan eskuragarri oraindik. Erabili beste Matrix bezero bat ezartzeko. Riot-iOS-ek erabili egingo du.";
+"security_settings_coming_soon" = "Sentitzen dugu. Ekintza hau ez dago iOS plataformarako Element bezeroan eskuragarri oraindik. Erabili beste Matrix bezero bat ezartzeko. Element iOS-ek erabili egingo du.";
 "device_verification_self_verify_wait_new_sign_in_title" = "Egiaztatu saio hau";
 "device_verification_self_verify_wait_additional_information" = "edo zeharkako sinadurarako gai den beste Matrix bezero bat";
 // Scanning
