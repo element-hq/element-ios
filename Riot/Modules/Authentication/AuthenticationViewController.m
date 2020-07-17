@@ -26,7 +26,7 @@
 #import "ForgotPasswordInputsView.h"
 #import "AuthFallBackViewController.h"
 
-@interface AuthenticationViewController () <AuthFallBackViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate>
+@interface AuthenticationViewController () <AuthFallBackViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, SetPinCoordinatorBridgePresenterDelegate>
 {
     /**
      The default country code used to initialize the mobile phone number input.
@@ -49,10 +49,14 @@
     MXAutoDiscovery *autoDiscovery;
 
     AuthFallBackViewController *authFallBackViewController;
+    
+    // successful login credentials
+    MXCredentials *loginCredentials;
 }
 
 @property (nonatomic, readonly) BOOL isIdentityServerConfigured;
 @property (nonatomic, strong) KeyVerificationCoordinatorBridgePresenter *keyVerificationCoordinatorBridgePresenter;
+@property (nonatomic, strong) SetPinCoordinatorBridgePresenter *setPinCoordinatorBridgePresenter;
 
 @end
 
@@ -879,34 +883,24 @@
 
 - (void)onSuccessfulLogin:(MXCredentials*)credentials
 {
-    // Check whether a third party identifiers has not been used
-    if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+    //  if really login
+    if (self.authType == MXKAuthenticationTypeLogin)
     {
-        AuthInputsView *authInputsview = (AuthInputsView*)self.authInputsView;
-        if (authInputsview.isThirdPartyIdentifierPending)
+        loginCredentials = credentials;
+        
+        BOOL forcePinProtection = [[NSUserDefaults standardUserDefaults] boolForKey:@"forcePINProtection"];
+        
+        if (forcePinProtection)
         {
-            // Alert user
-            if (alert)
-            {
-                [alert dismissViewControllerAnimated:NO completion:nil];
-            }
-            
-            alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil) message:NSLocalizedStringFromTable(@"auth_add_email_and_phone_warning", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
-            
-            [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-                                                               
-                                                               [super onSuccessfulLogin:credentials];
-                                                               
-                                                           }]];
-            
-            [self presentViewController:alert animated:YES completion:nil];
+            SetPinCoordinatorBridgePresenter *presenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:nil];
+            presenter.delegate = self;
+            [presenter presentFrom:self animated:YES];
+            self.setPinCoordinatorBridgePresenter = presenter;
             return;
         }
     }
     
-    [super onSuccessfulLogin:credentials];
+    [self afterSetPinFlowCompletedWithCredentials:credentials];
 }
 
 - (void)updateForgotPwdButtonVisibility
@@ -929,6 +923,38 @@
         CGRect frame = self.forgotPasswordButton.frame;
         self.submitButtonMinLeadingConstraint.constant =  frame.origin.x + frame.size.width + 10;
     }
+}
+
+- (void)afterSetPinFlowCompletedWithCredentials:(MXCredentials*)credentials
+{
+    // Check whether a third party identifiers has not been used
+    if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+    {
+        AuthInputsView *authInputsview = (AuthInputsView*)self.authInputsView;
+        if (authInputsview.isThirdPartyIdentifierPending)
+        {
+            // Alert user
+            if (alert)
+            {
+                [alert dismissViewControllerAnimated:NO completion:nil];
+            }
+            
+            alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil) message:NSLocalizedStringFromTable(@"auth_add_email_and_phone_warning", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
+            
+            [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+                                                               
+                [super onSuccessfulLogin:credentials];
+                                                               
+                                                           }]];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+            return;
+        }
+    }
+    
+    [super onSuccessfulLogin:credentials];
 }
 
 #pragma mark -
@@ -1370,6 +1396,15 @@
     [coordinatorBridgePresenter.session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
     
     [self dismiss];
+}
+
+#pragma mark - SetPinCoordinatorBridgePresenterDelegate
+
+- (void)setPinCoordinatorBridgePresenterDelegateDidComplete:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self dismiss];
+
+    [self afterSetPinFlowCompletedWithCredentials:loginCredentials];
 }
 
 @end
