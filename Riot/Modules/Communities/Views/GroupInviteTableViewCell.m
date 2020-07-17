@@ -55,8 +55,8 @@ NSString *const kGroupInviteTableViewCellRoomKey = @"kGroupInviteTableViewCellRo
 {
     [super customizeTableViewCellRendering];
     
-    self.leftButton.backgroundColor = ThemeService.shared.riotColorBlue;
-    self.rightButton.backgroundColor = ThemeService.shared.riotColorBlue;
+    self.leftButton.backgroundColor = ThemeService.shared.theme.tintColor;
+    self.rightButton.backgroundColor = ThemeService.shared.theme.tintColor;
     
     self.noticeBadgeView.backgroundColor = ThemeService.shared.theme.noticeColor;
 }

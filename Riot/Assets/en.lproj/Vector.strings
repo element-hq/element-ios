@@ -17,7 +17,8 @@
 
 // String for App Store
 "store_short_description" = "Secure decentralised chat/VoIP";
-"store_full_description" = "Communicate, your way.\n\nA chat app, under your control and entirely flexible. Riot lets you communicate the way you want. Made for [matrix] - the standard for open, decentralised communication.\n\nGet a free matrix.org account, get your own server at https://modular.im, or use another Matrix server.\n\nWhy choose Riot.im?\n\nCOMPLETE COMMUNICATION: Build rooms around your teams, your friends, your community - however you like! Chat, share files, add widgets and make voice and video calls - all free of charge.\n\nPOWERFUL INTEGRATIONS: Use Riot.im with the tools you know and love. With Riot.im you can even chat with users and groups on other chat apps.\n\nPRIVATE AND SECURE: Keep your conversations secret. State of the art end-to-end encryption ensures that private communication stays private.\n\nOPEN, NOT CLOSED: Open source, and built on Matrix. Own your own data by hosting your own server, or selecting one you trust.\n\nEVERYWHERE YOU ARE: Stay in touch wherever you are with fully synchronised message history across all your devices and online at https://riot.im.";
+"store_full_description" = "Element is a new type of messenger and collaboration app that:\n\n1. Puts you in control to preserve your privacy\n2. Lets you communicate with anyone in the Matrix network, and even beyond by integrating with apps such as Slack\n3. Protects you from advertising, datamining, backdoors and walled gardens\n4. Secures you through end-to-end encryption, with cross-signing to verify others\n\nElement is completely different from other messaging and collaboration apps because it is decentralised and open source.\n\nElement lets you self-host - or choose a host - so that you have privacy, ownership and control of your data and conversations. It gives you access to an open network; so you’re not just stuck speaking to other Element users only. And it is very secure.\n\nElement is able to do all this because it operates on Matrix - the standard for open, decentralised communication. \n\nElement puts you in control by letting you choose who hosts your conversations. From the Element app, you can choose to host in different ways:\n\n1. Get a free account on the matrix.org public server\n2. Self-host your account by running a server on your own hardware\n3. Sign up for an account on a custom server by simply subscribing to the Element Matrix Services hosting platform\n\nWhy choose Element?\n\nOWN YOUR DATA: You decide where to keep your data and messages. You own it and control it, not some MEGACORP that mines your data or gives access to third parties.\n\nOPEN MESSAGING AND COLLABORATION: You can chat with anyone else in the Matrix network, whether they’re using Element or another Matrix app, and even if they are using a different messaging system of the likes of Slack, IRC or XMPP.\n\nSUPER-SECURE: Real end-to-end encryption (only those in the conversation can decrypt messages), and cross-signing to verify the devices of conversation participants.\n\nCOMPLETE COMMUNICATION: Messaging, voice and video calls, file sharing, screen sharing and a whole bunch of integrations, bots and widgets. Build rooms, communities, stay in touch and get things done.\n\nEVERYWHERE YOU ARE: Stay in touch wherever you are with fully synchronised message history across all your devices and on the web at https://element.io/app.";
+"store_promotional_text" = "Privacy-preserving chat and collaboration app, on an open network. Decentralised to put you in control. No datamining, no backdoors and no third party access.";
 
 // Titles
 "title_home" = "Home";
@@ -63,10 +64,10 @@
 "accessibility_checkbox_label" = "checkbox";
 
 // MARK: Clients
-"client_desktop_name" = "Riot Desktop";
-"client_web_name" = "Riot Web";
-"client_ios_name" = "Riot iOS";
-"client_android_name" = "Riot X for Android";
+"client_desktop_name" = "Element Desktop";
+"client_web_name" = "Element Web";
+"client_ios_name" = "Element iOS";
+"client_android_name" = "Element Android";
 
 // Authentication
 "auth_login" = "Log in";
@@ -214,7 +215,7 @@
 "contacts_address_book_no_identity_server" = "No identity server configured";
 "contacts_address_book_no_contact" = "No local contacts";
 "contacts_address_book_permission_required" = "Permission required to access local contacts";
-"contacts_address_book_permission_denied" = "You didn't allow Riot to access your local contacts";
+"contacts_address_book_permission_denied" = "You didn't allow Element to access your local contacts";
 "contacts_user_directory_section" = "USER DIRECTORY";
 "contacts_user_directory_offline_section" = "USER DIRECTORY (offline)";
 
@@ -365,6 +366,9 @@
 "media_type_accessibility_file" = "File";
 "media_type_accessibility_sticker" = "Sticker";
 
+"external_link_confirmation_title" = "Double-check this link";
+"external_link_confirmation_message" = "The link %@ is taking you to another site: %@\n\nAre you sure you want to continue?";
+
 // Unknown devices
 "unknown_devices_alert_title" = "Room contains unknown sessions";
 "unknown_devices_alert" = "This room contains unknown sessions which have not been verified.\nThis means there is no guarantee that the sessions belong to the users they claim to.\nWe recommend you go through the verification process for each session before continuing, but you can resend the message without verifying if you prefer.";
@@ -458,7 +462,7 @@
 //"settings_call_invitations" = "Call invitations";
 
 "settings_enable_callkit" = "Integrated calling";
-"settings_callkit_info" = "Receive incoming calls on your lock screen. See your Riot calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.";
+"settings_callkit_info" = "Receive incoming calls on your lock screen. See your Element calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.";
 "settings_calls_stun_server_fallback_button" = "Allow fallback call assist server";
 "settings_calls_stun_server_fallback_description" = "Allow fallback call assist server %@ when your homeserver does not offer one (your IP address would be shared during a call).";
 
@@ -481,19 +485,14 @@
 
 "settings_labs_e2e_encryption" = "End-to-End Encryption";
 "settings_labs_e2e_encryption_prompt_message" = "To finish setting up encryption you must log in again.";
-"settings_labs_room_members_lazy_loading" = "Lazy load rooms members";
-"settings_labs_room_members_lazy_loading_error_message" = "Your homeserver does not support lazy loading of room members yet. Try later.";
 "settings_labs_create_conference_with_jitsi" = "Create conference calls with jitsi";
 "settings_labs_message_reaction" = "React to messages with emoji";
 
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";
 "settings_copyright" = "Copyright";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Terms & Conditions";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Privacy Policy";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Third-party Notices";
 "settings_send_crash_report" = "Send anon crash & usage data";
 "settings_enable_rageshake" = "Rage shake to report bug";
@@ -572,7 +571,13 @@
 "security_settings_title" = "Security";
 "security_settings_crypto_sessions" = "MY SESSIONS";
 "security_settings_crypto_sessions_loading" = "Loading sessions…";
-"security_settings_crypto_sessions_description" = "Trust sessions to grant access to end-to-end encrypted messages. If you don’t recognise a session, change your login password and reset your Message Password used for Message Backup.";
+"security_settings_crypto_sessions_description_2" = "If you don’t recognise a login, change your password and reset Secure Backup.";
+
+"security_settings_secure_backup" = "SECURE BACKUP";
+"security_settings_secure_backup_description" =  "Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server.";
+"security_settings_secure_backup_setup" = "Set up";
+"security_settings_secure_backup_synchronise" = "Synchronise";
+"security_settings_secure_backup_delete" = "Delete";
 
 "security_settings_backup" = "MESSAGE BACKUP";
 
@@ -595,7 +600,8 @@
 "security_settings_complete_security_alert_title" = "Complete security";
 "security_settings_complete_security_alert_message" = "You should complete security on your current session first.";
 
-"security_settings_coming_soon" = "Sorry. This action is not available on Riot-iOS yet. Please use another Matrix client to set it up. Riot-iOS will use it.";
+"security_settings_coming_soon" = "Sorry. This action is not available on Element iOS yet. Please use another Matrix client to set it up. Element iOS will use it.";
+"security_settings_user_password_description" = "Confirm your identity by entering your account password";
 
 // Manage session
 "manage_session_title" = "Manage session";
@@ -605,6 +611,8 @@
 "manage_session_not_trusted" = "Not trusted";
 "manage_session_sign_out" = "Sign out of this session";
 
+// AuthenticatedSessionViewControllerFactory
+"authenticated_session_flow_not_supported" = "This app does not support the authentication mechanism on your homeserver.";
 
 // Identity server settings
 "identity_server_settings_title" = "Identity Server";
@@ -761,6 +769,12 @@
 "event_formatter_rerequest_keys_part2" = " from your other sessions.";
 "event_formatter_message_edited_mention" = "(edited)";
 
+// Events formatter with you
+"event_formatter_widget_added_by_you" = "You added the widget: %@";
+"event_formatter_widget_removed_by_you" = "You removed the widget: %@";
+"event_formatter_jitsi_widget_added_by_you" = "You added VoIP conference";
+"event_formatter_jitsi_widget_removed_by_you" = "You removed VoIP conference";
+
 // Others
 "or" = "or";
 "you" = "You";
@@ -799,7 +813,7 @@
 "google_analytics_use_prompt" = "Would you like to help improve %@ by automatically reporting anonymous crash reports and usage data?";
 
 // Crypto
-"e2e_enabling_on_app_update" = "Riot now supports end-to-end encryption but you need to log in again to enable it.\n\nYou can do it now or later from the application settings.";
+"e2e_enabling_on_app_update" = "Element now supports end-to-end encryption but you need to log in again to enable it.\n\nYou can do it now or later from the application settings.";
 "e2e_need_log_in_again" = "You need to log back in to generate end-to-end encryption keys for this session and submit the public key to your homeserver.\nThis is a once off; sorry for the inconvenience.";
 
 // Key backup wrong version
@@ -917,7 +931,37 @@
 
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Request Sent";
-"rerequest_keys_alert_message" = "Please launch Riot on another device that can decrypt the message so it can send the keys to this session.";
+"rerequest_keys_alert_message" = "Please launch Element on another device that can decrypt the message so it can send the keys to this session.";
+
+// MARK: Secure backup setup
+
+// Intro
+
+"secure_key_backup_setup_intro_title" = "Secure Backup";
+"secure_key_backup_setup_intro_info" = "Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server.";
+
+"secure_key_backup_setup_intro_use_security_key_title" = "Use a Security Key";
+"secure_key_backup_setup_intro_use_security_key_info" = "Generate a security key to store somewhere safe like a password manager or a safe.";
+
+"secure_key_backup_setup_intro_use_security_passphrase_title" = "Use a Security Passphrase";
+"secure_key_backup_setup_intro_use_security_passphrase_info" = "Enter a secret phrase only you know, and generate a key for backup.";
+
+"secure_key_backup_setup_existing_backup_error_title" = "A backup for messages already exists";
+"secure_key_backup_setup_existing_backup_error_info" = "Unlock it to reuse it in the secure backup or delete it to create a new messages backup in the secure backup.";
+"secure_key_backup_setup_existing_backup_error_unlock_it" = "Unlock it";
+"secure_key_backup_setup_existing_backup_error_delete_it" = "Delete it";
+
+
+// Cancel
+
+"secure_key_backup_setup_cancel_alert_title" = "Are your sure?";
+"secure_key_backup_setup_cancel_alert_message" = "If you cancel now, you may lose encrypted messages & data if you lose access to your logins.\n\nYou can also set up Secure Backup & manage your keys in Settings.";
+
+// Banner
+
+"secure_backup_setup_banner_title" = "Secure Backup";
+"secure_backup_setup_banner_subtitle" = "Safeguard against losing access to encrypted messages & data";
+
 
 // MARK: Key backup setup
 
@@ -1004,25 +1048,13 @@
 "key_backup_recover_success_info" = "Backup Restored!";
 "key_backup_recover_done_action" = "Done";
 
-// MARK: Key backup banners
-
-// Setup
-
-"key_backup_setup_banner_title" = "Never lose encrypted messages";
-"key_backup_setup_banner_subtitle" = "Start using Key Backup";
-
-// Recover
-
-"key_backup_recover_banner_title" = "Never lose encrypted messages";
-"key_backup_recover_connent_banner_subtitle" = "Connect this session to Key Backup";
-
 // MARK: Sign out warning
 
 "sign_out_existing_key_backup_alert_title" = "Are you sure you want to sign out?";
 "sign_out_existing_key_backup_alert_sign_out_action" = "Sign out";
 
 "sign_out_non_existing_key_backup_alert_title" = "You’ll lose access to your encrypted messages if you sign out now";
-"sign_out_non_existing_key_backup_alert_setup_key_backup_action" = "Start using Key Backup";
+"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Start using Secure Backup";
 "sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "I don't want my encrypted messages";
 
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "You'll lose your encrypted messages";
@@ -1084,8 +1116,11 @@
 
 "device_verification_self_verify_wait_title" = "Complete security";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verify this login";
-"device_verification_self_verify_wait_information" = "Verify this session from one of your other sessions, granting it access to encrypted messages.\n\nUse the latest Riot on your other devices:";
+"device_verification_self_verify_wait_information" = "Verify this session from one of your other sessions, granting it access to encrypted messages.\n\nUse the latest Element on your other devices:";
 "device_verification_self_verify_wait_additional_information" = "or another cross-signing capable Matrix client";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Use Recovery Key";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Use Recovery Passphrase or Key";
+"device_verification_self_verify_wait_recover_secrets_additional_information" = "If you can't accessing an existing session";
 
 // MARK: Verify
 
@@ -1309,3 +1344,74 @@
 "user_verification_session_details_verify_action_current_user" = "Interactively Verify";
 "user_verification_session_details_verify_action_current_user_manually" = "Manually Verify by Text";
 "user_verification_session_details_verify_action_other_user" = "Manually verify";
+
+// MARK: - Secrets recovery
+
+// Recover with passphrase
+
+"secrets_recovery_with_passphrase_title" = "Recovery Passphrase";
+"secrets_recovery_with_passphrase_information_default" = "Access your secure message history and your cross-signing identity for verifying other sessions by entering your recovery passphrase.";
+"secrets_recovery_with_passphrase_information_verify_device" = "Use your Recovery Passphrase to verify this device.";
+"secrets_recovery_with_passphrase_passphrase_title" = "Enter";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Enter Recovery Passphrase";
+"secrets_recovery_with_passphrase_recover_action" = "Use Passphrase";
+
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Don’t know your recovery passphrase? You can ";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "use your recovery key";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
+
+"secrets_recovery_with_passphrase_invalid_passphrase_title" = "Unable to access secret storage";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Please verify that you entered the correct recovery passphrase.";
+
+// Recover with key
+
+"secrets_recovery_with_key_title" = "Recovery Key";
+"secrets_recovery_with_key_information_default" = "Access your secure message history and your cross-signing identity for verifying other sessions by entering your recovery key.";
+"secrets_recovery_with_key_information_verify_device" = "Use your Recovery Key to verify this device.";
+"secrets_recovery_with_key_recovery_key_title" = "Enter";
+"secrets_recovery_with_key_recovery_key_placeholder" = "Enter Recovery Key";
+"secrets_recovery_with_key_recover_action" = "Use Key";
+
+"secrets_recovery_with_key_invalid_recovery_key_title" = "Unable to access secret storage";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "Please verify that you entered the correct recovery key.";
+
+// MARK: - Secrets set up
+
+// Recovery Key
+
+"secrets_setup_recovery_key_title" = "Save your Security Key";
+"secrets_setup_recovery_key_information" = "Store your Recovery Key somewhere safe. It can be used to unlock your encrypted messages & data.";
+"secrets_setup_recovery_key_loading" = "Loading…";
+"secrets_setup_recovery_key_export_action" = "Save";
+"secrets_setup_recovery_key_done_action" = "Done";
+
+"secrets_setup_recovery_key_storage_alert_title" = "Keep it safe";
+"secrets_setup_recovery_key_storage_alert_message" = "✓ Print it and store it somewhere safe\n✓ Save it on a USB key or backup drive\n✓ Copy it to your personal cloud storage";
+
+// Recovery passphrase
+
+"secrets_setup_recovery_passphrase_title" = "Set a Security Phrase";
+"secrets_setup_recovery_passphrase_information" = "Enter a security phrase only you know, used to secure secrets on your server.";
+"secrets_setup_recovery_passphrase_additional_information" = "Don't use your account password.";
+"secrets_setup_recovery_passphrase_validate_action" = "Done";
+
+"secrets_setup_recovery_passphrase_confirm_information" = "Enter your Security Phrase again to confirm it.";
+"secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Confirm";
+"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Confirm passphrase";
+
+"key_backup_setup_passphrase_confirm_passphrase_valid" = "Great!";
+"key_backup_setup_passphrase_confirm_passphrase_invalid" = "Passphrase doesn’t match";
+
+// MARK: - Cross-signing
+
+// Banner
+
+"cross_signing_setup_banner_title" = "Set up encryption";
+"cross_signing_setup_banner_subtitle" = "Verify your other devices easier";
+
+// MARK: - Major update
+
+"major_update_title" = "Riot is now Element";
+"major_update_information" = "We're excited to announce we've changed name! Your app is up to date and you're signed in to your account.";
+"major_update_learn_more_action" = "Learn more";
+"major_update_done_action" = "Got it";

@@ -1,14 +1,14 @@
-Riot-iOS
+Element iOS
 ==========
 
-.. image:: https://img.shields.io/matrix/riot-ios:matrix.org.svg?label=%23riot-ios:matrix.org
-    :alt: #riot-ios:matrix.org
-    :target: https://matrix.to/#/#riot-ios:matrix.org
+.. image:: https://img.shields.io/matrix/element-ios:matrix.org.svg?label=%23element-ios:matrix.org
+    :alt: #element-ios:matrix.org
+    :target: https://matrix.to/#/#element-ios:matrix.org
 
-Riot/iOS is an iOS Matrix client. 
+Element iOS is an iOS Matrix client.
 
 .. image:: https://linkmaker.itunes.apple.com/images/badges/en-us/badge_appstore-lrg.svg
-   :target: https://itunes.apple.com/us/app/riot-open-source-collaboration/id1083446067?mt=8
+   :target: https://itunes.apple.com/us/app/element/id1083446067?mt=8
 
 It is based on MatrixKit (https://github.com/matrix-org/matrix-ios-kit) and MatrixSDK (https://github.com/matrix-org/matrix-ios-sdk).
 
@@ -17,14 +17,14 @@ You can build the app from source as per below:
 Build instructions
 ==================
 
-Before opening the Riot Xcode workspace, you need to build it with the
+Before opening the Element Xcode workspace, you need to build it with the
 CocoaPods command::
 
         $ cd Riot
         $ bundle install
         $ bundle exec pod install
 
-This will load all dependencies for the Riot source code, including MatrixKit 
+This will load all dependencies for the Element source code, including MatrixKit
 and MatrixSDK.  You will need an recent and updated (``pod setup``) install of
 CocoaPods.
 

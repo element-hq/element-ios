@@ -1,11 +1,11 @@
 /*
  Copyright 2014 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
- 
+
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
- 
+
  http://www.apache.org/licenses/LICENSE-2.0
  
  Unless required by applicable law or agreed to in writing, software
@@ -17,7 +17,6 @@
 
 #import <UIKit/UIKit.h>
 #import <MatrixKit/MatrixKit.h>
-#import <UserNotifications/UserNotifications.h>
 
 #import "MasterTabBarController.h"
 #import "JitsiViewController.h"
@@ -48,10 +47,8 @@ extern NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey;
  */
 extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate, JitsiViewControllerDelegate, UNUserNotificationCenterDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate, JitsiViewControllerDelegate>
 {
-    BOOL isPushRegistered;
-    
     // background sync management
     void (^_completionHandler)(UIBackgroundFetchResult);
 }
@@ -103,6 +100,15 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 
 + (AppDelegate*)theDelegate;
 
+#pragma mark - Push Notifications
+
+/**
+ Perform registration for remote notifications.
+
+ @param completion the block to be executed when registration finished.
+ */
+- (void)registerForRemoteNotificationsWithCompletion:(nullable void (^)(NSError *))completion;
+
 #pragma mark - Application layout handling
 
 - (void)restoreInitialDisplay:(void (^)(void))completion;
@@ -132,7 +138,7 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 /**
  Log out all the accounts after asking for a potential confirmation.
  Show the authentication screen on successful logout.
- 
+
  @param askConfirmation tell whether a confirmation is required before logging out.
  @param completion the block to execute at the end of the operation.
  */
@@ -141,7 +147,7 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 /**
  Log out all the accounts without confirmation.
  Show the authentication screen on successful logout.
- 
+
  @param sendLogoutRequest Indicate whether send logout request to homeserver.
  @param completion the block to execute at the end of the operation.
  */
@@ -166,17 +172,6 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 
 - (void)selectMatrixAccount:(void (^)(MXKAccount *selectedAccount))onSelection;
 
-#pragma mark - Push notifications
-
-- (void)registerUserNotificationSettings;
-
-/**
- Perform registration for remote notifications.
- 
- @param completion the block to be executed when registration finished.
- */
-- (void)registerForRemoteNotificationsWithCompletion:(void (^)(NSError *))completion;
-
 #pragma mark - Matrix Room handling
 
 // Show a room and jump to the given event if event id is not nil otherwise go to last messages.
@@ -194,7 +189,7 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 
 /**
  Process the fragment part of a vector.im link.
- 
+
  @param fragment the fragment part of the universal link.
  @return YES in case of processing success.
  */
@@ -204,7 +199,7 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 
 /**
  Open the Jitsi view controller from a widget.
- 
+
  @param jitsiWidget the jitsi widget.
  @param video to indicate voice or video call.
  */
@@ -223,5 +218,11 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 @property (nonatomic, readonly) UIWindow* callStatusBarWindow;
 @property (nonatomic, readonly) UIButton* callStatusBarButton;
 
-@end
+#pragma mark - App version management
 
+/**
+ Check for app version related informations to display
+*/
+- (void)checkAppVersion;
+
+@end

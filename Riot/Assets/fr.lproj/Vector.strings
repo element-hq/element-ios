@@ -140,7 +140,7 @@
 "contacts_address_book_matrix_users_toggle" = "Utilisateurs Matrix uniquement";
 "contacts_address_book_no_contact" = "Aucun contact local";
 "contacts_address_book_permission_required" = "Permissions requises pour accéder aux contacts locaux";
-"contacts_address_book_permission_denied" = "Vous n'avez pas autorisé Riot à accéder à vos contacts locaux";
+"contacts_address_book_permission_denied" = "Vous n'avez pas autorisé Element à accéder à vos contacts locaux";
 "contacts_user_directory_section" = "RÉPERTOIRE UTILISATEURS";
 "contacts_user_directory_offline_section" = "RÉPERTOIRE UTILISATEURS (hors-ligne)";
 // Chat participants
@@ -288,11 +288,8 @@
 "settings_version" = "Version %@";
 "settings_olm_version" = "Version de olm %@";
 "settings_copyright" = "Droits d'auteur";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Termes et conditions";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Politique de confidentialité";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Licences tierces";
 "settings_send_crash_report" = "Envoyer des rapports d'erreur anonymes et des statistiques d'utilisation";
 "settings_enable_rageshake" = "Secouer l'appareil pour signaler un bug";
@@ -427,7 +424,7 @@
 // Crash report
 "google_analytics_use_prompt" = "Souhaitez-vous aider à améliorer %@ en envoyant automatiquement des rapports d'erreur et des statistiques d'utilisation ?";
 // Crypto
-"e2e_enabling_on_app_update" = "Riot prend désormais en charge le chiffrement de bout en bout, mais vous devez vous reconnecter pour l'activer.\n\nVous pouvez le faire maintenant ou plus tard à partir des paramètres de l'application.";
+"e2e_enabling_on_app_update" = "Element prend désormais en charge le chiffrement de bout en bout, mais vous devez vous reconnecter pour l'activer.\n\nVous pouvez le faire maintenant ou plus tard à partir des paramètres de l'application.";
 "e2e_need_log_in_again" = "Vous devez vous reconnecter pour générer les clés de chiffrement de bout en bout pour cette session et envoyer la clé publique vers votre serveur d’accueil.\nCeci ne se produira qu’une fois. Veuillez nous excuser pour ce désagrément.";
 // Bug report
 "bug_report_title" = "Rapport d'erreur";
@@ -488,7 +485,7 @@
 "settings_calls_settings" = "APPELS";
 "settings_show_decrypted_content" = "Afficher les messages chiffrés en clair";
 "settings_enable_callkit" = "Appels intégrés";
-"settings_callkit_info" = "Recevez les appels entrants sur votre écran de verrouillage. Voir vos appels Riot dans l'historique des appels du système. Si iCloud est activé, cet historique d'appels sera partagé avec Apple.";
+"settings_callkit_info" = "Recevez les appels entrants sur votre écran de verrouillage. Voir vos appels Element dans l'historique des appels du système. Si iCloud est activé, cet historique d'appels sera partagé avec Apple.";
 "event_formatter_widget_added" = "Widget %@ ajoutée par %@";
 "event_formatter_widget_removed" = "Widget %@ supprimée par %@";
 // Share extension
@@ -536,7 +533,7 @@
 "event_formatter_rerequest_keys_part2" = " depuis vos autres sessions.";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Demande envoyée";
-"rerequest_keys_alert_message" = "Lancez Riot sur un autre appareil qui peut déchiffrer le message pour qu’il puisse envoyer les clés à cette session.";
+"rerequest_keys_alert_message" = "Lancez Element sur un autre appareil qui peut déchiffrer le message pour qu’il puisse envoyer les clés à cette session.";
 "room_message_reply_to_placeholder" = "Envoyer une réponse (non chiffrée)…";
 "encrypted_room_message_reply_to_placeholder" = "Envoyer une réponse chiffrée…";
 "room_message_reply_to_short_placeholder" = "Envoyer une réponse…";
@@ -671,7 +668,7 @@
 "key_backup_setup_intro_manual_export_action" = "Exporter les clés manuellement";
 // String for App Store
 "store_short_description" = "Discussions et appels sécurisés et décentralisés";
-"store_full_description" = "Communiquez, à votre façon.\n\nUne application de discussion, que vous contrôlez et entièrement flexible. Riot vous laisse communiquer comme vous le souhaitez. Conçu pour [matrix], le standard pour les communications libres et décentralisées.\n\nCréez un compte matrix.org gratuit, gérez votre propre serveur sur https://modular.im ou utilisez un autre serveur Matrix.\n\nPourquoi choisir Riot.im ?\n\n• COMMUNICATION COMPLÈTE : Construisez des salons autours de vos équipes, de vos amis, de votre communauté comme vous le souhaitez ! Discutez, partagez des fichiers, ajoutez des widgets et passez des appels audio et vidéo gratuitement.\n\n• INTÉGRATIONS PUISSANTES : Utilisez Riot.im avec les outils que vous connaissez déjà. Avec Riot.im vous pouvez même discuter avec les utilisateurs et les groupes qui utilisent d'autres applications de discussion.\n\n• PRIVÉ ET SÉCURISÉ : Gardez vos conversations secrètes. Un chiffrement de bout en bout de pointe vous garanti que vos communications privées restent privées.\n\n• OUVERT, PAS FERMÉ : Open source, et construit autour de Matrix. Restez en possession de vos données en hébergeant votre propre serveur, ou choisissez celui auquel vous faites confiance.\n\n• PARTOUT OÙ VOUS ÊTES : Restez en contact où que vous soyez avec la synchronisation complète de l'historique de vos messages entre vos différents appareils et en ligne sur https://riot.im.";
+"store_full_description" = "Communiquez, à votre façon.\n\nUne application de discussion, que vous contrôlez et entièrement flexible. Element vous laisse communiquer comme vous le souhaitez. Conçu pour [matrix], le standard pour les communications libres et décentralisées.\n\nCréez un compte matrix.org gratuit, gérez votre propre serveur sur https://ems.element.io ou utilisez un autre serveur Matrix.\n\nPourquoi choisir Element ?\n\n• COMMUNICATION COMPLÈTE : Construisez des salons autours de vos équipes, de vos amis, de votre communauté comme vous le souhaitez ! Discutez, partagez des fichiers, ajoutez des widgets et passez des appels audio et vidéo gratuitement.\n\n• INTÉGRATIONS PUISSANTES : Utilisez Element avec les outils que vous connaissez déjà. Avec Element vous pouvez même discuter avec les utilisateurs et les groupes qui utilisent d'autres applications de discussion.\n\n• PRIVÉ ET SÉCURISÉ : Gardez vos conversations secrètes. Un chiffrement de bout en bout de pointe vous garanti que vos communications privées restent privées.\n\n• OUVERT, PAS FERMÉ : Open source, et construit autour de Matrix. Restez en possession de vos données en hébergeant votre propre serveur, ou choisissez celui auquel vous faites confiance.\n\n• PARTOUT OÙ VOUS ÊTES : Restez en contact où que vous soyez avec la synchronisation complète de l'historique de vos messages entre vos différents appareils et en ligne sur https://app.element.io.";
 "auth_login_single_sign_on" = "Se connecter avec l'authentification unique";
 "room_message_unable_open_link_error_message" = "Impossible d’ouvrir le lien.";
 "auth_autodiscover_invalid_response" = "Réponse de découverte du serveur d’accueil non valide";
@@ -1031,7 +1028,7 @@
 "device_verification_self_verify_start_waiting" = "En attente…";
 "skip" = "Passer";
 "device_verification_self_verify_wait_title" = "Compléter la sécurité";
-"device_verification_self_verify_wait_information" = "Vérifiez cette session depuis une de vos autres sessions, ce qui lui permettra d’avoir accès aux messages chiffrés.\n\nUtilisez la dernière version de Riot sur vos autres appareils :";
+"device_verification_self_verify_wait_information" = "Vérifiez cette session depuis une de vos autres sessions, ce qui lui permettra d’avoir accès aux messages chiffrés.\n\nUtilisez la dernière version de Element sur vos autres appareils :";
 "device_verification_self_verify_wait_waiting" = "En attente…";
 "room_member_power_level_admin_in" = "Administrateur dans %@";
 "room_member_power_level_moderator_in" = "Modérateur dans %@";
@@ -1059,12 +1056,12 @@
 "security_settings_crosssigning_complete_security" = "Compléter la sécurité";
 "security_settings_complete_security_alert_title" = "Compléter la sécurité";
 "security_settings_complete_security_alert_message" = "Vous devriez d’abord compléter la sécurité de votre session actuelle.";
-"security_settings_coming_soon" = "Désolé, cette action n’est pas encore disponible dans Riot-iOS. Utilisez un autre client Matrix pour le configurer. Riot-iOS l’utilisera.";
+"security_settings_coming_soon" = "Désolé, cette action n’est pas encore disponible dans Element iOS. Utilisez un autre client Matrix pour le configurer. Element iOS l’utilisera.";
 // MARK: Clients
-"client_desktop_name" = "Riot pour ordinateur";
-"client_web_name" = "Riot web";
-"client_ios_name" = "Riot iOS";
-"client_android_name" = "Riot X pour Android";
+"client_desktop_name" = "Element pour ordinateur";
+"client_web_name" = "Element web";
+"client_ios_name" = "Element iOS";
+"client_android_name" = "Element Android";
 "device_verification_self_verify_wait_new_sign_in_title" = "Vérifier cette connexion";
 "device_verification_self_verify_wait_additional_information" = "ou un autre client Matrix qui prend en charge la signature croisée";
 // MARK: - Device Verification
@@ -1101,3 +1098,70 @@
 "key_verification_manually_verify_device_additional_information" = "S’ils ne correspondent pas, la sécurité de vos communications est peut-être compromise.";
 "key_verification_manually_verify_device_validate_action" = "Vérifier";
 "user_verification_session_details_verify_action_current_user_manually" = "Vérifier manuellement avec un texte";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Utiliser la clé de récupération";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Utiliser la phrase secrète ou la clé de récupération";
+"device_verification_self_verify_wait_recover_secrets_additional_information" = "Si vous ne pouvez pas accéder à une session existante";
+"secrets_recovery_with_passphrase_title" = "Phrase secrète de récupération";
+"secrets_recovery_with_passphrase_information_default" = "Accédez à l’historique de vos messages sécurisés et à votre identité de signature croisée pour vérifier d’autres sessions en saisissant votre phrase secrète de récupération.";
+"secrets_recovery_with_passphrase_information_verify_device" = "Utilisez votre phrase secrète de récupération pour vérifier cet appareil.";
+"secrets_recovery_with_passphrase_passphrase_title" = "Saisir";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Saisir la phrase secrète de récupération";
+"secrets_recovery_with_passphrase_recover_action" = "Utiliser la phrase secrète";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Vous ne connaissez pas votre phrase secrète de récupération ? Vous pouvez ";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "utiliser votre clé de récupération";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
+"secrets_recovery_with_passphrase_invalid_passphrase_title" = "Impossible d’accéder au coffre secret";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Vérifiez que vous avez saisi la bonne phrase secrète de récupération.";
+"secrets_recovery_with_key_title" = "Clé de récupération";
+"secrets_recovery_with_key_information_default" = "Accédez à l’historique de vos messages sécurisés et à votre identité de signature croisée pour vérifier d’autres sessions en renseignant votre clé de récupération.";
+"secrets_recovery_with_key_information_verify_device" = "Utilisez votre clé de récupération pour vérifier cet appareil.";
+"secrets_recovery_with_key_recovery_key_title" = "Saisir";
+"secrets_recovery_with_key_recovery_key_placeholder" = "Saisir la clé de récupération";
+"secrets_recovery_with_key_recover_action" = "Utiliser la clé";
+"secrets_recovery_with_key_invalid_recovery_key_title" = "Impossible d’accéder au coffre secret";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "Vérifiez que vous avez saisi la bonne clé de récupération.";
+"secure_key_backup_setup_intro_title" = "Sauvegarde sécurisée";
+"secure_key_backup_setup_intro_info" = "Protection afin d’éviter de perdre l’accès aux messages et données chiffrés en sauvegardant les clés de chiffrement sur votre serveur.";
+"secure_key_backup_setup_intro_use_security_key_title" = "Utiliser une clé de sécurité";
+"secure_key_backup_setup_intro_use_security_key_info" = "Générer une clé de sécurité à stocker dans un endroit sûr comme un gestionnaire de mots de passe ou un coffre.";
+"secure_key_backup_setup_intro_use_security_passphrase_title" = "Utiliser une phrase secrète de sécurité";
+"secure_key_backup_setup_intro_use_security_passphrase_info" = "Saisissez une phrase secrète que vous êtes seul·e à connaître et générez une clé pour la sauvegarde.";
+"secure_key_backup_setup_cancel_alert_title" = "En êtes-vous sûr·e ?";
+"secure_key_backup_setup_cancel_alert_message" = "Si vous annulez maintenant, vous pourriez perdre les messages et données chiffrés si vous perdez l’accès à vos connexions.\n\nVous pouvez également configurer la sauvegarde sécurisée et gérer vos clés dans les paramètres.";
+"secrets_setup_recovery_key_title" = "Enregistrer votre clé de sécurité";
+"secrets_setup_recovery_key_information" = "Stockez votre clé de récupération dans un endroit sûr. Elle peut être utilisée pour déverrouiller vos messages et données chiffrés.";
+"secrets_setup_recovery_key_loading" = "Chargement…";
+"secrets_setup_recovery_key_export_action" = "Sauvegarder";
+"secrets_setup_recovery_key_done_action" = "Terminé";
+"secrets_setup_recovery_key_storage_alert_title" = "Conservez-la en lieu sûr";
+"secrets_setup_recovery_key_storage_alert_message" = "✓ Imprimez-la et stockez-la dans un endroit sûr\n✓ Sauvegardez-la sur une clé USB ou un disque de sauvegarde\n✓ Copiez-la sur votre stockage personnel dans le cloud";
+"secrets_setup_recovery_passphrase_title" = "Définir une phrase de sécurité";
+"secrets_setup_recovery_passphrase_information" = "Saisissez une phrase de sécurité que vous seul·e connaissez, utilisée pour sécuriser les secrets sur votre serveur.";
+"secrets_setup_recovery_passphrase_additional_information" = "N’utilisez pas le mot de passe de votre compte.";
+"secrets_setup_recovery_passphrase_validate_action" = "Terminé";
+"secrets_setup_recovery_passphrase_confirm_information" = "Saisissez à nouveau votre phrase de sécurité pour la confirmer.";
+"secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Confirmer";
+"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Confirmer la phrase secrète";
+// AuthenticatedSessionViewControllerFactory
+"authenticated_session_flow_not_supported" = "Cette application ne prend par en charge le mécanisme d’authentification de votre serveur d’accueil.";
+"secure_backup_setup_banner_title" = "Sauvegarde sécurisée";
+"secure_backup_setup_banner_subtitle" = "Protection afin d’éviter de perdre l’accès aux messages et données chiffrés";
+"security_settings_crypto_sessions_description_2" = "Si vous ne reconnaissez pas une connexion, changez votre mot de passe et réinitialisez la sauvegarde sécurisée.";
+"security_settings_secure_backup" = "SAUVEGARDE SÉCURISÉE";
+"security_settings_secure_backup_description" = "Protection afin d’éviter de perdre l’accès aux messages et données chiffrés en sauvegardant les clés de chiffrement sur votre serveur.";
+"security_settings_secure_backup_setup" = "Configurer";
+"security_settings_secure_backup_synchronise" = "Synchroniser";
+"security_settings_secure_backup_delete" = "Supprimer";
+"security_settings_user_password_description" = "Confirmez votre identité en saisissant le mot de passe de votre compte";
+"secure_key_backup_setup_existing_backup_error_title" = "Une sauvegarde pour les messages existe déjà";
+"secure_key_backup_setup_existing_backup_error_info" = "Déverrouillez-la pour la réutiliser dans la sauvegarde sécurisée ou supprimez-la pour créer une nouvelle sauvegarde de messages dans la sauvegarde sécurisée.";
+"secure_key_backup_setup_existing_backup_error_unlock_it" = "La déverrouiller";
+"secure_key_backup_setup_existing_backup_error_delete_it" = "La supprimer";
+"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Commencer à utiliser la sauvegarde sécurisée";
+"cross_signing_setup_banner_title" = "Configurer le chiffrement";
+"cross_signing_setup_banner_subtitle" = "Vérifiez vos autres appareils plus facilement";
+// Events formatter with you
+"event_formatter_widget_added_by_you" = "Vous avez ajouté le widget : %@";
+"event_formatter_widget_removed_by_you" = "Vous avez supprimé le widget : %@";
+"event_formatter_jitsi_widget_added_by_you" = "Vous avez ajouté une conférence en VoIP";
+"event_formatter_jitsi_widget_removed_by_you" = "Vous avez supprimé une conférence en VoIP";

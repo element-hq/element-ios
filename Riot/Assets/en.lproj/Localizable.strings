@@ -56,6 +56,17 @@
 /* Sticker from a specific person, not referencing a room. */
 "STICKER_FROM_USER" = "%@ sent a sticker";
 
+/** Notification messages **/
+
+/* New message indicator on unknown room */
+"MESSAGE" = "Message";
+
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "Message from %@";
+
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "Message in %@";
+
 /** Coalesced messages **/
 
 /* Multiple unread messages in a room */

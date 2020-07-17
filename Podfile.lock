@@ -43,45 +43,45 @@ PODS:
   - GBDeviceInfo/Core (6.3.0)
   - GZIP (1.2.3)
   - HPGrowingTextView (1.1)
-  - JitsiMeetSDK (2.3.1)
+  - JitsiMeetSDK (2.8.1)
   - KTCenterFlowLayout (1.3.1)
   - libbase58 (0.1.4)
   - libPhoneNumber-iOS (0.9.15)
-  - MatomoTracker (7.2.0):
-    - MatomoTracker/Core (= 7.2.0)
-  - MatomoTracker/Core (7.2.0)
-  - MatrixKit (0.12.6):
+  - MatomoTracker (7.2.1):
+    - MatomoTracker/Core (= 7.2.1)
+  - MatomoTracker/Core (7.2.1)
+  - MatrixKit (0.12.8):
     - cmark (~> 0.24.1)
-    - DTCoreText (~> 1.6.21)
+    - DTCoreText (~> 1.6.23)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.12.6)
-    - MatrixSDK (= 0.16.5)
-  - MatrixKit/AppExtension (0.12.6):
+    - MatrixKit/Core (= 0.12.8)
+    - MatrixSDK (= 0.16.7)
+  - MatrixKit/AppExtension (0.12.8):
     - cmark (~> 0.24.1)
-    - DTCoreText (~> 1.6.21)
+    - DTCoreText (~> 1.6.23)
     - DTCoreText/Extension
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.16.5)
-  - MatrixKit/Core (0.12.6):
+    - MatrixSDK (= 0.16.7)
+  - MatrixKit/Core (0.12.8):
     - cmark (~> 0.24.1)
-    - DTCoreText (~> 1.6.21)
+    - DTCoreText (~> 1.6.23)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.16.5)
-  - MatrixSDK (0.16.5):
-    - MatrixSDK/Core (= 0.16.5)
-  - MatrixSDK/Core (0.16.5):
+    - MatrixSDK (= 0.16.7)
+  - MatrixSDK (0.16.7):
+    - MatrixSDK/Core (= 0.16.7)
+  - MatrixSDK/Core (0.16.7):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.2.2)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.1.0)
     - Realm (~> 4.4.0)
-  - MatrixSDK/JingleCallStack (0.16.5):
-    - JitsiMeetSDK (~> 2.3.1)
+  - MatrixSDK/JingleCallStack (0.16.7):
+    - JitsiMeetSDK (~> 2.8.1)
     - MatrixSDK/Core
-  - MatrixSDK/SwiftSupport (0.16.5):
+  - MatrixSDK/SwiftSupport (0.16.7):
     - MatrixSDK/Core
   - OLMKit (3.1.0):
     - OLMKit/olmc (= 3.1.0)
@@ -91,12 +91,12 @@ PODS:
   - Realm (4.4.1):
     - Realm/Headers (= 4.4.1)
   - Realm/Headers (4.4.1)
-  - Reusable (4.1.0):
-    - Reusable/Storyboard (= 4.1.0)
-    - Reusable/View (= 4.1.0)
-  - Reusable/Storyboard (4.1.0)
-  - Reusable/View (4.1.0)
-  - SwiftGen (6.1.0)
+  - Reusable (4.1.1):
+    - Reusable/Storyboard (= 4.1.1)
+    - Reusable/View (= 4.1.1)
+  - Reusable/Storyboard (4.1.1)
+  - Reusable/View (4.1.1)
+  - SwiftGen (6.2.1)
   - SwiftLint (0.36.0)
   - zxcvbn-ios (1.0.4)
   - ZXingObjC (3.6.5):
@@ -109,8 +109,8 @@ DEPENDENCIES:
   - GBDeviceInfo (~> 6.3.0)
   - KTCenterFlowLayout (~> 1.3.1)
   - MatomoTracker (~> 7.2.0)
-  - MatrixKit (= 0.12.6)
-  - MatrixKit/AppExtension (= 0.12.6)
+  - MatrixKit (= 0.12.8)
+  - MatrixKit/AppExtension (= 0.12.8)
   - MatrixSDK/JingleCallStack
   - MatrixSDK/SwiftSupport
   - OLMKit
@@ -154,21 +154,21 @@ SPEC CHECKSUMS:
   GBDeviceInfo: a3f39dba1a04dcb630abff65d6f7e8fbf319eadd
   GZIP: af5c90ef903776a7e9afe6ebebd794a84a2929d4
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
-  JitsiMeetSDK: 69e4978fbab21f9a535d1bec3b8d43721a4c72b2
+  JitsiMeetSDK: 2984eac1343690bf1c0c72bde75b48b0148d0f79
   KTCenterFlowLayout: 6e02b50ab2bd865025ae82fe266ed13b6d9eaf97
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
-  MatomoTracker: 6f89e2561083685a360e223fb663e9ccd57c1d1a
-  MatrixKit: e4da1f13c6686134ee31769610f2aefe60bd8aa5
-  MatrixSDK: efe87af67440a67781be871b07e80b1f12ef5d48
+  MatomoTracker: 246b6b0693cf39b356134dec7561f719d3538b96
+  MatrixKit: 0e519c481b87930e30b1732a9a8d5605dba03176
+  MatrixSDK: 24e0adca0dc0dbbaa502bafdc75564bafd964c7b
   OLMKit: 4ee0159d63feeb86d836fdcfefe418e163511639
   Realm: 4eb04d7487bd43c0581256f40b424eafb711deff
-  Reusable: 82be188f29d96dc5eff0db7b2393bcc08d2cdd5b
-  SwiftGen: f872ca75cbd17bf7103c17f13dcfa0d9a15667b0
+  Reusable: 53a9acf5c536f229b31b5865782414b508252ddb
+  SwiftGen: 62e69d127507be1538d4263e137b2290cd6ab272
   SwiftLint: fc9859e4e1752340664851f667bb1898b9c90114
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 6589119129fac9d854db2842066a4e7c66c880c7
+PODFILE CHECKSUM: a6f754f2d6b9d3ef6ead7aa90e2cd23b80dde8e4
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.9.3

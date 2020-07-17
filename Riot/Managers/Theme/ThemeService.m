@@ -43,28 +43,39 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
 
 - (void)setThemeId:(NSString *)theThemeId
 {
-    // Update the current theme
     _themeId = theThemeId;
-    self.theme = [self themeWithThemeId:self.themeId];
+    [self reEvaluateTheme];
 }
 
 - (void)setTheme:(id<Theme> _Nonnull)theme
 {
-    _theme = theme;
-    
-    [self updateAppearance];
+    //  update only if really changed
+    if (![_theme.identifier isEqualToString:theme.identifier])
+    {
+        _theme = theme;
+        
+        [self updateAppearance];
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:kThemeServiceDidChangeThemeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kThemeServiceDidChangeThemeNotification object:nil];
+    }
 }
 
 - (id<Theme>)themeWithThemeId:(NSString*)themeId
 {
     id<Theme> theme;
-
-    if ([themeId isEqualToString:@"auto"])
+    
+    if (themeId == nil || [themeId isEqualToString:@"auto"])
     {
-        // Translate "auto" into a theme
-        themeId = UIAccessibilityIsInvertColorsEnabled() ? @"dark" : @"light";
+        if (@available(iOS 13, *))
+        {
+            // Translate "auto" into a theme with UITraitCollection
+            themeId = ([UITraitCollection currentTraitCollection].userInterfaceStyle == UIUserInterfaceStyleDark) ? @"dark" : @"light";
+        }
+        else
+        {
+            // Translate "auto" into a theme
+            themeId = UIAccessibilityIsInvertColorsEnabled() ? @"dark" : @"light";
+        }
     }
 
     if ([themeId isEqualToString:@"dark"])
@@ -92,24 +103,35 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
     if (self)
     {
         // Riot Colors not yet themeable
-        _riotColorBlue = [[UIColor alloc] initWithRgb:0x81BDDB];
-        _riotColorCuriousBlue = [[UIColor alloc] initWithRgb:0x2A9EDB];
-        _riotColorIndigo = [[UIColor alloc] initWithRgb:0xBD79CC];
-        _riotColorOrange = [[UIColor alloc] initWithRgb:0xF8A15F];
+        _riotColorCuriousBlue = [[UIColor alloc] initWithRgb:0x2A9EDB];        
 
-        // Observe "Invert Colours" settings changes (available since iOS 11)
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accessibilityInvertColorsStatusDidChange) name:UIAccessibilityInvertColorsStatusDidChangeNotification object:nil];
+        if (@available(iOS 13, *))
+        {
+            //  Observe application did become active for iOS appearance setting changes
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+        }
+        else
+        {
+            // Observe "Invert Colours" settings changes (available since iOS 11)
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accessibilityInvertColorsStatusDidChange) name:UIAccessibilityInvertColorsStatusDidChangeNotification object:nil];
+        }
     }
     return self;
 }
 
+- (void)reEvaluateTheme
+{
+     self.theme = [self themeWithThemeId:self.themeId];
+}
+
 - (void)accessibilityInvertColorsStatusDidChange
 {
-    // Refresh the theme only for "auto"
-    if ([self.themeId isEqualToString:@"auto"])
-    {
-         self.theme = [self themeWithThemeId:self.themeId];
-    }
+    [self reEvaluateTheme];
+}
+
+- (void)applicationDidBecomeActive
+{
+    [self reEvaluateTheme];
 }
 
 - (void)updateAppearance
@@ -120,7 +142,7 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
     [[UINavigationBar appearance] setTintColor:self.theme.tintColor];
     
     // Define the UISearchBar cancel button color
-    [[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class]]] setTitleTextAttributes:@{ NSForegroundColorAttributeName : self.theme.searchPlaceholderColor }                                                                                                        forState: UIControlStateNormal];
+    [[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class]]] setTitleTextAttributes:@{ NSForegroundColorAttributeName : self.theme.tintColor }                                                                                                        forState: UIControlStateNormal];
 }
 
 @end

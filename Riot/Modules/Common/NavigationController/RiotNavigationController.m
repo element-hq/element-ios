@@ -18,28 +18,14 @@
 
 @implementation RiotNavigationController
 
-- (UIStatusBarStyle)preferredStatusBarStyle
+- (UIViewController *)childViewControllerForStatusBarStyle
 {
-    if (self.topViewController)
-    {
-        // Return the preferred style of the top view controller.
-        return [self.topViewController preferredStatusBarStyle];
-    }
-    
-    // Keep the default UINavigationController style.
-    return [super preferredStatusBarStyle];
+    return self.topViewController;
 }
 
-- (BOOL)prefersStatusBarHidden
+- (UIViewController *)childViewControllerForStatusBarHidden
 {
-    if (self.topViewController)
-    {
-        // Retrieve this information from the top view controller.
-        return [self.topViewController prefersStatusBarHidden];
-    }
-    
-    // Keep the default UINavigationController mode.
-    return [super prefersStatusBarHidden];
+    return self.topViewController;
 }
 
 @end

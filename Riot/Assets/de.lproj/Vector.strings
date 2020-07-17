@@ -232,11 +232,8 @@
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm-Version %@";
 "settings_copyright" = "Kopierrecht";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Geschäftsbedingungen";
 "settings_privacy_policy" = "Datenschutzerklärung";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_send_crash_report" = "Sende anonyme Absturz- & Nutzungsdaten";
 "settings_change_password" = "Passwort ändern";
 "settings_old_password" = "altes Passwort";
@@ -295,7 +292,7 @@
 "directory_cell_description" = "%tu Räume";
 "directory_search_results" = "%tu Treffer gefunden für %@";
 "directory_search_results_more_than" = ">%tu Treffer gefunden für %@";
-"contacts_address_book_permission_denied" = "Riot fehlt die Berechtigung auf die lokalen Kontakte zuzugreifen";
+"contacts_address_book_permission_denied" = "Element fehlt die Berechtigung auf die lokalen Kontakte zuzugreifen";
 "room_participants_remove_third_party_invite_msg" = "Entfernen der Einladung von Dritten ist noch nicht unterstützt";
 "room_participants_invite_another_user" = "Suchen/Einladen mittels Benutzer-ID, Name oder E-Mail-Adresse";
 "room_participants_invite_malformed_id" = "Ungültige ID. Sollte eine E-Mail-Adresse oder Matrix-ID wie \"@thomas:matrix.org' sein";
@@ -390,7 +387,7 @@
 // Crash report
 "google_analytics_use_prompt" = "Möchtest du helfen %@ zu verbessern, indem du anonyme Crash Reports und Daten über die Verwendung sendest?";
 // Crypto
-"e2e_enabling_on_app_update" = "Riot unterstützt nun Ende-zu-Ende Verschlüsselung, um es zu aktivieren musst du dich erneut anmelden.\n\nDu kannst es nun machen oder später in den Einstellungen.";
+"e2e_enabling_on_app_update" = "Element unterstützt nun Ende-zu-Ende Verschlüsselung, um es zu aktivieren musst du dich erneut anmelden.\n\nDu kannst es nun machen oder später in den Einstellungen.";
 "e2e_need_log_in_again" = "Du musst dich erneut anmelden um Ende-zu-Ende Schlüssel für diese Sitzung zu erstellen und zum Server zu senden.\nDies ist nur einmal notwendig.";
 // Bug report
 "bug_report_title" = "Bug Report";
@@ -461,7 +458,7 @@
 "settings_calls_settings" = "ANRUFE";
 "settings_show_decrypted_content" = "Entschlüsselten Inhalt anzeigen";
 "settings_enable_callkit" = "Eingebettetes Anrufen";
-"settings_callkit_info" = "Empfange eingehende Anrufe auf deinem Sperrbildschirm und sehe deine Riot-Anrufe in der System-Anruf-Historie. Wenn iCloud aktiviert ist, wird diese Anruf-Historie mit Apple geteilt.";
+"settings_callkit_info" = "Empfange eingehende Anrufe auf deinem Sperrbildschirm und sehe deine Element-Anrufe in der System-Anruf-Historie. Wenn iCloud aktiviert ist, wird diese Anruf-Historie mit Apple geteilt.";
 "settings_enable_rageshake" = "Schüttle stark um einen Fehler zu melden";
 "do_not_ask_again" = "Nicht erneut fragen";
 "settings_ui_theme_black" = "Schwarz";
@@ -536,7 +533,7 @@
 "event_formatter_rerequest_keys_part2" = " von deinen anderen Sitzungen anfragen.";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Anfrage gesendet";
-"rerequest_keys_alert_message" = "Öffne Riot bitte in einer anderen Sitzung, die die Nachricht entschlüsseln kann, damit es die Schlüssel an dieses Gerät übertragen kann.";
+"rerequest_keys_alert_message" = "Öffne Element bitte in einer anderen Sitzung, die die Nachricht entschlüsseln kann, damit es die Schlüssel an dieses Gerät übertragen kann.";
 "room_message_reply_to_placeholder" = "Sende eine unverschlüsselte Antwort…";
 "encrypted_room_message_reply_to_placeholder" = "Sende eine verschlüsselte Antwort…";
 "room_message_reply_to_short_placeholder" = "Sende eine Antwort…";
@@ -656,7 +653,7 @@
 "key_backup_setup_intro_manual_export_action" = "Manueller Schlüssel Export";
 // String for App Store
 "store_short_description" = "Sicherer, dezentralisierter Chat/VoIP";
-"store_full_description" = "Kommuniziere - auf deine Art.\n\nEine Chat-App - unter deiner Kontrolle und komplett flexibel. Riot lässt dich so kommunizieren wie du willst. Gebaut für [matrix] - dem Standard für offene, dezentrale Kommunikation.\n\nHol dir ein kostenloses Konto auf matrix.org, deinen eigenen Server auf https://modular.im oder nutze einen anderen Matrix-Server.\n\nWarum Riot.im nutzen?\n\nLÜCKENLOSE KOMMUNIKATION: Baue Räume um deine Teams, deine Freunde, deine Community - ganz nach deinen Vorstellungen! Chatte, teile Dateien, füge Widgets hinzu und führe Sprach- sowie Videogespräche - alles kostenlos.\n\nMÄCHTIGE INTEGRATIONEN: Nutze Riot.im mit den Werkzeugen die du kennst und liebst. Mit Riot.im kannst du sogar mit Nutzern und Gruppen anderer Chat-Apps in Kontakt bleiben.\n\nPRIVAT UND SICHER: Halte deine Gespräche geheim. Modernste Verschlüsselung sogt dafür, dass private Kommunikation auch privat bleibt.\n\nOFFEN, NICHT VERSCHLOSSEN: Open Source - basierend auf [matrix]. Behalte die Hoheit über deine Daten indem du deinen eigenen Server betreibst - oder einen wählst, dem du vertraust.\n\nWO AUCH IMMER DU BIST: Halte den Kontakt - mit einem Nachrichtenverlauf der vollständig synchronisiert wird - auf all deinen Geräten oder Online unter https://riot.im";
+"store_full_description" = "Kommuniziere - auf deine Art.\n\nEine Chat-App - unter deiner Kontrolle und komplett flexibel. Element lässt dich so kommunizieren wie du willst. Gebaut für [matrix] - dem Standard für offene, dezentrale Kommunikation.\n\nHol dir ein kostenloses Konto auf matrix.org, deinen eigenen Server auf https://ems.element.io oder nutze einen anderen Matrix-Server.\n\nWarum Element nutzen?\n\nLÜCKENLOSE KOMMUNIKATION: Baue Räume um deine Teams, deine Freunde, deine Community - ganz nach deinen Vorstellungen! Chatte, teile Dateien, füge Widgets hinzu und führe Sprach- sowie Videogespräche - alles kostenlos.\n\nMÄCHTIGE INTEGRATIONEN: Nutze Element mit den Werkzeugen die du kennst und liebst. Mit Element kannst du sogar mit Nutzern und Gruppen anderer Chat-Apps in Kontakt bleiben.\n\nPRIVAT UND SICHER: Halte deine Gespräche geheim. Modernste Verschlüsselung sogt dafür, dass private Kommunikation auch privat bleibt.\n\nOFFEN, NICHT VERSCHLOSSEN: Open Source - basierend auf [matrix]. Behalte die Hoheit über deine Daten indem du deinen eigenen Server betreibst - oder einen wählst, dem du vertraust.\n\nWO AUCH IMMER DU BIST: Halte den Kontakt - mit einem Nachrichtenverlauf der vollständig synchronisiert wird - auf all deinen Geräten oder Online unter https://app.element.io";
 "auth_login_single_sign_on" = "Anmelden mit Single Sign-On";
 "auth_autodiscover_invalid_response" = "Ungültige Antwort beim Entdecken des Heimservers";
 "room_message_unable_open_link_error_message" = "Konnte Link nicht öffnen.";
@@ -961,7 +958,7 @@
 "key_verification_tile_request_status_waiting" = "Warten…";
 "key_verification_tile_request_status_expired" = "Abgelaufen";
 "key_verification_tile_request_status_cancelled_by_me" = "Du hast abgebrochen";
-"key_verification_tile_request_status_cancelled" = "%s brach ab";
+"key_verification_tile_request_status_cancelled" = "%@ brach ab";
 "key_verification_tile_request_status_accepted" = "Du hast akzeptiert";
 "key_verification_tile_request_incoming_approval_accept" = "Akzeptieren";
 "key_verification_tile_request_incoming_approval_decline" = "Ablehnen";
@@ -1005,14 +1002,24 @@
 "device_verification_self_verify_wait_waiting" = "warte…";
 "skip" = "Überspringen";
 // MARK: Clients
-"client_desktop_name" = "Riot Desktop";
+"client_desktop_name" = "Element Desktop";
 "security_settings_crosssigning_info_not_bootstrapped" = "Cross-signing ist bisher nicht konfiguriert.";
-"client_web_name" = "Riot Web";
-"client_ios_name" = "Riot iOS";
-"client_android_name" = "Riot X für Android";
+"client_web_name" = "Element Web";
+"client_ios_name" = "Element iOS";
+"client_android_name" = "Element Android";
 "room_member_power_level_admin_in" = "Admin in %@";
 "room_member_power_level_moderator_in" = "Moderator in %@";
 "room_member_power_level_custom_in" = "Benutzerdefiniert (%@) in %@";
 "room_member_power_level_short_admin" = "Admin";
 "room_member_power_level_short_moderator" = "Mod";
 "room_member_power_level_short_custom" = "Benutzerdefiniert";
+"security_settings_secure_backup" = "SICHERES BACKUP";
+"security_settings_secure_backup_synchronise" = "Synchronisiere";
+"security_settings_secure_backup_delete" = "Lösche";
+"security_settings_crosssigning_info_ok" = "Cross-signing ist angeschaltet.";
+"security_settings_crosssigning_reset" = "Cross-signing zurücksetzen";
+"security_settings_coming_soon" = "Entschuldigung, diese Funktion ist noch nicht für Element iOS verfügbar. Bitte nutze einen anderen Matrix Client, um es einzurichten. Element iOS wird es benutzen.";
+"security_settings_user_password_description" = "Bestätigen Sie Ihre Identität durch Eingabe von deinem Kontopasswort";
+// AuthenticatedSessionViewControllerFactory
+"authenticated_session_flow_not_supported" = "Diese App unterstützt nicht diese Authentifizierungsmethode für deinen Home-Server.";
+"secure_key_backup_setup_intro_title" = "Sicheres Backup";

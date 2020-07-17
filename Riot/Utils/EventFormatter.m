@@ -25,6 +25,8 @@
 #import "MXDecryptionResult.h"
 #import "DecryptionFailureTracker.h"
 
+#import "EventFormatter+DTCoreTextFix.h"
+
 #pragma mark - Constants definitions
 
 NSString *const EventFormatterOnReRequestKeysLinkAction = @"EventFormatterOnReRequestKeysLinkAction";
@@ -44,6 +46,11 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 
 @implementation EventFormatter
 
++ (void)load
+{
+    [self fixDTCoreTextFont];
+}
+
 - (void)initDateTimeFormatters
 {
     [super initDateTimeFormatters];
@@ -54,6 +61,8 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 
 - (NSAttributedString *)attributedStringFromEvent:(MXEvent *)event withRoomState:(MXRoomState *)roomState error:(MXKEventFormatterError *)error
 {
+    BOOL isEventSenderMyUser = [event.sender isEqualToString:mxSession.myUserId];
+    
     // Build strings for widget events
     if (event.eventType == MXEventTypeCustom
         && ([event.type isEqualToString:kWidgetMatrixEventTypeString]
@@ -73,13 +82,28 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                     || [widget.type isEqualToString:kWidgetTypeJitsiV2])
                 {
                     // This is an alive jitsi widget
-                    displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_added", @"Vector", nil), senderDisplayName];
+                    if (isEventSenderMyUser)
+                    {
+                        displayText = NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_added_by_you", @"Vector", nil);
+                    }
+                    else
+                    {
+                        displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_added", @"Vector", nil), senderDisplayName];
+                    }
                 }
                 else
                 {
-                    displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_widget_added", @"Vector", nil),
-                                   widget.name ? widget.name : widget.type,
-                                   senderDisplayName];
+                    if (isEventSenderMyUser)
+                    {
+                        displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_widget_added_by_you", @"Vector", nil),
+                        widget.name ? widget.name : widget.type];
+                    }
+                    else
+                    {
+                        displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_widget_added", @"Vector", nil),
+                        widget.name ? widget.name : widget.type,
+                        senderDisplayName];
+                    }
                 }
             }
             else
@@ -102,13 +126,28 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                                 || [activeWidget.type isEqualToString:kWidgetTypeJitsiV2])
                             {
                                 // This was a jitsi widget
-                                displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_removed", @"Vector", nil), senderDisplayName];
+                                if (isEventSenderMyUser)
+                                {
+                                    displayText = NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_removed_by_you", @"Vector", nil);
+                                }
+                                else
+                                {
+                                    displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_removed", @"Vector", nil), senderDisplayName];
+                                }
                             }
                             else
                             {
-                                displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_widget_removed", @"Vector", nil),
-                                               activeWidget.name ? activeWidget.name : activeWidget.type,
-                                               senderDisplayName];
+                                if (isEventSenderMyUser)
+                                {
+                                    displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_widget_removed_by_you", @"Vector", nil),
+                                                   activeWidget.name ? activeWidget.name : activeWidget.type];
+                                }
+                                else
+                                {
+                                    displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_widget_removed", @"Vector", nil),
+                                                   activeWidget.name ? activeWidget.name : activeWidget.type,
+                                                   senderDisplayName];
+                                }
                             }
                             break;
                         }

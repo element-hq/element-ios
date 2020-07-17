@@ -135,7 +135,7 @@
 "contacts_address_book_matrix_users_toggle" = "只有 Matrix 用户";
 "contacts_address_book_no_contact" = "没有本地联系人";
 "contacts_address_book_permission_required" = "需要权限以便访问本地联系人";
-"contacts_address_book_permission_denied" = "你没有允许 Riot 访问本地联系人";
+"contacts_address_book_permission_denied" = "你没有允许 Element 访问本地联系人";
 "contacts_matrix_users_section" = "已知联系人";
 // Chat participants
 "room_participants_title" = "参加者";
@@ -282,11 +282,8 @@
 "settings_version" = "版本 %@";
 "settings_olm_version" = "Olm 版本 %@";
 "settings_copyright" = "版权";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "条款和条件";
 "settings_privacy_policy" = "隐私政策";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "第三方通知";
 "settings_send_crash_report" = "发送崩溃和使用数据";
 "settings_clear_cache" = "清空缓存";
@@ -298,7 +295,7 @@
 "settings_password_updated" = "您的密码已经更新";
 "settings_crypto_device_name" = "会话名称： ";
 "settings_crypto_device_id" = "\n会话ID： ";
-"settings_crypto_device_key" = "\n会话密钥：\n";
+"settings_crypto_device_key" = "\n会话密钥:\n";
 "settings_crypto_export" = "导出密钥";
 "settings_crypto_blacklist_unverified_devices" = "只加密到已验证的会话";
 // Room Details
@@ -392,7 +389,7 @@
 // Crash report
 "google_analytics_use_prompt" = "您打算通过自动报告匿名的崩溃报告和使用数据来帮助提升 %@ 吗？";
 // Crypto
-"e2e_enabling_on_app_update" = "Riot 目前支持端对端加密，但是您需要重新登录以启用它。\n\n您可以现在重新登录，也可以之后再从应用程序设置中选择开启。";
+"e2e_enabling_on_app_update" = "Element 目前支持端对端加密，但是您需要重新登录以启用它。\n\n您可以现在重新登录，也可以之后再从应用程序设置中选择开启。";
 "e2e_need_log_in_again" = "您需要登录回来以便为此会话生成端对端加密密钥并提交公钥到您的主服务器。\n这只需要做一次；很抱歉造成打扰。";
 // Bug report
 "bug_report_title" = "Bug 报告";
@@ -520,7 +517,7 @@
 "deactivate_account_password_alert_title" = "注销账户";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "请求已发送";
-"settings_callkit_info" = "在您的锁屏界面接听 Riot 来电。在系统通话记录中显示 Riot 通话记录。若您已启用 iCloud，通话记录将会与 Apple 共享。";
+"settings_callkit_info" = "在您的锁屏界面接听 Element 来电。在系统通话记录中显示 Element 通话记录。若您已启用 iCloud，通话记录将会与 Apple 共享。";
 "room_replacement_link" = "对话自此继续。";
 "room_predecessor_information" = "这个聊天室是另一个对话的延续。";
 "room_predecessor_link" = "点击此处查看更早的消息。";
@@ -530,7 +527,7 @@
 "room_resource_usage_limit_reached_message_contact_3" = " 以提高限制。";
 // String for App Store
 "store_short_description" = "安全、去中心化的聊天及 VoIP 应用";
-"store_full_description" = "沟通，由你掌控。\n\n一个聊天应用，由你掌控且完全灵活。Riot 让你以你的方式沟通。为 [matrix] - 开放、去中心化的沟通而打造。\n\n获取一个免费的 matrix.org 账号，在 https://modular.im 获取一个你自己的服务器，或者使用其他 Matrix 服务器。\n\n为什么选择 Riot.im?\n\n完整的沟通：围绕你的团队、你的朋友、你的社区创建聊天室 - 随你喜欢！聊天、分享文件、添加插件和语音视频通话 - 全部免费。\n\n强大的集成度：通过你了解和喜欢的工具来使用 Riot.im 。你甚至可以在 Riot.im 上与其他聊天应用的用户和群组聊天。\n\n隐私和安全：保守你对话的秘密。最先进的端到端加密技术可确保私密通信保持私密性。\n\n开放，而非封闭：开源，基于 Matrix。通过自己开设的服务器来拥有你自己的数据，或者选择你信赖的服务器。\n\n随处可及：在你所有的设备和线上页面 https://riot.im 上通过完整的历史信息同步让你随处可及。";
+"store_full_description" = "沟通，由你掌控。\n\n一个聊天应用，由你掌控且完全灵活。Element 让你以你的方式沟通。为 [matrix] - 开放、去中心化的沟通而打造。\n\n获取一个免费的 matrix.org 账号，在 https://ems.element.io 获取一个你自己的服务器，或者使用其他 Matrix 服务器。\n\n为什么选择 Element?\n\n完整的沟通：围绕你的团队、你的朋友、你的社区创建聊天室 - 随你喜欢！聊天、分享文件、添加插件和语音视频通话 - 全部免费。\n\n强大的集成度：通过你了解和喜欢的工具来使用 Element 。你甚至可以在 Element 上与其他聊天应用的用户和群组聊天。\n\n隐私和安全：保守你对话的秘密。最先进的端到端加密技术可确保私密通信保持私密性。\n\n开放，而非封闭：开源，基于 Matrix。通过自己开设的服务器来拥有你自己的数据，或者选择你信赖的服务器。\n\n随处可及：在你所有的设备和线上页面 https://app.element.io 上通过完整的历史信息同步让你随处可及。";
 "auth_accept_policies" = "请查看并接受此主页服务器的服务条款：";
 "room_replacement_information" = "这个聊天室已被替换，不再有效。";
 "settings_flair" = "在允许的地方显示个性徽章";
@@ -591,7 +588,7 @@
 "deactivate_account_forget_messages_information_part1" = "当我的账号注销时请忘记我所有的已发送消息（";
 "deactivate_account_forget_messages_information_part3" = ": 这会导致将来加入的用户看到的是一段不完整的对话）";
 "deactivate_account_password_alert_message" = "要继续，请输入您的密码";
-"rerequest_keys_alert_message" = "请在另一台可以解密消息的设备上启动 Riot ，以便将密钥发送到此会话。";
+"rerequest_keys_alert_message" = "请在另一台可以解密消息的设备上启动 Element ，以便将密钥发送到此会话。";
 "key_backup_setup_title" = "密钥备份";
 "key_backup_setup_skip_alert_title" = "您确定吗？";
 "key_backup_setup_skip_alert_message" = "如果您退出或丢失设备，可能会丢失安全消息。";
@@ -841,7 +838,7 @@
 "key_backup_recover_connent_banner_subtitle" = "关联此会话到“密钥备份”";
 // MARK: - Device Verification
 "device_verification_title" = "验证会话";
-"key_verification_user_title" = "验证用户";
+"key_verification_user_title" = "验证它们";
 "device_verification_security_advice" = "为了最大化安全性，我们建议你们当面或者使用其他可信任的通讯手段来进行此操作";
 "device_verification_cancelled" = "另一方取消了验证。";
 "device_verification_cancelled_by_me" = "此验证被取消。原因：%@";
@@ -976,7 +973,7 @@
 "user_verification_sessions_list_session_trusted" = "已信任";
 "user_verification_sessions_list_session_untrusted" = "不信任";
 "user_verification_session_details_trusted_title" = "已信任";
-"user_verification_session_details_untrusted_title" = "警告";
+"user_verification_session_details_untrusted_title" = "不受信任";
 "user_verification_session_details_information_trusted_current_user" = "此会话已被信任用于安全消息，因为你已经验证过它：";
 "user_verification_session_details_information_trusted_other_user_part1" = "此会话已被信任用于安全消息，因为： ";
 "user_verification_session_details_information_trusted_other_user_part2" = " 已验证过它：";
@@ -984,13 +981,13 @@
 "user_verification_session_details_information_untrusted_other_user" = " 用新会话登录：";
 "user_verification_session_details_additional_information_untrusted_other_user" = "在此用户信任这个会话之前，发往和收到它的消息会有警告标签。或者，你可以手动验证它。";
 "user_verification_session_details_additional_information_untrusted_current_user" = "如果你没有登录到这个会话，你的账号可能在被盗用。";
-"user_verification_session_details_verify_action_current_user" = "验证";
+"user_verification_session_details_verify_action_current_user" = "交互式验证";
 "user_verification_session_details_verify_action_other_user" = "手动验证";
 // MARK: Clients
-"client_desktop_name" = "Riot 桌面版";
-"client_web_name" = "Riot Web";
-"client_ios_name" = "Riot iOS";
-"client_android_name" = "Riot X for Android";
+"client_desktop_name" = "Element 桌面版";
+"client_web_name" = "Element Web";
+"client_ios_name" = "Element iOS";
+"client_android_name" = "Element Android";
 "room_participants_action_security_status_complete_security" = "完整安全性";
 "room_participants_action_security_status_loading" = "加载中……";
 "room_member_power_level_admin_in" = "在 %@ 的管理员";
@@ -1000,3 +997,100 @@
 "security_settings_crosssigning" = "交叉签名";
 "security_settings_crosssigning_info_not_bootstrapped" = "交叉签名还没有被设置。";
 "security_settings_crosssigning_info_exists" = "您的帐户有一个交叉签名身份，但是还没有被这个会话信任。完全安全的会话。";
+"skip" = "跳过";
+"room_member_power_level_custom_in" = "自定义(%@) 到%@";
+"room_member_power_level_short_custom" = "自定义";
+"security_settings_crosssigning_info_trusted" = "已启用交叉签名。您可以基于交叉签名信任其他用户和其他会话，但不能从此会话交叉签名，因为它没有交叉签名私钥。此会话完全安全。";
+"security_settings_crosssigning_info_ok" = "交叉签名还没有被设置。";
+"security_settings_crosssigning_bootstrap" = "引导交叉签名";
+"security_settings_crosssigning_reset" = "重置交叉签名";
+"security_settings_crosssigning_complete_security" = "完整安全性";
+"security_settings_cryptography" = "加密";
+"security_settings_complete_security_alert_title" = "绝对安全";
+"security_settings_complete_security_alert_message" = "您应该先完成当前会话的安全防护。";
+"security_settings_coming_soon" = "抱歉的。Element iOS上尚未提供此操作。请使用其他Matrix客户端进行设置。Element iOS将使用它。";
+// Recover from private key
+"key_backup_recover_from_private_key_info" = "备份恢复中…";
+// MARK: - Device Verification
+"key_verification_other_session_title" = "验证会话";
+"key_verification_new_session_title" = "验证你的新会话";
+"key_verification_this_session_title" = "验证此会话";
+"device_verification_security_advice_emoji" = "比较独特的emoji，确保它们以相同的顺序出现。";
+"device_verification_security_advice_number" = "比较数字，确保它们以相同的顺序出现。";
+// New login
+"device_verification_self_verify_alert_title" = "新登录。这是你吗？";
+"device_verification_self_verify_alert_message" = "验证访问您的帐户的新登录名：%@";
+"device_verification_self_verify_alert_validate_action" = "验证";
+"device_verification_self_verify_start_verify_action" = "开始验证";
+"device_verification_self_verify_start_information" = "使用此会话验证您的新会话，并授予其访问加密信息的权限。";
+"device_verification_self_verify_start_waiting" = "等待中……";
+"key_verification_self_verify_current_session_alert_title" = "验证此会话";
+"key_verification_self_verify_current_session_alert_message" = "其他用户可能不信任它。";
+"key_verification_self_verify_current_session_alert_validate_action" = "验证";
+"key_verification_self_verify_unverified_sessions_alert_title" = "查看您的登陆位置";
+"key_verification_self_verify_unverified_sessions_alert_message" = "验证您的所有会话以确保您的帐户和消息的安全。";
+"key_verification_self_verify_unverified_sessions_alert_validate_action" = "检查";
+"device_verification_self_verify_wait_title" = "绝对安全";
+"device_verification_self_verify_wait_new_sign_in_title" = "验证此登录名";
+"device_verification_self_verify_wait_information" = "从您的其他会话之一验证此会话，并授予其对加密信息的访问权限。\n\n在您的其他设备上使用最新的Element：";
+"device_verification_self_verify_wait_additional_information" = "或另一个支持交叉签名的Matrix客户端";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "使用恢复密钥";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "使用恢复密码或密钥";
+"device_verification_self_verify_wait_recover_secrets_additional_information" = "如果您无法访问现有会话";
+"key_verification_verify_sas_title_emoji" = "比较emoji";
+"key_verification_verify_sas_title_number" = "比较数字";
+"key_verification_verify_sas_cancel_action" = "它们不相配";
+"key_verification_verify_sas_validate_action" = "它们相配";
+"key_verification_verify_sas_additional_information" = "为了最终的安全，请使用另一种可信的通信方式或亲自执行此操作。";
+"key_verification_manually_verify_device_title" = "通过文本手动验证";
+"key_verification_manually_verify_device_instruction" = "通过将以下设置与其他会话中的用户设置进行比较来确认：";
+"key_verification_manually_verify_device_name_title" = "会话名称";
+"key_verification_manually_verify_device_id_title" = "会话 ID";
+"key_verification_manually_verify_device_key_title" = "会话密钥";
+"key_verification_manually_verify_device_additional_information" = "如果它们不匹配，您的通信安全可能会受到威胁。";
+"key_verification_manually_verify_device_validate_action" = "验证";
+"key_verification_verified_new_session_title" = "新会话已验证！";
+"key_verification_verified_other_session_information" = "您现在可以阅读其他会话上的安全信息，其他用户将知道他们可以信任它。";
+"key_verification_verified_new_session_information" = "您现在可以在新设备上阅读安全信息，其他用户将知道他们可以信任它。";
+"key_verification_verified_this_session_information" = "您现在可以在此设备上阅读安全信息，其他用户将知道他们可以信任它。";
+"key_verification_verified_user_information" = "此用户的信息是端到端加密的，第三方无法读取。";
+"key_verification_bootstrap_not_setup_title" = "错误";
+"key_verification_bootstrap_not_setup_message" = "您需要先启动交叉签名。";
+"key_verification_verify_qr_code_title" = "通过扫描进行验证";
+"key_verification_verify_qr_code_information" = "扫描代码以安全地相互验证。";
+"key_verification_verify_qr_code_information_other_device" = "扫描以下代码以验证：";
+"key_verification_verify_qr_code_emoji_information" = "通过比较唯一的表情符号进行验证。";
+"key_verification_verify_qr_code_scan_code_action" = "扫描他们的代码";
+"key_verification_verify_qr_code_cannot_scan_action" = "不能扫描吗？";
+"key_verification_verify_qr_code_start_emoji_action" = "通过表情符号验证";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "其他用户是否成功扫描了二维码？";
+"key_verification_verify_qr_code_scan_other_code_success_title" = "代码已验证！";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "二维码已成功验证。";
+// Scanning
+"key_verification_scan_confirmation_scanning_title" = "快到了！\n正在等待确认…";
+"key_verification_scan_confirmation_scanning_user_waiting_other" = "等待中%@…";
+"key_verification_scan_confirmation_scanning_device_waiting_other" = "正在等待其他设备…";
+// Scanned
+"key_verification_scan_confirmation_scanned_title" = "快到了！";
+"key_verification_scan_confirmation_scanned_user_information" = "是否%@显示相同的盾牌？";
+"key_verification_scan_confirmation_scanned_device_information" = "另一台设备是否显示相同的盾牌？";
+"user_verification_session_details_verify_action_current_user_manually" = "通过文本手动验证";
+"secrets_recovery_with_passphrase_title" = "恢复密码";
+"secrets_recovery_with_passphrase_information_default" = "通过输入恢复密码，访问您的安全信息历史记录和交叉签名身份，以验证其他会话。";
+"secrets_recovery_with_passphrase_information_verify_device" = "使用您的恢复密码验证此设备。";
+"secrets_recovery_with_passphrase_passphrase_title" = "输入";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "输入恢复密码";
+"secrets_recovery_with_passphrase_recover_action" = "使用密码短语";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "忘记了您的恢复密码？您可以 ";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "使用您的恢复密钥";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
+"secrets_recovery_with_passphrase_invalid_passphrase_title" = "无法访问机密存储";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "请验证您输入的恢复密码是否正确。";
+"secrets_recovery_with_key_title" = "恢复密钥";
+"secrets_recovery_with_key_information_default" = "通过输入恢复密钥访问安全信息历史记录和交叉签名身份，以验证其他会话。";
+"secrets_recovery_with_key_information_verify_device" = "使用您的恢复密码验证此设备。";
+"secrets_recovery_with_key_recovery_key_title" = "输入";
+"secrets_recovery_with_key_recovery_key_placeholder" = "输入恢复密钥";
+"secrets_recovery_with_key_recover_action" = "使用密钥";
+"secrets_recovery_with_key_invalid_recovery_key_title" = "无法访问机密存储";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "请验证您输入的恢复密钥是否正确。";

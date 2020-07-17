@@ -254,11 +254,8 @@
 "settings_labs_e2e_encryption" = "Fshehtëzim Skaj-Më-Skaj";
 "settings_version" = "Version %@";
 "settings_copyright" = "Të drejta kopjimi";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Terma & Kushte";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Rregulla Privatësie";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Njoftime Palësh të Treta";
 "settings_clear_cache" = "Pastroje fshehtinën";
 "settings_change_password" = "Ndryshoni fjalëkalimin";
@@ -475,7 +472,7 @@
 "room_creation_make_public_prompt_msg" = "Jeni i sigurt se doni ta bëni publike këtë fjalosje? Në një të tillë, mesazhet tuaj mund t’i lexojë cilido dhe mund të hyjë në bisedë.";
 "room_creation_wait_for_creation" = "Po krijohet tashmë një dhomë. Ju lutemi, prisni.";
 "contacts_address_book_permission_required" = "Lypset leje për hyrje në kontaktet vendore";
-"contacts_address_book_permission_denied" = "S’e lejuat Riot-i të hyjë në kontaktet tuaja vendore";
+"contacts_address_book_permission_denied" = "S’e lejuat Element-i të hyjë në kontaktet tuaja vendore";
 "room_participants_remove_third_party_invite_msg" = "Heqja e ftesave nga palë të treta nuk mbulohet ende, derisa të kihet API";
 "room_participants_invite_malformed_id" = "ID e keqformuar. Duhet të jetë një adresë email ose ID Matrix, si '@localpart:domain'";
 "room_participants_action_ban" = "Dëboje nga kjo dhomë";
@@ -499,7 +496,7 @@
 "settings_global_settings_info" = "Rregullimet globale për njoftime i gjeni te klienti juaj %@ web";
 "settings_on_denied_notification" = "Njoftimet për %@ s’pranohen, ju lutemi, lejojini që nga rregullimet e pajisjes tuaj";
 "settings_enable_callkit" = "Thirrje të integruara";
-"settings_callkit_info" = "Merrini thirrjet ardhëse edhe me ekran të kyçur. Shihni thirrjet tuaja nën Riot te historiku i thirrjeve të sistemit. Nëse iCloud është i aktivizuar, ky historik thirrjesh do t’i jepet kompanisë Apple.";
+"settings_callkit_info" = "Merrini thirrjet ardhëse edhe me ekran të kyçur. Shihni thirrjet tuaja nën Element te historiku i thirrjeve të sistemit. Nëse iCloud është i aktivizuar, ky historik thirrjesh do t’i jepet kompanisë Apple.";
 "settings_ui_theme_picker_message" = "\"Auto\" përdor rregullimet \"Përmbysi Ngjyrat\" të pajisjes tuaj";
 "settings_contacts_discover_matrix_users" = "Përdorni email-e dhe numra telefoni për të gjetur përdorues";
 "settings_labs_e2e_encryption_prompt_message" = "Që të përfundohet rregullimi i fshehtëzimit duhet të ribëni hyrjen në llogari.";
@@ -525,7 +522,7 @@
 // Crash report
 "google_analytics_use_prompt" = "Do të donit të ndihmoni në përmirësimin e %@-it duke parashtruar automatikisht dhe në mënyrë anonime raporte vithisjesh dhe të dhëna përdorimi?";
 // Crypto
-"e2e_enabling_on_app_update" = "Riot tani mbulon fshehtëzim skaj-më-skaj, por lypset të ribëni hyrjen që ta aktivizoni.\n\nMund ta bëni tani ose më vonë, që prej rregullimeve të aplikacionit.";
+"e2e_enabling_on_app_update" = "Element tani mbulon fshehtëzim skaj-më-skaj, por lypset të ribëni hyrjen që ta aktivizoni.\n\nMund ta bëni tani ose më vonë, që prej rregullimeve të aplikacionit.";
 "bug_report_description" = "Ju lutemi, përshkruajeni të metën. Ç’po bënit? Ç’prisnit të ndodhte? Ç’ndodhi në fakt?";
 "bug_crash_report_description" = "Ju lutemi, përshkruani ç’po bënit para vithisjes:";
 "bug_report_logs_description" = "Që të mund të diagnostikohen probleme, regjistra prej këtij klienti do të dërgohen tok me këtë njoftim të metash. Nëse do të parapëlqenit të dërgohej vetëm teksti më sipër, ju lutemi, hiqjani shenjën kutizës:";
@@ -546,7 +543,7 @@
 "deactivate_account_informations_part5" = "Nëse do të donit që të harrohen mesazhet tuaj, ju lutemi, i vini shenjë kutizës më poshtë\n\nDukshmëria e mesazheve në Matrix është e ngjashme me atë në email. Harrimi i mesazheve nga ana jonë do të thotë që mesazhet që keni dërguar nuk do të ndahen me çfarëdo përdoruesi të ri apo të paregjistruar, por përdoruesit e regjistruar, që kanë tashmë hyrje në këto mesazhe, do të kenë prapëseprapë hyrje te kopja e tyre.";
 "deactivate_account_forget_messages_information_part1" = "Të lutem, harro krejt mesazhet që kamë dërguar, kur të çaktivizohet llogaria ime (";
 "deactivate_account_forget_messages_information_part3" = ": kjo do të bëjë që përdorues të ardhshëm të shohin një pamje jo të plotë të bisedave)";
-"rerequest_keys_alert_message" = "Ju lutemi, niseni Riot-in në një tjetër pajisje që mund të shfshehtëzoje mesazhin, që kështu të mund të dërgojë kyçet te ky sesion.";
+"rerequest_keys_alert_message" = "Ju lutemi, niseni Element-in në një tjetër pajisje që mund të shfshehtëzoje mesazhin, që kështu të mund të dërgojë kyçet te ky sesion.";
 "room_event_action_redact" = "Hiqe";
 "e2e_need_log_in_again" = "Që të prodhohen kyçe fshehtëzimi skaj-më-skaj për këtë sesion, lypset të ribëni hyrjen dhe të parashtroni kyçin publik te shërbyesi juaj Home.\nKjo duhet vetëm një herë; na ndjeni për belanë.";
 "room_action_send_sticker" = "Dërgoni ngjitës";
@@ -667,7 +664,7 @@
 "key_backup_setup_intro_manual_export_action" = "Eksportoni kyçe dorazi";
 // String for App Store
 "store_short_description" = "Fjalosje /VoIP e siguruar, e decentralizuar";
-"store_full_description" = "Komunikoni sipas rrugës tuaj.\n\nNjë aplikacion fjalosjesh, nën kontrollin tuaj dhe krejtësisht i zhdërvjellët. Riot-i ju lejon të komunikoni si doni. Krijuar për [matrix] - standardi për komunikim të hapur, të decentralizuar.\n\nMerrni një llogari matrix.org falas, merrni shërbyesin tuaj te https://modular.im, ose përdorni një tjetër shërbyes Matrix.\n\nPse të zgjidhet Riot.im?\n\nKOMUNIKIM I PLOTË: Krijoni dhoma rreth ekipeve tuaja, shokëve tuaj, bashkësisë tuaj - rreth kujtdo që doni! Bisedoni, shkëmbeni kartela, shtoni widget-e dhe bëni thirrje audio dhe video - gjithçka falas.\n\nINTEGRIME TË FUQISHME: Përdoreni Riot.im me mjetet që njihni dhe doni. Me Riot.im mundeni madje të bisedoni me përdorues dhe grupe nën aplikacione të tjera fjalosjesh.\n\nPRIVAT DHE I SIGURUAR: Mbajini bisedat tuaja të fshehta. Fshehtëzimi skaj-më-skaj i fjalës së fundit garanton që komunikimi privat mbetet privat.\n\nI HAPUR, JO I MBYLLUR: Me burim të hapur dhe i ngritur mbi Matrix. Jini zot i të dhënave tuaja, duke strehuar shërbyesin tuaj, ose duke përzgjedhur një të cilit i besoni.\n\nKUDO QOFSHI: Mbani lidhjet, kudo qofshi, me historik plotësisht të njëkohësuar mesazhesh në krejt pajisjet tuaja dhe në internet, te https://riot.im.";
+"store_full_description" = "Komunikoni sipas rrugës tuaj.\n\nNjë aplikacion fjalosjesh, nën kontrollin tuaj dhe krejtësisht i zhdërvjellët. Element-i ju lejon të komunikoni si doni. Krijuar për [matrix] - standardi për komunikim të hapur, të decentralizuar.\n\nMerrni një llogari matrix.org falas, merrni shërbyesin tuaj te https://ems.element.io, ose përdorni një tjetër shërbyes Matrix.\n\nPse të zgjidhet Element?\n\nKOMUNIKIM I PLOTË: Krijoni dhoma rreth ekipeve tuaja, shokëve tuaj, bashkësisë tuaj - rreth kujtdo që doni! Bisedoni, shkëmbeni kartela, shtoni widget-e dhe bëni thirrje audio dhe video - gjithçka falas.\n\nINTEGRIME TË FUQISHME: Përdoreni Element me mjetet që njihni dhe doni. Me Element mundeni madje të bisedoni me përdorues dhe grupe nën aplikacione të tjera fjalosjesh.\n\nPRIVAT DHE I SIGURUAR: Mbajini bisedat tuaja të fshehta. Fshehtëzimi skaj-më-skaj i fjalës së fundit garanton që komunikimi privat mbetet privat.\n\nI HAPUR, JO I MBYLLUR: Me burim të hapur dhe i ngritur mbi Matrix. Jini zot i të dhënave tuaja, duke strehuar shërbyesin tuaj, ose duke përzgjedhur një të cilit i besoni.\n\nKUDO QOFSHI: Mbani lidhjet, kudo qofshi, me historik plotësisht të njëkohësuar mesazhesh në krejt pajisjet tuaja dhe në internet, te https://app.element.io.";
 "auth_login_single_sign_on" = "Hyni përmes një hyrjeje njëshe";
 "room_message_unable_open_link_error_message" = "S’arrihet të hapet lidhja.";
 "auth_autodiscover_invalid_response" = "Përgjigje e pavlefshme pikasjeje shërbyesi Home";
@@ -1023,7 +1020,7 @@
 "device_verification_self_verify_start_information" = "Përdoreni këtë sesion që të verifikoni atë të riun tuaj, duke i akorduar hyrje te mesazhe të fshehtëzuar.";
 "device_verification_self_verify_start_waiting" = "Po pritet…";
 "device_verification_self_verify_wait_title" = "Siguri e plotë";
-"device_verification_self_verify_wait_information" = "Verifikoni këtë sesion prej një nga sesionet tuaj të tjera, duke i akorduar hyrje te mesazhe të fshehtëzuar.\n\nPërdorni Riot-in më të ri në pajisjet tuaja të tjera:";
+"device_verification_self_verify_wait_information" = "Verifikoni këtë sesion prej një nga sesionet tuaj të tjera, duke i akorduar hyrje te mesazhe të fshehtëzuar.\n\nPërdorni Element-in më të ri në pajisjet tuaja të tjera:";
 "device_verification_self_verify_wait_waiting" = "Po pritet…";
 "room_member_power_level_admin_in" = "Përgjegjës te %@";
 "room_member_power_level_moderator_in" = "Moderator te %@";
@@ -1034,10 +1031,10 @@
 // Recover from private key
 "key_backup_recover_from_private_key_info" = "Po rikthehet kopjeruajtje…";
 // MARK: Clients
-"client_desktop_name" = "Riot Desktop";
-"client_web_name" = "Riot Web";
-"client_ios_name" = "Riot iOS";
-"client_android_name" = "Riot X për Android";
+"client_desktop_name" = "Element Desktop";
+"client_web_name" = "Element Web";
+"client_ios_name" = "Element iOS";
+"client_android_name" = "Element Android";
 "room_participants_action_security_status_complete_security" = "Siguri e plotë";
 "security_settings_crosssigning_info_not_bootstrapped" = "<em>Cross-signing</em> s’është ujdisur ende.";
 "security_settings_crosssigning_info_exists" = "Llogaria juaj ka një identitet <em>cross-signing</em>, por s’është ende i besuar nga ky sesion. Plotësoni sigurinë e këtij sesioni.";
@@ -1046,7 +1043,7 @@
 "security_settings_crosssigning_complete_security" = "Siguri e plotë";
 "security_settings_complete_security_alert_title" = "Siguri e plotë";
 "security_settings_complete_security_alert_message" = "Së pari duhet të plotësoni sigurinë në sesionin tuaj të tanishëm.";
-"security_settings_coming_soon" = "Na ndjeni. Ky veprim s’është ende pjesë e Riot-iOS-it. Ju lutemi, për ta pasur, përdorni një klient tjetër Matrix. Riot-iOS-i do ta përdorë.";
+"security_settings_coming_soon" = "Na ndjeni. Ky veprim s’është ende pjesë e Element iOS-it. Ju lutemi, për ta pasur, përdorni një klient tjetër Matrix. Element iOS-i do ta përdorë.";
 // MARK: - Device Verification
 "key_verification_other_session_title" = "Verifiko sesion";
 "key_verification_new_session_title" = "Verifikoni sesionin tuaj të ri";
@@ -1091,3 +1088,68 @@
 "key_verification_manually_verify_device_additional_information" = "Nëse s’përputhen, siguria e komunikimeve tuaja mund të jetë komprometuar.";
 "key_verification_manually_verify_device_validate_action" = "Verifikoje";
 "user_verification_session_details_verify_action_current_user_manually" = "Verifikojeni Dorazi përmes Teksti";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Përdor Kyç Rimarrjesh";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Përdor Frazëkalim ose Kyç Rimarrjesh";
+"device_verification_self_verify_wait_recover_secrets_additional_information" = "Nëse s’hyni dot në një sesion ekzistues";
+"secrets_recovery_with_passphrase_title" = "Frazëkalim Rimarrjesh";
+"secrets_recovery_with_passphrase_information_default" = "Hyni në historikun tuaj të mesazheve të sigurt dhe përdorni identitetin tuaj “cross-signing” për të verifikuar sesione të tjerë duke dhënë frazëkalimin tuaj të rimarrjeve.";
+"secrets_recovery_with_passphrase_information_verify_device" = "Që të verifikoni këtë pajisje, përdorni Frazëkalimin tuaj të Rimarrjeve.";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Jepni Frazëkalim Rimarrjesh";
+"secrets_recovery_with_passphrase_recover_action" = "Përdor Frazëkalim";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "S’e din frazëkalimin tuaj të rimarrjeve? Mundeni të ";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "përdorni kyçin tuaj të rimarrjeve";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
+"secrets_recovery_with_passphrase_invalid_passphrase_title" = "S’arrihet të hyhet në depo të fshehtë";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Ju lutemi, verifikoni që keni dhënë frazëkalimin e saktë të rimarrjeve.";
+"secrets_recovery_with_key_title" = "Kyç Rimarrjesh";
+"secrets_recovery_with_key_information_default" = "Hyni te historiku i mesazheve tuaj të sigurt dhe te identiteti juaj për cross-signing për verifikim sesionesh të tjerë përmes dhënies së kyçit të rimarrjeve.";
+"secrets_recovery_with_key_information_verify_device" = "Që të verifikoni këtë pajisje, përdorni Kyç Rimarrjesh.";
+"secrets_recovery_with_key_recovery_key_placeholder" = "Jepni Kyç Rimarrjesh";
+"secrets_recovery_with_key_recover_action" = "Përdor Kyç";
+"secrets_recovery_with_key_invalid_recovery_key_title" = "S’arrihet të hyhet në depozitë të fshehtë";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "Ju lutemi, verifikoni se dhatë kyçin e saktë të rimarrjeve.";
+// AuthenticatedSessionViewControllerFactory
+"authenticated_session_flow_not_supported" = "Ky aplikacion nuk mbulon mekanizimin e mirëfilltësimeve në shërbyesin tuaj Home.";
+"secure_key_backup_setup_intro_title" = "Kopjeruajtje e Sigurt";
+"secure_key_backup_setup_intro_info" = "Mbrohuni kundër humbjes së hyrjes në mesazhe & të dhëna të fshehtëzuara, duke kopjeruajtur kyçe fshehtëzimi në shërbyesin tuaj.";
+"secure_key_backup_setup_intro_use_security_key_title" = "Përdorni një Kyç Sigurie";
+"secure_key_backup_setup_intro_use_security_key_info" = "Prodhoni një kyç sigurie  për ta ruajtur diku të parrezik, bie fjala, në një përgjegjës fjalëkalimesh apo në një kasafortë.";
+"secure_key_backup_setup_intro_use_security_passphrase_title" = "Përdorni një Frazëkalim Sigurie";
+"secure_key_backup_setup_intro_use_security_passphrase_info" = "Jepni një frazë të fshehtë që e dini vetëm ju, dhe prodhoni një kyç për kopjeruajtje.";
+"secure_key_backup_setup_cancel_alert_title" = "Jeni i sigurt?";
+"secure_key_backup_setup_cancel_alert_message" = "Nëse e anuloni tani, mund të humbni mesazhe & të dhëna të fshehtëzuara, nëse humbni hyrje te kredenciale tuajt hyrjesh.\n\nMundeni edhe të ujdisni Kopjeruajtje të Sigurt & të administroni kyçet tuaj që nga Rregullimet.";
+"secure_backup_setup_banner_title" = "Kopjeruajtje e Sigurt";
+"secure_backup_setup_banner_subtitle" = "Mbrohuni kundër humbjes së hyrjes te mesazhe & të dhëna të fshehtëzuara";
+"secrets_setup_recovery_key_title" = "Ruani Kyçin tuaj të Sigurisë";
+"secrets_setup_recovery_key_information" = "Mbajeni Kyçin tuaj të Rimarrjeve diku të parrezik. Mund të përdoret për të shkyçur mesazhet & të dhënat tuaja të fshehtëzuara.";
+"secrets_setup_recovery_key_loading" = "Po ngarkohet…";
+"secrets_setup_recovery_key_export_action" = "Ruaje";
+"secrets_setup_recovery_key_done_action" = "U bë";
+"secrets_setup_recovery_key_storage_alert_title" = "Ruajeni të parrezik";
+"secrets_setup_recovery_key_storage_alert_message" = "✓ Shtypeni dhe vendoseni diku të parrezik\n✓ Ruajeni në një diskth USB ose në një pajisje kopjeruajtjesh\n✓ Kopjojeni te depoja juaj personale në re";
+"secrets_setup_recovery_passphrase_title" = "Caktoni një Frazë Sigurie";
+"secrets_setup_recovery_passphrase_information" = "Jepni një frazë sigurie që e dini vetëm ju, për ta përdorur për sigurim të fshehtash në shërbyesin tuaj.";
+"secrets_setup_recovery_passphrase_additional_information" = "Mos përdorni fjalëkalimin e llogarisë tuaj.";
+"secrets_setup_recovery_passphrase_validate_action" = "U bë";
+"secrets_setup_recovery_passphrase_confirm_information" = "Që ta ripohoni, rijepeni Frazën e Sigurisë.";
+"secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Ripohojeni";
+"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Ripohoni frazëkalimin";
+"security_settings_secure_backup" = "KOPJERUAJTJE E SIGURT";
+"security_settings_secure_backup_description" = "Mbrohuni kundër humbjes së hyrjes në mesazhe & të dhëna të fshehtëzuara, duke kopjeruajtur kyçe fshehtëzimi në shërbyesin tuaj.";
+"security_settings_secure_backup_setup" = "Ujdiseni";
+"security_settings_secure_backup_synchronise" = "Njëkohësoje";
+"security_settings_secure_backup_delete" = "Fshije";
+"security_settings_user_password_description" = "Ripohoni identitetin tuaj duke dhënë fjalëkalimin e llogarisë tuaj";
+"secure_key_backup_setup_existing_backup_error_title" = "Një kopjeruajtje për mesazhe që ekzistojnë tashmë";
+"secure_key_backup_setup_existing_backup_error_info" = "Shkyçeni, që ta ripërdorni te kopjeruajtja e sigurt ose për ta fshirë që të krijoni një kopjeruajtje të re mesazhesh te kopjeruajtja e sigurt.";
+"secure_key_backup_setup_existing_backup_error_unlock_it" = "Shkyçe";
+"secure_key_backup_setup_existing_backup_error_delete_it" = "Fshije";
+"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Fillo të përdorësh Kojperuajtje të Sigurt";
+"security_settings_crypto_sessions_description_2" = "Nëse nuk njihni një palë kredenciale, ndryshoni fjalëkalimin tuaj dhe riujdisni Kopjeruajtjen e Sigurt.";
+"cross_signing_setup_banner_title" = "Ujdisni fshehtëzim";
+"cross_signing_setup_banner_subtitle" = "Verifikoni më me lehtësi pajisje të tjera";
+// Events formatter with you
+"event_formatter_widget_added_by_you" = "Shtuat widget-in: %@";
+"event_formatter_widget_removed_by_you" = "Hoqët widget-in: %@";
+"event_formatter_jitsi_widget_added_by_you" = "Shtuat konferencë VoIP";
+"event_formatter_jitsi_widget_removed_by_you" = "Hoqët konferencë VoIP";

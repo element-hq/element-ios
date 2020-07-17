@@ -132,16 +132,16 @@
     
     [self.leftButton.layer setCornerRadius:5];
     self.leftButton.clipsToBounds = YES;
-    self.leftButton.backgroundColor = ThemeService.shared.riotColorBlue;
+    self.leftButton.backgroundColor = ThemeService.shared.theme.tintColor;
     
     [self.rightButton.layer setCornerRadius:5];
     self.rightButton.clipsToBounds = YES;
-    self.rightButton.backgroundColor = ThemeService.shared.riotColorBlue;
+    self.rightButton.backgroundColor = ThemeService.shared.theme.tintColor;
     
     if (_groupLongDescription)
     {
         _groupLongDescription.textColor = ThemeService.shared.theme.textSecondaryColor;
-        _groupLongDescription.tintColor = ThemeService.shared.riotColorBlue;
+        _groupLongDescription.tintColor = ThemeService.shared.theme.tintColor;
         
         // Update HTML loading options
         NSUInteger bgColor = [MXKTools rgbValueWithColor:ThemeService.shared.theme.headerBackgroundColor];
@@ -166,6 +166,8 @@
                     DTDefaultStyleSheet: [[DTCSSStylesheet alloc] initWithStyleBlock:defaultCSS]
                     };
     }
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

@@ -30,6 +30,7 @@
     self.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.mxkTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
     
+    _countryCodeButton.tintColor = ThemeService.shared.theme.textSecondaryColor;
     _isoCountryCodeLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
 }
 

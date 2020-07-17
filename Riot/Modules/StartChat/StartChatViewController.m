@@ -103,7 +103,7 @@
     dataSource.forceMatrixIdInDisplayName = YES;
     // Add a plus icon to the contact cell when a search session is in progress,
     // in order to make it more understandable for the end user.
-    dataSource.contactCellAccessoryImage = [UIImage imageNamed:@"plus_icon"];
+    dataSource.contactCellAccessoryImage = [[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor];
 
     [self displayList:dataSource];
 
@@ -196,10 +196,10 @@
     }
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void)viewDidDisappear:(BOOL)animated
 {
-    [super viewWillDisappear:animated];
- 
+    [super viewDidDisappear:animated];
+
     // cancel any pending search
     [self searchBarCancelButtonClicked:_searchBarView];
 }
@@ -564,7 +564,7 @@
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
             };
 
-            [self.mainSession canEnableE2EByDefaultInNewRoomWithUsers:inviteArray success:^(BOOL canEnableE2E) {
+            [self.mainSession vc_canEnableE2EByDefaultInNewRoomWithUsers:inviteArray success:^(BOOL canEnableE2E) {
                 MXStrongifyAndReturnIfNil(self);
 
                 // Create new room
@@ -639,10 +639,7 @@
     // place holder
     if (searchBarTextField.placeholder)
     {
-        searchBarTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:searchBarTextField.placeholder
-                                                                                   attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
-                                                                                                NSUnderlineColorAttributeName: ThemeService.shared.theme.tintColor,
-                                                                                                NSForegroundColorAttributeName: ThemeService.shared.theme.tintColor}];
+        searchBarTextField.textColor = ThemeService.shared.theme.placeholderTextColor;
     }
 }
 

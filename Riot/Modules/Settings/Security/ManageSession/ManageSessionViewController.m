@@ -129,6 +129,8 @@ enum {
     self.tableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
     
     [self reloadData];
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -355,7 +357,7 @@ enum {
     MXDeviceInfo *deviceInfo = [self.mainSession.crypto deviceWithDeviceId:deviceId ofUser:self.mainSession.myUser.userId];
     
     cell.textLabel.numberOfLines = 0;
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
 
     if (deviceInfo.trustLevel.isVerified)
     {

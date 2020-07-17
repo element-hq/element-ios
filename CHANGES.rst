@@ -1,3 +1,79 @@
+ Changes in 1.0.1 (2020-07-17)
+===============================================
+ 
+Bug fix:
+ * SettingsViewController: Fix crash when scrolling to Discovery (#3401).
+ * Main.storyboard: Set storyboard identifier for SettingsViewController (#3398).
+ * Universal links: Fix broken links for web apps (#3420).
+ * SettingsViewController: Fix pan gesture crash (#3396).
+ * RecentsViewController: Fix crash on dequeue some cells (#3433).
+ * NotificationService: Fix losing sound when not showing decrypted content in notifications (#3423).
+
+Changes in 1.0.0 (2020-07-13)
+===============================================
+
+Improvements:
+ * Rename Riot to Element
+ * Update deployment target to iOS 11.0. Required for Jitsi > 2.8.x.
+ * Theme: Customize UISearchBar with new iOS 13 properties (#3270).
+ * NSE: Make extension reusable (#3326).
+ * Strings: Use you instead of display name on notice events (#3282).
+ * Third-party licences: Add license for FlowCommoniOS (#3415).
+ * Lazy-loading: Remove lazy loading labs setting, enable it by default (#3389).
+ * Room: Show alert if link text does not match link target (#3137).
+ 
+Bug fix:
+ * Xcode11: Fix content change error when dragging start chat page (PR #3075).
+ * Xcode11: Fix status bar styles for many screens (PR #3077).
+ * Xcode11: Replace deprecated MPMoviePlayerController with AVPlayerViewController (PR #3092).
+ * Xcode11: Show AuthenticationViewController fullscreen (PR #3093).
+ * Xcode11: Fix font used for `org.matrix.custom.html`messages in timeline (#3241).
+ * Settings: New phone number is invisible in dark theme (#3218).
+ * SettingsViewController: Fix notifications on this device setting to use APNS pusher (#3291).
+ * Xcode11: Fix decryption on notifications when the key is not present (#3295).
+ * SettingsViewController: Fix PushKit references with APNS correspondents (PR #3298).
+ * Xcode11: Fix notification reply with new pushes (#3301).
+ * Xcode11: Fix notification doubling on replies (#3308).
+ * Xcode11: Fix selected background color on cells, for iOS 13+ (#3309).
+ * Xcode11: Respect system dark mode setting (#2628).
+ * Xcode11: Fix noisy notifications (#3316).
+ * Xcode11: Temporary workaround for navigation bar bg color on emoji selection screen (#3271).
+ * Project: Remove GoogleService-Info.plist (#3329).
+ * Xcode11: Various bug fixes about NSE (PR #3345).
+ * Xcode11: Fix session user display name (PR #3349).
+ * Xcode11: Fix rebooted and unlocked case for NSE (PR #3353).
+ * Xcode11: New localization keys for push notifications, include room display name in fallback content (#3325).
+ * Xcode11: Disable voip background mode to avoid VoIP pushes (#3369).
+ * Xcode11: Disable key backup on push extension (#3371).
+ * RoomMembershipBubbleCell: Fix message textview leading constraint (#3226).
+ * SettingsViewController: Fix crash when scrolling to Discovery (#3401).
+ * Main.storyboard: Set storyboard identifier for SettingsViewController (#3398).
+ * Universal links: Fix broken links for web apps (#3420).
+ * SettingsViewController: Fix pan gesture crash (#3396).
+ * RecentsViewController: Fix crash on dequeue some cells (#3433).
+ * NotificationService: Fix losing sound when not showing decrypted content in notifications (#3423).
+
+Changes in 0.11.6 (2020-06-30)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.7](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.7)).
+ * PushNotificationService: Move all notification related code to a new class (PR #3100).
+ * Cross-signing: Bootstrap cross-sign on registration (and login if applicable). This action is now invisible to the user (#3292).
+ * Cross-signing: Setup cross-signing for existing users (#3299).
+ * Authentication: Redirect the webview (SSO) javascript logs to iOS native logs.
+ * Timeline: Hide encrypted history (pre-invite) (#3239).
+ * Complete security: Add recovery from 4S (#3304).
+ * Key backup: Connect/restore backup created with SSSS (#3124).
+ * E2E by default: Disable it if the HS admin disabled it (#3305).
+ * Key backup: Add secure backup creation flow (#3344).
+ * Add AuthenticatedSessionViewControllerFactory to set up a authenticated flow for a given CS API request.
+ * Set up SSSS from banners (#3293).
+
+Bug fix:
+ * CallVC: Declined calls now properly reset call view controller, thanks to @Legi429 (#2877).
+ * PreviewRoomTitleView: Fix inviter display name (#2520).
+
 Changes in 0.11.5 (2020-05-18)
 ===============================================
 
@@ -7,6 +83,7 @@ Improvements:
 Bug fix:
  * AuthenticationViewController: Adapt UIWebView changes in MatrixKit (PR #3242).
  * Share extension & Siri intent: Do not fail when sending to locally unverified devices (#3252).
+ * CountryPickerVC: Search field is invisible in dark theme (#3219).
 
 Changes in 0.11.4 (2020-05-08)
 ===============================================

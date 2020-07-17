@@ -29,13 +29,18 @@
 
 #import "Riot-Swift.h"
 
+// Dev flag to have more options
+//#define CROSS_SIGNING_AND_BACKUP_DEV
 
 enum
 {
     SECTION_CRYPTO_SESSIONS,
-    SECTION_CROSSSIGNING,
+    SECTION_SECURE_BACKUP,
     SECTION_CRYPTOGRAPHY,
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
+    SECTION_CROSSSIGNING,
     SECTION_KEYBACKUP,
+#endif
     SECTION_ADVANCED,
     SECTION_COUNT
 };
@@ -45,6 +50,24 @@ enum {
     CROSSSIGNING_FIRST_ACTION,      // Bootstrap, Reset, Verify this session, Request keys
     CROSSSIGNING_SECOND_ACTION,     // Reset
 };
+
+enum {
+    SECURE_BACKUP_DESCRIPTION,
+    // TODO: We can display the state of 4S both locally and on the server. Then, provide actions according to all combinations.
+    // - Does the 4S contains all the 4 keys server side?
+    // - Advice the user to do a recovery if there is less keys locally
+    // - Advice them to do a recovery if local keys are obsolete -> We cannot know now
+    // - Advice them to fix a secure backup if there is 4S but no key backup
+    // - Warm them if there is no 4S and they do not have all 3 signing keys locally. They will set up a not complete secure backup
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
+    SECURE_BACKUP_INFO,
+#endif
+    SECURE_BACKUP_SETUP,
+    SECURE_BACKUP_RESTORE,
+    SECURE_BACKUP_DELETE,
+    SECURE_BACKUP_MANAGE_MANUALLY,  // TODO: What to do with that?
+};
+
 
 enum {
     CRYPTOGRAPHY_INFO,
@@ -60,16 +83,23 @@ enum {
 
 
 @interface SecurityViewController () <
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
 SettingsKeyBackupTableViewSectionDelegate,
 KeyBackupSetupCoordinatorBridgePresenterDelegate,
 KeyBackupRecoverCoordinatorBridgePresenterDelegate,
-UIDocumentInteractionControllerDelegate>
+#endif
+UIDocumentInteractionControllerDelegate,
+SecretsRecoveryCoordinatorBridgePresenterDelegate,
+SecureBackupSetupCoordinatorBridgePresenterDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
 
     // Devices
     NSMutableArray<MXDevice *> *devicesArray;
+    
+    // SECURE_BACKUP_* rows to display
+    NSArray<NSNumber *> *secureBackupSectionState;
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
@@ -85,12 +115,19 @@ UIDocumentInteractionControllerDelegate>
     // The current pushed view controller
     UIViewController *pushedViewController;
 
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
     SettingsKeyBackupTableViewSection *keyBackupSection;
     KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
+#endif
     KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter;
+
+    SecretsRecoveryCoordinatorBridgePresenter *secretsRecoveryCoordinatorBridgePresenter;
 }
 
 @property (nonatomic) BOOL isLoadingDevices;
+@property (nonatomic, strong) MXKeyBackupVersion *currentkeyBackupVersion;
+@property (nonatomic, strong) SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
+@property (nonatomic, strong) AuthenticatedSessionViewControllerFactory *authenticatedSessionViewControllerFactory;
 
 @end
 
@@ -129,11 +166,13 @@ UIDocumentInteractionControllerDelegate>
 
     [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
     [self.tableView registerNib:MXKTableViewCellWithTextView.nib forCellReuseIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier]];
-    
+    [self.tableView registerNib:MXKTableViewCellWithButton.nib forCellReuseIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
+
     // Enable self sizing cells
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 50;
 
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
     if (self.mainSession.crypto.backup)
     {
         MXDeviceInfo *deviceInfo = [self.mainSession.crypto.deviceList storedDevice:self.mainSession.matrixRestClient.credentials.userId
@@ -145,6 +184,7 @@ UIDocumentInteractionControllerDelegate>
             keyBackupSection.delegate = self;
         }
     }
+#endif
     
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -167,6 +207,8 @@ UIDocumentInteractionControllerDelegate>
     self.tableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
     
     [self reloadData];
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -198,8 +240,11 @@ UIDocumentInteractionControllerDelegate>
         kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
 
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
     keyBackupSetupCoordinatorBridgePresenter = nil;
+#endif
     keyBackupRecoverCoordinatorBridgePresenter = nil;
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -393,6 +438,8 @@ UIDocumentInteractionControllerDelegate>
 
 - (void)reloadData
 {
+    [self refreshSecureBackupSectionData];
+    
     // Trigger a full table reloadData
     [self.tableView reloadData];
 }
@@ -423,7 +470,6 @@ UIDocumentInteractionControllerDelegate>
     {
         case MXCrossSigningStateNotBootstrapped:                // Action: Bootstrap
         case MXCrossSigningStateCanCrossSign:                   // Action: Reset
-        case MXCrossSigningStateCanCrossSignAsynchronously:     // Action: Reset
             numberOfRowsInCrossSigningSection = CROSSSIGNING_FIRST_ACTION + 1;
             break;
         case MXCrossSigningStateCrossSigningExists:             // Actions: Verify this session, Reset
@@ -452,8 +498,12 @@ UIDocumentInteractionControllerDelegate>
             crossSigningInformation = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_info_trusted"];
             break;
         case MXCrossSigningStateCanCrossSign:
-        case MXCrossSigningStateCanCrossSignAsynchronously:
             crossSigningInformation = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_info_ok"];
+            
+            if (![self.mainSession.crypto.recoveryService hasSecretLocally:MXSecretId.crossSigningMaster])
+            {
+                crossSigningInformation = [crossSigningInformation stringByAppendingString:@"\n\n⚠️ The MSK is missing. Verify this device again or use the Secure Backup below to synchronise your keys accross your devices"];
+            }
             break;
     }
     
@@ -487,7 +537,6 @@ UIDocumentInteractionControllerDelegate>
             [self setUpcrossSigningButtonCellForBootstrap:buttonCell];
             break;
         case MXCrossSigningStateCanCrossSign:                   // Action: Reset
-        case MXCrossSigningStateCanCrossSignAsynchronously:     // Action: Reset
             [self setUpcrossSigningButtonCellForReset:buttonCell];
             break;
         case MXCrossSigningStateCrossSigningExists:             // Actions: Verify this session, Reset
@@ -524,12 +573,99 @@ UIDocumentInteractionControllerDelegate>
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
  
-    [buttonCell.mxkButton addTarget:self action:@selector(bootstrapCrossSigning:) forControlEvents:UIControlEventTouchUpInside];
+    [buttonCell.mxkButton addTarget:self action:@selector(setupCrossSigning:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (void)bootstrapCrossSigning:(UITapGestureRecognizer *)recognizer
+- (void)setupCrossSigning:(id)sender
 {
-    [self displayComingSoon];
+    [self setupCrossSigningWithTitle:@"Set up cross-signing"    // TODO
+                             message:NSLocalizedStringFromTable(@"security_settings_user_password_description", @"Vector", nil)
+                             success:^{
+                             } failure:^(NSError *error) {
+                             }];
+}
+
+- (void)setupCrossSigningWithTitle:(NSString*)title
+                           message:(NSString*)message
+                           success:(void (^)(void))success
+                             failure:(void (^)(NSError *error))failure
+{
+    __block UIViewController *viewController;
+    [self startActivityIndicator];
+    
+    // Get credentials to set up cross-signing
+    NSString *path = [NSString stringWithFormat:@"%@/keys/device_signing/upload", kMXAPIPrefixPathUnstable];
+    _authenticatedSessionViewControllerFactory = [[AuthenticatedSessionViewControllerFactory alloc] initWithSession:self.mainSession];
+    [_authenticatedSessionViewControllerFactory viewControllerForPath:path
+                                                           httpMethod:@"POST"
+                                                                title:title
+                                                              message:message
+                                                     onViewController:^(UIViewController * _Nonnull theViewController)
+     {
+         viewController = theViewController;
+         [self presentViewController:viewController animated:YES completion:nil];
+         
+     } onAuthenticated:^(NSDictionary * _Nonnull authParams) {
+         
+         [viewController dismissViewControllerAnimated:NO completion:nil];
+         viewController = nil;
+         
+         MXCrossSigning *crossSigning = self.mainSession.crypto.crossSigning;
+         if (crossSigning)
+         {
+             [crossSigning setupWithAuthParams:authParams success:^{
+                 [self stopActivityIndicator];
+                 [self reloadData];
+                 success();
+             } failure:^(NSError * _Nonnull error) {
+                 [self stopActivityIndicator];
+                 [self reloadData];
+                 
+                 [[AppDelegate theDelegate] showErrorAsAlert:error];
+                 failure(error);
+             }];
+         }
+
+     } onCancelled:^{
+         [self stopActivityIndicator];
+         
+         [viewController dismissViewControllerAnimated:NO completion:nil];
+         viewController = nil;
+         failure(nil);
+     } onFailure:^(NSError * _Nonnull error) {
+         
+         [self stopActivityIndicator];
+         [[AppDelegate theDelegate] showErrorAsAlert:error];
+         
+         [viewController dismissViewControllerAnimated:NO completion:nil];
+         viewController = nil;
+         failure(error);
+    }];
+}
+
+- (void)resetCrossSigning:(id)sender
+{
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
+    
+    // Double confirmation
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Are you sure?"  // TODO
+                                                                             message:@"Anyone you have verified with will see security alerts. You almost certainly don't want to do this, unless you've lost every device you can cross-sign from."     // TODO
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Reset"
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * action)
+                                {
+                                    // Setup and reset are the same thing
+                                    [self setupCrossSigning:nil];
+                                }]];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                                style:UIAlertActionStyleCancel
+                                                              handler:nil]];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+    currentAlert = alertController;
 }
 
 - (void)setUpcrossSigningButtonCellForReset:(MXKTableViewCellWithButton*)buttonCell
@@ -541,11 +677,6 @@ UIDocumentInteractionControllerDelegate>
     buttonCell.mxkButton.tintColor = ThemeService.shared.theme.warningColor;
     
     [buttonCell.mxkButton addTarget:self action:@selector(resetCrossSigning:) forControlEvents:UIControlEventTouchUpInside];
-}
-
-- (void)resetCrossSigning:(UITapGestureRecognizer *)recognizer
-{
-    [self displayComingSoon];
 }
 
 - (void)setUpcrossSigningButtonCellForCompletingSecurity:(MXKTableViewCellWithButton*)buttonCell
@@ -560,6 +691,221 @@ UIDocumentInteractionControllerDelegate>
 - (void)displayComingSoon
 {
     [[AppDelegate theDelegate] showAlertWithTitle:nil message:[NSBundle mxk_localizedStringForKey:@"security_settings_coming_soon"]];
+}
+
+
+#pragma mark - SSSS
+
+- (void)refreshSecureBackupSectionData
+{
+    MXRecoveryService *recoveryService =  self.mainSession.crypto.recoveryService;
+    if (recoveryService.hasRecovery)
+    {
+        secureBackupSectionState = @[
+                                     @(SECURE_BACKUP_RESTORE),
+                                     @(SECURE_BACKUP_DELETE),
+                                     @(SECURE_BACKUP_DESCRIPTION),
+                                     //@(SECURE_BACKUP_MANAGE_MANUALLY),
+                                     ];
+    }
+    else
+    {
+        secureBackupSectionState = @[
+                                     @(SECURE_BACKUP_SETUP),
+                                     @(SECURE_BACKUP_DESCRIPTION),
+                                     //@(SECURE_BACKUP_MANAGE_MANUALLY),
+                                     ];
+    }
+    
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
+    secureBackupSectionState = [@[@(SECURE_BACKUP_INFO)] arrayByAddingObjectsFromArray:secureBackupSectionState];
+#endif
+    
+}
+
+- (NSUInteger)secureBackupSectionEnumForRow:(NSUInteger)row
+{
+    if (row < secureBackupSectionState.count)
+    {
+        return secureBackupSectionState[row].unsignedIntegerValue;
+    }
+    
+    return SECURE_BACKUP_DESCRIPTION;
+}
+
+- (NSUInteger)numberOfRowsInSecureBackupSection
+{
+    return secureBackupSectionState.count;
+}
+
+- (NSString*)secureBackupInformation
+{
+    NSString *secureBackupInformation;
+    
+    MXRecoveryService *recoveryService =  self.mainSession.crypto.recoveryService;
+    
+    if (recoveryService.hasRecovery)
+    {
+        NSMutableString *mutableString = [@"Your account has a Secure Backup.\n" mutableCopy];
+        
+        // Check all keys that should be in the SSSSS
+        // TODO: Check obsoletes ones but need spec update
+        
+        BOOL hasWarning = NO;
+        NSString *keyState = [self informationForSecret:MXSecretId.crossSigningMaster secretName:@"Cross-signing" hasWarning:&hasWarning];
+        if (keyState)
+        {
+            [mutableString appendString:keyState];
+        }
+        
+        keyState = [self informationForSecret:MXSecretId.crossSigningSelfSigning secretName:@"Self signing" hasWarning:&hasWarning];
+        if (keyState)
+        {
+            [mutableString appendString:keyState];
+        }
+
+        keyState = [self informationForSecret:MXSecretId.crossSigningUserSigning secretName:@"User signing" hasWarning:&hasWarning];
+        if (keyState)
+        {
+            [mutableString appendString:keyState];
+        }
+        
+        keyState = [self informationForSecret:MXSecretId.keyBackup secretName:@"Message Backup" hasWarning:&hasWarning];
+        if (keyState)
+        {
+            [mutableString appendString:keyState];
+        }
+        else
+        {
+            if (self.mainSession.crypto.backup.keyBackupVersion)
+            {
+                [mutableString appendString:@"\n\n⚠️ The key of your current Message backup is not in the Secure Backup. Restore it first (see below)."];
+            }
+            else
+            {
+                [mutableString appendString:@"\n\n⚠️ Consider create a Message Backup (see below)."];
+            }
+        }
+        
+        if (!hasWarning)
+        {
+            [mutableString appendFormat:@"\n\nIf you are facing an issue, synchronise your Secure Backup."];
+        }
+        
+        secureBackupInformation = mutableString;
+    }
+    else
+    {
+        if (self.canSetupSecureBackup)
+        {
+            secureBackupInformation = [NSString stringWithFormat:@"No Secure Backup. Create one.\n-----\nKeys to back up: %@", recoveryService.secretsStoredLocally];
+        }
+        else
+        {
+            secureBackupInformation = [NSString stringWithFormat:@"No Secure Backup. Set up cross-signing first (see above)"];
+        }
+    }
+
+    return secureBackupInformation;
+}
+
+- (nullable NSString*)informationForSecret:(NSString*)secretId secretName:(NSString*)secretName hasWarning:(BOOL*)hasWarning
+{
+    NSString *information;
+    
+    MXRecoveryService *recoveryService = self.mainSession.crypto.recoveryService;
+    
+    if ([recoveryService hasSecretWithSecretId:secretId])
+    {
+        if ([recoveryService hasSecretLocally:secretId])
+        {
+            information = [NSString stringWithFormat:@"\n ✅ %@ is in the backup", secretName];
+        }
+        else
+        {
+            information = [NSString stringWithFormat:@"\n ⚠️ %@ is in the backup but not locally. Tap Synchronise", secretName];
+            *hasWarning |= YES;
+        }
+    }
+    else
+    {
+        if ([recoveryService hasSecretLocally:secretId])
+        {
+            information = [NSString stringWithFormat:@"\n ⚠️ %@ is not in the backup. Tap Synchronise", secretName];
+            *hasWarning |= YES;
+        }
+    }
+    
+    return information;
+}
+
+- (BOOL)canSetupSecureBackup
+{
+    // Accept to create a setup only if we have the 3 cross-signing keys
+    // This is the path to have a sane state
+    MXRecoveryService *recoveryService = self.mainSession.crypto.recoveryService;
+    
+    NSArray *crossSigningServiceSecrets = @[
+                                            MXSecretId.crossSigningMaster,
+                                            MXSecretId.crossSigningSelfSigning,
+                                            MXSecretId.crossSigningUserSigning];
+    
+    return ([recoveryService.secretsStoredLocally mx_intersectArray:crossSigningServiceSecrets].count
+            == crossSigningServiceSecrets.count);
+}
+
+- (void)setupSecureBackup
+{
+    if (self.canSetupSecureBackup)
+    {
+        [self setupSecureBackup2];
+    }
+    else
+    {
+        // Set up cross-signing first
+        [self setupCrossSigningWithTitle:NSLocalizedStringFromTable(@"secure_key_backup_setup_intro_title", @"Vector", nil)
+                                 message:NSLocalizedStringFromTable(@"security_settings_user_password_description", @"Vector", nil)
+                                 success:^{
+                                     [self setupSecureBackup2];
+                                 } failure:^(NSError *error) {
+                                 }];
+    }
+}
+
+- (void)setupSecureBackup2
+{
+    SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter = [[SecureBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    secureBackupSetupCoordinatorBridgePresenter.delegate = self;
+    
+    [secureBackupSetupCoordinatorBridgePresenter presentFrom:self animated:YES];
+    
+    self.secureBackupSetupCoordinatorBridgePresenter = secureBackupSetupCoordinatorBridgePresenter;
+}
+
+- (void)restoreFromSecureBackup
+{
+    secretsRecoveryCoordinatorBridgePresenter = [[SecretsRecoveryCoordinatorBridgePresenter alloc] initWithSession:self.mainSession recoveryGoal:SecretsRecoveryGoalRestoreSecureBackup];
+    
+    [secretsRecoveryCoordinatorBridgePresenter presentFrom:self animated:true];
+    secretsRecoveryCoordinatorBridgePresenter.delegate = self;
+}
+
+- (void)deleteSecureBackup
+{
+    MXRecoveryService *recoveryService = self.mainSession.crypto.recoveryService;
+    if (recoveryService)
+    {
+        [self startActivityIndicator];
+        [recoveryService deleteRecoveryWithDeleteServicesBackups:YES success:^{
+            [self stopActivityIndicator];
+            [self reloadData];
+        } failure:^(NSError * _Nonnull error) {
+            [self stopActivityIndicator];
+            [self reloadData];
+            
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+        }];
+    }
 }
 
 
@@ -596,12 +942,17 @@ UIDocumentInteractionControllerDelegate>
                 count = devicesArray.count + 1;
             }
             break;
+        case SECTION_SECURE_BACKUP:
+            count = [self numberOfRowsInSecureBackupSection];
+            break;
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
         case SECTION_KEYBACKUP:
             count = keyBackupSection.numberOfRows;
             break;
         case SECTION_CROSSSIGNING:
             count = [self numberOfRowsInCrossSigningSection];
             break;
+#endif
         case SECTION_CRYPTOGRAPHY:
             count = CRYPTOGRAPHY_COUNT;
             break;
@@ -659,7 +1010,7 @@ UIDocumentInteractionControllerDelegate>
     NSString *deviceId = device.deviceId;
     cell.textLabel.text = (name.length ? [NSString stringWithFormat:@"%@ (%@)", name, deviceId] : [NSString stringWithFormat:@"(%@)", deviceId]);
     cell.textLabel.numberOfLines = 0;
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
 
     if ([deviceId isEqualToString:self.mainSession.matrixRestClient.credentials.deviceId])
     {
@@ -723,6 +1074,45 @@ UIDocumentInteractionControllerDelegate>
     return textViewCell;
 }
 
+- (MXKTableViewCellWithButton *)buttonCellForTableView:(UITableView*)tableView atIndexPath:(NSIndexPath *)indexPath
+{
+    MXKTableViewCellWithButton *cell = [self.tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier] forIndexPath:indexPath];
+    
+    if (!cell)
+    {
+        cell = [[MXKTableViewCellWithButton alloc] init];
+    }
+    else
+    {
+        // Fix https://github.com/vector-im/riot-ios/issues/1354
+        cell.mxkButton.titleLabel.text = nil;
+        cell.mxkButton.enabled = YES;
+    }
+    
+    cell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
+    [cell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
+    
+    return cell;
+}
+
+- (MXKTableViewCellWithButton *)buttonCellWithTitle:(NSString*)title
+                                           action:(SEL)action
+                                       forTableView:(UITableView*)tableView
+                                        atIndexPath:(NSIndexPath *)indexPath
+{
+    MXKTableViewCellWithButton *cell = [self buttonCellForTableView:tableView atIndexPath:indexPath];
+    
+    
+    [cell.mxkButton setTitle:title forState:UIControlStateNormal];
+    [cell.mxkButton setTitle:title forState:UIControlStateHighlighted];
+    
+    [cell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+    [cell.mxkButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
+    cell.mxkButton.accessibilityIdentifier = nil;
+    
+    return cell;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger section = indexPath.section;
@@ -745,7 +1135,7 @@ UIDocumentInteractionControllerDelegate>
             else
             {
                 cell = [self descriptionCellForTableView:tableView
-                                                withText:NSLocalizedStringFromTable(@"security_settings_crypto_sessions_description", @"Vector", nil) ];
+                                                withText:NSLocalizedStringFromTable(@"security_settings_crypto_sessions_description_2", @"Vector", nil) ];
             }
         }
         else
@@ -757,11 +1147,74 @@ UIDocumentInteractionControllerDelegate>
             else if (row == devicesArray.count)
             {
                 cell = [self descriptionCellForTableView:tableView
-                                                withText:NSLocalizedStringFromTable(@"security_settings_crypto_sessions_description", @"Vector", nil) ];
+                                                withText:NSLocalizedStringFromTable(@"security_settings_crypto_sessions_description_2", @"Vector", nil) ];
                 
             }
         }
     }
+    else if (section == SECTION_SECURE_BACKUP)
+    {
+        switch ([self secureBackupSectionEnumForRow:row])
+        {
+            case SECURE_BACKUP_DESCRIPTION:
+            {
+                cell = [self descriptionCellForTableView:tableView
+                                                withText:NSLocalizedStringFromTable(@"security_settings_secure_backup_description", @"Vector", nil)];
+                break;
+            }
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
+            case SECURE_BACKUP_INFO:
+            {
+                cell = [self descriptionCellForTableView:tableView
+                                                withText:self.secureBackupInformation];
+                break;
+            }
+#endif
+            case SECURE_BACKUP_SETUP:
+            {
+                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:NSLocalizedStringFromTable(@"security_settings_secure_backup_setup", @"Vector", nil)
+                                                                            action:@selector(setupSecureBackup)
+                                                                      forTableView:tableView
+                                                                       atIndexPath:indexPath];
+                
+                cell = buttonCell;
+                break;
+            }
+            case SECURE_BACKUP_RESTORE:
+            {
+                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:NSLocalizedStringFromTable(@"security_settings_secure_backup_synchronise", @"Vector", nil)
+                                                                            action:@selector(restoreFromSecureBackup)
+                                                                      forTableView:tableView
+                                                                       atIndexPath:indexPath];
+                
+                cell = buttonCell;
+                break;
+            }
+            case SECURE_BACKUP_DELETE:
+            {
+                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:NSLocalizedStringFromTable(@"security_settings_secure_backup_delete", @"Vector", nil)
+                                                                            action:@selector(deleteSecureBackup)
+                                                                      forTableView:tableView
+                                                                       atIndexPath:indexPath];
+                buttonCell.mxkButton.tintColor = ThemeService.shared.theme.warningColor;
+                
+                cell = buttonCell;
+                break;
+            }
+            
+            case SECURE_BACKUP_MANAGE_MANUALLY:
+            {
+                MXKTableViewCellWithTextView *textCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
+                textCell.mxkTextView.text = @"Advanced: Manually manage keys";  // TODO
+                [textCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
+                
+                cell = textCell;
+                break;
+            }
+        }
+
+    }
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
     else if (section == SECTION_KEYBACKUP)
     {
         cell = [keyBackupSection cellForRowAtRow:row];
@@ -785,6 +1238,7 @@ UIDocumentInteractionControllerDelegate>
                 break;
         }
     }
+#endif
     else if (section == SECTION_CRYPTOGRAPHY)
     {
         switch (row)
@@ -798,27 +1252,10 @@ UIDocumentInteractionControllerDelegate>
             }
             case CRYPTOGRAPHY_EXPORT:
             {
-                MXKTableViewCellWithButton *exportKeysBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
-                if (!exportKeysBtnCell)
-                {
-                    exportKeysBtnCell = [[MXKTableViewCellWithButton alloc] init];
-                }
-                else
-                {
-                    exportKeysBtnCell.mxkButton.titleLabel.text = nil;
-                    exportKeysBtnCell.mxkButton.enabled = YES;
-                }
-                
-                NSString *btnTitle = NSLocalizedStringFromTable(@"security_settings_export_keys_manually", @"Vector", nil);
-                [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
-                [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-                [exportKeysBtnCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
-                exportKeysBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
-                
-                [exportKeysBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-                [exportKeysBtnCell.mxkButton addTarget:self action:@selector(exportEncryptionKeys:) forControlEvents:UIControlEventTouchUpInside];
-                exportKeysBtnCell.mxkButton.accessibilityIdentifier = nil;
-                
+                MXKTableViewCellWithButton *exportKeysBtnCell = [self buttonCellWithTitle:NSLocalizedStringFromTable(@"security_settings_export_keys_manually", @"Vector", nil)
+                                                                                   action:@selector(exportEncryptionKeys:)
+                                                                             forTableView:tableView
+                                                                              atIndexPath:indexPath];
                 cell = exportKeysBtnCell;
                 break;
             }
@@ -860,10 +1297,14 @@ UIDocumentInteractionControllerDelegate>
     {
         case SECTION_CRYPTO_SESSIONS:
             return NSLocalizedStringFromTable(@"security_settings_crypto_sessions", @"Vector", nil);
+        case SECTION_SECURE_BACKUP:
+            return NSLocalizedStringFromTable(@"security_settings_secure_backup", @"Vector", nil);
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
         case SECTION_KEYBACKUP:
             return NSLocalizedStringFromTable(@"security_settings_backup", @"Vector", nil);
         case SECTION_CROSSSIGNING:
             return NSLocalizedStringFromTable(@"security_settings_crosssigning", @"Vector", nil);
+#endif
         case SECTION_CRYPTOGRAPHY:
             return NSLocalizedStringFromTable(@"security_settings_cryptography", @"Vector", nil);
         case SECTION_ADVANCED:
@@ -1086,7 +1527,7 @@ UIDocumentInteractionControllerDelegate>
 
 
 #pragma mark - SettingsKeyBackupTableViewSectionDelegate
-
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
 - (void)settingsKeyBackupTableViewSectionDidUpdate:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection
 {
     [self.tableView reloadData];
@@ -1099,23 +1540,8 @@ UIDocumentInteractionControllerDelegate>
 
 - (MXKTableViewCellWithButton *)settingsKeyBackupTableViewSection:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection buttonCellForRow:(NSInteger)buttonCellForRow
 {
-    MXKTableViewCellWithButton *cell = [self.tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
-
-    if (!cell)
-    {
-        cell = [[MXKTableViewCellWithButton alloc] init];
-    }
-    else
-    {
-        // Fix https://github.com/vector-im/riot-ios/issues/1354
-        cell.mxkButton.titleLabel.text = nil;
-        cell.mxkButton.enabled = YES;
-    }
-
-    cell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
-    [cell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
-
-    return cell;
+    return [self buttonCellForTableView:self.tableView
+                             atIndexPath:[NSIndexPath indexPathForRow:buttonCellForRow inSection:SECTION_KEYBACKUP]] ;
 }
 
 - (void)settingsKeyBackupTableViewSectionShowKeyBackupSetup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection
@@ -1125,7 +1551,19 @@ UIDocumentInteractionControllerDelegate>
 
 - (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showKeyBackupRecover:(MXKeyBackupVersion *)keyBackupVersion
 {
-    [self showKeyBackupRecover:keyBackupVersion];
+    self.currentkeyBackupVersion = keyBackupVersion;
+    
+    // If key backup key is stored in SSSS ask for secrets recovery before restoring key backup.
+    if (!self.mainSession.crypto.backup.hasPrivateKeyInCryptoStore
+        && self.mainSession.crypto.recoveryService.hasRecovery
+        && [self.mainSession.crypto.recoveryService hasSecretWithSecretId:MXSecretId.keyBackup])
+    {
+        [self showSecretsRecovery];
+    }
+    else
+    {
+        [self showKeyBackupRecover:keyBackupVersion fromViewController:self];
+    }
 }
 
 - (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showKeyBackupDeleteConfirm:(MXKeyBackupVersion *)keyBackupVersion
@@ -1200,24 +1638,90 @@ UIDocumentInteractionControllerDelegate>
     [keyBackupSection reload];
 }
 
+#endif
+
 #pragma mark - KeyBackupRecoverCoordinatorBridgePresenter
 
-- (void)showKeyBackupRecover:(MXKeyBackupVersion*)keyBackupVersion
+- (void)showKeyBackupRecover:(MXKeyBackupVersion*)keyBackupVersion fromViewController:(UIViewController*)presentingViewController
 {
     keyBackupRecoverCoordinatorBridgePresenter = [[KeyBackupRecoverCoordinatorBridgePresenter alloc] initWithSession:self.mainSession keyBackupVersion:keyBackupVersion];
 
-    [keyBackupRecoverCoordinatorBridgePresenter presentFrom:self animated:true];
+    [keyBackupRecoverCoordinatorBridgePresenter presentFrom:presentingViewController animated:true];
+    keyBackupRecoverCoordinatorBridgePresenter.delegate = self;
+}
+    
+- (void)pushKeyBackupRecover:(MXKeyBackupVersion*)keyBackupVersion fromNavigationController:(UINavigationController*)navigationController
+{
+    keyBackupRecoverCoordinatorBridgePresenter = [[KeyBackupRecoverCoordinatorBridgePresenter alloc] initWithSession:self.mainSession keyBackupVersion:keyBackupVersion];
+    
+    [keyBackupRecoverCoordinatorBridgePresenter pushFrom:navigationController animated:YES];
     keyBackupRecoverCoordinatorBridgePresenter.delegate = self;
 }
 
 - (void)keyBackupRecoverCoordinatorBridgePresenterDidCancel:(KeyBackupRecoverCoordinatorBridgePresenter *)bridgePresenter {
     [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:true];
     keyBackupRecoverCoordinatorBridgePresenter = nil;
+    secretsRecoveryCoordinatorBridgePresenter = nil;
 }
 
 - (void)keyBackupRecoverCoordinatorBridgePresenterDidRecover:(KeyBackupRecoverCoordinatorBridgePresenter *)bridgePresenter {
     [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:true];
     keyBackupRecoverCoordinatorBridgePresenter = nil;
+    secretsRecoveryCoordinatorBridgePresenter = nil;
+}
+    
+#pragma mark - KeyBackupRecoverCoordinatorBridgePresenter
+    
+- (void)showSecretsRecovery
+{
+    secretsRecoveryCoordinatorBridgePresenter = [[SecretsRecoveryCoordinatorBridgePresenter alloc] initWithSession:self.mainSession recoveryGoal:SecretsRecoveryGoalKeyBackup];
+    
+    [secretsRecoveryCoordinatorBridgePresenter presentFrom:self animated:true];
+    secretsRecoveryCoordinatorBridgePresenter.delegate = self;
+}
+
+- (void)secretsRecoveryCoordinatorBridgePresenterDelegateDidCancel:(SecretsRecoveryCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [secretsRecoveryCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    secretsRecoveryCoordinatorBridgePresenter = nil;
+}
+
+- (void)secretsRecoveryCoordinatorBridgePresenterDelegateDidComplete:(SecretsRecoveryCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    UIViewController *presentedViewController = [coordinatorBridgePresenter toPresentable];
+    
+    if (coordinatorBridgePresenter.recoveryGoal == SecretsRecoveryGoalKeyBackup)
+    {
+        // Go to the true key backup recovery screen
+        if ([presentedViewController isKindOfClass:UINavigationController.class])
+        {
+            UINavigationController *navigationController = (UINavigationController*)self.presentedViewController;
+            [self pushKeyBackupRecover:self.currentkeyBackupVersion fromNavigationController:navigationController];
+        }
+        else
+        {
+            [self showKeyBackupRecover:self.currentkeyBackupVersion fromViewController:presentedViewController];
+        }
+    }
+    else
+    {
+        [secretsRecoveryCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+        secretsRecoveryCoordinatorBridgePresenter = nil;
+    }
+}
+
+#pragma mark - SecureBackupSetupCoordinatorBridgePresenterDelegate
+
+- (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidComplete:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.secureBackupSetupCoordinatorBridgePresenter = nil;
+}
+
+- (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.secureBackupSetupCoordinatorBridgePresenter = nil;
 }
 
 @end

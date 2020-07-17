@@ -253,10 +253,10 @@
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     self.memberHeaderView.backgroundColor = ThemeService.shared.theme.baseColor;
-    self.roomMemberNameLabel.textColor = ThemeService.shared.theme.baseTextPrimaryColor;
+    self.roomMemberNameLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
 
     self.roomMemberStatusLabel.textColor = ThemeService.shared.theme.tintColor;
-    self.roomMemberPowerLevelLabel.textColor = ThemeService.shared.theme.baseTextPrimaryColor;
+    self.roomMemberPowerLevelLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     
     // Check the table view style to select its bg color.
     self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.backgroundColor : ThemeService.shared.theme.headerBackgroundColor);
@@ -267,6 +267,8 @@
     {
         [self.tableView reloadData];
     }
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -886,7 +888,7 @@
             securityStatusCell.backgroundColor = ThemeService.shared.theme.backgroundColor;
             securityStatusCell.contentView.backgroundColor = [UIColor clearColor];
             securityStatusCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            securityStatusCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [securityStatusCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
             cell = securityStatusCell;
         }

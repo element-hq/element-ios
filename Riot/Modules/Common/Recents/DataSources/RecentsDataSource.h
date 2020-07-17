@@ -33,13 +33,21 @@ typedef enum : NSUInteger
 } RecentsDataSourceMode;
 
 /**
- List the different key backup banners that could be displayed.
+ List the different secure backup banners that could be displayed.
  */
-typedef NS_ENUM(NSInteger, KeyBackupBanner)
+typedef NS_ENUM(NSInteger, SecureBackupBannerDisplay)
 {
-    KeyBackupBannerNone,
-    KeyBackupBannerSetup,
-    KeyBackupBannerRecover
+    SecureBackupBannerDisplayNone,
+    SecureBackupBannerDisplaySetup    
+};
+
+/**
+ List the different cross-signing banners that could be displayed.
+ */
+typedef NS_ENUM(NSInteger, CrossSigningBannerDisplay)
+{
+    CrossSigningBannerDisplayNone,
+    CrossSigningBannerDisplaySetup
 };
 
 /**
@@ -55,7 +63,8 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
  */
 @interface RecentsDataSource : MXKInterleavedRecentsDataSource
 
-@property (nonatomic) NSInteger keyBackupBannerSection;
+@property (nonatomic) NSInteger crossSigningBannerSection;
+@property (nonatomic) NSInteger secureBackupBannerSection;
 @property (nonatomic) NSInteger directorySection;
 @property (nonatomic) NSInteger invitesSection;
 @property (nonatomic) NSInteger favoritesSection;
@@ -71,7 +80,8 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
 @property (nonatomic, readonly) NSArray* lowPriorityCellDataArray;
 @property (nonatomic, readonly) NSArray* serverNoticeCellDataArray;
 
-@property (nonatomic, readonly) KeyBackupBanner keyBackupBanner;
+@property (nonatomic, readonly) SecureBackupBannerDisplay secureBackupBannerDisplay;
+@property (nonatomic, readonly) CrossSigningBannerDisplay crossSigningBannerDisplay;
 
 /**
  Set the delegate by specifying the selected display mode.

@@ -131,6 +131,12 @@
     [self.recentsTableView registerNib:RecentTableViewCell.nib forCellReuseIdentifier:RecentTableViewCell.defaultReuseIdentifier];
     [self.recentsTableView registerNib:InviteRecentTableViewCell.nib forCellReuseIdentifier:InviteRecentTableViewCell.defaultReuseIdentifier];
     
+    // Register key backup banner cells
+    [self.recentsTableView registerNib:SecureBackupBannerCell.nib forCellReuseIdentifier:SecureBackupBannerCell.defaultReuseIdentifier];
+
+    // Register key verification banner cells
+    [self.recentsTableView registerNib:CrossSigningSetupBannerCell.nib forCellReuseIdentifier:CrossSigningSetupBannerCell.defaultReuseIdentifier];
+    
     // Hide line separators of empty cells
     self.recentsTableView.tableFooterView = [[UIView alloc] init];
     
@@ -177,6 +183,8 @@
         // Force table refresh
         [self cancelEditionMode:YES];
     }
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -841,132 +849,145 @@
 
 #pragma mark - Swipe actions
 
-- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSMutableArray* actions = [[NSMutableArray alloc] init];
-    MXRoom* room = [self.dataSource getRoomAtIndexPath:indexPath];
-    
-    if (room)
-    {
-        // Display no action for the invited room
-        if (room.summary.membership == MXMembershipInvite)
-        {
-            return actions;
-        }
-        
-        // Store the identifier of the room related to the edited cell.
-        editedRoomId = room.roomId;
-        
-        NSString* title = @"      ";
-        
-        // Direct chat toggle
-        BOOL isDirect = room.isDirect;
-        
-        UITableViewRowAction *directAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-            
-            [self makeDirectEditedRoom:!isDirect];
-            
-        }];
-        
-        UIImage *actionIcon = isDirect ? [UIImage imageNamed:@"directChatOff"] : [UIImage imageNamed:@"directChatOn"];
-        directAction.backgroundColor = [MXKTools convertImageToPatternColor:isDirect ? @"directChatOn" : @"directChatOff" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
-        [actions insertObject:directAction atIndex:0];
-        
-        
-        // Notification toggle
-        BOOL isMuted = room.isMute || room.isMentionsOnly;
-        
-        UITableViewRowAction *muteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-            
-            [self muteEditedRoomNotifications:!isMuted];
-            
-        }];
-        
-        actionIcon = isMuted ? [UIImage imageNamed:@"notifications"] : [UIImage imageNamed:@"notificationsOff"];
-        muteAction.backgroundColor = [MXKTools convertImageToPatternColor:isMuted ? @"notifications" : @"notificationsOff" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
-        [actions insertObject:muteAction atIndex:0];
-        
-        // Favorites management
-        MXRoomTag* currentTag = nil;
-        
-        // Get the room tag (use only the first one).
-        if (room.accountData.tags)
-        {
-            NSArray<MXRoomTag*>* tags = room.accountData.tags.allValues;
-            if (tags.count)
-            {
-                currentTag = tags[0];
-            }
-        }
-        
-        if (currentTag && [kMXRoomTagFavourite isEqualToString:currentTag.name])
-        {
-            UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-                
-                [self updateEditedRoomTag:nil];
-                
-            }];
-            
-            actionIcon = [UIImage imageNamed:@"favourite"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favourite" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
-            [actions insertObject:action atIndex:0];
-        }
-        else
-        {
-            UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-                
-                [self updateEditedRoomTag:kMXRoomTagFavourite];
-                
-            }];
-            
-            actionIcon = [UIImage imageNamed:@"favouriteOff"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favouriteOff" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
-            [actions insertObject:action atIndex:0];
-        }
-        
-        if (currentTag && [kMXRoomTagLowPriority isEqualToString:currentTag.name])
-        {
-            UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-                
-                [self updateEditedRoomTag:nil];
-                
-            }];
-            
-            actionIcon = [UIImage imageNamed:@"priorityHigh"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"priorityHigh" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
-            [actions insertObject:action atIndex:0];
-        }
-        else
-        {
-            UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-                
-                [self updateEditedRoomTag:kMXRoomTagLowPriority];
-                
-            }];
-            
-            actionIcon = [UIImage imageNamed:@"priorityLow"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"priorityLow" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
-            [actions insertObject:action atIndex:0];
-        }
-        
-        UITableViewRowAction *leaveAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:title  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-            
-            [self leaveEditedRoom];
-            
-        }];
-        
-        actionIcon = [UIImage imageNamed:@"leave"];
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"leave" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
-        
-        [actions insertObject:leaveAction atIndex:0];
-    }
-    
-    return actions;
-}
-
 - (void)tableView:(UITableView*)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self cancelEditionMode:isRefreshPending];
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleNone;
+}
+
+- (nullable UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    MXRoom *room = [self.dataSource getRoomAtIndexPath:indexPath];
+    
+    if (!room)
+    {
+        return nil;
+    }
+    
+    // Display no action for the invited room
+    if (room.summary.membership == MXMembershipInvite)
+    {
+        return nil;
+    }
+    
+    // Store the identifier of the room related to the edited cell.
+    editedRoomId = room.roomId;
+    
+    UIColor *selectedColor = ThemeService.shared.theme.tintColor;
+    UIColor *unselectedColor = ThemeService.shared.theme.tabBarUnselectedItemTintColor;
+    UIColor *actionBackgroundColor = ThemeService.shared.theme.baseColor;
+    
+    NSString* title = @"      ";
+    
+    // Direct chat toggle
+    
+    BOOL isDirect = room.isDirect;
+    
+    UIContextualAction *directChatAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive
+                                                                                   title:title
+                                                                                 handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+        [self makeDirectEditedRoom:!isDirect];
+        completionHandler(YES);
+    }];
+    directChatAction.backgroundColor = actionBackgroundColor;
+    
+    UIImage *directChatImage = [UIImage imageNamed:@"room_action_direct_chat"];
+    directChatImage = [directChatImage vc_tintedImageUsingColor:isDirect ? selectedColor : unselectedColor];
+    directChatAction.image = directChatImage;
+    
+    // Notification toggle
+    
+    BOOL isMuted = room.isMute || room.isMentionsOnly;
+    
+    UIContextualAction *muteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive
+                                                                             title:title
+                                                                           handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+        [self muteEditedRoomNotifications:!isMuted];
+        completionHandler(YES);
+    }];
+    muteAction.backgroundColor = actionBackgroundColor;
+    
+    UIImage *notificationImage = [UIImage imageNamed:@"room_action_notification"];
+    notificationImage = [notificationImage vc_tintedImageUsingColor:isMuted ? unselectedColor : selectedColor];
+    muteAction.image = notificationImage;
+    
+    // Favorites management
+    
+    MXRoomTag* currentTag = nil;
+    
+    // Get the room tag (use only the first one).
+    if (room.accountData.tags)
+    {
+        NSArray<MXRoomTag*>* tags = room.accountData.tags.allValues;
+        if (tags.count)
+        {
+            currentTag = tags[0];
+        }
+    }
+    
+    BOOL isFavourite = (currentTag && [kMXRoomTagFavourite isEqualToString:currentTag.name]);
+    
+    UIContextualAction *favouriteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive
+                                                                             title:title
+                                                                           handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+        NSString *favouriteTag = isFavourite ? nil : kMXRoomTagFavourite;
+        [self updateEditedRoomTag:favouriteTag];
+        completionHandler(YES);
+    }];
+    favouriteAction.backgroundColor = actionBackgroundColor;
+    
+    UIImage *favouriteImage = [UIImage imageNamed:@"room_action_favourite"];
+    favouriteImage = [favouriteImage vc_tintedImageUsingColor:isFavourite ? selectedColor : unselectedColor];
+    favouriteAction.image = favouriteImage;
+    
+    // Priority toggle
+    
+    BOOL isInLowPriority = (currentTag && [kMXRoomTagLowPriority isEqualToString:currentTag.name]);
+    
+    UIContextualAction *priorityAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive
+                                                                                   title:title
+                                                                                 handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+        NSString *priorityTag = isInLowPriority ? nil : kMXRoomTagLowPriority;
+        [self updateEditedRoomTag:priorityTag];
+        completionHandler(YES);
+    }];
+    priorityAction.backgroundColor = actionBackgroundColor;
+    
+    UIImage *priorityImage = isInLowPriority ? [UIImage imageNamed:@"room_action_priority_high"] : [UIImage imageNamed:@"room_action_priority_low"];
+    priorityImage = [priorityImage vc_tintedImageUsingColor:unselectedColor];
+    priorityAction.image = priorityImage;
+    
+    // Leave action
+    
+    UIContextualAction *leaveAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive
+                                                                                   title:title
+                                                                                 handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+        [self leaveEditedRoom];
+        completionHandler(YES);
+    }];
+    leaveAction.backgroundColor = actionBackgroundColor;
+    
+    UIImage *leaveImage = [UIImage imageNamed:@"room_action_leave"];
+    leaveImage = [leaveImage vc_tintedImageUsingColor:unselectedColor];
+    leaveAction.image = leaveImage;
+        
+    // Create swipe action configuration
+    
+    NSArray<UIContextualAction*> *actions = @[
+        leaveAction,
+        priorityAction,
+        favouriteAction,
+        muteAction,
+        directChatAction
+    ];
+    
+    UISwipeActionsConfiguration *swipeActionConfiguration = [UISwipeActionsConfiguration configurationWithActions:actions];
+    swipeActionConfiguration.performsFirstActionWithFullSwipe = NO;
+    return swipeActionConfiguration;
 }
 
 - (void)leaveEditedRoom
@@ -1582,7 +1603,7 @@
     
     plusButtonImageView.backgroundColor = [UIColor clearColor];
     plusButtonImageView.contentMode = UIViewContentModeCenter;
-    plusButtonImageView.image = [UIImage imageNamed:@"create_room"];
+    plusButtonImageView.image = [UIImage imageNamed:@"plus_floating_action"];
     plusButtonImageView.layer.shadowOpacity = 0.3;
     plusButtonImageView.layer.shadowOffset = CGSizeMake(0, 3);
     

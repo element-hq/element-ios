@@ -27,7 +27,7 @@
 "room_details_low_priority_tag" = "Lehentasun baxua";
 "people_no_conversation" = "Elkarrizketarik ez";
 "contacts_address_book_no_contact" = "Gailuko kontakturik ez";
-"contacts_address_book_permission_denied" = "Ez diozu baimena eman Riot aplikazioari zure gailuko kontaktuak atzitzeko";
+"contacts_address_book_permission_denied" = "Ez diozu baimena eman Element aplikazioari zure gailuko kontaktuak atzitzeko";
 "search_no_result" = "Emaitzarik ez";
 "room_recents_no_conversation" = "Gelarik ez";
 // Rooms tab
@@ -195,7 +195,7 @@
 // Directory
 "directory_title" = "Direktorioa";
 // Crypto
-"e2e_enabling_on_app_update" = "Riotek orain muturretik muturrerako zifratzea onartzen du baina berriro hasi behar duzu saioa hau gaitzeko.\n\nOrain egin dezakezu edo gero aplikazioaren ezarpenetatik.";
+"e2e_enabling_on_app_update" = "Elementek orain muturretik muturrerako zifratzea onartzen du baina berriro hasi behar duzu saioa hau gaitzeko.\n\nOrain egin dezakezu edo gero aplikazioaren ezarpenetatik.";
 // Unknown devices
 "unknown_devices_alert_title" = "Gelan saio ezezagunak daude";
 "directory_server_type_homeserver" = "Idatzi hasiera zerbitzari bat honen gela publikoak zerrendatzeko";
@@ -343,11 +343,8 @@
 "settings_labs_e2e_encryption_prompt_message" = "Zifratzea ezartzen bukatzeko saioa berriro hasi behar duzu.";
 "settings_version" = "%@ bertsioa";
 "settings_olm_version" = "%@ Olm bertsioa";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Termino eta baldintzak";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Pribatutasun politika";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Hirugarrengoen adierazpenak";
 "settings_send_crash_report" = "Bidali kraskatze eta erabilera datu anonimoak";
 "settings_crypto_device_name" = "Saioaren izena: ";
@@ -435,7 +432,7 @@
 "settings_calls_settings" = "DEIAK";
 "settings_show_decrypted_content" = "Erakutsi deszifratutako edukia";
 "settings_enable_callkit" = "Dei integratuak";
-"settings_callkit_info" = "Jaso deiak zure blokeo-pantailan. Ikusi Riot deiak sistemaren deian historialean. Cloud gaituta badago, deien historiala Apple-ekin partekatuko da.";
+"settings_callkit_info" = "Jaso deiak zure blokeo-pantailan. Ikusi Element deiak sistemaren deian historialean. Cloud gaituta badago, deien historiala Apple-ekin partekatuko da.";
 "settings_ui_theme" = "Azala";
 "settings_ui_theme_auto" = "Automatikoa";
 "settings_ui_theme_light" = "Argia";
@@ -538,7 +535,7 @@
 "event_formatter_rerequest_keys_part2" = " zure beste saioetatik.";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Eskaria bidalita";
-"rerequest_keys_alert_message" = "Abiatu Riot mezua deszifratu dezakeen beste gailuren batean handik hona gakoak bidali ahal izateko.";
+"rerequest_keys_alert_message" = "Abiatu Element mezua deszifratu dezakeen beste gailuren batean handik hona gakoak bidali ahal izateko.";
 "room_message_reply_to_placeholder" = "Bidali erantzun bat (zifratu gabea)…";
 "encrypted_room_message_reply_to_placeholder" = "Bidali zifratutako erantzun bat…";
 "room_message_reply_to_short_placeholder" = "Bidali erantzun bat…";
@@ -659,7 +656,7 @@
 "key_backup_setup_intro_manual_export_action" = "Esportatu gakoak eskuz";
 // String for App Store
 "store_short_description" = "Deszentralizatutako txat/VoIP segurua";
-"store_full_description" = "Komunikatu, zure erara.\n\nTxat aplikazio bat, zure kontrolpean eta erabat malgua. Riot-ek zuk nahi eran komunikatzea ahalbidetzen dizu. Komunikaziorako estandar ireki eta deszentralizatua den [matrix] protokolorako egina.\n\nEskuratu matrix.org kontu bat, ezarri zure zerbitzaria  https://modular.im erabiliz, edo erabili beste Matrix zerbitzari bat.\n\nZertgatik aukeratu Riot.im?\n\nERABATEKO KOMUNIKAZIOA: Sortu zure taldeentzako gelak, zure lagunentzko, zure komunitatearentzat, zuk nahi eran! Txateatu, partekatu fitxategiak, gehitu trepetak eta egin ahots eta bideo-deiak, dena doan.\n\nINTEGRAZIO AHALTSUAK: Erabili Riot.im jada ezagutu eta maite dituzun tresnekin. Riot.im erabilita beste txat aplikazioak erabiltzen dituzten erabiltzaile eta taldeekin ere aritu zaitezke.\n\nPRIBATUA ETA SEGURUA: Mantendu zure elkarrizketak sekretupean. Gaur egungo muturretik muturrerako zifratzeak pribatua dena pribatu mantentzen laguntzen du.\n\nIREKIA, EZ ITXIA: Kode irekikoa, eta Matrix protokoloan eraikia. Izan zure datuen jabe zure zerbitzaria osatatauz, edo fidagarritzat duzun bat aukeratuz.\n\nZUREKIN NONAHI: Mantendu kontaktua zauden tokian zaudela gailuetan zehar erabat sinkronizatutako mezuen historialarekin, eta web bidez https://riot.im helbidean.";
+"store_full_description" = "Komunikatu, zure erara.\n\nTxat aplikazio bat, zure kontrolpean eta erabat malgua. Element-ek zuk nahi eran komunikatzea ahalbidetzen dizu. Komunikaziorako estandar ireki eta deszentralizatua den [matrix] protokolorako egina.\n\nEskuratu matrix.org kontu bat, ezarri zure zerbitzaria  https://ems.element.io erabiliz, edo erabili beste Matrix zerbitzari bat.\n\nZertgatik aukeratu Element?\n\nERABATEKO KOMUNIKAZIOA: Sortu zure taldeentzako gelak, zure lagunentzko, zure komunitatearentzat, zuk nahi eran! Txateatu, partekatu fitxategiak, gehitu trepetak eta egin ahots eta bideo-deiak, dena doan.\n\nINTEGRAZIO AHALTSUAK: Erabili Element jada ezagutu eta maite dituzun tresnekin. Element erabilita beste txat aplikazioak erabiltzen dituzten erabiltzaile eta taldeekin ere aritu zaitezke.\n\nPRIBATUA ETA SEGURUA: Mantendu zure elkarrizketak sekretupean. Gaur egungo muturretik muturrerako zifratzeak pribatua dena pribatu mantentzen laguntzen du.\n\nIREKIA, EZ ITXIA: Kode irekikoa, eta Matrix protokoloan eraikia. Izan zure datuen jabe zure zerbitzaria osatatauz, edo fidagarritzat duzun bat aukeratuz.\n\nZUREKIN NONAHI: Mantendu kontaktua zauden tokian zaudela gailuetan zehar erabat sinkronizatutako mezuen historialarekin, eta web bidez https://app.element.io helbidean.";
 "auth_login_single_sign_on" = "Hasi saioa Single sign-on bidez";
 "auth_autodiscover_invalid_response" = "Erantzun baliogabea hasiera-zerbitzarien bilaketari";
 "room_message_unable_open_link_error_message" = "Ezin izan da esteka ireki.";
@@ -986,7 +983,7 @@
 "user_verification_sessions_list_session_trusted" = "Fidagarria";
 "user_verification_sessions_list_session_untrusted" = "Ez fidagarria";
 "user_verification_session_details_trusted_title" = "Fidagarria";
-"user_verification_session_details_untrusted_title" = "Abisua";
+"user_verification_session_details_untrusted_title" = "Ez fidagarritzat jota";
 "user_verification_session_details_information_trusted_current_user" = "Saio hau fidagarritzat jotzen da mezu seguruetarako egiaztatu duzulako:";
 "user_verification_session_details_information_trusted_other_user_part1" = "Saio hau fidagarritzat jotzen da ";
 "user_verification_session_details_information_trusted_other_user_part2" = " egiaztatu duelako:";
@@ -994,7 +991,7 @@
 "user_verification_session_details_information_untrusted_other_user" = " saio berria hasi du:";
 "user_verification_session_details_additional_information_untrusted_other_user" = "Erabiltzaile honek saio hau fidagarritzat jo arte, hara eta handik bidalitako mezuak abisu batekin markatuko dira. Bestela, eskuz egiaztatu dezakezu.";
 "user_verification_session_details_additional_information_untrusted_current_user" = "Ez baduzu saio hau zuk hasi, agian baten bat zure kontuan sartu da.";
-"user_verification_session_details_verify_action_current_user" = "Egiaztatu";
+"user_verification_session_details_verify_action_current_user" = "Egiaztatu interaktiboki";
 "user_verification_session_details_verify_action_other_user" = "Eskuzko egiaztaketa";
 "security_settings_crosssigning" = "ZEHARKAKO SINATZEA";
 "security_settings_cryptography" = "KRIPTOGRAFIA";
@@ -1008,8 +1005,8 @@
 "key_verification_verify_qr_code_scan_other_code_success_title" = "Kodea balioztatuta!";
 "key_verification_verify_qr_code_scan_other_code_success_message" = "QR kodea ongi balioztatu da.";
 "room_participants_action_security_status_loading" = "Kargatzen…";
-"device_verification_self_verify_alert_title" = "Saio berria";
-"device_verification_self_verify_alert_message" = "Erabili saio hau berria egiaztatzeko, zifratutako mezuetara sarbidea emanez: %@\nEz baduzu saio hau zuk hasi agian zure kontua konprometituta dago.";
+"device_verification_self_verify_alert_title" = "Saio berria. Zu izan zara?";
+"device_verification_self_verify_alert_message" = "Egiaztatu zure kontuan hasitako saio berria: %@";
 "device_verification_self_verify_alert_cancel_action" = "Ez naiz ni izan";
 "device_verification_self_verify_start_verify_action" = "Hasi egiaztaketa";
 "device_verification_self_verify_start_information" = "Erabili saio hau berria egiaztatzeko, honela mezu zifratuetara sarbidea emanez.";
@@ -1024,13 +1021,13 @@
 // Recover from private key
 "key_backup_recover_from_private_key_info" = "Babes-kopia berrezartzen…";
 "device_verification_self_verify_wait_title" = "Segurtasun osoa";
-"device_verification_self_verify_wait_information" = "Erabili badagoen beste saio bat berri hau egiaztatzeko, honela mezu zifratuetara sarbidea emanez.\n\nErabili azken Riot bertsioa zure beste gailuetan:";
+"device_verification_self_verify_wait_information" = "Egiaztatu saio hau zure beste saio batetik, honela mezu zifratuetara sarbidea emanez.\n\nErabili azken Element bertsioa zure beste gailuetan:";
 "device_verification_self_verify_wait_waiting" = "Itxaroten…";
 // MARK: Clients
-"client_desktop_name" = "Riot Desktop";
-"client_web_name" = "Riot Web";
-"client_ios_name" = "Riot iOS";
-"client_android_name" = "Riot X Androidentzat";
+"client_desktop_name" = "Element Desktop";
+"client_web_name" = "Element Web";
+"client_ios_name" = "Element iOS";
+"client_android_name" = "Element Androidentzat";
 "room_participants_action_security_status_complete_security" = "Segurtasun osoa";
 "security_settings_crosssigning_info_not_bootstrapped" = "Zeharkako sinadura ez dago ezarrita.";
 "security_settings_crosssigning_info_exists" = "Zure kontuak zeharkako sinatze identitate bat du biltegi sekretuan, baina saio honek ez du oraindik fidagarritzat. Osatu saio honen segurtasuna.";
@@ -1041,7 +1038,7 @@
 "security_settings_crosssigning_complete_security" = "Segurtasun osoa";
 "security_settings_complete_security_alert_title" = "Segurtasun osoa";
 "security_settings_complete_security_alert_message" = "Aurretik segurtasuna osatu beharko zenuke oraingo saioan.";
-"security_settings_coming_soon" = "Sentitzen dugu. Ekintza hau ez dago iOS plataformarako Riot bezeroan eskuragarri oraindik. Erabili beste Matrix bezero bat ezartzeko. Riot-iOS-ek erabili egingo du.";
+"security_settings_coming_soon" = "Sentitzen dugu. Ekintza hau ez dago iOS plataformarako Element bezeroan eskuragarri oraindik. Erabili beste Matrix bezero bat ezartzeko. Element iOS-ek erabili egingo du.";
 "device_verification_self_verify_wait_new_sign_in_title" = "Egiaztatu saio hau";
 "device_verification_self_verify_wait_additional_information" = "edo zeharkako sinadurarako gai den beste Matrix bezero bat";
 // Scanning
@@ -1052,3 +1049,59 @@
 "key_verification_scan_confirmation_scanned_title" = "Ia amaitu duzu!";
 "key_verification_scan_confirmation_scanned_user_information" = "%@ ezkutu bera erakusten ari da?";
 "key_verification_scan_confirmation_scanned_device_information" = "Beste gailuak ezkutu bera erakusten du?";
+// MARK: - Device Verification
+"key_verification_other_session_title" = "Egiaztatu saioa";
+"key_verification_new_session_title" = "Egiaztatu zure saio berria";
+"key_verification_this_session_title" = "Egiaztatu saio hau";
+"device_verification_security_advice_emoji" = "Konparatu emojiak, ordena berean agertzen direla ziurtatuz.";
+"device_verification_security_advice_number" = "Konparatu zenbakiak, ordena berean agertzen direla ziurtatuz.";
+"device_verification_self_verify_alert_validate_action" = "Egiaztatu";
+"key_verification_self_verify_current_session_alert_title" = "Egiaztatu saio hau";
+"key_verification_self_verify_current_session_alert_message" = "Beste erabiltzaile batzuk ez fidagarritzat jo lezakete.";
+"key_verification_self_verify_current_session_alert_validate_action" = "Egiaztatu";
+"key_verification_self_verify_unverified_sessions_alert_title" = "Berrikusi non hasi duzun saioa";
+"key_verification_self_verify_unverified_sessions_alert_message" = "Egiaztatu zure saio guztiak kontua eta mezuak seguru daudela bermatzeko.";
+"key_verification_self_verify_unverified_sessions_alert_validate_action" = "Berrikusi";
+"key_verification_verify_sas_title_emoji" = "Konparatu emojiak";
+"key_verification_verify_sas_title_number" = "Konparatu zenbakiak";
+"key_verification_verify_sas_cancel_action" = "Ez datoz bat";
+"key_verification_verify_sas_validate_action" = "Bat datoz";
+"key_verification_verify_sas_additional_information" = "Segurtasun gehiagorako, erabili beste komunikabide fidagarri bat, edo egin aurrez-aurre.";
+"key_verification_manually_verify_device_title" = "Egiaztatu eskuz testu bidez";
+"key_verification_manually_verify_device_instruction" = "Berretsi honako hau zure beste saioaren erabiltzaile-ezarpenetan agertzen denarekin alderatuz:";
+"key_verification_manually_verify_device_name_title" = "Saioaren izena";
+"key_verification_manually_verify_device_id_title" = "Saioaren IDa";
+"key_verification_manually_verify_device_key_title" = "Saioaren gakoa";
+"key_verification_manually_verify_device_additional_information" = "Ez badatoz bat, komunikazioaren segurtasuna konprometitua egon daiteke.";
+"key_verification_manually_verify_device_validate_action" = "Egiaztatu";
+"key_verification_verified_new_session_title" = "Saio berria egiaztatuta!";
+"key_verification_verified_other_session_information" = "Mezu seguruak irakurri ditzakezu zure beste saioetan, eta beste erabiltzaileek fidagarritzat jo zaitzakete.";
+"key_verification_verified_new_session_information" = "Mezu seguruak irakurri ditzakezu zure gailu berrian, eta beste erabiltzaileek fidagarritzat jo zaitzakete.";
+"key_verification_verified_this_session_information" = "Mezu seguruak irakurri ditzakezu zure gailu honetan, eta beste erabiltzaileek fidagarritzat jo zaitzakete.";
+"key_verification_verified_user_information" = "Erabiltzaile honekin partekatutako mezuak muturretik-muturrera zifratuta daude eta ezin ditu beste inork irakurri.";
+"key_verification_verify_qr_code_information_other_device" = "Eskaneatu kodea elkar egiaztatzeko:";
+"key_verification_verify_qr_code_emoji_information" = "Egiaztatu emoji bakanak konparatuz.";
+"key_verification_verify_qr_code_start_emoji_action" = "Egiaztatu emoji bidez";
+"user_verification_session_details_verify_action_current_user_manually" = "Egiaztatu eskuz testu bidez";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Erabili berreskuratze gakoa";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Erabili berreskuratze pasa-esaldia edo gakoa";
+"device_verification_self_verify_wait_recover_secrets_additional_information" = "Ezin baduzu dagoen saio bat erabili";
+"secrets_recovery_with_passphrase_title" = "Berreskuratze pasa-esaldia";
+"secrets_recovery_with_passphrase_information_default" = "Atzitu zure mezu seguruen historiala eta zeharkako sinatzerako identitatea beste saioak egiaztatzeko zure berreskuratze pasa-esaldia sartuz.";
+"secrets_recovery_with_passphrase_information_verify_device" = "Erabili berreskuratze pasa-esaldia gailu hau egiaztatzeko.";
+"secrets_recovery_with_passphrase_passphrase_title" = "Sartu";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Sartu berreskuratze pasa-esaldia";
+"secrets_recovery_with_passphrase_recover_action" = "Erabili pasa-esaldia";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Ez duzu berreskuratze pasa-esaldia gogoratzen? ";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "erabili berreskuratze-gakoa";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
+"secrets_recovery_with_passphrase_invalid_passphrase_title" = "Ezin izan da biltegi sekretua atzitu";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Egiaztatu berreskuratze pasa-esaldi zuzena sartu duzula.";
+"secrets_recovery_with_key_title" = "Berreskuratze gakoa";
+"secrets_recovery_with_key_information_default" = "Atzitu zure mezu seguruen historiala eta zeharkako sinatzerako identitatea beste saioak egiaztatzeko zure berreskuratze gakoa sartuz.";
+"secrets_recovery_with_key_information_verify_device" = "Erabili berreskuratze gakoa gailu hau egiaztatzeko.";
+"secrets_recovery_with_key_recovery_key_title" = "Sartu";
+"secrets_recovery_with_key_recovery_key_placeholder" = "Sartu berreskuratze-gakoa";
+"secrets_recovery_with_key_recover_action" = "Erabili gakoa";
+"secrets_recovery_with_key_invalid_recovery_key_title" = "Ezin izan da biltegi sekretua atzitu";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "Egiaztatu berreskuratze gako zuzena sartu duzula.";

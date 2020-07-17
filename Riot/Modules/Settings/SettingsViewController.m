@@ -87,9 +87,7 @@ enum
 
 enum
 {
-    CALLS_ENABLE_CALLKIT_INDEX = 0,
-    CALLS_CALLKIT_DESCRIPTION_INDEX,
-    CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX,
+    CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX=0,
     CALLS_STUN_SERVER_FALLBACK_DESCRIPTION_INDEX,
     CALLS_COUNT
 };
@@ -133,8 +131,7 @@ enum
 
 enum
 {
-    LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX = 0,
-    LABS_USE_JITSI_WIDGET_INDEX,
+    LABS_USE_JITSI_WIDGET_INDEX = 0,
     LABS_COUNT
 };
 
@@ -150,7 +147,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 
 @interface SettingsViewController () <DeactivateAccountViewControllerDelegate,
-KeyBackupSetupCoordinatorBridgePresenterDelegate,
+SecureBackupSetupCoordinatorBridgePresenterDelegate,
 SignOutAlertPresenterDelegate,
 SingleImagePickerPresenterDelegate,
 SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinatorDelegate,
@@ -233,8 +230,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     // The current pushed view controller
     UIViewController *pushedViewController;
 
-    KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
-
     SettingsIdentityServerCoordinatorBridgePresenter *identityServerSettingsCoordinatorBridgePresenter;
 }
 
@@ -256,6 +251,9 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 @property (nonatomic, strong) SettingsDiscoveryViewModel *settingsDiscoveryViewModel;
 @property (nonatomic, strong) SettingsDiscoveryTableViewSection *settingsDiscoveryTableViewSection;
 @property (nonatomic, strong) SettingsDiscoveryThreePidDetailsCoordinatorBridgePresenter *discoveryThreePidDetailsPresenter;
+
+@property (nonatomic, strong) SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
+@property (nonatomic, strong) AuthenticatedSessionViewControllerFactory *authenticatedSessionViewControllerFactory;
 
 @end
 
@@ -323,7 +321,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }];
     
     // Add observer to push settings
-    pushInfoUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountPushKitActivityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    pushInfoUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountAPNSActivityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self stopActivityIndicator];
         
@@ -377,6 +375,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     {
         [self refreshSettings];
     }
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -429,7 +429,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         [super destroy];
     }
 
-    keyBackupSetupCoordinatorBridgePresenter = nil;
+    _secureBackupSetupCoordinatorBridgePresenter = nil;
     identityServerSettingsCoordinatorBridgePresenter = nil;
 }
 
@@ -456,9 +456,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"Settings"];
     
-    // Release the potential pushed view controller
-    [self releasePushedViewController];
-    
     // Refresh display
     [self refreshSettings];
 
@@ -478,6 +475,9 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    // Release the potential pushed view controller
+    [self releasePushedViewController];
     
     [self.settingsDiscoveryTableViewSection reload];
 }
@@ -1485,8 +1485,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 newEmailCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_add_email_address", @"Vector", nil);
                 newEmailCell.mxkTextField.text = nil;
                 newEmailCell.mxkTextField.userInteractionEnabled = NO;
-                
-                newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
+                newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
             }
             else
             {
@@ -1521,7 +1520,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                     newEmailTextField = newEmailCell.mxkTextField;
                 }
                 
-                UIImage *accessoryViewImage = [MXKTools paintImage:[UIImage imageNamed:@"plus_icon"] withColor:ThemeService.shared.theme.tintColor];
+                UIImage *accessoryViewImage = [[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
                 newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:accessoryViewImage];
             }
             
@@ -1550,7 +1549,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 newPhoneCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_add_phone_number", @"Vector", nil);
                 newPhoneCell.mxkTextField.text = nil;
                 newPhoneCell.mxkTextField.userInteractionEnabled = NO;
-                newPhoneCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
+                newPhoneCell.accessoryView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
                 
                 cell = newPhoneCell;
             }
@@ -1563,6 +1562,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 newPhoneCell.countryCodeButton.accessibilityIdentifier = @"SettingsVCPhoneCountryButton";
                 
                 newPhoneCell.mxkLabel.font = newPhoneCell.mxkTextField.font = [UIFont systemFontOfSize:16];
+                newPhoneCell.mxkTextField.textColor = ThemeService.shared.theme.textSecondaryColor;                
                 
                 newPhoneCell.mxkTextField.userInteractionEnabled = YES;
                 newPhoneCell.mxkTextField.keyboardType = UIKeyboardTypePhonePad;
@@ -1612,7 +1612,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                     newPhoneNumberCell = newPhoneCell;
                 }
                 
-                UIImage *accessoryViewImage = [MXKTools paintImage:[UIImage imageNamed:@"plus_icon"] withColor:ThemeService.shared.theme.tintColor];
+                UIImage *accessoryViewImage = [[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
                 newPhoneCell.accessoryView = [[UIImageView alloc] initWithImage:accessoryViewImage];
                 
                 cell = newPhoneCell;
@@ -1658,7 +1658,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             nightModeCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_night_mode", @"Vector", nil);
             nightModeCell.mxkTextField.userInteractionEnabled = NO;
             nightModeCell.mxkTextField.text = NSLocalizedStringFromTable(@"off", @"Vector", nil);
-            nightModeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [nightModeCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell = nightModeCell;
         }
     }
@@ -1669,7 +1669,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
     
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_push_notif", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = account.isPushKitNotificationActive;
+            labelAndSwitchCell.mxkSwitch.on = account.pushNotificationServiceIsActive;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventTouchUpInside];
@@ -1683,7 +1683,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_decrypted_content", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.showDecryptedContentInNotifications;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            labelAndSwitchCell.mxkSwitch.enabled = account.isPushKitNotificationActive;
+            labelAndSwitchCell.mxkSwitch.enabled = account.pushNotificationServiceIsActive;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowDecodedContent:) forControlEvents:UIControlEventTouchUpInside];
             
             
@@ -1729,39 +1729,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }
     else if (section == SETTINGS_SECTION_CALLS_INDEX)
     {
-        if (row == CALLS_ENABLE_CALLKIT_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_callkit", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].isCallKitEnabled;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleCallKit:) forControlEvents:UIControlEventTouchUpInside];
-
-            if (![MXCallKitAdapter callKitAvailable])
-            {
-                labelAndSwitchCell.mxkSwitch.on = NO;
-                labelAndSwitchCell.mxkSwitch.enabled = NO;
-                labelAndSwitchCell.mxkLabel.enabled = NO;
-            }
-
-            cell = labelAndSwitchCell;
-        }
-        else if (row == CALLS_CALLKIT_DESCRIPTION_INDEX)
-        {
-            MXKTableViewCell *globalInfoCell = [self getDefaultTableViewCell:tableView];
-            globalInfoCell.textLabel.text = NSLocalizedStringFromTable(@"settings_callkit_info", @"Vector", nil);
-            globalInfoCell.textLabel.numberOfLines = 0;
-            globalInfoCell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-            if (![MXCallKitAdapter callKitAvailable])
-            {
-                globalInfoCell.textLabel.enabled = NO;
-            }
-
-            cell = globalInfoCell;
-        }
-        else if (row == CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX)
+        if (row == CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_calls_stun_server_fallback_button", @"Vector", nil);
@@ -1806,7 +1774,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 {
                     isCell.textLabel.text = NSLocalizedStringFromTable(@"settings_identity_server_no_is", @"Vector", nil);
                 }
-                isCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                [isCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
                 cell = isCell;
                 break;
             }
@@ -1898,7 +1866,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             cell.textLabel.text = NSLocalizedStringFromTable(@"settings_ui_language", @"Vector", nil);
             cell.detailTextLabel.text = languageDescription;
 
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
         else if (row == USER_INTERFACE_THEME_INDEX)
@@ -1935,7 +1903,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             cell.textLabel.text = NSLocalizedStringFromTable(@"settings_ui_theme", @"Vector", nil);
             cell.detailTextLabel.text = i18nTheme;
 
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
     }
@@ -1984,7 +1952,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             cell.textLabel.text = NSLocalizedStringFromTable(@"settings_contacts_phonebook_country", @"Vector", nil);
             cell.detailTextLabel.text = countryName;
             
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
     }
@@ -2030,7 +1998,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
             termAndConditionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
             
-            termAndConditionCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [termAndConditionCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
             cell = termAndConditionCell;
         }
@@ -2040,7 +2008,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
             copyrightCell.textLabel.text = NSLocalizedStringFromTable(@"settings_copyright", @"Vector", nil);
             
-            copyrightCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [copyrightCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
             cell = copyrightCell;
         }
@@ -2050,7 +2018,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             
             privacyPolicyCell.textLabel.text = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
             
-            privacyPolicyCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [privacyPolicyCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
             cell = privacyPolicyCell;
         }
@@ -2060,7 +2028,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             
             thirdPartyCell.textLabel.text = NSLocalizedStringFromTable(@"settings_third_party_notices", @"Vector", nil);
             
-            thirdPartyCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [thirdPartyCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
             cell = thirdPartyCell;
         }
@@ -2166,21 +2134,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }
     else if (section == SETTINGS_SECTION_LABS_INDEX)
     {
-        if (row == LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_room_members_lazy_loading", @"Vector", nil);
-
-            MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-            labelAndSwitchCell.mxkSwitch.on = account.mxSession.syncWithLazyLoadOfRoomMembers;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleSyncWithLazyLoadOfRoomMembers:) forControlEvents:UIControlEventTouchUpInside];
-
-            cell = labelAndSwitchCell;
-        }
-        else if (row == LABS_USE_JITSI_WIDGET_INDEX)
+        if (row == LABS_USE_JITSI_WIDGET_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
@@ -2226,7 +2180,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             case SECURITY_BUTTON_INDEX:
                 cell = [self getDefaultTableViewCell:tableView];
                 cell.textLabel.text = NSLocalizedStringFromTable(@"security_settings_title", @"Vector", nil);
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
                 break;
         }
     }
@@ -2501,8 +2455,18 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         }
         else if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX && row == userSettingsThreePidsInformation)
         {
-            NSIndexPath *discoveryIndexPath = [NSIndexPath indexPathForRow:0 inSection:SETTINGS_SECTION_DISCOVERY_INDEX];
-            [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            // settingsDiscoveryTableViewSection is a dynamic section, so check number of rows before scroll to avoid crashes
+            if (self.settingsDiscoveryTableViewSection.numberOfRows > 0)
+            {
+                NSIndexPath *discoveryIndexPath = [NSIndexPath indexPathForRow:0 inSection:SETTINGS_SECTION_DISCOVERY_INDEX];
+                [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            }
+            else
+            {
+                //  this won't be precise in scroll location, but seems the best option for now
+                NSIndexPath *discoveryIndexPath = [NSIndexPath indexPathForRow:0 inSection:SETTINGS_SECTION_DISCOVERY_INDEX + 1];
+                [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+            }
         }
         else if (section == SETTINGS_SECTION_DISCOVERY_INDEX)
         {
@@ -2586,7 +2550,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         {
             if (row == OTHER_COPYRIGHT_INDEX)
             {
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_copyright_url", @"Vector", nil)];
+                NSString *copyrightUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"settingsCopyrightUrl"];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:copyrightUrlString];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_copyright", @"Vector", nil);
                 
@@ -2594,7 +2559,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             }
             else if (row == OTHER_TERM_CONDITIONS_INDEX)
             {
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_term_conditions_url", @"Vector", nil)];
+                NSString *termsConditionsUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"settingsTermsConditionsUrl"];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:termsConditionsUrlString];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
                 
@@ -2602,7 +2568,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             }
             else if (row == OTHER_PRIVACY_INDEX)
             {
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_privacy_policy_url", @"Vector", nil)];
+                NSString *privacyPolicyUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"settingsPrivacyPolicyUrl"];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:privacyPolicyUrlString];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
                 
@@ -2846,10 +2813,10 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         
         MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
         MXKAccount* account = accountManager.activeAccounts.firstObject;
-        
-        if (accountManager.pushDeviceToken)
+
+        if (accountManager.apnsDeviceToken)
         {
-            [account enablePushKitNotifications:!account.isPushKitNotificationActive success:^{
+            [account enablePushNotifications:!account.pushNotificationServiceIsActive success:^{
                 [self stopActivityIndicator];
             } failure:^(NSError *error) {
                 [self stopActivityIndicator];
@@ -2866,7 +2833,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 }
                 else
                 {
-                    [account enablePushKitNotifications:YES success:^{
+                    [account enablePushNotifications:YES success:^{
                         [self stopActivityIndicator];
                     } failure:^(NSError *error) {
                         [self stopActivityIndicator];
@@ -2971,66 +2938,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         [self.tableView reloadData];
     }
 }
-
-- (void)toggleSyncWithLazyLoadOfRoomMembers:(id)sender
-{
-    if (sender && [sender isKindOfClass:UISwitch.class])
-    {
-        UISwitch *switchButton = (UISwitch*)sender;
-
-        if (!switchButton.isOn)
-        {
-            // Disable LL and reload
-            [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = NO;
-            [self launchClearCache];
-        }
-        else
-        {
-            switchButton.enabled = NO;
-            [self startActivityIndicator];
-
-            // Check the user homeserver supports lazy-loading
-            MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-
-            MXWeakify(self);
-            [account supportLazyLoadOfRoomMembers:^(BOOL supportLazyLoadOfRoomMembers) {
-                MXStrongifyAndReturnIfNil(self);
-
-                if (supportLazyLoadOfRoomMembers)
-                {
-                    // Lazy-loading is fully supported, enable it
-                    [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = YES;
-                    [self launchClearCache];
-                }
-                else
-                {
-                    [switchButton setOn:NO animated:YES];
-                    switchButton.enabled = YES;
-                    [self stopActivityIndicator];
-
-                    // No support of lazy-loading, do not engage it and warn the user
-                    [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
-
-                    self->currentAlert = [UIAlertController alertControllerWithTitle:nil
-                                                                             message:NSLocalizedStringFromTable(@"settings_labs_room_members_lazy_loading_error_message", @"Vector", nil)
-                                                                      preferredStyle:UIAlertControllerStyleAlert];
-
-                    MXWeakify(self);
-                    [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                                           style:UIAlertActionStyleDefault
-                                                                         handler:^(UIAlertAction * action) {
-                                                                             MXStrongifyAndReturnIfNil(self);
-                                                                             self->currentAlert = nil;
-                                                                         }]];
-
-                    [self->currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCNoHSSupportOfLazyLoading"];
-                    [self presentViewController:self->currentAlert animated:YES completion:nil];
-                }
-            }];
-        }
-    }
-}
-
 
 - (void)toggleJitsiForConference:(id)sender
 {
@@ -4084,35 +3991,72 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     [deactivateAccountViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - SecureBackupSetupCoordinatorBridgePresenter
 
-#pragma mark - KeyBackupSetupCoordinatorBridgePresenter
-
-- (void)showKeyBackupSetupFromSignOutFlow:(BOOL)showFromSignOutFlow
+- (void)showSecureBackupSetupFromSignOutFlow
 {
-    keyBackupSetupCoordinatorBridgePresenter = [[KeyBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
-    
-    [keyBackupSetupCoordinatorBridgePresenter presentFrom:self
-                                     isStartedFromSignOut:showFromSignOutFlow
-                                                 animated:true];
-    
-    keyBackupSetupCoordinatorBridgePresenter.delegate = self;
+    if (self.canSetupSecureBackup)
+    {
+        [self setupSecureBackup2];
+    }
+    else
+    {
+        // Set up cross-signing first
+        [self setupCrossSigningWithTitle:NSLocalizedStringFromTable(@"secure_key_backup_setup_intro_title", @"Vector", nil)
+                                 message:NSLocalizedStringFromTable(@"security_settings_user_password_description", @"Vector", nil)
+                                 success:^{
+                                     [self setupSecureBackup2];
+                                 } failure:^(NSError *error) {
+                                 }];
+    }
 }
 
-- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(KeyBackupSetupCoordinatorBridgePresenter *)bridgePresenter {
-    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:true];
-    keyBackupSetupCoordinatorBridgePresenter = nil;
+- (void)setupSecureBackup2
+{
+    SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter = [[SecureBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    secureBackupSetupCoordinatorBridgePresenter.delegate = self;
+    
+    [secureBackupSetupCoordinatorBridgePresenter presentFrom:self animated:YES];
+    
+    self.secureBackupSetupCoordinatorBridgePresenter = secureBackupSetupCoordinatorBridgePresenter;
 }
 
-- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidSetupRecoveryKey:(KeyBackupSetupCoordinatorBridgePresenter *)bridgePresenter {
-    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:true];
-    keyBackupSetupCoordinatorBridgePresenter = nil;
+- (BOOL)canSetupSecureBackup
+{
+    // Accept to create a setup only if we have the 3 cross-signing keys
+    // This is the path to have a sane state
+    // TODO: What about missing MSK that was not gossiped before?
+    
+    MXRecoveryService *recoveryService = self.mainSession.crypto.recoveryService;
+    
+    NSArray *crossSigningServiceSecrets = @[
+                                            MXSecretId.crossSigningMaster,
+                                            MXSecretId.crossSigningSelfSigning,
+                                            MXSecretId.crossSigningUserSigning];
+    
+    return ([recoveryService.secretsStoredLocally mx_intersectArray:crossSigningServiceSecrets].count
+            == crossSigningServiceSecrets.count);
+}
+
+#pragma mark - SecureBackupSetupCoordinatorBridgePresenterDelegate
+
+- (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidComplete:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.secureBackupSetupCoordinatorBridgePresenter = nil;
+}
+
+- (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.secureBackupSetupCoordinatorBridgePresenter = nil;
 }
 
 #pragma mark - SignOutAlertPresenterDelegate
 
 - (void)signOutAlertPresenterDidTapBackupAction:(SignOutAlertPresenter * _Nonnull)presenter
 {
-    [self showKeyBackupSetupFromSignOutFlow:YES];
+    [self showSecureBackupSetupFromSignOutFlow];
 }
 
 - (void)signOutAlertPresenterDidTapSignOutAction:(SignOutAlertPresenter * _Nonnull)presenter
@@ -4135,6 +4079,63 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         self.signOutButton.enabled = YES;
     }];
 }
+
+- (void)setupCrossSigningWithTitle:(NSString*)title
+                           message:(NSString*)message
+                           success:(void (^)(void))success
+                           failure:(void (^)(NSError *error))failure
+{
+    __block UIViewController *viewController;
+    [self startActivityIndicator];
+    
+    // Get credentials to set up cross-signing
+    NSString *path = [NSString stringWithFormat:@"%@/keys/device_signing/upload", kMXAPIPrefixPathUnstable];
+    _authenticatedSessionViewControllerFactory = [[AuthenticatedSessionViewControllerFactory alloc] initWithSession:self.mainSession];
+    [_authenticatedSessionViewControllerFactory viewControllerForPath:path
+                                                           httpMethod:@"POST"
+                                                                title:title
+                                                              message:message
+                                                     onViewController:^(UIViewController * _Nonnull theViewController)
+     {
+         viewController = theViewController;
+         [self presentViewController:viewController animated:YES completion:nil];
+         
+     } onAuthenticated:^(NSDictionary * _Nonnull authParams) {
+         
+         [viewController dismissViewControllerAnimated:NO completion:nil];
+         viewController = nil;
+         
+         MXCrossSigning *crossSigning = self.mainSession.crypto.crossSigning;
+         if (crossSigning)
+         {
+             [crossSigning setupWithAuthParams:authParams success:^{
+                 [self stopActivityIndicator];
+                 success();
+             } failure:^(NSError * _Nonnull error) {
+                 [self stopActivityIndicator];
+                 
+                 [[AppDelegate theDelegate] showErrorAsAlert:error];
+                 failure(error);
+             }];
+         }
+         
+     } onCancelled:^{
+         [self stopActivityIndicator];
+         
+         [viewController dismissViewControllerAnimated:NO completion:nil];
+         viewController = nil;
+         failure(nil);
+     } onFailure:^(NSError * _Nonnull error) {
+         
+         [self stopActivityIndicator];
+         [[AppDelegate theDelegate] showErrorAsAlert:error];
+         
+         [viewController dismissViewControllerAnimated:NO completion:nil];
+         viewController = nil;
+         failure(error);
+     }];
+}
+
 
 #pragma mark - SingleImagePickerPresenterDelegate
 

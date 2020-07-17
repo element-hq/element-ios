@@ -2,4 +2,4 @@
 "NSCameraUsageDescription" = "La càmera s'utilitza per fer fotos i vídeos, fer vídeo conferència.";
 "NSPhotoLibraryUsageDescription" = "La fototeca s'utilitza per enviar fotos i vídeos.";
 "NSMicrophoneUsageDescription" = "El micròfon s'utilitza per fer vídeos, fer trucades.";
-"NSContactsUsageDescription" = "Per tal de mostrar-vos quins dels vostres contactes ja són usuaris de Riot o Matrix, podem enviar les seves adreces i números de telèfon desades a la vostra agenda cap al vostre servidor d'identitats de Matrix. El nou Vector no emmagatzema aquestes dades ni les usa per a cap altra finalitat. Per a més informació, si us plau visiteu l'apartat de política de privacitat als paràmetres de l'aplicació.";
+"NSContactsUsageDescription" = "Per tal de mostrar-vos quins dels vostres contactes ja són usuaris de Element o Matrix, podem enviar les seves adreces i números de telèfon desades a la vostra agenda cap al vostre servidor d'identitats de Matrix. El nou Vector no emmagatzema aquestes dades ni les usa per a cap altra finalitat. Per a més informació, si us plau visiteu l'apartat de política de privacitat als paràmetres de l'aplicació.";

@@ -51,9 +51,6 @@
 
     // Hide line separators of empty cells
     self.tableView.tableFooterView = [[UIView alloc] init];
-    // Note: UISearchDisplayController is deprecated in iOS 8.
-    // MXKCountryPickerViewController should use UISearchController to manage the presentation of a search bar and display search results.
-    self.searchDisplayController.searchResultsTableView.tableFooterView = [[UIView alloc] init];
     
     // Add a top view which will be displayed in case of vertical bounce.
     CGFloat height = self.tableView.frame.size.height;
@@ -76,18 +73,22 @@
 
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
-    [ThemeService.shared.theme applyStyleOnSearchBar:self.searchBar];
-    
     // Use the primary bg color for the table view in plain style.
     self.tableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.tableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
     topview.backgroundColor = ThemeService.shared.theme.backgroundColor;
-    self.searchDisplayController.searchResultsTableView.backgroundColor = self.tableView.backgroundColor;
+    
+    if (self.searchController.searchBar)
+    {
+        [ThemeService.shared.theme applyStyleOnSearchBar:self.searchController.searchBar];
+    }
     
     if (self.tableView.dataSource)
     {
         [self.tableView reloadData];
-    }  
+    }
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

@@ -820,6 +820,7 @@
             chevron = [UIImage imageNamed:@"shrink_icon"];
         }
         UIImageView *chevronView = [[UIImageView alloc] initWithImage:chevron];
+        chevronView.tintColor = ThemeService.shared.theme.textSecondaryColor;
         chevronView.contentMode = UIViewContentModeCenter;
         [sectionHeader addSubview:chevronView];
         sectionHeader.accessoryView = chevronView;
@@ -862,6 +863,7 @@
         
         // Set the right value of the tick box
         localContactsCheckbox.image = hideNonMatrixEnabledContacts ? [UIImage imageNamed:@"selection_tick"] : [UIImage imageNamed:@"selection_untick"];
+        localContactsCheckbox.tintColor = ThemeService.shared.theme.tintColor;
         
         // Add the check box container
         [sectionHeader addSubview:localContactsCheckboxContainer];

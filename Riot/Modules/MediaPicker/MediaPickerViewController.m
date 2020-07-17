@@ -22,7 +22,7 @@
 
 #import <Photos/Photos.h>
 
-#import <MediaPlayer/MediaPlayer.h>
+#import <AVKit/AVKit.h>
 
 #import <MobileCoreServices/MobileCoreServices.h>
 
@@ -50,7 +50,7 @@
     
     MXKImageView* validationView;
     
-    MPMoviePlayerController *videoPlayer;
+    AVPlayerViewController *videoPlayer;
     UIButton *videoPlayerControl;
     
     BOOL isValidationInProgress;
@@ -182,6 +182,8 @@
     self.recentCapturesCollectionContainerView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.recentCapturesCollectionView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.userAlbumsTableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -723,21 +725,53 @@
     }];
     
     // Display first video frame
-    videoPlayer = [[MPMoviePlayerController alloc] initWithContentURL:selectedVideoURL];
+    videoPlayer = [[AVPlayerViewController alloc] init];
     if (videoPlayer)
     {
-        [videoPlayer setShouldAutoplay:NO];
-        videoPlayer.scalingMode = MPMovieScalingModeAspectFit;
-        videoPlayer.controlStyle = MPMovieControlStyleNone;
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(moviePlayerThumbnailImageRequestDidFinishNotification:)
-                                                     name:MPMoviePlayerThumbnailImageRequestDidFinishNotification
-                                                   object:nil];
-        [videoPlayer requestThumbnailImagesAtTimes:@[@0.0f] timeOption:MPMovieTimeOptionNearestKeyFrame];
+        videoPlayer.allowsPictureInPicturePlayback = NO;
+        videoPlayer.updatesNowPlayingInfoCenter = NO;
+        videoPlayer.player = [AVPlayer playerWithURL:selectedVideoURL];
+        videoPlayer.videoGravity = AVLayerVideoGravityResizeAspect;
+        videoPlayer.showsPlaybackControls = NO;
+
+        //  create a thumbnail for the first frame
+        AVAsset *asset = [AVAsset assetWithURL:selectedVideoURL];
+        AVAssetImageGenerator *generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+        CGImageRef thumbnailRef = [generator copyCGImageAtTime:kCMTimeZero actualTime:nil error:nil];
+
+        //  set thumbnail on validationView
+        validationView.image = [UIImage imageWithCGImage:thumbnailRef];
     }
 
     [validationView showFullScreen];
+
+    // Now, there is a thumbnail, show the video control
+    videoPlayerControl = [UIButton buttonWithType:UIButtonTypeCustom];
+    [videoPlayerControl addTarget:self action:@selector(controlVideoPlayer) forControlEvents:UIControlEventTouchUpInside];
+    videoPlayerControl.frame = CGRectMake(0, 0, 44, 44);
+    [videoPlayerControl setImage:[UIImage imageNamed:@"camera_play"] forState:UIControlStateNormal];
+    [videoPlayerControl setImage:[UIImage imageNamed:@"camera_play"] forState:UIControlStateHighlighted];
+    [validationView addSubview:videoPlayerControl];
+    videoPlayerControl.center = validationView.imageView.center;
+
+    videoPlayerControl.translatesAutoresizingMaskIntoConstraints = NO;
+    NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:videoPlayerControl
+                                                                         attribute:NSLayoutAttributeCenterX
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:validationView.imageView
+                                                                         attribute:NSLayoutAttributeCenterX
+                                                                        multiplier:1
+                                                                          constant:0.0f];
+
+    NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:videoPlayerControl
+                                                                         attribute:NSLayoutAttributeCenterY
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:validationView.imageView
+                                                                         attribute:NSLayoutAttributeCenterY
+                                                                        multiplier:1
+                                                                          constant:0.0f];
+
+    [NSLayoutConstraint activateConstraints:@[centerXConstraint, centerYConstraint]];
     
     // Hide the status bar
     isStatusBarHidden = YES;
@@ -751,7 +785,8 @@
     {
         if (videoPlayer)
         {
-            [videoPlayer stop];
+            [videoPlayer.player pause];
+            videoPlayer.player = nil;
             
             [videoPlayer.view removeFromSuperview];
             videoPlayer = nil;
@@ -775,9 +810,10 @@
     // Check whether the video player is already playing
     if (videoPlayer.view.superview)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
         
-        [videoPlayer stop];
+        [videoPlayer.player pause];
+        [videoPlayer.player seekToTime:kCMTimeZero];
         [videoPlayer.view removeFromSuperview];
         
         [videoPlayerControl setImage:[UIImage imageNamed:@"camera_play"] forState:UIControlStateNormal];
@@ -787,7 +823,7 @@
     {
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(moviePlayerPlaybackDidFinishNotification:)
-                                                     name:MPMoviePlayerPlaybackDidFinishNotification
+                                                     name:AVPlayerItemDidPlayToEndTimeNotification
                                                    object:nil];
         
         CGRect frame = validationView.imageView.frame;
@@ -797,7 +833,7 @@
         
         [validationView.imageView addSubview:videoPlayer.view];
         
-        [videoPlayer play];
+        [videoPlayer.player play];
         
         [videoPlayerControl setImage:[UIImage imageNamed:@"camera_stop"] forState:UIControlStateNormal];
         [videoPlayerControl setImage:[UIImage imageNamed:@"camera_stop"] forState:UIControlStateHighlighted];
@@ -1045,45 +1081,6 @@
 }
 
 #pragma mark - Movie player observer
-
-- (void)moviePlayerThumbnailImageRequestDidFinishNotification:(NSNotification *)notification
-{
-    if (validationView)
-    {
-        validationView.image = [notification userInfo][MPMoviePlayerThumbnailImageKey];
-        [validationView bringSubviewToFront:videoPlayerControl];
-
-        // Now, there is a thumbnail, show the video control
-        videoPlayerControl = [UIButton buttonWithType:UIButtonTypeCustom];
-        [videoPlayerControl addTarget:self action:@selector(controlVideoPlayer) forControlEvents:UIControlEventTouchUpInside];
-        videoPlayerControl.frame = CGRectMake(0, 0, 44, 44);
-        [videoPlayerControl setImage:[UIImage imageNamed:@"camera_play"] forState:UIControlStateNormal];
-        [videoPlayerControl setImage:[UIImage imageNamed:@"camera_play"] forState:UIControlStateHighlighted];
-        [validationView addSubview:videoPlayerControl];
-        videoPlayerControl.center = validationView.imageView.center;
-
-        videoPlayerControl.translatesAutoresizingMaskIntoConstraints = NO;
-        NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:videoPlayerControl
-                                                                             attribute:NSLayoutAttributeCenterX
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:validationView.imageView
-                                                                             attribute:NSLayoutAttributeCenterX
-                                                                            multiplier:1
-                                                                              constant:0.0f];
-
-        NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:videoPlayerControl
-                                                                             attribute:NSLayoutAttributeCenterY
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:validationView.imageView
-                                                                             attribute:NSLayoutAttributeCenterY
-                                                                            multiplier:1
-                                                                              constant:0.0f];
-
-        [NSLayoutConstraint activateConstraints:@[centerXConstraint, centerYConstraint]];
-    }
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerThumbnailImageRequestDidFinishNotification object:nil];
-}
 
 - (void)moviePlayerPlaybackDidFinishNotification:(NSNotification *)notification
 {

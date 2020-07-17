@@ -19,7 +19,7 @@ platform :ios do
 
     before_all do
         # Ensure used Xcode version
-        xcversion(version: "~> 10.3.0")
+        xcversion(version: "~> 11.4")
     end
 
     #### Public ####
@@ -101,11 +101,13 @@ platform :ios do
             main_provisioning_profile = ENV["ADHOC_MAIN_PROVISIONING_PROFILE_SPECIFIER"]
             share_extension_provisioning_profile = ENV["ADHOC_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
             siri_intents_provisioning_profile = ENV["ADHOC_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"] 
+            nse_provisioning_profile = ENV["ADHOC_NSE_PROVISIONING_PROFILE_SPECIFIER"]
         else
             export_method = "app-store"
             main_provisioning_profile = ENV["APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER"]
             share_extension_provisioning_profile = ENV["APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
             siri_intents_provisioning_profile = ENV["APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
+            nse_provisioning_profile = ENV["APPSTORE_NSE_PROVISIONING_PROFILE_SPECIFIER"]
         end
 
         # Build app and create ipa
@@ -129,6 +131,7 @@ platform :ios do
                 provisioningProfiles: {
                     ENV["MAIN_BUNDLE_ID"] => main_provisioning_profile,
                     ENV["SHARE_EXTENSION_BUNDLE_ID"] => share_extension_provisioning_profile,
+                    ENV["NSE_BUNDLE_ID"] => nse_provisioning_profile,
                     ENV["SIRI_INTENTS_EXTENSION_BUNDLE_ID"] => siri_intents_provisioning_profile
                 },
                 iCloudContainerEnvironment: 'Production'
@@ -143,13 +146,20 @@ platform :ios do
         adhoc = options.fetch(:adhoc, false)
 
         output_path = ENV["PROVISIONING_PROFILES_PATH"]
-        skip_certificate_verification = true
+        skip_certificate_verification = false
+
+        main_provisioning_name = adhoc ? ENV["ADHOC_MAIN_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER"]
+        share_extension_provisioning_name = adhoc ? ENV["ADHOC_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
+        siri_intents_provisioning_name = adhoc ? ENV["ADHOC_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
+        notification_service_extension_provisioning_name = adhoc ? ENV["ADHOC_NSE_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_NSE_PROVISIONING_PROFILE_SPECIFIER"]
 
         # Main application
         get_provisioning_profile(
             app_identifier: ENV["MAIN_BUNDLE_ID"],
+            provisioning_name: main_provisioning_name,
+            ignore_profiles_with_different_name: true,
             adhoc: adhoc,
-            skip_certificate_verification: skip_certificate_verification,
+            skip_certificate_verification: skip_certificate_verification,            
             output_path: output_path,
             filename: ENV["MAIN_PROVISIONING_PROFILE_FILENAME"],
             readonly: true
@@ -157,6 +167,8 @@ platform :ios do
         # Share extension
         get_provisioning_profile(
             app_identifier: ENV["SHARE_EXTENSION_BUNDLE_ID"],
+            provisioning_name: share_extension_provisioning_name,
+            ignore_profiles_with_different_name: true,
             adhoc: adhoc,
             skip_certificate_verification: skip_certificate_verification,
             output_path: output_path,
@@ -166,10 +178,23 @@ platform :ios do
         # Siri Intents extension
         get_provisioning_profile(
             app_identifier: ENV["SIRI_INTENTS_EXTENSION_BUNDLE_ID"],
+            provisioning_name: siri_intents_provisioning_name,
+            ignore_profiles_with_different_name: true,
             adhoc: adhoc,
             skip_certificate_verification: skip_certificate_verification,
             output_path: output_path,
             filename: ENV["SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_FILENAME"],
+            readonly: true
+        )
+        # NSE
+        get_provisioning_profile(
+            app_identifier: ENV["NSE_BUNDLE_ID"],
+            provisioning_name: notification_service_extension_provisioning_name,
+            ignore_profiles_with_different_name: true,
+            adhoc: adhoc,
+            skip_certificate_verification: skip_certificate_verification,
+            output_path: output_path,
+            filename: ENV["NSE_PROVISIONING_PROFILE_FILENAME"],
             readonly: true
         )
     end
@@ -201,26 +226,21 @@ platform :ios do
             target_filter: ENV["SIRI_INTENTS_EXTENSION_TARGET"],
             build_configuration: build_configuration
         )
+        # NSE
+        update_project_provisioning(
+            xcodeproj: xcodeproj,
+            profile: "#{provisioning_profiles_path}#{ENV["NSE_PROVISIONING_PROFILE_FILENAME"]}",
+            target_filter: ENV["NSE_TARGET"],
+            build_configuration: build_configuration
+        )
     end
 
     desc "Update application build number for all targets"
     private_lane :update_build_number do |options|
         build_number = options[:build_number]
 
-        # Main application
-        increment_build_number_in_plist(
-            build_number: build_number,
-            target: ENV["MAIN_TARGET"]
-        )
-        # Share extension
-        increment_build_number_in_plist(
-            build_number: build_number,
-            target: ENV["SHARE_EXTENSION_TARGET"]
-        )
-        # Siri Intents extension
-        increment_build_number_in_plist(
-            build_number: build_number,
-            target: ENV["SIRI_INTENTS_EXTENSION_TARGET"]
+        increment_build_number_in_xcodeproj(
+            build_number: build_number
         )
     end
 

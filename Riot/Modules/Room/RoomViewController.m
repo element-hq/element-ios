@@ -214,6 +214,9 @@
 
     // Homeserver notices
     MXServerNotices *serverNotices;
+    
+    // Formatted body parser for events
+    FormattedBodyParser *formattedBodyParser;
 }
 
 @property (nonatomic, weak) IBOutlet UIView *overlayContainerView;
@@ -291,6 +294,7 @@
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+    formattedBodyParser = [FormattedBodyParser new];
     
     _showExpandedHeader = NO;
     _showMissedDiscussionsBadge = YES;
@@ -435,6 +439,8 @@
     self.errorPresenter = [MXKErrorAlertPresentation new];
     self.roomMessageURLParser = [RoomMessageURLParser new];
     
+    self.jumpToLastUnreadLabel.text = NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil);
+    
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -470,9 +476,9 @@
     
     // Prepare jump to last unread banner
     self.jumpToLastUnreadBannerContainer.backgroundColor = ThemeService.shared.theme.backgroundColor;
-    self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: ThemeService.shared.theme.textPrimaryColor, NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor}];
-    self.jumpToLastUnreadBannerSeparatorView.backgroundColor = ThemeService.shared.theme.headerBorderColor;
-    
+    self.jumpToLastUnreadImageView.tintColor = ThemeService.shared.theme.textPrimaryColor;
+    self.jumpToLastUnreadLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.jumpToLastUnreadBannerSeparatorView.backgroundColor = ThemeService.shared.theme.lineBreakColor;
     
     self.expandedHeaderContainer.backgroundColor = ThemeService.shared.theme.baseColor;
     self.previewHeaderContainer.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
@@ -490,6 +496,8 @@
     {
         [self.bubblesTableView reloadData];
     }
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -1486,7 +1494,7 @@
                 else
                 {
                     // Reset original icon
-                    self.navigationItem.rightBarButtonItems[1].image = [UIImage imageNamed:@"apps-icon"];
+                    self.navigationItem.rightBarButtonItems[1].image = [UIImage imageNamed:@"integrations_icon"];
                     self.navigationItem.rightBarButtonItems[1].accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_integrations", @"Vector", nil);
                 }
                 
@@ -3141,6 +3149,40 @@
                             shouldDoAction = NO;
                             break;
                         default:
+                        {
+                            MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
+                            NSString *format = tappedEvent.content[@"format"];
+                            NSString *formattedBody = tappedEvent.content[@"formatted_body"];
+                            //  if an html formatted body exists
+                            if ([format isEqualToString:kMXRoomMessageFormatHTML] && formattedBody)
+                            {
+                                NSURL *visibleURL = [formattedBodyParser getVisibleURLForURL:url inFormattedBody:formattedBody];
+                                
+                                if (visibleURL && ![url isEqual:visibleURL])
+                                {
+                                    //  urls are different, show confirmation alert
+                                    NSString *formatStr = NSLocalizedStringFromTable(@"external_link_confirmation_message", @"Vector", nil);
+                                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"external_link_confirmation_title", @"Vector", nil) message:[NSString stringWithFormat:formatStr, visibleURL.absoluteString, url.absoluteString] preferredStyle:UIAlertControllerStyleAlert];
+                                    
+                                    UIAlertAction *continueAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"continue", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                                        // Try to open the link
+                                        [[UIApplication sharedApplication] vc_open:url completionHandler:^(BOOL success) {
+                                            if (!success)
+                                            {
+                                                [self showUnableToOpenLinkErrorAlert];
+                                            }
+                                        }];
+                                    }];
+                                    
+                                    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) style:UIAlertActionStyleCancel handler:nil];
+                                    
+                                    [alert addAction:continueAction];
+                                    [alert addAction:cancelAction];
+                                    
+                                    [self presentViewController:alert animated:YES completion:nil];
+                                    return NO;
+                                }
+                            }
                             // Try to open the link
                             [[UIApplication sharedApplication] vc_open:url completionHandler:^(BOOL success) {
                                 if (!success)
@@ -3150,6 +3192,7 @@
                             }];
                             shouldDoAction = NO;
                             break;
+                        }
                     }                                        
                 }
                     break;
@@ -3400,7 +3443,7 @@
         contactsDataSource.displaySearchInputInContactsList = YES;
         contactsDataSource.forceMatrixIdInDisplayName = YES;
         // Add a plus icon to the contact cell in the contacts picker, in order to make it more understandable for the end user.
-        contactsDataSource.contactCellAccessoryImage = [UIImage imageNamed:@"plus_icon"];
+        contactsDataSource.contactCellAccessoryImage = [[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor];
         
         // List all the participants matrix user id to ignore them during the contacts search.
         NSArray *members = [self.roomDataSource.roomState.members membersWithoutConferenceUser];
@@ -5934,4 +5977,3 @@
 }
 
 @end
-

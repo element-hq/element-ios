@@ -20,6 +20,7 @@
 
 #import "AppDelegate.h"
 #import "Riot-Swift.h"
+#import "MXSession+Riot.h"
 
 #import "AuthInputsView.h"
 #import "ForgotPasswordInputsView.h"
@@ -95,7 +96,7 @@
     
     self.defaultIdentityServerUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"identityserverurl"];
     
-    self.welcomeImageView.image = [UIImage imageNamed:@"logo"];
+    self.welcomeImageView.image = [UIImage imageNamed:@"horizontal_logo"];
     
     [self.submitButton.layer setCornerRadius:5];
     self.submitButton.clipsToBounds = YES;
@@ -171,6 +172,8 @@
     self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
 
     self.authenticationScrollView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    
+    self.welcomeImageView.tintColor = ThemeService.shared.theme.tintColor;
 
     // Style the authentication fallback webview screen so that its header matches to navigation bar style
     self.authFallbackContentView.backgroundColor = ThemeService.shared.theme.baseColor;
@@ -222,6 +225,8 @@
 
     self.softLogoutClearDataLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.softLogoutClearDataButton.backgroundColor = ThemeService.shared.theme.warningColor;
+    
+    self.customServersTickButton.tintColor = ThemeService.shared.theme.tintColor;
 
     [self.authInputsView customizeViewRendering];
     
@@ -516,7 +521,7 @@
 
     authFallBackViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissFallBackViewController:)];
 
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:authFallBackViewController];
+    UINavigationController *navigationController = [[RiotNavigationController alloc] initWithRootViewController:authFallBackViewController];
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
@@ -1107,8 +1112,10 @@
     MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:userId];
     MXSession *session = account.mxSession;
     
+    BOOL botCreationEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"enableBotCreation"];
+    
     // Create DM with Riot-bot on new account creation.
-    if (self.authType == MXKAuthenticationTypeRegister)
+    if (self.authType == MXKAuthenticationTypeRegister && botCreationEnabled)
     {
         MXRoomCreationParameters *roomCreationParameters = [MXRoomCreationParameters parametersForDirectRoomWithUser:@"@riot-bot:matrix.org"];
         [session createRoomWithParameters:roomCreationParameters success:nil failure:^(NSError *error) {
@@ -1146,28 +1153,72 @@
             [session.crypto setOutgoingKeyRequestsEnabled:NO onComplete:nil];
             
             [session.crypto.crossSigning refreshStateWithSuccess:^(BOOL stateUpdated) {
-                
-                if (session.crypto.crossSigning.state == MXCrossSigningStateCrossSigningExists)
+
+                NSLog(@"[AuthenticationVC] sessionStateDidChange: crossSigning.state: %@", @(session.crypto.crossSigning.state));
+
+                switch (session.crypto.crossSigning.state)
                 {
-                    dispatch_async(dispatch_get_main_queue(), ^{
+                    case MXCrossSigningStateNotBootstrapped:
+                    {
+                        // TODO: This is still not sure we want to disable the automatic cross-signing bootstrap
+                        // if the admin disabled e2e by default.
+                        // Do like riot-web for the moment
+                        if (session.vc_isE2EByDefaultEnabledByHSAdmin)
+                        {
+                            // Bootstrap cross-signing on user's account
+                            // We do it for both registration and new login as long as cross-signing does not exist yet
+                            if (self.authInputsView.password.length)
+                            {
+                                NSLog(@"[AuthenticationVC] sessionStateDidChange: Bootstrap with password");
+                                
+                                [session.crypto.crossSigning setupWithPassword:self.authInputsView.password success:^{
+                                    NSLog(@"[AuthenticationVC] sessionStateDidChange: Bootstrap succeeded");
+                                    [self dismiss];
+                                } failure:^(NSError * _Nonnull error) {
+                                    NSLog(@"[AuthenticationVC] sessionStateDidChange: Bootstrap failed. Error: %@", error);
+                                    [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+                                    [self dismiss];
+                                }];
+                            }
+                            else
+                            {
+                                NSLog(@"[AuthenticationVC] sessionStateDidChange: Do not know how to bootstrap cross-signing. Skip it.");
+                                
+                                [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+                                [self dismiss];
+                            }
+                        }
+                        else
+                        {
+                            [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+                            [self dismiss];
+                        }
+                        break;
+                    }
+                    case MXCrossSigningStateCrossSigningExists:
+                    {
+                        NSLog(@"[AuthenticationVC] sessionStateDidChange: Complete security");
                         
+                        // Ask the user to verify this session
                         self.userInteractionEnabled = YES;
                         [self.authenticationActivityIndicator stopAnimating];
                         
                         [self presentCompleteSecurityWithSession:session];
-                    });
-                }
-                else
-                {
-                    [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
-                    [self dismiss];
+                        break;
+                    }
+                        
+                    default:
+                        NSLog(@"[AuthenticationVC] sessionStateDidChange: Nothing to do");
+                        
+                        [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+                        [self dismiss];
+                        break;
                 }
                 
             } failure:^(NSError * _Nonnull error) {
-                NSLog(@"[AuthenticationVC] Fail to refresh crypto state with error: %@", error);
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self dismiss];
-                });
+                NSLog(@"[AuthenticationVC] sessionStateDidChange: Fail to refresh crypto state with error: %@", error);
+                [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+                [self dismiss];
             }];
         }
         else

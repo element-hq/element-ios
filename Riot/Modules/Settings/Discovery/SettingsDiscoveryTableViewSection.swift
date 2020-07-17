@@ -113,7 +113,7 @@ private enum DiscoverySectionRows {
             }
         case .threePid(let threePid):
             if let detailCell: MXKTableViewCell = self.cellType(at: row) {
-                detailCell.accessoryType = .disclosureIndicator
+                detailCell.vc_setAccessoryDisclosureIndicator(withTheme: self.theme)
                 
                 let formattedThreePid: String?
                 

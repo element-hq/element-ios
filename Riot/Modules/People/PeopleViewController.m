@@ -29,6 +29,8 @@
 
 #import "ContactTableViewCell.h"
 
+#import "Riot-Swift.h"
+
 @interface PeopleViewController ()
 {
     NSInteger          directRoomsSectionNumber;
@@ -69,7 +71,7 @@
     [self addPlusButton];
     
     // Apply tintColor on the (+) button
-    plusButtonImageView.image = [UIImage imageNamed:@"create_direct_chat"];
+    plusButtonImageView.image = [UIImage imageNamed:@"plus_floating_action"];
     
     // Register table view cell for contacts.
     [self.recentsTableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:ContactTableViewCell.defaultReuseIdentifier];
@@ -114,7 +116,7 @@
     [[MXKContactManager sharedManager] refreshLocalContacts];
 
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_people", @"Vector", nil);
-    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.riotColorOrange;
+    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
     if (recentsDataSource)
     {
@@ -143,7 +145,7 @@
     {
         // Prepare its contacts data source
         contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:listDataSource.mxSession];
-        contactsDataSource.contactCellAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        contactsDataSource.contactCellAccessoryImage = [[UIImage imageNamed: @"disclosure_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textSecondaryColor];
         contactsDataSource.delegate = self;
     }
 }

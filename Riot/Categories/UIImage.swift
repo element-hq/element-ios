@@ -37,7 +37,7 @@ extension UIImage {
         return image
     }
     
-    func vc_tintedImage(usingColor tintColor: UIColor) -> UIImage? {
+    @objc func vc_tintedImage(usingColor tintColor: UIColor) -> UIImage? {
         UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
         let drawRect = CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height)
 
@@ -47,5 +47,13 @@ extension UIImage {
         let tintedImage: UIImage? = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return tintedImage
-    }    
+    }
+    
+    @objc func vc_withAlpha(_ alpha: CGFloat) -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(size, false, scale)
+        draw(at: .zero, blendMode: .normal, alpha: alpha)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage
+    }
 }

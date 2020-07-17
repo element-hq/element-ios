@@ -201,6 +201,8 @@
     self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     self.sectionHeaderTintColor = ThemeService.shared.theme.tintColor;
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

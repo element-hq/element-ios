@@ -1,6 +1,6 @@
 // String for App Store
 "store_short_description" = "Sgwrs/VoIP datgonoledig a diogel";
-"store_full_description" = "Cyfathrebu, eich ffordd eich hyn.\n\nAp sgwrsio, o dan eich rheolaeth ac yn hollol hyblyg. Mae Riot yn gadael ichi gyfathrebu'r ffordd rydych chi ei eisiau. Wedi'i wneud ar gyfer [matrix] - y safon ar gyfer cyfathrebu agored, datganoledig.\n\nSicrhewch gyfrif matrix.org am ddim, mynnwch eich gweinydd eich hun yn https://modular.im, neu defnyddiwch weinydd Matrix arall.\n\nPam dewis Riot.im?\n\nCYFATHREBU LLAWN: Adeiladwch ystafelloedd o amgylch eich timau, eich ffrindiau, eich cymuned - sut bynnag yr ydych chi'n hoffi! Sgwrsiwch, rhannwch ffeiliau, ychwanegwch teclynnau a gwnewch galwadau llais a fideo - i gyd yn rhad ac am ddim.\n\nINTEGREIDDIAU GRYMUS: Defnyddiwch Riot.im gyda'r offer rydych chi'n eu hadnabod ac yn eu caru. Gyda Riot.im gallwch hyd yn oed sgwrsio â defnyddwyr a grwpiau ar apiau sgwrsio eraill.\n\nPREIFAT A DIOGEL: Cadwch eich sgyrsiau yn gyfrinachol. Mae amgryptio o'r dechrau i'r diwedd o'r radd flaenaf yn sicrhau bod cyfathrebu preifat yn aros yn breifat.\n\nAGORED, NID YN GAËDIG: Ffynhonnell agor, ac wedi'i adeiladu ar Matrix. ––Byddwch yn berchen ar eich data eich hun trwy gynnal eich gweinydd eich hun, neu ddewis un rydych chi'n ymddiried ynddo.\n\nBOB MAN YDYCH CHI: Cadwch mewn cysylltiad ble bynnag yr ydych â hanes negeseuon wedi'i gydamseru'n llawn ar draws eich holl ddyfeisiau ac ar-lein yn https://riot.im.";
+"store_full_description" = "Cyfathrebu, eich ffordd eich hyn.\n\nAp sgwrsio, o dan eich rheolaeth ac yn hollol hyblyg. Mae Element yn gadael ichi gyfathrebu'r ffordd rydych chi ei eisiau. Wedi'i wneud ar gyfer [matrix] - y safon ar gyfer cyfathrebu agored, datganoledig.\n\nSicrhewch gyfrif matrix.org am ddim, mynnwch eich gweinydd eich hun yn https://ems.element.io, neu defnyddiwch weinydd Matrix arall.\n\nPam dewis Element?\n\nCYFATHREBU LLAWN: Adeiladwch ystafelloedd o amgylch eich timau, eich ffrindiau, eich cymuned - sut bynnag yr ydych chi'n hoffi! Sgwrsiwch, rhannwch ffeiliau, ychwanegwch teclynnau a gwnewch galwadau llais a fideo - i gyd yn rhad ac am ddim.\n\nINTEGREIDDIAU GRYMUS: Defnyddiwch Element gyda'r offer rydych chi'n eu hadnabod ac yn eu caru. Gyda Element gallwch hyd yn oed sgwrsio â defnyddwyr a grwpiau ar apiau sgwrsio eraill.\n\nPREIFAT A DIOGEL: Cadwch eich sgyrsiau yn gyfrinachol. Mae amgryptio o'r dechrau i'r diwedd o'r radd flaenaf yn sicrhau bod cyfathrebu preifat yn aros yn breifat.\n\nAGORED, NID YN GAËDIG: Ffynhonnell agor, ac wedi'i adeiladu ar Matrix. ––Byddwch yn berchen ar eich data eich hun trwy gynnal eich gweinydd eich hun, neu ddewis un rydych chi'n ymddiried ynddo.\n\nBOB MAN YDYCH CHI: Cadwch mewn cysylltiad ble bynnag yr ydych â hanes negeseuon wedi'i gydamseru'n llawn ar draws eich holl ddyfeisiau ac ar-lein yn https://app.element.io.";
 // Titles
 "title_home" = "Hafan";
 "title_favourites" = "Ffefrynnau";
@@ -175,7 +175,7 @@
 "contacts_address_book_no_identity_server" = "Dim gweinydd adnabod wedi'i osod";
 "contacts_address_book_no_contact" = "Dim cysylltiadau lleol";
 "contacts_address_book_permission_required" = "Mae angen caniatâd i gael mynediad at gysylltiadau lleol";
-"contacts_address_book_permission_denied" = "Gwrthodwyd caniatâd i Riot gael mynediad i'ch cysylltiadau lleol";
+"contacts_address_book_permission_denied" = "Gwrthodwyd caniatâd i Element gael mynediad i'ch cysylltiadau lleol";
 "contacts_user_directory_section" = "CYFEIRIADUR DEFNYDDWYR";
 "contacts_user_directory_offline_section" = "CYFEIRIADUR DEFNYDDWYR (all-lein)";
 // Chat participants
@@ -376,7 +376,7 @@
 "settings_pin_rooms_with_unread" = "Pinio ystafelloedd gyda negeseuon heb eu darllen";
 "settings_on_denied_notification" = "Gwrthodir hysbysiadau i %@, caniatewch nhw yn eich gosodiadau dyfais";
 "settings_enable_callkit" = "Galw integredig";
-"settings_callkit_info" = "Derbyn galwadau sy'n dod i mewn ar eich sgrin clo. Gwelwch eich galwadau Riot yn hanes galwadau'r system. Os yw iCloud wedi'i alluogi, bydd yr hanes galw hwn yn cael ei rannu gydag Apple.";
+"settings_callkit_info" = "Derbyn galwadau sy'n dod i mewn ar eich sgrin clo. Gwelwch eich galwadau Element yn hanes galwadau'r system. Os yw iCloud wedi'i alluogi, bydd yr hanes galw hwn yn cael ei rannu gydag Apple.";
 "settings_calls_stun_server_fallback_button" = "Caniatáu gweinydd cymorth galw wrth gefn";
 "settings_calls_stun_server_fallback_description" = "Caniatáu gweinydd cymorth galw wrth gefn %@ pan nad yw eich hafanweinydd yn cynnig un (byddai eich cyfeiriad IP yn cael ei rannu yn ystod galwad).";
 "settings_ui_language" = "Iaith";
@@ -399,11 +399,8 @@
 "settings_version" = "Fersiwn %@";
 "settings_olm_version" = "Fersiwn Olm %@";
 "settings_copyright" = "Hawlfraint";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Telerau ac Amodau";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Polisi Preifatrwydd";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Hysbysiadau Trydydd Parti";
 "settings_send_crash_report" = "Anfonwch ddata namau a defnydd dienw";
 "settings_enable_rageshake" = "Ysgwydiad blin i roi gwybod am nam";
@@ -630,7 +627,7 @@
 // Crash report
 "google_analytics_use_prompt" = "Hoffech chi helpu i wella %@ trwy gyrru adroddiadau pall a data defnydd dienw yn awtomatig?";
 // Crypto
-"e2e_enabling_on_app_update" = "Mae Riot bellach yn cefnogi amgryptio o'r dechrau i'r diwedd ond mae angen i chi fewngofnodi eto i'w alluogi.\n\nGallwch ei wneud nawr neu'n hwyrach o'r gosodiadau.";
+"e2e_enabling_on_app_update" = "Mae Element bellach yn cefnogi amgryptio o'r dechrau i'r diwedd ond mae angen i chi fewngofnodi eto i'w alluogi.\n\nGallwch ei wneud nawr neu'n hwyrach o'r gosodiadau.";
 "e2e_need_log_in_again" = "Mae angen i chi fewngofnodi i gynhyrchu allweddi amgryptio o'r dechrau i'r diwedd ar gyfer y sesiwn hon a chyflwyno'r allwedd gyhoeddus i'ch hafanweinydd\nDim ond unwaith fydd rhaid gwneud hyn; sori am yr anghyfleustra.";
 // Key backup wrong version
 "e2e_key_backup_wrong_version_title" = "Copi Allwedd Wrth Gefn Newydd";
@@ -706,7 +703,7 @@
 "deactivate_account_password_alert_message" = "I barhau, rhowch eich cyfrinair os gwelwch yn dda";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Anfonwyd y Cais";
-"rerequest_keys_alert_message" = "Lansiwch Riot ar ddyfais arall a all ddadgryptio'r neges fel y gall anfon yr allweddi i'r sesiwn hon.";
+"rerequest_keys_alert_message" = "Lansiwch Element ar ddyfais arall a all ddadgryptio'r neges fel y gall anfon yr allweddi i'r sesiwn hon.";
 "key_backup_setup_title" = "Allweddi Wrth Gefn";
 "key_backup_setup_skip_alert_title" = "Ydych chi'n siwr?";
 "key_backup_setup_skip_alert_message" = "Efallai y byddwch chi'n colli negeseuon diogel os byddwch chi'n allgofnodi neu'n colli'ch dyfais.";
@@ -986,10 +983,10 @@
 "key_verification_verify_qr_code_scan_other_code_success_message" = "Mae'r côd QR wedi'i brofi'n ddilys.";
 "skip" = "Hepgor";
 // MARK: Clients
-"client_desktop_name" = "Riot Cyfrifiadur";
-"client_web_name" = "Riot Gwê";
-"client_ios_name" = "Riot iOS";
-"client_android_name" = "Riot X i Android";
+"client_desktop_name" = "Element Cyfrifiadur";
+"client_web_name" = "Element Gwê";
+"client_ios_name" = "Element iOS";
+"client_android_name" = "Element Android";
 "room_participants_action_security_status_complete_security" = "Cwblhewch diogelwch";
 "room_participants_action_security_status_loading" = "Yn llwytho…";
 "room_member_power_level_admin_in" = "Gweinyddwr yn %@";
@@ -1009,7 +1006,7 @@
 "security_settings_cryptography" = "CRYPTOGRAFFEG";
 "security_settings_complete_security_alert_title" = "Cwblhewch diogelwch";
 "security_settings_complete_security_alert_message" = "Dylech gwblhau diogelwch ar eich sesiwn gyfredol yn gyntaf.";
-"security_settings_coming_soon" = "Sori. Nid yw'r weithred hon ar gael ar Riot-iOS eto. Defnyddiwch gleient Matrix arall i'w osod. Bydd Riot-iOS yn ei ddefnyddio.";
+"security_settings_coming_soon" = "Sori. Nid yw'r weithred hon ar gael ar Element iOS eto. Defnyddiwch gleient Matrix arall i'w osod. Bydd Element iOS yn ei ddefnyddio.";
 // Recover from private key
 "key_backup_recover_from_private_key_info" = "Yn adfer copi wrth gefn…";
 "device_verification_self_verify_alert_title" = "Mewngofnodiad Newydd";

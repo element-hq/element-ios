@@ -66,7 +66,7 @@
 "deactivate_account_password_alert_message" = "Para continuar, ingresa tu contraseña por favor";
 "deactivate_account_forget_messages_information_part2_emphasize" = "Advertencia";
 "deactivate_account_informations_part2_emphasize" = "Esta acción es irreversible.";
-"rerequest_keys_alert_message" = "Por favor, inicia Riot en otro dispositivo que pueda descifrar el mensaje para que pueda enviar las claves a este dispositivo.";
+"rerequest_keys_alert_message" = "Por favor, inicia Element en otro dispositivo que pueda descifrar el mensaje para que pueda enviar las claves a este dispositivo.";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Solicitud Enviada";
 "auth_password_dont_match" = "Las contraseñas no coinciden";
@@ -166,7 +166,7 @@
 "directory_search_fail" = "Error al buscar datos";
 "contacts_address_book_no_contact" = "No hay contactos locales";
 "contacts_address_book_permission_required" = "Se requiere permiso para acceder a tus contactos locales";
-"contacts_address_book_permission_denied" = "No permitiste que Riot acceda a tus contactos locales";
+"contacts_address_book_permission_denied" = "No permitiste que Element acceda a tus contactos locales";
 "contacts_user_directory_section" = "DIRECTORIO DE USUARIOS";
 "contacts_user_directory_offline_section" = "DIRECTORIO DE USUARIOS (desconectados)";
 "room_participants_leave_prompt_title" = "Salir de la sala";
@@ -324,7 +324,7 @@
 "settings_pin_rooms_with_unread" = "Fijar salas con mensajes no leídos";
 "settings_on_denied_notification" = "Las notificaciones están denegadas para %@, por favor habilita notificaciones en los ajustes de tu dispositivo";
 "settings_enable_callkit" = "Integración de llamadas";
-"settings_callkit_info" = "Recibe llamadas entrantes en tu pantalla de bloqueo. Ve tus llamadas de Riot en el historial de llamadas del sistema. Si iCloud está habilitado, este historial de llamadas se compartirá con Apple.";
+"settings_callkit_info" = "Recibe llamadas entrantes en tu pantalla de bloqueo. Ve tus llamadas de Element en el historial de llamadas del sistema. Si iCloud está habilitado, este historial de llamadas se compartirá con Apple.";
 "settings_ui_language" = "Idioma";
 "settings_ui_theme" = "Tema";
 "settings_ui_theme_auto" = "Automático";
@@ -344,11 +344,8 @@
 "settings_version" = "Versión %@";
 "settings_olm_version" = "Versión de Olm %@";
 "settings_copyright" = "Derechos de autor";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Términos y Condiciones";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Política de Privacidad";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Avisos de Terceros";
 "settings_send_crash_report" = "Enviar datos de uso e informes de fallas anónimos";
 "settings_enable_rageshake" = "Agitar con rabia para reportar un error";
@@ -502,7 +499,7 @@
 // Crash report
 "google_analytics_use_prompt" = "¿Te gustaría ayudar a mejorar %@ enviando automáticamente informes de fallas y datos de uso anónimos?";
 // Crypto
-"e2e_enabling_on_app_update" = "Riot ahora admite cifrado de extremo a extremo pero debes volver a iniciar sesión para habilitarlo.\n\nPuedes hacerlo ahora o más tarde desde los ajustes de la aplicación.";
+"e2e_enabling_on_app_update" = "Element ahora admite cifrado de extremo a extremo pero debes volver a iniciar sesión para habilitarlo.\n\nPuedes hacerlo ahora o más tarde desde los ajustes de la aplicación.";
 "e2e_need_log_in_again" = "Tienes que volver a iniciar sesión para generar claves de cifrado de extremo a extremo para este dispositivo y enviar la clave pública a tu servidor doméstico.\nEsto es por única vez; disculpas por la molestia.";
 // Bug report
 "bug_report_title" = "Informe de Error";

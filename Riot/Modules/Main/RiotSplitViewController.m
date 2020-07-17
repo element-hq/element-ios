@@ -15,53 +15,17 @@
  */
 
 #import "RiotSplitViewController.h"
-#import "ThemeService.h"
-#import "Riot-Swift.h"
 
 @implementation RiotSplitViewController
 
-- (UIStatusBarStyle)preferredStatusBarStyle
+- (UIViewController *)childViewControllerForStatusBarStyle
 {
-    if (self.collapsed)
-    {
-        // Look for the view controller displayed at the top.
-        UIViewController *topViewController = self.viewControllers.firstObject;
-        
-        while ([topViewController isKindOfClass:[UINavigationController class]])
-        {
-            topViewController = ((UINavigationController*)topViewController).topViewController;
-        }
-        
-        if (topViewController)
-        {
-            return [topViewController preferredStatusBarStyle];
-        }
-    }
-    
-    // Use theme status bar style
-    return ThemeService.shared.theme.statusBarStyle;
+    return self.viewControllers.firstObject;
 }
 
-- (BOOL)prefersStatusBarHidden
+- (UIViewController *)childViewControllerForStatusBarHidden
 {
-    if (self.collapsed)
-    {
-        // Look for the view controller displayed at the top.
-        UIViewController *topViewController = self.viewControllers.firstObject;
-        
-        while ([topViewController isKindOfClass:[UINavigationController class]])
-        {
-            topViewController = ((UINavigationController*)topViewController).topViewController;
-        }
-        
-        if (topViewController)
-        {
-            return [topViewController prefersStatusBarHidden];
-        }
-    }
-    
-    // Keep the default UISplitViewController mode.
-    return [super prefersStatusBarHidden];
+    return self.viewControllers.firstObject;
 }
 
 @end

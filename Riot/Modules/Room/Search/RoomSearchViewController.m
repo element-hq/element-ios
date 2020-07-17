@@ -132,6 +132,11 @@
     [super viewWillDisappear:animated];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return ThemeService.shared.theme.statusBarStyle;
+}
+
 #pragma mark -
 
 - (void)setRoomDataSource:(MXKRoomDataSource *)roomDataSource

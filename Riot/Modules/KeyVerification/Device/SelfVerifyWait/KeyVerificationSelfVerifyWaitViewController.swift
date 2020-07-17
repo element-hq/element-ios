@@ -40,6 +40,11 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     
     @IBOutlet private weak var additionalInformationLabel: UILabel!
     
+    
+    @IBOutlet private weak var recoverSecretsContainerView: UIView!
+    @IBOutlet private weak var recoverSecretsButton: RoundedButton!
+    @IBOutlet private weak var recoverSecretsAdditionalInformationLabel: UILabel!
+    
     // MARK: Private
 
     private var viewModel: KeyVerificationSelfVerifyWaitViewModelType!
@@ -112,6 +117,8 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
             self?.cancelButtonAction()
         }
         
+        self.vc_removeBackTitle()
+        
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         self.cancelBarButtonItem = cancelBarButtonItem
         
@@ -126,14 +133,16 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         self.mobileClientImageView.image = Asset.Images.smartphone.image.withRenderingMode(.alwaysTemplate)
         
         self.additionalInformationLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitAdditionalInformation
+        
+        self.recoverSecretsAdditionalInformationLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitRecoverSecretsAdditionalInformation
     }
 
     private func render(viewState: KeyVerificationSelfVerifyWaitViewState) {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .loaded(let isNewSignIn):
-            self.renderLoaded(isNewSignIn: isNewSignIn)
+        case .loaded(let viewData):
+            self.renderLoaded(viewData: viewData)
         case .cancelled(let reason):
             self.renderCancelled(reason: reason)
         case .cancelledByMe(let reason):
@@ -147,11 +156,32 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
     }
     
-    private func renderLoaded(isNewSignIn: Bool) {
+    private func renderLoaded(viewData: KeyVerificationSelfVerifyWaitViewData) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         
-        self.title = isNewSignIn ? VectorL10n.deviceVerificationSelfVerifyWaitNewSignInTitle : VectorL10n.deviceVerificationSelfVerifyWaitTitle
-        self.cancelBarButtonItem?.title = isNewSignIn ? VectorL10n.skip : VectorL10n.cancel
+        self.title = viewData.isNewSignIn ? VectorL10n.deviceVerificationSelfVerifyWaitNewSignInTitle : VectorL10n.deviceVerificationSelfVerifyWaitTitle
+        self.cancelBarButtonItem?.title = viewData.isNewSignIn ? VectorL10n.skip : VectorL10n.cancel
+   
+        let hideRecoverSecrets: Bool
+        let recoverSecretsButtonTitle: String?
+        
+        switch viewData.secretsRecoveryAvailability {
+        case .notAvailable:
+            hideRecoverSecrets = true
+            recoverSecretsButtonTitle = nil
+        case .available(let secretsRecoveryMode):
+            hideRecoverSecrets = false
+            
+            switch secretsRecoveryMode {
+            case .passphraseOrKey:
+                recoverSecretsButtonTitle = VectorL10n.deviceVerificationSelfVerifyWaitRecoverSecretsWithPassphrase
+            case .onlyKey:
+                recoverSecretsButtonTitle = VectorL10n.deviceVerificationSelfVerifyWaitRecoverSecretsWithoutPassphrase
+            }
+        }
+        
+        self.recoverSecretsContainerView.isHidden = hideRecoverSecrets
+        self.recoverSecretsButton.setTitle(recoverSecretsButtonTitle, for: .normal)
     }
     
     private func renderCancelled(reason: MXTransactionCancelCode) {
@@ -183,6 +213,10 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     
     private func cancelButtonAction() {
         self.viewModel.process(viewAction: .cancel)
+    }
+    
+    @IBAction private func recoverSecretsButtonAction(_ sender: Any) {
+        self.viewModel.process(viewAction: .recoverSecrets)
     }
 }
 

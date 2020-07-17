@@ -310,6 +310,10 @@ internal enum VectorL10n {
   internal static var authUsernameInUse: String { 
     return VectorL10n.tr("Vector", "auth_username_in_use") 
   }
+  /// This app does not support the authentication mechanism on your homeserver.
+  internal static var authenticatedSessionFlowNotSupported: String { 
+    return VectorL10n.tr("Vector", "authenticated_session_flow_not_supported") 
+  }
   /// Back
   internal static var back: String { 
     return VectorL10n.tr("Vector", "back") 
@@ -414,19 +418,19 @@ internal enum VectorL10n {
   internal static var cancel: String { 
     return VectorL10n.tr("Vector", "cancel") 
   }
-  /// Riot X for Android
+  /// Element Android
   internal static var clientAndroidName: String { 
     return VectorL10n.tr("Vector", "client_android_name") 
   }
-  /// Riot Desktop
+  /// Element Desktop
   internal static var clientDesktopName: String { 
     return VectorL10n.tr("Vector", "client_desktop_name") 
   }
-  /// Riot iOS
+  /// Element iOS
   internal static var clientIosName: String { 
     return VectorL10n.tr("Vector", "client_ios_name") 
   }
-  /// Riot Web
+  /// Element Web
   internal static var clientWebName: String { 
     return VectorL10n.tr("Vector", "client_web_name") 
   }
@@ -450,7 +454,7 @@ internal enum VectorL10n {
   internal static var contactsAddressBookNoIdentityServer: String { 
     return VectorL10n.tr("Vector", "contacts_address_book_no_identity_server") 
   }
-  /// You didn't allow Riot to access your local contacts
+  /// You didn't allow Element to access your local contacts
   internal static var contactsAddressBookPermissionDenied: String { 
     return VectorL10n.tr("Vector", "contacts_address_book_permission_denied") 
   }
@@ -477,6 +481,14 @@ internal enum VectorL10n {
   /// Create
   internal static var create: String { 
     return VectorL10n.tr("Vector", "create") 
+  }
+  /// Verify your other devices easier
+  internal static var crossSigningSetupBannerSubtitle: String { 
+    return VectorL10n.tr("Vector", "cross_signing_setup_banner_subtitle") 
+  }
+  /// Set up encryption
+  internal static var crossSigningSetupBannerTitle: String { 
+    return VectorL10n.tr("Vector", "cross_signing_setup_banner_title") 
   }
   /// Please forget all messages I have sent when my account is deactivated (
   internal static var deactivateAccountForgetMessagesInformationPart1: String { 
@@ -846,13 +858,25 @@ internal enum VectorL10n {
   internal static var deviceVerificationSelfVerifyWaitAdditionalInformation: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_additional_information") 
   }
-  /// Verify this session from one of your other sessions, granting it access to encrypted messages.\n\nUse the latest Riot on your other devices:
+  /// Verify this session from one of your other sessions, granting it access to encrypted messages.\n\nUse the latest Element on your other devices:
   internal static var deviceVerificationSelfVerifyWaitInformation: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_information") 
   }
   /// Verify this login
   internal static var deviceVerificationSelfVerifyWaitNewSignInTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_new_sign_in_title") 
+  }
+  /// If you can't accessing an existing session
+  internal static var deviceVerificationSelfVerifyWaitRecoverSecretsAdditionalInformation: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_wait_recover_secrets_additional_information") 
+  }
+  /// Use Recovery Passphrase or Key
+  internal static var deviceVerificationSelfVerifyWaitRecoverSecretsWithPassphrase: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_wait_recover_secrets_with_passphrase") 
+  }
+  /// Use Recovery Key
+  internal static var deviceVerificationSelfVerifyWaitRecoverSecretsWithoutPassphrase: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_wait_recover_secrets_without_passphrase") 
   }
   /// Complete security
   internal static var deviceVerificationSelfVerifyWaitTitle: String { 
@@ -946,7 +970,7 @@ internal enum VectorL10n {
   internal static var doNotAskAgain: String { 
     return VectorL10n.tr("Vector", "do_not_ask_again") 
   }
-  /// Riot now supports end-to-end encryption but you need to log in again to enable it.\n\nYou can do it now or later from the application settings.
+  /// Element now supports end-to-end encryption but you need to log in again to enable it.\n\nYou can do it now or later from the application settings.
   internal static var e2eEnablingOnAppUpdate: String { 
     return VectorL10n.tr("Vector", "e2e_enabling_on_app_update") 
   }
@@ -1054,9 +1078,17 @@ internal enum VectorL10n {
   internal static func eventFormatterJitsiWidgetAdded(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_jitsi_widget_added", p1)
   }
+  /// You added VoIP conference
+  internal static var eventFormatterJitsiWidgetAddedByYou: String { 
+    return VectorL10n.tr("Vector", "event_formatter_jitsi_widget_added_by_you") 
+  }
   /// VoIP conference removed by %@
   internal static func eventFormatterJitsiWidgetRemoved(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_jitsi_widget_removed", p1)
+  }
+  /// You removed VoIP conference
+  internal static var eventFormatterJitsiWidgetRemovedByYou: String { 
+    return VectorL10n.tr("Vector", "event_formatter_jitsi_widget_removed_by_you") 
   }
   /// %tu membership changes
   internal static func eventFormatterMemberUpdates(_ p1: Int) -> String {
@@ -1078,9 +1110,25 @@ internal enum VectorL10n {
   internal static func eventFormatterWidgetAdded(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_widget_added", p1, p2)
   }
+  /// You added the widget: %@
+  internal static func eventFormatterWidgetAddedByYou(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "event_formatter_widget_added_by_you", p1)
+  }
   /// %@ widget removed by %@
   internal static func eventFormatterWidgetRemoved(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_widget_removed", p1, p2)
+  }
+  /// You removed the widget: %@
+  internal static func eventFormatterWidgetRemovedByYou(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "event_formatter_widget_removed_by_you", p1)
+  }
+  /// The link %@ is taking you to another site: %@\n\nAre you sure you want to continue?
+  internal static func externalLinkConfirmationMessage(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "external_link_confirmation_message", p1, p2)
+  }
+  /// Double-check this link
+  internal static var externalLinkConfirmationTitle: String { 
+    return VectorL10n.tr("Vector", "external_link_confirmation_title") 
   }
   /// File upload
   internal static var fileUploadErrorTitle: String { 
@@ -1294,14 +1342,6 @@ internal enum VectorL10n {
   internal static var join: String { 
     return VectorL10n.tr("Vector", "join") 
   }
-  /// Never lose encrypted messages
-  internal static var keyBackupRecoverBannerTitle: String { 
-    return VectorL10n.tr("Vector", "key_backup_recover_banner_title") 
-  }
-  /// Connect this session to Key Backup
-  internal static var keyBackupRecoverConnentBannerSubtitle: String { 
-    return VectorL10n.tr("Vector", "key_backup_recover_connent_banner_subtitle") 
-  }
   /// Done
   internal static var keyBackupRecoverDoneAction: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_done_action") 
@@ -1381,14 +1421,6 @@ internal enum VectorL10n {
   /// Secure Messages
   internal static var keyBackupRecoverTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_title") 
-  }
-  /// Start using Key Backup
-  internal static var keyBackupSetupBannerSubtitle: String { 
-    return VectorL10n.tr("Vector", "key_backup_setup_banner_subtitle") 
-  }
-  /// Never lose encrypted messages
-  internal static var keyBackupSetupBannerTitle: String { 
-    return VectorL10n.tr("Vector", "key_backup_setup_banner_title") 
   }
   /// Messages in encrypted rooms are secured with end-to-end encryption. Only you and the recipient(s) have the keys to read these messages.\n\nSecurely back up your keys to avoid losing them.
   internal static var keyBackupSetupIntroInfo: String { 
@@ -1758,6 +1790,22 @@ internal enum VectorL10n {
   internal static var leave: String { 
     return VectorL10n.tr("Vector", "leave") 
   }
+  /// Got it
+  internal static var majorUpdateDoneAction: String { 
+    return VectorL10n.tr("Vector", "major_update_done_action") 
+  }
+  /// We're excited to announce we've changed name! Your app is up to date and you're signed in to your account.
+  internal static var majorUpdateInformation: String { 
+    return VectorL10n.tr("Vector", "major_update_information") 
+  }
+  /// Learn more
+  internal static var majorUpdateLearnMoreAction: String { 
+    return VectorL10n.tr("Vector", "major_update_learn_more_action") 
+  }
+  /// Riot is now Element
+  internal static var majorUpdateTitle: String { 
+    return VectorL10n.tr("Vector", "major_update_title") 
+  }
   /// SESSION INFO
   internal static var manageSessionInfo: String { 
     return VectorL10n.tr("Vector", "manage_session_info") 
@@ -1894,7 +1942,7 @@ internal enum VectorL10n {
   internal static var rename: String { 
     return VectorL10n.tr("Vector", "rename") 
   }
-  /// Please launch Riot on another device that can decrypt the message so it can send the keys to this session.
+  /// Please launch Element on another device that can decrypt the message so it can send the keys to this session.
   internal static var rerequestKeysAlertMessage: String { 
     return VectorL10n.tr("Vector", "rerequest_keys_alert_message") 
   }
@@ -2914,6 +2962,194 @@ internal enum VectorL10n {
   internal static var searchRooms: String { 
     return VectorL10n.tr("Vector", "search_rooms") 
   }
+  /// Access your secure message history and your cross-signing identity for verifying other sessions by entering your recovery key.
+  internal static var secretsRecoveryWithKeyInformationDefault: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_key_information_default") 
+  }
+  /// Use your Recovery Key to verify this device.
+  internal static var secretsRecoveryWithKeyInformationVerifyDevice: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_key_information_verify_device") 
+  }
+  /// Please verify that you entered the correct recovery key.
+  internal static var secretsRecoveryWithKeyInvalidRecoveryKeyMessage: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_key_invalid_recovery_key_message") 
+  }
+  /// Unable to access secret storage
+  internal static var secretsRecoveryWithKeyInvalidRecoveryKeyTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_key_invalid_recovery_key_title") 
+  }
+  /// Use Key
+  internal static var secretsRecoveryWithKeyRecoverAction: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_key_recover_action") 
+  }
+  /// Enter Recovery Key
+  internal static var secretsRecoveryWithKeyRecoveryKeyPlaceholder: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_key_recovery_key_placeholder") 
+  }
+  /// Enter
+  internal static var secretsRecoveryWithKeyRecoveryKeyTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_key_recovery_key_title") 
+  }
+  /// Recovery Key
+  internal static var secretsRecoveryWithKeyTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_key_title") 
+  }
+  /// Access your secure message history and your cross-signing identity for verifying other sessions by entering your recovery passphrase.
+  internal static var secretsRecoveryWithPassphraseInformationDefault: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_information_default") 
+  }
+  /// Use your Recovery Passphrase to verify this device.
+  internal static var secretsRecoveryWithPassphraseInformationVerifyDevice: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_information_verify_device") 
+  }
+  /// Please verify that you entered the correct recovery passphrase.
+  internal static var secretsRecoveryWithPassphraseInvalidPassphraseMessage: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_invalid_passphrase_message") 
+  }
+  /// Unable to access secret storage
+  internal static var secretsRecoveryWithPassphraseInvalidPassphraseTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_invalid_passphrase_title") 
+  }
+  /// Don’t know your recovery passphrase? You can 
+  internal static var secretsRecoveryWithPassphraseLostPassphraseActionPart1: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_lost_passphrase_action_part1") 
+  }
+  /// use your recovery key
+  internal static var secretsRecoveryWithPassphraseLostPassphraseActionPart2: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_lost_passphrase_action_part2") 
+  }
+  /// .
+  internal static var secretsRecoveryWithPassphraseLostPassphraseActionPart3: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_lost_passphrase_action_part3") 
+  }
+  /// Enter Recovery Passphrase
+  internal static var secretsRecoveryWithPassphrasePassphrasePlaceholder: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_passphrase_placeholder") 
+  }
+  /// Enter
+  internal static var secretsRecoveryWithPassphrasePassphraseTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_passphrase_title") 
+  }
+  /// Use Passphrase
+  internal static var secretsRecoveryWithPassphraseRecoverAction: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_recover_action") 
+  }
+  /// Recovery Passphrase
+  internal static var secretsRecoveryWithPassphraseTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_title") 
+  }
+  /// Done
+  internal static var secretsSetupRecoveryKeyDoneAction: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_key_done_action") 
+  }
+  /// Save
+  internal static var secretsSetupRecoveryKeyExportAction: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_key_export_action") 
+  }
+  /// Store your Recovery Key somewhere safe. It can be used to unlock your encrypted messages & data.
+  internal static var secretsSetupRecoveryKeyInformation: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_key_information") 
+  }
+  /// Loading…
+  internal static var secretsSetupRecoveryKeyLoading: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_key_loading") 
+  }
+  /// ✓ Print it and store it somewhere safe\n✓ Save it on a USB key or backup drive\n✓ Copy it to your personal cloud storage
+  internal static var secretsSetupRecoveryKeyStorageAlertMessage: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_key_storage_alert_message") 
+  }
+  /// Keep it safe
+  internal static var secretsSetupRecoveryKeyStorageAlertTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_key_storage_alert_title") 
+  }
+  /// Save your Security Key
+  internal static var secretsSetupRecoveryKeyTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_key_title") 
+  }
+  /// Don't use your account password.
+  internal static var secretsSetupRecoveryPassphraseAdditionalInformation: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_additional_information") 
+  }
+  /// Enter your Security Phrase again to confirm it.
+  internal static var secretsSetupRecoveryPassphraseConfirmInformation: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_confirm_information") 
+  }
+  /// Confirm passphrase
+  internal static var secretsSetupRecoveryPassphraseConfirmPassphrasePlaceholder: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder") 
+  }
+  /// Confirm
+  internal static var secretsSetupRecoveryPassphraseConfirmPassphraseTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_confirm_passphrase_title") 
+  }
+  /// Enter a security phrase only you know, used to secure secrets on your server.
+  internal static var secretsSetupRecoveryPassphraseInformation: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_information") 
+  }
+  /// Set a Security Phrase
+  internal static var secretsSetupRecoveryPassphraseTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_title") 
+  }
+  /// Done
+  internal static var secretsSetupRecoveryPassphraseValidateAction: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_validate_action") 
+  }
+  /// Safeguard against losing access to encrypted messages & data
+  internal static var secureBackupSetupBannerSubtitle: String { 
+    return VectorL10n.tr("Vector", "secure_backup_setup_banner_subtitle") 
+  }
+  /// Secure Backup
+  internal static var secureBackupSetupBannerTitle: String { 
+    return VectorL10n.tr("Vector", "secure_backup_setup_banner_title") 
+  }
+  /// If you cancel now, you may lose encrypted messages & data if you lose access to your logins.\n\nYou can also set up Secure Backup & manage your keys in Settings.
+  internal static var secureKeyBackupSetupCancelAlertMessage: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_cancel_alert_message") 
+  }
+  /// Are your sure?
+  internal static var secureKeyBackupSetupCancelAlertTitle: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_cancel_alert_title") 
+  }
+  /// Delete it
+  internal static var secureKeyBackupSetupExistingBackupErrorDeleteIt: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_existing_backup_error_delete_it") 
+  }
+  /// Unlock it to reuse it in the secure backup or delete it to create a new messages backup in the secure backup.
+  internal static var secureKeyBackupSetupExistingBackupErrorInfo: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_existing_backup_error_info") 
+  }
+  /// A backup for messages already exists
+  internal static var secureKeyBackupSetupExistingBackupErrorTitle: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_existing_backup_error_title") 
+  }
+  /// Unlock it
+  internal static var secureKeyBackupSetupExistingBackupErrorUnlockIt: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_existing_backup_error_unlock_it") 
+  }
+  /// Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server.
+  internal static var secureKeyBackupSetupIntroInfo: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_intro_info") 
+  }
+  /// Secure Backup
+  internal static var secureKeyBackupSetupIntroTitle: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_intro_title") 
+  }
+  /// Generate a security key to store somewhere safe like a password manager or a safe.
+  internal static var secureKeyBackupSetupIntroUseSecurityKeyInfo: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_intro_use_security_key_info") 
+  }
+  /// Use a Security Key
+  internal static var secureKeyBackupSetupIntroUseSecurityKeyTitle: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_intro_use_security_key_title") 
+  }
+  /// Enter a secret phrase only you know, and generate a key for backup.
+  internal static var secureKeyBackupSetupIntroUseSecurityPassphraseInfo: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_intro_use_security_passphrase_info") 
+  }
+  /// Use a Security Passphrase
+  internal static var secureKeyBackupSetupIntroUseSecurityPassphraseTitle: String { 
+    return VectorL10n.tr("Vector", "secure_key_backup_setup_intro_use_security_passphrase_title") 
+  }
   /// ADVANCED
   internal static var securitySettingsAdvanced: String { 
     return VectorL10n.tr("Vector", "security_settings_advanced") 
@@ -2930,7 +3166,7 @@ internal enum VectorL10n {
   internal static var securitySettingsBlacklistUnverifiedDevicesDescription: String { 
     return VectorL10n.tr("Vector", "security_settings_blacklist_unverified_devices_description") 
   }
-  /// Sorry. This action is not available on Riot-iOS yet. Please use another Matrix client to set it up. Riot-iOS will use it.
+  /// Sorry. This action is not available on Element iOS yet. Please use another Matrix client to set it up. Element iOS will use it.
   internal static var securitySettingsComingSoon: String { 
     return VectorL10n.tr("Vector", "security_settings_coming_soon") 
   }
@@ -2978,9 +3214,9 @@ internal enum VectorL10n {
   internal static var securitySettingsCryptoSessions: String { 
     return VectorL10n.tr("Vector", "security_settings_crypto_sessions") 
   }
-  /// Trust sessions to grant access to end-to-end encrypted messages. If you don’t recognise a session, change your login password and reset your Message Password used for Message Backup.
-  internal static var securitySettingsCryptoSessionsDescription: String { 
-    return VectorL10n.tr("Vector", "security_settings_crypto_sessions_description") 
+  /// If you don’t recognise a login, change your password and reset Secure Backup.
+  internal static var securitySettingsCryptoSessionsDescription2: String { 
+    return VectorL10n.tr("Vector", "security_settings_crypto_sessions_description_2") 
   }
   /// Loading sessions…
   internal static var securitySettingsCryptoSessionsLoading: String { 
@@ -2994,9 +3230,33 @@ internal enum VectorL10n {
   internal static var securitySettingsExportKeysManually: String { 
     return VectorL10n.tr("Vector", "security_settings_export_keys_manually") 
   }
+  /// SECURE BACKUP
+  internal static var securitySettingsSecureBackup: String { 
+    return VectorL10n.tr("Vector", "security_settings_secure_backup") 
+  }
+  /// Delete
+  internal static var securitySettingsSecureBackupDelete: String { 
+    return VectorL10n.tr("Vector", "security_settings_secure_backup_delete") 
+  }
+  /// Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server.
+  internal static var securitySettingsSecureBackupDescription: String { 
+    return VectorL10n.tr("Vector", "security_settings_secure_backup_description") 
+  }
+  /// Set up
+  internal static var securitySettingsSecureBackupSetup: String { 
+    return VectorL10n.tr("Vector", "security_settings_secure_backup_setup") 
+  }
+  /// Synchronise
+  internal static var securitySettingsSecureBackupSynchronise: String { 
+    return VectorL10n.tr("Vector", "security_settings_secure_backup_synchronise") 
+  }
   /// Security
   internal static var securitySettingsTitle: String { 
     return VectorL10n.tr("Vector", "security_settings_title") 
+  }
+  /// Confirm your identity by entering your account password
+  internal static var securitySettingsUserPasswordDescription: String { 
+    return VectorL10n.tr("Vector", "security_settings_user_password_description") 
   }
   /// Send to %@
   internal static func sendTo(_ p1: String) -> String {
@@ -3074,7 +3334,7 @@ internal enum VectorL10n {
   internal static var settingsAdvanced: String { 
     return VectorL10n.tr("Vector", "settings_advanced") 
   }
-  /// Receive incoming calls on your lock screen. See your Riot calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.
+  /// Receive incoming calls on your lock screen. See your Element calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.
   internal static var settingsCallkitInfo: String { 
     return VectorL10n.tr("Vector", "settings_callkit_info") 
   }
@@ -3133,10 +3393,6 @@ internal enum VectorL10n {
   /// Copyright
   internal static var settingsCopyright: String { 
     return VectorL10n.tr("Vector", "settings_copyright") 
-  }
-  /// https://riot.im/copyright
-  internal static var settingsCopyrightUrl: String { 
-    return VectorL10n.tr("Vector", "settings_copyright_url") 
   }
   /// Encrypt to verified sessions only
   internal static var settingsCryptoBlacklistUnverifiedDevices: String { 
@@ -3426,14 +3682,6 @@ internal enum VectorL10n {
   internal static var settingsLabsMessageReaction: String { 
     return VectorL10n.tr("Vector", "settings_labs_message_reaction") 
   }
-  /// Lazy load rooms members
-  internal static var settingsLabsRoomMembersLazyLoading: String { 
-    return VectorL10n.tr("Vector", "settings_labs_room_members_lazy_loading") 
-  }
-  /// Your homeserver does not support lazy loading of room members yet. Try later.
-  internal static var settingsLabsRoomMembersLazyLoadingErrorMessage: String { 
-    return VectorL10n.tr("Vector", "settings_labs_room_members_lazy_loading_error_message") 
-  }
   /// Mark all messages as read
   internal static var settingsMarkAllAsRead: String { 
     return VectorL10n.tr("Vector", "settings_mark_all_as_read") 
@@ -3486,10 +3734,6 @@ internal enum VectorL10n {
   internal static var settingsPrivacyPolicy: String { 
     return VectorL10n.tr("Vector", "settings_privacy_policy") 
   }
-  /// https://riot.im/privacy
-  internal static var settingsPrivacyPolicyUrl: String { 
-    return VectorL10n.tr("Vector", "settings_privacy_policy_url") 
-  }
   /// Profile Picture
   internal static var settingsProfilePicture: String { 
     return VectorL10n.tr("Vector", "settings_profile_picture") 
@@ -3541,10 +3785,6 @@ internal enum VectorL10n {
   /// Terms & Conditions
   internal static var settingsTermConditions: String { 
     return VectorL10n.tr("Vector", "settings_term_conditions") 
-  }
-  /// https://riot.im/tac_apple
-  internal static var settingsTermConditionsUrl: String { 
-    return VectorL10n.tr("Vector", "settings_term_conditions_url") 
   }
   /// Third-party Notices
   internal static var settingsThirdPartyNotices: String { 
@@ -3646,9 +3886,9 @@ internal enum VectorL10n {
   internal static var signOutNonExistingKeyBackupAlertDiscardKeyBackupAction: String { 
     return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_alert_discard_key_backup_action") 
   }
-  /// Start using Key Backup
-  internal static var signOutNonExistingKeyBackupAlertSetupKeyBackupAction: String { 
-    return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_alert_setup_key_backup_action") 
+  /// Start using Secure Backup
+  internal static var signOutNonExistingKeyBackupAlertSetupSecureBackupAction: String { 
+    return VectorL10n.tr("Vector", "sign_out_non_existing_key_backup_alert_setup_secure_backup_action") 
   }
   /// You’ll lose access to your encrypted messages if you sign out now
   internal static var signOutNonExistingKeyBackupAlertTitle: String { 
@@ -3678,9 +3918,13 @@ internal enum VectorL10n {
   internal static var start: String { 
     return VectorL10n.tr("Vector", "start") 
   }
-  /// Communicate, your way.\n\nA chat app, under your control and entirely flexible. Riot lets you communicate the way you want. Made for [matrix] - the standard for open, decentralised communication.\n\nGet a free matrix.org account, get your own server at https://modular.im, or use another Matrix server.\n\nWhy choose Riot.im?\n\nCOMPLETE COMMUNICATION: Build rooms around your teams, your friends, your community - however you like! Chat, share files, add widgets and make voice and video calls - all free of charge.\n\nPOWERFUL INTEGRATIONS: Use Riot.im with the tools you know and love. With Riot.im you can even chat with users and groups on other chat apps.\n\nPRIVATE AND SECURE: Keep your conversations secret. State of the art end-to-end encryption ensures that private communication stays private.\n\nOPEN, NOT CLOSED: Open source, and built on Matrix. Own your own data by hosting your own server, or selecting one you trust.\n\nEVERYWHERE YOU ARE: Stay in touch wherever you are with fully synchronised message history across all your devices and online at https://riot.im.
+  /// Element is a new type of messenger and collaboration app that:\n\n1. Puts you in control to preserve your privacy\n2. Lets you communicate with anyone in the Matrix network, and even beyond by integrating with apps such as Slack\n3. Protects you from advertising, datamining, backdoors and walled gardens\n4. Secures you through end-to-end encryption, with cross-signing to verify others\n\nElement is completely different from other messaging and collaboration apps because it is decentralised and open source.\n\nElement lets you self-host - or choose a host - so that you have privacy, ownership and control of your data and conversations. It gives you access to an open network; so you’re not just stuck speaking to other Element users only. And it is very secure.\n\nElement is able to do all this because it operates on Matrix - the standard for open, decentralised communication. \n\nElement puts you in control by letting you choose who hosts your conversations. From the Element app, you can choose to host in different ways:\n\n1. Get a free account on the matrix.org public server\n2. Self-host your account by running a server on your own hardware\n3. Sign up for an account on a custom server by simply subscribing to the Element Matrix Services hosting platform\n\nWhy choose Element?\n\nOWN YOUR DATA: You decide where to keep your data and messages. You own it and control it, not some MEGACORP that mines your data or gives access to third parties.\n\nOPEN MESSAGING AND COLLABORATION: You can chat with anyone else in the Matrix network, whether they’re using Element or another Matrix app, and even if they are using a different messaging system of the likes of Slack, IRC or XMPP.\n\nSUPER-SECURE: Real end-to-end encryption (only those in the conversation can decrypt messages), and cross-signing to verify the devices of conversation participants.\n\nCOMPLETE COMMUNICATION: Messaging, voice and video calls, file sharing, screen sharing and a whole bunch of integrations, bots and widgets. Build rooms, communities, stay in touch and get things done.\n\nEVERYWHERE YOU ARE: Stay in touch wherever you are with fully synchronised message history across all your devices and on the web at https://element.io/app.
   internal static var storeFullDescription: String { 
     return VectorL10n.tr("Vector", "store_full_description") 
+  }
+  /// Privacy-preserving chat and collaboration app, on an open network. Decentralised to put you in control. No datamining, no backdoors and no third party access.
+  internal static var storePromotionalText: String { 
+    return VectorL10n.tr("Vector", "store_promotional_text") 
   }
   /// Secure decentralised chat/VoIP
   internal static var storeShortDescription: String { 

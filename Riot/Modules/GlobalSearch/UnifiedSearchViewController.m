@@ -187,6 +187,11 @@
     [self checkAndShowBackgroundImage];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return ThemeService.shared.theme.statusBarStyle;
+}
+
 #pragma mark -
 
 - (MXEvent*)selectedSearchEvent
@@ -234,7 +239,7 @@
         peopleSearchDataSource = [[ContactsDataSource alloc] initWithMatrixSession:mainSession];
         peopleSearchDataSource.areSectionsShrinkable = YES;
         peopleSearchDataSource.displaySearchInputInContactsList = YES;
-        peopleSearchDataSource.contactCellAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        peopleSearchDataSource.contactCellAccessoryImage = [[UIImage imageNamed: @"disclosure_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textSecondaryColor];;
         [peopleSearchViewController displayList:peopleSearchDataSource];
         
         // Check whether there are others sessions

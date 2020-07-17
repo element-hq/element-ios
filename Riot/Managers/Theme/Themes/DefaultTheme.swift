@@ -21,27 +21,31 @@ import UIKit
 @objcMembers
 class DefaultTheme: NSObject, Theme {
 
+    var identifier: String = "default"
+    
     var backgroundColor: UIColor = UIColor(rgb: 0xFFFFFF)
 
-    var baseColor: UIColor = UIColor(rgb: 0x27303A)
+    var baseColor: UIColor = UIColor(rgb: 0xF5F7FA)
+    var baseIconPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
     var baseTextPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
-    var baseTextSecondaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
+    var baseTextSecondaryColor: UIColor = UIColor(rgb: 0x8F97A3)
 
     var searchBackgroundColor: UIColor = UIColor(rgb: 0xFFFFFF)
-    var searchPlaceholderColor: UIColor = UIColor(rgb: 0x61708B)
+    var searchPlaceholderColor: UIColor = UIColor(rgb: 0x8F97A3)
 
-    var headerBackgroundColor: UIColor = UIColor(rgb: 0xF3F8FD)
+    var headerBackgroundColor: UIColor = UIColor(rgb: 0xF5F7FA)
     var headerBorderColor: UIColor  = UIColor(rgb: 0xE9EDF1)
-    var headerTextPrimaryColor: UIColor = UIColor(rgb: 0x61708B)
-    var headerTextSecondaryColor: UIColor = UIColor(rgb: 0xC8C8CD)
+    var headerTextPrimaryColor: UIColor = UIColor(rgb: 0x171910)
+    var headerTextSecondaryColor: UIColor = UIColor(rgb: 0x8F97A3)
 
-    var textPrimaryColor: UIColor = UIColor(rgb: 0x2E2F32)
-    var textSecondaryColor: UIColor = UIColor(rgb: 0x9E9E9E)
+    var textPrimaryColor: UIColor = UIColor(rgb: 0x171910)
+    var textSecondaryColor: UIColor = UIColor(rgb: 0x8F97A3)
 
-    var tintColor: UIColor = UIColor(rgb: 0x03B381)
+    var tintColor: UIColor = UIColor(displayP3Red: 0.05098039216, green: 0.7450980392, blue: 0.5450980392, alpha: 1.0)
     var tintBackgroundColor: UIColor = UIColor(rgb: 0xe9fff9)
+    var tabBarUnselectedItemTintColor: UIColor = UIColor(rgb: 0xC1C6CD)
     var unreadRoomIndentColor: UIColor = UIColor(rgb: 0x2E3648)
-    var lineBreakColor: UIColor = UIColor(rgb: 0xEEEFEF)
+    var lineBreakColor: UIColor = UIColor(rgb: 0xDDE4EE)        
     
     var noticeColor: UIColor = UIColor(rgb: 0xFF4B55)
     var noticeSecondaryColor: UIColor = UIColor(rgb: 0x61708B)
@@ -63,40 +67,58 @@ class DefaultTheme: NSObject, Theme {
         UIColor(rgb: 0x5C56F5),
         UIColor(rgb: 0x74D12C)
     ]
-
-    var statusBarStyle: UIStatusBarStyle = .lightContent
+    
+    var statusBarStyle: UIStatusBarStyle {
+        if #available(iOS 13.0, *) {
+            return .darkContent
+        } else {
+            return .default
+        }
+    }
     var scrollBarStyle: UIScrollView.IndicatorStyle = .default
     var keyboardAppearance: UIKeyboardAppearance = .light
 
-    var placeholderTextColor: UIColor = UIColor(white: 0.7, alpha: 1.0) // Use default 70% gray color
-    var selectedBackgroundColor: UIColor?  // Use the default selection color
+    var placeholderTextColor: UIColor = UIColor(rgb: 0x8F97A3) // Use secondary text color
+    
+    var selectedBackgroundColor: UIColor = UIColor(rgb: 0xF5F7FA)
+    
     var overlayBackgroundColor: UIColor = UIColor(white: 0.7, alpha: 0.5)
     var matrixSearchBackgroundImageTintColor: UIColor = UIColor(rgb: 0xE7E7E7)
     
     func applyStyle(onTabBar tabBar: UITabBar) {
+        tabBar.unselectedItemTintColor = self.tabBarUnselectedItemTintColor
         tabBar.tintColor = self.tintColor
-        tabBar.barTintColor = self.headerBackgroundColor
+        tabBar.barTintColor = self.baseColor
         tabBar.isTranslucent = false
     }
-
+    
+    // Note: We are not using UINavigationBarAppearance on iOS 13+ atm because of UINavigationBar directly include UISearchBar on their titleView that cause crop issues with UINavigationController pop.
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
-        navigationBar.tintColor = self.baseTextPrimaryColor
+        navigationBar.tintColor = self.tintColor
         navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: self.baseTextPrimaryColor
+            NSAttributedString.Key.foregroundColor: self.textPrimaryColor
         ]
         navigationBar.barTintColor = self.baseColor
+        navigationBar.shadowImage = UIImage() // Remove bottom shadow
 
         // The navigation bar needs to be opaque so that its background color is the expected one
         navigationBar.isTranslucent = false
     }
-
+    
     func applyStyle(onSearchBar searchBar: UISearchBar) {
-        searchBar.barStyle = .default
-        searchBar.tintColor = self.searchPlaceholderColor
-        searchBar.barTintColor = self.headerBackgroundColor
+        searchBar.searchBarStyle = .default
+        searchBar.barTintColor = self.baseColor
+        searchBar.isTranslucent = false
+        searchBar.backgroundImage = UIImage() // Remove top and bottom shadow
+        searchBar.tintColor = self.tintColor
         
-        if let searchBarTextField = searchBar.vc_searchTextField {
-            searchBarTextField.textColor = searchBar.tintColor
+        if #available(iOS 13.0, *) {
+            searchBar.searchTextField.backgroundColor = self.searchBackgroundColor
+            searchBar.searchTextField.textColor = self.searchPlaceholderColor
+        } else {
+            if let searchBarTextField = searchBar.vc_searchTextField {
+                searchBarTextField.textColor = self.searchPlaceholderColor
+            }
         }
     }
     

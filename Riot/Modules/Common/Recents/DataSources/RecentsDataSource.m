@@ -24,6 +24,7 @@
 #import "ThemeService.h"
 
 #import "MXRoom+Riot.h"
+#import "MXSession+Riot.h"
 
 #import "AppDelegate.h"
 
@@ -42,7 +43,7 @@
 
 NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSourceTapOnDirectoryServerChange";
 
-@interface RecentsDataSource() <KeyBackupBannerCellDelegate>
+@interface RecentsDataSource() <SecureBackupBannerCellDelegate, CrossSigningSetupBannerCellDelegate>
 {
     NSMutableArray* invitesCellDataArray;
     NSMutableArray* favoriteCellDataArray;
@@ -63,12 +64,15 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     NSTimer *publicRoomsTriggerTimer;
 }
 
-@property (nonatomic, assign, readwrite) KeyBackupBanner keyBackupBanner;
+@property (nonatomic, assign, readwrite) SecureBackupBannerDisplay secureBackupBannerDisplay;
+@property (nonatomic, assign, readwrite) CrossSigningBannerDisplay crossSigningBannerDisplay;
+
+@property (nonatomic, strong) CrossSigningService *crossSigningService;
 
 @end
 
 @implementation RecentsDataSource
-@synthesize directorySection, invitesSection, favoritesSection, peopleSection, conversationSection, lowPrioritySection, serverNoticeSection, keyBackupBannerSection;
+@synthesize directorySection, invitesSection, favoritesSection, peopleSection, conversationSection, lowPrioritySection, serverNoticeSection, secureBackupBannerSection, crossSigningBannerSection;
 @synthesize hiddenCellIndexPath, droppingCellIndexPath, droppingCellBackGroundView;
 @synthesize invitesCellDataArray, favoriteCellDataArray, peopleCellDataArray, conversationCellDataArray, lowPriorityCellDataArray, serverNoticeCellDataArray;
 
@@ -83,10 +87,12 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         lowPriorityCellDataArray = [[NSMutableArray alloc] init];
         serverNoticeCellDataArray = [[NSMutableArray alloc] init];
         conversationCellDataArray = [[NSMutableArray alloc] init];
-
         
-        _keyBackupBanner = KeyBackupBannerNone;
-        keyBackupBannerSection = -1;
+        _crossSigningBannerDisplay = CrossSigningBannerDisplayNone;
+        crossSigningBannerSection = -1;
+        
+        _secureBackupBannerDisplay = SecureBackupBannerDisplayNone;
+        secureBackupBannerSection = -1;
         directorySection = -1;
         invitesSection = -1;
         favoritesSection = -1;
@@ -99,6 +105,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         shrinkedSectionsBitMask = 0;
         
         roomTagsListenerByUserId = [[NSMutableDictionary alloc] init];
+        
+        _crossSigningService = [CrossSigningService new];
         
         // Set default data and view classes
         [self registerCellDataClass:RecentCellData.class forCellIdentifier:kMXKRecentCellIdentifier];
@@ -129,8 +137,9 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         [self unregisterKeyBackupStateDidChangeNotification];
     }
 
-    [self updateKeyBackupBanner];
+    [self updateSecureBackupBanner];
     [self forceRefresh];
+    [self refreshCrossSigningBannerDisplay];
 }
 
 - (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
@@ -168,82 +177,105 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (void)keyBackupStateDidChangeNotification:(NSNotification*)notification
 {
-    if ([self updateKeyBackupBanner])
+    if ([self updateSecureBackupBanner])
     {
         [self forceRefresh];
     }
 }
 
-- (BOOL)updateKeyBackupBanner
+- (BOOL)updateSecureBackupBanner
 {
-    KeyBackupBanner keyBackupBanner = KeyBackupBannerNone;
-        
-    if (self.recentsDataSourceMode == RecentsDataSourceModeHome && self.mxSession.crypto.backup.hasKeysToBackup)
+    SecureBackupBannerDisplay secureBackupBanner = SecureBackupBannerDisplayNone;
+    
+    if (self.recentsDataSourceMode == RecentsDataSourceModeHome)
     {
-        KeyBackupBannerPreferences *keyBackupBannersPreferences = KeyBackupBannerPreferences.shared;
+        SecureBackupBannerPreferences *secureBackupBannersPreferences = SecureBackupBannerPreferences.shared;
         
-        NSString *keyBackupVersion = self.mxSession.crypto.backup.keyBackupVersion.version;
-        
-        switch (self.mxSession.crypto.backup.state) {
-            case MXKeyBackupStateDisabled:
-                // Show key backup setup banner only if user has not hidden it once.
-                if (keyBackupBannersPreferences.hideSetupBanner)
-                {
-                    keyBackupBanner = KeyBackupBannerNone;
-                }
-                else
-                {
-                    keyBackupBanner = KeyBackupBannerSetup;
-                }
-                break;
-            case MXKeyBackupStateNotTrusted:
-            case MXKeyBackupStateWrongBackUpVersion:
-                // Show key backup recover banner only if user has not hidden it for the given version.
-                if (keyBackupVersion && [keyBackupBannersPreferences isRecoverBannerHiddenFor:keyBackupVersion])
-                {
-                    keyBackupBanner = KeyBackupBannerNone;
-                }
-                else
-                {
-                    keyBackupBanner = KeyBackupBannerRecover;
-                }
-                break;
-            default:
-                keyBackupBanner = KeyBackupBannerNone;
-                break;
+        if (!secureBackupBannersPreferences.hideSetupBanner && [self.mxSession vc_canSetupSecureBackup])
+        {
+            secureBackupBanner = SecureBackupBannerDisplaySetup;
         }
     }
-
-    BOOL updated = (self.keyBackupBanner != keyBackupBanner);
-
-    self.keyBackupBanner = keyBackupBanner;
-
+    
+    BOOL updated = (self.secureBackupBannerDisplay != secureBackupBanner);
+    
+    self.secureBackupBannerDisplay = secureBackupBanner;
+    
     return updated;
 }
 
-- (void)hideKeyBackupBanner:(KeyBackupBanner)keyBackupBanner
+- (void)hideKeyBackupBannerWithDisplay:(SecureBackupBannerDisplay)secureBackupBannerDisplay
 {
-    KeyBackupBannerPreferences *keyBackupBannersPreferences = KeyBackupBannerPreferences.shared;
+    SecureBackupBannerPreferences *keyBackupBannersPreferences = SecureBackupBannerPreferences.shared;
     
-    switch (keyBackupBanner) {
-        case KeyBackupBannerSetup:
+    switch (secureBackupBannerDisplay) {
+        case SecureBackupBannerDisplaySetup:
             keyBackupBannersPreferences.hideSetupBanner = YES;
-            break;
-        case KeyBackupBannerRecover:
-        {
-            NSString *keyBackupVersion = self.mxSession.crypto.backup.keyBackupVersion.version;
-            if (keyBackupVersion)
-            {
-                [keyBackupBannersPreferences hideRecoverBannerFor:keyBackupVersion];
-            }
-        }
             break;
         default:
             break;
     }
     
-    [self updateKeyBackupBanner];
+    [self updateSecureBackupBanner];
     [self forceRefresh];
+}
+
+#pragma mark - Cross-signing setup banner
+
+- (void)refreshCrossSigningBannerDisplay
+{
+    if (self.recentsDataSourceMode == RecentsDataSourceModeHome)
+    {
+        CrossSigningBannerPreferences *crossSigningBannerPreferences = CrossSigningBannerPreferences.shared;
+        
+        if (!crossSigningBannerPreferences.hideSetupBanner)
+        {
+            [self.crossSigningService canSetupCrossSigningFor:self.mxSession success:^(BOOL canSetupCrossSigning) {
+
+                CrossSigningBannerDisplay crossSigningBannerDisplay = canSetupCrossSigning ? CrossSigningBannerDisplaySetup : CrossSigningBannerDisplayNone;
+                
+                [self updateCrossSigningBannerDisplay:crossSigningBannerDisplay];
+                
+            } failure:^(NSError * _Nonnull error) {
+                NSLog(@"[RecentsDataSource] refreshCrossSigningBannerDisplay: Fail to verify if cross signing banner can be displayed");
+            }];
+        }
+        else
+        {
+            [self updateCrossSigningBannerDisplay:CrossSigningBannerDisplayNone];
+        }
+    }
+    else
+    {
+        [self updateCrossSigningBannerDisplay:CrossSigningBannerDisplayNone];
+    }
+}
+
+- (void)updateCrossSigningBannerDisplay:(CrossSigningBannerDisplay)crossSigningBannerDisplay
+{
+    if (self.crossSigningBannerDisplay == crossSigningBannerDisplay)
+    {
+        return;
+    }
+    
+    self.crossSigningBannerDisplay = crossSigningBannerDisplay;
+    [self forceRefresh];
+}
+
+
+- (void)hideCrossSigningBannerWithDisplay:(CrossSigningBannerDisplay)crossSigningBannerDisplay
+{
+    CrossSigningBannerPreferences *crossSigningBannerPreferences = CrossSigningBannerPreferences.shared;
+    
+    switch (crossSigningBannerDisplay) {
+        case CrossSigningBannerDisplaySetup:
+            crossSigningBannerPreferences.hideSetupBanner = YES;
+            break;
+        default:
+            break;
+    }
+    
+    [self refreshCrossSigningBannerDisplay];
 }
 
 #pragma mark -
@@ -360,11 +392,15 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     // Check whether all data sources are ready before rendering recents
     if (self.state == MXKDataSourceStateReady)
     {
-        keyBackupBannerSection = directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = invitesSection = serverNoticeSection = -1;
+        crossSigningBannerSection = secureBackupBannerSection = directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = invitesSection = serverNoticeSection = -1;
         
-        if (self.keyBackupBanner != KeyBackupBannerNone)
+        if (self.crossSigningBannerDisplay != CrossSigningBannerDisplayNone)
         {
-            self.keyBackupBannerSection = sectionsCount++;
+            crossSigningBannerSection = sectionsCount++;
+        }
+        else if (self.secureBackupBannerDisplay != SecureBackupBannerDisplayNone)
+        {
+            secureBackupBannerSection = sectionsCount++;
         }
         
         if (invitesCellDataArray.count > 0)
@@ -419,7 +455,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     
     NSUInteger count = 0;
 
-    if (section == self.keyBackupBannerSection && self.keyBackupBanner != KeyBackupBannerNone)
+    if (section == self.crossSigningBannerSection && self.crossSigningBannerDisplay != CrossSigningBannerDisplayNone)
+    {
+        count = 1;
+    }
+    else if (section == self.secureBackupBannerSection && self.secureBackupBannerDisplay != SecureBackupBannerDisplayNone)
     {
         count = 1;
     }
@@ -468,7 +508,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (CGFloat)heightForHeaderInSection:(NSInteger)section
 {
-    if (section == self.keyBackupBannerSection)
+    if (section == self.secureBackupBannerSection || section == self.crossSigningBannerSection)
     {
         return 0.0;
     }
@@ -632,7 +672,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 - (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
 {
     // No header view in key backup banner section
-    if (section == self.keyBackupBannerSection)
+    if (section == self.secureBackupBannerSection || section == self.crossSigningBannerSection)
     {
         return nil;
     }
@@ -696,6 +736,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             chevron = [UIImage imageNamed:@"shrink_icon"];
         }
         UIImageView *chevronView = [[UIImageView alloc] initWithImage:chevron];
+        chevronView.tintColor = ThemeService.shared.theme.textSecondaryColor;
         chevronView.contentMode = UIViewContentModeCenter;
         [sectionHeader addSubview:chevronView];
         sectionHeader.accessoryView = chevronView;
@@ -745,6 +786,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             UIImageView *chevronImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 6, 12)];
             chevronImageView.contentMode = UIViewContentModeScaleAspectFit;
             chevronImageView.image = [UIImage imageNamed:@"disclosure_icon"];
+            chevronImageView.tintColor = ThemeService.shared.theme.textSecondaryColor;
             [directorySectionContainer addSubview:chevronImageView];
             directorySectionContainer.disclosureView = chevronImageView;
 
@@ -780,10 +822,16 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         return [[UITableViewCell alloc] init];
     }
     
-    if (indexPath.section == self.keyBackupBannerSection)
+    if (indexPath.section == self.crossSigningBannerSection)
     {
-        KeyBackupBannerCell* keyBackupBannerCell = [tableView dequeueReusableCellWithIdentifier:KeyBackupBannerCell.defaultReuseIdentifier forIndexPath:indexPath];
-        [keyBackupBannerCell configureFor:self.keyBackupBanner];
+        CrossSigningSetupBannerCell* crossSigningSetupBannerCell = [tableView dequeueReusableCellWithIdentifier:CrossSigningSetupBannerCell.defaultReuseIdentifier forIndexPath:indexPath];
+        crossSigningSetupBannerCell.delegate = self;
+        return crossSigningSetupBannerCell;
+    }
+    else if (indexPath.section == self.secureBackupBannerSection)
+    {
+        SecureBackupBannerCell* keyBackupBannerCell = [tableView dequeueReusableCellWithIdentifier:SecureBackupBannerCell.defaultReuseIdentifier forIndexPath:indexPath];
+        [keyBackupBannerCell configureFor:self.secureBackupBannerDisplay];
         keyBackupBannerCell.delegate = self;
         return keyBackupBannerCell;
     }
@@ -1091,7 +1139,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     _missedDirectDiscussionsCount = _missedHighlightDirectDiscussionsCount = 0;
     _missedGroupDiscussionsCount = _missedHighlightGroupDiscussionsCount = 0;
     
-    keyBackupBannerSection = directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = serverNoticeSection = invitesSection = -1;
+    secureBackupBannerSection = directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = serverNoticeSection = invitesSection = -1;
     
     if (displayedRecentsDataSourceArray.count > 0)
     {
@@ -1576,11 +1624,18 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
 }
 
-#pragma mark - KeyBackupSetupBannerCellDelegate
+#pragma mark - SecureBackupSetupBannerCellDelegate
 
-- (void)keyBackupBannerCellDidTapCloseAction:(KeyBackupBannerCell * _Nonnull)cell
+- (void)secureBackupBannerCellDidTapCloseAction:(SecureBackupBannerCell * _Nonnull)cell
 {
-    [self hideKeyBackupBanner:self.keyBackupBanner];
+    [self hideKeyBackupBannerWithDisplay:self.secureBackupBannerDisplay];
+}
+
+#pragma mark - CrossSigningSetupBannerCellDelegate
+
+- (void)crossSigningSetupBannerCellDidTapCloseAction:(CrossSigningSetupBannerCell *)cell
+{
+    [self hideCrossSigningBannerWithDisplay:self.crossSigningBannerDisplay];
 }
 
 @end

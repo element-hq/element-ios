@@ -112,6 +112,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.KeyVerificationVerifyByScanningViewController>(storyboard: KeyVerificationVerifyByScanningViewController.self)
   }
+  internal enum MajorUpdateViewController: StoryboardType {
+    internal static let storyboardName = "MajorUpdateViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.MajorUpdateViewController>(storyboard: MajorUpdateViewController.self)
+  }
   internal enum QRCodeReaderViewController: StoryboardType {
     internal static let storyboardName = "QRCodeReaderViewController"
 
@@ -126,6 +131,31 @@ internal enum StoryboardScene {
     internal static let storyboardName = "RoomContextualMenuViewController"
 
     internal static let initialScene = InitialSceneType<Riot.RoomContextualMenuViewController>(storyboard: RoomContextualMenuViewController.self)
+  }
+  internal enum SecretsRecoveryWithKeyViewController: StoryboardType {
+    internal static let storyboardName = "SecretsRecoveryWithKeyViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SecretsRecoveryWithKeyViewController>(storyboard: SecretsRecoveryWithKeyViewController.self)
+  }
+  internal enum SecretsRecoveryWithPassphraseViewController: StoryboardType {
+    internal static let storyboardName = "SecretsRecoveryWithPassphraseViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SecretsRecoveryWithPassphraseViewController>(storyboard: SecretsRecoveryWithPassphraseViewController.self)
+  }
+  internal enum SecretsSetupRecoveryKeyViewController: StoryboardType {
+    internal static let storyboardName = "SecretsSetupRecoveryKeyViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SecretsSetupRecoveryKeyViewController>(storyboard: SecretsSetupRecoveryKeyViewController.self)
+  }
+  internal enum SecretsSetupRecoveryPassphraseViewController: StoryboardType {
+    internal static let storyboardName = "SecretsSetupRecoveryPassphraseViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SecretsSetupRecoveryPassphraseViewController>(storyboard: SecretsSetupRecoveryPassphraseViewController.self)
+  }
+  internal enum SecureBackupSetupIntroViewController: StoryboardType {
+    internal static let storyboardName = "SecureBackupSetupIntroViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SecureBackupSetupIntroViewController>(storyboard: SecureBackupSetupIntroViewController.self)
   }
   internal enum ServiceTermsModalScreenViewController: StoryboardType {
     internal static let storyboardName = "ServiceTermsModalScreenViewController"
@@ -184,7 +214,7 @@ internal protocol StoryboardType {
 internal extension StoryboardType {
   static var storyboard: UIStoryboard {
     let name = self.storyboardName
-    return UIStoryboard(name: name, bundle: Bundle(for: BundleToken.self))
+    return UIStoryboard(name: name, bundle: BundleToken.bundle)
   }
 }
 
@@ -212,4 +242,10 @@ internal struct InitialSceneType<T: UIViewController> {
   }
 }
 
-private final class BundleToken {}
+// swiftlint:disable convenience_type
+private final class BundleToken {
+  static let bundle: Bundle = {
+    Bundle(for: BundleToken.self)
+  }()
+}
+// swiftlint:enable convenience_type
