@@ -79,12 +79,6 @@
     // Register table view cell used for rooms collection.
     [self.recentsTableView registerClass:TableViewCellWithCollectionView.class forCellReuseIdentifier:TableViewCellWithCollectionView.defaultReuseIdentifier];
 
-    // Register key backup banner cells
-    [self.recentsTableView registerNib:SecureBackupBannerCell.nib forCellReuseIdentifier:SecureBackupBannerCell.defaultReuseIdentifier];
-    
-    // Register key verification banner cells
-    [self.recentsTableView registerNib:CrossSigningSetupBannerCell.nib forCellReuseIdentifier:CrossSigningSetupBannerCell.defaultReuseIdentifier];
-    
     // Change the table data source. It must be the home view controller itself.
     self.recentsTableView.dataSource = self;
 }
