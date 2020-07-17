@@ -168,8 +168,8 @@ class NotificationService: UNNotificationServiceExtension {
             //  encrypted
             if !self.showDecryptedContentInNotifications {
                 //  do not show decrypted content in notification
-                NSLog("[NotificationService] fetchEvent: Do not show decrypted content in notifications.")
-                self.fallbackToBestAttemptContent(forEventId: event.eventId)
+                NSLog("[NotificationService] fetchEvent: Do not show decrypted content in notifications, no need to attempt to decrypt it.")
+                self.processEvent(event)
                 return
             }
             
