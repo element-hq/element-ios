@@ -38,6 +38,7 @@ Bug fix:
  * Main.storyboard: Set storyboard identifier for SettingsViewController (#3398).
  * Universal links: Fix broken links for web apps (#3420).
  * SettingsViewController: Fix pan gesture crash (#3396).
+ * RecentsViewController: Fix crash on dequeue some cells (#3433).
 
 Changes in 0.11.6 (2020-06-30)
 ===============================================
