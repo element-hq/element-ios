@@ -888,7 +888,7 @@
             securityStatusCell.backgroundColor = ThemeService.shared.theme.backgroundColor;
             securityStatusCell.contentView.backgroundColor = [UIColor clearColor];
             securityStatusCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            securityStatusCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [securityStatusCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
             cell = securityStatusCell;
         }

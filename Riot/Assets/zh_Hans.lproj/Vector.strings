@@ -135,7 +135,7 @@
 "contacts_address_book_matrix_users_toggle" = "只有 Matrix 用户";
 "contacts_address_book_no_contact" = "没有本地联系人";
 "contacts_address_book_permission_required" = "需要权限以便访问本地联系人";
-"contacts_address_book_permission_denied" = "你没有允许 Riot 访问本地联系人";
+"contacts_address_book_permission_denied" = "你没有允许 Element 访问本地联系人";
 "contacts_matrix_users_section" = "已知联系人";
 // Chat participants
 "room_participants_title" = "参加者";
@@ -282,11 +282,8 @@
 "settings_version" = "版本 %@";
 "settings_olm_version" = "Olm 版本 %@";
 "settings_copyright" = "版权";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "条款和条件";
 "settings_privacy_policy" = "隐私政策";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "第三方通知";
 "settings_send_crash_report" = "发送崩溃和使用数据";
 "settings_clear_cache" = "清空缓存";
@@ -392,7 +389,7 @@
 // Crash report
 "google_analytics_use_prompt" = "您打算通过自动报告匿名的崩溃报告和使用数据来帮助提升 %@ 吗？";
 // Crypto
-"e2e_enabling_on_app_update" = "Riot 目前支持端对端加密，但是您需要重新登录以启用它。\n\n您可以现在重新登录，也可以之后再从应用程序设置中选择开启。";
+"e2e_enabling_on_app_update" = "Element 目前支持端对端加密，但是您需要重新登录以启用它。\n\n您可以现在重新登录，也可以之后再从应用程序设置中选择开启。";
 "e2e_need_log_in_again" = "您需要登录回来以便为此会话生成端对端加密密钥并提交公钥到您的主服务器。\n这只需要做一次；很抱歉造成打扰。";
 // Bug report
 "bug_report_title" = "Bug 报告";
@@ -520,7 +517,7 @@
 "deactivate_account_password_alert_title" = "注销账户";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "请求已发送";
-"settings_callkit_info" = "在您的锁屏界面接听 Riot 来电。在系统通话记录中显示 Riot 通话记录。若您已启用 iCloud，通话记录将会与 Apple 共享。";
+"settings_callkit_info" = "在您的锁屏界面接听 Element 来电。在系统通话记录中显示 Element 通话记录。若您已启用 iCloud，通话记录将会与 Apple 共享。";
 "room_replacement_link" = "对话自此继续。";
 "room_predecessor_information" = "这个聊天室是另一个对话的延续。";
 "room_predecessor_link" = "点击此处查看更早的消息。";
@@ -530,7 +527,7 @@
 "room_resource_usage_limit_reached_message_contact_3" = " 以提高限制。";
 // String for App Store
 "store_short_description" = "安全、去中心化的聊天及 VoIP 应用";
-"store_full_description" = "沟通，由你掌控。\n\n一个聊天应用，由你掌控且完全灵活。Riot 让你以你的方式沟通。为 [matrix] - 开放、去中心化的沟通而打造。\n\n获取一个免费的 matrix.org 账号，在 https://modular.im 获取一个你自己的服务器，或者使用其他 Matrix 服务器。\n\n为什么选择 Riot.im?\n\n完整的沟通：围绕你的团队、你的朋友、你的社区创建聊天室 - 随你喜欢！聊天、分享文件、添加插件和语音视频通话 - 全部免费。\n\n强大的集成度：通过你了解和喜欢的工具来使用 Riot.im 。你甚至可以在 Riot.im 上与其他聊天应用的用户和群组聊天。\n\n隐私和安全：保守你对话的秘密。最先进的端到端加密技术可确保私密通信保持私密性。\n\n开放，而非封闭：开源，基于 Matrix。通过自己开设的服务器来拥有你自己的数据，或者选择你信赖的服务器。\n\n随处可及：在你所有的设备和线上页面 https://riot.im 上通过完整的历史信息同步让你随处可及。";
+"store_full_description" = "沟通，由你掌控。\n\n一个聊天应用，由你掌控且完全灵活。Element 让你以你的方式沟通。为 [matrix] - 开放、去中心化的沟通而打造。\n\n获取一个免费的 matrix.org 账号，在 https://ems.element.io 获取一个你自己的服务器，或者使用其他 Matrix 服务器。\n\n为什么选择 Element?\n\n完整的沟通：围绕你的团队、你的朋友、你的社区创建聊天室 - 随你喜欢！聊天、分享文件、添加插件和语音视频通话 - 全部免费。\n\n强大的集成度：通过你了解和喜欢的工具来使用 Element 。你甚至可以在 Element 上与其他聊天应用的用户和群组聊天。\n\n隐私和安全：保守你对话的秘密。最先进的端到端加密技术可确保私密通信保持私密性。\n\n开放，而非封闭：开源，基于 Matrix。通过自己开设的服务器来拥有你自己的数据，或者选择你信赖的服务器。\n\n随处可及：在你所有的设备和线上页面 https://app.element.io 上通过完整的历史信息同步让你随处可及。";
 "auth_accept_policies" = "请查看并接受此主页服务器的服务条款：";
 "room_replacement_information" = "这个聊天室已被替换，不再有效。";
 "settings_flair" = "在允许的地方显示个性徽章";
@@ -591,7 +588,7 @@
 "deactivate_account_forget_messages_information_part1" = "当我的账号注销时请忘记我所有的已发送消息（";
 "deactivate_account_forget_messages_information_part3" = ": 这会导致将来加入的用户看到的是一段不完整的对话）";
 "deactivate_account_password_alert_message" = "要继续，请输入您的密码";
-"rerequest_keys_alert_message" = "请在另一台可以解密消息的设备上启动 Riot ，以便将密钥发送到此会话。";
+"rerequest_keys_alert_message" = "请在另一台可以解密消息的设备上启动 Element ，以便将密钥发送到此会话。";
 "key_backup_setup_title" = "密钥备份";
 "key_backup_setup_skip_alert_title" = "您确定吗？";
 "key_backup_setup_skip_alert_message" = "如果您退出或丢失设备，可能会丢失安全消息。";
@@ -987,10 +984,10 @@
 "user_verification_session_details_verify_action_current_user" = "交互式验证";
 "user_verification_session_details_verify_action_other_user" = "手动验证";
 // MARK: Clients
-"client_desktop_name" = "Riot 桌面版";
-"client_web_name" = "Riot Web";
-"client_ios_name" = "Riot iOS";
-"client_android_name" = "Riot X for Android";
+"client_desktop_name" = "Element 桌面版";
+"client_web_name" = "Element Web";
+"client_ios_name" = "Element iOS";
+"client_android_name" = "Element Android";
 "room_participants_action_security_status_complete_security" = "完整安全性";
 "room_participants_action_security_status_loading" = "加载中……";
 "room_member_power_level_admin_in" = "在 %@ 的管理员";
@@ -1011,7 +1008,7 @@
 "security_settings_cryptography" = "加密";
 "security_settings_complete_security_alert_title" = "绝对安全";
 "security_settings_complete_security_alert_message" = "您应该先完成当前会话的安全防护。";
-"security_settings_coming_soon" = "抱歉的。Riot-iOS上尚未提供此操作。请使用其他Matrix客户端进行设置。Riot-iOS将使用它。";
+"security_settings_coming_soon" = "抱歉的。Element iOS上尚未提供此操作。请使用其他Matrix客户端进行设置。Element iOS将使用它。";
 // Recover from private key
 "key_backup_recover_from_private_key_info" = "备份恢复中…";
 // MARK: - Device Verification
@@ -1035,7 +1032,7 @@
 "key_verification_self_verify_unverified_sessions_alert_validate_action" = "检查";
 "device_verification_self_verify_wait_title" = "绝对安全";
 "device_verification_self_verify_wait_new_sign_in_title" = "验证此登录名";
-"device_verification_self_verify_wait_information" = "从您的其他会话之一验证此会话，并授予其对加密信息的访问权限。\n\n在您的其他设备上使用最新的Riot：";
+"device_verification_self_verify_wait_information" = "从您的其他会话之一验证此会话，并授予其对加密信息的访问权限。\n\n在您的其他设备上使用最新的Element：";
 "device_verification_self_verify_wait_additional_information" = "或另一个支持交叉签名的Matrix客户端";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "使用恢复密钥";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "使用恢复密码或密钥";

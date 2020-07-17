@@ -131,6 +131,12 @@
     [self.recentsTableView registerNib:RecentTableViewCell.nib forCellReuseIdentifier:RecentTableViewCell.defaultReuseIdentifier];
     [self.recentsTableView registerNib:InviteRecentTableViewCell.nib forCellReuseIdentifier:InviteRecentTableViewCell.defaultReuseIdentifier];
     
+    // Register key backup banner cells
+    [self.recentsTableView registerNib:SecureBackupBannerCell.nib forCellReuseIdentifier:SecureBackupBannerCell.defaultReuseIdentifier];
+
+    // Register key verification banner cells
+    [self.recentsTableView registerNib:CrossSigningSetupBannerCell.nib forCellReuseIdentifier:CrossSigningSetupBannerCell.defaultReuseIdentifier];
+    
     // Hide line separators of empty cells
     self.recentsTableView.tableFooterView = [[UIView alloc] init];
     

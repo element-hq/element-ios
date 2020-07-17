@@ -140,7 +140,7 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
 
         cell.label.text = policy.name
         cell.isEnabled = accepted
-        cell.accessoryType = .disclosureIndicator
+        cell.vc_setAccessoryDisclosureIndicatorWithCurrentTheme()
         cell.backgroundColor = UIColor.clear
 
         if let checkBox = cell.checkBox, checkBox.gestureRecognizers?.isEmpty ?? true {

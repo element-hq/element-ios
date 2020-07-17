@@ -155,7 +155,7 @@
 "contacts_address_book_section" = "CONTATTI LOCALI";
 "contacts_address_book_matrix_users_toggle" = "Solo utenti Matrix";
 "contacts_address_book_no_contact" = "Nessun contatto locale";
-"contacts_address_book_permission_required" = "Riot deve essere autorizzato per poter accedere alla Rubrica locale";
+"contacts_address_book_permission_required" = "Element deve essere autorizzato per poter accedere alla Rubrica locale";
 "contacts_address_book_permission_denied" = "Non hai autorizzato Element ad accedere alla rubrica locale";
 "contacts_user_directory_section" = "ELENCO UTENTI";
 "contacts_user_directory_offline_section" = "ELENCO UTENTI (offline)";
@@ -350,11 +350,8 @@
 "settings_version" = "Versione %@";
 "settings_olm_version" = "Versione Olm %@";
 "settings_copyright" = "Copyright";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Termini e condizioni";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Privacy Policy";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Avvisi di terze parti";
 "settings_send_crash_report" = "Invia dati di utilizzo anonimi";
 "settings_enable_rageshake" = "Per segnalare un errore agita il dispositivo con rabbia";
@@ -539,7 +536,7 @@
 "bug_report_description" = "Per favore descrivi l'errore. Cosa hai fatto? Cosa ti aspettavi dovesse accadere? Cosa è effettivamente successo?";
 "bug_crash_report_title" = "Segnalazione del crash";
 "bug_crash_report_description" = "Per favore descrivi cosa hai fatto prima del crash:";
-"bug_report_logs_description" = "Al fine di diagnosticare i problemi, i registri Riot di questo dispositivo saranno inviati con il rapporto dell'errore. Se preferisci inviare solo il testo soprastante, deseleziona:";
+"bug_report_logs_description" = "Al fine di diagnosticare i problemi, i registri Element di questo dispositivo saranno inviati con il rapporto dell'errore. Se preferisci inviare solo il testo soprastante, deseleziona:";
 "bug_report_send_logs" = "Invia registri";
 "bug_report_send_screenshot" = "Invia screenshot";
 "bug_report_progress_zipping" = "Ottenimento registri";

@@ -1010,7 +1010,7 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
     NSString *deviceId = device.deviceId;
     cell.textLabel.text = (name.length ? [NSString stringWithFormat:@"%@ (%@)", name, deviceId] : [NSString stringWithFormat:@"(%@)", deviceId]);
     cell.textLabel.numberOfLines = 0;
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
 
     if ([deviceId isEqualToString:self.mainSession.matrixRestClient.credentials.deviceId])
     {
@@ -1206,7 +1206,7 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
             {
                 MXKTableViewCellWithTextView *textCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
                 textCell.mxkTextView.text = @"Advanced: Manually manage keys";  // TODO
-                textCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                [textCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
                 
                 cell = textCell;
                 break;

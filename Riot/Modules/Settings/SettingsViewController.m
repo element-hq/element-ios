@@ -1658,7 +1658,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             nightModeCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_night_mode", @"Vector", nil);
             nightModeCell.mxkTextField.userInteractionEnabled = NO;
             nightModeCell.mxkTextField.text = NSLocalizedStringFromTable(@"off", @"Vector", nil);
-            nightModeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [nightModeCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell = nightModeCell;
         }
     }
@@ -1774,7 +1774,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 {
                     isCell.textLabel.text = NSLocalizedStringFromTable(@"settings_identity_server_no_is", @"Vector", nil);
                 }
-                isCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                [isCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
                 cell = isCell;
                 break;
             }
@@ -1866,7 +1866,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             cell.textLabel.text = NSLocalizedStringFromTable(@"settings_ui_language", @"Vector", nil);
             cell.detailTextLabel.text = languageDescription;
 
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
         else if (row == USER_INTERFACE_THEME_INDEX)
@@ -1903,7 +1903,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             cell.textLabel.text = NSLocalizedStringFromTable(@"settings_ui_theme", @"Vector", nil);
             cell.detailTextLabel.text = i18nTheme;
 
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
     }
@@ -1952,7 +1952,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             cell.textLabel.text = NSLocalizedStringFromTable(@"settings_contacts_phonebook_country", @"Vector", nil);
             cell.detailTextLabel.text = countryName;
             
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
     }
@@ -1998,7 +1998,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
             termAndConditionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
             
-            termAndConditionCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [termAndConditionCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
             cell = termAndConditionCell;
         }
@@ -2008,7 +2008,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
             copyrightCell.textLabel.text = NSLocalizedStringFromTable(@"settings_copyright", @"Vector", nil);
             
-            copyrightCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [copyrightCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
             cell = copyrightCell;
         }
@@ -2018,7 +2018,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             
             privacyPolicyCell.textLabel.text = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
             
-            privacyPolicyCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [privacyPolicyCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
             cell = privacyPolicyCell;
         }
@@ -2028,7 +2028,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             
             thirdPartyCell.textLabel.text = NSLocalizedStringFromTable(@"settings_third_party_notices", @"Vector", nil);
             
-            thirdPartyCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [thirdPartyCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
             cell = thirdPartyCell;
         }
@@ -2180,7 +2180,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             case SECURITY_BUTTON_INDEX:
                 cell = [self getDefaultTableViewCell:tableView];
                 cell.textLabel.text = NSLocalizedStringFromTable(@"security_settings_title", @"Vector", nil);
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
                 break;
         }
     }
