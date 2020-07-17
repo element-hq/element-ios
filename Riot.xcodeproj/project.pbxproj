@@ -704,6 +704,17 @@
 		B1E5368F21FB7258001F3AFF /* KeyBackupRecoverFromPassphraseViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1E5368E21FB7258001F3AFF /* KeyBackupRecoverFromPassphraseViewController.storyboard */; };
 		B1FDF56021F5FE5500BA3834 /* KeyBackupSetupPassphraseViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FDF55F21F5FE5500BA3834 /* KeyBackupSetupPassphraseViewAction.swift */; };
 		DB1392A2332C3CAF6C9962EF /* Pods_RiotPods_RiotNSE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D418D054E4032F2CFA8B51 /* Pods_RiotPods_RiotNSE.framework */; };
+		EC1CA85F24C1DEC400DE9EBF /* EnterPinCodeViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA85124C1DEC400DE9EBF /* EnterPinCodeViewModelType.swift */; };
+		EC1CA86024C1DEC400DE9EBF /* EnterPinCodeViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA85224C1DEC400DE9EBF /* EnterPinCodeViewAction.swift */; };
+		EC1CA86124C1DEC400DE9EBF /* EnterPinCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA85324C1DEC400DE9EBF /* EnterPinCodeViewModel.swift */; };
+		EC1CA86224C1DEC400DE9EBF /* EnterPinCodeViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA85424C1DEC400DE9EBF /* EnterPinCodeViewState.swift */; };
+		EC1CA86324C1DEC400DE9EBF /* EnterPinCodeCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA85524C1DEC400DE9EBF /* EnterPinCodeCoordinatorType.swift */; };
+		EC1CA86424C1DEC400DE9EBF /* EnterPinCodeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA85624C1DEC400DE9EBF /* EnterPinCodeCoordinator.swift */; };
+		EC1CA86524C1DEC400DE9EBF /* EnterPinCodeViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC1CA85724C1DEC400DE9EBF /* EnterPinCodeViewController.storyboard */; };
+		EC1CA86624C1DEC400DE9EBF /* EnterPinCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA85824C1DEC400DE9EBF /* EnterPinCodeViewController.swift */; };
+		EC1CA86824C1DEC400DE9EBF /* SetPinCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA85A24C1DEC400DE9EBF /* SetPinCoordinatorBridgePresenter.swift */; };
+		EC1CA86924C1DEC400DE9EBF /* SetPinCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA85B24C1DEC400DE9EBF /* SetPinCoordinator.swift */; };
+		EC1CA86C24C1DEC400DE9EBF /* SetPinCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA85E24C1DEC400DE9EBF /* SetPinCoordinatorType.swift */; };
 		EC2B4EF124A1EEBD005EB739 /* DataProtectionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2B4EF024A1EEBD005EB739 /* DataProtectionHelper.swift */; };
 		EC2B4EF224A1EF34005EB739 /* DataProtectionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2B4EF024A1EEBD005EB739 /* DataProtectionHelper.swift */; };
 		EC3B066924AC6ADE000DF9BF /* CrossSigningService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3B066424AC6ADD000DF9BF /* CrossSigningService.swift */; };
@@ -1787,6 +1798,17 @@
 		BABB6681FBD79219B1213D6C /* Pods-RiotTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotTests.debug.xcconfig"; path = "Target Support Files/Pods-RiotTests/Pods-RiotTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E2599D0ECB8DD206624E450B /* Pods-RiotPods-SiriIntents.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-SiriIntents.release.xcconfig"; path = "Target Support Files/Pods-RiotPods-SiriIntents/Pods-RiotPods-SiriIntents.release.xcconfig"; sourceTree = "<group>"; };
 		E4D418D054E4032F2CFA8B51 /* Pods_RiotPods_RiotNSE.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_RiotNSE.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC1CA85124C1DEC400DE9EBF /* EnterPinCodeViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterPinCodeViewModelType.swift; sourceTree = "<group>"; };
+		EC1CA85224C1DEC400DE9EBF /* EnterPinCodeViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterPinCodeViewAction.swift; sourceTree = "<group>"; };
+		EC1CA85324C1DEC400DE9EBF /* EnterPinCodeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterPinCodeViewModel.swift; sourceTree = "<group>"; };
+		EC1CA85424C1DEC400DE9EBF /* EnterPinCodeViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterPinCodeViewState.swift; sourceTree = "<group>"; };
+		EC1CA85524C1DEC400DE9EBF /* EnterPinCodeCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterPinCodeCoordinatorType.swift; sourceTree = "<group>"; };
+		EC1CA85624C1DEC400DE9EBF /* EnterPinCodeCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterPinCodeCoordinator.swift; sourceTree = "<group>"; };
+		EC1CA85724C1DEC400DE9EBF /* EnterPinCodeViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EnterPinCodeViewController.storyboard; sourceTree = "<group>"; };
+		EC1CA85824C1DEC400DE9EBF /* EnterPinCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterPinCodeViewController.swift; sourceTree = "<group>"; };
+		EC1CA85A24C1DEC400DE9EBF /* SetPinCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetPinCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
+		EC1CA85B24C1DEC400DE9EBF /* SetPinCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetPinCoordinator.swift; sourceTree = "<group>"; };
+		EC1CA85E24C1DEC400DE9EBF /* SetPinCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetPinCoordinatorType.swift; sourceTree = "<group>"; };
 		EC2B4EF024A1EEBD005EB739 /* DataProtectionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProtectionHelper.swift; sourceTree = "<group>"; };
 		EC3B066424AC6ADD000DF9BF /* CrossSigningService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossSigningService.swift; sourceTree = "<group>"; };
 		EC3B066624AC6ADD000DF9BF /* CrossSigningSetupBannerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CrossSigningSetupBannerCell.xib; sourceTree = "<group>"; };
@@ -3037,6 +3059,7 @@
 		B1B5567620EE6C4C00210D55 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				EC1CA84F24C1DEC400DE9EBF /* SetPinCode */,
 				EC3B066324AC6ADD000DF9BF /* CrossSigning */,
 				EC711BB424A63C11008F830C /* AuthenticatedSession */,
 				EC711B9A24A63B58008F830C /* SecureBackup */,
@@ -4432,6 +4455,32 @@
 			path = Recover;
 			sourceTree = "<group>";
 		};
+		EC1CA84F24C1DEC400DE9EBF /* SetPinCode */ = {
+			isa = PBXGroup;
+			children = (
+				EC1CA85024C1DEC400DE9EBF /* EnterPinCode */,
+				EC1CA85A24C1DEC400DE9EBF /* SetPinCoordinatorBridgePresenter.swift */,
+				EC1CA85B24C1DEC400DE9EBF /* SetPinCoordinator.swift */,
+				EC1CA85E24C1DEC400DE9EBF /* SetPinCoordinatorType.swift */,
+			);
+			path = SetPinCode;
+			sourceTree = "<group>";
+		};
+		EC1CA85024C1DEC400DE9EBF /* EnterPinCode */ = {
+			isa = PBXGroup;
+			children = (
+				EC1CA85124C1DEC400DE9EBF /* EnterPinCodeViewModelType.swift */,
+				EC1CA85224C1DEC400DE9EBF /* EnterPinCodeViewAction.swift */,
+				EC1CA85324C1DEC400DE9EBF /* EnterPinCodeViewModel.swift */,
+				EC1CA85424C1DEC400DE9EBF /* EnterPinCodeViewState.swift */,
+				EC1CA85524C1DEC400DE9EBF /* EnterPinCodeCoordinatorType.swift */,
+				EC1CA85624C1DEC400DE9EBF /* EnterPinCodeCoordinator.swift */,
+				EC1CA85724C1DEC400DE9EBF /* EnterPinCodeViewController.storyboard */,
+				EC1CA85824C1DEC400DE9EBF /* EnterPinCodeViewController.swift */,
+			);
+			path = EnterPinCode;
+			sourceTree = "<group>";
+		};
 		EC3B066324AC6ADD000DF9BF /* CrossSigning */ = {
 			isa = PBXGroup;
 			children = (
@@ -5129,6 +5178,7 @@
 				B1B558D620EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				B1B5593720EF7BAC00210D55 /* TableViewCellWithCheckBoxAndLabel.xib in Resources */,
 				B190F55B22CE35FD00AEB493 /* EditHistoryHeaderView.xib in Resources */,
+				EC1CA86524C1DEC400DE9EBF /* EnterPinCodeViewController.storyboard in Resources */,
 				B1B5579020EF568D00210D55 /* GroupTableViewCell.xib in Resources */,
 				B142317B22CCFA2000FFA96A /* EditHistoryCell.xib in Resources */,
 				B1B5581B20EF625800210D55 /* ExpandedRoomTitleView.xib in Resources */,
@@ -5520,7 +5570,9 @@
 				EC85D72B2477DCF2002C44C9 /* KeyVerificationManuallyVerifyCoordinatorType.swift in Sources */,
 				B16932F220F3C49E00746532 /* GroupsDataSource.m in Sources */,
 				B1B5581C20EF625800210D55 /* RoomAvatarTitleView.m in Sources */,
+				EC1CA86124C1DEC400DE9EBF /* EnterPinCodeViewModel.swift in Sources */,
 				B169330820F3CA0E00746532 /* ContactsDataSource.m in Sources */,
+				EC1CA86924C1DEC400DE9EBF /* SetPinCoordinator.swift in Sources */,
 				B1B5574B20EE6C4D00210D55 /* MediaAlbumContentViewController.m in Sources */,
 				B1B5598820EFC3E000210D55 /* WidgetManager.m in Sources */,
 				B1DB4F0E22316FFF0065DBFA /* UserNameColorGenerator.swift in Sources */,
@@ -5545,6 +5597,7 @@
 				B1CE9F062216FB09000FAE6A /* EncryptionKeysExportPresenter.swift in Sources */,
 				32607D72243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewAction.swift in Sources */,
 				B1B5574420EE6C4D00210D55 /* CallViewController.m in Sources */,
+				EC1CA86024C1DEC400DE9EBF /* EnterPinCodeViewAction.swift in Sources */,
 				B12D7A0023E2462200FACEDC /* UserVerificationStartCoordinatorType.swift in Sources */,
 				EC711B9324A63B37008F830C /* SecretsRecoveryWithKeyViewController.swift in Sources */,
 				B1B5572220EE6C4D00210D55 /* RoomSettingsViewController.m in Sources */,
@@ -5583,6 +5636,7 @@
 				B1BEE71523DF2ACF0003A4CB /* UserVerificationCoordinator.swift in Sources */,
 				32607D70243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewModel.swift in Sources */,
 				B1B558C420EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
+				EC1CA86424C1DEC400DE9EBF /* EnterPinCodeCoordinator.swift in Sources */,
 				B1963B2E228F1C4900CBA17F /* BubbleReactionViewData.swift in Sources */,
 				B1C3361C22F32B4A0021BA8D /* SingleImagePickerPresenter.swift in Sources */,
 				B1B5572F20EE6C4D00210D55 /* ReadReceiptsViewController.m in Sources */,
@@ -5657,6 +5711,7 @@
 				EC711B7424A63B37008F830C /* SecretsSetupRecoveryKeyViewModelType.swift in Sources */,
 				B14F143122144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewState.swift in Sources */,
 				32DB557F22FDADE50016329E /* ServiceTermsModalScreenCoordinator.swift in Sources */,
+				EC1CA85F24C1DEC400DE9EBF /* EnterPinCodeViewModelType.swift in Sources */,
 				B1098C1121ED07E4000DDA48 /* NavigationRouterType.swift in Sources */,
 				B1B5573D20EE6C4D00210D55 /* WebViewViewController.m in Sources */,
 				3209451221F1C1430088CAA2 /* BlackTheme.swift in Sources */,
@@ -5694,6 +5749,8 @@
 				B1D4752821EE4E630067973F /* KeyboardNotification.swift in Sources */,
 				B1D1BDA622BBAFB500831367 /* ReactionsMenuView.swift in Sources */,
 				EC711B4624A63B13008F830C /* MXRecoveryService.swift in Sources */,
+				EC1CA86C24C1DEC400DE9EBF /* SetPinCoordinatorType.swift in Sources */,
+				EC1CA86324C1DEC400DE9EBF /* EnterPinCodeCoordinatorType.swift in Sources */,
 				B18DEDD6243377C10075FEF7 /* KeyVerificationSelfVerifyWaitCoordinator.swift in Sources */,
 				32DB557A22FDADE50016329E /* ServiceTermsModalScreenViewController.swift in Sources */,
 				B1B9DEF422EB426D0065E677 /* ReactionHistoryViewCell.swift in Sources */,
@@ -5759,6 +5816,7 @@
 				EC711B7924A63B37008F830C /* SecretsSetupRecoveryKeyViewController.swift in Sources */,
 				B1CA3A2721EF6914000D1D89 /* UIViewController.swift in Sources */,
 				322C110822BBC6F80043FEAC /* WidgetManagerConfig.swift in Sources */,
+				EC1CA86624C1DEC400DE9EBF /* EnterPinCodeViewController.swift in Sources */,
 				F0D2ADA11F6AA5FD00A7097D /* MXRoomSummary+Riot.m in Sources */,
 				B1CE83B92422815C00D07506 /* KeyVerificationKind.swift in Sources */,
 				EC85D7262477DCF2002C44C9 /* KeyVerificationManuallyVerifyCoordinator.swift in Sources */,
@@ -5854,6 +5912,7 @@
 				B1B5581920EF625800210D55 /* RoomTitleView.m in Sources */,
 				B1098BE321ECE09F000DDA48 /* RiotDefaults.swift in Sources */,
 				EC711B9424A63B37008F830C /* SecretsRecoveryWithKeyViewAction.swift in Sources */,
+				EC1CA86824C1DEC400DE9EBF /* SetPinCoordinatorBridgePresenter.swift in Sources */,
 				B1C562CA2289C2690037F12A /* UIGestureRecognizer.swift in Sources */,
 				B1C562CC228AB3510037F12A /* UIStackView.swift in Sources */,
 				B1B557BE20EF5B4500210D55 /* RoomInputToolbarView.m in Sources */,
@@ -5992,6 +6051,7 @@
 				EC3B066B24AC6ADE000DF9BF /* CrossSigningBannerPreferences.swift in Sources */,
 				ECB101322477CFDB00CF8C11 /* UIDevice.swift in Sources */,
 				B169330320F3C98900746532 /* RoomBubbleCellData.m in Sources */,
+				EC1CA86224C1DEC400DE9EBF /* EnterPinCodeViewState.swift in Sources */,
 				EC711B8A24A63B37008F830C /* SecretsRecoveryWithPassphraseViewController.swift in Sources */,
 				B1B336C3242B933700F95EC4 /* KeyVerificationSelfVerifyStartCoordinator.swift in Sources */,
 				B1B557CC20EF5D8000210D55 /* DirectoryServerTableViewCell.m in Sources */,
