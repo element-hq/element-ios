@@ -736,6 +736,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             chevron = [UIImage imageNamed:@"shrink_icon"];
         }
         UIImageView *chevronView = [[UIImageView alloc] initWithImage:chevron];
+        chevronView.tintColor = ThemeService.shared.theme.textSecondaryColor;
         chevronView.contentMode = UIViewContentModeCenter;
         [sectionHeader addSubview:chevronView];
         sectionHeader.accessoryView = chevronView;
@@ -785,6 +786,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             UIImageView *chevronImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 6, 12)];
             chevronImageView.contentMode = UIViewContentModeScaleAspectFit;
             chevronImageView.image = [UIImage imageNamed:@"disclosure_icon"];
+            chevronImageView.tintColor = ThemeService.shared.theme.textSecondaryColor;
             [directorySectionContainer addSubview:chevronImageView];
             directorySectionContainer.disclosureView = chevronImageView;
 

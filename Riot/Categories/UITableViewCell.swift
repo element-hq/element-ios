@@ -28,5 +28,18 @@ extension UITableViewCell {
         }
         return result
     }
-
+    
+    @objc func vc_setAccessoryDisclosureIndicator(withTintColor tintColor: UIColor) {
+        let disclosureImageView = UIImageView(image: Asset.Images.disclosureIcon.image)
+        disclosureImageView.tintColor = tintColor
+        self.accessoryView = disclosureImageView
+    }        
+    
+    @objc func vc_setAccessoryDisclosureIndicator(withTheme theme: Theme) {
+        self.vc_setAccessoryDisclosureIndicator(withTintColor: theme.textSecondaryColor)
+    }
+    
+    @objc func vc_setAccessoryDisclosureIndicatorWithCurrentTheme() {
+        self.vc_setAccessoryDisclosureIndicator(withTheme: ThemeService.shared().theme)
+    }
 }

@@ -145,7 +145,7 @@
     {
         // Prepare its contacts data source
         contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:listDataSource.mxSession];
-        contactsDataSource.contactCellAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        contactsDataSource.contactCellAccessoryImage = [[UIImage imageNamed: @"disclosure_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textSecondaryColor];
         contactsDataSource.delegate = self;
     }
 }
