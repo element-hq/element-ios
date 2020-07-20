@@ -293,3 +293,36 @@
 "room_accessibility_call" = "Helista";
 "room_accessibility_hangup" = "Lõpeta kõne";
 "media_type_accessibility_image" = "Pilt";
+"settings_key_backup_info_checking" = "Kontrollin…";
+"settings_key_backup_info_none" = "Sinu selle sessiooni krüptovõtmeid ei varundata.";
+"settings_key_backup_info_version" = "Võtmete varukoopia versioon: %@";
+"settings_key_backup_info_algorithm" = "Algoritm: %@";
+"settings_key_backup_info_valid" = "See sessioon varundab sinu krüptovõtmeid.";
+"settings_key_backup_info_not_valid" = "See sessioon ei varunda sinu krüptovõtmeid, aga sul on olemas varundus, millest saad taastada ning millele saad võtmeid lisada.";
+"settings_key_backup_info_progress" = "Varundan %@ võtmeid…";
+"settings_key_backup_info_progress_done" = "Kõik krüptovõtmed on varundatud";
+"settings_key_backup_info_trust_signature_unknown" = "Varukoopial on allkiri sessioonilt tunnusega %@";
+"settings_key_backup_info_trust_signature_valid" = "Varukoopial on selle sessiooni kehtiv allkiri";
+"settings_key_backup_info_trust_signature_valid_device_verified" = "Varukoopial on kehtiv allkiri osapoolelt %@";
+"settings_key_backup_info_trust_signature_valid_device_unverified" = "Varukoopial on allkiri osapoolelt %@";
+"settings_key_backup_info_trust_signature_invalid_device_verified" = "Varukoopial on vigane allkiri osapoolelt %@";
+"settings_key_backup_info_trust_signature_invalid_device_unverified" = "Varukoopial on vigane allkiri osapoolelt %@";
+"settings_key_backup_button_create" = "Võta kasutusele krüptovõtmete varundamine";
+"settings_key_backup_button_restore" = "Taasta varukoopiast";
+"settings_key_backup_button_delete" = "Kustuta varukoopia";
+"settings_key_backup_button_connect" = "Seo see sessioon krüptovõtmete varundusega";
+"settings_key_backup_delete_confirmation_prompt_title" = "Kustuta varukoopia";
+"settings_key_backup_delete_confirmation_prompt_msg" = "Kas sa oled kindel? Kui sul muud varundust pole, siis kaotad ligipääsu oma krüptitud sõnumitele.";
+"settings_devices_description" = "Sessiooni avalik nimi on nähtav neile, kellega sa suhtled";
+"widget_integration_must_be_in_room" = "Sa ei asu selles jututoas.";
+"widget_integration_no_permission_in_room" = "Sinul pole selle toimingu jaoks selles jututoas õigusi.";
+"widget_integration_missing_room_id" = "Päringus puudub jututoa tunnus ehk room_id.";
+"widget_integration_missing_user_id" = "Päringus puudub kasutaja tunnus ehk user_id.";
+"widget_integration_room_not_visible" = "Jututuba %@ ei ole nähtav.";
+"widget_integration_manager_disabled" = "Sa peaksid seadistustes kasutusele võtma lõiminguhalduri";
+// Widget Picker
+"widget_picker_title" = "Lõiminguid";
+"widget_picker_manage_integrations" = "Halda lõiminguid…";
+// Room widget permissions
+"room_widget_permission_title" = "Lae vidin";
+"room_widget_permission_creator_info_title" = "Selle vidina lisaja:";
