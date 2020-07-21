@@ -364,7 +364,7 @@
 "settings_crypto_device_id" = "\nID sessione: ";
 "settings_crypto_device_key" = "\nChiave sessione:\n";
 "settings_crypto_export" = "Esporta chiavi";
-"settings_crypto_blacklist_unverified_devices" = "Cifratura solo per le sessioni verificate";
+"settings_crypto_blacklist_unverified_devices" = "Crittografia solo per le sessioni verificate";
 "settings_deactivate_my_account" = "Disattiva il mio account";
 "settings_key_backup_info" = "I messaggi nelle stanze cifrate sono protetti con crittografia E2E. Solo tu e il/i destinatario/i avete le chiavi crittografiche per leggere questi messaggi.";
 "settings_key_backup_info_checking" = "Controllo…";
@@ -525,7 +525,7 @@
 "google_analytics_use_prompt" = "Vuoi aiutare a migliorare %@ inviando automaticamente in modo anonimo i dati di utilizzo e le segnalazioni di crash?";
 // Crypto
 "e2e_enabling_on_app_update" = "Element ora supporta la crittografia da-utente-a-utente ma devi eseguire nuovamente l'accesso per abilitarla.\n\nPuoi farlo ora o più tardi dalle impostazioni dell'applicazione.";
-"e2e_need_log_in_again" = "È necessario eseguire nuovamente l'accesso per generare le chiavi di cifratura end-to-end per questa sessione ed inviare la chiave pubblica all'homeserver.\nVa fatto una sola volta; ci scusiamo per il disturbo.";
+"e2e_need_log_in_again" = "È necessario eseguire nuovamente l'accesso per generare le chiavi di crittografia end-to-end per questa sessione ed inviare la chiave pubblica all'homeserver.\nVa fatto una sola volta; ci scusiamo per il disturbo.";
 // Key backup wrong version
 "e2e_key_backup_wrong_version_title" = "Nuovo Backup delle chiavi";
 "e2e_key_backup_wrong_version" = "È stato effettuato un nuovo Backup delle chiavi per i messaggi crittografati. \n\nSe non sei stato tu, imposta una nuova frase di sicurezza dalle impostazioni.";
@@ -1144,3 +1144,5 @@
 "major_update_information" = "Siamo entusiasti di annunciare che abbiamo cambiato nome! La tua app è aggiornata e hai fatto l'accesso al tuo account.";
 "major_update_learn_more_action" = "Maggiori informazioni";
 "major_update_done_action" = "Capito";
+"external_link_confirmation_title" = "Controlla bene questo collegamento";
+"external_link_confirmation_message" = "Il collegamento %@ ti porterà in un altro sito: %@\n\nSei sicuro di voler continuare?";
