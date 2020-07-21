@@ -326,3 +326,12 @@
 // Room widget permissions
 "room_widget_permission_title" = "Lae vidin";
 "room_widget_permission_creator_info_title" = "Selle vidina lisaja:";
+"secure_key_backup_setup_existing_backup_error_title" = "Sõnumite varukoopia on juba olemas";
+"secure_key_backup_setup_cancel_alert_title" = "Kas sa oled kindel?";
+"secure_backup_setup_banner_title" = "Turvaline varundus";
+"secure_backup_setup_banner_subtitle" = "Hoia ära, et kaotad ligipääsu krüptitud sõnumitele ja andmetele";
+"key_backup_setup_title" = "Võtmete varundus";
+"key_backup_setup_skip_alert_title" = "Kas sa oled kindel?";
+"key_backup_setup_skip_alert_skip_action" = "Jäta vahele";
+"key_backup_setup_intro_title" = "Ära kunagi kaota krüptitud sõnumeid";
+"device_verification_self_verify_wait_new_sign_in_title" = "Verifitseeri see sisselogimissessioon";
