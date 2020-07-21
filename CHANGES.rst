@@ -9,6 +9,7 @@ Improvements:
  * Third-party licences: Add license for FlowCommoniOS (#3415).
  * Lazy-loading: Remove lazy loading labs setting, enable it by default (#3389).
  * Room: Show alert if link text does not match link target (#3137).
+ * Implement PIN protection (#3436).
  
 Bug fix:
  * Xcode11: Fix content change error when dragging start chat page (PR #3075).
