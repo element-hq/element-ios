@@ -27,7 +27,6 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
     private let session: MXSession?
     private var viewMode: SetPinCoordinatorViewMode
     
-    private var currentOperation: MXHTTPOperation?
     private var firstPin: String = ""
     private var currentPin: String = "" {
         didSet {
@@ -48,10 +47,6 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
         self.viewMode = viewMode
     }
     
-    deinit {
-        self.cancelOperations()
-    }
-    
     // MARK: - Public
     
     func process(viewAction: EnterPinCodeViewAction) {
@@ -63,7 +58,6 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
         case .forgotPinPressed:
             self.viewDelegate?.enterPinCodeViewModel(self, didUpdateViewState: .forgotPin)
         case .cancel:
-            self.cancelOperations()
             self.coordinatorDelegate?.enterPinCodeViewModelDidCancel(self)
         case .pinsDontMatchAlertAction:
             //  reset pins
@@ -88,9 +82,9 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
             }
         } else {
             //  a digit tapped
-            currentPin += "\(tag)"
+            currentPin += String(tag)
             
-            if currentPin.count == 4 {
+            if currentPin.count == PinCodePreferences.shared.numberOfDigits {
                 switch viewMode {
                 case .setPin:
                     //  choosing pin
@@ -98,7 +92,7 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
                         //  go to next screen
                         firstPin = currentPin
                         currentPin.removeAll()
-                        self.update(viewState: .confirmPin)
+                        update(viewState: .confirmPin)
                     } else {
                         //  check first and second pins
                         if firstPin == currentPin {
@@ -107,7 +101,7 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
                                 self.coordinatorDelegate?.enterPinCodeViewModel(self, didCompleteWithPin: self.firstPin)
                             }
                         } else {
-                            self.update(viewState: .pinsDontMatch)
+                            update(viewState: .pinsDontMatch)
                         }
                     }
                 case .unlockByPin, .confirmPinToDeactivate:
@@ -116,13 +110,15 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
                         //  no match
                         numberOfFailuresDuringEnterPIN += 1
                         if numberOfFailuresDuringEnterPIN < PinCodePreferences.shared.allowedNumberOfTrialsBeforeAlert {
-                            self.viewDelegate?.enterPinCodeViewModel(self, didUpdateViewState: .wrongPin)
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                self.viewDelegate?.enterPinCodeViewModel(self, didUpdateViewState: .wrongPin)
+                                self.currentPin.removeAll()
+                            }
                         } else {
-                            self.viewDelegate?.enterPinCodeViewModel(self, didUpdateViewState: .wrongPinTooManyTimes)
+                            viewDelegate?.enterPinCodeViewModel(self, didUpdateViewState: .wrongPinTooManyTimes)
                             numberOfFailuresDuringEnterPIN = 0
+                            currentPin.removeAll()
                         }
-                        
-                        currentPin.removeAll()
                     } else {
                         //  match
                         //  complete with a little delay
@@ -149,9 +145,5 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
     
     private func update(viewState: EnterPinCodeViewState) {
         self.viewDelegate?.enterPinCodeViewModel(self, didUpdateViewState: viewState)
-    }
-    
-    private func cancelOperations() {
-        self.currentOperation?.cancel()
     }
 }

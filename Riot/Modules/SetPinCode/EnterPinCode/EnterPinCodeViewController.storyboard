@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="V8j-Lb-PgC">
-    <device id="retina3_5" orientation="portrait" appearance="light"/>
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -13,24 +13,24 @@
             <objects>
                 <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="V8j-Lb-PgC" customClass="EnterPinCodeViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="EL9-GA-lwo">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="DMT-DS-IA8">
-                                <rect key="frame" x="0.0" y="8" width="320" height="464"/>
+                                <rect key="frame" x="0.0" y="52" width="375" height="718"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ztg-5t-ECh" userLabel="Container">
-                                        <rect key="frame" x="20" y="0.0" width="280" height="86"/>
+                                        <rect key="frame" x="20" y="0.0" width="335" height="86"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="callkit_icon" translatesAutoresizingMaskIntoConstraints="NO" id="UHg-qE-anw">
-                                                <rect key="frame" x="120" y="8" width="40" height="40"/>
+                                                <rect key="frame" x="147.66666666666666" y="8" width="40" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="40" id="ERR-Np-6I1"/>
                                                     <constraint firstAttribute="height" constant="40" id="zYD-Rk-nOH"/>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose a PIN for security" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bxI-mu-qng">
-                                                <rect key="frame" x="13.5" y="57" width="253" height="29"/>
+                                                <rect key="frame" x="41.333333333333329" y="57" width="252.66666666666669" height="29"/>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="22"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -47,7 +47,7 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="xi9-P9-8WP">
-                                        <rect key="frame" x="76" y="87" width="168" height="24"/>
+                                        <rect key="frame" x="103.66666666666669" y="171.66666666666666" width="168" height="24"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="selection_untick" translatesAutoresizingMaskIntoConstraints="NO" id="Gwx-8X-ZWk">
                                                 <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
@@ -57,14 +57,14 @@
                                                 </constraints>
                                             </imageView>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="selection_untick" translatesAutoresizingMaskIntoConstraints="NO" id="qDY-R1-l5l">
-                                                <rect key="frame" x="48" y="0.0" width="24" height="24"/>
+                                                <rect key="frame" x="47.999999999999986" y="0.0" width="24" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="24" id="QDg-LP-R4J"/>
                                                     <constraint firstAttribute="height" constant="24" id="f4G-d8-hoA"/>
                                                 </constraints>
                                             </imageView>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="selection_untick" translatesAutoresizingMaskIntoConstraints="NO" id="X0l-q3-fXm">
-                                                <rect key="frame" x="96" y="0.0" width="24" height="24"/>
+                                                <rect key="frame" x="95.999999999999986" y="0.0" width="24" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="24" id="HQA-9R-8bC"/>
                                                     <constraint firstAttribute="height" constant="24" id="Zjd-RW-DiW"/>
@@ -80,7 +80,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="21" translatesAutoresizingMaskIntoConstraints="NO" id="W0M-eq-abZ">
-                                        <rect key="frame" x="38" y="112" width="244" height="303"/>
+                                        <rect key="frame" x="65.666666666666686" y="281.33333333333331" width="244" height="302.99999999999994"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="Uqh-o2-7HP">
                                                 <rect key="frame" x="0.0" y="0.0" width="244" height="60"/>
@@ -91,19 +91,19 @@
                                                             <constraint firstAttribute="width" constant="60" id="HSC-fC-0mb"/>
                                                             <constraint firstAttribute="height" constant="60" id="UsP-qt-rq1"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="28"/>
                                                         <state key="normal" title="1"/>
                                                         <connections>
                                                             <action selector="digitButtonAction:" destination="V8j-Lb-PgC" eventType="touchUpInside" id="bJg-z4-FSc"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vRL-nn-bIH">
-                                                        <rect key="frame" x="92" y="0.0" width="60" height="60"/>
+                                                        <rect key="frame" x="91.999999999999986" y="0.0" width="60.000000000000014" height="60"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="60" id="HaJ-0E-bl3"/>
                                                             <constraint firstAttribute="width" constant="60" id="JJz-zL-t77"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="28"/>
                                                         <state key="normal" title="2"/>
                                                         <connections>
                                                             <action selector="digitButtonAction:" destination="V8j-Lb-PgC" eventType="touchUpInside" id="jWB-aT-7CT"/>
@@ -115,7 +115,7 @@
                                                             <constraint firstAttribute="height" constant="60" id="9Uy-xG-5Vq"/>
                                                             <constraint firstAttribute="width" constant="60" id="EZw-k5-DP8"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="28"/>
                                                         <state key="normal" title="3"/>
                                                         <connections>
                                                             <action selector="digitButtonAction:" destination="V8j-Lb-PgC" eventType="touchUpInside" id="yNt-BA-OvG"/>
@@ -132,19 +132,19 @@
                                                             <constraint firstAttribute="width" constant="60" id="G0j-6T-fRk"/>
                                                             <constraint firstAttribute="height" constant="60" id="JhY-SW-MMe"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="28"/>
                                                         <state key="normal" title="4"/>
                                                         <connections>
                                                             <action selector="digitButtonAction:" destination="V8j-Lb-PgC" eventType="touchUpInside" id="aHq-oD-jeB"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ziv-SY-nXQ">
-                                                        <rect key="frame" x="92" y="0.0" width="60" height="60"/>
+                                                        <rect key="frame" x="91.999999999999986" y="0.0" width="60.000000000000014" height="60"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="60" id="5Ry-eq-V0D"/>
                                                             <constraint firstAttribute="height" constant="60" id="iCm-G8-2Us"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="28"/>
                                                         <state key="normal" title="5"/>
                                                         <connections>
                                                             <action selector="digitButtonAction:" destination="V8j-Lb-PgC" eventType="touchUpInside" id="t2w-kA-5Ej"/>
@@ -156,7 +156,7 @@
                                                             <constraint firstAttribute="width" constant="60" id="odD-FC-4eB"/>
                                                             <constraint firstAttribute="height" constant="60" id="zHt-bd-Jwg"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="28"/>
                                                         <state key="normal" title="6"/>
                                                         <connections>
                                                             <action selector="digitButtonAction:" destination="V8j-Lb-PgC" eventType="touchUpInside" id="q9A-aO-qvf"/>
@@ -173,19 +173,19 @@
                                                             <constraint firstAttribute="width" constant="60" id="Ye8-5w-NMv"/>
                                                             <constraint firstAttribute="height" constant="60" id="lPa-Qd-zDM"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="28"/>
                                                         <state key="normal" title="7"/>
                                                         <connections>
                                                             <action selector="digitButtonAction:" destination="V8j-Lb-PgC" eventType="touchUpInside" id="i3U-c4-Cp9"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OCE-R0-CMN">
-                                                        <rect key="frame" x="92" y="0.0" width="60" height="60"/>
+                                                        <rect key="frame" x="91.999999999999986" y="0.0" width="60.000000000000014" height="60"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="60" id="5LE-yh-yoi"/>
                                                             <constraint firstAttribute="height" constant="60" id="65e-mr-hid"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="28"/>
                                                         <state key="normal" title="8"/>
                                                         <connections>
                                                             <action selector="digitButtonAction:" destination="V8j-Lb-PgC" eventType="touchUpInside" id="wpv-qG-N2w"/>
@@ -197,7 +197,7 @@
                                                             <constraint firstAttribute="width" constant="60" id="rS1-XX-Xw9"/>
                                                             <constraint firstAttribute="height" constant="60" id="zza-iD-Oue"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="28"/>
                                                         <state key="normal" title="9"/>
                                                         <connections>
                                                             <action selector="digitButtonAction:" destination="V8j-Lb-PgC" eventType="touchUpInside" id="tTD-CN-iVS"/>
@@ -206,7 +206,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="Nrp-tS-u1k">
-                                                <rect key="frame" x="0.0" y="243" width="244" height="60"/>
+                                                <rect key="frame" x="0.0" y="243.00000000000006" width="244" height="60"/>
                                                 <subviews>
                                                     <button opaque="NO" userInteractionEnabled="NO" tag="-99" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DEv-rc-fGB">
                                                         <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
@@ -214,15 +214,15 @@
                                                             <constraint firstAttribute="width" constant="60" id="fVd-IS-maA"/>
                                                             <constraint firstAttribute="height" constant="60" id="x1Z-Ar-22U"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="28"/>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sc1-u3-yvh">
-                                                        <rect key="frame" x="92" y="0.0" width="60" height="60"/>
+                                                        <rect key="frame" x="91.999999999999986" y="0.0" width="60.000000000000014" height="60"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="60" id="DDy-yf-FOR"/>
                                                             <constraint firstAttribute="width" constant="60" id="vSL-tm-biX"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="28"/>
                                                         <state key="normal" title="0"/>
                                                         <connections>
                                                             <action selector="digitButtonAction:" destination="V8j-Lb-PgC" eventType="touchUpInside" id="9nh-0D-5vB"/>
@@ -234,6 +234,7 @@
                                                             <constraint firstAttribute="width" constant="60" id="DAY-CR-kKO"/>
                                                             <constraint firstAttribute="height" constant="60" id="iDt-BW-fEz"/>
                                                         </constraints>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="28"/>
                                                         <state key="normal" image="back_icon"/>
                                                         <connections>
                                                             <action selector="digitButtonAction:" destination="V8j-Lb-PgC" eventType="touchUpInside" id="CVc-4x-WXb"/>
@@ -244,7 +245,7 @@
                                         </subviews>
                                     </stackView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nCW-ER-9SF" userLabel="Container">
-                                        <rect key="frame" x="40" y="416" width="240" height="48"/>
+                                        <rect key="frame" x="67.666666666666686" y="670" width="240" height="48"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CRt-Fb-0Dq">
                                                 <rect key="frame" x="0.0" y="0.0" width="240" height="48"/>

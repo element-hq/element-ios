@@ -43,6 +43,9 @@ final class PinCodePreferences: NSObject {
     /// Max allowed time to continue using the app without prompting PIN
     let graceTimeInSeconds: TimeInterval = 120
     
+    /// Number of digits for the PIN
+    let numberOfDigits: Int = 4
+    
     /// Is user has set a pin
     var isPinSet: Bool {
         return pin != nil

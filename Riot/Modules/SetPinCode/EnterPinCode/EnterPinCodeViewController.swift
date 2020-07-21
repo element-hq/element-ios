@@ -105,15 +105,28 @@ final class EnterPinCodeViewController: UIViewController {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
-        // TODO: Set view colors here
         self.informationLabel.textColor = theme.textPrimaryColor
 
+        updateThemesOfAllImages(in: placeholderStackView, with: theme)
         updateThemesOfAllButtons(in: digitsStackView, with: theme)
+        
+        theme.applyStyle(onButton: forgotPinButton)
+    }
+    
+    private func updateThemesOfAllImages(in view: UIView, with theme: Theme) {
+        if let imageView = view as? UIImageView {
+            imageView.tintColor = theme.noticeSecondaryColor
+        } else {
+            for subview in view.subviews {
+                updateThemesOfAllImages(in: subview, with: theme)
+            }
+        }
     }
     
     private func updateThemesOfAllButtons(in view: UIView, with theme: Theme) {
         if let button = view as? UIButton {
-            theme.applyStyle(onButton: button)
+            button.tintColor = theme.textPrimaryColor
+            button.setTitleColor(theme.textPrimaryColor, for: .normal)
         } else {
             for subview in view.subviews {
                 updateThemesOfAllButtons(in: subview, with: theme)
@@ -130,15 +143,32 @@ final class EnterPinCodeViewController: UIViewController {
     }
     
     private func setupViews() {
+        showCancelButton()
+        
+        self.title = ""
+        
+        placeholderStackView.vc_removeAllArrangedSubviews()
+        for i in 0..<PinCodePreferences.shared.numberOfDigits {
+            let imageView = UIImageView(image: Asset.Images.selectionUntick.image)
+            imageView.heightAnchor.constraint(equalToConstant: 24).isActive = true
+            imageView.widthAnchor.constraint(equalToConstant: 24).isActive = true
+            imageView.tag = i
+            placeholderStackView.addArrangedSubview(imageView)
+        }
+    }
+    
+    private func showCancelButton() {
         let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
             self?.cancelButtonAction()
         }
         
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
-        
-        self.title = ""
     }
-
+    
+    private func hideCancelButton() {
+        self.navigationItem.rightBarButtonItem = nil
+    }
+    
     private func render(viewState: EnterPinCodeViewState) {
         switch viewState {
         case .choosePin:
@@ -185,6 +215,7 @@ final class EnterPinCodeViewController: UIViewController {
     }
     
     private func renderUnlockByPin() {
+        hideCancelButton()
         self.logoImageView.isHidden = false
         self.informationLabel.text = VectorL10n.pinProtectionEnterPin
         self.forgotPinButton.isHidden = false
@@ -197,12 +228,10 @@ final class EnterPinCodeViewController: UIViewController {
     private func renderWrongPinTooManyTimes() {
         let error = NSError(domain: "", code: 0, userInfo: [
             NSLocalizedFailureReasonErrorKey: VectorL10n.pinProtectionMismatchErrorTitle,
-            NSLocalizedDescriptionKey: VectorL10n.pinProtectionMismatchErrorMessage
+            NSLocalizedDescriptionKey: VectorL10n.pinProtectionMismatchTooManyTimesErrorMessage
         ])
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true) {
-            
-        }
+        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
     
     private func renderForgotPin() {

@@ -657,13 +657,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     NSLog(@"[AppDelegate] applicationDidBecomeActive");
     
-    if ([PinCodePreferences shared].isPinSet && [MXKAccountManager sharedManager].activeAccounts.count > 0 && appLastActiveDate)
+    if ([PinCodePreferences shared].isPinSet && [MXKAccountManager sharedManager].activeAccounts.count > 0)
     {
         //  check should show the pinpad
-        NSDate *now = [NSDate new];
-        NSTimeInterval inactiveTimeInterval = [now timeIntervalSinceDate:appLastActiveDate];
-        
-        if (inactiveTimeInterval > [PinCodePreferences shared].graceTimeInSeconds)
+        if (appLastActiveDate == nil || [[NSDate new] timeIntervalSinceDate:appLastActiveDate] > [PinCodePreferences shared].graceTimeInSeconds)
         {
             if (self.setPinCoordinatorBridgePresenter)
             {
