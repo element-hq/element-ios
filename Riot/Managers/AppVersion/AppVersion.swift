@@ -94,6 +94,10 @@ final class AppVersion: NSObject {
         UserDefaults.standard.set(currentVersion.bundleShortVersion, forKey: Constants.lastBundleShortVersion)
         UserDefaults.standard.set(currentVersion.bundleVersion, forKey: Constants.lastBundleVersion)
     }
+    
+    override var description: String {
+        return "\(bundleShortVersion)(\(bundleVersion))"
+    }
 
     // MARK: - Private
 
