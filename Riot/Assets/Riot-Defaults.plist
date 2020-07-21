@@ -94,7 +94,5 @@
 	<string>https://element.io/terms-of-service</string>
 	<key>enableBotCreation</key>
 	<false/>
-	<key>forcePINProtection</key>
-	<true/>
 </dict>
 </plist>
