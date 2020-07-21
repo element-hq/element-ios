@@ -1,7 +1,25 @@
-Changes in 0.12.0 (2020-xx-xx)
+Changes in 1.0.2 (2020-07-)
+===============================================
+ 
+Bug fix:
+ * Registration: Do not display the skip button if email is mandatory (#3417).
+
+Changes in 1.0.1 (2020-07-17)
+===============================================
+ 
+Bug fix:
+ * SettingsViewController: Fix crash when scrolling to Discovery (#3401).
+ * Main.storyboard: Set storyboard identifier for SettingsViewController (#3398).
+ * Universal links: Fix broken links for web apps (#3420).
+ * SettingsViewController: Fix pan gesture crash (#3396).
+ * RecentsViewController: Fix crash on dequeue some cells (#3433).
+ * NotificationService: Fix losing sound when not showing decrypted content in notifications (#3423).
+
+Changes in 1.0.0 (2020-07-13)
 ===============================================
 
 Improvements:
+ * Rename Riot to Element
  * Update deployment target to iOS 11.0. Required for Jitsi > 2.8.x.
  * Theme: Customize UISearchBar with new iOS 13 properties (#3270).
  * NSE: Make extension reusable (#3326).

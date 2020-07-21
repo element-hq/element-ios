@@ -4612,7 +4612,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     if (self.majorUpdateManager.shouldShowMajorUpdate)
     {
-        [self showMajorUpdate];
+        // When you do not understand why the UI does not work as expected...
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showMajorUpdate];
+        });
     }
 }
 
