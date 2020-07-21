@@ -36,8 +36,12 @@ final class PinCodePreferences: NSObject {
     var forcePinProtection: Bool {
         return RiotSettings.shared.forcePinProtection
     }
+    
+    /// Allowed number of PIN trials before showing forgot help alert
     let allowedNumberOfTrialsBeforeAlert: Int = 5
-    let graceTimeInSeconds: Int = 1
+    
+    /// Max allowed time to continue using the app without prompting PIN
+    let graceTimeInSeconds: TimeInterval = 120
     
     /// Is user has set a pin
     var isPinSet: Bool {
@@ -46,6 +50,7 @@ final class PinCodePreferences: NSObject {
     
     /// Saved user PIN
     var pin: String? {
+        // TODO: Move pin to a safer area
         get {
             return UserDefaults.standard.object(forKey: UserDefaultsKeys.pin) as? String
         } set {

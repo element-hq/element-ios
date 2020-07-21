@@ -74,7 +74,7 @@ final class SetPinCoordinator: SetPinCoordinatorType {
     }
     
     private func removePin() {
-        PinCodePreferences.shared.pin = nil
+        PinCodePreferences.shared.reset()
     }
 }
 
