@@ -104,7 +104,7 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
                         if firstPin == currentPin {
                             //  complete with a little delay
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                self.coordinatorDelegate?.enterPinCodeViewModel(self, didCompleteWithPin: firstPin)
+                                self.coordinatorDelegate?.enterPinCodeViewModel(self, didCompleteWithPin: self.firstPin)
                             }
                         } else {
                             self.update(viewState: .pinsDontMatch)
