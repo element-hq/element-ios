@@ -1910,6 +1910,66 @@ internal enum VectorL10n {
   internal static func photoLibraryAccessNotGranted(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "photo_library_access_not_granted", p1)
   }
+  /// Choose a PIN for security
+  internal static var pinProtectionChoosePin: String { 
+    return VectorL10n.tr("Vector", "pin_protection_choose_pin") 
+  }
+  /// Confirm your PIN
+  internal static var pinProtectionConfirmPin: String { 
+    return VectorL10n.tr("Vector", "pin_protection_confirm_pin") 
+  }
+  /// Confirm PIN to disable PIN
+  internal static var pinProtectionConfirmPinToDisable: String { 
+    return VectorL10n.tr("Vector", "pin_protection_confirm_pin_to_disable") 
+  }
+  /// Enter your PIN
+  internal static var pinProtectionEnterPin: String { 
+    return VectorL10n.tr("Vector", "pin_protection_enter_pin") 
+  }
+  /// Forgot PIN
+  internal static var pinProtectionForgotPin: String { 
+    return VectorL10n.tr("Vector", "pin_protection_forgot_pin") 
+  }
+  /// Please try again
+  internal static var pinProtectionMismatchErrorMessage: String { 
+    return VectorL10n.tr("Vector", "pin_protection_mismatch_error_message") 
+  }
+  /// PINs don't match
+  internal static var pinProtectionMismatchErrorTitle: String { 
+    return VectorL10n.tr("Vector", "pin_protection_mismatch_error_title") 
+  }
+  /// If you can't remember your PIN, tap the forgot PIN button.
+  internal static var pinProtectionMismatchTooManyTimesErrorMessage: String { 
+    return VectorL10n.tr("Vector", "pin_protection_mismatch_too_many_times_error_message") 
+  }
+  /// Reset
+  internal static var pinProtectionResetAlertActionReset: String { 
+    return VectorL10n.tr("Vector", "pin_protection_reset_alert_action_reset") 
+  }
+  /// To reset your PIN, you'll need to re-login and create a new one
+  internal static var pinProtectionResetAlertMessage: String { 
+    return VectorL10n.tr("Vector", "pin_protection_reset_alert_message") 
+  }
+  /// Reset PIN
+  internal static var pinProtectionResetAlertTitle: String { 
+    return VectorL10n.tr("Vector", "pin_protection_reset_alert_title") 
+  }
+  /// Enable PIN
+  internal static var pinProtectionSettingsEnablePin: String { 
+    return VectorL10n.tr("Vector", "pin_protection_settings_enable_pin") 
+  }
+  /// PIN enabled
+  internal static var pinProtectionSettingsEnabledForced: String { 
+    return VectorL10n.tr("Vector", "pin_protection_settings_enabled_forced") 
+  }
+  /// To reset your PIN, you'll need to re-login and create a new one.
+  internal static var pinProtectionSettingsSectionFooter: String { 
+    return VectorL10n.tr("Vector", "pin_protection_settings_section_footer") 
+  }
+  /// PIN
+  internal static var pinProtectionSettingsSectionHeader: String { 
+    return VectorL10n.tr("Vector", "pin_protection_settings_section_header") 
+  }
   /// Preview
   internal static var preview: String { 
     return VectorL10n.tr("Vector", "preview") 
