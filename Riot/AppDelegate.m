@@ -90,7 +90,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
 NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUniversalLinkDidChangeNotification";
 
-@interface AppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate>
+@interface AppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate>
 {
     /**
      Reachability observer
@@ -210,6 +210,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
      */
     UIView *launchAnimationContainerView;
     NSDate *launchAnimationStart;
+    
+    NSDate *appLastActiveDate;
 }
 
 @property (strong, nonatomic) UIAlertController *mxInAppNotification;
@@ -223,6 +225,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 @property (nonatomic, strong) SlidingModalPresenter *slidingModalPresenter;
+@property (nonatomic, strong) SetPinCoordinatorBridgePresenter *setPinCoordinatorBridgePresenter;
 
 /**
  Used to manage on boarding steps, like create DM with riot bot
@@ -580,6 +583,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         [wrongBackupVersionAlert dismissViewControllerAnimated:NO completion:nil];
         wrongBackupVersionAlert = nil;
     }
+    
+    //  store last active date
+    appLastActiveDate = [NSDate new];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -650,6 +656,30 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     NSLog(@"[AppDelegate] applicationDidBecomeActive");
+    
+    if ([PinCodePreferences shared].isPinSet && [MXKAccountManager sharedManager].activeAccounts.count > 0 && appLastActiveDate)
+    {
+        //  check should show the pinpad
+        NSDate *now = [NSDate new];
+        NSTimeInterval inactiveTimeInterval = [now timeIntervalSinceDate:appLastActiveDate];
+        
+        if (inactiveTimeInterval > [PinCodePreferences shared].graceTimeInSeconds)
+        {
+            if (self.setPinCoordinatorBridgePresenter)
+            {
+                //  it's already on screen
+                return;
+            }
+            self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:mxSessionArray.firstObject viewMode:SetPinCoordinatorViewModeUnlockByPin];
+            self.setPinCoordinatorBridgePresenter.delegate = self;
+            [self.setPinCoordinatorBridgePresenter presentIn:self.window];
+        }
+    }
+}
+
+- (void)afterAppUnlockedByPin:(UIApplication *)application
+{
+    NSLog(@"[AppDelegate] afterAppUnlockedByPin");
     
     // Check if there is crash log to send
     if (RiotSettings.shared.enableCrashReport)
@@ -2307,6 +2337,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     // Reset key verification banner preferences
     [CrossSigningBannerPreferences.shared reset];
+    
+    // Reset user pin code
+    [PinCodePreferences.shared reset];
     
 #ifdef MX_CALL_STACK_ENDPOINT
     // Erase all created certificates and private keys by MXEndpointCallStack
@@ -4628,5 +4661,19 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                              completion:nil];
 }
 
+#pragma mark - SetPinCoordinatorBridgePresenterDelegate
+
+- (void)setPinCoordinatorBridgePresenterDelegateDidComplete:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismiss];
+    self.setPinCoordinatorBridgePresenter = nil;
+}
+
+- (void)setPinCoordinatorBridgePresenterDelegateDidCompleteWithReset:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismiss];
+    self.setPinCoordinatorBridgePresenter = nil;
+    [self logoutWithConfirmation:NO completion:nil];
+}
 
 @end
