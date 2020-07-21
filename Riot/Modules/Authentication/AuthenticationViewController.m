@@ -883,21 +883,16 @@
 
 - (void)onSuccessfulLogin:(MXCredentials*)credentials
 {
-    //  if really login
-    if (self.authType == MXKAuthenticationTypeLogin)
+    //  if really login and pin protection is forced
+    if (self.authType == MXKAuthenticationTypeLogin && [PinCodePreferences shared].forcePinProtection)
     {
         loginCredentials = credentials;
         
-        BOOL forcePinProtection = [[NSUserDefaults standardUserDefaults] boolForKey:@"forcePINProtection"];
-        
-        if (forcePinProtection)
-        {
-            SetPinCoordinatorBridgePresenter *presenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:nil];
-            presenter.delegate = self;
-            [presenter presentFrom:self animated:YES];
-            self.setPinCoordinatorBridgePresenter = presenter;
-            return;
-        }
+        SetPinCoordinatorBridgePresenter *presenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:nil viewMode:SetPinCoordinatorViewModeSetPin];
+        presenter.delegate = self;
+        [presenter presentFrom:self animated:YES];
+        self.setPinCoordinatorBridgePresenter = presenter;
+        return;
     }
     
     [self afterSetPinFlowCompletedWithCredentials:credentials];
@@ -1405,6 +1400,18 @@
     [self dismiss];
 
     [self afterSetPinFlowCompletedWithCredentials:loginCredentials];
+}
+
+- (void)setPinCoordinatorBridgePresenterDelegateDidCancel:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    //  enable the view again
+    [self setUserInteractionEnabled:YES];
+    
+    //  stop the spinner
+    [self.authenticationActivityIndicator stopAnimating];
+    
+    //  then, just close the enter pin screen
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
 }
 
 @end
