@@ -19,6 +19,8 @@
 import Foundation
 
 protocol EnterPinCodeCoordinatorDelegate: class {
+    func enterPinCodeCoordinatorDidComplete(_ coordinator: EnterPinCodeCoordinatorType)
+    func enterPinCodeCoordinatorDidCompleteWithReset(_ coordinator: EnterPinCodeCoordinatorType)
     func enterPinCodeCoordinator(_ coordinator: EnterPinCodeCoordinatorType, didCompleteWithPin pin: String)
     func enterPinCodeCoordinatorDidCancel(_ coordinator: EnterPinCodeCoordinatorType)
 }

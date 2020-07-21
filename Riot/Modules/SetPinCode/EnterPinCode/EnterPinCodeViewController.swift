@@ -30,9 +30,11 @@ final class EnterPinCodeViewController: UIViewController {
     
     // MARK: Outlets
     
+    @IBOutlet private weak var logoImageView: UIImageView!
     @IBOutlet private weak var placeholderStackView: UIStackView!
     @IBOutlet private weak var digitsStackView: UIStackView!
     @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private weak var forgotPinButton: UIButton!
     
     // MARK: Private
 
@@ -67,8 +69,13 @@ final class EnterPinCodeViewController: UIViewController {
         self.update(theme: self.theme)
         
         self.viewModel.viewDelegate = self
+        
+        if #available(iOS 13.0, *) {
+            modalPresentationStyle = .fullScreen
+            isModalInPresentation = true
+        }
 
-//        self.viewModel.process(viewAction: .loadData)
+        self.viewModel.process(viewAction: .loadData)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -134,29 +141,87 @@ final class EnterPinCodeViewController: UIViewController {
 
     private func render(viewState: EnterPinCodeViewState) {
         switch viewState {
-        case .enterFirstPin:
-            self.renderEnterFirstPin()
+        case .choosePin:
+            self.renderChoosePin()
         case .confirmPin:
             self.renderConfirmPin()
-        case .pinsDontMatch(let error):
-            self.render(error: error)
+        case .pinsDontMatch:
+            self.renderPinsDontMatch()
+        case .unlockByPin:
+            self.renderUnlockByPin()
+        case .wrongPin:
+            self.renderWrongPin()
+        case .wrongPinTooManyTimes:
+            self.renderWrongPinTooManyTimes()
+        case .forgotPin:
+            self.renderForgotPin()
+        case .confirmPinToDisable:
+            self.renderConfirmPinToDisable()
         }
     }
     
-    private func renderEnterFirstPin() {
-        self.informationLabel.text = "Choose a PIN for security"
+    private func renderChoosePin() {
+        self.logoImageView.isHidden = true
+        self.informationLabel.text = VectorL10n.pinProtectionChoosePin
+        self.forgotPinButton.isHidden = true
     }
     
     private func renderConfirmPin() {
-        self.informationLabel.text = "Confirm your PIN"
+        self.informationLabel.text = VectorL10n.pinProtectionConfirmPin
         
         //  reset placeholders
         renderPlaceholdersCount(0)
     }
     
-    private func render(error: Error) {
+    private func renderPinsDontMatch() {
+        let error = NSError(domain: "", code: 0, userInfo: [
+            NSLocalizedFailureReasonErrorKey: VectorL10n.pinProtectionMismatchErrorTitle,
+            NSLocalizedDescriptionKey: VectorL10n.pinProtectionMismatchErrorMessage
+        ])
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        self.errorPresenter.presentError(from: self, forError: error, animated: true) {
+            self.viewModel.process(viewAction: .pinsDontMatchAlertAction)
+        }
+    }
+    
+    private func renderUnlockByPin() {
+        self.logoImageView.isHidden = false
+        self.informationLabel.text = VectorL10n.pinProtectionEnterPin
+        self.forgotPinButton.isHidden = false
+    }
+    
+    private func renderWrongPin() {
+        self.placeholderStackView.vc_shake()
+    }
+    
+    private func renderWrongPinTooManyTimes() {
+        let error = NSError(domain: "", code: 0, userInfo: [
+            NSLocalizedFailureReasonErrorKey: VectorL10n.pinProtectionMismatchErrorTitle,
+            NSLocalizedDescriptionKey: VectorL10n.pinProtectionMismatchErrorMessage
+        ])
+        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        self.errorPresenter.presentError(from: self, forError: error, animated: true) {
+            
+        }
+    }
+    
+    private func renderForgotPin() {
+        let controller = UIAlertController(title: VectorL10n.pinProtectionResetAlertTitle,
+                                           message: VectorL10n.pinProtectionResetAlertMessage,
+                                           preferredStyle: .alert)
+        
+        let resetAction = UIAlertAction(title: VectorL10n.pinProtectionResetAlertActionReset, style: .default) { (_) in
+            self.viewModel.process(viewAction: .forgotPinAlertAction)
+        }
+        
+        controller.addAction(resetAction)
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    private func renderConfirmPinToDisable() {
+        self.logoImageView.isHidden = true
+        self.informationLabel.text = VectorL10n.pinProtectionConfirmPinToDisable
+        self.forgotPinButton.isHidden = true
     }
     
     private func renderPlaceholdersCount(_ count: Int) {
@@ -172,11 +237,14 @@ final class EnterPinCodeViewController: UIViewController {
         }
     }
 
-    
     // MARK: - Actions
 
     @IBAction private func digitButtonAction(_ sender: UIButton) {
         self.viewModel.process(viewAction: .digitPressed(sender.tag))
+    }
+    
+    @IBAction private func forgotPinButtonAction(_ sender: UIButton) {
+        self.viewModel.process(viewAction: .forgotPinPressed)
     }
 
     private func cancelButtonAction() {

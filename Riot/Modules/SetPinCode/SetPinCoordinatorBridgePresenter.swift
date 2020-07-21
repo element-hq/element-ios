@@ -18,8 +18,18 @@
 
 import Foundation
 
+@objc enum SetPinCoordinatorViewMode: Int {
+    case setPin
+    case unlockByPin
+    case confirmPinToDeactivate
+}
+
 @objc protocol SetPinCoordinatorBridgePresenterDelegate {
     func setPinCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: SetPinCoordinatorBridgePresenter)
+    @objc optional
+    func setPinCoordinatorBridgePresenterDelegateDidCancel(_ coordinatorBridgePresenter: SetPinCoordinatorBridgePresenter)
+    @objc optional
+    func setPinCoordinatorBridgePresenterDelegateDidCompleteWithReset(_ coordinatorBridgePresenter: SetPinCoordinatorBridgePresenter)
 }
 
 /// SetPinCoordinatorBridgePresenter enables to start SetPinCoordinator from a view controller.
@@ -33,6 +43,7 @@ final class SetPinCoordinatorBridgePresenter: NSObject {
     
     private let session: MXSession?
     private var coordinator: SetPinCoordinator?
+    private var viewMode: SetPinCoordinatorViewMode
     
     // MARK: Public
     
@@ -40,8 +51,9 @@ final class SetPinCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Setup
     
-    init(session: MXSession?) {
+    init(session: MXSession?, viewMode: SetPinCoordinatorViewMode) {
         self.session = session
+        self.viewMode = viewMode
         super.init()
     }
     
@@ -53,9 +65,24 @@ final class SetPinCoordinatorBridgePresenter: NSObject {
     // }
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let setPinCoordinator = SetPinCoordinator(session: self.session)
+        let setPinCoordinator = SetPinCoordinator(session: self.session, viewMode: self.viewMode)
         setPinCoordinator.delegate = self
         viewController.present(setPinCoordinator.toPresentable(), animated: animated, completion: nil)
+        setPinCoordinator.start()
+        
+        self.coordinator = setPinCoordinator
+    }
+    
+    func present(in window: UIWindow) {
+        let setPinCoordinator = SetPinCoordinator(session: self.session, viewMode: self.viewMode)
+        setPinCoordinator.delegate = self
+        guard let view = setPinCoordinator.toPresentable().view else { return }
+        window.addSubview(view)
+        view.leadingAnchor.constraint(equalTo: window.leadingAnchor, constant: 0).isActive = true
+        view.trailingAnchor.constraint(equalTo: window.trailingAnchor, constant: 0).isActive = true
+        view.topAnchor.constraint(equalTo: window.topAnchor, constant: 0).isActive = true
+        view.bottomAnchor.constraint(equalTo: window.bottomAnchor, constant: 0).isActive = true
+        
         setPinCoordinator.start()
         
         self.coordinator = setPinCoordinator
@@ -73,11 +100,27 @@ final class SetPinCoordinatorBridgePresenter: NSObject {
             }
         }
     }
+    
+    func dismiss() {
+        guard let coordinator = self.coordinator else {
+            return
+        }
+        coordinator.toPresentable().view.removeFromSuperview()
+    }
 }
 
 // MARK: - SetPinCoordinatorDelegate
 extension SetPinCoordinatorBridgePresenter: SetPinCoordinatorDelegate {
+    
     func setPinCoordinatorDidComplete(_ coordinator: SetPinCoordinatorType) {
         self.delegate?.setPinCoordinatorBridgePresenterDelegateDidComplete(self)
+    }
+    
+    func setPinCoordinatorDidCompleteWithReset(_ coordinator: SetPinCoordinatorType) {
+        self.delegate?.setPinCoordinatorBridgePresenterDelegateDidCompleteWithReset?(self)
+    }
+    
+    func setPinCoordinatorDidCancel(_ coordinator: SetPinCoordinatorType) {
+        self.delegate?.setPinCoordinatorBridgePresenterDelegateDidCancel?(self)
     }
 }

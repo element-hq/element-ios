@@ -38,10 +38,10 @@ final class EnterPinCodeCoordinator: EnterPinCodeCoordinatorType {
     
     // MARK: - Setup
     
-    init(session: MXSession?) {
+    init(session: MXSession?, viewMode: SetPinCoordinatorViewMode) {
         self.session = session
         
-        let enterPinCodeViewModel = EnterPinCodeViewModel(session: self.session)
+        let enterPinCodeViewModel = EnterPinCodeViewModel(session: self.session, viewMode: viewMode)
         let enterPinCodeViewController = EnterPinCodeViewController.instantiate(with: enterPinCodeViewModel)
         self.enterPinCodeViewModel = enterPinCodeViewModel
         self.enterPinCodeViewController = enterPinCodeViewController
@@ -60,6 +60,14 @@ final class EnterPinCodeCoordinator: EnterPinCodeCoordinatorType {
 
 // MARK: - EnterPinCodeViewModelCoordinatorDelegate
 extension EnterPinCodeCoordinator: EnterPinCodeViewModelCoordinatorDelegate {
+    
+    func enterPinCodeViewModelDidComplete(_ viewModel: EnterPinCodeViewModelType) {
+        self.delegate?.enterPinCodeCoordinatorDidComplete(self)
+    }
+    
+    func enterPinCodeViewModelDidCompleteWithReset(_ viewModel: EnterPinCodeViewModelType) {
+        self.delegate?.enterPinCodeCoordinatorDidCompleteWithReset(self)
+    }
     
     func enterPinCodeViewModel(_ viewModel: EnterPinCodeViewModelType, didCompleteWithPin pin: String) {
         self.delegate?.enterPinCodeCoordinator(self, didCompleteWithPin: pin)

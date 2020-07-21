@@ -27,6 +27,7 @@ final class SetPinCoordinator: SetPinCoordinatorType {
     
     private let navigationRouter: NavigationRouterType
     private let session: MXSession?
+    private var viewMode: SetPinCoordinatorViewMode
     
     // MARK: Public
 
@@ -37,9 +38,10 @@ final class SetPinCoordinator: SetPinCoordinatorType {
     
     // MARK: - Setup
     
-    init(session: MXSession?) {
+    init(session: MXSession?, viewMode: SetPinCoordinatorViewMode) {
         self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
+        self.viewMode = viewMode
     }    
     
     // MARK: - Public methods
@@ -62,24 +64,40 @@ final class SetPinCoordinator: SetPinCoordinatorType {
     // MARK: - Private methods
 
     private func createEnterPinCodeCoordinator() -> EnterPinCodeCoordinator {
-        let coordinator = EnterPinCodeCoordinator(session: self.session)
+        let coordinator = EnterPinCodeCoordinator(session: self.session, viewMode: self.viewMode)
         coordinator.delegate = self
         return coordinator
     }
     
     private func storePin(_ pin: String) {
-        // TODO: Implement this
+        PinCodePreferences.shared.pin = pin
+    }
+    
+    private func removePin() {
+        PinCodePreferences.shared.pin = nil
     }
 }
 
 // MARK: - EnterPinCodeCoordinatorDelegate
 extension SetPinCoordinator: EnterPinCodeCoordinatorDelegate {
+    
+    func enterPinCodeCoordinatorDidComplete(_ coordinator: EnterPinCodeCoordinatorType) {
+        if viewMode == .confirmPinToDeactivate {
+            removePin()
+        }
+        self.delegate?.setPinCoordinatorDidComplete(self)
+    }
+    
+    func enterPinCodeCoordinatorDidCompleteWithReset(_ coordinator: EnterPinCodeCoordinatorType) {
+        self.delegate?.setPinCoordinatorDidCompleteWithReset(self)
+    }
+    
     func enterPinCodeCoordinator(_ coordinator: EnterPinCodeCoordinatorType, didCompleteWithPin pin: String) {
         storePin(pin)
         self.delegate?.setPinCoordinatorDidComplete(self)
     }
     
     func enterPinCodeCoordinatorDidCancel(_ coordinator: EnterPinCodeCoordinatorType) {
-        self.delegate?.setPinCoordinatorDidComplete(self)
+        self.delegate?.setPinCoordinatorDidCancel(self)
     }
 }

@@ -20,7 +20,12 @@ import Foundation
 
 /// EnterPinCodeViewController view state
 enum EnterPinCodeViewState {
-    case enterFirstPin
-    case confirmPin
-    case pinsDontMatch(Error)
+    case choosePin              //  creating pin for the first time, enter for first
+    case confirmPin             //  creating pin for the first time, confirm
+    case pinsDontMatch          //  pins don't match
+    case unlockByPin            //  after pin has been set, enter pin to unlock
+    case wrongPin               //  after pin has been set, pin entered wrongly
+    case wrongPinTooManyTimes   //  after pin has been set, pin entered wrongly too many times
+    case forgotPin              //  after pin has been set, user tapped forgot pin
+    case confirmPinToDisable    //  after pin has been set, confirm pin to disable pin
 }

@@ -20,6 +20,8 @@ import Foundation
 
 protocol SetPinCoordinatorDelegate: class {
     func setPinCoordinatorDidComplete(_ coordinator: SetPinCoordinatorType)
+    func setPinCoordinatorDidCompleteWithReset(_ coordinator: SetPinCoordinatorType)
+    func setPinCoordinatorDidCancel(_ coordinator: SetPinCoordinatorType)
 }
 
 /// `SetPinCoordinatorType` is a protocol describing a Coordinator that handle keybackup setup navigation flow.
