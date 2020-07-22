@@ -39,7 +39,7 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
 
     weak var viewDelegate: EnterPinCodeViewModelViewDelegate?
     weak var coordinatorDelegate: EnterPinCodeViewModelCoordinatorDelegate?
-    var pinCodePreferences: PinCodePreferences
+    private let pinCodePreferences: PinCodePreferences
     
     // MARK: - Setup
     
