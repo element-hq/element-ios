@@ -253,8 +253,7 @@ final class EnterPinCodeViewController: UIViewController {
     
     private func renderPlaceholdersCount(_ count: Int) {
         UIView.animate(withDuration: 0.3) {
-            for view in self.placeholderStackView.arrangedSubviews {
-                guard let imageView = view as? UIImageView else { continue }
+            for case let imageView as UIImageView in self.placeholderStackView.arrangedSubviews {
                 if imageView.tag < count {
                     imageView.image = Asset.Images.placeholder.image
                 } else {
