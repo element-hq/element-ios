@@ -204,12 +204,11 @@ final class EnterPinCodeViewController: UIViewController {
     }
     
     private func renderPinsDontMatch() {
-        let error = NSError(domain: "", code: 0, userInfo: [
-            NSLocalizedFailureReasonErrorKey: VectorL10n.pinProtectionMismatchErrorTitle,
-            NSLocalizedDescriptionKey: VectorL10n.pinProtectionMismatchErrorMessage
-        ])
+        let error = MXKErrorViewModel(title: VectorL10n.pinProtectionMismatchErrorTitle,
+                                      message: VectorL10n.pinProtectionMismatchErrorMessage)
+        
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true) {
+        self.errorPresenter.presentError(from: self, for: error, animated: true) {
             self.viewModel.process(viewAction: .pinsDontMatchAlertAction)
         }
     }
@@ -226,12 +225,11 @@ final class EnterPinCodeViewController: UIViewController {
     }
     
     private func renderWrongPinTooManyTimes() {
-        let error = NSError(domain: "", code: 0, userInfo: [
-            NSLocalizedFailureReasonErrorKey: VectorL10n.pinProtectionMismatchErrorTitle,
-            NSLocalizedDescriptionKey: VectorL10n.pinProtectionMismatchTooManyTimesErrorMessage
-        ])
+        let error = MXKErrorViewModel(title: VectorL10n.pinProtectionMismatchErrorTitle,
+                                      message: VectorL10n.pinProtectionMismatchTooManyTimesErrorMessage)
+        
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        self.errorPresenter.presentError(from: self, for: error, animated: true, handler: nil)
     }
     
     private func renderForgotPin() {
