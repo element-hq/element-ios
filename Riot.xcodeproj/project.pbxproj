@@ -716,6 +716,9 @@
 		EC1CA86924C1DEC400DE9EBF /* SetPinCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA85B24C1DEC400DE9EBF /* SetPinCoordinator.swift */; };
 		EC1CA86C24C1DEC400DE9EBF /* SetPinCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA85E24C1DEC400DE9EBF /* SetPinCoordinatorType.swift */; };
 		EC1CA86E24C5BA4500DE9EBF /* PinCodePreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA86D24C5BA4500DE9EBF /* PinCodePreferences.swift */; };
+		EC1CA87224C823E700DE9EBF /* KeyValueStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA87124C823E700DE9EBF /* KeyValueStore.swift */; };
+		EC1CA87524C8259700DE9EBF /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA87424C8259700DE9EBF /* KeychainStore.swift */; };
+		EC1CA87724C82D0E00DE9EBF /* MemoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA87624C82D0E00DE9EBF /* MemoryStore.swift */; };
 		EC2B4EF124A1EEBD005EB739 /* DataProtectionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2B4EF024A1EEBD005EB739 /* DataProtectionHelper.swift */; };
 		EC2B4EF224A1EF34005EB739 /* DataProtectionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2B4EF024A1EEBD005EB739 /* DataProtectionHelper.swift */; };
 		EC3B066924AC6ADE000DF9BF /* CrossSigningService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3B066424AC6ADD000DF9BF /* CrossSigningService.swift */; };
@@ -1811,6 +1814,9 @@
 		EC1CA85B24C1DEC400DE9EBF /* SetPinCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetPinCoordinator.swift; sourceTree = "<group>"; };
 		EC1CA85E24C1DEC400DE9EBF /* SetPinCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetPinCoordinatorType.swift; sourceTree = "<group>"; };
 		EC1CA86D24C5BA4500DE9EBF /* PinCodePreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCodePreferences.swift; sourceTree = "<group>"; };
+		EC1CA87124C823E700DE9EBF /* KeyValueStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueStore.swift; sourceTree = "<group>"; };
+		EC1CA87424C8259700DE9EBF /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
+		EC1CA87624C82D0E00DE9EBF /* MemoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryStore.swift; sourceTree = "<group>"; };
 		EC2B4EF024A1EEBD005EB739 /* DataProtectionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProtectionHelper.swift; sourceTree = "<group>"; };
 		EC3B066424AC6ADD000DF9BF /* CrossSigningService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossSigningService.swift; sourceTree = "<group>"; };
 		EC3B066624AC6ADD000DF9BF /* CrossSigningSetupBannerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CrossSigningSetupBannerCell.xib; sourceTree = "<group>"; };
@@ -4137,6 +4143,7 @@
 		B1B5597C20EFC3DF00210D55 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				EC1CA87324C8257F00DE9EBF /* KeyValueStorage */,
 				B185145324B7CF9500EE19EA /* AppVersion */,
 				EC85D73B2477DDD0002C44C9 /* PushNotification */,
 				B12C56ED2396CB0100FAC6DE /* RoomMessageLinkParser */,
@@ -4482,6 +4489,16 @@
 				EC1CA85824C1DEC400DE9EBF /* EnterPinCodeViewController.swift */,
 			);
 			path = EnterPinCode;
+			sourceTree = "<group>";
+		};
+		EC1CA87324C8257F00DE9EBF /* KeyValueStorage */ = {
+			isa = PBXGroup;
+			children = (
+				EC1CA87124C823E700DE9EBF /* KeyValueStore.swift */,
+				EC1CA87424C8259700DE9EBF /* KeychainStore.swift */,
+				EC1CA87624C82D0E00DE9EBF /* MemoryStore.swift */,
+			);
+			path = KeyValueStorage;
 			sourceTree = "<group>";
 		};
 		EC3B066324AC6ADD000DF9BF /* CrossSigning */ = {
@@ -5667,6 +5684,7 @@
 				ECB101302477CFDB00CF8C11 /* UITableView.swift in Sources */,
 				B1CE83DC2422817200D07506 /* KeyVerificationVerifyByScanningViewState.swift in Sources */,
 				B139C21B21FE5B9200BB68EC /* KeyBackupRecoverFromPassphraseViewModel.swift in Sources */,
+				EC1CA87224C823E700DE9EBF /* KeyValueStore.swift in Sources */,
 				B1C45A8C232A8C2600165425 /* SettingsIdentityServerViewAction.swift in Sources */,
 				32A6001E22C661100042C1D9 /* EditHistoryCoordinatorBridgePresenter.swift in Sources */,
 				B1B5574A20EE6C4D00210D55 /* MediaPickerViewController.m in Sources */,
@@ -5938,6 +5956,7 @@
 				39D49C7824B8D42A00FEDBC8 /* ShapeView.swift in Sources */,
 				32A6001722C661100042C1D9 /* EditHistoryViewController.swift in Sources */,
 				B1098BFA21ECFE65000DDA48 /* KeyBackupSetupPassphraseViewModel.swift in Sources */,
+				EC1CA87524C8259700DE9EBF /* KeychainStore.swift in Sources */,
 				B1B5575220EE6C4D00210D55 /* RoomKeyRequestViewController.m in Sources */,
 				32A6001A22C661100042C1D9 /* EditHistoryCoordinator.swift in Sources */,
 				F083BD1E1E7009ED00A9B29C /* AppDelegate.m in Sources */,
@@ -6130,6 +6149,7 @@
 				B1B5591020EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m in Sources */,
 				B1CE83E52422817200D07506 /* KeyVerificationVerifyBySASViewModel.swift in Sources */,
 				B1DB4F06223015080065DBFA /* Character.swift in Sources */,
+				EC1CA87724C82D0E00DE9EBF /* MemoryStore.swift in Sources */,
 				B1B9DEEE22EB34EF0065E677 /* ReactionHistoryViewAction.swift in Sources */,
 				EC711BB624A63C11008F830C /* AuthenticatedSessionViewControllerFactory.swift in Sources */,
 				B1C543A4239E98E400DCA1FA /* KeyVerificationCellInnerContentView.swift in Sources */,
