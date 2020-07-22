@@ -34,7 +34,7 @@ final class PinCodePreferences: NSObject {
     static let shared = PinCodePreferences()
     
     /// Store. Defaults to `KeychainStore`
-    let store: KeyValueStore
+    private let store: KeyValueStore
     
     override init() {
         store = KeychainStore(withKeychain: Keychain(service: PinConstants.pinCodeKeychainService,
