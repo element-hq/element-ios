@@ -19,7 +19,7 @@ import Foundation
 @objcMembers
 class LocalAuthenticationService: NSObject {
     
-    private var pinCodePreferences: PinCodePreferences
+    private let pinCodePreferences: PinCodePreferences
     
     init(pinCodePreferences: PinCodePreferences) {
         self.pinCodePreferences = pinCodePreferences
