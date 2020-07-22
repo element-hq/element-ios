@@ -51,7 +51,7 @@
 "auth_repeat_password_placeholder" = "パスワード再確認";
 "auth_repeat_new_password_placeholder" = "新しいパスワードを再確認";
 "auth_home_server_placeholder" = "URL (例 https://matrix.org)";
-"auth_identity_server_placeholder" = "URL (例 https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (例 https://vector.im)";
 "auth_invalid_login_param" = "ユーザ名かパスワードが正しくありません";
 "auth_invalid_user_name" = "ユーザ名は半角英数字、ドット、ハイフン、アンダスコアのみで記して下さい";
 "auth_invalid_password" = "パスワードが短すぎます(最小6文字)";
@@ -77,7 +77,7 @@
 "auth_msisdn_validation_title" = "認証を確認中";
 "auth_msisdn_validation_message" = "SMSで認証番号を送りました. 以下にその番号を入力してください.";
 "auth_msisdn_validation_error" = "電話番号を認証できません。";
-"auth_recaptcha_message" = "接続先サーバ側かが、機械による自動登録ではなく、あなたが人間であることを確認したいとのことです";
+"auth_recaptcha_message" = "接続先サーバ側が、機械による自動登録ではなく、あなたが人間であることを確認したいとのことです";
 "auth_reset_password_message" = "パスワードを初期化するには, アカウントに登録されている電子メールアドレスを入力してください:";
 "auth_reset_password_missing_email" = "あなたのアカウントに登録された電子メールアドレスの入力が必要です.";
 "auth_reset_password_missing_password" = "新しいパスワードの入力が必要です.";
@@ -85,7 +85,7 @@
 "auth_reset_password_next_step_button" = "自分用電子メールアドレスで認証をします";
 "auth_reset_password_error_unauthorized" = "電子メールアドレスの確認に失敗しました: 電子メールのリンクをクリックしたことを確認してください";
 "auth_reset_password_error_not_found" = "あなたの電子メールアドレスは、接続先サーバ上のMatrix IDと関連付けられていないようです。";
-"auth_reset_password_success_message" = "あなたのパスワードは初期化されました.\n\nあなたはすべての端末から切断しており、プッシュ通知を受け取ることはありません。通知を再度有効にするには、各端末に再度ログインします。";
+"auth_reset_password_success_message" = "あなたのパスワードは初期化されました.\n\nあなたはすべてのセッションから切断しており、プッシュ通知を受け取ることはありません。通知を再度有効にするには、各端末に再度ログインします。";
 "auth_add_email_and_phone_warning" = "電子メールと電話番号の同時登録は, まだシステムが対応できません. 電話番号だけの登録は可能です. お手数おかけしますが, 後ほど個人情報設定から電子メールアドレスを登録してください.";
 // Chat creation
 "room_creation_title" = "新しい対話";
@@ -173,8 +173,8 @@
 "room_participants_ago" = "前";
 "room_participants_action_section_admin_tools" = "管理者権限操作";
 "room_participants_action_section_direct_chats" = "対話";
-"room_participants_action_section_devices" = "端末";
-"room_participants_action_section_other" = "その他";
+"room_participants_action_section_devices" = "セッション";
+"room_participants_action_section_other" = "オプション";
 "room_participants_action_invite" = "招待";
 "room_participants_action_leave" = "部屋を退室";
 "room_participants_action_remove" = "部屋から退室させる";
@@ -201,7 +201,7 @@
 "room_message_short_placeholder" = "ここに送信文を入力…";
 "room_offline_notification" = "サーバとの接続が失われました.";
 "room_unsent_messages_notification" = "文章が送信できませんでした。現在 %@ または %@ ?";
-"room_unsent_messages_unknown_devices_notification" = "未知の端末が存在するために文章が送信されませんでした。現在%@ or %@ ？";
+"room_unsent_messages_unknown_devices_notification" = "未知のセッションが存在するために文章が送信されませんでした。現在%@ or %@ ？";
 "room_ongoing_conference_call" = "会議通話実施中。 %@ または %@で参加してください。";
 "room_ongoing_conference_call_with_close" = "会議通話実施中。%@または%@で参加してください。 %@。";
 "room_ongoing_conference_call_close" = "閉じる";
@@ -229,13 +229,13 @@
 "room_warning_about_encryption" = "End-to-end 暗号化はベータ版であり、信頼性が低い場合があります。\n\n発言を保護するためにはまだ信用すべきではありません。\n\n端末が参加するより前の発言履歴を復号化することはまだできません。\n\n暗号化された発言は、まだ暗号化を実装していないクライアントでは表示されません。";
 "room_event_failed_to_send" = "送信失敗";
 // Unknown devices
-"unknown_devices_alert_title" = "部屋に未知の端末が存在します";
-"unknown_devices_alert" = "この部屋には、確認されていない未知の端末が含まれています。\nすなわち、端末がをユーザ本人が所有しているという保証はありません。\n続ける前に各端末の確認を行うことをおすすめしますが、確認することなく発言を再送信することができます。";
+"unknown_devices_alert_title" = "部屋に未知のセッションが存在します";
+"unknown_devices_alert" = "この部屋には、確認されていない未知のセッションが含まれています。\nすなわち、セッションがをユーザ本人が所有しているという保証はありません。\n続ける前に各セッションの確認を行うことをおすすめしますが、確認することなく発言を再送信することができます。";
 "unknown_devices_send_anyway" = "とにかく送る";
 "unknown_devices_call_anyway" = "とにかく通話する";
 "unknown_devices_answer_anyway" = "とにかく応答する";
 "unknown_devices_verify" = "確認…";
-"unknown_devices_title" = "未知の端末";
+"unknown_devices_title" = "未知のセッション";
 // Room Title
 "room_title_new_room" = "新しい部屋";
 "room_title_multiple_active_members" = "全%@人中 %@人が回線接続";
@@ -267,7 +267,7 @@
 "settings_advanced" = "拡張設定";
 "settings_other" = "その他";
 "settings_labs" = "実験的";
-"settings_devices" = "端末";
+"settings_devices" = "セッション";
 "settings_cryptography" = "暗号化";
 "settings_sign_out" = "通信完全切断";
 "settings_sign_out_confirmation" = "本当によろしいですか？";
@@ -321,7 +321,7 @@
 "settings_confirm_password" = "パスワード確認";
 "settings_fail_to_update_password" = "パスワードの更新に失敗しました";
 "settings_password_updated" = "あなたのパスワードは更新されました";
-"settings_crypto_device_name" = "端末名: ";
+"settings_crypto_device_name" = "セッション名: ";
 "settings_crypto_device_id" = "\n装置固有ID: ";
 "settings_crypto_device_key" = "\n端末鍵: ";
 "settings_crypto_export" = "暗号鍵を外部へ保存";
@@ -483,7 +483,7 @@
 "room_replacement_information" = "この部屋は交換されており、もうアクティブではありません。";
 "room_replacement_link" = "会話はここで続けられます。";
 "room_predecessor_information" = "この部屋は別の会話の続きです。";
-"room_predecessor_link" = "より古いメッセージを見るにはここをクリックしてください。";
+"room_predecessor_link" = "より古いメッセージを見るにはここをタップしてください。";
 "room_resource_limit_exceeded_message_contact_2_link" = "サービス管理者に連絡する";
 "room_resource_limit_exceeded_message_contact_3" = " このサービスの使用を継続するには。";
 "room_resource_usage_limit_reached_message_1_default" = "このホームサーバーはリソース制限の1つを超えています ";
