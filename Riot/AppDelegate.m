@@ -665,6 +665,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:mxSessionArray.firstObject viewMode:SetPinCoordinatorViewModeUnlockByPin];
         self.setPinCoordinatorBridgePresenter.delegate = self;
         [self.setPinCoordinatorBridgePresenter presentIn:self.window];
+    } else {
+        [self afterAppUnlockedByPin:application];
     }
 }
 
@@ -4661,6 +4663,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     [coordinatorBridgePresenter dismiss];
     self.setPinCoordinatorBridgePresenter = nil;
+    [self afterAppUnlockedByPin:[UIApplication sharedApplication]];
 }
 
 - (void)setPinCoordinatorBridgePresenterDelegateDidCompleteWithReset:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter

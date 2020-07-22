@@ -40,7 +40,6 @@ final class EnterPinCodeViewController: UIViewController {
 
     private var viewModel: EnterPinCodeViewModelType!
     private var theme: Theme!
-    private var keyboardAvoider: KeyboardAvoider?
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
 
@@ -61,7 +60,6 @@ final class EnterPinCodeViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.setupViews()
-//        self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
         self.activityPresenter = ActivityIndicatorPresenter()
         self.errorPresenter = MXKErrorAlertPresentation()
         
@@ -78,18 +76,6 @@ final class EnterPinCodeViewController: UIViewController {
         self.viewModel.process(viewAction: .loadData)
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        self.keyboardAvoider?.startAvoiding()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        
-        self.keyboardAvoider?.stopAvoiding()
-    }
-    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.theme.statusBarStyle
     }
@@ -238,10 +224,15 @@ final class EnterPinCodeViewController: UIViewController {
                                            preferredStyle: .alert)
         
         let resetAction = UIAlertAction(title: VectorL10n.pinProtectionResetAlertActionReset, style: .default) { (_) in
-            self.viewModel.process(viewAction: .forgotPinAlertAction)
+            self.viewModel.process(viewAction: .forgotPinAlertResetAction)
+        }
+        
+        let cancelAction = UIAlertAction(title: VectorL10n.cancel, style: .cancel) { (_) in
+            self.viewModel.process(viewAction: .forgotPinAlertCancelAction)
         }
         
         controller.addAction(resetAction)
+        controller.addAction(cancelAction)
         self.present(controller, animated: true, completion: nil)
     }
     

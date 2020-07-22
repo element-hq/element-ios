@@ -67,8 +67,11 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
             currentPin.removeAll()
             //  go back to first state
             self.update(viewState: .choosePin)
-        case .forgotPinAlertAction:
+        case .forgotPinAlertResetAction:
             self.coordinatorDelegate?.enterPinCodeViewModelDidCompleteWithReset(self)
+        case .forgotPinAlertCancelAction:
+            //  no-op
+            break
         }
     }
     

@@ -25,5 +25,6 @@ enum EnterPinCodeViewAction {
     case forgotPinPressed
     case cancel
     case pinsDontMatchAlertAction
-    case forgotPinAlertAction
+    case forgotPinAlertResetAction
+    case forgotPinAlertCancelAction
 }
