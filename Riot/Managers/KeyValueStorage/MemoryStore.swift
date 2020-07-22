@@ -21,7 +21,7 @@ class MemoryStore: KeyValueStore {
     
     private var map: Dictionary<KeyValueStoreKey, Any> = [:]
     
-    func setObject(forKey key: KeyValueStoreKey, value: Any?) {
+    func set(_ value: Any?, forKey key: KeyValueStoreKey) {
         if let value = value {
             map[key] = value
         } else {
@@ -29,7 +29,7 @@ class MemoryStore: KeyValueStore {
         }
     }
 
-    func getObject(forKey key: KeyValueStoreKey) -> Any? {
+    func object(forKey key: KeyValueStoreKey) -> Any? {
         return map[key]
     }
     

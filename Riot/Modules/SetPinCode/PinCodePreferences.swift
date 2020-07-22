@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 import Foundation
+import KeychainAccess
 
 /// Pin code preferences.
 @objcMembers
@@ -22,8 +23,12 @@ final class PinCodePreferences: NSObject {
     
     // MARK: - Constants
     
-    private enum StoreKeys {
-        static let pin = "pin"
+    private struct PinConstants {
+        static let pinCodeKeychainService: String = "im.vector.app.pin-service"
+    }
+    
+    private struct StoreKeys {
+        static let pin: String = "pin"
     }
     
     static let shared = PinCodePreferences()
@@ -32,7 +37,8 @@ final class PinCodePreferences: NSObject {
     var store: KeyValueStore!
     
     override init() {
-        store = KeychainStore()
+        store = KeychainStore(withKeychain: Keychain(service: PinConstants.pinCodeKeychainService,
+                                                     accessGroup: Constants.keychainAccessGroup))
     }
     
     // MARK: - Public
@@ -59,9 +65,18 @@ final class PinCodePreferences: NSObject {
     /// Saved user PIN
     var pin: String? {
         get {
-            return store.getObject(forKey: StoreKeys.pin) as? String
+            do {
+                return try store.object(forKey: StoreKeys.pin) as? String
+            } catch let error {
+                NSLog("[PinCodePreferences] Error when reading user pin from store: \(error)")
+                return nil
+            }
         } set {
-            store.setObject(forKey: StoreKeys.pin, value: newValue)
+            do {
+                try store.set(newValue, forKey: StoreKeys.pin)
+            } catch let error {
+                NSLog("[PinCodePreferences] Error when storing user pin to the store: \(error)")
+            }
         }
     }
     

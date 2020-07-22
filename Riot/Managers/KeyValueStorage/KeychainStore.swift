@@ -21,27 +21,33 @@ import KeychainAccess
 /// Only supports `String` and `Data` values for now.
 class KeychainStore: KeyValueStore {
     
-    private let keychain = Keychain()
+    private var keychain: Keychain
     
-    func setObject(forKey key: KeyValueStoreKey, value: Any?) {
+    /// Initializer
+    /// - Parameter keychain: Keychain instance to be used to read/write
+    init(withKeychain keychain: Keychain) {
+        self.keychain = keychain
+    }
+    
+    func set(_ value: Any?, forKey key: KeyValueStoreKey) throws {
         if value == nil {
-            removeObject(forKey: key)
+            try removeObject(forKey: key)
             return
         }
         
         if let value = value as? String {
-            try? keychain.set(value, key: key)
+            try keychain.set(value, key: key)
         } else if let value = value as? Data {
-            try? keychain.set(value, key: key)
+            try keychain.set(value, key: key)
         }
     }
 
-    func getObject(forKey key: KeyValueStoreKey) -> Any? {
-        return try? keychain.get(key)
+    func object(forKey key: KeyValueStoreKey) throws -> Any? {
+        return try keychain.get(key)
     }
     
-    func removeObject(forKey key: KeyValueStoreKey) {
-        try? keychain.remove(key)
+    func removeObject(forKey key: KeyValueStoreKey) throws {
+        try keychain.remove(key)
     }
     
 }
