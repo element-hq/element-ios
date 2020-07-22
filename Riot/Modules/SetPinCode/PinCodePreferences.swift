@@ -22,13 +22,18 @@ final class PinCodePreferences: NSObject {
     
     // MARK: - Constants
     
-    private enum UserDefaultsKeys {
+    private enum StoreKeys {
         static let pin = "pin"
     }
     
     static let shared = PinCodePreferences()
     
-    // MARK: - Properties
+    /// Store. Defaults to `KeychainStore`
+    var store: KeyValueStore!
+    
+    override init() {
+        store = KeychainStore()
+    }
     
     // MARK: - Public
     
@@ -53,11 +58,10 @@ final class PinCodePreferences: NSObject {
     
     /// Saved user PIN
     var pin: String? {
-        // TODO: Move pin to a safer area
         get {
-            return UserDefaults.standard.object(forKey: UserDefaultsKeys.pin) as? String
+            return store.getObject(forKey: StoreKeys.pin) as? String
         } set {
-            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.pin)
+            store.setObject(forKey: StoreKeys.pin, value: newValue)
         }
     }
     
