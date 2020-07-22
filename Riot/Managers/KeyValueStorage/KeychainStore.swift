@@ -24,6 +24,11 @@ class KeychainStore: KeyValueStore {
     private let keychain = Keychain()
     
     func setObject(forKey key: KeyValueStoreKey, value: Any?) {
+        if value == nil {
+            removeObject(forKey: key)
+            return
+        }
+        
         if let value = value as? String {
             try? keychain.set(value, key: key)
         } else if let value = value as? Data {
