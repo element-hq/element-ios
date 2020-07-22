@@ -41,7 +41,7 @@ final class EnterPinCodeCoordinator: EnterPinCodeCoordinatorType {
     init(session: MXSession?, viewMode: SetPinCoordinatorViewMode) {
         self.session = session
         
-        let enterPinCodeViewModel = EnterPinCodeViewModel(session: self.session, viewMode: viewMode)
+        let enterPinCodeViewModel = EnterPinCodeViewModel(session: self.session, viewMode: viewMode, pinCodePreferences: .shared)
         let enterPinCodeViewController = EnterPinCodeViewController.instantiate(with: enterPinCodeViewModel)
         self.enterPinCodeViewModel = enterPinCodeViewModel
         self.enterPinCodeViewController = enterPinCodeViewController

@@ -39,12 +39,14 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
 
     weak var viewDelegate: EnterPinCodeViewModelViewDelegate?
     weak var coordinatorDelegate: EnterPinCodeViewModelCoordinatorDelegate?
+    var pinCodePreferences: PinCodePreferences
     
     // MARK: - Setup
     
-    init(session: MXSession?, viewMode: SetPinCoordinatorViewMode) {
+    init(session: MXSession?, viewMode: SetPinCoordinatorViewMode, pinCodePreferences: PinCodePreferences) {
         self.session = session
         self.viewMode = viewMode
+        self.pinCodePreferences = pinCodePreferences
     }
     
     // MARK: - Public
@@ -84,7 +86,7 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
             //  a digit tapped
             currentPin += String(tag)
             
-            if currentPin.count == PinCodePreferences.shared.numberOfDigits {
+            if currentPin.count == pinCodePreferences.numberOfDigits {
                 switch viewMode {
                 case .setPin:
                     //  choosing pin
@@ -106,10 +108,10 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
                     }
                 case .unlockByPin, .confirmPinToDeactivate:
                     //  unlocking
-                    if currentPin != PinCodePreferences.shared.pin {
+                    if currentPin != pinCodePreferences.pin {
                         //  no match
                         numberOfFailuresDuringEnterPIN += 1
-                        if numberOfFailuresDuringEnterPIN < PinCodePreferences.shared.allowedNumberOfTrialsBeforeAlert {
+                        if numberOfFailuresDuringEnterPIN < pinCodePreferences.allowedNumberOfTrialsBeforeAlert {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                                 self.viewDelegate?.enterPinCodeViewModel(self, didUpdateViewState: .wrongPin)
                                 self.currentPin.removeAll()
