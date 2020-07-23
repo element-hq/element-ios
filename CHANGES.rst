@@ -1,5 +1,8 @@
 Changes in 1.0.2 (2020-07-)
 ===============================================
+
+Improvements:
+ * Build: Make the app build if JitsiMeetSDK is not in the Podfile.
  
 Bug fix:
  * Registration: Do not display the skip button if email is mandatory (#3417).
