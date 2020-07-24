@@ -17,8 +17,25 @@
 import Foundation
 import KeychainAccess
 
+/// Extension on Keychain to get/set booleans
+extension Keychain {
+    
+    public func set(_ value: Bool, key: String, ignoringAttributeSynchronizable: Bool = true) throws {
+        try set(value.description, key: key, ignoringAttributeSynchronizable: ignoringAttributeSynchronizable)
+    }
+    
+    public func getBool(_ key: String, ignoringAttributeSynchronizable: Bool = true) throws -> Bool? {
+        guard let value = try getString(key, ignoringAttributeSynchronizable: ignoringAttributeSynchronizable) else {
+            return nil
+        }
+        guard value == true.description || value == false.description else { return nil }
+        return value == true.description
+    }
+    
+}
+
 @objcMembers
-/// Only supports `String` and `Data` values for now.
+/// Only supports `String`, `Data` and `Bool` values for now.
 class KeychainStore: KeyValueStore {
     
     private var keychain: Keychain
@@ -35,14 +52,23 @@ class KeychainStore: KeyValueStore {
             return
         }
         
-        if let value = value as? String {
+        if let value = value as? Data {
             try keychain.set(value, key: key)
-        } else if let value = value as? Data {
+        } else if let value = value as? String {
+            try keychain.set(value, key: key)
+        } else if let value = value as? Bool {
             try keychain.set(value, key: key)
         }
     }
 
     func object(forKey key: KeyValueStoreKey) throws -> Any? {
+        if let value = try keychain.getBool(key) {
+            return value
+        } else if let value = try keychain.getString(key) {
+            return value
+        } else if let value = try keychain.getData(key) {
+            return value
+        }
         return try keychain.get(key)
     }
     
