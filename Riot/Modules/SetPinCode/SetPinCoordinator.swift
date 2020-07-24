@@ -160,7 +160,8 @@ extension SetPinCoordinator: SetupBiometricsCoordinatorDelegate {
     }
     
     func setupBiometricsCoordinatorDidCancel(_ coordinator: SetupBiometricsCoordinatorType) {
-        if viewMode == .unlock {
+        switch viewMode {
+        case .unlock:
             //  if trying to unlock
             if pinCodePreferences.isPinSet {
                 //  and user also has set a pin, so fallback to it
@@ -169,11 +170,9 @@ extension SetPinCoordinator: SetupBiometricsCoordinatorDelegate {
                 //  no pin set, cascade cancellation
                 self.delegate?.setPinCoordinatorDidCancel(self)
             }
-            return
-        }
-        if viewMode == .setupBiometricsAfterLogin {
+        case .setupBiometricsAfterLogin:
             self.delegate?.setPinCoordinatorDidComplete(self)
-        } else {
+        default:
             self.delegate?.setPinCoordinatorDidCancel(self)
         }
     }
