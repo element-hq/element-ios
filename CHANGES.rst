@@ -1,6 +1,9 @@
 Changes in 1.0.2 (2020-07-)
 ===============================================
- 
+
+Improvements:
+ * Biometrics protection: Implement TouchID/FaceID protection (#3437).
+
 Bug fix:
  * Registration: Do not display the skip button if email is mandatory (#3417).
 
