@@ -163,7 +163,7 @@ final class EnterPinCodeViewController: UIViewController {
             self.renderConfirmPin()
         case .pinsDontMatch:
             self.renderPinsDontMatch()
-        case .unlockByPin:
+        case .unlock:
             self.renderUnlockByPin()
         case .wrongPin:
             self.renderWrongPin()

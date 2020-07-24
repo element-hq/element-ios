@@ -20,8 +20,11 @@ import Foundation
 
 @objc enum SetPinCoordinatorViewMode: Int {
     case setPin
-    case unlockByPin
+    case unlock
     case confirmPinToDeactivate
+    case setupBiometricsAfterLogin
+    case setupBiometricsFromSettings
+    case confirmBiometricsToDeactivate
 }
 
 @objc protocol SetPinCoordinatorBridgePresenterDelegate {
@@ -65,7 +68,7 @@ final class SetPinCoordinatorBridgePresenter: NSObject {
     // }
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let setPinCoordinator = SetPinCoordinator(session: self.session, viewMode: self.viewMode)
+        let setPinCoordinator = SetPinCoordinator(session: self.session, viewMode: self.viewMode, pinCodePreferences: .shared)
         setPinCoordinator.delegate = self
         viewController.present(setPinCoordinator.toPresentable(), animated: animated, completion: nil)
         setPinCoordinator.start()
@@ -74,7 +77,7 @@ final class SetPinCoordinatorBridgePresenter: NSObject {
     }
     
     func present(in window: UIWindow) {
-        let setPinCoordinator = SetPinCoordinator(session: self.session, viewMode: self.viewMode)
+        let setPinCoordinator = SetPinCoordinator(session: self.session, viewMode: self.viewMode, pinCodePreferences: .shared)
         setPinCoordinator.delegate = self
         guard let view = setPinCoordinator.toPresentable().view else { return }
         window.addSubview(view)

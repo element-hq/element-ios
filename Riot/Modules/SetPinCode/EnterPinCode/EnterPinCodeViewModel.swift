@@ -109,7 +109,7 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
                             update(viewState: .pinsDontMatch)
                         }
                     }
-                case .unlockByPin, .confirmPinToDeactivate:
+                case .unlock, .confirmPinToDeactivate:
                     //  unlocking
                     if currentPin != pinCodePreferences.pin {
                         //  no match
@@ -131,6 +131,8 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
                             self.coordinatorDelegate?.enterPinCodeViewModelDidComplete(self)
                         }
                     }
+                default:
+                    break
                 }
                 return
             }
@@ -141,10 +143,12 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
         switch viewMode {
         case .setPin:
             update(viewState: .choosePin)
-        case .unlockByPin:
-            update(viewState: .unlockByPin)
+        case .unlock:
+            update(viewState: .unlock)
         case .confirmPinToDeactivate:
             update(viewState: .confirmPinToDisable)
+        default:
+            break
         }
     }
     

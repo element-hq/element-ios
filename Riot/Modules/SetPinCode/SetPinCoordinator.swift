@@ -28,6 +28,7 @@ final class SetPinCoordinator: SetPinCoordinatorType {
     private let navigationRouter: NavigationRouterType
     private let session: MXSession?
     private var viewMode: SetPinCoordinatorViewMode
+    private let pinCodePreferences: PinCodePreferences
     
     // MARK: Public
 
@@ -38,23 +39,34 @@ final class SetPinCoordinator: SetPinCoordinatorType {
     
     // MARK: - Setup
     
-    init(session: MXSession?, viewMode: SetPinCoordinatorViewMode) {
+    init(session: MXSession?, viewMode: SetPinCoordinatorViewMode, pinCodePreferences: PinCodePreferences) {
         self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
         self.viewMode = viewMode
-    }    
+        self.pinCodePreferences = pinCodePreferences
+    }
+    
+    private func getRootCoordinator() -> Coordinator & Presentable {
+        switch viewMode {
+        case .unlock:
+            if pinCodePreferences.isBiometricsSet {
+                return createSetupBiometricsCoordinator()
+            } else {
+                return createEnterPinCodeCoordinator()
+            }
+        case .setPin, .confirmPinToDeactivate:
+            return createEnterPinCodeCoordinator()
+        case .setupBiometricsAfterLogin, .setupBiometricsFromSettings, .confirmBiometricsToDeactivate:
+            return createSetupBiometricsCoordinator()
+        }
+    }
     
     // MARK: - Public methods
     
     func start() {
-
-        let rootCoordinator = self.createEnterPinCodeCoordinator()
-
-        rootCoordinator.start()
-
-        self.add(childCoordinator: rootCoordinator)
-
-        self.navigationRouter.setRootModule(rootCoordinator)
+        let rootCoordinator = getRootCoordinator()
+        
+        setRootCoordinator(rootCoordinator)
     }
     
     func toPresentable() -> UIViewController {
@@ -62,6 +74,14 @@ final class SetPinCoordinator: SetPinCoordinatorType {
     }
     
     // MARK: - Private methods
+    
+    private func setRootCoordinator(_ coordinator: Coordinator & Presentable) {
+        coordinator.start()
+
+        self.add(childCoordinator: coordinator)
+
+        self.navigationRouter.setRootModule(coordinator)
+    }
 
     private func createEnterPinCodeCoordinator() -> EnterPinCodeCoordinator {
         let coordinator = EnterPinCodeCoordinator(session: self.session, viewMode: self.viewMode)
@@ -69,12 +89,26 @@ final class SetPinCoordinator: SetPinCoordinatorType {
         return coordinator
     }
     
+    private func createSetupBiometricsCoordinator() -> SetupBiometricsCoordinator {
+        let coordinator = SetupBiometricsCoordinator(session: self.session, viewMode: self.viewMode)
+        coordinator.delegate = self
+        return coordinator
+    }
+    
     private func storePin(_ pin: String) {
-        PinCodePreferences.shared.pin = pin
+        pinCodePreferences.pin = pin
     }
     
     private func removePin() {
-        PinCodePreferences.shared.reset()
+        pinCodePreferences.pin = nil
+    }
+    
+    private func setupBiometrics() {
+        pinCodePreferences.biometricsEnabled = true
+    }
+    
+    private func removeBiometrics() {
+        pinCodePreferences.biometricsEnabled = nil
     }
 }
 
@@ -94,10 +128,54 @@ extension SetPinCoordinator: EnterPinCodeCoordinatorDelegate {
     
     func enterPinCodeCoordinator(_ coordinator: EnterPinCodeCoordinatorType, didCompleteWithPin pin: String) {
         storePin(pin)
-        self.delegate?.setPinCoordinatorDidComplete(self)
+        if pinCodePreferences.forcePinProtection && pinCodePreferences.isBiometricsAvailable {
+            viewMode = .setupBiometricsAfterLogin
+            setRootCoordinator(createSetupBiometricsCoordinator())
+        } else {
+            self.delegate?.setPinCoordinatorDidComplete(self)
+        }
     }
     
     func enterPinCodeCoordinatorDidCancel(_ coordinator: EnterPinCodeCoordinatorType) {
         self.delegate?.setPinCoordinatorDidCancel(self)
     }
+}
+
+extension SetPinCoordinator: SetupBiometricsCoordinatorDelegate {
+    
+    func setupBiometricsCoordinatorDidComplete(_ coordinator: SetupBiometricsCoordinatorType) {
+        switch viewMode {
+        case .setupBiometricsAfterLogin, .setupBiometricsFromSettings:
+            setupBiometrics()
+        case .confirmBiometricsToDeactivate:
+            removeBiometrics()
+        default:
+            break
+        }
+        self.delegate?.setPinCoordinatorDidComplete(self)
+    }
+    
+    func setupBiometricsCoordinatorDidCompleteWithReset(_ coordinator: SetupBiometricsCoordinatorType) {
+        self.delegate?.setPinCoordinatorDidCompleteWithReset(self)
+    }
+    
+    func setupBiometricsCoordinatorDidCancel(_ coordinator: SetupBiometricsCoordinatorType) {
+        if viewMode == .unlock {
+            //  if trying to unlock
+            if pinCodePreferences.isPinSet {
+                //  and user also has set a pin, so fallback to it
+                setRootCoordinator(createEnterPinCodeCoordinator())
+            } else {
+                //  no pin set, cascade cancellation
+                self.delegate?.setPinCoordinatorDidCancel(self)
+            }
+            return
+        }
+        if viewMode == .setupBiometricsAfterLogin {
+            self.delegate?.setPinCoordinatorDidComplete(self)
+        } else {
+            self.delegate?.setPinCoordinatorDidCancel(self)
+        }
+    }
+    
 }
