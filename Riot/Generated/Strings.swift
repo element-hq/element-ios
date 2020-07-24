@@ -318,6 +318,62 @@ internal enum VectorL10n {
   internal static var back: String { 
     return VectorL10n.tr("Vector", "back") 
   }
+  /// Log back in
+  internal static var biometricsCantUnlockedAlertMessageLogin: String { 
+    return VectorL10n.tr("Vector", "biometrics_cant_unlocked_alert_message_login") 
+  }
+  /// Retry
+  internal static var biometricsCantUnlockedAlertMessageRetry: String { 
+    return VectorL10n.tr("Vector", "biometrics_cant_unlocked_alert_message_retry") 
+  }
+  /// To unlock, use %@ or log back in and enable %@ again
+  internal static func biometricsCantUnlockedAlertMessageX(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "biometrics_cant_unlocked_alert_message_x", p1, p2)
+  }
+  /// Can't unlock app
+  internal static var biometricsCantUnlockedAlertTitle: String { 
+    return VectorL10n.tr("Vector", "biometrics_cant_unlocked_alert_title") 
+  }
+  /// Disable %@
+  internal static func biometricsDesetupDisableButtonTitleX(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "biometrics_desetup_disable_button_title_x", p1)
+  }
+  /// 
+  internal static var biometricsDesetupSubtitle: String { 
+    return VectorL10n.tr("Vector", "biometrics_desetup_subtitle") 
+  }
+  /// Disable %@
+  internal static func biometricsDesetupTitleX(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "biometrics_desetup_title_x", p1)
+  }
+  /// Face ID
+  internal static var biometricsModeFaceId: String { 
+    return VectorL10n.tr("Vector", "biometrics_mode_face_id") 
+  }
+  /// Touch ID
+  internal static var biometricsModeTouchId: String { 
+    return VectorL10n.tr("Vector", "biometrics_mode_touch_id") 
+  }
+  /// Enable %@
+  internal static func biometricsSettingsEnableX(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "biometrics_settings_enable_x", p1)
+  }
+  /// Enable %@
+  internal static func biometricsSetupEnableButtonTitleX(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "biometrics_setup_enable_button_title_x", p1)
+  }
+  /// Save yourself time
+  internal static var biometricsSetupSubtitle: String { 
+    return VectorL10n.tr("Vector", "biometrics_setup_subtitle") 
+  }
+  /// Enable %@
+  internal static func biometricsSetupTitleX(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "biometrics_setup_title_x", p1)
+  }
+  /// Authentication is needed to access your app
+  internal static var biometricsUsageReason: String { 
+    return VectorL10n.tr("Vector", "biometrics_usage_reason") 
+  }
   /// Please describe what you did before the crash:
   internal static var bugCrashReportDescription: String { 
     return VectorL10n.tr("Vector", "bug_crash_report_description") 
@@ -1966,9 +2022,9 @@ internal enum VectorL10n {
   internal static var pinProtectionSettingsSectionFooter: String { 
     return VectorL10n.tr("Vector", "pin_protection_settings_section_footer") 
   }
-  /// PIN
-  internal static var pinProtectionSettingsSectionHeader: String { 
-    return VectorL10n.tr("Vector", "pin_protection_settings_section_header") 
+  /// PIN & %@
+  internal static func pinProtectionSettingsSectionHeaderX(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "pin_protection_settings_section_header_x", p1)
   }
   /// Preview
   internal static var preview: String { 
