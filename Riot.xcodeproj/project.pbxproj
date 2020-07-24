@@ -74,6 +74,7 @@
 		32891D6C2264CBA300C82226 /* SimpleScreenTemplateViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32891D6A2264CBA300C82226 /* SimpleScreenTemplateViewController.storyboard */; };
 		32891D75226728EE00C82226 /* KeyVerificationDataLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32891D73226728EE00C82226 /* KeyVerificationDataLoadingViewController.swift */; };
 		32891D76226728EF00C82226 /* KeyVerificationDataLoadingViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32891D74226728EE00C82226 /* KeyVerificationDataLoadingViewController.storyboard */; };
+		328E410624CB168500DC4490 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328E410524CB168500DC4490 /* AppConfig.swift */; };
 		3291DC8A23E0BE820009732F /* Security.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3291DC8923E0BE820009732F /* Security.storyboard */; };
 		3291DC8D23E0BFF10009732F /* SecurityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3291DC8C23E0BFF10009732F /* SecurityViewController.m */; };
 		329E746622CD02EA006F9797 /* BubbleReactionActionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 329E746422CD02EA006F9797 /* BubbleReactionActionViewCell.xib */; };
@@ -939,6 +940,7 @@
 		32891D6A2264CBA300C82226 /* SimpleScreenTemplateViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SimpleScreenTemplateViewController.storyboard; sourceTree = "<group>"; };
 		32891D73226728EE00C82226 /* KeyVerificationDataLoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationDataLoadingViewController.swift; sourceTree = "<group>"; };
 		32891D74226728EE00C82226 /* KeyVerificationDataLoadingViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = KeyVerificationDataLoadingViewController.storyboard; sourceTree = "<group>"; };
+		328E410524CB168500DC4490 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
 		3291DC8923E0BE820009732F /* Security.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Security.storyboard; sourceTree = "<group>"; };
 		3291DC8B23E0BFF10009732F /* SecurityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityViewController.h; sourceTree = "<group>"; };
 		3291DC8C23E0BFF10009732F /* SecurityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityViewController.m; sourceTree = "<group>"; };
@@ -4683,6 +4685,7 @@
 		F083BB081E7009EC00A9B29C /* Riot */ = {
 			isa = PBXGroup;
 			children = (
+				328E410524CB168500DC4490 /* AppConfig.swift */,
 				F083BB0C1E7009EC00A9B29C /* AppDelegate.h */,
 				F083BB0D1E7009EC00A9B29C /* AppDelegate.m */,
 				B1098BD921ECE09E000DDA48 /* Generated */,
@@ -5565,6 +5568,7 @@
 				B1B5572320EE6C4D00210D55 /* AttachmentsViewController.m in Sources */,
 				B18DEDDD2433967C0075FEF7 /* KeyVerificationFlow.swift in Sources */,
 				F083BDEE1E7009ED00A9B29C /* MXRoom+Riot.m in Sources */,
+				328E410624CB168500DC4490 /* AppConfig.swift in Sources */,
 				EC711B9624A63B37008F830C /* SecretsRecoveryWithKeyViewState.swift in Sources */,
 				B120863722EF375F001F89E0 /* ReactionHistoryBridgeCoordinatorPresenter.swift in Sources */,
 				EC711B9224A63B37008F830C /* SecretsRecoveryWithKeyViewModel.swift in Sources */,

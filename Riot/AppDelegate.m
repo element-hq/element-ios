@@ -509,11 +509,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [DecryptionFailureTracker sharedInstance].delegate = [Analytics sharedInstance];
     [[Analytics sharedInstance] start];
     
-    // Disable CallKit
-    [MXKAppSettings standardAppSettings].enableCallKit = NO;
-    
-    // Enable lazy loading
-    [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = YES;
+    // Set application settings
+    [AppConfig.shared setupSettings];
 
     self.pushNotificationService = [PushNotificationService new];
     self.pushNotificationService.delegate = self;
@@ -1815,30 +1812,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 - (void)initMatrixSessions
 {
     NSLog(@"[AppDelegate] initMatrixSessions");
-    
-    MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
-    
-    // Define the media cache version
-    sdkOptions.mediaCacheAppVersion = 0;
-    
-    // Enable e2e encryption for newly created MXSession
-    sdkOptions.enableCryptoWhenStartingMXSession = YES;
-    
-    // Disable identicon use
-    sdkOptions.disableIdenticonUseForUserAvatar = YES;
-    
-    // Use UIKit BackgroundTask for handling background tasks in the SDK
-    sdkOptions.backgroundModeHandler = [[MXUIKitBackgroundModeHandler alloc] init];
 
-    // Get modular widget events in rooms histories
-    [[MXKAppSettings standardAppSettings] addSupportedEventTypes:@[kWidgetMatrixEventTypeString, kWidgetModularEventTypeString]];
-    
-    // Hide undecryptable messages that were sent while the user was not in the room
-    [MXKAppSettings standardAppSettings].hidePreJoinedUndecryptableEvents = YES;
-    
-    // Enable long press on event in bubble cells
-    [MXKRoomBubbleTableViewCell disableLongPressGestureOnEvent:NO];
-    
     // Set first RoomDataSource class used in Vector
     [MXKRoomDataSourceManager registerRoomDataSourceClass:RoomDataSource.class];
     
@@ -1868,14 +1842,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             {
                 [mxSession enableVoIPWithCallStack:callStack];
 
-                // Let's call invite be valid for 1 minute
-                mxSession.callManager.inviteLifetime = 60000;
-
-                if (RiotSettings.shared.allowStunServerFallback)
-                {
-                    mxSession.callManager.fallbackSTUNServer = RiotSettings.shared.stunServerFallback;
-                }
-
                 // Setup CallKit
                 if ([MXCallKitAdapter callKitAvailable])
                 {
@@ -1899,14 +1865,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 [self enableNoVoIPOnMatrixSession:mxSession];
             }
             
-            // Each room member will be considered as a potential contact.
-            [MXKContactManager sharedManager].contactManagerMXRoomSource = MXKContactManagerMXRoomSourceAll;
-
-            // Send read receipts for widgets events too
-            NSMutableArray<MXEventTypeString> *acknowledgableEventTypes = [NSMutableArray arrayWithArray:mxSession.acknowledgableEventTypes];
-            [acknowledgableEventTypes addObject:kWidgetMatrixEventTypeString];
-            [acknowledgableEventTypes addObject:kWidgetModularEventTypeString];
-            mxSession.acknowledgableEventTypes = acknowledgableEventTypes;
+            [AppConfig.shared setupSettingsFor:mxSession];
         }
         else if (mxSession.state == MXSessionStateStoreDataReady)
         {
@@ -1925,8 +1884,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 }
             }
             
-            // Do not warn for unknown devices. We have cross-signing now
-            mxSession.crypto.warnOnUnknowDevices = NO;
+            [AppConfig.shared setupSettingsWhenLoadedFor:mxSession];
             
             // Register to user new device sign in notification
             [self registerUserDidSignInOnNewDeviceNotificationForSession:mxSession];
