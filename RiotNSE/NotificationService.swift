@@ -28,9 +28,9 @@ class NotificationService: UNNotificationServiceExtension {
     /// Cached events. Keys are eventId's
     var cachedEvents: [String: MXEvent] = [:]
     static var mxSession: MXSession?
-    lazy var showDecryptedContentInNotifications: Bool = {
+    var showDecryptedContentInNotifications: Bool {
         return RiotSettings.shared.showDecryptedContentInNotifications
-    }()
+    }
     static var isLoggerInitialized: Bool = false
     
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
