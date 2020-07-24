@@ -690,3 +690,15 @@
 "key_verification_verify_qr_code_other_scan_my_code_title" = "Kas teisel osapoolel õnnestus QR-koodi skaneerimine?";
 "key_verification_verify_qr_code_scan_other_code_success_title" = "Koodid klapivad!";
 "key_verification_verify_qr_code_scan_other_code_success_message" = "QR-koodi valideerimine õnnestus.";
+"security_settings_blacklist_unverified_devices" = "Ära iialgi saada sõnumeid sessioonidele, mida sa ei usalda";
+"security_settings_blacklist_unverified_devices_description" = "Veriftseeri kasutaja kõik sessioonid selleks et märkida nad usaldusväärseks ja sinna sõnumeid saata.";
+// AuthenticatedSessionViewControllerFactory
+"authenticated_session_flow_not_supported" = "See rakendus ei toeta sinu koduserveri pakutavat autentimislahendust.";
+"user_verification_sessions_list_user_trust_level_warning_title" = "Hoiatus";
+"user_verification_sessions_list_user_trust_level_unknown_title" = "Teadmata olek";
+"user_verification_sessions_list_information" = "Sõnumid selle kasutajaga selles jututoas on läbivalt krüptitud ning kolmandad osapooled ei saa neid lugeda.";
+"user_verification_sessions_list_table_title" = "Sessioonid";
+"user_verification_sessions_list_session_trusted" = "Usaldusväärsed";
+"user_verification_sessions_list_session_untrusted" = "Ei ole usaldusväärsed";
+"user_verification_session_details_trusted_title" = "Usaldusväärsed";
+"user_verification_session_details_untrusted_title" = "Ei ole usaldusväärsed";
