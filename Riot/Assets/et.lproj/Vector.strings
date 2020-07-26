@@ -432,7 +432,7 @@
 "room_participants_invite_prompt_title" = "Kinnitus";
 "room_participants_invite_prompt_msg" = "Kas sa oled kindel, et soovid kutsuda %@ vestlusele?";
 "room_participants_filter_room_members" = "Filtreeri jututoa liikmeid";
-"room_participants_invite_another_user" = "Otsi või kutsu uut kasutajat tema kasutajatunnuse või nime alusel";
+"room_participants_invite_another_user" = "Otsi või kutsu uut kasutajat tema kasutajatunnuse, nime või e-posti aadressi alusel";
 "room_participants_invite_malformed_id_title" = "Viga kutse saatmisel";
 "room_participants_invite_malformed_id" = "Vigane kasutajatunnus. Peaksid kasutama kas e-posti aadressi või õiget Matrix'i kasutajatunnust vormingus '@toreinimene:domeen.ee'";
 "room_participants_invited_section" = "KUTSUTUD";
@@ -702,3 +702,154 @@
 "user_verification_sessions_list_session_untrusted" = "Ei ole usaldusväärsed";
 "user_verification_session_details_trusted_title" = "Usaldusväärsed";
 "user_verification_session_details_untrusted_title" = "Ei ole usaldusväärsed";
+// Chat creation
+"room_creation_title" = "Uus vestlus";
+"room_creation_account" = "Kasutajakonto";
+"room_creation_appearance" = "Välimus";
+"room_creation_appearance_name" = "Nimi";
+"room_creation_appearance_picture" = "Vestluse tunnuspilt (kui soovid)";
+"room_creation_privacy" = "Privaatsus";
+"room_creation_private_room" = "See vestlus on privaatne";
+"room_creation_public_room" = "See vestlus on avalik";
+"room_creation_make_public" = "Muuda avalikuks";
+"room_creation_make_public_prompt_title" = "Kas muudame selle vestluse avalikuks?";
+"room_creation_make_public_prompt_msg" = "Kas sa oled kindel, et soovid muuta seda vestlust avalikuks? Sel juhul võib igaüks lugeda sinu sõnumeid ja liituda vestlusega.";
+"room_creation_keep_private" = "Jäta privaatseks";
+"room_creation_make_private" = "Muuda privaatseks";
+"room_creation_wait_for_creation" = "Jututuba on just loomisel. Palun oota üks hetk.";
+"room_creation_invite_another_user" = "Otsi või kutsu uut kasutajat tema kasutajatunnuse, nime või e-posti aadressi alusel";
+"room_creation_error_invite_user_by_email_without_identity_server" = "Ühtegi isikutuvastusserverit pole seadistatud ning sul ei ole võimalik lisada kasutajaid e-posti aadressi alusel.";
+"room_recents_low_priority_section" = "VÄHETÄHTIS";
+"room_recents_server_notice_section" = "SÜSTEEMSED TEATED";
+"room_recents_invites_section" = "KUTSED";
+"room_recents_start_chat_with" = "Alusta vestlust";
+"room_recents_create_empty_room" = "Loo jututuba";
+"room_recents_join_room" = "Liitu jututoaga";
+"room_recents_join_room_title" = "Liitu jututoaga";
+"room_recents_join_room_prompt" = "Sisesta jututoa tunnus, nimi või alias";
+// People tab
+"people_invites_section" = "KUTSED";
+"people_conversation_section" = "VESTLUSED";
+"people_no_conversation" = "Vestlusi ei leidu";
+// Rooms tab
+"room_directory_no_public_room" = "Avalikke jututube ei leidu";
+// Groups tab
+"group_invite_section" = "KUTSED";
+"group_section" = "KOGUKONNAD";
+// Search
+"search_rooms" = "Jututoad";
+"search_messages" = "Sõnumid";
+"search_people" = "Inimesed";
+"search_files" = "Failid";
+"search_default_placeholder" = "Otsing";
+"search_people_placeholder" = "Otsi kasutajat tema kasutajatunnuse, nime või e-posti aadressi alusel";
+"search_no_result" = "Tulemusi pole";
+"search_in_progress" = "Otsin…";
+// Directory
+"directory_cell_title" = "Sirvi kataloogi";
+"directory_cell_description" = "%tu jututuba";
+"directory_search_results_title" = "Sirvi tulemusi kataloogist";
+"directory_search_results" = "%@ kohta leidsin %tu tulemust";
+"directory_search_results_more_than" = ">%@ kohta leidsin %tu tulemust";
+"directory_searching_title" = "Otsin kataaloogist…";
+"directory_search_fail" = "Andmete laadimine ei õnnestunud";
+// Contacts
+"contacts_address_book_section" = "KONTAKTID SIIN SEADMES";
+"settings_config_identity_server" = "Isikutuvastusserver on %@";
+"settings_config_user_id" = "Sisselogitud kui %@";
+"settings_user_settings" = "KASUTAJA SEADISTUSED";
+"settings_notifications_settings" = "TEAVITUSTE SEADUSTUSED";
+"settings_calls_settings" = "KÕNED";
+"settings_identity_server_settings" = "ISIKUTUVASTUSSERVER";
+"settings_integrations" = "LÕIMINGUD";
+"settings_user_interface" = "KASUTAJALIIDES";
+"settings_ignored_users" = "EIRATUD KASUTAJAD";
+"settings_contacts" = "KONTAKTID SIIN SEADMES";
+"settings_advanced" = "KEERUKAMAD SEADISTUSED";
+"settings_other" = "MUUD SEADISTUSED";
+"settings_labs" = "KATSED";
+"settings_discovery_no_identity_server" = "Sa hetkel ei kasuta isikutuvastusserverit. Et olla leitav ja ise leida sinule teadaolevaid inimesi seadista ta alljärgnevalt.";
+"settings_discovery_terms_not_signed" = "Selleks, et sind võiks leida e-posti aadressi või telefoninumbri alusel, nõustu isikutuvastusserveri (%@) kasutustingimustega.";
+// Security settings
+"security_settings_title" = "Turvalisus";
+"security_settings_crypto_sessions" = "MINU SESSIOONID";
+"security_settings_crypto_sessions_description_2" = "Kui sa ei tunne ära mõnda oma sisselogimissessiooni, siis muuda ära oma salasõna ja tee võtmetest uus turvaline varukoopia.";
+"security_settings_secure_backup" = "TURVALINE VARUNDUS";
+"security_settings_secure_backup_description" = "Tagamaks, et sa ei kaota ligipääsu krüptitud sõnumitele ja andmetele, varunda krüptimisvõtmed oma serveris.";
+"security_settings_secure_backup_setup" = "Võta kasutusele";
+"security_settings_crosssigning_info_exists" = "Sinu kontol on olemas risttunnustamise identiteet, kuid seda veel ei loeta antud sessioonis usaldusväärseks. Vormista lõpuni selle sessiooni turvaseadistused.";
+"e2e_room_key_request_ignore_request" = "Eira päringut";
+// GDPR
+"gdpr_consent_not_given_alert_message" = "Selleks et jätkata koduserveri %@ kasutamist sa pead üle vaatama ja nõustuma meie kasutustingimustega.";
+"gdpr_consent_not_given_alert_review_now_action" = "Vaata üle";
+// Service terms
+"service_terms_modal_title" = "Kasutustingimused";
+"service_terms_modal_message" = "Jätkamaks pead nõustuma selle teenuse kasutustingimustega(%@).";
+"service_terms_modal_accept_button" = "Nõustu";
+"service_terms_modal_decline_button" = "Keeldu";
+"service_terms_modal_description_for_identity_server_1" = "Leia teisi kasutajaid telefoninumbri või e-posti aadressi alusel";
+"service_terms_modal_description_for_identity_server_2" = "Ole leitav telefoninumbri või e-posti aadressi alusel";
+"service_terms_modal_description_for_integration_manager" = "Kasuta roboteid, võrgusildu, vidinaid või kleepsupakke";
+// Service terms - Variant for identity server when displayed out of a context
+"service_terms_modal_title_identity_server" = "Kasutajate leidmine";
+"service_terms_modal_message_identity_server" = "Väliste kasutajate leidmiseks pead nõustuma isikutuvastusserveri (%@) kasutustingimustega.";
+"service_terms_modal_policy_checkbox_accessibility_hint" = "Nõustumaks %@ tingimustega tee siia märge";
+"key_backup_setup_skip_alert_message" = "Kui sa logid välja või kaotad seadme, siis sa ei saa enam lugeda oma krüptitud sõnumeid.";
+"key_backup_setup_intro_info" = "Sõnumid krüptitud jututubades kasutavad läbivat krüptimist. Ainult sinul ja saaja(te)l on võtmed selliste sõnumite lugemiseks.\n\nVältimaks krüptovõtmete kadumist, varunda nad turvaliselt.";
+"key_backup_setup_intro_setup_action_without_existing_backup" = "Võta kasutusele krüptovõtmete varundamine";
+"key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Seo see seade krüptovõtmete varundusega";
+"key_backup_setup_intro_manual_export_info" = "(Lisaseadistused)";
+"key_backup_setup_intro_manual_export_action" = "Ekspordi võtmed käsitsi";
+"key_backup_setup_passphrase_title" = "Krüpti oma varukoopia paroolifraasiga";
+"key_backup_setup_passphrase_info" = "Me salvestame krüptitud varukoopia sinu krüptovõtmetest meie serveris. Tagamaks, et keegi ei saa seda kasutada, krüpti varukoopia paroolifraasiga.\n\n Parima turvalisuse jaoks peaks paroolifraas olema erinev sinu konto salasõnast.";
+"key_backup_setup_passphrase_passphrase_title" = "Sisesta";
+"key_backup_setup_passphrase_passphrase_placeholder" = "Sisesta paroolifraas";
+"key_backup_setup_passphrase_passphrase_valid" = "Tore!";
+"key_verification_manually_verify_device_key_title" = "Sessiooni võti";
+"key_verification_manually_verify_device_additional_information" = "Kui nad omavahel ei klapi, siis teie suhtluse turvalisus võib olla ohus.";
+"key_verification_manually_verify_device_validate_action" = "Verifitseeri";
+"device_verification_verify_wait_partner" = "Ootan teise osapoole kinnitust…";
+"device_verification_verified_title" = "Verifitseeritud!";
+"device_verification_verified_got_it_button" = "Selge lugu";
+"key_verification_verified_new_session_title" = "Uus sessioon on verifitseeritud!";
+"key_verification_verified_other_session_information" = "Nüüd saad sa lugeda krüptitud sõnumeid oma teises sessioonis ning muud kasutajad teavad, et saavad seda ka usaldada.";
+"key_verification_verified_new_session_information" = "Nüüd saad sa lugeda krüptitud sõnumeid oma uues seadmes ning muud kasutajad teavad, et saavad seda ka usaldada.";
+"key_verification_verified_this_session_information" = "Nüüd saad sa lugeda krüptitud sõnumeid selles seadmes ning muud kasutajad teavad, et saavad seda ka usaldada.";
+// MARK: File upload
+"file_upload_error_title" = "Faili üleslaadimine";
+"file_upload_error_unsupported_file_type_message" = "See failitüüp ei ole toetatud.";
+// MARK: Emoji picker
+"emoji_picker_title" = "Reageerimised";
+"emoji_picker_people_category" = "Vigurnäod ja inimesed";
+"emoji_picker_nature_category" = "Loomad ja loodus";
+"emoji_picker_foods_category" = "Toit ja jook";
+"emoji_picker_activity_category" = "Tegevused";
+"emoji_picker_places_category" = "Reisimine ja kohad";
+"emoji_picker_objects_category" = "Esemed";
+"emoji_picker_symbols_category" = "Sümbolid";
+"emoji_picker_flags_category" = "Lipud";
+// MARK: Reaction history
+"reaction_history_title" = "Reageerimised";
+// Generic errors
+"error_invite_3pid_with_no_identity_server" = "E-posti aadressi alusel kutsumiseks määra oma seadistustes isikutuvastusserver.";
+"error_not_supported_on_mobile" = "Seda tegevust ei saa teha %@ telefonrakendusest.";
+"key_verification_bootstrap_not_setup_title" = "Viga";
+"key_verification_bootstrap_not_setup_message" = "Sa pead esmalt kasutusele võtma risttunnustamise.";
+"key_verification_tile_request_incoming_title" = "Verifitseerimispäring";
+"key_verification_tile_request_outgoing_title" = "Verifitseerimispäring on saadetud";
+"key_verification_tile_request_status_data_loading" = "Laeme andmeid…";
+"key_verification_tile_request_status_waiting" = "Ootan…";
+"key_verification_tile_request_status_expired" = "Aegunud";
+"key_verification_tile_request_status_cancelled_by_me" = "Sa tühistasid";
+"key_verification_tile_request_status_cancelled" = "%@ tühistas";
+"key_verification_tile_request_status_accepted" = "Sa nõustusid";
+"key_verification_tile_conclusion_warning_title" = "Ebausaldusväärne sisselogimine";
+// Scanning
+"key_verification_scan_confirmation_scanning_title" = "Peaaegu valmis! Ootan kinnitust…";
+"key_verification_scan_confirmation_scanning_user_waiting_other" = "Ootan vastust kasutajalt %@…";
+"key_verification_scan_confirmation_scanning_device_waiting_other" = "Ootan vastust teiselt seadmelt…";
+// Scanned
+"key_verification_scan_confirmation_scanned_title" = "Peaaegu valmis!";
+"key_verification_scan_confirmation_scanned_user_information" = "Kas %@ kuvab sama kilpi?";
+"key_verification_scan_confirmation_scanned_device_information" = "Kas teine seade kuvab sama kilpi?";
+"user_verification_start_verify_action" = "Alusta verifitseerimist";
