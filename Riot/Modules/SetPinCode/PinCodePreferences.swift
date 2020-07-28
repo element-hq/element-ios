@@ -73,14 +73,14 @@ final class PinCodePreferences: NSObject {
     var pin: String? {
         get {
             do {
-                return try store.object(forKey: StoreKeys.pin) as? String
+                return try store.string(forKey: StoreKeys.pin)
             } catch let error {
                 NSLog("[PinCodePreferences] Error when reading user pin from store: \(error)")
                 return nil
             }
         } set {
             do {
-                try store.set(newValue, forKey: StoreKeys.pin)
+                try store.setString(newValue, forKey: StoreKeys.pin)
             } catch let error {
                 NSLog("[PinCodePreferences] Error when storing user pin to the store: \(error)")
             }
@@ -90,14 +90,14 @@ final class PinCodePreferences: NSObject {
     var biometricsEnabled: Bool? {
         get {
             do {
-                return try store.object(forKey: StoreKeys.biometricsEnabled) as? Bool
+                return try store.bool(forKey: StoreKeys.biometricsEnabled)
             } catch let error {
                 NSLog("[PinCodePreferences] Error when reading biometrics enabled from store: \(error)")
                 return nil
             }
         } set {
             do {
-                try store.set(newValue, forKey: StoreKeys.biometricsEnabled)
+                try store.setBool(newValue, forKey: StoreKeys.biometricsEnabled)
             } catch let error {
                 NSLog("[PinCodePreferences] Error when storing biometrics enabled to the store: \(error)")
             }

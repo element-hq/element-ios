@@ -35,8 +35,7 @@ extension Keychain {
 }
 
 @objcMembers
-/// Only supports `String`, `Data` and `Bool` values for now.
-class KeychainStore: KeyValueStore {
+class KeychainStore {
     
     private var keychain: Keychain
     
@@ -46,32 +45,52 @@ class KeychainStore: KeyValueStore {
         self.keychain = keychain
     }
     
-    func set(_ value: Any?, forKey key: KeyValueStoreKey) throws {
-        if value == nil {
+}
+
+extension KeychainStore: KeyValueStore {
+    
+    //  setters
+    func setData(_ value: Data?, forKey key: KeyValueStoreKey) throws {
+        guard let value = value else {
             try removeObject(forKey: key)
             return
         }
         
-        if let value = value as? Data {
-            try keychain.set(value, key: key)
-        } else if let value = value as? String {
-            try keychain.set(value, key: key)
-        } else if let value = value as? Bool {
-            try keychain.set(value, key: key)
-        }
-    }
-
-    func object(forKey key: KeyValueStoreKey) throws -> Any? {
-        if let value = try keychain.getBool(key) {
-            return value
-        } else if let value = try keychain.getString(key) {
-            return value
-        } else if let value = try keychain.getData(key) {
-            return value
-        }
-        return try keychain.get(key)
+        try keychain.set(value, key: key)
     }
     
+    func setString(_ value: String?, forKey key: KeyValueStoreKey) throws {
+        guard let value = value else {
+            try removeObject(forKey: key)
+            return
+        }
+        
+        try keychain.set(value, key: key)
+    }
+    
+    func setBool(_ value: Bool?, forKey key: KeyValueStoreKey) throws {
+        guard let value = value else {
+            try removeObject(forKey: key)
+            return
+        }
+        
+        try keychain.set(value, key: key)
+    }
+    
+    //  getters
+    func data(forKey key: KeyValueStoreKey) throws -> Data? {
+        return try keychain.getData(key)
+    }
+    
+    func string(forKey key: KeyValueStoreKey) throws -> String? {
+        return try keychain.getString(key)
+    }
+    
+    func bool(forKey key: KeyValueStoreKey) throws -> Bool? {
+        return try keychain.getBool(key)
+    }
+    
+    //  remove
     func removeObject(forKey key: KeyValueStoreKey) throws {
         try keychain.remove(key)
     }
