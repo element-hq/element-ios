@@ -249,10 +249,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     NSLog(@"[AppDelegate] initialize");
 
-    // Set the App Group identifier.
-    MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
-    sdkOptions.applicationGroupIdentifier = @"group.im.vector";
-    sdkOptions.computeE2ERoomSummaryTrust = YES;
+    // Set static application settings
+    [AppConfig.shared setupSettings];
 
     // Redirect NSLogs to files only if we are not debugging
     if (!isatty(STDERR_FILENO))
@@ -468,9 +466,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [NSBundle mxk_setFallbackLanguage:@"en"];
 
     
-    // Customize the localized string table
-    [NSBundle mxk_customizeLocalizedStringTableName:@"Vector"];
-    
     mxSessionArray = [NSMutableArray array];
     callEventsListeners = [NSMutableDictionary dictionary];
 
@@ -508,9 +503,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [MXSDKOptions sharedInstance].analyticsDelegate = [Analytics sharedInstance];
     [DecryptionFailureTracker sharedInstance].delegate = [Analytics sharedInstance];
     [[Analytics sharedInstance] start];
-    
-    // Set application settings
-    [AppConfig.shared setupSettings];
 
     self.pushNotificationService = [PushNotificationService new];
     self.pushNotificationService.delegate = self;

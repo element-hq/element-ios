@@ -36,6 +36,9 @@ final class AppConfig: NSObject {
             return
         }
         
+        // Customize the localized string table
+        Bundle.mxk_customizeLocalizedStringTableName("Vector")
+        
         // Disable CallKit
         settings.isCallKitEnabled = false
         
@@ -46,11 +49,14 @@ final class AppConfig: NSObject {
     private func setupMatrixSDKSettings() {
         let sdkOptions = MXSDKOptions.sharedInstance()
         
+        sdkOptions.applicationGroupIdentifier = "group.im.vector"
+        
         // Define the media cache version
         sdkOptions.mediaCacheAppVersion = 0
         
         // Enable e2e encryption for newly created MXSession
         sdkOptions.enableCryptoWhenStartingMXSession = true
+        sdkOptions.computeE2ERoomSummaryTrust = true
         
         // Disable identicon use
         sdkOptions.disableIdenticonUseForUserAvatar = true
