@@ -37,5 +37,9 @@
 	<array>
 		<string>group.im.vector</string>
 	</array>
+	<key>keychain-access-groups</key>
+	<array>
+		<string>$(AppIdentifierPrefix)im.vector.app.keychain.shared</string>
+	</array>
 </dict>
 </plist>
