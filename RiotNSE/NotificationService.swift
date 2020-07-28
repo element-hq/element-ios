@@ -34,8 +34,8 @@ class NotificationService: UNNotificationServiceExtension {
     static var isLoggerInitialized: Bool = false
     
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-        //  set app-group identifier first
-        MXSDKOptions.sharedInstance().applicationGroupIdentifier = "group.im.vector"
+        // Set static application settings
+        AppConfig.shared.setupSettings()
         
         if DataProtectionHelper.isDeviceInRebootedAndLockedState(appGroupIdentifier: MXSDKOptions.sharedInstance().applicationGroupIdentifier) {
             //  kill the process in this state, this leads for the notification to be displayed as came from APNS
@@ -100,13 +100,6 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func setup(withRoomId roomId: String, eventId: String, completion: @escaping () -> Void) {
-        let sdkOptions = MXSDKOptions.sharedInstance()
-        sdkOptions.disableIdenticonUseForUserAvatar = true
-        sdkOptions.enableCryptoWhenStartingMXSession = true
-        sdkOptions.enableKeyBackupWhenStartingMXCrypto = false
-        sdkOptions.backgroundModeHandler = MXUIKitBackgroundModeHandler()
-        Bundle.mxk_customizeLocalizedStringTableName("Vector")
-        
         if let userAccount = MXKAccountManager.shared()?.activeAccounts.first {
             if NotificationService.mxSession == nil {
                 let store = NSEMemoryStore(withCredentials: userAccount.mxCredentials)

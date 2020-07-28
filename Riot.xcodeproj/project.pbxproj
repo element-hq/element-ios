@@ -116,6 +116,12 @@
 		32F6B96C2270623100BBA352 /* KeyVerificationDataLoadingCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F6B9662270623100BBA352 /* KeyVerificationDataLoadingCoordinatorType.swift */; };
 		32F6B96D2270623100BBA352 /* KeyVerificationDataLoadingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F6B9672270623100BBA352 /* KeyVerificationDataLoadingViewModel.swift */; };
 		32F6B96E2270623100BBA352 /* KeyVerificationDataLoadingViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F6B9682270623100BBA352 /* KeyVerificationDataLoadingViewModelType.swift */; };
+		32FD754724D06B4200BA7B37 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328E410524CB168500DC4490 /* AppConfig.swift */; };
+		32FD754824D06DCC00BA7B37 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328E410524CB168500DC4490 /* AppConfig.swift */; };
+		32FD754924D06DDB00BA7B37 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328E410524CB168500DC4490 /* AppConfig.swift */; };
+		32FD754B24D06EA600BA7B37 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328E410524CB168500DC4490 /* AppConfig.swift */; };
+		32FD754C24D06EBE00BA7B37 /* RiotSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597F20EFC3DF00210D55 /* RiotSettings.swift */; };
+		32FD754D24D06EBF00BA7B37 /* RiotSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597F20EFC3DF00210D55 /* RiotSettings.swift */; };
 		32FDC1CD2386CD390084717A /* RiotSettingIntegrationProvisioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FDC1CC2386CD390084717A /* RiotSettingIntegrationProvisioning.swift */; };
 		39D49C6524B8D40500FEDBC8 /* ElementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D49C6224B8D40500FEDBC8 /* ElementViewController.swift */; };
 		39D49C6624B8D40500FEDBC8 /* Timeline_1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D49C6324B8D40500FEDBC8 /* Timeline_1.swift */; };
@@ -5458,6 +5464,7 @@
 				B1664BCF20F4E67600808783 /* ShareExtensionManager.m in Sources */,
 				B1DB4F0722301AF20065DBFA /* Character.swift in Sources */,
 				3209451321F1C1D50088CAA2 /* BlackTheme.swift in Sources */,
+				32FD754824D06DCC00BA7B37 /* AppConfig.swift in Sources */,
 				24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */,
 				B1664BC720F4E67600808783 /* SharePresentingViewController.m in Sources */,
 				B1DB4F0F223170000065DBFA /* UserNameColorGenerator.swift in Sources */,
@@ -5480,6 +5487,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				92726A471F58737A004AD26F /* IntentHandler.m in Sources */,
+				32FD754C24D06EBE00BA7B37 /* RiotSettings.swift in Sources */,
+				32FD754B24D06EA600BA7B37 /* AppConfig.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5490,6 +5499,7 @@
 				EC85D74F2477E8EB002C44C9 /* RiotSettings.swift in Sources */,
 				EC85D757247E700F002C44C9 /* NSEMemoryStore.swift in Sources */,
 				EC2B4EF224A1EF34005EB739 /* DataProtectionHelper.swift in Sources */,
+				32FD754724D06B4200BA7B37 /* AppConfig.swift in Sources */,
 				EC85D7462477E5F7002C44C9 /* NotificationService.swift in Sources */,
 				EC85D752247C0F52002C44C9 /* UNUserNotificationCenter.swift in Sources */,
 				EC85D755247C0F84002C44C9 /* Constants.swift in Sources */,
@@ -6090,6 +6100,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32FD754D24D06EBF00BA7B37 /* RiotSettings.swift in Sources */,
+				32FD754924D06DDB00BA7B37 /* AppConfig.swift in Sources */,
 				F083BEA51E70356E00A9B29C /* RiotTests.m in Sources */,
 				B152C73122DF561E0041315A /* EmojiServiceTests.swift in Sources */,
 			);
@@ -6323,6 +6335,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.SiriIntents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
 				USER_HEADER_SEARCH_PATHS = "$(inherited)";
 			};
 			name = Debug;
@@ -6356,6 +6369,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.SiriIntents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
 				USER_HEADER_SEARCH_PATHS = "$(inherited)";
 			};
 			name = Release;

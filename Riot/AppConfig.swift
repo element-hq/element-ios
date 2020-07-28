@@ -14,7 +14,8 @@
 // limitations under the License.
 //
 
-import UIKit
+import Foundation
+import MatrixKit
 
 /// AppConfig is the central point to setup settings for MatrixSDK, MatrixKit and the app.
 @objcMembers
@@ -97,11 +98,12 @@ final class AppConfig: NSObject {
     }
     
     private func setupWidgetReadReceipts(for matrixSession: MXSession) {
-        var acknowledgableEventTypes = matrixSession.acknowledgableEventTypes ?? []
-        acknowledgableEventTypes.append(kWidgetMatrixEventTypeString)
-        acknowledgableEventTypes.append(kWidgetModularEventTypeString)
-        
-        matrixSession.acknowledgableEventTypes = acknowledgableEventTypes
+// TODO
+//        var acknowledgableEventTypes = matrixSession.acknowledgableEventTypes ?? []
+//        acknowledgableEventTypes.append(kWidgetMatrixEventTypeString)
+//        acknowledgableEventTypes.append(kWidgetModularEventTypeString)
+//
+//        matrixSession.acknowledgableEventTypes = acknowledgableEventTypes
     }
     
     
