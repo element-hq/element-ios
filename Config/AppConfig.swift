@@ -17,57 +17,19 @@
 import Foundation
 import MatrixKit
 
-/// AppConfig is the central point to setup settings for MatrixSDK, MatrixKit and the app.
-@objcMembers
-final class AppConfig: NSObject {
+/// AppConfig is Config plus configuration dedicated to the app
+@objcMembers class AppConfig: Config {
     
-    static let shared = AppConfig()
-    
+    static let sharedAppConfig = AppConfig()
     
     // MARK: - Global settings
     
-    func setupSettings() {
-        setupMatrixKitSettings()
-        setupMatrixSDKSettings()
+    override func setupSettings() {
+        super.setupSettings()
         setupAppSettings()
     }
     
-    private func setupMatrixKitSettings() {
-        guard let settings = MXKAppSettings.standard() else {
-            return
-        }
-        
-        // Customize the localized string table
-        Bundle.mxk_customizeLocalizedStringTableName("Vector")
-        
-        // Disable CallKit
-        settings.isCallKitEnabled = false
-        
-        // Enable lazy loading
-        settings.syncWithLazyLoadOfRoomMembers = true
-    }
-    
-    private func setupMatrixSDKSettings() {
-        let sdkOptions = MXSDKOptions.sharedInstance()
-        
-        sdkOptions.applicationGroupIdentifier = "group.im.vector"
-        
-        // Define the media cache version
-        sdkOptions.mediaCacheAppVersion = 0
-        
-        // Enable e2e encryption for newly created MXSession
-        sdkOptions.enableCryptoWhenStartingMXSession = true
-        sdkOptions.computeE2ERoomSummaryTrust = true
-        
-        // Disable identicon use
-        sdkOptions.disableIdenticonUseForUserAvatar = true
-        
-        // Use UIKit BackgroundTask for handling background tasks in the SDK
-        sdkOptions.backgroundModeHandler = MXUIKitBackgroundModeHandler()
-    }
-    
     private func setupAppSettings() {
-        
         // Enable long press on event in bubble cells
         MXKRoomBubbleTableViewCell.disableLongPressGesture(onEvent: false)
         
@@ -78,40 +40,17 @@ final class AppConfig: NSObject {
     
     // MARK: - Per matrix session settings
     
-    func setupSettings(for matrixSession: MXSession) {
-        setupCallsSettings(for: matrixSession)
+    override func setupSettings(for matrixSession: MXSession) {
+        super.setupSettings(for: matrixSession)
         setupWidgetReadReceipts(for: matrixSession)
     }
-    
-    private func setupCallsSettings(for matrixSession: MXSession) {
-        guard let callManager = matrixSession.callManager else {
-            // This means nothing happens if the project does not embed a VoIP stack
-            return
-        }
-        
-        // Let's call invite be valid for 1 minute
-        callManager.inviteLifetime = 60000
-        
-        if RiotSettings.shared.allowStunServerFallback, let stunServerFallback = RiotSettings.shared.stunServerFallback {
-            callManager.fallbackSTUNServer = stunServerFallback
-        }
-    }
-    
+  
     private func setupWidgetReadReceipts(for matrixSession: MXSession) {
-// TODO
-//        var acknowledgableEventTypes = matrixSession.acknowledgableEventTypes ?? []
-//        acknowledgableEventTypes.append(kWidgetMatrixEventTypeString)
-//        acknowledgableEventTypes.append(kWidgetModularEventTypeString)
-//
-//        matrixSession.acknowledgableEventTypes = acknowledgableEventTypes
-    }
-    
-    
-    // MARK: - Per loaded matrix session settings
-    
-    func setupSettingsWhenLoaded(for matrixSession: MXSession) {
-        // Do not warn for unknown devices. We have cross-signing now
-        matrixSession.crypto.warnOnUnknowDevices = false
+        var acknowledgableEventTypes = matrixSession.acknowledgableEventTypes ?? []
+        acknowledgableEventTypes.append(kWidgetMatrixEventTypeString)
+        acknowledgableEventTypes.append(kWidgetModularEventTypeString)
+
+        matrixSession.acknowledgableEventTypes = acknowledgableEventTypes
     }
     
 }

@@ -35,7 +35,7 @@ class NotificationService: UNNotificationServiceExtension {
     
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         // Set static application settings
-        AppConfig.shared.setupSettings()
+        Config.shared.setupSettings()
         
         if DataProtectionHelper.isDeviceInRebootedAndLockedState(appGroupIdentifier: MXSDKOptions.sharedInstance().applicationGroupIdentifier) {
             //  kill the process in this state, this leads for the notification to be displayed as came from APNS

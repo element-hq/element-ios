@@ -250,7 +250,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     NSLog(@"[AppDelegate] initialize");
 
     // Set static application settings
-    [AppConfig.shared setupSettings];
+    [AppConfig.sharedAppConfig setupSettings];
 
     // Redirect NSLogs to files only if we are not debugging
     if (!isatty(STDERR_FILENO))
@@ -1857,7 +1857,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 [self enableNoVoIPOnMatrixSession:mxSession];
             }
             
-            [AppConfig.shared setupSettingsFor:mxSession];
+            [AppConfig.sharedAppConfig setupSettingsFor:mxSession];
         }
         else if (mxSession.state == MXSessionStateStoreDataReady)
         {
@@ -1876,7 +1876,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 }
             }
             
-            [AppConfig.shared setupSettingsWhenLoadedFor:mxSession];
+            [AppConfig.sharedAppConfig setupSettingsWhenLoadedFor:mxSession];
             
             // Register to user new device sign in notification
             [self registerUserDidSignInOnNewDeviceNotificationForSession:mxSession];
