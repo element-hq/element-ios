@@ -34,7 +34,6 @@ extension Keychain {
     
 }
 
-@objcMembers
 class KeychainStore {
     
     private var keychain: Keychain
@@ -50,7 +49,7 @@ class KeychainStore {
 extension KeychainStore: KeyValueStore {
     
     //  setters
-    func setData(_ value: Data?, forKey key: KeyValueStoreKey) throws {
+    func set(_ value: Data?, forKey key: KeyValueStoreKey) throws {
         guard let value = value else {
             try removeObject(forKey: key)
             return
@@ -59,7 +58,7 @@ extension KeychainStore: KeyValueStore {
         try keychain.set(value, key: key)
     }
     
-    func setString(_ value: String?, forKey key: KeyValueStoreKey) throws {
+    func set(_ value: String?, forKey key: KeyValueStoreKey) throws {
         guard let value = value else {
             try removeObject(forKey: key)
             return
@@ -68,7 +67,7 @@ extension KeychainStore: KeyValueStore {
         try keychain.set(value, key: key)
     }
     
-    func setBool(_ value: Bool?, forKey key: KeyValueStoreKey) throws {
+    func set(_ value: Bool?, forKey key: KeyValueStoreKey) throws {
         guard let value = value else {
             try removeObject(forKey: key)
             return

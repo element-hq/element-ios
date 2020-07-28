@@ -20,9 +20,9 @@ typealias KeyValueStoreKey = String
 
 protocol KeyValueStore {
     //  setters
-    func setData(_ value: Data?, forKey key: KeyValueStoreKey) throws
-    func setString(_ value: String?, forKey key: KeyValueStoreKey) throws
-    func setBool(_ value: Bool?, forKey key: KeyValueStoreKey) throws
+    func set(_ value: Data?, forKey key: KeyValueStoreKey) throws
+    func set(_ value: String?, forKey key: KeyValueStoreKey) throws
+    func set(_ value: Bool?, forKey key: KeyValueStoreKey) throws
     
     //  getters
     func data(forKey key: KeyValueStoreKey) throws -> Data?

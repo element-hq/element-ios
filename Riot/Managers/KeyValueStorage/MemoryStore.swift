@@ -16,12 +16,11 @@
 
 import Foundation
 
-@objcMembers
 class MemoryStore {
     
     private var map: Dictionary<KeyValueStoreKey, Any> = [:]
     
-    private func set(_ value: Any?, forKey key: KeyValueStoreKey) {
+    private func setObject(_ value: Any?, forKey key: KeyValueStoreKey) {
         if let value = value {
             map[key] = value
         } else {
@@ -38,16 +37,16 @@ class MemoryStore {
 extension MemoryStore: KeyValueStore {
     
     //  setters
-    func setData(_ value: Data?, forKey key: KeyValueStoreKey) throws {
-        set(value, forKey: key)
+    func set(_ value: Data?, forKey key: KeyValueStoreKey) throws {
+        setObject(value, forKey: key)
     }
     
-    func setString(_ value: String?, forKey key: KeyValueStoreKey) throws {
-        set(value, forKey: key)
+    func set(_ value: String?, forKey key: KeyValueStoreKey) throws {
+        setObject(value, forKey: key)
     }
     
-    func setBool(_ value: Bool?, forKey key: KeyValueStoreKey) throws {
-        set(value, forKey: key)
+    func set(_ value: Bool?, forKey key: KeyValueStoreKey) throws {
+        setObject(value, forKey: key)
     }
     
     //  getters
