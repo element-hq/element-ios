@@ -16,6 +16,7 @@ limitations under the License.
 
 import Foundation
 import KeychainAccess
+import LocalAuthentication
 
 /// Pin code preferences.
 @objcMembers
@@ -29,6 +30,7 @@ final class PinCodePreferences: NSObject {
     
     private struct StoreKeys {
         static let pin: String = "pin"
+        static let biometricsEnabled: String = "biometricsEnabled"
     }
     
     static let shared = PinCodePreferences()
@@ -49,6 +51,10 @@ final class PinCodePreferences: NSObject {
         return RiotSettings.shared.forcePinProtection
     }
     
+    var isBiometricsAvailable: Bool {
+        return LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+    }
+    
     /// Allowed number of PIN trials before showing forgot help alert
     let allowedNumberOfTrialsBeforeAlert: Int = 5
     
@@ -67,7 +73,7 @@ final class PinCodePreferences: NSObject {
     var pin: String? {
         get {
             do {
-                return try store.object(forKey: StoreKeys.pin) as? String
+                return try store.string(forKey: StoreKeys.pin)
             } catch let error {
                 NSLog("[PinCodePreferences] Error when reading user pin from store: \(error)")
                 return nil
@@ -81,8 +87,60 @@ final class PinCodePreferences: NSObject {
         }
     }
     
+    var biometricsEnabled: Bool? {
+        get {
+            do {
+                return try store.bool(forKey: StoreKeys.biometricsEnabled)
+            } catch let error {
+                NSLog("[PinCodePreferences] Error when reading biometrics enabled from store: \(error)")
+                return nil
+            }
+        } set {
+            do {
+                try store.set(newValue, forKey: StoreKeys.biometricsEnabled)
+            } catch let error {
+                NSLog("[PinCodePreferences] Error when storing biometrics enabled to the store: \(error)")
+            }
+        }
+    }
+    
+    var isBiometricsSet: Bool {
+        return biometricsEnabled == true
+    }
+    
+    func localizedBiometricsName() -> String? {
+        if isBiometricsAvailable {
+            let context = LAContext()
+            switch context.biometryType {
+            case .touchID:
+                return VectorL10n.biometricsModeTouchId
+            case .faceID:
+                return VectorL10n.biometricsModeFaceId
+            default:
+                return nil
+            }
+        }
+        return nil
+    }
+    
+    func biometricsIcon() -> UIImage? {
+        if isBiometricsAvailable {
+            let context = LAContext()
+            switch context.biometryType {
+            case .touchID:
+                return Asset.Images.touchidIcon.image
+            case .faceID:
+                return Asset.Images.faceidIcon.image
+            default:
+                return nil
+            }
+        }
+        return nil
+    }
+    
     /// Resets user PIN
     func reset() {
         pin = nil
+        biometricsEnabled = nil
     }
 }

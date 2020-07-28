@@ -44,7 +44,7 @@ class LocalAuthenticationService: NSObject {
     }
     
     var shouldShowPinCode: Bool {
-        if !pinCodePreferences.isPinSet {
+        if !pinCodePreferences.isPinSet && !pinCodePreferences.isBiometricsSet {
             return false
         }
         if MXKAccountManager.shared()?.activeAccounts.count == 0 {

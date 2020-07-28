@@ -177,6 +177,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.SettingsIdentityServerViewController>(storyboard: SettingsIdentityServerViewController.self)
   }
+  internal enum SetupBiometricsViewController: StoryboardType {
+    internal static let storyboardName = "SetupBiometricsViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SetupBiometricsViewController>(storyboard: SetupBiometricsViewController.self)
+  }
   internal enum SimpleScreenTemplateViewController: StoryboardType {
     internal static let storyboardName = "SimpleScreenTemplateViewController"
 

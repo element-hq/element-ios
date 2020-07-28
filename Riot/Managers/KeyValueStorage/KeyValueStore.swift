@@ -19,7 +19,16 @@ import Foundation
 typealias KeyValueStoreKey = String
 
 protocol KeyValueStore {
-    func set(_ value: Any?, forKey key: KeyValueStoreKey) throws
-    func object(forKey key: KeyValueStoreKey) throws -> Any?
+    //  setters
+    func set(_ value: Data?, forKey key: KeyValueStoreKey) throws
+    func set(_ value: String?, forKey key: KeyValueStoreKey) throws
+    func set(_ value: Bool?, forKey key: KeyValueStoreKey) throws
+    
+    //  getters
+    func data(forKey key: KeyValueStoreKey) throws -> Data?
+    func string(forKey key: KeyValueStoreKey) throws -> String?
+    func bool(forKey key: KeyValueStoreKey) throws -> Bool?
+    
+    //  remove
     func removeObject(forKey key: KeyValueStoreKey) throws
 }

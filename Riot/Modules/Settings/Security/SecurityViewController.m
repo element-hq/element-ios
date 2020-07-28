@@ -72,6 +72,7 @@ enum {
 enum {
     PIN_CODE_SETTING,
     PIN_CODE_DESCRIPTION,
+    PIN_CODE_BIOMETRICS,
     PIN_CODE_COUNT
 };
 
@@ -941,13 +942,11 @@ SetPinCoordinatorBridgePresenterDelegate>
     switch (section)
     {
         case SECTION_PIN_CODE:
-            if ([PinCodePreferences shared].isPinSet)
+            count = PIN_CODE_COUNT;
+            
+            if (![PinCodePreferences shared].isBiometricsAvailable)
             {
-                count = PIN_CODE_COUNT;
-            }
-            else
-            {
-                count = PIN_CODE_COUNT - 1;
+                count -= 1;
             }
             break;
         case SECTION_CRYPTO_SESSIONS:
@@ -1143,22 +1142,14 @@ SetPinCoordinatorBridgePresenterDelegate>
     MXSession* session = self.mainSession;
     if (section == SECTION_PIN_CODE)
     {
-        if ([PinCodePreferences shared].forcePinProtection)
+        if (indexPath.row == PIN_CODE_SETTING)
         {
-            if (indexPath.row == PIN_CODE_SETTING)
+            if ([PinCodePreferences shared].forcePinProtection)
             {
                 cell = [self getDefaultTableViewCell:tableView];
                 cell.textLabel.text = NSLocalizedStringFromTable(@"pin_protection_settings_enabled_forced", @"Vector", nil);
             }
-            else if (indexPath.row == PIN_CODE_DESCRIPTION)
-            {
-                cell = [self descriptionCellForTableView:tableView
-                                                withText:NSLocalizedStringFromTable(@"pin_protection_settings_section_footer", @"Vector", nil) ];
-            }
-        }
-        else
-        {
-            if (indexPath.row == PIN_CODE_SETTING)
+            else
             {
                 MXKTableViewCellWithLabelAndSwitch *switchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
                 
@@ -1168,11 +1159,30 @@ SetPinCoordinatorBridgePresenterDelegate>
                 
                 cell = switchCell;
             }
-            else if (indexPath.row == PIN_CODE_DESCRIPTION)
+        }
+        else if (indexPath.row == PIN_CODE_DESCRIPTION)
+        {
+            if ([PinCodePreferences shared].isPinSet)
             {
                 cell = [self descriptionCellForTableView:tableView
                                                 withText:NSLocalizedStringFromTable(@"pin_protection_settings_section_footer", @"Vector", nil) ];
             }
+            else
+            {
+                cell = [self descriptionCellForTableView:tableView withText:nil];
+            }
+        }
+        else if (indexPath.row == PIN_CODE_BIOMETRICS)
+        {
+            MXKTableViewCellWithLabelAndSwitch *switchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            NSString *format = NSLocalizedStringFromTable(@"biometrics_settings_enable_x", @"Vector", nil);
+            switchCell.mxkLabel.text = [NSString stringWithFormat:format, [PinCodePreferences shared].localizedBiometricsName];
+            switchCell.mxkSwitch.on = [PinCodePreferences shared].isBiometricsSet;
+            switchCell.mxkSwitch.enabled = [PinCodePreferences shared].isBiometricsAvailable;
+            [switchCell.mxkSwitch addTarget:self action:@selector(enableBiometricsSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
+            
+            cell = switchCell;
         }
     }
     else if (section == SECTION_CRYPTO_SESSIONS)
@@ -1348,7 +1358,10 @@ SetPinCoordinatorBridgePresenterDelegate>
     switch (section)
     {
         case SECTION_PIN_CODE:
-            return NSLocalizedStringFromTable(@"pin_protection_settings_section_header", @"Vector", nil);
+        {
+            NSString *format = NSLocalizedStringFromTable(@"pin_protection_settings_section_header_x", @"Vector", nil);
+            return [NSString stringWithFormat:format, [PinCodePreferences shared].localizedBiometricsName];
+        }
         case SECTION_CRYPTO_SESSIONS:
             return NSLocalizedStringFromTable(@"security_settings_crypto_sessions", @"Vector", nil);
         case SECTION_SECURE_BACKUP:
@@ -1582,6 +1595,14 @@ SetPinCoordinatorBridgePresenterDelegate>
 - (void)enablePinCodeSwitchValueChanged:(UISwitch *)sender
 {
     SetPinCoordinatorViewMode viewMode = sender.isOn ? SetPinCoordinatorViewModeSetPin : SetPinCoordinatorViewModeConfirmPinToDeactivate;
+    self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:self.mainSession viewMode:viewMode];
+    self.setPinCoordinatorBridgePresenter.delegate = self;
+    [self.setPinCoordinatorBridgePresenter presentFrom:self animated:YES];
+}
+
+- (void)enableBiometricsSwitchValueChanged:(UISwitch *)sender
+{
+    SetPinCoordinatorViewMode viewMode = sender.isOn ? SetPinCoordinatorViewModeSetupBiometricsFromSettings : SetPinCoordinatorViewModeConfirmBiometricsToDeactivate;
     self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:self.mainSession viewMode:viewMode];
     self.setPinCoordinatorBridgePresenter.delegate = self;
     [self.setPinCoordinatorBridgePresenter presentFrom:self animated:YES];
