@@ -1,4 +1,11 @@
- Changes in 1.0.1 (2020-07-17)
+Changes in 1.0.2 (2020-07-28)
+===============================================
+ 
+Bug fix:
+ * Registration: Do not display the skip button if email is mandatory (#3417).
+ * NotificationService: Do not cache showDecryptedContentInNotifications setting (#3444).
+
+Changes in 1.0.1 (2020-07-17)
 ===============================================
  
 Bug fix:

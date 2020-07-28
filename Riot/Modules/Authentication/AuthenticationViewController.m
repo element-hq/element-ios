@@ -937,6 +937,19 @@
 {
     self.skipButton.hidden = thirdPartyIdentifiersHidden;
     
+    // Do not display the skip button if the 3PID is mandatory
+    if (!thirdPartyIdentifiersHidden)
+    {
+        if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+        {
+            AuthInputsView *authInputsview = (AuthInputsView*)self.authInputsView;
+            if (authInputsview.isThirdPartyIdentifierRequired)
+            {
+                self.skipButton.hidden = YES;
+            }
+        }
+    }
+    
     self.serverOptionsContainer.hidden = !thirdPartyIdentifiersHidden;
     [self refreshContentViewHeightConstraint];
     
