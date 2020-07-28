@@ -7,7 +7,7 @@ use_frameworks!
 
 # Different flavours of pods to MatrixKit
 # The current MatrixKit pod version
-$matrixKitVersion = '0.12.8'
+$matrixKitVersion = '0.12.9'
 
 # The specific branch version (supported: develop)
 #$matrixKitVersion = 'develop'
