@@ -2292,6 +2292,14 @@
 			path = Modal;
 			sourceTree = "<group>";
 		};
+		32FD754E24D073E400BA7B37 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				328E410524CB168500DC4490 /* AppConfig.swift */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
 		39D49C6124B8D3B000FEDBC8 /* LaunchLoadingAnimation */ = {
 			isa = PBXGroup;
 			children = (
@@ -4691,7 +4699,6 @@
 		F083BB081E7009EC00A9B29C /* Riot */ = {
 			isa = PBXGroup;
 			children = (
-				328E410524CB168500DC4490 /* AppConfig.swift */,
 				F083BB0C1E7009EC00A9B29C /* AppDelegate.h */,
 				F083BB0D1E7009EC00A9B29C /* AppDelegate.m */,
 				B1098BD921ECE09E000DDA48 /* Generated */,
@@ -4830,6 +4837,7 @@
 				3267EFB320E379FD00FF1CAA /* CHANGES.rst */,
 				3267EFB520E379FD00FF1CAA /* AUTHORS.rst */,
 				3267EFB420E379FD00FF1CAA /* Podfile */,
+				32FD754E24D073E400BA7B37 /* Config */,
 				F083BB081E7009EC00A9B29C /* Riot */,
 				F083BB021E7005FD00A9B29C /* RiotTests */,
 				24CBEC4F1F0EAD310093EABB /* RiotShareExtension */,
