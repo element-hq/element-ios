@@ -17,7 +17,7 @@
 import Foundation
 import MatrixKit
 
-/// AppConfig is Config plus configuration dedicated to the app
+/// AppConfig is Config plus configurations dedicated to the app
 @objcMembers class AppConfig: Config {
     
     static let sharedAppConfig = AppConfig()

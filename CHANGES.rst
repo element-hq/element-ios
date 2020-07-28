@@ -1,3 +1,6 @@
+Improvements:
+ * Configuration: Add Config and AppConfig classes as central points to configure all targets in the same way.
+
 Changes in 1.0.2 (2020-07-)
 ===============================================
  
