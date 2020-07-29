@@ -32,7 +32,7 @@ class NotificationService: UNNotificationServiceExtension {
         return RiotSettings.shared.showDecryptedContentInNotifications
     }
     lazy var configuration: Configurable = {
-        return Config()
+        return CommonConfiguration()
     }()
     static var isLoggerInitialized: Bool = false
     

@@ -39,7 +39,7 @@
     if (self)
     {
         // Set static application settings
-        _configuration = [Config new];
+        _configuration = [CommonConfiguration new];
         [_configuration setupSettings];
 
         // NSLog -> console.log file when not debugging the app

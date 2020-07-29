@@ -17,8 +17,8 @@
 import Foundation
 import MatrixKit
 
-/// AppConfig is Config plus configurations dedicated to the app
-class AppConfiguration: Config {
+/// AppConfiguration is CommonConfiguration plus configurations dedicated to the app
+class AppConfiguration: CommonConfiguration {
     
     // MARK: - Global settings
     

@@ -17,8 +17,8 @@
 import Foundation
 import MatrixKit
 
-/// Config is the central point to setup settings for MatrixSDK, MatrixKit and common configurations for all targets.
-class Config: NSObject, Configurable {
+/// CommonConfiguration is the central point to setup settings for MatrixSDK, MatrixKit and common configurations for all targets.
+class CommonConfiguration: NSObject, Configurable {
     
     // MARK: - Global settings
     
