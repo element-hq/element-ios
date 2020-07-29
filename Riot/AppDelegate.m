@@ -516,14 +516,15 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
     
+#ifdef CALL_STACK_JINGLE
     // Setup Jitsi
-    
     NSString *jitsiServerStringURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"jitsiServerURL"];
     NSURL *jitsiServerURL = [NSURL URLWithString:jitsiServerStringURL];
-    
+
     [JitsiService.shared configureDefaultConferenceOptionsWith:jitsiServerURL];
 
     [JitsiService.shared application:application didFinishLaunchingWithOptions:launchOptions];
+#endif
     
     self.majorUpdateManager = [MajorUpdateManager new];
 
@@ -2505,6 +2506,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)enableCallKit:(BOOL)enable forCallManager:(MXCallManager *)callManager
 {
+#ifdef CALL_STACK_JINGLE
     JitsiService.shared.enableCallKit = enable;
     
     if (enable)
@@ -2514,18 +2516,15 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         callKitConfiguration.iconName = @"callkit_icon";
         
         NSData *riotCallKitIconData = UIImagePNGRepresentation([UIImage imageNamed:callKitConfiguration.iconName]);
-        
         [JitsiService.shared configureCallKitProviderWithLocalizedName:callKitConfiguration.name
                                                           ringtoneName:callKitConfiguration.ringtoneName
                                                  iconTemplateImageData:riotCallKitIconData];
-        
+
         MXCallKitAdapter *callKitAdapter = [[MXCallKitAdapter alloc] initWithConfiguration:callKitConfiguration];
         
         id<MXCallAudioSessionConfigurator> audioSessionConfigurator;
         
-#ifdef CALL_STACK_JINGLE
         audioSessionConfigurator = [[MXJingleCallAudioSessionConfigurator alloc] init];
-#endif
         
         callKitAdapter.audioSessionConfigurator = audioSessionConfigurator;
         
@@ -2535,6 +2534,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         callManager.callKitAdapter = nil;
     }
+#endif
 }
 
 - (void)checkLocalPrivateKeysInSession:(MXSession*)mxSession
@@ -3175,6 +3175,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)displayJitsiViewControllerWithWidget:(Widget*)jitsiWidget andVideo:(BOOL)video
 {
+#ifdef CALL_STACK_JINGLE
     if (!_jitsiViewController && !currentCallViewController)
     {
         MXWeakify(self);
@@ -3204,6 +3205,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         [self showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"call_already_displayed", @"Vector", nil)];
     }
+#else
+    [self showAlertWithTitle:nil message:[NSBundle mxk_localizedStringForKey:@"not_supported_yet"]];
+#endif
 }
 
 - (void)presentJitsiViewController:(void (^)(void))completion
