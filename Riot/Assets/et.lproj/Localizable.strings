@@ -50,14 +50,14 @@
 /* A user has invited you to a named room */
 "USER_INVITE_TO_NAMED_ROOM" = "%@ kutsus sind %@ jututuppa";
 /* Incoming one-to-one voice call */
-"VOICE_CALL_FROM_USER" = "Kõne %@'lt";
+"VOICE_CALL_FROM_USER" = "Kõne kasutajalt %@";
 /* Incoming one-to-one video call */
-"VIDEO_CALL_FROM_USER" = "Videokõne %@'lt";
+"VIDEO_CALL_FROM_USER" = "Videokõne kasutajalt %@";
 /* Incoming unnamed voice conference invite from a specific person */
-"VOICE_CONF_FROM_USER" = "Rühmakõne %@'lt";
+"VOICE_CONF_FROM_USER" = "Rühmakõne kasutajalt %@";
 /* Incoming unnamed video conference invite from a specific person */
-"VIDEO_CONF_FROM_USER" = "Video rühmakõne %@'lt";
+"VIDEO_CONF_FROM_USER" = "Video rühmakõne kasutajalt %@";
 /* Incoming named voice conference invite from a specific person */
-"VOICE_CONF_NAMED_FROM_USER" = "Rühmakõne %@'lt: \"%@\"";
+"VOICE_CONF_NAMED_FROM_USER" = "Rühmakõne kasutajalt %@: „%@“";
 /* Incoming named video conference invite from a specific person */
-"VIDEO_CONF_NAMED_FROM_USER" = "Video rühmakõne %@'lt: \"%@\"";
+"VIDEO_CONF_NAMED_FROM_USER" = "Video rühmakõne kasutajalt %@: „%@“";
