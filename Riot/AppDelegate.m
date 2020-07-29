@@ -251,10 +251,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     NSLog(@"[AppDelegate] initialize");
 
-    // Set the App Group identifier.
-    MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
-    sdkOptions.applicationGroupIdentifier = @"group.im.vector";
-    sdkOptions.computeE2ERoomSummaryTrust = YES;
+    // Set static application settings
+    [[AppConfiguration new] setupSettings];
 
     // Redirect NSLogs to files only if we are not debugging
     if (!isatty(STDERR_FILENO))
@@ -433,6 +431,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 //    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@ (%tu)", @([application isProtectedDataAvailable]), loopCount);
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@", @([application isProtectedDataAvailable]));
 
+    _configuration = [AppConfiguration new];
+    
     // Log app information
     NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
     NSString* appVersion = [AppDelegate theDelegate].appVersion;
@@ -469,9 +469,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [NSBundle mxk_setLanguage:language];
     [NSBundle mxk_setFallbackLanguage:@"en"];
 
-    
-    // Customize the localized string table
-    [NSBundle mxk_customizeLocalizedStringTableName:@"Vector"];
     
     mxSessionArray = [NSMutableArray array];
     callEventsListeners = [NSMutableDictionary dictionary];
@@ -510,12 +507,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [MXSDKOptions sharedInstance].analyticsDelegate = [Analytics sharedInstance];
     [DecryptionFailureTracker sharedInstance].delegate = [Analytics sharedInstance];
     [[Analytics sharedInstance] start];
-    
-    // Disable CallKit
-    [MXKAppSettings standardAppSettings].enableCallKit = NO;
-    
-    // Enable lazy loading
-    [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = YES;
 
     self.pushNotificationService = [PushNotificationService new];
     self.pushNotificationService.delegate = self;
@@ -1838,30 +1829,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 - (void)initMatrixSessions
 {
     NSLog(@"[AppDelegate] initMatrixSessions");
-    
-    MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
-    
-    // Define the media cache version
-    sdkOptions.mediaCacheAppVersion = 0;
-    
-    // Enable e2e encryption for newly created MXSession
-    sdkOptions.enableCryptoWhenStartingMXSession = YES;
-    
-    // Disable identicon use
-    sdkOptions.disableIdenticonUseForUserAvatar = YES;
-    
-    // Use UIKit BackgroundTask for handling background tasks in the SDK
-    sdkOptions.backgroundModeHandler = [[MXUIKitBackgroundModeHandler alloc] init];
 
-    // Get modular widget events in rooms histories
-    [[MXKAppSettings standardAppSettings] addSupportedEventTypes:@[kWidgetMatrixEventTypeString, kWidgetModularEventTypeString]];
-    
-    // Hide undecryptable messages that were sent while the user was not in the room
-    [MXKAppSettings standardAppSettings].hidePreJoinedUndecryptableEvents = YES;
-    
-    // Enable long press on event in bubble cells
-    [MXKRoomBubbleTableViewCell disableLongPressGestureOnEvent:NO];
-    
     // Set first RoomDataSource class used in Vector
     [MXKRoomDataSourceManager registerRoomDataSourceClass:RoomDataSource.class];
     
@@ -1891,14 +1859,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             {
                 [mxSession enableVoIPWithCallStack:callStack];
 
-                // Let's call invite be valid for 1 minute
-                mxSession.callManager.inviteLifetime = 60000;
-
-                if (RiotSettings.shared.allowStunServerFallback)
-                {
-                    mxSession.callManager.fallbackSTUNServer = RiotSettings.shared.stunServerFallback;
-                }
-
                 // Setup CallKit
                 if ([MXCallKitAdapter callKitAvailable])
                 {
@@ -1922,14 +1882,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 [self enableNoVoIPOnMatrixSession:mxSession];
             }
             
-            // Each room member will be considered as a potential contact.
-            [MXKContactManager sharedManager].contactManagerMXRoomSource = MXKContactManagerMXRoomSourceAll;
-
-            // Send read receipts for widgets events too
-            NSMutableArray<MXEventTypeString> *acknowledgableEventTypes = [NSMutableArray arrayWithArray:mxSession.acknowledgableEventTypes];
-            [acknowledgableEventTypes addObject:kWidgetMatrixEventTypeString];
-            [acknowledgableEventTypes addObject:kWidgetModularEventTypeString];
-            mxSession.acknowledgableEventTypes = acknowledgableEventTypes;
+            [self.configuration setupSettingsFor:mxSession];
         }
         else if (mxSession.state == MXSessionStateStoreDataReady)
         {
@@ -1948,8 +1901,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 }
             }
             
-            // Do not warn for unknown devices. We have cross-signing now
-            mxSession.crypto.warnOnUnknowDevices = NO;
+            [self.configuration setupSettingsWhenLoadedFor:mxSession];
             
             // Register to user new device sign in notification
             [self registerUserDidSignInOnNewDeviceNotificationForSession:mxSession];

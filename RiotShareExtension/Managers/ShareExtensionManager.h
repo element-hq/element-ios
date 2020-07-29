@@ -19,6 +19,7 @@
 
 @class ShareExtensionManager;
 @class SharePresentingViewController;
+@protocol Configurable;
 
 /**
  Posted when the matrix user account and his data has been checked and updated.
@@ -90,6 +91,9 @@ extern NSString *const kShareExtensionManagerDidUpdateAccountDataNotification;
  A delegate used to notify about needed UI changes when sharing
  */
 @property (nonatomic, weak) id<ShareExtensionManagerDelegate> delegate;
+
+// Build Settings
+@property (nonatomic, readonly) id<Configurable> configuration;
 
 /**
  The singleton instance

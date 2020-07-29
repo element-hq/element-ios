@@ -74,6 +74,7 @@
 		32891D6C2264CBA300C82226 /* SimpleScreenTemplateViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32891D6A2264CBA300C82226 /* SimpleScreenTemplateViewController.storyboard */; };
 		32891D75226728EE00C82226 /* KeyVerificationDataLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32891D73226728EE00C82226 /* KeyVerificationDataLoadingViewController.swift */; };
 		32891D76226728EF00C82226 /* KeyVerificationDataLoadingViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32891D74226728EE00C82226 /* KeyVerificationDataLoadingViewController.storyboard */; };
+		328E410624CB168500DC4490 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328E410524CB168500DC4490 /* AppConfiguration.swift */; };
 		3291DC8A23E0BE820009732F /* Security.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3291DC8923E0BE820009732F /* Security.storyboard */; };
 		3291DC8D23E0BFF10009732F /* SecurityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3291DC8C23E0BFF10009732F /* SecurityViewController.m */; };
 		329E746622CD02EA006F9797 /* BubbleReactionActionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 329E746422CD02EA006F9797 /* BubbleReactionActionViewCell.xib */; };
@@ -115,6 +116,19 @@
 		32F6B96C2270623100BBA352 /* KeyVerificationDataLoadingCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F6B9662270623100BBA352 /* KeyVerificationDataLoadingCoordinatorType.swift */; };
 		32F6B96D2270623100BBA352 /* KeyVerificationDataLoadingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F6B9672270623100BBA352 /* KeyVerificationDataLoadingViewModel.swift */; };
 		32F6B96E2270623100BBA352 /* KeyVerificationDataLoadingViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F6B9682270623100BBA352 /* KeyVerificationDataLoadingViewModelType.swift */; };
+		32FD754C24D06EBE00BA7B37 /* RiotSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597F20EFC3DF00210D55 /* RiotSettings.swift */; };
+		32FD754D24D06EBF00BA7B37 /* RiotSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597F20EFC3DF00210D55 /* RiotSettings.swift */; };
+		32FD755024D074C700BA7B37 /* CommonConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD754F24D074C700BA7B37 /* CommonConfiguration.swift */; };
+		32FD755124D074C700BA7B37 /* CommonConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD754F24D074C700BA7B37 /* CommonConfiguration.swift */; };
+		32FD755224D074C700BA7B37 /* CommonConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD754F24D074C700BA7B37 /* CommonConfiguration.swift */; };
+		32FD755324D074C700BA7B37 /* CommonConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD754F24D074C700BA7B37 /* CommonConfiguration.swift */; };
+		32FD755424D074C700BA7B37 /* CommonConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD754F24D074C700BA7B37 /* CommonConfiguration.swift */; };
+		32FD755524D0754500BA7B37 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328E410524CB168500DC4490 /* AppConfiguration.swift */; };
+		32FD755724D15C7A00BA7B37 /* Configurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD755624D15C7A00BA7B37 /* Configurable.swift */; };
+		32FD755824D15C7A00BA7B37 /* Configurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD755624D15C7A00BA7B37 /* Configurable.swift */; };
+		32FD755924D15C7A00BA7B37 /* Configurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD755624D15C7A00BA7B37 /* Configurable.swift */; };
+		32FD755A24D15C7A00BA7B37 /* Configurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD755624D15C7A00BA7B37 /* Configurable.swift */; };
+		32FD755B24D15C7A00BA7B37 /* Configurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD755624D15C7A00BA7B37 /* Configurable.swift */; };
 		32FDC1CD2386CD390084717A /* RiotSettingIntegrationProvisioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FDC1CC2386CD390084717A /* RiotSettingIntegrationProvisioning.swift */; };
 		39D49C6524B8D40500FEDBC8 /* ElementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D49C6224B8D40500FEDBC8 /* ElementViewController.swift */; };
 		39D49C6624B8D40500FEDBC8 /* Timeline_1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D49C6324B8D40500FEDBC8 /* Timeline_1.swift */; };
@@ -963,6 +977,7 @@
 		32891D6A2264CBA300C82226 /* SimpleScreenTemplateViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SimpleScreenTemplateViewController.storyboard; sourceTree = "<group>"; };
 		32891D73226728EE00C82226 /* KeyVerificationDataLoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationDataLoadingViewController.swift; sourceTree = "<group>"; };
 		32891D74226728EE00C82226 /* KeyVerificationDataLoadingViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = KeyVerificationDataLoadingViewController.storyboard; sourceTree = "<group>"; };
+		328E410524CB168500DC4490 /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
 		3291DC8923E0BE820009732F /* Security.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Security.storyboard; sourceTree = "<group>"; };
 		3291DC8B23E0BFF10009732F /* SecurityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityViewController.h; sourceTree = "<group>"; };
 		3291DC8C23E0BFF10009732F /* SecurityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityViewController.m; sourceTree = "<group>"; };
@@ -1018,6 +1033,8 @@
 		32F6B9662270623100BBA352 /* KeyVerificationDataLoadingCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationDataLoadingCoordinatorType.swift; sourceTree = "<group>"; };
 		32F6B9672270623100BBA352 /* KeyVerificationDataLoadingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationDataLoadingViewModel.swift; sourceTree = "<group>"; };
 		32F6B9682270623100BBA352 /* KeyVerificationDataLoadingViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationDataLoadingViewModelType.swift; sourceTree = "<group>"; };
+		32FD754F24D074C700BA7B37 /* CommonConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonConfiguration.swift; sourceTree = "<group>"; };
+		32FD755624D15C7A00BA7B37 /* Configurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configurable.swift; sourceTree = "<group>"; };
 		32FDC1CC2386CD390084717A /* RiotSettingIntegrationProvisioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiotSettingIntegrationProvisioning.swift; sourceTree = "<group>"; };
 		3942DD65EBEB7AE647C6392A /* Pods-RiotPods-SiriIntents.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-SiriIntents.debug.xcconfig"; path = "Target Support Files/Pods-RiotPods-SiriIntents/Pods-RiotPods-SiriIntents.debug.xcconfig"; sourceTree = "<group>"; };
 		39D49C6224B8D40500FEDBC8 /* ElementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ElementViewController.swift; sourceTree = "<group>"; };
@@ -2330,6 +2347,16 @@
 				32DB557422FDADE50016329E /* ServiceTermsModalScreenCoordinator.swift */,
 			);
 			path = Modal;
+			sourceTree = "<group>";
+		};
+		32FD754E24D073E400BA7B37 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				32FD754F24D074C700BA7B37 /* CommonConfiguration.swift */,
+				328E410524CB168500DC4490 /* AppConfiguration.swift */,
+				32FD755624D15C7A00BA7B37 /* Configurable.swift */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 		39D49C6124B8D3B000FEDBC8 /* LaunchLoadingAnimation */ = {
@@ -4933,6 +4960,7 @@
 				3267EFB320E379FD00FF1CAA /* CHANGES.rst */,
 				3267EFB520E379FD00FF1CAA /* AUTHORS.rst */,
 				3267EFB420E379FD00FF1CAA /* Podfile */,
+				32FD754E24D073E400BA7B37 /* Config */,
 				F083BB081E7009EC00A9B29C /* Riot */,
 				F083BB021E7005FD00A9B29C /* RiotTests */,
 				24CBEC4F1F0EAD310093EABB /* RiotShareExtension */,
@@ -5570,7 +5598,9 @@
 				B1DB4F0722301AF20065DBFA /* Character.swift in Sources */,
 				3209451321F1C1D50088CAA2 /* BlackTheme.swift in Sources */,
 				24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */,
+				32FD755924D15C7A00BA7B37 /* Configurable.swift in Sources */,
 				B1664BC720F4E67600808783 /* SharePresentingViewController.m in Sources */,
+				32FD755224D074C700BA7B37 /* CommonConfiguration.swift in Sources */,
 				B1DB4F0F223170000065DBFA /* UserNameColorGenerator.swift in Sources */,
 				F0A8955F1F7D1FEA00BD6C2A /* MXRoomSummary+Riot.m in Sources */,
 				32242F1721E8FBE500725742 /* Theme.swift in Sources */,
@@ -5591,6 +5621,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				92726A471F58737A004AD26F /* IntentHandler.m in Sources */,
+				32FD755324D074C700BA7B37 /* CommonConfiguration.swift in Sources */,
+				32FD755A24D15C7A00BA7B37 /* Configurable.swift in Sources */,
+				32FD754C24D06EBE00BA7B37 /* RiotSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5602,7 +5635,9 @@
 				EC85D757247E700F002C44C9 /* NSEMemoryStore.swift in Sources */,
 				EC2B4EF224A1EF34005EB739 /* DataProtectionHelper.swift in Sources */,
 				EC85D7462477E5F7002C44C9 /* NotificationService.swift in Sources */,
+				32FD755424D074C700BA7B37 /* CommonConfiguration.swift in Sources */,
 				EC85D752247C0F52002C44C9 /* UNUserNotificationCenter.swift in Sources */,
+				32FD755B24D15C7A00BA7B37 /* Configurable.swift in Sources */,
 				EC85D755247C0F84002C44C9 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5675,6 +5710,7 @@
 				B1B558E820EF768F00210D55 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				B1B558F320EF768F00210D55 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				B12D79FE23E2462200FACEDC /* UserVerificationStartViewController.swift in Sources */,
+				32FD755724D15C7A00BA7B37 /* Configurable.swift in Sources */,
 				32607D73243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyCoordinator.swift in Sources */,
 				B1B557BD20EF5B4500210D55 /* KeyboardGrowingTextView.m in Sources */,
 				EC711B9524A63B37008F830C /* SecretsRecoveryWithKeyViewModelType.swift in Sources */,
@@ -5683,6 +5719,7 @@
 				B1B5572320EE6C4D00210D55 /* AttachmentsViewController.m in Sources */,
 				B18DEDDD2433967C0075FEF7 /* KeyVerificationFlow.swift in Sources */,
 				F083BDEE1E7009ED00A9B29C /* MXRoom+Riot.m in Sources */,
+				328E410624CB168500DC4490 /* AppConfiguration.swift in Sources */,
 				EC711B9624A63B37008F830C /* SecretsRecoveryWithKeyViewState.swift in Sources */,
 				B120863722EF375F001F89E0 /* ReactionHistoryBridgeCoordinatorPresenter.swift in Sources */,
 				EC711B9224A63B37008F830C /* SecretsRecoveryWithKeyViewModel.swift in Sources */,
@@ -5880,6 +5917,7 @@
 				B1B5593C20EF7BAC00210D55 /* TableViewCellWithCheckBoxes.m in Sources */,
 				32891D6B2264CBA300C82226 /* SimpleScreenTemplateViewController.swift in Sources */,
 				EC711B7924A63B37008F830C /* SecretsSetupRecoveryKeyViewController.swift in Sources */,
+				32FD755024D074C700BA7B37 /* CommonConfiguration.swift in Sources */,
 				B1CA3A2721EF6914000D1D89 /* UIViewController.swift in Sources */,
 				322C110822BBC6F80043FEAC /* WidgetManagerConfig.swift in Sources */,
 				EC1CA86624C1DEC400DE9EBF /* EnterPinCodeViewController.swift in Sources */,
@@ -6222,6 +6260,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32FD755824D15C7A00BA7B37 /* Configurable.swift in Sources */,
+				32FD754D24D06EBF00BA7B37 /* RiotSettings.swift in Sources */,
+				32FD755524D0754500BA7B37 /* AppConfiguration.swift in Sources */,
+				32FD755124D074C700BA7B37 /* CommonConfiguration.swift in Sources */,
 				F083BEA51E70356E00A9B29C /* RiotTests.m in Sources */,
 				B152C73122DF561E0041315A /* EmojiServiceTests.swift in Sources */,
 			);
@@ -6455,6 +6497,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.SiriIntents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
 				USER_HEADER_SEARCH_PATHS = "$(inherited)";
 			};
 			name = Debug;
@@ -6488,6 +6531,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.SiriIntents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
 				USER_HEADER_SEARCH_PATHS = "$(inherited)";
 			};
 			name = Release;
