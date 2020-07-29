@@ -34,6 +34,7 @@
 
 enum
 {
+    SECTION_PIN_CODE,
     SECTION_CRYPTO_SESSIONS,
     SECTION_SECURE_BACKUP,
     SECTION_CRYPTOGRAPHY,
@@ -68,6 +69,12 @@ enum {
     SECURE_BACKUP_MANAGE_MANUALLY,  // TODO: What to do with that?
 };
 
+enum {
+    PIN_CODE_SETTING,
+    PIN_CODE_DESCRIPTION,
+    PIN_CODE_BIOMETRICS,
+    PIN_CODE_COUNT
+};
 
 enum {
     CRYPTOGRAPHY_INFO,
@@ -90,7 +97,8 @@ KeyBackupRecoverCoordinatorBridgePresenterDelegate,
 #endif
 UIDocumentInteractionControllerDelegate,
 SecretsRecoveryCoordinatorBridgePresenterDelegate,
-SecureBackupSetupCoordinatorBridgePresenterDelegate>
+SecureBackupSetupCoordinatorBridgePresenterDelegate,
+SetPinCoordinatorBridgePresenterDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
@@ -128,6 +136,7 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
 @property (nonatomic, strong) MXKeyBackupVersion *currentkeyBackupVersion;
 @property (nonatomic, strong) SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
 @property (nonatomic, strong) AuthenticatedSessionViewControllerFactory *authenticatedSessionViewControllerFactory;
+@property (nonatomic, strong) SetPinCoordinatorBridgePresenter *setPinCoordinatorBridgePresenter;
 
 @end
 
@@ -932,6 +941,14 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
 
     switch (section)
     {
+        case SECTION_PIN_CODE:
+            count = PIN_CODE_COUNT;
+            
+            if (![PinCodePreferences shared].isBiometricsAvailable)
+            {
+                count -= 1;
+            }
+            break;
         case SECTION_CRYPTO_SESSIONS:
             if (self.showLoadingDevicesInformation)
             {
@@ -1123,7 +1140,52 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
     cell.backgroundColor = [UIColor redColor];
 
     MXSession* session = self.mainSession;
-    if (section == SECTION_CRYPTO_SESSIONS)
+    if (section == SECTION_PIN_CODE)
+    {
+        if (indexPath.row == PIN_CODE_SETTING)
+        {
+            if ([PinCodePreferences shared].forcePinProtection)
+            {
+                cell = [self getDefaultTableViewCell:tableView];
+                cell.textLabel.text = NSLocalizedStringFromTable(@"pin_protection_settings_enabled_forced", @"Vector", nil);
+            }
+            else
+            {
+                MXKTableViewCellWithLabelAndSwitch *switchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+                
+                switchCell.mxkLabel.text = NSLocalizedStringFromTable(@"pin_protection_settings_enable_pin", @"Vector", nil);
+                switchCell.mxkSwitch.on = [PinCodePreferences shared].isPinSet;
+                [switchCell.mxkSwitch addTarget:self action:@selector(enablePinCodeSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
+                
+                cell = switchCell;
+            }
+        }
+        else if (indexPath.row == PIN_CODE_DESCRIPTION)
+        {
+            if ([PinCodePreferences shared].isPinSet)
+            {
+                cell = [self descriptionCellForTableView:tableView
+                                                withText:NSLocalizedStringFromTable(@"pin_protection_settings_section_footer", @"Vector", nil) ];
+            }
+            else
+            {
+                cell = [self descriptionCellForTableView:tableView withText:nil];
+            }
+        }
+        else if (indexPath.row == PIN_CODE_BIOMETRICS)
+        {
+            MXKTableViewCellWithLabelAndSwitch *switchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            NSString *format = NSLocalizedStringFromTable(@"biometrics_settings_enable_x", @"Vector", nil);
+            switchCell.mxkLabel.text = [NSString stringWithFormat:format, [PinCodePreferences shared].localizedBiometricsName];
+            switchCell.mxkSwitch.on = [PinCodePreferences shared].isBiometricsSet;
+            switchCell.mxkSwitch.enabled = [PinCodePreferences shared].isBiometricsAvailable;
+            [switchCell.mxkSwitch addTarget:self action:@selector(enableBiometricsSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
+            
+            cell = switchCell;
+        }
+    }
+    else if (section == SECTION_CRYPTO_SESSIONS)
     {
         if (self.showLoadingDevicesInformation)
         {
@@ -1295,6 +1357,11 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
 {
     switch (section)
     {
+        case SECTION_PIN_CODE:
+        {
+            NSString *format = NSLocalizedStringFromTable(@"pin_protection_settings_section_header_x", @"Vector", nil);
+            return [NSString stringWithFormat:format, [PinCodePreferences shared].localizedBiometricsName];
+        }
         case SECTION_CRYPTO_SESSIONS:
             return NSLocalizedStringFromTable(@"security_settings_crypto_sessions", @"Vector", nil);
         case SECTION_SECURE_BACKUP:
@@ -1525,6 +1592,21 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
     [self.tableView reloadData];
 }
 
+- (void)enablePinCodeSwitchValueChanged:(UISwitch *)sender
+{
+    SetPinCoordinatorViewMode viewMode = sender.isOn ? SetPinCoordinatorViewModeSetPin : SetPinCoordinatorViewModeConfirmPinToDeactivate;
+    self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:self.mainSession viewMode:viewMode];
+    self.setPinCoordinatorBridgePresenter.delegate = self;
+    [self.setPinCoordinatorBridgePresenter presentFrom:self animated:YES];
+}
+
+- (void)enableBiometricsSwitchValueChanged:(UISwitch *)sender
+{
+    SetPinCoordinatorViewMode viewMode = sender.isOn ? SetPinCoordinatorViewModeSetupBiometricsFromSettings : SetPinCoordinatorViewModeConfirmBiometricsToDeactivate;
+    self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:self.mainSession viewMode:viewMode];
+    self.setPinCoordinatorBridgePresenter.delegate = self;
+    [self.setPinCoordinatorBridgePresenter presentFrom:self animated:YES];
+}
 
 #pragma mark - SettingsKeyBackupTableViewSectionDelegate
 #ifdef CROSS_SIGNING_AND_BACKUP_DEV
@@ -1722,6 +1804,20 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate>
 {
     [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.secureBackupSetupCoordinatorBridgePresenter = nil;
+}
+
+#pragma mark - SetPinCoordinatorBridgePresenterDelegate
+
+- (void)setPinCoordinatorBridgePresenterDelegateDidComplete:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self.tableView reloadData];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)setPinCoordinatorBridgePresenterDelegateDidCancel:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self.tableView reloadData];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

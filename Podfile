@@ -7,7 +7,7 @@ use_frameworks!
 
 # Different flavours of pods to MatrixKit
 # The current MatrixKit pod version
-$matrixKitVersion = '0.12.8'
+$matrixKitVersion = '0.12.9'
 
 # The specific branch version (supported: develop)
 #$matrixKitVersion = 'develop'
@@ -61,6 +61,7 @@ abstract_target 'RiotPods' do
 
     pod 'GBDeviceInfo', '~> 6.3.0'
     pod 'Reusable', '~> 4.1'
+    pod 'KeychainAccess', '~> 4.2'
  
     # Piwik for analytics
     pod 'MatomoTracker', '~> 7.2.0'
@@ -116,4 +117,3 @@ post_install do |installer|
         end
     end
 end
-

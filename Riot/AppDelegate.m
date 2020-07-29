@@ -90,7 +90,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
 NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUniversalLinkDidChangeNotification";
 
-@interface AppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate>
+@interface AppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate>
 {
     /**
      Reachability observer
@@ -223,6 +223,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 @property (nonatomic, strong) SlidingModalPresenter *slidingModalPresenter;
+@property (nonatomic, strong) SetPinCoordinatorBridgePresenter *setPinCoordinatorBridgePresenter;
 
 /**
  Used to manage on boarding steps, like create DM with riot bot
@@ -236,6 +237,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
  Related push notification service instance. Will be created when launch finished.
  */
 @property (nonatomic, strong) PushNotificationService *pushNotificationService;
+@property (nonatomic, strong) LocalAuthenticationService *localAuthenticationService;
 
 @property (nonatomic, strong) MajorUpdateManager *majorUpdateManager;
 
@@ -249,10 +251,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     NSLog(@"[AppDelegate] initialize");
 
-    // Set the App Group identifier.
-    MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
-    sdkOptions.applicationGroupIdentifier = @"group.im.vector";
-    sdkOptions.computeE2ERoomSummaryTrust = YES;
+    // Set static application settings
+    [[AppConfiguration new] setupSettings];
 
     // Redirect NSLogs to files only if we are not debugging
     if (!isatty(STDERR_FILENO))
@@ -431,6 +431,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 //    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@ (%tu)", @([application isProtectedDataAvailable]), loopCount);
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@", @([application isProtectedDataAvailable]));
 
+    _configuration = [AppConfiguration new];
+    
     // Log app information
     NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
     NSString* appVersion = [AppDelegate theDelegate].appVersion;
@@ -467,9 +469,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [NSBundle mxk_setLanguage:language];
     [NSBundle mxk_setFallbackLanguage:@"en"];
 
-    
-    // Customize the localized string table
-    [NSBundle mxk_customizeLocalizedStringTableName:@"Vector"];
     
     mxSessionArray = [NSMutableArray array];
     callEventsListeners = [NSMutableDictionary dictionary];
@@ -508,15 +507,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [MXSDKOptions sharedInstance].analyticsDelegate = [Analytics sharedInstance];
     [DecryptionFailureTracker sharedInstance].delegate = [Analytics sharedInstance];
     [[Analytics sharedInstance] start];
-    
-    // Disable CallKit
-    [MXKAppSettings standardAppSettings].enableCallKit = NO;
-    
-    // Enable lazy loading
-    [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = YES;
 
     self.pushNotificationService = [PushNotificationService new];
     self.pushNotificationService.delegate = self;
+    
+    self.localAuthenticationService = [[LocalAuthenticationService alloc] initWithPinCodePreferences:[PinCodePreferences shared]];
 
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
@@ -651,6 +646,25 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     NSLog(@"[AppDelegate] applicationDidBecomeActive");
+    
+    if ([self.localAuthenticationService shouldShowPinCode])
+    {
+        if (self.setPinCoordinatorBridgePresenter)
+        {
+            //  it's already on screen
+            return;
+        }
+        self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:mxSessionArray.firstObject viewMode:SetPinCoordinatorViewModeUnlock];
+        self.setPinCoordinatorBridgePresenter.delegate = self;
+        [self.setPinCoordinatorBridgePresenter presentIn:self.window];
+    } else {
+        [self afterAppUnlockedByPin:application];
+    }
+}
+
+- (void)afterAppUnlockedByPin:(UIApplication *)application
+{
+    NSLog(@"[AppDelegate] afterAppUnlockedByPin");
     
     // Check if there is crash log to send
     if (RiotSettings.shared.enableCrashReport)
@@ -1816,30 +1830,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 - (void)initMatrixSessions
 {
     NSLog(@"[AppDelegate] initMatrixSessions");
-    
-    MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
-    
-    // Define the media cache version
-    sdkOptions.mediaCacheAppVersion = 0;
-    
-    // Enable e2e encryption for newly created MXSession
-    sdkOptions.enableCryptoWhenStartingMXSession = YES;
-    
-    // Disable identicon use
-    sdkOptions.disableIdenticonUseForUserAvatar = YES;
-    
-    // Use UIKit BackgroundTask for handling background tasks in the SDK
-    sdkOptions.backgroundModeHandler = [[MXUIKitBackgroundModeHandler alloc] init];
 
-    // Get modular widget events in rooms histories
-    [[MXKAppSettings standardAppSettings] addSupportedEventTypes:@[kWidgetMatrixEventTypeString, kWidgetModularEventTypeString]];
-    
-    // Hide undecryptable messages that were sent while the user was not in the room
-    [MXKAppSettings standardAppSettings].hidePreJoinedUndecryptableEvents = YES;
-    
-    // Enable long press on event in bubble cells
-    [MXKRoomBubbleTableViewCell disableLongPressGestureOnEvent:NO];
-    
     // Set first RoomDataSource class used in Vector
     [MXKRoomDataSourceManager registerRoomDataSourceClass:RoomDataSource.class];
     
@@ -1869,14 +1860,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             {
                 [mxSession enableVoIPWithCallStack:callStack];
 
-                // Let's call invite be valid for 1 minute
-                mxSession.callManager.inviteLifetime = 60000;
-
-                if (RiotSettings.shared.allowStunServerFallback)
-                {
-                    mxSession.callManager.fallbackSTUNServer = RiotSettings.shared.stunServerFallback;
-                }
-
                 // Setup CallKit
                 if ([MXCallKitAdapter callKitAvailable])
                 {
@@ -1900,14 +1883,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 [self enableNoVoIPOnMatrixSession:mxSession];
             }
             
-            // Each room member will be considered as a potential contact.
-            [MXKContactManager sharedManager].contactManagerMXRoomSource = MXKContactManagerMXRoomSourceAll;
-
-            // Send read receipts for widgets events too
-            NSMutableArray<MXEventTypeString> *acknowledgableEventTypes = [NSMutableArray arrayWithArray:mxSession.acknowledgableEventTypes];
-            [acknowledgableEventTypes addObject:kWidgetMatrixEventTypeString];
-            [acknowledgableEventTypes addObject:kWidgetModularEventTypeString];
-            mxSession.acknowledgableEventTypes = acknowledgableEventTypes;
+            [self.configuration setupSettingsFor:mxSession];
         }
         else if (mxSession.state == MXSessionStateStoreDataReady)
         {
@@ -1926,8 +1902,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 }
             }
             
-            // Do not warn for unknown devices. We have cross-signing now
-            mxSession.crypto.warnOnUnknowDevices = NO;
+            [self.configuration setupSettingsWhenLoadedFor:mxSession];
             
             // Register to user new device sign in notification
             [self registerUserDidSignInOnNewDeviceNotificationForSession:mxSession];
@@ -2308,6 +2283,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     // Reset key verification banner preferences
     [CrossSigningBannerPreferences.shared reset];
+    
+    // Reset user pin code
+    [PinCodePreferences.shared reset];
     
 #ifdef MX_CALL_STACK_ENDPOINT
     // Erase all created certificates and private keys by MXEndpointCallStack
@@ -4635,5 +4613,20 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                              completion:nil];
 }
 
+#pragma mark - SetPinCoordinatorBridgePresenterDelegate
+
+- (void)setPinCoordinatorBridgePresenterDelegateDidComplete:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismiss];
+    self.setPinCoordinatorBridgePresenter = nil;
+    [self afterAppUnlockedByPin:[UIApplication sharedApplication]];
+}
+
+- (void)setPinCoordinatorBridgePresenterDelegateDidCompleteWithReset:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismiss];
+    self.setPinCoordinatorBridgePresenter = nil;
+    [self logoutWithConfirmation:NO completion:nil];
+}
 
 @end

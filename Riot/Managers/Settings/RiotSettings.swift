@@ -45,6 +45,9 @@ final class RiotSettings: NSObject {
     
     // MARK: - Public
     
+    /// Setting to force protection by pin code
+    let forcePinProtection: Bool = false
+    
     // MARK: Notifications
     
     /// Indicate if `showDecryptedContentInNotifications` settings has been set once.

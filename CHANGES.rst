@@ -1,9 +1,15 @@
-Changes in 1.0.2 (2020-07-)
+Changes in 1.0.3 (2020-xx-xx)
 ===============================================
 
 Improvements:
+ * Implement PIN protection (#3436).
+ * Biometrics protection: Implement TouchID/FaceID protection (#3437).
  * Build: Make the app build if JitsiMeetSDK is not in the Podfile.
- 
+ * Configuration: Add CommonConfiguration and AppConfiguratio classes as central points to configure all targets in the same way.
+
+Changes in 1.0.2 (2020-07-28)
+===============================================
+
 Bug fix:
  * Registration: Do not display the skip button if email is mandatory (#3417).
  * NotificationService: Do not cache showDecryptedContentInNotifications setting (#3444).

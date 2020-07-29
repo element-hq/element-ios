@@ -1415,3 +1415,40 @@
 "major_update_information" = "We're excited to announce we've changed name! Your app is up to date and you're signed in to your account.";
 "major_update_learn_more_action" = "Learn more";
 "major_update_done_action" = "Got it";
+
+// MARK: - PIN Protection
+
+"pin_protection_choose_pin" = "Choose a PIN for security";
+"pin_protection_confirm_pin" = "Confirm your PIN";
+"pin_protection_confirm_pin_to_disable" = "Confirm PIN to disable PIN";
+"pin_protection_enter_pin" = "Enter your PIN";
+"pin_protection_forgot_pin" = "Forgot PIN";
+"pin_protection_reset_alert_title" = "Reset PIN";
+"pin_protection_reset_alert_message" = "To reset your PIN, you'll need to re-login and create a new one";
+"pin_protection_reset_alert_action_reset" = "Reset";
+"pin_protection_mismatch_error_title" = "PINs don't match";
+"pin_protection_mismatch_error_message" = "Please try again";
+"pin_protection_mismatch_too_many_times_error_message" = "If you can't remember your PIN, tap the forgot PIN button.";
+"pin_protection_settings_section_header_x" = "PIN & %@";
+"pin_protection_settings_section_footer" = "To reset your PIN, you'll need to re-login and create a new one.";
+"pin_protection_settings_enabled_forced" = "PIN enabled";
+"pin_protection_settings_enable_pin" = "Enable PIN";
+
+// MARK: - Biometrics Protection
+
+"biometrics_mode_touch_id" = "Touch ID";
+"biometrics_mode_face_id" = "Face ID";
+"biometrics_settings_enable_x" = "Enable %@";
+"biometrics_setup_title_x" = "Enable %@";
+"biometrics_setup_enable_button_title_x" = "Enable %@";
+"biometrics_setup_subtitle" = "Save yourself time";
+
+"biometrics_desetup_title_x" = "Disable %@";
+"biometrics_desetup_subtitle" = "";
+"biometrics_desetup_disable_button_title_x" = "Disable %@";
+
+"biometrics_usage_reason" = "Authentication is needed to access your app";
+"biometrics_cant_unlocked_alert_title" = "Can't unlock app";
+"biometrics_cant_unlocked_alert_message_x" = "To unlock, use %@ or log back in and enable %@ again";
+"biometrics_cant_unlocked_alert_message_login" = "Log back in";
+"biometrics_cant_unlocked_alert_message_retry" = "Retry";
