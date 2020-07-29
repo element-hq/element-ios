@@ -31,11 +31,14 @@ class NotificationService: UNNotificationServiceExtension {
     var showDecryptedContentInNotifications: Bool {
         return RiotSettings.shared.showDecryptedContentInNotifications
     }
+    lazy var configuration: Configurable = {
+        return Config()
+    }()
     static var isLoggerInitialized: Bool = false
     
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         // Set static application settings
-        Config.shared.setupSettings()
+        configuration.setupSettings()
         
         if DataProtectionHelper.isDeviceInRebootedAndLockedState(appGroupIdentifier: MXSDKOptions.sharedInstance().applicationGroupIdentifier) {
             //  kill the process in this state, this leads for the notification to be displayed as came from APNS

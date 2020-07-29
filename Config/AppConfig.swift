@@ -18,9 +18,7 @@ import Foundation
 import MatrixKit
 
 /// AppConfig is Config plus configurations dedicated to the app
-@objcMembers class AppConfig: Config {
-    
-    static let sharedAppConfig = AppConfig()
+class AppConfig: Config {
     
     // MARK: - Global settings
     

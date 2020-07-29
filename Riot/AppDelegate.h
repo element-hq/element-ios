@@ -27,6 +27,9 @@
 #import "ThemeService.h"
 #import "UniversalLink.h"
 
+@protocol Configurable;
+
+
 #pragma mark - Notifications
 /**
  Posted when the user taps the clock status bar.
@@ -97,6 +100,9 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 
 // New message sound id.
 @property (nonatomic, readonly) SystemSoundID messageSound;
+
+// Build Settings
+@property (nonatomic, readonly) id<Configurable> configuration;
 
 + (AppDelegate*)theDelegate;
 

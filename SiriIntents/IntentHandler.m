@@ -26,6 +26,9 @@
 
 @interface IntentHandler () <INStartAudioCallIntentHandling, INStartVideoCallIntentHandling, INSendMessageIntentHandling>
 
+// Build Settings
+@property (nonatomic) id<Configurable> configuration;
+
 @end
 
 @implementation IntentHandler
@@ -36,7 +39,8 @@
     if (self)
     {
         // Set static application settings
-        [Config.shared setupSettings];
+        _configuration = [Config new];
+        [_configuration setupSettings];
 
         // NSLog -> console.log file when not debugging the app
         if (!isatty(STDERR_FILENO))

@@ -250,7 +250,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     NSLog(@"[AppDelegate] initialize");
 
     // Set static application settings
-    [AppConfig.sharedAppConfig setupSettings];
+    [[AppConfig new] setupSettings];
 
     // Redirect NSLogs to files only if we are not debugging
     if (!isatty(STDERR_FILENO))
@@ -429,6 +429,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 //    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@ (%tu)", @([application isProtectedDataAvailable]), loopCount);
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@", @([application isProtectedDataAvailable]));
 
+    _configuration = [AppConfig new];
+    
     // Log app information
     NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
     NSString* appVersion = [AppDelegate theDelegate].appVersion;
@@ -1857,7 +1859,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 [self enableNoVoIPOnMatrixSession:mxSession];
             }
             
-            [AppConfig.sharedAppConfig setupSettingsFor:mxSession];
+            [self.configuration setupSettingsFor:mxSession];
         }
         else if (mxSession.state == MXSessionStateStoreDataReady)
         {
@@ -1876,7 +1878,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 }
             }
             
-            [AppConfig.sharedAppConfig setupSettingsWhenLoadedFor:mxSession];
+            [self.configuration setupSettingsWhenLoadedFor:mxSession];
             
             // Register to user new device sign in notification
             [self registerUserDidSignInOnNewDeviceNotificationForSession:mxSession];

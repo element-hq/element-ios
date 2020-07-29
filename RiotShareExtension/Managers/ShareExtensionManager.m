@@ -75,7 +75,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         [NSNotificationCenter.defaultCenter addObserver:sharedInstance selector:@selector(didReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
         
         // Set static application settings
-        [Config.shared setupSettings];
+        sharedInstance->_configuration = [Config new];
+        [sharedInstance.configuration setupSettings];
 
         // NSLog -> console.log file when not debugging the app
         if (!isatty(STDERR_FILENO))
