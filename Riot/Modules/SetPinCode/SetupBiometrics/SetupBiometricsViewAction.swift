@@ -1,3 +1,5 @@
+// File created from ScreenTemplate
+// $ createScreen.sh SetPinCode/SetupBiometrics SetupBiometrics
 /*
  Copyright 2020 New Vector Ltd
  
@@ -16,9 +18,11 @@
 
 import Foundation
 
-enum Constants {
-    
-    static let toBeRemovedNotificationCategoryIdentifier = "TO_BE_REMOVED"
-    static let keychainAccessGroup = "7J4U792NQT.im.vector.app.keychain.shared"
-    
+/// SetupBiometricsViewController view actions exposed to view model
+enum SetupBiometricsViewAction {
+    case loadData
+    case enableDisableTapped
+    case skipOrCancel
+    case unlock
+    case cantUnlockedAlertResetAction
 }

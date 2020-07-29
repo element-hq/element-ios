@@ -1,3 +1,5 @@
+// File created from ScreenTemplate
+// $ createScreen.sh SetPinCode/EnterPinCode EnterPinCode
 /*
  Copyright 2020 New Vector Ltd
  
@@ -16,9 +18,13 @@
 
 import Foundation
 
-enum Constants {
-    
-    static let toBeRemovedNotificationCategoryIdentifier = "TO_BE_REMOVED"
-    static let keychainAccessGroup = "7J4U792NQT.im.vector.app.keychain.shared"
-    
+/// EnterPinCodeViewController view actions exposed to view model
+enum EnterPinCodeViewAction {
+    case loadData
+    case digitPressed(_ tag: Int)
+    case forgotPinPressed
+    case cancel
+    case pinsDontMatchAlertAction
+    case forgotPinAlertResetAction
+    case forgotPinAlertCancelAction
 }

@@ -20,4 +20,4 @@
 "NSMicrophoneUsageDescription" = "The microphone is used to take videos, make calls.";
 "NSContactsUsageDescription" = "To discover contacts already using Matrix, Element can send email addresses and phone numbers in your address book to your chosen Matrix identity server. Where supported, personal data is hashed before sending - please check your identity server's privacy policy for more details.";
 "NSCalendarsUsageDescription" = "See your scheduled meetings in the app.";
-
+"NSFaceIDUsageDescription" = "Face ID is used to access your app.";
