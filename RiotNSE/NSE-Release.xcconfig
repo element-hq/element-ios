@@ -18,4 +18,4 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 
 #include "Config/Common.xcconfig"
-#include "Pods/Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension.release.xcconfig"
+#include "Pods/Target Support Files/Pods-RiotPods-RiotNSE/Pods-RiotPods-RiotNSE.release.xcconfig"
