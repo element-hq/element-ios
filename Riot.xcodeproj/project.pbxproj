@@ -1852,6 +1852,15 @@
 		EC1CA89224C9C9A200DE9EBF /* SetupBiometricsCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupBiometricsCoordinatorType.swift; sourceTree = "<group>"; };
 		EC1CA89324C9C9A200DE9EBF /* SetupBiometricsViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupBiometricsViewState.swift; sourceTree = "<group>"; };
 		EC1CA89424C9C9A200DE9EBF /* SetupBiometricsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupBiometricsViewModel.swift; sourceTree = "<group>"; };
+		EC1CA8B324D1AA8000DE9EBF /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
+		EC1CA8B424D1AA8700DE9EBF /* App-Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "App-Debug.xcconfig"; sourceTree = "<group>"; };
+		EC1CA8B624D1AA8D00DE9EBF /* App-Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "App-Release.xcconfig"; sourceTree = "<group>"; };
+		EC1CA8B824D1AD1600DE9EBF /* ShareExtension-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "ShareExtension-Debug.xcconfig"; sourceTree = "<group>"; };
+		EC1CA8B924D1AD1600DE9EBF /* ShareExtension-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "ShareExtension-Release.xcconfig"; sourceTree = "<group>"; };
+		EC1CA8BA24D1B4BF00DE9EBF /* SiriIntents-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "SiriIntents-Release.xcconfig"; sourceTree = "<group>"; };
+		EC1CA8BB24D1B4BF00DE9EBF /* SiriIntents-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "SiriIntents-Debug.xcconfig"; sourceTree = "<group>"; };
+		EC1CA8BC24D1B4CF00DE9EBF /* NSE-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "NSE-Debug.xcconfig"; sourceTree = "<group>"; };
+		EC1CA8BD24D1B4CF00DE9EBF /* NSE-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "NSE-Release.xcconfig"; sourceTree = "<group>"; };
 		EC2B4EF024A1EEBD005EB739 /* DataProtectionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProtectionHelper.swift; sourceTree = "<group>"; };
 		EC3B066424AC6ADD000DF9BF /* CrossSigningService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossSigningService.swift; sourceTree = "<group>"; };
 		EC3B066624AC6ADD000DF9BF /* CrossSigningSetupBannerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CrossSigningSetupBannerCell.xib; sourceTree = "<group>"; };
@@ -2352,6 +2361,7 @@
 		32FD754E24D073E400BA7B37 /* Config */ = {
 			isa = PBXGroup;
 			children = (
+				EC1CA8B324D1AA8000DE9EBF /* Common.xcconfig */,
 				32FD754F24D074C700BA7B37 /* CommonConfiguration.swift */,
 				328E410524CB168500DC4490 /* AppConfiguration.swift */,
 				32FD755624D15C7A00BA7B37 /* Configurable.swift */,
@@ -2426,6 +2436,8 @@
 				92726A451F58737A004AD26F /* IntentHandler.h */,
 				92726A461F58737A004AD26F /* IntentHandler.m */,
 				92726A481F58737A004AD26F /* Info.plist */,
+				EC1CA8BB24D1B4BF00DE9EBF /* SiriIntents-Debug.xcconfig */,
+				EC1CA8BA24D1B4BF00DE9EBF /* SiriIntents-Release.xcconfig */,
 			);
 			path = SiriIntents;
 			sourceTree = "<group>";
@@ -2783,6 +2795,8 @@
 				B1664BD120F4E82700808783 /* RiotShareExtension-Bridging-Header.h */,
 				B1664BD220F4E82800808783 /* RiotShareExtension.entitlements */,
 				B1664BD320F4E82800808783 /* Info.plist */,
+				EC1CA8B824D1AD1600DE9EBF /* ShareExtension-Debug.xcconfig */,
+				EC1CA8B924D1AD1600DE9EBF /* ShareExtension-Release.xcconfig */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -2805,6 +2819,8 @@
 				B16932A020F3A21B00746532 /* Riot.entitlements */,
 				B16932A120F3A21B00746532 /* Info.plist */,
 				B16932A220F3A21B00746532 /* empty.mm */,
+				EC1CA8B424D1AA8700DE9EBF /* App-Debug.xcconfig */,
+				EC1CA8B624D1AA8D00DE9EBF /* App-Release.xcconfig */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -4796,6 +4812,8 @@
 				EC85D7452477E5F7002C44C9 /* NotificationService.swift */,
 				EC85D756247E700F002C44C9 /* NSEMemoryStore.swift */,
 				EC85D7472477E5F7002C44C9 /* Info.plist */,
+				EC1CA8BC24D1B4CF00DE9EBF /* NSE-Debug.xcconfig */,
+				EC1CA8BD24D1B4CF00DE9EBF /* NSE-Release.xcconfig */,
 			);
 			path = RiotNSE;
 			sourceTree = "<group>";
@@ -6392,7 +6410,7 @@
 /* Begin XCBuildConfiguration section */
 		24CBEC5A1F0EAD310093EABB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9C3242E3FE95BCDA9562C75D /* Pods-RiotPods-RiotShareExtension.debug.xcconfig */;
+			baseConfigurationReference = EC1CA8B824D1AD1600DE9EBF /* ShareExtension-Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APPLICATION_EXTENSION_API_ONLY = YES;
@@ -6431,7 +6449,7 @@
 		};
 		24CBEC5B1F0EAD310093EABB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4FC6A5D63FAD1B27C2F57AFA /* Pods-RiotPods-RiotShareExtension.release.xcconfig */;
+			baseConfigurationReference = EC1CA8B924D1AD1600DE9EBF /* ShareExtension-Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APPLICATION_EXTENSION_API_ONLY = YES;
@@ -6471,7 +6489,7 @@
 		};
 		92726A4C1F58737A004AD26F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3942DD65EBEB7AE647C6392A /* Pods-RiotPods-SiriIntents.debug.xcconfig */;
+			baseConfigurationReference = EC1CA8BB24D1B4BF00DE9EBF /* SiriIntents-Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -6504,7 +6522,7 @@
 		};
 		92726A4D1F58737A004AD26F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E2599D0ECB8DD206624E450B /* Pods-RiotPods-SiriIntents.release.xcconfig */;
+			baseConfigurationReference = EC1CA8BA24D1B4BF00DE9EBF /* SiriIntents-Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -6538,7 +6556,7 @@
 		};
 		EC85D74B2477E5F7002C44C9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2B582BE9B2A98BCF5F740873 /* Pods-RiotPods-RiotNSE.debug.xcconfig */;
+			baseConfigurationReference = EC1CA8BC24D1B4CF00DE9EBF /* NSE-Debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -6574,7 +6592,7 @@
 		};
 		EC85D74C2477E5F7002C44C9 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8A61E94F88EA96AFE1CFD9D3 /* Pods-RiotPods-RiotNSE.release.xcconfig */;
+			baseConfigurationReference = EC1CA8BD24D1B4CF00DE9EBF /* NSE-Release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -6719,7 +6737,7 @@
 		};
 		F094A9C91B78D8F000B1FBBF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 43C2962BE367F59220F517FA /* Pods-RiotPods-Riot.debug.xcconfig */;
+			baseConfigurationReference = EC1CA8B424D1AA8700DE9EBF /* App-Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -6752,7 +6770,7 @@
 		};
 		F094A9CA1B78D8F000B1FBBF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B43DC75D1590BB8A4243BD4D /* Pods-RiotPods-Riot.release.xcconfig */;
+			baseConfigurationReference = EC1CA8B624D1AA8D00DE9EBF /* App-Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
