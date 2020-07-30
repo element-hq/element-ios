@@ -48,6 +48,43 @@ final class RiotSettings: NSObject {
     /// Setting to force protection by pin code
     let forcePinProtection: Bool = false
     
+    /// Force non-jailbroken app usage
+    let forceNonJailbrokenUsage: Bool = true
+    
+    //  BEGIN: SETTINGS TO BE REPLACED
+    
+    let showUserFirstNameInSettings: Bool = false
+    let showUserSurnameInSettings: Bool = false
+    let allowAddingEmailThreepids: Bool = true
+    let allowAddingPhoneThreepids: Bool = true
+    var showThreepidExplanatory: Bool = true
+    let allowVoIPUsage: Bool = true
+    let showDiscoverySettings: Bool = true
+    let allowIdentityServerConfig: Bool = true
+    let allowLocalContactsAccess: Bool = true
+    let allowIntegrations: Bool = true
+    let showAdvancedSettings: Bool = true
+    let showLabSettings: Bool = true
+    let allowChangeRageshakeSettings: Bool = true
+    let allowCrashUsageData: Bool = true
+    let allowDeactivatingAccount: Bool = true
+    let allowSendingStickers: Bool = false
+    let allowSearchOnOtherServersForRoomDirectory: Bool = false
+    
+    //  Message settings
+    let allowMessageDetailsShare: Bool = false
+    let allowMessageDetailsPermalink: Bool = false
+    let allowMessageDetailsShowSource: Bool = false
+    let allowMessageDetailsReportContent: Bool = false
+    
+    //  Room settings
+    let showLowPrioritySetting: Bool = false
+    let showDirectChatSettings: Bool = false
+    let showAccessControls: Bool = false
+    let allowChangingHistoryVisibility: Bool = false
+    
+    //  END: SETTINGS TO BE REPLACED
+    
     // MARK: Notifications
     
     /// Indicate if `showDecryptedContentInNotifications` settings has been set once.
