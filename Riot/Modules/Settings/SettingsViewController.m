@@ -253,7 +253,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 @property (nonatomic, strong) SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
 @property (nonatomic, strong) AuthenticatedSessionViewControllerFactory *authenticatedSessionViewControllerFactory;
 
-@property (nonatomic, strong) NSMutableArray<Section*> *sections;
+@property (nonatomic, strong) NSArray<Section*> *sections;
 
 @end
 
@@ -473,7 +473,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     self.sections = tmpSections;
 }
 
-- (void)setSections:(NSMutableArray<Section *> *)sections
+- (void)setSections:(NSArray<Section *> *)sections
 {
     _sections = sections;
     
