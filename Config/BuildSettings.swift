@@ -63,4 +63,7 @@ final class BuildSettings: NSObject {
     static let allowMessageDetailsPermalink: Bool = true
     static let allowMessageDetailsViewSource: Bool = true
     
+    // Authentication Screen
+    static let authScreenShowRegister = true
+    static let authScreenShowCustomServerOptions = true
 }
