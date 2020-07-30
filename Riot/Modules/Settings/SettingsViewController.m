@@ -363,11 +363,11 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     [sectionUserSettings addRowWithTag:USER_SETTINGS_PROFILE_PICTURE_INDEX];
     [sectionUserSettings addRowWithTag:USER_SETTINGS_DISPLAYNAME_INDEX];
     [sectionUserSettings addRowWithTag:USER_SETTINGS_CHANGE_PASSWORD_INDEX];
-    if (RiotSettings.shared.showUserFirstNameInSettings)
+    if (BuildSettings.showUserFirstNameInSettings)
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_FIRST_NAME_INDEX];
     }
-    if (RiotSettings.shared.showUserSurnameInSettings)
+    if (BuildSettings.showUserSurnameInSettings)
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_SURNAME_INDEX];
     }
@@ -382,15 +382,15 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     {
         [sectionUserSettings addRowWithTag: USER_SETTINGS_EMAILS_OFFSET + index];
     }
-    if (RiotSettings.shared.allowAddingEmailThreepids)
+    if (BuildSettings.allowAddingEmailThreepids)
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_ADD_EMAIL_INDEX];
     }
-    if (RiotSettings.shared.allowAddingPhoneThreepids)
+    if (BuildSettings.allowAddingPhoneThreepids)
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_ADD_PHONENUMBER_INDEX];
     }
-    if (RiotSettings.shared.showThreepidExplanatory)
+    if (BuildSettings.showThreepidExplanatory)
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_THREEPIDS_INFORMATION_INDEX];
     }
@@ -411,7 +411,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     sectionNotificationSettings.headerTitle = NSLocalizedStringFromTable(@"settings_notifications_settings", @"Vector", nil);
     [tmpSections addObject:sectionNotificationSettings];
     
-    if (RiotSettings.shared.allowVoIPUsage && RiotSettings.shared.stunServerFallback)
+    if (BuildSettings.allowVoIPUsage && RiotSettings.shared.stunServerFallback)
     {
         Section *sectionCalls = [Section sectionWithTag:SECTION_TAG_CALLS];
         [sectionCalls addRowWithTag:CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX];
@@ -420,7 +420,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         [tmpSections addObject:sectionCalls];
     }
     
-    if (RiotSettings.shared.showDiscoverySettings)
+    if (BuildSettings.showDiscoverySettings)
     {
         Section *sectionDiscovery = [Section sectionWithTag:SECTION_TAG_DISCOVERY];
         NSInteger count = self.settingsDiscoveryTableViewSection.numberOfRows;
@@ -432,7 +432,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         [tmpSections addObject:sectionDiscovery];
     }
     
-    if (RiotSettings.shared.allowIdentityServerConfig)
+    if (BuildSettings.allowIdentityServerConfig)
     {
         Section *sectionIdentityServer = [Section sectionWithTag:SECTION_TAG_IDENTITY_SERVER];
         [sectionIdentityServer addRowWithTag:IDENTITY_SERVER_INDEX];
@@ -441,7 +441,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         [tmpSections addObject:sectionIdentityServer];
     }
     
-    if (RiotSettings.shared.allowLocalContactsAccess)
+    if (BuildSettings.allowLocalContactsAccess)
     {
         Section *sectionLocalContacts = [Section sectionWithTag:SECTION_TAG_LOCAL_CONTACTS];
         [sectionLocalContacts addRowWithTag:LOCAL_CONTACTS_SYNC_INDEX];
@@ -480,7 +480,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     sectionUserInterface.headerTitle = NSLocalizedStringFromTable(@"settings_user_interface", @"Vector", nil);
     [tmpSections addObject: sectionUserInterface];
     
-    if (RiotSettings.shared.showAdvancedSettings)
+    if (BuildSettings.showAdvancedSettings)
     {
         Section *sectionAdvanced = [Section sectionWithTag:SECTION_TAG_ADVANCED];
         [sectionAdvanced addRowWithTag:0];
@@ -495,24 +495,24 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     [sectionOther addRowWithTag:OTHER_TERM_CONDITIONS_INDEX];
     [sectionOther addRowWithTag:OTHER_PRIVACY_INDEX];
     [sectionOther addRowWithTag:OTHER_THIRD_PARTY_INDEX];
-    if (RiotSettings.shared.allowChangingCrashUsageDataSettings)
+    if (BuildSettings.allowChangingCrashUsageDataSettings)
     {
         [sectionOther addRowWithTag:OTHER_CRASH_REPORT_INDEX];
     }
-    if (RiotSettings.shared.allowChangingRageshakeSettings)
+    if (BuildSettings.allowChangingRageshakeSettings)
     {
         [sectionOther addRowWithTag:OTHER_ENABLE_RAGESHAKE_INDEX];
     }
     [sectionOther addRowWithTag:OTHER_MARK_ALL_AS_READ_INDEX];
     [sectionOther addRowWithTag:OTHER_CLEAR_CACHE_INDEX];
-    if (RiotSettings.shared.allowBugReportingManually)
+    if (BuildSettings.allowBugReportingManually)
     {
         [sectionOther addRowWithTag:OTHER_REPORT_BUG_INDEX];
     }
     sectionOther.headerTitle = NSLocalizedStringFromTable(@"settings_other", @"Vector", nil);
     [tmpSections addObject:sectionOther];
     
-    if (RiotSettings.shared.showLabSettings)
+    if (BuildSettings.showLabSettings)
     {
         Section *sectionLabs = [Section sectionWithTag:SECTION_TAG_LABS];
         [sectionLabs addRowWithTag:LABS_USE_JITSI_WIDGET_INDEX];
@@ -533,7 +533,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         [tmpSections addObject:sectionFlair];
     }
     
-    if (RiotSettings.shared.allowDeactivatingAccount)
+    if (BuildSettings.allowDeactivatingAccount)
     {
         Section *sectionDeactivate = [Section sectionWithTag:SECTION_TAG_DEACTIVATE_ACCOUNT];
         [sectionDeactivate addRowWithTag:0];

@@ -2578,7 +2578,7 @@
                                                            
                                                        }]];
 
-        if (RiotSettings.shared.allowMessageDetailsShare)
+        if (BuildSettings.allowMessageDetailsShare)
         {
             [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_share", @"Vector", nil)
                                                              style:UIAlertActionStyleDefault
@@ -2691,7 +2691,7 @@
 
         if (attachment.type != MXKAttachmentTypeSticker)
         {
-            if (RiotSettings.shared.allowMessageDetailsShare)
+            if (BuildSettings.allowMessageDetailsShare)
             {
                 [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_share", @"Vector", nil)
                                                                  style:UIAlertActionStyleDefault
@@ -2802,7 +2802,7 @@
                                                            }]];
         }
 
-        if (RiotSettings.shared.allowMessageDetailsPermalink)
+        if (BuildSettings.allowMessageDetailsPermalink)
         {
             [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_permalink", @"Vector", nil)
                                                              style:UIAlertActionStyleDefault
@@ -2844,7 +2844,7 @@
                                                            }]];
         }
         
-        if (RiotSettings.shared.allowMessageDetailsViewSource)
+        if (BuildSettings.allowMessageDetailsViewSource)
         {
             [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_view_source", @"Vector", nil)
                                                              style:UIAlertActionStyleDefault
@@ -2884,7 +2884,7 @@
             }
         }
         
-        if (RiotSettings.shared.allowMessageDetailsReportContent)
+        if (BuildSettings.allowMessageDetailsReportContent)
         {
             [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_report", @"Vector", nil)
                                                              style:UIAlertActionStyleDefault

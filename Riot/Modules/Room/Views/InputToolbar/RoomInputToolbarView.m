@@ -347,7 +347,7 @@
 
                                                           }]];
 
-            if (RiotSettings.shared.allowSendingStickers)
+            if (BuildSettings.allowSendingStickers)
             {
                 [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_send_sticker", @"Vector", nil)
                                                                 style:UIAlertActionStyleDefault
