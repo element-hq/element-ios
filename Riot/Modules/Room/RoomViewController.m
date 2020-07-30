@@ -1542,7 +1542,7 @@
         RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
         
         // Check whether the call option is supported
-        roomInputToolbarView.supportCallOption = self.roomDataSource.mxSession.callManager && self.roomDataSource.room.summary.membersCount.joined >= 2;
+        roomInputToolbarView.supportCallOption = BuildSettings.allowVoIPUsage && self.roomDataSource.mxSession.callManager && self.roomDataSource.room.summary.membersCount.joined >= 2;
         
         // Get user picture view in input toolbar
         userPictureView = roomInputToolbarView.pictureView;

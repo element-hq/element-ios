@@ -40,7 +40,13 @@ final class BuildSettings: NSObject {
     static let allowAddingEmailThreepids: Bool = true
     static let allowAddingPhoneThreepids: Bool = true
     static let showThreepidExplanatory: Bool = true
-    static let allowVoIPUsage: Bool = true
+    static var allowVoIPUsage: Bool {
+        #if canImport(JitsiMeet)
+        return true
+        #else
+        return false
+        #endif
+    }
     static let showDiscoverySettings: Bool = true
     static let allowIdentityServerConfig: Bool = true
     static let allowLocalContactsAccess: Bool = true
