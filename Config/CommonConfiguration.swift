@@ -45,7 +45,7 @@ class CommonConfiguration: NSObject, Configurable {
     private func setupMatrixSDKSettings() {
         let sdkOptions = MXSDKOptions.sharedInstance()
         
-        sdkOptions.applicationGroupIdentifier = "group.im.vector"
+        sdkOptions.applicationGroupIdentifier = BuildSettings.applicationGroupIdentifier
         
         // Define the media cache version
         sdkOptions.mediaCacheAppVersion = 0

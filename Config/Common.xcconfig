@@ -18,3 +18,5 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 
 BUNDLE_DISPLAY_NAME = Element (Riot.im)
+
+APPLICATION_GROUP_IDENTIFIER = group.im.vector

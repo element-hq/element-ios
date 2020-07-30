@@ -89,5 +89,7 @@
 	<true/>
 	<key>UserDefaults</key>
 	<string>${PRODUCT_NAME}-Defaults</string>
+	<key>applicationGroupIdentifier</key>
+	<string>$(APPLICATION_GROUP_IDENTIFIER)</string>
 </dict>
 </plist>

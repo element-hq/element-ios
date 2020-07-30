@@ -24,6 +24,10 @@ final class BuildSettings: NSObject {
     static var bundleDisplayName: String {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as! String
     }
-
+    
+    static var applicationGroupIdentifier: String {
+        Bundle.main.object(forInfoDictionaryKey: "applicationGroupIdentifier") as! String
+    }
+    
     static let aSampleTestToRemove = "This is a demo of how we will use this class. TODO: Remove it once we have some settings"
 }
