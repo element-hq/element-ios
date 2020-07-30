@@ -7,6 +7,7 @@ Improvements:
  * Build: Make the app build if JitsiMeetSDK is not in the Podfile.
  * Configuration: Add CommonConfiguration and AppConfiguratio classes as central points to configure all targets in the same way.
  * Xcconfig: Add Common config and app and share extension config files.
+ * BuildSettings: A new class that entralises build settings and exposes xcconfig variable.
 
 Changes in 1.0.2 (2020-07-28)
 ===============================================
