@@ -73,7 +73,7 @@ final class RiotSettings: NSObject {
     let allowSearchOnOtherServersForRoomDirectory: Bool = false
     
     //  Message settings
-    let allowMessageDetailsShare: Bool = false
+    let allowMessageDetailsShare: Bool = true
     let allowMessageDetailsPermalink: Bool = true
     let allowMessageDetailsViewSource: Bool = true
     let allowMessageDetailsReportContent: Bool = true
