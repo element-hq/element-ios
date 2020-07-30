@@ -495,17 +495,17 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     [sectionOther addRowWithTag:OTHER_TERM_CONDITIONS_INDEX];
     [sectionOther addRowWithTag:OTHER_PRIVACY_INDEX];
     [sectionOther addRowWithTag:OTHER_THIRD_PARTY_INDEX];
-    if (RiotSettings.shared.allowCrashUsageData)
+    if (RiotSettings.shared.allowChangingCrashUsageDataSettings)
     {
         [sectionOther addRowWithTag:OTHER_CRASH_REPORT_INDEX];
     }
-    if (RiotSettings.shared.allowChangeRageshakeSettings)
+    if (RiotSettings.shared.allowChangingRageshakeSettings)
     {
         [sectionOther addRowWithTag:OTHER_ENABLE_RAGESHAKE_INDEX];
     }
     [sectionOther addRowWithTag:OTHER_MARK_ALL_AS_READ_INDEX];
     [sectionOther addRowWithTag:OTHER_CLEAR_CACHE_INDEX];
-    if (RiotSettings.shared.enableRageShake)
+    if (RiotSettings.shared.allowBugReportingManually)
     {
         [sectionOther addRowWithTag:OTHER_REPORT_BUG_INDEX];
     }

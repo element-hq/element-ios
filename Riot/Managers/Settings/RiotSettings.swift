@@ -65,8 +65,9 @@ final class RiotSettings: NSObject {
     let allowIntegrations: Bool = true
     let showAdvancedSettings: Bool = true
     let showLabSettings: Bool = true
-    let allowChangeRageshakeSettings: Bool = true
-    let allowCrashUsageData: Bool = true
+    let allowChangingRageshakeSettings: Bool = true
+    let allowChangingCrashUsageDataSettings: Bool = true
+    let allowBugReportingManually: Bool = true
     let allowDeactivatingAccount: Bool = true
     let allowSendingStickers: Bool = false
     let allowSearchOnOtherServersForRoomDirectory: Bool = false
