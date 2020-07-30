@@ -75,7 +75,7 @@ final class RiotSettings: NSObject {
     //  Message settings
     let allowMessageDetailsShare: Bool = false
     let allowMessageDetailsPermalink: Bool = false
-    let allowMessageDetailsShowSource: Bool = false
+    let allowMessageDetailsViewSource: Bool = true
     let allowMessageDetailsReportContent: Bool = false
     
     //  Room settings

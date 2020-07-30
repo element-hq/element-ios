@@ -2835,40 +2835,44 @@
                                                            }]];
         }
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_view_source", @"Vector", nil)
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
-                                                           
-                                                           if (weakSelf)
-                                                           {
-                                                               typeof(self) self = weakSelf;
-                                                               
-                                                               [self cancelEventSelection];
-                                                               
-                                                               // Display event details
-                                                               [self showEventDetails:selectedEvent];
-                                                           }
-                                                           
-                                                       }]];
-
-        // Add "View Decrypted Source" for e2ee event we can decrypt
-        if (selectedEvent.isEncrypted && selectedEvent.clearEvent)
+        if (RiotSettings.shared.allowMessageDetailsViewSource)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_view_decrypted_source", @"Vector", nil)
+            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_view_source", @"Vector", nil)
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
+                
+                if (weakSelf)
+                {
+                    typeof(self) self = weakSelf;
+                    
+                    [self cancelEventSelection];
+                    
+                    // Display event details
+                    [self showEventDetails:selectedEvent];
+                }
+                
+            }]];
+        
 
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-
-                                                                   [self cancelEventSelection];
-
-                                                                   // Display clear event details
-                                                                   [self showEventDetails:selectedEvent.clearEvent];
-                                                               }
-
-                                                           }]];
+            // Add "View Decrypted Source" for e2ee event we can decrypt
+            if (selectedEvent.isEncrypted && selectedEvent.clearEvent)
+            {
+                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_view_decrypted_source", @"Vector", nil)
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:^(UIAlertAction * action) {
+                    
+                    if (weakSelf)
+                    {
+                        typeof(self) self = weakSelf;
+                        
+                        [self cancelEventSelection];
+                        
+                        // Display clear event details
+                        [self showEventDetails:selectedEvent.clearEvent];
+                    }
+                    
+                }]];
+            }
         }
         
 
