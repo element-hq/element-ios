@@ -308,7 +308,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     //  add linked phone numbers
     for (NSInteger index = 0; index < account.linkedPhoneNumbers.count; index++)
     {
-        [sectionUserSettings addRowWithTag: USER_SETTINGS_EMAILS_OFFSET + index];
+        [sectionUserSettings addRowWithTag: USER_SETTINGS_PHONENUMBERS_OFFSET + index];
     }
     if (BuildSettings.allowAddingEmailThreepids)
     {
