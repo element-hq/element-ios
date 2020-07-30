@@ -1405,7 +1405,12 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _sections[section].rows.count;
+    Section *sectionObject = nil;
+    if (section < _sections.count)
+    {
+        sectionObject = _sections[section];
+    }
+    return sectionObject.rows.count;
 }
 
 - (MXKTableViewCellWithLabelAndTextField*)getLabelAndTextFieldCell:(UITableView*)tableview forIndexPath:(NSIndexPath *)indexPath
@@ -1491,9 +1496,19 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Section *sectionObj = _sections[indexPath.section];
-    NSInteger section = sectionObj.tag;
-    NSInteger row = sectionObj.rows[indexPath.row].tag;
+    Section *sectionObj = nil;
+    NSInteger section = NSNotFound;
+    NSInteger row = NSNotFound;
+    
+    if (indexPath.section < _sections.count)
+    {
+        sectionObj = _sections[indexPath.section];
+        section = sectionObj.tag;
+        if (indexPath.row < sectionObj.rows.count)
+        {
+            row = sectionObj.rows[indexPath.row].tag;
+        }
+    }
 
     // set the cell to a default value to avoid application crashes
     UITableViewCell *cell = [[UITableViewCell alloc] init];
@@ -2354,7 +2369,12 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
 - (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return _sections[section].headerTitle;
+    Section *sectionObj = nil;
+    if (section < _sections.count)
+    {
+        sectionObj = _sections[section];
+    }
+    return sectionObj.headerTitle;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
@@ -2370,9 +2390,19 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Section *sectionObject = _sections[indexPath.section];
-    NSInteger section = sectionObject.tag;
-    NSInteger row = sectionObject.rows[indexPath.row].tag;
+    Section *sectionObj = nil;
+    NSInteger section = NSNotFound;
+    NSInteger row = NSNotFound;
+    
+    if (indexPath.section < _sections.count)
+    {
+        sectionObj = _sections[indexPath.section];
+        section = sectionObj.tag;
+        if (indexPath.row < sectionObj.rows.count)
+        {
+            row = sectionObj.rows[indexPath.row].tag;
+        }
+    }
     
     if (section == SECTION_TAG_USER_SETTINGS)
     {
@@ -2416,25 +2446,31 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    section = _sections[section].tag;
-    
     return 24;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    section = _sections[section].tag;
-    
     return 24;
 }
 
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSMutableArray* actions;
+    Section *sectionObj = nil;
+    NSInteger section = NSNotFound;
+    NSInteger row = NSNotFound;
     
-    Section *sectionObject = _sections[indexPath.section];
-    NSInteger section = sectionObject.tag;
-    NSInteger row = sectionObject.rows[indexPath.row].tag;
+    if (indexPath.section < _sections.count)
+    {
+        sectionObj = _sections[indexPath.section];
+        section = sectionObj.tag;
+        if (indexPath.row < sectionObj.rows.count)
+        {
+            row = sectionObj.rows[indexPath.row].tag;
+        }
+    }
+    
+    NSMutableArray* actions;
     
     // Add the swipe to delete user's email or phone number
     if (section == SECTION_TAG_USER_SETTINGS)
@@ -2465,9 +2501,19 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 {
     if (self.tableView == tableView)
     {
-        Section *sectionObject = _sections[indexPath.section];
-        NSInteger section = sectionObject.tag;
-        NSInteger row = sectionObject.rows[indexPath.row].tag;
+        Section *sectionObj = nil;
+        NSInteger section = NSNotFound;
+        NSInteger row = NSNotFound;
+        
+        if (indexPath.section < _sections.count)
+        {
+            sectionObj = _sections[indexPath.section];
+            section = sectionObj.tag;
+            if (indexPath.row < sectionObj.rows.count)
+            {
+                row = sectionObj.rows[indexPath.row].tag;
+            }
+        }
 
         if (section == SECTION_TAG_USER_INTERFACE)
         {
@@ -2701,9 +2747,19 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
 - (void)onRemove3PID:(NSIndexPath*)indexPath
 {
-    Section *sectionObj = _sections[indexPath.section];
-    NSInteger section = sectionObj.tag;
-    NSInteger row = sectionObj.rows[indexPath.row].tag;
+    Section *sectionObj = nil;
+    NSInteger section = NSNotFound;
+    NSInteger row = NSNotFound;
+    
+    if (indexPath.section < _sections.count)
+    {
+        sectionObj = _sections[indexPath.section];
+        section = sectionObj.tag;
+        if (indexPath.row < sectionObj.rows.count)
+        {
+            row = sectionObj.rows[indexPath.row].tag;
+        }
+    }
     
     if (section == SECTION_TAG_USER_SETTINGS)
     {
