@@ -22,11 +22,11 @@ import Foundation
 final class BuildSettings: NSObject {
     
     static var bundleDisplayName: String {
-        Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as! String
+        InfoPlist.cfBundleName
     }
     
     static var applicationGroupIdentifier: String {
-        Bundle.main.object(forInfoDictionaryKey: "applicationGroupIdentifier") as! String
+        InfoPlist.applicationGroupIdentifier
     }
     
     static let aSampleTestToRemove = "This is a demo of how we will use this class. TODO: Remove it once we have some settings"
