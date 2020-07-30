@@ -139,6 +139,11 @@
 		32FD757224D2BEF700BA7B37 /* InfoPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD756F24D2BEF700BA7B37 /* InfoPlist.swift */; };
 		32FD757324D2BEF700BA7B37 /* InfoPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD756F24D2BEF700BA7B37 /* InfoPlist.swift */; };
 		32FD757424D2BEF700BA7B37 /* InfoPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD756F24D2BEF700BA7B37 /* InfoPlist.swift */; };
+		32FD757624D2C9BA00BA7B37 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD757524D2C9BA00BA7B37 /* Bundle.swift */; };
+		32FD757724D2C9BA00BA7B37 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD757524D2C9BA00BA7B37 /* Bundle.swift */; };
+		32FD757824D2C9BA00BA7B37 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD757524D2C9BA00BA7B37 /* Bundle.swift */; };
+		32FD757924D2C9BA00BA7B37 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD757524D2C9BA00BA7B37 /* Bundle.swift */; };
+		32FD757A24D2C9BA00BA7B37 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD757524D2C9BA00BA7B37 /* Bundle.swift */; };
 		32FDC1CD2386CD390084717A /* RiotSettingIntegrationProvisioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FDC1CC2386CD390084717A /* RiotSettingIntegrationProvisioning.swift */; };
 		39D49C6524B8D40500FEDBC8 /* ElementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D49C6224B8D40500FEDBC8 /* ElementViewController.swift */; };
 		39D49C6624B8D40500FEDBC8 /* Timeline_1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D49C6324B8D40500FEDBC8 /* Timeline_1.swift */; };
@@ -1047,6 +1052,7 @@
 		32FD755624D15C7A00BA7B37 /* Configurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configurable.swift; sourceTree = "<group>"; };
 		32FD756324D2AD5100BA7B37 /* BuildSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildSettings.swift; sourceTree = "<group>"; };
 		32FD756F24D2BEF700BA7B37 /* InfoPlist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoPlist.swift; sourceTree = "<group>"; };
+		32FD757524D2C9BA00BA7B37 /* Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		32FDC1CC2386CD390084717A /* RiotSettingIntegrationProvisioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiotSettingIntegrationProvisioning.swift; sourceTree = "<group>"; };
 		3942DD65EBEB7AE647C6392A /* Pods-RiotPods-SiriIntents.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-SiriIntents.debug.xcconfig"; path = "Target Support Files/Pods-RiotPods-SiriIntents/Pods-RiotPods-SiriIntents.debug.xcconfig"; sourceTree = "<group>"; };
 		39D49C6224B8D40500FEDBC8 /* ElementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ElementViewController.swift; sourceTree = "<group>"; };
@@ -4938,6 +4944,7 @@
 				B1B12B2822942315002CB419 /* UITouch.swift */,
 				B1DCC63322E72C1B00625807 /* UISearchBar.swift */,
 				B11291EB238D704C0077B478 /* FloatingPoint.swift */,
+				32FD757524D2C9BA00BA7B37 /* Bundle.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -5621,6 +5628,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B169328420F38BE300746532 /* SegmentedViewController.m in Sources */,
+				32FD757824D2C9BA00BA7B37 /* Bundle.swift in Sources */,
 				32242F1821E8FBF800725742 /* DefaultTheme.swift in Sources */,
 				B1664BCA20F4E67600808783 /* ShareViewController.m in Sources */,
 				B1664BC620F4E67600808783 /* FallbackViewController.m in Sources */,
@@ -5655,6 +5663,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				32FD757324D2BEF700BA7B37 /* InfoPlist.swift in Sources */,
+				32FD757924D2C9BA00BA7B37 /* Bundle.swift in Sources */,
 				92726A471F58737A004AD26F /* IntentHandler.m in Sources */,
 				32FD755324D074C700BA7B37 /* CommonConfiguration.swift in Sources */,
 				32FD756724D2AD5100BA7B37 /* BuildSettings.swift in Sources */,
@@ -5675,6 +5684,7 @@
 				32FD755424D074C700BA7B37 /* CommonConfiguration.swift in Sources */,
 				32FD757424D2BEF700BA7B37 /* InfoPlist.swift in Sources */,
 				EC85D752247C0F52002C44C9 /* UNUserNotificationCenter.swift in Sources */,
+				32FD757A24D2C9BA00BA7B37 /* Bundle.swift in Sources */,
 				32FD755B24D15C7A00BA7B37 /* Configurable.swift in Sources */,
 				EC85D755247C0F84002C44C9 /* Constants.swift in Sources */,
 			);
@@ -5737,6 +5747,7 @@
 				32607D72243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewAction.swift in Sources */,
 				B1B5574420EE6C4D00210D55 /* CallViewController.m in Sources */,
 				EC1CA86024C1DEC400DE9EBF /* EnterPinCodeViewAction.swift in Sources */,
+				32FD757624D2C9BA00BA7B37 /* Bundle.swift in Sources */,
 				B12D7A0023E2462200FACEDC /* UserVerificationStartCoordinatorType.swift in Sources */,
 				EC711B9324A63B37008F830C /* SecretsRecoveryWithKeyViewController.swift in Sources */,
 				B1B5572220EE6C4D00210D55 /* RoomSettingsViewController.m in Sources */,
@@ -6301,6 +6312,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				32FD755824D15C7A00BA7B37 /* Configurable.swift in Sources */,
+				32FD757724D2C9BA00BA7B37 /* Bundle.swift in Sources */,
 				32FD754D24D06EBF00BA7B37 /* RiotSettings.swift in Sources */,
 				32FD757124D2BEF700BA7B37 /* InfoPlist.swift in Sources */,
 				32FD756524D2AD5100BA7B37 /* BuildSettings.swift in Sources */,

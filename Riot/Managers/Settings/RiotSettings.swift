@@ -40,7 +40,6 @@ final class RiotSettings: NSObject {
     
     /// UserDefaults to be used on reads and writes.
     private lazy var defaults: UserDefaults = {
-        NSLog("\(BuildSettings.applicationGroupIdentifier)")
         return UserDefaults(suiteName: BuildSettings.applicationGroupIdentifier)!
     }()
     
