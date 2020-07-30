@@ -2796,30 +2796,33 @@
                                                            }]];
         }
 
-        [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_permalink", @"Vector", nil)
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
-                                                           
-                                                           if (weakSelf)
-                                                           {
-                                                               typeof(self) self = weakSelf;
-                                                               
-                                                               [self cancelEventSelection];
-                                                               
-                                                               // Create a matrix.to permalink that is common to all matrix clients
-                                                               NSString *permalink = [MXTools permalinkToEvent:selectedEvent.eventId inRoom:selectedEvent.roomId];
-                                                               
-                                                               if (permalink)
-                                                               {
-                                                                   [[UIPasteboard generalPasteboard] setString:permalink];
-                                                               }
-                                                               else
-                                                               {
-                                                                   NSLog(@"[RoomViewController] Contextual menu permalink action failed. Permalink is nil room id/event id: %@/%@", selectedEvent.roomId, selectedEvent.eventId);
-                                                               }
-                                                           }
-                                                           
-                                                       }]];
+        if (RiotSettings.shared.allowMessageDetailsPermalink)
+        {
+            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_permalink", @"Vector", nil)
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+                
+                if (weakSelf)
+                {
+                    typeof(self) self = weakSelf;
+                    
+                    [self cancelEventSelection];
+                    
+                    // Create a matrix.to permalink that is common to all matrix clients
+                    NSString *permalink = [MXTools permalinkToEvent:selectedEvent.eventId inRoom:selectedEvent.roomId];
+                    
+                    if (permalink)
+                    {
+                        [[UIPasteboard generalPasteboard] setString:permalink];
+                    }
+                    else
+                    {
+                        NSLog(@"[RoomViewController] Contextual menu permalink action failed. Permalink is nil room id/event id: %@/%@", selectedEvent.roomId, selectedEvent.eventId);
+                    }
+                }
+                
+            }]];
+        }
         
         // Add reaction history if event contains reactions
         if (roomBubbleTableViewCell.bubbleData.reactions[selectedEvent.eventId].aggregatedReactionsWithNonZeroCount)
