@@ -14,9 +14,20 @@
 // limitations under the License.
 //
 
-// Configuration settings file format documentation can be found at:
-// https://help.apple.com/xcode/#/dev745c5c974
+import Foundation
 
-BUNDLE_DISPLAY_NAME = Element (Riot.im)
-
-APPLICATION_GROUP_IDENTIFIER = group.im.vector
+public extension Bundle {
+    /// Returns the real app bundle.
+    /// Can also be used in app extensions.
+    static var app: Bundle {
+        let bundle = main
+        if bundle.bundleURL.pathExtension == "appex" {
+            // Peel off two directory levels - MY_APP.app/PlugIns/MY_APP_EXTENSION.appex
+            let url = bundle.bundleURL.deletingLastPathComponent().deletingLastPathComponent()
+            if let otherBundle = Bundle(url: url) {
+                return otherBundle
+            }
+        }
+        return bundle
+    }
+}

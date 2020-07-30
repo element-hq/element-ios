@@ -129,6 +129,21 @@
 		32FD755924D15C7A00BA7B37 /* Configurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD755624D15C7A00BA7B37 /* Configurable.swift */; };
 		32FD755A24D15C7A00BA7B37 /* Configurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD755624D15C7A00BA7B37 /* Configurable.swift */; };
 		32FD755B24D15C7A00BA7B37 /* Configurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD755624D15C7A00BA7B37 /* Configurable.swift */; };
+		32FD756424D2AD5100BA7B37 /* BuildSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD756324D2AD5100BA7B37 /* BuildSettings.swift */; };
+		32FD756524D2AD5100BA7B37 /* BuildSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD756324D2AD5100BA7B37 /* BuildSettings.swift */; };
+		32FD756624D2AD5100BA7B37 /* BuildSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD756324D2AD5100BA7B37 /* BuildSettings.swift */; };
+		32FD756724D2AD5100BA7B37 /* BuildSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD756324D2AD5100BA7B37 /* BuildSettings.swift */; };
+		32FD756824D2AD5100BA7B37 /* BuildSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD756324D2AD5100BA7B37 /* BuildSettings.swift */; };
+		32FD757024D2BEF700BA7B37 /* InfoPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD756F24D2BEF700BA7B37 /* InfoPlist.swift */; };
+		32FD757124D2BEF700BA7B37 /* InfoPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD756F24D2BEF700BA7B37 /* InfoPlist.swift */; };
+		32FD757224D2BEF700BA7B37 /* InfoPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD756F24D2BEF700BA7B37 /* InfoPlist.swift */; };
+		32FD757324D2BEF700BA7B37 /* InfoPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD756F24D2BEF700BA7B37 /* InfoPlist.swift */; };
+		32FD757424D2BEF700BA7B37 /* InfoPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD756F24D2BEF700BA7B37 /* InfoPlist.swift */; };
+		32FD757624D2C9BA00BA7B37 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD757524D2C9BA00BA7B37 /* Bundle.swift */; };
+		32FD757724D2C9BA00BA7B37 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD757524D2C9BA00BA7B37 /* Bundle.swift */; };
+		32FD757824D2C9BA00BA7B37 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD757524D2C9BA00BA7B37 /* Bundle.swift */; };
+		32FD757924D2C9BA00BA7B37 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD757524D2C9BA00BA7B37 /* Bundle.swift */; };
+		32FD757A24D2C9BA00BA7B37 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD757524D2C9BA00BA7B37 /* Bundle.swift */; };
 		32FDC1CD2386CD390084717A /* RiotSettingIntegrationProvisioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FDC1CC2386CD390084717A /* RiotSettingIntegrationProvisioning.swift */; };
 		39D49C6524B8D40500FEDBC8 /* ElementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D49C6224B8D40500FEDBC8 /* ElementViewController.swift */; };
 		39D49C6624B8D40500FEDBC8 /* Timeline_1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D49C6324B8D40500FEDBC8 /* Timeline_1.swift */; };
@@ -1035,6 +1050,9 @@
 		32F6B9682270623100BBA352 /* KeyVerificationDataLoadingViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationDataLoadingViewModelType.swift; sourceTree = "<group>"; };
 		32FD754F24D074C700BA7B37 /* CommonConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonConfiguration.swift; sourceTree = "<group>"; };
 		32FD755624D15C7A00BA7B37 /* Configurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configurable.swift; sourceTree = "<group>"; };
+		32FD756324D2AD5100BA7B37 /* BuildSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildSettings.swift; sourceTree = "<group>"; };
+		32FD756F24D2BEF700BA7B37 /* InfoPlist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoPlist.swift; sourceTree = "<group>"; };
+		32FD757524D2C9BA00BA7B37 /* Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		32FDC1CC2386CD390084717A /* RiotSettingIntegrationProvisioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiotSettingIntegrationProvisioning.swift; sourceTree = "<group>"; };
 		3942DD65EBEB7AE647C6392A /* Pods-RiotPods-SiriIntents.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-SiriIntents.debug.xcconfig"; path = "Target Support Files/Pods-RiotPods-SiriIntents/Pods-RiotPods-SiriIntents.debug.xcconfig"; sourceTree = "<group>"; };
 		39D49C6224B8D40500FEDBC8 /* ElementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ElementViewController.swift; sourceTree = "<group>"; };
@@ -2365,6 +2383,7 @@
 				32FD754F24D074C700BA7B37 /* CommonConfiguration.swift */,
 				328E410524CB168500DC4490 /* AppConfiguration.swift */,
 				32FD755624D15C7A00BA7B37 /* Configurable.swift */,
+				32FD756324D2AD5100BA7B37 /* BuildSettings.swift */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -2466,6 +2485,7 @@
 		B1098BD921ECE09E000DDA48 /* Generated */ = {
 			isa = PBXGroup;
 			children = (
+				32FD756F24D2BEF700BA7B37 /* InfoPlist.swift */,
 				B1098BDA21ECE09E000DDA48 /* Strings.swift */,
 				B1098BDC21ECE09E000DDA48 /* Images.swift */,
 				B1098BDE21ECE09E000DDA48 /* RiotDefaults.swift */,
@@ -4924,6 +4944,7 @@
 				B1B12B2822942315002CB419 /* UITouch.swift */,
 				B1DCC63322E72C1B00625807 /* UISearchBar.swift */,
 				B11291EB238D704C0077B478 /* FloatingPoint.swift */,
+				32FD757524D2C9BA00BA7B37 /* Bundle.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -5607,12 +5628,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				B169328420F38BE300746532 /* SegmentedViewController.m in Sources */,
+				32FD757824D2C9BA00BA7B37 /* Bundle.swift in Sources */,
 				32242F1821E8FBF800725742 /* DefaultTheme.swift in Sources */,
 				B1664BCA20F4E67600808783 /* ShareViewController.m in Sources */,
 				B1664BC620F4E67600808783 /* FallbackViewController.m in Sources */,
 				32242F1621E8FBCC00725742 /* ThemeService.m in Sources */,
 				24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */,
+				32FD757224D2BEF700BA7B37 /* InfoPlist.swift in Sources */,
 				B1664BCF20F4E67600808783 /* ShareExtensionManager.m in Sources */,
+				32FD756624D2AD5100BA7B37 /* BuildSettings.swift in Sources */,
 				B1DB4F0722301AF20065DBFA /* Character.swift in Sources */,
 				3209451321F1C1D50088CAA2 /* BlackTheme.swift in Sources */,
 				24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */,
@@ -5638,8 +5662,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32FD757324D2BEF700BA7B37 /* InfoPlist.swift in Sources */,
+				32FD757924D2C9BA00BA7B37 /* Bundle.swift in Sources */,
 				92726A471F58737A004AD26F /* IntentHandler.m in Sources */,
 				32FD755324D074C700BA7B37 /* CommonConfiguration.swift in Sources */,
+				32FD756724D2AD5100BA7B37 /* BuildSettings.swift in Sources */,
 				32FD755A24D15C7A00BA7B37 /* Configurable.swift in Sources */,
 				32FD754C24D06EBE00BA7B37 /* RiotSettings.swift in Sources */,
 			);
@@ -5650,11 +5677,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				EC85D74F2477E8EB002C44C9 /* RiotSettings.swift in Sources */,
+				32FD756824D2AD5100BA7B37 /* BuildSettings.swift in Sources */,
 				EC85D757247E700F002C44C9 /* NSEMemoryStore.swift in Sources */,
 				EC2B4EF224A1EF34005EB739 /* DataProtectionHelper.swift in Sources */,
 				EC85D7462477E5F7002C44C9 /* NotificationService.swift in Sources */,
 				32FD755424D074C700BA7B37 /* CommonConfiguration.swift in Sources */,
+				32FD757424D2BEF700BA7B37 /* InfoPlist.swift in Sources */,
 				EC85D752247C0F52002C44C9 /* UNUserNotificationCenter.swift in Sources */,
+				32FD757A24D2C9BA00BA7B37 /* Bundle.swift in Sources */,
 				32FD755B24D15C7A00BA7B37 /* Configurable.swift in Sources */,
 				EC85D755247C0F84002C44C9 /* Constants.swift in Sources */,
 			);
@@ -5670,6 +5700,7 @@
 				324A2053225FC571004FE8B0 /* DeviceVerificationIncomingViewModel.swift in Sources */,
 				B1B557A120EF58AD00210D55 /* ContactTableViewCell.m in Sources */,
 				B1CE83DE2422817200D07506 /* KeyVerificationVerifyBySASViewModelType.swift in Sources */,
+				32FD757024D2BEF700BA7B37 /* InfoPlist.swift in Sources */,
 				F083BE021E7009ED00A9B29C /* AvatarGenerator.m in Sources */,
 				B157FAA023264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsViewModelType.swift in Sources */,
 				B1B5573A20EE6C4D00210D55 /* GroupRoomsViewController.m in Sources */,
@@ -5716,6 +5747,7 @@
 				32607D72243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewAction.swift in Sources */,
 				B1B5574420EE6C4D00210D55 /* CallViewController.m in Sources */,
 				EC1CA86024C1DEC400DE9EBF /* EnterPinCodeViewAction.swift in Sources */,
+				32FD757624D2C9BA00BA7B37 /* Bundle.swift in Sources */,
 				B12D7A0023E2462200FACEDC /* UserVerificationStartCoordinatorType.swift in Sources */,
 				EC711B9324A63B37008F830C /* SecretsRecoveryWithKeyViewController.swift in Sources */,
 				B1B5572220EE6C4D00210D55 /* RoomSettingsViewController.m in Sources */,
@@ -6191,6 +6223,7 @@
 				B1B5577020EE702800210D55 /* WidgetPickerViewController.m in Sources */,
 				B1B558D320EF768F00210D55 /* RoomOutgoingEncryptedTextMsgBubbleCell.m in Sources */,
 				B1B5576F20EE702800210D55 /* IntegrationManagerViewController.m in Sources */,
+				32FD756424D2AD5100BA7B37 /* BuildSettings.swift in Sources */,
 				B1B557AC20EF5A6D00210D55 /* DeviceView.m in Sources */,
 				3281BCF72201FA4200F4A383 /* UIControl.swift in Sources */,
 				B16932EE20F3C3C900746532 /* FilesSearchCellData.m in Sources */,
@@ -6279,7 +6312,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				32FD755824D15C7A00BA7B37 /* Configurable.swift in Sources */,
+				32FD757724D2C9BA00BA7B37 /* Bundle.swift in Sources */,
 				32FD754D24D06EBF00BA7B37 /* RiotSettings.swift in Sources */,
+				32FD757124D2BEF700BA7B37 /* InfoPlist.swift in Sources */,
+				32FD756524D2AD5100BA7B37 /* BuildSettings.swift in Sources */,
 				32FD755524D0754500BA7B37 /* AppConfiguration.swift in Sources */,
 				32FD755124D074C700BA7B37 /* CommonConfiguration.swift in Sources */,
 				F083BEA51E70356E00A9B29C /* RiotTests.m in Sources */,

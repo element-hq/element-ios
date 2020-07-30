@@ -40,7 +40,7 @@ final class RiotSettings: NSObject {
     
     /// UserDefaults to be used on reads and writes.
     private lazy var defaults: UserDefaults = {
-        return UserDefaults(suiteName: "group.im.vector")!
+        return UserDefaults(suiteName: BuildSettings.applicationGroupIdentifier)!
     }()
     
     // MARK: - Public
