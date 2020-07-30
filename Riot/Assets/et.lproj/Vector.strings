@@ -934,3 +934,23 @@
 "pin_protection_mismatch_error_title" = "PIN-koodid ei klapi omavahel";
 "pin_protection_mismatch_error_message" = "Palun proovi uuesti";
 "pin_protection_mismatch_too_many_times_error_message" = "Kui sa ei mäleta oma PIN-koodi, siis klõpsi nuppu „Unustasin PIN-koodi“.";
+"external_link_confirmation_title" = "Kontrolli seda linki veel üks kord";
+"external_link_confirmation_message" = "See %@ link viib sind teise veebisaiti: %@\n\nKas sa kindlasti soovid jätkata?";
+// Unknown devices
+"unknown_devices_alert_title" = "Jututoas leidub tundmatuid sessioone";
+"unknown_devices_alert" = "Siin jututoas leidub tundmatuid ja verifitseerimata sessioone.\nSee tähendab, et pole mitte mingit kindlust selles osas, et teised kasutajad on ka tegelikult need, keda nad väidavad end olevat.\nKui sa tõesti soovid, siis sa võid saata sõnumi ka verifitseerimata kasutajatele, kuid meie soovitame, et sa esmalt läbid verifitseerimise kõikide nende sessioonidega.";
+"unknown_devices_send_anyway" = "Saada ikkagi";
+"unknown_devices_call_anyway" = "Helista ikkagi";
+"unknown_devices_answer_anyway" = "Ikkagi vasta kõnele";
+"unknown_devices_verify" = "Verifitseeri…";
+"unknown_devices_title" = "Tundmatud sessioonid";
+// Room Title
+"room_title_new_room" = "Uus jututuba";
+"room_title_multiple_active_members" = "%@/%@ aktiivset liiget";
+"room_title_one_active_member" = "%@/%@ aktiivne liige";
+"room_title_invite_members" = "Kutsu jututuppa uusi osalejaid";
+"room_title_members" = "%@ liiget";
+"room_title_one_member" = "1 liige";
+// Room Preview
+"room_preview_invitation_format" = "Sa oled kutsutud siia jututuppa %@ poolt";
+"room_preview_subtitle" = "See on jututoa eelvaade. Seega igasugune suhtlus ei ole võimalik.";
