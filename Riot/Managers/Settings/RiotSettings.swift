@@ -34,6 +34,7 @@ final class RiotSettings: NSObject {
         static let stunServerFallback = "stunServerFallback"
         static let hideVerifyThisSessionAlert = "hideVerifyThisSessionAlert"
         static let hideReviewSessionsAlert = "hideReviewSessionsAlert"
+        static let matrixApps = "matrixApps"
     }
     
     static let shared = RiotSettings()
@@ -44,9 +45,6 @@ final class RiotSettings: NSObject {
     }()
     
     // MARK: - Public
-    
-    /// Setting to force protection by pin code
-    let forcePinProtection: Bool = false
     
     // MARK: Notifications
     
@@ -176,6 +174,14 @@ final class RiotSettings: NSObject {
             return defaults.bool(forKey: UserDefaultsKeys.hideReviewSessionsAlert)
         } set {
             defaults.set(newValue, forKey: UserDefaultsKeys.hideReviewSessionsAlert)
+        }
+    }
+    
+    var matrixApps: Bool {
+        get {
+            return defaults.bool(forKey: UserDefaultsKeys.matrixApps)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.matrixApps)
         }
     }
 }

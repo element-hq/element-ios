@@ -29,5 +29,38 @@ final class BuildSettings: NSObject {
         Bundle.app.object(forInfoDictionaryKey: "applicationGroupIdentifier") as! String
     }
     
-    static let aSampleTestToRemove = "This is a demo of how we will use this class. TODO: Remove it once we have some settings"
+    /// Setting to force protection by pin code
+    static let forcePinProtection: Bool = false
+    
+    /// Force non-jailbroken app usage
+    static let forceNonJailbrokenUsage: Bool = true
+    
+    static let showUserFirstNameInSettings: Bool = false
+    static let showUserSurnameInSettings: Bool = false
+    static let allowAddingEmailThreepids: Bool = true
+    static let allowAddingPhoneThreepids: Bool = true
+    static let showThreepidExplanatory: Bool = true
+    static var allowVoIPUsage: Bool {
+        #if canImport(JitsiMeet)
+        return true
+        #else
+        return false
+        #endif
+    }
+    static let showDiscoverySettings: Bool = true
+    static let allowIdentityServerConfig: Bool = true
+    static let allowLocalContactsAccess: Bool = true
+    static let showAdvancedSettings: Bool = true
+    static let showLabSettings: Bool = true
+    static let allowChangingRageshakeSettings: Bool = true
+    static let allowChangingCrashUsageDataSettings: Bool = true
+    static let allowBugReportingManually: Bool = true
+    static let allowDeactivatingAccount: Bool = true
+    static let allowSendingStickers: Bool = true
+    
+    //  Message settings
+    static let allowMessageDetailsShare: Bool = true
+    static let allowMessageDetailsPermalink: Bool = true
+    static let allowMessageDetailsViewSource: Bool = true
+    
 }

@@ -48,7 +48,7 @@ final class PinCodePreferences: NSObject {
     
     /// Setting to force protection by pin code
     var forcePinProtection: Bool {
-        return RiotSettings.shared.forcePinProtection
+        return BuildSettings.forcePinProtection
     }
     
     var isBiometricsAvailable: Bool {
