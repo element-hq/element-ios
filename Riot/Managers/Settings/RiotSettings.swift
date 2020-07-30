@@ -34,6 +34,7 @@ final class RiotSettings: NSObject {
         static let stunServerFallback = "stunServerFallback"
         static let hideVerifyThisSessionAlert = "hideVerifyThisSessionAlert"
         static let hideReviewSessionsAlert = "hideReviewSessionsAlert"
+        static let matrixApps = "matrixApps"
     }
     
     static let shared = RiotSettings()
@@ -62,7 +63,6 @@ final class RiotSettings: NSObject {
     let showDiscoverySettings: Bool = true
     let allowIdentityServerConfig: Bool = true
     let allowLocalContactsAccess: Bool = true
-    let allowIntegrations: Bool = true
     let showAdvancedSettings: Bool = true
     let showLabSettings: Bool = true
     let allowChangingRageshakeSettings: Bool = true
@@ -214,6 +214,14 @@ final class RiotSettings: NSObject {
             return defaults.bool(forKey: UserDefaultsKeys.hideReviewSessionsAlert)
         } set {
             defaults.set(newValue, forKey: UserDefaultsKeys.hideReviewSessionsAlert)
+        }
+    }
+    
+    var matrixApps: Bool {
+        get {
+            return defaults.bool(forKey: UserDefaultsKeys.matrixApps)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.matrixApps)
         }
     }
 }

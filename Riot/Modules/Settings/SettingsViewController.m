@@ -465,7 +465,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         [tmpSections addObject:sectionIgnoredUsers];
     }
     
-    if (RiotSettings.shared.allowIntegrations)
+    if (RiotSettings.shared.matrixApps)
     {
         Section *sectionIntegrations = [Section sectionWithTag:SECTION_TAG_INTEGRATIONS];
         [sectionIntegrations addRowWithTag:INTEGRATIONS_INDEX];
