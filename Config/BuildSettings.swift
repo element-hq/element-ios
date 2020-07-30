@@ -62,6 +62,5 @@ final class BuildSettings: NSObject {
     static let allowMessageDetailsShare: Bool = true
     static let allowMessageDetailsPermalink: Bool = true
     static let allowMessageDetailsViewSource: Bool = true
-    static let allowMessageDetailsReportContent: Bool = true
     
 }
