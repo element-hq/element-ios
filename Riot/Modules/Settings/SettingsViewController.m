@@ -42,6 +42,9 @@
 #import "GroupsDataSource.h"
 #import "GroupTableViewCellWithSwitch.h"
 
+#import "Row.h"
+#import "Section.h"
+
 #import "GBDeviceInfo_iOS.h"
 
 #import "Riot-Swift.h"
@@ -156,81 +159,6 @@ enum
 };
 
 typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
-
-#pragma mark - Row
-
-@interface Row: NSObject
-
-@property (nonatomic, assign) NSInteger tag;
-
-@end
-
-@implementation Row
-
-+ (instancetype)rowWithTag:(NSInteger)tag
-{
-    return [[self alloc] initWithTag:tag];
-}
-
-- (instancetype)initWithTag:(NSInteger)tag
-{
-    self = [super init];
-    if (self) {
-        self.tag = tag;
-    }
-    return self;
-}
-
-@end
-
-#pragma mark - Section
-
-@interface Section: NSObject
-
-@property (nonatomic, assign) NSInteger tag;
-@property (nonatomic, strong) NSMutableArray<Row*> *rows;
-@property (nonatomic, copy) NSString *headerTitle;
-
-- (void)addRow:(Row *)row;
-- (void)addRowWithTag:(NSInteger)tag;
-
-@end
-
-@implementation Section
-
-+ (instancetype)sectionWithTag:(NSInteger)tag
-{
-    return [[self alloc] initWithTag:tag];
-}
-
-- (instancetype)initWithTag:(NSInteger)tag
-{
-    self = [super init];
-    if (self) {
-        self.tag = tag;
-        _rows = [NSMutableArray arrayWithCapacity:10];
-    }
-    return self;
-}
-
-- (void)addRow:(Row *)row
-{
-    [_rows addObject:row];
-}
-
-- (void)addRowWithTag:(NSInteger)tag
-{
-    [_rows addObject:[Row rowWithTag:tag]];
-}
-
-- (NSInteger)indexOfRowForTag:(NSInteger)tag
-{
-    return [_rows indexOfObjectPassingTest:^BOOL(Row * _Nonnull row, NSUInteger idx, BOOL * _Nonnull stop) {
-        return row.tag == tag;
-    }];
-}
-
-@end
 
 #pragma mark - SettingsViewController
 
