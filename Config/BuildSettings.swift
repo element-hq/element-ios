@@ -57,18 +57,11 @@ final class BuildSettings: NSObject {
     static let allowBugReportingManually: Bool = true
     static let allowDeactivatingAccount: Bool = true
     static let allowSendingStickers: Bool = true
-    static let allowSearchOnOtherServersForRoomDirectory: Bool = false
     
     //  Message settings
     static let allowMessageDetailsShare: Bool = true
     static let allowMessageDetailsPermalink: Bool = true
     static let allowMessageDetailsViewSource: Bool = true
     static let allowMessageDetailsReportContent: Bool = true
-    
-    //  Room settings
-    static let showLowPrioritySetting: Bool = false
-    static let showDirectChatSettings: Bool = false
-    static let showAccessControls: Bool = false
-    static let allowChangingHistoryVisibility: Bool = false
     
 }
