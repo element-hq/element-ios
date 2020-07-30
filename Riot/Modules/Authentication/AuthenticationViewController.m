@@ -117,6 +117,13 @@
     [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateNormal];
     [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateHighlighted];
     
+    if (!BuildSettings.authScreenShowRegister)
+    {
+        self.rightBarButtonItem.enabled = NO;
+        self.rightBarButtonItem.title = nil;
+    }
+    self.serverOptionsContainer.hidden = !BuildSettings.authScreenShowCustomServerOptions;
+    
     [self hideCustomServers:YES];
 
     // Soft logout section
@@ -426,7 +433,9 @@
         // The right bar button is used to switch the authentication type.
         if (self.authType == MXKAuthenticationTypeLogin)
         {
-            if (!authInputsview.isSingleSignOnRequired && !self.softLogoutCredentials)
+            if (!authInputsview.isSingleSignOnRequired
+                && !self.softLogoutCredentials
+                && BuildSettings.authScreenShowRegister)
             {
                 self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
             }
@@ -971,7 +980,8 @@
         }
     }
     
-    self.serverOptionsContainer.hidden = !thirdPartyIdentifiersHidden;
+    self.serverOptionsContainer.hidden = !thirdPartyIdentifiersHidden
+                                            || !BuildSettings.authScreenShowCustomServerOptions;
     [self refreshContentViewHeightConstraint];
     
     if (thirdPartyIdentifiersHidden)
