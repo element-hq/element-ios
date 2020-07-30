@@ -3000,6 +3000,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)refreshLocalContacts
 {
+    if (!BuildSettings.allowLocalContactsAccess)
+    {
+        return;
+    }
+    
     // Do not scan local contacts in background if the user has not decided yet about using
     // an identity server
     BOOL doRefreshLocalContacts = NO;

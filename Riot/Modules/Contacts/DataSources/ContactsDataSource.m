@@ -467,7 +467,10 @@
         }
         
         // Keep visible the header for the both contact sections, even if their are empty.
-        filteredLocalContactsSection = count++;
+        if (BuildSettings.allowLocalContactsAccess)
+        {
+            filteredLocalContactsSection = count++;
+        }
         filteredMatrixContactsSection = count++;
     }
     else
@@ -479,7 +482,10 @@
         }
         
         // Keep visible the local contact header, even if the section is empty.
-        filteredLocalContactsSection = count++;
+        if (BuildSettings.allowLocalContactsAccess)
+        {
+            filteredLocalContactsSection = count++;
+        }
     }
     
     
