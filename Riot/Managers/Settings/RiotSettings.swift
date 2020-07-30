@@ -69,7 +69,7 @@ final class RiotSettings: NSObject {
     let allowChangingCrashUsageDataSettings: Bool = true
     let allowBugReportingManually: Bool = true
     let allowDeactivatingAccount: Bool = true
-    let allowSendingStickers: Bool = false
+    let allowSendingStickers: Bool = true
     let allowSearchOnOtherServersForRoomDirectory: Bool = false
     
     //  Message settings
