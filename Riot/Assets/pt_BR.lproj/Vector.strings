@@ -72,7 +72,7 @@
 "auth_password_dont_match" = "As senhas não são iguais";
 "auth_username_in_use" = "Este nome de usuária/o já está sendo usado por outra pessoa";
 "auth_forgot_password" = "Esqueceu sua senha?";
-"auth_email_not_found" = "Não consegui enviar e-mail: este endereço de e-mail não foi encontrado";
+"auth_email_not_found" = "Não foi possível enviar um e-mail: este endereço de e-mail não foi encontrado";
 "auth_use_server_options" = "Usar opções personalizadas de servidor (avançado)";
 "auth_email_validation_message" = "Por favor, verifique o seu e-mail para continuar seu cadastro";
 "auth_msisdn_validation_title" = "Faltando verificação";
@@ -86,8 +86,8 @@
 "auth_reset_password_next_step_button" = "Eu verifiquei meu endereço de e-mail";
 "auth_reset_password_error_unauthorized" = "Não foi possível verificar o endereço de e-mail: confirme que realmente clicou no link contido na mensagem de e-mail";
 "auth_reset_password_error_not_found" = "O seu endereço de e-mail não parece estar associado a um ID Matrix neste servidor local.";
-"auth_reset_password_success_message" = "Sua senha foi redefinida.↵\n↵\nVocê foi desconectado de todas as sessões e não receberá mais notificações por push. Para reativar as notificações, faça login novamente em cada aparelho.";
-"auth_add_email_and_phone_warning" = "Registro com email e número de telefone ainda não é suportado enquanto existir a API. Apenas o número de telefone será associado a sua conta. Você pode adicionar seu email ao seu perfil nas configurações.";
+"auth_reset_password_success_message" = "Sua senha foi redefinida.↵\n↵\nVocê foi desconectado de todas as sessões e não receberá mais notificações pop-up. Para reativar as notificações, faça login novamente em cada aparelho.";
+"auth_add_email_and_phone_warning" = "Registro com e-mail e número de telefone ainda não é suportado enquanto existir a API. Apenas o número de telefone será associado a sua conta. Você pode adicionar seu e-mail ao seu perfil nas configurações.";
 "room_creation_appearance" = "Aparência";
 "room_creation_appearance_name" = "Nome";
 "room_creation_appearance_picture" = "Imagem da Sala (opcional)";
@@ -100,7 +100,7 @@
 "room_creation_keep_private" = "Manter privada";
 "room_creation_make_private" = "Manter privada";
 "room_creation_wait_for_creation" = "A sala já está sendo criada. Por favor aguarde.";
-"room_creation_invite_another_user" = "Procurar / convidar por ID da usuária/o, Nome ou email";
+"room_creation_invite_another_user" = "Procurar / convidar por ID da usuária/o, Nome ou e-mail";
 "room_recents_directory_section_network" = "Rede";
 "room_recents_favourites_section" = "FAVORITOS";
 "room_recents_people_section" = "PESSOAS";
@@ -128,7 +128,7 @@
 "search_people" = "Pessoas";
 "search_files" = "Arquivos";
 "search_default_placeholder" = "Procurar";
-"search_people_placeholder" = "Procurar por ID da/o usuária/o, Nome ou email";
+"search_people_placeholder" = "Procurar por ID da/o usuária/o, Nome ou e-mail";
 "search_no_result" = "Nenhum resultado";
 "search_in_progress" = "Procurando…";
 // Directory
@@ -187,7 +187,7 @@
 "room_participants_action_unban" = "Desbloquear";
 "room_participants_action_ignore" = "Esconder todas as mensagens deste usuário";
 "room_participants_action_unignore" = "Mostrar todas as mensagens deste usuário";
-"room_participants_invite_malformed_id" = "ID malformado. Deve ser utlizado um endereço de e-mail ou um Matrix ID, como \"@localpart:domain\"";
+"room_participants_invite_malformed_id" = "ID malformado. Deve ser uitlizado um endereço de e-mail ou um Matrix ID, como \"@localpart:domain\"";
 "room_participants_action_set_default_power_level" = "Redefinir para usuário normal";
 "room_participants_action_set_moderator" = "Faça moderador";
 "room_participants_action_set_admin" = "Faça administrador";
@@ -212,10 +212,10 @@
 "room_offline_notification" = "A conectividade com o servidor foi perdida.";
 "room_unsent_messages_notification" = "Mensagens não enviadas. %@ ou %@ agora?";
 "room_unsent_messages_unknown_devices_notification" = "Mensagem não enviada devido à presença de sessões desconhecidas. %@ ou %@ agora?";
-"room_ongoing_conference_call" = "Teleconferência em andamento. Junte-se como %@ ou %@.";
-"room_ongoing_conference_call_with_close" = "Teleconferência em andamento. Junte-se como %@ ou %@. %@ isto.";
+"room_ongoing_conference_call" = "Chamada em grupo em andamento. Junte-se como %@ ou %@.";
+"room_ongoing_conference_call_with_close" = "Chamada em grupo em andamento. Junte-se como %@ ou %@. %@ isto.";
 "room_ongoing_conference_call_close" = "Fechar";
-"room_conference_call_no_power" = "Você precisa de permissão para gerenciar a teleconferência nesta sala";
+"room_conference_call_no_power" = "Você precisa de permissão para gerenciar a chamada em grupo nesta sala";
 "room_prompt_resend" = "Reenviar tudo";
 "room_prompt_cancel" = "Cancelar todas";
 "room_resend_unsent_messages" = "Reenviar mensagens não enviadas";
@@ -226,12 +226,12 @@
 "room_event_action_more" = "Mais";
 "room_event_action_share" = "Compartilhar";
 "room_event_action_permalink" = "Link permanente";
-"room_event_action_view_source" = "Ver fonte";
-"room_event_action_view_decrypted_source" = "Ver fonte descriptografado";
+"room_event_action_view_source" = "Ver código-fonte";
+"room_event_action_view_decrypted_source" = "Ver código-fonte descriptografado";
 "room_event_action_report" = "Denunciar conteúdo";
 "room_event_action_report_prompt_reason" = "Razão para denunciar este conteúdo";
-"room_event_action_kick_prompt_reason" = "Razão para chutar este usuário";
-"room_event_action_ban_prompt_reason" = "Razão para banir este usuário";
+"room_event_action_kick_prompt_reason" = "Razão para remover este usuário";
+"room_event_action_ban_prompt_reason" = "Razão para bloquear este usuário";
 "room_event_action_report_prompt_ignore_user" = "Você quer esconder todas as mensagens deste usuário?";
 "room_event_action_save" = "Salvar";
 "room_event_action_resend" = "Reenviar";
@@ -250,7 +250,7 @@
 "room_resource_limit_exceeded_message_contact_1" = " Por favor ";
 "room_resource_limit_exceeded_message_contact_2_link" = "entre em contato com o administrador do serviço";
 "room_resource_limit_exceeded_message_contact_3" = " para continuar usando este serviço.";
-"room_resource_usage_limit_reached_message_1_default" = "Este servidor local excedeu um de seus limites de recursos, portanto· ";
+"room_resource_usage_limit_reached_message_1_default" = "Este servidor local excedeu um dos limites de seus recursos, portanto· ";
 "room_resource_usage_limit_reached_message_1_monthly_active_user" = "Esse servidor local atingiu seu limite mensal de usuários ativos, portanto· ";
 "room_resource_usage_limit_reached_message_2" = "alguns usuários não poderão efetuar login.";
 "room_resource_usage_limit_reached_message_contact_3" = " para ter este limite aumentado.";
@@ -319,7 +319,7 @@
 "settings_show_decrypted_content" = "Mostrar conteúdo descriptografado";
 "settings_global_settings_info" = "Configurações globais de notificação estão disponíveis no seu cliente web %@";
 "settings_on_denied_notification" = "As notificações são negadas para %@, permita-as nas configurações do seu aparelho";
-"settings_enable_callkit" = "Chamada Integrada";
+"settings_enable_callkit" = "Chamada integrada";
 "settings_callkit_info" = "Receba chamadas na sua tela de bloqueio. Veja suas chamadas do Element no histórico de chamadas do sistema. Se o iCloud estiver ativado, esse histórico de chamadas será compartilhado com a Apple.";
 "settings_ui_language" = "Idioma";
 "settings_ui_theme" = "Tema";
@@ -336,7 +336,7 @@
 "settings_labs_e2e_encryption_prompt_message" = "Para concluir a configuração da criptografia, você deve efetuar login novamente.";
 "settings_labs_room_members_lazy_loading" = "Usuários de carrregamento Lazy de salas";
 "settings_labs_room_members_lazy_loading_error_message" = "Seu homeserver não suporta o carregamento Lazy de membros da sala ainda. Tente depois.";
-"settings_labs_create_conference_with_jitsi" = "Crie chamadas de conferência com jitsi";
+"settings_labs_create_conference_with_jitsi" = "Crie chamadas em grupo com jitsi";
 "settings_version" = "Versão %@";
 "settings_olm_version" = "Versão do Olm %@";
 "settings_copyright" = "Copyright";
@@ -396,7 +396,7 @@
 "room_details_new_flair_placeholder" = "Adicionar nova ID de comunidade (por exemplo, +foo%@)";
 "room_details_flair_invalid_id_prompt_title" = "Formato Inválido";
 "room_details_flair_invalid_id_prompt_msg" = "%@ não é um identificador válido para uma comunidade";
-"room_details_banned_users_section" = "Usuários banidos";
+"room_details_banned_users_section" = "Usuários bloqueados";
 "room_details_advanced_section" = "Avançado";
 "room_details_advanced_room_id" = "ID da sala:";
 "room_details_advanced_enable_e2e_encryption" = "Ativar criptografia (aviso: não pode ser desativado novamente!)";
@@ -469,8 +469,8 @@
 "event_formatter_member_updates" = "%tu mudanças na filiação";
 "event_formatter_widget_added" = "%@ widget adicionado por %@";
 "event_formatter_widget_removed" = "%@ widget removido por %@";
-"event_formatter_jitsi_widget_added" = "Conferência VoIP adicionada por %@";
-"event_formatter_jitsi_widget_removed" = "Conferência de VoIP removida por %@";
+"event_formatter_jitsi_widget_added" = "Chamada em grupo adicionada por %@";
+"event_formatter_jitsi_widget_removed" = "Chamada em grupo removida por %@";
 "event_formatter_rerequest_keys_part1_link" = "Solicitar novamente chaves de criptografia";
 "event_formatter_rerequest_keys_part2" = " ·de suas outras sessões.";
 // Others
@@ -489,13 +489,13 @@
 // Call
 "call_incoming_voice_prompt" = "Recebendo chamada de voz de %@";
 "call_incoming_video_prompt" = "Recebendo chamada de vídeo de %@";
-"call_incoming_voice" = "Recebendo chamada…";
+"call_incoming_voice" = "Recebendo chamada de voz…";
 "call_incoming_video" = "Recebendo chamada de vídeo…";
 "call_already_displayed" = "Já existe uma chamada em andamento.";
-"call_jitsi_error" = "Não foi possível participar da conferência.";
+"call_jitsi_error" = "Não foi possível participar da chamada em grupo.";
 // No VoIP support
 "no_voip_title" = "Recebendo chamada";
-"no_voip" = "%@ está chamando você, mas %@ ainda não suporta chamadas.↵\nVocê pode ignorar essa notificação e atender a chamada de outro aparelho ou pode rejeitá-la.";
+"no_voip" = "%@ está ligando para você, mas %@ ainda não suporta chamadas.↵\nVocê pode ignorar essa notificação e atender a chamada de outro aparelho ou pode rejeitá-la.";
 // Crash report
 "google_analytics_use_prompt" = "Você gostaria de ajudar a melhorar o %@ informando automaticamente relatórios de falhas e dados de uso anônimos?";
 // Crypto
@@ -558,7 +558,7 @@
 "rerequest_keys_alert_message" = "Por favor, inicie o Element em outro aparelho que possa descriptografar a mensagem, de modo que ele possa enviar as chaves para esta sessão.";
 // String for App Store
 "store_short_description" = "Chat/VoIP seguro e descentralizado";
-"store_full_description" = "O Element é um novo tipo de aplicativo de comunicação e colaboração que:↵\n↵\n1. Coloca você no controle para preservar sua privacidade↵\n2. Permite que você se comunique com qualquer pessoa na rede Matrix, e até mais além, integrando-se a aplicativos como o Slack↵\n3. Protege você de publicidade, datamining, backdoors e jardins murados↵\n4. Protege você por meio de criptografia de ponta a ponta, com assinatura cruzada para verificar outras pessoas↵\n↵\nO Element é completamente diferente de outros aplicativos de mensagens e colaboração porque é descentralizado e de código aberto.↵\n↵\nO Element permite que você use seu próprio servidor - ou escolha uma alternativa de armazenamento - para ter privacidade, propriedade e controle de seus dados e conversas. Dá acesso a uma rede aberta; para que você não fique falando apenas com outros usuários do Element. E é muito seguro.↵\n↵\nO Element é capaz de fazer tudo isso porque opera na rede Matrix - o padrão para comunicação aberta e descentralizada.↵\n↵\nO Element coloca você no controle, permitindo escolher quem armazena suas conversas. No aplicativo do Element, você pode optar por armazenar de diferentes maneiras:↵\n↵\n1. Obtenha uma conta gratuita no servidor público matrix.org↵\n2. Armazene sua conta automaticamente, executando um servidor em seu próprio hardware↵\n3. Inscreva-se em uma conta para um servidor personalizado, basta se inscrever na plataforma de armazenamento do Element Matrix Services↵\n↵\nPor que escolher o Element?↵\n↵\nPOSSUA SEUS DADOS: você decide onde guardar seus dados e mensagens. Você os possui e controla, e não alguma MEGA CORPORAÇÃO que vende seus dados ou dá acesso a terceiros.↵\n↵\nMENSAGEM ABERTA E COLABORAÇÃO: você pode conversar com qualquer outra pessoa na rede Matrix, esteja ela usando o Element ou outro aplicativo que se conecta na rede Matrix. E mesmo se estiverem usando um sistema de mensagens diferente, como Slack, IRC ou XMPP.↵\n↵\nSUPER SEGURO: criptografia real de ponta a ponta (somente aqueles na conversa podem descriptografar as mensagens) e assinatura cruzada para verificar os aparelhos dos participantes da conversa.↵\n↵\nCOMUNICAÇÃO COMPLETA: mensagens, chamadas de voz e vídeo, compartilhamento de arquivos, compartilhamento de tela e um monte de integrações, bots e widgets. Crie salas, comunidades, mantenha contato e faça as coisas acontecerem.↵\n↵\nONDE QUER QUE VOCÊ ESTEJA: mantenha contato onde quer que você esteja, com o histórico de mensagens totalmente sincronizado em todos os seus aparelhos e na web em https://element.io/app.";
+"store_full_description" = "O Element é um novo tipo de aplicativo de comunicação e colaboração que:↵\n↵\n1. Coloca você no controle para preservar sua privacidade↵\n2. Permite que você se comunique com qualquer pessoa na rede Matrix, e até mais além, integrando-se a aplicativos como o Slack↵\n3. Protege você de publicidade, datamining, backdoors e jardins murados↵\n4. Protege você por meio de criptografia de ponta a ponta, com assinatura cruzada para verificar outras pessoas↵\n↵\nO Element é completamente diferente de outros aplicativos de mensagens e colaboração porque é descentralizado e de código aberto.↵\n↵\nO Element permite que você use seu próprio servidor - ou escolha uma alternativa de armazenamento - para ter privacidade, propriedade e controle de seus dados e conversas. Dá acesso a uma rede aberta; para que você não fique falando apenas com outros usuários do Element. E é muito seguro.↵\n↵\nO Element é capaz de fazer tudo isso porque opera na rede Matrix - o padrão para comunicação aberta e descentralizada.↵\n↵\nO Element coloca você no controle, permitindo escolher quem armazena suas conversas. No aplicativo do Element, você pode optar por armazenar de diferentes maneiras:↵\n↵\n1. Obtenha uma conta gratuita no servidor público matrix.org↵\n2. Armazene sua conta automaticamente, executando um servidor em seu próprio hardware↵\n3. Inscreva-se em uma conta para um servidor personalizado, basta se inscrever na plataforma de armazenamento do Element Matrix Services↵\n↵\nPor que escolher o Element?↵\n↵\nPOSSUA SEUS DADOS: você decide onde guardar seus dados e mensagens. Você os possui e controla, e não alguma MEGA CORPORAÇÃO que vende seus dados ou dá acesso a terceiros.↵\n↵\nMENSAGEM ABERTA E COLABORAÇÃO: você pode conversar com qualquer outra pessoa na rede Matrix, esteja ela usando o Element ou outro aplicativo que se conecta na rede Matrix. E mesmo se estiverem usando um sistema de mensagens diferente, como Slack, IRC ou XMPP.↵\n↵\nSUPER SEGURO: criptografia real de ponta a ponta (somente aqueles na conversa podem descriptografar as mensagens) e assinatura cruzada para verificar os aparelhos dos participantes da conversa.↵\n↵\nCOMUNICAÇÃO COMPLETA: mensagens, chamadas de voz e de vídeo, compartilhamento de arquivos, compartilhamento de tela e um monte de integrações, bots e widgets. Crie salas, comunidades, mantenha contato e faça as coisas acontecerem.↵\n↵\nONDE QUER QUE VOCÊ ESTEJA: mantenha contato onde quer que você esteja, com o histórico de mensagens totalmente sincronizado em todos os seus aparelhos e na web em https://element.io/app.";
 "auth_login_single_sign_on" = "Entre com o logon único";
 "auth_autodiscover_invalid_response" = "Resposta de descoberta inválida no servidor local";
 "room_message_unable_open_link_error_message" = "Não foi possível abrir o link.";
@@ -694,3 +694,10 @@
 "device_verification_cancelled_by_me" = "A verificação foi cancelada. Razão: %@";
 "device_verification_error_cannot_load_device" = "Não foi possível carregar as informações da sessão.";
 "major_update_information" = "Estamos felizes em anunciar que mudamos de nome! Seu aplicativo está atualizado e você está conectado à sua conta.";
+"room_action_camera" = "Tirar uma foto ou vídeo";
+"room_accessibility_call" = "Ligar";
+"media_type_accessibility_video" = "Vídeo";
+"event_formatter_jitsi_widget_added_by_you" = "Você adicionou chamada em grupo";
+"event_formatter_jitsi_widget_removed_by_you" = "Você removeu chamada em grupo";
+"room_widget_permission_avatar_url_permission" = "URL da sua foto de perfil";
+"device_verification_emoji_banana" = "Banana";
