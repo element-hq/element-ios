@@ -4,3 +4,4 @@
 "NSMicrophoneUsageDescription" = "Mikrofoni përdoret për të regjistruar video, dhe për të bërë thirrje.";
 "NSContactsUsageDescription" = "Për zbulim kontaktesh që përdorin tashmë Matrix-in, Element-i mund të dërgojë adresa email dhe numra telefonash nga libri juaj i adresave te shërbyesi juaj i zgjedhur Matrix i identiteteve. Kur kjo mbulohet, të dhënat personale fshehtëzohen, para se të dërgohen - ju lutemi, për më tepër hollësi, shihni rregulla privatësie të shërbyesit tuaj të identiteteve.";
 "NSCalendarsUsageDescription" = "Shihini te aplikacioni takimet tuaja të planifikuara.";
+"NSFaceIDUsageDescription" = "Face ID përdoret që të hyni në aplikacionin tuaj.";
