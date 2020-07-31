@@ -47,6 +47,12 @@ final class BuildSettings: NSObject {
     static let stunServerFallbackUrlString: String? = "stun:turn.matrix.org"
     
     
+    // List of homeservers for the public rooms directory
+    static let roomDirectoryServers = [
+        "matrix.org"
+    ]
+    
+    
     // Bug report
     static let bugReportEndpointUrlString = "https://riot.im/bugreports"
     // Use the name allocated by the bug report server
