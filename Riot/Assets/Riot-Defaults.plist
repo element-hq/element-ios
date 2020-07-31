@@ -14,8 +14,6 @@
 	<string>im.vector.app.ios.dev</string>
 	<key>pusherAppIdProd</key>
 	<string>im.vector.app.ios.prod</string>
-	<key>homeserver</key>
-	<string>matrix.org</string>
 	<key>matrixApps</key>
 	<true/>
 	<key>showAllEventsInRoomHistory</key>
