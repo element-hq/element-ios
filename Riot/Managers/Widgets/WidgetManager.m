@@ -741,7 +741,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     BOOL isScalarUrl = NO;
 
     // TODO: Do we need to add `integrationsWidgetsUrls` to `WidgetManagerConfig`?
-    NSArray<NSString*> *scalarUrlStrings = [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsWidgetsUrls"];
+    NSArray<NSString*> *scalarUrlStrings = BuildSettings.integrationsScalarWidgetsPaths;
     if (scalarUrlStrings.count == 0)
     {
         NSString *apiUrl = [self configForUser:userId].apiUrl;

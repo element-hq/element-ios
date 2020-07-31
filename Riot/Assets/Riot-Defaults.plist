@@ -30,14 +30,6 @@
 	<string>https://app.element.io</string>
 	<key>matrixApps</key>
 	<true/>
-	<key>integrationsWidgetsUrls</key>
-	<array>
-		<string>https://scalar.vector.im/_matrix/integrations/v1</string>
-		<string>https://scalar.vector.im/api</string>
-		<string>https://scalar-staging.vector.im/_matrix/integrations/v1</string>
-		<string>https://scalar-staging.vector.im/api</string>
-		<string>https://scalar-staging.riot.im/scalar/api</string>
-	</array>
 	<key>showAllEventsInRoomHistory</key>
 	<false/>
 	<key>showRedactionsInRoomHistory</key>

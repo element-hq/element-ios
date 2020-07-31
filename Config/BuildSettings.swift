@@ -68,6 +68,14 @@ final class BuildSettings: NSObject {
     // MARK: - Integrations
     static let integrationsUiUrlString = "https://scalar.vector.im/"
     static let integrationsRestApiUrlString = "https://scalar.vector.im/api"
+    // Widgets in those paths require a scalar token
+    static let integrationsScalarWidgetsPaths = [
+        "https://scalar.vector.im/_matrix/integrations/v1",
+        "https://scalar.vector.im/api",
+        "https://scalar-staging.vector.im/_matrix/integrations/v1",
+        "https://scalar-staging.vector.im/api",
+        "https://scalar-staging.riot.im/scalar/api",
+    ]
     // Jitsi server used outside integrations to create conference calls from the call button in the timeline
     static let jitsiServerUrl = NSURL(string: "https://jitsi.riot.im")
 
