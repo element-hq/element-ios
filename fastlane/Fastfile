@@ -41,6 +41,22 @@ platform :ios do
     #)
   end
 
+  desc "Build the app for simulator to ensure it compiles"
+  lane :build do |options|
+    cocoapods
+
+    app_name = "Riot"
+    build_app(
+      clean: true,
+      scheme: app_name,
+      derived_data_path: "./DerivedData/",
+      buildlog_path: "./DerivedData/Logs/",
+      # skip_package_ipa: true,
+      skip_archive: true,
+      destination: "generic/platform=iOS Simulator",
+    )
+  end
+
   #### Private ####
 
   desc "Download App Store or Ad-Hoc provisioning profiles"
