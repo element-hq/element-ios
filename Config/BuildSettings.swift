@@ -21,6 +21,7 @@ import Foundation
 @objcMembers
 final class BuildSettings: NSObject {
     
+    // MARK: - Bundle Settings
     static var bundleDisplayName: String {
         Bundle.app.object(forInfoDictionaryKey: "CFBundleDisplayName") as! String
     }
@@ -30,13 +31,13 @@ final class BuildSettings: NSObject {
     }
     
     
-    // Legal URLs
+    // MARK: - Legal URLs
     static let applicationCopyrightUrlString = "https://element.io/copyright"
     static let applicationPrivacyPolicyUrlString = "https://element.io/privacy"
     static let applicationTermsConditionsUrlString = "https://element.io/terms-of-service"
     
     
-    // VoIP
+    // MARK: - VoIP
     static var allowVoIPUsage: Bool {
         #if canImport(JitsiMeet)
         return true
@@ -53,11 +54,18 @@ final class BuildSettings: NSObject {
     ]
     
     
-    // Bug report
+    // Analytics
+    static let analyticsServerUrl = URL(string: "https://piwik.riot.im/piwik.php")
+    static let analyticsAppId = "14"
+    
+    
+    // MARK: - Bug report
     static let bugReportEndpointUrlString = "https://riot.im/bugreports"
     // Use the name allocated by the bug report server
     static let bugReportApplicationId = "riot-ios"
 
+    
+    // MARK: - Features
     
     /// Setting to force protection by pin code
     static let forcePinProtection: Bool = false
@@ -65,6 +73,8 @@ final class BuildSettings: NSObject {
     /// Force non-jailbroken app usage
     static let forceNonJailbrokenUsage: Bool = true
     
+    
+    // MARK: - Screen settings -
     
     static let showUserFirstNameInSettings: Bool = false
     static let showUserSurnameInSettings: Bool = false
@@ -83,13 +93,13 @@ final class BuildSettings: NSObject {
     static let allowSendingStickers: Bool = true
     
     
-    //  Message settings
+    // MARK: - Message
     static let allowMessageDetailsShare: Bool = true
     static let allowMessageDetailsPermalink: Bool = true
     static let allowMessageDetailsViewSource: Bool = true
     
     
-    // Authentication Screen
+    // MARK: - Authentication Screen
     static let authScreenShowRegister = true
     static let authScreenShowCustomServerOptions = true
 }

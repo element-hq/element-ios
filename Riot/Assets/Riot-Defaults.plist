@@ -44,13 +44,6 @@
 		<string>https://scalar-staging.vector.im/api</string>
 		<string>https://scalar-staging.riot.im/scalar/api</string>
 	</array>
-	<key>piwik</key>
-	<dict>
-		<key>url</key>
-		<string>https://piwik.riot.im/piwik.php</string>
-		<key>siteId</key>
-		<string>14</string>
-	</dict>
 	<key>showAllEventsInRoomHistory</key>
 	<false/>
 	<key>showRedactionsInRoomHistory</key>
