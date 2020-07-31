@@ -26,8 +26,6 @@
 	<string>https://develop.element.io</string>
 	<key>webAppUrlStaging</key>
 	<string>https://staging.element.io</string>
-	<key>webAppUrl</key>
-	<string>https://app.element.io</string>
 	<key>matrixApps</key>
 	<true/>
 	<key>showAllEventsInRoomHistory</key>

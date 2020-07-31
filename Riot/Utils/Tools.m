@@ -61,13 +61,6 @@
 
 #pragma mark - Universal link
 
-+ (NSString *)webAppUrl
-{
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrl"];
-    //return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrlStaging"];
-    //return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrlDev"];
-}
-
 + (BOOL)isUniversalLink:(NSURL*)url
 {
     BOOL isUniversalLink = NO;

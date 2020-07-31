@@ -31,11 +31,6 @@
 #pragma mark - Universal link
 
 /**
- The url of the Vector web application.
- */
-+ (NSString*)webAppUrl;
-
-/**
  Detect if a URL is a universal link for the application.
 
  @return YES if the URL can be handled by the app.

@@ -296,7 +296,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     // This url can be used as is inside a web container (like iframe for Riot-web)
     
     // Build it from the riot-web app
-    NSString *appUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrl"];
+    NSString *appUrlString = BuildSettings.applicationWebAppUrlString;
     
     // We mix v1 and v2 param for backward compability
     NSString *v1Params = [NSString stringWithFormat:@"confId=%@&isAudioConf=%@&displayName=$matrix_display_name&avatarUrl=$matrix_avatar_url&email=$matrix_user_id", confId, video ? @"false" : @"true"];

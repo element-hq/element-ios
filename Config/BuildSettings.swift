@@ -30,6 +30,9 @@ final class BuildSettings: NSObject {
         Bundle.app.object(forInfoDictionaryKey: "applicationGroupIdentifier") as! String
     }
     
+    // Element-Web instance for the app
+    static let applicationWebAppUrlString = "https://app.element.io"
+    
     
     // MARK: - Legal URLs
     static let applicationCopyrightUrlString = "https://element.io/copyright"
