@@ -77,7 +77,7 @@ class CommonConfiguration: NSObject, Configurable {
         // Let's call invite be valid for 1 minute
         callManager.inviteLifetime = 60000
         
-        if RiotSettings.shared.allowStunServerFallback, let stunServerFallback = RiotSettings.shared.stunServerFallback {
+        if RiotSettings.shared.allowStunServerFallback, let stunServerFallback = BuildSettings.stunServerFallbackUrlString {
             callManager.fallbackSTUNServer = stunServerFallback
         }
     }

@@ -339,7 +339,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     sectionNotificationSettings.headerTitle = NSLocalizedStringFromTable(@"settings_notifications_settings", @"Vector", nil);
     [tmpSections addObject:sectionNotificationSettings];
     
-    if (BuildSettings.allowVoIPUsage && RiotSettings.shared.stunServerFallback)
+    if (BuildSettings.allowVoIPUsage && BuildSettings.stunServerFallbackUrlString)
     {
         Section *sectionCalls = [Section sectionWithTag:SECTION_TAG_CALLS];
         [sectionCalls addRowWithTag:CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX];
@@ -1900,7 +1900,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         }
         else if (row == CALLS_STUN_SERVER_FALLBACK_DESCRIPTION_INDEX)
         {
-            NSString *stunFallbackHost = RiotSettings.shared.stunServerFallback;
+            NSString *stunFallbackHost = BuildSettings.stunServerFallbackUrlString;
             // Remove "stun:"
             stunFallbackHost = [stunFallbackHost componentsSeparatedByString:@":"].lastObject;
 
@@ -2942,7 +2942,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     UISwitch *switchButton = (UISwitch*)sender;
     RiotSettings.shared.allowStunServerFallback = switchButton.isOn;
 
-    self.mainSession.callManager.fallbackSTUNServer = RiotSettings.shared.allowStunServerFallback ? RiotSettings.shared.stunServerFallback : nil;
+    self.mainSession.callManager.fallbackSTUNServer = RiotSettings.shared.allowStunServerFallback ? BuildSettings.stunServerFallbackUrlString : nil;
 }
 
 - (void)toggleAllowIntegrations:(id)sender

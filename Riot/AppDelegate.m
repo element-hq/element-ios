@@ -3134,7 +3134,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     [_errorNotification dismissViewControllerAnimated:NO completion:nil];
 
-    NSString *stunFallbackHost = RiotSettings.shared.stunServerFallback;
+    NSString *stunFallbackHost = BuildSettings.stunServerFallbackUrlString;
     // Remove "stun:"
     stunFallbackHost = [stunFallbackHost componentsSeparatedByString:@":"].lastObject;
 
@@ -3154,7 +3154,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                                          handler:^(UIAlertAction * action) {
 
                                                              RiotSettings.shared.allowStunServerFallback = YES;
-                                                             mainSession.callManager.fallbackSTUNServer = RiotSettings.shared.stunServerFallback;
+                                                             mainSession.callManager.fallbackSTUNServer = BuildSettings.stunServerFallbackUrlString;
 
                                                              [AppDelegate theDelegate].errorNotification = nil;
                                                          }]];

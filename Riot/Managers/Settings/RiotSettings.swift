@@ -31,7 +31,6 @@ final class RiotSettings: NSObject {
         static let pinRoomsWithMissedNotifications = "pinRoomsWithMissedNotif"
         static let pinRoomsWithUnreadMessages = "pinRoomsWithUnread"
         static let allowStunServerFallback = "allowStunServerFallback"
-        static let stunServerFallback = "stunServerFallback"
         static let hideVerifyThisSessionAlert = "hideVerifyThisSessionAlert"
         static let hideReviewSessionsAlert = "hideReviewSessionsAlert"
         static let matrixApps = "matrixApps"
@@ -153,10 +152,6 @@ final class RiotSettings: NSObject {
         } set {
             defaults.set(newValue, forKey: UserDefaultsKeys.allowStunServerFallback)
         }
-    }
-
-    var stunServerFallback: String? {
-        return defaults.string(forKey: UserDefaultsKeys.stunServerFallback)
     }
     
     // MARK: Key verification
