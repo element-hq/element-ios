@@ -518,10 +518,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
 #ifdef CALL_STACK_JINGLE
     // Setup Jitsi
-    NSString *jitsiServerStringURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"jitsiServerURL"];
-    NSURL *jitsiServerURL = [NSURL URLWithString:jitsiServerStringURL];
-
-    [JitsiService.shared configureDefaultConferenceOptionsWith:jitsiServerURL];
+    [JitsiService.shared configureDefaultConferenceOptionsWith:BuildSettings.jitsiServerUrl];
 
     [JitsiService.shared application:application didFinishLaunchingWithOptions:launchOptions];
 #endif

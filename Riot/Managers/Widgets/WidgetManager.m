@@ -307,8 +307,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     
     // Build widget data
     // We mix v1 and v2 widget data for backward compability
-    NSString *preferredJitsiServerUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"jitsiServerURL"];
-    NSURL *preferredJitsiServerUrl = [NSURL URLWithString:preferredJitsiServerUrlString];
+    NSURL *preferredJitsiServerUrl = BuildSettings.jitsiServerUrl;
     
     JitsiWidgetData *jitsiWidgetData = [JitsiWidgetData new];
     jitsiWidgetData.domain = preferredJitsiServerUrl.host;
@@ -524,10 +523,8 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
 - (WidgetManagerConfig*)createWidgetManagerConfigWithAppSettings
 {
-    NSString *apiUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsRestUrl"];
-    NSString *uiUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsUiUrl"];
-
-    return [[WidgetManagerConfig alloc] initWithApiUrl:apiUrl uiUrl:uiUrl];
+    return [[WidgetManagerConfig alloc] initWithApiUrl:BuildSettings.integrationsRestApiUrlString
+                                                 uiUrl:BuildSettings.integrationsUiUrlString];
 }
 
 #pragma mark - Modular interface

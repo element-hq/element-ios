@@ -54,7 +54,7 @@ final class BuildSettings: NSObject {
     ]
     
     
-    // Analytics
+    // MARK: - Analytics
     static let analyticsServerUrl = URL(string: "https://piwik.riot.im/piwik.php")
     static let analyticsAppId = "14"
     
@@ -63,6 +63,13 @@ final class BuildSettings: NSObject {
     static let bugReportEndpointUrlString = "https://riot.im/bugreports"
     // Use the name allocated by the bug report server
     static let bugReportApplicationId = "riot-ios"
+    
+    
+    // MARK: - Integrations
+    static let integrationsUiUrlString = "https://scalar.vector.im/"
+    static let integrationsRestApiUrlString = "https://scalar.vector.im/api"
+    // Jitsi server used outside integrations to create conference calls from the call button in the timeline
+    static let jitsiServerUrl = NSURL(string: "https://jitsi.riot.im")
 
     
     // MARK: - Features
