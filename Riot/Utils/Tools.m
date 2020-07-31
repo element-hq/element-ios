@@ -16,6 +16,8 @@
 
 #import "Tools.h"
 
+#import "Riot-Swift.h"
+
 @implementation Tools
 
 + (NSString *)presenceText:(MXUser *)user
@@ -61,42 +63,31 @@
 
 #pragma mark - Universal link
 
-+ (NSString *)webAppUrl
-{
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrl"];
-    //return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrlStaging"];
-    //return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrlDev"];
-}
-
 + (BOOL)isUniversalLink:(NSURL*)url
 {
     BOOL isUniversalLink = NO;
-
-    if ([url.host isEqualToString:@"vector.im"] || [url.host isEqualToString:@"www.vector.im"]
-        || [url.host isEqualToString:@"riot.im"] || [url.host isEqualToString:@"www.riot.im"])
+    
+    for (NSString *matrixPermalinkHost in BuildSettings.matrixPermalinkPaths)
     {
-        // iOS Patch: fix vector.im/riot.im urls before using it
-        NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
-
-        if (NSNotFound != [@[@"/app", @"/staging", @"/develop"] indexOfObject:fixedURL.path])
+        if ([url.host isEqualToString:matrixPermalinkHost])
         {
-            isUniversalLink = YES;
-        }
-    }
-    else if ([url.host isEqualToString:@"staging.element.io"]
-             || [url.host isEqualToString:@"develop.element.io"]
-             || [url.host isEqualToString:@"app.element.io"])
-    {
-        isUniversalLink = YES;
-    }
-    else if ([url.host isEqualToString:@"matrix.to"] || [url.host isEqualToString:@"www.matrix.to"])
-    {
-        // iOS Patch: fix matrix.to urls before using it
-        NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
-
-        if ([fixedURL.path isEqualToString:@"/"])
-        {
-            isUniversalLink = YES;
+            NSArray<NSString*> *hostPaths = BuildSettings.matrixPermalinkPaths[matrixPermalinkHost];
+            if (hostPaths.count)
+            {
+                // iOS Patch: fix urls before using it
+                NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
+                
+                if (NSNotFound != [hostPaths indexOfObject:fixedURL.path])
+                {
+                    isUniversalLink = YES;
+                    break;
+                }
+            }
+            else
+            {
+                isUniversalLink = YES;
+                break;
+            }
         }
     }
 

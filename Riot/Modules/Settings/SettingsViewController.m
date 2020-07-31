@@ -339,7 +339,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     sectionNotificationSettings.headerTitle = NSLocalizedStringFromTable(@"settings_notifications_settings", @"Vector", nil);
     [tmpSections addObject:sectionNotificationSettings];
     
-    if (BuildSettings.allowVoIPUsage && RiotSettings.shared.stunServerFallback)
+    if (BuildSettings.allowVoIPUsage && BuildSettings.stunServerFallbackUrlString)
     {
         Section *sectionCalls = [Section sectionWithTag:SECTION_TAG_CALLS];
         [sectionCalls addRowWithTag:CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX];
@@ -1900,7 +1900,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         }
         else if (row == CALLS_STUN_SERVER_FALLBACK_DESCRIPTION_INDEX)
         {
-            NSString *stunFallbackHost = RiotSettings.shared.stunServerFallback;
+            NSString *stunFallbackHost = BuildSettings.stunServerFallbackUrlString;
             // Remove "stun:"
             stunFallbackHost = [stunFallbackHost componentsSeparatedByString:@":"].lastObject;
 
@@ -2629,8 +2629,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         {
             if (row == OTHER_COPYRIGHT_INDEX)
             {
-                NSString *copyrightUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"settingsCopyrightUrl"];
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:copyrightUrlString];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationCopyrightUrlString];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_copyright", @"Vector", nil);
                 
@@ -2638,8 +2637,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             }
             else if (row == OTHER_TERM_CONDITIONS_INDEX)
             {
-                NSString *termsConditionsUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"settingsTermsConditionsUrl"];
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:termsConditionsUrlString];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationTermsConditionsUrlString];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
                 
@@ -2647,8 +2645,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             }
             else if (row == OTHER_PRIVACY_INDEX)
             {
-                NSString *privacyPolicyUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"settingsPrivacyPolicyUrl"];
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:privacyPolicyUrlString];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationPrivacyPolicyUrlString];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
                 
@@ -2945,7 +2942,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     UISwitch *switchButton = (UISwitch*)sender;
     RiotSettings.shared.allowStunServerFallback = switchButton.isOn;
 
-    self.mainSession.callManager.fallbackSTUNServer = RiotSettings.shared.allowStunServerFallback ? RiotSettings.shared.stunServerFallback : nil;
+    self.mainSession.callManager.fallbackSTUNServer = RiotSettings.shared.allowStunServerFallback ? BuildSettings.stunServerFallbackUrlString : nil;
 }
 
 - (void)toggleAllowIntegrations:(id)sender

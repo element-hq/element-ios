@@ -26,6 +26,8 @@
 #import "ForgotPasswordInputsView.h"
 #import "AuthFallBackViewController.h"
 
+#import "Riot-Swift.h"
+
 @interface AuthenticationViewController () <AuthFallBackViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, SetPinCoordinatorBridgePresenterDelegate>
 {
     /**
@@ -96,9 +98,9 @@
     self.mainNavigationItem.title = nil;
     self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
     
-    self.defaultHomeServerUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"homeserverurl"];
+    self.defaultHomeServerUrl = RiotSettings.shared.homeserverUrlString;
     
-    self.defaultIdentityServerUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"identityserverurl"];
+    self.defaultIdentityServerUrl = RiotSettings.shared.identityServerUrlString;
     
     self.welcomeImageView.image = [UIImage imageNamed:@"horizontal_logo"];
     

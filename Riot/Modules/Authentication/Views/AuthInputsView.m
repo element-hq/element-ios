@@ -651,7 +651,7 @@
 
                             // Create the next link that is common to all Vector.im clients
                             NSString *nextLink = [NSString stringWithFormat:@"%@/#/register?client_secret=%@&hs_url=%@&session_id=%@",
-                                                  [Tools webAppUrl],
+                                                  BuildSettings.applicationWebAppUrlString,
                                                   [self->submittedEmail.clientSecret stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]],
                                                   [restClient.homeserver stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]],
                                                   [self->currentSession.session stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]]];

@@ -6,8 +6,6 @@
 	<true/>
 	<key>pinRoomsWithUnread</key>
 	<true/>
-	<key>pushGatewayURL</key>
-	<string>https://matrix.org/_matrix/push/v1/notify</string>
 	<key>pushKitAppIdProd</key>
 	<string>im.vector.app.ios.voip.prod</string>
 	<key>pushKitAppIdDev</key>
@@ -16,41 +14,8 @@
 	<string>im.vector.app.ios.dev</string>
 	<key>pusherAppIdProd</key>
 	<string>im.vector.app.ios.prod</string>
-	<key>identityserverurl</key>
-	<string>https://vector.im</string>
-	<key>homeserverurl</key>
-	<string>https://matrix.org</string>
-	<key>homeserver</key>
-	<string>matrix.org</string>
-	<key>webAppUrlDev</key>
-	<string>https://develop.element.io</string>
-	<key>webAppUrlStaging</key>
-	<string>https://staging.element.io</string>
-	<key>webAppUrl</key>
-	<string>https://app.element.io</string>
 	<key>matrixApps</key>
 	<true/>
-	<key>integrationsUiUrl</key>
-	<string>https://scalar.vector.im/</string>
-	<key>integrationsRestUrl</key>
-	<string>https://scalar.vector.im/api</string>
-	<key>jitsiServerURL</key>
-	<string>https://jitsi.riot.im</string>
-	<key>integrationsWidgetsUrls</key>
-	<array>
-		<string>https://scalar.vector.im/_matrix/integrations/v1</string>
-		<string>https://scalar.vector.im/api</string>
-		<string>https://scalar-staging.vector.im/_matrix/integrations/v1</string>
-		<string>https://scalar-staging.vector.im/api</string>
-		<string>https://scalar-staging.riot.im/scalar/api</string>
-	</array>
-	<key>piwik</key>
-	<dict>
-		<key>url</key>
-		<string>https://piwik.riot.im/piwik.php</string>
-		<key>siteId</key>
-		<string>14</string>
-	</dict>
 	<key>showAllEventsInRoomHistory</key>
 	<false/>
 	<key>showRedactionsInRoomHistory</key>
@@ -65,8 +30,6 @@
 	<false/>
 	<key>createConferenceCallsWithJitsi</key>
 	<true/>
-	<key>stunServerFallback</key>
-	<string>stun:turn.matrix.org</string>
 	<key>enableRageShake</key>
 	<true/>
 	<key>maxAllowedMediaCacheSize</key>
@@ -77,21 +40,6 @@
 	<integer>15066368</integer>
 	<key>presenceColorForOfflineUser</key>
 	<integer>15020851</integer>
-	<key>bugReportEndpointUrl</key>
-	<string>https://riot.im/bugreports</string>
-	<key>bugReportApp</key>
-	<string>riot-ios</string>
-	<key>roomDirectoryServers</key>
-	<dict>
-		<key>matrix.org</key>
-		<string></string>
-	</dict>
-	<key>settingsCopyrightUrl</key>
-	<string>https://element.io/copyright</string>
-	<key>settingsPrivacyPolicyUrl</key>
-	<string>https://element.io/privacy</string>
-	<key>settingsTermsConditionsUrl</key>
-	<string>https://element.io/terms-of-service</string>
 	<key>enableBotCreation</key>
 	<false/>
 </dict>

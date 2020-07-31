@@ -23,6 +23,8 @@ final class RiotSettings: NSObject {
     // MARK: - Constants
     
     private enum UserDefaultsKeys {
+        static let homeserverUrlString = "homeserverurl"
+        static let identityServerUrlString = "identityserverurl"
         static let enableCrashReport = "enableCrashReport"
         static let enableRageShake = "enableRageShake"
         static let createConferenceCallsWithJitsi = "createConferenceCallsWithJitsi"
@@ -31,7 +33,6 @@ final class RiotSettings: NSObject {
         static let pinRoomsWithMissedNotifications = "pinRoomsWithMissedNotif"
         static let pinRoomsWithUnreadMessages = "pinRoomsWithUnread"
         static let allowStunServerFallback = "allowStunServerFallback"
-        static let stunServerFallback = "stunServerFallback"
         static let hideVerifyThisSessionAlert = "hideVerifyThisSessionAlert"
         static let hideReviewSessionsAlert = "hideReviewSessionsAlert"
         static let matrixApps = "matrixApps"
@@ -45,6 +46,24 @@ final class RiotSettings: NSObject {
     }()
     
     // MARK: - Public
+    
+    // MARK: Servers
+    
+    var homeserverUrlString: String {
+        get {
+            return defaults.string(forKey: UserDefaultsKeys.homeserverUrlString) ?? BuildSettings.defaultHomeserverUrlString
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.homeserverUrlString)
+        }
+    }
+    
+    var identityServerUrlString: String {
+        get {
+            return defaults.string(forKey: UserDefaultsKeys.identityServerUrlString) ?? BuildSettings.defaultIdentityServerUrlString
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.identityServerUrlString)
+        }
+    }
     
     // MARK: Notifications
     
@@ -153,10 +172,6 @@ final class RiotSettings: NSObject {
         } set {
             defaults.set(newValue, forKey: UserDefaultsKeys.allowStunServerFallback)
         }
-    }
-
-    var stunServerFallback: String? {
-        return defaults.string(forKey: UserDefaultsKeys.stunServerFallback)
     }
     
     // MARK: Key verification

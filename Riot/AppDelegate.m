@@ -518,10 +518,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
 #ifdef CALL_STACK_JINGLE
     // Setup Jitsi
-    NSString *jitsiServerStringURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"jitsiServerURL"];
-    NSURL *jitsiServerURL = [NSURL URLWithString:jitsiServerStringURL];
-
-    [JitsiService.shared configureDefaultConferenceOptionsWith:jitsiServerURL];
+    [JitsiService.shared configureDefaultConferenceOptionsWith:BuildSettings.jitsiServerUrl];
 
     [JitsiService.shared application:application didFinishLaunchingWithOptions:launchOptions];
 #endif
@@ -1942,7 +1939,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             account.mxSession.roomSummaryUpdateDelegate = eventFormatter;
             
             // Set the push gateway URL.
-            account.pushGatewayURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"pushGatewayURL"];
+            account.pushGatewayURL = BuildSettings.sygnalAPIUrlString;
 
             BOOL isPushRegistered = self.pushNotificationService.isPushRegistered;
 
@@ -2058,7 +2055,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             // Set this url in the existing accounts when it is undefined.
             if (!account.pushGatewayURL)
             {
-                account.pushGatewayURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"pushGatewayURL"];
+                account.pushGatewayURL = BuildSettings.sygnalAPIUrlString;
             }
         }
         
@@ -3134,7 +3131,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     [_errorNotification dismissViewControllerAnimated:NO completion:nil];
 
-    NSString *stunFallbackHost = RiotSettings.shared.stunServerFallback;
+    NSString *stunFallbackHost = BuildSettings.stunServerFallbackUrlString;
     // Remove "stun:"
     stunFallbackHost = [stunFallbackHost componentsSeparatedByString:@":"].lastObject;
 
@@ -3154,7 +3151,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                                          handler:^(UIAlertAction * action) {
 
                                                              RiotSettings.shared.allowStunServerFallback = YES;
-                                                             mainSession.callManager.fallbackSTUNServer = RiotSettings.shared.stunServerFallback;
+                                                             mainSession.callManager.fallbackSTUNServer = BuildSettings.stunServerFallbackUrlString;
 
                                                              [AppDelegate theDelegate].errorNotification = nil;
                                                          }]];
