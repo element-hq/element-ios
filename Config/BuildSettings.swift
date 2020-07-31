@@ -34,6 +34,10 @@ final class BuildSettings: NSObject {
     static let applicationWebAppUrlString = "https://app.element.io"
     
     
+    // MARK: - Server configuration
+    static let sygnalAPIUrlString = "https://matrix.org/_matrix/push/v1/notify"
+    
+    
     // MARK: - Legal URLs
     static let applicationCopyrightUrlString = "https://element.io/copyright"
     static let applicationPrivacyPolicyUrlString = "https://element.io/privacy"
