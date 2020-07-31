@@ -136,6 +136,14 @@ platform :ios do
     )
   end
 
+  lane :point_dependencies_to_pending_releases do
+    edit_podfile(branch_pattern: "release/*/release")
+  end
+
+  lane :point_dependencies_to_same_feature do
+    edit_podfile(branch_pattern: git_branch)
+  end
+
   #### Private ####
 
   desc "Download App Store or Ad-Hoc provisioning profiles"
@@ -270,4 +278,13 @@ platform :ios do
     scheme.save_as(project_path, scheme_name)
   end
 
+  desc "Edit the Podfile in order to point MatrixKit and MatrixSDK to the appropriate branches."
+  private_lane :edit_podfile do |options|
+    # Since MatrixSDK is a transitive dependency (brought by MatrixKit.podspec), modifying the Podfile won't be enough.
+    #  - So we need to make a copy of the MatrixKit.podspec (extracted from the right branch of the MatrixKit repo) locally first,
+    #  - then edit that local MatrixKit.podspec to change its dependency of MatrixSDK to point to the right branch of MatrixSDK too
+    #  - and finally edit the Podfile to point MatrixKit to that locally modified `MatrixKit.podspec` (itself opinting to the right MatrixSDK).
+    #
+    UI.message("This is supposed to make a local copy of MatrixKit.podspec from #{options[:branch_pattern]} branch, edit it to use the right MatrixSDK version, and point the Podfile to that local podspec. But that is not implemented yet...")
+  end
 end
