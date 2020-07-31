@@ -29,11 +29,19 @@ final class BuildSettings: NSObject {
         Bundle.app.object(forInfoDictionaryKey: "applicationGroupIdentifier") as! String
     }
     
+    
+    // Legal URLs
+    static let applicationCopyrightUrlString = "https://element.io/copyright"
+    static let applicationPrivacyPolicyUrlString = "https://element.io/privacy"
+    static let applicationTermsConditionsUrlString = "https://element.io/terms-of-service"
+
+    
     /// Setting to force protection by pin code
     static let forcePinProtection: Bool = false
     
     /// Force non-jailbroken app usage
     static let forceNonJailbrokenUsage: Bool = true
+    
     
     static let showUserFirstNameInSettings: Bool = false
     static let showUserSurnameInSettings: Bool = false
@@ -58,10 +66,12 @@ final class BuildSettings: NSObject {
     static let allowDeactivatingAccount: Bool = true
     static let allowSendingStickers: Bool = true
     
+    
     //  Message settings
     static let allowMessageDetailsShare: Bool = true
     static let allowMessageDetailsPermalink: Bool = true
     static let allowMessageDetailsViewSource: Bool = true
+    
     
     // Authentication Screen
     static let authScreenShowRegister = true

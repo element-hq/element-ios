@@ -86,12 +86,6 @@
 		<key>matrix.org</key>
 		<string></string>
 	</dict>
-	<key>settingsCopyrightUrl</key>
-	<string>https://element.io/copyright</string>
-	<key>settingsPrivacyPolicyUrl</key>
-	<string>https://element.io/privacy</string>
-	<key>settingsTermsConditionsUrl</key>
-	<string>https://element.io/terms-of-service</string>
 	<key>enableBotCreation</key>
 	<false/>
 </dict>

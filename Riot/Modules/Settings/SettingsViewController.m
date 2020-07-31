@@ -2629,8 +2629,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         {
             if (row == OTHER_COPYRIGHT_INDEX)
             {
-                NSString *copyrightUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"settingsCopyrightUrl"];
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:copyrightUrlString];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationCopyrightUrlString];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_copyright", @"Vector", nil);
                 
@@ -2638,8 +2637,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             }
             else if (row == OTHER_TERM_CONDITIONS_INDEX)
             {
-                NSString *termsConditionsUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"settingsTermsConditionsUrl"];
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:termsConditionsUrlString];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationTermsConditionsUrlString];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
                 
@@ -2647,8 +2645,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             }
             else if (row == OTHER_PRIVACY_INDEX)
             {
-                NSString *privacyPolicyUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"settingsPrivacyPolicyUrl"];
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:privacyPolicyUrlString];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationPrivacyPolicyUrlString];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
                 
