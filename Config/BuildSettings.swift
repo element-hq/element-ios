@@ -40,6 +40,23 @@ final class BuildSettings: NSObject {
     static let applicationTermsConditionsUrlString = "https://element.io/terms-of-service"
     
     
+    // MARk: - Matrix permalinks
+    // Paths for URLs that will considered as Matrix permalinks. Those permalinks are opened within the app
+    static let matrixPermalinkPaths: [String: [String]] = [
+        "app.element.io": [],
+        "staging.element.io": [],
+        "develop.element.io": [],
+        // Historical ones
+        "riot.im": ["/app", "/staging", "/develop"],
+        "www.riot.im": ["/app", "/staging", "/develop"],
+        "vector.im": ["/app", "/staging", "/develop"],
+        "www.vector.im": ["/app", "/staging", "/develop"],
+        // Official Matrix ones
+        "matrix.to": ["/"],
+        "www.matrix.to": ["/"],
+    ]
+    
+    
     // MARK: - VoIP
     static var allowVoIPUsage: Bool {
         #if canImport(JitsiMeet)

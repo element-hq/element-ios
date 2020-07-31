@@ -22,10 +22,6 @@
 	<string>https://matrix.org</string>
 	<key>homeserver</key>
 	<string>matrix.org</string>
-	<key>webAppUrlDev</key>
-	<string>https://develop.element.io</string>
-	<key>webAppUrlStaging</key>
-	<string>https://staging.element.io</string>
 	<key>matrixApps</key>
 	<true/>
 	<key>showAllEventsInRoomHistory</key>
