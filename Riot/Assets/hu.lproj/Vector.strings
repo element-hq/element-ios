@@ -1189,3 +1189,17 @@
 "pin_protection_settings_section_footer" = "A PIN újbóli beállításához újra be kell lépjél és létre kell hozni egy újat.";
 "pin_protection_settings_enabled_forced" = "PIN engedélyezve";
 "pin_protection_settings_enable_pin" = "PIN engedélyezése";
+"pin_protection_settings_section_header_x" = "PIN & %@";
+"biometrics_mode_touch_id" = "Érintéses azonosítás";
+"biometrics_mode_face_id" = "Arc felismerés";
+"biometrics_settings_enable_x" = "%@ engedélyezése";
+"biometrics_setup_title_x" = "%@ engedélyezése";
+"biometrics_setup_enable_button_title_x" = "%@ engedélyezése";
+"biometrics_setup_subtitle" = "Spórolj időt";
+"biometrics_desetup_title_x" = "%@ kikapcsolása";
+"biometrics_desetup_disable_button_title_x" = "%@ kikapcsolása";
+"biometrics_usage_reason" = "Az alkalmazás eléréséhez azonosításra van szükség";
+"biometrics_cant_unlocked_alert_title" = "Az alkalmazást nem sikerült feloldani";
+"biometrics_cant_unlocked_alert_message_x" = "A feloldáshoz használd ezt: %@ vagy jelentkezz vissza és engedélyezd ezt újra: %@";
+"biometrics_cant_unlocked_alert_message_login" = "Bejelentkezés újra";
+"biometrics_cant_unlocked_alert_message_retry" = "Újra";
