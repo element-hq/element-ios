@@ -34,6 +34,12 @@ final class BuildSettings: NSObject {
     static let applicationCopyrightUrlString = "https://element.io/copyright"
     static let applicationPrivacyPolicyUrlString = "https://element.io/privacy"
     static let applicationTermsConditionsUrlString = "https://element.io/terms-of-service"
+    
+    
+    // Bug report
+    static let bugReportEndpointUrlString = "https://riot.im/bugreports"
+    // Use the name allocated by the bug report server
+    static let bugReportApplicationId = "riot-ios"
 
     
     /// Setting to force protection by pin code
