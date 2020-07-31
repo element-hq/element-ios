@@ -954,3 +954,50 @@
 // Room Preview
 "room_preview_invitation_format" = "Sa oled kutsutud siia jututuppa %@ poolt";
 "room_preview_subtitle" = "See on jututoa eelvaade. Seega igasugune suhtlus ei ole võimalik.";
+"media_type_accessibility_audio" = "Heli";
+"room_preview_unlinked_email_warning" = "Kutse saadeti %@ e-posti aadressile, aga see ei ole seotud antud kasutajakontoga. Sa kas peaksid logima sisse teise kontoga või lisama selle e-posti aadressi oma kasutajakontole.";
+"room_preview_try_join_an_unknown_room" = "Sa proovid saada ligipääsu %@ jututoale. Kas soovid keskustelus osalemiseks selle jututoaga liituda?";
+"room_preview_try_join_an_unknown_room_default" = "jututoaga";
+// Settings
+"settings_title" = "Seadistused";
+"account_logout_all" = "Logi välja kõikidest kasutajakontodest";
+"settings_config_no_build_info" = "Puudub teave kompileerimise kohta";
+"settings_mark_all_as_read" = "Märgi kõik sõnumid loetuks";
+"settings_report_bug" = "Teata veast";
+"settings_clear_cache" = "Tühjenda puhver";
+"settings_config_home_server" = "Koduserver on %@";
+"settings_discovery_settings" = "LEIA KASUTAJAID";
+"settings_flair" = "Kui see on lubatud, siis näita kogukonna rinnamärki";
+"settings_devices" = "SESSIOONID";
+"settings_cryptography" = "KRÜPTOGRAAFIA";
+"settings_key_backup" = "KRÜPTOVÕTMETE VARUNDUS";
+"settings_deactivate_account" = "SULGE KASUTAJAKONTO";
+"settings_sign_out" = "Logi välja";
+"settings_sign_out_confirmation" = "Kas sa oled kindel?";
+"settings_sign_out_e2e_warn" = "Sa kaotav võimaluse kasutada oma läbiva krüptimise võtmeid. See tähendab, et selles seadmes krüptitud jututubades sa ei saa enam lugeda vanu sõnumeid.";
+"settings_night_mode" = "Öörežiim";
+"settings_three_pids_management_information_part1" = "Halda missuguseid e-posti aadresse ja telefoninumbreid sa saad siin oma kontole sisselogimiseks või ligipääsu taastamiseks kasutada. Määra seda, kes saavad sind leida ";
+"settings_three_pids_management_information_part2" = "Kasutajate otsingus";
+"settings_three_pids_management_information_part3" = ".";
+"settings_security" = "TURVALISUS";
+"settings_enable_push_notif" = "Teavitused selles seadmes";
+"settings_key_backup_info" = "Krüptitud sõnumid kasutavad läbivat krüptimist. Ainult sinul ja saaja(te)l on võtmed selliste sõnumite lugemiseks.";
+"settings_key_backup_info_signout_warning" = "Enne väljalogimist seo see sessioon krüptovõtmete varundusega. Kui sa seda ei tee, siis võid kaotada võtmed, mida kasutatakse vaid siin seadmes.";
+"settings_discovery_three_pids_management_information_part2" = "Kasutaja seadistused";
+"settings_discovery_three_pids_management_information_part3" = ".";
+"settings_discovery_error_message" = "Ilmnes viga. Palun proovi uuesti.";
+"settings_discovery_three_pid_details_title_email" = "Halda e-posti seadistusi";
+"settings_identity_server_no_is" = "Isikutuvastusserver ei ole seadistatud";
+"settings_identity_server_no_is_description" = "Sa hetkel ei kasuta isikutuvastusserverit. Et olla leitav ja ise leida sinule teadaolevaid inimesi seadista ta siinsamas ülal.";
+"security_settings_complete_security_alert_title" = "Vormista turvaseadistused lõpuni";
+"security_settings_complete_security_alert_message" = "Sa peaksid esmalt vormistama turvaseadistused lõpuni oma praeguses sessioonis.";
+"room_details_history_section_prompt_title" = "Privaatsushoiatus";
+"room_details_addresses_disable_main_address_prompt_msg" = "Sel jututoal ei saa olema põhiaadressi. Seetõttu valitakse vaikimisi põhiaadress juhuslikult";
+"room_details_flair_section" = "Näita kogukondade rinnasilte";
+// Crash report
+"google_analytics_use_prompt" = "Kas sa soovid aitata parandada %@ rakendust saates arendajatele automaatseid ja anonüümsed veateateid ning kasutusteavet?";
+// Crypto
+"e2e_enabling_on_app_update" = "Element nüüd toetab läbivat krüptimist ning selle kasutusele võtmiseks peaksid sa uuesti sisse logima.\n\nSa võid teha seda kohe või määrata rakenduse seadistustes.";
+"e2e_need_log_in_again" = "Selle sessiooni läbiva krüptimise võtmete loomiseks ja avaliku võtme salvestamiseks koduserverisse peaksid sa uuesti sisse logima.\nVabandame ebamugavuse pärast, aga see õnneks on ühekordne toiming.";
+// Key backup wrong version
+"e2e_key_backup_wrong_version_title" = "Uus võtmete varukoopia";
