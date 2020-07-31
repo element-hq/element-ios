@@ -23,6 +23,8 @@ final class RiotSettings: NSObject {
     // MARK: - Constants
     
     private enum UserDefaultsKeys {
+        static let homeserverUrlString = "homeserverurl"
+        static let identityServerUrlString = "identityserverurl"
         static let enableCrashReport = "enableCrashReport"
         static let enableRageShake = "enableRageShake"
         static let createConferenceCallsWithJitsi = "createConferenceCallsWithJitsi"
@@ -44,6 +46,24 @@ final class RiotSettings: NSObject {
     }()
     
     // MARK: - Public
+    
+    // MARK: Servers
+    
+    var homeserverUrlString: String {
+        get {
+            return defaults.string(forKey: UserDefaultsKeys.homeserverUrlString) ?? BuildSettings.defaultHomeserverUrlString
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.homeserverUrlString)
+        }
+    }
+    
+    var identityServerUrlString: String {
+        get {
+            return defaults.string(forKey: UserDefaultsKeys.identityServerUrlString) ?? BuildSettings.defaultIdentityServerUrlString
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.identityServerUrlString)
+        }
+    }
     
     // MARK: Notifications
     
