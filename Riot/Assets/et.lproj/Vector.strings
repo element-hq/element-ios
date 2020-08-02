@@ -1091,3 +1091,10 @@
 "biometrics_cant_unlocked_alert_message_x" = "Lukust lahti võtmiseks, kasuta %@ või logi uuesti sise ja võta %@ uuesti kasutusele";
 "biometrics_cant_unlocked_alert_message_login" = "Logi uuesti sisse";
 "biometrics_cant_unlocked_alert_message_retry" = "Proovi uuesti";
+"deactivate_account_title" = "Deaktiveeri konto";
+"deactivate_account_informations_part1" = "See muudab sinu konto jäädavalt mittekasutatavaks. Sina ei saa enam sisse logida ja keegi teine ei saa seda kasutajatunnust uuesti pruukida. Samuti logitakse sind välja kõikidest jututubadest, kus sa osaled ning eemaldatakse kõik sinu andmed sinu isikutuvastusserverist. ";
+"deactivate_account_informations_part2_emphasize" = "Seda tegevust ei saa tagasi pöörata.";
+"deactivate_account_informations_part3" = "\n\nSinu konto kustutamine ";
+"deactivate_account_informations_part4_emphasize" = "vaikimisi ei tähenda, et unustatakse ka sinu saadetud sõnumid. ";
+"deactivate_account_informations_part5" = "Kui sa siiski soovid seda, siis palun tee märge alljärgnevasse kasti.\n\nMatrix'i sõnumite nähtavus on sarnane e-posti kirjadega. Sõnumite unustamine tegelikult tähendab seda, et sinu varemsaadetud sõnumeid ei jagata uute või veel registreerumata kasutajatega, kuid registeerunud kasutajad, kes juba on need sõnumid saanud, võivad neid ka jätkuvalt lugeda.";
+"rerequest_keys_alert_message" = "Palun käivita Element mõnes muus seadmes, mis suudab neid sõnumeid dekrüptoda ja seega saata krüptovõtmeid siia sessiooni.";
