@@ -202,12 +202,12 @@
 "room_one_user_is_typing" = "%@ está digitando…";
 "room_two_users_are_typing" = "%@ & %@ estão digitando…";
 "room_many_users_are_typing" = "%@, %@ e outros estão digitando…";
-"room_message_placeholder" = "Enviar uma mensagem (não criptografada)…";
+"room_message_placeholder" = "Digite uma mensagem (não criptografada)…";
 "room_message_reply_to_placeholder" = "Enviar uma resposta (não criptografada)…";
 "room_do_not_have_permission_to_post" = "Você não tem permissão para postar nesta sala";
 "encrypted_room_message_placeholder" = "Enviar uma mensagem criptografada…";
 "encrypted_room_message_reply_to_placeholder" = "Enviar uma resposta criptografada…";
-"room_message_short_placeholder" = "Enviar uma mensagem…";
+"room_message_short_placeholder" = "Digite uma mensagem…";
 "room_message_reply_to_short_placeholder" = "Enviar uma resposta…";
 "room_offline_notification" = "A conectividade com o servidor foi perdida.";
 "room_unsent_messages_notification" = "Mensagens não enviadas. %@ ou %@ agora?";
@@ -242,7 +242,7 @@
 "room_warning_about_encryption" = "A criptografia de ponta a ponta está na versão beta e pode não ser confiável.↵\n↵\nVocê ainda não deve confiar nela para proteger os dados.↵\n↵\nOs aparelhos ainda não poderão descriptografar o histórico antes de entrarem na sala.↵\n↵\nAs mensagens criptografadas não estarão visíveis em clientes que ainda não implementaram a criptografia.";
 "room_event_failed_to_send" = "Falha ao enviar";
 "room_action_send_photo_or_video" = "Enviar foto ou vídeo";
-"room_action_send_sticker" = "Enviar sticker";
+"room_action_send_sticker" = "Enviar figurinha";
 "room_replacement_information" = "Esta sala foi substituída e não está mais ativa.";
 "room_replacement_link" = "A conversa continua aqui.";
 "room_predecessor_information" = "Esta sala é uma continuação de outra conversa.";
@@ -288,7 +288,7 @@
 "settings_notifications_settings" = "CONFIGURAÇÕES DE NOTIFICAÇÕES";
 "settings_calls_settings" = "CHAMADAS";
 "settings_user_interface" = "INTERFACE DO USUÁRIO";
-"settings_ignored_users" = "USUÁRIOS IGNORADOS";
+"settings_ignored_users" = "USUÁRIOS SILENCIADOS";
 "settings_contacts" = "CONTATOS LOCAIS";
 "settings_advanced" = "AVANÇADO";
 "settings_other" = "OUTROS";
@@ -296,7 +296,7 @@
 "settings_flair" = "Mostrar insígnias onde permitido";
 "settings_devices" = "SESSÕES";
 "settings_cryptography" = "CRIPTOGRAFIA";
-"settings_deactivate_account" = "DESATIVAR A CONTA";
+"settings_deactivate_account" = "DESATIVAR MINHA CONTA";
 "settings_sign_out" = "Sair";
 "settings_sign_out_confirmation" = "Você tem certeza?";
 "settings_sign_out_e2e_warn" = "Você perderá suas chaves de criptografia de ponta a ponta. Isso significa que você não poderá mais ler mensagens antigas em salas criptografadas neste aparelho.";
@@ -495,7 +495,7 @@
 "call_jitsi_error" = "Não foi possível participar da chamada em grupo.";
 // No VoIP support
 "no_voip_title" = "Recebendo chamada";
-"no_voip" = "%@ está ligando para você, mas %@ ainda não suporta chamadas.↵\nVocê pode ignorar essa notificação e atender a chamada de outro aparelho ou pode rejeitá-la.";
+"no_voip" = "%@ está ligando para você, mas %@ ainda não suporta chamadas.↵\nVocê pode ignorar essa notificação e aceitar a chamada em outro aparelho, ou recusar.";
 // Crash report
 "google_analytics_use_prompt" = "Você gostaria de ajudar a melhorar o %@ informando automaticamente relatórios de falhas e dados de uso anônimos?";
 // Crypto
@@ -515,7 +515,7 @@
 // Widget
 "widget_no_power_to_manage" = "Você precisa de permissão para gerenciar widgets nesta sala";
 "widget_creation_failure" = "A criação do widget falhou";
-"widget_sticker_picker_no_stickerpacks_alert" = "Atualmente, você não tem nenhum stickerpacks ativado.";
+"widget_sticker_picker_no_stickerpacks_alert" = "No momento, você não possui pacotes de figurinhas ativados.";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "Adicione alguns agora?";
 // Widget Integration Manager
 "widget_integration_need_to_be_able_to_invite" = "Você precisa convidar os usuários para fazer isso.";
@@ -537,11 +537,11 @@
 "e2e_room_key_request_message" = "Sua sessão não verificada '%@' está solicitando chaves de criptografia.";
 "e2e_room_key_request_start_verification" = "Iniciar verificação…";
 "e2e_room_key_request_share_without_verifying" = "Compartilhar sem verificar";
-"e2e_room_key_request_ignore_request" = "Ignorar requisição";
+"e2e_room_key_request_ignore_request" = "Ignorar solicitação";
 // GDPR
 "gdpr_consent_not_given_alert_message" = "Para continuar usando o %@ servidor local, você deve revisar e concordar com os termos e condições.";
 "gdpr_consent_not_given_alert_review_now_action" = "Revisar agora";
-"deactivate_account_title" = "Desativar Conta";
+"deactivate_account_title" = "Desativar minha conta";
 "deactivate_account_informations_part1" = "Isso tornará sua conta permanentemente inutilizável. Você não poderá efetuar login e ninguém poderá registrar novamente o mesmo ID de usuário. Isso fará com que sua conta deixe todas as salas nas quais está participando e removerá os detalhes da sua conta do seu servidor de identidade. ";
 "deactivate_account_informations_part2_emphasize" = "Essa ação é irreversível.";
 "deactivate_account_informations_part3" = "\n\nDesativando sua conta ";
@@ -550,15 +550,15 @@
 "deactivate_account_forget_messages_information_part1" = "Por favor, esqueça todas as mensagens que enviei quando minha conta está desativada (";
 "deactivate_account_forget_messages_information_part2_emphasize" = "Aviso";
 "deactivate_account_forget_messages_information_part3" = ": isso fará com que futuros usuários vejam uma visão incompleta das conversas)";
-"deactivate_account_validate_action" = "Desativar conta";
-"deactivate_account_password_alert_title" = "Desativar Conta";
+"deactivate_account_validate_action" = "Desativar minha conta";
+"deactivate_account_password_alert_title" = "Desativar minha conta";
 "deactivate_account_password_alert_message" = "Para continuar, por favor, digite sua senha";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Requisição enviada";
 "rerequest_keys_alert_message" = "Por favor, inicie o Element em outro aparelho que possa descriptografar a mensagem, de modo que ele possa enviar as chaves para esta sessão.";
 // String for App Store
-"store_short_description" = "Chat/VoIP seguro e descentralizado";
-"store_full_description" = "O Element é um novo tipo de aplicativo de comunicação e colaboração que:↵\n↵\n1. Coloca você no controle para preservar sua privacidade↵\n2. Permite que você se comunique com qualquer pessoa na rede Matrix, e até mais além, integrando-se a aplicativos como o Slack↵\n3. Protege você de publicidade, datamining, backdoors e jardins murados↵\n4. Protege você por meio de criptografia de ponta a ponta, com assinatura cruzada para verificar outras pessoas↵\n↵\nO Element é completamente diferente de outros aplicativos de mensagens e colaboração porque é descentralizado e de código aberto.↵\n↵\nO Element permite que você use seu próprio servidor - ou escolha uma alternativa de armazenamento - para ter privacidade, propriedade e controle de seus dados e conversas. Dá acesso a uma rede aberta; para que você não fique falando apenas com outros usuários do Element. E é muito seguro.↵\n↵\nO Element é capaz de fazer tudo isso porque opera na rede Matrix - o padrão para comunicação aberta e descentralizada.↵\n↵\nO Element coloca você no controle, permitindo escolher quem armazena suas conversas. No aplicativo do Element, você pode optar por armazenar de diferentes maneiras:↵\n↵\n1. Obtenha uma conta gratuita no servidor público matrix.org↵\n2. Armazene sua conta automaticamente, executando um servidor em seu próprio hardware↵\n3. Inscreva-se em uma conta para um servidor personalizado, basta se inscrever na plataforma de armazenamento do Element Matrix Services↵\n↵\nPor que escolher o Element?↵\n↵\nPOSSUA SEUS DADOS: você decide onde guardar seus dados e mensagens. Você os possui e controla, e não alguma MEGA CORPORAÇÃO que vende seus dados ou dá acesso a terceiros.↵\n↵\nMENSAGEM ABERTA E COLABORAÇÃO: você pode conversar com qualquer outra pessoa na rede Matrix, esteja ela usando o Element ou outro aplicativo que se conecta na rede Matrix. E mesmo se estiverem usando um sistema de mensagens diferente, como Slack, IRC ou XMPP.↵\n↵\nSUPER SEGURO: criptografia real de ponta a ponta (somente aqueles na conversa podem descriptografar as mensagens) e assinatura cruzada para verificar os aparelhos dos participantes da conversa.↵\n↵\nCOMUNICAÇÃO COMPLETA: mensagens, chamadas de voz e de vídeo, compartilhamento de arquivos, compartilhamento de tela e um monte de integrações, bots e widgets. Crie salas, comunidades, mantenha contato e faça as coisas acontecerem.↵\n↵\nONDE QUER QUE VOCÊ ESTEJA: mantenha contato onde quer que você esteja, com o histórico de mensagens totalmente sincronizado em todos os seus aparelhos e na web em https://element.io/app.";
+"store_short_description" = "Conversas e chamadas: seguras e descentralizadas";
+"store_full_description" = "O Element é um novo tipo de aplicativo de comunicação e colaboração que:↵\n↵\n1. Coloca você no controle para preservar sua privacidade↵\n2. Permite que você se comunique com qualquer pessoa na rede Matrix, e até mais além, integrando-se a aplicativos como o Slack↵\n3. Protege você de publicidade, datamining, backdoors e jardins murados↵\n4. Protege você por meio da criptografia de ponta a ponta, com assinatura cruzada para verificar outras pessoas↵\n↵\nO Element é completamente diferente de outros aplicativos de mensagens e colaboração porque é descentralizado e de código aberto.↵\n↵\nO Element permite que você use seu próprio servidor - ou escolha uma alternativa de armazenamento - para ter privacidade, propriedade e controle de seus dados e conversas. Dá acesso a uma rede aberta; para que você não fique falando apenas com outros usuários do Element. E é muito seguro.↵\n↵\nO Element é capaz de fazer tudo isso porque opera na rede Matrix - o padrão para comunicação aberta e descentralizada.↵\n↵\nO Element coloca você no controle, permitindo escolher quem armazena suas conversas. No aplicativo do Element, você pode optar por armazenar de diferentes maneiras:↵\n↵\n1. Obtenha uma conta gratuita no servidor público matrix.org↵\n2. Armazene sua conta automaticamente, executando um servidor em seu próprio hardware↵\n3. Inscreva-se em uma conta para um servidor personalizado, basta se inscrever na plataforma de armazenamento do Element Matrix Services↵\n↵\nPor que escolher o Element?↵\n↵\nPOSSUA SEUS DADOS: você decide onde guardar seus dados e mensagens. Você os possui e controla, e não alguma MEGA CORPORAÇÃO que vende seus dados ou dá acesso a terceiros.↵\n↵\nMENSAGEM ABERTA E COLABORAÇÃO: você pode conversar com qualquer outra pessoa na rede Matrix, esteja ela usando o Element ou outro aplicativo que se conecta na rede Matrix. E mesmo se estiverem usando um sistema de mensagens diferente, como Slack, IRC ou XMPP.↵\n↵\nSUPER SEGURO: criptografia real de ponta a ponta (somente aqueles na conversa podem descriptografar as mensagens) e assinatura cruzada para verificar os aparelhos dos participantes da conversa.↵\n↵\nCOMUNICAÇÃO COMPLETA: mensagens, chamadas de voz e de vídeo, compartilhamento de arquivos, compartilhamento de tela e um monte de integrações, bots e widgets. Crie salas, comunidades, mantenha contato e faça as coisas acontecerem.↵\n↵\nONDE QUER QUE VOCÊ ESTEJA: mantenha contato onde quer que você esteja, com o histórico de mensagens totalmente sincronizado em todos os seus aparelhos e na web em https://element.io/app.";
 "auth_login_single_sign_on" = "Entre com o logon único";
 "auth_autodiscover_invalid_response" = "Resposta de descoberta inválida no servidor local";
 "room_message_unable_open_link_error_message" = "Não foi possível abrir o link.";
@@ -701,3 +701,43 @@
 "event_formatter_jitsi_widget_removed_by_you" = "Você removeu chamada em grupo";
 "room_widget_permission_avatar_url_permission" = "URL da sua foto de perfil";
 "device_verification_emoji_banana" = "Banana";
+"room_participants_action_security_status_loading" = "Carregando…";
+"room_participants_security_loading" = "Carregando…";
+"room_participants_security_information_room_not_encrypted" = "As mensagens nesta sala não estão criptografadas de ponta a ponta.";
+"room_member_power_level_admin_in" = "Administrador em %@";
+"room_member_power_level_moderator_in" = "Moderador em %@";
+"room_member_power_level_short_admin" = "Administrador";
+"room_member_power_level_short_moderator" = "Moderador";
+"room_event_action_reply" = "Responder";
+"room_event_action_edit" = "Editar";
+"room_event_action_reaction_show_all" = "Mostrar tudo";
+"room_action_send_file" = "Enviar arquivo";
+"room_action_reply" = "Responder";
+"room_accessibility_search" = "Buscar";
+"room_accessibility_integrations" = "Integrações";
+"media_type_accessibility_audio" = "Áudio";
+"media_type_accessibility_file" = "Arquivo";
+"media_type_accessibility_sticker" = "Figurinha";
+"settings_integrations" = "INTEGRAÇÕES";
+"settings_three_pids_management_information_part3" = ".";
+"settings_security" = "SEGURANÇA";
+"settings_integrations_allow_button" = "Gerenciar integrações";
+"settings_integrations_allow_description" = "Use o Gerenciador de Integrações (%@) para gerenciar bots, pontes, widgets e pacotes de figurinhas.↵\n↵\nO Gerenciador de Integrações recebe dados de configuração e pode modificar widgets, enviar convites para salas e definir níveis de permissão em seu nome.";
+"settings_add_3pid_password_title_email" = "Adicionar endereço de e-mail";
+"settings_discovery_three_pids_management_information_part2" = "Configurações do usuário";
+"settings_discovery_three_pids_management_information_part3" = ".";
+"settings_discovery_three_pid_details_share_action" = "Compartilhar";
+"settings_discovery_three_pid_details_revoke_action" = "Revogar";
+"service_terms_modal_description_for_integration_manager" = "Use bots, pontes, widgets e pacotes de figurinhas";
+"device_verification_cancelled" = "Seu contato cancelou a verificação.";
+// Mark: Incoming
+"device_verification_incoming_title" = "Recebendo solicitação de verificação";
+"device_verification_start_wait_partner" = "Aguardando seu contato aceitar…";
+"device_verification_self_verify_start_waiting" = "Aguardando…";
+"device_verification_verify_wait_partner" = "Aguardando seu contato confirmar…";
+"key_verification_tile_request_status_waiting" = "Aguardando…";
+// Scanning
+"key_verification_scan_confirmation_scanning_title" = "Quase lá! Aguardando a confirmação…";
+"key_verification_scan_confirmation_scanning_user_waiting_other" = "Aguardando %@…";
+"key_verification_scan_confirmation_scanning_device_waiting_other" = "Aguardando o outro aparelho…";
+"user_verification_start_waiting_partner" = "Aguardando %@…";
