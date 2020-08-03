@@ -16,6 +16,7 @@ limitations under the License.
 
 import Foundation
 
+/// `BubbleReactionsViewModelBuilder` enables to build a BubbleReactionsViewModel for a given `RoomBubbleCellData` and `MXKRoomBubbleComponent` index.
 @objcMembers
 final class BubbleReactionsViewModelBuilder: NSObject {
     

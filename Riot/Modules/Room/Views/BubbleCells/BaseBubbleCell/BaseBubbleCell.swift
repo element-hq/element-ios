@@ -21,6 +21,7 @@ import MatrixKit
     var bubbleCellContentView: BubbleCellContentView? { get }
 }
 
+/// `BaseBubbleCell` allows a bubble cell that inherits from this class to embed and manage the default room message outer views and add an inner content view.
 @objcMembers
 class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
     

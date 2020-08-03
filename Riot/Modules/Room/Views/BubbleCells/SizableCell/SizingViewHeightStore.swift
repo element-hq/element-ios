@@ -16,6 +16,7 @@ limitations under the License.
 
 import Foundation
 
+/// `SizingViewHeightStore` allows to store `SizingViewHeight` for a given hash value
 final class SizingViewHeightStore {
     
     private var sizes = Set<SizingViewHeight>()

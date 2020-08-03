@@ -16,6 +16,7 @@
 
 import Foundation
 
+/// `SizingViewHeight` allows to associate a height for a given width to a unique value.
 final class SizingViewHeight: Hashable, Equatable, CustomStringConvertible {
     
     // MARK: - Properties

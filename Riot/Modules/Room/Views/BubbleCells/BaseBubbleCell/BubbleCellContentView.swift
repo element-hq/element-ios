@@ -17,6 +17,7 @@
 import UIKit
 import Reusable
 
+/// `BubbleCellContentView` is a container view that display the default room message outer views and enables to manage them. Like pagination title, sender info, read receipts, reactions, encryption status.
 @objcMembers
 final class BubbleCellContentView: UIView, NibLoadable {
     
