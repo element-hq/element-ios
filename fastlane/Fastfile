@@ -30,21 +30,33 @@ platform :ios do
     build_release(options)
   end
 
-  desc "Builds (and upload) an ipa for the App Store"
+  desc "Builds an ipa for the App Store"
   lane :app_store do |options|
     build_release(options)
+  end
 
-    # Upload ipa to TestFlight
-    #upload_to_testflight(
+  desc "Builds the ipa for the AppStore, then uploads it"
+  lane :deploy_release do |options|
+    require 'date'
+    build_number = DateTime.now.strftime("%Y%m%d%H%M%S")
+    options = { build_number: build_number }.merge(options)
+    app_store(options)
+
+    # We haven't yet implemented/tested deliver/upload_to_appstore properly so keep it manual for now
+    UI.message("IPA is available at path '#{ENV['IPA_OUTPUT_PATH']}'. Please upload manually using Application Loader.")
+    UI.confirm("Have you uploaded the IPA to the AppStore now?")
+    #upload_to_appstore(
     #    skip_submission: true, # Only upload the build
     #    skip_waiting_for_build_processing: true # Don't wait for the build to process
     #)
   end
 
+  desc "Point MatrixKit and MatrixSDK to their respective release/*/release branch if they exist, develop otherwise"
   lane :point_dependencies_to_pending_releases do
     edit_podfile(branch_pattern: "release/*/release")
   end
 
+  desc "Point MatrixKit and MatrixSDK to the branch with the same name as the current branch if such one exist, develop otherwise"
   lane :point_dependencies_to_same_feature do
     edit_podfile(branch_pattern: git_branch)
   end
@@ -303,8 +315,8 @@ platform :ios do
     kit_slug = "matrix-org/matrix-ios-kit"
     sdk_slug = "matrix-org/matrix-ios-sdk"
 
-    kit_branch = branch_name(kit_slug, branch_pattern) || 'develop'
-    sdk_branch = branch_name(sdk_slug, branch_pattern) || 'develop'
+    kit_branch = find_branch(kit_slug, branch_pattern) || 'develop'
+    sdk_branch = find_branch(sdk_slug, branch_pattern) || 'develop'
 
     UI.message("✏️ Making a local copy of MatrixKit.podspec from the \`#{kit_branch}\` branch...")
     podspec_content = Net::HTTP.get(URI("https://raw.githubusercontent.com/#{kit_slug}/#{kit_branch}/MatrixKit.podspec"))
@@ -321,7 +333,8 @@ platform :ios do
     File.write('../Podfile', podfile_content)
   end
 
-  def branch_name(repo_slug, pattern)
+  # Find the latest branch with the given name pattern in the given repo
+  def find_branch(repo_slug, pattern)
     list = `git ls-remote --heads --sort=version:refname https://github.com/#{repo_slug} #{pattern}`
     list.split("\n")
         .map { |line| line.sub(%r{[0-9a-f]+\trefs/heads/}, '').chomp }
