@@ -113,6 +113,7 @@ DEPENDENCIES:
   - MatomoTracker (~> 7.2.0)
   - MatrixKit (= 0.12.9)
   - MatrixKit/AppExtension (= 0.12.9)
+  - MatrixSDK
   - MatrixSDK/JingleCallStack
   - MatrixSDK/SwiftSupport
   - OLMKit
@@ -173,6 +174,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 60f9f40b2b58b0a311ac91a15f4d315cea0eba14
+PODFILE CHECKSUM: 35c0be0ac3a1b6cfac738888f03f9be44a75f634
 
 COCOAPODS: 1.9.3

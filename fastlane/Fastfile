@@ -314,13 +314,11 @@ platform :ios do
     File.write('../MatrixKit.edited.podspec', podspec_content) # current dir is 'fastlane/' hence the '../'
 
     UI.message "✏️ Modify Podfile to point MatrixKit to local podspec and `MatrixSDK/*` to \`#{sdk_branch}\` branch..."
-    parsed_podfile = YAML.safe_load(`bundle exec pod ipc podfile ../Podfile`, [Symbol])
-    recurse_replace_dependencies(
-      parsed_podfile['target_definitions'],
-      sdk: { git: 'https://github.com/matrix-org/matrix-ios-sdk.git', branch: sdk_branch },
-      kit: { podspec: 'MatrixKit.edited.podspec' }
-    )
-    File.write('../CocoaPods.podfile.yaml', parsed_podfile.to_yaml)
+    podfile_content = File.read('../Podfile') # current dir is 'fastlane/' hence the '../'
+    kit_spec = { podspec: 'MatrixKit.edited.podspec' }
+    sdk_spec = { git: 'https://github.com/matrix-org/matrix-ios-sdk.git', branch: sdk_branch }
+    podfile_content.gsub!(%r{^\$matrixKitVersion\s*=\s*.*$}, "$matrixKitVersion = { #{kit_spec} => #{sdk_spec} }")
+    File.write('../Podfile', podfile_content)
   end
 
   def branch_name(repo_slug, pattern)
@@ -328,30 +326,5 @@ platform :ios do
     list.split("\n")
         .map { |line| line.sub(%r{[0-9a-f]+\trefs/heads/}, '').chomp }
         .last # Latest ref found, in "version:refname" semantic order
-  end
-
-  def recurse_replace_dependencies(entries, sdk:, kit:)
-    return if entries.nil?
-
-    entries.each do |entry|
-      if entry.is_a?(Hash) && entry.key?('dependencies')
-        entry['dependencies'] = entry['dependencies'].flat_map do |dep|
-          fix_kit_and_sdk(dep, sdk: sdk, kit: kit)
-        end
-      end
-      recurse_replace_dependencies(entry['children'], sdk: sdk, kit: kit)
-    end
-  end
-
-  def fix_kit_and_sdk(dep, sdk:, kit:)
-    spec_name = dep.is_a?(Hash) ? dep.keys.first : dep
-    pod_name = spec_name.split('/')[0]
-    if pod_name == 'MatrixKit' && !kit.nil? # Point MatrixKit to local podspec and MatrixSDK to branch
-      [{ spec_name => [kit] }, { 'MatrixSDK' => [sdk] }]
-    elsif pod_name == 'MatrixSDK' && !sdk.nil? # Point MatrixSDK and its subspecs to branch
-      [{ spec_name => [sdk] }]
-    else # For any other entries, keep them untouched
-      [dep]
-    end
   end
 end
