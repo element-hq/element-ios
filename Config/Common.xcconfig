@@ -17,7 +17,7 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-BUNDLE_DISPLAY_NAME = Element (Riot.im)
+BUNDLE_DISPLAY_NAME = Element
 
 APPLICATION_GROUP_IDENTIFIER = group.im.vector
 

@@ -11,6 +11,9 @@ Improvements:
  * AuthenticationVC: Make custom server options and register button configurable.
  * Xcconfig: Add product bundle identifiers for each target.
 
+Bug fix:
+ * Rebranding: Remove Riot from app name (#3497).
+
 Changes in 1.0.2 (2020-07-28)
 ===============================================
 
