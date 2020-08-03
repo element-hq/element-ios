@@ -10,6 +10,9 @@ Improvements:
  * BuildSettings: A new class that entralises build settings and exposes xcconfig variable.
  * AuthenticationVC: Make custom server options and register button configurable.
 
+Bug fix:
+ * Rebranding: Remove Riot from app name (#3497).
+
 Changes in 1.0.2 (2020-07-28)
 ===============================================
 
