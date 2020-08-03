@@ -1098,3 +1098,44 @@
 "deactivate_account_informations_part4_emphasize" = "vaikimisi ei tähenda, et unustatakse ka sinu saadetud sõnumid. ";
 "deactivate_account_informations_part5" = "Kui sa siiski soovid seda, siis palun tee märge alljärgnevasse kasti.\n\nMatrix'i sõnumite nähtavus on sarnane e-posti kirjadega. Sõnumite unustamine tegelikult tähendab seda, et sinu varemsaadetud sõnumeid ei jagata uute või veel registreerumata kasutajatega, kuid registeerunud kasutajad, kes juba on need sõnumid saanud, võivad neid ka jätkuvalt lugeda.";
 "rerequest_keys_alert_message" = "Palun käivita Element mõnes muus seadmes, mis suudab neid sõnumeid dekrüptoda ja seega saata krüptovõtmeid siia sessiooni.";
+"settings_discovery_three_pids_management_information_part1" = "Halda missuguse e-posti aadressi ja telefoninumbri alusel teised kasutajad saavad sind kutsuda jututubadesse. Lisa või eemalda e-posti aadresse ja telefoninumbreid sellest loendist ";
+"settings_discovery_three_pid_details_information_email" = "Halda selle e-posti aadressi eelistusi, mille alusel teised kasutajad saavad sind leida ja kutsuda jututubade liikmeks. E-posti aadresse lisada ja muuta saad kasutajakonto seadistustest.";
+"settings_discovery_three_pid_details_title_phone_number" = "Halda telefoninumbrit";
+"settings_discovery_three_pid_details_information_phone_number" = "Halda selle telefoninumbri eelistusi, mille alusel teised kasutajad saavad sind leida ja kutsuda jututubade liikmeks. Telefoninumbreid lisada ja muuta saad kasutajakonto seadistustest.";
+"settings_discovery_three_pid_details_share_action" = "Jaga";
+"settings_discovery_three_pid_details_revoke_action" = "Tühista";
+"settings_discovery_three_pid_details_cancel_email_validation_action" = "Tühista e-posti aadressi kinnitamine";
+"settings_discovery_three_pid_details_enter_sms_code_action" = "Sisesta SMS'iga saadetud aktiveerimiskood";
+"settings_identity_server_description" = "Kasutades ülalkirjeldatud isikutuvastusserverit saad sa otsida tuttavaid ja lasta neil sind leida.";
+"e2e_key_backup_wrong_version" = "Tuvastasin uue krüptosõnumite võtmete varukoopia.\n\nKui sina ei teinud seda, siis seadista varukoopiale uus paroolifraas.";
+"e2e_key_backup_wrong_version_button_settings" = "Seadistused";
+"e2e_key_backup_wrong_version_button_wasme" = "See olin mina";
+// Bug report
+"bug_report_title" = "Veateade";
+"bug_report_description" = "Palun kirjelda viga. Mida sa tegid? Mida sa eeldasid, et juhtub? Mis tegelikult juhtus?";
+"bug_crash_report_title" = "Oluliste vigade aruanne";
+"bug_crash_report_description" = "Palun kirjelda, mida sa tegid enne, kui rakendus kokku jooksis:";
+"bug_report_logs_description" = "Vigade põhjuse leidmiseks sadetakse koos veakirjeldusega ka selle seadme logikirjed. Kui sa siiski soovid saata vaid ülalpool näidatud teksti, siis palun eemalda järgnev valik:";
+"bug_report_send_logs" = "Saada logikirjed";
+"bug_report_send_screenshot" = "Saada ekraanipilt";
+"bug_report_progress_zipping" = "Kogun logisid";
+"bug_report_progress_uploading" = "Laen üles veakirjeldust";
+"bug_report_send" = "Saada";
+// Widget
+"widget_no_integrations_server_configured" = "Vidinate haldusserver ei ole seadistatud";
+"widget_menu_revoke_permission" = "Eemalda minu ligipääsuõigused";
+"room_widget_permission_webview_information_title" = "Vidina kasutamine võib tuua kaasa küpsise salvestamise ja andmete jagamise serveriga %@:\n";
+"room_widget_permission_information_title" = "Selle kasutamine võib tuua kaasa andmete jagamise serveriga %@:\n";
+// Share extension
+"share_extension_auth_prompt" = "Sisu jagamiseks logi sisse põhirakendusse";
+"share_extension_failed_to_encrypt" = "Saatmine ei õnnestunud. Palun kontrolli põhirakenduses selle jututoa krüptoseadistusi";
+// Room key request dialog
+"e2e_room_key_request_title" = "Krüptimisvõtmete päring";
+"e2e_room_key_request_message_new_device" = "Sa oled lisanud uue sessiooni '%@', mis soovib saada krüptimisvõtmeid.";
+"e2e_room_key_request_message" = "Sinu verifitseerimata sessioon '%@' soovib saada krüptimisvõtmeid.";
+"e2e_room_key_request_start_verification" = "Alusta verifitseerimist…";
+"e2e_room_key_request_share_without_verifying" = "Jaga ilma verifitseerimata";
+"secure_key_backup_setup_existing_backup_error_info" = "Selleks, et saaksid varukoopiat kasutada või kustutada enne uue varukoopia loomist, võta ta lukust lahti.";
+"secure_key_backup_setup_existing_backup_error_unlock_it" = "Võta varukoopia lukust lahti";
+"secure_key_backup_setup_existing_backup_error_delete_it" = "Kustuta varukoopia";
+"device_verification_self_verify_wait_recover_secrets_additional_information" = "Või kui sa ei saa neid kasutada, siis võid olemasolevas sessioonis";
