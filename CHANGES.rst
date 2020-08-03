@@ -13,6 +13,7 @@ Improvements:
 
 Bug fix:
  * Rebranding: Remove Riot from app name (#3497).
+ * Rebranding: Update provisioning universal link domain (#3483).
 
 Changes in 1.0.2 (2020-07-28)
 ===============================================
