@@ -296,11 +296,62 @@ platform :ios do
 
   desc "Edit the Podfile in order to point MatrixKit and MatrixSDK to the appropriate branches."
   private_lane :edit_podfile do |options|
-    # Since MatrixSDK is a transitive dependency (brought by MatrixKit.podspec), modifying the Podfile won't be enough.
-    #  - So we need to make a copy of the MatrixKit.podspec (extracted from the right branch of the MatrixKit repo) locally first,
-    #  - then edit that local MatrixKit.podspec to change its dependency of MatrixSDK to point to the right branch of MatrixSDK too
-    #  - and finally edit the Podfile to point MatrixKit to that locally modified `MatrixKit.podspec` (itself opinting to the right MatrixSDK).
-    #
-    UI.message("This is supposed to make a local copy of MatrixKit.podspec from #{options[:branch_pattern]} branch, edit it to use the right MatrixSDK version, and point the Podfile to that local podspec. But that is not implemented yet...")
+    require 'net/http'
+    require 'yaml'
+
+    branch_pattern = options[:branch_pattern]
+    kit_slug = "matrix-org/matrix-ios-kit"
+    sdk_slug = "matrix-org/matrix-ios-sdk"
+
+    kit_branch = branch_name(kit_slug, branch_pattern) || 'develop'
+    sdk_branch = branch_name(sdk_slug, branch_pattern) || 'develop'
+
+    UI.message("✏️ Making a local copy of MatrixKit.podspec from the \`#{kit_branch}\` branch...")
+    podspec_content = Net::HTTP.get(URI("https://raw.githubusercontent.com/#{kit_slug}/#{kit_branch}/MatrixKit.podspec"))
+
+    UI.message "✏️ Editing local MatrixKit podspec to remove version constaint on 'MatrixSDK*' dependencies..."
+    podspec_content.gsub!(%r{(\.dependency\s+(['"])MatrixSDK(\/[^'"]+)?\2).*$}, '\1')
+    File.write('../MatrixKit.edited.podspec', podspec_content) # current dir is 'fastlane/' hence the '../'
+
+    UI.message "✏️ Modify Podfile to point MatrixKit to local podspec and `MatrixSDK/*` to \`#{sdk_branch}\` branch..."
+    parsed_podfile = YAML.safe_load(`bundle exec pod ipc podfile ../Podfile`, [Symbol])
+    recurse_replace_dependencies(
+      parsed_podfile['target_definitions'],
+      sdk: { git: 'https://github.com/matrix-org/matrix-ios-sdk.git', branch: sdk_branch },
+      kit: { podspec: 'MatrixKit.edited.podspec' }
+    )
+    File.write('../CocoaPods.podfile.yaml', parsed_podfile.to_yaml)
+  end
+
+  def branch_name(repo_slug, pattern)
+    list = `git ls-remote --heads --sort=version:refname https://github.com/#{repo_slug} #{pattern}`
+    list.split("\n")
+        .map { |line| line.sub(%r{[0-9a-f]+\trefs/heads/}, '').chomp }
+        .last # Latest ref found, in "version:refname" semantic order
+  end
+
+  def recurse_replace_dependencies(entries, sdk:, kit:)
+    return if entries.nil?
+
+    entries.each do |entry|
+      if entry.is_a?(Hash) && entry.key?('dependencies')
+        entry['dependencies'] = entry['dependencies'].flat_map do |dep|
+          fix_kit_and_sdk(dep, sdk: sdk, kit: kit)
+        end
+      end
+      recurse_replace_dependencies(entry['children'], sdk: sdk, kit: kit)
+    end
+  end
+
+  def fix_kit_and_sdk(dep, sdk:, kit:)
+    spec_name = dep.is_a?(Hash) ? dep.keys.first : dep
+    pod_name = spec_name.split('/')[0]
+    if pod_name == 'MatrixKit' && !kit.nil? # Point MatrixKit to local podspec and MatrixSDK to branch
+      [{ spec_name => [kit] }, { 'MatrixSDK' => [sdk] }]
+    elsif pod_name == 'MatrixSDK' && !sdk.nil? # Point MatrixSDK and its subspecs to branch
+      [{ spec_name => [sdk] }]
+    else # For any other entries, keep them untouched
+      [dep]
+    end
   end
 end
