@@ -41,6 +41,14 @@ platform :ios do
     #)
   end
 
+  lane :point_dependencies_to_pending_releases do
+    edit_podfile(branch_pattern: "release/*/release")
+  end
+
+  lane :point_dependencies_to_same_feature do
+    edit_podfile(branch_pattern: git_branch)
+  end
+
   desc "Build the app for simulator to ensure it compiles"
   lane :build do |options|
     cocoapods
@@ -150,14 +158,6 @@ platform :ios do
         iCloudContainerEnvironment: "Production",
       },
     )
-  end
-
-  lane :point_dependencies_to_pending_releases do
-    edit_podfile(branch_pattern: "release/*/release")
-  end
-
-  lane :point_dependencies_to_same_feature do
-    edit_podfile(branch_pattern: git_branch)
   end
 
   #### Private ####
