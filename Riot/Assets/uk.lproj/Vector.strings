@@ -98,7 +98,7 @@
 "auth_reset_password_error_unauthorized" = "Не вдалося перевірити е-пошту: переконайтеся, що ви перейшли за посиланням у листі";
 "auth_reset_password_error_not_found" = "Схоже, ваша адреса електронної пошти не пов'язана з жодним Matrix ID на цьому домашньому сервері.";
 "auth_reset_password_error_is_required" = "Ідентифікаційний сервер не налаштовано: додайте його в параметрах сервера, щоб мати можливість відновити пароль в майбутньому.";
-"auth_reset_password_success_message" = "Ваш пароль було відновлено.\n\nСеанс входу завершено на всіх пристроях і припинено отримання push-сповіщень. Щоб активувати сповіщення, виконайте вхід з новим паролем на кожному пристрої.";
+"auth_reset_password_success_message" = "Ваш пароль було скинуто.\n\nСеанс входу завершено на всіх сесіях і припинено отримання push-сповіщень. Щоб активувати сповіщення, виконайте вхід з новим паролем на кожному пристрої.";
 "auth_add_email_and_phone_warning" = "Реєстрація за допомогою електронної пошти і номера телефону водночас не підтримується, доки немає API. Лише номер телефону буде додано до облікового запису. Ви можете додати електронну пошту до свого профілю в налаштуваннях.";
 "auth_accept_policies" = "Ознайомтесь та прийміть правила цього домашнього сервера:";
 "auth_softlogout_signed_out" = "Ви вийшли";
@@ -133,3 +133,30 @@
 "room_creation_keep_private" = "Залишити приватним";
 "room_creation_make_private" = "Зробити приватним";
 "room_creation_wait_for_creation" = "Триває створення кімнати. Будь ласка, зачекайте.";
+"skip" = "Пропустити";
+// MARK: Clients
+"client_desktop_name" = "Десктопний Element";
+"client_web_name" = "Мережа Element";
+"client_ios_name" = "Element iOS";
+"auth_login_single_sign_on" = "Увійти за допомогою єдиного входу";
+"room_creation_invite_another_user" = "Пошук / запрошення по ідентифікатору користувача, імені або адреси електронної пошти";
+"room_creation_error_invite_user_by_email_without_identity_server" = "Сервер ідентифікації не налаштовано, тому ви не можете додати учасника з е-поштою.";
+// Room recents
+"room_recents_directory_section" = "КАТАЛОГ КІМНАТ";
+"room_recents_directory_section_network" = "Мережа";
+"room_recents_favourites_section" = "ВИБРАНІ";
+"room_recents_people_section" = "ЛЮДИ";
+"room_recents_conversations_section" = "КІМНАТИ";
+"room_recents_no_conversation" = "Немає кімнат";
+"room_recents_low_priority_section" = "НИЗЬКОПРІОРИТЕТНІ";
+"room_recents_server_notice_section" = "СИСТЕМНІ ПОПЕРЕДЖЕННЯ";
+"room_recents_invites_section" = "ЗАПРОШЕННЯ";
+"room_recents_start_chat_with" = "Почати спілкування";
+"room_recents_create_empty_room" = "Створити кімнатку";
+"room_recents_join_room" = "Зайти в кімнату";
+"room_recents_join_room_title" = "Вхід в кімнату";
+"room_recents_join_room_prompt" = "Введіть ідентифікатор або псевдонім кімнати";
+// People tab
+"people_invites_section" = "ЗАПРОШЕННЯ";
+"people_conversation_section" = "БАЛАЧКИ";
+"people_no_conversation" = "Нема балачок";
