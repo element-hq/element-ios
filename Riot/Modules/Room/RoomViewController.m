@@ -2578,7 +2578,7 @@
                                                            
                                                        }]];
 
-        if (BuildSettings.allowMessageDetailsShare)
+        if (BuildSettings.messageDetailsAllowShare)
         {
             [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_share", @"Vector", nil)
                                                              style:UIAlertActionStyleDefault
@@ -2691,7 +2691,7 @@
 
         if (attachment.type != MXKAttachmentTypeSticker)
         {
-            if (BuildSettings.allowMessageDetailsShare)
+            if (BuildSettings.messageDetailsAllowShare)
             {
                 [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_share", @"Vector", nil)
                                                                  style:UIAlertActionStyleDefault
@@ -2802,7 +2802,7 @@
                                                            }]];
         }
 
-        if (BuildSettings.allowMessageDetailsPermalink)
+        if (BuildSettings.messageDetailsAllowPermalink)
         {
             [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_permalink", @"Vector", nil)
                                                              style:UIAlertActionStyleDefault
@@ -2844,7 +2844,7 @@
                                                            }]];
         }
         
-        if (BuildSettings.allowMessageDetailsViewSource)
+        if (BuildSettings.messageDetailsAllowViewSource)
         {
             [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_view_source", @"Vector", nil)
                                                              style:UIAlertActionStyleDefault
