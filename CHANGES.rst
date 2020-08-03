@@ -9,6 +9,7 @@ Improvements:
  * Xcconfig: Add Common config and app and share extension config files.
  * BuildSettings: A new class that entralises build settings and exposes xcconfig variable.
  * AuthenticationVC: Make custom server options and register button configurable.
+ * Xcconfig: Add product bundle identifiers for each target.
 
 Changes in 1.0.2 (2020-07-28)
 ===============================================

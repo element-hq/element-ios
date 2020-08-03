@@ -759,6 +759,10 @@
 		EC1CA89C24C9C9A200DE9EBF /* SetupBiometricsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA89424C9C9A200DE9EBF /* SetupBiometricsViewModel.swift */; };
 		EC1CA8C824D3160100DE9EBF /* Row.m in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA8C724D3160100DE9EBF /* Row.m */; };
 		EC1CA8CB24D3168F00DE9EBF /* Section.m in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA8CA24D3168F00DE9EBF /* Section.m */; };
+		EC1CA8D424D8103400DE9EBF /* App-Common.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EC1CA8D324D8103400DE9EBF /* App-Common.xcconfig */; };
+		EC1CA8D624D8108700DE9EBF /* ShareExtension-Common.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EC1CA8D524D8108700DE9EBF /* ShareExtension-Common.xcconfig */; };
+		EC1CA8D824D8118400DE9EBF /* SiriIntents-Common.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EC1CA8D724D8118400DE9EBF /* SiriIntents-Common.xcconfig */; };
+		EC1CA8DA24D811B400DE9EBF /* NSE-Common.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EC1CA8D924D811B400DE9EBF /* NSE-Common.xcconfig */; };
 		EC2B4EF124A1EEBD005EB739 /* DataProtectionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2B4EF024A1EEBD005EB739 /* DataProtectionHelper.swift */; };
 		EC2B4EF224A1EF34005EB739 /* DataProtectionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2B4EF024A1EEBD005EB739 /* DataProtectionHelper.swift */; };
 		EC3B066924AC6ADE000DF9BF /* CrossSigningService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3B066424AC6ADD000DF9BF /* CrossSigningService.swift */; };
@@ -1885,6 +1889,10 @@
 		EC1CA8C724D3160100DE9EBF /* Row.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Row.m; sourceTree = "<group>"; };
 		EC1CA8C924D3168F00DE9EBF /* Section.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Section.h; sourceTree = "<group>"; };
 		EC1CA8CA24D3168F00DE9EBF /* Section.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Section.m; sourceTree = "<group>"; };
+		EC1CA8D324D8103400DE9EBF /* App-Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "App-Common.xcconfig"; sourceTree = "<group>"; };
+		EC1CA8D524D8108700DE9EBF /* ShareExtension-Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "ShareExtension-Common.xcconfig"; sourceTree = "<group>"; };
+		EC1CA8D724D8118400DE9EBF /* SiriIntents-Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "SiriIntents-Common.xcconfig"; sourceTree = "<group>"; };
+		EC1CA8D924D811B400DE9EBF /* NSE-Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "NSE-Common.xcconfig"; sourceTree = "<group>"; };
 		EC2B4EF024A1EEBD005EB739 /* DataProtectionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProtectionHelper.swift; sourceTree = "<group>"; };
 		EC3B066424AC6ADD000DF9BF /* CrossSigningService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossSigningService.swift; sourceTree = "<group>"; };
 		EC3B066624AC6ADD000DF9BF /* CrossSigningSetupBannerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CrossSigningSetupBannerCell.xib; sourceTree = "<group>"; };
@@ -2461,6 +2469,7 @@
 				92726A451F58737A004AD26F /* IntentHandler.h */,
 				92726A461F58737A004AD26F /* IntentHandler.m */,
 				92726A481F58737A004AD26F /* Info.plist */,
+				EC1CA8D724D8118400DE9EBF /* SiriIntents-Common.xcconfig */,
 				EC1CA8BB24D1B4BF00DE9EBF /* SiriIntents-Debug.xcconfig */,
 				EC1CA8BA24D1B4BF00DE9EBF /* SiriIntents-Release.xcconfig */,
 			);
@@ -2821,6 +2830,7 @@
 				B1664BD120F4E82700808783 /* RiotShareExtension-Bridging-Header.h */,
 				B1664BD220F4E82800808783 /* RiotShareExtension.entitlements */,
 				B1664BD320F4E82800808783 /* Info.plist */,
+				EC1CA8D524D8108700DE9EBF /* ShareExtension-Common.xcconfig */,
 				EC1CA8B824D1AD1600DE9EBF /* ShareExtension-Debug.xcconfig */,
 				EC1CA8B924D1AD1600DE9EBF /* ShareExtension-Release.xcconfig */,
 			);
@@ -2845,6 +2855,7 @@
 				B16932A020F3A21B00746532 /* Riot.entitlements */,
 				B16932A120F3A21B00746532 /* Info.plist */,
 				B16932A220F3A21B00746532 /* empty.mm */,
+				EC1CA8D324D8103400DE9EBF /* App-Common.xcconfig */,
 				EC1CA8B424D1AA8700DE9EBF /* App-Debug.xcconfig */,
 				EC1CA8B624D1AA8D00DE9EBF /* App-Release.xcconfig */,
 			);
@@ -4850,6 +4861,7 @@
 				EC85D7452477E5F7002C44C9 /* NotificationService.swift */,
 				EC85D756247E700F002C44C9 /* NSEMemoryStore.swift */,
 				EC85D7472477E5F7002C44C9 /* Info.plist */,
+				EC1CA8D924D811B400DE9EBF /* NSE-Common.xcconfig */,
 				EC1CA8BC24D1B4CF00DE9EBF /* NSE-Debug.xcconfig */,
 				EC1CA8BD24D1B4CF00DE9EBF /* NSE-Release.xcconfig */,
 			);
@@ -5254,6 +5266,7 @@
 				B1664BCB20F4E67600808783 /* RoomsListViewController.xib in Resources */,
 				B169328520F38BE800746532 /* SegmentedViewController.xib in Resources */,
 				B1664DA420F4F96300808783 /* Vector.strings in Resources */,
+				EC1CA8D624D8108700DE9EBF /* ShareExtension-Common.xcconfig in Resources */,
 				B1664BC920F4E67600808783 /* ShareViewController.xib in Resources */,
 				B169328820F3954A00746532 /* SharedImages.xcassets in Resources */,
 				B1664BC520F4E67600808783 /* FallbackViewController.xib in Resources */,
@@ -5265,6 +5278,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC1CA8D824D8118400DE9EBF /* SiriIntents-Common.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5272,6 +5286,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC1CA8DA24D811B400DE9EBF /* NSE-Common.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5448,6 +5463,7 @@
 				B1C562E5228C7C8D0037F12A /* RoomContextualMenuViewController.storyboard in Resources */,
 				3232ABA2225730E100AD6A5C /* DeviceVerificationStartViewController.storyboard in Resources */,
 				3284A35120A07C210044F922 /* postMessageAPI.js in Resources */,
+				EC1CA8D424D8103400DE9EBF /* App-Common.xcconfig in Resources */,
 				B1B557A220EF58AD00210D55 /* ContactTableViewCell.xib in Resources */,
 				B1B558EB20EF768F00210D55 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				B1C543A6239E999700DCA1FA /* KeyVerificationCellInnerContentView.xib in Resources */,
@@ -6494,7 +6510,7 @@
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.shareExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(PRODUCT_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/RiotShareExtension-Bridging-Header.h";
@@ -6534,7 +6550,7 @@
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.shareExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(PRODUCT_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/RiotShareExtension-Bridging-Header.h";
@@ -6568,7 +6584,7 @@
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.SiriIntents;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(PRODUCT_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -6602,7 +6618,7 @@
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.SiriIntents;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(PRODUCT_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -6635,7 +6651,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.nse;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(PRODUCT_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
@@ -6671,7 +6687,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.nse;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(PRODUCT_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
@@ -6814,7 +6830,7 @@
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(PRODUCT_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/Riot-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -6846,7 +6862,7 @@
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(PRODUCT_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/Riot-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

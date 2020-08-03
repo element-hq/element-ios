@@ -17,8 +17,6 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-BUNDLE_DISPLAY_NAME = Element (Riot.im)
+#include "Config/Common.xcconfig"
 
-APPLICATION_GROUP_IDENTIFIER = group.im.vector
-
-BASE_BUNDLE_IDENTIFIER = im.vector.app
+PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER).SiriIntents
