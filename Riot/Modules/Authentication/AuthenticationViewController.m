@@ -1137,6 +1137,18 @@
     }];
 }
 
+#pragma mark - UITextFieldDelegate
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    CGRect frameInScrollView = [textField convertRect:textField.frame toView:self.authenticationScrollView];
+    //  add an offset to also see some below of the textField
+    frameInScrollView.origin.y += 20;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.authenticationScrollView scrollRectToVisible:frameInScrollView animated:YES];
+    });
+}
+
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
