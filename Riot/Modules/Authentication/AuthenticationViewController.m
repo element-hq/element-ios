@@ -59,6 +59,7 @@
 @property (nonatomic, readonly) BOOL isIdentityServerConfigured;
 @property (nonatomic, strong) KeyVerificationCoordinatorBridgePresenter *keyVerificationCoordinatorBridgePresenter;
 @property (nonatomic, strong) SetPinCoordinatorBridgePresenter *setPinCoordinatorBridgePresenter;
+@property (nonatomic, strong) KeyboardAvoider *keyboardAvoider;
 
 @end
 
@@ -168,6 +169,8 @@
 
     [self userInterfaceThemeDidChange];
     [self updateUniversalLink];
+    
+    _keyboardAvoider = [[KeyboardAvoider alloc] initWithScrollViewContainerView:self.view scrollView:self.authenticationScrollView];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -271,6 +274,8 @@
 
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"Authentication"];
+    
+    [_keyboardAvoider startAvoiding];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -296,6 +301,13 @@
     }
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [_keyboardAvoider stopAvoiding];
+    
+    [super viewDidDisappear:animated];
+}
+
 - (void)destroy
 {
     [super destroy];
@@ -314,6 +326,7 @@
 
     autoDiscovery = nil;
     _keyVerificationCoordinatorBridgePresenter = nil;
+    _keyboardAvoider = nil;
 }
 
 - (BOOL)isIdentityServerConfigured
@@ -481,15 +494,6 @@
     }
     
     self.keyVerificationCoordinatorBridgePresenter = keyVerificationCoordinatorBridgePresenter;
-}
-
-- (void)setKeyboardHeight:(CGFloat)keyboardHeight
-{
-    [super setKeyboardHeight:keyboardHeight];
-    
-    UIEdgeInsets insets = self.authenticationScrollView.scrollIndicatorInsets;
-    insets.bottom = keyboardHeight;
-    self.authenticationScrollView.scrollIndicatorInsets = insets;
 }
 
 - (void)dismiss
