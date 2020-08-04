@@ -483,6 +483,15 @@
     self.keyVerificationCoordinatorBridgePresenter = keyVerificationCoordinatorBridgePresenter;
 }
 
+- (void)setKeyboardHeight:(CGFloat)keyboardHeight
+{
+    [super setKeyboardHeight:keyboardHeight];
+    
+    UIEdgeInsets insets = self.authenticationScrollView.scrollIndicatorInsets;
+    insets.bottom = keyboardHeight;
+    self.authenticationScrollView.scrollIndicatorInsets = insets;
+}
+
 - (void)dismiss
 {
     self.userInteractionEnabled = YES;
