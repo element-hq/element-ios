@@ -309,7 +309,6 @@ platform :ios do
   desc "Edit the Podfile in order to point MatrixKit and MatrixSDK to the appropriate branches."
   private_lane :edit_podfile do |options|
     require 'net/http'
-    require 'yaml'
 
     branch_pattern = options[:branch_pattern]
     kit_slug = "matrix-org/matrix-ios-kit"
