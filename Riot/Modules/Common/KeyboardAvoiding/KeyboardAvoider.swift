@@ -16,8 +16,9 @@
 
 import Foundation
 
+@objcMembers
 /// Avoid keyboard overlap with scroll view content
-final class KeyboardAvoider {
+final class KeyboardAvoider: NSObject {
     
     // MARK: - Constants
     
