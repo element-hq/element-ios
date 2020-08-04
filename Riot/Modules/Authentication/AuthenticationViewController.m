@@ -1021,6 +1021,10 @@
             {
                 constant += customServersContainerFrame.size.height;
             }
+            else
+            {
+                constant += self.customServersTickButton.frame.size.height;
+            }
         }
     }
 
