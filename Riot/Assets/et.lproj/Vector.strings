@@ -370,7 +370,7 @@
 "room_details_history_section_members_only_since_invited" = "Ainult liikmetele (alates nende kutsumise ajast)";
 "room_details_history_section_members_only_since_joined" = "Ainult liikmetele (alates liitumisest)";
 "room_details_addresses_section" = "Aadressid";
-"room_details_no_local_addresses" = "Sellel jututoal puudub kohalik aadress";
+"room_details_no_local_addresses" = "Sellel jututoal puuduvad kohalikud aadressid";
 "room_details_new_address" = "Lisa uus aadress";
 "room_details_new_address_placeholder" = "Lisa uus aadress (näiteks #torenimi%@)";
 "room_details_addresses_invalid_address_prompt_title" = "Vigane aliase vorming";
@@ -648,7 +648,7 @@
 "key_verification_new_session_title" = "Verifitseeri oma uus sessioon";
 "key_verification_this_session_title" = "Verifitseeri see sessioon";
 "key_verification_user_title" = "Verifitseeri neid";
-"device_verification_security_advice_emoji" = "Võrdle unikaalset emoji'de kombinatsiooni ja vaata et nad oleks samas järjekorras.";
+"device_verification_security_advice_emoji" = "Võrdle unikaalset emoji'de kombinatsiooni ja vaata, et nad oleksid samas järjekorras.";
 "device_verification_security_advice_number" = "Võrdle numbreid ja vaata et nad oleks samas järjekorras.";
 "device_verification_cancelled" = "Teine osapool tühistas verifitseerimise.";
 "device_verification_cancelled_by_me" = "Verifitseerimine on tühistatud. Põhjus: %@";
@@ -832,7 +832,7 @@
 "reaction_history_title" = "Reageerimised";
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "E-posti aadressi alusel kutsumiseks määra oma seadistustes isikutuvastusserver.";
-"error_not_supported_on_mobile" = "Seda tegevust ei saa teha %@ telefonrakendusest.";
+"error_not_supported_on_mobile" = "Seda tegevust ei saa teha %@ nutirakendusest.";
 "key_verification_bootstrap_not_setup_title" = "Viga";
 "key_verification_bootstrap_not_setup_message" = "Sa pead esmalt kasutusele võtma risttunnustamise.";
 "key_verification_tile_request_incoming_title" = "Verifitseerimispäring";
@@ -883,7 +883,7 @@
 "pin_protection_choose_pin" = "Turvaliseks ligipääsuks seadista PIN-kood";
 "pin_protection_confirm_pin" = "Korda PIN-koodi";
 "pin_protection_confirm_pin_to_disable" = "PIN-koodi kasutuselt eemaldamiseks korda PIN-koodi";
-"pin_protection_enter_pin" = "Sisesta oma PIN-koos";
+"pin_protection_enter_pin" = "Sisesta oma PIN-kood";
 "store_full_description" = "Element on uut tüüpi sõnumi- ja koostöörakendus, mis:\n\n1. Privaatsuse säilitamise nimel jätab kontrolli sinu kätte\n2. Võimaldab sul suhelda kõikide Matrix’i võrgu kasutajatega ning kasutades lõiminguid ka teiste võrkude ja rakenduste kasutajatega (näiteks Slack)\n3. Hoiab sinu info ja suhtluse eemal reklaamimisest, andmekaevandamisest, tagaustest ja „müüritagustest iluaedadest“\n4. Kasutades läbivat krüptimist turvab sinu andmed ning võimaldab teiste kasutajate tuvastamiseks risttunnustamist\n\nErinevalt teistest sõnumi- ja koostöörakendustest põhineb Element vabal tarkvaral ja kasutab hajutatud võrku.\n\nElement võimaldab sinul kasutada nii oma serverit kui teenusepakkuja serverit selliselt, et sinu privaatsus on tagatud ning sa omad ja kontrollid oma andmeid ja sõnumeid. Sa saad ligipääsu avatud võrgule, mis ei ole piiratud vaid teiste Element’i kasutajatega. Lisaks on Element väga turvaline.\n\nKuna Element kasutab avatud standardil põhinevat hajusvõrku Matrix, saab ta seda kõike ka tagada.\n\nElement võimaldab sinul otsustada seda, kus hoitakse sinu vestlusi. Seda rakendust kasutades sad sa valida kolme andmemajutusviisi vahel:\n\n1. Tasuta kasutajakonto avalikus matrix.org serveris\n2. Kasutajakonto sinu enda või sinu organisatsiooni hallatavas serveris\n3. Kasutajakonto mõne tasulise teenusepakkuja serveris (näiteks Element Matrix Services)\n\nMiks peaks Element olema sinu eelistus?\n\nSINA OMISTAD OMA ANDMEID: Sina otsustad, kus sa hoiad oma andmeid ja sõnumeid. Vaid sina omad neid ja kontrollid nende kasutust ning hoiad eemale mõne HIIDSUURFIRMA, mis kasutaks sinu teavet andmekaevanduseka või kolmandatele osapooltele jagamiseks.\n\nAVATUD SUHTLUS JA KOOSTÖÖ: Sõltumata sellest, kas teine osapool kasutab Element’i või muud Matrix’i klienti, saad sa suhelda kõigiga Matrix’i võrgus. Lisaks saad sa suhelda teiste sõnumilahenduste kasutajatega – näiteks Slack, IRC või XMPP.\n\nÜLITURVALINE: Me kasutame tegelikku läbivat krüptimist (vaid vestluse osapooled saavad lugeda sõnumeid) ning teiste kasutajate ja nende seadmete tuvastamist risttunnustamise abil.\n\nTÄISVALIK SUHTLUSVAHENDEID: Sõnumid, hääl- ja videokõned, failide edastamine ekraanijagamine ning terve pinu lõiminguid, roboteid ja vidinaid. Loo jututubasid, asuta kogukondi, suhtle paljude osapooltega ning saavuta oma eesmärgid.\n\nKUS IGANES SA OLED: Kasutades kõikides sinu seadmetes või veebirakendustes täielikult sünkroniseeritud vestluste ajalugu, hoia kätt pulsil, kus iganes sa oled.";
 "store_promotional_text" = "Avatud võrgul põhinev privaatsuskeskne vestlus- ja koostöörakendus. Põhineb hajutatud võrgul ja jätab otsustusõiguse sinu kätte. Pole andmekaevandust ega tagauksi ning puudub kolmandate osapoolte ligipääs.";
 "on" = "Sisse lülitatud";
@@ -1124,7 +1124,7 @@
 // Widget
 "widget_no_integrations_server_configured" = "Vidinate haldusserver ei ole seadistatud";
 "widget_menu_revoke_permission" = "Eemalda minu ligipääsuõigused";
-"room_widget_permission_webview_information_title" = "Vidina kasutamine võib tuua kaasa küpsise salvestamise ja andmete jagamise serveriga %@:\n";
+"room_widget_permission_webview_information_title" = "Vidina kasutamine võib tuua kaasa küpsiste salvestamise ja andmete jagamise serveriga %@:\n";
 "room_widget_permission_information_title" = "Selle kasutamine võib tuua kaasa andmete jagamise serveriga %@:\n";
 // Share extension
 "share_extension_auth_prompt" = "Sisu jagamiseks logi sisse põhirakendusse";
