@@ -30,6 +30,30 @@ final class BuildSettings: NSObject {
         Bundle.app.object(forInfoDictionaryKey: "applicationGroupIdentifier") as! String
     }
     
+    static var baseBundleIdentifier: String {
+        Bundle.app.object(forInfoDictionaryKey: "baseBundleIdentifier") as! String
+    }
+    
+    static var keychainAccessGroup: String {
+        Bundle.app.object(forInfoDictionaryKey: "keychainAccessGroup") as! String
+    }
+    
+    static var pushKitAppIdProd: String {
+        Bundle.app.object(forInfoDictionaryKey: "pushKitAppIdProd") as! String
+    }
+    
+    static var pushKitAppIdDev: String {
+        Bundle.app.object(forInfoDictionaryKey: "pushKitAppIdDev") as! String
+    }
+    
+    static var pusherAppIdProd: String {
+        Bundle.app.object(forInfoDictionaryKey: "pusherAppIdProd") as! String
+    }
+    
+    static var pusherAppIdDev: String {
+        Bundle.app.object(forInfoDictionaryKey: "pusherAppIdDev") as! String
+    }
+    
     // Element-Web instance for the app
     static let applicationWebAppUrlString = "https://app.element.io"
     
