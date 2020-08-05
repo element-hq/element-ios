@@ -1,7 +1,8 @@
-Changes in 1.0.3 (2020-xx-xx)
+Changes in 1.0.3 (2020-08-05)
 ===============================================
 
 Improvements:
+ * Upgrade MatrixKit version ([v0.12.10](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.10)).
  * Implement PIN protection (#3436).
  * Biometrics protection: Implement TouchID/FaceID protection (#3437).
  * Build: Make the app build if JitsiMeetSDK is not in the Podfile.
