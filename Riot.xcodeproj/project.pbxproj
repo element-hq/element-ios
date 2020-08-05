@@ -769,6 +769,7 @@
 		EC3B066A24AC6ADE000DF9BF /* CrossSigningSetupBannerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC3B066624AC6ADD000DF9BF /* CrossSigningSetupBannerCell.xib */; };
 		EC3B066B24AC6ADE000DF9BF /* CrossSigningBannerPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3B066724AC6ADD000DF9BF /* CrossSigningBannerPreferences.swift */; };
 		EC3B066C24AC6ADE000DF9BF /* CrossSigningSetupBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3B066824AC6ADD000DF9BF /* CrossSigningSetupBannerCell.swift */; };
+		EC619C1924DAD96000663A80 /* UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC619C1824DAD96000663A80 /* UIScrollView.swift */; };
 		EC711B4624A63B13008F830C /* MXRecoveryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC711B4524A63B13008F830C /* MXRecoveryService.swift */; };
 		EC711B7424A63B37008F830C /* SecretsSetupRecoveryKeyViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC711B4A24A63B36008F830C /* SecretsSetupRecoveryKeyViewModelType.swift */; };
 		EC711B7524A63B37008F830C /* SecretsSetupRecoveryKeyCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC711B4B24A63B36008F830C /* SecretsSetupRecoveryKeyCoordinatorType.swift */; };
@@ -1898,6 +1899,7 @@
 		EC3B066624AC6ADD000DF9BF /* CrossSigningSetupBannerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CrossSigningSetupBannerCell.xib; sourceTree = "<group>"; };
 		EC3B066724AC6ADD000DF9BF /* CrossSigningBannerPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossSigningBannerPreferences.swift; sourceTree = "<group>"; };
 		EC3B066824AC6ADD000DF9BF /* CrossSigningSetupBannerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossSigningSetupBannerCell.swift; sourceTree = "<group>"; };
+		EC619C1824DAD96000663A80 /* UIScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView.swift; sourceTree = "<group>"; };
 		EC711B4524A63B13008F830C /* MXRecoveryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MXRecoveryService.swift; sourceTree = "<group>"; };
 		EC711B4A24A63B36008F830C /* SecretsSetupRecoveryKeyViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryKeyViewModelType.swift; sourceTree = "<group>"; };
 		EC711B4B24A63B36008F830C /* SecretsSetupRecoveryKeyCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryKeyCoordinatorType.swift; sourceTree = "<group>"; };
@@ -4964,6 +4966,7 @@
 				B1CA3A2821EF692B000D1D89 /* UIView.swift */,
 				B140B4A121F87F7100E3F5FE /* OperationQueue.swift */,
 				B1E5368821FB1E20001F3AFF /* UIButton.swift */,
+				EC619C1824DAD96000663A80 /* UIScrollView.swift */,
 				3281BCF62201FA4200F4A383 /* UIControl.swift */,
 				B109D6F0222D8C400061B6D9 /* UIApplication.swift */,
 				B1DB4F05223015080065DBFA /* Character.swift */,
@@ -6048,6 +6051,7 @@
 				B1B5599320EFC5E400210D55 /* DecryptionFailure.m in Sources */,
 				39D49C7D24B8D42A00FEDBC8 /* Timeline.swift in Sources */,
 				B1CE83E12422817200D07506 /* KeyVerificationVerifyBySASCoordinator.swift in Sources */,
+				EC619C1924DAD96000663A80 /* UIScrollView.swift in Sources */,
 				B125FE1F231D5DF700B72806 /* SettingsDiscoveryViewModelType.swift in Sources */,
 				EC85D7162477DCD7002C44C9 /* KeyVerificationScanConfirmationViewAction.swift in Sources */,
 				EC711BAF24A63B58008F830C /* SecureBackupSetupCoordinatorType.swift in Sources */,

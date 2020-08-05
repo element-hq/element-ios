@@ -16,8 +16,9 @@
 
 import Foundation
 
+@objcMembers
 /// Avoid keyboard overlap with scroll view content
-final class KeyboardAvoider {
+final class KeyboardAvoider: NSObject {
     
     // MARK: - Constants
     
@@ -40,6 +41,7 @@ final class KeyboardAvoider {
     init(scrollViewContainerView: UIView, scrollView: UIScrollView) {
         self.scrollViewContainerView = scrollViewContainerView
         self.scrollView = scrollView
+        super.init()
     }
     
     // MARK: - Public
@@ -93,7 +95,7 @@ final class KeyboardAvoider {
         let keyboardFrameInView = view.convert(keyboardFrame, from: nil)
         
         // Find how much the keyboard overlaps the scroll view
-        let scrollViewBottomInset = scrollView.frame.maxY - keyboardFrameInView.origin.y
+        let scrollViewBottomInset = max(scrollView.frame.maxY - keyboardFrameInView.origin.y - view.safeAreaInsets.bottom, 0)
         
         UIView.animate(withDuration: animationDuration,
                        delay: 0.0,
