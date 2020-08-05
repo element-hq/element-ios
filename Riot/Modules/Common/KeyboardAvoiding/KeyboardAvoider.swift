@@ -41,6 +41,7 @@ final class KeyboardAvoider: NSObject {
     init(scrollViewContainerView: UIView, scrollView: UIScrollView) {
         self.scrollViewContainerView = scrollViewContainerView
         self.scrollView = scrollView
+        super.init()
     }
     
     // MARK: - Public
