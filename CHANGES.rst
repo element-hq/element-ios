@@ -15,6 +15,7 @@ Improvements:
 
 Bug fix:
  * Rebranding: Remove Riot from app name (#3497).
+ * AuthenticationViewController: Fix custom homeserver textfield scroll issue (#3467).
 
 Changes in 1.0.2 (2020-07-28)
 ===============================================
