@@ -155,9 +155,8 @@
         MXKDirectoryServersDataSource *directoryServersDataSource = [[MXKDirectoryServersDataSource alloc] initWithMatrixSession:recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
         [directoryServersDataSource finalizeInitialization];
 
-        // Add directory servers from the app settings plist
-        NSArray<NSString*> *roomDirectoryServers = [[NSUserDefaults standardUserDefaults] objectForKey:@"roomDirectoryServers"];
-        directoryServersDataSource.roomDirectoryServers = roomDirectoryServers;
+        // Add directory servers from the app settings
+        directoryServersDataSource.roomDirectoryServers = BuildSettings.publicRoomsDirectoryServers;
 
         __weak typeof(self) weakSelf = self;
 

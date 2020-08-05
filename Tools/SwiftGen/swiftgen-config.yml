@@ -29,3 +29,11 @@ plist:
     output: RiotDefaults.swift
     params:
         enumName: RiotDefaults
+        
+plist:
+  inputs: SupportingFiles/Info.plist
+  outputs:
+    templateName: runtime-swift4
+    output: InfoPlist.swift
+    params:
+        enumName: InfoPlist

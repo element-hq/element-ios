@@ -101,20 +101,23 @@
 {
     [super viewWillAppear:animated];
 
-    // Check whether the access to the local contacts has not been already asked
-    // and check that the user has decided to use or not to use an identity server 
-    if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusNotDetermined
-        || !contactsDataSource.mxSession.hasAccountDataIdentityServerValue)
+    if (BuildSettings.allowLocalContactsAccess)
     {
-        // Allow by default the local contacts sync in order to discover matrix users.
-        // This setting change will trigger the loading of the local contacts, which will automatically
-        // ask user permission to access their local contacts.
-        [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
+        // Check whether the access to the local contacts has not been already asked
+        // and check that the user has decided to use or not to use an identity server
+        if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusNotDetermined
+            || !contactsDataSource.mxSession.hasAccountDataIdentityServerValue)
+        {
+            // Allow by default the local contacts sync in order to discover matrix users.
+            // This setting change will trigger the loading of the local contacts, which will automatically
+            // ask user permission to access their local contacts.
+            [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
+        }
+        
+        // Refresh the local contacts list.
+        [[MXKContactManager sharedManager] refreshLocalContacts];
     }
-
-    // Refresh the local contacts list.
-    [[MXKContactManager sharedManager] refreshLocalContacts];
-
+    
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_people", @"Vector", nil);
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
@@ -141,12 +144,15 @@
         recentsDataSource = (RecentsDataSource*)listDataSource;
     }
 
-    if (!contactsDataSource)
+    if (BuildSettings.allowLocalContactsAccess)
     {
-        // Prepare its contacts data source
-        contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:listDataSource.mxSession];
-        contactsDataSource.contactCellAccessoryImage = [[UIImage imageNamed: @"disclosure_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textSecondaryColor];
-        contactsDataSource.delegate = self;
+        if (!contactsDataSource)
+        {
+            // Prepare its contacts data source
+            contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:listDataSource.mxSession];
+            contactsDataSource.contactCellAccessoryImage = [[UIImage imageNamed: @"disclosure_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textSecondaryColor];
+            contactsDataSource.delegate = self;
+        }
     }
 }
 

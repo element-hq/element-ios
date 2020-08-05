@@ -1,6 +1,25 @@
+Changes in 1.0.3 (2020-08-05)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.10](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.10)).
+ * Implement PIN protection (#3436).
+ * Biometrics protection: Implement TouchID/FaceID protection (#3437).
+ * Build: Make the app build if JitsiMeetSDK is not in the Podfile.
+ * Configuration: Add CommonConfiguration and AppConfiguratio classes as central points to configure all targets in the same way.
+ * Xcconfig: Add Common config and app and share extension config files.
+ * BuildSettings: A new class that entralises build settings and exposes xcconfig variable.
+ * AuthenticationVC: Make custom server options and register button configurable.
+ * Xcconfig: Add product bundle identifiers for each target.
+ * BuildSettings: Namespace some settings.
+
+Bug fix:
+ * Rebranding: Remove Riot from app name (#3497).
+ * AuthenticationViewController: Fix custom homeserver textfield scroll issue (#3467).
+
 Changes in 1.0.2 (2020-07-28)
 ===============================================
- 
+
 Bug fix:
  * Registration: Do not display the skip button if email is mandatory (#3417).
  * NotificationService: Do not cache showDecryptedContentInNotifications setting (#3444).

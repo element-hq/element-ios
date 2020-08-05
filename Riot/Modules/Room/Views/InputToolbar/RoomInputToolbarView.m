@@ -347,19 +347,22 @@
 
                                                           }]];
 
-            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_send_sticker", @"Vector", nil)
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
-
-                                                              if (weakSelf)
-                                                              {
-                                                                  typeof(self) self = weakSelf;
-                                                                  self->actionSheet = nil;
-
-                                                                  [self.delegate roomInputToolbarViewPresentStickerPicker:self];
-                                                              }
-
-                                                          }]];
+            if (BuildSettings.allowSendingStickers)
+            {
+                [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_send_sticker", @"Vector", nil)
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {
+                    
+                    if (weakSelf)
+                    {
+                        typeof(self) self = weakSelf;
+                        self->actionSheet = nil;
+                        
+                        [self.delegate roomInputToolbarViewPresentStickerPicker:self];
+                    }
+                    
+                }]];
+            }
             
             [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_send_file", @"Vector", nil)
                                                             style:UIAlertActionStyleDefault

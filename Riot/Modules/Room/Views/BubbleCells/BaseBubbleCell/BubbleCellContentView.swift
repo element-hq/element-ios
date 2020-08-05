@@ -17,6 +17,7 @@
 import UIKit
 import Reusable
 
+/// `BubbleCellContentView` is a container view that display the default room message outer views and enables to manage them. Like pagination title, sender info, read receipts, reactions, encryption status.
 @objcMembers
 final class BubbleCellContentView: UIView, NibLoadable {
     
@@ -24,19 +25,30 @@ final class BubbleCellContentView: UIView, NibLoadable {
     
     // MARK: Outlets
     
-    @IBOutlet weak var bubbleInfoContainer: UIView!
-    @IBOutlet weak var bubbleInfoContainerTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var paginationTitleContainerView: UIView!
+    @IBOutlet weak var paginationLabel: UILabel!
+    @IBOutlet weak var paginationSeparatorView: UIView!
+    
+    @IBOutlet weak var senderInfoContainerView: UIView!
+    @IBOutlet weak var avatarImageView: MXKImageView!
+    @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var userNameTouchMaskView: UIView!
     
     @IBOutlet weak var innerContentView: UIView!
+    
+    @IBOutlet weak var encryptionStatusContainerView: UIView!
+    @IBOutlet weak var encryptionImageView: UIImageView!
+    
+    @IBOutlet weak var bubbleInfoContainer: UIView!
+    @IBOutlet weak var bubbleInfoContainerTopConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var readReceiptsContainerView: UIView!
     @IBOutlet weak var readReceiptsContentView: UIView!
     
-    @IBOutlet weak var bubbleOverlayContainer: UIView!
+    @IBOutlet weak var reactionsContainerView: UIView!
+    @IBOutlet weak var reactionsContentView: UIView!
     
-    @IBOutlet weak var paginationTitleContainerView: UIView!
-    @IBOutlet weak var paginationLabel: UILabel!
-    @IBOutlet weak var paginationSeparatorView: UIView!
+    @IBOutlet weak var bubbleOverlayContainer: UIView!
     
     // MARK: Private
     
@@ -49,6 +61,15 @@ final class BubbleCellContentView: UIView, NibLoadable {
         }
     }
     
+    private var showReactions: Bool {
+        get {
+            return !self.reactionsContainerView.isHidden
+        }
+        set {
+            self.reactionsContainerView.isHidden = !newValue
+        }
+    }
+    
     // MARK: Public
     
     var showPaginationTitle: Bool {
@@ -56,7 +77,25 @@ final class BubbleCellContentView: UIView, NibLoadable {
             return !self.paginationTitleContainerView.isHidden
         }
         set {
-            self.paginationTitleContainerView.isHidden = !newValue
+            self.paginationTitleContainerView.isHidden = !newValue                        
+        }
+    }
+    
+    var showSenderInfo: Bool {
+        get {
+            return !self.senderInfoContainerView.isHidden
+        }
+        set {
+            self.senderInfoContainerView.isHidden = !newValue
+        }
+    }
+    
+    var showEncryptionStatus: Bool {
+        get {
+            return !self.encryptionStatusContainerView.isHidden
+        }
+        set {
+            self.encryptionStatusContainerView.isHidden = !newValue
         }
     }
     
@@ -87,5 +126,20 @@ extension BubbleCellContentView: BubbleCellReadReceiptsDisplayable {
     func removeReadReceiptsView() {
         self.showReadReceipts = false
         self.readReceiptsContentView.vc_removeAllSubviews()
+    }
+}
+
+// MARK: - BubbleCellReactionsDisplayable
+extension BubbleCellContentView: BubbleCellReactionsDisplayable {
+    
+    func addReactionsView(_ reactionsView: UIView) {
+        self.reactionsContentView.vc_removeAllSubviews()
+        self.reactionsContentView.vc_addSubViewMatchingParent(reactionsView) 
+        self.showReactions = true
+    }
+    
+    func removeReactionsView() {
+        self.showReactions = false
+        self.reactionsContentView.vc_removeAllSubviews()
     }
 }

@@ -296,7 +296,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     // This url can be used as is inside a web container (like iframe for Riot-web)
     
     // Build it from the riot-web app
-    NSString *appUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrl"];
+    NSString *appUrlString = BuildSettings.applicationWebAppUrlString;
     
     // We mix v1 and v2 param for backward compability
     NSString *v1Params = [NSString stringWithFormat:@"confId=%@&isAudioConf=%@&displayName=$matrix_display_name&avatarUrl=$matrix_avatar_url&email=$matrix_user_id", confId, video ? @"false" : @"true"];
@@ -307,8 +307,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     
     // Build widget data
     // We mix v1 and v2 widget data for backward compability
-    NSString *preferredJitsiServerUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"jitsiServerURL"];
-    NSURL *preferredJitsiServerUrl = [NSURL URLWithString:preferredJitsiServerUrlString];
+    NSURL *preferredJitsiServerUrl = BuildSettings.jitsiServerUrl;
     
     JitsiWidgetData *jitsiWidgetData = [JitsiWidgetData new];
     jitsiWidgetData.domain = preferredJitsiServerUrl.host;
@@ -524,10 +523,8 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
 - (WidgetManagerConfig*)createWidgetManagerConfigWithAppSettings
 {
-    NSString *apiUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsRestUrl"];
-    NSString *uiUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsUiUrl"];
-
-    return [[WidgetManagerConfig alloc] initWithApiUrl:apiUrl uiUrl:uiUrl];
+    return [[WidgetManagerConfig alloc] initWithApiUrl:BuildSettings.integrationsRestApiUrlString
+                                                 uiUrl:BuildSettings.integrationsUiUrlString];
 }
 
 #pragma mark - Modular interface
@@ -744,7 +741,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     BOOL isScalarUrl = NO;
 
     // TODO: Do we need to add `integrationsWidgetsUrls` to `WidgetManagerConfig`?
-    NSArray<NSString*> *scalarUrlStrings = [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsWidgetsUrls"];
+    NSArray<NSString*> *scalarUrlStrings = BuildSettings.integrationsScalarWidgetsPaths;
     if (scalarUrlStrings.count == 0)
     {
         NSString *apiUrl = [self configForUser:userId].apiUrl;
