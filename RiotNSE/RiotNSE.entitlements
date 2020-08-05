@@ -8,7 +8,7 @@
 	</array>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)im.vector.app.keychain.shared</string>
+		<string>$(KEYCHAIN_ACCESS_GROUP)</string>
 	</array>
 </dict>
 </plist>
