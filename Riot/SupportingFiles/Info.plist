@@ -91,5 +91,17 @@
 	<string>${PRODUCT_NAME}-Defaults</string>
 	<key>applicationGroupIdentifier</key>
 	<string>$(APPLICATION_GROUP_IDENTIFIER)</string>
+	<key>baseBundleIdentifier</key>
+	<string>$(BASE_BUNDLE_IDENTIFIER)</string>
+	<key>keychainAccessGroup</key>
+	<string>$(KEYCHAIN_ACCESS_GROUP)</string>
+	<key>pushKitAppIdProd</key>
+	<string>$(BASE_BUNDLE_IDENTIFIER).ios.voip.prod</string>
+	<key>pushKitAppIdDev</key>
+	<string>$(BASE_BUNDLE_IDENTIFIER).ios.voip.dev</string>
+	<key>pusherAppIdProd</key>
+	<string>$(BASE_BUNDLE_IDENTIFIER).ios.prod</string>
+	<key>pusherAppIdDev</key>
+	<string>$(BASE_BUNDLE_IDENTIFIER).ios.dev</string>
 </dict>
 </plist>

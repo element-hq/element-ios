@@ -44,6 +44,12 @@ internal enum InfoPlist {
   internal static let uiViewControllerBasedStatusBarAppearance: Bool = _document["UIViewControllerBasedStatusBarAppearance"]
   internal static let userDefaults: String = _document["UserDefaults"]
   internal static let applicationGroupIdentifier: String = _document["applicationGroupIdentifier"]
+  internal static let baseBundleIdentifier: String = _document["baseBundleIdentifier"]
+  internal static let keychainAccessGroup: String = _document["keychainAccessGroup"]
+  internal static let pushKitAppIdDev: String = _document["pushKitAppIdDev"]
+  internal static let pushKitAppIdProd: String = _document["pushKitAppIdProd"]
+  internal static let pusherAppIdDev: String = _document["pusherAppIdDev"]
+  internal static let pusherAppIdProd: String = _document["pusherAppIdProd"]
 }
 // swiftlint:enable identifier_name line_length type_body_length
 
