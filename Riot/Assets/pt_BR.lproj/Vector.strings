@@ -51,13 +51,13 @@
 "auth_phone_placeholder" = "Número de telefone";
 "auth_repeat_password_placeholder" = "Repita a senha";
 "auth_repeat_new_password_placeholder" = "Confirme sua nova senha";
-"auth_home_server_placeholder" = "URL (p.ex. https://matrix.org)";
-"auth_identity_server_placeholder" = "URL (por exemplo: https://vector.im)";
+"auth_home_server_placeholder" = "Endereço (por exemplo: https://matrix.org)";
+"auth_identity_server_placeholder" = "Endereço (por exemplo: https://vector.im)";
 "auth_invalid_login_param" = "Nome de usuário e/ou senha incorretos";
 "auth_invalid_user_name" = "Nomes de usuários podem conter apenas letras, números, pontos, hifens e sublinhados";
 "auth_invalid_password" = "Senha muito curta (mín. 6 letras)";
-"auth_invalid_email" = "O endereço de e-mail não parece válido";
-"auth_invalid_phone" = "O número de telefone não parece válido";
+"auth_invalid_email" = "Este não parece ser um endereço de e-mail válido";
+"auth_invalid_phone" = "Este não parece ser um número de telefone válido";
 "auth_missing_password" = "Falta a senha";
 "auth_add_email_message" = "Adicione um endereço de e-mail para a sua conta para permitir que outras pessoas possam te achar, e também para que você possa redefinir sua senha.";
 "auth_add_phone_message" = "Adicione um número de telefone à sua conta para permitir que outras pessoas te encontrem.";
@@ -69,25 +69,25 @@
 "auth_email_in_use" = "Este endereço de e-mail já está sendo usado por outra pessoa";
 "auth_phone_in_use" = "Este número de telefone já está sendo usado por outra pessoa";
 "auth_untrusted_id_server" = "Este servidor de identidades não é confiável";
-"auth_password_dont_match" = "As senhas não são iguais";
-"auth_username_in_use" = "Este nome de usuário já está em uso";
+"auth_password_dont_match" = "As senhas não correspondem";
+"auth_username_in_use" = "Nome de usuário indisponível";
 "auth_forgot_password" = "Esqueceu sua senha?";
 "auth_email_not_found" = "Não foi possível enviar um e-mail: este endereço de e-mail não foi encontrado";
-"auth_use_server_options" = "Usar opções personalizadas de servidor (avançado)";
-"auth_email_validation_message" = "Por favor, verifique o seu e-mail para continuar seu cadastro";
+"auth_use_server_options" = "Use opções para servidor personalizado (avançado)";
+"auth_email_validation_message" = "Por favor, verifique o seu e-mail para continuar a inscrição";
 "auth_msisdn_validation_title" = "Faltando verificação";
 "auth_msisdn_validation_message" = "Nós enviamos um SMS com um código de ativação. Por favor, coloque abaixo este código.";
 "auth_msisdn_validation_error" = "Não foi possível verificar o número de telefone.";
 "auth_recaptcha_message" = "Este servidor local quer se certificar de que você não é um robô";
-"auth_reset_password_message" = "Para redefinir sua senha, coloque o endereço de e-mail relacionado à sua conta:";
-"auth_reset_password_missing_email" = "O endereço de e-mail relacionado à sua conta tem que ser inserido.";
-"auth_reset_password_missing_password" = "Uma nova senha tem que ser inserida.";
-"auth_reset_password_email_validation_message" = "Um e-mail foi enviado para %@. Quando você clicar no link do e-mail, clique abaixo.";
-"auth_reset_password_next_step_button" = "Eu verifiquei meu endereço de e-mail";
-"auth_reset_password_error_unauthorized" = "Não foi possível verificar o endereço de e-mail: confirme que realmente clicou no link contido na mensagem de e-mail";
+"auth_reset_password_message" = "Para redefinir sua senha, digite o endereço de e-mail vinculado à sua conta:";
+"auth_reset_password_missing_email" = "O e-mail vinculado à sua conta precisa ser informado.";
+"auth_reset_password_missing_password" = "Uma nova senha precisa ser inserida.";
+"auth_reset_password_email_validation_message" = "Um e-mail foi enviado para %@. Após clicar no link contido no e-mail, clique abaixo.";
+"auth_reset_password_next_step_button" = "Eu verifiquei o meu endereço de e-mail";
+"auth_reset_password_error_unauthorized" = "Falha ao verificar o endereço de e-mail: certifique-se de clicar no link do e-mail";
 "auth_reset_password_error_not_found" = "O seu endereço de e-mail não parece estar associado a um ID Matrix neste servidor local.";
-"auth_reset_password_success_message" = "Sua senha foi redefinida.↵\n↵\nVocê foi desconectado de todas as sessões e não receberá mais notificações pop-up. Para reativar as notificações, faça login novamente em cada aparelho.";
-"auth_add_email_and_phone_warning" = "Registro com e-mail e número de telefone ainda não é suportado enquanto existir a API. Apenas o número de telefone será associado a sua conta. Você pode adicionar seu e-mail ao seu perfil nas configurações.";
+"auth_reset_password_success_message" = "Sua senha foi alterada.↵\n↵\nVocê foi desconectado de todas as sessões e não receberá mais notificações. Para reativar as notificações, faça login novamente em cada aparelho.";
+"auth_add_email_and_phone_warning" = "Atualmente, registrar-se com e-mail e número de telefone ao mesmo tempo não é possível. Apenas o número de telefone será levado em consideração. No entanto, você pode adicionar o endereço de e-mail ao seu perfil nas configurações.";
 "room_creation_appearance" = "Aparência";
 "room_creation_appearance_name" = "Nome";
 "room_creation_appearance_picture" = "Imagem da Sala (opcional)";
@@ -99,7 +99,7 @@
 "room_creation_make_public_prompt_msg" = "Você tem certeza que deseja tornar esta conversa pública? Qualquer um poderá ler suas mensagens e entrar na conversa.";
 "room_creation_keep_private" = "Manter privada";
 "room_creation_make_private" = "Manter privada";
-"room_creation_wait_for_creation" = "A sala já está sendo criada. Por favor aguarde.";
+"room_creation_wait_for_creation" = "A sala já está sendo criada. Por favor, aguarde.";
 "room_creation_invite_another_user" = "Buscar / convidar por ID de usuário, nome e sobrenome ou e-mail";
 "room_recents_directory_section_network" = "Rede";
 "room_recents_favourites_section" = "FAVORITOS";
@@ -118,7 +118,7 @@
 "people_conversation_section" = "CONVERSAS";
 "people_no_conversation" = "Nenhuma conversa";
 // Rooms tab
-"room_directory_no_public_room" = "Não existem salas públicas disponíveis";
+"room_directory_no_public_room" = "Nenhuma sala pública disponível";
 // Groups tab
 "group_invite_section" = "CONVITES";
 "group_section" = "Comunidades";
@@ -139,7 +139,7 @@
 "directory_searching_title" = "Procurando no diretório…";
 // Contacts
 "contacts_address_book_section" = "CONTATOS LOCAIS";
-"contacts_address_book_matrix_users_toggle" = "Apenas usuários Matrix";
+"contacts_address_book_matrix_users_toggle" = "Apenas usuários na Matrix";
 "contacts_address_book_no_contact" = "Nenhum contato local";
 "contacts_address_book_permission_required" = "É preciso autorização para acessar contatos locais";
 "contacts_address_book_permission_denied" = "Você não permitiu que o Element acesse seus contatos locais";
@@ -187,11 +187,11 @@
 "room_participants_action_unban" = "Desbloquear";
 "room_participants_action_ignore" = "Esconder todas as mensagens deste usuário";
 "room_participants_action_unignore" = "Mostrar todas as mensagens deste usuário";
-"room_participants_invite_malformed_id" = "ID malformado. Deve ser uitlizado um endereço de e-mail ou um Matrix ID, como \"@localpart:domain\"";
+"room_participants_invite_malformed_id" = "ID mal formatado. Precisa ser um endereço de e-mail ou um ID Matrix, como '@membrolocal:dominio'";
 "room_participants_action_set_default_power_level" = "Redefinir para usuário normal";
 "room_participants_action_set_moderator" = "Faça moderador";
 "room_participants_action_set_admin" = "Faça administrador";
-"room_participants_action_start_new_chat" = "Iniciar um novo bate-papo";
+"room_participants_action_start_new_chat" = "Iniciar nova conversa";
 "room_participants_action_start_voice_call" = "Iniciar chamada de voz";
 "room_participants_action_start_video_call" = "Iniciar chamada de vídeo";
 "room_participants_action_mention" = "Menção";
@@ -230,8 +230,8 @@
 "room_event_action_view_decrypted_source" = "Ver código-fonte descriptografado";
 "room_event_action_report" = "Denunciar conteúdo";
 "room_event_action_report_prompt_reason" = "Razão para denunciar este conteúdo";
-"room_event_action_kick_prompt_reason" = "Razão para remover este usuário";
-"room_event_action_ban_prompt_reason" = "Razão para bloquear este usuário";
+"room_event_action_kick_prompt_reason" = "Motivo para remover este usuário";
+"room_event_action_ban_prompt_reason" = "Motivo para bloquear este usuário";
 "room_event_action_report_prompt_ignore_user" = "Você quer esconder todas as mensagens deste usuário?";
 "room_event_action_save" = "Salvar";
 "room_event_action_resend" = "Reenviar";
@@ -293,7 +293,7 @@
 "settings_advanced" = "AVANÇADO";
 "settings_other" = "OUTROS";
 "settings_labs" = "LABORATÓRIO";
-"settings_flair" = "Mostrar insígnias onde permitido";
+"settings_flair" = "Mostrar ícones onde permitido";
 "settings_devices" = "SESSÕES";
 "settings_cryptography" = "CRIPTOGRAFIA";
 "settings_deactivate_account" = "DESATIVAR MINHA CONTA";
@@ -382,7 +382,7 @@
 "room_details_history_section_members_only" = "Apenas membros (desde o momento em que selecionamos esta opção)";
 "room_details_history_section_members_only_since_invited" = "Apenas membros (desde que foram convidados)";
 "room_details_history_section_members_only_since_joined" = "Apenas membros (desde que aderiram)";
-"room_details_history_section_prompt_title" = "Aviso de privacidade";
+"room_details_history_section_prompt_title" = "Alerta de privacidade";
 "room_details_history_section_prompt_msg" = "Alterações em quem pode ler o histórico de conversas aplica-se apenas para mensagens futuras nesta sala. A visibilidade do histórico existente não será alterada.";
 "room_details_addresses_section" = "Endereços";
 "room_details_no_local_addresses" = "Este quarto não tem endereços locais";
@@ -390,16 +390,16 @@
 "room_details_new_address_placeholder" = "Adicionar novo endereço (por exemplo, #foo%@)";
 "room_details_addresses_invalid_address_prompt_title" = "Formato de alias inválido";
 "room_details_addresses_invalid_address_prompt_msg" = "%@ não é um formato válido para um alias";
-"room_details_addresses_disable_main_address_prompt_title" = "Aviso de endereço principal";
-"room_details_addresses_disable_main_address_prompt_msg" = "Você não terá nenhum endereço principal especificado. O endereço principal padrão para esta sala será escolhido aleatoriamente";
-"room_details_flair_section" = "Mostrar insígnias para as comunidades";
+"room_details_addresses_disable_main_address_prompt_title" = "Alerta de endereço principal";
+"room_details_addresses_disable_main_address_prompt_msg" = "Você não terá nenhum endereço principal especificado. O endereço principal padrão desta sala será escolhido aleatoriamente";
+"room_details_flair_section" = "Mostrar ícones de comunidades";
 "room_details_new_flair_placeholder" = "Adicionar nova ID de comunidade (por exemplo, +foo%@)";
 "room_details_flair_invalid_id_prompt_title" = "Formato Inválido";
 "room_details_flair_invalid_id_prompt_msg" = "%@ não é um identificador válido para uma comunidade";
 "room_details_banned_users_section" = "Usuários bloqueados";
 "room_details_advanced_section" = "Avançado";
 "room_details_advanced_room_id" = "ID da sala:";
-"room_details_advanced_enable_e2e_encryption" = "Ativar criptografia (aviso: não pode ser desativado novamente!)";
+"room_details_advanced_enable_e2e_encryption" = "Ativar criptografia (atenção: não pode ser desativado novamente!)";
 "room_details_advanced_e2e_encryption_enabled" = "A criptografia está ativada nesta sala";
 "room_details_advanced_e2e_encryption_disabled" = "A criptografia não está ativada nesta sala.";
 "room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Criptografar apenas para sessões verificadas";
@@ -422,7 +422,7 @@
 "room_details_unset_main_address" = "Desativar como endereço principal";
 "room_details_copy_room_id" = "Copiar o ID da sala";
 "room_details_copy_room_address" = "Copiar o endereço da sala";
-"room_details_copy_room_url" = "Copiar o URL da sala";
+"room_details_copy_room_url" = "Copiar o link da sala";
 // Group Details
 "group_details_title" = "Detalhes da Comunidade";
 "group_details_home" = "Início";
@@ -481,9 +481,9 @@
 "network_offline_prompt" = "A internet parece estar fora do ar.";
 "homeserver_connection_lost" = "Não foi possível conectar-se ao servidor local.";
 "public_room_section_title" = "Salas Públicas (em %@):";
-"bug_report_prompt" = "O aplicativo encerrou abruptamente na última vez. Gostaria de enviar um relatório de falhas?";
+"bug_report_prompt" = "O aplicativo encerrou inesperadamente na última vez. Gostaria de enviar um relatório de erros?";
 "rage_shake_prompt" = "Você parece estar agitando o telefone em frustração. Gostaria de enviar um relatório de erro?";
-"do_not_ask_again" = "Não pergunte novamente";
+"do_not_ask_again" = "Não perguntar novamente";
 "camera_access_not_granted" = "%@ não tem permissão para usar a câmera, altere as configurações de privacidade";
 "large_badge_value_k_format" = "%.1fK";
 // Call
@@ -495,7 +495,7 @@
 "call_jitsi_error" = "Não foi possível participar da chamada em grupo.";
 // No VoIP support
 "no_voip_title" = "Recebendo chamada";
-"no_voip" = "%@ está ligando para você, mas %@ ainda não suporta chamadas.↵\nVocê pode ignorar essa notificação e aceitar a chamada em outro aparelho, ou recusar.";
+"no_voip" = "%@ está ligando para você, mas %@ ainda não suporta chamadas.↵\nVocê pode ignorar essa notificação e aceitar a chamada em outro aparelho, ou recusá-la.";
 // Crash report
 "google_analytics_use_prompt" = "Você gostaria de ajudar a melhorar o %@ informando automaticamente relatórios de falhas e dados de uso anônimos?";
 // Crypto
@@ -507,8 +507,8 @@
 "bug_crash_report_title" = "Relatório de erros";
 "bug_crash_report_description" = "Por favor, descreva o que você fez antes do erro:";
 "bug_report_logs_description" = "Para diagnosticar problemas, os logs deste cliente serão enviados com este relatório de erro. Se preferir enviar apenas o texto acima, por favor desmarque:";
-"bug_report_send_logs" = "Enviar logs";
-"bug_report_send_screenshot" = "Enviar screenshot";
+"bug_report_send_logs" = "Enviar registros";
+"bug_report_send_screenshot" = "Enviar recorte de tela";
 "bug_report_progress_zipping" = "Coletando logs";
 "bug_report_progress_uploading" = "Enviando relatório";
 "bug_report_send" = "Enviar";
@@ -530,7 +530,7 @@
 "widget_integration_room_not_visible" = "Sala %@ não é visível.";
 // Share extension
 "share_extension_auth_prompt" = "Entre no aplicativo principal para compartilhar conteúdo";
-"share_extension_failed_to_encrypt" = "Falha ao enviar. Verifique no aplicativo principal as configurações de criptografia para esta sala";
+"share_extension_failed_to_encrypt" = "Falha ao enviar. Verifique no aplicativo principal as configurações de criptografia desta sala";
 // Room key request dialog
 "e2e_room_key_request_title" = "Pedido de chave de encriptação";
 "e2e_room_key_request_message_new_device" = "Você adicionou uma nova sessão '%@', que está solicitando chaves de criptografia.";
@@ -546,9 +546,9 @@
 "deactivate_account_informations_part2_emphasize" = "Essa ação é irreversível.";
 "deactivate_account_informations_part3" = "\n\nDesativando sua conta ";
 "deactivate_account_informations_part4_emphasize" = "não nos faz esquecer, por padrão, as mensagens que você enviou. ";
-"deactivate_account_informations_part5" = "Se você gostaria que nós esquecêssemos suas mensagens, por favor marque a caixa abaixo\n\nA visibilidade das mensagens no Matrix é semelhante ao e-mail. O fato de esquecermos suas mensagens significa que as mensagens que você enviou não serão compartilhadas com usuários novos ou não registrados, mas os usuários registrados que já têm acesso a essas mensagens ainda terão acesso à cópia deles.";
-"deactivate_account_forget_messages_information_part1" = "Por favor, esqueça todas as mensagens que enviei quando minha conta está desativada (";
-"deactivate_account_forget_messages_information_part2_emphasize" = "Aviso";
+"deactivate_account_informations_part5" = "Se você gostaria que nós esquecêssemos suas mensagens, por favor marque a caixa abaixo↵\n↵\nA visibilidade das mensagens no Matrix é semelhante ao e-mail. O fato de esquecermos suas mensagens significa que as mensagens que você enviou não serão compartilhadas com usuários novos ou não registrados, mas os usuários registrados que já têm acesso a essas mensagens ainda terão acesso à cópia delas.";
+"deactivate_account_forget_messages_information_part1" = "Quando minha conta for desativada, exclua todas as mensagens que eu enviei (";
+"deactivate_account_forget_messages_information_part2_emphasize" = "Atenção";
 "deactivate_account_forget_messages_information_part3" = ": isso fará com que futuros usuários vejam uma visão incompleta das conversas)";
 "deactivate_account_validate_action" = "Desativar minha conta";
 "deactivate_account_password_alert_title" = "Desativar minha conta";
@@ -558,7 +558,7 @@
 "rerequest_keys_alert_message" = "Por favor, inicie o Element em outro aparelho que possa descriptografar a mensagem, de modo que ele possa enviar as chaves para esta sessão.";
 // String for App Store
 "store_short_description" = "Conversas e chamadas: seguras e descentralizadas";
-"store_full_description" = "O Element é um novo tipo de aplicativo de comunicação e colaboração que:↵\n↵\n1. Coloca você no controle para preservar sua privacidade↵\n2. Permite que você se comunique com qualquer pessoa na rede Matrix, e até mais além, integrando-se a aplicativos como o Slack↵\n3. Protege você de publicidade, datamining, backdoors e jardins murados↵\n4. Protege você por meio da criptografia de ponta a ponta, com assinatura cruzada para verificar outras pessoas↵\n↵\nO Element é completamente diferente de outros aplicativos de mensagens e colaboração porque é descentralizado e de código aberto.↵\n↵\nO Element permite que você use seu próprio servidor - ou escolha uma alternativa de armazenamento - para ter privacidade, propriedade e controle de seus dados e conversas. Dá acesso a uma rede aberta; para que você não fique falando apenas com outros usuários do Element. E é muito seguro.↵\n↵\nO Element é capaz de fazer tudo isso porque opera na rede Matrix - o padrão para comunicação aberta e descentralizada.↵\n↵\nO Element coloca você no controle, permitindo escolher quem armazena suas conversas. No aplicativo do Element, você pode optar por armazenar de diferentes maneiras:↵\n↵\n1. Obtenha uma conta gratuita no servidor público matrix.org↵\n2. Armazene sua conta automaticamente, executando um servidor em seu próprio hardware↵\n3. Inscreva-se em uma conta para um servidor personalizado, basta se inscrever na plataforma de armazenamento do Element Matrix Services↵\n↵\nPor que escolher o Element?↵\n↵\nPOSSUA SEUS DADOS: você decide onde guardar seus dados e mensagens. Você os possui e controla, e não alguma MEGA CORPORAÇÃO que vende seus dados ou dá acesso a terceiros.↵\n↵\nMENSAGEM ABERTA E COLABORAÇÃO: você pode conversar com qualquer outra pessoa na rede Matrix, esteja ela usando o Element ou outro aplicativo que se conecta na rede Matrix. E mesmo se estiverem usando um sistema de mensagens diferente, como Slack, IRC ou XMPP.↵\n↵\nSUPER SEGURO: criptografia real de ponta a ponta (somente aqueles na conversa podem descriptografar as mensagens) e assinatura cruzada para verificar os aparelhos dos participantes da conversa.↵\n↵\nCOMUNICAÇÃO COMPLETA: mensagens, chamadas de voz e de vídeo, compartilhamento de arquivos, compartilhamento de tela e um monte de integrações, bots e widgets. Crie salas, comunidades, mantenha contato e faça as coisas acontecerem.↵\n↵\nONDE QUER QUE VOCÊ ESTEJA: mantenha contato onde quer que você esteja, com o histórico de mensagens totalmente sincronizado em todos os seus aparelhos e na web em https://element.io/app.";
+"store_full_description" = "O Element é um novo tipo de aplicativo de comunicação e colaboração que:↵\n↵\n1. Coloca você no controle para preservar sua privacidade↵\n2. Permite que você se comunique com qualquer pessoa na rede Matrix, e até mais além, integrando-se a aplicativos como o Slack↵\n3. Protege você de publicidade, datamining, backdoors e jardins murados↵\n4. Protege você por meio da criptografia de ponta a ponta, com autoverificação para verificar outras pessoas↵\n↵\nO Element é completamente diferente de outros aplicativos de mensagens e colaboração porque é descentralizado e de código aberto.↵\n↵\nO Element permite que você use seu próprio servidor - ou escolha uma alternativa de armazenamento - para ter privacidade, propriedade e controle de seus dados e conversas. Dá acesso a uma rede aberta; para que você não fique falando apenas com outros usuários do Element. E é muito seguro.↵\n↵\nO Element é capaz de fazer tudo isso porque opera na rede Matrix - o padrão para comunicação aberta e descentralizada.↵\n↵\nO Element coloca você no controle, permitindo escolher quem armazena suas conversas. No aplicativo do Element, você pode optar por armazenar de diferentes maneiras:↵\n↵\n1. Obtenha uma conta gratuita no servidor público matrix.org↵\n2. Armazene sua conta automaticamente, executando um servidor em seu próprio hardware↵\n3. Inscreva-se em uma conta para um servidor personalizado, basta se inscrever na plataforma de armazenamento do Element Matrix Services↵\n↵\nPor que escolher o Element?↵\n↵\nPOSSUA SEUS DADOS: você decide onde guardar seus dados e mensagens. Você os possui e controla, e não alguma MEGA CORPORAÇÃO que vende seus dados ou dá acesso a terceiros.↵\n↵\nMENSAGEM ABERTA E COLABORAÇÃO: você pode conversar com qualquer outra pessoa na rede Matrix, esteja ela usando o Element ou outro aplicativo que se conecta na rede Matrix. E mesmo se estiverem usando um sistema de mensagens diferente, como Slack, IRC ou XMPP.↵\n↵\nSUPER SEGURO: criptografia real de ponta a ponta (somente aqueles na conversa podem descriptografar as mensagens) e autoverificação para verificar os aparelhos dos participantes da conversa.↵\n↵\nCOMUNICAÇÃO COMPLETA: mensagens, chamadas de voz e de vídeo, compartilhamento de arquivos, compartilhamento de tela e um monte de integrações, bots e widgets. Crie salas, comunidades, mantenha contato e faça as coisas acontecerem.↵\n↵\nONDE QUER QUE VOCÊ ESTEJA: mantenha contato onde quer que você esteja, com o histórico de mensagens totalmente sincronizado em todos os seus aparelhos e na web em https://element.io/app.";
 "auth_login_single_sign_on" = "Entre com o logon único";
 "auth_autodiscover_invalid_response" = "Resposta de descoberta inválida no servidor local";
 "room_message_unable_open_link_error_message" = "Não foi possível abrir o link.";
@@ -614,7 +614,7 @@
 "key_backup_setup_passphrase_set_passphrase_action" = "Definir a frase secreta";
 "key_backup_setup_passphrase_setup_recovery_key_info" = "Ou, proteja seu backup com uma chave de recuperação, salvando-a em algum lugar seguro.";
 "key_backup_setup_passphrase_setup_recovery_key_action" = "(Avançado) Configurar com chave de recuperação";
-"key_backup_setup_success_title" = "Sucesso!";
+"key_backup_setup_success_title" = "Pronto!";
 // Success from passphrase
 "key_backup_setup_success_from_passphrase_info" = "Suas chaves estão sendo copiadas.\n\nSua chave de recuperação é uma rede de segurança - você pode usá-la para restaurar o acesso às suas mensagens criptografadas se esquecer sua frase secreta.\n\nMantenha sua chave de recuperação em algum lugar muito seguro, como um gerenciador de senhas (ou um cofre).";
 "key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Salvar chave de recuperação";
@@ -658,7 +658,7 @@
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_backup_action" = "Backup";
 "sign_out_key_backup_in_progress_alert_title" = "Backup de chave em andamento. Se você sair agora, perderá o acesso às suas mensagens criptografadas.";
 "sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Eu não quero minhas mensagens criptografadas";
-"sign_out_key_backup_in_progress_alert_cancel_action" = "Eu vou esperar";
+"sign_out_key_backup_in_progress_alert_cancel_action" = "Eu esperarei";
 "store_promotional_text" = "Aplicativo de bate-papo e colaboração que preserva a privacidade, em uma rede aberta. Descentralizado para colocar você no controle. Sem datamining, sem backdoors e sem acesso de terceiros.";
 "close" = "Fechar";
 "skip" = "Pular";
@@ -694,12 +694,12 @@
 "device_verification_cancelled_by_me" = "A verificação foi cancelada. Razão: %@";
 "device_verification_error_cannot_load_device" = "Não foi possível carregar as informações da sessão.";
 "major_update_information" = "Estamos felizes em anunciar que mudamos de nome! Seu aplicativo está atualizado e você está conectado à sua conta.";
-"room_action_camera" = "Tirar uma foto ou vídeo";
-"room_accessibility_call" = "Ligar";
+"room_action_camera" = "Tirar uma foto ou gravar vídeo";
+"room_accessibility_call" = "Chamada de voz";
 "media_type_accessibility_video" = "Vídeo";
 "event_formatter_jitsi_widget_added_by_you" = "Você adicionou chamada em grupo";
 "event_formatter_jitsi_widget_removed_by_you" = "Você removeu chamada em grupo";
-"room_widget_permission_avatar_url_permission" = "URL da sua foto de perfil";
+"room_widget_permission_avatar_url_permission" = "Link da sua foto de perfil";
 "device_verification_emoji_banana" = "Banana";
 "room_participants_action_security_status_loading" = "Carregando…";
 "room_participants_security_loading" = "Carregando…";
@@ -768,7 +768,52 @@
 "key_verification_verify_qr_code_scan_code_action" = "Escanear o código do seu contato";
 // Scanned
 "key_verification_scan_confirmation_scanned_title" = "Quase lá!";
-"user_verification_session_details_additional_information_untrusted_other_user" = "Até que este usuário confie nesta sessão, as mensagens enviadas para e a partir dela são rotuladas com avisos. Como alternativa, você pode verificá-la manualmente.";
+"user_verification_session_details_additional_information_untrusted_other_user" = "Até que este usuário confie nesta sessão, as mensagens enviadas para e a partir dela são rotuladas com alertas. Como alternativa, você pode verificá-la manualmente.";
 "user_verification_session_details_verify_action_current_user" = "Verifiquem interativamente";
 "user_verification_session_details_verify_action_current_user_manually" = "Verifique manualmente por texto";
 "user_verification_session_details_verify_action_other_user" = "Verificar manualmente";
+"auth_add_email_phone_message_2" = "Defina um e-mail para recuperação da conta. Posteriormente, você pode permitir que as pessoas encontrem você através dele, ou através do número de telefone.";
+"auth_email_is_required" = "Nenhum servidor de identidade está configurado, portanto você não pode adicionar um endereço de e-mail para redefinir sua senha no futuro.";
+"auth_softlogout_clear_data_message_1" = "Atenção: seus dados pessoais (incluindo chaves de criptografia) ainda estão armazenados neste aparelho.";
+"auth_softlogout_clear_data_sign_out" = "Sair";
+"room_creation_error_invite_user_by_email_without_identity_server" = "Nenhum servidor de identidade está configurado, portanto você não pode adicionar um membro com um e-mail.";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Nenhum servidor de identidade está configurado, portanto você não pode iniciar uma conversa com um contato usando um e-mail.";
+"room_participants_action_security_status_warning" = "Atenção";
+"settings_three_pids_management_information_part1" = "Gerencie quais endereços de e-mail ou números de telefone você pode usar para fazer login ou recuperar sua conta aqui. Controle quem pode encontrar você em· ";
+"settings_calls_stun_server_fallback_button" = "Permitir a assistência do servidor de chamadas reserva";
+"settings_discovery_terms_not_signed" = "Concorde com os Termos de Serviço do servidor de identidade (%s), para que você possa ser descoberto por endereço de e-mail ou por número de telefone.";
+"settings_discovery_three_pids_management_information_part1" = "Gerencie quais endereços de e-mail ou números de telefone outros usuários podem usar para descobrir sua conta e enviar um convite para salas. Adicione ou remova endereços de e-mail ou números de telefone desta lista em· ";
+"settings_discovery_three_pid_details_title_email" = "Gerenciar e-mail";
+"settings_discovery_three_pid_details_information_email" = "Gerencie preferências para este endereço de e-mail, que outros usuários podem usar para descobrir sua conta e enviar um convite para salas. Adicione ou remova endereços de e-mail em Contas.";
+"settings_discovery_three_pid_details_cancel_email_validation_action" = "Cancelar a validação de e-mail";
+"security_settings_crosssigning" = "AUTOVERIFICAÇÃO";
+"security_settings_crosssigning_info_not_bootstrapped" = "A autoverificação ainda não está ativada.";
+"security_settings_crosssigning_info_exists" = "A sua conta tem uma identidade autoverificada em armazenamento secreto, mas ainda não é considerada confiável por esta sessão. Conclua as etapas de segurança desta sessão.";
+"security_settings_crosssigning_info_trusted" = "A autoverificação está ativada. Você pode confiar em outros usuários e em suas outras sessões com base na autoverificação deles, mas você não pode fazer a autoverificação nesta sessão porque ela não possui as suas chaves privadas da autoverificação. Complete as etapas de segurança desta sessão.";
+"security_settings_crosssigning_info_ok" = "A autoverificação está ativada.";
+"security_settings_crosssigning_bootstrap" = "Fazer a autoverificação";
+"security_settings_crosssigning_reset" = "Refazer a autoverificação";
+"identity_server_settings_disconnect_info" = "Desconectar-se do servidor de identidade significa que você não poderá ser descoberto por outros usuários e não poderá convidar outras pessoas por e-mail ou número de celular.";
+"identity_server_settings_alert_disconnect_still_sharing_3pid" = "Você ainda está compartilhando seus dados pessoais no servidor de identidade %@.↵\n↵\nRecomendamos que você remova seus endereços de e-mail e números de telefone do servidor de identidade antes de desconectar.";
+"call_no_stun_server_error_title" = "A chamada falhou por conta de má configuração no servidor";
+"widget_integration_manager_disabled" = "Você precisa ativar o Gerenciador de Integrações nas configurações";
+"service_terms_modal_description_for_identity_server_1" = "Encontrar outras pessoas por telefone ou e-mail";
+"service_terms_modal_description_for_identity_server_2" = "Seja encontrada/o por número de celular ou por e-mail";
+"device_verification_self_verify_wait_additional_information" = "ou outro cliente da Matrix capaz de fazer autoverificação";
+"key_verification_verified_user_information" = "As mensagens com este usuário estão criptografadas de ponta a ponta e não podem ser lidas por terceiros.";
+"device_verification_emoji_smiley" = "Sorriso";
+// Generic errors
+"error_invite_3pid_with_no_identity_server" = "Adicionar um servidor de identidade nas suas configurações para convidar por e-mail.";
+"key_verification_bootstrap_not_setup_message" = "Você precisa fazer a autoverificação em primeiro lugar.";
+"user_verification_sessions_list_user_trust_level_warning_title" = "Atenção";
+"user_verification_sessions_list_information" = "As mensagens com este usuário nesta sala estão criptografadas de ponta a ponta e não podem ser lidas por terceiros.";
+"secrets_recovery_with_passphrase_information_default" = "Digite a sua senha de recuperação para acessar o seu histórico de mensagens seguras e a sua identidade autoverificada para verificar outras sessões.";
+"secrets_recovery_with_key_information_default" = "Digite a sua senha de recuperação para acessar o seu histórico de mensagens seguras e a sua identidade autoverificada para verificar outras sessões.";
+"secrets_setup_recovery_key_done_action" = "Pronto";
+"secrets_setup_recovery_passphrase_validate_action" = "Pronto";
+"pin_protection_settings_enabled_forced" = "PIN ativado";
+"pin_protection_settings_enable_pin" = "Ativar o PIN";
+"biometrics_settings_enable_x" = "Ativar %@";
+"biometrics_setup_title_x" = "Ativar %@";
+"biometrics_setup_enable_button_title_x" = "Ativar %@";
+"biometrics_cant_unlocked_alert_message_x" = "Para desbloquear, use %@ ou faça login novamente e ative %@ novamente";
