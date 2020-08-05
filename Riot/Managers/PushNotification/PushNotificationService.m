@@ -19,11 +19,15 @@
 
 #import <MatrixKit/MatrixKit.h>
 
+#import <PushKit/PushKit.h>
+
 #import "Riot-Swift.h"
 
-@interface PushNotificationService()
+@interface PushNotificationService()<PKPushRegistryDelegate>
 
 @property (nonatomic, nullable, copy) void (^registrationForRemoteNotificationsCompletion)(NSError *);
+@property (nonatomic, strong) PKPushRegistry *pushRegistry;
+@property (nonatomic, strong) PushNotificationManager *pushNotificationManager;
 
 @end
 
@@ -94,6 +98,8 @@
     NSParameterAssert(!accountManager.pushDeviceToken);
 
     _isPushRegistered = YES;
+    
+    [self configurePushKit];
 
     if (self.registrationForRemoteNotificationsCompletion)
     {
@@ -129,6 +135,23 @@
 - (void)applicationWillEnterForeground
 {
     [[UNUserNotificationCenter currentNotificationCenter] removeUnwantedNotifications];
+}
+
+#pragma mark - Private Methods
+
+- (void)configurePushKit
+{
+    if (_pushNotificationManager == nil)
+    {
+        _pushNotificationManager = PushNotificationManager.shared;
+    }
+    
+    if (_pushRegistry == nil)
+    {
+        _pushRegistry = [[PKPushRegistry alloc] initWithQueue:dispatch_get_main_queue()];
+        _pushRegistry.delegate = self;
+        _pushRegistry.desiredPushTypes = [NSSet setWithObject:PKPushTypeVoIP];
+    }
 }
 
 #pragma mark - UNUserNotificationCenterDelegate
@@ -323,6 +346,18 @@
     {
         [_delegate pushNotificationService:self shouldNavigateToRoomWithId:roomId];
     }
+}
+
+#pragma mark - PKPushRegistryDelegate
+
+- (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)pushCredentials forType:(PKPushType)type
+{
+    _pushNotificationManager.pushToken = pushCredentials.token;
+}
+
+- (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type withCompletionHandler:(void (^)(void))completion
+{
+    
 }
 
 @end
