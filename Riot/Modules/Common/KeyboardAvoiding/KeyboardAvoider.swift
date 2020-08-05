@@ -56,21 +56,6 @@ final class KeyboardAvoider: NSObject {
         self.unregisterKeyboardNotifications()
     }
     
-    /// Scroll to the given view, which must be a view in the scrollView.
-    /// - Parameters:
-    ///   - view: The view to scroll
-    ///   - animated: animate the scroll
-    func scroll(to view: UIView, animated: Bool = true) {
-        guard let scrollView = scrollView else { return }
-        //  find the view's frame in the scrollView
-        var rect = view.convert(view.frame, to: scrollView)
-        //  add a little offset to also see some below/above of the view
-        rect = rect.insetBy(dx: 0, dy: -20)
-        DispatchQueue.main.async {
-            scrollView.scrollRectToVisible(rect, animated: animated)
-        }
-    }
-    
     // MARK: - Private
     
     private func registerKeyboardNotifications() {

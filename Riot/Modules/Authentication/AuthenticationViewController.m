@@ -1145,7 +1145,7 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    [_keyboardAvoider scrollTo:textField animated:YES];
+    [self.authenticationScrollView vc_scrollTo:textField with:UIEdgeInsetsMake(-20, 0, -20, 0) animated:YES];
 }
 
 #pragma mark - KVO
