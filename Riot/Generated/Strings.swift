@@ -318,6 +318,62 @@ internal enum VectorL10n {
   internal static var back: String { 
     return VectorL10n.tr("Vector", "back") 
   }
+  /// Log back in
+  internal static var biometricsCantUnlockedAlertMessageLogin: String { 
+    return VectorL10n.tr("Vector", "biometrics_cant_unlocked_alert_message_login") 
+  }
+  /// Retry
+  internal static var biometricsCantUnlockedAlertMessageRetry: String { 
+    return VectorL10n.tr("Vector", "biometrics_cant_unlocked_alert_message_retry") 
+  }
+  /// To unlock, use %@ or log back in and enable %@ again
+  internal static func biometricsCantUnlockedAlertMessageX(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "biometrics_cant_unlocked_alert_message_x", p1, p2)
+  }
+  /// Can't unlock app
+  internal static var biometricsCantUnlockedAlertTitle: String { 
+    return VectorL10n.tr("Vector", "biometrics_cant_unlocked_alert_title") 
+  }
+  /// Disable %@
+  internal static func biometricsDesetupDisableButtonTitleX(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "biometrics_desetup_disable_button_title_x", p1)
+  }
+  /// 
+  internal static var biometricsDesetupSubtitle: String { 
+    return VectorL10n.tr("Vector", "biometrics_desetup_subtitle") 
+  }
+  /// Disable %@
+  internal static func biometricsDesetupTitleX(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "biometrics_desetup_title_x", p1)
+  }
+  /// Face ID
+  internal static var biometricsModeFaceId: String { 
+    return VectorL10n.tr("Vector", "biometrics_mode_face_id") 
+  }
+  /// Touch ID
+  internal static var biometricsModeTouchId: String { 
+    return VectorL10n.tr("Vector", "biometrics_mode_touch_id") 
+  }
+  /// Enable %@
+  internal static func biometricsSettingsEnableX(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "biometrics_settings_enable_x", p1)
+  }
+  /// Enable %@
+  internal static func biometricsSetupEnableButtonTitleX(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "biometrics_setup_enable_button_title_x", p1)
+  }
+  /// Save yourself time
+  internal static var biometricsSetupSubtitle: String { 
+    return VectorL10n.tr("Vector", "biometrics_setup_subtitle") 
+  }
+  /// Enable %@
+  internal static func biometricsSetupTitleX(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "biometrics_setup_title_x", p1)
+  }
+  /// Authentication is needed to access your app
+  internal static var biometricsUsageReason: String { 
+    return VectorL10n.tr("Vector", "biometrics_usage_reason") 
+  }
   /// Please describe what you did before the crash:
   internal static var bugCrashReportDescription: String { 
     return VectorL10n.tr("Vector", "bug_crash_report_description") 
@@ -1909,6 +1965,66 @@ internal enum VectorL10n {
   /// %@ doesn't have permission to access photo library, please change privacy settings
   internal static func photoLibraryAccessNotGranted(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "photo_library_access_not_granted", p1)
+  }
+  /// Choose a PIN for security
+  internal static var pinProtectionChoosePin: String { 
+    return VectorL10n.tr("Vector", "pin_protection_choose_pin") 
+  }
+  /// Confirm your PIN
+  internal static var pinProtectionConfirmPin: String { 
+    return VectorL10n.tr("Vector", "pin_protection_confirm_pin") 
+  }
+  /// Confirm PIN to disable PIN
+  internal static var pinProtectionConfirmPinToDisable: String { 
+    return VectorL10n.tr("Vector", "pin_protection_confirm_pin_to_disable") 
+  }
+  /// Enter your PIN
+  internal static var pinProtectionEnterPin: String { 
+    return VectorL10n.tr("Vector", "pin_protection_enter_pin") 
+  }
+  /// Forgot PIN
+  internal static var pinProtectionForgotPin: String { 
+    return VectorL10n.tr("Vector", "pin_protection_forgot_pin") 
+  }
+  /// Please try again
+  internal static var pinProtectionMismatchErrorMessage: String { 
+    return VectorL10n.tr("Vector", "pin_protection_mismatch_error_message") 
+  }
+  /// PINs don't match
+  internal static var pinProtectionMismatchErrorTitle: String { 
+    return VectorL10n.tr("Vector", "pin_protection_mismatch_error_title") 
+  }
+  /// If you can't remember your PIN, tap the forgot PIN button.
+  internal static var pinProtectionMismatchTooManyTimesErrorMessage: String { 
+    return VectorL10n.tr("Vector", "pin_protection_mismatch_too_many_times_error_message") 
+  }
+  /// Reset
+  internal static var pinProtectionResetAlertActionReset: String { 
+    return VectorL10n.tr("Vector", "pin_protection_reset_alert_action_reset") 
+  }
+  /// To reset your PIN, you'll need to re-login and create a new one
+  internal static var pinProtectionResetAlertMessage: String { 
+    return VectorL10n.tr("Vector", "pin_protection_reset_alert_message") 
+  }
+  /// Reset PIN
+  internal static var pinProtectionResetAlertTitle: String { 
+    return VectorL10n.tr("Vector", "pin_protection_reset_alert_title") 
+  }
+  /// Enable PIN
+  internal static var pinProtectionSettingsEnablePin: String { 
+    return VectorL10n.tr("Vector", "pin_protection_settings_enable_pin") 
+  }
+  /// PIN enabled
+  internal static var pinProtectionSettingsEnabledForced: String { 
+    return VectorL10n.tr("Vector", "pin_protection_settings_enabled_forced") 
+  }
+  /// To reset your PIN, you'll need to re-login and create a new one.
+  internal static var pinProtectionSettingsSectionFooter: String { 
+    return VectorL10n.tr("Vector", "pin_protection_settings_section_footer") 
+  }
+  /// PIN & %@
+  internal static func pinProtectionSettingsSectionHeaderX(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "pin_protection_settings_section_header_x", p1)
   }
   /// Preview
   internal static var preview: String { 

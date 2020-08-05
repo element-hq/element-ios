@@ -10,267 +10,338 @@
 #     https://docs.fastlane.tools/plugins/available-plugins
 #
 
-fastlane_require 'dotenv'
+fastlane_require "dotenv"
 
 default_platform(:ios)
 platform :ios do
 
-    #### Pre ####
+  #### Pre ####
 
-    before_all do
-        # Ensure used Xcode version
-        xcversion(version: "~> 11.4")
+  before_all do
+    # Ensure used Xcode version
+    xcversion(version: "~> 11.4")
+  end
+
+  #### Public ####
+
+  desc "Builds an adhoc ipa"
+  lane :adhoc do |options|
+    options[:adhoc] = true
+    build_release(options)
+  end
+
+  desc "Builds an ipa for the App Store"
+  lane :app_store do |options|
+    build_release(options)
+  end
+
+  desc "Builds the ipa for the AppStore, then uploads it"
+  lane :deploy_release do |options|
+    require 'date'
+    build_number = DateTime.now.strftime("%Y%m%d%H%M%S")
+    options = { build_number: build_number }.merge(options)
+    app_store(options)
+
+    # We haven't yet implemented/tested deliver/upload_to_appstore properly so keep it manual for now
+    UI.message("IPA is available at path '#{ENV['IPA_OUTPUT_PATH']}'. Please upload manually using Application Loader.")
+    UI.confirm("Have you uploaded the IPA to the AppStore now?")
+    #upload_to_appstore(
+    #    skip_submission: true, # Only upload the build
+    #    skip_waiting_for_build_processing: true # Don't wait for the build to process
+    #)
+  end
+
+  desc "Point MatrixKit and MatrixSDK to their respective release/*/release branch if they exist, develop otherwise"
+  lane :point_dependencies_to_pending_releases do
+    edit_podfile(branch_pattern: "release/*/release")
+  end
+
+  desc "Point MatrixKit and MatrixSDK to the branch with the same name as the current branch if such one exist, develop otherwise"
+  lane :point_dependencies_to_same_feature do
+    edit_podfile(branch_pattern: git_branch)
+  end
+
+  desc "Build the app for simulator to ensure it compiles"
+  lane :build do |options|
+    cocoapods
+
+    app_name = "Riot"
+    build_app(
+      clean: true,
+      scheme: app_name,
+      derived_data_path: "./DerivedData/",
+      buildlog_path: "./DerivedData/Logs/",
+      # skip_package_ipa: true,
+      skip_archive: true,
+      destination: "generic/platform=iOS Simulator",
+    )
+  end
+
+  #### Private ####
+
+  desc "Download App Store or Ad-Hoc provisioning profiles"
+  private_lane :build_release do |options|
+    UI.user_error!("'APPLE_ID' environment variable should be set to use this lane") unless !ENV["APPLE_ID"].to_s.empty?
+
+    build_number = options[:build_number]
+    UI.user_error!("'build_number' parameter is missing") unless !build_number.to_s.empty?
+
+    # ad-hoc or app-store?
+    adhoc = options.fetch(:adhoc, false)
+
+    # Retrieve GIT branch name
+    git_branch_name = git_branch
+    UI.user_error!("Unable to retrieve GIT branch name") unless !git_branch_name.to_s.empty?
+
+    # Fetch team id from Appfile
+    team_id = CredentialsManager::AppfileConfig.try_fetch_value(:team_id)
+    UI.user_error!("Fail to fetch team id from Appfile") unless !team_id.to_s.empty?
+
+    # Generate versioning preprocessor macros
+    additional_preprocessor_definitions_hash = release_versioning_preprocessor_definitions(git_branch: git_branch_name, build_number: build_number)
+    additional_preprocessor_definitions = additional_preprocessor_definitions_hash.map { |k, v| "#{k}=\"#{v}\"" }.join(" ")
+
+    # Generate xcodebuild additional arguments
+    xcargs_hash = {
+      "GCC_PREPROCESSOR_DEFINITIONS" => "$(GCC_PREPROCESSOR_DEFINITIONS) #{additional_preprocessor_definitions}",
+      "-UseNewBuildSystem" => "NO",
+    }
+
+    xcargs = xcargs_hash.map { |k, v| "#{k}=#{v.shellescape}" }.join(" ")
+
+    # Clear derived data
+    clear_derived_data(derived_data_path: ENV["DERIVED_DATA_PATH"])
+
+    # Setup project provisioning profiles
+    download_provisioning_profiles(adhoc: adhoc)
+    disable_automatic_code_signing
+    update_project_provisioning_profiles
+
+    # Update build number
+    update_build_number(build_number: build_number)
+
+    # On Xcode 10 with 'Parallelize Build' option on, archive randomly fails with error title "** ARCHIVE FAILED **" for various reasons.
+    # Errors only occur on CocoaPods frameworks and the observed command that failed are CodeSign, CpHeader, CpResource, SetOwnerAndGroup.
+    # To make archive reliable disable 'Parallelize Build' option of scheme ENV["SCHEME"] for the moment.
+    disable_parallelize_builds
+
+    # Perform a pod install
+    cocoapods(repo_update: true)
+
+    # Select a config
+    if adhoc
+      export_method = "ad-hoc"
+      main_provisioning_profile = ENV["ADHOC_MAIN_PROVISIONING_PROFILE_SPECIFIER"]
+      share_extension_provisioning_profile = ENV["ADHOC_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
+      siri_intents_provisioning_profile = ENV["ADHOC_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
+      nse_provisioning_profile = ENV["ADHOC_NSE_PROVISIONING_PROFILE_SPECIFIER"]
+    else
+      export_method = "app-store"
+      main_provisioning_profile = ENV["APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER"]
+      share_extension_provisioning_profile = ENV["APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
+      siri_intents_provisioning_profile = ENV["APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
+      nse_provisioning_profile = ENV["APPSTORE_NSE_PROVISIONING_PROFILE_SPECIFIER"]
     end
 
-    #### Public ####
+    # Build app and create ipa
+    build_app(
+      clean: true,
+      scheme: ENV["SCHEME"],
+      xcargs: xcargs,
+      export_method: export_method,
+      derived_data_path: ENV["DERIVED_DATA_PATH"],
+      archive_path: ENV["ARCHIVE_PATH"],
+      output_directory: ENV["BUILD_OUTPUT_DIRECTORY"],
+      output_name: "#{ENV["IPA_NAME"]}.ipa",
+      buildlog_path: ENV["BUILD_LOG_DIRECTORY"],
+      codesigning_identity: ENV["APPSTORE_CODESIGNING_IDENTITY"],
+      skip_profile_detection: true,
+      export_options: {
+        method: export_method,
+        signingStyle: "manual",
+        teamID: team_id,
+        signingCertificate: ENV["APPSTORE_SIGNING_CERTIFICATE"],
+        provisioningProfiles: {
+          ENV["MAIN_BUNDLE_ID"] => main_provisioning_profile,
+          ENV["SHARE_EXTENSION_BUNDLE_ID"] => share_extension_provisioning_profile,
+          ENV["NSE_BUNDLE_ID"] => nse_provisioning_profile,
+          ENV["SIRI_INTENTS_EXTENSION_BUNDLE_ID"] => siri_intents_provisioning_profile,
+        },
+        iCloudContainerEnvironment: "Production",
+      },
+    )
+  end
 
-    desc "Builds an adhoc ipa"
-    lane :adhoc do |options|
+  #### Private ####
 
-        options[:adhoc] = true
-        build_release(options)
+  desc "Download App Store or Ad-Hoc provisioning profiles"
+  private_lane :download_provisioning_profiles do |options|
+    adhoc = options.fetch(:adhoc, false)
+
+    output_path = ENV["PROVISIONING_PROFILES_PATH"]
+    skip_certificate_verification = false
+
+    main_provisioning_name = adhoc ? ENV["ADHOC_MAIN_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER"]
+    share_extension_provisioning_name = adhoc ? ENV["ADHOC_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
+    siri_intents_provisioning_name = adhoc ? ENV["ADHOC_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
+    notification_service_extension_provisioning_name = adhoc ? ENV["ADHOC_NSE_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_NSE_PROVISIONING_PROFILE_SPECIFIER"]
+
+    # Main application
+    get_provisioning_profile(
+      app_identifier: ENV["MAIN_BUNDLE_ID"],
+      provisioning_name: main_provisioning_name,
+      ignore_profiles_with_different_name: true,
+      adhoc: adhoc,
+      skip_certificate_verification: skip_certificate_verification,
+      output_path: output_path,
+      filename: ENV["MAIN_PROVISIONING_PROFILE_FILENAME"],
+      readonly: true,
+    )
+    # Share extension
+    get_provisioning_profile(
+      app_identifier: ENV["SHARE_EXTENSION_BUNDLE_ID"],
+      provisioning_name: share_extension_provisioning_name,
+      ignore_profiles_with_different_name: true,
+      adhoc: adhoc,
+      skip_certificate_verification: skip_certificate_verification,
+      output_path: output_path,
+      filename: ENV["SHARE_EXTENSION_PROVISIONING_PROFILE_FILENAME"],
+      readonly: true,
+    )
+    # Siri Intents extension
+    get_provisioning_profile(
+      app_identifier: ENV["SIRI_INTENTS_EXTENSION_BUNDLE_ID"],
+      provisioning_name: siri_intents_provisioning_name,
+      ignore_profiles_with_different_name: true,
+      adhoc: adhoc,
+      skip_certificate_verification: skip_certificate_verification,
+      output_path: output_path,
+      filename: ENV["SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_FILENAME"],
+      readonly: true,
+    )
+    # NSE
+    get_provisioning_profile(
+      app_identifier: ENV["NSE_BUNDLE_ID"],
+      provisioning_name: notification_service_extension_provisioning_name,
+      ignore_profiles_with_different_name: true,
+      adhoc: adhoc,
+      skip_certificate_verification: skip_certificate_verification,
+      output_path: output_path,
+      filename: ENV["NSE_PROVISIONING_PROFILE_FILENAME"],
+      readonly: true,
+    )
+  end
+
+  desc "Update provisioning profiles for each target"
+  private_lane :update_project_provisioning_profiles do
+    provisioning_profiles_path = ENV["PROVISIONING_PROFILES_PATH"]
+    build_configuration = "Release"
+    xcodeproj = ENV["PROJECT_PATH"]
+
+    # Main application
+    update_project_provisioning(
+      xcodeproj: xcodeproj,
+      profile: "#{provisioning_profiles_path}#{ENV["MAIN_PROVISIONING_PROFILE_FILENAME"]}",
+      target_filter: ENV["MAIN_TARGET"],
+      build_configuration: build_configuration,
+    )
+    # Share extension
+    update_project_provisioning(
+      xcodeproj: xcodeproj,
+      profile: "#{provisioning_profiles_path}#{ENV["SHARE_EXTENSION_PROVISIONING_PROFILE_FILENAME"]}",
+      target_filter: ENV["SHARE_EXTENSION_TARGET"],
+      build_configuration: build_configuration,
+    )
+    # Siri Intents extension
+    update_project_provisioning(
+      xcodeproj: xcodeproj,
+      profile: "#{provisioning_profiles_path}#{ENV["SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_FILENAME"]}",
+      target_filter: ENV["SIRI_INTENTS_EXTENSION_TARGET"],
+      build_configuration: build_configuration,
+    )
+    # NSE
+    update_project_provisioning(
+      xcodeproj: xcodeproj,
+      profile: "#{provisioning_profiles_path}#{ENV["NSE_PROVISIONING_PROFILE_FILENAME"]}",
+      target_filter: ENV["NSE_TARGET"],
+      build_configuration: build_configuration,
+    )
+  end
+
+  desc "Update application build number for all targets"
+  private_lane :update_build_number do |options|
+    build_number = options[:build_number]
+
+    increment_build_number_in_xcodeproj(
+      build_number: build_number,
+    )
+  end
+
+  desc "Returns version identifiers hash to inject in GCC_PREPROCESSOR_DEFINITIONS for release builds"
+  private_lane :release_versioning_preprocessor_definitions do |options|
+    preprocessor_definitions = Hash.new
+
+    git_branch_name = options[:git_branch]
+    build_number = options[:build_number]
+
+    if !git_branch_name.to_s.empty?
+      preprocessor_definitions["GIT_BRANCH"] = git_branch_name.sub("origin/", "").sub("heads/", "")
     end
 
-    desc "Builds (and upload) an ipa for the App Store"
-    lane :app_store do |options|
-
-        build_release(options)
-
-        # Upload ipa to TestFlight
-        #upload_to_testflight(
-        #    skip_submission: true, # Only upload the build
-        #    skip_waiting_for_build_processing: true # Don't wait for the build to process
-        #)
+    if !build_number.to_s.empty?
+      preprocessor_definitions["BUILD_NUMBER"] = build_number
     end
 
-    #### Private ####
+    preprocessor_definitions
+  end
 
-    desc "Download App Store or Ad-Hoc provisioning profiles"
-    private_lane :build_release do |options|
+  desc "Disable 'Parallelize Build' option of build action of main scheme"
+  private_lane :disable_parallelize_builds do
+    project_path = "../#{ENV["PROJECT_PATH"]}"
+    scheme_name = ENV["SCHEME"]
 
-        UI.user_error!("'APPLE_ID' environment variable should be set to use this lane") unless !ENV["APPLE_ID"].to_s.empty?
+    scheme_path = Xcodeproj::XCScheme.shared_data_dir(project_path) + "#{scheme_name}.xcscheme"
+    scheme = Xcodeproj::XCScheme.new(scheme_path)
+    scheme.build_action.xml_element.attributes["parallelizeBuildables"] = "NO"
+    scheme.save_as(project_path, scheme_name)
+  end
 
-        build_number = options[:build_number]
-        UI.user_error!("'build_number' parameter is missing") unless !build_number.to_s.empty?
+  desc "Edit the Podfile in order to point MatrixKit and MatrixSDK to the appropriate branches."
+  private_lane :edit_podfile do |options|
+    require 'net/http'
 
-        # ad-hoc or app-store?
-        adhoc = options.fetch(:adhoc, false)
+    branch_pattern = options[:branch_pattern]
+    kit_slug = "matrix-org/matrix-ios-kit"
+    sdk_slug = "matrix-org/matrix-ios-sdk"
 
-        # Retrieve GIT branch name
-        git_branch_name = git_branch
-        UI.user_error!("Unable to retrieve GIT branch name") unless !git_branch_name.to_s.empty?
+    kit_branch = find_branch(kit_slug, branch_pattern) || 'develop'
+    sdk_branch = find_branch(sdk_slug, branch_pattern) || 'develop'
 
-        # Fetch team id from Appfile
-        team_id = CredentialsManager::AppfileConfig.try_fetch_value(:team_id)
-        UI.user_error!("Fail to fetch team id from Appfile") unless !team_id.to_s.empty?
+    kit_spec = { git: 'https://github.com/matrix-org/matrix-ios-kit.git', branch: kit_branch }
+    kit_podspec = { podspec: 'MatrixKit.edited.podspec' }
+    sdk_spec = { git: 'https://github.com/matrix-org/matrix-ios-sdk.git', branch: sdk_branch }
 
-        # Generate versioning preprocessor macros
-        additional_preprocessor_definitions_hash = release_versioning_preprocessor_definitions(git_branch: git_branch_name, build_number: build_number)
-        additional_preprocessor_definitions = additional_preprocessor_definitions_hash.map { |k,v| "#{k}=\"#{v}\"" }.join(' ')
+    UI.message("✏️ Making a local copy of MatrixKit.podspec from the \`#{kit_branch}\` branch...")
+    podspec_content = Net::HTTP.get(URI("https://raw.githubusercontent.com/#{kit_slug}/#{kit_branch}/MatrixKit.podspec"))
 
-        # Generate xcodebuild additional arguments
-        xcargs_hash = {
-            'GCC_PREPROCESSOR_DEFINITIONS' => "$(GCC_PREPROCESSOR_DEFINITIONS) #{additional_preprocessor_definitions}",
-            '-UseNewBuildSystem' => 'NO'
-        }
+    UI.message "✏️ Editing local MatrixKit podspec to remove version constaint on 'MatrixSDK*' dependencies..."
+    podspec_content.gsub!(%r{(\.dependency\s+(['"])MatrixSDK(\/[^'"]+)?\2).*$}, '\1')
+    podspec_content.gsub!(%r{(\.source\s*=\s*).*$}, "\\1#{kit_spec}")
+    File.write('../MatrixKit.edited.podspec', podspec_content) # current dir is 'fastlane/' hence the '../'
+    UI.command_output("Content of MatrixKit.edited.podspec:\n" + podspec_content)
 
-        xcargs = xcargs_hash.map { |k,v| "#{k}=#{v.shellescape}" }.join(' ')
+    UI.message "✏️ Modify Podfile to point MatrixKit to local podspec and `MatrixSDK/*` to \`#{sdk_branch}\` branch..."
+    podfile_content = File.read('../Podfile') # current dir is 'fastlane/' hence the '../'
+    podfile_content.gsub!(%r{^\$matrixKitVersion\s*=\s*.*$}, "$matrixKitVersion = { #{kit_podspec} => #{sdk_spec} }")
+    File.write('../Podfile', podfile_content)
+    UI.command_output("Content of modified Podfile:\n" + podfile_content)
+  end
 
-        # Clear derived data
-        clear_derived_data(derived_data_path: ENV["DERIVED_DATA_PATH"])
-
-        # Setup project provisioning profiles
-        download_provisioning_profiles(adhoc: adhoc)
-        disable_automatic_code_signing
-        update_project_provisioning_profiles
-
-        # Update build number
-        update_build_number(build_number: build_number)
-
-        # On Xcode 10 with 'Parallelize Build' option on, archive randomly fails with error title "** ARCHIVE FAILED **" for various reasons.
-        # Errors only occur on CocoaPods frameworks and the observed command that failed are CodeSign, CpHeader, CpResource, SetOwnerAndGroup.
-        # To make archive reliable disable 'Parallelize Build' option of scheme ENV["SCHEME"] for the moment.
-        disable_parallelize_builds
-
-        # Perform a pod install
-        cocoapods(repo_update: true)
-
-        # Select a config
-        if adhoc
-            export_method = "ad-hoc"
-            main_provisioning_profile = ENV["ADHOC_MAIN_PROVISIONING_PROFILE_SPECIFIER"]
-            share_extension_provisioning_profile = ENV["ADHOC_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
-            siri_intents_provisioning_profile = ENV["ADHOC_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"] 
-            nse_provisioning_profile = ENV["ADHOC_NSE_PROVISIONING_PROFILE_SPECIFIER"]
-        else
-            export_method = "app-store"
-            main_provisioning_profile = ENV["APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER"]
-            share_extension_provisioning_profile = ENV["APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
-            siri_intents_provisioning_profile = ENV["APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
-            nse_provisioning_profile = ENV["APPSTORE_NSE_PROVISIONING_PROFILE_SPECIFIER"]
-        end
-
-        # Build app and create ipa
-        build_app(
-            clean: true,
-            scheme: ENV["SCHEME"],
-            xcargs: xcargs,
-            export_method: export_method,
-            derived_data_path: ENV["DERIVED_DATA_PATH"],
-            archive_path: ENV["ARCHIVE_PATH"],
-            output_directory: ENV["BUILD_OUTPUT_DIRECTORY"],
-            output_name: "#{ENV['IPA_NAME']}.ipa",
-            buildlog_path: ENV["BUILD_LOG_DIRECTORY"],
-            codesigning_identity: ENV["APPSTORE_CODESIGNING_IDENTITY"],            
-            skip_profile_detection: true,
-            export_options: {
-                method: export_method,
-                signingStyle: "manual",
-                teamID: team_id,
-                signingCertificate: ENV["APPSTORE_SIGNING_CERTIFICATE"],
-                provisioningProfiles: {
-                    ENV["MAIN_BUNDLE_ID"] => main_provisioning_profile,
-                    ENV["SHARE_EXTENSION_BUNDLE_ID"] => share_extension_provisioning_profile,
-                    ENV["NSE_BUNDLE_ID"] => nse_provisioning_profile,
-                    ENV["SIRI_INTENTS_EXTENSION_BUNDLE_ID"] => siri_intents_provisioning_profile
-                },
-                iCloudContainerEnvironment: 'Production'
-            }
-        )
-    end
-
-    #### Private ####
-
-    desc "Download App Store or Ad-Hoc provisioning profiles"
-    private_lane :download_provisioning_profiles do |options|
-        adhoc = options.fetch(:adhoc, false)
-
-        output_path = ENV["PROVISIONING_PROFILES_PATH"]
-        skip_certificate_verification = false
-
-        main_provisioning_name = adhoc ? ENV["ADHOC_MAIN_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER"]
-        share_extension_provisioning_name = adhoc ? ENV["ADHOC_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
-        siri_intents_provisioning_name = adhoc ? ENV["ADHOC_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
-        notification_service_extension_provisioning_name = adhoc ? ENV["ADHOC_NSE_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_NSE_PROVISIONING_PROFILE_SPECIFIER"]
-
-        # Main application
-        get_provisioning_profile(
-            app_identifier: ENV["MAIN_BUNDLE_ID"],
-            provisioning_name: main_provisioning_name,
-            ignore_profiles_with_different_name: true,
-            adhoc: adhoc,
-            skip_certificate_verification: skip_certificate_verification,            
-            output_path: output_path,
-            filename: ENV["MAIN_PROVISIONING_PROFILE_FILENAME"],
-            readonly: true
-        )
-        # Share extension
-        get_provisioning_profile(
-            app_identifier: ENV["SHARE_EXTENSION_BUNDLE_ID"],
-            provisioning_name: share_extension_provisioning_name,
-            ignore_profiles_with_different_name: true,
-            adhoc: adhoc,
-            skip_certificate_verification: skip_certificate_verification,
-            output_path: output_path,
-            filename: ENV["SHARE_EXTENSION_PROVISIONING_PROFILE_FILENAME"],
-            readonly: true
-        )
-        # Siri Intents extension
-        get_provisioning_profile(
-            app_identifier: ENV["SIRI_INTENTS_EXTENSION_BUNDLE_ID"],
-            provisioning_name: siri_intents_provisioning_name,
-            ignore_profiles_with_different_name: true,
-            adhoc: adhoc,
-            skip_certificate_verification: skip_certificate_verification,
-            output_path: output_path,
-            filename: ENV["SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_FILENAME"],
-            readonly: true
-        )
-        # NSE
-        get_provisioning_profile(
-            app_identifier: ENV["NSE_BUNDLE_ID"],
-            provisioning_name: notification_service_extension_provisioning_name,
-            ignore_profiles_with_different_name: true,
-            adhoc: adhoc,
-            skip_certificate_verification: skip_certificate_verification,
-            output_path: output_path,
-            filename: ENV["NSE_PROVISIONING_PROFILE_FILENAME"],
-            readonly: true
-        )
-    end
-
-    desc "Update provisioning profiles for each target"
-    private_lane :update_project_provisioning_profiles do
-        provisioning_profiles_path = ENV["PROVISIONING_PROFILES_PATH"]
-        build_configuration = 'Release'
-        xcodeproj = ENV["PROJECT_PATH"]
-
-        # Main application
-        update_project_provisioning(
-            xcodeproj: xcodeproj,
-            profile: "#{provisioning_profiles_path}#{ENV["MAIN_PROVISIONING_PROFILE_FILENAME"]}",
-            target_filter: ENV["MAIN_TARGET"],
-            build_configuration: build_configuration
-        )
-        # Share extension
-        update_project_provisioning(
-            xcodeproj: xcodeproj,
-            profile: "#{provisioning_profiles_path}#{ENV["SHARE_EXTENSION_PROVISIONING_PROFILE_FILENAME"]}",
-            target_filter: ENV["SHARE_EXTENSION_TARGET"],
-            build_configuration: build_configuration
-        )
-        # Siri Intents extension
-        update_project_provisioning(
-            xcodeproj: xcodeproj,
-            profile: "#{provisioning_profiles_path}#{ENV["SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_FILENAME"]}",
-            target_filter: ENV["SIRI_INTENTS_EXTENSION_TARGET"],
-            build_configuration: build_configuration
-        )
-        # NSE
-        update_project_provisioning(
-            xcodeproj: xcodeproj,
-            profile: "#{provisioning_profiles_path}#{ENV["NSE_PROVISIONING_PROFILE_FILENAME"]}",
-            target_filter: ENV["NSE_TARGET"],
-            build_configuration: build_configuration
-        )
-    end
-
-    desc "Update application build number for all targets"
-    private_lane :update_build_number do |options|
-        build_number = options[:build_number]
-
-        increment_build_number_in_xcodeproj(
-            build_number: build_number
-        )
-    end
-
-    desc "Returns version identifiers hash to inject in GCC_PREPROCESSOR_DEFINITIONS for release builds"
-    private_lane :release_versioning_preprocessor_definitions do |options|
-        preprocessor_definitions = Hash.new
-
-        git_branch_name = options[:git_branch]
-        build_number = options[:build_number]
-
-        if !git_branch_name.to_s.empty?
-            preprocessor_definitions["GIT_BRANCH"] = git_branch_name.sub("origin/", "").sub("heads/", "")
-        end
-
-        if !build_number.to_s.empty?
-            preprocessor_definitions["BUILD_NUMBER"] = build_number
-        end
-
-        preprocessor_definitions
-    end
-
-    desc "Disable 'Parallelize Build' option of build action of main scheme"
-    private_lane :disable_parallelize_builds do
-        project_path = "../#{ENV["PROJECT_PATH"]}"        
-        scheme_name = ENV['SCHEME']
-
-        scheme_path = Xcodeproj::XCScheme.shared_data_dir(project_path) + "#{scheme_name}.xcscheme"        
-        scheme = Xcodeproj::XCScheme.new(scheme_path)
-        scheme.build_action.xml_element.attributes['parallelizeBuildables'] = 'NO' 
-        scheme.save_as(project_path, scheme_name)
-    end
-
+  # Find the latest branch with the given name pattern in the given repo
+  def find_branch(repo_slug, pattern)
+    list = `git ls-remote --heads --sort=version:refname https://github.com/#{repo_slug} #{pattern}`
+    list.split("\n")
+        .map { |line| line.sub(%r{[0-9a-f]+\trefs/heads/}, '').chomp }
+        .last # Latest ref found, in "version:refname" semantic order
+  end
 end

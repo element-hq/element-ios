@@ -32,6 +32,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.EmojiPickerViewController>(storyboard: EmojiPickerViewController.self)
   }
+  internal enum EnterPinCodeViewController: StoryboardType {
+    internal static let storyboardName = "EnterPinCodeViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.EnterPinCodeViewController>(storyboard: EnterPinCodeViewController.self)
+  }
   internal enum KeyBackupRecoverFromPassphraseViewController: StoryboardType {
     internal static let storyboardName = "KeyBackupRecoverFromPassphraseViewController"
 
@@ -171,6 +176,11 @@ internal enum StoryboardScene {
     internal static let storyboardName = "SettingsIdentityServerViewController"
 
     internal static let initialScene = InitialSceneType<Riot.SettingsIdentityServerViewController>(storyboard: SettingsIdentityServerViewController.self)
+  }
+  internal enum SetupBiometricsViewController: StoryboardType {
+    internal static let storyboardName = "SetupBiometricsViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SetupBiometricsViewController>(storyboard: SetupBiometricsViewController.self)
   }
   internal enum SimpleScreenTemplateViewController: StoryboardType {
     internal static let storyboardName = "SimpleScreenTemplateViewController"

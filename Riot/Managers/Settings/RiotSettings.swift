@@ -23,6 +23,8 @@ final class RiotSettings: NSObject {
     // MARK: - Constants
     
     private enum UserDefaultsKeys {
+        static let homeserverUrlString = "homeserverurl"
+        static let identityServerUrlString = "identityserverurl"
         static let enableCrashReport = "enableCrashReport"
         static let enableRageShake = "enableRageShake"
         static let createConferenceCallsWithJitsi = "createConferenceCallsWithJitsi"
@@ -31,19 +33,37 @@ final class RiotSettings: NSObject {
         static let pinRoomsWithMissedNotifications = "pinRoomsWithMissedNotif"
         static let pinRoomsWithUnreadMessages = "pinRoomsWithUnread"
         static let allowStunServerFallback = "allowStunServerFallback"
-        static let stunServerFallback = "stunServerFallback"
         static let hideVerifyThisSessionAlert = "hideVerifyThisSessionAlert"
         static let hideReviewSessionsAlert = "hideReviewSessionsAlert"
+        static let matrixApps = "matrixApps"
     }
     
     static let shared = RiotSettings()
     
     /// UserDefaults to be used on reads and writes.
     private lazy var defaults: UserDefaults = {
-        return UserDefaults(suiteName: "group.im.vector")!
+        return UserDefaults(suiteName: BuildSettings.applicationGroupIdentifier)!
     }()
     
     // MARK: - Public
+    
+    // MARK: Servers
+    
+    var homeserverUrlString: String {
+        get {
+            return defaults.string(forKey: UserDefaultsKeys.homeserverUrlString) ?? BuildSettings.serverConfigDefaultHomeserverUrlString
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.homeserverUrlString)
+        }
+    }
+    
+    var identityServerUrlString: String {
+        get {
+            return defaults.string(forKey: UserDefaultsKeys.identityServerUrlString) ?? BuildSettings.serverConfigDefaultIdentityServerUrlString
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.identityServerUrlString)
+        }
+    }
     
     // MARK: Notifications
     
@@ -153,10 +173,6 @@ final class RiotSettings: NSObject {
             defaults.set(newValue, forKey: UserDefaultsKeys.allowStunServerFallback)
         }
     }
-
-    var stunServerFallback: String? {
-        return defaults.string(forKey: UserDefaultsKeys.stunServerFallback)
-    }
     
     // MARK: Key verification
     
@@ -173,6 +189,14 @@ final class RiotSettings: NSObject {
             return defaults.bool(forKey: UserDefaultsKeys.hideReviewSessionsAlert)
         } set {
             defaults.set(newValue, forKey: UserDefaultsKeys.hideReviewSessionsAlert)
+        }
+    }
+    
+    var matrixApps: Bool {
+        get {
+            return defaults.bool(forKey: UserDefaultsKeys.matrixApps)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.matrixApps)
         }
     }
 }

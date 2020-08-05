@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="V8j-Lb-PgC">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Setup Biometrics View Controller-->
+        <scene sceneID="mt5-wz-YKA">
+            <objects>
+                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="V8j-Lb-PgC" customClass="SetupBiometricsViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="EL9-GA-lwo">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="callkit_icon" translatesAutoresizingMaskIntoConstraints="NO" id="m4e-3p-cc0">
+                                <rect key="frame" x="187" y="114" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="RH5-eK-akg"/>
+                                    <constraint firstAttribute="width" constant="40" id="eZM-v6-0MP"/>
+                                </constraints>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="ua6-xA-2ZZ">
+                                <rect key="frame" x="0.0" y="83" width="414" height="771"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Npd-Cl-ROl">
+                                        <rect key="frame" x="87" y="0.0" width="240" height="100"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unlock with Face ID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5d9-9G-mVC">
+                                                <rect key="frame" x="21.5" y="16" width="197" height="26.5"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="22"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save yourself time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hwi-Me-q2e">
+                                                <rect key="frame" x="50" y="71.5" width="140.5" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="Hwi-Me-q2e" secondAttribute="bottom" constant="8" id="5t1-u8-gqI"/>
+                                            <constraint firstItem="5d9-9G-mVC" firstAttribute="centerX" secondItem="Npd-Cl-ROl" secondAttribute="centerX" id="mVK-Yb-6bE"/>
+                                            <constraint firstAttribute="height" constant="100" id="t0f-ZB-PN8"/>
+                                            <constraint firstItem="5d9-9G-mVC" firstAttribute="top" secondItem="Npd-Cl-ROl" secondAttribute="top" constant="16" id="xbZ-CM-RwY"/>
+                                            <constraint firstItem="Hwi-Me-q2e" firstAttribute="centerX" secondItem="Npd-Cl-ROl" secondAttribute="centerX" id="yV3-O4-JOm"/>
+                                        </constraints>
+                                    </view>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="faceid_icon" translatesAutoresizingMaskIntoConstraints="NO" id="BCZ-BS-w0E">
+                                        <rect key="frame" x="171" y="374.5" width="72" height="72"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="72" id="enO-Nr-Kis"/>
+                                            <constraint firstAttribute="height" constant="72" id="hqB-9S-FMJ"/>
+                                        </constraints>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5JR-LV-ZwX">
+                                        <rect key="frame" x="16" y="721" width="382" height="50"/>
+                                        <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="d9h-bD-uYQ"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Enable Face ID"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="enableButtonAction:" destination="V8j-Lb-PgC" eventType="touchUpInside" id="BQi-xW-jkZ"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="5JR-LV-ZwX" firstAttribute="leading" secondItem="ua6-xA-2ZZ" secondAttribute="leading" constant="16" id="oS7-Jp-f31"/>
+                                    <constraint firstAttribute="trailing" secondItem="5JR-LV-ZwX" secondAttribute="trailing" constant="16" id="sO9-Cj-gAf"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.94509803921568625" green="0.96078431372549022" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="bFg-jh-JZB" firstAttribute="bottom" secondItem="ua6-xA-2ZZ" secondAttribute="bottom" constant="8" id="0Wf-Mp-exA"/>
+                            <constraint firstItem="m4e-3p-cc0" firstAttribute="top" secondItem="bFg-jh-JZB" secondAttribute="top" constant="70" id="8fB-R8-Nae"/>
+                            <constraint firstItem="ua6-xA-2ZZ" firstAttribute="leading" secondItem="bFg-jh-JZB" secondAttribute="leading" id="BhU-bi-ycC"/>
+                            <constraint firstItem="bFg-jh-JZB" firstAttribute="trailing" secondItem="ua6-xA-2ZZ" secondAttribute="trailing" id="Jsz-dV-9qw"/>
+                            <constraint firstItem="m4e-3p-cc0" firstAttribute="centerX" secondItem="EL9-GA-lwo" secondAttribute="centerX" id="Sqv-do-u5P"/>
+                            <constraint firstItem="ua6-xA-2ZZ" firstAttribute="top" secondItem="bFg-jh-JZB" secondAttribute="top" constant="39" id="zV3-48-Oov"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="bFg-jh-JZB"/>
+                    </view>
+                    <connections>
+                        <outlet property="biometricsIconImageView" destination="BCZ-BS-w0E" id="NUF-eV-lgU"/>
+                        <outlet property="enableButton" destination="5JR-LV-ZwX" id="yjp-uu-gX8"/>
+                        <outlet property="itemsStackView" destination="ua6-xA-2ZZ" id="S9f-ag-Trx"/>
+                        <outlet property="logoImageView" destination="m4e-3p-cc0" id="4kL-Mi-frU"/>
+                        <outlet property="subtitleLabel" destination="Hwi-Me-q2e" id="mvA-tq-Yp4"/>
+                        <outlet property="titleLabel" destination="5d9-9G-mVC" id="fiW-V0-wVA"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zK0-v6-7Wt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3198.5507246376815" y="-647.54464285714278"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="callkit_icon" width="40" height="40"/>
+        <image name="faceid_icon" width="72" height="72"/>
+    </resources>
+</document>

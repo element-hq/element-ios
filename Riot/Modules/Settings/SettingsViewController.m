@@ -42,6 +42,9 @@
 #import "GroupsDataSource.h"
 #import "GroupTableViewCellWithSwitch.h"
 
+#import "Row.h"
+#import "Section.h"
+
 #import "GBDeviceInfo_iOS.h"
 
 #import "Riot-Swift.h"
@@ -50,23 +53,40 @@ NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewC
 
 enum
 {
-    SETTINGS_SECTION_SIGN_OUT_INDEX = 0,
-    SETTINGS_SECTION_USER_SETTINGS_INDEX,
-    SETTINGS_SECTION_SECURITY_INDEX,
-    SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX,
-    SETTINGS_SECTION_CALLS_INDEX,
-    SETTINGS_SECTION_DISCOVERY_INDEX,
-    SETTINGS_SECTION_IDENTITY_SERVER_INDEX,
-    SETTINGS_SECTION_CONTACTS_INDEX,
-    SETTINGS_SECTION_IGNORED_USERS_INDEX,
-    SETTINGS_SECTION_INTEGRATIONS_INDEX,
-    SETTINGS_SECTION_USER_INTERFACE_INDEX,
-    SETTINGS_SECTION_ADVANCED_INDEX,
-    SETTINGS_SECTION_OTHER_INDEX,
-    SETTINGS_SECTION_LABS_INDEX,
-    SETTINGS_SECTION_FLAIR_INDEX,
-    SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX,
-    SETTINGS_SECTION_COUNT
+    SECTION_TAG_SIGN_OUT = 0,
+    SECTION_TAG_USER_SETTINGS,
+    SECTION_TAG_SECURITY,
+    SECTION_TAG_NOTIFICATIONS,
+    SECTION_TAG_CALLS,
+    SECTION_TAG_DISCOVERY,
+    SECTION_TAG_IDENTITY_SERVER,
+    SECTION_TAG_LOCAL_CONTACTS,
+    SECTION_TAG_IGNORED_USERS,
+    SECTION_TAG_INTEGRATIONS,
+    SECTION_TAG_USER_INTERFACE,
+    SECTION_TAG_ADVANCED,
+    SECTION_TAG_OTHER,
+    SECTION_TAG_LABS,
+    SECTION_TAG_FLAIR,
+    SECTION_TAG_DEACTIVATE_ACCOUNT
+};
+
+enum
+{
+    USER_SETTINGS_PROFILE_PICTURE_INDEX = 0,
+    USER_SETTINGS_DISPLAYNAME_INDEX,
+    USER_SETTINGS_CHANGE_PASSWORD_INDEX,
+    USER_SETTINGS_FIRST_NAME_INDEX,
+    USER_SETTINGS_SURNAME_INDEX,
+    USER_SETTINGS_ADD_EMAIL_INDEX,
+    USER_SETTINGS_ADD_PHONENUMBER_INDEX,
+    USER_SETTINGS_THREEPIDS_INFORMATION_INDEX
+};
+
+enum
+{
+    USER_SETTINGS_EMAILS_OFFSET = 2000,
+    USER_SETTINGS_PHONENUMBERS_OFFSET = 1000
 };
 
 enum
@@ -82,35 +102,35 @@ enum
     //NOTIFICATION_SETTINGS_INVITED_TO_ROOM_INDEX,
     //NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX,
     //NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX,
-    NOTIFICATION_SETTINGS_COUNT
 };
 
 enum
 {
     CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX=0,
     CALLS_STUN_SERVER_FALLBACK_DESCRIPTION_INDEX,
-    CALLS_COUNT
 };
 
 enum
 {
     INTEGRATIONS_INDEX,
     INTEGRATIONS_DESCRIPTION_INDEX,
-    INTEGRATIONS_COUNT
+};
+
+enum {
+    LOCAL_CONTACTS_SYNC_INDEX,
+    LOCAL_CONTACTS_PHONEBOOK_COUNTRY_INDEX
 };
 
 enum
 {
     USER_INTERFACE_LANGUAGE_INDEX = 0,
     USER_INTERFACE_THEME_INDEX,
-    USER_INTERFACE_COUNT
 };
 
 enum
 {
     IDENTITY_SERVER_INDEX,
     IDENTITY_SERVER_DESCRIPTION_INDEX,
-    IDENTITY_SERVER_COUNT
 };
 
 enum
@@ -126,25 +146,21 @@ enum
     OTHER_MARK_ALL_AS_READ_INDEX,
     OTHER_CLEAR_CACHE_INDEX,
     OTHER_REPORT_BUG_INDEX,
-    OTHER_COUNT
 };
 
 enum
 {
     LABS_USE_JITSI_WIDGET_INDEX = 0,
-    LABS_COUNT
 };
 
 enum
 {
     SECURITY_BUTTON_INDEX = 0,
-    SECURITY_COUNT
 };
-
-#define SECTION_TITLE_PADDING_WHEN_HIDDEN 0.01f
 
 typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
+#pragma mark - SettingsViewController
 
 @interface SettingsViewController () <DeactivateAccountViewControllerDelegate,
 SecureBackupSetupCoordinatorBridgePresenterDelegate,
@@ -187,24 +203,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     TableViewCellWithPhoneNumberTextField * newPhoneNumberCell;
     CountryPickerViewController *newPhoneNumberCountryPicker;
     NBPhoneNumber *newPhoneNumber;
-    
-    // Dynamic rows in the user settings section
-    NSInteger userSettingsProfilePictureIndex;
-    NSInteger userSettingsDisplayNameIndex;
-    NSInteger userSettingsFirstNameIndex;
-    NSInteger userSettingsSurnameIndex;
-    NSInteger userSettingsEmailStartIndex;  // The user can have several linked emails. Hence, the dynamic section items count
-    NSInteger userSettingsNewEmailIndex;    // This index also marks the end of the emails list
-    NSInteger userSettingsPhoneStartIndex;  // The user can have several linked phone numbers. Hence, the dynamic section items count
-    NSInteger userSettingsNewPhoneIndex;    // This index also marks the end of the phone numbers list
-    NSInteger userSettingsChangePasswordIndex;
-    NSInteger userSettingsThreePidsInformation;
-    NSInteger userSettingsNightModeSepIndex;
-    NSInteger userSettingsNightModeIndex;
-    
-    // Dynamic rows in the local contacts section
-    NSInteger localContactsSyncIndex;
-    NSInteger localContactsPhoneBookCountryIndex;
     
     // Flair: the groups data source
     GroupsDataSource *groupsDataSource;
@@ -255,6 +253,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 @property (nonatomic, strong) SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
 @property (nonatomic, strong) AuthenticatedSessionViewControllerFactory *authenticatedSessionViewControllerFactory;
 
+@property (nonatomic, strong) NSArray<Section*> *sections;
+
 @end
 
 @implementation SettingsViewController
@@ -277,6 +277,271 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     isSavingInProgress = NO;
     isResetPwdInProgress = NO;
     is3PIDBindingInProgress = NO;
+}
+
+- (void)updateSections
+{
+    NSMutableArray<Section*> *tmpSections = [NSMutableArray arrayWithCapacity:SECTION_TAG_DEACTIVATE_ACCOUNT + 1];
+    
+    Section *sectionSignOut = [Section sectionWithTag:SECTION_TAG_SIGN_OUT];
+    [sectionSignOut addRowWithTag:0];
+    [tmpSections addObject:sectionSignOut];
+    
+    Section *sectionUserSettings = [Section sectionWithTag:SECTION_TAG_USER_SETTINGS];
+    [sectionUserSettings addRowWithTag:USER_SETTINGS_PROFILE_PICTURE_INDEX];
+    [sectionUserSettings addRowWithTag:USER_SETTINGS_DISPLAYNAME_INDEX];
+    [sectionUserSettings addRowWithTag:USER_SETTINGS_CHANGE_PASSWORD_INDEX];
+    if (BuildSettings.settingsScreenShowUserFirstName)
+    {
+        [sectionUserSettings addRowWithTag:USER_SETTINGS_FIRST_NAME_INDEX];
+    }
+    if (BuildSettings.settingsScreenShowUserSurname)
+    {
+        [sectionUserSettings addRowWithTag:USER_SETTINGS_SURNAME_INDEX];
+    }
+    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+    //  add linked emails
+    for (NSInteger index = 0; index < account.linkedEmails.count; index++)
+    {
+        [sectionUserSettings addRowWithTag: USER_SETTINGS_EMAILS_OFFSET + index];
+    }
+    //  add linked phone numbers
+    for (NSInteger index = 0; index < account.linkedPhoneNumbers.count; index++)
+    {
+        [sectionUserSettings addRowWithTag: USER_SETTINGS_PHONENUMBERS_OFFSET + index];
+    }
+    if (BuildSettings.settingsScreenAllowAddingEmailThreepids)
+    {
+        [sectionUserSettings addRowWithTag:USER_SETTINGS_ADD_EMAIL_INDEX];
+    }
+    if (BuildSettings.settingsScreenAllowAddingPhoneThreepids)
+    {
+        [sectionUserSettings addRowWithTag:USER_SETTINGS_ADD_PHONENUMBER_INDEX];
+    }
+    if (BuildSettings.settingsScreenShowThreepidExplanatory)
+    {
+        [sectionUserSettings addRowWithTag:USER_SETTINGS_THREEPIDS_INFORMATION_INDEX];
+    }
+    sectionUserSettings.headerTitle = NSLocalizedStringFromTable(@"settings_user_settings", @"Vector", nil);
+    [tmpSections addObject:sectionUserSettings];
+    
+    Section *sectionSecurity = [Section sectionWithTag:SECTION_TAG_SECURITY];
+    [sectionSecurity addRowWithTag:SECURITY_BUTTON_INDEX];
+    sectionSecurity.headerTitle = NSLocalizedStringFromTable(@"settings_security", @"Vector", nil);
+    [tmpSections addObject:sectionSecurity];
+    
+    Section *sectionNotificationSettings = [Section sectionWithTag:SECTION_TAG_NOTIFICATIONS];
+    [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX];
+    [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT];
+    [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX];
+    [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX];
+    [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_PIN_UNREAD_INDEX];
+    sectionNotificationSettings.headerTitle = NSLocalizedStringFromTable(@"settings_notifications_settings", @"Vector", nil);
+    [tmpSections addObject:sectionNotificationSettings];
+    
+    if (BuildSettings.allowVoIPUsage && BuildSettings.stunServerFallbackUrlString)
+    {
+        Section *sectionCalls = [Section sectionWithTag:SECTION_TAG_CALLS];
+        [sectionCalls addRowWithTag:CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX];
+        [sectionCalls addRowWithTag:CALLS_STUN_SERVER_FALLBACK_DESCRIPTION_INDEX];
+        sectionCalls.headerTitle = NSLocalizedStringFromTable(@"settings_calls_settings", @"Vector", nil);
+        [tmpSections addObject:sectionCalls];
+    }
+    
+    if (BuildSettings.settingsScreenShowDiscoverySettings)
+    {
+        Section *sectionDiscovery = [Section sectionWithTag:SECTION_TAG_DISCOVERY];
+        NSInteger count = self.settingsDiscoveryTableViewSection.numberOfRows;
+        for (NSInteger index = 0; index < count; index++)
+        {
+            [sectionDiscovery addRowWithTag:index];
+        }
+        sectionDiscovery.headerTitle = NSLocalizedStringFromTable(@"settings_discovery_settings", @"Vector", nil);
+        [tmpSections addObject:sectionDiscovery];
+    }
+    
+    if (BuildSettings.settingsScreenAllowIdentityServerConfig)
+    {
+        Section *sectionIdentityServer = [Section sectionWithTag:SECTION_TAG_IDENTITY_SERVER];
+        [sectionIdentityServer addRowWithTag:IDENTITY_SERVER_INDEX];
+        [sectionIdentityServer addRowWithTag:IDENTITY_SERVER_DESCRIPTION_INDEX];
+        sectionIdentityServer.headerTitle = NSLocalizedStringFromTable(@"settings_identity_server_settings", @"Vector", nil);
+        [tmpSections addObject:sectionIdentityServer];
+    }
+    
+    if (BuildSettings.allowLocalContactsAccess)
+    {
+        Section *sectionLocalContacts = [Section sectionWithTag:SECTION_TAG_LOCAL_CONTACTS];
+        [sectionLocalContacts addRowWithTag:LOCAL_CONTACTS_SYNC_INDEX];
+        if (MXKAppSettings.standardAppSettings.syncLocalContacts)
+        {
+            [sectionLocalContacts addRowWithTag:LOCAL_CONTACTS_PHONEBOOK_COUNTRY_INDEX];
+        }
+        sectionLocalContacts.headerTitle = NSLocalizedStringFromTable(@"settings_contacts", @"Vector", nil);
+        [tmpSections addObject:sectionLocalContacts];
+    }
+    
+    MXSession *session = [AppDelegate theDelegate].mxSessions.firstObject;
+    if (session.ignoredUsers.count)
+    {
+        Section *sectionIgnoredUsers = [Section sectionWithTag:SECTION_TAG_IGNORED_USERS];
+        for (NSInteger index = 0; index < session.ignoredUsers.count; index++)
+        {
+            [sectionIgnoredUsers addRowWithTag:index];
+        }
+        sectionIgnoredUsers.headerTitle = NSLocalizedStringFromTable(@"settings_ignored_users", @"Vector", nil);
+        [tmpSections addObject:sectionIgnoredUsers];
+    }
+    
+    if (RiotSettings.shared.matrixApps)
+    {
+        Section *sectionIntegrations = [Section sectionWithTag:SECTION_TAG_INTEGRATIONS];
+        [sectionIntegrations addRowWithTag:INTEGRATIONS_INDEX];
+        [sectionIntegrations addRowWithTag:INTEGRATIONS_DESCRIPTION_INDEX];
+        sectionIntegrations.headerTitle = NSLocalizedStringFromTable(@"settings_integrations", @"Vector", nil);
+        [tmpSections addObject:sectionIntegrations];
+    }
+    
+    Section *sectionUserInterface = [Section sectionWithTag:SECTION_TAG_USER_INTERFACE];
+    [sectionUserInterface addRowWithTag:USER_INTERFACE_LANGUAGE_INDEX];
+    [sectionUserInterface addRowWithTag:USER_INTERFACE_THEME_INDEX];
+    sectionUserInterface.headerTitle = NSLocalizedStringFromTable(@"settings_user_interface", @"Vector", nil);
+    [tmpSections addObject: sectionUserInterface];
+    
+    if (BuildSettings.settingsScreenShowAdvancedSettings)
+    {
+        Section *sectionAdvanced = [Section sectionWithTag:SECTION_TAG_ADVANCED];
+        [sectionAdvanced addRowWithTag:0];
+        sectionAdvanced.headerTitle = NSLocalizedStringFromTable(@"settings_advanced", @"Vector", nil);
+        [tmpSections addObject:sectionAdvanced];
+    }
+    
+    Section *sectionOther = [Section sectionWithTag:SECTION_TAG_OTHER];
+    [sectionOther addRowWithTag:OTHER_VERSION_INDEX];
+    [sectionOther addRowWithTag:OTHER_OLM_VERSION_INDEX];
+    [sectionOther addRowWithTag:OTHER_COPYRIGHT_INDEX];
+    [sectionOther addRowWithTag:OTHER_TERM_CONDITIONS_INDEX];
+    [sectionOther addRowWithTag:OTHER_PRIVACY_INDEX];
+    [sectionOther addRowWithTag:OTHER_THIRD_PARTY_INDEX];
+    if (BuildSettings.settingsScreenAllowChangingCrashUsageDataSettings)
+    {
+        [sectionOther addRowWithTag:OTHER_CRASH_REPORT_INDEX];
+    }
+    if (BuildSettings.settingsScreenAllowChangingRageshakeSettings)
+    {
+        [sectionOther addRowWithTag:OTHER_ENABLE_RAGESHAKE_INDEX];
+    }
+    [sectionOther addRowWithTag:OTHER_MARK_ALL_AS_READ_INDEX];
+    [sectionOther addRowWithTag:OTHER_CLEAR_CACHE_INDEX];
+    if (BuildSettings.settingsScreenAllowBugReportingManually)
+    {
+        [sectionOther addRowWithTag:OTHER_REPORT_BUG_INDEX];
+    }
+    sectionOther.headerTitle = NSLocalizedStringFromTable(@"settings_other", @"Vector", nil);
+    [tmpSections addObject:sectionOther];
+    
+    if (BuildSettings.settingsScreenShowLabSettings)
+    {
+        Section *sectionLabs = [Section sectionWithTag:SECTION_TAG_LABS];
+        [sectionLabs addRowWithTag:LABS_USE_JITSI_WIDGET_INDEX];
+        sectionLabs.headerTitle = NSLocalizedStringFromTable(@"settings_labs", @"Vector", nil);
+        [tmpSections addObject:sectionLabs];
+    }
+    
+    if ([groupsDataSource numberOfSectionsInTableView:self.tableView] && groupsDataSource.joinedGroupsSection != -1)
+    {
+        NSInteger count = [groupsDataSource tableView:self.tableView
+                                numberOfRowsInSection:groupsDataSource.joinedGroupsSection];
+        Section *sectionFlair = [Section sectionWithTag:SECTION_TAG_FLAIR];
+        for (NSInteger index = 0; index < count; index++)
+        {
+            [sectionFlair addRowWithTag:index];
+        }
+        sectionFlair.headerTitle = NSLocalizedStringFromTable(@"settings_flair", @"Vector", nil);
+        [tmpSections addObject:sectionFlair];
+    }
+    
+    if (BuildSettings.settingsScreenAllowDeactivatingAccount)
+    {
+        Section *sectionDeactivate = [Section sectionWithTag:SECTION_TAG_DEACTIVATE_ACCOUNT];
+        [sectionDeactivate addRowWithTag:0];
+        sectionDeactivate.headerTitle = NSLocalizedStringFromTable(@"settings_deactivate_my_account", @"Vector", nil);
+        [tmpSections addObject:sectionDeactivate];
+    }
+    
+    //  update sections
+    self.sections = tmpSections;
+}
+
+- (void)setSections:(NSArray<Section *> *)sections
+{
+    _sections = sections;
+    
+    //  reload table
+    [self.tableView reloadData];
+}
+
+/// Returns index of section for the given tag. If cannot find, return `NSNotFound`
+/// @param tag Tag for section
+- (NSInteger)indexOfSectionForTag:(NSInteger)tag
+{
+    return [_sections indexOfObjectPassingTest:^BOOL(Section * _Nonnull section, NSUInteger idx, BOOL * _Nonnull stop) {
+        return section.tag == tag;
+    }];
+}
+
+/// Finds the exact indexpath for the given row and section tag. If cannot find, returns nil
+/// @param rowTag Tag for row
+/// @param sectionTag Tag for section
+- (NSIndexPath *)exactIndexPathForRowTag:(NSInteger)rowTag sectionTag:(NSInteger)sectionTag
+{
+    NSInteger sectionIndex = [self indexOfSectionForTag:sectionTag];
+    if (sectionIndex != NSNotFound)
+    {
+        Section *section = _sections[sectionIndex];
+        NSInteger rowIndex = [section indexOfRowForTag:rowTag];
+        if (rowIndex != NSNotFound)
+        {
+            return [NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex];
+        }
+    }
+    return nil;
+}
+
+/// Finds the nearest next indexPath for given row tag and section tag. If the section finishes, also checks for the next section. If cannot find any row available, returns nil.
+/// @param rowTag Tag for row
+/// @param sectionTag Tag for section
+- (NSIndexPath *)nearestIndexPathForRowTag:(NSInteger)rowTag sectionTag:(NSInteger)sectionTag
+{
+    NSInteger sectionIndex = [self indexOfSectionForTag:sectionTag];
+    if (sectionIndex != NSNotFound)
+    {
+        Section *section = _sections[sectionIndex];
+        NSInteger rowIndex = [section indexOfRowForTag:rowTag];
+        if (rowIndex != NSNotFound)
+        {
+            //  exact row found, return it
+            return [NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex];
+        }
+        else if (rowTag + 1 < section.rows.count)
+        {
+            //  try to return next row in the same section
+            return [self nearestIndexPathForRowTag:rowTag + 1 sectionTag:sectionTag];
+        }
+        else if (sectionTag + 1 < _sections.count)
+        {
+            //  try to return the first row of the next section
+            return [self nearestIndexPathForRowTag:0 sectionTag:sectionTag + 1];
+        }
+        
+        return nil;
+    }
+    else if (sectionTag + 1 < _sections.count)
+    {
+        //  try to return the first row of the next section
+        return [self nearestIndexPathForRowTag:0 sectionTag:sectionTag + 1];
+    }
+    return nil;
 }
 
 - (void)viewDidLoad
@@ -358,6 +623,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     
     self.signOutAlertPresenter = [SignOutAlertPresenter new];
     self.signOutAlertPresenter.delegate = self;
+    
+    [self updateSections];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -614,10 +881,12 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             [self.tableView beginUpdates];
             
             // Refresh the corresponding table view cell with animation
-            [self.tableView reloadRowsAtIndexPaths:@[
-                                                     [NSIndexPath indexPathForRow:userSettingsNewEmailIndex inSection:SETTINGS_SECTION_USER_SETTINGS_INDEX]
-                                                     ]
-                                  withRowAnimation:UITableViewRowAnimationFade];
+            NSIndexPath *addEmailIndexPath = [self exactIndexPathForRowTag:USER_SETTINGS_ADD_EMAIL_INDEX
+                                                                sectionTag:SECTION_TAG_USER_SETTINGS];
+            if (addEmailIndexPath)
+            {
+                [self.tableView reloadRowsAtIndexPaths:@[addEmailIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            }
             
             [self.tableView endUpdates];            
         });
@@ -643,10 +912,12 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             [self.tableView beginUpdates];
             
             // Refresh the corresponding table view cell with animation
-            [self.tableView reloadRowsAtIndexPaths:@[
-                                                     [NSIndexPath indexPathForRow:userSettingsNewPhoneIndex inSection:SETTINGS_SECTION_USER_SETTINGS_INDEX]
-                                                     ]
-                                  withRowAnimation:UITableViewRowAnimationFade];
+            NSIndexPath *addPhoneIndexPath = [self exactIndexPathForRowTag:USER_SETTINGS_ADD_PHONENUMBER_INDEX
+                                                                sectionTag:SECTION_TAG_USER_SETTINGS];
+            if (addPhoneIndexPath)
+            {
+                [self.tableView reloadRowsAtIndexPaths:@[addPhoneIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            }
             
             [self.tableView endUpdates];
         });
@@ -974,7 +1245,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     keepNewPhoneNumberEditing = newPhoneNumberCell ? newPhoneNumberCell.mxkTextField.isFirstResponder : NO;
     
     // Trigger a full table reloadData
-    [self.tableView reloadData];
+    [self updateSections];
     
     // Restore the previous edited field
     if (keepNewEmailEditing)
@@ -1129,126 +1400,17 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     // update the save button if there is an update
     [self updateSaveButtonStatus];
     
-    return SETTINGS_SECTION_COUNT;
+    return _sections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger count = 0;
-    
-    if (section == SETTINGS_SECTION_SIGN_OUT_INDEX)
+    Section *sectionObject = nil;
+    if (section < _sections.count)
     {
-        count = 1;
+        sectionObject = _sections[section];
     }
-    else if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
-    {
-        MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-        
-        userSettingsProfilePictureIndex = 0;
-        userSettingsDisplayNameIndex = 1;
-        userSettingsChangePasswordIndex = 2;
-        
-        // Hide some unsupported account settings
-        userSettingsFirstNameIndex = -1;
-        userSettingsSurnameIndex = -1;
-        userSettingsNightModeSepIndex = -1;
-        userSettingsNightModeIndex = -1;
-
-        userSettingsEmailStartIndex = 3;
-        userSettingsNewEmailIndex = userSettingsEmailStartIndex + account.linkedEmails.count;
-        userSettingsPhoneStartIndex = userSettingsNewEmailIndex + 1;
-        userSettingsNewPhoneIndex = userSettingsPhoneStartIndex + account.linkedPhoneNumbers.count;
-        userSettingsThreePidsInformation = userSettingsNewPhoneIndex + 1;
-        
-        count = userSettingsThreePidsInformation + 1;
-    }
-    else if (section == SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX)
-    {
-        count = NOTIFICATION_SETTINGS_COUNT;
-    }
-    else if (section == SETTINGS_SECTION_CALLS_INDEX)
-    {
-        count = CALLS_COUNT;
-
-        if (!RiotSettings.shared.stunServerFallback)
-        {
-            count -= 2;
-        }
-    }
-    else if (section == SETTINGS_SECTION_DISCOVERY_INDEX)
-    {
-        count = self.settingsDiscoveryTableViewSection.numberOfRows;
-    }
-    else if (section == SETTINGS_SECTION_IDENTITY_SERVER_INDEX)
-    {
-        count = IDENTITY_SERVER_COUNT;
-    }
-    else if (section == SETTINGS_SECTION_INTEGRATIONS_INDEX)
-    {
-        count = INTEGRATIONS_COUNT;
-    }
-    else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
-    {
-        count = USER_INTERFACE_COUNT;
-    }
-    else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
-    {
-        if ([AppDelegate theDelegate].mxSessions.count > 0)
-        {
-            MXSession* session = [AppDelegate theDelegate].mxSessions[0];
-            count = session.ignoredUsers.count;
-        }
-        else
-        {
-            count = 0;
-        }
-    }
-    else if (section == SETTINGS_SECTION_CONTACTS_INDEX)
-    {
-        localContactsSyncIndex = count++;
-        
-        if ([MXKAppSettings standardAppSettings].syncLocalContacts)
-        {
-            localContactsPhoneBookCountryIndex = count++;
-        }
-        else
-        {
-            localContactsPhoneBookCountryIndex = -1;
-        }
-    }
-    else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
-    {
-        count = 1;
-    }
-    else if (section == SETTINGS_SECTION_OTHER_INDEX)
-    {
-        count = OTHER_COUNT;
-    }
-    else if (section == SETTINGS_SECTION_LABS_INDEX)
-    {
-        count = LABS_COUNT;
-    }
-    else if (section == SETTINGS_SECTION_FLAIR_INDEX)
-    {
-        // Check whether some joined groups are available
-        if ([groupsDataSource numberOfSectionsInTableView:tableView])
-        {
-            if (groupsDataSource.joinedGroupsSection != -1)
-            {
-                count = [groupsDataSource tableView:tableView numberOfRowsInSection:groupsDataSource.joinedGroupsSection];
-            }
-        }
-    }
-    else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
-    {
-        count = 1;
-    }
-    else if (section == SETTINGS_SECTION_SECURITY_INDEX)
-    {
-        count = SECURITY_COUNT;
-    }
-
-    return count;
+    return sectionObject.rows.count;
 }
 
 - (MXKTableViewCellWithLabelAndTextField*)getLabelAndTextFieldCell:(UITableView*)tableview forIndexPath:(NSIndexPath *)indexPath
@@ -1334,8 +1496,19 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger section = indexPath.section;
-    NSInteger row = indexPath.row;
+    Section *sectionObj = nil;
+    NSInteger section = NSNotFound;
+    NSInteger row = NSNotFound;
+    
+    if (indexPath.section < _sections.count)
+    {
+        sectionObj = _sections[indexPath.section];
+        section = sectionObj.tag;
+        if (indexPath.row < sectionObj.rows.count)
+        {
+            row = sectionObj.rows[indexPath.row].tag;
+        }
+    }
 
     // set the cell to a default value to avoid application crashes
     UITableViewCell *cell = [[UITableViewCell alloc] init];
@@ -1351,7 +1524,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     MXSession* session = [AppDelegate theDelegate].mxSessions[0];
     MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
 
-    if (section == SETTINGS_SECTION_SIGN_OUT_INDEX)
+    if (section == SECTION_TAG_SIGN_OUT)
     {
         MXKTableViewCellWithButton *signOutCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
         if (!signOutCell)
@@ -1378,11 +1551,11 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         
         cell = signOutCell;
     }
-    else if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
+    else if (section == SECTION_TAG_USER_SETTINGS)
     {
         MXMyUser* myUser = session.myUser;
         
-        if (row == userSettingsProfilePictureIndex)
+        if (row == USER_SETTINGS_PROFILE_PICTURE_INDEX)
         {
             MXKTableViewCellWithLabelAndMXKImageView *profileCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier] forIndexPath:indexPath];
             
@@ -1432,7 +1605,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             
             cell = profileCell;
         }
-        else if (row == userSettingsDisplayNameIndex)
+        else if (row == USER_SETTINGS_DISPLAYNAME_INDEX)
         {
             MXKTableViewCellWithLabelAndTextField *displaynameCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
             
@@ -1447,7 +1620,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             
             cell = displaynameCell;
         }
-        else if (row == userSettingsFirstNameIndex)
+        else if (row == USER_SETTINGS_FIRST_NAME_INDEX)
         {
             MXKTableViewCellWithLabelAndTextField *firstCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
         
@@ -1456,7 +1629,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             
             cell = firstCell;
         }
-        else if (row == userSettingsSurnameIndex)
+        else if (row == USER_SETTINGS_SURNAME_INDEX)
         {
             MXKTableViewCellWithLabelAndTextField *surnameCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
             
@@ -1465,17 +1638,30 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             
             cell = surnameCell;
         }
-        else if (userSettingsEmailStartIndex <= row &&  row < userSettingsNewEmailIndex)
+        else if (row >= USER_SETTINGS_EMAILS_OFFSET)
         {
+            NSInteger emailIndex = row - USER_SETTINGS_EMAILS_OFFSET;
             MXKTableViewCellWithLabelAndTextField *emailCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
             
             emailCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_email_address", @"Vector", nil);
-            emailCell.mxkTextField.text = account.linkedEmails[row - userSettingsEmailStartIndex];
+            emailCell.mxkTextField.text = account.linkedEmails[emailIndex];
             emailCell.mxkTextField.userInteractionEnabled = NO;
             
             cell = emailCell;
         }
-        else if (row == userSettingsNewEmailIndex)
+        else if (row >= USER_SETTINGS_PHONENUMBERS_OFFSET)
+        {
+            NSInteger phoneNumberIndex = row - USER_SETTINGS_PHONENUMBERS_OFFSET;
+            MXKTableViewCellWithLabelAndTextField *phoneCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
+            
+            phoneCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_phone_number", @"Vector", nil);
+            
+            phoneCell.mxkTextField.text = [MXKTools readableMSISDN:account.linkedPhoneNumbers[phoneNumberIndex]];
+            phoneCell.mxkTextField.userInteractionEnabled = NO;
+            
+            cell = phoneCell;
+        }
+        else if (row == USER_SETTINGS_ADD_EMAIL_INDEX)
         {
             MXKTableViewCellWithLabelAndTextField *newEmailCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
 
@@ -1528,18 +1714,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
             cell = newEmailCell;
         }
-        else if (userSettingsPhoneStartIndex <= row &&  row < userSettingsNewPhoneIndex)
-        {
-            MXKTableViewCellWithLabelAndTextField *phoneCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
-            
-            phoneCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_phone_number", @"Vector", nil);
-            
-            phoneCell.mxkTextField.text = [MXKTools readableMSISDN:account.linkedPhoneNumbers[row - userSettingsPhoneStartIndex]];
-            phoneCell.mxkTextField.userInteractionEnabled = NO;
-            
-            cell = phoneCell;
-        }
-        else if (row == userSettingsNewPhoneIndex)
+        else if (row == USER_SETTINGS_ADD_PHONENUMBER_INDEX)
         {
             // Render the cell according to the `newPhoneEditingEnabled` property
             if (!_newPhoneEditingEnabled)
@@ -1618,7 +1793,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 cell = newPhoneCell;
             }
         }
-        else if (row == userSettingsThreePidsInformation)
+        else if (row == USER_SETTINGS_THREEPIDS_INFORMATION_INDEX)
         {
             MXKTableViewCell *threePidsInformationCell = [self getDefaultTableViewCell:self.tableView];
             
@@ -1633,7 +1808,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             
             cell = threePidsInformationCell;
         }
-        else if (row == userSettingsChangePasswordIndex)
+        else if (row == USER_SETTINGS_CHANGE_PASSWORD_INDEX)
         {
             MXKTableViewCellWithLabelAndTextField *passwordCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
             
@@ -1644,25 +1819,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             
             cell = passwordCell;
         }
-        else if (row == userSettingsNightModeSepIndex)
-        {
-            UITableViewCell *sepCell = [[UITableViewCell alloc] init];
-            sepCell.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
-            
-            cell = sepCell;
-        }
-        else if (row == userSettingsNightModeIndex)
-        {
-            MXKTableViewCellWithLabelAndTextField *nightModeCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
-                                                                    
-            nightModeCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_night_mode", @"Vector", nil);
-            nightModeCell.mxkTextField.userInteractionEnabled = NO;
-            nightModeCell.mxkTextField.text = NSLocalizedStringFromTable(@"off", @"Vector", nil);
-            [nightModeCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
-            cell = nightModeCell;
-        }
     }
-    else if (section == SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX)
+    else if (section == SECTION_TAG_NOTIFICATIONS)
     {
         if (row == NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX)
         {
@@ -1727,7 +1885,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             cell = labelAndSwitchCell;
         }
     }
-    else if (section == SETTINGS_SECTION_CALLS_INDEX)
+    else if (section == SECTION_TAG_CALLS)
     {
         if (row == CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX)
         {
@@ -1742,7 +1900,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         }
         else if (row == CALLS_STUN_SERVER_FALLBACK_DESCRIPTION_INDEX)
         {
-            NSString *stunFallbackHost = RiotSettings.shared.stunServerFallback;
+            NSString *stunFallbackHost = BuildSettings.stunServerFallbackUrlString;
             // Remove "stun:"
             stunFallbackHost = [stunFallbackHost componentsSeparatedByString:@":"].lastObject;
 
@@ -1754,11 +1912,11 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             cell = globalInfoCell;
         }
     }
-    else if (section == SETTINGS_SECTION_DISCOVERY_INDEX)
+    else if (section == SECTION_TAG_DISCOVERY)
     {
         cell = [self.settingsDiscoveryTableViewSection cellForRowAtRow:row];
     }
-    else if (section == SETTINGS_SECTION_IDENTITY_SERVER_INDEX)
+    else if (section == SECTION_TAG_IDENTITY_SERVER)
     {
         switch (row)
         {
@@ -1802,7 +1960,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 break;
         }
     }
-    else if (section == SETTINGS_SECTION_INTEGRATIONS_INDEX)
+    else if (section == SECTION_TAG_INTEGRATIONS)
     {
         switch (row) {
             case INTEGRATIONS_INDEX:
@@ -1840,7 +1998,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 break;
         }
     }
-    else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
+    else if (section == SECTION_TAG_USER_INTERFACE)
     {
         if (row == USER_INTERFACE_LANGUAGE_INDEX)
         {
@@ -1907,22 +2065,17 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
     }
-    else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
+    else if (section == SECTION_TAG_IGNORED_USERS)
     {
         MXKTableViewCell *ignoredUserCell = [self getDefaultTableViewCell:tableView];
 
-        NSString *ignoredUserId;
-        if (indexPath.row < session.ignoredUsers.count)
-        {
-            ignoredUserId = session.ignoredUsers[indexPath.row];
-        }
-        ignoredUserCell.textLabel.text = ignoredUserId;
+        ignoredUserCell.textLabel.text = session.ignoredUsers[row];
 
         cell = ignoredUserCell;
     }
-    else if (section == SETTINGS_SECTION_CONTACTS_INDEX)
+    else if (section == SECTION_TAG_LOCAL_CONTACTS)
     {
-        if (row == localContactsSyncIndex)
+        if (row == LOCAL_CONTACTS_SYNC_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
@@ -1935,7 +2088,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
             cell = labelAndSwitchCell;
         }
-        else if (row == localContactsPhoneBookCountryIndex)
+        else if (row == LOCAL_CONTACTS_PHONEBOOK_COUNTRY_INDEX)
         {
             cell = [tableView dequeueReusableCellWithIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
             if (!cell)
@@ -1956,7 +2109,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
     }
-    else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
+    else if (section == SECTION_TAG_ADVANCED)
     {
         MXKTableViewCellWithTextView *configCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
         
@@ -1967,7 +2120,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         
         cell = configCell;
     }
-    else if (section == SETTINGS_SECTION_OTHER_INDEX)
+    else if (section == SECTION_TAG_OTHER)
     {
         if (row == OTHER_VERSION_INDEX)
         {
@@ -2132,7 +2285,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             cell = reportBugBtnCell;
         }
     }
-    else if (section == SETTINGS_SECTION_LABS_INDEX)
+    else if (section == SECTION_TAG_LABS)
     {
         if (row == LABS_USE_JITSI_WIDGET_INDEX)
         {
@@ -2147,7 +2300,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             cell = labelAndSwitchCell;
         }
     }
-    else if (section == SETTINGS_SECTION_FLAIR_INDEX)
+    else if (section == SECTION_TAG_FLAIR)
     {
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:groupsDataSource.joinedGroupsSection];
         cell = [groupsDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
@@ -2173,7 +2326,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             [groupWithSwitchCell.toggleButton addTarget:self action:@selector(toggleCommunityFlair:) forControlEvents:UIControlEventTouchUpInside];
         }
     }
-    else if (section == SETTINGS_SECTION_SECURITY_INDEX)
+    else if (section == SECTION_TAG_SECURITY)
     {
         switch (row)
         {
@@ -2184,7 +2337,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 break;
         }
     }
-    else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
+    else if (section == SECTION_TAG_DEACTIVATE_ACCOUNT)
     {
         MXKTableViewCellWithButton *deactivateAccountBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
         
@@ -2216,80 +2369,12 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
 - (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
+    Section *sectionObj = nil;
+    if (section < _sections.count)
     {
-        return NSLocalizedStringFromTable(@"settings_user_settings", @"Vector", nil);
+        sectionObj = _sections[section];
     }
-    else if (section == SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX)
-    {
-        return NSLocalizedStringFromTable(@"settings_notifications_settings", @"Vector", nil);
-    }
-    else if (section == SETTINGS_SECTION_CALLS_INDEX)
-    {
-        return NSLocalizedStringFromTable(@"settings_calls_settings", @"Vector", nil);
-    }
-    else if (section == SETTINGS_SECTION_DISCOVERY_INDEX)
-    {
-        return NSLocalizedStringFromTable(@"settings_discovery_settings", @"Vector", nil);
-    }
-    else if (section == SETTINGS_SECTION_IDENTITY_SERVER_INDEX)
-    {
-        return NSLocalizedStringFromTable(@"settings_identity_server_settings", @"Vector", nil);
-    }
-    else if (section == SETTINGS_SECTION_INTEGRATIONS_INDEX)
-    {
-        return NSLocalizedStringFromTable(@"settings_integrations", @"Vector", nil);
-    }
-    else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
-    {
-        return NSLocalizedStringFromTable(@"settings_user_interface", @"Vector", nil);
-    }
-    else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
-    {
-        // Check whether this section is visible
-        if ([AppDelegate theDelegate].mxSessions.count > 0)
-        {
-            MXSession* session = [AppDelegate theDelegate].mxSessions[0];
-            if (session.ignoredUsers.count)
-            {
-                return NSLocalizedStringFromTable(@"settings_ignored_users", @"Vector", nil);
-            }
-        }
-    }
-    else if (section == SETTINGS_SECTION_CONTACTS_INDEX)
-    {
-        return NSLocalizedStringFromTable(@"settings_contacts", @"Vector", nil);
-    }
-    else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
-    {
-        return NSLocalizedStringFromTable(@"settings_advanced", @"Vector", nil);
-    }
-    else if (section == SETTINGS_SECTION_OTHER_INDEX)
-    {
-        return NSLocalizedStringFromTable(@"settings_other", @"Vector", nil);
-    }
-    else if (section == SETTINGS_SECTION_LABS_INDEX)
-    {
-        return NSLocalizedStringFromTable(@"settings_labs", @"Vector", nil);
-    }
-    else if (section == SETTINGS_SECTION_FLAIR_INDEX)
-    {
-        // Check whether this section is visible
-        if (groupsDataSource.joinedGroupsSection != -1)
-        {
-            return NSLocalizedStringFromTable(@"settings_flair", @"Vector", nil);
-        }
-    }
-    else if (section == SETTINGS_SECTION_SECURITY_INDEX)
-    {
-        return NSLocalizedStringFromTable(@"settings_security", @"Vector", nil);
-    }
-    else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
-    {
-        return NSLocalizedStringFromTable(@"settings_deactivate_my_account", @"Vector", nil);
-    }
-
-    return nil;
+    return sectionObj.headerTitle;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
@@ -2305,14 +2390,23 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
+    Section *sectionObj = nil;
+    NSInteger section = NSNotFound;
+    NSInteger row = NSNotFound;
+    
+    if (indexPath.section < _sections.count)
     {
-        NSInteger row = indexPath.row;
-        if ((userSettingsEmailStartIndex <= row &&  row < userSettingsNewEmailIndex) ||
-            (userSettingsPhoneStartIndex <= row &&  row < userSettingsNewPhoneIndex))
+        sectionObj = _sections[indexPath.section];
+        section = sectionObj.tag;
+        if (indexPath.row < sectionObj.rows.count)
         {
-            return YES;
+            row = sectionObj.rows[indexPath.row].tag;
         }
+    }
+    
+    if (section == SECTION_TAG_USER_SETTINGS)
+    {
+        return row >= USER_SETTINGS_PHONENUMBERS_OFFSET;
     }
     return NO;
 }
@@ -2352,64 +2446,36 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
-    {
-        if ([AppDelegate theDelegate].mxSessions.count > 0)
-        {
-            MXSession* session = [AppDelegate theDelegate].mxSessions[0];
-            if (session.ignoredUsers.count == 0)
-            {
-                // Hide this section
-                return SECTION_TITLE_PADDING_WHEN_HIDDEN;
-            }
-        }
-    }
-    else if (section == SETTINGS_SECTION_FLAIR_INDEX)
-    {
-        if (groupsDataSource.joinedGroupsSection == -1)
-        {
-            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
-        }
-    }
-    
     return 24;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
-    {
-        if ([AppDelegate theDelegate].mxSessions.count > 0)
-        {
-            MXSession* session = [AppDelegate theDelegate].mxSessions[0];
-            if (session.ignoredUsers.count == 0)
-            {
-                // Hide this section
-                return SECTION_TITLE_PADDING_WHEN_HIDDEN;
-            }
-        }
-    }
-    else if (section == SETTINGS_SECTION_FLAIR_INDEX)
-    {
-        if (groupsDataSource.joinedGroupsSection == -1)
-        {
-            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
-        }
-    }
-
     return 24;
 }
 
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    Section *sectionObj = nil;
+    NSInteger section = NSNotFound;
+    NSInteger row = NSNotFound;
+    
+    if (indexPath.section < _sections.count)
+    {
+        sectionObj = _sections[indexPath.section];
+        section = sectionObj.tag;
+        if (indexPath.row < sectionObj.rows.count)
+        {
+            row = sectionObj.rows[indexPath.row].tag;
+        }
+    }
+    
     NSMutableArray* actions;
     
     // Add the swipe to delete user's email or phone number
-    if (indexPath.section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
+    if (section == SECTION_TAG_USER_SETTINGS)
     {
-        NSInteger row = indexPath.row;
-        if ((userSettingsEmailStartIndex <= row &&  row < userSettingsNewEmailIndex) ||
-            (userSettingsPhoneStartIndex <= row &&  row < userSettingsNewPhoneIndex))
+        if (row >= USER_SETTINGS_PHONENUMBERS_OFFSET)
         {
             actions = [[NSMutableArray alloc] init];
             
@@ -2435,10 +2501,21 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 {
     if (self.tableView == tableView)
     {
-        NSInteger section = indexPath.section;
-        NSInteger row = indexPath.row;
+        Section *sectionObj = nil;
+        NSInteger section = NSNotFound;
+        NSInteger row = NSNotFound;
+        
+        if (indexPath.section < _sections.count)
+        {
+            sectionObj = _sections[indexPath.section];
+            section = sectionObj.tag;
+            if (indexPath.row < sectionObj.rows.count)
+            {
+                row = sectionObj.rows[indexPath.row].tag;
+            }
+        }
 
-        if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
+        if (section == SECTION_TAG_USER_INTERFACE)
         {
             if (row == USER_INTERFACE_LANGUAGE_INDEX)
             {
@@ -2453,26 +2530,32 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 [self showThemePicker];
             }
         }
-        else if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX && row == userSettingsThreePidsInformation)
+        else if (section == SECTION_TAG_USER_SETTINGS && row == USER_SETTINGS_THREEPIDS_INFORMATION_INDEX)
         {
             // settingsDiscoveryTableViewSection is a dynamic section, so check number of rows before scroll to avoid crashes
             if (self.settingsDiscoveryTableViewSection.numberOfRows > 0)
             {
-                NSIndexPath *discoveryIndexPath = [NSIndexPath indexPathForRow:0 inSection:SETTINGS_SECTION_DISCOVERY_INDEX];
-                [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                NSIndexPath *discoveryIndexPath = [self exactIndexPathForRowTag:0 sectionTag:SECTION_TAG_DISCOVERY];
+                if (discoveryIndexPath)
+                {
+                    [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                }
             }
             else
             {
                 //  this won't be precise in scroll location, but seems the best option for now
-                NSIndexPath *discoveryIndexPath = [NSIndexPath indexPathForRow:0 inSection:SETTINGS_SECTION_DISCOVERY_INDEX + 1];
-                [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+                NSIndexPath *discoveryIndexPath = [self nearestIndexPathForRowTag:0 sectionTag:SECTION_TAG_DISCOVERY];
+                if (discoveryIndexPath)
+                {
+                    [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+                }
             }
         }
-        else if (section == SETTINGS_SECTION_DISCOVERY_INDEX)
+        else if (section == SECTION_TAG_DISCOVERY)
         {
-            [self.settingsDiscoveryTableViewSection selectRow:indexPath.row];
+            [self.settingsDiscoveryTableViewSection selectRow:row];
         }
-        else if (section == SETTINGS_SECTION_IDENTITY_SERVER_INDEX)
+        else if (section == SECTION_TAG_IDENTITY_SERVER)
         {
             switch (row)
             {
@@ -2481,15 +2564,11 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                     break;
             }
         }
-        else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
+        else if (section == SECTION_TAG_IGNORED_USERS)
         {
             MXSession* session = [AppDelegate theDelegate].mxSessions[0];
 
-            NSString *ignoredUserId;
-            if (indexPath.row < session.ignoredUsers.count)
-            {
-                ignoredUserId = session.ignoredUsers[indexPath.row];
-            }
+            NSString *ignoredUserId = session.ignoredUsers[row];
 
             if (ignoredUserId)
             {
@@ -2546,12 +2625,11 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 [self presentViewController:currentAlert animated:YES completion:nil];
             }
         }
-        else if (section == SETTINGS_SECTION_OTHER_INDEX)
+        else if (section == SECTION_TAG_OTHER)
         {
             if (row == OTHER_COPYRIGHT_INDEX)
             {
-                NSString *copyrightUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"settingsCopyrightUrl"];
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:copyrightUrlString];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationCopyrightUrlString];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_copyright", @"Vector", nil);
                 
@@ -2559,8 +2637,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             }
             else if (row == OTHER_TERM_CONDITIONS_INDEX)
             {
-                NSString *termsConditionsUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"settingsTermsConditionsUrl"];
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:termsConditionsUrlString];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationTermsConditionsUrlString];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
                 
@@ -2568,8 +2645,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             }
             else if (row == OTHER_PRIVACY_INDEX)
             {
-                NSString *privacyPolicyUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"settingsPrivacyPolicyUrl"];
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:privacyPolicyUrlString];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationPrivacyPolicyUrlString];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
                 
@@ -2586,17 +2662,17 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 [self pushViewController:webViewViewController];
             }
         }
-        else if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
+        else if (section == SECTION_TAG_USER_SETTINGS)
         {
-            if (row == userSettingsProfilePictureIndex)
+            if (row == USER_SETTINGS_PROFILE_PICTURE_INDEX)
             {
                 [self onProfileAvatarTap:nil];
             }
-            else if (row == userSettingsChangePasswordIndex)
+            else if (row == USER_SETTINGS_CHANGE_PASSWORD_INDEX)
             {
                 [self displayPasswordAlert];
             }
-            else if (row == userSettingsNewEmailIndex)
+            else if (row == USER_SETTINGS_ADD_EMAIL_INDEX)
             {
                 if (!self.newEmailEditingEnabled)
                 {
@@ -2608,7 +2684,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                     [self onAddNewEmail:newEmailTextField];
                 }
             }
-            else if (row == userSettingsNewPhoneIndex)
+            else if (row == USER_SETTINGS_ADD_PHONENUMBER_INDEX)
             {
                 if (!self.newPhoneEditingEnabled)
                 {
@@ -2621,18 +2697,18 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 }
             }
         }
-        else if (section == SETTINGS_SECTION_CONTACTS_INDEX)
+        else if (section == SECTION_TAG_LOCAL_CONTACTS)
         {
-            if (row == localContactsPhoneBookCountryIndex)
+            if (row == LOCAL_CONTACTS_PHONEBOOK_COUNTRY_INDEX)
             {
                 CountryPickerViewController *countryPicker = [CountryPickerViewController countryPickerViewController];
-                countryPicker.view.tag = SETTINGS_SECTION_CONTACTS_INDEX;
+                countryPicker.view.tag = SECTION_TAG_LOCAL_CONTACTS;
                 countryPicker.delegate = self;
                 countryPicker.showCountryCallingCode = YES;
                 [self pushViewController:countryPicker];
             }
         }
-        else if (section == SETTINGS_SECTION_SECURITY_INDEX)
+        else if (section == SECTION_TAG_SECURITY)
         {
             switch (row)
             {
@@ -2666,21 +2742,32 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                                   animated:YES];
 }
 
-- (void)onRemove3PID:(NSIndexPath*)path
+- (void)onRemove3PID:(NSIndexPath*)indexPath
 {
-    NSUInteger section = path.section;
-    NSUInteger row = path.row;
+    Section *sectionObj = nil;
+    NSInteger section = NSNotFound;
+    NSInteger row = NSNotFound;
     
-    if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
+    if (indexPath.section < _sections.count)
+    {
+        sectionObj = _sections[indexPath.section];
+        section = sectionObj.tag;
+        if (indexPath.row < sectionObj.rows.count)
+        {
+            row = sectionObj.rows[indexPath.row].tag;
+        }
+    }
+    
+    if (section == SECTION_TAG_USER_SETTINGS)
     {
         NSString *address, *medium;
         MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
         NSString *promptMsg;
         
-        if (userSettingsEmailStartIndex <= row &&  row < userSettingsNewEmailIndex)
+        if (row >= USER_SETTINGS_EMAILS_OFFSET)
         {
             medium = kMX3PIDMediumEmail;
-            row = row - userSettingsEmailStartIndex;
+            row = row - USER_SETTINGS_EMAILS_OFFSET;
             NSArray<NSString *> *linkedEmails = account.linkedEmails;
             if (row < linkedEmails.count)
             {
@@ -2688,10 +2775,10 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 promptMsg = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_remove_email_prompt_msg", @"Vector", nil), address];
             }
         }
-        else if (userSettingsPhoneStartIndex <= row &&  row < userSettingsNewPhoneIndex)
+        else if (row >= USER_SETTINGS_PHONENUMBERS_OFFSET)
         {
             medium = kMX3PIDMediumMSISDN;
-            row = row - userSettingsPhoneStartIndex;
+            row = row - USER_SETTINGS_PHONENUMBERS_OFFSET;
             NSArray<NSString *> *linkedPhones = account.linkedPhoneNumbers;
             if (row < linkedPhones.count)
             {
@@ -2855,7 +2942,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     UISwitch *switchButton = (UISwitch*)sender;
     RiotSettings.shared.allowStunServerFallback = switchButton.isOn;
 
-    self.mainSession.callManager.fallbackSTUNServer = RiotSettings.shared.allowStunServerFallback ? RiotSettings.shared.stunServerFallback : nil;
+    self.mainSession.callManager.fallbackSTUNServer = RiotSettings.shared.allowStunServerFallback ? BuildSettings.stunServerFallbackUrlString : nil;
 }
 
 - (void)toggleAllowIntegrations:(id)sender
@@ -2892,14 +2979,14 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
             [MXKAppSettings standardAppSettings].syncLocalContacts = granted;
             
-            [self.tableView reloadData];
+            [self updateSections];
         }];
     }
     else
     {
         [MXKAppSettings standardAppSettings].syncLocalContacts = NO;
         
-        [self.tableView reloadData];
+        [self updateSections];
     }
 }
 
@@ -2935,7 +3022,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
         RiotSettings.shared.enableRageShake = switchButton.isOn;
 
-        [self.tableView reloadData];
+        [self updateSections];
     }
 }
 
@@ -3050,7 +3137,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 - (void)selectPhoneNumberCountry:(id)sender
 {
     newPhoneNumberCountryPicker = [CountryPickerViewController countryPickerViewController];
-    newPhoneNumberCountryPicker.view.tag = SETTINGS_SECTION_USER_SETTINGS_INDEX;
+    newPhoneNumberCountryPicker.view.tag = SECTION_TAG_USER_SETTINGS;
     newPhoneNumberCountryPicker.delegate = self;
     newPhoneNumberCountryPicker.showCountryCallingCode = YES;
     [self pushViewController:newPhoneNumberCountryPicker];
@@ -3218,7 +3305,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }
     else
     {
-        [self.tableView reloadData];
+        [self updateSections];
     }
 }
 
@@ -3536,15 +3623,18 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     SingleImagePickerPresenter *singleImagePickerPresenter = [[SingleImagePickerPresenter alloc] initWithSession:self.mainSession];
     singleImagePickerPresenter.delegate = self;
     
-    
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:userSettingsProfilePictureIndex inSection:SETTINGS_SECTION_USER_SETTINGS_INDEX];
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    
-    UIView *sourceView = cell;
-    
-    [singleImagePickerPresenter presentFrom:self sourceView:sourceView sourceRect:sourceView.bounds animated:YES];
-    
-    self.imagePickerPresenter = singleImagePickerPresenter;
+    NSIndexPath *indexPath = [self exactIndexPathForRowTag:USER_SETTINGS_PROFILE_PICTURE_INDEX
+                                                sectionTag:SECTION_TAG_USER_SETTINGS];
+    if (indexPath)
+    {
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+        
+        UIView *sourceView = cell;
+        
+        [singleImagePickerPresenter presentFrom:self sourceView:sourceView sourceRect:sourceView.bounds animated:YES];
+        
+        self.imagePickerPresenter = singleImagePickerPresenter;
+    }
 }
 
 - (void)showThemePicker
@@ -3588,7 +3678,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 RiotSettings.shared.userInterfaceTheme = newTheme;
                 ThemeService.shared.themeId = newTheme;
 
-                [self.tableView reloadData];
+                [self updateSections];
             }
         }
     };
@@ -3633,11 +3723,15 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                                                         style:UIAlertActionStyleCancel
                                                       handler:nil]];
 
-    UIView *fromCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:USER_INTERFACE_THEME_INDEX inSection:SETTINGS_SECTION_USER_INTERFACE_INDEX]];
-    [themePicker popoverPresentationController].sourceView = fromCell;
-    [themePicker popoverPresentationController].sourceRect = fromCell.bounds;
-
-    [self presentViewController:themePicker animated:YES completion:nil];
+    NSIndexPath *indexPath = [self exactIndexPathForRowTag:USER_INTERFACE_THEME_INDEX
+                                                sectionTag:SECTION_TAG_USER_INTERFACE];
+    if (indexPath)
+    {
+        UIView *fromCell = [self.tableView cellForRowAtIndexPath:indexPath];
+        [themePicker popoverPresentationController].sourceView = fromCell;
+        [themePicker popoverPresentationController].sourceRect = fromCell.bounds;
+        [self presentViewController:themePicker animated:YES completion:nil];
+    }
 }
 
 - (void)deactivateAccountAction
@@ -3660,13 +3754,13 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 {
     UITextField* textField = (UITextField*)sender;
     
-    if (textField.tag == userSettingsDisplayNameIndex)
+    if (textField.tag == USER_SETTINGS_DISPLAYNAME_INDEX)
     {
         // Remove white space from both ends
         newDisplayName = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         [self updateSaveButtonStatus];
     }
-    else if (textField.tag == userSettingsNewPhoneIndex)
+    else if (textField.tag == USER_SETTINGS_ADD_PHONENUMBER_INDEX)
     {
         newPhoneNumber = [[NBPhoneNumberUtil sharedInstance] parse:textField.text defaultRegion:newPhoneNumberCell.isoCountryCode error:nil];
         
@@ -3679,11 +3773,11 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     UITextField* textField = (UITextField*)sender;
 
     // Disable the new email edition if the user leaves the text field empty
-    if (textField.tag == userSettingsNewEmailIndex && textField.text.length == 0 && !keepNewEmailEditing)
+    if (textField.tag == USER_SETTINGS_ADD_EMAIL_INDEX && textField.text.length == 0 && !keepNewEmailEditing)
     {
         self.newEmailEditingEnabled = NO;
     }
-    else if (textField.tag == userSettingsNewPhoneIndex && textField.text.length == 0 && !keepNewPhoneNumberEditing && !newPhoneNumberCountryPicker)
+    else if (textField.tag == USER_SETTINGS_ADD_PHONENUMBER_INDEX && textField.text.length == 0 && !keepNewPhoneNumberEditing && !newPhoneNumberCountryPicker)
     {
         // Disable the new phone edition if the user leaves the text field empty
         self.newPhoneEditingEnabled = NO;
@@ -3694,14 +3788,15 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    if (textField.tag == userSettingsDisplayNameIndex)
+    if (textField.tag == USER_SETTINGS_DISPLAYNAME_INDEX)
     {
         textField.textAlignment = NSTextAlignmentLeft;
     }
 }
+
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    if (textField.tag == userSettingsDisplayNameIndex)
+    if (textField.tag == USER_SETTINGS_DISPLAYNAME_INDEX)
     {
         textField.textAlignment = NSTextAlignmentRight;
     }
@@ -3709,11 +3804,11 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if (textField.tag == userSettingsDisplayNameIndex)
+    if (textField.tag == USER_SETTINGS_DISPLAYNAME_INDEX)
     {
         [textField resignFirstResponder];
     }
-    else if (textField.tag == userSettingsNewEmailIndex)
+    else if (textField.tag == USER_SETTINGS_ADD_EMAIL_INDEX)
     {
         [self onAddNewEmail:textField];
     }
@@ -3913,11 +4008,11 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
 - (void)countryPickerViewController:(MXKCountryPickerViewController *)countryPickerViewController didSelectCountry:(NSString *)isoCountryCode
 {
-    if (countryPickerViewController.view.tag == SETTINGS_SECTION_CONTACTS_INDEX)
+    if (countryPickerViewController.view.tag == SECTION_TAG_LOCAL_CONTACTS)
     {
         [MXKAppSettings standardAppSettings].phonebookCountryCode = isoCountryCode;
     }
-    else if (countryPickerViewController.view.tag == SETTINGS_SECTION_USER_SETTINGS_INDEX)
+    else if (countryPickerViewController.view.tag == SECTION_TAG_USER_SETTINGS)
     {
         if (newPhoneNumberCell)
         {
@@ -4152,7 +4247,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     
     newAvatarImage = [UIImage imageWithData:imageData];
     
-    [self.tableView reloadData];
+    [self updateSections];
 }
 
 
@@ -4172,7 +4267,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
 - (void)settingsDiscoveryTableViewSectionDidUpdate:(SettingsDiscoveryTableViewSection *)settingsDiscoveryTableViewSection
 {
-    [self.tableView reloadData];
+    [self updateSections];
 }
 
 - (MXKTableViewCell *)settingsDiscoveryTableViewSection:(SettingsDiscoveryTableViewSection *)settingsDiscoveryTableViewSection tableViewCellClass:(Class)tableViewCellClass forRow:(NSInteger)forRow
@@ -4185,7 +4280,11 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }
     else if ([tableViewCellClass isEqual:[MXKTableViewCellWithTextView class]])
     {
-        tableViewCell = [self textViewCellForTableView:self.tableView atIndexPath:[NSIndexPath indexPathForRow:forRow inSection:SETTINGS_SECTION_DISCOVERY_INDEX]];
+        NSIndexPath *indexPath = [self exactIndexPathForRowTag:forRow sectionTag:SECTION_TAG_DISCOVERY];
+        if (indexPath)
+        {
+            tableViewCell = [self textViewCellForTableView:self.tableView atIndexPath:indexPath];
+        }
     }
     else if ([tableViewCellClass isEqual:[MXKTableViewCellWithButton class]])
     {
@@ -4208,7 +4307,11 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }
     else if ([tableViewCellClass isEqual:[MXKTableViewCellWithLabelAndSwitch class]])
     {
-        tableViewCell = [self getLabelAndSwitchCell:self.tableView forIndexPath:[NSIndexPath indexPathForRow:forRow inSection:SETTINGS_SECTION_DISCOVERY_INDEX]];
+        NSIndexPath *indexPath = [self exactIndexPathForRowTag:forRow sectionTag:SECTION_TAG_DISCOVERY];
+        if (indexPath)
+        {
+            tableViewCell = [self getLabelAndSwitchCell:self.tableView forIndexPath:indexPath];
+        }
     }
     
     return tableViewCell;
@@ -4233,8 +4336,12 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
 - (void)settingsDiscoveryViewModelDidTapUserSettingsLink:(SettingsDiscoveryViewModel *)viewModel
 {
-    NSIndexPath *discoveryIndexPath = [NSIndexPath indexPathForRow:userSettingsNewEmailIndex inSection:SETTINGS_SECTION_USER_SETTINGS_INDEX];
-    [self.tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    NSIndexPath *discoveryIndexPath = [self exactIndexPathForRowTag:USER_SETTINGS_ADD_EMAIL_INDEX
+                                                         sectionTag:SECTION_TAG_USER_SETTINGS];
+    if (discoveryIndexPath)
+    {
+        [self.tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    }
 }
 
 
