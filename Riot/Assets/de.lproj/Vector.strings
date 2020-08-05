@@ -1129,3 +1129,4 @@
 "secrets_setup_recovery_key_export_action" = "Speichern";
 "secrets_setup_recovery_key_done_action" = "Erledigt";
 "secrets_setup_recovery_key_storage_alert_title" = "Bewahre ihn sicher auf";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "Der QR-Code wurde erfolgreich validiert.";
