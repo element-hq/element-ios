@@ -425,7 +425,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         }
         
         if (_recentsDataSourceMode == RecentsDataSourceModeRooms
-            && BuildSettings.showPublicRoomDirectory)
+            && BuildSettings.publicRoomsShowDirectory)
         {
             // Add the directory section after "ROOMS"
             directorySection = sectionsCount++;
@@ -515,7 +515,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
     else if (section == directorySection
              && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY)
-             && BuildSettings.allowRoomDirectoryServersChange)
+             && BuildSettings.publicRoomsAllowServerChange)
     {
         return RECENTSDATASOURCE_DIRECTORY_SECTION_HEADER_HEIGHT;
     }
@@ -767,7 +767,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     if (section == directorySection
         && _recentsDataSourceMode == RecentsDataSourceModeRooms
         && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY)
-        && BuildSettings.allowRoomDirectoryServersChange)
+        && BuildSettings.publicRoomsAllowServerChange)
     {
         if (!directorySectionContainer)
         {
