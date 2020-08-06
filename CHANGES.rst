@@ -39,6 +39,7 @@ Improvements:
  * AuthenticationVC: Make custom server options and register button configurable.
  * Xcconfig: Add product bundle identifiers for each target.
  * BuildSettings: Namespace some settings.
+ * BuildSettings: Reuse base bundle identifier for various settings.
 
 Bug fix:
  * Rebranding: Remove Riot from app name (#3497).

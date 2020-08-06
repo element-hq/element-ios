@@ -4533,7 +4533,14 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // Register "Riot-Defaults.plist" default values
     NSString* userDefaults = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UserDefaults"];
     NSString *defaultsPathFromApp = [[NSBundle mainBundle] pathForResource:userDefaults ofType:@"plist"];
-    NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsPathFromApp];
+    NSMutableDictionary *defaults = [[NSDictionary dictionaryWithContentsOfFile:defaultsPathFromApp] mutableCopy];
+    
+    //  add pusher ids, as they don't belong to plist anymore
+    defaults[@"pushKitAppIdProd"] = BuildSettings.pushKitAppIdProd;
+    defaults[@"pushKitAppIdDev"] = BuildSettings.pushKitAppIdDev;
+    defaults[@"pusherAppIdProd"] = BuildSettings.pusherAppIdProd;
+    defaults[@"pusherAppIdDev"] = BuildSettings.pusherAppIdDev;
+    
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
     
     if (!RiotSettings.shared.isUserDefaultsMigrated)
