@@ -280,4 +280,12 @@ extension EnterPinCodeViewController: EnterPinCodeViewModelViewDelegate {
         self.renderPlaceholdersCount(count)
     }
     
+    func enterPinCodeViewModel(_ viewModel: EnterPinCodeViewModelType, didUpdateCancelButtonHidden isHidden: Bool) {
+        if isHidden {
+            hideCancelButton()
+        } else {
+            showCancelButton()
+        }
+    }
+    
 }
