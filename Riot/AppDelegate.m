@@ -1229,7 +1229,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         [[NSNotificationCenter defaultCenter] postNotificationName:AppDelegateUniversalLinkDidChangeNotification object:nil];
     }
 
-    if ([webURL.path hasPrefix:@"/config"])
+    if ([webURL.path isEqualToString:@"/"])
     {
         return [self handleServerProvionningLink:webURL];
     }
@@ -1772,7 +1772,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)parseServerProvionningLink:(NSURL*)link homeserver:(NSString**)homeserver identityServer:(NSString**)identityServer
 {
-    if ([link.path isEqualToString:@"/config/config"])
+    if ([link.path isEqualToString:@"/"])
     {
         NSURLComponents *linkURLComponents = [NSURLComponents componentsWithURL:link resolvingAgainstBaseURL:NO];
         for (NSURLQueryItem *item in linkURLComponents.queryItems)
