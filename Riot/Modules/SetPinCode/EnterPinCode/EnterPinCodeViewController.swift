@@ -80,6 +80,10 @@ final class EnterPinCodeViewController: UIViewController {
         return self.theme.statusBarStyle
     }
     
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+    
     // MARK: - Private
     
     private func update(theme: Theme) {
