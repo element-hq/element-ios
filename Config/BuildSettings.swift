@@ -39,19 +39,19 @@ final class BuildSettings: NSObject {
     }
     
     static var pushKitAppIdProd: String {
-        Bundle.app.object(forInfoDictionaryKey: "pushKitAppIdProd") as! String
+        return baseBundleIdentifier + ".ios.voip.prod"
     }
     
     static var pushKitAppIdDev: String {
-        Bundle.app.object(forInfoDictionaryKey: "pushKitAppIdDev") as! String
+        return baseBundleIdentifier + ".ios.voip.dev"
     }
     
     static var pusherAppIdProd: String {
-        Bundle.app.object(forInfoDictionaryKey: "pusherAppIdProd") as! String
+        return baseBundleIdentifier + ".ios.prod"
     }
     
     static var pusherAppIdDev: String {
-        Bundle.app.object(forInfoDictionaryKey: "pusherAppIdDev") as! String
+        return baseBundleIdentifier + ".ios.dev"
     }
     
     // Element-Web instance for the app
