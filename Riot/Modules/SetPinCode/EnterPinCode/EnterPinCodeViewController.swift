@@ -69,6 +69,11 @@ final class EnterPinCodeViewController: UIViewController {
         self.viewModel.viewDelegate = self
 
         self.viewModel.process(viewAction: .loadData)
+        
+        //  force orientation to portrait if phone
+        if UIDevice.current.isPhone {
+            UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+        }
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -76,7 +81,18 @@ final class EnterPinCodeViewController: UIViewController {
     }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .portrait
+        //  limit orientation to portrait only for phone
+        if UIDevice.current.isPhone {
+            return .portrait
+        }
+        return super.supportedInterfaceOrientations
+    }
+    
+    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        if UIDevice.current.isPhone {
+            return .portrait
+        }
+        return super.preferredInterfaceOrientationForPresentation
     }
     
     // MARK: - Private
