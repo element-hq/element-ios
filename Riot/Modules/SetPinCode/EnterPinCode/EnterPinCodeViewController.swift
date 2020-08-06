@@ -67,17 +67,32 @@ final class EnterPinCodeViewController: UIViewController {
         self.update(theme: self.theme)
         
         self.viewModel.viewDelegate = self
-        
-        if #available(iOS 13.0, *) {
-            modalPresentationStyle = .fullScreen
-            isModalInPresentation = true
-        }
 
         self.viewModel.process(viewAction: .loadData)
+        
+        //  force orientation to portrait if phone
+        if UIDevice.current.isPhone {
+            UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+        }
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.theme.statusBarStyle
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        //  limit orientation to portrait only for phone
+        if UIDevice.current.isPhone {
+            return .portrait
+        }
+        return super.supportedInterfaceOrientations
+    }
+    
+    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        if UIDevice.current.isPhone {
+            return .portrait
+        }
+        return super.preferredInterfaceOrientationForPresentation
     }
     
     // MARK: - Private
@@ -279,6 +294,14 @@ extension EnterPinCodeViewController: EnterPinCodeViewModelViewDelegate {
     
     func enterPinCodeViewModel(_ viewModel: EnterPinCodeViewModelType, didUpdatePlaceholdersCount count: Int) {
         self.renderPlaceholdersCount(count)
+    }
+    
+    func enterPinCodeViewModel(_ viewModel: EnterPinCodeViewModelType, didUpdateCancelButtonHidden isHidden: Bool) {
+        if isHidden {
+            hideCancelButton()
+        } else {
+            showCancelButton()
+        }
     }
     
 }
