@@ -53,12 +53,12 @@ platform :ios do
 
   desc "Point MatrixKit and MatrixSDK to their respective release/*/release branch if they exist, develop otherwise"
   lane :point_dependencies_to_pending_releases do
-    edit_podfile(branch_pattern: "release/*/release")
+    edit_podfile(branch_pattern: "release/*/release", fallback_branch: nil)
   end
 
   desc "Point MatrixKit and MatrixSDK to the branch with the same name as the current branch if such one exist, develop otherwise"
   lane :point_dependencies_to_same_feature do
-    edit_podfile(branch_pattern: git_branch)
+    edit_podfile(branch_pattern: git_branch, fallback_branch: "develop")
   end
 
   desc "Build the app for simulator to ensure it compiles"
@@ -311,11 +311,12 @@ platform :ios do
     require 'net/http'
 
     branch_pattern = options[:branch_pattern]
+    fallback_branch =  options[:fallback_branch]
     kit_slug = "matrix-org/matrix-ios-kit"
     sdk_slug = "matrix-org/matrix-ios-sdk"
 
-    kit_branch = find_branch(kit_slug, branch_pattern) || 'develop'
-    sdk_branch = find_branch(sdk_slug, branch_pattern) || 'develop'
+    kit_branch = find_branch(kit_slug, branch_pattern) || fallback_branch
+    sdk_branch = find_branch(sdk_slug, branch_pattern) || fallback_branch
 
     kit_spec = { git: 'https://github.com/matrix-org/matrix-ios-kit.git', branch: kit_branch }
     kit_podspec = { podspec: 'MatrixKit.edited.podspec' }
@@ -326,13 +327,14 @@ platform :ios do
 
     UI.message "✏️ Editing local MatrixKit podspec to remove version constaint on 'MatrixSDK*' dependencies..."
     podspec_content.gsub!(%r{(\.dependency\s+(['"])MatrixSDK(\/[^'"]+)?\2).*$}, '\1')
-    podspec_content.gsub!(%r{(\.source\s*=\s*).*$}, "\\1#{kit_spec}")
     File.write('../MatrixKit.edited.podspec', podspec_content) # current dir is 'fastlane/' hence the '../'
     UI.command_output("Content of MatrixKit.edited.podspec:\n" + podspec_content)
 
     UI.message "✏️ Modify Podfile to point MatrixKit to local podspec and `MatrixSDK/*` to \`#{sdk_branch}\` branch..."
     podfile_content = File.read('../Podfile') # current dir is 'fastlane/' hence the '../'
-    podfile_content.gsub!(%r{^\$matrixKitVersion\s*=\s*.*$}, "$matrixKitVersion = { #{kit_podspec} => #{sdk_spec} }")
+    kit_spec = { podspec: 'MatrixKit.edited.podspec' }
+    sdk_spec = { git: 'https://github.com/matrix-org/matrix-ios-sdk.git', branch: sdk_branch }
+    podfile_content.gsub!(%r{^\$matrixKitVersion\s*=\s*.*$}, "$matrixKitVersion = { #{kit_spec} => #{sdk_spec} }")
     File.write('../Podfile', podfile_content)
     UI.command_output("Content of modified Podfile:\n" + podfile_content)
   end
