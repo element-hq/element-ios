@@ -55,7 +55,7 @@ final class BuildSettings: NSObject {
         "app.element.io": [],
         "staging.element.io": [],
         "develop.element.io": [],
-        "mobile.element.io": ["/config/config"],
+        "mobile.element.io": [],
         // Historical ones
         "riot.im": ["/app", "/staging", "/develop"],
         "www.riot.im": ["/app", "/staging", "/develop"],
