@@ -16,8 +16,8 @@
 
 import Foundation
 
-enum Constants {
-    
-    static let toBeRemovedNotificationCategoryIdentifier = "TO_BE_REMOVED"
-    
+/// `BubbleCellReactionsDisplayable` is a protocol indicating that a cell support displaying reactions.
+@objc protocol BubbleCellReactionsDisplayable {
+    func addReactionsView(_ reactionsView: UIView)
+    func removeReactionsView()
 }

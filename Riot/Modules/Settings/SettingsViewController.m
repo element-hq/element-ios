@@ -291,11 +291,11 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     [sectionUserSettings addRowWithTag:USER_SETTINGS_PROFILE_PICTURE_INDEX];
     [sectionUserSettings addRowWithTag:USER_SETTINGS_DISPLAYNAME_INDEX];
     [sectionUserSettings addRowWithTag:USER_SETTINGS_CHANGE_PASSWORD_INDEX];
-    if (BuildSettings.showUserFirstNameInSettings)
+    if (BuildSettings.settingsScreenShowUserFirstName)
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_FIRST_NAME_INDEX];
     }
-    if (BuildSettings.showUserSurnameInSettings)
+    if (BuildSettings.settingsScreenShowUserSurname)
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_SURNAME_INDEX];
     }
@@ -310,15 +310,15 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     {
         [sectionUserSettings addRowWithTag: USER_SETTINGS_PHONENUMBERS_OFFSET + index];
     }
-    if (BuildSettings.allowAddingEmailThreepids)
+    if (BuildSettings.settingsScreenAllowAddingEmailThreepids)
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_ADD_EMAIL_INDEX];
     }
-    if (BuildSettings.allowAddingPhoneThreepids)
+    if (BuildSettings.settingsScreenAllowAddingPhoneThreepids)
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_ADD_PHONENUMBER_INDEX];
     }
-    if (BuildSettings.showThreepidExplanatory)
+    if (BuildSettings.settingsScreenShowThreepidExplanatory)
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_THREEPIDS_INFORMATION_INDEX];
     }
@@ -348,7 +348,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         [tmpSections addObject:sectionCalls];
     }
     
-    if (BuildSettings.showDiscoverySettings)
+    if (BuildSettings.settingsScreenShowDiscoverySettings)
     {
         Section *sectionDiscovery = [Section sectionWithTag:SECTION_TAG_DISCOVERY];
         NSInteger count = self.settingsDiscoveryTableViewSection.numberOfRows;
@@ -360,7 +360,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         [tmpSections addObject:sectionDiscovery];
     }
     
-    if (BuildSettings.allowIdentityServerConfig)
+    if (BuildSettings.settingsScreenAllowIdentityServerConfig)
     {
         Section *sectionIdentityServer = [Section sectionWithTag:SECTION_TAG_IDENTITY_SERVER];
         [sectionIdentityServer addRowWithTag:IDENTITY_SERVER_INDEX];
@@ -408,7 +408,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     sectionUserInterface.headerTitle = NSLocalizedStringFromTable(@"settings_user_interface", @"Vector", nil);
     [tmpSections addObject: sectionUserInterface];
     
-    if (BuildSettings.showAdvancedSettings)
+    if (BuildSettings.settingsScreenShowAdvancedSettings)
     {
         Section *sectionAdvanced = [Section sectionWithTag:SECTION_TAG_ADVANCED];
         [sectionAdvanced addRowWithTag:0];
@@ -423,24 +423,24 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     [sectionOther addRowWithTag:OTHER_TERM_CONDITIONS_INDEX];
     [sectionOther addRowWithTag:OTHER_PRIVACY_INDEX];
     [sectionOther addRowWithTag:OTHER_THIRD_PARTY_INDEX];
-    if (BuildSettings.allowChangingCrashUsageDataSettings)
+    if (BuildSettings.settingsScreenAllowChangingCrashUsageDataSettings)
     {
         [sectionOther addRowWithTag:OTHER_CRASH_REPORT_INDEX];
     }
-    if (BuildSettings.allowChangingRageshakeSettings)
+    if (BuildSettings.settingsScreenAllowChangingRageshakeSettings)
     {
         [sectionOther addRowWithTag:OTHER_ENABLE_RAGESHAKE_INDEX];
     }
     [sectionOther addRowWithTag:OTHER_MARK_ALL_AS_READ_INDEX];
     [sectionOther addRowWithTag:OTHER_CLEAR_CACHE_INDEX];
-    if (BuildSettings.allowBugReportingManually)
+    if (BuildSettings.settingsScreenAllowBugReportingManually)
     {
         [sectionOther addRowWithTag:OTHER_REPORT_BUG_INDEX];
     }
     sectionOther.headerTitle = NSLocalizedStringFromTable(@"settings_other", @"Vector", nil);
     [tmpSections addObject:sectionOther];
     
-    if (BuildSettings.showLabSettings)
+    if (BuildSettings.settingsScreenShowLabSettings)
     {
         Section *sectionLabs = [Section sectionWithTag:SECTION_TAG_LABS];
         [sectionLabs addRowWithTag:LABS_USE_JITSI_WIDGET_INDEX];
@@ -461,7 +461,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         [tmpSections addObject:sectionFlair];
     }
     
-    if (BuildSettings.allowDeactivatingAccount)
+    if (BuildSettings.settingsScreenAllowDeactivatingAccount)
     {
         Section *sectionDeactivate = [Section sectionWithTag:SECTION_TAG_DEACTIVATE_ACCOUNT];
         [sectionDeactivate addRowWithTag:0];

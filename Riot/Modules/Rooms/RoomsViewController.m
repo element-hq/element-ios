@@ -156,7 +156,7 @@
         [directoryServersDataSource finalizeInitialization];
 
         // Add directory servers from the app settings
-        directoryServersDataSource.roomDirectoryServers = BuildSettings.roomDirectoryServers;
+        directoryServersDataSource.roomDirectoryServers = BuildSettings.publicRoomsDirectoryServers;
 
         __weak typeof(self) weakSelf = self;
 

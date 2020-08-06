@@ -25,7 +25,7 @@ final class PinCodePreferences: NSObject {
     // MARK: - Constants
     
     private struct PinConstants {
-        static let pinCodeKeychainService: String = "im.vector.app.pin-service"
+        static let pinCodeKeychainService: String = BuildSettings.baseBundleIdentifier + ".pin-service"
     }
     
     private struct StoreKeys {
@@ -40,7 +40,7 @@ final class PinCodePreferences: NSObject {
     
     override init() {
         store = KeychainStore(withKeychain: Keychain(service: PinConstants.pinCodeKeychainService,
-                                                     accessGroup: Constants.keychainAccessGroup))
+                                                     accessGroup: BuildSettings.keychainAccessGroup))
         super.init()
     }
     

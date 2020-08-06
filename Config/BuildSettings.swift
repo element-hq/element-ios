@@ -30,6 +30,30 @@ final class BuildSettings: NSObject {
         Bundle.app.object(forInfoDictionaryKey: "applicationGroupIdentifier") as! String
     }
     
+    static var baseBundleIdentifier: String {
+        Bundle.app.object(forInfoDictionaryKey: "baseBundleIdentifier") as! String
+    }
+    
+    static var keychainAccessGroup: String {
+        Bundle.app.object(forInfoDictionaryKey: "keychainAccessGroup") as! String
+    }
+    
+    static var pushKitAppIdProd: String {
+        return baseBundleIdentifier + ".ios.voip.prod"
+    }
+    
+    static var pushKitAppIdDev: String {
+        return baseBundleIdentifier + ".ios.voip.dev"
+    }
+    
+    static var pusherAppIdProd: String {
+        return baseBundleIdentifier + ".ios.prod"
+    }
+    
+    static var pusherAppIdDev: String {
+        return baseBundleIdentifier + ".ios.dev"
+    }
+    
     // Element-Web instance for the app
     static let applicationWebAppUrlString = "https://app.element.io"
     
@@ -37,10 +61,10 @@ final class BuildSettings: NSObject {
     // MARK: - Server configuration
     
     // Default servers proposed on the authentication screen
-    static let defaultHomeserverUrlString = "https://matrix.org"
-    static let defaultIdentityServerUrlString = "https://vector.im"
+    static let serverConfigDefaultHomeserverUrlString = "https://matrix.org"
+    static let serverConfigDefaultIdentityServerUrlString = "https://vector.im"
     
-    static let sygnalAPIUrlString = "https://matrix.org/_matrix/push/v1/notify"
+    static let serverConfigSygnalAPIUrlString = "https://matrix.org/_matrix/push/v1/notify"
     
     
     // MARK: - Legal URLs
@@ -79,10 +103,10 @@ final class BuildSettings: NSObject {
     
     
     // MARK: -  Public rooms Directory
-    static let showPublicRoomDirectory: Bool = true
-    static let allowRoomDirectoryServersChange: Bool = true
+    static let publicRoomsShowDirectory: Bool = true
+    static let publicRoomsAllowServerChange: Bool = true
     // List of homeservers for the public rooms directory
-    static let roomDirectoryServers = [
+    static let publicRoomsDirectoryServers = [
         "matrix.org"
     ]
     
@@ -121,30 +145,31 @@ final class BuildSettings: NSObject {
     /// Force non-jailbroken app usage
     static let forceNonJailbrokenUsage: Bool = true
     
+    static let allowSendingStickers: Bool = true
+    
+    static let allowLocalContactsAccess: Bool = true
+    
     
     // MARK: - Screen settings -
     
-    static let showUserFirstNameInSettings: Bool = false
-    static let showUserSurnameInSettings: Bool = false
-    static let allowAddingEmailThreepids: Bool = true
-    static let allowAddingPhoneThreepids: Bool = true
-    static let showThreepidExplanatory: Bool = true
-    static let showDiscoverySettings: Bool = true
-    static let allowIdentityServerConfig: Bool = true
-    static let allowLocalContactsAccess: Bool = true
-    static let showAdvancedSettings: Bool = true
-    static let showLabSettings: Bool = true
-    static let allowChangingRageshakeSettings: Bool = true
-    static let allowChangingCrashUsageDataSettings: Bool = true
-    static let allowBugReportingManually: Bool = true
-    static let allowDeactivatingAccount: Bool = true
-    static let allowSendingStickers: Bool = true
-    
+    static let settingsScreenShowUserFirstName: Bool = false
+    static let settingsScreenShowUserSurname: Bool = false
+    static let settingsScreenAllowAddingEmailThreepids: Bool = true
+    static let settingsScreenAllowAddingPhoneThreepids: Bool = true
+    static let settingsScreenShowThreepidExplanatory: Bool = true
+    static let settingsScreenShowDiscoverySettings: Bool = true
+    static let settingsScreenAllowIdentityServerConfig: Bool = true
+    static let settingsScreenShowAdvancedSettings: Bool = true
+    static let settingsScreenShowLabSettings: Bool = true
+    static let settingsScreenAllowChangingRageshakeSettings: Bool = true
+    static let settingsScreenAllowChangingCrashUsageDataSettings: Bool = true
+    static let settingsScreenAllowBugReportingManually: Bool = true
+    static let settingsScreenAllowDeactivatingAccount: Bool = true
     
     // MARK: - Message
-    static let allowMessageDetailsShare: Bool = true
-    static let allowMessageDetailsPermalink: Bool = true
-    static let allowMessageDetailsViewSource: Bool = true
+    static let messageDetailsAllowShare: Bool = true
+    static let messageDetailsAllowPermalink: Bool = true
+    static let messageDetailsAllowViewSource: Bool = true
     
     
     // MARK: - Authentication Screen

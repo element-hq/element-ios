@@ -94,4 +94,14 @@ import Foundation
 
         self.viewDelegate?.bubbleReactionsViewModel(self, didUpdateViewState: .loaded(reactionsViewData: reactionsViewData, showAllButtonState: showAllButtonState))
     }
+        
+    // MARK: - Hashable
+    
+    override var hash: Int {
+        var hasher = Hasher()
+        hasher.combine(self.aggregatedReactions)
+        hasher.combine(self.eventId)
+        hasher.combine(self.showAll)
+        return hasher.finalize()
+    }
 }
