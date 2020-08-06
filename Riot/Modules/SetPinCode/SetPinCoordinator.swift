@@ -70,7 +70,11 @@ final class SetPinCoordinator: SetPinCoordinatorType {
     }
     
     func toPresentable() -> UIViewController {
-        return self.navigationRouter.toPresentable()
+        let controller = self.navigationRouter.toPresentable()
+        if #available(iOS 13.0, *) {
+            controller.modalPresentationStyle = .fullScreen
+        }
+        return controller
     }
     
     // MARK: - Private methods

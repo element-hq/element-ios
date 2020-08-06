@@ -67,11 +67,6 @@ final class EnterPinCodeViewController: UIViewController {
         self.update(theme: self.theme)
         
         self.viewModel.viewDelegate = self
-        
-        if #available(iOS 13.0, *) {
-            modalPresentationStyle = .fullScreen
-            isModalInPresentation = true
-        }
 
         self.viewModel.process(viewAction: .loadData)
     }
