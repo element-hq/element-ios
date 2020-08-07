@@ -16,18 +16,18 @@ PODS:
     - AFNetworking/NSURLSession
   - cmark (0.24.1)
   - DGCollectionViewLeftAlignFlowLayout (1.0.4)
-  - DTCoreText (1.6.23):
-    - DTCoreText/Core (= 1.6.23)
+  - DTCoreText (1.6.24):
+    - DTCoreText/Core (= 1.6.24)
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTCoreText/Core (1.6.23):
+  - DTCoreText/Core (1.6.24):
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTCoreText/Extension (1.6.23):
+  - DTCoreText/Extension (1.6.24):
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
@@ -51,38 +51,38 @@ PODS:
   - MatomoTracker (7.2.1):
     - MatomoTracker/Core (= 7.2.1)
   - MatomoTracker/Core (7.2.1)
-  - MatrixKit (0.12.10):
+  - MatrixKit (0.12.11):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.23)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.12.10)
-    - MatrixSDK (= 0.16.9)
-  - MatrixKit/AppExtension (0.12.10):
+    - MatrixKit/Core (= 0.12.11)
+    - MatrixSDK (= 0.16.10)
+  - MatrixKit/AppExtension (0.12.11):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.23)
     - DTCoreText/Extension
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.16.9)
-  - MatrixKit/Core (0.12.10):
+    - MatrixSDK (= 0.16.10)
+  - MatrixKit/Core (0.12.11):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.23)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.16.9)
-  - MatrixSDK (0.16.9):
-    - MatrixSDK/Core (= 0.16.9)
-  - MatrixSDK/Core (0.16.9):
+    - MatrixSDK (= 0.16.10)
+  - MatrixSDK (0.16.10):
+    - MatrixSDK/Core (= 0.16.10)
+  - MatrixSDK/Core (0.16.10):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.2.2)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.1.0)
     - Realm (~> 4.4.0)
-  - MatrixSDK/JingleCallStack (0.16.9):
+  - MatrixSDK/JingleCallStack (0.16.10):
     - JitsiMeetSDK (~> 2.8.1)
     - MatrixSDK/Core
-  - MatrixSDK/SwiftSupport (0.16.9):
+  - MatrixSDK/SwiftSupport (0.16.10):
     - MatrixSDK/Core
   - OLMKit (3.1.0):
     - OLMKit/olmc (= 3.1.0)
@@ -111,8 +111,8 @@ DEPENDENCIES:
   - KeychainAccess (~> 4.2)
   - KTCenterFlowLayout (~> 1.3.1)
   - MatomoTracker (~> 7.2.0)
-  - MatrixKit (= 0.12.10)
-  - MatrixKit/AppExtension (= 0.12.10)
+  - MatrixKit (= 0.12.11)
+  - MatrixKit/AppExtension (= 0.12.11)
   - MatrixSDK
   - MatrixSDK/JingleCallStack
   - MatrixSDK/SwiftSupport
@@ -153,7 +153,7 @@ SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
   cmark: 1d9ad0375e3b9fa281732e992467903606015520
   DGCollectionViewLeftAlignFlowLayout: a0fa58797373ded039cafba8133e79373d048399
-  DTCoreText: 67023bb51b26711d5f640c851f4845aea14c24c9
+  DTCoreText: 0298d372ccc137e51f27b3ec1af65fd4af5d173a
   DTFoundation: 25aa19bb7c6e225b1dfae195604fb8cf1da0ab4c
   GBDeviceInfo: a3f39dba1a04dcb630abff65d6f7e8fbf319eadd
   GZIP: af5c90ef903776a7e9afe6ebebd794a84a2929d4
@@ -164,8 +164,8 @@ SPEC CHECKSUMS:
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   MatomoTracker: 246b6b0693cf39b356134dec7561f719d3538b96
-  MatrixKit: 6937446581f1c71011e47db8b302dc912433edb2
-  MatrixSDK: 007988f3ef43983a6b1c1f0087a18c7e2598abfa
+  MatrixKit: 6c5ba4a7673475eca2ad38bbfa02122a502fd03c
+  MatrixSDK: a9793d20448ee7cbe8acd8650fa319ea0b11d273
   OLMKit: 4ee0159d63feeb86d836fdcfefe418e163511639
   Realm: 4eb04d7487bd43c0581256f40b424eafb711deff
   Reusable: 53a9acf5c536f229b31b5865782414b508252ddb
@@ -174,6 +174,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 44306ac00e0905967588b3035b5494bc26836188
+PODFILE CHECKSUM: 4f5106309b0939cb9dca5512fc9880a78a8b4926
 
 COCOAPODS: 1.9.3
