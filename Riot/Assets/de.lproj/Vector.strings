@@ -968,7 +968,7 @@
 "user_verification_start_verify_action" = "Verifizierung starten";
 "user_verification_start_information_part1" = "Für zusätzliche Sicherheit verifizieren ";
 "user_verification_start_information_part2" = " indem ein einmaliger Code auf beiden Geräten überprüft wird.";
-"user_verification_start_waiting_partner" = "Warte auf %s…";
+"user_verification_start_waiting_partner" = "Warte auf %@…";
 "user_verification_start_additional_information" = "Um sicher zu sein, tut dies persönlich oder verwendet einen anderen Kommunikationsweg.";
 "user_verification_sessions_list_user_trust_level_trusted_title" = "Vertraut";
 "user_verification_sessions_list_user_trust_level_warning_title" = "Warnung";
