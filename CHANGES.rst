@@ -8,7 +8,7 @@ Improvements:
  * 
 
 Bugfix:
- * 
+ * Fix crash on cross-signing start in German translation
 
 API Change:
  * 
