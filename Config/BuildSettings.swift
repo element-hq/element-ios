@@ -30,6 +30,30 @@ final class BuildSettings: NSObject {
         Bundle.app.object(forInfoDictionaryKey: "applicationGroupIdentifier") as! String
     }
     
+    static var baseBundleIdentifier: String {
+        Bundle.app.object(forInfoDictionaryKey: "baseBundleIdentifier") as! String
+    }
+    
+    static var keychainAccessGroup: String {
+        Bundle.app.object(forInfoDictionaryKey: "keychainAccessGroup") as! String
+    }
+    
+    static var pushKitAppIdProd: String {
+        return baseBundleIdentifier + ".ios.voip.prod"
+    }
+    
+    static var pushKitAppIdDev: String {
+        return baseBundleIdentifier + ".ios.voip.dev"
+    }
+    
+    static var pusherAppIdProd: String {
+        return baseBundleIdentifier + ".ios.prod"
+    }
+    
+    static var pusherAppIdDev: String {
+        return baseBundleIdentifier + ".ios.dev"
+    }
+    
     // Element-Web instance for the app
     static let applicationWebAppUrlString = "https://app.element.io"
     
@@ -55,6 +79,7 @@ final class BuildSettings: NSObject {
         "app.element.io": [],
         "staging.element.io": [],
         "develop.element.io": [],
+        "mobile.element.io": [""],
         // Historical ones
         "riot.im": ["/app", "/staging", "/develop"],
         "www.riot.im": ["/app", "/staging", "/develop"],

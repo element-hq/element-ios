@@ -20,7 +20,7 @@ Build instructions
 Before opening the Element Xcode workspace, you need to build it with the
 CocoaPods command::
 
-        $ cd Riot
+        $ cd Element
         $ bundle install
         $ bundle exec pod install
 

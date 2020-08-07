@@ -143,6 +143,7 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
         switch viewMode {
         case .setPin:
             update(viewState: .choosePin)
+            self.viewDelegate?.enterPinCodeViewModel(self, didUpdateCancelButtonHidden: pinCodePreferences.forcePinProtection)
         case .unlock:
             update(viewState: .unlock)
         case .confirmPinToDeactivate:
