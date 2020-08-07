@@ -22,3 +22,5 @@ BUNDLE_DISPLAY_NAME = Element
 APPLICATION_GROUP_IDENTIFIER = group.im.vector
 
 BASE_BUNDLE_IDENTIFIER = im.vector.app
+
+KEYCHAIN_ACCESS_GROUP = $(AppIdentifierPrefix)$(BASE_BUNDLE_IDENTIFIER).keychain.shared
