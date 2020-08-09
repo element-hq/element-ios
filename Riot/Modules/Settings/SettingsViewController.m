@@ -1323,7 +1323,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 {
     MXKTableViewCell *cell = [self getDefaultTableViewCell:tableView];
     cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-    cell.textLabel.textColor = ThemeService.shared.theme.headerTextPrimaryColor;
+    cell.textLabel.textColor = ThemeService.shared.theme.headerTextSecondaryColor;
     cell.textLabel.numberOfLines = 0;
     cell.contentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -1635,9 +1635,9 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         {
             MXKTableViewCell *threePidsInformationCell = [self descriptionCellForTableView:self.tableView];
             
-            NSMutableAttributedString *attributedString =  [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"settings_three_pids_management_information_part1", @"Vector", nil) attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor}];
+            NSMutableAttributedString *attributedString =  [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"settings_three_pids_management_information_part1", @"Vector", nil) attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.headerTextSecondaryColor}];
             [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"settings_three_pids_management_information_part2", @"Vector", nil) attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.tintColor}]];
-            [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"settings_three_pids_management_information_part3", @"Vector", nil) attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor}]];
+            [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"settings_three_pids_management_information_part3", @"Vector", nil) attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.headerTextSecondaryColor}]];
             
             threePidsInformationCell.textLabel.attributedText = attributedString;
             threePidsInformationCell.textLabel.numberOfLines = 0;
@@ -2325,7 +2325,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     {
         // Customize label style
         UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
-        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.headerTextPrimaryColor;
+        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.headerTextSecondaryColor;
     }
 }
 

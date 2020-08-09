@@ -378,7 +378,7 @@ enum {
     MXKTableViewCell *cell = [self getDefaultTableViewCell:tableView];
     cell.textLabel.text = text;
     cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-    cell.textLabel.textColor = ThemeService.shared.theme.headerTextPrimaryColor;
+    cell.textLabel.textColor = ThemeService.shared.theme.headerTextSecondaryColor;
     cell.textLabel.numberOfLines = 0;
     cell.contentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -491,7 +491,7 @@ enum {
     {
         // Customize label style
         UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
-        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.headerTextPrimaryColor;
+        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.headerTextSecondaryColor;
     }
 }
 

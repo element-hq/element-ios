@@ -2084,7 +2084,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     {
         // Customize label style
         UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
-        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.headerTextPrimaryColor;
+        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.headerTextSecondaryColor;
     }
 }
 
