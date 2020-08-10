@@ -38,7 +38,7 @@ class NotificationService: UNNotificationServiceExtension {
     static var isLoggerInitialized: Bool = false
     private lazy var pushGatewayRestClient: MXPushGatewayRestClient = {
         let url = URL(string: BuildSettings.serverConfigSygnalAPIUrlString)!
-        return MXPushGatewayRestClient(pushGateway: url.host!, andOnUnrecognizedCertificateBlock: nil)
+        return MXPushGatewayRestClient(pushGateway: url.scheme! + "://" + url.host!, andOnUnrecognizedCertificateBlock: nil)
     }()
     private var pushNotificationManager: PushNotificationManager = .shared
     
@@ -555,10 +555,12 @@ class NotificationService: UNNotificationServiceExtension {
             return
         }
         
-        pushGatewayRestClient.notifyApp(withId: "", pushToken: token, eventId: event.eventId, roomId: event.roomId, eventType: event.wireType, success: { (rejected) in
-            
+        let appId = BuildSettings.pushKitAppId
+        
+        pushGatewayRestClient.notifyApp(withId: appId, pushToken: token, eventId: event.eventId, roomId: event.roomId, eventType: event.wireType, sender: event.sender, success: { (rejected) in
+            NSLog("[NotificationService] sendVoipPush succeeded, rejected token: \(rejected)")
         }) { (error) in
-            
+            NSLog("[NotificationService] sendVoipPush failed with error: \(error)")
         }
     }
     
