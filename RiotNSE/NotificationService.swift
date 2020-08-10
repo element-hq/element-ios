@@ -543,6 +543,10 @@ class NotificationService: UNNotificationServiceExtension {
             return nil
         }
         
+        if event.eventType == .callInvite {
+            return Constants.callNotificationsCategoryIdentifier
+        }
+        
         guard event.eventType == .roomMessage || event.eventType == .roomEncrypted else {
             return nil
         }
