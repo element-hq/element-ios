@@ -23,7 +23,7 @@ final class PushNotificationManager: NSObject {
     // MARK: - Constants
     
     private struct PushNotificationConstants {
-        static let pushNotificationKeychainService: String = "im.vector.app.pushnotification-service"
+        static let pushNotificationKeychainService: String = BuildSettings.baseBundleIdentifier + ".pushnotification-service"
     }
     
     private struct StoreKeys {
@@ -37,7 +37,7 @@ final class PushNotificationManager: NSObject {
     
     override init() {
         store = KeychainStore(withKeychain: Keychain(service: PushNotificationConstants.pushNotificationKeychainService,
-                                                     accessGroup: Constants.keychainAccessGroup))
+                                                     accessGroup: BuildSettings.keychainAccessGroup))
         super.init()
     }
     

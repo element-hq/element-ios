@@ -92,5 +92,9 @@
 	<string>${PRODUCT_NAME}-Defaults</string>
 	<key>applicationGroupIdentifier</key>
 	<string>$(APPLICATION_GROUP_IDENTIFIER)</string>
+	<key>baseBundleIdentifier</key>
+	<string>$(BASE_BUNDLE_IDENTIFIER)</string>
+	<key>keychainAccessGroup</key>
+	<string>$(KEYCHAIN_ACCESS_GROUP)</string>
 </dict>
 </plist>

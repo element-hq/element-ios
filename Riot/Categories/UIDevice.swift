@@ -33,4 +33,10 @@ import UIKit
             return false
         }
     }
+    
+    /// Returns if the device is a Phone
+    var isPhone: Bool {
+        return userInterfaceIdiom == .phone
+    }
+    
 }
