@@ -30,4 +30,15 @@ import UserNotifications
         }
     }
     
+    func removeCallNotifications() {
+        UNUserNotificationCenter.current().getDeliveredNotifications { (notifications) in
+            //  get identifiers of notifications whose category identifiers are "TO_BE_REMOVED"
+            let identifiersToBeRemoved = notifications.compactMap({ $0.request.content.categoryIdentifier == Constants.callNotificationsCategoryIdentifier ? $0.request.identifier : nil })
+            
+            NSLog("[UNUserNotificationCenter] removeUnwantedNotifications: Removing \(identifiersToBeRemoved.count) notifications.")
+            //  remove the notifications with these id's
+            UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: identifiersToBeRemoved)
+        }
+    }
+    
 }

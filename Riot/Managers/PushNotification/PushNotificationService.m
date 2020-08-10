@@ -137,6 +137,12 @@
     [[UNUserNotificationCenter currentNotificationCenter] removeUnwantedNotifications];
 }
 
+- (void)applicationDidBecomeActive
+{
+    [[UNUserNotificationCenter currentNotificationCenter] removeUnwantedNotifications];
+    [[UNUserNotificationCenter currentNotificationCenter] removeCallNotifications];
+}
+
 #pragma mark - Private Methods
 
 - (void)configurePushKit

@@ -68,6 +68,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)applicationWillEnterForeground;
 
+/// Method to be called when the application becomes active.
+- (void)applicationDidBecomeActive;
+
 /**
  Remove delivered notifications for a given room id except call notifications
 

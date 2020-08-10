@@ -644,6 +644,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     NSLog(@"[AppDelegate] applicationDidBecomeActive");
     
+    [self.pushNotificationService applicationDidBecomeActive];
+    
     if ([self.localAuthenticationService shouldShowPinCode])
     {
         if (self.setPinCoordinatorBridgePresenter)
