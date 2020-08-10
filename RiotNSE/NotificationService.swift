@@ -16,6 +16,7 @@
 
 import UserNotifications
 import MatrixKit
+import MatrixSDK
 
 class NotificationService: UNNotificationServiceExtension {
     
@@ -35,6 +36,11 @@ class NotificationService: UNNotificationServiceExtension {
         return CommonConfiguration()
     }()
     static var isLoggerInitialized: Bool = false
+    private lazy var pushGatewayRestClient: MXPushGatewayRestClient = {
+        let url = URL(string: BuildSettings.serverConfigSygnalAPIUrlString)!
+        return MXPushGatewayRestClient(pushGateway: url.host!, andOnUnrecognizedCertificateBlock: nil)
+    }()
+    private var pushNotificationManager: PushNotificationManager = .shared
     
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         // Set static application settings
@@ -430,6 +436,7 @@ class NotificationService: UNNotificationServiceExtension {
                 
                 // call notifications should stand out from normal messages, so we don't stack them
                 threadIdentifier = nil
+                self.sendVoipPush(forEvent: event)
             case .roomMember:
                 let roomDisplayName = room.summary.displayname
                 
@@ -541,6 +548,18 @@ class NotificationService: UNNotificationServiceExtension {
         }
         
         return "QUICK_REPLY"
+    }
+    
+    private func sendVoipPush(forEvent event: MXEvent) {
+        guard let token = pushNotificationManager.pushToken else {
+            return
+        }
+        
+        pushGatewayRestClient.notifyApp(withId: "", pushToken: token, eventId: event.eventId, roomId: event.roomId, eventType: event.wireType, success: { (rejected) in
+            
+        }) { (error) in
+            
+        }
     }
     
 }
