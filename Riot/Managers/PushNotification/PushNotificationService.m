@@ -154,6 +154,37 @@
     }
 }
 
+- (void)launchBackgroundSync
+{
+    // Launch a background sync for all existing matrix sessions
+    NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
+    for (MXKAccount *account in mxAccounts)
+    {
+        // Check the current session state
+        if (account.mxSession.state == MXSessionStatePaused)
+        {
+            NSLog(@"[PushNotificationService][Push] launchBackgroundSync");
+            __weak typeof(self) weakSelf = self;
+
+            [account backgroundSync:20000 success:^{
+                
+                // Sanity check
+                if (!weakSelf)
+                {
+                    return;
+                }
+                
+                [[UNUserNotificationCenter currentNotificationCenter] removeUnwantedNotifications];
+                [[UNUserNotificationCenter currentNotificationCenter] removeCallNotifications];
+                NSLog(@"[PushNotificationService][Push] launchBackgroundSync: the background sync succeeds");
+            } failure:^(NSError *error) {
+                
+                NSLog(@"[PushNotificationService][Push] launchBackgroundSync: the background sync failed. Error: %@ (%@).", error.domain, @(error.code));
+            }];
+        }
+    }
+}
+
 #pragma mark - UNUserNotificationCenterDelegate
 
 // iOS 10+, see application:handleActionWithIdentifier:forLocalNotification:withResponseInfo:completionHandler:
@@ -352,12 +383,20 @@
 
 - (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)pushCredentials forType:(PKPushType)type
 {
+    NSLog(@"[PushNotificationService] didUpdatePushCredentials");
     _pushNotificationManager.pushToken = pushCredentials.token;
 }
 
 - (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type withCompletionHandler:(void (^)(void))completion
 {
+    NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: %@", payload);
+    [[UNUserNotificationCenter currentNotificationCenter] removeUnwantedNotifications];
+    [[UNUserNotificationCenter currentNotificationCenter] removeCallNotifications];
     
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
+    {
+        [self launchBackgroundSync];
+    }
 }
 
 @end
