@@ -544,7 +544,7 @@ class NotificationService: UNNotificationServiceExtension {
         }
         
         if event.eventType == .callInvite {
-            return Constants.callNotificationsCategoryIdentifier
+            return Constants.callInviteNotificationCategoryIdentifier
         }
         
         guard event.eventType == .roomMessage || event.eventType == .roomEncrypted else {

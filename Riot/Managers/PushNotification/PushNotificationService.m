@@ -140,7 +140,7 @@
 - (void)applicationDidBecomeActive
 {
     [[UNUserNotificationCenter currentNotificationCenter] removeUnwantedNotifications];
-    [[UNUserNotificationCenter currentNotificationCenter] removeCallNotifications];
+    [[UNUserNotificationCenter currentNotificationCenter] removeCallNotificationsFor:nil];
 }
 
 #pragma mark - Private Methods
@@ -169,7 +169,7 @@
         // Check the current session state
         if (account.mxSession.state == MXSessionStatePaused)
         {
-            NSLog(@"[PushNotificationService][Push] launchBackgroundSync");
+            NSLog(@"[PushNotificationService] launchBackgroundSync");
             __weak typeof(self) weakSelf = self;
 
             [account backgroundSync:20000 success:^{
@@ -181,11 +181,11 @@
                 }
                 
                 [[UNUserNotificationCenter currentNotificationCenter] removeUnwantedNotifications];
-                [[UNUserNotificationCenter currentNotificationCenter] removeCallNotifications];
-                NSLog(@"[PushNotificationService][Push] launchBackgroundSync: the background sync succeeds");
+                [[UNUserNotificationCenter currentNotificationCenter] removeCallNotificationsFor:nil];
+                NSLog(@"[PushNotificationService] launchBackgroundSync: the background sync succeeds");
             } failure:^(NSError *error) {
                 
-                NSLog(@"[PushNotificationService][Push] launchBackgroundSync: the background sync failed. Error: %@ (%@).", error.domain, @(error.code));
+                NSLog(@"[PushNotificationService] launchBackgroundSync: the background sync failed. Error: %@ (%@).", error.domain, @(error.code));
             }];
         }
     }
@@ -389,15 +389,15 @@
 
 - (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)pushCredentials forType:(PKPushType)type
 {
-    NSLog(@"[PushNotificationService] didUpdatePushCredentials");
+    NSLog(@"[PushNotificationService] did update push credentials");
     _pushNotificationManager.pushToken = pushCredentials.token;
 }
 
 - (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type withCompletionHandler:(void (^)(void))completion
 {
-    NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: %@", payload);
+    NSLog(@"[PushNotificationService] did receive PushKit push with payload: %@", payload);
     [[UNUserNotificationCenter currentNotificationCenter] removeUnwantedNotifications];
-    [[UNUserNotificationCenter currentNotificationCenter] removeCallNotifications];
+    [[UNUserNotificationCenter currentNotificationCenter] removeCallNotificationsFor:payload.dictionaryPayload[@"room_id"]];
     
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
     {
