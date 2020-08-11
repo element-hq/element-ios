@@ -1093,7 +1093,7 @@
 "key_verification_verify_qr_code_information_other_device" = "Scanne den Code unten zur Überprüfung:";
 "key_verification_verify_qr_code_emoji_information" = "Überprüfung durch den Vergleich einzigartiger Emojis.";
 "key_verification_verify_qr_code_scan_code_action" = "Scanne Code des Gegenübers";
-"key_verification_verify_qr_code_cannot_scan_action" = "Du kannst nicht scannen?";
+"key_verification_verify_qr_code_cannot_scan_action" = "Scannen nicht möglich?";
 "key_verification_verify_qr_code_start_emoji_action" = "Verifizierung durch Emojis";
 "key_verification_verify_qr_code_other_scan_my_code_title" = "Hat dein Gegenüber erfolgreich den QR-Code gescannt?";
 "key_verification_verify_qr_code_scan_other_code_success_title" = "Code erfolgreich überprüft!";
