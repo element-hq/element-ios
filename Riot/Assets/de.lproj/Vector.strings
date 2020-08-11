@@ -1033,7 +1033,7 @@
 "security_settings_crosssigning_info_trusted" = "Cross-Signing ist aktiviert. Du kannst anderen Nutzern und deinen anderen Sitzungen basierend auf Cross-Signing vertrauen, aber du kannst in dieser Sitzung kein Cross-Signing durchführen, da sie keine privaten Cross-Signing-Schlüssel enthält. Vervollständige die Sicherheit dieser Sitzung.";
 "security_settings_crosssigning_bootstrap" = "Cross-Signing einrichten";
 "security_settings_complete_security_alert_title" = "Sicherheit vervollständigen";
-"security_settings_complete_security_alert_message" = "Sie sollten zuerst die Sicherheit ihrer aktuellen Sitzung vervollständigen.";
+"security_settings_complete_security_alert_message" = "Du solltest zuerst die Sicherheit deiner aktuellen Sitzung vervollständigen.";
 // Events formatter with you
 "event_formatter_widget_added_by_you" = "Du hast das Widget hinzugefügt: %@";
 "event_formatter_widget_removed_by_you" = "Du hast das Widget entfernt: %@";
