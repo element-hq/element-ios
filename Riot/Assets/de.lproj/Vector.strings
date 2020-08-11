@@ -1024,7 +1024,7 @@
 "authenticated_session_flow_not_supported" = "Diese App unterstützt nicht diese Authentifizierungsmethode für deinen Home-Server.";
 "secure_key_backup_setup_intro_title" = "Sicheres Backup";
 "store_promotional_text" = "Privatsphäre-wahrende Kollaborations-App in einem offenen Netzwerk. Dezentral, um dir die Kontrolle zu geben. Keine Datenerfassung, keine Hintertüren und kein Zugriff durch Dritte.";
-"room_participants_action_security_status_complete_security" = "Vollständige Sicherheit";
+"room_participants_action_security_status_complete_security" = "Sicherheit vervollständigen";
 "external_link_confirmation_title" = "Überprüfe diesen Link genau";
 "external_link_confirmation_message" = "Der Link %@ braucht zu lange auf der anderen Seite: %@\n\nSicher, dass du fortfahren möchtest?";
 "security_settings_crypto_sessions_description_2" = "Wenn du dich nicht eingeloggt hast, ändere dein Passwort und setze das Sichere Backup zurück.";
