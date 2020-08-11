@@ -1088,11 +1088,11 @@
 "key_verification_verified_user_information" = "Nachrichten mit diesem Gegenüber sind Ende-zu-Ende verschlüsselt und können nicht von Dritten gelesen werden.";
 "key_verification_bootstrap_not_setup_title" = "Fehler";
 "key_verification_bootstrap_not_setup_message" = "Du musst erst Cross-Signing einrichten.";
-"key_verification_verify_qr_code_title" = "Verifizierung durch Scannen";
+"key_verification_verify_qr_code_title" = "Verifizierung durch Scannen eines QR-Codes";
 "key_verification_verify_qr_code_information" = "Scanne den Code für eine gegenseitige Überprüfung.";
 "key_verification_verify_qr_code_information_other_device" = "Scanne den Code unten zur Überprüfung:";
 "key_verification_verify_qr_code_emoji_information" = "Überprüfung durch den Vergleich einzigartiger Emojis.";
-"key_verification_verify_qr_code_scan_code_action" = "Scanne ihren/seinen Code";
+"key_verification_verify_qr_code_scan_code_action" = "Scanne Code des Gegenübers";
 "key_verification_verify_qr_code_cannot_scan_action" = "Du kannst nicht scannen?";
 "key_verification_verify_qr_code_start_emoji_action" = "Verifizierung durch Emojis";
 "key_verification_verify_qr_code_other_scan_my_code_title" = "Hat dein Gegenüber erfolgreich den QR-Code gescannt?";
