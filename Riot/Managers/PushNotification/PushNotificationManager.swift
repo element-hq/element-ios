@@ -16,6 +16,7 @@
 
 import Foundation
 import KeychainAccess
+import MatrixSDK
 
 @objcMembers
 final class PushNotificationManager: NSObject {
@@ -28,6 +29,7 @@ final class PushNotificationManager: NSObject {
     
     private struct StoreKeys {
         static let pushToken: String = "pushtoken"
+        static let lastCallInvite: String = "lastCallInvite"
     }
     
     static let shared = PushNotificationManager()
@@ -41,8 +43,8 @@ final class PushNotificationManager: NSObject {
         super.init()
     }
     
-    /// Saved push token
-    var pushToken: Data? {
+    /// Saved PushKit token
+    var pushKitToken: Data? {
         get {
             do {
                 return try store.data(forKey: StoreKeys.pushToken)
@@ -59,4 +61,32 @@ final class PushNotificationManager: NSObject {
         }
     }
     
+    var lastCallInvite: MXEvent? {
+        get {
+            do {
+                guard let data = try store.data(forKey: StoreKeys.lastCallInvite) else {
+                    return nil
+                }
+                return NSKeyedUnarchiver.unarchiveObject(with: data) as? MXEvent
+            } catch let error {
+                NSLog("[PinCodePreferences] Error when reading push token from store: \(error)")
+                return nil
+            }
+        } set {
+            do {
+                guard let newValue = newValue else {
+                    return try store.removeObject(forKey: StoreKeys.lastCallInvite)
+                }
+                let data = NSKeyedArchiver.archivedData(withRootObject: newValue)
+                try store.set(data, forKey: StoreKeys.lastCallInvite)
+            } catch let error {
+                NSLog("[PinCodePreferences] Error when storing push token to the store: \(error)")
+            }
+        }
+    }
+    
+    func reset() {
+        pushKitToken = nil
+        lastCallInvite = nil
+    }
 }
