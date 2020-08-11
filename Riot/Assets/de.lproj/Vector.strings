@@ -958,7 +958,7 @@
 "key_verification_tile_request_status_waiting" = "Warten…";
 "key_verification_tile_request_status_expired" = "Abgelaufen";
 "key_verification_tile_request_status_cancelled_by_me" = "Du hast abgebrochen";
-"key_verification_tile_request_status_cancelled" = "%@ brach ab";
+"key_verification_tile_request_status_cancelled" = "%s abgebrochen";
 "key_verification_tile_request_status_accepted" = "Du hast akzeptiert";
 "key_verification_tile_request_incoming_approval_accept" = "Akzeptieren";
 "key_verification_tile_request_incoming_approval_decline" = "Ablehnen";
@@ -1088,7 +1088,7 @@
 "key_verification_verified_user_information" = "Nachrichten mit diesem Gegenüber sind Ende-zu-Ende verschlüsselt und können nicht von Dritten gelesen werden.";
 "key_verification_bootstrap_not_setup_title" = "Fehler";
 "key_verification_bootstrap_not_setup_message" = "Du musst erst Cross-Signing einrichten.";
-"key_verification_verify_qr_code_title" = "Mit Scannen eines QR Codes verifizieren";
+"key_verification_verify_qr_code_title" = "Verifizierung durch Scannen";
 "key_verification_verify_qr_code_information" = "Scanne den Code für eine gegenseitige Überprüfung.";
 "key_verification_verify_qr_code_information_other_device" = "Scanne den Code unten zur Überprüfung:";
 "key_verification_verify_qr_code_emoji_information" = "Überprüfung durch den Vergleich einzigartiger Emojis.";
