@@ -471,7 +471,7 @@
     {
         NSLog(@"[PushNotificationService] application is in bg");
         
-        if (@available(iOS 12.0, *))
+        if (@available(iOS 13.0, *))
         {
             //  for iOS 13, we'll just report the incoming call in the same runloop. It means we cannot call an async API here.
             MXEvent *lastCallInvite = _pushNotificationManager.lastCallInvite;
