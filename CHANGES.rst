@@ -8,7 +8,7 @@ Improvements:
  * 
 
 Bugfix:
- * 
+ * Fix pin code cell selection. 
 
 API Change:
  * 
