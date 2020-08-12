@@ -28,14 +28,17 @@ class NotificationService: UNNotificationServiceExtension {
     /// Cached events. Keys are eventId's
     var cachedEvents: [String: MXEvent] = [:]
     static var mxSession: MXSession?
-    lazy var showDecryptedContentInNotifications: Bool = {
+    var showDecryptedContentInNotifications: Bool {
         return RiotSettings.shared.showDecryptedContentInNotifications
+    }
+    lazy var configuration: Configurable = {
+        return CommonConfiguration()
     }()
     static var isLoggerInitialized: Bool = false
     
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-        //  set app-group identifier first
-        MXSDKOptions.sharedInstance().applicationGroupIdentifier = "group.im.vector"
+        // Set static application settings
+        configuration.setupSettings()
         
         if DataProtectionHelper.isDeviceInRebootedAndLockedState(appGroupIdentifier: MXSDKOptions.sharedInstance().applicationGroupIdentifier) {
             //  kill the process in this state, this leads for the notification to be displayed as came from APNS
@@ -100,13 +103,6 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func setup(withRoomId roomId: String, eventId: String, completion: @escaping () -> Void) {
-        let sdkOptions = MXSDKOptions.sharedInstance()
-        sdkOptions.disableIdenticonUseForUserAvatar = true
-        sdkOptions.enableCryptoWhenStartingMXSession = true
-        sdkOptions.enableKeyBackupWhenStartingMXCrypto = false
-        sdkOptions.backgroundModeHandler = MXUIKitBackgroundModeHandler()
-        Bundle.mxk_customizeLocalizedStringTableName("Vector")
-        
         if let userAccount = MXKAccountManager.shared()?.activeAccounts.first {
             if NotificationService.mxSession == nil {
                 let store = NSEMemoryStore(withCredentials: userAccount.mxCredentials)
@@ -168,8 +164,8 @@ class NotificationService: UNNotificationServiceExtension {
             //  encrypted
             if !self.showDecryptedContentInNotifications {
                 //  do not show decrypted content in notification
-                NSLog("[NotificationService] fetchEvent: Do not show decrypted content in notifications.")
-                self.fallbackToBestAttemptContent(forEventId: event.eventId)
+                NSLog("[NotificationService] fetchEvent: Do not show decrypted content in notifications, no need to attempt to decrypt it.")
+                self.processEvent(event)
                 return
             }
             
@@ -399,7 +395,7 @@ class NotificationService: UNNotificationServiceExtension {
                         })
                     } else {
                         // Encrypted messages falls here
-                        notificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE_IN_X", arguments: [eventSenderName as Any])
+                        notificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE", arguments: [])
                     }
                 } else {
                     notificationTitle = eventSenderName
@@ -416,7 +412,7 @@ class NotificationService: UNNotificationServiceExtension {
                         break
                     default:
                         // Encrypted messages falls here
-                        notificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE_FROM_X", arguments: [eventSenderName as Any])
+                        notificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE", arguments: [])
                         break
                     }
                 }

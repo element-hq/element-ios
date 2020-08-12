@@ -21,6 +21,7 @@
 #import "objc/runtime.h"
 #include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
 #import <mach/mach.h>
+#import "RiotShareExtension-Swift.h"
 
 NSString *const kShareExtensionManagerDidUpdateAccountDataNotification = @"kShareExtensionManagerDidUpdateAccountDataNotification";
 
@@ -73,18 +74,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         // Add observer to handle memory warning
         [NSNotificationCenter.defaultCenter addObserver:sharedInstance selector:@selector(didReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
         
-        MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
-        // Apply the application group
-        sdkOptions.applicationGroupIdentifier = @"group.im.vector";
-        // Disable identicon use
-        sdkOptions.disableIdenticonUseForUserAvatar = YES;
-        // Enable e2e encryption for newly created MXSession
-        sdkOptions.enableCryptoWhenStartingMXSession = YES;
-        // Use UIKit BackgroundTask for handling background tasks in the SDK
-        sdkOptions.backgroundModeHandler = [[MXUIKitBackgroundModeHandler alloc] init];
-        
-        // Customize the localized string table
-        [NSBundle mxk_customizeLocalizedStringTableName:@"Vector"];
+        // Set static application settings
+        sharedInstance->_configuration = [CommonConfiguration new];
+        [sharedInstance.configuration setupSettings];
 
         // NSLog -> console.log file when not debugging the app
         if (!isatty(STDERR_FILENO))

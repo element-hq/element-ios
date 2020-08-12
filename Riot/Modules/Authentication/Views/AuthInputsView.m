@@ -113,6 +113,8 @@
     self.isoCountryCodeLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.callingCodeLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     
+    self.countryCodeButton.tintColor = ThemeService.shared.theme.textSecondaryColor;
+    
     self.messageLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.messageLabel.numberOfLines = 0;
     
@@ -649,7 +651,7 @@
 
                             // Create the next link that is common to all Vector.im clients
                             NSString *nextLink = [NSString stringWithFormat:@"%@/#/register?client_secret=%@&hs_url=%@&session_id=%@",
-                                                  [Tools webAppUrl],
+                                                  BuildSettings.applicationWebAppUrlString,
                                                   [self->submittedEmail.clientSecret stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]],
                                                   [restClient.homeserver stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]],
                                                   [self->currentSession.session stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]]];

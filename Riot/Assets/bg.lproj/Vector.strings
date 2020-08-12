@@ -149,7 +149,7 @@
 "contacts_address_book_matrix_users_toggle" = "Само потребители на Matrix";
 "contacts_address_book_no_contact" = "Няма локални контакти";
 "contacts_address_book_permission_required" = "Необходимо е разрешение за достъп до локални контакти";
-"contacts_address_book_permission_denied" = "Не сте позволили достъп на Riot до локалните Ви контакти";
+"contacts_address_book_permission_denied" = "Не сте позволили достъп на Element до локалните Ви контакти";
 "contacts_user_directory_section" = "ДИРЕКТОРИЯ С ПОТРЕБИТЕЛИ";
 "contacts_user_directory_offline_section" = "ДИРЕКТОРИЯ С ПОТРЕБИТЕЛИ (офлайн)";
 "room_details_access_section_directory_toggle" = "Включване в директорията със стаи";
@@ -301,7 +301,7 @@
 "settings_pin_rooms_with_unread" = "Закачане на стаи с непрочетени съобщения";
 "settings_on_denied_notification" = "Известията са отказани за %@. Моля, включете ги в настройките на устройството";
 "settings_enable_callkit" = "Интегрирани разговори";
-"settings_callkit_info" = "Получаване на входящи повиквания при заключен екран. Показване на Riot разговори в историята на системата. Ако iCloud е включен, историята на разговорите се споделя с Apple.";
+"settings_callkit_info" = "Получаване на входящи повиквания при заключен екран. Показване на Element разговори в историята на системата. Ако iCloud е включен, историята на разговорите се споделя с Apple.";
 "settings_ui_language" = "Език";
 "settings_ui_theme" = "Тема";
 "settings_ui_theme_auto" = "Автоматична";
@@ -313,17 +313,14 @@
 "settings_unignore_user" = "Покажи всички съобщения от %@?";
 "settings_labs_e2e_encryption" = "Шифроване от край до край";
 "settings_copyright" = "Лиценз";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_olm_version" = "Olm версия %@";
 "settings_version" = "Версия %@";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_contacts_discover_matrix_users" = "Използване на имейл и телефонен номер за откриване на потребители";
 "settings_contacts_phonebook_country" = "Държава на телефонния указател";
 "settings_labs_e2e_encryption_prompt_message" = "За да завършите настройката на шифроването, трябва да влезете в профила си отново.";
 "settings_labs_create_conference_with_jitsi" = "Създаване на групови разговори с jitsi";
 "settings_term_conditions" = "Правила и условия";
 "settings_privacy_policy" = "Политика за поверителност";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Други известия";
 "settings_send_crash_report" = "Изпращане на анон. данни за грешки и използване";
 "settings_enable_rageshake" = "Силно разклащане на телефона за изпращане на грешка";
@@ -450,7 +447,7 @@
 "network_offline_prompt" = "Интернет връзката изглежда не работи.";
 "public_room_section_title" = "Публични стаи (в %@):";
 "bug_report_prompt" = "Приложението спря да работи последния път. Искате ли да изпратите съобщение за грешка?";
-"rage_shake_prompt" = "Изглежда, че разклащате телефона, което ни кара да мислим, че не сте доволни от Riot. Искате ли да изпратите съобщение за грешка?";
+"rage_shake_prompt" = "Изглежда, че разклащате телефона, което ни кара да мислим, че не сте доволни от Element. Искате ли да изпратите съобщение за грешка?";
 "do_not_ask_again" = "Не питай отново";
 "camera_access_not_granted" = "%@ няма разрешение да използва камерата. Моля, проверете настройките за сигурност";
 "large_badge_value_k_format" = "%.1fK";
@@ -476,7 +473,7 @@
 // Crash report
 "google_analytics_use_prompt" = "Искате ли да помогнете за подобрението на %@ като анонимно изпращате съобщения за грешки и данни за използване?";
 // Crypto
-"e2e_enabling_on_app_update" = "Riot поддържа шифроване от край до край, но за да го включите трябва да влезете в профила си отново.\n\nМоже да го направите сега или по-късно от настройките на приложението.";
+"e2e_enabling_on_app_update" = "Element поддържа шифроване от край до край, но за да го включите трябва да влезете в профила си отново.\n\nМоже да го направите сега или по-късно от настройките на приложението.";
 "e2e_need_log_in_again" = "Трябва да влезете обратно в профила си, за да се създадат ключове за шифроване от-край-до-край за тази сесия и да се изпрати публичния ключ към Home сървъра.\nТова е еднократно. Извинете за неудобството.";
 "bug_crash_report_description" = "Моля, опишете какво правихте преди да възникне грешката:";
 "bug_report_logs_description" = "За да се диагностицират проблемите, логовете от този клиент ще бъдат изпратени с този доклад за грешки. Ако предпочитате да изпратите само текста по-горе, моля, премахнете отметката:";
@@ -535,7 +532,7 @@
 "event_formatter_rerequest_keys_part2" = " от другите ми сесии.";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Заявката е изпратена";
-"rerequest_keys_alert_message" = "Моля стартирайте Riot на друго устройство можещо да разшифрова съобщението, за да може то да изпрати ключовете до тази сесия.";
+"rerequest_keys_alert_message" = "Моля стартирайте Element на друго устройство можещо да разшифрова съобщението, за да може то да изпрати ключовете до тази сесия.";
 "room_message_reply_to_placeholder" = "Изпрати отговор (нешифрован)…";
 "encrypted_room_message_reply_to_placeholder" = "Изпрати шифрован отговор…";
 "room_message_reply_to_short_placeholder" = "Изпрати отговор…";
@@ -670,7 +667,7 @@
 "sign_out_key_backup_in_progress_alert_cancel_action" = "Ще почакам";
 // String for App Store
 "store_short_description" = "Защитен децентрализиран чат/VoIP";
-"store_full_description" = "Комуникирай по свой начин.\n\nЧат приложение, което е изцяло гъвкаво и под Ваш контрол. Riot позволява да комуникирате по начина, по който искате. Направено за [matrix] - стандарт за отворена и децентрализирана комуникация.\n\nИзползвайте безплатен matrix.org акаунт, собствен сървър от https://modular.im или друг Matrix сървър.\n\nЗащо да изберете Riot.im?\n\n• ПЪЛНА КОМУНИКАЦИЯ: Създавайте каквито пожелаете чат стаи - свързани с работни екипи, приятели или друг вид общности! Чатете, споделяйте файлове, добавяйте приспособления и водете аудио и видео разговори - всичко това, изцяло безплатно.\n\n• МОЩНИ ИНТЕГРАЦИИ: Използвайте Riot.im с досега-познатите Ви инструменти. Посредством Riot.im дори можете да чатите с потребители и групи използващи други чат приложения.\n\n• ЛИЧНО И ЗАЩИТЕНО: Пазете комуникацията си в тайна. Съвременна технология за шифроване от край до край гарантира, че Вашата комуникацията наистина остава Ваша.\n\n• ОТВОРЕНО, А НЕ ЗАТВОРЕНО: Приложение с отворен код, изградено върху Matrix. Дръжте данните си под Ваш контрол, като използвате Ваш собствен сървър или като изберете сървър, на който вярвате.\n\n• КЪДЕТО И ДА СТЕ: Поддържайте връзка където и да сте, с напълно синхронизирана чат история на всички Ваши устройства или онлайн на https://riot.im.";
+"store_full_description" = "Комуникирай по свой начин.\n\nЧат приложение, което е изцяло гъвкаво и под Ваш контрол. Element позволява да комуникирате по начина, по който искате. Направено за [matrix] - стандарт за отворена и децентрализирана комуникация.\n\nИзползвайте безплатен matrix.org акаунт, собствен сървър от https://ems.element.io или друг Matrix сървър.\n\nЗащо да изберете Element?\n\n• ПЪЛНА КОМУНИКАЦИЯ: Създавайте каквито пожелаете чат стаи - свързани с работни екипи, приятели или друг вид общности! Чатете, споделяйте файлове, добавяйте приспособления и водете аудио и видео разговори - всичко това, изцяло безплатно.\n\n• МОЩНИ ИНТЕГРАЦИИ: Използвайте Element с досега-познатите Ви инструменти. Посредством Element дори можете да чатите с потребители и групи използващи други чат приложения.\n\n• ЛИЧНО И ЗАЩИТЕНО: Пазете комуникацията си в тайна. Съвременна технология за шифроване от край до край гарантира, че Вашата комуникацията наистина остава Ваша.\n\n• ОТВОРЕНО, А НЕ ЗАТВОРЕНО: Приложение с отворен код, изградено върху Matrix. Дръжте данните си под Ваш контрол, като използвате Ваш собствен сървър или като изберете сървър, на който вярвате.\n\n• КЪДЕТО И ДА СТЕ: Поддържайте връзка където и да сте, с напълно синхронизирана чат история на всички Ваши устройства или онлайн на https://app.element.io.";
 "auth_autodiscover_invalid_response" = "Невалиден отговор при опит за откриване на адреса на сървъра";
 "room_message_unable_open_link_error_message" = "Неуспешно отваряне на връзката.";
 "room_event_action_reply" = "Отговори";
@@ -956,10 +953,10 @@
 "security_settings_crypto_sessions" = "МОИТЕ СЕСИИ";
 "security_settings_crypto_sessions_loading" = "Зареждан на сесии…";
 // MARK: Clients
-"client_desktop_name" = "Riot Desktop";
-"client_web_name" = "Riot Web";
-"client_ios_name" = "Riot iOS";
-"client_android_name" = "Riot X за Android";
+"client_desktop_name" = "Element Desktop";
+"client_web_name" = "Element Web";
+"client_ios_name" = "Element iOS";
+"client_android_name" = "Element Android";
 "room_member_power_level_admin_in" = "Админ в %@";
 "room_member_power_level_moderator_in" = "Модератор в %@";
 "room_member_power_level_custom_in" = "Собствен (%@) в %@";
@@ -984,7 +981,7 @@
 "security_settings_blacklist_unverified_devices_description" = "Потвърждаване на всички потребителски сесии за да бъдат маркирани като доверени и да се изпращат съобщения до тях.";
 "security_settings_complete_security_alert_title" = "Завършване на сигурността";
 "security_settings_complete_security_alert_message" = "Първо трябва да завършите сигурността на текущата си сесия.";
-"security_settings_coming_soon" = "Извинете. Това действие все още не е налично в Riot-iOS. Моля използвайте друг Matrix клиент за да го настройте. Riot-iOS ще го използва след това.";
+"security_settings_coming_soon" = "Извинете. Това действие все още не е налично в Element iOS. Моля използвайте друг Matrix клиент за да го настройте. Element iOS ще го използва след това.";
 // Manage session
 "manage_session_title" = "Управление на сесията";
 "manage_session_info" = "СЕСИЙНА ИНФОРМАЦИЯ";
@@ -1016,7 +1013,7 @@
 "key_verification_self_verify_unverified_sessions_alert_validate_action" = "Прегледай";
 "device_verification_self_verify_wait_title" = "Завършване на сигурността";
 "device_verification_self_verify_wait_new_sign_in_title" = "Потвърждение на вход";
-"device_verification_self_verify_wait_information" = "Потвърдете тази сесия от някоя от другите ви сесии, така че да й дадете достъп до шифрованите съобщения.\n\nИзползвайте най-новия Riot на другите си устройства:";
+"device_verification_self_verify_wait_information" = "Потвърдете тази сесия от някоя от другите ви сесии, така че да й дадете достъп до шифрованите съобщения.\n\nИзползвайте най-новия Element на другите си устройства:";
 "device_verification_self_verify_wait_additional_information" = "или друг Matrix клиент поддържащ кръстосано-подписване";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Използвай ключ за възстановяване";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Използвай парола или ключ за възстановяване";

@@ -8,7 +8,7 @@ Element iOS
 Element iOS is an iOS Matrix client.
 
 .. image:: https://linkmaker.itunes.apple.com/images/badges/en-us/badge_appstore-lrg.svg
-   :target: https://itunes.apple.com/us/app/riot-open-source-collaboration/id1083446067?mt=8
+   :target: https://itunes.apple.com/us/app/element/id1083446067?mt=8
 
 It is based on MatrixKit (https://github.com/matrix-org/matrix-ios-kit) and MatrixSDK (https://github.com/matrix-org/matrix-ios-sdk).
 
@@ -20,7 +20,7 @@ Build instructions
 Before opening the Element Xcode workspace, you need to build it with the
 CocoaPods command::
 
-        $ cd Riot
+        $ cd Element
         $ bundle install
         $ bundle exec pod install
 

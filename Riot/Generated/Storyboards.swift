@@ -32,6 +32,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.EmojiPickerViewController>(storyboard: EmojiPickerViewController.self)
   }
+  internal enum EnterPinCodeViewController: StoryboardType {
+    internal static let storyboardName = "EnterPinCodeViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.EnterPinCodeViewController>(storyboard: EnterPinCodeViewController.self)
+  }
   internal enum KeyBackupRecoverFromPassphraseViewController: StoryboardType {
     internal static let storyboardName = "KeyBackupRecoverFromPassphraseViewController"
 
@@ -172,6 +177,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.SettingsIdentityServerViewController>(storyboard: SettingsIdentityServerViewController.self)
   }
+  internal enum SetupBiometricsViewController: StoryboardType {
+    internal static let storyboardName = "SetupBiometricsViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SetupBiometricsViewController>(storyboard: SetupBiometricsViewController.self)
+  }
   internal enum SimpleScreenTemplateViewController: StoryboardType {
     internal static let storyboardName = "SimpleScreenTemplateViewController"
 
@@ -214,7 +224,7 @@ internal protocol StoryboardType {
 internal extension StoryboardType {
   static var storyboard: UIStoryboard {
     let name = self.storyboardName
-    return UIStoryboard(name: name, bundle: Bundle(for: BundleToken.self))
+    return UIStoryboard(name: name, bundle: BundleToken.bundle)
   }
 }
 
@@ -242,4 +252,10 @@ internal struct InitialSceneType<T: UIViewController> {
   }
 }
 
-private final class BundleToken {}
+// swiftlint:disable convenience_type
+private final class BundleToken {
+  static let bundle: Bundle = {
+    Bundle(for: BundleToken.self)
+  }()
+}
+// swiftlint:enable convenience_type

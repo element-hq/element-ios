@@ -424,7 +424,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             conversationSection = sectionsCount++;
         }
         
-        if (_recentsDataSourceMode == RecentsDataSourceModeRooms)
+        if (_recentsDataSourceMode == RecentsDataSourceModeRooms
+            && BuildSettings.publicRoomsShowDirectory)
         {
             // Add the directory section after "ROOMS"
             directorySection = sectionsCount++;
@@ -512,7 +513,9 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         return 0.0;
     }
-    else if (section == directorySection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
+    else if (section == directorySection
+             && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY)
+             && BuildSettings.publicRoomsAllowServerChange)
     {
         return RECENTSDATASOURCE_DIRECTORY_SECTION_HEADER_HEIGHT;
     }
@@ -736,6 +739,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             chevron = [UIImage imageNamed:@"shrink_icon"];
         }
         UIImageView *chevronView = [[UIImageView alloc] initWithImage:chevron];
+        chevronView.tintColor = ThemeService.shared.theme.textSecondaryColor;
         chevronView.contentMode = UIViewContentModeCenter;
         [sectionHeader addSubview:chevronView];
         sectionHeader.accessoryView = chevronView;
@@ -760,7 +764,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     [sectionHeader addSubview:headerLabel];
     sectionHeader.headerLabel = headerLabel;
 
-    if (section == directorySection && _recentsDataSourceMode == RecentsDataSourceModeRooms && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
+    if (section == directorySection
+        && _recentsDataSourceMode == RecentsDataSourceModeRooms
+        && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY)
+        && BuildSettings.publicRoomsAllowServerChange)
     {
         if (!directorySectionContainer)
         {
@@ -785,6 +792,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             UIImageView *chevronImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 6, 12)];
             chevronImageView.contentMode = UIViewContentModeScaleAspectFit;
             chevronImageView.image = [UIImage imageNamed:@"disclosure_icon"];
+            chevronImageView.tintColor = ThemeService.shared.theme.textSecondaryColor;
             [directorySectionContainer addSubview:chevronImageView];
             directorySectionContainer.disclosureView = chevronImageView;
 

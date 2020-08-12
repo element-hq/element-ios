@@ -55,3 +55,9 @@
 /* Sticker from a specific person, not referencing a room. */
 "STICKER_FROM_USER" = "%@ изпрати стикер";
 "KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ иска потвърждение";
+/* New message indicator on unknown room */
+"MESSAGE" = "Съобщение";
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "Съобщение от %@";
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "Съобщение в %@";

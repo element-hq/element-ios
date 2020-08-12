@@ -15,6 +15,8 @@
  */
 
 import Foundation
+
+#if canImport(JitsiMeet)
 import JitsiMeet
 
 /// JitsiService enables to abstract and configure Jitsi Meet SDK
@@ -72,3 +74,4 @@ final class JitsiService: NSObject {
         return self.jitsiMeet.application(application, continue: userActivity, restorationHandler: restorationHandler)
     }
 }
+#endif

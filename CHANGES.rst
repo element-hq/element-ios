@@ -1,11 +1,109 @@
-Changes in 0.12.0 (2020-xx-xx)
+Changes to be released in next version
+=================================================
+
+Features:
+ * 
+
+Improvements:
+ * 
+
+Bugfix:
+ * 
+
+API Change:
+ * 
+
+Translations:
+ * 
+
+Others:
+ * 
+
+Build:
+ * 
+
+Test:
+ * 
+
+Changes in 1.0.4 (2020-08-07)
+=================================================
+
+Features:
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.11](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.11)).
+ * 
+
+Bugfix:
+ * 
+
+API Change:
+ * 
+
+Translations:
+ * 
+
+Others:
+ * 
+
+Build:
+ * 
+
+Test:
+ * 
+
+Changes in 1.0.3 (2020-08-05)
 ===============================================
 
 Improvements:
+ * Upgrade MatrixKit version ([v0.12.10](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.10)).
+ * Implement PIN protection (#3436).
+ * Biometrics protection: Implement TouchID/FaceID protection (#3437).
+ * Build: Make the app build if JitsiMeetSDK is not in the Podfile.
+ * Configuration: Add CommonConfiguration and AppConfiguratio classes as central points to configure all targets in the same way.
+ * Xcconfig: Add Common config and app and share extension config files.
+ * BuildSettings: A new class that entralises build settings and exposes xcconfig variable.
+ * AuthenticationVC: Make custom server options and register button configurable.
+ * Xcconfig: Add product bundle identifiers for each target.
+ * BuildSettings: Namespace some settings.
+ * BuildSettings: Reuse base bundle identifier for various settings.
+
+Bug fix:
+ * Rebranding: Remove Riot from app name (#3497).
+ * AuthenticationViewController: Fix custom homeserver textfield scroll issue (#3467).
+ * Rebranding: Update provisioning universal link domain (#3483).
+
+Changes in 1.0.2 (2020-07-28)
+===============================================
+
+Bug fix:
+ * Registration: Do not display the skip button if email is mandatory (#3417).
+ * NotificationService: Do not cache showDecryptedContentInNotifications setting (#3444).
+
+Changes in 1.0.1 (2020-07-17)
+===============================================
+ 
+Bug fix:
+ * SettingsViewController: Fix crash when scrolling to Discovery (#3401).
+ * Main.storyboard: Set storyboard identifier for SettingsViewController (#3398).
+ * Universal links: Fix broken links for web apps (#3420).
+ * SettingsViewController: Fix pan gesture crash (#3396).
+ * RecentsViewController: Fix crash on dequeue some cells (#3433).
+ * NotificationService: Fix losing sound when not showing decrypted content in notifications (#3423).
+
+Changes in 1.0.0 (2020-07-13)
+===============================================
+
+Improvements:
+ * Rename Riot to Element
  * Update deployment target to iOS 11.0. Required for Jitsi > 2.8.x.
  * Theme: Customize UISearchBar with new iOS 13 properties (#3270).
  * NSE: Make extension reusable (#3326).
  * Strings: Use you instead of display name on notice events (#3282).
+ * Third-party licences: Add license for FlowCommoniOS (#3415).
+ * Lazy-loading: Remove lazy loading labs setting, enable it by default (#3389).
+ * Room: Show alert if link text does not match link target (#3137).
  
 Bug fix:
  * Xcode11: Fix content change error when dragging start chat page (PR #3075).
@@ -31,6 +129,12 @@ Bug fix:
  * Xcode11: Disable voip background mode to avoid VoIP pushes (#3369).
  * Xcode11: Disable key backup on push extension (#3371).
  * RoomMembershipBubbleCell: Fix message textview leading constraint (#3226).
+ * SettingsViewController: Fix crash when scrolling to Discovery (#3401).
+ * Main.storyboard: Set storyboard identifier for SettingsViewController (#3398).
+ * Universal links: Fix broken links for web apps (#3420).
+ * SettingsViewController: Fix pan gesture crash (#3396).
+ * RecentsViewController: Fix crash on dequeue some cells (#3433).
+ * NotificationService: Fix losing sound when not showing decrypted content in notifications (#3423).
 
 Changes in 0.11.6 (2020-06-30)
 ===============================================

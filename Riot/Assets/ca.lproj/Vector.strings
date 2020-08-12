@@ -149,7 +149,7 @@
 "contacts_address_book_matrix_users_toggle" = "Només usuaris de Matrix";
 "contacts_address_book_no_contact" = "Sense contactes locals";
 "contacts_address_book_permission_required" = "Es necessita permís per accedir als contactes locals";
-"contacts_address_book_permission_denied" = "No vas permetre que Riot accedís als teus contactes locals";
+"contacts_address_book_permission_denied" = "No vas permetre que Element accedís als teus contactes locals";
 "contacts_user_directory_section" = "Directori d'usuaris";
 "contacts_user_directory_offline_section" = "Directori d'usuaris (fora de línia)";
 // Chat participants
@@ -298,7 +298,7 @@
 "settings_pin_rooms_with_unread" = "Fixa sales amb missatges pendents";
 "settings_on_denied_notification" = "%@ no permet notificacions, si us plau activa-les en els ajustos del teu dispositiu";
 "settings_enable_callkit" = "Trucades integrades";
-"settings_callkit_info" = "Rep les trucades entrants a la pantalla de bloqueig. Consulta les trucades de Riot a l'historial de trucades del sistema. Si està habilitat iCloud, aquest historial de trucades es compartirà amb Apple.";
+"settings_callkit_info" = "Rep les trucades entrants a la pantalla de bloqueig. Consulta les trucades de Element a l'historial de trucades del sistema. Si està habilitat iCloud, aquest historial de trucades es compartirà amb Apple.";
 "settings_ui_language" = "Llenguatge";
 "settings_ui_theme" = "Tema";
 "settings_ui_theme_auto" = "Auto";
@@ -316,11 +316,8 @@
 "settings_version" = "Versió %@";
 "settings_olm_version" = "Versió Olm %@";
 "settings_copyright" = "Copyright";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Termes i Condicions";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Política de Privacitat";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Avisos de tercers";
 "settings_send_crash_report" = "Envia anònimament dades de fallades i d'ús";
 "settings_enable_rageshake" = "Agitar rabiosament per informar d'errors";
@@ -470,7 +467,7 @@
 // Crash report
 "google_analytics_use_prompt" = "T'agradaria ajudar a millorar %@ enviant automàticament informes de bloquejos i ús de dades?";
 // Crypto
-"e2e_enabling_on_app_update" = "Riot ara permet l'ús de xifrat punt a punt però has de tornar a connectar-te per tal d'activar-lo.\n\nPots fer-ho ara o més tard des de les preferències de l'aplicació.";
+"e2e_enabling_on_app_update" = "Element ara permet l'ús de xifrat punt a punt però has de tornar a connectar-te per tal d'activar-lo.\n\nPots fer-ho ara o més tard des de les preferències de l'aplicació.";
 "e2e_need_log_in_again" = "Has de tornar a iniciar sessió per tal de generar claus de xifrat punt a punt per a aquest dispositiu i enviar la clau pública al servidor.\nAixò només s'ha de fer un cop, disculpa les molèsties.";
 // Bug report
 "bug_report_title" = "Informe d'errors";
@@ -554,4 +551,4 @@
 "deactivate_account_password_alert_message" = "Per a continuar si us plau introdueix la teva contrasenya";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Sol·licitud enviada";
-"rerequest_keys_alert_message" = "Inicia Riot en un altre dispositiu que pugui desxifrar el missatge per que pugui enviar les claus a aquest dispositiu.";
+"rerequest_keys_alert_message" = "Inicia Element en un altre dispositiu que pugui desxifrar el missatge per que pugui enviar les claus a aquest dispositiu.";

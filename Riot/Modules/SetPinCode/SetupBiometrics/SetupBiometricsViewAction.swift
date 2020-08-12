@@ -1,5 +1,7 @@
+// File created from ScreenTemplate
+// $ createScreen.sh SetPinCode/SetupBiometrics SetupBiometrics
 /*
- Copyright 2019 New Vector Ltd
+ Copyright 2020 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,7 +18,11 @@
 
 import Foundation
 
-@objc protocol BubbleCellReadReceiptsDisplayable {
-    func addReadReceiptsView(_ readReceiptsView: UIView)
-    func removeReadReceiptsView()
+/// SetupBiometricsViewController view actions exposed to view model
+enum SetupBiometricsViewAction {
+    case loadData
+    case enableDisableTapped
+    case skipOrCancel
+    case unlock
+    case cantUnlockedAlertResetAction
 }

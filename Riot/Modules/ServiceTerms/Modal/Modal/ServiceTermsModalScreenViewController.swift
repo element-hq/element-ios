@@ -276,7 +276,7 @@ extension ServiceTermsModalScreenViewController: UITableViewDataSource {
         cell.label.attributedText = self.cellLabel(for: policy)
         cell.label.font = .systemFont(ofSize: 15)
         cell.isEnabled = checked
-        cell.accessoryType = .disclosureIndicator
+        cell.vc_setAccessoryDisclosureIndicator(withTheme: self.theme)
         cell.backgroundColor = self.theme.backgroundColor
 
         if let checkBox = cell.checkBox, checkBox.gestureRecognizers?.isEmpty ?? true {

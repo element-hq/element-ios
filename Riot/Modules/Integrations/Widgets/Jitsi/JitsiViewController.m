@@ -17,6 +17,7 @@
 #import "JitsiViewController.h"
 #import "JitsiWidgetData.h"
 
+#if __has_include(<MatrixSDK/MXJingleCallStack.h>)
 @import JitsiMeet;
 
 static const NSString *kJitsiDataErrorKey = @"error";
@@ -251,3 +252,5 @@ static const NSString *kJitsiDataErrorKey = @"error";
 }
 
 @end
+
+#endif

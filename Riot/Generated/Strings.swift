@@ -318,6 +318,62 @@ internal enum VectorL10n {
   internal static var back: String { 
     return VectorL10n.tr("Vector", "back") 
   }
+  /// Log back in
+  internal static var biometricsCantUnlockedAlertMessageLogin: String { 
+    return VectorL10n.tr("Vector", "biometrics_cant_unlocked_alert_message_login") 
+  }
+  /// Retry
+  internal static var biometricsCantUnlockedAlertMessageRetry: String { 
+    return VectorL10n.tr("Vector", "biometrics_cant_unlocked_alert_message_retry") 
+  }
+  /// To unlock, use %@ or log back in and enable %@ again
+  internal static func biometricsCantUnlockedAlertMessageX(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "biometrics_cant_unlocked_alert_message_x", p1, p2)
+  }
+  /// Can't unlock app
+  internal static var biometricsCantUnlockedAlertTitle: String { 
+    return VectorL10n.tr("Vector", "biometrics_cant_unlocked_alert_title") 
+  }
+  /// Disable %@
+  internal static func biometricsDesetupDisableButtonTitleX(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "biometrics_desetup_disable_button_title_x", p1)
+  }
+  /// 
+  internal static var biometricsDesetupSubtitle: String { 
+    return VectorL10n.tr("Vector", "biometrics_desetup_subtitle") 
+  }
+  /// Disable %@
+  internal static func biometricsDesetupTitleX(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "biometrics_desetup_title_x", p1)
+  }
+  /// Face ID
+  internal static var biometricsModeFaceId: String { 
+    return VectorL10n.tr("Vector", "biometrics_mode_face_id") 
+  }
+  /// Touch ID
+  internal static var biometricsModeTouchId: String { 
+    return VectorL10n.tr("Vector", "biometrics_mode_touch_id") 
+  }
+  /// Enable %@
+  internal static func biometricsSettingsEnableX(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "biometrics_settings_enable_x", p1)
+  }
+  /// Enable %@
+  internal static func biometricsSetupEnableButtonTitleX(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "biometrics_setup_enable_button_title_x", p1)
+  }
+  /// Save yourself time
+  internal static var biometricsSetupSubtitle: String { 
+    return VectorL10n.tr("Vector", "biometrics_setup_subtitle") 
+  }
+  /// Enable %@
+  internal static func biometricsSetupTitleX(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "biometrics_setup_title_x", p1)
+  }
+  /// Authentication is needed to access your app
+  internal static var biometricsUsageReason: String { 
+    return VectorL10n.tr("Vector", "biometrics_usage_reason") 
+  }
   /// Please describe what you did before the crash:
   internal static var bugCrashReportDescription: String { 
     return VectorL10n.tr("Vector", "bug_crash_report_description") 
@@ -1122,6 +1178,14 @@ internal enum VectorL10n {
   internal static func eventFormatterWidgetRemovedByYou(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_widget_removed_by_you", p1)
   }
+  /// The link %@ is taking you to another site: %@\n\nAre you sure you want to continue?
+  internal static func externalLinkConfirmationMessage(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "external_link_confirmation_message", p1, p2)
+  }
+  /// Double-check this link
+  internal static var externalLinkConfirmationTitle: String { 
+    return VectorL10n.tr("Vector", "external_link_confirmation_title") 
+  }
   /// File upload
   internal static var fileUploadErrorTitle: String { 
     return VectorL10n.tr("Vector", "file_upload_error_title") 
@@ -1901,6 +1965,66 @@ internal enum VectorL10n {
   /// %@ doesn't have permission to access photo library, please change privacy settings
   internal static func photoLibraryAccessNotGranted(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "photo_library_access_not_granted", p1)
+  }
+  /// Choose a PIN for security
+  internal static var pinProtectionChoosePin: String { 
+    return VectorL10n.tr("Vector", "pin_protection_choose_pin") 
+  }
+  /// Confirm your PIN
+  internal static var pinProtectionConfirmPin: String { 
+    return VectorL10n.tr("Vector", "pin_protection_confirm_pin") 
+  }
+  /// Confirm PIN to disable PIN
+  internal static var pinProtectionConfirmPinToDisable: String { 
+    return VectorL10n.tr("Vector", "pin_protection_confirm_pin_to_disable") 
+  }
+  /// Enter your PIN
+  internal static var pinProtectionEnterPin: String { 
+    return VectorL10n.tr("Vector", "pin_protection_enter_pin") 
+  }
+  /// Forgot PIN
+  internal static var pinProtectionForgotPin: String { 
+    return VectorL10n.tr("Vector", "pin_protection_forgot_pin") 
+  }
+  /// Please try again
+  internal static var pinProtectionMismatchErrorMessage: String { 
+    return VectorL10n.tr("Vector", "pin_protection_mismatch_error_message") 
+  }
+  /// PINs don't match
+  internal static var pinProtectionMismatchErrorTitle: String { 
+    return VectorL10n.tr("Vector", "pin_protection_mismatch_error_title") 
+  }
+  /// If you can't remember your PIN, tap the forgot PIN button.
+  internal static var pinProtectionMismatchTooManyTimesErrorMessage: String { 
+    return VectorL10n.tr("Vector", "pin_protection_mismatch_too_many_times_error_message") 
+  }
+  /// Reset
+  internal static var pinProtectionResetAlertActionReset: String { 
+    return VectorL10n.tr("Vector", "pin_protection_reset_alert_action_reset") 
+  }
+  /// To reset your PIN, you'll need to re-login and create a new one
+  internal static var pinProtectionResetAlertMessage: String { 
+    return VectorL10n.tr("Vector", "pin_protection_reset_alert_message") 
+  }
+  /// Reset PIN
+  internal static var pinProtectionResetAlertTitle: String { 
+    return VectorL10n.tr("Vector", "pin_protection_reset_alert_title") 
+  }
+  /// Enable PIN
+  internal static var pinProtectionSettingsEnablePin: String { 
+    return VectorL10n.tr("Vector", "pin_protection_settings_enable_pin") 
+  }
+  /// PIN enabled
+  internal static var pinProtectionSettingsEnabledForced: String { 
+    return VectorL10n.tr("Vector", "pin_protection_settings_enabled_forced") 
+  }
+  /// To reset your PIN, you'll need to re-login and create a new one.
+  internal static var pinProtectionSettingsSectionFooter: String { 
+    return VectorL10n.tr("Vector", "pin_protection_settings_section_footer") 
+  }
+  /// PIN & %@
+  internal static func pinProtectionSettingsSectionHeaderX(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "pin_protection_settings_section_header_x", p1)
   }
   /// Preview
   internal static var preview: String { 
@@ -3674,14 +3798,6 @@ internal enum VectorL10n {
   internal static var settingsLabsMessageReaction: String { 
     return VectorL10n.tr("Vector", "settings_labs_message_reaction") 
   }
-  /// Lazy load rooms members
-  internal static var settingsLabsRoomMembersLazyLoading: String { 
-    return VectorL10n.tr("Vector", "settings_labs_room_members_lazy_loading") 
-  }
-  /// Your homeserver does not support lazy loading of room members yet. Try later.
-  internal static var settingsLabsRoomMembersLazyLoadingErrorMessage: String { 
-    return VectorL10n.tr("Vector", "settings_labs_room_members_lazy_loading_error_message") 
-  }
   /// Mark all messages as read
   internal static var settingsMarkAllAsRead: String { 
     return VectorL10n.tr("Vector", "settings_mark_all_as_read") 
@@ -3918,9 +4034,13 @@ internal enum VectorL10n {
   internal static var start: String { 
     return VectorL10n.tr("Vector", "start") 
   }
-  /// Communicate, your way.\n\nA chat app, under your control and entirely flexible. Riot lets you communicate the way you want. Made for [matrix] - the standard for open, decentralised communication.\n\nGet a free matrix.org account, get your own server at https://modular.im, or use another Matrix server.\n\nWhy choose Riot.im?\n\nCOMPLETE COMMUNICATION: Build rooms around your teams, your friends, your community - however you like! Chat, share files, add widgets and make voice and video calls - all free of charge.\n\nPOWERFUL INTEGRATIONS: Use Riot.im with the tools you know and love. With Riot.im you can even chat with users and groups on other chat apps.\n\nPRIVATE AND SECURE: Keep your conversations secret. State of the art end-to-end encryption ensures that private communication stays private.\n\nOPEN, NOT CLOSED: Open source, and built on Matrix. Own your own data by hosting your own server, or selecting one you trust.\n\nEVERYWHERE YOU ARE: Stay in touch wherever you are with fully synchronised message history across all your devices and online at https://element.io.
+  /// Element is a new type of messenger and collaboration app that:\n\n1. Puts you in control to preserve your privacy\n2. Lets you communicate with anyone in the Matrix network, and even beyond by integrating with apps such as Slack\n3. Protects you from advertising, datamining, backdoors and walled gardens\n4. Secures you through end-to-end encryption, with cross-signing to verify others\n\nElement is completely different from other messaging and collaboration apps because it is decentralised and open source.\n\nElement lets you self-host - or choose a host - so that you have privacy, ownership and control of your data and conversations. It gives you access to an open network; so you’re not just stuck speaking to other Element users only. And it is very secure.\n\nElement is able to do all this because it operates on Matrix - the standard for open, decentralised communication. \n\nElement puts you in control by letting you choose who hosts your conversations. From the Element app, you can choose to host in different ways:\n\n1. Get a free account on the matrix.org public server\n2. Self-host your account by running a server on your own hardware\n3. Sign up for an account on a custom server by simply subscribing to the Element Matrix Services hosting platform\n\nWhy choose Element?\n\nOWN YOUR DATA: You decide where to keep your data and messages. You own it and control it, not some MEGACORP that mines your data or gives access to third parties.\n\nOPEN MESSAGING AND COLLABORATION: You can chat with anyone else in the Matrix network, whether they’re using Element or another Matrix app, and even if they are using a different messaging system of the likes of Slack, IRC or XMPP.\n\nSUPER-SECURE: Real end-to-end encryption (only those in the conversation can decrypt messages), and cross-signing to verify the devices of conversation participants.\n\nCOMPLETE COMMUNICATION: Messaging, voice and video calls, file sharing, screen sharing and a whole bunch of integrations, bots and widgets. Build rooms, communities, stay in touch and get things done.\n\nEVERYWHERE YOU ARE: Stay in touch wherever you are with fully synchronised message history across all your devices and on the web at https://element.io/app.
   internal static var storeFullDescription: String { 
     return VectorL10n.tr("Vector", "store_full_description") 
+  }
+  /// Privacy-preserving chat and collaboration app, on an open network. Decentralised to put you in control. No datamining, no backdoors and no third party access.
+  internal static var storePromotionalText: String { 
+    return VectorL10n.tr("Vector", "store_promotional_text") 
   }
   /// Secure decentralised chat/VoIP
   internal static var storeShortDescription: String { 

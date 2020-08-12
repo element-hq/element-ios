@@ -3,7 +3,7 @@
 "title_favourites" = "Preferiti";
 "title_people" = "Chat dirette";
 "title_rooms" = "Stanze";
-"store_full_description" = "Comunica, a modo tuo.\n\nUn'app di messaggistica, sotto il tuo controllo e interamente flessibile. Riot ti permette di comunicare a modo tuo. Creata per [matrix] - lo standard per le comunicazioni aperte, decentralizzate.\n\nOttieni un account matrix.org gratuito, ottieni il tuo server su https://modular.im, o usa un altro server Matrix.\n\nPerché scegliere Riot.im?\n\n• COMUNICAZIONE COMPLETA: crea stanze per i tuoi team, i tuoi amici, la tua comunità - come preferisci! Chatta, condividi file, aggiungi widget e fai videochiamate vocali - tutto gratuito.\n\n• GRANDI INTEGRAZIONI: usa Riot.im con gli strumenti che conosci ed ami. Con Riot.im puoi addirittura chattare con utenti e gruppi su altre applicazioni di messaggistica.\n\n• PRIVATO E SICURO: tieni segrete le tue conversazioni. Una crittografia end-to-end allo stato dell'arte assicura che le comunicazioni private restino tali.\n\n• APERTO, NON CHIUSO: open source e costruito su Matrix. Possiedi i tuoi dati ospitando il tuo server personale, o scegliendone uno di cui ti fidi.\n\n• OVUNQUE TU SIA: resta in contatto ovunque tu sia con la cronologia dei messaggi totalmente sincronizzata tra i tuoi dispositivi ed online su https://riot.im.";
+"store_full_description" = "Element è un nuovo tipo di app di messaggistica e collaborazione che:\n\n1. Ti dà il controllo per preservare la tua privacy\n2. Ti permette di comunicare con chiunque nella rete Matrix e anche oltre, integrandosi con app come Slack\n3. Ti protegge da pubblicità, datamining, backdoor ed ecosistemi chiusi\n4. Ti protegge tramite crittografia end-to-end, con la firma incrociata per verificare gli altri\n\nElement è completamente diverso dalle altre app di messaggistica e collaborazione perchè è decentralizzato e open source.\n\nElement può essere auto-ospitato - o puoi scegliere un host - in modo da avere privacy, proprietà e controllo dei tuoi dati e delle conversazioni. Ti dà l'accesso a una rete aperta, perciò non sei limitato a parlare solo con gli altri utenti Element. È anche molto sicuro.\n\nElement può fare tutto questo perchè opera su Matrix - lo standard per le comunicazioni aperte e decentralizzate. \n\nElement ti dà il controllo lasciandoti scegliere chi ospita le tue conversazioni. Dall'app Element, puoi scegliere l'host in diversi modi:\n\n1. Ottieni un account gratuito sul server pubblico matrix.org\n2. Auto-ospita il tuo account gestendo un server su tuo hardware personale\n3. Registra un account su un server personalizzato sottoscrivendoti alla piattaforma di hosting Element Matrix Services\n\nPerché scegliere Element?\n\nPOSSIEDI I TUOI DATI: decidi tu dove tenere i tuoi dati e messaggi. Sei tu che li possiedi e li controlli, non una MEGADITTA che estrae i tuoi dati o ne dà l'accesso a terze parti.\n\nMESSAGGISTICA APERTA E COLLABORAZIONE: puoi parlare con chiunque nella rete Matrix, sia che usino Element o un'altra app Matrix, e addirittura anche se usano un altro sistema di messaggistica come Slack, IRC o XMPP.\n\nSUPER SICURO: vera crittografia end-to-end (solo chi è nella conversazione può decifrare i messaggi) e firma incrociata per verificare i dispositivi dei partecipanti alla conversazione.\n\nCOMUNICAZIONE COMPLETA: messaggi, telefonate e videochiamate, condivisione file, condivisione schermo e un sacco di integrazioni, bot e widget. Crea stanze, comunità, resta in contatto e porta a termine le cose.\n\nOVUNQUE TU SIA: resta in contatto ovunque tu sia con la cronologia dei messaggi totalmente sincronizzata tra i tuoi dispositivi e sul web su https://element.io/app.";
 "title_groups" = "Comunità";
 "warning" = "Attenzione";
 "next" = "Prossimo";
@@ -155,8 +155,8 @@
 "contacts_address_book_section" = "CONTATTI LOCALI";
 "contacts_address_book_matrix_users_toggle" = "Solo utenti Matrix";
 "contacts_address_book_no_contact" = "Nessun contatto locale";
-"contacts_address_book_permission_required" = "Riot deve essere autorizzato per poter accedere alla Rubrica locale";
-"contacts_address_book_permission_denied" = "Non hai autorizzato Riot ad accedere alla Rubrica locale";
+"contacts_address_book_permission_required" = "Element deve essere autorizzato per poter accedere alla Rubrica locale";
+"contacts_address_book_permission_denied" = "Non hai autorizzato Element ad accedere alla rubrica locale";
 "contacts_user_directory_section" = "ELENCO UTENTI";
 "contacts_user_directory_offline_section" = "ELENCO UTENTI (offline)";
 // Chat participants
@@ -197,8 +197,8 @@
 "room_participants_action_set_moderator" = "Nomina moderatore";
 "room_participants_action_set_admin" = "Nomina amministratore";
 "room_participants_action_start_new_chat" = "Inizia nuova chat";
-"room_participants_action_start_voice_call" = "Avvia chiamata audio";
-"room_participants_action_start_video_call" = "Avvia chiamata video";
+"room_participants_action_start_voice_call" = "Nuova telefonata";
+"room_participants_action_start_video_call" = "Nuova videochiamata";
 "room_participants_action_mention" = "Citazione";
 // Chat
 "room_jump_to_first_unread" = "Vai al primo messaggio non letto";
@@ -330,7 +330,7 @@
 "settings_pin_rooms_with_unread" = "Segna le stanze con messaggi non letti";
 "settings_on_denied_notification" = "Le notifiche non sono permesse per %@, abilitale nelle impostazioni del tuo dispositivo";
 "settings_enable_callkit" = "Chiamate integrate";
-"settings_callkit_info" = "Ricevi le chiamate in arrivo sul blocca schermo. Mostra le chiamate Riot nella cronologia di chiamate del dispositivo. Se iCloud è attivo, questa cronologia sarà condivisa con Apple.";
+"settings_callkit_info" = "Ricevi le chiamate in arrivo sul blocca schermo. Mostra le chiamate Element nella cronologia di chiamate del dispositivo. Se iCloud è attivo, questa cronologia sarà condivisa con Apple.";
 "settings_ui_language" = "Lingua";
 "settings_ui_theme" = "Tema";
 "settings_ui_theme_auto" = "Automatico";
@@ -350,11 +350,8 @@
 "settings_version" = "Versione %@";
 "settings_olm_version" = "Versione Olm %@";
 "settings_copyright" = "Copyright";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Termini e condizioni";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Privacy Policy";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Avvisi di terze parti";
 "settings_send_crash_report" = "Invia dati di utilizzo anonimi";
 "settings_enable_rageshake" = "Per segnalare un errore agita il dispositivo con rabbia";
@@ -367,7 +364,7 @@
 "settings_crypto_device_id" = "\nID sessione: ";
 "settings_crypto_device_key" = "\nChiave sessione:\n";
 "settings_crypto_export" = "Esporta chiavi";
-"settings_crypto_blacklist_unverified_devices" = "Cifratura solo per le sessioni verificate";
+"settings_crypto_blacklist_unverified_devices" = "Crittografia solo per le sessioni verificate";
 "settings_deactivate_my_account" = "Disattiva il mio account";
 "settings_key_backup_info" = "I messaggi nelle stanze cifrate sono protetti con crittografia E2E. Solo tu e il/i destinatario/i avete le chiavi crittografiche per leggere questi messaggi.";
 "settings_key_backup_info_checking" = "Controllo…";
@@ -515,7 +512,7 @@
 "large_badge_value_k_format" = "%.1fK";
 "room_does_not_exist" = "%@ non esiste";
 // Call
-"call_incoming_voice_prompt" = "Chiamata vocale in arrivo da %@";
+"call_incoming_voice_prompt" = "Telefonata in arrivo da %@";
 "call_incoming_video_prompt" = "Videochiamata in arrivo da %@";
 "call_incoming_voice" = "Chiamata in arrivo…";
 "call_incoming_video" = "Videochiamata in arrivo…";
@@ -527,8 +524,8 @@
 // Crash report
 "google_analytics_use_prompt" = "Vuoi aiutare a migliorare %@ inviando automaticamente in modo anonimo i dati di utilizzo e le segnalazioni di crash?";
 // Crypto
-"e2e_enabling_on_app_update" = "Riot ora supporta la crittografia da-utente-a-utente ma devi eseguire nuovamente l'accesso per abilitarla.\n\nPuoi farlo ora o più tardi dalle impostazioni dell'applicazione.";
-"e2e_need_log_in_again" = "È necessario eseguire nuovamente l'accesso per generare le chiavi di cifratura end-to-end per questa sessione ed inviare la chiave pubblica all'homeserver.\nVa fatto una sola volta; ci scusiamo per il disturbo.";
+"e2e_enabling_on_app_update" = "Element ora supporta la crittografia da-utente-a-utente ma devi eseguire nuovamente l'accesso per abilitarla.\n\nPuoi farlo ora o più tardi dalle impostazioni dell'applicazione.";
+"e2e_need_log_in_again" = "È necessario eseguire nuovamente l'accesso per generare le chiavi di crittografia end-to-end per questa sessione ed inviare la chiave pubblica all'homeserver.\nVa fatto una sola volta; ci scusiamo per il disturbo.";
 // Key backup wrong version
 "e2e_key_backup_wrong_version_title" = "Nuovo Backup delle chiavi";
 "e2e_key_backup_wrong_version" = "È stato effettuato un nuovo Backup delle chiavi per i messaggi crittografati. \n\nSe non sei stato tu, imposta una nuova frase di sicurezza dalle impostazioni.";
@@ -539,7 +536,7 @@
 "bug_report_description" = "Per favore descrivi l'errore. Cosa hai fatto? Cosa ti aspettavi dovesse accadere? Cosa è effettivamente successo?";
 "bug_crash_report_title" = "Segnalazione del crash";
 "bug_crash_report_description" = "Per favore descrivi cosa hai fatto prima del crash:";
-"bug_report_logs_description" = "Al fine di diagnosticare i problemi, i registri Riot di questo dispositivo saranno inviati con il rapporto dell'errore. Se preferisci inviare solo il testo soprastante, deseleziona:";
+"bug_report_logs_description" = "Al fine di diagnosticare i problemi, i registri Element di questo dispositivo saranno inviati con il rapporto dell'errore. Se preferisci inviare solo il testo soprastante, deseleziona:";
 "bug_report_send_logs" = "Invia registri";
 "bug_report_send_screenshot" = "Invia screenshot";
 "bug_report_progress_zipping" = "Ottenimento registri";
@@ -588,7 +585,7 @@
 "deactivate_account_password_alert_message" = "Per proseguire, inserisci la tua password";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Richiesta inviata";
-"rerequest_keys_alert_message" = "Avvia Riot su un altro dispositivo che possa decifrare il messaggio, in modo da poter inviare le chiavi a questa sessione.";
+"rerequest_keys_alert_message" = "Avvia Element su un altro dispositivo che possa decifrare il messaggio, in modo da poter inviare le chiavi a questa sessione.";
 "key_backup_setup_title" = "Backup chiave";
 "key_backup_setup_skip_alert_title" = "Sei sicuro?";
 "key_backup_setup_skip_alert_message" = "Se ti disconnetti oppure perdi il dispositivo potresti perdere i tuoi messaggi crittografati.";
@@ -1003,7 +1000,7 @@
 "device_verification_self_verify_start_waiting" = "In attesa…";
 "skip" = "Salta";
 "device_verification_self_verify_wait_title" = "Completa la sicurezza";
-"device_verification_self_verify_wait_information" = "Verifica questa sessione da una delle tue altre sessioni, dandole l'accesso ai messaggi cifrati.\n\nUsa la versione più recente di Riot sui tuoi altri dispositivi:";
+"device_verification_self_verify_wait_information" = "Verifica questa sessione da una delle tue altre sessioni, dandole l'accesso ai messaggi cifrati.\n\nUsa la versione più recente di Element sui tuoi altri dispositivi:";
 "device_verification_self_verify_wait_waiting" = "In attesa…";
 "room_member_power_level_admin_in" = "Amministratore in %@";
 "room_member_power_level_moderator_in" = "Moderatore in %@";
@@ -1031,12 +1028,12 @@
 "security_settings_crosssigning_complete_security" = "Completa la sicurezza";
 "security_settings_complete_security_alert_title" = "Completa la sicurezza";
 "security_settings_complete_security_alert_message" = "Dovresti completare la sicurezza prima sulla tua sessione attuale.";
-"security_settings_coming_soon" = "Spiacenti. Questa azione non è ancora disponibile su Riot-iOS. Prova ad usare un altro client Matrix per farlo. Riot-iOS lo userà.";
+"security_settings_coming_soon" = "Spiacenti. Questa azione non è ancora disponibile su Element iOS. Prova ad usare un altro client Matrix per farlo. Element iOS lo userà.";
 // MARK: Clients
-"client_desktop_name" = "Riot Desktop";
-"client_web_name" = "Riot Web";
-"client_ios_name" = "Riot iOS";
-"client_android_name" = "Riot X per Android";
+"client_desktop_name" = "Element Desktop";
+"client_web_name" = "Element Web";
+"client_ios_name" = "Element iOS";
+"client_android_name" = "Element Android";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verifica questo accesso";
 "device_verification_self_verify_wait_additional_information" = "o un altro client Matrix che supporti la firma incrociata";
 // MARK: - Device Verification
@@ -1142,3 +1139,10 @@
 "sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Inizia ad usare il Backup Sicuro";
 "cross_signing_setup_banner_title" = "Imposta la crittografia";
 "cross_signing_setup_banner_subtitle" = "Verifica più facilmente i tuoi altri dispositivi";
+"store_promotional_text" = "App di chat e collaborazione rispettosa della privacy, su una rete aperta. Decentralizzata per darti il controllo. Nessun datamining, backdoor e accessi di terze parti.";
+"major_update_title" = "Riot ora si chiama Element";
+"major_update_information" = "Siamo entusiasti di annunciare che abbiamo cambiato nome! La tua app è aggiornata e hai fatto l'accesso al tuo account.";
+"major_update_learn_more_action" = "Maggiori informazioni";
+"major_update_done_action" = "Capito";
+"external_link_confirmation_title" = "Controlla bene questo collegamento";
+"external_link_confirmation_message" = "Il collegamento %@ ti porterà in un altro sito: %@\n\nSei sicuro di voler continuare?";

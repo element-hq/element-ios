@@ -151,7 +151,7 @@
 "contacts_address_book_matrix_users_toggle" = "Csak Matrix felhasználók";
 "contacts_address_book_no_contact" = "Nincsenek helyi ismerősök";
 "contacts_address_book_permission_required" = "Jogosultság szükséges a helyi névjegyzék eléréséhez";
-"contacts_address_book_permission_denied" = "Nem engedted meg, hogy a Riot hozzáférjen a helyi névjegyzékhez";
+"contacts_address_book_permission_denied" = "Nem engedted meg, hogy az Element hozzáférjen a helyi névjegyzékhez";
 "contacts_user_directory_section" = "FELHASZNÁLÓI KÖNYVTÁR";
 "contacts_user_directory_offline_section" = "FELHASZNÁLÓI KÖNYVTÁR (kapcsolat nélküli)";
 // Chat participants
@@ -314,7 +314,7 @@
 "settings_pin_rooms_with_unread" = "Szobák kitűzése olvasatlan üzenetekkel";
 "settings_on_denied_notification" = "Az értesítések tiltva vannak ehhez: %@, kérlek engedélyezd az eszköz beállításaiban";
 "settings_enable_callkit" = "Beépített hívás";
-"settings_callkit_info" = "Hívások fogadása a zárolt képernyőn. Riot hívások megjelenítése a rendszer hívás naplójában. Ha az iCloud engedélyezett akkor a hívásnapló az Apple-el megosztásra kerül.";
+"settings_callkit_info" = "Hívások fogadása a zárolt képernyőn. Element hívások megjelenítése a rendszer hívás naplójában. Ha az iCloud engedélyezett akkor a hívásnapló az Apple-el megosztásra kerül.";
 "settings_ui_language" = "Nyelv";
 "settings_ui_theme" = "Téma";
 "settings_ui_theme_auto" = "Autó";
@@ -334,11 +334,8 @@
 "settings_version" = "Verzió %@";
 "settings_olm_version" = "Olm verzió %@";
 "settings_copyright" = "Szerzői jog";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Felhasználási feltételek";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Adatvédelmi szabályok";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Harmadik fél jegyzetek";
 "settings_send_crash_report" = "Személytelen összeomlás és felhasználási adatok küldése";
 "settings_enable_rageshake" = "Eszköz megrázása a hiba bejelentéséhez";
@@ -495,7 +492,7 @@
 // Crash report
 "google_analytics_use_prompt" = "Szeretnél segíteni személytelen összeomlás és felhasználási adatok küldésével a(z) %@ fejlesztésében?";
 // Crypto
-"e2e_enabling_on_app_update" = "Riot most már támogatja a végponttól végpontig titkosítást de újra be kell jelentkezned.\n\nMegteheted most vagy később az alkalmazás beállításainál.";
+"e2e_enabling_on_app_update" = "Element most már támogatja a végponttól végpontig titkosítást de újra be kell jelentkezned.\n\nMegteheted most vagy később az alkalmazás beállításainál.";
 "e2e_need_log_in_again" = "Vissza kell jelentkezned, hogy a munkamenetedhez a végponttól végpontig titkosítási kulcsokat létrehozzuk és a nyilvános kulcsokat elküldjük a Matrix szerverednek.\nEz egy egyszeri alkalom; elnézést a kellemetlenségért.";
 // Bug report
 "bug_report_title" = "Hiba bejelentés";
@@ -551,7 +548,7 @@
 "deactivate_account_password_alert_message" = "A folytatáshoz add meg a jelszavadat";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Kérés elküldve";
-"rerequest_keys_alert_message" = "Kérlek indítsd el a Riot-ot egy másik eszközödön amelyik vissza tudja fejteni az üzenetet, hogy el tudja küldeni a kulcsokat ennek a munkamenetnek.";
+"rerequest_keys_alert_message" = "Kérlek indítsd el a Elementet egy másik eszközödön amelyik vissza tudja fejteni az üzenetet, hogy el tudja küldeni a kulcsokat ennek a munkamenetnek.";
 "room_recents_server_notice_section" = "RENDSZER FIGYELMEZTETÉSEK";
 "room_resource_limit_exceeded_message_contact_1" = " Kérlek ";
 "room_resource_limit_exceeded_message_contact_2_link" = "vedd fel a kapcsolatot a szolgáltatás adminisztrátorával";
@@ -678,7 +675,7 @@
 "store_short_description" = "Biztonságos elosztott csevegés/VoIP";
 "auth_login_single_sign_on" = "Bejelentkezés egyszeri bejelentkezéssel";
 "room_message_unable_open_link_error_message" = "A linket nem lehet megnyitni.";
-"store_full_description" = "Beszélgess, ahogy tetszik.\n\nA csevegő alkalmazás ami személyre szabható és az irányításod alatt marad. Riot megteremti a lehetőséget, hogy úgy beszélgess ahogy szeretnél. A [matrix] hálózathoz tervezve - ami egy nyílt és elosztott hálózat.\n\nKészíts egy ingyenes matrix.org fiókot vagy igényelj egy saját szervert a https://modular.im -től, de üzemeltethetsz is saját Matrix szervert.\n\nMiért válaszd a Riot.im-et?\n\nTELJES KOMMUNIKÁCIÓ: Nyiss szobákat a csoportod, barátaid, közösséged vagy bárkiknek akiknek szeretnél! Beszélgess, ossz meg fájlokat, adj hozzá kisalkalmazásokat és indíts hang és videóhívásokat - teljesen ingyen.\n\nERŐS KAPCSOLATOK: Használd a Riot-ot a kedvenc eszközeiddel. A Riottal még másik rendszerekben lévő emberekkel és csoportokkal is képes lehetsz beszélgetni.\n\nSZEMÉLYES ÉS BIZTONSÁGOS: Tartsd a beszélgetéseidet titokban. A végponttól-végpontig titkosítás biztosítja, hogy a személyes beszélgetések személyesek maradnak.\n\nNYÍLT ÉS NEM ZÁRT: Nyílt forrású és a Matrix-hoz készült. Az adataid maradjanak a birtokodban a saját szerver üzemeltetésével vagy válassz olyan szervert amiben megbízol.\n\nMINDENHOL AMERRE JÁRSZ: Maradj kapcsolatban a többiekkel mindenhol az eszközeid közötti teljesen szinkronizált üzenetváltásokkal. Akár a https://riot.im -en.";
+"store_full_description" = "Element egy újfajta csevegő és együttműködést segítő alkalmazás ami:\n\n1. Visszaadja az irányítást neked, hogy megvédd a magánéleted információit\n2. Lépj kapcsolatba bárkivel a Matrix hálózatban, és azon túl alkalmazások integrálásával mint amilyen például a slack\n3. Megvéd a hirdetőktől, adatbányászoktól, hátsó kapuktól és fallal védett rendszerektől\n4. Végpontok közötti titkosítással véd, ahol egymás személyazonosságát ellenőrizhetitek\n\nElement a többi üzenetküldő és kollaborációs alkalmazástól teljesen eltérő abban a tekintetben, hogy elosztott és nyílt forrású rendszer.\n\nElement megengedi, hogy saját magadnak üzemeltess szervert vagy válassz szervert tetszés szerint - így biztonságban vagy te vagy a tulajdonosa az üzeneteidnek és te irányítod az adatokat és a beszélgetéseket. Egy nyílt hálózathoz enged hozzáférést; tehát nem csak más Element felhasználókkal beszélgethetsz. És nagyon biztonságos.\n\nElement mindezt a Matrix miatt tudja ami egy szabványos nyílt és elosztott kommunikációs rendszer.\n\nElement visszaadja az irányítást azzal, hogy kiválaszthatod ki kezelje a beszélgetéseidet. Az Element alkalmazásból különbözőképpen választhatod ki a szerverd:\n\n1. Kérj egy ingyenes fiókot a matrix.org nyilvános szerveren\n2. Saját szervert is üzemeltethetsz a fiókodnak saját hardveren\n3. Jelentkezz egy fiókért egy egyedi szerveren az Element Matrix Services hosting platformra való feliratkozással\n\nMiért válasz az Elementet?\n\nAZ ADATOD A TULAJDONOD: Te döntöd el hol tárolod az adataidat és üzeneteidet. A tiéd és nálad az irányítás és nem valami NAGYVÁLLALATNÁL ami elemzi az adataidat és odaadja másoknak.\n\nNYILT ÜZENETKÜLDÉS ÉS KOLLABORÁCIÓ: Bárkivel beszélgethetsz a Matrix hálózaton, akár az Elementet használja akár más Matrix alkalmazást vagy akár másik üzenetküldő rendszert használ mint például a Slack, IRC vagy XMPP.\n\nSZUPER-BIZTONSÁGOS: Igazi végpontok közötti titkosítás (csak a beszélgetés résztvevői tudják visszafejteni az üzenetet), és kereszt aláírásokkal lehet a beszélgetésben résztvevő eszközöket ellenőrizni.\n\nTELJES KOMMUNIKÁCIÓ: Üzenetküldés, hang és videó hívások, fájl megosztás, képernyő megosztás és egy csomó egyéb integráció, botok és kisalkalmazások. Építs szobákat, közösségeket, maradj kapcsolatban és vigyél véghez dolgokat. \n\nBÁRHOL VAGY: Maradj kapcsolatban akárhol vagy az összes üzeneteddel minden eszközödön vagy a weben a https://element.io/app -pal.";
 "auth_autodiscover_invalid_response" = "Matrix szerver felderítésénél érvénytelen válasz érkezett";
 "room_event_action_reply" = "Válasz";
 "room_event_action_edit" = "Szerkeszt";
@@ -1041,7 +1038,7 @@
 "device_verification_self_verify_start_information" = "Az új munkamenet ellenőrzéséhez használd ezt, amivel hozzáférést adsz a titkosított üzenetekhez.";
 "device_verification_self_verify_start_waiting" = "Várakozik…";
 "device_verification_self_verify_wait_title" = "Biztonság beállítása";
-"device_verification_self_verify_wait_information" = "Ennek a munkamenet ellenőrzéséhez használd valamelyik másik munkamenetedet, amivel hozzáférést adsz a titkosított üzenetekhez.\n\nHasználd a legfrissebb Riotot valamelyik eszközödön:";
+"device_verification_self_verify_wait_information" = "Ennek a munkamenet ellenőrzéséhez használd valamelyik másik munkamenetedet, amivel hozzáférést adsz a titkosított üzenetekhez.\n\nHasználd a legfrissebb Elementet valamelyik eszközödön:";
 "device_verification_self_verify_wait_waiting" = "Várakozik…";
 // Scanning
 "key_verification_scan_confirmation_scanning_title" = "Majdnem kész! Várakozás a megerősítésre…";
@@ -1053,10 +1050,10 @@
 "key_verification_scan_confirmation_scanned_device_information" = "A másik eszköz is ugyanazt a pajzsot mutatja?";
 "room_participants_action_security_status_complete_security" = "Biztonsági beállítás befejezése";
 // MARK: Clients
-"client_desktop_name" = "Asztali Riot";
-"client_web_name" = "Riot Web";
-"client_ios_name" = "Riot iOS";
-"client_android_name" = "RiotX Android";
+"client_desktop_name" = "Asztali Element";
+"client_web_name" = "Element Web";
+"client_ios_name" = "Element iOS";
+"client_android_name" = "Element Android";
 "security_settings_crosssigning_info_not_bootstrapped" = "Az eszközök közötti hitelesítés nincs még beállítva.";
 "security_settings_crosssigning_info_exists" = "A fiókodban az eszközök közötti aláírás be van állítva, de ebben a munkamenetben még nem ellenőrizted. Végezd el a munkamenet biztonsági beállításait.";
 "security_settings_crosssigning_info_trusted" = "Eszközök közötti hitelesítés engedélyezve van. Megbízhatsz más felhasználókban és a munkameneteidben az aláírást felhasználva de ebből a munkamenetből nem tudsz aláírni mert az eszközök közötti aláíráshoz hiányzik a privát kulcs. Fejezd be a munkamenet biztonsági beállításait.";
@@ -1066,7 +1063,7 @@
 "security_settings_crosssigning_complete_security" = "Biztonsági beállítás befejezése";
 "security_settings_complete_security_alert_title" = "Biztonsági beállítás befejezése";
 "security_settings_complete_security_alert_message" = "Először be kell fejezned ennek a munkamenetnek a biztonsági beállítását.";
-"security_settings_coming_soon" = "Bocsánat. Riot-iOS-n ez a művelet egyenlőre nem érhető el. Kérlek használj másik Matrix klienst a beállításához. Riot-iOS használni fogja.";
+"security_settings_coming_soon" = "Bocsánat. Element iOS-n ez a művelet egyenlőre nem érhető el. Kérlek használj másik Matrix klienst a beállításához. Element iOS használni fogja.";
 "device_verification_self_verify_wait_new_sign_in_title" = "Belépés ellenőrzése";
 "device_verification_self_verify_wait_additional_information" = "vagy másik eszközök közötti hitelesítésre alkalmas Matrix kliensre";
 // MARK: - Device Verification
@@ -1156,3 +1153,24 @@
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Jelmondat megerősítése";
 "cross_signing_setup_banner_title" = "Titkosítás beállítása";
 "cross_signing_setup_banner_subtitle" = "A többi eszközödet ellenőrizd egyszerűen";
+"security_settings_crypto_sessions_description_2" = "Ha ez a bejelentkezés nem ismerős, akkor változtasd meg a jelszavad és újra állítsd be a Biztonsági Mentést.";
+"security_settings_secure_backup_description" = "A titkosított üzenetekhez és adatokhoz való hozzáférés elvesztése esetén használható biztonsági tartalék a titkosított kulcsok a szerveredre való elmentésével.";
+// AuthenticatedSessionViewControllerFactory
+"authenticated_session_flow_not_supported" = "Ez az alkalmazás nem támogatja a matrix szervered azonosítási mechanizmusát.";
+// Events formatter with you
+"event_formatter_widget_added_by_you" = "Hozzáadtad ezt a kisalkalmazást: %@";
+"event_formatter_widget_removed_by_you" = "Törölted ezt a kisalkalmazást: %@";
+"event_formatter_jitsi_widget_added_by_you" = "VoIP konferenciát adtál hozzá";
+"event_formatter_jitsi_widget_removed_by_you" = "Törölted a VoIP konferenciát";
+"secure_key_backup_setup_intro_use_security_passphrase_info" = "Adj meg olyan biztonsági jelmondatot amit csak te ismersz és generálj egy kulcsot a mentéshez.";
+"secure_key_backup_setup_existing_backup_error_info" = "Old fel, hogy a biztonsági mentéshez tudd használni vagy töröld, hogy új üzenet mentést állíthass be a biztonsági mentésben.";
+"secrets_setup_recovery_key_information" = "A Visszaállítási Kulcsot tárold valahol biztonságos helyen. Felhasználható a titkosított üzenetek és adatok hozzáféréshez.";
+"secrets_setup_recovery_key_storage_alert_message" = "✓Nyomtasd ki és tárold biztonságos helyen\n✓Mentsd egy USB kulcsra vagy biztonsági mentésbe\n✓Másold a saját felhő tárhelyedre";
+"secrets_setup_recovery_passphrase_information" = "Add meg a biztonsági jelmondatot amit csak te tudsz és a titkok biztosításához használod a szervereden.";
+"major_update_title" = "Riot mostantól Element";
+"major_update_learn_more_action" = "Tudj meg többet";
+"major_update_done_action" = "Értem";
+"store_promotional_text" = "Magánéletet tiszteletben tartó csevegő és együttműködést segítő alkalmazás egy nyílt hálózaton. Elosztott rendszer ami visszaadja neked az irányítást. Nincs adathalászat, nincsenek hátsó bejáratok és hozzáférések harmadik fél részére.";
+"external_link_confirmation_title" = "Ezt a hivatkozást ellenőrizd le még egyszer";
+"external_link_confirmation_message" = "%@ hivatkozás egy másik oldalra visz: %@ \n \nFolytatod?";
+"major_update_information" = "Izgatottan jelentjük, hogy megváltoztattuk a nevünket! Az alkalmazásod friss és be vagy jelentkezve a fiókodba.";

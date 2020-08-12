@@ -224,7 +224,7 @@
 "contacts_address_book_matrix_users_toggle" = "只顯示 Matrix 使用者";
 "contacts_address_book_no_contact" = "沒有裝置上的聯絡人";
 "contacts_address_book_permission_required" = "取得裝置上的聯絡資訊需要權限";
-"contacts_address_book_permission_denied" = "您沒有允許 Riot 存取裝置上的聯絡資訊";
+"contacts_address_book_permission_denied" = "您沒有允許 Element 存取裝置上的聯絡資訊";
 "contacts_user_directory_section" = "使用者目錄";
 "contacts_user_directory_offline_section" = "使用者目錄（離線）";
 // Chat participants
@@ -347,7 +347,7 @@
 "settings_pin_rooms_with_unread" = "釘選含有未讀訊息的聊天室";
 "settings_on_denied_notification" = "因 %@ 的通知不被允許，請在裝置設定中允許";
 "settings_enable_callkit" = "整合式通話";
-"settings_callkit_info" = "提供在鎖定畫面接聽 Riot 來電、在通話紀錄中顯示 Riot 通話。 如果您已啟用 iCloud ，則會與蘋果公司共享通話紀錄。";
+"settings_callkit_info" = "提供在鎖定畫面接聽 Element 來電、在通話紀錄中顯示 Element 通話。 如果您已啟用 iCloud ，則會與蘋果公司共享通話紀錄。";
 "settings_ui_language" = "語言";
 "settings_ui_theme" = "主題";
 "settings_ui_theme_auto" = "自動";
@@ -365,11 +365,8 @@
 "settings_version" = "版本 %@";
 "settings_olm_version" = "Olm 版本 %@";
 "settings_copyright" = "版權";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "合約條款";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "隱私權政策";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "第三方通知";
 "settings_send_crash_report" = "傳送崩潰和使用數據";
 "settings_enable_rageshake" = "透過大力搖晃回報錯誤";
@@ -493,7 +490,7 @@
 // Crash report
 "google_analytics_use_prompt" = "您願意透過自動送出匿名的崩潰報告和使用資料來幫住%@進步嗎?";
 // Crypto
-"e2e_enabling_on_app_update" = "Riot 目前支援點對點加密，但您需要重新登入來啟用他。\n\n您可以現在重新登入或稍後在應用程式設定中進行。";
+"e2e_enabling_on_app_update" = "Element 目前支援點對點加密，但您需要重新登入來啟用他。\n\n您可以現在重新登入或稍後在應用程式設定中進行。";
 // Bug report
 "bug_report_title" = "錯誤回報";
 "bug_report_send_screenshot" = "傳送螢幕截圖";
@@ -505,7 +502,7 @@
 "widget_creation_failure" = "建立 Widget 失敗";
 "widget_sticker_picker_no_stickerpacks_alert" = "您目前沒有啟用任何貼圖。";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "現在新增一些嗎?";
-"rerequest_keys_alert_message" = "請在其他可解密訊息的裝置開啟 Riot 以將密鑰傳送到此裝置。";
+"rerequest_keys_alert_message" = "請在其他可解密訊息的裝置開啟 Element 以將密鑰傳送到此裝置。";
 "bug_report_description" = "請描述此錯誤。您做了什麼? 本來應該發生什麼? 以及實際發生什麼?";
 "bug_crash_report_description" = "請描述您在崩潰前做了什麼:";
 "bug_report_logs_description" = "為了診斷問題，此用戶端的記錄檔將會隨此錯誤報告送出。 如果您只想傳送上面的文字，請取消:";

@@ -46,3 +46,6 @@
 // Directory
 "directory_title" = "Luettelo";
 "directory_server_picker_title" = "Valitse luettelo";
+"major_update_title" = "Riot on nyt Element";
+"major_update_learn_more_action" = "Lue lisää";
+"major_update_done_action" = "Selvä";

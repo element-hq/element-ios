@@ -254,11 +254,8 @@
 "settings_labs_e2e_encryption" = "Fshehtëzim Skaj-Më-Skaj";
 "settings_version" = "Version %@";
 "settings_copyright" = "Të drejta kopjimi";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Terma & Kushte";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Rregulla Privatësie";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Njoftime Palësh të Treta";
 "settings_clear_cache" = "Pastroje fshehtinën";
 "settings_change_password" = "Ndryshoni fjalëkalimin";
@@ -475,7 +472,7 @@
 "room_creation_make_public_prompt_msg" = "Jeni i sigurt se doni ta bëni publike këtë fjalosje? Në një të tillë, mesazhet tuaj mund t’i lexojë cilido dhe mund të hyjë në bisedë.";
 "room_creation_wait_for_creation" = "Po krijohet tashmë një dhomë. Ju lutemi, prisni.";
 "contacts_address_book_permission_required" = "Lypset leje për hyrje në kontaktet vendore";
-"contacts_address_book_permission_denied" = "S’e lejuat Riot-i të hyjë në kontaktet tuaja vendore";
+"contacts_address_book_permission_denied" = "S’e lejuat Element-i të hyjë në kontaktet tuaja vendore";
 "room_participants_remove_third_party_invite_msg" = "Heqja e ftesave nga palë të treta nuk mbulohet ende, derisa të kihet API";
 "room_participants_invite_malformed_id" = "ID e keqformuar. Duhet të jetë një adresë email ose ID Matrix, si '@localpart:domain'";
 "room_participants_action_ban" = "Dëboje nga kjo dhomë";
@@ -499,7 +496,7 @@
 "settings_global_settings_info" = "Rregullimet globale për njoftime i gjeni te klienti juaj %@ web";
 "settings_on_denied_notification" = "Njoftimet për %@ s’pranohen, ju lutemi, lejojini që nga rregullimet e pajisjes tuaj";
 "settings_enable_callkit" = "Thirrje të integruara";
-"settings_callkit_info" = "Merrini thirrjet ardhëse edhe me ekran të kyçur. Shihni thirrjet tuaja nën Riot te historiku i thirrjeve të sistemit. Nëse iCloud është i aktivizuar, ky historik thirrjesh do t’i jepet kompanisë Apple.";
+"settings_callkit_info" = "Merrini thirrjet ardhëse edhe me ekran të kyçur. Shihni thirrjet tuaja nën Element te historiku i thirrjeve të sistemit. Nëse iCloud është i aktivizuar, ky historik thirrjesh do t’i jepet kompanisë Apple.";
 "settings_ui_theme_picker_message" = "\"Auto\" përdor rregullimet \"Përmbysi Ngjyrat\" të pajisjes tuaj";
 "settings_contacts_discover_matrix_users" = "Përdorni email-e dhe numra telefoni për të gjetur përdorues";
 "settings_labs_e2e_encryption_prompt_message" = "Që të përfundohet rregullimi i fshehtëzimit duhet të ribëni hyrjen në llogari.";
@@ -525,7 +522,7 @@
 // Crash report
 "google_analytics_use_prompt" = "Do të donit të ndihmoni në përmirësimin e %@-it duke parashtruar automatikisht dhe në mënyrë anonime raporte vithisjesh dhe të dhëna përdorimi?";
 // Crypto
-"e2e_enabling_on_app_update" = "Riot tani mbulon fshehtëzim skaj-më-skaj, por lypset të ribëni hyrjen që ta aktivizoni.\n\nMund ta bëni tani ose më vonë, që prej rregullimeve të aplikacionit.";
+"e2e_enabling_on_app_update" = "Element tani mbulon fshehtëzim skaj-më-skaj, por lypset të ribëni hyrjen që ta aktivizoni.\n\nMund ta bëni tani ose më vonë, që prej rregullimeve të aplikacionit.";
 "bug_report_description" = "Ju lutemi, përshkruajeni të metën. Ç’po bënit? Ç’prisnit të ndodhte? Ç’ndodhi në fakt?";
 "bug_crash_report_description" = "Ju lutemi, përshkruani ç’po bënit para vithisjes:";
 "bug_report_logs_description" = "Që të mund të diagnostikohen probleme, regjistra prej këtij klienti do të dërgohen tok me këtë njoftim të metash. Nëse do të parapëlqenit të dërgohej vetëm teksti më sipër, ju lutemi, hiqjani shenjën kutizës:";
@@ -546,7 +543,7 @@
 "deactivate_account_informations_part5" = "Nëse do të donit që të harrohen mesazhet tuaj, ju lutemi, i vini shenjë kutizës më poshtë\n\nDukshmëria e mesazheve në Matrix është e ngjashme me atë në email. Harrimi i mesazheve nga ana jonë do të thotë që mesazhet që keni dërguar nuk do të ndahen me çfarëdo përdoruesi të ri apo të paregjistruar, por përdoruesit e regjistruar, që kanë tashmë hyrje në këto mesazhe, do të kenë prapëseprapë hyrje te kopja e tyre.";
 "deactivate_account_forget_messages_information_part1" = "Të lutem, harro krejt mesazhet që kamë dërguar, kur të çaktivizohet llogaria ime (";
 "deactivate_account_forget_messages_information_part3" = ": kjo do të bëjë që përdorues të ardhshëm të shohin një pamje jo të plotë të bisedave)";
-"rerequest_keys_alert_message" = "Ju lutemi, niseni Riot-in në një tjetër pajisje që mund të shfshehtëzoje mesazhin, që kështu të mund të dërgojë kyçet te ky sesion.";
+"rerequest_keys_alert_message" = "Ju lutemi, niseni Element-in në një tjetër pajisje që mund të shfshehtëzoje mesazhin, që kështu të mund të dërgojë kyçet te ky sesion.";
 "room_event_action_redact" = "Hiqe";
 "e2e_need_log_in_again" = "Që të prodhohen kyçe fshehtëzimi skaj-më-skaj për këtë sesion, lypset të ribëni hyrjen dhe të parashtroni kyçin publik te shërbyesi juaj Home.\nKjo duhet vetëm një herë; na ndjeni për belanë.";
 "room_action_send_sticker" = "Dërgoni ngjitës";
@@ -667,7 +664,7 @@
 "key_backup_setup_intro_manual_export_action" = "Eksportoni kyçe dorazi";
 // String for App Store
 "store_short_description" = "Fjalosje /VoIP e siguruar, e decentralizuar";
-"store_full_description" = "Komunikoni sipas rrugës tuaj.\n\nNjë aplikacion fjalosjesh, nën kontrollin tuaj dhe krejtësisht i zhdërvjellët. Riot-i ju lejon të komunikoni si doni. Krijuar për [matrix] - standardi për komunikim të hapur, të decentralizuar.\n\nMerrni një llogari matrix.org falas, merrni shërbyesin tuaj te https://modular.im, ose përdorni një tjetër shërbyes Matrix.\n\nPse të zgjidhet Riot.im?\n\nKOMUNIKIM I PLOTË: Krijoni dhoma rreth ekipeve tuaja, shokëve tuaj, bashkësisë tuaj - rreth kujtdo që doni! Bisedoni, shkëmbeni kartela, shtoni widget-e dhe bëni thirrje audio dhe video - gjithçka falas.\n\nINTEGRIME TË FUQISHME: Përdoreni Riot.im me mjetet që njihni dhe doni. Me Riot.im mundeni madje të bisedoni me përdorues dhe grupe nën aplikacione të tjera fjalosjesh.\n\nPRIVAT DHE I SIGURUAR: Mbajini bisedat tuaja të fshehta. Fshehtëzimi skaj-më-skaj i fjalës së fundit garanton që komunikimi privat mbetet privat.\n\nI HAPUR, JO I MBYLLUR: Me burim të hapur dhe i ngritur mbi Matrix. Jini zot i të dhënave tuaja, duke strehuar shërbyesin tuaj, ose duke përzgjedhur një të cilit i besoni.\n\nKUDO QOFSHI: Mbani lidhjet, kudo qofshi, me historik plotësisht të njëkohësuar mesazhesh në krejt pajisjet tuaja dhe në internet, te https://riot.im.";
+"store_full_description" = "Element-i është një lloj i ri aplikacioni shkëmbimi mesazhesh dhe bashkëpunimi që:\n\n1. Ju vë juve në kontroll të ruajtjes së privatësisë\n2. Ju lejon të komunikoni me këdo në rrjetin Matrix, dhe madje edhe tej tij, duke u integruar me aplikacione të tillë si Slack\n3. Ju mbron nga reklama, shfrytëzim të dhënash, deriçka të pasme dhe kopshte të gardhuar\n4. Ju siguron përmes fshehtëzimi skaj-më-skaj, me ndër-nënshkrim për verifikim të tjerësh\n\nElement-i është plotësisht i ndryshëm nga aplikacione të tjerë mesazhesh dhe bashkëpunimi, ngaqë është i decentralizuar dhe me burim të hapët.\n\nElement-i ju lejon ta strehoni ju vetë - ose të zgjidhni një strehë - që kështu të keni privatësi, pronësi dhe kontroll të të dhënave dhe bisedave tuaja. Ju jep hyrje në një rrjet të hapët; kështu që s’jeni të kufizuar për të folur vetëm me përdorues të tjerë të Element-i. Dhe është shumë i sigurt.\n\nElement-i është në gjendje të bëjë gjithë këtë ngaqë funksionon me Matrix - standardi për komunikim të hapët, të decentralizuar. \n\nElement-i ju vë juve në kontroll, duke ju lejuar të zgjidhni se cili strehon bisedat tuaja. Prej aplikacionit Element, mund të zgjidhni t’i strehoni në rrugë të ndryshme:\n\n1. Të merrni një llogari falas te shërbyesi publik matrix.org\n2. Të vetëstrehoni llogarinë tuaj duke xhiruar një shërbyes në hardware-in tuaj\n3. Të regjistroni një llogari në një shërbyes vetjak thjesht duke u pajtuar te platforma Element Matrix Services\n\nPse të zgjidhet Element-i?\n\nJINI ZOT I TË DHËNAVE TUAJA: Se ku të mbani të dhënat dhe mesazhet tuaja, e vendosni ju vetë. I keni pronë tuajën dhe i kontrolloni, jo ndonjë MEGAKORPORATË që shfrytëzon të dhënat tuaja dhe u lejon hyrje në to palëve të treta.\n\nSHKËMBIM MESAZHESH DHE BASHKËPUNIM I HAPËT: Mund të bisedoni me këdo tjetër në rrjetin Matrix, qoftë kur përdorin Element-in, qoftë tjetër aplikacion Matrix, dhe edhe kur përdorin tjetër sistem shkëmbimi mesazhesh, bie fjala, Slack, IRC apo XMPP.\n\nSUPER-I-SIGURT: Fshehtëzim i vërtetë skaj-më-skaj (vetëm ata që marrim pjesë në bisedë mund të shfshehtëzojnë mesazhe), dhe ndër-nënshkrim për verifikimin e pajisjeve të pjesëmarrësve në bisedë.\n\nKOMUNIKIM I PLOTË: Shkëmbim mesazhesh, thirrje zanore dhe video, shkëmbim kartelash, tregim ekrani dhe një gamë të tërë integrimesh, robotë dhe widget-e. Krijoni dhoma, bashkësi, mbani kontakte dhe mbaroni punë.\n\nKUDO QË JENI: Mbani lidhje kudo që të jeni, me historik tërësisht të njëkohësuar përmes krejt pajisjeve tuaja dhe në internet te https://element.io/app.";
 "auth_login_single_sign_on" = "Hyni përmes një hyrjeje njëshe";
 "room_message_unable_open_link_error_message" = "S’arrihet të hapet lidhja.";
 "auth_autodiscover_invalid_response" = "Përgjigje e pavlefshme pikasjeje shërbyesi Home";
@@ -1023,7 +1020,7 @@
 "device_verification_self_verify_start_information" = "Përdoreni këtë sesion që të verifikoni atë të riun tuaj, duke i akorduar hyrje te mesazhe të fshehtëzuar.";
 "device_verification_self_verify_start_waiting" = "Po pritet…";
 "device_verification_self_verify_wait_title" = "Siguri e plotë";
-"device_verification_self_verify_wait_information" = "Verifikoni këtë sesion prej një nga sesionet tuaj të tjera, duke i akorduar hyrje te mesazhe të fshehtëzuar.\n\nPërdorni Riot-in më të ri në pajisjet tuaja të tjera:";
+"device_verification_self_verify_wait_information" = "Verifikoni këtë sesion prej një nga sesionet tuaj të tjera, duke i akorduar hyrje te mesazhe të fshehtëzuar.\n\nPërdorni Element-in më të ri në pajisjet tuaja të tjera:";
 "device_verification_self_verify_wait_waiting" = "Po pritet…";
 "room_member_power_level_admin_in" = "Përgjegjës te %@";
 "room_member_power_level_moderator_in" = "Moderator te %@";
@@ -1034,10 +1031,10 @@
 // Recover from private key
 "key_backup_recover_from_private_key_info" = "Po rikthehet kopjeruajtje…";
 // MARK: Clients
-"client_desktop_name" = "Riot Desktop";
-"client_web_name" = "Riot Web";
-"client_ios_name" = "Riot iOS";
-"client_android_name" = "Riot X për Android";
+"client_desktop_name" = "Element Desktop";
+"client_web_name" = "Element Web";
+"client_ios_name" = "Element iOS";
+"client_android_name" = "Element Android";
 "room_participants_action_security_status_complete_security" = "Siguri e plotë";
 "security_settings_crosssigning_info_not_bootstrapped" = "<em>Cross-signing</em> s’është ujdisur ende.";
 "security_settings_crosssigning_info_exists" = "Llogaria juaj ka një identitet <em>cross-signing</em>, por s’është ende i besuar nga ky sesion. Plotësoni sigurinë e këtij sesioni.";
@@ -1046,7 +1043,7 @@
 "security_settings_crosssigning_complete_security" = "Siguri e plotë";
 "security_settings_complete_security_alert_title" = "Siguri e plotë";
 "security_settings_complete_security_alert_message" = "Së pari duhet të plotësoni sigurinë në sesionin tuaj të tanishëm.";
-"security_settings_coming_soon" = "Na ndjeni. Ky veprim s’është ende pjesë e Riot-iOS-it. Ju lutemi, për ta pasur, përdorni një klient tjetër Matrix. Riot-iOS-i do ta përdorë.";
+"security_settings_coming_soon" = "Na ndjeni. Ky veprim s’është ende pjesë e Element iOS-it. Ju lutemi, për ta pasur, përdorni një klient tjetër Matrix. Element iOS-i do ta përdorë.";
 // MARK: - Device Verification
 "key_verification_other_session_title" = "Verifiko sesion";
 "key_verification_new_session_title" = "Verifikoni sesionin tuaj të ri";

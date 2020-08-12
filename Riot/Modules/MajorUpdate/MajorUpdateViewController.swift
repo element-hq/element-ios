@@ -94,8 +94,7 @@ final class MajorUpdateViewController: UIViewController {
         if let navigationBar = self.navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
-        
-        // TODO: Check image is rendered as template
+                
         self.disclosureImageView.tintColor = theme.noticeSecondaryColor
                 
         self.newLogoImageView.tintColor = theme.tintColor

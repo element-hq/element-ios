@@ -316,7 +316,7 @@
                     BubbleReactionsView *reactionsView;
                     
                     if (!component.event.isRedactedEvent && reactions && !isCollapsableCellCollapsed)
-                    {                        
+                    {
                         BOOL showAllReactions = [cellData showAllReactionsForEvent:componentEventId];
                         BubbleReactionsViewModel *bubbleReactionsViewModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:reactions
                                                                                                                                    eventId:componentEventId
@@ -326,12 +326,9 @@
                         reactionsView.viewModel = bubbleReactionsViewModel;
                         [reactionsView updateWithTheme:ThemeService.shared.theme];
                         
-                        [temporaryViews addObject:reactionsView];
-                        
                         bubbleReactionsViewModel.viewModelDelegate = self;
                         
-                        reactionsView.translatesAutoresizingMaskIntoConstraints = NO;
-                        [bubbleCell.contentView addSubview:reactionsView];
+                        [temporaryViews addObject:reactionsView];
                         
                         if (!bubbleCell.tmpSubviews)
                         {
@@ -339,23 +336,34 @@
                         }
                         [bubbleCell.tmpSubviews addObject:reactionsView];
                         
-                        CGFloat leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin;
-                        
-                        if (roomBubbleCellData.containsBubbleComponentWithEncryptionBadge)
+                        if ([[bubbleCell class] conformsToProtocol:@protocol(BubbleCellReactionsDisplayable)])
                         {
-                            leftMargin+= RoomBubbleCellLayout.encryptedContentLeftMargin;
+                            id<BubbleCellReactionsDisplayable> reactionsDisplayable = (id<BubbleCellReactionsDisplayable>)bubbleCell;
+                            [reactionsDisplayable addReactionsView:reactionsView];
                         }
-                        
-                        // Force receipts container size
-                        [NSLayoutConstraint activateConstraints:
-                         @[
-                           [reactionsView.leadingAnchor constraintEqualToAnchor:reactionsView.superview.leadingAnchor constant:leftMargin],
-                           [reactionsView.trailingAnchor constraintEqualToAnchor:reactionsView.superview.trailingAnchor constant:-RoomBubbleCellLayout.reactionsViewRightMargin],
-                           [reactionsView.topAnchor constraintEqualToAnchor:reactionsView.superview.topAnchor constant:bottomPositionY + RoomBubbleCellLayout.reactionsViewTopMargin]
-                           ]];
+                        else
+                        {
+                            reactionsView.translatesAutoresizingMaskIntoConstraints = NO;
+                            [bubbleCell.contentView addSubview:reactionsView];
+                            
+                            CGFloat leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin;
+                            
+                            if (roomBubbleCellData.containsBubbleComponentWithEncryptionBadge)
+                            {
+                                leftMargin+= RoomBubbleCellLayout.encryptedContentLeftMargin;
+                            }
+                            
+                            // Force receipts container size
+                            [NSLayoutConstraint activateConstraints:
+                             @[
+                               [reactionsView.leadingAnchor constraintEqualToAnchor:reactionsView.superview.leadingAnchor constant:leftMargin],
+                               [reactionsView.trailingAnchor constraintEqualToAnchor:reactionsView.superview.trailingAnchor constant:-RoomBubbleCellLayout.reactionsViewRightMargin],
+                               [reactionsView.topAnchor constraintEqualToAnchor:reactionsView.superview.topAnchor constant:bottomPositionY + RoomBubbleCellLayout.reactionsViewTopMargin]
+                               ]];
+                        }
                     }
                     
-                    MXKReceiptSendersContainer* avatarsContainer;                    
+                    MXKReceiptSendersContainer* avatarsContainer;
                     
                     // Handle read receipts (if any)
                     if (self.showBubbleReceipts && cellData.readReceipts.count && !isCollapsableCellCollapsed)
