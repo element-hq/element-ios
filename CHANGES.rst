@@ -9,6 +9,7 @@ Improvements:
 
 Bugfix:
  * Fix pin code cell selection. 
+ * Fix default orientation crash.
 
 API Change:
  * 
