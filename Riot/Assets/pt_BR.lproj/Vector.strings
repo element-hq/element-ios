@@ -781,7 +781,7 @@
 "room_participants_action_security_status_warning" = "Atenção";
 "settings_three_pids_management_information_part1" = "Gerencie quais endereços de e-mail ou números de telefone você pode usar para fazer login ou recuperar sua conta aqui. Controle quem pode encontrar você em· ";
 "settings_calls_stun_server_fallback_button" = "Permitir a assistência do servidor de chamadas reserva";
-"settings_discovery_terms_not_signed" = "Concorde com os Termos de Serviço do servidor de identidade (%s), para que você possa ser descoberto por endereço de e-mail ou por número de telefone.";
+"settings_discovery_terms_not_signed" = "Concorde com os Termos de Serviço do servidor de identidade (%@), para que você possa ser descoberto por endereço de e-mail ou por número de telefone.";
 "settings_discovery_three_pids_management_information_part1" = "Gerencie quais endereços de e-mail ou números de telefone outros usuários podem usar para descobrir sua conta e enviar um convite para salas. Adicione ou remova endereços de e-mail ou números de telefone desta lista em· ";
 "settings_discovery_three_pid_details_title_email" = "Gerenciar e-mail";
 "settings_discovery_three_pid_details_information_email" = "Configure este endereço de e-mail, que outros usuários podem usar para descobrir sua conta e enviar um convite para salas. Adicione ou remova endereços de e-mail em Contas.";
