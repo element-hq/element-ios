@@ -86,7 +86,7 @@
 "auth_recaptcha_message" = "Questo Home Server vuol esser certo che tu non sia un robot";
 "auth_reset_password_missing_email" = "Va inserito l'indirizzo email associato al tuo account.";
 "auth_reset_password_missing_password" = "Va inserita una nuova password.";
-"auth_reset_password_email_validation_message" = "Un'email è stata inviata a %s. Dopo aver cliccato il link che contiene, clicca qui sotto.";
+"auth_reset_password_email_validation_message" = "Un'email è stata inviata a %@. Dopo aver cliccato il link che contiene, clicca qui sotto.";
 "auth_reset_password_next_step_button" = "Ho verificato il mio indirizzo email";
 "auth_reset_password_error_unauthorized" = "Verifica indirizzo email fallita: assicurati di aver cliccato sul link contenuto nell'email";
 "auth_reset_password_error_not_found" = "Il tuo indirizzo email non sembra associato a nessun ID utente registrato su questo Home Server.";
@@ -279,7 +279,7 @@
 "room_preview_invitation_format" = "Sei stato invitato ad entrare in questa stanza da %@";
 "room_preview_subtitle" = "Questa è l'anteprima della stanza. Le interazioni sono disabilitate.";
 "room_preview_unlinked_email_warning" = "Questo invito è stato spedito a %@, che non è associato a questo account. Puoi aggiungere questa email al tuo account o provare ad accedere con un account differente.";
-"room_preview_try_join_an_unknown_room" = "Stai provando ad accedere a %s. Desideri entrare per partecipare alla discussione?";
+"room_preview_try_join_an_unknown_room" = "Stai provando ad accedere a %@. Desideri entrare per partecipare alla discussione?";
 "room_preview_try_join_an_unknown_room_default" = "una stanza";
 // Settings
 "settings_title" = "Impostazioni";
@@ -832,7 +832,7 @@
 "settings_three_pids_management_information_part2" = "Scopri";
 "settings_three_pids_management_information_part3" = ".";
 "settings_calls_stun_server_fallback_button" = "Permetti chiamate dal Server di appoggio";
-"settings_calls_stun_server_fallback_description" = "Se il tuo Home Server non ne ha un proprio Server d'appoggio verrà usato %s  (il Server d'appoggio verrà a conoscenza del tuo indirizzo IP durante le chiamate).";
+"settings_calls_stun_server_fallback_description" = "Se il tuo Home Server non ne ha un proprio Server d'appoggio verrà usato %@  (il Server d'appoggio verrà a conoscenza del tuo indirizzo IP durante le chiamate).";
 "settings_devices_description" = "Il nome pubblico di una sessione è visibile alle persone con cui comunichi";
 "settings_discovery_no_identity_server" = "In questo momento non stai usando alcun Identity Server. Per trovare e farti trovare dagli altri utenti, configurane uno qua sotto.";
 "settings_discovery_terms_not_signed" = "Accetta i termini di servizio dell'Identity Server (%@) per permettere ad altri utenti di trovarti tramite la tua email o numero di telefono.";
