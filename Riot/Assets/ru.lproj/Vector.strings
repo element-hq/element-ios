@@ -132,7 +132,7 @@
 "contacts_address_book_matrix_users_toggle" = "Только пользователи Matrix";
 "contacts_address_book_no_contact" = "Нет локальных контактов";
 "contacts_address_book_permission_required" = "Разрешение на доступ к локальным контактам";
-"contacts_address_book_permission_denied" = "Вы не разрешили Element получить доступ к локальным контактам";
+"contacts_address_book_permission_denied" = "Вы не разрешили Element получить доступ к вашим локальным контактам";
 // Chat participants
 "room_participants_title" = "Участники";
 "room_participants_add_participant" = "Добавить участника";
@@ -186,7 +186,7 @@
 "room_message_short_placeholder" = "Отправить сообщение…";
 "room_offline_notification" = "Связь с сервером потеряна.";
 "room_unsent_messages_notification" = "Сообщения не отправлены. %@ или %@ сейчас?";
-"room_unsent_messages_unknown_devices_notification" = "Сообщение не отправлено из-за присутствия неизвестных устройств. %@ или %@ сейчас?";
+"room_unsent_messages_unknown_devices_notification" = "Сообщение не отправлено из-за присутствия неизвестных сеансов. %@ или %@ сейчас?";
 "room_ongoing_conference_call" = "Текущий групповой вызов. Войти как %@ или %@.";
 "room_prompt_resend" = "Отправить все";
 "room_prompt_cancel" = "отменить все";
@@ -209,12 +209,12 @@
 "room_event_action_cancel_download" = "Отменить загрузку";
 "room_event_action_view_encryption" = "Информация о шифровании";
 // Unknown devices
-"unknown_devices_alert_title" = "В комнате присутствуют неизвестные устройства";
+"unknown_devices_alert_title" = "Комната содержит неизвестные сеансы";
 "unknown_devices_send_anyway" = "Отправить в любом случае";
 "unknown_devices_call_anyway" = "Позвонить в любом случае";
 "unknown_devices_answer_anyway" = "Ответить в любом случае";
 "unknown_devices_verify" = "Проверка…";
-"unknown_devices_title" = "Неизвестные устройства";
+"unknown_devices_title" = "Неизвестные сеансы";
 // Room Title
 "room_title_new_room" = "Новая комната";
 "room_title_multiple_active_members" = "%@/%@ активные участники";
@@ -242,7 +242,7 @@
 "settings_advanced" = "ДОПОЛНИТЕЛЬНО";
 "settings_other" = "ДРУГИЕ";
 "settings_labs" = "ЛАБОРАТОРИЯ";
-"settings_devices" = "УСТРОЙСТВА";
+"settings_devices" = "СЕАНСЫ";
 "settings_cryptography" = "КРИПТОГРАФИЯ";
 "settings_sign_out" = "Выход";
 "settings_sign_out_confirmation" = "Уверены?";
@@ -279,11 +279,11 @@
 "settings_confirm_password" = "подтвердить пароль";
 "settings_fail_to_update_password" = "Не удалось обновить пароль";
 "settings_password_updated" = "Ваш пароль был обновлен";
-"settings_crypto_device_name" = "Имя общеизвестного устройства: ";
-"settings_crypto_device_id" = "\nИдентификатор устройства: ";
-"settings_crypto_device_key" = "\nКлюч устройства:\n";
+"settings_crypto_device_name" = "Имя сеанса: ";
+"settings_crypto_device_id" = "\nID сеанса: ";
+"settings_crypto_device_key" = "\nКлюч сеанса:\n";
 "settings_crypto_export" = "Экспорт ключей";
-"settings_crypto_blacklist_unverified_devices" = "Шифрование только для проверенных устройств";
+"settings_crypto_blacklist_unverified_devices" = "Шифрование только для проверенных сеансов";
 "room_details_people" = "Участники";
 "room_details_files" = "Файлы";
 "room_details_settings" = "Настройки";
@@ -320,7 +320,7 @@
 "room_details_advanced_enable_e2e_encryption" = "Включить шифрование (предупреждение: отключить будет невозможно!)";
 "room_details_advanced_e2e_encryption_enabled" = "Шифрование включено в этой комнате";
 "room_details_advanced_e2e_encryption_disabled" = "Шифрование в этой комнате не включено.";
-"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Шифрование только для проверенных устройств";
+"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Шифрование только для проверенных сеансов";
 "room_details_advanced_e2e_encryption_prompt_message" = "Сквозное шифрование является экспериментальным и может быть ненадежным.\n\nПока еще не стоит доверять ему для защиты важных данных.\n\nУстройства не смогут расшифровать историю чатов которые велись до их входа в комнату.\n\nПосле включения шифрования для комнаты его нельзя отключить снова (пока).\n\nЗашифрованные сообщения не будут видны на клиентах, которые еще не применяют шифрование.";
 "room_details_fail_to_update_avatar" = "Не удалось обновить изображение комнаты";
 "room_details_fail_to_update_room_name" = "Не удалось обновить название комнаты";
@@ -373,8 +373,8 @@
 // Crash report
 "google_analytics_use_prompt" = "Вы хотите помочь улучшить %@, автоматически отправляя анонимные отчеты о сбоях и данные об использовании?";
 // Crypto
-"e2e_enabling_on_app_update" = "Element теперь поддерживает сквозное шифрование, но вам нужно снова войти в систему, чтобы включить его.\n\nВы можете сделать это сейчас или позже из настроек приложения.";
-"e2e_need_log_in_again" = "Вам нужно войти в систему, чтобы сгенерировать ключи шифрования для этого устройства и отправлять публичный ключ вашему серверу.\nЭто необходимо только один раз; извините за неудобства.";
+"e2e_enabling_on_app_update" = "Element теперь поддерживает сквозное шифрование, но вам нужно снова войти в систему, чтобы активировать его.\n\nВы можете сделать это сейчас или позже из настроек приложения.";
+"e2e_need_log_in_again" = "Вам нужно войти в систему, чтобы сгенерировать ключи шифрования для этого устройства и отправлять публичный ключ вашему серверу.\nЭто необходимо только один раз; просим прощения за неудобства.";
 // Bug report
 "bug_report_title" = "Сообщить об ошибке";
 "bug_report_description" = "Опишите ошибку. Что сделали? Чего ожидали? Что на самом деле произошло?";
@@ -398,7 +398,7 @@
 "room_participants_action_ban" = "Забанить в этой комнате";
 "room_participants_action_unban" = "Разбанить";
 "room_warning_about_encryption" = "Сквозное шифрование является экспериментальным и может быть ненадежным.\n\nПока еще не стоит доверять ему для защиты важных данных.\n\nУстройства не смогут расшифровать историю чатов которые велись до их входа в комнату.\n\nЗашифрованные сообщения не будут видны на клиентах, которые еще не применяют шифрование.";
-"unknown_devices_alert" = "Эта комната содержит устройства, которые еще не были проверены.\nЭто означает, что нет гарантии, что устройства принадлежат пользователям, тем, за кого они сами себя выдают.\nПеред продолжением рекомендуется пройти процедуру проверки для каждого устройства, но при желании можно повторно отправить сообщение без проверки.";
+"unknown_devices_alert" = "Эта комната содержит неизвестные сеансы, которые не были проверены.\nЭто означает, что нет никакой гарантии, что сеансы принадлежат тем пользователям, которые их используют.\nМы рекомендуем Вам пройти процесс проверки для каждого сеанса, прежде чем продолжить, но вы можете повторно отправить сообщение без проверки, если хотите.";
 "room_preview_try_join_an_unknown_room" = "Вы пытаетесь получить доступ к %@. Хотите присоединиться к обсуждению?";
 "settings_config_no_build_info" = "Нет информации о выпуске";
 "settings_sign_out_e2e_warn" = "Будут утеряны ключи сквозного шифрования. Это означает, что вы больше не сможете читать старые сообщения в зашифрованных комнатах на этом устройстве.";
@@ -430,8 +430,8 @@
 "room_details_fail_to_update_room_direct" = "Не удается обновить прямой флаг этой комнаты";
 "event_formatter_jitsi_widget_added" = "Конференция добавлена %@";
 "event_formatter_jitsi_widget_removed" = "Конференция удалена %@";
-"call_incoming_voice" = "Входящий звонок...";
-"call_incoming_video" = "Входящий видеозвонок...";
+"call_incoming_voice" = "Входящий звонок…";
+"call_incoming_video" = "Входящий видеозвонок…";
 // Widget Integration Manager
 "widget_integration_need_to_be_able_to_invite" = "Вам нужно иметь возможность приглашать пользователей, чтобы сделать это.";
 "widget_integration_unable_to_create" = "Не удалось создать виджет.";
@@ -448,7 +448,7 @@
 "settings_calls_settings" = "ВЫЗОВЫ";
 "settings_show_decrypted_content" = "Показать расшифрованное содержимое";
 "settings_enable_callkit" = "Интегрированный вызов";
-"settings_callkit_info" = "Прием входящих звонков на экране блокировки. Журнал вызовов Element будет доступен в истории звонков вашего телефона. Если включен iCloud , то журнал вызовов будет доступен в том числе и Apple.";
+"settings_callkit_info" = "Прием входящих звонков на экране блокировки. Журнал вызовов Element будет доступен в истории звонков вашего телефона. Если включен iCloud, то журнал вызовов будет доступен в том числе и Apple.";
 "settings_ui_theme" = "Тема";
 "settings_ui_theme_auto" = "Авто";
 "settings_ui_theme_light" = "Светлая";
@@ -465,8 +465,8 @@
 "settings_ui_theme_black" = "Черная";
 // Room key request dialog
 "e2e_room_key_request_title" = "Запрос ключа шифрования";
-"e2e_room_key_request_message" = "Ваше непроверенное устройство '%@' запрашивает ключи шифрования.";
-"e2e_room_key_request_start_verification" = "Начало верификации...";
+"e2e_room_key_request_message" = "Ваш непроверенный сеанс '%@' запрашивает ключи шифрования.";
+"e2e_room_key_request_start_verification" = "Начало проверки…";
 "e2e_room_key_request_share_without_verifying" = "Поделиться без верификации";
 "e2e_room_key_request_ignore_request" = "Игнорировать запрос";
 "title_groups" = "Сообщества";
@@ -503,7 +503,7 @@
 "group_participants_invited_section" = "ПРИГЛАШЕНЫ";
 // Group rooms
 "group_rooms_filter_rooms" = "Фильтр комнат сообщества";
-"e2e_room_key_request_message_new_device" = "Вы добавили новое устройство '%@', которое запрашивает ключи шифрования.";
+"e2e_room_key_request_message_new_device" = "Вы добавили новый сеанс '%@', который запрашивает ключи шифрования.";
 "room_do_not_have_permission_to_post" = "У вас нет разрешения на публикацию в этой комнате";
 "settings_flair" = "Покажите настроение, где это разрешено";
 "room_details_flair_section" = "Показать настроение для сообществ";
@@ -531,7 +531,7 @@
 "deactivate_account_password_alert_message" = "Чтобы продолжить, введите пароль";
 "widget_sticker_picker_no_stickerpacks_alert" = "У вас пока нет включенных пакетов стикеров.";
 "event_formatter_rerequest_keys_part1_link" = "Повторно запросить ключи шифрования";
-"event_formatter_rerequest_keys_part2" = " с других устройств.";
+"event_formatter_rerequest_keys_part2" = " из других ваших сеансов.";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Запрос отправлен";
 "rerequest_keys_alert_message" = "Запустите Element на другом устройстве, которое может расшифровать сообщение, чтобы оно могло отправить ключи этому устройству.";
@@ -555,21 +555,21 @@
 "settings_labs_room_members_lazy_loading_error_message" = "Ваш сервер не поддерживает ленивую подгрузку собеседников. Попробуйте позже.";
 "homeserver_connection_lost" = "Невозможно соединиться с этим сервером.";
 "auth_accept_policies" = "Пожалуйста ознакомьтесь и подтвердите согласие с политикой этого сервера:";
-"settings_key_backup_info_checking" = "Проверка ...";
-"settings_key_backup_info_none" = "Ваши ключи не сохраняются с этого устройства.";
+"settings_key_backup_info_checking" = "Проверка…";
+"settings_key_backup_info_none" = "Ваши ключи не будут скопированы с этого сеанса.";
 "settings_key_backup" = "РЕЗЕРВНАЯ КОПИЯ КЛЮЧЕЙ";
 "settings_key_backup_info_version" = "Версия ключа резервного копирования: %@";
 "settings_key_backup_info_algorithm" = "Алгоритм: %@";
-"settings_key_backup_info_valid" = "Это устройство делает резервное копирование ключей.";
-"settings_key_backup_info_not_valid" = "Это устройство не делает резервного копирования ключей.";
-"settings_key_backup_info_progress" = "Резервное копирование ключей %@...";
+"settings_key_backup_info_valid" = "Этот сеанс совершает резервное копирование ваших ключей.";
+"settings_key_backup_info_not_valid" = "Этот сеанс не делает резервное копирование ваших ключей, но у вас есть существующая резервная копия, которую вы можете восстановить и добавить в дальнейшем.";
+"settings_key_backup_info_progress" = "Резервное копирование %@ ключей…";
 "settings_key_backup_info_progress_done" = "Все ключи сохранены";
 "settings_key_backup_info_not_trusted_from_verifiable_device_fix_action" = "Для Безопасного Восстановления Сообщений на этом устройстве, проверьте %@.";
 "settings_key_backup_info_not_trusted_fix_action" = "Для Безопасного Восстановления Сообщений на этом устройстве, требуется пароль или ключ восстановления.";
-"settings_key_backup_info_trust_signature_unknown" = "Резервная копия подписана устройством с идентификатором: %@";
-"settings_key_backup_info_trust_signature_valid" = "Резервная копия имеет действительную подпись этого устройства";
+"settings_key_backup_info_trust_signature_unknown" = "Резервное копирование имеет подпись от сеанса со следующим ID: %@";
+"settings_key_backup_info_trust_signature_valid" = "Резервная копия имеет действующую подпись этой сессии";
 "settings_key_backup_info_trust_signature_valid_device_verified" = "Резервная копия имеет действительную подпись %@";
-"settings_key_backup_info_trust_signature_valid_device_unverified" = "Резервная копия подписана %@";
+"settings_key_backup_info_trust_signature_valid_device_unverified" = "Резервная копия имеет подпись от %@";
 "settings_key_backup_info_trust_signature_invalid_device_verified" = "Резервная копия имеет недействительную подпись %@";
 "settings_key_backup_info_trust_signature_invalid_device_unverified" = "Резервная копия имеет недействительную подпись %@";
 "settings_key_backup_button_create" = "Использовать резервное копирование ключей";
@@ -582,7 +582,7 @@
 "key_backup_setup_title" = "Резервное копирование ключей";
 "key_backup_setup_skip_action" = "Пропустить";
 "key_backup_setup_skip_alert_title" = "Вы уверены?";
-"key_backup_setup_skip_alert_message" = "Вы можете потерять зашифрованные сообщения, если выйдете из системы или потеряете свое устройство.";
+"key_backup_setup_skip_alert_message" = "Вы можете потерять защищенные сообщения, если выйдете из системы или потеряете свое устройство.";
 "key_backup_setup_skip_alert_skip_action" = "Пропустить";
 "key_backup_setup_intro_title" = "Никогда не теряйте зашифрованных сообщений";
 "key_backup_setup_intro_info" = "Сообщения в зашифрованных комнатах защищены сквозным шифрованием. Только вы и получатель(и) имеют ключи для чтения этих сообщений.\n\nСохраните ключи надежно, чтобы не потерять их.";
@@ -622,7 +622,7 @@
 "key_backup_recover_banner_title_part2" = " для чтения истории зашифрованных сообщений на этом устройстве";
 "key_backup_setup_banner_title_part2" = " чтобы никогда не потерять зашифрованные сообщения";
 "key_backup_setup_recovery_key_info" = "Сделайте копию ключа восстановления и надёжно сохраните его.\n\nЕго можно будет использовать для восстановления истории зашифрованных сообщений, на случай если вы забудете парольную фразу восстановления.";
-"key_backup_setup_success_title" = "Успешно!";
+"key_backup_setup_success_title" = "Успех!";
 "key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Сохранить ключ восстановления";
 "key_backup_setup_success_from_passphrase_done_action" = "Готово";
 "key_backup_setup_success_from_recovery_key_recovery_key_title" = "Ключ восстановления";
@@ -644,7 +644,7 @@
 "key_backup_setup_intro_setup_action_without_existing_backup" = "Начать использовать ключ восстановления";
 "key_backup_setup_intro_setup_action_with_existing_backup" = "Использовать ключ восстановления";
 "settings_key_backup_info" = "Зашифрованные сообщения защищены сквозным шифрованием. Только вы и получатель(и) имеют ключи для чтения этих сообщений.";
-"settings_key_backup_info_signout_warning" = "Перед выходом сделайте резервную копию ключей, чтобы не потерять их.";
+"settings_key_backup_info_signout_warning" = "Подключите этот сеанс к резервному копированию ключей перед выходом из системы, чтобы избежать потери ключей, которые могут быть только на этом устройстве.";
 "key_backup_setup_passphrase_title" = "Защитите резервную копию парольной фразой";
 "key_backup_setup_passphrase_setup_recovery_key_info" = "Или защитите резервную копию с помощью ключа восстановления, сохранив его в безопасном месте.";
 "key_backup_setup_passphrase_setup_recovery_key_action" = "(Расширенный) Настройка с ключом восстановления";
@@ -666,10 +666,10 @@
 "key_backup_setup_intro_manual_export_action" = "Ручной экспорт ключей";
 // Key backup wrong version
 "e2e_key_backup_wrong_version_title" = "Новая резервная копия ключей";
-"e2e_key_backup_wrong_version" = "Обнаружена новая резервная копия ключа безопасного сообщения.\n\nЕсли вы этого не делали, установите новую парольную фразу в настройках.";
+"e2e_key_backup_wrong_version" = "Обнаружена новая резервная копия ключа защищенного сообщения.\n\nЕсли это не вы, установите новый пароль в настройках.";
 // String for App Store
 "store_short_description" = "Безопасный децентрализованный чат/VoIP";
-"store_full_description" = "Приложение для чата, под вашим контролем и полностью гибкое. Райот позволяет вам общаться так, как вы хотите. Сделано на [matrix] — стандарт для открытого, децентрализованного общения.\n\nПолучите бесплатную учетную запись на matrix.org, собственный сервер по адресу https://ems.element.io или используйте другой сервер Matrix.\n\nПочему стоит выбрать Element?\n\n• ПОЛНАЯ СВЯЗЬ: создавайте комнаты для команд, друзей, сообщест — как хотите! Общайтесь, обменивайтесь файлами, добавляйте виджеты и совершайте голосовые и видеозвонки — и все это бесплатно.\n\n• МОЩНЫЕ ИНТЕГРАЦИИ: Используйте Element с инструментами, которые знаете и любите. С Element вы можете даже общаться с пользователями и группами других приложений.\n\n• ЧАСТНЫЕ И БЕЗОПАСНЫЕ: держите ваши разговоры в тайне. Современное сквозное шифрование гарантирует, что частное общение остается частным.\n\n• ОТКРЫТО, НЕ ЗАКРЫТО: Исходный код открыт, построено на Matrix. Владейте данными, используя собственный сервер или выбирайте тот, которому доверяете.\n\n• Везде, где вы находитесь: оставайтесь на связи, где бы вы ни находились, с полностью синхронизированной историей сообщений на всех ваших устройствах и в Интернете по адресу https://app.element.io.";
+"store_full_description" = "Element - это новый тип мессенджера и приложения для совместной работы, которое:\n\n1. Ставит вас под контроль, чтобы сохранить вашу частную жизнь\n2. Позволяет вам общаться с кем угодно в cети Matrix и даже за ее пределами, интегрируясь с такими приложениями, как Slack\n3. Защищает вас от рекламы, сбора данных, бэкдоров и огороженных стеной садов\n4. Обеспечивает безопасность с помощью сквозного шифрования с кросс-подписью для проверки других пользователей\n\nElement полностью отличается от других приложений для обмена сообщениями и совместной работы, поскольку он децентрализован и имеет открытый исходный код.\n\nElement позволяет вам самостоятельно разместить или выбрать хост так, чтобы у вас была конфиденциальность, право собственности и контроль над вашими данными и разговорами. Это дает вам доступ к открытой сети; так чтобы вы не были ограничены, разговаривая только с другими пользователями Element. И это очень безопасно.\n\nElement способен делать все это, потому что он работает на Matrix - стандарте открытой, децентрализованной коммуникации.\n\nElement дает вам возможность контролировать, позволяя вам выбирать, кто будет вести ваши разговоры. В приложении Element вы можете выбрать размещение различными способами:\n\n1. Получите бесплатный аккаунт на сайте matrix.org - это публичный сервер\n2. Самостоятельно разместите свою учетную запись, запустив сервер на собственном оборудовании\n3. Подпишитесь на учетную запись на пользовательском сервере, просто подписавшись на хостинг-платформу Element Matrix Services\n\nПочему нужно использовать Element?\n\nВЛАДЕЙТЕ ВАШИМИ ДАННЫМИ: вы сами решаете, где хранить ваши данные и сообщения. Вы владеете ими и контролируете их, а не какая-то мегакорпорация, которая добывает ваши данные или предоставляет к ним доступ третьим лицам.\n\nОТКРЫТОЕ ОБЩЕНИЕ И СОВМЕСТНАЯ РАБОТА: вы можете общаться с кем угодно в сети Matrix, независимо от того, используют ли сам Element или другое приложение Matrix, и даже если они используют другую систему обмена сообщениями, такую как Slack, IRC или XMPP.\n\nАБСОЛЮТНАЯ БЕЗОПАСНОСТЬ: реальное сквозное шифрование (только те, кто находится в разговоре, могут расшифровывать сообщения) и кросс-подпись для проверки устройств участников разговора.\n\nСОВЕРШЕННАЯ КОММУНИКАЦИЯ: обмен сообщениями, голосовые и видеозвонки, общий доступ к файлам, общий доступ к экрану и целая куча интеграций, ботов и виджетов. Создавайте комнаты, сообщества, оставайтесь на связи и делайте все возможное.\n\nГДЕ БЫ ВЫ НЕ БЫЛИ: оставайтесь на связи, где бы вы ни находились, с полностью синхронизированной историей сообщений на всех ваших устройствах и в Интернете по адресу https://element.io/app.";
 "auth_login_single_sign_on" = "Войти с помощью единого входа (sign-on)";
 "room_message_unable_open_link_error_message" = "Невозможно открыть ссылку.";
 "auth_autodiscover_invalid_response" = "Неверный ответ обнаружения сервера";
@@ -681,7 +681,7 @@
 "room_event_action_reaction_dislike" = "%@ не согласны";
 "room_action_reply" = "Ответ";
 "settings_labs_message_reaction" = "Реагировать на сообщения с Emoji";
-"settings_key_backup_button_connect" = "Подключите это устройство к ключу резервного копирования";
+"settings_key_backup_button_connect" = "Подключите этот сеанс к резервному копированию ключей";
 "close" = "Закрыть";
 "auth_forgot_password_error_no_configured_identity_server" = "Сервер идентификации не настроен: добавьте один для сброса пароля.";
 "auth_softlogout_signed_out" = "Вы вышли";
@@ -705,11 +705,11 @@
 "widget_integrations_server_failed_to_connect" = "Не удалось подключиться к серверу интеграции";
 // Service terms
 "service_terms_modal_title" = "Условия пользования";
-"service_terms_modal_message" = "Для продолжения Вам необходимо принять Условия данного сервиса.";
+"service_terms_modal_message" = "Для продолжения Вам необходимо принять условия данной услуги (%@).";
 "service_terms_modal_accept_button" = "Принять";
 "service_terms_modal_description_for_identity_server" = "Быть открытыми для других";
 "service_terms_modal_description_for_integration_manager" = "Используйте боты, мосты, виджеты и стикеры";
-"key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Подключите это устройство к Key Backup";
+"key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Подключите это устройство к резервному копированию ключей";
 // MARK: - Device Verification
 "device_verification_title" = "Проверьте устройство";
 "auth_softlogout_reason" = "Ваш домашний сервер (%1$@) админ выписал вас из вашей учетной записи %2$@ (%3$@).";
@@ -730,17 +730,17 @@
 "device_verification_security_advice" = "Для обеспечения максимальной безопасности мы рекомендуем делать это лично или использовать другие надежные средства связи";
 "device_verification_cancelled" = "Другая сторона отменила проверку.";
 "device_verification_cancelled_by_me" = "Проверка была отменена. Причина: %@";
-"device_verification_error_cannot_load_device" = "Невозможно загрузить информацию об устройстве.";
+"device_verification_error_cannot_load_device" = "Не удается загрузить информацию о сеансе.";
 // Mark: Incoming
 "device_verification_incoming_title" = "Входящий запрос на проверку";
-"device_verification_incoming_description_1" = "Проверьте это устройство, чтобы отметить его как доверенное. Доверительные устройства партнеров дают вам дополнительное спокойствие при использовании сообщений со сквозным шифрованием.";
-"device_verification_incoming_description_2" = "Убедитесь, что данное устройство является доверенным, а также проверьте, что оно доверено для вашего партнера.";
+"device_verification_incoming_description_1" = "Проверьте этот сеанс, чтобы отметить его как доверенный. Доверительные сеансы партнеров дают вам дополнительное спокойствие при использовании сквозных зашифрованных сообщений.";
+"device_verification_incoming_description_2" = "Проверка этого сеанса пометит его как доверенный, а также пометит ваш сеанс как доверенный для вашего партнера.";
 // MARK: Start
 "device_verification_start_title" = "Проверьте, сравнив короткую текстовую строку";
-"device_verification_start_wait_partner" = "Ожидайте, пока партнер примет....";
+"device_verification_start_wait_partner" = "Ожидание принятия партнера…";
 "device_verification_start_use_legacy" = "Ничего не появляется? Не все клиенты пока поддерживают интерактивную проверку. Используйте устаревшую проверку.";
 "device_verification_start_verify_button" = "Начать проверку";
-"device_verification_verify_wait_partner" = "Ожидайте, пока партнер подтвердит....";
+"device_verification_verify_wait_partner" = "Ожидание подтверждения от партнера…";
 // MARK: Verified
 "device_verification_verified_title" = "Проверено!";
 "device_verification_verified_description_1" = "Вы успешно проверили это устройство.";
@@ -851,7 +851,7 @@
 "settings_three_pids_management_information_part3" = ".";
 "settings_calls_stun_server_fallback_button" = "Разрешить резервный вызов сервером поддержки";
 "settings_calls_stun_server_fallback_description" = "Разрешить резервный вызов сервером поддержки %@ если ваш домашний сервер не предлагает его (ваш IP-адрес будет передан во время разговора).";
-"settings_devices_description" = "Публичное имя устройства видны людям, с которыми вы общаетесь";
+"settings_devices_description" = "Публичное имя сеанса видно людям, с которыми вы общаетесь";
 "settings_discovery_three_pids_management_information_part2" = "Пользовательские настройки";
 "settings_discovery_three_pids_management_information_part3" = ".";
 "settings_discovery_error_message" = "Произошла ошибка. Пожалуйста, повторите.";
@@ -895,3 +895,4 @@
 "room_participants_action_security_status_verify" = "Проверить";
 "room_participants_action_security_status_warning" = "Предупреждение";
 "room_participants_security_loading" = "Загрузка…";
+"skip" = "Пропустить";
