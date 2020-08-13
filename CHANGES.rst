@@ -8,7 +8,9 @@ Improvements:
  * 
 
 Bugfix:
- * 
+ * Fix pin code cell selection. 
+ * Fix default orientation crash.
+ * Fix rooms list swipe actions tint colors (#3507).
 
 API Change:
  * 
