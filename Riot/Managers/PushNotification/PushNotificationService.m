@@ -19,15 +19,37 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "Riot-Swift.h"
+#import <PushKit/PushKit.h>
 
-@interface PushNotificationService()
+@interface PushNotificationService()<PKPushRegistryDelegate>
+{
+    /**
+     Matrix session observer used to detect new opened sessions.
+     */
+    id matrixSessionStateObserver;
+}
 
 @property (nonatomic, nullable, copy) void (^registrationForRemoteNotificationsCompletion)(NSError *);
+@property (nonatomic, strong) PKPushRegistry *pushRegistry;
+@property (nonatomic, strong) PushNotificationManager *pushNotificationManager;
+
+/// Should PushNotificationService receive VoIP pushes
+@property (nonatomic, assign) BOOL shouldReceiveVoIPPushes;
 
 @end
 
 @implementation PushNotificationService
+
+- (instancetype)initWithPushNotificationManager:(PushNotificationManager *)pushNotificationManager
+{
+    if (self = [super init])
+    {
+        self.pushNotificationManager = pushNotificationManager;
+        _pushRegistry = [[PKPushRegistry alloc] initWithQueue:dispatch_get_main_queue()];
+        self.shouldReceiveVoIPPushes = YES;
+    }
+    return self;
+}
 
 #pragma mark - Public Methods
 
@@ -94,6 +116,11 @@
     NSParameterAssert(!accountManager.pushDeviceToken);
 
     _isPushRegistered = YES;
+    
+    if (!_pushNotificationManager.pushKitToken)
+    {
+        [self configurePushKit];
+    }
 
     if (self.registrationForRemoteNotificationsCompletion)
     {
@@ -124,11 +151,104 @@
 - (void)deregisterRemoteNotifications
 {
     _isPushRegistered = NO;
+    self.shouldReceiveVoIPPushes = NO;
 }
 
-- (void)applicationWillEnterForeground
+- (void)applicationWillResignActive
 {
     [[UNUserNotificationCenter currentNotificationCenter] removeUnwantedNotifications];
+    [[UNUserNotificationCenter currentNotificationCenter] removeCallNotificationsFor:nil];
+}
+
+- (void)applicationDidEnterBackground
+{
+    if (_pushNotificationManager.pushKitToken)
+    {
+        self.shouldReceiveVoIPPushes = YES;
+    }
+}
+
+- (void)applicationDidBecomeActive
+{
+    [[UNUserNotificationCenter currentNotificationCenter] removeUnwantedNotifications];
+    [[UNUserNotificationCenter currentNotificationCenter] removeCallNotificationsFor:nil];
+    if (_pushNotificationManager.pushKitToken)
+    {
+        self.shouldReceiveVoIPPushes = NO;
+    }
+}
+
+#pragma mark - Private Methods
+
+- (void)setShouldReceiveVoIPPushes:(BOOL)shouldReceiveVoIPPushes
+{
+    _shouldReceiveVoIPPushes = shouldReceiveVoIPPushes;
+    
+    if (_shouldReceiveVoIPPushes && _pushNotificationManager.pushKitToken)
+    {
+        MXSession *session = [AppDelegate theDelegate].mxSessions.firstObject;
+        if (session.state >= MXSessionStateStoreDataReady)
+        {
+            [self configurePushKit];
+        }
+        else
+        {
+            //  add an observer for session state
+            matrixSessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+                MXSession *mxSession = (MXSession*)notif.object;
+                
+                if ([[AppDelegate theDelegate].mxSessions containsObject:mxSession]
+                    && mxSession.state >= MXSessionStateStoreDataReady
+                    && self->_shouldReceiveVoIPPushes)
+                {
+                    [self configurePushKit];
+                    [[NSNotificationCenter defaultCenter] removeObserver:self->matrixSessionStateObserver];
+                    self->matrixSessionStateObserver = nil;
+                }
+            }];
+        }
+    }
+    else
+    {
+        _pushRegistry.delegate = nil;
+    }
+}
+
+- (void)configurePushKit
+{
+    _pushRegistry.delegate = self;
+    _pushRegistry.desiredPushTypes = [NSSet setWithObject:PKPushTypeVoIP];
+}
+
+- (void)launchBackgroundSync
+{
+    // Launch a background sync for all existing matrix sessions
+    NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
+    for (MXKAccount *account in mxAccounts)
+    {
+        // Check the current session state
+        if (account.mxSession.state == MXSessionStatePaused)
+        {
+            NSLog(@"[PushNotificationService] launchBackgroundSync");
+            __weak typeof(self) weakSelf = self;
+
+            [account backgroundSync:20000 success:^{
+                
+                // Sanity check
+                if (!weakSelf)
+                {
+                    return;
+                }
+                
+                [[UNUserNotificationCenter currentNotificationCenter] removeUnwantedNotifications];
+                [[UNUserNotificationCenter currentNotificationCenter] removeCallNotificationsFor:nil];
+                NSLog(@"[PushNotificationService] launchBackgroundSync: the background sync succeeds");
+            } failure:^(NSError *error) {
+                
+                NSLog(@"[PushNotificationService] launchBackgroundSync: the background sync failed. Error: %@ (%@).", error.domain, @(error.code));
+            }];
+        }
+    }
 }
 
 #pragma mark - UNUserNotificationCenterDelegate
@@ -323,6 +443,87 @@
     {
         [_delegate pushNotificationService:self shouldNavigateToRoomWithId:roomId];
     }
+}
+
+#pragma mark - PKPushRegistryDelegate
+
+- (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)pushCredentials forType:(PKPushType)type
+{
+    NSLog(@"[PushNotificationService] did update PushKit credentials");
+    _pushNotificationManager.pushKitToken = pushCredentials.token;
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive)
+    {
+        self.shouldReceiveVoIPPushes = NO;
+    }
+}
+
+- (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type withCompletionHandler:(void (^)(void))completion
+{
+    NSLog(@"[PushNotificationService] did receive PushKit push with payload: %@", payload.dictionaryPayload);
+    
+    NSString *roomId = payload.dictionaryPayload[@"room_id"];
+    NSString *eventId = payload.dictionaryPayload[@"event_id"];
+    
+    [[UNUserNotificationCenter currentNotificationCenter] removeUnwantedNotifications];
+    [[UNUserNotificationCenter currentNotificationCenter] removeCallNotificationsFor:roomId];
+    
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
+    {
+        NSLog(@"[PushNotificationService] application is in bg");
+        
+        if (@available(iOS 13.0, *))
+        {
+            //  for iOS 13, we'll just report the incoming call in the same runloop. It means we cannot call an async API here.
+            MXEvent *lastCallInvite = _pushNotificationManager.lastCallInvite;
+            //  remove event
+            _pushNotificationManager.lastCallInvite = nil;
+            MXSession *session = [AppDelegate theDelegate].mxSessions.firstObject;
+            //  when we have a VoIP push while the application is killed, session.callManager will not be ready yet. Configure it.
+            [[AppDelegate theDelegate] configureCallManagerIfRequiredForSession:session];
+            
+            if (lastCallInvite.isEncrypted)
+            {
+                [session decryptEvent:lastCallInvite inTimeline:nil];
+            }
+            
+            NSLog(@"[PushNotificationService] lastCallInvite: %@", lastCallInvite);
+            
+            if ([lastCallInvite.eventId isEqualToString:eventId])
+            {
+                SEL handleCallInvite = NSSelectorFromString(@"handleCallInvite:");
+                if ([session.callManager respondsToSelector:handleCallInvite])
+                {
+                    [session.callManager performSelector:handleCallInvite withObject:lastCallInvite];
+                }
+                MXCall *call = [session.callManager callWithCallId:lastCallInvite.content[@"call_id"]];
+                if (call)
+                {
+                    [session.callManager.callKitAdapter reportIncomingCall:call];
+                    NSLog(@"[PushNotificationService] Reporting new call in room %@ for the event: %@", roomId, eventId);
+                }
+                else
+                {
+                    NSLog(@"[PushNotificationService] Error on call object on room %@ for the event: %@", roomId, eventId);
+                }
+            }
+            else
+            {
+                //  It's a serious error. There is nothing to avoid iOS to kill us here.
+                NSLog(@"[PushNotificationService] iOS 13 and in bg, but we don't have the last callInvite event for the event %@. There is something wrong.", eventId);
+            }
+        }
+        else
+        {
+            //  below iOS 13, we can call an async API. After background sync, we'll hopefully fetch the call invite and report a new call to the CallKit.
+            [self launchBackgroundSync];
+        }
+    }
+    else
+    {
+        NSLog(@"[PushNotificationService] application is not in bg. There is something wrong.");
+    }
+    
+    completion();
 }
 
 @end

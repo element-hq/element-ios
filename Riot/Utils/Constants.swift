@@ -19,5 +19,6 @@ import Foundation
 enum Constants {
     
     static let toBeRemovedNotificationCategoryIdentifier = "TO_BE_REMOVED"
+    static let callInviteNotificationCategoryIdentifier = "CALL_INVITE"
     
 }
