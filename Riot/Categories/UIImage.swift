@@ -56,4 +56,20 @@ extension UIImage {
         UIGraphicsEndImageContext()
         return newImage
     }
+    
+    @objc func vc_notRenderedImage() -> UIImage {
+        if let cgImage = cgImage {
+            return NotRenderedImage(cgImage: cgImage, scale: UIScreen.main.scale, orientation: .up)
+        } else if let ciImage = ciImage {
+            return NotRenderedImage(ciImage: ciImage, scale: UIScreen.main.scale, orientation: .up)
+        }
+        return self
+    }
+    
+    //  inline class to disable rendering
+    private class NotRenderedImage: UIImage {
+        override func withRenderingMode(_ renderingMode: UIImage.RenderingMode) -> UIImage {
+            return self
+        }
+    }
 }

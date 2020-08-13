@@ -40,15 +40,15 @@ platform :ios do
     require 'date'
     build_number = DateTime.now.strftime("%Y%m%d%H%M%S")
     options = { build_number: build_number }.merge(options)
+    # build the IPA
     app_store(options)
+    # upload the IPA and metadata
+    deliver()
 
     # We haven't yet implemented/tested deliver/upload_to_appstore properly so keep it manual for now
-    UI.message("IPA is available at path '#{ENV['IPA_OUTPUT_PATH']}'. Please upload manually using Application Loader.")
-    UI.confirm("Have you uploaded the IPA to the AppStore now?")
-    #upload_to_appstore(
-    #    skip_submission: true, # Only upload the build
-    #    skip_waiting_for_build_processing: true # Don't wait for the build to process
-    #)
+    # UI.message("IPA is available at path '#{ENV['IPA_OUTPUT_PATH']}'. Please upload manually using Application Loader.")
+    # UI.confirm("Have you uploaded the IPA to the AppStore now?")
+    #
   end
 
   desc "Point MatrixKit and MatrixSDK to their respective release/*/release branch if they exist, develop otherwise"

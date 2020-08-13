@@ -17,3 +17,72 @@
 "group_details_rooms" = "Babilejoj";
 // MARK: - Device Verification
 "device_verification_title" = "Kontroli aparaton";
+// String for App Store
+"store_short_description" = "Sekura malcentra babilejo/voĉo";
+// Titles
+"title_home" = "Hejmo";
+"title_favourites" = "Ŝatataj";
+"warning" = "Averto";
+// Actions
+"view" = "Vidi";
+"next" = "Sekva";
+"back" = "Reiri";
+"continue" = "Daŭrigi";
+"create" = "Krei";
+"start" = "Komenci";
+"leave" = "Forlasi";
+"remove" = "Forigi";
+"invite" = "Inviti";
+"retry" = "Reprovi";
+"on" = "Enŝaltita";
+"off" = "Malŝaltita";
+"cancel" = "Nuligi";
+"save" = "Konservi";
+"join" = "Aliĝi";
+"decline" = "Malakcepti";
+"accept" = "Akcepti";
+"preview" = "Antaŭrigardi";
+"camera" = "Fotilo";
+"voice" = "Voĉo";
+"video" = "Filmeto";
+"active_call" = "Aktiva Voko";
+"active_call_details" = "Aktiva Voko (%@)";
+"later" = "Poste";
+"rename" = "Renomi";
+"collapse" = "Kolapsi";
+"send_to" = "Sendi al %@";
+"sending" = "Sendanta";
+"close" = "Fermi";
+"skip" = "Salti";
+// Accessibility
+"accessibility_checkbox_label" = "markobutono";
+// Authentication
+"auth_login" = "Ensaluti";
+"auth_register" = "Registriĝi";
+"auth_submit" = "Sendi";
+"auth_skip" = "Salti";
+"auth_login_single_sign_on" = "Ensaluti kun SSO";
+"auth_send_reset_email" = "Sendi Restarigan Retpoŝton";
+"auth_return_to_login" = "Reiri al ensaluta ekrano";
+"auth_user_id_placeholder" = "Retpoŝtadreso aŭ uzantnomo";
+"auth_password_placeholder" = "Pasvorto";
+"auth_new_password_placeholder" = "Nova pasvorto";
+"auth_user_name_placeholder" = "Uzantnomo";
+"auth_optional_email_placeholder" = "Retpoŝtadreso (laŭvola)";
+"auth_email_placeholder" = "Retpoŝtadreso";
+"auth_optional_phone_placeholder" = "Telefonnumero (laŭvola)";
+"auth_phone_placeholder" = "Telefonnumero";
+"auth_repeat_password_placeholder" = "Ripeti pasvorton";
+"auth_repeat_new_password_placeholder" = "Konfirmi vian pasvorton";
+"auth_home_server_placeholder" = "URL (ekz. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (ekz. https://vector.im)";
+"auth_invalid_login_param" = "Malĝusta uzantnomo kaj/aŭ pasvorto";
+"auth_invalid_user_name" = "Uzantaj nomoj povas enhavi nur literojn, ciferojn, punktojn kaj strekojn";
+"auth_invalid_password" = "Pasvorto tro mallonga (minuso 6)";
+"auth_invalid_email" = "Ĉi tio ne aspektas kiel valida retpoŝtadreso";
+"auth_invalid_phone" = "Ĉi tio ne aspektas kiel valida telefonnumero";
+"auth_missing_password" = "Mankanta pasvorto";
+"auth_missing_email" = "Mankanta retpoŝtadreso";
+"auth_missing_phone" = "Mankanta telefonnumero";
+"auth_missing_email_or_phone" = "Mankanta retpoŝtadreso aŭ telefonnumero";
+"auth_password_dont_match" = "Pasvortoj ne kongruas";

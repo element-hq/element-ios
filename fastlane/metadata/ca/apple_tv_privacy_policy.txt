@@ -1,0 +1,1 @@
+We do not want to release for tvOS.
