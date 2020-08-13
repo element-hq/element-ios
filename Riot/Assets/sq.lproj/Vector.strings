@@ -947,7 +947,7 @@
 "key_verification_tile_request_incoming_approval_decline" = "Hidhe poshtë";
 "key_verification_tile_conclusion_done_title" = "I verifikuar";
 "key_verification_tile_conclusion_warning_title" = "Hyrje jo e besuar në";
-"key_verification_incoming_request_incoming_alert_message" = "%s dëshiron të verifikojë";
+"key_verification_incoming_request_incoming_alert_message" = "%@ dëshiron të verifikojë";
 "room_participants_action_section_security" = "Siguri";
 "room_participants_action_security_status_verified" = "I verifikuar";
 "room_participants_action_security_status_verify" = "Verifikoje";
