@@ -22,7 +22,7 @@ Others:
  * 
 
 Build:
- * 
+ * Integrate fastlane deliver (#3519).
 
 Test:
  * 
