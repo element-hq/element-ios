@@ -897,7 +897,7 @@
     
     UIImage *directChatImage = [UIImage imageNamed:@"room_action_direct_chat"];
     directChatImage = [directChatImage vc_tintedImageUsingColor:isDirect ? selectedColor : unselectedColor];
-    directChatAction.image = directChatImage;
+    directChatAction.image = [directChatImage vc_notRenderedImage];
     
     // Notification toggle
     
@@ -913,7 +913,7 @@
     
     UIImage *notificationImage = [UIImage imageNamed:@"room_action_notification"];
     notificationImage = [notificationImage vc_tintedImageUsingColor:isMuted ? unselectedColor : selectedColor];
-    muteAction.image = notificationImage;
+    muteAction.image = [notificationImage vc_notRenderedImage];
     
     // Favorites management
     
@@ -942,7 +942,7 @@
     
     UIImage *favouriteImage = [UIImage imageNamed:@"room_action_favourite"];
     favouriteImage = [favouriteImage vc_tintedImageUsingColor:isFavourite ? selectedColor : unselectedColor];
-    favouriteAction.image = favouriteImage;
+    favouriteAction.image = [favouriteImage vc_notRenderedImage];
     
     // Priority toggle
     
@@ -959,7 +959,7 @@
     
     UIImage *priorityImage = isInLowPriority ? [UIImage imageNamed:@"room_action_priority_high"] : [UIImage imageNamed:@"room_action_priority_low"];
     priorityImage = [priorityImage vc_tintedImageUsingColor:unselectedColor];
-    priorityAction.image = priorityImage;
+    priorityAction.image = [priorityImage vc_notRenderedImage];
     
     // Leave action
     
@@ -973,7 +973,7 @@
     
     UIImage *leaveImage = [UIImage imageNamed:@"room_action_leave"];
     leaveImage = [leaveImage vc_tintedImageUsingColor:unselectedColor];
-    leaveAction.image = leaveImage;
+    leaveAction.image = [leaveImage vc_notRenderedImage];
         
     // Create swipe action configuration
     

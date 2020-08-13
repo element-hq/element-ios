@@ -1,0 +1,23 @@
+Additional test account, if required: appletest2 / _lp1n3 (user IDs can be used in place of email addresses).
+
+For a video demonstrating how to use the app, please see https://riot.im/download/review_video/riot_review_video.mov
+
+If you wish, you may create further test accounts within the app by using the 'register' button.
+
+Home Server for both test accounts is https://matrix.org so Matrix IDs of the test accounts are @appletest1:matrix.org and @appletest2:matrix.org respectively.
+
+This is a chat application and so allow users to receive content from other users. For this reason, we have selected 'Unrestricted web access' in the Ratings section as this is the closest that was available.
+
+App Target Users: Users who want a tool for text based communication within a public or private group of people or to a single other person.
+
+This is a client for an existing service, one instance of which runs at https://matrix.org/ although the server is open source.
+
+The service is offered completely free of charge. There are no additional charges for mobile access.
+
+Users obtain an account either by using the 'register' link within the app, or on the web at https://riot.im/app . There are no fees involved.
+
+The app does not offer access to any paid content or services.
+
+The app does not generate revenue.
+
+The intended use of the app is a textual/voice/video communication tool, for use in either a team-based collaboration environment or as an instant messaging application.

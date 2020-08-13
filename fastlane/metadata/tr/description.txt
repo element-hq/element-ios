@@ -1,0 +1,15 @@
+Bir sohbet uygulaması, senin kontrolün altında ve tamamen esnek. Element senin istediğin şekilde iletişim kurmanı sağlar. [matrix] için yapıldı - açık, merkezi olmayan iletişim için bir standart.
+
+Ücretsiz matrix.org hesabı al, https://modular.im adresinde kendi özel sunucunu al ya da farklı bir Matrix sunucusu kullan.
+
+Neden Element’i seçmeliyim?
+
+• TAMAMEN İLETİŞİM: Takımın, arkadaşların ve topluluğun etrafında odalar oluştur - nasıl istersen! Sohbet et, dosya paylaş, widget ekle ve sesli arama yap ya da görüntülü arama yap - tamamen ücretsiz.
+
+• GÜÇLÜ ENTEGRASYON: Element’i bildiğin ve sevdiğin araçlarla kullan. Element ile farklı sohbet uygulamalarındaki kullanıcılar, gruplarla bile konuşabilirsin.
+
+• GİZLİ VE GÜVENLİ: Tartışmalarını gizli tutar. Uçtan-uca şifreleme gizli iletişimin gizli kalmasını sağlar.
+
+• AÇIK, KAPALI DEĞİL: Açık kaynaklı, ve Matrix üzerinde kuruldu. Kendi verilerine kendi sunucunu kullanarak ya da güvendiğin bir tanesini seçerek sahip ol.
+
+• OLDUĞUN HERYERDE: Tüm cihazlarında ya da çevrimiçi https://element.io/app’de tamamen senkronize mesaj geçmişi ile nerede olursan ol iletişimde kal.

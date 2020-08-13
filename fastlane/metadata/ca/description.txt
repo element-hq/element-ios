@@ -1,0 +1,15 @@
+Una aplicació de xat, sota el vostre control i totalment flexible. El Element us permet comunicar-vos de la manera que preferiu. Fet per al [matrix] - l’estàndard per a la comunicació oberta i descentralitzada.
+
+Obteniu un compte gratuït de matrix.org, executeu el vostre servidor propi a https://ems.element.io, o empreu un altre servidor de Matrix.
+
+Per què triar Element?
+
+• COMUNICACIÓ COMPLETA: Creeu sales al voltant dels vostres equips, els vostre amics o la vostra comunitat - de la manera que preferiu! Converseu, compartiu fitxers, afegiu ginys i feu trucades de veu i vídeo - tot de manera gratuïta.
+
+• INTEGRACIONS POTENTS: Empreu el Element amb les eines que ja coneixeu i us agraden. Amb el Element fins i tot podeu conversar amb usuaris i grups d’altres aplicacions de xat.
+
+• PRIVAT I SEGUR: Mantingueu les vostres converses en secret. Xifratge punt a punt us assegura que les comunicacions privades continuaran sent privades.
+
+• OBERT, NO TANCAT: Programari lliure, i construït damunt de Matrix. Sigueu els propietaris de les vostres dades hostatjant el vostre servidor propi, o emprant un en què confieu.
+
+• ALLÀ ON SIGUEU: Esteu en contacte allà on esteu amb una sincronització total de l’historial dels missatges en tots els vostres dispositius, i en línia a https://element.io/app.

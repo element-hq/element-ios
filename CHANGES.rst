@@ -1,3 +1,33 @@
+Changes in 1.0.5 (2020-08-13)
+=================================================
+
+Features:
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.12](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.12)).
+ * 
+
+Bugfix:
+ * Fix pin code cell selection. 
+ * Fix default orientation crash.
+ * Fix rooms list swipe actions tint colors (#3507).
+
+API Change:
+ * 
+
+Translations:
+ * 
+
+Others:
+ * 
+
+Build:
+ * Integrate fastlane deliver (#3519).
+
+Test:
+ * 
+
 Changes in 1.0.4 (2020-08-07)
 =================================================
 

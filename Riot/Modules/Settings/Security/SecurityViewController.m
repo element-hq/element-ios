@@ -1159,6 +1159,8 @@ SetPinCoordinatorBridgePresenterDelegate>
                 
                 cell = switchCell;
             }
+            
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         else if (indexPath.row == PIN_CODE_DESCRIPTION)
         {

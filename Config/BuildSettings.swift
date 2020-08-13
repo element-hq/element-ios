@@ -54,6 +54,22 @@ final class BuildSettings: NSObject {
         return baseBundleIdentifier + ".ios.dev"
     }
     
+    static var pushKitAppId: String {
+        #if DEBUG
+        return pushKitAppIdDev
+        #else
+        return pushKitAppIdProd
+        #endif
+    }
+    
+    static var pusherAppId: String {
+        #if DEBUG
+        return pusherAppIdDev
+        #else
+        return pusherAppIdProd
+        #endif
+    }
+    
     // Element-Web instance for the app
     static let applicationWebAppUrlString = "https://app.element.io"
     

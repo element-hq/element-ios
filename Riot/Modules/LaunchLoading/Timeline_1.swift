@@ -5,6 +5,7 @@
 // swiftlint:disable all
 
 import UIKit
+import FlowCommoniOS
 
 public class Timeline_1: Timeline {
     public convenience init(view: ElementView, duration: TimeInterval, autoreverses: Bool = false, repeatCount: Float = 0) {

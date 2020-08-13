@@ -1046,7 +1046,7 @@
 "key_verification_scan_confirmation_scanning_device_waiting_other" = "Várakozás másik eszközre…";
 // Scanned
 "key_verification_scan_confirmation_scanned_title" = "Majdnem kész!";
-"key_verification_scan_confirmation_scanned_user_information" = "%s is ugyanazt a pajzsot mutatja?";
+"key_verification_scan_confirmation_scanned_user_information" = "%@ is ugyanazt a pajzsot mutatja?";
 "key_verification_scan_confirmation_scanned_device_information" = "A másik eszköz is ugyanazt a pajzsot mutatja?";
 "room_participants_action_security_status_complete_security" = "Biztonsági beállítás befejezése";
 // MARK: Clients
@@ -1174,3 +1174,32 @@
 "external_link_confirmation_title" = "Ezt a hivatkozást ellenőrizd le még egyszer";
 "external_link_confirmation_message" = "%@ hivatkozás egy másik oldalra visz: %@ \n \nFolytatod?";
 "major_update_information" = "Izgatottan jelentjük, hogy megváltoztattuk a nevünket! Az alkalmazásod friss és be vagy jelentkezve a fiókodba.";
+"pin_protection_choose_pin" = "A biztonság érdekében válassz egy PIN kódot";
+"pin_protection_confirm_pin" = "Erősítsd meg a PIN kódot";
+"pin_protection_confirm_pin_to_disable" = "A PIN letiltásához írd be a PIN kódot";
+"pin_protection_enter_pin" = "Add meg a PIN kódot";
+"pin_protection_forgot_pin" = "Elfelejtett PIN";
+"pin_protection_reset_alert_title" = "PIN újra beállítása";
+"pin_protection_reset_alert_message" = "A PIN újbóli beállításához újra be kell lépjél és létre kell hozni egy újat";
+"pin_protection_reset_alert_action_reset" = "Újra beállít";
+"pin_protection_mismatch_error_title" = "A PIN-ek nem egyeznek meg";
+"pin_protection_mismatch_error_message" = "Kérlek próbáld újra";
+"pin_protection_mismatch_too_many_times_error_message" = "Ha nem emlékszel a PIN kódodra, koppints az Elfelejtett PIN gombra.";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_settings_section_footer" = "A PIN újbóli beállításához újra be kell lépjél és létre kell hozni egy újat.";
+"pin_protection_settings_enabled_forced" = "PIN engedélyezve";
+"pin_protection_settings_enable_pin" = "PIN engedélyezése";
+"pin_protection_settings_section_header_x" = "PIN & %@";
+"biometrics_mode_touch_id" = "Érintéses azonosítás";
+"biometrics_mode_face_id" = "Arc felismerés";
+"biometrics_settings_enable_x" = "%@ engedélyezése";
+"biometrics_setup_title_x" = "%@ engedélyezése";
+"biometrics_setup_enable_button_title_x" = "%@ engedélyezése";
+"biometrics_setup_subtitle" = "Spórolj időt";
+"biometrics_desetup_title_x" = "%@ kikapcsolása";
+"biometrics_desetup_disable_button_title_x" = "%@ kikapcsolása";
+"biometrics_usage_reason" = "Az alkalmazás eléréséhez azonosításra van szükség";
+"biometrics_cant_unlocked_alert_title" = "Az alkalmazást nem sikerült feloldani";
+"biometrics_cant_unlocked_alert_message_x" = "A feloldáshoz használd ezt: %@ vagy jelentkezz vissza és engedélyezd ezt újra: %@";
+"biometrics_cant_unlocked_alert_message_login" = "Bejelentkezés újra";
+"biometrics_cant_unlocked_alert_message_retry" = "Újra";
