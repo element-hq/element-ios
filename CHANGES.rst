@@ -5,7 +5,7 @@ Features:
  * 
 
 Improvements:
- * 
+ * Config fixes. 
 
 Bugfix:
  * 
