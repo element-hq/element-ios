@@ -2609,40 +2609,43 @@
     }
     else // Add action for attachment
     {
-        if (attachment.type == MXKAttachmentTypeImage || attachment.type == MXKAttachmentTypeVideo)
+        if (BuildSettings.messageDetailsAllowSaving)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_save", @"Vector", nil)
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-                                                               
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-                                                                   
-                                                                   [self cancelEventSelection];
-                                                                   
-                                                                   [self startActivityIndicator];
-                                                                   
-                                                                   [attachment save:^{
-                                                                       
-                                                                       __strong __typeof(weakSelf)self = weakSelf;
-                                                                       [self stopActivityIndicator];
-                                                                       
-                                                                   } failure:^(NSError *error) {
-                                                                       
-                                                                       __strong __typeof(weakSelf)self = weakSelf;
-                                                                       [self stopActivityIndicator];
-                                                                       
-                                                                       //Alert user
-                                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                       
-                                                                   }];
-                                                                   
-                                                                   // Start animation in case of download during attachment preparing
-                                                                   [roomBubbleTableViewCell startProgressUI];
-                                                               }
-                                                               
-                                                           }]];
+            if (attachment.type == MXKAttachmentTypeImage || attachment.type == MXKAttachmentTypeVideo)
+            {
+                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_save", @"Vector", nil)
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:^(UIAlertAction * action) {
+                    
+                    if (weakSelf)
+                    {
+                        typeof(self) self = weakSelf;
+                        
+                        [self cancelEventSelection];
+                        
+                        [self startActivityIndicator];
+                        
+                        [attachment save:^{
+                            
+                            __strong __typeof(weakSelf)self = weakSelf;
+                            [self stopActivityIndicator];
+                            
+                        } failure:^(NSError *error) {
+                            
+                            __strong __typeof(weakSelf)self = weakSelf;
+                            [self stopActivityIndicator];
+                            
+                            //Alert user
+                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                            
+                        }];
+                        
+                        // Start animation in case of download during attachment preparing
+                        [roomBubbleTableViewCell startProgressUI];
+                    }
+                    
+                }]];
+            }
         }
             
         // Check status of the selected event
