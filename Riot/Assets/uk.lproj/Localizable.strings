@@ -60,4 +60,4 @@
 /* New message indicator from a DM */
 "MESSAGE_FROM_X" = "Повідомлення від %@";
 /* New message indicator on a room */
-"MESSAGE_IN_X" = "Повідомлення в %@";
+"MESSAGE_IN_X" = "Повідомлення у %@";
