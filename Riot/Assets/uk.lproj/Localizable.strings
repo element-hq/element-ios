@@ -57,3 +57,7 @@
 "KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ бажає звіритись";
 /* New message indicator on unknown room */
 "MESSAGE" = "Повідомлення";
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "Повідомлення від %@";
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "Повідомлення в %@";
