@@ -85,7 +85,7 @@ platform :ios do
       sonar_organization: "new_vector_ltd_organization",
       sonar_url: "https://sonarcloud.io",
       sonar_login: ENV["SONAR_LOGIN"],
-      sources_path: File.expand_path("../Riot,../RiotNSE,../RiotShareExtension")
+      sources_path: File.expand_path("../Riot") + "," + File.expand_path("../RiotNSE") + "," + File.expand_path("../RiotShareExtension")
     )
   end
 
