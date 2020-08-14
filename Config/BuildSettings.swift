@@ -186,7 +186,7 @@ final class BuildSettings: NSObject {
     static let messageDetailsAllowShare: Bool = true
     static let messageDetailsAllowPermalink: Bool = true
     static let messageDetailsAllowViewSource: Bool = true
-    static let messageDetailsAllowSaving: Bool = true
+    static let messageDetailsAllowSave: Bool = true
     
     
     // MARK: - Authentication Screen
