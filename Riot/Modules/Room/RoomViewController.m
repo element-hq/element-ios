@@ -2609,7 +2609,7 @@
     }
     else // Add action for attachment
     {
-        if (BuildSettings.messageDetailsAllowSaving)
+        if (BuildSettings.messageDetailsAllowSave)
         {
             if (attachment.type == MXKAttachmentTypeImage || attachment.type == MXKAttachmentTypeVideo)
             {

@@ -42,7 +42,7 @@ class CommonConfiguration: NSObject, Configurable {
         settings.syncWithLazyLoadOfRoomMembers = true
         
         settings.messageDetailsAllowSharing = BuildSettings.messageDetailsAllowShare
-        settings.messageDetailsAllowSaving = BuildSettings.messageDetailsAllowSaving
+        settings.messageDetailsAllowSaving = BuildSettings.messageDetailsAllowSave
         
         MXKContactManager.shared().allowLocalContactsAccess = BuildSettings.allowLocalContactsAccess
     }
