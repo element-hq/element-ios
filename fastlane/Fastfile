@@ -86,7 +86,7 @@ platform :ios do
       sonar_url: "https://sonarcloud.io",
       sonar_login: ENV["SONAR_LOGIN"],
       sources_path: File.expand_path("../Riot") + "," + File.expand_path("../RiotNSE") + "," + File.expand_path("../RiotShareExtension"),
-      sonar_runner_args: -Dsonar.cfamily.build-wrapper-output=build_wrapper_output_directory
+      sonar_runner_args: "-Dsonar.cfamily.build-wrapper-output=build_wrapper_output_directory"
     )
   end
 
