@@ -61,7 +61,7 @@ platform :ios do
     edit_podfile(branch_pattern: git_branch)
   end
 
-  desc "Build the app for simulator to ensure it compiles"
+  desc "Build the app for simulator to ensure it compiles, and send code to SonarCloud for analysis"
   lane :build do |options|
     cocoapods
 
@@ -75,10 +75,7 @@ platform :ios do
       skip_archive: true,
       destination: "generic/platform=iOS Simulator",
     )
-  end
 
-  desc "Send code to SonarCloud for analysis"
-  lane :sonar do |options|
     sonar(
       project_key: "im.vector.app.ios",
       project_name: "Element-iOS",
