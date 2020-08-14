@@ -40,6 +40,11 @@ class CommonConfiguration: NSObject, Configurable {
         
         // Enable lazy loading
         settings.syncWithLazyLoadOfRoomMembers = true
+        
+        settings.messageDetailsAllowSharing = BuildSettings.messageDetailsAllowShare
+        settings.messageDetailsAllowSaving = BuildSettings.messageDetailsAllowSaving
+        
+        MXKContactManager.shared().allowLocalContactsAccess = BuildSettings.allowLocalContactsAccess
     }
     
     private func setupMatrixSDKSettings() {
