@@ -174,7 +174,7 @@
 "device_verification_emoji_heart" = "Süda";
 "device_verification_emoji_smiley" = "Smaili";
 "device_verification_emoji_robot" = "Robot";
-"device_verification_emoji_hat" = "Müts";
+"device_verification_emoji_hat" = "Kübar";
 "device_verification_emoji_glasses" = "Prillid";
 "device_verification_emoji_spanner" = "Mutrivõti";
 "device_verification_emoji_santa" = "Jõuluvana";
@@ -205,7 +205,7 @@
 "device_verification_emoji_anchor" = "Ankur";
 "device_verification_emoji_headphones" = "Kõrvaklapid";
 "device_verification_emoji_folder" = "Kaust";
-"device_verification_emoji_pin" = "Knopka";
+"device_verification_emoji_pin" = "Nööpnõel";
 "deactivate_account_forget_messages_information_part2_emphasize" = "Hoiatus";
 "deactivate_account_validate_action" = "Kas eemaldame selle konto kasutusest";
 "deactivate_account_password_alert_title" = "Eemalda konto";
@@ -427,7 +427,7 @@
 "room_participants_leave_prompt_title" = "Lahku jututoast";
 "room_participants_leave_prompt_msg" = "Kas oled kindel, et soovid lahkuda jututoast?";
 "room_participants_remove_prompt_title" = "Kinnitus";
-"room_participants_remove_prompt_msg" = "Kas sa oled kindel, et soovid eemaldada %@ vestlusest?";
+"room_participants_remove_prompt_msg" = "Kas sa oled kindel, et soovid eemaldada %@ sellest vestlusest?";
 "room_participants_remove_third_party_invite_prompt_msg" = "Kas sa oled kindel, et soovid tühistada selle kutse?";
 "room_participants_invite_prompt_title" = "Kinnitus";
 "room_participants_invite_prompt_msg" = "Kas sa oled kindel, et soovid kutsuda %@ vestlusele?";
@@ -946,7 +946,7 @@
 "unknown_devices_title" = "Tundmatud sessioonid";
 // Room Title
 "room_title_new_room" = "Uus jututuba";
-"room_title_multiple_active_members" = "%@/%@ aktiivset liiget";
+"room_title_multiple_active_members" = "%@/%@ aktiivset osalejat";
 "room_title_one_active_member" = "%@/%@ aktiivne liige";
 "room_title_invite_members" = "Kutsu jututuppa uusi osalejaid";
 "room_title_members" = "%@ liiget";
