@@ -14,7 +14,7 @@ API Change:
  * 
 
 Translations:
- * 
+ * Replaces "Show less" with "Show fewer"
 
 Others:
  * 
