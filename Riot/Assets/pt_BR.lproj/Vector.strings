@@ -141,7 +141,7 @@
 "contacts_address_book_section" = "CONTATOS LOCAIS";
 "contacts_address_book_matrix_users_toggle" = "Apenas usuários na Matrix";
 "contacts_address_book_no_contact" = "Nenhum contato local";
-"contacts_address_book_permission_required" = "É preciso autorização para acessar contatos locais";
+"contacts_address_book_permission_required" = "Permissão necessária para acessar contatos locais";
 "contacts_address_book_permission_denied" = "Você não permitiu que o Element acesse seus contatos locais";
 "contacts_user_directory_section" = "DIRETÓRIO DE USUÁRIOS";
 "contacts_user_directory_offline_section" = "DIRETÓRIO DE USUÁRIOS (desconectado)";
@@ -203,12 +203,12 @@
 "room_two_users_are_typing" = "%@ & %@ estão digitando…";
 "room_many_users_are_typing" = "%@, %@ e outros estão digitando…";
 "room_message_placeholder" = "Digite uma mensagem (não criptografada)…";
-"room_message_reply_to_placeholder" = "Enviar uma resposta (não criptografada)…";
-"room_do_not_have_permission_to_post" = "Você não tem permissão para postar nesta sala";
-"encrypted_room_message_placeholder" = "Enviar uma mensagem criptografada…";
-"encrypted_room_message_reply_to_placeholder" = "Enviar uma resposta criptografada…";
+"room_message_reply_to_placeholder" = "Digite sua resposta (não criptografada)…";
+"room_do_not_have_permission_to_post" = "Você não tem permissão para digitar nesta sala";
+"encrypted_room_message_placeholder" = "Digite uma mensagem criptografada…";
+"encrypted_room_message_reply_to_placeholder" = "Digite sua resposta criptografada…";
 "room_message_short_placeholder" = "Digite uma mensagem…";
-"room_message_reply_to_short_placeholder" = "Enviar uma resposta…";
+"room_message_reply_to_short_placeholder" = "Digite sua resposta…";
 "room_offline_notification" = "A conectividade com o servidor foi perdida.";
 "room_unsent_messages_notification" = "Mensagens não enviadas. %@ ou %@ agora?";
 "room_unsent_messages_unknown_devices_notification" = "Mensagem não enviada devido à presença de sessões desconhecidas. %@ ou %@ agora?";
@@ -317,7 +317,7 @@
 "settings_fail_to_update_profile" = "Falha ao atualizar perfil";
 "settings_enable_push_notif" = "Notificações neste aparelho";
 "settings_show_decrypted_content" = "Mostrar conteúdo descriptografado";
-"settings_global_settings_info" = "Configurações globais de notificação estão disponíveis no seu cliente web %@";
+"settings_global_settings_info" = "Configurações gerais de notificação estão disponíveis no %@ Web";
 "settings_on_denied_notification" = "As notificações são negadas para %@, permita-as nas configurações do seu aparelho";
 "settings_enable_callkit" = "Chamada integrada";
 "settings_callkit_info" = "Receba chamadas na sua tela de bloqueio. Veja suas chamadas do Element no histórico de chamadas do sistema. Se o iCloud estiver ativado, esse histórico de chamadas será compartilhado com a Apple.";
@@ -558,7 +558,7 @@
 "rerequest_keys_alert_message" = "Por favor, inicie o Element em outro aparelho que possa descriptografar a mensagem, de modo que ele possa enviar as chaves para esta sessão.";
 // String for App Store
 "store_short_description" = "Conversas e chamadas: seguras e descentralizadas";
-"store_full_description" = "O Element é um novo tipo de aplicativo de comunicação e colaboração que:↵\n↵\n1. Coloca você no controle para preservar sua privacidade↵\n2. Permite que você se comunique com qualquer pessoa na rede Matrix, e até mais além, integrando-se a aplicativos como o Slack↵\n3. Protege você de publicidade, datamining, backdoors e jardins murados↵\n4. Protege você por meio da criptografia de ponta a ponta, com autoverificação para verificar outras pessoas↵\n↵\nO Element é completamente diferente de outros aplicativos de mensagens e colaboração porque é descentralizado e de código aberto.↵\n↵\nO Element permite que você use seu próprio servidor - ou escolha uma alternativa de armazenamento - para ter privacidade, propriedade e controle de seus dados e conversas. Dá acesso a uma rede aberta; para que você não fique falando apenas com outros usuários do Element. E é muito seguro.↵\n↵\nO Element é capaz de fazer tudo isso porque opera na rede Matrix - o padrão para comunicação aberta e descentralizada.↵\n↵\nO Element coloca você no controle, permitindo escolher quem armazena suas conversas. No aplicativo do Element, você pode optar por armazenar de diferentes maneiras:↵\n↵\n1. Obtenha uma conta gratuita no servidor público matrix.org↵\n2. Armazene sua conta automaticamente, executando um servidor em seu próprio hardware↵\n3. Inscreva-se em uma conta para um servidor personalizado, basta se inscrever na plataforma de armazenamento do Element Matrix Services↵\n↵\nPor que escolher o Element?↵\n↵\nPOSSUA SEUS DADOS: você decide onde guardar seus dados e mensagens. Você os possui e controla, e não alguma MEGA CORPORAÇÃO que vende seus dados ou dá acesso a terceiros.↵\n↵\nMENSAGEM ABERTA E COLABORAÇÃO: você pode conversar com qualquer outra pessoa na rede Matrix, esteja ela usando o Element ou outro aplicativo que se conecta na rede Matrix. E mesmo se estiverem usando um sistema de mensagens diferente, como Slack, IRC ou XMPP.↵\n↵\nSUPER SEGURO: criptografia real de ponta a ponta (somente aqueles na conversa podem descriptografar as mensagens) e autoverificação para verificar os aparelhos dos participantes da conversa.↵\n↵\nCOMUNICAÇÃO COMPLETA: mensagens, chamadas de voz e de vídeo, compartilhamento de arquivos, compartilhamento de tela e um monte de integrações, bots e widgets. Crie salas, comunidades, mantenha contato e faça as coisas acontecerem.↵\n↵\nONDE QUER QUE VOCÊ ESTEJA: mantenha contato onde quer que você esteja, com o histórico de mensagens totalmente sincronizado em todos os seus aparelhos e na web em https://element.io/app.";
+"store_full_description" = "O Element é um novo tipo de aplicativo de comunicação e colaboração que:↵\n↵\n1. Coloca você no controle para preservar sua privacidade↵\n2. Permite que você se comunique com qualquer pessoa na rede Matrix, e até mais além, integrando-se a aplicativos como o Slack↵\n3. Protege você de publicidade, datamining, backdoors e jardins murados↵\n4. Protege você por meio da criptografia de ponta a ponta, com autoverificação para verificar outras pessoas↵\n↵\nO Element é completamente diferente de outros aplicativos de mensagens e colaboração porque é descentralizado e de código aberto.↵\n↵\nO Element permite que você use seu próprio servidor - ou escolha uma alternativa de armazenamento - para ter privacidade, propriedade e controle de seus dados e conversas. Dá acesso a uma rede aberta; para que você não fique falando apenas com outros usuários do Element. E é muito seguro.↵\n↵\nO Element é capaz de fazer tudo isso porque opera na rede Matrix - o padrão para comunicação aberta e descentralizada.↵\n↵\nO Element coloca você no controle, permitindo escolher quem armazena suas conversas. No aplicativo do Element, você pode optar por armazenar de diferentes maneiras:↵\n↵\n1. Obtenha uma conta gratuita no servidor público matrix.org↵\n2. Armazene sua conta automaticamente, executando um servidor em seu próprio hardware↵\n3. Inscreva-se em uma conta para um servidor personalizado, basta se inscrever na plataforma de armazenamento do Element Matrix Services↵\n↵\nPor que escolher o Element?↵\n↵\nPOSSUA SEUS DADOS: você decide onde guardar seus dados e mensagens. Você os possui e controla, e não alguma MEGA CORPORAÇÃO que vende seus dados ou dá acesso a terceiros.↵\n↵\nMENSAGEM ABERTA E COLABORAÇÃO: você pode conversar com qualquer outra pessoa na rede Matrix, esteja ela usando o Element ou outro aplicativo que se conecta na rede Matrix. E mesmo se estiverem usando um sistema de mensagens diferente, como Slack, IRC ou XMPP.↵\n↵\nSUPER SEGURO: criptografia real de ponta a ponta (somente aqueles na conversa podem descriptografar as mensagens) e autoverificação para verificar os aparelhos dos participantes da conversa.↵\n↵\nCOMUNICAÇÃO COMPLETA: mensagens, chamadas de voz e de vídeo, compartilhamento de arquivos, compartilhamento de tela e um monte de integrações, bots e widgets. Crie salas, comunidades, mantenha contato e faça as coisas acontecerem.↵\n↵\nONDE QUER QUE VOCÊ ESTEJA: mantenha contato onde quer que você esteja, com o histórico de mensagens totalmente sincronizado em todos os seus aparelhos e no navegador de internet em https://element.io/app.";
 "auth_login_single_sign_on" = "Entre com o logon único";
 "auth_autodiscover_invalid_response" = "Resposta de descoberta inválida no servidor local";
 "room_message_unable_open_link_error_message" = "Não foi possível abrir o link.";
@@ -627,7 +627,7 @@
 "key_backup_recover_title" = "Mensagens seguras";
 "key_backup_recover_invalid_passphrase_title" = "Senha de recuperação incorreta";
 "key_backup_recover_invalid_passphrase" = "O Backup não pôde ser descriptografado com essa frase secreta: verifique se você digitou a frase secreta de recuperação correta.";
-"key_backup_recover_invalid_recovery_key_title" = "Incompatibilidade de chave de recuperação";
+"key_backup_recover_invalid_recovery_key_title" = "Chave de recuperação incorreta";
 "key_backup_recover_invalid_recovery_key" = "O Backup não pôde ser descriptografado com essa chave: verifique se você inseriu a chave de recuperação correta.";
 "key_backup_recover_from_passphrase_info" = "Use sua frase secreta de recuperação para desbloquear seu histórico de mensagens seguras";
 "key_backup_recover_from_passphrase_passphrase_title" = "Entrar";
@@ -636,7 +636,7 @@
 "key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Não sabe sua senha de recuperação? Você pode ";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "use sua chave de recuperação";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
-"key_backup_recover_from_recovery_key_info" = "Use sua chave de recuperação para desbloquear seu histórico de mensagens seguras";
+"key_backup_recover_from_recovery_key_info" = "Use sua chave de recuperação para desbloquear o seu histórico de mensagens seguras";
 "key_backup_recover_from_recovery_key_recovery_key_title" = "Entrar";
 "key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Digite a chave de recuperação";
 "key_backup_recover_from_recovery_key_recover_action" = "Desbloquear Histórico";
@@ -808,7 +808,7 @@
 "user_verification_sessions_list_user_trust_level_warning_title" = "Atenção";
 "user_verification_sessions_list_information" = "As mensagens com este usuário nesta sala estão criptografadas de ponta a ponta e não podem ser lidas por terceiros.";
 "secrets_recovery_with_passphrase_information_default" = "Digite a sua senha de recuperação para acessar o seu histórico de mensagens seguras e a sua identidade autoverificada para verificar outras sessões.";
-"secrets_recovery_with_key_information_default" = "Digite a sua senha de recuperação para acessar o seu histórico de mensagens seguras e a sua identidade autoverificada para verificar outras sessões.";
+"secrets_recovery_with_key_information_default" = "Digite a sua chave de recuperação para acessar o seu histórico de mensagens seguras e para verificar outras sessões com sua identidade autoverificada.";
 "secrets_setup_recovery_key_done_action" = "Pronto";
 "secrets_setup_recovery_passphrase_validate_action" = "Pronto";
 "pin_protection_settings_enabled_forced" = "PIN ativado";
@@ -847,7 +847,7 @@
 "room_member_power_level_short_custom" = "Personalizado";
 "room_accessiblity_scroll_to_bottom" = "Ir para as mensagens mais recentes";
 "room_event_action_reaction_show_less" = "Mostrar menos";
-"room_event_action_reaction_history" = "Reações";
+"room_event_action_reaction_history" = "Histórico de reações";
 "room_message_edits_history_title" = "Edições na mensagem";
 "room_accessibility_upload" = "Enviar";
 "room_accessibility_hangup" = "Encerrar";
@@ -974,7 +974,7 @@
 "device_verification_self_verify_wait_title" = "Concluir segurança";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verificar este login";
 "device_verification_self_verify_wait_information" = "Verifique esta sessão a partir de uma de suas outras sessões, concedendo acesso às mensagens criptografadas.↵\n↵\nUse o Element mais recente em seus outros aparelhos:";
-"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Use a chave de recuperação";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Usar chave de recuperação";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Use a chave de recuperação, ou a frase de recuperação";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "Se você não tem acesso a uma sessão existente";
 "key_verification_verify_sas_title_number" = "Comparar números";
