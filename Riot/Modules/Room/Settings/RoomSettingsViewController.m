@@ -33,9 +33,6 @@
 
 #import "RoomMemberDetailsViewController.h"
 
-#import "Row.h"
-#import "Section.h"
-
 #import <MobileCoreServices/MobileCoreServices.h>
 
 enum
@@ -130,7 +127,7 @@ NSString *const kRoomSettingsAdvancedCellViewIdentifier = @"kRoomSettingsAdvance
 NSString *const kRoomSettingsAdvancedEnableE2eCellViewIdentifier = @"kRoomSettingsAdvancedEnableE2eCellViewIdentifier";
 NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSettingsAdvancedE2eEnabledCellViewIdentifier";
 
-@interface RoomSettingsViewController () <SingleImagePickerPresenterDelegate>
+@interface RoomSettingsViewController () <SingleImagePickerPresenterDelegate, TableViewSectionsDelegate>
 {
     // The updated user data
     NSMutableDictionary<NSString*, id> *updatedItemsDict;
@@ -189,7 +186,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
 @property (nonatomic, strong) SingleImagePickerPresenter *imagePickerPresenter;
 
-@property (nonatomic, strong) NSArray<Section*> *sections;
+@property (nonatomic, strong) TableViewSections *tableViewSections;
 
 @end
 
@@ -283,6 +280,8 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     }];
     [self userInterfaceThemeDidChange];
     
+    _tableViewSections = [TableViewSections new];
+    _tableViewSections.delegate = self;
     [self updateSections];
 }
 
@@ -665,78 +664,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     }
     
     //  update sections
-    self.sections = tmpSections;
-}
-
-- (void)setSections:(NSArray<Section *> *)sections
-{
-    _sections = sections;
-    
-    //  reload table
-    [self.tableView reloadData];
-}
-
-/// Returns index of section for the given tag. If cannot find, return `NSNotFound`
-/// @param tag Tag for section
-- (NSInteger)indexOfSectionForTag:(NSInteger)tag
-{
-    return [_sections indexOfObjectPassingTest:^BOOL(Section * _Nonnull section, NSUInteger idx, BOOL * _Nonnull stop) {
-        return section.tag == tag;
-    }];
-}
-
-/// Finds the exact indexpath for the given row and section tag. If cannot find, returns nil
-/// @param rowTag Tag for row
-/// @param sectionTag Tag for section
-- (NSIndexPath *)exactIndexPathForRowTag:(NSInteger)rowTag sectionTag:(NSInteger)sectionTag
-{
-    NSInteger sectionIndex = [self indexOfSectionForTag:sectionTag];
-    if (sectionIndex != NSNotFound)
-    {
-        Section *section = _sections[sectionIndex];
-        NSInteger rowIndex = [section indexOfRowForTag:rowTag];
-        if (rowIndex != NSNotFound)
-        {
-            return [NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex];
-        }
-    }
-    return nil;
-}
-
-/// Finds the nearest next indexPath for given row tag and section tag. If the section finishes, also checks for the next section. If cannot find any row available, returns nil.
-/// @param rowTag Tag for row
-/// @param sectionTag Tag for section
-- (NSIndexPath *)nearestIndexPathForRowTag:(NSInteger)rowTag sectionTag:(NSInteger)sectionTag
-{
-    NSInteger sectionIndex = [self indexOfSectionForTag:sectionTag];
-    if (sectionIndex != NSNotFound)
-    {
-        Section *section = _sections[sectionIndex];
-        NSInteger rowIndex = [section indexOfRowForTag:rowTag];
-        if (rowIndex != NSNotFound)
-        {
-            //  exact row found, return it
-            return [NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex];
-        }
-        else if (rowTag + 1 < section.rows.count)
-        {
-            //  try to return next row in the same section
-            return [self nearestIndexPathForRowTag:rowTag + 1 sectionTag:sectionTag];
-        }
-        else if (sectionTag + 1 < _sections.count)
-        {
-            //  try to return the first row of the next section
-            return [self nearestIndexPathForRowTag:0 sectionTag:sectionTag + 1];
-        }
-        
-        return nil;
-    }
-    else if (sectionTag + 1 < _sections.count)
-    {
-        //  try to return the first row of the next section
-        return [self nearestIndexPathForRowTag:0 sectionTag:sectionTag + 1];
-    }
-    return nil;
+    self.tableViewSections.sections = tmpSections;
 }
 
 #pragma mark -
@@ -2196,26 +2124,18 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return _sections.count;
+    return _tableViewSections.sections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    Section *sectionObject = nil;
-    if (section < _sections.count)
-    {
-        sectionObject = _sections[section];
-    }
+    Section *sectionObject = [_tableViewSections sectionAtIndex:section];
     return sectionObject.rows.count;
 }
 
 - (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    Section *sectionObject = nil;
-    if (section < _sections.count)
-    {
-        sectionObject = _sections[section];
-    }
+    Section *sectionObject = [_tableViewSections sectionAtIndex:section];
     return sectionObject.headerTitle;
 }
 
@@ -2232,20 +2152,10 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Section *sectionObj = nil;
-    NSInteger section = NSNotFound;
-    NSInteger row = NSNotFound;
-    
-    if (indexPath.section < _sections.count)
-    {
-        sectionObj = _sections[indexPath.section];
-        section = sectionObj.tag;
-        if (indexPath.row < sectionObj.rows.count)
-        {
-            row = sectionObj.rows[indexPath.row].tag;
-        }
-    }
-    
+    NSIndexPath *tagsIndexPath = [_tableViewSections tagsIndexPathFromTableViewIndexPath:indexPath];
+    NSInteger section = tagsIndexPath.section;
+    NSInteger row = tagsIndexPath.row;
+
     if (section == SECTION_TAG_MAIN)
     {
         if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_TOPIC)
@@ -2259,19 +2169,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Section *sectionObj = nil;
-    NSInteger section = NSNotFound;
-    NSInteger row = NSNotFound;
-    
-    if (indexPath.section < _sections.count)
-    {
-        sectionObj = _sections[indexPath.section];
-        section = sectionObj.tag;
-        if (indexPath.row < sectionObj.rows.count)
-        {
-            row = sectionObj.rows[indexPath.row].tag;
-        }
-    }
+    NSIndexPath *tagsIndexPath = [_tableViewSections tagsIndexPathFromTableViewIndexPath:indexPath];
+    NSInteger section = tagsIndexPath.section;
+    NSInteger row = tagsIndexPath.row;
     
     UITableViewCell* cell;
     
@@ -2997,19 +2897,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Section *sectionObj = nil;
-    NSInteger section = NSNotFound;
-    NSInteger row = NSNotFound;
-    
-    if (indexPath.section < _sections.count)
-    {
-        sectionObj = _sections[indexPath.section];
-        section = sectionObj.tag;
-        if (indexPath.row < sectionObj.rows.count)
-        {
-            row = sectionObj.rows[indexPath.row].tag;
-        }
-    }
+    NSIndexPath *tagsIndexPath = [_tableViewSections tagsIndexPathFromTableViewIndexPath:indexPath];
+    NSInteger section = tagsIndexPath.section;
+    NSInteger row = tagsIndexPath.row;
     
     if (self.tableView == tableView)
     {
@@ -3157,14 +3047,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             else if (row == ROOM_SETTINGS_ROOM_ACCESS_MISSING_ADDRESS_WARNING)
             {
                 // Scroll to room addresses section
-                NSIndexPath *addressIndexPath = [self exactIndexPathForRowTag:0 sectionTag:SECTION_TAG_ADDRESSES];
+                NSIndexPath *addressIndexPath = [_tableViewSections exactIndexPathForRowTag:0 sectionTag:SECTION_TAG_ADDRESSES];
                 if (addressIndexPath)
                 {
                     [tableView scrollToRowAtIndexPath:addressIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
                 }
                 else
                 {
-                    addressIndexPath = [self nearestIndexPathForRowTag:0 sectionTag:SECTION_TAG_ADDRESSES];
+                    addressIndexPath = [_tableViewSections nearestIndexPathForRowTag:0 sectionTag:SECTION_TAG_ADDRESSES];
                     if (addressIndexPath)
                     {
                         [tableView scrollToRowAtIndexPath:addressIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
@@ -3277,19 +3167,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
 - (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Section *sectionObj = nil;
-    NSInteger section = NSNotFound;
-    NSInteger row = NSNotFound;
-    
-    if (indexPath.section < _sections.count)
-    {
-        sectionObj = _sections[indexPath.section];
-        section = sectionObj.tag;
-        if (indexPath.row < sectionObj.rows.count)
-        {
-            row = sectionObj.rows[indexPath.row].tag;
-        }
-    }
+    NSIndexPath *tagsIndexPath = [_tableViewSections tagsIndexPathFromTableViewIndexPath:indexPath];
+    NSInteger section = tagsIndexPath.section;
+    NSInteger row = tagsIndexPath.row;
     
     // Add the swipe to delete only on addresses section
     if (section == SECTION_TAG_ADDRESSES && row >= ROOM_SETTINGS_ROOM_ADDRESS_ALIAS_OFFSET)
@@ -3553,7 +3433,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     UIView *sourceView;
     
-    NSIndexPath *indexPath = [self exactIndexPathForRowTag:ROOM_SETTINGS_MAIN_SECTION_ROW_PHOTO sectionTag:SECTION_TAG_MAIN];
+    NSIndexPath *indexPath = [_tableViewSections exactIndexPathForRowTag:ROOM_SETTINGS_MAIN_SECTION_ROW_PHOTO sectionTag:SECTION_TAG_MAIN];
     if (indexPath)
     {
         sourceView = [self.tableView cellForRowAtIndexPath:indexPath];
@@ -3713,19 +3593,8 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
 - (void)removeAddressAtIndexPath:(NSIndexPath *)indexPath
 {
-    Section *sectionObj = nil;
-    NSInteger section = NSNotFound;
-    NSInteger row = NSNotFound;
-    
-    if (indexPath.section < _sections.count)
-    {
-        sectionObj = _sections[indexPath.section];
-        section = sectionObj.tag;
-        if (indexPath.row < sectionObj.rows.count)
-        {
-            row = sectionObj.rows[indexPath.row].tag;
-        }
-    }
+    indexPath = [_tableViewSections tagsIndexPathFromTableViewIndexPath:indexPath];
+    NSInteger row = indexPath.row;
     
     row = ROOM_SETTINGS_ROOM_ADDRESS_ALIAS_OFFSET - row;
     
@@ -3738,19 +3607,8 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
 - (void)removeCommunityAtIndexPath:(NSIndexPath *)indexPath
 {
-    Section *sectionObj = nil;
-    NSInteger section = NSNotFound;
-    NSInteger row = NSNotFound;
-    
-    if (indexPath.section < _sections.count)
-    {
-        sectionObj = _sections[indexPath.section];
-        section = sectionObj.tag;
-        if (indexPath.row < sectionObj.rows.count)
-        {
-            row = sectionObj.rows[indexPath.row].tag;
-        }
-    }
+    indexPath = [_tableViewSections tagsIndexPathFromTableViewIndexPath:indexPath];
+    NSInteger row = indexPath.row;
     
     NSInteger index = row - ROOM_SETTINGS_RELATED_GROUPS_OFFSET;
     
@@ -4077,6 +3935,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     }
 }
 
+#pragma mark - TableViewSectionsDelegate
+
+- (void)tableViewSectionsDidUpdateSections:(TableViewSections *)sections
+{
+    [self.tableView reloadData];
+}
+
 @end
-
-
