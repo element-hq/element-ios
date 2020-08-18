@@ -40,13 +40,13 @@
 
 enum
 {
-    ROOM_SETTINGS_MAIN_SECTION_INDEX,
-    ROOM_SETTINGS_ROOM_ACCESS_SECTION_INDEX,
-    ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_INDEX,
-    ROOM_SETTINGS_ROOM_ADDRESSES_SECTION_INDEX,
-    ROOM_SETTINGS_RELATED_GROUPS_SECTION_INDEX,
-    ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX,
-    ROOM_SETTINGS_ADVANCED_SECTION_INDEX
+    SECTION_TAG_MAIN,
+    SECTION_TAG_ACCESS,
+    SECTION_TAG_HISTORY,
+    SECTION_TAG_ADDRESSES,
+    SECTION_TAG_FLAIR,
+    SECTION_TAG_BANNED_USERS,
+    SECTION_TAG_BANNED_ADVANCED
 };
 
 enum
@@ -519,9 +519,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     [self refreshRelatedGroups];
     
     //  create sections
-    NSMutableArray<Section*> *tmpSections = [NSMutableArray arrayWithCapacity:ROOM_SETTINGS_ADVANCED_SECTION_INDEX + 1];
+    NSMutableArray<Section*> *tmpSections = [NSMutableArray arrayWithCapacity:SECTION_TAG_BANNED_ADVANCED + 1];
     
-    Section *sectionMain = [Section sectionWithTag:ROOM_SETTINGS_MAIN_SECTION_INDEX];
+    Section *sectionMain = [Section sectionWithTag:SECTION_TAG_MAIN];
     [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_PHOTO];
     [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_NAME];
     [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_TOPIC];
@@ -536,7 +536,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     if (BuildSettings.roomSettingsScreenAllowChangingAccessSettings)
     {
-        Section *sectionAccess = [Section sectionWithTag:ROOM_SETTINGS_ROOM_ACCESS_SECTION_INDEX];
+        Section *sectionAccess = [Section sectionWithTag:SECTION_TAG_ACCESS];
         [sectionAccess addRowWithTag:ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_INVITED_ONLY];
         [sectionAccess addRowWithTag:ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_ANYONE_APART_FROM_GUEST];
         [sectionAccess addRowWithTag:ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_ANYONE];
@@ -562,7 +562,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     if (BuildSettings.roomSettingsScreenAllowChangingHistorySettings)
     {
-        Section *sectionHistory = [Section sectionWithTag:ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_INDEX];
+        Section *sectionHistory = [Section sectionWithTag:SECTION_TAG_HISTORY];
         [sectionHistory addRowWithTag:ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_ANYONE];
         [sectionHistory addRowWithTag:ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_MEMBERS_ONLY];
         [sectionHistory addRowWithTag:ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_MEMBERS_ONLY_SINCE_INVITED];
@@ -573,7 +573,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     if (BuildSettings.roomSettingsScreenShowAddressSettings)
     {
-        Section *sectionAddresses = [Section sectionWithTag:ROOM_SETTINGS_ROOM_ADDRESSES_SECTION_INDEX];
+        Section *sectionAddresses = [Section sectionWithTag:SECTION_TAG_ADDRESSES];
         if (localAddressesCount)
         {
             for (NSInteger counter = 0; counter < roomAddresses.count; counter++)
@@ -592,7 +592,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     if (BuildSettings.roomSettingsScreenShowFlairSettings)
     {
-        Section *sectionFlair = [Section sectionWithTag:ROOM_SETTINGS_RELATED_GROUPS_SECTION_INDEX];
+        Section *sectionFlair = [Section sectionWithTag:SECTION_TAG_FLAIR];
         
         for (NSInteger counter = 0; counter < relatedGroups.count; counter++)
         {
@@ -620,7 +620,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     if (bannedMembers.count)
     {
-        Section *sectionBannedUsers = [Section sectionWithTag:ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX];
+        Section *sectionBannedUsers = [Section sectionWithTag:SECTION_TAG_BANNED_USERS];
         
         for (NSInteger counter = 0; counter < bannedMembers.count; counter++)
         {
@@ -633,7 +633,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     if (BuildSettings.roomSettingsScreenShowAdvancedSettings)
     {
-        Section *sectionAdvanced = [Section sectionWithTag:ROOM_SETTINGS_ADVANCED_SECTION_INDEX];
+        Section *sectionAdvanced = [Section sectionWithTag:SECTION_TAG_BANNED_ADVANCED];
         
         [sectionAdvanced addRowWithTag:ROOM_SETTINGS_ADVANCED_ROOM_ID];
         if (mxRoom.mxSession.crypto)
@@ -2246,7 +2246,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         }
     }
     
-    if (section == ROOM_SETTINGS_MAIN_SECTION_INDEX)
+    if (section == SECTION_TAG_MAIN)
     {
         if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_TOPIC)
         {
@@ -2280,7 +2280,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
     
     // general settings
-    if (section == ROOM_SETTINGS_MAIN_SECTION_INDEX)
+    if (section == SECTION_TAG_MAIN)
     {
         if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS)
         {
@@ -2513,7 +2513,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             cell = leaveCell;
         }
     }
-    else if (section == ROOM_SETTINGS_ROOM_ACCESS_SECTION_INDEX)
+    else if (section == SECTION_TAG_ACCESS)
     {
         if (row == ROOM_SETTINGS_ROOM_ACCESS_DIRECTORY_VISIBILITY)
         {
@@ -2605,7 +2605,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             cell = roomAccessCell;
         }
     }
-    else if (section == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_INDEX)
+    else if (section == SECTION_TAG_HISTORY)
     {
         TableViewCellWithCheckBoxAndLabel *historyVisibilityCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithCheckBoxAndLabel defaultReuseIdentifier] forIndexPath:indexPath];
         
@@ -2663,7 +2663,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         
         cell = historyVisibilityCell;
     }
-    else if (section == ROOM_SETTINGS_ROOM_ADDRESSES_SECTION_INDEX)
+    else if (section == SECTION_TAG_ADDRESSES)
     {
         if (row == ROOM_SETTINGS_ROOM_ADDRESS_NEW_ALIAS)
         {
@@ -2757,7 +2757,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             cell = addressCell;
         }
     }
-    else if (section == ROOM_SETTINGS_RELATED_GROUPS_SECTION_INDEX)
+    else if (section == SECTION_TAG_FLAIR)
     {
         if (row == ROOM_SETTINGS_RELATED_GROUPS_NEW_GROUP)
         {
@@ -2815,7 +2815,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             cell = communityCell;
         }
     }
-    else if (section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX)
+    else if (section == SECTION_TAG_BANNED_USERS)
     {
         UITableViewCell *addressCell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsAddressCellViewIdentifier forIndexPath:indexPath];
         
@@ -2830,7 +2830,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         
         cell = addressCell;
     }
-    else if (section == ROOM_SETTINGS_ADVANCED_SECTION_INDEX)
+    else if (section == SECTION_TAG_BANNED_ADVANCED)
     {
         if (row == ROOM_SETTINGS_ADVANCED_ROOM_ID)
         {
@@ -2962,7 +2962,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         }
     }
     
-    if (section == ROOM_SETTINGS_ROOM_ADDRESSES_SECTION_INDEX && row != ROOM_SETTINGS_ROOM_ADDRESS_NEW_ALIAS)
+    if (section == SECTION_TAG_ADDRESSES && row != ROOM_SETTINGS_ROOM_ADDRESS_NEW_ALIAS)
     {
         if (row >= ROOM_SETTINGS_ROOM_ADDRESS_ALIAS_OFFSET)
         {
@@ -2971,10 +2971,10 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             return YES;
         }
     }
-    else if (section == ROOM_SETTINGS_RELATED_GROUPS_SECTION_INDEX && row != ROOM_SETTINGS_RELATED_GROUPS_NEW_GROUP)
+    else if (section == SECTION_TAG_FLAIR && row != ROOM_SETTINGS_RELATED_GROUPS_NEW_GROUP)
     {
         NSIndexPath *indexPath = [self exactIndexPathForRowTag:ROOM_SETTINGS_RELATED_GROUPS_NEW_GROUP
-                                                    sectionTag:ROOM_SETTINGS_RELATED_GROUPS_SECTION_INDEX];
+                                                    sectionTag:SECTION_TAG_FLAIR];
         
         // The user is allowed to remove a related group only if he is allowed to add a new one.
         return indexPath != nil;
@@ -3056,7 +3056,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     {
         [self dismissFirstResponder];
         
-        if (section == ROOM_SETTINGS_MAIN_SECTION_INDEX)
+        if (section == SECTION_TAG_MAIN)
         {
             if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_PHOTO)
             {
@@ -3070,7 +3070,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 }
             }
         }
-        else if (section == ROOM_SETTINGS_ROOM_ACCESS_SECTION_INDEX)
+        else if (section == SECTION_TAG_ACCESS)
         {
             BOOL isUpdated = NO;
             
@@ -3198,14 +3198,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             else if (row == ROOM_SETTINGS_ROOM_ACCESS_MISSING_ADDRESS_WARNING)
             {
                 // Scroll to room addresses section
-                NSIndexPath *addressIndexPath = [self exactIndexPathForRowTag:0 sectionTag:ROOM_SETTINGS_ROOM_ADDRESSES_SECTION_INDEX];
+                NSIndexPath *addressIndexPath = [self exactIndexPathForRowTag:0 sectionTag:SECTION_TAG_ADDRESSES];
                 if (addressIndexPath)
                 {
                     [tableView scrollToRowAtIndexPath:addressIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
                 }
                 else
                 {
-                    addressIndexPath = [self nearestIndexPathForRowTag:0 sectionTag:ROOM_SETTINGS_ROOM_ADDRESSES_SECTION_INDEX];
+                    addressIndexPath = [self nearestIndexPathForRowTag:0 sectionTag:SECTION_TAG_ADDRESSES];
                     if (addressIndexPath)
                     {
                         [tableView scrollToRowAtIndexPath:addressIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
@@ -3220,7 +3220,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
             }
         }
-        else if (section == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_INDEX)
+        else if (section == SECTION_TAG_HISTORY)
         {
             // Ignore the selection if the option is already enabled
             TableViewCellWithCheckBoxAndLabel *selectedCell = [self.tableView cellForRowAtIndexPath:indexPath];
@@ -3252,7 +3252,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 }
             }
         }
-        else if (section == ROOM_SETTINGS_ROOM_ADDRESSES_SECTION_INDEX)
+        else if (section == SECTION_TAG_ADDRESSES)
         {
             if (row == ROOM_SETTINGS_ROOM_ADDRESS_NEW_ALIAS)
             {
@@ -3275,7 +3275,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 });
             }
         }
-        else if (section == ROOM_SETTINGS_RELATED_GROUPS_SECTION_INDEX)
+        else if (section == SECTION_TAG_FLAIR)
         {
             if (row == ROOM_SETTINGS_RELATED_GROUPS_NEW_GROUP)
             {
@@ -3287,7 +3287,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 }
             }
         }
-        else if (section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX)
+        else if (section == SECTION_TAG_BANNED_USERS)
         {
             // Show the RoomMemberDetailsViewController on this member so that
             // if the user has enough power level, he will be able to unban him
@@ -3298,7 +3298,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             [self.parentViewController.navigationController pushViewController:roomMemberDetailsViewController animated:NO];
         }
-        else if (section == ROOM_SETTINGS_ADVANCED_SECTION_INDEX && row == ROOM_SETTINGS_ADVANCED_ROOM_ID)
+        else if (section == SECTION_TAG_BANNED_ADVANCED && row == ROOM_SETTINGS_ADVANCED_ROOM_ID)
         {
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             if (cell)
@@ -3335,7 +3335,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     NSMutableArray* actions;
     
     // Add the swipe to delete only on addresses section
-    if (section == ROOM_SETTINGS_ROOM_ADDRESSES_SECTION_INDEX && row != ROOM_SETTINGS_ROOM_ADDRESS_NEW_ALIAS)
+    if (section == SECTION_TAG_ADDRESSES && row != ROOM_SETTINGS_ROOM_ADDRESS_NEW_ALIAS)
     {
         if (row >= ROOM_SETTINGS_ROOM_ADDRESS_ALIAS_OFFSET)
         {
@@ -3352,7 +3352,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             [actions insertObject:removeAction atIndex:0];
         }
     }
-    else if (section == ROOM_SETTINGS_RELATED_GROUPS_SECTION_INDEX && row != ROOM_SETTINGS_RELATED_GROUPS_NEW_GROUP)
+    else if (section == SECTION_TAG_FLAIR && row != ROOM_SETTINGS_RELATED_GROUPS_NEW_GROUP)
     {
         actions = [[NSMutableArray alloc] init];
         
@@ -3585,7 +3585,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     UIView *sourceView;
     
-    NSIndexPath *indexPath = [self exactIndexPathForRowTag:ROOM_SETTINGS_MAIN_SECTION_ROW_PHOTO sectionTag:ROOM_SETTINGS_MAIN_SECTION_INDEX];
+    NSIndexPath *indexPath = [self exactIndexPathForRowTag:ROOM_SETTINGS_MAIN_SECTION_ROW_PHOTO sectionTag:SECTION_TAG_MAIN];
     if (indexPath)
     {
         sourceView = [self.tableView cellForRowAtIndexPath:indexPath];
