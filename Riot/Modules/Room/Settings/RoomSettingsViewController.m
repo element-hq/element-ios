@@ -2946,47 +2946,6 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     return cell;
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    Section *sectionObj = nil;
-    NSInteger section = NSNotFound;
-    NSInteger row = NSNotFound;
-    
-    if (indexPath.section < _sections.count)
-    {
-        sectionObj = _sections[indexPath.section];
-        section = sectionObj.tag;
-        if (indexPath.row < sectionObj.rows.count)
-        {
-            row = sectionObj.rows[indexPath.row].tag;
-        }
-    }
-    
-    if (section == SECTION_TAG_ADDRESSES && row != ROOM_SETTINGS_ROOM_ADDRESS_NEW_ALIAS)
-    {
-        if (row >= ROOM_SETTINGS_ROOM_ADDRESS_ALIAS_OFFSET)
-        {
-            // The user can only delete alias they has created, even if the Admin has set it as canonical.
-            // So, let the server answer if it's possible to delete an alias.
-            return YES;
-        }
-    }
-    else if (section == SECTION_TAG_FLAIR && row != ROOM_SETTINGS_RELATED_GROUPS_NEW_GROUP)
-    {
-        NSIndexPath *indexPath = [self exactIndexPathForRowTag:ROOM_SETTINGS_RELATED_GROUPS_NEW_GROUP
-                                                    sectionTag:SECTION_TAG_FLAIR];
-        
-        // The user is allowed to remove a related group only if he is allowed to add a new one.
-        return indexPath != nil;
-    }
-    return NO;
-}
-
-- (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath*)indexPath
-{
-    // iOS8 requires this method to enable editing (see editActionsForRowAtIndexPath).
-}
-
 - (MXKTableViewCellWithLabelAndSwitch*)getLabelAndSwitchCell:(UITableView*)tableview forIndexPath:(NSIndexPath *)indexPath
 {
     MXKTableViewCellWithLabelAndSwitch *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier] forIndexPath:indexPath];
@@ -3316,7 +3275,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     }
 }
 
-- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Section *sectionObj = nil;
     NSInteger section = NSNotFound;
@@ -3332,42 +3291,51 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         }
     }
     
-    NSMutableArray* actions;
-    
     // Add the swipe to delete only on addresses section
-    if (section == SECTION_TAG_ADDRESSES && row != ROOM_SETTINGS_ROOM_ADDRESS_NEW_ALIAS)
+    if (section == SECTION_TAG_ADDRESSES && row >= ROOM_SETTINGS_ROOM_ADDRESS_ALIAS_OFFSET)
     {
-        if (row >= ROOM_SETTINGS_ROOM_ADDRESS_ALIAS_OFFSET)
-        {
-            actions = [[NSMutableArray alloc] init];
-            
-            // Patch: Force the width of the button by adding whitespace characters into the title string.
-            UITableViewRowAction *removeAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"   "  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-                
-                [self removeAddressAtIndexPath:indexPath];
-                
-            }];
-            
-            removeAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(44, 44) resourceSize:CGSizeMake(24, 24)];
-            [actions insertObject:removeAction atIndex:0];
-        }
-    }
-    else if (section == SECTION_TAG_FLAIR && row != ROOM_SETTINGS_RELATED_GROUPS_NEW_GROUP)
-    {
-        actions = [[NSMutableArray alloc] init];
-        
-        // Patch: Force the width of the button by adding whitespace characters into the title string.
-        UITableViewRowAction *removeAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"   "  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-            
-            [self removeCommunityAtIndexPath:indexPath];
-            
+        UIContextualAction *removeAddressAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive
+                                                                                          title:@"    "
+                                                                                        handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+            [self removeAddressAtIndexPath:indexPath];
+            completionHandler(YES);
         }];
+        removeAddressAction.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+        removeAddressAction.image = [[UIImage imageNamed:@"remove_icon"] vc_notRenderedImage];
         
-        removeAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(44, 44) resourceSize:CGSizeMake(24, 24)];
-        [actions insertObject:removeAction atIndex:0];
+        // Create swipe action configuration
+        
+        NSArray<UIContextualAction*> *actions = @[
+            removeAddressAction
+        ];
+        
+        UISwipeActionsConfiguration *swipeActionConfiguration = [UISwipeActionsConfiguration configurationWithActions:actions];
+        swipeActionConfiguration.performsFirstActionWithFullSwipe = NO;
+        return swipeActionConfiguration;
+    }
+    else if (section == SECTION_TAG_FLAIR && row >= ROOM_SETTINGS_RELATED_GROUPS_OFFSET)
+    {
+        UIContextualAction *removeAddressAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive
+                                                                                          title:@"    "
+                                                                                        handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+            [self removeCommunityAtIndexPath:indexPath];
+            completionHandler(YES);
+        }];
+        removeAddressAction.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+        removeAddressAction.image = [[UIImage imageNamed:@"remove_icon"] vc_notRenderedImage];
+        
+        // Create swipe action configuration
+        
+        NSArray<UIContextualAction*> *actions = @[
+            removeAddressAction
+        ];
+        
+        UISwipeActionsConfiguration *swipeActionConfiguration = [UISwipeActionsConfiguration configurationWithActions:actions];
+        swipeActionConfiguration.performsFirstActionWithFullSwipe = NO;
+        return swipeActionConfiguration;
     }
     
-    return actions;
+    return nil;
 }
 
 #pragma mark -
