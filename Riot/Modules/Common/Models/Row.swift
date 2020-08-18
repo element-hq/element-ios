@@ -14,22 +14,20 @@
 // limitations under the License.
 //
 
-#import "Row.h"
+import Foundation
 
-@implementation Row
-
-+ (instancetype)rowWithTag:(NSInteger)tag
-{
-    return [[self alloc] initWithTag:tag];
-}
-
-- (instancetype)initWithTag:(NSInteger)tag
-{
-    self = [super init];
-    if (self) {
-        self.tag = tag;
+@objcMembers
+final class Row: NSObject {
+    
+    let tag: Int
+    
+    init(withTag tag: Int) {
+        self.tag = tag
+        super.init()
     }
-    return self;
+    
+    static func row(withTag tag: Int) -> Row {
+        return Row(withTag: tag)
+    }
+    
 }
-
-@end
