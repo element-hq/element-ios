@@ -60,4 +60,4 @@
 "MESSAGE_FROM_X" = "Mensagem de %@";
 /* New message indicator on a room */
 "MESSAGE_IN_X" = "Mensagem em %@";
-"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ solicita verificação";
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ solicita confirmação";
