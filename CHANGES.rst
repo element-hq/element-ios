@@ -5,7 +5,8 @@ Features:
  * 
 
 Improvements:
- * Config fixes. 
+ * Config fixes.
+ * Refactor RoomSettingsViewController.
 
 Bugfix:
  * 
