@@ -51,4 +51,9 @@
     }];
 }
 
+- (BOOL)hasAnyRows
+{
+    return _rows.count > 0;
+}
+
 @end

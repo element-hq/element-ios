@@ -33,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)addRow:(Row *)row;
 - (void)addRowWithTag:(NSInteger)tag;
 - (NSInteger)indexOfRowForTag:(NSInteger)tag;
+- (BOOL)hasAnyRows;
 
 @end
 
