@@ -3466,6 +3466,7 @@
 		B1B556CD20EE6C4C00210D55 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				ECAE7AEA24EC223D002FA813 /* Models */,
 				EC85D7312477DD54002C44C9 /* SectionHeaders */,
 				B183226923F59F3E0035B2E8 /* Buttons */,
 				B1963B3622933B9500CBA17F /* CollectionView */,
@@ -4845,6 +4846,16 @@
 			path = RiotNSE;
 			sourceTree = "<group>";
 		};
+		ECAE7AEA24EC223D002FA813 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				ECAE7AE424EC0E01002FA813 /* TableViewSections.swift */,
+				ECAE7AE624EC15F7002FA813 /* Section.swift */,
+				ECAE7AE824EC1888002FA813 /* Row.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		F083BB021E7005FD00A9B29C /* RiotTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -4996,9 +5007,6 @@
 				B197B7C5243DE947005ABBF3 /* EncryptionTrustLevelBadgeImageHelper.swift */,
 				EC2B4EF024A1EEBD005EB739 /* DataProtectionHelper.swift */,
 				ECDC15F124AF41D2003437CF /* FormattedBodyParser.swift */,
-				ECAE7AE424EC0E01002FA813 /* TableViewSections.swift */,
-				ECAE7AE624EC15F7002FA813 /* Section.swift */,
-				ECAE7AE824EC1888002FA813 /* Row.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
