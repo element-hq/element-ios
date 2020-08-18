@@ -166,7 +166,7 @@ final class BuildSettings: NSObject {
     static let allowLocalContactsAccess: Bool = true
     
     
-    // MARK: - Screen settings -
+    // MARK: - General Settings Screen
     
     static let settingsScreenShowUserFirstName: Bool = false
     static let settingsScreenShowUserSurname: Bool = false
@@ -181,6 +181,16 @@ final class BuildSettings: NSObject {
     static let settingsScreenAllowChangingCrashUsageDataSettings: Bool = true
     static let settingsScreenAllowBugReportingManually: Bool = true
     static let settingsScreenAllowDeactivatingAccount: Bool = true
+    
+    // MARK: - Room Settings Screen
+    
+    static let roomSettingsScreenShowLowPriorityOption: Bool = true
+    static let roomSettingsScreenShowDirectChatOption: Bool = true
+    static let roomSettingsScreenAllowChangingAccessSettings: Bool = true
+    static let roomSettingsScreenAllowChangingHistorySettings: Bool = true
+    static let roomSettingsScreenShowAddressSettings: Bool = true
+    static let roomSettingsScreenShowFlairSettings: Bool = true
+    static let roomSettingsScreenShowAdvancedSettings: Bool = true
     
     // MARK: - Message
     static let messageDetailsAllowShare: Bool = true
