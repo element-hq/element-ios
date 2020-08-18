@@ -19,7 +19,7 @@ import Foundation
 @objcMembers
 final class Row: NSObject {
     
-    var tag: Int
+    let tag: Int
     
     init(withTag tag: Int) {
         self.tag = tag

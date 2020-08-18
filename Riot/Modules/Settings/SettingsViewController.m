@@ -810,8 +810,8 @@ TableViewSectionsDelegate>
             [self.tableView beginUpdates];
             
             // Refresh the corresponding table view cell with animation
-            NSIndexPath *addEmailIndexPath = [self->_tableViewSections exactIndexPathForRowTag:USER_SETTINGS_ADD_EMAIL_INDEX
-                                                                                    sectionTag:SECTION_TAG_USER_SETTINGS];
+            NSIndexPath *addEmailIndexPath = [self.tableViewSections exactIndexPathForRowTag:USER_SETTINGS_ADD_EMAIL_INDEX
+                                                                                  sectionTag:SECTION_TAG_USER_SETTINGS];
             if (addEmailIndexPath)
             {
                 [self.tableView reloadRowsAtIndexPaths:@[addEmailIndexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -841,8 +841,8 @@ TableViewSectionsDelegate>
             [self.tableView beginUpdates];
             
             // Refresh the corresponding table view cell with animation
-            NSIndexPath *addPhoneIndexPath = [self->_tableViewSections exactIndexPathForRowTag:USER_SETTINGS_ADD_PHONENUMBER_INDEX
-                                                                                    sectionTag:SECTION_TAG_USER_SETTINGS];
+            NSIndexPath *addPhoneIndexPath = [self.tableViewSections exactIndexPathForRowTag:USER_SETTINGS_ADD_PHONENUMBER_INDEX
+                                                                                  sectionTag:SECTION_TAG_USER_SETTINGS];
             if (addPhoneIndexPath)
             {
                 [self.tableView reloadRowsAtIndexPaths:@[addPhoneIndexPath] withRowAnimation:UITableViewRowAnimationFade];

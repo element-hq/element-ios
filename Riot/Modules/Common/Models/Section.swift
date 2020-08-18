@@ -19,7 +19,7 @@ import Foundation
 @objcMembers
 final class Section: NSObject {
     
-    var tag: Int
+    let tag: Int
     var rows: [Row]
     var headerTitle: String?
     
