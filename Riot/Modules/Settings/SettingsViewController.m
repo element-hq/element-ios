@@ -164,11 +164,12 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate,
 SignOutAlertPresenterDelegate,
 SingleImagePickerPresenterDelegate,
 SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinatorDelegate,
-SettingsIdentityServerCoordinatorBridgePresenterDelegate>
+SettingsIdentityServerCoordinatorBridgePresenterDelegate,
+TableViewSectionsDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
-
+    
     // listener
     id removedAccountObserver;
     id accountUserInfoObserver;
@@ -809,8 +810,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             [self.tableView beginUpdates];
             
             // Refresh the corresponding table view cell with animation
-            NSIndexPath *addEmailIndexPath = [_tableViewSections exactIndexPathForRowTag:USER_SETTINGS_ADD_EMAIL_INDEX
-                                                                sectionTag:SECTION_TAG_USER_SETTINGS];
+            NSIndexPath *addEmailIndexPath = [self->_tableViewSections exactIndexPathForRowTag:USER_SETTINGS_ADD_EMAIL_INDEX
+                                                                                    sectionTag:SECTION_TAG_USER_SETTINGS];
             if (addEmailIndexPath)
             {
                 [self.tableView reloadRowsAtIndexPaths:@[addEmailIndexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -840,8 +841,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             [self.tableView beginUpdates];
             
             // Refresh the corresponding table view cell with animation
-            NSIndexPath *addPhoneIndexPath = [_tableViewSections exactIndexPathForRowTag:USER_SETTINGS_ADD_PHONENUMBER_INDEX
-                                                                sectionTag:SECTION_TAG_USER_SETTINGS];
+            NSIndexPath *addPhoneIndexPath = [self->_tableViewSections exactIndexPathForRowTag:USER_SETTINGS_ADD_PHONENUMBER_INDEX
+                                                                                    sectionTag:SECTION_TAG_USER_SETTINGS];
             if (addPhoneIndexPath)
             {
                 [self.tableView reloadRowsAtIndexPaths:@[addPhoneIndexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -3715,7 +3716,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 
                 MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
                 
-                [account changePassword:currentPasswordTextField.text with:newPasswordTextField1.text success:^{
+                [account changePassword:self->currentPasswordTextField.text with:self->newPasswordTextField1.text success:^{
                     
                     if (weakSelf)
                     {

@@ -1090,22 +1090,22 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             self->actualDirectoryVisibility = directoryVisibility;
             
             // Update the value of the displayed toggle button (if any)
-            if (directoryVisibilitySwitch)
+            if (self->directoryVisibilitySwitch)
             {
                 // Check a potential user's change before the end of the request
-                MXRoomDirectoryVisibility modifiedDirectoryVisibility = updatedItemsDict[kRoomSettingsDirectoryKey];
+                MXRoomDirectoryVisibility modifiedDirectoryVisibility = self->updatedItemsDict[kRoomSettingsDirectoryKey];
                 if (modifiedDirectoryVisibility)
                 {
                     if ([modifiedDirectoryVisibility isEqualToString:directoryVisibility])
                     {
                         // The requested change corresponds to the actual settings
-                        [updatedItemsDict removeObjectForKey:kRoomSettingsDirectoryKey];
+                        [self->updatedItemsDict removeObjectForKey:kRoomSettingsDirectoryKey];
                         
-                        [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
+                        [self getNavigationItem].rightBarButtonItem.enabled = (self->updatedItemsDict.count != 0);
                     }
                 }
                 
-                directoryVisibilitySwitch.on = ([directoryVisibility isEqualToString:kMXRoomDirectoryVisibilityPublic]);
+                self->directoryVisibilitySwitch.on = ([directoryVisibility isEqualToString:kMXRoomDirectoryVisibilityPublic]);
             }
         }
         
