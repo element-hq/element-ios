@@ -6,7 +6,7 @@ Features:
 
 Improvements:
  * Config fixes.
- * Refactor RoomSettingsViewController.
+ * Introduce TableViewSections. Refactor RoomSettingsViewController & SettingsViewController.
 
 Bugfix:
  * 
