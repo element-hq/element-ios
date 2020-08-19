@@ -111,6 +111,8 @@ final class PinCodePreferences: NSObject {
     func localizedBiometricsName() -> String? {
         if isBiometricsAvailable {
             let context = LAContext()
+            //  canEvaluatePolicy should be called for biometryType to be set
+            _ = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
             switch context.biometryType {
             case .touchID:
                 return VectorL10n.biometricsModeTouchId
@@ -126,6 +128,8 @@ final class PinCodePreferences: NSObject {
     func biometricsIcon() -> UIImage? {
         if isBiometricsAvailable {
             let context = LAContext()
+            //  canEvaluatePolicy should be called for biometryType to be set
+            _ = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
             switch context.biometryType {
             case .touchID:
                 return Asset.Images.touchidIcon.image
