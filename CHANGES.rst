@@ -9,7 +9,7 @@ Improvements:
  * Introduce TableViewSections. Refactor RoomSettingsViewController & SettingsViewController.
 
 Bugfix:
- * 
+ * Fix biometry name null case (#3551).
 
 API Change:
  * 
