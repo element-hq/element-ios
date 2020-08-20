@@ -32,8 +32,6 @@ final class PushNotificationStore: NSObject {
         static let lastCallInvite: String = "lastCallInvite"
     }
     
-    static let shared = PushNotificationStore()
-    
     /// Store. Defaults to `KeychainStore`
     private let store: KeyValueStore
     
