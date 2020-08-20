@@ -7,6 +7,7 @@ Features:
 Improvements:
  * Config fixes.
  * Introduce TableViewSections. Refactor RoomSettingsViewController & SettingsViewController.
+ * Introduce httpAdditionalHeaders in BuildSettings.
 
 Bugfix:
  * Fix biometry name null case (#3551).
