@@ -22,13 +22,11 @@
 #import <PushKit/PushKit.h>
 
 @interface PushNotificationService()<PKPushRegistryDelegate>
-{
-    /**
-     Matrix session observer used to detect new opened sessions.
-     */
-    id matrixSessionStateObserver;
-}
 
+/**
+Matrix session observer used to detect new opened sessions.
+*/
+@property (nonatomic, weak) id matrixSessionStateObserver;
 @property (nonatomic, nullable, copy) void (^registrationForRemoteNotificationsCompletion)(NSError *);
 @property (nonatomic, strong) PKPushRegistry *pushRegistry;
 @property (nonatomic, strong) PushNotificationStore *pushNotificationStore;
@@ -194,7 +192,11 @@
         else
         {
             //  add an observer for session state
-            matrixSessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+            MXWeakify(self);
+
+            NSNotificationCenter * __weak notificationCenter = [NSNotificationCenter defaultCenter];
+            self.matrixSessionStateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+                MXStrongifyAndReturnIfNil(self);
                 MXSession *mxSession = (MXSession*)notif.object;
                 
                 if ([[AppDelegate theDelegate].mxSessions containsObject:mxSession]
@@ -202,8 +204,7 @@
                     && self->_shouldReceiveVoIPPushes)
                 {
                     [self configurePushKit];
-                    [[NSNotificationCenter defaultCenter] removeObserver:self->matrixSessionStateObserver];
-                    self->matrixSessionStateObserver = nil;
+                    [notificationCenter removeObserver:self.matrixSessionStateObserver];
                 }
             }];
         }
@@ -230,15 +231,12 @@
         if (account.mxSession.state == MXSessionStatePaused)
         {
             NSLog(@"[PushNotificationService] launchBackgroundSync");
-            __weak typeof(self) weakSelf = self;
+            MXWeakify(self);
 
             [account backgroundSync:20000 success:^{
                 
                 // Sanity check
-                if (!weakSelf)
-                {
-                    return;
-                }
+                MXStrongifyAndReturnIfNil(self);
                 
                 [[UNUserNotificationCenter currentNotificationCenter] removeUnwantedNotifications];
                 [[UNUserNotificationCenter currentNotificationCenter] removeCallNotificationsFor:nil];
