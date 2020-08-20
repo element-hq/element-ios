@@ -1,0 +1,1 @@
+collaboration,chat,secure,matrix,private,E2EE,decentralised,encrypted,self-host

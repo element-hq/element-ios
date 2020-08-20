@@ -19,6 +19,10 @@
 
 #import "WidgetManager.h"
 
+#import "MXRoomSummary+Riot.h"
+
+@protocol RoomDataSourceDelegate;
+
 /**
  The data source for `RoomViewController` in Vector.
  */
@@ -38,6 +42,11 @@
  Tell whether timestamp should be displayed on event selection. Default is YES.
  */
 @property(nonatomic) BOOL showBubbleDateTimeOnSelection;
+
+/**
+ Current room members trust level for an encrypted room.
+ */
+@property(nonatomic, readonly) RoomEncryptionTrustLevel encryptionTrustLevel;
 
 /**
  Check if there is an active jitsi widget in the room and return it.
@@ -83,5 +92,11 @@
 - (void)declineVerificationRequestForEventId:(NSString*)eventId
                                      success:(void(^)(void))success
                                      failure:(void(^)(NSError*))failure;
+
+@end
+
+@protocol RoomDataSourceDelegate <MXKDataSourceDelegate>
+
+- (void)roomDataSource:(RoomDataSource*)roomDataSource didUpdateEncryptionTrustLevel:(RoomEncryptionTrustLevel)roomEncryptionTrustLevel;
 
 @end

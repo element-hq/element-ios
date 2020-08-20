@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--HomeNav-->
         <scene sceneID="pY4-Hu-kfo">
             <objects>
-                <navigationController id="RMx-3f-FxP" userLabel="HomeNav" sceneMemberID="viewController">
+                <navigationController id="RMx-3f-FxP" userLabel="HomeNav" customClass="RiotNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="Pmd-2v-anx">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -41,7 +38,7 @@
                             <barButtonItem image="search_icon" id="wyR-qv-IxC" userLabel="Menu Bar Button Item">
                                 <inset key="imageInsets" minX="-5" minY="0.0" maxX="5" maxY="0.0"/>
                             </barButtonItem>
-                            <barButtonItem image="apps-icon" id="cal-D0-6Fw">
+                            <barButtonItem image="integrations_icon" id="cal-D0-6Fw">
                                 <inset key="imageInsets" minX="10" minY="0.0" maxX="-10" maxY="0.0"/>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -69,7 +66,7 @@
                         <viewControllerLayoutGuide type="bottom" id="6ie-9b-cBo"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="N8z-LO-417">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -110,7 +107,7 @@
                         <viewControllerLayoutGuide type="bottom" id="BxE-Q4-YjP"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Kg1-rX-y7X">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -131,11 +128,11 @@
                         <viewControllerLayoutGuide type="bottom" id="lAN-yJ-zNI"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="b5v-sy-iSu">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="43F-4t-lHi">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
                         </subviews>
@@ -177,7 +174,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="2" image="tab_people" selectedImage="tab_people_selected" id="edr-fK-bgM">
+                    <tabBarItem key="tabBarItem" tag="2" image="tab_people" id="edr-fK-bgM">
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="TabBarItemPeople"/>
                         </userDefinedRuntimeAttributes>
@@ -203,7 +200,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="1" image="tab_favourites" selectedImage="tab_favourites_selected" id="UVh-Xd-zDZ">
+                    <tabBarItem key="tabBarItem" tag="1" image="tab_favourites" id="UVh-Xd-zDZ">
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="TabBarItemFavourites"/>
                         </userDefinedRuntimeAttributes>
@@ -247,7 +244,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="tab_home" selectedImage="tab_home_selected" id="hNI-yH-EXj">
+                    <tabBarItem key="tabBarItem" title="" image="tab_home" id="hNI-yH-EXj">
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="TabBarItemHome"/>
                         </userDefinedRuntimeAttributes>
@@ -292,7 +289,7 @@
                         <outlet property="searchBarButtonIem" destination="pud-Fh-Usd" id="DiH-Re-nZE"/>
                         <outlet property="settingsBarButtonItem" destination="QSE-cg-V2m" id="N6b-Ju-w9g"/>
                         <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="showRoomDetails" id="tk8-vF-K4T"/>
-                        <segue destination="ZlD-EU-ncw" kind="presentation" identifier="showAuth" id="fpJ-zM-Qpo"/>
+                        <segue destination="ZlD-EU-ncw" kind="presentation" identifier="showAuth" modalPresentationStyle="fullScreen" id="fpJ-zM-Qpo"/>
                         <segue destination="pBa-To-3YT" kind="relationship" relationship="viewControllers" id="Sfs-mh-GOz"/>
                         <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="showContactDetails" id="p4M-yR-DLA"/>
                         <segue destination="HnD-LA-psC" kind="relationship" relationship="viewControllers" id="zON-Qp-EVq"/>
@@ -327,7 +324,7 @@
         <!--Settings-->
         <scene sceneID="9we-7Q-LBo">
             <objects>
-                <tableViewController title="Settings" id="taU-5Q-sdv" customClass="SettingsViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="SettingsViewController" title="Settings" id="taU-5Q-sdv" customClass="SettingsViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="egL-pK-Xhr">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -380,7 +377,7 @@
             <objects>
                 <navigationController id="qAW-wR-KyU" customClass="RiotNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="r5V-3P-3Lg">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -400,7 +397,7 @@
                         <viewControllerLayoutGuide type="bottom" id="GF2-be-Jca"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="eRR-tG-G8a">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -412,9 +409,9 @@
         <!--RoomNav-->
         <scene sceneID="r7l-gg-dq7">
             <objects>
-                <navigationController title="RoomNav" id="vC3-pB-5Vb" sceneMemberID="viewController">
+                <navigationController title="RoomNav" id="vC3-pB-5Vb" customClass="RiotNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="DjV-YW-jjY">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -438,7 +435,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="6LG-qc-7jf">
-                                <rect key="frame" x="127" y="283" width="120" height="101"/>
+                                <rect key="frame" x="127.5" y="283" width="120" height="101"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -466,7 +463,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="tab_groups" selectedImage="tab_groups_selected" id="5x2-xc-uIB"/>
+                    <tabBarItem key="tabBarItem" title="" image="tab_groups" id="5x2-xc-uIB"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xpc-LV-krz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -485,7 +482,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="3" image="tab_rooms" selectedImage="tab_rooms" id="7eS-Ei-00V">
+                    <tabBarItem key="tabBarItem" tag="3" image="tab_rooms" id="7eS-Ei-00V">
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="TabBarItemRooms"/>
                         </userDefinedRuntimeAttributes>
@@ -505,7 +502,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="WDS-Ip-RQ9" customClass="RiotNavigationController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="CtR-n9-ztG">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -526,7 +523,7 @@
                         <viewControllerLayoutGuide type="bottom" id="0pc-6H-UO9"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="rVj-X8-v0f">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -542,7 +539,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ZZb-IS-a1F" customClass="RiotNavigationController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="MHE-SG-tnL">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -563,7 +560,7 @@
                         <viewControllerLayoutGuide type="bottom" id="7q1-ig-sPp"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="6G9-nj-ktC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -577,7 +574,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="DirectoryServerPickerViewControllerStoryboardId" id="mRq-hp-dod" customClass="DirectoryServerPickerViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="YbK-Rh-uRf">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
@@ -592,21 +589,6 @@
             <point key="canvasLocation" x="4174" y="-2050"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="apps-icon" width="24" height="24"/>
-        <image name="logo" width="120" height="101"/>
-        <image name="search_icon" width="22" height="22"/>
-        <image name="settings_icon" width="24" height="24"/>
-        <image name="tab_favourites" width="25" height="25"/>
-        <image name="tab_favourites_selected" width="25" height="25"/>
-        <image name="tab_groups" width="25" height="25"/>
-        <image name="tab_groups_selected" width="25" height="25"/>
-        <image name="tab_home" width="25" height="25"/>
-        <image name="tab_home_selected" width="25" height="25"/>
-        <image name="tab_people" width="25" height="25"/>
-        <image name="tab_people_selected" width="25" height="25"/>
-        <image name="tab_rooms" width="25" height="25"/>
-    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Tfl-tq-LQp"/>
         <segue reference="fIR-e3-ssz"/>
@@ -614,4 +596,15 @@
         <segue reference="vCz-dl-6xQ"/>
         <segue reference="cUw-vU-gJq"/>
     </inferredMetricsTieBreakers>
+    <resources>
+        <image name="integrations_icon" width="24" height="24"/>
+        <image name="logo" width="120" height="101"/>
+        <image name="search_icon" width="24" height="24"/>
+        <image name="settings_icon" width="24" height="24"/>
+        <image name="tab_favourites" width="24" height="24"/>
+        <image name="tab_groups" width="24" height="24"/>
+        <image name="tab_home" width="20" height="23.5"/>
+        <image name="tab_people" width="24" height="24"/>
+        <image name="tab_rooms" width="24" height="24"/>
+    </resources>
 </document>

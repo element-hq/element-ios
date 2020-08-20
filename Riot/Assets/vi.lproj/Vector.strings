@@ -145,7 +145,7 @@
 "contacts_address_book_matrix_users_toggle" = "Chỉ người dùng của matrix";
 "contacts_address_book_no_contact" = "Không có danh bạ nội bộ";
 "contacts_address_book_permission_required" = "Quyền được yêu cầu để truy cập danh bạ nội bộ";
-"contacts_address_book_permission_denied" = "Bạn chưa cho phép Riot truy cập danh bạ nội bộ của bạn";
+"contacts_address_book_permission_denied" = "Bạn chưa cho phép Element truy cập danh bạ nội bộ của bạn";
 "contacts_user_directory_section" = "DANH MỤC NGƯỜI DÙNG";
 "contacts_user_directory_offline_section" = "DANH MỤC NGƯỜI DÙNG (ngoại tuyến)";
 // Chat participants
@@ -310,11 +310,8 @@
 "settings_version" = "Phiên bản %@";
 "settings_olm_version" = "Phiên bản Olm %@";
 "settings_copyright" = "Bản quyền";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Điều khoản và điều kiện";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Chính sách bảo mật";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Thông báo từ bên thứ ba";
 "settings_send_crash_report" = "Gửi lỗi & dữ liệu sử dụng";
 "settings_enable_rageshake" = "Lắc điện thoại để báo cáo lỗi";
@@ -433,7 +430,7 @@
 // Crash report
 "google_analytics_use_prompt" = "Bạn có muốn giúp cải thiện %@ bằng cách tự động báo cáo sự cố vô danh và dữ liệu sử dụng?";
 // Crypto
-"e2e_enabling_on_app_update" = "Riot đã hỗ trợ mã hóa end-to-end nhưng bạn cần phải đăng nhập lại để kích hoạt.\n\nBạn có thể thực hiện ngay bây giờ hoặc sau đó từ cài đặt của ứng dụng.";
+"e2e_enabling_on_app_update" = "Element đã hỗ trợ mã hóa end-to-end nhưng bạn cần phải đăng nhập lại để kích hoạt.\n\nBạn có thể thực hiện ngay bây giờ hoặc sau đó từ cài đặt của ứng dụng.";
 "e2e_need_log_in_again" = "Bạn cần phải đăng nhập lại để tạo các khoá mã hóa end-to-end cho thiết bị này và gửi khoá chung tới máy chủ nhà của bạn.\nĐây là một lần duy nhất; xin lỗi vì sự bất tiện.";
 // Bug report
 "bug_report_title" = "Báo cáo lỗi";

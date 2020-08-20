@@ -1,5 +1,5 @@
 /*
- Copyright 2019 New Vector Ltd
+ Copyright 2020 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -59,8 +59,8 @@ final class TemplateScreenCoordinator: TemplateScreenCoordinatorType {
 // MARK: - TemplateScreenViewModelCoordinatorDelegate
 extension TemplateScreenCoordinator: TemplateScreenViewModelCoordinatorDelegate {
     
-    func templateScreenViewModel(_ viewModel: TemplateScreenViewModelType, didCompleteWithMessage message: String) {
-        self.delegate?.templateScreenCoordinator(self, didCompleteWithMessage: message)
+    func templateScreenViewModel(_ viewModel: TemplateScreenViewModelType, didCompleteWithUserDisplayName userDisplayName: String?) {
+        self.delegate?.templateScreenCoordinator(self, didCompleteWithUserDisplayName: userDisplayName)
     }
     
     func templateScreenViewModelDidCancel(_ viewModel: TemplateScreenViewModelType) {

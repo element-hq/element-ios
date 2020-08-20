@@ -104,6 +104,8 @@
         
         // Add the search bar
         self.navigationItem.titleView = self.searchBar;
+
+        self.extendedLayoutIncludesOpaqueBars = YES;
         
         // On iPad, there is no cancel button inside the UISearchBar
         // So, add a classic cancel right bar button

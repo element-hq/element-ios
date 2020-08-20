@@ -163,6 +163,11 @@
     self.cancelButton.tintColor = ThemeService.shared.theme.tintColor;
     
     _bugReportDescriptionTextView.layer.borderColor = ThemeService.shared.theme.headerBackgroundColor.CGColor;
+    
+    self.sendLogsButtonImage.tintColor = ThemeService.shared.theme.tintColor;
+    self.sendScreenshotButtonImage.tintColor = ThemeService.shared.theme.tintColor;
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -277,11 +282,10 @@
     _sendingContainer.hidden = NO;
 
     // Setup data to send
-    NSString *url = [[NSUserDefaults standardUserDefaults] objectForKey:@"bugReportEndpointUrl"];
-    bugReportRestClient = [[MXBugReportRestClient alloc] initWithBugReportEndpoint:url];
+    bugReportRestClient = [[MXBugReportRestClient alloc] initWithBugReportEndpoint:BuildSettings.bugReportEndpointUrlString];
 
     // App info
-    bugReportRestClient.appName = [[NSUserDefaults standardUserDefaults] objectForKey:@"bugReportApp"]; // Use the name allocated by the bug report server
+    bugReportRestClient.appName = BuildSettings.bugReportApplicationId;
     bugReportRestClient.version = [AppDelegate theDelegate].appVersion;
     bugReportRestClient.build = [AppDelegate theDelegate].build;
 

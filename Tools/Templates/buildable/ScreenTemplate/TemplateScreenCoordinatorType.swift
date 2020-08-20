@@ -1,5 +1,5 @@
 /*
- Copyright 2019 New Vector Ltd
+ Copyright 2020 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 import Foundation
 
 protocol TemplateScreenCoordinatorDelegate: class {
-    func templateScreenCoordinator(_ coordinator: TemplateScreenCoordinatorType, didCompleteWithMessage message: String)
+    func templateScreenCoordinator(_ coordinator: TemplateScreenCoordinatorType, didCompleteWithUserDisplayName userDisplayName: String?)
     func templateScreenCoordinatorDidCancel(_ coordinator: TemplateScreenCoordinatorType)
 }
 

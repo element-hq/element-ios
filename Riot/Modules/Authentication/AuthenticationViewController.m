@@ -20,19 +20,16 @@
 
 #import "AppDelegate.h"
 #import "Riot-Swift.h"
+#import "MXSession+Riot.h"
 
 #import "AuthInputsView.h"
 #import "ForgotPasswordInputsView.h"
 #import "AuthFallBackViewController.h"
 
-@interface AuthenticationViewController () <AuthFallBackViewControllerDelegate>
+#import "Riot-Swift.h"
+
+@interface AuthenticationViewController () <AuthFallBackViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, SetPinCoordinatorBridgePresenterDelegate>
 {
-    /**
-     Store the potential login error received by using a default homeserver different from matrix.org
-     while we retry a login process against the matrix.org HS.
-     */
-    NSError *loginError;
-    
     /**
      The default country code used to initialize the mobile phone number input.
      */
@@ -44,14 +41,25 @@
     id kThemeServiceDidChangeThemeNotificationObserver;
 
     /**
+     Observe AppDelegateUniversalLinkDidChangeNotification to handle universal link changes.
+     */
+    id universalLinkDidChangeNotificationObserver;
+
+    /**
      Server discovery.
      */
     MXAutoDiscovery *autoDiscovery;
 
     AuthFallBackViewController *authFallBackViewController;
+    
+    // successful login credentials
+    MXCredentials *loginCredentials;
 }
 
 @property (nonatomic, readonly) BOOL isIdentityServerConfigured;
+@property (nonatomic, strong) KeyVerificationCoordinatorBridgePresenter *keyVerificationCoordinatorBridgePresenter;
+@property (nonatomic, strong) SetPinCoordinatorBridgePresenter *setPinCoordinatorBridgePresenter;
+@property (nonatomic, strong) KeyboardAvoider *keyboardAvoider;
 
 @end
 
@@ -91,11 +99,11 @@
     self.mainNavigationItem.title = nil;
     self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
     
-    self.defaultHomeServerUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"homeserverurl"];
+    self.defaultHomeServerUrl = RiotSettings.shared.homeserverUrlString;
     
-    self.defaultIdentityServerUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"identityserverurl"];
+    self.defaultIdentityServerUrl = RiotSettings.shared.identityServerUrlString;
     
-    self.welcomeImageView.image = [UIImage imageNamed:@"logo"];
+    self.welcomeImageView.image = [UIImage imageNamed:@"horizontal_logo"];
     
     [self.submitButton.layer setCornerRadius:5];
     self.submitButton.clipsToBounds = YES;
@@ -111,6 +119,13 @@
     
     [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateNormal];
     [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateHighlighted];
+    
+    if (!BuildSettings.authScreenShowRegister)
+    {
+        self.rightBarButtonItem.enabled = NO;
+        self.rightBarButtonItem.title = nil;
+    }
+    self.serverOptionsContainer.hidden = !BuildSettings.authScreenShowCustomServerOptions;
     
     [self hideCustomServers:YES];
 
@@ -148,11 +163,19 @@
         [self userInterfaceThemeDidChange];
         
     }];
+    universalLinkDidChangeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:AppDelegateUniversalLinkDidChangeNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull notification) {
+        [self updateUniversalLink];
+    }];
+
     [self userInterfaceThemeDidChange];
+    [self updateUniversalLink];
+    
+    _keyboardAvoider = [[KeyboardAvoider alloc] initWithScrollViewContainerView:self.view scrollView:self.authenticationScrollView];
 }
 
 - (void)userInterfaceThemeDidChange
 {
+    self.navigationBackView.backgroundColor = ThemeService.shared.theme.baseColor;
     [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationBar];
     self.navigationBarSeparatorView.backgroundColor = ThemeService.shared.theme.lineBreakColor;
 
@@ -162,9 +185,11 @@
     // as the main view background color.
     // Hopefully, subviews define their own background color with `theme.backgroundColor`,
     // which makes all work together.
-    self.view.backgroundColor = ThemeService.shared.theme.baseColor;
+    self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
 
     self.authenticationScrollView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    
+    self.welcomeImageView.tintColor = ThemeService.shared.theme.tintColor;
 
     // Style the authentication fallback webview screen so that its header matches to navigation bar style
     self.authFallbackContentView.backgroundColor = ThemeService.shared.theme.baseColor;
@@ -216,10 +241,26 @@
 
     self.softLogoutClearDataLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.softLogoutClearDataButton.backgroundColor = ThemeService.shared.theme.warningColor;
+    
+    self.customServersTickButton.tintColor = ThemeService.shared.theme.tintColor;
 
     [self.authInputsView customizeViewRendering];
     
     [self setNeedsStatusBarAppearanceUpdate];
+}
+
+- (void)updateUniversalLink
+{
+    UniversalLink *link = [AppDelegate theDelegate].lastHandledUniversalLink;
+    if (link)
+    {
+        NSString *emailAddress = link.queryParams[@"email"];
+        if (emailAddress && self.authInputsView)
+        {
+            AuthInputsView *inputsView = (AuthInputsView *)self.authInputsView;
+            inputsView.emailTextField.text = emailAddress;
+        }
+    }
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -233,11 +274,18 @@
 
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"Authentication"];
+    
+    [_keyboardAvoider startAvoiding];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    if (self.keyVerificationCoordinatorBridgePresenter)
+    {
+        return;
+    }        
 
     // Verify that the app does not show the authentification screean whereas
     // the user has already logged in.
@@ -253,6 +301,13 @@
     }
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [_keyboardAvoider stopAvoiding];
+    
+    [super viewDidDisappear:animated];
+}
+
 - (void)destroy
 {
     [super destroy];
@@ -263,7 +318,15 @@
         kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
 
+    if (universalLinkDidChangeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:universalLinkDidChangeNotificationObserver];
+        universalLinkDidChangeNotificationObserver = nil;
+    }
+
     autoDiscovery = nil;
+    _keyVerificationCoordinatorBridgePresenter = nil;
+    _keyboardAvoider = nil;
 }
 
 - (BOOL)isIdentityServerConfigured
@@ -280,16 +343,7 @@
     }
     
     super.authType = authType;
-    
-    // Check a potential stored error.
-    if (loginError)
-    {
-        // Restore the default HS
-        NSLog(@"[AuthenticationVC] Switch back to default homeserver");
-        [self setHomeServerTextFieldText:nil];
-        loginError = nil;
-    }
-    
+
     if (authType == MXKAuthenticationTypeLogin)
     {
         [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateNormal];
@@ -394,7 +448,9 @@
         // The right bar button is used to switch the authentication type.
         if (self.authType == MXKAuthenticationTypeLogin)
         {
-            if (!authInputsview.isSingleSignOnRequired && !self.softLogoutCredentials)
+            if (!authInputsview.isSingleSignOnRequired
+                && !self.softLogoutCredentials
+                && BuildSettings.authScreenShowRegister)
             {
                 self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
             }
@@ -423,6 +479,40 @@
     }
 }
 
+- (void)presentCompleteSecurityWithSession:(MXSession*)session
+{
+    KeyVerificationCoordinatorBridgePresenter *keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:session];
+    keyVerificationCoordinatorBridgePresenter.delegate = self;
+    
+    if (self.navigationController)
+    {
+        [keyVerificationCoordinatorBridgePresenter pushCompleteSecurityFrom:self.navigationController isNewSignIn:YES animated:YES];
+    }
+    else
+    {
+        [keyVerificationCoordinatorBridgePresenter presentCompleteSecurityFrom:self isNewSignIn:YES animated:YES];
+    }
+    
+    self.keyVerificationCoordinatorBridgePresenter = keyVerificationCoordinatorBridgePresenter;
+}
+
+- (void)dismiss
+{
+    self.userInteractionEnabled = YES;
+    [self.authenticationActivityIndicator stopAnimating];
+    
+    // Remove auth view controller on successful login
+    if (self.navigationController)
+    {
+        // Pop the view controller
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else
+    {
+        // Dismiss on successful login
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    }
+}
 
 #pragma mark - Fallback URL display
 
@@ -459,7 +549,7 @@
 
     authFallBackViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissFallBackViewController:)];
 
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:authFallBackViewController];
+    UINavigationController *navigationController = [[RiotNavigationController alloc] initWithRootViewController:authFallBackViewController];
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
@@ -641,6 +731,7 @@
     if ([self.authInputsView isKindOfClass:AuthInputsView.class])
     {
         authInputsview = (AuthInputsView*)self.authInputsView;
+        [self updateUniversalLink];
     }
 
     // Hide "Forgot password" and "Log in" buttons in case of SSO
@@ -803,80 +894,64 @@
 
 - (void)onFailureDuringAuthRequest:(NSError *)error
 {
-    // Homeserver migration: When the default homeserver url is different from matrix.org,
-    // the login (or forgot pwd) process with an existing matrix.org accounts will then fail.
-    // Patch: Falling back to matrix.org HS so we don't break everyone's logins
-    if ([self.homeServerTextField.text isEqualToString:self.defaultHomeServerUrl] && ![self.defaultHomeServerUrl isEqualToString:@"https://matrix.org"] && !self.softLogoutCredentials)
+    MXError *mxError = [[MXError alloc] initWithNSError:error];
+    if ([mxError.errcode isEqualToString:kMXErrCodeStringResourceLimitExceeded])
     {
-        MXError *mxError = [[MXError alloc] initWithNSError:error];
-        
-        if (self.authType == MXKAuthenticationTypeLogin)
-        {
-            if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringForbidden])
-            {
-                // Falling back to matrix.org HS
-                NSLog(@"[AuthenticationVC] Retry login against matrix.org");
-                
-                // Store the current error, and change the homeserver url
-                loginError = error;
-                [self setHomeServerTextFieldText:@"https://matrix.org"];
-                
-                // Trigger a new request
-                [self onButtonPressed:self.submitButton];
-                return;
-            }
-        }
-        else if (self.authType == MXKAuthenticationTypeForgotPassword)
-        {
-            if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringNotFound])
-            {
-                // Sanity check
-                if ([self.authInputsView isKindOfClass:ForgotPasswordInputsView.class])
-                {
-                    // Falling back to matrix.org HS
-                    NSLog(@"[AuthenticationVC] Retry forgot password against matrix.org");
-                    
-                    // Store the current error, and change the homeserver url
-                    loginError = error;
-                    [self setHomeServerTextFieldText:@"https://matrix.org"];
-                    
-                    // Trigger a new request
-                    ForgotPasswordInputsView *authInputsView = (ForgotPasswordInputsView*)self.authInputsView;
-                    [authInputsView.nextStepButton sendActionsForControlEvents:UIControlEventTouchUpInside];
-                    return;
-                }
-            }
-        }
-    }
-    
-    // Check whether we were retrying against matrix.org HS
-    if (loginError)
-    {
-        // This is not an existing matrix.org accounts
-        NSLog(@"[AuthenticationVC] This is not an existing matrix.org accounts");
-        
-        // Restore the default HS
-        [self setHomeServerTextFieldText:nil];
-        
-        // Consider the original login error
-        [super onFailureDuringAuthRequest:loginError];
-        loginError = nil;
+        [self showResourceLimitExceededError:mxError.userInfo];
     }
     else
     {
-        MXError *mxError = [[MXError alloc] initWithNSError:error];
-        if ([mxError.errcode isEqualToString:kMXErrCodeStringResourceLimitExceeded])
-        {
-            [self showResourceLimitExceededError:mxError.userInfo];
-        }
-        else
-        {
-            [super onFailureDuringAuthRequest:error];
-        }
+        [super onFailureDuringAuthRequest:error];
     }
 }
 
 - (void)onSuccessfulLogin:(MXCredentials*)credentials
+{
+    //  if really login and pin protection is forced
+    if (self.authType == MXKAuthenticationTypeLogin && [PinCodePreferences shared].forcePinProtection)
+    {
+        loginCredentials = credentials;
+        
+        SetPinCoordinatorBridgePresenter *presenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:nil viewMode:SetPinCoordinatorViewModeSetPin];
+        presenter.delegate = self;
+        [presenter presentFrom:self animated:YES];
+        self.setPinCoordinatorBridgePresenter = presenter;
+        return;
+    }
+    
+    [self afterSetPinFlowCompletedWithCredentials:credentials];
+}
+
+- (void)updateForgotPwdButtonVisibility
+{
+    AuthInputsView *authInputsview;
+    if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+    {
+        authInputsview = (AuthInputsView*)self.authInputsView;
+    }
+    
+    BOOL showForgotPasswordButton = NO;
+
+    if (BuildSettings.authScreenShowForgotPassword)
+    {
+        showForgotPasswordButton = (self.authType == MXKAuthenticationTypeLogin) && !authInputsview.isSingleSignOnRequired;
+    }
+    
+    self.forgotPasswordButton.hidden = !showForgotPasswordButton;
+    
+    // Adjust minimum leading constraint of the submit button
+    if (self.forgotPasswordButton.isHidden)
+    {
+        self.submitButtonMinLeadingConstraint.constant = 19;
+    }
+    else
+    {
+        CGRect frame = self.forgotPasswordButton.frame;
+        self.submitButtonMinLeadingConstraint.constant =  frame.origin.x + frame.size.width + 10;
+    }
+}
+
+- (void)afterSetPinFlowCompletedWithCredentials:(MXCredentials*)credentials
 {
     // Check whether a third party identifiers has not been used
     if ([self.authInputsView isKindOfClass:AuthInputsView.class])
@@ -896,7 +971,7 @@
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                                                                
-                                                               [super onSuccessfulLogin:credentials];
+                [super onSuccessfulLogin:credentials];
                                                                
                                                            }]];
             
@@ -908,35 +983,27 @@
     [super onSuccessfulLogin:credentials];
 }
 
-- (void)updateForgotPwdButtonVisibility
-{
-    AuthInputsView *authInputsview;
-    if ([self.authInputsView isKindOfClass:AuthInputsView.class])
-    {
-        authInputsview = (AuthInputsView*)self.authInputsView;
-    }
-
-    self.forgotPasswordButton.hidden = (self.authType != MXKAuthenticationTypeLogin) || authInputsview.isSingleSignOnRequired;
-    
-    // Adjust minimum leading constraint of the submit button
-    if (self.forgotPasswordButton.isHidden)
-    {
-        self.submitButtonMinLeadingConstraint.constant = 19;
-    }
-    else
-    {
-        CGRect frame = self.forgotPasswordButton.frame;
-        self.submitButtonMinLeadingConstraint.constant =  frame.origin.x + frame.size.width + 10;
-    }
-}
-
 #pragma mark -
 
 - (void)updateRegistrationScreenWithThirdPartyIdentifiersHidden:(BOOL)thirdPartyIdentifiersHidden
 {
     self.skipButton.hidden = thirdPartyIdentifiersHidden;
     
-    self.serverOptionsContainer.hidden = !thirdPartyIdentifiersHidden;
+    // Do not display the skip button if the 3PID is mandatory
+    if (!thirdPartyIdentifiersHidden)
+    {
+        if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+        {
+            AuthInputsView *authInputsview = (AuthInputsView*)self.authInputsView;
+            if (authInputsview.isThirdPartyIdentifierRequired)
+            {
+                self.skipButton.hidden = YES;
+            }
+        }
+    }
+    
+    self.serverOptionsContainer.hidden = !thirdPartyIdentifiersHidden
+                                            || !BuildSettings.authScreenShowCustomServerOptions;
     [self refreshContentViewHeightConstraint];
     
     if (thirdPartyIdentifiersHidden)
@@ -973,6 +1040,10 @@
             if (!self.customServersContainer.isHidden)
             {
                 constant += customServersContainerFrame.size.height;
+            }
+            else
+            {
+                constant += self.customServersTickButton.frame.size.height;
             }
         }
     }
@@ -1077,6 +1148,13 @@
     }];
 }
 
+#pragma mark - UITextFieldDelegate
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [self.authenticationScrollView vc_scrollTo:textField with:UIEdgeInsetsMake(-20, 0, -20, 0) animated:YES];
+}
+
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -1102,40 +1180,128 @@
 
 - (void)authenticationViewController:(MXKAuthenticationViewController *)authenticationViewController didLogWithUserId:(NSString *)userId
 {
+    self.userInteractionEnabled = NO;
+    [self.authenticationActivityIndicator startAnimating];
+    
     // Hide the custom server details in order to save customized inputs
     [self hideCustomServers:YES];
     
+    MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:userId];
+    MXSession *session = account.mxSession;
+    
+    BOOL botCreationEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"enableBotCreation"];
+    
     // Create DM with Riot-bot on new account creation.
-    if (self.authType == MXKAuthenticationTypeRegister)
+    if (self.authType == MXKAuthenticationTypeRegister && botCreationEnabled)
     {
-        MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:userId];
-        
-        [account.mxSession createRoom:nil
-                           visibility:kMXRoomDirectoryVisibilityPrivate
-                            roomAlias:nil
-                                topic:nil
-                               invite:@[@"@riot-bot:matrix.org"]
-                           invite3PID:nil
-                             isDirect:YES
-                               preset:kMXRoomPresetTrustedPrivateChat
-                              success:nil
-                              failure:^(NSError *error) {
-                                  
-                                  NSLog(@"[AuthenticationVC] Create chat with riot-bot failed");
-                                  
-                              }];
+        MXRoomCreationParameters *roomCreationParameters = [MXRoomCreationParameters parametersForDirectRoomWithUser:@"@riot-bot:matrix.org"];
+        [session createRoomWithParameters:roomCreationParameters success:nil failure:^(NSError *error) {
+            NSLog(@"[AuthenticationVC] Create chat with riot-bot failed");
+        }];
     }
     
-    // Remove auth view controller on successful login
-    if (self.navigationController)
+    // Wait for session change to present complete security screen if needed
+    [self registerSessionStateChangeNotificationForSession:session];
+}
+
+- (void)registerSessionStateChangeNotificationForSession:(MXSession*)session
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionStateDidChangeNotification:) name:kMXSessionStateDidChangeNotification object:session];
+}
+
+- (void)unregisterSessionStateChangeNotification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionStateDidChangeNotification object:nil];
+}
+                                  
+- (void)sessionStateDidChangeNotification:(NSNotification*)notification
+{
+    MXSession *session = (MXSession*)notification.object;
+    
+    if (session.state >= MXSessionStateStoreDataReady)
     {
-        // Pop the view controller
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    else
-    {
-        // Dismiss on successful login
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self unregisterSessionStateChangeNotification];
+        
+        if (session.crypto.crossSigning)
+        {
+            // Do not make key share requests while the "Complete security" is not complete.
+            // If the device is self-verified, the SDK will restore the existing key backup.
+            // Then, it  will re-enable outgoing key share requests
+            [session.crypto setOutgoingKeyRequestsEnabled:NO onComplete:nil];
+            
+            [session.crypto.crossSigning refreshStateWithSuccess:^(BOOL stateUpdated) {
+
+                NSLog(@"[AuthenticationVC] sessionStateDidChange: crossSigning.state: %@", @(session.crypto.crossSigning.state));
+
+                switch (session.crypto.crossSigning.state)
+                {
+                    case MXCrossSigningStateNotBootstrapped:
+                    {
+                        // TODO: This is still not sure we want to disable the automatic cross-signing bootstrap
+                        // if the admin disabled e2e by default.
+                        // Do like riot-web for the moment
+                        if (session.vc_isE2EByDefaultEnabledByHSAdmin)
+                        {
+                            // Bootstrap cross-signing on user's account
+                            // We do it for both registration and new login as long as cross-signing does not exist yet
+                            if (self.authInputsView.password.length)
+                            {
+                                NSLog(@"[AuthenticationVC] sessionStateDidChange: Bootstrap with password");
+                                
+                                [session.crypto.crossSigning setupWithPassword:self.authInputsView.password success:^{
+                                    NSLog(@"[AuthenticationVC] sessionStateDidChange: Bootstrap succeeded");
+                                    [self dismiss];
+                                } failure:^(NSError * _Nonnull error) {
+                                    NSLog(@"[AuthenticationVC] sessionStateDidChange: Bootstrap failed. Error: %@", error);
+                                    [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+                                    [self dismiss];
+                                }];
+                            }
+                            else
+                            {
+                                NSLog(@"[AuthenticationVC] sessionStateDidChange: Do not know how to bootstrap cross-signing. Skip it.");
+                                
+                                [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+                                [self dismiss];
+                            }
+                        }
+                        else
+                        {
+                            [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+                            [self dismiss];
+                        }
+                        break;
+                    }
+                    case MXCrossSigningStateCrossSigningExists:
+                    {
+                        NSLog(@"[AuthenticationVC] sessionStateDidChange: Complete security");
+                        
+                        // Ask the user to verify this session
+                        self.userInteractionEnabled = YES;
+                        [self.authenticationActivityIndicator stopAnimating];
+                        
+                        [self presentCompleteSecurityWithSession:session];
+                        break;
+                    }
+                        
+                    default:
+                        NSLog(@"[AuthenticationVC] sessionStateDidChange: Nothing to do");
+                        
+                        [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+                        [self dismiss];
+                        break;
+                }
+                
+            } failure:^(NSError * _Nonnull error) {
+                NSLog(@"[AuthenticationVC] sessionStateDidChange: Fail to refresh crypto state with error: %@", error);
+                [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+                [self dismiss];
+            }];
+        }
+        else
+        {
+            [self dismiss];
+        }
     }
 }
 
@@ -1266,6 +1432,42 @@
 
     // And show custom servers
     [self hideCustomServers:NO];
+}
+
+#pragma mark - KeyVerificationCoordinatorBridgePresenterDelegate
+
+- (void)keyVerificationCoordinatorBridgePresenterDelegateDidComplete:(KeyVerificationCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
+{
+    [self dismiss];
+}
+
+- (void)keyVerificationCoordinatorBridgePresenterDelegateDidCancel:(KeyVerificationCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    // Set outgoing key requests back
+    [coordinatorBridgePresenter.session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+    
+    [self dismiss];
+}
+
+#pragma mark - SetPinCoordinatorBridgePresenterDelegate
+
+- (void)setPinCoordinatorBridgePresenterDelegateDidComplete:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self dismiss];
+
+    [self afterSetPinFlowCompletedWithCredentials:loginCredentials];
+}
+
+- (void)setPinCoordinatorBridgePresenterDelegateDidCancel:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    //  enable the view again
+    [self setUserInteractionEnabled:YES];
+    
+    //  stop the spinner
+    [self.authenticationActivityIndicator stopAnimating];
+    
+    //  then, just close the enter pin screen
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
 }
 
 @end

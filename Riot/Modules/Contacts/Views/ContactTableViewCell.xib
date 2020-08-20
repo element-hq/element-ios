@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -27,23 +27,28 @@
                             <constraint firstAttribute="height" constant="42" id="WPC-tL-hnM"/>
                         </constraints>
                     </view>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="e2Q-sr-Kz4">
-                        <rect key="frame" x="42" y="10" width="20" height="21"/>
-                        <accessibility key="accessibilityConfiguration" identifier="ThumbnailBadgeView"/>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Wg7-no-cax">
+                        <rect key="frame" x="41" y="43" width="16" height="16"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="21" id="5Do-zm-vSO"/>
-                            <constraint firstAttribute="width" constant="20" id="IIL-0b-xCh"/>
+                            <constraint firstAttribute="width" constant="16" id="Rcc-M1-2hb"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Display name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lg1-xQ-AGn" userLabel="member display name">
-                        <rect key="frame" x="69" y="14" width="481" height="21"/>
+                        <rect key="frame" x="69" y="14" width="489" height="21"/>
                         <accessibility key="accessibilityConfiguration" identifier="MemberDisplayName"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1nR-ck-5Xd">
+                        <rect key="frame" x="563" y="24.5" width="0.0" height="0.0"/>
+                        <accessibility key="accessibilityConfiguration" identifier="ContactInformationLabel"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="info label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dQt-mN-T6b">
-                        <rect key="frame" x="69" y="39" width="531" height="20"/>
+                        <rect key="frame" x="69" y="39" width="531" height="19.5"/>
                         <accessibility key="accessibilityConfiguration" identifier="ContactInformationLabel"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                         <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -62,16 +67,19 @@
                 <constraints>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="RX5-eD-c3c" secondAttribute="bottom" constant="15" id="0MH-4P-AYF"/>
                     <constraint firstAttribute="bottom" secondItem="dQt-mN-T6b" secondAttribute="bottom" constant="15" id="2cU-tU-nDT"/>
-                    <constraint firstItem="e2Q-sr-Kz4" firstAttribute="trailing" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="7" id="Fib-p7-t8G"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="14" id="Pgp-JM-oQd"/>
                     <constraint firstItem="dQt-mN-T6b" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="14" id="XFM-LG-4uJ"/>
                     <constraint firstItem="dQt-mN-T6b" firstAttribute="top" secondItem="Lg1-xQ-AGn" secondAttribute="bottom" constant="4" id="iaT-57-GOs"/>
+                    <constraint firstItem="1nR-ck-5Xd" firstAttribute="centerY" secondItem="Lg1-xQ-AGn" secondAttribute="centerY" id="m01-Lq-3wa"/>
                     <constraint firstItem="RX5-eD-c3c" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="15" id="mga-fG-I0L"/>
-                    <constraint firstItem="Ogo-Qt-u2C" firstAttribute="leading" secondItem="Lg1-xQ-AGn" secondAttribute="trailing" constant="13" id="oNi-JM-zCJ"/>
+                    <constraint firstItem="Ogo-Qt-u2C" firstAttribute="leading" secondItem="1nR-ck-5Xd" secondAttribute="trailing" id="nbn-Je-HEE"/>
+                    <constraint firstItem="Wg7-no-cax" firstAttribute="bottom" secondItem="RX5-eD-c3c" secondAttribute="bottom" constant="2" id="pck-mZ-FjJ"/>
+                    <constraint firstItem="Wg7-no-cax" firstAttribute="width" secondItem="Wg7-no-cax" secondAttribute="height" multiplier="1:1" id="sZo-F2-fpL"/>
                     <constraint firstAttribute="trailing" secondItem="dQt-mN-T6b" secondAttribute="trailing" id="t2m-pb-5zd"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="14" id="tY3-6V-A3B"/>
+                    <constraint firstItem="1nR-ck-5Xd" firstAttribute="leading" secondItem="Lg1-xQ-AGn" secondAttribute="trailing" constant="5" id="tat-Fj-BSw"/>
                     <constraint firstItem="RX5-eD-c3c" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" constant="13" id="tgy-cX-Wxm"/>
-                    <constraint firstItem="RX5-eD-c3c" firstAttribute="top" secondItem="e2Q-sr-Kz4" secondAttribute="top" constant="5" id="xrs-nE-h6t"/>
+                    <constraint firstItem="Wg7-no-cax" firstAttribute="trailing" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="2" id="zT4-CH-fH8"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -81,14 +89,16 @@
                 <constraint firstAttribute="trailing" secondItem="Ogo-Qt-u2C" secondAttribute="trailing" constant="13" id="cWl-2f-cvI"/>
             </constraints>
             <connections>
+                <outlet property="avatarBadgeImageView" destination="Wg7-no-cax" id="mTr-4H-B6t"/>
                 <outlet property="contactDisplayNameLabel" destination="Lg1-xQ-AGn" id="xKB-Pw-12c"/>
                 <outlet property="contactInformationLabel" destination="dQt-mN-T6b" id="IKZ-wv-xVD"/>
                 <outlet property="customAccessViewWidthConstraint" destination="pDU-SS-0mb" id="A22-tz-iIz"/>
                 <outlet property="customAccessoryView" destination="Ogo-Qt-u2C" id="Hec-bO-0Av"/>
                 <outlet property="customAccessoryViewLeadingConstraint" destination="cWl-2f-cvI" id="WSj-ru-Qxx"/>
-                <outlet property="thumbnailBadgeView" destination="e2Q-sr-Kz4" id="kMn-et-a0z"/>
+                <outlet property="powerLevelLabel" destination="1nR-ck-5Xd" id="aIO-tg-fBq"/>
                 <outlet property="thumbnailView" destination="RX5-eD-c3c" id="GBi-K9-LhK"/>
             </connections>
+            <point key="canvasLocation" x="80" y="48.575712143928037"/>
         </tableViewCell>
     </objects>
 </document>

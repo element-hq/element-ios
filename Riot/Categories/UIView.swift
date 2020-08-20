@@ -37,4 +37,21 @@ extension UIView {
             subView.removeFromSuperview()
         }
     }
+    
+    /// Shake the view to indicate an error
+    @objc func vc_shake() {
+        let shake = CABasicAnimation(keyPath: "position")
+        let xDelta = CGFloat(10)
+        shake.duration = 0.07
+        shake.repeatCount = 2
+        shake.autoreverses = true
+
+        let fromPoint = CGPoint(x: center.x - xDelta, y: center.y)
+        let toPoint = CGPoint(x: center.x + xDelta, y: center.y)
+
+        shake.fromValue = NSValue(cgPoint: fromPoint)
+        shake.toValue = NSValue(cgPoint: toPoint)
+        shake.timingFunction = CAMediaTimingFunction(name: .easeOut)
+        layer.add(shake, forKey: "position")
+    }
 }

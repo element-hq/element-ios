@@ -107,7 +107,7 @@
     }
     
     // Adjust Top and Bottom constraints to take into account potential navBar and tabBar.
-    [NSLayoutConstraint deactivateConstraints:@[_searchBarTopConstraint, _tableViewBottomConstraint]];
+    [NSLayoutConstraint deactivateConstraints:@[_searchBarTopConstraint]];
     
     _searchBarTopConstraint = [NSLayoutConstraint constraintWithItem:self.topLayoutGuide
                                                            attribute:NSLayoutAttributeBottom
@@ -117,15 +117,7 @@
                                                           multiplier:1.0f
                                                             constant:0.0f];
     
-    _tableViewBottomConstraint = [NSLayoutConstraint constraintWithItem:self.bottomLayoutGuide
-                                                              attribute:NSLayoutAttributeTop
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:self.tableView
-                                                              attribute:NSLayoutAttributeBottom
-                                                             multiplier:1.0f
-                                                               constant:0.0f];
-    
-    [NSLayoutConstraint activateConstraints:@[_searchBarTopConstraint, _tableViewBottomConstraint]];
+    [NSLayoutConstraint activateConstraints:@[_searchBarTopConstraint]];
     
     self.navigationItem.title = NSLocalizedStringFromTable(@"room_participants_title", @"Vector", nil);
     
@@ -177,10 +169,14 @@
     CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
     tableViewMaskLayer.colors = @[(__bridge id) transparentWhiteColor, (__bridge id) transparentWhiteColor, (__bridge id) opaqueWhiteColor];
     
+    addParticipantButtonImageView.tintColor = ThemeService.shared.theme.tintColor;
+    
     if (self.tableView.dataSource)
     {
         [self.tableView reloadData];
     }
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -254,20 +250,25 @@
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"RoomParticipants"];
     
+    // Refresh display
+    [self refreshTableView];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
     if (memberDetailsViewController)
     {
         [memberDetailsViewController destroy];
         memberDetailsViewController = nil;
     }
-    
+
     if (contactsPickerViewController)
     {
         [contactsPickerViewController destroy];
         contactsPickerViewController = nil;
     }
-    
-    // Refresh display
-    [self refreshTableView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -667,7 +668,7 @@
     contactsDataSource.displaySearchInputInContactsList = YES;
     contactsDataSource.forceMatrixIdInDisplayName = YES;
     // Add a plus icon to the contact cell in the contacts picker, in order to make it more understandable for the end user.
-    contactsDataSource.contactCellAccessoryImage = [UIImage imageNamed:@"plus_icon"];
+    contactsDataSource.contactCellAccessoryImage = [[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor];
     
     // List all the participants matrix user id to ignore them during the contacts search.
     for (Contact *contact in actualParticipants)
@@ -1127,19 +1128,27 @@
             {
                 MXRoomState *roomState = self.mxRoom.dangerousSyncState;
                 
-                // Update member badge
+                // Update member power level
                 MXRoomPowerLevels *powerLevels = [roomState powerLevels];
                 NSInteger powerLevel = [powerLevels powerLevelOfUserWithUserID:contact.mxMember.userId];
-                if (powerLevel >= RoomPowerLevelAdmin)
-                {
-                    participantCell.thumbnailBadgeView.image = [UIImage imageNamed:@"admin_icon"];
-                    participantCell.thumbnailBadgeView.hidden = NO;
+                
+                RoomPowerLevel roomPowerLevel = [RoomPowerLevelHelper roomPowerLevelFrom:powerLevel];
+                
+                NSString *powerLevelText;
+                
+                switch (roomPowerLevel) {
+                    case RoomPowerLevelAdmin:
+                        powerLevelText = NSLocalizedStringFromTable(@"room_member_power_level_short_admin", @"Vector", nil);
+                        break;
+                    case RoomPowerLevelModerator:
+                        powerLevelText = NSLocalizedStringFromTable(@"room_member_power_level_short_moderator", @"Vector", nil);
+                        break;
+                    default:
+                        powerLevelText = nil;
+                        break;
                 }
-                else if (powerLevel >= RoomPowerLevelModerator)
-                {
-                    participantCell.thumbnailBadgeView.image = [UIImage imageNamed:@"mod_icon"];
-                    participantCell.thumbnailBadgeView.hidden = NO;
-                }
+                
+                participantCell.powerLevelLabel.text = powerLevelText;
                 
                 // Update the contact display name by considering the current room state.
                 if (contact.mxMember.userId)
@@ -1741,10 +1750,7 @@
     effectBackgroundBottom.hidden = YES;
     
     // place holder
-    searchBarTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:searchBarTextField.placeholder
-                                                                               attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
-                                                                                            NSUnderlineColorAttributeName: ThemeService.shared.theme.tintColor,
-                                                                                            NSForegroundColorAttributeName: ThemeService.shared.theme.tintColor}];
+    searchBarTextField.textColor = ThemeService.shared.theme.searchPlaceholderColor;
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText

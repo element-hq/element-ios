@@ -2,5 +2,5 @@
 "NSCameraUsageDescription" = "Defnyddir y camera i dynnu lluniau a fideos, gwneud galwadau fideo.";
 "NSPhotoLibraryUsageDescription" = "Defnyddir y llyfrgell ffotograffau i anfon lluniau a fideos.";
 "NSMicrophoneUsageDescription" = "Defnyddir y meicroffon i gymryd fideos, gwneud galwadau.";
-"NSContactsUsageDescription" = "I ddarganfod cysylltiadau sydd eisoes yn defnyddio Matrix, gall Riot anfon cyfeiriadau e-bost a rhifau ffôn yn eich llyfr cyfeiriadau at y gweinydd adnabod Matrix o'ch dewis. Pan gânt eu cefnogi, mae data personol yn cael ei amgodio cyn ei anfon - gwiriwch bolisi preifatrwydd eich gweinydd adnabod i gael mwy o fanylion.";
+"NSContactsUsageDescription" = "I ddarganfod cysylltiadau sydd eisoes yn defnyddio Matrix, gall Element anfon cyfeiriadau e-bost a rhifau ffôn yn eich llyfr cyfeiriadau at y gweinydd adnabod Matrix o'ch dewis. Pan gânt eu cefnogi, mae data personol yn cael ei amgodio cyn ei anfon - gwiriwch bolisi preifatrwydd eich gweinydd adnabod i gael mwy o fanylion.";
 "NSCalendarsUsageDescription" = "Gweler eich cyfarfodydd a drefnwyd yn yr ap.";

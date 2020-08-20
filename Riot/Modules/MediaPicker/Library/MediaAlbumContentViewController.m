@@ -123,6 +123,8 @@
 
     self.assetsCollectionView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -275,6 +277,7 @@
         cell.bottomLeftIcon.hidden = (asset.mediaType == PHAssetMediaTypeImage);
 
         cell.bottomRightIcon.image = [UIImage imageNamed:@"selection_tick"];
+        cell.bottomRightIcon.tintColor = ThemeService.shared.theme.tintColor;
         cell.bottomRightIcon.hidden = !selectedAssets || (NSNotFound == [selectedAssets indexOfObject:asset]);
 
         // Disable user interaction in mxkImageView, in order to let collection handle user selection

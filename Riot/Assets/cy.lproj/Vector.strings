@@ -1,6 +1,6 @@
 // String for App Store
 "store_short_description" = "Sgwrs/VoIP datgonoledig a diogel";
-"store_full_description" = "Cyfathrebu, eich ffordd eich hyn.\n\nAp sgwrsio, o dan eich rheolaeth ac yn hollol hyblyg. Mae Riot yn gadael ichi gyfathrebu'r ffordd rydych chi ei eisiau. Wedi'i wneud ar gyfer [matrix] - y safon ar gyfer cyfathrebu agored, datganoledig.\n\nSicrhewch gyfrif matrix.org am ddim, mynnwch eich gweinydd eich hun yn https://modular.im, neu defnyddiwch weinydd Matrix arall.\n\nPam dewis Riot.im?\n\nCYFATHREBU LLAWN: Adeiladwch ystafelloedd o amgylch eich timau, eich ffrindiau, eich cymuned - sut bynnag yr ydych chi'n hoffi! Sgwrsiwch, rhannwch ffeiliau, ychwanegwch teclynnau a gwnewch galwadau llais a fideo - i gyd yn rhad ac am ddim.\n\nINTEGREIDDIAU GRYMUS: Defnyddiwch Riot.im gyda'r offer rydych chi'n eu hadnabod ac yn eu caru. Gyda Riot.im gallwch hyd yn oed sgwrsio â defnyddwyr a grwpiau ar apiau sgwrsio eraill.\n\nPREIFAT A DIOGEL: Cadwch eich sgyrsiau yn gyfrinachol. Mae amgryptio o'r dechrau i'r diwedd o'r radd flaenaf yn sicrhau bod cyfathrebu preifat yn aros yn breifat.\n\nAGORED, NID YN GAËDIG: Ffynhonnell agor, ac wedi'i adeiladu ar Matrix. ––Byddwch yn berchen ar eich data eich hun trwy gynnal eich gweinydd eich hun, neu ddewis un rydych chi'n ymddiried ynddo.\n\nBOB MAN YDYCH CHI: Cadwch mewn cysylltiad ble bynnag yr ydych â hanes negeseuon wedi'i gydamseru'n llawn ar draws eich holl ddyfeisiau ac ar-lein yn https://riot.im.";
+"store_full_description" = "Cyfathrebu, eich ffordd eich hyn.\n\nAp sgwrsio, o dan eich rheolaeth ac yn hollol hyblyg. Mae Element yn gadael ichi gyfathrebu'r ffordd rydych chi ei eisiau. Wedi'i wneud ar gyfer [matrix] - y safon ar gyfer cyfathrebu agored, datganoledig.\n\nSicrhewch gyfrif matrix.org am ddim, mynnwch eich gweinydd eich hun yn https://ems.element.io, neu defnyddiwch weinydd Matrix arall.\n\nPam dewis Element?\n\nCYFATHREBU LLAWN: Adeiladwch ystafelloedd o amgylch eich timau, eich ffrindiau, eich cymuned - sut bynnag yr ydych chi'n hoffi! Sgwrsiwch, rhannwch ffeiliau, ychwanegwch teclynnau a gwnewch galwadau llais a fideo - i gyd yn rhad ac am ddim.\n\nINTEGREIDDIAU GRYMUS: Defnyddiwch Element gyda'r offer rydych chi'n eu hadnabod ac yn eu caru. Gyda Element gallwch hyd yn oed sgwrsio â defnyddwyr a grwpiau ar apiau sgwrsio eraill.\n\nPREIFAT A DIOGEL: Cadwch eich sgyrsiau yn gyfrinachol. Mae amgryptio o'r dechrau i'r diwedd o'r radd flaenaf yn sicrhau bod cyfathrebu preifat yn aros yn breifat.\n\nAGORED, NID YN GAËDIG: Ffynhonnell agor, ac wedi'i adeiladu ar Matrix. ––Byddwch yn berchen ar eich data eich hun trwy gynnal eich gweinydd eich hun, neu ddewis un rydych chi'n ymddiried ynddo.\n\nBOB MAN YDYCH CHI: Cadwch mewn cysylltiad ble bynnag yr ydych â hanes negeseuon wedi'i gydamseru'n llawn ar draws eich holl ddyfeisiau ac ar-lein yn https://app.element.io.";
 // Titles
 "title_home" = "Hafan";
 "title_favourites" = "Ffefrynnau";
@@ -92,9 +92,9 @@
 "auth_reset_password_email_validation_message" = "Mae e-bost wedi'i anfon at %@. Ar ôl i chi ddilyn y ddolen sydd ynddo, cliciwch isod.";
 "auth_reset_password_next_step_button" = "Rwyf wedi gwirio fy nghyfeiriad e-bost";
 "auth_reset_password_error_unauthorized" = "Methiant gwirio cyfeiriad e-bost: gwnewch yn siŵr eich bod wedi clicio'r ddolen yn yr e-bost";
-"auth_reset_password_error_not_found" = "Nid yw'n ymddangos bod eich cyfeiriad e-bost yn gysylltiedig ag Matrix ID ar y hafanweinydd hwn.";
+"auth_reset_password_error_not_found" = "Nid yw'n ymddangos bod eich cyfeiriad e-bost yn gysylltiedig ag Dynodwr Matrix ar y hafanweinydd hwn.";
 "auth_reset_password_error_is_required" = "Nid oes unrhyw weinydd adnabod wedi'i osod: ychwanegwch un yn opsiynau'r gweinydd i ailosod eich cyfrinair.";
-"auth_reset_password_success_message" = "Mae eich cyfrinair wedi'i ailosod.\n\nRydych wedi cael eich allgofnodi o bob dyfais ac ni fyddwch yn derbyn hysbysiadau mwyach. I ail-alluogi hysbysiadau, ail-fewngofnodwch ar bob dyfais.";
+"auth_reset_password_success_message" = "Mae eich cyfrinair wedi'i ailosod.\n\nRydych wedi cael eich allgofnodi o bob sesiwn ac ni fyddwch yn derbyn hysbysiadau mwyach. I ail-alluogi hysbysiadau, ail-fewngofnodwch ar bob dyfais.";
 "auth_add_email_and_phone_warning" = "Ni chefnogir cofrestru gydag e-bost a rhif ffôn ar yr un pryd nes bod yr api yn bodoli. Dim ond y rhif ffôn fydd yn cael ei ystyried. Gallwch ychwanegu eich e-bost at eich proffil mewn gosodiadau.";
 "auth_accept_policies" = "Adolygwch a derbynwch bolisïau'r gewinydd cartref hwn:";
 "auth_autodiscover_invalid_response" = "Ymateb darganfod hafanweinydd annilys";
@@ -126,7 +126,7 @@
 "room_creation_keep_private" = "Cadw'n breifat";
 "room_creation_make_private" = "Gwneud yn breifat";
 "room_creation_wait_for_creation" = "Mae ystafell eisoes yn cael ei greu. Arhoswch os gwelwch yn dda.";
-"room_creation_invite_another_user" = "Chwilio / gwahodd yn ôl ID defnyddiwr, Enw, new e-bost";
+"room_creation_invite_another_user" = "Chwilio / gwahodd yn ôl Dynodwr Defnyddiwr, Enw, new e-bost";
 "room_creation_error_invite_user_by_email_without_identity_server" = "Nid oes unrhyw weinydd adnabod wedi'i osod felly ni allwch ychwanegu cyfranogwr gydag e-bost.";
 // Room recents
 "room_recents_directory_section" = "CYFEIRIADUR YSTAFELLOEDD";
@@ -158,7 +158,7 @@
 "search_people" = "Pobl";
 "search_files" = "Ffeiliau";
 "search_default_placeholder" = "Chwilio";
-"search_people_placeholder" = "Chwilio yn ôl ID defnyddiwr, Enw, new e-bost";
+"search_people_placeholder" = "Chwilio yn ôl Dynodwr Defnyddiwr, Enw, new e-bost";
 "search_no_result" = "Dim canlyniadau";
 "search_in_progress" = "Chwilio…";
 // Directory
@@ -175,7 +175,7 @@
 "contacts_address_book_no_identity_server" = "Dim gweinydd adnabod wedi'i osod";
 "contacts_address_book_no_contact" = "Dim cysylltiadau lleol";
 "contacts_address_book_permission_required" = "Mae angen caniatâd i gael mynediad at gysylltiadau lleol";
-"contacts_address_book_permission_denied" = "Gwrthodwyd caniatâd i Riot gael mynediad i'ch cysylltiadau lleol";
+"contacts_address_book_permission_denied" = "Gwrthodwyd caniatâd i Element gael mynediad i'ch cysylltiadau lleol";
 "contacts_user_directory_section" = "CYFEIRIADUR DEFNYDDWYR";
 "contacts_user_directory_offline_section" = "CYFEIRIADUR DEFNYDDWYR (all-lein)";
 // Chat participants
@@ -191,9 +191,9 @@
 "room_participants_invite_prompt_title" = "Cadarnhad";
 "room_participants_invite_prompt_msg" = "Ydych chi'n siwr eich bod eisau ychwanegu %@ i'r sgwrs?";
 "room_participants_filter_room_members" = "Hidlo aelodau'r ystafell";
-"room_participants_invite_another_user" = "Chwilio / gwahodd yn ôl ID defnyddiwr, Enw, new e-bost";
+"room_participants_invite_another_user" = "Chwilio / gwahodd yn ôl Dynodwr Defnyddiwr, Enw, new e-bost";
 "room_participants_invite_malformed_id_title" = "Gwall gwahoddiad";
-"room_participants_invite_malformed_id" = "ID camffurfiedig. Dylai fod yn gyfeiriad e-bost neu'n ID Matrix fel '@localpart:domain'";
+"room_participants_invite_malformed_id" = "Dynodwr camffurfiedig. Dylai fod yn gyfeiriad e-bost neu'n Ddynodwr Matrix fel '@localpart:domain'";
 "room_participants_invited_section" = "GWAHODDWYD";
 "room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Nid oes unrhyw weinydd adnabod wedi'i osod felly ni allwch ddechrau sgwrs gyda chyswllt gan ddefnyddio e-bost.";
 "room_participants_online" = "Ar-lein";
@@ -204,8 +204,8 @@
 "room_participants_ago" = "yn ôl";
 "room_participants_action_section_admin_tools" = "Offer gweinyddu";
 "room_participants_action_section_direct_chats" = "Sgyrsiau uniongyrchol";
-"room_participants_action_section_devices" = "Dyfeisiau";
-"room_participants_action_section_other" = "Arall";
+"room_participants_action_section_devices" = "Sesiynau";
+"room_participants_action_section_other" = "Opsiynau";
 "room_participants_action_invite" = "Gwahodd";
 "room_participants_action_leave" = "Gadael yr ystafell hon";
 "room_participants_action_remove" = "Tynnu o'r ystafell hon";
@@ -238,7 +238,7 @@
 "room_message_reply_to_short_placeholder" = "Anfon ateb…";
 "room_offline_notification" = "Collwyd cysylltedd â'r gweinydd.";
 "room_unsent_messages_notification" = "Negeseuon heb eu hanfon. %@ neu %@ rwan?";
-"room_unsent_messages_unknown_devices_notification" = "Ni anfonwyd neges oherwydd bod dyfeisiau anhysbys yn bresennol. %@ neu %@ rwan?";
+"room_unsent_messages_unknown_devices_notification" = "Ni anfonwyd neges oherwydd bod sesiynau anhysbys yn bresennol. %@ neu %@ rwan?";
 "room_ongoing_conference_call" = "Galwad gynhadledd ar y gweill. Ymunwch fel %@ neu %@.";
 "room_ongoing_conference_call_with_close" = "Galwad gynhadledd ar y gweill. Ymunwch fel %@ neu %@. %@ o.";
 "room_ongoing_conference_call_close" = "Cau";
@@ -281,7 +281,7 @@
 "room_replacement_information" = "Mae'r ystafell hon wedi'i newid ac nid yw'n weithredol mwyach.";
 "room_replacement_link" = "Mae'r sgwrs yn parhau yma.";
 "room_predecessor_information" = "Mae'r ystafell hon yn barhad o sgwrs arall.";
-"room_predecessor_link" = "Cyffyrddwch yma i weld negeseuon hŷn.";
+"room_predecessor_link" = "Tapiwch yma i weld negeseuon hŷn.";
 "room_resource_limit_exceeded_message_contact_1" = " Os gwelwch yn dda ";
 "room_resource_limit_exceeded_message_contact_2_link" = "cysylltwch â'ch gweinyddwr gwasanaeth";
 "room_resource_limit_exceeded_message_contact_3" = " i barhau i ddefnyddio'r gwasanaeth hwn.";
@@ -302,13 +302,13 @@
 "media_type_accessibility_file" = "Ffeil";
 "media_type_accessibility_sticker" = "Sticer";
 // Unknown devices
-"unknown_devices_alert_title" = "Mae'r ystafell yn cynnwys dyfeisiau anhysbys";
-"unknown_devices_alert" = "Mae'r ystafell hon yn cynnwys dyfeisiau anhysbys na chawsant eu gwirio.\nMae hyn yn golygu nad oes unrhyw sicrwydd bod y dyfeisiau'n eiddo i'r defnyddwyr maen nhw'n honni iddyn nhw.\nRydym yn argymell eich bod yn mynd trwy'r broses ddilysu ar gyfer pob dyfais cyn parhau, ond gallwch ail-anfon y neges heb wirio a yw'n well gennych.";
+"unknown_devices_alert_title" = "Mae'r ystafell yn cynnwys sesiynau anhysbys";
+"unknown_devices_alert" = "Mae'r ystafell hon yn cynnwys sesiynau anhysbys na chawsant eu gwirio.\nMae hyn yn golygu nad oes unrhyw sicrwydd bod y sesiynau'n eiddo i'r defnyddwyr maen nhw'n honni iddyn nhw.\nRydym yn argymell eich bod yn mynd trwy'r broses ddilysu ar gyfer pob sesiwn cyn parhau, ond gallwch ail-anfon y neges heb wirio a yw'n well gennych.";
 "unknown_devices_send_anyway" = "Anfon beth bynnag";
 "unknown_devices_call_anyway" = "Galw beth bynnag";
 "unknown_devices_answer_anyway" = "Ateb beth bynnag";
 "unknown_devices_verify" = "Gwirio…";
-"unknown_devices_title" = "Dyfeisiau anhysbys";
+"unknown_devices_title" = "Sesiynau anhysbys";
 // Room Title
 "room_title_new_room" = "Ystafell newydd";
 "room_title_multiple_active_members" = "%@/%@ aelod gweithredol";
@@ -344,7 +344,7 @@
 "settings_other" = "ARALL";
 "settings_labs" = "LABORDAI";
 "settings_flair" = "Dangos dawn lle caniateir";
-"settings_devices" = "DYFEISIAU";
+"settings_devices" = "SESIYNAU";
 "settings_cryptography" = "CRYPTOGRAFFEG";
 "settings_key_backup" = "ALLWEDDI WRTH GEFN";
 "settings_deactivate_account" = "DAD-ACTIFADU CYFRIF";
@@ -376,7 +376,7 @@
 "settings_pin_rooms_with_unread" = "Pinio ystafelloedd gyda negeseuon heb eu darllen";
 "settings_on_denied_notification" = "Gwrthodir hysbysiadau i %@, caniatewch nhw yn eich gosodiadau dyfais";
 "settings_enable_callkit" = "Galw integredig";
-"settings_callkit_info" = "Derbyn galwadau sy'n dod i mewn ar eich sgrin clo. Gwelwch eich galwadau Riot yn hanes galwadau'r system. Os yw iCloud wedi'i alluogi, bydd yr hanes galw hwn yn cael ei rannu gydag Apple.";
+"settings_callkit_info" = "Derbyn galwadau sy'n dod i mewn ar eich sgrin clo. Gwelwch eich galwadau Element yn hanes galwadau'r system. Os yw iCloud wedi'i alluogi, bydd yr hanes galw hwn yn cael ei rannu gydag Apple.";
 "settings_calls_stun_server_fallback_button" = "Caniatáu gweinydd cymorth galw wrth gefn";
 "settings_calls_stun_server_fallback_description" = "Caniatáu gweinydd cymorth galw wrth gefn %@ pan nad yw eich hafanweinydd yn cynnig un (byddai eich cyfeiriad IP yn cael ei rannu yn ystod galwad).";
 "settings_ui_language" = "Iaith";
@@ -399,11 +399,8 @@
 "settings_version" = "Fersiwn %@";
 "settings_olm_version" = "Fersiwn Olm %@";
 "settings_copyright" = "Hawlfraint";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Telerau ac Amodau";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Polisi Preifatrwydd";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Hysbysiadau Trydydd Parti";
 "settings_send_crash_report" = "Anfonwch ddata namau a defnydd dienw";
 "settings_enable_rageshake" = "Ysgwydiad blin i roi gwybod am nam";
@@ -416,24 +413,24 @@
 "settings_add_3pid_password_title_msidsn" = "Ychwanegu rhif ffôn";
 "settings_add_3pid_password_message" = "I barhau, rhowch eich cyfrinair os gwelwch yn dda";
 "settings_add_3pid_invalid_password_message" = "Cyfrinair annilys";
-"settings_crypto_device_name" = "Enw Cyhoeddus y Ddyfais: ";
-"settings_crypto_device_id" = "\nID y ddyfais: ";
-"settings_crypto_device_key" = "\nAllwedd y ddyfais:\n";
+"settings_crypto_device_name" = "Enw Sesiwn: ";
+"settings_crypto_device_id" = "\nDynodwr y sesiwn: ";
+"settings_crypto_device_key" = "\nAllwedd y sesiwn:\n";
 "settings_crypto_export" = "Allfudo allweddi";
-"settings_crypto_blacklist_unverified_devices" = "Amgryptio i ddyfeisiau wedi'u gwirio yn unig";
+"settings_crypto_blacklist_unverified_devices" = "Amgryptio i sesiynau wedi'u gwirio yn unig";
 "settings_deactivate_my_account" = "Dad-actifadu fy nghyfrif";
 "settings_key_backup_info" = "Sicrheir negeseuon wedi'u hamgryptio gydag amgryptio o'r dechrau i'r diwedd. Dim ond chi a'r derbynnydd / derbynwyr sydd â'r allweddi i ddarllen y negeseuon hyn.";
-"settings_key_backup_info_checking" = "Gwirio...";
-"settings_key_backup_info_none" = "Nid yw'ch allweddi yn cael eu cadw wrth gefn o'r ddyfais hon.";
-"settings_key_backup_info_signout_warning" = "Cysylltwch y ddyfais hon â Allweddi Wrth Gefn cyn arwyddo allan er mwyn osgoi colli unrhyw allweddi a allai fod ar y ddyfais hon yn unig.";
+"settings_key_backup_info_checking" = "Gwirio…";
+"settings_key_backup_info_none" = "Nid yw'ch allweddi yn cael eu cadw wrth gefn o'r sesiwn hon.";
+"settings_key_backup_info_signout_warning" = "Cysylltwch y sesiwn hon â Allweddi Wrth Gefn cyn allgofnodi er mwyn osgoi colli unrhyw allweddi a allai fod ar y ddyfais hon yn unig.";
 "settings_key_backup_info_version" = "Fersiwn Allweddi Wrth Gefn: %@";
 "settings_key_backup_info_algorithm" = "Algorithm: %@";
-"settings_key_backup_info_valid" = "Mae'r ddyfais hon yn gwneud copi wrth gefn o'ch allweddi.";
-"settings_key_backup_info_not_valid" = "Nid yw'r ddyfais hon yn gwneud copi wrth gefn o'ch allweddi, ond mae gennych gopi wrth gefn y gallwch ei adfer ac ychwanegu ato wrth symud ymlaen.";
-"settings_key_backup_info_progress" = "Creu copi wrth gefn o allweddi %@...";
+"settings_key_backup_info_valid" = "Mae'r sesiwn hon yn gwneud copi wrth gefn o'ch allweddi.";
+"settings_key_backup_info_not_valid" = "Nid yw'r sesiwn hon yn gwneud copi wrth gefn o'ch allweddi, ond mae gennych gopi wrth gefn y gallwch ei adfer ac ychwanegu ato wrth symud ymlaen.";
+"settings_key_backup_info_progress" = "Creu copi wrth gefn o allweddi %@…";
 "settings_key_backup_info_progress_done" = "Pob allwedd â copi wrth gefn";
-"settings_key_backup_info_trust_signature_unknown" = "Mae gan Allweddi Wrth Gefn lofnod o'r ddyfais gydag ID: %@";
-"settings_key_backup_info_trust_signature_valid" = "Mae gan Allweddi Wrth Gefn lofnod dilys o'r ddyfais hon";
+"settings_key_backup_info_trust_signature_unknown" = "Mae gan Allweddi Wrth Gefn lofnod o'r sesiwn gyda dynodwr: %@";
+"settings_key_backup_info_trust_signature_valid" = "Mae gan Allweddi Wrth Gefn lofnod dilys o'r sesiwn hon";
 "settings_key_backup_info_trust_signature_valid_device_verified" = "Mae gan Allweddi Wrth Gefn lofnod dilys o %@";
 "settings_key_backup_info_trust_signature_valid_device_unverified" = "Mae gan Allweddi Wrth Gefn lofnod o %@";
 "settings_key_backup_info_trust_signature_invalid_device_verified" = "Mae gan Allweddi Wrth Gefn lofnod annilys o %@";
@@ -441,10 +438,10 @@
 "settings_key_backup_button_create" = "Dechrau defnyddio Allweddi Wrth Gefn";
 "settings_key_backup_button_restore" = "Adfer o'r copi wrth gefn";
 "settings_key_backup_button_delete" = "Dileu copi wrth gefn";
-"settings_key_backup_button_connect" = "Cysylltwch y ddyfais hon i Allweddi Wrth Gefn";
+"settings_key_backup_button_connect" = "Cysylltwch y sesiwn hon i Allweddi Wrth Gefn";
 "settings_key_backup_delete_confirmation_prompt_title" = "Dileu copi wrth gefn";
 "settings_key_backup_delete_confirmation_prompt_msg" = "Ydych chi'n siwr? Byddwch yn colli'ch negeseuon wedi'u hamgryptio os nad yw'ch allweddi wedi'u cadw wrth gefn yn gywir.";
-"settings_devices_description" = "Mae enw cyhoeddus dyfais yn weladwy i'r bobl rydych chi'n cyfathrebu â nhw";
+"settings_devices_description" = "Mae enw cyhoeddus sesiwn yn weladwy i'r bobl rydych chi'n cyfathrebu â nhw";
 "settings_discovery_no_identity_server" = "Ar hyn o bryd nid ydych yn defnyddio gweinydd adnabod. I fod yn ddarganfyddadwy gan y cysylltiadau presennol yr ydych chi'n eu hadnabod, ychwanegwch un.";
 "settings_discovery_terms_not_signed" = "Cytuno i'r Telerau Gwasanaeth Gweinydd Adnabod (%@) i ganiatáu i'ch hun fod yn ddargandfyddadwy trwy gyfeiriad e-bost neu rif ffôn.";
 "settings_discovery_three_pids_management_information_part1" = "Rheoli pa gyfeiriadau e-bost neu rifau ffôn y gall defnyddwyr eraill eu defnyddio i'ch darganfod. Ychwanegu neu dynnu cyfeiriadau e-bost neu rifau ffôn o'r rhestr hon yn ";
@@ -516,16 +513,16 @@
 "room_details_addresses_disable_main_address_prompt_title" = "Rhybydd prif gyfeiriad";
 "room_details_addresses_disable_main_address_prompt_msg" = "Ni fydd gennych brif gyfeiriad wedi'i nodi. Dewisir ar hap prif gyfeiriad diofyn ar gyfer yr ystafell hon";
 "room_details_flair_section" = "Dangos dawn i gymunedau";
-"room_details_new_flair_placeholder" = "Ychwanegu ID cymunedol newydd (e.e. +foo%@)";
+"room_details_new_flair_placeholder" = "Ychwanegu dynodwr cymunedol newydd (e.e. +foo%@)";
 "room_details_flair_invalid_id_prompt_title" = "Fformat annilys";
 "room_details_flair_invalid_id_prompt_msg" = "Nid yw %@ yn ddynodwr dilys ar gyfer cymuned";
 "room_details_banned_users_section" = "Defnyddwyr gwaharddedig";
 "room_details_advanced_section" = "Uwch";
-"room_details_advanced_room_id" = "ID Ystafell:";
+"room_details_advanced_room_id" = "Dynodwr Ystafell:";
 "room_details_advanced_enable_e2e_encryption" = "Galluogi amgryptio (rhybudd: ni ellir ei anablu eto!)";
 "room_details_advanced_e2e_encryption_enabled" = "Mae amgryptio wedi'i alluogi yn yr ystafell hon";
 "room_details_advanced_e2e_encryption_disabled" = "Nid yw amgryptio wedi'i alluogi yn yr ystafell hon.";
-"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Amgryptio i ddyfeisiau wedi'u gwirio yn unig";
+"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Amgryptio i sesiynau wedi'u gwirio yn unig";
 "room_details_fail_to_update_avatar" = "Methwyd diweddaru llun yr ystafell";
 "room_details_fail_to_update_room_name" = "Methwyd diweddaru enw'r ystafell";
 "room_details_fail_to_update_topic" = "Methwyd diweddaru'r pwnc";
@@ -542,7 +539,7 @@
 "room_details_save_changes_prompt" = "Hoffech chi gadw'r newidiadau?";
 "room_details_set_main_address" = "Gosod fel Prif Gyfeiriad";
 "room_details_unset_main_address" = "Dad-osod fel Prif Gyfeiriad";
-"room_details_copy_room_id" = "Copio ID Ystafell";
+"room_details_copy_room_id" = "Copio Dynodwr Ystafell";
 "room_details_copy_room_address" = "Copio Cyfeiriad Ystafell";
 "room_details_copy_room_url" = "Copio URL Ystafell";
 // Group Details
@@ -565,9 +562,9 @@
 "group_participants_invite_prompt_title" = "Cadarnhad";
 "group_participants_invite_prompt_msg" = "Ydych chi'n siwr eich bod eisau gwahodd %@ i'r grŵp?";
 "group_participants_filter_members" = "Hidlo aelodau'r cymuned";
-"group_participants_invite_another_user" = "Chwilio / gwahodd yn ôl ID Defnyddiwr neu Enw";
+"group_participants_invite_another_user" = "Chwilio / gwahodd yn ôl Dynodwr Defnyddiwr neu Enw";
 "group_participants_invite_malformed_id_title" = "Gwall gwahoddiad";
-"group_participants_invite_malformed_id" = "ID camffurfiedig. Dylai fod yn ID Matrix fel '@localpart:domain'";
+"group_participants_invite_malformed_id" = "Dynodwr camffurfiedig. Dylai fod yn Ddynodwr Matrix fel '@localpart:domain'";
 "group_participants_invited_section" = "GWAHODDWYD";
 // Group rooms
 "group_rooms_filter_rooms" = "Hidlo ystafelloedd y gymuned";
@@ -595,7 +592,7 @@
 "event_formatter_jitsi_widget_added" = "Ychwanegwyd cynhadledd VoIP gan %@";
 "event_formatter_jitsi_widget_removed" = "Tynnwyd cynhadledd VoIP gan %@";
 "event_formatter_rerequest_keys_part1_link" = "Ail-ofyn am allweddi amgryptio";
-"event_formatter_rerequest_keys_part2" = " o'ch dyfeisiau eraill.";
+"event_formatter_rerequest_keys_part2" = " o'ch sesiynau eraill.";
 "event_formatter_message_edited_mention" = "(adolygwyd)";
 // Others
 "or" = "neu";
@@ -616,8 +613,8 @@
 // Call
 "call_incoming_voice_prompt" = "Galwad llais sy'n dod i mewn gan %@";
 "call_incoming_video_prompt" = "Galwad fideo sy'n dod i mewn gan %@";
-"call_incoming_voice" = "Galwad sy'n dod i mewn...";
-"call_incoming_video" = "Galwad fideo sy'n dod i mewn...";
+"call_incoming_voice" = "Galwad sy'n dod i mewn…";
+"call_incoming_video" = "Galwad fideo sy'n dod i mewn…";
 "call_already_displayed" = "Mae galwad ar y gweill eisoes.";
 "call_jitsi_error" = "Methwyd ymuno â'r alwad cynhadledd.";
 "call_no_stun_server_error_title" = "Methodd yr alwad oherwydd gweinydd wedi'i gamosod";
@@ -630,8 +627,8 @@
 // Crash report
 "google_analytics_use_prompt" = "Hoffech chi helpu i wella %@ trwy gyrru adroddiadau pall a data defnydd dienw yn awtomatig?";
 // Crypto
-"e2e_enabling_on_app_update" = "Mae Riot bellach yn cefnogi amgryptio o'r dechrau i'r diwedd ond mae angen i chi fewngofnodi eto i'w alluogi.\n\nGallwch ei wneud nawr neu'n hwyrach o'r gosodiadau.";
-"e2e_need_log_in_again" = "Mae angen i chi fewngofnodi i gynhyrchu allweddi amgryptio o'r dechrau i'r diwedd ar gyfer y ddyfais hon a chyflwyno'r allwedd gyhoeddus i'ch hafanweinydd\nDim ond unwaith fydd rhaid gwneud hyn; sori am yr anghyfleustra.";
+"e2e_enabling_on_app_update" = "Mae Element bellach yn cefnogi amgryptio o'r dechrau i'r diwedd ond mae angen i chi fewngofnodi eto i'w alluogi.\n\nGallwch ei wneud nawr neu'n hwyrach o'r gosodiadau.";
+"e2e_need_log_in_again" = "Mae angen i chi fewngofnodi i gynhyrchu allweddi amgryptio o'r dechrau i'r diwedd ar gyfer y sesiwn hon a chyflwyno'r allwedd gyhoeddus i'ch hafanweinydd\nDim ond unwaith fydd rhaid gwneud hyn; sori am yr anghyfleustra.";
 // Key backup wrong version
 "e2e_key_backup_wrong_version_title" = "Copi Allwedd Wrth Gefn Newydd";
 "e2e_key_backup_wrong_version" = "Mae copi allwedd wrth gefn newydd neges ddiogel wedi'i ganfod.\n\nOs nad chi oedd hyn, gosodwch gyfrinair newydd yn Gosodiadau.";
@@ -673,9 +670,9 @@
 "share_extension_failed_to_encrypt" = "Methwyd anfon. Gwiriwch y gosodiadau amgryptio ar gyfer yr ystafell hon yn y prif app";
 // Room key request dialog
 "e2e_room_key_request_title" = "Cais allwedd amgryptio";
-"e2e_room_key_request_message_new_device" = "Fe wnaethoch ychwanegu dyfais newydd '%@', sy'n gofyn am allweddi amgryptio.";
-"e2e_room_key_request_message" = "Mae'ch dyfais anwiriedig '%@' yn gofyn am allweddi amgryptio.";
-"e2e_room_key_request_start_verification" = "Dechrau gwirio...";
+"e2e_room_key_request_message_new_device" = "Fe wnaethoch ychwanegu sesiwn newydd '%@', sy'n gofyn am allweddi amgryptio.";
+"e2e_room_key_request_message" = "Mae'ch sesiwn anwiriedig '%@' yn gofyn am allweddi amgryptio.";
+"e2e_room_key_request_start_verification" = "Dechrau gwirio…";
 "e2e_room_key_request_share_without_verifying" = "Rhannwch heb wirio";
 "e2e_room_key_request_ignore_request" = "Anwybyddu cais";
 // GDPR
@@ -693,7 +690,7 @@
 "service_terms_modal_title_identity_server" = "Darganfod Cysylltiadau";
 "service_terms_modal_message_identity_server" = "Derbyn telerau'r gweinydd adnabod (%@) i ddarganfod cysylltiadau.";
 "deactivate_account_title" = "Dad-actifadu Cyfrif";
-"deactivate_account_informations_part1" = "Bydd hyn yn golygu na ellir defnyddio'ch cyfrif yn barhaol. Ni fyddwch yn gallu mewngofnodi, ac ni fydd unrhyw un yn gallu ailgofrestru'r un ID defnyddiwr. Bydd hyn yn achosi i'ch cyfrif adael yr holl ystafelloedd y mae'n cymryd rhan ynddynt, a bydd yn tynnu manylion eich cyfrif o'ch gweinydd adnabod. ";
+"deactivate_account_informations_part1" = "Bydd hyn yn golygu na ellir defnyddio'ch cyfrif yn barhaol. Ni fyddwch yn gallu mewngofnodi, ac ni fydd unrhyw un yn gallu ailgofrestru'r un dynodwr defnyddiwr. Bydd hyn yn achosi i'ch cyfrif adael yr holl ystafelloedd y mae'n cymryd rhan ynddynt, a bydd yn tynnu manylion eich cyfrif o'ch gweinydd adnabod. ";
 "deactivate_account_informations_part2_emphasize" = "Ni ellir gwrthdroi'r weithred hon.";
 "deactivate_account_informations_part3" = "\n\nYn dad-actifadu eich cyfrif ";
 "deactivate_account_informations_part4_emphasize" = "nid yw yn ddiofyn yn achosi inni anghofio negeseuon yr ydych wedi'u hanfon. ";
@@ -706,7 +703,7 @@
 "deactivate_account_password_alert_message" = "I barhau, rhowch eich cyfrinair os gwelwch yn dda";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Anfonwyd y Cais";
-"rerequest_keys_alert_message" = "Lansiwch Riot ar ddyfais arall a all ddadgryptio'r neges fel y gall anfon yr allweddi i'r ddyfais hon.";
+"rerequest_keys_alert_message" = "Lansiwch Element ar ddyfais arall a all ddadgryptio'r neges fel y gall anfon yr allweddi i'r sesiwn hon.";
 "key_backup_setup_title" = "Allweddi Wrth Gefn";
 "key_backup_setup_skip_alert_title" = "Ydych chi'n siwr?";
 "key_backup_setup_skip_alert_message" = "Efallai y byddwch chi'n colli negeseuon diogel os byddwch chi'n allgofnodi neu'n colli'ch dyfais.";
@@ -762,7 +759,7 @@
 "key_backup_setup_banner_title" = "Peidiwch byth â cholli negeseuon wedi'u hamgryptio";
 "key_backup_setup_banner_subtitle" = "Dechrau defnyddio Allweddi Wrth Gefn";
 "key_backup_recover_banner_title" = "Peidiwch byth â cholli negeseuon wedi'u hamgryptio";
-"key_backup_recover_connent_banner_subtitle" = "Cysylltwch y ddyfais hon i Allweddi Wrth Gefn";
+"key_backup_recover_connent_banner_subtitle" = "Cysylltwch y sesiwn hon i Allweddi Wrth Gefn";
 "sign_out_existing_key_backup_alert_title" = "Ydych chi'n siŵr eich bod chi am allgofnodi?";
 "sign_out_existing_key_backup_alert_sign_out_action" = "Allgofnodi";
 "sign_out_non_existing_key_backup_alert_title" = "Byddwch yn colli mynediad i'ch negeseuon amgryptiedig os byddwch chi'n allgofnodi rwan";
@@ -776,28 +773,28 @@
 "sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Dydw i ddim eisiau i fy negeseuon amgryptiedig";
 "sign_out_key_backup_in_progress_alert_cancel_action" = "Arosaf";
 // MARK: - Device Verification
-"device_verification_title" = "Gwirio dyfais";
+"device_verification_title" = "Gwirio sesiwn";
 "device_verification_security_advice" = "Er mwyn sicrhau'r diogelwch mwyaf, rydym yn argymell eich bod yn gwneud hyn yn bersonol neu'n defnyddio dull cyfathrebu dibynadwy arall";
 "device_verification_cancelled" = "Canslodd y parti arall y gwiriad.";
 "device_verification_cancelled_by_me" = "Mae'r gwiriad wedi'i ganslo. Rheswm: %@";
-"device_verification_error_cannot_load_device" = "Methu llwytho gwybodaeth am ddyfeisiau.";
+"device_verification_error_cannot_load_device" = "Methu llwytho gwybodaeth am y sesiwn.";
 // Mark: Incoming
 "device_verification_incoming_title" = "Cais Gwirio sy'n Dod i Mewn";
-"device_verification_incoming_description_1" = "Gwiriwch y ddyfais hon i'w nodi fel un y gellir ymddiried ynddo. Mae dyfeisiau ymddiriedol partneriaid yn rhoi tawelwch meddwl ychwanegol i chi wrth ddefnyddio negeseuon wedi'u hamgryptio o'r dechrau i'r diwedd.";
-"device_verification_incoming_description_2" = "Bydd gwirio'r ddyfais hon yn ei nodi fel un y gellir ymddiried ynddo, a hefyd yn marcio'ch dyfais fel un y gellir ymddiried ynddo i'r partner.";
+"device_verification_incoming_description_1" = "Gwiriwch y sesiwn hon i'w nodi fel un y gellir ymddiried ynddo. Mae sesiynau ymddiriedol partneriaid yn rhoi tawelwch meddwl ychwanegol i chi wrth ddefnyddio negeseuon wedi'u hamgryptio o'r dechrau i'r diwedd.";
+"device_verification_incoming_description_2" = "Bydd gwirio'r sesiwn hon yn ei nodi fel un y gellir ymddiried ynddo, a hefyd yn marcio'ch sesiwn fel un y gellir ymddiried ynddo i'r partner.";
 // MARK: Start
 "device_verification_start_title" = "Gwirio trwy gymharu testun byr";
-"device_verification_start_wait_partner" = "Aros i'r partner dderbyn ...";
+"device_verification_start_wait_partner" = "Aros i'r partner dderbyn…";
 "device_verification_start_use_legacy" = "Dim byd yn ymddangos? Nid yw pob cleient yn cefnogi gwirio rhyngweithiol eto. Defnyddiwch yr hen fodd o wirio.";
 "device_verification_start_verify_button" = "Dechrau Gwirio";
 "device_verification_start_use_legacy_action" = "Defnyddio'r Hen Fodd o Wirio";
 // MARK: Verify
-"device_verification_verify_title_emoji" = "Gwiriwch y ddyfais hon trwy gadarnhau'r emoji canlynol sy'n ymddangos ar sgrin y partner";
-"device_verification_verify_title_number" = "Gwiriwch y ddyfais hon trwy gadarnhau'r rhifau canlynol sy'n ymddangos ar sgrin y partner";
-"device_verification_verify_wait_partner" = "Aros i'r partner gadarnhau...";
+"device_verification_verify_title_emoji" = "Gwiriwch y sesiwn hon trwy gadarnhau'r emoji canlynol sy'n ymddangos ar sgrin y partner";
+"device_verification_verify_title_number" = "Gwiriwch y sesiwn hon trwy gadarnhau'r rhifau canlynol sy'n ymddangos ar sgrin y partner";
+"device_verification_verify_wait_partner" = "Aros i'r partner gadarnhau…";
 // MARK: Verified
 "device_verification_verified_title" = "Wedi Gwirio!";
-"device_verification_verified_description_1" = "Rydych chi wedi gwirio'r ddyfais hon yn llwyddiannus.";
+"device_verification_verified_description_1" = "Rydych chi wedi gwirio'r sesiwn hon yn llwyddiannus.";
 "device_verification_verified_description_2" = "Mae negeseuon diogel gyda'r defnyddiwr hwn wedi'u hamgryptio o'r dechrau i'r diwedd ac ni all unrhyw drydydd parti eu darllen.";
 "device_verification_verified_got_it_button" = "Iawn";
 // MARK: Emoji
@@ -883,3 +880,136 @@
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Ychwanegwch weinydd adnabod yn eich gosodiadau i wahodd trwy e-bost.";
 "error_not_supported_on_mobile" = "Ni allwch wneud hyn o %@ ffôn symudol.";
+// Accessibility
+"accessibility_checkbox_label" = "blwch ticio";
+"settings_integrations" = "INTEGREIDDIADAU";
+"settings_integrations_allow_button" = "Rheoli integreiddiadau";
+"settings_integrations_allow_description" = "Defnyddiwch Reolwr Integreiddio (%@) i reoli bots, pontydd, teclynnau a phecynnau sticeri.\n\nMae Rheolwyr Integreiddio yn derbyn data cyfluniad, a gallant addasu teclynnau, anfon gwahoddiadau ystafell a gosod lefelau pŵer ar eich rhan.";
+"settings_labs_dm_key_verification" = "Gwirio allweddi trwy neges uniongyrchol";
+"settings_labs_cross_signing" = "Traws-arwyddo";
+"widget_menu_refresh" = "Adnewyddu";
+"widget_menu_open_outside" = "Agor mewn porwr";
+"widget_menu_revoke_permission" = "Dirymu mynediad i mi";
+"widget_menu_remove" = "Gwaredu i bawb";
+"widget_integration_manager_disabled" = "Mae angen i chi alluogi Rheolwr Integreiddio yn y gosodiadau";
+"widget_picker_manage_integrations" = "Rheoli integreiddiadau…";
+// Room widget permissions
+"room_widget_permission_title" = "Llwytho Teclyn";
+"room_widget_permission_creator_info_title" = "Ychwanegwyd y teclyn hwn gan:";
+"room_widget_permission_webview_information_title" = "Gall ei ddefnyddio osod cwcis a rhannu data gyda %@:\n";
+"room_widget_permission_information_title" = "Gall ei ddefnyddio rhannu data gyda %@:\n";
+"room_widget_permission_display_name_permission" = "Eich enw arddangos";
+"room_widget_permission_avatar_url_permission" = "Eich URL dangoslun";
+"room_widget_permission_user_id_permission" = "Eich dynodwr defnyddiwr";
+"room_widget_permission_theme_permission" = "Eich thema";
+"room_widget_permission_widget_id_permission" = "Dynodwr Teclyn";
+"room_widget_permission_room_id_permission" = "Dynodwr Ystafell";
+"service_terms_modal_policy_checkbox_accessibility_hint" = "Ticiwch i dderbyn %@";
+"room_participants_action_section_security" = "Diogelwch";
+"room_participants_action_security_status_verified" = "Wedi Gwirio";
+"room_participants_action_security_status_verify" = "Gwirio";
+"room_participants_action_security_status_warning" = "Rhybydd";
+"room_participants_security_loading" = "Yn llwytho…";
+"room_participants_security_information_room_not_encrypted" = "Nid yw'r negeseuon yn y'r ystafell hon wedi'u hamgryptio o'r dechrau i'r diwedd.";
+"room_participants_security_information_room_encrypted" = "Mae negeseuon yn yr ystafell hon wedi'u hamgryptio o' dechrau i'r diwedd.\n\nMae'ch negeseuon wedi'u diogelu a chloeon a dim ond chi a'r derbynnydd sydd gan yr allweddi unigryw i'w datgloi.";
+"settings_security" = "DIOGELWCH";
+"settings_labs_enable_cross_signing" = "Galluogi croes-lofnodi i wirio fesyl-defnyddiwr yn lle fesyl-dyfais (cael ei ddatblygu)";
+// Security settings
+"security_settings_title" = "Diogelwch";
+"security_settings_crypto_sessions" = "FY SESIYNAU";
+"security_settings_crypto_sessions_loading" = "Yn llwytho sesiynau…";
+"security_settings_crypto_sessions_description" = "Ymddiried mewn sesiynau i ganiatáu mynediad i negeseuon wedi'u hamgryptio o'r dechrau i'r diwedd. Os nad ydych yn cydnabod sesiwn, newidiwch eich cyfrinair mewngofnodi ac ailosodwch eich Cyfrinair Neges a ddefnyddir ar gyfer Negeseuon Wrth Gefn.";
+"security_settings_backup" = "NEGESEUON WRTH GEFN";
+"security_settings_advanced" = "UWCH";
+"security_settings_blacklist_unverified_devices" = "Na anfonir negeseuon i sesiynau nad oes ymddiried ynddynt";
+"security_settings_blacklist_unverified_devices_description" = "Gwirio holl sesiynau defnyddiwr i farcio nhw wedi'i ymddiried ynddynt ac i anfon negeseuon atynt.";
+"security_settings_export_keys_manually" = "Allfudo allweddi â llaw";
+// Manage session
+"manage_session_title" = "Rheoli sesiwn";
+"manage_session_info" = "GWYBODAETH SESIWN";
+"manage_session_name" = "Enw Sesiwn";
+"manage_session_trusted" = "Ymddiriedir ynddo gannoch";
+"manage_session_not_trusted" = "Na ymddiriedir ynddo";
+"manage_session_sign_out" = "Allgofnodi o'r sesiwn hon";
+"key_verification_user_title" = "Gwirio defnyddiwr";
+"key_verification_verify_user_title_emoji" = "Gwiriwch y defnyddiwr hwn trwy gadarnhau'r fod yr emoji unigryw canlynol yn ymddangos ar eu sgrin, yn yr un drefn.";
+"key_verification_verify_user_title_number" = "Gwiriwch y defnyddiwr hwn trwy gadarnhau'r fod y rhifau canlynol yn ymddangos ar eu sgrin, yn yr un drefn.";
+"key_verification_verified_user_description_1" = "Rydych chi wedi gwirio'r defnyddiwr hwn yn llwyddiannus.";
+"key_verification_verified_user_description_2" = "Mae negeseuon gyda'r defnyddiwr hwn yn yr ystafell hon wedi'u hamgryptio o'r dechrau i'r diwedd ac ni all unrhyw drydydd parti eu darllen.";
+"key_verification_tile_request_incoming_title" = "Cais gwirio";
+"key_verification_tile_request_outgoing_title" = "Gyrwyd Gwiriad";
+"key_verification_tile_request_status_data_loading" = "Data yn llwytho…";
+"key_verification_tile_request_status_waiting" = "Yn aros…";
+"key_verification_tile_request_status_expired" = "Darfodedig";
+"key_verification_tile_request_status_cancelled_by_me" = "Wedi canslo gennych";
+"key_verification_tile_request_status_cancelled" = "%@ wedi canslo";
+"key_verification_tile_request_status_accepted" = "Derbynwyd gennych";
+"key_verification_tile_request_incoming_approval_accept" = "Derbyn";
+"key_verification_tile_request_incoming_approval_decline" = "Gwrthod";
+"key_verification_tile_conclusion_done_title" = "Wedi Gwirio";
+"key_verification_tile_conclusion_warning_title" = "Mewngofnodiad na ymddiriedir ynddo";
+"key_verification_incoming_request_incoming_alert_message" = "Mae %@ eisiau gwirio";
+"user_verification_start_verify_action" = "Dechrau gwirio";
+"user_verification_start_information_part1" = "Er mwyn diogelwch ychwanegol, gwiriwch ";
+"user_verification_start_information_part2" = " drwy wirio cod defnydd sengl ar eich dwy ddyfais";
+"user_verification_start_waiting_partner" = "Yn aros am %@…";
+"user_verification_start_additional_information" = "I fod yn ddiogel, gwnewch hyn mewn person neu defnyddiwch modd gwahanol o gyfarthrebu.";
+"user_verification_sessions_list_user_trust_level_trusted_title" = "Ymddiriedir";
+"user_verification_sessions_list_user_trust_level_warning_title" = "Rhybydd";
+"user_verification_sessions_list_user_trust_level_unknown_title" = "Anhysbys";
+"user_verification_sessions_list_information" = "Mae negeseuon gyda'r defnyddiwr hwn yn yr ystafell hon wedi'u hamgryptio o'r dechrau i'r diwedd ac ni all unrhyw drydydd parti eu darllen.";
+"user_verification_sessions_list_table_title" = "Sesiynau";
+"user_verification_sessions_list_session_trusted" = "Ymddiriedir";
+"user_verification_sessions_list_session_untrusted" = "Na ymddiriedir";
+"user_verification_session_details_trusted_title" = "Ymddiriedir";
+"user_verification_session_details_untrusted_title" = "Rhybydd";
+"user_verification_session_details_information_trusted_current_user" = "Ymddiriedir yn y sesiwn hon ar gyfer sgwrsio diogel oherwydd eich bod wedi'i wirio:";
+"user_verification_session_details_information_trusted_other_user_part1" = "Ymddiriedir yn y sesiwn hon ar gyfer sgwrsio diogel oherwydd mae ";
+"user_verification_session_details_information_trusted_other_user_part2" = " wedi'i wirio:";
+"user_verification_session_details_information_untrusted_current_user" = "Gwirio'r sesiwn hon er mwyn ei nodi fel un yr ymddiriedir ynddi a chaniatáu iddi gael mynediad i negeseuon wedi'u hamgryptio:";
+"user_verification_session_details_information_untrusted_other_user" = " wedi mewngofnodi yn defnyddio sesiwn newydd:";
+"user_verification_session_details_additional_information_untrusted_other_user" = "Nes bod y defnyddiwr hwn yn ymddiried yn sesiwn hon, mi fydd negeseuon a anfonir yn cael eu labelu a rhybuddion. Fel arall, gallwch wirio hi â llaw.";
+"user_verification_session_details_additional_information_untrusted_current_user" = "Os nad ydych chi wedi mewn gofnodi i'r sesiwn hon, gall fod eich cyfrif mewn peryg.";
+"user_verification_session_details_verify_action_current_user" = "Gwirio";
+"user_verification_session_details_verify_action_other_user" = "Gwirio â llaw";
+"key_verification_bootstrap_not_setup_title" = "Gwall";
+"key_verification_bootstrap_not_setup_message" = "Mae'n rhaid i chi ymlwytho croes-lofnodi";
+"key_verification_verify_qr_code_title" = "Gwirio drwy sganio";
+"key_verification_verify_qr_code_information" = "Sganiwch y côd i wirio'ch gilydd yn ddiogel.";
+"key_verification_verify_qr_code_scan_code_action" = "Sganiwch eu côd";
+"key_verification_verify_qr_code_cannot_scan_action" = "Methu sganio?";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "A sganwyd y defnyddiwr arall u côd QR yn llwyddianus?";
+"key_verification_verify_qr_code_scan_other_code_success_title" = "Côd yn ddilys!";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "Mae'r côd QR wedi'i brofi'n ddilys.";
+"skip" = "Hepgor";
+// MARK: Clients
+"client_desktop_name" = "Element Cyfrifiadur";
+"client_web_name" = "Element Gwê";
+"client_ios_name" = "Element iOS";
+"client_android_name" = "Element Android";
+"room_participants_action_security_status_complete_security" = "Cwblhewch diogelwch";
+"room_participants_action_security_status_loading" = "Yn llwytho…";
+"room_member_power_level_admin_in" = "Gweinyddwr yn %@";
+"room_member_power_level_moderator_in" = "Cymedrolwrm yn %@";
+"room_member_power_level_custom_in" = "Addasiedig (%@) yn %@";
+"room_member_power_level_short_admin" = "Gweinyddwr";
+"room_member_power_level_short_moderator" = "Cymedrolwr";
+"room_member_power_level_short_custom" = "Addasiedig";
+"security_settings_crosssigning" = "CROES-LOFNODI";
+"security_settings_crosssigning_info_not_bootstrapped" = "Nid yw croes-lofnodi eto wedi ei gyflunio.";
+"security_settings_crosssigning_info_exists" = "Mae gan eich cyfrif hunaniaeth croes-lofnodi, ond nid yw'r sesiwn hon yn ymddiried ynddo eto. Cwblhewch diogelwch y sesiwn hon.";
+"security_settings_crosssigning_info_trusted" = "Mae croes-lofnodi wedi'i alluogi. Gallwch ymddiried yn defnyddwyr eraill a'ch sesiynau eraill yn seiliedig ar groes-lofnodi ond ni allwch groes-lofnodi o'r sesiwn hon oherwydd nad oes ganddo allweddi preifat traws-lofnodi. Cwblhewch diogelwch y sesiwn hon.";
+"security_settings_crosssigning_info_ok" = "Mae croes-lofnodi yn weithredol.";
+"security_settings_crosssigning_bootstrap" = "Ymlwytho croes-lofnodi";
+"security_settings_crosssigning_reset" = "Ailosod croes-lofnodi";
+"security_settings_crosssigning_complete_security" = "Cwblhewch diogelwch";
+"security_settings_cryptography" = "CRYPTOGRAFFEG";
+"security_settings_complete_security_alert_title" = "Cwblhewch diogelwch";
+"security_settings_complete_security_alert_message" = "Dylech gwblhau diogelwch ar eich sesiwn gyfredol yn gyntaf.";
+"security_settings_coming_soon" = "Sori. Nid yw'r weithred hon ar gael ar Element iOS eto. Defnyddiwch gleient Matrix arall i'w osod. Bydd Element iOS yn ei ddefnyddio.";
+// Recover from private key
+"key_backup_recover_from_private_key_info" = "Yn adfer copi wrth gefn…";
+"device_verification_self_verify_alert_title" = "Mewngofnodiad Newydd";
+"device_verification_self_verify_alert_message" = "Defnyddiwch y sesiwn hon i wirio'ch un newydd, gan roi mynediad iddo i negeseuon wedi'u hamgryptio :%@\nOs na wnaethoch fewngofnodi i'r sesiwn hon, mae'n bosibl y bydd eich cyfrif mewn perygl..";
+"device_verification_self_verify_alert_cancel_action" = "Nid fi oedd hwn";
+"device_verification_self_verify_start_verify_action" = "Dechrau gwirio";

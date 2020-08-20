@@ -18,11 +18,16 @@
 
 #import <MatrixKit/MatrixKit.h>
 
+#import "SiriIntents-Swift.h"
+
 #if __has_include(<MatrixSDK/MXJingleCallStack.h>)
 #define CALL_STACK_JINGLE
 #endif
 
 @interface IntentHandler () <INStartAudioCallIntentHandling, INStartVideoCallIntentHandling, INSendMessageIntentHandling>
+
+// Build Settings
+@property (nonatomic) id<Configurable> configuration;
 
 @end
 
@@ -33,7 +38,9 @@
     self = [super init];
     if (self)
     {
-        [MXSDKOptions sharedInstance].applicationGroupIdentifier = @"group.im.vector";
+        // Set static application settings
+        _configuration = [CommonConfiguration new];
+        [_configuration setupSettings];
 
         // NSLog -> console.log file when not debugging the app
         if (!isatty(STDERR_FILENO))
@@ -226,6 +233,9 @@
                                             MXStrongifyAndReturnIfNil(session);
                                             
                                             MXRoom *room = [MXRoom loadRoomFromStore:fileStore withRoomId:roomID matrixSession:session];
+                                            
+                                            // Do not warn for unknown devices. We have cross-signing now
+                                            session.crypto.warnOnUnknowDevices = NO;
 
                                             [room sendTextMessage:intent.content
                                                           success:^(NSString *eventId) {

@@ -17,3 +17,6 @@
 #import "AppDelegate.h"
 #import "RoomBubbleCellData.h"
 #import "MXKRoomBubbleTableViewCell+Riot.h"
+#import "UserEncryptionTrustLevel.h"
+#import "BubbleReactionsViewSizer.h"
+#import "RoomEncryptedDataBubbleCell.h"

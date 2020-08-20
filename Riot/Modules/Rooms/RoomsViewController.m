@@ -155,9 +155,8 @@
         MXKDirectoryServersDataSource *directoryServersDataSource = [[MXKDirectoryServersDataSource alloc] initWithMatrixSession:recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
         [directoryServersDataSource finalizeInitialization];
 
-        // Add directory servers from the app settings plist
-        NSArray<NSString*> *roomDirectoryServers = [[NSUserDefaults standardUserDefaults] objectForKey:@"roomDirectoryServers"];
-        directoryServersDataSource.roomDirectoryServers = roomDirectoryServers;
+        // Add directory servers from the app settings
+        directoryServersDataSource.roomDirectoryServers = BuildSettings.publicRoomsDirectoryServers;
 
         __weak typeof(self) weakSelf = self;
 
@@ -267,13 +266,12 @@
         // Preview the public room
         if (publicRoom.worldReadable)
         {
-            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:publicRoom.roomId andSession:recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
-
+            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithPublicRoom:publicRoom andSession:recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
+            
             [self startActivityIndicator];
 
             // Try to get more information about the room before opening its preview
             [roomPreviewData peekInRoom:^(BOOL succeeded) {
-
                 [self stopActivityIndicator];
 
                 [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];

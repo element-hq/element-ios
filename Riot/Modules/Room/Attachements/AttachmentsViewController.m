@@ -65,6 +65,13 @@
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     self.backButton.tintColor = ThemeService.shared.theme.tintColor;
+
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated

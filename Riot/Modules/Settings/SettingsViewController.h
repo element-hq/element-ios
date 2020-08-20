@@ -16,11 +16,11 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "DeviceView.h"
-
 #import "MediaPickerViewController.h"
 
-@interface SettingsViewController : MXKTableViewController<UITextFieldDelegate, MXKDeviceViewDelegate, UIDocumentInteractionControllerDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate, MXKDataSourceDelegate>
+@interface SettingsViewController : MXKTableViewController<UITextFieldDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate, MXKDataSourceDelegate>
+
++ (instancetype)instantiate;
 
 @end
 

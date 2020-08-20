@@ -61,6 +61,9 @@ protocol NavigationRouterType: class, Presentable {
     ///
     /// - Parameter animated: Specify true to animate the transition.
     func popModule(animated: Bool)
+    
+    /// Returns the modules that are currently in the navigation stack
+    var modules: [Presentable] { get }
 }
 
 // `NavigationRouterType` default implementation

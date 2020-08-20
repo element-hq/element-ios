@@ -1,0 +1,15 @@
+Eine Chat-App unter deiner Kontrolle und total flexibel. Element lässt dich auf die Art kommunizieren wie du willst. Die App wurde gemacht für [matrix] - dem Standard für offene, dezentrale Komunikation.
+
+Hole dir ein kostenloses Konto auf matrix.org, hol dir einen eigenen Server auf https://ems.element.io oder nutze einen anderen Matrix-Server.
+
+Warum solltest du Element wählen?
+
+• KOMPLETTE KOMMUNIKATION: Baue Räume um deine Teams, deine Freunde, deine Community - wie auch immer du willst! Chatte, teile Dateien, füge Widgets hinzu und führe Sprach- und Videotelefonate - alles kostenlos.
+
+• MÄCHTIGE INTEGRATIONEN: Benutze Element mit den Werkzeugen die du kennst und liebst. Mit Element kannst du sogar mit Personen und Gruppen chatten, die andere Chat-Anwendungen benutzen.
+
+• PRIVAT UND SICHER: Halte deine Konversationen geheim. Aktuellste Ende-zu-Ende-Verschlüsselung sorgt dafür, dass deine private Kommunikation auch privat bleibt.
+
+• OFFEN - NICHT VERSCHLOSSEN: Quelloffen und basierend auf Matrix. Behalte deine Daten indem du deinen eigenen Server betreibst oder einen auswählst dem du vertraust.
+
+• WO AUCH IMMER DU BIST: Bleibe im Kontakt wo auch immer du bist wobei deine Nachrichtenhistorie zwischen all deinen Geräten synchronisiert wird. Das andere \"Gerät\" kann auch ein Browser sein. Schau dir dazu auch Element an.

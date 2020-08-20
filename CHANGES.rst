@@ -1,3 +1,292 @@
+Changes to be released in next version
+=================================================
+
+Features:
+ * 
+
+Improvements:
+ * Config fixes.
+ * Introduce TableViewSections. Refactor RoomSettingsViewController & SettingsViewController.
+ * AuthenticationVC: Make forgot password button and phone number text field configurable.
+ * Introduce httpAdditionalHeaders in BuildSettings.
+
+Bugfix:
+ * Fix biometry name null case (#3551).
+ * Avoid email validation link to redirect to web app (#3513).
+
+API Change:
+ * 
+
+Translations:
+ * 
+
+Others:
+ * 
+
+Build:
+ * 
+
+Test:
+ * 
+
+Changes in 1.0.5 (2020-08-13)
+=================================================
+
+Features:
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.12](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.12)).
+ * 
+
+Bugfix:
+ * Fix pin code cell selection. 
+ * Fix default orientation crash.
+ * Fix rooms list swipe actions tint colors (#3507).
+
+API Change:
+ * 
+
+Translations:
+ * 
+
+Others:
+ * 
+
+Build:
+ * Integrate fastlane deliver (#3519).
+
+Test:
+ * 
+
+Changes in 1.0.4 (2020-08-07)
+=================================================
+
+Features:
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.11](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.11)).
+ * 
+
+Bugfix:
+ * 
+
+API Change:
+ * 
+
+Translations:
+ * 
+
+Others:
+ * 
+
+Build:
+ * 
+
+Test:
+ * 
+
+Changes in 1.0.3 (2020-08-05)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.10](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.10)).
+ * Implement PIN protection (#3436).
+ * Biometrics protection: Implement TouchID/FaceID protection (#3437).
+ * Build: Make the app build if JitsiMeetSDK is not in the Podfile.
+ * Configuration: Add CommonConfiguration and AppConfiguratio classes as central points to configure all targets in the same way.
+ * Xcconfig: Add Common config and app and share extension config files.
+ * BuildSettings: A new class that entralises build settings and exposes xcconfig variable.
+ * AuthenticationVC: Make custom server options and register button configurable.
+ * Xcconfig: Add product bundle identifiers for each target.
+ * BuildSettings: Namespace some settings.
+ * BuildSettings: Reuse base bundle identifier for various settings.
+
+Bug fix:
+ * Rebranding: Remove Riot from app name (#3497).
+ * AuthenticationViewController: Fix custom homeserver textfield scroll issue (#3467).
+ * Rebranding: Update provisioning universal link domain (#3483).
+
+Changes in 1.0.2 (2020-07-28)
+===============================================
+
+Bug fix:
+ * Registration: Do not display the skip button if email is mandatory (#3417).
+ * NotificationService: Do not cache showDecryptedContentInNotifications setting (#3444).
+
+Changes in 1.0.1 (2020-07-17)
+===============================================
+ 
+Bug fix:
+ * SettingsViewController: Fix crash when scrolling to Discovery (#3401).
+ * Main.storyboard: Set storyboard identifier for SettingsViewController (#3398).
+ * Universal links: Fix broken links for web apps (#3420).
+ * SettingsViewController: Fix pan gesture crash (#3396).
+ * RecentsViewController: Fix crash on dequeue some cells (#3433).
+ * NotificationService: Fix losing sound when not showing decrypted content in notifications (#3423).
+
+Changes in 1.0.0 (2020-07-13)
+===============================================
+
+Improvements:
+ * Rename Riot to Element
+ * Update deployment target to iOS 11.0. Required for Jitsi > 2.8.x.
+ * Theme: Customize UISearchBar with new iOS 13 properties (#3270).
+ * NSE: Make extension reusable (#3326).
+ * Strings: Use you instead of display name on notice events (#3282).
+ * Third-party licences: Add license for FlowCommoniOS (#3415).
+ * Lazy-loading: Remove lazy loading labs setting, enable it by default (#3389).
+ * Room: Show alert if link text does not match link target (#3137).
+ 
+Bug fix:
+ * Xcode11: Fix content change error when dragging start chat page (PR #3075).
+ * Xcode11: Fix status bar styles for many screens (PR #3077).
+ * Xcode11: Replace deprecated MPMoviePlayerController with AVPlayerViewController (PR #3092).
+ * Xcode11: Show AuthenticationViewController fullscreen (PR #3093).
+ * Xcode11: Fix font used for `org.matrix.custom.html`messages in timeline (#3241).
+ * Settings: New phone number is invisible in dark theme (#3218).
+ * SettingsViewController: Fix notifications on this device setting to use APNS pusher (#3291).
+ * Xcode11: Fix decryption on notifications when the key is not present (#3295).
+ * SettingsViewController: Fix PushKit references with APNS correspondents (PR #3298).
+ * Xcode11: Fix notification reply with new pushes (#3301).
+ * Xcode11: Fix notification doubling on replies (#3308).
+ * Xcode11: Fix selected background color on cells, for iOS 13+ (#3309).
+ * Xcode11: Respect system dark mode setting (#2628).
+ * Xcode11: Fix noisy notifications (#3316).
+ * Xcode11: Temporary workaround for navigation bar bg color on emoji selection screen (#3271).
+ * Project: Remove GoogleService-Info.plist (#3329).
+ * Xcode11: Various bug fixes about NSE (PR #3345).
+ * Xcode11: Fix session user display name (PR #3349).
+ * Xcode11: Fix rebooted and unlocked case for NSE (PR #3353).
+ * Xcode11: New localization keys for push notifications, include room display name in fallback content (#3325).
+ * Xcode11: Disable voip background mode to avoid VoIP pushes (#3369).
+ * Xcode11: Disable key backup on push extension (#3371).
+ * RoomMembershipBubbleCell: Fix message textview leading constraint (#3226).
+ * SettingsViewController: Fix crash when scrolling to Discovery (#3401).
+ * Main.storyboard: Set storyboard identifier for SettingsViewController (#3398).
+ * Universal links: Fix broken links for web apps (#3420).
+ * SettingsViewController: Fix pan gesture crash (#3396).
+ * RecentsViewController: Fix crash on dequeue some cells (#3433).
+ * NotificationService: Fix losing sound when not showing decrypted content in notifications (#3423).
+
+Changes in 0.11.6 (2020-06-30)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.7](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.7)).
+ * PushNotificationService: Move all notification related code to a new class (PR #3100).
+ * Cross-signing: Bootstrap cross-sign on registration (and login if applicable). This action is now invisible to the user (#3292).
+ * Cross-signing: Setup cross-signing for existing users (#3299).
+ * Authentication: Redirect the webview (SSO) javascript logs to iOS native logs.
+ * Timeline: Hide encrypted history (pre-invite) (#3239).
+ * Complete security: Add recovery from 4S (#3304).
+ * Key backup: Connect/restore backup created with SSSS (#3124).
+ * E2E by default: Disable it if the HS admin disabled it (#3305).
+ * Key backup: Add secure backup creation flow (#3344).
+ * Add AuthenticatedSessionViewControllerFactory to set up a authenticated flow for a given CS API request.
+ * Set up SSSS from banners (#3293).
+
+Bug fix:
+ * CallVC: Declined calls now properly reset call view controller, thanks to @Legi429 (#2877).
+ * PreviewRoomTitleView: Fix inviter display name (#2520).
+
+Changes in 0.11.5 (2020-05-18)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.6](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.6)).
+
+Bug fix:
+ * AuthenticationViewController: Adapt UIWebView changes in MatrixKit (PR #3242).
+ * Share extension & Siri intent: Do not fail when sending to locally unverified devices (#3252).
+ * CountryPickerVC: Search field is invisible in dark theme (#3219).
+
+Changes in 0.11.4 (2020-05-08)
+===============================================
+
+Bug fix:
+ * App asks to verify all devices on every startup for no valid reason (#3221).
+
+Changes in 0.11.3 (2020-05-07)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.3](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.3)).
+ * Cross-signing: Display "Verify your other sessions" modal at every startup if needed (#3180).
+ * Cross-signing: The "Complete Security" button now triggers a verification request to all user devices.
+ * Secrets: On startup, request again private keys we are missing locally.
+
+Bug fix:
+ * KeyVerificationSelfVerifyStartViewController has no navigation (#3195).
+ * Self-verification: QR code scanning screen refers to other-person scanning (#3189).
+
+Changes in 0.11.2 (2020-05-01)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.2](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.2)).
+ * Registration / Email addition: Support email verification link from homeserver (#3167).
+ * Verification requests: Hide incoming request modal when it is no more pending (#3033).
+ * Self-verification: Do not display incoming self verification requests at the top of the Complete Security screen.
+ * Verification: Do not talk about QR code if only emoji is possible (#3035).
+ * Registration: Prefill email field when opened with universal link (PR #3173).
+ * Cross-signing: Display "Verify this session" modal at every startup if needed (#3179).
+ * Complete Security: Support SAS verification start (#3183).
+
+Bug fix:
+ * AuthenticationViewController: Remove fallback to matrix.org when authentication failed (PR #3165).
+
+Changes in 0.11.1 (2020-04-24)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.1)).
+ * New icons.
+ * Cross-signing: Allow incoming device verification request from other user (#3139).
+ * Cross-signing: Allow to verify each device of users with no cross-signing (#3138).
+ * Jitsi: Make Jitsi widgets compatible with Matrix Widget API v2. This allows to use any Jitsi servers (#3150).
+
+Bug fix:
+ * Settings: Security, present complete security when my device is not trusted (#3127).
+ * Settings: Security: Do not ask to complete security if there is no cross-signing (#3147).
+
+Changes in 0.11.0 (2020-04-17)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.0](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.0)).
+ * Crypto: Enable E2EE by default for DM
+ * Crypto: Cross-signing support
+ * Crypto: Do not warn anymore for unknown devices. Trust on First Use.
+ * RoomVC: Update encryption decoration with shields (#2934, #2930, #2906).
+ * Settings: Remove "End-to-End Encryption" from the LABS section (#2941).
+ * Room decoration: Use shields instead of padlocks (#2906).
+ * Room decoration: Remove horizontal empty space when there is no decoration badge to set on room message (#2978).
+ * RoomVC: For a room preview use room canonical alias if present when joining a room.
+ * Update Matomo app id (#3001)
+ * Verification by DM: Support QR code (#2921).
+ * Cross-Signing: Detect and expose new sign-ins (#2918).
+ * Cross-signing: Complete security at the end of sign in process( #3003).
+ * Make decoration uniform (#2972).
+ * DeactivateAccountViewController: Respect active theme (PR #3107).
+ * Verification by emojis: Center emojis in screen horizontally (PR #3119).
+ 
+Bug fix:
+ * Key backup banner is not hidden correctly (#2899). 
+
+Bug fix:
+ * Considered safe area insets for some screens (PR #3084).
+
+Changes in 0.10.5 (2020-04-01)
+===============================================
+
+Bug fix:
+ * Fix error when joining some public rooms, thanks to @chrismoos (PR #2888).
+ * Fix crash due to malformed widget (#2997).
+ * Push notifications: Avoid any automatic deactivation (vector-im/riot-ios#3017).
+ * Fix links breaking user out of SSO flow, thanks to @schultetwin (#3039).
+
 Changes in 0.10.4 (2019-12-11)
 ===============================================
 

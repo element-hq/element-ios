@@ -4,7 +4,7 @@ ib:
   - inputs:
     - ../Tools/Templates/buildable/
     - Modules/
-    filter: ^((?!DeactivateAccountViewController).)*\.(storyboard)
+    filter: ^((?!(DeactivateAccountViewController|Security)).)*\.(storyboard)
     outputs:
       - templateName: scenes-swift4
         output: Storyboards.swift
@@ -29,3 +29,11 @@ plist:
     output: RiotDefaults.swift
     params:
         enumName: RiotDefaults
+        
+plist:
+  inputs: SupportingFiles/Info.plist
+  outputs:
+    templateName: runtime-swift4
+    output: InfoPlist.swift
+    params:
+        enumName: InfoPlist

@@ -35,15 +35,26 @@ import AVFoundation
     
     // MARK: - Properties
     
-    // MARK: - Private
+    // MARK: Private
+    
+    private let cameraAccessManager: CameraAccessManager
+    private let cameraAccessAlertPresenter: CameraAccessAlertPresenter
     
     private weak var presentingViewController: UIViewController?
     private weak var cameraViewController: UIViewController?
     private var mediaUTIs: [MXKUTI] = []
     
-    // MARK: - Public
+    // MARK: Public
     
     @objc weak var delegate: CameraPresenterDelegate?
+    
+    // MARK: - Setup
+    
+    override init() {
+        self.cameraAccessManager = CameraAccessManager()
+        self.cameraAccessAlertPresenter = CameraAccessAlertPresenter()
+        super.init()
+    }
     
     // MARK: - Public
     
@@ -63,24 +74,21 @@ import AVFoundation
     // MARK: - Private
     
     private func checkCameraPermissionAndPresentCamera(animated: Bool) {
+        guard let presentingViewController = self.presentingViewController else {
+            return
+        }
         
-        let authorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
+        guard self.cameraAccessManager.isCameraAvailable else {
+            self.cameraAccessAlertPresenter.presentCameraUnavailableAlert(from: presentingViewController, animated: animated)
+            return
+        }
         
-        switch authorizationStatus {
-        case .authorized:
-            self.presentCameraController(animated: animated)
-        case .notDetermined:
-            self.requestCameraAccess(completion: { (granted) in
-                if granted {
-                    self.presentCameraController(animated: animated)
-                } else {
-                    self.presentPermissionDeniedAlert()
-                }
-            })
-        case .denied, .restricted:
-            self.presentPermissionDeniedAlert()
-        @unknown default:
-            break
+        self.cameraAccessManager.askAndRequestCameraAccessIfNeeded { (granted) in
+            if granted {
+                self.presentCameraController(animated: animated)
+            } else {
+                self.cameraAccessAlertPresenter.presentPermissionDeniedAlert(from: presentingViewController, animated: animated)
+            }
         }
     }
     
@@ -113,56 +121,6 @@ import AVFoundation
         imagePickerController.allowsEditing = false
         
         return imagePickerController
-    }
-    
-    private func requestCameraAccess(completion: @escaping (_ granted: Bool) -> Void) {
-        AVCaptureDevice.requestAccess(for: .video) { granted in
-            DispatchQueue.main.async {
-                completion(granted)
-            }
-        }
-    }
-    
-    private func presentPermissionDeniedAlert() {
-        guard let presentingViewController = self.presentingViewController, let settingsURL = URL(string: UIApplication.openSettingsURLString) else {
-            return
-        }
-        
-        let appDisplayName = Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String ?? ""
-        
-        let alert = UIAlertController(title: VectorL10n.camera, message: VectorL10n.cameraAccessNotGranted(appDisplayName), preferredStyle: .alert)
-        
-        let cancelActionTitle = Bundle.mxk_localizedString(forKey: "ok")
-        let cancelAction = UIAlertAction(title: cancelActionTitle, style: .cancel, handler: { _ in
-        })
-        
-        let settingsActionTitle = Bundle.mxk_localizedString(forKey: "settings")
-        let settingsAction = UIAlertAction(title: settingsActionTitle, style: .default, handler: { _ in
-            UIApplication.shared.open(settingsURL, options: [:], completionHandler: { (succeed) in
-                if !succeed {
-                    print("[CameraPresenter] Fails to open settings")
-                }
-            })
-        })
-        
-        alert.addAction(cancelAction)
-        alert.addAction(settingsAction)
-        
-        presentingViewController.present(alert, animated: true, completion: nil)
-    }
-    
-    private func presentCameraUnavailableAlert() {
-        guard let presentingViewController = self.presentingViewController else {
-            return
-        }
-        
-        let alert = UIAlertController(title: VectorL10n.camera, message: VectorL10n.cameraUnavailable, preferredStyle: .alert)
-        
-        let okAction = UIAlertAction(title: VectorL10n.accept, style: .default, handler: nil)
-        
-        alert.addAction(okAction)
-        
-        presentingViewController.present(alert, animated: true, completion: nil)
     }
 }
 

@@ -60,7 +60,7 @@
 
         UIAlertAction *alertAction;
 
-        NSArray<Widget*> *widgets = [[WidgetManager sharedManager] widgetsNotOfTypes:@[kWidgetTypeJitsi]
+        NSArray<Widget*> *widgets = [[WidgetManager sharedManager] widgetsNotOfTypes:@[kWidgetTypeJitsiV1, kWidgetTypeJitsiV2]
                                                                               inRoom:roomDataSource.room
                                                                        withRoomState:roomDataSource.roomState];
 

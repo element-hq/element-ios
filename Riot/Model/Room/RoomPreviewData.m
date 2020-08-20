@@ -51,11 +51,24 @@
     if (self)
     {
         // Report public room data
-        _roomName = publicRoom.name;
+        _roomName = publicRoom.displayname;
         _roomAvatarUrl = publicRoom.avatarUrl;
         _roomTopic = publicRoom.topic;
+        _roomCanonicalAlias = publicRoom.canonicalAlias;
         _roomAliases = publicRoom.aliases;
         _numJoinedMembers = publicRoom.numJoinedMembers;
+        
+        // First try to fallback to the name if displayname isn't present
+        if (!_roomName.length)
+        {
+            _roomName = publicRoom.name;
+        }
+        
+        if (!_roomName.length)
+        {
+            // Use the canonical alias if present.
+            _roomName = publicRoom.canonicalAlias;
+        }
         
         if (!_roomName.length)
         {
@@ -109,7 +122,9 @@
     } failure:^(NSError *error) {
         MXStrongifyAndReturnIfNil(self);
         
-        self->_roomName = self->_roomId;
+        if(self->_roomName == nil || self->_roomName.length == 0) {
+            self->_roomName = self->_roomId;
+        }
         completion(NO);
     }];
 }

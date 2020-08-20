@@ -153,6 +153,18 @@
     [self updateSearch];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    if (!self.searchBarHidden && self.extendedLayoutIncludesOpaqueBars)
+    {
+        //  if a search bar is visible, navigationBar height will be increased. Below code will force update layout on previous view controller.
+        [self.navigationController.view setNeedsLayout]; // force update layout
+        [self.navigationController.view layoutIfNeeded]; // to fix height of the navigation bar
+    }
+
+    [super viewWillDisappear:animated];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -173,6 +185,11 @@
     [super viewDidLayoutSubviews];
     
     [self checkAndShowBackgroundImage];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 #pragma mark -
@@ -222,7 +239,7 @@
         peopleSearchDataSource = [[ContactsDataSource alloc] initWithMatrixSession:mainSession];
         peopleSearchDataSource.areSectionsShrinkable = YES;
         peopleSearchDataSource.displaySearchInputInContactsList = YES;
-        peopleSearchDataSource.contactCellAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        peopleSearchDataSource.contactCellAccessoryImage = [[UIImage imageNamed: @"disclosure_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textSecondaryColor];;
         [peopleSearchViewController displayList:peopleSearchDataSource];
         
         // Check whether there are others sessions

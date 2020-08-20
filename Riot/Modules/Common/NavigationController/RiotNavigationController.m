@@ -18,28 +18,41 @@
 
 @implementation RiotNavigationController
 
-- (UIStatusBarStyle)preferredStatusBarStyle
+- (UIViewController *)childViewControllerForStatusBarStyle
 {
-    if (self.topViewController)
-    {
-        // Return the preferred style of the top view controller.
-        return [self.topViewController preferredStatusBarStyle];
-    }
-    
-    // Keep the default UINavigationController style.
-    return [super preferredStatusBarStyle];
+    return self.topViewController;
 }
 
-- (BOOL)prefersStatusBarHidden
+- (UIViewController *)childViewControllerForStatusBarHidden
+{
+    return self.topViewController;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     if (self.topViewController)
     {
-        // Retrieve this information from the top view controller.
-        return [self.topViewController prefersStatusBarHidden];
+        return self.topViewController.supportedInterfaceOrientations;
     }
-    
-    // Keep the default UINavigationController mode.
-    return [super prefersStatusBarHidden];
+    return [super supportedInterfaceOrientations];
+}
+
+- (BOOL)shouldAutorotate
+{
+    if (self.topViewController)
+    {
+        return self.topViewController.shouldAutorotate;
+    }
+    return [super shouldAutorotate];
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    if (self.topViewController)
+    {
+        return self.topViewController.preferredInterfaceOrientationForPresentation;
+    }
+    return [super preferredInterfaceOrientationForPresentation];
 }
 
 @end

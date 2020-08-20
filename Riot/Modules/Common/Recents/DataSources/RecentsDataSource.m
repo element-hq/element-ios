@@ -18,10 +18,13 @@
 #import "RecentsDataSource.h"
 
 #import "RecentCellData.h"
+#import "SectionHeaderView.h"
+#import "DirectorySectionHeaderContainerView.h"
 
 #import "ThemeService.h"
 
 #import "MXRoom+Riot.h"
+#import "MXSession+Riot.h"
 
 #import "AppDelegate.h"
 
@@ -40,7 +43,7 @@
 
 NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSourceTapOnDirectoryServerChange";
 
-@interface RecentsDataSource() <KeyBackupBannerCellDelegate>
+@interface RecentsDataSource() <SecureBackupBannerCellDelegate, CrossSigningSetupBannerCellDelegate>
 {
     NSMutableArray* invitesCellDataArray;
     NSMutableArray* favoriteCellDataArray;
@@ -51,7 +54,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     
     NSInteger shrinkedSectionsBitMask;
 
-    UIView *directorySectionContainer;
+    DirectorySectionHeaderContainerView *directorySectionContainer;
     UILabel *networkLabel;
     UILabel *directoryServerLabel;
 
@@ -61,12 +64,15 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     NSTimer *publicRoomsTriggerTimer;
 }
 
-@property (nonatomic, assign, readwrite) KeyBackupBanner keyBackupBanner;
+@property (nonatomic, assign, readwrite) SecureBackupBannerDisplay secureBackupBannerDisplay;
+@property (nonatomic, assign, readwrite) CrossSigningBannerDisplay crossSigningBannerDisplay;
+
+@property (nonatomic, strong) CrossSigningService *crossSigningService;
 
 @end
 
 @implementation RecentsDataSource
-@synthesize directorySection, invitesSection, favoritesSection, peopleSection, conversationSection, lowPrioritySection, serverNoticeSection, keyBackupBannerSection;
+@synthesize directorySection, invitesSection, favoritesSection, peopleSection, conversationSection, lowPrioritySection, serverNoticeSection, secureBackupBannerSection, crossSigningBannerSection;
 @synthesize hiddenCellIndexPath, droppingCellIndexPath, droppingCellBackGroundView;
 @synthesize invitesCellDataArray, favoriteCellDataArray, peopleCellDataArray, conversationCellDataArray, lowPriorityCellDataArray, serverNoticeCellDataArray;
 
@@ -81,10 +87,12 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         lowPriorityCellDataArray = [[NSMutableArray alloc] init];
         serverNoticeCellDataArray = [[NSMutableArray alloc] init];
         conversationCellDataArray = [[NSMutableArray alloc] init];
-
         
-        _keyBackupBanner = KeyBackupBannerNone;
-        keyBackupBannerSection = -1;
+        _crossSigningBannerDisplay = CrossSigningBannerDisplayNone;
+        crossSigningBannerSection = -1;
+        
+        _secureBackupBannerDisplay = SecureBackupBannerDisplayNone;
+        secureBackupBannerSection = -1;
         directorySection = -1;
         invitesSection = -1;
         favoritesSection = -1;
@@ -97,6 +105,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         shrinkedSectionsBitMask = 0;
         
         roomTagsListenerByUserId = [[NSMutableDictionary alloc] init];
+        
+        _crossSigningService = [CrossSigningService new];
         
         // Set default data and view classes
         [self registerCellDataClass:RecentCellData.class forCellIdentifier:kMXKRecentCellIdentifier];
@@ -127,8 +137,9 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         [self unregisterKeyBackupStateDidChangeNotification];
     }
 
-    [self updateKeyBackupBanner];
+    [self updateSecureBackupBanner];
     [self forceRefresh];
+    [self refreshCrossSigningBannerDisplay];
 }
 
 - (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
@@ -166,81 +177,105 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (void)keyBackupStateDidChangeNotification:(NSNotification*)notification
 {
-    if ([self updateKeyBackupBanner])
+    if ([self updateSecureBackupBanner])
     {
         [self forceRefresh];
     }
 }
 
-- (BOOL)updateKeyBackupBanner
+- (BOOL)updateSecureBackupBanner
 {
-    KeyBackupBanner keyBackupBanner = KeyBackupBannerNone;
-        
-    if (self.recentsDataSourceMode == RecentsDataSourceModeHome && self.mxSession.crypto.backup.hasKeysToBackup)
+    SecureBackupBannerDisplay secureBackupBanner = SecureBackupBannerDisplayNone;
+    
+    if (self.recentsDataSourceMode == RecentsDataSourceModeHome)
     {
-        KeyBackupBannerPreferences *keyBackupBannersPreferences = KeyBackupBannerPreferences.shared;
+        SecureBackupBannerPreferences *secureBackupBannersPreferences = SecureBackupBannerPreferences.shared;
         
-        NSString *keyBackupVersion = self.mxSession.crypto.backup.keyBackupVersion.version;
-        
-        switch (self.mxSession.crypto.backup.state) {
-            case MXKeyBackupStateDisabled:
-                // Show key backup setup banner only if user has not hidden it once.
-                if (keyBackupBannersPreferences.hideSetupBanner)
-                {
-                    keyBackupBanner = KeyBackupBannerNone;
-                }
-                else
-                {
-                    keyBackupBanner = KeyBackupBannerSetup;
-                }
-                break;
-            case MXKeyBackupStateNotTrusted:
-            case MXKeyBackupStateWrongBackUpVersion:
-                // Show key backup recover banner only if user has not hidden it for the given version.
-                if (keyBackupVersion && [keyBackupBannersPreferences isRecoverBannerHiddenFor:keyBackupVersion])
-                {
-                    keyBackupBanner = KeyBackupBannerNone;
-                }
-                else
-                {
-                    keyBackupBanner = KeyBackupBannerRecover;
-                }
-                break;
-            default:
-                keyBackupBanner = KeyBackupBannerNone;
-                break;
+        if (!secureBackupBannersPreferences.hideSetupBanner && [self.mxSession vc_canSetupSecureBackup])
+        {
+            secureBackupBanner = SecureBackupBannerDisplaySetup;
         }
     }
-
-    BOOL updated = (self.keyBackupBanner != keyBackupBanner);
-
-    self.keyBackupBanner = keyBackupBanner;
-
+    
+    BOOL updated = (self.secureBackupBannerDisplay != secureBackupBanner);
+    
+    self.secureBackupBannerDisplay = secureBackupBanner;
+    
     return updated;
 }
 
-- (void)hideKeyBackupBanner:(KeyBackupBanner)keyBackupBanner
+- (void)hideKeyBackupBannerWithDisplay:(SecureBackupBannerDisplay)secureBackupBannerDisplay
 {
-    KeyBackupBannerPreferences *keyBackupBannersPreferences = KeyBackupBannerPreferences.shared;
+    SecureBackupBannerPreferences *keyBackupBannersPreferences = SecureBackupBannerPreferences.shared;
     
-    switch (keyBackupBanner) {
-        case KeyBackupBannerSetup:
+    switch (secureBackupBannerDisplay) {
+        case SecureBackupBannerDisplaySetup:
             keyBackupBannersPreferences.hideSetupBanner = YES;
-            break;
-        case KeyBackupBannerRecover:
-        {
-            NSString *keyBackupVersion = self.mxSession.crypto.backup.keyBackupVersion.version;
-            if (keyBackupVersion)
-            {
-                [keyBackupBannersPreferences hideRecoverBannerFor:keyBackupVersion];
-            }
-        }
             break;
         default:
             break;
     }
     
+    [self updateSecureBackupBanner];
     [self forceRefresh];
+}
+
+#pragma mark - Cross-signing setup banner
+
+- (void)refreshCrossSigningBannerDisplay
+{
+    if (self.recentsDataSourceMode == RecentsDataSourceModeHome)
+    {
+        CrossSigningBannerPreferences *crossSigningBannerPreferences = CrossSigningBannerPreferences.shared;
+        
+        if (!crossSigningBannerPreferences.hideSetupBanner)
+        {
+            [self.crossSigningService canSetupCrossSigningFor:self.mxSession success:^(BOOL canSetupCrossSigning) {
+
+                CrossSigningBannerDisplay crossSigningBannerDisplay = canSetupCrossSigning ? CrossSigningBannerDisplaySetup : CrossSigningBannerDisplayNone;
+                
+                [self updateCrossSigningBannerDisplay:crossSigningBannerDisplay];
+                
+            } failure:^(NSError * _Nonnull error) {
+                NSLog(@"[RecentsDataSource] refreshCrossSigningBannerDisplay: Fail to verify if cross signing banner can be displayed");
+            }];
+        }
+        else
+        {
+            [self updateCrossSigningBannerDisplay:CrossSigningBannerDisplayNone];
+        }
+    }
+    else
+    {
+        [self updateCrossSigningBannerDisplay:CrossSigningBannerDisplayNone];
+    }
+}
+
+- (void)updateCrossSigningBannerDisplay:(CrossSigningBannerDisplay)crossSigningBannerDisplay
+{
+    if (self.crossSigningBannerDisplay == crossSigningBannerDisplay)
+    {
+        return;
+    }
+    
+    self.crossSigningBannerDisplay = crossSigningBannerDisplay;
+    [self forceRefresh];
+}
+
+
+- (void)hideCrossSigningBannerWithDisplay:(CrossSigningBannerDisplay)crossSigningBannerDisplay
+{
+    CrossSigningBannerPreferences *crossSigningBannerPreferences = CrossSigningBannerPreferences.shared;
+    
+    switch (crossSigningBannerDisplay) {
+        case CrossSigningBannerDisplaySetup:
+            crossSigningBannerPreferences.hideSetupBanner = YES;
+            break;
+        default:
+            break;
+    }
+    
+    [self refreshCrossSigningBannerDisplay];
 }
 
 #pragma mark -
@@ -357,11 +392,15 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     // Check whether all data sources are ready before rendering recents
     if (self.state == MXKDataSourceStateReady)
     {
-        keyBackupBannerSection = directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = invitesSection = serverNoticeSection = -1;
+        crossSigningBannerSection = secureBackupBannerSection = directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = invitesSection = serverNoticeSection = -1;
         
-        if (self.keyBackupBanner != KeyBackupBannerNone)
+        if (self.crossSigningBannerDisplay != CrossSigningBannerDisplayNone)
         {
-            self.keyBackupBannerSection = sectionsCount++;
+            crossSigningBannerSection = sectionsCount++;
+        }
+        else if (self.secureBackupBannerDisplay != SecureBackupBannerDisplayNone)
+        {
+            secureBackupBannerSection = sectionsCount++;
         }
         
         if (invitesCellDataArray.count > 0)
@@ -385,7 +424,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             conversationSection = sectionsCount++;
         }
         
-        if (_recentsDataSourceMode == RecentsDataSourceModeRooms)
+        if (_recentsDataSourceMode == RecentsDataSourceModeRooms
+            && BuildSettings.publicRoomsShowDirectory)
         {
             // Add the directory section after "ROOMS"
             directorySection = sectionsCount++;
@@ -416,7 +456,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     
     NSUInteger count = 0;
 
-    if (section == self.keyBackupBannerSection && self.keyBackupBanner != KeyBackupBannerNone)
+    if (section == self.crossSigningBannerSection && self.crossSigningBannerDisplay != CrossSigningBannerDisplayNone)
+    {
+        count = 1;
+    }
+    else if (section == self.secureBackupBannerSection && self.secureBackupBannerDisplay != SecureBackupBannerDisplayNone)
     {
         count = 1;
     }
@@ -465,11 +509,13 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (CGFloat)heightForHeaderInSection:(NSInteger)section
 {
-    if (section == self.keyBackupBannerSection)
+    if (section == self.secureBackupBannerSection || section == self.crossSigningBannerSection)
     {
         return 0.0;
     }
-    else if (section == directorySection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
+    else if (section == directorySection
+             && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY)
+             && BuildSettings.publicRoomsAllowServerChange)
     {
         return RECENTSDATASOURCE_DIRECTORY_SECTION_HEADER_HEIGHT;
     }
@@ -617,23 +663,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         
         [missedNotifAndUnreadBadgeBgView addSubview:missedNotifAndUnreadBadgeLabel];
         missedNotifAndUnreadBadgeLabel.center = missedNotifAndUnreadBadgeBgView.center;
-        NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:missedNotifAndUnreadBadgeLabel
-                                                                             attribute:NSLayoutAttributeCenterX
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:missedNotifAndUnreadBadgeBgView
-                                                                             attribute:NSLayoutAttributeCenterX
-                                                                            multiplier:1
-                                                                              constant:0.0f];
-        NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:missedNotifAndUnreadBadgeLabel
-                                                                             attribute:NSLayoutAttributeCenterY
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:missedNotifAndUnreadBadgeBgView
-                                                                             attribute:NSLayoutAttributeCenterY
-                                                                            multiplier:1
-                                                                              constant:0.0f];
-        
-        [NSLayoutConstraint activateConstraints:@[centerXConstraint, centerYConstraint]];
-        
+        [missedNotifAndUnreadBadgeLabel.centerXAnchor constraintEqualToAnchor:missedNotifAndUnreadBadgeBgView.centerXAnchor
+                                                                     constant:0].active = YES;
+        [missedNotifAndUnreadBadgeLabel.centerYAnchor constraintEqualToAnchor:missedNotifAndUnreadBadgeBgView.centerYAnchor
+                                                                     constant:0].active = YES;
     }
     
     return missedNotifAndUnreadBadgeBgView;
@@ -642,17 +675,16 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 - (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
 {
     // No header view in key backup banner section
-    if (section == self.keyBackupBannerSection)
+    if (section == self.secureBackupBannerSection || section == self.crossSigningBannerSection)
     {
         return nil;
     }
     
-    UIView *sectionHeader = [[UIView alloc] initWithFrame:frame];
+    SectionHeaderView *sectionHeader = [[SectionHeaderView alloc] initWithFrame:frame];
     sectionHeader.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    sectionHeader.topViewHeight = RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT;
     NSInteger sectionBitwise = 0;
-    UIImageView *chevronView;
-    UIView *accessoryView;
-    
+
     if (_areSectionsShrinkable)
     {
         if (section == favoritesSection)
@@ -689,12 +721,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         // Add shrink button
         UIButton *shrinkButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        frame.origin.x = frame.origin.y = 0;
-        shrinkButton.frame = frame;
         shrinkButton.backgroundColor = [UIColor clearColor];
         [shrinkButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         shrinkButton.tag = sectionBitwise;
         [sectionHeader addSubview:shrinkButton];
+        sectionHeader.topSpanningView = shrinkButton;
         sectionHeader.userInteractionEnabled = YES;
         
         // Add shrink icon
@@ -707,182 +738,69 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         {
             chevron = [UIImage imageNamed:@"shrink_icon"];
         }
-        chevronView = [[UIImageView alloc] initWithImage:chevron];
+        UIImageView *chevronView = [[UIImageView alloc] initWithImage:chevron];
+        chevronView.tintColor = ThemeService.shared.theme.textSecondaryColor;
         chevronView.contentMode = UIViewContentModeCenter;
-        frame = chevronView.frame;
-        frame.origin.x = sectionHeader.frame.size.width - frame.size.width - 16;
-        frame.origin.y = (sectionHeader.frame.size.height - frame.size.height) / 2;
-        chevronView.frame = frame;
         [sectionHeader addSubview:chevronView];
-        chevronView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
-        
-        accessoryView = chevronView;
+        sectionHeader.accessoryView = chevronView;
     }
     else if (_recentsDataSourceMode == RecentsDataSourceModeHome)
     {
         // Add a badge to display the total of missed notifications by section.
-        accessoryView = [self badgeViewForHeaderTitleInHomeSection:section];
+        UIView *badgeView = [self badgeViewForHeaderTitleInHomeSection:section];
         
-        if (accessoryView)
+        if (badgeView)
         {
-            frame = accessoryView.frame;
-            frame.origin.x = sectionHeader.frame.size.width - frame.size.width - 16;
-            frame.origin.y = (sectionHeader.frame.size.height - frame.size.height) / 2;
-            accessoryView.frame = frame;
-            [sectionHeader addSubview:accessoryView];
-            accessoryView.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+            [sectionHeader addSubview:badgeView];
+            sectionHeader.accessoryView = badgeView;
         }
     }
     
     // Add label
-    frame = sectionHeader.frame;
-    frame.origin.x = 20;
-    frame.origin.y = 5;
-    frame.size.width = accessoryView ? accessoryView.frame.origin.x - 10 : sectionHeader.frame.size.width - 10;
     frame.size.height = RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT - 10;
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
     headerLabel.backgroundColor = [UIColor clearColor];
     headerLabel.attributedText = [self attributedStringForHeaderTitleInSection:section];
     [sectionHeader addSubview:headerLabel];
+    sectionHeader.headerLabel = headerLabel;
 
-    if (section == directorySection && _recentsDataSourceMode == RecentsDataSourceModeRooms && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
+    if (section == directorySection
+        && _recentsDataSourceMode == RecentsDataSourceModeRooms
+        && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY)
+        && BuildSettings.publicRoomsAllowServerChange)
     {
-        NSLayoutConstraint *leadingConstraint, *trailingConstraint, *topConstraint, *bottomConstraint;
-        NSLayoutConstraint *widthConstraint, *heightConstraint, *centerYConstraint;
-
         if (!directorySectionContainer)
         {
-            CGFloat containerWidth = sectionHeader.frame.size.width;
-
-            directorySectionContainer = [[UIView alloc] initWithFrame:CGRectMake(0, RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT, containerWidth, sectionHeader.frame.size.height - RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT)];
+            directorySectionContainer = [[DirectorySectionHeaderContainerView alloc] initWithFrame:CGRectZero];
             directorySectionContainer.backgroundColor = [UIColor clearColor];
-            directorySectionContainer.translatesAutoresizingMaskIntoConstraints = NO;
 
             // Add the "Network" label at the left
-            networkLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 100, 30)];
-            networkLabel.translatesAutoresizingMaskIntoConstraints = NO;
+            networkLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
             networkLabel.font = [UIFont systemFontOfSize:16.0];
             networkLabel.text = NSLocalizedStringFromTable(@"room_recents_directory_section_network", @"Vector", nil);
             [directorySectionContainer addSubview:networkLabel];
+            directorySectionContainer.networkLabel = networkLabel;
 
             // Add label for selected directory server
-            directoryServerLabel = [[UILabel alloc] initWithFrame:CGRectMake(120, 0, containerWidth - 32, 30)];
-            directoryServerLabel.translatesAutoresizingMaskIntoConstraints = NO;
+            directoryServerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 30)];
             directoryServerLabel.font = [UIFont systemFontOfSize:16.0];
             directoryServerLabel.textAlignment = NSTextAlignmentRight;
             [directorySectionContainer addSubview:directoryServerLabel];
+            directorySectionContainer.directoryServerLabel = directoryServerLabel;
 
             // Chevron
-            UIImageView *chevronImageView = [[UIImageView alloc] initWithFrame:CGRectMake(containerWidth - 26, 5, 6, 12)];
+            UIImageView *chevronImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 6, 12)];
+            chevronImageView.contentMode = UIViewContentModeScaleAspectFit;
             chevronImageView.image = [UIImage imageNamed:@"disclosure_icon"];
-            chevronImageView.translatesAutoresizingMaskIntoConstraints = NO;
+            chevronImageView.tintColor = ThemeService.shared.theme.textSecondaryColor;
             [directorySectionContainer addSubview:chevronImageView];
+            directorySectionContainer.disclosureView = chevronImageView;
 
             // Set a tap listener on all the container
             UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onDirectoryServerPickerTap:)];
             [tapGesture setNumberOfTouchesRequired:1];
             [tapGesture setNumberOfTapsRequired:1];
             [directorySectionContainer addGestureRecognizer:tapGesture];
-
-            // Add networkLabel constraints
-            centerYConstraint = [NSLayoutConstraint constraintWithItem:networkLabel
-                                                             attribute:NSLayoutAttributeCenterY
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:directorySectionContainer
-                                                             attribute:NSLayoutAttributeCenterY
-                                                            multiplier:1
-                                                              constant:0.0f];
-
-            heightConstraint = [NSLayoutConstraint constraintWithItem:networkLabel
-                                                            attribute:NSLayoutAttributeHeight
-                                                            relatedBy:NSLayoutRelationEqual
-                                                               toItem:nil
-                                                            attribute:NSLayoutAttributeNotAnAttribute
-                                                           multiplier:1
-                                                             constant:30];
-            leadingConstraint = [NSLayoutConstraint constraintWithItem:networkLabel
-                                                             attribute:NSLayoutAttributeLeading
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:directorySectionContainer
-                                                             attribute:NSLayoutAttributeLeading
-                                                            multiplier:1
-                                                              constant:20];
-            widthConstraint = [NSLayoutConstraint constraintWithItem:networkLabel
-                                                              attribute:NSLayoutAttributeWidth
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:nil
-                                                              attribute:NSLayoutAttributeNotAnAttribute
-                                                             multiplier:1
-                                                               constant:100];
-
-            [NSLayoutConstraint activateConstraints:@[centerYConstraint, heightConstraint, leadingConstraint, widthConstraint]];
-
-            // Add directoryServerLabel constraints
-            centerYConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
-                                                             attribute:NSLayoutAttributeCenterY
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:directorySectionContainer
-                                                             attribute:NSLayoutAttributeCenterY
-                                                            multiplier:1
-                                                              constant:0.0f];
-
-            heightConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
-                                                            attribute:NSLayoutAttributeHeight
-                                                            relatedBy:NSLayoutRelationEqual
-                                                               toItem:nil
-                                                            attribute:NSLayoutAttributeNotAnAttribute
-                                                           multiplier:1
-                                                             constant:30];
-            leadingConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
-                                                             attribute:NSLayoutAttributeLeading
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:networkLabel
-                                                             attribute:NSLayoutAttributeTrailing
-                                                            multiplier:1
-                                                              constant:20];
-            trailingConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
-                                                              attribute:NSLayoutAttributeTrailing
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:chevronImageView
-                                                              attribute:NSLayoutAttributeLeading
-                                                             multiplier:1
-                                                               constant:-8];
-
-            [NSLayoutConstraint activateConstraints:@[centerYConstraint, heightConstraint, leadingConstraint, trailingConstraint]];
-
-            // Add chevron constraints
-            trailingConstraint = [NSLayoutConstraint constraintWithItem:chevronImageView
-                                                              attribute:NSLayoutAttributeTrailing
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:directorySectionContainer
-                                                              attribute:NSLayoutAttributeTrailing
-                                                             multiplier:1
-                                                               constant:-20];
-
-            centerYConstraint = [NSLayoutConstraint constraintWithItem:chevronImageView
-                                                             attribute:NSLayoutAttributeCenterY
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:directorySectionContainer
-                                                             attribute:NSLayoutAttributeCenterY
-                                                            multiplier:1
-                                                              constant:0.0f];
-
-            widthConstraint = [NSLayoutConstraint constraintWithItem:chevronImageView
-                                                           attribute:NSLayoutAttributeWidth
-                                                           relatedBy:NSLayoutRelationEqual
-                                                              toItem:nil
-                                                           attribute:NSLayoutAttributeNotAnAttribute
-                                                          multiplier:1
-                                                            constant:6];
-            heightConstraint = [NSLayoutConstraint constraintWithItem:chevronImageView
-                                                            attribute:NSLayoutAttributeHeight
-                                                            relatedBy:NSLayoutRelationEqual
-                                                               toItem:nil
-                                                            attribute:NSLayoutAttributeNotAnAttribute
-                                                           multiplier:1
-                                                             constant:12];
-
-            [NSLayoutConstraint activateConstraints:@[trailingConstraint, centerYConstraint, widthConstraint, heightConstraint]];
         }
         
         // Apply the current UI theme.
@@ -894,36 +812,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
         // Add the check box container
         [sectionHeader addSubview:directorySectionContainer];
-        leadingConstraint = [NSLayoutConstraint constraintWithItem:directorySectionContainer
-                                                         attribute:NSLayoutAttributeLeading
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:sectionHeader
-                                                         attribute:NSLayoutAttributeLeading
-                                                        multiplier:1
-                                                          constant:0];
-        widthConstraint = [NSLayoutConstraint constraintWithItem:directorySectionContainer
-                                                       attribute:NSLayoutAttributeWidth
-                                                       relatedBy:NSLayoutRelationEqual
-                                                          toItem:sectionHeader
-                                                       attribute:NSLayoutAttributeWidth
-                                                      multiplier:1
-                                                        constant:0];
-        topConstraint = [NSLayoutConstraint constraintWithItem:directorySectionContainer
-                                                     attribute:NSLayoutAttributeTop
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:sectionHeader
-                                                     attribute:NSLayoutAttributeTop
-                                                    multiplier:1
-                                                      constant:RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT];
-        bottomConstraint = [NSLayoutConstraint constraintWithItem:directorySectionContainer
-                                                        attribute:NSLayoutAttributeBottom
-                                                        relatedBy:NSLayoutRelationEqual
-                                                           toItem:sectionHeader
-                                                        attribute:NSLayoutAttributeBottom
-                                                       multiplier:1
-                                                         constant:0];
-
-        [NSLayoutConstraint activateConstraints:@[leadingConstraint, widthConstraint, topConstraint, bottomConstraint]];
+        sectionHeader.bottomView = directorySectionContainer;
     }
 
     return sectionHeader;
@@ -939,10 +828,16 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         return [[UITableViewCell alloc] init];
     }
     
-    if (indexPath.section == self.keyBackupBannerSection)
+    if (indexPath.section == self.crossSigningBannerSection)
     {
-        KeyBackupBannerCell* keyBackupBannerCell = [tableView dequeueReusableCellWithIdentifier:KeyBackupBannerCell.defaultReuseIdentifier forIndexPath:indexPath];
-        [keyBackupBannerCell configureFor:self.keyBackupBanner];
+        CrossSigningSetupBannerCell* crossSigningSetupBannerCell = [tableView dequeueReusableCellWithIdentifier:CrossSigningSetupBannerCell.defaultReuseIdentifier forIndexPath:indexPath];
+        crossSigningSetupBannerCell.delegate = self;
+        return crossSigningSetupBannerCell;
+    }
+    else if (indexPath.section == self.secureBackupBannerSection)
+    {
+        SecureBackupBannerCell* keyBackupBannerCell = [tableView dequeueReusableCellWithIdentifier:SecureBackupBannerCell.defaultReuseIdentifier forIndexPath:indexPath];
+        [keyBackupBannerCell configureFor:self.secureBackupBannerDisplay];
         keyBackupBannerCell.delegate = self;
         return keyBackupBannerCell;
     }
@@ -1250,7 +1145,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     _missedDirectDiscussionsCount = _missedHighlightDirectDiscussionsCount = 0;
     _missedGroupDiscussionsCount = _missedHighlightGroupDiscussionsCount = 0;
     
-    keyBackupBannerSection = directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = serverNoticeSection = invitesSection = -1;
+    secureBackupBannerSection = directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = serverNoticeSection = invitesSection = -1;
     
     if (displayedRecentsDataSourceArray.count > 0)
     {
@@ -1735,11 +1630,18 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
 }
 
-#pragma mark - KeyBackupSetupBannerCellDelegate
+#pragma mark - SecureBackupSetupBannerCellDelegate
 
-- (void)keyBackupBannerCellDidTapCloseAction:(KeyBackupBannerCell * _Nonnull)cell
+- (void)secureBackupBannerCellDidTapCloseAction:(SecureBackupBannerCell * _Nonnull)cell
 {
-    [self hideKeyBackupBanner:self.keyBackupBanner];
+    [self hideKeyBackupBannerWithDisplay:self.secureBackupBannerDisplay];
+}
+
+#pragma mark - CrossSigningSetupBannerCellDelegate
+
+- (void)crossSigningSetupBannerCellDidTapCloseAction:(CrossSigningSetupBannerCell *)cell
+{
+    [self hideCrossSigningBannerWithDisplay:self.crossSigningBannerDisplay];
 }
 
 @end

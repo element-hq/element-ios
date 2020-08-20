@@ -1,11 +1,11 @@
 /*
  Copyright 2014 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
- 
+
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
- 
+
  http://www.apache.org/licenses/LICENSE-2.0
  
  Unless required by applicable law or agreed to in writing, software
@@ -17,7 +17,6 @@
 
 #import <UIKit/UIKit.h>
 #import <MatrixKit/MatrixKit.h>
-#import <UserNotifications/UserNotifications.h>
 
 #import "MasterTabBarController.h"
 #import "JitsiViewController.h"
@@ -26,6 +25,10 @@
 #import "Analytics.h"
 
 #import "ThemeService.h"
+#import "UniversalLink.h"
+
+@protocol Configurable;
+
 
 #pragma mark - Notifications
 /**
@@ -42,10 +45,13 @@ extern NSString *const AppDelegateDidValidateEmailNotification;
 extern NSString *const AppDelegateDidValidateEmailNotificationSIDKey;
 extern NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate, JitsiViewControllerDelegate, UNUserNotificationCenterDelegate>
+/**
+ Posted when the property 'lastHandledUniversalLink' has changed. Notification object and userInfo will be nil.
+ */
+extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
+
+@interface AppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate, JitsiViewControllerDelegate>
 {
-    BOOL isPushRegistered;
-    
     // background sync management
     void (^_completionHandler)(UIBackgroundFetchResult);
 }
@@ -65,6 +71,13 @@ extern NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey;
 @property (nonatomic) BOOL isAppForeground;
 @property (nonatomic) BOOL isOffline;
 
+
+/**
+ Let the AppDelegate handle and display self verification requests.
+ Default is YES;
+ */
+@property (nonatomic) BOOL handleSelfVerificationRequest;
+
 /**
  The navigation controller of the master view controller of the main split view controller.
  */
@@ -80,10 +93,27 @@ extern NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey;
 // Current selected room id. nil if no room is presently visible.
 @property (strong, nonatomic) NSString *visibleRoomId;
 
+/**
+ Last handled universal link (url will be formatted for several hash keys).
+ */
+@property (nonatomic, readonly) UniversalLink *lastHandledUniversalLink;
+
 // New message sound id.
 @property (nonatomic, readonly) SystemSoundID messageSound;
 
+// Build Settings
+@property (nonatomic, readonly) id<Configurable> configuration;
+
 + (AppDelegate*)theDelegate;
+
+#pragma mark - Push Notifications
+
+/**
+ Perform registration for remote notifications.
+
+ @param completion the block to be executed when registration finished.
+ */
+- (void)registerForRemoteNotificationsWithCompletion:(nullable void (^)(NSError *))completion;
 
 #pragma mark - Application layout handling
 
@@ -114,7 +144,7 @@ extern NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey;
 /**
  Log out all the accounts after asking for a potential confirmation.
  Show the authentication screen on successful logout.
- 
+
  @param askConfirmation tell whether a confirmation is required before logging out.
  @param completion the block to execute at the end of the operation.
  */
@@ -123,7 +153,7 @@ extern NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey;
 /**
  Log out all the accounts without confirmation.
  Show the authentication screen on successful logout.
- 
+
  @param sendLogoutRequest Indicate whether send logout request to homeserver.
  @param completion the block to execute at the end of the operation.
  */
@@ -140,20 +170,15 @@ extern NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey;
 - (BOOL)presentIncomingKeyVerificationRequest:(MXKeyVerificationRequest*)incomingKeyVerificationRequest
                                     inSession:(MXSession*)session;
 
+- (BOOL)presentUserVerificationForRoomMember:(MXRoomMember*)roomMember session:(MXSession*)mxSession;
+
+- (BOOL)presentCompleteSecurityForSession:(MXSession*)mxSession;
+
+- (void)configureCallManagerIfRequiredForSession:(MXSession *)mxSession;
+
 #pragma mark - Matrix Accounts handling
 
 - (void)selectMatrixAccount:(void (^)(MXKAccount *selectedAccount))onSelection;
-
-#pragma mark - Push notifications
-
-- (void)registerUserNotificationSettings;
-
-/**
- Perform registration for remote notifications.
- 
- @param completion the block to be executed when registration finished.
- */
-- (void)registerForRemoteNotificationsWithCompletion:(void (^)(NSError *))completion;
 
 #pragma mark - Matrix Room handling
 
@@ -172,7 +197,7 @@ extern NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey;
 
 /**
  Process the fragment part of a vector.im link.
- 
+
  @param fragment the fragment part of the universal link.
  @return YES in case of processing success.
  */
@@ -182,7 +207,7 @@ extern NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey;
 
 /**
  Open the Jitsi view controller from a widget.
- 
+
  @param jitsiWidget the jitsi widget.
  @param video to indicate voice or video call.
  */
@@ -201,5 +226,11 @@ extern NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey;
 @property (nonatomic, readonly) UIWindow* callStatusBarWindow;
 @property (nonatomic, readonly) UIButton* callStatusBarButton;
 
-@end
+#pragma mark - App version management
 
+/**
+ Check for app version related informations to display
+*/
+- (void)checkAppVersion;
+
+@end

@@ -37,7 +37,8 @@ FOUNDATION_EXPORT NSString *const kWidgetModularEventTypeString;
 /**
  Known types widgets.
  */
-FOUNDATION_EXPORT NSString *const kWidgetTypeJitsi;
+FOUNDATION_EXPORT NSString *const kWidgetTypeJitsiV1;
+FOUNDATION_EXPORT NSString *const kWidgetTypeJitsiV2;
 FOUNDATION_EXPORT NSString *const kWidgetTypeStickerPicker;
 
 /**

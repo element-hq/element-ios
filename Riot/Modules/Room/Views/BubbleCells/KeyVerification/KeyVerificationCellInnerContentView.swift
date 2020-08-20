@@ -23,8 +23,6 @@ final class KeyVerificationCellInnerContentView: UIView, NibLoadable {
     
     private enum Constants {
         static let cornerRadius: CGFloat = 8.0
-        static let buttonBackgroundColorAlpha: CGFloat = 0.2
-        static let buttonCornerRadius: CGFloat = 6.0
     }
     
     // MARK: - Properties
@@ -39,8 +37,8 @@ final class KeyVerificationCellInnerContentView: UIView, NibLoadable {
     @IBOutlet private weak var requestStatusLabel: UILabel!
     
     @IBOutlet private weak var buttonsContainerView: UIView!
-    @IBOutlet private weak var acceptButton: UIButton!
-    @IBOutlet private weak var declineButton: UIButton!
+    @IBOutlet private weak var acceptButton: RoundedButton!
+    @IBOutlet private weak var declineButton: RoundedButton!
     
     // MARK: Public
     
@@ -110,20 +108,16 @@ final class KeyVerificationCellInnerContentView: UIView, NibLoadable {
         super.awakeFromNib()
         
         self.layer.masksToBounds = true
-        self.acceptButton.layer.masksToBounds = true
         
         self.acceptButton.titleLabel?.adjustsFontSizeToFitWidth = true
         self.acceptButton.titleLabel?.minimumScaleFactor = 0.5
         self.acceptButton.titleLabel?.baselineAdjustment = .alignCenters
-        
         self.acceptButton.setTitle(VectorL10n.keyVerificationTileRequestIncomingApprovalAccept, for: .normal)
-        
-        self.declineButton.layer.masksToBounds = true
         
         self.declineButton.titleLabel?.adjustsFontSizeToFitWidth = true
         self.declineButton.titleLabel?.minimumScaleFactor = 0.5
         self.declineButton.titleLabel?.baselineAdjustment = .alignCenters
-        
+        self.declineButton.actionStyle = .cancel
         self.declineButton.setTitle(VectorL10n.keyVerificationTileRequestIncomingApprovalDecline, for: .normal)
     }
     
@@ -131,11 +125,6 @@ final class KeyVerificationCellInnerContentView: UIView, NibLoadable {
         super.layoutSubviews()
         
         self.layer.cornerRadius = Constants.cornerRadius
-        
-        if self.isButtonsHidden == false {
-            self.acceptButton.layer.cornerRadius = Constants.buttonCornerRadius
-            self.declineButton.layer.cornerRadius = Constants.buttonCornerRadius
-        }
     }
     
     // MARK: - Public
@@ -145,8 +134,8 @@ final class KeyVerificationCellInnerContentView: UIView, NibLoadable {
         self.titleLabel.textColor = theme.textPrimaryColor
         self.otherUserInformationLabel.textColor = theme.textSecondaryColor
         
-        self.acceptButton.vc_setBackgroundColor(theme.tintColor.withAlphaComponent(Constants.buttonBackgroundColorAlpha), for: .normal)
-        self.declineButton.vc_setBackgroundColor(theme.noticeColor.withAlphaComponent(Constants.buttonBackgroundColorAlpha), for: .normal)
+        self.acceptButton.update(theme: theme)
+        self.declineButton.update(theme: theme)
     }
     
     func updateSenderInfo(with userId: String, userDisplayName: String?) {

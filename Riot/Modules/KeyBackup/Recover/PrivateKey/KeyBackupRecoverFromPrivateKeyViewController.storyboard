@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="cb6-oF-e0m">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Key Backup Recover Data Loading View Controller-->
+        <scene sceneID="JIv-4y-eqa">
+            <objects>
+                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="cb6-oF-e0m" customClass="KeyBackupRecoverFromPrivateKeyViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="JOd-8G-rga">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cUL-rS-rfi">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a4s-VR-9rG">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="239"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AA6-5y-aKB">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="239"/>
+                                                <subviews>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="key_backup_logo" translatesAutoresizingMaskIntoConstraints="NO" id="c3s-XT-wGy">
+                                                        <rect key="frame" x="163.5" y="35" width="48" height="46"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="46" id="G7f-5x-wqu"/>
+                                                            <constraint firstAttribute="width" constant="48" id="raJ-A8-OeL"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Restoring backup…" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1dN-Ld-mvf">
+                                                        <rect key="frame" x="20" y="111" width="335" height="18"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstItem="c3s-XT-wGy" firstAttribute="top" secondItem="AA6-5y-aKB" secondAttribute="top" constant="35" id="2hk-29-LeR"/>
+                                                    <constraint firstItem="1dN-Ld-mvf" firstAttribute="top" secondItem="c3s-XT-wGy" secondAttribute="bottom" constant="30" id="7oJ-n1-Vec"/>
+                                                    <constraint firstAttribute="trailing" secondItem="1dN-Ld-mvf" secondAttribute="trailing" constant="20" id="RRJ-XS-DKi"/>
+                                                    <constraint firstItem="1dN-Ld-mvf" firstAttribute="leading" secondItem="AA6-5y-aKB" secondAttribute="leading" constant="20" id="bgC-6o-Qd3"/>
+                                                    <constraint firstItem="c3s-XT-wGy" firstAttribute="centerX" secondItem="AA6-5y-aKB" secondAttribute="centerX" id="hhx-MR-Ssb"/>
+                                                    <constraint firstAttribute="width" priority="750" constant="500" id="qn9-3x-Vus"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="AA6-5y-aKB" secondAttribute="trailing" id="9zl-EA-onb"/>
+                                            <constraint firstAttribute="bottom" secondItem="AA6-5y-aKB" secondAttribute="bottom" id="QEe-pI-nde"/>
+                                            <constraint firstItem="AA6-5y-aKB" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="a4s-VR-9rG" secondAttribute="leading" id="dUg-r0-GLK"/>
+                                            <constraint firstAttribute="height" constant="239" id="f7G-GL-m2p"/>
+                                            <constraint firstItem="AA6-5y-aKB" firstAttribute="centerX" secondItem="a4s-VR-9rG" secondAttribute="centerX" id="jfM-Ga-xmC"/>
+                                            <constraint firstItem="AA6-5y-aKB" firstAttribute="top" secondItem="a4s-VR-9rG" secondAttribute="top" id="sUF-Z1-GNm"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="a4s-VR-9rG" secondAttribute="bottom" id="1y5-kr-9rM"/>
+                                    <constraint firstItem="a4s-VR-9rG" firstAttribute="leading" secondItem="cUL-rS-rfi" secondAttribute="leading" id="C8p-p4-H7y"/>
+                                    <constraint firstItem="a4s-VR-9rG" firstAttribute="top" secondItem="cUL-rS-rfi" secondAttribute="top" id="Ex0-c1-ak8"/>
+                                    <constraint firstAttribute="trailing" secondItem="a4s-VR-9rG" secondAttribute="trailing" id="d6Y-su-yMj"/>
+                                    <constraint firstItem="a4s-VR-9rG" firstAttribute="width" secondItem="cUL-rS-rfi" secondAttribute="width" id="uTy-iK-Qq9"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.94509803920000002" green="0.96078431369999995" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="cUL-rS-rfi" firstAttribute="leading" secondItem="Y3k-2C-Pek" secondAttribute="leading" id="9ZI-Gm-3DT"/>
+                            <constraint firstItem="Y3k-2C-Pek" firstAttribute="trailing" secondItem="cUL-rS-rfi" secondAttribute="trailing" id="QwC-RO-L6M"/>
+                            <constraint firstItem="Y3k-2C-Pek" firstAttribute="top" secondItem="cUL-rS-rfi" secondAttribute="top" id="ffm-HV-RhA"/>
+                            <constraint firstAttribute="bottom" secondItem="cUL-rS-rfi" secondAttribute="bottom" id="rib-a1-j68"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Y3k-2C-Pek"/>
+                    </view>
+                    <connections>
+                        <outlet property="informationLabel" destination="1dN-Ld-mvf" id="RAQ-9H-hXQ"/>
+                        <outlet property="shieldImageView" destination="c3s-XT-wGy" id="jVg-AC-PGB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dR3-YY-guh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3772" y="-774"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="key_backup_logo" width="48" height="46"/>
+    </resources>
+</document>

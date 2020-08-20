@@ -21,6 +21,7 @@
 
 #import "AvatarGenerator.h"
 #import "Tools.h"
+#import "BubbleReactionsViewSizer.h"
 
 #import "Riot-Swift.h"
 
@@ -406,42 +407,16 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
 
 - (void)addVerticalWhitespaceToString:(NSMutableAttributedString *)attributedString forEvent:(NSString *)eventId
 {
-    // Add vertical whitespace in case of read receipts.
-    NSUInteger reactionCount = self.reactions[eventId].reactions.count;
+    CGFloat additionalVerticalHeight = 0;
     
-    MXAggregatedReactions *aggregatedReactions = self.reactions[eventId];
-    
-    if (reactionCount)
-    {
-        CGFloat bubbleReactionsViewWidth = self.maxTextViewWidth - 4;
-        
-        CGSize fittingSize = UILayoutFittingCompressedSize;
-        fittingSize.width = bubbleReactionsViewWidth;
-        
-        static BubbleReactionsView *bubbleReactionsView;
-        
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            bubbleReactionsView = [BubbleReactionsView new];
-        });
-
-        BOOL showAllReactions = [self.eventsToShowAllReactions containsObject:eventId];
-        
-        bubbleReactionsView.frame = CGRectMake(0, 0, bubbleReactionsViewWidth, 1.0);
-        BubbleReactionsViewModel *viemModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:aggregatedReactions eventId:eventId showAll:showAllReactions];
-        bubbleReactionsView.viewModel = viemModel;
-        [bubbleReactionsView setNeedsLayout];
-        [bubbleReactionsView layoutIfNeeded];
-        
-        CGFloat height = [bubbleReactionsView systemLayoutSizeFittingSize:fittingSize].height + RoomBubbleCellLayout.reactionsViewTopMargin;
-        
-        [attributedString appendAttributedString:[RoomBubbleCellData verticalWhitespaceForHeight: height]];
-    }
-
+    // Add vertical whitespace in case of reactions.
+    additionalVerticalHeight+= [self reactionHeightForEventId:eventId];
     // Add vertical whitespace in case of read receipts.
-    if (self.readReceipts[eventId].count)
+    additionalVerticalHeight+= [self readReceiptHeightForEventId:eventId];
+    
+    if (additionalVerticalHeight)
     {
-        [attributedString appendAttributedString:[RoomBubbleCellData verticalWhitespaceForHeight:RoomBubbleCellLayout.readReceiptsViewHeight + RoomBubbleCellLayout.readReceiptsViewTopMargin]];
+        [attributedString appendAttributedString:[RoomBubbleCellData verticalWhitespaceForHeight: additionalVerticalHeight]];
     }
 }
 
@@ -504,25 +479,16 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
     {
         CGFloat bubbleReactionsViewWidth = self.maxTextViewWidth - 4;
         
-        CGSize fittingSize = UILayoutFittingCompressedSize;
-        fittingSize.width = bubbleReactionsViewWidth;
-        
-        static BubbleReactionsView *bubbleReactionsView;
+        static BubbleReactionsViewSizer *bubbleReactionsViewSizer;
         
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
-            bubbleReactionsView = [BubbleReactionsView new];
+            bubbleReactionsViewSizer = [BubbleReactionsViewSizer new];
         });
 
         BOOL showAllReactions = [self.eventsToShowAllReactions containsObject:eventId];
-        
-        bubbleReactionsView.frame = CGRectMake(0, 0, bubbleReactionsViewWidth, 1.0);
         BubbleReactionsViewModel *viemModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:aggregatedReactions eventId:eventId showAll:showAllReactions];
-        bubbleReactionsView.viewModel = viemModel;
-        [bubbleReactionsView setNeedsLayout];
-        [bubbleReactionsView layoutIfNeeded];
-        
-        height = [bubbleReactionsView systemLayoutSizeFittingSize:fittingSize].height + RoomBubbleCellLayout.reactionsViewTopMargin;
+        height = [bubbleReactionsViewSizer heightForViewModel:viemModel fittingWidth:bubbleReactionsViewWidth] + RoomBubbleCellLayout.reactionsViewTopMargin;
     }
     
     return height;

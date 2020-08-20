@@ -1,5 +1,5 @@
 /*
- Copyright 2019 New Vector Ltd
+ Copyright 2020 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -68,10 +68,10 @@ final class FlowTemplateCoordinator: FlowTemplateCoordinatorType {
 
 // MARK: - TemplateScreenCoordinatorDelegate
 extension FlowTemplateCoordinator: TemplateScreenCoordinatorDelegate {
-    func templateScreenCoordinator(_ coordinator: TemplateScreenCoordinatorType, didCompleteWithMessage message: String) {
+    func templateScreenCoordinator(_ coordinator: TemplateScreenCoordinatorType, didCompleteWithUserDisplayName userDisplayName: String?) {
         self.delegate?.flowTemplateCoordinatorDidComplete(self)
     }
-
+    
     func templateScreenCoordinatorDidCancel(_ coordinator: TemplateScreenCoordinatorType) {
         self.delegate?.flowTemplateCoordinatorDidComplete(self)
     }

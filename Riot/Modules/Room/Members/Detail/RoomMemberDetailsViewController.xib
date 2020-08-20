@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,11 +14,14 @@
                 <outlet property="bottomImageView" destination="7Dc-jk-9sT" id="BVN-bt-VXI"/>
                 <outlet property="memberHeaderView" destination="YXr-As-Mqh" id="Eqb-qr-iAo"/>
                 <outlet property="memberThumbnail" destination="GQ1-rP-ckr" id="abr-hr-C3p"/>
+                <outlet property="roomMemberAvatarBadgeImageView" destination="jHh-A3-In3" id="LKN-mv-WFg"/>
                 <outlet property="roomMemberAvatarHeaderBackground" destination="ouj-VM-zdT" id="YeD-zt-8y5"/>
                 <outlet property="roomMemberAvatarHeaderBackgroundHeightConstraint" destination="dBL-G6-Yec" id="QXZ-ZP-0Rn"/>
                 <outlet property="roomMemberAvatarMask" destination="MAS-3M-3cg" id="nLI-7d-5Hu"/>
                 <outlet property="roomMemberNameLabel" destination="92g-hC-6jB" id="gcP-wz-8FT"/>
                 <outlet property="roomMemberNameLabelMask" destination="wEo-Mk-SgZ" id="uEv-LU-eEI"/>
+                <outlet property="roomMemberPowerLevelContainerView" destination="Flu-1i-oqi" id="mdj-h2-evz"/>
+                <outlet property="roomMemberPowerLevelLabel" destination="lbh-ZN-XUO" id="DXV-T0-yKs"/>
                 <outlet property="roomMemberStatusLabel" destination="5le-5e-Vml" id="ODo-tG-ewy"/>
                 <outlet property="tableView" destination="R6u-PR-DcU" id="Cm1-1y-meQ"/>
                 <outlet property="view" destination="gX8-mM-6Ig" id="R3w-s7-1CY"/>
@@ -31,7 +33,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YXr-As-Mqh">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="192"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="241"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ouj-VM-zdT">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="117"/>
@@ -45,7 +47,7 @@
                             <rect key="frame" x="137.5" y="0.0" width="100" height="125"/>
                             <subviews>
                                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GQ1-rP-ckr" customClass="MXKImageView">
-                                    <rect key="frame" x="7.5" y="31" width="84" height="84"/>
+                                    <rect key="frame" x="8" y="31" width="84" height="84"/>
                                     <color key="backgroundColor" red="0.6886889638" green="1" blue="0.74383144840000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" identifier="MemberAvatar"/>
                                     <constraints>
@@ -53,11 +55,20 @@
                                         <constraint firstAttribute="width" secondItem="GQ1-rP-ckr" secondAttribute="height" multiplier="1:1" id="a1T-Y0-Iic"/>
                                     </constraints>
                                 </view>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jHh-A3-In3">
+                                    <rect key="frame" x="68" y="91" width="24" height="24"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="jHh-A3-In3" secondAttribute="height" multiplier="1:1" id="fvP-Hk-apc"/>
+                                        <constraint firstAttribute="width" constant="24" id="xga-bi-rLY"/>
+                                    </constraints>
+                                </imageView>
                             </subviews>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <accessibility key="accessibilityConfiguration" identifier="RoomMemberDetailsVCAvatarMask"/>
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="GQ1-rP-ckr" secondAttribute="bottom" constant="10" id="3pC-So-WvO"/>
+                                <constraint firstItem="jHh-A3-In3" firstAttribute="bottom" secondItem="GQ1-rP-ckr" secondAttribute="bottom" id="6Gg-lp-pJw"/>
+                                <constraint firstItem="jHh-A3-In3" firstAttribute="trailing" secondItem="GQ1-rP-ckr" secondAttribute="trailing" id="TbA-vY-3Ef"/>
                                 <constraint firstItem="GQ1-rP-ckr" firstAttribute="centerX" secondItem="MAS-3M-3cg" secondAttribute="centerX" id="ZGI-nR-gGx"/>
                                 <constraint firstAttribute="width" constant="100" id="fwv-qE-IV1"/>
                             </constraints>
@@ -72,6 +83,14 @@
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wEo-Mk-SgZ">
+                            <rect key="frame" x="0.0" y="119" width="375" height="33"/>
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                            <accessibility key="accessibilityConfiguration" identifier="RoomMemberDetailsVCNameLabelMask"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="33" id="qhK-10-7AW"/>
+                            </constraints>
+                        </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5le-5e-Vml">
                             <rect key="frame" x="168" y="153" width="39" height="21"/>
                             <accessibility key="accessibilityConfiguration" identifier="RoomMemberDetailsVCStatusLabel"/>
@@ -82,14 +101,34 @@
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wEo-Mk-SgZ">
-                            <rect key="frame" x="0.0" y="119" width="375" height="33"/>
-                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                            <accessibility key="accessibilityConfiguration" identifier="RoomMemberDetailsVCNameLabelMask"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="hSH-1t-jnC">
+                            <rect key="frame" x="0.0" y="181" width="375" height="50"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Flu-1i-oqi">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lbh-ZN-XUO">
+                                            <rect key="frame" x="20" y="0.0" width="335" height="50"/>
+                                            <accessibility key="accessibilityConfiguration" identifier="RoomMemberDetailsVCStatusLabel"/>
+                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="lbh-ZN-XUO" secondAttribute="bottom" id="62K-Ie-Kg9"/>
+                                        <constraint firstAttribute="trailing" secondItem="lbh-ZN-XUO" secondAttribute="trailing" constant="20" id="Dkd-ht-VdC"/>
+                                        <constraint firstItem="lbh-ZN-XUO" firstAttribute="leading" secondItem="Flu-1i-oqi" secondAttribute="leading" constant="20" id="O46-2t-sDM"/>
+                                        <constraint firstItem="lbh-ZN-XUO" firstAttribute="top" secondItem="Flu-1i-oqi" secondAttribute="top" id="OKl-Wi-8cg"/>
+                                        <constraint firstAttribute="height" priority="250" id="q1U-pw-18U"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
                             <constraints>
-                                <constraint firstAttribute="height" constant="33" id="qhK-10-7AW"/>
+                                <constraint firstItem="Flu-1i-oqi" firstAttribute="width" secondItem="hSH-1t-jnC" secondAttribute="width" id="oyq-sY-NBr"/>
                             </constraints>
-                        </view>
+                        </stackView>
                     </subviews>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <accessibility key="accessibilityConfiguration" identifier="RoomMemberDetailsVCHeaderView"/>
@@ -97,16 +136,19 @@
                         <constraint firstItem="wEo-Mk-SgZ" firstAttribute="centerY" secondItem="92g-hC-6jB" secondAttribute="centerY" id="3Zt-MD-sZK"/>
                         <constraint firstItem="5le-5e-Vml" firstAttribute="top" secondItem="92g-hC-6jB" secondAttribute="bottom" constant="7" id="5zX-1T-n38"/>
                         <constraint firstItem="92g-hC-6jB" firstAttribute="centerX" secondItem="YXr-As-Mqh" secondAttribute="centerX" id="7Is-d0-FZp"/>
+                        <constraint firstItem="hSH-1t-jnC" firstAttribute="top" secondItem="5le-5e-Vml" secondAttribute="bottom" constant="7" id="EB4-IF-sT6"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="92g-hC-6jB" secondAttribute="trailing" constant="32" id="Eyx-UF-fYc"/>
                         <constraint firstAttribute="trailing" secondItem="ouj-VM-zdT" secondAttribute="trailing" id="FRy-TL-gS2"/>
                         <constraint firstItem="wEo-Mk-SgZ" firstAttribute="centerX" secondItem="92g-hC-6jB" secondAttribute="centerX" id="K1f-RX-kpp"/>
                         <constraint firstItem="wEo-Mk-SgZ" firstAttribute="width" secondItem="YXr-As-Mqh" secondAttribute="width" id="P5e-q6-OIS"/>
                         <constraint firstItem="92g-hC-6jB" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YXr-As-Mqh" secondAttribute="leading" constant="32" id="QZB-ue-Sih"/>
+                        <constraint firstItem="hSH-1t-jnC" firstAttribute="leading" secondItem="YXr-As-Mqh" secondAttribute="leading" id="Z0t-iC-uTc"/>
+                        <constraint firstAttribute="bottom" secondItem="hSH-1t-jnC" secondAttribute="bottom" constant="10" id="Z9m-Up-f4r"/>
                         <constraint firstItem="5le-5e-Vml" firstAttribute="centerX" secondItem="YXr-As-Mqh" secondAttribute="centerX" id="bmA-Fq-uxO"/>
                         <constraint firstItem="5le-5e-Vml" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YXr-As-Mqh" secondAttribute="leading" constant="42" id="ioz-jk-jrE"/>
-                        <constraint firstAttribute="bottom" secondItem="5le-5e-Vml" secondAttribute="bottom" constant="18" id="j10-rX-tMf"/>
                         <constraint firstItem="MAS-3M-3cg" firstAttribute="top" secondItem="YXr-As-Mqh" secondAttribute="top" id="jJp-cP-Vgp"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="5le-5e-Vml" secondAttribute="trailing" constant="42" id="mad-qx-tHe"/>
+                        <constraint firstAttribute="trailing" secondItem="hSH-1t-jnC" secondAttribute="trailing" id="nJW-bQ-zVq"/>
                         <constraint firstItem="92g-hC-6jB" firstAttribute="top" secondItem="ouj-VM-zdT" secondAttribute="bottom" constant="8" id="rKl-Gw-ajI"/>
                         <constraint firstItem="ouj-VM-zdT" firstAttribute="leading" secondItem="YXr-As-Mqh" secondAttribute="leading" id="rWQ-Ru-7Ej"/>
                         <constraint firstItem="MAS-3M-3cg" firstAttribute="bottom" secondItem="92g-hC-6jB" secondAttribute="top" id="rgU-C1-YMW"/>
@@ -129,7 +171,7 @@
                     </constraints>
                 </imageView>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" style="grouped" separatorStyle="default" rowHeight="46" sectionHeaderHeight="28" sectionFooterHeight="8" translatesAutoresizingMaskIntoConstraints="NO" id="R6u-PR-DcU">
-                    <rect key="frame" x="0.0" y="192" width="375" height="475"/>
+                    <rect key="frame" x="0.0" y="241" width="375" height="426"/>
                     <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="RoomMemberDetailsVCTableView"/>
@@ -157,6 +199,7 @@
                 <constraint firstItem="R6u-PR-DcU" firstAttribute="leading" secondItem="gX8-mM-6Ig" secondAttribute="leading" id="rbT-O1-m3d"/>
                 <constraint firstAttribute="bottom" secondItem="7Dc-jk-9sT" secondAttribute="bottom" id="yKK-K2-ebi"/>
             </constraints>
+            <point key="canvasLocation" x="53.600000000000001" y="26.53673163418291"/>
         </view>
     </objects>
     <resources>

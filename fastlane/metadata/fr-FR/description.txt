@@ -1,0 +1,15 @@
+Une application de discussion, que vous contrôlez et entièrement flexible. Element vous laisse communiquer comme vous le souhaitez. Conçu pour [matrix], le standard pour les communications libres et décentralisées.
+
+Créez un compte matrix.org gratuit, gérez votre propre serveur sur https://ems.element.io ou utilisez un autre serveur Matrix.
+
+Pourquoi choisir Element ?
+
+• COMMUNICATION COMPLÈTE : Construisez des salons autours de vos équipes, de vos amis, de votre communauté comme vous le souhaitez ! Discutez, partagez des fichiers, ajoutez des widgets et passez des appels audio et vidéo gratuitement.
+
+• INTÉGRATIONS PUISSANTES : Utilisez Element avec les outils que vous connaissez déjà. Avec Element vous pouvez même discuter avec les utilisateurs et les groupes qui utilisent d’autres applications de discussion.
+
+• PRIVÉ ET SÉCURISÉ : Gardez vos conversations secrètes. Un chiffrement de bout en bout de pointe vous garanti que vos communications privées restent privées.
+
+• OUVERT, PAS FERMÉ : Open source, et construit autour de Matrix. Restez en possession de vos données en hébergeant votre propre serveur, ou choisissez celui auquel vous faites confiance.
+
+• PARTOUT OÙ VOUS ÊTES : Restez en contact où que vous soyez avec la synchronisation complète de l’historique de vos messages entre vos différents appareils et en ligne sur https://element.io/app.

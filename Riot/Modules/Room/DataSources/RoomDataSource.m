@@ -39,10 +39,14 @@
 @property (nonatomic, weak) id keyVerificationRequestDidChangeNotificationObserver;
 
 // Observe key verification transaction changes
-@property (nonatomic, weak) id deviceVerificationTransactionDidChangeNotificationObserver;
+@property (nonatomic, weak) id keyVerificationTransactionDidChangeNotificationObserver;
 
 // Timer used to debounce cells refresh
 @property (nonatomic, strong) NSTimer *refreshCellsTimer;
+
+@property (nonatomic, readonly) id<RoomDataSourceDelegate> roomDataSourceDelegate;
+
+@property(nonatomic, readwrite) RoomEncryptionTrustLevel encryptionTrustLevel;
 
 @end
 
@@ -82,7 +86,10 @@
         }];
         
         [self registerKeyVerificationRequestNotification];
-        [self registerDeviceVerificationTransactionNotification];
+        [self registerKeyVerificationTransactionNotification];
+        [self registerTrustLevelDidChangeNotifications];
+        
+        self.encryptionTrustLevel = RoomEncryptionTrustLevelUnknown;
     }
     return self;
 }
@@ -105,6 +112,21 @@
             NSLog(@"[MXKRoomDataSource] finalizeRoomDataSource: Cannot retrieve all room members");
         }];
     }
+
+    if (self.room.summary.isEncrypted)
+    {
+        [self fetchEncryptionTrustedLevel];
+    }
+}
+
+- (id<RoomDataSourceDelegate>)roomDataSourceDelegate
+{
+    if (!self.delegate || ![self.delegate conformsToProtocol:@protocol(RoomDataSourceDelegate)])
+    {
+        return nil;
+    }
+    
+    return ((id<RoomDataSourceDelegate>)(self.delegate));
 }
 
 - (void)updateEventFormatter
@@ -134,9 +156,9 @@
         [[NSNotificationCenter defaultCenter] removeObserver:self.keyVerificationRequestDidChangeNotificationObserver];
     }
     
-    if (self.deviceVerificationTransactionDidChangeNotificationObserver)
+    if (self.keyVerificationTransactionDidChangeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:self.deviceVerificationTransactionDidChangeNotificationObserver];
+        [[NSNotificationCenter defaultCenter] removeObserver:self.keyVerificationTransactionDidChangeNotificationObserver];
     }
     
     [super destroy];
@@ -166,6 +188,31 @@
         [roomBubbleCellData setNeedsUpdateAdditionalContentHeight];
     }
 }
+
+#pragma mark Encryption trust level
+
+- (void)registerTrustLevelDidChangeNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(roomSummaryDidChange:) name:kMXRoomSummaryDidChangeNotification object:self.room.summary];
+}
+
+
+- (void)roomSummaryDidChange:(NSNotification*)notification
+{
+    if (!self.room.summary.isEncrypted)
+    {
+        return;
+    }
+    
+    [self fetchEncryptionTrustedLevel];
+}
+
+- (void)fetchEncryptionTrustedLevel
+{
+    self.encryptionTrustLevel = self.room.summary.roomEncryptionTrustLevel;
+    [self.roomDataSourceDelegate roomDataSource:self didUpdateEncryptionTrustLevel:self.encryptionTrustLevel];
+}
+
 
 #pragma  mark -
 
@@ -269,7 +316,7 @@
                     BubbleReactionsView *reactionsView;
                     
                     if (!component.event.isRedactedEvent && reactions && !isCollapsableCellCollapsed)
-                    {                        
+                    {
                         BOOL showAllReactions = [cellData showAllReactionsForEvent:componentEventId];
                         BubbleReactionsViewModel *bubbleReactionsViewModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:reactions
                                                                                                                                    eventId:componentEventId
@@ -279,12 +326,9 @@
                         reactionsView.viewModel = bubbleReactionsViewModel;
                         [reactionsView updateWithTheme:ThemeService.shared.theme];
                         
-                        [temporaryViews addObject:reactionsView];
-                        
                         bubbleReactionsViewModel.viewModelDelegate = self;
                         
-                        reactionsView.translatesAutoresizingMaskIntoConstraints = NO;
-                        [bubbleCell.contentView addSubview:reactionsView];
+                        [temporaryViews addObject:reactionsView];
                         
                         if (!bubbleCell.tmpSubviews)
                         {
@@ -292,23 +336,34 @@
                         }
                         [bubbleCell.tmpSubviews addObject:reactionsView];
                         
-                        CGFloat leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin;
-                        
-                        if (self.room.summary.isEncrypted)
+                        if ([[bubbleCell class] conformsToProtocol:@protocol(BubbleCellReactionsDisplayable)])
                         {
-                            leftMargin+= RoomBubbleCellLayout.encryptedContentLeftMargin;
+                            id<BubbleCellReactionsDisplayable> reactionsDisplayable = (id<BubbleCellReactionsDisplayable>)bubbleCell;
+                            [reactionsDisplayable addReactionsView:reactionsView];
                         }
-                        
-                        // Force receipts container size
-                        [NSLayoutConstraint activateConstraints:
-                         @[
-                           [reactionsView.leadingAnchor constraintEqualToAnchor:reactionsView.superview.leadingAnchor constant:leftMargin],
-                           [reactionsView.trailingAnchor constraintEqualToAnchor:reactionsView.superview.trailingAnchor constant:-RoomBubbleCellLayout.reactionsViewRightMargin],
-                           [reactionsView.topAnchor constraintEqualToAnchor:reactionsView.superview.topAnchor constant:bottomPositionY + RoomBubbleCellLayout.reactionsViewTopMargin]
-                           ]];
+                        else
+                        {
+                            reactionsView.translatesAutoresizingMaskIntoConstraints = NO;
+                            [bubbleCell.contentView addSubview:reactionsView];
+                            
+                            CGFloat leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin;
+                            
+                            if (roomBubbleCellData.containsBubbleComponentWithEncryptionBadge)
+                            {
+                                leftMargin+= RoomBubbleCellLayout.encryptedContentLeftMargin;
+                            }
+                            
+                            // Force receipts container size
+                            [NSLayoutConstraint activateConstraints:
+                             @[
+                               [reactionsView.leadingAnchor constraintEqualToAnchor:reactionsView.superview.leadingAnchor constant:leftMargin],
+                               [reactionsView.trailingAnchor constraintEqualToAnchor:reactionsView.superview.trailingAnchor constant:-RoomBubbleCellLayout.reactionsViewRightMargin],
+                               [reactionsView.topAnchor constraintEqualToAnchor:reactionsView.superview.topAnchor constant:bottomPositionY + RoomBubbleCellLayout.reactionsViewTopMargin]
+                               ]];
+                        }
                     }
                     
-                    MXKReceiptSendersContainer* avatarsContainer;                    
+                    MXKReceiptSendersContainer* avatarsContainer;
                     
                     // Handle read receipts (if any)
                     if (self.showBubbleReceipts && cellData.readReceipts.count && !isCollapsableCellCollapsed)
@@ -623,18 +678,18 @@
                                                                 }];
 }
 
-- (void)registerDeviceVerificationTransactionNotification
+- (void)registerKeyVerificationTransactionNotification
 {
-    self.deviceVerificationTransactionDidChangeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:MXDeviceVerificationTransactionDidChangeNotification
+    self.keyVerificationTransactionDidChangeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:MXKeyVerificationTransactionDidChangeNotification
                                                                                                                         object:nil
                                                                                                                          queue:[NSOperationQueue mainQueue]
                                                                                                                     usingBlock:^(NSNotification *notification)
                                                                        {
-                                                                           MXDeviceVerificationTransaction *deviceVerificationTransaction = (MXDeviceVerificationTransaction*)notification.object;
+                                                                           MXKeyVerificationTransaction *keyVerificationTransaction = (MXKeyVerificationTransaction*)notification.object;
                                                                            
-                                                                           if ([deviceVerificationTransaction.dmRoomId isEqualToString:self.roomId])
+                                                                           if ([keyVerificationTransaction.dmRoomId isEqualToString:self.roomId])
                                                                            {
-                                                                               RoomBubbleCellData *roomBubbleCellData = [self roomBubbleCellDataForEventId:deviceVerificationTransaction.dmEventId];
+                                                                               RoomBubbleCellData *roomBubbleCellData = [self roomBubbleCellDataForEventId:keyVerificationTransaction.dmEventId];
                                                                                
                                                                                roomBubbleCellData.isKeyVerificationOperationPending = NO;
                                                                                roomBubbleCellData.keyVerification = nil;
@@ -694,7 +749,7 @@
         return;
     }
     
-    __block MXHTTPOperation *operation = [self.mxSession.crypto.deviceVerificationManager keyVerificationFromKeyVerificationEvent:event
+    __block MXHTTPOperation *operation = [self.mxSession.crypto.keyVerificationManager keyVerificationFromKeyVerificationEvent:event
                                                                                                                           success:^(MXKeyVerification * _Nonnull keyVerification)
                                           {
                                               BOOL shouldRefreshCells = bubbleCellData.isKeyVerificationOperationPending || bubbleCellData.keyVerification == nil;
@@ -755,7 +810,7 @@
     Widget *jitsiWidget;
 
     // Note: Manage only one jitsi widget at a time for the moment
-    jitsiWidget = [[WidgetManager sharedManager] widgetsOfTypes:@[kWidgetTypeJitsi] inRoom:self.room withRoomState:self.roomState].firstObject;
+    jitsiWidget = [[WidgetManager sharedManager] widgetsOfTypes:@[kWidgetTypeJitsiV1, kWidgetTypeJitsiV2] inRoom:self.room withRoomState:self.roomState].firstObject;
 
     return jitsiWidget;
 }

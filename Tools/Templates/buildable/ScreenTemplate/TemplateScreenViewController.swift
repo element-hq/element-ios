@@ -1,5 +1,5 @@
 /*
- Copyright 2019 New Vector Ltd
+ Copyright 2020 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -30,8 +30,8 @@ final class TemplateScreenViewController: UIViewController {
 
     @IBOutlet private weak var scrollView: UIScrollView!
     
-    @IBOutlet private weak var messageLabel: UILabel!
-    @IBOutlet private weak var okButton: UIButton!
+    @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private weak var doneButton: UIButton!
     
     // MARK: Private
 
@@ -57,8 +57,6 @@ final class TemplateScreenViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.title = "Template"
-        
         self.setupViews()
         self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
         self.activityPresenter = ActivityIndicatorPresenter()
@@ -69,7 +67,7 @@ final class TemplateScreenViewController: UIViewController {
         
         self.viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .sayHello)
+        self.viewModel.process(viewAction: .loadData)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -100,11 +98,11 @@ final class TemplateScreenViewController: UIViewController {
         }
 
 
-        // TODO:
-        self.messageLabel.textColor = theme.textPrimaryColor
+        // TODO: Set view colors here
+        self.informationLabel.textColor = theme.textPrimaryColor
 
-        self.okButton.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.okButton)
+        self.doneButton.backgroundColor = theme.backgroundColor
+        theme.applyStyle(onButton: self.doneButton)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -122,18 +120,19 @@ final class TemplateScreenViewController: UIViewController {
         
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         
+        self.title = "Template"
+        
         self.scrollView.keyboardDismissMode = .interactive
         
-        self.messageLabel.text = "VectorL10n.templateScreenTitle"
-        self.messageLabel.isHidden = true
+        self.informationLabel.text = "VectorL10n.templateScreenTitle"
     }
 
     private func render(viewState: TemplateScreenViewState) {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .loaded:
-            self.renderLoaded()
+        case .loaded(let displayName):
+            self.renderLoaded(displayName: displayName)
         case .error(let error):
             self.render(error: error)
         }
@@ -141,13 +140,13 @@ final class TemplateScreenViewController: UIViewController {
     
     private func renderLoading() {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        self.informationLabel.text = "Fetch display name"
     }
     
-    private func renderLoaded() {
+    private func renderLoaded(displayName: String) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
 
-        self.messageLabel.text = self.viewModel.message
-        self.messageLabel.isHidden = false
+        self.informationLabel.text = "You display name: \(displayName)"
     }
     
     private func render(error: Error) {
@@ -158,7 +157,7 @@ final class TemplateScreenViewController: UIViewController {
     
     // MARK: - Actions
 
-    @IBAction private func okButtonAction(_ sender: Any) {
+    @IBAction private func doneButtonAction(_ sender: Any) {
         self.viewModel.process(viewAction: .complete)
     }
 

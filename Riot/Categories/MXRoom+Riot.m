@@ -324,6 +324,46 @@
     }
 }
 
+- (void)encryptionTrustLevelForUserId:(NSString*)userId onComplete:(void (^)(UserEncryptionTrustLevel userEncryptionTrustLevel))onComplete
+{
+    if (self.mxSession.crypto)
+    {
+        [self.mxSession.crypto trustLevelSummaryForUserIds:@[userId] onComplete:^(MXUsersTrustLevelSummary *usersTrustLevelSummary) {
+            
+            UserEncryptionTrustLevel userEncryptionTrustLevel;
+            double trustedDevicesPercentage = usersTrustLevelSummary.trustedDevicesProgress.fractionCompleted;
+            
+            if (trustedDevicesPercentage >= 1.0)
+            {
+                userEncryptionTrustLevel = UserEncryptionTrustLevelTrusted;
+            }
+            else if (trustedDevicesPercentage == 0.0)
+            {
+                // Verify if the user has the user has cross-signing enabled
+                if ([self.mxSession.crypto crossSigningKeysForUser:userId])
+                {
+                    userEncryptionTrustLevel = UserEncryptionTrustLevelNotVerified;
+                }
+                else
+                {
+                    userEncryptionTrustLevel = UserEncryptionTrustLevelNoCrossSigning;
+                }
+            }
+            else
+            {
+                userEncryptionTrustLevel = UserEncryptionTrustLevelWarning;
+            }
+            
+            onComplete(userEncryptionTrustLevel);
+            
+        }];
+    }
+    else
+    {
+        onComplete(UserEncryptionTrustLevelNone);
+    }
+}
+
 #pragma mark -
 
 - (MXPushRule*)getRoomPushRule

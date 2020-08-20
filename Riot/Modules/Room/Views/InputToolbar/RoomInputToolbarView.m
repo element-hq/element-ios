@@ -81,7 +81,7 @@
     self.backgroundColor = [UIColor clearColor];
     
     self.separatorView.backgroundColor = ThemeService.shared.theme.lineBreakColor;
-    
+        
     // Custom the growingTextView display
     growingTextView.layer.cornerRadius = 0;
     growingTextView.layer.borderWidth = 0;
@@ -96,6 +96,10 @@
     self.attachMediaButton.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_upload", @"Vector", nil);
     self.voiceCallButton.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_call", @"Vector", nil);
     self.hangupCallButton.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_hangup", @"Vector", nil);
+    
+    self.hangupCallButton.tintColor = ThemeService.shared.theme.noticeColor;
+    self.voiceCallButton.tintColor = ThemeService.shared.theme.tintColor;
+    self.attachMediaButton.tintColor = ThemeService.shared.theme.tintColor;
 }
 
 #pragma mark -
@@ -128,8 +132,6 @@
     
     if (_isEncryptionEnabled)
     {
-        self.encryptedRoomIcon.image = [UIImage imageNamed:@"e2e_verified"];
-        
         // Check the device screen size before using large placeholder
         if ([GBDeviceInfo deviceInfo].family == GBDeviceFamilyiPad || [GBDeviceInfo deviceInfo].displayInfo.display >= GBDeviceDisplay4p7Inch)
         {
@@ -138,8 +140,6 @@
     }
     else
     {
-        self.encryptedRoomIcon.image = [UIImage imageNamed:@"e2e_unencrypted"];
-        
         // Check the device screen size before using large placeholder
         if ([GBDeviceInfo deviceInfo].family == GBDeviceFamilyiPad || [GBDeviceInfo deviceInfo].displayInfo.display >= GBDeviceDisplay4p7Inch)
         {
@@ -347,19 +347,22 @@
 
                                                           }]];
 
-            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_send_sticker", @"Vector", nil)
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
-
-                                                              if (weakSelf)
-                                                              {
-                                                                  typeof(self) self = weakSelf;
-                                                                  self->actionSheet = nil;
-
-                                                                  [self.delegate roomInputToolbarViewPresentStickerPicker:self];
-                                                              }
-
-                                                          }]];
+            if (BuildSettings.allowSendingStickers)
+            {
+                [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_send_sticker", @"Vector", nil)
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {
+                    
+                    if (weakSelf)
+                    {
+                        typeof(self) self = weakSelf;
+                        self->actionSheet = nil;
+                        
+                        [self.delegate roomInputToolbarViewPresentStickerPicker:self];
+                    }
+                    
+                }]];
+            }
             
             [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_send_file", @"Vector", nil)
                                                             style:UIAlertActionStyleDefault

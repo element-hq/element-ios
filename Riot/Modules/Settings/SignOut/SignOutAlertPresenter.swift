@@ -89,7 +89,7 @@ final class SignOutAlertPresenter: NSObject {
             self.presentNonExistingBackupSignOutConfirmationAlert(animated: true)
         }
         
-        let setUpKeyBackupAction = UIAlertAction(title: VectorL10n.signOutNonExistingKeyBackupAlertSetupKeyBackupAction, style: .default) { (_) in
+        let setUpKeyBackupAction = UIAlertAction(title: VectorL10n.signOutNonExistingKeyBackupAlertSetupSecureBackupAction, style: .default) { (_) in
             self.delegate?.signOutAlertPresenterDidTapBackupAction(self)
         }
         

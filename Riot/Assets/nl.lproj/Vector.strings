@@ -151,7 +151,7 @@
 "contacts_address_book_matrix_users_toggle" = "Alleen Matrix-gebruikers";
 "contacts_address_book_no_contact" = "Geen lokale contacten";
 "contacts_address_book_permission_required" = "Toestemming vereist voor toegang tot de lokale contacten";
-"contacts_address_book_permission_denied" = "U heeft Riot geen toegang tot uw lokale contacten verleend";
+"contacts_address_book_permission_denied" = "U heeft Element geen toegang tot uw lokale contacten verleend";
 // Chat participants
 "room_participants_title" = "Deelnemers";
 "room_participants_add_participant" = "Deelnemer toevoegen";
@@ -229,7 +229,7 @@
 "room_event_action_view_encryption" = "Versleutelingsinformatie";
 "room_warning_about_encryption" = "Eind-tot-eindversleuteling is in bèta en kan onbetrouwbaar zijn.\n\nHet is beter om het nog niet met gevoelige gegevens te vertrouwen.\n\nApparaten kunnen de geschiedenis van vóór ze het gesprek betraden nog niet ontsleutelen.\n\nVersleutelde berichten zullen niet zichtbaar zijn op cliënten die nog geen versleuteling ondersteunen.";
 // Unknown devices
-"unknown_devices_alert_title" = "Gesprek bevat onbekende apparaten";
+"unknown_devices_alert_title" = "Gesprek bevat onbekende sessies";
 "unknown_devices_alert" = "Dit gesprek bevat onbekende apparaten die niet geverifieerd zijn.\nDit betekent dat er geen garantie is dat de apparaten bij de gebruikers horen waarbij ze beweren te horen.\nWe raden u aan om bij elk apparaat door het verificatieproces heen te gaan voordat u verdergaat, maar u kunt het bericht ook zonder verificatie opnieuw versturen.";
 "unknown_devices_send_anyway" = "Alsnog versturen";
 "unknown_devices_call_anyway" = "Alsnog bellen";
@@ -307,11 +307,8 @@
 "settings_version" = "Versie %@";
 "settings_olm_version" = "Olm-versie %@";
 "settings_copyright" = "Copyright";
-"settings_copyright_url" = "https://riot.im/copyright";
 "settings_term_conditions" = "Algemene voorwaarden";
-"settings_term_conditions_url" = "https://riot.im/tac_apple";
 "settings_privacy_policy" = "Privacybeleid";
-"settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Derdepartijmeldingen";
 "settings_send_crash_report" = "Anonieme crash- en gebruiksgegevens versturen";
 "settings_clear_cache" = "Cache verwijderen";
@@ -413,7 +410,7 @@
 // Crash report
 "google_analytics_use_prompt" = "Wilt u helpen met het verbeteren van %@ door anonieme crashrapporten en gebruiksstatistieken te versturen?";
 // Crypto
-"e2e_enabling_on_app_update" = "Riot ondersteunt nu eind-tot-eind-versleuteling, maar u moet zich opnieuw aanmelden om het in te schakelen.\n\nU kunt dit nu of later doen vanuit de app-instellingen.";
+"e2e_enabling_on_app_update" = "Element ondersteunt nu eind-tot-eind-versleuteling, maar u moet zich opnieuw aanmelden om het in te schakelen.\n\nU kunt dit nu of later doen vanuit de app-instellingen.";
 "e2e_need_log_in_again" = "U moet zich opnieuw aanmelden om sleutels voor eind-tot-eind-versleuteling te genereren voor dit apparaat, en om de publieke sleutel naar uw thuisserver te sturen.\nDit is eenmalig; excuses voor het ongemak.";
 // Bug report
 "bug_report_title" = "Foutmelding";
@@ -459,7 +456,7 @@
 "settings_calls_settings" = "OPROEPEN";
 "settings_show_decrypted_content" = "Ontsleutelde inhoud tonen";
 "settings_enable_callkit" = "Geïntegreerde oproepen";
-"settings_callkit_info" = "Ontvang inkomende oproepen op uw toegangsscherm. Geef uw Riot-oproepen weer in de gespreksgeschiedenis van het systeem. Als iCloud ingeschakeld is zal deze geschiedenis met Apple gedeeld worden.";
+"settings_callkit_info" = "Ontvang inkomende oproepen op uw toegangsscherm. Geef uw Element-oproepen weer in de gespreksgeschiedenis van het systeem. Als iCloud ingeschakeld is zal deze geschiedenis met Apple gedeeld worden.";
 "settings_ui_theme" = "Thema";
 "settings_ui_theme_auto" = "Automatisch";
 "settings_ui_theme_light" = "Licht";
@@ -546,7 +543,7 @@
 "deactivate_account_forget_messages_information_part2_emphasize" = "Waarschuwing";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Aanvraag verstuurd";
-"rerequest_keys_alert_message" = "Start Riot op een ander apparaat dat het bericht kan ontsleutelen, zodat het de sleutels kan sturen naar dit apparaat.";
+"rerequest_keys_alert_message" = "Start Element op een ander apparaat dat het bericht kan ontsleutelen, zodat het de sleutels kan sturen naar dit apparaat.";
 "settings_deactivate_my_account" = "Mijn account deactiveren";
 "event_formatter_rerequest_keys_part1_link" = "Versleutelingssleutels opnieuw aanvragen";
 "event_formatter_rerequest_keys_part2" = " van uw andere apparaten.";
@@ -569,7 +566,7 @@
 "room_message_reply_to_short_placeholder" = "Stuur een antwoord…";
 // String for App Store
 "store_short_description" = "Veilig en gedecentraliseerd chatten en bellen";
-"store_full_description" = "Communiceer op uw manier.\n\nEen chat-app, onder uw controle en heel flexibel. Riot laat u communiceren zoals u dat wilt. Gemaakt voor [matrix] - de standaard voor open, gedecentraliseerde communicatie.\n\nMaak een gratis account aan op matrix.org, verkrijg uw eigen server op https://modular.im, of gebruik een andere Matrix-server.\n\nWaarom zou ik voor Riot.im kiezen?\n\n• VOLLEDIGE COMMUNICATIE: maak gesprekken aan rond uw teams, uw vrienden, uw gemeenschap - hoe u maar wilt! Chat, deel bestanden, voeg widgets toe en maak stem- en video-oproepen - allemaal volledig gratis.\n\n• KRACHTIGE INTEGRATIE: gebruik Riot.im met de hulpmiddelen waarmee u vertrouwd bent. Met Riot.im kunt u zelfs chatten met gebruikers en groepen op andere chat-apps.\n\n• PRIVÉ EN VEILIG: houd uw gesprekken geheim. Eind-tot-eind-versleuteling van de bovenste plank zorgt ervoor dat uw privécommunicatie ook privé blijft.\n\n• OPEN, NIET GESLOTEN: vrije software, gebouwd op Matrix. Wees baas over uw eigen gegevens door uw eigen server te gebruiken, of te kiezen voor een andere server die u vertrouwt.\n\n• WAAR U OOK BENT: houd contact waar u ook bent met volledig gesynchroniseerde berichtgeschiedenis op al uw apparaten, en online op https://riot.im.";
+"store_full_description" = "Communiceer op uw manier.\n\nEen chat-app, onder uw controle en heel flexibel. Element laat u communiceren zoals u dat wilt. Gemaakt voor [matrix] - de standaard voor open, gedecentraliseerde communicatie.\n\nMaak een gratis account aan op matrix.org, verkrijg uw eigen server op https://ems.element.io, of gebruik een andere Matrix-server.\n\nWaarom zou ik voor Element kiezen?\n\n• VOLLEDIGE COMMUNICATIE: maak gesprekken aan rond uw teams, uw vrienden, uw gemeenschap - hoe u maar wilt! Chat, deel bestanden, voeg widgets toe en maak stem- en video-oproepen - allemaal volledig gratis.\n\n• KRACHTIGE INTEGRATIE: gebruik Element met de hulpmiddelen waarmee u vertrouwd bent. Met Element kunt u zelfs chatten met gebruikers en groepen op andere chat-apps.\n\n• PRIVÉ EN VEILIG: houd uw gesprekken geheim. Eind-tot-eind-versleuteling van de bovenste plank zorgt ervoor dat uw privécommunicatie ook privé blijft.\n\n• OPEN, NIET GESLOTEN: vrije software, gebouwd op Matrix. Wees baas over uw eigen gegevens door uw eigen server te gebruiken, of te kiezen voor een andere server die u vertrouwt.\n\n• WAAR U OOK BENT: houd contact waar u ook bent met volledig gesynchroniseerde berichtgeschiedenis op al uw apparaten, en online op https://app.element.io.";
 "auth_login_single_sign_on" = "Aanmelden met enkele aanmelding";
 "auth_accept_policies" = "Gelieve het beleid van deze thuisserver te lezen en aanvaarden:";
 "auth_autodiscover_invalid_response" = "Ongeldig thuisserverontdekkingsantwoord";
@@ -855,3 +852,17 @@
 "media_type_accessibility_sticker" = "Sticker";
 // Widget Picker
 "widget_picker_title" = "Integraties";
+"skip" = "Overslaan";
+// Accessibility
+"accessibility_checkbox_label" = "aanvinkvak";
+// MARK: Clients
+"client_desktop_name" = "Element Desktop";
+"client_web_name" = "Element Web";
+"client_ios_name" = "Element iOS";
+"client_android_name" = "Element Android";
+"auth_add_email_message_2" = "Stel een e-mailadres in voor accountherstel en om later optioneel vindbaar te zijn voor mensen die u kennen.";
+"auth_add_phone_message_2" = "Stel een telefoon in om later optioneel vindbaar te zijn voor mensen die u kennen.";
+"auth_add_email_phone_message_2" = "Stel een e-mailadres in voor accountherstel. Gebruik later e-mail of telefoon om optioneel vindbaar te zijn voor mensen die u kennen.";
+"auth_email_is_required" = "Er is geen identiteitsserver geconfigureerd, dus u kunt geen e-mailadres toevoegen om uw wachtwoord in de toekomst opnieuw in te stellen.";
+"auth_phone_is_required" = "Er is geen identiteitsserver geconfigureerd, dus u kunt geen telefoonnummer toevoegen om uw wachtwoord in de toekomst opnieuw in te stellen.";
+"auth_reset_password_error_is_required" = "Geen identiteitsserver ingesteld: voeg er één toe bij server opties om uw wachtwoord te wijzigen.";

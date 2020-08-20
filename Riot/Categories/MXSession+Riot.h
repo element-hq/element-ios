@@ -23,6 +23,29 @@
 /**
  The current number of rooms with missed notifications, including the invites.
  */
-- (NSUInteger)riot_missedDiscussionsCount;
+- (NSUInteger)vc_missedDiscussionsCount;
+
+/**
+ Check if E2E by default is welcomed on the user's HS.
+ The default value is YES.
+ 
+ HS admins can disable it in /.well-known/matrix/client by returning:
+ "im.vector.riot.e2ee": {
+ "default": false
+ }
+ */
+- (BOOL)vc_isE2EByDefaultEnabledByHSAdmin;
+
+/**
+ Riot version of [MXSession canEnableE2EByDefaultInNewRoomWithUsers:]
+ */
+- (MXHTTPOperation*)vc_canEnableE2EByDefaultInNewRoomWithUsers:(NSArray<NSString*>*)userIds
+                                                         success:(void (^)(BOOL canEnableE2E))success
+                                                         failure:(void (^)(NSError *error))failure;
+
+/**
+ Indicate YES if secure key backup can be setup
+ */
+- (BOOL)vc_canSetupSecureBackup;
 
 @end

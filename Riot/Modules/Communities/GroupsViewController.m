@@ -133,6 +133,8 @@
         // Force table refresh
         [self cancelEditionMode:YES];
     }
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -204,7 +206,7 @@
     }];
     
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_groups", @"Vector", nil);
-    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.riotColorBlue;
+    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -557,7 +559,7 @@
     
     plusButtonImageView.backgroundColor = [UIColor clearColor];
     plusButtonImageView.contentMode = UIViewContentModeCenter;
-    plusButtonImageView.image = [UIImage imageNamed:@"create_group"];
+    plusButtonImageView.image = [UIImage imageNamed:@"plus_floating_action"];
     plusButtonImageView.layer.shadowOpacity = 0.3;
     plusButtonImageView.layer.shadowOffset = CGSizeMake(0, 3);
     

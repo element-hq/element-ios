@@ -18,7 +18,7 @@
 #import "AppDelegate.h"
 
 
-// Generic method to make a bridge between JS and the UIWebView
+// Generic method to make a bridge between JS and the WKWebView
 NSString *FallBackViewControllerJavascriptSendObjectMessage = @"window.sendObjectMessage = function(parameters) {   \
     var iframe = document.createElement('iframe');                              \
     iframe.setAttribute('src', 'js:' + JSON.stringify(parameters));             \
@@ -56,6 +56,9 @@ NSString *FallBackViewControllerJavascriptOnLogin = @"window.matrixLogin.onLogin
 {
     [super viewDidLoad];
 
+    // Catch js logs
+    [self enableDebug];
+    
     // Due to https://developers.googleblog.com/2016/08/modernizing-oauth-interactions-in-native-apps.html, we hack
     // the user agent to bypass the limitation of Google, as a quick fix (a proper solution will be to use the SSO SDK)
     webView.customUserAgent = @"Mozilla/5.0";
@@ -154,7 +157,7 @@ NSString *FallBackViewControllerJavascriptOnLogin = @"window.matrixLogin.onLogin
     // `didReceiveScriptMessage` delegate to manage the JS<->Native bridge
     if ([urlString hasPrefix:@"js:"])
     {
-        // Listen only to scheme of the JS-UIWebView bridge
+        // Listen only to scheme of the JS-WKWebView bridge
         NSString *jsonString = [[[urlString componentsSeparatedByString:@"js:"] lastObject]  stringByReplacingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
         NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
 
@@ -199,14 +202,6 @@ NSString *FallBackViewControllerJavascriptOnLogin = @"window.matrixLogin.onLogin
             }
         }
         
-        decisionHandler(WKNavigationActionPolicyCancel);
-        return;
-    }
-
-    if (navigationAction.navigationType == WKNavigationTypeLinkActivated)
-    {
-        // Open links outside the app
-        [[UIApplication sharedApplication] openURL:navigationAction.request.URL options:@{} completionHandler:nil];
         decisionHandler(WKNavigationActionPolicyCancel);
         return;
     }
