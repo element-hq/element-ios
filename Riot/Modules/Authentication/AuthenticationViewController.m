@@ -934,7 +934,7 @@
 
     if (BuildSettings.authScreenShowForgotPassword)
     {
-        showForgotPasswordButton = (self.authType != MXKAuthenticationTypeLogin) || authInputsview.isSingleSignOnRequired;
+        showForgotPasswordButton = (self.authType == MXKAuthenticationTypeLogin) && !authInputsview.isSingleSignOnRequired;
     }
     
     self.forgotPasswordButton.hidden = !showForgotPasswordButton;
