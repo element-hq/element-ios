@@ -665,22 +665,9 @@
 
                             NSString *identityServer = restClient.identityServer;
 
-                            // Create the next link that is common to all Vector.im clients
-                            NSString *nextLink = [NSString stringWithFormat:@"%@/#/register?client_secret=%@&hs_url=%@&session_id=%@",
-                                                  BuildSettings.applicationWebAppUrlString,
-                                                  [self->submittedEmail.clientSecret stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]],
-                                                  [restClient.homeserver stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]],
-                                                  [self->currentSession.session stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]]];
-
-                            if (identityServer)
-                            {
-                                nextLink = [NSString stringWithFormat:@"%@&is_url=%@", nextLink,
-                                            [identityServer stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]]];
-                            }
-
                             [self->submittedEmail requestValidationTokenWithMatrixRestClient:restClient
                                                                   isDuringRegistration:YES
-                                                                              nextLink:nextLink
+                                                                              nextLink:nil
                                                                                success:^
                              {
                                  NSMutableDictionary *threepidCreds = [NSMutableDictionary dictionaryWithDictionary:@{
