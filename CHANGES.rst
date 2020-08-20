@@ -12,6 +12,7 @@ Improvements:
 
 Bugfix:
  * Fix biometry name null case (#3551).
+ * Avoid email validation link to redirect to web app (#3513).
 
 API Change:
  * 
