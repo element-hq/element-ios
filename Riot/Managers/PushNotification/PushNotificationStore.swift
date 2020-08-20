@@ -19,7 +19,7 @@ import KeychainAccess
 import MatrixSDK
 
 @objcMembers
-final class PushNotificationManager: NSObject {
+final class PushNotificationStore: NSObject {
     
     // MARK: - Constants
     
@@ -32,7 +32,7 @@ final class PushNotificationManager: NSObject {
         static let lastCallInvite: String = "lastCallInvite"
     }
     
-    static let shared = PushNotificationManager()
+    static let shared = PushNotificationStore()
     
     /// Store. Defaults to `KeychainStore`
     private let store: KeyValueStore

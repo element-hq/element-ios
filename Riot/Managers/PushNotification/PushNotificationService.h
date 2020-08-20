@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Designated initializer
 /// @param pushNotificationManager Push Notification Manager instance
-- (instancetype)initWithPushNotificationManager:(PushNotificationManager *)pushNotificationManager;
+- (instancetype)initWithPushNotificationStore:(PushNotificationStore *)pushNotificationManager;
 
 /**
  Is push really registered.

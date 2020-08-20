@@ -510,7 +510,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
     self.localAuthenticationService = [[LocalAuthenticationService alloc] initWithPinCodePreferences:[PinCodePreferences shared]];
 
-    self.pushNotificationService = [[PushNotificationService alloc] initWithPushNotificationManager:PushNotificationManager.shared];
+    self.pushNotificationService = [[PushNotificationService alloc] initWithPushNotificationStore:PushNotificationStore.shared];
     self.pushNotificationService.delegate = self;
     
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
@@ -2251,7 +2251,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [PinCodePreferences.shared reset];
     
     //  Reset push notification manager
-    [PushNotificationManager.shared reset];
+    [PushNotificationStore.shared reset];
     
 #ifdef MX_CALL_STACK_ENDPOINT
     // Erase all created certificates and private keys by MXEndpointCallStack

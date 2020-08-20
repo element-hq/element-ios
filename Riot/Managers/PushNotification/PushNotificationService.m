@@ -31,7 +31,7 @@
 
 @property (nonatomic, nullable, copy) void (^registrationForRemoteNotificationsCompletion)(NSError *);
 @property (nonatomic, strong) PKPushRegistry *pushRegistry;
-@property (nonatomic, strong) PushNotificationManager *pushNotificationManager;
+@property (nonatomic, strong) PushNotificationStore *pushNotificationManager;
 
 /// Should PushNotificationService receive VoIP pushes
 @property (nonatomic, assign) BOOL shouldReceiveVoIPPushes;
@@ -40,7 +40,7 @@
 
 @implementation PushNotificationService
 
-- (instancetype)initWithPushNotificationManager:(PushNotificationManager *)pushNotificationManager
+- (instancetype)initWithPushNotificationStore:(PushNotificationStore *)pushNotificationManager
 {
     if (self = [super init])
     {

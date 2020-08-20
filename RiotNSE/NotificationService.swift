@@ -40,7 +40,7 @@ class NotificationService: UNNotificationServiceExtension {
         let url = URL(string: BuildSettings.serverConfigSygnalAPIUrlString)!
         return MXPushGatewayRestClient(pushGateway: url.scheme! + "://" + url.host!, andOnUnrecognizedCertificateBlock: nil)
     }()
-    private var pushNotificationManager: PushNotificationManager = .shared
+    private var pushNotificationManager: PushNotificationStore = .shared
     
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         // Set static application settings
