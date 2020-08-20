@@ -8,6 +8,7 @@ Improvements:
  * Config fixes.
  * Introduce TableViewSections. Refactor RoomSettingsViewController & SettingsViewController.
  * AuthenticationVC: Make forgot password button and phone number text field configurable.
+ * Introduce httpAdditionalHeaders in BuildSettings.
 
 Bugfix:
  * Fix biometry name null case (#3551).
