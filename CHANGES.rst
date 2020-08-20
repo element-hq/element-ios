@@ -13,6 +13,7 @@ Improvements:
 Bugfix:
  * Fix biometry name null case (#3551).
  * Avoid email validation link to redirect to web app (#3513).
+ * Gracefully cancel verification on iOS 13 drag gesture (#3556).
 
 API Change:
  * 
