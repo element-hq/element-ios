@@ -31,7 +31,7 @@
 
 @property (nonatomic, nullable, copy) void (^registrationForRemoteNotificationsCompletion)(NSError *);
 @property (nonatomic, strong) PKPushRegistry *pushRegistry;
-@property (nonatomic, strong) PushNotificationStore *pushNotificationManager;
+@property (nonatomic, strong) PushNotificationStore *pushNotificationStore;
 
 /// Should PushNotificationService receive VoIP pushes
 @property (nonatomic, assign) BOOL shouldReceiveVoIPPushes;
@@ -40,11 +40,11 @@
 
 @implementation PushNotificationService
 
-- (instancetype)initWithPushNotificationStore:(PushNotificationStore *)pushNotificationManager
+- (instancetype)initWithPushNotificationStore:(PushNotificationStore *)pushNotificationStore
 {
     if (self = [super init])
     {
-        self.pushNotificationManager = pushNotificationManager;
+        self.pushNotificationStore = pushNotificationStore;
         _pushRegistry = [[PKPushRegistry alloc] initWithQueue:dispatch_get_main_queue()];
         self.shouldReceiveVoIPPushes = YES;
     }
@@ -117,7 +117,7 @@
 
     _isPushRegistered = YES;
     
-    if (!_pushNotificationManager.pushKitToken)
+    if (!_pushNotificationStore.pushKitToken)
     {
         [self configurePushKit];
     }
@@ -162,7 +162,7 @@
 
 - (void)applicationDidEnterBackground
 {
-    if (_pushNotificationManager.pushKitToken)
+    if (_pushNotificationStore.pushKitToken)
     {
         self.shouldReceiveVoIPPushes = YES;
     }
@@ -172,7 +172,7 @@
 {
     [[UNUserNotificationCenter currentNotificationCenter] removeUnwantedNotifications];
     [[UNUserNotificationCenter currentNotificationCenter] removeCallNotificationsFor:nil];
-    if (_pushNotificationManager.pushKitToken)
+    if (_pushNotificationStore.pushKitToken)
     {
         self.shouldReceiveVoIPPushes = NO;
     }
@@ -184,7 +184,7 @@
 {
     _shouldReceiveVoIPPushes = shouldReceiveVoIPPushes;
     
-    if (_shouldReceiveVoIPPushes && _pushNotificationManager.pushKitToken)
+    if (_shouldReceiveVoIPPushes && _pushNotificationStore.pushKitToken)
     {
         MXSession *session = [AppDelegate theDelegate].mxSessions.firstObject;
         if (session.state >= MXSessionStateStoreDataReady)
@@ -450,7 +450,7 @@
 - (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)pushCredentials forType:(PKPushType)type
 {
     NSLog(@"[PushNotificationService] did update PushKit credentials");
-    _pushNotificationManager.pushKitToken = pushCredentials.token;
+    _pushNotificationStore.pushKitToken = pushCredentials.token;
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive)
     {
         self.shouldReceiveVoIPPushes = NO;
@@ -474,9 +474,9 @@
         if (@available(iOS 13.0, *))
         {
             //  for iOS 13, we'll just report the incoming call in the same runloop. It means we cannot call an async API here.
-            MXEvent *lastCallInvite = _pushNotificationManager.lastCallInvite;
+            MXEvent *lastCallInvite = _pushNotificationStore.lastCallInvite;
             //  remove event
-            _pushNotificationManager.lastCallInvite = nil;
+            _pushNotificationStore.lastCallInvite = nil;
             MXSession *session = [AppDelegate theDelegate].mxSessions.firstObject;
             //  when we have a VoIP push while the application is killed, session.callManager will not be ready yet. Configure it.
             [[AppDelegate theDelegate] configureCallManagerIfRequiredForSession:session];
