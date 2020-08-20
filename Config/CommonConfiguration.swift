@@ -64,6 +64,9 @@ class CommonConfiguration: NSObject, Configurable {
         
         // Use UIKit BackgroundTask for handling background tasks in the SDK
         sdkOptions.backgroundModeHandler = MXUIKitBackgroundModeHandler()
+        
+        // Pass httpAdditionalHeaders to the SDK
+        sdkOptions.httpAdditionalHeaders = BuildSettings.httpAdditionalHeaders
     }
     
     
