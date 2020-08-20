@@ -204,6 +204,8 @@
 
                 if ([self isFlowSupported:kMXLoginFlowTypePassword])
                 {
+                    BOOL showPhoneTextField = BuildSettings.authScreenShowPhoneNumber;
+                    
                     self.passWordTextField.returnKeyType = UIReturnKeyDone;
                     self.phoneTextField.returnKeyType = UIReturnKeyNext;
 
@@ -219,13 +221,27 @@
                                                                  attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
 
                     self.userLoginContainer.hidden = NO;
-                    self.messageLabel.hidden = NO;
-                    self.phoneContainer.hidden = NO;
+                    self.messageLabel.hidden = !showPhoneTextField;
+                    self.phoneContainer.hidden = !showPhoneTextField;
                     self.passwordContainer.hidden = NO;
 
                     self.messageLabelTopConstraint.constant = 59;
-                    self.phoneContainerTopConstraint.constant = 70;
-                    self.passwordContainerTopConstraint.constant = 150;
+                    
+                    CGFloat phoneContainerTopConstraintConstant = 0.0;
+                    CGFloat passwordContainerTopConstraintConstant = 0.0;
+                    
+                    if (showPhoneTextField)
+                    {
+                        phoneContainerTopConstraintConstant = 70;
+                        passwordContainerTopConstraintConstant = 150;
+                    }
+                    else
+                    {
+                        passwordContainerTopConstraintConstant = 50;
+                    }
+                    
+                    self.phoneContainerTopConstraint.constant = phoneContainerTopConstraintConstant;
+                    self.passwordContainerTopConstraint.constant = passwordContainerTopConstraintConstant;
 
                     self.currentLastContainer = self.passwordContainer;
                 }
