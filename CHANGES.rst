@@ -13,6 +13,7 @@ Improvements:
 Bugfix:
  * Fix biometry name null case (#3551).
  * Avoid email validation link to redirect to web app (#3513).
+ * Wait for first sync complete before stopping loading screen (#3336).
 
 API Change:
  * 
