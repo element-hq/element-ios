@@ -94,7 +94,7 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
                 continueLoadData()
             } else {
                 //  show loader
-                self.update(viewState: .loading)
+                self.update(viewState: .secretsRecoveryCheckingAvailability(VectorL10n.deviceVerificationSelfVerifyWaitRecoverSecretsCheckingAvailability))
                 NotificationCenter.default.addObserver(self, selector: #selector(sessionStateChanged), name: .mxSessionStateDidChange, object: session)
             }
         }
