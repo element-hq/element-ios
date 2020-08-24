@@ -174,7 +174,7 @@
 "device_verification_emoji_heart" = "Süda";
 "device_verification_emoji_smiley" = "Smaili";
 "device_verification_emoji_robot" = "Robot";
-"device_verification_emoji_hat" = "Müts";
+"device_verification_emoji_hat" = "Kübar";
 "device_verification_emoji_glasses" = "Prillid";
 "device_verification_emoji_spanner" = "Mutrivõti";
 "device_verification_emoji_santa" = "Jõuluvana";
@@ -205,7 +205,7 @@
 "device_verification_emoji_anchor" = "Ankur";
 "device_verification_emoji_headphones" = "Kõrvaklapid";
 "device_verification_emoji_folder" = "Kaust";
-"device_verification_emoji_pin" = "Knopka";
+"device_verification_emoji_pin" = "Nööpnõel";
 "deactivate_account_forget_messages_information_part2_emphasize" = "Hoiatus";
 "deactivate_account_validate_action" = "Kas eemaldame selle konto kasutusest";
 "deactivate_account_password_alert_title" = "Eemalda konto";
@@ -427,7 +427,7 @@
 "room_participants_leave_prompt_title" = "Lahku jututoast";
 "room_participants_leave_prompt_msg" = "Kas oled kindel, et soovid lahkuda jututoast?";
 "room_participants_remove_prompt_title" = "Kinnitus";
-"room_participants_remove_prompt_msg" = "Kas sa oled kindel, et soovid eemaldada %@ vestlusest?";
+"room_participants_remove_prompt_msg" = "Kas sa oled kindel, et soovid eemaldada %@ sellest vestlusest?";
 "room_participants_remove_third_party_invite_prompt_msg" = "Kas sa oled kindel, et soovid tühistada selle kutse?";
 "room_participants_invite_prompt_title" = "Kinnitus";
 "room_participants_invite_prompt_msg" = "Kas sa oled kindel, et soovid kutsuda %@ vestlusele?";
@@ -901,7 +901,7 @@
 "error_user_already_logged_in" = "Tundub, et sa üritad luua ühendust teise koduserveriga. Kas sa soovid välja logida?";
 "room_participants_action_security_status_complete_security" = "Vormista turvaseadistused lõpuni";
 "room_warning_about_encryption" = "Läbiv krüptimine on veel testimisjärgus ja ei pruugi veel olla täiesti töökindel.\n\nSeadmed ei suuda veel dekrüptida jututoa vestlusajalugu, mis pärineb jututoaga liitumise eelsest ajast.\n\nKrüptitud sõnumid pole loetavad klientides ja seadmetes, kus krüptimine pole veel toetatud.";
-"secure_key_backup_setup_intro_use_security_key_info" = "Loome turvavõti, mida sa peaksid hoidma turvalises kohas, nagu näiteks arvutis salasõnade halduris või vana kooli seifis.";
+"secure_key_backup_setup_intro_use_security_key_info" = "Loome turvavõtme, mida sa peaksid hoidma turvalises kohas, nagu näiteks arvutis salasõnade halduris või vana kooli seifis.";
 "secure_key_backup_setup_intro_use_security_passphrase_title" = "Täiendavaks krüptimiseks kasuta paroolifraasi";
 "key_backup_recover_from_passphrase_info" = "Selleks, et krüptitud sõnumite ajalugu lukust lahti võtta, kasuta oma taastamiseks mõeldud paroolifraasi";
 "key_backup_recover_from_passphrase_passphrase_title" = "Sisesta";
@@ -946,7 +946,7 @@
 "unknown_devices_title" = "Tundmatud sessioonid";
 // Room Title
 "room_title_new_room" = "Uus jututuba";
-"room_title_multiple_active_members" = "%@/%@ aktiivset liiget";
+"room_title_multiple_active_members" = "%@/%@ aktiivset osalejat";
 "room_title_one_active_member" = "%@/%@ aktiivne liige";
 "room_title_invite_members" = "Kutsu jututuppa uusi osalejaid";
 "room_title_members" = "%@ liiget";
