@@ -128,7 +128,9 @@ final class KeyVerificationCoordinatorBridgePresenter: NSObject {
     
     private func present(coordinator keyVerificationCoordinator: KeyVerificationCoordinator, from viewController: UIViewController, animated: Bool) {
         keyVerificationCoordinator.delegate = self
-        viewController.present(keyVerificationCoordinator.toPresentable(), animated: animated, completion: nil)
+        let presentable = keyVerificationCoordinator.toPresentable()
+        presentable.presentationController?.delegate = self
+        viewController.present(presentable, animated: animated, completion: nil)
         keyVerificationCoordinator.start()
         
         self.coordinator = keyVerificationCoordinator
@@ -145,4 +147,14 @@ extension KeyVerificationCoordinatorBridgePresenter: KeyVerificationCoordinatorD
     func keyVerificationCoordinatorDidCancel(_ coordinator: KeyVerificationCoordinatorType) {
         self.delegate?.keyVerificationCoordinatorBridgePresenterDelegateDidCancel(self)
     }
+}
+
+extension KeyVerificationCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
+    
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        if let coordinator = self.coordinator {
+            keyVerificationCoordinatorDidCancel(coordinator)
+        }
+    }
+    
 }
