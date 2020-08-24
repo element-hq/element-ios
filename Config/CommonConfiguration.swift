@@ -67,6 +67,9 @@ class CommonConfiguration: NSObject, Configurable {
         
         // Pass httpAdditionalHeaders to the SDK
         sdkOptions.httpAdditionalHeaders = BuildSettings.httpAdditionalHeaders
+        
+        // Disable key backup on common
+        sdkOptions.enableKeyBackupWhenStartingMXCrypto = false
     }
     
     
