@@ -5,7 +5,7 @@
 To build Element iOS project you need:
 
 - Xcode 11.4+.
-- [cmake](https://gitlab.kitware.com/cmake/cmake), used to build [OLMKit](https://gitlab.matrix.org/matrix-org/olm/tree/master/xcode) dependency.
+- [cmake](https://gitlab.kitware.com/cmake/cmake), used to build [cmark](https://github.com/commonmark/cmark) dependency of [MatrixKit](https://github.com/matrix-org/matrix-ios-kit) pod.
 - [CocoaPods](https://cocoapods.org) 1.9.3. Manages library dependencies for Xcode projects.
 - [bundler](https://bundler.io/) (optional), is also a dependency manager used to manage build tools dependency (CocoaPods, Fastlane).
 
