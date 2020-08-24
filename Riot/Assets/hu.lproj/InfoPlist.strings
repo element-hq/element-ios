@@ -4,3 +4,4 @@
 "NSMicrophoneUsageDescription" = "A mikrofon videók készítéséhez és hívásokhoz lesz használva.";
 "NSContactsUsageDescription" = "Az olyan ismerősök felderítéséhez akik már használják a Matrixot, Elementet el tudja küldeni a címjegyzékben található e-mail címeket és telefonszámokat az általad választott Matrix azonosítási szervernek. Ahol lehetséges a személyes adatok hash-elve lesznek - kérlek ellenőrizd az azonosítási szervered adatvédelmi szabályait.";
 "NSCalendarsUsageDescription" = "Nézd meg a találkozóidat az alkalmazásban.";
+"NSFaceIDUsageDescription" = "Arc felismerés használata az alkalmazás eléréséhez.";
