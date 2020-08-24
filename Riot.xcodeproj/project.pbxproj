@@ -841,13 +841,14 @@
 		EC85D754247C0F5B002C44C9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D753247C0F5B002C44C9 /* Constants.swift */; };
 		EC85D755247C0F84002C44C9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D753247C0F5B002C44C9 /* Constants.swift */; };
 		EC85D757247E700F002C44C9 /* NSEMemoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D756247E700F002C44C9 /* NSEMemoryStore.swift */; };
-		EC9A3EC524E1616900A8CFAE /* PushNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9A3EC424E1616900A8CFAE /* PushNotificationManager.swift */; };
-		EC9A3EC624E1632C00A8CFAE /* PushNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9A3EC424E1616900A8CFAE /* PushNotificationManager.swift */; };
+		EC9A3EC524E1616900A8CFAE /* PushNotificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9A3EC424E1616900A8CFAE /* PushNotificationStore.swift */; };
+		EC9A3EC624E1632C00A8CFAE /* PushNotificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9A3EC424E1616900A8CFAE /* PushNotificationStore.swift */; };
 		EC9A3EC724E1634100A8CFAE /* KeyValueStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA87124C823E700DE9EBF /* KeyValueStore.swift */; };
 		EC9A3EC824E1634800A8CFAE /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA87424C8259700DE9EBF /* KeychainStore.swift */; };
 		ECAE7AE524EC0E01002FA813 /* TableViewSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAE7AE424EC0E01002FA813 /* TableViewSections.swift */; };
 		ECAE7AE724EC15F7002FA813 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAE7AE624EC15F7002FA813 /* Section.swift */; };
 		ECAE7AE924EC1888002FA813 /* Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAE7AE824EC1888002FA813 /* Row.swift */; };
+		ECAE7AEE24EFDD1F002FA813 /* MXSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAE7AED24EFDD1F002FA813 /* MXSessionState.swift */; };
 		ECB101302477CFDB00CF8C11 /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1012C2477CFDB00CF8C11 /* UITableView.swift */; };
 		ECB101312477CFDB00CF8C11 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1012D2477CFDB00CF8C11 /* UILabel.swift */; };
 		ECB101322477CFDB00CF8C11 /* UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1012E2477CFDB00CF8C11 /* UIDevice.swift */; };
@@ -1972,10 +1973,11 @@
 		EC85D750247C0E8F002C44C9 /* UNUserNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNUserNotificationCenter.swift; sourceTree = "<group>"; };
 		EC85D753247C0F5B002C44C9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		EC85D756247E700F002C44C9 /* NSEMemoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSEMemoryStore.swift; sourceTree = "<group>"; };
-		EC9A3EC424E1616900A8CFAE /* PushNotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushNotificationManager.swift; sourceTree = "<group>"; };
+		EC9A3EC424E1616900A8CFAE /* PushNotificationStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushNotificationStore.swift; sourceTree = "<group>"; };
 		ECAE7AE424EC0E01002FA813 /* TableViewSections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewSections.swift; sourceTree = "<group>"; };
 		ECAE7AE624EC15F7002FA813 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		ECAE7AE824EC1888002FA813 /* Row.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Row.swift; sourceTree = "<group>"; };
+		ECAE7AED24EFDD1F002FA813 /* MXSessionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MXSessionState.swift; sourceTree = "<group>"; };
 		ECB1012C2477CFDB00CF8C11 /* UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
 		ECB1012D2477CFDB00CF8C11 /* UILabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		ECB1012E2477CFDB00CF8C11 /* UIDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIDevice.swift; sourceTree = "<group>"; };
@@ -4827,7 +4829,7 @@
 			children = (
 				EC85D73C2477DDD0002C44C9 /* PushNotificationService.h */,
 				EC85D73D2477DDD0002C44C9 /* PushNotificationService.m */,
-				EC9A3EC424E1616900A8CFAE /* PushNotificationManager.swift */,
+				EC9A3EC424E1616900A8CFAE /* PushNotificationStore.swift */,
 			);
 			path = PushNotification;
 			sourceTree = "<group>";
@@ -4964,6 +4966,7 @@
 				B1DCC63322E72C1B00625807 /* UISearchBar.swift */,
 				B11291EB238D704C0077B478 /* FloatingPoint.swift */,
 				32FD757524D2C9BA00BA7B37 /* Bundle.swift */,
+				ECAE7AED24EFDD1F002FA813 /* MXSessionState.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -5705,7 +5708,7 @@
 				EC2B4EF224A1EF34005EB739 /* DataProtectionHelper.swift in Sources */,
 				EC85D7462477E5F7002C44C9 /* NotificationService.swift in Sources */,
 				32FD755424D074C700BA7B37 /* CommonConfiguration.swift in Sources */,
-				EC9A3EC624E1632C00A8CFAE /* PushNotificationManager.swift in Sources */,
+				EC9A3EC624E1632C00A8CFAE /* PushNotificationStore.swift in Sources */,
 				32FD757424D2BEF700BA7B37 /* InfoPlist.swift in Sources */,
 				EC85D752247C0F52002C44C9 /* UNUserNotificationCenter.swift in Sources */,
 				EC9A3EC724E1634100A8CFAE /* KeyValueStore.swift in Sources */,
@@ -5897,6 +5900,7 @@
 				F05927C91FDED836009F2A68 /* MXGroup+Riot.m in Sources */,
 				B1B5594520EF7BD000210D55 /* TableViewCellWithCollectionView.m in Sources */,
 				B1A6C109238828A6002882FD /* SlidingModalPresentationDelegate.swift in Sources */,
+				ECAE7AEE24EFDD1F002FA813 /* MXSessionState.swift in Sources */,
 				32DB557722FDADE50016329E /* ServiceTermsModalCoordinator.swift in Sources */,
 				B185145B24B8C98200EE19EA /* MajorUpdateViewController.swift in Sources */,
 				32DB557922FDADE50016329E /* ServiceTermsModalScreenViewModel.swift in Sources */,
@@ -6168,7 +6172,7 @@
 				EC711BA924A63B58008F830C /* SecureBackupSetupCoordinatorBridgePresenter.swift in Sources */,
 				B1B558C720EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				B1B336C5242B933700F95EC4 /* KeyVerificationSelfVerifyStartViewModel.swift in Sources */,
-				EC9A3EC524E1616900A8CFAE /* PushNotificationManager.swift in Sources */,
+				EC9A3EC524E1616900A8CFAE /* PushNotificationStore.swift in Sources */,
 				B1B558F020EF768F00210D55 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				926FA53F1F4C132000F826C2 /* MXSession+Riot.m in Sources */,
 				EC711B8324A63B37008F830C /* SecretsSetupRecoveryPassphraseCoordinator.swift in Sources */,

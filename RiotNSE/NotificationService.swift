@@ -40,7 +40,7 @@ class NotificationService: UNNotificationServiceExtension {
         let url = URL(string: BuildSettings.serverConfigSygnalAPIUrlString)!
         return MXPushGatewayRestClient(pushGateway: url.scheme! + "://" + url.host!, andOnUnrecognizedCertificateBlock: nil)
     }()
-    private var pushNotificationManager: PushNotificationManager = .shared
+    private var pushNotificationStore: PushNotificationStore = PushNotificationStore()
     
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         // Set static application settings
@@ -549,11 +549,11 @@ class NotificationService: UNNotificationServiceExtension {
     /// Attempts to send trigger a VoIP push for the given event
     /// - Parameter event: The call invite event.
     private func sendVoipPush(forEvent event: MXEvent) {
-        guard let token = pushNotificationManager.pushKitToken else {
+        guard let token = pushNotificationStore.pushKitToken else {
             return
         }
         
-        pushNotificationManager.lastCallInvite = event
+        pushNotificationStore.lastCallInvite = event
         
         let appId = BuildSettings.pushKitAppId
         

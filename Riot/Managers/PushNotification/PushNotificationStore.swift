@@ -19,7 +19,7 @@ import KeychainAccess
 import MatrixSDK
 
 @objcMembers
-final class PushNotificationManager: NSObject {
+final class PushNotificationStore: NSObject {
     
     // MARK: - Constants
     
@@ -31,8 +31,6 @@ final class PushNotificationManager: NSObject {
         static let pushToken: String = "pushtoken"
         static let lastCallInvite: String = "lastCallInvite"
     }
-    
-    static let shared = PushNotificationManager()
     
     /// Store. Defaults to `KeychainStore`
     private let store: KeyValueStore

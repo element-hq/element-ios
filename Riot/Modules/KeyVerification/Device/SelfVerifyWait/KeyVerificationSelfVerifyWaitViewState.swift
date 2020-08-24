@@ -31,6 +31,7 @@ struct KeyVerificationSelfVerifyWaitViewData {
 /// KeyVerificationSelfVerifyWaitViewController view state
 enum KeyVerificationSelfVerifyWaitViewState {
     case loading
+    case secretsRecoveryCheckingAvailability(_ text: String?)
     case loaded(_ viewData: KeyVerificationSelfVerifyWaitViewData)
     case cancelled(MXTransactionCancelCode)
     case cancelledByMe(MXTransactionCancelCode)
