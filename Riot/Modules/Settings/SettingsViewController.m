@@ -93,12 +93,6 @@ enum
     NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX,
     NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX,
     NOTIFICATION_SETTINGS_PIN_UNREAD_INDEX,
-    //NOTIFICATION_SETTINGS_CONTAINING_MY_USER_NAME_INDEX,
-    //NOTIFICATION_SETTINGS_CONTAINING_MY_DISPLAY_NAME_INDEX,
-    //NOTIFICATION_SETTINGS_SENT_TO_ME_INDEX,
-    //NOTIFICATION_SETTINGS_INVITED_TO_ROOM_INDEX,
-    //NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX,
-    //NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX,
 };
 
 enum
@@ -3013,46 +3007,6 @@ TableViewSectionsDelegate>
     newPhoneNumberCountryPicker.showCountryCallingCode = YES;
     [self pushViewController:newPhoneNumberCountryPicker];
 }
-
-//- (void)onRuleUpdate:(id)sender
-//{
-//    MXPushRule* pushRule = nil;
-//    MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
-//    
-//    NSInteger row = ((UIView*)sender).tag;
-//    
-//    if (row == NOTIFICATION_SETTINGS_CONTAINING_MY_DISPLAY_NAME_INDEX)
-//    {
-//        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterContainDisplayNameRuleID];
-//    }
-//    else if (row == NOTIFICATION_SETTINGS_CONTAINING_MY_USER_NAME_INDEX)
-//    {
-//        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterContainUserNameRuleID];
-//    }
-//    else if (row == NOTIFICATION_SETTINGS_SENT_TO_ME_INDEX)
-//    {
-//        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterOneToOneRoomRuleID];
-//    }
-//    else if (row == NOTIFICATION_SETTINGS_INVITED_TO_ROOM_INDEX)
-//    {
-//        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterInviteMeRuleID];
-//    }
-//    else if (row == NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX)
-//    {
-//        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterMemberEventRuleID];
-//    }
-//    else if (row == NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX)
-//    {
-//        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterCallRuleID];
-//    }
-//    
-//    if (pushRule)
-//    {
-//        // toggle the rule
-//        [session.notificationCenter enableRule:pushRule isEnabled:!pushRule.enabled];
-//    }
-//}
-
 
 - (void)onSave:(id)sender
 {

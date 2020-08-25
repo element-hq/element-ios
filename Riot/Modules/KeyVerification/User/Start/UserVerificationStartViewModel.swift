@@ -59,9 +59,6 @@ final class UserVerificationStartViewModel: UserVerificationStartViewModelType {
         self.keyVerificationService = KeyVerificationService()
     }
     
-    deinit {
-    }
-    
     // MARK: - Public
     
     func process(viewAction: UserVerificationStartViewAction) {

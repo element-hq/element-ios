@@ -48,9 +48,6 @@ final class ServiceTermsModalScreenViewModel: ServiceTermsModalScreenViewModelTy
         self.outOfContext = outOfContext
     }
     
-    deinit {
-    }
-    
     // MARK: - Public
     
     func process(viewAction: ServiceTermsModalScreenViewAction) {

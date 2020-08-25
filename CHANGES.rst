@@ -24,7 +24,8 @@ Translations:
  * 
 
 Others:
- * Ignore fastlane/Preview.html 
+ * Ignore fastlane/Preview.html
+ * SonarCloud: Fix some code smells.
 
 Build:
  * 
