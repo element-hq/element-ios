@@ -24,7 +24,7 @@ Translations:
  * 
 
 Others:
- * 
+ * Ignore fastlane/Preview.html 
 
 Build:
  * 
