@@ -36,12 +36,12 @@ If you want to contribute to Element iOS code or translations please refer to th
 
 When you are experiencing an issue on Element iOS, please first search in [GitHub issues](https://github.com/vector-im/element-ios/issues)
 and then in [Element iOS Matrix chat room](https://matrix.to/#/#element-ios:matrix.org).
-If after your research you still have a question, ask at our [Matrix chat room](https://matrix.to/#/#element-ios:matrix.org). Otherwise feel free to create a GitHub issue if you encounter a bug or a crash, by explaining clearly in detail what happened. You can also perform bug reporting (Rageshake) from the Element application by shaking your phone or going to the application settings. This is especially recommended when you encounter a crash.
+If after your research you still have a question, ask at [#element-ios:matrix.org](https://matrix.to/#/#element-ios:matrix.org). Otherwise feel free to create a GitHub issue if you encounter a bug or a crash, by explaining clearly in detail what happened. You can also perform bug reporting (Rageshake) from the Element application by shaking your phone or going to the application settings. This is especially recommended when you encounter a crash.
 
 ## Copyright & License
 
-Copyright (c) 2014-2017 OpenMarket Ltd
-Copyright (c) 2017 Vector Creations Ltd
+Copyright (c) 2014-2017 OpenMarket Ltd  
+Copyright (c) 2017 Vector Creations Ltd  
 Copyright (c) 2017-2020 New Vector Ltd
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this work except in compliance with the License. You may obtain a copy of the License in the [LICENSE](LICENSE) file, or at:
