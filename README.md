@@ -40,7 +40,9 @@ If after your research you still have a question, ask at our [Matrix chat room](
 
 ## Copyright & License
 
-Copyright (c) 2014-2017 OpenMarket Ltd Copyright (c) 2017 Vector Creations Ltd Copyright (c) 2017-2019 New Vector Ltd
+Copyright (c) 2014-2017 OpenMarket Ltd
+Copyright (c) 2017 Vector Creations Ltd
+Copyright (c) 2017-2020 New Vector Ltd
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this work except in compliance with the License. You may obtain a copy of the License in the [LICENSE](LICENSE) file, or at:
 
