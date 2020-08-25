@@ -488,11 +488,7 @@ Matrix session observer used to detect new opened sessions.
             
             if ([lastCallInvite.eventId isEqualToString:eventId])
             {
-                SEL handleCallInvite = NSSelectorFromString(@"handleCallInvite:");
-                if ([session.callManager respondsToSelector:handleCallInvite])
-                {
-                    [session.callManager performSelector:handleCallInvite withObject:lastCallInvite];
-                }
+                [session.callManager handleCallEvent:lastCallInvite];
                 MXCall *call = [session.callManager callWithCallId:lastCallInvite.content[@"call_id"]];
                 if (call)
                 {
