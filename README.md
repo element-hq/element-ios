@@ -22,7 +22,7 @@ Element iOS is an iOS [Matrix](https://matrix.org/) client provided by [Element]
 
 ## Beta testing 
 
-You can try last beta build by accessing our [TestFlight Public Link](https://testflight.apple.com/join/lCeTuDKM). For questions and feedback about latest TestFlight build, please access the [Element iOS Matrix room](#element-ios:matrix.org).
+You can try last beta build by accessing our [TestFlight Public Link](https://testflight.apple.com/join/lCeTuDKM). For questions and feedback about latest TestFlight build, please access the [Element iOS Matrix room](https://matrix.to/#/#element-ios:matrix.org).
 
 ## Build instructions
 
@@ -35,8 +35,8 @@ If you want to contribute to Element iOS code or translations please refer to th
 ## Support
 
 When you are experiencing an issue on Element iOS, please first search in [GitHub issues](https://github.com/vector-im/element-ios/issues)
-and then in [Element iOS Matrix chat room](#element-ios:matrix.org).
-If after your research you still have a question, ask at our [Matrix chat room](#element-ios:matrix.org). Otherwise feel free to create a GitHub issue if you encounter a bug or a crash, by explaining clearly in detail what happened. You can also perform bug reporting (Rageshake) from the Element application by shaking your phone or going to the application settings. This is especially recommended when you encounter a crash.
+and then in [Element iOS Matrix chat room](https://matrix.to/#/#element-ios:matrix.org).
+If after your research you still have a question, ask at our [Matrix chat room](https://matrix.to/#/#element-ios:matrix.org). Otherwise feel free to create a GitHub issue if you encounter a bug or a crash, by explaining clearly in detail what happened. You can also perform bug reporting (Rageshake) from the Element application by shaking your phone or going to the application settings. This is especially recommended when you encounter a crash.
 
 ## Copyright & License
 

@@ -9,7 +9,7 @@ Please read Synapse [contributing guide](https://github.com/matrix-org/synapse/b
 If you want to fix an issue for an English string, please submit a pull request to the Element iOS GitHub repository.
 If you want to fix an issue for another language, add a missing translation, or  add a new language, please read [Element Web translating guide](https://github.com/vector-im/element-web/blob/develop/docs/translating.md) first and then use the Element iOS [Weblate](https://translate.riot.im/projects/riot-ios/).
 
-If you have any question regarding translations please ask in [Element Translation room](#element-translations:matrix.org).
+If you have any question regarding translations please ask in [Element Translation room](https://matrix.to/#/#element-translations:matrix.org).
 
 ## Setting up a development environment
 
