@@ -5,10 +5,17 @@
 To build Element iOS project you need:
 
 - Xcode 11.4+.
+- [Ruby](https://www.ruby-lang.org/), a dynamic programming language used by several build tools.
 - [cmake](https://gitlab.kitware.com/cmake/cmake), used to build [cmark](https://github.com/commonmark/cmark) dependency of [MatrixKit](https://github.com/matrix-org/matrix-ios-kit) pod.
 - [CocoaPods](https://cocoapods.org) 1.9.3. Manages library dependencies for Xcode projects.
 - [Homebrew](http://brew.sh/) (recommended), is a package manager for macOS that can be used to install cmake.
 - [bundler](https://bundler.io/) (optional), is also a dependency manager used to manage build tools dependency (CocoaPods, Fastlane).
+
+### Install Ruby
+
+Ruby is required for several build tools like CocoaPods, bundler and fastlane. Ruby is preinstalled on macOS, the system version is sufficient to build the porject tools, it's not required to install the latest version. If you want to install the lastest version of Ruby please check [official instructions](https://www.ruby-lang.org/en/documentation/installation/#homebrew).
+
+If you do not want to grant the ruby package manager, [RubyGems](https://rubygems.org/), admin privileges and you prefer install gems into your user directory, you can read instructions from the CocoaPods [guide about sudo-less installation](https://guides.cocoapods.org/using/getting-started.html#sudo-less-installation).
 
 ### Install cmake
 
@@ -21,11 +28,13 @@ brew install cmake
 
 ### Install CocoaPods
 
-If you want to install CocoaPods into your user directory and using it in sudo-less mode you can read this official guide [here](https://guides.cocoapods.org/using/getting-started.html#sudo-less-installation).
+To install CocoaPods you can grab the right version by using `bundler` (recommended) or you can directly install it with RubyGems:
 
 ```
 gem install cocoapods
 ```
+
+In the last case please ensure that you are using the same version as indicated at the end of the `Podfile.lock` file.
 
 ### Install bundler (optional)
 
