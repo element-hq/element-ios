@@ -7,11 +7,13 @@ To build Element iOS project you need:
 - Xcode 11.4+.
 - [cmake](https://gitlab.kitware.com/cmake/cmake), used to build [cmark](https://github.com/commonmark/cmark) dependency of [MatrixKit](https://github.com/matrix-org/matrix-ios-kit) pod.
 - [CocoaPods](https://cocoapods.org) 1.9.3. Manages library dependencies for Xcode projects.
+- [Homebrew](http://brew.sh/) (recommended), is a package manager for macOS that can be used to install cmake.
 - [bundler](https://bundler.io/) (optional), is also a dependency manager used to manage build tools dependency (CocoaPods, Fastlane).
 
 ### Install cmake
 
-You can install cmake using [Homebrew](http://brew.sh/):
+There are several ways to install cmake, downloading binary from [official website](https://cmake.org/download/) or using a package manager like [MacPorts](https://ports.macports.org/port/cmake/summary) or [Homebrew](http://brew.sh/).
+To keep it up to date, we recommend you to install cmake using [Homebrew](http://brew.sh/):
 
 ```
 brew install cmake
@@ -26,6 +28,8 @@ gem install cocoapods
 ```
 
 ### Install bundler (optional)
+
+By using `bundler` you will ensure to use the right versions of build tools used to build and deliver the project. You can find dependency definitions in the `Gemfile`. To install `bundler`:
 
 ```
 gem install bundler
