@@ -792,8 +792,8 @@
         // Refresh here the preview header according to the coming screen orientation.
         
         // Retrieve the affine transform indicating the amount of rotation being applied to the interface.
-        // This transform is the identity transform when no rotation is applied;
-        // otherwise, it is a transform that applies a 90 degree, -90 degree, or 180 degree rotation.
+        // This transform is the identity transform when no rotation is applied.
+        // Otherwise, it is a transform that applies a 90 degree, -90 degree, or 180 degree rotation.
         CGAffineTransform transform = coordinator.targetTransform;
         
         // Consider here only the transform that applies a +/- 90 degree.

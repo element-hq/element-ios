@@ -74,7 +74,7 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 
 /**
  Let the AppDelegate handle and display self verification requests.
- Default is YES;
+ Default is YES.
  */
 @property (nonatomic) BOOL handleSelfVerificationRequest;
 

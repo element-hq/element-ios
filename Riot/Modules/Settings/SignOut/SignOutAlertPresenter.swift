@@ -72,7 +72,7 @@ final class SignOutAlertPresenter: NSObject {
             self.delegate?.signOutAlertPresenterDidTapSignOutAction(self)
         }
         
-        let cancelAction = UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: VectorL10n.cancel, style: .cancel)
         
         alertContoller.addAction(signoutAction)
         alertContoller.addAction(cancelAction)
@@ -93,7 +93,7 @@ final class SignOutAlertPresenter: NSObject {
             self.delegate?.signOutAlertPresenterDidTapBackupAction(self)
         }
         
-        let cancelAction = UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: VectorL10n.cancel, style: .cancel)
         
         alertContoller.addAction(doNotWantKeyBackupAction)
         alertContoller.addAction(setUpKeyBackupAction)
@@ -130,7 +130,7 @@ final class SignOutAlertPresenter: NSObject {
             self.delegate?.signOutAlertPresenterDidTapSignOutAction(self)
         }
         
-        let cancelAction = UIAlertAction(title: VectorL10n.signOutKeyBackupInProgressAlertCancelAction, style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: VectorL10n.signOutKeyBackupInProgressAlertCancelAction, style: .cancel)
         
         alertContoller.addAction(discardKeyBackupAction)
         alertContoller.addAction(cancelAction)

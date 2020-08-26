@@ -213,10 +213,12 @@ static const NSString *kJitsiDataErrorKey = @"error";
 
 - (void)conferenceWillJoin:(NSDictionary *)data
 {
+    // Nothing to do
 }
 
 - (void)conferenceJoined:(NSDictionary *)data
 {
+    // Nothing to do
 }
 
 - (void)conferenceTerminated:(NSDictionary *)data
