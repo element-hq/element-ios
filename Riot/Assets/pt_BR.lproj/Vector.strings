@@ -166,7 +166,7 @@
 "room_participants_remove_third_party_invite_msg" = "Remover convite de terceiros ainda não é suportado até que a API exista";
 "room_participants_invite_prompt_title" = "Confirmação";
 "room_participants_invite_prompt_msg" = "Tem certeza de que deseja convidar %@ para este chat?";
-"room_participants_filter_room_members" = "Filtrar membros da sala";
+"room_participants_filter_room_members" = "Pesquisar participantes da sala";
 "room_participants_invite_another_user" = "Pesquisar / convidar por ID de usuário, nome e sobrenome ou e-mail";
 "room_participants_invite_malformed_id_title" = "Erro no Convite";
 "room_participants_invited_section" = "CONVIDADO";
@@ -187,7 +187,7 @@
 "room_participants_action_unban" = "Remover banimento";
 "room_participants_action_ignore" = "Esconder todas as mensagens deste usuário";
 "room_participants_action_unignore" = "Mostrar todas as mensagens deste usuário";
-"room_participants_invite_malformed_id" = "ID mal formatado. Precisa ser um endereço de e-mail ou um ID Matrix, como '@membrolocal:dominio'";
+"room_participants_invite_malformed_id" = "ID mal formatado. Precisa ser um endereço de e-mail ou um ID Matrix, como '@participantelocal:dominio'";
 "room_participants_action_set_default_power_level" = "Redefinir para usuário normal";
 "room_participants_action_set_moderator" = "Faça moderador";
 "room_participants_action_set_admin" = "Faça administrador";
@@ -263,11 +263,11 @@
 "unknown_devices_title" = "Sessões desconhecidas";
 // Room Title
 "room_title_new_room" = "Nova sala";
-"room_title_multiple_active_members" = "%@/%@ membros ativos";
-"room_title_one_active_member" = "%@/%@ membro ativo";
-"room_title_invite_members" = "Convidar membros";
-"room_title_members" = "%@ membros";
-"room_title_one_member" = "1 membro";
+"room_title_multiple_active_members" = "%@/%@ participantes ativos";
+"room_title_one_active_member" = "%@/%@ participante ativo";
+"room_title_invite_members" = "Convidar participantes";
+"room_title_members" = "%@ participantes";
+"room_title_one_member" = "1 participante";
 // Room Preview
 "room_preview_invitation_format" = "Você foi convidado a participar desta sala por %@";
 "unknown_devices_alert" = "Esta sala contém sessões desconhecidas que não foram confirmadas.↵\nIsso significa que não há garantia de que as sessões pertençam aos usuários em questão.↵\nRecomendamos que você passe pelo processo de confirmação de cada sessão antes de continuar, mas você pode reenviar a mensagem sem confirmar, se preferir.";
@@ -348,7 +348,7 @@
 "settings_third_party_notices" = "Avisos de terceiros";
 "settings_send_crash_report" = "Enviar dados de falha e uso anônimos";
 "settings_enable_rageshake" = "Agite rapidamente para relatar um erro";
-"settings_clear_cache" = "Limpar cache";
+"settings_clear_cache" = "Limpar cache e recarregar";
 "settings_change_password" = "Alterar senha";
 "settings_old_password" = "senha antiga";
 "settings_new_password" = "senha nova";
@@ -361,7 +361,7 @@
 "settings_crypto_export" = "Chaves de exportação";
 "settings_crypto_blacklist_unverified_devices" = "Criptografar apenas para sessões confirmadas";
 "settings_deactivate_my_account" = "Desativar minha conta";
-"room_details_people" = "Membros";
+"room_details_people" = "Participantes";
 "room_details_files" = "Arquivos";
 "room_details_settings" = "Configurações";
 "room_details_photo" = "Imagem da Sala";
@@ -379,9 +379,9 @@
 "room_details_access_section_directory_toggle" = "Listar esta sala no diretório de salas";
 "room_details_history_section" = "Quem pode ler o histórico?";
 "room_details_history_section_anyone" = "Qualquer um";
-"room_details_history_section_members_only" = "Apenas membros (desde o momento em que selecionamos esta opção)";
-"room_details_history_section_members_only_since_invited" = "Apenas membros (desde que foram convidados)";
-"room_details_history_section_members_only_since_joined" = "Apenas membros (desde que aderiram)";
+"room_details_history_section_members_only" = "Apenas participantes (desde o momento em que selecionamos esta opção)";
+"room_details_history_section_members_only_since_invited" = "Apenas participantes (desde que foram convidados)";
+"room_details_history_section_members_only_since_joined" = "Apenas participantes (desde que aderiram)";
 "room_details_history_section_prompt_title" = "Alerta de privacidade";
 "room_details_history_section_prompt_msg" = "Alterações em quem pode ler o histórico de conversas aplica-se apenas para mensagens futuras nesta sala. A visibilidade do histórico existente não será alterada.";
 "room_details_addresses_section" = "Endereços";
@@ -429,8 +429,8 @@
 "group_details_people" = "Pessoas";
 "group_details_rooms" = "Salas";
 // Group Home
-"group_home_one_member_format" = "1 membro";
-"group_home_multi_members_format" = "%tu membros";
+"group_home_one_member_format" = "1 participante";
+"group_home_multi_members_format" = "%tu participantes";
 "group_home_one_room_format" = "1 sala";
 "group_home_multi_rooms_format" = "%tu salas";
 "group_invitation_format" = "%@ convidou você para participar desta comunidade";
@@ -442,7 +442,7 @@
 "group_participants_remove_prompt_msg" = "Tem certeza de que deseja remover %@ desta comunidade?";
 "group_participants_invite_prompt_title" = "Confirmação";
 "group_participants_invite_prompt_msg" = "Tem certeza de que deseja convidar %@ para esta comunidade?";
-"group_participants_filter_members" = "Filtrar membros da comunidade";
+"group_participants_filter_members" = "Pesquisar participantes da comunidade";
 "group_participants_invite_another_user" = "Pesquisar / convidar por ID de usuário ou nome e sobrenome";
 "group_participants_invite_malformed_id_title" = "Erro ao convidar";
 "group_participants_invite_malformed_id" = "ID malformado. Deve ser um ID da Matrix como \"@localpart:domain\"";
@@ -776,7 +776,7 @@
 "auth_email_is_required" = "Nenhum servidor de identidade está configurado, portanto você não pode adicionar um endereço de e-mail para redefinir sua senha no futuro.";
 "auth_softlogout_clear_data_message_1" = "Atenção: seus dados pessoais (incluindo chaves de criptografia) ainda estão armazenados neste aparelho.";
 "auth_softlogout_clear_data_sign_out" = "Sair";
-"room_creation_error_invite_user_by_email_without_identity_server" = "Nenhum servidor de identidade está configurado, portanto você não pode adicionar um membro com um e-mail.";
+"room_creation_error_invite_user_by_email_without_identity_server" = "Nenhum servidor de identidade está configurado, portanto você não pode adicionar participantes com um e-mail.";
 "room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Nenhum servidor de identidade está configurado, portanto você não pode iniciar uma conversa com um contato usando um e-mail.";
 "room_participants_action_security_status_warning" = "Atenção";
 "settings_three_pids_management_information_part1" = "Gerencie quais endereços de e-mail ou números de telefone você pode usar para fazer login ou recuperar sua conta aqui. Controle quem pode encontrar você em· ";
