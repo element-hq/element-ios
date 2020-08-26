@@ -1,10 +1,11 @@
-Changes to be released in next version
+Changes in 1.0.6 (2020-08-26)
 =================================================
 
 Features:
  * 
 
 Improvements:
+ * Upgrade MatrixKit version ([v0.12.15](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.15)).
  * Config fixes.
  * Introduce TableViewSections. Refactor RoomSettingsViewController & SettingsViewController.
  * AuthenticationVC: Make forgot password button and phone number text field configurable.
