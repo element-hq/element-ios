@@ -64,7 +64,7 @@ final class SingleImagePickerPresenter: NSObject {
             self.presentPhotoLibray(sourceView: sourceView, sourceRect: sourceRect, animated: animated)
         })
         
-        let cancelAction = UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: VectorL10n.cancel, style: .cancel)
         
         alert.addAction(cameraAction)
         alert.addAction(photoLibraryAction)
