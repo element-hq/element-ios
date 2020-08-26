@@ -204,6 +204,8 @@
 
                 if ([self isFlowSupported:kMXLoginFlowTypePassword])
                 {
+                    BOOL showPhoneTextField = BuildSettings.authScreenShowPhoneNumber;
+                    
                     self.passWordTextField.returnKeyType = UIReturnKeyDone;
                     self.phoneTextField.returnKeyType = UIReturnKeyNext;
 
@@ -219,13 +221,27 @@
                                                                  attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
 
                     self.userLoginContainer.hidden = NO;
-                    self.messageLabel.hidden = NO;
-                    self.phoneContainer.hidden = NO;
+                    self.messageLabel.hidden = !showPhoneTextField;
+                    self.phoneContainer.hidden = !showPhoneTextField;
                     self.passwordContainer.hidden = NO;
 
                     self.messageLabelTopConstraint.constant = 59;
-                    self.phoneContainerTopConstraint.constant = 70;
-                    self.passwordContainerTopConstraint.constant = 150;
+                    
+                    CGFloat phoneContainerTopConstraintConstant = 0.0;
+                    CGFloat passwordContainerTopConstraintConstant = 0.0;
+                    
+                    if (showPhoneTextField)
+                    {
+                        phoneContainerTopConstraintConstant = 70;
+                        passwordContainerTopConstraintConstant = 150;
+                    }
+                    else
+                    {
+                        passwordContainerTopConstraintConstant = 50;
+                    }
+                    
+                    self.phoneContainerTopConstraint.constant = phoneContainerTopConstraintConstant;
+                    self.passwordContainerTopConstraint.constant = passwordContainerTopConstraintConstant;
 
                     self.currentLastContainer = self.passwordContainer;
                 }
@@ -649,22 +665,9 @@
 
                             NSString *identityServer = restClient.identityServer;
 
-                            // Create the next link that is common to all Vector.im clients
-                            NSString *nextLink = [NSString stringWithFormat:@"%@/#/register?client_secret=%@&hs_url=%@&session_id=%@",
-                                                  BuildSettings.applicationWebAppUrlString,
-                                                  [self->submittedEmail.clientSecret stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]],
-                                                  [restClient.homeserver stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]],
-                                                  [self->currentSession.session stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]]];
-
-                            if (identityServer)
-                            {
-                                nextLink = [NSString stringWithFormat:@"%@&is_url=%@", nextLink,
-                                            [identityServer stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]]];
-                            }
-
                             [self->submittedEmail requestValidationTokenWithMatrixRestClient:restClient
                                                                   isDuringRegistration:YES
-                                                                              nextLink:nextLink
+                                                                              nextLink:nil
                                                                                success:^
                              {
                                  NSMutableDictionary *threepidCreds = [NSMutableDictionary dictionaryWithDictionary:@{

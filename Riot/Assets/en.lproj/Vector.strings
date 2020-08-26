@@ -1121,6 +1121,7 @@
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Use Recovery Key";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Use Recovery Passphrase or Key";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "If you can't accessing an existing session";
+"device_verification_self_verify_wait_recover_secrets_checking_availability" = "Checking for other verification capabilities ...";
 
 // MARK: Verify
 

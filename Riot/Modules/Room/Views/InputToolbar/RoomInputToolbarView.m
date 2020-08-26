@@ -248,14 +248,6 @@
 
 #pragma mark - HPGrowingTextView delegate
 
-//- (BOOL)growingTextViewShouldReturn:(HPGrowingTextView *)hpGrowingTextView
-//{
-//    // The return sends the message rather than giving a carriage return.
-//    [self onTouchUpInside:self.rightInputToolbarButton];
-//    
-//    return NO;
-//}
-
 - (void)growingTextViewDidChange:(HPGrowingTextView *)hpGrowingTextView
 {
     // Clean the carriage return added on return press

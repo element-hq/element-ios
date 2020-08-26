@@ -1,1 +1,0 @@
-messaging,collaboration,messenger,chat,secure,open,private,E2EE,decentralised,encrypted,self-host

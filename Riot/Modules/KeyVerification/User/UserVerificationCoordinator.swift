@@ -134,8 +134,7 @@ final class UserVerificationCoordinator: NSObject, UserVerificationCoordinatorTy
                                       message: VectorL10n.keyVerificationBootstrapNotSetupMessage,
                                       preferredStyle: .alert)
         
-        let cancelAction = UIAlertAction(title: Bundle.mxk_localizedString(forKey: "ok"), style: .cancel, handler: { _ in
-        })
+        let cancelAction = UIAlertAction(title: Bundle.mxk_localizedString(forKey: "ok"), style: .cancel)
         alert.addAction(cancelAction)
         
         self.presenter.toPresentable().present(alert, animated: true, completion: nil)        

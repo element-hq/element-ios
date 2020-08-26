@@ -45,9 +45,6 @@ final class DeviceVerificationStartViewModel: DeviceVerificationStartViewModelTy
         self.otherDevice = otherDevice
     }
     
-    deinit {
-    }
-    
     // MARK: - Public
     
     func process(viewAction: DeviceVerificationStartViewAction) {

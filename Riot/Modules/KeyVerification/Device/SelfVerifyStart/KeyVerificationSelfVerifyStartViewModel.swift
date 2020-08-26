@@ -45,9 +45,6 @@ final class KeyVerificationSelfVerifyStartViewModel: KeyVerificationSelfVerifySt
         self.keyVerificationService = KeyVerificationService()
     }
     
-    deinit {
-    }
-    
     // MARK: - Public
     
     func process(viewAction: KeyVerificationSelfVerifyStartViewAction) {
