@@ -457,7 +457,7 @@ Matrix session observer used to detect new opened sessions.
 
 - (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type withCompletionHandler:(void (^)(void))completion
 {
-    NSLog(@"[PushNotificationService] did receive PushKit push with payload: %@", payload.dictionaryPayload);
+    NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: %@", payload.dictionaryPayload);
     
     NSString *roomId = payload.dictionaryPayload[@"room_id"];
     NSString *eventId = payload.dictionaryPayload[@"event_id"];
@@ -467,7 +467,7 @@ Matrix session observer used to detect new opened sessions.
     
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
     {
-        NSLog(@"[PushNotificationService] application is in bg");
+        NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: application is in bg");
         
         if (@available(iOS 13.0, *))
         {
@@ -484,30 +484,26 @@ Matrix session observer used to detect new opened sessions.
                 [session decryptEvent:lastCallInvite inTimeline:nil];
             }
             
-            NSLog(@"[PushNotificationService] lastCallInvite: %@", lastCallInvite);
+            NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: lastCallInvite: %@", lastCallInvite);
             
             if ([lastCallInvite.eventId isEqualToString:eventId])
             {
-                SEL handleCallInvite = NSSelectorFromString(@"handleCallInvite:");
-                if ([session.callManager respondsToSelector:handleCallInvite])
-                {
-                    [session.callManager performSelector:handleCallInvite withObject:lastCallInvite];
-                }
+                [session.callManager handleCallEvent:lastCallInvite];
                 MXCall *call = [session.callManager callWithCallId:lastCallInvite.content[@"call_id"]];
                 if (call)
                 {
                     [session.callManager.callKitAdapter reportIncomingCall:call];
-                    NSLog(@"[PushNotificationService] Reporting new call in room %@ for the event: %@", roomId, eventId);
+                    NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Reporting new call in room %@ for the event: %@", roomId, eventId);
                 }
                 else
                 {
-                    NSLog(@"[PushNotificationService] Error on call object on room %@ for the event: %@", roomId, eventId);
+                    NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Error on call object on room %@ for the event: %@", roomId, eventId);
                 }
             }
             else
             {
                 //  It's a serious error. There is nothing to avoid iOS to kill us here.
-                NSLog(@"[PushNotificationService] iOS 13 and in bg, but we don't have the last callInvite event for the event %@. There is something wrong.", eventId);
+                NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: iOS 13 and in bg, but we don't have the last callInvite event for the event %@. There is something wrong.", eventId);
             }
         }
         else
@@ -518,7 +514,7 @@ Matrix session observer used to detect new opened sessions.
     }
     else
     {
-        NSLog(@"[PushNotificationService] application is not in bg. There is something wrong.");
+        NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: application is not in bg. There is something wrong.");
     }
     
     completion();
