@@ -114,11 +114,6 @@
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 }
 
-- (void)dealloc
-{
-    
-}
-
 - (void)destroy
 {
     [super destroy];

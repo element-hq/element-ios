@@ -929,8 +929,15 @@
     {
         authInputsview = (AuthInputsView*)self.authInputsView;
     }
+    
+    BOOL showForgotPasswordButton = NO;
 
-    self.forgotPasswordButton.hidden = (self.authType != MXKAuthenticationTypeLogin) || authInputsview.isSingleSignOnRequired;
+    if (BuildSettings.authScreenShowForgotPassword)
+    {
+        showForgotPasswordButton = (self.authType == MXKAuthenticationTypeLogin) && !authInputsview.isSingleSignOnRequired;
+    }
+    
+    self.forgotPasswordButton.hidden = !showForgotPasswordButton;
     
     // Adjust minimum leading constraint of the submit button
     if (self.forgotPasswordButton.isHidden)

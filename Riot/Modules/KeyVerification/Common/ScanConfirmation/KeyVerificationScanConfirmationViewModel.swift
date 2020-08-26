@@ -53,9 +53,6 @@ final class KeyVerificationScanConfirmationViewModel: KeyVerificationScanConfirm
         self.verificationKind = verificationKind
     }
     
-    deinit {
-    }
-    
     // MARK: - Public
     
     func process(viewAction: KeyVerificationScanConfirmationViewAction) {

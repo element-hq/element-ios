@@ -221,10 +221,6 @@
     [super viewWillDisappear:animated];
 }
 
-- (void)dealloc
-{
-}
-
 #pragma mark - override MXKViewController
 
 - (void)destroy
@@ -366,7 +362,7 @@
 {
     // Detect if we should display the prompt to fallback to the STUN server defined
     // in the app plist if the homeserver does not provide STUN or TURN servers.
-    // We should if the call ends while we were in connecting state
+    // We should display it if the call ends while we were in connecting state
     if (!self.mainSession.callManager.turnServers
         && !self.mainSession.callManager.fallbackSTUNServer
         && !RiotSettings.shared.isAllowStunServerFallbackHasBeenSetOnce)
@@ -388,6 +384,7 @@
                 }
 
             default:
+                // There is nothing to do for other states
                 break;
         }
     }

@@ -30,8 +30,7 @@ final class CameraAccessAlertPresenter {
         let alert = UIAlertController(title: VectorL10n.camera, message: VectorL10n.cameraAccessNotGranted(appDisplayName), preferredStyle: .alert)
         
         let cancelActionTitle = Bundle.mxk_localizedString(forKey: "ok")
-        let cancelAction = UIAlertAction(title: cancelActionTitle, style: .cancel, handler: { _ in
-        })
+        let cancelAction = UIAlertAction(title: cancelActionTitle, style: .cancel)
         
         let settingsActionTitle = Bundle.mxk_localizedString(forKey: "settings")
         let settingsAction = UIAlertAction(title: settingsActionTitle, style: .default, handler: { _ in
