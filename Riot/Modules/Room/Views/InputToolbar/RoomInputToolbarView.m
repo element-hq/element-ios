@@ -92,6 +92,11 @@
     growingTextView.tintColor = ThemeService.shared.theme.tintColor;
     
     growingTextView.internalTextView.keyboardAppearance = ThemeService.shared.theme.keyboardAppearance;
+    if (growingTextView.isFirstResponder)
+    {
+        [growingTextView resignFirstResponder];
+        [growingTextView becomeFirstResponder];
+    }
 
     self.attachMediaButton.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_upload", @"Vector", nil);
     self.voiceCallButton.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_call", @"Vector", nil);

@@ -472,6 +472,8 @@
         mainNavigationController.navigationBar.translucent = YES;
     }
     
+    [self.inputToolbarView customizeViewRendering];
+    
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     // Prepare jump to last unread banner
