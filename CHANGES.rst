@@ -8,7 +8,8 @@ Improvements:
  * 
 
 Bugfix:
- * Explicitly remove PushKit pushers (#3577). 
+ * Update room input toolbar on theme change (#3445).
+ * Explicitly remove PushKit pushers (#3577).
 
 API Change:
  * 
