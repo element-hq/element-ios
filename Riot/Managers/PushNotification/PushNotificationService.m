@@ -104,14 +104,32 @@ Matrix session observer used to detect new opened sessions.
 {
     MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
     [accountManager setApnsDeviceToken:deviceToken];
-    //  remove PushKit pusher if exists
+    
+    //  remove PushKit pusher
+    if (!accountManager.pushDeviceToken)
+    {
+        //  If we don't have the pushDeviceToken, we may have migrated it into the shared user defaults.
+        NSString *pushDeviceToken = [MXKAppSettings.standardAppSettings.sharedUserDefaults objectForKey:@"pushDeviceToken"];
+        if (pushDeviceToken)
+        {
+            //  Set the token in standard user defaults, as MXKAccount will read it from there when removing the pusher.
+            [[NSUserDefaults standardUserDefaults] setObject:pushDeviceToken forKey:@"pushDeviceToken"];
+        }
+    }
+    
+    //  if we already have pushDeviceToken or recovered it in above step
     if (accountManager.pushDeviceToken)
     {
-        [accountManager setPushDeviceToken:nil withPushOptions:nil];
+        //  Attempt to remove PushKit pushers explicitly
+        [[accountManager accounts] enumerateObjectsUsingBlock:^(MXKAccount * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [obj enablePushKitNotifications:NO success:^{
+                [MXKAppSettings.standardAppSettings.sharedUserDefaults removeObjectForKey:@"pushDeviceToken"];
+                [MXKAppSettings.standardAppSettings.sharedUserDefaults removeObjectForKey:@"pushOptions"];
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pushDeviceToken"];
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pushOptions"];
+            } failure:nil];
+        }];
     }
-    // Sanity check: Make sure the Pushkit push token is deleted
-    NSParameterAssert(!accountManager.isPushAvailable);
-    NSParameterAssert(!accountManager.pushDeviceToken);
 
     _isPushRegistered = YES;
     
