@@ -8,7 +8,7 @@ Improvements:
  * 
 
 Bugfix:
- * 
+ * Explicitly remove PushKit pushers (#3577). 
 
 API Change:
  * 
