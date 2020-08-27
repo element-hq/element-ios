@@ -112,6 +112,11 @@ Matrix session observer used to detect new opened sessions.
     // Sanity check: Make sure the Pushkit push token is deleted
     NSParameterAssert(!accountManager.isPushAvailable);
     NSParameterAssert(!accountManager.pushDeviceToken);
+    
+    //  somehow we've lost the token (accountManager.pushDeviceToken), but PushKit pushers still exist, explicitly remove them
+    [[accountManager accounts] enumerateObjectsUsingBlock:^(MXKAccount * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [obj enablePushKitNotifications:NO success:nil failure:nil];
+    }];
 
     _isPushRegistered = YES;
     
