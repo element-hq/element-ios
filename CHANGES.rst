@@ -1,3 +1,33 @@
+Changes in 1.0.7 (2020-08-28)
+=================================================
+
+Features:
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.16](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.16)).
+ * 
+
+Bugfix:
+ * Update room input toolbar on theme change (#3445).
+ * Explicitly remove PushKit pushers (#3577).
+ * Fix launch animation on clear cache (#3580).
+
+API Change:
+ * 
+
+Translations:
+ * 
+
+Others:
+ * 
+
+Build:
+ * 
+
+Test:
+ * 
+
 Changes in 1.0.6 (2020-08-26)
 =================================================
 

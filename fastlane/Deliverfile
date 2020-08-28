@@ -7,3 +7,4 @@ ipa "#{ENV["BUILD_OUTPUT_DIRECTORY"]}/#{ENV["IPA_NAME"]}.ipa"
 
 # uploading screenshots fail, skipping for now
 skip_screenshots true
+force true
