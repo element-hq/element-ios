@@ -10,6 +10,7 @@
 #     https://docs.fastlane.tools/plugins/available-plugins
 #
 
+min_fastlane_version('2.156.0')
 fastlane_require "dotenv"
 
 default_platform(:ios)
