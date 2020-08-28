@@ -10,6 +10,7 @@ Improvements:
 Bugfix:
  * Update room input toolbar on theme change (#3445).
  * Explicitly remove PushKit pushers (#3577).
+ * Fix launch animation on clear cache (#3580).
 
 API Change:
  * 
