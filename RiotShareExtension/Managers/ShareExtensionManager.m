@@ -404,7 +404,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         }
         else
         {
-            [self completeRequestReturningItems:returningExtensionItems completionHandler:nil];
+            [self completeRequestReturningItems:nil completionHandler:nil];
         }
     });
 }
