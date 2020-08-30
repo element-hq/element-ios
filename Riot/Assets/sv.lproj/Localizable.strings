@@ -21,7 +21,7 @@
 /* A single unread message */
 "SINGLE_UNREAD" = "Du fick ett meddelande";
 /* Sticker from a specific person, not referencing a room. */
-"STICKER_FROM_USER" = "%@ skickade ett klistermärke";
+"STICKER_FROM_USER" = "%@ skickade en dekal";
 /* New message indicator on unknown room */
 "MESSAGE" = "Meddelande";
 /* New message indicator from a DM */
