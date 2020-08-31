@@ -21,8 +21,6 @@
 
 #import "RageShakeManager.h"
 
-#import "AppDelegate.h"
-
 #import "RecentsDataSource.h"
 #import "RecentTableViewCell.h"
 #import "InviteRecentTableViewCell.h"

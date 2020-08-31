@@ -19,7 +19,6 @@
 
 #import "FilesSearchTableViewCell.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 
 #import "AttachmentsViewController.h"

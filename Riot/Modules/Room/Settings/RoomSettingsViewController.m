@@ -28,7 +28,6 @@
 #import "MXRoom+Riot.h"
 #import "MXRoomSummary+Riot.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 
 #import "RoomMemberDetailsViewController.h"

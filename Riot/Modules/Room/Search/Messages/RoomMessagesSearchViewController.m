@@ -26,7 +26,6 @@
 #import "RoomIncomingAttachmentBubbleCell.h"
 #import "RoomIncomingTextMsgBubbleCell.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 
 @interface RoomMessagesSearchViewController ()

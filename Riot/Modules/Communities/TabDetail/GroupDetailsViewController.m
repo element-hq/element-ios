@@ -20,7 +20,6 @@
 #import "GroupParticipantsViewController.h"
 #import "GroupRoomsViewController.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 
 @interface GroupDetailsViewController ()

@@ -32,7 +32,6 @@
 #import "DirectoryRecentTableViewCell.h"
 #import "RoomIdOrAliasTableViewCell.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 
 @interface RecentsViewController ()

@@ -17,7 +17,6 @@
 
 #import "HomeViewController.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 
 #import "RecentsDataSource.h"
