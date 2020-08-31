@@ -129,14 +129,7 @@ Matrix session observer used to detect new opened sessions.
         NSLog(@"[PushNotificationService][Push] didRegisterForRemoteNotificationsWithDeviceToken: A PushKit pusher still exists. Remove it");
         
         //  Attempt to remove PushKit pushers explicitly
-        [[accountManager accounts] enumerateObjectsUsingBlock:^(MXKAccount * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            [obj enablePushKitNotifications:NO success:^{
-                [MXKAppSettings.standardAppSettings.sharedUserDefaults removeObjectForKey:@"pushDeviceToken"];
-                [MXKAppSettings.standardAppSettings.sharedUserDefaults removeObjectForKey:@"pushOptions"];
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pushDeviceToken"];
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pushOptions"];
-            } failure:nil];
-        }];
+        [self clearPushNotificationToken];
     }
 
     _isPushRegistered = YES;
@@ -419,14 +412,10 @@ Matrix session observer used to detect new opened sessions.
 - (void)clearPushNotificationToken
 {
     NSLog(@"[PushNotificationService][Push] clearPushNotificationToken: Clear existing token");
-
-    // XXX: The following code has been commented to avoid automatic deactivation of push notifications
-    // There may be a race condition here where the clear happens after the update of the new push token.
-    // We have no evidence of this. This is a safety measure.
-
+    
     // Clear existing token
-    //MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
-    //[accountManager setPushDeviceToken:nil withPushOptions:nil];
+    MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
+    [accountManager setPushDeviceToken:nil withPushOptions:nil];
 }
 
 // Remove delivred notifications for a given room id except call notifications
