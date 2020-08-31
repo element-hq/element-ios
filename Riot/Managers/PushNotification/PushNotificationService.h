@@ -18,12 +18,12 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import <UserNotifications/UserNotifications.h>
-#import "Riot-Swift.h"
 
 @class MXSession;
 @class MXEvent;
 @class MXPushRule;
 @class MXKAccount;
+@class PushNotificationStore;
 @protocol PushNotificationServiceDelegate;
 
 NS_ASSUME_NONNULL_BEGIN
