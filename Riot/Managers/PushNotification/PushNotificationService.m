@@ -112,14 +112,22 @@ Matrix session observer used to detect new opened sessions.
         NSString *pushDeviceToken = [MXKAppSettings.standardAppSettings.sharedUserDefaults objectForKey:@"pushDeviceToken"];
         if (pushDeviceToken)
         {
-            //  Set the token in standard user defaults, as MXKAccount will read it from there when removing the pusher.
+            NSLog(@"[PushNotificationService][Push] didRegisterForRemoteNotificationsWithDeviceToken: Move PushKit token to user defaults");
+            
+            // Set the token in standard user defaults, as MXKAccount will read it from there when removing the pusher.
+            // This will allow to remove the PushKit pusher in the next step
             [[NSUserDefaults standardUserDefaults] setObject:pushDeviceToken forKey:@"pushDeviceToken"];
+            
+            [MXKAppSettings.standardAppSettings.sharedUserDefaults removeObjectForKey:@"pushDeviceToken"];
+            [MXKAppSettings.standardAppSettings.sharedUserDefaults removeObjectForKey:@"pushOptions"];
         }
     }
     
     //  if we already have pushDeviceToken or recovered it in above step
     if (accountManager.pushDeviceToken)
     {
+        NSLog(@"[PushNotificationService][Push] didRegisterForRemoteNotificationsWithDeviceToken: A PushKit pusher still exists. Remove it");
+        
         //  Attempt to remove PushKit pushers explicitly
         [[accountManager accounts] enumerateObjectsUsingBlock:^(MXKAccount * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             [obj enablePushKitNotifications:NO success:^{

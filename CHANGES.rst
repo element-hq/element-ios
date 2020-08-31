@@ -8,7 +8,7 @@ Improvements:
  * 
 
 Bugfix:
- * 
+ * PushKit pusher: Add more logs when removing it (#3577).
 
 API Change:
  * 
