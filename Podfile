@@ -61,7 +61,8 @@ abstract_target 'RiotPods' do
   # Remove warnings from "bad" pods
   pod 'OLMKit', :inhibit_warnings => true
   pod 'cmark', :inhibit_warnings => true
-  pod 'zxcvbn-ios'
+  pod 'zxcvbn-ios', :inhibit_warnings => true
+  pod 'HPGrowingTextView', :inhibit_warnings => true
 
   # Tools
   pod 'SwiftGen', '~> 6.1'
