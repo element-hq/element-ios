@@ -4440,15 +4440,13 @@
 
         if ([self.roomDataSource.mxSession.syncError.errcode isEqualToString:kMXErrCodeStringResourceLimitExceeded])
         {
-            [roomActivitiesView showResourceLimitExceededError:self.roomDataSource.mxSession.syncError.userInfo onAdminContactTapped:^(NSURL *adminContact) {
-                if ([[UIApplication sharedApplication] canOpenURL:adminContact])
-                {
-                    [[UIApplication sharedApplication] openURL:adminContact];
-                }
-                else
-                {
-                    NSLog(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContact);
-                }
+            [roomActivitiesView showResourceLimitExceededError:self.roomDataSource.mxSession.syncError.userInfo onAdminContactTapped:^(NSURL *adminContactURL) {
+                [[UIApplication sharedApplication] vc_open:adminContactURL completionHandler:^(BOOL success) {
+                   if (!success)
+                   {
+                        NSLog(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContactURL);
+                   }
+                }];
             }];
         }
         else if ([AppDelegate theDelegate].isOffline)
@@ -4615,16 +4613,13 @@
             }
             else if (serverNotices.usageLimit && serverNotices.usageLimit.isServerNoticeUsageLimit)
             {
-                [roomActivitiesView showResourceUsageLimitNotice:serverNotices.usageLimit onAdminContactTapped:^(NSURL *adminContact) {
-
-                    if ([[UIApplication sharedApplication] canOpenURL:adminContact])
-                    {
-                        [[UIApplication sharedApplication] openURL:adminContact];
-                    }
-                    else
-                    {
-                        NSLog(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContact);
-                    }
+                [roomActivitiesView showResourceUsageLimitNotice:serverNotices.usageLimit onAdminContactTapped:^(NSURL *adminContactURL) {                    
+                    [[UIApplication sharedApplication] vc_open:adminContactURL completionHandler:^(BOOL success) {
+                       if (!success)
+                       {
+                            NSLog(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContactURL);
+                       }
+                    }];
                 }];
             }
             else
