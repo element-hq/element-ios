@@ -28,7 +28,7 @@
 @implementation AvatarGenerator
 
 static NSMutableDictionary *imageByKeyDict = nil;
-static NSMutableArray* colorsList = nil;
+static NSArray* colorsList = nil;
 static UILabel* backgroundLabel = nil;
 
 /**
