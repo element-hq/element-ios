@@ -38,52 +38,23 @@
     
     if (self.superview)
     {
-        if (@available(iOS 11.0, *))
-        {
-            // Force the title view layout by adding 2 new constraints on the UINavigationBarContentView instance.
-            NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:self
-                                                                             attribute:NSLayoutAttributeTop
+        // Force the title view layout by adding 2 new constraints on the UINavigationBarContentView instance.
+        NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:self
+                                                                         attribute:NSLayoutAttributeTop
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self.superview
+                                                                         attribute:NSLayoutAttributeTop
+                                                                        multiplier:1.0f
+                                                                          constant:0.0f];
+        NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:self
+                                                                             attribute:NSLayoutAttributeCenterX
                                                                              relatedBy:NSLayoutRelationEqual
                                                                                 toItem:self.superview
-                                                                             attribute:NSLayoutAttributeTop
+                                                                             attribute:NSLayoutAttributeCenterX
                                                                             multiplier:1.0f
                                                                               constant:0.0f];
-            NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:self
-                                                                                 attribute:NSLayoutAttributeCenterX
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:self.superview
-                                                                                 attribute:NSLayoutAttributeCenterX
-                                                                                multiplier:1.0f
-                                                                                  constant:0.0f];
-            
-            [NSLayoutConstraint activateConstraints:@[topConstraint, centerXConstraint]];
-        }
-        else
-        {
-            // Center horizontally the display name into the navigation bar
-            CGRect frame = self.superview.frame;
-            UINavigationBar *navigationBar;
-            UIView *superView = self;
-            while (superView.superview)
-            {
-                if ([superView.superview isKindOfClass:[UINavigationBar class]])
-                {
-                    navigationBar = (UINavigationBar*)superView.superview;
-                    break;
-                }
-                
-                superView = superView.superview;
-            }
-            
-            if (navigationBar)
-            {
-                CGSize navBarSize = navigationBar.frame.size;
-                CGFloat superviewCenterX = frame.origin.x + (frame.size.width / 2);
-                
-                // Center the display name
-                self.displayNameCenterXConstraint.constant = (navBarSize.width / 2) - superviewCenterX;
-            } 
-        }
+        
+        [NSLayoutConstraint activateConstraints:@[topConstraint, centerXConstraint]];
     }
 }
 
