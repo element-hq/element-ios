@@ -28,7 +28,8 @@ included:
 excluded:
   - Carthage
   - Pods
-  - Riot/Generated/  
+  - Riot/Generated/
+  - Riot/Modules/LaunchLoading/LoadingAnimation/
 
 line_length:
   warning: 250
