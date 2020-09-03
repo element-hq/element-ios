@@ -3,23 +3,23 @@ Changes to be released in next version
 
 ✨ Features
  * 
-
- 🙌 Improvements
- * 
-
- 🐛 Bugfix
- * 
-
- ⚠️ API Changes
- * 
-
- 🗣 Translations
+    
+🙌 Improvements
  * 
     
- 🧱 Build
+🐛 Bugfix
  * 
-
-Others:
+    
+⚠️ API Changes
+ * 
+    
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+    
+Others
  * 
 
 Changes in 1.0.9 (2020-09-03)
