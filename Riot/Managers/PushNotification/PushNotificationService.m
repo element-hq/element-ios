@@ -465,11 +465,9 @@ Matrix session observer used to detect new opened sessions.
 {
     NSLog(@"[PushNotificationService][Push] clearPushNotificationToken: Clear existing token");
     
-    NSLog(@"[Push] MANU: DO NOTHING");
-    
-    // Clear existing token
-   // MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
-   // [accountManager setPushDeviceToken:nil withPushOptions:nil];
+    // Clear existing pushkit token registered on the HS
+    MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
+    [accountManager setPushDeviceToken:nil withPushOptions:nil];
 }
 
 // Remove delivred notifications for a given room id except call notifications
