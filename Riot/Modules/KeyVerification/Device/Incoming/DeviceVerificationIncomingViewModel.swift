@@ -51,10 +51,7 @@ final class DeviceVerificationIncomingViewModel: DeviceVerificationIncomingViewM
 
         self.mediaManager = session.mediaManager
     }
-    
-    deinit {
-    }
-    
+
     // MARK: - Public
     
     func process(viewAction: DeviceVerificationIncomingViewAction) {

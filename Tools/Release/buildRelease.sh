@@ -37,23 +37,17 @@ bundle update
 # Checkout the source to build
 mkdir -p $BUILD_DIR
 cd $BUILD_DIR
-git clone https://github.com/vector-im/riot-ios.git
-cd riot-ios
-git checkout -b $TAG $TAG
+REPO_URL=$(git ls-remote --get-url origin)
+git clone $REPO_URL
+REPO_NAME=$(basename -s .git $REPO_URL)
+cd $REPO_NAME
+git checkout $TAG $TAG
 
-
-# Develop branch special case
-if [ "$TAG" = "develop" ]; then 
-    ./use-dev-pods.sh
-fi
-
+# Use appropriated dependencies according to the current branch
+bundle exec fastlane point_dependencies_to_same_feature
 
 # Build
 bundle exec fastlane app_store build_number:$BUILD_NUMBER
-
-# Check ipa
-./checkipa.sh out/Riot.ipa
-
 
 if [ -e out/Riot.ipa ]; then
     # Here is the artefact

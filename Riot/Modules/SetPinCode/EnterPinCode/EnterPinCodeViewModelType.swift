@@ -21,6 +21,7 @@ import Foundation
 protocol EnterPinCodeViewModelViewDelegate: class {
     func enterPinCodeViewModel(_ viewModel: EnterPinCodeViewModelType, didUpdateViewState viewSate: EnterPinCodeViewState)
     func enterPinCodeViewModel(_ viewModel: EnterPinCodeViewModelType, didUpdatePlaceholdersCount count: Int)
+    func enterPinCodeViewModel(_ viewModel: EnterPinCodeViewModelType, didUpdateCancelButtonHidden isHidden: Bool)
 }
 
 protocol EnterPinCodeViewModelCoordinatorDelegate: class {

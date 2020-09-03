@@ -19,9 +19,9 @@
 /* A single unread message */
 "SINGLE_UNREAD" = "Ви отримали повідомлення";
 /* Multiple unread messages in a room */
-"UNREAD_IN_ROOM" = "%@ нових повідомлень в %@";
+"UNREAD_IN_ROOM" = "%@ нових повідомлень у %@";
 /* Multiple unread messages from a specific person, not referencing a room */
-"MSGS_FROM_USER" = "%@ нових повідомлень в %@";
+"MSGS_FROM_USER" = "%@ нових повідомлень у %@";
 /* Multiple unread messages from two people */
 "MSGS_FROM_TWO_USERS" = "%@ нових повідомлень від %@ і %@";
 /* Multiple unread messages from three people */
@@ -29,9 +29,9 @@
 /* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
 "MSGS_FROM_TWO_PLUS_USERS" = "%@ нових повідомлень від %@, %@ та інших";
 /* Multiple messages in two rooms */
-"MSGS_IN_TWO_ROOMS" = "%@ нових повідомлень в %@ і %@";
+"MSGS_IN_TWO_ROOMS" = "%@ нових повідомлень у %@ і %@";
 /* Look, stuff's happened, alright? Just open the app. */
-"MSGS_IN_TWO_PLUS_ROOMS" = "%@ нових повідомлень в %@, %@ та інших";
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@ нових повідомлень у %@, %@ та інших";
 /* A user has invited you to a chat */
 "USER_INVITE_TO_CHAT" = "%@ запрошує вас до чату";
 /* A user has invited you to an (unamed) group chat */
@@ -41,16 +41,23 @@
 /* Incoming one-to-one voice call */
 "VOICE_CALL_FROM_USER" = "Виклик від %@";
 /* Incoming one-to-one video call */
-"VIDEO_CALL_FROM_USER" = "Відео-виклик від %@";
+"VIDEO_CALL_FROM_USER" = "Відеовиклик від %@";
 /* Incoming unnamed voice conference invite from a specific person */
 "VOICE_CONF_FROM_USER" = "Груповий виклик від %@";
 /* Incoming unnamed video conference invite from a specific person */
-"VIDEO_CONF_FROM_USER" = "Груповий відео-виклик від %@";
+"VIDEO_CONF_FROM_USER" = "Груповий відеовиклик від %@";
 /* Incoming named voice conference invite from a specific person */
 "VOICE_CONF_NAMED_FROM_USER" = "Груповий виклик від %@: '%@'";
 /* Incoming named video conference invite from a specific person */
-"VIDEO_CONF_NAMED_FROM_USER" = "Груповий відео-виклик від %@: '%@'";
+"VIDEO_CONF_NAMED_FROM_USER" = "Груповий відеовиклик від %@: '%@'";
 /* Message title for a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM_TITLE" = "%@ в %@";
 /* Sticker from a specific person, not referencing a room. */
 "STICKER_FROM_USER" = "%@ надсилає наліпку";
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ бажає звіритись";
+/* New message indicator on unknown room */
+"MESSAGE" = "Повідомлення";
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "Повідомлення від %@";
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "Повідомлення у %@";

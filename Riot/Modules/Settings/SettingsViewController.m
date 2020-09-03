@@ -42,9 +42,6 @@
 #import "GroupsDataSource.h"
 #import "GroupTableViewCellWithSwitch.h"
 
-#import "Row.h"
-#import "Section.h"
-
 #import "GBDeviceInfo_iOS.h"
 
 #import "Riot-Swift.h"
@@ -96,12 +93,6 @@ enum
     NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX,
     NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX,
     NOTIFICATION_SETTINGS_PIN_UNREAD_INDEX,
-    //NOTIFICATION_SETTINGS_CONTAINING_MY_USER_NAME_INDEX,
-    //NOTIFICATION_SETTINGS_CONTAINING_MY_DISPLAY_NAME_INDEX,
-    //NOTIFICATION_SETTINGS_SENT_TO_ME_INDEX,
-    //NOTIFICATION_SETTINGS_INVITED_TO_ROOM_INDEX,
-    //NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX,
-    //NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX,
 };
 
 enum
@@ -167,11 +158,12 @@ SecureBackupSetupCoordinatorBridgePresenterDelegate,
 SignOutAlertPresenterDelegate,
 SingleImagePickerPresenterDelegate,
 SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinatorDelegate,
-SettingsIdentityServerCoordinatorBridgePresenterDelegate>
+SettingsIdentityServerCoordinatorBridgePresenterDelegate,
+TableViewSectionsDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
-
+    
     // listener
     id removedAccountObserver;
     id accountUserInfoObserver;
@@ -253,7 +245,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 @property (nonatomic, strong) SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
 @property (nonatomic, strong) AuthenticatedSessionViewControllerFactory *authenticatedSessionViewControllerFactory;
 
-@property (nonatomic, strong) NSArray<Section*> *sections;
+@property (nonatomic, strong) TableViewSections *tableViewSections;
 
 @end
 
@@ -470,78 +462,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }
     
     //  update sections
-    self.sections = tmpSections;
-}
-
-- (void)setSections:(NSArray<Section *> *)sections
-{
-    _sections = sections;
-    
-    //  reload table
-    [self.tableView reloadData];
-}
-
-/// Returns index of section for the given tag. If cannot find, return `NSNotFound`
-/// @param tag Tag for section
-- (NSInteger)indexOfSectionForTag:(NSInteger)tag
-{
-    return [_sections indexOfObjectPassingTest:^BOOL(Section * _Nonnull section, NSUInteger idx, BOOL * _Nonnull stop) {
-        return section.tag == tag;
-    }];
-}
-
-/// Finds the exact indexpath for the given row and section tag. If cannot find, returns nil
-/// @param rowTag Tag for row
-/// @param sectionTag Tag for section
-- (NSIndexPath *)exactIndexPathForRowTag:(NSInteger)rowTag sectionTag:(NSInteger)sectionTag
-{
-    NSInteger sectionIndex = [self indexOfSectionForTag:sectionTag];
-    if (sectionIndex != NSNotFound)
-    {
-        Section *section = _sections[sectionIndex];
-        NSInteger rowIndex = [section indexOfRowForTag:rowTag];
-        if (rowIndex != NSNotFound)
-        {
-            return [NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex];
-        }
-    }
-    return nil;
-}
-
-/// Finds the nearest next indexPath for given row tag and section tag. If the section finishes, also checks for the next section. If cannot find any row available, returns nil.
-/// @param rowTag Tag for row
-/// @param sectionTag Tag for section
-- (NSIndexPath *)nearestIndexPathForRowTag:(NSInteger)rowTag sectionTag:(NSInteger)sectionTag
-{
-    NSInteger sectionIndex = [self indexOfSectionForTag:sectionTag];
-    if (sectionIndex != NSNotFound)
-    {
-        Section *section = _sections[sectionIndex];
-        NSInteger rowIndex = [section indexOfRowForTag:rowTag];
-        if (rowIndex != NSNotFound)
-        {
-            //  exact row found, return it
-            return [NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex];
-        }
-        else if (rowTag + 1 < section.rows.count)
-        {
-            //  try to return next row in the same section
-            return [self nearestIndexPathForRowTag:rowTag + 1 sectionTag:sectionTag];
-        }
-        else if (sectionTag + 1 < _sections.count)
-        {
-            //  try to return the first row of the next section
-            return [self nearestIndexPathForRowTag:0 sectionTag:sectionTag + 1];
-        }
-        
-        return nil;
-    }
-    else if (sectionTag + 1 < _sections.count)
-    {
-        //  try to return the first row of the next section
-        return [self nearestIndexPathForRowTag:0 sectionTag:sectionTag + 1];
-    }
-    return nil;
+    _tableViewSections.sections = tmpSections;
 }
 
 - (void)viewDidLoad
@@ -624,6 +545,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     self.signOutAlertPresenter = [SignOutAlertPresenter new];
     self.signOutAlertPresenter.delegate = self;
     
+    _tableViewSections = [TableViewSections new];
+    _tableViewSections.delegate = self;
     [self updateSections];
 }
 
@@ -881,8 +804,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             [self.tableView beginUpdates];
             
             // Refresh the corresponding table view cell with animation
-            NSIndexPath *addEmailIndexPath = [self exactIndexPathForRowTag:USER_SETTINGS_ADD_EMAIL_INDEX
-                                                                sectionTag:SECTION_TAG_USER_SETTINGS];
+            NSIndexPath *addEmailIndexPath = [self.tableViewSections exactIndexPathForRowTag:USER_SETTINGS_ADD_EMAIL_INDEX
+                                                                                  sectionTag:SECTION_TAG_USER_SETTINGS];
             if (addEmailIndexPath)
             {
                 [self.tableView reloadRowsAtIndexPaths:@[addEmailIndexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -912,8 +835,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             [self.tableView beginUpdates];
             
             // Refresh the corresponding table view cell with animation
-            NSIndexPath *addPhoneIndexPath = [self exactIndexPathForRowTag:USER_SETTINGS_ADD_PHONENUMBER_INDEX
-                                                                sectionTag:SECTION_TAG_USER_SETTINGS];
+            NSIndexPath *addPhoneIndexPath = [self.tableViewSections exactIndexPathForRowTag:USER_SETTINGS_ADD_PHONENUMBER_INDEX
+                                                                                  sectionTag:SECTION_TAG_USER_SETTINGS];
             if (addPhoneIndexPath)
             {
                 [self.tableView reloadRowsAtIndexPaths:@[addPhoneIndexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -1400,16 +1323,12 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     // update the save button if there is an update
     [self updateSaveButtonStatus];
     
-    return _sections.count;
+    return _tableViewSections.sections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    Section *sectionObject = nil;
-    if (section < _sections.count)
-    {
-        sectionObject = _sections[section];
-    }
+    Section *sectionObject = [_tableViewSections sectionAtIndex:section];
     return sectionObject.rows.count;
 }
 
@@ -1496,19 +1415,9 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Section *sectionObj = nil;
-    NSInteger section = NSNotFound;
-    NSInteger row = NSNotFound;
-    
-    if (indexPath.section < _sections.count)
-    {
-        sectionObj = _sections[indexPath.section];
-        section = sectionObj.tag;
-        if (indexPath.row < sectionObj.rows.count)
-        {
-            row = sectionObj.rows[indexPath.row].tag;
-        }
-    }
+    NSIndexPath *tagsIndexPath = [_tableViewSections tagsIndexPathFromTableViewIndexPath:indexPath];
+    NSInteger section = tagsIndexPath.section;
+    NSInteger row = tagsIndexPath.row;
 
     // set the cell to a default value to avoid application crashes
     UITableViewCell *cell = [[UITableViewCell alloc] init];
@@ -2369,11 +2278,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
 - (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    Section *sectionObj = nil;
-    if (section < _sections.count)
-    {
-        sectionObj = _sections[section];
-    }
+    Section *sectionObj = [_tableViewSections sectionAtIndex:section];
     return sectionObj.headerTitle;
 }
 
@@ -2390,19 +2295,9 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Section *sectionObj = nil;
-    NSInteger section = NSNotFound;
-    NSInteger row = NSNotFound;
-    
-    if (indexPath.section < _sections.count)
-    {
-        sectionObj = _sections[indexPath.section];
-        section = sectionObj.tag;
-        if (indexPath.row < sectionObj.rows.count)
-        {
-            row = sectionObj.rows[indexPath.row].tag;
-        }
-    }
+    NSIndexPath *tagsIndexPath = [_tableViewSections tagsIndexPathFromTableViewIndexPath:indexPath];
+    NSInteger section = tagsIndexPath.section;
+    NSInteger row = tagsIndexPath.row;
     
     if (section == SECTION_TAG_USER_SETTINGS)
     {
@@ -2456,19 +2351,9 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Section *sectionObj = nil;
-    NSInteger section = NSNotFound;
-    NSInteger row = NSNotFound;
-    
-    if (indexPath.section < _sections.count)
-    {
-        sectionObj = _sections[indexPath.section];
-        section = sectionObj.tag;
-        if (indexPath.row < sectionObj.rows.count)
-        {
-            row = sectionObj.rows[indexPath.row].tag;
-        }
-    }
+    NSIndexPath *tagsIndexPath = [_tableViewSections tagsIndexPathFromTableViewIndexPath:indexPath];
+    NSInteger section = tagsIndexPath.section;
+    NSInteger row = tagsIndexPath.row;
     
     NSMutableArray* actions;
     
@@ -2501,19 +2386,9 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 {
     if (self.tableView == tableView)
     {
-        Section *sectionObj = nil;
-        NSInteger section = NSNotFound;
-        NSInteger row = NSNotFound;
-        
-        if (indexPath.section < _sections.count)
-        {
-            sectionObj = _sections[indexPath.section];
-            section = sectionObj.tag;
-            if (indexPath.row < sectionObj.rows.count)
-            {
-                row = sectionObj.rows[indexPath.row].tag;
-            }
-        }
+        NSIndexPath *tagsIndexPath = [_tableViewSections tagsIndexPathFromTableViewIndexPath:indexPath];
+        NSInteger section = tagsIndexPath.section;
+        NSInteger row = tagsIndexPath.row;
 
         if (section == SECTION_TAG_USER_INTERFACE)
         {
@@ -2535,7 +2410,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             // settingsDiscoveryTableViewSection is a dynamic section, so check number of rows before scroll to avoid crashes
             if (self.settingsDiscoveryTableViewSection.numberOfRows > 0)
             {
-                NSIndexPath *discoveryIndexPath = [self exactIndexPathForRowTag:0 sectionTag:SECTION_TAG_DISCOVERY];
+                NSIndexPath *discoveryIndexPath = [_tableViewSections exactIndexPathForRowTag:0 sectionTag:SECTION_TAG_DISCOVERY];
                 if (discoveryIndexPath)
                 {
                     [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
@@ -2544,7 +2419,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             else
             {
                 //  this won't be precise in scroll location, but seems the best option for now
-                NSIndexPath *discoveryIndexPath = [self nearestIndexPathForRowTag:0 sectionTag:SECTION_TAG_DISCOVERY];
+                NSIndexPath *discoveryIndexPath = [_tableViewSections nearestIndexPathForRowTag:0 sectionTag:SECTION_TAG_DISCOVERY];
                 if (discoveryIndexPath)
                 {
                     [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
@@ -2744,19 +2619,9 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
 - (void)onRemove3PID:(NSIndexPath*)indexPath
 {
-    Section *sectionObj = nil;
-    NSInteger section = NSNotFound;
-    NSInteger row = NSNotFound;
-    
-    if (indexPath.section < _sections.count)
-    {
-        sectionObj = _sections[indexPath.section];
-        section = sectionObj.tag;
-        if (indexPath.row < sectionObj.rows.count)
-        {
-            row = sectionObj.rows[indexPath.row].tag;
-        }
-    }
+    NSIndexPath *tagsIndexPath = [_tableViewSections tagsIndexPathFromTableViewIndexPath:indexPath];
+    NSInteger section = tagsIndexPath.section;
+    NSInteger row = tagsIndexPath.row;
     
     if (section == SECTION_TAG_USER_SETTINGS)
     {
@@ -3142,46 +3007,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     newPhoneNumberCountryPicker.showCountryCallingCode = YES;
     [self pushViewController:newPhoneNumberCountryPicker];
 }
-
-//- (void)onRuleUpdate:(id)sender
-//{
-//    MXPushRule* pushRule = nil;
-//    MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
-//    
-//    NSInteger row = ((UIView*)sender).tag;
-//    
-//    if (row == NOTIFICATION_SETTINGS_CONTAINING_MY_DISPLAY_NAME_INDEX)
-//    {
-//        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterContainDisplayNameRuleID];
-//    }
-//    else if (row == NOTIFICATION_SETTINGS_CONTAINING_MY_USER_NAME_INDEX)
-//    {
-//        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterContainUserNameRuleID];
-//    }
-//    else if (row == NOTIFICATION_SETTINGS_SENT_TO_ME_INDEX)
-//    {
-//        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterOneToOneRoomRuleID];
-//    }
-//    else if (row == NOTIFICATION_SETTINGS_INVITED_TO_ROOM_INDEX)
-//    {
-//        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterInviteMeRuleID];
-//    }
-//    else if (row == NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX)
-//    {
-//        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterMemberEventRuleID];
-//    }
-//    else if (row == NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX)
-//    {
-//        pushRule = [session.notificationCenter ruleById:kMXNotificationCenterCallRuleID];
-//    }
-//    
-//    if (pushRule)
-//    {
-//        // toggle the rule
-//        [session.notificationCenter enableRule:pushRule isEnabled:!pushRule.enabled];
-//    }
-//}
-
 
 - (void)onSave:(id)sender
 {
@@ -3623,8 +3448,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     SingleImagePickerPresenter *singleImagePickerPresenter = [[SingleImagePickerPresenter alloc] initWithSession:self.mainSession];
     singleImagePickerPresenter.delegate = self;
     
-    NSIndexPath *indexPath = [self exactIndexPathForRowTag:USER_SETTINGS_PROFILE_PICTURE_INDEX
-                                                sectionTag:SECTION_TAG_USER_SETTINGS];
+    NSIndexPath *indexPath = [_tableViewSections exactIndexPathForRowTag:USER_SETTINGS_PROFILE_PICTURE_INDEX
+                                                              sectionTag:SECTION_TAG_USER_SETTINGS];
     if (indexPath)
     {
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
@@ -3723,7 +3548,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                                                         style:UIAlertActionStyleCancel
                                                       handler:nil]];
 
-    NSIndexPath *indexPath = [self exactIndexPathForRowTag:USER_INTERFACE_THEME_INDEX
+    NSIndexPath *indexPath = [_tableViewSections exactIndexPathForRowTag:USER_INTERFACE_THEME_INDEX
                                                 sectionTag:SECTION_TAG_USER_INTERFACE];
     if (indexPath)
     {
@@ -3845,7 +3670,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 
                 MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
                 
-                [account changePassword:currentPasswordTextField.text with:newPasswordTextField1.text success:^{
+                [account changePassword:self->currentPasswordTextField.text with:self->newPasswordTextField1.text success:^{
                     
                     if (weakSelf)
                     {
@@ -4280,7 +4105,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }
     else if ([tableViewCellClass isEqual:[MXKTableViewCellWithTextView class]])
     {
-        NSIndexPath *indexPath = [self exactIndexPathForRowTag:forRow sectionTag:SECTION_TAG_DISCOVERY];
+        NSIndexPath *indexPath = [_tableViewSections exactIndexPathForRowTag:forRow sectionTag:SECTION_TAG_DISCOVERY];
         if (indexPath)
         {
             tableViewCell = [self textViewCellForTableView:self.tableView atIndexPath:indexPath];
@@ -4307,7 +4132,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }
     else if ([tableViewCellClass isEqual:[MXKTableViewCellWithLabelAndSwitch class]])
     {
-        NSIndexPath *indexPath = [self exactIndexPathForRowTag:forRow sectionTag:SECTION_TAG_DISCOVERY];
+        NSIndexPath *indexPath = [_tableViewSections exactIndexPathForRowTag:forRow sectionTag:SECTION_TAG_DISCOVERY];
         if (indexPath)
         {
             tableViewCell = [self getLabelAndSwitchCell:self.tableView forIndexPath:indexPath];
@@ -4336,7 +4161,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
 - (void)settingsDiscoveryViewModelDidTapUserSettingsLink:(SettingsDiscoveryViewModel *)viewModel
 {
-    NSIndexPath *discoveryIndexPath = [self exactIndexPathForRowTag:USER_SETTINGS_ADD_EMAIL_INDEX
+    NSIndexPath *discoveryIndexPath = [_tableViewSections exactIndexPathForRowTag:USER_SETTINGS_ADD_EMAIL_INDEX
                                                          sectionTag:SECTION_TAG_USER_SETTINGS];
     if (discoveryIndexPath)
     {
@@ -4361,6 +4186,13 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 {
     identityServerSettingsCoordinatorBridgePresenter = nil;
     [self refreshSettings];
+}
+
+#pragma mark - TableViewSectionsDelegate
+
+- (void)tableViewSectionsDidUpdateSections:(TableViewSections *)sections
+{
+    [self.tableView reloadData];
 }
 
 @end

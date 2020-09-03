@@ -92,6 +92,11 @@
     growingTextView.tintColor = ThemeService.shared.theme.tintColor;
     
     growingTextView.internalTextView.keyboardAppearance = ThemeService.shared.theme.keyboardAppearance;
+    if (growingTextView.isFirstResponder)
+    {
+        [growingTextView resignFirstResponder];
+        [growingTextView becomeFirstResponder];
+    }
 
     self.attachMediaButton.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_upload", @"Vector", nil);
     self.voiceCallButton.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_call", @"Vector", nil);
@@ -247,14 +252,6 @@
 }
 
 #pragma mark - HPGrowingTextView delegate
-
-//- (BOOL)growingTextViewShouldReturn:(HPGrowingTextView *)hpGrowingTextView
-//{
-//    // The return sends the message rather than giving a carriage return.
-//    [self onTouchUpInside:self.rightInputToolbarButton];
-//    
-//    return NO;
-//}
 
 - (void)growingTextViewDidChange:(HPGrowingTextView *)hpGrowingTextView
 {

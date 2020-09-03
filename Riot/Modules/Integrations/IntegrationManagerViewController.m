@@ -349,7 +349,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
     if (!widget_id)
     {
-        [self sendLocalisedError:@"widget_integration_unable_to_create" toRequest:requestId]; // new Error("Missing required widget fields."));
+        [self sendLocalisedError:@"widget_integration_unable_to_create" toRequest:requestId];
         return;
     }
 

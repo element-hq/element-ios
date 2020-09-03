@@ -926,6 +926,10 @@ internal enum VectorL10n {
   internal static var deviceVerificationSelfVerifyWaitRecoverSecretsAdditionalInformation: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_recover_secrets_additional_information") 
   }
+  /// Checking for other verification capabilities ...
+  internal static var deviceVerificationSelfVerifyWaitRecoverSecretsCheckingAvailability: String { 
+    return VectorL10n.tr("Vector", "device_verification_self_verify_wait_recover_secrets_checking_availability") 
+  }
   /// Use Recovery Passphrase or Key
   internal static var deviceVerificationSelfVerifyWaitRecoverSecretsWithPassphrase: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_recover_secrets_with_passphrase") 

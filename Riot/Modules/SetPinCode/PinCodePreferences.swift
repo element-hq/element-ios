@@ -25,7 +25,7 @@ final class PinCodePreferences: NSObject {
     // MARK: - Constants
     
     private struct PinConstants {
-        static let pinCodeKeychainService: String = "im.vector.app.pin-service"
+        static let pinCodeKeychainService: String = BuildSettings.baseBundleIdentifier + ".pin-service"
     }
     
     private struct StoreKeys {
@@ -40,7 +40,7 @@ final class PinCodePreferences: NSObject {
     
     override init() {
         store = KeychainStore(withKeychain: Keychain(service: PinConstants.pinCodeKeychainService,
-                                                     accessGroup: Constants.keychainAccessGroup))
+                                                     accessGroup: BuildSettings.keychainAccessGroup))
         super.init()
     }
     
@@ -111,6 +111,8 @@ final class PinCodePreferences: NSObject {
     func localizedBiometricsName() -> String? {
         if isBiometricsAvailable {
             let context = LAContext()
+            //  canEvaluatePolicy should be called for biometryType to be set
+            _ = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
             switch context.biometryType {
             case .touchID:
                 return VectorL10n.biometricsModeTouchId
@@ -126,6 +128,8 @@ final class PinCodePreferences: NSObject {
     func biometricsIcon() -> UIImage? {
         if isBiometricsAvailable {
             let context = LAContext()
+            //  canEvaluatePolicy should be called for biometryType to be set
+            _ = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
             switch context.biometryType {
             case .touchID:
                 return Asset.Images.touchidIcon.image

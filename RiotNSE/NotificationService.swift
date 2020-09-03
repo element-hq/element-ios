@@ -16,6 +16,7 @@
 
 import UserNotifications
 import MatrixKit
+import MatrixSDK
 
 class NotificationService: UNNotificationServiceExtension {
     
@@ -35,6 +36,11 @@ class NotificationService: UNNotificationServiceExtension {
         return CommonConfiguration()
     }()
     static var isLoggerInitialized: Bool = false
+    private lazy var pushGatewayRestClient: MXPushGatewayRestClient = {
+        let url = URL(string: BuildSettings.serverConfigSygnalAPIUrlString)!
+        return MXPushGatewayRestClient(pushGateway: url.scheme! + "://" + url.host!, andOnUnrecognizedCertificateBlock: nil)
+    }()
+    private var pushNotificationStore: PushNotificationStore = PushNotificationStore()
     
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         // Set static application settings
@@ -162,14 +168,6 @@ class NotificationService: UNNotificationServiceExtension {
             }
             
             //  encrypted
-            if !self.showDecryptedContentInNotifications {
-                //  do not show decrypted content in notification
-                NSLog("[NotificationService] fetchEvent: Do not show decrypted content in notifications, no need to attempt to decrypt it.")
-                self.processEvent(event)
-                return
-            }
-            
-            //  should show decrypted content in notification
             if event.clear != nil {
                 //  already decrypted
                 NSLog("[NotificationService] fetchEvent: Event already decrypted.")
@@ -323,6 +321,20 @@ class NotificationService: UNNotificationServiceExtension {
             let pushRule = session.notificationCenter.rule(matching: event, roomState: roomState)
             
             switch event.eventType {
+            case .callInvite:
+                let offer = event.content["offer"] as? [AnyHashable: Any]
+                let sdp = offer?["sdp"] as? String
+                let isVideoCall = sdp?.contains("m=video") ?? false
+                
+                if isVideoCall {
+                    notificationBody = NSString.localizedUserNotificationString(forKey: "VIDEO_CALL_FROM_USER", arguments: [eventSenderName as Any])
+                } else {
+                    notificationBody = NSString.localizedUserNotificationString(forKey: "VOICE_CALL_FROM_USER", arguments: [eventSenderName as Any])
+                }
+                
+                // call notifications should stand out from normal messages, so we don't stack them
+                threadIdentifier = nil
+                self.sendVoipPush(forEvent: event)
             case .roomMessage, .roomEncrypted:
                 if room.isMentionsOnly {
                     // A local notification will be displayed only for highlighted notification.
@@ -417,19 +429,6 @@ class NotificationService: UNNotificationServiceExtension {
                     }
                 }
                 break
-            case .callInvite:
-                let offer = event.content["offer"] as? [AnyHashable: Any]
-                let sdp = offer?["sdp"] as? String
-                let isVideoCall = sdp?.contains("m=video") ?? false
-                
-                if isVideoCall {
-                    notificationBody = NSString.localizedUserNotificationString(forKey: "VIDEO_CALL_FROM_USER", arguments: [eventSenderName as Any])
-                } else {
-                    notificationBody = NSString.localizedUserNotificationString(forKey: "VOICE_CALL_FROM_USER", arguments: [eventSenderName as Any])
-                }
-                
-                // call notifications should stand out from normal messages, so we don't stack them
-                threadIdentifier = nil
             case .roomMember:
                 let roomDisplayName = room.summary.displayname
                 
@@ -536,11 +535,33 @@ class NotificationService: UNNotificationServiceExtension {
             return nil
         }
         
+        if event.eventType == .callInvite {
+            return Constants.callInviteNotificationCategoryIdentifier
+        }
+        
         guard event.eventType == .roomMessage || event.eventType == .roomEncrypted else {
             return nil
         }
         
         return "QUICK_REPLY"
+    }
+    
+    /// Attempts to send trigger a VoIP push for the given event
+    /// - Parameter event: The call invite event.
+    private func sendVoipPush(forEvent event: MXEvent) {
+        guard let token = pushNotificationStore.pushKitToken else {
+            return
+        }
+        
+        pushNotificationStore.lastCallInvite = event
+        
+        let appId = BuildSettings.pushKitAppId
+        
+        pushGatewayRestClient.notifyApp(withId: appId, pushToken: token, eventId: event.eventId, roomId: event.roomId, eventType: nil, sender: event.sender, success: { (rejected) in
+            NSLog("[NotificationService] sendVoipPush succeeded, rejected tokens: \(rejected)")
+        }) { (error) in
+            NSLog("[NotificationService] sendVoipPush failed with error: \(error)")
+        }
     }
     
 }

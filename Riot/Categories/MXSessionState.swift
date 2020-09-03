@@ -14,22 +14,12 @@
 // limitations under the License.
 //
 
-#import "Row.h"
+import Foundation
 
-@implementation Row
-
-+ (instancetype)rowWithTag:(NSInteger)tag
-{
-    return [[self alloc] initWithTag:tag];
-}
-
-- (instancetype)initWithTag:(NSInteger)tag
-{
-    self = [super init];
-    if (self) {
-        self.tag = tag;
+extension MXSessionState: Comparable {
+    
+    public static func < (lhs: MXSessionState, rhs: MXSessionState) -> Bool {
+        return lhs.rawValue < rhs.rawValue
     }
-    return self;
+    
 }
-
-@end

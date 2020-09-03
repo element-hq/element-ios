@@ -74,7 +74,7 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 
 /**
  Let the AppDelegate handle and display self verification requests.
- Default is YES;
+ Default is YES.
  */
 @property (nonatomic) BOOL handleSelfVerificationRequest;
 
@@ -173,6 +173,8 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 - (BOOL)presentUserVerificationForRoomMember:(MXRoomMember*)roomMember session:(MXSession*)mxSession;
 
 - (BOOL)presentCompleteSecurityForSession:(MXSession*)mxSession;
+
+- (void)configureCallManagerIfRequiredForSession:(MXSession *)mxSession;
 
 #pragma mark - Matrix Accounts handling
 

@@ -40,8 +40,6 @@ final class KeyBackupRecoverFromPrivateKeyViewModel: KeyBackupRecoverFromPrivate
         self.keyBackupVersion = keyBackupVersion
     }
     
-    deinit {
-    }
     
     // MARK: - Public
     

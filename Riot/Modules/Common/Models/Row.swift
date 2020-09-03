@@ -14,19 +14,20 @@
 // limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
+import Foundation
 
-NS_ASSUME_NONNULL_BEGIN
-
-/// Row object for tableviews
-@interface Row: NSObject
-
-@property (nonatomic, assign) NSInteger tag;
-
-+ (instancetype)rowWithTag:(NSInteger)tag;
-
-- (instancetype)initWithTag:(NSInteger)tag;
-
-@end
-
-NS_ASSUME_NONNULL_END
+@objcMembers
+final class Row: NSObject {
+    
+    let tag: Int
+    
+    init(withTag tag: Int) {
+        self.tag = tag
+        super.init()
+    }
+    
+    static func row(withTag tag: Int) -> Row {
+        return Row(withTag: tag)
+    }
+    
+}

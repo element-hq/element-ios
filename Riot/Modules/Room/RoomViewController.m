@@ -472,6 +472,8 @@
         mainNavigationController.navigationBar.translucent = YES;
     }
     
+    [self.inputToolbarView customizeViewRendering];
+    
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     // Prepare jump to last unread banner
@@ -792,8 +794,8 @@
         // Refresh here the preview header according to the coming screen orientation.
         
         // Retrieve the affine transform indicating the amount of rotation being applied to the interface.
-        // This transform is the identity transform when no rotation is applied;
-        // otherwise, it is a transform that applies a 90 degree, -90 degree, or 180 degree rotation.
+        // This transform is the identity transform when no rotation is applied.
+        // Otherwise, it is a transform that applies a 90 degree, -90 degree, or 180 degree rotation.
         CGAffineTransform transform = coordinator.targetTransform;
         
         // Consider here only the transform that applies a +/- 90 degree.
@@ -2609,40 +2611,43 @@
     }
     else // Add action for attachment
     {
-        if (attachment.type == MXKAttachmentTypeImage || attachment.type == MXKAttachmentTypeVideo)
+        if (BuildSettings.messageDetailsAllowSave)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_save", @"Vector", nil)
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-                                                               
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-                                                                   
-                                                                   [self cancelEventSelection];
-                                                                   
-                                                                   [self startActivityIndicator];
-                                                                   
-                                                                   [attachment save:^{
-                                                                       
-                                                                       __strong __typeof(weakSelf)self = weakSelf;
-                                                                       [self stopActivityIndicator];
-                                                                       
-                                                                   } failure:^(NSError *error) {
-                                                                       
-                                                                       __strong __typeof(weakSelf)self = weakSelf;
-                                                                       [self stopActivityIndicator];
-                                                                       
-                                                                       //Alert user
-                                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                       
-                                                                   }];
-                                                                   
-                                                                   // Start animation in case of download during attachment preparing
-                                                                   [roomBubbleTableViewCell startProgressUI];
-                                                               }
-                                                               
-                                                           }]];
+            if (attachment.type == MXKAttachmentTypeImage || attachment.type == MXKAttachmentTypeVideo)
+            {
+                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_save", @"Vector", nil)
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:^(UIAlertAction * action) {
+                    
+                    if (weakSelf)
+                    {
+                        typeof(self) self = weakSelf;
+                        
+                        [self cancelEventSelection];
+                        
+                        [self startActivityIndicator];
+                        
+                        [attachment save:^{
+                            
+                            __strong __typeof(weakSelf)self = weakSelf;
+                            [self stopActivityIndicator];
+                            
+                        } failure:^(NSError *error) {
+                            
+                            __strong __typeof(weakSelf)self = weakSelf;
+                            [self stopActivityIndicator];
+                            
+                            //Alert user
+                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                            
+                        }];
+                        
+                        // Start animation in case of download during attachment preparing
+                        [roomBubbleTableViewCell startProgressUI];
+                    }
+                    
+                }]];
+            }
         }
             
         // Check status of the selected event

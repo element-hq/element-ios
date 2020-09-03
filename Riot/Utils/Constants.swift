@@ -19,6 +19,6 @@ import Foundation
 enum Constants {
     
     static let toBeRemovedNotificationCategoryIdentifier = "TO_BE_REMOVED"
-    static let keychainAccessGroup = "7J4U792NQT.im.vector.app.keychain.shared"
+    static let callInviteNotificationCategoryIdentifier = "CALL_INVITE"
     
 }

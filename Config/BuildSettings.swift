@@ -30,6 +30,46 @@ final class BuildSettings: NSObject {
         Bundle.app.object(forInfoDictionaryKey: "applicationGroupIdentifier") as! String
     }
     
+    static var baseBundleIdentifier: String {
+        Bundle.app.object(forInfoDictionaryKey: "baseBundleIdentifier") as! String
+    }
+    
+    static var keychainAccessGroup: String {
+        Bundle.app.object(forInfoDictionaryKey: "keychainAccessGroup") as! String
+    }
+    
+    static var pushKitAppIdProd: String {
+        return baseBundleIdentifier + ".ios.voip.prod"
+    }
+    
+    static var pushKitAppIdDev: String {
+        return baseBundleIdentifier + ".ios.voip.dev"
+    }
+    
+    static var pusherAppIdProd: String {
+        return baseBundleIdentifier + ".ios.prod"
+    }
+    
+    static var pusherAppIdDev: String {
+        return baseBundleIdentifier + ".ios.dev"
+    }
+    
+    static var pushKitAppId: String {
+        #if DEBUG
+        return pushKitAppIdDev
+        #else
+        return pushKitAppIdProd
+        #endif
+    }
+    
+    static var pusherAppId: String {
+        #if DEBUG
+        return pusherAppIdDev
+        #else
+        return pusherAppIdProd
+        #endif
+    }
+    
     // Element-Web instance for the app
     static let applicationWebAppUrlString = "https://app.element.io"
     
@@ -55,6 +95,7 @@ final class BuildSettings: NSObject {
         "app.element.io": [],
         "staging.element.io": [],
         "develop.element.io": [],
+        "mobile.element.io": [""],
         // Historical ones
         "riot.im": ["/app", "/staging", "/develop"],
         "www.riot.im": ["/app", "/staging", "/develop"],
@@ -125,7 +166,7 @@ final class BuildSettings: NSObject {
     static let allowLocalContactsAccess: Bool = true
     
     
-    // MARK: - Screen settings -
+    // MARK: - General Settings Screen
     
     static let settingsScreenShowUserFirstName: Bool = false
     static let settingsScreenShowUserSurname: Bool = false
@@ -141,13 +182,31 @@ final class BuildSettings: NSObject {
     static let settingsScreenAllowBugReportingManually: Bool = true
     static let settingsScreenAllowDeactivatingAccount: Bool = true
     
+    // MARK: - Room Settings Screen
+    
+    static let roomSettingsScreenShowLowPriorityOption: Bool = true
+    static let roomSettingsScreenShowDirectChatOption: Bool = true
+    static let roomSettingsScreenAllowChangingAccessSettings: Bool = true
+    static let roomSettingsScreenAllowChangingHistorySettings: Bool = true
+    static let roomSettingsScreenShowAddressSettings: Bool = true
+    static let roomSettingsScreenShowFlairSettings: Bool = true
+    static let roomSettingsScreenShowAdvancedSettings: Bool = true
+    
     // MARK: - Message
     static let messageDetailsAllowShare: Bool = true
     static let messageDetailsAllowPermalink: Bool = true
     static let messageDetailsAllowViewSource: Bool = true
+    static let messageDetailsAllowSave: Bool = true
+    
+    // MARK: - HTTP
+    /// Additional HTTP headers will be sent by all requests. Not recommended to use request-specific headers, like `Authorization`.
+    /// Empty dictionary by default.
+    static let httpAdditionalHeaders: [String: String] = [:]
     
     
     // MARK: - Authentication Screen
     static let authScreenShowRegister = true
+    static let authScreenShowPhoneNumber = true
+    static let authScreenShowForgotPassword = true
     static let authScreenShowCustomServerOptions = true
 }

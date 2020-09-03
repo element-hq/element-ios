@@ -1,0 +1,10 @@
+app_identifier ENV["MAIN_BUNDLE_ID"]
+username ENV["APPLE_ID"]
+team_id ENV["TEAM_ID"]
+dev_portal_team_id ENV["TEAM_ID"]
+precheck_include_in_app_purchases false
+ipa "#{ENV["BUILD_OUTPUT_DIRECTORY"]}/#{ENV["IPA_NAME"]}.ipa"
+
+# uploading screenshots fail, skipping for now
+skip_screenshots true
+force true

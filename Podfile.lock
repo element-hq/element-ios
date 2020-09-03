@@ -16,28 +16,29 @@ PODS:
     - AFNetworking/NSURLSession
   - cmark (0.24.1)
   - DGCollectionViewLeftAlignFlowLayout (1.0.4)
-  - DTCoreText (1.6.23):
-    - DTCoreText/Core (= 1.6.23)
+  - DTCoreText (1.6.25):
+    - DTCoreText/Core (= 1.6.25)
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTCoreText/Core (1.6.23):
+  - DTCoreText/Core (1.6.25):
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTCoreText/Extension (1.6.23):
+  - DTCoreText/Extension (1.6.25):
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTFoundation/Core (1.7.14)
-  - DTFoundation/DTAnimatedGIF (1.7.14)
-  - DTFoundation/DTHTMLParser (1.7.14):
+  - DTFoundation/Core (1.7.15)
+  - DTFoundation/DTAnimatedGIF (1.7.15)
+  - DTFoundation/DTHTMLParser (1.7.15):
     - DTFoundation/Core
-  - DTFoundation/UIKit (1.7.14):
+  - DTFoundation/UIKit (1.7.15):
     - DTFoundation/Core
+  - FlowCommoniOS (1.8.7)
   - GBDeviceInfo (6.3.0):
     - GBDeviceInfo/Core (= 6.3.0)
   - GBDeviceInfo/Core (6.3.0)
@@ -51,38 +52,38 @@ PODS:
   - MatomoTracker (7.2.1):
     - MatomoTracker/Core (= 7.2.1)
   - MatomoTracker/Core (7.2.1)
-  - MatrixKit (0.12.10):
+  - MatrixKit (0.12.15):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.23)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.12.10)
-    - MatrixSDK (= 0.16.9)
-  - MatrixKit/AppExtension (0.12.10):
+    - MatrixKit/Core (= 0.12.15)
+    - MatrixSDK (= 0.16.13)
+  - MatrixKit/AppExtension (0.12.15):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.23)
     - DTCoreText/Extension
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.16.9)
-  - MatrixKit/Core (0.12.10):
+    - MatrixSDK (= 0.16.13)
+  - MatrixKit/Core (0.12.15):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.23)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.16.9)
-  - MatrixSDK (0.16.9):
-    - MatrixSDK/Core (= 0.16.9)
-  - MatrixSDK/Core (0.16.9):
+    - MatrixSDK (= 0.16.13)
+  - MatrixSDK (0.16.13):
+    - MatrixSDK/Core (= 0.16.13)
+  - MatrixSDK/Core (0.16.13):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.2.2)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.1.0)
     - Realm (~> 4.4.0)
-  - MatrixSDK/JingleCallStack (0.16.9):
+  - MatrixSDK/JingleCallStack (0.16.13):
     - JitsiMeetSDK (~> 2.8.1)
     - MatrixSDK/Core
-  - MatrixSDK/SwiftSupport (0.16.9):
+  - MatrixSDK/SwiftSupport (0.16.13):
     - MatrixSDK/Core
   - OLMKit (3.1.0):
     - OLMKit/olmc (= 3.1.0)
@@ -107,12 +108,13 @@ PODS:
 DEPENDENCIES:
   - cmark
   - DGCollectionViewLeftAlignFlowLayout (~> 1.0.4)
+  - FlowCommoniOS (~> 1.8.7)
   - GBDeviceInfo (~> 6.3.0)
   - KeychainAccess (~> 4.2)
   - KTCenterFlowLayout (~> 1.3.1)
   - MatomoTracker (~> 7.2.0)
-  - MatrixKit (= 0.12.10)
-  - MatrixKit/AppExtension (= 0.12.10)
+  - MatrixKit (= 0.12.15)
+  - MatrixKit/AppExtension (= 0.12.15)
   - MatrixSDK
   - MatrixSDK/JingleCallStack
   - MatrixSDK/SwiftSupport
@@ -130,6 +132,7 @@ SPEC REPOS:
     - DGCollectionViewLeftAlignFlowLayout
     - DTCoreText
     - DTFoundation
+    - FlowCommoniOS
     - GBDeviceInfo
     - GZIP
     - HPGrowingTextView
@@ -153,8 +156,9 @@ SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
   cmark: 1d9ad0375e3b9fa281732e992467903606015520
   DGCollectionViewLeftAlignFlowLayout: a0fa58797373ded039cafba8133e79373d048399
-  DTCoreText: 67023bb51b26711d5f640c851f4845aea14c24c9
-  DTFoundation: 25aa19bb7c6e225b1dfae195604fb8cf1da0ab4c
+  DTCoreText: e92f4cf6b36d9d71ce4436d12cf089d74ab0596b
+  DTFoundation: 767ca882209ef4d5132ec7e702526d5ed5bb71a2
+  FlowCommoniOS: 1647a1775b988f5d97202f635bcbcbce4f4c46a1
   GBDeviceInfo: a3f39dba1a04dcb630abff65d6f7e8fbf319eadd
   GZIP: af5c90ef903776a7e9afe6ebebd794a84a2929d4
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
@@ -164,8 +168,8 @@ SPEC CHECKSUMS:
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   MatomoTracker: 246b6b0693cf39b356134dec7561f719d3538b96
-  MatrixKit: 6937446581f1c71011e47db8b302dc912433edb2
-  MatrixSDK: 007988f3ef43983a6b1c1f0087a18c7e2598abfa
+  MatrixKit: 0fcc9a131a120637d7da37db2e02ab22241f171d
+  MatrixSDK: f96afe337d5a408c33a4a67a198afaf5cade56e7
   OLMKit: 4ee0159d63feeb86d836fdcfefe418e163511639
   Realm: 4eb04d7487bd43c0581256f40b424eafb711deff
   Reusable: 53a9acf5c536f229b31b5865782414b508252ddb
@@ -174,6 +178,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 44306ac00e0905967588b3035b5494bc26836188
+PODFILE CHECKSUM: 4b6b00d796458412d40d8a1e776fd1ce8de97631
 
 COCOAPODS: 1.9.3

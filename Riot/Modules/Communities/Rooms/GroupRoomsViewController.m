@@ -577,25 +577,6 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-//- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    NSMutableArray* actions;
-//
-//    // @TODO Add the swipe to remove this room from the community if the current user is admin
-//    actions = [[NSMutableArray alloc] init];
-//
-//    // Patch: Force the width of the button by adding whitespace characters into the title string.
-//    UITableViewRowAction *leaveAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"        "  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-//
-//        // @TODO Remove the room
-//
-//    }];
-//
-//    leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon_blue" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
-//    [actions insertObject:leaveAction atIndex:0];
-//
-//    return actions;
-//}
 
 #pragma mark - UISearchBar delegate
 

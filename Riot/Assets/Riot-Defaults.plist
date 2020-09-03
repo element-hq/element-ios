@@ -6,14 +6,6 @@
 	<true/>
 	<key>pinRoomsWithUnread</key>
 	<true/>
-	<key>pushKitAppIdProd</key>
-	<string>im.vector.app.ios.voip.prod</string>
-	<key>pushKitAppIdDev</key>
-	<string>im.vector.app.ios.voip.dev</string>
-	<key>pusherAppIdDev</key>
-	<string>im.vector.app.ios.dev</string>
-	<key>pusherAppIdProd</key>
-	<string>im.vector.app.ios.prod</string>
 	<key>matrixApps</key>
 	<true/>
 	<key>showAllEventsInRoomHistory</key>

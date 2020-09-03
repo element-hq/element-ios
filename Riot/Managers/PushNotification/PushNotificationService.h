@@ -18,6 +18,7 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import <UserNotifications/UserNotifications.h>
+#import "Riot-Swift.h"
 
 @class MXSession;
 @class MXEvent;
@@ -28,6 +29,13 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PushNotificationService : NSObject <UNUserNotificationCenterDelegate>
+
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
+
+/// Designated initializer
+/// @param pushNotificationStore Push Notification Store instance
+- (instancetype)initWithPushNotificationStore:(PushNotificationStore *)pushNotificationStore;
 
 /**
  Is push really registered.
@@ -63,10 +71,22 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)deregisterRemoteNotifications;
 
+/// Method to be called when the application resigns active..
+- (void)applicationWillResignActive;
+
+/// Method to be called when the application enters background..
+- (void)applicationDidEnterBackground;
+
+/// Method to be called when the application becomes active.
+- (void)applicationDidBecomeActive;
+
 /**
- Method to be called when the application enters foreground. Flushs all the pending notifications.
+ Make sure the account has no more PushKit pusher.
+ 
+ @param session The session on this account.
  */
-- (void)applicationWillEnterForeground;
+- (void)checkPushKitPushersInSession:(MXSession*)session;
+
 
 /**
  Remove delivered notifications for a given room id except call notifications

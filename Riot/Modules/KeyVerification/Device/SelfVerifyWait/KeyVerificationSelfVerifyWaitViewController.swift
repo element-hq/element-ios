@@ -40,7 +40,9 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     
     @IBOutlet private weak var additionalInformationLabel: UILabel!
     
-    
+    @IBOutlet private weak var recoverSecretsAvailabilityLoadingContainerView: UIView!
+    @IBOutlet private weak var recoverSecretsAvailabilityLoadingLabel: UILabel!
+    @IBOutlet private weak var recoverSecretsAvailabilityActivityIndicatorView: UIActivityIndicatorView!
     @IBOutlet private weak var recoverSecretsContainerView: UIView!
     @IBOutlet private weak var recoverSecretsButton: RoundedButton!
     @IBOutlet private weak var recoverSecretsAdditionalInformationLabel: UILabel!
@@ -102,6 +104,8 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         self.mobileClientLabel.textColor = theme.textPrimaryColor
         self.mobileClientImageView.tintColor = theme.tintColor
         self.additionalInformationLabel.textColor = theme.textSecondaryColor
+        self.recoverSecretsAvailabilityLoadingLabel.textColor = theme.textSecondaryColor
+        self.recoverSecretsAvailabilityActivityIndicatorView.color = theme.tintColor
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -141,6 +145,8 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         switch viewState {
         case .loading:
             self.renderLoading()
+        case .secretsRecoveryCheckingAvailability(let text):
+            self.renderSecretsRecoveryCheckingAvailability(withText: text)
         case .loaded(let viewData):
             self.renderLoaded(viewData: viewData)
         case .cancelled(let reason):
@@ -154,6 +160,13 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     
     private func renderLoading() {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+    }
+    
+    private func renderSecretsRecoveryCheckingAvailability(withText text: String?) {
+        self.recoverSecretsAvailabilityLoadingLabel.text = text
+        self.recoverSecretsAvailabilityActivityIndicatorView.startAnimating()
+        self.recoverSecretsAvailabilityLoadingContainerView.isHidden = false
+        self.recoverSecretsContainerView.isHidden = true
     }
     
     private func renderLoaded(viewData: KeyVerificationSelfVerifyWaitViewData) {
@@ -180,6 +193,8 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
             }
         }
         
+        self.recoverSecretsAvailabilityLoadingContainerView.isHidden = true
+        self.recoverSecretsAvailabilityActivityIndicatorView.stopAnimating()
         self.recoverSecretsContainerView.isHidden = hideRecoverSecrets
         self.recoverSecretsButton.setTitle(recoverSecretsButtonTitle, for: .normal)
     }

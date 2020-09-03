@@ -615,48 +615,6 @@
     
     currentAlert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-//    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_recents_start_chat_with", @"Vector", nil)
-//                                                     style:UIAlertActionStyleDefault
-//                                                   handler:^(UIAlertAction * action) {
-//
-//                                                       if (weakSelf)
-//                                                       {
-//                                                           typeof(self) self = weakSelf;
-//                                                           self->currentAlert = nil;
-//
-//                                                           [self performSegueWithIdentifier:@"presentStartChat" sender:self];
-//                                                       }
-//
-//                                                   }]];
-//
-//    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_recents_create_empty_room", @"Vector", nil)
-//                                                     style:UIAlertActionStyleDefault
-//                                                   handler:^(UIAlertAction * action) {
-//
-//                                                       if (weakSelf)
-//                                                       {
-//                                                           typeof(self) self = weakSelf;
-//                                                           self->currentAlert = nil;
-//
-//                                                           [self createAnEmptyRoom];
-//                                                       }
-//
-//                                                   }]];
-//
-//    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_recents_join_room", @"Vector", nil)
-//                                                     style:UIAlertActionStyleDefault
-//                                                   handler:^(UIAlertAction * action) {
-//
-//                                                       if (weakSelf)
-//                                                       {
-//                                                           typeof(self) self = weakSelf;
-//                                                           self->currentAlert = nil;
-//
-//                                                           [self joinARoom];
-//                                                       }
-//
-//                                                   }]];
-    
     [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
@@ -675,76 +633,6 @@
     [currentAlert mxk_setAccessibilityIdentifier:@"GroupsVCCreateRoomAlert"];
     [self presentViewController:currentAlert animated:YES completion:nil];
 }
-
-//- (void)joinARoom
-//{
-//    [currentAlert dismissViewControllerAnimated:NO completion:nil];
-//
-//    __weak typeof(self) weakSelf = self;
-//
-//    // Prompt the user to type a room id or room alias
-//    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_recents_join_room_title", @"Vector", nil)
-//                                                       message:NSLocalizedStringFromTable(@"room_recents_join_room_prompt", @"Vector", nil)
-//                                                preferredStyle:UIAlertControllerStyleAlert];
-//
-//    [currentAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-//
-//        textField.secureTextEntry = NO;
-//        textField.placeholder = nil;
-//        textField.keyboardType = UIKeyboardTypeDefault;
-//    }];
-//
-//    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-//                                                     style:UIAlertActionStyleDefault
-//                                                   handler:^(UIAlertAction * action) {
-//
-//                                                       if (weakSelf)
-//                                                       {
-//                                                           typeof(self) self = weakSelf;
-//                                                           self->currentAlert = nil;
-//                                                       }
-//
-//                                                   }]];
-//
-//    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil)
-//                                                     style:UIAlertActionStyleDefault
-//                                                   handler:^(UIAlertAction * action) {
-//
-//                                                       if (weakSelf)
-//                                                       {
-//                                                           typeof(self) self = weakSelf;
-//
-//                                                           NSString *roomAliasOrId = [self->currentAlert textFields].firstObject.text;
-//
-//                                                           self->currentAlert = nil;
-//
-//                                                           [self.activityIndicator startAnimating];
-//
-//                                                           self->currentRequest = [self.mainSession joinRoom:roomAliasOrId success:^(MXRoom *room) {
-//
-//                                                               self->currentRequest = nil;
-//                                                               [self.activityIndicator stopAnimating];
-//
-//                                                               // Show the room
-//                                                               [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession];
-//
-//                                                           } failure:^(NSError *error) {
-//
-//                                                               NSLog(@"[RecentsViewController] Join joinARoom (%@) failed", roomAliasOrId);
-//
-//                                                               self->currentRequest = nil;
-//                                                               [self.activityIndicator stopAnimating];
-//
-//                                                               // Alert user
-//                                                               [[AppDelegate theDelegate] showErrorAsAlert:error];
-//                                                           }];
-//                                                       }
-//
-//                                                   }]];
-//
-//    [currentAlert mxk_setAccessibilityIdentifier:@"RecentsVCJoinARoomAlert"];
-//    [self presentViewController:currentAlert animated:YES completion:nil];
-//}
 
 #pragma mark - Table view scrolling
 

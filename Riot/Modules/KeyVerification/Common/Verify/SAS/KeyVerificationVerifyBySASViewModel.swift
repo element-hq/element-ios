@@ -46,9 +46,6 @@ final class KeyVerificationVerifyBySASViewModel: KeyVerificationVerifyBySASViewM
         self.verificationKind = verificationKind
     }
     
-    deinit {
-    }
-    
     // MARK: - Public
     
     func process(viewAction: KeyVerificationVerifyBySASViewAction) {
