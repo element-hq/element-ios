@@ -102,33 +102,36 @@ Matrix session observer used to detect new opened sessions.
 
 - (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
+    NSLog(@"[PushNotificationService][Push] didRegisterForRemoteNotificationsWithDeviceToken");
+    
     MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
     [accountManager setApnsDeviceToken:deviceToken];
     
-    //  remove PushKit pusher
+    //  Resurrect old PushKit token to better kill it
     if (!accountManager.pushDeviceToken)
     {
         //  If we don't have the pushDeviceToken, we may have migrated it into the shared user defaults.
         NSString *pushDeviceToken = [MXKAppSettings.standardAppSettings.sharedUserDefaults objectForKey:@"pushDeviceToken"];
         if (pushDeviceToken)
         {
-            //  Set the token in standard user defaults, as MXKAccount will read it from there when removing the pusher.
+            NSLog(@"[PushNotificationService][Push] didRegisterForRemoteNotificationsWithDeviceToken: Move PushKit token to user defaults");
+            
+            // Set the token in standard user defaults, as MXKAccount will read it from there when removing the pusher.
+            // This will allow to remove the PushKit pusher in the next step
             [[NSUserDefaults standardUserDefaults] setObject:pushDeviceToken forKey:@"pushDeviceToken"];
+            
+            [MXKAppSettings.standardAppSettings.sharedUserDefaults removeObjectForKey:@"pushDeviceToken"];
+            [MXKAppSettings.standardAppSettings.sharedUserDefaults removeObjectForKey:@"pushOptions"];
         }
     }
     
-    //  if we already have pushDeviceToken or recovered it in above step
+    //  If we already have pushDeviceToken or recovered it in above step, remove its PushKit pusher
     if (accountManager.pushDeviceToken)
     {
+        NSLog(@"[PushNotificationService][Push] didRegisterForRemoteNotificationsWithDeviceToken: A PushKit pusher still exists. Remove it");
+        
         //  Attempt to remove PushKit pushers explicitly
-        [[accountManager accounts] enumerateObjectsUsingBlock:^(MXKAccount * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            [obj enablePushKitNotifications:NO success:^{
-                [MXKAppSettings.standardAppSettings.sharedUserDefaults removeObjectForKey:@"pushDeviceToken"];
-                [MXKAppSettings.standardAppSettings.sharedUserDefaults removeObjectForKey:@"pushOptions"];
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pushDeviceToken"];
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pushOptions"];
-            } failure:nil];
-        }];
+        [self clearPushNotificationToken];
     }
 
     _isPushRegistered = YES;
@@ -194,6 +197,29 @@ Matrix session observer used to detect new opened sessions.
     }
 }
 
+- (void)checkPushKitPushersInSession:(MXSession*)session
+{
+    [session.matrixRestClient pushers:^(NSArray<MXPusher *> *pushers) {
+        
+        NSLog(@"[PushNotificationService][Push] checkPushKitPushers: %@ has %@ pushers:", session.myUserId, @(pushers.count));
+        
+        for (MXPusher *pusher in pushers)
+        {
+            NSLog(@"   - %@", pusher.appId);
+            
+            // We do not want anymore PushKit pushers the app used to use
+            if ([pusher.appId isEqualToString:BuildSettings.pushKitAppIdProd]
+                || [pusher.appId isEqualToString:BuildSettings.pushKitAppIdDev])
+            {
+                [self removePusher:pusher inSession:session];
+            }
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"[PushNotificationService][Push] checkPushKitPushers: Error: %@", error);
+    }];
+}
+
+
 #pragma mark - Private Methods
 
 - (void)setShouldReceiveVoIPPushes:(BOOL)shouldReceiveVoIPPushes
@@ -238,6 +264,33 @@ Matrix session observer used to detect new opened sessions.
     _pushRegistry.delegate = self;
     _pushRegistry.desiredPushTypes = [NSSet setWithObject:PKPushTypeVoIP];
 }
+
+- (void)removePusher:(MXPusher*)pusher inSession:(MXSession*)session
+{
+    NSLog(@"[PushNotificationService][Push] removePusher: %@", pusher.appId);
+    
+    // Shortcut MatrixKit and its complex logic and call directly the API
+    [session.matrixRestClient setPusherWithPushkey:pusher.pushkey
+                                              kind:[NSNull null]    // This is how we remove a pusher
+                                             appId:pusher.appId
+                                    appDisplayName:pusher.appDisplayName
+                                 deviceDisplayName:pusher.deviceDisplayName
+                                        profileTag:pusher.profileTag
+                                              lang:pusher.lang
+                                              data:pusher.data.JSONDictionary
+                                            append:NO
+                                           success:^{
+        NSLog(@"[PushNotificationService][Push] removePusher: Success");
+        
+        // Brute clean remaining MatrixKit data
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pushDeviceToken"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pushOptions"];
+        
+    } failure:^(NSError *error) {
+        NSLog(@"[PushNotificationService][Push] removePusher: Error: %@", error);
+    }];
+}
+
 
 - (void)launchBackgroundSync
 {
@@ -411,14 +464,10 @@ Matrix session observer used to detect new opened sessions.
 - (void)clearPushNotificationToken
 {
     NSLog(@"[PushNotificationService][Push] clearPushNotificationToken: Clear existing token");
-
-    // XXX: The following code has been commented to avoid automatic deactivation of push notifications
-    // There may be a race condition here where the clear happens after the update of the new push token.
-    // We have no evidence of this. This is a safety measure.
-
-    // Clear existing token
-    //MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
-    //[accountManager setPushDeviceToken:nil withPushOptions:nil];
+    
+    // Clear existing pushkit token registered on the HS
+    MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
+    [accountManager setPushDeviceToken:nil withPushOptions:nil];
 }
 
 // Remove delivred notifications for a given room id except call notifications
