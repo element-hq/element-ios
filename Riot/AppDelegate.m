@@ -1859,6 +1859,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             [self registerNewRequestNotificationForSession:mxSession];
             
             [self checkLocalPrivateKeysInSession:mxSession];
+            
+            [self.pushNotificationService checkPushKitPushersInSession:mxSession];
         }
         else if (mxSession.state == MXSessionStateClosed)
         {

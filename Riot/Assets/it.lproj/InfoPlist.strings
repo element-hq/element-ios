@@ -4,3 +4,4 @@
 "NSMicrophoneUsageDescription" = "Il microfono viene utilizzato per registrare video ed effettuare chiamate.";
 "NSContactsUsageDescription" = "Per scoprire i contatti che già usano Matrix, Element può inviare gli indirizzi email e i numeri di telefono della tua rubrica al server identità che hai scelto. Se supportato, viene fatto un hash dei dati personali prima dell'invio - controlla la politica sulla privacy del tuo server di identità per maggiori informazioni.";
 "NSCalendarsUsageDescription" = "Vedi le tue riunioni programmate nell'app.";
+"NSFaceIDUsageDescription" = "Face ID viene usato per accedere all'app.";

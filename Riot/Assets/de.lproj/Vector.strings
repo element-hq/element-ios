@@ -588,7 +588,7 @@
 "key_backup_setup_intro_setup_action_with_existing_backup" = "Benutze Schlüsselsicherung";
 "key_backup_setup_passphrase_title" = "Sichere dein Backup mit einer Passphrase";
 "key_backup_setup_passphrase_info" = "Wir speichern eine verschlüsselte Kopie deiner Schlüssel auf unserem Server. Schütze deine Sicherung mit einer Passphrase, um sie sicher zu halten.\n\nFür maximale Sicherheit sollte sich dies von deinem Kontopasswort unterscheiden.";
-"key_backup_setup_passphrase_passphrase_title" = "Eingeben";
+"key_backup_setup_passphrase_passphrase_title" = "Enter";
 "key_backup_setup_passphrase_passphrase_placeholder" = "Passphrase eingeben";
 "key_backup_setup_passphrase_passphrase_valid" = "Gut!";
 "key_backup_setup_passphrase_passphrase_invalid" = "Versuche ein Wort hinzuzufügen";
@@ -1024,7 +1024,7 @@
 "authenticated_session_flow_not_supported" = "Diese App unterstützt nicht diese Authentifizierungsmethode für deinen Home-Server.";
 "secure_key_backup_setup_intro_title" = "Sicheres Backup";
 "store_promotional_text" = "Privatsphäre-wahrende Kollaborations-App in einem offenen Netzwerk. Dezentral, um dir die Kontrolle zu geben. Keine Datenerfassung, keine Hintertüren und kein Zugriff durch Dritte.";
-"room_participants_action_security_status_complete_security" = "Sicherheit vervollständigen";
+"room_participants_action_security_status_complete_security" = "Vollständige Sicherheit";
 "external_link_confirmation_title" = "Überprüfe diesen Link genau";
 "external_link_confirmation_message" = "Der Link %@ braucht zu lange auf der anderen Seite: %@\n\nSicher, dass du fortfahren möchtest?";
 "security_settings_crypto_sessions_description_2" = "Wenn du dich nicht eingeloggt hast, ändere dein Passwort und setze das Sichere Backup zurück.";
@@ -1032,7 +1032,7 @@
 "security_settings_crosssigning_info_exists" = "Dein Konto hat eine Cross-Signing Identität, aber dieser Sitzung wird noch nicht vertraut. Vervollständige die Sicherheit auf diese Sitzung.";
 "security_settings_crosssigning_info_trusted" = "Cross-Signing ist aktiviert. Du kannst anderen Nutzern und deinen anderen Sitzungen basierend auf Cross-Signing vertrauen, aber du kannst in dieser Sitzung kein Cross-Signing durchführen, da sie keine privaten Cross-Signing-Schlüssel enthält. Vervollständige die Sicherheit dieser Sitzung.";
 "security_settings_crosssigning_bootstrap" = "Cross-Signing einrichten";
-"security_settings_complete_security_alert_title" = "Sicherheit vervollständigen";
+"security_settings_complete_security_alert_title" = "Vollständige Sicherheit";
 "security_settings_complete_security_alert_message" = "Du solltest zuerst die Sicherheit deiner aktuellen Sitzung vervollständigen.";
 // Events formatter with you
 "event_formatter_widget_added_by_you" = "Du hast das Widget hinzugefügt: %@";
@@ -1130,14 +1130,14 @@
 "secrets_setup_recovery_key_done_action" = "Erledigt";
 "secrets_setup_recovery_key_storage_alert_title" = "Bewahre ihn sicher auf";
 "key_verification_verify_qr_code_scan_other_code_success_message" = "Der QR-Code wurde erfolgreich validiert.";
-"security_settings_secure_backup_setup" = "Einrichten";
-"security_settings_crosssigning_complete_security" = "Sicherheit vervollständigen";
-"secure_key_backup_setup_existing_backup_error_delete_it" = "Backup löschen";
+"security_settings_secure_backup_setup" = "Konfiguration";
+"security_settings_crosssigning_complete_security" = "Vollständige Sicherheit";
+"secure_key_backup_setup_existing_backup_error_delete_it" = "Lösche es";
 "device_verification_self_verify_alert_validate_action" = "Überprüfen";
 "key_verification_self_verify_current_session_alert_validate_action" = "Überprüfen";
 "key_verification_manually_verify_device_validate_action" = "Überprüfen";
-"secrets_recovery_with_passphrase_passphrase_title" = "Eingeben";
-"secrets_recovery_with_key_recovery_key_title" = "Eingeben";
+"secrets_recovery_with_passphrase_passphrase_title" = "Enter";
+"secrets_recovery_with_key_recovery_key_title" = "Enter";
 "secrets_setup_recovery_key_storage_alert_message" = "✓ Drucken ihn aus und bewahre ihn an einem sicheren Ort auf\n✓ Speicher ihn auf einem USB-Stick oder einem Backup-Laufwerk\n✓ Kopiere ihn in deinen persönlichen Cloud-Speicher";
 "secrets_setup_recovery_passphrase_title" = "Setze Sicherheitsphrase";
 "secrets_setup_recovery_passphrase_information" = "Gib eine Sicherheitsphrase ein, welche nur du kennst und deine Daten auf dem Server geheim halten soll.";

@@ -227,7 +227,7 @@
 "room_event_action_reaction_history" = "Reaktionshistorik";
 "room_action_camera" = "Ta en bild eller video";
 "room_action_send_photo_or_video" = "Skicka bild eller video";
-"room_action_send_sticker" = "Skicka klistermärke";
+"room_action_send_sticker" = "Skicka dekal";
 "room_action_send_file" = "Skicka fil";
 "room_action_reply" = "Svara";
 "room_replacement_information" = "Det här rumet har ersatts och är inte längre aktivt.";
@@ -242,7 +242,7 @@
 "media_type_accessibility_video" = "Video";
 "media_type_accessibility_location" = "Plats";
 "media_type_accessibility_file" = "Fil";
-"media_type_accessibility_sticker" = "Klistermärke";
+"media_type_accessibility_sticker" = "Dekal";
 "external_link_confirmation_title" = "Dubbelkolla den här länken";
 "external_link_confirmation_message" = "Länken %@ tar dig till en annan webbplats: %@\n\nÄr du säker på att du vill fortsätta?";
 // Unknown devices
@@ -614,7 +614,7 @@
 "settings_crypto_device_key" = "\nSessionsnyckel:\n";
 "settings_key_backup_info_signout_warning" = "Anslut den här sessionen till nyckelbackup innan du loggar ut för att undvika förlust av någon nyckel som endast finns på den här enheten.";
 "settings_discovery_no_identity_server" = "Du använder för närvarande ingen identitetsserver. Lägg till en för att kunna upptäckas av befintliga kontakter du känner.";
-"settings_discovery_terms_not_signed" = "Acceptera identitetsserverns (%s) användarvillkor för att låta dig själv vara upptäckbar med e-postadress eller telefonnummer.";
+"settings_discovery_terms_not_signed" = "Acceptera identitetsserverns (%@) användarvillkor för att låta dig själv vara upptäckbar med e-postadress eller telefonnummer.";
 "security_settings_crypto_sessions_loading" = "Laddar sessioner…";
 "security_settings_crosssigning_info_exists" = "Ditt konto har en identitet för korssignering, men den är ännu inte betrodd av den här sessionen. Slutför säkerheten för den här sessionen.";
 "security_settings_crosssigning_info_trusted" = "Korssignering är aktiverat. Du kan lita på andra användare och dina andra sessioner baserat på korssignering, men du kan inte korssignera från den här sessionen eftersom den inte har privata nycklar för korssignering. Slutför säkerheten för den här sessionen.";
