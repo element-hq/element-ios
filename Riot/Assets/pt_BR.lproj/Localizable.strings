@@ -43,14 +43,21 @@
 /* Incoming one-to-one video call */
 "VIDEO_CALL_FROM_USER" = "Chamada de vídeo de %@";
 /* Incoming unnamed voice conference invite from a specific person */
-"VOICE_CONF_FROM_USER" = "Chamada coletiva de %@";
+"VOICE_CONF_FROM_USER" = "Chamada de voz em grupo de %@";
 /* Incoming unnamed video conference invite from a specific person */
-"VIDEO_CONF_FROM_USER" = "Vídeo-chamada coletiva de %@";
+"VIDEO_CONF_FROM_USER" = "Chamada de vídeo em grupo de %@";
 /* Incoming named voice conference invite from a specific person */
-"VOICE_CONF_NAMED_FROM_USER" = "Vídeo chamada coletiva de %@: '%@'";
+"VOICE_CONF_NAMED_FROM_USER" = "Chamada de vídeo em grupo de %@: '%@'";
 /* Incoming named video conference invite from a specific person */
-"VIDEO_CONF_NAMED_FROM_USER" = "Vídeo-chamada coletiva de %@: '%@'";
+"VIDEO_CONF_NAMED_FROM_USER" = "Chamada de vídeo em grupo de %@: '%@'";
 /* Message title for a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM_TITLE" = "%@ em %@";
 /* Sticker from a specific person, not referencing a room. */
 "STICKER_FROM_USER" = "%@ enviou uma figurinha";
+/* New message indicator on unknown room */
+"MESSAGE" = "Mensagem";
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "Mensagem de %@";
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "Mensagem em %@";
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ solicita confirmação";
