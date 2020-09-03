@@ -1,0 +1,63 @@
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ i %@";
+/* New message from a specific person, not referencing a room */
+"MSG_FROM_USER" = "%@ skickade ett meddelande";
+/* New message from a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM" = "%@ postade i %@";
+/* New message from a specific person, not referencing a room. Content included. */
+"MSG_FROM_USER_WITH_CONTENT" = "%@: %@";
+/* New message from a specific person in a named room. Content included. */
+"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ i %@: %@";
+/* New action message from a specific person, not referencing a room. */
+"ACTION_FROM_USER" = "* %@ %@";
+/* New action message from a specific person in a named room. */
+"ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
+/* New action message from a specific person, not referencing a room. */
+"IMAGE_FROM_USER" = "%@ skickade en bild %@";
+/* New action message from a specific person in a named room. */
+"IMAGE_FROM_USER_IN_ROOM" = "%@ skickade en bild %@ i %@";
+/* A single unread message in a room */
+"SINGLE_UNREAD_IN_ROOM" = "Du fick ett meddelande i %@";
+/* A single unread message */
+"SINGLE_UNREAD" = "Du fick ett meddelande";
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@ skickade en dekal";
+/* New message indicator on unknown room */
+"MESSAGE" = "Meddelande";
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "Meddelande från %@";
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "Meddelande i %@";
+/* Multiple unread messages in a room */
+"UNREAD_IN_ROOM" = "%@ nya meddelanden i %@";
+/* Multiple unread messages from a specific person, not referencing a room */
+"MSGS_FROM_USER" = "%@ nya meddelanden i %@";
+/* Multiple unread messages from two people */
+"MSGS_FROM_TWO_USERS" = "%@ nya meddelanden från %@ och %@";
+/* Multiple unread messages from three people */
+"MSGS_FROM_THREE_USERS" = "%@ nya meddelanden från %@, %@ och %@";
+/* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
+"MSGS_FROM_TWO_PLUS_USERS" = "%@ nya meddelanden från %@, %@ och andra";
+/* Multiple messages in two rooms */
+"MSGS_IN_TWO_ROOMS" = "%@ nya meddelanden från %@ och %@";
+/* Look, stuff's happened, alright? Just open the app. */
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@ nya meddelanden i %@, %@ och andra";
+/* A user has invited you to a chat */
+"USER_INVITE_TO_CHAT" = "%@ har bjudit in dig för att chatta";
+/* A user has invited you to an (unamed) group chat */
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ har bjudit in dig till en gruppchatt";
+/* A user has invited you to a named room */
+"USER_INVITE_TO_NAMED_ROOM" = "%@ har bjudit in dig till %@";
+/* Incoming one-to-one voice call */
+"VOICE_CALL_FROM_USER" = "Samtal från %@";
+/* Incoming one-to-one video call */
+"VIDEO_CALL_FROM_USER" = "Videosamtal från %@";
+/* Incoming unnamed voice conference invite from a specific person */
+"VOICE_CONF_FROM_USER" = "Gruppsamtal från %@";
+/* Incoming unnamed video conference invite from a specific person */
+"VIDEO_CONF_FROM_USER" = "Videogruppsamtal från %@";
+/* Incoming named voice conference invite from a specific person */
+"VOICE_CONF_NAMED_FROM_USER" = "Gruppsamtal från %@: '%@'";
+/* Incoming named video conference invite from a specific person */
+"VIDEO_CONF_NAMED_FROM_USER" = "Videogruppsamtal från %@: '%@'";
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ vill verifiera";
