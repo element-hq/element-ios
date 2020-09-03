@@ -17,7 +17,7 @@ Changes to be released in next version
  * 
     
 🧱 Build
- * 
+ * buildRelease.sh: Make sure it works for both branches and tags
     
 Others
  * 

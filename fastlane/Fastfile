@@ -59,7 +59,7 @@ platform :ios do
 
   desc "Point MatrixKit and MatrixSDK to the branch with the same name as the current branch if such one exist, develop otherwise"
   lane :point_dependencies_to_same_feature do
-    edit_podfile(branch_pattern: git_branch)
+    edit_podfile(branch_pattern: git_branch) unless git_branch.to_s.empty?
   end
 
   desc "Build the app for simulator to ensure it compiles"
