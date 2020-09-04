@@ -399,14 +399,7 @@
         
         CGSize fittingSize = UILayoutFittingCompressedSize;
         CGFloat tableViewWidth = CGRectGetWidth(tableView.frame);
-        CGFloat safeAreaWidth;
-        
-        if (@available(iOS 11.0, *)) {
-            // Take safe area into account
-            safeAreaWidth = MAX(tableView.safeAreaInsets.left, tableView.safeAreaInsets.right);
-        } else {
-            safeAreaWidth = 0;
-        }
+        CGFloat safeAreaWidth = MAX(tableView.safeAreaInsets.left, tableView.safeAreaInsets.right);        
         
         fittingSize.width = tableViewWidth - safeAreaWidth;
         

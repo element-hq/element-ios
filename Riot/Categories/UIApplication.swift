@@ -26,13 +26,8 @@ extension UIApplication {
             return
         }
         
-        if #available(iOS 10.0, *) {
-            application.open(url, options: [:], completionHandler: { success in
-                completion?(success)
-            })
-        } else {
-            let success = application.openURL(url)
+        application.open(url, options: [:], completionHandler: { success in
             completion?(success)
-        }
+        })
     }
 }

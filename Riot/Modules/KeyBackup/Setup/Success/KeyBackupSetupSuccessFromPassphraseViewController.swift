@@ -122,9 +122,12 @@ final class KeyBackupSetupSuccessFromPassphraseViewController: UIViewController 
     }
     
     private func shareRecoveryKey() {
+        guard let recoveryKey = self.recoveryKey else {
+            return
+        }
         
         // Set up activity view controller
-        let activityItems: [Any] = [ self.recoveryKey ]
+        let activityItems: [Any] = [ recoveryKey ]
         let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         
         // Configure source view when activity view controller is presented with a popover

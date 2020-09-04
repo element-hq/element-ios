@@ -100,11 +100,9 @@ static const CGFloat kInterItemsSpaceHorizontal = 8.0;
     [super layoutSubviews];
 
     CGFloat _leftInset = 0.0, _rightInset = 0.0;
-    if (@available(iOS 11, *))
-    {
-        _leftInset += self.safeAreaInsets.left;
-        _rightInset += self.safeAreaInsets.right;
-    }
+    
+    _leftInset += self.safeAreaInsets.left;
+    _rightInset += self.safeAreaInsets.right;
 
     CGFloat leftMargin = MAX(_leftInset, _minimumLeftInset);
     CGFloat rightMargin = MAX(_rightInset, _minimumRightInset);

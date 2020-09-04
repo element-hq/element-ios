@@ -411,8 +411,15 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 
     if (navigationAction.navigationType == WKNavigationTypeLinkActivated)
     {
+        NSURL *linkURL = navigationAction.request.URL;
+        
         // Open links outside the app
-        [[UIApplication sharedApplication] openURL:navigationAction.request.URL];
+        [[UIApplication sharedApplication] vc_open:linkURL completionHandler:^(BOOL success) {
+            if (!success)
+            {
+                NSLog(@"[WidgetVC] webView:decidePolicyForNavigationAction:decisionHandler fail to open external link: %@", linkURL);
+            }
+        }];
         decisionHandler(WKNavigationActionPolicyCancel);
         return;
     }
