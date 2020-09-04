@@ -1203,3 +1203,4 @@
 "biometrics_cant_unlocked_alert_message_x" = "A feloldáshoz használd ezt: %@ vagy jelentkezz vissza és engedélyezd ezt újra: %@";
 "biometrics_cant_unlocked_alert_message_login" = "Bejelentkezés újra";
 "biometrics_cant_unlocked_alert_message_retry" = "Újra";
+"biometrics_desetup_subtitle" = " ";

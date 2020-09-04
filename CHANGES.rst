@@ -1,14 +1,68 @@
 Changes to be released in next version
 =================================================
 
+✨ Features
+ * 
+    
+🙌 Improvements
+ * AppDelegate: Convert to Swift (#3594).
+    
+🐛 Bugfix
+ * 
+    
+⚠️ API Changes
+ * 
+    
+🗣 Translations
+ * 
+    
+🧱 Build
+ * buildRelease.sh: Make sure it works for both branches and tags
+    
+Others
+ * 
+
+Changes in 1.0.9 (2020-09-03)
+=================================================
+
 Features:
  * 
 
 Improvements:
- * AppDelegate: Convert to Swift (#3594).
+ * Upgrade MatrixKit version ([v0.12.17](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.17)).
+ * 
 
 Bugfix:
  * 
+
+API Change:
+ * 
+
+Translations:
+ * 
+
+Others:
+ * 
+
+Build:
+ * 
+
+Test:
+ * 
+
+Changes in 1.0.8 (2020-09-03)
+=================================================
+
+Features:
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.17](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.17)).
+ * 
+
+Bugfix:
+ * PushKit: Add more logs when removing PushKit pusher (#3577).
+ * PushKit: Check all registered pushers and remove PushKit ones (#3577).
 
 API Change:
  * 

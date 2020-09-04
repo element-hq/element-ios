@@ -81,6 +81,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)applicationDidBecomeActive;
 
 /**
+ Make sure the account has no more PushKit pusher.
+ 
+ @param session The session on this account.
+ */
+- (void)checkPushKitPushersInSession:(MXSession*)session;
+
+
+/**
  Remove delivered notifications for a given room id except call notifications
 
  @param roomId Room identifier
