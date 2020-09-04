@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -261,7 +261,7 @@
         <!--Master Tab Bar Controller-->
         <scene sceneID="iBe-Y5-gBt">
             <objects>
-                <tabBarController id="xaQ-tG-rlO" customClass="MasterTabBarController" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="MasterTabBarController" id="xaQ-tG-rlO" customClass="MasterTabBarController" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="m6O-wq-yrc">
                         <barButtonItem key="leftBarButtonItem" image="settings_icon" id="QSE-cg-V2m">
                             <userDefinedRuntimeAttributes>
@@ -342,7 +342,7 @@
         <!--RecentsSplitVC-->
         <scene sceneID="Nki-YV-4Qg">
             <objects>
-                <splitViewController title="RecentsSplitVC" id="H1p-Uh-vWS" customClass="RiotSplitViewController" sceneMemberID="viewController">
+                <splitViewController storyboardIdentifier="RiotSplitViewController" title="RecentsSplitVC" id="H1p-Uh-vWS" customClass="RiotSplitViewController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="EB5-8V-irH"/>
                     <connections>
@@ -422,10 +422,10 @@
             </objects>
             <point key="canvasLocation" x="-1375" y="-1121"/>
         </scene>
-        <!--View Controller-->
+        <!--Placeholder Details View Controller-->
         <scene sceneID="2wP-Cu-Wca">
             <objects>
-                <viewController storyboardIdentifier="EmptyDetailsViewControllerStoryboardId" id="Cpr-Tz-Az0" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EmptyDetailsViewControllerStoryboardId" id="Cpr-Tz-Az0" customClass="PlaceholderDetailsViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="yS4-RU-AsN"/>
                         <viewControllerLayoutGuide type="bottom" id="VKG-pW-vMU"/>
@@ -434,8 +434,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="6LG-qc-7jf">
-                                <rect key="frame" x="127.5" y="283" width="120" height="101"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch_screen_logo" translatesAutoresizingMaskIntoConstraints="NO" id="6LG-qc-7jf">
+                                <rect key="frame" x="127.5" y="273.5" width="120" height="120"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="6LG-qc-7jf" secondAttribute="height" multiplier="1:1" id="4Qy-7P-CuE"/>
+                                    <constraint firstAttribute="width" constant="120" id="E2Y-gX-itg"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -445,6 +449,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="c9s-dM-eEg"/>
+                    <connections>
+                        <outlet property="logoImageView" destination="6LG-qc-7jf" id="vLR-KE-0aH"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pZm-ap-zdK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -590,7 +597,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Tfl-tq-LQp"/>
+        <segue reference="mhb-l9-pM3"/>
         <segue reference="fIR-e3-ssz"/>
         <segue reference="f5u-Y1-7nt"/>
         <segue reference="vCz-dl-6xQ"/>
@@ -598,7 +605,7 @@
     </inferredMetricsTieBreakers>
     <resources>
         <image name="integrations_icon" width="24" height="24"/>
-        <image name="logo" width="120" height="101"/>
+        <image name="launch_screen_logo" width="240" height="240"/>
         <image name="search_icon" width="24" height="24"/>
         <image name="settings_icon" width="24" height="24"/>
         <image name="tab_favourites" width="24" height="24"/>
