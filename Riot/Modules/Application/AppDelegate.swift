@@ -22,13 +22,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - Properties
     
-    var window: UIWindow?        
+    // MARK: Private
     
     private var legacyAppDelegate: LegacyAppDelegate {
         return AppDelegate.theDelegate()
     }
     
-    // MARK: - Public
+    // MARK: Public
     
     /// Call the Riot legacy AppDelegate
     @objc class func theDelegate() -> LegacyAppDelegate {
@@ -37,6 +37,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return legacyAppDelegate
     }
+    
+    // UIApplicationDelegate properties
+    
+    /// Main application window
+    var window: UIWindow?
     
     // MARK: - UIApplicationDelegate
     
