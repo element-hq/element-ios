@@ -20,8 +20,6 @@
 #import "ThemeService.h"
 #import "Riot-Swift.h"
 
-#import "AppDelegate.h"
-
 @interface EncryptionInfoView() <KeyVerificationCoordinatorBridgePresenterDelegate>
 {
     KeyVerificationCoordinatorBridgePresenter *keyVerificationCoordinatorBridgePresenter;

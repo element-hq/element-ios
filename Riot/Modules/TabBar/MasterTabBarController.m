@@ -22,7 +22,6 @@
 #import "RecentsDataSource.h"
 #import "GroupsDataSource.h"
 
-#import "AppDelegate.h"
 
 #import "MXRoom+Riot.h"
 #import "MXSession+Riot.h"

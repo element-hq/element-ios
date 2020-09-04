@@ -18,7 +18,6 @@
 
 #import "CallViewController.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 
 #import "AvatarGenerator.h"

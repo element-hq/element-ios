@@ -24,7 +24,6 @@
 #import "FilesSearchCellData.h"
 #import "FilesSearchTableViewCell.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 
 @interface RoomFilesSearchViewController ()

@@ -20,7 +20,6 @@
 
 #import <OLMKit/OLMKit.h>
 
-#import "AppDelegate.h"
 #import "AvatarGenerator.h"
 
 #import "ThemeService.h"

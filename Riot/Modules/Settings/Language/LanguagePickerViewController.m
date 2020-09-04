@@ -16,7 +16,6 @@
 
 #import "LanguagePickerViewController.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 
 @interface LanguagePickerViewController ()

@@ -20,7 +20,6 @@
 
 #import "UIViewController+RiotSearch.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 
 #define CONTACTS_TABLEVC_LOCALCONTACTS_BITWISE 0x01

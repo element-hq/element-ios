@@ -16,7 +16,7 @@
  limitations under the License.
  */
 
-#import "AppDelegate.h"
+#import "LegacyAppDelegate.h"
 
 #import <Intents/Intents.h>
 #import <Contacts/Contacts.h>
@@ -42,8 +42,6 @@
 
 #import "AFNetworkReachabilityManager.h"
 
-#import "PushNotificationService.h"
-
 #import <AudioToolbox/AudioToolbox.h>
 
 #include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
@@ -57,6 +55,7 @@
 #import "MXRoom+Riot.h"
 
 #import "Riot-Swift.h"
+#import "PushNotificationService.h"
 
 //#define MX_CALL_STACK_OPENWEBRTC
 #ifdef MX_CALL_STACK_OPENWEBRTC
@@ -90,7 +89,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
 NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUniversalLinkDidChangeNotification";
 
-@interface AppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate>
+@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate>
 {
     /**
      Reachability observer
@@ -244,7 +243,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 @end
 
-@implementation AppDelegate
+@implementation LegacyAppDelegate
 
 #pragma mark -
 
@@ -264,10 +263,18 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     NSLog(@"[AppDelegate] initialize: Done");
 }
 
-+ (AppDelegate*)theDelegate
++ (instancetype)theDelegate
 {
-    return (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    static id sharedInstance = nil;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [[self alloc] init];
+    });
+    
+    return sharedInstance;
 }
+
 
 #pragma mark - Push Notifications
 

@@ -17,7 +17,6 @@
 
 #import "WidgetViewController.h"
 
-#import "AppDelegate.h"
 #import "IntegrationManagerViewController.h"
 #import "Riot-Swift.h"
 

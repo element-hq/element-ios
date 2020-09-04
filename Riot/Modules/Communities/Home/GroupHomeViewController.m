@@ -17,7 +17,6 @@
 
 #import "GroupHomeViewController.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 
 #import "ThemeService.h"

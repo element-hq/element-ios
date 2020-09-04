@@ -20,6 +20,7 @@
 #import <MatrixKit/MatrixKit.h>
 
 #import <PushKit/PushKit.h>
+#import "Riot-Swift.h"
 
 @interface PushNotificationService()<PKPushRegistryDelegate>
 
