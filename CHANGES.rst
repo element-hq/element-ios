@@ -10,6 +10,7 @@ Changes to be released in next version
 🐛 Bugfix
  * Show pin code screen on every foreground (#3620). 
  * Close keyboard on pin code screen (#3622).
+ * Fix content leakage on pin code protection (#3624).
     
 ⚠️ API Changes
  * 
