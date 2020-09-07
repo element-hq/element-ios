@@ -37,7 +37,6 @@ final class PlaceholderDetailViewController: UIViewController, Themable {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.theme = ThemeService.shared().theme
         self.setupViews()
         self.registerThemeServiceDidChangeThemeNotification()
         self.update(theme: self.theme)
@@ -48,6 +47,16 @@ final class PlaceholderDetailViewController: UIViewController, Themable {
     }
     
     // MARK: - Public
+    
+    // TODO: Extract Storyboard and use SwiftGen
+    class func instantiate() -> PlaceholderDetailViewController {
+        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        guard let emptyDetailsViewController = storyboard.instantiateViewController(withIdentifier: "EmptyDetailsViewControllerStoryboardId") as? PlaceholderDetailViewController else {
+            fatalError("[PlaceholderDetailViewController] Fail to load view controller from storyboard")
+        }
+        emptyDetailsViewController.theme = ThemeService.shared().theme
+        return emptyDetailsViewController
+    }
     
     func update(theme: Theme) {
         self.theme = theme
