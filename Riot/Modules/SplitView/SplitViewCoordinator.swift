@@ -27,12 +27,10 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
     
     private let splitViewController: UISplitViewController
     
-    // TODO: Move to TabBarCoordinator
-    private let masterNavigationController: UINavigationController
-    private let masterTabBarController: MasterTabBarController
+    private weak var masterPresentable: SplitViewMasterPresentable?
+    private weak var detailNavigationController: UINavigationController?
     
-    /// Completion called when `popToHomeViewControllerAnimated:` has been completed.
-    private var popToHomeViewControllerCompletion: (() -> Void)?
+    private weak var tabBarCoordinator: TabBarCoordinatorType?
     
     // MARK: Public
     
@@ -40,33 +38,36 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
     
     // MARK: - Setup
     
+    // TODO: Improve sessions injection
+    // at the moment the session is not used, see TabBarCoordinator `init`.
     init(router: RootRouterType, session: MXSession?) {
         self.rootRouter = router
         self.session = session
         
-        // TODO: Use a dedicated stoyboard and SwiftGen to access it
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        guard let splitViewController = storyboard.instantiateViewController(withIdentifier: "RiotSplitViewController") as? UISplitViewController else {
-            fatalError("[SplitViewCoordinator] Can't load RiotSplitViewController")
-        }
+        let splitViewController = UISplitViewController()
         splitViewController.preferredDisplayMode = .allVisible
         self.splitViewController = splitViewController
-        
-        guard let masterNavigationController = splitViewController.viewControllers.first as? UINavigationController else {
-            fatalError("[SplitViewCoordinator] Can't load masterNavigationController")
-        }
-        self.masterNavigationController = masterNavigationController
-        
-        guard let masterTabBarController = masterNavigationController.viewControllers.first as? MasterTabBarController else {
-            fatalError("[SplitViewCoordinator] Can't load masterTabBarController")
-        }
-        self.masterTabBarController = masterTabBarController
     }
     
     // MARK: - Public methods
     
     func start() {
         self.splitViewController.delegate = self
+        
+        let tabBarCoordinator = self.createTabBarCoordinator()
+        tabBarCoordinator.delegate = self
+        tabBarCoordinator.splitViewMasterPresentableDelegate = self
+        tabBarCoordinator.start()
+        let detailNavigationController = self.createDetailNavigationController()
+        
+        self.splitViewController.viewControllers = [tabBarCoordinator.toPresentable(), detailNavigationController]
+                
+        self.add(childCoordinator: tabBarCoordinator)
+        
+        self.tabBarCoordinator = tabBarCoordinator
+        self.masterPresentable = tabBarCoordinator
+        self.detailNavigationController = detailNavigationController
+        
         self.rootRouter.setRootModule(self.splitViewController)
     }
     
@@ -94,42 +95,34 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
         }
 
         // Release the current selected item (room/contact/group...).
-        masterTabBarController.releaseSelectedItem()
+        self.tabBarCoordinator?.releaseSelectedItems()
     }
     
     func popToHome(animated: Bool, completion: (() -> Void)?) {
-        if let secondNavController = self.secondaryNavigationController() {
+        if let secondNavController = self.detailNavigationController {
             secondNavController.popToRootViewController(animated: animated)
         }
 
         // Force back to the main screen if this is not the one that is displayed
-        if masterTabBarController != masterNavigationController.visibleViewController {
-            // Listen to the masterNavigationController changes
-            // We need to be sure that masterTabBarController is back to the screen
-            popToHomeViewControllerCompletion = completion
-            masterNavigationController.delegate = self
-
-            masterNavigationController.popToViewController(masterTabBarController, animated: animated)
-        } else {
-            // Select the Home tab
-            masterTabBarController.selectedIndex = Int(TABBAR_HOME_INDEX)
-            completion?()
-        }
+        self.tabBarCoordinator?.popToHome(animated: animated, completion: completion)
     }
     
     // MARK: - Private methods
     
     private func createPlaceholderDetailsViewController() -> UIViewController {
-        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        let emptyDetailsViewController = storyboard.instantiateViewController(withIdentifier: "EmptyDetailsViewControllerStoryboardId")
-        return emptyDetailsViewController
+        return PlaceholderDetailViewController.instantiate()
     }
     
-    func secondaryNavigationController() -> UINavigationController? {
-        guard splitViewController.viewControllers.count == 2, let secondViewController = splitViewController.viewControllers.last as? UINavigationController else {
-            return nil
-        }
-        return secondViewController
+    private func createTabBarCoordinator() -> TabBarCoordinator {
+        let tabBarCoordinator = TabBarCoordinator(session: self.session)
+        tabBarCoordinator.delegate = self
+        return tabBarCoordinator
+    }
+    
+    private func createDetailNavigationController() -> UINavigationController {
+        let placeholderDetailViewController = self.createPlaceholderDetailsViewController()
+        let detailNavigationController = RiotNavigationController(rootViewController: placeholderDetailViewController)
+        return detailNavigationController
     }
 }
 
@@ -137,11 +130,9 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
 extension SplitViewCoordinator: UISplitViewControllerDelegate {
     
     func splitViewController(_ splitViewController: UISplitViewController, separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
-                
-        // Return the top view controller of the master navigation controller, if it is a navigation controller itself.
-        if let topViewController = masterNavigationController.topViewController as? UINavigationController {
-            // Keep the detail scene
-            return topViewController
+        
+        if let detailViewController = self.masterPresentable?.secondViewControllerWhenSeparatedFromPrimary() {
+            return detailViewController
         }
 
         // Else return the default empty details view controller from the storyboard.
@@ -154,40 +145,25 @@ extension SplitViewCoordinator: UISplitViewControllerDelegate {
     }
     
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
-        if (masterTabBarController.currentRoomViewController == nil) && (masterTabBarController.currentContactDetailViewController == nil) && (masterTabBarController.currentGroupDetailViewController == nil) {
-            // Return YES to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
-            return true
-        } else {
-            return false
-        }
+        return self.masterPresentable?.collapseDetailViewController ?? false
     }
 }
 
-// MARK: - UINavigationControllerDelegate
-extension SplitViewCoordinator: UINavigationControllerDelegate {
+/// MARK: - UINavigationControllerDelegate
+extension SplitViewCoordinator: TabBarCoordinatorDelegate {
     
-    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
-        
-        if viewController == masterTabBarController {
-            masterNavigationController.delegate = nil
-            
-            // For unknown reason, the navigation bar is not restored correctly by [popToViewController:animated:]
-            // when a ViewController has hidden it (see MXKAttachmentsViewController).
-            // Patch: restore navigation bar by default here.
-            masterNavigationController.isNavigationBarHidden = false
+}
 
-            // Release the current selected item (room/contact/...).
-            masterTabBarController.releaseSelectedItem()
-
-            if let popToHomeViewControllerCompletion = self.popToHomeViewControllerCompletion {
-                let popToHomeViewControllerCompletion2: (() -> Void)? = popToHomeViewControllerCompletion
-                self.popToHomeViewControllerCompletion = nil
-
-                DispatchQueue.main.async {
-                    popToHomeViewControllerCompletion2?()
-                }
-            }
+/// MARK: - SplitViewMasterPresentableDelegate
+extension SplitViewCoordinator: SplitViewMasterPresentableDelegate {
+    func splitViewMasterPresentable(_ presentable: Presentable, wantsToDisplay detailPresentable: Presentable) {
+        guard let detailNavigationController = self.detailNavigationController else {
+            return
         }
         
+        detailNavigationController.viewControllers = [detailPresentable.toPresentable()]
+        
+        self.detailNavigationController?.viewControllers = [detailPresentable.toPresentable()]
+        self.splitViewController.showDetailViewController(detailNavigationController, sender: nil)
     }
 }
