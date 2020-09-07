@@ -27,7 +27,11 @@ final class SetPinCoordinator: SetPinCoordinatorType {
     
     private let navigationRouter: NavigationRouterType
     private let session: MXSession?
-    private var viewMode: SetPinCoordinatorViewMode
+    var viewMode: SetPinCoordinatorViewMode {
+        didSet {
+            start()
+        }
+    }
     private let pinCodePreferences: PinCodePreferences
     
     // MARK: Public
@@ -58,6 +62,8 @@ final class SetPinCoordinator: SetPinCoordinatorType {
             return createEnterPinCodeCoordinator()
         case .setupBiometricsAfterLogin, .setupBiometricsFromSettings, .confirmBiometricsToDeactivate:
             return createSetupBiometricsCoordinator()
+        case .inactive:
+            return createEnterPinCodeCoordinator()
         }
     }
     
