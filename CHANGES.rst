@@ -8,7 +8,7 @@ Changes to be released in next version
  * AppDelegate: Convert to Swift (#3594).
     
 🐛 Bugfix
- * 
+ * Show pin code screen on every foreground (#3620). 
     
 ⚠️ API Changes
  * 
