@@ -75,6 +75,12 @@ final class EnterPinCodeViewController: UIViewController {
             UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
         }
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        UIApplication.shared.vc_closeKeyboard()
+    }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.theme.statusBarStyle
