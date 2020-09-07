@@ -910,7 +910,7 @@
 "room_participants_action_security_status_verify" = "Überprüfen";
 "room_participants_action_security_status_warning" = "Warnung";
 "room_participants_security_loading" = "Lade…";
-"room_participants_security_information_room_not_encrypted" = "Nachrichten in diesem Raum sind nicht End-zu-End verschlüsselt.";
+"room_participants_security_information_room_not_encrypted" = "Nachrichten in diesem Raum sind nicht Ende-zu-Ende verschlüsselt.";
 "settings_security" = "SICHERHEIT";
 "settings_integrations_allow_description" = "Benutze einen Integrations-Manager (%@), um Bots, Bridges, Widgets und Sticker-Packs zu verwalten.\n\nIntegrations-Manager erhalten Konfigurations-Daten und können Widgets verändern, Raum-Einladungen versenden sowie Berechtigungen in deinem Namen einstellen.";
 "settings_labs_enable_cross_signing" = "Aktiviere Cross-Signing, um deinen Gesprächspartner anstatt dessen Gerät zu verifizieren (in Entwicklung)";
