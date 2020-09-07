@@ -35,7 +35,13 @@
 #define TABBAR_GROUPS_INDEX       4
 #define TABBAR_COUNT              5
 
+
+@protocol MasterTabBarControllerDelegate;
+
 @interface MasterTabBarController : UITabBarController
+
+// UITabBarController already have a `delegate` property
+@property (weak, nonatomic) id<MasterTabBarControllerDelegate> masterTabBarDelegate;
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsBarButtonItem;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *searchBarButtonIem;
@@ -165,3 +171,6 @@
 
 @end
 
+@protocol MasterTabBarControllerDelegate <NSObject>
+    - (void)masterTabBarController:(MasterTabBarController*)masterTabBarController wantsToPresentDetailViewController:(UIViewController*)detailViewController;
+@end

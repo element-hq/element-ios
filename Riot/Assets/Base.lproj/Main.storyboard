@@ -288,15 +288,12 @@
                     <connections>
                         <outlet property="searchBarButtonIem" destination="pud-Fh-Usd" id="DiH-Re-nZE"/>
                         <outlet property="settingsBarButtonItem" destination="QSE-cg-V2m" id="N6b-Ju-w9g"/>
-                        <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="showRoomDetails" id="tk8-vF-K4T"/>
                         <segue destination="ZlD-EU-ncw" kind="presentation" identifier="showAuth" modalPresentationStyle="fullScreen" id="fpJ-zM-Qpo"/>
                         <segue destination="pBa-To-3YT" kind="relationship" relationship="viewControllers" id="Sfs-mh-GOz"/>
-                        <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="showContactDetails" id="p4M-yR-DLA"/>
                         <segue destination="HnD-LA-psC" kind="relationship" relationship="viewControllers" id="zON-Qp-EVq"/>
                         <segue destination="IGB-jr-yFz" kind="relationship" relationship="viewControllers" id="CeF-yL-aO0"/>
                         <segue destination="HPQ-zg-lZR" kind="relationship" relationship="viewControllers" id="y12-eg-vhO"/>
                         <segue destination="SLx-Wj-p7E" kind="relationship" relationship="viewControllers" id="MLn-VT-30W"/>
-                        <segue destination="vC3-pB-5Vb" kind="showDetail" identifier="showGroupDetails" id="fIR-e3-ssz"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k1S-FF-3Zu" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -422,10 +419,10 @@
             </objects>
             <point key="canvasLocation" x="-1375" y="-1121"/>
         </scene>
-        <!--Placeholder Details View Controller-->
+        <!--Placeholder Detail View Controller-->
         <scene sceneID="2wP-Cu-Wca">
             <objects>
-                <viewController storyboardIdentifier="EmptyDetailsViewControllerStoryboardId" id="Cpr-Tz-Az0" customClass="PlaceholderDetailsViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EmptyDetailsViewControllerStoryboardId" id="Cpr-Tz-Az0" customClass="PlaceholderDetailViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="yS4-RU-AsN"/>
                         <viewControllerLayoutGuide type="bottom" id="VKG-pW-vMU"/>
@@ -598,7 +595,6 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="mhb-l9-pM3"/>
-        <segue reference="fIR-e3-ssz"/>
         <segue reference="f5u-Y1-7nt"/>
         <segue reference="vCz-dl-6xQ"/>
         <segue reference="cUw-vU-gJq"/>
