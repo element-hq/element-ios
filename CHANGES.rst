@@ -6,6 +6,7 @@ Changes to be released in next version
     
 🙌 Improvements
  * AppDelegate: Convert to Swift (#3594).
+ * Architecture: Use coordinator pattern for legacy screen flows (#3597).
     
 🐛 Bugfix
  * 
