@@ -29,7 +29,7 @@ final class SetPinCoordinator: SetPinCoordinatorType {
     private let session: MXSession?
     var viewMode: SetPinCoordinatorViewMode {
         didSet {
-            start()
+            updateRootCoordinator()
         }
     }
     private let pinCodePreferences: PinCodePreferences
@@ -70,9 +70,7 @@ final class SetPinCoordinator: SetPinCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        let rootCoordinator = getRootCoordinator()
-        
-        setRootCoordinator(rootCoordinator)
+        updateRootCoordinator()
     }
     
     func toPresentable() -> UIViewController {
@@ -84,6 +82,12 @@ final class SetPinCoordinator: SetPinCoordinatorType {
     }
     
     // MARK: - Private methods
+    
+    private func updateRootCoordinator() {
+        let rootCoordinator = getRootCoordinator()
+        
+        setRootCoordinator(rootCoordinator)
+    }
     
     private func setRootCoordinator(_ coordinator: Coordinator & Presentable) {
         coordinator.start()
