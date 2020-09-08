@@ -3,9 +3,9 @@
 "title_favourites" = "Favoriter";
 "next" = "Nästa";
 "back" = "Tillbaka";
-"continue" = "Rum";
+"continue" = "Fortsätt";
 "create" = "Skapa";
-"start" = "Börja";
+"start" = "Starta";
 "leave" = "Lämna";
 "remove" = "Ta bort";
 "invite" = "Bjud in";
@@ -17,7 +17,7 @@
 "join" = "Gå med";
 "decline" = "Avböj";
 "accept" = "Godkänn";
-"preview" = "Förhandsvisning";
+"preview" = "Förhandsgranskning";
 "camera" = "Kamera";
 "voice" = "Röst";
 "video" = "Video";
@@ -59,22 +59,22 @@
 "auth_missing_email" = "E-postadress saknas";
 "auth_missing_phone" = "Telefonnummer saknas";
 "auth_missing_email_or_phone" = "E-postadress eller telefonnummer saknas";
-"auth_email_in_use" = "Den här e-postadressen används redan";
-"auth_phone_in_use" = "Det här telefonnumret används redan";
+"auth_email_in_use" = "Den här e-postadressen är upptagen";
+"auth_phone_in_use" = "Det här telefonnumret är upptaget";
 "auth_email_is_required" = "Ingen identitetsserver är konfigurerad, så du kan inte lägga till en e-postadress för att återställa ditt lösenord i framtiden.";
 "auth_phone_is_required" = "Ingen identitetsserver är konfigurerad, så du kan inte lägga till ett telefonnummer för att återställa ditt lösenord i framtiden.";
 "auth_password_dont_match" = "Lösenorden matchar inte";
 "auth_username_in_use" = "Användarnamnet är upptaget";
 "auth_forgot_password" = "Glömt lösenordet?";
-"auth_email_not_found" = "Kunde inte skicka e-post: Den här e-postadressen hittades inte";
+"auth_email_not_found" = "Misslyckades att skicka e-post: Den här e-postadressen hittades inte";
 "auth_use_server_options" = "Använd anpassade serveralternativ (avancerat)";
-"auth_email_validation_message" = "Kontrollera din e-post för att fortsätta registreringen";
+"auth_email_validation_message" = "Kolla din e-post för att fortsätta registreringen";
 "auth_msisdn_validation_message" = "Vi har skickat ett SMS med en aktiveringskod. Ange den koden nedan.";
 "auth_msisdn_validation_error" = "Kunde inte verifiera telefonnummer.";
 "auth_reset_password_message" = "För att återställa ditt lösenord, ange e-postadressen som är länkad till ditt konto:";
 "auth_reset_password_missing_email" = "Du måste ange e-postadressen som är länkad till ditt konto.";
 "auth_reset_password_missing_password" = "Ett nytt lösenord måste anges.";
-"auth_reset_password_email_validation_message" = "Ett e-postmeddelande har skickats till %@. När du har följt länken i det, tryck nedan.";
+"auth_reset_password_email_validation_message" = "Ett e-brev har skickats till %@. När du har följt länken i det, tryck nedan.";
 "auth_reset_password_next_step_button" = "Jag har verifierat min e-postadress";
 "auth_reset_password_error_not_found" = "Din e-postadress verkar inte vara kopplad till något Matrix-ID på den här hemservern.";
 "auth_softlogout_signed_out" = "Du är utloggad";
@@ -404,8 +404,8 @@
 // Accessibility
 "accessibility_checkbox_label" = "kryssruta";
 // MARK: Clients
-"client_desktop_name" = "Element Desktop";
-"client_web_name" = "Element Web";
+"client_desktop_name" = "Element Skrivbord";
+"client_web_name" = "Element Webb";
 "auth_submit" = "Skicka";
 "auth_login_single_sign_on" = "Logga in med externt konto";
 "auth_send_reset_email" = "Skicka återställningsmeddelande";
@@ -586,10 +586,10 @@
 "deactivate_account_title" = "Inaktivera konto";
 "deactivate_account_forget_messages_information_part2_emphasize" = "Varning";
 "secrets_recovery_with_key_information_default" = "Få tillgång till din säkra meddelandehistorik och din identitet för korssignering för att verifiera andra sessioner genom att ange din återställningsnyckel.";
-"store_promotional_text" = "En chatt- och samarbetsapp som bevarar din integritet, på ett öppet nätverk. Decentraliserat så att du har kontrollen. Ingen datamining, inga bakdörrar och ingen tredjepartsåtkomst.";
-"auth_add_phone_message_2" = "Ställ in ett telefonnummer, och senare för att valfritt bli upptäckbar av personer som känner dig.";
+"store_promotional_text" = "En chatt- och samarbetsapp som bevarar din integritet, på ett öppet nätverk. Decentraliserat så att du har kontrollen. Ingen datainsamling, inga bakdörrar och ingen tredjepartsåtkomst.";
+"auth_add_phone_message_2" = "Ställ in ett telefonnummer, som senare valfritt kan användas för att bli upptäckbar av personer som känner dig.";
 "auth_untrusted_id_server" = "Identitetsservern är inte betrodd";
-"auth_reset_password_error_unauthorized" = "Det gick inte att verifiera e-postadressen: se till att du klickade på länken i e-postmeddelandet";
+"auth_reset_password_error_unauthorized" = "Det gick inte att verifiera e-postadressen: se till att du klickade på länken i e-brevet";
 // Directory
 "directory_cell_title" = "Bläddra i katalog";
 "directory_search_results_title" = "Bläddra i katalogresultat";
@@ -631,3 +631,7 @@
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Lägg till en identitetsserver i dina inställningar för att bjuda in via e-post.";
 "secrets_recovery_with_passphrase_information_default" = "Få tillgång till din säkra meddelandehistorik och din identitet för korssignering för att verifiera andra sessioner genom att ange din återställningslösenfras.";
+"store_full_description" = "Element är en ny sorts meddelande- och samarbetsapp som:\n\n1. Sätter dig i kontroll för att kunna säkerställa ditt privatliv\n2. Låter dig kommunicera med vem som helst i Matrix-nätverket, och till och med bortom det genom integrationer med appar som Slack\n3. Skyddar dig från reklam, datainsamling, bakdörrar och inlåsning\n4. Säkrar dig genom totalsträckskryptering, med korssingering för att verifiera andra\n\nElement skiljer sig helt från andra meddelande- och samarbetsappar genom att vara decentraliserad och öppen källkod.\n\nElement låter dig driva en egen server - eller välja en värd - så att du har sekretess, ägande och kontroll över din data och dina konversationer. Den ger dig tillgång till ett öppet nätverk; så att du inte kan prata bara med Element-användare. Och den är väldigt säker.\n\nElement kan göra allt detta för att den använder Matrix - standarden för öppen decentraliserad kommunikation.\n\nElement sätter dig i kontroll genom att låta dig välja att vara värd för dina konversationer. Från appen Element kan du välja att ansluta på följande sätt:\n\n1. Skaffa ett gratis konto på den publika servern på matrix.org\n2. Var värd för ditt eget konto genom att driva en server på din egen hårdvara\n3. Skapa ett konto på en anpassad server genom att registrera dig på värdplattformen Element Matrix Services\n\nVarför välja Element?\n\nÄG DIN DATA: Du väljer var du vill ha din data och dina meddelanden. Du äger den och kontrollerar den, inte nåt stort företag som samlar in din data och ger den till tredje parter.\n\nÖPPEN KOMMUNIKATION OCH ÖPPET SAMARBETE: Du kan chatta med med vem som helst på Matrix-nätverket, oavsett om de använder Element eller en annan Matrix-app, och till och med om de använder ett annat meddelandesystem som Slack, IRC eller XMPP.\n\nSUPERSÄKER: Riktig totalsträckskryptering (bara de in konversationen kan avkryptera meddelandena), och korssingering för att verifiera konversationsmedlemmars enheter.\n\nKOMPLETT KOMMUNIKATION: Meddelanden, röst- och videosamtal, fildelning, skärmdelning och massa integrationer, bottar och widgets. Skapa rum och gemenskaper, håll kontakten och få saker gjorda.\n\nÖVERALLT DÄR DU ÄR: Håll kontakten vart du än befinner dig med fullständigt synkroniserad meddelandehistorik på alla dina enheter och på webben på https://element.io/app.";
+"auth_add_email_phone_message_2" = "Sätt en e-postadress för kontoåterställning. E-postadress och telefonnummer kan senare valfritt användas för att vara upptäckbar av folk som känner dig.";
+"auth_add_email_and_phone_warning" = "Registrering med e-post och telefonnummer samtidigt stöds inte än, tills att API:t finns. Endast telefonnumret kommer att användas. Du kan lägga till din e-postadress till din profil i inställningarna.";
+"auth_autodiscover_invalid_response" = "Ogiltigt upptäcktssvar från hemservern";
