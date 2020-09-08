@@ -17,7 +17,6 @@
 
 #import "StartChatViewController.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 #import "MXSession+Riot.h"
 

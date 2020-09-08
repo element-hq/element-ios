@@ -30,6 +30,7 @@ internal enum Asset {
     internal static let callVideoMuteOnIcon = ImageAsset(name: "call_video_mute_on_icon")
     internal static let callkitIcon = ImageAsset(name: "callkit_icon")
     internal static let cameraSwitch = ImageAsset(name: "camera_switch")
+    internal static let appSymbol = ImageAsset(name: "app_symbol")
     internal static let backIcon = ImageAsset(name: "back_icon")
     internal static let camera = ImageAsset(name: "camera")
     internal static let chevron = ImageAsset(name: "chevron")

@@ -25,6 +25,7 @@ import Foundation
     case setupBiometricsAfterLogin
     case setupBiometricsFromSettings
     case confirmBiometricsToDeactivate
+    case inactive
 }
 
 @objc protocol SetPinCoordinatorBridgePresenterDelegate {
@@ -46,7 +47,13 @@ final class SetPinCoordinatorBridgePresenter: NSObject {
     
     private let session: MXSession?
     private var coordinator: SetPinCoordinator?
-    private var viewMode: SetPinCoordinatorViewMode
+    var viewMode: SetPinCoordinatorViewMode {
+        didSet {
+            if viewMode != oldValue {
+                coordinator?.viewMode = viewMode
+            }
+        }
+    }
     
     // MARK: Public
     

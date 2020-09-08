@@ -1,1 +1,16 @@
-
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ ใน %@";
+/* New message from a specific person, not referencing a room */
+"MSG_FROM_USER" = "%@ ส่งข้อความ";
+/* A single unread message in a room */
+"SINGLE_UNREAD_IN_ROOM" = "คุณได้รับข้อความใน %@";
+/* A single unread message */
+"SINGLE_UNREAD" = "คุณได้รับข้อความ";
+/* New message indicator on unknown room */
+"MESSAGE" = "ข้อความ";
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "ข้อความจาก %@";
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "ข้อความใน %@";
+/* Multiple unread messages in a room */
+"UNREAD_IN_ROOM" = "%@ ข้อความใหม่ใน %@";

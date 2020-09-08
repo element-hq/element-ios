@@ -19,7 +19,6 @@
 
 #import "PublicRoomTableViewCell.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 
 #pragma mark - Constants definitions

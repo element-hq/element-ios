@@ -16,8 +16,6 @@
 
 #import "RoomsViewController.h"
 
-#import "AppDelegate.h"
-
 #import "RecentsDataSource.h"
 
 #import "DirectoryServerPickerViewController.h"

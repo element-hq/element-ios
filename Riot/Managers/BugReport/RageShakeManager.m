@@ -19,7 +19,6 @@
 
 #import "RageShakeManager.h"
 
-#import "AppDelegate.h"
 #import "BugReportViewController.h"
 
 #import <MatrixKit/MatrixKit.h>

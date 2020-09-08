@@ -161,7 +161,7 @@
 
 #pragma mark - INSendMessageIntentHandling
 
-- (void)resolveRecipientsForSendMessage:(INSendMessageIntent *)intent withCompletion:(void (^)(NSArray<INPersonResolutionResult *> * _Nonnull))completion
+- (void)resolveRecipientsForSendMessage:(INSendMessageIntent *)intent completion:(void (^)(NSArray<INSendMessageRecipientResolutionResult *> * _Nonnull))completion
 {
     [self resolveContacts:intent.recipients withCompletion:completion];
 }

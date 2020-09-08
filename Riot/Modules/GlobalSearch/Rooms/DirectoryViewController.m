@@ -19,7 +19,6 @@
 
 #import "PublicRoomsDirectoryDataSource.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 
 @interface DirectoryViewController ()

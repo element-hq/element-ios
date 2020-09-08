@@ -21,8 +21,6 @@
 #import "RoomDataSource.h"
 #import "RoomBubbleCellData.h"
 
-#import "AppDelegate.h"
-
 #import "RoomInputToolbarView.h"
 #import "DisabledRoomInputToolbarView.h"
 
@@ -4440,15 +4438,13 @@
 
         if ([self.roomDataSource.mxSession.syncError.errcode isEqualToString:kMXErrCodeStringResourceLimitExceeded])
         {
-            [roomActivitiesView showResourceLimitExceededError:self.roomDataSource.mxSession.syncError.userInfo onAdminContactTapped:^(NSURL *adminContact) {
-                if ([[UIApplication sharedApplication] canOpenURL:adminContact])
-                {
-                    [[UIApplication sharedApplication] openURL:adminContact];
-                }
-                else
-                {
-                    NSLog(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContact);
-                }
+            [roomActivitiesView showResourceLimitExceededError:self.roomDataSource.mxSession.syncError.userInfo onAdminContactTapped:^(NSURL *adminContactURL) {
+                [[UIApplication sharedApplication] vc_open:adminContactURL completionHandler:^(BOOL success) {
+                   if (!success)
+                   {
+                        NSLog(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContactURL);
+                   }
+                }];
             }];
         }
         else if ([AppDelegate theDelegate].isOffline)
@@ -4525,7 +4521,7 @@
         {
             // The room has an active jitsi widget
             // Show it in the banner if the user is not already in
-            AppDelegate *appDelegate = [AppDelegate theDelegate];
+            LegacyAppDelegate *appDelegate = [AppDelegate theDelegate];
             if ([appDelegate.jitsiViewController.widget.widgetId isEqualToString:jitsiWidget.widgetId])
             {
                 if ([self checkUnsentMessages] == NO)
@@ -4615,16 +4611,13 @@
             }
             else if (serverNotices.usageLimit && serverNotices.usageLimit.isServerNoticeUsageLimit)
             {
-                [roomActivitiesView showResourceUsageLimitNotice:serverNotices.usageLimit onAdminContactTapped:^(NSURL *adminContact) {
-
-                    if ([[UIApplication sharedApplication] canOpenURL:adminContact])
-                    {
-                        [[UIApplication sharedApplication] openURL:adminContact];
-                    }
-                    else
-                    {
-                        NSLog(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContact);
-                    }
+                [roomActivitiesView showResourceUsageLimitNotice:serverNotices.usageLimit onAdminContactTapped:^(NSURL *adminContactURL) {                    
+                    [[UIApplication sharedApplication] vc_open:adminContactURL completionHandler:^(BOOL success) {
+                       if (!success)
+                       {
+                            NSLog(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContactURL);
+                       }
+                    }];
                 }];
             }
             else

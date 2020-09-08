@@ -18,7 +18,6 @@
 
 #import "ThemeService.h"
 #import "Riot-Swift.h"
-#import "AppDelegate.h"
 
 #pragma mark - Defines & Constants
 

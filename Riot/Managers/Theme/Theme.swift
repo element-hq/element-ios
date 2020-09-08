@@ -93,12 +93,12 @@ import UIKit
     /// Apply the theme on a navigation bar
     ///
     /// - Parameter navigationBar: the navigation bar to customise.
-    func applyStyle(onNavigationBar: UINavigationBar)
+    func applyStyle(onNavigationBar navigationBar: UINavigationBar)
 
     ///  Apply the theme on a search bar.
     ///
     /// - Parameter searchBar: the search bar to customise.
-    func applyStyle(onSearchBar: UISearchBar)
+    func applyStyle(onSearchBar searchBar: UISearchBar)
     
     ///  Apply the theme on a text field.
     ///

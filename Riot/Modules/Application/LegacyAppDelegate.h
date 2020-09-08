@@ -50,7 +50,7 @@ extern NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey;
  */
 extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate, JitsiViewControllerDelegate>
+@interface LegacyAppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate, JitsiViewControllerDelegate>
 {
     // background sync management
     void (^_completionHandler)(UIBackgroundFetchResult);
@@ -104,7 +104,7 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 // Build Settings
 @property (nonatomic, readonly) id<Configurable> configuration;
 
-+ (AppDelegate*)theDelegate;
++ (instancetype)theDelegate;
 
 #pragma mark - Push Notifications
 
@@ -113,7 +113,7 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 
  @param completion the block to be executed when registration finished.
  */
-- (void)registerForRemoteNotificationsWithCompletion:(nullable void (^)(NSError *))completion;
+- (void)registerForRemoteNotificationsWithCompletion:(void (^)(NSError *))completion;
 
 #pragma mark - Application layout handling
 

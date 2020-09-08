@@ -1188,3 +1188,4 @@
 "biometrics_cant_unlocked_alert_message_x" = "Për ta shkyçur, përdorni %@ ose ribëni hyrjen dhe riaktivizoni %@";
 "biometrics_cant_unlocked_alert_message_login" = "Ribëni hyrjen";
 "biometrics_cant_unlocked_alert_message_retry" = "Riprovoni";
+"device_verification_self_verify_wait_recover_secrets_checking_availability" = "Po kontrollohet për aftësi të tjera verifikimi …";

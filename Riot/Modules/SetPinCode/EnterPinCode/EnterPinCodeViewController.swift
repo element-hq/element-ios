@@ -30,6 +30,9 @@ final class EnterPinCodeViewController: UIViewController {
     
     // MARK: Outlets
     
+    @IBOutlet private weak var mainStackView: UIStackView!
+    @IBOutlet private weak var inactiveView: UIView!
+    @IBOutlet private weak var inactiveLogoImageView: UIImageView!
     @IBOutlet private weak var logoImageView: UIImageView!
     @IBOutlet private weak var placeholderStackView: UIStackView!
     @IBOutlet private weak var digitsStackView: UIStackView!
@@ -74,6 +77,12 @@ final class EnterPinCodeViewController: UIViewController {
         if UIDevice.current.isPhone {
             UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        UIApplication.shared.vc_closeKeyboard()
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -188,16 +197,22 @@ final class EnterPinCodeViewController: UIViewController {
             self.renderForgotPin()
         case .confirmPinToDisable:
             self.renderConfirmPinToDisable()
+        case .inactive:
+            self.renderInactive()
         }
     }
     
     private func renderChoosePin() {
+        self.inactiveView.isHidden = true
+        self.mainStackView.isHidden = false
         self.logoImageView.isHidden = true
         self.informationLabel.text = VectorL10n.pinProtectionChoosePin
         self.forgotPinButton.isHidden = true
     }
     
     private func renderConfirmPin() {
+        self.inactiveView.isHidden = true
+        self.mainStackView.isHidden = false
         self.informationLabel.text = VectorL10n.pinProtectionConfirmPin
         
         //  reset placeholders
@@ -216,12 +231,16 @@ final class EnterPinCodeViewController: UIViewController {
     
     private func renderUnlockByPin() {
         hideCancelButton()
+        self.inactiveView.isHidden = true
+        self.mainStackView.isHidden = false
         self.logoImageView.isHidden = false
         self.informationLabel.text = VectorL10n.pinProtectionEnterPin
         self.forgotPinButton.isHidden = false
     }
     
     private func renderWrongPin() {
+        self.inactiveView.isHidden = true
+        self.mainStackView.isHidden = false
         self.placeholderStackView.vc_shake()
     }
     
@@ -252,9 +271,17 @@ final class EnterPinCodeViewController: UIViewController {
     }
     
     private func renderConfirmPinToDisable() {
+        self.inactiveView.isHidden = true
+        self.mainStackView.isHidden = false
         self.logoImageView.isHidden = true
         self.informationLabel.text = VectorL10n.pinProtectionConfirmPinToDisable
         self.forgotPinButton.isHidden = true
+    }
+    
+    private func renderInactive() {
+        self.hideCancelButton()
+        self.inactiveView.isHidden = false
+        self.mainStackView.isHidden = true
     }
     
     private func renderPlaceholdersCount(_ count: Int) {

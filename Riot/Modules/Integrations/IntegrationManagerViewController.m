@@ -19,7 +19,6 @@
 
 #import "WidgetManager.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 
 NSString *const kIntegrationManagerMainScreen = nil;

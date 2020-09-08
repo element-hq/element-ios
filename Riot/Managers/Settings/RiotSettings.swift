@@ -42,7 +42,10 @@ final class RiotSettings: NSObject {
     
     /// UserDefaults to be used on reads and writes.
     private lazy var defaults: UserDefaults = {
-        return UserDefaults(suiteName: BuildSettings.applicationGroupIdentifier)!
+        guard let userDefaults = UserDefaults(suiteName: BuildSettings.applicationGroupIdentifier) else {
+            fatalError("[RiotSettings] Fail to load shared UserDefaults")
+        }
+        return userDefaults
     }()
     
     // MARK: - Public

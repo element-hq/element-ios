@@ -26,8 +26,6 @@
 #import "MXRoom+Riot.h"
 #import "MXSession+Riot.h"
 
-#import "AppDelegate.h"
-
 #import "Riot-Swift.h"
 
 #define RECENTSDATASOURCE_SECTION_DIRECTORY     0x01
