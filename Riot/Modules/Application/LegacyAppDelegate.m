@@ -16,7 +16,7 @@
  limitations under the License.
  */
 
-#import "AppDelegate.h"
+#import "LegacyAppDelegate.h"
 
 #import <Intents/Intents.h>
 #import <Contacts/Contacts.h>
@@ -42,8 +42,6 @@
 
 #import "AFNetworkReachabilityManager.h"
 
-#import "PushNotificationService.h"
-
 #import <AudioToolbox/AudioToolbox.h>
 
 #include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
@@ -57,6 +55,7 @@
 #import "MXRoom+Riot.h"
 
 #import "Riot-Swift.h"
+#import "PushNotificationService.h"
 
 //#define MX_CALL_STACK_OPENWEBRTC
 #ifdef MX_CALL_STACK_OPENWEBRTC
@@ -90,7 +89,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
 NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUniversalLinkDidChangeNotification";
 
-@interface AppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate>
+@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate>
 {
     /**
      Reachability observer
@@ -244,7 +243,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 @end
 
-@implementation AppDelegate
+@implementation LegacyAppDelegate
 
 #pragma mark -
 
@@ -264,10 +263,18 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     NSLog(@"[AppDelegate] initialize: Done");
 }
 
-+ (AppDelegate*)theDelegate
++ (instancetype)theDelegate
 {
-    return (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    static id sharedInstance = nil;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [[self alloc] init];
+    });
+    
+    return sharedInstance;
 }
+
 
 #pragma mark - Push Notifications
 
@@ -512,6 +519,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: Done in %.0fms", [[NSDate date] timeIntervalSinceDate:startDate] * 1000);
 
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self configurePinCodeScreenFor:application createIfRequired:YES];
+    });
+    
     return YES;
 }
 
@@ -559,6 +570,24 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         [wrongBackupVersionAlert dismissViewControllerAnimated:NO completion:nil];
         wrongBackupVersionAlert = nil;
+    }
+    
+    if ([self.localAuthenticationService isProtectionSet])
+    {
+        if (self.setPinCoordinatorBridgePresenter)
+        {
+            //  it's already on screen, convert the viewMode
+            self.setPinCoordinatorBridgePresenter.viewMode = SetPinCoordinatorViewModeInactive;
+            return;
+        }
+        self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:mxSessionArray.firstObject viewMode:SetPinCoordinatorViewModeInactive];
+        self.setPinCoordinatorBridgePresenter.delegate = self;
+        [self.setPinCoordinatorBridgePresenter presentIn:self.window];
+    }
+    else
+    {
+        [self.setPinCoordinatorBridgePresenter dismiss];
+        self.setPinCoordinatorBridgePresenter = nil;
     }
 }
 
@@ -624,6 +653,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     
     _isAppForeground = YES;
+    
+    [self configurePinCodeScreenFor:application createIfRequired:NO];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -632,17 +663,31 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     [self.pushNotificationService applicationDidBecomeActive];
     
+    [self configurePinCodeScreenFor:application createIfRequired:NO];
+}
+
+- (void)configurePinCodeScreenFor:(UIApplication *)application
+                 createIfRequired:(BOOL)createIfRequired
+{
     if ([self.localAuthenticationService shouldShowPinCode])
     {
         if (self.setPinCoordinatorBridgePresenter)
         {
-            //  it's already on screen
+            //  it's already on screen, convert the viewMode
+            self.setPinCoordinatorBridgePresenter.viewMode = SetPinCoordinatorViewModeUnlock;
             return;
         }
-        self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:mxSessionArray.firstObject viewMode:SetPinCoordinatorViewModeUnlock];
-        self.setPinCoordinatorBridgePresenter.delegate = self;
-        [self.setPinCoordinatorBridgePresenter presentIn:self.window];
-    } else {
+        if (createIfRequired)
+        {
+            self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:mxSessionArray.firstObject viewMode:SetPinCoordinatorViewModeUnlock];
+            self.setPinCoordinatorBridgePresenter.delegate = self;
+            [self.setPinCoordinatorBridgePresenter presentIn:self.window];
+        }
+    }
+    else
+    {
+        [self.setPinCoordinatorBridgePresenter dismiss];
+        self.setPinCoordinatorBridgePresenter = nil;
         [self afterAppUnlockedByPin:application];
     }
 }

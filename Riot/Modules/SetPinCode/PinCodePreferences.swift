@@ -59,7 +59,9 @@ final class PinCodePreferences: NSObject {
     let allowedNumberOfTrialsBeforeAlert: Int = 5
     
     /// Max allowed time to continue using the app without prompting PIN
-    let graceTimeInSeconds: TimeInterval = 120
+    var graceTimeInSeconds: TimeInterval {
+        return BuildSettings.pinCodeGraceTimeInSeconds
+    }
     
     /// Number of digits for the PIN
     let numberOfDigits: Int = 4

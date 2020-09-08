@@ -17,7 +17,6 @@
 
 #import "UsersDevicesViewController.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 
 @interface UsersDevicesViewController () <KeyVerificationCoordinatorBridgePresenterDelegate>

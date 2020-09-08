@@ -17,7 +17,6 @@
 
 #import "HomeFilesSearchViewController.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 
 #import "HomeViewController.h"

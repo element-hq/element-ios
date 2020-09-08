@@ -11,7 +11,7 @@ use_frameworks!
 # - `{ {kit spec hash} => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for each repo. Used by Fastfile during CI
 #
 # Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
-$matrixKitVersion = '= 0.12.17'
+$matrixKitVersion = '0.12.18'
 # $matrixKitVersion = :local
 # $matrixKitVersion = {'develop' => 'develop'}
 
@@ -61,7 +61,8 @@ abstract_target 'RiotPods' do
   # Remove warnings from "bad" pods
   pod 'OLMKit', :inhibit_warnings => true
   pod 'cmark', :inhibit_warnings => true
-  pod 'zxcvbn-ios'
+  pod 'zxcvbn-ios', :inhibit_warnings => true
+  pod 'HPGrowingTextView', :inhibit_warnings => true
 
   # Tools
   pod 'SwiftGen', '~> 6.1'
@@ -101,12 +102,7 @@ post_install do |installer|
     # Because the WebRTC pod (included by the JingleCallStack pod) does not support it.
     # Plus the app does not enable it
     target.build_configurations.each do |config|
-      config.build_settings['ENABLE_BITCODE'] = 'NO'
-
-      # Force SwiftUTI Swift version to 5.0 (as there is no code changes to perform for SwiftUTI fork using Swift 4.2)
-      if target.name.include? 'SwiftUTI'
-        config.build_settings['SWIFT_VERSION'] = '5.0'
-      end
+      config.build_settings['ENABLE_BITCODE'] = 'NO'      
     end
   end
 end

@@ -22,11 +22,14 @@ final class DataProtectionHelper {
     /// - Parameter appGroupIdentifier: App-group identifier to be used when deciding where it'll try to write the file.
     /// - Returns: true if the state detected
     static func isDeviceInRebootedAndLockedState(appGroupIdentifier: String? = nil) -> Bool {
+        
+        let dummyString = String.unique
+        guard let dummyData = dummyString.data(using: .utf8) else {
+            return true
+        }
+        
         do {
-            let dummyString = String.unique
-            let dummyData = dummyString.data(using: .utf8)!
-
-            var url: URL!
+            var url: URL
             if let identifier = appGroupIdentifier,
                 let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: identifier) {
                 url = containerURL

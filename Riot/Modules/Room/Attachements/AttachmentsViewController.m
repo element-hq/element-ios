@@ -17,7 +17,6 @@
 
 #import "AttachmentsViewController.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 
 @interface AttachmentsViewController ()

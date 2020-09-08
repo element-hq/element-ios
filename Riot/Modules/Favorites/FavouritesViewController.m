@@ -16,8 +16,6 @@
 
 #import "FavouritesViewController.h"
 
-#import "AppDelegate.h"
-
 #import "RecentsDataSource.h"
 #import "Riot-Swift.h"
 

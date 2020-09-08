@@ -17,8 +17,6 @@
 
 #import "MediaAlbumContentViewController.h"
 
-#import "AppDelegate.h"
-
 #import <MobileCoreServices/MobileCoreServices.h>
 
 #import "Riot-Swift.h"

@@ -22,7 +22,6 @@
 
 #import <OLMKit/OLMKit.h>
 
-#import "AppDelegate.h"
 #import "AvatarGenerator.h"
 
 #import "BugReportViewController.h"
@@ -1948,16 +1947,7 @@ TableViewSectionsDelegate>
             
             if (!theme)
             {
-                if (@available(iOS 11.0, *))
-                {
-                    // "auto" is used the default value from iOS 11
-                    theme = @"auto";
-                }
-                else
-                {
-                    // Use "light" for older version
-                    theme = @"light";
-                }
+                theme = @"auto";
             }
 
             theme = [NSString stringWithFormat:@"settings_ui_theme_%@", theme];
@@ -3507,17 +3497,14 @@ TableViewSectionsDelegate>
             }
         }
     };
-
-    if (@available(iOS 11.0, *))
-    {
-        // Show "auto" only from iOS 11
-        autoAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_auto", @"Vector", nil)
-                                              style:UIAlertActionStyleDefault
-                                            handler:actionBlock];
-
-        // Explain what is "auto"
-        themePickerMessage = NSLocalizedStringFromTable(@"settings_ui_theme_picker_message", @"Vector", nil);
-    }
+    
+    // Show "auto" only from iOS 11
+    autoAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_auto", @"Vector", nil)
+                                          style:UIAlertActionStyleDefault
+                                        handler:actionBlock];
+    
+    // Explain what is "auto"
+    themePickerMessage = NSLocalizedStringFromTable(@"settings_ui_theme_picker_message", @"Vector", nil);  
 
     lightAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_light", @"Vector", nil)
                                           style:UIAlertActionStyleDefault

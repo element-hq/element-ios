@@ -38,10 +38,10 @@ bundle update
 mkdir -p $BUILD_DIR
 cd $BUILD_DIR
 REPO_URL=$(git ls-remote --get-url origin)
-git clone $REPO_URL
 REPO_NAME=$(basename -s .git $REPO_URL)
+git clone $REPO_URL --depth=1 --branch $TAG
 cd $REPO_NAME
-git checkout $TAG $TAG
+
 
 # Use appropriated dependencies according to the current branch
 bundle exec fastlane point_dependencies_to_same_feature

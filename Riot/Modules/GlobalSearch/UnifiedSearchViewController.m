@@ -31,7 +31,6 @@
 #import "HomeFilesSearchViewController.h"
 #import "FilesSearchCellData.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 
 #import "GBDeviceInfo_iOS.h"

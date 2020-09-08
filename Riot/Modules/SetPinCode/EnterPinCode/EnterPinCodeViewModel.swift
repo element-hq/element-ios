@@ -148,6 +148,8 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
             update(viewState: .unlock)
         case .confirmPinToDeactivate:
             update(viewState: .confirmPinToDisable)
+        case .inactive:
+            update(viewState: .inactive)
         default:
             break
         }

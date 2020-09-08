@@ -19,7 +19,6 @@
 
 #import "RoomMemberDetailsViewController.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 
 #import "Contact.h"

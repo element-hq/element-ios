@@ -32,7 +32,6 @@
 #import "DirectoryRecentTableViewCell.h"
 #import "RoomIdOrAliasTableViewCell.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 
 @interface RecentsViewController ()
@@ -1611,14 +1610,9 @@
     [plusButtonImageView.widthAnchor constraintEqualToConstant:side].active = YES;
     [plusButtonImageView.heightAnchor constraintEqualToConstant:side].active = YES;
     
-    if (@available(iOS 11.0, *)) {
-        //  align to safe area
-        [plusButtonImageView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor].active = YES;
-        [self.view.safeAreaLayoutGuide.bottomAnchor constraintEqualToAnchor:plusButtonImageView.bottomAnchor constant:9].active = YES;
-    } else {
-        [plusButtonImageView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor].active = YES;
-        [self.bottomLayoutGuide.topAnchor constraintEqualToAnchor:plusButtonImageView.bottomAnchor constant:9].active = YES;
-    }
+    //  align to safe area
+    [plusButtonImageView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor].active = YES;
+    [self.view.safeAreaLayoutGuide.bottomAnchor constraintEqualToAnchor:plusButtonImageView.bottomAnchor constant:9].active = YES;
     
     plusButtonImageView.userInteractionEnabled = YES;
     

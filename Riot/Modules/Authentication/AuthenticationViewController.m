@@ -18,7 +18,6 @@
 
 #import "AuthenticationViewController.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 #import "MXSession+Riot.h"
 
@@ -1135,16 +1134,14 @@
 {
     NSLog(@"[AuthenticationVC] showResourceLimitExceededError");
 
-    [self showResourceLimitExceededError:errorDict onAdminContactTapped:^(NSURL *adminContact) {
+    [self showResourceLimitExceededError:errorDict onAdminContactTapped:^(NSURL *adminContactURL) {
 
-        if ([[UIApplication sharedApplication] canOpenURL:adminContact])
-        {
-            [[UIApplication sharedApplication] openURL:adminContact];
-        }
-        else
-        {
-            NSLog(@"[AuthenticationVC] adminContact(%@) cannot be opened", adminContact);
-        }
+        [[UIApplication sharedApplication] vc_open:adminContactURL completionHandler:^(BOOL success) {
+           if (!success)
+           {
+               NSLog(@"[AuthenticationVC] adminContact(%@) cannot be opened", adminContactURL);
+           }
+        }];
     }];
 }
 

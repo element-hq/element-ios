@@ -18,7 +18,6 @@
 
 #import "ContactDetailsViewController.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 #import "MXSession+Riot.h"
 
@@ -139,50 +138,9 @@
     
     self.contactAvatar.contentMode = UIViewContentModeScaleAspectFill;
     self.contactAvatar.defaultBackgroundColor = [UIColor clearColor];
-    
-    if (@available(iOS 11.0, *))
-    {
-        // Define directly the navigation titleView with the custom title view instance. Do not use anymore a container.
-        self.navigationItem.titleView = contactTitleView;
-    }
-    else
-    {
-        self.navigationItem.titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 600, 40)];
         
-        // Add the title view and define edge constraints
-        contactTitleView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.navigationItem.titleView addSubview:contactTitleView];
-        
-        NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:contactTitleView
-                                                                         attribute:NSLayoutAttributeTop
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:self.navigationItem.titleView
-                                                                         attribute:NSLayoutAttributeTop
-                                                                        multiplier:1.0f
-                                                                          constant:0.0f];
-        NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:contactTitleView
-                                                                            attribute:NSLayoutAttributeBottom
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:self.navigationItem.titleView
-                                                                            attribute:NSLayoutAttributeBottom
-                                                                           multiplier:1.0f
-                                                                             constant:0.0f];
-        NSLayoutConstraint *leadingConstraint = [NSLayoutConstraint constraintWithItem:contactTitleView
-                                                                             attribute:NSLayoutAttributeLeading
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:self.navigationItem.titleView
-                                                                             attribute:NSLayoutAttributeLeading
-                                                                            multiplier:1.0f
-                                                                              constant:0.0f];
-        NSLayoutConstraint *trailingConstraint = [NSLayoutConstraint constraintWithItem:contactTitleView
-                                                                              attribute:NSLayoutAttributeTrailing
-                                                                              relatedBy:NSLayoutRelationEqual
-                                                                                 toItem:self.navigationItem.titleView
-                                                                              attribute:NSLayoutAttributeTrailing
-                                                                             multiplier:1.0f
-                                                                               constant:0.0f];
-        [NSLayoutConstraint activateConstraints:@[topConstraint, bottomConstraint, leadingConstraint, trailingConstraint]];
-    }
+    // Define directly the navigation titleView with the custom title view instance. Do not use anymore a container.
+    self.navigationItem.titleView = contactTitleView;    
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     [tap setNumberOfTouchesRequired:1];
