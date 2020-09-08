@@ -69,7 +69,7 @@
     [self addPlusButton];
     
     // Apply tintColor on the (+) button
-    plusButtonImageView.image = [UIImage imageNamed:@"plus_floating_action"];
+    plusButtonImageView.image = [UIImage imageNamed:@"people_floating_action"];
     
     // Register table view cell for contacts.
     [self.recentsTableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:ContactTableViewCell.defaultReuseIdentifier];
@@ -425,6 +425,12 @@
     {
         [super refreshCurrentSelectedCell:forceVisible];
     }
+}
+
+- (void)onPlusButtonPressed
+{
+    //  directly open the new chat screen
+    [self performSegueWithIdentifier:@"presentStartChat" sender:self];
 }
 
 #pragma mark -
