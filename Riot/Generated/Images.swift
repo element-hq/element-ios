@@ -35,6 +35,7 @@ internal enum Asset {
     internal static let chevron = ImageAsset(name: "chevron")
     internal static let closeButton = ImageAsset(name: "close_button")
     internal static let disclosureIcon = ImageAsset(name: "disclosure_icon")
+    internal static let elementSymbol = ImageAsset(name: "element_symbol")
     internal static let faceidIcon = ImageAsset(name: "faceid_icon")
     internal static let group = ImageAsset(name: "group")
     internal static let monitor = ImageAsset(name: "monitor")
