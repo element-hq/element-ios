@@ -16,13 +16,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1YE-D1-eHn">
+                                <rect key="frame" x="0.0" y="64" width="375" height="694"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="app_symbol" translatesAutoresizingMaskIntoConstraints="NO" id="8qz-Yk-9a4">
+                                        <rect key="frame" x="137.66666666666666" y="277" width="100" height="100"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="100" id="Ux9-pH-SW9"/>
+                                            <constraint firstAttribute="height" constant="100" id="o3K-YH-5tn"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="8qz-Yk-9a4" firstAttribute="centerY" secondItem="1YE-D1-eHn" secondAttribute="centerY" constant="-20" id="IKY-me-86i"/>
+                                    <constraint firstItem="8qz-Yk-9a4" firstAttribute="centerX" secondItem="1YE-D1-eHn" secondAttribute="centerX" id="cPb-3H-3yK"/>
+                                </constraints>
+                            </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="DMT-DS-IA8">
                                 <rect key="frame" x="0.0" y="52" width="375" height="718"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ztg-5t-ECh" userLabel="Container">
                                         <rect key="frame" x="20" y="0.0" width="335" height="86"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="callkit_icon" translatesAutoresizingMaskIntoConstraints="NO" id="UHg-qE-anw">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="app_symbol" translatesAutoresizingMaskIntoConstraints="NO" id="UHg-qE-anw">
                                                 <rect key="frame" x="147.66666666666666" y="8" width="40" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="40" id="ERR-Np-6I1"/>
@@ -274,18 +291,25 @@
                         </subviews>
                         <color key="backgroundColor" red="0.94509803921568625" green="0.96078431372549022" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="bFg-jh-JZB" firstAttribute="bottom" secondItem="1YE-D1-eHn" secondAttribute="bottom" constant="20" id="5mk-pT-EGS"/>
+                            <constraint firstItem="1YE-D1-eHn" firstAttribute="top" secondItem="bFg-jh-JZB" secondAttribute="top" constant="20" id="Jzf-aA-rX7"/>
                             <constraint firstItem="DMT-DS-IA8" firstAttribute="top" secondItem="bFg-jh-JZB" secondAttribute="top" constant="8" id="Mlg-kp-E06"/>
                             <constraint firstItem="bFg-jh-JZB" firstAttribute="trailing" secondItem="DMT-DS-IA8" secondAttribute="trailing" id="Vwu-g7-vNh"/>
+                            <constraint firstItem="bFg-jh-JZB" firstAttribute="trailing" secondItem="1YE-D1-eHn" secondAttribute="trailing" id="cxG-Xd-t0n"/>
                             <constraint firstItem="bFg-jh-JZB" firstAttribute="bottom" secondItem="DMT-DS-IA8" secondAttribute="bottom" constant="8" id="gPa-B5-LIs"/>
                             <constraint firstItem="DMT-DS-IA8" firstAttribute="leading" secondItem="bFg-jh-JZB" secondAttribute="leading" id="kA7-cw-VK1"/>
+                            <constraint firstItem="1YE-D1-eHn" firstAttribute="leading" secondItem="bFg-jh-JZB" secondAttribute="leading" id="qOT-0t-zQs"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="bFg-jh-JZB"/>
                     </view>
                     <connections>
                         <outlet property="digitsStackView" destination="W0M-eq-abZ" id="xnb-6w-dtC"/>
                         <outlet property="forgotPinButton" destination="CRt-Fb-0Dq" id="kHp-wn-P0o"/>
+                        <outlet property="inactiveLogoImageView" destination="8qz-Yk-9a4" id="DFZ-fF-0NC"/>
+                        <outlet property="inactiveView" destination="1YE-D1-eHn" id="I2t-3r-WUQ"/>
                         <outlet property="informationLabel" destination="bxI-mu-qng" id="pbX-aZ-inC"/>
                         <outlet property="logoImageView" destination="UHg-qE-anw" id="8C0-pd-i3b"/>
+                        <outlet property="mainStackView" destination="DMT-DS-IA8" id="qYw-KO-M4k"/>
                         <outlet property="placeholderStackView" destination="xi9-P9-8WP" id="ynl-7M-Rpb"/>
                     </connections>
                 </viewController>
@@ -295,8 +319,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="app_symbol" width="120" height="120"/>
         <image name="back_icon" width="14" height="23"/>
-        <image name="callkit_icon" width="40" height="40"/>
         <image name="selection_untick" width="22" height="22"/>
     </resources>
 </document>
