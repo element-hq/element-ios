@@ -54,6 +54,8 @@
     // Add the (+) button programmatically
     [self addPlusButton];
     
+    plusButtonImageView.image = [UIImage imageNamed:@"rooms_floating_action"];
+    
     self.enableStickyHeaders = YES;
 }
 
