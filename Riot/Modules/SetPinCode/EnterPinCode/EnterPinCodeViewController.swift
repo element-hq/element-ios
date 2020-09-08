@@ -116,7 +116,6 @@ final class EnterPinCodeViewController: UIViewController {
         }
 
         self.informationLabel.textColor = theme.textPrimaryColor
-        self.inactiveLogoImageView.tintColor = theme.tintColor
 
         updateThemesOfAllImages(in: placeholderStackView, with: theme)
         updateThemesOfAllButtons(in: digitsStackView, with: theme)
