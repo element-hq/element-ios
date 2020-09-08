@@ -47,7 +47,7 @@ cd $REPO_NAME
 bundle exec fastlane point_dependencies_to_same_feature
 
 # Build
-bundle exec fastlane app_store build_number:$BUILD_NUMBER
+bundle exec fastlane app_store build_number:$BUILD_NUMBER git_tag:$TAG
 
 if [ -e out/Riot.ipa ]; then
     # Here is the artefact
