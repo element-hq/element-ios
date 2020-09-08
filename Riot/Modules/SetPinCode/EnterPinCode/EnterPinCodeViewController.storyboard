@@ -19,7 +19,7 @@
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1YE-D1-eHn">
                                 <rect key="frame" x="0.0" y="64" width="375" height="694"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="element_symbol" translatesAutoresizingMaskIntoConstraints="NO" id="8qz-Yk-9a4">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="app_symbol" translatesAutoresizingMaskIntoConstraints="NO" id="8qz-Yk-9a4">
                                         <rect key="frame" x="137.66666666666666" y="277" width="100" height="100"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="100" id="Ux9-pH-SW9"/>
@@ -39,7 +39,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ztg-5t-ECh" userLabel="Container">
                                         <rect key="frame" x="20" y="0.0" width="335" height="86"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="element_symbol" translatesAutoresizingMaskIntoConstraints="NO" id="UHg-qE-anw">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="app_symbol" translatesAutoresizingMaskIntoConstraints="NO" id="UHg-qE-anw">
                                                 <rect key="frame" x="147.66666666666666" y="8" width="40" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="40" id="ERR-Np-6I1"/>
@@ -319,8 +319,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="app_symbol" width="120" height="120"/>
         <image name="back_icon" width="14" height="23"/>
-        <image name="element_symbol" width="120" height="120"/>
         <image name="selection_untick" width="22" height="22"/>
     </resources>
 </document>
