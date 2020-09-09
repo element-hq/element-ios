@@ -371,4 +371,46 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     }
 }
 
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    PublicRoomsDirectoryDataSource *source = [[[self class] allocWithZone:zone] initWithMatrixSession:self.mxSession];
+    
+    source.homeserver = [self.homeserver copyWithZone:zone];
+    source.includeAllNetworks = self.includeAllNetworks;
+    if (self.thirdpartyProtocolInstance)
+    {
+        source.thirdpartyProtocolInstance = [MXThirdPartyProtocolInstance modelFromJSON:self.thirdpartyProtocolInstance.JSONDictionary];
+    }
+    source.paginationLimit = self.paginationLimit;
+    source.searchPattern = [self.searchPattern copyWithZone:zone];
+    source->rooms = [rooms mutableCopyWithZone:zone];
+    source->nextBatch = [nextBatch copyWithZone:zone];
+    
+    return source;
+}
+
+@end
+
+@interface MXThirdPartyProtocolInstance (Additions)
+
+@end
+
+@implementation MXThirdPartyProtocolInstance (Additions)
+
+- (NSDictionary *)JSONDictionary
+{
+    NSMutableDictionary *JSONDictionary = [NSMutableDictionary dictionary];
+    
+    JSONDictionary[@"network_id"] = self.networkId;
+    JSONDictionary[@"fields"] = self.fields;
+    JSONDictionary[@"instance_id"] = self.instanceId;
+    JSONDictionary[@"desc"] = self.desc;
+    JSONDictionary[@"bot_user_id"] = self.botUserId;
+    JSONDictionary[@"icon"] = self.icon;
+    
+    return JSONDictionary;
+}
+
 @end
