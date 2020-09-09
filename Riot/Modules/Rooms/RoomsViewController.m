@@ -22,7 +22,7 @@
 
 #import "Riot-Swift.h"
 
-@interface RoomsViewController ()
+@interface RoomsViewController ()<SearchableDirectoryViewControllerDelegate>
 {
     RecentsDataSource *recentsDataSource;
 
@@ -121,6 +121,15 @@
     {
         [super dataSource:dataSource didRecognizeAction:actionIdentifier inCell:cell userInfo:userInfo];
     }
+}
+
+- (void)onPlusButtonPressed
+{
+    SearchableDirectoryViewController *controller = [SearchableDirectoryViewController instantiateWithSession:self.mainSession];
+    [controller displayWithDataSource:[recentsDataSource.publicRoomsDirectoryDataSource copy]];
+    controller.delegate = self;
+    UINavigationController *navController = [[RiotNavigationController alloc] initWithRootViewController:controller];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 #pragma mark - 
@@ -249,7 +258,12 @@
 - (void)openPublicRoomAtIndexPath:(NSIndexPath *)indexPath
 {
     MXPublicRoom *publicRoom = [recentsDataSource.publicRoomsDirectoryDataSource roomAtIndexPath:indexPath];
+    
+    [self openPublicRoom:publicRoom];
+}
 
+- (void)openPublicRoom:(MXPublicRoom *)publicRoom
+{
     // Check whether the user has already joined the selected public room
     if ([recentsDataSource.publicRoomsDirectoryDataSource.mxSession roomWithRoomId:publicRoom.roomId])
     {
@@ -334,6 +348,27 @@
         // Hide line separators of empty cells
         self.recentsTableView.tableFooterView = [[UIView alloc] init];;
     }
+}
+
+#pragma mark - SearchableDirectoryViewControllerDelegate
+
+- (void)searchableDirectoryViewControllerDidCancel:(SearchableDirectoryViewController *)viewController
+{
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)searchableDirectoryViewControllerDidSelect:(SearchableDirectoryViewController *)viewController room:(MXPublicRoom *)room
+{
+    [viewController dismissViewControllerAnimated:YES completion:^{
+        [self openPublicRoom:room];
+    }];
+}
+
+- (void)searchableDirectoryViewControllerDidTapCreateNewRoom:(SearchableDirectoryViewController *)viewController
+{
+    [viewController dismissViewControllerAnimated:YES completion:^{
+        [self createAnEmptyRoom];
+    }];
 }
 
 @end
