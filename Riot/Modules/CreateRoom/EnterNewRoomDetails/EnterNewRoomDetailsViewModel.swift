@@ -55,6 +55,8 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
         case .cancel:
             self.cancelOperations()
             self.coordinatorDelegate?.enterNewRoomDetailsViewModelDidCancel(self)
+        case .create:
+            break
         }
     }
     

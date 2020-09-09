@@ -23,4 +23,5 @@ enum EnterNewRoomDetailsViewAction {
     case loadData
     case complete
     case cancel
+    case create
 }
