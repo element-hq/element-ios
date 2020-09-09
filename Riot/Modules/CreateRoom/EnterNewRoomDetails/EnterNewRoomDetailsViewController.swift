@@ -248,7 +248,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         mainTableView.register(cellType: MXKTableViewCellWithLabelAndSwitch.self)
         mainTableView.register(cellType: MXKTableViewCellWithTextView.self)
         mainTableView.register(cellType: TextFieldTableViewCell.self)
-        mainTableView.register(headerFooterViewType: TableViewHeaderFooterView.self)
+//        mainTableView.register(headerFooterViewType: TableViewHeaderFooterView.self)
         mainTableView.sectionHeaderHeight = UITableView.automaticDimension
         mainTableView.estimatedSectionHeaderHeight = 50
         mainTableView.sectionFooterHeight = UITableView.automaticDimension
