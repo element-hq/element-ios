@@ -866,6 +866,14 @@
 		ECF57A4C25090C23004BBF9D /* EnterNewRoomDetailsViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A4125090C23004BBF9D /* EnterNewRoomDetailsViewAction.swift */; };
 		ECF57A4D25090C23004BBF9D /* EnterNewRoomDetailsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A4225090C23004BBF9D /* EnterNewRoomDetailsCoordinator.swift */; };
 		ECF57A4E25090C23004BBF9D /* EnterNewRoomDetailsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A4325090C23004BBF9D /* EnterNewRoomDetailsViewModelType.swift */; };
+		ECF57A50250913E4004BBF9D /* MXKTableViewCellWithLabelAndSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A4F250913E4004BBF9D /* MXKTableViewCellWithLabelAndSwitch.swift */; };
+		ECF57A522509148C004BBF9D /* TableViewHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A512509148C004BBF9D /* TableViewHeaderFooterView.swift */; };
+		ECF57A5525091B4D004BBF9D /* RoomCreationParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A5425091B4D004BBF9D /* RoomCreationParameters.swift */; };
+		ECF57A5725091ECC004BBF9D /* MXKTableViewCellWithTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A5625091ECC004BBF9D /* MXKTableViewCellWithTextView.swift */; };
+		ECF57A5A250925AC004BBF9D /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A58250925AC004BBF9D /* TextFieldTableViewCell.swift */; };
+		ECF57A5B250925AC004BBF9D /* TextFieldTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECF57A59250925AC004BBF9D /* TextFieldTableViewCell.xib */; };
+		ECF57A5E2509265A004BBF9D /* InsettedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A5D2509265A004BBF9D /* InsettedTextField.swift */; };
+		ECF57A6225093B04004BBF9D /* SectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A6025093B04004BBF9D /* SectionHeaderView.m */; };
 		F05927C91FDED836009F2A68 /* MXGroup+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F05927C71FDED835009F2A68 /* MXGroup+Riot.m */; };
 		F083BD1E1E7009ED00A9B29C /* LegacyAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB0D1E7009EC00A9B29C /* LegacyAppDelegate.m */; };
 		F083BDE61E7009ED00A9B29C /* busy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDB1E7009EC00A9B29C /* busy.mp3 */; };
@@ -2007,6 +2015,15 @@
 		ECF57A4125090C23004BBF9D /* EnterNewRoomDetailsViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterNewRoomDetailsViewAction.swift; sourceTree = "<group>"; };
 		ECF57A4225090C23004BBF9D /* EnterNewRoomDetailsCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterNewRoomDetailsCoordinator.swift; sourceTree = "<group>"; };
 		ECF57A4325090C23004BBF9D /* EnterNewRoomDetailsViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterNewRoomDetailsViewModelType.swift; sourceTree = "<group>"; };
+		ECF57A4F250913E4004BBF9D /* MXKTableViewCellWithLabelAndSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MXKTableViewCellWithLabelAndSwitch.swift; sourceTree = "<group>"; };
+		ECF57A512509148C004BBF9D /* TableViewHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewHeaderFooterView.swift; sourceTree = "<group>"; };
+		ECF57A5425091B4D004BBF9D /* RoomCreationParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCreationParameters.swift; sourceTree = "<group>"; };
+		ECF57A5625091ECC004BBF9D /* MXKTableViewCellWithTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MXKTableViewCellWithTextView.swift; sourceTree = "<group>"; };
+		ECF57A58250925AC004BBF9D /* TextFieldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldTableViewCell.swift; sourceTree = "<group>"; };
+		ECF57A59250925AC004BBF9D /* TextFieldTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldTableViewCell.xib; sourceTree = "<group>"; };
+		ECF57A5D2509265A004BBF9D /* InsettedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsettedTextField.swift; sourceTree = "<group>"; };
+		ECF57A6025093B04004BBF9D /* SectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionHeaderView.m; sourceTree = "<group>"; };
+		ECF57A6125093B04004BBF9D /* SectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SectionHeaderView.h; sourceTree = "<group>"; };
 		F05927C71FDED835009F2A68 /* MXGroup+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXGroup+Riot.m"; sourceTree = "<group>"; };
 		F05927C81FDED835009F2A68 /* MXGroup+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXGroup+Riot.h"; sourceTree = "<group>"; };
 		F083BB031E7005FD00A9B29C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -3491,8 +3508,10 @@
 		B1B556CD20EE6C4C00210D55 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				ECF57A5F25093B04004BBF9D /* SectionHeaders */,
+				ECF57A5C2509264B004BBF9D /* Views */,
 				ECAE7AEA24EC223D002FA813 /* Models */,
-				EC85D7312477DD54002C44C9 /* SectionHeaders */,
+				EC85D7312477DD54002C44C9 /* SectionHeaderFooters */,
 				B183226923F59F3E0035B2E8 /* Buttons */,
 				B1963B3622933B9500CBA17F /* CollectionView */,
 				B1B556CE20EE6C4C00210D55 /* WebViewController */,
@@ -4177,6 +4196,8 @@
 				B1B5592820EF7A5D00210D55 /* TableViewCellWithButton.h */,
 				B1B5592A20EF7A5D00210D55 /* TableViewCellWithButton.m */,
 				B1B5592920EF7A5D00210D55 /* TableViewCellWithButton.xib */,
+				ECF57A58250925AC004BBF9D /* TextFieldTableViewCell.swift */,
+				ECF57A59250925AC004BBF9D /* TextFieldTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4848,13 +4869,14 @@
 			path = JSONModels;
 			sourceTree = "<group>";
 		};
-		EC85D7312477DD54002C44C9 /* SectionHeaders */ = {
+		EC85D7312477DD54002C44C9 /* SectionHeaderFooters */ = {
 			isa = PBXGroup;
 			children = (
 				EC85D7322477DD54002C44C9 /* SectionHeaderView.m */,
 				EC85D7332477DD54002C44C9 /* SectionHeaderView.h */,
+				ECF57A512509148C004BBF9D /* TableViewHeaderFooterView.swift */,
 			);
-			path = SectionHeaders;
+			path = SectionHeaderFooters;
 			sourceTree = "<group>";
 		};
 		EC85D73B2477DDD0002C44C9 /* PushNotification */ = {
@@ -4897,6 +4919,7 @@
 				ECF57A3825090C23004BBF9D /* CreateRoomCoordinatorBridgePresenter.swift */,
 				ECF57A3925090C23004BBF9D /* CreateRoomCoordinatorType.swift */,
 				ECF57A3A25090C23004BBF9D /* CreateRoomCoordinator.swift */,
+				ECF57A5325091B3F004BBF9D /* Models */,
 				ECF57A3B25090C23004BBF9D /* EnterNewRoomDetails */,
 			);
 			path = CreateRoom;
@@ -4915,6 +4938,31 @@
 				ECF57A4325090C23004BBF9D /* EnterNewRoomDetailsViewModelType.swift */,
 			);
 			path = EnterNewRoomDetails;
+			sourceTree = "<group>";
+		};
+		ECF57A5325091B3F004BBF9D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				ECF57A5425091B4D004BBF9D /* RoomCreationParameters.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		ECF57A5C2509264B004BBF9D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				ECF57A5D2509265A004BBF9D /* InsettedTextField.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		ECF57A5F25093B04004BBF9D /* SectionHeaders */ = {
+			isa = PBXGroup;
+			children = (
+				ECF57A6025093B04004BBF9D /* SectionHeaderView.m */,
+				ECF57A6125093B04004BBF9D /* SectionHeaderView.h */,
+			);
+			path = SectionHeaders;
 			sourceTree = "<group>";
 		};
 		F083BB021E7005FD00A9B29C /* RiotTests */ = {
@@ -5024,6 +5072,8 @@
 				B11291EB238D704C0077B478 /* FloatingPoint.swift */,
 				32FD757524D2C9BA00BA7B37 /* Bundle.swift */,
 				ECAE7AED24EFDD1F002FA813 /* MXSessionState.swift */,
+				ECF57A4F250913E4004BBF9D /* MXKTableViewCellWithLabelAndSwitch.swift */,
+				ECF57A5625091ECC004BBF9D /* MXKTableViewCellWithTextView.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -5433,6 +5483,7 @@
 				B1DCC61722E5E17100625807 /* EmojiPickerViewController.storyboard in Resources */,
 				32891D6C2264CBA300C82226 /* SimpleScreenTemplateViewController.storyboard in Resources */,
 				32D5D16123E1EE2700E3E37C /* ManageSession.storyboard in Resources */,
+				ECF57A5B250925AC004BBF9D /* TextFieldTableViewCell.xib in Resources */,
 				B1963B2C228F1C4900CBA17F /* BubbleReactionViewCell.xib in Resources */,
 				B1664DA320F4F96200808783 /* Vector.strings in Resources */,
 				B1B557C720EF5CD400210D55 /* DirectoryServerDetailTableViewCell.xib in Resources */,
@@ -5913,6 +5964,7 @@
 				B1A6C111238BD236002882FD /* SlidingModalContainerView.swift in Sources */,
 				B1DCC62D22E61EAF00625807 /* EmojiPickerViewCell.swift in Sources */,
 				3232ABA8225730E100AD6A5C /* DeviceVerificationStartViewState.swift in Sources */,
+				ECF57A5525091B4D004BBF9D /* RoomCreationParameters.swift in Sources */,
 				B1B558D420EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				B169331420F3CAFC00746532 /* PublicRoomTableViewCell.m in Sources */,
 				32BF995721FB07A400698084 /* SettingsKeyBackupTableViewSection.swift in Sources */,
@@ -6015,6 +6067,7 @@
 				B125FE21231D5E1D00B72806 /* SettingsDiscoveryViewAction.swift in Sources */,
 				B108932323AB908A00802670 /* KeyVerificationRequestStatusViewData.swift in Sources */,
 				B142317A22CCFA2000FFA96A /* EditHistoryCell.swift in Sources */,
+				ECF57A50250913E4004BBF9D /* MXKTableViewCellWithLabelAndSwitch.swift in Sources */,
 				B1DCC62622E60CC600625807 /* EmojiItem.swift in Sources */,
 				B1B5572A20EE6C4D00210D55 /* RoomMemberDetailsViewController.m in Sources */,
 				EC3B066C24AC6ADE000DF9BF /* CrossSigningSetupBannerCell.swift in Sources */,
@@ -6053,6 +6106,7 @@
 				EC711B7824A63B37008F830C /* SecretsSetupRecoveryKeyViewModel.swift in Sources */,
 				B1C562E3228C7C8D0037F12A /* RoomContextualMenuPresenter.swift in Sources */,
 				EC85D7182477DCD7002C44C9 /* KeyVerificationScanConfirmationViewModelType.swift in Sources */,
+				ECF57A5E2509265A004BBF9D /* InsettedTextField.swift in Sources */,
 				B1B5593C20EF7BAC00210D55 /* TableViewCellWithCheckBoxes.m in Sources */,
 				32891D6B2264CBA300C82226 /* SimpleScreenTemplateViewController.swift in Sources */,
 				EC711B7924A63B37008F830C /* SecretsSetupRecoveryKeyViewController.swift in Sources */,
@@ -6071,6 +6125,7 @@
 				B1B5583E20EF6E7F00210D55 /* GroupRoomTableViewCell.m in Sources */,
 				B14F143522144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewController.swift in Sources */,
 				B1DCC61E22E5E17100625807 /* EmojiPickerViewModel.swift in Sources */,
+				ECF57A522509148C004BBF9D /* TableViewHeaderFooterView.swift in Sources */,
 				B1B5574F20EE6C4D00210D55 /* RoomsViewController.m in Sources */,
 				EC85D73A2477DDB8002C44C9 /* DirectorySectionHeaderContainerView.m in Sources */,
 				EC711B8524A63B37008F830C /* SecretsRecoveryWithPassphraseCoordinator.swift in Sources */,
@@ -6212,6 +6267,7 @@
 				B1B558CF20EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				B140B4A221F87F7100E3F5FE /* OperationQueue.swift in Sources */,
 				B183226C23F59F810035B2E8 /* CloseButton.swift in Sources */,
+				ECF57A5A250925AC004BBF9D /* TextFieldTableViewCell.swift in Sources */,
 				EC711B7F24A63B37008F830C /* SecretsSetupRecoveryPassphraseViewController.swift in Sources */,
 				B1B5575120EE6C4D00210D55 /* AuthenticationViewController.m in Sources */,
 				B1CE83BA2422815C00D07506 /* KeyVerificationService.swift in Sources */,
@@ -6342,6 +6398,7 @@
 				B1B5574920EE6C4D00210D55 /* RiotSplitViewController.m in Sources */,
 				B1B5574E20EE6C4D00210D55 /* DirectoryServerPickerViewController.m in Sources */,
 				EC711B8824A63B37008F830C /* SecretsRecoveryWithPassphraseViewAction.swift in Sources */,
+				ECF57A6225093B04004BBF9D /* SectionHeaderView.m in Sources */,
 				ECF57A4A25090C23004BBF9D /* EnterNewRoomDetailsViewController.swift in Sources */,
 				B1D211E822C195B400D939BD /* ReactionMenuItemViewData.swift in Sources */,
 				B1DB4F0B223131600065DBFA /* String.swift in Sources */,
@@ -6399,6 +6456,7 @@
 				B1E5368921FB1E20001F3AFF /* UIButton.swift in Sources */,
 				B1DCC63422E72C1B00625807 /* UISearchBar.swift in Sources */,
 				32A6001622C661100042C1D9 /* EditHistoryViewState.swift in Sources */,
+				ECF57A5725091ECC004BBF9D /* MXKTableViewCellWithTextView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
