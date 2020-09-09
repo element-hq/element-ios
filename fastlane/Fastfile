@@ -90,9 +90,13 @@ platform :ios do
     # ad-hoc or app-store?
     adhoc = options.fetch(:adhoc, false)
 
-    # Retrieve GIT branch name
-    git_branch_name = git_branch
-    UI.user_error!("Unable to retrieve GIT branch name") unless !git_branch_name.to_s.empty?
+    # Extract git information to show within the app
+    git_branch_name = options[:git_tag]
+    if git_branch_name.to_s.empty?
+      # Retrieve the current git branch as a fallback
+      git_branch_name = git_branch
+    end
+    UI.user_error!("Unable to retrieve GIT tag or branch") unless !git_branch_name.to_s.empty?
 
     # Fetch team id from Appfile
     team_id = CredentialsManager::AppfileConfig.try_fetch_value(:team_id)
