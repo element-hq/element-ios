@@ -33,6 +33,7 @@ class DirectoryNetworkTableHeaderFooterView: UITableViewHeaderFooterView {
             switchButton.setTitle(VectorL10n.switch, for: .normal)
         }
     }
+    @IBOutlet private weak var separatorView: UIView!
     
     weak var delegate: DirectoryNetworkTableHeaderFooterViewDelegate?
 
@@ -57,6 +58,7 @@ extension DirectoryNetworkTableHeaderFooterView: Themable {
         
         titleLabel.textColor = theme.textSecondaryColor
         theme.applyStyle(onButton: switchButton)
+        separatorView.backgroundColor = theme.lineBreakColor
     }
     
 }

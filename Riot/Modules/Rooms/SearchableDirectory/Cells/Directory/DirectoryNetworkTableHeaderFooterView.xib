@@ -11,37 +11,59 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="IKv-Eo-Uhr" customClass="DirectoryNetworkTableHeaderFooterView" customModule="Riot" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="399" height="57"/>
+            <rect key="frame" x="0.0" y="0.0" width="399" height="40"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w20-KY-Toq">
-                    <rect key="frame" x="16" y="4" width="42" height="49"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZMw-in-qvp">
-                    <rect key="frame" x="336" y="4" width="47" height="49"/>
-                    <state key="normal" title="Switch"/>
-                    <connections>
-                        <action selector="switchButtonTapped:" destination="IKv-Eo-Uhr" eventType="touchUpInside" id="QDw-YB-3Uj"/>
-                    </connections>
-                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DFi-MN-E9H">
+                    <rect key="frame" x="0.0" y="9" width="399" height="30"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w20-KY-Toq">
+                            <rect key="frame" x="16" y="5" width="42" height="20.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZMw-in-qvp">
+                            <rect key="frame" x="334" y="0.0" width="49" height="30"/>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                            <state key="normal" title="Switch"/>
+                            <connections>
+                                <action selector="switchButtonTapped:" destination="IKv-Eo-Uhr" eventType="touchUpInside" id="QDw-YB-3Uj"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="CBk-T8-H3L"/>
+                        <constraint firstItem="w20-KY-Toq" firstAttribute="leading" secondItem="DFi-MN-E9H" secondAttribute="leading" constant="16" id="D88-nj-LLg"/>
+                        <constraint firstAttribute="trailing" secondItem="ZMw-in-qvp" secondAttribute="trailing" constant="16" id="DfS-xd-Rtc"/>
+                        <constraint firstItem="ZMw-in-qvp" firstAttribute="centerY" secondItem="DFi-MN-E9H" secondAttribute="centerY" id="euM-Vt-Qp0"/>
+                        <constraint firstItem="w20-KY-Toq" firstAttribute="centerY" secondItem="DFi-MN-E9H" secondAttribute="centerY" id="n2J-hq-wkG"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eQG-M1-gau">
+                    <rect key="frame" x="16" y="39" width="383" height="1"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="eV0-cd-aDv"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="ZMw-in-qvp" secondAttribute="trailing" constant="16" id="2P9-iz-0Qc"/>
-                <constraint firstItem="w20-KY-Toq" firstAttribute="top" secondItem="IKv-Eo-Uhr" secondAttribute="top" constant="4" id="8FH-qS-hEX"/>
-                <constraint firstItem="w20-KY-Toq" firstAttribute="leading" secondItem="IKv-Eo-Uhr" secondAttribute="leading" constant="16" id="93G-RI-FN0"/>
-                <constraint firstAttribute="bottom" secondItem="w20-KY-Toq" secondAttribute="bottom" constant="4" id="R0k-61-4CG"/>
-                <constraint firstItem="ZMw-in-qvp" firstAttribute="top" secondItem="IKv-Eo-Uhr" secondAttribute="top" constant="4" id="j34-GH-MlK"/>
-                <constraint firstAttribute="bottom" secondItem="ZMw-in-qvp" secondAttribute="bottom" constant="4" id="ksf-tR-cCB"/>
+                <constraint firstAttribute="bottom" secondItem="DFi-MN-E9H" secondAttribute="bottom" constant="1" id="Bbk-Uz-sn1"/>
+                <constraint firstItem="Tnw-0a-us5" firstAttribute="trailing" secondItem="DFi-MN-E9H" secondAttribute="trailing" id="g30-VP-4hM"/>
+                <constraint firstAttribute="trailing" secondItem="eQG-M1-gau" secondAttribute="trailing" id="jiW-vO-gZ0"/>
+                <constraint firstAttribute="bottom" secondItem="eQG-M1-gau" secondAttribute="bottom" id="s0Q-A7-LJG"/>
+                <constraint firstItem="DFi-MN-E9H" firstAttribute="leading" secondItem="Tnw-0a-us5" secondAttribute="leading" id="swz-j4-zcd"/>
+                <constraint firstItem="eQG-M1-gau" firstAttribute="leading" secondItem="IKv-Eo-Uhr" secondAttribute="leading" constant="16" id="utf-t0-1An"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="Tnw-0a-us5"/>
             <connections>
+                <outlet property="separatorView" destination="eQG-M1-gau" id="hLt-rM-Lsc"/>
                 <outlet property="switchButton" destination="ZMw-in-qvp" id="Tdr-44-Akl"/>
                 <outlet property="titleLabel" destination="w20-KY-Toq" id="AgV-tj-DYl"/>
             </connections>

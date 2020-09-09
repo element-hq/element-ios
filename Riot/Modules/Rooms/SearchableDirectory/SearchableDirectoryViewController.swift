@@ -128,6 +128,7 @@ final class SearchableDirectoryViewController: MXKViewController {
         
         if let navigationBar = self.navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
+            navigationBar.setBackgroundImage(UIImage.vc_image(from: theme.headerBackgroundColor), for: .default)
         }
         
         theme.applyStyle(onSearchBar: mainSearchBar)
@@ -259,7 +260,7 @@ extension SearchableDirectoryViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 30
+        return 40
     }
     
 }
