@@ -54,7 +54,7 @@ final class SearchableDirectoryViewController: MXKViewController {
         let bar = UISearchBar(frame: CGRect(origin: .zero, size: CGSize(width: 600, height: 44)))
         bar.autoresizingMask = .flexibleWidth
         bar.showsCancelButton = false
-        bar.placeholder = VectorL10n.searchDefaultPlaceholder
+        bar.placeholder = VectorL10n.searchableDirectorySearchPlaceholder
         bar.setBackgroundImage(UIImage.vc_image(from: .clear), for: .any, barMetrics: .default)
         bar.delegate = self
         return bar

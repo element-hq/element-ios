@@ -3090,6 +3090,10 @@ internal enum VectorL10n {
   internal static var searchableDirectoryCreateNewRoom: String { 
     return VectorL10n.tr("Vector", "searchable_directory_create_new_room") 
   }
+  /// Name or ID
+  internal static var searchableDirectorySearchPlaceholder: String { 
+    return VectorL10n.tr("Vector", "searchable_directory_search_placeholder") 
+  }
   /// %@ Network
   internal static func searchableDirectoryXNetwork(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "searchable_directory_x_network", p1)
