@@ -1140,3 +1140,4 @@
 "secure_key_backup_setup_existing_backup_error_delete_it" = "Kustuta varukoopia";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "Või kui sa ei saa neid kasutada, siis võid olemasolevas sessioonis";
 "device_verification_self_verify_wait_recover_secrets_checking_availability" = "Kontrollin teiste verifikatsioonivõimaluste olemasolu ...";
+"biometrics_desetup_subtitle" = "biometrics_desetup_subtitle";
