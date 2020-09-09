@@ -6,6 +6,7 @@ Changes to be released in next version
     
 🙌 Improvements
  * AppDelegate: Convert to Swift (#3594).
+ * Contextualize floating button actions per tab (#3627).
     
 🐛 Bugfix
  * Show pin code screen on every foreground (#3620). 
