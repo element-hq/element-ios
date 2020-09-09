@@ -1659,6 +1659,20 @@
                                                        
                                                    }]];
     
+    [currentAlert addAction:[UIAlertAction actionWithTitle:@"Create room (v2)"
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+        
+        if (weakSelf)
+        {
+            typeof(self) self = weakSelf;
+            self->currentAlert = nil;
+            
+            [self createNewRoom];
+        }
+        
+    }]];
+    
     [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_recents_join_room", @"Vector", nil)
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
@@ -1690,6 +1704,16 @@
     
     [currentAlert mxk_setAccessibilityIdentifier:@"RecentsVCCreateRoomAlert"];
     [self presentViewController:currentAlert animated:YES completion:nil];
+}
+
+- (void)createNewRoom
+{
+    // Sanity check
+    if (self.mainSession)
+    {
+        CreateRoomCoordinatorBridgePresenter *presenter = [[CreateRoomCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+        [presenter presentFrom:self animated:YES];
+    }
 }
 
 - (void)createAnEmptyRoom
