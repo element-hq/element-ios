@@ -137,6 +137,13 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.RoomContextualMenuViewController>(storyboard: RoomContextualMenuViewController.self)
   }
+  internal enum SearchableDirectoryViewController: StoryboardType {
+    internal static let storyboardName = "SearchableDirectoryViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SearchableDirectoryViewController>(storyboard: SearchableDirectoryViewController.self)
+
+    internal static let searchableDirectoryViewController = SceneType<Riot.SearchableDirectoryViewController>(storyboard: SearchableDirectoryViewController.self, identifier: "SearchableDirectoryViewController")
+  }
   internal enum SecretsRecoveryWithKeyViewController: StoryboardType {
     internal static let storyboardName = "SecretsRecoveryWithKeyViewController"
 
