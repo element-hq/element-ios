@@ -94,6 +94,7 @@ internal enum Asset {
     internal static let moreReactions = ImageAsset(name: "more_reactions")
     internal static let scrollup = ImageAsset(name: "scrollup")
     internal static let roomsFloatingAction = ImageAsset(name: "rooms_floating_action")
+    internal static let userIcon = ImageAsset(name: "user_icon")
     internal static let fileDocIcon = ImageAsset(name: "file_doc_icon")
     internal static let fileMusicIcon = ImageAsset(name: "file_music_icon")
     internal static let filePhotoIcon = ImageAsset(name: "file_photo_icon")
