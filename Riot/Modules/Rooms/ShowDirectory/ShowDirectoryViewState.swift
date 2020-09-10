@@ -1,5 +1,5 @@
 // File created from ScreenTemplate
-// $ createScreen.sh Rooms2/ShowDirectory ShowDirectory
+// $ createScreen.sh Rooms/ShowDirectory ShowDirectory
 /*
  Copyright 2020 New Vector Ltd
  
@@ -21,6 +21,6 @@ import Foundation
 /// ShowDirectoryViewController view state
 enum ShowDirectoryViewState {
     case loading
-    case loaded(_ displayName: String)
+    case loaded
     case error(Error)
 }

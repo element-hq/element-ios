@@ -22,13 +22,16 @@
 
 #import "Riot-Swift.h"
 
-@interface RoomsViewController ()<SearchableDirectoryViewControllerDelegate>
+@interface RoomsViewController ()<RoomsDirectoryCoordinatorBridgePresenterDelegate>
 {
     RecentsDataSource *recentsDataSource;
 
     // The animated view displayed at the table view bottom when paginating the room directory
     UIView* footerSpinnerView;
 }
+
+@property (nonatomic, strong) RoomsDirectoryCoordinatorBridgePresenter *roomsDirectoryCoordinatorBridgePresenter;
+
 @end
 
 @implementation RoomsViewController
@@ -125,11 +128,9 @@
 
 - (void)onPlusButtonPressed
 {
-    SearchableDirectoryViewController *controller = [SearchableDirectoryViewController instantiateWithSession:self.mainSession];
-    [controller displayWithDataSource:[recentsDataSource.publicRoomsDirectoryDataSource copy]];
-    controller.delegate = self;
-    UINavigationController *navController = [[RiotNavigationController alloc] initWithRootViewController:controller];
-    [self presentViewController:navController animated:YES completion:nil];
+    self.roomsDirectoryCoordinatorBridgePresenter = [[RoomsDirectoryCoordinatorBridgePresenter alloc] initWithSession:self.mainSession dataSource:[recentsDataSource.publicRoomsDirectoryDataSource copy]];
+    self.roomsDirectoryCoordinatorBridgePresenter.delegate = self;
+    [self.roomsDirectoryCoordinatorBridgePresenter presentFrom:self animated:YES];
 }
 
 #pragma mark - 
@@ -350,25 +351,28 @@
     }
 }
 
-#pragma mark - SearchableDirectoryViewControllerDelegate
+#pragma mark - RoomsDirectoryCoordinatorBridgePresenterDelegate
 
-- (void)searchableDirectoryViewControllerDidCancel:(SearchableDirectoryViewController *)viewController
+- (void)roomsDirectoryCoordinatorBridgePresenterDelegateDidComplete:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
-    [viewController dismissViewControllerAnimated:YES completion:nil];
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.roomsDirectoryCoordinatorBridgePresenter = nil;
 }
 
-- (void)searchableDirectoryViewControllerDidSelect:(SearchableDirectoryViewController *)viewController room:(MXPublicRoom *)room
+- (void)roomsDirectoryCoordinatorBridgePresenterDelegate:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectRoom:(MXPublicRoom *)room
 {
-    [viewController dismissViewControllerAnimated:YES completion:^{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
         [self openPublicRoom:room];
     }];
+    self.roomsDirectoryCoordinatorBridgePresenter = nil;
 }
 
-- (void)searchableDirectoryViewControllerDidTapCreateNewRoom:(SearchableDirectoryViewController *)viewController
+- (void)roomsDirectoryCoordinatorBridgePresenterDelegateDidTapCreateNewRoom:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
-    [viewController dismissViewControllerAnimated:YES completion:^{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
         [self createAnEmptyRoom];
     }];
+    self.roomsDirectoryCoordinatorBridgePresenter = nil;
 }
 
 @end

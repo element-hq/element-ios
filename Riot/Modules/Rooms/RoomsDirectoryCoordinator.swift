@@ -1,5 +1,5 @@
 // File created from FlowTemplate
-// $ createRootCoordinator.sh Rooms2 ShowDirectory ShowDirectory
+// $ createRootCoordinator.sh Rooms2 RoomsDirectory ShowDirectory
 /*
  Copyright 2020 New Vector Ltd
  
@@ -19,7 +19,7 @@
 import UIKit
 
 @objcMembers
-final class ShowDirectoryCoordinator: ShowDirectoryCoordinatorType {
+final class RoomsDirectoryCoordinator: RoomsDirectoryCoordinatorType {
     
     // MARK: - Properties
     
@@ -27,19 +27,21 @@ final class ShowDirectoryCoordinator: ShowDirectoryCoordinatorType {
     
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
+    private let dataSource: PublicRoomsDirectoryDataSource
     
     // MARK: Public
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
     
-    weak var delegate: ShowDirectoryCoordinatorDelegate?
+    weak var delegate: RoomsDirectoryCoordinatorDelegate?
     
     // MARK: - Setup
     
-    init(session: MXSession) {
+    init(session: MXSession, dataSource: PublicRoomsDirectoryDataSource) {
         self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
+        self.dataSource = dataSource
     }    
     
     // MARK: - Public methods
@@ -62,19 +64,27 @@ final class ShowDirectoryCoordinator: ShowDirectoryCoordinatorType {
     // MARK: - Private methods
 
     private func createShowDirectoryCoordinator() -> ShowDirectoryCoordinator {
-        let coordinator = ShowDirectoryCoordinator(session: self.session)
+        let coordinator = ShowDirectoryCoordinator(session: self.session, dataSource: dataSource)
         coordinator.delegate = self
         return coordinator
     }
 }
 
 // MARK: - ShowDirectoryCoordinatorDelegate
-extension ShowDirectoryCoordinator: ShowDirectoryCoordinatorDelegate {
-    func showDirectoryCoordinator(_ coordinator: ShowDirectoryCoordinatorType, didCompleteWithUserDisplayName userDisplayName: String?) {
-        self.delegate?.showDirectoryCoordinatorDidComplete(self)
+extension RoomsDirectoryCoordinator: ShowDirectoryCoordinatorDelegate {
+    func showDirectoryCoordinator(_ coordinator: ShowDirectoryCoordinatorType, didSelectRoom room: MXPublicRoom) {
+        self.delegate?.roomsDirectoryCoordinator(self, didSelectRoom: room)
+    }
+    
+    func showDirectoryCoordinatorDidTapCreateNewRoom(_ coordinator: ShowDirectoryCoordinatorType) {
+        self.delegate?.roomsDirectoryCoordinatorDidTapCreateNewRoom(self)
     }
     
     func showDirectoryCoordinatorDidCancel(_ coordinator: ShowDirectoryCoordinatorType) {
-        self.delegate?.showDirectoryCoordinatorDidComplete(self)
+        self.delegate?.roomsDirectoryCoordinatorDidComplete(self)
+    }
+    
+    func showDirectoryCoordinatorWantsToShow(_ coordinator: ShowDirectoryCoordinatorType, viewController: UIViewController) {
+        toPresentable().present(RiotNavigationController(rootViewController: viewController), animated: true, completion: nil)
     }
 }

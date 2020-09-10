@@ -1,5 +1,5 @@
 // File created from ScreenTemplate
-// $ createScreen.sh Rooms2/ShowDirectory ShowDirectory
+// $ createScreen.sh Rooms/ShowDirectory ShowDirectory
 /*
  Copyright 2020 New Vector Ltd
  
@@ -30,10 +30,12 @@ final class ShowDirectoryViewController: UIViewController {
     
     // MARK: Outlets
 
-    @IBOutlet private weak var scrollView: UIScrollView!
-    
-    @IBOutlet private weak var informationLabel: UILabel!
-    @IBOutlet private weak var doneButton: UIButton!
+    @IBOutlet private weak var mainTableView: UITableView!
+    @IBOutlet private weak var createRoomButton: UIButton! {
+        didSet {
+            createRoomButton.setTitle(VectorL10n.searchableDirectoryCreateNewRoom, for: .normal)
+        }
+    }
     
     // MARK: Private
 
@@ -42,6 +44,24 @@ final class ShowDirectoryViewController: UIViewController {
     private var keyboardAvoider: KeyboardAvoider?
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
+    private lazy var footerSpinnerView: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView(style: .whiteLarge)
+        spinner.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
+        spinner.color = .darkGray
+        spinner.hidesWhenStopped = false
+        spinner.backgroundColor = .clear
+        spinner.startAnimating()
+        return spinner
+    }()
+    private lazy var mainSearchBar: UISearchBar = {
+        let bar = UISearchBar(frame: CGRect(origin: .zero, size: CGSize(width: 600, height: 44)))
+        bar.autoresizingMask = .flexibleWidth
+        bar.showsCancelButton = false
+        bar.placeholder = VectorL10n.searchableDirectorySearchPlaceholder
+        bar.setBackgroundImage(UIImage.vc_image(from: .clear), for: .any, barMetrics: .default)
+        bar.delegate = self
+        return bar
+    }()
 
     // MARK: - Setup
     
@@ -60,7 +80,7 @@ final class ShowDirectoryViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.setupViews()
-        self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
+        self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.mainTableView)
         self.activityPresenter = ActivityIndicatorPresenter()
         self.errorPresenter = MXKErrorAlertPresentation()
         
@@ -69,7 +89,7 @@ final class ShowDirectoryViewController: UIViewController {
         
         self.viewModel.viewDelegate = self
 
-        self.viewModel.process(viewAction: .loadData)
+        self.viewModel.process(viewAction: .loadData(false))
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -90,21 +110,32 @@ final class ShowDirectoryViewController: UIViewController {
     
     // MARK: - Private
     
+    private func addSpinnerFooterView() {
+        footerSpinnerView.startAnimating()
+        self.mainTableView.tableFooterView = footerSpinnerView
+    }
+    
+    private func removeSpinnerFooterView() {
+        footerSpinnerView.stopAnimating()
+        self.mainTableView.tableFooterView = UIView()
+    }
+    
     private func update(theme: Theme) {
         self.theme = theme
         
         self.view.backgroundColor = theme.headerBackgroundColor
+        self.mainTableView.backgroundColor = theme.backgroundColor
+        self.mainTableView.separatorColor = theme.lineBreakColor
         
         if let navigationBar = self.navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
+            navigationBar.setBackgroundImage(UIImage.vc_image(from: theme.headerBackgroundColor), for: .default)
         }
 
-
-        // TODO: Set view colors here
-        self.informationLabel.textColor = theme.textPrimaryColor
-
-        self.doneButton.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.doneButton)
+        theme.applyStyle(onSearchBar: mainSearchBar)
+        theme.applyStyle(onButton: createRoomButton)
+        
+        self.mainTableView.reloadData()
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -116,51 +147,49 @@ final class ShowDirectoryViewController: UIViewController {
     }
     
     private func setupViews() {
+        self.mainTableView.keyboardDismissMode = .interactive
+        self.mainTableView.register(headerFooterViewType: DirectoryNetworkTableHeaderFooterView.self)
+        self.mainTableView.register(cellType: DirectoryRoomTableViewCell.self)
+        self.mainTableView.rowHeight = 76
+        self.mainTableView.tableFooterView = UIView()
+        
         let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
             self?.cancelButtonAction()
         }
-        
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         
-        self.title = "Template"
-        
-        self.scrollView.keyboardDismissMode = .interactive
-        
-        self.informationLabel.text = "VectorL10n.showDirectoryTitle"
+        self.navigationItem.titleView = mainSearchBar
     }
 
     private func render(viewState: ShowDirectoryViewState) {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .loaded(let displayName):
-            self.renderLoaded(displayName: displayName)
+        case .loaded:
+            self.renderLoaded()
         case .error(let error):
             self.render(error: error)
         }
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
-        self.informationLabel.text = "Fetch display name"
+        addSpinnerFooterView()
     }
     
-    private func renderLoaded(displayName: String) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+    private func renderLoaded() {
+        removeSpinnerFooterView()
 
-        self.informationLabel.text = "You display name: \(displayName)"
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        removeSpinnerFooterView()
         self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
 
-    
     // MARK: - Actions
 
-    @IBAction private func doneButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .complete)
+    @IBAction private func createRoomButtonTapped(_ sender: UIButton) {
+        viewModel.process(viewAction: .createNewRoom)
     }
 
     private func cancelButtonAction() {
@@ -169,10 +198,115 @@ final class ShowDirectoryViewController: UIViewController {
 }
 
 
+// MARK: - UITableViewDataSource
+
+extension ShowDirectoryViewController: UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.roomsCount
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: DirectoryRoomTableViewCell = tableView.dequeueReusableCell(for: indexPath)
+        if let viewModel = viewModel.roomViewModel(at: indexPath) {
+            cell.configure(withViewModel: viewModel)
+        }
+        cell.indexPath = indexPath
+        cell.delegate = self
+        cell.update(theme: self.theme)
+        return cell
+    }
+    
+}
+
+// MARK: - UITableViewDataDelegate
+
+extension ShowDirectoryViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = theme.backgroundColor
+        
+        // Update the selected background view
+        cell.selectedBackgroundView = UIView()
+        cell.selectedBackgroundView?.backgroundColor = theme.selectedBackgroundColor
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        viewModel.process(viewAction: .selectRoom(indexPath))
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // Trigger inconspicuous pagination when user scrolls down
+        if (scrollView.contentSize.height - scrollView.contentOffset.y - scrollView.frame.size.height) < 300 {
+            viewModel.process(viewAction: .loadData(false))
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let view: DirectoryNetworkTableHeaderFooterView = tableView.dequeueReusableHeaderFooterView() else {
+            return nil
+        }
+        if let name = self.viewModel.directoryServerDisplayname {
+            let title = VectorL10n.searchableDirectoryXNetwork(name)
+            view.configure(withViewModel: DirectoryNetworkVM(title: title))
+        }
+        view.update(theme: self.theme)
+        view.delegate = self
+        return view
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40
+    }
+    
+}
+
+// MARK: - UISearchBarDelegate
+
+extension ShowDirectoryViewController {
+    
+    override func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        viewModel.process(viewAction: .search(searchText))
+    }
+    
+}
+
+// MARK: -
+
+extension ShowDirectoryViewController: DirectoryRoomTableViewCellDelegate {
+    
+    func directoryRoomTableViewCellDidTapJoin(_ cell: DirectoryRoomTableViewCell) {
+        cell.startJoining()
+        viewModel.process(viewAction: .joinRoom(cell.indexPath))
+    }
+    
+}
+
+// MARK: - DirectoryNetworkTableHeaderFooterViewDelegate
+
+extension ShowDirectoryViewController: DirectoryNetworkTableHeaderFooterViewDelegate {
+    
+    func directoryNetworkTableHeaderFooterViewDidTapSwitch(_ view: DirectoryNetworkTableHeaderFooterView) {
+        viewModel.process(viewAction: .switchServer)
+    }
+    
+}
+
+
 // MARK: - ShowDirectoryViewModelViewDelegate
 extension ShowDirectoryViewController: ShowDirectoryViewModelViewDelegate {
 
     func showDirectoryViewModel(_ viewModel: ShowDirectoryViewModelType, didUpdateViewState viewSate: ShowDirectoryViewState) {
         self.render(viewState: viewSate)
+    }
+    
+    func showDirectoryViewModelDidUpdateDataSource(_ viewModel: ShowDirectoryViewModelType) {
+        self.mainTableView.reloadData()
     }
 }

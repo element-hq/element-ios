@@ -1,5 +1,5 @@
 // File created from ScreenTemplate
-// $ createScreen.sh Rooms2/ShowDirectory ShowDirectory
+// $ createScreen.sh Rooms/ShowDirectory ShowDirectory
 /*
  Copyright 2020 New Vector Ltd
  
@@ -19,8 +19,10 @@
 import Foundation
 
 protocol ShowDirectoryCoordinatorDelegate: class {
-    func showDirectoryCoordinator(_ coordinator: ShowDirectoryCoordinatorType, didCompleteWithUserDisplayName userDisplayName: String?)
+    func showDirectoryCoordinator(_ coordinator: ShowDirectoryCoordinatorType, didSelectRoom room: MXPublicRoom)
+    func showDirectoryCoordinatorDidTapCreateNewRoom(_ coordinator: ShowDirectoryCoordinatorType)
     func showDirectoryCoordinatorDidCancel(_ coordinator: ShowDirectoryCoordinatorType)
+    func showDirectoryCoordinatorWantsToShow(_ coordinator: ShowDirectoryCoordinatorType, viewController: UIViewController)
 }
 
 /// `ShowDirectoryCoordinatorType` is a protocol describing a Coordinator that handle key backup setup passphrase navigation flow.

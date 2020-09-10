@@ -1,5 +1,5 @@
 // File created from ScreenTemplate
-// $ createScreen.sh Rooms2/ShowDirectory ShowDirectory
+// $ createScreen.sh Rooms/ShowDirectory ShowDirectory
 /*
  Copyright 2020 New Vector Ltd
  
@@ -18,13 +18,14 @@
 
 import Foundation
 
-final class ShowDirectoryViewModel: ShowDirectoryViewModelType {
+final class ShowDirectoryViewModel: NSObject, ShowDirectoryViewModelType {
     
     // MARK: - Properties
     
     // MARK: Private
 
     private let session: MXSession
+    private let dataSource: PublicRoomsDirectoryDataSource
     
     private var currentOperation: MXHTTPOperation?
     private var userDisplayName: String?
@@ -34,10 +35,22 @@ final class ShowDirectoryViewModel: ShowDirectoryViewModelType {
     weak var viewDelegate: ShowDirectoryViewModelViewDelegate?
     weak var coordinatorDelegate: ShowDirectoryViewModelCoordinatorDelegate?
     
+    var roomsCount: Int {
+        return Int(dataSource.roomsCount)
+    }
+    var directoryServerDisplayname: String? {
+        return dataSource.directoryServerDisplayname
+    }
+    func roomViewModel(at indexPath: IndexPath) -> DirectoryRoomTableViewCellVM? {
+        guard let room = dataSource.room(at: indexPath) else { return nil }
+        return DirectoryRoomTableViewCellVM(room: room, session: session)
+    }
+    
     // MARK: - Setup
     
-    init(session: MXSession) {
+    init(session: MXSession, dataSource: PublicRoomsDirectoryDataSource) {
         self.session = session
+        self.dataSource = dataSource
     }
     
     deinit {
@@ -48,10 +61,21 @@ final class ShowDirectoryViewModel: ShowDirectoryViewModelType {
     
     func process(viewAction: ShowDirectoryViewAction) {
         switch viewAction {
-        case .loadData:
-            self.loadData()
-        case .complete:
-            self.coordinatorDelegate?.showDirectoryViewModel(self, didCompleteWithUserDisplayName: self.userDisplayName)
+        case .loadData(let force):
+            self.loadData(force: force)
+        case .selectRoom(let indexPath):
+            guard let room = dataSource.room(at: indexPath) else { return }
+            self.coordinatorDelegate?.showDirectoryViewModelDidSelect(self, room: room)
+        case .joinRoom(let indexPath):
+            guard let room = dataSource.room(at: indexPath) else { return }
+            joinRoom(room)
+        case .search(let pattern):
+            self.dataSource.searchPattern = pattern
+            self.loadData(force: true)
+        case .createNewRoom:
+            self.coordinatorDelegate?.showDirectoryViewModelDidTapCreateNewRoom(self)
+        case .switchServer:
+            self.switchServer()
         case .cancel:
             self.cancelOperations()
             self.coordinatorDelegate?.showDirectoryViewModelDidCancel(self)
@@ -60,24 +84,57 @@ final class ShowDirectoryViewModel: ShowDirectoryViewModelType {
     
     // MARK: - Private
     
-    private func loadData() {
-
+    private func loadData(force: Bool) {
+        if !force && (dataSource.hasReachedPaginationEnd || currentOperation != nil) {
+            // We got all public rooms or we are already paginating
+            // Do nothing
+            return
+        }
+        
         self.update(viewState: .loading)
-
-        // Check first that the user homeserver is federated with the  Riot-bot homeserver
-        self.currentOperation = self.session.matrixRestClient.displayName(forUser: self.session.myUser.userId) { [weak self]  (response) in
-
-            guard let self = self else {
-                return
+        
+        currentOperation = dataSource.paginate({ [weak self] (roomsAdded) in
+            guard let self = self else { return }
+            if roomsAdded > 0 {
+                self.viewDelegate?.showDirectoryViewModelDidUpdateDataSource(self)
             }
-            
-            switch response {
-            case .success(let userDisplayName):
-                self.update(viewState: .loaded(userDisplayName))
-                self.userDisplayName = userDisplayName
-            case .failure(let error):
-                self.update(viewState: .error(error))
+            self.update(viewState: .loaded)
+            self.currentOperation = nil
+        }, failure: { [weak self] (error) in
+            guard let self = self else { return }
+            guard let error = error else { return }
+            self.update(viewState: .error(error))
+            self.currentOperation = nil
+        })
+    }
+    
+    private func switchServer() {
+        let controller = DirectoryServerPickerViewController()
+        let source = MXKDirectoryServersDataSource(matrixSession: session)
+        source?.finalizeInitialization()
+        source?.roomDirectoryServers = BuildSettings.publicRoomsDirectoryServers
+
+        controller.display(with: source) { [weak self] (cellData) in
+            guard let self = self else { return }
+            guard let cellData = cellData else { return }
+
+            if let thirdpartyProtocolInstance = cellData.thirdPartyProtocolInstance {
+                self.dataSource.thirdpartyProtocolInstance = thirdpartyProtocolInstance
+            } else if let homeserver = cellData.homeserver {
+                self.dataSource.includeAllNetworks = cellData.includeAllNetworks
+                self.dataSource.homeserver = homeserver
             }
+
+            self.loadData(force: false)
+        }
+
+        self.coordinatorDelegate?.showDirectoryViewModelWantsToShow(self, controller: controller)
+    }
+    
+    private func joinRoom(_ room: MXPublicRoom) {
+        session.joinRoom(room.roomId) { [weak self] (response) in
+            guard let self = self else { return }
+            self.viewDelegate?.showDirectoryViewModelDidUpdateDataSource(self)
         }
     }
     
@@ -88,4 +145,26 @@ final class ShowDirectoryViewModel: ShowDirectoryViewModelType {
     private func cancelOperations() {
         self.currentOperation?.cancel()
     }
+}
+
+// MARK: - MXKDataSourceDelegate
+
+extension ShowDirectoryViewModel: MXKDataSourceDelegate {
+    
+    func cellViewClass(for cellData: MXKCellData!) -> MXKCellRendering.Type! {
+        return nil
+    }
+    
+    func cellReuseIdentifier(for cellData: MXKCellData!) -> String! {
+        return nil
+    }
+    
+    func dataSource(_ dataSource: MXKDataSource!, didCellChange changes: Any!) {
+        
+    }
+    
+    func dataSource(_ dataSource: MXKDataSource!, didStateChange state: MXKDataSourceState) {
+        self.viewDelegate?.showDirectoryViewModelDidUpdateDataSource(self)
+    }
+    
 }

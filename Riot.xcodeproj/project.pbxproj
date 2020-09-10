@@ -760,8 +760,6 @@
 		EC3B066A24AC6ADE000DF9BF /* CrossSigningSetupBannerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC3B066624AC6ADD000DF9BF /* CrossSigningSetupBannerCell.xib */; };
 		EC3B066B24AC6ADE000DF9BF /* CrossSigningBannerPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3B066724AC6ADD000DF9BF /* CrossSigningBannerPreferences.swift */; };
 		EC3B066C24AC6ADE000DF9BF /* CrossSigningSetupBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3B066824AC6ADD000DF9BF /* CrossSigningSetupBannerCell.swift */; };
-		EC60786F2507AC1100EA75C1 /* SearchableDirectoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC60786D2507AC1100EA75C1 /* SearchableDirectoryViewController.swift */; };
-		EC6078702507AC1100EA75C1 /* SearchableDirectoryViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC60786E2507AC1100EA75C1 /* SearchableDirectoryViewController.storyboard */; };
 		EC6078762507B07E00EA75C1 /* DirectoryRoomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6078742507B07E00EA75C1 /* DirectoryRoomTableViewCell.swift */; };
 		EC6078772507B07E00EA75C1 /* DirectoryRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC6078752507B07E00EA75C1 /* DirectoryRoomTableViewCell.xib */; };
 		EC60787B2507B0D200EA75C1 /* DirectoryNetworkTableHeaderFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC6078792507B0D200EA75C1 /* DirectoryNetworkTableHeaderFooterView.xib */; };
@@ -870,9 +868,10 @@
 		ECF57A76250A2E40004BBF9D /* ShowDirectoryCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A6B250A2E40004BBF9D /* ShowDirectoryCoordinatorType.swift */; };
 		ECF57A77250A2E40004BBF9D /* ShowDirectoryViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A6C250A2E40004BBF9D /* ShowDirectoryViewModelType.swift */; };
 		ECF57A78250A2E40004BBF9D /* ShowDirectoryViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A6D250A2E40004BBF9D /* ShowDirectoryViewAction.swift */; };
-		ECF57A79250A2E40004BBF9D /* ShowDirectoryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A6E250A2E40004BBF9D /* ShowDirectoryCoordinator.swift */; };
-		ECF57A7A250A2E40004BBF9D /* ShowDirectoryCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A6F250A2E40004BBF9D /* ShowDirectoryCoordinatorBridgePresenter.swift */; };
-		ECF57A7B250A2E40004BBF9D /* ShowDirectoryCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A70250A2E40004BBF9D /* ShowDirectoryCoordinatorType.swift */; };
+		ECF57A7F250A3190004BBF9D /* RoomsDirectoryCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A7C250A318F004BBF9D /* RoomsDirectoryCoordinatorType.swift */; };
+		ECF57A80250A3190004BBF9D /* RoomsDirectoryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A7D250A3190004BBF9D /* RoomsDirectoryCoordinator.swift */; };
+		ECF57A81250A3190004BBF9D /* RoomsDirectoryCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A7E250A3190004BBF9D /* RoomsDirectoryCoordinatorBridgePresenter.swift */; };
+		ECF57A83250A3FB2004BBF9D /* DirectoryRoomTableViewCellVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A82250A3FB2004BBF9D /* DirectoryRoomTableViewCellVM.swift */; };
 		F05927C91FDED836009F2A68 /* MXGroup+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F05927C71FDED835009F2A68 /* MXGroup+Riot.m */; };
 		F083BD1E1E7009ED00A9B29C /* LegacyAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB0D1E7009EC00A9B29C /* LegacyAppDelegate.m */; };
 		F083BDE61E7009ED00A9B29C /* busy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDB1E7009EC00A9B29C /* busy.mp3 */; };
@@ -1906,8 +1905,6 @@
 		EC3B066624AC6ADD000DF9BF /* CrossSigningSetupBannerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CrossSigningSetupBannerCell.xib; sourceTree = "<group>"; };
 		EC3B066724AC6ADD000DF9BF /* CrossSigningBannerPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossSigningBannerPreferences.swift; sourceTree = "<group>"; };
 		EC3B066824AC6ADD000DF9BF /* CrossSigningSetupBannerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossSigningSetupBannerCell.swift; sourceTree = "<group>"; };
-		EC60786D2507AC1100EA75C1 /* SearchableDirectoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchableDirectoryViewController.swift; sourceTree = "<group>"; };
-		EC60786E2507AC1100EA75C1 /* SearchableDirectoryViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SearchableDirectoryViewController.storyboard; sourceTree = "<group>"; };
 		EC6078742507B07E00EA75C1 /* DirectoryRoomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryRoomTableViewCell.swift; sourceTree = "<group>"; };
 		EC6078752507B07E00EA75C1 /* DirectoryRoomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DirectoryRoomTableViewCell.xib; sourceTree = "<group>"; };
 		EC6078792507B0D200EA75C1 /* DirectoryNetworkTableHeaderFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DirectoryNetworkTableHeaderFooterView.xib; sourceTree = "<group>"; };
@@ -2018,9 +2015,10 @@
 		ECF57A6B250A2E40004BBF9D /* ShowDirectoryCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDirectoryCoordinatorType.swift; sourceTree = "<group>"; };
 		ECF57A6C250A2E40004BBF9D /* ShowDirectoryViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDirectoryViewModelType.swift; sourceTree = "<group>"; };
 		ECF57A6D250A2E40004BBF9D /* ShowDirectoryViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDirectoryViewAction.swift; sourceTree = "<group>"; };
-		ECF57A6E250A2E40004BBF9D /* ShowDirectoryCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDirectoryCoordinator.swift; sourceTree = "<group>"; };
-		ECF57A6F250A2E40004BBF9D /* ShowDirectoryCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDirectoryCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
-		ECF57A70250A2E40004BBF9D /* ShowDirectoryCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDirectoryCoordinatorType.swift; sourceTree = "<group>"; };
+		ECF57A7C250A318F004BBF9D /* RoomsDirectoryCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomsDirectoryCoordinatorType.swift; sourceTree = "<group>"; };
+		ECF57A7D250A3190004BBF9D /* RoomsDirectoryCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomsDirectoryCoordinator.swift; sourceTree = "<group>"; };
+		ECF57A7E250A3190004BBF9D /* RoomsDirectoryCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomsDirectoryCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
+		ECF57A82250A3FB2004BBF9D /* DirectoryRoomTableViewCellVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryRoomTableViewCellVM.swift; sourceTree = "<group>"; };
 		F05927C71FDED835009F2A68 /* MXGroup+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXGroup+Riot.m"; sourceTree = "<group>"; };
 		F05927C81FDED835009F2A68 /* MXGroup+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXGroup+Riot.h"; sourceTree = "<group>"; };
 		F083BB031E7005FD00A9B29C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -3629,13 +3627,12 @@
 		B1B556F420EE6C4C00210D55 /* Rooms */ = {
 			isa = PBXGroup;
 			children = (
+				ECF57A7D250A3190004BBF9D /* RoomsDirectoryCoordinator.swift */,
+				ECF57A7E250A3190004BBF9D /* RoomsDirectoryCoordinatorBridgePresenter.swift */,
+				ECF57A7C250A318F004BBF9D /* RoomsDirectoryCoordinatorType.swift */,
 				ECF57A65250A2E40004BBF9D /* ShowDirectory */,
-				ECF57A6E250A2E40004BBF9D /* ShowDirectoryCoordinator.swift */,
-				ECF57A6F250A2E40004BBF9D /* ShowDirectoryCoordinatorBridgePresenter.swift */,
-				ECF57A70250A2E40004BBF9D /* ShowDirectoryCoordinatorType.swift */,
 				B1B556F620EE6C4C00210D55 /* RoomsViewController.h */,
 				B1B556F820EE6C4C00210D55 /* RoomsViewController.m */,
-				EC60786C2507AC1100EA75C1 /* SearchableDirectory */,
 				B1B5577820EE75ED00210D55 /* DirectoryPicker */,
 			);
 			path = Rooms;
@@ -4685,16 +4682,6 @@
 			path = Banners;
 			sourceTree = "<group>";
 		};
-		EC60786C2507AC1100EA75C1 /* SearchableDirectory */ = {
-			isa = PBXGroup;
-			children = (
-				EC60786D2507AC1100EA75C1 /* SearchableDirectoryViewController.swift */,
-				EC60786E2507AC1100EA75C1 /* SearchableDirectoryViewController.storyboard */,
-				EC6078712507B04500EA75C1 /* Cells */,
-			);
-			path = SearchableDirectory;
-			sourceTree = "<group>";
-		};
 		EC6078712507B04500EA75C1 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -4718,6 +4705,7 @@
 			children = (
 				EC6078742507B07E00EA75C1 /* DirectoryRoomTableViewCell.swift */,
 				EC6078752507B07E00EA75C1 /* DirectoryRoomTableViewCell.xib */,
+				ECF57A82250A3FB2004BBF9D /* DirectoryRoomTableViewCellVM.swift */,
 			);
 			path = Room;
 			sourceTree = "<group>";
@@ -4957,6 +4945,7 @@
 				ECF57A6B250A2E40004BBF9D /* ShowDirectoryCoordinatorType.swift */,
 				ECF57A6C250A2E40004BBF9D /* ShowDirectoryViewModelType.swift */,
 				ECF57A6D250A2E40004BBF9D /* ShowDirectoryViewAction.swift */,
+				EC6078712507B04500EA75C1 /* Cells */,
 			);
 			path = ShowDirectory;
 			sourceTree = "<group>";
@@ -5455,7 +5444,6 @@
 				B1E5368F21FB7258001F3AFF /* KeyBackupRecoverFromPassphraseViewController.storyboard in Resources */,
 				B1B5590420EF768F00210D55 /* RoomOutgoingAttachmentBubbleCell.xib in Resources */,
 				B1B558F120EF768F00210D55 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
-				EC6078702507AC1100EA75C1 /* SearchableDirectoryViewController.storyboard in Resources */,
 				B1B557CB20EF5D8000210D55 /* DirectoryServerTableViewCell.xib in Resources */,
 				B1B558EC20EF768F00210D55 /* RoomMembershipCollapsedBubbleCell.xib in Resources */,
 				EC711BAD24A63B58008F830C /* SecureBackupSetupIntroViewController.storyboard in Resources */,
@@ -5939,7 +5927,6 @@
 				B14F143422144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewAction.swift in Sources */,
 				B1098BF621ECFE65000DDA48 /* KeyBackupSetupPassphraseCoordinator.swift in Sources */,
 				B1B558C320EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
-				ECF57A7A250A2E40004BBF9D /* ShowDirectoryCoordinatorBridgePresenter.swift in Sources */,
 				B1B9DEDC22E9B7440065E677 /* SerializationServiceType.swift in Sources */,
 				B110872521F098F0003554A5 /* ActivityIndicatorPresenter.swift in Sources */,
 				32242F1521E8FBA900725742 /* DarkTheme.swift in Sources */,
@@ -6038,6 +6025,8 @@
 				B1D4752821EE4E630067973F /* KeyboardNotification.swift in Sources */,
 				B1D1BDA622BBAFB500831367 /* ReactionsMenuView.swift in Sources */,
 				EC711B4624A63B13008F830C /* MXRecoveryService.swift in Sources */,
+				ECF57A80250A3190004BBF9D /* RoomsDirectoryCoordinator.swift in Sources */,
+				ECF57A83250A3FB2004BBF9D /* DirectoryRoomTableViewCellVM.swift in Sources */,
 				EC1CA86C24C1DEC400DE9EBF /* SetPinCoordinatorType.swift in Sources */,
 				EC1CA86324C1DEC400DE9EBF /* EnterPinCodeCoordinatorType.swift in Sources */,
 				B18DEDD6243377C10075FEF7 /* KeyVerificationSelfVerifyWaitCoordinator.swift in Sources */,
@@ -6086,6 +6075,7 @@
 				B1BEE73623DF44A60003A4CB /* UserVerificationSessionsStatusCoordinatorType.swift in Sources */,
 				B1C45A86232A8C2600165425 /* SettingsIdentityServerViewModelType.swift in Sources */,
 				F083BE031E7009ED00A9B29C /* EventFormatter.m in Sources */,
+				ECF57A7F250A3190004BBF9D /* RoomsDirectoryCoordinatorType.swift in Sources */,
 				B157FAA623264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsViewController.swift in Sources */,
 				B1DCC62422E60CA900625807 /* EmojiPickerCategoryViewData.swift in Sources */,
 				B1550FCB2420E8F500CE097B /* QRCodeReaderViewController.swift in Sources */,
@@ -6139,7 +6129,6 @@
 				B1B558CC20EF768F00210D55 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				B183226623F55D6B0035B2E8 /* CameraAccessManager.swift in Sources */,
 				B1B5571D20EE6C4D00210D55 /* HomeViewController.m in Sources */,
-				ECF57A79250A2E40004BBF9D /* ShowDirectoryCoordinator.swift in Sources */,
 				B1CE83DD2422817200D07506 /* KeyVerificationVerifyBySASViewAction.swift in Sources */,
 				B1C45A84232A8C2600165425 /* SettingsIdentityServerCoordinatorType.swift in Sources */,
 				EC711B7524A63B37008F830C /* SecretsSetupRecoveryKeyCoordinatorType.swift in Sources */,
@@ -6271,6 +6260,7 @@
 				B1D211E622C194A200D939BD /* ReactionsMenuViewState.swift in Sources */,
 				B17982FF2119FED2001FD722 /* GDPRConsentViewController.swift in Sources */,
 				B1098BE121ECE09F000DDA48 /* Images.swift in Sources */,
+				ECF57A81250A3190004BBF9D /* RoomsDirectoryCoordinatorBridgePresenter.swift in Sources */,
 				B1B4E9C424D47207004D5C33 /* BubbleReactionsViewModelBuilder.swift in Sources */,
 				EC85D72A2477DCF2002C44C9 /* KeyVerificationManuallyVerifyViewModel.swift in Sources */,
 				B1BEE74A23E093260003A4CB /* UserVerificationSessionStatusCoordinatorType.swift in Sources */,
@@ -6352,7 +6342,6 @@
 				EC3B066B24AC6ADE000DF9BF /* CrossSigningBannerPreferences.swift in Sources */,
 				ECB101322477CFDB00CF8C11 /* UIDevice.swift in Sources */,
 				B169330320F3C98900746532 /* RoomBubbleCellData.m in Sources */,
-				EC60786F2507AC1100EA75C1 /* SearchableDirectoryViewController.swift in Sources */,
 				EC1CA86224C1DEC400DE9EBF /* EnterPinCodeViewState.swift in Sources */,
 				EC711B8A24A63B37008F830C /* SecretsRecoveryWithPassphraseViewController.swift in Sources */,
 				B1B336C3242B933700F95EC4 /* KeyVerificationSelfVerifyStartCoordinator.swift in Sources */,
@@ -6448,7 +6437,6 @@
 				EC60787D2507D30200EA75C1 /* DirectoryNetworkTableHeaderFooterView.swift in Sources */,
 				B14F143022144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyCoordinatorType.swift in Sources */,
 				B1E5368921FB1E20001F3AFF /* UIButton.swift in Sources */,
-				ECF57A7B250A2E40004BBF9D /* ShowDirectoryCoordinatorType.swift in Sources */,
 				B1DCC63422E72C1B00625807 /* UISearchBar.swift in Sources */,
 				32A6001622C661100042C1D9 /* EditHistoryViewState.swift in Sources */,
 			);

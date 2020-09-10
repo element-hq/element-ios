@@ -1,5 +1,5 @@
 // File created from ScreenTemplate
-// $ createScreen.sh Rooms2/ShowDirectory ShowDirectory
+// $ createScreen.sh Rooms/ShowDirectory ShowDirectory
 /*
  Copyright 2020 New Vector Ltd
  
@@ -20,7 +20,11 @@ import Foundation
 
 /// ShowDirectoryViewController view actions exposed to view model
 enum ShowDirectoryViewAction {
-    case loadData
-    case complete
+    case loadData(_ force: Bool)
+    case selectRoom(_ indexPath: IndexPath)
+    case joinRoom(_ indexPath: IndexPath)
+    case search(_ pattern: String?)
+    case createNewRoom
+    case switchServer
     case cancel
 }

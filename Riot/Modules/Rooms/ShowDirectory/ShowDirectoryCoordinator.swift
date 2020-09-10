@@ -1,5 +1,5 @@
 // File created from ScreenTemplate
-// $ createScreen.sh Rooms2/ShowDirectory ShowDirectory
+// $ createScreen.sh Rooms/ShowDirectory ShowDirectory
 /*
  Copyright 2020 New Vector Ltd
  
@@ -26,6 +26,7 @@ final class ShowDirectoryCoordinator: ShowDirectoryCoordinatorType {
     // MARK: Private
     
     private let session: MXSession
+    private let dataSource: PublicRoomsDirectoryDataSource
     private var showDirectoryViewModel: ShowDirectoryViewModelType
     private let showDirectoryViewController: ShowDirectoryViewController
     
@@ -38,10 +39,11 @@ final class ShowDirectoryCoordinator: ShowDirectoryCoordinatorType {
     
     // MARK: - Setup
     
-    init(session: MXSession) {
+    init(session: MXSession, dataSource: PublicRoomsDirectoryDataSource) {
         self.session = session
+        self.dataSource = dataSource
         
-        let showDirectoryViewModel = ShowDirectoryViewModel(session: self.session)
+        let showDirectoryViewModel = ShowDirectoryViewModel(session: self.session, dataSource: dataSource)
         let showDirectoryViewController = ShowDirectoryViewController.instantiate(with: showDirectoryViewModel)
         self.showDirectoryViewModel = showDirectoryViewModel
         self.showDirectoryViewController = showDirectoryViewController
@@ -61,11 +63,20 @@ final class ShowDirectoryCoordinator: ShowDirectoryCoordinatorType {
 // MARK: - ShowDirectoryViewModelCoordinatorDelegate
 extension ShowDirectoryCoordinator: ShowDirectoryViewModelCoordinatorDelegate {
     
-    func showDirectoryViewModel(_ viewModel: ShowDirectoryViewModelType, didCompleteWithUserDisplayName userDisplayName: String?) {
-        self.delegate?.showDirectoryCoordinator(self, didCompleteWithUserDisplayName: userDisplayName)
+    func showDirectoryViewModelDidSelect(_ viewModel: ShowDirectoryViewModelType, room: MXPublicRoom) {
+        self.delegate?.showDirectoryCoordinator(self, didSelectRoom: room)
+    }
+    
+    func showDirectoryViewModelDidTapCreateNewRoom(_ viewModel: ShowDirectoryViewModelType) {
+        self.delegate?.showDirectoryCoordinatorDidTapCreateNewRoom(self)
     }
     
     func showDirectoryViewModelDidCancel(_ viewModel: ShowDirectoryViewModelType) {
         self.delegate?.showDirectoryCoordinatorDidCancel(self)
     }
+    
+    func showDirectoryViewModelWantsToShow(_ viewModel: ShowDirectoryViewModelType, controller: UIViewController) {
+        self.delegate?.showDirectoryCoordinatorWantsToShow(self, viewController: controller)
+    }
+    
 }

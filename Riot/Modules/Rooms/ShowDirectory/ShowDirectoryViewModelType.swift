@@ -1,5 +1,5 @@
 // File created from ScreenTemplate
-// $ createScreen.sh Rooms2/ShowDirectory ShowDirectory
+// $ createScreen.sh Rooms/ShowDirectory ShowDirectory
 /*
  Copyright 2020 New Vector Ltd
  
@@ -20,11 +20,14 @@ import Foundation
 
 protocol ShowDirectoryViewModelViewDelegate: class {
     func showDirectoryViewModel(_ viewModel: ShowDirectoryViewModelType, didUpdateViewState viewSate: ShowDirectoryViewState)
+    func showDirectoryViewModelDidUpdateDataSource(_ viewModel: ShowDirectoryViewModelType)
 }
 
 protocol ShowDirectoryViewModelCoordinatorDelegate: class {
-    func showDirectoryViewModel(_ viewModel: ShowDirectoryViewModelType, didCompleteWithUserDisplayName userDisplayName: String?)
+    func showDirectoryViewModelDidSelect(_ viewModel: ShowDirectoryViewModelType, room: MXPublicRoom)
+    func showDirectoryViewModelDidTapCreateNewRoom(_ viewModel: ShowDirectoryViewModelType)
     func showDirectoryViewModelDidCancel(_ viewModel: ShowDirectoryViewModelType)
+    func showDirectoryViewModelWantsToShow(_ viewModel: ShowDirectoryViewModelType, controller: UIViewController)
 }
 
 /// Protocol describing the view model used by `ShowDirectoryViewController`
@@ -34,4 +37,8 @@ protocol ShowDirectoryViewModelType {
     var coordinatorDelegate: ShowDirectoryViewModelCoordinatorDelegate? { get set }
     
     func process(viewAction: ShowDirectoryViewAction)
+    
+    var roomsCount: Int { get }
+    var directoryServerDisplayname: String? { get }
+    func roomViewModel(at indexPath: IndexPath) -> DirectoryRoomTableViewCellVM?
 }

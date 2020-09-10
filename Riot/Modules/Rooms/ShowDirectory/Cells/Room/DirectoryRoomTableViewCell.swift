@@ -17,12 +17,15 @@
 import UIKit
 import Reusable
 
+protocol DirectoryRoomTableViewCellDelegate: class {
+    func directoryRoomTableViewCellDidTapJoin(_ cell: DirectoryRoomTableViewCell)
+}
+
 class DirectoryRoomTableViewCell: UITableViewCell {
     
     @IBOutlet private weak var avatarImageView: MXKImageView! {
         didSet {
             avatarImageView.layer.cornerRadius = avatarImageView.frame.width/2
-            avatarImageView.clipsToBounds = true
         }
     }
     @IBOutlet private weak var displaynameLabel: UILabel!
@@ -30,79 +33,54 @@ class DirectoryRoomTableViewCell: UITableViewCell {
     @IBOutlet private weak var topicLabel: UILabel!
     @IBOutlet private weak var joinButton: UIButton!
     @IBOutlet private weak var joinActivityIndicator: UIActivityIndicatorView!
+    
+    weak var delegate: DirectoryRoomTableViewCellDelegate?
 
-    private weak var room: MXPublicRoom!
-    private weak var session: MXSession!
-    private var isJoined: Bool = false {
-        didSet {
-            joinButton.setTitle(isJoined ? VectorL10n.joined : VectorL10n.join, for: .normal)
-            joinButton.isUserInteractionEnabled = !isJoined
-            joinActivityIndicator.isHidden = true
-            update(theme: ThemeService.shared().theme)
-        }
+    private var viewModel: DirectoryRoomTableViewCellVM!
+    var indexPath: IndexPath!
+    
+    func startJoining() {
+        joinButton.setTitle(nil, for: .normal)
+        joinActivityIndicator.isHidden = false
+        joinActivityIndicator.startAnimating()
     }
-
-    func configure(withRoom room: MXPublicRoom, session: MXSession) {
-        self.room = room
-        self.session = session
+    
+    func configure(withViewModel viewModel: DirectoryRoomTableViewCellVM) {
+        //  keep viewModel
+        self.viewModel = viewModel
         
-        displaynameLabel.text = room.name
-        if displaynameLabel.text == nil {
-            displaynameLabel.text = room.aliases?.first
-        }
+        displaynameLabel.text = viewModel.title
         
-        if room.numJoinedMembers > 0 {
+        if viewModel.numberOfUsers > 0 {
             numberOfUsersLabel.isHidden = false
-            numberOfUsersLabel.text = String(room.numJoinedMembers)
+            numberOfUsersLabel.text = String(viewModel.numberOfUsers)
         } else {
             numberOfUsersLabel.isHidden = true
         }
         
-        if let topic = room.topic {
-            topicLabel.text = MXTools.stripNewlineCharacters(topic)
+        if let subtitle = viewModel.subtitle {
+            topicLabel.text = subtitle
             topicLabel.isHidden = false
         } else {
             topicLabel.isHidden = true
         }
         
-        let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: room.roomId, withDisplayName: displaynameLabel.text)
+        viewModel.setAvatar(in: avatarImageView)
         
-        if let avatarUrl = room.avatarUrl {
-            avatarImageView.enableInMemoryCache = true
-            
-            avatarImageView.setImageURI(avatarUrl,
-                                        withType: nil,
-                                        andImageOrientation: .up,
-                                        toFitViewSize: avatarImageView.frame.size,
-                                        with: MXThumbnailingMethodCrop,
-                                        previewImage: avatarImage,
-                                        mediaManager: session.mediaManager)
+        if viewModel.isJoined {
+            joinButton.setTitle(VectorL10n.joined, for: .normal)
+            joinButton.isUserInteractionEnabled = false
         } else {
-            avatarImageView.image = avatarImage
+            joinButton.setTitle(VectorL10n.join, for: .normal)
+            joinButton.isUserInteractionEnabled = true
         }
-        
-        avatarImageView.contentMode = .scaleAspectFill
-        
-        guard let summary = session.roomSummary(withRoomId: room.roomId) else {
-            isJoined = false
-            return
-        }
-        isJoined = summary.membership == .join
+        joinActivityIndicator.stopAnimating()
         joinActivityIndicator.isHidden = true
+        update(theme: ThemeService.shared().theme)
     }
     
     @IBAction private func joinButtonTapped(_ sender: UIButton) {
-        sender.setTitle(nil, for: .normal)
-        joinActivityIndicator.isHidden = false
-        session.joinRoom(room.roomId) { [weak self] (response) in
-            guard let self = self else { return }
-            switch response {
-            case .success:
-                self.isJoined = true
-            default:
-                self.isJoined = false
-            }
-        }
+        delegate?.directoryRoomTableViewCellDidTapJoin(self)
     }
     
 }
@@ -119,7 +97,7 @@ extension DirectoryRoomTableViewCell: Themable {
         numberOfUsersLabel.textColor = theme.textSecondaryColor
         topicLabel.textColor = theme.textSecondaryColor
         
-        if isJoined {
+        if viewModel.isJoined {
             joinButton.backgroundColor = theme.backgroundColor
             joinButton.tintColor = theme.textSecondaryColor
             joinButton.layer.borderWidth = 1.0
