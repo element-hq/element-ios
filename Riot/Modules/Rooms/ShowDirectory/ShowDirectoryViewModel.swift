@@ -43,7 +43,15 @@ final class ShowDirectoryViewModel: NSObject, ShowDirectoryViewModelType {
     }
     func roomViewModel(at indexPath: IndexPath) -> DirectoryRoomTableViewCellVM? {
         guard let room = dataSource.room(at: indexPath) else { return nil }
-        return DirectoryRoomTableViewCellVM(room: room, session: session)
+        let summary = session.roomSummary(withRoomId: room.roomId)
+        
+        return DirectoryRoomTableViewCellVM(title: room.displayname(),
+                                            numberOfUsers: room.numJoinedMembers,
+                                            subtitle: MXTools.stripNewlineCharacters(room.topic),
+                                            isJoined: summary?.membership == .join,
+                                            roomId: room.roomId,
+                                            avatarUrl: room.avatarUrl,
+                                            mediaManager: session.mediaManager)
     }
     
     // MARK: - Setup

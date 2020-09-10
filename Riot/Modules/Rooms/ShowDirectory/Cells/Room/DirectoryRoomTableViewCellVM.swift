@@ -17,30 +17,19 @@
 import Foundation
 
 struct DirectoryRoomTableViewCellVM {
-    private let room: MXPublicRoom
-    private let session: MXSession
+    var title: String?
+    var numberOfUsers: Int
+    var subtitle: String?
+    var isJoined: Bool = false
     
-    var title: String? {
-        return room.displayname()
-    }
-    var numberOfUsers: Int {
-        return room.numJoinedMembers
-    }
-    var subtitle: String? {
-        guard let topic = room.topic else { return nil }
-        return MXTools.stripNewlineCharacters(topic)
-    }
-    var isJoined: Bool {
-        guard let summary = session.roomSummary(withRoomId: room.roomId) else {
-            return false
-        }
-        return summary.membership == .join
-    }
+    private var roomId: String!
+    private var avatarUrl: String?
+    private var mediaManager: MXMediaManager?
 
     func setAvatar(in avatarImageView: MXKImageView) {
-        let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: room.roomId, withDisplayName: title)
+        let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: roomId, withDisplayName: title)
         
-        if let avatarUrl = room.avatarUrl {
+        if let avatarUrl = avatarUrl {
             avatarImageView.enableInMemoryCache = true
 
             avatarImageView.setImageURI(avatarUrl,
@@ -49,14 +38,26 @@ struct DirectoryRoomTableViewCellVM {
                                         toFitViewSize: avatarImageView.frame.size,
                                         with: MXThumbnailingMethodCrop,
                                         previewImage: avatarImage,
-                                        mediaManager: session.mediaManager)
+                                        mediaManager: mediaManager)
         } else {
             avatarImageView.image = avatarImage
         }
     }
     
-    init(room: MXPublicRoom, session: MXSession) {
-        self.room = room
-        self.session = session
+    /// Initializer declared explicitly due to private variables
+    init(title: String?,
+         numberOfUsers: Int,
+         subtitle: String?,
+         isJoined: Bool,
+         roomId: String!,
+         avatarUrl: String?,
+         mediaManager: MXMediaManager?) {
+        self.title = title
+        self.numberOfUsers = numberOfUsers
+        self.subtitle = subtitle
+        self.isJoined = isJoined
+        self.roomId = roomId
+        self.avatarUrl = avatarUrl
+        self.mediaManager = mediaManager
     }
 }
