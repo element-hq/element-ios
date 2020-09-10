@@ -872,6 +872,9 @@
 		ECF57A5B250925AC004BBF9D /* TextFieldTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECF57A59250925AC004BBF9D /* TextFieldTableViewCell.xib */; };
 		ECF57A5E2509265A004BBF9D /* InsettedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A5D2509265A004BBF9D /* InsettedTextField.swift */; };
 		ECF57A6225093B04004BBF9D /* SectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A6025093B04004BBF9D /* SectionHeaderView.m */; };
+		ECF57A85250A64F0004BBF9D /* PlaceholderedTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A84250A64F0004BBF9D /* PlaceholderedTextView.swift */; };
+		ECF57A87250A6872004BBF9D /* TextViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A86250A6872004BBF9D /* TextViewTableViewCell.swift */; };
+		ECF57A89250A687B004BBF9D /* TextViewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECF57A88250A687B004BBF9D /* TextViewTableViewCell.xib */; };
 		F05927C91FDED836009F2A68 /* MXGroup+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F05927C71FDED835009F2A68 /* MXGroup+Riot.m */; };
 		F083BD1E1E7009ED00A9B29C /* LegacyAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB0D1E7009EC00A9B29C /* LegacyAppDelegate.m */; };
 		F083BDE61E7009ED00A9B29C /* busy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDB1E7009EC00A9B29C /* busy.mp3 */; };
@@ -2022,6 +2025,9 @@
 		ECF57A5D2509265A004BBF9D /* InsettedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsettedTextField.swift; sourceTree = "<group>"; };
 		ECF57A6025093B04004BBF9D /* SectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionHeaderView.m; sourceTree = "<group>"; };
 		ECF57A6125093B04004BBF9D /* SectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SectionHeaderView.h; sourceTree = "<group>"; };
+		ECF57A84250A64F0004BBF9D /* PlaceholderedTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderedTextView.swift; sourceTree = "<group>"; };
+		ECF57A86250A6872004BBF9D /* TextViewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewTableViewCell.swift; sourceTree = "<group>"; };
+		ECF57A88250A687B004BBF9D /* TextViewTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextViewTableViewCell.xib; sourceTree = "<group>"; };
 		F05927C71FDED835009F2A68 /* MXGroup+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXGroup+Riot.m"; sourceTree = "<group>"; };
 		F05927C81FDED835009F2A68 /* MXGroup+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXGroup+Riot.h"; sourceTree = "<group>"; };
 		F083BB031E7005FD00A9B29C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -4196,6 +4202,8 @@
 				B1B5592920EF7A5D00210D55 /* TableViewCellWithButton.xib */,
 				ECF57A58250925AC004BBF9D /* TextFieldTableViewCell.swift */,
 				ECF57A59250925AC004BBF9D /* TextFieldTableViewCell.xib */,
+				ECF57A86250A6872004BBF9D /* TextViewTableViewCell.swift */,
+				ECF57A88250A687B004BBF9D /* TextViewTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4950,6 +4958,7 @@
 			isa = PBXGroup;
 			children = (
 				ECF57A5D2509265A004BBF9D /* InsettedTextField.swift */,
+				ECF57A84250A64F0004BBF9D /* PlaceholderedTextView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -5469,6 +5478,7 @@
 				B1550FCA2420E8F500CE097B /* QRCodeReaderViewController.storyboard in Resources */,
 				B1B5579C20EF575B00210D55 /* ForgotPasswordInputsView.xib in Resources */,
 				F083BE011E7009ED00A9B29C /* third_party_licenses.html in Resources */,
+				ECF57A89250A687B004BBF9D /* TextViewTableViewCell.xib in Resources */,
 				EC3B066A24AC6ADE000DF9BF /* CrossSigningSetupBannerCell.xib in Resources */,
 				B1098BFC21ECFE65000DDA48 /* PasswordStrengthView.xib in Resources */,
 				B1B5573720EE6C4D00210D55 /* GroupParticipantsViewController.xib in Resources */,
@@ -6273,6 +6283,7 @@
 				ECF57A4925090C23004BBF9D /* EnterNewRoomDetailsViewState.swift in Sources */,
 				B17982FF2119FED2001FD722 /* GDPRConsentViewController.swift in Sources */,
 				B1098BE121ECE09F000DDA48 /* Images.swift in Sources */,
+				ECF57A85250A64F0004BBF9D /* PlaceholderedTextView.swift in Sources */,
 				B1B4E9C424D47207004D5C33 /* BubbleReactionsViewModelBuilder.swift in Sources */,
 				EC85D72A2477DCF2002C44C9 /* KeyVerificationManuallyVerifyViewModel.swift in Sources */,
 				B1BEE74A23E093260003A4CB /* UserVerificationSessionStatusCoordinatorType.swift in Sources */,
@@ -6327,6 +6338,7 @@
 				B1C562D9228C0B760037F12A /* RoomContextualMenuItem.swift in Sources */,
 				B1C543B223A2913F00DCA1FA /* KeyVerificationConclusionBubbleCell.swift in Sources */,
 				323AB947232BD74600C1451F /* AuthFallBackViewController.m in Sources */,
+				ECF57A87250A6872004BBF9D /* TextViewTableViewCell.swift in Sources */,
 				B1C562E1228C7C8C0037F12A /* RoomContextualMenuToolbarView.swift in Sources */,
 				B1CE83DF2422817200D07506 /* KeyVerificationVerifyBySASCoordinatorType.swift in Sources */,
 				B1B557BF20EF5B4500210D55 /* DisabledRoomInputToolbarView.m in Sources */,

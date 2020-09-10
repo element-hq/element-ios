@@ -248,6 +248,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         mainTableView.register(cellType: MXKTableViewCellWithLabelAndSwitch.self)
         mainTableView.register(cellType: MXKTableViewCellWithTextView.self)
         mainTableView.register(cellType: TextFieldTableViewCell.self)
+        mainTableView.register(cellType: TextViewTableViewCell.self)
 //        mainTableView.register(headerFooterViewType: TableViewHeaderFooterView.self)
         mainTableView.sectionHeaderHeight = UITableView.automaticDimension
         mainTableView.estimatedSectionHeaderHeight = 50
@@ -348,20 +349,18 @@ extension EnterNewRoomDetailsViewController: UITableViewDataSource {
             
             return cell
         case .textView(let tag, let placeholder, let delegate):
-            let cell: MXKTableViewCellWithTextView = tableView.dequeueReusableCell(for: indexPath)
-            cell.mxkTextView.tag = tag
-            cell.mxkTextViewTopConstraint.constant = 8
-            cell.mxkTextViewLeadingConstraint.constant = 16
-            cell.mxkTextViewBottomConstraint.constant = 8
-            cell.mxkTextViewTrailingConstraint.constant = 16
-            cell.mxkTextView.textContainerInset = .zero
-            cell.mxkTextView.contentInset = .zero
-            cell.mxkTextView.textContainer.lineFragmentPadding = 0
-            cell.mxkTextView.font = .systemFont(ofSize: 17)
-            cell.mxkTextView.text = row.text
-            cell.mxkTextView.isEditable = true
-            cell.mxkTextView.isScrollEnabled = false
-            cell.mxkTextView.delegate = delegate
+            let cell: TextViewTableViewCell = tableView.dequeueReusableCell(for: indexPath)
+            cell.textView.tag = tag
+            cell.textView.textContainer.lineFragmentPadding = 0
+            cell.textView.contentInset = .zero
+            cell.textView.textContainerInset = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+            cell.textView.placeholder = placeholder
+            cell.textView.font = .systemFont(ofSize: 17)
+            cell.textView.text = row.text
+            cell.textView.isEditable = true
+            cell.textView.isScrollEnabled = false
+            cell.textView.delegate = delegate
+            cell.textView.backgroundColor = .clear
             cell.update(theme: theme)
             
             return cell
