@@ -22,10 +22,6 @@ final class ShowDirectoryViewController: UIViewController {
     
     // MARK: - Constants
     
-    private enum Constants {
-        static let aConstant: Int = 666
-    }
-    
     // MARK: - Properties
     
     // MARK: Outlets
