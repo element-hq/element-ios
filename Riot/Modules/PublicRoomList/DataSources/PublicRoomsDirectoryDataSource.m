@@ -392,25 +392,3 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
 }
 
 @end
-
-@interface MXThirdPartyProtocolInstance (Additions)
-
-@end
-
-@implementation MXThirdPartyProtocolInstance (Additions)
-
-- (NSDictionary *)JSONDictionary
-{
-    NSMutableDictionary *JSONDictionary = [NSMutableDictionary dictionary];
-    
-    JSONDictionary[@"network_id"] = self.networkId;
-    JSONDictionary[@"fields"] = self.fields;
-    JSONDictionary[@"instance_id"] = self.instanceId;
-    JSONDictionary[@"desc"] = self.desc;
-    JSONDictionary[@"bot_user_id"] = self.botUserId;
-    JSONDictionary[@"icon"] = self.icon;
-    
-    return JSONDictionary;
-}
-
-@end

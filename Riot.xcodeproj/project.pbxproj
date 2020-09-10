@@ -861,6 +861,7 @@
 		ECB101332477CFDB00CF8C11 /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB1012F2477CFDB00CF8C11 /* UITableViewCell.swift */; };
 		ECB101362477D00700CF8C11 /* UniversalLink.m in Sources */ = {isa = PBXBuildFile; fileRef = ECB101352477D00700CF8C11 /* UniversalLink.m */; };
 		ECDC15F224AF41D2003437CF /* FormattedBodyParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC15F124AF41D2003437CF /* FormattedBodyParser.swift */; };
+		ECF57A64250A17FC004BBF9D /* MXThirdPartyProtocolInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A63250A17FC004BBF9D /* MXThirdPartyProtocolInstance.swift */; };
 		F05927C91FDED836009F2A68 /* MXGroup+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F05927C71FDED835009F2A68 /* MXGroup+Riot.m */; };
 		F083BD1E1E7009ED00A9B29C /* LegacyAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB0D1E7009EC00A9B29C /* LegacyAppDelegate.m */; };
 		F083BDE61E7009ED00A9B29C /* busy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDB1E7009EC00A9B29C /* busy.mp3 */; };
@@ -1997,6 +1998,7 @@
 		ECB101342477D00700CF8C11 /* UniversalLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UniversalLink.h; sourceTree = "<group>"; };
 		ECB101352477D00700CF8C11 /* UniversalLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UniversalLink.m; sourceTree = "<group>"; };
 		ECDC15F124AF41D2003437CF /* FormattedBodyParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattedBodyParser.swift; sourceTree = "<group>"; };
+		ECF57A63250A17FC004BBF9D /* MXThirdPartyProtocolInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MXThirdPartyProtocolInstance.swift; sourceTree = "<group>"; };
 		F05927C71FDED835009F2A68 /* MXGroup+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXGroup+Riot.m"; sourceTree = "<group>"; };
 		F05927C81FDED835009F2A68 /* MXGroup+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXGroup+Riot.h"; sourceTree = "<group>"; };
 		F083BB031E7005FD00A9B29C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -5025,6 +5027,7 @@
 				B11291EB238D704C0077B478 /* FloatingPoint.swift */,
 				32FD757524D2C9BA00BA7B37 /* Bundle.swift */,
 				ECAE7AED24EFDD1F002FA813 /* MXSessionState.swift */,
+				ECF57A63250A17FC004BBF9D /* MXThirdPartyProtocolInstance.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -6346,6 +6349,7 @@
 				3232AB522256558300AD6A5C /* TemplateScreenViewModel.swift in Sources */,
 				B1B5575B20EE6C4D00210D55 /* HomeFilesSearchViewController.m in Sources */,
 				B139C22521FF01C100BB68EC /* KeyBackupRecoverFromPassphraseCoordinator.swift in Sources */,
+				ECF57A64250A17FC004BBF9D /* MXThirdPartyProtocolInstance.swift in Sources */,
 				B1BEE71623DF2ACF0003A4CB /* UserVerificationCoordinatorBridgePresenter.swift in Sources */,
 				B1098BFD21ECFE65000DDA48 /* PasswordStrengthManager.swift in Sources */,
 				B1B558F520EF768F00210D55 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
