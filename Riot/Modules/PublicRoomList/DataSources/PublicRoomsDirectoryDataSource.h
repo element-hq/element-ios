@@ -31,7 +31,7 @@
  There is no way in Matrix to be notified when there is a change in the public room directory.
  As a workaround, the data source refreshes its data when there are more than 10s old.
  */
-@interface PublicRoomsDirectoryDataSource : MXKDataSource <UITableViewDataSource>
+@interface PublicRoomsDirectoryDataSource : MXKDataSource <UITableViewDataSource, NSCopying>
 
 /**
  The homeserver to list public rooms from.

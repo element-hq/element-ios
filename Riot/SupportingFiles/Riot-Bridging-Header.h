@@ -20,3 +20,4 @@
 #import "BubbleReactionsViewSizer.h"
 #import "RoomEncryptedDataBubbleCell.h"
 #import "LegacyAppDelegate.h"
+#import "DirectoryServerPickerViewController.h"

@@ -1402,6 +1402,10 @@ internal enum VectorL10n {
   internal static var join: String { 
     return VectorL10n.tr("Vector", "join") 
   }
+  /// Joined
+  internal static var joined: String { 
+    return VectorL10n.tr("Vector", "joined") 
+  }
   /// Done
   internal static var keyBackupRecoverDoneAction: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_done_action") 
@@ -3082,6 +3086,18 @@ internal enum VectorL10n {
   internal static var searchRooms: String { 
     return VectorL10n.tr("Vector", "search_rooms") 
   }
+  /// Create a new room
+  internal static var searchableDirectoryCreateNewRoom: String { 
+    return VectorL10n.tr("Vector", "searchable_directory_create_new_room") 
+  }
+  /// Name or ID
+  internal static var searchableDirectorySearchPlaceholder: String { 
+    return VectorL10n.tr("Vector", "searchable_directory_search_placeholder") 
+  }
+  /// %@ Network
+  internal static func searchableDirectoryXNetwork(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "searchable_directory_x_network", p1)
+  }
   /// Access your secure message history and your cross-signing identity for verifying other sessions by entering your recovery key.
   internal static var secretsRecoveryWithKeyInformationDefault: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_key_information_default") 
@@ -4049,6 +4065,10 @@ internal enum VectorL10n {
   /// Secure decentralised chat/VoIP
   internal static var storeShortDescription: String { 
     return VectorL10n.tr("Vector", "store_short_description") 
+  }
+  /// Switch
+  internal static var `switch`: String { 
+    return VectorL10n.tr("Vector", "switch") 
   }
   /// Favourites
   internal static var titleFavourites: String { 

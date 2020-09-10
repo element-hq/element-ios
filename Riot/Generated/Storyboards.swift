@@ -187,6 +187,13 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.SetupBiometricsViewController>(storyboard: SetupBiometricsViewController.self)
   }
+  internal enum ShowDirectoryViewController: StoryboardType {
+    internal static let storyboardName = "ShowDirectoryViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.ShowDirectoryViewController>(storyboard: ShowDirectoryViewController.self)
+
+    internal static let searchableDirectoryViewController = SceneType<Riot.ShowDirectoryViewController>(storyboard: ShowDirectoryViewController.self, identifier: "SearchableDirectoryViewController")
+  }
   internal enum SimpleScreenTemplateViewController: StoryboardType {
     internal static let storyboardName = "SimpleScreenTemplateViewController"
 
