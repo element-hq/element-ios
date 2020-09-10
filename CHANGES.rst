@@ -30,6 +30,7 @@ Changes in 1.0.10 (2020-09-08)
     
 🙌 Improvements
  * AppDelegate: Convert to Swift (#3594).
+ * Contextualize floating button actions per tab (#3627).
     
 🐛 Bugfix
  * Show pin code screen on every foreground (#3620). 

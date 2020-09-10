@@ -59,6 +59,8 @@
 "sending" = "Sending";
 "close" = "Close";
 "skip" = "Skip";
+"joined" = "Joined";
+"switch" = "Switch";
 
 // Accessibility
 "accessibility_checkbox_label" = "checkbox";
@@ -1453,3 +1455,9 @@
 "biometrics_cant_unlocked_alert_message_x" = "To unlock, use %@ or log back in and enable %@ again";
 "biometrics_cant_unlocked_alert_message_login" = "Log back in";
 "biometrics_cant_unlocked_alert_message_retry" = "Retry";
+
+// MARK: - Searchable Directory View Controller
+
+"searchable_directory_create_new_room" = "Create a new room";
+"searchable_directory_x_network" = "%@ Network";
+"searchable_directory_search_placeholder" = "Name or ID";
