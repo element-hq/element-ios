@@ -862,6 +862,17 @@
 		ECB101362477D00700CF8C11 /* UniversalLink.m in Sources */ = {isa = PBXBuildFile; fileRef = ECB101352477D00700CF8C11 /* UniversalLink.m */; };
 		ECDC15F224AF41D2003437CF /* FormattedBodyParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC15F124AF41D2003437CF /* FormattedBodyParser.swift */; };
 		ECF57A64250A17FC004BBF9D /* MXThirdPartyProtocolInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A63250A17FC004BBF9D /* MXThirdPartyProtocolInstance.swift */; };
+		ECF57A71250A2E40004BBF9D /* ShowDirectoryViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ECF57A66250A2E40004BBF9D /* ShowDirectoryViewController.storyboard */; };
+		ECF57A72250A2E40004BBF9D /* ShowDirectoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A67250A2E40004BBF9D /* ShowDirectoryViewModel.swift */; };
+		ECF57A73250A2E40004BBF9D /* ShowDirectoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A68250A2E40004BBF9D /* ShowDirectoryViewController.swift */; };
+		ECF57A74250A2E40004BBF9D /* ShowDirectoryViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A69250A2E40004BBF9D /* ShowDirectoryViewState.swift */; };
+		ECF57A75250A2E40004BBF9D /* ShowDirectoryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A6A250A2E40004BBF9D /* ShowDirectoryCoordinator.swift */; };
+		ECF57A76250A2E40004BBF9D /* ShowDirectoryCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A6B250A2E40004BBF9D /* ShowDirectoryCoordinatorType.swift */; };
+		ECF57A77250A2E40004BBF9D /* ShowDirectoryViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A6C250A2E40004BBF9D /* ShowDirectoryViewModelType.swift */; };
+		ECF57A78250A2E40004BBF9D /* ShowDirectoryViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A6D250A2E40004BBF9D /* ShowDirectoryViewAction.swift */; };
+		ECF57A79250A2E40004BBF9D /* ShowDirectoryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A6E250A2E40004BBF9D /* ShowDirectoryCoordinator.swift */; };
+		ECF57A7A250A2E40004BBF9D /* ShowDirectoryCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A6F250A2E40004BBF9D /* ShowDirectoryCoordinatorBridgePresenter.swift */; };
+		ECF57A7B250A2E40004BBF9D /* ShowDirectoryCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A70250A2E40004BBF9D /* ShowDirectoryCoordinatorType.swift */; };
 		F05927C91FDED836009F2A68 /* MXGroup+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F05927C71FDED835009F2A68 /* MXGroup+Riot.m */; };
 		F083BD1E1E7009ED00A9B29C /* LegacyAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB0D1E7009EC00A9B29C /* LegacyAppDelegate.m */; };
 		F083BDE61E7009ED00A9B29C /* busy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDB1E7009EC00A9B29C /* busy.mp3 */; };
@@ -1999,6 +2010,17 @@
 		ECB101352477D00700CF8C11 /* UniversalLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UniversalLink.m; sourceTree = "<group>"; };
 		ECDC15F124AF41D2003437CF /* FormattedBodyParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattedBodyParser.swift; sourceTree = "<group>"; };
 		ECF57A63250A17FC004BBF9D /* MXThirdPartyProtocolInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MXThirdPartyProtocolInstance.swift; sourceTree = "<group>"; };
+		ECF57A66250A2E40004BBF9D /* ShowDirectoryViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ShowDirectoryViewController.storyboard; sourceTree = "<group>"; };
+		ECF57A67250A2E40004BBF9D /* ShowDirectoryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDirectoryViewModel.swift; sourceTree = "<group>"; };
+		ECF57A68250A2E40004BBF9D /* ShowDirectoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDirectoryViewController.swift; sourceTree = "<group>"; };
+		ECF57A69250A2E40004BBF9D /* ShowDirectoryViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDirectoryViewState.swift; sourceTree = "<group>"; };
+		ECF57A6A250A2E40004BBF9D /* ShowDirectoryCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDirectoryCoordinator.swift; sourceTree = "<group>"; };
+		ECF57A6B250A2E40004BBF9D /* ShowDirectoryCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDirectoryCoordinatorType.swift; sourceTree = "<group>"; };
+		ECF57A6C250A2E40004BBF9D /* ShowDirectoryViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDirectoryViewModelType.swift; sourceTree = "<group>"; };
+		ECF57A6D250A2E40004BBF9D /* ShowDirectoryViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDirectoryViewAction.swift; sourceTree = "<group>"; };
+		ECF57A6E250A2E40004BBF9D /* ShowDirectoryCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDirectoryCoordinator.swift; sourceTree = "<group>"; };
+		ECF57A6F250A2E40004BBF9D /* ShowDirectoryCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDirectoryCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
+		ECF57A70250A2E40004BBF9D /* ShowDirectoryCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDirectoryCoordinatorType.swift; sourceTree = "<group>"; };
 		F05927C71FDED835009F2A68 /* MXGroup+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXGroup+Riot.m"; sourceTree = "<group>"; };
 		F05927C81FDED835009F2A68 /* MXGroup+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXGroup+Riot.h"; sourceTree = "<group>"; };
 		F083BB031E7005FD00A9B29C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -3607,6 +3629,10 @@
 		B1B556F420EE6C4C00210D55 /* Rooms */ = {
 			isa = PBXGroup;
 			children = (
+				ECF57A65250A2E40004BBF9D /* ShowDirectory */,
+				ECF57A6E250A2E40004BBF9D /* ShowDirectoryCoordinator.swift */,
+				ECF57A6F250A2E40004BBF9D /* ShowDirectoryCoordinatorBridgePresenter.swift */,
+				ECF57A70250A2E40004BBF9D /* ShowDirectoryCoordinatorType.swift */,
 				B1B556F620EE6C4C00210D55 /* RoomsViewController.h */,
 				B1B556F820EE6C4C00210D55 /* RoomsViewController.m */,
 				EC60786C2507AC1100EA75C1 /* SearchableDirectory */,
@@ -4920,6 +4946,21 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		ECF57A65250A2E40004BBF9D /* ShowDirectory */ = {
+			isa = PBXGroup;
+			children = (
+				ECF57A66250A2E40004BBF9D /* ShowDirectoryViewController.storyboard */,
+				ECF57A67250A2E40004BBF9D /* ShowDirectoryViewModel.swift */,
+				ECF57A68250A2E40004BBF9D /* ShowDirectoryViewController.swift */,
+				ECF57A69250A2E40004BBF9D /* ShowDirectoryViewState.swift */,
+				ECF57A6A250A2E40004BBF9D /* ShowDirectoryCoordinator.swift */,
+				ECF57A6B250A2E40004BBF9D /* ShowDirectoryCoordinatorType.swift */,
+				ECF57A6C250A2E40004BBF9D /* ShowDirectoryViewModelType.swift */,
+				ECF57A6D250A2E40004BBF9D /* ShowDirectoryViewAction.swift */,
+			);
+			path = ShowDirectory;
+			sourceTree = "<group>";
+		};
 		F083BB021E7005FD00A9B29C /* RiotTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -5356,6 +5397,7 @@
 				B1B5590A20EF768F00210D55 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				B1A6C113238BD245002882FD /* SlidingModalContainerView.xib in Resources */,
 				B1B5594420EF7BD000210D55 /* TableViewCellWithCollectionView.xib in Resources */,
+				ECF57A71250A2E40004BBF9D /* ShowDirectoryViewController.storyboard in Resources */,
 				B1B558D520EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				B12D79FC23E2462200FACEDC /* UserVerificationStartViewController.storyboard in Resources */,
 				B1CE83D32422817200D07506 /* KeyVerificationVerifiedViewController.storyboard in Resources */,
@@ -5841,6 +5883,7 @@
 				B1B5574420EE6C4D00210D55 /* CallViewController.m in Sources */,
 				EC1CA86024C1DEC400DE9EBF /* EnterPinCodeViewAction.swift in Sources */,
 				32FD757624D2C9BA00BA7B37 /* Bundle.swift in Sources */,
+				ECF57A78250A2E40004BBF9D /* ShowDirectoryViewAction.swift in Sources */,
 				B12D7A0023E2462200FACEDC /* UserVerificationStartCoordinatorType.swift in Sources */,
 				EC711B9324A63B37008F830C /* SecretsRecoveryWithKeyViewController.swift in Sources */,
 				B1B5572220EE6C4D00210D55 /* RoomSettingsViewController.m in Sources */,
@@ -5885,6 +5928,7 @@
 				B1BD71BC238E8F9600BA92E2 /* WidgetPermissionViewController.swift in Sources */,
 				B1B558CB20EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				B11291EA238D35590077B478 /* SlidingModalPresentable.swift in Sources */,
+				ECF57A76250A2E40004BBF9D /* ShowDirectoryCoordinatorType.swift in Sources */,
 				B157FAA823264BED00EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinatorBridgePresenter.swift in Sources */,
 				B169330B20F3CA3A00746532 /* Contact.m in Sources */,
 				B1A5B33E227ADF2A004CBA85 /* UIImage.swift in Sources */,
@@ -5895,6 +5939,7 @@
 				B14F143422144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewAction.swift in Sources */,
 				B1098BF621ECFE65000DDA48 /* KeyBackupSetupPassphraseCoordinator.swift in Sources */,
 				B1B558C320EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
+				ECF57A7A250A2E40004BBF9D /* ShowDirectoryCoordinatorBridgePresenter.swift in Sources */,
 				B1B9DEDC22E9B7440065E677 /* SerializationServiceType.swift in Sources */,
 				B110872521F098F0003554A5 /* ActivityIndicatorPresenter.swift in Sources */,
 				32242F1521E8FBA900725742 /* DarkTheme.swift in Sources */,
@@ -5931,6 +5976,7 @@
 				32F6B9692270623100BBA352 /* KeyVerificationDataLoadingCoordinator.swift in Sources */,
 				B125FE1D231D5DE400B72806 /* SettingsDiscoveryViewModel.swift in Sources */,
 				32863A5A2384070300D07C4A /* RiotSharedSettings.swift in Sources */,
+				ECF57A74250A2E40004BBF9D /* ShowDirectoryViewState.swift in Sources */,
 				B1B5594720EF7BD000210D55 /* RoomCollectionViewCell.m in Sources */,
 				B10CFBC32268D99D00A5842E /* JitsiService.swift in Sources */,
 				B1A6C10B23882B6C002882FD /* SlidingModalPresentationAnimator.swift in Sources */,
@@ -5999,6 +6045,7 @@
 				B1B9DEF422EB426D0065E677 /* ReactionHistoryViewCell.swift in Sources */,
 				B1B5573C20EE6C4D00210D55 /* MasterTabBarController.m in Sources */,
 				B1DCC61B22E5E17100625807 /* EmojiPickerCoordinator.swift in Sources */,
+				ECF57A75250A2E40004BBF9D /* ShowDirectoryCoordinator.swift in Sources */,
 				EC85D7292477DCF2002C44C9 /* KeyVerificationManuallyVerifyViewModelType.swift in Sources */,
 				32F6B96E2270623100BBA352 /* KeyVerificationDataLoadingViewModelType.swift in Sources */,
 				B185145524B7CFA700EE19EA /* AppVersion.swift in Sources */,
@@ -6013,6 +6060,7 @@
 				B1B5582C20EF666100210D55 /* DirectoryRecentTableViewCell.m in Sources */,
 				B1B558E420EF768F00210D55 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
 				B18DEDD8243377C10075FEF7 /* KeyVerificationSelfVerifyWaitCoordinatorType.swift in Sources */,
+				ECF57A73250A2E40004BBF9D /* ShowDirectoryViewController.swift in Sources */,
 				B1B5573620EE6C4D00210D55 /* GroupsViewController.m in Sources */,
 				B125FE21231D5E1D00B72806 /* SettingsDiscoveryViewAction.swift in Sources */,
 				B108932323AB908A00802670 /* KeyVerificationRequestStatusViewData.swift in Sources */,
@@ -6085,11 +6133,13 @@
 				B139C22121FE5D9D00BB68EC /* KeyBackupRecoverFromPassphraseViewState.swift in Sources */,
 				EC711B8124A63B37008F830C /* SecretsSetupRecoveryPassphraseViewAction.swift in Sources */,
 				B1B5579120EF568D00210D55 /* GroupInviteTableViewCell.m in Sources */,
+				ECF57A77250A2E40004BBF9D /* ShowDirectoryViewModelType.swift in Sources */,
 				B1B5579A20EF575B00210D55 /* ForgotPasswordInputsView.m in Sources */,
 				B1B12B2922942315002CB419 /* UITouch.swift in Sources */,
 				B1B558CC20EF768F00210D55 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				B183226623F55D6B0035B2E8 /* CameraAccessManager.swift in Sources */,
 				B1B5571D20EE6C4D00210D55 /* HomeViewController.m in Sources */,
+				ECF57A79250A2E40004BBF9D /* ShowDirectoryCoordinator.swift in Sources */,
 				B1CE83DD2422817200D07506 /* KeyVerificationVerifyBySASViewAction.swift in Sources */,
 				B1C45A84232A8C2600165425 /* SettingsIdentityServerCoordinatorType.swift in Sources */,
 				EC711B7524A63B37008F830C /* SecretsSetupRecoveryKeyCoordinatorType.swift in Sources */,
@@ -6117,6 +6167,7 @@
 				F083BDED1E7009ED00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m in Sources */,
 				B1B9DEEF22EB34EF0065E677 /* ReactionHistoryViewState.swift in Sources */,
 				B1DCC62022E5EDA400625807 /* EmojiPickerCoordinatorBridgePresenter.swift in Sources */,
+				ECF57A72250A2E40004BBF9D /* ShowDirectoryViewModel.swift in Sources */,
 				B1B557A820EF5A1B00210D55 /* DeviceTableViewCell.m in Sources */,
 				B1B5572620EE6C4D00210D55 /* RoomFilesSearchViewController.m in Sources */,
 				B1B5583120EF66BA00210D55 /* RoomIdOrAliasTableViewCell.m in Sources */,
@@ -6397,6 +6448,7 @@
 				EC60787D2507D30200EA75C1 /* DirectoryNetworkTableHeaderFooterView.swift in Sources */,
 				B14F143022144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyCoordinatorType.swift in Sources */,
 				B1E5368921FB1E20001F3AFF /* UIButton.swift in Sources */,
+				ECF57A7B250A2E40004BBF9D /* ShowDirectoryCoordinatorType.swift in Sources */,
 				B1DCC63422E72C1B00625807 /* UISearchBar.swift in Sources */,
 				32A6001622C661100042C1D9 /* EditHistoryViewState.swift in Sources */,
 			);
