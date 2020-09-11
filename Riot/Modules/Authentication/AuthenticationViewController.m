@@ -1215,7 +1215,7 @@
 {
     MXSession *session = (MXSession*)notification.object;
     
-    if (session.state >= MXSessionStateStoreDataReady)
+    if (session.state == MXSessionStateRunning)
     {
         [self unregisterSessionStateChangeNotification];
         
