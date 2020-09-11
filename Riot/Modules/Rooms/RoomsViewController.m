@@ -370,7 +370,7 @@
 - (void)roomsDirectoryCoordinatorBridgePresenterDelegateDidTapCreateNewRoom:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-        [self createAnEmptyRoom];
+        [self createNewRoom];
     }];
     self.roomsDirectoryCoordinatorBridgePresenter = nil;
 }

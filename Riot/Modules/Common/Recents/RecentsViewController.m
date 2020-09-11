@@ -1656,24 +1656,10 @@
                                                            typeof(self) self = weakSelf;
                                                            self->currentAlert = nil;
                                                            
-                                                           [self createAnEmptyRoom];
+                                                           [self createNewRoom];
                                                        }
                                                        
                                                    }]];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:@"Create room (v2)"
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-        
-        if (weakSelf)
-        {
-            typeof(self) self = weakSelf;
-            self->currentAlert = nil;
-            
-            [self createNewRoom];
-        }
-        
-    }]];
     
     [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_recents_join_room", @"Vector", nil)
                                                      style:UIAlertActionStyleDefault
@@ -1716,79 +1702,6 @@
         self.createRoomCoordinatorBridgePresenter = [[CreateRoomCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
         self.createRoomCoordinatorBridgePresenter.delegate = self;
         [self.createRoomCoordinatorBridgePresenter presentFrom:self animated:YES];
-    }
-}
-
-- (void)createAnEmptyRoom
-{
-    // Sanity check
-    if (self.mainSession)
-    {
-        // Create one room at time
-        if (!currentRequest)
-        {
-            [self startActivityIndicator];
-            
-            // Create an empty room.
-            MXWeakify(self);
-            currentRequest = [self.mainSession createRoom:nil
-                                               visibility:kMXRoomDirectoryVisibilityPrivate
-                                                roomAlias:nil
-                                                    topic:nil
-                                                  success:^(MXRoom *room) {
-                                                      MXStrongifyAndReturnIfNil(self);
-                                                      
-                                                      self->currentRequest = nil;
-                                                      [self stopActivityIndicator];
-                                                      if (self->currentAlert)
-                                                      {
-                                                          [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
-                                                          self->currentAlert = nil;
-                                                      }
-
-                                                      [self dispayRoomWithRoomId:room.roomId inMatrixSession:self.mainSession];
-
-                                                  } failure:^(NSError *error) {
-                                                      MXStrongifyAndReturnIfNil(self);
-                                                      
-                                                      self->currentRequest = nil;
-                                                      [self stopActivityIndicator];
-                                                      if (self->currentAlert)
-                                                      {
-                                                          [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
-                                                          self->currentAlert = nil;
-                                                      }
-                                                      
-                                                      NSLog(@"[RecentsViewController] Create new room failed");
-                                                      
-                                                      // Alert user
-                                                      [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                      
-                                                  }];
-        }
-        else
-        {
-            // Ask the user to wait
-            __weak __typeof(self) weakSelf = self;
-            currentAlert = [UIAlertController alertControllerWithTitle:nil
-                                                               message:NSLocalizedStringFromTable(@"room_creation_wait_for_creation", @"Vector", nil)
-                                                        preferredStyle:UIAlertControllerStyleAlert];
-            
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-                                                               
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-                                                                   self->currentAlert = nil;
-                                                               }
-                                                               
-                                                           }]];
-            
-            [currentAlert mxk_setAccessibilityIdentifier:@"RecentsVCRoomCreationInProgressAlert"];
-            [self presentViewController:currentAlert animated:YES completion:nil];
-        }
     }
 }
 
