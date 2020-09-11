@@ -19,6 +19,7 @@
 import Foundation
 
 @objc protocol CreateRoomCoordinatorBridgePresenterDelegate {
+    func createRoomCoordinatorBridgePresenterDelegate(_ coordinatorBridgePresenter: CreateRoomCoordinatorBridgePresenter, didCreateNewRoom room: MXRoom)
     func createRoomCoordinatorBridgePresenterDelegateDidCancel(_ coordinatorBridgePresenter: CreateRoomCoordinatorBridgePresenter)
 }
 
@@ -81,7 +82,11 @@ final class CreateRoomCoordinatorBridgePresenter: NSObject {
 
 extension CreateRoomCoordinatorBridgePresenter: CreateRoomCoordinatorDelegate {
     
-    func createRoomCoordinatorDidComplete(_ coordinator: CreateRoomCoordinatorType) {
+    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didCreateNewRoom room: MXRoom) {
+        self.delegate?.createRoomCoordinatorBridgePresenterDelegate(self, didCreateNewRoom: room)
+    }
+    
+    func createRoomCoordinatorDidCancel(_ coordinator: CreateRoomCoordinatorType) {
         self.delegate?.createRoomCoordinatorBridgePresenterDelegateDidCancel(self)
     }
     

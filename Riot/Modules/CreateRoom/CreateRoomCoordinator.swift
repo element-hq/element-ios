@@ -70,11 +70,12 @@ final class CreateRoomCoordinator: CreateRoomCoordinatorType {
 
 // MARK: - EnterNewRoomDetailsCoordinatorDelegate
 extension CreateRoomCoordinator: EnterNewRoomDetailsCoordinatorDelegate {
-    func enterNewRoomDetailsCoordinator(_ coordinator: EnterNewRoomDetailsCoordinatorType, didCompleteWithUserDisplayName userDisplayName: String?) {
-        self.delegate?.createRoomCoordinatorDidComplete(self)
+    
+    func enterNewRoomDetailsCoordinator(_ coordinator: EnterNewRoomDetailsCoordinatorType, didCreateNewRoom room: MXRoom) {
+        self.delegate?.createRoomCoordinator(self, didCreateNewRoom: room)
     }
     
     func enterNewRoomDetailsCoordinatorDidCancel(_ coordinator: EnterNewRoomDetailsCoordinatorType) {
-        self.delegate?.createRoomCoordinatorDidComplete(self)
+        self.delegate?.createRoomCoordinatorDidCancel(self)
     }
 }

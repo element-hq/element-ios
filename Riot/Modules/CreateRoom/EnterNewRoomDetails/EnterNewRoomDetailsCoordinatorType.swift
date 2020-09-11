@@ -19,7 +19,7 @@
 import Foundation
 
 protocol EnterNewRoomDetailsCoordinatorDelegate: class {
-    func enterNewRoomDetailsCoordinator(_ coordinator: EnterNewRoomDetailsCoordinatorType, didCompleteWithUserDisplayName userDisplayName: String?)
+    func enterNewRoomDetailsCoordinator(_ coordinator: EnterNewRoomDetailsCoordinatorType, didCreateNewRoom room: MXRoom)
     func enterNewRoomDetailsCoordinatorDidCancel(_ coordinator: EnterNewRoomDetailsCoordinatorType)
 }
 

@@ -61,8 +61,8 @@ final class EnterNewRoomDetailsCoordinator: EnterNewRoomDetailsCoordinatorType {
 // MARK: - EnterNewRoomDetailsViewModelCoordinatorDelegate
 extension EnterNewRoomDetailsCoordinator: EnterNewRoomDetailsViewModelCoordinatorDelegate {
     
-    func enterNewRoomDetailsViewModel(_ viewModel: EnterNewRoomDetailsViewModelType, didCompleteWithUserDisplayName userDisplayName: String?) {
-        self.delegate?.enterNewRoomDetailsCoordinator(self, didCompleteWithUserDisplayName: userDisplayName)
+    func enterNewRoomDetailsViewModel(_ viewModel: EnterNewRoomDetailsViewModelType, didCreateNewRoom room: MXRoom) {
+        self.delegate?.enterNewRoomDetailsCoordinator(self, didCreateNewRoom: room)
     }
     
     func enterNewRoomDetailsViewModelDidCancel(_ viewModel: EnterNewRoomDetailsViewModelType) {
