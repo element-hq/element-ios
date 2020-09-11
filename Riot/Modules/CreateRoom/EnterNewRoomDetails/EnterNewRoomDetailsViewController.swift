@@ -226,11 +226,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        // TODO: Set view colors here
-        //        self.informationLabel.textColor = theme.textPrimaryColor
-        //
-        //        self.doneButton.backgroundColor = theme.backgroundColor
-        //        theme.applyStyle(onButton: self.doneButton)
+        self.mainTableView.reloadData()
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
