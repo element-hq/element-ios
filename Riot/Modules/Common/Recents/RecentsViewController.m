@@ -34,7 +34,7 @@
 
 #import "Riot-Swift.h"
 
-@interface RecentsViewController ()
+@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -65,6 +65,8 @@
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
 }
+
+@property (nonatomic, strong) CreateRoomCoordinatorBridgePresenter *createRoomCoordinatorBridgePresenter;
 
 @end
 
@@ -1711,8 +1713,9 @@
     // Sanity check
     if (self.mainSession)
     {
-        CreateRoomCoordinatorBridgePresenter *presenter = [[CreateRoomCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
-        [presenter presentFrom:self animated:YES];
+        self.createRoomCoordinatorBridgePresenter = [[CreateRoomCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+        self.createRoomCoordinatorBridgePresenter.delegate = self;
+        [self.createRoomCoordinatorBridgePresenter presentFrom:self animated:YES];
     }
 }
 
@@ -1956,6 +1959,14 @@
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
     [self.recentsSearchBar setShowsCancelButton:NO animated:NO];
+}
+
+#pragma mark - CreateRoomCoordinatorBridgePresenterDelegate
+
+- (void)createRoomCoordinatorBridgePresenterDelegateDidCancel:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    coordinatorBridgePresenter = nil;
 }
 
 @end
