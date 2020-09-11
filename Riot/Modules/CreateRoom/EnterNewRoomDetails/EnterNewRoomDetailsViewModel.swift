@@ -33,6 +33,7 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
 
     weak var viewDelegate: EnterNewRoomDetailsViewModelViewDelegate?
     weak var coordinatorDelegate: EnterNewRoomDetailsViewModelCoordinatorDelegate?
+    var roomCreationParameters: RoomCreationParameters = RoomCreationParameters()
     
     // MARK: - Setup
     

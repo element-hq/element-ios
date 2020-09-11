@@ -34,4 +34,6 @@ protocol EnterNewRoomDetailsViewModelType {
     var coordinatorDelegate: EnterNewRoomDetailsViewModelCoordinatorDelegate? { get set }
     
     func process(viewAction: EnterNewRoomDetailsViewAction)
+    
+    var roomCreationParameters: RoomCreationParameters { get set }
 }
