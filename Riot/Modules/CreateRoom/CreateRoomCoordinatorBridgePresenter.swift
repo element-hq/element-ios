@@ -19,7 +19,7 @@
 import Foundation
 
 @objc protocol CreateRoomCoordinatorBridgePresenterDelegate {
-    func createRoomCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: CreateRoomCoordinatorBridgePresenter)
+    func createRoomCoordinatorBridgePresenterDelegateDidCancel(_ coordinatorBridgePresenter: CreateRoomCoordinatorBridgePresenter)
 }
 
 /// CreateRoomCoordinatorBridgePresenter enables to start CreateRoomCoordinator from a view controller.
@@ -55,7 +55,9 @@ final class CreateRoomCoordinatorBridgePresenter: NSObject {
     func present(from viewController: UIViewController, animated: Bool) {
         let createRoomCoordinator = CreateRoomCoordinator(session: self.session)
         createRoomCoordinator.delegate = self
-        viewController.present(createRoomCoordinator.toPresentable(), animated: animated, completion: nil)
+        let presentable = createRoomCoordinator.toPresentable()
+        presentable.presentationController?.delegate = self
+        viewController.present(presentable, animated: animated, completion: nil)
         createRoomCoordinator.start()
         
         self.coordinator = createRoomCoordinator
@@ -76,8 +78,21 @@ final class CreateRoomCoordinatorBridgePresenter: NSObject {
 }
 
 // MARK: - CreateRoomCoordinatorDelegate
+
 extension CreateRoomCoordinatorBridgePresenter: CreateRoomCoordinatorDelegate {
+    
     func createRoomCoordinatorDidComplete(_ coordinator: CreateRoomCoordinatorType) {
-        self.delegate?.createRoomCoordinatorBridgePresenterDelegateDidComplete(self)
+        self.delegate?.createRoomCoordinatorBridgePresenterDelegateDidCancel(self)
     }
+    
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+
+extension CreateRoomCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
+    
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        self.delegate?.createRoomCoordinatorBridgePresenterDelegateDidCancel(self)
+    }
+    
 }
