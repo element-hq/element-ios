@@ -892,6 +892,10 @@
 		ECFBD5D7250A7AAF00DD5F5A /* RoomsDirectoryCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFBD5C7250A7AAF00DD5F5A /* RoomsDirectoryCoordinatorBridgePresenter.swift */; };
 		ECFBD5D8250A7AAF00DD5F5A /* RoomsDirectoryCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFBD5C8250A7AAF00DD5F5A /* RoomsDirectoryCoordinatorType.swift */; };
 		ECFBD5DA250A7ABD00DD5F5A /* MXThirdPartyProtocolInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFBD5D9250A7ABD00DD5F5A /* MXThirdPartyProtocolInstance.swift */; };
+		ECFBD5DC250A82B200DD5F5A /* TableViewHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFBD5DB250A82B200DD5F5A /* TableViewHeaderFooterView.swift */; };
+		ECFBD5E0250B684E00DD5F5A /* ChooseAvatarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFBD5DE250B684E00DD5F5A /* ChooseAvatarTableViewCell.swift */; };
+		ECFBD5E1250B684E00DD5F5A /* ChooseAvatarTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECFBD5DF250B684E00DD5F5A /* ChooseAvatarTableViewCell.xib */; };
+		ECFBD5E3250B6CAB00DD5F5A /* ChooseAvatarTableViewCellVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFBD5E2250B6CAB00DD5F5A /* ChooseAvatarTableViewCellVM.swift */; };
 		F05927C91FDED836009F2A68 /* MXGroup+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F05927C71FDED835009F2A68 /* MXGroup+Riot.m */; };
 		F083BD1E1E7009ED00A9B29C /* LegacyAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB0D1E7009EC00A9B29C /* LegacyAppDelegate.m */; };
 		F083BDE61E7009ED00A9B29C /* busy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDB1E7009EC00A9B29C /* busy.mp3 */; };
@@ -1995,8 +1999,6 @@
 		EC85D7242477DCF2002C44C9 /* KeyVerificationManuallyVerifyViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationManuallyVerifyViewState.swift; sourceTree = "<group>"; };
 		EC85D72E2477DD33002C44C9 /* JitsiWidgetData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JitsiWidgetData.h; sourceTree = "<group>"; };
 		EC85D72F2477DD33002C44C9 /* JitsiWidgetData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JitsiWidgetData.m; sourceTree = "<group>"; };
-		EC85D7322477DD54002C44C9 /* SectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionHeaderView.m; sourceTree = "<group>"; };
-		EC85D7332477DD54002C44C9 /* SectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SectionHeaderView.h; sourceTree = "<group>"; };
 		EC85D7352477DD97002C44C9 /* LocalContactsSectionHeaderContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalContactsSectionHeaderContainerView.m; sourceTree = "<group>"; };
 		EC85D7362477DD97002C44C9 /* LocalContactsSectionHeaderContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalContactsSectionHeaderContainerView.h; sourceTree = "<group>"; };
 		EC85D7382477DDB8002C44C9 /* DirectorySectionHeaderContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectorySectionHeaderContainerView.h; sourceTree = "<group>"; };
@@ -2034,7 +2036,6 @@
 		ECF57A4225090C23004BBF9D /* EnterNewRoomDetailsCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterNewRoomDetailsCoordinator.swift; sourceTree = "<group>"; };
 		ECF57A4325090C23004BBF9D /* EnterNewRoomDetailsViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterNewRoomDetailsViewModelType.swift; sourceTree = "<group>"; };
 		ECF57A4F250913E4004BBF9D /* MXKTableViewCellWithLabelAndSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MXKTableViewCellWithLabelAndSwitch.swift; sourceTree = "<group>"; };
-		ECF57A512509148C004BBF9D /* TableViewHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewHeaderFooterView.swift; sourceTree = "<group>"; };
 		ECF57A5425091B4D004BBF9D /* RoomCreationParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCreationParameters.swift; sourceTree = "<group>"; };
 		ECF57A5625091ECC004BBF9D /* MXKTableViewCellWithTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MXKTableViewCellWithTextView.swift; sourceTree = "<group>"; };
 		ECF57A58250925AC004BBF9D /* TextFieldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldTableViewCell.swift; sourceTree = "<group>"; };
@@ -2062,6 +2063,10 @@
 		ECFBD5C7250A7AAF00DD5F5A /* RoomsDirectoryCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomsDirectoryCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
 		ECFBD5C8250A7AAF00DD5F5A /* RoomsDirectoryCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomsDirectoryCoordinatorType.swift; sourceTree = "<group>"; };
 		ECFBD5D9250A7ABD00DD5F5A /* MXThirdPartyProtocolInstance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MXThirdPartyProtocolInstance.swift; sourceTree = "<group>"; };
+		ECFBD5DB250A82B200DD5F5A /* TableViewHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewHeaderFooterView.swift; sourceTree = "<group>"; };
+		ECFBD5DE250B684E00DD5F5A /* ChooseAvatarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseAvatarTableViewCell.swift; sourceTree = "<group>"; };
+		ECFBD5DF250B684E00DD5F5A /* ChooseAvatarTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChooseAvatarTableViewCell.xib; sourceTree = "<group>"; };
+		ECFBD5E2250B6CAB00DD5F5A /* ChooseAvatarTableViewCellVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseAvatarTableViewCellVM.swift; sourceTree = "<group>"; };
 		F05927C71FDED835009F2A68 /* MXGroup+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXGroup+Riot.m"; sourceTree = "<group>"; };
 		F05927C81FDED835009F2A68 /* MXGroup+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXGroup+Riot.h"; sourceTree = "<group>"; };
 		F083BB031E7005FD00A9B29C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -3549,7 +3554,6 @@
 				ECF57A5F25093B04004BBF9D /* SectionHeaders */,
 				ECF57A5C2509264B004BBF9D /* Views */,
 				ECAE7AEA24EC223D002FA813 /* Models */,
-				EC85D7312477DD54002C44C9 /* SectionHeaderFooters */,
 				B183226923F59F3E0035B2E8 /* Buttons */,
 				B1963B3622933B9500CBA17F /* CollectionView */,
 				B1B556CE20EE6C4C00210D55 /* WebViewController */,
@@ -4913,16 +4917,6 @@
 			path = JSONModels;
 			sourceTree = "<group>";
 		};
-		EC85D7312477DD54002C44C9 /* SectionHeaderFooters */ = {
-			isa = PBXGroup;
-			children = (
-				EC85D7322477DD54002C44C9 /* SectionHeaderView.m */,
-				EC85D7332477DD54002C44C9 /* SectionHeaderView.h */,
-				ECF57A512509148C004BBF9D /* TableViewHeaderFooterView.swift */,
-			);
-			path = SectionHeaderFooters;
-			sourceTree = "<group>";
-		};
 		EC85D73B2477DDD0002C44C9 /* PushNotification */ = {
 			isa = PBXGroup;
 			children = (
@@ -4972,6 +4966,7 @@
 		ECF57A3B25090C23004BBF9D /* EnterNewRoomDetails */ = {
 			isa = PBXGroup;
 			children = (
+				ECFBD5DD250B683300DD5F5A /* Cells */,
 				ECF57A3C25090C23004BBF9D /* EnterNewRoomDetailsViewController.storyboard */,
 				ECF57A3D25090C23004BBF9D /* EnterNewRoomDetailsCoordinatorType.swift */,
 				ECF57A3E25090C23004BBF9D /* EnterNewRoomDetailsViewState.swift */,
@@ -5006,6 +5001,7 @@
 			children = (
 				ECF57A6025093B04004BBF9D /* SectionHeaderView.m */,
 				ECF57A6125093B04004BBF9D /* SectionHeaderView.h */,
+				ECFBD5DB250A82B200DD5F5A /* TableViewHeaderFooterView.swift */,
 			);
 			path = SectionHeaders;
 			sourceTree = "<group>";
@@ -5052,6 +5048,16 @@
 				ECFBD5BF250A7AAF00DD5F5A /* DirectoryNetworkTableHeaderFooterView.swift */,
 			);
 			path = Directory;
+			sourceTree = "<group>";
+		};
+		ECFBD5DD250B683300DD5F5A /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				ECFBD5DE250B684E00DD5F5A /* ChooseAvatarTableViewCell.swift */,
+				ECFBD5DF250B684E00DD5F5A /* ChooseAvatarTableViewCell.xib */,
+				ECFBD5E2250B6CAB00DD5F5A /* ChooseAvatarTableViewCellVM.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		F083BB021E7005FD00A9B29C /* RiotTests */ = {
@@ -5516,6 +5522,7 @@
 				B1B557E420EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.xib in Resources */,
 				B1B336C2242B933700F95EC4 /* KeyVerificationSelfVerifyStartViewController.storyboard in Resources */,
 				B1B558F220EF768F00210D55 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
+				ECFBD5E1250B684E00DD5F5A /* ChooseAvatarTableViewCell.xib in Resources */,
 				B1B558EA20EF768F00210D55 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				B1B558CD20EF768F00210D55 /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				B1B9DEEA22EB34EF0065E677 /* ReactionHistoryViewController.storyboard in Resources */,
@@ -5984,6 +5991,7 @@
 				32607D72243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewAction.swift in Sources */,
 				B1B5574420EE6C4D00210D55 /* CallViewController.m in Sources */,
 				EC1CA86024C1DEC400DE9EBF /* EnterPinCodeViewAction.swift in Sources */,
+				ECFBD5E0250B684E00DD5F5A /* ChooseAvatarTableViewCell.swift in Sources */,
 				32FD757624D2C9BA00BA7B37 /* Bundle.swift in Sources */,
 				B12D7A0023E2462200FACEDC /* UserVerificationStartCoordinatorType.swift in Sources */,
 				EC711B9324A63B37008F830C /* SecretsRecoveryWithKeyViewController.swift in Sources */,
@@ -6229,6 +6237,7 @@
 				B1DCC61E22E5E17100625807 /* EmojiPickerViewModel.swift in Sources */,
 				B1B5574F20EE6C4D00210D55 /* RoomsViewController.m in Sources */,
 				EC85D73A2477DDB8002C44C9 /* DirectorySectionHeaderContainerView.m in Sources */,
+				ECFBD5E3250B6CAB00DD5F5A /* ChooseAvatarTableViewCellVM.swift in Sources */,
 				EC711B8524A63B37008F830C /* SecretsRecoveryWithPassphraseCoordinator.swift in Sources */,
 				32863A5C2384074C00D07C4A /* RiotSettingAllowedWidgets.swift in Sources */,
 				EC711B8724A63B37008F830C /* SecretsRecoveryWithPassphraseViewModelType.swift in Sources */,
@@ -6541,6 +6550,7 @@
 				ECFBD5D6250A7AAF00DD5F5A /* ShowDirectoryViewAction.swift in Sources */,
 				EC711BB124A63B58008F830C /* SecureBackupBannerPreferences.swift in Sources */,
 				ECF57A4625090C23004BBF9D /* CreateRoomCoordinator.swift in Sources */,
+				ECFBD5DC250A82B200DD5F5A /* TableViewHeaderFooterView.swift in Sources */,
 				B1BEE73723DF44A60003A4CB /* UserVerificationSessionsStatusViewState.swift in Sources */,
 				B108932823ABEE6800802670 /* BubbleCellReadReceiptsDisplayable.swift in Sources */,
 				B1B558FF20EF768F00210D55 /* RoomIncomingTextMsgBubbleCell.m in Sources */,
