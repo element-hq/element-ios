@@ -25,9 +25,9 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
     // MARK: Private
 
     private let session: MXSession
-    
     private var currentOperation: MXHTTPOperation?
-    private var userDisplayName: String?
+    
+    private var mediaUploader: MXMediaLoader?
     
     // MARK: Public
 
@@ -51,35 +51,108 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
         switch viewAction {
         case .loadData:
             self.loadData()
-        case .complete:
-            self.coordinatorDelegate?.enterNewRoomDetailsViewModel(self, didCompleteWithUserDisplayName: self.userDisplayName)
         case .cancel:
             self.cancelOperations()
             self.coordinatorDelegate?.enterNewRoomDetailsViewModelDidCancel(self)
         case .create:
-            break
+            self.createRoom()
         }
     }
     
     // MARK: - Private
     
     private func loadData() {
-
-        self.update(viewState: .loading)
-
-        // Check first that the user homeserver is federated with the  Riot-bot homeserver
-        self.currentOperation = self.session.matrixRestClient.displayName(forUser: self.session.myUser.userId) { [weak self]  (response) in
-
-            guard let self = self else {
-                return
+        //  no-op
+    }
+    
+    private func fixRoomAlias(alias: String?) -> String? {
+        guard var alias = alias else { return nil }
+        
+        //  drop prefix # from room alias
+        while alias.hasPrefix("#") {
+            alias = String(alias.dropFirst())
+        }
+        
+        //  TODO: Fix below somehow
+        alias = alias.replacingOccurrences(of: ":matrix.org", with: "")
+        if let homeserver = session.credentials.homeServer {
+            alias = alias.replacingOccurrences(of: ":" + homeserver, with: "")
+        }
+        
+        return alias
+    }
+    
+    private func createRoom() {
+        //  compose room creation parameters in Matrix level
+        let parameters = MXRoomCreationParameters()
+        parameters.name = roomCreationParameters.name
+        parameters.topic = roomCreationParameters.topic
+        parameters.roomAlias = fixRoomAlias(alias: roomCreationParameters.address)
+        
+        if roomCreationParameters.isPublic {
+            parameters.preset = kMXRoomPresetPublicChat
+            if roomCreationParameters.showInDirectory {
+                parameters.visibility = kMXRoomDirectoryVisibilityPublic
+            } else {
+                parameters.visibility = kMXRoomDirectoryVisibilityPrivate
             }
-            
+        } else {
+            parameters.preset = kMXRoomPresetPrivateChat
+            parameters.visibility = kMXRoomDirectoryVisibilityPrivate
+        }
+        
+        if roomCreationParameters.isEncrypted {
+            parameters.initialStateEvents = [MXRoomCreationParameters.initialStateEventForEncryption(withAlgorithm: kMXCryptoMegolmAlgorithm)]
+        }
+        
+        update(viewState: .loading)
+        
+        currentOperation = session.createRoom(parameters: parameters) { (response) in
             switch response {
-            case .success(let userDisplayName):
-                self.update(viewState: .loaded(userDisplayName))
-                self.userDisplayName = userDisplayName
+            case .success(let room):
+                self.uploadAvatarIfRequired(ofRoom: room)
+                self.currentOperation = nil
             case .failure(let error):
                 self.update(viewState: .error(error))
+                self.currentOperation = nil
+            }
+        }
+    }
+    
+    private func uploadAvatarIfRequired(ofRoom room: MXRoom) {
+        guard let avatar = roomCreationParameters.userSelectedAvatar else {
+            //  no avatar set, continue
+            self.coordinatorDelegate?.enterNewRoomDetailsViewModel(self, didCreateNewRoom: room)
+            return
+        }
+        
+        let avatarUp = MXKTools.forceImageOrientationUp(avatar)
+        
+        mediaUploader = MXMediaManager.prepareUploader(withMatrixSession: session, initialRange: 0, andRange: 1.0)
+        mediaUploader?.uploadData(avatarUp?.jpegData(compressionQuality: 0.5),
+                                  filename: nil,
+                                  mimeType: "image/jpeg",
+                                  success: { [weak self] (urlString) in
+                                    guard let self = self else { return }
+                                    guard let urlString = urlString else { return }
+                                    guard let url = URL(string: urlString) else { return }
+                                    self.setAvatar(ofRoom: room, withURL: url)
+        }, failure: { [weak self] (error) in
+            guard let self = self else { return }
+            guard let error = error else { return }
+            self.update(viewState: .error(error))
+        })
+    }
+    
+    private func setAvatar(ofRoom room: MXRoom, withURL url: URL) {
+        currentOperation = room.setAvatar(url: url) { (response) in
+            switch response {
+            case .success:
+                self.coordinatorDelegate?.enterNewRoomDetailsViewModel(self, didCreateNewRoom: room)
+                self.currentOperation = nil
+            case .failure(let error):
+                self.update(viewState: .error(error))
+                self.currentOperation = nil
             }
         }
     }

@@ -21,7 +21,6 @@ import Foundation
 /// EnterNewRoomDetailsViewController view actions exposed to view model
 enum EnterNewRoomDetailsViewAction {
     case loadData
-    case complete
     case cancel
     case create
 }

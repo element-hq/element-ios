@@ -23,7 +23,7 @@ protocol EnterNewRoomDetailsViewModelViewDelegate: class {
 }
 
 protocol EnterNewRoomDetailsViewModelCoordinatorDelegate: class {
-    func enterNewRoomDetailsViewModel(_ viewModel: EnterNewRoomDetailsViewModelType, didCompleteWithUserDisplayName userDisplayName: String?)
+    func enterNewRoomDetailsViewModel(_ viewModel: EnterNewRoomDetailsViewModelType, didCreateNewRoom room: MXRoom)
     func enterNewRoomDetailsViewModelDidCancel(_ viewModel: EnterNewRoomDetailsViewModelType)
 }
 

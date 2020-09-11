@@ -271,8 +271,6 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .loaded(let displayName):
-            self.renderLoaded(displayName: displayName)
         case .error(let error):
             self.render(error: error)
         }
@@ -280,13 +278,6 @@ final class EnterNewRoomDetailsViewController: UIViewController {
     
     private func renderLoading() {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
-        //        self.informationLabel.text = "Fetch display name"
-    }
-    
-    private func renderLoaded(displayName: String) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        
-        //        self.informationLabel.text = "You display name: \(displayName)"
     }
     
     private func render(error: Error) {
@@ -295,10 +286,6 @@ final class EnterNewRoomDetailsViewController: UIViewController {
     }
     
     // MARK: - Actions
-    
-    @IBAction private func doneButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .complete)
-    }
     
     private func cancelButtonAction() {
         self.viewModel.process(viewAction: .cancel)
@@ -361,6 +348,13 @@ extension EnterNewRoomDetailsViewController: UITableViewDataSource {
             cell.textField.placeholder = placeholder
             cell.textField.text = row.text
             cell.textField.delegate = delegate
+            
+            switch tag {
+            case Constants.roomAddressTextFieldTag:
+                cell.textField.autocapitalizationType = .none
+            default: break
+            }
+            
             cell.update(theme: theme)
             
             return cell
@@ -487,7 +481,7 @@ extension EnterNewRoomDetailsViewController: UITableViewDelegate {
 extension EnterNewRoomDetailsViewController: ChooseAvatarTableViewCellDelegate {
     
     func chooseAvatarTableViewCellDidTapChooseAvatar(_ cell: ChooseAvatarTableViewCell) {
-        
+        // TODO: Implement image picker
     }
     
 }
@@ -527,13 +521,24 @@ extension EnterNewRoomDetailsViewController: UITextFieldDelegate {
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let text: NSString = (textField.text ?? "") as NSString
+        let resultString = text.replacingCharacters(in: range, with: string)
+        let resultCount = resultString.count
+        
         switch textField.tag {
         case Constants.roomNameTextFieldTag:
-            let newLength = (textField.text?.count ?? 0) + (string.count - range.length)
-            createBarButtonItem.isEnabled = newLength >= Constants.roomNameMinimumNumberOfChars
-            return newLength <= Constants.roomNameMaximumNumberOfChars
+            createBarButtonItem.isEnabled = resultCount >= Constants.roomNameMinimumNumberOfChars
+            let result = resultCount <= Constants.roomNameMaximumNumberOfChars
+            if result {
+                viewModel.roomCreationParameters.name = resultString
+            }
+            return result
         case Constants.roomAddressTextFieldTag:
-            return (textField.text?.count ?? 0) + (string.count - range.length) <= Constants.roomAddressMaximumNumberOfChars
+            let result = resultCount <= Constants.roomAddressMaximumNumberOfChars
+            if result {
+                viewModel.roomCreationParameters.address = resultString
+            }
+            return result
         default:
             return true
         }
@@ -544,6 +549,15 @@ extension EnterNewRoomDetailsViewController: UITextFieldDelegate {
 // MARK: - UITextViewDelegate
 
 extension EnterNewRoomDetailsViewController: UITextViewDelegate {
+    
+    func textViewDidChange(_ textView: UITextView) {
+        switch textView.tag {
+        case Constants.roomTopicTextViewTag:
+            viewModel.roomCreationParameters.topic = textView.text
+        default:
+            break
+        }
+    }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         switch textView.tag {
