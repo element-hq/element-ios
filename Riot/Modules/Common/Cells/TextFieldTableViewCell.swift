@@ -30,6 +30,7 @@ extension TextFieldTableViewCell: Themable {
     
     func update(theme: Theme) {
         theme.applyStyle(onTextField: textField)
+        textField.placeholderColor = theme.placeholderTextColor
     }
     
 }
