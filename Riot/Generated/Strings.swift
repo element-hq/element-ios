@@ -538,6 +538,66 @@ internal enum VectorL10n {
   internal static var create: String { 
     return VectorL10n.tr("Vector", "create") 
   }
+  /// Enable Encryption
+  internal static var createRoomEnableEncryption: String { 
+    return VectorL10n.tr("Vector", "create_room_enable_encryption") 
+  }
+  /// #testroom:matrix.org
+  internal static var createRoomPlaceholderAddress: String { 
+    return VectorL10n.tr("Vector", "create_room_placeholder_address") 
+  }
+  /// Name
+  internal static var createRoomPlaceholderName: String { 
+    return VectorL10n.tr("Vector", "create_room_placeholder_name") 
+  }
+  /// Topic
+  internal static var createRoomPlaceholderTopic: String { 
+    return VectorL10n.tr("Vector", "create_room_placeholder_topic") 
+  }
+  /// Encryption can’t be disabled afterwards.
+  internal static var createRoomSectionFooterEncryption: String { 
+    return VectorL10n.tr("Vector", "create_room_section_footer_encryption") 
+  }
+  /// People join a private room only with the room invitation.
+  internal static var createRoomSectionFooterType: String { 
+    return VectorL10n.tr("Vector", "create_room_section_footer_type") 
+  }
+  /// Room address
+  internal static var createRoomSectionHeaderAddress: String { 
+    return VectorL10n.tr("Vector", "create_room_section_header_address") 
+  }
+  /// Room encryption
+  internal static var createRoomSectionHeaderEncryption: String { 
+    return VectorL10n.tr("Vector", "create_room_section_header_encryption") 
+  }
+  /// Room name
+  internal static var createRoomSectionHeaderName: String { 
+    return VectorL10n.tr("Vector", "create_room_section_header_name") 
+  }
+  /// Room topic (optional)
+  internal static var createRoomSectionHeaderTopic: String { 
+    return VectorL10n.tr("Vector", "create_room_section_header_topic") 
+  }
+  /// Room type
+  internal static var createRoomSectionHeaderType: String { 
+    return VectorL10n.tr("Vector", "create_room_section_header_type") 
+  }
+  /// Show the room in the directory
+  internal static var createRoomShowInDirectory: String { 
+    return VectorL10n.tr("Vector", "create_room_show_in_directory") 
+  }
+  /// New Room
+  internal static var createRoomTitle: String { 
+    return VectorL10n.tr("Vector", "create_room_title") 
+  }
+  /// Private Room
+  internal static var createRoomTypePrivate: String { 
+    return VectorL10n.tr("Vector", "create_room_type_private") 
+  }
+  /// Public Room
+  internal static var createRoomTypePublic: String { 
+    return VectorL10n.tr("Vector", "create_room_type_public") 
+  }
   /// Verify your other devices easier
   internal static var crossSigningSetupBannerSubtitle: String { 
     return VectorL10n.tr("Vector", "cross_signing_setup_banner_subtitle") 

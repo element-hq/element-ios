@@ -1461,3 +1461,21 @@
 "searchable_directory_create_new_room" = "Create a new room";
 "searchable_directory_x_network" = "%@ Network";
 "searchable_directory_search_placeholder" = "Name or ID";
+
+// MARK: - Create Room
+
+"create_room_title" = "New Room";
+"create_room_section_header_name" = "Room name";
+"create_room_placeholder_name" = "Name";
+"create_room_section_header_topic" = "Room topic (optional)";
+"create_room_placeholder_topic" = "Topic";
+"create_room_section_header_encryption" = "Room encryption";
+"create_room_enable_encryption" = "Enable Encryption";
+"create_room_section_footer_encryption" = "Encryption can’t be disabled afterwards.";
+"create_room_section_header_type" = "Room type";
+"create_room_type_private" = "Private Room";
+"create_room_type_public" = "Public Room";
+"create_room_section_footer_type" = "People join a private room only with the room invitation.";
+"create_room_show_in_directory" = "Show the room in the directory";
+"create_room_section_header_address" = "Room address";
+"create_room_placeholder_address" = "#testroom:matrix.org";

@@ -99,34 +99,34 @@ final class EnterNewRoomDetailsViewController: UIViewController {
                                rows: [row_0_0],
                                footer: nil)
         
-        let row_1_0 = Row(type: .textField(tag: Constants.roomNameTextFieldTag, placeholder: "Name", delegate: self), text: viewModel.roomCreationParameters.name, accessoryType: .none) {
+        let row_1_0 = Row(type: .textField(tag: Constants.roomNameTextFieldTag, placeholder: VectorL10n.createRoomPlaceholderName, delegate: self), text: viewModel.roomCreationParameters.name, accessoryType: .none) {
             
         }
-        let section1 = Section(header: "Room name",
+        let section1 = Section(header: VectorL10n.createRoomSectionHeaderName,
                                rows: [row_1_0],
                                footer: nil)
         
-        let row_2_0 = Row(type: .textView(tag: Constants.roomTopicTextViewTag, placeholder: "Topic", delegate: self), text: viewModel.roomCreationParameters.topic, accessoryType: .none) {
+        let row_2_0 = Row(type: .textView(tag: Constants.roomTopicTextViewTag, placeholder: VectorL10n.createRoomPlaceholderTopic, delegate: self), text: viewModel.roomCreationParameters.topic, accessoryType: .none) {
             
         }
-        let section2 = Section(header: "Room topic (optional)",
+        let section2 = Section(header: VectorL10n.createRoomSectionHeaderTopic,
                                rows: [row_2_0],
                                footer: nil)
         
         let row_3_0 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.isEncrypted, onValueChanged: { (theSwitch) in
             self.viewModel.roomCreationParameters.isEncrypted = theSwitch.isOn
-        }), text: "Enable Encryption", accessoryType: .none) {
+        }), text: VectorL10n.createRoomEnableEncryption, accessoryType: .none) {
             // no-op
         }
-        let section3 = Section(header: "Room encryption",
+        let section3 = Section(header: VectorL10n.createRoomSectionHeaderEncryption,
                                rows: [row_3_0],
-                               footer: "Encryption can’t be disabled afterwards.")
+                               footer: VectorL10n.createRoomSectionFooterEncryption)
         
-        let row_4_0 = Row(type: .default, text: "Private Room", accessoryType: viewModel.roomCreationParameters.isPublic ? .none : .checkmark) {
+        let row_4_0 = Row(type: .default, text: VectorL10n.createRoomTypePrivate, accessoryType: viewModel.roomCreationParameters.isPublic ? .none : .checkmark) {
             self.viewModel.roomCreationParameters.isPublic = false
             self.updateSections()
         }
-        let row_4_1 = Row(type: .default, text: "Public Room", accessoryType: viewModel.roomCreationParameters.isPublic ? .checkmark : .none) {
+        let row_4_1 = Row(type: .default, text: VectorL10n.createRoomTypePublic, accessoryType: viewModel.roomCreationParameters.isPublic ? .checkmark : .none) {
             self.viewModel.roomCreationParameters.isPublic = true
             self.updateSections()
             //  scroll bottom to show user new fields
@@ -134,9 +134,9 @@ final class EnterNewRoomDetailsViewController: UIViewController {
                 self.mainTableView.scrollToRow(at: IndexPath(row: 0, section: 6), at: .bottom, animated: true)
             }
         }
-        let section4 = Section(header: "Room type",
+        let section4 = Section(header: VectorL10n.createRoomSectionHeaderType,
                                rows: [row_4_0, row_4_1],
-                               footer: "People join a private room only with the room invitation.")
+                               footer: VectorL10n.createRoomSectionFooterType)
         
         var tmpSections: [Section] = [
             section0,
@@ -149,17 +149,17 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         if viewModel.roomCreationParameters.isPublic {
             let row_5_0 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.showInDirectory, onValueChanged: { (theSwitch) in
                 self.viewModel.roomCreationParameters.showInDirectory = theSwitch.isOn
-            }), text: "Show the room in the directory", accessoryType: .none) {
+            }), text: VectorL10n.createRoomShowInDirectory, accessoryType: .none) {
                 // no-op
             }
             let section5 = Section(header: nil,
                                    rows: [row_5_0],
                                    footer: nil)
             
-            let row_6_0 = Row(type: .textField(tag: Constants.roomAddressTextFieldTag, placeholder: "#testroom:matrix.org", delegate: self), text: viewModel.roomCreationParameters.address, accessoryType: .none) {
+            let row_6_0 = Row(type: .textField(tag: Constants.roomAddressTextFieldTag, placeholder: VectorL10n.createRoomPlaceholderAddress, delegate: self), text: viewModel.roomCreationParameters.address, accessoryType: .none) {
                 
             }
-            let section6 = Section(header: "Room address",
+            let section6 = Section(header: VectorL10n.createRoomSectionHeaderAddress,
                                    rows: [row_6_0],
                                    footer: nil)
             
@@ -250,7 +250,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         
         self.navigationItem.rightBarButtonItem = createBarButtonItem
         
-        self.title = "New Room"
+        self.title = VectorL10n.createRoomTitle
         
         mainTableView.keyboardDismissMode = .interactive
         mainTableView.register(cellType: ChooseAvatarTableViewCell.self)
