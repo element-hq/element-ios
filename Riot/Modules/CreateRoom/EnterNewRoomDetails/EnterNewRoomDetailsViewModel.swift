@@ -39,6 +39,7 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
     
     init(session: MXSession) {
         self.session = session
+        roomCreationParameters.isEncrypted = session.vc_isE2EByDefaultEnabledByHSAdmin()
     }
     
     deinit {
