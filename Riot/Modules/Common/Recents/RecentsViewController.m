@@ -1963,6 +1963,14 @@
 
 #pragma mark - CreateRoomCoordinatorBridgePresenterDelegate
 
+- (void)createRoomCoordinatorBridgePresenterDelegate:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter didCreateNewRoom:(MXRoom *)room
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession restoreInitialDisplay:NO];
+    }];
+    coordinatorBridgePresenter = nil;
+}
+
 - (void)createRoomCoordinatorBridgePresenterDelegateDidCancel:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
