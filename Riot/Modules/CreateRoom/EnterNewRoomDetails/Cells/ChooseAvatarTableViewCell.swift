@@ -18,7 +18,7 @@ import UIKit
 import Reusable
 
 protocol ChooseAvatarTableViewCellDelegate: class {
-    func chooseAvatarTableViewCellDidTapChooseAvatar(_ cell: ChooseAvatarTableViewCell)
+    func chooseAvatarTableViewCellDidTapChooseAvatar(_ cell: ChooseAvatarTableViewCell, sourceView: UIView)
 }
 
 class ChooseAvatarTableViewCell: UITableViewCell {
@@ -33,7 +33,7 @@ class ChooseAvatarTableViewCell: UITableViewCell {
     weak var delegate: ChooseAvatarTableViewCellDelegate?
     
     @IBAction private func chooseAvatarButtonTapped(_ sender: UIButton) {
-        delegate?.chooseAvatarTableViewCellDidTapChooseAvatar(self)
+        delegate?.chooseAvatarTableViewCellDidTapChooseAvatar(self, sourceView: sender)
     }
     
     func configure(withViewModel viewModel: ChooseAvatarTableViewCellVM) {

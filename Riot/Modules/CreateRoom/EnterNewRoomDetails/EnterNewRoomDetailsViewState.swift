@@ -21,5 +21,6 @@ import Foundation
 /// EnterNewRoomDetailsViewController view state
 enum EnterNewRoomDetailsViewState {
     case loading
+    case loaded
     case error(Error)
 }

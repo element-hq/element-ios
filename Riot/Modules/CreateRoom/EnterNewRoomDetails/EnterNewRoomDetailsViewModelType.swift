@@ -24,6 +24,7 @@ protocol EnterNewRoomDetailsViewModelViewDelegate: class {
 
 protocol EnterNewRoomDetailsViewModelCoordinatorDelegate: class {
     func enterNewRoomDetailsViewModel(_ viewModel: EnterNewRoomDetailsViewModelType, didCreateNewRoom room: MXRoom)
+    func enterNewRoomDetailsViewModel(_ viewModel: EnterNewRoomDetailsViewModelType, didTapChooseAvatar sourceView: UIView)
     func enterNewRoomDetailsViewModelDidCancel(_ viewModel: EnterNewRoomDetailsViewModelType)
 }
 

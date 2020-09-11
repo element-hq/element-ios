@@ -29,6 +29,12 @@ final class EnterNewRoomDetailsCoordinator: EnterNewRoomDetailsCoordinatorType {
     private var enterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType
     private let enterNewRoomDetailsViewController: EnterNewRoomDetailsViewController
     
+    private lazy var singleImagePickerPresenter: SingleImagePickerPresenter = {
+        let presenter = SingleImagePickerPresenter(session: session)
+        presenter.delegate = self
+        return presenter
+    }()
+    
     // MARK: Public
 
     // Must be used only internally
@@ -49,7 +55,7 @@ final class EnterNewRoomDetailsCoordinator: EnterNewRoomDetailsCoordinatorType {
     
     // MARK: - Public methods
     
-    func start() {            
+    func start() {
         self.enterNewRoomDetailsViewModel.coordinatorDelegate = self
     }
     
@@ -65,7 +71,25 @@ extension EnterNewRoomDetailsCoordinator: EnterNewRoomDetailsViewModelCoordinato
         self.delegate?.enterNewRoomDetailsCoordinator(self, didCreateNewRoom: room)
     }
     
+    func enterNewRoomDetailsViewModel(_ viewModel: EnterNewRoomDetailsViewModelType, didTapChooseAvatar sourceView: UIView) {
+        singleImagePickerPresenter.present(from: toPresentable(), sourceView: sourceView, sourceRect: sourceView.bounds, animated: true)
+    }
+    
     func enterNewRoomDetailsViewModelDidCancel(_ viewModel: EnterNewRoomDetailsViewModelType) {
         self.delegate?.enterNewRoomDetailsCoordinatorDidCancel(self)
     }
+}
+
+extension EnterNewRoomDetailsCoordinator: SingleImagePickerPresenterDelegate {
+    
+    func singleImagePickerPresenter(_ presenter: SingleImagePickerPresenter, didSelectImageData imageData: Data, withUTI uti: MXKUTI?) {
+        enterNewRoomDetailsViewModel.roomCreationParameters.userSelectedAvatar = UIImage(data: imageData)
+        enterNewRoomDetailsViewModel.process(viewAction: .loadData)
+        presenter.dismiss(animated: true, completion: nil)
+    }
+    
+    func singleImagePickerPresenterDidCancel(_ presenter: SingleImagePickerPresenter) {
+        presenter.dismiss(animated: true, completion: nil)
+    }
+    
 }

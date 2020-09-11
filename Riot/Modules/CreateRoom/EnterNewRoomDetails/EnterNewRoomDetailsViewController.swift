@@ -196,8 +196,6 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         self.viewModel.viewDelegate = self
         
         self.viewModel.process(viewAction: .loadData)
-        
-        updateSections()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -271,6 +269,8 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         switch viewState {
         case .loading:
             self.renderLoading()
+        case .loaded:
+            updateSections()
         case .error(let error):
             self.render(error: error)
         }
@@ -480,8 +480,8 @@ extension EnterNewRoomDetailsViewController: UITableViewDelegate {
 
 extension EnterNewRoomDetailsViewController: ChooseAvatarTableViewCellDelegate {
     
-    func chooseAvatarTableViewCellDidTapChooseAvatar(_ cell: ChooseAvatarTableViewCell) {
-        // TODO: Implement image picker
+    func chooseAvatarTableViewCellDidTapChooseAvatar(_ cell: ChooseAvatarTableViewCell, sourceView: UIView) {
+        viewModel.process(viewAction: .chooseAvatar(sourceView: sourceView))
     }
     
 }

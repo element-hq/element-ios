@@ -21,6 +21,7 @@ import Foundation
 /// EnterNewRoomDetailsViewController view actions exposed to view model
 enum EnterNewRoomDetailsViewAction {
     case loadData
+    case chooseAvatar(sourceView: UIView)
     case cancel
     case create
 }

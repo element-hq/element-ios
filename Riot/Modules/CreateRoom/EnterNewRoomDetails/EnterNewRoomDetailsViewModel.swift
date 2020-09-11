@@ -51,6 +51,8 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
         switch viewAction {
         case .loadData:
             self.loadData()
+        case .chooseAvatar(let sourceView):
+            self.chooseAvatar(sourceView: sourceView)
         case .cancel:
             self.cancelOperations()
             self.coordinatorDelegate?.enterNewRoomDetailsViewModelDidCancel(self)
@@ -62,7 +64,11 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
     // MARK: - Private
     
     private func loadData() {
-        //  no-op
+        update(viewState: .loaded)
+    }
+    
+    private func chooseAvatar(sourceView: UIView) {
+        self.coordinatorDelegate?.enterNewRoomDetailsViewModel(self, didTapChooseAvatar: sourceView)
     }
     
     private func fixRoomAlias(alias: String?) -> String? {
