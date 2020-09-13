@@ -690,3 +690,132 @@
 "room_details_fail_to_update_room_guest_access" = "Misslyckades att uppdatera rummets gäståtkomst";
 "room_details_fail_to_update_room_join_rule" = "Misslyckades att uppdatera regeln för att gå med";
 "room_details_fail_to_update_room_directory_visibility" = "Misslyckades att uppdatera rummets synlighet";
+"room_details_unset_main_address" = "Sluta använd som huvudadress";
+"room_details_copy_room_url" = "Kopiera rum-URL";
+"group_participants_invited_section" = "INBJUDNA";
+// Read Receipts
+"read_receipts_list" = "Lista med läskvitton";
+// Image picker
+"image_picker_action_camera" = "Ta foto";
+// Directory
+"directory_title" = "Katalog";
+"directory_server_picker_title" = "Välj en katalog";
+"directory_server_all_rooms" = "Alla rum på servern %@";
+"directory_server_type_homeserver" = "Skriv in en hemserver för att lista publika rum från";
+"event_formatter_jitsi_widget_added" = "VoIP-konferens tillagd av %@";
+"event_formatter_jitsi_widget_removed" = "VoIP-konferens borttagen av %@";
+"event_formatter_rerequest_keys_part1_link" = "Kräv krypteringsnycklar på nytt";
+"event_formatter_rerequest_keys_part2" = " från dina andra sessioner.";
+"event_formatter_message_edited_mention" = "(redigerat)";
+"event_formatter_jitsi_widget_added_by_you" = "Du lade till VoIP-konferens";
+"event_formatter_jitsi_widget_removed_by_you" = "Du tog bort VoIP-konferens";
+"public_room_section_title" = "Publika rum (på %@):";
+"bug_report_prompt" = "Appen har kraschat förra gången. Vill du skicka en kraschrapport?";
+"camera_access_not_granted" = "%@ verkar inte ha behörighet att använda kameran, vänligen ändra integritetsinställningarna";
+"photo_library_access_not_granted" = "%@ verkar inte ha åtkomst till bildbiblioteket, vänligen ändra integritetsinställningarna";
+"large_badge_value_k_format" = "%.1fK";
+"call_incoming_voice" = "Inkommande samtal…";
+"call_incoming_video" = "Inkommande videosamtal…";
+"call_already_displayed" = "Det finns redan ett pågående samtal.";
+"call_no_stun_server_error_use_fallback_button" = "Försök att använda %@";
+// Crypto
+"e2e_enabling_on_app_update" = "Element har nu stöd för end-to-end-kryptering men du behöver logga in igen för att aktivera det.\n\nDu kan göra det nu eller senare från appens inställningar.";
+"bug_report_send_screenshot" = "Skicka skärmavbild";
+"widget_no_power_to_manage" = "Du behöver behörighet för att hantera widgets i det här rummet";
+"widget_creation_failure" = "Det gick inte att skapa widget";
+"widget_menu_refresh" = "Ladda om";
+"widget_menu_revoke_permission" = "Återkalla åtkomst för mig";
+"widget_integration_unable_to_create" = "Kunde inte skapa widget.";
+"widget_integration_failed_to_send_request" = "Det gick inte att skicka begäran.";
+"widget_integration_missing_room_id" = "Begäran saknar room_id.";
+"widget_integration_missing_user_id" = "Begäran saknar user_id.";
+"widget_integration_room_not_visible" = "Rummet %@ är inte synligt.";
+// Widget Picker
+"widget_picker_title" = "Integrationer";
+"widget_picker_manage_integrations" = "Hantera integrationer…";
+// Room widget permissions
+"room_widget_permission_title" = "Läs in widget";
+"room_widget_permission_creator_info_title" = "Den här widgeten lades till av:";
+// Share extension
+"share_extension_auth_prompt" = "Logga in i huvudappen för att dela innehåll";
+// Room key request dialog
+"e2e_room_key_request_title" = "Begäran om krypteringsnyckel";
+"e2e_room_key_request_start_verification" = "Starta verifiering…";
+"e2e_room_key_request_share_without_verifying" = "Dela utan att verifiera";
+// GDPR
+"gdpr_consent_not_given_alert_message" = "För att fortsätta använda hemservern %@ behöver du ta del av och godkänna villkoren.";
+"service_terms_modal_message" = "För att fortsätta behöver du godkänna villkoren för den här tjänsten (%@).";
+"service_terms_modal_description_for_identity_server_2" = "Hitta mig via telefon eller e-post";
+// Service terms - Variant for identity server when displayed out of a context
+"service_terms_modal_title_identity_server" = "Upptäcka kontakter";
+"service_terms_modal_policy_checkbox_accessibility_hint" = "Kryssa i för att godkänna %@";
+"deactivate_account_informations_part1" = "Detta kommer att göra ditt konto permanent oanvändbart. Du kommer inte att kunna logga in, och ingen kommer att kunna registrera på nytt med samma användar-ID. Detta kommer innebära att ditt konto lämnar alla rum det deltar i, och dina kontouppgifter kommer att tas bort från din identitetsserver. ";
+"deactivate_account_informations_part2_emphasize" = "Denna åtgärd går inte att ångra.";
+"deactivate_account_informations_part3" = "\n\nAtt inaktivera ditt konto ";
+"deactivate_account_informations_part4_emphasize" = "leder inte alltid till att vi glömmer meddelanden som du har skickat. ";
+"deactivate_account_informations_part5" = "Om du vill att vi glömmer dina meddelanden, vänligen kryssa i rutan nedan\n\nSynlighet för meddelanden i Matrix liknar den i e-post. När vi glömmer dina meddelanden betyder det att meddelanden som du har skickat inte kommer att delas med några nya eller oregistrerade användare, men registrerade användare som redan har tillgång till dessa meddelanden kommer fortfarande ha tillgång till sin kopia.";
+"deactivate_account_forget_messages_information_part1" = "Glöm alla mina meddelanden som jag har skickat när mitt konto är inaktiverat (";
+"deactivate_account_forget_messages_information_part3" = ": detta leder till att framtida användare kommer att se en ofullständig bild av konversationer)";
+"deactivate_account_validate_action" = "Inaktivera konto";
+"deactivate_account_password_alert_title" = "Inaktivera konto";
+"deactivate_account_password_alert_message" = "För att fortsätta, ange ditt lösenord";
+"rerequest_keys_alert_message" = "Starta Element på en annan enhet som dekryptera meddelandet så att den kan skicka nycklarna till den här sessionen.";
+"secure_key_backup_setup_intro_use_security_key_title" = "Använd en säkerhetsnyckel";
+"secure_key_backup_setup_intro_use_security_key_info" = "Generera en säkerhetsnyckel att lagra på en säker plats, exempelvis i en lösenordshanterare eller ett kassaskåp.";
+"secure_key_backup_setup_existing_backup_error_unlock_it" = "Lås upp den";
+"secure_key_backup_setup_existing_backup_error_delete_it" = "Radera den";
+"secure_key_backup_setup_cancel_alert_title" = "Är du säker?";
+"secure_backup_setup_banner_title" = "Säker backup";
+"key_backup_setup_title" = "Nyckelbackup";
+"key_backup_setup_skip_alert_title" = "Är du säker?";
+"key_backup_setup_skip_alert_message" = "Du kanske kommer förlora säkra meddelanden om du loggar ut från eller tappar bort din enhet.";
+"key_backup_setup_skip_alert_skip_action" = "Hoppa över";
+"key_backup_setup_intro_info" = "Meddelanden i krypterade rum skyddas av end-to-end-kryptering. Endast du och mottagaren/mottagarna har nycklarna för att läsa dessa meddelanden.\n\nSäkerhetskopiera dina nycklar för att inte förlora dem.";
+"key_backup_setup_intro_manual_export_info" = "(Avancerat)";
+"key_backup_setup_intro_manual_export_action" = "Exportera nycklar manuellt";
+"key_backup_setup_passphrase_title" = "Skydda din backup med en lösenfras";
+"key_backup_setup_passphrase_passphrase_title" = "Ange";
+"key_backup_setup_passphrase_passphrase_placeholder" = "Ange lösenfras";
+"key_backup_setup_passphrase_passphrase_valid" = "Toppen!";
+"key_backup_setup_passphrase_passphrase_invalid" = "Försök att lägga till ett ord";
+"key_backup_setup_passphrase_confirm_passphrase_title" = "Bekräfta";
+"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "Bekräfta lösenfras";
+"key_backup_setup_passphrase_confirm_passphrase_valid" = "Toppen!";
+"key_backup_setup_passphrase_confirm_passphrase_invalid" = "Lösenfrasen matchar inte";
+"key_backup_setup_passphrase_set_passphrase_action" = "Ställ in lösenfras";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "(Avancerat) Ställ in med återställningsnyckel";
+"key_backup_setup_success_title" = "Lyckades!";
+// Success from passphrase
+"key_backup_setup_success_from_passphrase_info" = "Dina nycklar säkerhetskopieras.\n\nDin återställningsnyckel är ett skyddsnät – du kan använda den för att åter få tillgång till dina krypterade meddelanden om du glömmer din lösenfras.\n\nLagra din återställningsnyckel på en väldigt säker plats, som i en lösenordshanterare (eller ett kassaskåp).";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Spara återställningsnyckel";
+"key_backup_setup_success_from_passphrase_done_action" = "Klart";
+// Success from recovery key
+"key_backup_setup_success_from_recovery_key_info" = "Dina nycklar säkerhetskopieras.\n\nSkapa en kopia av den här återställningsnyckeln och skydda den.";
+"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Återställningsnyckel";
+"key_backup_setup_success_from_recovery_key_make_copy_action" = "Skapa en kopia";
+"key_backup_setup_success_from_recovery_key_made_copy_action" = "Jag har skapat en kopia";
+"key_backup_recover_title" = "Säkra meddelanden";
+"key_backup_recover_invalid_passphrase_title" = "Felaktig lösenfras för återställning";
+"key_backup_recover_from_passphrase_passphrase_title" = "Ange";
+"key_backup_recover_from_passphrase_passphrase_placeholder" = "Ange lösenfras";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Känner du inte till din lösenfras för återställning? Du kan ";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "använda din återställningsnyckel";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
+"key_backup_recover_from_recovery_key_recovery_key_title" = "Ange";
+"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Ange återställningsnyckel";
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Förlorat din återställningsncykel? Du kan ställa in en ny i inställningarna.";
+"key_backup_recover_done_action" = "Klart";
+"sign_out_existing_key_backup_alert_title" = "Är du säker på att du vill logga ut?";
+"sign_out_existing_key_backup_alert_sign_out_action" = "Logga ut";
+"sign_out_non_existing_key_backup_alert_title" = "Du kommer att förlora åtkomst till dina krypterade meddelanden om du loggar ut nu";
+"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Börja använd säker backup";
+"sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "Jag vill inte ha mina krypterade meddelanden";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "Du kommer att förlora dina krypterade meddelanden";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_sign_out_action" = "Logga ut";
+"sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Jag vill inte ha mina krypterade meddelanden";
+"sign_out_key_backup_in_progress_alert_cancel_action" = "Jag väntar";
+// MARK: - Device Verification
+"key_verification_other_session_title" = "Verifiera session";
+"key_verification_new_session_title" = "Verifiera din nya session";
+"key_verification_this_session_title" = "Verifiera den här sessionen";
+"key_verification_user_title" = "Verifiera dem";
