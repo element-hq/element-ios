@@ -126,7 +126,7 @@
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate>
 {
     // The expanded header
     ExpandedRoomTitleView *expandedHeader;
@@ -233,6 +233,7 @@
 @property (nonatomic, strong) CameraPresenter *cameraPresenter;
 @property (nonatomic, strong) MediaPickerCoordinatorBridgePresenter *mediaPickerPresenter;
 @property (nonatomic, strong) RoomMessageURLParser *roomMessageURLParser;
+@property (nonatomic, strong) RoomCreationModalCoordinatorBridgePresenter *roomCreationModalCoordinatorBridgePresenter;
 
 @end
 
@@ -1753,6 +1754,15 @@
     self.mediaPickerPresenter = mediaPickerPresenter;
 }
 
+- (void)showRoomCreationModalWithBubbleData:(id<MXKRoomBubbleCellDataStoring>) bubbleData
+{
+    [self.roomCreationModalCoordinatorBridgePresenter dismissWithAnimated:NO completion:nil];
+    
+    self.roomCreationModalCoordinatorBridgePresenter = [[RoomCreationModalCoordinatorBridgePresenter alloc] initWithSession:self.mainSession bubbleData:bubbleData roomState:self.roomDataSource.roomState];
+    self.roomCreationModalCoordinatorBridgePresenter.delegate = self;
+    [self.roomCreationModalCoordinatorBridgePresenter presentFrom:self animated:YES];
+}
+
 #pragma mark - Hide/Show expanded header
 
 - (void)showExpandedHeader:(BOOL)isVisible
@@ -2336,7 +2346,7 @@
                         // Show contextual menu on single tap if bubble is not collapsed
                         if (bubbleData.collapsed)
                         {
-                            [self selectEventWithId:tappedEvent.eventId];
+                            [self showRoomCreationModalWithBubbleData:bubbleData];
                         }
                         else
                         {
@@ -6005,6 +6015,14 @@
     {
         [roomInputToolbarView sendSelectedAssets:assets withCompressionMode:MXKRoomInputToolbarCompressionModePrompt];
     }
+}
+
+#pragma mark - RoomCreationModalCoordinatorBridgePresenter
+
+- (void)roomCreationModalCoordinatorBridgePresenterDelegateDidComplete:(RoomCreationModalCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.roomCreationModalCoordinatorBridgePresenter = nil;
 }
 
 @end
