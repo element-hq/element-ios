@@ -21,3 +21,4 @@
 #import "RoomEncryptedDataBubbleCell.h"
 #import "LegacyAppDelegate.h"
 #import "DirectoryServerPickerViewController.h"
+#import "MXSession+Riot.h"
