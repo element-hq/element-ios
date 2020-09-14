@@ -273,10 +273,10 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                 NSFontAttributeName: [UIFont systemFontOfSize:13],
                 NSForegroundColorAttributeName: ThemeService.shared.theme.textSecondaryColor
             } range:NSMakeRange(0, rendered.length)];
-            //  add one char space
+            //  add one-char space
             [result appendAttributedString:[[NSAttributedString alloc] initWithString:@" "]];
             //  add more link
-            NSAttributedString *linkMore = [[NSAttributedString alloc] initWithString:@"More" attributes:@{
+            NSAttributedString *linkMore = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"more", @"Vector", nil) attributes:@{
                 NSFontAttributeName: [UIFont systemFontOfSize:13],
                 NSForegroundColorAttributeName: ThemeService.shared.theme.tintColor
             }];

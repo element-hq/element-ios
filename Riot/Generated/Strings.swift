@@ -1990,6 +1990,10 @@ internal enum VectorL10n {
   internal static var mediaTypeAccessibilityVideo: String { 
     return VectorL10n.tr("Vector", "media_type_accessibility_video") 
   }
+  /// More
+  internal static var more: String { 
+    return VectorL10n.tr("Vector", "more") 
+  }
   /// The Internet connection appears to be offline.
   internal static var networkOfflinePrompt: String { 
     return VectorL10n.tr("Vector", "network_offline_prompt") 
