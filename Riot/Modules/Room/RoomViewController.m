@@ -2162,6 +2162,31 @@
                 cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipWithPaginationTitleBubbleCell.class : RoomMembershipBubbleCell.class;
             }
         }
+        else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreateConfiguration)
+        {
+            if (bubbleData.collapsed)
+            {
+                if (bubbleData.nextCollapsableCellData)
+                {
+                    cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipCollapsedWithPaginationTitleBubbleCell.class : RoomMembershipCollapsedBubbleCell.class;
+                }
+                else
+                {
+                    // Use a normal membership cell for a single membership event
+                    cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipWithPaginationTitleBubbleCell.class : RoomMembershipBubbleCell.class;
+                }
+            }
+            else if (bubbleData.collapsedAttributedTextMessage)
+            {
+                // The cell (and its series) is not collapsed but this cell is the first
+                // of the series. So, use the cell with the "collapse" button.
+                cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipExpandedWithPaginationTitleBubbleCell.class : RoomMembershipExpandedBubbleCell.class;
+            }
+            else
+            {
+                cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipWithPaginationTitleBubbleCell.class : RoomMembershipBubbleCell.class;
+            }
+        }
         else if (bubbleData.isIncoming)
         {
             if (bubbleData.isAttachmentWithThumbnail)
@@ -2321,6 +2346,18 @@
                     {
                         // Show predecessor room
                         [[AppDelegate theDelegate] showRoom:predecessorRoomId andEventId:nil withMatrixSession:self.mainSession];
+                    }
+                    else
+                    {
+                        // Show contextual menu on single tap if bubble is not collapsed
+                        if (bubbleData.collapsed)
+                        {
+                            [self selectEventWithId:tappedEvent.eventId];
+                        }
+                        else
+                        {
+                            [self showContextualMenuForEvent:tappedEvent fromSingleTapGesture:YES cell:cell animated:YES];
+                        }
                     }
                 }
                 else
