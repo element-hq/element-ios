@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="100" id="KGk-i7-Jjw" customClass="ChooseAvatarTableViewCell" customModule="Riot" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="335" height="100"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="335" height="100"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cxa-zY-I2z">
+                        <rect key="frame" x="137.5" y="20" width="60" height="60"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jO2-1T-e01">
+                                <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="capture_avatar" translatesAutoresizingMaskIntoConstraints="NO" id="DmM-HO-d5u">
+                                <rect key="frame" x="36" y="36" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="24" id="CfH-3G-sp2"/>
+                                    <constraint firstAttribute="height" constant="24" id="LAj-br-cZn"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qhc-S1-fNz">
+                                <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+                                <connections>
+                                    <action selector="chooseAvatarButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Tr5-En-JRL"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="jO2-1T-e01" firstAttribute="top" secondItem="cxa-zY-I2z" secondAttribute="top" id="4vV-IL-HBT"/>
+                            <constraint firstItem="jO2-1T-e01" firstAttribute="leading" secondItem="cxa-zY-I2z" secondAttribute="leading" id="EHU-dt-Wct"/>
+                            <constraint firstItem="Qhc-S1-fNz" firstAttribute="leading" secondItem="cxa-zY-I2z" secondAttribute="leading" id="EXo-Xj-gmU"/>
+                            <constraint firstAttribute="trailing" secondItem="jO2-1T-e01" secondAttribute="trailing" id="Jl4-Km-Skg"/>
+                            <constraint firstAttribute="width" constant="60" id="UGR-4m-Wbs"/>
+                            <constraint firstAttribute="trailing" secondItem="DmM-HO-d5u" secondAttribute="trailing" id="ULE-c0-OVB"/>
+                            <constraint firstItem="Qhc-S1-fNz" firstAttribute="top" secondItem="cxa-zY-I2z" secondAttribute="top" id="Vmh-gb-pTd"/>
+                            <constraint firstAttribute="height" constant="60" id="XgW-eP-Ej1"/>
+                            <constraint firstAttribute="bottom" secondItem="jO2-1T-e01" secondAttribute="bottom" id="k80-e4-Sir"/>
+                            <constraint firstAttribute="trailing" secondItem="Qhc-S1-fNz" secondAttribute="trailing" id="mmu-lZ-hA2"/>
+                            <constraint firstAttribute="bottom" secondItem="DmM-HO-d5u" secondAttribute="bottom" id="qH0-4k-fJI"/>
+                            <constraint firstAttribute="bottom" secondItem="Qhc-S1-fNz" secondAttribute="bottom" id="xzy-TW-HzO"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="cxa-zY-I2z" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="LzI-TD-D7I"/>
+                    <constraint firstItem="cxa-zY-I2z" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="ckM-FU-rM1"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="avatarImageView" destination="jO2-1T-e01" id="LDf-AD-Ubx"/>
+                <outlet property="chooseAvatarButton" destination="Qhc-S1-fNz" id="37s-Cp-Uwf"/>
+            </connections>
+            <point key="canvasLocation" x="63.04347826086957" y="89.0625"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="capture_avatar" width="25" height="25"/>
+    </resources>
+</document>
