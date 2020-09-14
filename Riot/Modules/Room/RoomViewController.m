@@ -95,6 +95,8 @@
 #import "RoomMembershipCollapsedWithPaginationTitleBubbleCell.h"
 #import "RoomMembershipExpandedBubbleCell.h"
 #import "RoomMembershipExpandedWithPaginationTitleBubbleCell.h"
+#import "RoomCreationWithPaginationCollapsedBubbleCell.h"
+#import "RoomCreationCollapsedBubbleCell.h"
 
 #import "RoomSelectedStickerBubbleCell.h"
 #import "RoomPredecessorBubbleCell.h"
@@ -362,6 +364,9 @@
     [self.bubblesTableView registerClass:KeyVerificationRequestStatusWithPaginationTitleBubbleCell.class forCellReuseIdentifier:KeyVerificationRequestStatusWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:KeyVerificationConclusionBubbleCell.class forCellReuseIdentifier:KeyVerificationConclusionBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:KeyVerificationConclusionWithPaginationTitleBubbleCell.class forCellReuseIdentifier:KeyVerificationConclusionWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    
+    [self.bubblesTableView registerClass:RoomCreationCollapsedBubbleCell.class forCellReuseIdentifier:RoomCreationCollapsedBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomCreationWithPaginationCollapsedBubbleCell.class forCellReuseIdentifier:RoomCreationWithPaginationCollapsedBubbleCell.defaultReuseIdentifier];
     
     
     // Prepare expanded header
@@ -2164,28 +2169,7 @@
         }
         else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreateConfiguration)
         {
-            if (bubbleData.collapsed)
-            {
-                if (bubbleData.nextCollapsableCellData)
-                {
-                    cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipCollapsedWithPaginationTitleBubbleCell.class : RoomMembershipCollapsedBubbleCell.class;
-                }
-                else
-                {
-                    // Use a normal membership cell for a single membership event
-                    cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipWithPaginationTitleBubbleCell.class : RoomMembershipBubbleCell.class;
-                }
-            }
-            else if (bubbleData.collapsedAttributedTextMessage)
-            {
-                // The cell (and its series) is not collapsed but this cell is the first
-                // of the series. So, use the cell with the "collapse" button.
-                cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipExpandedWithPaginationTitleBubbleCell.class : RoomMembershipExpandedBubbleCell.class;
-            }
-            else
-            {
-                cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipWithPaginationTitleBubbleCell.class : RoomMembershipBubbleCell.class;
-            }
+            cellViewClass = bubbleData.isPaginationFirstBubble ? RoomCreationWithPaginationCollapsedBubbleCell.class : RoomCreationCollapsedBubbleCell.class;
         }
         else if (bubbleData.isIncoming)
         {
