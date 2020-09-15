@@ -97,6 +97,7 @@
                 <outlet property="bubbleOverlayContainer" destination="stw-MD-khQ" id="fDX-tM-vSH"/>
                 <outlet property="messageTextView" destination="HTH-5n-MSU" id="YN4-iK-gNc"/>
                 <outlet property="msgTextViewBottomConstraint" destination="oTk-3F-SEC" id="nmX-GC-tPw"/>
+                <outlet property="msgTextViewLeadingConstraint" destination="qVQ-7B-aFR" id="QFN-39-EIX"/>
                 <outlet property="msgTextViewMinHeightConstraint" destination="ZZt-rc-tVJ" id="hDD-TL-PFM"/>
                 <outlet property="msgTextViewTopConstraint" destination="mkw-3s-H8B" id="lON-oG-Xx9"/>
                 <outlet property="msgTextViewTrailingConstraint" destination="Shz-6S-kGd" id="5ib-m6-Lna"/>
