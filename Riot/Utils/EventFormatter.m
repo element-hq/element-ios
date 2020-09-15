@@ -180,7 +180,10 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         }
         else
         {
-            return nil;
+            NSAttributedString *string = [super attributedStringFromEvent:event withRoomState:roomState error:error];
+            NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:@"· "];
+            [result appendAttributedString:string];
+            return result;
         }
     }
     
@@ -260,7 +263,31 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 
     if (events.count)
     {
-        if (events[0].eventType == MXEventTypeRoomMember)
+        MXEvent *roomCreateEvent = [events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type == %@", kMXEventTypeStringRoomCreate]].firstObject;
+        
+        if (roomCreateEvent)
+        {
+            MXKEventFormatterError tmpError;
+            displayText = [super attributedStringFromEvent:roomCreateEvent withRoomState:roomState error:&tmpError].string;
+
+            NSAttributedString *rendered = [self renderString:displayText forEvent:roomCreateEvent];
+            NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:@"· "];
+            [result appendAttributedString:rendered];
+            [result setAttributes:@{
+                NSFontAttributeName: [UIFont systemFontOfSize:13],
+                NSForegroundColorAttributeName: ThemeService.shared.theme.textSecondaryColor
+            } range:NSMakeRange(0, result.length)];
+            //  add one-char space
+            [result appendAttributedString:[[NSAttributedString alloc] initWithString:@" "]];
+            //  add more link
+            NSAttributedString *linkMore = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"more", @"Vector", nil) attributes:@{
+                NSFontAttributeName: [UIFont systemFontOfSize:13],
+                NSForegroundColorAttributeName: ThemeService.shared.theme.tintColor
+            }];
+            [result appendAttributedString:linkMore];
+            return result;
+        }
+        else if (events[0].eventType == MXEventTypeRoomMember)
         {
             // This is a series for cells tagged with RoomBubbleCellDataTagMembership
             // TODO: Build a complete summary like Riot-web

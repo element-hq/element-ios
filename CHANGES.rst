@@ -1,3 +1,33 @@
+Changes in 1.0.11 (2020-09-15)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Room: Collapse state messages on room creation (#3629). 
+ * AuthVC: Make force PIN working for registration as well.
+ * AppDelegate: Do not show incoming key verification requests while authenticating.
+
+🐛 Bugfix
+ * AuthVC: Fix PIN setup that broke cross-signing bootstrap.
+ * Loading animation: Fix the bug where, after authentication, the animation disappeared too early and made auth screen flashed.
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * buildRelease.sh: Pass a `git_tag` parameter to fastlane because fastlane `git_branch` method can fail.
+
+Improvements:
+
+
 Changes in 1.0.10 (2020-09-08)
 =================================================
 
@@ -6,6 +36,7 @@ Changes in 1.0.10 (2020-09-08)
     
 🙌 Improvements
  * AppDelegate: Convert to Swift (#3594).
+ * Contextualize floating button actions per tab (#3627).
     
 🐛 Bugfix
  * Show pin code screen on every foreground (#3620). 

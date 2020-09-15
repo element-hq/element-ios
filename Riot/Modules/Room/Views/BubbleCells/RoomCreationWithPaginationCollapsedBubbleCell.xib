@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="WmY-Jw-mqv" customClass="RoomCreationWithPaginationCollapsedBubbleCell">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="88"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WmY-Jw-mqv" id="ef1-Tq-U3Z">
+                <rect key="frame" x="0.0" y="0.0" width="600" height="88"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CMu-2c-5JU" userLabel="Pagination Title View">
+                        <rect key="frame" x="56" y="21" width="534" height="24"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eV5-VM-9yG" userLabel="Pagination Label">
+                                <rect key="frame" x="0.0" y="0.0" width="524" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="18" id="QKr-1m-XfW"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ceg-Ey-9E7" userLabel="Pagination Separator View">
+                                <rect key="frame" x="0.0" y="23" width="534" height="1"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <accessibility key="accessibilityConfiguration" identifier="PaginationTitleView"/>
+                        <constraints>
+                            <constraint firstItem="Ceg-Ey-9E7" firstAttribute="top" secondItem="eV5-VM-9yG" secondAttribute="bottom" constant="5" id="9nF-Cx-tDM"/>
+                            <constraint firstAttribute="trailing" secondItem="eV5-VM-9yG" secondAttribute="trailing" constant="10" id="FAr-sC-x70"/>
+                            <constraint firstItem="eV5-VM-9yG" firstAttribute="leading" secondItem="CMu-2c-5JU" secondAttribute="leading" id="Jbk-TU-J28"/>
+                            <constraint firstAttribute="height" constant="24" id="KR6-Qg-6LH"/>
+                            <constraint firstItem="eV5-VM-9yG" firstAttribute="top" secondItem="CMu-2c-5JU" secondAttribute="top" id="Mxt-lC-MNS"/>
+                            <constraint firstItem="Ceg-Ey-9E7" firstAttribute="leading" secondItem="CMu-2c-5JU" secondAttribute="leading" id="XoG-F1-0uk"/>
+                            <constraint firstAttribute="trailing" secondItem="Ceg-Ey-9E7" secondAttribute="trailing" id="tOP-y2-2n4"/>
+                            <constraint firstAttribute="bottom" secondItem="Ceg-Ey-9E7" secondAttribute="bottom" id="vvi-kj-iCN"/>
+                        </constraints>
+                    </view>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="text message" translatesAutoresizingMaskIntoConstraints="NO" id="HTH-5n-MSU">
+                        <rect key="frame" x="51" y="54" width="102" height="34"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                        <accessibility key="accessibilityConfiguration" identifier="MessageTextView"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="102" id="OX6-NK-oti"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="ZZt-rc-tVJ"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                    </textView>
+                    <view hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IOg-Kt-8vW">
+                        <rect key="frame" x="515" y="54" width="70" height="34"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                        <accessibility key="accessibilityConfiguration" identifier="BubbleInfoContainer"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="70" id="1E4-Lu-3sr"/>
+                        </constraints>
+                    </view>
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="stw-MD-khQ">
+                        <rect key="frame" x="7" y="3" width="586" height="82"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                <constraints>
+                    <constraint firstItem="stw-MD-khQ" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leadingMargin" constant="-8" id="0oH-d5-525"/>
+                    <constraint firstItem="IOg-Kt-8vW" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="54" id="4Ac-p5-610"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="stw-MD-khQ" secondAttribute="bottom" constant="-8" id="8Lj-ay-d6E"/>
+                    <constraint firstItem="stw-MD-khQ" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="topMargin" constant="-8" id="JXb-n4-O4S"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="HTH-5n-MSU" secondAttribute="trailing" constant="15" id="Shz-6S-kGd"/>
+                    <constraint firstAttribute="trailing" secondItem="CMu-2c-5JU" secondAttribute="trailing" constant="10" id="XjN-lQ-9KQ"/>
+                    <constraint firstAttribute="bottom" secondItem="IOg-Kt-8vW" secondAttribute="bottom" id="f24-Fr-D4j"/>
+                    <constraint firstItem="CMu-2c-5JU" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="56" id="jH2-vf-Rls"/>
+                    <constraint firstItem="HTH-5n-MSU" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="54" id="mkw-3s-H8B"/>
+                    <constraint firstAttribute="bottom" secondItem="HTH-5n-MSU" secondAttribute="bottom" id="oTk-3F-SEC"/>
+                    <constraint firstItem="CMu-2c-5JU" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="topMargin" constant="10" id="pMj-uZ-6c9"/>
+                    <constraint firstAttribute="trailing" secondItem="IOg-Kt-8vW" secondAttribute="trailing" constant="15" id="pWt-Mb-kAX"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="stw-MD-khQ" secondAttribute="trailing" constant="-8" id="qO5-ZZ-mHI"/>
+                    <constraint firstItem="HTH-5n-MSU" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="51" id="qVQ-7B-aFR"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+            <accessibility key="accessibilityConfiguration" identifier="RoomBubbleCell"/>
+            <connections>
+                <outlet property="bubbleInfoContainer" destination="IOg-Kt-8vW" id="TAw-QY-Y9e"/>
+                <outlet property="bubbleInfoContainerTopConstraint" destination="4Ac-p5-610" id="lmm-l8-kaq"/>
+                <outlet property="bubbleOverlayContainer" destination="stw-MD-khQ" id="fDX-tM-vSH"/>
+                <outlet property="messageTextView" destination="HTH-5n-MSU" id="YN4-iK-gNc"/>
+                <outlet property="msgTextViewBottomConstraint" destination="oTk-3F-SEC" id="nmX-GC-tPw"/>
+                <outlet property="msgTextViewLeadingConstraint" destination="qVQ-7B-aFR" id="QFN-39-EIX"/>
+                <outlet property="msgTextViewMinHeightConstraint" destination="ZZt-rc-tVJ" id="hDD-TL-PFM"/>
+                <outlet property="msgTextViewTopConstraint" destination="mkw-3s-H8B" id="lON-oG-Xx9"/>
+                <outlet property="msgTextViewTrailingConstraint" destination="Shz-6S-kGd" id="5ib-m6-Lna"/>
+                <outlet property="msgTextViewWidthConstraint" destination="OX6-NK-oti" id="Ptq-cZ-07y"/>
+                <outlet property="paginationLabel" destination="eV5-VM-9yG" id="JMf-Xo-4vM"/>
+                <outlet property="paginationSeparatorView" destination="Ceg-Ey-9E7" id="6P8-yJ-K5x"/>
+                <outlet property="paginationTitleView" destination="CMu-2c-5JU" id="nxX-pK-fYg"/>
+            </connections>
+            <point key="canvasLocation" x="139" y="154"/>
+        </tableViewCell>
+    </objects>
+</document>

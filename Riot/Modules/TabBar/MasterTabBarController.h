@@ -1,5 +1,6 @@
 /*
  Copyright 2017 Vector Creations Ltd
+ Copyright 2020 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -34,6 +35,10 @@
 #define TABBAR_ROOMS_INDEX        3
 #define TABBAR_GROUPS_INDEX       4
 #define TABBAR_COUNT              5
+
+
+@protocol MasterTabBarControllerDelegate;
+
 
 @interface MasterTabBarController : UITabBarController
 
@@ -136,6 +141,7 @@
  */
 - (void)refreshTabBarBadges;
 
+@property (nonatomic, weak) id<MasterTabBarControllerDelegate> masterVCDelegate;
 
 // Reference to the current auth VC. It is not nil only when the auth screen is displayed.
 @property (nonatomic, readonly) AuthenticationViewController *authViewController;
@@ -163,5 +169,14 @@
 @property (nonatomic, readonly) MXGroup *selectedGroup;
 @property (nonatomic, readonly) MXSession *selectedGroupSession;
 
+// YES while the authentication screen is displayed
+@property (nonatomic, readonly) BOOL authenticationInProgress;
+
 @end
 
+
+@protocol MasterTabBarControllerDelegate <NSObject>
+
+- (void)masterTabBarControllerDidCompleteAuthentication:(MasterTabBarController *)masterTabBarController;
+
+@end;
