@@ -32,6 +32,7 @@ final class RoomCreationEventsModalViewController: UIViewController {
             roomAvatarImageView.layer.cornerRadius = roomAvatarImageView.frame.width/2
         }
     }
+    @IBOutlet private weak var encryptionIconImageView: UIImageView!
     @IBOutlet private weak var roomNameLabel: UILabel!
     @IBOutlet private weak var roomInfoLabel: UILabel!
     @IBOutlet private weak var closeButton: UIButton!
@@ -73,6 +74,7 @@ final class RoomCreationEventsModalViewController: UIViewController {
         roomNameLabel.text = viewModel.roomName
         roomInfoLabel.text = viewModel.roomInfo
         viewModel.setAvatar(in: roomAvatarImageView)
+        viewModel.setEncryptionIcon(in: encryptionIconImageView)
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {

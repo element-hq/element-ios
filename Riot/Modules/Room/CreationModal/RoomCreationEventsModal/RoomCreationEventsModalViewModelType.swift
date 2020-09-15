@@ -38,4 +38,5 @@ protocol RoomCreationEventsModalViewModelType {
     var roomName: String? { get }
     var roomInfo: String? { get }
     func setAvatar(in avatarImageView: MXKImageView)
+    func setEncryptionIcon(in imageView: UIImageView)
 }

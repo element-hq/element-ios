@@ -27,6 +27,13 @@
                                             <constraint firstAttribute="width" constant="40" id="eG6-bm-km9"/>
                                         </constraints>
                                     </view>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NAg-Nv-eHX">
+                                        <rect key="frame" x="42" y="46" width="16" height="16"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="16" id="rNk-yi-Pzy"/>
+                                            <constraint firstAttribute="width" constant="16" id="vV5-lq-00B"/>
+                                        </constraints>
+                                    </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eyI-bY-amr">
                                         <rect key="frame" x="370" y="16" width="28" height="28"/>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -67,8 +74,10 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
                                     <constraint firstItem="eyI-bY-amr" firstAttribute="top" secondItem="M84-br-bHM" secondAttribute="top" constant="16" id="10e-aB-X62"/>
+                                    <constraint firstItem="NAg-Nv-eHX" firstAttribute="trailing" secondItem="YaZ-Pv-7g9" secondAttribute="trailing" constant="2" id="Ard-6C-AbE"/>
                                     <constraint firstItem="KNr-eh-RCO" firstAttribute="leading" secondItem="M84-br-bHM" secondAttribute="leading" id="EVn-qm-pHi"/>
                                     <constraint firstAttribute="trailing" secondItem="f1E-jK-fMa" secondAttribute="trailing" constant="52" id="UX4-gD-R3P"/>
+                                    <constraint firstItem="NAg-Nv-eHX" firstAttribute="bottom" secondItem="YaZ-Pv-7g9" secondAttribute="bottom" constant="2" id="Urn-tr-1of"/>
                                     <constraint firstAttribute="bottom" secondItem="KNr-eh-RCO" secondAttribute="bottom" id="Wia-ai-pZe"/>
                                     <constraint firstAttribute="trailing" secondItem="eyI-bY-amr" secondAttribute="trailing" constant="16" id="YbD-Uq-CyY"/>
                                     <constraint firstItem="YaZ-Pv-7g9" firstAttribute="top" secondItem="M84-br-bHM" secondAttribute="top" constant="20" id="d1C-qB-Yx7"/>
@@ -106,6 +115,7 @@
                     <modalPageSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="closeButton" destination="eyI-bY-amr" id="7Lv-N9-aHa"/>
+                        <outlet property="encryptionIconImageView" destination="NAg-Nv-eHX" id="qyl-UV-XJO"/>
                         <outlet property="mainTableView" destination="co7-sG-zRv" id="F9J-rS-nSq"/>
                         <outlet property="roomAvatarImageView" destination="YaZ-Pv-7g9" id="Gu2-as-fNL"/>
                         <outlet property="roomInfoLabel" destination="f1E-jK-fMa" id="0CH-Q8-8aD"/>

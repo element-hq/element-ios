@@ -85,6 +85,23 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
             avatarImageView.image = avatarImage
         }
     }
+    func setEncryptionIcon(in imageView: UIImageView) {
+        guard let summary = session.roomSummary(withRoomId: roomState.roomId) else {
+            imageView.image = nil
+            imageView.isHidden = true
+            return
+        }
+        
+        if (summary.isEncrypted)
+        {
+            imageView.isHidden = false
+            imageView.image = EncryptionTrustLevelBadgeImageHelper.roomBadgeImage(for: summary.roomEncryptionTrustLevel())
+        }
+        else
+        {
+            imageView.isHidden = true
+        }
+    }
     
     // MARK: - Setup
     
