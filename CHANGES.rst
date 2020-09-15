@@ -6,9 +6,10 @@ Changes to be released in next version
 
 🙌 Improvements
  * Room: Collapse state messages on room creation (#3629). 
+ * AuthVC: Make force PIN working for registration as well
 
 🐛 Bugfix
- * 
+ * AuthVC: Fix PIN setup that broke cross-signing bootstrap.
 
 ⚠️ API Changes
  * 

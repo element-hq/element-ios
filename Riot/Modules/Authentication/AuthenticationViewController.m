@@ -916,8 +916,8 @@
 
 - (void)onSuccessfulLogin:(MXCredentials*)credentials
 {
-    //  if really login and pin protection is forced
-    if (self.authType == MXKAuthenticationTypeLogin && [PinCodePreferences shared].forcePinProtection)
+    //  Is pin protection forced?
+    if ([PinCodePreferences shared].forcePinProtection)
     {
         loginCredentials = credentials;
         
