@@ -42,7 +42,6 @@ final class RoomCreationEventsModalViewController: UIViewController {
 
     private var viewModel: RoomCreationEventsModalViewModelType!
     private var theme: Theme!
-    private var errorPresenter: MXKErrorPresentation!
 
     // MARK: - Setup
     
@@ -62,7 +61,6 @@ final class RoomCreationEventsModalViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.setupViews()
-        self.errorPresenter = MXKErrorAlertPresentation()
         
         self.registerThemeServiceDidChangeThemeNotification()
         self.update(theme: self.theme)
@@ -124,8 +122,6 @@ final class RoomCreationEventsModalViewController: UIViewController {
         switch viewState {
         case .loaded:
             self.renderLoaded()
-        case .error(let error):
-            self.render(error: error)
         }
     }
     
@@ -133,10 +129,6 @@ final class RoomCreationEventsModalViewController: UIViewController {
         mainTableView.reloadData()
     }
     
-    private func render(error: Error) {
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
-    }
-
     // MARK: - Actions
 
     @IBAction private func closeButtonTapped(_ sender: Any) {

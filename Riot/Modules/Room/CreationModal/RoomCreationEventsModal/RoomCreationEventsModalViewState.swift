@@ -21,5 +21,4 @@ import Foundation
 /// RoomCreationEventsModalViewController view state
 enum RoomCreationEventsModalViewState {
     case loaded
-    case error(Error)
 }
