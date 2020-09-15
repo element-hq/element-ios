@@ -4123,6 +4123,17 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         return;
     }
     
+    if (_masterTabBarController.authenticationInProgress)
+    {
+        NSLog(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Postpone requests during the authentication process");
+        
+        // 10s is quite arbitrary
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10* NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self keyVerificationNewRequestNotification:notification];
+        });
+        return;
+    }
+    
     NSDictionary *userInfo = notification.userInfo;
     
     MXKeyVerificationRequest *keyVerificationRequest = userInfo[MXKeyVerificationManagerNotificationRequestKey];
