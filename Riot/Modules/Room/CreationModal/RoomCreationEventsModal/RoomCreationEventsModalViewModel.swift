@@ -54,16 +54,10 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
         return RoomCreationEventRowViewModel(title: nil)
     }
     var roomName: String? {
-        if let name = roomState.name, name.count > 0 {
-            return name
+        guard let summary = session.roomSummary(withRoomId: roomState.roomId) else {
+            return nil
         }
-        if let aliases = roomState.aliases, aliases.count > 0 {
-            return aliases.first
-        }
-        if let summary = session.roomSummary(withRoomId: roomState.roomId) {
-            return summary.displayname
-        }
-        return nil
+        return summary.displayname
     }
     var roomInfo: String? {
         guard let creationEvent = events.first(where: { $0.eventType == .roomCreate }) else {
