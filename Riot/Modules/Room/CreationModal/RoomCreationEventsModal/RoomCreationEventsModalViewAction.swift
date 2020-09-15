@@ -22,5 +22,4 @@ import Foundation
 enum RoomCreationEventsModalViewAction {
     case loadData
     case close
-    case cancel
 }

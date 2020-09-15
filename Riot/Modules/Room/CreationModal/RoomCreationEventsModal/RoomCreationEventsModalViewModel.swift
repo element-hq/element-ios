@@ -27,7 +27,6 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
     private let session: MXSession
     private let bubbleData: MXKRoomBubbleCellDataStoring
     private let roomState: MXRoomState
-    private var currentOperation: MXHTTPOperation?
     private lazy var eventFormatter: EventFormatter = {
         return EventFormatter(matrixSession: self.session)
     }()
@@ -124,10 +123,6 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
         }
     }
     
-    deinit {
-        self.cancelOperations()
-    }
-    
     // MARK: - Public
     
     func process(viewAction: RoomCreationEventsModalViewAction) {
@@ -136,8 +131,6 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
             self.loadData()
         case .close:
             self.coordinatorDelegate?.roomCreationEventsModalViewModelDidTapClose(self)
-        case .cancel:
-            self.cancelOperations()
         }
     }
     
@@ -151,7 +144,4 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
         self.viewDelegate?.roomCreationEventsModalViewModel(self, didUpdateViewState: viewState)
     }
     
-    private func cancelOperations() {
-        self.currentOperation?.cancel()
-    }
 }
