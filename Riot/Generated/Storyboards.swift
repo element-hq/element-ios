@@ -32,6 +32,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.EmojiPickerViewController>(storyboard: EmojiPickerViewController.self)
   }
+  internal enum EnterNewRoomDetailsViewController: StoryboardType {
+    internal static let storyboardName = "EnterNewRoomDetailsViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.EnterNewRoomDetailsViewController>(storyboard: EnterNewRoomDetailsViewController.self)
+  }
   internal enum EnterPinCodeViewController: StoryboardType {
     internal static let storyboardName = "EnterPinCodeViewController"
 
@@ -137,6 +142,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.RoomContextualMenuViewController>(storyboard: RoomContextualMenuViewController.self)
   }
+  internal enum RoomCreationEventsModalViewController: StoryboardType {
+    internal static let storyboardName = "RoomCreationEventsModalViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.RoomCreationEventsModalViewController>(storyboard: RoomCreationEventsModalViewController.self)
+  }
   internal enum SecretsRecoveryWithKeyViewController: StoryboardType {
     internal static let storyboardName = "SecretsRecoveryWithKeyViewController"
 
@@ -181,6 +191,13 @@ internal enum StoryboardScene {
     internal static let storyboardName = "SetupBiometricsViewController"
 
     internal static let initialScene = InitialSceneType<Riot.SetupBiometricsViewController>(storyboard: SetupBiometricsViewController.self)
+  }
+  internal enum ShowDirectoryViewController: StoryboardType {
+    internal static let storyboardName = "ShowDirectoryViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.ShowDirectoryViewController>(storyboard: ShowDirectoryViewController.self)
+
+    internal static let searchableDirectoryViewController = SceneType<Riot.ShowDirectoryViewController>(storyboard: ShowDirectoryViewController.self, identifier: "SearchableDirectoryViewController")
   }
   internal enum SimpleScreenTemplateViewController: StoryboardType {
     internal static let storyboardName = "SimpleScreenTemplateViewController"

@@ -85,6 +85,33 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
                 {
                     self.tag = RoomBubbleCellDataTagRoomCreateWithPredecessor;
                 }
+                else
+                {
+                    self.tag = RoomBubbleCellDataTagRoomCreateConfiguration;
+                }
+                
+                // Membership events can be collapsed together
+                self.collapsable = YES;
+                
+                // Collapse them by default
+                self.collapsed = YES;
+            }
+                break;
+            case MXEventTypeRoomTopic:
+            case MXEventTypeRoomName:
+            case MXEventTypeRoomEncryption:
+            case MXEventTypeRoomHistoryVisibility:
+            case MXEventTypeRoomGuestAccess:
+            case MXEventTypeRoomAvatar:
+            case MXEventTypeRoomJoinRules:
+            {
+                self.tag = RoomBubbleCellDataTagRoomCreateConfiguration;
+                
+                // Membership events can be collapsed together
+                self.collapsable = YES;
+                
+                // Collapse them by default
+                self.collapsed = YES;
             }
                 break;
             default:
@@ -186,6 +213,15 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
         }
 
         return NO;
+    }
+    else if (self.tag == RoomBubbleCellDataTagRoomCreateConfiguration &&
+             (cellData.tag == RoomBubbleCellDataTagRoomCreateConfiguration || cellData.tag == RoomBubbleCellDataTagMembership))
+    {
+        return YES;
+    }
+    else if (self.tag == RoomBubbleCellDataTagMembership && cellData.tag == RoomBubbleCellDataTagRoomCreateConfiguration)
+    {
+        return YES;
     }
     
     if (self.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor || cellData.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor)
@@ -663,6 +699,9 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
             break;
         case RoomBubbleCellDataTagMembership:
             // One single bubble per membership event
+            shouldAddEvent = NO;
+            break;
+        case RoomBubbleCellDataTagRoomCreateConfiguration:
             shouldAddEvent = NO;
             break;
         default:

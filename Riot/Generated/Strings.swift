@@ -538,6 +538,66 @@ internal enum VectorL10n {
   internal static var create: String { 
     return VectorL10n.tr("Vector", "create") 
   }
+  /// Enable Encryption
+  internal static var createRoomEnableEncryption: String { 
+    return VectorL10n.tr("Vector", "create_room_enable_encryption") 
+  }
+  /// #testroom:matrix.org
+  internal static var createRoomPlaceholderAddress: String { 
+    return VectorL10n.tr("Vector", "create_room_placeholder_address") 
+  }
+  /// Name
+  internal static var createRoomPlaceholderName: String { 
+    return VectorL10n.tr("Vector", "create_room_placeholder_name") 
+  }
+  /// Topic
+  internal static var createRoomPlaceholderTopic: String { 
+    return VectorL10n.tr("Vector", "create_room_placeholder_topic") 
+  }
+  /// Encryption can’t be disabled afterwards.
+  internal static var createRoomSectionFooterEncryption: String { 
+    return VectorL10n.tr("Vector", "create_room_section_footer_encryption") 
+  }
+  /// People join a private room only with the room invitation.
+  internal static var createRoomSectionFooterType: String { 
+    return VectorL10n.tr("Vector", "create_room_section_footer_type") 
+  }
+  /// Room address
+  internal static var createRoomSectionHeaderAddress: String { 
+    return VectorL10n.tr("Vector", "create_room_section_header_address") 
+  }
+  /// Room encryption
+  internal static var createRoomSectionHeaderEncryption: String { 
+    return VectorL10n.tr("Vector", "create_room_section_header_encryption") 
+  }
+  /// Room name
+  internal static var createRoomSectionHeaderName: String { 
+    return VectorL10n.tr("Vector", "create_room_section_header_name") 
+  }
+  /// Room topic (optional)
+  internal static var createRoomSectionHeaderTopic: String { 
+    return VectorL10n.tr("Vector", "create_room_section_header_topic") 
+  }
+  /// Room type
+  internal static var createRoomSectionHeaderType: String { 
+    return VectorL10n.tr("Vector", "create_room_section_header_type") 
+  }
+  /// Show the room in the directory
+  internal static var createRoomShowInDirectory: String { 
+    return VectorL10n.tr("Vector", "create_room_show_in_directory") 
+  }
+  /// New Room
+  internal static var createRoomTitle: String { 
+    return VectorL10n.tr("Vector", "create_room_title") 
+  }
+  /// Private Room
+  internal static var createRoomTypePrivate: String { 
+    return VectorL10n.tr("Vector", "create_room_type_private") 
+  }
+  /// Public Room
+  internal static var createRoomTypePublic: String { 
+    return VectorL10n.tr("Vector", "create_room_type_public") 
+  }
   /// Verify your other devices easier
   internal static var crossSigningSetupBannerSubtitle: String { 
     return VectorL10n.tr("Vector", "cross_signing_setup_banner_subtitle") 
@@ -1402,6 +1462,10 @@ internal enum VectorL10n {
   internal static var join: String { 
     return VectorL10n.tr("Vector", "join") 
   }
+  /// Joined
+  internal static var joined: String { 
+    return VectorL10n.tr("Vector", "joined") 
+  }
   /// Done
   internal static var keyBackupRecoverDoneAction: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_done_action") 
@@ -1925,6 +1989,10 @@ internal enum VectorL10n {
   /// Video
   internal static var mediaTypeAccessibilityVideo: String { 
     return VectorL10n.tr("Vector", "media_type_accessibility_video") 
+  }
+  /// More
+  internal static var more: String { 
+    return VectorL10n.tr("Vector", "more") 
   }
   /// The Internet connection appears to be offline.
   internal static var networkOfflinePrompt: String { 
@@ -3082,6 +3150,18 @@ internal enum VectorL10n {
   internal static var searchRooms: String { 
     return VectorL10n.tr("Vector", "search_rooms") 
   }
+  /// Create a new room
+  internal static var searchableDirectoryCreateNewRoom: String { 
+    return VectorL10n.tr("Vector", "searchable_directory_create_new_room") 
+  }
+  /// Name or ID
+  internal static var searchableDirectorySearchPlaceholder: String { 
+    return VectorL10n.tr("Vector", "searchable_directory_search_placeholder") 
+  }
+  /// %@ Network
+  internal static func searchableDirectoryXNetwork(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "searchable_directory_x_network", p1)
+  }
   /// Access your secure message history and your cross-signing identity for verifying other sessions by entering your recovery key.
   internal static var secretsRecoveryWithKeyInformationDefault: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_key_information_default") 
@@ -4049,6 +4129,10 @@ internal enum VectorL10n {
   /// Secure decentralised chat/VoIP
   internal static var storeShortDescription: String { 
     return VectorL10n.tr("Vector", "store_short_description") 
+  }
+  /// Switch
+  internal static var `switch`: String { 
+    return VectorL10n.tr("Vector", "switch") 
   }
   /// Favourites
   internal static var titleFavourites: String { 
