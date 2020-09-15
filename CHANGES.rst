@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Room: Collapse state messages on room creation (#3629). 
 
 🐛 Bugfix
  * 
