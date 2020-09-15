@@ -762,6 +762,8 @@
 		EC3B066C24AC6ADE000DF9BF /* CrossSigningSetupBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3B066824AC6ADD000DF9BF /* CrossSigningSetupBannerCell.swift */; };
 		EC51E78D250FC15000AAE7DB /* RoomCreationEventRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC51E78C250FC15000AAE7DB /* RoomCreationEventRowViewModel.swift */; };
 		EC51E7902510B7C700AAE7DB /* AutosizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC51E78F2510B7C700AAE7DB /* AutosizedTableView.swift */; };
+		EC51E7922510C0A500AAE7DB /* SpanningSlidingModalContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC51E7912510C0A500AAE7DB /* SpanningSlidingModalContainerView.swift */; };
+		EC51E7942510C0D000AAE7DB /* SpanningSlidingModalContainerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC51E7932510C0D000AAE7DB /* SpanningSlidingModalContainerView.xib */; };
 		EC619C1924DAD96000663A80 /* UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC619C1824DAD96000663A80 /* UIScrollView.swift */; };
 		EC711B4624A63B13008F830C /* MXRecoveryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC711B4524A63B13008F830C /* MXRecoveryService.swift */; };
 		EC711B7424A63B37008F830C /* SecretsSetupRecoveryKeyViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC711B4A24A63B36008F830C /* SecretsSetupRecoveryKeyViewModelType.swift */; };
@@ -1947,6 +1949,8 @@
 		EC3B066824AC6ADD000DF9BF /* CrossSigningSetupBannerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossSigningSetupBannerCell.swift; sourceTree = "<group>"; };
 		EC51E78C250FC15000AAE7DB /* RoomCreationEventRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCreationEventRowViewModel.swift; sourceTree = "<group>"; };
 		EC51E78F2510B7C700AAE7DB /* AutosizedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutosizedTableView.swift; sourceTree = "<group>"; };
+		EC51E7912510C0A500AAE7DB /* SpanningSlidingModalContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpanningSlidingModalContainerView.swift; sourceTree = "<group>"; };
+		EC51E7932510C0D000AAE7DB /* SpanningSlidingModalContainerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SpanningSlidingModalContainerView.xib; sourceTree = "<group>"; };
 		EC619C1824DAD96000663A80 /* UIScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView.swift; sourceTree = "<group>"; };
 		EC711B4524A63B13008F830C /* MXRecoveryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MXRecoveryService.swift; sourceTree = "<group>"; };
 		EC711B4A24A63B36008F830C /* SecretsSetupRecoveryKeyViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryKeyViewModelType.swift; sourceTree = "<group>"; };
@@ -3212,6 +3216,8 @@
 				B1A6C10C23882D1D002882FD /* SlidingModalPresentationController.swift */,
 				B1A6C110238BD236002882FD /* SlidingModalContainerView.swift */,
 				B1A6C112238BD245002882FD /* SlidingModalContainerView.xib */,
+				EC51E7912510C0A500AAE7DB /* SpanningSlidingModalContainerView.swift */,
+				EC51E7932510C0D000AAE7DB /* SpanningSlidingModalContainerView.xib */,
 				B1BD71B4238DCBF700BA92E2 /* SlidingModalEmptyViewController.swift */,
 			);
 			path = SlidingModal;
@@ -5611,6 +5617,7 @@
 				B1B558CD20EF768F00210D55 /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				B1B9DEEA22EB34EF0065E677 /* ReactionHistoryViewController.storyboard in Resources */,
 				B1B9194C2118984300FE25B5 /* RoomPredecessorBubbleCell.xib in Resources */,
+				EC51E7942510C0D000AAE7DB /* SpanningSlidingModalContainerView.xib in Resources */,
 				B1C562E9228C7CF20037F12A /* ContextualMenuItemView.xib in Resources */,
 				B1560DA424B65B3700490F50 /* LaunchLoadingView.xib in Resources */,
 				B1BEE73A23DF44A60003A4CB /* UserVerificationSessionsStatusViewController.storyboard in Resources */,
@@ -6132,6 +6139,7 @@
 				B1A5B33E227ADF2A004CBA85 /* UIImage.swift in Sources */,
 				B1D4752A21EE52B10067973F /* KeyBackupSetupIntroViewController.swift in Sources */,
 				B108931F23AB80EF00802670 /* KeyVerificationIncomingRequestApprovalBubbleCell.swift in Sources */,
+				EC51E7922510C0A500AAE7DB /* SpanningSlidingModalContainerView.swift in Sources */,
 				B1CE83D42422817200D07506 /* KeyVerificationVerifiedViewController.swift in Sources */,
 				B1B5599220EFC5E400210D55 /* Analytics.m in Sources */,
 				B14F143422144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewAction.swift in Sources */,

@@ -29,14 +29,16 @@ final class SlidingModalPresentationAnimator: NSObject {
     // MARK: - Properties
 
     private let isPresenting: Bool
+    private let isSpanning: Bool
     
     // MARK: - Setup
     
     /// Instantiate a SlidingModalPresentationAnimator object.
     ///
     /// - Parameter isPresenting: true to animate presentation or false to animate dismissal
-    required public init(isPresenting: Bool) {
+    required public init(isPresenting: Bool, isSpanning: Bool) {
         self.isPresenting = isPresenting
+        self.isSpanning = isSpanning
         super.init()
     }
     
@@ -55,7 +57,7 @@ final class SlidingModalPresentationAnimator: NSObject {
         
         let containerView = transitionContext.containerView
         
-        let slidingModalContainerView = SlidingModalContainerView.instantiate()
+        let slidingModalContainerView = isSpanning ? SpanningSlidingModalContainerView.instantiate() : SlidingModalContainerView.instantiate()
         slidingModalContainerView.alpha = 0
         slidingModalContainerView.updateDimmingViewAlpha(0.0)
         
