@@ -71,7 +71,7 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
     func setAvatar(in avatarImageView: MXKImageView) {
         let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: roomState.roomId, withDisplayName: roomName)
         
-        if let avatarUrl = roomState.avatar {
+        if let avatarUrl = roomState.avatar ?? session.roomSummary(withRoomId: roomState.roomId)?.avatar {
             avatarImageView.enableInMemoryCache = true
 
             avatarImageView.setImageURI(avatarUrl,
