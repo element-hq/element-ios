@@ -91,7 +91,7 @@
                                     <constraint firstItem="goJ-ND-Jsk" firstAttribute="top" secondItem="M84-br-bHM" secondAttribute="top" constant="20" id="ykL-gN-QoL"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="co7-sG-zRv" customClass="AutosizedTableView" customModule="Riot" customModuleProvider="target">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" contentInsetAdjustmentBehavior="never" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="co7-sG-zRv" customClass="AutosizedTableView" customModule="Riot" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="80" width="414" height="762"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <connections>

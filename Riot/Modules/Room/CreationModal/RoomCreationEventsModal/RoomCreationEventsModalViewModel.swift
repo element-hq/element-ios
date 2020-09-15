@@ -44,7 +44,15 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
     func rowViewModel(at indexPath: IndexPath) -> RoomCreationEventRowViewModel? {
         let event = events[indexPath.row]
         let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
-        return RoomCreationEventRowViewModel(title: eventFormatter.attributedString(from: event, with: roomState, error: formatterError))
+        if let string = eventFormatter.attributedString(from: event, with: roomState, error: formatterError) {
+            if string.string.hasPrefix("·") {
+                return RoomCreationEventRowViewModel(title: string)
+            }
+            let mutableString = NSMutableAttributedString(attributedString: string)
+            mutableString.insert(NSAttributedString(string: "· "), at: 0)
+            return RoomCreationEventRowViewModel(title: mutableString)
+        }
+        return RoomCreationEventRowViewModel(title: nil)
     }
     var roomName: String? {
         if let name = roomState.name, name.count > 0 {
@@ -92,13 +100,10 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
             return
         }
         
-        if (summary.isEncrypted)
-        {
+        if summary.isEncrypted {
             imageView.isHidden = false
             imageView.image = EncryptionTrustLevelBadgeImageHelper.roomBadgeImage(for: summary.roomEncryptionTrustLevel())
-        }
-        else
-        {
+        } else {
             imageView.isHidden = true
         }
     }

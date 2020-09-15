@@ -112,9 +112,7 @@ final class RoomCreationEventsModalViewController: UIViewController {
     }
     
     private func setupViews() {
-        mainTableView.separatorStyle = .none
-        mainTableView.tableFooterView = UIView()
-        mainTableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 20, right: 0)
+        mainTableView.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 36, right: 0)
         mainTableView.register(cellType: TextViewTableViewCell.self)
     }
 
