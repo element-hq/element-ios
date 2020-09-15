@@ -180,7 +180,10 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         }
         else
         {
-            return [super attributedStringFromEvent:event withRoomState:roomState error:error];
+            NSAttributedString *string = [super attributedStringFromEvent:event withRoomState:roomState error:error];
+            NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:@"· "];
+            [result appendAttributedString:string];
+            return result;
         }
     }
     
@@ -268,11 +271,12 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
             displayText = [super attributedStringFromEvent:roomCreateEvent withRoomState:roomState error:&tmpError].string;
 
             NSAttributedString *rendered = [self renderString:displayText forEvent:roomCreateEvent];
-            NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithAttributedString:rendered];
+            NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:@"· "];
+            [result appendAttributedString:rendered];
             [result setAttributes:@{
                 NSFontAttributeName: [UIFont systemFontOfSize:13],
                 NSForegroundColorAttributeName: ThemeService.shared.theme.textSecondaryColor
-            } range:NSMakeRange(0, rendered.length)];
+            } range:NSMakeRange(0, result.length)];
             //  add one-char space
             [result appendAttributedString:[[NSAttributedString alloc] initWithString:@" "]];
             //  add more link
