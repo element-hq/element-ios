@@ -4699,4 +4699,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self logoutWithConfirmation:NO completion:nil];
 }
 
+#pragma mark - MasterTabBarControllerDelegate
+
+- (void)masterTabBarControllerDidCompleteAuthentication:(MasterTabBarController *)masterTabBarController
+{
+    [self handleLaunchAnimation];
+}
+
 @end
