@@ -112,7 +112,11 @@ final class RoomCreationEventsModalViewController: UIViewController {
     }
     
     private func setupViews() {
-        mainTableView.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 36, right: 0)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            mainTableView.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0)
+        } else {
+            mainTableView.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 36, right: 0)
+        }
         mainTableView.register(cellType: TextViewTableViewCell.self)
     }
 
