@@ -36,6 +36,7 @@ final class SlidingModalPresentationAnimator: NSObject {
     /// Instantiate a SlidingModalPresentationAnimator object.
     ///
     /// - Parameter isPresenting: true to animate presentation or false to animate dismissal
+    /// - Parameter isSpanning: true to remove left, bottom and right spaces between the screen edges and the content view
     required public init(isPresenting: Bool, isSpanning: Bool) {
         self.isPresenting = isPresenting
         self.isSpanning = isSpanning
