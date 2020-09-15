@@ -1,4 +1,4 @@
-Changes to be released in next version
+Changes in 1.0.11 (2020-09-15)
 =================================================
 
 ✨ Features
@@ -24,6 +24,9 @@ Changes to be released in next version
 
 Others
  * buildRelease.sh: Pass a `git_tag` parameter to fastlane because fastlane `git_branch` method can fail.
+
+Improvements:
+
 
 Changes in 1.0.10 (2020-09-08)
 =================================================
