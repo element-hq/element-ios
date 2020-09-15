@@ -521,6 +521,11 @@
         // Dismiss on successful login
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     }
+    
+    if (self.authVCDelegate)
+    {
+        [self.authVCDelegate authenticationViewControllerDidDismiss:self];
+    }
 }
 
 #pragma mark - Fallback URL display

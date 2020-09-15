@@ -10,6 +10,7 @@ Changes to be released in next version
 
 🐛 Bugfix
  * AuthVC: Fix PIN setup that broke cross-signing bootstrap.
+ * Loading animation: Fix the bug where, after authentication, the animation disappeared too early and made auth screen flashed.
 
 ⚠️ API Changes
  * 

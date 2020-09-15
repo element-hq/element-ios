@@ -31,7 +31,7 @@
 
 #import "Riot-Swift.h"
 
-@interface MasterTabBarController ()
+@interface MasterTabBarController () <AuthenticationViewControllerDelegate>
 {
     // Array of `MXSession` instances.
     NSMutableArray *mxSessionArray;    
@@ -78,6 +78,8 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    _authenticationInProgress = NO;
     
     // Note: UITabBarViewController shoud not be embed in a UINavigationController (https://github.com/vector-im/riot-ios/issues/3086)
     [self vc_removeBackTitle];
@@ -418,6 +420,7 @@
     if (!self.authViewController && !isAuthViewControllerPreparing)
     {
         isAuthViewControllerPreparing = YES;
+        _authenticationInProgress = YES;
         
         [self resetReviewSessionsFlags];
         
@@ -464,6 +467,7 @@
     if (!self.authViewController && !isAuthViewControllerPreparing)
     {
         isAuthViewControllerPreparing = YES;
+        _authenticationInProgress = YES;
 
         [[AppDelegate theDelegate] restoreInitialDisplay:^{
 
@@ -694,6 +698,9 @@
             // ie until we get the notification about a new account
             _authViewController = segue.destinationViewController;
             isAuthViewControllerPreparing = NO;
+            
+            // Listen to the end of the authentication flow
+            _authViewController.authVCDelegate = self;
             
             authViewControllerObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
                 
@@ -1160,6 +1167,17 @@
         {
             [self.favouritesViewController scrollToNextRoomWithMissedNotifications];
         }
+    }
+}
+
+#pragma mark - AuthenticationViewControllerDelegate
+
+- (void)authenticationViewControllerDidDismiss:(AuthenticationViewController *)authenticationViewController
+{
+    _authenticationInProgress = NO;
+    if (self.masterVCDelegate)
+    {
+        [self.masterVCDelegate masterTabBarControllerDidCompleteAuthentication:self];
     }
 }
 
