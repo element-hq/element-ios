@@ -89,7 +89,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
 NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUniversalLinkDidChangeNotification";
 
-@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate>
+@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate, MasterTabBarControllerDelegate>
 {
     /**
      Reachability observer
@@ -2443,24 +2443,37 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         BOOL isLaunching = NO;
         
-        switch (mainSession.state)
+        if (_masterTabBarController.authenticationInProgress)
         {
-            case MXSessionStateClosed:
-            case MXSessionStateInitialised:
-                isLaunching = YES;
-                break;
-            case MXSessionStateStoreDataReady:
-            case MXSessionStateSyncInProgress:
-                // Stay in launching during the first server sync if the store is empty.
-                isLaunching = (mainSession.rooms.count == 0 && launchAnimationContainerView);
-                break;
-            default:
-                isLaunching = NO;
-                break;
+            NSLog(@"[AppDelegate] handleLaunchAnimation: Authentication still in progress");
+                  
+            // Wait for the return of masterTabBarControllerDidCompleteAuthentication
+            isLaunching = YES;
+            _masterTabBarController.masterVCDelegate = self;
+        }
+        else
+        {
+            switch (mainSession.state)
+            {
+                case MXSessionStateClosed:
+                case MXSessionStateInitialised:
+                    isLaunching = YES;
+                    break;
+                case MXSessionStateStoreDataReady:
+                case MXSessionStateSyncInProgress:
+                    // Stay in launching during the first server sync if the store is empty.
+                    isLaunching = (mainSession.rooms.count == 0 && launchAnimationContainerView);
+                    break;
+                default:
+                    isLaunching = NO;
+                    break;
+            }
         }
         
         if (isLaunching)
         {
+            NSLog(@"[AppDelegate] handleLaunchAnimation: LaunchLoadingView");
+            
             UIWindow *window = [[UIApplication sharedApplication] keyWindow];
             
             if (!launchAnimationContainerView && window)
@@ -2477,6 +2490,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             }
             
             return;
+        }
+        else
+        {
+            NSLog(@"[AppDelegate] handleLaunchAnimation: isLaunching: NO");
         }
     }
     
@@ -4106,6 +4123,17 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         return;
     }
     
+    if (_masterTabBarController.authenticationInProgress)
+    {
+        NSLog(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Postpone requests during the authentication process");
+        
+        // 10s is quite arbitrary
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10* NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self keyVerificationNewRequestNotification:notification];
+        });
+        return;
+    }
+    
     NSDictionary *userInfo = notification.userInfo;
     
     MXKeyVerificationRequest *keyVerificationRequest = userInfo[MXKeyVerificationManagerNotificationRequestKey];
@@ -4680,6 +4708,13 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [coordinatorBridgePresenter dismiss];
     self.setPinCoordinatorBridgePresenter = nil;
     [self logoutWithConfirmation:NO completion:nil];
+}
+
+#pragma mark - MasterTabBarControllerDelegate
+
+- (void)masterTabBarControllerDidCompleteAuthentication:(MasterTabBarController *)masterTabBarController
+{
+    [self handleLaunchAnimation];
 }
 
 @end
