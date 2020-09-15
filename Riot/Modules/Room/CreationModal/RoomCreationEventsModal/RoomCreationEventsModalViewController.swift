@@ -22,10 +22,6 @@ final class RoomCreationEventsModalViewController: UIViewController {
     
     // MARK: - Constants
     
-    private enum Constants {
-        static let defaultStyleCellReuseIdentifier = "default"
-    }
-    
     // MARK: - Properties
     
     // MARK: Outlets
@@ -39,13 +35,13 @@ final class RoomCreationEventsModalViewController: UIViewController {
     @IBOutlet private weak var roomNameLabel: UILabel!
     @IBOutlet private weak var roomInfoLabel: UILabel!
     @IBOutlet private weak var closeButton: UIButton!
+    @IBOutlet private weak var separatorView: UIView!
     
     // MARK: Private
 
     private var viewModel: RoomCreationEventsModalViewModelType!
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
-    private var activityPresenter: ActivityIndicatorPresenter!
 
     // MARK: - Setup
     
@@ -53,6 +49,7 @@ final class RoomCreationEventsModalViewController: UIViewController {
         let viewController = StoryboardScene.RoomCreationEventsModalViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
         viewController.theme = ThemeService.shared().theme
+        _ = viewController.view
         return viewController
     }
     
@@ -64,7 +61,6 @@ final class RoomCreationEventsModalViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.setupViews()
-        self.activityPresenter = ActivityIndicatorPresenter()
         self.errorPresenter = MXKErrorAlertPresentation()
         
         self.registerThemeServiceDidChangeThemeNotification()
@@ -95,11 +91,12 @@ final class RoomCreationEventsModalViewController: UIViewController {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
-        // TODO: Set view colors here
-        theme.applyStyle(onButton: self.closeButton)
-        
         roomNameLabel.textColor = theme.textPrimaryColor
         roomInfoLabel.textColor = theme.textSecondaryColor
+        closeButton.backgroundColor = theme.headerBorderColor
+        closeButton.tintColor = theme.textSecondaryColor
+        closeButton.setImage(closeButton.image(for: .normal)?.vc_tintedImage(usingColor: theme.textSecondaryColor), for: .normal)
+        separatorView.backgroundColor = theme.lineBreakColor
         
         self.mainTableView.reloadData()
     }
@@ -113,14 +110,14 @@ final class RoomCreationEventsModalViewController: UIViewController {
     }
     
     private func setupViews() {
-        self.mainTableView.separatorStyle = .none
-        self.mainTableView.tableFooterView = UIView()
+        mainTableView.separatorStyle = .none
+        mainTableView.tableFooterView = UIView()
+        mainTableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 20, right: 0)
+        mainTableView.register(cellType: TextViewTableViewCell.self)
     }
 
     private func render(viewState: RoomCreationEventsModalViewState) {
         switch viewState {
-        case .loading:
-            self.renderLoading()
         case .loaded:
             self.renderLoaded()
         case .error(let error):
@@ -128,17 +125,11 @@ final class RoomCreationEventsModalViewController: UIViewController {
         }
     }
     
-    private func renderLoading() {
-//        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
-    }
-    
     private func renderLoaded() {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-
+        mainTableView.reloadData()
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
 
@@ -169,9 +160,10 @@ extension RoomCreationEventsModalViewController: SlidingModalPresentable {
     }
     
     func layoutHeightFittingWidth(_ width: CGFloat) -> CGFloat {
-        return mainTableView.contentSize.height + 80
-        // TODO: Fix hard-coded
-//        return 500
+        return mainTableView.contentSize.height
+            + mainTableView.contentInset.top
+            + mainTableView.contentInset.bottom
+            + 80    // height of the above view
     }
     
 }
@@ -179,10 +171,6 @@ extension RoomCreationEventsModalViewController: SlidingModalPresentable {
 // MARK: - UITableViewDataSource
 
 extension RoomCreationEventsModalViewController: UITableViewDataSource {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.numberOfRows
@@ -193,22 +181,23 @@ extension RoomCreationEventsModalViewController: UITableViewDataSource {
             return UITableViewCell(style: .default, reuseIdentifier: nil)
         }
         
-        var cell: UITableViewCell! = tableView.dequeueReusableCell(withIdentifier: Constants.defaultStyleCellReuseIdentifier)
-        if cell == nil {
-            cell = UITableViewCell(style: .default, reuseIdentifier: Constants.defaultStyleCellReuseIdentifier)
-        }
+        let cell: TextViewTableViewCell = tableView.dequeueReusableCell(for: indexPath)
+        
         if let title = viewModel.title {
             let mutableTitle = NSMutableAttributedString(attributedString: title)
             mutableTitle.setAttributes([
                 NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
                 NSAttributedString.Key.foregroundColor: theme.textSecondaryColor
             ], range: NSRange(location: 0, length: mutableTitle.length))
-            cell.textLabel?.attributedText = mutableTitle
+            cell.textView.attributedText = mutableTitle
         } else {
-            cell.textLabel?.attributedText = nil
+            cell.textView.attributedText = nil
         }
         
-        cell.textLabel?.numberOfLines = 0
+        cell.textView.textContainerInset = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
+        cell.textView.isScrollEnabled = false
+        cell.textView.isEditable = false
+        cell.textView.isSelectable = false
         cell.backgroundColor = theme.backgroundColor
         cell.contentView.backgroundColor = .clear
         cell.tintColor = theme.tintColor

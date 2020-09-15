@@ -53,6 +53,9 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
         if let aliases = roomState.aliases, aliases.count > 0 {
             return aliases.first
         }
+        if let summary = session.roomSummary(withRoomId: roomState.roomId) {
+            return summary.displayname
+        }
         return nil
     }
     var roomInfo: String? {
@@ -119,9 +122,7 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
     // MARK: - Private
     
     private func loadData() {
-
-        self.update(viewState: .loading)
-
+        self.update(viewState: .loaded)
     }
     
     private func update(viewState: RoomCreationEventsModalViewState) {
