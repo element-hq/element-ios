@@ -764,6 +764,10 @@
 		EC51E7902510B7C700AAE7DB /* AutosizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC51E78F2510B7C700AAE7DB /* AutosizedTableView.swift */; };
 		EC51E7922510C0A500AAE7DB /* SpanningSlidingModalContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC51E7912510C0A500AAE7DB /* SpanningSlidingModalContainerView.swift */; };
 		EC51E7942510C0D000AAE7DB /* SpanningSlidingModalContainerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC51E7932510C0D000AAE7DB /* SpanningSlidingModalContainerView.xib */; };
+		EC51E796251239E700AAE7DB /* PinCodePreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA86D24C5BA4500DE9EBF /* PinCodePreferences.swift */; };
+		EC51E79725123A0000AAE7DB /* LocalAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA87924C8841C00DE9EBF /* LocalAuthenticationService.swift */; };
+		EC51E79825123A3900AAE7DB /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1098BDA21ECE09E000DDA48 /* Strings.swift */; };
+		EC51E79925123A4D00AAE7DB /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1098BDC21ECE09E000DDA48 /* Images.swift */; };
 		EC619C1924DAD96000663A80 /* UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC619C1824DAD96000663A80 /* UIScrollView.swift */; };
 		EC711B4624A63B13008F830C /* MXRecoveryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC711B4524A63B13008F830C /* MXRecoveryService.swift */; };
 		EC711B7424A63B37008F830C /* SecretsSetupRecoveryKeyViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC711B4A24A63B36008F830C /* SecretsSetupRecoveryKeyViewModelType.swift */; };
@@ -6015,9 +6019,13 @@
 				32FD757424D2BEF700BA7B37 /* InfoPlist.swift in Sources */,
 				EC85D752247C0F52002C44C9 /* UNUserNotificationCenter.swift in Sources */,
 				EC9A3EC724E1634100A8CFAE /* KeyValueStore.swift in Sources */,
+				EC51E796251239E700AAE7DB /* PinCodePreferences.swift in Sources */,
 				32FD757A24D2C9BA00BA7B37 /* Bundle.swift in Sources */,
+				EC51E79825123A3900AAE7DB /* Strings.swift in Sources */,
+				EC51E79925123A4D00AAE7DB /* Images.swift in Sources */,
 				EC9A3EC824E1634800A8CFAE /* KeychainStore.swift in Sources */,
 				32FD755B24D15C7A00BA7B37 /* Configurable.swift in Sources */,
+				EC51E79725123A0000AAE7DB /* LocalAuthenticationService.swift in Sources */,
 				EC85D755247C0F84002C44C9 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
