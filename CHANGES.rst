@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Push: Do not show notification content and disable replies when protection set.
 
 🐛 Bugfix
  * 
