@@ -540,10 +540,11 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func notificationCategoryIdentifier(forEvent event: MXEvent) -> String? {
-        let isNotificationContentShown = !event.isEncrypted || self.showDecryptedContentInNotifications
+        let isNotificationContentShown = (!event.isEncrypted || self.showDecryptedContentInNotifications)
+            && !localAuthenticationService.isProtectionSet
         
         guard isNotificationContentShown else {
-            return nil
+            return Constants.toBeRemovedNotificationCategoryIdentifier
         }
         
         if event.eventType == .callInvite {
@@ -551,7 +552,7 @@ class NotificationService: UNNotificationServiceExtension {
         }
         
         guard event.eventType == .roomMessage || event.eventType == .roomEncrypted else {
-            return nil
+            return Constants.toBeRemovedNotificationCategoryIdentifier
         }
         
         return "QUICK_REPLY"
