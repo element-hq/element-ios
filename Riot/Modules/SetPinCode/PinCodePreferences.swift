@@ -51,6 +51,11 @@ final class PinCodePreferences: NSObject {
         return BuildSettings.forcePinProtection
     }
     
+    /// Not allowed pin codes. User won't be able to select one of the pin in the list.
+    var notAllowedPINs: [String] {
+        return BuildSettings.notAllowedPINs
+    }
+    
     var isBiometricsAvailable: Bool {
         return LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
     }

@@ -20,6 +20,7 @@ import Foundation
 
 @objc enum SetPinCoordinatorViewMode: Int {
     case setPin
+    case notAllowedPin
     case unlock
     case confirmPinToDeactivate
     case setupBiometricsAfterLogin

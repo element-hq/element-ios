@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Pin: Implement not allowed PINs feature. There is no restriction by default.
 
 🐛 Bugfix
  * 

@@ -168,6 +168,10 @@ final class BuildSettings: NSObject {
     
     static let allowLocalContactsAccess: Bool = true
     
+    // MARK: - Feature Specifics
+    
+    /// Not allowed pin codes. User won't be able to select one of the pin in the list.
+    static let notAllowedPINs: [String] = []
     
     // MARK: - General Settings Screen
     
