@@ -162,7 +162,7 @@ final class EnterPinCodeViewController: UIViewController {
         
         self.title = ""
         
-        notAllowedPinLabel.text = VectorL10n.pinProtectionBlockedPin
+        notAllowedPinLabel.text = VectorL10n.pinProtectionNotAllowedPin
         
         placeholderStackView.vc_removeAllArrangedSubviews()
         for i in 0..<PinCodePreferences.shared.numberOfDigits {

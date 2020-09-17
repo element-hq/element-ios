@@ -2038,10 +2038,6 @@ internal enum VectorL10n {
   internal static func photoLibraryAccessNotGranted(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "photo_library_access_not_granted", p1)
   }
-  /// For security reasons, this PIN isn’t available. Please try another PIN
-  internal static var pinProtectionBlockedPin: String { 
-    return VectorL10n.tr("Vector", "pin_protection_blocked_pin") 
-  }
   /// Choose a PIN for security
   internal static var pinProtectionChoosePin: String { 
     return VectorL10n.tr("Vector", "pin_protection_choose_pin") 
@@ -2073,6 +2069,10 @@ internal enum VectorL10n {
   /// If you can't remember your PIN, tap the forgot PIN button.
   internal static var pinProtectionMismatchTooManyTimesErrorMessage: String { 
     return VectorL10n.tr("Vector", "pin_protection_mismatch_too_many_times_error_message") 
+  }
+  /// For security reasons, this PIN isn’t available. Please try another PIN
+  internal static var pinProtectionNotAllowedPin: String { 
+    return VectorL10n.tr("Vector", "pin_protection_not_allowed_pin") 
   }
   /// Reset
   internal static var pinProtectionResetAlertActionReset: String { 
