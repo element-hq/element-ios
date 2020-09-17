@@ -35,6 +35,9 @@ final class EnterPinCodeViewController: UIViewController {
     @IBOutlet private weak var inactiveLogoImageView: UIImageView!
     @IBOutlet private weak var logoImageView: UIImageView!
     @IBOutlet private weak var placeholderStackView: UIStackView!
+    @IBOutlet private weak var blockedPinView: UIView!
+    @IBOutlet private weak var blockedPinLineView: UIView!
+    @IBOutlet private weak var blockedPinLabel: UILabel!
     @IBOutlet private weak var digitsStackView: UIStackView!
     @IBOutlet private weak var informationLabel: UILabel!
     @IBOutlet private weak var forgotPinButton: UIButton!
@@ -116,6 +119,8 @@ final class EnterPinCodeViewController: UIViewController {
         }
 
         self.informationLabel.textColor = theme.textPrimaryColor
+        self.blockedPinLineView.backgroundColor = theme.noticeColor
+        self.blockedPinLabel.textColor = theme.noticeColor
 
         updateThemesOfAllImages(in: placeholderStackView, with: theme)
         updateThemesOfAllButtons(in: digitsStackView, with: theme)
@@ -157,6 +162,8 @@ final class EnterPinCodeViewController: UIViewController {
         
         self.title = ""
         
+        blockedPinLabel.text = VectorL10n.pinProtectionBlockedPin
+        
         placeholderStackView.vc_removeAllArrangedSubviews()
         for i in 0..<PinCodePreferences.shared.numberOfDigits {
             let imageView = UIImageView(image: Asset.Images.selectionUntick.image)
@@ -183,6 +190,8 @@ final class EnterPinCodeViewController: UIViewController {
         switch viewState {
         case .choosePin:
             self.renderChoosePin()
+        case .blockedPin:
+            self.renderBlockedPin()
         case .confirmPin:
             self.renderConfirmPin()
         case .pinsDontMatch:
@@ -208,12 +217,25 @@ final class EnterPinCodeViewController: UIViewController {
         self.logoImageView.isHidden = true
         self.informationLabel.text = VectorL10n.pinProtectionChoosePin
         self.forgotPinButton.isHidden = true
+        self.blockedPinView.isHidden = true
+    }
+    
+    private func renderBlockedPin() {
+        self.inactiveView.isHidden = true
+        self.mainStackView.isHidden = false
+        self.logoImageView.isHidden = true
+        self.informationLabel.text = VectorL10n.pinProtectionChoosePin
+        self.forgotPinButton.isHidden = true
+        self.blockedPinView.isHidden = false
+        
+        renderPlaceholdersCount(.max, error: true)
     }
     
     private func renderConfirmPin() {
         self.inactiveView.isHidden = true
         self.mainStackView.isHidden = false
         self.informationLabel.text = VectorL10n.pinProtectionConfirmPin
+        self.blockedPinView.isHidden = true
         
         //  reset placeholders
         renderPlaceholdersCount(0)
@@ -236,11 +258,13 @@ final class EnterPinCodeViewController: UIViewController {
         self.logoImageView.isHidden = false
         self.informationLabel.text = VectorL10n.pinProtectionEnterPin
         self.forgotPinButton.isHidden = false
+        self.blockedPinView.isHidden = true
     }
     
     private func renderWrongPin() {
         self.inactiveView.isHidden = true
         self.mainStackView.isHidden = false
+        self.blockedPinView.isHidden = true
         self.placeholderStackView.vc_shake()
     }
     
@@ -276,19 +300,25 @@ final class EnterPinCodeViewController: UIViewController {
         self.logoImageView.isHidden = true
         self.informationLabel.text = VectorL10n.pinProtectionConfirmPinToDisable
         self.forgotPinButton.isHidden = true
+        self.blockedPinView.isHidden = true
     }
     
     private func renderInactive() {
         self.hideCancelButton()
         self.inactiveView.isHidden = false
         self.mainStackView.isHidden = true
+        self.blockedPinView.isHidden = true
     }
     
-    private func renderPlaceholdersCount(_ count: Int) {
+    private func renderPlaceholdersCount(_ count: Int, error: Bool = false) {
         UIView.animate(withDuration: 0.3) {
             for case let imageView as UIImageView in self.placeholderStackView.arrangedSubviews {
                 if imageView.tag < count {
-                    imageView.image = Asset.Images.placeholder.image
+                    if error {
+                        imageView.image = Asset.Images.placeholder.image.vc_tintedImage(usingColor: self.theme.noticeColor)
+                    } else {
+                        imageView.image = Asset.Images.placeholder.image
+                    }
                 } else {
                     imageView.image = Asset.Images.selectionUntick.image
                 }

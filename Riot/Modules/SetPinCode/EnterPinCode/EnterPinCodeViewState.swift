@@ -21,6 +21,7 @@ import Foundation
 /// EnterPinCodeViewController view state
 enum EnterPinCodeViewState {
     case choosePin              //  creating pin for the first time, enter for first
+    case blockedPin             //  creating pin for the first time, provided pin is blocked
     case confirmPin             //  creating pin for the first time, confirm
     case pinsDontMatch          //  pins don't match
     case unlock                 //  after pin has been set, enter pin to unlock

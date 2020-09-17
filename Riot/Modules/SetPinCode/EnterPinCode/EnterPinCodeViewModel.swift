@@ -84,9 +84,28 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
                 return
             } else {
                 currentPin.removeLast()
+                
+                //  switch to setPin if blocked
+                if viewMode == .blockedPin {
+                    //  clear error UI
+                    update(viewState: .choosePin)
+                    //  switch to normal flow
+                    viewMode = .setPin
+                }
             }
         } else {
             //  a digit tapped
+            
+            //  switch to setPin if blocked
+            if viewMode == .blockedPin {
+                //  clear old pin first
+                currentPin.removeAll()
+                //  clear error UI
+                update(viewState: .choosePin)
+                //  switch to normal flow
+                viewMode = .setPin
+            }
+            //  add new digit
             currentPin += String(tag)
             
             if currentPin.count == pinCodePreferences.numberOfDigits {
@@ -94,6 +113,12 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
                 case .setPin:
                     //  choosing pin
                     if firstPin.isEmpty {
+                        //  check if this PIN is allowed
+                        if pinCodePreferences.blockedPINs.contains(currentPin) {
+                            viewMode = .blockedPin
+                            update(viewState: .blockedPin)
+                            return
+                        }
                         //  go to next screen
                         firstPin = currentPin
                         currentPin.removeAll()
