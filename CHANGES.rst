@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Pin: Implement blocked PINs feature. 
 
 🐛 Bugfix
  * 
