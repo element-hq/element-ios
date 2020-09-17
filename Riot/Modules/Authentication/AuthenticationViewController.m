@@ -926,7 +926,19 @@
     {
         loginCredentials = credentials;
         
-        SetPinCoordinatorBridgePresenter *presenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:nil viewMode:SetPinCoordinatorViewModeSetPin];
+        SetPinCoordinatorViewMode viewMode = SetPinCoordinatorViewModeSetPin;
+        switch (self.authType) {
+            case MXKAuthenticationTypeLogin:
+                viewMode = SetPinCoordinatorViewModeSetPinAfterLogin;
+                break;
+            case MXKAuthenticationTypeRegister:
+                viewMode = SetPinCoordinatorViewModeSetPinAfterRegister;
+                break;
+            default:
+                break;
+        }
+        
+        SetPinCoordinatorBridgePresenter *presenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:nil viewMode:viewMode];
         presenter.delegate = self;
         [presenter presentFrom:self animated:YES];
         self.setPinCoordinatorBridgePresenter = presenter;
