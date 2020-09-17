@@ -51,6 +51,11 @@ final class PinCodePreferences: NSObject {
         return BuildSettings.forcePinProtection
     }
     
+    /// Blocked pin codes. User won't be able to select one of the pin in the list.
+    var blockedPINs: [String] {
+        return BuildSettings.blockedPINs
+    }
+    
     var isBiometricsAvailable: Bool {
         return LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
     }
