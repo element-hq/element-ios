@@ -35,9 +35,9 @@ final class EnterPinCodeViewController: UIViewController {
     @IBOutlet private weak var inactiveLogoImageView: UIImageView!
     @IBOutlet private weak var logoImageView: UIImageView!
     @IBOutlet private weak var placeholderStackView: UIStackView!
-    @IBOutlet private weak var blockedPinView: UIView!
-    @IBOutlet private weak var blockedPinLineView: UIView!
-    @IBOutlet private weak var blockedPinLabel: UILabel!
+    @IBOutlet private weak var notAllowedPinView: UIView!
+    @IBOutlet private weak var notAllowedPinLineView: UIView!
+    @IBOutlet private weak var notAllowedPinLabel: UILabel!
     @IBOutlet private weak var digitsStackView: UIStackView!
     @IBOutlet private weak var informationLabel: UILabel!
     @IBOutlet private weak var forgotPinButton: UIButton!
@@ -119,8 +119,8 @@ final class EnterPinCodeViewController: UIViewController {
         }
 
         self.informationLabel.textColor = theme.textPrimaryColor
-        self.blockedPinLineView.backgroundColor = theme.noticeColor
-        self.blockedPinLabel.textColor = theme.noticeColor
+        self.notAllowedPinLineView.backgroundColor = theme.noticeColor
+        self.notAllowedPinLabel.textColor = theme.noticeColor
 
         updateThemesOfAllImages(in: placeholderStackView, with: theme)
         updateThemesOfAllButtons(in: digitsStackView, with: theme)
@@ -162,7 +162,7 @@ final class EnterPinCodeViewController: UIViewController {
         
         self.title = ""
         
-        blockedPinLabel.text = VectorL10n.pinProtectionBlockedPin
+        notAllowedPinLabel.text = VectorL10n.pinProtectionBlockedPin
         
         placeholderStackView.vc_removeAllArrangedSubviews()
         for i in 0..<PinCodePreferences.shared.numberOfDigits {
@@ -217,7 +217,7 @@ final class EnterPinCodeViewController: UIViewController {
         self.logoImageView.isHidden = true
         self.informationLabel.text = VectorL10n.pinProtectionChoosePin
         self.forgotPinButton.isHidden = true
-        self.blockedPinView.isHidden = true
+        self.notAllowedPinView.isHidden = true
     }
     
     private func renderNotAllowedPin() {
@@ -226,7 +226,7 @@ final class EnterPinCodeViewController: UIViewController {
         self.logoImageView.isHidden = true
         self.informationLabel.text = VectorL10n.pinProtectionChoosePin
         self.forgotPinButton.isHidden = true
-        self.blockedPinView.isHidden = false
+        self.notAllowedPinView.isHidden = false
         
         renderPlaceholdersCount(.max, error: true)
     }
@@ -235,7 +235,7 @@ final class EnterPinCodeViewController: UIViewController {
         self.inactiveView.isHidden = true
         self.mainStackView.isHidden = false
         self.informationLabel.text = VectorL10n.pinProtectionConfirmPin
-        self.blockedPinView.isHidden = true
+        self.notAllowedPinView.isHidden = true
         
         //  reset placeholders
         renderPlaceholdersCount(0)
@@ -258,13 +258,13 @@ final class EnterPinCodeViewController: UIViewController {
         self.logoImageView.isHidden = false
         self.informationLabel.text = VectorL10n.pinProtectionEnterPin
         self.forgotPinButton.isHidden = false
-        self.blockedPinView.isHidden = true
+        self.notAllowedPinView.isHidden = true
     }
     
     private func renderWrongPin() {
         self.inactiveView.isHidden = true
         self.mainStackView.isHidden = false
-        self.blockedPinView.isHidden = true
+        self.notAllowedPinView.isHidden = true
         self.placeholderStackView.vc_shake()
     }
     
@@ -300,14 +300,14 @@ final class EnterPinCodeViewController: UIViewController {
         self.logoImageView.isHidden = true
         self.informationLabel.text = VectorL10n.pinProtectionConfirmPinToDisable
         self.forgotPinButton.isHidden = true
-        self.blockedPinView.isHidden = true
+        self.notAllowedPinView.isHidden = true
     }
     
     private func renderInactive() {
         self.hideCancelButton()
         self.inactiveView.isHidden = false
         self.mainStackView.isHidden = true
-        self.blockedPinView.isHidden = true
+        self.notAllowedPinView.isHidden = true
     }
     
     private func renderPlaceholdersCount(_ count: Int, error: Bool = false) {

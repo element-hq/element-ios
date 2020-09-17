@@ -337,9 +337,6 @@
                         <viewLayoutGuide key="safeArea" id="bFg-jh-JZB"/>
                     </view>
                     <connections>
-                        <outlet property="blockedPinLabel" destination="H5g-FI-xEj" id="v2X-MF-cPQ"/>
-                        <outlet property="blockedPinLineView" destination="Q0w-RD-JD3" id="7d4-JM-Mvl"/>
-                        <outlet property="blockedPinView" destination="CBc-7Z-a5Z" id="4DN-Tq-CMW"/>
                         <outlet property="digitsStackView" destination="W0M-eq-abZ" id="xnb-6w-dtC"/>
                         <outlet property="forgotPinButton" destination="CRt-Fb-0Dq" id="kHp-wn-P0o"/>
                         <outlet property="inactiveLogoImageView" destination="8qz-Yk-9a4" id="DFZ-fF-0NC"/>
@@ -347,6 +344,9 @@
                         <outlet property="informationLabel" destination="bxI-mu-qng" id="pbX-aZ-inC"/>
                         <outlet property="logoImageView" destination="UHg-qE-anw" id="8C0-pd-i3b"/>
                         <outlet property="mainStackView" destination="DMT-DS-IA8" id="qYw-KO-M4k"/>
+                        <outlet property="notAllowedPinLabel" destination="H5g-FI-xEj" id="QYZ-bo-QLC"/>
+                        <outlet property="notAllowedPinLineView" destination="Q0w-RD-JD3" id="pJ4-2x-eTq"/>
+                        <outlet property="notAllowedPinView" destination="CBc-7Z-a5Z" id="ySo-7J-MBK"/>
                         <outlet property="placeholderStackView" destination="xi9-P9-8WP" id="ynl-7M-Rpb"/>
                     </connections>
                 </viewController>
