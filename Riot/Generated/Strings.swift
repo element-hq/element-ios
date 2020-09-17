@@ -2038,6 +2038,10 @@ internal enum VectorL10n {
   internal static func photoLibraryAccessNotGranted(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "photo_library_access_not_granted", p1)
   }
+  /// For security reasons, this PIN isn’t available. Please try another PIN
+  internal static var pinProtectionBlockedPin: String { 
+    return VectorL10n.tr("Vector", "pin_protection_blocked_pin") 
+  }
   /// Choose a PIN for security
   internal static var pinProtectionChoosePin: String { 
     return VectorL10n.tr("Vector", "pin_protection_choose_pin") 
