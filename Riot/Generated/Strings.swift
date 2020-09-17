@@ -2038,9 +2038,17 @@ internal enum VectorL10n {
   internal static func photoLibraryAccessNotGranted(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "photo_library_access_not_granted", p1)
   }
-  /// Choose a PIN for security
+  /// Create a PIN for security
   internal static var pinProtectionChoosePin: String { 
     return VectorL10n.tr("Vector", "pin_protection_choose_pin") 
+  }
+  /// Welcome back.
+  internal static var pinProtectionChoosePinWelcomeAfterLogin: String { 
+    return VectorL10n.tr("Vector", "pin_protection_choose_pin_welcome_after_login") 
+  }
+  /// Welcome.
+  internal static var pinProtectionChoosePinWelcomeAfterRegister: String { 
+    return VectorL10n.tr("Vector", "pin_protection_choose_pin_welcome_after_register") 
   }
   /// Confirm your PIN
   internal static var pinProtectionConfirmPin: String { 
@@ -2053,6 +2061,10 @@ internal enum VectorL10n {
   /// Enter your PIN
   internal static var pinProtectionEnterPin: String { 
     return VectorL10n.tr("Vector", "pin_protection_enter_pin") 
+  }
+  /// PINs help keep your profile, messages and contacts secure, so only you can access them.
+  internal static var pinProtectionExplanatory: String { 
+    return VectorL10n.tr("Vector", "pin_protection_explanatory") 
   }
   /// Forgot PIN
   internal static var pinProtectionForgotPin: String { 
