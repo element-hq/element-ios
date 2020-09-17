@@ -114,7 +114,7 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
                     //  choosing pin
                     if firstPin.isEmpty {
                         //  check if this PIN is allowed
-                        if pinCodePreferences.blockedPINs.contains(currentPin) {
+                        if pinCodePreferences.notAllowedPINs.contains(currentPin) {
                             viewMode = .blockedPin
                             update(viewState: .blockedPin)
                             return

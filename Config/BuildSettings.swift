@@ -170,8 +170,8 @@ final class BuildSettings: NSObject {
     
     // MARK: - Feature Specifics
     
-    /// Blocked pin codes. User won't be able to select one of the pin in the list.
-    static let blockedPINs: [String] = []
+    /// Not allowed pin codes. User won't be able to select one of the pin in the list.
+    static let notAllowedPINs: [String] = []
     
     // MARK: - General Settings Screen
     
