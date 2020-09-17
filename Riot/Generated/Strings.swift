@@ -2070,6 +2070,10 @@ internal enum VectorL10n {
   internal static var pinProtectionMismatchTooManyTimesErrorMessage: String { 
     return VectorL10n.tr("Vector", "pin_protection_mismatch_too_many_times_error_message") 
   }
+  /// For security reasons, this PIN isn’t available. Please try another PIN
+  internal static var pinProtectionNotAllowedPin: String { 
+    return VectorL10n.tr("Vector", "pin_protection_not_allowed_pin") 
+  }
   /// Reset
   internal static var pinProtectionResetAlertActionReset: String { 
     return VectorL10n.tr("Vector", "pin_protection_reset_alert_action_reset") 

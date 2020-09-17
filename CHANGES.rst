@@ -5,6 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
+ * Pin: Implement not allowed PINs feature. There is no restriction by default.
  * Push: Do not show notification content and disable replies when protection set.
 
 🐛 Bugfix
@@ -21,6 +22,32 @@ Changes to be released in next version
 
 Others
  * 
+
+Changes in 1.0.12 (2020-09-16)
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.20](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.20)).
 
 Changes in 1.0.11 (2020-09-15)
 =================================================

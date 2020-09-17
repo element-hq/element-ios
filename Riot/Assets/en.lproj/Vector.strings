@@ -1437,6 +1437,7 @@
 "pin_protection_settings_section_footer" = "To reset your PIN, you'll need to re-login and create a new one.";
 "pin_protection_settings_enabled_forced" = "PIN enabled";
 "pin_protection_settings_enable_pin" = "Enable PIN";
+"pin_protection_not_allowed_pin" = "For security reasons, this PIN isn’t available. Please try another PIN";
 
 // MARK: - Biometrics Protection
 
