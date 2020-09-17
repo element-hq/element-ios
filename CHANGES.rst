@@ -8,7 +8,7 @@ Changes to be released in next version
  * Pin: Implement not allowed PINs feature. There is no restriction by default.
 
 🐛 Bugfix
- * 
+ * Timeline: Hide encrypted history (pre-invite) (#3660).
 
 ⚠️ API Changes
  * 
