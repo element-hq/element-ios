@@ -190,8 +190,8 @@ final class EnterPinCodeViewController: UIViewController {
         switch viewState {
         case .choosePin:
             self.renderChoosePin()
-        case .blockedPin:
-            self.renderBlockedPin()
+        case .notAllowedPin:
+            self.renderNotAllowedPin()
         case .confirmPin:
             self.renderConfirmPin()
         case .pinsDontMatch:
@@ -220,7 +220,7 @@ final class EnterPinCodeViewController: UIViewController {
         self.blockedPinView.isHidden = true
     }
     
-    private func renderBlockedPin() {
+    private func renderNotAllowedPin() {
         self.inactiveView.isHidden = true
         self.mainStackView.isHidden = false
         self.logoImageView.isHidden = true

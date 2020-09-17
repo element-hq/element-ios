@@ -116,7 +116,7 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
                         //  check if this PIN is allowed
                         if pinCodePreferences.notAllowedPINs.contains(currentPin) {
                             viewMode = .notAllowedPin
-                            update(viewState: .blockedPin)
+                            update(viewState: .notAllowedPin)
                             return
                         }
                         //  go to next screen
