@@ -241,7 +241,6 @@ final class EnterPinCodeViewController: UIViewController {
         self.inactiveView.isHidden = true
         self.mainStackView.isHidden = false
         self.logoImageView.isHidden = true
-        self.informationLabel.text = VectorL10n.pinProtectionChoosePin
         self.forgotPinButton.isHidden = true
         self.notAllowedPinView.isHidden = false
         
