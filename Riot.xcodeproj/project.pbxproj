@@ -760,6 +760,9 @@
 		EC3B066A24AC6ADE000DF9BF /* CrossSigningSetupBannerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC3B066624AC6ADD000DF9BF /* CrossSigningSetupBannerCell.xib */; };
 		EC3B066B24AC6ADE000DF9BF /* CrossSigningBannerPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3B066724AC6ADD000DF9BF /* CrossSigningBannerPreferences.swift */; };
 		EC3B066C24AC6ADE000DF9BF /* CrossSigningSetupBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3B066824AC6ADD000DF9BF /* CrossSigningSetupBannerCell.swift */; };
+		EC49F5F62514FFFA003894A6 /* RoomInfoBasicTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC49F5F42514FFFA003894A6 /* RoomInfoBasicTableViewCell.swift */; };
+		EC49F5F72514FFFA003894A6 /* RoomInfoBasicTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC49F5F52514FFFA003894A6 /* RoomInfoBasicTableViewCell.xib */; };
+		EC49F5F92515016F003894A6 /* RoomInfoBasicTableViewCellVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC49F5F82515016F003894A6 /* RoomInfoBasicTableViewCellVM.swift */; };
 		EC51E78D250FC15000AAE7DB /* RoomCreationEventRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC51E78C250FC15000AAE7DB /* RoomCreationEventRowViewModel.swift */; };
 		EC51E7902510B7C700AAE7DB /* AutosizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC51E78F2510B7C700AAE7DB /* AutosizedTableView.swift */; };
 		EC51E7922510C0A500AAE7DB /* SpanningSlidingModalContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC51E7912510C0A500AAE7DB /* SpanningSlidingModalContainerView.swift */; };
@@ -1958,6 +1961,9 @@
 		EC3B066624AC6ADD000DF9BF /* CrossSigningSetupBannerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CrossSigningSetupBannerCell.xib; sourceTree = "<group>"; };
 		EC3B066724AC6ADD000DF9BF /* CrossSigningBannerPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossSigningBannerPreferences.swift; sourceTree = "<group>"; };
 		EC3B066824AC6ADD000DF9BF /* CrossSigningSetupBannerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossSigningSetupBannerCell.swift; sourceTree = "<group>"; };
+		EC49F5F42514FFFA003894A6 /* RoomInfoBasicTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomInfoBasicTableViewCell.swift; sourceTree = "<group>"; };
+		EC49F5F52514FFFA003894A6 /* RoomInfoBasicTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomInfoBasicTableViewCell.xib; sourceTree = "<group>"; };
+		EC49F5F82515016F003894A6 /* RoomInfoBasicTableViewCellVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomInfoBasicTableViewCellVM.swift; sourceTree = "<group>"; };
 		EC51E78C250FC15000AAE7DB /* RoomCreationEventRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCreationEventRowViewModel.swift; sourceTree = "<group>"; };
 		EC51E78F2510B7C700AAE7DB /* AutosizedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutosizedTableView.swift; sourceTree = "<group>"; };
 		EC51E7912510C0A500AAE7DB /* SpanningSlidingModalContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpanningSlidingModalContainerView.swift; sourceTree = "<group>"; };
@@ -4807,6 +4813,16 @@
 			path = Banners;
 			sourceTree = "<group>";
 		};
+		EC49F5F32514FFCA003894A6 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				EC49F5F42514FFFA003894A6 /* RoomInfoBasicTableViewCell.swift */,
+				EC49F5F52514FFFA003894A6 /* RoomInfoBasicTableViewCell.xib */,
+				EC49F5F82515016F003894A6 /* RoomInfoBasicTableViewCellVM.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		EC51E78B250FC12A00AAE7DB /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -4826,6 +4842,7 @@
 		EC51E79C2514D2E100AAE7DB /* RoomInfoList */ = {
 			isa = PBXGroup;
 			children = (
+				EC49F5F32514FFCA003894A6 /* Cells */,
 				EC51E79D2514D2E100AAE7DB /* RoomInfoListViewController.swift */,
 				EC51E79E2514D2E100AAE7DB /* RoomInfoListViewModelType.swift */,
 				EC51E79F2514D2E100AAE7DB /* RoomInfoListViewController.storyboard */,
@@ -5662,6 +5679,7 @@
 				B1B557E420EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.xib in Resources */,
 				B1B336C2242B933700F95EC4 /* KeyVerificationSelfVerifyStartViewController.storyboard in Resources */,
 				B1B558F220EF768F00210D55 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
+				EC49F5F72514FFFA003894A6 /* RoomInfoBasicTableViewCell.xib in Resources */,
 				ECFBD5E1250B684E00DD5F5A /* ChooseAvatarTableViewCell.xib in Resources */,
 				B1B558EA20EF768F00210D55 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				B1B558CD20EF768F00210D55 /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
@@ -6114,6 +6132,7 @@
 				EC1CA86924C1DEC400DE9EBF /* SetPinCoordinator.swift in Sources */,
 				B1B5574B20EE6C4D00210D55 /* MediaAlbumContentViewController.m in Sources */,
 				ECFBD5CC250A7AAF00DD5F5A /* DirectoryRoomTableViewCell.swift in Sources */,
+				EC49F5F92515016F003894A6 /* RoomInfoBasicTableViewCellVM.swift in Sources */,
 				B1B5598820EFC3E000210D55 /* WidgetManager.m in Sources */,
 				B1DB4F0E22316FFF0065DBFA /* UserNameColorGenerator.swift in Sources */,
 				B157FAA123264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinatorType.swift in Sources */,
@@ -6507,6 +6526,7 @@
 				EC1CA89A24C9C9A200DE9EBF /* SetupBiometricsCoordinatorType.swift in Sources */,
 				32A6001722C661100042C1D9 /* EditHistoryViewController.swift in Sources */,
 				B1098BFA21ECFE65000DDA48 /* KeyBackupSetupPassphraseViewModel.swift in Sources */,
+				EC49F5F62514FFFA003894A6 /* RoomInfoBasicTableViewCell.swift in Sources */,
 				EC51E7A62514D2E100AAE7DB /* RoomInfoCoordinatorBridgePresenter.swift in Sources */,
 				EC1CA87524C8259700DE9EBF /* KeychainStore.swift in Sources */,
 				B1B5575220EE6C4D00210D55 /* RoomKeyRequestViewController.m in Sources */,
