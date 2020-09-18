@@ -126,7 +126,7 @@
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate>
 {
     
     // The preview header
@@ -232,6 +232,7 @@
 @property (nonatomic, strong) MediaPickerCoordinatorBridgePresenter *mediaPickerPresenter;
 @property (nonatomic, strong) RoomMessageURLParser *roomMessageURLParser;
 @property (nonatomic, strong) RoomCreationModalCoordinatorBridgePresenter *roomCreationModalCoordinatorBridgePresenter;
+@property (nonatomic, strong) RoomInfoCoordinatorBridgePresenter *roomInfoCoordinatorBridgePresenter;
 
 @end
 
@@ -3776,10 +3777,9 @@
     
     if (tappedView == titleView.titleMask)
     {
-        // Open room settings (for now)
-        selectedRoomSettingsField = RoomSettingsViewControllerFieldNone;
-        selectedRoomDetailsIndex = 2;
-        [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
+        self.roomInfoCoordinatorBridgePresenter = [[RoomInfoCoordinatorBridgePresenter alloc] initWithSession:self.roomDataSource.mxSession room:self.roomDataSource.room];
+        self.roomInfoCoordinatorBridgePresenter.delegate = self;
+        [self.roomInfoCoordinatorBridgePresenter presentFrom:self animated:YES];
     }
     else if (tappedView == previewHeader.rightButton)
     {
@@ -5701,6 +5701,14 @@
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.roomCreationModalCoordinatorBridgePresenter = nil;
+}
+
+#pragma mark - RoomInfoCoordinatorBridgePresenterDelegate
+
+- (void)roomInfoCoordinatorBridgePresenterDelegateDidComplete:(RoomInfoCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.roomInfoCoordinatorBridgePresenter = nil;
 }
 
 @end
