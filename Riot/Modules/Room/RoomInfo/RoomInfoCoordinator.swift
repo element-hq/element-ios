@@ -73,7 +73,7 @@ final class RoomInfoCoordinator: RoomInfoCoordinatorType {
 extension RoomInfoCoordinator: RoomInfoListCoordinatorDelegate {
     
     func roomInfoListCoordinator(_ coordinator: RoomInfoListCoordinatorType, wantsToNavigate viewController: UIViewController) {
-        let coordinator = BasicCoordinator(withViewController: viewController)
+        let coordinator = SimpleCoordinator(withViewController: viewController)
         coordinator.start()
         
         self.add(childCoordinator: coordinator)
@@ -86,28 +86,4 @@ extension RoomInfoCoordinator: RoomInfoListCoordinatorDelegate {
         self.delegate?.roomInfoCoordinatorDidComplete(self)
     }
 
-}
-
-class BasicCoordinator: Coordinator {
-    
-    private let viewController: UIViewController
-    
-    init(withViewController viewController: UIViewController) {
-        self.viewController = viewController
-    }
-    
-    func start() {
-        
-    }
-    
-    var childCoordinators: [Coordinator] = []
-    
-}
-
-extension BasicCoordinator: Presentable {
-    
-    func toPresentable() -> UIViewController {
-        return viewController
-    }
-    
 }
