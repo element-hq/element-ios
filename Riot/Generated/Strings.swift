@@ -2418,7 +2418,7 @@ internal enum VectorL10n {
   internal static var roomDetailsFavouriteTag: String { 
     return VectorL10n.tr("Vector", "room_details_favourite_tag") 
   }
-  /// Files
+  /// Uploads
   internal static var roomDetailsFiles: String { 
     return VectorL10n.tr("Vector", "room_details_files") 
   }
