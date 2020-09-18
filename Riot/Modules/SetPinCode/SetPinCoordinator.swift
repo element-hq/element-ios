@@ -58,7 +58,7 @@ final class SetPinCoordinator: SetPinCoordinatorType {
             } else {
                 return createEnterPinCodeCoordinator()
             }
-        case .setPin, .notAllowedPin, .confirmPinToDeactivate:
+        case .setPin, .setPinAfterLogin, .setPinAfterRegister, .notAllowedPin, .confirmPinToDeactivate:
             return createEnterPinCodeCoordinator()
         case .setupBiometricsAfterLogin, .setupBiometricsFromSettings, .confirmBiometricsToDeactivate:
             return createSetupBiometricsCoordinator()
