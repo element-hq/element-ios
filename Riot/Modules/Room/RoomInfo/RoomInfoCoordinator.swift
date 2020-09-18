@@ -27,6 +27,7 @@ final class RoomInfoCoordinator: RoomInfoCoordinatorType {
     
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
+    private let room: MXRoom
     
     // MARK: Public
 
@@ -37,15 +38,15 @@ final class RoomInfoCoordinator: RoomInfoCoordinatorType {
     
     // MARK: - Setup
     
-    init(session: MXSession) {
+    init(session: MXSession, room: MXRoom) {
         self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
+        self.room = room
     }    
     
     // MARK: - Public methods
     
     func start() {
-
         let rootCoordinator = self.createRoomInfoListCoordinator()
 
         rootCoordinator.start()
@@ -53,7 +54,7 @@ final class RoomInfoCoordinator: RoomInfoCoordinatorType {
         self.add(childCoordinator: rootCoordinator)
 
         self.navigationRouter.setRootModule(rootCoordinator)
-      }
+    }
     
     func toPresentable() -> UIViewController {
         return self.navigationRouter.toPresentable()
@@ -62,7 +63,7 @@ final class RoomInfoCoordinator: RoomInfoCoordinatorType {
     // MARK: - Private methods
 
     private func createRoomInfoListCoordinator() -> RoomInfoListCoordinator {
-        let coordinator = RoomInfoListCoordinator(session: self.session)
+        let coordinator = RoomInfoListCoordinator(session: self.session, room: room)
         coordinator.delegate = self
         return coordinator
     }
@@ -70,11 +71,43 @@ final class RoomInfoCoordinator: RoomInfoCoordinatorType {
 
 // MARK: - RoomInfoListCoordinatorDelegate
 extension RoomInfoCoordinator: RoomInfoListCoordinatorDelegate {
-    func roomInfoListCoordinator(_ coordinator: RoomInfoListCoordinatorType, didCompleteWithUserDisplayName userDisplayName: String?) {
-        self.delegate?.roomInfoCoordinatorDidComplete(self)
-    }
     
+    func roomInfoListCoordinator(_ coordinator: RoomInfoListCoordinatorType, wantsToNavigate viewController: UIViewController) {
+        let coordinator = BasicCoordinator(withViewController: viewController)
+        coordinator.start()
+        
+        self.add(childCoordinator: coordinator)
+        navigationRouter.push(coordinator, animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
+
     func roomInfoListCoordinatorDidCancel(_ coordinator: RoomInfoListCoordinatorType) {
         self.delegate?.roomInfoCoordinatorDidComplete(self)
     }
+
+}
+
+class BasicCoordinator: Coordinator {
+    
+    private let viewController: UIViewController
+    
+    init(withViewController viewController: UIViewController) {
+        self.viewController = viewController
+    }
+    
+    func start() {
+        
+    }
+    
+    var childCoordinators: [Coordinator] = []
+    
+}
+
+extension BasicCoordinator: Presentable {
+    
+    func toPresentable() -> UIViewController {
+        return viewController
+    }
+    
 }

@@ -18,26 +18,78 @@
 
 import Foundation
 
-final class RoomInfoListViewModel: RoomInfoListViewModelType {
+final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
     
     // MARK: - Properties
     
     // MARK: Private
 
     private let session: MXSession
+    private let room: MXRoom
     
     private var currentOperation: MXHTTPOperation?
     private var userDisplayName: String?
+    
+    private lazy var segmentedViewController: SegmentedViewController = {
+        let controller = SegmentedViewController()
+        
+        let participants = RoomParticipantsViewController()
+        participants.finalizeInit()
+        participants.enableMention = true
+        participants.mxRoom = self.room
+        participants.delegate = self
+        
+        let files = RoomFilesViewController()
+        files.finalizeInit()
+        MXKRoomDataSource.load(withRoomId: self.room.roomId, andMatrixSession: self.session) { (dataSource) in
+            guard let dataSource = dataSource as? MXKRoomDataSource else { return }
+            dataSource.filterMessagesWithURL = true
+            dataSource.finalizeInitialization()
+            files.hasRoomDataSourceOwnership = true
+            files.displayRoom(dataSource)
+        }
+        
+        let settings = RoomSettingsViewController()
+        settings.finalizeInit()
+        settings.initWith(self.session, andRoomId: self.room.roomId)
+        
+        controller.title = VectorL10n.roomDetailsTitle
+        controller.initWithTitles([
+            VectorL10n.roomDetailsPeople,
+            VectorL10n.roomDetailsFiles,
+            VectorL10n.roomDetailsSettings
+        ], viewControllers: [
+            participants,
+            files,
+            settings
+        ], defaultSelected: 0)
+        controller.addMatrixSession(self.session)
+        
+        _ = controller.view
+        
+        return controller
+    }()
     
     // MARK: Public
 
     weak var viewDelegate: RoomInfoListViewModelViewDelegate?
     weak var coordinatorDelegate: RoomInfoListViewModelCoordinatorDelegate?
     
+    var numberOfMembers: Int {
+        return Int(room.summary.membersCount.joined)
+    }
+    var isEncrypted: Bool {
+        return room.summary.isEncrypted
+    }
+    var basicInfoViewModel: RoomInfoBasicTableViewCellVM {
+        return self
+    }
+    
     // MARK: - Setup
     
-    init(session: MXSession) {
+    init(session: MXSession, room: MXRoom) {
         self.session = session
+        self.room = room
     }
     
     deinit {
@@ -50,8 +102,8 @@ final class RoomInfoListViewModel: RoomInfoListViewModelType {
         switch viewAction {
         case .loadData:
             self.loadData()
-        case .complete:
-            self.coordinatorDelegate?.roomInfoListViewModel(self, didCompleteWithUserDisplayName: self.userDisplayName)
+        case .navigate(let target):
+            self.navigate(to: target)
         case .cancel:
             self.cancelOperations()
             self.coordinatorDelegate?.roomInfoListViewModelDidCancel(self)
@@ -61,23 +113,23 @@ final class RoomInfoListViewModel: RoomInfoListViewModelType {
     // MARK: - Private
     
     private func loadData() {
-
-        self.update(viewState: .loading)
-
-        // Check first that the user homeserver is federated with the  Riot-bot homeserver
-        self.currentOperation = self.session.matrixRestClient.displayName(forUser: self.session.myUser.userId) { [weak self]  (response) in
-
-            guard let self = self else {
-                return
-            }
-            
-            switch response {
-            case .success(let userDisplayName):
-                self.update(viewState: .loaded(userDisplayName))
-                self.userDisplayName = userDisplayName
-            case .failure(let error):
-                self.update(viewState: .error(error))
-            }
+        self.update(viewState: .loaded)
+    }
+    
+    private func navigate(to target: RoomInfoListTarget) {
+        switch target {
+        case .settings:
+            let controller = segmentedViewController
+            controller.selectedIndex = 2
+            self.coordinatorDelegate?.roomInfoListViewModel(self, wantsToNavigate: controller)
+        case .members:
+            let controller = segmentedViewController
+            controller.selectedIndex = 0
+            self.coordinatorDelegate?.roomInfoListViewModel(self, wantsToNavigate: controller)
+        case .uploads:
+            let controller = segmentedViewController
+            controller.selectedIndex = 1
+            self.coordinatorDelegate?.roomInfoListViewModel(self, wantsToNavigate: controller)
         }
     }
     
@@ -88,4 +140,56 @@ final class RoomInfoListViewModel: RoomInfoListViewModelType {
     private func cancelOperations() {
         self.currentOperation?.cancel()
     }
+}
+
+extension RoomInfoListViewModel: RoomInfoBasicTableViewCellVM {
+    
+    func setAvatar(in avatarImageView: MXKImageView) {
+        let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: room.roomId, withDisplayName: room.summary.displayname)
+        
+        if let avatarUrl = room.summary.avatar ?? session.roomSummary(withRoomId: room.roomId)?.avatar {
+            avatarImageView.enableInMemoryCache = true
+
+            avatarImageView.setImageURI(avatarUrl,
+                                        withType: nil,
+                                        andImageOrientation: .up,
+                                        toFitViewSize: avatarImageView.frame.size,
+                                        with: MXThumbnailingMethodCrop,
+                                        previewImage: avatarImage,
+                                        mediaManager: session.mediaManager)
+        } else {
+            avatarImageView.image = avatarImage
+        }
+    }
+    func setEncryptionIcon(in imageView: UIImageView) {
+        guard let summary = room.summary else {
+            imageView.image = nil
+            imageView.isHidden = true
+            return
+        }
+        
+        if summary.isEncrypted {
+            imageView.isHidden = false
+            imageView.image = EncryptionTrustLevelBadgeImageHelper.roomBadgeImage(for: summary.roomEncryptionTrustLevel())
+        } else {
+            imageView.isHidden = true
+        }
+    }
+    
+    var roomName: String? {
+        return room.summary.displayname
+    }
+    
+    var roomAddress: String? {
+        return room.summary.aliases?.first
+    }
+    
+}
+
+extension RoomInfoListViewModel: RoomParticipantsViewControllerDelegate {
+    
+    func roomParticipantsViewController(_ roomParticipantsViewController: RoomParticipantsViewController!, mention member: MXRoomMember!) {
+        
+    }
+    
 }

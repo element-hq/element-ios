@@ -19,7 +19,7 @@
 import Foundation
 
 protocol RoomInfoListCoordinatorDelegate: class {
-    func roomInfoListCoordinator(_ coordinator: RoomInfoListCoordinatorType, didCompleteWithUserDisplayName userDisplayName: String?)
+    func roomInfoListCoordinator(_ coordinator: RoomInfoListCoordinatorType, wantsToNavigate viewController: UIViewController)
     func roomInfoListCoordinatorDidCancel(_ coordinator: RoomInfoListCoordinatorType)
 }
 

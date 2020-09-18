@@ -18,9 +18,15 @@
 
 import Foundation
 
+enum RoomInfoListTarget {
+    case settings
+    case members
+    case uploads
+}
+
 /// RoomInfoListViewController view actions exposed to view model
 enum RoomInfoListViewAction {
     case loadData
-    case complete
+    case navigate(target: RoomInfoListTarget)
     case cancel
 }

@@ -21,6 +21,6 @@ import Foundation
 /// RoomInfoListViewController view state
 enum RoomInfoListViewState {
     case loading
-    case loaded(_ displayName: String)
+    case loaded
     case error(Error)
 }

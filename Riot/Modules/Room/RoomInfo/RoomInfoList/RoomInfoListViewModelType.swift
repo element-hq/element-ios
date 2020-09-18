@@ -23,8 +23,8 @@ protocol RoomInfoListViewModelViewDelegate: class {
 }
 
 protocol RoomInfoListViewModelCoordinatorDelegate: class {
-    func roomInfoListViewModel(_ viewModel: RoomInfoListViewModelType, didCompleteWithUserDisplayName userDisplayName: String?)
     func roomInfoListViewModelDidCancel(_ viewModel: RoomInfoListViewModelType)
+    func roomInfoListViewModel(_ viewModel: RoomInfoListViewModelType, wantsToNavigate viewController: UIViewController)
 }
 
 /// Protocol describing the view model used by `RoomInfoListViewController`
@@ -34,4 +34,7 @@ protocol RoomInfoListViewModelType {
     var coordinatorDelegate: RoomInfoListViewModelCoordinatorDelegate? { get set }
     
     func process(viewAction: RoomInfoListViewAction)
+    var numberOfMembers: Int { get }
+    var isEncrypted: Bool { get }
+    var basicInfoViewModel: RoomInfoBasicTableViewCellVM { get }
 }

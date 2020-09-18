@@ -32,6 +32,7 @@ final class RoomInfoCoordinatorBridgePresenter: NSObject {
     // MARK: Private
     
     private let session: MXSession
+    private let room: MXRoom
     private var coordinator: RoomInfoCoordinator?
     
     // MARK: Public
@@ -40,8 +41,9 @@ final class RoomInfoCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Setup
     
-    init(session: MXSession) {
+    init(session: MXSession, room: MXRoom) {
         self.session = session
+        self.room = room
         super.init()
     }
     
@@ -53,7 +55,7 @@ final class RoomInfoCoordinatorBridgePresenter: NSObject {
     // }
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let roomInfoCoordinator = RoomInfoCoordinator(session: self.session)
+        let roomInfoCoordinator = RoomInfoCoordinator(session: self.session, room: room)
         roomInfoCoordinator.delegate = self
         viewController.present(roomInfoCoordinator.toPresentable(), animated: animated, completion: nil)
         roomInfoCoordinator.start()

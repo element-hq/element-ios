@@ -26,6 +26,7 @@ final class RoomInfoListCoordinator: RoomInfoListCoordinatorType {
     // MARK: Private
     
     private let session: MXSession
+    private let room: MXRoom
     private var roomInfoListViewModel: RoomInfoListViewModelType
     private let roomInfoListViewController: RoomInfoListViewController
     
@@ -38,10 +39,11 @@ final class RoomInfoListCoordinator: RoomInfoListCoordinatorType {
     
     // MARK: - Setup
     
-    init(session: MXSession) {
+    init(session: MXSession, room: MXRoom) {
         self.session = session
+        self.room = room
         
-        let roomInfoListViewModel = RoomInfoListViewModel(session: self.session)
+        let roomInfoListViewModel = RoomInfoListViewModel(session: self.session, room: room)
         let roomInfoListViewController = RoomInfoListViewController.instantiate(with: roomInfoListViewModel)
         self.roomInfoListViewModel = roomInfoListViewModel
         self.roomInfoListViewController = roomInfoListViewController
@@ -61,11 +63,12 @@ final class RoomInfoListCoordinator: RoomInfoListCoordinatorType {
 // MARK: - RoomInfoListViewModelCoordinatorDelegate
 extension RoomInfoListCoordinator: RoomInfoListViewModelCoordinatorDelegate {
     
-    func roomInfoListViewModel(_ viewModel: RoomInfoListViewModelType, didCompleteWithUserDisplayName userDisplayName: String?) {
-        self.delegate?.roomInfoListCoordinator(self, didCompleteWithUserDisplayName: userDisplayName)
+    func roomInfoListViewModel(_ viewModel: RoomInfoListViewModelType, wantsToNavigate viewController: UIViewController) {
+        self.delegate?.roomInfoListCoordinator(self, wantsToNavigate: viewController)
     }
-    
+
     func roomInfoListViewModelDidCancel(_ viewModel: RoomInfoListViewModelType) {
         self.delegate?.roomInfoListCoordinatorDidCancel(self)
     }
+
 }
