@@ -57,7 +57,9 @@ final class RoomInfoCoordinatorBridgePresenter: NSObject {
     func present(from viewController: UIViewController, animated: Bool) {
         let roomInfoCoordinator = RoomInfoCoordinator(session: self.session, room: room)
         roomInfoCoordinator.delegate = self
-        viewController.present(roomInfoCoordinator.toPresentable(), animated: animated, completion: nil)
+        let presentable = roomInfoCoordinator.toPresentable()
+        presentable.presentationController?.delegate = self
+        viewController.present(presentable, animated: animated, completion: nil)
         roomInfoCoordinator.start()
         
         self.coordinator = roomInfoCoordinator
@@ -79,7 +81,19 @@ final class RoomInfoCoordinatorBridgePresenter: NSObject {
 
 // MARK: - RoomInfoCoordinatorDelegate
 extension RoomInfoCoordinatorBridgePresenter: RoomInfoCoordinatorDelegate {
+    
     func roomInfoCoordinatorDidComplete(_ coordinator: RoomInfoCoordinatorType) {
         self.delegate?.roomInfoCoordinatorBridgePresenterDelegateDidComplete(self)
     }
+    
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+
+extension RoomInfoCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
+    
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        self.delegate?.roomInfoCoordinatorBridgePresenterDelegateDidComplete(self)
+    }
+    
 }
