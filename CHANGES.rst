@@ -6,6 +6,7 @@ Changes to be released in next version
 
 🙌 Improvements
  * Pin: Implement not allowed PINs feature. There is no restriction by default.
+ * Room: New Room Settings screen.
 
 🐛 Bugfix
  * Timeline: Hide encrypted history (pre-invite) (#3660).
