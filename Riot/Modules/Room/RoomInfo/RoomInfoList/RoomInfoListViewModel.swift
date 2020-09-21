@@ -27,9 +27,6 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
     private let session: MXSession
     private let room: MXRoom
     
-    private var currentOperation: MXHTTPOperation?
-    private var userDisplayName: String?
-    
     private lazy var segmentedViewController: SegmentedViewController = {
         let controller = SegmentedViewController()
         
@@ -93,10 +90,12 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
     init(session: MXSession, room: MXRoom) {
         self.session = session
         self.room = room
+        super.init()
+        NotificationCenter.default.addObserver(self, selector: #selector(roomSummaryUpdated(_:)), name: .mxRoomSummaryDidChange, object: room.summary)
     }
     
     deinit {
-        self.cancelOperations()
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Public
@@ -108,12 +107,16 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
         case .navigate(let target):
             self.navigate(to: target)
         case .cancel:
-            self.cancelOperations()
             self.coordinatorDelegate?.roomInfoListViewModelDidCancel(self)
         }
     }
     
     // MARK: - Private
+    
+    @objc private func roomSummaryUpdated(_ notification: Notification) {
+        //  force update view
+        self.update(viewState: .loaded)
+    }
     
     private func loadData() {
         self.update(viewState: .loaded)
@@ -138,10 +141,6 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
     
     private func update(viewState: RoomInfoListViewState) {
         self.viewDelegate?.roomInfoListViewModel(self, didUpdateViewState: viewState)
-    }
-    
-    private func cancelOperations() {
-        self.currentOperation?.cancel()
     }
 }
 
