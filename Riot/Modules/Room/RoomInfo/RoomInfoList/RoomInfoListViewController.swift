@@ -40,11 +40,17 @@ final class RoomInfoListViewController: UIViewController {
     private var activityPresenter: ActivityIndicatorPresenter!
     
     private lazy var closeButton: UIButton = {
-        return UIButton()
+        let button = UIButton(frame: CGRect(origin: .zero, size: CGSize(width: 28, height: 28)))
+        button.layer.cornerRadius = 14
+        button.clipsToBounds = true
+        button.setImage(Asset.Images.closeButton.image, for: .normal)
+        button.addTarget(self, action: #selector(closeButtonTapped(_:)), for: .touchUpInside)
+        return button
     }()
     
     private enum RowType {
         case `default`
+        case destructive
         case basicInfo
         case textView
     }
@@ -108,37 +114,44 @@ final class RoomInfoListViewController: UIViewController {
         
         let row_0_0 = Row(type: .basicInfo, text: nil, accessoryType: .none, action: nil)
         
-        let section0 = Section(header: nil,
+        var section0 = Section(header: nil,
                                rows: [row_0_0],
                                footer: nil)
+        
+        if let topic = viewModel.roomTopic {
+            let row_0_1 = Row(type: .textView, text: topic, accessoryType: .none, action: nil)
+            
+            section0.rows.append(row_0_1)
+        }
         
         tmpSections.append(section0)
         
         if viewModel.isEncrypted {
-            let section1 = Section(header: "Security",
+            let section1 = Section(header: VectorL10n.securitySettingsTitle,
                                    rows: [],
-                                   footer: "Messages in this room are end to end encrypted")
+                                   footer: VectorL10n.roomInfoListRoomEncrypted)
             
             tmpSections.append(section1)
         }
         
-        let row_2_0 = Row(type: .default, icon: Asset.Images.settingsIcon.image, text: "Settings", accessoryType: .disclosureIndicator) {
+        let row_2_0 = Row(type: .default, icon: Asset.Images.settingsIcon.image, text: VectorL10n.roomDetailsSettings, accessoryType: .disclosureIndicator) {
             self.viewModel.process(viewAction: .navigate(target: .settings))
         }
-        let row_2_2 = Row(type: .default, icon: Asset.Images.userIcon.image, text: "\(viewModel.numberOfMembers) members", accessoryType: .disclosureIndicator) {
+        let text = viewModel.numberOfMembers == 1 ? VectorL10n.roomInfoListOneMember : VectorL10n.roomInfoListXMembers(String(viewModel.numberOfMembers))
+        let row_2_2 = Row(type: .default, icon: Asset.Images.userIcon.image, text: text, accessoryType: .disclosureIndicator) {
             self.viewModel.process(viewAction: .navigate(target: .members))
         }
-        let row_2_3 = Row(type: .default, icon: Asset.Images.scrollup.image, text: "Uploads", accessoryType: .disclosureIndicator) {
+        let row_2_3 = Row(type: .default, icon: Asset.Images.scrollup.image, text: VectorL10n.roomDetailsFiles, accessoryType: .disclosureIndicator) {
             self.viewModel.process(viewAction: .navigate(target: .uploads))
         }
         
-        let section2 = Section(header: "Other",
+        let section2 = Section(header: VectorL10n.roomInfoListSectionOther,
                                rows: [row_2_0,
                                       row_2_2,
                                       row_2_3],
                                footer: nil)
         
-        let row_3_0 = Row(type: .default, icon: Asset.Images.roomActionLeave.image, text: "Leave Room", accessoryType: .none) {
+        let row_3_0 = Row(type: .destructive, icon: Asset.Images.roomActionLeave.image, text: VectorL10n.roomParticipantsLeavePromptTitle, accessoryType: .none) {
             //  no-op
         }
         let section3 = Section(header: nil,
@@ -161,8 +174,9 @@ final class RoomInfoListViewController: UIViewController {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
-        self.closeButton.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.closeButton)
+        closeButton.backgroundColor = theme.headerBorderColor
+        closeButton.tintColor = theme.textSecondaryColor
+        closeButton.setImage(closeButton.image(for: .normal)?.vc_tintedImage(usingColor: theme.textSecondaryColor), for: .normal)
         
         mainTableView.reloadData()
     }
@@ -176,11 +190,7 @@ final class RoomInfoListViewController: UIViewController {
     }
     
     private func setupViews() {
-        let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
-//            self?.cancelButtonAction()
-        }
-        
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+        self.navigationItem.rightBarButtonItem = MXKBarButtonItem(customView: closeButton)
         
         self.title = ""
         
@@ -220,7 +230,7 @@ final class RoomInfoListViewController: UIViewController {
     
     // MARK: - Actions
 
-    @IBAction private func closeButtonAction(_ sender: Any) {
+    @objc private func closeButtonTapped(_ sender: Any) {
         self.viewModel.process(viewAction: .cancel)
     }
 
@@ -243,13 +253,17 @@ extension RoomInfoListViewController: UITableViewDataSource {
         let row = sections[indexPath.section].rows[indexPath.row]
         
         switch row.type {
-        case .default:
+        case .default, .destructive:
             var cell: UITableViewCell! = tableView.dequeueReusableCell(withIdentifier: Constants.defaultStyleCellReuseIdentifier)
             if cell == nil {
                 cell = UITableViewCell(style: .default, reuseIdentifier: Constants.defaultStyleCellReuseIdentifier)
             }
             if let icon = row.icon {
-                cell.imageView?.image = MXKTools.resize(icon, to: CGSize(width: 20, height: 20))?.vc_tintedImage(usingColor: theme.textSecondaryColor)
+                if row.type == .default {
+                    cell.imageView?.image = MXKTools.resize(icon, to: CGSize(width: 20, height: 20))?.vc_tintedImage(usingColor: theme.textSecondaryColor)
+                } else if row.type == .destructive {
+                    cell.imageView?.image = MXKTools.resize(icon, to: CGSize(width: 20, height: 20))?.vc_tintedImage(usingColor: theme.noticeColor)
+                }
             }
             cell.textLabel?.font = .systemFont(ofSize: 17)
             cell.detailTextLabel?.font = .systemFont(ofSize: 16)
@@ -260,8 +274,13 @@ extension RoomInfoListViewController: UITableViewDataSource {
                 cell.accessoryView = nil
                 cell.accessoryType = row.accessoryType
             }
-            cell.textLabel?.textColor = theme.textPrimaryColor
-            cell.detailTextLabel?.textColor = theme.textSecondaryColor
+            if row.type == .default {
+                cell.textLabel?.textColor = theme.textPrimaryColor
+                cell.detailTextLabel?.textColor = theme.textSecondaryColor
+            } else if row.type == .destructive {
+                cell.textLabel?.textColor = theme.noticeColor
+                cell.detailTextLabel?.textColor = theme.noticeSecondaryColor
+            }
             cell.backgroundColor = theme.backgroundColor
             cell.contentView.backgroundColor = .clear
             cell.tintColor = theme.tintColor
@@ -270,7 +289,9 @@ extension RoomInfoListViewController: UITableViewDataSource {
             let cell: RoomInfoBasicTableViewCell = tableView.dequeueReusableCell(for: indexPath)
             cell.configure(withViewModel: viewModel.basicInfoViewModel)
             cell.selectionStyle = .none
+            cell.vc_hideSeparator()
             cell.update(theme: theme)
+            cell.hideSectionSeparators = true
             
             return cell
         case .textView:
@@ -279,7 +300,7 @@ extension RoomInfoListViewController: UITableViewDataSource {
             cell.textView.textAlignment = .center
             cell.textView.contentInset = .zero
             cell.textView.textContainerInset = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
-            cell.textView.font = .systemFont(ofSize: 17)
+            cell.textView.font = .systemFont(ofSize: 15)
             cell.textView.text = row.text
             cell.textView.isEditable = false
             cell.textView.isScrollEnabled = false
@@ -287,9 +308,10 @@ extension RoomInfoListViewController: UITableViewDataSource {
             cell.selectionStyle = .none
             cell.contentView.backgroundColor = theme.headerBackgroundColor
             cell.update(theme: theme)
+            cell.textView.textColor = theme.textSecondaryColor
+            cell.hideSectionSeparators = true
             
             return cell
-
         }
     }
     
@@ -360,14 +382,14 @@ extension RoomInfoListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if sections[section].header == nil {
-            return 18
+            return 8
         }
         return UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if sections[section].footer == nil {
-            return 18
+            return 8
         }
         return UITableView.automaticDimension
     }

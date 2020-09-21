@@ -84,6 +84,9 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
     var basicInfoViewModel: RoomInfoBasicTableViewCellVM {
         return self
     }
+    var roomTopic: String? {
+        return room.summary.topic
+    }
     
     // MARK: - Setup
     

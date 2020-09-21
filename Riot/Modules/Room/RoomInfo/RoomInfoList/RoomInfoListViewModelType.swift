@@ -37,4 +37,6 @@ protocol RoomInfoListViewModelType {
     var numberOfMembers: Int { get }
     var isEncrypted: Bool { get }
     var basicInfoViewModel: RoomInfoBasicTableViewCellVM { get }
+    var roomTopic: String? { get }
+    
 }
