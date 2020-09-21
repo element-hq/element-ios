@@ -67,7 +67,7 @@
 "auth_missing_phone" = "Falta o número de telefone";
 "auth_missing_email_or_phone" = "Falta o endereço de e-mail ou o número de telefone";
 "auth_email_in_use" = "Este endereço de e-mail já está sendo usado por outra pessoa";
-"auth_phone_in_use" = "Este número de telefone já está sendo usado por outra pessoa";
+"auth_phone_in_use" = "Este número de telefone já está em uso";
 "auth_untrusted_id_server" = "Este servidor de identidades não é confiável";
 "auth_password_dont_match" = "As senhas não correspondem";
 "auth_username_in_use" = "Nome de usuário indisponível";
@@ -1088,7 +1088,7 @@
 "key_verification_scan_confirmation_scanned_device_information" = "O outro aparelho está mostrando o mesmo escudo?";
 "user_verification_start_verify_action" = "Iniciar a confirmação";
 "user_verification_start_information_part1" = "Para segurança extra, confirme· ";
-"user_verification_start_information_part2" = " ·comparando um código único em ambos os aparelhos.";
+"user_verification_start_information_part2" = " comparando um código único em ambos os aparelhos.";
 "user_verification_start_additional_information" = "Para sua segurança, faça isso pessoalmente ou use outra forma de comunicação.";
 "user_verification_sessions_list_user_trust_level_trusted_title" = "Confiável";
 "user_verification_sessions_list_user_trust_level_unknown_title" = "Desconhecido";
