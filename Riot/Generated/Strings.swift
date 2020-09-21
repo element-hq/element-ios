@@ -2634,6 +2634,22 @@ internal enum VectorL10n {
   internal static var roomEventFailedToSend: String { 
     return VectorL10n.tr("Vector", "room_event_failed_to_send") 
   }
+  /// 1 member
+  internal static var roomInfoListOneMember: String { 
+    return VectorL10n.tr("Vector", "room_info_list_one_member") 
+  }
+  /// Messages in this room are end to end encrypted
+  internal static var roomInfoListRoomEncrypted: String { 
+    return VectorL10n.tr("Vector", "room_info_list_room_encrypted") 
+  }
+  /// Other
+  internal static var roomInfoListSectionOther: String { 
+    return VectorL10n.tr("Vector", "room_info_list_section_other") 
+  }
+  /// %@ members
+  internal static func roomInfoListXMembers(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_info_list_x_members", p1)
+  }
   /// Jump to first unread message
   internal static var roomJumpToFirstUnread: String { 
     return VectorL10n.tr("Vector", "room_jump_to_first_unread") 
