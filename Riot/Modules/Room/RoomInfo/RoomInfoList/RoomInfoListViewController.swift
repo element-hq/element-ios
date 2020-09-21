@@ -152,7 +152,7 @@ final class RoomInfoListViewController: UIViewController {
                                footer: nil)
         
         let row_3_0 = Row(type: .destructive, icon: Asset.Images.roomActionLeave.image, text: VectorL10n.roomParticipantsLeavePromptTitle, accessoryType: .none) {
-            //  no-op
+            self.viewModel.process(viewAction: .leave)
         }
         let section3 = Section(header: nil,
                                rows: [row_3_0],

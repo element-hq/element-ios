@@ -20,6 +20,7 @@ import Foundation
 
 protocol RoomInfoListCoordinatorDelegate: class {
     func roomInfoListCoordinator(_ coordinator: RoomInfoListCoordinatorType, wantsToNavigate viewController: UIViewController)
+    func roomInfoListCoordinator(_ coordinator: RoomInfoListCoordinatorType, wantsToPresent viewController: UIViewController)
     func roomInfoListCoordinatorDidCancel(_ coordinator: RoomInfoListCoordinatorType)
 }
 

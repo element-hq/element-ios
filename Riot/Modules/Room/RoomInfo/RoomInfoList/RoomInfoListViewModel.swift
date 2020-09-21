@@ -67,6 +67,29 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
         return controller
     }()
     
+    private lazy var leaveAlertController: UIAlertController = {
+        let controller = UIAlertController(title: VectorL10n.roomParticipantsLeavePromptTitle, message: VectorL10n.roomParticipantsLeavePromptMsg, preferredStyle: .alert)
+        
+        controller.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil))
+        controller.addAction(UIAlertAction(title: VectorL10n.leave, style: .default, handler: { [weak self] (action) in
+            guard let self = self else { return }
+            self.stopObservingSummaryChanges()
+            self.update(viewState: .loading)
+            self.room.leave { (response) in
+                switch response {
+                case .success:
+                    self.coordinatorDelegate?.roomInfoListViewModelDidCancel(self)
+                case .failure(let error):
+                    self.startObservingSummaryChanges()
+                    self.update(viewState: .error(error))
+                }
+            }
+        }))
+        controller.mxk_setAccessibilityIdentifier("RoomSettingsVCLeaveAlert")
+        
+        return controller
+    }()
+    
     // MARK: Public
 
     weak var viewDelegate: RoomInfoListViewModelViewDelegate?
@@ -91,11 +114,11 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
         self.session = session
         self.room = room
         super.init()
-        NotificationCenter.default.addObserver(self, selector: #selector(roomSummaryUpdated(_:)), name: .mxRoomSummaryDidChange, object: room.summary)
+        startObservingSummaryChanges()
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self)
+        stopObservingSummaryChanges()
     }
     
     // MARK: - Public
@@ -106,12 +129,22 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
             self.loadData()
         case .navigate(let target):
             self.navigate(to: target)
+        case .leave:
+            self.leave()
         case .cancel:
             self.coordinatorDelegate?.roomInfoListViewModelDidCancel(self)
         }
     }
     
     // MARK: - Private
+    
+    private func startObservingSummaryChanges() {
+        NotificationCenter.default.addObserver(self, selector: #selector(roomSummaryUpdated(_:)), name: .mxRoomSummaryDidChange, object: room.summary)
+    }
+    
+    private func stopObservingSummaryChanges() {
+        NotificationCenter.default.removeObserver(self, name: .mxRoomSummaryDidChange, object: nil)
+    }
     
     @objc private func roomSummaryUpdated(_ notification: Notification) {
         //  force update view
@@ -137,6 +170,10 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
             controller.selectedIndex = 1
             self.coordinatorDelegate?.roomInfoListViewModel(self, wantsToNavigate: controller)
         }
+    }
+    
+    private func leave() {
+        self.coordinatorDelegate?.roomInfoListViewModel(self, wantsToPresent: leaveAlertController)
     }
     
     private func update(viewState: RoomInfoListViewState) {

@@ -28,5 +28,6 @@ enum RoomInfoListTarget {
 enum RoomInfoListViewAction {
     case loadData
     case navigate(target: RoomInfoListTarget)
+    case leave
     case cancel
 }

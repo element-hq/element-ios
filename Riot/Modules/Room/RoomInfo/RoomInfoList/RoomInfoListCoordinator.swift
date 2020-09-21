@@ -66,6 +66,10 @@ extension RoomInfoListCoordinator: RoomInfoListViewModelCoordinatorDelegate {
     func roomInfoListViewModel(_ viewModel: RoomInfoListViewModelType, wantsToNavigate viewController: UIViewController) {
         self.delegate?.roomInfoListCoordinator(self, wantsToNavigate: viewController)
     }
+    
+    func roomInfoListViewModel(_ viewModel: RoomInfoListViewModelType, wantsToPresent viewController: UIViewController) {
+        self.delegate?.roomInfoListCoordinator(self, wantsToPresent: viewController)
+    }
 
     func roomInfoListViewModelDidCancel(_ viewModel: RoomInfoListViewModelType) {
         self.delegate?.roomInfoListCoordinatorDidCancel(self)

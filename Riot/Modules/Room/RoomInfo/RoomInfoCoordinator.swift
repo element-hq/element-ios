@@ -81,6 +81,14 @@ extension RoomInfoCoordinator: RoomInfoListCoordinatorDelegate {
             self?.remove(childCoordinator: coordinator)
         }
     }
+    
+    func roomInfoListCoordinator(_ coordinator: RoomInfoListCoordinatorType, wantsToPresent viewController: UIViewController) {
+        let coordinator = SimpleCoordinator(withViewController: viewController)
+        coordinator.start()
+        
+        self.add(childCoordinator: coordinator)
+        navigationRouter.present(coordinator, animated: true)
+    }
 
     func roomInfoListCoordinatorDidCancel(_ coordinator: RoomInfoListCoordinatorType) {
         self.delegate?.roomInfoCoordinatorDidComplete(self)
