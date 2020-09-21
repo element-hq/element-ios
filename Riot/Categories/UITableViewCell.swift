@@ -42,4 +42,9 @@ extension UITableViewCell {
     @objc func vc_setAccessoryDisclosureIndicatorWithCurrentTheme() {
         self.vc_setAccessoryDisclosureIndicator(withTheme: ThemeService.shared().theme)
     }
+    
+    /// Hide cell separators
+    @objc func vc_hideSeparator() {
+        separatorInset = UIEdgeInsets(top: 0, left: .greatestFiniteMagnitude, bottom: 0, right: 0)
+    }
 }
