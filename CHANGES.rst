@@ -9,7 +9,8 @@ Changes to be released in next version
  * Push: Do not show notification content and disable replies when protection set.
 
 🐛 Bugfix
- * 
+ * Timeline: Hide encrypted history (pre-invite) (#3660).
+ * Fix floating action buttons' images.
 
 ⚠️ API Changes
  * 
