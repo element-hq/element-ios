@@ -9,6 +9,7 @@ Changes to be released in next version
 
 🐛 Bugfix
  * Timeline: Hide encrypted history (pre-invite) (#3660).
+ * Fix floating action buttons' images.
  * Various theme fixes.
 
 ⚠️ API Changes
