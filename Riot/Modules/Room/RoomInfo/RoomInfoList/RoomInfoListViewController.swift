@@ -197,6 +197,7 @@ final class RoomInfoListViewController: UIViewController {
         mainTableView.estimatedSectionHeaderHeight = 50
         mainTableView.sectionFooterHeight = UITableView.automaticDimension
         mainTableView.estimatedSectionFooterHeight = 50
+        mainTableView.rowHeight = UITableView.automaticDimension
     }
 
     private func render(viewState: RoomInfoListViewState) {
@@ -365,15 +366,6 @@ extension RoomInfoListViewController: UITableViewDelegate {
         
         let row = sections[indexPath.section].rows[indexPath.row]
         row.action?()
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let row = sections[indexPath.section].rows[indexPath.row]
-        
-        switch row.type {
-        default:
-            return UITableView.automaticDimension
-        }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
