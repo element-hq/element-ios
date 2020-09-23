@@ -22,3 +22,5 @@
 #import "LegacyAppDelegate.h"
 #import "DirectoryServerPickerViewController.h"
 #import "MXSession+Riot.h"
+#import "RoomFilesViewController.h"
+#import "RoomSettingsViewController.h"
