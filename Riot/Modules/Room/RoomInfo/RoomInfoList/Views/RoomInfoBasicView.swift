@@ -62,7 +62,7 @@ class RoomInfoBasicView: UIView {
         roomAddressLabel.text = viewData.mainRoomAlias
         roomAddressLabel.isHidden = roomAddressLabel.text?.isEmpty ?? true
         roomTopicLabel.text = viewData.roomTopic
-        roomTopicLabel.isHidden = (roomTopicLabel.text?.count ?? 0) == 0
+        roomTopicLabel.isHidden = roomTopicLabel.text?.isEmpty ?? true
     }
 
 }
