@@ -24,6 +24,7 @@ final class RoomInfoListViewController: UIViewController {
     
     private enum Constants {
         static let defaultStyleCellReuseIdentifier = "default"
+        static let tableViewSectionMinHeight: CGFloat = 8.0
     }
     
     // MARK: - Properties
@@ -370,14 +371,14 @@ extension RoomInfoListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if sections[section].header == nil {
-            return 8
+            return Constants.tableViewSectionMinHeight
         }
         return UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if sections[section].footer == nil {
-            return 8
+            return Constants.tableViewSectionMinHeight
         }
         return UITableView.automaticDimension
     }
