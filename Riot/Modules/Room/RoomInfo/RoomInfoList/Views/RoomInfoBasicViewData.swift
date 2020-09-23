@@ -24,5 +24,6 @@ struct RoomInfoBasicViewData {
     let roomId: String
     let roomDisplayName: String?
     let mainRoomAlias: String?
+    let roomTopic: String?
     let encryptionImage: UIImage?
 }

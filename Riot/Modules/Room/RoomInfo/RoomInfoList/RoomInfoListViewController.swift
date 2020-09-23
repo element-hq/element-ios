@@ -47,6 +47,13 @@ final class RoomInfoListViewController: UIViewController {
         return button
     }()
     
+    private lazy var basicInfoView: RoomInfoBasicView = {
+        let view = RoomInfoBasicView.loadFromNib()
+        view.autoresizingMask = .flexibleWidth
+        view.translatesAutoresizingMaskIntoConstraints = true
+        return view
+    }()
+    
     private lazy var leaveAlertController: UIAlertController = {
         let controller = UIAlertController(title: VectorL10n.roomParticipantsLeavePromptTitle, message: VectorL10n.roomParticipantsLeavePromptMsg, preferredStyle: .alert)
         
@@ -60,26 +67,9 @@ final class RoomInfoListViewController: UIViewController {
         return controller
     }()
     
-    private enum RowType: Equatable {
+    private enum RowType {
         case `default`
         case destructive
-        case basicInfo(_ viewData: RoomInfoBasicViewData)
-        case textView
-        
-        static func == (lhs: RoomInfoListViewController.RowType, rhs: RoomInfoListViewController.RowType) -> Bool {
-            switch (lhs, rhs) {
-            case (.default, .default):
-                return true
-            case (.destructive, .destructive):
-                return true
-            case (.basicInfo, .basicInfo):
-                return true
-            case (.textView, .textView):
-                return true
-            default:
-                return false
-            }
-        }
     }
     
     private struct Row {
@@ -137,21 +127,9 @@ final class RoomInfoListViewController: UIViewController {
     // MARK: - Private
     
     private func updateSections(with viewData: RoomInfoListViewData) {
+        basicInfoView.configure(withViewData: viewData.basicInfoViewData)
+        
         var tmpSections: [Section] = []
-        
-        let rowBasicInfo = Row(type: .basicInfo(viewData.basicInfoViewData), text: nil, accessoryType: .none, action: nil)
-        
-        var sectionBasicInfo = Section(header: nil,
-                                       rows: [rowBasicInfo],
-                                       footer: nil)
-        
-        if let topic = viewData.roomTopic {
-            let rowTopic = Row(type: .textView, text: topic, accessoryType: .none, action: nil)
-            
-            sectionBasicInfo.rows.append(rowTopic)
-        }
-        
-        tmpSections.append(sectionBasicInfo)
         
         if viewData.isEncrypted {
             let sectionSecurity = Section(header: VectorL10n.securitySettingsTitle,
@@ -202,6 +180,7 @@ final class RoomInfoListViewController: UIViewController {
         }
 
         closeButton.update(theme: theme)
+        basicInfoView.update(theme: theme)
         
         mainTableView.reloadData()
     }
@@ -219,14 +198,13 @@ final class RoomInfoListViewController: UIViewController {
         
         self.title = ""
         
-        mainTableView.register(cellType: TextViewTableViewCell.self)
-        mainTableView.register(cellType: RoomInfoBasicTableViewCell.self)
         mainTableView.register(headerFooterViewType: TextViewTableViewHeaderFooterView.self)
         mainTableView.sectionHeaderHeight = UITableView.automaticDimension
         mainTableView.estimatedSectionHeaderHeight = 50
         mainTableView.sectionFooterHeight = UITableView.automaticDimension
         mainTableView.estimatedSectionFooterHeight = 50
         mainTableView.rowHeight = UITableView.automaticDimension
+        mainTableView.tableHeaderView = basicInfoView
     }
 
     private func render(viewState: RoomInfoListViewState) {
@@ -310,33 +288,6 @@ extension RoomInfoListViewController: UITableViewDataSource {
             cell.backgroundColor = theme.backgroundColor
             cell.contentView.backgroundColor = .clear
             cell.tintColor = theme.tintColor
-            return cell
-        case .basicInfo(let basicInfoViewData):
-            let cell: RoomInfoBasicTableViewCell = tableView.dequeueReusableCell(for: indexPath)
-            cell.configure(withViewData: basicInfoViewData)
-            cell.selectionStyle = .none
-            cell.vc_hideSeparator()
-            cell.update(theme: theme)
-            cell.hideSectionSeparators = true
-            
-            return cell
-        case .textView:
-            let cell: TextViewTableViewCell = tableView.dequeueReusableCell(for: indexPath)
-            cell.textView.textContainer.lineFragmentPadding = 0
-            cell.textView.textAlignment = .center
-            cell.textView.contentInset = .zero
-            cell.textView.textContainerInset = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
-            cell.textView.font = .systemFont(ofSize: 15)
-            cell.textView.text = row.text
-            cell.textView.isEditable = false
-            cell.textView.isScrollEnabled = false
-            cell.textView.backgroundColor = .clear
-            cell.selectionStyle = .none
-            cell.contentView.backgroundColor = theme.headerBackgroundColor
-            cell.update(theme: theme)
-            cell.textView.textColor = theme.textSecondaryColor
-            cell.hideSectionSeparators = true
-            
             return cell
         }
     }

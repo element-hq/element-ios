@@ -40,12 +40,12 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
                                                       roomId: room.roomId,
                                                       roomDisplayName: room.summary.displayname,
                                                       mainRoomAlias: room.summary.aliases?.first,
+                                                      roomTopic: room.summary.topic,
                                                       encryptionImage: encryptionImage)
         
         return RoomInfoListViewData(numberOfMembers: Int(room.summary.membersCount.joined),
                                     isEncrypted: room.summary.isEncrypted,
-                                    basicInfoViewData: basicInfoViewData,
-                                    roomTopic: room.summary.topic)
+                                    basicInfoViewData: basicInfoViewData)
     }
     
     // MARK: - Setup

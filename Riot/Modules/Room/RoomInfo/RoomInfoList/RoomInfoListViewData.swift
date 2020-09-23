@@ -23,5 +23,4 @@ struct RoomInfoListViewData {
     let numberOfMembers: Int
     let isEncrypted: Bool
     let basicInfoViewData: RoomInfoBasicViewData
-    let roomTopic: String?
 }

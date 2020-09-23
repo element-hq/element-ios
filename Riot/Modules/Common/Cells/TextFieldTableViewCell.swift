@@ -18,7 +18,7 @@ import UIKit
 import Reusable
 
 /// Table view cell with only a text field spanning the whole content view, insets can be configured via `textField.insets`
-class TextFieldTableViewCell: GroupedTableViewCell {
+class TextFieldTableViewCell: UITableViewCell {
 
     @IBOutlet weak var textField: InsettedTextField!
     

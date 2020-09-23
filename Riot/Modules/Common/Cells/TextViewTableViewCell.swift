@@ -18,7 +18,7 @@ import UIKit
 import Reusable
 
 /// Table view cell with only a text view spanning the whole content view, insets can be configured via `textView.textContainerInset`
-class TextViewTableViewCell: GroupedTableViewCell {
+class TextViewTableViewCell: UITableViewCell {
 
     @IBOutlet weak var textView: PlaceholderedTextView!
     

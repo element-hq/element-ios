@@ -16,10 +16,10 @@
 
 import UIKit
 import Reusable
-import MatrixKit
 
-class RoomInfoBasicTableViewCell: GroupedTableViewCell {
+class RoomInfoBasicView: UIView {
 
+    @IBOutlet private weak var mainStackView: UIStackView!
     @IBOutlet private weak var avatarImageView: MXKImageView!
     @IBOutlet private weak var shadowView: UIView! {
         didSet {
@@ -39,6 +39,7 @@ class RoomInfoBasicTableViewCell: GroupedTableViewCell {
     @IBOutlet private weak var badgeImageView: UIImageView!
     @IBOutlet private weak var roomNameLabel: UILabel!
     @IBOutlet private weak var roomAddressLabel: UILabel!
+    @IBOutlet private weak var roomTopicLabel: UILabel!
     
     func configure(withViewData viewData: RoomInfoBasicViewData) {
         let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: viewData.roomId, withDisplayName: viewData.roomDisplayName)
@@ -59,18 +60,22 @@ class RoomInfoBasicTableViewCell: GroupedTableViewCell {
         badgeImageView.image = viewData.encryptionImage
         roomNameLabel.text = viewData.roomDisplayName
         roomAddressLabel.text = viewData.mainRoomAlias
+        roomAddressLabel.isHidden = (roomAddressLabel.text?.count ?? 0) == 0
+        roomTopicLabel.text = viewData.roomTopic
+        roomTopicLabel.isHidden = (roomTopicLabel.text?.count ?? 0) == 0
     }
-    
+
 }
 
-extension RoomInfoBasicTableViewCell: NibReusable {}
+extension RoomInfoBasicView: NibLoadable {}
 
-extension RoomInfoBasicTableViewCell: Themable {
+extension RoomInfoBasicView: Themable {
     
     func update(theme: Theme) {
-        contentView.backgroundColor = theme.headerBackgroundColor
+        backgroundColor = theme.headerBackgroundColor
         roomNameLabel.textColor = theme.textPrimaryColor
         roomAddressLabel.textColor = theme.textSecondaryColor
+        roomTopicLabel.textColor = theme.textSecondaryColor
     }
     
 }
