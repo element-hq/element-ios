@@ -70,6 +70,7 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 
 @property (nonatomic) BOOL isAppForeground;
 @property (nonatomic) BOOL isOffline;
+@property (nonatomic, copy) NSString *lastNavigatedRoomIdFromPush;
 
 
 /**
