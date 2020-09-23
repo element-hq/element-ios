@@ -193,7 +193,7 @@ final class RoomInfoListViewController: UIViewController {
         
         mainTableView.register(cellType: TextViewTableViewCell.self)
         mainTableView.register(cellType: RoomInfoBasicTableViewCell.self)
-        mainTableView.register(headerFooterViewType: TableViewHeaderFooterView.self)
+        mainTableView.register(headerFooterViewType: TextViewTableViewHeaderFooterView.self)
         mainTableView.sectionHeaderHeight = UITableView.automaticDimension
         mainTableView.estimatedSectionHeaderHeight = 50
         mainTableView.sectionFooterHeight = UITableView.automaticDimension
@@ -338,7 +338,7 @@ extension RoomInfoListViewController: UITableViewDelegate {
             return nil
         }
 
-        let view: TableViewHeaderFooterView? = tableView.dequeueReusableHeaderFooterView()
+        let view: TextViewTableViewHeaderFooterView? = tableView.dequeueReusableHeaderFooterView()
 
         view?.textView.text = header
         view?.textView.font = .systemFont(ofSize: 13)
@@ -353,7 +353,7 @@ extension RoomInfoListViewController: UITableViewDelegate {
             return nil
         }
 
-        let view: TableViewHeaderFooterView? = tableView.dequeueReusableHeaderFooterView()
+        let view: TextViewTableViewHeaderFooterView? = tableView.dequeueReusableHeaderFooterView()
 
         view?.textView.text = footer
         view?.textView.font = .systemFont(ofSize: 13)
