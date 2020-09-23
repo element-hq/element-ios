@@ -73,21 +73,11 @@ final class RoomInfoCoordinator: RoomInfoCoordinatorType {
 extension RoomInfoCoordinator: RoomInfoListCoordinatorDelegate {
     
     func roomInfoListCoordinator(_ coordinator: RoomInfoListCoordinatorType, wantsToNavigate viewController: UIViewController) {
-        let coordinator = SimpleCoordinator(withViewController: viewController)
-        coordinator.start()
-        
-        self.add(childCoordinator: coordinator)
-        navigationRouter.push(coordinator, animated: true) { [weak self] in
-            self?.remove(childCoordinator: coordinator)
-        }
+        navigationRouter.push(viewController, animated: true, popCompletion: nil)
     }
     
     func roomInfoListCoordinator(_ coordinator: RoomInfoListCoordinatorType, wantsToPresent viewController: UIViewController) {
-        let coordinator = SimpleCoordinator(withViewController: viewController)
-        coordinator.start()
-        
-        self.add(childCoordinator: coordinator)
-        navigationRouter.present(coordinator, animated: true)
+        navigationRouter.present(viewController, animated: true)
     }
 
     func roomInfoListCoordinatorDidCancel(_ coordinator: RoomInfoListCoordinatorType) {
