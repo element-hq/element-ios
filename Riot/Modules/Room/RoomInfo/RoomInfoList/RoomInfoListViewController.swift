@@ -63,7 +63,7 @@ final class RoomInfoListViewController: UIViewController {
     private enum RowType: Equatable {
         case `default`
         case destructive
-        case basicInfo(_ viewModel: RoomInfoBasicTableViewCellVM)
+        case basicInfo(_ viewData: RoomInfoBasicViewData)
         case textView
         
         static func == (lhs: RoomInfoListViewController.RowType, rhs: RoomInfoListViewController.RowType) -> Bool {
@@ -139,7 +139,7 @@ final class RoomInfoListViewController: UIViewController {
     private func updateSections(with viewData: RoomInfoListViewData) {
         var tmpSections: [Section] = []
         
-        let rowBasicInfo = Row(type: .basicInfo(viewData.basicInfoViewModel), text: nil, accessoryType: .none, action: nil)
+        let rowBasicInfo = Row(type: .basicInfo(viewData.basicInfoViewData), text: nil, accessoryType: .none, action: nil)
         
         var sectionBasicInfo = Section(header: nil,
                                        rows: [rowBasicInfo],
@@ -311,9 +311,9 @@ extension RoomInfoListViewController: UITableViewDataSource {
             cell.contentView.backgroundColor = .clear
             cell.tintColor = theme.tintColor
             return cell
-        case .basicInfo(let basicInfoViewModel):
+        case .basicInfo(let basicInfoViewData):
             let cell: RoomInfoBasicTableViewCell = tableView.dequeueReusableCell(for: indexPath)
-            cell.configure(withViewModel: basicInfoViewModel)
+            cell.configure(withViewData: basicInfoViewData)
             cell.selectionStyle = .none
             cell.vc_hideSeparator()
             cell.update(theme: theme)

@@ -17,9 +17,12 @@
 import Foundation
 import MatrixKit
 
-protocol RoomInfoBasicTableViewCellVM {
-    func setAvatar(in avatarImageView: MXKImageView)
-    func setEncryptionIcon(in imageView: UIImageView)
-    var roomName: String? { get }
-    var roomAddress: String? { get }
+struct RoomInfoBasicViewData {
+    let avatarUrl: String?
+    let mediaManager: MXMediaManager?
+    
+    let roomId: String
+    let roomDisplayName: String?
+    let mainRoomAlias: String?
+    let encryptionImage: UIImage?
 }

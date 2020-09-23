@@ -40,11 +40,25 @@ class RoomInfoBasicTableViewCell: GroupedTableViewCell {
     @IBOutlet private weak var roomNameLabel: UILabel!
     @IBOutlet private weak var roomAddressLabel: UILabel!
     
-    func configure(withViewModel viewModel: RoomInfoBasicTableViewCellVM) {
-        viewModel.setAvatar(in: avatarImageView)
-        viewModel.setEncryptionIcon(in: badgeImageView)
-        roomNameLabel.text = viewModel.roomName
-        roomAddressLabel.text = viewModel.roomAddress
+    func configure(withViewData viewData: RoomInfoBasicViewData) {
+        let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: viewData.roomId, withDisplayName: viewData.roomDisplayName)
+        
+        if let avatarUrl = viewData.avatarUrl {
+            avatarImageView.enableInMemoryCache = true
+
+            avatarImageView.setImageURI(avatarUrl,
+                                        withType: nil,
+                                        andImageOrientation: .up,
+                                        toFitViewSize: avatarImageView.frame.size,
+                                        with: MXThumbnailingMethodCrop,
+                                        previewImage: avatarImage,
+                                        mediaManager: viewData.mediaManager)
+        } else {
+            avatarImageView.image = avatarImage
+        }
+        badgeImageView.image = viewData.encryptionImage
+        roomNameLabel.text = viewData.roomDisplayName
+        roomAddressLabel.text = viewData.mainRoomAlias
     }
     
 }

@@ -22,6 +22,6 @@ import Foundation
 struct RoomInfoListViewData {
     let numberOfMembers: Int
     let isEncrypted: Bool
-    let basicInfoViewModel: RoomInfoBasicTableViewCellVM
+    let basicInfoViewData: RoomInfoBasicViewData
     let roomTopic: String?
 }

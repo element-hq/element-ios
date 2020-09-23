@@ -33,9 +33,18 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
     weak var coordinatorDelegate: RoomInfoListViewModelCoordinatorDelegate?
     
     private var viewData: RoomInfoListViewData {
+        let encryptionImage = EncryptionTrustLevelBadgeImageHelper.roomBadgeImage(for: room.summary.roomEncryptionTrustLevel())
+        
+        let basicInfoViewData = RoomInfoBasicViewData(avatarUrl: room.summary.avatar,
+                                                      mediaManager: session.mediaManager,
+                                                      roomId: room.roomId,
+                                                      roomDisplayName: room.summary.displayname,
+                                                      mainRoomAlias: room.summary.aliases?.first,
+                                                      encryptionImage: encryptionImage)
+        
         return RoomInfoListViewData(numberOfMembers: Int(room.summary.membersCount.joined),
                                     isEncrypted: room.summary.isEncrypted,
-                                    basicInfoViewModel: self,
+                                    basicInfoViewData: basicInfoViewData,
                                     roomTopic: room.summary.topic)
     }
     
@@ -107,48 +116,4 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
     private func update(viewState: RoomInfoListViewState) {
         self.viewDelegate?.roomInfoListViewModel(self, didUpdateViewState: viewState)
     }
-}
-
-extension RoomInfoListViewModel: RoomInfoBasicTableViewCellVM {
-    
-    func setAvatar(in avatarImageView: MXKImageView) {
-        let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: room.roomId, withDisplayName: room.summary.displayname)
-        
-        if let avatarUrl = room.summary.avatar ?? session.roomSummary(withRoomId: room.roomId)?.avatar {
-            avatarImageView.enableInMemoryCache = true
-
-            avatarImageView.setImageURI(avatarUrl,
-                                        withType: nil,
-                                        andImageOrientation: .up,
-                                        toFitViewSize: avatarImageView.frame.size,
-                                        with: MXThumbnailingMethodCrop,
-                                        previewImage: avatarImage,
-                                        mediaManager: session.mediaManager)
-        } else {
-            avatarImageView.image = avatarImage
-        }
-    }
-    func setEncryptionIcon(in imageView: UIImageView) {
-        guard let summary = room.summary else {
-            imageView.image = nil
-            imageView.isHidden = true
-            return
-        }
-        
-        if summary.isEncrypted {
-            imageView.isHidden = false
-            imageView.image = EncryptionTrustLevelBadgeImageHelper.roomBadgeImage(for: summary.roomEncryptionTrustLevel())
-        } else {
-            imageView.isHidden = true
-        }
-    }
-    
-    var roomName: String? {
-        return room.summary.displayname
-    }
-    
-    var roomAddress: String? {
-        return room.summary.aliases?.first
-    }
-    
 }
