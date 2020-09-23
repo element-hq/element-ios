@@ -757,6 +757,7 @@
 		EC2B4EF124A1EEBD005EB739 /* DataProtectionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2B4EF024A1EEBD005EB739 /* DataProtectionHelper.swift */; };
 		EC2B4EF224A1EF34005EB739 /* DataProtectionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2B4EF024A1EEBD005EB739 /* DataProtectionHelper.swift */; };
 		EC31F00E2518BEEB00D407DA /* GroupedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC31F00D2518BEEB00D407DA /* GroupedTableViewCell.swift */; };
+		EC31F012251B4DBD00D407DA /* RoomInfoListViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC31F011251B4DBD00D407DA /* RoomInfoListViewData.swift */; };
 		EC3B066924AC6ADE000DF9BF /* CrossSigningService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3B066424AC6ADD000DF9BF /* CrossSigningService.swift */; };
 		EC3B066A24AC6ADE000DF9BF /* CrossSigningSetupBannerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC3B066624AC6ADD000DF9BF /* CrossSigningSetupBannerCell.xib */; };
 		EC3B066B24AC6ADE000DF9BF /* CrossSigningBannerPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3B066724AC6ADD000DF9BF /* CrossSigningBannerPreferences.swift */; };
@@ -1959,6 +1960,7 @@
 		EC1CA8D924D811B400DE9EBF /* NSE-Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "NSE-Common.xcconfig"; sourceTree = "<group>"; };
 		EC2B4EF024A1EEBD005EB739 /* DataProtectionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProtectionHelper.swift; sourceTree = "<group>"; };
 		EC31F00D2518BEEB00D407DA /* GroupedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedTableViewCell.swift; sourceTree = "<group>"; };
+		EC31F011251B4DBD00D407DA /* RoomInfoListViewData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomInfoListViewData.swift; sourceTree = "<group>"; };
 		EC3B066424AC6ADD000DF9BF /* CrossSigningService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossSigningService.swift; sourceTree = "<group>"; };
 		EC3B066624AC6ADD000DF9BF /* CrossSigningSetupBannerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CrossSigningSetupBannerCell.xib; sourceTree = "<group>"; };
 		EC3B066724AC6ADD000DF9BF /* CrossSigningBannerPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossSigningBannerPreferences.swift; sourceTree = "<group>"; };
@@ -4850,6 +4852,7 @@
 				EC51E79E2514D2E100AAE7DB /* RoomInfoListViewModelType.swift */,
 				EC51E79F2514D2E100AAE7DB /* RoomInfoListViewController.storyboard */,
 				EC51E7A02514D2E100AAE7DB /* RoomInfoListViewState.swift */,
+				EC31F011251B4DBD00D407DA /* RoomInfoListViewData.swift */,
 				EC51E7A12514D2E100AAE7DB /* RoomInfoListCoordinatorType.swift */,
 				EC51E7A22514D2E100AAE7DB /* RoomInfoListCoordinator.swift */,
 				EC51E7A32514D2E100AAE7DB /* RoomInfoListViewModel.swift */,
@@ -6291,6 +6294,7 @@
 				B1B5594520EF7BD000210D55 /* TableViewCellWithCollectionView.m in Sources */,
 				B1A6C109238828A6002882FD /* SlidingModalPresentationDelegate.swift in Sources */,
 				ECAE7AEE24EFDD1F002FA813 /* MXSessionState.swift in Sources */,
+				EC31F012251B4DBD00D407DA /* RoomInfoListViewData.swift in Sources */,
 				32DB557722FDADE50016329E /* ServiceTermsModalCoordinator.swift in Sources */,
 				ECF57A4B25090C23004BBF9D /* EnterNewRoomDetailsViewModel.swift in Sources */,
 				B185145B24B8C98200EE19EA /* MajorUpdateViewController.swift in Sources */,

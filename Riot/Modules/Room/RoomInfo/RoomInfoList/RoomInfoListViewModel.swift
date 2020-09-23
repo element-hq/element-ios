@@ -32,17 +32,11 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
     weak var viewDelegate: RoomInfoListViewModelViewDelegate?
     weak var coordinatorDelegate: RoomInfoListViewModelCoordinatorDelegate?
     
-    var numberOfMembers: Int {
-        return Int(room.summary.membersCount.joined)
-    }
-    var isEncrypted: Bool {
-        return room.summary.isEncrypted
-    }
-    var basicInfoViewModel: RoomInfoBasicTableViewCellVM {
-        return self
-    }
-    var roomTopic: String? {
-        return room.summary.topic
+    private var viewData: RoomInfoListViewData {
+        return RoomInfoListViewData(numberOfMembers: Int(room.summary.membersCount.joined),
+                                    isEncrypted: room.summary.isEncrypted,
+                                    basicInfoViewModel: self,
+                                    roomTopic: room.summary.topic)
     }
     
     // MARK: - Setup
@@ -85,11 +79,11 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
     
     @objc private func roomSummaryUpdated(_ notification: Notification) {
         //  force update view
-        self.update(viewState: .loaded)
+        self.update(viewState: .loaded(viewData: viewData))
     }
     
     private func loadData() {
-        self.update(viewState: .loaded)
+        self.update(viewState: .loaded(viewData: viewData))
     }
     
     private func navigate(to target: RoomInfoListTarget) {

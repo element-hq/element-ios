@@ -18,9 +18,10 @@
 
 import Foundation
 
-/// RoomInfoListViewController view state
-enum RoomInfoListViewState {
-    case loading
-    case loaded(viewData: RoomInfoListViewData)
-    case error(Error)
+/// View data object to represent view
+struct RoomInfoListViewData {
+    let numberOfMembers: Int
+    let isEncrypted: Bool
+    let basicInfoViewModel: RoomInfoBasicTableViewCellVM
+    let roomTopic: String?
 }

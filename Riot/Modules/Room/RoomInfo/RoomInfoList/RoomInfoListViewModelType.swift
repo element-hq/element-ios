@@ -33,10 +33,5 @@ protocol RoomInfoListViewModelType {
     var viewDelegate: RoomInfoListViewModelViewDelegate? { get set }
     var coordinatorDelegate: RoomInfoListViewModelCoordinatorDelegate? { get set }
     
-    func process(viewAction: RoomInfoListViewAction)
-    var numberOfMembers: Int { get }
-    var isEncrypted: Bool { get }
-    var basicInfoViewModel: RoomInfoBasicTableViewCellVM { get }
-    var roomTopic: String? { get }
-    
+    func process(viewAction: RoomInfoListViewAction)    
 }

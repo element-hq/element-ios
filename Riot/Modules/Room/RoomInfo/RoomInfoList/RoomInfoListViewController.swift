@@ -60,11 +60,26 @@ final class RoomInfoListViewController: UIViewController {
         return controller
     }()
     
-    private enum RowType {
+    private enum RowType: Equatable {
         case `default`
         case destructive
-        case basicInfo
+        case basicInfo(_ viewModel: RoomInfoBasicTableViewCellVM)
         case textView
+        
+        static func == (lhs: RoomInfoListViewController.RowType, rhs: RoomInfoListViewController.RowType) -> Bool {
+            switch (lhs, rhs) {
+            case (.default, .default):
+                return true
+            case (.destructive, .destructive):
+                return true
+            case (.basicInfo, .basicInfo):
+                return true
+            case (.textView, .textView):
+                return true
+            default:
+                return false
+            }
+        }
     }
     
     private struct Row {
@@ -121,16 +136,16 @@ final class RoomInfoListViewController: UIViewController {
     
     // MARK: - Private
     
-    private func updateSections() {
+    private func updateSections(with viewData: RoomInfoListViewData) {
         var tmpSections: [Section] = []
         
-        let rowBasicInfo = Row(type: .basicInfo, text: nil, accessoryType: .none, action: nil)
+        let rowBasicInfo = Row(type: .basicInfo(viewData.basicInfoViewModel), text: nil, accessoryType: .none, action: nil)
         
         var sectionBasicInfo = Section(header: nil,
                                        rows: [rowBasicInfo],
                                        footer: nil)
         
-        if let topic = viewModel.roomTopic {
+        if let topic = viewData.roomTopic {
             let rowTopic = Row(type: .textView, text: topic, accessoryType: .none, action: nil)
             
             sectionBasicInfo.rows.append(rowTopic)
@@ -138,7 +153,7 @@ final class RoomInfoListViewController: UIViewController {
         
         tmpSections.append(sectionBasicInfo)
         
-        if viewModel.isEncrypted {
+        if viewData.isEncrypted {
             let sectionSecurity = Section(header: VectorL10n.securitySettingsTitle,
                                           rows: [],
                                           footer: VectorL10n.roomInfoListRoomEncrypted)
@@ -149,7 +164,7 @@ final class RoomInfoListViewController: UIViewController {
         let rowSettings = Row(type: .default, icon: Asset.Images.settingsIcon.image, text: VectorL10n.roomDetailsSettings, accessoryType: .disclosureIndicator) {
             self.viewModel.process(viewAction: .navigate(target: .settings))
         }
-        let text = viewModel.numberOfMembers == 1 ? VectorL10n.roomInfoListOneMember : VectorL10n.roomInfoListSeveralMembers(String(viewModel.numberOfMembers))
+        let text = viewData.numberOfMembers == 1 ? VectorL10n.roomInfoListOneMember : VectorL10n.roomInfoListSeveralMembers(String(viewData.numberOfMembers))
         let rowMembers = Row(type: .default, icon: Asset.Images.userIcon.image, text: text, accessoryType: .disclosureIndicator) {
             self.viewModel.process(viewAction: .navigate(target: .members))
         }
@@ -218,8 +233,8 @@ final class RoomInfoListViewController: UIViewController {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .loaded:
-            self.renderLoaded()
+        case .loaded(let viewData):
+            self.renderLoaded(viewData: viewData)
         case .error(let error):
             self.render(error: error)
         }
@@ -229,9 +244,9 @@ final class RoomInfoListViewController: UIViewController {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
     }
     
-    private func renderLoaded() {
+    private func renderLoaded(viewData: RoomInfoListViewData) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.updateSections()
+        self.updateSections(with: viewData)
     }
     
     private func render(error: Error) {
@@ -296,9 +311,9 @@ extension RoomInfoListViewController: UITableViewDataSource {
             cell.contentView.backgroundColor = .clear
             cell.tintColor = theme.tintColor
             return cell
-        case .basicInfo:
+        case .basicInfo(let basicInfoViewModel):
             let cell: RoomInfoBasicTableViewCell = tableView.dequeueReusableCell(for: indexPath)
-            cell.configure(withViewModel: viewModel.basicInfoViewModel)
+            cell.configure(withViewModel: basicInfoViewModel)
             cell.selectionStyle = .none
             cell.vc_hideSeparator()
             cell.update(theme: theme)
