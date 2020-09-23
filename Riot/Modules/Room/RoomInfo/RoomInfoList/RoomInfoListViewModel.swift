@@ -27,46 +27,6 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
     private let session: MXSession
     private let room: MXRoom
     
-    private lazy var segmentedViewController: SegmentedViewController = {
-        let controller = SegmentedViewController()
-        
-        let participants = RoomParticipantsViewController()
-        participants.finalizeInit()
-        participants.enableMention = true
-        participants.mxRoom = self.room
-        participants.delegate = self
-        
-        let files = RoomFilesViewController()
-        files.finalizeInit()
-        MXKRoomDataSource.load(withRoomId: self.room.roomId, andMatrixSession: self.session) { (dataSource) in
-            guard let dataSource = dataSource as? MXKRoomDataSource else { return }
-            dataSource.filterMessagesWithURL = true
-            dataSource.finalizeInitialization()
-            files.hasRoomDataSourceOwnership = true
-            files.displayRoom(dataSource)
-        }
-        
-        let settings = RoomSettingsViewController()
-        settings.finalizeInit()
-        settings.initWith(self.session, andRoomId: self.room.roomId)
-        
-        controller.title = VectorL10n.roomDetailsTitle
-        controller.initWithTitles([
-            VectorL10n.roomDetailsPeople,
-            VectorL10n.roomDetailsFiles,
-            VectorL10n.roomDetailsSettings
-        ], viewControllers: [
-            participants,
-            files,
-            settings
-        ], defaultSelected: 0)
-        controller.addMatrixSession(self.session)
-        
-        _ = controller.view
-        
-        return controller
-    }()
-    
     // MARK: Public
 
     weak var viewDelegate: RoomInfoListViewModelViewDelegate?
@@ -133,20 +93,7 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
     }
     
     private func navigate(to target: RoomInfoListTarget) {
-        switch target {
-        case .settings:
-            let controller = segmentedViewController
-            controller.selectedIndex = 2
-            self.coordinatorDelegate?.roomInfoListViewModel(self, wantsToNavigate: controller)
-        case .members:
-            let controller = segmentedViewController
-            controller.selectedIndex = 0
-            self.coordinatorDelegate?.roomInfoListViewModel(self, wantsToNavigate: controller)
-        case .uploads:
-            let controller = segmentedViewController
-            controller.selectedIndex = 1
-            self.coordinatorDelegate?.roomInfoListViewModel(self, wantsToNavigate: controller)
-        }
+        self.coordinatorDelegate?.roomInfoListViewModel(self, wantsToNavigateTo: target)
     }
     
     private func leave() {
@@ -208,14 +155,6 @@ extension RoomInfoListViewModel: RoomInfoBasicTableViewCellVM {
     
     var roomAddress: String? {
         return room.summary.aliases?.first
-    }
-    
-}
-
-extension RoomInfoListViewModel: RoomParticipantsViewControllerDelegate {
-    
-    func roomParticipantsViewController(_ roomParticipantsViewController: RoomParticipantsViewController!, mention member: MXRoomMember!) {
-        
     }
     
 }

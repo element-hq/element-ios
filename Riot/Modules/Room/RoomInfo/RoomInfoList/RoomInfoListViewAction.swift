@@ -18,10 +18,10 @@
 
 import Foundation
 
-enum RoomInfoListTarget {
-    case settings
-    case members
-    case uploads
+enum RoomInfoListTarget: UInt {
+    case settings = 2
+    case members = 0
+    case uploads = 1
 }
 
 /// RoomInfoListViewController view actions exposed to view model

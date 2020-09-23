@@ -63,8 +63,8 @@ final class RoomInfoListCoordinator: RoomInfoListCoordinatorType {
 // MARK: - RoomInfoListViewModelCoordinatorDelegate
 extension RoomInfoListCoordinator: RoomInfoListViewModelCoordinatorDelegate {
     
-    func roomInfoListViewModel(_ viewModel: RoomInfoListViewModelType, wantsToNavigate viewController: UIViewController) {
-        self.delegate?.roomInfoListCoordinator(self, wantsToNavigate: viewController)
+    func roomInfoListViewModel(_ viewModel: RoomInfoListViewModelType, wantsToNavigateTo target: RoomInfoListTarget) {
+        self.delegate?.roomInfoListCoordinator(self, wantsToNavigateTo: target)
     }
     
     func roomInfoListViewModelDidCancel(_ viewModel: RoomInfoListViewModelType) {

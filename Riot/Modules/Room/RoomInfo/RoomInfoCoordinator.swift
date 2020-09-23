@@ -19,7 +19,7 @@
 import UIKit
 
 @objcMembers
-final class RoomInfoCoordinator: RoomInfoCoordinatorType {
+final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
     
     // MARK: - Properties
     
@@ -28,6 +28,46 @@ final class RoomInfoCoordinator: RoomInfoCoordinatorType {
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
     private let room: MXRoom
+    
+    private lazy var segmentedViewController: SegmentedViewController = {
+        let controller = SegmentedViewController()
+        
+        let participants = RoomParticipantsViewController()
+        participants.finalizeInit()
+        participants.enableMention = true
+        participants.mxRoom = self.room
+        participants.delegate = self
+        
+        let files = RoomFilesViewController()
+        files.finalizeInit()
+        MXKRoomDataSource.load(withRoomId: self.room.roomId, andMatrixSession: self.session) { (dataSource) in
+            guard let dataSource = dataSource as? MXKRoomDataSource else { return }
+            dataSource.filterMessagesWithURL = true
+            dataSource.finalizeInitialization()
+            files.hasRoomDataSourceOwnership = true
+            files.displayRoom(dataSource)
+        }
+        
+        let settings = RoomSettingsViewController()
+        settings.finalizeInit()
+        settings.initWith(self.session, andRoomId: self.room.roomId)
+        
+        controller.title = VectorL10n.roomDetailsTitle
+        controller.initWithTitles([
+            VectorL10n.roomDetailsPeople,
+            VectorL10n.roomDetailsFiles,
+            VectorL10n.roomDetailsSettings
+        ], viewControllers: [
+            participants,
+            files,
+            settings
+        ], defaultSelected: 0)
+        controller.addMatrixSession(self.session)
+        
+        _ = controller.view
+        
+        return controller
+    }()
     
     // MARK: Public
 
@@ -72,12 +112,21 @@ final class RoomInfoCoordinator: RoomInfoCoordinatorType {
 // MARK: - RoomInfoListCoordinatorDelegate
 extension RoomInfoCoordinator: RoomInfoListCoordinatorDelegate {
     
-    func roomInfoListCoordinator(_ coordinator: RoomInfoListCoordinatorType, wantsToNavigate viewController: UIViewController) {
-        navigationRouter.push(viewController, animated: true, popCompletion: nil)
+    func roomInfoListCoordinator(_ coordinator: RoomInfoListCoordinatorType, wantsToNavigateTo target: RoomInfoListTarget) {
+        segmentedViewController.selectedIndex = target.rawValue
+        navigationRouter.push(segmentedViewController, animated: true, popCompletion: nil)
     }
     
     func roomInfoListCoordinatorDidCancel(_ coordinator: RoomInfoListCoordinatorType) {
         self.delegate?.roomInfoCoordinatorDidComplete(self)
     }
 
+}
+
+extension RoomInfoCoordinator: RoomParticipantsViewControllerDelegate {
+    
+    func roomParticipantsViewController(_ roomParticipantsViewController: RoomParticipantsViewController!, mention member: MXRoomMember!) {
+        
+    }
+    
 }
