@@ -1489,5 +1489,5 @@
 
 "room_info_list_room_encrypted" = "Messages in this room are end to end encrypted";
 "room_info_list_one_member" = "1 member";
-"room_info_list_x_members" = "%@ members";
+"room_info_list_several_members" = "%@ members";
 "room_info_list_section_other" = "Other";

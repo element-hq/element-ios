@@ -2647,8 +2647,8 @@ internal enum VectorL10n {
     return VectorL10n.tr("Vector", "room_info_list_section_other") 
   }
   /// %@ members
-  internal static func roomInfoListXMembers(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "room_info_list_x_members", p1)
+  internal static func roomInfoListSeveralMembers(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_info_list_several_members", p1)
   }
   /// Jump to first unread message
   internal static var roomJumpToFirstUnread: String { 

@@ -137,7 +137,7 @@ final class RoomInfoListViewController: UIViewController {
         let row_2_0 = Row(type: .default, icon: Asset.Images.settingsIcon.image, text: VectorL10n.roomDetailsSettings, accessoryType: .disclosureIndicator) {
             self.viewModel.process(viewAction: .navigate(target: .settings))
         }
-        let text = viewModel.numberOfMembers == 1 ? VectorL10n.roomInfoListOneMember : VectorL10n.roomInfoListXMembers(String(viewModel.numberOfMembers))
+        let text = viewModel.numberOfMembers == 1 ? VectorL10n.roomInfoListOneMember : VectorL10n.roomInfoListSeveralMembers(String(viewModel.numberOfMembers))
         let row_2_2 = Row(type: .default, icon: Asset.Images.userIcon.image, text: text, accessoryType: .disclosureIndicator) {
             self.viewModel.process(viewAction: .navigate(target: .members))
         }
