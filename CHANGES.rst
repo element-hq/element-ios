@@ -10,6 +10,7 @@ Changes to be released in next version
 🐛 Bugfix
  * Timeline: Hide encrypted history (pre-invite) (#3660).
  * Fix floating action buttons' images.
+ * Room: Fix message not shown after push issue (#3672).
 
 ⚠️ API Changes
  * 
