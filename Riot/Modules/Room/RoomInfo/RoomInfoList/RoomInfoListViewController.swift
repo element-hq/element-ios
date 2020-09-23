@@ -110,54 +110,54 @@ final class RoomInfoListViewController: UIViewController {
     private func updateSections() {
         var tmpSections: [Section] = []
         
-        let row_0_0 = Row(type: .basicInfo, text: nil, accessoryType: .none, action: nil)
+        let rowBasicInfo = Row(type: .basicInfo, text: nil, accessoryType: .none, action: nil)
         
-        var section0 = Section(header: nil,
-                               rows: [row_0_0],
-                               footer: nil)
+        var sectionBasicInfo = Section(header: nil,
+                                       rows: [rowBasicInfo],
+                                       footer: nil)
         
         if let topic = viewModel.roomTopic {
-            let row_0_1 = Row(type: .textView, text: topic, accessoryType: .none, action: nil)
+            let rowTopic = Row(type: .textView, text: topic, accessoryType: .none, action: nil)
             
-            section0.rows.append(row_0_1)
+            sectionBasicInfo.rows.append(rowTopic)
         }
         
-        tmpSections.append(section0)
+        tmpSections.append(sectionBasicInfo)
         
         if viewModel.isEncrypted {
-            let section1 = Section(header: VectorL10n.securitySettingsTitle,
-                                   rows: [],
-                                   footer: VectorL10n.roomInfoListRoomEncrypted)
+            let sectionSecurity = Section(header: VectorL10n.securitySettingsTitle,
+                                          rows: [],
+                                          footer: VectorL10n.roomInfoListRoomEncrypted)
             
-            tmpSections.append(section1)
+            tmpSections.append(sectionSecurity)
         }
         
-        let row_2_0 = Row(type: .default, icon: Asset.Images.settingsIcon.image, text: VectorL10n.roomDetailsSettings, accessoryType: .disclosureIndicator) {
+        let rowSettings = Row(type: .default, icon: Asset.Images.settingsIcon.image, text: VectorL10n.roomDetailsSettings, accessoryType: .disclosureIndicator) {
             self.viewModel.process(viewAction: .navigate(target: .settings))
         }
         let text = viewModel.numberOfMembers == 1 ? VectorL10n.roomInfoListOneMember : VectorL10n.roomInfoListSeveralMembers(String(viewModel.numberOfMembers))
-        let row_2_2 = Row(type: .default, icon: Asset.Images.userIcon.image, text: text, accessoryType: .disclosureIndicator) {
+        let rowMembers = Row(type: .default, icon: Asset.Images.userIcon.image, text: text, accessoryType: .disclosureIndicator) {
             self.viewModel.process(viewAction: .navigate(target: .members))
         }
-        let row_2_3 = Row(type: .default, icon: Asset.Images.scrollup.image, text: VectorL10n.roomDetailsFiles, accessoryType: .disclosureIndicator) {
+        let rowUploads = Row(type: .default, icon: Asset.Images.scrollup.image, text: VectorL10n.roomDetailsFiles, accessoryType: .disclosureIndicator) {
             self.viewModel.process(viewAction: .navigate(target: .uploads))
         }
         
-        let section2 = Section(header: VectorL10n.roomInfoListSectionOther,
-                               rows: [row_2_0,
-                                      row_2_2,
-                                      row_2_3],
-                               footer: nil)
+        let sectionSettings = Section(header: VectorL10n.roomInfoListSectionOther,
+                                      rows: [rowSettings,
+                                             rowMembers,
+                                             rowUploads],
+                                      footer: nil)
         
-        let row_3_0 = Row(type: .destructive, icon: Asset.Images.roomActionLeave.image, text: VectorL10n.roomParticipantsLeavePromptTitle, accessoryType: .none) {
+        let rowLeave = Row(type: .destructive, icon: Asset.Images.roomActionLeave.image, text: VectorL10n.roomParticipantsLeavePromptTitle, accessoryType: .none) {
             self.viewModel.process(viewAction: .leave)
         }
-        let section3 = Section(header: nil,
-                               rows: [row_3_0],
-                               footer: nil)
+        let sectionLeave = Section(header: nil,
+                                   rows: [rowLeave],
+                                   footer: nil)
         
-        tmpSections.append(section2)
-        tmpSections.append(section3)
+        tmpSections.append(sectionSettings)
+        tmpSections.append(sectionLeave)
         
         sections = tmpSections
     }
