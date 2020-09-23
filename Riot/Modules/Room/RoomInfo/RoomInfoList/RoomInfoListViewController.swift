@@ -39,11 +39,9 @@ final class RoomInfoListViewController: UIViewController {
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
     
-    private lazy var closeButton: UIButton = {
-        let button = UIButton(frame: CGRect(origin: .zero, size: CGSize(width: 28, height: 28)))
-        button.layer.cornerRadius = 14
-        button.clipsToBounds = true
-        button.setImage(Asset.Images.closeButton.image, for: .normal)
+    private lazy var closeButton: CloseButton = {
+        let button = CloseButton()
+        button.isHighlighted = true
         button.addTarget(self, action: #selector(closeButtonTapped(_:)), for: .touchUpInside)
         return button
     }()
@@ -174,9 +172,7 @@ final class RoomInfoListViewController: UIViewController {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
-        closeButton.backgroundColor = theme.headerBorderColor
-        closeButton.tintColor = theme.textSecondaryColor
-        closeButton.setImage(closeButton.image(for: .normal)?.vc_tintedImage(usingColor: theme.textSecondaryColor), for: .normal)
+        closeButton.update(theme: theme)
         
         mainTableView.reloadData()
     }
