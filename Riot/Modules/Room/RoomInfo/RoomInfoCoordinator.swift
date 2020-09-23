@@ -76,10 +76,6 @@ extension RoomInfoCoordinator: RoomInfoListCoordinatorDelegate {
         navigationRouter.push(viewController, animated: true, popCompletion: nil)
     }
     
-    func roomInfoListCoordinator(_ coordinator: RoomInfoListCoordinatorType, wantsToPresent viewController: UIViewController) {
-        navigationRouter.present(viewController, animated: true)
-    }
-
     func roomInfoListCoordinatorDidCancel(_ coordinator: RoomInfoListCoordinatorType) {
         self.delegate?.roomInfoCoordinatorDidComplete(self)
     }

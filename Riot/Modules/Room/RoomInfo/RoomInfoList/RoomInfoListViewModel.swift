@@ -67,29 +67,6 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
         return controller
     }()
     
-    private lazy var leaveAlertController: UIAlertController = {
-        let controller = UIAlertController(title: VectorL10n.roomParticipantsLeavePromptTitle, message: VectorL10n.roomParticipantsLeavePromptMsg, preferredStyle: .alert)
-        
-        controller.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil))
-        controller.addAction(UIAlertAction(title: VectorL10n.leave, style: .default, handler: { [weak self] (action) in
-            guard let self = self else { return }
-            self.stopObservingSummaryChanges()
-            self.update(viewState: .loading)
-            self.room.leave { (response) in
-                switch response {
-                case .success:
-                    self.coordinatorDelegate?.roomInfoListViewModelDidCancel(self)
-                case .failure(let error):
-                    self.startObservingSummaryChanges()
-                    self.update(viewState: .error(error))
-                }
-            }
-        }))
-        controller.mxk_setAccessibilityIdentifier("RoomSettingsVCLeaveAlert")
-        
-        return controller
-    }()
-    
     // MARK: Public
 
     weak var viewDelegate: RoomInfoListViewModelViewDelegate?
@@ -173,7 +150,17 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
     }
     
     private func leave() {
-        self.coordinatorDelegate?.roomInfoListViewModel(self, wantsToPresent: leaveAlertController)
+        self.stopObservingSummaryChanges()
+        self.update(viewState: .loading)
+        self.room.leave { (response) in
+            switch response {
+            case .success:
+                self.coordinatorDelegate?.roomInfoListViewModelDidCancel(self)
+            case .failure(let error):
+                self.startObservingSummaryChanges()
+                self.update(viewState: .error(error))
+            }
+        }
     }
     
     private func update(viewState: RoomInfoListViewState) {

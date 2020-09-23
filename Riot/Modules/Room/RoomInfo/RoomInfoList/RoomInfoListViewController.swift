@@ -47,6 +47,19 @@ final class RoomInfoListViewController: UIViewController {
         return button
     }()
     
+    private lazy var leaveAlertController: UIAlertController = {
+        let controller = UIAlertController(title: VectorL10n.roomParticipantsLeavePromptTitle, message: VectorL10n.roomParticipantsLeavePromptMsg, preferredStyle: .alert)
+        
+        controller.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil))
+        controller.addAction(UIAlertAction(title: VectorL10n.leave, style: .default, handler: { [weak self] (action) in
+            guard let self = self else { return }
+            self.viewModel.process(viewAction: .leave)
+        }))
+        controller.mxk_setAccessibilityIdentifier("RoomSettingsVCLeaveAlert")
+        
+        return controller
+    }()
+    
     private enum RowType {
         case `default`
         case destructive
@@ -151,7 +164,7 @@ final class RoomInfoListViewController: UIViewController {
                                       footer: nil)
         
         let rowLeave = Row(type: .destructive, icon: Asset.Images.roomActionLeave.image, text: VectorL10n.roomParticipantsLeavePromptTitle, accessoryType: .none) {
-            self.viewModel.process(viewAction: .leave)
+            self.present(self.leaveAlertController, animated: true, completion: nil)
         }
         let sectionLeave = Section(header: nil,
                                    rows: [rowLeave],
