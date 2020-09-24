@@ -21,7 +21,7 @@ protocol SplitViewCoordinatorDelegate: class {
     func splitViewCoordinatorDidCompleteAuthentication(_ coordinator: SplitViewCoordinatorType)
 }
 
-/// `SplitViewCoordinatorType` is a protocol describing a Coordinator that handle split view navigation flow.
+/// `SplitViewCoordinatorType` is a protocol describing a Coordinator that handles split view navigation flow.
 protocol SplitViewCoordinatorType: Coordinator, Presentable {
     
     var delegate: SplitViewCoordinatorDelegate? { get }
