@@ -338,10 +338,6 @@ internal enum VectorL10n {
   internal static func biometricsDesetupDisableButtonTitleX(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "biometrics_desetup_disable_button_title_x", p1)
   }
-  /// 
-  internal static var biometricsDesetupSubtitle: String { 
-    return VectorL10n.tr("Vector", "biometrics_desetup_subtitle") 
-  }
   /// Disable %@
   internal static func biometricsDesetupTitleX(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "biometrics_desetup_title_x", p1)

@@ -1452,7 +1452,6 @@
 "biometrics_setup_subtitle" = "Save yourself time";
 
 "biometrics_desetup_title_x" = "Disable %@";
-"biometrics_desetup_subtitle" = "";
 "biometrics_desetup_disable_button_title_x" = "Disable %@";
 
 "biometrics_usage_reason" = "Authentication is needed to access your app";
