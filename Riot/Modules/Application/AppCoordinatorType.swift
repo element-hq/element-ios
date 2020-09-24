@@ -16,6 +16,6 @@
 
 import Foundation
 
-/// `AppCoordinatorType` is a protocol describing a Coordinator that handle application navigation flow.
+/// `AppCoordinatorType` is a protocol describing a Coordinator that handles application navigation flow. 
 protocol AppCoordinatorType: Coordinator {
 }

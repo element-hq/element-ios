@@ -60,6 +60,7 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
         tabBarCoordinator.delegate = self
         tabBarCoordinator.splitViewMasterPresentableDelegate = self
         tabBarCoordinator.start()
+        
         let detailNavigationController = self.createDetailNavigationController()
         
         self.splitViewController.viewControllers = [tabBarCoordinator.toPresentable(), detailNavigationController]

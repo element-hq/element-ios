@@ -17,6 +17,8 @@
 import Foundation
 import Intents
 
+/// The AppCoordinator is responsible of screen navigation and data injection at root application level. It decides if authentication or home screen should be shown and inject data needed for these flows, it changes the navigation stack on deep link, displays global warning.
+/// This class should avoid to contain too many data management code not related to screen navigation logic. For example `MXSession` or push notification management should be handled in dedicated classes and report only navigation changes to the AppCoordinator.
 final class AppCoordinator: NSObject, AppCoordinatorType {
     
     // MARK: - Constants
@@ -26,7 +28,9 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     // MARK: Private
     
     private let rootRouter: RootRouterType
+    // swiftlint:disable weak_delegate        
     private let legacyAppDelegate: LegacyAppDelegate = AppDelegate.theDelegate()
+    // swiftlint:enable weak_delegate
     
     private weak var splitViewCoordinator: SplitViewCoordinatorType?
     
@@ -54,7 +58,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         
     // MARK: - Private methods
     
-    private func showLogin() {
+    private func showAuthentication() {
         // TODO: Implement
     }
     
