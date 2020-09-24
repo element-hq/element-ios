@@ -55,6 +55,10 @@ class LocalAuthenticationService: NSObject {
         }
         return (systemUptime - appLastActiveTime) > pinCodePreferences.graceTimeInSeconds
     }
+    
+    var isProtectionSet: Bool {
+        return pinCodePreferences.isPinSet || pinCodePreferences.isBiometricsSet
+    }
 
     func applicationWillResignActive() {
         appLastActiveTime = systemUptime

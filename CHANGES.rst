@@ -6,10 +6,13 @@ Changes to be released in next version
     
 🙌 Improvements
  * AppDelegate: Convert to Swift (#3594).
+ * Contextualize floating button actions per tab (#3627).
  * Architecture: Use coordinator pattern for legacy screen flows (#3597).
     
 🐛 Bugfix
- * 
+ * Show pin code screen on every foreground (#3620). 
+ * Close keyboard on pin code screen (#3622).
+ * Fix content leakage on pin code protection (#3624).
     
 ⚠️ API Changes
  * 
@@ -22,6 +25,9 @@ Changes to be released in next version
     
 Others
  * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.18](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.18)).
 
 Changes in 1.0.9 (2020-09-03)
 =================================================

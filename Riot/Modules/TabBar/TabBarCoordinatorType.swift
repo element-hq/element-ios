@@ -19,6 +19,8 @@
 import Foundation
 
 protocol TabBarCoordinatorDelegate: class {
+    // TODO: Remove this method, authentication should not be handled by TabBarCoordinator
+    func tabBarCoordinatorDidCompleteAuthentication(_ coordinator: TabBarCoordinatorType)
 }
 
 /// `TabBarCoordinatorType` is a protocol describing a Coordinator that handle keybackup setup navigation flow.

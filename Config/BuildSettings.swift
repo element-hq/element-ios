@@ -158,6 +158,9 @@ final class BuildSettings: NSObject {
     /// Setting to force protection by pin code
     static let forcePinProtection: Bool = false
     
+    /// Max allowed time to continue using the app without prompting PIN
+    static let pinCodeGraceTimeInSeconds: TimeInterval = 0
+    
     /// Force non-jailbroken app usage
     static let forceNonJailbrokenUsage: Bool = true
     
@@ -165,6 +168,10 @@ final class BuildSettings: NSObject {
     
     static let allowLocalContactsAccess: Bool = true
     
+    // MARK: - Feature Specifics
+    
+    /// Not allowed pin codes. User won't be able to select one of the pin in the list.
+    static let notAllowedPINs: [String] = []
     
     // MARK: - General Settings Screen
     

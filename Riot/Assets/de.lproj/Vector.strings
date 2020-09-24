@@ -314,7 +314,7 @@
 "settings_phone_number" = "Telefon";
 "settings_add_phone_number" = "Telefonnummer hinzufügen";
 "settings_fail_to_update_profile" = "Profilaktualisierung fehlgeschlagen";
-"settings_global_settings_info" = "Globale Benachrichtigungseinstellungen sind auf Ihrem% @ web-Client verfügbar";
+"settings_global_settings_info" = "Globale Benachrichtigungseinstellungen sind auf deinem %@ web-Client verfügbar";
 "settings_pin_rooms_with_missed_notif" = "Pinnen von Räumen mit verpassten Benachrichtigungen";
 "settings_pin_rooms_with_unread" = "Pinnen von Räumen mit ungelesenen Nachrichten";
 "settings_on_denied_notification" = "Benachrichtigungen verboten für %@, bitte in den Geräte-Einstellungen erlauben";
@@ -739,7 +739,7 @@
 "auth_softlogout_reason" = "Deine Heimserver-Administration (%1$s) hat dich von deinem Konto %2$s (%3$s) abgemeldet.";
 "auth_softlogout_recover_encryption_keys" = "Melden dich an, um ausschließlich auf diesem Gerät gespeicherte Verschlüsselungsschlüssel wiederherzustellen. Du benötigst sie, um deine verschlüsselten Nachrichten auf jedem Gerät zu lesen.";
 "auth_softlogout_clear_data" = "Persönliche Daten löschen";
-"auth_softlogout_clear_data_message_1" = "Warnung: Ihre persönlichen Daten (einschließlich Verschlüsselungsschlüssel) sind noch auf diesem Gerät gespeichert.";
+"auth_softlogout_clear_data_message_1" = "Warnung: Deine persönlichen Daten (einschließlich Verschlüsselungsschlüssel) sind noch auf diesem Gerät gespeichert.";
 "auth_softlogout_clear_data_message_2" = "Deaktiviere es, wenn du dieses Gerät nicht mehr verwendest oder du dich mit einem anderen Konto anmelden möchtst.";
 "auth_softlogout_clear_data_button" = "Lösche alle Daten";
 "auth_softlogout_clear_data_sign_out_title" = "Bist du sicher?";
@@ -801,9 +801,9 @@
 // Image picker
 "image_picker_action_camera" = "Foto aufnehmen";
 "image_picker_action_library" = "Aus der Mediathek auswählen";
-"camera_unavailable" = "Die Kamera ist auf Ihrem Gerät nicht verfügbar";
+"camera_unavailable" = "Die Kamera ist auf deinem Gerät nicht verfügbar";
 "photo_library_access_not_granted" = "%@ hat keine Berechtigung zum Zugriff auf die Fotobibliothek. Bitte ändere die Datenschutzeinstellungen";
-"auth_forgot_password_error_no_configured_identity_server" = "Es ist kein Identitätsserver konfiguriert: Füge einen hinzu, um Ihr Kennwort zurückzusetzen.";
+"auth_forgot_password_error_no_configured_identity_server" = "Es ist kein Identitätsserver konfiguriert: Füge einen hinzu, um dein Kennwort zurückzusetzen.";
 "room_creation_error_invite_user_by_email_without_identity_server" = "Es ist kein Identitätsserver konfiguriert, sodass du keine Teilnehmenden mit einer E-Mail hinzufügen kannst.";
 "room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Es ist kein Identitätsserver konfiguriert, sodass du keinen Chat mit einem Kontakt über eine E-Mail starten kannst.";
 // Service terms
@@ -834,7 +834,7 @@
 "settings_identity_server_settings" = "IDENTITÄT SERVER";
 "settings_three_pids_management_information_part1" = "Verwalte hier, mit welchen E-Mail-Adressen oder Telefonnummern du dich anmeldest, oder dein Konto wiederherstellen kannst. Kontrolliere, wer dich finden kann ";
 "settings_three_pids_management_information_part3" = ".";
-"settings_calls_stun_server_fallback_button" = "Fallback-Call-Assist-Server zulassen";
+"settings_calls_stun_server_fallback_button" = "Ausweich-Anruf-Assistenz-Server zulassen";
 "settings_devices_description" = "Der öffentliche Name der Sitzung ist für Personen sichtbar, mit denen du kommunizierst";
 "settings_discovery_no_identity_server" = "Du verwendest derzeit keinen Identitätsserver. Füge einen hinzu, um für vorhandene, dir bekannte Kontakte sichtbar zu sein.";
 "settings_discovery_terms_not_signed" = "Stimme den Nutzungsbedingungen des Identitätsservers (%@) zu, um zu erlauben per E-Mail oder Telefonnummer gefunden zu werden.";
@@ -873,7 +873,7 @@
 "auth_add_email_message_2" = "Richte eine E-Mail für die Kontowiederherstellung ein. Optional, kannst du später einrichten, dass Personen dich über diese Adresse finden.";
 "auth_add_phone_message_2" = "Richte eine Telefonnummer ein. Später kannst du einrichten, dass Personen dich über diese finden.";
 "auth_add_email_phone_message_2" = "Lege eine E-Mail-Adresse für die Kontowiederherstellung fest. Später kann optional eine E-Mail-Adresse oder eine Telefonnummer dazu verwendet werden, um von anderen Personen gefunden zu werden.";
-"settings_calls_stun_server_fallback_description" = "Fallback Call Assist Server %@ zulassen, wenn Ihr Heimserver keinen anbietet (Ihre IP-Adresse wird während eines Anrufs weitergegeben).";
+"settings_calls_stun_server_fallback_description" = "Ausweich-Anruf-Assistenz-Server %@ zulassen, wenn dein Heimserver keinen anbietet (deine IP-Adresse wird während eines Anrufs weitergegeben).";
 "settings_discovery_three_pid_details_information_phone_number" = "Verwalte die Einstellungen für diese Telefonnummer, die andere Benutzer!nnen verwenden können, um dich zu entdecken und dich in Räume einzuladen. Hinzufügen oder Entfernen von Telefonnummern in Konten.";
 "settings_identity_server_description" = "Mithilfe des oben festgelegten Identitätsservers kannst du vorhandene Kontakte finden und dich für diese sichtbar machen.";
 "settings_identity_server_no_is_description" = "Du nutzt momentan keinen Identitätsserver. Um von bestehenden Kontakten gefunden zu werden und diese zu finden, füge oben einen hinzu.";
@@ -1019,7 +1019,7 @@
 "security_settings_crosssigning_info_ok" = "Cross-signing ist angeschaltet.";
 "security_settings_crosssigning_reset" = "Cross-signing zurücksetzen";
 "security_settings_coming_soon" = "Entschuldigung, diese Funktion ist noch nicht für Element iOS verfügbar. Bitte nutze einen anderen Matrix Client, um es einzurichten. Element iOS wird es benutzen.";
-"security_settings_user_password_description" = "Bestätigen Sie Ihre Identität durch Eingabe von deinem Kontopasswort";
+"security_settings_user_password_description" = "Bestätige deine Identität durch Eingabe des Kontopassworts";
 // AuthenticatedSessionViewControllerFactory
 "authenticated_session_flow_not_supported" = "Diese App unterstützt nicht diese Authentifizierungsmethode für deinen Home-Server.";
 "secure_key_backup_setup_intro_title" = "Sicheres Backup";
@@ -1180,3 +1180,4 @@
 "biometrics_cant_unlocked_alert_message_x" = "Zum Entsperren nutze %@ oder melde dich erneut an und reaktiviere %@";
 "biometrics_cant_unlocked_alert_message_login" = "Erneut anmelden";
 "biometrics_cant_unlocked_alert_message_retry" = "Erneut probieren";
+"device_verification_self_verify_wait_recover_secrets_checking_availability" = "Nach anderen Überprüfungsfunktionen suchen ...";

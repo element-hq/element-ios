@@ -178,6 +178,8 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 
 - (void)configureCallManagerIfRequiredForSession:(MXSession *)mxSession;
 
+- (void)authenticationDidComplete;
+
 #pragma mark - Matrix Accounts handling
 
 - (void)selectMatrixAccount:(void (^)(MXKAccount *selectedAccount))onSelection;

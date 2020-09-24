@@ -22,7 +22,7 @@ protocol SlidingModalContainerViewDelegate: class {
 }
 
 /// `SlidingModalContainerView` is a custom UIView used as a `UIViewControllerContextTransitioning.containerView` subview to embed a `SlidingModalPresentable` during presentation.
-final class SlidingModalContainerView: UIView, Themable, NibLoadable {
+class SlidingModalContainerView: UIView, Themable, NibLoadable {
     
     // MARK: - Constants
     
@@ -72,7 +72,7 @@ final class SlidingModalContainerView: UIView, Themable, NibLoadable {
     // MARK: - Setup
     
     static func instantiate() -> SlidingModalContainerView {
-        return SlidingModalContainerView.loadFromNib()
+        return self.loadFromNib()
     }
         
     // MARK: - Life cycle

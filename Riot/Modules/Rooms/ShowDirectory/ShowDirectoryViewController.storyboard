@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yEe-Sn-mN0">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Show Directory View Controller-->
+        <scene sceneID="bXw-aP-pys">
+            <objects>
+                <viewController storyboardIdentifier="SearchableDirectoryViewController" id="yEe-Sn-mN0" customClass="ShowDirectoryViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ALX-A9-ywk">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hBr-zt-GEh">
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="yEe-Sn-mN0" id="FHU-nL-H9g"/>
+                                    <outlet property="delegate" destination="yEe-Sn-mN0" id="V30-de-Prc"/>
+                                </connections>
+                            </tableView>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="shK-Lq-qu8">
+                                <rect key="frame" x="0.0" y="812" width="414" height="84"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="o3H-fV-geh">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="84"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sbh-JU-SHP">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="84"/>
+                                            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="4ka-0i-i4y">
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="84"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            </view>
+                                            <vibrancyEffect>
+                                                <blurEffect style="regular"/>
+                                            </vibrancyEffect>
+                                        </visualEffectView>
+                                        <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qGk-Os-0Dj">
+                                            <rect key="frame" x="140" y="27" width="134" height="30"/>
+                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                            <color key="tintColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <state key="normal" title="Create a new room"/>
+                                            <connections>
+                                                <action selector="createRoomButtonTapped:" destination="yEe-Sn-mN0" eventType="touchUpInside" id="7TP-Tn-kuq"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Sbh-JU-SHP" firstAttribute="leading" secondItem="o3H-fV-geh" secondAttribute="leading" id="CZW-xn-mr2"/>
+                                        <constraint firstAttribute="bottom" secondItem="Sbh-JU-SHP" secondAttribute="bottom" id="Fnr-YE-4EN"/>
+                                        <constraint firstAttribute="trailing" secondItem="Sbh-JU-SHP" secondAttribute="trailing" id="HSV-PE-Ycn"/>
+                                        <constraint firstItem="qGk-Os-0Dj" firstAttribute="centerX" secondItem="o3H-fV-geh" secondAttribute="centerX" id="PcN-U5-R7I"/>
+                                        <constraint firstItem="Sbh-JU-SHP" firstAttribute="top" secondItem="o3H-fV-geh" secondAttribute="top" id="UYa-Bi-dEn"/>
+                                        <constraint firstItem="qGk-Os-0Dj" firstAttribute="centerY" secondItem="o3H-fV-geh" secondAttribute="centerY" id="uS7-P1-Hi9"/>
+                                    </constraints>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="84" id="iU1-Ev-7sx"/>
+                                </constraints>
+                                <blurEffect style="regular"/>
+                            </visualEffectView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="hBr-zt-GEh" secondAttribute="bottom" id="2m9-dZ-hbT"/>
+                            <constraint firstAttribute="trailing" secondItem="hBr-zt-GEh" secondAttribute="trailing" id="9rC-zz-tGb"/>
+                            <constraint firstItem="hBr-zt-GEh" firstAttribute="leading" secondItem="ALX-A9-ywk" secondAttribute="leading" id="AMV-UD-oAB"/>
+                            <constraint firstAttribute="trailing" secondItem="shK-Lq-qu8" secondAttribute="trailing" id="MaI-VM-heW"/>
+                            <constraint firstItem="shK-Lq-qu8" firstAttribute="leading" secondItem="ALX-A9-ywk" secondAttribute="leading" id="alj-5Q-VqD"/>
+                            <constraint firstAttribute="bottom" secondItem="shK-Lq-qu8" secondAttribute="bottom" id="n8O-5X-KlB"/>
+                            <constraint firstItem="hBr-zt-GEh" firstAttribute="top" secondItem="PMt-fQ-rFh" secondAttribute="top" id="z0k-qY-JPZ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="PMt-fQ-rFh"/>
+                    </view>
+                    <connections>
+                        <outlet property="createRoomButton" destination="qGk-Os-0Dj" id="eGX-z9-mAi"/>
+                        <outlet property="mainTableView" destination="hBr-zt-GEh" id="erE-8r-vuc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lCT-2C-Scp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2479.1999999999998" y="-36.431784107946029"/>
+        </scene>
+    </scenes>
+</document>

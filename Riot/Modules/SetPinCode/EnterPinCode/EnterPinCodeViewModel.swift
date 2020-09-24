@@ -25,6 +25,7 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
     // MARK: Private
 
     private let session: MXSession?
+    private var originalViewMode: SetPinCoordinatorViewMode
     private var viewMode: SetPinCoordinatorViewMode
     
     private var firstPin: String = ""
@@ -45,6 +46,7 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
     
     init(session: MXSession?, viewMode: SetPinCoordinatorViewMode, pinCodePreferences: PinCodePreferences) {
         self.session = session
+        self.originalViewMode = viewMode
         self.viewMode = viewMode
         self.pinCodePreferences = pinCodePreferences
     }
@@ -84,16 +86,41 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
                 return
             } else {
                 currentPin.removeLast()
+                
+                //  switch to setPin if blocked
+                if viewMode == .notAllowedPin {
+                    //  clear error UI
+                    update(viewState: viewState(for: originalViewMode))
+                    //  switch back to original flow
+                    viewMode = originalViewMode
+                }
             }
         } else {
             //  a digit tapped
+            
+            //  switch to setPin if blocked
+            if viewMode == .notAllowedPin {
+                //  clear old pin first
+                currentPin.removeAll()
+                //  clear error UI
+                update(viewState: viewState(for: originalViewMode))
+                //  switch back to original flow
+                viewMode = originalViewMode
+            }
+            //  add new digit
             currentPin += String(tag)
             
             if currentPin.count == pinCodePreferences.numberOfDigits {
                 switch viewMode {
-                case .setPin:
+                case .setPin, .setPinAfterLogin, .setPinAfterRegister:
                     //  choosing pin
                     if firstPin.isEmpty {
+                        //  check if this PIN is allowed
+                        if pinCodePreferences.notAllowedPINs.contains(currentPin) {
+                            viewMode = .notAllowedPin
+                            update(viewState: .notAllowedPin)
+                            return
+                        }
                         //  go to next screen
                         firstPin = currentPin
                         currentPin.removeAll()
@@ -139,15 +166,30 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
         }
     }
     
+    private func viewState(for mode: SetPinCoordinatorViewMode) -> EnterPinCodeViewState {
+        switch mode {
+        case .setPin:
+            return .choosePin
+        case .setPinAfterLogin:
+            return .choosePinAfterLogin
+        case .setPinAfterRegister:
+            return .choosePinAfterRegister
+        default:
+            return .inactive
+        }
+    }
+    
     private func loadData() {
         switch viewMode {
-        case .setPin:
-            update(viewState: .choosePin)
+        case .setPin, .setPinAfterLogin, .setPinAfterRegister:
+            update(viewState: viewState(for: viewMode))
             self.viewDelegate?.enterPinCodeViewModel(self, didUpdateCancelButtonHidden: pinCodePreferences.forcePinProtection)
         case .unlock:
             update(viewState: .unlock)
         case .confirmPinToDeactivate:
             update(viewState: .confirmPinToDisable)
+        case .inactive:
+            update(viewState: .inactive)
         default:
             break
         }

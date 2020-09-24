@@ -131,9 +131,9 @@
 - (void)onPlusButtonPressed;
 
 /**
- Create an empty room.
+ Open screen to create a new room.
  */
-- (void)createAnEmptyRoom;
+- (void)createNewRoom;
 
 /**
  Join a room by alias or id.

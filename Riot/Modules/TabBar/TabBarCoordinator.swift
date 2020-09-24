@@ -178,6 +178,10 @@ extension TabBarCoordinator: UINavigationControllerDelegate {
 // MARK: - MasterTabBarControllerDelegate
 extension TabBarCoordinator: MasterTabBarControllerDelegate {
     
+    func masterTabBarControllerDidCompleteAuthentication(_ masterTabBarController: MasterTabBarController!) {
+        self.delegate?.tabBarCoordinatorDidCompleteAuthentication(self)
+    }
+    
     func masterTabBarController(_ masterTabBarController: MasterTabBarController!, wantsToPresentDetailViewController detailViewController: UIViewController!) {
         
         self.splitViewMasterPresentableDelegate?.splitViewMasterPresentable(self, wantsToDisplay: detailViewController)

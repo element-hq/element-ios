@@ -36,6 +36,8 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
     
     var childCoordinators: [Coordinator] = []
     
+    weak var delegate: SplitViewCoordinatorDelegate?
+    
     // MARK: - Setup
     
     // TODO: Improve sessions injection
@@ -151,7 +153,9 @@ extension SplitViewCoordinator: UISplitViewControllerDelegate {
 
 /// MARK: - UINavigationControllerDelegate
 extension SplitViewCoordinator: TabBarCoordinatorDelegate {
-    
+    func tabBarCoordinatorDidCompleteAuthentication(_ coordinator: TabBarCoordinatorType) {
+        self.delegate?.splitViewCoordinatorDidCompleteAuthentication(self)
+    }
 }
 
 /// MARK: - SplitViewMasterPresentableDelegate

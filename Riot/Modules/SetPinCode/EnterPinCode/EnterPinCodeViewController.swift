@@ -30,10 +30,17 @@ final class EnterPinCodeViewController: UIViewController {
     
     // MARK: Outlets
     
+    @IBOutlet private weak var mainStackView: UIStackView!
+    @IBOutlet private weak var inactiveView: UIView!
+    @IBOutlet private weak var inactiveLogoImageView: UIImageView!
     @IBOutlet private weak var logoImageView: UIImageView!
     @IBOutlet private weak var placeholderStackView: UIStackView!
+    @IBOutlet private weak var notAllowedPinView: UIView!
+    @IBOutlet private weak var notAllowedPinLineView: UIView!
+    @IBOutlet private weak var notAllowedPinLabel: UILabel!
     @IBOutlet private weak var digitsStackView: UIStackView!
     @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private weak var explanatoryLabel: UILabel!
     @IBOutlet private weak var forgotPinButton: UIButton!
     
     // MARK: Private
@@ -75,6 +82,12 @@ final class EnterPinCodeViewController: UIViewController {
             UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
         }
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        UIApplication.shared.vc_closeKeyboard()
+    }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.theme.statusBarStyle
@@ -107,6 +120,9 @@ final class EnterPinCodeViewController: UIViewController {
         }
 
         self.informationLabel.textColor = theme.textPrimaryColor
+        self.explanatoryLabel.textColor = theme.textSecondaryColor
+        self.notAllowedPinLineView.backgroundColor = theme.noticeColor
+        self.notAllowedPinLabel.textColor = theme.noticeColor
 
         updateThemesOfAllImages(in: placeholderStackView, with: theme)
         updateThemesOfAllButtons(in: digitsStackView, with: theme)
@@ -148,6 +164,8 @@ final class EnterPinCodeViewController: UIViewController {
         
         self.title = ""
         
+        notAllowedPinLabel.text = VectorL10n.pinProtectionNotAllowedPin
+        
         placeholderStackView.vc_removeAllArrangedSubviews()
         for i in 0..<PinCodePreferences.shared.numberOfDigits {
             let imageView = UIImageView(image: Asset.Images.selectionUntick.image)
@@ -174,6 +192,12 @@ final class EnterPinCodeViewController: UIViewController {
         switch viewState {
         case .choosePin:
             self.renderChoosePin()
+        case .choosePinAfterLogin:
+            self.renderChoosePinAfterLogin()
+        case .choosePinAfterRegister:
+            self.renderChoosePinAfterRegister()
+        case .notAllowedPin:
+            self.renderNotAllowedPin()
         case .confirmPin:
             self.renderConfirmPin()
         case .pinsDontMatch:
@@ -188,17 +212,46 @@ final class EnterPinCodeViewController: UIViewController {
             self.renderForgotPin()
         case .confirmPinToDisable:
             self.renderConfirmPinToDisable()
+        case .inactive:
+            self.renderInactive()
         }
     }
     
     private func renderChoosePin() {
+        self.inactiveView.isHidden = true
+        self.mainStackView.isHidden = false
         self.logoImageView.isHidden = true
         self.informationLabel.text = VectorL10n.pinProtectionChoosePin
+        self.explanatoryLabel.isHidden = false
         self.forgotPinButton.isHidden = true
+        self.notAllowedPinView.isHidden = true
+    }
+    
+    private func renderChoosePinAfterLogin() {
+        renderChoosePin()
+        self.informationLabel.text = VectorL10n.pinProtectionChoosePinWelcomeAfterLogin + "\n" + VectorL10n.pinProtectionChoosePin
+    }
+    
+    private func renderChoosePinAfterRegister() {
+        renderChoosePin()
+        self.informationLabel.text = VectorL10n.pinProtectionChoosePinWelcomeAfterRegister + "\n" + VectorL10n.pinProtectionChoosePin
+    }
+    
+    private func renderNotAllowedPin() {
+        self.inactiveView.isHidden = true
+        self.mainStackView.isHidden = false
+        self.logoImageView.isHidden = true
+        self.forgotPinButton.isHidden = true
+        self.notAllowedPinView.isHidden = false
+        
+        renderPlaceholdersCount(.max, error: true)
     }
     
     private func renderConfirmPin() {
+        self.inactiveView.isHidden = true
+        self.mainStackView.isHidden = false
         self.informationLabel.text = VectorL10n.pinProtectionConfirmPin
+        self.notAllowedPinView.isHidden = true
         
         //  reset placeholders
         renderPlaceholdersCount(0)
@@ -216,12 +269,20 @@ final class EnterPinCodeViewController: UIViewController {
     
     private func renderUnlockByPin() {
         hideCancelButton()
+        self.inactiveView.isHidden = true
+        self.mainStackView.isHidden = false
         self.logoImageView.isHidden = false
         self.informationLabel.text = VectorL10n.pinProtectionEnterPin
+        self.explanatoryLabel.text = nil
         self.forgotPinButton.isHidden = false
+        self.notAllowedPinView.isHidden = true
     }
     
     private func renderWrongPin() {
+        self.inactiveView.isHidden = true
+        self.mainStackView.isHidden = false
+        self.notAllowedPinView.isHidden = true
+        self.explanatoryLabel.text = nil
         self.placeholderStackView.vc_shake()
     }
     
@@ -252,16 +313,32 @@ final class EnterPinCodeViewController: UIViewController {
     }
     
     private func renderConfirmPinToDisable() {
+        self.inactiveView.isHidden = true
+        self.mainStackView.isHidden = false
         self.logoImageView.isHidden = true
         self.informationLabel.text = VectorL10n.pinProtectionConfirmPinToDisable
+        self.explanatoryLabel.text = nil
         self.forgotPinButton.isHidden = true
+        self.notAllowedPinView.isHidden = true
     }
     
-    private func renderPlaceholdersCount(_ count: Int) {
+    private func renderInactive() {
+        self.hideCancelButton()
+        self.inactiveView.isHidden = false
+        self.mainStackView.isHidden = true
+        self.notAllowedPinView.isHidden = true
+        self.explanatoryLabel.text = nil
+    }
+    
+    private func renderPlaceholdersCount(_ count: Int, error: Bool = false) {
         UIView.animate(withDuration: 0.3) {
             for case let imageView as UIImageView in self.placeholderStackView.arrangedSubviews {
                 if imageView.tag < count {
-                    imageView.image = Asset.Images.placeholder.image
+                    if error {
+                        imageView.image = Asset.Images.placeholder.image.vc_tintedImage(usingColor: self.theme.noticeColor)
+                    } else {
+                        imageView.image = Asset.Images.placeholder.image
+                    }
                 } else {
                     imageView.image = Asset.Images.selectionUntick.image
                 }

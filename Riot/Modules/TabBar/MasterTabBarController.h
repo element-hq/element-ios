@@ -1,5 +1,6 @@
 /*
  Copyright 2017 Vector Creations Ltd
+ Copyright 2020 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -37,6 +38,7 @@
 
 
 @protocol MasterTabBarControllerDelegate;
+
 
 @interface MasterTabBarController : UITabBarController
 
@@ -169,8 +171,15 @@
 @property (nonatomic, readonly) MXGroup *selectedGroup;
 @property (nonatomic, readonly) MXSession *selectedGroupSession;
 
+// YES while the authentication screen is displayed
+@property (nonatomic, readonly) BOOL authenticationInProgress;
+
 @end
 
+
 @protocol MasterTabBarControllerDelegate <NSObject>
-    - (void)masterTabBarController:(MasterTabBarController*)masterTabBarController wantsToPresentDetailViewController:(UIViewController*)detailViewController;
+
+- (void)masterTabBarControllerDidCompleteAuthentication:(MasterTabBarController *)masterTabBarController;
+- (void)masterTabBarController:(MasterTabBarController*)masterTabBarController wantsToPresentDetailViewController:(UIViewController*)detailViewController;
+
 @end

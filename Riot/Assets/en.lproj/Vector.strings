@@ -59,6 +59,9 @@
 "sending" = "Sending";
 "close" = "Close";
 "skip" = "Skip";
+"joined" = "Joined";
+"switch" = "Switch";
+"more" = "More";
 
 // Accessibility
 "accessibility_checkbox_label" = "checkbox";
@@ -1419,7 +1422,9 @@
 
 // MARK: - PIN Protection
 
-"pin_protection_choose_pin" = "Choose a PIN for security";
+"pin_protection_choose_pin_welcome_after_login" = "Welcome back.";
+"pin_protection_choose_pin_welcome_after_register" = "Welcome.";
+"pin_protection_choose_pin" = "Create a PIN for security";
 "pin_protection_confirm_pin" = "Confirm your PIN";
 "pin_protection_confirm_pin_to_disable" = "Confirm PIN to disable PIN";
 "pin_protection_enter_pin" = "Enter your PIN";
@@ -1434,6 +1439,8 @@
 "pin_protection_settings_section_footer" = "To reset your PIN, you'll need to re-login and create a new one.";
 "pin_protection_settings_enabled_forced" = "PIN enabled";
 "pin_protection_settings_enable_pin" = "Enable PIN";
+"pin_protection_not_allowed_pin" = "For security reasons, this PIN isn’t available. Please try another PIN";
+"pin_protection_explanatory" = "PINs help keep your profile, messages and contacts secure, so only you can access them.";
 
 // MARK: - Biometrics Protection
 
@@ -1453,3 +1460,27 @@
 "biometrics_cant_unlocked_alert_message_x" = "To unlock, use %@ or log back in and enable %@ again";
 "biometrics_cant_unlocked_alert_message_login" = "Log back in";
 "biometrics_cant_unlocked_alert_message_retry" = "Retry";
+
+// MARK: - Searchable Directory View Controller
+
+"searchable_directory_create_new_room" = "Create a new room";
+"searchable_directory_x_network" = "%@ Network";
+"searchable_directory_search_placeholder" = "Name or ID";
+
+// MARK: - Create Room
+
+"create_room_title" = "New Room";
+"create_room_section_header_name" = "Room name";
+"create_room_placeholder_name" = "Name";
+"create_room_section_header_topic" = "Room topic (optional)";
+"create_room_placeholder_topic" = "Topic";
+"create_room_section_header_encryption" = "Room encryption";
+"create_room_enable_encryption" = "Enable Encryption";
+"create_room_section_footer_encryption" = "Encryption can’t be disabled afterwards.";
+"create_room_section_header_type" = "Room type";
+"create_room_type_private" = "Private Room";
+"create_room_type_public" = "Public Room";
+"create_room_section_footer_type" = "People join a private room only with the room invitation.";
+"create_room_show_in_directory" = "Show the room in the directory";
+"create_room_section_header_address" = "Room address";
+"create_room_placeholder_address" = "#testroom:matrix.org";

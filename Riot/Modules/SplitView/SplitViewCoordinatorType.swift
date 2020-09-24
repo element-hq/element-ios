@@ -16,8 +16,15 @@
 
 import Foundation
 
+protocol SplitViewCoordinatorDelegate: class {
+    // TODO: Remove this method, authentication should not be handled by SplitViewCoordinator
+    func splitViewCoordinatorDidCompleteAuthentication(_ coordinator: SplitViewCoordinatorType)
+}
+
 /// `SplitViewCoordinatorType` is a protocol describing a Coordinator that handle split view navigation flow.
 protocol SplitViewCoordinatorType: Coordinator, Presentable {
+    
+    var delegate: SplitViewCoordinatorDelegate? { get }
     
     func popToHome(animated: Bool, completion: (() -> Void)?)
     

@@ -26,6 +26,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     // MARK: Private
     
     private let rootRouter: RootRouterType
+    private let legacyAppDelegate: LegacyAppDelegate = AppDelegate.theDelegate()
     
     private weak var splitViewCoordinator: SplitViewCoordinatorType?
     
@@ -67,6 +68,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     
     private func showSplitView(session: MXSession?) {
         let splitViewCoordinator = SplitViewCoordinator(router: self.rootRouter, session: session)
+        splitViewCoordinator.delegate = self
         splitViewCoordinator.start()
         self.add(childCoordinator: splitViewCoordinator)
         self.splitViewCoordinator = splitViewCoordinator
@@ -78,7 +80,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     
     private func showError(_ error: Error) {
         // FIXME: Present an error on coordinator.toPresentable()
-        AppDelegate.theDelegate().showError(asAlert: error)
+        self.legacyAppDelegate.showError(asAlert: error)
     }
 }
 
@@ -92,5 +94,12 @@ extension AppCoordinator: LegacyAppDelegateDelegate {
     
     func legacyAppDelegateRestoreEmptyDetailsViewController(_ legacyAppDelegate: LegacyAppDelegate!) {
         self.splitViewCoordinator?.restorePlaceholderDetails()
+    }
+}
+
+// MARK: - SplitViewCoordinatorDelegate
+extension AppCoordinator: SplitViewCoordinatorDelegate {
+    func splitViewCoordinatorDidCompleteAuthentication(_ coordinator: SplitViewCoordinatorType) {
+        self.legacyAppDelegate.authenticationDidComplete()
     }
 }

@@ -53,6 +53,9 @@
     
     // successful login credentials
     MXCredentials *loginCredentials;
+    
+    // Check false display of this screen only once
+    BOOL didCheckFalseAuthScreenDisplay;
 }
 
 @property (nonatomic, readonly) BOOL isIdentityServerConfigured;
@@ -89,6 +92,8 @@
     // Set a default country code
     // Note: this value is used only when no MCC and no local country code is available.
     defaultCountryCode = @"GB";
+    
+    didCheckFalseAuthScreenDisplay = NO;
 }
 
 - (void)viewDidLoad
@@ -291,12 +296,17 @@
     // This bug rarely happens (https://github.com/vector-im/riot-ios/issues/1643)
     // but it invites the user to log in again. They will then lose all their
     // e2e messages.
-    NSLog(@"[AuthenticationVC] viewDidAppear: Checking false logout");
-    [[MXKAccountManager sharedManager] forceReloadAccounts];
-    if ([MXKAccountManager sharedManager].activeAccounts.count)
+    if (!didCheckFalseAuthScreenDisplay)
     {
-        // For now, we do not have better solution than forcing the user to restart the app
-        [NSException raise:@"False logout. Kill the app" format:@"AuthenticationViewController has been displayed whereas there is an existing account"];
+        didCheckFalseAuthScreenDisplay = YES;
+        
+        NSLog(@"[AuthenticationVC] viewDidAppear: Checking false logout");
+        [[MXKAccountManager sharedManager] forceReloadAccounts];
+        if ([MXKAccountManager sharedManager].activeAccounts.count)
+        {
+            // For now, we do not have better solution than forcing the user to restart the app
+            [NSException raise:@"False logout. Kill the app" format:@"AuthenticationViewController has been displayed whereas there is an existing account"];
+        }
     }
 }
 
@@ -510,6 +520,11 @@
     {
         // Dismiss on successful login
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    }
+    
+    if (self.authVCDelegate)
+    {
+        [self.authVCDelegate authenticationViewControllerDidDismiss:self];
     }
 }
 
@@ -906,12 +921,24 @@
 
 - (void)onSuccessfulLogin:(MXCredentials*)credentials
 {
-    //  if really login and pin protection is forced
-    if (self.authType == MXKAuthenticationTypeLogin && [PinCodePreferences shared].forcePinProtection)
+    //  Is pin protection forced?
+    if ([PinCodePreferences shared].forcePinProtection)
     {
         loginCredentials = credentials;
         
-        SetPinCoordinatorBridgePresenter *presenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:nil viewMode:SetPinCoordinatorViewModeSetPin];
+        SetPinCoordinatorViewMode viewMode = SetPinCoordinatorViewModeSetPin;
+        switch (self.authType) {
+            case MXKAuthenticationTypeLogin:
+                viewMode = SetPinCoordinatorViewModeSetPinAfterLogin;
+                break;
+            case MXKAuthenticationTypeRegister:
+                viewMode = SetPinCoordinatorViewModeSetPinAfterRegister;
+                break;
+            default:
+                break;
+        }
+        
+        SetPinCoordinatorBridgePresenter *presenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:nil viewMode:viewMode];
         presenter.delegate = self;
         [presenter presentFrom:self animated:YES];
         self.setPinCoordinatorBridgePresenter = presenter;
@@ -1215,7 +1242,7 @@
 {
     MXSession *session = (MXSession*)notification.object;
     
-    if (session.state >= MXSessionStateStoreDataReady)
+    if (session.state == MXSessionStateRunning)
     {
         [self unregisterSessionStateChangeNotification];
         
@@ -1450,7 +1477,8 @@
 
 - (void)setPinCoordinatorBridgePresenterDelegateDidComplete:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
-    [self dismiss];
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.setPinCoordinatorBridgePresenter = nil;
 
     [self afterSetPinFlowCompletedWithCredentials:loginCredentials];
 }
@@ -1465,6 +1493,7 @@
     
     //  then, just close the enter pin screen
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.setPinCoordinatorBridgePresenter = nil;
 }
 
 @end

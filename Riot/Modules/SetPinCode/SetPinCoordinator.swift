@@ -27,7 +27,11 @@ final class SetPinCoordinator: SetPinCoordinatorType {
     
     private let navigationRouter: NavigationRouterType
     private let session: MXSession?
-    private var viewMode: SetPinCoordinatorViewMode
+    var viewMode: SetPinCoordinatorViewMode {
+        didSet {
+            updateRootCoordinator()
+        }
+    }
     private let pinCodePreferences: PinCodePreferences
     
     // MARK: Public
@@ -54,19 +58,19 @@ final class SetPinCoordinator: SetPinCoordinatorType {
             } else {
                 return createEnterPinCodeCoordinator()
             }
-        case .setPin, .confirmPinToDeactivate:
+        case .setPin, .setPinAfterLogin, .setPinAfterRegister, .notAllowedPin, .confirmPinToDeactivate:
             return createEnterPinCodeCoordinator()
         case .setupBiometricsAfterLogin, .setupBiometricsFromSettings, .confirmBiometricsToDeactivate:
             return createSetupBiometricsCoordinator()
+        case .inactive:
+            return createEnterPinCodeCoordinator()
         }
     }
     
     // MARK: - Public methods
     
     func start() {
-        let rootCoordinator = getRootCoordinator()
-        
-        setRootCoordinator(rootCoordinator)
+        updateRootCoordinator()
     }
     
     func toPresentable() -> UIViewController {
@@ -78,6 +82,12 @@ final class SetPinCoordinator: SetPinCoordinatorType {
     }
     
     // MARK: - Private methods
+    
+    private func updateRootCoordinator() {
+        let rootCoordinator = getRootCoordinator()
+        
+        setRootCoordinator(rootCoordinator)
+    }
     
     private func setRootCoordinator(_ coordinator: Coordinator & Presentable) {
         coordinator.start()
