@@ -3377,9 +3377,20 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
+    NSString *title, *message;
+    if ([self.mainSession roomWithRoomId:self.roomId].isDirect)
+    {
+        title = NSLocalizedStringFromTable(@"dm_room_participants_leave_prompt_title", @"Vector", nil);
+        message = NSLocalizedStringFromTable(@"dm_room_participants_leave_prompt_msg", @"Vector", nil);
+    }
+    else
+    {
+        title = NSLocalizedStringFromTable(@"room_participants_leave_prompt_title", @"Vector", nil);
+        message = NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg", @"Vector", nil);
+    }
     
-    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_participants_leave_prompt_title", @"Vector", nil)
-                                                       message:NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg", @"Vector", nil)
+    currentAlert = [UIAlertController alertControllerWithTitle:title
+                                                       message:message
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
     [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]

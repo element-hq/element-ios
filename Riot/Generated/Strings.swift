@@ -1082,6 +1082,14 @@ internal enum VectorL10n {
   internal static var directoryTitle: String { 
     return VectorL10n.tr("Vector", "directory_title") 
   }
+  /// Are you sure you want to leave?
+  internal static var dmRoomParticipantsLeavePromptMsg: String { 
+    return VectorL10n.tr("Vector", "dm_room_participants_leave_prompt_msg") 
+  }
+  /// Leave
+  internal static var dmRoomParticipantsLeavePromptTitle: String { 
+    return VectorL10n.tr("Vector", "dm_room_participants_leave_prompt_title") 
+  }
   /// Do not ask again
   internal static var doNotAskAgain: String { 
     return VectorL10n.tr("Vector", "do_not_ask_again") 
