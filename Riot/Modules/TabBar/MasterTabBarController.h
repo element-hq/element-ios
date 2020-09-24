@@ -180,6 +180,6 @@
 @protocol MasterTabBarControllerDelegate <NSObject>
 
 - (void)masterTabBarControllerDidCompleteAuthentication:(MasterTabBarController *)masterTabBarController;
-- (void)masterTabBarController:(MasterTabBarController*)masterTabBarController wantsToPresentDetailViewController:(UIViewController*)detailViewController;
+- (void)masterTabBarController:(MasterTabBarController*)masterTabBarController wantsToDisplayDetailViewController:(UIViewController*)detailViewController;
 
 @end

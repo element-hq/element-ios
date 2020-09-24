@@ -488,9 +488,7 @@
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
         _currentRoomViewController = [storyboard instantiateViewControllerWithIdentifier:@"RoomViewControllerStoryboardId"];
         
-        //                navigationController.viewControllers = @[_currentRoomViewController];
-        
-        [self.masterTabBarDelegate masterTabBarController:self wantsToPresentDetailViewController:_currentRoomViewController];
+        [self.masterTabBarDelegate masterTabBarController:self wantsToDisplayDetailViewController:_currentRoomViewController];
         
         [_currentRoomViewController displayRoomPreview:_selectedRoomPreviewData];
         _selectedRoomPreviewData = nil;
@@ -508,7 +506,7 @@
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
             self->_currentRoomViewController = [storyboard instantiateViewControllerWithIdentifier:@"RoomViewControllerStoryboardId"];
             
-            [self.masterTabBarDelegate masterTabBarController:self wantsToPresentDetailViewController:self.currentRoomViewController];
+            [self.masterTabBarDelegate masterTabBarController:self wantsToDisplayDetailViewController:self.currentRoomViewController];
             
             [self.currentRoomViewController displayRoom:roomDataSource];
             
@@ -608,7 +606,7 @@
     _currentContactDetailViewController.enableVoipCall = NO;
     _currentContactDetailViewController.contact = _selectedContact;
     
-    [self.masterTabBarDelegate masterTabBarController:self wantsToPresentDetailViewController:_currentContactDetailViewController];
+    [self.masterTabBarDelegate masterTabBarController:self wantsToDisplayDetailViewController:_currentContactDetailViewController];
     
     [self setupLeftBarButtonItem];
 }
@@ -629,7 +627,7 @@
     _currentGroupDetailViewController = [GroupDetailsViewController groupDetailsViewController];
     [_currentGroupDetailViewController setGroup:_selectedGroup withMatrixSession:_selectedGroupSession];
     
-    [self.masterTabBarDelegate masterTabBarController:self wantsToPresentDetailViewController:_currentGroupDetailViewController];
+    [self.masterTabBarDelegate masterTabBarController:self wantsToDisplayDetailViewController:_currentGroupDetailViewController];
     
     [self setupLeftBarButtonItem];
 }
