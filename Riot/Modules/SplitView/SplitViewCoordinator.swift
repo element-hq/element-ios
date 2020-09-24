@@ -166,8 +166,6 @@ extension SplitViewCoordinator: SplitViewMasterPresentableDelegate {
         }
         
         detailNavigationController.viewControllers = [detailPresentable.toPresentable()]
-        
-        self.detailNavigationController?.viewControllers = [detailPresentable.toPresentable()]
         self.splitViewController.showDetailViewController(detailNavigationController, sender: nil)
     }
 }
