@@ -4,6 +4,7 @@ ib:
   - inputs:
     - ../Tools/Templates/buildable/
     - Modules/
+    - Assets/
     filter: ^((?!(DeactivateAccountViewController|Security)).)*\.(storyboard)
     outputs:
       - templateName: scenes-swift4

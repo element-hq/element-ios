@@ -122,6 +122,30 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.KeyVerificationVerifyByScanningViewController>(storyboard: KeyVerificationVerifyByScanningViewController.self)
   }
+  internal enum LaunchScreen: StoryboardType {
+    internal static let storyboardName = "LaunchScreen"
+
+    internal static let initialScene = InitialSceneType<UIKit.UIViewController>(storyboard: LaunchScreen.self)
+  }
+  internal enum Main: StoryboardType {
+    internal static let storyboardName = "Main"
+
+    internal static let initialScene = InitialSceneType<RiotSplitViewController>(storyboard: Main.self)
+
+    internal static let directoryServerPickerViewControllerStoryboardId = SceneType<DirectoryServerPickerViewController>(storyboard: Main.self, identifier: "DirectoryServerPickerViewControllerStoryboardId")
+
+    internal static let emptyDetailsViewControllerStoryboardId = SceneType<Riot.PlaceholderDetailViewController>(storyboard: Main.self, identifier: "EmptyDetailsViewControllerStoryboardId")
+
+    internal static let masterTabBarController = SceneType<MasterTabBarController>(storyboard: Main.self, identifier: "MasterTabBarController")
+
+    internal static let riotSplitViewController = SceneType<RiotSplitViewController>(storyboard: Main.self, identifier: "RiotSplitViewController")
+
+    internal static let roomViewControllerStoryboardId = SceneType<RoomViewController>(storyboard: Main.self, identifier: "RoomViewControllerStoryboardId")
+
+    internal static let settingsViewController = SceneType<SettingsViewController>(storyboard: Main.self, identifier: "SettingsViewController")
+
+    internal static let usersDevicesViewControllerStoryboardId = SceneType<UsersDevicesViewController>(storyboard: Main.self, identifier: "UsersDevicesViewControllerStoryboardId")
+  }
   internal enum MajorUpdateViewController: StoryboardType {
     internal static let storyboardName = "MajorUpdateViewController"
 
