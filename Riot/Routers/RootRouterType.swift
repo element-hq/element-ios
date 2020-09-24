@@ -16,7 +16,7 @@
 
 import UIKit
 
-/// Protocol describing a router that wrap the root navigation of the application.
+/// Protocol describing a router that wraps the root navigation of the application.
 /// Routers are used to be passed between coordinators. They handles only `physical` navigation.
 protocol RootRouterType: class {          
     
