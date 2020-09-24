@@ -1174,3 +1174,4 @@
 "biometrics_cant_unlocked_alert_message_x" = "Per sbloccare, usa %@ o riaccedi e attiva %@ di nuovo";
 "biometrics_cant_unlocked_alert_message_login" = "Riaccedi";
 "biometrics_cant_unlocked_alert_message_retry" = "Riprova";
+"device_verification_self_verify_wait_recover_secrets_checking_availability" = "Controllo di altre possibilità di verifica...";
