@@ -650,7 +650,7 @@
 // Room Details
 "room_details_title" = "Room Details";
 "room_details_people" = "Members";
-"room_details_files" = "Files";
+"room_details_files" = "Uploads";
 "room_details_settings" = "Settings";
 "room_details_photo" = "Room Photo";
 "room_details_room_name" = "Room Name";
@@ -1484,3 +1484,10 @@
 "create_room_show_in_directory" = "Show the room in the directory";
 "create_room_section_header_address" = "Room address";
 "create_room_placeholder_address" = "#testroom:matrix.org";
+
+// MARK: - Room Info
+
+"room_info_list_room_encrypted" = "Messages in this room are end to end encrypted";
+"room_info_list_one_member" = "1 member";
+"room_info_list_several_members" = "%@ members";
+"room_info_list_section_other" = "Other";

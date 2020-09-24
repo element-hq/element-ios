@@ -29,10 +29,6 @@
 
 @interface RoomViewController : MXKRoomViewController
 
-// The expanded header
-@property (weak, nonatomic) IBOutlet UIView *expandedHeaderContainer;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *expandedHeaderContainerHeightConstraint;
-
 // The preview header
 @property (weak, nonatomic) IBOutlet UIView *previewHeaderContainer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *previewHeaderContainerHeightConstraint;
@@ -45,14 +41,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *jumpToLastUnreadLabel;
 @property (weak, nonatomic) IBOutlet UIButton *resetReadMarkerButton;
 @property (weak, nonatomic) IBOutlet UIView *jumpToLastUnreadBannerSeparatorView;
-
-/**
- Force the display of the expanded header.
- The default value is NO: this expanded header is hidden on new instantiated RoomViewController object.
- 
- When this property is YES, the expanded header is forced each time the view controller appears.
- */
-@property (nonatomic) BOOL showExpandedHeader;
 
 /**
  Preview data for a room invitation received by email, or a link to a room.
