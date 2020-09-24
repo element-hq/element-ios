@@ -133,14 +133,17 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         // TODO: Implement
     }
     
+    // FIXME: Should be displayed from a tab.
     private func showContactDetails() {
         // TODO: Implement
     }
     
+    // FIXME: Should be displayed from a tab.
     private func showRoomDetails() {
         // TODO: Implement
     }
     
+    // FIXME: Should be displayed from a tab.
     private func showGroupDetails() {
         // TODO: Implement
     }

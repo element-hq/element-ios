@@ -28,5 +28,6 @@ protocol SplitViewCoordinatorType: Coordinator, Presentable {
     
     func popToHome(animated: Bool, completion: (() -> Void)?)
     
+    // TODO: Do not expose publicly this method
     func restorePlaceholderDetails()
 }

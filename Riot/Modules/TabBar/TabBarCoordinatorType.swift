@@ -30,6 +30,7 @@ protocol TabBarCoordinatorType: Coordinator, SplitViewMasterPresentable {
     
     func popToHome(animated: Bool, completion: (() -> Void)?)
     
+    // TODO: Remove this method, this implementation detail should not be exposed
     // Release the current selected item (room/contact/group...).
     func releaseSelectedItems()
 }
