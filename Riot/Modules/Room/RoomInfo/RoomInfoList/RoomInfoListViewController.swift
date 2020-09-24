@@ -136,9 +136,12 @@ final class RoomInfoListViewController: UIViewController {
         var tmpSections: [Section] = []
         
         if viewData.isEncrypted {
+            let footer = viewData.isDirect ?
+                VectorL10n.dmRoomParticipantsSecurityInformationRoomEncrypted :
+                VectorL10n.roomParticipantsSecurityInformationRoomEncrypted
             let sectionSecurity = Section(header: VectorL10n.securitySettingsTitle,
                                           rows: [],
-                                          footer: VectorL10n.roomInfoListRoomEncrypted)
+                                          footer: footer)
             
             tmpSections.append(sectionSecurity)
         }

@@ -1082,6 +1082,14 @@ internal enum VectorL10n {
   internal static var directoryTitle: String { 
     return VectorL10n.tr("Vector", "directory_title") 
   }
+  /// Encryption is not enabled here.
+  internal static var dmRoomDetailsAdvancedE2eEncryptionDisabled: String { 
+    return VectorL10n.tr("Vector", "dm_room_details_advanced_e2e_encryption_disabled") 
+  }
+  /// Encryption is enabled here
+  internal static var dmRoomDetailsAdvancedE2eEncryptionEnabled: String { 
+    return VectorL10n.tr("Vector", "dm_room_details_advanced_e2e_encryption_enabled") 
+  }
   /// Are you sure you want to leave?
   internal static var dmRoomParticipantsLeavePromptMsg: String { 
     return VectorL10n.tr("Vector", "dm_room_participants_leave_prompt_msg") 
@@ -1089,6 +1097,14 @@ internal enum VectorL10n {
   /// Leave
   internal static var dmRoomParticipantsLeavePromptTitle: String { 
     return VectorL10n.tr("Vector", "dm_room_participants_leave_prompt_title") 
+  }
+  /// Messages here are end-to-end encrypted.\n\nYour messages are secured with locks and only you and the recipient have the unique keys to unlock them.
+  internal static var dmRoomParticipantsSecurityInformationRoomEncrypted: String { 
+    return VectorL10n.tr("Vector", "dm_room_participants_security_information_room_encrypted") 
+  }
+  /// Messages here are not end-to-end encrypted.
+  internal static var dmRoomParticipantsSecurityInformationRoomNotEncrypted: String { 
+    return VectorL10n.tr("Vector", "dm_room_participants_security_information_room_not_encrypted") 
   }
   /// Do not ask again
   internal static var doNotAskAgain: String { 
@@ -2641,10 +2657,6 @@ internal enum VectorL10n {
   /// 1 member
   internal static var roomInfoListOneMember: String { 
     return VectorL10n.tr("Vector", "room_info_list_one_member") 
-  }
-  /// Messages in this room are end to end encrypted
-  internal static var roomInfoListRoomEncrypted: String { 
-    return VectorL10n.tr("Vector", "room_info_list_room_encrypted") 
   }
   /// Other
   internal static var roomInfoListSectionOther: String { 
