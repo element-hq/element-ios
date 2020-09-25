@@ -29,6 +29,7 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     private let session: MXSession
     private let verificationFlow: KeyVerificationFlow
     private let verificationKind: KeyVerificationKind
+    private var completeSecurityCoordinator: KeyVerificationSelfVerifyWaitCoordinatorType?
     
     private var otherUserId: String {
         
@@ -133,7 +134,9 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
         case .incomingSASTransaction(let incomingSASTransaction):
             rootCoordinator = self.createDataLoadingScreenCoordinator(otherUserId: incomingSASTransaction.otherUserId, otherDeviceId: incomingSASTransaction.otherDeviceId)
         case .completeSecurity(let isNewSignIn):
-            rootCoordinator = self.createCompleteSecurityCoordinator(isNewSignIn: isNewSignIn)
+            let coordinator = self.createCompleteSecurityCoordinator(isNewSignIn: isNewSignIn)
+            self.completeSecurityCoordinator = coordinator
+            rootCoordinator = coordinator
         }
 
         rootCoordinator.start()
@@ -162,6 +165,12 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     }
     
     private func didCancel() {
+        if self.completeSecurityCoordinator != nil && childCoordinators.count > 1 {
+            NSLog("[KeyVerificationCoordinator] didCancel: popToRootModule");
+            self.navigationRouter.popToRootModule(animated: true)
+            return
+        }
+        
         self.delegate?.keyVerificationCoordinatorDidCancel(self)
     }
     
