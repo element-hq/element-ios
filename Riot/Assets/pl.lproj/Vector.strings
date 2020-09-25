@@ -803,3 +803,6 @@
 "key_backup_setup_skip_alert_skip_action" = "Pomiń";
 "key_backup_setup_intro_title" = "Nigdy nie trać zaszyfrowanych wiadomości";
 "key_backup_setup_intro_info" = "Wiadomości w szyfrowanym pokoju są zabezpieczone przez end-to-end. Tylko Ty i rozmówca macie klucze, aby odczytać te wiadomości.\nWykonaj kopię zapasową kluczy, aby ich nie zgubić.";
+"user_verification_session_details_trusted_title" = "Zaufany";
+"user_verification_session_details_untrusted_title" = "Niezaufany";
+"user_verification_session_details_information_trusted_current_user" = "Ta sesja jest zaufana dla bezpiecznego przesyłania wiadomości, ponieważ ją zweryfikowałeś:";
