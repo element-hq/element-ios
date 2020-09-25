@@ -2652,7 +2652,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             addressCell.accessoryView = nil;
             addressCell.accessoryType = UITableViewCellAccessoryNone;
             addressCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            addressCell.textLabel.text = NSLocalizedStringFromTable(@"room_details_no_local_addresses", @"Vector", nil);
+            if (mxRoom.isDirect)
+            {
+                addressCell.textLabel.text = NSLocalizedStringFromTable(@"dm_room_details_no_local_addresses", @"Vector", nil);
+            }
+            else
+            {
+                addressCell.textLabel.text = NSLocalizedStringFromTable(@"room_details_no_local_addresses", @"Vector", nil);
+            }
             
             cell = addressCell;
         }
