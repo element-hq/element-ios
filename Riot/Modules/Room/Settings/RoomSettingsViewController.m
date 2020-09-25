@@ -554,7 +554,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         }
         [sectionAccess addRowWithTag:ROOM_SETTINGS_ROOM_ACCESS_DIRECTORY_VISIBILITY];
         
-        sectionAccess.headerTitle = NSLocalizedStringFromTable(@"room_details_access_section", @"Vector", nil);
+        if (mxRoom.isDirect)
+        {
+            sectionAccess.headerTitle = NSLocalizedStringFromTable(@"dm_room_details_access_section", @"Vector", nil);
+        }
+        else
+        {
+            sectionAccess.headerTitle = NSLocalizedStringFromTable(@"room_details_access_section", @"Vector", nil);
+        }
         [tmpSections addObject:sectionAccess];
     }
     

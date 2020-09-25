@@ -668,6 +668,7 @@
 "room_details_mute_notifs" = "Mute notifications";
 "room_details_direct_chat" = "Direct Chat";
 "room_details_access_section"="Who can access this room?";
+"dm_room_details_access_section"="Who can access this?";
 "room_details_access_section_invited_only"="Only people who have been invited";
 "room_details_access_section_anyone_apart_from_guest"="Anyone who knows the room's link, apart from guests";
 "room_details_access_section_anyone"="Anyone who knows the room's link, including guests";
