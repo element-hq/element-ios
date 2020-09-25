@@ -165,8 +165,10 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     }
     
     private func didCancel() {
+        // In the case of the complete security flow, come back to the root screen if any child flow
+        // like device verification has been cancelled
         if self.completeSecurityCoordinator != nil && childCoordinators.count > 1 {
-            NSLog("[KeyVerificationCoordinator] didCancel: popToRootModule");
+            NSLog("[KeyVerificationCoordinator] didCancel: popToRootModule")
             self.navigationRouter.popToRootModule(animated: true)
             return
         }
