@@ -1086,7 +1086,11 @@ internal enum VectorL10n {
   internal static var dmRoomDetailsAccessSection: String { 
     return VectorL10n.tr("Vector", "dm_room_details_access_section") 
   }
-  /// Anyone who knows the its link, apart from guests
+  /// Anyone who knows the link, including guests
+  internal static var dmRoomDetailsAccessSectionAnyone: String { 
+    return VectorL10n.tr("Vector", "dm_room_details_access_section_anyone") 
+  }
+  /// Anyone who knows the link, apart from guests
   internal static var dmRoomDetailsAccessSectionAnyoneApartFromGuest: String { 
     return VectorL10n.tr("Vector", "dm_room_details_access_section_anyone_apart_from_guest") 
   }
