@@ -120,7 +120,14 @@
     
     self.navigationItem.title = NSLocalizedStringFromTable(@"room_participants_title", @"Vector", nil);
     
-    _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_filter_room_members", @"Vector", nil);
+    if (self.mxRoom.isDirect)
+    {
+        _searchBarView.placeholder = NSLocalizedStringFromTable(@"dm_room_participants_filter_room_members", @"Vector", nil);
+    }
+    else
+    {
+        _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_filter_room_members", @"Vector", nil);
+    }
     _searchBarView.returnKeyType = UIReturnKeyDone;
     _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     
@@ -378,6 +385,15 @@
         if (self.mxRoom)
         {
             self.searchBarHeader.hidden = NO;
+            
+            if (self.mxRoom.isDirect)
+            {
+                self.searchBarView.placeholder = NSLocalizedStringFromTable(@"dm_room_participants_filter_room_members", @"Vector", nil);
+            }
+            else
+            {
+                self.searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_filter_room_members", @"Vector", nil);
+            }
 
             // Update the current matrix session.
             [self addMatrixSession:self.mxRoom.mxSession];

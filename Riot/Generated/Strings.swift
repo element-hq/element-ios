@@ -1094,6 +1094,10 @@ internal enum VectorL10n {
   internal static var dmRoomDetailsTitle: String { 
     return VectorL10n.tr("Vector", "dm_room_details_title") 
   }
+  /// Filter members
+  internal static var dmRoomParticipantsFilterRoomMembers: String { 
+    return VectorL10n.tr("Vector", "dm_room_participants_filter_room_members") 
+  }
   /// Are you sure you want to leave?
   internal static var dmRoomParticipantsLeavePromptMsg: String { 
     return VectorL10n.tr("Vector", "dm_room_participants_leave_prompt_msg") 

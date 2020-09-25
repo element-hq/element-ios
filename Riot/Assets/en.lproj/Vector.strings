@@ -237,6 +237,7 @@
 "room_participants_invite_prompt_title" = "Confirmation";
 "room_participants_invite_prompt_msg" = "Are you sure you want to invite %@ to this chat?";
 "room_participants_filter_room_members" = "Filter room members";
+"dm_room_participants_filter_room_members" = "Filter members";
 "room_participants_invite_another_user" = "Search / invite by User ID, Name or email";
 "room_participants_invite_malformed_id_title" = "Invite Error";
 "room_participants_invite_malformed_id" = "Malformed ID. Should be an email address or a Matrix ID like '@localpart:domain'";
