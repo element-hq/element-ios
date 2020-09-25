@@ -7,12 +7,14 @@ Changes to be released in next version
 🙌 Improvements
  * Pin: Implement not allowed PINs feature. There is no restriction by default.
  * Room: New Room Settings screen.
+ * Complete Security: Come back to the root screen if device verification is cancelled.
  * Architecture: Use coordinator pattern for legacy screen flows (#3597).
  * Room: Differentiate wordings for DMs.
 
 🐛 Bugfix
  * Timeline: Hide encrypted history (pre-invite) (#3660).
  * Fix floating action buttons' images.
+ * Complete Security: Let the authentication flow display it if this flow is not complete yet.
 
 ⚠️ API Changes
  *

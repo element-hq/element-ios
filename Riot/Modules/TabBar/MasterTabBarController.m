@@ -1032,7 +1032,9 @@
 
 - (void)presentVerifyCurrentSessionAlertIfNeededWithSession:(MXSession*)session
 {
-    if (RiotSettings.shared.hideVerifyThisSessionAlert || self.reviewSessionAlertHasBeenDisplayed)
+    if (RiotSettings.shared.hideVerifyThisSessionAlert
+        || self.reviewSessionAlertHasBeenDisplayed
+        || self.authenticationInProgress)
     {
         return;
     }
