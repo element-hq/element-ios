@@ -2503,7 +2503,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             else if (row == ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_ANYONE_APART_FROM_GUEST)
             {
-                roomAccessCell.label.text = NSLocalizedStringFromTable(@"room_details_access_section_anyone_apart_from_guest", @"Vector", nil);
+                if (mxRoom.isDirect)
+                {
+                    roomAccessCell.label.text = NSLocalizedStringFromTable(@"dm_room_details_access_section_anyone_apart_from_guest", @"Vector", nil);
+                }
+                else
+                {
+                    roomAccessCell.label.text = NSLocalizedStringFromTable(@"room_details_access_section_anyone_apart_from_guest", @"Vector", nil);
+                }
                 
                 roomAccessCell.enabled = ([joinRule isEqualToString:kMXRoomJoinRulePublic] && [guestAccess isEqualToString:kMXRoomGuestAccessForbidden]);
                 
