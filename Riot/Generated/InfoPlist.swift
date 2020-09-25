@@ -35,7 +35,6 @@ internal enum InfoPlist {
   internal static let nsSiriUsageDescription: String = _document["NSSiriUsageDescription"]
   internal static let uiBackgroundModes: [String] = _document["UIBackgroundModes"]
   internal static let uiLaunchStoryboardName: String = _document["UILaunchStoryboardName"]
-  internal static let uiMainStoryboardFile: String = _document["UIMainStoryboardFile"]
   internal static let uiRequiredDeviceCapabilities: [String] = _document["UIRequiredDeviceCapabilities"]
   internal static let uiStatusBarHidden: Bool = _document["UIStatusBarHidden"]
   internal static let uiStatusBarTintParameters: [String: Any] = _document["UIStatusBarTintParameters"]

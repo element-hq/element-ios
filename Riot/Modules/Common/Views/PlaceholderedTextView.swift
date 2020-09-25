@@ -96,7 +96,7 @@ class PlaceholderedTextView: UITextView {
         NotificationCenter.default.addObserver(self, selector: #selector(textViewTextChanged(_:)), name: UITextView.textDidChangeNotification, object: self)
         kvoLineFragmentPadding = observe(\.textContainer.lineFragmentPadding, options: [.new]) { [weak self] (_, change) in
             guard let self = self else { return }
-            let newValue = change.newValue ?? 0
+            let newValue = change.newValue ?? 0            
             self.placeholderTextView.textContainer.lineFragmentPadding = newValue
         }
     }
