@@ -1094,6 +1094,10 @@ internal enum VectorL10n {
   internal static var dmRoomDetailsPhoto: String { 
     return VectorL10n.tr("Vector", "dm_room_details_photo") 
   }
+  /// Name
+  internal static var dmRoomDetailsRoomName: String { 
+    return VectorL10n.tr("Vector", "dm_room_details_room_name") 
+  }
   /// Details
   internal static var dmRoomDetailsTitle: String { 
     return VectorL10n.tr("Vector", "dm_room_details_title") 

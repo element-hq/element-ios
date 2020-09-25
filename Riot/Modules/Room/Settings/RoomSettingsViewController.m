@@ -2303,7 +2303,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             roomNameCell.mxkTextFieldLeadingConstraint.constant = 16;
             roomNameCell.mxkTextFieldTrailingConstraint.constant = 15;
             
-            roomNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_room_name", @"Vector", nil);
+            if (mxRoom.isDirect)
+            {
+                roomNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"dm_room_details_room_name", @"Vector", nil);
+            }
+            else
+            {
+                roomNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_room_name", @"Vector", nil);
+            }
             roomNameCell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
             roomNameCell.accessoryType = UITableViewCellAccessoryNone;
