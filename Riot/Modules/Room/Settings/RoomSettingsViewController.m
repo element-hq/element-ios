@@ -2239,7 +2239,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             roomPhotoCell.mxkImageView.defaultBackgroundColor = [UIColor clearColor];
             
-            roomPhotoCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_photo", @"Vector", nil);
+            if (mxRoom.isDirect)
+            {
+                roomPhotoCell.mxkLabel.text = NSLocalizedStringFromTable(@"dm_room_details_photo", @"Vector", nil);
+            }
+            else
+            {
+                roomPhotoCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_photo", @"Vector", nil);
+            }
             roomPhotoCell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
             if (updatedItemsDict[kRoomSettingsAvatarKey])

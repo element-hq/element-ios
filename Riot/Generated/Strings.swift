@@ -1090,6 +1090,10 @@ internal enum VectorL10n {
   internal static var dmRoomDetailsAdvancedE2eEncryptionEnabled: String { 
     return VectorL10n.tr("Vector", "dm_room_details_advanced_e2e_encryption_enabled") 
   }
+  /// Photo
+  internal static var dmRoomDetailsPhoto: String { 
+    return VectorL10n.tr("Vector", "dm_room_details_photo") 
+  }
   /// Details
   internal static var dmRoomDetailsTitle: String { 
     return VectorL10n.tr("Vector", "dm_room_details_title") 

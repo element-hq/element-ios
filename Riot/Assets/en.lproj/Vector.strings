@@ -659,6 +659,7 @@
 "room_details_files" = "Uploads";
 "room_details_settings" = "Settings";
 "room_details_photo" = "Room Photo";
+"dm_room_details_photo" = "Photo";
 "room_details_room_name" = "Room Name";
 "room_details_topic" = "Topic";
 "room_details_favourite_tag" = "Favourite";
