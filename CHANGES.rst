@@ -7,6 +7,7 @@ Changes to be released in next version
 🙌 Improvements
  * Pin: Implement not allowed PINs feature. There is no restriction by default.
  * Room: New Room Settings screen.
+ * Complete Security: Come back to the root screen if device verification is cancelled.
  * Architecture: Use coordinator pattern for legacy screen flows (#3597).
 
 🐛 Bugfix
