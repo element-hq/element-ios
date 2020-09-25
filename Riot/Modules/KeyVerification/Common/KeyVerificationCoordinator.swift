@@ -29,7 +29,7 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     private let session: MXSession
     private let verificationFlow: KeyVerificationFlow
     private let verificationKind: KeyVerificationKind
-    private var completeSecurityCoordinator: KeyVerificationSelfVerifyWaitCoordinatorType?
+    private weak var completeSecurityCoordinator: KeyVerificationSelfVerifyWaitCoordinatorType?
     
     private var otherUserId: String {
         
