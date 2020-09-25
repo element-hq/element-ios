@@ -2439,7 +2439,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         {
             MXKTableViewCellWithLabelAndSwitch *directoryToggleCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
-            directoryToggleCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_access_section_directory_toggle", @"Vector", nil);
+            if (mxRoom.isDirect)
+            {
+                directoryToggleCell.mxkLabel.text = NSLocalizedStringFromTable(@"dm_room_details_access_section_directory_toggle", @"Vector", nil);
+            }
+            else
+            {
+                directoryToggleCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_access_section_directory_toggle", @"Vector", nil);
+            }
             
             [directoryToggleCell.mxkSwitch addTarget:self action:@selector(toggleDirectoryVisibility:) forControlEvents:UIControlEventValueChanged];
             

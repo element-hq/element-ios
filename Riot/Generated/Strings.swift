@@ -1094,6 +1094,10 @@ internal enum VectorL10n {
   internal static var dmRoomDetailsAccessSectionAnyoneApartFromGuest: String { 
     return VectorL10n.tr("Vector", "dm_room_details_access_section_anyone_apart_from_guest") 
   }
+  /// List in room directory
+  internal static var dmRoomDetailsAccessSectionDirectoryToggle: String { 
+    return VectorL10n.tr("Vector", "dm_room_details_access_section_directory_toggle") 
+  }
   /// Encryption is not enabled here.
   internal static var dmRoomDetailsAdvancedE2eEncryptionDisabled: String { 
     return VectorL10n.tr("Vector", "dm_room_details_advanced_e2e_encryption_disabled") 

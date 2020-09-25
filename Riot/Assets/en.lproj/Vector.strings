@@ -676,6 +676,7 @@
 "dm_room_details_access_section_anyone"="Anyone who knows the link, including guests";
 "room_details_access_section_no_address_warning" = "To link to a room it must have an address";
 "room_details_access_section_directory_toggle"="List this room in room directory";
+"dm_room_details_access_section_directory_toggle"="List in room directory";
 "room_details_history_section"="Who can read history?";
 "room_details_history_section_anyone"="Anyone";
 "room_details_history_section_members_only"="Members only (since the point in time of selecting this option)";
