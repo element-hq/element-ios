@@ -89,7 +89,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
 NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUniversalLinkDidChangeNotification";
 
-@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate, MasterTabBarControllerDelegate>
+@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate>
 {
     /**
      Reachability observer
@@ -176,11 +176,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
      */
     BOOL isErrorNotificationSuspended;
     
-    /**
-     Completion block called when [self popToHomeViewControllerAnimated:] has been
-     completed.
-     */
-    void (^popToHomeViewControllerCompletion)(void);
     
     /**
      The listeners to call events.
@@ -375,27 +370,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (UINavigationController*)secondaryNavigationController
-{
-    UIViewController* rootViewController = self.window.rootViewController;
-    
-    if ([rootViewController isKindOfClass:[UISplitViewController class]])
-    {
-        UISplitViewController *splitViewController = (UISplitViewController *)rootViewController;
-        if (splitViewController.viewControllers.count == 2)
-        {
-            UIViewController *secondViewController = [splitViewController.viewControllers lastObject];
-            
-            if ([secondViewController isKindOfClass:[UINavigationController class]])
-            {
-                return (UINavigationController*)secondViewController;
-            }
-        }
-    }
-    
-    return nil;
-}
-
 #pragma mark - UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(nullable NSDictionary *)launchOptions
@@ -466,27 +440,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
     // To simplify navigation into the app, we retrieve here the main navigation controller and the tab bar controller.
     UISplitViewController *splitViewController = (UISplitViewController *)self.window.rootViewController;
-    splitViewController.delegate = self;
     
     _masterNavigationController = splitViewController.viewControllers[0];
     _masterTabBarController = _masterNavigationController.viewControllers.firstObject;
-    
-    // Force the background color of the fake view controller displayed when there is no details.
-    UINavigationController *secondNavController = self.secondaryNavigationController;
-    if (secondNavController)
-    {
-        [ThemeService.shared.theme applyStyleOnNavigationBar:secondNavController.navigationBar];
-        secondNavController.topViewController.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
-    }
-    
-    // on IOS 8 iPad devices, force to display the primary and the secondary viewcontroller
-    // to avoid empty room View Controller in portrait orientation
-    // else, the user cannot select a room
-    // shouldHideViewController delegate method is also implemented
-    if ([(NSString*)[UIDevice currentDevice].model hasPrefix:@"iPad"])
-    {
-        splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
-    }
     
     // Sanity check
     NSAssert(_masterTabBarController, @"Something wrong in Main.storyboard");
@@ -938,32 +894,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)restoreEmptyDetailsViewController
 {
-    UIViewController* rootViewController = self.window.rootViewController;
-    
-    if ([rootViewController isKindOfClass:[UISplitViewController class]])
-    {
-        UISplitViewController *splitViewController = (UISplitViewController *)rootViewController;
-        
-        // Be sure that the primary is then visible too.
-        if (splitViewController.displayMode == UISplitViewControllerDisplayModePrimaryHidden)
-        {
-            splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
-        }
-        
-        if (splitViewController.viewControllers.count == 2)
-        {
-            UIViewController *mainViewController = splitViewController.viewControllers[0];
-            
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-            UIViewController *emptyDetailsViewController = [storyboard instantiateViewControllerWithIdentifier:@"EmptyDetailsViewControllerStoryboardId"];
-            emptyDetailsViewController.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
-            
-            splitViewController.viewControllers = @[mainViewController, emptyDetailsViewController];
-        }
-    }
-    
-    // Release the current selected item (room/contact/group...).
-    [_masterTabBarController releaseSelectedItem];
+    [self.delegate legacyAppDelegateRestoreEmptyDetailsViewController:self];
 }
 
 - (UIAlertController*)showErrorAsAlert:(NSError*)error
@@ -1136,61 +1067,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)popToHomeViewControllerAnimated:(BOOL)animated completion:(void (^)(void))completion
 {
-    UINavigationController *secondNavController = self.secondaryNavigationController;
-    if (secondNavController)
-    {
-        [secondNavController popToRootViewControllerAnimated:animated];
-    }
-    
-    // Force back to the main screen if this is not the one that is displayed
-    if (_masterTabBarController && _masterTabBarController != _masterNavigationController.visibleViewController)
-    {
-        // Listen to the masterNavigationController changes
-        // We need to be sure that masterTabBarController is back to the screen
-        popToHomeViewControllerCompletion = completion;
-        _masterNavigationController.delegate = self;
-        
-        [_masterNavigationController popToViewController:_masterTabBarController animated:animated];
-    }
-    else
-    {
-        // Select the Home tab
-        _masterTabBarController.selectedIndex = TABBAR_HOME_INDEX;
-        
-        if (completion)
-        {
-            completion();
-        }
-    }
-}
-
-#pragma mark - UINavigationController delegate
-
-- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
-    if (viewController == _masterTabBarController)
-    {
-        _masterNavigationController.delegate = nil;
-        
-        // For unknown reason, the navigation bar is not restored correctly by [popToViewController:animated:]
-        // when a ViewController has hidden it (see MXKAttachmentsViewController).
-        // Patch: restore navigation bar by default here.
-        _masterNavigationController.navigationBarHidden = NO;
-        
-        // Release the current selected item (room/contact/...).
-        [_masterTabBarController releaseSelectedItem];
-        
-        if (popToHomeViewControllerCompletion)
-        {
-            void (^popToHomeViewControllerCompletion2)(void) = popToHomeViewControllerCompletion;
-            popToHomeViewControllerCompletion = nil;
-            
-            // Dispatch the completion in order to let navigation stack refresh itself.
-            dispatch_async(dispatch_get_main_queue(), ^{
-                popToHomeViewControllerCompletion2();
-            });
-        }
-    }
+    [self.delegate legacyAppDelegate:self wantsToPopToHomeViewControllerAnimated:animated completion:completion];
 }
 
 #pragma mark - Crash handling
@@ -2448,8 +2325,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             NSLog(@"[AppDelegate] handleLaunchAnimation: Authentication still in progress");
                   
             // Wait for the return of masterTabBarControllerDidCompleteAuthentication
-            isLaunching = YES;
-            _masterTabBarController.masterVCDelegate = self;
+            isLaunching = YES;            
         }
         else
         {
@@ -2619,6 +2495,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         NSLog(@"[AppDelegate] checkLocalPrivateKeysInSession: request keys because keysCount = %@", @(keysCount));
         [mxSession.crypto requestAllPrivateKeys];
     }
+}
+
+- (void)authenticationDidComplete
+{
+    [self handleLaunchAnimation];
 }
 
 #pragma mark -
@@ -3611,50 +3492,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         rootController.presentedViewController.view.frame = rootControllerFrame;
     }
     [rootController.view setNeedsLayout];
-}
-
-#pragma mark - SplitViewController delegate
-
-- (nullable UIViewController *)splitViewController:(UISplitViewController *)splitViewController separateSecondaryViewControllerFromPrimaryViewController:(UIViewController *)primaryViewController
-{
-    // Return the top view controller of the master navigation controller, if it is a navigation controller itself.
-    UIViewController *topViewController = _masterNavigationController.topViewController;
-    if ([topViewController isKindOfClass:UINavigationController.class])
-    {
-        return topViewController;
-    }
-    
-    // Else return the default empty details view controller from the storyboard.
-    // Be sure that the primary is then visible too.
-    if (splitViewController.displayMode == UISplitViewControllerDisplayModePrimaryHidden)
-    {
-        splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
-    }
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-    UIViewController *emptyDetailsViewController = [storyboard instantiateViewControllerWithIdentifier:@"EmptyDetailsViewControllerStoryboardId"];
-    emptyDetailsViewController.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
-    return emptyDetailsViewController;
-}
-
-- (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController
-{
-    if (!self.masterTabBarController.currentRoomViewController && !self.masterTabBarController.currentContactDetailViewController && !self.masterTabBarController.currentGroupDetailViewController)
-    {
-        // Return YES to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
-        return YES;
-    }
-    else
-    {
-        return NO;
-    }
-}
-
-- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
-{
-    // oniPad devices, force to display the primary and the secondary viewcontroller
-    // to avoid empty room View Controller in portrait orientation
-    // else, the user cannot select a room
-    return NO;
 }
 
 #pragma mark - Status Bar Tap handling
@@ -4708,13 +4545,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [coordinatorBridgePresenter dismiss];
     self.setPinCoordinatorBridgePresenter = nil;
     [self logoutWithConfirmation:NO completion:nil];
-}
-
-#pragma mark - MasterTabBarControllerDelegate
-
-- (void)masterTabBarControllerDidCompleteAuthentication:(MasterTabBarController *)masterTabBarController
-{
-    [self handleLaunchAnimation];
 }
 
 @end

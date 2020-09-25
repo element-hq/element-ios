@@ -115,6 +115,8 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
             // Observe "Invert Colours" settings changes (available since iOS 11)
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accessibilityInvertColorsStatusDidChange) name:UIAccessibilityInvertColorsStatusDidChangeNotification object:nil];
         }
+        
+        [self reEvaluateTheme];
     }
     return self;
 }

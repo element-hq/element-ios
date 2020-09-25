@@ -2,51 +2,52 @@ Changes to be released in next version
 =================================================
 
 ✨ Features
- * 
+ *
 
 🙌 Improvements
  * Pin: Implement not allowed PINs feature. There is no restriction by default.
  * Room: New Room Settings screen.
+ * Architecture: Use coordinator pattern for legacy screen flows (#3597).
 
 🐛 Bugfix
  * Timeline: Hide encrypted history (pre-invite) (#3660).
  * Fix floating action buttons' images.
 
 ⚠️ API Changes
- * 
+ *
 
 🗣 Translations
- * 
+ *
     
 🧱 Build
- * 
+ *
 
 Others
- * 
+ *
 
 Changes in 1.0.12 (2020-09-16)
 =================================================
 
 ✨ Features
- * 
+ *
 
 🙌 Improvements
- * 
+ *
 
 🐛 Bugfix
- * 
+ *
 
 ⚠️ API Changes
- * 
+ *
 
 🗣 Translations
- * 
+ *
     
 🧱 Build
- * 
+ *
 
 Others
- * 
+ *
 
 Improvements:
  * Upgrade MatrixKit version ([v0.12.20](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.20)).
@@ -55,10 +56,10 @@ Changes in 1.0.11 (2020-09-15)
 =================================================
 
 ✨ Features
- * 
+ *
 
 🙌 Improvements
- * Room: Collapse state messages on room creation (#3629). 
+ * Room: Collapse state messages on room creation (#3629).
  * AuthVC: Make force PIN working for registration as well.
  * AppDelegate: Do not show incoming key verification requests while authenticating.
 
@@ -67,13 +68,13 @@ Changes in 1.0.11 (2020-09-15)
  * Loading animation: Fix the bug where, after authentication, the animation disappeared too early and made auth screen flashed.
 
 ⚠️ API Changes
- * 
+ *
 
 🗣 Translations
- * 
+ *
     
 🧱 Build
- * 
+ *
 
 Others
  * buildRelease.sh: Pass a `git_tag` parameter to fastlane because fastlane `git_branch` method can fail.
@@ -85,28 +86,28 @@ Changes in 1.0.10 (2020-09-08)
 =================================================
 
 ✨ Features
- * 
+ *
     
 🙌 Improvements
  * AppDelegate: Convert to Swift (#3594).
  * Contextualize floating button actions per tab (#3627).
     
 🐛 Bugfix
- * Show pin code screen on every foreground (#3620). 
+ * Show pin code screen on every foreground (#3620).
  * Close keyboard on pin code screen (#3622).
  * Fix content leakage on pin code protection (#3624).
     
 ⚠️ API Changes
- * 
+ *
     
 🗣 Translations
- * 
+ *
     
 🧱 Build
  * buildRelease.sh: Make sure it works for both branches and tags
     
 Others
- * 
+ *
 
 Improvements:
  * Upgrade MatrixKit version ([v0.12.18](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.18)).
