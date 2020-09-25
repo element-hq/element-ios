@@ -1106,6 +1106,10 @@ internal enum VectorL10n {
   internal static var dmRoomDetailsAdvancedE2eEncryptionEnabled: String { 
     return VectorL10n.tr("Vector", "dm_room_details_advanced_e2e_encryption_enabled") 
   }
+  /// ID:
+  internal static var dmRoomDetailsAdvancedRoomId: String { 
+    return VectorL10n.tr("Vector", "dm_room_details_advanced_room_id") 
+  }
   /// This has no local addresses
   internal static var dmRoomDetailsNoLocalAddresses: String { 
     return VectorL10n.tr("Vector", "dm_room_details_no_local_addresses") 

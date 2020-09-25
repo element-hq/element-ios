@@ -2789,7 +2789,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             
             cell.textLabel.font = [UIFont systemFontOfSize:17];
-            cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_room_id", @"Vector", nil);
+            if (mxRoom.isDirect)
+            {
+                cell.textLabel.text = NSLocalizedStringFromTable(@"dm_room_details_advanced_room_id", @"Vector", nil);
+            }
+            else
+            {
+                cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_room_id", @"Vector", nil);
+            }
             cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
             cell.detailTextLabel.font = [UIFont systemFontOfSize:15];

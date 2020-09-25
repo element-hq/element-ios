@@ -700,6 +700,7 @@
 "room_details_banned_users_section"="Banned users";
 "room_details_advanced_section"="Advanced";
 "room_details_advanced_room_id"="Room ID:";
+"dm_room_details_advanced_room_id"="ID:";
 "room_details_advanced_enable_e2e_encryption"="Enable encryption (warning: cannot be disabled again!)";
 "room_details_advanced_e2e_encryption_enabled"="Encryption is enabled in this room";
 "dm_room_details_advanced_e2e_encryption_enabled"="Encryption is enabled here";
