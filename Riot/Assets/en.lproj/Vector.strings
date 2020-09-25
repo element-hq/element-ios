@@ -653,6 +653,7 @@
 
 // Room Details
 "room_details_title" = "Room Details";
+"dm_room_details_title" = "Details";
 "room_details_people" = "Members";
 "room_details_files" = "Uploads";
 "room_details_settings" = "Settings";
