@@ -31,6 +31,7 @@ final class PinCodePreferences: NSObject {
     private struct StoreKeys {
         static let pin: String = "pin"
         static let biometricsEnabled: String = "biometricsEnabled"
+        static let canUseBiometricsToUnlock: String = "canUseBiometricsToUnlock"
     }
     
     static let shared = PinCodePreferences()
@@ -107,6 +108,23 @@ final class PinCodePreferences: NSObject {
                 try store.set(newValue, forKey: StoreKeys.biometricsEnabled)
             } catch let error {
                 NSLog("[PinCodePreferences] Error when storing biometrics enabled to the store: \(error)")
+            }
+        }
+    }
+    
+    var canUseBiometricsToUnlock: Bool? {
+        get {
+            do {
+                return try store.bool(forKey: StoreKeys.canUseBiometricsToUnlock) ?? true
+            } catch let error {
+                NSLog("[PinCodePreferences] Error when reading canUseBiometricsToUnlock from store: \(error)")
+                return nil
+            }
+        } set {
+            do {
+                try store.set(newValue, forKey: StoreKeys.canUseBiometricsToUnlock)
+            } catch let error {
+                NSLog("[PinCodePreferences] Error when storing canUseBiometricsToUnlock to the store: \(error)")
             }
         }
     }
