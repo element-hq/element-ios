@@ -60,7 +60,7 @@ NSString *FallBackViewControllerJavascriptOnLogin = @"window.matrixLogin.onLogin
     
     // Due to https://developers.googleblog.com/2016/08/modernizing-oauth-interactions-in-native-apps.html, we hack
     // the user agent to bypass the limitation of Google, as a quick fix (a proper solution will be to use the SSO SDK)
-    webView.customUserAgent = @"Mozilla/5.0";
+    // webView.customUserAgent = @"Mozilla/5.0";
 
     [self clearCookies];
 }
