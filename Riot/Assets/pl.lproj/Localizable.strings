@@ -55,3 +55,9 @@
 /* Incoming named video conference invite from a specific person */
 "VIDEO_CONF_NAMED_FROM_USER" = "Grupowe połączenie wideo z %@: '%@'";
 "KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ wymaga weryfikacji";
+/* New message indicator on unknown room */
+"MESSAGE" = "Wiadomość";
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "Wiadomość od %@";
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "Wiadomość w %@";
