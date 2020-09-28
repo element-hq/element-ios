@@ -53,7 +53,8 @@ final class SetPinCoordinator: SetPinCoordinatorType {
     private func getRootCoordinator() -> Coordinator & Presentable {
         switch viewMode {
         case .unlock:
-            if pinCodePreferences.isBiometricsSet {
+            let canUseBiometricsToUnlock = pinCodePreferences.canUseBiometricsToUnlock ?? true
+            if pinCodePreferences.isBiometricsSet && canUseBiometricsToUnlock {
                 return createSetupBiometricsCoordinator()
             } else {
                 return createEnterPinCodeCoordinator()

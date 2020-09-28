@@ -32,6 +32,7 @@ final class PinCodePreferences: NSObject {
         static let pin: String = "pin"
         static let biometricsEnabled: String = "biometricsEnabled"
         static let canUseBiometricsToUnlock: String = "canUseBiometricsToUnlock"
+        static let numberOfPinFailures: String = "numberOfPinFailures"
     }
     
     static let shared = PinCodePreferences()
@@ -39,7 +40,7 @@ final class PinCodePreferences: NSObject {
     /// Store. Defaults to `KeychainStore`
     private let store: KeyValueStore
     
-    override init() {
+    override private init() {
         store = KeychainStore(withKeychain: Keychain(service: PinConstants.pinCodeKeychainService,
                                                      accessGroup: BuildSettings.keychainAccessGroup))
         super.init()
@@ -129,6 +130,23 @@ final class PinCodePreferences: NSObject {
         }
     }
     
+    var numberOfPinFailures: Int {
+        get {
+            do {
+                return try store.integer(forKey: StoreKeys.numberOfPinFailures) ?? 0
+            } catch let error {
+                NSLog("[PinCodePreferences] Error when reading numberOfPinFailures from store: \(error)")
+                return 0
+            }
+        } set {
+            do {
+                try store.set(newValue, forKey: StoreKeys.numberOfPinFailures)
+            } catch let error {
+                NSLog("[PinCodePreferences] Error when storing numberOfPinFailures to the store: \(error)")
+            }
+        }
+    }
+    
     var isBiometricsSet: Bool {
         return biometricsEnabled == true
     }
@@ -171,5 +189,7 @@ final class PinCodePreferences: NSObject {
     func reset() {
         pin = nil
         biometricsEnabled = nil
+        canUseBiometricsToUnlock = nil
+        numberOfPinFailures = 0
     }
 }
