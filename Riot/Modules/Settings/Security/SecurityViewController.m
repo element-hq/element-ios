@@ -314,7 +314,7 @@ TableViewSectionsDelegate>
     [pinCodeSection addRowWithTag:PIN_CODE_SETTING];
     [pinCodeSection addRowWithTag:PIN_CODE_DESCRIPTION];
     
-    if (![PinCodePreferences shared].isBiometricsAvailable)
+    if ([PinCodePreferences shared].isBiometricsAvailable)
     {
         [pinCodeSection addRowWithTag:PIN_CODE_BIOMETRICS];
     }
