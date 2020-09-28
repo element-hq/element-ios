@@ -39,6 +39,7 @@ final class RoomInfoListViewController: UIViewController {
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
+    private var isRoomDirect: Bool = false
     
     private lazy var closeButton: CloseButton = {
         let button = CloseButton()
@@ -55,7 +56,9 @@ final class RoomInfoListViewController: UIViewController {
     }()
     
     private lazy var leaveAlertController: UIAlertController = {
-        let controller = UIAlertController(title: VectorL10n.roomParticipantsLeavePromptTitle, message: VectorL10n.roomParticipantsLeavePromptMsg, preferredStyle: .alert)
+        let title = self.isRoomDirect ? VectorL10n.roomParticipantsLeavePromptTitleForDm : VectorL10n.roomParticipantsLeavePromptTitle
+        let message = self.isRoomDirect ? VectorL10n.roomParticipantsLeavePromptMsgForDm : VectorL10n.roomParticipantsLeavePromptMsg
+        let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
         controller.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil))
         controller.addAction(UIAlertAction(title: VectorL10n.leave, style: .default, handler: { [weak self] (action) in
@@ -127,14 +130,18 @@ final class RoomInfoListViewController: UIViewController {
     // MARK: - Private
     
     private func updateSections(with viewData: RoomInfoListViewData) {
+        isRoomDirect = viewData.isDirect
         basicInfoView.configure(withViewData: viewData.basicInfoViewData)
         
         var tmpSections: [Section] = []
         
         if viewData.isEncrypted {
+            let footer = viewData.isDirect ?
+                VectorL10n.roomParticipantsSecurityInformationRoomEncryptedForDm :
+                VectorL10n.roomParticipantsSecurityInformationRoomEncrypted
             let sectionSecurity = Section(header: VectorL10n.securitySettingsTitle,
                                           rows: [],
-                                          footer: VectorL10n.roomInfoListRoomEncrypted)
+                                          footer: footer)
             
             tmpSections.append(sectionSecurity)
         }
@@ -156,7 +163,10 @@ final class RoomInfoListViewController: UIViewController {
                                              rowUploads],
                                       footer: nil)
         
-        let rowLeave = Row(type: .destructive, icon: Asset.Images.roomActionLeave.image, text: VectorL10n.roomParticipantsLeavePromptTitle, accessoryType: .none) {
+        let leaveTitle = viewData.isDirect ?
+            VectorL10n.roomParticipantsLeavePromptTitleForDm :
+            VectorL10n.roomParticipantsLeavePromptTitle
+        let rowLeave = Row(type: .destructive, icon: Asset.Images.roomActionLeave.image, text: leaveTitle, accessoryType: .none) {
             self.present(self.leaveAlertController, animated: true, completion: nil)
         }
         let sectionLeave = Section(header: nil,

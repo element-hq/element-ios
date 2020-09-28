@@ -120,7 +120,14 @@
     
     self.navigationItem.title = NSLocalizedStringFromTable(@"room_participants_title", @"Vector", nil);
     
-    _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_filter_room_members", @"Vector", nil);
+    if (self.mxRoom.isDirect)
+    {
+        _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_filter_room_members_for_dm", @"Vector", nil);
+    }
+    else
+    {
+        _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_filter_room_members", @"Vector", nil);
+    }
     _searchBarView.returnKeyType = UIReturnKeyDone;
     _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     
@@ -378,6 +385,15 @@
         if (self.mxRoom)
         {
             self.searchBarHeader.hidden = NO;
+            
+            if (self.mxRoom.isDirect)
+            {
+                self.searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_filter_room_members_for_dm", @"Vector", nil);
+            }
+            else
+            {
+                self.searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_filter_room_members", @"Vector", nil);
+            }
 
             // Update the current matrix session.
             [self addMatrixSession:self.mxRoom.mxSession];
@@ -1393,8 +1409,21 @@
         {
             // Leave ?
             MXWeakify(self);
-            currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_participants_leave_prompt_title", @"Vector", nil)
-                                                               message:NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg", @"Vector", nil)
+            
+            NSString *title, *message;
+            if (self.mxRoom.isDirect)
+            {
+                title = NSLocalizedStringFromTable(@"room_participants_leave_prompt_title_for_dm", @"Vector", nil);
+                message = NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg_for_dm", @"Vector", nil);
+            }
+            else
+            {
+                title = NSLocalizedStringFromTable(@"room_participants_leave_prompt_title", @"Vector", nil);
+                message = NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg", @"Vector", nil);
+            }
+            
+            currentAlert = [UIAlertController alertControllerWithTitle:title
+                                                               message:message
                                                         preferredStyle:UIAlertControllerStyleAlert];
             
             [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
