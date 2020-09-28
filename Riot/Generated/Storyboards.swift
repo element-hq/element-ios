@@ -147,6 +147,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.RoomCreationEventsModalViewController>(storyboard: RoomCreationEventsModalViewController.self)
   }
+  internal enum RoomInfoListViewController: StoryboardType {
+    internal static let storyboardName = "RoomInfoListViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.RoomInfoListViewController>(storyboard: RoomInfoListViewController.self)
+  }
   internal enum SecretsRecoveryWithKeyViewController: StoryboardType {
     internal static let storyboardName = "SecretsRecoveryWithKeyViewController"
 

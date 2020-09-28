@@ -44,9 +44,22 @@ final class CloseButton: UIButton, Themable {
     
     // MARK: - Life cycle
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
+    init() {
+        super.init(frame: .zero)
+        setup()
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setup()
+    }
+    
+    private func setup() {
         self.backgroundColor = UIColor.clear
         self.setImage(Asset.Images.closeButton.image, for: .normal)
         self.setupCircleView()
@@ -64,6 +77,12 @@ final class CloseButton: UIButton, Themable {
     // MARK: - Private
     
     private func setupCircleView() {
+        
+        //  sanity check
+        if circleBackgroundView != nil {
+            //  already set up
+            return
+        }
         
         let rect = CGRect(x: 0, y: 0, width: CircleBackgroundConstants.height, height: CircleBackgroundConstants.height)
         let view = UIView(frame: rect)

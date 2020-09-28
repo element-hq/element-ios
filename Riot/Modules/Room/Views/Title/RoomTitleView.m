@@ -48,26 +48,6 @@
         [self.titleMask addGestureRecognizer:tap];
         self.titleMask.userInteractionEnabled = YES;
     }
-    
-    if (_roomDetailsMask)
-    {
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
-        [tap setNumberOfTouchesRequired:1];
-        [tap setNumberOfTapsRequired:1];
-        [tap setDelegate:self];
-        [self.roomDetailsMask addGestureRecognizer:tap];
-        self.roomDetailsMask.userInteractionEnabled = YES;
-    }
-    
-    if (_addParticipantMask)
-    {
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
-        [tap setNumberOfTouchesRequired:1];
-        [tap setNumberOfTapsRequired:1];
-        [tap setDelegate:self];
-        [self.addParticipantMask addGestureRecognizer:tap];
-        self.addParticipantMask.userInteractionEnabled = YES;
-    }
 }
 
 - (void)layoutSubviews
