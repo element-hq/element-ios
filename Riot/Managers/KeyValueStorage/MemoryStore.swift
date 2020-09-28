@@ -49,6 +49,10 @@ extension MemoryStore: KeyValueStore {
         setObject(value, forKey: key)
     }
     
+    func set(_ value: Int?, forKey key: KeyValueStoreKey) throws {
+        setObject(value, forKey: key)
+    }
+    
     //  getters
     func data(forKey key: KeyValueStoreKey) throws -> Data? {
         return object(forKey: key) as? Data
@@ -60,6 +64,10 @@ extension MemoryStore: KeyValueStore {
     
     func bool(forKey key: KeyValueStoreKey) throws -> Bool? {
         return object(forKey: key) as? Bool
+    }
+    
+    func integer(forKey key: KeyValueStoreKey) throws -> Int? {
+        return object(forKey: key) as? Int
     }
     
     //  remove
