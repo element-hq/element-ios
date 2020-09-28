@@ -43,7 +43,7 @@ final class Section: NSObject {
     
     func addRows(withCount count: Int) {
         for i in 0..<count {
-            addRow(Row.row(withTag: i))
+            addRow(withTag: i)
         }
     }
     
