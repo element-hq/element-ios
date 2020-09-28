@@ -173,6 +173,12 @@ final class BuildSettings: NSObject {
     /// Not allowed pin codes. User won't be able to select one of the pin in the list.
     static let notAllowedPINs: [String] = []
     
+    /// Maximum number of allowed pin failures when unlocking, before force logging out the user. Defaults to `3`
+    static let maxAllowedNumberOfPinFailures: Int = 3
+    
+    /// Maximum number of allowed biometrics failures when unlocking, before fallbacking the user to the pin. Defaults to `5`
+    static let maxAllowedNumberOfBiometricsFailures: Int = 5
+    
     // MARK: - General Settings Screen
     
     static let settingsScreenShowUserFirstName: Bool = false

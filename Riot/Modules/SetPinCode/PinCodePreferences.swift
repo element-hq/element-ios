@@ -59,6 +59,16 @@ final class PinCodePreferences: NSObject {
         return BuildSettings.notAllowedPINs
     }
     
+    /// Maximum number of allowed pin failures when unlocking, before force logging out the user
+    var maxAllowedNumberOfPinFailures: Int {
+        return BuildSettings.maxAllowedNumberOfPinFailures
+    }
+    
+    /// Maximum number of allowed biometrics failures when unlocking, before fallbacking the user to the pin
+    var maxAllowedNumberOfBiometricsFailures: Int {
+        return BuildSettings.maxAllowedNumberOfBiometricsFailures
+    }
+    
     var isBiometricsAvailable: Bool {
         return LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
     }
