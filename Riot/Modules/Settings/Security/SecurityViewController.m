@@ -1664,14 +1664,30 @@ TableViewSectionsDelegate>
 
 - (MXKTableViewCellWithTextView *)settingsKeyBackupTableViewSection:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection textCellForRow:(NSInteger)textCellForRow
 {
+    MXKTableViewCellWithTextView *cell;
+    
     NSIndexPath *indexPath = [self.tableViewSections exactIndexPathForRowTag:textCellForRow sectionTag:SECTION_KEYBACKUP];
-    return [self textViewCellForTableView:self.tableView atIndexPath:indexPath];
+    
+    if (indexPath)
+    {
+        cell = [self textViewCellForTableView:self.tableView atIndexPath:indexPath];
+    }
+    
+    return cell;
 }
 
 - (MXKTableViewCellWithButton *)settingsKeyBackupTableViewSection:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection buttonCellForRow:(NSInteger)buttonCellForRow
 {
+    MXKTableViewCellWithButton *cell;
+    
     NSIndexPath *indexPath = [self.tableViewSections exactIndexPathForRowTag:buttonCellForRow sectionTag:SECTION_KEYBACKUP];
-    return [self buttonCellForTableView:self.tableView atIndexPath:indexPath];
+    
+    if (indexPath)
+    {
+        [self buttonCellForTableView:self.tableView atIndexPath:indexPath];
+    }
+    
+    return cell;
 }
 
 - (void)settingsKeyBackupTableViewSectionShowKeyBackupSetup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection
