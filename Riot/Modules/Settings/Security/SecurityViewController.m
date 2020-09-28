@@ -1055,7 +1055,7 @@ TableViewSectionsDelegate>
 
     cell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
 
-    [cell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+    [cell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventValueChanged];
 
     // Force layout before reusing a cell (fix switch displayed outside the screen)
     [cell layoutIfNeeded];
@@ -1403,7 +1403,7 @@ TableViewSectionsDelegate>
                 labelAndSwitchCell.mxkSwitch.on = session.crypto.globalBlacklistUnverifiedDevices;
                 labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
                 labelAndSwitchCell.mxkSwitch.enabled = YES;
-                [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleBlacklistUnverifiedDevices:) forControlEvents:UIControlEventTouchUpInside];
+                [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleBlacklistUnverifiedDevices:) forControlEvents:UIControlEventValueChanged];
                 
                 cell = labelAndSwitchCell;
                 break;
