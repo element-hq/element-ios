@@ -1002,8 +1002,8 @@
         NSString *title, *message;
         if ([self.mainSession roomWithRoomId:currentRoomId].isDirect)
         {
-            title = NSLocalizedStringFromTable(@"dm_room_participants_leave_prompt_title", @"Vector", nil);
-            message = NSLocalizedStringFromTable(@"dm_room_participants_leave_prompt_msg", @"Vector", nil);
+            title = NSLocalizedStringFromTable(@"room_participants_leave_prompt_title_for_dm", @"Vector", nil);
+            message = NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg_for_dm", @"Vector", nil);
         }
         else
         {

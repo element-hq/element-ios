@@ -3186,7 +3186,7 @@
             }
             else
             {
-                segmentedViewController.title = NSLocalizedStringFromTable(@"dm_room_details_title", @"Vector", nil);
+                segmentedViewController.title = NSLocalizedStringFromTable(@"room_details_title_for_dm", @"Vector", nil);
             }
             [segmentedViewController initWithTitles:titles viewControllers:viewControllers defaultSelected:selectedRoomDetailsIndex];
             

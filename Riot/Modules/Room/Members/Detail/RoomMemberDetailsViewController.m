@@ -862,7 +862,7 @@
                 case UserEncryptionTrustLevelTrusted:
                 {
                     NSString *info = (self.mxRoom.isDirect) ?
-                    NSLocalizedStringFromTable(@"dm_room_participants_security_information_room_encrypted", @"Vector", nil) :
+                    NSLocalizedStringFromTable(@"room_participants_security_information_room_encrypted_for_dm", @"Vector", nil) :
                     NSLocalizedStringFromTable(@"room_participants_security_information_room_encrypted", @"Vector", nil);
                     [encryptionInformation appendString:info];
                 }
@@ -870,7 +870,7 @@
                 case UserEncryptionTrustLevelNone:
                     {
                         NSString *info = (self.mxRoom.isDirect) ?
-                        NSLocalizedStringFromTable(@"dm_room_participants_security_information_room_not_encrypted", @"Vector", nil) :
+                        NSLocalizedStringFromTable(@"room_participants_security_information_room_not_encrypted_for_dm", @"Vector", nil) :
                         NSLocalizedStringFromTable(@"room_participants_security_information_room_not_encrypted", @"Vector", nil);
                         [encryptionInformation appendString:info];
                     }

@@ -122,7 +122,7 @@
     
     if (self.mxRoom.isDirect)
     {
-        _searchBarView.placeholder = NSLocalizedStringFromTable(@"dm_room_participants_filter_room_members", @"Vector", nil);
+        _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_filter_room_members_for_dm", @"Vector", nil);
     }
     else
     {
@@ -388,7 +388,7 @@
             
             if (self.mxRoom.isDirect)
             {
-                self.searchBarView.placeholder = NSLocalizedStringFromTable(@"dm_room_participants_filter_room_members", @"Vector", nil);
+                self.searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_filter_room_members_for_dm", @"Vector", nil);
             }
             else
             {
@@ -1413,8 +1413,8 @@
             NSString *title, *message;
             if (self.mxRoom.isDirect)
             {
-                title = NSLocalizedStringFromTable(@"dm_room_participants_leave_prompt_title", @"Vector", nil);
-                message = NSLocalizedStringFromTable(@"dm_room_participants_leave_prompt_msg", @"Vector", nil);
+                title = NSLocalizedStringFromTable(@"room_participants_leave_prompt_title_for_dm", @"Vector", nil);
+                message = NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg_for_dm", @"Vector", nil);
             }
             else
             {

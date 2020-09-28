@@ -56,8 +56,8 @@ final class RoomInfoListViewController: UIViewController {
     }()
     
     private lazy var leaveAlertController: UIAlertController = {
-        let title = self.isRoomDirect ? VectorL10n.dmRoomParticipantsLeavePromptTitle : VectorL10n.roomParticipantsLeavePromptTitle
-        let message = self.isRoomDirect ? VectorL10n.dmRoomParticipantsLeavePromptMsg : VectorL10n.roomParticipantsLeavePromptMsg
+        let title = self.isRoomDirect ? VectorL10n.roomParticipantsLeavePromptTitleForDm : VectorL10n.roomParticipantsLeavePromptTitle
+        let message = self.isRoomDirect ? VectorL10n.roomParticipantsLeavePromptMsgForDm : VectorL10n.roomParticipantsLeavePromptMsg
         let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
         controller.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil))
@@ -137,7 +137,7 @@ final class RoomInfoListViewController: UIViewController {
         
         if viewData.isEncrypted {
             let footer = viewData.isDirect ?
-                VectorL10n.dmRoomParticipantsSecurityInformationRoomEncrypted :
+                VectorL10n.roomParticipantsSecurityInformationRoomEncryptedForDm :
                 VectorL10n.roomParticipantsSecurityInformationRoomEncrypted
             let sectionSecurity = Section(header: VectorL10n.securitySettingsTitle,
                                           rows: [],
@@ -164,7 +164,7 @@ final class RoomInfoListViewController: UIViewController {
                                       footer: nil)
         
         let leaveTitle = viewData.isDirect ?
-            VectorL10n.dmRoomParticipantsLeavePromptTitle :
+            VectorL10n.roomParticipantsLeavePromptTitleForDm :
             VectorL10n.roomParticipantsLeavePromptTitle
         let rowLeave = Row(type: .destructive, icon: Asset.Images.roomActionLeave.image, text: leaveTitle, accessoryType: .none) {
             self.present(self.leaveAlertController, animated: true, completion: nil)

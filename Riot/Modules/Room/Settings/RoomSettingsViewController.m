@@ -556,7 +556,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         
         if (mxRoom.isDirect)
         {
-            sectionAccess.headerTitle = NSLocalizedStringFromTable(@"dm_room_details_access_section", @"Vector", nil);
+            sectionAccess.headerTitle = NSLocalizedStringFromTable(@"room_details_access_section_for_dm", @"Vector", nil);
         }
         else
         {
@@ -2248,7 +2248,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             if (mxRoom.isDirect)
             {
-                roomPhotoCell.mxkLabel.text = NSLocalizedStringFromTable(@"dm_room_details_photo", @"Vector", nil);
+                roomPhotoCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_photo_for_dm", @"Vector", nil);
             }
             else
             {
@@ -2312,7 +2312,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             if (mxRoom.isDirect)
             {
-                roomNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"dm_room_details_room_name", @"Vector", nil);
+                roomNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_room_name_for_dm", @"Vector", nil);
             }
             else
             {
@@ -2441,7 +2441,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             if (mxRoom.isDirect)
             {
-                directoryToggleCell.mxkLabel.text = NSLocalizedStringFromTable(@"dm_room_details_access_section_directory_toggle", @"Vector", nil);
+                directoryToggleCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_access_section_directory_toggle_for_dm", @"Vector", nil);
             }
             else
             {
@@ -2512,7 +2512,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             {
                 if (mxRoom.isDirect)
                 {
-                    roomAccessCell.label.text = NSLocalizedStringFromTable(@"dm_room_details_access_section_anyone_apart_from_guest", @"Vector", nil);
+                    roomAccessCell.label.text = NSLocalizedStringFromTable(@"room_details_access_section_anyone_apart_from_guest_for_dm", @"Vector", nil);
                 }
                 else
                 {
@@ -2527,7 +2527,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             {
                 if (mxRoom.isDirect)
                 {
-                    roomAccessCell.label.text = NSLocalizedStringFromTable(@"dm_room_details_access_section_anyone", @"Vector", nil);
+                    roomAccessCell.label.text = NSLocalizedStringFromTable(@"room_details_access_section_anyone_for_dm", @"Vector", nil);
                 }
                 else
                 {
@@ -2654,7 +2654,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             addressCell.selectionStyle = UITableViewCellSelectionStyleNone;
             if (mxRoom.isDirect)
             {
-                addressCell.textLabel.text = NSLocalizedStringFromTable(@"dm_room_details_no_local_addresses", @"Vector", nil);
+                addressCell.textLabel.text = NSLocalizedStringFromTable(@"room_details_no_local_addresses_for_dm", @"Vector", nil);
             }
             else
             {
@@ -2791,7 +2791,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             cell.textLabel.font = [UIFont systemFontOfSize:17];
             if (mxRoom.isDirect)
             {
-                cell.textLabel.text = NSLocalizedStringFromTable(@"dm_room_details_advanced_room_id", @"Vector", nil);
+                cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_room_id_for_dm", @"Vector", nil);
             }
             else
             {
@@ -2859,7 +2859,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             cell.textLabel.numberOfLines = 0;
             if (mxRoom.isDirect)
             {
-                cell.textLabel.text = NSLocalizedStringFromTable(@"dm_room_details_advanced_e2e_encryption_enabled", @"Vector", nil);
+                cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_enabled_for_dm", @"Vector", nil);
             }
             else
             {
@@ -2893,7 +2893,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             cell.textLabel.numberOfLines = 0;
             if (mxRoom.isDirect)
             {
-                cell.textLabel.text = NSLocalizedStringFromTable(@"dm_room_details_advanced_e2e_encryption_disabled", @"Vector", nil);
+                cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_disabled_for_dm", @"Vector", nil);
             }
             else
             {
@@ -3450,8 +3450,8 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     NSString *title, *message;
     if ([self.mainSession roomWithRoomId:self.roomId].isDirect)
     {
-        title = NSLocalizedStringFromTable(@"dm_room_participants_leave_prompt_title", @"Vector", nil);
-        message = NSLocalizedStringFromTable(@"dm_room_participants_leave_prompt_msg", @"Vector", nil);
+        title = NSLocalizedStringFromTable(@"room_participants_leave_prompt_title_for_dm", @"Vector", nil);
+        message = NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg_for_dm", @"Vector", nil);
     }
     else
     {
