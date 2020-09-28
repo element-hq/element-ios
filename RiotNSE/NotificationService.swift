@@ -458,7 +458,7 @@ class NotificationService: UNNotificationServiceExtension {
             
             if self.localAuthenticationService.isProtectionSet {
                 NSLog("[NotificationService] notificationContentForEvent: Resetting title and body because app protection is set")
-                notificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE", arguments: [])
+                notificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE_PROTECTED", arguments: [])
                 notificationTitle = nil
             }
             
