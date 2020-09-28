@@ -33,6 +33,7 @@ final class PinCodePreferences: NSObject {
         static let biometricsEnabled: String = "biometricsEnabled"
         static let canUseBiometricsToUnlock: String = "canUseBiometricsToUnlock"
         static let numberOfPinFailures: String = "numberOfPinFailures"
+        static let numberOfBiometricsFailures: String = "numberOfBiometricsFailures"
     }
     
     static let shared = PinCodePreferences()
@@ -147,6 +148,23 @@ final class PinCodePreferences: NSObject {
         }
     }
     
+    var numberOfBiometricsFailures: Int {
+        get {
+            do {
+                return try store.integer(forKey: StoreKeys.numberOfBiometricsFailures) ?? 0
+            } catch let error {
+                NSLog("[PinCodePreferences] Error when reading numberOfBiometricsFailures from store: \(error)")
+                return 0
+            }
+        } set {
+            do {
+                try store.set(newValue, forKey: StoreKeys.numberOfBiometricsFailures)
+            } catch let error {
+                NSLog("[PinCodePreferences] Error when storing numberOfBiometricsFailures to the store: \(error)")
+            }
+        }
+    }
+    
     var isBiometricsSet: Bool {
         return biometricsEnabled == true
     }
@@ -190,6 +208,12 @@ final class PinCodePreferences: NSObject {
         pin = nil
         biometricsEnabled = nil
         canUseBiometricsToUnlock = nil
+        resetCounters()
+    }
+    
+    /// Reset number of failures for both pin and biometrics
+    func resetCounters() {
         numberOfPinFailures = 0
+        numberOfBiometricsFailures = 0
     }
 }
