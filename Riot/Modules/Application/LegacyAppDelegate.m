@@ -2356,6 +2356,31 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         }
 
         [self hideLaunchAnimation];
+        
+        if (self.setPinCoordinatorBridgePresenter)
+        {
+            NSLog(@"[AppDelegate] handleAppState: PIN code is presented. Do not go further");
+            return;
+        }
+        
+        if (mainSession.crypto.crossSigning)
+        {
+            NSLog(@"[AppDelegate] handleAppState: crossSigning.state: %@", @(mainSession.crypto.crossSigning.state));
+            
+            switch (mainSession.crypto.crossSigning.state)
+            {
+                case MXCrossSigningStateCrossSigningExists:
+                    NSLog(@"[AppDelegate] handleAppState: presentVerifyCurrentSessionAlertIfNeededWithSession");
+                    [_masterTabBarController presentVerifyCurrentSessionAlertIfNeededWithSession:mainSession];
+                    break;
+                case MXCrossSigningStateCanCrossSign:
+                    NSLog(@"[AppDelegate] handleAppState: presentReviewUnverifiedSessionsAlertIfNeededWithSession");
+                    [_masterTabBarController presentReviewUnverifiedSessionsAlertIfNeededWithSession:mainSession];
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
 

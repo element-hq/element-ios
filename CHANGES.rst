@@ -17,6 +17,7 @@ Changes to be released in next version
  * Timeline: Hide encrypted history (pre-invite) (#3660).
  * Fix floating action buttons' images.
  * Complete Security: Let the authentication flow display it if this flow is not complete yet.
+ * PIN Code: Do not show verification dialog at the top of PIN code.
 
 ⚠️ API Changes
  *
