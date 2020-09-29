@@ -1788,15 +1788,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         {
             [self removeMatrixSession:mxSession];
         }
-        else if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
-        {
-            if (mxSession.state == MXSessionStateRunning)
-            {
-                // Check if we need to display a key share dialog
-                [self checkPendingRoomKeyRequests];
-                [self checkPendingIncomingKeyVerificationsInSession:mxSession];
-            }
-        }
         
         [self handleAppState];
     }];
@@ -1973,12 +1964,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         
         // Do the one time check on device id
         [self checkDeviceId:mxSession];
-
-        // Enable listening of incoming key share requests
-        [self enableRoomKeyRequestObserver:mxSession];
-
-        // Enable listening of incoming key verification requests
-        [self enableIncomingKeyVerificationObserver:mxSession];
     }
 }
 
@@ -2381,6 +2366,19 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                     break;
             }
         }
+        
+        // TODO: We should wait that cross-signing screens are done before going further but it seems fine. Those screens
+        // protect each other.
+        
+        // This is the time to register for incoming requests
+        [self checkPendingRoomKeyRequests];
+        [self checkPendingIncomingKeyVerificationsInSession:mainSession];
+        
+        // Enable listening of incoming key share requests
+        [self enableRoomKeyRequestObserver:mainSession];
+        
+        // Enable listening of incoming key verification requests
+        [self enableIncomingKeyVerificationObserver:mainSession];
     }
 }
 
