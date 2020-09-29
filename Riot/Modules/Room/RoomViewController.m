@@ -3180,7 +3180,14 @@
                 selectedRoomDetailsIndex = 0;
             }
             
-            segmentedViewController.title = NSLocalizedStringFromTable(@"room_details_title", @"Vector", nil);
+            if (self.roomDataSource.room.isDirect)
+            {
+                segmentedViewController.title = NSLocalizedStringFromTable(@"room_details_title", @"Vector", nil);
+            }
+            else
+            {
+                segmentedViewController.title = NSLocalizedStringFromTable(@"room_details_title_for_dm", @"Vector", nil);
+            }
             [segmentedViewController initWithTitles:titles viewControllers:viewControllers defaultSelected:selectedRoomDetailsIndex];
             
             // Add the current session to be able to observe its state change.

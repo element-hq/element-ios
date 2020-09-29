@@ -860,10 +860,20 @@
                 case UserEncryptionTrustLevelNotVerified:
                 case UserEncryptionTrustLevelNoCrossSigning:
                 case UserEncryptionTrustLevelTrusted:
-                    [encryptionInformation appendString:NSLocalizedStringFromTable(@"room_participants_security_information_room_encrypted", @"Vector", nil)];
+                {
+                    NSString *info = (self.mxRoom.isDirect) ?
+                    NSLocalizedStringFromTable(@"room_participants_security_information_room_encrypted_for_dm", @"Vector", nil) :
+                    NSLocalizedStringFromTable(@"room_participants_security_information_room_encrypted", @"Vector", nil);
+                    [encryptionInformation appendString:info];
+                }
                     break;
                 case UserEncryptionTrustLevelNone:
-                    [encryptionInformation appendString:NSLocalizedStringFromTable(@"room_participants_security_information_room_not_encrypted", @"Vector", nil)];
+                    {
+                        NSString *info = (self.mxRoom.isDirect) ?
+                        NSLocalizedStringFromTable(@"room_participants_security_information_room_not_encrypted_for_dm", @"Vector", nil) :
+                        NSLocalizedStringFromTable(@"room_participants_security_information_room_not_encrypted", @"Vector", nil);
+                        [encryptionInformation appendString:info];
+                    }
                     break;
                 case UserEncryptionTrustLevelUnknown:
                     [encryptionInformation appendString:NSLocalizedStringFromTable(@"room_participants_security_information_loading", @"Vector", nil)];

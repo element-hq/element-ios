@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import MatrixKit
 
 @objcMembers
 class LocalAuthenticationService: NSObject {

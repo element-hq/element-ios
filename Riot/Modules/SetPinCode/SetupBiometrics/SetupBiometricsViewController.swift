@@ -178,7 +178,7 @@ final class SetupBiometricsViewController: UIViewController {
         
         guard let biometricsName = viewModel.localizedBiometricsName() else { return }
         self.titleLabel.text = VectorL10n.biometricsDesetupTitleX(biometricsName)
-        self.subtitleLabel.text = VectorL10n.biometricsDesetupSubtitle
+        self.subtitleLabel.text = nil
         self.biometricsIconImageView.image = viewModel.biometricsIcon()
         self.enableButton.setTitle(VectorL10n.biometricsDesetupDisableButtonTitleX(biometricsName), for: .normal)
     }
