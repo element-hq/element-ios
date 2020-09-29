@@ -731,7 +731,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         [application keyWindow].accessibilityIgnoresInvertColors = YES;
     }
     
-    [self handleLaunchAnimation];
+    [self handleAppState];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -1798,7 +1798,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             }
         }
         
-        [self handleLaunchAnimation];
+        [self handleAppState];
     }];
     
     // Register an observer in order to handle new account
@@ -2312,7 +2312,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }];
 }
 
-- (void)handleLaunchAnimation
+- (void)handleAppState
 {
     MXSession *mainSession = self.mxSessions.firstObject;
     
@@ -2322,7 +2322,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         
         if (_masterTabBarController.authenticationInProgress)
         {
-            NSLog(@"[AppDelegate] handleLaunchAnimation: Authentication still in progress");
+            NSLog(@"[AppDelegate] handleAppState: Authentication still in progress");
                   
             // Wait for the return of masterTabBarControllerDidCompleteAuthentication
             isLaunching = YES;            
@@ -2346,38 +2346,46 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             }
         }
         
+        NSLog(@"[AppDelegate] handleAppState: isLaunching: %@", isLaunching ? @"YES" : @"NO");
+        
         if (isLaunching)
         {
-            NSLog(@"[AppDelegate] handleLaunchAnimation: LaunchLoadingView");
-            
-            UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-            
-            if (!launchAnimationContainerView && window)
-            {
-                LaunchLoadingView *launchLoadingView = [LaunchLoadingView instantiate];
-                launchLoadingView.frame = window.bounds;
-                [launchLoadingView updateWithTheme:ThemeService.shared.theme];
-                launchLoadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-                
-                [window addSubview:launchLoadingView];
-                
-                launchAnimationContainerView = launchLoadingView;
-                launchAnimationStart = [NSDate date];
-            }
-            
+            NSLog(@"[AppDelegate] handleAppState: LaunchLoadingView");
+            [self showLaunchAnimation];
             return;
         }
-        else
-        {
-            NSLog(@"[AppDelegate] handleLaunchAnimation: isLaunching: NO");
-        }
+
+        [self hideLaunchAnimation];
     }
+}
+
+- (void)showLaunchAnimation
+{
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
     
+    if (!launchAnimationContainerView && window)
+    {
+        NSLog(@"[AppDelegate] showLaunchAnimation");
+        
+        LaunchLoadingView *launchLoadingView = [LaunchLoadingView instantiate];
+        launchLoadingView.frame = window.bounds;
+        [launchLoadingView updateWithTheme:ThemeService.shared.theme];
+        launchLoadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        
+        [window addSubview:launchLoadingView];
+        
+        launchAnimationContainerView = launchLoadingView;
+        launchAnimationStart = [NSDate date];
+    }
+}
+
+- (void)hideLaunchAnimation
+{
     if (launchAnimationContainerView)
     {
         NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:launchAnimationStart];
-        NSLog(@"[AppDelegate] LaunchAnimation was shown for %.3fms", duration * 1000);
-
+        NSLog(@"[AppDelegate] hideLaunchAnimation: LaunchAnimation was shown for %.3fms", duration * 1000);
+        
         // Track it on our analytics
         [[Analytics sharedInstance] trackLaunchScreenDisplayDuration:duration];
         
@@ -2499,7 +2507,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)authenticationDidComplete
 {
-    [self handleLaunchAnimation];
+    [self handleAppState];
 }
 
 #pragma mark -

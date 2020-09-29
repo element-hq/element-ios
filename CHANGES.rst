@@ -11,6 +11,7 @@ Changes to be released in next version
  * Architecture: Use coordinator pattern for legacy screen flows (#3597).
  * Room: Differentiate wordings for DMs.
  * Push: Do not show notification content and disable replies when protection set.
+ * AppDelegate: Create handleAppState as central point to handle application state.
 
 🐛 Bugfix
  * Timeline: Hide encrypted history (pre-invite) (#3660).
