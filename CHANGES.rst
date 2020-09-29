@@ -9,6 +9,7 @@ Changes to be released in next version
  * Room: New Room Settings screen.
  * Complete Security: Come back to the root screen if device verification is cancelled.
  * Architecture: Use coordinator pattern for legacy screen flows (#3597).
+ * Log Out User Automatically After Some Wrong PINs/Biometrics.
 
 🐛 Bugfix
  * Timeline: Hide encrypted history (pre-invite) (#3660).
