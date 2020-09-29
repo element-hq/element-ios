@@ -528,7 +528,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         wrongBackupVersionAlert = nil;
     }
     
-    if ([self.localAuthenticationService isProtectionSet])
+    if ([self.localAuthenticationService shouldShowInactiveScreen])
     {
         if (self.setPinCoordinatorBridgePresenter)
         {
@@ -539,11 +539,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:mxSessionArray.firstObject viewMode:SetPinCoordinatorViewModeInactive];
         self.setPinCoordinatorBridgePresenter.delegate = self;
         [self.setPinCoordinatorBridgePresenter presentIn:self.window];
-    }
-    else
-    {
-        [self.setPinCoordinatorBridgePresenter dismiss];
-        self.setPinCoordinatorBridgePresenter = nil;
     }
 }
 

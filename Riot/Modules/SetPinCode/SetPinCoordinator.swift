@@ -53,8 +53,7 @@ final class SetPinCoordinator: SetPinCoordinatorType {
     private func getRootCoordinator() -> Coordinator & Presentable {
         switch viewMode {
         case .unlock:
-            let canUseBiometricsToUnlock = pinCodePreferences.canUseBiometricsToUnlock ?? true
-            if pinCodePreferences.isBiometricsSet && canUseBiometricsToUnlock {
+            if pinCodePreferences.isBiometricsSet {
                 return createSetupBiometricsCoordinator()
             } else {
                 return createEnterPinCodeCoordinator()
@@ -139,6 +138,7 @@ extension SetPinCoordinator: EnterPinCodeCoordinatorDelegate {
     
     func enterPinCodeCoordinatorDidCompleteWithReset(_ coordinator: EnterPinCodeCoordinatorType) {
         self.delegate?.setPinCoordinatorDidCompleteWithReset(self)
+        pinCodePreferences.reset()
     }
     
     func enterPinCodeCoordinator(_ coordinator: EnterPinCodeCoordinatorType, didCompleteWithPin pin: String) {
@@ -171,7 +171,13 @@ extension SetPinCoordinator: SetupBiometricsCoordinatorDelegate {
     }
     
     func setupBiometricsCoordinatorDidCompleteWithReset(_ coordinator: SetupBiometricsCoordinatorType) {
-        self.delegate?.setPinCoordinatorDidCompleteWithReset(self)
+        if viewMode == .unlock && pinCodePreferences.isPinSet {
+            //  and user also has set a pin, so fallback to it
+            setRootCoordinator(createEnterPinCodeCoordinator())
+        } else {
+            //  cascade rest
+            self.delegate?.setPinCoordinatorDidCompleteWithReset(self)
+        }
     }
     
     func setupBiometricsCoordinatorDidCancel(_ coordinator: SetupBiometricsCoordinatorType) {

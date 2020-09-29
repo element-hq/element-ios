@@ -43,6 +43,11 @@ class LocalAuthenticationService: NSObject {
         NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResignActive), name: UIApplication.willResignActiveNotification, object: nil)
     }
     
+    /// Whether the application currently showing the biometrics setup or unlock dialog.
+    /// Showing biometrics dialog will cause the app to resign active.
+    /// This property can be used in order to distinguish real resignations and biometrics case.
+    static var isShowingBiometrics: Bool = false
+    
     var shouldShowPinCode: Bool {
         if !pinCodePreferences.isPinSet && !pinCodePreferences.isBiometricsSet {
             return false
@@ -56,12 +61,29 @@ class LocalAuthenticationService: NSObject {
         return (systemUptime - appLastActiveTime) > pinCodePreferences.graceTimeInSeconds
     }
     
+    var shouldShowInactiveScreen: Bool {
+        if !isProtectionSet {
+            return false
+        }
+        return !LocalAuthenticationService.isShowingBiometrics
+    }
+    
     var isProtectionSet: Bool {
         return pinCodePreferences.isPinSet || pinCodePreferences.isBiometricsSet
     }
 
     func applicationWillResignActive() {
         appLastActiveTime = systemUptime
+    }
+    
+    func shouldLogOutUser() -> Bool {
+        if BuildSettings.logOutUserWhenPINFailuresExceeded && pinCodePreferences.numberOfPinFailures >= pinCodePreferences.maxAllowedNumberOfPinFailures {
+            return true
+        }
+        if BuildSettings.logOutUserWhenBiometricsFailuresExceeded && pinCodePreferences.numberOfBiometricsFailures >= pinCodePreferences.maxAllowedNumberOfBiometricsFailures {
+            return true
+        }
+        return false
     }
 
 }
