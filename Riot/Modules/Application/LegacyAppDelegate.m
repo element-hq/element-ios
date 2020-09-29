@@ -4537,8 +4537,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)setPinCoordinatorBridgePresenterDelegateDidCompleteWithReset:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter dueToTooManyErrors:(BOOL)dueToTooManyErrors
 {
-    [coordinatorBridgePresenter dismiss];
-    self.setPinCoordinatorBridgePresenter = nil;
     if (dueToTooManyErrors)
     {
         [self showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"pin_protection_kick_user_alert_message", @"Vector", nil)];
@@ -4546,6 +4544,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     else
     {
+        [coordinatorBridgePresenter dismiss];
+        self.setPinCoordinatorBridgePresenter = nil;
         [self logoutWithConfirmation:NO completion:nil];
     }
 }
