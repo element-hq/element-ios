@@ -4541,7 +4541,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     self.setPinCoordinatorBridgePresenter = nil;
     if (dueToTooManyErrors)
     {
-        //  TODO: Show an alert
+        [self showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"pin_protection_kick_user_alert_message", @"Vector", nil)];
+        [self logoutWithConfirmation:NO completion:nil];
     }
     else
     {
