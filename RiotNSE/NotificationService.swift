@@ -41,6 +41,7 @@ class NotificationService: UNNotificationServiceExtension {
         return MXPushGatewayRestClient(pushGateway: url.scheme! + "://" + url.host!, andOnUnrecognizedCertificateBlock: nil)
     }()
     private var pushNotificationStore: PushNotificationStore = PushNotificationStore()
+    private let localAuthenticationService = LocalAuthenticationService(pinCodePreferences: .shared)
     
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         // Set static application settings
@@ -139,6 +140,10 @@ class NotificationService: UNNotificationServiceExtension {
     ///   - eventId: Event identifier to mutate best attempt content
     ///   - roomId: Room identifier to fetch display name
     func preprocessPayload(forEventId eventId: String, roomId: String) {
+        if localAuthenticationService.isProtectionSet {
+            NSLog("[NotificationService] preprocessPayload: Do not preprocess because app protection is set")
+            return
+        }
         guard let session = NotificationService.mxSession else { return }
         guard let roomDisplayName = session.store.summary?(ofRoom: roomId)?.displayname else { return }
         let isDirect = session.directUserId(inRoom: roomId) != nil
@@ -451,6 +456,12 @@ class NotificationService: UNNotificationServiceExtension {
                 break
             }
             
+            if self.localAuthenticationService.isProtectionSet {
+                NSLog("[NotificationService] notificationContentForEvent: Resetting title and body because app protection is set")
+                notificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE_PROTECTED", arguments: [])
+                notificationTitle = nil
+            }
+            
             guard notificationBody != nil else {
                 NSLog("[NotificationService] notificationContentForEvent: notificationBody is nil")
                 onComplete(nil)
@@ -529,10 +540,11 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func notificationCategoryIdentifier(forEvent event: MXEvent) -> String? {
-        let isNotificationContentShown = !event.isEncrypted || self.showDecryptedContentInNotifications
+        let isNotificationContentShown = (!event.isEncrypted || self.showDecryptedContentInNotifications)
+            && !localAuthenticationService.isProtectionSet
         
         guard isNotificationContentShown else {
-            return nil
+            return Constants.toBeRemovedNotificationCategoryIdentifier
         }
         
         if event.eventType == .callInvite {
@@ -540,7 +552,7 @@ class NotificationService: UNNotificationServiceExtension {
         }
         
         guard event.eventType == .roomMessage || event.eventType == .roomEncrypted else {
-            return nil
+            return Constants.toBeRemovedNotificationCategoryIdentifier
         }
         
         return "QUICK_REPLY"

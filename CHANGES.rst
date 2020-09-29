@@ -10,6 +10,7 @@ Changes to be released in next version
  * Complete Security: Come back to the root screen if device verification is cancelled.
  * Architecture: Use coordinator pattern for legacy screen flows (#3597).
  * Room: Differentiate wordings for DMs.
+ * Push: Do not show notification content and disable replies when protection set.
 
 🐛 Bugfix
  * Timeline: Hide encrypted history (pre-invite) (#3660).
@@ -29,7 +30,6 @@ Others
  *
 
 Changes in 1.0.12 (2020-09-16)
-=================================================
 
 ✨ Features
  *
