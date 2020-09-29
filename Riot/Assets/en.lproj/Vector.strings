@@ -1441,6 +1441,7 @@
 "pin_protection_settings_enable_pin" = "Enable PIN";
 "pin_protection_not_allowed_pin" = "For security reasons, this PIN isn’t available. Please try another PIN";
 "pin_protection_explanatory" = "PINs help keep your profile, messages and contacts secure, so only you can access them.";
+"pin_protection_kick_user_alert_message" = "Too many errors, you've been logged out";
 
 // MARK: - Biometrics Protection
 
