@@ -9,6 +9,8 @@ Changes to be released in next version
  * Room: New Room Settings screen.
  * Complete Security: Come back to the root screen if device verification is cancelled.
  * Architecture: Use coordinator pattern for legacy screen flows (#3597).
+ * Room: Differentiate wordings for DMs.
+ * Push: Do not show notification content and disable replies when protection set.
  * Log Out User Automatically After Some Wrong PINs/Biometrics.
 
 🐛 Bugfix
@@ -29,7 +31,6 @@ Others
  *
 
 Changes in 1.0.12 (2020-09-16)
-=================================================
 
 ✨ Features
  *

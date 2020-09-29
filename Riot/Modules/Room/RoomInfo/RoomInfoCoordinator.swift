@@ -52,7 +52,11 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         settings.finalizeInit()
         settings.initWith(self.session, andRoomId: self.room.roomId)
         
-        controller.title = VectorL10n.roomDetailsTitle
+        if self.room.isDirect {
+            controller.title = VectorL10n.roomDetailsTitleForDm
+        } else {
+            controller.title = VectorL10n.roomDetailsTitle
+        }
         controller.initWithTitles([
             VectorL10n.roomDetailsPeople,
             VectorL10n.roomDetailsFiles,
