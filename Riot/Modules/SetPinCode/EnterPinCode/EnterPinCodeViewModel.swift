@@ -72,7 +72,7 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
             //  go back to first state
             self.update(viewState: .choosePin)
         case .forgotPinAlertResetAction:
-            self.coordinatorDelegate?.enterPinCodeViewModelDidCompleteWithReset(self)
+            self.coordinatorDelegate?.enterPinCodeViewModelDidCompleteWithReset(self, dueToTooManyErrors: false)
         case .forgotPinAlertCancelAction:
             //  no-op
             break
@@ -146,7 +146,7 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
                         pinCodePreferences.numberOfPinFailures += 1
                         if viewMode == .unlock && localAuthenticationService.shouldLogOutUser() {
                             //  log out user
-                            self.coordinatorDelegate?.enterPinCodeViewModelDidCompleteWithReset(self)
+                            self.coordinatorDelegate?.enterPinCodeViewModelDidCompleteWithReset(self, dueToTooManyErrors: true)
                             return
                         }
                         if numberOfFailuresDuringEnterPIN < pinCodePreferences.allowedNumberOfTrialsBeforeAlert {

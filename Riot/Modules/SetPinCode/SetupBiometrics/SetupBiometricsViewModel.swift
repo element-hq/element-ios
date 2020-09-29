@@ -69,7 +69,7 @@ final class SetupBiometricsViewModel: SetupBiometricsViewModelType {
         case .unlock:
             unlockWithBiometrics()
         case .cantUnlockedAlertResetAction:
-            coordinatorDelegate?.setupBiometricsViewModelDidCompleteWithReset(self)
+            coordinatorDelegate?.setupBiometricsViewModelDidCompleteWithReset(self, dueToTooManyErrors: false)
         }
     }
     
@@ -110,7 +110,7 @@ final class SetupBiometricsViewModel: SetupBiometricsViewModelType {
                         //  biometrics can't be used until further unlock with pin or a new log in
                         self.pinCodePreferences.canUseBiometricsToUnlock = false
                         DispatchQueue.main.async {
-                            self.coordinatorDelegate?.setupBiometricsViewModelDidCompleteWithReset(self)
+                            self.coordinatorDelegate?.setupBiometricsViewModelDidCompleteWithReset(self, dueToTooManyErrors: true)
                             LocalAuthenticationService.isShowingBiometrics = false
                         }
                     } else if error.code == LAError.Code.userCancel.rawValue || error.code == LAError.Code.userFallback.rawValue {

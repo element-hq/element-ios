@@ -4535,11 +4535,18 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self afterAppUnlockedByPin:[UIApplication sharedApplication]];
 }
 
-- (void)setPinCoordinatorBridgePresenterDelegateDidCompleteWithReset:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter
+- (void)setPinCoordinatorBridgePresenterDelegateDidCompleteWithReset:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter dueToTooManyErrors:(BOOL)dueToTooManyErrors
 {
     [coordinatorBridgePresenter dismiss];
     self.setPinCoordinatorBridgePresenter = nil;
-    [self logoutWithConfirmation:NO completion:nil];
+    if (dueToTooManyErrors)
+    {
+        //  TODO: Show an alert
+    }
+    else
+    {
+        [self logoutWithConfirmation:NO completion:nil];
+    }
 }
 
 @end

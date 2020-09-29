@@ -20,7 +20,7 @@ import Foundation
 
 protocol SetPinCoordinatorDelegate: class {
     func setPinCoordinatorDidComplete(_ coordinator: SetPinCoordinatorType)
-    func setPinCoordinatorDidCompleteWithReset(_ coordinator: SetPinCoordinatorType)
+    func setPinCoordinatorDidCompleteWithReset(_ coordinator: SetPinCoordinatorType, dueToTooManyErrors: Bool)
     func setPinCoordinatorDidCancel(_ coordinator: SetPinCoordinatorType)
 }
 

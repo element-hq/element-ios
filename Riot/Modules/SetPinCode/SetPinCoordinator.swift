@@ -136,8 +136,8 @@ extension SetPinCoordinator: EnterPinCodeCoordinatorDelegate {
         self.delegate?.setPinCoordinatorDidComplete(self)
     }
     
-    func enterPinCodeCoordinatorDidCompleteWithReset(_ coordinator: EnterPinCodeCoordinatorType) {
-        self.delegate?.setPinCoordinatorDidCompleteWithReset(self)
+    func enterPinCodeCoordinatorDidCompleteWithReset(_ coordinator: EnterPinCodeCoordinatorType, dueToTooManyErrors: Bool) {
+        self.delegate?.setPinCoordinatorDidCompleteWithReset(self, dueToTooManyErrors: dueToTooManyErrors)
         pinCodePreferences.reset()
     }
     
@@ -170,13 +170,13 @@ extension SetPinCoordinator: SetupBiometricsCoordinatorDelegate {
         self.delegate?.setPinCoordinatorDidComplete(self)
     }
     
-    func setupBiometricsCoordinatorDidCompleteWithReset(_ coordinator: SetupBiometricsCoordinatorType) {
+    func setupBiometricsCoordinatorDidCompleteWithReset(_ coordinator: SetupBiometricsCoordinatorType, dueToTooManyErrors: Bool) {
         if viewMode == .unlock && pinCodePreferences.isPinSet {
             //  and user also has set a pin, so fallback to it
             setRootCoordinator(createEnterPinCodeCoordinator())
         } else {
             //  cascade rest
-            self.delegate?.setPinCoordinatorDidCompleteWithReset(self)
+            self.delegate?.setPinCoordinatorDidCompleteWithReset(self, dueToTooManyErrors: dueToTooManyErrors)
         }
     }
     

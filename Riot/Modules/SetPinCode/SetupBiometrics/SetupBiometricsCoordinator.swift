@@ -67,8 +67,8 @@ extension SetupBiometricsCoordinator: SetupBiometricsViewModelCoordinatorDelegat
         self.delegate?.setupBiometricsCoordinatorDidComplete(self)
     }
     
-    func setupBiometricsViewModelDidCompleteWithReset(_ viewModel: SetupBiometricsViewModelType) {
-        self.delegate?.setupBiometricsCoordinatorDidCompleteWithReset(self)
+    func setupBiometricsViewModelDidCompleteWithReset(_ viewModel: SetupBiometricsViewModelType, dueToTooManyErrors: Bool) {
+        self.delegate?.setupBiometricsCoordinatorDidCompleteWithReset(self, dueToTooManyErrors: dueToTooManyErrors)
     }
     
     func setupBiometricsViewModelDidCancel(_ viewModel: SetupBiometricsViewModelType) {

@@ -20,7 +20,7 @@ import Foundation
 
 protocol SetupBiometricsCoordinatorDelegate: class {
     func setupBiometricsCoordinatorDidComplete(_ coordinator: SetupBiometricsCoordinatorType)
-    func setupBiometricsCoordinatorDidCompleteWithReset(_ coordinator: SetupBiometricsCoordinatorType)
+    func setupBiometricsCoordinatorDidCompleteWithReset(_ coordinator: SetupBiometricsCoordinatorType, dueToTooManyErrors: Bool)
     func setupBiometricsCoordinatorDidCancel(_ coordinator: SetupBiometricsCoordinatorType)
 }
 
