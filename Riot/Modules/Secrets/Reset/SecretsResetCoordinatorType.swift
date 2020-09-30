@@ -23,7 +23,7 @@ protocol SecretsResetCoordinatorDelegate: class {
     func secretsResetCoordinatorDidCancel(_ coordinator: SecretsResetCoordinatorType)
 }
 
-/// `SecretsResetCoordinatorType` is a protocol describing a Coordinator that handle key backup setup passphrase navigation flow.
+/// `SecretsResetCoordinatorType` is a protocol describing a Coordinator that handle keys reset flow.
 protocol SecretsResetCoordinatorType: Coordinator, Presentable {
     var delegate: SecretsResetCoordinatorDelegate? { get }
 }
