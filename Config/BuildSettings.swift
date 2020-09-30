@@ -92,18 +92,7 @@ final class BuildSettings: NSObject {
     // MARk: - Matrix permalinks
     // Paths for URLs that will considered as Matrix permalinks. Those permalinks are opened within the app
     static let matrixPermalinkPaths: [String: [String]] = [
-        "app.element.io": [],
-        "staging.element.io": [],
-        "develop.element.io": [],
-        "mobile.element.io": [""],
-        // Historical ones
-        "riot.im": ["/app", "/staging", "/develop"],
-        "www.riot.im": ["/app", "/staging", "/develop"],
-        "vector.im": ["/app", "/staging", "/develop"],
-        "www.vector.im": ["/app", "/staging", "/develop"],
-        // Official Matrix ones
-        "matrix.to": ["/"],
-        "www.matrix.to": ["/"],
+        "p2p.matrix.to": ["/"],
     ]
     
     

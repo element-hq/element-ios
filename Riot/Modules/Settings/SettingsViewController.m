@@ -145,6 +145,7 @@ enum
     YGGDRASIL_ENABLE_STATIC_INDEX,
     YGGDRASIL_STATIC_PEER_INDEX,
     YGGDRASIL_PUBLIC_PEERS_INDEX,
+    YGGDRASIL_COPY_USER_ID_INDEX,
 };
 
 enum
@@ -291,6 +292,7 @@ TableViewSectionsDelegate>
     
     Section *sectionYggdrasil = [Section sectionWithTag:SECTION_TAG_YGGDRASIL];
     sectionYggdrasil.headerTitle = @"Peer-to-Peer Settings";
+    [sectionYggdrasil addRowWithTag:YGGDRASIL_COPY_USER_ID_INDEX];
     [sectionYggdrasil addRowWithTag:YGGDRASIL_ENABLE_MULTICAST_INDEX];
     [sectionYggdrasil addRowWithTag:YGGDRASIL_ENABLE_STATIC_INDEX];
     [sectionYggdrasil addRowWithTag:YGGDRASIL_STATIC_PEER_INDEX];
@@ -1549,7 +1551,33 @@ TableViewSectionsDelegate>
             
             cell = yggdrasilPublicPeersCell;
         }
-
+        else if (row == YGGDRASIL_COPY_USER_ID_INDEX)
+        {
+            MXKTableViewCellWithButton *yggdrasilCopyUserIDCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
+            if (!yggdrasilCopyUserIDCell)
+            {
+                yggdrasilCopyUserIDCell = [[MXKTableViewCellWithButton alloc] init];
+            }
+            else
+            {
+                // Fix https://github.com/vector-im/riot-ios/issues/1354
+                // Do not move this line in prepareForReuse because of https://github.com/vector-im/riot-ios/issues/1323
+                yggdrasilCopyUserIDCell.mxkButton.titleLabel.text = nil;
+            }
+            
+            NSString* title = @"Share my user ID";
+            
+            [yggdrasilCopyUserIDCell.mxkButton setTitle:title forState:UIControlStateNormal];
+            [yggdrasilCopyUserIDCell.mxkButton setTitle:title forState:UIControlStateHighlighted];
+            [yggdrasilCopyUserIDCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
+            yggdrasilCopyUserIDCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
+            
+            [yggdrasilCopyUserIDCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [yggdrasilCopyUserIDCell.mxkButton addTarget:self action:@selector(onCopyUserID:) forControlEvents:UIControlEventTouchUpInside];
+            yggdrasilCopyUserIDCell.mxkButton.accessibilityIdentifier=@"SettingsVCYggdrasilCopyUserIDButton";
+            
+            cell = yggdrasilCopyUserIDCell;
+        }
     }
     else if (section == SECTION_TAG_USER_SETTINGS)
     {
@@ -2690,6 +2718,14 @@ TableViewSectionsDelegate>
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://publicpeers.neilalexander.dev"] options:nil completionHandler:^(BOOL success) {
         
     }];
+}
+
+- (void)onCopyUserID:(id)sender
+{
+    NSArray *activityItems = @[[[MXKAccountManager sharedManager] activeAccounts].firstObject.mxSession.myUserId];
+    UIActivityViewController *shareSheetController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+    shareSheetController.excludedActivityTypes = @[];
+    [self presentViewController:shareSheetController animated:true completion:nil];
 }
 
 - (void)updateYggdrasilDisableAWDL:(id)sender
