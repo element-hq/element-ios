@@ -2370,15 +2370,23 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         // TODO: We should wait that cross-signing screens are done before going further but it seems fine. Those screens
         // protect each other.
         
-        // This is the time to register for incoming requests
+        // This is the time to check existing requests
+        NSLog(@"[AppDelegate] handleAppState: Check pending verification requests");
         [self checkPendingRoomKeyRequests];
         [self checkPendingIncomingKeyVerificationsInSession:mainSession];
-        
-        // Enable listening of incoming key share requests
-        [self enableRoomKeyRequestObserver:mainSession];
-        
-        // Enable listening of incoming key verification requests
-        [self enableIncomingKeyVerificationObserver:mainSession];
+            
+        // TODO: When we will have an application state, we will do all of this in a dedicated initialisation state
+        // For the moment, reuse an existing boolean to avoid register things several times
+        if (!incomingKeyVerificationObserver)
+        {
+            NSLog(@"[AppDelegate] handleAppState: Set up observers for the crypto module");
+            
+            // Enable listening of incoming key share requests
+            [self enableRoomKeyRequestObserver:mainSession];
+            
+            // Enable listening of incoming key verification requests
+            [self enableIncomingKeyVerificationObserver:mainSession];
+        }
     }
 }
 
