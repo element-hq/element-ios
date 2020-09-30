@@ -492,7 +492,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     NSLog(@"HOMESERVER URL: %@\n", monolith.baseURL);
     [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = false;
     [MXKAppSettings standardAppSettings].syncLocalContacts = false;
-    [[NSUserDefaults standardUserDefaults] setObject:monolith.baseURL forKey:@"homeserverurl"];
+    [[RiotSettings shared] setHomeserverUrlString:monolith.baseURL];
     
     // ----------------------------- DENDRITE ----------------------------- //
 

@@ -164,9 +164,9 @@ final class BuildSettings: NSObject {
     /// Force non-jailbroken app usage
     static let forceNonJailbrokenUsage: Bool = true
     
-    static let allowSendingStickers: Bool = true
+    static let allowSendingStickers: Bool = false
     
-    static let allowLocalContactsAccess: Bool = true
+    static let allowLocalContactsAccess: Bool = false
     
     
     // MARK: - General Settings Screen
@@ -209,7 +209,7 @@ final class BuildSettings: NSObject {
     
     // MARK: - Authentication Screen
     static let authScreenShowRegister = true
-    static let authScreenShowPhoneNumber = true
-    static let authScreenShowForgotPassword = true
-    static let authScreenShowCustomServerOptions = true
+    static let authScreenShowPhoneNumber = false
+    static let authScreenShowForgotPassword = false
+    static let authScreenShowCustomServerOptions = false
 }

@@ -132,10 +132,6 @@
     self.serverOptionsContainer.hidden = !BuildSettings.authScreenShowCustomServerOptions;
     
     [self hideCustomServers:YES];
-    [self.customServersTickButton setHidden:YES];
-    [self.customServersContainer setHidden:YES];
-    [self.homeServerContainer setHidden:YES];
-    [self.forgotPasswordButton setHidden:YES];
 
     // Soft logout section
     self.softLogoutClearDataButton.layer.cornerRadius = 5;
@@ -942,8 +938,6 @@
 
 - (void)updateForgotPwdButtonVisibility
 {
-    return;
-    
     AuthInputsView *authInputsview;
     if ([self.authInputsView isKindOfClass:AuthInputsView.class])
     {
