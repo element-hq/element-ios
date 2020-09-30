@@ -176,7 +176,7 @@ final class PinCodePreferences: NSObject {
     }
     
     var isBiometricsSet: Bool {
-        return biometricsEnabled == true && canUseBiometricsToUnlock == true
+        return biometricsEnabled == true && (canUseBiometricsToUnlock ?? true)
     }
     
     func localizedBiometricsName() -> String? {

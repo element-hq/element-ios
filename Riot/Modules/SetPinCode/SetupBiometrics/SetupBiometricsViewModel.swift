@@ -29,6 +29,7 @@ final class SetupBiometricsViewModel: SetupBiometricsViewModelType {
     private let viewMode: SetPinCoordinatorViewMode
     private let pinCodePreferences: PinCodePreferences
     private let localAuthenticationService: LocalAuthenticationService
+    private let biometricsAuthenticationPresenter: BiometricsAuthenticationPresenter
     
     // MARK: Public
 
@@ -42,6 +43,7 @@ final class SetupBiometricsViewModel: SetupBiometricsViewModelType {
         self.viewMode = viewMode
         self.pinCodePreferences = pinCodePreferences
         self.localAuthenticationService = LocalAuthenticationService(pinCodePreferences: pinCodePreferences)
+        self.biometricsAuthenticationPresenter = BiometricsAuthenticationPresenter()
     }
     
     deinit {
@@ -76,34 +78,26 @@ final class SetupBiometricsViewModel: SetupBiometricsViewModelType {
     // MARK: - Private
     
     private func enableDisableBiometrics() {
-        LocalAuthenticationService.isShowingBiometrics = true
-        LAContext().evaluatePolicy(.deviceOwnerAuthentication, localizedReason: VectorL10n.biometricsUsageReason) { (success, error) in
-            if success {
-                //  complete after a little delay
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    self.pinCodePreferences.canUseBiometricsToUnlock = nil
-                    self.pinCodePreferences.resetCounters()
-                    self.coordinatorDelegate?.setupBiometricsViewModelDidComplete(self)
-                    LocalAuthenticationService.isShowingBiometrics = false
-                }
-            } else {
-                LocalAuthenticationService.isShowingBiometrics = false
+        biometricsAuthenticationPresenter.present(with: VectorL10n.biometricsUsageReason) { (response) in
+            switch response {
+            case .success:
+                self.pinCodePreferences.canUseBiometricsToUnlock = nil
+                self.pinCodePreferences.resetCounters()
+                self.coordinatorDelegate?.setupBiometricsViewModelDidComplete(self)
+            case .failure:
+                break
             }
         }
     }
     
     private func unlockWithBiometrics() {
-        LocalAuthenticationService.isShowingBiometrics = true
-        LAContext().evaluatePolicy(.deviceOwnerAuthentication, localizedReason: VectorL10n.biometricsUsageReason) { (success, error) in
-            if success {
-                //  complete after a little delay
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    self.pinCodePreferences.canUseBiometricsToUnlock = nil
-                    self.pinCodePreferences.resetCounters()
-                    self.coordinatorDelegate?.setupBiometricsViewModelDidComplete(self)
-                    LocalAuthenticationService.isShowingBiometrics = false
-                }
-            } else {
+        biometricsAuthenticationPresenter.present(with: VectorL10n.biometricsUsageReason) { (response) in
+            switch response {
+            case .success:
+                self.pinCodePreferences.canUseBiometricsToUnlock = nil
+                self.pinCodePreferences.resetCounters()
+                self.coordinatorDelegate?.setupBiometricsViewModelDidComplete(self)
+            case .failure(let error):
                 guard let error = error as NSError? else {
                     return
                 }
@@ -111,13 +105,9 @@ final class SetupBiometricsViewModel: SetupBiometricsViewModelType {
                 if self.localAuthenticationService.shouldLogOutUser() {
                     //  biometrics can't be used until further unlock with pin or a new log in
                     self.pinCodePreferences.canUseBiometricsToUnlock = false
-                    DispatchQueue.main.async {
-                        self.coordinatorDelegate?.setupBiometricsViewModelDidCompleteWithReset(self, dueToTooManyErrors: true)
-                        LocalAuthenticationService.isShowingBiometrics = false
-                    }
+                    self.coordinatorDelegate?.setupBiometricsViewModelDidCompleteWithReset(self, dueToTooManyErrors: true)
                 } else if error.code == LAError.Code.userCancel.rawValue || error.code == LAError.Code.userFallback.rawValue {
                     self.userCancelledUnlockWithBiometrics()
-                    LocalAuthenticationService.isShowingBiometrics = false
                 }
             }
         }

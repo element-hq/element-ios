@@ -44,11 +44,6 @@ class LocalAuthenticationService: NSObject {
         NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResignActive), name: UIApplication.willResignActiveNotification, object: nil)
     }
     
-    /// Whether the application currently showing the biometrics setup or unlock dialog.
-    /// Showing biometrics dialog will cause the app to resign active.
-    /// This property can be used in order to distinguish real resignations and biometrics case.
-    static var isShowingBiometrics: Bool = false
-    
     var shouldShowPinCode: Bool {
         if !pinCodePreferences.isPinSet && !pinCodePreferences.isBiometricsSet {
             return false
@@ -66,7 +61,7 @@ class LocalAuthenticationService: NSObject {
         guard isProtectionSet else {
             return false
         }
-        return !LocalAuthenticationService.isShowingBiometrics
+        return !BiometricsAuthenticationPresenter.isPresentingBiometricsAuth
     }
     
     var isProtectionSet: Bool {
