@@ -59,4 +59,8 @@ extension SecretsRecoveryWithKeyCoordinator: SecretsRecoveryWithKeyViewModelCoor
     
     func secretsRecoveryWithKeyViewModelDidCancel(_ viewModel: SecretsRecoveryWithKeyViewModelType) {        self.delegate?.secretsRecoveryWithKeyCoordinatorDidCancel(self)
     }
+    
+    func secretsRecoveryWithKeyViewModelWantsToResetSecrets(_ viewModel: SecretsRecoveryWithKeyViewModelType) {
+        self.delegate?.secretsRecoveryWithKeyCoordinatorWantsToResetSecrets(self)
+    }
 }

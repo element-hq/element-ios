@@ -2,24 +2,49 @@ Changes to be released in next version
 =================================================
 
 ✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * Fix "Unable to open the link" error when using non-Safari browsers (#3673).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Changes in 1.0.13 (2020-09-30)
+=================================================
+
+✨ Features
  *
 
 🙌 Improvements
- * Pin: Implement not allowed PINs feature. There is no restriction by default.
- * Room: New Room Settings screen.
- * Complete Security: Come back to the root screen if device verification is cancelled.
- * Architecture: Use coordinator pattern for legacy screen flows (#3597).
  * Room: Differentiate wordings for DMs.
- * Push: Do not show notification content and disable replies when protection set.
- * AppDelegate: Create handleAppState as central point to handle application state.
- * Log out user automatically after some wrong PINs/biometrics (#3623).
+ * Room: New Room Settings screen.
+ * PIN code: Implement not allowed PINs feature. There is no restriction by default.
+ * PIN code: Do not show notification content and disable replies when protection set.
+ * PIN code: Log out user automatically after some wrong PINs/biometrics (#3623).
+ * Complete Security: Come back to the root screen if device verification is cancelled.
+ * Device verification: Add possibility to reset SSSS & Cross-Signing when recovery passphrase or key are lost.
+ * Architecture: Use coordinator pattern for legacy screen flows (#3597).
+ * Architecture: Create AppDelegate.handleAppState() as central point to handle application state.
 
 🐛 Bugfix
  * Timeline: Hide encrypted history (pre-invite) (#3660).
- * Fix floating action buttons' images.
- * Complete Security: Let the authentication flow display it if this flow is not complete yet.
- * Fix "Unable to open the link" error when using non-Safari browsers (#3673).
  * PIN Code: Do not show verification dialog at the top of PIN code.
+ * Complete Security: Let the authentication flow display it if this flow is not complete yet.
+ * Device verification: Fix inactive cancel action issue in self verification flow.
+ * Fix floating action buttons' images.
  * Various theme fixes.
 
 ⚠️ API Changes
@@ -58,6 +83,7 @@ Others
  *
 
 Improvements:
+ * Upgrade MatrixKit version ([v0.12.21](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.21)).
  * Upgrade MatrixKit version ([v0.12.20](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.20)).
 
 Changes in 1.0.11 (2020-09-15)

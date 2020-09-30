@@ -23,6 +23,7 @@ protocol SecretsRecoveryWithKeyViewModelViewDelegate: class {
 protocol SecretsRecoveryWithKeyViewModelCoordinatorDelegate: class {
     func secretsRecoveryWithKeyViewModelDidRecover(_ viewModel: SecretsRecoveryWithKeyViewModelType)
     func secretsRecoveryWithKeyViewModelDidCancel(_ viewModel: SecretsRecoveryWithKeyViewModelType)
+    func secretsRecoveryWithKeyViewModelWantsToResetSecrets(_ viewModel: SecretsRecoveryWithKeyViewModelType)
 }
 
 /// Protocol describing the view model used by `SecretsRecoveryWithPassphraseViewController`
