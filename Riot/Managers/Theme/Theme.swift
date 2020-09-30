@@ -72,6 +72,9 @@ import UIKit
     var scrollBarStyle: UIScrollView.IndicatorStyle { get }
 
     var keyboardAppearance: UIKeyboardAppearance { get }
+    
+    @available(iOS 12.0, *)
+    var userInterfaceStyle: UIUserInterfaceStyle { get }
 
 
     // MARK: - Colors not defined in the design palette

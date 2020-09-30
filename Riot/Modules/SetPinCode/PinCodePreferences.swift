@@ -31,6 +31,9 @@ final class PinCodePreferences: NSObject {
     private struct StoreKeys {
         static let pin: String = "pin"
         static let biometricsEnabled: String = "biometricsEnabled"
+        static let canUseBiometricsToUnlock: String = "canUseBiometricsToUnlock"
+        static let numberOfPinFailures: String = "numberOfPinFailures"
+        static let numberOfBiometricsFailures: String = "numberOfBiometricsFailures"
     }
     
     static let shared = PinCodePreferences()
@@ -38,7 +41,7 @@ final class PinCodePreferences: NSObject {
     /// Store. Defaults to `KeychainStore`
     private let store: KeyValueStore
     
-    override init() {
+    override private init() {
         store = KeychainStore(withKeychain: Keychain(service: PinConstants.pinCodeKeychainService,
                                                      accessGroup: BuildSettings.keychainAccessGroup))
         super.init()
@@ -49,6 +52,21 @@ final class PinCodePreferences: NSObject {
     /// Setting to force protection by pin code
     var forcePinProtection: Bool {
         return BuildSettings.forcePinProtection
+    }
+    
+    /// Not allowed pin codes. User won't be able to select one of the pin in the list.
+    var notAllowedPINs: [String] {
+        return BuildSettings.notAllowedPINs
+    }
+    
+    /// Maximum number of allowed pin failures when unlocking, before force logging out the user
+    var maxAllowedNumberOfPinFailures: Int {
+        return BuildSettings.maxAllowedNumberOfPinFailures
+    }
+    
+    /// Maximum number of allowed biometrics failures when unlocking, before fallbacking the user to the pin
+    var maxAllowedNumberOfBiometricsFailures: Int {
+        return BuildSettings.maxAllowedNumberOfBiometricsFailures
     }
     
     var isBiometricsAvailable: Bool {
@@ -106,8 +124,59 @@ final class PinCodePreferences: NSObject {
         }
     }
     
+    var canUseBiometricsToUnlock: Bool? {
+        get {
+            do {
+                return try store.bool(forKey: StoreKeys.canUseBiometricsToUnlock)
+            } catch let error {
+                NSLog("[PinCodePreferences] Error when reading canUseBiometricsToUnlock from store: \(error)")
+                return nil
+            }
+        } set {
+            do {
+                try store.set(newValue, forKey: StoreKeys.canUseBiometricsToUnlock)
+            } catch let error {
+                NSLog("[PinCodePreferences] Error when storing canUseBiometricsToUnlock to the store: \(error)")
+            }
+        }
+    }
+    
+    var numberOfPinFailures: Int {
+        get {
+            do {
+                return try store.integer(forKey: StoreKeys.numberOfPinFailures) ?? 0
+            } catch let error {
+                NSLog("[PinCodePreferences] Error when reading numberOfPinFailures from store: \(error)")
+                return 0
+            }
+        } set {
+            do {
+                try store.set(newValue, forKey: StoreKeys.numberOfPinFailures)
+            } catch let error {
+                NSLog("[PinCodePreferences] Error when storing numberOfPinFailures to the store: \(error)")
+            }
+        }
+    }
+    
+    var numberOfBiometricsFailures: Int {
+        get {
+            do {
+                return try store.integer(forKey: StoreKeys.numberOfBiometricsFailures) ?? 0
+            } catch let error {
+                NSLog("[PinCodePreferences] Error when reading numberOfBiometricsFailures from store: \(error)")
+                return 0
+            }
+        } set {
+            do {
+                try store.set(newValue, forKey: StoreKeys.numberOfBiometricsFailures)
+            } catch let error {
+                NSLog("[PinCodePreferences] Error when storing numberOfBiometricsFailures to the store: \(error)")
+            }
+        }
+    }
+    
     var isBiometricsSet: Bool {
-        return biometricsEnabled == true
+        return biometricsEnabled == true && (canUseBiometricsToUnlock ?? true)
     }
     
     func localizedBiometricsName() -> String? {
@@ -148,5 +217,13 @@ final class PinCodePreferences: NSObject {
     func reset() {
         pin = nil
         biometricsEnabled = nil
+        canUseBiometricsToUnlock = nil
+        resetCounters()
+    }
+    
+    /// Reset number of failures for both pin and biometrics
+    func resetCounters() {
+        numberOfPinFailures = 0
+        numberOfBiometricsFailures = 0
     }
 }

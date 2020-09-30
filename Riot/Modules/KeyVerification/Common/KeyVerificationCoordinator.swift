@@ -29,6 +29,7 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     private let session: MXSession
     private let verificationFlow: KeyVerificationFlow
     private let verificationKind: KeyVerificationKind
+    private weak var completeSecurityCoordinator: KeyVerificationSelfVerifyWaitCoordinatorType?
     
     private var otherUserId: String {
         
@@ -133,7 +134,9 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
         case .incomingSASTransaction(let incomingSASTransaction):
             rootCoordinator = self.createDataLoadingScreenCoordinator(otherUserId: incomingSASTransaction.otherUserId, otherDeviceId: incomingSASTransaction.otherDeviceId)
         case .completeSecurity(let isNewSignIn):
-            rootCoordinator = self.createCompleteSecurityCoordinator(isNewSignIn: isNewSignIn)
+            let coordinator = self.createCompleteSecurityCoordinator(isNewSignIn: isNewSignIn)
+            self.completeSecurityCoordinator = coordinator
+            rootCoordinator = coordinator
         }
 
         rootCoordinator.start()
@@ -162,6 +165,14 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     }
     
     private func didCancel() {
+        // In the case of the complete security flow, come back to the root screen if any child flow
+        // like device verification has been cancelled
+        if self.completeSecurityCoordinator != nil && childCoordinators.count > 1 {
+            NSLog("[KeyVerificationCoordinator] didCancel: popToRootModule")
+            self.navigationRouter.popToRootModule(animated: true)
+            return
+        }
+        
         self.delegate?.keyVerificationCoordinatorDidCancel(self)
     }
     
@@ -179,9 +190,6 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
         coordinator.start()
         
         self.add(childCoordinator: coordinator)
-        self.navigationRouter.setRootModule(coordinator) { [weak self] in
-            self?.remove(childCoordinator: coordinator)
-        }
     }
     
     private func createSelfVerificationCoordinator(otherDeviceId: String) -> KeyVerificationSelfVerifyStartCoordinator {
@@ -445,10 +453,12 @@ extension KeyVerificationCoordinator: KeyVerificationScanConfirmationCoordinator
 extension KeyVerificationCoordinator: SecretsRecoveryCoordinatorDelegate {
     
     func secretsRecoveryCoordinatorDidRecover(_ coordinator: SecretsRecoveryCoordinatorType) {
+        self.remove(childCoordinator: coordinator)
         self.showVerified(animated: true)
     }
     
     func secretsRecoveryCoordinatorDidCancel(_ coordinator: SecretsRecoveryCoordinatorType) {
+        self.remove(childCoordinator: coordinator)
         self.didCancel()
     }
 }

@@ -39,18 +39,28 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     
     // MARK: - Setup
     
-    init(session: MXSession) {
-        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
+    init(session: MXSession, navigationRouter: NavigationRouterType? = nil) {
         self.session = session
         self.recoveryService = session.crypto.recoveryService
         self.keyBackup = session.crypto.backup
-    }    
+        
+        if let navigationRouter = navigationRouter {
+            self.navigationRouter = navigationRouter
+        } else {
+            self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
+        }
+    }
     
     // MARK: - Public methods
     
     func start() {
         let rootViewController = self.createIntro()
-        self.navigationRouter.setRootModule(rootViewController)
+        
+        if self.navigationRouter.modules.isEmpty == false {
+            self.navigationRouter.push(rootViewController, animated: true, popCompletion: nil)
+        } else {
+            self.navigationRouter.setRootModule(rootViewController)
+        }
     }
     
     func toPresentable() -> UIViewController {

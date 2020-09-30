@@ -554,7 +554,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         }
         [sectionAccess addRowWithTag:ROOM_SETTINGS_ROOM_ACCESS_DIRECTORY_VISIBILITY];
         
-        sectionAccess.headerTitle = NSLocalizedStringFromTable(@"room_details_access_section", @"Vector", nil);
+        if (mxRoom.isDirect)
+        {
+            sectionAccess.headerTitle = NSLocalizedStringFromTable(@"room_details_access_section_for_dm", @"Vector", nil);
+        }
+        else
+        {
+            sectionAccess.headerTitle = NSLocalizedStringFromTable(@"room_details_access_section", @"Vector", nil);
+        }
         [tmpSections addObject:sectionAccess];
     }
     
@@ -2239,7 +2246,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             roomPhotoCell.mxkImageView.defaultBackgroundColor = [UIColor clearColor];
             
-            roomPhotoCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_photo", @"Vector", nil);
+            if (mxRoom.isDirect)
+            {
+                roomPhotoCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_photo_for_dm", @"Vector", nil);
+            }
+            else
+            {
+                roomPhotoCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_photo", @"Vector", nil);
+            }
             roomPhotoCell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
             if (updatedItemsDict[kRoomSettingsAvatarKey])
@@ -2296,7 +2310,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             roomNameCell.mxkTextFieldLeadingConstraint.constant = 16;
             roomNameCell.mxkTextFieldTrailingConstraint.constant = 15;
             
-            roomNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_room_name", @"Vector", nil);
+            if (mxRoom.isDirect)
+            {
+                roomNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_room_name_for_dm", @"Vector", nil);
+            }
+            else
+            {
+                roomNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_room_name", @"Vector", nil);
+            }
             roomNameCell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
             roomNameCell.accessoryType = UITableViewCellAccessoryNone;
@@ -2418,7 +2439,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         {
             MXKTableViewCellWithLabelAndSwitch *directoryToggleCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
-            directoryToggleCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_access_section_directory_toggle", @"Vector", nil);
+            if (mxRoom.isDirect)
+            {
+                directoryToggleCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_access_section_directory_toggle_for_dm", @"Vector", nil);
+            }
+            else
+            {
+                directoryToggleCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_access_section_directory_toggle", @"Vector", nil);
+            }
             
             [directoryToggleCell.mxkSwitch addTarget:self action:@selector(toggleDirectoryVisibility:) forControlEvents:UIControlEventValueChanged];
             
@@ -2482,7 +2510,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             else if (row == ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_ANYONE_APART_FROM_GUEST)
             {
-                roomAccessCell.label.text = NSLocalizedStringFromTable(@"room_details_access_section_anyone_apart_from_guest", @"Vector", nil);
+                if (mxRoom.isDirect)
+                {
+                    roomAccessCell.label.text = NSLocalizedStringFromTable(@"room_details_access_section_anyone_apart_from_guest_for_dm", @"Vector", nil);
+                }
+                else
+                {
+                    roomAccessCell.label.text = NSLocalizedStringFromTable(@"room_details_access_section_anyone_apart_from_guest", @"Vector", nil);
+                }
                 
                 roomAccessCell.enabled = ([joinRule isEqualToString:kMXRoomJoinRulePublic] && [guestAccess isEqualToString:kMXRoomGuestAccessForbidden]);
                 
@@ -2490,7 +2525,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             else if (row == ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_ANYONE)
             {
-                roomAccessCell.label.text = NSLocalizedStringFromTable(@"room_details_access_section_anyone", @"Vector", nil);
+                if (mxRoom.isDirect)
+                {
+                    roomAccessCell.label.text = NSLocalizedStringFromTable(@"room_details_access_section_anyone_for_dm", @"Vector", nil);
+                }
+                else
+                {
+                    roomAccessCell.label.text = NSLocalizedStringFromTable(@"room_details_access_section_anyone", @"Vector", nil);
+                }
                 
                 roomAccessCell.enabled = ([joinRule isEqualToString:kMXRoomJoinRulePublic] && [guestAccess isEqualToString:kMXRoomGuestAccessCanJoin]);
                 
@@ -2610,7 +2652,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             addressCell.accessoryView = nil;
             addressCell.accessoryType = UITableViewCellAccessoryNone;
             addressCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            addressCell.textLabel.text = NSLocalizedStringFromTable(@"room_details_no_local_addresses", @"Vector", nil);
+            if (mxRoom.isDirect)
+            {
+                addressCell.textLabel.text = NSLocalizedStringFromTable(@"room_details_no_local_addresses_for_dm", @"Vector", nil);
+            }
+            else
+            {
+                addressCell.textLabel.text = NSLocalizedStringFromTable(@"room_details_no_local_addresses", @"Vector", nil);
+            }
             
             cell = addressCell;
         }
@@ -2740,7 +2789,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
             
             cell.textLabel.font = [UIFont systemFontOfSize:17];
-            cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_room_id", @"Vector", nil);
+            if (mxRoom.isDirect)
+            {
+                cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_room_id_for_dm", @"Vector", nil);
+            }
+            else
+            {
+                cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_room_id", @"Vector", nil);
+            }
             cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
             cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
@@ -2801,7 +2857,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             cell.textLabel.font = [UIFont systemFontOfSize:17];
             cell.textLabel.numberOfLines = 0;
-            cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_enabled", @"Vector", nil);
+            if (mxRoom.isDirect)
+            {
+                cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_enabled_for_dm", @"Vector", nil);
+            }
+            else
+            {
+                cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_enabled", @"Vector", nil);
+            }
             cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -2828,7 +2891,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             cell.textLabel.font = [UIFont systemFontOfSize:17];
             cell.textLabel.numberOfLines = 0;
-            cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_disabled", @"Vector", nil);
+            if (mxRoom.isDirect)
+            {
+                cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_disabled_for_dm", @"Vector", nil);
+            }
+            else
+            {
+                cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_disabled", @"Vector", nil);
+            }
             cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -3377,9 +3447,20 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
+    NSString *title, *message;
+    if ([self.mainSession roomWithRoomId:self.roomId].isDirect)
+    {
+        title = NSLocalizedStringFromTable(@"room_participants_leave_prompt_title_for_dm", @"Vector", nil);
+        message = NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg_for_dm", @"Vector", nil);
+    }
+    else
+    {
+        title = NSLocalizedStringFromTable(@"room_participants_leave_prompt_title", @"Vector", nil);
+        message = NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg", @"Vector", nil);
+    }
     
-    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_participants_leave_prompt_title", @"Vector", nil)
-                                                       message:NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg", @"Vector", nil)
+    currentAlert = [UIAlertController alertControllerWithTitle:title
+                                                       message:message
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
     [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]

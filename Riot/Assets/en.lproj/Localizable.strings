@@ -67,6 +67,8 @@
 /* New message indicator on a room */
 "MESSAGE_IN_X" = "Message in %@";
 
+"MESSAGE_PROTECTED" = "New Message";
+
 /** Coalesced messages **/
 
 /* Multiple unread messages in a room */

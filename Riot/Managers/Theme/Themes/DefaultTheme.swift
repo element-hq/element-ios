@@ -77,6 +77,11 @@ class DefaultTheme: NSObject, Theme {
     }
     var scrollBarStyle: UIScrollView.IndicatorStyle = .default
     var keyboardAppearance: UIKeyboardAppearance = .light
+    
+    @available(iOS 12.0, *)
+    var userInterfaceStyle: UIUserInterfaceStyle {
+        return .light
+    }
 
     var placeholderTextColor: UIColor = UIColor(rgb: 0x8F97A3) // Use secondary text color
     
