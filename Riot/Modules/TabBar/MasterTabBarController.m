@@ -221,8 +221,6 @@
             [childViewControllers removeAllObjects];
         }
         
-        [self presentReviewSessionsAlertIfNeeded];
-        
         [[AppDelegate theDelegate] checkAppVersion];
     }
     
@@ -408,8 +406,6 @@
 - (void)onMatrixSessionStateDidChange:(NSNotification *)notif
 {
     [self refreshTabBarBadges];
-    
-    [self presentReviewSessionsAlertIfNeeded];
 }
 
 - (void)showAuthenticationScreen
@@ -1007,29 +1003,6 @@
 
 #pragma mark - Review session
 
-- (void)presentReviewSessionsAlertIfNeeded
-{
-    MXSession *mainSession = self.mxSessions.firstObject;
-    
-    if (!(self.viewLoaded
-          && mainSession.state >= MXSessionStateStoreDataReady
-          && mainSession.crypto.crossSigning))
-    {
-        return;
-    }
-    
-    switch (mainSession.crypto.crossSigning.state) {
-        case MXCrossSigningStateCrossSigningExists:
-            [self presentVerifyCurrentSessionAlertIfNeededWithSession:mainSession];
-            break;
-        case MXCrossSigningStateCanCrossSign:
-            [self presentReviewUnverifiedSessionsAlertIfNeededWithSession:mainSession];
-            break;
-        default:
-            break;
-    }
-}
-
 - (void)presentVerifyCurrentSessionAlertIfNeededWithSession:(MXSession*)session
 {
     if (RiotSettings.shared.hideVerifyThisSessionAlert
@@ -1045,6 +1018,8 @@
 
 - (void)presentVerifyCurrentSessionAlertWithSession:(MXSession*)session
 {
+    NSLog(@"[MasterTabBarController] presentVerifyCurrentSessionAlertWithSession");
+    
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"key_verification_self_verify_current_session_alert_title", @"Vector", nil)
@@ -1102,6 +1077,8 @@
 
 - (void)presentReviewUnverifiedSessionsAlertWithSession:(MXSession*)session
 {
+    NSLog(@"[MasterTabBarController] presentReviewUnverifiedSessionsAlertWithSession");
+    
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"key_verification_self_verify_unverified_sessions_alert_title", @"Vector", nil)

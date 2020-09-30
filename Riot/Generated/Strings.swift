@@ -2058,13 +2058,17 @@ internal enum VectorL10n {
   internal static var pinProtectionEnterPin: String { 
     return VectorL10n.tr("Vector", "pin_protection_enter_pin") 
   }
-  /// PINs help keep your profile, messages and contacts secure, so only you can access them.
+  /// Setting up a PIN lets you protect data like messages and contacts, so only you can access them by entering the PIN at the start of the app.
   internal static var pinProtectionExplanatory: String { 
     return VectorL10n.tr("Vector", "pin_protection_explanatory") 
   }
   /// Forgot PIN
   internal static var pinProtectionForgotPin: String { 
     return VectorL10n.tr("Vector", "pin_protection_forgot_pin") 
+  }
+  /// Too many errors, you've been logged out
+  internal static var pinProtectionKickUserAlertMessage: String { 
+    return VectorL10n.tr("Vector", "pin_protection_kick_user_alert_message") 
   }
   /// Please try again
   internal static var pinProtectionMismatchErrorMessage: String { 

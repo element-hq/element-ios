@@ -144,6 +144,20 @@
  */
 - (void)refreshTabBarBadges;
 
+/**
+ Verify the current device if needed.
+ 
+  @param session the matrix session.
+ */
+- (void)presentVerifyCurrentSessionAlertIfNeededWithSession:(MXSession*)session;
+
+/**
+ Verify others device if needed.
+ 
+ @param session the matrix session.
+ */
+- (void)presentReviewUnverifiedSessionsAlertIfNeededWithSession:(MXSession*)session;
+
 
 // Reference to the current auth VC. It is not nil only when the auth screen is displayed.
 @property (nonatomic, readonly) AuthenticationViewController *authViewController;
