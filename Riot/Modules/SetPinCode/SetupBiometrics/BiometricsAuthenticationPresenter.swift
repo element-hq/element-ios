@@ -27,7 +27,7 @@ final class BiometricsAuthenticationPresenter {
     /// Whether the presenter currently showing the biometrics setup or unlock dialog.
     /// Showing biometrics dialog will cause the app to resign active.
     /// This property can be used in order to distinguish real resignations and biometrics case.
-    static private(set) var isPresentingBiometricsAuth: Bool = false
+    static private(set) var isPresenting: Bool = false
     
     /// Presents the user authentication with biometry.
     /// - Parameters:
@@ -35,16 +35,16 @@ final class BiometricsAuthenticationPresenter {
     ///   - completion: A closure that is executed when policy evaluation finishes. Will be called in main thread.
     func present(with message: String, completion: @escaping (Result<Void, Error>) -> Void) {
         //  do not present if already presented
-        guard !BiometricsAuthenticationPresenter.isPresentingBiometricsAuth else {
+        guard !BiometricsAuthenticationPresenter.isPresenting else {
             return
         }
-        BiometricsAuthenticationPresenter.isPresentingBiometricsAuth = true
+        BiometricsAuthenticationPresenter.isPresenting = true
 
         LAContext().evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: message) { (success, error) in
             if success {
                 // Complete after a little delay
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    BiometricsAuthenticationPresenter.isPresentingBiometricsAuth = false
+                    BiometricsAuthenticationPresenter.isPresenting = false
                     completion(.success(Void()))
                 }
             } else {
@@ -57,7 +57,7 @@ final class BiometricsAuthenticationPresenter {
                 }
                 
                 DispatchQueue.main.async {
-                    BiometricsAuthenticationPresenter.isPresentingBiometricsAuth = false
+                    BiometricsAuthenticationPresenter.isPresenting = false
                     completion(.failure(finalError))
                 }
             }

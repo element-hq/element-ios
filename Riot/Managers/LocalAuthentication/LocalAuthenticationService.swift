@@ -61,7 +61,7 @@ class LocalAuthenticationService: NSObject {
         guard isProtectionSet else {
             return false
         }
-        return !BiometricsAuthenticationPresenter.isPresentingBiometricsAuth
+        return !BiometricsAuthenticationPresenter.isPresenting
     }
     
     var isProtectionSet: Bool {
