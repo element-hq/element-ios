@@ -102,6 +102,28 @@ final class SecretsRecoveryCoordinator: SecretsRecoveryCoordinatorType {
         })
         self.add(childCoordinator: coordinator)
     }
+    
+    private func showResetSecrets() {
+        let coordinator = SecretsResetCoordinator(session: self.session)
+        coordinator.delegate = self
+        coordinator.start()
+        
+        self.navigationRouter.push(coordinator.toPresentable(), animated: true, popCompletion: { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        })
+        self.add(childCoordinator: coordinator)
+    }
+    
+    private func showSecureBackupSetup() {
+        let coordinator = SecureBackupSetupCoordinator(session: self.session, navigationRouter: self.navigationRouter)
+        coordinator.delegate = self
+        coordinator.start()
+        
+        self.navigationRouter.push(coordinator.toPresentable(), animated: true, popCompletion: { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        })
+        self.add(childCoordinator: coordinator)
+    }
 }
 
 // MARK: - SecretsRecoveryWithKeyCoordinatorDelegate
@@ -113,6 +135,10 @@ extension SecretsRecoveryCoordinator: SecretsRecoveryWithKeyCoordinatorDelegate 
     
     func secretsRecoveryWithKeyCoordinatorDidCancel(_ coordinator: SecretsRecoveryWithKeyCoordinatorType) {
         self.delegate?.secretsRecoveryCoordinatorDidCancel(self)
+    }
+    
+    func secretsRecoveryWithKeyCoordinatorWantsToResetSecrets(_ viewModel: SecretsRecoveryWithKeyCoordinatorType) {
+        self.showResetSecrets()
     }
 }
 
@@ -128,6 +154,32 @@ extension SecretsRecoveryCoordinator: SecretsRecoveryWithPassphraseCoordinatorDe
     }
     
     func secretsRecoveryWithPassphraseCoordinatorDidCancel(_ coordinator: SecretsRecoveryWithPassphraseCoordinatorType) {
+        self.delegate?.secretsRecoveryCoordinatorDidCancel(self)
+    }
+    
+    func secretsRecoveryWithPassphraseCoordinatorWantsToResetSecrets(_ coordinator: SecretsRecoveryWithPassphraseCoordinatorType) {        
+        self.showResetSecrets()
+    }
+}
+
+// MARK: - SecretsResetCoordinatorDelegate
+extension SecretsRecoveryCoordinator: SecretsResetCoordinatorDelegate {
+    func secretsResetCoordinatorDidResetSecrets(_ coordinator: SecretsResetCoordinatorType) {
+        self.showSecureBackupSetup()
+    }
+    
+    func secretsResetCoordinatorDidCancel(_ coordinator: SecretsResetCoordinatorType) {
+        self.delegate?.secretsRecoveryCoordinatorDidCancel(self)
+    }
+}
+
+// MARK: - SecureBackupSetupCoordinatorDelegate
+extension SecretsRecoveryCoordinator: SecureBackupSetupCoordinatorDelegate {
+    func secureBackupSetupCoordinatorDidComplete(_ coordinator: SecureBackupSetupCoordinatorType) {
+        self.delegate?.secretsRecoveryCoordinatorDidRecover(self)
+    }
+    
+    func secureBackupSetupCoordinatorDidCancel(_ coordinator: SecureBackupSetupCoordinatorType) {
         self.delegate?.secretsRecoveryCoordinatorDidCancel(self)
     }
 }

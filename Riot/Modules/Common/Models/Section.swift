@@ -41,12 +41,18 @@ final class Section: NSObject {
         addRow(Row.row(withTag: tag))
     }
     
+    func addRows(withCount count: Int) {
+        for i in 0..<count {
+            addRow(withTag: i)
+        }
+    }
+    
     func indexOfRow(withTag tag: Int) -> Int? {
         return rows.firstIndex(where: { $0.tag == tag })
     }
     
     var hasAnyRows: Bool {
-        return rows.count > 0
+        return rows.isEmpty == false
     }
     
 }

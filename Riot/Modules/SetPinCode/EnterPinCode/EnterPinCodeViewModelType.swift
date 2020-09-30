@@ -26,7 +26,7 @@ protocol EnterPinCodeViewModelViewDelegate: class {
 
 protocol EnterPinCodeViewModelCoordinatorDelegate: class {
     func enterPinCodeViewModelDidComplete(_ viewModel: EnterPinCodeViewModelType)
-    func enterPinCodeViewModelDidCompleteWithReset(_ viewModel: EnterPinCodeViewModelType)
+    func enterPinCodeViewModelDidCompleteWithReset(_ viewModel: EnterPinCodeViewModelType, dueToTooManyErrors: Bool)
     func enterPinCodeViewModel(_ viewModel: EnterPinCodeViewModelType, didCompleteWithPin pin: String)
     func enterPinCodeViewModelDidCancel(_ viewModel: EnterPinCodeViewModelType)
 }

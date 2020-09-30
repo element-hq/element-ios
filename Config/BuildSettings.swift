@@ -168,6 +168,22 @@ final class BuildSettings: NSObject {
     
     static let allowLocalContactsAccess: Bool = true
     
+    // MARK: - Feature Specifics
+    
+    /// Not allowed pin codes. User won't be able to select one of the pin in the list.
+    static let notAllowedPINs: [String] = []
+    
+    /// Maximum number of allowed pin failures when unlocking, before force logging out the user. Defaults to `3`
+    static let maxAllowedNumberOfPinFailures: Int = 3
+    
+    /// Maximum number of allowed biometrics failures when unlocking, before fallbacking the user to the pin if set or logging out the user. Defaults to `5`
+    static let maxAllowedNumberOfBiometricsFailures: Int = 5
+    
+    /// Indicates should the app log out the user when number of PIN failures reaches `maxAllowedNumberOfPinFailures`. Defaults to `false`
+    static let logOutUserWhenPINFailuresExceeded: Bool = false
+    
+    /// Indicates should the app log out the user when number of biometrics failures reaches `maxAllowedNumberOfBiometricsFailures`. Defaults to `false`
+    static let logOutUserWhenBiometricsFailuresExceeded: Bool = false
     
     // MARK: - General Settings Screen
     

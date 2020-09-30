@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import MatrixKit
 
 @objcMembers
 class LocalAuthenticationService: NSObject {
@@ -62,6 +63,16 @@ class LocalAuthenticationService: NSObject {
 
     func applicationWillResignActive() {
         appLastActiveTime = systemUptime
+    }
+    
+    func shouldLogOutUser() -> Bool {
+        if BuildSettings.logOutUserWhenPINFailuresExceeded && pinCodePreferences.numberOfPinFailures >= pinCodePreferences.maxAllowedNumberOfPinFailures {
+            return true
+        }
+        if BuildSettings.logOutUserWhenBiometricsFailuresExceeded && pinCodePreferences.numberOfBiometricsFailures >= pinCodePreferences.maxAllowedNumberOfBiometricsFailures {
+            return true
+        }
+        return false
     }
 
 }

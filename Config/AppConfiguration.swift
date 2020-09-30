@@ -31,6 +31,9 @@ class AppConfiguration: CommonConfiguration {
         // Enable CallKit for app
         MXKAppSettings.standard()?.isCallKitEnabled = true
         
+        // Hide undecryptable messages that were sent while the user was not in the room
+        MXKAppSettings.standard()?.hidePreJoinedUndecryptableEvents = true
+        
         // Enable long press on event in bubble cells
         MXKRoomBubbleTableViewCell.disableLongPressGesture(onEvent: false)
         

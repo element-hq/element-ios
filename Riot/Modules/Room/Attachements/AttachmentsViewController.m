@@ -92,4 +92,10 @@
     }
 }
 
+- (void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion
+{
+    BOOL animated = flag && !self.presentingViewController.presentingViewController;
+    [super dismissViewControllerAnimated:animated completion:completion];
+}
+
 @end

@@ -23,11 +23,13 @@ protocol KeyValueStore {
     func set(_ value: Data?, forKey key: KeyValueStoreKey) throws
     func set(_ value: String?, forKey key: KeyValueStoreKey) throws
     func set(_ value: Bool?, forKey key: KeyValueStoreKey) throws
+    func set(_ value: Int?, forKey key: KeyValueStoreKey) throws
     
     //  getters
     func data(forKey key: KeyValueStoreKey) throws -> Data?
     func string(forKey key: KeyValueStoreKey) throws -> String?
     func bool(forKey key: KeyValueStoreKey) throws -> Bool?
+    func integer(forKey key: KeyValueStoreKey) throws -> Int?
     
     //  remove
     func removeObject(forKey key: KeyValueStoreKey) throws

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,7 +14,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="encryption_normal" translatesAutoresizingMaskIntoConstraints="NO" id="Ky3-cy-HAx">
-                    <rect key="frame" x="229.5" y="13" width="14" height="14"/>
+                    <rect key="frame" x="231.5" y="13.5" width="14" height="14"/>
                     <accessibility key="accessibilityConfiguration" identifier="RoomDetailsIconImageView"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="14" id="7xE-aD-sld"/>
@@ -24,7 +22,7 @@
                     </constraints>
                 </imageView>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Room Name" textAlignment="center" adjustsFontSizeToFit="NO" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="6uH-I3-RQg">
-                    <rect key="frame" x="247.5" y="9" width="105" height="22"/>
+                    <rect key="frame" x="249.5" y="9" width="101" height="23"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     <accessibility key="accessibilityConfiguration" identifier="DisplayNameTextField"/>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
@@ -34,7 +32,7 @@
                     </connections>
                 </textField>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="details_icon" translatesAutoresizingMaskIntoConstraints="NO" id="S3Y-wJ-HOe">
-                    <rect key="frame" x="359.5" y="14" width="6" height="12"/>
+                    <rect key="frame" x="357.5" y="14.5" width="6" height="12"/>
                     <accessibility key="accessibilityConfiguration" identifier="RoomDetailsIconImageView"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="6" id="XTx-6p-2wB"/>
@@ -42,11 +40,7 @@
                     </constraints>
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sD9-l7-azQ">
-                    <rect key="frame" x="0.0" y="0.0" width="352.5" height="44"/>
-                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pFg-XE-6DB">
-                    <rect key="frame" x="352.5" y="0.0" width="247.5" height="44"/>
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
             </subviews>
@@ -57,19 +51,15 @@
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="S3Y-wJ-HOe" secondAttribute="trailing" id="3z3-Ye-wh3"/>
                 <constraint firstAttribute="bottom" secondItem="sD9-l7-azQ" secondAttribute="bottom" id="4rX-5O-LrO"/>
                 <constraint firstItem="sD9-l7-azQ" firstAttribute="leading" secondItem="BkF-x3-7fX" secondAttribute="leading" id="AJc-Aa-sht"/>
-                <constraint firstItem="sD9-l7-azQ" firstAttribute="trailing" secondItem="6uH-I3-RQg" secondAttribute="trailing" id="DnD-l9-v0F"/>
-                <constraint firstItem="pFg-XE-6DB" firstAttribute="leading" secondItem="sD9-l7-azQ" secondAttribute="trailing" id="Gxi-oJ-gpi"/>
-                <constraint firstAttribute="bottom" secondItem="pFg-XE-6DB" secondAttribute="bottom" id="HEU-GL-4yt"/>
-                <constraint firstAttribute="trailing" secondItem="pFg-XE-6DB" secondAttribute="trailing" id="HPm-vM-32l"/>
                 <constraint firstItem="S3Y-wJ-HOe" firstAttribute="centerY" secondItem="6uH-I3-RQg" secondAttribute="centerY" id="Jjq-ss-0kj"/>
                 <constraint firstItem="6uH-I3-RQg" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="BkF-x3-7fX" secondAttribute="leading" constant="8" id="KW6-05-QLM"/>
                 <constraint firstItem="6uH-I3-RQg" firstAttribute="leading" secondItem="Ky3-cy-HAx" secondAttribute="trailing" constant="4" id="Kis-Qb-UuJ"/>
-                <constraint firstItem="pFg-XE-6DB" firstAttribute="top" secondItem="BkF-x3-7fX" secondAttribute="top" id="M4X-tH-OCM"/>
                 <constraint firstItem="Ky3-cy-HAx" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="BkF-x3-7fX" secondAttribute="leading" id="MHL-wh-61l"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="6uH-I3-RQg" secondAttribute="trailing" constant="8" id="PUM-di-dAZ"/>
                 <constraint firstItem="6uH-I3-RQg" firstAttribute="top" secondItem="BkF-x3-7fX" secondAttribute="top" constant="9" id="Piq-rp-Pae"/>
                 <constraint firstItem="sD9-l7-azQ" firstAttribute="top" secondItem="BkF-x3-7fX" secondAttribute="top" id="YrR-1c-h56"/>
                 <constraint firstItem="Ky3-cy-HAx" firstAttribute="centerY" secondItem="6uH-I3-RQg" secondAttribute="centerY" id="ayN-Hv-q7s"/>
+                <constraint firstAttribute="trailing" secondItem="sD9-l7-azQ" secondAttribute="trailing" id="q9f-Hp-g5N"/>
                 <constraint firstItem="S3Y-wJ-HOe" firstAttribute="leading" secondItem="6uH-I3-RQg" secondAttribute="trailing" constant="7" id="qbS-km-tTO"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -79,7 +69,6 @@
                 <outlet property="displayNameTextField" destination="6uH-I3-RQg" id="MfX-LQ-C2K"/>
                 <outlet property="displayNameTextFieldTopConstraint" destination="Piq-rp-Pae" id="jnL-Hz-TWn"/>
                 <outlet property="roomDetailsIconImageView" destination="S3Y-wJ-HOe" id="bhR-6E-8St"/>
-                <outlet property="roomDetailsMask" destination="pFg-XE-6DB" id="7EF-K5-G0o"/>
                 <outlet property="titleMask" destination="sD9-l7-azQ" id="I9b-wF-iNH"/>
             </connections>
             <point key="canvasLocation" x="137.59999999999999" y="153.82308845577214"/>

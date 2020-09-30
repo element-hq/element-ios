@@ -24,6 +24,7 @@ protocol SecretsRecoveryWithPassphraseViewModelCoordinatorDelegate: class {
     func secretsRecoveryWithPassphraseViewModelDidRecover(_ viewModel: SecretsRecoveryWithPassphraseViewModelType)
     func secretsRecoveryWithPassphraseViewModelDidCancel(_ viewModel: SecretsRecoveryWithPassphraseViewModelType)
     func secretsRecoveryWithPassphraseViewModelWantsToRecoverByKey(_ viewModel: SecretsRecoveryWithPassphraseViewModelType)
+    func secretsRecoveryWithPassphraseViewModelWantsToResetSecrets(_ viewModel: SecretsRecoveryWithPassphraseViewModelType)
 }
 
 /// Protocol describing the view model used by `SecretsRecoveryWithPassphraseViewController`

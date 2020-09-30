@@ -1,38 +1,75 @@
-Changes in 1.0.12 (2020-09-16)
+Changes in 1.0.13 (2020-09-30)
 =================================================
 
 ✨ Features
- * 
+ *
 
 🙌 Improvements
- * 
+ * Room: Differentiate wordings for DMs.
+ * Room: New Room Settings screen.
+ * PIN code: Implement not allowed PINs feature. There is no restriction by default.
+ * PIN code: Do not show notification content and disable replies when protection set.
+ * PIN code: Log out user automatically after some wrong PINs/biometrics (#3623).
+ * Complete Security: Come back to the root screen if device verification is cancelled.
+ * Device verification: Add possibility to reset SSSS & Cross-Signing when recovery passphrase or key are lost.
+ * Architecture: Use coordinator pattern for legacy screen flows (#3597).
+ * Architecture: Create AppDelegate.handleAppState() as central point to handle application state.
 
 🐛 Bugfix
- * 
+ * Timeline: Hide encrypted history (pre-invite) (#3660).
+ * PIN Code: Do not show verification dialog at the top of PIN code.
+ * Complete Security: Let the authentication flow display it if this flow is not complete yet.
+ * Device verification: Fix inactive cancel action issue in self verification flow.
+ * Fix floating action buttons' images.
+ * Various theme fixes.
 
 ⚠️ API Changes
- * 
+ *
 
 🗣 Translations
- * 
+ *
     
 🧱 Build
- * 
+ *
 
 Others
- * 
+ *
+
+Changes in 1.0.12 (2020-09-16)
+
+✨ Features
+ *
+
+🙌 Improvements
+ *
+
+🐛 Bugfix
+ *
+
+⚠️ API Changes
+ *
+
+🗣 Translations
+ *
+    
+🧱 Build
+ *
+
+Others
+ *
 
 Improvements:
+ * Upgrade MatrixKit version ([v0.12.21](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.21)).
  * Upgrade MatrixKit version ([v0.12.20](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.20)).
 
 Changes in 1.0.11 (2020-09-15)
 =================================================
 
 ✨ Features
- * 
+ *
 
 🙌 Improvements
- * Room: Collapse state messages on room creation (#3629). 
+ * Room: Collapse state messages on room creation (#3629).
  * AuthVC: Make force PIN working for registration as well.
  * AppDelegate: Do not show incoming key verification requests while authenticating.
 
@@ -41,13 +78,13 @@ Changes in 1.0.11 (2020-09-15)
  * Loading animation: Fix the bug where, after authentication, the animation disappeared too early and made auth screen flashed.
 
 ⚠️ API Changes
- * 
+ *
 
 🗣 Translations
- * 
+ *
     
 🧱 Build
- * 
+ *
 
 Others
  * buildRelease.sh: Pass a `git_tag` parameter to fastlane because fastlane `git_branch` method can fail.
@@ -59,28 +96,28 @@ Changes in 1.0.10 (2020-09-08)
 =================================================
 
 ✨ Features
- * 
+ *
     
 🙌 Improvements
  * AppDelegate: Convert to Swift (#3594).
  * Contextualize floating button actions per tab (#3627).
     
 🐛 Bugfix
- * Show pin code screen on every foreground (#3620). 
+ * Show pin code screen on every foreground (#3620).
  * Close keyboard on pin code screen (#3622).
  * Fix content leakage on pin code protection (#3624).
     
 ⚠️ API Changes
- * 
+ *
     
 🗣 Translations
- * 
+ *
     
 🧱 Build
  * buildRelease.sh: Make sure it works for both branches and tags
     
 Others
- * 
+ *
 
 Improvements:
  * Upgrade MatrixKit version ([v0.12.18](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.18)).

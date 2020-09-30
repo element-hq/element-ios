@@ -140,7 +140,6 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
                 return
             }
             
-            self.unregisterKeyVerificationManagerNewRequestNotification()
             self.coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModel(self, didAcceptKeyVerificationRequest: keyVerificationRequest)
             
             }, failure: { [weak self] (error) in
@@ -200,8 +199,6 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     private func sasTransactionDidStateChange(_ transaction: MXIncomingSASTransaction) {
         switch transaction.state {
         case MXSASTransactionStateIncomingShowAccept:
-            // Stop listening for incoming request
-            self.unregisterKeyVerificationManagerNewRequestNotification()
             transaction.accept()
         case MXSASTransactionStateShowSAS:
             self.unregisterTransactionDidStateChangeNotification()

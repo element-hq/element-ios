@@ -113,7 +113,7 @@
 "room_participants_action_security_status_loading" = "Laeme…";
 "room_participants_security_loading" = "Laeme…";
 "room_participants_security_information_room_not_encrypted" = "See jututuba ei ole läbivalt krüptitud.";
-"room_participants_security_information_room_encrypted" = "Sõnumid siis jututoas kasutavad läbivat krüptimist.\n\nSinu sõnumid on turvatud ning ainult sinul ja saaja(te)l on unikaalsed võtmed selliste sõnumite lugemiseks.";
+"room_participants_security_information_room_encrypted" = "Sõnumid siin jututoas kasutavad läbivat krüptimist.\n\nSinu sõnumid on turvatud ning ainult sinul ja saaja(te)l on unikaalsed võtmed selliste sõnumite lugemiseks.";
 // Chat
 "room_jump_to_first_unread" = "Mine esimese lugemata sõnumi juurde";
 // Room Details
@@ -1140,3 +1140,33 @@
 "secure_key_backup_setup_existing_backup_error_delete_it" = "Kustuta varukoopia";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "Või kui sa ei saa neid kasutada, siis võid olemasolevas sessioonis";
 "device_verification_self_verify_wait_recover_secrets_checking_availability" = "Kontrollin teiste verifikatsioonivõimaluste olemasolu ...";
+"biometrics_desetup_subtitle" = "biometrics_desetup_subtitle";
+"joined" = "Liikmed";
+"switch" = "Vaheta";
+"more" = "Veel";
+"pin_protection_choose_pin_welcome_after_login" = "Tere tulemast tagasi.";
+"pin_protection_choose_pin_welcome_after_register" = "Tere tulemast.";
+"pin_protection_not_allowed_pin" = "Turvapõhjustel seda PIN-kooi ei saa kasutada. Palun vali mõnu muu PIN-kood";
+"pin_protection_explanatory" = "PIN-kood aitab tagada, et vaid sina ise pääsed ligi oma profiilile, sõnumitele ja kontaktidele.";
+"searchable_directory_create_new_room" = "Loo uus jututuba";
+"searchable_directory_x_network" = "%@ võrk";
+"searchable_directory_search_placeholder" = "Nimi või Matrix'i tunnus";
+"create_room_title" = "Uus jututuba";
+"create_room_section_header_name" = "Jututoa nimi";
+"create_room_placeholder_name" = "Nimi";
+"create_room_section_header_topic" = "Jututoa teema (valikuline)";
+"create_room_placeholder_topic" = "Jututoa teema";
+"create_room_section_header_encryption" = "Krüptimine jututoas";
+"create_room_enable_encryption" = "Võta krüptimine kasutusele";
+"create_room_section_footer_encryption" = "Krüptimist ei saa hiljem välja lülitada.";
+"create_room_section_header_type" = "Jututoa tüüp";
+"create_room_type_private" = "Omavaheline jututuba";
+"create_room_type_public" = "Avalik jututuba";
+"create_room_section_footer_type" = "Omavahelise jututoaga saab liituda vaid kutsega.";
+"create_room_show_in_directory" = "Näita jututubade loendit";
+"create_room_section_header_address" = "Jututoa aadress";
+"create_room_placeholder_address" = "#torenimi:domeen.ee";
+"room_info_list_room_encrypted" = "See jututuba on läbivalt krüptitud";
+"room_info_list_one_member" = "1 liige";
+"room_info_list_several_members" = "%@ liiget";
+"room_info_list_section_other" = "Muud";
