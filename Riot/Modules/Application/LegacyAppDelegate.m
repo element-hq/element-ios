@@ -493,6 +493,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = false;
     [MXKAppSettings standardAppSettings].syncLocalContacts = false;
     [[RiotSettings shared] setHomeserverUrlString:monolith.baseURL];
+    [[RiotSettings shared] setMatrixApps:NO];
     
     // ----------------------------- DENDRITE ----------------------------- //
 

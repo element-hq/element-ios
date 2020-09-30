@@ -109,6 +109,7 @@ final class BuildSettings: NSObject {
     
     // MARK: - VoIP
     static var allowVoIPUsage: Bool {
+        return false
         #if canImport(JitsiMeet)
         return true
         #else
