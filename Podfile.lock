@@ -15,6 +15,7 @@ PODS:
   - AFNetworking/UIKit (4.0.1):
     - AFNetworking/NSURLSession
   - cmark (0.24.1)
+  - Dendrite (0.0.3)
   - DGCollectionViewLeftAlignFlowLayout (1.0.4)
   - DTCoreText (1.6.25):
     - DTCoreText/Core (= 1.6.25)
@@ -107,6 +108,7 @@ PODS:
 
 DEPENDENCIES:
   - cmark
+  - Dendrite (from `/Users/neilalexander/Desktop/dendrite-pod`)
   - DGCollectionViewLeftAlignFlowLayout (~> 1.0.4)
   - FlowCommoniOS (~> 1.8.7)
   - GBDeviceInfo (~> 6.3.0)
@@ -153,9 +155,14 @@ SPEC REPOS:
     - zxcvbn-ios
     - ZXingObjC
 
+EXTERNAL SOURCES:
+  Dendrite:
+    :path: "/Users/neilalexander/Desktop/dendrite-pod"
+
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
   cmark: 1d9ad0375e3b9fa281732e992467903606015520
+  Dendrite: 74275307d9801b1f176b1eb88378c235701abc47
   DGCollectionViewLeftAlignFlowLayout: a0fa58797373ded039cafba8133e79373d048399
   DTCoreText: e92f4cf6b36d9d71ce4436d12cf089d74ab0596b
   DTFoundation: 767ca882209ef4d5132ec7e702526d5ed5bb71a2
@@ -179,6 +186,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 42729c01dc00e56b55fe47af73f2a3a13fa43fb4
+PODFILE CHECKSUM: 901bf791e3fb9e6f3cb218991f12c064feb7eeea
 
 COCOAPODS: 1.9.3

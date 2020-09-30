@@ -75,6 +75,8 @@ abstract_target 'RiotPods' do
     pod 'ZXingObjC', '~> 3.6.5'
     pod 'FlowCommoniOS', '~> 1.8.7'
 
+    pod 'Dendrite', :path => "/Users/neilalexander/Desktop/dendrite-pod"
+
     target 'RiotTests' do
       inherit! :search_paths
     end
