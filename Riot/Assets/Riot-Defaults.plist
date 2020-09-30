@@ -7,7 +7,7 @@
 	<key>pinRoomsWithUnread</key>
 	<true/>
 	<key>matrixApps</key>
-	<true/>
+	<false/>
 	<key>showAllEventsInRoomHistory</key>
 	<false/>
 	<key>showRedactionsInRoomHistory</key>
@@ -21,7 +21,7 @@
 	<key>syncLocalContacts</key>
 	<false/>
 	<key>createConferenceCallsWithJitsi</key>
-	<true/>
+	<false/>
 	<key>enableRageShake</key>
 	<true/>
 	<key>maxAllowedMediaCacheSize</key>

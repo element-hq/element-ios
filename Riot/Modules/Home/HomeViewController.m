@@ -69,6 +69,8 @@
     selectedCollectionViewContentOffset = -1;
     
     self.screenName = @"Home";
+    
+    [self startTimer];
 }
 
 - (void)viewDidLoad
