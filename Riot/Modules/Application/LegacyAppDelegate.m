@@ -528,7 +528,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         wrongBackupVersionAlert = nil;
     }
     
-    if ([self.localAuthenticationService isProtectionSet])
+    if ([self.localAuthenticationService isProtectionSet] && ![BiometricsAuthenticationPresenter isPresenting])
     {
         if (self.setPinCoordinatorBridgePresenter)
         {
@@ -539,11 +539,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:mxSessionArray.firstObject viewMode:SetPinCoordinatorViewModeInactive];
         self.setPinCoordinatorBridgePresenter.delegate = self;
         [self.setPinCoordinatorBridgePresenter presentIn:self.window];
-    }
-    else
-    {
-        [self.setPinCoordinatorBridgePresenter dismiss];
-        self.setPinCoordinatorBridgePresenter = nil;
     }
 }
 
@@ -731,7 +726,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         [application keyWindow].accessibilityIgnoresInvertColors = YES;
     }
     
-    [self handleLaunchAnimation];
+    [self handleAppState];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -1788,17 +1783,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         {
             [self removeMatrixSession:mxSession];
         }
-        else if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
-        {
-            if (mxSession.state == MXSessionStateRunning)
-            {
-                // Check if we need to display a key share dialog
-                [self checkPendingRoomKeyRequests];
-                [self checkPendingIncomingKeyVerificationsInSession:mxSession];
-            }
-        }
         
-        [self handleLaunchAnimation];
+        [self handleAppState];
     }];
     
     // Register an observer in order to handle new account
@@ -1973,12 +1959,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         
         // Do the one time check on device id
         [self checkDeviceId:mxSession];
-
-        // Enable listening of incoming key share requests
-        [self enableRoomKeyRequestObserver:mxSession];
-
-        // Enable listening of incoming key verification requests
-        [self enableIncomingKeyVerificationObserver:mxSession];
     }
 }
 
@@ -2312,7 +2292,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }];
 }
 
-- (void)handleLaunchAnimation
+- (void)handleAppState
 {
     MXSession *mainSession = self.mxSessions.firstObject;
     
@@ -2322,7 +2302,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         
         if (_masterTabBarController.authenticationInProgress)
         {
-            NSLog(@"[AppDelegate] handleLaunchAnimation: Authentication still in progress");
+            NSLog(@"[AppDelegate] handleAppState: Authentication still in progress");
                   
             // Wait for the return of masterTabBarControllerDidCompleteAuthentication
             isLaunching = YES;            
@@ -2346,38 +2326,92 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             }
         }
         
+        NSLog(@"[AppDelegate] handleAppState: isLaunching: %@", isLaunching ? @"YES" : @"NO");
+        
         if (isLaunching)
         {
-            NSLog(@"[AppDelegate] handleLaunchAnimation: LaunchLoadingView");
-            
-            UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-            
-            if (!launchAnimationContainerView && window)
-            {
-                LaunchLoadingView *launchLoadingView = [LaunchLoadingView instantiate];
-                launchLoadingView.frame = window.bounds;
-                [launchLoadingView updateWithTheme:ThemeService.shared.theme];
-                launchLoadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-                
-                [window addSubview:launchLoadingView];
-                
-                launchAnimationContainerView = launchLoadingView;
-                launchAnimationStart = [NSDate date];
-            }
-            
+            NSLog(@"[AppDelegate] handleAppState: LaunchLoadingView");
+            [self showLaunchAnimation];
             return;
         }
-        else
+
+        [self hideLaunchAnimation];
+        
+        if (self.setPinCoordinatorBridgePresenter)
         {
-            NSLog(@"[AppDelegate] handleLaunchAnimation: isLaunching: NO");
+            NSLog(@"[AppDelegate] handleAppState: PIN code is presented. Do not go further");
+            return;
+        }
+        
+        if (mainSession.crypto.crossSigning)
+        {
+            NSLog(@"[AppDelegate] handleAppState: crossSigning.state: %@", @(mainSession.crypto.crossSigning.state));
+            
+            switch (mainSession.crypto.crossSigning.state)
+            {
+                case MXCrossSigningStateCrossSigningExists:
+                    NSLog(@"[AppDelegate] handleAppState: presentVerifyCurrentSessionAlertIfNeededWithSession");
+                    [_masterTabBarController presentVerifyCurrentSessionAlertIfNeededWithSession:mainSession];
+                    break;
+                case MXCrossSigningStateCanCrossSign:
+                    NSLog(@"[AppDelegate] handleAppState: presentReviewUnverifiedSessionsAlertIfNeededWithSession");
+                    [_masterTabBarController presentReviewUnverifiedSessionsAlertIfNeededWithSession:mainSession];
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+        // TODO: We should wait that cross-signing screens are done before going further but it seems fine. Those screens
+        // protect each other.
+        
+        // This is the time to check existing requests
+        NSLog(@"[AppDelegate] handleAppState: Check pending verification requests");
+        [self checkPendingRoomKeyRequests];
+        [self checkPendingIncomingKeyVerificationsInSession:mainSession];
+            
+        // TODO: When we will have an application state, we will do all of this in a dedicated initialisation state
+        // For the moment, reuse an existing boolean to avoid register things several times
+        if (!incomingKeyVerificationObserver)
+        {
+            NSLog(@"[AppDelegate] handleAppState: Set up observers for the crypto module");
+            
+            // Enable listening of incoming key share requests
+            [self enableRoomKeyRequestObserver:mainSession];
+            
+            // Enable listening of incoming key verification requests
+            [self enableIncomingKeyVerificationObserver:mainSession];
         }
     }
+}
+
+- (void)showLaunchAnimation
+{
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
     
+    if (!launchAnimationContainerView && window)
+    {
+        NSLog(@"[AppDelegate] showLaunchAnimation");
+        
+        LaunchLoadingView *launchLoadingView = [LaunchLoadingView instantiate];
+        launchLoadingView.frame = window.bounds;
+        [launchLoadingView updateWithTheme:ThemeService.shared.theme];
+        launchLoadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        
+        [window addSubview:launchLoadingView];
+        
+        launchAnimationContainerView = launchLoadingView;
+        launchAnimationStart = [NSDate date];
+    }
+}
+
+- (void)hideLaunchAnimation
+{
     if (launchAnimationContainerView)
     {
         NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:launchAnimationStart];
-        NSLog(@"[AppDelegate] LaunchAnimation was shown for %.3fms", duration * 1000);
-
+        NSLog(@"[AppDelegate] hideLaunchAnimation: LaunchAnimation was shown for %.3fms", duration * 1000);
+        
         // Track it on our analytics
         [[Analytics sharedInstance] trackLaunchScreenDisplayDuration:duration];
         
@@ -2499,7 +2533,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)authenticationDidComplete
 {
-    [self handleLaunchAnimation];
+    [self handleAppState];
 }
 
 #pragma mark -
@@ -4540,11 +4574,19 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self afterAppUnlockedByPin:[UIApplication sharedApplication]];
 }
 
-- (void)setPinCoordinatorBridgePresenterDelegateDidCompleteWithReset:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter
+- (void)setPinCoordinatorBridgePresenterDelegateDidCompleteWithReset:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter dueToTooManyErrors:(BOOL)dueToTooManyErrors
 {
-    [coordinatorBridgePresenter dismiss];
-    self.setPinCoordinatorBridgePresenter = nil;
-    [self logoutWithConfirmation:NO completion:nil];
+    if (dueToTooManyErrors)
+    {
+        [self showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"pin_protection_kick_user_alert_message", @"Vector", nil)];
+        [self logoutWithConfirmation:NO completion:nil];
+    }
+    else
+    {
+        [coordinatorBridgePresenter dismiss];
+        self.setPinCoordinatorBridgePresenter = nil;
+        [self logoutWithConfirmation:NO completion:nil];
+    }
 }
 
 @end

@@ -41,6 +41,7 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
     weak var viewDelegate: EnterPinCodeViewModelViewDelegate?
     weak var coordinatorDelegate: EnterPinCodeViewModelCoordinatorDelegate?
     private let pinCodePreferences: PinCodePreferences
+    private let localAuthenticationService: LocalAuthenticationService
     
     // MARK: - Setup
     
@@ -49,6 +50,7 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
         self.originalViewMode = viewMode
         self.viewMode = viewMode
         self.pinCodePreferences = pinCodePreferences
+        self.localAuthenticationService = LocalAuthenticationService(pinCodePreferences: pinCodePreferences)
     }
     
     // MARK: - Public
@@ -70,7 +72,7 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
             //  go back to first state
             self.update(viewState: .choosePin)
         case .forgotPinAlertResetAction:
-            self.coordinatorDelegate?.enterPinCodeViewModelDidCompleteWithReset(self)
+            self.coordinatorDelegate?.enterPinCodeViewModelDidCompleteWithReset(self, dueToTooManyErrors: false)
         case .forgotPinAlertCancelAction:
             //  no-op
             break
@@ -141,6 +143,12 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
                     if currentPin != pinCodePreferences.pin {
                         //  no match
                         numberOfFailuresDuringEnterPIN += 1
+                        pinCodePreferences.numberOfPinFailures += 1
+                        if viewMode == .unlock && localAuthenticationService.shouldLogOutUser() {
+                            //  log out user
+                            self.coordinatorDelegate?.enterPinCodeViewModelDidCompleteWithReset(self, dueToTooManyErrors: true)
+                            return
+                        }
                         if numberOfFailuresDuringEnterPIN < pinCodePreferences.allowedNumberOfTrialsBeforeAlert {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                                 self.viewDelegate?.enterPinCodeViewModel(self, didUpdateViewState: .wrongPin)
@@ -153,6 +161,9 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
                         }
                     } else {
                         //  match
+                        //  we can use biometrics anymore, if set
+                        pinCodePreferences.canUseBiometricsToUnlock = nil
+                        pinCodePreferences.resetCounters()
                         //  complete with a little delay
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                             self.coordinatorDelegate?.enterPinCodeViewModelDidComplete(self)
