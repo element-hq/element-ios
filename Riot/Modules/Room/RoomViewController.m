@@ -2952,6 +2952,10 @@
                             // Keep the default OS behavior on single tap when UITextView data detector detect a known type.
                             shouldDoAction = YES;
                             break;
+                        case RoomMessageURLTypeHttp:
+                            // Keep the default OS behavior for HTTP links
+                            shouldDoAction = YES;
+                            break;
                         case RoomMessageURLTypeDummy:
                             // Do nothing for dummy links
                             shouldDoAction = NO;
