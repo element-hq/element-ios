@@ -13,6 +13,7 @@ Changes to be released in next version
  * Push: Do not show notification content and disable replies when protection set.
  * AppDelegate: Create handleAppState as central point to handle application state.
  * Log out user automatically after some wrong PINs/biometrics (#3623).
+ * Secrets: Add possibility to reset SSSS when recovery passphrase or key are lost.
 
 🐛 Bugfix
  * Timeline: Hide encrypted history (pre-invite) (#3660).
