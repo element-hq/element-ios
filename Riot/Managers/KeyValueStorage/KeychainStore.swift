@@ -99,10 +99,10 @@ extension KeychainStore: KeyValueStore {
     }
     
     func integer(forKey key: KeyValueStoreKey) throws -> Int? {
-guard let stringValue = keychain.getString(key) else {
-return nil
-}
-return try Int(stringValue)
+        guard let stringValue = try keychain.getString(key) else {
+            return nil
+        }
+        return Int(stringValue)
     }
     
     //  remove

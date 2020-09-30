@@ -104,19 +104,20 @@ final class SetupBiometricsViewModel: SetupBiometricsViewModelType {
                     LocalAuthenticationService.isShowingBiometrics = false
                 }
             } else {
-                if let error = error as NSError? {
-                    self.pinCodePreferences.numberOfBiometricsFailures += 1
-                    if self.localAuthenticationService.shouldLogOutUser() {
-                        //  biometrics can't be used until further unlock with pin or a new log in
-                        self.pinCodePreferences.canUseBiometricsToUnlock = false
-                        DispatchQueue.main.async {
-                            self.coordinatorDelegate?.setupBiometricsViewModelDidCompleteWithReset(self, dueToTooManyErrors: true)
-                            LocalAuthenticationService.isShowingBiometrics = false
-                        }
-                    } else if error.code == LAError.Code.userCancel.rawValue || error.code == LAError.Code.userFallback.rawValue {
-                        self.userCancelledUnlockWithBiometrics()
+                guard let error = error as NSError? else {
+                    return
+                }
+                self.pinCodePreferences.numberOfBiometricsFailures += 1
+                if self.localAuthenticationService.shouldLogOutUser() {
+                    //  biometrics can't be used until further unlock with pin or a new log in
+                    self.pinCodePreferences.canUseBiometricsToUnlock = false
+                    DispatchQueue.main.async {
+                        self.coordinatorDelegate?.setupBiometricsViewModelDidCompleteWithReset(self, dueToTooManyErrors: true)
                         LocalAuthenticationService.isShowingBiometrics = false
                     }
+                } else if error.code == LAError.Code.userCancel.rawValue || error.code == LAError.Code.userFallback.rawValue {
+                    self.userCancelledUnlockWithBiometrics()
+                    LocalAuthenticationService.isShowingBiometrics = false
                 }
             }
         }
