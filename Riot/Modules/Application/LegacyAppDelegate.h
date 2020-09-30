@@ -233,4 +233,10 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 */
 - (void)checkAppVersion;
 
+#pragma mark - Yggdrasil
+
+- (NSString*)yggdrasilPeers;
+- (void)yggdrasilSetMulticastEnabled:(BOOL)enabled;
+- (void)yggdrasilSetStaticPeer:(NSString*)uri;
+
 @end

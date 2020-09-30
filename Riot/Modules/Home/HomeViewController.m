@@ -50,6 +50,16 @@
 
 @implementation HomeViewController
 
+- (void) startTimer
+{
+    [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(peerTimer:) userInfo:nil repeats:YES];
+}
+
+- (void) peerTimer:(NSTimer *)timer
+{
+    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [[AppDelegate theDelegate] yggdrasilPeers];
+}
+
 - (void)finalizeInit
 {
     [super finalizeInit];
@@ -86,7 +96,8 @@
 {
     [super viewWillAppear:animated];
     
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_home", @"Vector", nil);
+    //[AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_home", @"Vector", nil);
+    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [[AppDelegate theDelegate] yggdrasilPeers];
 
     [ThemeService.shared.theme applyStyleOnNavigationBar:[AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar];
 

@@ -57,6 +57,9 @@
 #import "Riot-Swift.h"
 #import "PushNotificationService.h"
 
+// P2P
+#import <Gobind/Gobind.h>
+
 //#define MX_CALL_STACK_OPENWEBRTC
 #ifdef MX_CALL_STACK_OPENWEBRTC
 #import <MatrixOpenWebRTCWrapper/MatrixOpenWebRTCWrapper.h>
@@ -209,6 +212,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
      */
     UIView *launchAnimationContainerView;
     NSDate *launchAnimationStart;
+    
+    /**
+        The Yggdrasil node.
+     */
+    GobindDendriteMonolith *monolith;
 }
 
 @property (strong, nonatomic) UIAlertController *mxInAppNotification;
@@ -396,6 +404,42 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     return nil;
 }
 
+#pragma mark - Yggdrasil
+
+- (NSString*)yggdrasilPeers
+{
+    long peerCount = [monolith peerCount];
+    long sessionCount = [monolith sessionCount];
+    NSMutableString *text = [NSMutableString string];
+    if (peerCount == 0) {
+        return @"No connected peers";
+    }
+    if (sessionCount == 0) {
+        [text appendString:@"No connections"];
+    } else if (sessionCount == 1) {
+        [text appendFormat:@"%li connection", sessionCount];
+    } else {
+        [text appendFormat:@"%li connections", sessionCount];
+    }
+    if (peerCount == 1) {
+        [text appendFormat:@" via %li peer", peerCount];
+    } else {
+        [text appendFormat:@" via %li peers", peerCount];
+    }
+    return text;
+}
+
+- (void)yggdrasilSetMulticastEnabled:(BOOL)isEnabled
+{
+    [monolith setMulticastEnabled:isEnabled];
+}
+
+- (void)yggdrasilSetStaticPeer:(NSString*)uri
+{
+    NSError *error = nil;
+    [monolith setStaticPeer:uri error:&error];
+}
+
 #pragma mark - UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(nullable NSDictionary *)launchOptions
@@ -438,6 +482,19 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     NSLog(@"------------------------------\n");
     
     [self setupUserDefaults];
+    
+    // ----------------------------- DENDRITE ----------------------------- //
+    
+    monolith = [[GobindDendriteMonolith alloc] init];
+    monolith.storageDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"/Documents"];
+    [monolith start];
+    
+    NSLog(@"HOMESERVER URL: %@\n", monolith.baseURL);
+    [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = false;
+    [MXKAppSettings standardAppSettings].syncLocalContacts = false;
+    [[NSUserDefaults standardUserDefaults] setObject:monolith.baseURL forKey:@"homeserverurl"];
+    
+    // ----------------------------- DENDRITE ----------------------------- //
 
     // Set up theme
     ThemeService.shared.themeId = RiotSettings.shared.userInterfaceTheme;
@@ -782,6 +839,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     NSLog(@"[AppDelegate] applicationWillTerminate");
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    
+    [monolith setMulticastEnabled:NO];
+    [monolith disconnectMulticastPeers];
+    [monolith disconnectNonMulticastPeers];
+    [monolith suspend];
 }
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
