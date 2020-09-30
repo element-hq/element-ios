@@ -3250,6 +3250,14 @@ internal enum VectorL10n {
   internal static func searchableDirectoryXNetwork(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "searchable_directory_x_network", p1)
   }
+  /// Forgot or lost all recovery options? 
+  internal static var secretsRecoveryResetActionPart1: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_reset_action_part_1") 
+  }
+  /// Reset everything
+  internal static var secretsRecoveryResetActionPart2: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_reset_action_part_2") 
+  }
   /// Access your secure message history and your cross-signing identity for verifying other sessions by entering your recovery key.
   internal static var secretsRecoveryWithKeyInformationDefault: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_key_information_default") 
@@ -3325,6 +3333,30 @@ internal enum VectorL10n {
   /// Recovery Passphrase
   internal static var secretsRecoveryWithPassphraseTitle: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_title") 
+  }
+  /// Enter your account password to confirm
+  internal static var secretsResetAuthenticationMessage: String { 
+    return VectorL10n.tr("Vector", "secrets_reset_authentication_message") 
+  }
+  /// Only do this if you have no other device you can verify this device with.
+  internal static var secretsResetInformation: String { 
+    return VectorL10n.tr("Vector", "secrets_reset_information") 
+  }
+  /// Reset
+  internal static var secretsResetResetAction: String { 
+    return VectorL10n.tr("Vector", "secrets_reset_reset_action") 
+  }
+  /// Reset everything
+  internal static var secretsResetTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_reset_title") 
+  }
+  /// You will restart with no history, no messages, trusted devices or trusted users.
+  internal static var secretsResetWarningMessage: String { 
+    return VectorL10n.tr("Vector", "secrets_reset_warning_message") 
+  }
+  /// If you reset everything
+  internal static var secretsResetWarningTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_reset_warning_title") 
   }
   /// Done
   internal static var secretsSetupRecoveryKeyDoneAction: String { 

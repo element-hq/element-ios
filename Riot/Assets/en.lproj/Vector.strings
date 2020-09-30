@@ -1367,6 +1367,9 @@
 
 // MARK: - Secrets recovery
 
+"secrets_recovery_reset_action_part_1" = "Forgot or lost all recovery options? ";
+"secrets_recovery_reset_action_part_2" = "Reset everything";
+
 // Recover with passphrase
 
 "secrets_recovery_with_passphrase_title" = "Recovery Passphrase";
@@ -1421,6 +1424,15 @@
 
 "key_backup_setup_passphrase_confirm_passphrase_valid" = "Great!";
 "key_backup_setup_passphrase_confirm_passphrase_invalid" = "Passphrase doesn’t match";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "Reset everything";
+"secrets_reset_information" = "Only do this if you have no other device you can verify this device with.";
+"secrets_reset_warning_title" = "If you reset everything";
+"secrets_reset_warning_message" = "You will restart with no history, no messages, trusted devices or trusted users.";
+"secrets_reset_reset_action" = "Reset";
+"secrets_reset_authentication_message" = "Enter your account password to confirm";
 
 // MARK: - Cross-signing
 
