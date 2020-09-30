@@ -65,8 +65,8 @@ extension EnterPinCodeCoordinator: EnterPinCodeViewModelCoordinatorDelegate {
         self.delegate?.enterPinCodeCoordinatorDidComplete(self)
     }
     
-    func enterPinCodeViewModelDidCompleteWithReset(_ viewModel: EnterPinCodeViewModelType) {
-        self.delegate?.enterPinCodeCoordinatorDidCompleteWithReset(self)
+    func enterPinCodeViewModelDidCompleteWithReset(_ viewModel: EnterPinCodeViewModelType, dueToTooManyErrors: Bool) {
+        self.delegate?.enterPinCodeCoordinatorDidCompleteWithReset(self, dueToTooManyErrors: dueToTooManyErrors)
     }
     
     func enterPinCodeViewModel(_ viewModel: EnterPinCodeViewModelType, didCompleteWithPin pin: String) {

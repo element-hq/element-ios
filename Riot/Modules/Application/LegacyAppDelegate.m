@@ -528,7 +528,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         wrongBackupVersionAlert = nil;
     }
     
-    if ([self.localAuthenticationService isProtectionSet])
+    if ([self.localAuthenticationService isProtectionSet] && ![BiometricsAuthenticationPresenter isPresenting])
     {
         if (self.setPinCoordinatorBridgePresenter)
         {
@@ -539,11 +539,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:mxSessionArray.firstObject viewMode:SetPinCoordinatorViewModeInactive];
         self.setPinCoordinatorBridgePresenter.delegate = self;
         [self.setPinCoordinatorBridgePresenter presentIn:self.window];
-    }
-    else
-    {
-        [self.setPinCoordinatorBridgePresenter dismiss];
-        self.setPinCoordinatorBridgePresenter = nil;
     }
 }
 
@@ -4579,11 +4574,19 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self afterAppUnlockedByPin:[UIApplication sharedApplication]];
 }
 
-- (void)setPinCoordinatorBridgePresenterDelegateDidCompleteWithReset:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter
+- (void)setPinCoordinatorBridgePresenterDelegateDidCompleteWithReset:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter dueToTooManyErrors:(BOOL)dueToTooManyErrors
 {
-    [coordinatorBridgePresenter dismiss];
-    self.setPinCoordinatorBridgePresenter = nil;
-    [self logoutWithConfirmation:NO completion:nil];
+    if (dueToTooManyErrors)
+    {
+        [self showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"pin_protection_kick_user_alert_message", @"Vector", nil)];
+        [self logoutWithConfirmation:NO completion:nil];
+    }
+    else
+    {
+        [coordinatorBridgePresenter dismiss];
+        self.setPinCoordinatorBridgePresenter = nil;
+        [self logoutWithConfirmation:NO completion:nil];
+    }
 }
 
 @end

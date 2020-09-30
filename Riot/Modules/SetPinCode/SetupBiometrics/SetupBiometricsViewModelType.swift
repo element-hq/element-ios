@@ -24,7 +24,7 @@ protocol SetupBiometricsViewModelViewDelegate: class {
 
 protocol SetupBiometricsViewModelCoordinatorDelegate: class {
     func setupBiometricsViewModelDidComplete(_ viewModel: SetupBiometricsViewModelType)
-    func setupBiometricsViewModelDidCompleteWithReset(_ viewModel: SetupBiometricsViewModelType)
+    func setupBiometricsViewModelDidCompleteWithReset(_ viewModel: SetupBiometricsViewModelType, dueToTooManyErrors: Bool)
     func setupBiometricsViewModelDidCancel(_ viewModel: SetupBiometricsViewModelType)
 }
 

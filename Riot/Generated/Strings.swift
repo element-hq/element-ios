@@ -2066,6 +2066,10 @@ internal enum VectorL10n {
   internal static var pinProtectionForgotPin: String { 
     return VectorL10n.tr("Vector", "pin_protection_forgot_pin") 
   }
+  /// Too many errors, you've been logged out
+  internal static var pinProtectionKickUserAlertMessage: String { 
+    return VectorL10n.tr("Vector", "pin_protection_kick_user_alert_message") 
+  }
   /// Please try again
   internal static var pinProtectionMismatchErrorMessage: String { 
     return VectorL10n.tr("Vector", "pin_protection_mismatch_error_message") 
