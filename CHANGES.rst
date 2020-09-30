@@ -11,12 +11,15 @@ Changes to be released in next version
  * Architecture: Use coordinator pattern for legacy screen flows (#3597).
  * Room: Differentiate wordings for DMs.
  * Push: Do not show notification content and disable replies when protection set.
- * Log out user automatically after some wrong PINs/biometrics.
+ * AppDelegate: Create handleAppState as central point to handle application state.
+ * Log out user automatically after some wrong PINs/biometrics (#3623).
 
 🐛 Bugfix
  * Timeline: Hide encrypted history (pre-invite) (#3660).
  * Fix floating action buttons' images.
  * Complete Security: Let the authentication flow display it if this flow is not complete yet.
+ * PIN Code: Do not show verification dialog at the top of PIN code.
+ * Various theme fixes.
 
 ⚠️ API Changes
  *

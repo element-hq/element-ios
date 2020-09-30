@@ -5197,7 +5197,7 @@
 			isa = PBXGroup;
 			children = (
 				ECFBD5B9250A7AAF00DD5F5A /* Room */,
-				ECFBD5BD250A7AAF00DD5F5A /* Directory */,
+				ECFBD5BD250A7AAF00DD5F5A /* Network */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -5212,13 +5212,13 @@
 			path = Room;
 			sourceTree = "<group>";
 		};
-		ECFBD5BD250A7AAF00DD5F5A /* Directory */ = {
+		ECFBD5BD250A7AAF00DD5F5A /* Network */ = {
 			isa = PBXGroup;
 			children = (
 				ECFBD5BE250A7AAF00DD5F5A /* DirectoryNetworkTableHeaderFooterView.xib */,
 				ECFBD5BF250A7AAF00DD5F5A /* DirectoryNetworkTableHeaderFooterView.swift */,
 			);
-			path = Directory;
+			path = Network;
 			sourceTree = "<group>";
 		};
 		ECFBD5DD250B683300DD5F5A /* Cells */ = {

@@ -78,8 +78,12 @@
                         <viewLayoutGuide key="safeArea" id="PMt-fQ-rFh"/>
                     </view>
                     <connections>
+                        <outlet property="blurEffectContentView" destination="4ka-0i-i4y" id="xYO-0s-q7b"/>
+                        <outlet property="blurEffectView" destination="Sbh-JU-SHP" id="mUv-Wg-ku9"/>
                         <outlet property="createRoomButton" destination="qGk-Os-0Dj" id="eGX-z9-mAi"/>
                         <outlet property="mainTableView" destination="hBr-zt-GEh" id="erE-8r-vuc"/>
+                        <outlet property="vibrancyEffectContentView" destination="o3H-fV-geh" id="4zA-HE-umG"/>
+                        <outlet property="vibrancyEffectView" destination="shK-Lq-qu8" id="f0q-fp-Ofp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lCT-2C-Scp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

@@ -375,7 +375,7 @@ TableViewSectionsDelegate>
     Section *keybackupSection = [Section sectionWithTag:SECTION_KEYBACKUP];
     keybackupSection.headerTitle = NSLocalizedStringFromTable(@"security_settings_backup", @"Vector", nil);
     
-    [keybackupSection addRowsWithCount:[self keyBackupSection.numberOfRows]];
+    [keybackupSection addRowsWithCount:self->keyBackupSection.numberOfRows];
     
     [sections addObject:keybackupSection];
         
