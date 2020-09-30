@@ -16,6 +16,7 @@ Changes to be released in next version
  * Timeline: Hide encrypted history (pre-invite) (#3660).
  * Fix floating action buttons' images.
  * Complete Security: Let the authentication flow display it if this flow is not complete yet.
+ * Fix "Unable to open the link" error when using non-Safari browsers (#3673).
 
 ⚠️ API Changes
  *
