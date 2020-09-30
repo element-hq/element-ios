@@ -54,6 +54,8 @@ final class SecretsRecoveryWithPassphraseViewModel: SecretsRecoveryWithPassphras
             self.coordinatorDelegate?.secretsRecoveryWithPassphraseViewModelDidCancel(self)
         case .useRecoveryKey:
             self.coordinatorDelegate?.secretsRecoveryWithPassphraseViewModelWantsToRecoverByKey(self)
+        case .resetSecrets:
+            self.coordinatorDelegate?.secretsRecoveryWithPassphraseViewModelWantsToResetSecrets(self)
         }
     }
     

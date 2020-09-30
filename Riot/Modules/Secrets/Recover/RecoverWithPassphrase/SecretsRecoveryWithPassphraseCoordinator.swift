@@ -57,9 +57,15 @@ extension SecretsRecoveryWithPassphraseCoordinator: SecretsRecoveryWithPassphras
         self.delegate?.secretsRecoveryWithPassphraseCoordinatorDoNotKnowPassphrase(self)
     }
     
-    func secretsRecoveryWithPassphraseViewModelDidRecover(_ viewModel: SecretsRecoveryWithPassphraseViewModelType) {        self.delegate?.secretsRecoveryWithPassphraseCoordinatorDidRecover(self)
+    func secretsRecoveryWithPassphraseViewModelDidRecover(_ viewModel: SecretsRecoveryWithPassphraseViewModelType) {
+        self.delegate?.secretsRecoveryWithPassphraseCoordinatorDidRecover(self)
     }
     
-    func secretsRecoveryWithPassphraseViewModelDidCancel(_ viewModel: SecretsRecoveryWithPassphraseViewModelType) {        self.delegate?.secretsRecoveryWithPassphraseCoordinatorDidCancel(self)
-    }        
+    func secretsRecoveryWithPassphraseViewModelDidCancel(_ viewModel: SecretsRecoveryWithPassphraseViewModelType) {
+        self.delegate?.secretsRecoveryWithPassphraseCoordinatorDidCancel(self)
+    }
+    
+    func secretsRecoveryWithPassphraseViewModelWantsToResetSecrets(_ viewModel: SecretsRecoveryWithPassphraseViewModelType) {
+        self.delegate?.secretsRecoveryWithPassphraseCoordinatorWantsToResetSecrets(self)
+    }
 }
