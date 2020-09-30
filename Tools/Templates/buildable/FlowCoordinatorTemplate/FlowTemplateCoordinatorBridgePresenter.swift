@@ -22,6 +22,7 @@ import Foundation
 
 /// FlowTemplateCoordinatorBridgePresenter enables to start FlowTemplateCoordinator from a view controller.
 /// This bridge is used while waiting for global usage of coordinator pattern.
+/// It breaks the Coordinator abstraction and it has been introduced for Objective-C compatibility (mainly for integration in legacy view controllers). Each bridge should be removed once the underlying Coordinator has been integrated by another Coordinator.
 @objcMembers
 final class FlowTemplateCoordinatorBridgePresenter: NSObject {
     

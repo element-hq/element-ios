@@ -318,7 +318,7 @@ enum {
 
     cell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
 
-    [cell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+    [cell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventValueChanged];
 
     // Force layout before reusing a cell (fix switch displayed outside the screen)
     [cell layoutIfNeeded];
