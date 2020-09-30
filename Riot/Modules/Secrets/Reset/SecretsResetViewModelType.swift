@@ -19,7 +19,7 @@
 import Foundation
 
 protocol SecretsResetViewModelViewDelegate: class {
-    func secretsResetViewModel(_ viewModel: SecretsResetViewModelType, didUpdateViewState viewSate: SecretsResetViewState)
+    func secretsResetViewModel(_ viewModel: SecretsResetViewModelType, didUpdateViewState viewState: SecretsResetViewState)
 }
 
 protocol SecretsResetViewModelCoordinatorDelegate: class {
