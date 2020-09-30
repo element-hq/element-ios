@@ -98,15 +98,13 @@ final class SetupBiometricsViewModel: SetupBiometricsViewModelType {
                 self.pinCodePreferences.resetCounters()
                 self.coordinatorDelegate?.setupBiometricsViewModelDidComplete(self)
             case .failure(let error):
-                guard let error = error as NSError? else {
-                    return
-                }
+                let nsError = error as NSError
                 self.pinCodePreferences.numberOfBiometricsFailures += 1
                 if self.localAuthenticationService.shouldLogOutUser() {
                     //  biometrics can't be used until further unlock with pin or a new log in
                     self.pinCodePreferences.canUseBiometricsToUnlock = false
                     self.coordinatorDelegate?.setupBiometricsViewModelDidCompleteWithReset(self, dueToTooManyErrors: true)
-                } else if error.code == LAError.Code.userCancel.rawValue || error.code == LAError.Code.userFallback.rawValue {
+                } else if nsError.code == LAError.Code.userCancel.rawValue || nsError.code == LAError.Code.userFallback.rawValue {
                     self.userCancelledUnlockWithBiometrics()
                 }
             }
