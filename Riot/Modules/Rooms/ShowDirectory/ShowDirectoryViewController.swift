@@ -27,6 +27,10 @@ final class ShowDirectoryViewController: UIViewController {
     // MARK: Outlets
 
     @IBOutlet private weak var mainTableView: UITableView!
+    @IBOutlet private weak var vibrancyEffectView: UIVisualEffectView!
+    @IBOutlet private weak var vibrancyEffectContentView: UIView!
+    @IBOutlet private weak var blurEffectView: UIVisualEffectView!
+    @IBOutlet private weak var blurEffectContentView: UIView!
     @IBOutlet private weak var createRoomButton: UIButton! {
         didSet {
             createRoomButton.setTitle(VectorL10n.searchableDirectoryCreateNewRoom, for: .normal)
@@ -130,6 +134,12 @@ final class ShowDirectoryViewController: UIViewController {
 
         theme.applyStyle(onSearchBar: mainSearchBar)
         theme.applyStyle(onButton: createRoomButton)
+        if #available(iOS 13.0, *) {
+            vibrancyEffectView.overrideUserInterfaceStyle = theme.userInterfaceStyle
+            vibrancyEffectContentView.overrideUserInterfaceStyle = theme.userInterfaceStyle
+            blurEffectView.overrideUserInterfaceStyle = theme.userInterfaceStyle
+            blurEffectContentView.overrideUserInterfaceStyle = theme.userInterfaceStyle
+        }
         
         self.mainTableView.reloadData()
     }
