@@ -63,7 +63,7 @@ class LocalAuthenticationService: NSObject {
     }
     
     var shouldShowInactiveScreen: Bool {
-        if !isProtectionSet {
+        guard isProtectionSet else {
             return false
         }
         return !LocalAuthenticationService.isShowingBiometrics
