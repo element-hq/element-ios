@@ -17,11 +17,11 @@
 import Foundation
 import Reusable
 
-protocol TableViewHeaderFooterViewDelegate: UITextViewDelegate {
+protocol TextViewTableViewHeaderFooterViewDelegate: UITextViewDelegate {
     
 }
 
-class TableViewHeaderFooterView: UITableViewHeaderFooterView {
+class TextViewTableViewHeaderFooterView: UITableViewHeaderFooterView {
     
     // MARK - Private
     private var _textView: UITextView?
@@ -33,7 +33,7 @@ class TableViewHeaderFooterView: UITableViewHeaderFooterView {
     
     // MARK - Public
     
-    weak var delegate: TableViewHeaderFooterViewDelegate?
+    weak var delegate: TextViewTableViewHeaderFooterViewDelegate?
     
     var textViewInsets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16) {
         didSet {
@@ -89,9 +89,9 @@ class TableViewHeaderFooterView: UITableViewHeaderFooterView {
     
 }
 
-extension TableViewHeaderFooterView: Reusable { }
+extension TextViewTableViewHeaderFooterView: Reusable { }
 
-extension TableViewHeaderFooterView: Themable {
+extension TextViewTableViewHeaderFooterView: Themable {
     
     func update(theme: Theme) {
         contentView.backgroundColor = theme.headerBackgroundColor
@@ -102,7 +102,7 @@ extension TableViewHeaderFooterView: Themable {
     
 }
 
-extension TableViewHeaderFooterView: UITextViewDelegate {
+extension TextViewTableViewHeaderFooterView: UITextViewDelegate {
     
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         return delegate?.textView?(textView, shouldInteractWith: URL, in: characterRange, interaction: interaction) ?? (interaction == .invokeDefaultAction)

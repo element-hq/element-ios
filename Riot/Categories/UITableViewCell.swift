@@ -42,4 +42,5 @@ extension UITableViewCell {
     @objc func vc_setAccessoryDisclosureIndicatorWithCurrentTheme() {
         self.vc_setAccessoryDisclosureIndicator(withTheme: ThemeService.shared().theme)
     }
+    
 }
