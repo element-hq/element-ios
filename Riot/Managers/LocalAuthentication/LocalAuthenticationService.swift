@@ -57,13 +57,6 @@ class LocalAuthenticationService: NSObject {
         return (systemUptime - appLastActiveTime) > pinCodePreferences.graceTimeInSeconds
     }
     
-    var shouldShowInactiveScreen: Bool {
-        guard isProtectionSet else {
-            return false
-        }
-        return !BiometricsAuthenticationPresenter.isPresenting
-    }
-    
     var isProtectionSet: Bool {
         return pinCodePreferences.isPinSet || pinCodePreferences.isBiometricsSet
     }
