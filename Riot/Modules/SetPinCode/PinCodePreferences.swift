@@ -127,7 +127,7 @@ final class PinCodePreferences: NSObject {
     var canUseBiometricsToUnlock: Bool? {
         get {
             do {
-                return try store.bool(forKey: StoreKeys.canUseBiometricsToUnlock) ?? true
+                return try store.bool(forKey: StoreKeys.canUseBiometricsToUnlock)
             } catch let error {
                 NSLog("[PinCodePreferences] Error when reading canUseBiometricsToUnlock from store: \(error)")
                 return nil
