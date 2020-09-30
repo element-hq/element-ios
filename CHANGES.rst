@@ -13,6 +13,7 @@ Changes to be released in next version
  * Push: Do not show notification content and disable replies when protection set.
  * AppDelegate: Create handleAppState as central point to handle application state.
  * Log out user automatically after some wrong PINs/biometrics (#3623).
+ * Device verification: Add possibility to reset SSSS & Cross-Signing when recovery passphrase or key are lost.
 
 🐛 Bugfix
  * Timeline: Hide encrypted history (pre-invite) (#3660).
@@ -20,6 +21,7 @@ Changes to be released in next version
  * Complete Security: Let the authentication flow display it if this flow is not complete yet.
  * PIN Code: Do not show verification dialog at the top of PIN code.
  * Various theme fixes.
+ * Device verification: Fix inactive cancel action issue in self verification flow.
 
 ⚠️ API Changes
  *

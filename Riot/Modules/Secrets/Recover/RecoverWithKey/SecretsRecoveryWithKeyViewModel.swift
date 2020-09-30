@@ -50,6 +50,8 @@ final class SecretsRecoveryWithKeyViewModel: SecretsRecoveryWithKeyViewModelType
         switch viewAction {
         case .recover:
             self.recover()
+        case .resetSecrets:
+            self.coordinatorDelegate?.secretsRecoveryWithKeyViewModelWantsToResetSecrets(self)
         case .cancel:
             self.coordinatorDelegate?.secretsRecoveryWithKeyViewModelDidCancel(self)
         }
