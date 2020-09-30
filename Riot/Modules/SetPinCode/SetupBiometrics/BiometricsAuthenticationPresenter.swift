@@ -22,7 +22,8 @@ enum BiometricsAuthenticationPresenterError: Error {
 }
 
 /// Presenter for user authentication with biometry.
-final class BiometricsAuthenticationPresenter {
+@objcMembers
+final class BiometricsAuthenticationPresenter: NSObject {
 
     /// Whether the presenter currently showing the biometrics setup or unlock dialog.
     /// Showing biometrics dialog will cause the app to resign active.
