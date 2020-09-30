@@ -21,6 +21,6 @@ BUNDLE_DISPLAY_NAME = Element P2P
 
 APPLICATION_GROUP_IDENTIFIER = group.im.vector.p2p
 
-BASE_BUNDLE_IDENTIFIER = im.vector.app.p2p
+BASE_BUNDLE_IDENTIFIER = im.vector.p2p
 
 KEYCHAIN_ACCESS_GROUP = $(AppIdentifierPrefix)$(BASE_BUNDLE_IDENTIFIER).keychain.shared
