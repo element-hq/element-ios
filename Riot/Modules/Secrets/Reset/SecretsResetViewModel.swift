@@ -64,6 +64,7 @@ final class SecretsResetViewModel: SecretsResetViewModelType {
         guard let crossSigning = self.session.crypto.crossSigning else {
             return
         }
+        NSLog("[SecretsResetViewModel] resetSecrets")
 
         self.update(viewState: .resetting)
         crossSigning.setup(withAuthParams: authInfo, success: { [weak self] in
