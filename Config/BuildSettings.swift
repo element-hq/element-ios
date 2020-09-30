@@ -123,7 +123,7 @@ final class BuildSettings: NSObject {
     static let publicRoomsAllowServerChange: Bool = true
     // List of homeservers for the public rooms directory
     static let publicRoomsDirectoryServers = [
-        "matrix.org"
+        "b5ae50589e50991dd9dd7d59c5c5f7a4521e8da5b603b7f57076272abc58b374"
     ]
     
     
@@ -173,17 +173,17 @@ final class BuildSettings: NSObject {
     
     static let settingsScreenShowUserFirstName: Bool = false
     static let settingsScreenShowUserSurname: Bool = false
-    static let settingsScreenAllowAddingEmailThreepids: Bool = true
-    static let settingsScreenAllowAddingPhoneThreepids: Bool = true
-    static let settingsScreenShowThreepidExplanatory: Bool = true
-    static let settingsScreenShowDiscoverySettings: Bool = true
-    static let settingsScreenAllowIdentityServerConfig: Bool = true
-    static let settingsScreenShowAdvancedSettings: Bool = true
-    static let settingsScreenShowLabSettings: Bool = true
+    static let settingsScreenAllowAddingEmailThreepids: Bool = false
+    static let settingsScreenAllowAddingPhoneThreepids: Bool = false
+    static let settingsScreenShowThreepidExplanatory: Bool = false
+    static let settingsScreenShowDiscoverySettings: Bool = false
+    static let settingsScreenAllowIdentityServerConfig: Bool = false
+    static let settingsScreenShowAdvancedSettings: Bool = false
+    static let settingsScreenShowLabSettings: Bool = false
     static let settingsScreenAllowChangingRageshakeSettings: Bool = true
     static let settingsScreenAllowChangingCrashUsageDataSettings: Bool = true
     static let settingsScreenAllowBugReportingManually: Bool = true
-    static let settingsScreenAllowDeactivatingAccount: Bool = true
+    static let settingsScreenAllowDeactivatingAccount: Bool = false
     
     // MARK: - Room Settings Screen
     
@@ -191,9 +191,9 @@ final class BuildSettings: NSObject {
     static let roomSettingsScreenShowDirectChatOption: Bool = true
     static let roomSettingsScreenAllowChangingAccessSettings: Bool = true
     static let roomSettingsScreenAllowChangingHistorySettings: Bool = true
-    static let roomSettingsScreenShowAddressSettings: Bool = true
-    static let roomSettingsScreenShowFlairSettings: Bool = true
-    static let roomSettingsScreenShowAdvancedSettings: Bool = true
+    static let roomSettingsScreenShowAddressSettings: Bool = false
+    static let roomSettingsScreenShowFlairSettings: Bool = false
+    static let roomSettingsScreenShowAdvancedSettings: Bool = false
     
     // MARK: - Message
     static let messageDetailsAllowShare: Bool = true

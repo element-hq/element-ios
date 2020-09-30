@@ -29,7 +29,7 @@ class AppConfiguration: CommonConfiguration {
     
     private func setupAppSettings() {
         // Enable CallKit for app
-        MXKAppSettings.standard()?.isCallKitEnabled = true
+        MXKAppSettings.standard()?.isCallKitEnabled = false
         
         // Enable long press on event in bubble cells
         MXKRoomBubbleTableViewCell.disableLongPressGesture(onEvent: false)
@@ -38,7 +38,9 @@ class AppConfiguration: CommonConfiguration {
         MXKContactManager.shared().contactManagerMXRoomSource = MXKContactManagerMXRoomSource.all
         
         // Enable key backup on app
-        MXSDKOptions.sharedInstance().enableKeyBackupWhenStartingMXCrypto = true
+        MXSDKOptions.sharedInstance().enableKeyBackupWhenStartingMXCrypto = false
+        MXSDKOptions.sharedInstance().enableCryptoWhenStartingMXSession = false
+        MXSDKOptions.sharedInstance().computeE2ERoomSummaryTrust = false
     }
     
     
