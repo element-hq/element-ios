@@ -106,6 +106,8 @@ final class SetupBiometricsViewModel: SetupBiometricsViewModelType {
                     self.coordinatorDelegate?.setupBiometricsViewModelDidCompleteWithReset(self, dueToTooManyErrors: true)
                 } else if nsError.code == LAError.Code.userCancel.rawValue || nsError.code == LAError.Code.userFallback.rawValue {
                     self.userCancelledUnlockWithBiometrics()
+                } else {
+                    self.update(viewState: .cantUnlocked)
                 }
             }
         }
