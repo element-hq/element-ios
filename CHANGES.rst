@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * i18n: Add Estonian (et).
 
 🐛 Bugfix
  * 
