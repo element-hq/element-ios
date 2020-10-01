@@ -5,9 +5,11 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * i18n: Add Estonian (et).
 
 🐛 Bugfix
+ * Settings: New phone number is invisible in dark theme (#3218).
+ * Handle call actions on other devices on VoIP pushes (#3677).
  * Fix "Unable to open the link" error when using non-Safari browsers (#3673).
 
 ⚠️ API Changes
@@ -46,6 +48,7 @@ Changes in 1.0.13 (2020-09-30)
  * Device verification: Fix inactive cancel action issue in self verification flow.
  * Fix floating action buttons' images.
  * Various theme fixes.
+ * Room: Fix message not shown after push issue (#3672).
 
 ⚠️ API Changes
  *

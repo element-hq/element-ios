@@ -562,6 +562,9 @@ Matrix session observer used to detect new opened sessions.
                 {
                     [session.callManager.callKitAdapter reportIncomingCall:call];
                     NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Reporting new call in room %@ for the event: %@", roomId, eventId);
+                    
+                    //  After reporting the call, we can continue async. Launch a background sync to handle call answers/declines on other devices of the user.
+                    [self launchBackgroundSync];
                 }
                 else
                 {

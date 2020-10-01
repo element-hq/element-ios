@@ -1096,6 +1096,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)pushNotificationService:(PushNotificationService *)pushNotificationService shouldNavigateToRoomWithId:(NSString *)roomId
 {
+    _lastNavigatedRoomIdFromPush = roomId;
     [self navigateToRoomById:roomId];
 }
 
