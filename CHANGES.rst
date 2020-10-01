@@ -11,6 +11,7 @@ Changes to be released in next version
  * Settings: New phone number is invisible in dark theme (#3218).
  * Handle call actions on other devices on VoIP pushes (#3677).
  * Fix "Unable to open the link" error when using non-Safari browsers (#3673).
+ * Biometrics: Handle retry case.
 
 ⚠️ API Changes
  * 
