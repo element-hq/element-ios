@@ -9,6 +9,8 @@ Changes to be released in next version
 
 🐛 Bugfix
  * Settings: New phone number is invisible in dark theme (#3218).
+ * Handle call actions on other devices on VoIP pushes (#3677).
+ * Fix "Unable to open the link" error when using non-Safari browsers (#3673).
  * Room: Remove membership events from room creation modal (#3679).
 
 ⚠️ API Changes
