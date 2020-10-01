@@ -8,7 +8,7 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
- * 
+ * Settings: New phone number is invisible in dark theme (#3218).
 
 ⚠️ API Changes
  * 
