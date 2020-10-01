@@ -189,7 +189,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         SecureBackupBannerPreferences *secureBackupBannersPreferences = SecureBackupBannerPreferences.shared;
         
-        if (!secureBackupBannersPreferences.hideSetupBanner && [self.mxSession vc_canSetupSecureBackup])
+        // Display the banner if only we can set up 4S and if there are messages keys to backup
+        if (!secureBackupBannersPreferences.hideSetupBanner
+            && [self.mxSession vc_canSetupSecureBackup]
+            && self.mxSession.crypto.backup.hasKeysToBackup)
         {
             secureBackupBanner = SecureBackupBannerDisplaySetup;
         }
