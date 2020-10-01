@@ -8,6 +8,7 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
+ * Settings: New phone number is invisible in dark theme (#3218).
  * Handle call actions on other devices on VoIP pushes (#3677).
 
 ⚠️ API Changes
