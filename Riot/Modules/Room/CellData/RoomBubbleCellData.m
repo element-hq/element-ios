@@ -229,12 +229,7 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
 
         return NO;
     }
-    else if (self.tag == RoomBubbleCellDataTagRoomCreateConfiguration &&
-             (cellData.tag == RoomBubbleCellDataTagRoomCreateConfiguration || cellData.tag == RoomBubbleCellDataTagMembership))
-    {
-        return YES;
-    }
-    else if (self.tag == RoomBubbleCellDataTagMembership && cellData.tag == RoomBubbleCellDataTagRoomCreateConfiguration)
+    else if (self.tag == RoomBubbleCellDataTagRoomCreateConfiguration && cellData.tag == RoomBubbleCellDataTagRoomCreateConfiguration)
     {
         return YES;
     }
