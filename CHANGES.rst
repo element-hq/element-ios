@@ -9,6 +9,7 @@ Changes to be released in next version
 
 🐛 Bugfix
  * Settings: New phone number is invisible in dark theme (#3218).
+ * Room: Remove membership events from room creation modal (#3679).
 
 ⚠️ API Changes
  * 
