@@ -1,3 +1,5 @@
+// File created from ScreenTemplate
+// $ createScreen.sh Secrets/Reset SecretsReset
 /*
  Copyright 2020 New Vector Ltd
  
@@ -16,9 +18,12 @@
 
 import Foundation
 
-/// SecretsRecoveryWithKeyViewController view actions exposed to view model
-enum SecretsRecoveryWithKeyViewAction {
-    case recover
-    case resetSecrets
-    case cancel
+protocol SecretsResetCoordinatorDelegate: class {
+    func secretsResetCoordinatorDidResetSecrets(_ coordinator: SecretsResetCoordinatorType)
+    func secretsResetCoordinatorDidCancel(_ coordinator: SecretsResetCoordinatorType)
+}
+
+/// `SecretsResetCoordinatorType` is a protocol describing a Coordinator that handle keys reset flow.
+protocol SecretsResetCoordinatorType: Coordinator, Presentable {
+    var delegate: SecretsResetCoordinatorDelegate? { get }
 }

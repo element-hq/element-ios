@@ -190,9 +190,6 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
         coordinator.start()
         
         self.add(childCoordinator: coordinator)
-        self.navigationRouter.setRootModule(coordinator) { [weak self] in
-            self?.remove(childCoordinator: coordinator)
-        }
     }
     
     private func createSelfVerificationCoordinator(otherDeviceId: String) -> KeyVerificationSelfVerifyStartCoordinator {
@@ -456,10 +453,12 @@ extension KeyVerificationCoordinator: KeyVerificationScanConfirmationCoordinator
 extension KeyVerificationCoordinator: SecretsRecoveryCoordinatorDelegate {
     
     func secretsRecoveryCoordinatorDidRecover(_ coordinator: SecretsRecoveryCoordinatorType) {
+        self.remove(childCoordinator: coordinator)
         self.showVerified(animated: true)
     }
     
     func secretsRecoveryCoordinatorDidCancel(_ coordinator: SecretsRecoveryCoordinatorType) {
+        self.remove(childCoordinator: coordinator)
         self.didCancel()
     }
 }

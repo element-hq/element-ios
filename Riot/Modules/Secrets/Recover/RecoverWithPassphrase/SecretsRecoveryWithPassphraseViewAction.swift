@@ -20,5 +20,6 @@ import Foundation
 enum SecretsRecoveryWithPassphraseViewAction {
     case recover
     case useRecoveryKey
+    case resetSecrets
     case cancel
 }
