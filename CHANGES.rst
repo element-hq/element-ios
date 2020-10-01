@@ -46,6 +46,7 @@ Changes in 1.0.13 (2020-09-30)
  * Device verification: Fix inactive cancel action issue in self verification flow.
  * Fix floating action buttons' images.
  * Various theme fixes.
+ * Room: Fix message not shown after push issue (#3672).
 
 ⚠️ API Changes
  *
