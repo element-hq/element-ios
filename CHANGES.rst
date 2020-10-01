@@ -8,7 +8,7 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
- * 
+ * Handle call actions on other devices on VoIP pushes (#3677).
 
 ⚠️ API Changes
  * 
