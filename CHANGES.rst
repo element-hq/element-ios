@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * i18n: Add Estonian (et).
 
 🐛 Bugfix
  * Settings: New phone number is invisible in dark theme (#3218).
