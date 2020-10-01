@@ -28,7 +28,9 @@
     [super customizeTableViewCellRendering];
     
     self.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
-    self.mxkTextField.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.mxkTextField.textColor = ThemeService.shared.theme.textSecondaryColor;
+    self.mxkTextField.tintColor = ThemeService.shared.theme.tintColor;
+    self.mxkTextField.backgroundColor = ThemeService.shared.theme.baseColor;
     
     _countryCodeButton.tintColor = ThemeService.shared.theme.textSecondaryColor;
     _isoCountryCodeLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
