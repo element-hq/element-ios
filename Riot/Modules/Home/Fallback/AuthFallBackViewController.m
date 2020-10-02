@@ -60,7 +60,16 @@ NSString *FallBackViewControllerJavascriptOnLogin = @"window.matrixLogin.onLogin
     
     // Due to https://developers.googleblog.com/2016/08/modernizing-oauth-interactions-in-native-apps.html, we hack
     // the user agent to bypass the limitation of Google, as a quick fix (a proper solution will be to use the SSO SDK)
-    webView.customUserAgent = @"Mozilla/5.0";
+    // Do not use the custom user agent when opening a logineonrw page. This (logineonrw) fix is only needed for iOS 12 and below.
+    if (@available(iOS 13, *)) {
+        // iOS 13 (or newer) ObjC code
+         webView.customUserAgent = @"Mozilla/5.0";
+    } else {
+        // iOS 12 or older code
+        if ([self.URL rangeOfString:@"logineonrw-messenger.de/"].location == NSNotFound) {
+            webView.customUserAgent = @"Mozilla/5.0";
+        }
+    }
 
     [self clearCookies];
 }
