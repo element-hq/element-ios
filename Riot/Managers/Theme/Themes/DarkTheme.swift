@@ -71,6 +71,11 @@ class DarkTheme: NSObject, Theme {
     var statusBarStyle: UIStatusBarStyle = .lightContent
     var scrollBarStyle: UIScrollView.IndicatorStyle = .white
     var keyboardAppearance: UIKeyboardAppearance = .dark
+    
+    @available(iOS 12.0, *)
+    var userInterfaceStyle: UIUserInterfaceStyle {
+        return .dark
+    }
 
     var placeholderTextColor: UIColor = UIColor(rgb: 0xA1B2D1) // Use secondary text color
     var selectedBackgroundColor: UIColor = UIColor(rgb: 0x040506)

@@ -112,9 +112,14 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
         events.append(contentsOf: bubbleData.events)
         var nextBubbleData = bubbleData.nextCollapsableCellData
         while nextBubbleData != nil {
+            // swiftlint:disable force_unwrapping
             events.append(contentsOf: nextBubbleData!.events)
+            // swiftlint:enable force_unwrapping
             nextBubbleData = nextBubbleData?.nextCollapsableCellData
         }
+        
+        //  remove room create event from the list, as EW and ElA do. This will also avoid duplication of "%@ joined" messages for direct rooms.
+        events.removeAll(where: { $0.eventType == .roomCreate })
     }
     
     // MARK: - Public

@@ -76,6 +76,15 @@ extension KeychainStore: KeyValueStore {
         try keychain.set(value, key: key)
     }
     
+    func set(_ value: Int?, forKey key: KeyValueStoreKey) throws {
+        guard let value = value else {
+            try removeObject(forKey: key)
+            return
+        }
+        
+        try keychain.set(String(value), key: key)
+    }
+    
     //  getters
     func data(forKey key: KeyValueStoreKey) throws -> Data? {
         return try keychain.getData(key)
@@ -87,6 +96,13 @@ extension KeychainStore: KeyValueStore {
     
     func bool(forKey key: KeyValueStoreKey) throws -> Bool? {
         return try keychain.getBool(key)
+    }
+    
+    func integer(forKey key: KeyValueStoreKey) throws -> Int? {
+        guard let stringValue = try keychain.getString(key) else {
+            return nil
+        }
+        return Int(stringValue)
     }
     
     //  remove

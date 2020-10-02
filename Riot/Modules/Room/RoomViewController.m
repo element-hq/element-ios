@@ -503,6 +503,13 @@
         
         [self setBubbleTableViewContentOffset:CGPointMake(-self.bubblesTableView.mxk_adjustedContentInset.left, -self.bubblesTableView.mxk_adjustedContentInset.top) animated:YES];
     }];
+    
+    if ([self.roomDataSource.roomId isEqualToString:[LegacyAppDelegate theDelegate].lastNavigatedRoomIdFromPush])
+    {
+        [self startActivityIndicator];
+        [self.roomDataSource reload];
+        [LegacyAppDelegate theDelegate].lastNavigatedRoomIdFromPush = nil;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -3180,7 +3187,14 @@
                 selectedRoomDetailsIndex = 0;
             }
             
-            segmentedViewController.title = NSLocalizedStringFromTable(@"room_details_title", @"Vector", nil);
+            if (self.roomDataSource.room.isDirect)
+            {
+                segmentedViewController.title = NSLocalizedStringFromTable(@"room_details_title", @"Vector", nil);
+            }
+            else
+            {
+                segmentedViewController.title = NSLocalizedStringFromTable(@"room_details_title_for_dm", @"Vector", nil);
+            }
             [segmentedViewController initWithTitles:titles viewControllers:viewControllers defaultSelected:selectedRoomDetailsIndex];
             
             // Add the current session to be able to observe its state change.

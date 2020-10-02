@@ -108,6 +108,7 @@ internal enum Asset {
     internal static let secretsRecoveryPassphrase = ImageAsset(name: "secrets_recovery_passphrase")
     internal static let secretsSetupKey = ImageAsset(name: "secrets_setup_key")
     internal static let secretsSetupPassphrase = ImageAsset(name: "secrets_setup_passphrase")
+    internal static let secretsResetWarning = ImageAsset(name: "secrets_reset_warning")
     internal static let removeIconPink = ImageAsset(name: "remove_icon_pink")
     internal static let settingsIcon = ImageAsset(name: "settings_icon")
     internal static let tabFavourites = ImageAsset(name: "tab_favourites")
