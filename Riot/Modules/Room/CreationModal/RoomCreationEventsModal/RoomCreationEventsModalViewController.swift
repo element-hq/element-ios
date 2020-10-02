@@ -194,6 +194,7 @@ extension RoomCreationEventsModalViewController: UITableViewDataSource {
         cell.textView.isScrollEnabled = false
         cell.textView.isEditable = false
         cell.textView.isSelectable = false
+        cell.textView.backgroundColor = .clear
         cell.backgroundColor = theme.backgroundColor
         cell.contentView.backgroundColor = .clear
         cell.tintColor = theme.tintColor
