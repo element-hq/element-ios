@@ -1,4 +1,4 @@
-Changes to be released in next version
+Changes in 1.0.14 (2020-10-02)
 =================================================
 
 ✨ Features
@@ -26,6 +26,9 @@ Changes to be released in next version
 
 Others
  * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.22](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.22)).
 
 Changes in 1.0.13 (2020-09-30)
 =================================================
