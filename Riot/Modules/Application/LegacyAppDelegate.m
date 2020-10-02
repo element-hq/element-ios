@@ -719,6 +719,15 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     NSLog(@"[AppDelegate] applicationDidBecomeActive");
     
+    if (RiotSettings.shared.yggdrasilEnableStaticPeer) {
+        NSError* err;
+        NSString* peerURI = RiotSettings.shared.yggdrasilStaticPeerURI;
+        [monolith setStaticPeer:peerURI error:&err];
+    }
+    if (!RiotSettings.shared.yggdrasilDisableAWDL) {
+        [monolith setMulticastEnabled:!RiotSettings.shared.yggdrasilDisableAWDL];
+    }
+    
     [self.pushNotificationService applicationDidBecomeActive];
     
     [self configurePinCodeScreenFor:application createIfRequired:NO];

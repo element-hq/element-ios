@@ -2725,6 +2725,7 @@ TableViewSectionsDelegate>
     NSArray *activityItems = @[[[MXKAccountManager sharedManager] activeAccounts].firstObject.mxSession.myUserId];
     UIActivityViewController *shareSheetController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
     shareSheetController.excludedActivityTypes = @[];
+    shareSheetController.popoverPresentationController.sourceView = sender;
     [self presentViewController:shareSheetController animated:true completion:nil];
 }
 
