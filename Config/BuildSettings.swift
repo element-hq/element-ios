@@ -181,7 +181,7 @@ final class BuildSettings: NSObject {
     static let roomSettingsScreenShowDirectChatOption: Bool = true
     static let roomSettingsScreenAllowChangingAccessSettings: Bool = true
     static let roomSettingsScreenAllowChangingHistorySettings: Bool = true
-    static let roomSettingsScreenShowAddressSettings: Bool = false
+    static let roomSettingsScreenShowAddressSettings: Bool = true
     static let roomSettingsScreenShowFlairSettings: Bool = false
     static let roomSettingsScreenShowAdvancedSettings: Bool = false
     
