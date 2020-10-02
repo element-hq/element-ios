@@ -746,6 +746,15 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
             case MXEventTypeRoomCreate:
                 shouldAddEvent = NO;
                 break;
+            case MXEventTypeRoomTopic:
+            case MXEventTypeRoomName:
+            case MXEventTypeRoomEncryption:
+            case MXEventTypeRoomHistoryVisibility:
+            case MXEventTypeRoomGuestAccess:
+            case MXEventTypeRoomAvatar:
+            case MXEventTypeRoomJoinRules:
+                shouldAddEvent = NO;
+                break;
             default:
                 break;
         }
