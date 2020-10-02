@@ -73,6 +73,12 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 @property (nonatomic) BOOL isAppForeground;
 @property (nonatomic) BOOL isOffline;
 
+/**
+ Last navigated room's identifier from a push notification.
+ */
+// TODO: This property is introduced to fix #3672. Remove it when a better solution revealed to the problem.
+@property (nonatomic, copy) NSString *lastNavigatedRoomIdFromPush;
+
 
 /**
  Let the AppDelegate handle and display self verification requests.

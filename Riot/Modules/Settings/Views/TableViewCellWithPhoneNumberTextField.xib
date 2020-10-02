@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,11 +13,11 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5Je-1y-foH" id="hCm-wd-Yup">
-                <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="14" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="SBE-PS-i6p">
-                        <rect key="frame" x="110" y="7" width="482" height="30"/>
+                        <rect key="frame" x="114" y="5" width="478" height="34"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" returnKeyType="done"/>
                         <connections>
@@ -28,7 +25,7 @@
                         </connections>
                     </textField>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="584" translatesAutoresizingMaskIntoConstraints="NO" id="DE7-uC-Oz2">
-                        <rect key="frame" x="60" y="11" width="42" height="21"/>
+                        <rect key="frame" x="64" y="11.5" width="42" height="21"/>
                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="10" id="Qzq-Ej-Wdb"/>
@@ -38,18 +35,18 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8KD-C4-hzY">
-                        <rect key="frame" x="8" y="-0.5" width="44" height="44"/>
+                        <rect key="frame" x="14" y="0.0" width="44" height="44"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="44" id="IXc-6F-gtQ"/>
                         </constraints>
                         <state key="normal" image="shrink_icon"/>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h7J-Li-Rej">
-                        <rect key="frame" x="25" y="11" width="30" height="21"/>
+                        <rect key="frame" x="20" y="11.5" width="30" height="21.5"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="30" id="ioP-sM-wA4"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -59,11 +56,11 @@
                     <constraint firstAttribute="trailing" secondItem="SBE-PS-i6p" secondAttribute="trailing" constant="8" id="7NM-6p-4fc"/>
                     <constraint firstItem="SBE-PS-i6p" firstAttribute="centerY" secondItem="DE7-uC-Oz2" secondAttribute="centerY" id="LEG-PI-Zmz"/>
                     <constraint firstAttribute="centerY" secondItem="DE7-uC-Oz2" secondAttribute="centerY" id="PU3-ZA-23J"/>
-                    <constraint firstItem="DE7-uC-Oz2" firstAttribute="leading" secondItem="8KD-C4-hzY" secondAttribute="trailing" constant="8" id="XNM-HZ-lBf"/>
-                    <constraint firstItem="8KD-C4-hzY" firstAttribute="leading" secondItem="hCm-wd-Yup" secondAttribute="leading" constant="8" id="buh-ht-pIX"/>
+                    <constraint firstItem="DE7-uC-Oz2" firstAttribute="leading" secondItem="8KD-C4-hzY" secondAttribute="trailing" constant="6" id="XNM-HZ-lBf"/>
+                    <constraint firstItem="h7J-Li-Rej" firstAttribute="leading" secondItem="8KD-C4-hzY" secondAttribute="trailing" constant="-38" id="bSX-La-Jem"/>
                     <constraint firstItem="SBE-PS-i6p" firstAttribute="leading" secondItem="DE7-uC-Oz2" secondAttribute="trailing" constant="8" id="h1v-HS-kzp"/>
                     <constraint firstItem="h7J-Li-Rej" firstAttribute="centerY" secondItem="8KD-C4-hzY" secondAttribute="centerY" id="mPr-EN-Ne5"/>
-                    <constraint firstItem="h7J-Li-Rej" firstAttribute="leading" secondItem="hCm-wd-Yup" secondAttribute="leadingMargin" constant="5" id="tPe-Md-GPg"/>
+                    <constraint firstItem="h7J-Li-Rej" firstAttribute="leading" secondItem="hCm-wd-Yup" secondAttribute="leading" constant="20" id="qQ5-VP-Vfn"/>
                 </constraints>
             </tableViewCellContentView>
             <constraints>
@@ -78,6 +75,7 @@
                 <outlet property="mxkTextFieldLeadingConstraint" destination="h1v-HS-kzp" id="Sx7-JU-SeG"/>
                 <outlet property="mxkTextFieldTrailingConstraint" destination="7NM-6p-4fc" id="tBw-Gt-9pm"/>
             </connections>
+            <point key="canvasLocation" x="139" y="152"/>
         </tableViewCell>
     </objects>
     <resources>

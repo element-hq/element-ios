@@ -1,3 +1,35 @@
+Changes in 1.0.14 (2020-10-02)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * i18n: Add Estonian (et).
+ * MXSession: Make vc_canSetupSecureBackup reusable.
+
+🐛 Bugfix
+ * Settings: New phone number is invisible in dark theme (#3218).
+ * Handle call actions on other devices on VoIP pushes (#3677).
+ * Fix "Unable to open the link" error when using non-Safari browsers (#3673).
+ * Biometrics: Handle retry case.
+ * Room: Remove membership events from room creation modal (#3679).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.22](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.22)).
+
 Changes in 1.0.13 (2020-09-30)
 =================================================
 
@@ -22,6 +54,7 @@ Changes in 1.0.13 (2020-09-30)
  * Device verification: Fix inactive cancel action issue in self verification flow.
  * Fix floating action buttons' images.
  * Various theme fixes.
+ * Room: Fix message not shown after push issue (#3672).
 
 ⚠️ API Changes
  *

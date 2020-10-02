@@ -71,7 +71,7 @@
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="eyI-bY-amr" firstAttribute="top" secondItem="M84-br-bHM" secondAttribute="top" constant="16" id="10e-aB-X62"/>
                                     <constraint firstItem="NAg-Nv-eHX" firstAttribute="trailing" secondItem="YaZ-Pv-7g9" secondAttribute="trailing" constant="2" id="Ard-6C-AbE"/>
