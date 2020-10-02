@@ -13,6 +13,7 @@ Changes to be released in next version
  * Handle call actions on other devices on VoIP pushes (#3677).
  * Fix "Unable to open the link" error when using non-Safari browsers (#3673).
  * Biometrics: Handle retry case.
+ * Room: Remove membership events from room creation modal (#3679).
 
 ⚠️ API Changes
  * 

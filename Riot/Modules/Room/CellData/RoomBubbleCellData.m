@@ -75,6 +75,21 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
                 
                 // Collapse them by default
                 self.collapsed = YES;
+                
+                //  find the room create event in stateEvents
+                MXEvent *roomCreateEvent = [roomState.stateEvents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"wireType == %@", kMXEventTypeStringRoomCreate]].firstObject;
+                NSString *creatorUserId = [MXRoomCreateContent modelFromJSON:roomCreateEvent.content].creatorUserId;
+                if (creatorUserId)
+                {
+                    MXRoomMemberEventContent *content = [MXRoomMemberEventContent modelFromJSON:event.content];
+                    if ([kMXMembershipStringJoin isEqualToString:content.membership] &&
+                        [creatorUserId isEqualToString:event.sender])
+                    {
+                        //  join event of the room creator
+                        //  group it with room creation events
+                        self.tag = RoomBubbleCellDataTagRoomCreateConfiguration;
+                    }
+                }
             }
                 break;
             case MXEventTypeRoomCreate:
@@ -214,12 +229,7 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
 
         return NO;
     }
-    else if (self.tag == RoomBubbleCellDataTagRoomCreateConfiguration &&
-             (cellData.tag == RoomBubbleCellDataTagRoomCreateConfiguration || cellData.tag == RoomBubbleCellDataTagMembership))
-    {
-        return YES;
-    }
-    else if (self.tag == RoomBubbleCellDataTagMembership && cellData.tag == RoomBubbleCellDataTagRoomCreateConfiguration)
+    else if (self.tag == RoomBubbleCellDataTagRoomCreateConfiguration && cellData.tag == RoomBubbleCellDataTagRoomCreateConfiguration)
     {
         return YES;
     }
@@ -734,6 +744,15 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
                 shouldAddEvent = NO;
                 break;
             case MXEventTypeRoomCreate:
+                shouldAddEvent = NO;
+                break;
+            case MXEventTypeRoomTopic:
+            case MXEventTypeRoomName:
+            case MXEventTypeRoomEncryption:
+            case MXEventTypeRoomHistoryVisibility:
+            case MXEventTypeRoomGuestAccess:
+            case MXEventTypeRoomAvatar:
+            case MXEventTypeRoomJoinRules:
                 shouldAddEvent = NO;
                 break;
             default:
