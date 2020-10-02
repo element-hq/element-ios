@@ -24,6 +24,7 @@ internal enum InfoPlist {
   internal static let cfBundleVersion: String = _document["CFBundleVersion"]
   internal static let itsAppUsesNonExemptEncryption: Bool = _document["ITSAppUsesNonExemptEncryption"]
   internal static let itsEncryptionExportComplianceCode: String = _document["ITSEncryptionExportComplianceCode"]
+  internal static let lsApplicationQueriesSchemes: [String] = _document["LSApplicationQueriesSchemes"]
   internal static let lsRequiresIPhoneOS: Bool = _document["LSRequiresIPhoneOS"]
   internal static let nsAppTransportSecurity: [String: Any] = _document["NSAppTransportSecurity"]
   internal static let nsCalendarsUsageDescription: String = _document["NSCalendarsUsageDescription"]

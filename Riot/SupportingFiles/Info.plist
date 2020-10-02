@@ -94,5 +94,10 @@
 	<string>$(BASE_BUNDLE_IDENTIFIER)</string>
 	<key>keychainAccessGroup</key>
 	<string>$(KEYCHAIN_ACCESS_GROUP)</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>http</string>
+		<string>https</string>
+	</array>
 </dict>
 </plist>
