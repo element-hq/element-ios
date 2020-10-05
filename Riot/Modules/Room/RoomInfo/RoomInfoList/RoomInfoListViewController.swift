@@ -49,10 +49,7 @@ final class RoomInfoListViewController: UIViewController {
     }()
     
     private lazy var basicInfoView: RoomInfoBasicView = {
-        let view = RoomInfoBasicView.loadFromNib()
-        view.autoresizingMask = .flexibleWidth
-        view.translatesAutoresizingMaskIntoConstraints = true
-        return view
+        return RoomInfoBasicView.loadFromNib()
     }()
     
     private lazy var leaveAlertController: UIAlertController = {
@@ -125,6 +122,19 @@ final class RoomInfoListViewController: UIViewController {
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.theme.statusBarStyle
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        let height = ceil(basicInfoView.systemLayoutSizeFitting(CGSize(width: view.bounds.width, height: 0)).height)
+        
+        //  compare heights to avoid infinite loop
+        if height != basicInfoView.frame.height {
+            var headerFrame = basicInfoView.frame
+            headerFrame.size.height = height
+            basicInfoView.frame = headerFrame
+        }
     }
     
     // MARK: - Private
