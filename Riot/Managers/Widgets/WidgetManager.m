@@ -307,7 +307,30 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     
     // Build widget data
     // We mix v1 and v2 widget data for backward compability
-    NSURL *preferredJitsiServerUrl = BuildSettings.jitsiServerUrl;
+    
+    NSURL *preferredJitsiServerUrl;
+    
+    NSString *wellKnownJitsiPreferredDomain = [room.mxSession.homeserverWellknown vc_jitsiPreferredDomain];
+    
+    if (wellKnownJitsiPreferredDomain)
+    {
+        preferredJitsiServerUrl = [[NSURL alloc] initWithString:wellKnownJitsiPreferredDomain];
+        
+        if (!preferredJitsiServerUrl)
+        {
+            NSLog(@"[WidgetManager] Jitsi server URL from homeserver's Well Known is not valid");
+        }
+        else
+        {
+            NSLog(@"[WidgetManager] Use Jitsi server URL from homeserver's Well Known");
+        }
+    }
+    
+    if (!preferredJitsiServerUrl)
+    {
+        NSLog(@"[WidgetManager] No Jitsi server set on the homeserver's Well Known, use the URL hardcoded in the app");
+        preferredJitsiServerUrl = BuildSettings.jitsiServerUrl;
+    }
     
     JitsiWidgetData *jitsiWidgetData = [JitsiWidgetData new];
     jitsiWidgetData.domain = preferredJitsiServerUrl.host;
