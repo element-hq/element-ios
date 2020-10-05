@@ -134,6 +134,7 @@ final class RoomInfoListViewController: UIViewController {
             var headerFrame = basicInfoView.frame
             headerFrame.size.height = height
             basicInfoView.frame = headerFrame
+            mainTableView.tableHeaderView = basicInfoView
         }
     }
     
