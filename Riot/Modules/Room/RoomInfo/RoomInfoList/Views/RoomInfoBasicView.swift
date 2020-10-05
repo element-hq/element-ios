@@ -39,7 +39,13 @@ class RoomInfoBasicView: UIView {
     @IBOutlet private weak var badgeImageView: UIImageView!
     @IBOutlet private weak var roomNameLabel: UILabel!
     @IBOutlet private weak var roomAddressLabel: UILabel!
-    @IBOutlet private weak var roomTopicLabel: UILabel!
+    @IBOutlet private weak var roomTopicTextView: UITextView! {
+        didSet {
+            roomTopicTextView.contentInset = .zero
+            roomTopicTextView.textContainerInset = .zero
+            roomTopicTextView.textContainer.lineFragmentPadding = 0
+        }
+    }
     
     func configure(withViewData viewData: RoomInfoBasicViewData) {
         let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: viewData.roomId, withDisplayName: viewData.roomDisplayName)
@@ -61,8 +67,8 @@ class RoomInfoBasicView: UIView {
         roomNameLabel.text = viewData.roomDisplayName
         roomAddressLabel.text = viewData.mainRoomAlias
         roomAddressLabel.isHidden = roomAddressLabel.text?.isEmpty ?? true
-        roomTopicLabel.text = viewData.roomTopic
-        roomTopicLabel.isHidden = roomTopicLabel.text?.isEmpty ?? true
+        roomTopicTextView.text = viewData.roomTopic
+        roomTopicTextView.isHidden = roomTopicTextView.text?.isEmpty ?? true
     }
 
 }
@@ -75,7 +81,11 @@ extension RoomInfoBasicView: Themable {
         backgroundColor = theme.headerBackgroundColor
         roomNameLabel.textColor = theme.textPrimaryColor
         roomAddressLabel.textColor = theme.textSecondaryColor
-        roomTopicLabel.textColor = theme.textSecondaryColor
+        roomTopicTextView.textColor = theme.textSecondaryColor
+        roomTopicTextView.linkTextAttributes = [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
+            NSAttributedString.Key.foregroundColor: theme.tintColor
+        ]
     }
     
 }
