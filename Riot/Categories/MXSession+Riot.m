@@ -52,15 +52,15 @@
 - (BOOL)vc_isE2EByDefaultEnabledByHSAdmin
 {
     BOOL isE2EByDefaultEnabledByHSAdmin = YES;
-    
+
     MXWellKnown *wellKnown = self.homeserverWellknown;
     
-    if (wellKnown.JSONDictionary[@"im.vector.riot.e2ee"][@"default"])
+    if (wellKnown)
     {
-        MXJSONModelSetBoolean(isE2EByDefaultEnabledByHSAdmin, wellKnown.JSONDictionary[@"im.vector.riot.e2ee"][@"default"]);
+        isE2EByDefaultEnabledByHSAdmin = [wellKnown vc_isE2EEByDefaultEnabled];
     }
     
-    return isE2EByDefaultEnabledByHSAdmin;
+    return [self.homeserverWellknown vc_isE2EEByDefaultEnabled];
 }
 
 - (MXHTTPOperation*)vc_canEnableE2EByDefaultInNewRoomWithUsers:(NSArray<NSString*>*)userIds
