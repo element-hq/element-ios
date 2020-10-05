@@ -38,6 +38,7 @@ Changes in 1.0.14 (2020-10-02)
  * Fix "Unable to open the link" error when using non-Safari browsers (#3673).
  * Biometrics: Handle retry case.
  * Room: Remove membership events from room creation modal (#3679).
+ * PIN: Fix layout on small screens.
 
 ⚠️ API Changes
  * 
