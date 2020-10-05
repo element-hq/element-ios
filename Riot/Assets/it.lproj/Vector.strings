@@ -1181,7 +1181,7 @@
 "pin_protection_choose_pin_welcome_after_login" = "Bentornato/a.";
 "pin_protection_choose_pin_welcome_after_register" = "Benvenuti.";
 "pin_protection_not_allowed_pin" = "Per motivi di sicurezza, questo PIN non è disponibile. Provane un altro";
-"pin_protection_explanatory" = "I PIN aiutano a tenere sicuri il tuo profilo, i messaggi e i contatti, in modo che solo tu possa vederli.";
+"pin_protection_explanatory" = "L'impostazione di un PIN ti permette di proteggere dati come messaggi e contatti, in modo che solo tu possa vederli inserendo il PIN all'apertura dell'app.";
 "searchable_directory_create_new_room" = "Crea una nuova stanza";
 "searchable_directory_x_network" = "Rete %@";
 "searchable_directory_search_placeholder" = "Nome o ID";
@@ -1220,3 +1220,4 @@
 "room_details_advanced_room_id_for_dm" = "ID:";
 "room_details_advanced_e2e_encryption_enabled_for_dm" = "La crittografia è attiva";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "La crittografia non è attiva.";
+"pin_protection_kick_user_alert_message" = "Troppi errori, sei stato disconnesso";
