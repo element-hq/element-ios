@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Room: Make topic links tappable (#3713).
 
 🐛 Bugfix
  * 
