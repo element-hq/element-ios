@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Jitsi: Use Jitsi server from homeserver's Well Known, if present, to create conferences (#3158).
 
 🐛 Bugfix
  * RoomVC: Avoid navigation to integration management using integration popup with settings set to integration disabled (#4261).
