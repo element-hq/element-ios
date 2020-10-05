@@ -153,6 +153,9 @@
 		92726A4B1F58737A004AD26F /* SiriIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 92726A431F58737A004AD26F /* SiriIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		92726A511F587410004AD26F /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92726A501F587410004AD26F /* Intents.framework */; };
 		933A7148CE5984940344006C /* Pods_RiotPods_RiotShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97151D7F0F892081250D50A3 /* Pods_RiotPods_RiotShareExtension.framework */; };
+		B100D571252B175B0081D447 /* MXWellKnown+Riot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100D570252B175B0081D447 /* MXWellKnown+Riot.swift */; };
+		B100D574252B4B5F0081D447 /* VectorWellKnown.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100D573252B4B5F0081D447 /* VectorWellKnown.swift */; };
+		B100D57A252B73390081D447 /* VectorWellKnownTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100D579252B73390081D447 /* VectorWellKnownTests.swift */; };
 		B1057789221304EC00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1057788221304EB00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.swift */; };
 		B105778B221304FA00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B105778A221304FA00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.storyboard */; };
 		B105778D2213051E00334B1E /* KeyBackupSetupSuccessFromRecoveryKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B105778C2213051E00334B1E /* KeyBackupSetupSuccessFromRecoveryKeyViewController.swift */; };
@@ -1179,6 +1182,9 @@
 		97151D7F0F892081250D50A3 /* Pods_RiotPods_RiotShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_RiotShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C3242E3FE95BCDA9562C75D /* Pods-RiotPods-RiotShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-RiotShareExtension.debug.xcconfig"; path = "Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		AC34BF67FD21A9D01C16AE5D /* Pods-RiotTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotTests.release.xcconfig"; path = "Target Support Files/Pods-RiotTests/Pods-RiotTests.release.xcconfig"; sourceTree = "<group>"; };
+		B100D570252B175B0081D447 /* MXWellKnown+Riot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MXWellKnown+Riot.swift"; sourceTree = "<group>"; };
+		B100D573252B4B5F0081D447 /* VectorWellKnown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorWellKnown.swift; sourceTree = "<group>"; };
+		B100D579252B73390081D447 /* VectorWellKnownTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorWellKnownTests.swift; sourceTree = "<group>"; };
 		B1057788221304EB00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupSetupSuccessFromPassphraseViewController.swift; sourceTree = "<group>"; };
 		B105778A221304FA00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = KeyBackupSetupSuccessFromPassphraseViewController.storyboard; sourceTree = "<group>"; };
 		B105778C2213051E00334B1E /* KeyBackupSetupSuccessFromRecoveryKeyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupSetupSuccessFromRecoveryKeyViewController.swift; sourceTree = "<group>"; };
@@ -2636,6 +2642,14 @@
 				EC1CA8BA24D1B4BF00DE9EBF /* SiriIntents-Release.xcconfig */,
 			);
 			path = SiriIntents;
+			sourceTree = "<group>";
+		};
+		B100D572252B4B380081D447 /* WellKnown */ = {
+			isa = PBXGroup;
+			children = (
+				B100D573252B4B5F0081D447 /* VectorWellKnown.swift */,
+			);
+			path = WellKnown;
 			sourceTree = "<group>";
 		};
 		B1057787221304A200334B1E /* Success */ = {
@@ -5297,6 +5311,7 @@
 			children = (
 				F083BB041E7005FD00A9B29C /* RiotTests.m */,
 				B152C73022DF561E0041315A /* EmojiServiceTests.swift */,
+				B100D579252B73390081D447 /* VectorWellKnownTests.swift */,
 				F083BB071E70067700A9B29C /* Supporting Files */,
 			);
 			path = RiotTests;
@@ -5402,6 +5417,7 @@
 				ECAE7AED24EFDD1F002FA813 /* MXSessionState.swift */,
 				ECF57A4F250913E4004BBF9D /* MXKTableViewCellWithLabelAndSwitch.swift */,
 				ECF57A5625091ECC004BBF9D /* MXKTableViewCellWithTextView.swift */,
+				B100D570252B175B0081D447 /* MXWellKnown+Riot.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -5409,6 +5425,7 @@
 		F083BBF21E7009EC00A9B29C /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B100D572252B4B380081D447 /* WellKnown */,
 				B169330420F3C9B000746532 /* Contact */,
 				F083BBF61E7009EC00A9B29C /* Room */,
 			);
@@ -6318,6 +6335,7 @@
 				B139C21B21FE5B9200BB68EC /* KeyBackupRecoverFromPassphraseViewModel.swift in Sources */,
 				EC1CA87224C823E700DE9EBF /* KeyValueStore.swift in Sources */,
 				B1C45A8C232A8C2600165425 /* SettingsIdentityServerViewAction.swift in Sources */,
+				B100D571252B175B0081D447 /* MXWellKnown+Riot.swift in Sources */,
 				32A6001E22C661100042C1D9 /* EditHistoryCoordinatorBridgePresenter.swift in Sources */,
 				B1B5574A20EE6C4D00210D55 /* MediaPickerViewController.m in Sources */,
 				B1BEE74623E093260003A4CB /* UserVerificationSessionStatusViewState.swift in Sources */,
@@ -6802,6 +6820,7 @@
 				32A6002022C66FCF0042C1D9 /* EditHistoryMessage.swift in Sources */,
 				B1B5574920EE6C4D00210D55 /* RiotSplitViewController.m in Sources */,
 				B1B5574E20EE6C4D00210D55 /* DirectoryServerPickerViewController.m in Sources */,
+				B100D574252B4B5F0081D447 /* VectorWellKnown.swift in Sources */,
 				EC711B8824A63B37008F830C /* SecretsRecoveryWithPassphraseViewAction.swift in Sources */,
 				ECF57A6225093B04004BBF9D /* SectionHeaderView.m in Sources */,
 				ECF57A4A25090C23004BBF9D /* EnterNewRoomDetailsViewController.swift in Sources */,
@@ -6878,6 +6897,7 @@
 				32FD757124D2BEF700BA7B37 /* InfoPlist.swift in Sources */,
 				32FD756524D2AD5100BA7B37 /* BuildSettings.swift in Sources */,
 				32FD755524D0754500BA7B37 /* AppConfiguration.swift in Sources */,
+				B100D57A252B73390081D447 /* VectorWellKnownTests.swift in Sources */,
 				32FD755124D074C700BA7B37 /* CommonConfiguration.swift in Sources */,
 				F083BEA51E70356E00A9B29C /* RiotTests.m in Sources */,
 				B152C73122DF561E0041315A /* EmojiServiceTests.swift in Sources */,
