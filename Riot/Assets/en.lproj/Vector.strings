@@ -62,6 +62,7 @@
 "joined" = "Joined";
 "switch" = "Switch";
 "more" = "More";
+"less" = "Less";
 
 // Accessibility
 "accessibility_checkbox_label" = "checkbox";
