@@ -151,21 +151,9 @@ final class RoomInfoListViewController: UIViewController {
     // MARK: - Private
     
     private func updateSections(with viewData: RoomInfoListViewData) {
-        isRoomDirect = viewData.isDirect
         basicInfoView.configure(withViewData: viewData.basicInfoViewData)
         
         var tmpSections: [Section] = []
-        
-        if viewData.isEncrypted {
-            let footer = viewData.isDirect ?
-                VectorL10n.roomParticipantsSecurityInformationRoomEncryptedForDm :
-                VectorL10n.roomParticipantsSecurityInformationRoomEncrypted
-            let sectionSecurity = Section(header: VectorL10n.securitySettingsTitle,
-                                          rows: [],
-                                          footer: footer)
-            
-            tmpSections.append(sectionSecurity)
-        }
         
         let rowSettings = Row(type: .default, icon: Asset.Images.settingsIcon.image, text: VectorL10n.roomDetailsSettings, accessoryType: .disclosureIndicator) {
             self.viewModel.process(viewAction: .navigate(target: .settings))
@@ -184,7 +172,7 @@ final class RoomInfoListViewController: UIViewController {
                                              rowUploads],
                                       footer: nil)
         
-        let leaveTitle = viewData.isDirect ?
+        let leaveTitle = viewData.basicInfoViewData.isDirect ?
             VectorL10n.roomParticipantsLeavePromptTitleForDm :
             VectorL10n.roomParticipantsLeavePromptTitle
         let rowLeave = Row(type: .destructive, icon: Asset.Images.roomActionLeave.image, text: leaveTitle, accessoryType: .none) {
