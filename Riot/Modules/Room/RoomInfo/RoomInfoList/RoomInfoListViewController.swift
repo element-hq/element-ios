@@ -49,7 +49,11 @@ final class RoomInfoListViewController: UIViewController {
     }()
     
     private lazy var basicInfoView: RoomInfoBasicView = {
-        return RoomInfoBasicView.loadFromNib()
+        let view = RoomInfoBasicView.loadFromNib()
+        view.onTopicSizeChange = { _ in
+            self.view.setNeedsLayout()
+        }
+        return view
     }()
     
     private lazy var leaveAlertController: UIAlertController = {
@@ -127,7 +131,7 @@ final class RoomInfoListViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        let height = ceil(basicInfoView.systemLayoutSizeFitting(CGSize(width: view.bounds.width, height: 0)).height)
+        let height = ceil(basicInfoView.systemLayoutSizeFitting(CGSize(width: view.bounds.width, height: 0), withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel).height)
         
         //  compare heights to avoid infinite loop
         if height != basicInfoView.frame.height {
@@ -136,6 +140,12 @@ final class RoomInfoListViewController: UIViewController {
             basicInfoView.frame = headerFrame
             mainTableView.tableHeaderView = basicInfoView
         }
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate(alongsideTransition: {_ in
+            self.basicInfoView.updateTrimmingOnTopic()
+        }, completion: nil)
     }
     
     // MARK: - Private

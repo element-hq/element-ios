@@ -16,6 +16,7 @@
 
 import UIKit
 import Reusable
+import ReadMoreTextView
 
 class RoomInfoBasicView: UIView {
 
@@ -39,12 +40,33 @@ class RoomInfoBasicView: UIView {
     @IBOutlet private weak var badgeImageView: UIImageView!
     @IBOutlet private weak var roomNameLabel: UILabel!
     @IBOutlet private weak var roomAddressLabel: UILabel!
-    @IBOutlet private weak var roomTopicTextView: UITextView! {
+    @IBOutlet private weak var roomTopicTextView: ReadMoreTextView! {
         didSet {
             roomTopicTextView.contentInset = .zero
             roomTopicTextView.textContainerInset = .zero
             roomTopicTextView.textContainer.lineFragmentPadding = 0
+            roomTopicTextView.readMoreTextPadding = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+            roomTopicTextView.readLessTextPadding = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+            roomTopicTextView.shouldTrim = true
+            roomTopicTextView.maximumNumberOfLines = 4
+            roomTopicTextView.onSizeChange = { _ in
+                self.roomTopicTextView.textAlignment = .center
+                self.onTopicSizeChange?(self)
+            }
         }
+    }
+    
+    /// Block to be invoked when topic text view changes its content size.
+    var onTopicSizeChange: ((RoomInfoBasicView) -> Void)?
+    
+    /// Force to update topic text view trimming.
+    func updateTrimmingOnTopic() {
+        roomTopicTextView.setNeedsUpdateTrim()
+        roomTopicTextView.layoutIfNeeded()
+        let currentValue = roomTopicTextView.shouldTrim
+        roomTopicTextView.shouldTrim = !currentValue
+        roomTopicTextView.shouldTrim = currentValue
+        roomTopicTextView.textAlignment = .center
     }
     
     func configure(withViewData viewData: RoomInfoBasicViewData) {
@@ -70,7 +92,7 @@ class RoomInfoBasicView: UIView {
         roomTopicTextView.text = viewData.roomTopic
         roomTopicTextView.isHidden = roomTopicTextView.text?.isEmpty ?? true
     }
-
+    
 }
 
 extension RoomInfoBasicView: NibLoadable {}
@@ -86,6 +108,24 @@ extension RoomInfoBasicView: Themable {
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
             NSAttributedString.Key.foregroundColor: theme.tintColor
         ]
+        let mutableReadMore = NSMutableAttributedString(string: "... ", attributes: [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
+            NSAttributedString.Key.foregroundColor: theme.textSecondaryColor
+        ])
+        let attributedMore = NSAttributedString(string: VectorL10n.more, attributes: [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
+            NSAttributedString.Key.foregroundColor: theme.tintColor
+        ])
+        mutableReadMore.append(attributedMore)
+        roomTopicTextView.attributedReadMoreText = mutableReadMore
+        
+        let mutableReadLess = NSMutableAttributedString(string: " ")
+        let attributedLess = NSAttributedString(string: VectorL10n.less, attributes: [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
+            NSAttributedString.Key.foregroundColor: theme.tintColor
+        ])
+        mutableReadLess.append(attributedLess)
+        roomTopicTextView.attributedReadLessText = mutableReadLess
     }
     
 }
