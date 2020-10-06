@@ -73,7 +73,7 @@ abstract_target 'RiotPods' do
     pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
     pod 'KTCenterFlowLayout', '~> 1.3.1'
     pod 'ZXingObjC', '~> 3.6.5'
-    pod 'FlowCommoniOS', '~> 1.8.7'
+    pod 'FlowCommoniOS', '~> 1.9.0'
 
     target 'RiotTests' do
       inherit! :search_paths
