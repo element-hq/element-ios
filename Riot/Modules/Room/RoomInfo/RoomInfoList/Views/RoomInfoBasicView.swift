@@ -16,8 +16,15 @@
 
 import UIKit
 import Reusable
+import ReadMoreTextView
 
 class RoomInfoBasicView: UIView {
+    
+    private enum TopicTextViewConstants {
+        static let font = UIFont.systemFont(ofSize: 15)
+        static let defaultNumberOfLines = 4
+        static let moreLessTextPadding = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+    }
 
     @IBOutlet private weak var mainStackView: UIStackView!
     @IBOutlet private weak var avatarImageView: MXKImageView!
@@ -39,7 +46,42 @@ class RoomInfoBasicView: UIView {
     @IBOutlet private weak var badgeImageView: UIImageView!
     @IBOutlet private weak var roomNameLabel: UILabel!
     @IBOutlet private weak var roomAddressLabel: UILabel!
-    @IBOutlet private weak var roomTopicLabel: UILabel!
+    @IBOutlet private weak var topicContainerView: UIView!
+    @IBOutlet private weak var topicTitleLabel: UILabel! {
+        didSet {
+            topicTitleLabel.text = VectorL10n.roomDetailsTopic
+        }
+    }
+    @IBOutlet private weak var roomTopicTextView: ReadMoreTextView! {
+        didSet {
+            roomTopicTextView.contentInset = .zero
+            roomTopicTextView.textContainerInset = .zero
+            roomTopicTextView.textContainer.lineFragmentPadding = 0
+            roomTopicTextView.readMoreTextPadding = TopicTextViewConstants.moreLessTextPadding
+            roomTopicTextView.readLessTextPadding = TopicTextViewConstants.moreLessTextPadding
+            roomTopicTextView.shouldTrim = true
+            roomTopicTextView.maximumNumberOfLines = TopicTextViewConstants.defaultNumberOfLines
+            roomTopicTextView.onSizeChange = { _ in
+                self.roomTopicTextView.textAlignment = .left
+                self.onTopicSizeChange?(self)
+            }
+        }
+    }
+    @IBOutlet private weak var securityContainerView: UIView!
+    @IBOutlet private weak var securityTitleLabel: UILabel!
+    @IBOutlet private weak var securityInformationLabel: UILabel!
+    
+    /// Block to be invoked when topic text view changes its content size.
+    var onTopicSizeChange: ((RoomInfoBasicView) -> Void)?
+    
+    /// Force to update topic text view trimming.
+    func updateTrimmingOnTopic() {
+        roomTopicTextView.setNeedsUpdateTrim()
+        let currentValue = roomTopicTextView.shouldTrim
+        roomTopicTextView.shouldTrim = !currentValue
+        roomTopicTextView.shouldTrim = currentValue
+        roomTopicTextView.textAlignment = .left
+    }
     
     func configure(withViewData viewData: RoomInfoBasicViewData) {
         let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: viewData.roomId, withDisplayName: viewData.roomDisplayName)
@@ -61,10 +103,15 @@ class RoomInfoBasicView: UIView {
         roomNameLabel.text = viewData.roomDisplayName
         roomAddressLabel.text = viewData.mainRoomAlias
         roomAddressLabel.isHidden = roomAddressLabel.text?.isEmpty ?? true
-        roomTopicLabel.text = viewData.roomTopic
-        roomTopicLabel.isHidden = roomTopicLabel.text?.isEmpty ?? true
+        roomTopicTextView.text = viewData.roomTopic
+        topicContainerView.isHidden = roomTopicTextView.text?.isEmpty ?? true
+        securityTitleLabel.text = VectorL10n.securitySettingsTitle
+        securityInformationLabel.text = viewData.isDirect ?
+            VectorL10n.roomParticipantsSecurityInformationRoomEncryptedForDm :
+            VectorL10n.roomParticipantsSecurityInformationRoomEncrypted
+        securityContainerView.isHidden = !viewData.isEncrypted
     }
-
+    
 }
 
 extension RoomInfoBasicView: NibLoadable {}
@@ -75,7 +122,33 @@ extension RoomInfoBasicView: Themable {
         backgroundColor = theme.headerBackgroundColor
         roomNameLabel.textColor = theme.textPrimaryColor
         roomAddressLabel.textColor = theme.textSecondaryColor
-        roomTopicLabel.textColor = theme.textSecondaryColor
+        topicTitleLabel.textColor = theme.textSecondaryColor
+        roomTopicTextView.textColor = theme.textPrimaryColor
+        roomTopicTextView.linkTextAttributes = [
+            NSAttributedString.Key.font: TopicTextViewConstants.font,
+            NSAttributedString.Key.foregroundColor: theme.tintColor
+        ]
+        let mutableReadMore = NSMutableAttributedString(string: "… ", attributes: [
+            NSAttributedString.Key.font: TopicTextViewConstants.font,
+            NSAttributedString.Key.foregroundColor: theme.textPrimaryColor
+        ])
+        let attributedMore = NSAttributedString(string: VectorL10n.more, attributes: [
+            NSAttributedString.Key.font: TopicTextViewConstants.font,
+            NSAttributedString.Key.foregroundColor: theme.tintColor
+        ])
+        mutableReadMore.append(attributedMore)
+        roomTopicTextView.attributedReadMoreText = mutableReadMore
+        
+        let mutableReadLess = NSMutableAttributedString(string: " ")
+        let attributedLess = NSAttributedString(string: VectorL10n.less, attributes: [
+            NSAttributedString.Key.font: TopicTextViewConstants.font,
+            NSAttributedString.Key.foregroundColor: theme.tintColor
+        ])
+        mutableReadLess.append(attributedLess)
+        roomTopicTextView.attributedReadLessText = mutableReadLess
+        
+        securityTitleLabel.textColor = theme.textSecondaryColor
+        securityInformationLabel.textColor = theme.textPrimaryColor
     }
     
 }
