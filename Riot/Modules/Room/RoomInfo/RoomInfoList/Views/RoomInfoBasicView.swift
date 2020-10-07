@@ -77,7 +77,6 @@ class RoomInfoBasicView: UIView {
     /// Force to update topic text view trimming.
     func updateTrimmingOnTopic() {
         roomTopicTextView.setNeedsUpdateTrim()
-        roomTopicTextView.layoutIfNeeded()
         let currentValue = roomTopicTextView.shouldTrim
         roomTopicTextView.shouldTrim = !currentValue
         roomTopicTextView.shouldTrim = currentValue
