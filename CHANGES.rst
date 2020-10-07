@@ -8,7 +8,7 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
- * 
+ * Push: Check crypto has keys to decrypt an event before decryption attempt, avoid sync loops on failure.
 
 ⚠️ API Changes
  * 
