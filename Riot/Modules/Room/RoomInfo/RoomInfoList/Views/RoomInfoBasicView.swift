@@ -19,6 +19,12 @@ import Reusable
 import ReadMoreTextView
 
 class RoomInfoBasicView: UIView {
+    
+    private enum TopicTextViewConstants {
+        static let font = UIFont.systemFont(ofSize: 15)
+        static let defaultNumberOfLines = 4
+        static let moreLessTextPadding = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+    }
 
     @IBOutlet private weak var mainStackView: UIStackView!
     @IBOutlet private weak var avatarImageView: MXKImageView!
@@ -51,10 +57,10 @@ class RoomInfoBasicView: UIView {
             roomTopicTextView.contentInset = .zero
             roomTopicTextView.textContainerInset = .zero
             roomTopicTextView.textContainer.lineFragmentPadding = 0
-            roomTopicTextView.readMoreTextPadding = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-            roomTopicTextView.readLessTextPadding = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+            roomTopicTextView.readMoreTextPadding = TopicTextViewConstants.moreLessTextPadding
+            roomTopicTextView.readLessTextPadding = TopicTextViewConstants.moreLessTextPadding
             roomTopicTextView.shouldTrim = true
-            roomTopicTextView.maximumNumberOfLines = 4
+            roomTopicTextView.maximumNumberOfLines = TopicTextViewConstants.defaultNumberOfLines
             roomTopicTextView.onSizeChange = { _ in
                 self.roomTopicTextView.textAlignment = .left
                 self.onTopicSizeChange?(self)
@@ -120,15 +126,15 @@ extension RoomInfoBasicView: Themable {
         topicTitleLabel.textColor = theme.textSecondaryColor
         roomTopicTextView.textColor = theme.textPrimaryColor
         roomTopicTextView.linkTextAttributes = [
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15),
+            NSAttributedString.Key.font: TopicTextViewConstants.font,
             NSAttributedString.Key.foregroundColor: theme.tintColor
         ]
-        let mutableReadMore = NSMutableAttributedString(string: "... ", attributes: [
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15),
+        let mutableReadMore = NSMutableAttributedString(string: "… ", attributes: [
+            NSAttributedString.Key.font: TopicTextViewConstants.font,
             NSAttributedString.Key.foregroundColor: theme.textPrimaryColor
         ])
         let attributedMore = NSAttributedString(string: VectorL10n.more, attributes: [
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15),
+            NSAttributedString.Key.font: TopicTextViewConstants.font,
             NSAttributedString.Key.foregroundColor: theme.tintColor
         ])
         mutableReadMore.append(attributedMore)
@@ -136,7 +142,7 @@ extension RoomInfoBasicView: Themable {
         
         let mutableReadLess = NSMutableAttributedString(string: " ")
         let attributedLess = NSAttributedString(string: VectorL10n.less, attributes: [
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15),
+            NSAttributedString.Key.font: TopicTextViewConstants.font,
             NSAttributedString.Key.foregroundColor: theme.tintColor
         ])
         mutableReadLess.append(attributedLess)
