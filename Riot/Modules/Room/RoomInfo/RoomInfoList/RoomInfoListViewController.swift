@@ -130,16 +130,8 @@ final class RoomInfoListViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
-        let height = ceil(basicInfoView.systemLayoutSizeFitting(CGSize(width: view.bounds.width, height: 0), withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel).height)
         
-        //  compare heights to avoid infinite loop
-        if height != basicInfoView.frame.height {
-            var headerFrame = basicInfoView.frame
-            headerFrame.size.height = height
-            basicInfoView.frame = headerFrame
-            mainTableView.tableHeaderView = basicInfoView
-        }
+        mainTableView.vc_relayoutHeaderView()
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
