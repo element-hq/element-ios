@@ -150,7 +150,7 @@ final class BuildSettings: NSObject {
         "https://scalar-staging.riot.im/scalar/api",
     ]
     // Jitsi server used outside integrations to create conference calls from the call button in the timeline
-    static let jitsiServerUrl = NSURL(string: "https://jitsi.riot.im")
+    static let jitsiServerUrl: URL = URL(string: "https://jitsi.riot.im")!
 
     
     // MARK: - Features

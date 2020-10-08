@@ -19,6 +19,7 @@
 
 #import "Riot-Swift.h"
 #import "JitsiWidgetData.h"
+#import "MXSession+Riot.h"
 
 #import <MatrixKit/MatrixKit.h>
 
@@ -307,24 +308,11 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     
     // Build widget data
     // We mix v1 and v2 widget data for backward compability
-    
-    NSURL *preferredJitsiServerUrl;
-    
-    NSURL *wellKnownJitsiPreferredServerURL = [room.mxSession.homeserverWellknown vc_jitsiPreferredServerURL];
-    
-    if (wellKnownJitsiPreferredServerURL)
-    {
-        NSLog(@"[WidgetManager] Use Jitsi server URL from homeserver's Well Known");
-        preferredJitsiServerUrl = wellKnownJitsiPreferredServerURL;
-    }
-    else
-    {
-        NSLog(@"[WidgetManager] No Jitsi server set on the homeserver's Well Known, use the URL hardcoded in the app");
-        preferredJitsiServerUrl = BuildSettings.jitsiServerUrl;
-    }
+            
+    NSString *jitsiServerDomain = [room.mxSession vc_homeserverConfiguration].jitsi.serverDomain;
     
     JitsiWidgetData *jitsiWidgetData = [JitsiWidgetData new];
-    jitsiWidgetData.domain = preferredJitsiServerUrl.host;
+    jitsiWidgetData.domain = jitsiServerDomain;
     jitsiWidgetData.conferenceId = confId;
     jitsiWidgetData.isAudioOnly = !video;
     NSDictionary *v2WidgetData = jitsiWidgetData.JSONDictionary;
