@@ -60,7 +60,7 @@
         isE2EByDefaultEnabledByHSAdmin = [wellKnown vc_isE2EEByDefaultEnabled];
     }
     
-    return [self.homeserverWellknown vc_isE2EEByDefaultEnabled];
+    return isE2EByDefaultEnabledByHSAdmin;
 }
 
 - (MXHTTPOperation*)vc_canEnableE2EByDefaultInNewRoomWithUsers:(NSArray<NSString*>*)userIds
