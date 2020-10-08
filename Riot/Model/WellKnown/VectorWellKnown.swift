@@ -16,20 +16,33 @@
 
 import Foundation
 
+// MARK: - Well Known
+
 /// `VectorWellKnown` represents additional Well Known configuration specific to Element client
-struct VectorWellKnown: Codable {
+struct VectorWellKnown {
     let encryption: VectorWellKnownEncryptionConfiguration?
     let jitsi: VectorWellKnownJitsiConfiguration?
     
+    // Deprecated properties
+    let deprecatedEncryption: VectorWellKnownEncryptionConfiguration?
+    let deprecatedJitsi: VectorWellKnownJitsiConfiguration?
+}
+
+// MARK: Decodable
+extension VectorWellKnown: Decodable {
+    /// JSON keys associated to VectorWellKnown properties
     enum CodingKeys: String, CodingKey {
-        case jitsi = "im.vector.riot.jitsi"
-        case encryption = "im.vector.riot.e2ee"
+        case encryption = "io.element.e2ee"
+        case jitsi = "io.element.jitsi"
+        // Deprecated keys
+        case deprecatedEncryption = "im.vector.riot.e2ee"
+        case deprecatedJitsi = "im.vector.riot.jitsi"
     }
 }
 
 // MARK: - Encryption
 
-struct VectorWellKnownEncryptionConfiguration: Codable {
+struct VectorWellKnownEncryptionConfiguration: Decodable {
     
     /// Indicate if E2EE is enabled by default
     let isE2EEByDefaultEnabled: Bool
@@ -40,7 +53,7 @@ struct VectorWellKnownEncryptionConfiguration: Codable {
 }
 
 // MARK: - Jitsi
-struct VectorWellKnownJitsiConfiguration: Codable {
+struct VectorWellKnownJitsiConfiguration: Decodable {
     
     /// Default Jitsi server
     let preferredDomain: String
