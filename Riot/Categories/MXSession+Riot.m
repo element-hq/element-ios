@@ -63,6 +63,12 @@
     return isE2EByDefaultEnabledByHSAdmin;
 }
 
+- (HomeserverConfiguration*)vc_homeserverConfiguration
+{
+    HomeserverConfigurationBuilder *configurationBuilder = [HomeserverConfigurationBuilder new];
+    return [configurationBuilder buildFrom:self.homeserverWellknown];
+}
+
 - (MXHTTPOperation*)vc_canEnableE2EByDefaultInNewRoomWithUsers:(NSArray<NSString*>*)userIds
                                                          success:(void (^)(BOOL canEnableE2E))success
                                                          failure:(void (^)(NSError *error))failure;
