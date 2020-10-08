@@ -153,9 +153,13 @@
 		92726A4B1F58737A004AD26F /* SiriIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 92726A431F58737A004AD26F /* SiriIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		92726A511F587410004AD26F /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92726A501F587410004AD26F /* Intents.framework */; };
 		933A7148CE5984940344006C /* Pods_RiotPods_RiotShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97151D7F0F892081250D50A3 /* Pods_RiotPods_RiotShareExtension.framework */; };
-		B100D571252B175B0081D447 /* MXWellKnown+Riot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100D570252B175B0081D447 /* MXWellKnown+Riot.swift */; };
 		B100D574252B4B5F0081D447 /* VectorWellKnown.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100D573252B4B5F0081D447 /* VectorWellKnown.swift */; };
 		B100D57A252B73390081D447 /* VectorWellKnownTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100D579252B73390081D447 /* VectorWellKnownTests.swift */; };
+		B100D57E252F86120081D447 /* HomeserverConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100D57D252F86120081D447 /* HomeserverConfiguration.swift */; };
+		B100D584252F8A150081D447 /* VectorWellKnownParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100D583252F8A150081D447 /* VectorWellKnownParser.swift */; };
+		B100D586252F8BAA0081D447 /* HomeserverConfigurationBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100D585252F8BA90081D447 /* HomeserverConfigurationBuilder.swift */; };
+		B100D588252F995E0081D447 /* HomeserverJitsiConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100D587252F995E0081D447 /* HomeserverJitsiConfiguration.swift */; };
+		B100D58A252F9E590081D447 /* HomeserverConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100D589252F9E590081D447 /* HomeserverConfigurationTests.swift */; };
 		B1057789221304EC00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1057788221304EB00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.swift */; };
 		B105778B221304FA00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B105778A221304FA00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.storyboard */; };
 		B105778D2213051E00334B1E /* KeyBackupSetupSuccessFromRecoveryKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B105778C2213051E00334B1E /* KeyBackupSetupSuccessFromRecoveryKeyViewController.swift */; };
@@ -1182,9 +1186,13 @@
 		97151D7F0F892081250D50A3 /* Pods_RiotPods_RiotShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_RiotShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C3242E3FE95BCDA9562C75D /* Pods-RiotPods-RiotShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-RiotShareExtension.debug.xcconfig"; path = "Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		AC34BF67FD21A9D01C16AE5D /* Pods-RiotTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotTests.release.xcconfig"; path = "Target Support Files/Pods-RiotTests/Pods-RiotTests.release.xcconfig"; sourceTree = "<group>"; };
-		B100D570252B175B0081D447 /* MXWellKnown+Riot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MXWellKnown+Riot.swift"; sourceTree = "<group>"; };
 		B100D573252B4B5F0081D447 /* VectorWellKnown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorWellKnown.swift; sourceTree = "<group>"; };
 		B100D579252B73390081D447 /* VectorWellKnownTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorWellKnownTests.swift; sourceTree = "<group>"; };
+		B100D57D252F86120081D447 /* HomeserverConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeserverConfiguration.swift; sourceTree = "<group>"; };
+		B100D583252F8A150081D447 /* VectorWellKnownParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorWellKnownParser.swift; sourceTree = "<group>"; };
+		B100D585252F8BA90081D447 /* HomeserverConfigurationBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeserverConfigurationBuilder.swift; sourceTree = "<group>"; };
+		B100D587252F995E0081D447 /* HomeserverJitsiConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeserverJitsiConfiguration.swift; sourceTree = "<group>"; };
+		B100D589252F9E590081D447 /* HomeserverConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeserverConfigurationTests.swift; sourceTree = "<group>"; };
 		B1057788221304EB00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupSetupSuccessFromPassphraseViewController.swift; sourceTree = "<group>"; };
 		B105778A221304FA00334B1E /* KeyBackupSetupSuccessFromPassphraseViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = KeyBackupSetupSuccessFromPassphraseViewController.storyboard; sourceTree = "<group>"; };
 		B105778C2213051E00334B1E /* KeyBackupSetupSuccessFromRecoveryKeyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupSetupSuccessFromRecoveryKeyViewController.swift; sourceTree = "<group>"; };
@@ -2648,8 +2656,19 @@
 			isa = PBXGroup;
 			children = (
 				B100D573252B4B5F0081D447 /* VectorWellKnown.swift */,
+				B100D583252F8A150081D447 /* VectorWellKnownParser.swift */,
 			);
 			path = WellKnown;
+			sourceTree = "<group>";
+		};
+		B100D57C252F85ED0081D447 /* HomeserverConfiguration */ = {
+			isa = PBXGroup;
+			children = (
+				B100D57D252F86120081D447 /* HomeserverConfiguration.swift */,
+				B100D587252F995E0081D447 /* HomeserverJitsiConfiguration.swift */,
+				B100D585252F8BA90081D447 /* HomeserverConfigurationBuilder.swift */,
+			);
+			path = HomeserverConfiguration;
 			sourceTree = "<group>";
 		};
 		B1057787221304A200334B1E /* Success */ = {
@@ -5312,6 +5331,7 @@
 				F083BB041E7005FD00A9B29C /* RiotTests.m */,
 				B152C73022DF561E0041315A /* EmojiServiceTests.swift */,
 				B100D579252B73390081D447 /* VectorWellKnownTests.swift */,
+				B100D589252F9E590081D447 /* HomeserverConfigurationTests.swift */,
 				F083BB071E70067700A9B29C /* Supporting Files */,
 			);
 			path = RiotTests;
@@ -5417,7 +5437,6 @@
 				ECAE7AED24EFDD1F002FA813 /* MXSessionState.swift */,
 				ECF57A4F250913E4004BBF9D /* MXKTableViewCellWithLabelAndSwitch.swift */,
 				ECF57A5625091ECC004BBF9D /* MXKTableViewCellWithTextView.swift */,
-				B100D570252B175B0081D447 /* MXWellKnown+Riot.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -5425,6 +5444,7 @@
 		F083BBF21E7009EC00A9B29C /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B100D57C252F85ED0081D447 /* HomeserverConfiguration */,
 				B100D572252B4B380081D447 /* WellKnown */,
 				B169330420F3C9B000746532 /* Contact */,
 				F083BBF61E7009EC00A9B29C /* Room */,
@@ -6335,7 +6355,6 @@
 				B139C21B21FE5B9200BB68EC /* KeyBackupRecoverFromPassphraseViewModel.swift in Sources */,
 				EC1CA87224C823E700DE9EBF /* KeyValueStore.swift in Sources */,
 				B1C45A8C232A8C2600165425 /* SettingsIdentityServerViewAction.swift in Sources */,
-				B100D571252B175B0081D447 /* MXWellKnown+Riot.swift in Sources */,
 				32A6001E22C661100042C1D9 /* EditHistoryCoordinatorBridgePresenter.swift in Sources */,
 				B1B5574A20EE6C4D00210D55 /* MediaPickerViewController.m in Sources */,
 				B1BEE74623E093260003A4CB /* UserVerificationSessionStatusViewState.swift in Sources */,
@@ -6361,6 +6380,7 @@
 				EC51E7AB2514D2E100AAE7DB /* RoomInfoListViewState.swift in Sources */,
 				B1B5571A20EE6C4D00210D55 /* SettingsViewController.m in Sources */,
 				B1CE9EFD22148703000FAE6A /* SignOutAlertPresenter.swift in Sources */,
+				B100D57E252F86120081D447 /* HomeserverConfiguration.swift in Sources */,
 				32F6B9692270623100BBA352 /* KeyVerificationDataLoadingCoordinator.swift in Sources */,
 				B125FE1D231D5DE400B72806 /* SettingsDiscoveryViewModel.swift in Sources */,
 				32863A5A2384070300D07C4A /* RiotSharedSettings.swift in Sources */,
@@ -6452,6 +6472,7 @@
 				B108932523AB93A200802670 /* KeyVerificationConclusionViewData.swift in Sources */,
 				B1B5582520EF638A00210D55 /* RoomMemberTitleView.m in Sources */,
 				B1560DA224B65AFA00490F50 /* LaunchLoadingView.swift in Sources */,
+				B100D584252F8A150081D447 /* VectorWellKnownParser.swift in Sources */,
 				B1B5582C20EF666100210D55 /* DirectoryRecentTableViewCell.m in Sources */,
 				B1B558E420EF768F00210D55 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
 				B18DEDD8243377C10075FEF7 /* KeyVerificationSelfVerifyWaitCoordinatorType.swift in Sources */,
@@ -6588,6 +6609,7 @@
 				EC85D751247C0E8F002C44C9 /* UNUserNotificationCenter.swift in Sources */,
 				B1BEE73823DF44A60003A4CB /* UserVerificationSessionsStatusViewAction.swift in Sources */,
 				ECDC15F224AF41D2003437CF /* FormattedBodyParser.swift in Sources */,
+				B100D586252F8BAA0081D447 /* HomeserverConfigurationBuilder.swift in Sources */,
 				B1B5577E20EE84BF00210D55 /* IncomingCallView.m in Sources */,
 				B1CE83E22422817200D07506 /* KeyVerificationVerifyBySASViewState.swift in Sources */,
 				EC51E7AF2514D2E100AAE7DB /* RoomInfoListViewAction.swift in Sources */,
@@ -6871,6 +6893,7 @@
 				B1B9DEEE22EB34EF0065E677 /* ReactionHistoryViewAction.swift in Sources */,
 				EC711BB624A63C11008F830C /* AuthenticatedSessionViewControllerFactory.swift in Sources */,
 				B1C543A4239E98E400DCA1FA /* KeyVerificationCellInnerContentView.swift in Sources */,
+				B100D588252F995E0081D447 /* HomeserverJitsiConfiguration.swift in Sources */,
 				B10A3E8E24FE4368007C380F /* ElementView.swift in Sources */,
 				B1CE83B62422812100D07506 /* KeyVerificationCoordinatorBridgePresenter.swift in Sources */,
 				32B94DFA228EC26400716A26 /* ReactionsMenuButton.swift in Sources */,
@@ -6895,6 +6918,7 @@
 				32FD757724D2C9BA00BA7B37 /* Bundle.swift in Sources */,
 				32FD754D24D06EBF00BA7B37 /* RiotSettings.swift in Sources */,
 				32FD757124D2BEF700BA7B37 /* InfoPlist.swift in Sources */,
+				B100D58A252F9E590081D447 /* HomeserverConfigurationTests.swift in Sources */,
 				32FD756524D2AD5100BA7B37 /* BuildSettings.swift in Sources */,
 				32FD755524D0754500BA7B37 /* AppConfiguration.swift in Sources */,
 				B100D57A252B73390081D447 /* VectorWellKnownTests.swift in Sources */,
