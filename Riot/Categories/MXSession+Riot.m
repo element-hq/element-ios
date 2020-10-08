@@ -49,20 +49,6 @@
     return missedDiscussionsCount;
 }
 
-- (BOOL)vc_isE2EByDefaultEnabledByHSAdmin
-{
-    BOOL isE2EByDefaultEnabledByHSAdmin = YES;
-
-    MXWellKnown *wellKnown = self.homeserverWellknown;
-    
-    if (wellKnown)
-    {
-        isE2EByDefaultEnabledByHSAdmin = [wellKnown vc_isE2EEByDefaultEnabled];
-    }
-    
-    return isE2EByDefaultEnabledByHSAdmin;
-}
-
 - (HomeserverConfiguration*)vc_homeserverConfiguration
 {
     HomeserverConfigurationBuilder *configurationBuilder = [HomeserverConfigurationBuilder new];
@@ -73,7 +59,7 @@
                                                          success:(void (^)(BOOL canEnableE2E))success
                                                          failure:(void (^)(NSError *error))failure;
 {
-    if (self.vc_isE2EByDefaultEnabledByHSAdmin)
+    if ([self vc_homeserverConfiguration].isE2EEByDefaultEnabled)
     {
         return [self canEnableE2EByDefaultInNewRoomWithUsers:userIds success:success failure:failure];
     }
