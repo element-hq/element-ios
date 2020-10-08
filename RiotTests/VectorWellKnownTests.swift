@@ -41,6 +41,12 @@ class VectorWellKnownTests: XCTestCase {
             ],
             "im.vector.riot.jitsi" : [
                 "preferredDomain" : expectedJitsiServer
+            ],
+            "io.element.e2ee" : [
+                "default" : expectedE2EEEByDefaultEnabled
+            ],
+            "io.element.jitsi" : [
+                "preferredDomain" : expectedJitsiServer
             ]
         ]
                         
@@ -49,15 +55,28 @@ class VectorWellKnownTests: XCTestCase {
         do {
             let vectorWellKnown: VectorWellKnown = try serializationService.deserialize(wellKnownDictionary)
             
-            XCTAssertNotNil(vectorWellKnown.jitsi)
-            XCTAssertNotNil(vectorWellKnown.encryption)
+            let jistiConfiguration = vectorWellKnown.jitsi
+            let encryptionConfiguration = vectorWellKnown.encryption
             
-            XCTAssertEqual(vectorWellKnown.jitsi?.preferredDomain, expectedJitsiServer)
-            XCTAssertEqual(vectorWellKnown.encryption?.isE2EEByDefaultEnabled, expectedE2EEEByDefaultEnabled)
+            XCTAssertNotNil(jistiConfiguration)
+            XCTAssertNotNil(encryptionConfiguration)
+            
+            XCTAssertEqual(jistiConfiguration?.preferredDomain, expectedJitsiServer)
+            XCTAssertEqual(encryptionConfiguration?.isE2EEByDefaultEnabled, expectedE2EEEByDefaultEnabled)
+                        
+            let deprecatedJistiConfiguration = vectorWellKnown.deprecatedJitsi
+            let deprecatedEncryptionConfiguration = vectorWellKnown.deprecatedEncryption
+            
+            XCTAssertNotNil(deprecatedJistiConfiguration)
+            XCTAssertNotNil(deprecatedEncryptionConfiguration)
+            
+            XCTAssertEqual(deprecatedJistiConfiguration?.preferredDomain, expectedJitsiServer)
+            XCTAssertEqual(deprecatedEncryptionConfiguration?.isE2EEByDefaultEnabled, expectedE2EEEByDefaultEnabled)
+            
         } catch {
             XCTFail("Fail with error: \(error)")
         }
-    }
+    }        
     
     func testVectorWellKnownParsingMissingKey() {
                 
@@ -81,5 +100,40 @@ class VectorWellKnownTests: XCTestCase {
         } catch {
             XCTFail("Fail with error: \(error)")
         }
+    }
+    
+    func testMXWellKnown() {
+        
+        let expectedJitsiServer = "your.jitsi.example.org"
+        let expectedDeprecatedJitsiServer = "your.deprecated.jitsi.example.org"
+        let expectedE2EEEByDefaultEnabled = true
+        let expectedDeprecatedE2EEEByDefaultEnabled = false
+        
+        let wellKnownDictionary: [String: Any] = [
+            "m.homeserver": [
+                 "base_url": "https://your.homeserver.org"
+            ],
+             "m.identity_server": [
+                 "base_url": "https://your.identity-server.org"
+            ],
+            "im.vector.riot.e2ee" : [
+                "default" : expectedDeprecatedE2EEEByDefaultEnabled
+            ],
+            "im.vector.riot.jitsi" : [
+                "preferredDomain" : expectedDeprecatedJitsiServer
+            ],
+            "io.element.e2ee" : [
+                "default" : expectedE2EEEByDefaultEnabled
+            ],
+            "io.element.jitsi" : [
+                "preferredDomain" : expectedJitsiServer
+            ]
+        ]
+                
+        
+        let wellKnown = MXWellKnown(fromJSON: wellKnownDictionary)
+        
+        XCTAssertEqual(wellKnown?.vc_jitsiPreferredDomain(), expectedJitsiServer)
+        XCTAssertEqual(wellKnown?.vc_isE2EEByDefaultEnabled(), expectedE2EEEByDefaultEnabled)
     }
 }
