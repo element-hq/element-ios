@@ -9,7 +9,7 @@ Changes to be released in next version
  * Room: Add more to long room topics (#3715).
 
 🐛 Bugfix
- * 
+ * Push: Check crypto has keys to decrypt an event before decryption attempt, avoid sync loops on failure.
 
 ⚠️ API Changes
  * 
