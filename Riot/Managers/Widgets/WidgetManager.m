@@ -19,6 +19,7 @@
 
 #import "Riot-Swift.h"
 #import "JitsiWidgetData.h"
+#import "MXSession+Riot.h"
 
 #import <MatrixKit/MatrixKit.h>
 
