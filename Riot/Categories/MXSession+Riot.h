@@ -28,7 +28,7 @@
 - (NSUInteger)vc_missedDiscussionsCount;
 
 /**
-TODO:
+Return the homeserver configuration based on HS Well-Known or BuildSettings properties according to existing values.
 */
 - (HomeserverConfiguration*)vc_homeserverConfiguration;
 

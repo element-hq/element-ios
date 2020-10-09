@@ -16,6 +16,7 @@
 
 import Foundation
 
+/// `HomeserverJitsiConfiguration` gives Jitsi widget configuration used by homeserver
 @objcMembers
 final class HomeserverJitsiConfiguration: NSObject {
     let serverDomain: String
