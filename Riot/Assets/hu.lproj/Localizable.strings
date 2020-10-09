@@ -61,3 +61,4 @@
 "MESSAGE_FROM_X" = "Üzenet tőle: %@";
 /* New message indicator on a room */
 "MESSAGE_IN_X" = "Üzenet itt: %@";
+"MESSAGE_PROTECTED" = "Új üzenet";
