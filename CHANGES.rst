@@ -8,6 +8,7 @@ Changes to be released in next version
  * Room: Make topic links tappable (#3713).
  * Room: Add more to long room topics (#3715).
  * Security screens: Update automatically shields when the trust changes.
+ * Room: Add floating action button to invite members.
 
 🐛 Bugfix
  * Push: Check crypto has keys to decrypt an event before decryption attempt, avoid sync loops on failure.
