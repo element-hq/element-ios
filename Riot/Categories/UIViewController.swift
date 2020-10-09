@@ -77,7 +77,7 @@ extension UIViewController {
     @discardableResult
     @objc func vc_addFAB(withImage image: UIImage,
                          target: Any?,
-                         action: Selector?) -> UIView {
+                         action: Selector?) -> UIImageView {
         
         let fabImageView = UIImageView(image: image)
         fabImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -101,6 +101,6 @@ extension UIViewController {
         tapGestureRecognizer.numberOfTapsRequired = 1
         fabImageView.addGestureRecognizer(tapGestureRecognizer)
         
-        return UIView()
+        return fabImageView
     }
 }
