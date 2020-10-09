@@ -66,10 +66,9 @@
     self.recentsTableView.tag = RecentsDataSourceModePeople;
     
     // Add the (+) button programmatically
-    [self addPlusButton];
-    
-    // Apply tintColor on the (+) button
-    plusButtonImageView.image = [UIImage imageNamed:@"people_floating_action"];
+    plusButtonImageView = [self vc_addFABWithImage:[UIImage imageNamed:@"people_floating_action"]
+                                            target:self
+                                            action:@selector(onPlusButtonPressed)];
     
     // Register table view cell for contacts.
     [self.recentsTableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:ContactTableViewCell.defaultReuseIdentifier];
