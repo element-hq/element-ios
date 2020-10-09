@@ -290,6 +290,26 @@
 
 #pragma mark -
 
+- (void)updateInviteButtonForRoom:(MXRoom *)room
+{
+    if (room.isDirect && !BuildSettings.roomSettingsScreenAllowInviteOnDirectRooms)
+    {
+        // Remove invite members button if exists
+        [self->inviteFabImageView removeFromSuperview];
+        self->inviteFabImageView = nil;
+    }
+    else
+    {
+        // Add invite members button programmatically if does not exist
+        if (!self->inviteFabImageView)
+        {
+            self->inviteFabImageView = [self vc_addFABWithImage:[UIImage imageNamed:@"add_member_floating_action"]
+                                                         target:self
+                                                         action:@selector(onAddParticipantButtonPressed)];
+        }
+    }
+}
+
 - (void)setMxRoom:(MXRoom *)mxRoom
 {
     // Cancel any pending search
@@ -336,23 +356,15 @@
         {
             self.searchBarHeader.hidden = NO;
             
+            [self updateInviteButtonForRoom:self.mxRoom];
+            
             if (self.mxRoom.isDirect)
             {
                 self.searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_filter_room_members_for_dm", @"Vector", nil);
-                // Remove invite members button if exists
-                [self->inviteFabImageView removeFromSuperview];
-                self->inviteFabImageView = nil;
             }
             else
             {
                 self.searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_filter_room_members", @"Vector", nil);
-                // Add invite members button programmatically if does not exist
-                if (!self->inviteFabImageView)
-                {
-                    self->inviteFabImageView = [self vc_addFABWithImage:[UIImage imageNamed:@"add_member_floating_action"]
-                                                                 target:self
-                                                                 action:@selector(onAddParticipantButtonPressed)];
-                }
             }
 
             // Update the current matrix session.
