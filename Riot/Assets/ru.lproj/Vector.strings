@@ -1232,3 +1232,18 @@
 "room_details_advanced_e2e_encryption_enabled_for_dm" = "Шифрование включено";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "Шифрование не включено.";
 "pin_protection_kick_user_alert_message" = "Слишком много ошибок, вы вышли из системы";
+"secrets_reset_authentication_message" = "Введите пароль своей учётной записи для подтверждения";
+"secrets_reset_reset_action" = "Сброс";
+"secrets_reset_warning_message" = "Вы перезапустите приложение без истории, сообщений, доверенных устройств или доверенных пользователей.";
+"secrets_reset_warning_title" = "Если сбросить все";
+"secrets_reset_information" = "Делайте это только в том случае, если у вас нет другого устройства, с которого вы можете проверить это устройство.";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "Сбросить все";
+"secrets_recovery_reset_action_part_2" = "Сбросить все";
+
+// MARK: - Secrets recovery
+
+"secrets_recovery_reset_action_part_1" = "Забыли или потеряли все варианты восстановления? ";
+"less" = "Меньше";
