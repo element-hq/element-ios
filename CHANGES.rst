@@ -9,6 +9,7 @@ Changes to be released in next version
  * Room: Add more to long room topics (#3715).
  * Security screens: Update automatically shields when the trust changes.
  * Room: Add floating action button to invite members.
+ * Room: Hide invite members button on direct rooms configurably (#3739).
 
 🐛 Bugfix
  * Push: Check crypto has keys to decrypt an event before decryption attempt, avoid sync loops on failure.
