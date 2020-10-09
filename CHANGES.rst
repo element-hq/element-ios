@@ -7,6 +7,7 @@ Changes to be released in next version
 🙌 Improvements
  * Room: Make topic links tappable (#3713).
  * Room: Add more to long room topics (#3715).
+ * Security screens: Update automatically shields when the trust changes.
 
 🐛 Bugfix
  * Push: Check crypto has keys to decrypt an event before decryption attempt, avoid sync loops on failure.
