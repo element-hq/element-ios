@@ -898,7 +898,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                                
                                                                if (roomdId)
                                                                {
-                                                                   [[UIPasteboard generalPasteboard] setString:roomdId];
+                                                                   MXKPasteboardManager.shared.pasteboard.string = roomdId;
                                                                }
                                                                else
                                                                {
@@ -1006,7 +1006,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                                
                                                                if (roomAlias)
                                                                {
-                                                                   [[UIPasteboard generalPasteboard] setString:roomAlias];
+                                                                   MXKPasteboardManager.shared.pasteboard.string = roomAlias;
                                                                }
                                                                else
                                                                {
@@ -1031,7 +1031,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                                
                                                                if (permalink)
                                                                {
-                                                                   [[UIPasteboard generalPasteboard] setString:permalink];
+                                                                   MXKPasteboardManager.shared.pasteboard.string = permalink;
                                                                }
                                                                else
                                                                {
