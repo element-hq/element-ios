@@ -31,6 +31,9 @@
 
 @interface RoomParticipantsViewController ()
 {
+    // invite FAB
+    UIImageView *inviteFabImageView;
+    
     // Search result
     NSString *currentSearchText;
     NSMutableArray<Contact*> *filteredActualParticipants;
@@ -133,13 +136,6 @@
     self.tableView.tableFooterView = [[UIView alloc] init];
     
     [self.tableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:@"ParticipantTableViewCellId"];
-    
-    
-    
-    // Add invite members button programmatically
-    [self vc_addFABWithImage:[UIImage imageNamed:@"add_member_floating_action"]
-                      target:self
-                      action:@selector(onAddParticipantButtonPressed)];
     
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -343,10 +339,20 @@
             if (self.mxRoom.isDirect)
             {
                 self.searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_filter_room_members_for_dm", @"Vector", nil);
+                // Remove invite members button if exists
+                [self->inviteFabImageView removeFromSuperview];
+                self->inviteFabImageView = nil;
             }
             else
             {
                 self.searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_filter_room_members", @"Vector", nil);
+                // Add invite members button programmatically if does not exist
+                if (!self->inviteFabImageView)
+                {
+                    self->inviteFabImageView = [self vc_addFABWithImage:[UIImage imageNamed:@"add_member_floating_action"]
+                                                                 target:self
+                                                                 action:@selector(onAddParticipantButtonPressed)];
+                }
             }
 
             // Update the current matrix session.
