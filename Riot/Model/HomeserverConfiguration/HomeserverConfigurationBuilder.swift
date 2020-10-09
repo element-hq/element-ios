@@ -16,6 +16,7 @@
 
 import Foundation
 
+/// `HomeserverConfigurationBuilder` build `HomeserverConfiguration` objects according to injected inputs
 @objcMembers
 final class HomeserverConfigurationBuilder: NSObject {
 
@@ -25,6 +26,7 @@ final class HomeserverConfigurationBuilder: NSObject {
     
     // MARK: - Public
     
+    /// Create an `HomeserverConfiguration` from an HS Well-Known when possible otherwise it takes hardcoded values from BuildSettings by default.
     func build(from wellKnown: MXWellKnown?) -> HomeserverConfiguration {
                 
         let isE2EEByDefaultEnabled: Bool

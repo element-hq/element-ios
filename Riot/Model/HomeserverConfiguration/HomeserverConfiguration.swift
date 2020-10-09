@@ -16,6 +16,7 @@
 
 import Foundation
 
+/// Represents the homeserver configuration (usually based on HS Well-Known or hardoced values in the project)
 @objcMembers
 final class HomeserverConfiguration: NSObject {
     
