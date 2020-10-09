@@ -898,7 +898,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                                
                                                                if (roomdId)
                                                                {
-                                                                   [[UIPasteboard generalPasteboard] setString:roomdId];
+                                                                   MXKAppSettings.standardAppSettings.pasteboard.string = roomdId;
                                                                }
                                                                else
                                                                {
@@ -1006,7 +1006,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                                
                                                                if (roomAlias)
                                                                {
-                                                                   [[UIPasteboard generalPasteboard] setString:roomAlias];
+                                                                   MXKAppSettings.standardAppSettings.pasteboard.string = roomAlias;
                                                                }
                                                                else
                                                                {
@@ -1031,7 +1031,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                                
                                                                if (permalink)
                                                                {
-                                                                   [[UIPasteboard generalPasteboard] setString:permalink];
+                                                                   MXKAppSettings.standardAppSettings.pasteboard.string = permalink;
                                                                }
                                                                else
                                                                {
