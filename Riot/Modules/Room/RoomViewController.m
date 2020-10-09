@@ -2622,7 +2622,7 @@
                     
                     if (permalink)
                     {
-                        MXKAppSettings.standardAppSettings.pasteboard.string = permalink;
+                        MXKPasteboardManager.shared.pasteboard.string = permalink;
                     }
                     else
                     {
@@ -5256,7 +5256,7 @@
             
             if (textMessage)
             {
-                MXKAppSettings.standardAppSettings.pasteboard.string = textMessage;
+                MXKPasteboardManager.shared.pasteboard.string = textMessage;
             }
             else
             {

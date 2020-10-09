@@ -233,7 +233,7 @@ static RageShakeManager* sharedInstance = nil;
     UIGraphicsEndImageContext();
     
     // the image is copied in the clipboard
-    MXKAppSettings.standardAppSettings.pasteboard.image = image;
+    MXKPasteboardManager.shared.pasteboard.image = image;
     
     return image;
 }

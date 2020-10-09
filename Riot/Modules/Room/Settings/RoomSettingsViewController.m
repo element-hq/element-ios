@@ -898,7 +898,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                                
                                                                if (roomdId)
                                                                {
-                                                                   MXKAppSettings.standardAppSettings.pasteboard.string = roomdId;
+                                                                   MXKPasteboardManager.shared.pasteboard.string = roomdId;
                                                                }
                                                                else
                                                                {
@@ -1006,7 +1006,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                                
                                                                if (roomAlias)
                                                                {
-                                                                   MXKAppSettings.standardAppSettings.pasteboard.string = roomAlias;
+                                                                   MXKPasteboardManager.shared.pasteboard.string = roomAlias;
                                                                }
                                                                else
                                                                {
@@ -1031,7 +1031,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                                
                                                                if (permalink)
                                                                {
-                                                                   MXKAppSettings.standardAppSettings.pasteboard.string = permalink;
+                                                                   MXKPasteboardManager.shared.pasteboard.string = permalink;
                                                                }
                                                                else
                                                                {
