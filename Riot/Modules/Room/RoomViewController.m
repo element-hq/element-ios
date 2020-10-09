@@ -2622,7 +2622,7 @@
                     
                     if (permalink)
                     {
-                        [[UIPasteboard generalPasteboard] setString:permalink];
+                        MXKPasteboardManager.shared.pasteboard.string = permalink;
                     }
                     else
                     {
@@ -5256,7 +5256,7 @@
             
             if (textMessage)
             {
-                [UIPasteboard generalPasteboard].string = textMessage;
+                MXKPasteboardManager.shared.pasteboard.string = textMessage;
             }
             else
             {

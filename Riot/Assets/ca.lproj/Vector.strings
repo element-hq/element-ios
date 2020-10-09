@@ -552,3 +552,18 @@
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Sol·licitud enviada";
 "rerequest_keys_alert_message" = "Inicia Element en un altre dispositiu que pugui desxifrar el missatge per que pugui enviar les claus a aquest dispositiu.";
+// String for App Store
+"store_short_description" = "Xat/VoIP segur i descentralitzat";
+"close" = "Tanca";
+"skip" = "Salta";
+"joined" = "Unit";
+"switch" = "Canvia";
+"more" = "Més";
+// Accessibility
+"accessibility_checkbox_label" = "casella de selecció";
+// MARK: Clients
+"client_desktop_name" = "Element Escriptori";
+"client_web_name" = "Element Web";
+"client_ios_name" = "Element iOS";
+"client_android_name" = "Element Android";
+"auth_login_single_sign_on" = "Inicia sessió amb inici senzill";

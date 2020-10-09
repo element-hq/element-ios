@@ -114,6 +114,8 @@ enum {
         
     }];
     [self userInterfaceThemeDidChange];
+    
+    [self registerDeviceChangesNotification];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -244,6 +246,29 @@ enum {
         [self reloadData];
         completion();
     }];
+}
+
+
+#pragma mark - Data update
+
+- (void)registerDeviceChangesNotification
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onDeviceInfoTrustLevelDidChangeNotification:)
+                                                 name:MXDeviceInfoTrustLevelDidChangeNotification
+                                               object:nil];
+}
+
+- (void)onDeviceInfoTrustLevelDidChangeNotification:(NSNotification*)notification
+{
+    MXDeviceInfo *deviceInfo = notification.object;
+    
+    NSString *deviceId = deviceInfo.deviceId;
+    if ([deviceId isEqualToString:device.deviceId])
+    {
+        [self reloadDeviceWithCompletion:^{
+        }];
+    }
 }
 
 

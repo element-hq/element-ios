@@ -28,5 +28,37 @@ extension UITableView {
         }
         return result
     }
+    
+    /// Since UITableView does not manage Auto Layout for header, it'd be appropriate calling this after tableView bounds change
+    @objc func vc_relayoutHeaderView() {
+        guard let headerView = tableHeaderView else { return }
+        let height = ceil(headerView.systemLayoutSizeFitting(CGSize(width: bounds.width, height: 0),
+                                                             withHorizontalFittingPriority: .required,
+                                                             verticalFittingPriority: .fittingSizeLevel).height)
+        
+        //  compare heights to avoid infinite loop
+        if height != headerView.frame.height {
+            var headerFrame = headerView.frame
+            headerFrame.size.height = height
+            headerView.frame = headerFrame
+            tableHeaderView = headerView
+        }
+    }
+    
+    /// Since UITableView does not manage Auto Layout for footer, it'd be appropriate calling this after tableView bounds change
+    @objc func vc_relayoutFooterView() {
+        guard let footerView = tableFooterView else { return }
+        let height = ceil(footerView.systemLayoutSizeFitting(CGSize(width: bounds.width, height: 0),
+                                                             withHorizontalFittingPriority: .required,
+                                                             verticalFittingPriority: .fittingSizeLevel).height)
+        
+        //  compare heights to avoid infinite loop
+        if height != footerView.frame.height {
+            var headerFrame = footerView.frame
+            headerFrame.size.height = height
+            footerView.frame = headerFrame
+            tableFooterView = footerView
+        }
+    }
 
 }

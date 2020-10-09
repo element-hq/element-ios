@@ -1,3 +1,34 @@
+Changes in 1.0.15 (2020-10-09)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Room: Make topic links tappable (#3713).
+ * Room: Add more to long room topics (#3715).
+ * Security screens: Update automatically shields when the trust changes.
+ * Room: Add floating action button to invite members.
+ * Pasteboard: Use MXKPasteboardManager.pasteboard on copy operations (#3732).
+
+🐛 Bugfix
+ * Push: Check crypto has keys to decrypt an event before decryption attempt, avoid sync loops on failure.
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.23](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.23)).
+
 Changes in 1.0.14 (2020-10-02)
 =================================================
 
@@ -14,6 +45,7 @@ Changes in 1.0.14 (2020-10-02)
  * Fix "Unable to open the link" error when using non-Safari browsers (#3673).
  * Biometrics: Handle retry case.
  * Room: Remove membership events from room creation modal (#3679).
+ * PIN: Fix layout on small screens.
 
 ⚠️ API Changes
  * 
