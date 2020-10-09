@@ -1,5 +1,5 @@
 /* New message from a specific person, not referencing a room */
-"MSG_FROM_USER" = "Missatge de %@";
+"MSG_FROM_USER" = "%@ ha enviat un missatge";
 /* New message from a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM" = "%@ publicat a %@";
 /* New message from a specific person, not referencing a room. Content included. */
@@ -11,7 +11,7 @@
 /* New action message from a specific person in a named room. */
 "ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
 /* New action message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@ t'ha enviat una foto %@";
+"IMAGE_FROM_USER" = "%@ ha enviat una foto %@";
 /* New action message from a specific person in a named room. */
 "IMAGE_FROM_USER_IN_ROOM" = "%@ ha publicat una foto %@ a %@";
 /* Multiple unread messages in a room */
@@ -50,3 +50,14 @@
 "SINGLE_UNREAD_IN_ROOM" = "Has rebut un missatge a %@";
 /* A single unread message */
 "SINGLE_UNREAD" = "Has rebut un missatge";
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ a %@";
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@ t’ha enviat una enganxina";
+/* New message indicator on unknown room */
+"MESSAGE" = "Missatge";
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "Missatge de %@";
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "Missatge a %@";
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ vol verificar";
