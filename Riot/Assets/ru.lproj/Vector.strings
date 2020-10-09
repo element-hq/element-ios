@@ -1192,7 +1192,7 @@
 "pin_protection_choose_pin_welcome_after_login" = "С возвращением.";
 "pin_protection_choose_pin_welcome_after_register" = "Добро пожаловать.";
 "pin_protection_not_allowed_pin" = "По соображениям безопасности этот PIN-код недоступен. Пожалуйста, попробуйте другой PIN-код";
-"pin_protection_explanatory" = "PIN-коды помогают защитить ваш профиль, сообщения и контакты, поэтому только вы можете получить к ним доступ.";
+"pin_protection_explanatory" = "Установка PIN-кода позволяет защитить такие данные, как сообщения и контакты, поэтому только вы можете получить к ним доступ, введя PIN-код в начале приложения.";
 "searchable_directory_create_new_room" = "Создать новую комнату";
 "searchable_directory_x_network" = "%@ Сеть";
 "searchable_directory_search_placeholder" = "Имя или ID";
@@ -1231,3 +1231,4 @@
 "room_details_advanced_room_id_for_dm" = "ID:";
 "room_details_advanced_e2e_encryption_enabled_for_dm" = "Шифрование включено";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "Шифрование не включено.";
+"pin_protection_kick_user_alert_message" = "Слишком много ошибок, вы вышли из системы";

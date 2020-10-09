@@ -11,7 +11,7 @@ use_frameworks!
 # - `{ {kit spec hash} => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for each repo. Used by Fastfile during CI
 #
 # Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
-$matrixKitVersion = '= 0.12.22'
+$matrixKitVersion = '= 0.12.23'
 # $matrixKitVersion = :local
 # $matrixKitVersion = {'develop' => 'develop'}
 
@@ -74,6 +74,7 @@ abstract_target 'RiotPods' do
     pod 'KTCenterFlowLayout', '~> 1.3.1'
     pod 'ZXingObjC', '~> 3.6.5'
     pod 'FlowCommoniOS', '~> 1.8.7'
+    pod 'ReadMoreTextView', '~> 3.0.1'
 
     target 'RiotTests' do
       inherit! :search_paths
@@ -102,7 +103,12 @@ post_install do |installer|
     # Because the WebRTC pod (included by the JingleCallStack pod) does not support it.
     # Plus the app does not enable it
     target.build_configurations.each do |config|
-      config.build_settings['ENABLE_BITCODE'] = 'NO'      
+      config.build_settings['ENABLE_BITCODE'] = 'NO'
+      
+      # Force ReadMoreTextView to use Swift 5.2 version (as there is no code changes to perform)
+      if target.name.include? 'ReadMoreTextView'
+        config.build_settings['SWIFT_VERSION'] = '5.2'
+      end
     end
   end
 end

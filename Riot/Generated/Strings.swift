@@ -1910,6 +1910,10 @@ internal enum VectorL10n {
   internal static var leave: String { 
     return VectorL10n.tr("Vector", "leave") 
   }
+  /// Less
+  internal static var less: String { 
+    return VectorL10n.tr("Vector", "less") 
+  }
   /// Got it
   internal static var majorUpdateDoneAction: String { 
     return VectorL10n.tr("Vector", "major_update_done_action") 
