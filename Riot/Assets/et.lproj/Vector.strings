@@ -1187,3 +1187,18 @@
 "room_details_advanced_e2e_encryption_enabled_for_dm" = "Krüptimine on selles jututoas kasutusel";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "Krüptimine ei ole selles jututoas kasutusel.";
 "pin_protection_kick_user_alert_message" = "Liiga palju vigu PIN-koodi sisestamisel ning sa oled nüüd välja logitud";
+"secrets_reset_authentication_message" = "Kinnitamaks seda muudatust, sisesta oma konto salasõna";
+"secrets_reset_reset_action" = "Taasta algolek";
+"secrets_reset_warning_message" = "Siis alustad nii, et kadunud on ajalugu, sõnumid ning usaldatud seadmed ja kasutajad.";
+"secrets_reset_warning_title" = "Kui sa alustad kõigega algusest";
+"secrets_reset_information" = "Jätka vaid siis, kui sul pole ühtegi muud seadet, millega seda seadet saaks verifitseerida.";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "Alusta kõigega algusest";
+"secrets_recovery_reset_action_part_2" = "Alusta kõigega algusest";
+
+// MARK: - Secrets recovery
+
+"secrets_recovery_reset_action_part_1" = "Kas sa unustasid või kaotasid kõik võimalused taastada ligipääsu oma kontole? ";
+"less" = "Vähem";
