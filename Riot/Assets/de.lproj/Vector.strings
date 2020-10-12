@@ -733,7 +733,7 @@
 "device_verification_emoji_bell" = "Glocke";
 "device_verification_emoji_anchor" = "Anker";
 "device_verification_emoji_headphones" = "Kopfhörer";
-"close" = "Beenden";
+"close" = "Schließen";
 "auth_softlogout_signed_out" = "Du bist abgemeldet";
 "auth_softlogout_sign_in" = "Einloggen";
 "auth_softlogout_reason" = "Deine Heimserver-Administration (%1$@) hat dich von deinem Konto %2$@ (%3$@) abgemeldet.";
@@ -1227,3 +1227,13 @@
 "room_details_advanced_e2e_encryption_enabled_for_dm" = "Verschlüsselung ist hier aktiviert";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "Verschlüsselung ist hier nicht aktiviert.";
 "pin_protection_kick_user_alert_message" = "Zu viele Fehler. Du wurdest ausgeloggt";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "Alles zurücksetzen";
+"secrets_recovery_reset_action_part_2" = "Alles zurücksetzen";
+
+// MARK: - Secrets recovery
+
+"secrets_recovery_reset_action_part_1" = "Wiederherstellungsoptionen vergessen oder verloren? ";
+"less" = "Weniger";
