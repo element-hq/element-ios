@@ -1221,3 +1221,18 @@
 "room_details_advanced_e2e_encryption_enabled_for_dm" = "La crittografia è attiva";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "La crittografia non è attiva.";
 "pin_protection_kick_user_alert_message" = "Troppi errori, sei stato disconnesso";
+"secrets_reset_authentication_message" = "Inserisci la password del tuo account per confermare";
+"secrets_reset_reset_action" = "Reimposta";
+"secrets_reset_warning_message" = "Ricomincerai senza cronologia, messaggi, dispositivi o utenti fidati.";
+"secrets_reset_warning_title" = "Se reimposti tutto";
+"secrets_reset_information" = "Fallo solo se non hai altri dispositivi con cui verificare questo.";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "Reimposta tutto";
+
+// MARK: - Secrets recovery
+
+"secrets_recovery_reset_action_part_1" = "Dimenticato o perso tutte le opzioni di recupero? ";
+"less" = "Riduci";
+"secrets_recovery_reset_action_part_2" = "Reimposta tutto";
