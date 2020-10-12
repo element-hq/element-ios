@@ -101,13 +101,13 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func setupLogger() {
-//        if !NotificationService.isLoggerInitialized {
-//            if isatty(STDERR_FILENO) == 0 {
-//                MXLogger.setSubLogName("nse")
-//                MXLogger.redirectNSLog(toFiles: true)
-//            }
-//            NotificationService.isLoggerInitialized = true
-//        }
+        if !NotificationService.isLoggerInitialized {
+            if isatty(STDERR_FILENO) == 0 {
+                MXLogger.setSubLogName("nse")
+                MXLogger.redirectNSLog(toFiles: true)
+            }
+            NotificationService.isLoggerInitialized = true
+        }
     }
     
     func setup(withRoomId roomId: String, eventId: String, completion: @escaping () -> Void) {
