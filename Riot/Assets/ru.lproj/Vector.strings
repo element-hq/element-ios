@@ -846,7 +846,7 @@
 "media_type_accessibility_sticker" = "Стикер";
 "settings_discovery_settings" = "ПОИСК";
 "settings_identity_server_settings" = "ПОИСК СЕРВЕРА";
-"settings_three_pids_management_information_part1" = "Управление адресами электронной почты или номерами телефонов, которые можно использовать для входа в систему или восстановления здесь учетной записи . Контроль над тем, кто может тебя найти ";
+"settings_three_pids_management_information_part1" = "Управление адресами электронной почты или номерами телефонов, которые можно использовать для входа в систему или восстановления здесь учетной записи. Контроль над тем, кто может тебя найти ";
 "settings_three_pids_management_information_part2" = "Поиск";
 "settings_three_pids_management_information_part3" = ".";
 "settings_calls_stun_server_fallback_button" = "Разрешить резервный вызов сервером поддержки";
