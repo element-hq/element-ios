@@ -605,7 +605,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     _isAppForeground = YES;
     
-    [self configurePinCodeScreenFor:application createIfRequired:NO];
+//    [self configurePinCodeScreenFor:application createIfRequired:NO];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -715,6 +715,13 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
     for (MXKAccount *account in mxAccounts)
     {
+        SyncResponseFileStore *syncResponseStore = [[SyncResponseFileStore alloc] initWithCredentials:account.mxCredentials];
+        MXSyncResponse *syncResponse = syncResponseStore.syncResponse;
+        if (syncResponse)
+        {
+            [account.mxSession handleSyncResponse:syncResponse];
+        }
+        //  Do not resume for now, to test we've really fetched the events
         [account resume];
     }
     

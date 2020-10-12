@@ -305,7 +305,7 @@ Matrix session observer used to detect new opened sessions.
             NSLog(@"[PushNotificationService] launchBackgroundSync");
             MXWeakify(self);
 
-            [account backgroundSync:20000 success:^{
+            [account backgroundSync:20000 success:^(MXSyncResponse *syncResponse) {
                 
                 // Sanity check
                 MXStrongifyAndReturnIfNil(self);

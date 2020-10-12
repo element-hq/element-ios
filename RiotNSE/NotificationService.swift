@@ -29,6 +29,7 @@ class NotificationService: UNNotificationServiceExtension {
     /// Cached events. Keys are eventId's
     var cachedEvents: [String: MXEvent] = [:]
     static var mxSession: MXSession?
+    static var syncResponseStore: SyncResponseStore?
     var showDecryptedContentInNotifications: Bool {
         return RiotSettings.shared.showDecryptedContentInNotifications
     }
@@ -100,17 +101,20 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func setupLogger() {
-        if !NotificationService.isLoggerInitialized {
-            if isatty(STDERR_FILENO) == 0 {
-                MXLogger.setSubLogName("nse")
-                MXLogger.redirectNSLog(toFiles: true)
-            }
-            NotificationService.isLoggerInitialized = true
-        }
+//        if !NotificationService.isLoggerInitialized {
+//            if isatty(STDERR_FILENO) == 0 {
+//                MXLogger.setSubLogName("nse")
+//                MXLogger.redirectNSLog(toFiles: true)
+//            }
+//            NotificationService.isLoggerInitialized = true
+//        }
     }
     
     func setup(withRoomId roomId: String, eventId: String, completion: @escaping () -> Void) {
         if let userAccount = MXKAccountManager.shared()?.activeAccounts.first {
+            if NotificationService.syncResponseStore == nil {
+                NotificationService.syncResponseStore = SyncResponseFileStore(withCredentials: userAccount.mxCredentials)
+            }
             if NotificationService.mxSession == nil {
                 let store = NSEMemoryStore(withCredentials: userAccount.mxCredentials)
                 NotificationService.mxSession = MXSession(matrixRestClient: MXRestClient(credentials: userAccount.mxCredentials, unrecognizedCertificateHandler: nil))
@@ -216,32 +220,45 @@ class NotificationService: UNNotificationServiceExtension {
             //  use cached event
             handleEncryption(forEvent: cachedEvent)
         } else {
-            //  attempt to fetch the event
-            mxSession.event(withEventId: eventId, inRoom: roomId, success: { [weak self] (event) in
-                guard let self = self else {
-                    NSLog("[NotificationService] fetchEvent: MXSession.event method returned too late successfully.")
-                    return
-                }
-                
-                guard let event = event else {
-                    NSLog("[NotificationService] fetchEvent: MXSession.event method returned successfully with no event.")
-                    self.fallbackToBestAttemptContent(forEventId: eventId)
-                    return
-                }
-                
+            //  do not call the /event api and just check if the event exists in the store
+            if let event = mxSession.store.event(withEventId: eventId, inRoom: roomId) {
+                NSLog("[NotificationService] fetchEvent: We have the event in store.")
                 //  cache this event
                 self.cachedEvents[eventId] = event
                 
                 //  handle encryption for this event
                 handleEncryption(forEvent: event)
-            }) { [weak self] (error) in
-                guard let self = self else {
-                    NSLog("[NotificationService] fetchEvent: MXSession.event method returned too late with error: \(String(describing: error))")
-                    return
-                }
-                NSLog("[NotificationService] fetchEvent: MXSession.event method returned error: \(String(describing: error))")
-                self.fallbackToBestAttemptContent(forEventId: eventId)
+            } else {
+                NSLog("[NotificationService] fetchEvent: We don't have the event in store. Launch a background sync to fetch it.")
+                self.launchBackgroundSync(forEventId: eventId, roomId: roomId)
             }
+//
+//            //  attempt to fetch the event
+//            mxSession.event(withEventId: eventId, inRoom: roomId, success: { [weak self] (event) in
+//                guard let self = self else {
+//                    NSLog("[NotificationService] fetchEvent: MXSession.event method returned too late successfully.")
+//                    return
+//                }
+//
+//                guard let event = event else {
+//                    NSLog("[NotificationService] fetchEvent: MXSession.event method returned successfully with no event.")
+//                    self.fallbackToBestAttemptContent(forEventId: eventId)
+//                    return
+//                }
+//
+//                //  cache this event
+//                self.cachedEvents[eventId] = event
+//
+//                //  handle encryption for this event
+//                handleEncryption(forEvent: event)
+//            }) { [weak self] (error) in
+//                guard let self = self else {
+//                    NSLog("[NotificationService] fetchEvent: MXSession.event method returned too late with error: \(String(describing: error))")
+//                    return
+//                }
+//                NSLog("[NotificationService] fetchEvent: MXSession.event method returned error: \(String(describing: error))")
+//                self.fallbackToBestAttemptContent(forEventId: eventId)
+//            }
         }
     }
     
@@ -255,11 +272,19 @@ class NotificationService: UNNotificationServiceExtension {
         //  launch an initial background sync
         mxSession.backgroundSync(withTimeout: 20, ignoreSessionState: true) { [weak self] (response) in
             switch response {
-            case .success:
+            case .success(let syncResponse):
                 guard let self = self else {
                     NSLog("[NotificationService] launchBackgroundSync: MXSession.initialBackgroundSync returned too late successfully")
                     return
                 }
+                
+                if let oldSyncResponse = NotificationService.syncResponseStore?.syncResponse {
+                    oldSyncResponse.update(with: syncResponse)
+                    NotificationService.syncResponseStore?.syncResponse = oldSyncResponse
+                } else {
+                    NotificationService.syncResponseStore?.syncResponse = syncResponse
+                }
+                
                 //  do not allow to sync anymore
                 self.fetchEvent(withEventId: eventId, roomId: roomId, allowSync: false)
                 break
