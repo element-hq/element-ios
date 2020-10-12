@@ -715,15 +715,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
     for (MXKAccount *account in mxAccounts)
     {
-        SyncResponseFileStore *syncResponseStore = [[SyncResponseFileStore alloc] initWithCredentials:account.mxCredentials];
-        MXSyncResponse *syncResponse = syncResponseStore.syncResponse;
-        if (syncResponse)
-        {
-            [account.mxSession handleSyncResponse:syncResponse];
-        }
-        [syncResponseStore deleteData];
-        //  Do not resume for now, to test we've really fetched the events
-//        [account resume];
+        [account resume];
     }
     
     _isAppForeground = YES;
