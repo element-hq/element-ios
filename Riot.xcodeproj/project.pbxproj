@@ -787,9 +787,10 @@
 		EC3B066A24AC6ADE000DF9BF /* CrossSigningSetupBannerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC3B066624AC6ADD000DF9BF /* CrossSigningSetupBannerCell.xib */; };
 		EC3B066B24AC6ADE000DF9BF /* CrossSigningBannerPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3B066724AC6ADD000DF9BF /* CrossSigningBannerPreferences.swift */; };
 		EC3B066C24AC6ADE000DF9BF /* CrossSigningSetupBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3B066824AC6ADD000DF9BF /* CrossSigningSetupBannerCell.swift */; };
-		EC45DB1725344B8A006911C1 /* MXSyncResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC45DB1525344B89006911C1 /* MXSyncResponse.swift */; };
 		EC45DB1825344B8A006911C1 /* SyncResponseStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC45DB1625344B89006911C1 /* SyncResponseStore.swift */; };
 		EC45DB1925344B8E006911C1 /* SyncResponseStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC45DB1625344B89006911C1 /* SyncResponseStore.swift */; };
+		EC45DB992534969E006911C1 /* NSDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC45DB982534969E006911C1 /* NSDictionary.swift */; };
+		EC45DB9A253499FE006911C1 /* NSDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC45DB982534969E006911C1 /* NSDictionary.swift */; };
 		EC49F5F92515016F003894A6 /* RoomInfoBasicViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC49F5F82515016F003894A6 /* RoomInfoBasicViewData.swift */; };
 		EC51E78D250FC15000AAE7DB /* RoomCreationEventRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC51E78C250FC15000AAE7DB /* RoomCreationEventRowViewModel.swift */; };
 		EC51E7902510B7C700AAE7DB /* AutosizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC51E78F2510B7C700AAE7DB /* AutosizedTableView.swift */; };
@@ -2014,8 +2015,8 @@
 		EC3B066624AC6ADD000DF9BF /* CrossSigningSetupBannerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CrossSigningSetupBannerCell.xib; sourceTree = "<group>"; };
 		EC3B066724AC6ADD000DF9BF /* CrossSigningBannerPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossSigningBannerPreferences.swift; sourceTree = "<group>"; };
 		EC3B066824AC6ADD000DF9BF /* CrossSigningSetupBannerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossSigningSetupBannerCell.swift; sourceTree = "<group>"; };
-		EC45DB1525344B89006911C1 /* MXSyncResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MXSyncResponse.swift; sourceTree = "<group>"; };
 		EC45DB1625344B89006911C1 /* SyncResponseStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncResponseStore.swift; sourceTree = "<group>"; };
+		EC45DB982534969E006911C1 /* NSDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSDictionary.swift; sourceTree = "<group>"; };
 		EC49F5F82515016F003894A6 /* RoomInfoBasicViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomInfoBasicViewData.swift; sourceTree = "<group>"; };
 		EC51E78C250FC15000AAE7DB /* RoomCreationEventRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCreationEventRowViewModel.swift; sourceTree = "<group>"; };
 		EC51E78F2510B7C700AAE7DB /* AutosizedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutosizedTableView.swift; sourceTree = "<group>"; };
@@ -5144,7 +5145,7 @@
 				EC85D74E2477E614002C44C9 /* RiotNSE.entitlements */,
 				EC85D7452477E5F7002C44C9 /* NotificationService.swift */,
 				EC85D756247E700F002C44C9 /* NSEMemoryStore.swift */,
-				EC45DB1525344B89006911C1 /* MXSyncResponse.swift */,
+				EC45DB982534969E006911C1 /* NSDictionary.swift */,
 				EC45DB1625344B89006911C1 /* SyncResponseStore.swift */,
 				EC85D7472477E5F7002C44C9 /* Info.plist */,
 				EC1CA8D924D811B400DE9EBF /* NSE-Common.xcconfig */,
@@ -6168,9 +6169,9 @@
 				EC31F0952521FC4600D407DA /* PinCodePreferences.swift in Sources */,
 				32FD757424D2BEF700BA7B37 /* InfoPlist.swift in Sources */,
 				EC31F09C2524AE1400D407DA /* BiometricsAuthenticationPresenter.swift in Sources */,
+				EC45DB992534969E006911C1 /* NSDictionary.swift in Sources */,
 				EC85D752247C0F52002C44C9 /* UNUserNotificationCenter.swift in Sources */,
 				EC9A3EC724E1634100A8CFAE /* KeyValueStore.swift in Sources */,
-				EC45DB1725344B8A006911C1 /* MXSyncResponse.swift in Sources */,
 				32FD757A24D2C9BA00BA7B37 /* Bundle.swift in Sources */,
 				EC31F0962521FC5300D407DA /* Strings.swift in Sources */,
 				EC31F0972521FC6300D407DA /* Images.swift in Sources */,
@@ -6734,6 +6735,7 @@
 				B1B558FA20EF768F00210D55 /* RoomMembershipBubbleCell.m in Sources */,
 				B157FAA223264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsViewAction.swift in Sources */,
 				EC85D6AE2477DC89002C44C9 /* RoundedButton.swift in Sources */,
+				EC45DB9A253499FE006911C1 /* NSDictionary.swift in Sources */,
 				B1CE83D72422817200D07506 /* KeyVerificationVerifyByScanningViewModelType.swift in Sources */,
 				3232ABA1225730E100AD6A5C /* KeyVerificationCoordinatorType.swift in Sources */,
 				B1C562D9228C0B760037F12A /* RoomContextualMenuItem.swift in Sources */,

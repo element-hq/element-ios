@@ -18,7 +18,9 @@ import Foundation
 import MatrixSDK
 
 @objc protocol SyncResponseStore: NSObjectProtocol {
-    var syncResponse: MXSyncResponse? { get set }
+    var syncResponse: MXSyncResponse? { get }
+    func update(with response: MXSyncResponse?)
+    func deleteData()
 }
 
 @objcMembers
@@ -96,11 +98,27 @@ class SyncResponseFileStore: NSObject {
 extension SyncResponseFileStore: SyncResponseStore {
     
     var syncResponse: MXSyncResponse? {
-        get {
-            return readSyncResponse()
-        } set {
-            saveSyncResponse(newValue)
+        return readSyncResponse()
+    }
+    
+    func update(with response: MXSyncResponse?) {
+        guard let response = response else {
+            //  Return if no new response
+            return
         }
+        if let syncResponse = syncResponse {
+            //  current sync response exists, merge it with the new response
+            var dictionary = NSDictionary(dictionary: syncResponse.jsonDictionary())
+            dictionary = dictionary + NSDictionary(dictionary: response.jsonDictionary())
+            saveSyncResponse(MXSyncResponse(fromJSON: dictionary as? [AnyHashable : Any]))
+        } else {
+            //  no current sync response, directly save the new one
+            saveSyncResponse(response)
+        }
+    }
+    
+    func deleteData() {
+        saveSyncResponse(nil)
     }
     
 }

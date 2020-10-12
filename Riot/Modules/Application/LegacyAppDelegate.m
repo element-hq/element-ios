@@ -721,8 +721,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         {
             [account.mxSession handleSyncResponse:syncResponse];
         }
+        [syncResponseStore deleteData];
         //  Do not resume for now, to test we've really fetched the events
-        [account resume];
+//        [account resume];
     }
     
     _isAppForeground = YES;

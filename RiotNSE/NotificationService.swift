@@ -228,37 +228,13 @@ class NotificationService: UNNotificationServiceExtension {
                 
                 //  handle encryption for this event
                 handleEncryption(forEvent: event)
-            } else {
+            } else if allowSync {
                 NSLog("[NotificationService] fetchEvent: We don't have the event in store. Launch a background sync to fetch it.")
                 self.launchBackgroundSync(forEventId: eventId, roomId: roomId)
+            } else {
+                NSLog("[NotificationService] fetchEvent: We don't have the event in store. Do not sync anymore.")
+                self.fallbackToBestAttemptContent(forEventId: eventId)
             }
-//
-//            //  attempt to fetch the event
-//            mxSession.event(withEventId: eventId, inRoom: roomId, success: { [weak self] (event) in
-//                guard let self = self else {
-//                    NSLog("[NotificationService] fetchEvent: MXSession.event method returned too late successfully.")
-//                    return
-//                }
-//
-//                guard let event = event else {
-//                    NSLog("[NotificationService] fetchEvent: MXSession.event method returned successfully with no event.")
-//                    self.fallbackToBestAttemptContent(forEventId: eventId)
-//                    return
-//                }
-//
-//                //  cache this event
-//                self.cachedEvents[eventId] = event
-//
-//                //  handle encryption for this event
-//                handleEncryption(forEvent: event)
-//            }) { [weak self] (error) in
-//                guard let self = self else {
-//                    NSLog("[NotificationService] fetchEvent: MXSession.event method returned too late with error: \(String(describing: error))")
-//                    return
-//                }
-//                NSLog("[NotificationService] fetchEvent: MXSession.event method returned error: \(String(describing: error))")
-//                self.fallbackToBestAttemptContent(forEventId: eventId)
-//            }
         }
     }
     
@@ -268,23 +244,18 @@ class NotificationService: UNNotificationServiceExtension {
             self.fallbackToBestAttemptContent(forEventId: eventId)
             return
         }
-
-        //  launch an initial background sync
-        mxSession.backgroundSync(withTimeout: 20, ignoreSessionState: true) { [weak self] (response) in
+        
+        //  launch a background sync, set serverTimeout as 0.1 to avoid session to decide continue catching up
+        mxSession.backgroundSync(withTimeout: 20, serverTimeout: 0.1, ignoreSessionState: true) { [weak self] (response) in
             switch response {
             case .success(let syncResponse):
                 guard let self = self else {
                     NSLog("[NotificationService] launchBackgroundSync: MXSession.initialBackgroundSync returned too late successfully")
                     return
                 }
-                
-                if let oldSyncResponse = NotificationService.syncResponseStore?.syncResponse {
-                    oldSyncResponse.update(with: syncResponse)
-                    NotificationService.syncResponseStore?.syncResponse = oldSyncResponse
-                } else {
-                    NotificationService.syncResponseStore?.syncResponse = syncResponse
-                }
-                
+
+                NotificationService.syncResponseStore?.update(with: syncResponse)
+
                 //  do not allow to sync anymore
                 self.fetchEvent(withEventId: eventId, roomId: roomId, allowSync: false)
                 break
