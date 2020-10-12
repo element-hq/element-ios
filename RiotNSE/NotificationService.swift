@@ -113,7 +113,8 @@ class NotificationService: UNNotificationServiceExtension {
     func setup(withRoomId roomId: String, eventId: String, completion: @escaping () -> Void) {
         if let userAccount = MXKAccountManager.shared()?.activeAccounts.first {
             if NotificationService.syncResponseStore == nil {
-                NotificationService.syncResponseStore = SyncResponseFileStore(withCredentials: userAccount.mxCredentials)
+                NotificationService.syncResponseStore = SyncResponseFileStore()
+                NotificationService.syncResponseStore?.open(withCredentials: userAccount.mxCredentials)
             }
             if NotificationService.mxSession == nil {
                 let store = NSEMemoryStore(withCredentials: userAccount.mxCredentials)
