@@ -67,12 +67,6 @@
 // Accessibility
 "accessibility_checkbox_label" = "checkbox";
 
-// MARK: Clients
-"client_desktop_name" = "Element Desktop";
-"client_web_name" = "Element Web";
-"client_ios_name" = "Element iOS";
-"client_android_name" = "Element Android";
-
 // Authentication
 "auth_login" = "Log in";
 "auth_register" = "Register";
@@ -1137,7 +1131,7 @@
 "device_verification_self_verify_wait_title" = "Complete security";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verify this login";
 "device_verification_self_verify_wait_information" = "Verify this session from one of your other sessions, granting it access to encrypted messages.\n\nUse the latest Element on your other devices:";
-"device_verification_self_verify_wait_additional_information" = "or another cross-signing capable Matrix client";
+"device_verification_self_verify_wait_additional_information" = "This works with Element and other cross-signing capable Matrix cients.";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Use Recovery Key";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Use Recovery Passphrase or Key";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "If you can't accessing an existing session";
