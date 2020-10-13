@@ -227,6 +227,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 @property (nonatomic, weak) id userDidSignInOnNewDeviceObserver;
 @property (weak, nonatomic) UIAlertController *userNewSignInAlertController;
 
+@property (nonatomic, weak) id userDidChangeCrossSigningKeysObserver;
+
 /**
  Related push notification service instance. Will be created when launch finished.
  */
@@ -1772,6 +1774,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             
             // Register to user new device sign in notification
             [self registerUserDidSignInOnNewDeviceNotificationForSession:mxSession];
+            
+            [self registerDidChangeCrossSigningKeysNotificationForSession:mxSession];
             
             // Register to new key verification request
             [self registerNewRequestNotificationForSession:mxSession];
@@ -4224,9 +4228,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)presentNewSignInAlertForDevice:(MXDevice*)device inSession:(MXSession*)session
 {
+    NSLog(@"[AppDelegate] presentNewSignInAlertForDevice: %@", device.deviceId);
+    
     if (self.userNewSignInAlertController)
     {
-        return;
+        [self.userNewSignInAlertController dismissViewControllerAnimated:NO completion:nil];
     }
     
     NSString *deviceInfo;
@@ -4242,7 +4248,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     NSString *alertMessage = [NSString stringWithFormat:NSLocalizedStringFromTable(@"device_verification_self_verify_alert_message", @"Vector", nil), deviceInfo];
     
-    
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"device_verification_self_verify_alert_title", @"Vector", nil)
                                                                    message:alertMessage
                                                             preferredStyle:UIAlertControllerStyleAlert];
@@ -4250,18 +4255,57 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"device_verification_self_verify_alert_validate_action", @"Vector", nil)
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
-                                                
-                                                [self presentSelfVerificationForOtherDeviceId:device.deviceId inSession:session];
-                                            }]];
+        self.userNewSignInAlertController = nil;
+        [self presentSelfVerificationForOtherDeviceId:device.deviceId inSession:session];
+    }]];
     
     [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
-                                               style:UIAlertActionStyleCancel
-                                             handler:nil]];
+                                              style:UIAlertActionStyleCancel
+                                            handler:^(UIAlertAction * action) {
+        self.userNewSignInAlertController = nil;
+    }]];
      
     [self presentViewController:alert animated:YES completion:nil];
     
     self.userNewSignInAlertController = alert;
 }
+
+
+#pragma mark - Cross-signing reset detection
+
+- (void)registerDidChangeCrossSigningKeysNotificationForSession:(MXSession*)session
+{
+    MXCrossSigning *crossSigning = session.crypto.crossSigning;
+    
+    if (!crossSigning)
+    {
+        return;
+    }
+    
+    MXWeakify(self);
+
+    self.userDidChangeCrossSigningKeysObserver = [NSNotificationCenter.defaultCenter addObserverForName:MXCrossSigningDidChangeCrossSigningKeysNotification
+                                                                                                 object:crossSigning
+                                                                                                  queue:[NSOperationQueue mainQueue]
+                                                                                             usingBlock:^(NSNotification *notification)
+                                                  {
+                                                  
+         MXStrongifyAndReturnIfNil(self);
+               
+        NSLog(@"[AppDelegate] registerDidChangeCrossSigningKeysNotificationForSession");
+        
+        if (self.userNewSignInAlertController)
+        {
+            NSLog(@"[AppDelegate] registerDidChangeCrossSigningKeysNotificationForSession: Hide NewSignInAlertController");
+            
+            [self.userNewSignInAlertController dismissViewControllerAnimated:NO completion:nil];
+            self.userNewSignInAlertController = nil;
+        }
+        
+        [self.masterTabBarController presentVerifyCurrentSessionAlertIfNeededWithSession:session];
+    }];
+}
+
 
 #pragma mark - Complete security
 
