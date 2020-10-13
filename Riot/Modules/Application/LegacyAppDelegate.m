@@ -4228,9 +4228,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)presentNewSignInAlertForDevice:(MXDevice*)device inSession:(MXSession*)session
 {
+    NSLog(@"[AppDelegate] presentNewSignInAlertForDevice: %@", device.deviceId);
+    
     if (self.userNewSignInAlertController)
     {
-        return;
+        [self.userNewSignInAlertController dismissViewControllerAnimated:NO completion:nil];
     }
     
     NSString *deviceInfo;
@@ -4246,7 +4248,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     NSString *alertMessage = [NSString stringWithFormat:NSLocalizedStringFromTable(@"device_verification_self_verify_alert_message", @"Vector", nil), deviceInfo];
     
-    
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"device_verification_self_verify_alert_title", @"Vector", nil)
                                                                    message:alertMessage
                                                             preferredStyle:UIAlertControllerStyleAlert];
@@ -4254,13 +4255,15 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"device_verification_self_verify_alert_validate_action", @"Vector", nil)
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
-                                                
-                                                [self presentSelfVerificationForOtherDeviceId:device.deviceId inSession:session];
-                                            }]];
+        self.userNewSignInAlertController = nil;
+        [self presentSelfVerificationForOtherDeviceId:device.deviceId inSession:session];
+    }]];
     
     [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
-                                               style:UIAlertActionStyleCancel
-                                             handler:nil]];
+                                              style:UIAlertActionStyleCancel
+                                            handler:^(UIAlertAction * action) {
+        self.userNewSignInAlertController = nil;
+    }]];
      
     [self presentViewController:alert animated:YES completion:nil];
     
@@ -4280,11 +4283,20 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     
     self.userDidChangeCrossSigningKeysObserver = [NSNotificationCenter.defaultCenter addObserverForName:MXCrossSigningDidChangeCrossSigningKeysNotification
-                                                                                            object:crossSigning
-                                                                                             queue:[NSOperationQueue mainQueue]
-                                                                                        usingBlock:^(NSNotification *notification)
-                                             {
+                                                                                                 object:crossSigning
+                                                                                                  queue:[NSOperationQueue mainQueue]
+                                                                                             usingBlock:^(NSNotification *notification)
+                                                  {
         NSLog(@"[AppDelegate] registerDidChangeCrossSigningKeysNotificationForSession");
+        
+        if (self.userNewSignInAlertController)
+        {
+            NSLog(@"[AppDelegate] registerDidChangeCrossSigningKeysNotificationForSession: Hide NewSignInAlertController");
+            
+            [self.userNewSignInAlertController dismissViewControllerAnimated:NO completion:nil];
+            self.userNewSignInAlertController = nil;
+        }
+        
         [self.masterTabBarController presentVerifyCurrentSessionAlertIfNeededWithSession:session];
     }];
 }
