@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * NSE: Background sync and store/aggregate sync responses on pushes, to make messages available when the app is foregrounded (#3579).
 
 🐛 Bugfix
  * 
