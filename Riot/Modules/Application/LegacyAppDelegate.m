@@ -227,6 +227,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 @property (nonatomic, weak) id userDidSignInOnNewDeviceObserver;
 @property (weak, nonatomic) UIAlertController *userNewSignInAlertController;
 
+@property (nonatomic, weak) id userDidChangeCrossSigningKeysObserver;
+
 /**
  Related push notification service instance. Will be created when launch finished.
  */
@@ -1772,6 +1774,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             
             // Register to user new device sign in notification
             [self registerUserDidSignInOnNewDeviceNotificationForSession:mxSession];
+            
+            [self registerDidChangeCrossSigningKeysNotificationForSession:mxSession];
             
             // Register to new key verification request
             [self registerNewRequestNotificationForSession:mxSession];
@@ -4262,6 +4266,29 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     self.userNewSignInAlertController = alert;
 }
+
+
+#pragma mark - Cross-signing reset detection
+
+- (void)registerDidChangeCrossSigningKeysNotificationForSession:(MXSession*)session
+{
+    MXCrossSigning *crossSigning = session.crypto.crossSigning;
+    
+    if (!crossSigning)
+    {
+        return;
+    }
+    
+    self.userDidChangeCrossSigningKeysObserver = [NSNotificationCenter.defaultCenter addObserverForName:MXCrossSigningDidChangeCrossSigningKeysNotification
+                                                                                            object:crossSigning
+                                                                                             queue:[NSOperationQueue mainQueue]
+                                                                                        usingBlock:^(NSNotification *notification)
+                                             {
+        NSLog(@"[AppDelegate] registerDidChangeCrossSigningKeysNotificationForSession");
+        [self.masterTabBarController presentVerifyCurrentSessionAlertIfNeededWithSession:session];
+    }];
+}
+
 
 #pragma mark - Complete security
 

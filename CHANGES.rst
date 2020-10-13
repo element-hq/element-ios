@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Cross-signing: Detect when cross-signing keys have been changed.
 
 🐛 Bugfix
  * 
