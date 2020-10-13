@@ -470,22 +470,6 @@ internal enum VectorL10n {
   internal static var cancel: String { 
     return VectorL10n.tr("Vector", "cancel") 
   }
-  /// Element Android
-  internal static var clientAndroidName: String { 
-    return VectorL10n.tr("Vector", "client_android_name") 
-  }
-  /// Element Desktop
-  internal static var clientDesktopName: String { 
-    return VectorL10n.tr("Vector", "client_desktop_name") 
-  }
-  /// Element iOS
-  internal static var clientIosName: String { 
-    return VectorL10n.tr("Vector", "client_ios_name") 
-  }
-  /// Element Web
-  internal static var clientWebName: String { 
-    return VectorL10n.tr("Vector", "client_web_name") 
-  }
   /// Close
   internal static var close: String { 
     return VectorL10n.tr("Vector", "close") 
@@ -966,7 +950,7 @@ internal enum VectorL10n {
   internal static var deviceVerificationSelfVerifyStartWaiting: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_start_waiting") 
   }
-  /// or another cross-signing capable Matrix client
+  /// This works with Element and other cross-signing capable Matrix cients.
   internal static var deviceVerificationSelfVerifyWaitAdditionalInformation: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_additional_information") 
   }
