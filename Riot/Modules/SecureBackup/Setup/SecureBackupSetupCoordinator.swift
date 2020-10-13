@@ -29,6 +29,7 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     private let session: MXSession
     private let recoveryService: MXRecoveryService
     private let keyBackup: MXKeyBackup?
+    private let checkKeyBackup: Bool
 
     // MARK: Public
 
@@ -39,10 +40,16 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     
     // MARK: - Setup
     
-    init(session: MXSession, navigationRouter: NavigationRouterType? = nil) {
+    /// Initializer
+    /// - Parameters:
+    ///   - session: The MXSession.
+    ///   - checkKeyBackup: Indicate false to ignore existing key backup.
+    ///   - navigationRouter: Use existing navigation router to plug this flow or let nil to use new one.
+    init(session: MXSession, checkKeyBackup: Bool = true, navigationRouter: NavigationRouterType? = nil) {
         self.session = session
         self.recoveryService = session.crypto.recoveryService
         self.keyBackup = session.crypto.backup
+        self.checkKeyBackup = checkKeyBackup
         
         if let navigationRouter = navigationRouter {
             self.navigationRouter = navigationRouter
@@ -70,9 +77,10 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     // MARK: - Private methods
 
     private func createIntro() -> SecureBackupSetupIntroViewController {
-        let introViewController = SecureBackupSetupIntroViewController.instantiate()
+        // TODO: Use a coordinator
+        let viewModel = SecureBackupSetupIntroViewModel(keyBackup: self.keyBackup, checkKeyBackup: self.checkKeyBackup)
+        let introViewController = SecureBackupSetupIntroViewController.instantiate(with: viewModel)
         introViewController.delegate = self
-        introViewController.keyBackup = self.keyBackup
         return introViewController
     }
     
