@@ -4282,11 +4282,16 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         return;
     }
     
+    MXWeakify(self);
+
     self.userDidChangeCrossSigningKeysObserver = [NSNotificationCenter.defaultCenter addObserverForName:MXCrossSigningDidChangeCrossSigningKeysNotification
                                                                                                  object:crossSigning
                                                                                                   queue:[NSOperationQueue mainQueue]
                                                                                              usingBlock:^(NSNotification *notification)
                                                   {
+                                                  
+         MXStrongifyAndReturnIfNil(self);
+               
         NSLog(@"[AppDelegate] registerDidChangeCrossSigningKeysNotificationForSession");
         
         if (self.userNewSignInAlertController)
