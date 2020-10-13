@@ -216,6 +216,7 @@ final class BuildSettings: NSObject {
     static let messageDetailsAllowPermalink: Bool = true
     static let messageDetailsAllowViewSource: Bool = true
     static let messageDetailsAllowSave: Bool = true
+    static let messageDetailsAllowCopyMedia: Bool = true
     
     // MARK: - HTTP
     /// Additional HTTP headers will be sent by all requests. Not recommended to use request-specific headers, like `Authorization`.

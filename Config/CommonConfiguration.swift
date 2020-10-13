@@ -43,6 +43,7 @@ class CommonConfiguration: NSObject, Configurable {
         
         settings.messageDetailsAllowSharing = BuildSettings.messageDetailsAllowShare
         settings.messageDetailsAllowSaving = BuildSettings.messageDetailsAllowSave
+        settings.messageDetailsAllowCopyingMedia = BuildSettings.messageDetailsAllowCopyMedia
         
         MXKContactManager.shared().allowLocalContactsAccess = BuildSettings.allowLocalContactsAccess
     }
