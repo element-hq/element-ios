@@ -73,7 +73,9 @@
     self.recentsTableView.tag = RecentsDataSourceModeHome;
     
     // Add the (+) button programmatically
-    [self addPlusButton];
+    plusButtonImageView = [self vc_addFABWithImage:[UIImage imageNamed:@"plus_floating_action"]
+                                            target:self
+                                            action:@selector(onPlusButtonPressed)];
     
     // Register table view cell used for rooms collection.
     [self.recentsTableView registerClass:TableViewCellWithCollectionView.class forCellReuseIdentifier:TableViewCellWithCollectionView.defaultReuseIdentifier];

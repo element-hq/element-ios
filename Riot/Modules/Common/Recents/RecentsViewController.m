@@ -1606,36 +1606,6 @@
 
 #pragma mark - Room handling
 
-- (void)addPlusButton
-{
-    // Add room options button
-    plusButtonImageView = [[UIImageView alloc] init];
-    [plusButtonImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self.view addSubview:plusButtonImageView];
-    
-    plusButtonImageView.backgroundColor = [UIColor clearColor];
-    plusButtonImageView.contentMode = UIViewContentModeCenter;
-    plusButtonImageView.image = [UIImage imageNamed:@"plus_floating_action"];
-    plusButtonImageView.layer.shadowOpacity = 0.3;
-    plusButtonImageView.layer.shadowOffset = CGSizeMake(0, 3);
-    
-    CGFloat side = 78.0f;
-    [plusButtonImageView.widthAnchor constraintEqualToConstant:side].active = YES;
-    [plusButtonImageView.heightAnchor constraintEqualToConstant:side].active = YES;
-    
-    //  align to safe area
-    [plusButtonImageView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor].active = YES;
-    [self.view.safeAreaLayoutGuide.bottomAnchor constraintEqualToAnchor:plusButtonImageView.bottomAnchor constant:9].active = YES;
-    
-    plusButtonImageView.userInteractionEnabled = YES;
-    
-    // Handle tap gesture
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onPlusButtonPressed)];
-    [tap setNumberOfTouchesRequired:1];
-    [tap setNumberOfTapsRequired:1];
-    [plusButtonImageView addGestureRecognizer:tap];
-}
-
 - (void)onPlusButtonPressed
 {
     __weak typeof(self) weakSelf = self;
