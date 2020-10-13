@@ -121,11 +121,8 @@ class NSEMemoryStore: MXMemoryStore {
     
     override var syncFilterId: String? {
         get {
+            //  Return real sync filter
             return fileStore.syncFilterId
-//            let filter = MXFilterJSONModel()
-//            filter.room = MXRoomFilter()
-//            filter.room.rooms = []
-//            return filter.jsonString()
         } set {
             //  no-op
         }
