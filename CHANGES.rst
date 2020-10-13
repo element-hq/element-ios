@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Self-verification: Update complete security screen wording (#3743).
 
 🐛 Bugfix
  * 
