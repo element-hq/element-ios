@@ -33,10 +33,7 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     @IBOutlet private weak var informationLabel: UILabel!
     
     @IBOutlet private weak var desktopClientImageView: UIImageView!
-    @IBOutlet private weak var desktopClientLabel: UILabel!
-    
     @IBOutlet private weak var mobileClientImageView: UIImageView!
-    @IBOutlet private weak var mobileClientLabel: UILabel!
     
     @IBOutlet private weak var additionalInformationLabel: UILabel!
     
@@ -99,11 +96,9 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         }
         
         self.informationLabel.textColor = theme.textPrimaryColor
-        self.desktopClientLabel.textColor = theme.textPrimaryColor
         self.desktopClientImageView.tintColor = theme.tintColor
-        self.mobileClientLabel.textColor = theme.textPrimaryColor
         self.mobileClientImageView.tintColor = theme.tintColor
-        self.additionalInformationLabel.textColor = theme.textSecondaryColor
+        self.additionalInformationLabel.textColor = theme.textPrimaryColor
         self.recoverSecretsAvailabilityLoadingLabel.textColor = theme.textSecondaryColor
         self.recoverSecretsAvailabilityActivityIndicatorView.color = theme.tintColor
     }
@@ -129,9 +124,6 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         self.title = VectorL10n.deviceVerificationSelfVerifyWaitTitle
         
         self.informationLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitInformation
-        self.desktopClientLabel.vc_setText("\(VectorL10n.clientWebName)\n\(VectorL10n.clientDesktopName)", withLineSpacing: Constants.clientNamesLineSpacing, alignement: .center)
-        self.mobileClientLabel.vc_setText("\(VectorL10n.clientIosName)\n\(VectorL10n.clientAndroidName)",
-            withLineSpacing: Constants.clientNamesLineSpacing, alignement: .center)
         
         self.desktopClientImageView.image = Asset.Images.monitor.image.withRenderingMode(.alwaysTemplate)
         self.mobileClientImageView.image = Asset.Images.smartphone.image.withRenderingMode(.alwaysTemplate)
