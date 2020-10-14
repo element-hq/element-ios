@@ -7,6 +7,7 @@ Changes to be released in next version
 🙌 Improvements
  * Device verification: Do not check for existing key backup after SSSS & Cross-Signing reset.
  * Cross-signing: Detect when cross-signing keys have been changed.
+ * Make copying & pasting media configurable. 
 
 🐛 Bugfix
  * 
