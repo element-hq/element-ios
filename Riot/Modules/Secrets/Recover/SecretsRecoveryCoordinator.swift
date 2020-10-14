@@ -114,8 +114,8 @@ final class SecretsRecoveryCoordinator: SecretsRecoveryCoordinatorType {
         self.add(childCoordinator: coordinator)
     }
     
-    private func showSecureBackupSetup() {
-        let coordinator = SecureBackupSetupCoordinator(session: self.session, navigationRouter: self.navigationRouter)
+    private func showSecureBackupSetup(checkKeyBackup: Bool) {
+        let coordinator = SecureBackupSetupCoordinator(session: self.session, checkKeyBackup: checkKeyBackup, navigationRouter: self.navigationRouter)
         coordinator.delegate = self
         coordinator.start()
         
@@ -165,7 +165,7 @@ extension SecretsRecoveryCoordinator: SecretsRecoveryWithPassphraseCoordinatorDe
 // MARK: - SecretsResetCoordinatorDelegate
 extension SecretsRecoveryCoordinator: SecretsResetCoordinatorDelegate {
     func secretsResetCoordinatorDidResetSecrets(_ coordinator: SecretsResetCoordinatorType) {
-        self.showSecureBackupSetup()
+        self.showSecureBackupSetup(checkKeyBackup: false)
     }
     
     func secretsResetCoordinatorDidCancel(_ coordinator: SecretsResetCoordinatorType) {

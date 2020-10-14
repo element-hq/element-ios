@@ -5,6 +5,8 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
+ * Device verification: Do not check for existing key backup after SSSS & Cross-Signing reset.
+ * Cross-signing: Detect when cross-signing keys have been changed.
  * NSE: Background sync and store/aggregate sync responses on pushes, to make messages available when the app is foregrounded (#3579).
 
 🐛 Bugfix
