@@ -1,3 +1,32 @@
+Changes in 1.0.17 (2020-10-14)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Device verification: Do not check for existing key backup after SSSS & Cross-Signing reset.
+ * Cross-signing: Detect when cross-signing keys have been changed.
+ * Make copying & pasting media configurable. 
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.25](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.25)).
+
 Changes in 1.0.16 (2020-10-13)
 =================================================
 
