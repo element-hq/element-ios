@@ -1421,7 +1421,7 @@
 "key_backup_setup_passphrase_confirm_passphrase_invalid" = "Passphrase doesn’t match";
 
 "secrets_setup_recovery_passphrase_summary_title" = "Save your Security Phrase";
-"secrets_setup_recovery_passphrase_summary_information" = "Store your Recovery Passphrase somewhere safe. It can be used to unlock your encrypted messages & data.";
+"secrets_setup_recovery_passphrase_summary_information" = "Remember your Security Phrase. It can be used to unlock your encrypted messages & data.";
 
 // MARK: - Secrets reset
 
