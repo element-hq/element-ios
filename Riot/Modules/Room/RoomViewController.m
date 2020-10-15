@@ -147,14 +147,6 @@
     // Typing notifications listener.
     id typingNotifListener;
     
-    // The first tab is selected by default in room details screen in case of 'showRoomDetails' segue.
-    // Use this flag to select a specific tab (0: people, 1: files, 2: settings).
-    NSUInteger selectedRoomDetailsIndex;
-    
-    // No field is selected by default in room details screen in case of 'showRoomDetails' segue.
-    // Use this value to select a specific field in room settings.
-    RoomSettingsViewControllerField selectedRoomSettingsField;
-    
     // The position of the first touch down event stored in case of scrolling when the expanded header is visible.
     CGPoint startScrollingPoint;
     
@@ -3138,74 +3130,7 @@
     
     id pushedViewController = [segue destinationViewController];
     
-    if ([[segue identifier] isEqualToString:@"showRoomDetails"])
-    {
-        if ([pushedViewController isKindOfClass:[SegmentedViewController class]])
-        {
-            // Dismiss keyboard
-            [self dismissKeyboard];
-            
-            SegmentedViewController* segmentedViewController = (SegmentedViewController*)pushedViewController;
-            
-            MXSession* session = self.roomDataSource.mxSession;
-            NSString* roomId = self.roomDataSource.roomId;
-            NSMutableArray* viewControllers = [[NSMutableArray alloc] init];
-            NSMutableArray* titles = [[NSMutableArray alloc] init];
-            
-            // members tab
-            [titles addObject: NSLocalizedStringFromTable(@"room_details_people", @"Vector", nil)];
-            RoomParticipantsViewController* participantsViewController = [RoomParticipantsViewController roomParticipantsViewController];
-            participantsViewController.delegate = self;
-            participantsViewController.enableMention = YES;
-            participantsViewController.mxRoom = [session roomWithRoomId:roomId];
-            [viewControllers addObject:participantsViewController];
-            
-            // Files tab
-            [titles addObject: NSLocalizedStringFromTable(@"room_details_files", @"Vector", nil)];
-            RoomFilesViewController *roomFilesViewController = [RoomFilesViewController roomViewController];
-            // @TODO (async-state): This call should be synchronous. Every thing will be fine
-            __block MXKRoomDataSource *roomFilesDataSource;
-            [MXKRoomDataSource loadRoomDataSourceWithRoomId:roomId andMatrixSession:session onComplete:^(id roomDataSource) {
-                roomFilesDataSource = roomDataSource;
-            }];
-            roomFilesDataSource.filterMessagesWithURL = YES;
-            [roomFilesDataSource finalizeInitialization];
-            // Give the data source ownership to the room files view controller.
-            roomFilesViewController.hasRoomDataSourceOwnership = YES;
-            [roomFilesViewController displayRoom:roomFilesDataSource];
-            [viewControllers addObject:roomFilesViewController];
-            
-            // Settings tab
-            [titles addObject: NSLocalizedStringFromTable(@"room_details_settings", @"Vector", nil)];
-            RoomSettingsViewController *settingsViewController = [RoomSettingsViewController roomSettingsViewController];
-            [settingsViewController initWithSession:session andRoomId:roomId];
-            [viewControllers addObject:settingsViewController];
-            
-            // Sanity check
-            if (selectedRoomDetailsIndex > 2)
-            {
-                selectedRoomDetailsIndex = 0;
-            }
-            
-            if (self.roomDataSource.room.isDirect)
-            {
-                segmentedViewController.title = NSLocalizedStringFromTable(@"room_details_title", @"Vector", nil);
-            }
-            else
-            {
-                segmentedViewController.title = NSLocalizedStringFromTable(@"room_details_title_for_dm", @"Vector", nil);
-            }
-            [segmentedViewController initWithTitles:titles viewControllers:viewControllers defaultSelected:selectedRoomDetailsIndex];
-            
-            // Add the current session to be able to observe its state change.
-            [segmentedViewController addMatrixSession:session];
-            
-            // Preselect the tapped field if any
-            settingsViewController.selectedRoomSettingsField = selectedRoomSettingsField;
-            selectedRoomSettingsField = RoomSettingsViewControllerFieldNone;
-        }
-    }
-    else if ([[segue identifier] isEqualToString:@"showRoomSearch"])
+    if ([[segue identifier] isEqualToString:@"showRoomSearch"])
     {
         // Dismiss keyboard
         [self dismissKeyboard];
