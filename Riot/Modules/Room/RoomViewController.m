@@ -3176,39 +3176,6 @@
             unknownDevices = nil;
         }
     }
-    else if ([[segue identifier] isEqualToString:@"showContactPicker"])
-    {
-        ContactsTableViewController *contactsPickerViewController = (ContactsTableViewController*)pushedViewController;
-        
-        // Set delegate to handle selected contact
-        contactsPickerViewController.contactsTableViewControllerDelegate = self;
-        
-        // Prepare its data source
-        ContactsDataSource *contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.roomDataSource.mxSession];
-        contactsDataSource.areSectionsShrinkable = YES;
-        contactsDataSource.displaySearchInputInContactsList = YES;
-        contactsDataSource.forceMatrixIdInDisplayName = YES;
-        // Add a plus icon to the contact cell in the contacts picker, in order to make it more understandable for the end user.
-        contactsDataSource.contactCellAccessoryImage = [[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor];
-        
-        // List all the participants matrix user id to ignore them during the contacts search.
-        NSArray *members = [self.roomDataSource.roomState.members membersWithoutConferenceUser];
-        for (MXRoomMember *mxMember in members)
-        {
-            // Check his status
-            if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
-            {
-                // Create the contact related to this member
-                MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:mxMember.displayname andMatrixID:mxMember.userId];
-                contactsDataSource.ignoredContactsByMatrixId[mxMember.userId] = contact;
-            }
-        }
-
-        [contactsPickerViewController showSearch:YES];
-        contactsPickerViewController.searchBar.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
-        
-        [contactsPickerViewController displayList:contactsDataSource];
-    }
     
     // Hide back button title
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
