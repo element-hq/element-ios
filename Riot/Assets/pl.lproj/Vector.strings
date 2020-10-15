@@ -879,3 +879,5 @@
 "security_settings_crosssigning" = "PODPISYWANIE KRZYŻOWE";
 "security_settings_crosssigning_info_not_bootstrapped" = "Podpisywanie krzyżowe nie jest ustawione.";
 "room_info_list_section_other" = "Inne";
+"auth_phone_is_required" = "Żaden serwer tożsamości nie jest skonfigurowany, więc nie można dodać numeru telefonu w celu zresetowania hasła w przyszłości.";
+"less" = "Mniej";
