@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Secure backup: Add possibility to not expose recovery key when creating a secure backup.
 
 🐛 Bugfix
  * 
