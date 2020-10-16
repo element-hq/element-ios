@@ -736,7 +736,7 @@
 "close" = "Beenden";
 "auth_softlogout_signed_out" = "Du bist abgemeldet";
 "auth_softlogout_sign_in" = "Einloggen";
-"auth_softlogout_reason" = "Deine Heimserver-Administration (%1$s) hat dich von deinem Konto %2$s (%3$s) abgemeldet.";
+"auth_softlogout_reason" = "Deine Heimserver-Administration (%1$@) hat dich von deinem Konto %2$@ (%3$@) abgemeldet.";
 "auth_softlogout_recover_encryption_keys" = "Melden dich an, um ausschließlich auf diesem Gerät gespeicherte Verschlüsselungsschlüssel wiederherzustellen. Du benötigst sie, um deine verschlüsselten Nachrichten auf jedem Gerät zu lesen.";
 "auth_softlogout_clear_data" = "Persönliche Daten löschen";
 "auth_softlogout_clear_data_message_1" = "Warnung: Deine persönlichen Daten (einschließlich Verschlüsselungsschlüssel) sind noch auf diesem Gerät gespeichert.";
