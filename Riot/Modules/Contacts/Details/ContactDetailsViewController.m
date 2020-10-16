@@ -552,6 +552,10 @@
         [mainNavigationController.navigationBar setShadowImage:nil];
         [mainNavigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     }
+    
+    // Main Navigation bar opacity must follow
+    self.navigationController.navigationBar.translucent = isHidden;
+    mainNavigationController.navigationBar.translucent = isHidden;
 }
 
 #pragma mark - TableView data source
