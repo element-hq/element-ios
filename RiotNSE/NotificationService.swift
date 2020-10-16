@@ -154,12 +154,23 @@ class NotificationService: UNNotificationServiceExtension {
         }
     }
     
-    func fetchEvent(withEventId eventId: String, roomId: String) {
+    func fetchEvent(withEventId eventId: String, roomId: String, allowSync: Bool = true) {
         guard let mxSession = NotificationService.mxSession else {
             //  there is something wrong, do not change the content
             NSLog("[NotificationService] fetchEvent: Either originalContent or mxSession is missing.")
             fallbackToBestAttemptContent(forEventId: eventId)
             return
+        }
+        
+        /// Inline function to handle decryption failure
+        func handleDecryptionFailure() {
+            if allowSync {
+                NSLog("[NotificationService] fetchEvent: Launch a background sync.")
+                self.launchBackgroundSync(forEventId: eventId, roomId: roomId)
+            } else {
+                NSLog("[NotificationService] fetchEvent: Do not sync anymore.")
+                self.fallbackToBestAttemptContent(forEventId: eventId)
+            }
         }
 
         /// Inline function to handle encryption for event, either from cache or from the backend
@@ -181,14 +192,22 @@ class NotificationService: UNNotificationServiceExtension {
             }
             
             //  should decrypt it first
-            if mxSession.decryptEvent(event, inTimeline: nil) {
-                //  decryption succeeded
-                NSLog("[NotificationService] fetchEvent: Event decrypted successfully.")
-                self.processEvent(event)
+            if mxSession.crypto.hasKeys(toDecryptEvent: event) {
+                //  we have keys to decrypt the event
+                NSLog("[NotificationService] fetchEvent: Event needs to be decrpyted, and we have the keys to decrypt it.")
+                if mxSession.decryptEvent(event, inTimeline: nil) {
+                    //  decryption succeeded
+                    NSLog("[NotificationService] fetchEvent: Event decrypted successfully.")
+                    self.processEvent(event)
+                } else {
+                    //  decryption failed
+                    NSLog("[NotificationService] fetchEvent: Decryption failed even crypto claimed it has the keys.")
+                    handleDecryptionFailure()
+                }
             } else {
-                //  decryption failed
-                NSLog("[NotificationService] fetchEvent: Event needs to be decrpyted, but we don't have the keys to decrypt it. Launching a background sync.")
-                self.launchBackgroundSync(forEventId: eventId, roomId: roomId)
+                //  we don't have keys to decrypt the event
+                NSLog("[NotificationService] fetchEvent: Event needs to be decrpyted, but we don't have the keys to decrypt it.")
+                handleDecryptionFailure()
             }
         }
         
@@ -241,7 +260,8 @@ class NotificationService: UNNotificationServiceExtension {
                     NSLog("[NotificationService] launchBackgroundSync: MXSession.initialBackgroundSync returned too late successfully")
                     return
                 }
-                self.fetchEvent(withEventId: eventId, roomId: roomId)
+                //  do not allow to sync anymore
+                self.fetchEvent(withEventId: eventId, roomId: roomId, allowSync: false)
                 break
             case .failure(let error):
                 guard let self = self else {

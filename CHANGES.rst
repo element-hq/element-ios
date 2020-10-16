@@ -5,6 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
+ * Secure backup: Add possibility to not expose recovery key when creating a secure backup.
  * Update GBDeviceInfo to 6.4.0 (#3570).
  * Update FlowCommoniOS to 1.9.0 (#3570).
  * Update KeychainAccess to 4.2.1 (#3570).
@@ -26,6 +27,93 @@ Changes to be released in next version
 
 Others
  * 
+
+Changes in 1.0.17 (2020-10-14)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Device verification: Do not check for existing key backup after SSSS & Cross-Signing reset.
+ * Cross-signing: Detect when cross-signing keys have been changed.
+ * Make copying & pasting media configurable. 
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.25](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.25)).
+
+Changes in 1.0.16 (2020-10-13)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Self-verification: Update complete security screen wording (#3743).
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.24](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.24)).
+
+Changes in 1.0.15 (2020-10-09)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Room: Make topic links tappable (#3713).
+ * Room: Add more to long room topics (#3715).
+ * Security screens: Update automatically shields when the trust changes.
+ * Room: Add floating action button to invite members.
+ * Pasteboard: Use MXKPasteboardManager.pasteboard on copy operations (#3732).
+
+🐛 Bugfix
+ * Push: Check crypto has keys to decrypt an event before decryption attempt, avoid sync loops on failure.
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.23](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.23)).
 
 Changes in 1.0.14 (2020-10-02)
 =================================================

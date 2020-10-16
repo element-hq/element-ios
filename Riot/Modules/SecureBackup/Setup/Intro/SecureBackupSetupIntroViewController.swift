@@ -38,6 +38,7 @@ final class SecureBackupSetupIntroViewController: UIViewController {
     
     // MARK: Private
     
+    private var viewModel: SecureBackupSetupIntroViewModelType!
     private var theme: Theme!
     
     private var activityIndicatorPresenter: ActivityIndicatorPresenter!
@@ -46,15 +47,12 @@ final class SecureBackupSetupIntroViewController: UIViewController {
     // MARK: Public
     
     weak var delegate: SecureBackupSetupIntroViewControllerDelegate?
-    
-    // This is evil
-    // TODO: refactor it
-    weak var keyBackup: MXKeyBackup?
-    
+        
     // MARK: - Setup
     
-    class func instantiate() -> SecureBackupSetupIntroViewController {
+    class func instantiate(with viewModel: SecureBackupSetupIntroViewModelType) -> SecureBackupSetupIntroViewController {
         let viewController = StoryboardScene.SecureBackupSetupIntroViewController.initialScene.instantiate()
+        viewController.viewModel = viewModel
         viewController.theme = ThemeService.shared().theme
         return viewController
     }
@@ -162,7 +160,11 @@ final class SecureBackupSetupIntroViewController: UIViewController {
     
     // TODO: To remove
     private func checkKeyBackup() {
-        guard let keyBackup = self.keyBackup else {
+        guard self.viewModel.checkKeyBackup else {            
+            return
+        }
+        
+        guard let keyBackup = self.viewModel.keyBackup else {
             return
         }
         
@@ -194,8 +196,9 @@ final class SecureBackupSetupIntroViewController: UIViewController {
         }
     }
     
-    func deleteKeybackup() {
-        guard let keyBackup = self.keyBackup, let keybackupVersion = keyBackup.keyBackupVersion?.version else {
+    // TODO: Move to view model
+    private func deleteKeybackup() {
+        guard let keyBackup = self.viewModel.keyBackup, let keybackupVersion = keyBackup.keyBackupVersion?.version else {
             return
         }
         

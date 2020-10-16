@@ -204,9 +204,11 @@ TableViewSectionsDelegate>
     }];
     [self userInterfaceThemeDidChange];
     
+    [self registerUserDevicesChangesNotification];
+    
     self.tableViewSections = [TableViewSections new];
     self.tableViewSections.delegate = self;
-    
+     
     [self updateSections];
 }
 
@@ -556,6 +558,57 @@ TableViewSectionsDelegate>
     
     // Update table view sections and trigger a tableView reloadData
     [self updateSections];
+}
+
+
+#pragma mark - Data update
+
+- (void)registerUserDevicesChangesNotification
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onDeviceInfoTrustLevelDidChangeNotification:)
+                                                 name:MXDeviceInfoTrustLevelDidChangeNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(crossSigningInfoTrustLevelDidChangeNotification:)
+                                                 name:MXCrossSigningInfoTrustLevelDidChangeNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onDidUpdateUsersDevicesNotification:)
+                                                 name:MXDeviceListDidUpdateUsersDevicesNotification
+                                               object:nil];
+}
+
+- (void)onDidUpdateUsersDevicesNotification:(NSNotification*)notification
+{
+    NSDictionary *usersDevices = notification.userInfo;
+    
+    if ([usersDevices.allKeys containsObject:self.mainSession.myUserId])
+    {
+        [self loadDevices];
+    }
+}
+
+- (void)onDeviceInfoTrustLevelDidChangeNotification:(NSNotification*)notification
+{
+    MXDeviceInfo *deviceInfo = notification.object;
+    
+    NSString *userId = deviceInfo.userId;
+    if ([userId isEqualToString:self.mainSession.myUserId])
+    {
+        [self loadDevices];
+    }
+}
+
+- (void)crossSigningInfoTrustLevelDidChangeNotification:(NSNotification*)notification
+{
+    MXCrossSigningInfo *crossSigningInfo = notification.object;
+    
+    NSString *userId = crossSigningInfo.userId;
+    if ([userId isEqualToString:self.mainSession.myUserId])
+    {
+        [self loadDevices];
+    }
 }
 
 

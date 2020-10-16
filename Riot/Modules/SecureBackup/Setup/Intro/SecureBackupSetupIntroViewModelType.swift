@@ -15,17 +15,11 @@
 //
 
 import Foundation
-import MatrixKit
 
-struct RoomInfoBasicViewData {
-    let avatarUrl: String?
-    let mediaManager: MXMediaManager?
-    
-    let roomId: String
-    let roomDisplayName: String?
-    let mainRoomAlias: String?
-    let roomTopic: String?
-    let encryptionImage: UIImage?
-    let isEncrypted: Bool
-    let isDirect: Bool
+/// Protocol describing the view model used by `SecureBackupSetupIntroViewController`
+protocol SecureBackupSetupIntroViewModelType {
+            
+    // TODO: Hide these properties from interface and use same behavior as other view models
+    var keyBackup: MXKeyBackup? { get }
+    var checkKeyBackup: Bool { get }
 }

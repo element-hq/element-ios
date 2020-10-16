@@ -41,11 +41,11 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
                                                       roomDisplayName: room.summary.displayname,
                                                       mainRoomAlias: room.summary.aliases?.first,
                                                       roomTopic: room.summary.topic,
-                                                      encryptionImage: encryptionImage)
+                                                      encryptionImage: encryptionImage,
+                                                      isEncrypted: room.summary.isEncrypted,
+                                                      isDirect: room.isDirect)
         
         return RoomInfoListViewData(numberOfMembers: Int(room.summary.membersCount.joined),
-                                    isEncrypted: room.summary.isEncrypted,
-                                    isDirect: room.isDirect,
                                     basicInfoViewData: basicInfoViewData)
     }
     

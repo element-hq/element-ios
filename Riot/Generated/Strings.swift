@@ -470,22 +470,6 @@ internal enum VectorL10n {
   internal static var cancel: String { 
     return VectorL10n.tr("Vector", "cancel") 
   }
-  /// Element Android
-  internal static var clientAndroidName: String { 
-    return VectorL10n.tr("Vector", "client_android_name") 
-  }
-  /// Element Desktop
-  internal static var clientDesktopName: String { 
-    return VectorL10n.tr("Vector", "client_desktop_name") 
-  }
-  /// Element iOS
-  internal static var clientIosName: String { 
-    return VectorL10n.tr("Vector", "client_ios_name") 
-  }
-  /// Element Web
-  internal static var clientWebName: String { 
-    return VectorL10n.tr("Vector", "client_web_name") 
-  }
   /// Close
   internal static var close: String { 
     return VectorL10n.tr("Vector", "close") 
@@ -966,7 +950,7 @@ internal enum VectorL10n {
   internal static var deviceVerificationSelfVerifyStartWaiting: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_start_waiting") 
   }
-  /// or another cross-signing capable Matrix client
+  /// This works with Element and other cross-signing capable Matrix cients.
   internal static var deviceVerificationSelfVerifyWaitAdditionalInformation: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_additional_information") 
   }
@@ -1909,6 +1893,10 @@ internal enum VectorL10n {
   /// Leave
   internal static var leave: String { 
     return VectorL10n.tr("Vector", "leave") 
+  }
+  /// Less
+  internal static var less: String { 
+    return VectorL10n.tr("Vector", "less") 
   }
   /// Got it
   internal static var majorUpdateDoneAction: String { 
@@ -3409,6 +3397,14 @@ internal enum VectorL10n {
   /// Enter a security phrase only you know, used to secure secrets on your server.
   internal static var secretsSetupRecoveryPassphraseInformation: String { 
     return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_information") 
+  }
+  /// Store your Recovery Passphrase somewhere safe. It can be used to unlock your encrypted messages & data.
+  internal static var secretsSetupRecoveryPassphraseSummaryInformation: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_summary_information") 
+  }
+  /// Save your Security Phrase
+  internal static var secretsSetupRecoveryPassphraseSummaryTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_summary_title") 
   }
   /// Set a Security Phrase
   internal static var secretsSetupRecoveryPassphraseTitle: String { 

@@ -2622,7 +2622,7 @@
                     
                     if (permalink)
                     {
-                        [[UIPasteboard generalPasteboard] setString:permalink];
+                        MXKPasteboardManager.shared.pasteboard.string = permalink;
                     }
                     else
                     {
@@ -5209,6 +5209,11 @@
     
     BOOL isCopyActionEnabled = !attachment || attachment.type != MXKAttachmentTypeSticker;
     
+    if (attachment && !BuildSettings.messageDetailsAllowCopyMedia)
+    {
+        isCopyActionEnabled = NO;
+    }
+    
     if (isCopyActionEnabled)
     {
         switch (event.eventType) {
@@ -5256,7 +5261,7 @@
             
             if (textMessage)
             {
-                [UIPasteboard generalPasteboard].string = textMessage;
+                MXKPasteboardManager.shared.pasteboard.string = textMessage;
             }
             else
             {
