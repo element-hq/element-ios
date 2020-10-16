@@ -46,7 +46,6 @@
                     <connections>
                         <outlet property="roomTitleViewContainer" destination="aas-th-FW1" id="SFz-1s-ywg"/>
                         <segue destination="KDg-aD-xlK" kind="show" identifier="showRoomSearch" id="hdA-V1-9AF"/>
-                        <segue destination="nDS-pp-sWM" kind="show" identifier="showMemberDetails" id="cUw-vU-gJq"/>
                         <segue destination="gkO-rP-nGK" kind="show" identifier="showContactDetails" id="f5u-Y1-7nt"/>
                         <segue destination="ZZb-IS-a1F" kind="presentation" identifier="showUnknownDevices" id="wUx-4y-ybn"/>
                     </connections>
@@ -64,7 +63,7 @@
                         <viewControllerLayoutGuide type="bottom" id="6ie-9b-cBo"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="N8z-LO-417">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -87,7 +86,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="roomTitleViewContainer" destination="djN-zB-Vni" id="VQG-Mp-hSa"/>
-                        <segue destination="nDS-pp-sWM" kind="show" identifier="showMemberDetails" id="fNQ-S3-DbZ"/>
                         <segue destination="gkO-rP-nGK" kind="show" identifier="showContactDetails" id="ziz-Xl-QVg"/>
                     </connections>
                 </viewController>
@@ -592,8 +590,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="mhb-l9-pM3"/>
-        <segue reference="f5u-Y1-7nt"/>
-        <segue reference="cUw-vU-gJq"/>
+        <segue reference="ziz-Xl-QVg"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="integrations_icon" width="24" height="24"/>

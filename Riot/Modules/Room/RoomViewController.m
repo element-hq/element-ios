@@ -135,9 +135,6 @@
     // The customized room data source for Vector
     RoomDataSource *customizedRoomDataSource;
     
-    // The user taps on a member thumbnail
-    MXRoomMember *selectedRoomMember;
-    
     // The user taps on a user id contained in a message
     MXKContact *selectedContact;
     
@@ -1615,6 +1612,25 @@
     [self.roomCreationModalCoordinatorBridgePresenter presentFrom:self animated:YES];
 }
 
+- (void)showMemberDetails:(MXRoomMember *)member
+{
+    if (!member)
+    {
+        return;
+    }
+    RoomMemberDetailsViewController *memberViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
+    
+    // Set delegate to handle action on member (start chat, mention)
+    memberViewController.delegate = self;
+    memberViewController.enableMention = (self.inputToolbarView != nil);
+    memberViewController.enableVoipCall = NO;
+    
+    [memberViewController displayRoomMember:member withMatrixRoom:self.roomDataSource.room];
+    
+    [self vc_removeBackTitle];
+    [self.navigationController pushViewController:memberViewController animated:YES];
+}
+
 #pragma mark - Hide/Show preview header
 
 - (void)showPreviewHeader:(BOOL)isVisible
@@ -2064,11 +2080,8 @@
         
         if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAvatarView])
         {
-            selectedRoomMember = [self.roomDataSource.roomState.members memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
-            if (selectedRoomMember)
-            {
-                [self performSegueWithIdentifier:@"showMemberDetails" sender:self];
-            }
+            MXRoomMember *member = [self.roomDataSource.roomState.members memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
+            [self showMemberDetails:member];
         }
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellLongPressOnAvatarView])
         {
@@ -2878,8 +2891,7 @@
             if (member)
             {
                 // Use the room member detail VC for room members
-                selectedRoomMember = member;
-                [self performSegueWithIdentifier:@"showMemberDetails" sender:self];
+                [self showMemberDetails:member];
             }
             else
             {
@@ -3138,22 +3150,6 @@
         RoomSearchViewController* roomSearchViewController = (RoomSearchViewController*)pushedViewController;
         // Add the current data source to be able to search messages.
         roomSearchViewController.roomDataSource = self.roomDataSource;
-    }
-    else if ([[segue identifier] isEqualToString:@"showMemberDetails"])
-    {
-        if (selectedRoomMember)
-        {
-            RoomMemberDetailsViewController *memberViewController = pushedViewController;
-            
-            // Set delegate to handle action on member (start chat, mention)
-            memberViewController.delegate = self;
-            memberViewController.enableMention = (self.inputToolbarView != nil);
-            memberViewController.enableVoipCall = NO;
-            
-            [memberViewController displayRoomMember:selectedRoomMember withMatrixRoom:self.roomDataSource.room];
-            
-            selectedRoomMember = nil;
-        }
     }
     else if ([[segue identifier] isEqualToString:@"showContactDetails"])
     {
