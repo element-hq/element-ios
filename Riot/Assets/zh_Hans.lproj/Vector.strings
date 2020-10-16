@@ -672,7 +672,7 @@
 "auth_reset_password_error_is_required" = "未设置身份认证服务器：在服务器选项中添加以便重设你的密码。";
 "auth_softlogout_signed_out" = "你已经登出";
 "auth_softlogout_sign_in" = "登录";
-"auth_softlogout_reason" = "你的主服务器（%1$@）管理员已将你的账号%2￥@（%3$@）登出。";
+"auth_softlogout_reason" = "你的主服务器（%1$@）管理员已将你的账号%2$@（%3$@）登出。";
 "auth_softlogout_recover_encryption_keys" = "登录以恢复单独保存在此设备上的加密密钥。你需要它们才能阅读任何设备上的安全消息。";
 "auth_softlogout_clear_data" = "清空个人信息";
 "auth_softlogout_clear_data_message_1" = "警告：你的个人信息（包括加密密钥）仍将保存在这台设备上。";
