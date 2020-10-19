@@ -135,9 +135,6 @@
     // The customized room data source for Vector
     RoomDataSource *customizedRoomDataSource;
     
-    // The user taps on a member thumbnail
-    MXRoomMember *selectedRoomMember;
-    
     // The user taps on a user id contained in a message
     MXKContact *selectedContact;
     
@@ -146,14 +143,6 @@
     
     // Typing notifications listener.
     id typingNotifListener;
-    
-    // The first tab is selected by default in room details screen in case of 'showRoomDetails' segue.
-    // Use this flag to select a specific tab (0: people, 1: files, 2: settings).
-    NSUInteger selectedRoomDetailsIndex;
-    
-    // No field is selected by default in room details screen in case of 'showRoomDetails' segue.
-    // Use this value to select a specific field in room settings.
-    RoomSettingsViewControllerField selectedRoomSettingsField;
     
     // The position of the first touch down event stored in case of scrolling when the expanded header is visible.
     CGPoint startScrollingPoint;
@@ -366,6 +355,8 @@
     
     [self.bubblesTableView registerClass:RoomCreationCollapsedBubbleCell.class forCellReuseIdentifier:RoomCreationCollapsedBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomCreationWithPaginationCollapsedBubbleCell.class forCellReuseIdentifier:RoomCreationWithPaginationCollapsedBubbleCell.defaultReuseIdentifier];
+    
+    [self vc_removeBackTitle];
     
     // Replace the default input toolbar view.
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
@@ -1623,6 +1614,24 @@
     [self.roomCreationModalCoordinatorBridgePresenter presentFrom:self animated:YES];
 }
 
+- (void)showMemberDetails:(MXRoomMember *)member
+{
+    if (!member)
+    {
+        return;
+    }
+    RoomMemberDetailsViewController *memberViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
+    
+    // Set delegate to handle action on member (start chat, mention)
+    memberViewController.delegate = self;
+    memberViewController.enableMention = (self.inputToolbarView != nil);
+    memberViewController.enableVoipCall = NO;
+    
+    [memberViewController displayRoomMember:member withMatrixRoom:self.roomDataSource.room];
+    
+    [self.navigationController pushViewController:memberViewController animated:YES];
+}
+
 #pragma mark - Hide/Show preview header
 
 - (void)showPreviewHeader:(BOOL)isVisible
@@ -2072,11 +2081,8 @@
         
         if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAvatarView])
         {
-            selectedRoomMember = [self.roomDataSource.roomState.members memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
-            if (selectedRoomMember)
-            {
-                [self performSegueWithIdentifier:@"showMemberDetails" sender:self];
-            }
+            MXRoomMember *member = [self.roomDataSource.roomState.members memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
+            [self showMemberDetails:member];
         }
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellLongPressOnAvatarView])
         {
@@ -2886,8 +2892,7 @@
             if (member)
             {
                 // Use the room member detail VC for room members
-                selectedRoomMember = member;
-                [self performSegueWithIdentifier:@"showMemberDetails" sender:self];
+                [self showMemberDetails:member];
             }
             else
             {
@@ -3138,74 +3143,7 @@
     
     id pushedViewController = [segue destinationViewController];
     
-    if ([[segue identifier] isEqualToString:@"showRoomDetails"])
-    {
-        if ([pushedViewController isKindOfClass:[SegmentedViewController class]])
-        {
-            // Dismiss keyboard
-            [self dismissKeyboard];
-            
-            SegmentedViewController* segmentedViewController = (SegmentedViewController*)pushedViewController;
-            
-            MXSession* session = self.roomDataSource.mxSession;
-            NSString* roomId = self.roomDataSource.roomId;
-            NSMutableArray* viewControllers = [[NSMutableArray alloc] init];
-            NSMutableArray* titles = [[NSMutableArray alloc] init];
-            
-            // members tab
-            [titles addObject: NSLocalizedStringFromTable(@"room_details_people", @"Vector", nil)];
-            RoomParticipantsViewController* participantsViewController = [RoomParticipantsViewController roomParticipantsViewController];
-            participantsViewController.delegate = self;
-            participantsViewController.enableMention = YES;
-            participantsViewController.mxRoom = [session roomWithRoomId:roomId];
-            [viewControllers addObject:participantsViewController];
-            
-            // Files tab
-            [titles addObject: NSLocalizedStringFromTable(@"room_details_files", @"Vector", nil)];
-            RoomFilesViewController *roomFilesViewController = [RoomFilesViewController roomViewController];
-            // @TODO (async-state): This call should be synchronous. Every thing will be fine
-            __block MXKRoomDataSource *roomFilesDataSource;
-            [MXKRoomDataSource loadRoomDataSourceWithRoomId:roomId andMatrixSession:session onComplete:^(id roomDataSource) {
-                roomFilesDataSource = roomDataSource;
-            }];
-            roomFilesDataSource.filterMessagesWithURL = YES;
-            [roomFilesDataSource finalizeInitialization];
-            // Give the data source ownership to the room files view controller.
-            roomFilesViewController.hasRoomDataSourceOwnership = YES;
-            [roomFilesViewController displayRoom:roomFilesDataSource];
-            [viewControllers addObject:roomFilesViewController];
-            
-            // Settings tab
-            [titles addObject: NSLocalizedStringFromTable(@"room_details_settings", @"Vector", nil)];
-            RoomSettingsViewController *settingsViewController = [RoomSettingsViewController roomSettingsViewController];
-            [settingsViewController initWithSession:session andRoomId:roomId];
-            [viewControllers addObject:settingsViewController];
-            
-            // Sanity check
-            if (selectedRoomDetailsIndex > 2)
-            {
-                selectedRoomDetailsIndex = 0;
-            }
-            
-            if (self.roomDataSource.room.isDirect)
-            {
-                segmentedViewController.title = NSLocalizedStringFromTable(@"room_details_title", @"Vector", nil);
-            }
-            else
-            {
-                segmentedViewController.title = NSLocalizedStringFromTable(@"room_details_title_for_dm", @"Vector", nil);
-            }
-            [segmentedViewController initWithTitles:titles viewControllers:viewControllers defaultSelected:selectedRoomDetailsIndex];
-            
-            // Add the current session to be able to observe its state change.
-            [segmentedViewController addMatrixSession:session];
-            
-            // Preselect the tapped field if any
-            settingsViewController.selectedRoomSettingsField = selectedRoomSettingsField;
-            selectedRoomSettingsField = RoomSettingsViewControllerFieldNone;
-        }
-    }
-    else if ([[segue identifier] isEqualToString:@"showRoomSearch"])
+    if ([[segue identifier] isEqualToString:@"showRoomSearch"])
     {
         // Dismiss keyboard
         [self dismissKeyboard];
@@ -3213,22 +3151,6 @@
         RoomSearchViewController* roomSearchViewController = (RoomSearchViewController*)pushedViewController;
         // Add the current data source to be able to search messages.
         roomSearchViewController.roomDataSource = self.roomDataSource;
-    }
-    else if ([[segue identifier] isEqualToString:@"showMemberDetails"])
-    {
-        if (selectedRoomMember)
-        {
-            RoomMemberDetailsViewController *memberViewController = pushedViewController;
-            
-            // Set delegate to handle action on member (start chat, mention)
-            memberViewController.delegate = self;
-            memberViewController.enableMention = (self.inputToolbarView != nil);
-            memberViewController.enableVoipCall = NO;
-            
-            [memberViewController displayRoomMember:selectedRoomMember withMatrixRoom:self.roomDataSource.room];
-            
-            selectedRoomMember = nil;
-        }
     }
     else if ([[segue identifier] isEqualToString:@"showContactDetails"])
     {
@@ -3250,39 +3172,6 @@
             
             unknownDevices = nil;
         }
-    }
-    else if ([[segue identifier] isEqualToString:@"showContactPicker"])
-    {
-        ContactsTableViewController *contactsPickerViewController = (ContactsTableViewController*)pushedViewController;
-        
-        // Set delegate to handle selected contact
-        contactsPickerViewController.contactsTableViewControllerDelegate = self;
-        
-        // Prepare its data source
-        ContactsDataSource *contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.roomDataSource.mxSession];
-        contactsDataSource.areSectionsShrinkable = YES;
-        contactsDataSource.displaySearchInputInContactsList = YES;
-        contactsDataSource.forceMatrixIdInDisplayName = YES;
-        // Add a plus icon to the contact cell in the contacts picker, in order to make it more understandable for the end user.
-        contactsDataSource.contactCellAccessoryImage = [[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor];
-        
-        // List all the participants matrix user id to ignore them during the contacts search.
-        NSArray *members = [self.roomDataSource.roomState.members membersWithoutConferenceUser];
-        for (MXRoomMember *mxMember in members)
-        {
-            // Check his status
-            if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
-            {
-                // Create the contact related to this member
-                MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:mxMember.displayname andMatrixID:mxMember.userId];
-                contactsDataSource.ignoredContactsByMatrixId[mxMember.userId] = contact;
-            }
-        }
-
-        [contactsPickerViewController showSearch:YES];
-        contactsPickerViewController.searchBar.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
-        
-        [contactsPickerViewController displayList:contactsDataSource];
     }
     
     // Hide back button title
