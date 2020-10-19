@@ -84,8 +84,8 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
         return introViewController
     }
     
-    private func showSetupKey(passphrase: String? = nil) {
-        let coordinator = SecretsSetupRecoveryKeyCoordinator(recoveryService: self.recoveryService, passphrase: passphrase)
+    private func showSetupKey(passphraseOnly: Bool, passphrase: String? = nil) {
+        let coordinator = SecretsSetupRecoveryKeyCoordinator(recoveryService: self.recoveryService, passphrase: passphrase, passphraseOnly: passphraseOnly)
         coordinator.delegate = self
         coordinator.start()
         
@@ -161,7 +161,7 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
 extension SecureBackupSetupCoordinator: SecureBackupSetupIntroViewControllerDelegate {
     
     func secureBackupSetupIntroViewControllerDidTapUseKey(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController) {
-        self.showSetupKey()
+        self.showSetupKey(passphraseOnly: false)
     }
     
     func secureBackupSetupIntroViewControllerDidTapUsePassphrase(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController) {
@@ -201,7 +201,7 @@ extension SecureBackupSetupCoordinator: SecretsSetupRecoveryPassphraseCoordinato
     }
     
     func secretsSetupRecoveryPassphraseCoordinator(_ coordinator: SecretsSetupRecoveryPassphraseCoordinatorType, didConfirmPassphrase passphrase: String) {
-        self.showSetupKey(passphrase: passphrase)
+        self.showSetupKey(passphraseOnly: false, passphrase: passphrase)        
     }
     
     func secretsSetupRecoveryPassphraseCoordinatorDidCancel(_ coordinator: SecretsSetupRecoveryPassphraseCoordinatorType) {

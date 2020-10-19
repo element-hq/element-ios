@@ -5209,6 +5209,11 @@
     
     BOOL isCopyActionEnabled = !attachment || attachment.type != MXKAttachmentTypeSticker;
     
+    if (attachment && !BuildSettings.messageDetailsAllowCopyMedia)
+    {
+        isCopyActionEnabled = NO;
+    }
+    
     if (isCopyActionEnabled)
     {
         switch (event.eventType) {

@@ -3398,6 +3398,14 @@ internal enum VectorL10n {
   internal static var secretsSetupRecoveryPassphraseInformation: String { 
     return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_information") 
   }
+  /// Store your Recovery Passphrase somewhere safe. It can be used to unlock your encrypted messages & data.
+  internal static var secretsSetupRecoveryPassphraseSummaryInformation: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_summary_information") 
+  }
+  /// Save your Security Phrase
+  internal static var secretsSetupRecoveryPassphraseSummaryTitle: String { 
+    return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_summary_title") 
+  }
   /// Set a Security Phrase
   internal static var secretsSetupRecoveryPassphraseTitle: String { 
     return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_title") 

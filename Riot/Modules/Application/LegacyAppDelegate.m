@@ -4296,11 +4296,15 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         {
             NSLog(@"[AppDelegate] registerDidChangeCrossSigningKeysNotificationForSession: Hide NewSignInAlertController");
             
-            [self.userNewSignInAlertController dismissViewControllerAnimated:NO completion:nil];
+            [self.userNewSignInAlertController dismissViewControllerAnimated:NO completion:^{
+                [self.masterTabBarController presentVerifyCurrentSessionAlertIfNeededWithSession:session];
+            }];
             self.userNewSignInAlertController = nil;
         }
-        
-        [self.masterTabBarController presentVerifyCurrentSessionAlertIfNeededWithSession:session];
+        else
+        {
+            [self.masterTabBarController presentVerifyCurrentSessionAlertIfNeededWithSession:session];
+        }
     }];
 }
 
