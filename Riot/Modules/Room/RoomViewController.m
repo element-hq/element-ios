@@ -356,6 +356,8 @@
     [self.bubblesTableView registerClass:RoomCreationCollapsedBubbleCell.class forCellReuseIdentifier:RoomCreationCollapsedBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomCreationWithPaginationCollapsedBubbleCell.class forCellReuseIdentifier:RoomCreationWithPaginationCollapsedBubbleCell.defaultReuseIdentifier];
     
+    [self vc_removeBackTitle];
+    
     // Replace the default input toolbar view.
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
     [self updateRoomInputToolbarViewClassIfNeeded];
@@ -1627,7 +1629,6 @@
     
     [memberViewController displayRoomMember:member withMatrixRoom:self.roomDataSource.room];
     
-    [self vc_removeBackTitle];
     [self.navigationController pushViewController:memberViewController animated:YES];
 }
 
