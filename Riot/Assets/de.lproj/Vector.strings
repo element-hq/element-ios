@@ -1237,3 +1237,8 @@
 
 "secrets_recovery_reset_action_part_1" = "Wiederherstellungsoptionen vergessen oder verloren? ";
 "less" = "Weniger";
+"secrets_reset_authentication_message" = "Gib dein Konto-Passwort ein, um zu bestätigen";
+"secrets_reset_reset_action" = "Zurücksetzen";
+"secrets_reset_warning_message" = "Du wirst ohne Nachrichtenverlauf, Nachrichten, vertraute Geräte oder vertraute Benutzer neu-starten.";
+"secrets_reset_warning_title" = "Falls du alles zurücksetzt";
+"secrets_reset_information" = "Tu dies nur, wenn du kein anderes Gerät hast, mit dem du dieses Gerät überprüfen kannst.";
