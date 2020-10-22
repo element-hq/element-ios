@@ -8,7 +8,7 @@ Changes to be released in next version
  * Secure backup: Add possibility to not expose recovery key when creating a secure backup.
 
 🐛 Bugfix
- * 
+ * Fix typos in UI
 
 ⚠️ API Changes
  * 
