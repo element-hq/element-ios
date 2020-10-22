@@ -12,6 +12,7 @@ Changes to be released in next version
  * Update MatomoTracker to 7.2.2 (#3570).
  * Update SwiftGen to 6.3.0 (#3570).
  * Update SwiftLint to 0.40.3 (#3570).
+ * Upgrade to Xcode 12 (#3712).
 
 🐛 Bugfix
  * 
