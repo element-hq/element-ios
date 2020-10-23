@@ -13,13 +13,14 @@ Changes to be released in next version
  * Update SwiftGen to 6.3.0 (#3570).
  * Update SwiftLint to 0.40.3 (#3570).
  * Upgrade to Xcode 12 (#3712).
+ * Xcode 12: Make Xcode 12 and fastlane(xcodebuild) happy while some pods are not updated.
  * Update Gemfile.lock.
 
 🐛 Bugfix
  * 
 
 ⚠️ API Changes
- * 
+ * Xcode 12 is now mandatory to build the project.
 
 🗣 Translations
  * 
