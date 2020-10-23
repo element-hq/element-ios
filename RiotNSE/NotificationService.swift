@@ -272,8 +272,6 @@ class NotificationService: UNNotificationServiceExtension {
                         msgType = nil
                     }
                     
-                    let isIncomingEvent = event.sender != currentUserId
-                    
                     // Display the room name only if it is different than the sender name
                     if roomDisplayName != nil && roomDisplayName != eventSenderName {
                         notificationTitle = NSString.localizedUserNotificationString(forKey: "MSG_FROM_USER_IN_ROOM_TITLE", arguments: [eventSenderName as Any, roomDisplayName as Any])
