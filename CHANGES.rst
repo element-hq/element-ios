@@ -6,6 +6,7 @@ Changes to be released in next version
 
 🙌 Improvements
  * Secure backup: Add possibility to not expose recovery key when creating a secure backup.
+ * BuildSettings: Centralise RoomInputToolbar compression mode setting.
  * Update GBDeviceInfo to 6.4.0 (#3570).
  * Update FlowCommoniOS to 1.9.0 (#3570).
  * Update KeychainAccess to 4.2.1 (#3570).

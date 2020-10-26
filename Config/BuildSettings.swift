@@ -16,6 +16,8 @@
 
 import Foundation
 
+import MatrixKit
+
 /// BuildSettings provides settings computed at build time.
 /// In future, it may be automatically generated from xcconfig files
 @objcMembers
@@ -200,6 +202,9 @@ final class BuildSettings: NSObject {
     static let settingsScreenAllowChangingCrashUsageDataSettings: Bool = true
     static let settingsScreenAllowBugReportingManually: Bool = true
     static let settingsScreenAllowDeactivatingAccount: Bool = true
+    
+    // MARK: - Timeline settings
+    static let roomInputToolbarCompressionMode = MXKRoomInputToolbarCompressionModePrompt
     
     // MARK: - Room Settings Screen
     
