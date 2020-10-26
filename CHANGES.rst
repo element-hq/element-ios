@@ -133,6 +133,7 @@ Changes in 1.0.14 (2020-10-02)
  * Biometrics: Handle retry case.
  * Room: Remove membership events from room creation modal (#3679).
  * PIN: Fix layout on small screens.
+ * PIN: Fix code bypass on fast switching.
 
 ⚠️ API Changes
  * 
