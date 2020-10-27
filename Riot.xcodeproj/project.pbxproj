@@ -259,6 +259,8 @@
 		B1550FCC2420E8F500CE097B /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1550FC92420E8F400CE097B /* QRCodeGenerator.swift */; };
 		B1560DA224B65AFA00490F50 /* LaunchLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1560DA124B65AFA00490F50 /* LaunchLoadingView.swift */; };
 		B1560DA424B65B3700490F50 /* LaunchLoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1560DA324B65B3700490F50 /* LaunchLoadingView.xib */; };
+		B1562CE52541D113002F8436 /* JitsiWellKnownTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1562CE42541D113002F8436 /* JitsiWellKnownTests.swift */; };
+		B1562CE72541DE25002F8436 /* JitsiAuthenticationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1562CE62541DE25002F8436 /* JitsiAuthenticationType.swift */; };
 		B157FA9F23264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157FA9723264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinator.swift */; };
 		B157FAA023264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157FA9823264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsViewModelType.swift */; };
 		B157FAA123264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157FA9923264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinatorType.swift */; };
@@ -269,6 +271,8 @@
 		B157FAA623264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157FA9E23264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsViewController.swift */; };
 		B157FAA823264BED00EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157FAA723264BED00EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinatorBridgePresenter.swift */; };
 		B158253B2475350A00604D79 /* EventFormatter+DTCoreTextFix.m in Sources */ = {isa = PBXBuildFile; fileRef = B158253A2475350A00604D79 /* EventFormatter+DTCoreTextFix.m */; };
+		B158E72125485B9E000A7F75 /* Base32Coder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B158E72025485B9E000A7F75 /* Base32Coder.swift */; };
+		B158E72325485EAB000A7F75 /* JitsiJWTTokenBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B158E72225485EAB000A7F75 /* JitsiJWTTokenBuilder.swift */; };
 		B1664BC520F4E67600808783 /* FallbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1664BAD20F4E67500808783 /* FallbackViewController.xib */; };
 		B1664BC620F4E67600808783 /* FallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1664BAE20F4E67500808783 /* FallbackViewController.m */; };
 		B1664BC720F4E67600808783 /* SharePresentingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1664BB220F4E67500808783 /* SharePresentingViewController.m */; };
@@ -645,6 +649,7 @@
 		B1C3360222F1ED600021BA8D /* MediaPickerCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C335FF22F1ED5F0021BA8D /* MediaPickerCoordinatorBridgePresenter.swift */; };
 		B1C3360322F1ED600021BA8D /* MediaPickerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C3360022F1ED600021BA8D /* MediaPickerCoordinator.swift */; };
 		B1C3361C22F32B4A0021BA8D /* SingleImagePickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C3361B22F32B4A0021BA8D /* SingleImagePickerPresenter.swift */; };
+		B1C456C92548CF09002E5734 /* JitsiJWTPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C456C82548CF09002E5734 /* JitsiJWTPayload.swift */; };
 		B1C45A84232A8C2600165425 /* SettingsIdentityServerCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C45A7B232A8C2600165425 /* SettingsIdentityServerCoordinatorType.swift */; };
 		B1C45A85232A8C2600165425 /* SettingsIdentityServerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1C45A7C232A8C2600165425 /* SettingsIdentityServerViewController.storyboard */; };
 		B1C45A86232A8C2600165425 /* SettingsIdentityServerViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C45A7D232A8C2600165425 /* SettingsIdentityServerViewModelType.swift */; };
@@ -744,6 +749,7 @@
 		B1E5368921FB1E20001F3AFF /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E5368821FB1E20001F3AFF /* UIButton.swift */; };
 		B1E5368D21FB7245001F3AFF /* KeyBackupRecoverFromPassphraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E5368C21FB7245001F3AFF /* KeyBackupRecoverFromPassphraseViewController.swift */; };
 		B1E5368F21FB7258001F3AFF /* KeyBackupRecoverFromPassphraseViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1E5368E21FB7258001F3AFF /* KeyBackupRecoverFromPassphraseViewController.storyboard */; };
+		B1E5EF9D2541C06000E8A883 /* JitsiWellKnown.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E5EF9C2541C06000E8A883 /* JitsiWellKnown.swift */; };
 		B1FDF56021F5FE5500BA3834 /* KeyBackupSetupPassphraseViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FDF55F21F5FE5500BA3834 /* KeyBackupSetupPassphraseViewAction.swift */; };
 		DB1392A2332C3CAF6C9962EF /* Pods_RiotPods_RiotNSE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D418D054E4032F2CFA8B51 /* Pods_RiotPods_RiotNSE.framework */; };
 		EC1CA85F24C1DEC400DE9EBF /* EnterPinCodeViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA85124C1DEC400DE9EBF /* EnterPinCodeViewModelType.swift */; };
@@ -1090,7 +1096,7 @@
 		3267EFB520E379FD00FF1CAA /* AUTHORS.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS.rst; sourceTree = "<group>"; };
 		3275FD8B21A5A2C500B9C13D /* TermsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsView.swift; sourceTree = "<group>"; };
 		3281BCF62201FA4200F4A383 /* UIControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIControl.swift; sourceTree = "<group>"; };
-		3284A35020A07C210044F922 /* postMessageAPI.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = postMessageAPI.js; sourceTree = "<group>"; };
+		3284A35020A07C210044F922 /* postMessageAPI.js */ = {isa = PBXFileReference; explicitFileType = sourcecode.javascript; fileEncoding = 4; path = postMessageAPI.js; sourceTree = "<group>"; };
 		32863A592384070300D07C4A /* RiotSharedSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiotSharedSettings.swift; sourceTree = "<group>"; };
 		32863A5B2384074C00D07C4A /* RiotSettingAllowedWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiotSettingAllowedWidgets.swift; sourceTree = "<group>"; };
 		32891D692264CBA300C82226 /* SimpleScreenTemplateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleScreenTemplateViewController.swift; sourceTree = "<group>"; };
@@ -1288,6 +1294,8 @@
 		B1550FC92420E8F400CE097B /* QRCodeGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
 		B1560DA124B65AFA00490F50 /* LaunchLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchLoadingView.swift; sourceTree = "<group>"; };
 		B1560DA324B65B3700490F50 /* LaunchLoadingView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LaunchLoadingView.xib; sourceTree = "<group>"; };
+		B1562CE42541D113002F8436 /* JitsiWellKnownTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JitsiWellKnownTests.swift; sourceTree = "<group>"; };
+		B1562CE62541DE25002F8436 /* JitsiAuthenticationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JitsiAuthenticationType.swift; sourceTree = "<group>"; };
 		B157FA9723264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsDiscoveryThreePidDetailsCoordinator.swift; sourceTree = "<group>"; };
 		B157FA9823264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsDiscoveryThreePidDetailsViewModelType.swift; sourceTree = "<group>"; };
 		B157FA9923264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsDiscoveryThreePidDetailsCoordinatorType.swift; sourceTree = "<group>"; };
@@ -1299,6 +1307,8 @@
 		B157FAA723264BED00EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsDiscoveryThreePidDetailsCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
 		B15825392475350A00604D79 /* EventFormatter+DTCoreTextFix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EventFormatter+DTCoreTextFix.h"; sourceTree = "<group>"; };
 		B158253A2475350A00604D79 /* EventFormatter+DTCoreTextFix.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "EventFormatter+DTCoreTextFix.m"; sourceTree = "<group>"; };
+		B158E72025485B9E000A7F75 /* Base32Coder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base32Coder.swift; sourceTree = "<group>"; };
+		B158E72225485EAB000A7F75 /* JitsiJWTTokenBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JitsiJWTTokenBuilder.swift; sourceTree = "<group>"; };
 		B1664BAD20F4E67500808783 /* FallbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FallbackViewController.xib; sourceTree = "<group>"; };
 		B1664BAE20F4E67500808783 /* FallbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FallbackViewController.m; sourceTree = "<group>"; };
 		B1664BAF20F4E67500808783 /* FallbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FallbackViewController.h; sourceTree = "<group>"; };
@@ -1862,6 +1872,7 @@
 		B1C335FF22F1ED5F0021BA8D /* MediaPickerCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
 		B1C3360022F1ED600021BA8D /* MediaPickerCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerCoordinator.swift; sourceTree = "<group>"; };
 		B1C3361B22F32B4A0021BA8D /* SingleImagePickerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImagePickerPresenter.swift; sourceTree = "<group>"; };
+		B1C456C82548CF09002E5734 /* JitsiJWTPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JitsiJWTPayload.swift; sourceTree = "<group>"; };
 		B1C45A7B232A8C2600165425 /* SettingsIdentityServerCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsIdentityServerCoordinatorType.swift; sourceTree = "<group>"; };
 		B1C45A7C232A8C2600165425 /* SettingsIdentityServerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SettingsIdentityServerViewController.storyboard; sourceTree = "<group>"; };
 		B1C45A7D232A8C2600165425 /* SettingsIdentityServerViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsIdentityServerViewModelType.swift; sourceTree = "<group>"; };
@@ -1961,6 +1972,7 @@
 		B1E5368821FB1E20001F3AFF /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
 		B1E5368C21FB7245001F3AFF /* KeyBackupRecoverFromPassphraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverFromPassphraseViewController.swift; sourceTree = "<group>"; };
 		B1E5368E21FB7258001F3AFF /* KeyBackupRecoverFromPassphraseViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = KeyBackupRecoverFromPassphraseViewController.storyboard; sourceTree = "<group>"; };
+		B1E5EF9C2541C06000E8A883 /* JitsiWellKnown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JitsiWellKnown.swift; sourceTree = "<group>"; };
 		B1EDFDF32525E9690020EEFF /* et */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = et; path = et.lproj/Vector.strings; sourceTree = "<group>"; };
 		B1EDFDF42525E9690020EEFF /* et */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = et; path = et.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B1EDFDF52525E96A0020EEFF /* et */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = et; path = et.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -3944,6 +3956,10 @@
 			isa = PBXGroup;
 			children = (
 				B10CFBC22268D99D00A5842E /* JitsiService.swift */,
+				B1E5EF9C2541C06000E8A883 /* JitsiWellKnown.swift */,
+				B1562CE62541DE25002F8436 /* JitsiAuthenticationType.swift */,
+				B158E72225485EAB000A7F75 /* JitsiJWTTokenBuilder.swift */,
+				B1C456C82548CF09002E5734 /* JitsiJWTPayload.swift */,
 				B1B5576A20EE702800210D55 /* JitsiViewController.h */,
 				B1B5576C20EE702800210D55 /* JitsiViewController.m */,
 				B1B5576B20EE702800210D55 /* JitsiViewController.xib */,
@@ -5303,6 +5319,7 @@
 			children = (
 				F083BB041E7005FD00A9B29C /* RiotTests.m */,
 				B152C73022DF561E0041315A /* EmojiServiceTests.swift */,
+				B1562CE42541D113002F8436 /* JitsiWellKnownTests.swift */,
 				F083BB071E70067700A9B29C /* Supporting Files */,
 			);
 			path = RiotTests;
@@ -5451,6 +5468,7 @@
 				B197B7C5243DE947005ABBF3 /* EncryptionTrustLevelBadgeImageHelper.swift */,
 				EC2B4EF024A1EEBD005EB739 /* DataProtectionHelper.swift */,
 				ECDC15F124AF41D2003437CF /* FormattedBodyParser.swift */,
+				B158E72025485B9E000A7F75 /* Base32Coder.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -6356,6 +6374,7 @@
 				B1B5594720EF7BD000210D55 /* RoomCollectionViewCell.m in Sources */,
 				B10CFBC32268D99D00A5842E /* JitsiService.swift in Sources */,
 				B1A6C10B23882B6C002882FD /* SlidingModalPresentationAnimator.swift in Sources */,
+				B158E72125485B9E000A7F75 /* Base32Coder.swift in Sources */,
 				B1B558C120EF768F00210D55 /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				ECFBD5D8250A7AAF00DD5F5A /* RoomsDirectoryCoordinatorType.swift in Sources */,
 				B1B5573E20EE6C4D00210D55 /* RiotNavigationController.m in Sources */,
@@ -6598,6 +6617,7 @@
 				B1B5577120EE702800210D55 /* StickerPickerViewController.m in Sources */,
 				EC711B7624A63B37008F830C /* SecretsSetupRecoveryKeyViewState.swift in Sources */,
 				32FDC1CD2386CD390084717A /* RiotSettingIntegrationProvisioning.swift in Sources */,
+				B158E72325485EAB000A7F75 /* JitsiJWTTokenBuilder.swift in Sources */,
 				B1BEE73523DF44A60003A4CB /* UserVerificationSessionsStatusViewModel.swift in Sources */,
 				B1284E402535FEBA003529D7 /* SecureBackupSetupIntroViewModel.swift in Sources */,
 				B1B5572020EE6C4D00210D55 /* ContactsTableViewController.m in Sources */,
@@ -6607,6 +6627,7 @@
 				B1098BE321ECE09F000DDA48 /* RiotDefaults.swift in Sources */,
 				EC711B9424A63B37008F830C /* SecretsRecoveryWithKeyViewAction.swift in Sources */,
 				EC1CA86824C1DEC400DE9EBF /* SetPinCoordinatorBridgePresenter.swift in Sources */,
+				B1C456C92548CF09002E5734 /* JitsiJWTPayload.swift in Sources */,
 				B1C562CA2289C2690037F12A /* UIGestureRecognizer.swift in Sources */,
 				B1C562CC228AB3510037F12A /* UIStackView.swift in Sources */,
 				B1B557BE20EF5B4500210D55 /* RoomInputToolbarView.m in Sources */,
@@ -6716,6 +6737,7 @@
 				B1B336C4242B933700F95EC4 /* KeyVerificationSelfVerifyStartViewAction.swift in Sources */,
 				B1B4E9B924D46EB3004D5C33 /* SizingViewHeight.swift in Sources */,
 				B1B5590920EF768F00210D55 /* RoomEmptyBubbleCell.m in Sources */,
+				B1562CE72541DE25002F8436 /* JitsiAuthenticationType.swift in Sources */,
 				324A2054225FC571004FE8B0 /* DeviceVerificationIncomingCoordinatorType.swift in Sources */,
 				B139C21F21FE5D6600BB68EC /* KeyBackupRecoverFromPassphraseViewAction.swift in Sources */,
 				B1DCC61822E5E17100625807 /* EmojiPickerViewState.swift in Sources */,
@@ -6832,6 +6854,7 @@
 				B18DEDD5243377C10075FEF7 /* KeyVerificationSelfVerifyWaitViewModel.swift in Sources */,
 				EC711B8B24A63B37008F830C /* SecretsRecoveryWithPassphraseViewState.swift in Sources */,
 				ECAE7AE524EC0E01002FA813 /* TableViewSections.swift in Sources */,
+				B1E5EF9D2541C06000E8A883 /* JitsiWellKnown.swift in Sources */,
 				B1CE83DA2422817200D07506 /* KeyVerificationVerifyByScanningViewModel.swift in Sources */,
 				32242F0921E8B05F00725742 /* UIColor.swift in Sources */,
 				B16932E720F3C37100746532 /* HomeMessagesSearchDataSource.m in Sources */,
@@ -6883,6 +6906,7 @@
 				32FD755824D15C7A00BA7B37 /* Configurable.swift in Sources */,
 				32FD757724D2C9BA00BA7B37 /* Bundle.swift in Sources */,
 				32FD754D24D06EBF00BA7B37 /* RiotSettings.swift in Sources */,
+				B1562CE52541D113002F8436 /* JitsiWellKnownTests.swift in Sources */,
 				32FD757124D2BEF700BA7B37 /* InfoPlist.swift in Sources */,
 				32FD756524D2AD5100BA7B37 /* BuildSettings.swift in Sources */,
 				32FD755524D0754500BA7B37 /* AppConfiguration.swift in Sources */,
