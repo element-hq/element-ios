@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -45,12 +45,9 @@
                     </navigationItem>
                     <connections>
                         <outlet property="roomTitleViewContainer" destination="aas-th-FW1" id="SFz-1s-ywg"/>
-                        <segue destination="e7G-NU-7ck" kind="show" identifier="showRoomDetails" id="vCz-dl-6xQ"/>
                         <segue destination="KDg-aD-xlK" kind="show" identifier="showRoomSearch" id="hdA-V1-9AF"/>
-                        <segue destination="nDS-pp-sWM" kind="show" identifier="showMemberDetails" id="cUw-vU-gJq"/>
                         <segue destination="gkO-rP-nGK" kind="show" identifier="showContactDetails" id="f5u-Y1-7nt"/>
                         <segue destination="ZZb-IS-a1F" kind="presentation" identifier="showUnknownDevices" id="wUx-4y-ybn"/>
-                        <segue destination="udm-55-AMb" kind="show" identifier="showContactPicker" id="Q6y-9M-Ugl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="94y-cU-qQD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -66,7 +63,7 @@
                         <viewControllerLayoutGuide type="bottom" id="6ie-9b-cBo"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="N8z-LO-417">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -89,9 +86,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="roomTitleViewContainer" destination="djN-zB-Vni" id="VQG-Mp-hSa"/>
-                        <segue destination="nDS-pp-sWM" kind="show" identifier="showMemberDetails" id="fNQ-S3-DbZ"/>
                         <segue destination="gkO-rP-nGK" kind="show" identifier="showContactDetails" id="ziz-Xl-QVg"/>
-                        <segue destination="e7G-NU-7ck" kind="show" identifier="showRoomDetails" id="mFs-HA-7Oo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yjg-uP-Hcy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -564,7 +559,7 @@
                         <viewControllerLayoutGuide type="bottom" id="7q1-ig-sPp"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="6G9-nj-ktC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -595,9 +590,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="mhb-l9-pM3"/>
-        <segue reference="f5u-Y1-7nt"/>
-        <segue reference="vCz-dl-6xQ"/>
-        <segue reference="cUw-vU-gJq"/>
+        <segue reference="ziz-Xl-QVg"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="integrations_icon" width="24" height="24"/>
