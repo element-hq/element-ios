@@ -75,6 +75,8 @@ abstract_target 'RiotPods' do
     pod 'ZXingObjC', '~> 3.6.5'
     pod 'FlowCommoniOS', '~> 1.9.0'
     pod 'ReadMoreTextView', '~> 3.0.1'
+    pod 'SwiftBase32', '~> 0.9.0'
+    pod 'SwiftJWT', '~> 3.5.3'
 
     target 'RiotTests' do
       inherit! :search_paths
