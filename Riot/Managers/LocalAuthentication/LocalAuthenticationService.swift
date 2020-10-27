@@ -54,7 +54,7 @@ class LocalAuthenticationService: NSObject {
         guard let appLastActiveTime = appLastActiveTime else {
             return true
         }
-        return (systemUptime - appLastActiveTime) > pinCodePreferences.graceTimeInSeconds
+        return (systemUptime - appLastActiveTime) >= pinCodePreferences.graceTimeInSeconds
     }
     
     var isProtectionSet: Bool {

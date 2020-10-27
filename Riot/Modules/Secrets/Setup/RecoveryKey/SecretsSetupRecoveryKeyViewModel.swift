@@ -26,6 +26,7 @@ final class SecretsSetupRecoveryKeyViewModel: SecretsSetupRecoveryKeyViewModelTy
     
     private let recoveryService: MXRecoveryService
     private let passphrase: String?
+    private let passphraseOnly: Bool
     
     // MARK: Public
 
@@ -34,9 +35,10 @@ final class SecretsSetupRecoveryKeyViewModel: SecretsSetupRecoveryKeyViewModelTy
     
     // MARK: - Setup
     
-    init(recoveryService: MXRecoveryService, passphrase: String?) {
+    init(recoveryService: MXRecoveryService, passphrase: String?, passphraseOnly: Bool) {
         self.recoveryService = recoveryService
         self.passphrase = passphrase
+        self.passphraseOnly = passphraseOnly
     }
     
     // MARK: - Public
@@ -44,6 +46,7 @@ final class SecretsSetupRecoveryKeyViewModel: SecretsSetupRecoveryKeyViewModelTy
     func process(viewAction: SecretsSetupRecoveryKeyViewAction) {
         switch viewAction {
         case .loadData:
+            self.update(viewState: .loaded(self.passphraseOnly))
             self.createSecureKey()
         case .done:
             self.coordinatorDelegate?.secretsSetupRecoveryKeyViewModelDidComplete(self)
@@ -60,7 +63,7 @@ final class SecretsSetupRecoveryKeyViewModel: SecretsSetupRecoveryKeyViewModelTy
         self.update(viewState: .loading)
                 
         self.recoveryService.createRecovery(forSecrets: nil, withPassphrase: self.passphrase, createServicesBackups: true, success: { secretStorageKeyCreationInfo in
-            self.update(viewState: .loaded(secretStorageKeyCreationInfo.recoveryKey))
+            self.update(viewState: .recoveryCreated(secretStorageKeyCreationInfo.recoveryKey))
         }, failure: { error in
             self.update(viewState: .error(error))
         })

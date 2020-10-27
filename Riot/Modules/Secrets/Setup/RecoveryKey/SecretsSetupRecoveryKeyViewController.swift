@@ -33,6 +33,7 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
     // MARK: Private
 
     private var viewModel: SecretsSetupRecoveryKeyViewModelType!
+    private var isPassphraseOnly: Bool = true
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
@@ -132,22 +133,56 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .loaded(let recoveryKey):
-            self.renderLoaded(recoveryKey: recoveryKey)
+        case .loaded(let passphraseOnly):
+            self.renderLoaded(passphraseOnly: passphraseOnly)
+        case .recoveryCreated(let recoveryKey):
+            self.renderRecoveryCreated(recoveryKey: recoveryKey)
         case .error(let error):
             self.render(error: error)
         }
+    }
+    
+    private func renderLoaded(passphraseOnly: Bool) {        
+        self.isPassphraseOnly = passphraseOnly
+
+        let title: String
+        let secretsLogoImage: UIImage
+        let informationText: String
+        let recoveryKeyText: String?
+
+        if passphraseOnly {
+            title = VectorL10n.secretsSetupRecoveryPassphraseSummaryTitle
+            secretsLogoImage = Asset.Images.secretsSetupPassphrase.image
+            informationText = VectorL10n.secretsSetupRecoveryPassphraseSummaryInformation
+            recoveryKeyText = nil
+        } else {
+            title = VectorL10n.secretsSetupRecoveryKeyTitle
+            secretsLogoImage = Asset.Images.secretsSetupKey.image
+            informationText = VectorL10n.secretsSetupRecoveryKeyInformation
+            recoveryKeyText = VectorL10n.secretsSetupRecoveryKeyLoading
+        }
+
+        self.title = title
+        self.secureKeyImageView.image = secretsLogoImage
+        self.informationLabel.text = informationText
+        self.exportButton.isHidden = passphraseOnly
+        self.recoveryKeyLabel.text = recoveryKeyText
     }
     
     private func renderLoading() {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
     }
     
-    private func renderLoaded(recoveryKey: String) {
+    private func renderRecoveryCreated(recoveryKey: String) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.exportButton.isEnabled = true
-        self.recoveryKey = recoveryKey
-        self.recoveryKeyLabel.text = recoveryKey
+        
+        self.exportButton.isEnabled = !self.isPassphraseOnly
+        self.doneButton.isEnabled = self.isPassphraseOnly
+        
+        if !self.isPassphraseOnly {
+            self.recoveryKey = recoveryKey
+            self.recoveryKeyLabel.text = recoveryKey
+        }
     }
     
     private func render(error: Error) {
@@ -208,7 +243,12 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
     }
     
     @IBAction private func doneButtonAction(_ sender: Any) {
-        self.presentKeepSafeAlert()
+        
+        if self.isPassphraseOnly {
+            self.viewModel.process(viewAction: .done)
+        } else {
+            self.presentKeepSafeAlert()
+        }
     }
 
     private func cancelButtonAction() {

@@ -20,7 +20,8 @@ import Foundation
 
 /// SecretsSetupRecoveryKeyViewController view state
 enum SecretsSetupRecoveryKeyViewState {
+    case loaded(_ passphraseOnly: Bool)
     case loading
-    case loaded(_ recoveryKey: String)
+    case recoveryCreated(_ recoveryKey: String)
     case error(Error)
 }

@@ -11,7 +11,7 @@ use_frameworks!
 # - `{ {kit spec hash} => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for each repo. Used by Fastfile during CI
 #
 # Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
-$matrixKitVersion = '= 0.12.25'
+$matrixKitVersion = '= 0.12.26'
 # $matrixKitVersion = :local
 # $matrixKitVersion = {'develop' => 'develop'}
 
@@ -51,12 +51,12 @@ end
 
 abstract_target 'RiotPods' do
 
-  pod 'GBDeviceInfo', '~> 6.3.0'
+  pod 'GBDeviceInfo', '~> 6.4.0'
   pod 'Reusable', '~> 4.1'
-  pod 'KeychainAccess', '~> 4.2'
+  pod 'KeychainAccess', '~> 4.2.1'
  
   # Piwik for analytics
-  pod 'MatomoTracker', '~> 7.2.0'
+  pod 'MatomoTracker', '~> 7.2.2'
 
   # Remove warnings from "bad" pods
   pod 'OLMKit', :inhibit_warnings => true
@@ -65,15 +65,15 @@ abstract_target 'RiotPods' do
   pod 'HPGrowingTextView', :inhibit_warnings => true
 
   # Tools
-  pod 'SwiftGen', '~> 6.1'
-  pod 'SwiftLint', '~> 0.36.0'
+  pod 'SwiftGen', '~> 6.3'
+  pod 'SwiftLint', '~> 0.40.3'
 
   target "Riot" do
     import_MatrixKit
     pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
     pod 'KTCenterFlowLayout', '~> 1.3.1'
     pod 'ZXingObjC', '~> 3.6.5'
-    pod 'FlowCommoniOS', '~> 1.8.7'
+    pod 'FlowCommoniOS', '~> 1.9.0'
     pod 'ReadMoreTextView', '~> 3.0.1'
 
     target 'RiotTests' do

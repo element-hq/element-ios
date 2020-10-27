@@ -1099,7 +1099,7 @@
 // MARK: Start
 "device_verification_start_title" = "Verify by comparing a short text string";
 "device_verification_start_wait_partner" = "Waiting for partner to accept…";
-"device_verification_start_use_legacy" = "Nothing appearing? Not all clients supports interactive verification yet. Use legacy verification.";
+"device_verification_start_use_legacy" = "Nothing appearing? Not all clients support interactive verification yet. Use legacy verification.";
 "device_verification_start_verify_button" = "Begin Verifying";
 "device_verification_start_use_legacy_action" = "Use Legacy Verification";
 
@@ -1134,7 +1134,7 @@
 "device_verification_self_verify_wait_additional_information" = "This works with Element and other cross-signing capable Matrix cients.";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Use Recovery Key";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Use Recovery Passphrase or Key";
-"device_verification_self_verify_wait_recover_secrets_additional_information" = "If you can't accessing an existing session";
+"device_verification_self_verify_wait_recover_secrets_additional_information" = "If you can't access an existing session";
 "device_verification_self_verify_wait_recover_secrets_checking_availability" = "Checking for other verification capabilities ...";
 
 // MARK: Verify
@@ -1419,6 +1419,9 @@
 
 "key_backup_setup_passphrase_confirm_passphrase_valid" = "Great!";
 "key_backup_setup_passphrase_confirm_passphrase_invalid" = "Passphrase doesn’t match";
+
+"secrets_setup_recovery_passphrase_summary_title" = "Save your Security Phrase";
+"secrets_setup_recovery_passphrase_summary_information" = "Remember your Security Phrase. It can be used to unlock your encrypted messages & data.";
 
 // MARK: - Secrets reset
 
