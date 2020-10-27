@@ -15,7 +15,7 @@ Changes to be released in next version
  * Update SwiftLint to 0.40.3 (#3570).
 
 🐛 Bugfix
- * 
+ * Fix typos in UI
 
 ⚠️ API Changes
  * 
