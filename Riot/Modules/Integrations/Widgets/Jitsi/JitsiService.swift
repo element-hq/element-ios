@@ -55,6 +55,10 @@ final class JitsiService: NSObject {
     private var httpClient: MXHTTPClient?
     private let serializationService: SerializationServiceType = SerializationService()
     
+    private lazy var jwtTokenBuilder: JitsiJWTTokenBuilder = {
+        return JitsiJWTTokenBuilder()
+    }()
+    
     private var httpClients: [String: MXHTTPClient] = [:]
     
     // MARK: - Setup
@@ -79,6 +83,7 @@ final class JitsiService: NSObject {
     
     // MARK: WellKnown
     
+    /// Get Jitsi server Well-Known
     @discardableResult
     func getWellKnown(for jitsiServerURL: URL, completion: @escaping (Result<JitsiWellKnown, Error>) -> Void) -> MXHTTPOperation? {
         guard let httpClient = self.httpClient(for: jitsiServerURL) else {
@@ -103,6 +108,7 @@ final class JitsiService: NSObject {
         })
     }
     
+    /// Create Jitsi widget content
     @discardableResult
     func createJitsiWidgetContent(jitsiServerURL: URL, roomID: String, isAudioOnly: Bool, success: @escaping ([AnyHashable: Any]) -> Void, failure: @escaping ((Error) -> Void)) -> MXHTTPOperation? {
         return self.getWellKnown(for: jitsiServerURL) { (result) in
@@ -121,6 +127,45 @@ final class JitsiService: NSObject {
                 failure(error)
             }
         }
+    }
+    
+    /// Check if Jitsi widget requires "openidtoken-jwt" authentication
+    func isOpenIdJWTAuthenticationRequired(for widgetData: JitsiWidgetData) -> Bool {
+        return widgetData.authenticationType == JitsiAuthenticationType.openIDTokenJWT.identifier
+    }
+    
+    /// Get Jitsi JWT token using user OpenID token
+    @discardableResult
+    func getOpenIdJWTToken(jitsiServerDomain: String,
+                           roomId: String,
+                           matrixSession: MXSession,
+                           success: @escaping (String) -> Void,
+                           failure: @escaping (Error) -> Void) -> MXHTTPOperation? {
+        
+        let myUser: MXUser = matrixSession.myUser
+        let userDisplayName: String = myUser.displayname ?? myUser.userId
+        let avatarStringURL: String = myUser.avatarUrl ?? ""
+        
+        return matrixSession.matrixRestClient.openIdToken({ (openIdToken) in
+            guard let openIdToken = openIdToken, let openIdAccessToken = openIdToken.accessToken else {
+                failure(JitsiServiceError.unknown)
+                return
+            }
+            
+            do {
+                let jwtToken = try self.jwtTokenBuilder.build(jitsiServerDomain: jitsiServerDomain,
+                openIdAccessToken: openIdAccessToken,
+                roomId: roomId,
+                userAvatarUrl: avatarStringURL,
+                userDisplayName: userDisplayName)
+                
+                success(jwtToken)
+            } catch {
+                failure(error)
+            }
+        }, failure: { error in
+            failure(error ?? JitsiServiceError.unknown)
+        })
     }
     
     // MARK: AppDelegate methods
