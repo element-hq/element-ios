@@ -5,7 +5,32 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Changes in 1.0.18 (2020-10-27)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
  * Secure backup: Add possibility to not expose recovery key when creating a secure backup.
+ * BuildSettings: Centralise RoomInputToolbar compression mode setting.
  * Update GBDeviceInfo to 6.4.0 (#3570).
  * Update FlowCommoniOS to 1.9.0 (#3570).
  * Update KeychainAccess to 4.2.1 (#3570).
@@ -17,7 +42,7 @@ Changes to be released in next version
  * Update Gemfile.lock.
 
 🐛 Bugfix
- * 
+ * Fix typos in UI
 
 ⚠️ API Changes
  * Xcode 12 is now mandatory to build the project.
@@ -30,6 +55,9 @@ Changes to be released in next version
 
 Others
  * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.26](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.26)).
 
 Changes in 1.0.17 (2020-10-14)
 =================================================
@@ -135,6 +163,7 @@ Changes in 1.0.14 (2020-10-02)
  * Biometrics: Handle retry case.
  * Room: Remove membership events from room creation modal (#3679).
  * PIN: Fix layout on small screens.
+ * PIN: Fix code bypass on fast switching.
 
 ⚠️ API Changes
  * 
