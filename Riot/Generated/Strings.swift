@@ -962,7 +962,7 @@ internal enum VectorL10n {
   internal static var deviceVerificationSelfVerifyWaitNewSignInTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_new_sign_in_title") 
   }
-  /// If you can't accessing an existing session
+  /// If you can't access an existing session
   internal static var deviceVerificationSelfVerifyWaitRecoverSecretsAdditionalInformation: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_recover_secrets_additional_information") 
   }
@@ -986,7 +986,7 @@ internal enum VectorL10n {
   internal static var deviceVerificationStartTitle: String { 
     return VectorL10n.tr("Vector", "device_verification_start_title") 
   }
-  /// Nothing appearing? Not all clients supports interactive verification yet. Use legacy verification.
+  /// Nothing appearing? Not all clients support interactive verification yet. Use legacy verification.
   internal static var deviceVerificationStartUseLegacy: String { 
     return VectorL10n.tr("Vector", "device_verification_start_use_legacy") 
   }
@@ -3398,7 +3398,7 @@ internal enum VectorL10n {
   internal static var secretsSetupRecoveryPassphraseInformation: String { 
     return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_information") 
   }
-  /// Store your Recovery Passphrase somewhere safe. It can be used to unlock your encrypted messages & data.
+  /// Remember your Security Phrase. It can be used to unlock your encrypted messages & data.
   internal static var secretsSetupRecoveryPassphraseSummaryInformation: String { 
     return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_summary_information") 
   }

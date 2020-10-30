@@ -45,7 +45,7 @@ PODS:
   - GBDeviceInfo/Core (6.4.0)
   - GZIP (1.3.0)
   - HPGrowingTextView (1.1)
-  - JitsiMeetSDK (2.10.0)
+  - JitsiMeetSDK (2.10.2)
   - KeychainAccess (4.2.1)
   - KTCenterFlowLayout (1.3.1)
   - libbase58 (0.1.4)
@@ -82,7 +82,7 @@ PODS:
     - OLMKit (~> 3.1.0)
     - Realm (~> 5.4.8)
   - MatrixSDK/JingleCallStack (0.16.20):
-    - JitsiMeetSDK (= 2.10.0)
+    - JitsiMeetSDK (= 2.10.2)
     - MatrixSDK/Core
   - MatrixSDK/SwiftSupport (0.16.20):
     - MatrixSDK/Core
@@ -169,7 +169,7 @@ SPEC CHECKSUMS:
   GBDeviceInfo: f29249891446a392e64b9c9bbef9554aad2a6beb
   GZIP: 416858efbe66b41b206895ac6dfd5493200d95b3
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
-  JitsiMeetSDK: cbbfc8ace742e148a8477f32b8b95ef5578acac6
+  JitsiMeetSDK: d7612d73befd3f7f51f989458a816bbd05d0bc8e
   KeychainAccess: 9b07f665298d13c3a85881bd3171f6f49b8151c1
   KTCenterFlowLayout: 6e02b50ab2bd865025ae82fe266ed13b6d9eaf97
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
@@ -186,6 +186,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 20e05800c0570f4002b15931aab63ef454a93193
+PODFILE CHECKSUM: 90f31be321fd6711518e34930e83be6c98489f00
 
 COCOAPODS: 1.9.3
