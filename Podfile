@@ -13,7 +13,7 @@ use_frameworks!
 # Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
 $matrixKitVersion = '= 0.12.25'
 # $matrixKitVersion = :local
-$matrixKitVersion = {'develop' => 'xcode12'}  # THIS IS TEMPORARY. DO NOT MERGE TO DEVELOP
+# $matrixKitVersion = {'develop' => 'develop'}
 
 ########################################
 
