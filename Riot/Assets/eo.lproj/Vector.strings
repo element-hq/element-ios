@@ -13,8 +13,8 @@
 "search_default_placeholder" = "Serĉi";
 // Chat
 "room_jump_to_first_unread" = "Salti al unua nelegita mesaĝo";
-"group_details_people" = "Homoj";
-"group_details_rooms" = "Babilejoj";
+"group_details_people" = "Personoj";
+"group_details_rooms" = "Ĉambroj";
 // MARK: - Device Verification
 "device_verification_title" = "Kontroli aparaton";
 // String for App Store
@@ -311,3 +311,243 @@
 "auth_add_phone_message_2" = "Agordu telefonon, por via (laŭplaĉa) trovebleco de personoj, kiuj vin konas.";
 "auth_add_email_message_2" = "Agordu retpoŝtadreson por rehavo de konto, kaj por via (laŭplaĉa) trovebleco de personoj, kiuj vin konas.";
 "joined" = "Aliĝita";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Uzi rehavajn pasfrazon aŭ ŝlosilon";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Uzi rehavan ŝlosilon";
+"device_verification_self_verify_wait_additional_information" = "aŭ alian klienton de Matrix kapablan je delegaj subskriboj";
+"device_verification_self_verify_wait_information" = "Kontrolu ĉi tiun saluton per unu el viaj aliaj salutaĵoj, dononte al ĝi aliron al ĉifritaj mesaĝoj.\n\nUzu la plej freŝan version de Element per viaj aliaj aparatoj:";
+"device_verification_self_verify_wait_new_sign_in_title" = "Kontroli ĉi tiun saluton";
+
+// MARK: Self verification wait
+
+"device_verification_self_verify_wait_title" = "Plena sekureco";
+"key_verification_self_verify_unverified_sessions_alert_validate_action" = "Kontroli";
+"key_verification_self_verify_unverified_sessions_alert_message" = "Kontrolu ĉiujn viajn salutaĵojn por certigi, ke viaj konto kaj mesaĝoj sekuras.";
+"key_verification_self_verify_current_session_alert_validate_action" = "Kontroli";
+"key_verification_self_verify_current_session_alert_message" = "Aliaj uzantoj ĝin eble ne fidos.";
+
+// Current session
+
+"key_verification_self_verify_current_session_alert_title" = "Kontrolu ĉi tiun salutaĵon";
+"device_verification_self_verify_start_waiting" = "Atendante…";
+"device_verification_self_verify_start_information" = "Uzu ĉi tiun salutaĵon por kontroli vian novan, dononte al ĝi aliron al ĉifritaj mesaĝoj.";
+"device_verification_self_verify_start_verify_action" = "Komenci kontrolon";
+"device_verification_self_verify_alert_validate_action" = "Kontroli";
+"device_verification_self_verify_alert_message" = "Kontrolu la novan saluton alirantan al via konto: %@";
+
+// MARK: Self verification start
+
+// New login
+"device_verification_self_verify_alert_title" = "Nova saluto. Ĉu tio estis vi?";
+"device_verification_start_use_legacy_action" = "Uzi malnovecan kontrolon";
+"device_verification_start_verify_button" = "Komenci kontrolon";
+"device_verification_start_use_legacy" = "Ĉu nenio aperas? Ankoraŭ ne ĉiuj klientoj subtenas interagan kontroladon. Uzu kontroladon malnovecan.";
+"device_verification_start_wait_partner" = "Atendante akcepton de kunulo…";
+
+// MARK: Start
+"device_verification_start_title" = "Kontrolu per komparo de mallonga tekstoĉeno";
+"device_verification_incoming_description_2" = "Kontrolo de ĉi tiu salutaĵo markos ĝin fidata, kaj markos ankaŭ vian salutaĵon fidata por la kunulo.";
+"secure_key_backup_setup_intro_use_security_key_title" = "Uzi Sekurecan ŝlosilon";
+"secure_key_backup_setup_intro_info" = "Malhelpu perdon de aliro al ĉifritaj mesaĝoj kaj datumoj per savkopiado de ŝlosiloj al via servilo.";
+"rerequest_keys_alert_message" = "Bonvolu ruli Elementon per alia aparato, kiu povas malĉifri la mesaĝon, por ke ĝi povu resendi la ŝlosilojn al ĉi tiu salutaĵo.";
+
+// Re-request confirmation dialog
+"rerequest_keys_alert_title" = "Peto sendiĝis";
+"deactivate_account_password_alert_message" = "Por daŭrigi, bonvolu enigi vian pasvorton";
+"deactivate_account_password_alert_title" = "Malaktivigi konton";
+"deactivate_account_validate_action" = "Malaktivigi konton";
+"deactivate_account_forget_messages_information_part3" = ": ĉi tio prezentos neplenajn interparolojn al estontaj uzantoj)";
+"deactivate_account_forget_messages_information_part2_emphasize" = "Averto";
+"deactivate_account_forget_messages_information_part1" = "Bonvolu forgesi ĉiujn mesaĝojn, kiujn mi sendis, je la malaktivigo de mia konto (";
+"deactivate_account_informations_part5" = "Se vi volus, ke ni forgesu viajn mesaĝojn, bonvolu marki la markbutonon sube.\n\nVidebleco de mesaĝoj en Matrix estas simila al retpoŝto. Nia forgeso de viaj mesaĝoj signifas, ke viaj senditaj mesaĝoj estos havigotaj al neniuj novaj aŭ neregistritaj uzantoj, sed uzantoj registritaj, kiuj jam povas aliri tiujn mesaĝojn, daŭre povos aliri sian kopion.";
+"deactivate_account_informations_part4_emphasize" = "implice ne forgesigas la mesaĝojn, kiujn vi sendis. ";
+"deactivate_account_informations_part3" = "\n\nMalaktivigante vian konton ";
+"deactivate_account_informations_part2_emphasize" = "Tiu ĉi ago ne malfareblas.";
+"deactivate_account_informations_part1" = "Ĉi tio igos vian konton por ĉiam neuzebla. Vi ne povos saluti, kaj neniu povos registri la saman identigilon de uzanto. Tio ĉi foririgos vian konton de ĉiuj partoprenataj ĉambroj, kaj forigos detalojn pri via konto de via identiga servilo. ";
+
+// Deactivate account
+
+"deactivate_account_title" = "Malaktivigi konton";
+"service_terms_modal_policy_checkbox_accessibility_hint" = "Kontrolu por akcepti %@";
+"service_terms_modal_message_identity_server" = "Akceptu la uzokondiĉojn de la identiga servilo (%@) por trovi kontaktojn.";
+
+// Service terms - Variant for identity server when displayed out of a context
+"service_terms_modal_title_identity_server" = "Trovado de kontaktoj";
+"service_terms_modal_description_for_integration_manager" = "Uzu robotojn, pontojn, fenestraĵojn kaj glumarkarojn";
+"service_terms_modal_description_for_identity_server_2" = "Troviĝu per telefono au retpoŝtadreso";
+"service_terms_modal_description_for_identity_server_1" = "Trovi aliajn per telefono aŭ retpoŝtadreso";
+"service_terms_modal_decline_button" = "Rifuzi";
+"service_terms_modal_accept_button" = "Akcepti";
+"service_terms_modal_message" = "Por daŭrigi, vi devas akcepti la uzokondiĉojn de ĉi tiu servo (%@).";
+
+// Service terms
+"service_terms_modal_title" = "Uzokondiĉoj";
+"gdpr_consent_not_given_alert_review_now_action" = "Tralegi nun";
+
+// GDPR
+"gdpr_consent_not_given_alert_message" = "Por daŭre uzadi la hejmservilon %@, vi devas tralegi kaj konsenti la uzokondiĉojn.";
+"e2e_room_key_request_ignore_request" = "Malatenti peton";
+"e2e_room_key_request_share_without_verifying" = "Havigi sen kontrolo";
+"e2e_room_key_request_start_verification" = "Komenci kontrolon…";
+"e2e_room_key_request_message" = "Via nekontrolita salutaĵo «%@» petas ĉifrajn ŝlosilojn.";
+"e2e_room_key_request_message_new_device" = "Vi aldonis novan salutaĵon «%@», kiu petas ĉifrajn ŝlosilojn.";
+
+// Room key request dialog
+"e2e_room_key_request_title" = "Peto de ĉifra ŝlosilo";
+"share_extension_failed_to_encrypt" = "Malsukcesis sendi. Kontrolu agordojn de ĉifrado de ĉi tiu ĉambro per la ĉefa aplikaĵo";
+
+// Share extension
+"share_extension_auth_prompt" = "Salutu la ĉefan aplikaĵon por havigi enhavon";
+"room_widget_permission_room_id_permission" = "Identigilo de ĉambro";
+"room_widget_permission_widget_id_permission" = "Identigilo de fenestraĵo";
+"room_widget_permission_theme_permission" = "Via haŭto";
+"room_widget_permission_user_id_permission" = "Via identigilo de uzanto";
+"room_widget_permission_avatar_url_permission" = "URL de via profilbildo";
+"room_widget_permission_display_name_permission" = "Via prezenta nomo";
+"room_widget_permission_creator_info_title" = "Ĉi tiun fenestraĵon aldonis:";
+
+// Room widget permissions
+"room_widget_permission_title" = "Enlegi fenestraĵon";
+"widget_picker_manage_integrations" = "Administri kunigojn…";
+
+// Widget Picker
+"widget_picker_title" = "Kunigoj";
+"widget_integration_manager_disabled" = "Vi bezonas ŝalti kunigilon en la agordoj";
+"widget_integration_room_not_visible" = "Ĉambro %@ ne videblas.";
+"widget_integration_missing_user_id" = "Mankas user_id en la peto.";
+"widget_integration_missing_room_id" = "Mankas room_id en la peto.";
+"widget_integration_no_permission_in_room" = "Vi ne havas permeson fari tion en ĉi tiu ĉambro.";
+"widget_integration_must_be_in_room" = "Vi ne estas en ĉi tiu ĉambro.";
+"widget_integration_positive_power_level" = "Povnivelo devas esti plusa entejro.";
+"widget_integration_room_not_recognised" = "Ĉi tiu ĉambro ne estas rekonita.";
+"widget_integration_failed_to_send_request" = "Malsukcesis sendi peton.";
+"widget_integration_unable_to_create" = "Ne povas krei fenestraĵon.";
+
+// Widget Integration Manager
+"widget_integration_need_to_be_able_to_invite" = "Vi bezonas rajton inviti uzantojn por tion fari.";
+"widget_menu_remove" = "Nuligi por ĉiuj";
+"widget_menu_revoke_permission" = "Nuligi mian aliron";
+"widget_menu_open_outside" = "Malfermi per foliumilo";
+"widget_menu_refresh" = "Aktualigi";
+"widget_sticker_picker_no_stickerpacks_alert_add_now" = "Ĉu aldoni iun nun?";
+"widget_sticker_picker_no_stickerpacks_alert" = "Vi nun havas neniun ŝaltitan glumarkaron.";
+"widget_creation_failure" = "Malsukcesis krei finestraĵon";
+"widget_no_power_to_manage" = "Vi bezonas permeson administri fenestraĵojn en ĉi tiu ĉambro";
+"widget_integrations_server_failed_to_connect" = "Malsukcesis konektiĝi al la kuniga servilo";
+
+// Widget
+"widget_no_integrations_server_configured" = "Neniu kuniga servilo estas agordita";
+"bug_report_send" = "Sendi";
+"bug_report_progress_uploading" = "Alŝutante raporton";
+"bug_report_progress_zipping" = "Kolektante protokolon";
+"bug_report_send_screenshot" = "Sendi ekrankopion";
+"bug_report_send_logs" = "Sendi protokolon";
+"bug_report_logs_description" = "Por diagnozi problemojn, protokolo de tiu ĉi kliento sendiĝos kun ĉi tiu raporto de eraro. Se vi preferus sendi nur la ĉi-supran tekston, bonvolu malmarki:";
+"bug_crash_report_description" = "Bonvolu priskribi, kion vi faris antaŭ la fiasko:";
+"bug_crash_report_title" = "Raporto de fiasko";
+"bug_report_description" = "Bonvolu priskribi la eraron. Kion vi faris? Kion vi atendis? Kio vere okazis?";
+
+// Bug report
+"bug_report_title" = "Raporto de eraro";
+"e2e_key_backup_wrong_version_button_wasme" = "Tio estis mi";
+"e2e_key_backup_wrong_version_button_settings" = "Agordoj";
+"e2e_need_log_in_again" = "Vi bezonas resaluti por estigi tutvoje ĉifrajn ŝlosilojn porĉi tiu salutaĵo, kaj sendi la publikan ŝlosilon al via hejmservilo.\nTio necesas nur unufoje; pardonu la ĝenon.";
+
+// Crypto
+"e2e_enabling_on_app_update" = "Element nun subtenas tutvojan ĉifradon, sed vi bezonas resaluti por ŝalti ĝin.\n\nVi povas fari tion nun, aŭ pli poste per agordoj de la aplikaĵo.";
+
+// Crash report
+"google_analytics_use_prompt" = "Ĉu vi volus nin helpi pri plibonigoj al %@ per memaga kaj sennoma raportado de fiaskoj kaj datumoj pri uzado?";
+"no_voip" = "%@ vin vokas, sed %@ ankoraŭ ne subtenas vokojn.\nVi povas malatenti ĉi tiun sciigon kaj respondi la vokon per alia aparato, aŭ vi povas ĝin rifuzi.";
+
+// No VoIP support
+"no_voip_title" = "Envena voko";
+"call_no_stun_server_error_use_fallback_button" = "Provi uzi %@";
+"call_no_stun_server_error_message_2" = "Alternative, provu uzi la publikan servilon je %@, sed tio ne estos same dependebla, kaj konigos vian IP-adreson al tiu servilo. Vi ankaŭ povas ĉi tion pritrakti per la Agordoj";
+"call_no_stun_server_error_message_1" = "Bonvolu peti la administranton de via hejmservilo %@ agordi TURN-servilon, por ke vokoj funkciu dependeble.";
+"call_no_stun_server_error_title" = "Voko malsukcesis pro misagordita servilo";
+"call_jitsi_error" = "Malsukcesis aliĝi al la grupa voko.";
+"call_already_displayed" = "Jam progresas voko.";
+"call_incoming_video" = "Envena vidvoko…";
+"call_incoming_voice" = "Envena voko…";
+"call_incoming_video_prompt" = "Envena vidvoko de %@";
+
+// Call
+"call_incoming_voice_prompt" = "Envena voĉvoko de %@";
+"room_does_not_exist" = "%@ ne ekzistas";
+"camera_unavailable" = "Ĉi tiu filmilo estas nedisponebla per via aparato";
+"camera_access_not_granted" = "%@ ne havas permeson uzi la filmilon; bonvolu ŝanĝi la agordojn pri privateco";
+"do_not_ask_again" = "Ne plu demandi";
+"rage_shake_prompt" = "Ŝajnas, ke vi kolere skuas la telefonon. Ĉu vi deziras raporti eraron?";
+"bug_report_prompt" = "La aplikaĵo lastafoje fiaskis. Ĉu vi deziras sendi raporton pri la fiasko?";
+"public_room_section_title" = "Publikaj ĉambroj (de %@):";
+"homeserver_connection_lost" = "Ne povis konektiĝi al la hejmservilo.";
+"network_offline_prompt" = "La retkonekto ŝajnas ne funkcii.";
+"yesterday" = "Hieraŭ";
+"today" = "Hodiaŭ";
+"you" = "Vi";
+
+// Others
+"or" = "aŭ";
+"event_formatter_jitsi_widget_removed_by_you" = "Vi forigis grupan vokon";
+"event_formatter_jitsi_widget_added_by_you" = "Vi aldonis grupan vokon";
+"event_formatter_widget_removed_by_you" = "Vi forigis la fenestraĵon: %@";
+
+// Events formatter with you
+"event_formatter_widget_added_by_you" = "Vi aldonis la fenestraĵon: %@";
+"event_formatter_message_edited_mention" = "(redaktite)";
+"event_formatter_rerequest_keys_part2" = " de aliaj viaj salutaĵoj.";
+"event_formatter_rerequest_keys_part1_link" = "Repeti ĉifrajn ŝlasilojn";
+"event_formatter_jitsi_widget_removed" = "Grupan vokon forigis %@";
+"event_formatter_jitsi_widget_added" = "Grupan vokon aldonis %@";
+"event_formatter_widget_removed" = "Fenestraĵon %@ forigis %@";
+"event_formatter_widget_added" = "Fenestraĵon %@ aldonis %@";
+
+// Events formatter
+"event_formatter_member_updates" = "%tu ŝanĝoj de aneco";
+"directory_server_placeholder" = "matrix.org";
+"directory_server_type_homeserver" = "Entajpu hejmservilon, kies publikaj ĉambroj listiĝu";
+"directory_server_all_rooms" = "Ĉiuj ĉambroj de la servilo %@";
+"directory_server_picker_title" = "Elektu katalogon";
+
+// Directory
+"directory_title" = "Katalogo";
+
+// Image picker
+"image_picker_action_camera" = "Foti";
+"media_picker_select" = "Elekti";
+"receipt_status_read" = "Legite: ";
+
+// Read Receipts
+"read_receipts_list" = "Listo de legokonfirmoj";
+
+// Group rooms
+"group_rooms_filter_rooms" = "Filtri ĉambrojn de komunumo";
+"group_participants_invited_section" = "INVITITAJ";
+"group_participants_invite_malformed_id" = "Misformita identigilo. Ĝi devus esti identigilo de Matrix, kiel «@lokaparto:retnomo»";
+"group_participants_invite_malformed_id_title" = "Eraris invito";
+"group_participants_invite_another_user" = "Serĉi / Inviti per identigilo de uzanto aŭ nomo";
+"group_participants_filter_members" = "Filtri komunumanojn";
+"group_participants_invite_prompt_msg" = "Ĉu vi certe volas inviti uzanton %@ al ĉi tiu grupo?";
+"group_participants_invite_prompt_title" = "Konfirmo";
+"group_participants_remove_prompt_msg" = "Ĉu vi certe volas forigi partoprenanton %@ de ĉi tiu grupo?";
+"group_participants_remove_prompt_title" = "Konfirmo";
+"group_participants_leave_prompt_msg" = "Ĉu vi certe volas foriri de la grupo?";
+"group_participants_leave_prompt_title" = "Foriri de grupo";
+
+// Group participants
+"group_participants_add_participant" = "Aldoni partoprenanton";
+"group_invitation_format" = "%@ vin invitis al ĉi tiu komunumo";
+"group_home_multi_rooms_format" = "%tu ĉambroj";
+"group_home_one_room_format" = "1 ĉambro";
+"group_home_multi_members_format" = "%tu komunumanoj";
+
+// Group Home
+"group_home_one_member_format" = "1 komunumano";
+"group_details_home" = "Hejmo";
+
+// Group Details
+"group_details_title" = "Detaloj pri Komunumo";
+"room_details_copy_room_url" = "Kopii URL-on de ĉambro";
+"room_details_copy_room_address" = "Kopii adreson de ĉambro";
+"room_details_copy_room_id" = "Kopii identigilon de ĉambro";
+"room_details_unset_main_address" = "Malagordi kiel ĉefadreson";
