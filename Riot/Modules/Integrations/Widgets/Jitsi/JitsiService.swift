@@ -110,7 +110,7 @@ final class JitsiService: NSObject {
     
     /// Create Jitsi widget content
     @discardableResult
-    func createJitsiWidgetContent(jitsiServerURL: URL, roomID: String, isAudioOnly: Bool, success: @escaping ([AnyHashable: Any]) -> Void, failure: @escaping ((Error) -> Void)) -> MXHTTPOperation? {
+    func createJitsiWidgetContent(jitsiServerURL: URL, roomID: String, isAudioOnly: Bool, success: @escaping ([String: Any]) -> Void, failure: @escaping ((Error) -> Void)) -> MXHTTPOperation? {
         return self.getWellKnown(for: jitsiServerURL) { (result) in
             switch result {
             case .success(let jitsiWellKnown):
@@ -206,7 +206,7 @@ final class JitsiService: NSObject {
     private func createJitsiWidgetContent(serverDomain: String,
                                           authenticationType: JitsiAuthenticationType?,
                                           roomID: String,
-                                          isAudioOnly: Bool) -> [AnyHashable: Any]? {
+                                          isAudioOnly: Bool) -> [String: Any]? {
         guard MXTools.isMatrixRoomIdentifier(roomID) else {
             NSLog("[JitsiService] createJitsiWidgetContent the roomID is not valid")
             return nil
@@ -282,7 +282,7 @@ final class JitsiService: NSObject {
         var v1AndV2WidgetData = v2WidgetData
         v1AndV2WidgetData["widgetSessionId"] = widgetSessionId
         
-        let widgetContent: [AnyHashable: Any] = [
+        let widgetContent: [String: Any] = [
             "url": widgetStringURL,
             "type": kWidgetTypeJitsiV1,
             "data": v1AndV2WidgetData
