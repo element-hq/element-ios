@@ -17,6 +17,7 @@
 import Foundation
 
 /// `JitsiAuthenticationType` represents authentification type supported by a Jitsi server
+/// See https://github.com/matrix-org/prosody-mod-auth-matrix-user-verification
 enum JitsiAuthenticationType: Equatable {
     case openIDTokenJWT
     case other(String)

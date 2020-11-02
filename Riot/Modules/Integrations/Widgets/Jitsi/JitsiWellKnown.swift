@@ -16,7 +16,8 @@
 
 import Foundation
 
-/// `JitsiWellKnown` represents configuration specific to a Jitsi domain
+/// `JitsiWellKnown` represents configuration specific to a Jitsi domain.
+/// See https://github.com/matrix-org/prosody-mod-auth-matrix-user-verification#jitsi-auth-well-known
 struct JitsiWellKnown {
     let authenticationType: JitsiAuthenticationType?
 }
