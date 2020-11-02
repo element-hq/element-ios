@@ -164,22 +164,7 @@ static const NSString *kJitsiDataErrorKey = @"error";
 
 #pragma mark - Private
 
-// Extract data based on Matrix Widget V2 widget data
-- (void)extractWidgetDataFromWidget:(Widget*)widget
-{
-    JitsiWidgetData *jitsiWidgetData = [JitsiWidgetData modelFromJSON:widget.data];
-    if (jitsiWidgetData)
-    {
-        self.conferenceId = jitsiWidgetData.conferenceId;
-        if (jitsiWidgetData.domain)
-        {
-            NSString *serverUrlString = [NSString stringWithFormat:@"https://%@", jitsiWidgetData.domain];
-            self.serverUrl = [NSURL URLWithString:serverUrlString];
-        }
-        self.startWithVideo = !jitsiWidgetData.isAudioOnly;
-    }
-}
-
+// Fill Jitsi data based on Matrix Widget V2 widget data
 - (void)fillWithWidgetData:(JitsiWidgetData*)jitsiWidgetData
 {
     if (jitsiWidgetData)
