@@ -331,6 +331,7 @@
 		B190F55922CE356800AEB493 /* EditHistoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B190F55822CE356800AEB493 /* EditHistoryHeaderView.swift */; };
 		B190F55B22CE35FD00AEB493 /* EditHistoryHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B190F55A22CE35FD00AEB493 /* EditHistoryHeaderView.xib */; };
 		B190F55D22CE5A9700AEB493 /* EditHistorySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B190F55C22CE5A9600AEB493 /* EditHistorySection.swift */; };
+		B1920713255068B300F5062F /* RoomIDComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1920712255068B200F5062F /* RoomIDComponents.swift */; };
 		B1963B2B228F1C4900CBA17F /* BubbleReactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1963B25228F1C4800CBA17F /* BubbleReactionsView.swift */; };
 		B1963B2C228F1C4900CBA17F /* BubbleReactionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1963B26228F1C4800CBA17F /* BubbleReactionViewCell.xib */; };
 		B1963B2D228F1C4900CBA17F /* BubbleReactionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1963B27228F1C4800CBA17F /* BubbleReactionsViewModel.swift */; };
@@ -1415,6 +1416,7 @@
 		B190F55822CE356800AEB493 /* EditHistoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHistoryHeaderView.swift; sourceTree = "<group>"; };
 		B190F55A22CE35FD00AEB493 /* EditHistoryHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditHistoryHeaderView.xib; sourceTree = "<group>"; };
 		B190F55C22CE5A9600AEB493 /* EditHistorySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHistorySection.swift; sourceTree = "<group>"; };
+		B1920712255068B200F5062F /* RoomIDComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomIDComponents.swift; sourceTree = "<group>"; };
 		B1963B25228F1C4800CBA17F /* BubbleReactionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleReactionsView.swift; sourceTree = "<group>"; };
 		B1963B26228F1C4800CBA17F /* BubbleReactionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BubbleReactionViewCell.xib; sourceTree = "<group>"; };
 		B1963B27228F1C4800CBA17F /* BubbleReactionsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleReactionsViewModel.swift; sourceTree = "<group>"; };
@@ -3264,6 +3266,14 @@
 			path = SelfVerifyWait;
 			sourceTree = "<group>";
 		};
+		B19207112550683500F5062F /* Room */ = {
+			isa = PBXGroup;
+			children = (
+				B1920712255068B200F5062F /* RoomIDComponents.swift */,
+			);
+			path = Room;
+			sourceTree = "<group>";
+		};
 		B1963B24228F1C4800CBA17F /* BubbleReactions */ = {
 			isa = PBXGroup;
 			children = (
@@ -4505,6 +4515,7 @@
 				B1B5598A20EFC42100210D55 /* Settings */,
 				32242F0B21E8FBA900725742 /* Theme */,
 				B1B5598020EFC3DF00210D55 /* Widgets */,
+				B19207112550683500F5062F /* Room */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -6658,6 +6669,7 @@
 				EC51E7A62514D2E100AAE7DB /* RoomInfoCoordinatorBridgePresenter.swift in Sources */,
 				EC1CA87524C8259700DE9EBF /* KeychainStore.swift in Sources */,
 				B1B5575220EE6C4D00210D55 /* RoomKeyRequestViewController.m in Sources */,
+				B1920713255068B300F5062F /* RoomIDComponents.swift in Sources */,
 				32A6001A22C661100042C1D9 /* EditHistoryCoordinator.swift in Sources */,
 				F083BD1E1E7009ED00A9B29C /* LegacyAppDelegate.m in Sources */,
 				B1B558E620EF768F00210D55 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
