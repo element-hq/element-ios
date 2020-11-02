@@ -4,7 +4,7 @@
 
 To build Element iOS project you need:
 
-- Xcode 11.4+.
+- Xcode 12.1+.
 - [Ruby](https://www.ruby-lang.org/), a dynamic programming language used by several build tools.
 - [cmake](https://gitlab.kitware.com/cmake/cmake), used to build [cmark](https://github.com/commonmark/cmark) dependency of [MatrixKit](https://github.com/matrix-org/matrix-ios-kit) pod.
 - [CocoaPods](https://cocoapods.org) 1.9.3. Manages library dependencies for Xcode projects.

@@ -5,6 +5,32 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
+ * Upgrade to Xcode 12 (#3712).
+ * Xcode 12: Make Xcode 12 and fastlane(xcodebuild) happy while some pods are not updated.
+ * Update Gemfile.lock.
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * Xcode 12 is now mandatory to build the project.
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Changes in 1.0.18 (2020-10-27)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
  * Secure backup: Add possibility to not expose recovery key when creating a secure backup.
  * BuildSettings: Centralise RoomInputToolbar compression mode setting.
  * Update GBDeviceInfo to 6.4.0 (#3570).
@@ -15,10 +41,10 @@ Changes to be released in next version
  * Update SwiftLint to 0.40.3 (#3570).
 
 🐛 Bugfix
- * 
+ * Fix typos in UI
 
 ⚠️ API Changes
- * 
+ *
 
 🗣 Translations
  * 
@@ -28,6 +54,9 @@ Changes to be released in next version
 
 Others
  * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.26](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.26)).
 
 Changes in 1.0.17 (2020-10-14)
 =================================================

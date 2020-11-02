@@ -11,7 +11,7 @@ use_frameworks!
 # - `{ {kit spec hash} => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for each repo. Used by Fastfile during CI
 #
 # Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
-$matrixKitVersion = '= 0.12.25'
+$matrixKitVersion = '= 0.12.26'
 # $matrixKitVersion = :local
 # $matrixKitVersion = {'develop' => 'develop'}
 
@@ -101,12 +101,15 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
 
-    # Disable bitcode for each pod framework
-    # Because the WebRTC pod (included by the JingleCallStack pod) does not support it.
-    # Plus the app does not enable it
     target.build_configurations.each do |config|
+      # Disable bitcode for each pod framework
+      # Because the WebRTC pod (included by the JingleCallStack pod) does not support it.
+      # Plus the app does not enable it
       config.build_settings['ENABLE_BITCODE'] = 'NO'
       
+      # Make Xcode 12 and fastlane(xcodebuild) happy while some pods are not updated
+      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+
       # Force ReadMoreTextView to use Swift 5.2 version (as there is no code changes to perform)
       if target.name.include? 'ReadMoreTextView'
         config.build_settings['SWIFT_VERSION'] = '5.2'

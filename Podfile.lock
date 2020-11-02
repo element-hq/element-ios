@@ -16,7 +16,7 @@ PODS:
     - AFNetworking/NSURLSession
   - cmark (0.24.1)
   - DGCollectionViewLeftAlignFlowLayout (1.0.4)
-  - Down (0.9.3)
+  - Down (0.9.4)
   - DTCoreText (1.6.25):
     - DTCoreText/Core (= 1.6.25)
     - DTFoundation/Core (~> 1.7.5)
@@ -33,58 +33,58 @@ PODS:
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTFoundation/Core (1.7.15)
-  - DTFoundation/DTAnimatedGIF (1.7.15)
-  - DTFoundation/DTHTMLParser (1.7.15):
+  - DTFoundation/Core (1.7.16)
+  - DTFoundation/DTAnimatedGIF (1.7.16)
+  - DTFoundation/DTHTMLParser (1.7.16):
     - DTFoundation/Core
-  - DTFoundation/UIKit (1.7.15):
+  - DTFoundation/UIKit (1.7.16):
     - DTFoundation/Core
-  - FlowCommoniOS (1.8.7)
-  - GBDeviceInfo (6.3.0):
-    - GBDeviceInfo/Core (= 6.3.0)
-  - GBDeviceInfo/Core (6.3.0)
-  - GZIP (1.2.3)
+  - FlowCommoniOS (1.9.0)
+  - GBDeviceInfo (6.4.0):
+    - GBDeviceInfo/Core (= 6.4.0)
+  - GBDeviceInfo/Core (6.4.0)
+  - GZIP (1.3.0)
   - HPGrowingTextView (1.1)
-  - JitsiMeetSDK (2.8.1)
-  - KeychainAccess (4.2.0)
+  - JitsiMeetSDK (2.10.2)
+  - KeychainAccess (4.2.1)
   - KTCenterFlowLayout (1.3.1)
   - libbase58 (0.1.4)
   - libPhoneNumber-iOS (0.9.15)
-  - MatomoTracker (7.2.1):
-    - MatomoTracker/Core (= 7.2.1)
-  - MatomoTracker/Core (7.2.1)
-  - MatrixKit (0.12.25):
+  - MatomoTracker (7.2.2):
+    - MatomoTracker/Core (= 7.2.2)
+  - MatomoTracker/Core (7.2.2)
+  - MatrixKit (0.12.26):
     - Down (~> 0.9.3)
     - DTCoreText (~> 1.6.23)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.12.25)
-    - MatrixSDK (= 0.16.19)
-  - MatrixKit/AppExtension (0.12.25):
+    - MatrixKit/Core (= 0.12.26)
+    - MatrixSDK (= 0.16.20)
+  - MatrixKit/AppExtension (0.12.26):
     - Down (~> 0.9.3)
     - DTCoreText (~> 1.6.23)
     - DTCoreText/Extension
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.16.19)
-  - MatrixKit/Core (0.12.25):
+    - MatrixSDK (= 0.16.20)
+  - MatrixKit/Core (0.12.26):
     - Down (~> 0.9.3)
     - DTCoreText (~> 1.6.23)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.16.19)
-  - MatrixSDK (0.16.19):
-    - MatrixSDK/Core (= 0.16.19)
-  - MatrixSDK/Core (0.16.19):
+    - MatrixSDK (= 0.16.20)
+  - MatrixSDK (0.16.20):
+    - MatrixSDK/Core (= 0.16.20)
+  - MatrixSDK/Core (0.16.20):
     - AFNetworking (~> 4.0.0)
-    - GZIP (~> 1.2.2)
+    - GZIP (~> 1.3.0)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.1.0)
-    - Realm (~> 4.4.0)
-  - MatrixSDK/JingleCallStack (0.16.19):
-    - JitsiMeetSDK (~> 2.8.1)
+    - Realm (~> 5.4.8)
+  - MatrixSDK/JingleCallStack (0.16.20):
+    - JitsiMeetSDK (= 2.10.2)
     - MatrixSDK/Core
-  - MatrixSDK/SwiftSupport (0.16.19):
+  - MatrixSDK/SwiftSupport (0.16.20):
     - MatrixSDK/Core
   - OLMKit (3.1.0):
     - OLMKit/olmc (= 3.1.0)
@@ -92,16 +92,16 @@ PODS:
   - OLMKit/olmc (3.1.0)
   - OLMKit/olmcpp (3.1.0)
   - ReadMoreTextView (3.0.1)
-  - Realm (4.4.1):
-    - Realm/Headers (= 4.4.1)
-  - Realm/Headers (4.4.1)
+  - Realm (5.4.8):
+    - Realm/Headers (= 5.4.8)
+  - Realm/Headers (5.4.8)
   - Reusable (4.1.1):
     - Reusable/Storyboard (= 4.1.1)
     - Reusable/View (= 4.1.1)
   - Reusable/Storyboard (4.1.1)
   - Reusable/View (4.1.1)
-  - SwiftGen (6.2.1)
-  - SwiftLint (0.36.0)
+  - SwiftGen (6.4.0)
+  - SwiftLint (0.40.3)
   - zxcvbn-ios (1.0.4)
   - ZXingObjC (3.6.5):
     - ZXingObjC/All (= 3.6.5)
@@ -110,22 +110,22 @@ PODS:
 DEPENDENCIES:
   - cmark
   - DGCollectionViewLeftAlignFlowLayout (~> 1.0.4)
-  - FlowCommoniOS (~> 1.8.7)
-  - GBDeviceInfo (~> 6.3.0)
+  - FlowCommoniOS (~> 1.9.0)
+  - GBDeviceInfo (~> 6.4.0)
   - HPGrowingTextView
-  - KeychainAccess (~> 4.2)
+  - KeychainAccess (~> 4.2.1)
   - KTCenterFlowLayout (~> 1.3.1)
-  - MatomoTracker (~> 7.2.0)
-  - MatrixKit (= 0.12.25)
-  - MatrixKit/AppExtension (= 0.12.25)
+  - MatomoTracker (~> 7.2.2)
+  - MatrixKit (= 0.12.26)
+  - MatrixKit/AppExtension (= 0.12.26)
   - MatrixSDK
   - MatrixSDK/JingleCallStack
   - MatrixSDK/SwiftSupport
   - OLMKit
   - ReadMoreTextView (~> 3.0.1)
   - Reusable (~> 4.1)
-  - SwiftGen (~> 6.1)
-  - SwiftLint (~> 0.36.0)
+  - SwiftGen (~> 6.3)
+  - SwiftLint (~> 0.40.3)
   - zxcvbn-ios
   - ZXingObjC (~> 3.6.5)
 
@@ -162,30 +162,30 @@ SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
   cmark: 1d9ad0375e3b9fa281732e992467903606015520
   DGCollectionViewLeftAlignFlowLayout: a0fa58797373ded039cafba8133e79373d048399
-  Down: 4553b984236807e384fa0ef7c7e360ef9f7c425d
+  Down: 276f2c3eeeaf30345873bdad25f44b2640fcfa3a
   DTCoreText: e92f4cf6b36d9d71ce4436d12cf089d74ab0596b
-  DTFoundation: 767ca882209ef4d5132ec7e702526d5ed5bb71a2
-  FlowCommoniOS: 1647a1775b988f5d97202f635bcbcbce4f4c46a1
-  GBDeviceInfo: a3f39dba1a04dcb630abff65d6f7e8fbf319eadd
-  GZIP: af5c90ef903776a7e9afe6ebebd794a84a2929d4
+  DTFoundation: e7781d9fd2f202bfd451fbbf8cab71ce83b46498
+  FlowCommoniOS: 2b87d7878b7a2a29c80379c00eeb78aa4590831c
+  GBDeviceInfo: f29249891446a392e64b9c9bbef9554aad2a6beb
+  GZIP: 416858efbe66b41b206895ac6dfd5493200d95b3
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
-  JitsiMeetSDK: 2984eac1343690bf1c0c72bde75b48b0148d0f79
-  KeychainAccess: 3f760109aa99b05d0f231e28b22642da7153e38a
+  JitsiMeetSDK: d7612d73befd3f7f51f989458a816bbd05d0bc8e
+  KeychainAccess: 9b07f665298d13c3a85881bd3171f6f49b8151c1
   KTCenterFlowLayout: 6e02b50ab2bd865025ae82fe266ed13b6d9eaf97
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
-  MatomoTracker: 246b6b0693cf39b356134dec7561f719d3538b96
-  MatrixKit: 56fa2848229dc866c712f3b60e634f14a498d975
-  MatrixSDK: 1c4aee61037751f3b582ea09dbc7efeaf9b423d0
+  MatomoTracker: a59ec4da0f580be57bdc6baa708a71a86532a832
+  MatrixKit: 2caaa6d693a84c19709cf303ec4750c5b099297b
+  MatrixSDK: b4a837585997c462761b8faa894cd490e24acb11
   OLMKit: 4ee0159d63feeb86d836fdcfefe418e163511639
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
-  Realm: 4eb04d7487bd43c0581256f40b424eafb711deff
+  Realm: 042bbb59227a0159eda397b8a5a49fbd67495ce7
   Reusable: 53a9acf5c536f229b31b5865782414b508252ddb
-  SwiftGen: 62e69d127507be1538d4263e137b2290cd6ab272
-  SwiftLint: fc9859e4e1752340664851f667bb1898b9c90114
+  SwiftGen: 67860cc7c3cfc2ed25b9b74cfd55495fc89f9108
+  SwiftLint: dfd554ff0dff17288ee574814ccdd5cea85d76f7
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: d63d69286003b12daa38bc1f8fdbe0309ab91c2a
+PODFILE CHECKSUM: 90f31be321fd6711518e34930e83be6c98489f00
 
 COCOAPODS: 1.9.3

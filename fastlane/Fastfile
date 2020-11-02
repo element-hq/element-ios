@@ -20,7 +20,7 @@ platform :ios do
 
   before_all do
     # Ensure used Xcode version
-    xcversion(version: "~> 11.4")
+    xcversion(version: "~> 12.1")
   end
 
   #### Public ####
