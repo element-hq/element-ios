@@ -8,6 +8,7 @@ Changes to be released in next version
  * Upgrade to Xcode 12 (#3712).
  * Xcode 12: Make Xcode 12 and fastlane(xcodebuild) happy while some pods are not updated.
  * Update Gemfile.lock.
+ * Jitsi: Support authenticated Jitsi widgets (#3655).
 
 🐛 Bugfix
  * 
