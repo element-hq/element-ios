@@ -10,7 +10,7 @@ Changes to be released in next version
  * Update Gemfile.lock.
 
 🐛 Bugfix
- * 
+ * Fix analytics in order to track performance improvements.
 
 ⚠️ API Changes
  * Xcode 12 is now mandatory to build the project.
