@@ -104,7 +104,7 @@ NSString *const kAnalyticsE2eDecryptionFailureAction = @"Decryption failure";
 
 #ifdef DEBUG
         // Disable analytics in debug as it pollutes stats
-        [MatomoTracker shared].isOptedOut = YES;
+        matomoTracker.isOptedOut = YES;
 #endif
     }
     else
