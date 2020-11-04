@@ -229,8 +229,8 @@ final class JitsiService: NSObject {
             conferenceID = Base32Coder.encodedString(roomID, padding: false)
             authenticationTypeString = authenticationType.identifier
         } else {
-            let roomIDComponents = RoomIDComponents(matrixID: roomID)
-            let localRoomId = roomIDComponents?.localRoomID ?? ""
+            let roomIdComponents = RoomIdComponents(matrixID: roomID)
+            let localRoomId = roomIdComponents?.localRoomId ?? ""
             conferenceID = localRoomId + widgetSessionId
             authenticationTypeString = nil
         }
