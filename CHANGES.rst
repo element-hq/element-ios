@@ -9,9 +9,11 @@ Changes to be released in next version
  * Xcode 12: Make Xcode 12 and fastlane(xcodebuild) happy while some pods are not updated.
  * Update Gemfile.lock.
  * MXAnalyticsDelegate: Make it fully agnostic on tracked data.
+ * KeyValueStore improvements.
 
 🐛 Bugfix
  * Fix analytics in order to track performance improvements.
+ * Fix long placeholder cropping in room input toolbar. Prevent long placeholder to be displayed on small devices (#3790).
 
 ⚠️ API Changes
  * Xcode 12 is now mandatory to build the project.
