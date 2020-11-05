@@ -18,17 +18,11 @@
 
 #import "Riot-Swift.h"
 
-// All metrics are store under a Piwik category called "Metrics".
-// Then, there are 2 Piwik actions: "iOS.startup" and "iOS.stats" (these actions
-// are namespaced by plaform to have a nice rendering on the Piwik website).
-// Then, we use constants defined by the Matrix SDK as Piwik Names (ex:"mountData")
+
+// Duration data will be visible under the Piwik category called "Performance".
+// Other values will be visible in "Metrics".
 NSString *const kAnalyticsPerformanceCategory = @"Performance";
 NSString *const kAnalyticsMetricsCategory = @"Metrics";
-NSString *const kAnalyticsMetricsActionPattern = @"iOS.%@";
-
-// E2E telemetry is stored under a Piwik category called "E2E".
-NSString *const kAnalyticsE2eCategory = @"E2E";
-NSString *const kAnalyticsE2eDecryptionFailureAction = @"Decryption failure";
 
 
 @import MatomoTracker;
@@ -144,7 +138,7 @@ NSString *const kAnalyticsE2eDecryptionFailureAction = @"Decryption failure";
     // Report time in ms to make figures look better in Matomo
     NSNumber *value = @(seconds * 1000);
     [matomoTracker trackWithEventWithCategory:kAnalyticsPerformanceCategory
-                                       action:[NSString stringWithFormat:kAnalyticsMetricsActionPattern, category]
+                                       action:category
                                          name:name
                                        number:value
                                           url:nil];
@@ -153,7 +147,7 @@ NSString *const kAnalyticsE2eDecryptionFailureAction = @"Decryption failure";
 - (void)trackValue:(NSNumber*)value category:(NSString*)category name:(NSString*)name
 {
     [matomoTracker trackWithEventWithCategory:kAnalyticsMetricsCategory
-                                       action:[NSString stringWithFormat:kAnalyticsMetricsActionPattern, category]
+                                       action:category
                                          name:name
                                        number:value
                                           url:nil];
