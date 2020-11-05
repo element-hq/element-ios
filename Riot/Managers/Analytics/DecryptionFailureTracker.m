@@ -25,7 +25,7 @@
 #define GRACE_PERIOD 60
 
 // E2E failures analytics category.
-NSString *const DecryptionFailureTrackerAnalyticsCategory = @"e2e.failure";
+NSString *const kDecryptionFailureTrackerAnalyticsCategory = @"e2e.failure";
 
 @interface DecryptionFailureTracker()
 {
@@ -162,7 +162,7 @@ NSString *const DecryptionFailureTrackerAnalyticsCategory = @"e2e.failure";
         
         for (NSString *reason in failuresCounts)
         {
-            [_delegate trackValue:failuresCounts[reason] category:DecryptionFailureTrackerAnalyticsCategory name:reason];
+            [_delegate trackValue:failuresCounts[reason] category:kDecryptionFailureTrackerAnalyticsCategory name:reason];
         }
     }
 }
