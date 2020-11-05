@@ -34,6 +34,7 @@
 
 #import "BugReportViewController.h"
 #import "RoomKeyRequestViewController.h"
+#import "DecryptionFailureTracker.h"
 
 #import <MatrixKit/MatrixKit.h>
 

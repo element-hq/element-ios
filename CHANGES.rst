@@ -15,6 +15,7 @@ Changes to be released in next version
 
 ⚠️ API Changes
  * Xcode 12 is now mandatory to build the project.
+ * Remove MXDecryptionFailureDelegate in flavor of agnostic MXAnalyticsDelegate.
 
 🗣 Translations
  * 

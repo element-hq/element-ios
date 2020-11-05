@@ -159,18 +159,4 @@ NSString *const kAnalyticsE2eDecryptionFailureAction = @"Decryption failure";
                                           url:nil];
 }
 
-#pragma mark - MXDecryptionFailureDelegate
-
-- (void)trackFailures:(NSDictionary<NSString *,NSNumber *> *)failuresCounts
-{
-    for (NSString *reason in failuresCounts)
-    {
-        [matomoTracker trackWithEventWithCategory:kAnalyticsE2eCategory
-                                                   action:kAnalyticsE2eDecryptionFailureAction
-                                                     name:reason
-                                                   number:failuresCounts[reason]
-                                                      url:nil];
-    }
-}
-
 @end
