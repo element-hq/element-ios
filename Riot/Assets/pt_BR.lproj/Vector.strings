@@ -132,19 +132,19 @@
 "search_no_result" = "Nenhum resultado";
 "search_in_progress" = "Procurando…";
 // Directory
-"directory_cell_title" = "Procurar no diretório";
+"directory_cell_title" = "Procurar na lista";
 "directory_cell_description" = "%tu salas";
 "directory_search_results" = "%tu resultados encontrados para %@";
 "directory_search_results_more_than" = ">%tu resultados encontrados para %@";
-"directory_searching_title" = "Procurando no diretório…";
+"directory_searching_title" = "Procurando na lista…";
 // Contacts
 "contacts_address_book_section" = "CONTATOS LOCAIS";
 "contacts_address_book_matrix_users_toggle" = "Apenas usuários na Matrix";
 "contacts_address_book_no_contact" = "Nenhum contato local";
 "contacts_address_book_permission_required" = "Permissão necessária para acessar contatos locais";
 "contacts_address_book_permission_denied" = "Você não permitiu que o Element acesse seus contatos locais";
-"contacts_user_directory_section" = "DIRETÓRIO DE USUÁRIOS";
-"contacts_user_directory_offline_section" = "DIRETÓRIO DE USUÁRIOS (desconectado)";
+"contacts_user_directory_section" = "LISTA DE CONTATOS";
+"contacts_user_directory_offline_section" = "LISTA DE CONTATOS (offline)";
 // Chat participants
 "room_participants_title" = "Participantes";
 "room_participants_add_participant" = "Adicionar participantes";
@@ -158,8 +158,8 @@
 "room_creation_title" = "Nova Sala";
 "room_creation_account" = "Conta";
 // Room recents
-"room_recents_directory_section" = "DIRETÓRIO DE SALAS";
-"directory_search_results_title" = "Procurar nos resultados do diretório";
+"room_recents_directory_section" = "LISTA DE SALAS";
+"directory_search_results_title" = "Procurar nos resultados da lista";
 "directory_search_fail" = "Falha ao buscar dados";
 "auth_accept_policies" = "Por favor, revise e aceite as políticas deste servidor local:";
 "room_recents_server_notice_section" = "ALERTAS DO SISTEMA";
@@ -171,7 +171,7 @@
 "room_participants_invite_malformed_id_title" = "Erro no Convite";
 "room_participants_invited_section" = "CONVIDADO";
 "room_participants_online" = "Online";
-"room_participants_offline" = "Desconectado";
+"room_participants_offline" = "Offline";
 "room_participants_unknown" = "Desconhecido";
 "room_participants_idle" = "Ocioso";
 "room_participants_now" = "agora";
@@ -376,7 +376,7 @@
 "room_details_access_section_anyone_apart_from_guest" = "Quem conhece o link da sala, exceto convidados";
 "room_details_access_section_anyone" = "Qualquer pessoa que conheça o link da sala, incluindo convidados";
 "room_details_access_section_no_address_warning" = "Para ligar a uma sala, isto deve ter um endereço";
-"room_details_access_section_directory_toggle" = "Listar esta sala no diretório de salas";
+"room_details_access_section_directory_toggle" = "Listar esta sala na lista de salas";
 "room_details_history_section" = "Quem pode ler o histórico?";
 "room_details_history_section_anyone" = "Qualquer um";
 "room_details_history_section_members_only" = "Apenas participantes (desde o momento em que selecionamos esta opção)";
@@ -408,7 +408,7 @@
 "room_details_fail_to_update_topic" = "Falha ao atualizar a descrição";
 "room_details_fail_to_update_room_guest_access" = "Falha ao atualizar o acesso do convidado da sala";
 "room_details_fail_to_update_room_join_rule" = "Falha ao atualizar a regra de participação";
-"room_details_fail_to_update_room_directory_visibility" = "Falha ao atualizar a visibilidade da sala no diretório";
+"room_details_fail_to_update_room_directory_visibility" = "Falha ao atualizar a visibilidade da sala na lista";
 "room_details_fail_to_update_history_visibility" = "Falha ao atualizar a visibilidade do histórico";
 "room_details_advanced_e2e_encryption_prompt_message" = "A criptografia de ponta a ponta é experimental e pode não ser confiável.\n\nVocê ainda não deve confiar nele para proteger os dados.\n\nOs dispositivos ainda não poderão descriptografar o histórico antes de ingressarem na sala.\n\nQuando a criptografia estiver ativada para uma sala, ela não poderá ser desativada novamente (por enquanto).\n\nAs mensagens criptografadas não estarão visíveis em clientes que ainda não implementam a criptografia.";
 "room_details_fail_to_add_room_aliases" = "Falha ao adicionar os novos endereços da sala";
@@ -456,8 +456,8 @@
 "media_picker_library" = "Galeria";
 "media_picker_select" = "Selecionar";
 // Directory
-"directory_title" = "Diretório";
-"directory_server_picker_title" = "Selecionar um diretório";
+"directory_title" = "Lista";
+"directory_server_picker_title" = "Selecionar uma lista";
 "settings_display_name" = "Nome e sobrenome";
 "settings_pin_rooms_with_missed_notif" = "Fixar sala com notificações perdidas";
 "settings_pin_rooms_with_unread" = "Fixar sala com mensagens não lidas";
