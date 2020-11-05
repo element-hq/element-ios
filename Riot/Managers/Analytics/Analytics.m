@@ -137,17 +137,6 @@ NSString *const kAnalyticsE2eDecryptionFailureAction = @"Decryption failure";
     [matomoTracker dispatch];
 }
 
-- (void)trackLaunchScreenDisplayDuration:(NSTimeInterval)seconds
-{
-    NSString *action = [NSString stringWithFormat:kAnalyticsMetricsActionPattern, kMXAnalyticsStartupCategory];
-
-    [matomoTracker trackWithEventWithCategory:kAnalyticsMetricsCategory
-                                               action:action
-                                                 name:kMXAnalyticsStartupLaunchScreen
-                                               number:@(seconds * 1000)
-                                                  url:nil];
-}
-
 #pragma mark - MXAnalyticsDelegate
 
 - (void)trackDuration:(NSTimeInterval)seconds category:(NSString*)category name:(NSString*)name

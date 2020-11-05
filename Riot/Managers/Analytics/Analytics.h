@@ -53,11 +53,4 @@
  */
 - (void)dispatch;
 
-/**
- Track how long the launch screen has been displayed to the end user.
-
- @param seconds the duration in seconds.
- */
-- (void)trackLaunchScreenDisplayDuration: (NSTimeInterval)seconds;
-
 @end

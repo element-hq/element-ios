@@ -2418,7 +2418,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         NSLog(@"[AppDelegate] hideLaunchAnimation: LaunchAnimation was shown for %.3fms", duration * 1000);
         
         // Track it on our analytics
-        [[Analytics sharedInstance] trackLaunchScreenDisplayDuration:duration];
+        [[MXSDKOptions sharedInstance].analyticsDelegate trackDuration:duration
+                                                              category:kMXAnalyticsStartupCategory
+                                                                  name:kMXAnalyticsStartupLaunchScreen];
         
         // TODO: Send durationMs to Piwik
         // Such information should be the same on all platforms
