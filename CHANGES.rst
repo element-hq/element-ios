@@ -11,6 +11,7 @@ Changes to be released in next version
 
 🐛 Bugfix
  * Fix analytics in order to track performance improvements.
+ * Fix long placeholder cropping in room input toolbar. Prevent long placeholder to be displayed on small devices (#3790).
 
 ⚠️ API Changes
  * Xcode 12 is now mandatory to build the project.
