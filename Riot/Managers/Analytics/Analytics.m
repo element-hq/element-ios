@@ -18,16 +18,12 @@
 
 #import "Riot-Swift.h"
 
-// All metrics are store under a Piwik category called "Metrics".
-// Then, there are 2 Piwik actions: "iOS.startup" and "iOS.stats" (these actions
-// are namespaced by plaform to have a nice rendering on the Piwik website).
-// Then, we use constants defined by the Matrix SDK as Piwik Names (ex:"mountData")
-NSString *const kAnalyticsMetricsCategory = @"Metrics";
-NSString *const kAnalyticsMetricsActionPattern = @"iOS.%@";
 
-// E2E telemetry is stored under a Piwik category called "E2E".
-NSString *const kAnalyticsE2eCategory = @"E2E";
-NSString *const kAnalyticsE2eDecryptionFailureAction = @"Decryption failure";
+// Duration data will be visible under the Piwik category called "Performance".
+// Other values will be visible in "Metrics".
+// Some Matomo screenshots are available at https://github.com/vector-im/element-ios/pull/3789.
+NSString *const kAnalyticsPerformanceCategory = @"Performance";
+NSString *const kAnalyticsMetricsCategory = @"Metrics";
 
 
 @import MatomoTracker;
@@ -136,75 +132,26 @@ NSString *const kAnalyticsE2eDecryptionFailureAction = @"Decryption failure";
     [matomoTracker dispatch];
 }
 
-- (void)trackLaunchScreenDisplayDuration:(NSTimeInterval)seconds
-{
-    NSString *action = [NSString stringWithFormat:kAnalyticsMetricsActionPattern, kMXAnalyticsStartupCategory];
-
-    [matomoTracker trackWithEventWithCategory:kAnalyticsMetricsCategory
-                                               action:action
-                                                 name:kMXAnalyticsStartupLaunchScreen
-                                               number:@(seconds * 1000)
-                                                  url:nil];
-}
-
 #pragma mark - MXAnalyticsDelegate
 
-- (void)trackStartupStorePreloadDuration: (NSTimeInterval)seconds
+- (void)trackDuration:(NSTimeInterval)seconds category:(NSString*)category name:(NSString*)name
 {
-    NSString *action = [NSString stringWithFormat:kAnalyticsMetricsActionPattern, kMXAnalyticsStartupCategory];
-
-    [matomoTracker trackWithEventWithCategory:kAnalyticsMetricsCategory
-                                               action:action
-                                                 name:kMXAnalyticsStartupStorePreload
-                                               number:@(seconds * 1000)
-                                                  url:nil];
+    // Report time in ms to make figures look better in Matomo
+    NSNumber *value = @(seconds * 1000);
+    [matomoTracker trackWithEventWithCategory:kAnalyticsPerformanceCategory
+                                       action:category
+                                         name:name
+                                       number:value
+                                          url:nil];
 }
 
-- (void)trackStartupMountDataDuration: (NSTimeInterval)seconds
+- (void)trackValue:(NSNumber*)value category:(NSString*)category name:(NSString*)name
 {
-    NSString *action = [NSString stringWithFormat:kAnalyticsMetricsActionPattern, kMXAnalyticsStartupCategory];
-
     [matomoTracker trackWithEventWithCategory:kAnalyticsMetricsCategory
-                                               action:action
-                                                 name:kMXAnalyticsStartupMountData
-                                               number:@(seconds * 1000)
-                                                  url:nil];
-}
-
-- (void)trackStartupSyncDuration: (NSTimeInterval)seconds isInitial: (BOOL)isInitial
-{
-    NSString *action = [NSString stringWithFormat:kAnalyticsMetricsActionPattern, kMXAnalyticsStartupCategory];
-
-    [matomoTracker trackWithEventWithCategory:kAnalyticsMetricsCategory
-                                               action:action
-                                                 name:isInitial ? kMXAnalyticsStartupInititialSync : kMXAnalyticsStartupIncrementalSync
-                                               number:@(seconds * 1000)
-                                                  url:nil];
-}
-
-- (void)trackRoomCount: (NSUInteger)roomCount
-{
-    NSString *action = [NSString stringWithFormat:kAnalyticsMetricsActionPattern, kMXAnalyticsStatsCategory];
-
-    [matomoTracker trackWithEventWithCategory:kAnalyticsMetricsCategory
-                                               action:action
-                                                 name:kMXAnalyticsStatsRooms
-                                               number:@(roomCount)
-                                                  url:nil];
-}
-
-#pragma mark - MXDecryptionFailureDelegate
-
-- (void)trackFailures:(NSDictionary<NSString *,NSNumber *> *)failuresCounts
-{
-    for (NSString *reason in failuresCounts)
-    {
-        [matomoTracker trackWithEventWithCategory:kAnalyticsE2eCategory
-                                                   action:kAnalyticsE2eDecryptionFailureAction
-                                                     name:reason
-                                                   number:failuresCounts[reason]
-                                                      url:nil];
-    }
+                                       action:category
+                                         name:name
+                                       number:value
+                                          url:nil];
 }
 
 @end

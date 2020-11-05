@@ -8,6 +8,7 @@ Changes to be released in next version
  * Upgrade to Xcode 12 (#3712).
  * Xcode 12: Make Xcode 12 and fastlane(xcodebuild) happy while some pods are not updated.
  * Update Gemfile.lock.
+ * MXAnalyticsDelegate: Make it fully agnostic on tracked data.
  * KeyValueStore improvements.
 
 🐛 Bugfix
@@ -16,6 +17,7 @@ Changes to be released in next version
 
 ⚠️ API Changes
  * Xcode 12 is now mandatory to build the project.
+ * Remove MXDecryptionFailureDelegate in flavor of agnostic MXAnalyticsDelegate.
 
 🗣 Translations
  * 
