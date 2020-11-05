@@ -21,6 +21,7 @@
 
 // Duration data will be visible under the Piwik category called "Performance".
 // Other values will be visible in "Metrics".
+// Some Matomo screenshots are available at https://github.com/vector-im/element-ios/pull/3789.
 NSString *const kAnalyticsPerformanceCategory = @"Performance";
 NSString *const kAnalyticsMetricsCategory = @"Metrics";
 
