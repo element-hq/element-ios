@@ -132,28 +132,7 @@
 {
     _isEncryptionEnabled = isEncryptionEnabled;
     
-    // Consider the default placeholder
-    NSString *placeholder= NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil);
-    
-    if (_isEncryptionEnabled)
-    {
-        // Check the device screen size before using large placeholder
-        if ([GBDeviceInfo deviceInfo].family == GBDeviceFamilyiPad || [GBDeviceInfo deviceInfo].displayInfo.display >= GBDeviceDisplay4p7Inch)
-        {
-            placeholder = NSLocalizedStringFromTable(@"encrypted_room_message_placeholder", @"Vector", nil);
-        }
-    }
-    else
-    {
-        // Check the device screen size before using large placeholder
-        if ([GBDeviceInfo deviceInfo].family == GBDeviceFamilyiPad || [GBDeviceInfo deviceInfo].displayInfo.display >= GBDeviceDisplay4p7Inch)
-        {
-            placeholder = NSLocalizedStringFromTable(@"room_message_placeholder", @"Vector", nil);
-        }
-    }
-    
-    
-    self.placeholder = placeholder;
+    [self updatePlaceholder];
 }
 
 - (void)setSendMode:(RoomInputToolbarViewSendMode)sendMode
@@ -192,7 +171,7 @@
     NSString *placeholder;
     
     // Check the device screen size before using large placeholder
-    BOOL shouldDisplayLargePlaceholder = [GBDeviceInfo deviceInfo].family == GBDeviceFamilyiPad || [GBDeviceInfo deviceInfo].displayInfo.display >= GBDeviceDisplay4p7Inch;
+    BOOL shouldDisplayLargePlaceholder = [GBDeviceInfo deviceInfo].family == GBDeviceFamilyiPad || [GBDeviceInfo deviceInfo].displayInfo.display >= GBDeviceDisplay5p8Inch;
     
     if (!shouldDisplayLargePlaceholder)
     {

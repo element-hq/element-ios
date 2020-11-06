@@ -17,23 +17,6 @@
 import Foundation
 import KeychainAccess
 
-/// Extension on Keychain to get/set booleans
-extension Keychain {
-    
-    public func set(_ value: Bool, key: String, ignoringAttributeSynchronizable: Bool = true) throws {
-        try set(value.description, key: key, ignoringAttributeSynchronizable: ignoringAttributeSynchronizable)
-    }
-    
-    public func getBool(_ key: String, ignoringAttributeSynchronizable: Bool = true) throws -> Bool? {
-        guard let value = try getString(key, ignoringAttributeSynchronizable: ignoringAttributeSynchronizable) else {
-            return nil
-        }
-        guard value == true.description || value == false.description else { return nil }
-        return value == true.description
-    }
-    
-}
-
 class KeychainStore {
     
     private var keychain: Keychain
@@ -85,6 +68,15 @@ extension KeychainStore: KeyValueStore {
         try keychain.set(String(value), key: key)
     }
     
+    func set(_ value: UInt?, forKey key: KeyValueStoreKey) throws {
+        guard let value = value else {
+            try removeObject(forKey: key)
+            return
+        }
+        
+        try keychain.set(String(value), key: key)
+    }
+    
     //  getters
     func data(forKey key: KeyValueStoreKey) throws -> Data? {
         return try keychain.getData(key)
@@ -103,6 +95,18 @@ extension KeychainStore: KeyValueStore {
             return nil
         }
         return Int(stringValue)
+    }
+    
+    func unsignedInteger(forKey key: KeyValueStoreKey) throws -> UInt? {
+        guard let stringValue = try keychain.getString(key) else {
+            return nil
+        }
+        return UInt(stringValue)
+    }
+    
+    //  checkers
+    func containsObject(forKey key: KeyValueStoreKey) -> Bool {
+        return (try? keychain.contains(key)) ?? false
     }
     
     //  remove

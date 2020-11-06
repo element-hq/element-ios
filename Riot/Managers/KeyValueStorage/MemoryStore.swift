@@ -18,13 +18,13 @@ import Foundation
 
 class MemoryStore {
     
-    private var map: Dictionary<KeyValueStoreKey, Any> = [:]
+    private(set) var map: [KeyValueStoreKey: Any] = [:]
     
     private func setObject(_ value: Any?, forKey key: KeyValueStoreKey) {
         if let value = value {
             map[key] = value
         } else {
-            removeObject(forKey: key)
+            try? removeObject(forKey: key)
         }
     }
 
@@ -32,6 +32,10 @@ class MemoryStore {
         return map[key]
     }
     
+    init(withMap map: [KeyValueStoreKey: Any] = [:]) {
+        self.map = map
+    }
+
 }
 
 extension MemoryStore: KeyValueStore {
@@ -53,6 +57,10 @@ extension MemoryStore: KeyValueStore {
         setObject(value, forKey: key)
     }
     
+    func set(_ value: UInt?, forKey key: KeyValueStoreKey) throws {
+        setObject(value, forKey: key)
+    }
+    
     //  getters
     func data(forKey key: KeyValueStoreKey) throws -> Data? {
         return object(forKey: key) as? Data
@@ -70,8 +78,17 @@ extension MemoryStore: KeyValueStore {
         return object(forKey: key) as? Int
     }
     
+    func unsignedInteger(forKey key: KeyValueStoreKey) throws -> UInt? {
+        return object(forKey: key) as? UInt
+    }
+    
+    //  checkers
+    func containsObject(forKey key: KeyValueStoreKey) -> Bool {
+        return object(forKey: key) != nil
+    }
+    
     //  remove
-    func removeObject(forKey key: KeyValueStoreKey) {
+    func removeObject(forKey key: KeyValueStoreKey) throws {
         map.removeValue(forKey: key)
     }
     
