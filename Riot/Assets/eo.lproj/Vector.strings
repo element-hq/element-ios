@@ -551,3 +551,33 @@
 "room_details_copy_room_address" = "Kopii adreson de ĉambro";
 "room_details_copy_room_id" = "Kopii identigilon de ĉambro";
 "room_details_unset_main_address" = "Malagordi kiel ĉefadreson";
+"key_backup_setup_passphrase_passphrase_valid" = "Bone!";
+"key_backup_setup_passphrase_passphrase_placeholder" = "Enigu pasfrazon";
+"key_backup_setup_passphrase_info" = "Ni deponos ĉifritan kopion de viaj ŝlosiloj en nia servilo. Protektu vian savkopion per pasfrazo por ĝin sekurigi.\n\nPor plej bona sekureco, la pasfrazo malsamu la pasvorton de via konto.";
+"key_backup_setup_intro_manual_export_action" = "Permane elporti ŝlosilojn";
+"key_backup_setup_intro_info" = "Mesaĝoj en ĉifritaj ĉambroj estas sekurigitaj per tutvoja ĉifrado. Nur vi kaj la adresato(j) havas la ŝlosilojn por legi ĉi tiujn mesaĝojn.\n\nSekure savkopiu viajn ŝlosilojn por ilin ne perdi.";
+
+// Intro
+
+"key_backup_setup_intro_title" = "Neniam perdu ĉifritajn mesaĝojn";
+"key_backup_setup_skip_alert_skip_action" = "Preterpasi";
+"key_backup_setup_skip_alert_message" = "Vi eble perdos sekurajn mesaĝojn se vi adiaŭos, aŭ se vi perdos vian aparaton.";
+"key_backup_setup_skip_alert_title" = "Ĉu vi certas?";
+"secure_backup_setup_banner_subtitle" = "Evitu perdon de aliro al ĉifritaj mesaĝoj kaj datumoj";
+
+// Banner
+
+"secure_backup_setup_banner_title" = "Sekura savkopiado";
+"secure_key_backup_setup_cancel_alert_message" = "Se vi nuligos nun, vi povos perdi ĉifritajn mesaĝojn kaj datumojn, se vi perdos aliron al viaj salutoj.\n\nVi ankaŭ povas agordi sekuran savkopiadon kaj administri viajn ŝlosilojn en Agordoj.";
+
+
+// Cancel
+
+"secure_key_backup_setup_cancel_alert_title" = "Ĉu vi certas?";
+"secure_key_backup_setup_existing_backup_error_delete_it" = "Forigi ĝin";
+"secure_key_backup_setup_existing_backup_error_unlock_it" = "Malŝlosi ĝin";
+"secure_key_backup_setup_existing_backup_error_info" = "Malŝlosu ĝin por reuzi ĝin en la sekura savkopio, aŭ forigu ĝin por fari novan savkopion de mesaĝoj en la sekura savkopio.";
+"secure_key_backup_setup_existing_backup_error_title" = "Savkopio de mesaĝoj jam ekzistas";
+"secure_key_backup_setup_intro_use_security_passphrase_info" = "Enigu sekurecan pasfrazon, kiun konas nur vi, kaj estigu ŝlosilon por la savkopio.";
+"secure_key_backup_setup_intro_use_security_passphrase_title" = "Uzi sekurecan pasfrazon";
+"secure_key_backup_setup_intro_use_security_key_info" = "Estigu sekurecan ŝlosilon konservotan en sekura loko, ekzemple mastrumilo de pasvortoj aŭ sekurkesto.";
