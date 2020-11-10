@@ -33,7 +33,9 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
     weak var coordinatorDelegate: RoomInfoListViewModelCoordinatorDelegate?
     
     private var viewData: RoomInfoListViewData {
-        let encryptionImage = EncryptionTrustLevelBadgeImageHelper.roomBadgeImage(for: room.summary.roomEncryptionTrustLevel())
+        let encryptionImage = room.summary.isEncrypted ?
+            EncryptionTrustLevelBadgeImageHelper.roomBadgeImage(for: room.summary.roomEncryptionTrustLevel()) :
+            nil
         
         let basicInfoViewData = RoomInfoBasicViewData(avatarUrl: room.summary.avatar,
                                                       mediaManager: session.mediaManager,
