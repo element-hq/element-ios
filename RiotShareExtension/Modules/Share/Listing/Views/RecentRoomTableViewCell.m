@@ -71,10 +71,11 @@
         
         self.directRoomBorderView.hidden = !roomCellData.roomSummary.isDirect;
         
-        if (roomCellData.roomSummary.isEncrypted)
+        UIImage *shieldImage = [self shieldImageForTrustLevel:roomCellData.roomSummary.roomEncryptionTrustLevel];
+        if (shieldImage)
         {
             self.encryptedRoomIcon.hidden = NO;
-            self.encryptedRoomIcon.image = [self shieldImageForTrustLevel:roomCellData.roomSummary.roomEncryptionTrustLevel];
+            self.encryptedRoomIcon.image = shieldImage;
         }
         else
         {
@@ -106,6 +107,8 @@
             break;
         case RoomEncryptionTrustLevelUnknown:
             encryptionIconName = @"encryption_normal";
+            break;
+        case RoomEncryptionTrustLevelNone:
             break;
     }
     

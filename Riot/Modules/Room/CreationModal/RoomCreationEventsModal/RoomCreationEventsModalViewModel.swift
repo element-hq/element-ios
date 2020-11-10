@@ -93,9 +93,9 @@ final class RoomCreationEventsModalViewModel: RoomCreationEventsModalViewModelTy
             return
         }
         
-        if summary.isEncrypted {
+        if let image = EncryptionTrustLevelBadgeImageHelper.roomBadgeImage(for: summary.roomEncryptionTrustLevel()) {
             imageView.isHidden = false
-            imageView.image = EncryptionTrustLevelBadgeImageHelper.roomBadgeImage(for: summary.roomEncryptionTrustLevel())
+            imageView.image = image
         } else {
             imageView.isHidden = true
         }

@@ -137,10 +137,11 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
         
         self.directRoomBorderView.hidden = !roomCellData.roomSummary.room.isDirect;
 
-        if (roomCellData.roomSummary.isEncrypted)
+        UIImage *shieldImage = [self shieldImageForTrustLevel:roomCellData.roomSummary.roomEncryptionTrustLevel];
+        if (shieldImage)
         {
             self.encryptedRoomIcon.hidden = NO;
-            self.encryptedRoomIcon.image = [self shieldImageForTrustLevel:roomCellData.roomSummary.roomEncryptionTrustLevel];
+            self.encryptedRoomIcon.image = shieldImage;
         }
         else
         {
@@ -179,6 +180,8 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
             break;
         case RoomEncryptionTrustLevelUnknown:
             encryptionIconName = @"encryption_normal";
+            break;
+        case RoomEncryptionTrustLevelNone:
             break;
     }
     

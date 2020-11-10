@@ -17,13 +17,14 @@
 #import <MatrixKit/MatrixKit.h>
 
 /**
- RoomEncryptionTrustLevel represents the trust level in an encrypted room.
+ RoomEncryptionTrustLevel represents the trust level in a room.
  */
 typedef NS_ENUM(NSUInteger, RoomEncryptionTrustLevel) {
     RoomEncryptionTrustLevelTrusted,
     RoomEncryptionTrustLevelWarning,
     RoomEncryptionTrustLevelNormal,
-    RoomEncryptionTrustLevelUnknown
+    RoomEncryptionTrustLevelUnknown,
+    RoomEncryptionTrustLevelNone        //  not an encrypted room
 };
 
 

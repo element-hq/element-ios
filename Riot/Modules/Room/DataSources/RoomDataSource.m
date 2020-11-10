@@ -113,10 +113,7 @@
         }];
     }
 
-    if (self.room.summary.isEncrypted)
-    {
-        [self fetchEncryptionTrustedLevel];
-    }
+    [self fetchEncryptionTrustedLevel];
 }
 
 - (id<RoomDataSourceDelegate>)roomDataSourceDelegate

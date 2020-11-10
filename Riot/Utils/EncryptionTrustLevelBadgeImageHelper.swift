@@ -19,9 +19,9 @@ import UIKit
 @objcMembers
 final class EncryptionTrustLevelBadgeImageHelper: NSObject {
     
-    static func roomBadgeImage(for trustLevel: RoomEncryptionTrustLevel) -> UIImage {
+    static func roomBadgeImage(for trustLevel: RoomEncryptionTrustLevel) -> UIImage? {
         
-        let badgeImage: UIImage
+        let badgeImage: UIImage?
         
         switch trustLevel {
         case .warning:
@@ -32,8 +32,8 @@ final class EncryptionTrustLevelBadgeImageHelper: NSObject {
             badgeImage = Asset.Images.encryptionTrusted.image
         case .unknown:
             badgeImage = Asset.Images.encryptionNormal.image
-        @unknown default:
-            badgeImage = Asset.Images.encryptionNormal.image
+        default:
+            badgeImage = nil
         }
         
         return badgeImage

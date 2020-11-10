@@ -49,6 +49,11 @@
 
 - (RoomEncryptionTrustLevel)roomEncryptionTrustLevel
 {
+    if (!self.isEncrypted)
+    {
+        return RoomEncryptionTrustLevelNone;
+    }
+    
     RoomEncryptionTrustLevel roomEncryptionTrustLevel = RoomEncryptionTrustLevelUnknown;
     if (self.trust)
     {
