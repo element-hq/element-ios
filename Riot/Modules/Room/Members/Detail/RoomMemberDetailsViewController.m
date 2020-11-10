@@ -399,7 +399,14 @@
         
         self.roomMemberStatusLabel.text = presenceText;
         
-        self.roomMemberAvatarBadgeImageView.image = [EncryptionTrustLevelBadgeImageHelper userBadgeImageFor:self.encryptionTrustLevel];
+        if (self.mxRoom.summary.isEncrypted)
+        {
+            self.roomMemberAvatarBadgeImageView.image = [EncryptionTrustLevelBadgeImageHelper userBadgeImageFor:self.encryptionTrustLevel];
+        }
+        else
+        {
+            self.roomMemberAvatarBadgeImageView.image = nil;
+        }
         
         // Retrieve the existing direct chats
         [directChatsArray removeAllObjects];
@@ -835,7 +842,14 @@
                     break;
             }
             
-            securityStatusCell.imageView.image = [EncryptionTrustLevelBadgeImageHelper userBadgeImageFor:self.encryptionTrustLevel];
+            if (self.mxRoom.summary.isEncrypted)
+            {
+                securityStatusCell.imageView.image = [EncryptionTrustLevelBadgeImageHelper userBadgeImageFor:self.encryptionTrustLevel];
+            }
+            else
+            {
+                securityStatusCell.imageView.image = nil;
+            }
             
             securityStatusCell.textLabel.numberOfLines = 1;
             securityStatusCell.textLabel.font = [UIFont systemFontOfSize:16.0];

@@ -326,6 +326,12 @@
 
 - (void)encryptionTrustLevelForUserId:(NSString*)userId onComplete:(void (^)(UserEncryptionTrustLevel userEncryptionTrustLevel))onComplete
 {
+    if (!self.summary.isEncrypted)
+    {
+        onComplete(UserEncryptionTrustLevelNone);
+        return;
+    }
+    
     if (self.mxSession.crypto)
     {
         [self.mxSession.crypto trustLevelSummaryForUserIds:@[userId] onComplete:^(MXUsersTrustLevelSummary *usersTrustLevelSummary) {
