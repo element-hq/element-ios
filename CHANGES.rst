@@ -10,6 +10,7 @@ Changes to be released in next version
  * Update Gemfile.lock.
  * MXAnalyticsDelegate: Make it fully agnostic on tracked data.
  * KeyValueStore improvements.
+ * Remove room and user shields on non e2ee rooms.
 
 🐛 Bugfix
  * Fix analytics in order to track performance improvements.
