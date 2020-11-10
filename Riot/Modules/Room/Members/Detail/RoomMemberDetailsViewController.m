@@ -454,7 +454,14 @@
 
 - (void)startUserVerification
 {
-    [[AppDelegate theDelegate] presentUserVerificationForRoomMember:self.mxRoomMember session:self.mainSession];
+    if (keyVerificationCoordinatorBridgePresenter.isPresenting)
+    {
+        return;
+    }
+    keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    keyVerificationCoordinatorBridgePresenter.delegate = self;
+    
+    [keyVerificationCoordinatorBridgePresenter presentFrom:self roomMember:self.mxRoomMember animated:YES];
 }
 
 - (void)presentUserVerification
@@ -1354,6 +1361,7 @@
 {
     [keyVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     keyVerificationCoordinatorBridgePresenter = nil;
+    [self refreshUserEncryptionTrustLevel];
 }
 
 @end
