@@ -1109,6 +1109,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)pushNotificationService:(PushNotificationService *)pushNotificationService shouldNavigateToRoomWithId:(NSString *)roomId
 {
+    [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:AnalyticsNoficationsTimeToDisplayContent
+                                                            category:AnalyticsNoficationsCategory];
+    
     _lastNavigatedRoomIdFromPush = roomId;
     [self navigateToRoomById:roomId];
 }
