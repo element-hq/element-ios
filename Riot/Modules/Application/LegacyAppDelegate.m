@@ -3567,7 +3567,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                        kMXEventTypeStringCallInvite,
                                        kMXEventTypeStringCallCandidates,
                                        kMXEventTypeStringCallAnswer,
-                                       kMXEventTypeStringCallHangup
+                                       kMXEventTypeStringCallSelectAnswer,
+                                       kMXEventTypeStringCallHangup,
+                                       kMXEventTypeStringCallReject
                                        ]
                              onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {
                                  
@@ -3623,23 +3625,24 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                                                                                     style:UIAlertActionStyleDefault
                                                                                                   handler:^(UIAlertAction * action) {
                                                                                                       
-                                                                                                      // Reject the call by sending the hangup event
-                                                                                                      NSDictionary *content = @{
-                                                                                                                                @"call_id": callInviteEventContent.callId,
-                                                                                                                                @"version": @(0)
-                                                                                                                                };
-                                                                                                      
-                                                                                                      [mxSession.matrixRestClient sendEventToRoom:event.roomId eventType:kMXEventTypeStringCallHangup content:content txnId:nil success:nil failure:^(NSError *error) {
-                                                                                                          NSLog(@"[AppDelegate] enableNoVoIPOnMatrixSession: ERROR: Cannot send m.call.hangup event.");
-                                                                                                      }];
-                                                                                                      
-                                                                                                      if (weakSelf)
-                                                                                                      {
-                                                                                                          typeof(self) self = weakSelf;
-                                                                                                          self->noCallSupportAlert = nil;
-                                                                                                      }
-                                                                                                      
-                                                                                                  }]];
+                                                 // Reject the call by sending the hangup event
+                                                 NSDictionary *content = @{
+                                                     @"call_id": callInviteEventContent.callId,
+                                                     @"version": kMXCallVersion,
+                                                     @"party_id": mxSession.myDeviceId
+                                                 };
+                                                 
+                                                 [mxSession.matrixRestClient sendEventToRoom:event.roomId eventType:kMXEventTypeStringCallReject content:content txnId:nil success:nil failure:^(NSError *error) {
+                                                     NSLog(@"[AppDelegate] enableNoVoIPOnMatrixSession: ERROR: Cannot send m.call.reject event.");
+                                                 }];
+                                                 
+                                                 if (weakSelf)
+                                                 {
+                                                     typeof(self) self = weakSelf;
+                                                     self->noCallSupportAlert = nil;
+                                                 }
+                                                 
+                                             }]];
                                              
                                              [self showNotificationAlert:noCallSupportAlert];
                                              break;
@@ -3647,6 +3650,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                              
                                          case MXEventTypeCallAnswer:
                                          case MXEventTypeCallHangup:
+                                         case MXEventTypeCallReject:
                                              // The call has ended. The alert is no more needed.
                                              if (noCallSupportAlert)
                                              {
