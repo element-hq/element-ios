@@ -238,7 +238,30 @@
 
 - (UIView *)createIncomingCallView
 {
-    return nil;
+    NSString *callInfo;
+    if (self.mxCall.isVideoCall)
+        callInfo = NSLocalizedStringFromTable(@"call_incoming_video", @"Vector", nil);
+    else
+        callInfo = NSLocalizedStringFromTable(@"call_incoming_voice", @"Vector", nil);
+    
+    IncomingCallView *incomingCallView = [[IncomingCallView alloc] initWithCallerAvatar:self.peer.avatarUrl
+                                                                           mediaManager:self.mainSession.mediaManager
+                                                                       placeholderImage:self.picturePlaceholder
+                                                                             callerName:self.peer.displayname
+                                                                               callInfo:callInfo];
+    
+    // Incoming call is retained by call vc so use weak to avoid retain cycle
+    __weak typeof(self) weakSelf = self;
+    
+    incomingCallView.onAnswer = ^{
+        [weakSelf onButtonPressed:weakSelf.answerCallButton];
+    };
+    
+    incomingCallView.onReject = ^{
+        [weakSelf onButtonPressed:weakSelf.rejectCallButton];
+    };
+    
+    return incomingCallView;
 }
 
 #pragma mark - MXCallDelegate
