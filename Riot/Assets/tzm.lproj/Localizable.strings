@@ -1,0 +1,47 @@
+
+
+
+"MESSAGE_PROTECTED" = "Tuzint Tamaynut";
+
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "Tuzint g %@";
+
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "Tuzint seg %@";
+
+/** Notification messages **/
+
+/* New message indicator on unknown room */
+"MESSAGE" = "Tuzint";
+
+/** Image Messages **/
+
+/* New action message from a specific person, not referencing a room. */
+"IMAGE_FROM_USER" = "yuzen %@ yat twelaft %@";
+
+/* New action message from a specific person in a named room. */
+"IMAGE_FROM_USER_IN_ROOM" = "ifser%@ yat twelaft %@ g %@";
+
+/* New action message from a specific person in a named room. */
+"ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
+
+/* New action message from a specific person, not referencing a room. */
+"ACTION_FROM_USER" = "* %@ %@";
+
+/* New message from a specific person in a named room. Content included. */
+"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ g %@: %@";
+
+/** Single, unencrypted messages (where we can include the content */
+
+/* New message from a specific person, not referencing a room. Content included. */
+"MSG_FROM_USER_WITH_CONTENT" = "%@: %@";
+
+/* New message from a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM" = "ifser %@ g %@";
+
+/** Single, end-to-end encrypted messages (ie. we don't know what they say) */
+
+/* New message from a specific person, not referencing a room */
+"MSG_FROM_USER" = "yuzen%@ yat tuzint";
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ g %@";
