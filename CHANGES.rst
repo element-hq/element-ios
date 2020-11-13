@@ -9,6 +9,7 @@ Changes to be released in next version
  * Xcode 12: Make Xcode 12 and fastlane(xcodebuild) happy while some pods are not updated.
  * Update Gemfile.lock.
  * MXAnalyticsDelegate: Make it fully agnostic on tracked data.
+ * MXProfiler: Use this new module to track launch animation time reliably.
  * KeyValueStore improvements.
  * Jitsi: Support authenticated Jitsi widgets (#3655).
  * Room invites: Allow to accept a room invite without preview.
