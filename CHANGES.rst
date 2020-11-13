@@ -11,6 +11,7 @@ Changes to be released in next version
  * MXAnalyticsDelegate: Make it fully agnostic on tracked data.
  * KeyValueStore improvements.
  * Jitsi: Support authenticated Jitsi widgets (#3655).
+ * Room invites: Allow to accept a room invite without preview.
 
 🐛 Bugfix
  * Fix analytics in order to track performance improvements.
