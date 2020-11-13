@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,7 +13,7 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="105"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="L2L-l5-wPx" id="aXz-IR-jj5">
-                <rect key="frame" x="0.0" y="0.0" width="600" height="104.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="600" height="105"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RX5-eD-c3c" userLabel="Room avatar" customClass="MXKImageView">
@@ -33,7 +30,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="RoomTitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lg1-xQ-AGn">
-                        <rect key="frame" x="69" y="14" width="79" height="21"/>
+                        <rect key="frame" x="69" y="14" width="78" height="21"/>
                         <accessibility key="accessibilityConfiguration" identifier="TitleLabel"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="BeP-eL-JKM"/>
@@ -55,8 +52,8 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tjf-WP-vTl" userLabel="buttonsContainer">
                         <rect key="frame" x="68" y="65" width="478" height="30"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fc3-Id-aaG" userLabel="Left Button">
-                                <rect key="frame" x="0.0" y="0.0" width="229" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fc3-Id-aaG" userLabel="Left Button">
+                                <rect key="frame" x="0.0" y="0.0" width="229.5" height="30"/>
                                 <color key="backgroundColor" red="0.028153735480000001" green="0.82494870580000002" blue="0.051896891280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <accessibility key="accessibilityConfiguration" identifier="LeftButton"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
@@ -64,8 +61,8 @@
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lGf-lB-FsE" userLabel="Right Button">
-                                <rect key="frame" x="249" y="0.0" width="229" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lGf-lB-FsE" userLabel="Right Button">
+                                <rect key="frame" x="248.5" y="0.0" width="229.5" height="30"/>
                                 <color key="backgroundColor" red="0.028153735480000001" green="0.82494870580000002" blue="0.051896891280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <accessibility key="accessibilityConfiguration" identifier="RightButton"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
@@ -73,16 +70,26 @@
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="CzJ-mZ-Ryu">
+                                <rect key="frame" x="104.5" y="5" width="20" height="20"/>
+                            </activityIndicatorView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="f3G-yI-qc9">
+                                <rect key="frame" x="353.5" y="5" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="lGf-lB-FsE" firstAttribute="width" secondItem="tjf-WP-vTl" secondAttribute="width" multiplier="0.48" id="5fb-f6-oS3"/>
                             <constraint firstItem="Fc3-Id-aaG" firstAttribute="leading" secondItem="tjf-WP-vTl" secondAttribute="leading" id="5x7-DE-zYg"/>
+                            <constraint firstItem="f3G-yI-qc9" firstAttribute="centerY" secondItem="lGf-lB-FsE" secondAttribute="centerY" id="9Yy-DW-vZP"/>
                             <constraint firstItem="lGf-lB-FsE" firstAttribute="height" secondItem="tjf-WP-vTl" secondAttribute="height" id="QaA-wP-PHx"/>
                             <constraint firstAttribute="trailing" secondItem="lGf-lB-FsE" secondAttribute="trailing" id="S8h-oW-Egj"/>
                             <constraint firstItem="Fc3-Id-aaG" firstAttribute="height" secondItem="tjf-WP-vTl" secondAttribute="height" id="T0D-Z8-Iap"/>
+                            <constraint firstItem="CzJ-mZ-Ryu" firstAttribute="centerY" secondItem="Fc3-Id-aaG" secondAttribute="centerY" id="Yjd-zv-BcY"/>
                             <constraint firstItem="lGf-lB-FsE" firstAttribute="top" secondItem="tjf-WP-vTl" secondAttribute="top" id="Zst-Zf-1kd"/>
                             <constraint firstItem="Fc3-Id-aaG" firstAttribute="width" secondItem="tjf-WP-vTl" secondAttribute="width" multiplier="0.48" id="b8E-xg-a44"/>
+                            <constraint firstItem="CzJ-mZ-Ryu" firstAttribute="centerX" secondItem="Fc3-Id-aaG" secondAttribute="centerX" id="cAm-MG-goF"/>
                             <constraint firstAttribute="height" constant="30" id="lTf-u3-Z4R"/>
+                            <constraint firstItem="f3G-yI-qc9" firstAttribute="centerX" secondItem="lGf-lB-FsE" secondAttribute="centerX" id="oa9-ji-H4n"/>
                             <constraint firstItem="Fc3-Id-aaG" firstAttribute="top" secondItem="tjf-WP-vTl" secondAttribute="top" id="rLo-t4-61H"/>
                         </constraints>
                     </view>
@@ -90,7 +97,7 @@
                         <rect key="frame" x="563" y="14" width="27" height="20"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ztl-w2-d20">
-                                <rect key="frame" x="11" y="2" width="5" height="17"/>
+                                <rect key="frame" x="11" y="1.5" width="5" height="17"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -106,7 +113,7 @@
                         </constraints>
                     </view>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_verified" translatesAutoresizingMaskIntoConstraints="NO" id="hVY-f3-80Y">
-                        <rect key="frame" x="50" y="42" width="11" height="13"/>
+                        <rect key="frame" x="50" y="42.5" width="11" height="13"/>
                         <accessibility key="accessibilityConfiguration" identifier="EncryptedRoomIcon"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="11" id="0fX-ec-zEX"/>
@@ -145,11 +152,14 @@
                 <outlet property="encryptedRoomIcon" destination="hVY-f3-80Y" id="wyu-Sn-VaV"/>
                 <outlet property="lastEventDescription" destination="dQt-mN-T6b" id="MSz-h1-cAL"/>
                 <outlet property="leftButton" destination="Fc3-Id-aaG" id="cx4-98-B32"/>
+                <outlet property="leftButtonActivityIndicator" destination="CzJ-mZ-Ryu" id="4Jt-iD-QeD"/>
                 <outlet property="noticeBadgeView" destination="gCG-UR-b2u" id="hTT-qW-DMa"/>
                 <outlet property="rightButton" destination="lGf-lB-FsE" id="DDr-zp-yX9"/>
+                <outlet property="rightButtonActivityIndicator" destination="f3G-yI-qc9" id="4gn-jb-wdm"/>
                 <outlet property="roomAvatar" destination="RX5-eD-c3c" id="dIC-8p-inL"/>
                 <outlet property="roomTitle" destination="Lg1-xQ-AGn" id="q7Q-TM-5C8"/>
             </connections>
+            <point key="canvasLocation" x="-45" y="122"/>
         </tableViewCell>
     </objects>
     <resources>
