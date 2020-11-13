@@ -155,6 +155,9 @@
     self.recentsSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.recentsSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
     
+    // Register room change membership state notifications
+    [self registerRoomChangeMembershipStateDataSourceNotifications];
+    
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -450,6 +453,83 @@
             [self refreshRecentsTable];
         }
     }
+}
+
+- (void)joinRoomWithId:(NSString*)roomId completion:(void(^)(BOOL succeed))completion
+{
+    RoomService *roomService = RoomService.shared;
+        
+    [roomService joinWithRoomWithId:roomId success:^{
+        // `recentsTableView` will be reloaded `roomChangeMembershipStateDataSourceDidChangeRoomMembershipState` function
+        
+        if (completion)
+        {
+            completion(YES);
+        }
+        
+    } failure:^(NSError * _Nonnull error) {
+        NSLog(@"[RecentsViewController] Failed to join an invited room (%@)", roomId);
+        [self presentRoomJoinFailedAlertForError:error completion:^{
+            if (completion)
+            {
+                completion(NO);
+            }
+        }];
+    }];
+}
+
+- (void)leaveRoomWithId:(NSString*)roomId completion:(void(^)(BOOL succeed))completion
+{
+    RoomService *roomService = RoomService.shared;
+    
+    // Decline the invitation
+    [roomService leaveWithRoomWithId:roomId success:^{
+        
+        // `recentsTableView` will be reloaded `roomChangeMembershipStateDataSourceDidChangeRoomMembershipState` function
+        
+        if (completion)
+        {
+            completion(YES);
+        }
+    } failure:^(NSError * _Nonnull error) {
+        NSLog(@"[RecentsViewController] Failed to reject an invited room (%@)", roomId);
+        [[AppDelegate theDelegate] showErrorAsAlert:error];
+        
+        if (completion)
+        {
+            completion(NO);
+        }
+    }];
+}
+
+- (void)presentRoomJoinFailedAlertForError:(NSError*)error completion:(void(^)(void))completion
+{
+    MXWeakify(self);
+    NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
+    if ([msg isEqualToString:@"No known servers"])
+    {
+        // minging kludge until https://matrix.org/jira/browse/SYN-678 is fixed
+        // 'Error when trying to join an empty room should be more explicit'
+        msg = [NSBundle mxk_localizedStringForKey:@"room_error_join_failed_empty_room"];
+    }
+    
+    [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
+    
+    self->currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"room_error_join_failed_title"] message:msg preferredStyle:UIAlertControllerStyleAlert];
+    
+    [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                     style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction * action) {
+        MXStrongifyAndReturnIfNil(self);
+        self->currentAlert = nil;
+        
+        if (completion)
+        {
+            completion();
+        }
+    }]];
+    
+    [self presentViewController:self->currentAlert animated:YES completion:nil];
 }
 
 #pragma mark - Sticky Headers
@@ -812,31 +892,23 @@
 - (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
 {
     // Handle here user actions on recents for Riot app
-    if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellPreviewButtonPressed])
+    if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellAcceptButtonPressed])
     {
         // Retrieve the invited room
         MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
         
-        // Display the room preview
-        [self dispayRoomWithRoomId:invitedRoom.roomId inMatrixSession:invitedRoom.mxSession];
+        // Accept invitation
+        [self joinRoomWithId:invitedRoom.roomId completion:nil];
     }
     else if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellDeclineButtonPressed])
     {
         // Retrieve the invited room
         MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
-        
+                        
         [self cancelEditionMode:isRefreshPending];
         
         // Decline the invitation
-        [invitedRoom leave:^{
-            
-            [self.recentsTableView reloadData];
-            
-        } failure:^(NSError *error) {
-            
-            NSLog(@"[RecentsViewController] Failed to reject an invited room (%@)", invitedRoom.roomId);
-            
-        }];
+        [self leaveRoomWithId:invitedRoom.roomId completion:nil];
     }
     else
     {
@@ -1271,8 +1343,23 @@
     
     if ([cell isKindOfClass:[InviteRecentTableViewCell class]])
     {
-        // hide the selection
-        [tableView deselectRowAtIndexPath:indexPath animated:NO];
+        id<MXKRecentCellDataStoring> cellData = [self.dataSource cellDataAtIndexPath:indexPath];
+
+        // Retrieve the invited room
+        MXRoom* invitedRoom = cellData.roomSummary.room;
+        
+        NSString *roomId = invitedRoom.roomId;
+        
+        // Check if can show preview for the invited room 
+        if ([self canShowRoomPreviewFor:roomId])
+        {
+            // Display the room preview
+            [self dispayRoomWithRoomId:roomId inMatrixSession:invitedRoom.mxSession];
+        }
+        else
+        {
+            [tableView deselectRowAtIndexPath:indexPath animated:NO];
+        }
     }
     else if ([cell isKindOfClass:[DirectoryRecentTableViewCell class]])
     {
