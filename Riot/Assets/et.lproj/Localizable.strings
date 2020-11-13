@@ -61,3 +61,4 @@
 "VOICE_CONF_NAMED_FROM_USER" = "Rühmakõne kasutajalt %@: „%@“";
 /* Incoming named video conference invite from a specific person */
 "VIDEO_CONF_NAMED_FROM_USER" = "Video rühmakõne kasutajalt %@: „%@“";
+"MESSAGE_PROTECTED" = "Uus sõnum";

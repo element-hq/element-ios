@@ -61,3 +61,4 @@
 "MESSAGE_FROM_X" = "Съобщение от %@";
 /* New message indicator on a room */
 "MESSAGE_IN_X" = "Съобщение в %@";
+"MESSAGE_PROTECTED" = "Ново съобщение";
