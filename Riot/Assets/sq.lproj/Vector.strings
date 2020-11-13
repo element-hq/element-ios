@@ -1233,3 +1233,20 @@
 "room_details_advanced_e2e_encryption_enabled_for_dm" = "Këtu fshehtëzimi është i aktivizuar";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "Këtu fshehtëzimi s’është i aktivizuar.";
 "pin_protection_kick_user_alert_message" = "Shumë gabime, u bë nxjerrja juaj jashtë";
+"switch" = "Këmbe";
+"joined" = "Erdhi";
+"secrets_reset_authentication_message" = "Që ta ripohoni, jepni fjalëkalimin e llogarisë tuaj";
+"secrets_reset_reset_action" = "Riktheji";
+"secrets_reset_warning_message" = "Do të filloni pa historik, pa mesazhe, pajisje të besuara ose përdorues të besuar.";
+"secrets_reset_warning_title" = "Nëse ktheni gjithçka te parazgjedhjet";
+"secrets_reset_information" = "Bëjeni këtë vetëm nëse s’keni pajisje tjetër me të cilën mund të verifikoni këtë pajisje.";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "Riktheni gjithçka te parazgjedhjet";
+
+// MARK: - Secrets recovery
+
+"secrets_recovery_reset_action_part_1" = "Harruat ose humbët krejt mundësitë e rimarrjes? ";
+"less" = "Më pak";
+"secrets_recovery_reset_action_part_2" = "Riktheni gjithçka te parazgjedhjet";
