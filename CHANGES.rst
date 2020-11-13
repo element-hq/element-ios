@@ -10,6 +10,7 @@ Changes to be released in next version
  * Update Gemfile.lock.
  * MXAnalyticsDelegate: Make it fully agnostic on tracked data.
  * KeyValueStore improvements.
+ * Jitsi: Support authenticated Jitsi widgets (#3655).
 
 🐛 Bugfix
  * Fix analytics in order to track performance improvements.
