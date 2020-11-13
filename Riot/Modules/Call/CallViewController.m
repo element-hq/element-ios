@@ -250,7 +250,7 @@
     [self checkStunServerFallbackWithCallState:state];
 }
 
-- (void)call:(MXCall *)call didEncounterError:(NSError *)error
+- (void)call:(MXCall *)call didEncounterError:(NSError *)error reason:(MXCallHangupReason)reason
 {
     if ([error.domain isEqualToString:MXEncryptingErrorDomain]
         && error.code == MXEncryptingErrorUnknownDeviceCode)
@@ -296,7 +296,7 @@
                                                                    else
                                                                    {
                                                                        // Ignore the call
-                                                                       [call hangup];
+                                                                       [call hangupWithReason:reason];
                                                                    }
                                                                }];
                                                                
@@ -350,7 +350,7 @@
     }
     else
     {
-        [super call:call didEncounterError:error];
+        [super call:call didEncounterError:error reason:reason];
     }
 }
 
