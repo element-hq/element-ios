@@ -52,7 +52,7 @@
 "auth_repeat_password_placeholder" = "確認密碼";
 "auth_repeat_new_password_placeholder" = "確認新密碼";
 "auth_home_server_placeholder" = "URL（例如 https://matrix.org）";
-"auth_identity_server_placeholder" = "URL（例如 https://matrix.org）";
+"auth_identity_server_placeholder" = "URL（例如 https://vector.im）";
 "auth_invalid_login_param" = "使用者名稱或密碼錯誤";
 "auth_invalid_user_name" = "使用者名稱只能包含英數字、點 (.)、減號 (-) 、底線 (_)";
 "auth_invalid_password" = "密碼太短（至少需要 6 個字元）";
@@ -112,7 +112,7 @@
 "room_participants_unknown" = "未知";
 "room_participants_idle" = "閒置";
 "room_participants_action_section_direct_chats" = "私聊";
-"room_participants_action_section_devices" = "裝置列表";
+"room_participants_action_section_devices" = "工作階段";
 "room_participants_action_unban" = "解除封鎖";
 "room_participants_action_start_new_chat" = "開始新聊天";
 "room_participants_action_mention" = "提及";
@@ -122,10 +122,10 @@
 "room_offline_notification" = "至伺服器的連線已遺失。";
 "room_event_action_delete" = "刪除";
 // Unknown devices
-"unknown_devices_alert_title" = "聊天室包含未知裝置";
+"unknown_devices_alert_title" = "聊天室包含未知的工作階段";
 "unknown_devices_call_anyway" = "無論如何都通話";
 "unknown_devices_answer_anyway" = "無論如何都回覆";
-"unknown_devices_title" = "未知的裝置";
+"unknown_devices_title" = "未知的工作階段";
 "settings_sign_out_confirmation" = "你確定嗎？";
 "settings_email_address" = "電子郵件";
 "settings_add_email_address" = "新增電子郵件地址";
@@ -166,7 +166,7 @@
 "e2e_room_key_request_ignore_request" = "忽略請求";
 "auth_reset_password_message" = "要重設您的密碼，輸入連結到您的帳號的電子郵件地址：";
 "auth_reset_password_email_validation_message" = "電子郵件已傳送至 %@。您必須跟隨其中包含了連結，點按下面的連結。";
-"auth_reset_password_success_message" = "您的密碼已重設。\n\n您已在所有裝置上登出，並且不會再收到推送通知。要重新啟用通知，再次於每個裝置上登入。";
+"auth_reset_password_success_message" = "您的密碼已重設。\n\n您已在所有工作階段上登出，並且不會再收到推送通知。要重新啟用通知，再次於每個裝置上登入。";
 "auth_add_email_and_phone_warning" = "直到 API 存在之前，尚不支援同時使用電子郵件地址和電話號碼註冊，因此只有電話號碼會被採用，但您可以在基本資料中新增電子郵件地址。";
 // Chat creation
 "room_creation_title" = "新的聊天";
@@ -245,7 +245,7 @@
 "room_participants_now" = "現在";
 "room_participants_ago" = "之前";
 "room_participants_action_section_admin_tools" = "管理者工具";
-"room_participants_action_section_other" = "其他";
+"room_participants_action_section_other" = "選項";
 "room_participants_action_invite" = "邀請";
 "room_participants_action_leave" = "離開這個房間";
 "room_participants_action_remove" = "從此房間踢出";
@@ -267,14 +267,14 @@
 "room_many_users_are_typing" = "%@、%@ 和 %@ 正在輸入…";
 "room_message_short_placeholder" = "傳送訊息…";
 "room_unsent_messages_notification" = "訊息未被傳送。現在 %@ 或 %@ 嗎?";
-"room_unsent_messages_unknown_devices_notification" = "由於存在未知的裝置導致訊息未被傳送。現在 %@ 或 %@ 嗎?";
+"room_unsent_messages_unknown_devices_notification" = "由於存在未知的工作階段導致訊息未被傳送。現在 %@ 或 %@ 嗎?";
 "room_conference_call_no_power" = "您需要管理此聊天室群組通話的權限";
 "room_prompt_resend" = "全部重新傳送";
 "room_prompt_cancel" = "全部取消";
 "room_resend_unsent_messages" = "重送未傳送訊息";
 "room_delete_unsent_messages" = "刪除未傳送訊息";
 "room_event_action_copy" = "複製";
-"room_event_action_redact" = "撤回";
+"room_event_action_redact" = "移除";
 "room_event_action_more" = "更多";
 "room_event_action_share" = "分享";
 "room_event_action_report" = "回報內容";
@@ -289,7 +289,7 @@
 "room_event_failed_to_send" = "傳送失敗";
 "room_action_send_photo_or_video" = "傳送照片或影片";
 "room_action_send_sticker" = "傳送貼圖";
-"unknown_devices_alert" = "此聊天室包含未經驗證的裝置。\n無法保證這些裝置屬於他們聲稱的用戶。\n我們建議在繼續操作前驗證每一個裝置，但是你也可以選擇不驗證而重新傳送該訊息。";
+"unknown_devices_alert" = "此聊天室包含未經驗證的工作階段。\n無法保證這些工作階段屬於他們聲稱的用戶。\n我們建議在繼續操作前驗證每一個工作階段，但是你也可以選擇不驗證而重新傳送該訊息。";
 "unknown_devices_send_anyway" = "無論如何都傳送";
 "unknown_devices_verify" = "驗證…";
 // Room Title
@@ -302,7 +302,7 @@
 // Room Preview
 "room_preview_invitation_format" = "您已經透過 %@ 的邀請而加入聊天室";
 "room_preview_subtitle" = "這是該聊天室的預覽。聊天室互動已被禁用。";
-"room_preview_unlinked_email_warning" = "該邀請已傳送至  %@， 但和此帳號沒有關聯。你或許會希望使用其他帳號登入，或把該電子郵件加入到你目前的帳戶。";
+"room_preview_unlinked_email_warning" = "該邀請已傳送至  %@， 但和此帳號沒有關聯。你或許會希望使用其他帳號登入，或把該電子郵件加入到你的帳戶。";
 // Settings
 "settings_title" = "設定";
 "room_preview_try_join_an_unknown_room" = "你正在嘗試訪問%@。您要加入已參加討論嗎?";
@@ -323,11 +323,11 @@
 "settings_advanced" = "進階";
 "settings_other" = "其他";
 "settings_labs" = "實驗室";
-"settings_devices" = "裝置列表";
+"settings_devices" = "工作階段列表";
 "settings_cryptography" = "加密";
 "settings_deactivate_account" = "註銷帳戶";
 "settings_sign_out" = "登出";
-"settings_sign_out_e2e_warn" = "您將失去所有點對點加密密鑰。這會使您在這台設備上無法讀取過去已加密的訊息。";
+"settings_sign_out_e2e_warn" = "您將失去所有點對點加密密鑰。這代表您將以後都無法在這台設備上讀取過去已加密的訊息。";
 "settings_profile_picture" = "個人檔案圖片";
 "settings_display_name" = "顯示名稱";
 "settings_first_name" = "名稱";
@@ -347,7 +347,7 @@
 "settings_pin_rooms_with_unread" = "釘選含有未讀訊息的聊天室";
 "settings_on_denied_notification" = "因 %@ 的通知不被允許，請在裝置設定中允許";
 "settings_enable_callkit" = "整合式通話";
-"settings_callkit_info" = "提供在鎖定畫面接聽 Element 來電、在通話紀錄中顯示 Element 通話。 如果您已啟用 iCloud ，則會與蘋果公司共享通話紀錄。";
+"settings_callkit_info" = "在鎖定畫面接聽 Element 來電、在通話紀錄中顯示 Element 通話。 如果您已啟用 iCloud ，則這些通話紀錄會與蘋果公司共享。";
 "settings_ui_language" = "語言";
 "settings_ui_theme" = "主題";
 "settings_ui_theme_auto" = "自動";
@@ -377,11 +377,11 @@
 "settings_confirm_password" = "確認密碼";
 "settings_fail_to_update_password" = "更新密碼失敗";
 "settings_password_updated" = "您的密碼已經更新";
-"settings_crypto_device_name" = "裝置名稱: ";
-"settings_crypto_device_id" = "\n裝置 ID: ";
-"settings_crypto_device_key" = "\n裝置密鑰: ";
+"settings_crypto_device_name" = "工作階段名稱: ";
+"settings_crypto_device_id" = "\n工作階段 ID: ";
+"settings_crypto_device_key" = "\n工作階段密鑰:\n";
 "settings_crypto_export" = "匯出密鑰";
-"settings_crypto_blacklist_unverified_devices" = "只匯出到已驗證的裝置";
+"settings_crypto_blacklist_unverified_devices" = "只匯出到已驗證的工作階段";
 "settings_deactivate_my_account" = "註銷我的帳號";
 // Room Details
 "room_details_title" = "聊天室詳細資料";
@@ -405,7 +405,7 @@
 "room_details_advanced_room_id" = "聊天室 ID:";
 "room_details_advanced_enable_e2e_encryption" = "啟用加密 (警告: 啟用後無法停用)";
 "room_details_advanced_e2e_encryption_disabled" = "此聊天室未啟用加密。";
-"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "只匯出到已驗證的裝置";
+"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "只匯出到已驗證的工作階段";
 "room_details_advanced_e2e_encryption_prompt_message" = "點對點加密仍在測試階段，可能不夠可靠。\n\n現在您不該認為他能保護您的資料。\n\n裝置尚未能解密在加入聊天室前的聊天紀錄。\n\n一個聊天室一旦啟用加密功能，將無法關閉 (就目前而言)。\n\n加密過的訊息將無法在尚未提供加密功能的用戶端顯示。";
 "room_details_fail_to_update_avatar" = "更新聊天室圖片失敗";
 "room_details_fail_to_update_room_name" = "更新聊天室名稱失敗";
@@ -466,7 +466,7 @@
 "event_formatter_jitsi_widget_added" = "VoIP 群組通話已由 %@ 新增";
 "event_formatter_jitsi_widget_removed" = "VoIP 群組通話已由 %@ 移除";
 "event_formatter_rerequest_keys_part1_link" = "重新請求加密金鑰";
-"event_formatter_rerequest_keys_part2" = " 從您的其他裝置。";
+"event_formatter_rerequest_keys_part2" = " 從您其他的工作階段。";
 // Others
 "or" = "或";
 "you" = "您";
@@ -490,19 +490,19 @@
 // Crash report
 "google_analytics_use_prompt" = "您願意透過自動送出匿名的崩潰報告和使用資料來幫住%@進步嗎?";
 // Crypto
-"e2e_enabling_on_app_update" = "Element 目前支援點對點加密，但您需要重新登入來啟用他。\n\n您可以現在重新登入或稍後在應用程式設定中進行。";
+"e2e_enabling_on_app_update" = "Element 目前支援點對點加密，但您需要重新登入來啟用它。\n\n您可以現在重新登入或稍後在應用程式設定中進行。";
 // Bug report
 "bug_report_title" = "錯誤回報";
 "bug_report_send_screenshot" = "傳送螢幕截圖";
 "e2e_room_key_request_start_verification" = "開始驗證…";
-"e2e_need_log_in_again" = "您需要登入回帳號以便為此設備產生點對點加密密鑰並將公鑰送出到您的家伺服器。\n這僅需要做一次，很抱歉造成您的困擾。";
+"e2e_need_log_in_again" = "您需要登入回帳號以便為此工作階段產生點對點加密密鑰並將公鑰送出到您的家伺服器。\n這僅需要做一次，很抱歉造成您的困擾。";
 "bug_crash_report_title" = "崩潰報告";
 // Widget
 "widget_no_power_to_manage" = "您需要相關權限以管理此聊天室的 widget";
 "widget_creation_failure" = "建立 Widget 失敗";
 "widget_sticker_picker_no_stickerpacks_alert" = "您目前沒有啟用任何貼圖。";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "現在新增一些嗎?";
-"rerequest_keys_alert_message" = "請在其他可解密訊息的裝置開啟 Element 以將密鑰傳送到此裝置。";
+"rerequest_keys_alert_message" = "請在其他可解密訊息的裝置開啟 Element 以將密鑰傳送到此工作階段。";
 "bug_report_description" = "請描述此錯誤。您做了什麼? 本來應該發生什麼? 以及實際發生什麼?";
 "bug_crash_report_description" = "請描述您在崩潰前做了什麼:";
 "bug_report_logs_description" = "為了診斷問題，此用戶端的記錄檔將會隨此錯誤報告送出。 如果您只想傳送上面的文字，請取消:";
@@ -512,8 +512,8 @@
 // Share extension
 "share_extension_auth_prompt" = "登入主應用程式以分享內容";
 "share_extension_failed_to_encrypt" = "傳送失敗。 檢查主應用程式對此聊天室的加密設定";
-"e2e_room_key_request_message_new_device" = "您新增的裝置 '%@'， 正在請求加密密鑰。";
-"e2e_room_key_request_message" = "您未驗證的裝置 '%@' 正在請求加密密鑰。";
+"e2e_room_key_request_message_new_device" = "您新增的工作階段 '%@'， 正在請求加密密鑰。";
+"e2e_room_key_request_message" = "您未驗證的工作階段 '%@' 正在請求加密密鑰。";
 // GDPR
 "gdpr_consent_not_given_alert_message" = "如要繼續使用此家伺服器，您必須同意該合約條款。";
 "gdpr_consent_not_given_alert_review_now_action" = "現在重新檢視";
@@ -541,3 +541,99 @@
 "room_predecessor_information" = "此聊天室是另一對話的延續。";
 "settings_labs_room_members_lazy_loading" = "延遲載入聊天室成員";
 "settings_labs_room_members_lazy_loading_error_message" = "您的家伺服器尚未支援延遲載入聊天室成員。 請稍後再試。";
+
+// Service terms
+"service_terms_modal_title" = "服務條款";
+
+// Banner
+
+"secure_backup_setup_banner_title" = "安全備份";
+
+
+// Cancel
+
+"secure_key_backup_setup_cancel_alert_title" = "你確定嗎？";
+"secure_key_backup_setup_existing_backup_error_delete_it" = "刪除";
+"secure_key_backup_setup_existing_backup_error_unlock_it" = "解鎖";
+"secure_key_backup_setup_intro_use_security_key_title" = "使用安全密鑰";
+
+// MARK: Secure backup setup
+
+// Intro
+
+"secure_key_backup_setup_intro_title" = "安全備份";
+"service_terms_modal_message_identity_server" = "接受身份伺服器（%@）的條款以尋找聯繫人。";
+
+
+// MARK: Key backup setup
+
+"key_backup_setup_title" = "密鑰備份";
+"room_accessiblity_scroll_to_bottom" = "滾動到底部";
+"room_message_unable_open_link_error_message" = "無法打開鏈接。";
+"room_member_power_level_short_custom" = "自訂";
+"room_member_power_level_short_moderator" = "版主";
+"room_member_power_level_short_admin" = "管理員";
+"room_member_power_level_custom_in" = "%@ 中的自訂 (%@)";
+"room_member_power_level_moderator_in" = "%@的版主";
+"room_member_power_level_admin_in" = "%@中的管理員";
+"room_participants_security_information_room_encrypted_for_dm" = "此處的消息是端到端加密的。\n\n您的訊息已被加密保護，只有您和收件人才能使用唯一的密鑰來解鎖。";
+"room_participants_security_information_room_encrypted" = "此聊天室內的消息是端到端加密的。\n\n您的訊息已被加密保護，只有您和收件人才能使用唯一的密鑰來解鎖。";
+"room_participants_security_information_room_not_encrypted_for_dm" = "這裡的訊息並沒有端到端加密。";
+"room_participants_security_information_room_not_encrypted" = "此聊天室內的訊息未進行端到端加密。";
+"room_participants_security_loading" = "載入中…";
+"room_participants_action_security_status_loading" = "載入中…";
+"room_participants_action_security_status_warning" = "警告";
+"room_participants_action_security_status_complete_security" = "全面的安全性";
+"room_participants_action_security_status_verified" = "已驗證";
+"room_participants_action_security_status_verify" = "驗證";
+"room_participants_action_section_security" = "保安";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "沒有配置身份伺服器，因此您無法使用電子郵件與聯繫人開始聊天。";
+"room_participants_filter_room_members_for_dm" = "篩選成員";
+"room_participants_leave_prompt_msg_for_dm" = "您確定要離開嗎？";
+"room_participants_remove_third_party_invite_prompt_msg" = "您確定要撤消此邀請嗎？";
+"room_participants_leave_prompt_title_for_dm" = "離開";
+"room_recents_server_notice_section" = "系統警報";
+"room_creation_error_invite_user_by_email_without_identity_server" = "沒有配置身份伺服器，因此您無法為用戶添加電子郵件。";
+
+// Errors
+"error_user_already_logged_in" = "您似乎正在嘗試連接到另一個自家伺服器。 您要登出嗎？";
+"auth_softlogout_clear_data_sign_out" = "登出";
+"auth_softlogout_clear_data_sign_out_msg" = "您確定要清除當前存儲在此設備上的所有數據嗎？ 再次登錄以存取您的帳戶數據和消訊息。";
+"auth_softlogout_clear_data_sign_out_title" = "你確定嗎？";
+"auth_softlogout_clear_data_button" = "清除所有數據";
+"auth_softlogout_clear_data_message_2" = "如果您已使用完畢此設備，或想登錄另一個帳戶，請先登出。";
+"auth_softlogout_clear_data_message_1" = "警告：您的個人數據（包括加密密鑰）仍存儲在此設備上。";
+"auth_softlogout_clear_data" = "清除個人資料";
+"auth_softlogout_recover_encryption_keys" = "登入以恢復專門存儲在此設備上的加密密鑰。 您需要他們在任何設備上閱讀所有安全的訊息。";
+"auth_softlogout_reason" = "您的自家伺服器 (%1$@) 管理員已登出您的帳戶 %2$@ (%3$@)。";
+"auth_softlogout_sign_in" = "登入";
+"auth_softlogout_signed_out" = "你已登出";
+"auth_autodiscover_invalid_response" = "無效的自家伺服器發現回應";
+"auth_accept_policies" = "請查看並接受此自家伺服器的策略：";
+"auth_reset_password_error_is_required" = "未配置身份伺服器：在伺服器選項中添加一個以便日後重置密碼。";
+"auth_forgot_password_error_no_configured_identity_server" = "未配置身份伺服器：添加一台以便重置密碼。";
+"auth_phone_is_required" = "沒有配置身份伺服器，因此您無法添加電話號碼以便將來重設密碼。";
+"auth_email_is_required" = "沒有配置身份伺服器，因此您無法添加電子郵件地址以便將來重設密碼。";
+"auth_add_email_phone_message_2" = "設置一個電子郵件以便日後恢復帳戶和使以後可以由認識您的人發現你。";
+"auth_add_email_message_2" = "設置一個電子郵件以便日後恢復帳戶和使以後可以由認識您的人發現你。";
+"auth_add_phone_message_2" = "設置一個電話號碼，以後可以由認識您的人發現你。";
+"auth_login_single_sign_on" = "以單一登入方式登入";
+"client_android_name" = "Element Android版";
+"client_ios_name" = "Element iOS版";
+"client_web_name" = "Element 網頁版";
+
+// MARK: Clients
+"client_desktop_name" = "Element 桌面版";
+
+// Accessibility
+"accessibility_checkbox_label" = "複選框";
+"less" = "減少";
+"more" = "更多";
+"switch" = "轉換";
+"joined" = "已加入";
+"skip" = "跳過";
+"close" = "關閉";
+"store_promotional_text" = "開放網絡上的隱私保護聊天和協作應用程序。 去中心化管理。 沒有數據挖掘，沒有後門，也沒有第三方存取。";
+"store_full_description" = "Element是一種新型的通訊和協作應用程式，它可以使你：\n\n1.掌控您的隱私\n2.可以與Matrix網絡中的任何人進行通信，甚至可以與Slack等應用程式整合\n3.保護您免受廣告，數據挖掘，後門和封閉平台的侵害\n4.通過端到端加密和交互簽名來驗證他人，從而保護您的安全\n\nElement是去中心化的開源軟件，因此與其他通訊和協作應用程式完全不同。\n\nElement允許您自行架設（或選擇託管）伺服器，使您擁有隱私權，所有權以及對數據和會話的控制權。自行架設的伺服器可以使您訪問開放的網絡；因此，您不僅可以只與其他 Element 用戶聊天。而且非常安全。\n\nElement之所以能夠達至所有這些目標，是因為它在Matrix（開放，去中心化通信的標準）上運行。\n\nElement通過讓您選擇託管對話的伺服器來控制您的訊息和資料。在Element應用程式中，您可以選擇以不同方式託管你的訊息：\n\n1.在matrix.org公共伺服器上獲得一個免費帳戶\n2.通過在自己的硬件上架設伺服器來託管帳戶\n3.訂閱Element Matrix Services託管平台，即可在自定伺服器上註冊帳戶\n\n為什麼選擇Element？\n\n擁有您的數據：您可以決定將數據和訊息保留在何處。您擁有並控制它，而不是某些超大型企業一樣，會挖掘您的數據或把數據提供給第三方。\n\n開放的通訊和協作：您可以與Matrix網絡中的任何人聊天，無論他們使用的是Element還是其他Matrix應用程式，甚至他們使用的是Slack，IRC或XMPP之類的其他通訊系統。\n\n超級安全：真正的端到端加密（只有對話中的人才能解密消息），並進行交互簽名以驗證對話參與者的設備。\n\n完整的通信：文字通訊，語音和視像通話，文件共享，屏幕共享以及大量整合，機器人和小部件。建立房間、社群，保持聯繫並完成工作。\n\n無論您身在何處都可保持聯繫：無論您身在何處，都可以通過 https://element.io/app 在所有設備和網絡上完全同步訊息歷史記錄來保持聯繫。";
+// String for App Store
+"store_short_description" = "去中心化的安全通訊軟件";

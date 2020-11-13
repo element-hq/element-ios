@@ -417,7 +417,7 @@
 "auth_msisdn_validation_title" = "Avvaktar verifiering";
 "auth_recaptcha_message" = "Den här hemservern vill kontrollera att du inte är en robot";
 "auth_reset_password_error_is_required" = "Ingen identitetsserver är konfigurerad: lägg till en i serveralternativen för att återställa ditt lösenord.";
-"auth_reset_password_success_message" = "Ditt lösenord har återställts.\n \nDu har loggats ut från alla sessioner och kommer inte längre att ta emot pushnotiser. För att återaktivera pushnotiser, logga in igen på varje enhet.";
+"auth_reset_password_success_message" = "Ditt lösenord har återställts.\n\nDu har loggats ut från alla sessioner och kommer inte längre att ta emot pushnotiser. För att återaktivera pushnotiser, logga in igen på varje enhet.";
 "auth_accept_policies" = "Granska och acceptera villkoren för denna hemserver:";
 "auth_softlogout_reason" = "Admin hos din hemserver (%1$@) har loggat ut dig från ditt konto %2$@ (%3$@).";
 "auth_softlogout_clear_data" = "Rensa personlig data";
@@ -1186,3 +1186,18 @@
 "room_info_list_one_member" = "1 medlem";
 "room_info_list_several_members" = "%@ medlemmar";
 "room_info_list_section_other" = "Andra";
+"secrets_reset_authentication_message" = "Ange ditt kontolösenord för att bekräfta";
+"secrets_reset_reset_action" = "Återställ";
+"secrets_reset_warning_message" = "så kommer du att börja om utan historik, meddelanden, betrodda enheter eller betrodda användare.";
+"secrets_reset_information" = "Gör bara detta om du inte har någon annan enhet att verifiera den här enheten med.";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "Återställ allt";
+"secrets_recovery_reset_action_part_2" = "Återställ allt";
+
+// MARK: - Secrets recovery
+
+"secrets_recovery_reset_action_part_1" = "Glömt eller förlorat alla återställningsalternativ? ";
+"less" = "Mindre";
+"secrets_reset_warning_title" = "Om du återställer allt";
