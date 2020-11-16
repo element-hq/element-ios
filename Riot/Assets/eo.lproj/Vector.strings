@@ -313,9 +313,9 @@
 "joined" = "Aliĝita";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Uzi rehavajn pasfrazon aŭ ŝlosilon";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Uzi rehavan ŝlosilon";
-"device_verification_self_verify_wait_additional_information" = "aŭ alian klienton de Matrix kapablan je delegaj subskriboj";
+"device_verification_self_verify_wait_additional_information" = "Ĉi tio funkcias por Element kaj aliaj klientoj kapablaj je delegaj subskriboj";
 "device_verification_self_verify_wait_information" = "Kontrolu ĉi tiun saluton per unu el viaj aliaj salutaĵoj, dononte al ĝi aliron al ĉifritaj mesaĝoj.\n\nUzu la plej freŝan version de Element per viaj aliaj aparatoj:";
-"device_verification_self_verify_wait_new_sign_in_title" = "Kontroli ĉi tiun saluton";
+"device_verification_self_verify_wait_new_sign_in_title" = "Kontrolu ĉi tiun saluton";
 
 // MARK: Self verification wait
 
@@ -581,3 +581,359 @@
 "secure_key_backup_setup_intro_use_security_passphrase_info" = "Enigu sekurecan pasfrazon, kiun konas nur vi, kaj estigu ŝlosilon por la savkopio.";
 "secure_key_backup_setup_intro_use_security_passphrase_title" = "Uzi sekurecan pasfrazon";
 "secure_key_backup_setup_intro_use_security_key_info" = "Estigu sekurecan ŝlosilon konservotan en sekura loko, ekzemple mastrumilo de pasvortoj aŭ sekurkesto.";
+"room_info_list_section_other" = "Aliaj";
+"room_info_list_several_members" = "%@ ĉambranoj";
+
+// MARK: - Room Info
+
+"room_info_list_one_member" = "1 ĉambrano";
+"create_room_placeholder_address" = "#provachambro:matrix.org";
+"create_room_section_header_address" = "Adreso de ĉambro";
+"create_room_show_in_directory" = "Montri la ĉambron en la katalogo";
+"create_room_section_footer_type" = "Oni aliĝas al privata ĉambro nur per invito al tiu ĉambro.";
+"create_room_type_public" = "Publika ĉambro";
+"create_room_type_private" = "Privata ĉambro";
+"create_room_section_header_type" = "Speco de ĉambro";
+"create_room_section_footer_encryption" = "Ne eblas malŝalti ĉifradon poste.";
+"create_room_enable_encryption" = "Ŝalti ĉifradon";
+"create_room_section_header_encryption" = "Ĉifrado de ĉambro";
+"create_room_placeholder_topic" = "Temo";
+"create_room_section_header_topic" = "Temo de ĉambro (nedeviga)";
+"create_room_placeholder_name" = "Nomo";
+"create_room_section_header_name" = "Nomo de ĉambro";
+
+// MARK: - Create Room
+
+"create_room_title" = "Nova ĉambro";
+"searchable_directory_search_placeholder" = "Nomo aŭ identigilo";
+"searchable_directory_x_network" = "Reto %@";
+
+// MARK: - Searchable Directory View Controller
+
+"searchable_directory_create_new_room" = "Krei novan ĉambron";
+"biometrics_cant_unlocked_alert_message_retry" = "Reprovi";
+"biometrics_cant_unlocked_alert_message_login" = "Resaluti";
+"biometrics_cant_unlocked_alert_message_x" = "Malŝlosu per %@ aŭ per resaluto kaj reŝalto de %@";
+"biometrics_cant_unlocked_alert_title" = "Ne povas malŝlosi aplikaĵon";
+"biometrics_usage_reason" = "Necesas aŭtentikigo por aliri vian aplikaĵon";
+"biometrics_desetup_disable_button_title_x" = "Malŝalti %@";
+"biometrics_desetup_title_x" = "Malŝalti %@";
+"biometrics_setup_subtitle" = "Ŝparu vian tempon";
+"biometrics_setup_enable_button_title_x" = "Ŝalti %@";
+"biometrics_setup_title_x" = "Ŝalti %@";
+"biometrics_settings_enable_x" = "Ŝalti %@";
+"biometrics_mode_face_id" = "Vizaĝa identigilo";
+
+// MARK: - Biometrics Protection
+
+"biometrics_mode_touch_id" = "Tuŝa identigilo";
+"pin_protection_kick_user_alert_message" = "Tro multaj eraroj; vi adiaŭis";
+"pin_protection_explanatory" = "Agordi personan identigan numeron ebligas protektadon de datumoj, kiel mesaĝoj kaj kontaktoj, por ke nur vi povu ilin aliri per enigo de la numero je ekado de la aplikaĵo.";
+"pin_protection_not_allowed_pin" = "Por kialoj de sekureco, ĉi tiu persona identiga numero ne disponeblas. Bonvolu provi alian";
+"pin_protection_settings_enable_pin" = "Ŝalti personan identigan numeron";
+"pin_protection_settings_enabled_forced" = "Persona identiga numero ŝaltiĝis";
+"pin_protection_settings_section_footer" = "Por restarigi vian personan identigan numeron, vi devos resaluti kaj krei novan.";
+"pin_protection_settings_section_header_x" = "PIN kaj %@";
+"pin_protection_mismatch_too_many_times_error_message" = "Se vi ne memoras, tuŝetu la butonon «forgesita persona identiga numero».";
+"pin_protection_mismatch_error_message" = "Bonvolu reprovi";
+"pin_protection_mismatch_error_title" = "Personaj identigaj numeroj ne akordas";
+"pin_protection_reset_alert_action_reset" = "Restarigi";
+"pin_protection_reset_alert_message" = "Por restarigi vian personan identigan numeron, vi devos resaluti kaj krei novan";
+"pin_protection_reset_alert_title" = "Restarigi personan identigan numeron";
+"pin_protection_forgot_pin" = "Forgesita persona identiga numero";
+"pin_protection_enter_pin" = "Enigu vian personan identigan numeron";
+"pin_protection_confirm_pin_to_disable" = "Konfirmu la personan identigan numeron por ĝin malŝalti";
+"pin_protection_confirm_pin" = "Konfirmu vian personan identigan numeron";
+"pin_protection_choose_pin" = "Kreu personan identigan numeron por plia sekureco";
+"pin_protection_choose_pin_welcome_after_register" = "Bonvenon.";
+
+// MARK: - PIN Protection
+
+"pin_protection_choose_pin_welcome_after_login" = "Bonrevenon.";
+"major_update_done_action" = "Komprenite";
+"major_update_learn_more_action" = "Eksciu plion";
+"major_update_information" = "Ni ĝoje anoncas, ke ni ŝanĝis la nomon! Via aplikaĵo estas ĝisdata kaj via konto estas salutita.";
+
+// MARK: - Major update
+
+"major_update_title" = "Riot nun estas Element";
+"cross_signing_setup_banner_subtitle" = "Kontrolu aliajn viajn aparatojn pli facile";
+
+// MARK: - Cross-signing
+
+// Banner
+
+"cross_signing_setup_banner_title" = "Agordu ĉifradon";
+"secrets_reset_authentication_message" = "Enigu la pasvorton de via konto por konfirmi";
+"secrets_reset_reset_action" = "Restarigi";
+"secrets_reset_warning_message" = "Vi rekomencos kun neniu historio, neniuj mesaĝoj, neniuj fidataj aparatoj nek fidataj uzantoj.";
+"secrets_reset_warning_title" = "Se vi restarigos ĉion";
+"secrets_reset_information" = "Tion ĉi faru nur se vi havas neniun alian aparaton, per kiu vi povus kontroli ĉi tiun.";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "Ĉion restarigi";
+"secrets_setup_recovery_passphrase_summary_information" = "Memoru vian sekurecan pasfrazon. Ĝi povas malŝlosi viajn ĉifritajn mesaĝojn kaj datumojn.";
+"secrets_setup_recovery_passphrase_summary_title" = "Konservu vian sekurecan pasfrazon";
+"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Konfirmu pasfrazon";
+"secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Konfirmu";
+"secrets_setup_recovery_passphrase_confirm_information" = "Enigu vian sekurecan pasfrazon por ĝin konfirmi.";
+"secrets_setup_recovery_passphrase_validate_action" = "Finite";
+"secrets_setup_recovery_passphrase_additional_information" = "Ne uzu la pasvorton de via konto.";
+"secrets_setup_recovery_passphrase_information" = "Enigu sekurecan pasfrazon, kiun scias nur vi, uzotan por sekurigi sekretojn en via servilo.";
+
+// Recovery passphrase
+
+"secrets_setup_recovery_passphrase_title" = "Agordu sekurecan pasfrazon";
+"secrets_setup_recovery_key_storage_alert_message" = "✓ Presu ĝin kaj deponu ĝin en sekura loko\n✓ Konservu ĝin en poŝmemorilo aŭ savkopia disko\n✓ Kopiu ĝin al via persona fora deponejo";
+"secrets_setup_recovery_key_storage_alert_title" = "Tenu ĝin sekura";
+"secrets_setup_recovery_key_done_action" = "Farite";
+"secrets_setup_recovery_key_export_action" = "Konservi";
+"secrets_setup_recovery_key_loading" = "Enlegante…";
+"secrets_setup_recovery_key_information" = "Deponu vian rehavan ŝlosilon en sekura loko. Ĝi povas malŝlosi viajn ĉifritajn mesaĝojn kaj datumojn.";
+
+// MARK: - Secrets set up
+
+// Recovery Key
+
+"secrets_setup_recovery_key_title" = "Konservu vian sekurecan ŝlosilon";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "Bonvolu kontroli, ĉu vi enigis la ĝustan rehavan ŝlosilon.";
+"secrets_recovery_with_key_invalid_recovery_key_title" = "Ne povas aliri sekretan deponejon";
+"secrets_recovery_with_key_recover_action" = "Uzi ŝlosilon";
+"secrets_recovery_with_key_recovery_key_placeholder" = "Enigu rehavan ŝlosilon";
+"secrets_recovery_with_key_recovery_key_title" = "Enigu";
+"secrets_recovery_with_key_information_verify_device" = "Uzu vian rehavan ŝlosilon por kontroli ĉi tiun aparaton.";
+"secrets_recovery_with_key_information_default" = "Aliru vian historion de sekretaj mesaĝoj, kaj vian identecon de delegaj subskriboj por kontrolado de aliaj salutaĵoj, per enigo de via rehava ŝlosilo.";
+
+// Recover with key
+
+"secrets_recovery_with_key_title" = "Rehava ŝlosilo";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Bonvolu kontroli, ke vi enigis la ĝustan rehavan pasfrazon.";
+"secrets_recovery_with_passphrase_invalid_passphrase_title" = "Ne eblas aliri sekretan deponejon";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "uzi vian rehavan ŝlosilon";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Ĉu vi ne memoras vian rehavan pasfrazon? Vi povas ";
+"secrets_recovery_with_passphrase_recover_action" = "Uzi pasfrazon";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Enigu rehavan pasfrazon";
+"secrets_recovery_with_passphrase_passphrase_title" = "Enigu";
+"secrets_recovery_with_passphrase_information_verify_device" = "Uzu vian rehavas pasfrazon por kontroli ĉi tiun aparaton.";
+"secrets_recovery_with_passphrase_information_default" = "Aliru vian historion de sekuraj mesaĝoj, kaj vian identecon de delegaj subskriboj por kontroli aliajn salutaĵojn, per enigo de via rehava pasfrazo.";
+
+// Recover with passphrase
+
+"secrets_recovery_with_passphrase_title" = "Rehava pasfrazo";
+"secrets_recovery_reset_action_part_2" = "Ĉion restarigi";
+
+// MARK: - Secrets recovery
+
+"secrets_recovery_reset_action_part_1" = "Ĉu vi forgesis aŭ perdis ĉiujn eblojn de rehavo? ";
+"user_verification_session_details_verify_action_other_user" = "Permane kontroli";
+"user_verification_session_details_verify_action_current_user_manually" = "Permane kontroli tekste";
+"user_verification_session_details_verify_action_current_user" = "Kontroli interage";
+"user_verification_session_details_additional_information_untrusted_current_user" = "Se vi ne salutis la alian salutaĵon, la sekureco de via konto povus esti rompita.";
+"user_verification_session_details_additional_information_untrusted_other_user" = "Ĝis ĉi tiu uzanto kontrolos ĉi tiun salutaĵon, mesaĝoj senditaj de/al ĝi estas markitaj per avertoj. Alternative, vi povus kontroli ĝin permane.";
+"user_verification_session_details_information_untrusted_other_user" = " salutis per nova salutaĵo:";
+"user_verification_session_details_information_untrusted_current_user" = "Kontrolu ĉi tiun salutaĵon por marki ĝin fidata kaj al ĝi doni aliron al ĉifritaj mesaĝoj:";
+"user_verification_session_details_information_trusted_other_user_part2" = " ĝin kontrolis:";
+"user_verification_session_details_information_trusted_other_user_part1" = "Ĉi tiu salutaĵo estas fidata pri sekuraj mesaĝoj ĉar ";
+"user_verification_session_details_information_trusted_current_user" = "Ĉi tiu salutaĵo estas fidata pri sekuraj mesaĝoj, ĉar vi kontrolis ĝin:";
+"user_verification_session_details_untrusted_title" = "Nefidata";
+
+// Session details
+
+"user_verification_session_details_trusted_title" = "Fidata";
+"user_verification_sessions_list_session_untrusted" = "Nefidata";
+"user_verification_sessions_list_session_trusted" = "Fidata";
+"user_verification_sessions_list_table_title" = "Salutaĵoj";
+"user_verification_sessions_list_information" = "Mesaĝoj kun ĉi tiu uzanto en ĉi tiu ĉambro estas tutvoje ĉifrataj kaj nelegeblaj por aliuloj.";
+"user_verification_sessions_list_user_trust_level_unknown_title" = "Nekonataj";
+"user_verification_sessions_list_user_trust_level_warning_title" = "Averto";
+
+// Sessions list
+
+"user_verification_sessions_list_user_trust_level_trusted_title" = "Fidataj";
+"user_verification_start_additional_information" = "Por sekureco, faru tion persone aŭ uzu alian komunikilon.";
+"user_verification_start_waiting_partner" = "Atendante je %@…";
+"user_verification_start_information_part2" = " per unufoja kodo je ambaŭ viaj aparatoj.";
+"user_verification_start_information_part1" = "Por pli bona sekureco, faru kontrolon de ";
+
+// MARK: - User verification
+
+// Start
+
+"user_verification_start_verify_action" = "Komenci kontrolon";
+"key_verification_scan_confirmation_scanned_device_information" = "Ĉu la alia aparato montras la saman ŝildeton?";
+"key_verification_scan_confirmation_scanned_user_information" = "Ĉu %@ montras la saman ŝildeton?";
+
+// Scanned
+"key_verification_scan_confirmation_scanned_title" = "Preskaŭ finite!";
+"key_verification_scan_confirmation_scanning_device_waiting_other" = "Atendante la alian aparaton…";
+"key_verification_scan_confirmation_scanning_user_waiting_other" = "Atendante je %@…";
+
+// MARK: Scan confirmation
+
+// Scanning
+"key_verification_scan_confirmation_scanning_title" = "Preskaŭ finite! Atendante kontrolon…";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "La rapidresponda kodo estas sukcese validigita.";
+"key_verification_verify_qr_code_scan_other_code_success_title" = "Kodo validas!";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "Ĉu la alia uzanto sukcese skanis la rapidrespondan (QR) kodon?";
+"key_verification_verify_qr_code_start_emoji_action" = "Kontroli per bildosignoj";
+"key_verification_verify_qr_code_cannot_scan_action" = "Ĉu ne eblas skani?";
+"key_verification_verify_qr_code_scan_code_action" = "Skanu ĝian kodon";
+"key_verification_verify_qr_code_emoji_information" = "Kontrolu per komparo de unikaj bildosignoj.";
+"key_verification_verify_qr_code_information_other_device" = "Skanu la suban kodon por kontroli:";
+"key_verification_verify_qr_code_information" = "Skanu la kodon por sekure kontroli unu la alian.";
+
+// MARK: QR code
+
+"key_verification_verify_qr_code_title" = "Kontrolu per skano";
+
+// Incoming key verification request
+
+"key_verification_incoming_request_incoming_alert_message" = "%@ volas kontroli";
+"key_verification_tile_conclusion_warning_title" = "Nefidata saluto";
+"key_verification_tile_conclusion_done_title" = "Kontrolinte";
+"key_verification_tile_request_incoming_approval_decline" = "Rifuzi";
+"key_verification_tile_request_incoming_approval_accept" = "Akcepti";
+"key_verification_tile_request_status_accepted" = "Vi akceptis";
+"key_verification_tile_request_status_cancelled" = "%@ nuligis";
+"key_verification_tile_request_status_cancelled_by_me" = "Vi nuligis";
+"key_verification_tile_request_status_expired" = "Trafiĝis tempolimo";
+"key_verification_tile_request_status_waiting" = "Atendante…";
+"key_verification_tile_request_status_data_loading" = "Enlegante datumojn…";
+"key_verification_tile_request_outgoing_title" = "Kontrolo sendiĝis";
+
+// Tiles
+
+"key_verification_tile_request_incoming_title" = "Kontrolpeto";
+
+// MARK: - Key Verification
+
+"key_verification_bootstrap_not_setup_title" = "Eraro";
+
+
+// Generic errors
+"error_invite_3pid_with_no_identity_server" = "Por inviti retpoŝte, aldonu identigan servilon per viaj agordoj.";
+
+// MARK: Reaction history
+"reaction_history_title" = "Reagoj";
+"emoji_picker_flags_category" = "Flagoj";
+"emoji_picker_symbols_category" = "Simboloj";
+"emoji_picker_objects_category" = "Objektoj";
+"emoji_picker_places_category" = "Vojaĝado kaj lokoj";
+"emoji_picker_activity_category" = "Agadoj";
+"emoji_picker_foods_category" = "Manĝaĵoj kaj trinkaĵoj";
+"emoji_picker_nature_category" = "Bestoj kaj naturo";
+"emoji_picker_people_category" = "Mienetoj kaj homoj";
+
+// MARK: Emoji picker
+"emoji_picker_title" = "Reagoj";
+"file_upload_error_unsupported_file_type_message" = "La speco de dosiero ne estas subtenata.";
+
+// MARK: File upload
+"file_upload_error_title" = "Alŝutu dosieron";
+"device_verification_emoji_pin" = "Pinglo";
+"device_verification_emoji_folder" = "Dosierujo";
+"device_verification_emoji_headphones" = "Kapaŭdilo";
+"device_verification_emoji_anchor" = "Ankro";
+"device_verification_emoji_bell" = "Sonorilo";
+"device_verification_emoji_trumpet" = "Trumpeto";
+"device_verification_emoji_guitar" = "Gitaro";
+"device_verification_emoji_ball" = "Pilko";
+"device_verification_emoji_trophy" = "Trofeo";
+"device_verification_emoji_rocket" = "Raketo";
+"device_verification_emoji_aeroplane" = "Aviadilo";
+"device_verification_emoji_bicycle" = "Biciklo";
+"device_verification_emoji_train" = "Vagonaro";
+"device_verification_emoji_flag" = "Flago";
+"device_verification_emoji_telephone" = "Telefono";
+"device_verification_emoji_hammer" = "Martelo";
+"device_verification_emoji_key" = "Ŝlosilo";
+"device_verification_emoji_lock" = "Seruro";
+"device_verification_emoji_scissors" = "Tondilo";
+"device_verification_emoji_paperclip" = "Paperkuntenilo";
+"device_verification_emoji_pencil" = "Krajono";
+"device_verification_emoji_book" = "Libro";
+"device_verification_emoji_light bulb" = "Lampo";
+"device_verification_emoji_gift" = "Donaco";
+"device_verification_emoji_clock" = "Horloĝo";
+"device_verification_emoji_hourglass" = "Sablohorloĝo";
+"device_verification_emoji_umbrella" = "Ombrelo";
+"device_verification_emoji_thumbs up" = "Dikfingro supren";
+"device_verification_emoji_santa" = "Kristnaska viro";
+"device_verification_emoji_spanner" = "Ŝraŭbŝlosilo";
+"device_verification_emoji_glasses" = "Okulvitroj";
+"device_verification_emoji_hat" = "Ĉapelo";
+"device_verification_emoji_robot" = "Roboto";
+"device_verification_emoji_smiley" = "Rideto";
+"device_verification_emoji_heart" = "Koro";
+"device_verification_emoji_cake" = "Torto";
+"device_verification_emoji_pizza" = "Pico";
+"device_verification_emoji_corn" = "Maizo";
+"device_verification_emoji_strawberry" = "Frago";
+"device_verification_emoji_apple" = "Pomo";
+"device_verification_emoji_banana" = "Banano";
+"device_verification_emoji_fire" = "Fajro";
+"device_verification_emoji_cloud" = "Nubo";
+"device_verification_emoji_moon" = "Luno";
+"device_verification_emoji_globe" = "Globo";
+"device_verification_emoji_mushroom" = "Fungo";
+"device_verification_emoji_cactus" = "Kakto";
+"device_verification_emoji_tree" = "Arbo";
+"device_verification_emoji_flower" = "Floro";
+"device_verification_emoji_butterfly" = "Papilio";
+"device_verification_emoji_octopus" = "Polpo";
+"device_verification_emoji_fish" = "Fiŝo";
+"device_verification_emoji_turtle" = "Testudo";
+"device_verification_emoji_penguin" = "Pingveno";
+"device_verification_emoji_rooster" = "Virkoko";
+"device_verification_emoji_panda" = "Pando";
+"device_verification_emoji_rabbit" = "Kuniklo";
+"device_verification_emoji_elephant" = "Elefanto";
+"device_verification_emoji_pig" = "Porko";
+"device_verification_emoji_unicorn" = "Unukorno";
+"device_verification_emoji_horse" = "Ĉevalo";
+"device_verification_emoji_lion" = "Leono";
+"device_verification_emoji_cat" = "Kato";
+
+// MARK: Emoji
+"device_verification_emoji_dog" = "Hundo";
+
+// User
+
+"key_verification_verified_user_information" = "Mesaĝoj kun ĉi tiu uzanto estas tutvoje ĉifritaj kaj nelegeblaj al aliuloj.";
+"key_verification_verified_this_session_information" = "Vi nun povas legi sekurajn mesaĝojn per ĉi tiu aparato, kaj aliaj uzantoj scios, ke ili povas ĝin fidi.";
+"key_verification_verified_new_session_information" = "Vi nun povas legi sekurajn mesaĝojn per via nova aparato, kaj aliaj uzantoj scios, ke ili povas ĝin fidi.";
+"key_verification_verified_other_session_information" = "Vi nun povas legi sekurajn mesaĝojn per alia via salutaĵo, kaj aliaj uzantoj scios, ke ili povas ĝin fidi.";
+"key_verification_verified_new_session_title" = "Nova salutaĵo kontroliĝis!";
+"device_verification_verified_got_it_button" = "Komprenite";
+
+// MARK: Verified
+
+// Device
+
+"device_verification_verified_title" = "Kontrolite!";
+
+// Device
+
+"device_verification_verify_wait_partner" = "Atendante konfirmon de la kunulo…";
+"key_verification_manually_verify_device_validate_action" = "Kontroli";
+"key_verification_manually_verify_device_additional_information" = "Se ili ne akordas, la sekureco de via komunikado eble estas rompita.";
+"key_verification_manually_verify_device_key_title" = "Ŝlosilo de la salutaĵo";
+"key_verification_manually_verify_device_id_title" = "Identigilo de salutaĵo";
+"key_verification_manually_verify_device_name_title" = "Nomo de salutaĵo";
+"key_verification_manually_verify_device_instruction" = "Konfirmu per komparo de la jeno kun la Agordoj de uzanto en alia via salutaĵo:";
+
+// MARK: Manually Verify Device
+
+"key_verification_manually_verify_device_title" = "Kontrolu permane, tekste";
+"key_verification_verify_sas_additional_information" = "Por plej bona sekureco, uzu alian komunikilon aŭ faru tion persone.";
+"key_verification_verify_sas_validate_action" = "Ili akordas";
+"key_verification_verify_sas_cancel_action" = "Ili ne akordas";
+"key_verification_verify_sas_title_number" = "Komparu numerojn";
+
+// MARK: Verify
+
+"key_verification_verify_sas_title_emoji" = "Komparu bildosignojn";
+"device_verification_self_verify_wait_recover_secrets_checking_availability" = "Kontrolante aliajn kapablojn je kontrolado…";
+"device_verification_self_verify_wait_recover_secrets_additional_information" = "Se vi ne povas aliri jaman salutaĵon";
