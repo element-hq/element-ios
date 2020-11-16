@@ -3569,7 +3569,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                        kMXEventTypeStringCallAnswer,
                                        kMXEventTypeStringCallSelectAnswer,
                                        kMXEventTypeStringCallHangup,
-                                       kMXEventTypeStringCallReject
+                                       kMXEventTypeStringCallReject,
+                                       kMXEventTypeStringCallNegotiate
                                        ]
                              onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {
                                  
