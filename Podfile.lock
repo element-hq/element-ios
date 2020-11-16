@@ -17,7 +17,6 @@ PODS:
   - BlueCryptor (1.0.32)
   - BlueECC (1.2.5)
   - BlueRSA (1.0.34)
-  - cmark (0.24.1)
   - DGCollectionViewLeftAlignFlowLayout (1.0.4)
   - Down (0.9.4)
   - DTCoreText (1.6.25):
@@ -123,7 +122,6 @@ PODS:
   - ZXingObjC/All (3.6.5)
 
 DEPENDENCIES:
-  - cmark
   - DGCollectionViewLeftAlignFlowLayout (~> 1.0.4)
   - FlowCommoniOS (~> 1.9.0)
   - GBDeviceInfo (~> 6.4.0)
@@ -152,7 +150,6 @@ SPEC REPOS:
     - BlueCryptor
     - BlueECC
     - BlueRSA
-    - cmark
     - DGCollectionViewLeftAlignFlowLayout
     - Down
     - DTCoreText
@@ -188,7 +185,6 @@ SPEC CHECKSUMS:
   BlueCryptor: b0aee3d9b8f367b49b30de11cda90e1735571c24
   BlueECC: 0d18e93347d3ec6d41416de21c1ffa4d4cd3c2cc
   BlueRSA: 6f9776d62d9773502415a7db3bcbb2bbb3f71fc3
-  cmark: 1d9ad0375e3b9fa281732e992467903606015520
   DGCollectionViewLeftAlignFlowLayout: a0fa58797373ded039cafba8133e79373d048399
   Down: 276f2c3eeeaf30345873bdad25f44b2640fcfa3a
   DTCoreText: e92f4cf6b36d9d71ce4436d12cf089d74ab0596b
