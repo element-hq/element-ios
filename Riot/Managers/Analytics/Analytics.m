@@ -18,42 +18,25 @@
 
 #import "Riot-Swift.h"
 
-// All metrics are store under a Piwik category called "Metrics".
-// Then, there are 2 Piwik actions: "iOS.startup" and "iOS.stats" (these actions
-// are namespaced by plaform to have a nice rendering on the Piwik website).
-// Then, we use constants defined by the Matrix SDK as Piwik Names (ex:"mountData")
-NSString *const kAnalyticsMetricsCategory = @"Metrics";
-NSString *const kAnalyticsMetricsActionPattern = @"iOS.%@";
 
-// E2E telemetry is stored under a Piwik category called "E2E".
-NSString *const kAnalyticsE2eCategory = @"E2E";
-NSString *const kAnalyticsE2eDecryptionFailureAction = @"Decryption failure";
+NSString *const AnalyticsNoficationsCategory = @"notifications";
+NSString *const AnalyticsNoficationsTimeToDisplayContent = @"timelineDisplay";
+
+
+// Duration data will be visible under the Piwik category called "Performance".
+// Other values will be visible in "Metrics".
+// Some Matomo screenshots are available at https://github.com/vector-im/element-ios/pull/3789.
+NSString *const kAnalyticsPerformanceCategory = @"Performance";
+NSString *const kAnalyticsMetricsCategory = @"Metrics";
 
 
 @import MatomoTracker;
 
-@interface MatomoTracker (MatomoTrackerMigration)
-+ (MatomoTracker *)shared;
-
-- (void)migrateFromFourPointFourSharedInstance;
-@end
-
-@implementation MatomoTracker (MatomoTrackerMigration)
-+ (MatomoTracker *)shared
+@interface Analytics ()
 {
-    MatomoTracker *matomoTracker = [[MatomoTracker alloc] initWithSiteId:BuildSettings.analyticsAppId
-                                                                 baseURL:BuildSettings.analyticsServerUrl
-                                                               userAgent:@"iOSMatomoTracker"];
-    [matomoTracker migrateFromFourPointFourSharedInstance];
-    return matomoTracker;
+    MatomoTracker *matomoTracker;
 }
 
-- (void)migrateFromFourPointFourSharedInstance
-{
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"migratedFromFourPointFourSharedInstance"]) return;
-    [self copyFromOldSharedInstance];
-    [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"migratedFromFourPointFourSharedInstance"];
-}
 @end
 
 @implementation Analytics
@@ -70,26 +53,46 @@ NSString *const kAnalyticsE2eDecryptionFailureAction = @"Decryption failure";
     return sharedInstance;
 }
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        matomoTracker = [[MatomoTracker alloc] initWithSiteId:BuildSettings.analyticsAppId
+                                                      baseURL:BuildSettings.analyticsServerUrl
+                                                    userAgent:@"iOSMatomoTracker"];
+        [self migrateFromFourPointFourSharedInstance];
+    }
+    return self;
+}
+
+- (void)migrateFromFourPointFourSharedInstance
+{
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"migratedFromFourPointFourSharedInstance"]) return;
+    [matomoTracker copyFromOldSharedInstance];
+    [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"migratedFromFourPointFourSharedInstance"];
+}
+
 - (void)start
 {
     // Check whether the user has enabled the sending of crash reports.
     if (RiotSettings.shared.enableCrashReport)
     {
-        [MatomoTracker shared].isOptedOut = NO;
+        matomoTracker.isOptedOut = NO;
 
-        [[MatomoTracker shared] setCustomVariableWithIndex:1 name:@"App Platform" value:@"iOS Platform"];
-        [[MatomoTracker shared] setCustomVariableWithIndex:2 name:@"App Version" value:[AppDelegate theDelegate].appVersion];
+        [matomoTracker setCustomVariableWithIndex:1 name:@"App Platform" value:@"iOS Platform"];
+        [matomoTracker setCustomVariableWithIndex:2 name:@"App Version" value:[AppDelegate theDelegate].appVersion];
 
         // The language is either the one selected by the user within the app
         // or, else, the one configured by the OS
         NSString *language = [NSBundle mxk_language] ? [NSBundle mxk_language] : [[NSBundle mainBundle] preferredLocalizations][0];
-        [[MatomoTracker shared] setCustomVariableWithIndex:4 name:@"Chosen Language" value:language];
+        [matomoTracker setCustomVariableWithIndex:4 name:@"Chosen Language" value:language];
 
         MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
         if (account)
         {
-            [[MatomoTracker shared] setCustomVariableWithIndex:7 name:@"Homeserver URL" value:account.mxCredentials.homeServer];
-            [[MatomoTracker shared] setCustomVariableWithIndex:8 name:@"Identity Server URL" value:account.identityServerURL];
+            [matomoTracker setCustomVariableWithIndex:7 name:@"Homeserver URL" value:account.mxCredentials.homeServer];
+            [matomoTracker setCustomVariableWithIndex:8 name:@"Identity Server URL" value:account.identityServerURL];
         }
 
         // TODO: We should also track device and os version
@@ -101,20 +104,20 @@ NSString *const kAnalyticsE2eDecryptionFailureAction = @"Decryption failure";
 
 #ifdef DEBUG
         // Disable analytics in debug as it pollutes stats
-        [MatomoTracker shared].isOptedOut = YES;
+        matomoTracker.isOptedOut = YES;
 #endif
     }
     else
     {
         NSLog(@"[AppDelegate] The user decided to not send analytics");
-        [MatomoTracker shared].isOptedOut = YES;
+        matomoTracker.isOptedOut = YES;
         [MXLogger logCrashes:NO];
     }
 }
 
 - (void)stop
 {
-    [MatomoTracker shared].isOptedOut = YES;
+    matomoTracker.isOptedOut = YES;
     [MXLogger logCrashes:NO];
 }
 
@@ -124,84 +127,35 @@ NSString *const kAnalyticsE2eDecryptionFailureAction = @"Decryption failure";
     NSString *appName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
     NSString *appVersion = [AppDelegate theDelegate].appVersion;
 
-    [[MatomoTracker shared] trackWithView:@[@"ios", appName, appVersion, screenName]
+    [matomoTracker trackWithView:@[@"ios", appName, appVersion, screenName]
                                      url:nil];
 }
 
 - (void)dispatch
 {
-    [[MatomoTracker shared] dispatch];
-}
-
-- (void)trackLaunchScreenDisplayDuration:(NSTimeInterval)seconds
-{
-    NSString *action = [NSString stringWithFormat:kAnalyticsMetricsActionPattern, kMXAnalyticsStartupCategory];
-
-    [[MatomoTracker shared] trackWithEventWithCategory:kAnalyticsMetricsCategory
-                                               action:action
-                                                 name:kMXAnalyticsStartupLaunchScreen
-                                               number:@(seconds * 1000)
-                                                  url:nil];
+    [matomoTracker dispatch];
 }
 
 #pragma mark - MXAnalyticsDelegate
 
-- (void)trackStartupStorePreloadDuration: (NSTimeInterval)seconds
+- (void)trackDuration:(NSTimeInterval)seconds category:(NSString*)category name:(NSString*)name
 {
-    NSString *action = [NSString stringWithFormat:kAnalyticsMetricsActionPattern, kMXAnalyticsStartupCategory];
-
-    [[MatomoTracker shared] trackWithEventWithCategory:kAnalyticsMetricsCategory
-                                               action:action
-                                                 name:kMXAnalyticsStartupStorePreload
-                                               number:@(seconds * 1000)
-                                                  url:nil];
+    // Report time in ms to make figures look better in Matomo
+    NSNumber *value = @(seconds * 1000);
+    [matomoTracker trackWithEventWithCategory:kAnalyticsPerformanceCategory
+                                       action:category
+                                         name:name
+                                       number:value
+                                          url:nil];
 }
 
-- (void)trackStartupMountDataDuration: (NSTimeInterval)seconds
+- (void)trackValue:(NSNumber*)value category:(NSString*)category name:(NSString*)name
 {
-    NSString *action = [NSString stringWithFormat:kAnalyticsMetricsActionPattern, kMXAnalyticsStartupCategory];
-
-    [[MatomoTracker shared] trackWithEventWithCategory:kAnalyticsMetricsCategory
-                                               action:action
-                                                 name:kMXAnalyticsStartupMountData
-                                               number:@(seconds * 1000)
-                                                  url:nil];
-}
-
-- (void)trackStartupSyncDuration: (NSTimeInterval)seconds isInitial: (BOOL)isInitial
-{
-    NSString *action = [NSString stringWithFormat:kAnalyticsMetricsActionPattern, kMXAnalyticsStartupCategory];
-
-    [[MatomoTracker shared] trackWithEventWithCategory:kAnalyticsMetricsCategory
-                                               action:action
-                                                 name:isInitial ? kMXAnalyticsStartupInititialSync : kMXAnalyticsStartupIncrementalSync
-                                               number:@(seconds * 1000)
-                                                  url:nil];
-}
-
-- (void)trackRoomCount: (NSUInteger)roomCount
-{
-    NSString *action = [NSString stringWithFormat:kAnalyticsMetricsActionPattern, kMXAnalyticsStatsCategory];
-
-    [[MatomoTracker shared] trackWithEventWithCategory:kAnalyticsMetricsCategory
-                                               action:action
-                                                 name:kMXAnalyticsStatsRooms
-                                               number:@(roomCount)
-                                                  url:nil];
-}
-
-#pragma mark - MXDecryptionFailureDelegate
-
-- (void)trackFailures:(NSDictionary<NSString *,NSNumber *> *)failuresCounts
-{
-    for (NSString *reason in failuresCounts)
-    {
-        [[MatomoTracker shared] trackWithEventWithCategory:kAnalyticsE2eCategory
-                                                   action:kAnalyticsE2eDecryptionFailureAction
-                                                     name:reason
-                                                   number:failuresCounts[reason]
-                                                      url:nil];
-    }
+    [matomoTracker trackWithEventWithCategory:kAnalyticsMetricsCategory
+                                       action:category
+                                         name:name
+                                       number:value
+                                          url:nil];
 }
 
 @end

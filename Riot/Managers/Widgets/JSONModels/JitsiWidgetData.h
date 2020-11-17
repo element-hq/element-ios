@@ -34,6 +34,9 @@ NS_ASSUME_NONNULL_BEGIN
 // YES if the Jitsi conference is intended to be an audio-only call
 @property (nonatomic) BOOL isAudioOnly;
 
+// Indicate the authentication supported by the Jitsi server if any otherwise nil if there is no authentication supported.
+@property (nonatomic, nullable) NSString *authenticationType;
+
 @end
 
 NS_ASSUME_NONNULL_END

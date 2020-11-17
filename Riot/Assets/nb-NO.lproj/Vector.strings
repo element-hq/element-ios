@@ -580,3 +580,8 @@
 "biometrics_desetup_title_x" = "Skru av %@";
 "biometrics_desetup_disable_button_title_x" = "Skru av %@";
 "biometrics_cant_unlocked_alert_message_retry" = "Prøv igjen";
+"less" = "Mindre";
+"more" = "Mer";
+"switch" = "Bytt";
+"joined" = "Ble med";
+"store_promotional_text" = "Personvernbevarende chat- og samarbeidsapp på et åpent nettverk. Desentralisert for å gi deg kontroll. Ingen datamining, ingen bakdører og ingen tredjepartsadgang.";

@@ -29,6 +29,9 @@
     BOOL isAudioOnly = NO;
     MXJSONModelSetBoolean(isAudioOnly, JSONDictionary[@"isAudioOnly"])
     
+    NSString *authenticationType;
+    MXJSONModelSetString(authenticationType, JSONDictionary[@"auth"]);
+    
     // Sanitiy check
     if (!conferenceId)
     {
@@ -39,17 +42,25 @@
     model.domain = domain;
     model.conferenceId = conferenceId;
     model.isAudioOnly = isAudioOnly;
+    model.authenticationType = authenticationType;
     
     return model;
 }
 
 - (NSDictionary *)JSONDictionary
 {
-    return @{
-             @"domain": _domain,
-             @"conferenceId": _conferenceId,
-             @"isAudioOnly": @(_isAudioOnly),
-             };
+    NSMutableDictionary *jsonDictionary = [@{
+        @"domain": _domain,
+        @"conferenceId": _conferenceId,
+        @"isAudioOnly": @(_isAudioOnly),
+    } mutableCopy];
+            
+    if (_authenticationType)
+    {
+        jsonDictionary[@"auth"] = _authenticationType;
+    }
+    
+    return jsonDictionary;
 }
 
 

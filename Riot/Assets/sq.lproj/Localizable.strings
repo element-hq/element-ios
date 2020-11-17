@@ -61,3 +61,4 @@
 "MESSAGE_FROM_X" = "Mesazh nga %@";
 /* New message indicator on a room */
 "MESSAGE_IN_X" = "Mesazh te %@";
+"MESSAGE_PROTECTED" = "Mesazh i Ri";

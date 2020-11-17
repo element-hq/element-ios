@@ -204,6 +204,9 @@
     
     // Formatted body parser for events
     FormattedBodyParser *formattedBodyParser;
+    
+    // Time to display notification content in the timeline
+    MXTaskProfile *notificationTaskProfile;
 }
 
 @property (nonatomic, weak) IBOutlet UIView *overlayContainerView;
@@ -500,6 +503,9 @@
         [self startActivityIndicator];
         [self.roomDataSource reload];
         [LegacyAppDelegate theDelegate].lastNavigatedRoomIdFromPush = nil;
+        
+        notificationTaskProfile = [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:AnalyticsNoficationsTimeToDisplayContent
+                                                                                          category:AnalyticsNoficationsCategory];
     }
 }
 
@@ -840,6 +846,18 @@
     // Re-enable the read marker display, and disable its update.
     self.roomDataSource.showReadMarker = YES;
     self.updateRoomReadMarker = NO;
+}
+
+- (void)stopActivityIndicator
+{
+    if (notificationTaskProfile)
+    {
+        // Consider here we have displayed the message corresponding to the notification
+        [MXSDKOptions.sharedInstance.profiler stopMeasuringTaskWithProfile:notificationTaskProfile];
+        notificationTaskProfile = nil;
+    }
+    
+    [super stopActivityIndicator];
 }
 
 - (void)displayRoom:(MXKRoomDataSource *)dataSource

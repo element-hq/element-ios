@@ -339,7 +339,7 @@
 // Room Details
 "room_details_title" = "Информация";
 "room_details_people" = "Членове";
-"room_details_files" = "Файлове";
+"room_details_files" = "Качвания";
 "room_details_settings" = "Настройки";
 "room_details_photo" = "Снимка на стаята";
 "room_details_room_name" = "Име на стаята";
@@ -667,7 +667,7 @@
 "sign_out_key_backup_in_progress_alert_cancel_action" = "Ще почакам";
 // String for App Store
 "store_short_description" = "Защитен децентрализиран чат/VoIP";
-"store_full_description" = "Комуникирай по свой начин.\n\nЧат приложение, което е изцяло гъвкаво и под Ваш контрол. Element позволява да комуникирате по начина, по който искате. Направено за [matrix] - стандарт за отворена и децентрализирана комуникация.\n\nИзползвайте безплатен matrix.org акаунт, собствен сървър от https://ems.element.io или друг Matrix сървър.\n\nЗащо да изберете Element?\n\n• ПЪЛНА КОМУНИКАЦИЯ: Създавайте каквито пожелаете чат стаи - свързани с работни екипи, приятели или друг вид общности! Чатете, споделяйте файлове, добавяйте приспособления и водете аудио и видео разговори - всичко това, изцяло безплатно.\n\n• МОЩНИ ИНТЕГРАЦИИ: Използвайте Element с досега-познатите Ви инструменти. Посредством Element дори можете да чатите с потребители и групи използващи други чат приложения.\n\n• ЛИЧНО И ЗАЩИТЕНО: Пазете комуникацията си в тайна. Съвременна технология за шифроване от край до край гарантира, че Вашата комуникацията наистина остава Ваша.\n\n• ОТВОРЕНО, А НЕ ЗАТВОРЕНО: Приложение с отворен код, изградено върху Matrix. Дръжте данните си под Ваш контрол, като използвате Ваш собствен сървър или като изберете сървър, на който вярвате.\n\n• КЪДЕТО И ДА СТЕ: Поддържайте връзка където и да сте, с напълно синхронизирана чат история на всички Ваши устройства или онлайн на https://app.element.io.";
+"store_full_description" = "Element е нов тип приложение за чат и съвместна работа, което:\n\n1. Ви дава контрол и пази поверителността ви\n2. Ви позволява да комуникирате с всеки в Matrix мрежата, а дори и извън нея, интегрирайки се с други приложения (като Slack)\n3. Ви пази от реклами, събиране на данни, задни вратички и затворени екосистеми\n4. Ви защитава, чрез шифроване от-край-до-край и кръстосано-подписване за потвърждение на другите потребители\n\nElement е напълно различен от другите чат приложения, защото е децентрализиран и с отворен код.\n\nElement ви позволява да използвате собствен сървър, или да изберете сами сървъра, така че да имате поверителност, собственост и контрол върху данните и разговорите си. Дава ви достъп до отворена мрежа, за да не сте ограничени да комуникирате само с Element потребители. Също така е и много сигурен.\n\nElement успява да прави всичко това, защото използва Matrix - стандарт за отворена, децентрализирана комуникация.\n\nElement ви дава контрол, позволявайки ви сами да изберете кой стопанисва разговорите ви. От Element приложението можете да изберете между няколко различни начина:\n\n1. Регистриране на безплатен профил върху публичния matrix.org сървър\n2. Използване на изцяло собствен сървър върху ваш хардуер (self-hosting)\n3. Регистриране на профил върху собствен сървър чрез абониране към Element Matrix Services хостинг платформата\n\nЗащо да изберете Element?\n\nПАЗЕТЕ ДАННИТЕ СИ: Вие решавате къде да пазите данните и съобщенията си. Те са ваши и под ваш контрол, а не под контрола на някоя МЕГА–КОРПОРАЦИЯ, която ги обработва и предоставя за ползване на трети страни.\n\nОТВОРЕН ЧАТ И КОЛАБОРАЦИЯ: Можете да чатите с всички в Matrix мрежата, без значение дали използват Element или друго Matrix приложение. Освен това, можете да чатите и с потребители от други чат системи (като например Slack, IRC или XMPP)\n\nСУПЕР-СИГУРЕН: Истинско шифроване от-край-до-край (само тези в разговора могат да дешифрират съобщенията), както и кръстосано-подписване за потвърждение на участниците в разговорите.\n\nПЪЛНА КОМУНИКАЦИЯ: Чат, аудио и видео разговори, споделяне на екран, както и цял куп други интеграции, ботове и приспособления. Създавайте чат стаи, общности, поддържайте връзка и бъдете продуктивни.\n\nКЪДЕТО И ДА СТЕ: Поддържайте връзка където и да сте, чрез напълно синхронизирана история на съобщенията на всички ваши устройство и в уеб браузъра на https://element.io/app.";
 "auth_autodiscover_invalid_response" = "Невалиден отговор при опит за откриване на адреса на сървъра";
 "room_message_unable_open_link_error_message" = "Неуспешно отваряне на връзката.";
 "room_event_action_reply" = "Отговори";
@@ -1013,7 +1013,7 @@
 "key_verification_self_verify_unverified_sessions_alert_validate_action" = "Прегледай";
 "device_verification_self_verify_wait_title" = "Завършване на сигурността";
 "device_verification_self_verify_wait_new_sign_in_title" = "Потвърждение на вход";
-"device_verification_self_verify_wait_information" = "Потвърдете тази сесия от някоя от другите ви сесии, така че да й дадете достъп до шифрованите съобщения.\n\nИзползвайте най-новия Element на другите си устройства:";
+"device_verification_self_verify_wait_information" = "Потвърдете тази сесия от някоя от другите ви сесии, за че да й дадете достъп до шифрованите съобщения.\n\nИзползвайте най-новия Element на другите си устройства:";
 "device_verification_self_verify_wait_additional_information" = "или друг Matrix клиент поддържащ кръстосано-подписване";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Използвай ключ за възстановяване";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Използвай парола или ключ за възстановяване";
@@ -1133,3 +1133,150 @@
 "secrets_setup_recovery_passphrase_confirm_information" = "Въведете защитната парола отново за да потвърдите.";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Потвърди";
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Потвърдете паролата";
+"room_info_list_section_other" = "Друго";
+"room_info_list_several_members" = "%@ членове";
+
+// MARK: - Room Info
+
+"room_info_list_one_member" = "1 член";
+"create_room_placeholder_address" = "#testroom:matrix.org";
+"create_room_section_header_address" = "Адрес на стаята";
+"create_room_show_in_directory" = "Показвай в директорията със стаи";
+"create_room_section_footer_type" = "Хората могат да се присъединяват към частни стаи само с покана.";
+"create_room_type_public" = "Публична стая";
+"create_room_type_private" = "Частна стая";
+"create_room_section_header_type" = "Тип стая";
+"create_room_section_footer_encryption" = "Шифроването не може да бъде изключено в последствие.";
+"create_room_enable_encryption" = "Включи шифроване";
+"create_room_section_header_encryption" = "Шифроване";
+"create_room_placeholder_topic" = "Тема";
+"create_room_section_header_topic" = "Тема на стаята (незадължително)";
+"create_room_placeholder_name" = "Име";
+"create_room_section_header_name" = "Име на стаята";
+
+// MARK: - Create Room
+
+"create_room_title" = "Нова стая";
+"searchable_directory_search_placeholder" = "Име или ID";
+"searchable_directory_x_network" = "%@ мрежа";
+
+// MARK: - Searchable Directory View Controller
+
+"searchable_directory_create_new_room" = "Създай нова стая";
+"biometrics_cant_unlocked_alert_message_retry" = "Опитай пак";
+"biometrics_cant_unlocked_alert_message_login" = "Влез отначало";
+"biometrics_cant_unlocked_alert_message_x" = "За отключване, използвайте %@ или влезте отначало и включете %@ пак";
+"biometrics_cant_unlocked_alert_title" = "Неуспешно отключване на приложението";
+"biometrics_usage_reason" = "Необходима е автентикация за да достъпите приложението";
+"biometrics_desetup_disable_button_title_x" = "Изключи %@";
+"biometrics_desetup_title_x" = "Изключване на %@";
+"biometrics_setup_title_x" = "Включване на %@";
+"biometrics_setup_subtitle" = "Спестете си време";
+"biometrics_setup_enable_button_title_x" = "Включи %@";
+"biometrics_settings_enable_x" = "Включи %@";
+"biometrics_mode_face_id" = "Face ID";
+
+// MARK: - Biometrics Protection
+
+"biometrics_mode_touch_id" = "Touch ID";
+"pin_protection_kick_user_alert_message" = "Бяхте изхвърлени от приложението поради твърде много грешки";
+"pin_protection_explanatory" = "Чрез настройката на PIN код може да защитите съобщенията и контактите така, че те да бъдат достъпни само след въвеждането на PIN код при пускането на приложението.";
+"pin_protection_not_allowed_pin" = "От съображения за сигурност, този PIN код не е позволен. Опитайте с друг";
+"pin_protection_settings_enable_pin" = "Включи PIN код";
+"pin_protection_settings_enabled_forced" = "PIN кодът е включен";
+"pin_protection_settings_section_footer" = "За да нулирате PIN кода, ще трябва да влезете наново и да създадете нов.";
+"pin_protection_settings_section_header_x" = "PIN и %@";
+"pin_protection_mismatch_too_many_times_error_message" = "Ако не помните PIN кода си, натиснете бутона за забравен PIN код.";
+"pin_protection_mismatch_error_message" = "Опитайте пак";
+"pin_protection_mismatch_error_title" = "PIN кодовете не съвпадат";
+"pin_protection_reset_alert_action_reset" = "Нулирай";
+"pin_protection_reset_alert_message" = "За да нулирате PIN кода, ще трябва да влезете наново и да създадете нов";
+"pin_protection_reset_alert_title" = "Нулирай PIN кода";
+"pin_protection_forgot_pin" = "Забравих PIN кода";
+"pin_protection_enter_pin" = "Въведете PIN код";
+"pin_protection_confirm_pin_to_disable" = "Потвърдете PIN кода за да го изключите";
+"pin_protection_confirm_pin" = "Потвърдете PIN кода";
+"pin_protection_choose_pin" = "Създайте PIN код за сигурност";
+"pin_protection_choose_pin_welcome_after_register" = "Добре дошли.";
+
+// MARK: - PIN Protection
+
+"pin_protection_choose_pin_welcome_after_login" = "Добре дошли отново.";
+"major_update_done_action" = "Разбрах";
+"major_update_learn_more_action" = "Научи повече";
+"major_update_information" = "Развълнувани сме да съобщим, че се преименувахме! Приложението ви е обновено и сте вписани в профила си.";
+
+// MARK: - Major update
+
+"major_update_title" = "Riot вече е Element";
+"cross_signing_setup_banner_subtitle" = "Потвърждавайте другите си устройства по-лесно";
+
+// MARK: - Cross-signing
+
+// Banner
+
+"cross_signing_setup_banner_title" = "Настройка на шифроване";
+"secrets_reset_authentication_message" = "Въведете паролата за профила за да потвърдите";
+"secrets_reset_reset_action" = "Нулирай";
+"secrets_reset_warning_message" = "Ще започнете отначало, без история, без съобщения, без доверени устройства и потребители.";
+"secrets_reset_warning_title" = "Ако нулирате всичко";
+"secrets_reset_information" = "Правете това само ако нямате някое друго устройство, с което да потвърдите текущото.";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "Нулиране на всичко";
+"secrets_recovery_reset_action_part_2" = "Нулирай всичко";
+
+// MARK: - Secrets recovery
+
+"secrets_recovery_reset_action_part_1" = "Забравихте или загубихте всички опции за възстановяване? ";
+"device_verification_self_verify_wait_recover_secrets_checking_availability" = "Проверяване за други възможности за потвърждение...";
+"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Започни използване на защитено резервно копие";
+"secure_backup_setup_banner_subtitle" = "Предотвратете загуба на достъп до шифрованите съобщения и данни";
+
+// Banner
+
+"secure_backup_setup_banner_title" = "Защитено резервно копие";
+"secure_key_backup_setup_existing_backup_error_delete_it" = "Изтрий";
+"secure_key_backup_setup_existing_backup_error_unlock_it" = "Отключи";
+"secure_key_backup_setup_existing_backup_error_info" = "Отключете за да го преизползвате в защитеното резервно копие или го изтрийте за да създадете ново резервно копие на съобщенията в защитеното резервно копие.";
+"secure_key_backup_setup_existing_backup_error_title" = "Вече има резервно копие за съобщенията";
+"event_formatter_jitsi_widget_removed_by_you" = "Премахнахте VoIP конференция";
+"event_formatter_jitsi_widget_added_by_you" = "Добавихте VoIP конференция";
+"event_formatter_widget_removed_by_you" = "Премахнахте приспособление: %@";
+
+// Events formatter with you
+"event_formatter_widget_added_by_you" = "Добавихте приспособление: %@";
+"room_details_advanced_e2e_encryption_disabled_for_dm" = "Шифроването не е включено.";
+"room_details_advanced_e2e_encryption_enabled_for_dm" = "Включено е шифроване";
+"room_details_advanced_room_id_for_dm" = "Идентификатор:";
+"room_details_no_local_addresses_for_dm" = "Няма локални адреси";
+"room_details_access_section_directory_toggle_for_dm" = "Показвай в директорията със стаи";
+"room_details_access_section_anyone_for_dm" = "Всеки знаещ връзката, включително и гости";
+"room_details_access_section_anyone_apart_from_guest_for_dm" = "Всеки знаещ връзката, освен гости";
+"room_details_access_section_for_dm" = "Кой има достъп?";
+"room_details_room_name_for_dm" = "Име";
+"room_details_photo_for_dm" = "Снимка";
+"room_details_title_for_dm" = "Подробности";
+
+// AuthenticatedSessionViewControllerFactory
+"authenticated_session_flow_not_supported" = "Приложението не поддържа механизма за вход на този сървър.";
+"security_settings_user_password_description" = "Потвърдете самоличността си като въведете паролата за профила";
+"security_settings_secure_backup_delete" = "Изтрий";
+"security_settings_secure_backup_synchronise" = "Синхронизирай";
+"security_settings_secure_backup_setup" = "Настрой";
+"security_settings_secure_backup_description" = "Предпазете се от загуба на достъп до шифровани съобщения и данни като направите резервно копие на ключовете върху сървъра.";
+"security_settings_secure_backup" = "ЗАЩИТЕНО РЕЗЕРВНО КОПИЕ";
+"security_settings_crypto_sessions_description_2" = "Ако не разпознавате даден вход, сменете паролата и нулирайте защитеното резервно копие.";
+"external_link_confirmation_message" = "Връзката %@ ви води към друг сайт %@\n\nСигурни ли сте, че искате да продължите?";
+"external_link_confirmation_title" = "Проверете тази връзка пак";
+"room_participants_security_information_room_encrypted_for_dm" = "Съобщенията тук са шифровани от-край-до-край.\n\nСъобщенията са защитени чрез заключване, за което само вие и получателите имате уникалните ключове.";
+"room_participants_security_information_room_not_encrypted_for_dm" = "Съобщенията тук не са шифровани.";
+"room_participants_filter_room_members_for_dm" = "Филтрирай членовете";
+"room_participants_leave_prompt_msg_for_dm" = "Сигурни ли сте, че искате да напуснете?";
+"room_participants_leave_prompt_title_for_dm" = "Напускане";
+"less" = "По-малко";
+"more" = "Още";
+"switch" = "Смяна";
+"joined" = "Се присъедини";
+"store_promotional_text" = "Пазещо-поверителността ви приложение за чат и съвместна работа, което е част от отворена мрежа. Децентрализирано, за да ви даде контрол. Без събиране на данни, без задни вратички и без достъп на трети страни.";

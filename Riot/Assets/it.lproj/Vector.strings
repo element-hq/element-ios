@@ -577,7 +577,7 @@
 "deactivate_account_informations_part3" = "\n\nDisattivare il tuo account ";
 "deactivate_account_informations_part4_emphasize" = "non eliminerà in modo automatico i messaggi che hai inviato. ";
 "deactivate_account_informations_part5" = "Se vuoi che i tuoi messaggi siano dimenticati, seleziona la casella qui sotto\n\nLa visibilità dei messaggi in Matrix è simile alle email: \"dimenticare i tuoi messaggi\" significa che quelli che hai già inviato non verranno condivisi con nessun utente nuovo o non registrato, ma gli utenti registrati che già hanno avuto accesso ai tuoi messaggi potranno ancora accedere alla loro copia.";
-"deactivate_account_forget_messages_information_part1" = "Dal momento in cui disattivo il mio account dimentica tutti i messaggi che ho inviato in precedenza  (";
+"deactivate_account_forget_messages_information_part1" = "Dal momento in cui disattivo il mio account dimentica tutti i messaggi che ho inviato in precedenza (";
 "deactivate_account_forget_messages_information_part2_emphasize" = "Attenzione";
 "deactivate_account_forget_messages_information_part3" = ": gli utenti futuri vedranno un elenco incompleto di conversazioni)";
 "deactivate_account_validate_action" = "Disattiva account";
@@ -711,7 +711,7 @@
 // MARK: Start
 "device_verification_start_title" = "Verifica confrontando un breve testo";
 "device_verification_start_wait_partner" = "Attendi che il tuo contatto accetti…";
-"device_verification_start_use_legacy" = "Non accade nulla? Non tutti i dispositivi supportano la verifica interattiva. Usa la verifica classica.";
+"device_verification_start_use_legacy" = "Non appare nulla? Non tutti i dispositivi supportano la verifica interattiva. Usa la verifica classica.";
 "device_verification_start_verify_button" = "Inizia verifica";
 "device_verification_start_use_legacy_action" = "Usa verifica Legacy";
 // MARK: Verify
@@ -832,7 +832,7 @@
 "settings_three_pids_management_information_part2" = "Scopri";
 "settings_three_pids_management_information_part3" = ".";
 "settings_calls_stun_server_fallback_button" = "Permetti chiamate dal Server di appoggio";
-"settings_calls_stun_server_fallback_description" = "Se il tuo Home Server non ne ha un proprio Server d'appoggio verrà usato %@  (il Server d'appoggio verrà a conoscenza del tuo indirizzo IP durante le chiamate).";
+"settings_calls_stun_server_fallback_description" = "Se il tuo Home Server non ne ha un proprio Server d'appoggio verrà usato %@ (il Server d'appoggio verrà a conoscenza del tuo indirizzo IP durante le chiamate).";
 "settings_devices_description" = "Il nome pubblico di una sessione è visibile alle persone con cui comunichi";
 "settings_discovery_no_identity_server" = "In questo momento non stai usando alcun Identity Server. Per trovare e farti trovare dagli altri utenti, configurane uno qua sotto.";
 "settings_discovery_terms_not_signed" = "Accetta i termini di servizio dell'Identity Server (%@) per permettere ad altri utenti di trovarti tramite la tua email o numero di telefono.";
@@ -1035,7 +1035,7 @@
 "client_ios_name" = "Element iOS";
 "client_android_name" = "Element Android";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verifica questo accesso";
-"device_verification_self_verify_wait_additional_information" = "o un altro client Matrix che supporti la firma incrociata";
+"device_verification_self_verify_wait_additional_information" = "Funziona con Element ed altri client Matrix che supportino la firma incrociata.";
 // MARK: - Device Verification
 "key_verification_other_session_title" = "Verifica sessione";
 "key_verification_new_session_title" = "Verifica la tua nuova sessione";
@@ -1221,3 +1221,20 @@
 "room_details_advanced_e2e_encryption_enabled_for_dm" = "La crittografia è attiva";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "La crittografia non è attiva.";
 "pin_protection_kick_user_alert_message" = "Troppi errori, sei stato disconnesso";
+"secrets_reset_authentication_message" = "Inserisci la password del tuo account per confermare";
+"secrets_reset_reset_action" = "Reimposta";
+"secrets_reset_warning_message" = "Ricomincerai senza cronologia, messaggi, dispositivi o utenti fidati.";
+"secrets_reset_warning_title" = "Se reimposti tutto";
+"secrets_reset_information" = "Fallo solo se non hai altri dispositivi con cui verificare questo.";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "Reimposta tutto";
+
+// MARK: - Secrets recovery
+
+"secrets_recovery_reset_action_part_1" = "Dimenticato o perso tutte le opzioni di recupero? ";
+"less" = "Riduci";
+"secrets_recovery_reset_action_part_2" = "Reimposta tutto";
+"secrets_setup_recovery_passphrase_summary_information" = "Ricorda la tua frase di sicurezza. Può essere usata per sbloccare i tuoi messaggi e dati cifrati.";
+"secrets_setup_recovery_passphrase_summary_title" = "Salva la tua frase di sicurezza";
