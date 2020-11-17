@@ -711,7 +711,7 @@
 // MARK: Start
 "device_verification_start_title" = "Verifica confrontando un breve testo";
 "device_verification_start_wait_partner" = "Attendi che il tuo contatto accetti…";
-"device_verification_start_use_legacy" = "Non accade nulla? Non tutti i dispositivi supportano la verifica interattiva. Usa la verifica classica.";
+"device_verification_start_use_legacy" = "Non appare nulla? Non tutti i dispositivi supportano la verifica interattiva. Usa la verifica classica.";
 "device_verification_start_verify_button" = "Inizia verifica";
 "device_verification_start_use_legacy_action" = "Usa verifica Legacy";
 // MARK: Verify
@@ -1035,7 +1035,7 @@
 "client_ios_name" = "Element iOS";
 "client_android_name" = "Element Android";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verifica questo accesso";
-"device_verification_self_verify_wait_additional_information" = "o un altro client Matrix che supporti la firma incrociata";
+"device_verification_self_verify_wait_additional_information" = "Funziona con Element ed altri client Matrix che supportino la firma incrociata.";
 // MARK: - Device Verification
 "key_verification_other_session_title" = "Verifica sessione";
 "key_verification_new_session_title" = "Verifica la tua nuova sessione";
@@ -1236,3 +1236,5 @@
 "secrets_recovery_reset_action_part_1" = "Dimenticato o perso tutte le opzioni di recupero? ";
 "less" = "Riduci";
 "secrets_recovery_reset_action_part_2" = "Reimposta tutto";
+"secrets_setup_recovery_passphrase_summary_information" = "Ricorda la tua frase di sicurezza. Può essere usata per sbloccare i tuoi messaggi e dati cifrati.";
+"secrets_setup_recovery_passphrase_summary_title" = "Salva la tua frase di sicurezza";

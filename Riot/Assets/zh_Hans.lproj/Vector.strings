@@ -72,7 +72,7 @@
 "auth_reset_password_message" = "为了重置您的密码，请输入与您帐号关联的邮箱地址：";
 "auth_reset_password_missing_email" = "必须输入与您的账户关联的邮箱地址。";
 "auth_reset_password_missing_password" = "必须输入新的密码。";
-"auth_reset_password_email_validation_message" = "一封邮件已经发送到了  %@。当您已经按照其中的链接操作以后，请点下面。";
+"auth_reset_password_email_validation_message" = "一封邮件已经发送到 %@。当您已经按照其中的链接操作以后，请点下面。";
 "auth_reset_password_next_step_button" = "我已经验证了我的邮箱地址";
 "auth_reset_password_error_unauthorized" = "验证邮箱地址失败：请确认您已经点击了邮件里的链接";
 "auth_reset_password_error_not_found" = "您的邮箱地址可能没有与此主服务器上的 Matrix ID 绑定。";
@@ -93,7 +93,7 @@
 "room_creation_keep_private" = "保持私密";
 "room_creation_make_private" = "使其变成私密";
 "room_creation_wait_for_creation" = "聊天室已创建。请稍候。";
-"room_creation_invite_another_user" = "通过用户 ID、名称或电子邮件搜索 /  邀请";
+"room_creation_invite_another_user" = "通过用户 ID、名称或电子邮件进行搜索/邀请";
 // Room recents
 "room_recents_directory_section" = "聊天室目录";
 "room_recents_directory_section_network" = "网络";
@@ -126,8 +126,8 @@
 "directory_cell_title" = "浏览目录";
 "directory_cell_description" = "%tu 个聊天室";
 "directory_search_results_title" = "浏览目录结果";
-"directory_search_results" = "为  %2$@ 找到 %1$tu 个结果";
-"directory_search_results_more_than" = "> 为  %2$@ 找到 %1$tu 个结果";
+"directory_search_results" = "搜索%@，找到了%tu个结果";
+"directory_search_results_more_than" = ">找到了%tu个 %@的搜索结果";
 "directory_searching_title" = "正在搜索目录…";
 "directory_search_fail" = "获取数据失败";
 // Contacts
@@ -850,7 +850,7 @@
 // MARK: Start
 "device_verification_start_title" = "比较一段短文字来验证";
 "device_verification_start_wait_partner" = "等待同伴接受……";
-"device_verification_start_use_legacy" = "无响应？不是所有客户端都已支持交互式验证。请使用老式验证。";
+"device_verification_start_use_legacy" = "啥都没出现？并非所有客户端都支持交互式验证。使用旧的验证方法。";
 "device_verification_start_verify_button" = "开始验证";
 "device_verification_start_use_legacy_action" = "使用老式验证";
 "device_verification_verify_title_emoji" = "通过确认以下emoji表情出现在同伴的屏幕上来验证此会话";
@@ -1033,10 +1033,10 @@
 "device_verification_self_verify_wait_title" = "绝对安全";
 "device_verification_self_verify_wait_new_sign_in_title" = "验证此登录名";
 "device_verification_self_verify_wait_information" = "从您的其他会话之一验证此会话，授予它访问加密消息的权限。\n\n在您的其他设备上使用最新版的Element:";
-"device_verification_self_verify_wait_additional_information" = "或另一个支持交叉签名的Matrix客户端";
+"device_verification_self_verify_wait_additional_information" = "这适用于Element和其他支持交叉签名的Matrix客户端。";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "使用恢复密钥";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "使用恢复密码或密钥";
-"device_verification_self_verify_wait_recover_secrets_additional_information" = "如果您无法访问现有会话";
+"device_verification_self_verify_wait_recover_secrets_additional_information" = "如果您无法访问一个现有会话";
 "key_verification_verify_sas_title_emoji" = "比较emoji";
 "key_verification_verify_sas_title_number" = "比较数字";
 "key_verification_verify_sas_cancel_action" = "它们不相配";
@@ -1067,7 +1067,7 @@
 "key_verification_verify_qr_code_scan_other_code_success_title" = "代码已验证！";
 "key_verification_verify_qr_code_scan_other_code_success_message" = "二维码已成功验证。";
 // Scanning
-"key_verification_scan_confirmation_scanning_title" = "快到了！\n正在等待确认…";
+"key_verification_scan_confirmation_scanning_title" = "快好了！正在等待确认…";
 "key_verification_scan_confirmation_scanning_user_waiting_other" = "等待中%@…";
 "key_verification_scan_confirmation_scanning_device_waiting_other" = "正在等待其他设备…";
 // Scanned

@@ -907,7 +907,7 @@
 "key_backup_recover_from_passphrase_passphrase_title" = "Sisesta";
 "device_verification_self_verify_wait_title" = "Vormista turvaseadistused lõpuni";
 "device_verification_self_verify_wait_information" = "Verifitseeri see sessioon oma mõnest muust sessioonist ning anna sellega ka ligipääs oma krüptitud sõnumitele.\n\nKasuta viimast Element'i versiooni oma muudes seadmetes:";
-"device_verification_self_verify_wait_additional_information" = "või mõnda teist Matrix'i klienti, mis oskab risttunnustamist";
+"device_verification_self_verify_wait_additional_information" = "See toimib Element'is või mõnes teises Matrix'i kliendis, mis oskab risttunnustamist.";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Kasuta taastevõtit";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Kasuta taastamiseks mõeldud paroolifraasi või võtit";
 "key_verification_verify_sas_title_emoji" = "Võrdle emoji'sid";
@@ -1138,7 +1138,7 @@
 "secure_key_backup_setup_existing_backup_error_info" = "Selleks, et saaksid varukoopiat kasutada või kustutada enne uue varukoopia loomist, võta ta lukust lahti.";
 "secure_key_backup_setup_existing_backup_error_unlock_it" = "Võta varukoopia lukust lahti";
 "secure_key_backup_setup_existing_backup_error_delete_it" = "Kustuta varukoopia";
-"device_verification_self_verify_wait_recover_secrets_additional_information" = "Või kui sa ei saa neid kasutada, siis võid olemasolevas sessioonis";
+"device_verification_self_verify_wait_recover_secrets_additional_information" = "Või kui sa ei saa olemasolevat sessiooni kasutada";
 "device_verification_self_verify_wait_recover_secrets_checking_availability" = "Kontrollin teiste verifikatsioonivõimaluste olemasolu ...";
 "biometrics_desetup_subtitle" = "biometrics_desetup_subtitle";
 "joined" = "Liikmed";
@@ -1202,3 +1202,5 @@
 
 "secrets_recovery_reset_action_part_1" = "Kas sa unustasid või kaotasid kõik võimalused taastada ligipääsu oma kontole? ";
 "less" = "Vähem";
+"secrets_setup_recovery_passphrase_summary_information" = "Jäta oma turvafraas meelde. Seda saad kasutada ligipääsuks oma krüptitud sõnumitele ja andmetele.";
+"secrets_setup_recovery_passphrase_summary_title" = "Salvesta oma turvafraas";
