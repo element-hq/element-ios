@@ -54,7 +54,7 @@
 "MSG_FROM_USER_IN_ROOM_TITLE" = "%@ in %@ -ban/ben";
 /* Sticker from a specific person, not referencing a room. */
 "STICKER_FROM_USER" = "%@ matricát küldött";
-"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ ellenőrizni szeretné";
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ ellenőrizni szeretné Önt";
 /* New message indicator on unknown room */
 "MESSAGE" = "Üzenet";
 /* New message indicator from a DM */
