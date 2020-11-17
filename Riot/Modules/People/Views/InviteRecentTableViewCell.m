@@ -48,7 +48,7 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
     [self.rightButton.layer setCornerRadius:5];
     self.rightButton.clipsToBounds = YES;
     [self.rightButton setTitle:NSLocalizedStringFromTable(@"accept", @"Vector", nil) forState:UIControlStateNormal];
-    [self.rightButton addTarget:self action:@selector(onAcceptPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.rightButton addTarget:self action:@selector(onRightButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.noticeBadgeView.layer setCornerRadius:10];
     
@@ -63,8 +63,6 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
     self.rightButton.backgroundColor = ThemeService.shared.theme.tintColor;
     
     self.noticeBadgeView.backgroundColor = ThemeService.shared.theme.noticeColor;
-    
-    [self vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
 }
 
 - (void)prepareForReuse
@@ -72,22 +70,24 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
     [super prepareForReuse];
     
     [self resetButtonViews];
+    self.accessoryView = nil;
 }
 
 - (void)onDeclinePressed:(id)sender
 {
-    if (self.delegate)
-    {
-        MXRoom *room = roomCellData.roomSummary.room;
-        
-        if (room)
-        {
-            [self.delegate cell:self didRecognizeAction:kInviteRecentTableViewCellDeclineButtonPressed userInfo:@{kInviteRecentTableViewCellRoomKey:room}];
-        }
-    }
+    [self notifyDelegateWithActionIdentifier:kInviteRecentTableViewCellDeclineButtonPressed];
 }
 
-- (void)onAcceptPressed:(id)sender
+- (void)onRightButtonPressed:(id)sender
+{
+    MXRoom *room = roomCellData.roomSummary.room;
+    
+    NSString *actionIdentifier = room.isDirect ? kInviteRecentTableViewCellAcceptButtonPressed : kInviteRecentTableViewCellPreviewButtonPressed;
+    
+    [self notifyDelegateWithActionIdentifier:actionIdentifier];
+}
+
+- (void)notifyDelegateWithActionIdentifier:(NSString*)actionIdentifier
 {
     if (self.delegate)
     {
@@ -95,7 +95,7 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
         
         if (room)
         {
-            [self.delegate cell:self didRecognizeAction:kInviteRecentTableViewCellAcceptButtonPressed userInfo:@{kInviteRecentTableViewCellRoomKey:room}];
+            [self.delegate cell:self didRecognizeAction:actionIdentifier userInfo:@{kInviteRecentTableViewCellRoomKey:room}];
         }
     }
 }
@@ -108,8 +108,28 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
     
     if (room.roomId)
     {
-        [self updateButtonViewsWith:room.roomId session:room.mxSession];
+        [self updateViewsWithRoom:room];
     }
+}
+
+- (void)updateViewsWithRoom:(MXRoom*)room
+{
+    NSString *rightButtonTitle;
+    
+    if (room.isDirect)
+    {
+        rightButtonTitle = NSLocalizedStringFromTable(@"accept", @"Vector", nil);
+        [self vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
+    }
+    else
+    {
+        rightButtonTitle = NSLocalizedStringFromTable(@"preview", @"Vector", nil);
+        self.accessoryView = nil;
+    }
+    
+    [self.rightButton setTitle:rightButtonTitle forState:UIControlStateNormal];
+    
+    [self updateButtonViewsWith:room.roomId session:room.mxSession];
 }
 
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth

@@ -888,7 +888,15 @@
 - (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
 {
     // Handle here user actions on recents for Riot app
-    if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellAcceptButtonPressed])
+    if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellPreviewButtonPressed])
+    {
+        // Retrieve the invited room
+        MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
+        
+        // Display the room preview
+        [self dispayRoomWithRoomId:invitedRoom.roomId inMatrixSession:invitedRoom.mxSession];
+    }
+    else if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellAcceptButtonPressed])
     {
         // Retrieve the invited room
         MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
@@ -1344,13 +1352,11 @@
         // Retrieve the invited room
         MXRoom* invitedRoom = cellData.roomSummary.room;
         
-        NSString *roomId = invitedRoom.roomId;
-        
         // Check if can show preview for the invited room 
-        if ([self canShowRoomPreviewFor:roomId])
+        if ([self canShowRoomPreviewFor:invitedRoom])
         {
             // Display the room preview
-            [self dispayRoomWithRoomId:roomId inMatrixSession:invitedRoom.mxSession];
+            [self dispayRoomWithRoomId:invitedRoom.roomId inMatrixSession:invitedRoom.mxSession];
         }
         else
         {

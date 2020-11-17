@@ -34,12 +34,17 @@ extension RecentsViewController {
         self.recentsTableView.reloadData()
     }
     
-    @objc func canShowRoomPreview(for roomId: String) -> Bool {
+    @objc func canShowRoomPreview(for room: MXRoom) -> Bool {
+        // Do not show room preview if room is not direct
+        guard room.isDirect else {
+            return false
+        }
+        
         guard let session = self.mainSession else {
             return false
         }
         
-        let changeMembershipState = session.getRoomMembershipChangeState(withRoomId: roomId)
+        let changeMembershipState = session.getRoomMembershipChangeState(withRoomId: room.roomId)
         
         // NOTE: For the moment do not offer the possibility to show room preview when invitation action is in progress
         
