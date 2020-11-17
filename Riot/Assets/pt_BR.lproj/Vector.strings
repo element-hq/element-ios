@@ -356,8 +356,8 @@
 "settings_fail_to_update_password" = "Falha ao atualizar senha";
 "settings_password_updated" = "Sua senha foi atualizada";
 "settings_crypto_device_name" = "Nome da sessão:· ";
-"settings_crypto_device_id" = "\n↵\nID da sessão:· ";
-"settings_crypto_device_key" = "\n↵\nChave da sessão:↵\n";
+"settings_crypto_device_id" = "\nID da sessão: ";
+"settings_crypto_device_key" = "\nChave da sessão:\n";
 "settings_crypto_export" = "Chaves de exportação";
 "settings_crypto_blacklist_unverified_devices" = "Criptografar apenas para sessões confirmadas";
 "settings_deactivate_my_account" = "Desativar minha conta";
@@ -799,7 +799,7 @@
 "widget_integration_manager_disabled" = "Você precisa ativar o Gerenciador de Integrações nas configurações";
 "service_terms_modal_description_for_identity_server_1" = "Encontrar outras pessoas por telefone ou e-mail";
 "service_terms_modal_description_for_identity_server_2" = "Seja encontrada/o por número de celular ou por e-mail";
-"device_verification_self_verify_wait_additional_information" = "ou outro cliente da Matrix capaz de fazer autoverificação";
+"device_verification_self_verify_wait_additional_information" = "Isso funciona no Element e em outros clientes da Matrix capazes de fazer autoverificação.";
 "key_verification_verified_user_information" = "As mensagens com este usuário estão criptografadas de ponta a ponta e não podem ser lidas por terceiros.";
 "device_verification_emoji_smiley" = "Sorriso";
 // Generic errors
@@ -1233,3 +1233,5 @@
 "secrets_recovery_reset_action_part_1" = "Esqueceu as senhas ou perdeu todas opções de recuperação? ";
 "less" = "Menos";
 "secrets_recovery_reset_action_part_2" = "Redefinir tudo";
+"secrets_setup_recovery_passphrase_summary_information" = "Lembre-se da sua frase de segurança. Ela pode ser usada para desbloquear suas mensagens e dados criptografados.";
+"secrets_setup_recovery_passphrase_summary_title" = "Salve a sua frase de segurança";
