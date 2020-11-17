@@ -60,7 +60,6 @@ abstract_target 'RiotPods' do
 
   # Remove warnings from "bad" pods
   pod 'OLMKit', :inhibit_warnings => true
-  pod 'cmark', :inhibit_warnings => true
   pod 'zxcvbn-ios', :inhibit_warnings => true
   pod 'HPGrowingTextView', :inhibit_warnings => true
 
@@ -106,8 +105,8 @@ post_install do |installer|
       # Because the WebRTC pod (included by the JingleCallStack pod) does not support it.
       # Plus the app does not enable it
       config.build_settings['ENABLE_BITCODE'] = 'NO'
-      
-      # Make Xcode 12 and fastlane(xcodebuild) happy while some pods are not updated
+
+      # Make fastlane(xcodebuild) happy by preventing it from building for arm64 simulator 
       config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
 
       # Force ReadMoreTextView to use Swift 5.2 version (as there is no code changes to perform)

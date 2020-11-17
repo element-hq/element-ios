@@ -19,6 +19,7 @@ Changes to be released in next version
 
 ⚠️ API Changes
  * Xcode 12 is now mandatory to build the project.
+ * CocoaPods 1.10.0 is mandatory.
  * Remove MXDecryptionFailureDelegate in flavor of agnostic MXAnalyticsDelegate.
 
 🗣 Translations
