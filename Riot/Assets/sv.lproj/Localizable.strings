@@ -61,3 +61,4 @@
 /* Incoming named video conference invite from a specific person */
 "VIDEO_CONF_NAMED_FROM_USER" = "Videogruppsamtal från %@: '%@'";
 "KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ vill verifiera";
+"MESSAGE_PROTECTED" = "Nytt meddelande";

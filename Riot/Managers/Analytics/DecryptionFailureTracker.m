@@ -24,6 +24,8 @@
 // and reporting them as failures
 #define GRACE_PERIOD 60
 
+// E2E failures analytics category.
+NSString *const kDecryptionFailureTrackerAnalyticsCategory = @"e2e.failure";
 
 @interface DecryptionFailureTracker()
 {
@@ -128,6 +130,11 @@
  */
 - (void)checkFailures
 {
+    if (!_delegate)
+    {
+        return;
+    }
+    
     NSTimeInterval tsNow = [NSDate date].timeIntervalSince1970;
 
     NSMutableArray *failuresToTrack = [NSMutableArray array];
@@ -142,7 +149,7 @@
         }
     }
 
-    if (_delegate && failuresToTrack.count)
+    if (failuresToTrack.count)
     {
         // Sort failures by error reason
         NSMutableDictionary<NSString*, NSNumber*> *failuresCounts = [NSMutableDictionary dictionary];
@@ -152,8 +159,11 @@
         }
 
         NSLog(@"[DecryptionFailureTracker] trackFailures: %@", failuresCounts);
-
-        [_delegate trackFailures:failuresCounts];
+        
+        for (NSString *reason in failuresCounts)
+        {
+            [_delegate trackValue:failuresCounts[reason] category:kDecryptionFailureTrackerAnalyticsCategory name:reason];
+        }
     }
 }
 

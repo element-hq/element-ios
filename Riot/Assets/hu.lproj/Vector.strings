@@ -1250,3 +1250,18 @@
 "room_info_list_one_member" = "1 tag";
 "room_info_list_several_members" = "%@ tag";
 "room_info_list_section_other" = "Más";
+"secrets_reset_authentication_message" = "A fiók jelszavaddal erősítsd meg";
+"secrets_reset_reset_action" = "Visszaállít";
+"secrets_reset_warning_message" = "Tiszta lappal indulsz, üzenetek, megbízható eszközök és felhasználók nélkül.";
+"secrets_reset_warning_title" = "Ha mindent visszaállítasz";
+"secrets_reset_information" = "Csak akkor csináld, ha nincs másik eszközöd amivel ellenőrizni tudnád ezt.";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "Minden visszaállítása";
+"secrets_recovery_reset_action_part_2" = "Minden visszaállítása";
+
+// MARK: - Secrets recovery
+
+"secrets_recovery_reset_action_part_1" = "Elfelejtetted vagy elveszett minden visszaállítási lehetőség? ";
+"less" = "Kevesebb";

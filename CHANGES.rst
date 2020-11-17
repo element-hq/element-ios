@@ -1,3 +1,39 @@
+Changes in 1.1.0 (2020-11-17)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Upgrade to Xcode 12 (#3712).
+ * Xcode 12: Make Xcode 12 and fastlane(xcodebuild) happy while some pods are not updated.
+ * Update Gemfile.lock.
+ * MXAnalyticsDelegate: Make it fully agnostic on tracked data.
+ * MXProfiler: Use this new module to track launch animation time reliably.
+ * KeyValueStore improvements.
+ * Jitsi: Support authenticated Jitsi widgets (#3655).
+
+🐛 Bugfix
+ * Fix analytics in order to track performance improvements.
+ * Fix long placeholder cropping in room input toolbar. Prevent long placeholder to be displayed on small devices (#3790).
+
+⚠️ API Changes
+ * Xcode 12 is now mandatory to build the project.
+ * CocoaPods 1.10.0 is mandatory.
+ * Remove MXDecryptionFailureDelegate in flavor of agnostic MXAnalyticsDelegate.
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.13.0](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.0)).
+
 Changes in 1.0.18 (2020-10-27)
 =================================================
 
@@ -18,7 +54,7 @@ Changes in 1.0.18 (2020-10-27)
  * Fix typos in UI
 
 ⚠️ API Changes
- * 
+ *
 
 🗣 Translations
  * 

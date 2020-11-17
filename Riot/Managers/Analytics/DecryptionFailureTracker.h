@@ -20,8 +20,6 @@
 
 @import MatrixSDK;
 
-@protocol MXDecryptionFailureDelegate;
-
 @interface DecryptionFailureTracker : NSObject
 
 /**
@@ -34,7 +32,7 @@
 /**
  The delegate object to receive analytics events.
  */
-@property (nonatomic) id<MXDecryptionFailureDelegate> delegate;
+@property (nonatomic) id<MXAnalyticsDelegate> delegate;
 
 /**
  Report an event unable to decrypt.
@@ -52,20 +50,5 @@
  Flush current data.
  */
 - (void)dispatch;
-
-@end
-
-/**
- The `MXDecryptionFailureDelegate` protocol receives some stats computed by
- `DecryptionFailureTracker`.
- */
-@protocol MXDecryptionFailureDelegate <NSObject>
-
-/**
- Stats for decryption failures.
-
- @param failuresCounts the number of errors per failure reason.
- */
-- (void)trackFailures:(NSDictionary<NSString*, NSNumber*> *)failuresCounts;
 
 @end
