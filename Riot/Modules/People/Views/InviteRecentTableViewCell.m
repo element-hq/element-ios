@@ -108,7 +108,7 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
     
     if (room.roomId)
     {
-        [self updateButtonViewsWith:room.roomId];
+        [self updateButtonViewsWith:room.roomId session:room.mxSession];
     }
 }
 

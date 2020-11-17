@@ -25,9 +25,9 @@ extension InviteRecentTableViewCell {
         self.rightButtonActivityIndicator.stopAnimating()
     }
     
-    /// Update buttons according to current ChangeMembeshipState of the room
-    @objc func updateButtonViews(with roomId: String) {
-        let changeMembershipState = RoomService.shared.getChangeMembeshipState(for: roomId)
+    /// Update buttons according to current MXMembershipChangeState of the room
+    @objc func updateButtonViews(with roomId: String, session: MXSession) {
+        let changeMembershipState = session.getRoomMembershipChangeState(withRoomId: roomId)
         
         var joinButtonIsLoading = false
         var leaveButtonIsLoading = false

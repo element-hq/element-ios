@@ -1765,9 +1765,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             
             [self configureCallManagerIfRequiredForSession:mxSession];
             
-            [self.configuration setupSettingsFor:mxSession];
-                        
-            [RoomService.shared updateSession:mxSession];
+            [self.configuration setupSettingsFor:mxSession];                                    
         }
         else if (mxSession.state == MXSessionStateStoreDataReady)
         {

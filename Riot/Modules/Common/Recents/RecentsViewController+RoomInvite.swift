@@ -19,11 +19,15 @@ import Foundation
 extension RecentsViewController {
     
     @objc func registerRoomChangeMembershipStateDataSourceNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(roomChangeMembershipStateDataSourceDidChangeRoomMembershipState(notification:)), name: RoomChangeMembershipStateDataSource.didChangeRoomMembershipStateNotification, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(roomChangeMembershipStateDataSourceDidChangeRoomMembershipState(notification:)),
+                                               name: MXRoomMembershipStateDataSource.didChangeRoomMembershipStateNotification,
+                                               object: nil)
+                
     }
     
     @objc func unregisterRoomChangeMembershipStateDataSourceNotifications() {
-        NotificationCenter.default.removeObserver(self, name: RoomChangeMembershipStateDataSource.didChangeRoomMembershipStateNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: MXRoomMembershipStateDataSource.didChangeRoomMembershipStateNotification, object: nil)
     }
     
     @objc func roomChangeMembershipStateDataSourceDidChangeRoomMembershipState(notification: Notification) {
@@ -31,7 +35,11 @@ extension RecentsViewController {
     }
     
     @objc func canShowRoomPreview(for roomId: String) -> Bool {
-        let changeMembershipState = RoomService.shared.getChangeMembeshipState(for: roomId)
+        guard let session = self.mainSession else {
+            return false
+        }
+        
+        let changeMembershipState = session.getRoomMembershipChangeState(withRoomId: roomId)
         
         // NOTE: For the moment do not offer the possibility to show room preview when invitation action is in progress
         

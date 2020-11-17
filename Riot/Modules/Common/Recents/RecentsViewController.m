@@ -455,11 +455,9 @@
     }
 }
 
-- (void)joinRoomWithId:(NSString*)roomId completion:(void(^)(BOOL succeed))completion
+- (void)joinRoom:(MXRoom*)room completion:(void(^)(BOOL succeed))completion
 {
-    RoomService *roomService = RoomService.shared;
-        
-    [roomService joinWithRoomWithId:roomId success:^{
+    [room join:^{
         // `recentsTableView` will be reloaded `roomChangeMembershipStateDataSourceDidChangeRoomMembershipState` function
         
         if (completion)
@@ -468,7 +466,7 @@
         }
         
     } failure:^(NSError * _Nonnull error) {
-        NSLog(@"[RecentsViewController] Failed to join an invited room (%@)", roomId);
+        NSLog(@"[RecentsViewController] Failed to join an invited room (%@)", room.roomId);
         [self presentRoomJoinFailedAlertForError:error completion:^{
             if (completion)
             {
@@ -478,12 +476,10 @@
     }];
 }
 
-- (void)leaveRoomWithId:(NSString*)roomId completion:(void(^)(BOOL succeed))completion
+- (void)leaveRoom:(MXRoom*)room completion:(void(^)(BOOL succeed))completion
 {
-    RoomService *roomService = RoomService.shared;
-    
     // Decline the invitation
-    [roomService leaveWithRoomWithId:roomId success:^{
+    [room leave:^{
         
         // `recentsTableView` will be reloaded `roomChangeMembershipStateDataSourceDidChangeRoomMembershipState` function
         
@@ -492,7 +488,7 @@
             completion(YES);
         }
     } failure:^(NSError * _Nonnull error) {
-        NSLog(@"[RecentsViewController] Failed to reject an invited room (%@)", roomId);
+        NSLog(@"[RecentsViewController] Failed to reject an invited room (%@)", room.roomId);
         [[AppDelegate theDelegate] showErrorAsAlert:error];
         
         if (completion)
@@ -898,7 +894,7 @@
         MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
         
         // Accept invitation
-        [self joinRoomWithId:invitedRoom.roomId completion:nil];
+        [self joinRoom:invitedRoom completion:nil];
     }
     else if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellDeclineButtonPressed])
     {
@@ -908,7 +904,7 @@
         [self cancelEditionMode:isRefreshPending];
         
         // Decline the invitation
-        [self leaveRoomWithId:invitedRoom.roomId completion:nil];
+        [self leaveRoom:invitedRoom completion:nil];
     }
     else
     {
