@@ -18,37 +18,17 @@ import Foundation
 
 extension RecentsViewController {
     
-    @objc func registerRoomChangeMembershipStateDataSourceNotifications() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(roomChangeMembershipStateDataSourceDidChangeRoomMembershipState(notification:)),
-                                               name: MXRoomMembershipStateDataSource.didChangeRoomMembershipStateNotification,
-                                               object: nil)
-                
-    }
-    
-    @objc func unregisterRoomChangeMembershipStateDataSourceNotifications() {
-        NotificationCenter.default.removeObserver(self, name: MXRoomMembershipStateDataSource.didChangeRoomMembershipStateNotification, object: nil)
-    }
-    
-    @objc func roomChangeMembershipStateDataSourceDidChangeRoomMembershipState(notification: Notification) {
-        self.recentsTableView.reloadData()
-    }
-    
     @objc func canShowRoomPreview(for room: MXRoom) -> Bool {
         // Do not show room preview if room is not direct
         guard room.isDirect else {
             return false
         }
         
-        guard let session = self.mainSession else {
-            return false
-        }
-        
-        let changeMembershipState = session.getRoomMembershipChangeState(withRoomId: room.roomId)
+        let membershipTransitionState = room.summary.membershipTransitionState
         
         // NOTE: For the moment do not offer the possibility to show room preview when invitation action is in progress
         
-        switch changeMembershipState {
+        switch membershipTransitionState {
         case .failedJoining, .failedLeaving:
             return false
         default:

@@ -26,13 +26,13 @@ extension InviteRecentTableViewCell {
     }
     
     /// Update buttons according to current MXMembershipChangeState of the room
-    @objc func updateButtonViews(with roomId: String, session: MXSession) {
-        let changeMembershipState = session.getRoomMembershipChangeState(withRoomId: roomId)
+    @objc func updateButtonViews(with room: MXRoom) {
+        let membershipTransitionState = room.summary.membershipTransitionState
         
         var joinButtonIsLoading = false
         var leaveButtonIsLoading = false
         
-        switch changeMembershipState {
+        switch membershipTransitionState {
         case .joining:
             joinButtonIsLoading = true
         case .leaving:

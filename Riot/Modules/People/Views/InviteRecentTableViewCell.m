@@ -129,7 +129,7 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
     
     [self.rightButton setTitle:rightButtonTitle forState:UIControlStateNormal];
     
-    [self updateButtonViewsWith:room.roomId session:room.mxSession];
+    [self updateButtonViewsWith:room];
 }
 
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
