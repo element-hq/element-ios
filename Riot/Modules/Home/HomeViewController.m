@@ -867,7 +867,7 @@
     // Check if some banners should be displayed
     if (recentsDataSource.secureBackupBannerSection != -1 || recentsDataSource.crossSigningBannerSection != -1)
     {
-        return YES;
+        return NO;
     }
     
     // Otherwise check the number of items to display
