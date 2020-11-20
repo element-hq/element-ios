@@ -1346,6 +1346,14 @@ internal enum VectorL10n {
   internal static var groupSection: String { 
     return VectorL10n.tr("Vector", "group_section") 
   }
+  /// The all-in-one secure chat app for teams, friends and organisations. Tap the + to add people and rooms.
+  internal static var homeEmptyViewInformation: String { 
+    return VectorL10n.tr("Vector", "home_empty_view_information") 
+  }
+  /// Welcome to Element,\n%@
+  internal static func homeEmptyViewTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "home_empty_view_title", p1)
+  }
   /// Could not connect to the homeserver.
   internal static var homeserverConnectionLost: String { 
     return VectorL10n.tr("Vector", "homeserver_connection_lost") 
