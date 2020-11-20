@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -24,6 +24,7 @@
                 <outlet property="chatButton" destination="xCi-hD-FBs" id="h3w-6I-Agn"/>
                 <outlet property="endCallButton" destination="lVK-d8-Dqf" id="zgE-Go-bo6"/>
                 <outlet property="gradientMaskContainerView" destination="STO-VX-5VW" id="9s2-wN-gIY"/>
+                <outlet property="holdButton" destination="h8B-hJ-6RN" id="NjX-pA-kT0"/>
                 <outlet property="localPreviewActivityView" destination="Bhz-hS-5B6" id="2yA-xn-ITf"/>
                 <outlet property="localPreviewContainerView" destination="6gQ-zo-2Zw" id="6Ba-YZ-OmX"/>
                 <outlet property="localPreviewContainerViewHeightConstraint" destination="dZW-ZL-5rV" id="apO-M6-y8C"/>
@@ -43,12 +44,12 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bOl-aO-r5f">
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bOl-aO-r5f">
                     <rect key="frame" x="277" y="285" width="46" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <accessibility key="accessibilityConfiguration" identifier="CallVCAnswerCallButton"/>
                 </button>
-                <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nuB-Jc-MFa">
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nuB-Jc-MFa">
                     <rect key="frame" x="277" y="285" width="46" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <accessibility key="accessibilityConfiguration" identifier="CallVCRejectCallButton"/>
@@ -101,7 +102,7 @@
                             <rect key="frame" x="0.0" y="764" width="414" height="54"/>
                             <subviews>
                                 <button autoresizesSubviews="NO" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fxP-zM-kfT">
-                                    <rect key="frame" x="10" y="0.0" width="63" height="54"/>
+                                    <rect key="frame" x="10" y="0.0" width="45" height="54"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" identifier="CallVCAudioMuteButton"/>
                                     <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="13"/>
@@ -118,7 +119,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yq6-d2-Ea2">
-                                    <rect key="frame" x="93" y="0.0" width="62.5" height="54"/>
+                                    <rect key="frame" x="65" y="0.0" width="45.5" height="54"/>
                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" identifier="CallVCSpeakerButton"/>
                                     <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="13"/>
@@ -132,6 +133,23 @@
                                     </state>
                                     <connections>
                                         <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="kfq-w6-EXx"/>
+                                    </connections>
+                                </button>
+                                <button autoresizesSubviews="NO" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h8B-hJ-6RN">
+                                    <rect key="frame" x="120.5" y="0.0" width="45" height="54"/>
+                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="CallVCAudioMuteButton"/>
+                                    <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="13"/>
+                                    <inset key="titleEdgeInsets" minX="-69" minY="61" maxX="0.0" maxY="0.0"/>
+                                    <state key="normal">
+                                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <state key="highlighted">
+                                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="WfQ-jF-bmx"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lVK-d8-Dqf" userLabel="End Call Button">
@@ -148,7 +166,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UHM-u9-ODN">
-                                    <rect key="frame" x="258.5" y="0.0" width="62.5" height="54"/>
+                                    <rect key="frame" x="248.5" y="0.0" width="72.5" height="54"/>
                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" identifier="CallVCVideoMuteButton"/>
                                     <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="13"/>
@@ -166,7 +184,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xCi-hD-FBs">
-                                    <rect key="frame" x="341" y="0.0" width="63" height="54"/>
+                                    <rect key="frame" x="331" y="0.0" width="73" height="54"/>
                                     <accessibility key="accessibilityConfiguration" identifier="CallVCChatButton"/>
                                     <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="13"/>
                                     <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
@@ -187,23 +205,27 @@
                             <accessibility key="accessibilityConfiguration" identifier="CallVCCallControlContainerView"/>
                             <constraints>
                                 <constraint firstItem="UHM-u9-ODN" firstAttribute="top" secondItem="nk9-Un-LVP" secondAttribute="top" id="9WM-jp-uJ2"/>
+                                <constraint firstAttribute="bottom" secondItem="h8B-hJ-6RN" secondAttribute="bottom" id="A0G-lt-6ix"/>
                                 <constraint firstItem="lVK-d8-Dqf" firstAttribute="centerX" secondItem="nk9-Un-LVP" secondAttribute="centerX" id="C77-dh-aGp"/>
-                                <constraint firstItem="fxP-zM-kfT" firstAttribute="width" secondItem="nk9-Un-LVP" secondAttribute="width" multiplier="1/5" constant="-20" id="Etv-Tn-GIM"/>
                                 <constraint firstItem="Yq6-d2-Ea2" firstAttribute="top" secondItem="nk9-Un-LVP" secondAttribute="top" id="FEV-o2-EBw"/>
+                                <constraint firstItem="h8B-hJ-6RN" firstAttribute="leading" secondItem="Yq6-d2-Ea2" secondAttribute="trailing" constant="10" id="HPI-cl-jtP"/>
                                 <constraint firstAttribute="bottom" secondItem="xCi-hD-FBs" secondAttribute="bottom" id="HV5-bE-eXg"/>
-                                <constraint firstItem="Yq6-d2-Ea2" firstAttribute="width" secondItem="fxP-zM-kfT" secondAttribute="width" id="IiH-pu-P2k"/>
-                                <constraint firstItem="Yq6-d2-Ea2" firstAttribute="leading" secondItem="fxP-zM-kfT" secondAttribute="trailing" constant="20" id="JT2-ee-Wjz"/>
-                                <constraint firstItem="fxP-zM-kfT" firstAttribute="width" secondItem="UHM-u9-ODN" secondAttribute="width" id="Q6p-5w-4pM"/>
+                                <constraint firstItem="Yq6-d2-Ea2" firstAttribute="leading" secondItem="fxP-zM-kfT" secondAttribute="trailing" constant="10" id="JT2-ee-Wjz"/>
+                                <constraint firstItem="h8B-hJ-6RN" firstAttribute="top" secondItem="nk9-Un-LVP" secondAttribute="top" id="Kn1-GZ-YhA"/>
                                 <constraint firstAttribute="bottom" secondItem="fxP-zM-kfT" secondAttribute="bottom" id="Qly-U3-yZz"/>
                                 <constraint firstItem="lVK-d8-Dqf" firstAttribute="height" secondItem="nk9-Un-LVP" secondAttribute="height" id="RZ6-SE-aTO"/>
-                                <constraint firstItem="xCi-hD-FBs" firstAttribute="width" secondItem="fxP-zM-kfT" secondAttribute="width" id="SPK-TW-VGR"/>
                                 <constraint firstAttribute="trailing" secondItem="xCi-hD-FBs" secondAttribute="trailing" constant="10" id="UAd-cs-Evp"/>
                                 <constraint firstItem="lVK-d8-Dqf" firstAttribute="width" secondItem="nk9-Un-LVP" secondAttribute="width" multiplier="1/5" constant="-20" id="VrK-vw-mbY"/>
-                                <constraint firstItem="xCi-hD-FBs" firstAttribute="leading" secondItem="UHM-u9-ODN" secondAttribute="trailing" constant="20" id="bQT-Ff-cxR"/>
+                                <constraint firstItem="xCi-hD-FBs" firstAttribute="leading" secondItem="UHM-u9-ODN" secondAttribute="trailing" constant="10" id="bQT-Ff-cxR"/>
+                                <constraint firstItem="UHM-u9-ODN" firstAttribute="leading" secondItem="lVK-d8-Dqf" secondAttribute="trailing" constant="10" id="dzk-ZZ-B52"/>
                                 <constraint firstAttribute="height" constant="54" id="eS5-qj-HTc"/>
                                 <constraint firstAttribute="bottom" secondItem="UHM-u9-ODN" secondAttribute="bottom" id="g18-gQ-ckj"/>
+                                <constraint firstItem="Yq6-d2-Ea2" firstAttribute="width" secondItem="fxP-zM-kfT" secondAttribute="width" id="grm-Sp-YF4"/>
                                 <constraint firstItem="lVK-d8-Dqf" firstAttribute="centerY" secondItem="nk9-Un-LVP" secondAttribute="centerY" id="hY9-ut-lPv"/>
+                                <constraint firstItem="lVK-d8-Dqf" firstAttribute="leading" secondItem="h8B-hJ-6RN" secondAttribute="trailing" constant="10" id="n6Y-t9-vYR"/>
+                                <constraint firstItem="h8B-hJ-6RN" firstAttribute="width" secondItem="fxP-zM-kfT" secondAttribute="width" id="nd2-Nz-pAU"/>
                                 <constraint firstItem="fxP-zM-kfT" firstAttribute="leading" secondItem="nk9-Un-LVP" secondAttribute="leading" constant="10" id="tkX-xK-GQj"/>
+                                <constraint firstItem="xCi-hD-FBs" firstAttribute="width" secondItem="UHM-u9-ODN" secondAttribute="width" id="uah-dz-vX4"/>
                                 <constraint firstItem="xCi-hD-FBs" firstAttribute="top" secondItem="nk9-Un-LVP" secondAttribute="top" id="vtd-6B-FhT"/>
                                 <constraint firstItem="fxP-zM-kfT" firstAttribute="top" secondItem="nk9-Un-LVP" secondAttribute="top" id="xKI-k3-zBC"/>
                                 <constraint firstAttribute="bottom" secondItem="Yq6-d2-Ea2" secondAttribute="bottom" id="yBB-MV-h8o"/>
@@ -300,6 +322,7 @@
                     </constraints>
                 </view>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="r1a-fi-tZ0"/>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <accessibility key="accessibilityConfiguration" identifier="CallVCView"/>
             <constraints>
@@ -326,12 +349,11 @@
                 <constraint firstItem="6gQ-zo-2Zw" firstAttribute="top" relation="greaterThanOrEqual" secondItem="r1a-fi-tZ0" secondAttribute="top" constant="80" id="tLa-Lx-XbY"/>
                 <constraint firstAttribute="bottom" secondItem="JAR-tn-sGN" secondAttribute="bottom" id="vNS-wR-TjW"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="r1a-fi-tZ0"/>
             <point key="canvasLocation" x="139.13043478260872" y="152.67857142857142"/>
         </view>
     </objects>
     <resources>
-        <image name="back_icon" width="13.5" height="23"/>
+        <image name="back_icon" width="14" height="23"/>
         <image name="call_hangup_icon" width="24.5" height="26"/>
         <image name="call_hangup_large" width="40" height="40"/>
         <image name="camera_switch" width="24" height="24"/>

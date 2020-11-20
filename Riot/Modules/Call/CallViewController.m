@@ -97,6 +97,15 @@
     [self.videoMuteButton setImage:videoOffButtonImage forState:UIControlStateHighlighted];
     [self.videoMuteButton setImage:videoOnButtonImage forState:UIControlStateSelected];
     
+    //  Hold
+    
+    UIImage *holdButtonImage = [[UIImage imageNamed:@"call_hold_icon"] vc_tintedImageUsingColor:unselectedColor];
+    UIImage *holdedButtonImage = [[UIImage imageNamed:@"call_holded_icon"] vc_tintedImageUsingColor:unselectedColor];
+    
+    [self.holdButton setImage:holdButtonImage forState:UIControlStateNormal];
+    [self.holdButton setImage:holdButtonImage forState:UIControlStateHighlighted];
+    [self.holdButton setImage:holdedButtonImage forState:UIControlStateSelected];
+    
     // Speaker
     
     UIImage *speakerOffButtonImage = [[UIImage imageNamed:@"call_speaker_off_icon"] vc_tintedImageUsingColor:unselectedColor];
@@ -238,6 +247,11 @@
 
 - (UIView *)createIncomingCallView
 {
+    if ([MXCallKitAdapter callKitAvailable])
+    {
+        return nil;
+    }
+    
     NSString *callInfo;
     if (self.mxCall.isVideoCall)
         callInfo = NSLocalizedStringFromTable(@"call_incoming_video", @"Vector", nil);
