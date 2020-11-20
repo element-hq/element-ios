@@ -118,6 +118,8 @@
  */
 - (void)cancelEditionMode:(BOOL)forceRefresh;
 
+- (void)userInterfaceThemeDidChange;
+
 #pragma mark - Room handling
 
 /**
