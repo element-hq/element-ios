@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Home: Add empty screen when there is nothing to display (#3823).
 
 🐛 Bugfix
  * 
