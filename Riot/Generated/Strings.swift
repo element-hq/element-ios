@@ -1346,7 +1346,7 @@ internal enum VectorL10n {
   internal static var groupSection: String { 
     return VectorL10n.tr("Vector", "group_section") 
   }
-  /// The all-in-one secure chat app for teams, friends and organisations. Tap the + to add people and rooms.
+  /// The all-in-one secure chat app for teams, friends and organisations. Tap the "+" button below to add people and rooms.
   internal static var homeEmptyViewInformation: String { 
     return VectorL10n.tr("Vector", "home_empty_view_information") 
   }

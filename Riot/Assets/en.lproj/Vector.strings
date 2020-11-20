@@ -1520,4 +1520,4 @@
 // MARK: - Home
 
 "home_empty_view_title" = "Welcome to Element,\n%@";
-"home_empty_view_information" = "The all-in-one secure chat app for teams, friends and organisations. Tap the + to add people and rooms.";
+"home_empty_view_information" = "The all-in-one secure chat app for teams, friends and organisations. Tap the \"+\" button below to add people and rooms.";
