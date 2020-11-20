@@ -135,8 +135,8 @@
 "room_creation_wait_for_creation" = "Триває створення кімнати. Будь ласка, зачекайте.";
 "skip" = "Пропустити";
 // MARK: Clients
-"client_desktop_name" = "Десктопний Element";
-"client_web_name" = "Мережа Element";
+"client_desktop_name" = "Element Desktop";
+"client_web_name" = "Element Web";
 "client_ios_name" = "Element iOS";
 "auth_login_single_sign_on" = "Увійти за допомогою єдиного входу";
 "room_creation_invite_another_user" = "Пошук / запрошення по ідентифікатору користувача, імені або адреси електронної пошти";
@@ -160,3 +160,79 @@
 "people_invites_section" = "ЗАПРОШЕННЯ";
 "people_conversation_section" = "БАЛАЧКИ";
 "people_no_conversation" = "Нема балачок";
+"room_participants_leave_prompt_msg_for_dm" = "Ви впевненні, що бажаєте залишити?";
+"room_participants_leave_prompt_title_for_dm" = "Залишити";
+"client_android_name" = "Element Android";
+"store_promotional_text" = "Додаток для чату та сумісної роботи, що зберігає конфіденційність у відкритій мережі. Децентралізований, щоб надати вам контроль над даними. Без обробки даних, без бекдорів, без доступу для третіх сторін.";
+"settings_three_pids_management_information_part3" = ".";
+"settings_three_pids_management_information_part1" = "Керування адресами електронної пошти чи номерами телефонів, які ви можете використовувати для входу або відновлення акаунту. Контролюйте хто і як може вас знайти ";
+"contacts_address_book_no_identity_server" = "Сервер ідентифікації не налаштований";
+"auth_autodiscover_invalid_response" = "Неправильна відповідь виявлення домашнього сервера";
+"settings_key_backup" = "РЕЗЕРВНА КОПІЯ КЛЮЧІВ";
+"settings_deactivate_account" = "ДЕАКТИВУВАТИ АКАУНТ";
+"group_section" = "СПІЛЬНОТИ";
+
+// Groups tab
+"group_invite_section" = "ЗАПРОШЕННЯ";
+"settings_show_decrypted_content" = "Показувати розшифрований зміст";
+"search_in_progress" = "Пошук…";
+"contacts_user_directory_offline_section" = "КАТАЛОГ КОРИСТУВАЧІВ (offline)";
+"contacts_user_directory_section" = "КАТАЛОГ КОРИСТУВАЧІВ";
+"settings_email_address" = "Електронна пошта";
+"settings_remove_phone_prompt_msg" = "Ви впевнені, що бажаєте видалити номер телефону %@?";
+"settings_remove_email_prompt_msg" = "Ви впевнені, що бажаєте видалити адресу електронної пошти %@?";
+"settings_remove_prompt_title" = "Підтвердження";
+"settings_surname" = "Прізвище";
+"settings_first_name" = "Ім’я";
+"settings_display_name" = "Ім’я, що відображається";
+"settings_profile_picture" = "Зображення профілю";
+"settings_sign_out_e2e_warn" = "Ви втратите всі ваші ключі наскрізного шифрування. Це означає що ви більше не будете мати змогу читати старі повідомлення у зашифрованих кімнатах на цьому пристрої.";
+"settings_sign_out_confirmation" = "Ви впевнені?";
+"settings_sign_out" = "Вийти";
+"settings_cryptography" = "КРИПТОГРАФІЯ";
+"settings_devices" = "СЕАНСИ";
+"room_participants_invite_malformed_id_title" = "Помилка запрошення";
+"room_participants_invite_prompt_title" = "Підтвердження";
+"room_participants_remove_prompt_msg" = "Ви дійсно хочете видалити %@ із чату?";
+"room_participants_remove_prompt_title" = "Підтвердження";
+"room_participants_leave_prompt_msg" = "Ви дійсно бажаєте залишити кімнату?";
+"room_participants_leave_prompt_title" = "Залишити кімнату";
+"room_participants_multi_participants" = "%d учасників";
+"room_participants_one_participant" = "1 учасник";
+"room_participants_add_participant" = "Додати учасника";
+
+// Chat participants
+"room_participants_title" = "Учасники";
+"contacts_address_book_permission_denied" = "Ви не дозволили Element отримати доступ до локальних контактів";
+"contacts_address_book_permission_required" = "Необхідний дозвіл на доступ до локальних контактів";
+"contacts_address_book_no_contact" = "Немає локальних контактів";
+"contacts_address_book_matrix_users_toggle" = "Тільки користувачі Matrix";
+
+// Contacts
+"contacts_address_book_section" = "ЛОКАЛЬНІ КОНТАКТИ";
+"directory_search_fail" = "Виникла помилка при отриманні даних";
+"directory_searching_title" = "Пошук в каталозі…";
+"directory_cell_description" = "%tu кімнат";
+"search_no_result" = "Немає результатів";
+"search_people_placeholder" = "Пошук користувача за його ID, іменем або електронною поштою";
+"search_default_placeholder" = "Пошук";
+"search_files" = "Файли";
+"search_people" = "Люди";
+"search_messages" = "Повідомлення";
+
+// Search
+"search_rooms" = "Кімнати";
+
+// Rooms tab
+"room_directory_no_public_room" = "Загальнодоступних кімнат немає";
+"settings_security" = "БЕЗПЕКА";
+"settings_pin_rooms_with_missed_notif" = "Приколоти кімнати із пропущеними сповіщеннями";
+"settings_global_settings_info" = "Глобальні налаштування сповіщень доступні у вашому %@ веб-клієнті";
+"settings_enable_push_notif" = "Сповіщення на цьому пристрої";
+"settings_fail_to_update_profile" = "Не вдалося оновити профіль";
+"settings_night_mode" = "Нічний режим";
+"settings_change_password" = "Змінити пароль";
+"settings_add_phone_number" = "Додати номер телефону";
+"settings_phone_number" = "Телефон";
+"settings_add_email_address" = "Додати адресу електронної пошти";
+"settings_email_address_placeholder" = "Введіть вашу адресу електронної пошти";

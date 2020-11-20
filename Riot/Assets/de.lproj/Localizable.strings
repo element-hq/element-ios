@@ -61,3 +61,4 @@
 "MESSAGE_FROM_X" = "Nachricht von %@";
 /* New message indicator on a room */
 "MESSAGE_IN_X" = "Nachricht in %@";
+"MESSAGE_PROTECTED" = "Neue Nachricht";
