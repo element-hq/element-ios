@@ -1,3 +1,30 @@
+Changes in 1.1.1 (2020-11-24)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Home: Add empty screen when there is nothing to display (#3823).
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.13.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.1)).
+
 Changes in 1.1.0 (2020-11-17)
 =================================================
 
