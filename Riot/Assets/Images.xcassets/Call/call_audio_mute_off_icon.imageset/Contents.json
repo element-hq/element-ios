@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "call_audio_mute_on_icon.png",
+      "filename" : "Microphone.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "call_audio_mute_on_icon@2x.png",
+      "filename" : "Microphone@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "call_audio_mute_on_icon@3x.png",
+      "filename" : "Microphone@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
@@ -21,6 +21,6 @@
     "version" : 1
   },
   "properties" : {
-    "template-rendering-intent" : "template"
+    "template-rendering-intent" : "original"
   }
 }

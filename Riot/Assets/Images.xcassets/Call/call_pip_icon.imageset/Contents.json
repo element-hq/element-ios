@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Video Off.png",
+      "filename" : "picture_in_picture_alt-24px 1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Video Off@2x.png",
+      "filename" : "picture_in_picture_alt-24px 1@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Video Off@3x.png",
+      "filename" : "picture_in_picture_alt-24px 1@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

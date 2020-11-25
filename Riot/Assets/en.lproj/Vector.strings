@@ -819,6 +819,10 @@
 "call_no_stun_server_error_message_2" ="Alternatively, you can try to use the public server at %@, but this will not be as reliable, and it will share your IP address with that server. You can also manage this in Settings";
 "call_no_stun_server_error_use_fallback_button" = "Try using %@";
 
+"call_actions_unhold" = "Resume";
+"call_more_actions_hold" = "Hold";
+"call_more_actions_unhold" = "Resume";
+
 // No VoIP support
 "no_voip_title" = "Incoming call";
 "no_voip" = "%@ is calling you but %@ does not support calls yet.\nYou can ignore this notification and answer the call from another device or you can reject it.";

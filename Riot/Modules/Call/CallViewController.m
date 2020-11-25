@@ -30,9 +30,6 @@
 
 @interface CallViewController ()
 {
-    // Display a gradient view above the screen
-    CAGradientLayer* gradientMaskLayer;
-    
     // Current alert (if any).
     UIAlertController *currentAlert;
     
@@ -63,26 +60,22 @@
 {
     [super viewDidLoad];
     
-    UIColor *unselectedColor = ThemeService.shared.theme.tabBarUnselectedItemTintColor;
-    UIColor *selectedColor = ThemeService.shared.theme.tintColor;
-    
     // Back button
     
-    UIImage *backButtonImage = [[UIImage imageNamed:@"back_icon"] vc_tintedImageUsingColor:selectedColor];
+    UIImage *backButtonImage = [UIImage imageNamed:@"back_icon"];
     [self.backToAppButton setImage:backButtonImage forState:UIControlStateNormal];
     [self.backToAppButton setImage:backButtonImage forState:UIControlStateHighlighted];
     
     // Camera switch
     
-    UIImage *cameraSwitchButtonImage = [[UIImage imageNamed:@"camera_switch"] vc_tintedImageUsingColor:selectedColor];
+    UIImage *cameraSwitchButtonImage = [UIImage imageNamed:@"camera_switch"];
     [self.cameraSwitchButton setImage:cameraSwitchButtonImage forState:UIControlStateNormal];
     [self.cameraSwitchButton setImage:cameraSwitchButtonImage forState:UIControlStateHighlighted];
     
     // Audio mute
     
-    UIImage *audioMuteOffButtonImage = [[UIImage imageNamed:@"call_audio_mute_off_icon"] vc_tintedImageUsingColor:unselectedColor];
-    
-    UIImage *audioMuteOnButtonImage = [[UIImage imageNamed:@"call_audio_mute_on_icon"] vc_tintedImageUsingColor:unselectedColor];
+    UIImage *audioMuteOffButtonImage = [UIImage imageNamed:@"call_audio_mute_off_icon"];
+    UIImage *audioMuteOnButtonImage = [UIImage imageNamed:@"call_audio_mute_on_icon"];
     
     [self.audioMuteButton setImage:audioMuteOffButtonImage forState:UIControlStateNormal];
     [self.audioMuteButton setImage:audioMuteOffButtonImage forState:UIControlStateHighlighted];
@@ -90,48 +83,27 @@
     
     // Video mute
     
-    UIImage *videoOffButtonImage = [[UIImage imageNamed:@"call_video_mute_off_icon"] vc_tintedImageUsingColor:unselectedColor];
-    UIImage *videoOnButtonImage = [[UIImage imageNamed:@"call_video_mute_on_icon"] vc_tintedImageUsingColor:unselectedColor];
+    UIImage *videoOffButtonImage = [UIImage imageNamed:@"call_video_mute_off_icon"];
+    UIImage *videoOnButtonImage = [UIImage imageNamed:@"call_video_mute_on_icon"];
     
     [self.videoMuteButton setImage:videoOffButtonImage forState:UIControlStateNormal];
     [self.videoMuteButton setImage:videoOffButtonImage forState:UIControlStateHighlighted];
     [self.videoMuteButton setImage:videoOnButtonImage forState:UIControlStateSelected];
     
-    //  Hold
+    //  More
     
-    UIImage *holdButtonImage = [[UIImage imageNamed:@"call_hold_icon"] vc_tintedImageUsingColor:unselectedColor];
-    UIImage *holdedButtonImage = [[UIImage imageNamed:@"call_holded_icon"] vc_tintedImageUsingColor:unselectedColor];
+    UIImage *moreButtonImage = [UIImage imageNamed:@"call_more_icon"];
     
-    [self.holdButton setImage:holdButtonImage forState:UIControlStateNormal];
-    [self.holdButton setImage:holdButtonImage forState:UIControlStateHighlighted];
-    [self.holdButton setImage:holdedButtonImage forState:UIControlStateSelected];
-    
-    // Speaker
-    
-    UIImage *speakerOffButtonImage = [[UIImage imageNamed:@"call_speaker_off_icon"] vc_tintedImageUsingColor:unselectedColor];
-    UIImage *speakerOnButtonImage = [[UIImage imageNamed:@"call_speaker_on_icon"] vc_tintedImageUsingColor:unselectedColor];
-    [self.speakerButton setImage:speakerOffButtonImage forState:UIControlStateNormal];
-    [self.speakerButton setImage:speakerOnButtonImage forState:UIControlStateSelected];
-    
-    // Chat
-    
-    UIImage *chatButtonImage = [[UIImage imageNamed:@"call_chat_icon"] vc_tintedImageUsingColor:unselectedColor];
-    [self.chatButton setImage:chatButtonImage forState:UIControlStateNormal];
-    [self.chatButton setImage:chatButtonImage forState:UIControlStateHighlighted];
+    [self.moreButton setImage:moreButtonImage forState:UIControlStateNormal];
     
     // Hang up
     
-    UIImage *hangUpButtonImage = [[UIImage imageNamed:@"call_hangup_large"] vc_tintedImageUsingColor:ThemeService.shared.theme.noticeColor];
+    UIImage *hangUpButtonImage = [UIImage imageNamed:@"call_hangup_large"];
     
     [self.endCallButton setTitle:nil forState:UIControlStateNormal];
     [self.endCallButton setTitle:nil forState:UIControlStateHighlighted];
     [self.endCallButton setImage:hangUpButtonImage forState:UIControlStateNormal];
     [self.endCallButton setImage:hangUpButtonImage forState:UIControlStateHighlighted];
-    
-    // Define caller image view size
-    CGSize size = [[UIScreen mainScreen] bounds].size;
-    CGFloat minSize = MIN(size.width, size.height);
-    self.callerImageViewWidthConstraint.constant = minSize / 2;
     
     [self updateLocalPreviewLayout];
     
@@ -144,6 +116,11 @@
     [self userInterfaceThemeDidChange];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return ThemeService.shared.theme.statusBarStyle;
+}
+
 - (void)userInterfaceThemeDidChange
 {
     [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
@@ -151,71 +128,19 @@
     self.barTitleColor = ThemeService.shared.theme.textPrimaryColor;
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
-    self.callerNameLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
-    self.callStatusLabel.textColor = ThemeService.shared.theme.baseTextSecondaryColor;
+    self.backToAppButton.tintColor = [UIColor whiteColor];
+    self.cameraSwitchButton.tintColor = [UIColor whiteColor];
+    self.callerNameLabel.textColor = [UIColor whiteColor];
+    self.callStatusLabel.textColor = [UIColor whiteColor];
+    [self.resumeButton setTitleColor:ThemeService.shared.theme.tintColor forState:UIControlStateNormal];
     
     self.localPreviewContainerView.layer.borderColor = ThemeService.shared.theme.tintColor.CGColor;
     self.localPreviewContainerView.layer.borderWidth = 2;
     self.localPreviewContainerView.layer.cornerRadius = 5;
     self.localPreviewContainerView.clipsToBounds = YES;
     
-    self.remotePreviewContainerView.backgroundColor = ThemeService.shared.theme.backgroundColor;
-    
-    if (gradientMaskLayer)
-    {
-        [gradientMaskLayer removeFromSuperlayer];
-    }
-    
-    // Add a gradient mask programatically at the top of the screen (background of the call information (name, status))
-    gradientMaskLayer = [CAGradientLayer layer];
-    
-    // Consider the grayscale components of the ThemeService.shared.theme.backgroundColor.
-    CGFloat white = 1.0;
-    [ThemeService.shared.theme.backgroundColor getWhite:&white alpha:nil];
-    
-    CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
-    CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
-    
-    gradientMaskLayer.colors = @[(__bridge id) opaqueWhiteColor, (__bridge id) transparentWhiteColor];
-    
-    gradientMaskLayer.bounds = CGRectMake(0, 0, self.callContainerView.frame.size.width, self.callContainerView.frame.size.height + 20);
-    gradientMaskLayer.anchorPoint = CGPointZero;
-    
-    // CAConstraint is not supported on IOS.
-    // it seems only being supported on Mac OS.
-    // so viewDidLayoutSubviews will refresh the layout bounds.
-    [self.gradientMaskContainerView.layer addSublayer:gradientMaskLayer];
-    
-    self.callControlsBackgroundView.backgroundColor = ThemeService.shared.theme.baseColor;
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    // Hide the status bar on the call view controller.
-    return YES;
-}
-
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    
-    // sanity check
-    if (gradientMaskLayer)
-    {
-        CGRect currentBounds = gradientMaskLayer.bounds;
-        CGRect newBounds = CGRectMake(0, 0, self.callContainerView.frame.size.width, self.callContainerView.frame.size.height + 20);
-        
-        // check if there is an update
-        if (!CGSizeEqualToSize(currentBounds.size, newBounds.size))
-        {
-            newBounds.origin = CGPointZero;
-            gradientMaskLayer.bounds = newBounds;
-        }
-    }
-    
-    // The caller image view is circular
-    self.callerImageView.layer.cornerRadius = self.callerImageViewWidthConstraint.constant / 2;
-    self.callerImageView.clipsToBounds = YES;
+    self.view.backgroundColor = ThemeService.shared.theme.callBackgroundColor;
+    self.remotePreviewContainerView.backgroundColor = ThemeService.shared.theme.callBackgroundColor;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -240,9 +165,6 @@
         [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
         kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
-    
-    [gradientMaskLayer removeFromSuperlayer];
-    gradientMaskLayer = nil;
 }
 
 - (UIView *)createIncomingCallView
@@ -447,13 +369,6 @@
                       withColor:ThemeService.shared.theme.tintColor];
 }
 
-- (void)setMxCall:(MXCall *)call
-{
-    [super setMxCall:call];
-    
-    self.callerImageView.hidden = self.mxCall.isVideoCall;
-}
-
 - (void)updatePeerInfoDisplay
 {
     NSString *peerDisplayName;
@@ -490,13 +405,6 @@
     {
         self.callerImageView.image = self.picturePlaceholder;
     }
-}
-
-- (void)showOverlayContainer:(BOOL)isShown
-{
-    [super showOverlayContainer:isShown];
-    
-    self.gradientMaskContainerView.hidden = self.overlayContainerView.isHidden;
 }
 
 #pragma mark - Sounds

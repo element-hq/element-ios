@@ -90,6 +90,8 @@ class DefaultTheme: NSObject, Theme {
     var overlayBackgroundColor: UIColor = UIColor(white: 0.7, alpha: 0.5)
     var matrixSearchBackgroundImageTintColor: UIColor = UIColor(rgb: 0xE7E7E7)
     
+    var callBackgroundColor: UIColor = UIColor(rgb: 0x8D99A5)
+    
     func applyStyle(onTabBar tabBar: UITabBar) {
         tabBar.unselectedItemTintColor = self.tabBarUnselectedItemTintColor
         tabBar.tintColor = self.tintColor
