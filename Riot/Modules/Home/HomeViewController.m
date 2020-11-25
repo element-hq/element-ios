@@ -46,6 +46,8 @@
 @property (nonatomic, strong) CrossSigningSetupBannerCell *keyVerificationSetupBannerPrototypeCell;
 @property (nonatomic, strong) AuthenticatedSessionViewControllerFactory *authenticatedSessionViewControllerFactory;
 
+@property (nonatomic, weak) HomeEmptyView *homeEmptyView;
+
 @end
 
 @implementation HomeViewController
@@ -100,6 +102,8 @@
         recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeHome];
     }
+    
+    [self updateEmptyViewDisplayName];
 
     [self moveAllCollectionsToLeft];
 }
@@ -273,12 +277,32 @@
     }
 }
 
+- (void)onMatrixSessionChange
+{
+    [super onMatrixSessionChange];
+    
+    [self updateEmptyViewDisplayName];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    [super userInterfaceThemeDidChange];
+    
+    [self.homeEmptyView updateWithTheme:ThemeService.shared.theme];
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    NSInteger numberOfSections = [recentsDataSource numberOfSectionsInTableView:tableView];
+    
+    BOOL showEmptyView = [self shouldShowEmptyView];
+    
+    [self showEmptyView:showEmptyView];
+    
     // Return the actual number of sections prepared in recents dataSource.
-    return [recentsDataSource numberOfSectionsInTableView:tableView];
+    return numberOfSections;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -791,6 +815,74 @@
          viewController = nil;
          failure(error);
      }];
+}
+
+#pragma mark - Empty view management
+
+- (void)showEmptyView:(BOOL)show
+{
+    if (show && !self.homeEmptyView)
+    {
+        HomeEmptyView *homeEmptyView = [HomeEmptyView instantiate];
+        [homeEmptyView updateWithTheme:ThemeService.shared.theme];
+        [self addEmptyView:homeEmptyView];
+        
+        self.homeEmptyView = homeEmptyView;
+        
+        [self updateEmptyViewDisplayName];
+    }
+    else if (!show)
+    {
+        [self.homeEmptyView removeFromSuperview];
+    }
+    
+    self.recentsTableView.hidden = show;
+}
+
+- (void)updateEmptyViewDisplayName
+{
+    MXUser *myUser = self.mainSession.myUser;
+    NSString *displayName = myUser.displayname ?: myUser.userId;
+    
+    [self.homeEmptyView fillWith:displayName ?: @""];
+}
+
+- (void)addEmptyView:(UIView*)emptyView
+{
+    [self.view insertSubview:emptyView belowSubview:plusButtonImageView];
+
+    emptyView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [NSLayoutConstraint activateConstraints:@[
+        [emptyView.topAnchor constraintEqualToAnchor:emptyView.superview.topAnchor],
+        [emptyView.leftAnchor constraintEqualToAnchor:emptyView.superview.leftAnchor],
+        [emptyView.rightAnchor constraintEqualToAnchor:emptyView.superview.rightAnchor],
+        [emptyView.bottomAnchor constraintEqualToAnchor:plusButtonImageView.topAnchor]
+    ]];
+}
+
+// By default on fresh account
+- (BOOL)shouldShowEmptyView
+{
+    // Check if some banners should be displayed
+    if (recentsDataSource.secureBackupBannerSection != -1 || recentsDataSource.crossSigningBannerSection != -1)
+    {
+        return NO;
+    }
+    
+    // Otherwise check the number of items to display
+    return [self totalItemCounts] == 0;
+}
+
+// Total items to display on the screen
+- (NSUInteger)totalItemCounts
+{
+    return recentsDataSource.invitesCellDataArray.count
+    + recentsDataSource.favoriteCellDataArray.count
+    + recentsDataSource.peopleCellDataArray.count
+    + recentsDataSource.conversationCellDataArray.count
+    + recentsDataSource.lowPriorityCellDataArray.count
+    + recentsDataSource.serverNoticeCellDataArray.count;
 }
 
 @end
