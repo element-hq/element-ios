@@ -194,6 +194,7 @@
 		B10A3E9D24FE88CB007C380F /* RootRouterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10A3E9B24FE88CB007C380F /* RootRouterType.swift */; };
 		B10A3E9F24FFC3E6007C380F /* PlaceholderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10A3E9E24FFC3E5007C380F /* PlaceholderDetailViewController.swift */; };
 		B10CFBC32268D99D00A5842E /* JitsiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10CFBC22268D99D00A5842E /* JitsiService.swift */; };
+		B10D8F60256EBDC200B0FE91 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10D8F5F256EBDC000B0FE91 /* UIImageView.swift */; };
 		B1107EC82200B0720038014B /* KeyBackupRecoverSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1107EC72200B0720038014B /* KeyBackupRecoverSuccessViewController.swift */; };
 		B1107ECA2200B09F0038014B /* KeyBackupRecoverSuccessViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1107EC92200B09F0038014B /* KeyBackupRecoverSuccessViewController.storyboard */; };
 		B110871D21F087F4003554A5 /* KeyBackupSetupPassphraseViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B110871C21F087F4003554A5 /* KeyBackupSetupPassphraseViewState.swift */; };
@@ -205,6 +206,8 @@
 		B11291EC238D704C0077B478 /* FloatingPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11291EB238D704C0077B478 /* FloatingPoint.swift */; };
 		B11F4D1C25680010009F1586 /* HomeEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B11F4D1A25680010009F1586 /* HomeEmptyView.xib */; };
 		B11F4D1D25680010009F1586 /* HomeEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11F4D1B25680010009F1586 /* HomeEmptyView.swift */; };
+		B11F4D1F256814E5009F1586 /* RootTabEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B11F4D1E256814E5009F1586 /* RootTabEmptyView.xib */; };
+		B11F4D2125681500009F1586 /* RootTabEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11F4D2025681500009F1586 /* RootTabEmptyView.swift */; };
 		B120863722EF375F001F89E0 /* ReactionHistoryBridgeCoordinatorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B120863622EF375F001F89E0 /* ReactionHistoryBridgeCoordinatorPresenter.swift */; };
 		B125FE1B231D5BF200B72806 /* SettingsDiscoveryTableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B125FE1A231D5BF200B72806 /* SettingsDiscoveryTableViewSection.swift */; };
 		B125FE1D231D5DE400B72806 /* SettingsDiscoveryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B125FE1C231D5DE400B72806 /* SettingsDiscoveryViewModel.swift */; };
@@ -1233,6 +1236,7 @@
 		B10A3E9B24FE88CB007C380F /* RootRouterType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootRouterType.swift; sourceTree = "<group>"; };
 		B10A3E9E24FFC3E5007C380F /* PlaceholderDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderDetailViewController.swift; sourceTree = "<group>"; };
 		B10CFBC22268D99D00A5842E /* JitsiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JitsiService.swift; sourceTree = "<group>"; };
+		B10D8F5F256EBDC000B0FE91 /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		B1107EC72200B0720038014B /* KeyBackupRecoverSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverSuccessViewController.swift; sourceTree = "<group>"; };
 		B1107EC92200B09F0038014B /* KeyBackupRecoverSuccessViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = KeyBackupRecoverSuccessViewController.storyboard; sourceTree = "<group>"; };
 		B110871C21F087F4003554A5 /* KeyBackupSetupPassphraseViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupSetupPassphraseViewState.swift; sourceTree = "<group>"; };
@@ -1244,6 +1248,8 @@
 		B11291EB238D704C0077B478 /* FloatingPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPoint.swift; sourceTree = "<group>"; };
 		B11F4D1A25680010009F1586 /* HomeEmptyView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeEmptyView.xib; sourceTree = "<group>"; };
 		B11F4D1B25680010009F1586 /* HomeEmptyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeEmptyView.swift; sourceTree = "<group>"; };
+		B11F4D1E256814E5009F1586 /* RootTabEmptyView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RootTabEmptyView.xib; sourceTree = "<group>"; };
+		B11F4D2025681500009F1586 /* RootTabEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabEmptyView.swift; sourceTree = "<group>"; };
 		B120863622EF375F001F89E0 /* ReactionHistoryBridgeCoordinatorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionHistoryBridgeCoordinatorPresenter.swift; sourceTree = "<group>"; };
 		B125FE1A231D5BF200B72806 /* SettingsDiscoveryTableViewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDiscoveryTableViewSection.swift; sourceTree = "<group>"; };
 		B125FE1C231D5DE400B72806 /* SettingsDiscoveryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDiscoveryViewModel.swift; sourceTree = "<group>"; };
@@ -4474,6 +4480,8 @@
 				B1B5594F20EF9A8600210D55 /* RecentTableViewCell.h */,
 				B1B5595020EF9A8600210D55 /* RecentTableViewCell.m */,
 				B1B5595120EF9A8600210D55 /* RecentTableViewCell.xib */,
+				B11F4D2025681500009F1586 /* RootTabEmptyView.swift */,
+				B11F4D1E256814E5009F1586 /* RootTabEmptyView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -5454,6 +5462,7 @@
 				ECAE7AED24EFDD1F002FA813 /* MXSessionState.swift */,
 				ECF57A4F250913E4004BBF9D /* MXKTableViewCellWithLabelAndSwitch.swift */,
 				ECF57A5625091ECC004BBF9D /* MXKTableViewCellWithTextView.swift */,
+				B10D8F5F256EBDC000B0FE91 /* UIImageView.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -5824,6 +5833,7 @@
 				B1B558DA20EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				B1B558D620EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				B1B5593720EF7BAC00210D55 /* TableViewCellWithCheckBoxAndLabel.xib in Resources */,
+				B11F4D1F256814E5009F1586 /* RootTabEmptyView.xib in Resources */,
 				B190F55B22CE35FD00AEB493 /* EditHistoryHeaderView.xib in Resources */,
 				EC31F016251B53BC00D407DA /* RoomInfoBasicView.xib in Resources */,
 				EC1CA86524C1DEC400DE9EBF /* EnterPinCodeViewController.storyboard in Resources */,
@@ -6388,6 +6398,7 @@
 				B1B558D420EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				B169331420F3CAFC00746532 /* PublicRoomTableViewCell.m in Sources */,
 				32BF995721FB07A400698084 /* SettingsKeyBackupTableViewSection.swift in Sources */,
+				B10D8F60256EBDC200B0FE91 /* UIImageView.swift in Sources */,
 				3291DC8D23E0BFF10009732F /* SecurityViewController.m in Sources */,
 				B18DEDD4243377C10075FEF7 /* KeyVerificationSelfVerifyWaitViewModelType.swift in Sources */,
 				B1C45A88232A8C2600165425 /* SettingsIdentityServerViewState.swift in Sources */,
@@ -6509,6 +6520,7 @@
 				B1B558C920EF768F00210D55 /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				B1B5571B20EE6C4D00210D55 /* DeactivateAccountViewController.m in Sources */,
 				B1DCC63922E85E9A00625807 /* EmojiMartStore.swift in Sources */,
+				B11F4D2125681500009F1586 /* RootTabEmptyView.swift in Sources */,
 				B10A3E9024FE4368007C380F /* ElementViewController.swift in Sources */,
 				B1B5590620EF768F00210D55 /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */,
 				EC51E7AE2514D2E100AAE7DB /* RoomInfoListViewModel.swift in Sources */,
