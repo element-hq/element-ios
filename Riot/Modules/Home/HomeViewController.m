@@ -817,6 +817,12 @@
 
 - (BOOL)shouldShowEmptyView
 {
+    // Do not present empty screen while searching
+    if (recentsDataSource.searchPatternsList.count)
+    {
+        return NO;
+    }
+    
     // Check if some banners should be displayed
     if (recentsDataSource.secureBackupBannerSection != -1 || recentsDataSource.crossSigningBannerSection != -1)
     {

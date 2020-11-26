@@ -125,6 +125,12 @@
 
 - (BOOL)shouldShowEmptyView
 {
+    // Do not present empty screen while searching
+    if (recentsDataSource.searchPatternsList.count)
+    {
+        return NO;
+    }
+    
     return [self totalItemCounts] == 0;
 }
 
