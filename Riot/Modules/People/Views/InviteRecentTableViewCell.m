@@ -108,15 +108,15 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
     
     if (room.roomId)
     {
-        [self updateViewsWithRoom:room];
+        [self updateViewsWithRoom:room showPreviewButton:NO];
     }
 }
 
-- (void)updateViewsWithRoom:(MXRoom*)room
+- (void)updateViewsWithRoom:(MXRoom*)room showPreviewButton:(BOOL)showPreviewButton
 {
     NSString *rightButtonTitle;
     
-    if (room.isDirect)
+    if (!showPreviewButton)
     {
         rightButtonTitle = NSLocalizedStringFromTable(@"accept", @"Vector", nil);
         [self vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
