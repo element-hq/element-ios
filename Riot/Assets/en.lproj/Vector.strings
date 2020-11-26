@@ -181,8 +181,15 @@
 "people_conversation_section" = "CONVERSATIONS";
 "people_no_conversation" = "No conversations";
 
+"people_empty_view_title" = "People";
+"people_empty_view_information" = "Chat securely with anyone.
+Tap the + to start adding people.";
+
 // Rooms tab
 "room_directory_no_public_room" = "No public rooms available";
+
+"rooms_empty_view_title" = "Rooms";
+"rooms_empty_view_information" = "Rooms are great for any group chat, private or public. Tap the + to find existing rooms, or make new ones.";
 
 // Groups tab
 "group_invite_section" = "INVITES";
@@ -1520,4 +1527,9 @@
 // MARK: - Home
 
 "home_empty_view_title" = "Welcome to Element,\n%@";
-"home_empty_view_information" = "The all-in-one secure chat app for teams, friends and organisations. Tap the \"+\" button below to add people and rooms.";
+"home_empty_view_information" = "The all-in-one secure chat app for teams, friends and organisations. Tap the + button below to add people and rooms.";
+
+// MARK: - Favourites
+
+"favourites_empty_view_title" = "Favourite rooms and people";
+"favourites_empty_view_information" = "You can favourite a few ways - the quickest is just to press and hold. Tap the star and they’ll automatically appear here for safe keeping.";
