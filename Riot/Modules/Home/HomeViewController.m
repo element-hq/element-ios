@@ -810,7 +810,7 @@
     
     NSString *title = [NSString stringWithFormat:NSLocalizedStringFromTable(@"home_empty_view_title", @"Vector", nil), displayName];
     
-    [self.emptyView fillWith:[UIImage imageNamed:@"home_placeholder_artwork"]
+    [self.emptyView fillWith:[UIImage imageNamed:@"home_empty_screen_artwork"]
                        title:title
              informationText:NSLocalizedStringFromTable(@"home_empty_view_information", @"Vector", nil)];
 }
