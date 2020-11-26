@@ -184,6 +184,8 @@
         // Force table refresh
         [self cancelEditionMode:YES];
     }
+    
+    [self.emptyView updateWithTheme:ThemeService.shared.theme];
 
     [self setNeedsStatusBarAppearanceUpdate];
 }
@@ -846,6 +848,13 @@
             [super dataSource:dataSource didRecognizeAction:actionIdentifier inCell:cell userInfo:userInfo];
         }
     }
+}
+
+- (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
+{
+    [super dataSource:dataSource didCellChange:changes];
+    
+    [self showEmptyViewIfNeeded];
 }
 
 #pragma mark - Swipe actions
@@ -1869,6 +1878,92 @@
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     coordinatorBridgePresenter = nil;
+}
+
+#pragma mark - Empty view management
+
+- (void)showEmptyViewIfNeeded
+{
+    [self showEmptyView:[self shouldShowEmptyView]];
+}
+
+- (void)showEmptyView:(BOOL)show
+{
+    if (!self.viewIfLoaded)
+    {
+        return;
+    }
+    
+    if (show && !self.emptyView)
+    {
+        RootTabEmptyView *emptyView = [RootTabEmptyView instantiate];
+        [emptyView updateWithTheme:ThemeService.shared.theme];
+        [self addEmptyView:emptyView];
+        
+        self.emptyView = emptyView;
+        
+        [self updateEmptyView];
+    }
+    else if (!show)
+    {
+        [self.emptyView removeFromSuperview];
+    }
+    
+    self.recentsTableView.hidden = show;
+    self.stickyHeadersTopContainer.hidden = show;
+    self.stickyHeadersBottomContainer.hidden = show;
+}
+
+- (void)updateEmptyView
+{
+    
+}
+
+- (void)addEmptyView:(RootTabEmptyView*)emptyView
+{
+    if (!self.isViewLoaded)
+    {
+        return;
+    }
+    
+    NSLayoutConstraint *emptyViewBottomConstraint;
+    NSLayoutConstraint *contentViewBottomConstraint;
+    
+    if (plusButtonImageView && plusButtonImageView.isHidden == NO)
+    {
+        [self.view insertSubview:emptyView belowSubview:plusButtonImageView];
+        
+        contentViewBottomConstraint = [NSLayoutConstraint constraintWithItem:emptyView.contentView
+                                                                   attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationLessThanOrEqual toItem:plusButtonImageView
+                                                                   attribute:NSLayoutAttributeTop
+                                                                  multiplier:1.0
+                                                                    constant:0];
+    }
+    else
+    {
+        [self.view addSubview:emptyView];
+    }
+    
+    emptyViewBottomConstraint = [emptyView.bottomAnchor constraintEqualToAnchor:emptyView.superview.bottomAnchor];
+    
+    emptyView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [NSLayoutConstraint activateConstraints:@[
+        [emptyView.topAnchor constraintEqualToAnchor:emptyView.superview.topAnchor],
+        [emptyView.leftAnchor constraintEqualToAnchor:emptyView.superview.leftAnchor],
+        [emptyView.rightAnchor constraintEqualToAnchor:emptyView.superview.rightAnchor],
+        emptyViewBottomConstraint
+    ]];
+    
+    if (contentViewBottomConstraint)
+    {
+        contentViewBottomConstraint.active = YES;
+    }
+}
+
+- (BOOL)shouldShowEmptyView
+{
+    return NO;
 }
 
 @end

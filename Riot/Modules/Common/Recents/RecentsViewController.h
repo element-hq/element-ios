@@ -17,6 +17,8 @@
 
 #import <MatrixKit/MatrixKit.h>
 
+@class RootTabEmptyView;
+
 @interface RecentsViewController : MXKRecentListViewController <MXKRecentListViewControllerDelegate>
 {
 @protected
@@ -82,6 +84,11 @@
  The analytics instance screen name (Default is "RecentsScreen").
  */
 @property (nonatomic) NSString *screenName;
+
+/**
+ Empty view to display when there is no item to show on the screen.
+ */
+@property (nonatomic, weak) RootTabEmptyView *emptyView;
 
 /**
  Return the sticky header for the specified section of the table view
@@ -176,6 +183,18 @@
 
 - (void)didTapOnSectionHeader:(UIGestureRecognizer*)gestureRecognizer;
 - (void)didSwipeOnSectionHeader:(UISwipeGestureRecognizer*)gestureRecognizer;
+
+#pragma mark - Empty view
+
+/**
+ Overrides this method to fill the empty view with data.
+ */
+- (void)updateEmptyView;
+
+/**
+ Overrides this method to indicate if empty view should be shown. Returns NO by default.
+ */
+- (BOOL)shouldShowEmptyView;
 
 @end
 
