@@ -7,7 +7,6 @@ To build Element iOS project you need:
 - Xcode 12.1+.
 - [Ruby](https://www.ruby-lang.org/), a dynamic programming language used by several build tools.
 - [CocoaPods](https://cocoapods.org), library dependencies manager for Xcode projects.
-- [Homebrew](http://brew.sh/) (recommended), is a package manager for macOS.
 - [bundler](https://bundler.io/) (optional), is also a dependency manager used to manage build tools dependency (CocoaPods, Fastlane).
 
 ### Install Ruby
