@@ -114,4 +114,24 @@
     return 0.0f;
 }
 
+#pragma mark - Empty view management
+
+- (void)updateEmptyView
+{
+    [self.emptyView fillWith:[UIImage imageNamed:@"favourites_empty_screen_artwork"]
+                       title:NSLocalizedStringFromTable(@"favourites_empty_view_title", @"Vector", nil)
+             informationText:NSLocalizedStringFromTable(@"favourites_empty_view_information", @"Vector", nil)];
+}
+
+- (BOOL)shouldShowEmptyView
+{
+    return [self totalItemCounts] == 0;
+}
+
+// Total items to display on the screen
+- (NSUInteger)totalItemCounts
+{
+    return recentsDataSource.favoriteCellDataArray.count;
+}
+
 @end
