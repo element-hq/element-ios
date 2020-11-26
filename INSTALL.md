@@ -6,9 +6,8 @@ To build Element iOS project you need:
 
 - Xcode 12.1+.
 - [Ruby](https://www.ruby-lang.org/), a dynamic programming language used by several build tools.
-- [cmake](https://gitlab.kitware.com/cmake/cmake), used to build [cmark](https://github.com/commonmark/cmark) dependency of [MatrixKit](https://github.com/matrix-org/matrix-ios-kit) pod.
 - [CocoaPods](https://cocoapods.org), library dependencies manager for Xcode projects.
-- [Homebrew](http://brew.sh/) (recommended), is a package manager for macOS that can be used to install cmake.
+- [Homebrew](http://brew.sh/) (recommended), is a package manager for macOS.
 - [bundler](https://bundler.io/) (optional), is also a dependency manager used to manage build tools dependency (CocoaPods, Fastlane).
 
 ### Install Ruby
@@ -16,15 +15,6 @@ To build Element iOS project you need:
 Ruby is required for several build tools like CocoaPods, bundler and fastlane. Ruby is preinstalled on macOS, the system version is sufficient to build the porject tools, it's not required to install the latest version. If you want to install the lastest version of Ruby please check [official instructions](https://www.ruby-lang.org/en/documentation/installation/#homebrew).
 
 If you do not want to grant the ruby package manager, [RubyGems](https://rubygems.org/), admin privileges and you prefer install gems into your user directory, you can read instructions from the CocoaPods [guide about sudo-less installation](https://guides.cocoapods.org/using/getting-started.html#sudo-less-installation).
-
-### Install cmake
-
-There are several ways to install cmake, downloading binary from [official website](https://cmake.org/download/) or using a package manager like [MacPorts](https://ports.macports.org/port/cmake/summary) or [Homebrew](http://brew.sh/).
-To keep it up to date, we recommend you to install cmake using [Homebrew](http://brew.sh/):
-
-```
-brew install cmake
-```
 
 ### Install CocoaPods
 
