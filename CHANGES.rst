@@ -5,6 +5,57 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Changes in 1.1.1 (2020-11-24)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Home: Add empty screen when there is nothing to display (#3823).
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.13.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.1)).
+
+Changes in 1.1.0 (2020-11-17)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
  * Upgrade to Xcode 12 (#3712).
  * Xcode 12: Make Xcode 12 and fastlane(xcodebuild) happy while some pods are not updated.
  * Update Gemfile.lock.
@@ -20,6 +71,7 @@ Changes to be released in next version
 
 ⚠️ API Changes
  * Xcode 12 is now mandatory to build the project.
+ * CocoaPods 1.10.0 is mandatory.
  * Remove MXDecryptionFailureDelegate in flavor of agnostic MXAnalyticsDelegate.
 
 🗣 Translations
@@ -30,6 +82,9 @@ Changes to be released in next version
 
 Others
  * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.13.0](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.0)).
 
 Changes in 1.0.18 (2020-10-27)
 =================================================
