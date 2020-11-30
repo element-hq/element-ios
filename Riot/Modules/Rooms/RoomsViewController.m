@@ -398,8 +398,6 @@
 
 - (BOOL)shouldShowEmptyView
 {
-    return YES;
-    
     // Do not present empty screen while searching
     if (recentsDataSource.searchPatternsList.count)
     {
