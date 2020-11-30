@@ -272,8 +272,6 @@
 		B157FAA523264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157FA9D23264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsViewModel.swift */; };
 		B157FAA623264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157FA9E23264AE800EBFBD4 /* SettingsDiscoveryThreePidDetailsViewController.swift */; };
 		B157FAA823264BED00EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B157FAA723264BED00EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinatorBridgePresenter.swift */; };
-		B1581A4325713B1500B606BA /* HomeEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11F4D1B25680010009F1586 /* HomeEmptyView.swift */; };
-		B1581A4425713B1B00B606BA /* HomeEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B11F4D1A25680010009F1586 /* HomeEmptyView.xib */; };
 		B158253B2475350A00604D79 /* EventFormatter+DTCoreTextFix.m in Sources */ = {isa = PBXBuildFile; fileRef = B158253A2475350A00604D79 /* EventFormatter+DTCoreTextFix.m */; };
 		B158E72125485B9E000A7F75 /* Base32Coder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B158E72025485B9E000A7F75 /* Base32Coder.swift */; };
 		B158E72325485EAB000A7F75 /* JitsiJWTTokenBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B158E72225485EAB000A7F75 /* JitsiJWTTokenBuilder.swift */; };
@@ -347,6 +345,8 @@
 		B19EFA3921F8BB2C00FC070E /* KeyBackupRecoverCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19EFA3821F8BB2C00FC070E /* KeyBackupRecoverCoordinatorType.swift */; };
 		B19EFA3B21F8BB4100FC070E /* KeyBackupRecoverCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19EFA3A21F8BB4100FC070E /* KeyBackupRecoverCoordinator.swift */; };
 		B1A5B33E227ADF2A004CBA85 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A5B33D227ADF2A004CBA85 /* UIImage.swift */; };
+		B1A67946257559CF00BB0C69 /* RootTabEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11F4D2025681500009F1586 /* RootTabEmptyView.swift */; };
+		B1A67947257559D500BB0C69 /* RootTabEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B11F4D1E256814E5009F1586 /* RootTabEmptyView.xib */; };
 		B1A6805424B7C65200E312CC /* MajorUpdateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A6805324B7C65200E312CC /* MajorUpdateManager.swift */; };
 		B1A68593229E807A00D6C09A /* RoomBubbleCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A68592229E807800D6C09A /* RoomBubbleCellLayout.swift */; };
 		B1A6C10723881EF2002882FD /* SlidingModalPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A6C10623881EF2002882FD /* SlidingModalPresenter.swift */; };
@@ -1244,8 +1244,8 @@
 		B110872221F098F0003554A5 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
 		B11291E9238D35590077B478 /* SlidingModalPresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingModalPresentable.swift; sourceTree = "<group>"; };
 		B11291EB238D704C0077B478 /* FloatingPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPoint.swift; sourceTree = "<group>"; };
-		B11F4D1A25680010009F1586 /* HomeEmptyView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeEmptyView.xib; sourceTree = "<group>"; };
-		B11F4D1B25680010009F1586 /* HomeEmptyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeEmptyView.swift; sourceTree = "<group>"; };
+		B11F4D1E256814E5009F1586 /* RootTabEmptyView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RootTabEmptyView.xib; sourceTree = "<group>"; };
+		B11F4D2025681500009F1586 /* RootTabEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabEmptyView.swift; sourceTree = "<group>"; };
 		B120863622EF375F001F89E0 /* ReactionHistoryBridgeCoordinatorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionHistoryBridgeCoordinatorPresenter.swift; sourceTree = "<group>"; };
 		B124BBD625645F3F0028996D /* RoomIdComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomIdComponents.swift; sourceTree = "<group>"; };
 		B125FE1A231D5BF200B72806 /* SettingsDiscoveryTableViewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDiscoveryTableViewSection.swift; sourceTree = "<group>"; };
@@ -4465,8 +4465,6 @@
 				B1B5594320EF7BD000210D55 /* TableViewCellWithCollectionView.h */,
 				B1B5594020EF7BD000210D55 /* TableViewCellWithCollectionView.m */,
 				B1B5593F20EF7BD000210D55 /* TableViewCellWithCollectionView.xib */,
-				B11F4D1B25680010009F1586 /* HomeEmptyView.swift */,
-				B11F4D1A25680010009F1586 /* HomeEmptyView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -4479,6 +4477,8 @@
 				B1B5594F20EF9A8600210D55 /* RecentTableViewCell.h */,
 				B1B5595020EF9A8600210D55 /* RecentTableViewCell.m */,
 				B1B5595120EF9A8600210D55 /* RecentTableViewCell.xib */,
+				B11F4D2025681500009F1586 /* RootTabEmptyView.swift */,
+				B11F4D1E256814E5009F1586 /* RootTabEmptyView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -5941,12 +5941,12 @@
 				B1B558BB20EF768F00210D55 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				B1B557A720EF5A1B00210D55 /* DeviceTableViewCell.xib in Resources */,
 				B14084C823BF76CB0010F692 /* BubbleCellContentView.xib in Resources */,
+				B1A67947257559D500BB0C69 /* RootTabEmptyView.xib in Resources */,
 				B1B557D220EF5E3500210D55 /* MediaAlbumTableCell.xib in Resources */,
 				B1B558C520EF768F00210D55 /* RoomOutgoingEncryptedTextMsgBubbleCell.xib in Resources */,
 				B1B5582B20EF666100210D55 /* DirectoryRecentTableViewCell.xib in Resources */,
 				B105778F2213052A00334B1E /* KeyBackupSetupSuccessFromRecoveryKeyViewController.storyboard in Resources */,
 				EC1CA89924C9C9A200DE9EBF /* SetupBiometricsViewController.storyboard in Resources */,
-				B1581A4425713B1B00B606BA /* HomeEmptyView.xib in Resources */,
 				B1B5590F20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.xib in Resources */,
 				B1B5578520EF564900210D55 /* GroupTableViewCellWithSwitch.xib in Resources */,
 				B1B557B320EF5AEF00210D55 /* EventDetailsView.xib in Resources */,
@@ -6516,6 +6516,7 @@
 				32F6B96B2270623100BBA352 /* KeyVerificationDataLoadingViewAction.swift in Sources */,
 				B1B558C920EF768F00210D55 /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				B1B5571B20EE6C4D00210D55 /* DeactivateAccountViewController.m in Sources */,
+				B1A67946257559CF00BB0C69 /* RootTabEmptyView.swift in Sources */,
 				B1DCC63922E85E9A00625807 /* EmojiMartStore.swift in Sources */,
 				B10A3E9024FE4368007C380F /* ElementViewController.swift in Sources */,
 				B1B5590620EF768F00210D55 /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */,
@@ -6727,7 +6728,6 @@
 				B14F143322144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewModel.swift in Sources */,
 				B1B336C0242B933700F95EC4 /* KeyVerificationSelfVerifyStartViewModelType.swift in Sources */,
 				32A6001822C661100042C1D9 /* EditHistoryViewModel.swift in Sources */,
-				B1581A4325713B1500B606BA /* HomeEmptyView.swift in Sources */,
 				32607D6E243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewModelType.swift in Sources */,
 				B1B558D020EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				B1B558CF20EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,

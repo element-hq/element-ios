@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,15 +17,18 @@
 import Foundation
 import Reusable
 
+/// `RootTabEmptyView` is a view to display when there is no UI item to display on a screen.
 @objcMembers
-final class HomeEmptyView: UIView, NibLoadable {
+final class RootTabEmptyView: UIView, NibLoadable {
     
     // MARK: - Properties
     
     // MARK: Outlets
-        
+    
+    @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private(set) weak var contentView: UIView!
     
     // MARK: Private
     
@@ -35,8 +38,8 @@ final class HomeEmptyView: UIView, NibLoadable {
     
     // MARK: - Setup
     
-    class func instantiate() -> HomeEmptyView {
-        let view = HomeEmptyView.loadFromNib()
+    class func instantiate() -> RootTabEmptyView {
+        let view = RootTabEmptyView.loadFromNib()
         view.theme = ThemeService.shared().theme
         return view
     }
@@ -51,13 +54,15 @@ final class HomeEmptyView: UIView, NibLoadable {
     
     // MARK: - Public
     
-    func fill(with displayName: String) {
-        self.titleLabel.text = VectorL10n.homeEmptyViewTitle(displayName)
+    func fill(with image: UIImage, title: String, informationText: String) {
+        self.imageView.image = image
+        self.titleLabel.text = title
+        self.informationLabel.text = informationText
     }
 }
 
 // MARK: - Themable
-extension HomeEmptyView: Themable {
+extension RootTabEmptyView: Themable {
     
     func update(theme: Theme) {
         self.theme = theme
