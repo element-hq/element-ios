@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Room History: Remove the report option for outgoing messages.
 
 🐛 Bugfix
  * 
