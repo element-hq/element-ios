@@ -18,6 +18,10 @@
 import Foundation
 
 extension UITableViewCell {
+    
+    private enum AccessoryImageAlpha {
+        static let highlighted: CGFloat = 0.3
+    }
 
     /// Returns safe area insetted separator inset. Should only be used when custom constraints on custom table view cells are being set according to separator insets.
     @objc var vc_separatorInset: UIEdgeInsets {
@@ -30,8 +34,10 @@ extension UITableViewCell {
     }
     
     @objc func vc_setAccessoryDisclosureIndicator(withTintColor tintColor: UIColor) {
-        let disclosureImageView = UIImageView(image: Asset.Images.disclosureIcon.image)
+        let disclosureImage = Asset.Images.disclosureIcon.image.withRenderingMode(.alwaysTemplate)
+        let disclosureImageView = UIImageView(image: disclosureImage)
         disclosureImageView.tintColor = tintColor
+        disclosureImageView.highlightedImage = disclosureImage.vc_withAlpha(AccessoryImageAlpha.highlighted)
         self.accessoryView = disclosureImageView
     }        
     

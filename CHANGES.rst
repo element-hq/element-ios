@@ -63,6 +63,7 @@ Changes in 1.1.0 (2020-11-17)
  * MXProfiler: Use this new module to track launch animation time reliably.
  * KeyValueStore improvements.
  * Jitsi: Support authenticated Jitsi widgets (#3655).
+ * Room invites: Allow to accept a room invite without preview.
 
 🐛 Bugfix
  * Fix analytics in order to track performance improvements.

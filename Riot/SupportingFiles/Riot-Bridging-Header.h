@@ -25,3 +25,4 @@
 #import "RoomFilesViewController.h"
 #import "RoomSettingsViewController.h"
 #import "JitsiWidgetData.h"
+#import "InviteRecentTableViewCell.h"
