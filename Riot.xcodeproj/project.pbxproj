@@ -194,7 +194,6 @@
 		B10A3E9D24FE88CB007C380F /* RootRouterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10A3E9B24FE88CB007C380F /* RootRouterType.swift */; };
 		B10A3E9F24FFC3E6007C380F /* PlaceholderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10A3E9E24FFC3E5007C380F /* PlaceholderDetailViewController.swift */; };
 		B10CFBC32268D99D00A5842E /* JitsiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10CFBC22268D99D00A5842E /* JitsiService.swift */; };
-		B10D8F60256EBDC200B0FE91 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10D8F5F256EBDC000B0FE91 /* UIImageView.swift */; };
 		B1107EC82200B0720038014B /* KeyBackupRecoverSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1107EC72200B0720038014B /* KeyBackupRecoverSuccessViewController.swift */; };
 		B1107ECA2200B09F0038014B /* KeyBackupRecoverSuccessViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1107EC92200B09F0038014B /* KeyBackupRecoverSuccessViewController.storyboard */; };
 		B110871D21F087F4003554A5 /* KeyBackupSetupPassphraseViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B110871C21F087F4003554A5 /* KeyBackupSetupPassphraseViewState.swift */; };
@@ -1236,7 +1235,6 @@
 		B10A3E9B24FE88CB007C380F /* RootRouterType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootRouterType.swift; sourceTree = "<group>"; };
 		B10A3E9E24FFC3E5007C380F /* PlaceholderDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderDetailViewController.swift; sourceTree = "<group>"; };
 		B10CFBC22268D99D00A5842E /* JitsiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JitsiService.swift; sourceTree = "<group>"; };
-		B10D8F5F256EBDC000B0FE91 /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		B1107EC72200B0720038014B /* KeyBackupRecoverSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverSuccessViewController.swift; sourceTree = "<group>"; };
 		B1107EC92200B09F0038014B /* KeyBackupRecoverSuccessViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = KeyBackupRecoverSuccessViewController.storyboard; sourceTree = "<group>"; };
 		B110871C21F087F4003554A5 /* KeyBackupSetupPassphraseViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupSetupPassphraseViewState.swift; sourceTree = "<group>"; };
@@ -5462,7 +5460,6 @@
 				ECAE7AED24EFDD1F002FA813 /* MXSessionState.swift */,
 				ECF57A4F250913E4004BBF9D /* MXKTableViewCellWithLabelAndSwitch.swift */,
 				ECF57A5625091ECC004BBF9D /* MXKTableViewCellWithTextView.swift */,
-				B10D8F5F256EBDC000B0FE91 /* UIImageView.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -6399,7 +6396,6 @@
 				B1B558D420EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				B169331420F3CAFC00746532 /* PublicRoomTableViewCell.m in Sources */,
 				32BF995721FB07A400698084 /* SettingsKeyBackupTableViewSection.swift in Sources */,
-				B10D8F60256EBDC200B0FE91 /* UIImageView.swift in Sources */,
 				3291DC8D23E0BFF10009732F /* SecurityViewController.m in Sources */,
 				B18DEDD4243377C10075FEF7 /* KeyVerificationSelfVerifyWaitViewModelType.swift in Sources */,
 				B1C45A88232A8C2600165425 /* SettingsIdentityServerViewState.swift in Sources */,
