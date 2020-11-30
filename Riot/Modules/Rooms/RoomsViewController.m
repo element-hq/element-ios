@@ -379,13 +379,27 @@
 
 - (void)updateEmptyView
 {
-    [self.emptyView fillWith:[UIImage imageNamed:@"rooms_empty_screen_artwork"]
+    [self.emptyView fillWith:[self emptyViewArtwork]
                        title:NSLocalizedStringFromTable(@"rooms_empty_view_title", @"Vector", nil)
              informationText:NSLocalizedStringFromTable(@"rooms_empty_view_information", @"Vector", nil)];
 }
 
+- (UIImage*)emptyViewArtwork
+{
+    if (ThemeService.shared.isCurrentThemeDark)
+    {
+        return [UIImage imageNamed:@"rooms_empty_screen_artwork_dark"];
+    }
+    else
+    {
+        return [UIImage imageNamed:@"rooms_empty_screen_artwork"];
+    }
+}
+
 - (BOOL)shouldShowEmptyView
 {
+    return YES;
+    
     // Do not present empty screen while searching
     if (recentsDataSource.searchPatternsList.count)
     {

@@ -465,9 +465,21 @@
 
 - (void)updateEmptyView
 {
-    [self.emptyView fillWith:[UIImage imageNamed:@"people_empty_screen_artwork"]
+    [self.emptyView fillWith:[self emptyViewArtwork]
                        title:NSLocalizedStringFromTable(@"people_empty_view_title", @"Vector", nil)
              informationText:NSLocalizedStringFromTable(@"people_empty_view_information", @"Vector", nil)];
+}
+
+- (UIImage*)emptyViewArtwork
+{
+    if (ThemeService.shared.isCurrentThemeDark)
+    {
+        return [UIImage imageNamed:@"people_empty_screen_artwork_dark"];
+    }
+    else
+    {
+        return [UIImage imageNamed:@"people_empty_screen_artwork"];
+    }
 }
 
 - (BOOL)shouldShowEmptyView

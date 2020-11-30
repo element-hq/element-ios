@@ -810,9 +810,21 @@
     
     NSString *title = [NSString stringWithFormat:NSLocalizedStringFromTable(@"home_empty_view_title", @"Vector", nil), displayName];
     
-    [self.emptyView fillWith:[UIImage imageNamed:@"home_empty_screen_artwork"]
+    [self.emptyView fillWith:[self emptyViewArtwork]
                        title:title
              informationText:NSLocalizedStringFromTable(@"home_empty_view_information", @"Vector", nil)];
+}
+
+- (UIImage*)emptyViewArtwork
+{
+    if (ThemeService.shared.isCurrentThemeDark)
+    {
+        return [UIImage imageNamed:@"home_empty_screen_artwork_dark"];
+    }
+    else
+    {
+        return [UIImage imageNamed:@"home_empty_screen_artwork"];
+    }
 }
 
 - (BOOL)shouldShowEmptyView
