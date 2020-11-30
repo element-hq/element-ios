@@ -2,7 +2,7 @@ Changes to be released in next version
 =================================================
 
 ✨ Features
- * 
+ * Added blur background support for iPhone and iPad (#3842)
 
 🙌 Improvements
  * 
@@ -11,7 +11,7 @@ Changes to be released in next version
  * 
 
 ⚠️ API Changes
- * 
+ * Slight API changes for SlidingModalPresenter to avoid race conditions while sharing a presenter. (#3842)
 
 🗣 Translations
  * 
