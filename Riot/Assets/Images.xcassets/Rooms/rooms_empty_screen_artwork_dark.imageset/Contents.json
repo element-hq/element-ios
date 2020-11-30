@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "home_empty_screen_artwork.png",
+      "filename" : "rooms_empty_screen_artwork_dark.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "home_empty_screen_artwork@2x.png",
+      "filename" : "rooms_empty_screen_artwork_dark@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "home_empty_screen_artwork@3x.png",
+      "filename" : "rooms_empty_screen_artwork_dark@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
