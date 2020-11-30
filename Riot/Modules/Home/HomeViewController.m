@@ -808,7 +808,8 @@
     NSString *displayName = myUser.displayname ?: myUser.userId;
     displayName = displayName ?: @"";
     
-    NSString *title = [NSString stringWithFormat:NSLocalizedStringFromTable(@"home_empty_view_title", @"Vector", nil), displayName];
+    NSString *appName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
+    NSString *title = [NSString stringWithFormat:NSLocalizedStringFromTable(@"home_empty_view_title", @"Vector", nil), appName, displayName];
     
     [self.emptyView fillWith:[self emptyViewArtwork]
                        title:title

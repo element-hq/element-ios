@@ -1358,9 +1358,9 @@ internal enum VectorL10n {
   internal static var homeEmptyViewInformation: String { 
     return VectorL10n.tr("Vector", "home_empty_view_information") 
   }
-  /// Welcome to Element,\n%@
-  internal static func homeEmptyViewTitle(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "home_empty_view_title", p1)
+  /// Welcome to %@,\n%@
+  internal static func homeEmptyViewTitle(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "home_empty_view_title", p1, p2)
   }
   /// Could not connect to the homeserver.
   internal static var homeserverConnectionLost: String { 
