@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * Home: Add empty screen when there is nothing to display (#3823).
+ * Empty views: Add empty screen when there is nothing to display on home, people, favourites and rooms screen (#3823 & #3836).
 
 🐛 Bugfix
  * 
