@@ -1247,3 +1247,10 @@
 
 "secrets_recovery_reset_action_part_1" = "Забыли или потеряли все варианты восстановления? ";
 "less" = "Меньше";
+"home_empty_view_information" = "Комплексное безопасное приложение для общения в чате для команд, друзей и организаций. Нажмите кнопку \"+\" внизу, чтобы добавить людей и комнаты.";
+
+// MARK: - Home
+
+"home_empty_view_title" = "Добро пожаловать в Element!\n%@";
+"secrets_setup_recovery_passphrase_summary_information" = "Запомните свою секретную фразу. Её можно использовать для разблокировки ваших зашифрованных сообщений и данных.";
+"secrets_setup_recovery_passphrase_summary_title" = "Сохраните вашу секретную фразу";
