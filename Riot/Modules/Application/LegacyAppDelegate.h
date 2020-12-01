@@ -50,7 +50,11 @@ extern NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey;
  */
 extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 
-@interface LegacyAppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate, JitsiViewControllerDelegate>
+@interface LegacyAppDelegate : UIResponder <
+UIApplicationDelegate,
+UISplitViewControllerDelegate,
+UINavigationControllerDelegate,
+JitsiViewControllerDelegate>
 {
     // background sync management
     void (^_completionHandler)(UIBackgroundFetchResult);

@@ -38,4 +38,9 @@ extension String {
     func vc_caseInsensitiveContains(_ other: String) -> Bool {
         return self.range(of: other, options: .caseInsensitive) != nil
     }
+    
+    /// Returns a globally unique string
+    static var vc_unique: String {
+        return ProcessInfo.processInfo.globallyUniqueString
+    }
 }

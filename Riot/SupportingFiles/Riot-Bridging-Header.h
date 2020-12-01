@@ -24,3 +24,4 @@
 #import "MXSession+Riot.h"
 #import "RoomFilesViewController.h"
 #import "RoomSettingsViewController.h"
+#import "CallViewController.h"
