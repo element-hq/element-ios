@@ -5,6 +5,7 @@ Changes to be released in next version
  * Added blur background support for iPhone and iPad (#3842)
 
 🙌 Improvements
+ * Room History: Remove the report option for outgoing messages.
  * Empty views: Add empty screen when there is nothing to display on home, people, favourites and rooms screen (#3836).
 
 🐛 Bugfix
