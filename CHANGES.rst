@@ -2,16 +2,17 @@ Changes to be released in next version
 =================================================
 
 ✨ Features
- * 
+ * Added blur background support for iPhone and iPad (#3842)
 
 🙌 Improvements
  * Room History: Remove the report option for outgoing messages.
+ * Empty views: Add empty screen when there is nothing to display on home, people, favourites and rooms screen (#3836).
 
 🐛 Bugfix
  * 
 
 ⚠️ API Changes
- * 
+ * Slight API changes for SlidingModalPresenter to avoid race conditions while sharing a presenter. (#3842)
 
 🗣 Translations
  * 
@@ -63,6 +64,7 @@ Changes in 1.1.0 (2020-11-17)
  * MXProfiler: Use this new module to track launch animation time reliably.
  * KeyValueStore improvements.
  * Jitsi: Support authenticated Jitsi widgets (#3655).
+ * Room invites: Allow to accept a room invite without preview.
 
 🐛 Bugfix
  * Fix analytics in order to track performance improvements.
