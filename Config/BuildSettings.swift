@@ -25,19 +25,31 @@ final class BuildSettings: NSObject {
     
     // MARK: - Bundle Settings
     static var bundleDisplayName: String {
-        Bundle.app.object(forInfoDictionaryKey: "CFBundleDisplayName") as! String
+        guard let bundleDisplayName = Bundle.app.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String else {
+            fatalError("CFBundleDisplayName should be defined")
+        }
+        return bundleDisplayName
     }
     
     static var applicationGroupIdentifier: String {
-        Bundle.app.object(forInfoDictionaryKey: "applicationGroupIdentifier") as! String
+        guard let applicationGroupIdentifier = Bundle.app.object(forInfoDictionaryKey: "applicationGroupIdentifier") as? String else {
+            fatalError("applicationGroupIdentifier should be defined")
+        }
+        return applicationGroupIdentifier
     }
     
     static var baseBundleIdentifier: String {
-        Bundle.app.object(forInfoDictionaryKey: "baseBundleIdentifier") as! String
+        guard let baseBundleIdentifier = Bundle.app.object(forInfoDictionaryKey: "baseBundleIdentifier") as? String else {
+            fatalError("baseBundleIdentifier should be defined")
+        }
+        return baseBundleIdentifier
     }
     
     static var keychainAccessGroup: String {
-        Bundle.app.object(forInfoDictionaryKey: "keychainAccessGroup") as! String
+        guard let keychainAccessGroup = Bundle.app.object(forInfoDictionaryKey: "keychainAccessGroup") as? String else {
+            fatalError("keychainAccessGroup should be defined")
+        }
+        return keychainAccessGroup
     }
     
     static var pushKitAppIdProd: String {

@@ -375,4 +375,45 @@
     self.roomsDirectoryCoordinatorBridgePresenter = nil;
 }
 
+#pragma mark - Empty view management
+
+- (void)updateEmptyView
+{
+    [self.emptyView fillWith:[self emptyViewArtwork]
+                       title:NSLocalizedStringFromTable(@"rooms_empty_view_title", @"Vector", nil)
+             informationText:NSLocalizedStringFromTable(@"rooms_empty_view_information", @"Vector", nil)];
+}
+
+- (UIImage*)emptyViewArtwork
+{
+    if (ThemeService.shared.isCurrentThemeDark)
+    {
+        return [UIImage imageNamed:@"rooms_empty_screen_artwork_dark"];
+    }
+    else
+    {
+        return [UIImage imageNamed:@"rooms_empty_screen_artwork"];
+    }
+}
+
+- (BOOL)shouldShowEmptyView
+{
+    // Do not present empty screen while searching
+    if (recentsDataSource.searchPatternsList.count)
+    {
+        return NO;
+    }
+    
+    // Otherwise check the number of items to display
+    return [self totalItemCounts] == 0;
+}
+
+// Total items to display on the screen
+- (NSUInteger)totalItemCounts
+{
+    return recentsDataSource.conversationCellDataArray.count
+    + recentsDataSource.publicRoomsDirectoryDataSource.roomsCount
+    + recentsDataSource.invitesCellDataArray.count;
+}
+
 @end

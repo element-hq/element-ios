@@ -95,6 +95,16 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
     return theme;
 }
 
+- (BOOL)isCurrentThemeDark
+{
+    if ([self.theme.identifier isEqualToString:@"dark"] || [self.theme.identifier isEqualToString:@"black"])
+    {
+        return YES;
+    }
+    
+    return NO;
+}
+
 #pragma mark - Private methods
 
 - (instancetype)init
