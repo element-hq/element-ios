@@ -1208,4 +1208,13 @@
 
 // MARK: - Home
 
-"home_empty_view_title" = "Tere tulemast kasutama suhtlusrakendust Element,\n%@";
+"home_empty_view_title" = "Tere tulemast suhtlusrakendusse %@,\n%@";
+"favourites_empty_view_information" = "Lemmikuid saad lisada mitmel viisil - neist kõgi lihtsam on see, et vajutad nime ja hoiad seda mõne hetke. Vali siis tähega ikoon ja ongi lisatud.";
+
+// MARK: - Favourites
+
+"favourites_empty_view_title" = "Lemmikjututoad ja -inimesed";
+"rooms_empty_view_information" = "Jututoad sobivad igasuguste rühmavestluste jaoks, olgu need siis avalikud või privaatsed. Olemasolevate jututubade otsimiseks või uute lisamiseks klõpsi + ikooni.";
+"rooms_empty_view_title" = "Jututoad";
+"people_empty_view_information" = "Suhltle turvaliselt kellega soovid. Inimeste lisamiseks klõpsi + ikooni.";
+"people_empty_view_title" = "Inimesed";
