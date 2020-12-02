@@ -1235,3 +1235,8 @@
 "secrets_recovery_reset_action_part_2" = "Redefinir tudo";
 "secrets_setup_recovery_passphrase_summary_information" = "Lembre-se da sua frase de segurança. Ela pode ser usada para desbloquear suas mensagens e dados criptografados.";
 "secrets_setup_recovery_passphrase_summary_title" = "Salve a sua frase de segurança";
+"home_empty_view_information" = "O aplicativo de conversas seguro e completo para equipes, amigos e organizações. Toque no botão \"+\" abaixo para adicionar pessoas e salas.";
+
+// MARK: - Home
+
+"home_empty_view_title" = "Boas-vindas ao Element,\n%@";
