@@ -29,6 +29,7 @@
 
 @protocol Configurable;
 @protocol LegacyAppDelegateDelegate;
+@class CallBar;
 
 #pragma mark - Notifications
 /**
@@ -238,7 +239,7 @@ JitsiViewControllerDelegate>
  Call status window displayed when user goes back to app during a call.
  */
 @property (nonatomic, readonly) UIWindow* callStatusBarWindow;
-@property (nonatomic, readonly) UIButton* callStatusBarButton;
+@property (nonatomic, readonly) CallBar* callBar;
 
 #pragma mark - App version management
 

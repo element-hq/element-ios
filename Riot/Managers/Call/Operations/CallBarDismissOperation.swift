@@ -19,19 +19,16 @@ import Foundation
 class CallBarDismissOperation: AsyncOperation {
     
     private var service: CallService
-    private var callVC: CallViewController
     private var completion: (() -> Void)?
     
     init(service: CallService,
-         callVC: CallViewController,
          completion: (() -> Void)? = nil) {
         self.service = service
-        self.callVC = callVC
         self.completion = completion
     }
     
     override func main() {
-        service.delegate?.callService(service, dismissCallBarFor: callVC, completion: {
+        service.delegate?.callService(service, dismissCallBar: {
             self.finish()
             self.completion?()
         })

@@ -90,7 +90,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
 NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUniversalLinkDidChangeNotification";
 
-@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate, CallServiceDelegate>
+@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate, CallServiceDelegate, CallBarDelegate>
 {
     /**
      Reachability observer
@@ -3043,7 +3043,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
             MXRoom *room = [_jitsiViewController.widget.mxSession roomWithRoomId:_jitsiViewController.widget.roomId];
             NSString *btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"active_call_details", @"Vector", nil), room.summary.displayname];
-            [self addCallStatusBar:btnTitle];
+            [self updateCallStatusBar:btnTitle];
 
             if (completion)
             {
@@ -3186,8 +3186,13 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     return result;
 }
 
-- (void)addCallStatusBar:(NSString*)buttonTitle
+- (void)updateCallStatusBar:(NSString*)title
 {
+    if (_callBar)
+    {
+        _callBar.title = title;
+        return;
+    }
     // Add a call status bar
     CGSize topBarSize = CGSizeMake([[UIScreen mainScreen] bounds].size.width, [self calculateCallStatusBarHeight]);
 
@@ -3195,42 +3200,20 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     _callStatusBarWindow.windowLevel = UIWindowLevelStatusBar;
     
     // Create statusBarButton
-    _callStatusBarButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _callStatusBarButton.frame = CGRectMake(0, 0, topBarSize.width, topBarSize.height);
-    
-    [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateNormal];
-    [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateHighlighted];
-
-    _callStatusBarButton.titleLabel.textColor = ThemeService.shared.theme.backgroundColor;
-
-    _callStatusBarButton.titleLabel.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
-    
-    [_callStatusBarButton setBackgroundColor:ThemeService.shared.theme.tintColor];
-    [_callStatusBarButton addTarget:self action:@selector(onCallStatusBarButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    _callBar = [CallBar instantiate];
+    _callBar.frame = CGRectMake(0, 0, topBarSize.width, topBarSize.height);
+    _callBar.title = title;
+    _callBar.backgroundColor = ThemeService.shared.theme.tintColor;
+    _callBar.delegate = self;
     
     // Place button into the new window
-    [_callStatusBarButton setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [_callStatusBarWindow addSubview:_callStatusBarButton];
+    [_callBar setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [_callStatusBarWindow addSubview:_callBar];
     
-    // Force callStatusBarButton to fill the window (to handle auto-layout in case of screen rotation)
-    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:_callStatusBarButton
-                                                                       attribute:NSLayoutAttributeWidth
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:_callStatusBarWindow
-                                                                       attribute:NSLayoutAttributeWidth
-                                                                      multiplier:1.0
-                                                                        constant:0];
-    
-    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:_callStatusBarButton
-                                                                        attribute:NSLayoutAttributeHeight
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:_callStatusBarWindow
-                                                                        attribute:NSLayoutAttributeHeight
-                                                                       multiplier:1.0
-                                                                         constant:0];
-    
-    [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint]];
-    
+    // Force callBar to fill the window (to handle auto-layout in case of screen rotation)
+    [_callBar.widthAnchor constraintEqualToAnchor:_callStatusBarWindow.widthAnchor].active = YES;
+    [_callBar.heightAnchor constraintEqualToAnchor:_callStatusBarWindow.heightAnchor].active = YES;
+
     _callStatusBarWindow.hidden = NO;
     [self statusBarDidChangeFrame];
     
@@ -3251,23 +3234,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         
         // Hide & destroy it
         _callStatusBarWindow.hidden = YES;
-        [_callStatusBarButton removeFromSuperview];
-        _callStatusBarButton = nil;
+        [_callBar removeFromSuperview];
+        _callBar = nil;
         _callStatusBarWindow = nil;
         
         [self statusBarDidChangeFrame];
-    }
-}
-
-- (void)onCallStatusBarButtonPressed
-{
-    if ([_callService callStatusBarButtonTapped])
-    {
-        return;
-    }
-    else if (_jitsiViewController)
-    {
-        [self presentJitsiViewController:nil];
     }
 }
 
@@ -3307,20 +3278,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             }
         }
 
-        UIEdgeInsets callBarButtonContentEdgeInsets = UIEdgeInsetsZero;
-
-        if (@available(iOS 11.0, *))
-        {
-            callBarButtonContentEdgeInsets = UIApplication.sharedApplication.keyWindow.safeAreaInsets;
-            //  should override top inset
-            callBarButtonContentEdgeInsets.top = callStatusBarHeight - CALL_STATUS_BAR_HEIGHT;
-            //  should ignore bottom inset
-            callBarButtonContentEdgeInsets.bottom = 0.0;
-            //  should keep left, and right insets as original
-        }
-
-        _callStatusBarButton.contentEdgeInsets = callBarButtonContentEdgeInsets;
-        
         // Apply the vertical offset due to call status bar
         rootControllerFrame.origin.y = callStatusBarHeight;
         rootControllerFrame.size.height -= callStatusBarHeight;
@@ -4490,10 +4447,43 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)callService:(CallService *)service presentCallBarFor:(CallViewController *)viewController completion:(void (^)(void))completion
+- (void)callService:(CallService *)service presentCallBarFor:(CallViewController *)activeCallViewController numberOfPausedCalls:(NSUInteger)numberOfPausedCalls completion:(void (^)(void))completion
 {
-    NSString *btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"active_call_details", @"Vector", nil), viewController.callerNameLabel.text];
-    [self addCallStatusBar:btnTitle];
+    NSString *btnTitle;
+    
+    if (activeCallViewController)
+    {
+        //  TODO: Add timer for active call duration
+        if (numberOfPausedCalls == 0)
+        {
+            //  only one active
+            btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"callbar_only_single_active", @"Vector", nil), activeCallViewController.callStatusLabel.text];
+        }
+        else if (numberOfPausedCalls == 1)
+        {
+            //  one active and one paused
+            btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"callbar_active_and_single_paused", @"Vector", nil), activeCallViewController.callStatusLabel.text];
+        }
+        else
+        {
+            //  one active and multiple paused
+            btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"callbar_active_and_multiple_paused", @"Vector", nil), activeCallViewController.callStatusLabel.text, @(numberOfPausedCalls)];
+        }
+    }
+    else
+    {
+        //  no active calls
+        if (numberOfPausedCalls == 1)
+        {
+            btnTitle = NSLocalizedStringFromTable(@"callbar_only_single_paused", @"Vector", nil);
+        }
+        else
+        {
+            btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"callbar_only_multiple_paused", @"Vector", nil), @(numberOfPausedCalls)];
+        }
+    }
+    
+    [self updateCallStatusBar:btnTitle];
     
     if (completion)
     {
@@ -4501,13 +4491,27 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)callService:(CallService *)service dismissCallBarFor:(CallViewController *)viewController completion:(void (^)(void))completion
+- (void)callService:(CallService *)service dismissCallBar:(void (^)(void))completion
 {
     [self removeCallStatusBar];
     
     if (completion)
     {
         completion();
+    }
+}
+
+#pragma mark - CallBarDelegate
+
+- (void)callBarDidTapReturnButton:(CallBar *)callBar
+{
+    if ([_callService callStatusBarButtonTapped])
+    {
+        return;
+    }
+    else if (_jitsiViewController)
+    {
+        [self presentJitsiViewController:nil];
     }
 }
 

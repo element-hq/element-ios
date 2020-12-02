@@ -897,6 +897,8 @@
 		EC9E9B102575B33E0007C0A0 /* CallServiceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9E9B0F2575B33E0007C0A0 /* CallServiceDelegate.swift */; };
 		EC9E9B112575B3960007C0A0 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DB4F0A223131600065DBFA /* String.swift */; };
 		EC9E9B122575B3A70007C0A0 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DB4F05223015080065DBFA /* Character.swift */; };
+		EC9E9B1425767C460007C0A0 /* CallBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9E9B1325767C460007C0A0 /* CallBar.swift */; };
+		EC9E9B1725767D4B0007C0A0 /* CallBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC9E9B1625767D4B0007C0A0 /* CallBar.xib */; };
 		ECAE7AE524EC0E01002FA813 /* TableViewSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAE7AE424EC0E01002FA813 /* TableViewSections.swift */; };
 		ECAE7AE724EC15F7002FA813 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAE7AE624EC15F7002FA813 /* Section.swift */; };
 		ECAE7AE924EC1888002FA813 /* Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAE7AE824EC1888002FA813 /* Row.swift */; };
@@ -2132,6 +2134,8 @@
 		EC9E9B0B2575AF9B0007C0A0 /* CallBarDismissOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallBarDismissOperation.swift; sourceTree = "<group>"; };
 		EC9E9B0D2575AFB80007C0A0 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		EC9E9B0F2575B33E0007C0A0 /* CallServiceDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallServiceDelegate.swift; sourceTree = "<group>"; };
+		EC9E9B1325767C460007C0A0 /* CallBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallBar.swift; sourceTree = "<group>"; };
+		EC9E9B1625767D4B0007C0A0 /* CallBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CallBar.xib; sourceTree = "<group>"; };
 		ECAE7AE424EC0E01002FA813 /* TableViewSections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewSections.swift; sourceTree = "<group>"; };
 		ECAE7AE624EC15F7002FA813 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		ECAE7AE824EC1888002FA813 /* Row.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Row.swift; sourceTree = "<group>"; };
@@ -4008,6 +4012,7 @@
 				B1B5577B20EE84BE00210D55 /* CircleButton.m */,
 				B1B5577A20EE84BD00210D55 /* IncomingCallView.h */,
 				B1B5577C20EE84BF00210D55 /* IncomingCallView.m */,
+				EC9E9B1525767D3A0007C0A0 /* CallBar */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -5185,6 +5190,15 @@
 			path = Operations;
 			sourceTree = "<group>";
 		};
+		EC9E9B1525767D3A0007C0A0 /* CallBar */ = {
+			isa = PBXGroup;
+			children = (
+				EC9E9B1325767C460007C0A0 /* CallBar.swift */,
+				EC9E9B1625767D4B0007C0A0 /* CallBar.xib */,
+			);
+			path = CallBar;
+			sourceTree = "<group>";
+		};
 		ECAE7AEA24EC223D002FA813 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -5959,6 +5973,7 @@
 				B1C562E5228C7C8D0037F12A /* RoomContextualMenuViewController.storyboard in Resources */,
 				3232ABA2225730E100AD6A5C /* DeviceVerificationStartViewController.storyboard in Resources */,
 				3284A35120A07C210044F922 /* postMessageAPI.js in Resources */,
+				EC9E9B1725767D4B0007C0A0 /* CallBar.xib in Resources */,
 				EC1CA8D424D8103400DE9EBF /* App-Common.xcconfig in Resources */,
 				B1B557A220EF58AD00210D55 /* ContactTableViewCell.xib in Resources */,
 				ECFBD5CE250A7AAF00DD5F5A /* DirectoryNetworkTableHeaderFooterView.xib in Resources */,
@@ -6415,6 +6430,7 @@
 				B1B5573E20EE6C4D00210D55 /* RiotNavigationController.m in Sources */,
 				B1B5593B20EF7BAC00210D55 /* TableViewCellWithCheckBoxAndLabel.m in Sources */,
 				B1B5581A20EF625800210D55 /* ExpandedRoomTitleView.m in Sources */,
+				EC9E9B1425767C460007C0A0 /* CallBar.swift in Sources */,
 				B1107EC82200B0720038014B /* KeyBackupRecoverSuccessViewController.swift in Sources */,
 				B1BEE74C23E093260003A4CB /* UserVerificationSessionStatusViewController.swift in Sources */,
 				EC711BAB24A63B58008F830C /* SecureBackupSetupIntroViewController.swift in Sources */,

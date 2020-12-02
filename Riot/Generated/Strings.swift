@@ -466,6 +466,26 @@ internal enum VectorL10n {
   internal static func callNoStunServerErrorUseFallbackButton(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "call_no_stun_server_error_use_fallback_button", p1)
   }
+  /// 1 active call (%@) · %@ paused calls
+  internal static func callbarActiveAndMultiplePaused(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "callbar_active_and_multiple_paused", p1, p2)
+  }
+  /// 1 active call (%@) · 1 paused call
+  internal static func callbarActiveAndSinglePaused(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "callbar_active_and_single_paused", p1)
+  }
+  /// %@ paused calls
+  internal static func callbarOnlyMultiplePaused(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "callbar_only_multiple_paused", p1)
+  }
+  /// Active call (%@)
+  internal static func callbarOnlySingleActive(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "callbar_only_single_active", p1)
+  }
+  /// Paused call
+  internal static var callbarOnlySinglePaused: String { 
+    return VectorL10n.tr("Vector", "callbar_only_single_paused") 
+  }
   /// Camera
   internal static var camera: String { 
     return VectorL10n.tr("Vector", "camera") 

@@ -32,9 +32,13 @@ protocol CallServiceDelegate: class {
     
     //  Call Bar
     func callService(_ service: CallService,
-                     presentCallBarFor viewController: CallViewController,
+                     presentCallBarFor activeCallViewController: CallViewController?,
+                     numberOfPausedCalls: UInt,
                      completion:(() -> Void)?)
     func callService(_ service: CallService,
-                     dismissCallBarFor viewController: CallViewController,
+                     updateCallBarFor activeCallViewController: CallViewController?,
+                     numberOfPausedCalls: UInt,
                      completion:(() -> Void)?)
+    func callService(_ service: CallService,
+                     dismissCallBar completion:(() -> Void)?)
 }

@@ -18,6 +18,7 @@ import Foundation
 import MatrixKit
 
 @objcMembers
+/// Service to manage call screens and call bar UI management.
 class CallService: NSObject {
     
     private var callVCs: [String: CallViewController] = [:]
@@ -26,10 +27,22 @@ class CallService: NSObject {
     private weak var inBarCallVC: CallViewController?
     private var uiOperationQueue: OperationQueue = .main
     private var isStarted: Bool = false
+    private var callTimer: Timer!
     
     private var isCallKitEnabled: Bool {
         MXCallKitAdapter.callKitAvailable() && MXKAppSettings.standard()?.isCallKitEnabled == true
     }
+    
+    private var activeCallVC: CallViewController? {
+        return callVCs.values.filter { (callVC) -> Bool in
+            guard let call = callVC.mxCall else {
+                return false
+            }
+            return !call.isOnHold
+        }.first
+    }
+    
+    //  MARK: - Public
     
     /// Maximum number of concurrent calls allowed.
     let maximumNumberOfConcurrentCalls: UInt = 2
@@ -40,22 +53,77 @@ class CallService: NSObject {
     /// Start the service
     func start() {
         addCallObservers()
+        startCallTimer()
     }
     
     /// Stop the service
     func stop() {
         removeCallObservers()
+        stopCallTimer()
     }
     
     /// Method to be called when the call status bar is tapped.
     /// - Returns: If the user interaction handled or not
     func callStatusBarButtonTapped() -> Bool {
-        guard let inBarCallVC = inBarCallVC else {
+        if let callVC = inBarCallVC ?? activeCallVC {
+            dismissCallBar(for: callVC)
+            presentCallVC(callVC)
+            return true
+        }
+        return false
+    }
+    
+    //  MARK: - Private
+    
+    private func shouldHandleCall(_ call: MXCall) -> Bool {
+        if let delegate = delegate, !delegate.callService(self, shouldHandleNewCall: call) {
             return false
         }
-        dismissCallBar(for: inBarCallVC)
-        presentCallVC(inBarCallVC)
-        return true
+        return callVCs.count < maximumNumberOfConcurrentCalls
+    }
+    
+    private func endCall(withCallId callId: String) {
+        guard let callVC = callVCs[callId] else {
+            return
+        }
+        
+        let completion = { [weak self] in
+            self?.callVCs.removeValue(forKey: callId)
+            callVC.destroy()
+            self?.callBackgroundTasks[callId]?.stop()
+            self?.callBackgroundTasks.removeValue(forKey: callId)
+        }
+        
+        if inBarCallVC == callVC {
+            //  this call currently in the status bar,
+            //  first present it and then dismiss it
+            dismissCallBar(for: callVC)
+            presentCallVC(callVC)
+        }
+        dismissCallVC(callVC, completion: completion)
+    }
+    
+    //  MARK: - Timer
+    
+    private func startCallTimer() {
+        callTimer = Timer.scheduledTimer(timeInterval: 1.0,
+                                                 target: self,
+                                                 selector: #selector(callTimerFired(_:)),
+                                                 userInfo: nil,
+                                                 repeats: true)
+    }
+    
+    private func stopCallTimer() {
+        callTimer.invalidate()
+        callTimer = nil
+    }
+    
+    @objc private func callTimerFired(_ timer: Timer) {
+        guard let inBarCallVC = inBarCallVC else {
+            return
+        }
+        
+        presentCallBar(for: inBarCallVC, isUpdateOnly: true)
     }
     
     //  MARK: - Observers
@@ -136,42 +204,24 @@ class CallService: NSObject {
         case .createAnswer:
             if call.isIncoming, isCallKitEnabled, let callVC = callVCs[call.callId] {
                 presentCallVC(callVC)
+                return
             }
             NSLog("[CallService] callStateChanged: call created answer: \(call.callId)")
+        case .connected:
+            callTimer.fire()
+        case .onHold:
+            callTimer.fire()
+            NSLog("[CallService] callStateChanged: call holded: \(call.callId)")
+        case .remotelyOnHold:
+            callTimer.fire()
+            NSLog("[CallService] callStateChanged: call remotely holded: \(call.callId)")
         case .ended:
             NSLog("[CallService] callStateChanged: call ended: \(call.callId)")
             endCall(withCallId: call.callId)
+            return
         default:
             break
         }
-    }
-    
-    private func shouldHandleCall(_ call: MXCall) -> Bool {
-        if let delegate = delegate, !delegate.callService(self, shouldHandleNewCall: call) {
-            return false
-        }
-        return callVCs.count < maximumNumberOfConcurrentCalls
-    }
-    
-    private func endCall(withCallId callId: String) {
-        guard let callVC = callVCs[callId] else {
-            return
-        }
-        
-        let completion = { [weak self] in
-            self?.callVCs.removeValue(forKey: callId)
-            callVC.destroy()
-            self?.callBackgroundTasks[callId]?.stop()
-            self?.callBackgroundTasks.removeValue(forKey: callId)
-        }
-        
-        if inBarCallVC == callVC {
-            //  this call currently in the status bar,
-            //  first present it and then dismiss it
-            dismissCallBar(for: callVC)
-            presentCallVC(callVC)
-        }
-        dismissCallVC(callVC, completion: completion)
     }
     
     //  MARK: - Call Screens
@@ -204,11 +254,24 @@ class CallService: NSObject {
     
     //  MARK: - Call Bar
     
-    private func presentCallBar(for callVC: CallViewController, completion: (() -> Void)? = nil) {
-        NSLog("[CallService] presentCallBar: call: \(String(describing: callVC.mxCall?.callId))")
+    private func presentCallBar(for callVC: CallViewController?, isUpdateOnly: Bool = false, completion: (() -> Void)? = nil) {
+        NSLog("[CallService] presentCallBar: call: \(String(describing: callVC?.mxCall?.callId))")
+
+        let activeCallVC = self.activeCallVC
         
-        let operation = CallBarPresentOperation(service: self, callVC: callVC) { [weak self] in
-            self?.inBarCallVC = callVC
+        let numberOfPausedCalls = UInt(callVCs.values.filter { (callVC) -> Bool in
+            guard let call = callVC.mxCall else {
+                return false
+            }
+            return call.isOnHold
+        }.count)
+        
+        let operation = CallBarPresentOperation(service: self, activeCallVC: activeCallVC, numberOfPausedCalls: numberOfPausedCalls) { [weak self] in
+            //  active calls are more prior to paused ones.
+            //  So, if user taps the bar when we have one active and one paused calls, we navigate to the active one.
+            if !isUpdateOnly {
+                self?.inBarCallVC = activeCallVC ?? callVC
+            }
             completion?()
         }
         uiOperationQueue.addOperation(operation)
@@ -217,16 +280,19 @@ class CallService: NSObject {
     private func dismissCallBar(for callVC: CallViewController, completion: (() -> Void)? = nil) {
         NSLog("[CallService] dismissCallBar: call: \(String(describing: callVC.mxCall?.callId))")
         
-        let operation = CallBarDismissOperation(service: self, callVC: callVC) { [weak self] in
+        let operation = CallBarDismissOperation(service: self) { [weak self] in
             if callVC == self?.inBarCallVC {
                 self?.inBarCallVC = nil
             }
             completion?()
         }
+        
         uiOperationQueue.addOperation(operation)
     }
     
 }
+
+//  MARK: - MXKCallViewControllerDelegate
 
 extension CallService: MXKCallViewControllerDelegate {
     
