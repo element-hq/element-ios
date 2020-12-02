@@ -1230,6 +1230,14 @@ internal enum VectorL10n {
   internal static var externalLinkConfirmationTitle: String { 
     return VectorL10n.tr("Vector", "external_link_confirmation_title") 
   }
+  /// You can favourite a few ways - the quickest is just to press and hold. Tap the star and they’ll automatically appear here for safe keeping.
+  internal static var favouritesEmptyViewInformation: String { 
+    return VectorL10n.tr("Vector", "favourites_empty_view_information") 
+  }
+  /// Favourite rooms and people
+  internal static var favouritesEmptyViewTitle: String { 
+    return VectorL10n.tr("Vector", "favourites_empty_view_title") 
+  }
   /// File upload
   internal static var fileUploadErrorTitle: String { 
     return VectorL10n.tr("Vector", "file_upload_error_title") 
@@ -1346,13 +1354,13 @@ internal enum VectorL10n {
   internal static var groupSection: String { 
     return VectorL10n.tr("Vector", "group_section") 
   }
-  /// The all-in-one secure chat app for teams, friends and organisations. Tap the "+" button below to add people and rooms.
+  /// The all-in-one secure chat app for teams, friends and organisations. Tap the + button below to add people and rooms.
   internal static var homeEmptyViewInformation: String { 
     return VectorL10n.tr("Vector", "home_empty_view_information") 
   }
-  /// Welcome to Element,\n%@
-  internal static func homeEmptyViewTitle(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "home_empty_view_title", p1)
+  /// Welcome to %@,\n%@
+  internal static func homeEmptyViewTitle(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "home_empty_view_title", p1, p2)
   }
   /// Could not connect to the homeserver.
   internal static var homeserverConnectionLost: String { 
@@ -2017,6 +2025,14 @@ internal enum VectorL10n {
   /// CONVERSATIONS
   internal static var peopleConversationSection: String { 
     return VectorL10n.tr("Vector", "people_conversation_section") 
+  }
+  /// Chat securely with anyone.\nTap the + to start adding people.
+  internal static var peopleEmptyViewInformation: String { 
+    return VectorL10n.tr("Vector", "people_empty_view_information") 
+  }
+  /// People
+  internal static var peopleEmptyViewTitle: String { 
+    return VectorL10n.tr("Vector", "people_empty_view_title") 
   }
   /// INVITES
   internal static var peopleInvitesSection: String { 
@@ -3201,6 +3217,14 @@ internal enum VectorL10n {
   /// Widget ID
   internal static var roomWidgetPermissionWidgetIdPermission: String { 
     return VectorL10n.tr("Vector", "room_widget_permission_widget_id_permission") 
+  }
+  /// Rooms are great for any group chat, private or public. Tap the + to find existing rooms, or make new ones.
+  internal static var roomsEmptyViewInformation: String { 
+    return VectorL10n.tr("Vector", "rooms_empty_view_information") 
+  }
+  /// Rooms
+  internal static var roomsEmptyViewTitle: String { 
+    return VectorL10n.tr("Vector", "rooms_empty_view_title") 
   }
   /// Save
   internal static var save: String { 

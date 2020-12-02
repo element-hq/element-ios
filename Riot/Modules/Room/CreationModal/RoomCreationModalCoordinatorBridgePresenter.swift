@@ -36,9 +36,7 @@ final class RoomCreationModalCoordinatorBridgePresenter: NSObject {
     private let bubbleData: MXKRoomBubbleCellDataStoring
     private var coordinator: RoomCreationEventsModalCoordinator?
     private lazy var slidingModalPresenter: SlidingModalPresenter = {
-        let presenter = SlidingModalPresenter()
-        presenter.isSpanning = true
-        return presenter
+        return SlidingModalPresenter()
     }()
     
     // MARK: Public
@@ -64,6 +62,7 @@ final class RoomCreationModalCoordinatorBridgePresenter: NSObject {
         slidingModalPresenter.present(roomCreationEventsModalCoordinator.toSlidingModalPresentable(),
                                       from: viewController,
                                       animated: animated,
+                                      options: .spanning,
                                       completion: nil)
         
         roomCreationEventsModalCoordinator.start()
