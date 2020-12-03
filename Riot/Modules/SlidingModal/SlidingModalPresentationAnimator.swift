@@ -30,6 +30,7 @@ final class SlidingModalPresentationAnimator: NSObject {
 
     private let isPresenting: Bool
     private let isSpanning: Bool
+    private let blurBackground: Bool
     
     // MARK: - Setup
     
@@ -37,9 +38,10 @@ final class SlidingModalPresentationAnimator: NSObject {
     ///
     /// - Parameter isPresenting: true to animate presentation or false to animate dismissal
     /// - Parameter isSpanning: true to remove left, bottom and right spaces between the screen edges and the content view
-    required public init(isPresenting: Bool, isSpanning: Bool) {
+    required public init(isPresenting: Bool, isSpanning: Bool, blurBackground: Bool) {
         self.isPresenting = isPresenting
         self.isSpanning = isSpanning
+        self.blurBackground = blurBackground
         super.init()
     }
     
@@ -58,7 +60,9 @@ final class SlidingModalPresentationAnimator: NSObject {
         
         let containerView = transitionContext.containerView
         
-        let slidingModalContainerView = isSpanning ? SpanningSlidingModalContainerView.instantiate() : SlidingModalContainerView.instantiate()
+        // Spanning not available for iPad
+        let slidingModalContainerView = isSpanning && UIDevice.current.userInterfaceIdiom != .pad ? SpanningSlidingModalContainerView.instantiate() : SlidingModalContainerView.instantiate()
+        slidingModalContainerView.blurBackground = self.blurBackground
         slidingModalContainerView.alpha = 0
         slidingModalContainerView.updateDimmingViewAlpha(0.0)
         

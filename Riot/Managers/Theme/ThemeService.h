@@ -59,6 +59,10 @@ extern NSString *const kThemeServiceDidChangeThemeNotification;
  */
 - (id<Theme>)themeWithThemeId:(NSString*)themeId;
 
+
+/// Retrun YES if the current is Dark or Black
+- (BOOL)isCurrentThemeDark;
+
 #pragma mark - Riot Colors not yet themeable
 
 @property (nonatomic, readonly) UIColor *riotColorCuriousBlue;

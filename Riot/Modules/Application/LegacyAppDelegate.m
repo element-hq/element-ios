@@ -193,7 +193,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
      The launch animation container view
      */
     UIView *launchAnimationContainerView;
-    NSDate *launchAnimationStart;
 }
 
 @property (strong, nonatomic) UIAlertController *mxInAppNotification;
@@ -443,9 +442,15 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     _handleSelfVerificationRequest = YES;
     
     // Configure our analytics. It will indeed start if the option is enabled
-    [MXSDKOptions sharedInstance].analyticsDelegate = [Analytics sharedInstance];
+    Analytics *analytics = [Analytics sharedInstance];
+    [MXSDKOptions sharedInstance].analyticsDelegate = analytics;
     [DecryptionFailureTracker sharedInstance].delegate = [Analytics sharedInstance];
-    [[Analytics sharedInstance] start];
+    
+    MXBaseProfiler *profiler = [MXBaseProfiler new];
+    profiler.analytics = analytics;
+    [MXSDKOptions sharedInstance].profiler = profiler;
+    
+    [analytics start];
 
     self.localAuthenticationService = [[LocalAuthenticationService alloc] initWithPinCodePreferences:[PinCodePreferences shared]];
     
@@ -580,6 +585,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     [self.pushNotificationService applicationDidEnterBackground];
     
+    // Pause profiling
+    [MXSDKOptions.sharedInstance.profiler pause];
+    
     // Analytics: Force to send the pending actions
     [[DecryptionFailureTracker sharedInstance] dispatch];
     [[Analytics sharedInstance] dispatch];
@@ -591,6 +599,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 
+    [MXSDKOptions.sharedInstance.profiler resume];
+    
     // Force each session to refresh here their publicised groups by user dictionary.
     // When these publicised groups are retrieved for a user, they are cached and reused until the app is backgrounded and enters in the foreground again
     for (MXSession *session in mxSessionArray)
@@ -1091,6 +1101,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)pushNotificationService:(PushNotificationService *)pushNotificationService shouldNavigateToRoomWithId:(NSString *)roomId
 {
+    [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:AnalyticsNoficationsTimeToDisplayContent
+                                                            category:AnalyticsNoficationsCategory];
+    
     _lastNavigatedRoomIdFromPush = roomId;
     [self navigateToRoomById:roomId];
 }
@@ -1744,7 +1757,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             
             [self configureCallManagerIfRequiredForSession:mxSession];
             
-            [self.configuration setupSettingsFor:mxSession];
+            [self.configuration setupSettingsFor:mxSession];                                    
         }
         else if (mxSession.state == MXSessionStateStoreDataReady)
         {
@@ -2292,7 +2305,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         [window addSubview:launchLoadingView];
         
         launchAnimationContainerView = launchLoadingView;
-        launchAnimationStart = [NSDate date];
+        
+        [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:kMXAnalyticsStartupLaunchScreen
+                                                        category:kMXAnalyticsStartupCategory];
     }
 }
 
@@ -2300,16 +2315,14 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     if (launchAnimationContainerView)
     {
-        NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:launchAnimationStart];
-        NSLog(@"[AppDelegate] hideLaunchAnimation: LaunchAnimation was shown for %.3fms", duration * 1000);
-        
-        // Track it on our analytics
-        [[MXSDKOptions sharedInstance].analyticsDelegate trackDuration:duration
-                                                              category:kMXAnalyticsStartupCategory
-                                                                  name:kMXAnalyticsStartupLaunchScreen];
-        
-        // TODO: Send durationMs to Piwik
-        // Such information should be the same on all platforms
+        id<MXProfiler> profiler = MXSDKOptions.sharedInstance.profiler;
+        MXTaskProfile *launchTaskProfile = [profiler taskProfileWithName:kMXAnalyticsStartupLaunchScreen category:kMXAnalyticsStartupCategory];
+        if (launchTaskProfile)
+        {
+            [profiler stopMeasuringTaskWithProfile:launchTaskProfile];
+            
+            NSLog(@"[AppDelegate] hideLaunchAnimation: LaunchAnimation was shown for %.3fms", launchTaskProfile.duration * 1000);
+        }
         
         [self->launchAnimationContainerView removeFromSuperview];
         self->launchAnimationContainerView = nil;

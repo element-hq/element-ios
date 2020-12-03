@@ -900,7 +900,7 @@
 "widget_picker_title" = "Integrime";
 "service_terms_modal_decline_button" = "Hidhe poshtë";
 "service_terms_modal_description_for_identity_server_1" = "Gjeni të tjerë përmes telefoni ose email-i";
-"service_terms_modal_description_for_identity_server_2" = "Bëhuni i gjetshëm përmes telefoni  ose email-i";
+"service_terms_modal_description_for_identity_server_2" = "Bëhuni i gjetshëm përmes telefoni ose email-i";
 // Service terms - Variant for identity server when displayed out of a context
 "service_terms_modal_title_identity_server" = "Zbulim kontaktesh";
 "service_terms_modal_message_identity_server" = "Që të zbuloni kontakte, pranoni kushtet e shërbyesit të identiteteve (%@).";
@@ -1058,7 +1058,7 @@
 "key_verification_self_verify_unverified_sessions_alert_message" = "Verifikoni krejt sesionet tuaj që të siguroheni se llogaria & mesazhet tuaja janë të sigurt.";
 "key_verification_self_verify_unverified_sessions_alert_validate_action" = "Shqyrtojeni";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verifikoni këto kredenciale hyrjeje";
-"device_verification_self_verify_wait_additional_information" = "ose një tjetër klient Matrix i aftë për <em>cross-signing</em";
+"device_verification_self_verify_wait_additional_information" = "Kjo funksionon më Element-in ose një tjetër klient Matrix i aftë për <em>cross-signing</em.";
 "key_verification_verify_sas_title_emoji" = "Krahasoni emoji";
 "key_verification_verify_sas_title_number" = "Krahasoni numra";
 "key_verification_verify_sas_cancel_action" = "S’përputhen";
@@ -1113,7 +1113,7 @@
 "secure_key_backup_setup_intro_title" = "Kopjeruajtje e Sigurt";
 "secure_key_backup_setup_intro_info" = "Mbrohuni kundër humbjes së hyrjes në mesazhe & të dhëna të fshehtëzuara, duke kopjeruajtur kyçe fshehtëzimi në shërbyesin tuaj.";
 "secure_key_backup_setup_intro_use_security_key_title" = "Përdorni një Kyç Sigurie";
-"secure_key_backup_setup_intro_use_security_key_info" = "Prodhoni një kyç sigurie  për ta ruajtur diku të parrezik, bie fjala, në një përgjegjës fjalëkalimesh apo në një kasafortë.";
+"secure_key_backup_setup_intro_use_security_key_info" = "Prodhoni një kyç sigurie për ta ruajtur diku të parrezik, bie fjala, në një përgjegjës fjalëkalimesh apo në një kasafortë.";
 "secure_key_backup_setup_intro_use_security_passphrase_title" = "Përdorni një Frazëkalim Sigurie";
 "secure_key_backup_setup_intro_use_security_passphrase_info" = "Jepni një frazë të fshehtë që e dini vetëm ju, dhe prodhoni një kyç për kopjeruajtje.";
 "secure_key_backup_setup_cancel_alert_title" = "Jeni i sigurt?";
@@ -1233,3 +1233,22 @@
 "room_details_advanced_e2e_encryption_enabled_for_dm" = "Këtu fshehtëzimi është i aktivizuar";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "Këtu fshehtëzimi s’është i aktivizuar.";
 "pin_protection_kick_user_alert_message" = "Shumë gabime, u bë nxjerrja juaj jashtë";
+"switch" = "Këmbe";
+"joined" = "Erdhi";
+"secrets_reset_authentication_message" = "Që ta ripohoni, jepni fjalëkalimin e llogarisë tuaj";
+"secrets_reset_reset_action" = "Riktheji";
+"secrets_reset_warning_message" = "Do të filloni pa historik, pa mesazhe, pajisje të besuara ose përdorues të besuar.";
+"secrets_reset_warning_title" = "Nëse ktheni gjithçka te parazgjedhjet";
+"secrets_reset_information" = "Bëjeni këtë vetëm nëse s’keni pajisje tjetër me të cilën mund të verifikoni këtë pajisje.";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "Riktheni gjithçka te parazgjedhjet";
+
+// MARK: - Secrets recovery
+
+"secrets_recovery_reset_action_part_1" = "Harruat ose humbët krejt mundësitë e rimarrjes? ";
+"less" = "Më pak";
+"secrets_recovery_reset_action_part_2" = "Riktheni gjithçka te parazgjedhjet";
+"secrets_setup_recovery_passphrase_summary_information" = "Mbani mend Frazën tuaj të Sigurisë. Mund të përdoret për të shkyçur mesazhet & të dhëna tuajat të fshehtëzuara.";
+"secrets_setup_recovery_passphrase_summary_title" = "Ruani Frazën tuaj të Sigurisë";

@@ -99,7 +99,7 @@
         // Take the lead on the shared data source.
         recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeHome];
-    }
+    }        
 
     [self moveAllCollectionsToLeft];
 }
@@ -271,6 +271,13 @@
         
         [self refreshRecentsTable];
     }
+}
+
+- (void)onMatrixSessionChange
+{
+    [super onMatrixSessionChange];
+    
+    [self updateEmptyView];
 }
 
 #pragma mark - UITableViewDataSource
@@ -791,6 +798,63 @@
          viewController = nil;
          failure(error);
      }];
+}
+
+#pragma mark - Empty view management
+
+- (void)updateEmptyView
+{
+    MXUser *myUser = self.mainSession.myUser;
+    NSString *displayName = myUser.displayname ?: myUser.userId;
+    displayName = displayName ?: @"";
+    
+    NSString *appName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
+    NSString *title = [NSString stringWithFormat:NSLocalizedStringFromTable(@"home_empty_view_title", @"Vector", nil), appName, displayName];
+    
+    [self.emptyView fillWith:[self emptyViewArtwork]
+                       title:title
+             informationText:NSLocalizedStringFromTable(@"home_empty_view_information", @"Vector", nil)];
+}
+
+- (UIImage*)emptyViewArtwork
+{
+    if (ThemeService.shared.isCurrentThemeDark)
+    {
+        return [UIImage imageNamed:@"home_empty_screen_artwork_dark"];
+    }
+    else
+    {
+        return [UIImage imageNamed:@"home_empty_screen_artwork"];
+    }
+}
+
+- (BOOL)shouldShowEmptyView
+{
+    // Do not present empty screen while searching
+    if (recentsDataSource.searchPatternsList.count)
+    {
+        return NO;
+    }
+    
+    // Check if some banners should be displayed
+    if (recentsDataSource.secureBackupBannerSection != -1 || recentsDataSource.crossSigningBannerSection != -1)
+    {
+        return NO;
+    }
+    
+    // Otherwise check the number of items to display
+    return [self totalItemCounts] == 0;
+}
+
+// Total items to display on the screen
+- (NSUInteger)totalItemCounts
+{
+    return recentsDataSource.invitesCellDataArray.count
+    + recentsDataSource.favoriteCellDataArray.count
+    + recentsDataSource.peopleCellDataArray.count
+    + recentsDataSource.conversationCellDataArray.count
+    + recentsDataSource.lowPriorityCellDataArray.count
+    + recentsDataSource.serverNoticeCellDataArray.count;
 }
 
 @end

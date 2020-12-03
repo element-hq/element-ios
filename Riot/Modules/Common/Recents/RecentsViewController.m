@@ -153,7 +153,7 @@
     }];
     
     self.recentsSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    self.recentsSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
+    self.recentsSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);        
     
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -184,6 +184,8 @@
         // Force table refresh
         [self cancelEditionMode:YES];
     }
+    
+    [self.emptyView updateWithTheme:ThemeService.shared.theme];
 
     [self setNeedsStatusBarAppearanceUpdate];
 }
@@ -450,6 +452,79 @@
             [self refreshRecentsTable];
         }
     }
+}
+
+- (void)joinRoom:(MXRoom*)room completion:(void(^)(BOOL succeed))completion
+{
+    [room join:^{
+        // `recentsTableView` will be reloaded `roomChangeMembershipStateDataSourceDidChangeRoomMembershipState` function
+        
+        if (completion)
+        {
+            completion(YES);
+        }
+        
+    } failure:^(NSError * _Nonnull error) {
+        NSLog(@"[RecentsViewController] Failed to join an invited room (%@)", room.roomId);
+        [self presentRoomJoinFailedAlertForError:error completion:^{
+            if (completion)
+            {
+                completion(NO);
+            }
+        }];
+    }];
+}
+
+- (void)leaveRoom:(MXRoom*)room completion:(void(^)(BOOL succeed))completion
+{
+    // Decline the invitation
+    [room leave:^{
+        
+        // `recentsTableView` will be reloaded `roomChangeMembershipStateDataSourceDidChangeRoomMembershipState` function
+        
+        if (completion)
+        {
+            completion(YES);
+        }
+    } failure:^(NSError * _Nonnull error) {
+        NSLog(@"[RecentsViewController] Failed to reject an invited room (%@)", room.roomId);
+        [[AppDelegate theDelegate] showErrorAsAlert:error];
+        
+        if (completion)
+        {
+            completion(NO);
+        }
+    }];
+}
+
+- (void)presentRoomJoinFailedAlertForError:(NSError*)error completion:(void(^)(void))completion
+{
+    MXWeakify(self);
+    NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
+    if ([msg isEqualToString:@"No known servers"])
+    {
+        // minging kludge until https://matrix.org/jira/browse/SYN-678 is fixed
+        // 'Error when trying to join an empty room should be more explicit'
+        msg = [NSBundle mxk_localizedStringForKey:@"room_error_join_failed_empty_room"];
+    }
+    
+    [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
+    
+    self->currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"room_error_join_failed_title"] message:msg preferredStyle:UIAlertControllerStyleAlert];
+    
+    [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                     style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction * action) {
+        MXStrongifyAndReturnIfNil(self);
+        self->currentAlert = nil;
+        
+        if (completion)
+        {
+            completion();
+        }
+    }]];
+    
+    [self presentViewController:self->currentAlert animated:YES completion:nil];
 }
 
 #pragma mark - Sticky Headers
@@ -820,23 +895,23 @@
         // Display the room preview
         [self dispayRoomWithRoomId:invitedRoom.roomId inMatrixSession:invitedRoom.mxSession];
     }
-    else if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellDeclineButtonPressed])
+    else if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellAcceptButtonPressed])
     {
         // Retrieve the invited room
         MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
         
+        // Accept invitation
+        [self joinRoom:invitedRoom completion:nil];
+    }
+    else if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellDeclineButtonPressed])
+    {
+        // Retrieve the invited room
+        MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
+                        
         [self cancelEditionMode:isRefreshPending];
         
         // Decline the invitation
-        [invitedRoom leave:^{
-            
-            [self.recentsTableView reloadData];
-            
-        } failure:^(NSError *error) {
-            
-            NSLog(@"[RecentsViewController] Failed to reject an invited room (%@)", invitedRoom.roomId);
-            
-        }];
+        [self leaveRoom:invitedRoom completion:nil];
     }
     else
     {
@@ -846,6 +921,13 @@
             [super dataSource:dataSource didRecognizeAction:actionIdentifier inCell:cell userInfo:userInfo];
         }
     }
+}
+
+- (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
+{
+    [super dataSource:dataSource didCellChange:changes];
+    
+    [self showEmptyViewIfNeeded];
 }
 
 #pragma mark - Swipe actions
@@ -1271,8 +1353,21 @@
     
     if ([cell isKindOfClass:[InviteRecentTableViewCell class]])
     {
-        // hide the selection
-        [tableView deselectRowAtIndexPath:indexPath animated:NO];
+        id<MXKRecentCellDataStoring> cellData = [self.dataSource cellDataAtIndexPath:indexPath];
+
+        // Retrieve the invited room
+        MXRoom* invitedRoom = cellData.roomSummary.room;
+        
+        // Check if can show preview for the invited room 
+        if ([self canShowRoomPreviewFor:invitedRoom])
+        {
+            // Display the room preview
+            [self dispayRoomWithRoomId:invitedRoom.roomId inMatrixSession:invitedRoom.mxSession];
+        }
+        else
+        {
+            [tableView deselectRowAtIndexPath:indexPath animated:NO];
+        }
     }
     else if ([cell isKindOfClass:[DirectoryRecentTableViewCell class]])
     {
@@ -1869,6 +1964,92 @@
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     coordinatorBridgePresenter = nil;
+}
+
+#pragma mark - Empty view management
+
+- (void)showEmptyViewIfNeeded
+{
+    [self showEmptyView:[self shouldShowEmptyView]];
+}
+
+- (void)showEmptyView:(BOOL)show
+{
+    if (!self.viewIfLoaded)
+    {
+        return;
+    }
+    
+    if (show && !self.emptyView)
+    {
+        RootTabEmptyView *emptyView = [RootTabEmptyView instantiate];
+        [emptyView updateWithTheme:ThemeService.shared.theme];
+        [self addEmptyView:emptyView];
+        
+        self.emptyView = emptyView;
+        
+        [self updateEmptyView];
+    }
+    else if (!show)
+    {
+        [self.emptyView removeFromSuperview];
+    }
+    
+    self.recentsTableView.hidden = show;
+    self.stickyHeadersTopContainer.hidden = show;
+    self.stickyHeadersBottomContainer.hidden = show;
+}
+
+- (void)updateEmptyView
+{
+    
+}
+
+- (void)addEmptyView:(RootTabEmptyView*)emptyView
+{
+    if (!self.isViewLoaded)
+    {
+        return;
+    }
+    
+    NSLayoutConstraint *emptyViewBottomConstraint;
+    NSLayoutConstraint *contentViewBottomConstraint;
+    
+    if (plusButtonImageView && plusButtonImageView.isHidden == NO)
+    {
+        [self.view insertSubview:emptyView belowSubview:plusButtonImageView];
+        
+        contentViewBottomConstraint = [NSLayoutConstraint constraintWithItem:emptyView.contentView
+                                                                   attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationLessThanOrEqual toItem:plusButtonImageView
+                                                                   attribute:NSLayoutAttributeTop
+                                                                  multiplier:1.0
+                                                                    constant:0];
+    }
+    else
+    {
+        [self.view addSubview:emptyView];
+    }
+    
+    emptyViewBottomConstraint = [emptyView.bottomAnchor constraintEqualToAnchor:emptyView.superview.bottomAnchor];
+    
+    emptyView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [NSLayoutConstraint activateConstraints:@[
+        [emptyView.topAnchor constraintEqualToAnchor:emptyView.superview.topAnchor],
+        [emptyView.leftAnchor constraintEqualToAnchor:emptyView.superview.leftAnchor],
+        [emptyView.rightAnchor constraintEqualToAnchor:emptyView.superview.rightAnchor],
+        emptyViewBottomConstraint
+    ]];
+    
+    if (contentViewBottomConstraint)
+    {
+        contentViewBottomConstraint.active = YES;
+    }
+}
+
+- (BOOL)shouldShowEmptyView
+{
+    return NO;
 }
 
 @end

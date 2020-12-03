@@ -50,3 +50,5 @@
 "SINGLE_UNREAD_IN_ROOM" = "您在 %@ 中收到了一則訊息";
 /* A single unread message */
 "SINGLE_UNREAD" = "您收到了一則訊息";
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ 從 %@";

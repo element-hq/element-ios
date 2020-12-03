@@ -114,4 +114,42 @@
     return 0.0f;
 }
 
+#pragma mark - Empty view management
+
+- (void)updateEmptyView
+{
+    [self.emptyView fillWith:[self emptyViewArtwork]
+                       title:NSLocalizedStringFromTable(@"favourites_empty_view_title", @"Vector", nil)
+             informationText:NSLocalizedStringFromTable(@"favourites_empty_view_information", @"Vector", nil)];
+}
+
+- (UIImage*)emptyViewArtwork
+{
+    if (ThemeService.shared.isCurrentThemeDark)
+    {
+        return [UIImage imageNamed:@"favourites_empty_screen_artwork_dark"];
+    }
+    else
+    {
+        return [UIImage imageNamed:@"favourites_empty_screen_artwork"];
+    }
+}
+
+- (BOOL)shouldShowEmptyView
+{
+    // Do not present empty screen while searching
+    if (recentsDataSource.searchPatternsList.count)
+    {
+        return NO;
+    }
+    
+    return [self totalItemCounts] == 0;
+}
+
+// Total items to display on the screen
+- (NSUInteger)totalItemCounts
+{
+    return recentsDataSource.favoriteCellDataArray.count;
+}
+
 @end

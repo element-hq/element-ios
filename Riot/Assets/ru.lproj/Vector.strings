@@ -414,7 +414,7 @@
 "auth_identity_server_placeholder" = "URL (например https://vector.im)";
 "room_ongoing_conference_call_with_close" = "Текущий групповой звонок. Войдите как %@ или %@. %@.";
 "room_ongoing_conference_call_close" = "Закрыть";
-"room_conference_call_no_power" = "Вам нужно разрешение на управление  конференцией в этой комнате";
+"room_conference_call_no_power" = "Вам нужно разрешение на управление конференцией в этой комнате";
 "room_preview_unlinked_email_warning" = "Это приглашение было отправлено %@, и оно не связано с этой учетной записью. Возможно, вы пожелаете войти в систему с другой учетной записью или добавить этот адрес ел.почты к вашей учетной записи.";
 "settings_labs_create_conference_with_jitsi" = "Создать групповой вызов с jitsi";
 "call_already_displayed" = "Вызов уже установлен.";
@@ -547,7 +547,7 @@
 "room_resource_limit_exceeded_message_contact_2_link" = "обратитесь к администратору сервиса";
 "room_resource_limit_exceeded_message_contact_3" = " для продолжения его использования.";
 "room_event_action_view_decrypted_source" = "Посмотреть расшифрованный источник";
-"room_resource_usage_limit_reached_message_1_default" = "Превышен один из ресурсных лимитов  сервера, по этому ";
+"room_resource_usage_limit_reached_message_1_default" = "Превышен один из ресурсных лимитов сервера, по этому ";
 "room_resource_usage_limit_reached_message_1_monthly_active_user" = "Сервер достиг ежемесячного ограничения активных пользователей, так что ";
 "room_resource_usage_limit_reached_message_2" = "некоторые пользователи не смогут залогиниться.";
 "room_resource_usage_limit_reached_message_contact_3" = " что бы увеличить лимит.";
@@ -846,7 +846,7 @@
 "media_type_accessibility_sticker" = "Стикер";
 "settings_discovery_settings" = "ПОИСК";
 "settings_identity_server_settings" = "ПОИСК СЕРВЕРА";
-"settings_three_pids_management_information_part1" = "Управление адресами электронной почты или номерами телефонов, которые можно использовать для входа в систему или восстановления здесь учетной записи . Контроль над тем, кто может тебя найти ";
+"settings_three_pids_management_information_part1" = "Управление адресами электронной почты или номерами телефонов, которые можно использовать для входа в систему или восстановления здесь учетной записи. Контроль над тем, кто может тебя найти ";
 "settings_three_pids_management_information_part2" = "Поиск";
 "settings_three_pids_management_information_part3" = ".";
 "settings_calls_stun_server_fallback_button" = "Разрешить резервный вызов сервером поддержки";
@@ -987,7 +987,7 @@
 // Room widget permissions
 "room_widget_permission_title" = "Загрузить виджет";
 "room_widget_permission_creator_info_title" = "Этот виджет был добавлен:";
-"room_widget_permission_webview_information_title" = "Использование может оставить cookie на вашем устройстве и отправить данные в  %@:\n";
+"room_widget_permission_webview_information_title" = "Использование может оставить cookie на вашем устройстве и отправить данные в %@:\n";
 "room_widget_permission_information_title" = "Использование может отправить данные в %@:\n";
 "room_widget_permission_display_name_permission" = "Ваше отображаемое имя";
 "room_widget_permission_avatar_url_permission" = "URL вашего аватара";
@@ -1037,7 +1037,7 @@
 "device_verification_self_verify_wait_title" = "Завершите настройку безопасности";
 "device_verification_self_verify_wait_new_sign_in_title" = "Подтвердите вход";
 "device_verification_self_verify_wait_information" = "Подтвердите этот сеанс на одном из других ваших сеансов, предоставив ему доступ к зашифрованным сообщениям.\n\nИспользуйте последнюю версию Element на других ваших устройствах:";
-"device_verification_self_verify_wait_additional_information" = "или другой, поддерживаемый кросс-подпись Matrix клиент";
+"device_verification_self_verify_wait_additional_information" = "Это работает с Element и другими клиентами Matrix с поддержкой кросс-подписи.";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Используйте ключ восстановления";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Используйте пароль восстановления или ключ";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "Если вы не можете получить доступ к существующему сеансу";
@@ -1232,3 +1232,25 @@
 "room_details_advanced_e2e_encryption_enabled_for_dm" = "Шифрование включено";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "Шифрование не включено.";
 "pin_protection_kick_user_alert_message" = "Слишком много ошибок, вы вышли из системы";
+"secrets_reset_authentication_message" = "Введите пароль своей учётной записи для подтверждения";
+"secrets_reset_reset_action" = "Сброс";
+"secrets_reset_warning_message" = "Вы перезапустите приложение без истории, сообщений, доверенных устройств или доверенных пользователей.";
+"secrets_reset_warning_title" = "Если сбросить все";
+"secrets_reset_information" = "Делайте это только в том случае, если у вас нет другого устройства, с которого вы можете проверить это устройство.";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "Сбросить все";
+"secrets_recovery_reset_action_part_2" = "Сбросить все";
+
+// MARK: - Secrets recovery
+
+"secrets_recovery_reset_action_part_1" = "Забыли или потеряли все варианты восстановления? ";
+"less" = "Меньше";
+"home_empty_view_information" = "Комплексное безопасное приложение для общения в чате для команд, друзей и организаций. Нажмите кнопку \"+\" внизу, чтобы добавить людей и комнаты.";
+
+// MARK: - Home
+
+"home_empty_view_title" = "Добро пожаловать в Element!\n%@";
+"secrets_setup_recovery_passphrase_summary_information" = "Запомните свою секретную фразу. Её можно использовать для разблокировки ваших зашифрованных сообщений и данных.";
+"secrets_setup_recovery_passphrase_summary_title" = "Сохраните вашу секретную фразу";

@@ -18,6 +18,12 @@
 
 #import <MatrixSDK/MatrixSDK.h>
 
+
+// Metrics related to notifications
+FOUNDATION_EXPORT NSString *const AnalyticsNoficationsCategory;
+FOUNDATION_EXPORT NSString *const AnalyticsNoficationsTimeToDisplayContent;
+
+
 /**
  `Analytics` sends analytics to an analytics tool.
  */

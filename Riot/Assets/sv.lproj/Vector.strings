@@ -417,7 +417,7 @@
 "auth_msisdn_validation_title" = "Avvaktar verifiering";
 "auth_recaptcha_message" = "Den här hemservern vill kontrollera att du inte är en robot";
 "auth_reset_password_error_is_required" = "Ingen identitetsserver är konfigurerad: lägg till en i serveralternativen för att återställa ditt lösenord.";
-"auth_reset_password_success_message" = "Ditt lösenord har återställts.\n \nDu har loggats ut från alla sessioner och kommer inte längre att ta emot pushnotiser. För att återaktivera pushnotiser, logga in igen på varje enhet.";
+"auth_reset_password_success_message" = "Ditt lösenord har återställts.\n\nDu har loggats ut från alla sessioner och kommer inte längre att ta emot pushnotiser. För att återaktivera pushnotiser, logga in igen på varje enhet.";
 "auth_accept_policies" = "Granska och acceptera villkoren för denna hemserver:";
 "auth_softlogout_reason" = "Admin hos din hemserver (%1$@) har loggat ut dig från ditt konto %2$@ (%3$@).";
 "auth_softlogout_clear_data" = "Rensa personlig data";
@@ -627,11 +627,11 @@
 "identity_server_settings_alert_error_terms_not_accepted" = "Du måste acceptera villkoren hos %@ för att kunna ställa in den som identitetsserver.";
 "identity_server_settings_alert_error_invalid_identity_server" = "%@ är inte en giltig identitetsserver.";
 "service_terms_modal_message_identity_server" = "Acceptera villkoren hos identitetsservern (%@) för att upptäcka kontakter.";
-"device_verification_self_verify_wait_additional_information" = "eller någon annan Matrix-klient som stöder korssignering";
+"device_verification_self_verify_wait_additional_information" = "Detta funkar med Element och andra Matrix-klienter som stöder korssignering.";
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Lägg till en identitetsserver i dina inställningar för att bjuda in via e-post.";
 "secrets_recovery_with_passphrase_information_default" = "Få tillgång till din säkra meddelandehistorik och din identitet för korssignering för att verifiera andra sessioner genom att ange din återställningslösenfras.";
-"store_full_description" = "Element är en ny sorts meddelande- och samarbetsapp som:\n\n1. Sätter dig i kontroll för att kunna säkerställa ditt privatliv\n2. Låter dig kommunicera med vem som helst i Matrix-nätverket, och till och med bortom det genom integrationer med appar som Slack\n3. Skyddar dig från reklam, datainsamling, bakdörrar och inlåsning\n4. Säkrar dig genom totalsträckskryptering, med korssingering för att verifiera andra\n\nElement skiljer sig helt från andra meddelande- och samarbetsappar genom att vara decentraliserad och öppen källkod.\n\nElement låter dig driva en egen server - eller välja en värd - så att du har sekretess, ägande och kontroll över din data och dina konversationer. Den ger dig tillgång till ett öppet nätverk; så att du inte kan prata bara med Element-användare. Och den är väldigt säker.\n\nElement kan göra allt detta för att den använder Matrix - standarden för öppen decentraliserad kommunikation.\n\nElement sätter dig i kontroll genom att låta dig välja att vara värd för dina konversationer. Från appen Element kan du välja att ansluta på följande sätt:\n\n1. Skaffa ett gratis konto på den publika servern på matrix.org\n2. Var värd för ditt eget konto genom att driva en server på din egen hårdvara\n3. Skapa ett konto på en anpassad server genom att registrera dig på värdplattformen Element Matrix Services\n\nVarför välja Element?\n\nÄG DIN DATA: Du väljer var du vill ha din data och dina meddelanden. Du äger den och kontrollerar den, inte nåt stort företag som samlar in din data och ger den till tredje parter.\n\nÖPPEN KOMMUNIKATION OCH ÖPPET SAMARBETE: Du kan chatta med med vem som helst på Matrix-nätverket, oavsett om de använder Element eller en annan Matrix-app, och till och med om de använder ett annat meddelandesystem som Slack, IRC eller XMPP.\n\nSUPERSÄKER: Riktig totalsträckskryptering (bara de in konversationen kan avkryptera meddelandena), och korssingering för att verifiera konversationsmedlemmars enheter.\n\nKOMPLETT KOMMUNIKATION: Meddelanden, röst- och videosamtal, fildelning, skärmdelning och massa integrationer, bottar och widgets. Skapa rum och gemenskaper, håll kontakten och få saker gjorda.\n\nÖVERALLT DÄR DU ÄR: Håll kontakten vart du än befinner dig med fullständigt synkroniserad meddelandehistorik på alla dina enheter och på webben på https://element.io/app.";
+"store_full_description" = "Element är en ny sorts meddelande- och samarbetsapp som:\n\n1. Sätter dig i kontroll för att kunna säkerställa ditt privatliv\n2. Låter dig kommunicera med vem som helst i Matrix-nätverket, och till och med bortom det genom integrationer med appar som Slack\n3. Skyddar dig från reklam, datainsamling, bakdörrar och inlåsning\n4. Säkrar dig genom totalsträckskryptering, med korssingering för att verifiera andra\n\nElement skiljer sig helt från andra meddelande- och samarbetsappar genom att vara decentraliserad och öppen källkod.\n\nElement låter dig driva en egen server - eller välja en värd - så att du har sekretess, ägande och kontroll över din data och dina konversationer. Den ger dig tillgång till ett öppet nätverk; så att du inte kan prata bara med Element-användare. Och den är väldigt säker.\n\nElement kan göra allt detta för att den använder Matrix - standarden för öppen decentraliserad kommunikation.\n\nElement sätter dig i kontroll genom att låta dig välja att vara värd för dina konversationer. Från appen Element kan du välja att ansluta på följande sätt:\n\n1. Skaffa ett gratis konto på den publika servern på matrix.org\n2. Var värd för ditt eget konto genom att driva en server på din egen hårdvara\n3. Skapa ett konto på en anpassad server genom att registrera dig på värdplattformen Element Matrix Services\n\nVarför välja Element?\n\nÄG DIN DATA: Du väljer var du vill ha din data och dina meddelanden. Du äger den och kontrollerar den, inte nåt stort företag som samlar in din data och ger den till tredje parter.\n\nÖPPEN KOMMUNIKATION OCH ÖPPET SAMARBETE: Du kan chatta med vem som helst på Matrix-nätverket, oavsett om de använder Element eller en annan Matrix-app, och till och med om de använder ett annat meddelandesystem som Slack, IRC eller XMPP.\n\nSUPERSÄKER: Riktig totalsträckskryptering (bara de in konversationen kan avkryptera meddelandena), och korssingering för att verifiera konversationsmedlemmars enheter.\n\nKOMPLETT KOMMUNIKATION: Meddelanden, röst- och videosamtal, fildelning, skärmdelning och massa integrationer, bottar och widgets. Skapa rum och gemenskaper, håll kontakten och få saker gjorda.\n\nÖVERALLT DÄR DU ÄR: Håll kontakten vart du än befinner dig med fullständigt synkroniserad meddelandehistorik på alla dina enheter och på webben på https://element.io/app.";
 "auth_add_email_phone_message_2" = "Sätt en e-postadress för kontoåterställning. E-postadress och telefonnummer kan senare valfritt användas för att vara upptäckbar av folk som känner dig.";
 "auth_add_email_and_phone_warning" = "Registrering med e-post och telefonnummer samtidigt stöds inte än, tills att API:t finns. Endast telefonnumret kommer att användas. Du kan lägga till din e-postadress till din profil i inställningarna.";
 "auth_autodiscover_invalid_response" = "Ogiltigt upptäcktssvar från hemservern";
@@ -1186,3 +1186,20 @@
 "room_info_list_one_member" = "1 medlem";
 "room_info_list_several_members" = "%@ medlemmar";
 "room_info_list_section_other" = "Andra";
+"secrets_reset_authentication_message" = "Ange ditt kontolösenord för att bekräfta";
+"secrets_reset_reset_action" = "Återställ";
+"secrets_reset_warning_message" = "så kommer du att börja om utan historik, meddelanden, betrodda enheter eller betrodda användare.";
+"secrets_reset_information" = "Gör bara detta om du inte har någon annan enhet att verifiera den här enheten med.";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "Återställ allt";
+"secrets_recovery_reset_action_part_2" = "Återställ allt";
+
+// MARK: - Secrets recovery
+
+"secrets_recovery_reset_action_part_1" = "Glömt eller förlorat alla återställningsalternativ? ";
+"less" = "Mindre";
+"secrets_reset_warning_title" = "Om du återställer allt";
+"secrets_setup_recovery_passphrase_summary_information" = "Kom ihåg din säkerhetsfras. Den kan användas för att låsa upp dina krypterade meddelanden och data.";
+"secrets_setup_recovery_passphrase_summary_title" = "Spara din säkerhetsfras";

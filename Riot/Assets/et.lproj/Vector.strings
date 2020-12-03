@@ -98,7 +98,7 @@
 "auth_autodiscover_invalid_response" = "Vigane koduserveri tuvastamise päringu vastus";
 "auth_softlogout_signed_out" = "Sa oled loginud välja";
 "auth_softlogout_sign_in" = "Logi sisse";
-"auth_softlogout_reason" = "Sinu koduserveri (%1$@) haldur on sind sinu kontolt  %2$@ (%3$@) välja loginud.";
+"auth_softlogout_reason" = "Sinu koduserveri (%1$@) haldur on sind sinu kontolt %2$@ (%3$@) välja loginud.";
 "room_participants_ago" = "tagasi";
 "room_participants_action_section_admin_tools" = "Haldustoimingud";
 "room_participants_action_section_devices" = "Sessioonid";
@@ -415,7 +415,7 @@
 "group_rooms_filter_rooms" = "Filtreeri kogukonna jututubasid";
 "contacts_address_book_matrix_users_toggle" = "Vaid Matrix'i kasutajad";
 "contacts_address_book_no_identity_server" = "Isikutuvastusserver ei ole seadistatud";
-"contacts_address_book_no_contact" = "Kohalikke  kasutajaid ei leidu";
+"contacts_address_book_no_contact" = "Kohalikke kasutajaid ei leidu";
 "contacts_address_book_permission_required" = "Kohalikele kasutajatele ligipääsuks on luba vaja";
 "contacts_user_directory_section" = "KASUTAJATE LOEND";
 "contacts_user_directory_offline_section" = "KASUTAJATE LOEND (ei ole võrgus)";
@@ -900,14 +900,14 @@
 // Errors
 "error_user_already_logged_in" = "Tundub, et sa üritad luua ühendust teise koduserveriga. Kas sa soovid välja logida?";
 "room_participants_action_security_status_complete_security" = "Vormista turvaseadistused lõpuni";
-"room_warning_about_encryption" = "Läbiv krüptimine on veel testimisjärgus ja ei pruugi veel olla täiesti töökindel.\n\nSeadmed ei suuda veel dekrüptida jututoa vestlusajalugu, mis pärineb jututoaga liitumise eelsest ajast.\n\nKrüptitud sõnumid pole loetavad klientides ja seadmetes, kus krüptimine pole veel toetatud.";
+"room_warning_about_encryption" = "Läbiv krüptimine on veel testimisjärgus ja ei pruugi veel olla täiesti töökindel.\n\nSeda funktsionaalsust ei saa veel täies mahus usaldada.\n\nSeadmed ei suuda veel dekrüptida jututoa vestlusajalugu, mis pärineb jututoaga liitumise eelsest ajast.\n\nKrüptitud sõnumid pole loetavad klientides ja seadmetes, kus krüptimine pole veel toetatud.";
 "secure_key_backup_setup_intro_use_security_key_info" = "Loome turvavõtme, mida sa peaksid hoidma turvalises kohas, nagu näiteks arvutis salasõnade halduris või vana kooli seifis.";
 "secure_key_backup_setup_intro_use_security_passphrase_title" = "Täiendavaks krüptimiseks kasuta paroolifraasi";
 "key_backup_recover_from_passphrase_info" = "Selleks, et krüptitud sõnumite ajalugu lukust lahti võtta, kasuta oma taastamiseks mõeldud paroolifraasi";
 "key_backup_recover_from_passphrase_passphrase_title" = "Sisesta";
 "device_verification_self_verify_wait_title" = "Vormista turvaseadistused lõpuni";
 "device_verification_self_verify_wait_information" = "Verifitseeri see sessioon oma mõnest muust sessioonist ning anna sellega ka ligipääs oma krüptitud sõnumitele.\n\nKasuta viimast Element'i versiooni oma muudes seadmetes:";
-"device_verification_self_verify_wait_additional_information" = "või mõnda teist Matrix'i klienti, mis oskab risttunnustamist";
+"device_verification_self_verify_wait_additional_information" = "See toimib Element'is või mõnes teises Matrix'i kliendis, mis oskab risttunnustamist.";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Kasuta taastevõtit";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Kasuta taastamiseks mõeldud paroolifraasi või võtit";
 "key_verification_verify_sas_title_emoji" = "Võrdle emoji'sid";
@@ -915,14 +915,14 @@
 "key_verification_verify_sas_cancel_action" = "Nad ei klapi";
 "key_verification_verify_sas_validate_action" = "Nad klapivad";
 "key_verification_verify_sas_additional_information" = "Parima turvalisuse nimel palun kasuta mõnda muud usaldusväärset suhtlusvahendit või kohtu silmast silma.";
-"key_verification_manually_verify_device_title" = "Verifitseeri  käsitsi etteantud teksti abil";
+"key_verification_manually_verify_device_title" = "Verifitseeri käsitsi etteantud teksti abil";
 "key_verification_manually_verify_device_instruction" = "Kinnita seda võrreldes järgnevaid andmeid oma teise sessiooni kasutajaseadetes:";
 "key_verification_manually_verify_device_name_title" = "Sessiooni nimi";
 "key_verification_manually_verify_device_id_title" = "Sessiooni tunnus";
 "user_verification_start_information_part1" = "Turvalisuse lisamiseks verifitseeri ";
 "user_verification_start_information_part2" = " võrreldes selleks üheks korraks loodud koodi mõlemas seadmes.";
 "user_verification_start_waiting_partner" = "Ootan vastust kasutajalt %@…";
-"user_verification_start_additional_information" = "Turvalisuse mõttes on oluline, et teed seda nii, et kas olete  üheskoos või kasutate suhtluskanalit, mida mõlemad usaldate.";
+"user_verification_start_additional_information" = "Turvalisuse mõttes on oluline, et teed seda nii, et kas olete üheskoos või kasutate suhtluskanalit, mida mõlemad usaldate.";
 "user_verification_sessions_list_user_trust_level_trusted_title" = "Usaldusväärsed";
 "user_verification_session_details_information_trusted_current_user" = "Kuna sina oled selle sessiooni verifitseerinud, siis see sessioon on krüptitud sõnumite saatmiseks usaldusväärne:";
 "user_verification_session_details_information_trusted_other_user_part1" = "See sessioon on krüptitud sõnumite saatmiseks usaldusväärne, sest ";
@@ -1035,7 +1035,7 @@
 "user_verification_session_details_additional_information_untrusted_other_user" = "Kuni antud kasutaja seda sessiooni ei usalda, on ta märgitud hoiatussildiga. Alternatiivina on sul võimalus verifiseerimist ka käsitsi teha.";
 "user_verification_session_details_additional_information_untrusted_current_user" = "Kui sa pole sellesse sessiooni sisse loginud, siis sinu kasutajakonto andmed võivad olla sattunud valedesse kätesse.";
 "user_verification_session_details_verify_action_current_user" = "Verifitseeri interaktiivselt";
-"user_verification_session_details_verify_action_current_user_manually" = "Verifitseeri  käsitsi etteantud teksti abil";
+"user_verification_session_details_verify_action_current_user_manually" = "Verifitseeri käsitsi etteantud teksti abil";
 "user_verification_session_details_verify_action_other_user" = "Verifitseeri käsitsi";
 "secrets_recovery_with_passphrase_information_default" = "Sisestades taastamiseks mõeldud paroolifraasi, saad ligipääsu oma turvatud sõnumitele ja risttunnustamisega seotud identiteedile, mis lubab teisi sessioone verifitseerida.";
 "secrets_recovery_with_passphrase_information_verify_device" = "Kasuta taastamiseks mõeldud paroolifraasi selle seadme verifitseerimiseks.";
@@ -1138,7 +1138,7 @@
 "secure_key_backup_setup_existing_backup_error_info" = "Selleks, et saaksid varukoopiat kasutada või kustutada enne uue varukoopia loomist, võta ta lukust lahti.";
 "secure_key_backup_setup_existing_backup_error_unlock_it" = "Võta varukoopia lukust lahti";
 "secure_key_backup_setup_existing_backup_error_delete_it" = "Kustuta varukoopia";
-"device_verification_self_verify_wait_recover_secrets_additional_information" = "Või kui sa ei saa neid kasutada, siis võid olemasolevas sessioonis";
+"device_verification_self_verify_wait_recover_secrets_additional_information" = "Või kui sa ei saa olemasolevat sessiooni kasutada";
 "device_verification_self_verify_wait_recover_secrets_checking_availability" = "Kontrollin teiste verifikatsioonivõimaluste olemasolu ...";
 "biometrics_desetup_subtitle" = "biometrics_desetup_subtitle";
 "joined" = "Liikmed";
@@ -1187,3 +1187,25 @@
 "room_details_advanced_e2e_encryption_enabled_for_dm" = "Krüptimine on selles jututoas kasutusel";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "Krüptimine ei ole selles jututoas kasutusel.";
 "pin_protection_kick_user_alert_message" = "Liiga palju vigu PIN-koodi sisestamisel ning sa oled nüüd välja logitud";
+"secrets_reset_authentication_message" = "Kinnitamaks seda muudatust, sisesta oma konto salasõna";
+"secrets_reset_reset_action" = "Taasta algolek";
+"secrets_reset_warning_message" = "Siis alustad nii, et kadunud on ajalugu, sõnumid ning usaldatud seadmed ja kasutajad.";
+"secrets_reset_warning_title" = "Kui sa alustad kõigega algusest";
+"secrets_reset_information" = "Jätka vaid siis, kui sul pole ühtegi muud seadet, millega seda seadet saaks verifitseerida.";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "Alusta kõigega algusest";
+"secrets_recovery_reset_action_part_2" = "Alusta kõigega algusest";
+
+// MARK: - Secrets recovery
+
+"secrets_recovery_reset_action_part_1" = "Kas sa unustasid või kaotasid kõik võimalused taastada ligipääsu oma kontole? ";
+"less" = "Vähem";
+"secrets_setup_recovery_passphrase_summary_information" = "Jäta oma turvafraas meelde. Seda saad kasutada ligipääsuks oma krüptitud sõnumitele ja andmetele.";
+"secrets_setup_recovery_passphrase_summary_title" = "Salvesta oma turvafraas";
+"home_empty_view_information" = "Kõik ühes suhtlusrakendus rühmade, sõpruskondade ja organisatsioonide jaoks. Teiste kasutajate ka jututubade lisamiseks klõpsi plussiga nuppu.";
+
+// MARK: - Home
+
+"home_empty_view_title" = "Tere tulemast kasutama suhtlusrakendust Element,\n%@";
