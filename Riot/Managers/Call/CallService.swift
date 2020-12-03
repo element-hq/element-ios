@@ -42,6 +42,15 @@ class CallService: NSObject {
         }.first
     }
     
+    private var numberOfPausedCalls: UInt {
+        return UInt(callVCs.values.filter { (callVC) -> Bool in
+            guard let call = callVC.mxCall else {
+                return false
+            }
+            return call.isOnHold
+        }.count)
+    }
+    
     //  MARK: - Public
     
     /// Maximum number of concurrent calls allowed.
@@ -97,7 +106,6 @@ class CallService: NSObject {
         if inBarCallVC == callVC {
             //  this call currently in the status bar,
             //  first present it and then dismiss it
-            dismissCallBar(for: callVC)
             presentCallVC(callVC)
         }
         dismissCallVC(callVC, completion: completion)
@@ -120,6 +128,12 @@ class CallService: NSObject {
     
     @objc private func callTimerFired(_ timer: Timer) {
         guard let inBarCallVC = inBarCallVC else {
+            return
+        }
+        guard let call = inBarCallVC.mxCall else {
+            return
+        }
+        guard call.state != .ended else {
             return
         }
         
@@ -202,23 +216,22 @@ class CallService: NSObject {
         
         switch call.state {
         case .createAnswer:
+            NSLog("[CallService] callStateChanged: call created answer: \(call.callId)")
             if call.isIncoming, isCallKitEnabled, let callVC = callVCs[call.callId] {
                 presentCallVC(callVC)
-                return
             }
-            NSLog("[CallService] callStateChanged: call created answer: \(call.callId)")
         case .connected:
+            NSLog("[CallService] callStateChanged: call connected: \(call.callId)")
             callTimer.fire()
         case .onHold:
-            callTimer.fire()
             NSLog("[CallService] callStateChanged: call holded: \(call.callId)")
-        case .remotelyOnHold:
             callTimer.fire()
+        case .remotelyOnHold:
             NSLog("[CallService] callStateChanged: call remotely holded: \(call.callId)")
+            callTimer.fire()
         case .ended:
             NSLog("[CallService] callStateChanged: call ended: \(call.callId)")
             endCall(withCallId: call.callId)
-            return
         default:
             break
         }
@@ -228,6 +241,10 @@ class CallService: NSObject {
     
     private func presentCallVC(_ callVC: CallViewController, completion: (() -> Void)? = nil) {
         NSLog("[CallService] presentCallVC: call: \(String(describing: callVC.mxCall?.callId))")
+        
+        if let inBarCallVC = inBarCallVC {
+            dismissCallBar(for: inBarCallVC)
+        }
         
         if let presentedCallVC = presentedCallVC {
             dismissCallVC(presentedCallVC)
@@ -258,13 +275,6 @@ class CallService: NSObject {
         NSLog("[CallService] presentCallBar: call: \(String(describing: callVC?.mxCall?.callId))")
 
         let activeCallVC = self.activeCallVC
-        
-        let numberOfPausedCalls = UInt(callVCs.values.filter { (callVC) -> Bool in
-            guard let call = callVC.mxCall else {
-                return false
-            }
-            return call.isOnHold
-        }.count)
         
         let operation = CallBarPresentOperation(service: self, activeCallVC: activeCallVC, numberOfPausedCalls: numberOfPausedCalls) { [weak self] in
             //  active calls are more prior to paused ones.
