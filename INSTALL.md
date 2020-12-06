@@ -7,6 +7,7 @@ To build Element iOS project you need:
 - Xcode 12.1+.
 - [Ruby](https://www.ruby-lang.org/), a dynamic programming language used by several build tools.
 - [CocoaPods](https://cocoapods.org), library dependencies manager for Xcode projects.
+- [XcodeGen](https://github.com/yonaskolb/XcodeGen), an Xcode project generator.
 - [bundler](https://bundler.io/) (optional), is also a dependency manager used to manage build tools dependency (CocoaPods, Fastlane).
 
 ### Install Ruby
@@ -20,17 +21,30 @@ If you do not want to grant the ruby package manager, [RubyGems](https://rubygem
 To install CocoaPods you can grab the right version by using `bundler` (recommended) or you can directly install it with RubyGems:
 
 ```
-gem install cocoapods
+$ gem install cocoapods
 ```
 
 In the last case please ensure that you are using the same version as indicated at the end of the `Podfile.lock` file.
+
+### Install XcodeGen
+
+You can directly install XcodeGen with [Homebrew](https://brew.sh) or RubyGems:
+
+```
+$ brew install xcodegen
+```
+or
+
+```
+$ gem install xcodegen
+```
 
 ### Install bundler (optional)
 
 By using `bundler` you will ensure to use the right versions of build tools used to build and deliver the project. You can find dependency definitions in the `Gemfile`. To install `bundler`:
 
 ```
-gem install bundler
+$ gem install bundler
 ```
 
 ## Choose Matrix SDKs version to build
@@ -67,6 +81,17 @@ Assuming you have already completed the **Install dependencies** instructions fr
 
 Each time you edit `$matrixKitVersion` variable in the `Podfile` you will have to run the `pod install` command.
 
+## Generate Xcode project
+
+In order to get rid of git conflicts, the `Riot.xcodeproj` is not pushed into the git repository anymore but generated using `XcodeGen`. To generate the `xcodeproj` file simply run the following command line in the `Riot` folder:
+
+```
+$ cd Riot
+$ xcodegen
+```
+
+**Note**: After the project file generation, the script `createWorkspace.sh` is called to generate the associated workspace (see **Install dependencies**).
+
 ## Build
 
 ### Install dependencies
@@ -89,7 +114,14 @@ $ pod install
 ```
 
 This will load all dependencies for the Element source code, including [MatrixKit](https://github.com/matrix-org/matrix-ios-kit) 
-and [MatrixSDK](https://github.com/matrix-org/matrix-ios-sdk). 
+and [MatrixSDK](https://github.com/matrix-org/matrix-ios-sdk).
+
+[1]**Note**: you can run the script `createWorkspace.sh`. This script runs `bundler` if it's installed, CocoaPods otherwise:
+
+```
+$ cd Riot
+$ sh createWorkspace.sh
+```
 
 ### Open workspace
 
@@ -103,7 +135,9 @@ $ open Riot.xcworkspace
 
 ### Configure project
 
-You may need to change the bundle identifier and app group identifier to be unique to get Xcode to build the app. Make sure to change the bundle identifier,  application group identifier and app name in the `Config/Common.xcconfig` file to your new identifiers.
+You may need to change the bundle identifier and app group identifier to be unique to get Xcode to build the app. Make sure to change the bundle identifier,  application group identifier and app name in the `project.yml` file to your new identifiers.
+
+Each target has its own YAML file in the folder Targets folder.
 
 ## Generate IPA
 
