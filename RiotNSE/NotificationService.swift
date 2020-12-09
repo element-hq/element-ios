@@ -183,6 +183,9 @@ class NotificationService: UNNotificationServiceExtension {
             
             NSLog("[NotificationService] processEvent: Calling content handler for: \(String(describing: event.eventId)), isUnwanted: \(isUnwantedNotification)")
             self.contentHandlers[event.eventId]?(content)
+            //  clear maps
+            self.contentHandlers.removeValue(forKey: event.eventId)
+            self.bestAttemptContents.removeValue(forKey: event.eventId)
         }
     }
     
@@ -196,6 +199,9 @@ class NotificationService: UNNotificationServiceExtension {
         
         //  call contentHandler
         contentHandlers[eventId]?(content)
+        //  clear maps
+        contentHandlers.removeValue(forKey: eventId)
+        bestAttemptContents.removeValue(forKey: eventId)
     }
     
     private func notificationContent(forEvent event: MXEvent, forAccount account: MXKAccount, onComplete: @escaping (UNNotificationContent?) -> Void) {
