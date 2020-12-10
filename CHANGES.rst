@@ -130,6 +130,7 @@ Changes in 1.0.18 (2020-10-27)
  * Update MatomoTracker to 7.2.2 (#3570).
  * Update SwiftGen to 6.3.0 (#3570).
  * Update SwiftLint to 0.40.3 (#3570).
+ * NSE: Utilize MXBackgroundService on pushes, to make messages available when the app is foregrounded (#3579).
 
 🐛 Bugfix
  * Fix typos in UI
@@ -158,7 +159,7 @@ Changes in 1.0.17 (2020-10-14)
 🙌 Improvements
  * Device verification: Do not check for existing key backup after SSSS & Cross-Signing reset.
  * Cross-signing: Detect when cross-signing keys have been changed.
- * Make copying & pasting media configurable. 
+ * Make copying & pasting media configurable.
 
 🐛 Bugfix
  * 

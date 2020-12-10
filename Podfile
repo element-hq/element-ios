@@ -35,7 +35,6 @@ end
 # Method to import the right MatrixKit flavour
 def import_MatrixKit
   pod 'MatrixSDK', $matrixSDKVersionSpec
-  pod 'MatrixSDK/SwiftSupport', $matrixSDKVersionSpec
   pod 'MatrixSDK/JingleCallStack', $matrixSDKVersionSpec
   pod 'MatrixKit', $matrixKitVersionSpec
 end
@@ -43,7 +42,6 @@ end
 # Method to import the right MatrixKit/AppExtension flavour
 def import_MatrixKitAppExtension
   pod 'MatrixSDK', $matrixSDKVersionSpec
-  pod 'MatrixSDK/SwiftSupport', $matrixSDKVersionSpec
   pod 'MatrixKit/AppExtension', $matrixKitVersionSpec
 end
 
