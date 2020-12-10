@@ -834,8 +834,6 @@ Tap the + to start adding people.";
 "call_no_stun_server_error_use_fallback_button" = "Try using %@";
 
 "call_actions_unhold" = "Resume";
-"call_more_actions_hold" = "Hold";
-"call_more_actions_unhold" = "Resume";
 
 // No VoIP support
 "no_voip_title" = "Incoming call";

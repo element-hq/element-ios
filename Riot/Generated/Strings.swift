@@ -442,14 +442,6 @@ internal enum VectorL10n {
   internal static var callJitsiError: String { 
     return VectorL10n.tr("Vector", "call_jitsi_error") 
   }
-  /// Hold
-  internal static var callMoreActionsHold: String { 
-    return VectorL10n.tr("Vector", "call_more_actions_hold") 
-  }
-  /// Resume
-  internal static var callMoreActionsUnhold: String { 
-    return VectorL10n.tr("Vector", "call_more_actions_unhold") 
-  }
   /// Please ask the administrator of your homeserver %@ to configure a TURN server in order for calls to work reliably.
   internal static func callNoStunServerErrorMessage1(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "call_no_stun_server_error_message_1", p1)
