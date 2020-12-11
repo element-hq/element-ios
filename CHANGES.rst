@@ -8,7 +8,7 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
- * 
+ * Refresh account details on NSE runs (#3719).
 
 ⚠️ API Changes
  * 
