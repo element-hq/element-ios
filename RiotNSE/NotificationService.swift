@@ -110,6 +110,7 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func setup(withRoomId roomId: String, eventId: String, completion: @escaping () -> Void) {
+        MXKAccountManager.shared()?.forceReloadAccounts()
         self.userAccount = MXKAccountManager.shared()?.activeAccounts.first
         if let userAccount = userAccount {
             if NotificationService.backgroundSyncService == nil {
