@@ -30,6 +30,11 @@ class CallBar: UIView, NibLoadable {
         }
     }
     @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var returnLabel: UILabel! {
+        didSet {
+            returnLabel.text = VectorL10n.callbarReturn
+        }
+    }
     @IBOutlet private weak var returnButton: UIButton!
     
     weak var delegate: CallBarDelegate?
