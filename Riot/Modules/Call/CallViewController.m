@@ -351,6 +351,17 @@
 
 #pragma mark - Properties
 
+- (void)setMxCall:(MXCall *)mxCall
+{
+    [super setMxCall:mxCall];
+    
+    if (self.videoMuteButton.isHidden)
+    {
+        //  shift more button to left
+        self.moreButtonLeadingConstraint.constant = 8.0;
+    }
+}
+
 - (UIImage*)picturePlaceholder
 {
     CGFloat fontSize = floor(self.callerImageViewWidthConstraint.constant * 0.7);

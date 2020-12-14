@@ -27,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet UIView *callControlsBackgroundView;
 
 @property (unsafe_unretained, nonatomic) IBOutlet NSLayoutConstraint *callerImageViewWidthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *moreButtonLeadingConstraint;
 
 // At the end of call, this flag indicates if the prompt to use the fallback should be displayed
 @property (nonatomic) BOOL shouldPromptForStunServerFallback;

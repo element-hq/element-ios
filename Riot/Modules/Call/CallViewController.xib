@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -28,6 +28,7 @@
                 <outlet property="localPreviewContainerViewTopConstraint" destination="6gi-ec-ZnO" id="a0K-Ix-oIo"/>
                 <outlet property="localPreviewContainerViewWidthConstraint" destination="gyu-kv-SLy" id="urn-uo-hnt"/>
                 <outlet property="moreButton" destination="xCi-hD-FBs" id="2Hn-T9-jZY"/>
+                <outlet property="moreButtonLeadingConstraint" destination="Erd-Js-vLN" id="fpN-9m-rOc"/>
                 <outlet property="overlayContainerView" destination="JAR-tn-sGN" id="09u-3G-1UA"/>
                 <outlet property="pausedIcon" destination="rjn-DE-i10" id="CHR-mM-Dae"/>
                 <outlet property="pipButton" destination="Yq6-d2-Ea2" id="scW-S6-fpr"/>
@@ -195,10 +196,10 @@
                                 <constraint firstItem="UHM-u9-ODN" firstAttribute="leading" secondItem="lVK-d8-Dqf" secondAttribute="trailing" constant="12" id="4l8-GS-LMC"/>
                                 <constraint firstItem="lVK-d8-Dqf" firstAttribute="centerX" secondItem="nk9-Un-LVP" secondAttribute="centerX" id="C77-dh-aGp"/>
                                 <constraint firstItem="Yq6-d2-Ea2" firstAttribute="centerY" secondItem="nk9-Un-LVP" secondAttribute="centerY" id="CgC-oj-Epe"/>
+                                <constraint firstItem="xCi-hD-FBs" firstAttribute="leading" secondItem="lVK-d8-Dqf" secondAttribute="trailing" constant="64" id="Erd-Js-vLN"/>
                                 <constraint firstItem="fxP-zM-kfT" firstAttribute="centerY" secondItem="nk9-Un-LVP" secondAttribute="centerY" constant="4" id="FXE-lL-Q91"/>
                                 <constraint firstItem="UHM-u9-ODN" firstAttribute="centerY" secondItem="nk9-Un-LVP" secondAttribute="centerY" constant="4" id="aOF-7c-8gC"/>
                                 <constraint firstItem="fxP-zM-kfT" firstAttribute="leading" secondItem="Yq6-d2-Ea2" secondAttribute="trailing" constant="4" id="aR8-up-zPg"/>
-                                <constraint firstItem="xCi-hD-FBs" firstAttribute="leading" secondItem="UHM-u9-ODN" secondAttribute="trailing" constant="4" id="bQT-Ff-cxR"/>
                                 <constraint firstAttribute="height" constant="64" id="eS5-qj-HTc"/>
                                 <constraint firstItem="lVK-d8-Dqf" firstAttribute="centerY" secondItem="nk9-Un-LVP" secondAttribute="centerY" id="hY9-ut-lPv"/>
                                 <constraint firstItem="lVK-d8-Dqf" firstAttribute="leading" secondItem="fxP-zM-kfT" secondAttribute="trailing" constant="12" id="jZa-SH-3LK"/>
