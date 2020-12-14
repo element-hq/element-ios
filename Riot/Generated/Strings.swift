@@ -478,6 +478,10 @@ internal enum VectorL10n {
   internal static var callbarOnlySinglePaused: String { 
     return VectorL10n.tr("Vector", "callbar_only_single_paused") 
   }
+  /// Return
+  internal static var callbarReturn: String { 
+    return VectorL10n.tr("Vector", "callbar_return") 
+  }
   /// Camera
   internal static var camera: String { 
     return VectorL10n.tr("Vector", "camera") 

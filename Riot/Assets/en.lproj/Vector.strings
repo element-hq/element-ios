@@ -70,6 +70,7 @@
 "callbar_active_and_multiple_paused" = "1 active call (%@) · %@ paused calls";
 "callbar_only_single_paused" = "Paused call";
 "callbar_only_multiple_paused" = "%@ paused calls";
+"callbar_return" = "Return";
 
 // Accessibility
 "accessibility_checkbox_label" = "checkbox";
