@@ -97,10 +97,21 @@ class CallService: NSObject {
         }
         
         let completion = { [weak self] in
-            self?.callVCs.removeValue(forKey: callId)
+            guard let self = self else {
+                return
+            }
+            self.callVCs.removeValue(forKey: callId)
             callVC.destroy()
-            self?.callBackgroundTasks[callId]?.stop()
-            self?.callBackgroundTasks.removeValue(forKey: callId)
+            self.callBackgroundTasks[callId]?.stop()
+            self.callBackgroundTasks.removeValue(forKey: callId)
+            
+            //  if still have some calls and there is no present operation in the queue
+            if let oldCallVC = self.callVCs.values.first,
+               !self.uiOperationQueue.containsPresentCallVCOperation,
+               !self.uiOperationQueue.containsPresentCallBarOperation {
+                //  present the call bar after dismissing this one
+                self.presentCallBar(for: oldCallVC)
+            }
         }
         
         if inBarCallVC == callVC {
@@ -319,6 +330,24 @@ extension CallService: MXKCallViewControllerDelegate {
         } else {
             dismissCallVC(callVC)
             self.presentCallBar(for: callVC, completion: completion)
+        }
+    }
+    
+}
+
+//  MARK: - OperationQueue Extension
+
+extension OperationQueue {
+    
+    var containsPresentCallVCOperation: Bool {
+        return operations.contains { (operation) -> Bool in
+            return operation is CallVCPresentOperation
+        }
+    }
+    
+    var containsPresentCallBarOperation: Bool {
+        return operations.contains { (operation) -> Bool in
+            return operation is CallBarPresentOperation
         }
     }
     
