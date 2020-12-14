@@ -2,7 +2,7 @@ Changes to be released in next version
 =================================================
 
 ✨ Features
- * 
+ * Enable encryption for contacts, accounts, and crypto database
 
 🙌 Improvements
  * 
