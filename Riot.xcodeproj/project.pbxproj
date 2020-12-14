@@ -145,6 +145,7 @@
 		32FD757924D2C9BA00BA7B37 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD757524D2C9BA00BA7B37 /* Bundle.swift */; };
 		32FD757A24D2C9BA00BA7B37 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD757524D2C9BA00BA7B37 /* Bundle.swift */; };
 		32FDC1CD2386CD390084717A /* RiotSettingIntegrationProvisioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FDC1CC2386CD390084717A /* RiotSettingIntegrationProvisioning.swift */; };
+		3AA7D00C2587FF0000420A72 /* EncryptionKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA7D00B2587FF0000420A72 /* EncryptionKeyManager.swift */; };
 		3AF393339D2D566CE14AC200 /* Pods_RiotTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 129EB7E27E7E4AC3F5F098F5 /* Pods_RiotTests.framework */; };
 		405FD41D306133A48D9B5AA1 /* Pods_RiotPods_Riot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ACF09217ADF1D7E7A35BC02 /* Pods_RiotPods_Riot.framework */; };
 		670966FEFE120D865FD8A5B6 /* Pods_RiotPods_SiriIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51187E952D5CECF6D6F5A28E /* Pods_RiotPods_SiriIntents.framework */; };
@@ -1172,6 +1173,7 @@
 		32FD757524D2C9BA00BA7B37 /* Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		32FDC1CC2386CD390084717A /* RiotSettingIntegrationProvisioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiotSettingIntegrationProvisioning.swift; sourceTree = "<group>"; };
 		3942DD65EBEB7AE647C6392A /* Pods-RiotPods-SiriIntents.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-SiriIntents.debug.xcconfig"; path = "Target Support Files/Pods-RiotPods-SiriIntents/Pods-RiotPods-SiriIntents.debug.xcconfig"; sourceTree = "<group>"; };
+		3AA7D00B2587FF0000420A72 /* EncryptionKeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionKeyManager.swift; sourceTree = "<group>"; };
 		3D78489021AC9E6400B98A7D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3D78489121AC9E6500B98A7D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3D78489221AC9E6500B98A7D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Vector.strings; sourceTree = "<group>"; };
@@ -2619,6 +2621,14 @@
 				32FD756324D2AD5100BA7B37 /* BuildSettings.swift */,
 			);
 			path = Config;
+			sourceTree = "<group>";
+		};
+		3AA7D00A2587FEE500420A72 /* EncryptionKeyManager */ = {
+			isa = PBXGroup;
+			children = (
+				3AA7D00B2587FF0000420A72 /* EncryptionKeyManager.swift */,
+			);
+			path = EncryptionKeyManager;
 			sourceTree = "<group>";
 		};
 		4220F60B660591FD80AF3428 /* Pods */ = {
@@ -4515,6 +4525,7 @@
 		B1B5597C20EFC3DF00210D55 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				3AA7D00A2587FEE500420A72 /* EncryptionKeyManager */,
 				EC1CA87824C8840B00DE9EBF /* LocalAuthentication */,
 				EC1CA87324C8257F00DE9EBF /* KeyValueStorage */,
 				B185145324B7CF9500EE19EA /* AppVersion */,
@@ -6520,6 +6531,7 @@
 				B139C21D21FE5BF500BB68EC /* KeyBackupRecoverFromPassphraseViewModelType.swift in Sources */,
 				B157FA9F23264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsCoordinator.swift in Sources */,
 				B1CE83D92422817200D07506 /* KeyVerificationVerifyByScanningViewAction.swift in Sources */,
+				3AA7D00C2587FF0000420A72 /* EncryptionKeyManager.swift in Sources */,
 				B1C45A8B232A8C2600165425 /* SettingsIdentityServerViewModel.swift in Sources */,
 				EC711B8224A63B37008F830C /* SecretsSetupRecoveryPassphraseViewModelType.swift in Sources */,
 				B12D7A0123E2462200FACEDC /* UserVerificationStartViewModel.swift in Sources */,
