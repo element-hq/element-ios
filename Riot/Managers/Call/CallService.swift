@@ -107,6 +107,7 @@ class CallService: NSObject {
             
             //  if still have some calls and there is no present operation in the queue
             if let oldCallVC = self.callVCs.values.first,
+               self.presentedCallVC == nil,
                !self.uiOperationQueue.containsPresentCallVCOperation,
                !self.uiOperationQueue.containsPresentCallBarOperation {
                 //  present the call bar after dismissing this one
