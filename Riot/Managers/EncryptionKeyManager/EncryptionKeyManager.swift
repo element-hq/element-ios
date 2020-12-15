@@ -52,18 +52,18 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
     // MARK: - MXKeyProviderDelegate
     
     func isEncryptionAvailableForData(ofType dataType: String) -> Bool {
-        return dataType == kMXKContactManagerDataType
-            || dataType == kMXKAccountManagerDataType
-            || dataType == kMXRealmCryptoStoreDataType
+        return dataType == MXKContactManagerDataType
+            || dataType == MXKAccountManagerDataType
+            || dataType == MXRealmCryptoStoreDataType
     }
             
     func hasKeyForData(ofType dataType: String) -> Bool {
         switch dataType {
-        case kMXKContactManagerDataType:
+        case MXKContactManagerDataType:
             return keychainStore.containsObject(forKey: EncryptionKeyManager.contactsIv) && keychainStore.containsObject(forKey: EncryptionKeyManager.contactsAesKey)
-        case kMXKAccountManagerDataType:
+        case MXKAccountManagerDataType:
             return keychainStore.containsObject(forKey: EncryptionKeyManager.accountIv) && keychainStore.containsObject(forKey: EncryptionKeyManager.accountAesKey)
-        case kMXRealmCryptoStoreDataType:
+        case MXRealmCryptoStoreDataType:
             return keychainStore.containsObject(forKey: EncryptionKeyManager.realmCryptoKey)
         default:
             return false
@@ -72,17 +72,17 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
     
     func keyDataForData(ofType dataType: String) -> MXKeyData? {
         switch dataType {
-        case kMXKContactManagerDataType:
+        case MXKContactManagerDataType:
             if let ivKey = try? keychainStore.data(forKey: EncryptionKeyManager.contactsIv),
                let aesKey = try? keychainStore.data(forKey: EncryptionKeyManager.contactsAesKey) {
                 return MXAesKeyData(iv: ivKey, key: aesKey)
             }
-        case kMXKAccountManagerDataType:
+        case MXKAccountManagerDataType:
             if let ivKey = try? keychainStore.data(forKey: EncryptionKeyManager.accountIv),
                let aesKey = try? keychainStore.data(forKey: EncryptionKeyManager.accountAesKey) {
                 return MXAesKeyData(iv: ivKey, key: aesKey)
             }
-        case kMXRealmCryptoStoreDataType:
+        case MXRealmCryptoStoreDataType:
             if let key = try? keychainStore.data(forKey: EncryptionKeyManager.realmCryptoKey) {
                 return MXRawDataKey(key: key)
             }
@@ -95,12 +95,14 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
     // MARK: - Private methods
     
     private func generateIvIfNotExists(forKey key: String) {
-        if !keychainStore.containsObject(forKey: key) {
-            do {
-                try keychainStore.set(MXAes.iv(), forKey: key)
-            } catch {
-                NSLog("[EncryptionKeyManager] initKeys: Failed to generate IV: %@", error.localizedDescription)
-            }
+        guard !keychainStore.containsObject(forKey: key) else {
+            return
+        }
+        
+        do {
+            try keychainStore.set(MXAes.iv(), forKey: key)
+        } catch {
+            NSLog("[EncryptionKeyManager] initKeys: Failed to generate IV: %@", error.localizedDescription)
         }
     }
     
@@ -109,14 +111,16 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
     }
     
     private func generateKeyIfNotExists(forKey key: String, size: Int) {
-        if !keychainStore.containsObject(forKey: key) {
-            do {
-                var keyBytes = [UInt8](repeating: 0, count: size)
-                  _ = SecRandomCopyBytes(kSecRandomDefault, size, &keyBytes)
-                try keychainStore.set(Data(bytes: keyBytes, count: size), forKey: key)
-            } catch {
-                NSLog("[EncryptionKeyManager] initKeys: Failed to generate Key[%@]: %@", key, error.localizedDescription)
-            }
+        guard !keychainStore.containsObject(forKey: key) else {
+            return
+        }
+        
+        do {
+            var keyBytes = [UInt8](repeating: 0, count: size)
+              _ = SecRandomCopyBytes(kSecRandomDefault, size, &keyBytes)
+            try keychainStore.set(Data(bytes: keyBytes, count: size), forKey: key)
+        } catch {
+            NSLog("[EncryptionKeyManager] initKeys: Failed to generate Key[%@]: %@", key, error.localizedDescription)
         }
     }
 }
