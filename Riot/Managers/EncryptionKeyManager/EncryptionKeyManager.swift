@@ -33,6 +33,7 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
     private let keychainStore: KeychainStore = KeychainStore(withKeychain: Keychain(service: keychainService, accessGroup: BuildSettings.keychainAccessGroup))
 
     private override init() {
+        super.init()
     }
     
     func initKeys() {
