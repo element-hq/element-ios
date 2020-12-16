@@ -376,9 +376,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(nullable NSDictionary *)launchOptions
 {
-    [MXKeyProvider sharedInstance].delegate = [EncryptionKeyManager shared];
-    [[EncryptionKeyManager shared] initKeys];
-
     // Create message sound
     NSURL *messageSoundURL = [[NSBundle mainBundle] URLForResource:@"message" withExtension:@"caf"];
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)messageSoundURL, &_messageSound);

@@ -25,18 +25,19 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
     
     private static let keychainService: String = BuildSettings.baseBundleIdentifier + ".encryption-manager-service"
     private static let contactsIv: KeyValueStoreKey = "contactsIv"
-    private static let contactsAesKey: KeyValueStoreKey = "contactsKey"
-    private static let accountIv: KeyValueStoreKey = "acountIv"
-    private static let accountAesKey: KeyValueStoreKey = "acountKey"
+    private static let contactsAesKey: KeyValueStoreKey = "contactsAesKey"
+    private static let accountIv: KeyValueStoreKey = "accountIv"
+    private static let accountAesKey: KeyValueStoreKey = "accountAesKey"
     private static let realmCryptoKey: KeyValueStoreKey = "realmCryptoKey"
 
-    private let keychainStore: KeychainStore = KeychainStore(withKeychain: Keychain(service: keychainService, accessGroup: BuildSettings.keychainAccessGroup))
+    private let keychainStore: KeyValueStore = KeychainStore(withKeychain: Keychain(service: keychainService, accessGroup: BuildSettings.keychainAccessGroup))
 
     private override init() {
         super.init()
+        initKeys()
     }
     
-    func initKeys() {
+    private func initKeys() {
         generateIvIfNotExists(forKey: EncryptionKeyManager.accountIv)
         generateAesKeyIfNotExists(forKey: EncryptionKeyManager.accountAesKey)
         generateIvIfNotExists(forKey: EncryptionKeyManager.contactsIv)

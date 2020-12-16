@@ -912,6 +912,18 @@
 		ECB5D98F255420F8000AD89C /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB5D98E255420F8000AD89C /* Keychain.swift */; };
 		ECB5D9902554221F000AD89C /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB5D98E255420F8000AD89C /* Keychain.swift */; };
 		ECDC15F224AF41D2003437CF /* FormattedBodyParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC15F124AF41D2003437CF /* FormattedBodyParser.swift */; };
+		ECE36F71258A373900122124 /* EncryptionKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA7D00B2587FF0000420A72 /* EncryptionKeyManager.swift */; };
+		ECE36F72258A373A00122124 /* EncryptionKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA7D00B2587FF0000420A72 /* EncryptionKeyManager.swift */; };
+		ECE36F73258A373B00122124 /* EncryptionKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA7D00B2587FF0000420A72 /* EncryptionKeyManager.swift */; };
+		ECE36F74258A37D800122124 /* KeyValueStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA87124C823E700DE9EBF /* KeyValueStore.swift */; };
+		ECE36F75258A37D800122124 /* KeyValueStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA87124C823E700DE9EBF /* KeyValueStore.swift */; };
+		ECE36F76258A37EB00122124 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA87424C8259700DE9EBF /* KeychainStore.swift */; };
+		ECE36F77258A37EC00122124 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA87424C8259700DE9EBF /* KeychainStore.swift */; };
+		ECE36F78258A37FA00122124 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB5D98E255420F8000AD89C /* Keychain.swift */; };
+		ECE36F79258A37FB00122124 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB5D98E255420F8000AD89C /* Keychain.swift */; };
+		ECE36F7B258A383E00122124 /* EncryptionKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA7D00B2587FF0000420A72 /* EncryptionKeyManager.swift */; };
+		ECE36F7C258A384200122124 /* KeyValueStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA87124C823E700DE9EBF /* KeyValueStore.swift */; };
+		ECE36F7D258A384E00122124 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA87424C8259700DE9EBF /* KeychainStore.swift */; };
 		ECF57A4425090C23004BBF9D /* CreateRoomCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A3825090C23004BBF9D /* CreateRoomCoordinatorBridgePresenter.swift */; };
 		ECF57A4525090C23004BBF9D /* CreateRoomCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A3925090C23004BBF9D /* CreateRoomCoordinatorType.swift */; };
 		ECF57A4625090C23004BBF9D /* CreateRoomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A3A25090C23004BBF9D /* CreateRoomCoordinator.swift */; };
@@ -6173,7 +6185,10 @@
 				B169328420F38BE300746532 /* SegmentedViewController.m in Sources */,
 				32FD757824D2C9BA00BA7B37 /* Bundle.swift in Sources */,
 				32242F1821E8FBF800725742 /* DefaultTheme.swift in Sources */,
+				ECE36F71258A373900122124 /* EncryptionKeyManager.swift in Sources */,
 				B1664BCA20F4E67600808783 /* ShareViewController.m in Sources */,
+				ECE36F76258A37EB00122124 /* KeychainStore.swift in Sources */,
+				ECE36F75258A37D800122124 /* KeyValueStore.swift in Sources */,
 				B1664BC620F4E67600808783 /* FallbackViewController.m in Sources */,
 				32242F1621E8FBCC00725742 /* ThemeService.m in Sources */,
 				24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */,
@@ -6188,6 +6203,7 @@
 				32FD755224D074C700BA7B37 /* CommonConfiguration.swift in Sources */,
 				B1DB4F0F223170000065DBFA /* UserNameColorGenerator.swift in Sources */,
 				F0A8955F1F7D1FEA00BD6C2A /* MXRoomSummary+Riot.m in Sources */,
+				ECE36F78258A37FA00122124 /* Keychain.swift in Sources */,
 				32242F1721E8FBE500725742 /* Theme.swift in Sources */,
 				B169328320F38AE600746532 /* RiotSettings.swift in Sources */,
 				32242F0A21E8B21300725742 /* UIColor.swift in Sources */,
@@ -6209,9 +6225,13 @@
 				32FD757924D2C9BA00BA7B37 /* Bundle.swift in Sources */,
 				92726A471F58737A004AD26F /* IntentHandler.m in Sources */,
 				32FD755324D074C700BA7B37 /* CommonConfiguration.swift in Sources */,
+				ECE36F72258A373A00122124 /* EncryptionKeyManager.swift in Sources */,
+				ECE36F79258A37FB00122124 /* Keychain.swift in Sources */,
 				32FD756724D2AD5100BA7B37 /* BuildSettings.swift in Sources */,
 				32FD755A24D15C7A00BA7B37 /* Configurable.swift in Sources */,
 				32FD754C24D06EBE00BA7B37 /* RiotSettings.swift in Sources */,
+				ECE36F74258A37D800122124 /* KeyValueStore.swift in Sources */,
+				ECE36F77258A37EC00122124 /* KeychainStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6235,6 +6255,7 @@
 				EC31F0962521FC5300D407DA /* Strings.swift in Sources */,
 				EC31F0972521FC6300D407DA /* Images.swift in Sources */,
 				EC9A3EC824E1634800A8CFAE /* KeychainStore.swift in Sources */,
+				ECE36F73258A373B00122124 /* EncryptionKeyManager.swift in Sources */,
 				EC31F0942521FC3700D407DA /* LocalAuthenticationService.swift in Sources */,
 				32FD755B24D15C7A00BA7B37 /* Configurable.swift in Sources */,
 				EC85D755247C0F84002C44C9 /* Constants.swift in Sources */,
@@ -6954,9 +6975,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				32FD755824D15C7A00BA7B37 /* Configurable.swift in Sources */,
+				ECE36F7D258A384E00122124 /* KeychainStore.swift in Sources */,
 				32FD757724D2C9BA00BA7B37 /* Bundle.swift in Sources */,
 				32FD754D24D06EBF00BA7B37 /* RiotSettings.swift in Sources */,
 				B1562CE52541D113002F8436 /* JitsiWellKnownTests.swift in Sources */,
+				ECE36F7B258A383E00122124 /* EncryptionKeyManager.swift in Sources */,
+				ECE36F7C258A384200122124 /* KeyValueStore.swift in Sources */,
 				32FD757124D2BEF700BA7B37 /* InfoPlist.swift in Sources */,
 				32FD756524D2AD5100BA7B37 /* BuildSettings.swift in Sources */,
 				32FD755524D0754500BA7B37 /* AppConfiguration.swift in Sources */,
