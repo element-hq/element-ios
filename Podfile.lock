@@ -60,38 +60,36 @@ PODS:
   - MatomoTracker (7.2.2):
     - MatomoTracker/Core (= 7.2.2)
   - MatomoTracker/Core (7.2.2)
-  - MatrixKit (0.13.2):
+  - MatrixKit (0.13.3):
     - Down (~> 0.9.3)
     - DTCoreText (~> 1.6.23)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.13.2)
-    - MatrixSDK (= 0.17.4)
-  - MatrixKit/AppExtension (0.13.2):
+    - MatrixKit/Core (= 0.13.3)
+    - MatrixSDK (= 0.17.5)
+  - MatrixKit/AppExtension (0.13.3):
     - Down (~> 0.9.3)
     - DTCoreText (~> 1.6.23)
     - DTCoreText/Extension
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.17.4)
-  - MatrixKit/Core (0.13.2):
+    - MatrixSDK (= 0.17.5)
+  - MatrixKit/Core (0.13.3):
     - Down (~> 0.9.3)
     - DTCoreText (~> 1.6.23)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.17.4)
-  - MatrixSDK (0.17.4):
-    - MatrixSDK/Core (= 0.17.4)
-  - MatrixSDK/Core (0.17.4):
+    - MatrixSDK (= 0.17.5)
+  - MatrixSDK (0.17.5):
+    - MatrixSDK/Core (= 0.17.5)
+  - MatrixSDK/Core (0.17.5):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.3.0)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.1.0)
     - Realm (= 10.1.4)
-  - MatrixSDK/JingleCallStack (0.17.4):
+  - MatrixSDK/JingleCallStack (0.17.5):
     - JitsiMeetSDK (= 2.11.0)
-    - MatrixSDK/Core
-  - MatrixSDK/SwiftSupport (0.17.4):
     - MatrixSDK/Core
   - OLMKit (3.1.0):
     - OLMKit/olmc (= 3.1.0)
@@ -129,11 +127,10 @@ DEPENDENCIES:
   - KeychainAccess (~> 4.2.1)
   - KTCenterFlowLayout (~> 1.3.1)
   - MatomoTracker (~> 7.2.2)
-  - MatrixKit (= 0.13.2)
-  - MatrixKit/AppExtension (= 0.13.2)
+  - MatrixKit (= 0.13.3)
+  - MatrixKit/AppExtension (= 0.13.3)
   - MatrixSDK
   - MatrixSDK/JingleCallStack
-  - MatrixSDK/SwiftSupport
   - OLMKit
   - ReadMoreTextView (~> 3.0.1)
   - Reusable (~> 4.1)
@@ -202,8 +199,8 @@ SPEC CHECKSUMS:
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
   MatomoTracker: a59ec4da0f580be57bdc6baa708a71a86532a832
-  MatrixKit: 411348d4690b414e18958a0437c13edc21054a18
-  MatrixSDK: 39282219213aebf621326f6335073b5a2b1e9113
+  MatrixKit: 86f5239fab112ab0d3714fd1f366916ebd4d2b25
+  MatrixSDK: aadf483438804d9e93d5d46ad3e5e832b7bb8848
   OLMKit: 4ee0159d63feeb86d836fdcfefe418e163511639
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
   Realm: 80f4fb2971ccb9adc27a47d0955ae8e533a7030b
@@ -215,6 +212,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 5f40ae970fc6a939c548fedf78849358a895c315
+PODFILE CHECKSUM: 22fcc5047435925034265c61cd821507736bf492
 
 COCOAPODS: 1.10.0
