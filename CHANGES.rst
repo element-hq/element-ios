@@ -8,6 +8,30 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Changes in 1.1.3 (2020-12-16)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * AuthVC: Update SSO button wording.
+
+🐛 Bugfix
  * Refresh account details on NSE runs (#3719).
 
 ⚠️ API Changes
@@ -21,6 +45,9 @@ Changes to be released in next version
 
 Others
  * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.13.3](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.3)).
 
 Changes in 1.1.2 (2020-12-02)
 =================================================
