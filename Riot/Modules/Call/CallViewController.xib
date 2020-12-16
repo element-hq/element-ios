@@ -29,6 +29,8 @@
                 <outlet property="localPreviewContainerViewWidthConstraint" destination="gyu-kv-SLy" id="urn-uo-hnt"/>
                 <outlet property="moreButton" destination="xCi-hD-FBs" id="2Hn-T9-jZY"/>
                 <outlet property="moreButtonLeadingConstraint" destination="Erd-Js-vLN" id="fpN-9m-rOc"/>
+                <outlet property="onHoldCallContainerView" destination="4TX-46-pAi" id="SsP-eX-aHP"/>
+                <outlet property="onHoldCallerImageView" destination="uFS-C2-TxV" id="SfP-iP-jgd"/>
                 <outlet property="overlayContainerView" destination="JAR-tn-sGN" id="09u-3G-1UA"/>
                 <outlet property="pausedIcon" destination="rjn-DE-i10" id="CHR-mM-Dae"/>
                 <outlet property="pipButton" destination="Yq6-d2-Ea2" id="scW-S6-fpr"/>
@@ -48,6 +50,24 @@
                     <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <accessibility key="accessibilityConfiguration" identifier="CallVCRemotePreviewContainerView"/>
+                </view>
+                <view hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="6gQ-zo-2Zw" userLabel="Local Preview Container">
+                    <rect key="frame" x="20" y="464" width="79" height="106"/>
+                    <subviews>
+                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Bhz-hS-5B6">
+                            <rect key="frame" x="21" y="34.5" width="37" height="37"/>
+                        </activityIndicatorView>
+                    </subviews>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                    <accessibility key="accessibilityConfiguration" identifier="CallVCLocalPreviewContainerView">
+                        <accessibilityTraits key="traits" notEnabled="YES"/>
+                    </accessibility>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="106" id="dZW-ZL-5rV"/>
+                        <constraint firstAttribute="width" constant="79" id="gyu-kv-SLy"/>
+                        <constraint firstItem="Bhz-hS-5B6" firstAttribute="centerY" secondItem="6gQ-zo-2Zw" secondAttribute="centerY" id="jTh-Rj-Eew"/>
+                        <constraint firstItem="Bhz-hS-5B6" firstAttribute="centerX" secondItem="6gQ-zo-2Zw" secondAttribute="centerX" id="w3I-wQ-iiT"/>
+                    </constraints>
                 </view>
                 <view opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JAR-tn-sGN" userLabel="Overlay Container View">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
@@ -279,23 +299,52 @@
                         <constraint firstAttribute="trailing" secondItem="nk9-Un-LVP" secondAttribute="trailing" id="yES-yI-i3m"/>
                     </constraints>
                 </view>
-                <view hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="6gQ-zo-2Zw" userLabel="Local Preview Container">
-                    <rect key="frame" x="20" y="464" width="79" height="106"/>
+                <view hidden="YES" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4TX-46-pAi" userLabel="OnHold Call Container View">
+                    <rect key="frame" x="315" y="100" width="79" height="106"/>
                     <subviews>
-                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Bhz-hS-5B6">
-                            <rect key="frame" x="21" y="34.5" width="37" height="37"/>
-                        </activityIndicatorView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OG1-NY-jaP">
+                            <rect key="frame" x="0.0" y="0.0" width="79" height="106"/>
+                            <subviews>
+                                <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="uFS-C2-TxV" userLabel="Caller Image View" customClass="MXKImageView">
+                                    <rect key="frame" x="0.0" y="0.0" width="79" height="106"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </view>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="call_paused_icon" translatesAutoresizingMaskIntoConstraints="NO" id="p8r-Y5-kMV">
+                                    <rect key="frame" x="29.5" y="43" width="20" height="20"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="20" id="ZOV-dL-X9D"/>
+                                        <constraint firstAttribute="width" constant="20" id="cc5-U0-eRA"/>
+                                    </constraints>
+                                </imageView>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="uFS-C2-TxV" secondAttribute="trailing" id="8Av-i6-yhT"/>
+                                <constraint firstAttribute="bottom" secondItem="uFS-C2-TxV" secondAttribute="bottom" id="9bR-x7-eA2"/>
+                                <constraint firstItem="p8r-Y5-kMV" firstAttribute="centerX" secondItem="OG1-NY-jaP" secondAttribute="centerX" id="JaE-cc-vUa"/>
+                                <constraint firstItem="p8r-Y5-kMV" firstAttribute="centerY" secondItem="OG1-NY-jaP" secondAttribute="centerY" id="OhB-Az-Ek4"/>
+                                <constraint firstItem="uFS-C2-TxV" firstAttribute="leading" secondItem="OG1-NY-jaP" secondAttribute="leading" id="PAn-v0-Plu"/>
+                                <constraint firstItem="uFS-C2-TxV" firstAttribute="top" secondItem="OG1-NY-jaP" secondAttribute="top" id="Pnc-s9-53l"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                    <accessibility key="accessibilityConfiguration" identifier="CallVCLocalPreviewContainerView">
+                    <accessibility key="accessibilityConfiguration">
                         <accessibilityTraits key="traits" notEnabled="YES"/>
                     </accessibility>
                     <constraints>
-                        <constraint firstAttribute="height" constant="106" id="dZW-ZL-5rV"/>
-                        <constraint firstAttribute="width" constant="79" id="gyu-kv-SLy"/>
-                        <constraint firstItem="Bhz-hS-5B6" firstAttribute="centerY" secondItem="6gQ-zo-2Zw" secondAttribute="centerY" id="jTh-Rj-Eew"/>
-                        <constraint firstItem="Bhz-hS-5B6" firstAttribute="centerX" secondItem="6gQ-zo-2Zw" secondAttribute="centerX" id="w3I-wQ-iiT"/>
+                        <constraint firstItem="OG1-NY-jaP" firstAttribute="top" secondItem="4TX-46-pAi" secondAttribute="top" id="IBB-HJ-VdV"/>
+                        <constraint firstAttribute="height" constant="106" id="JSx-ut-Nri"/>
+                        <constraint firstAttribute="bottom" secondItem="OG1-NY-jaP" secondAttribute="bottom" id="Ni3-ZD-Ztc"/>
+                        <constraint firstAttribute="width" constant="79" id="eGa-lf-eMP"/>
+                        <constraint firstItem="OG1-NY-jaP" firstAttribute="leading" secondItem="4TX-46-pAi" secondAttribute="leading" id="h53-VO-cSk"/>
+                        <constraint firstAttribute="trailing" secondItem="OG1-NY-jaP" secondAttribute="trailing" id="vts-Ig-B3r"/>
                     </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
                 </view>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UGa-hI-iqx" userLabel="Hidden View">
                     <rect key="frame" x="135" y="164" width="144" height="64"/>
@@ -336,8 +385,10 @@
             <constraints>
                 <constraint firstItem="6gQ-zo-2Zw" firstAttribute="top" secondItem="r1a-fi-tZ0" secondAttribute="top" priority="750" constant="420" id="6gi-ec-ZnO"/>
                 <constraint firstItem="r1a-fi-tZ0" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="6gQ-zo-2Zw" secondAttribute="trailing" constant="20" id="9Om-6f-K9u"/>
+                <constraint firstItem="r1a-fi-tZ0" firstAttribute="trailing" secondItem="4TX-46-pAi" secondAttribute="trailing" constant="20" id="PWX-RT-P9p"/>
                 <constraint firstItem="JAR-tn-sGN" firstAttribute="leading" secondItem="r1a-fi-tZ0" secondAttribute="leading" id="QLG-jw-Xph"/>
                 <constraint firstItem="6gQ-zo-2Zw" firstAttribute="leading" secondItem="r1a-fi-tZ0" secondAttribute="leading" priority="750" constant="20" id="Qvg-FG-sBr"/>
+                <constraint firstItem="4TX-46-pAi" firstAttribute="top" secondItem="r1a-fi-tZ0" secondAttribute="top" constant="56" id="TQG-q5-eS7"/>
                 <constraint firstItem="r1a-fi-tZ0" firstAttribute="bottom" secondItem="nk9-Un-LVP" secondAttribute="bottom" id="VpW-QU-xiw"/>
                 <constraint firstItem="r1a-fi-tZ0" firstAttribute="trailing" secondItem="JAR-tn-sGN" secondAttribute="trailing" id="Xcc-jT-zbd"/>
                 <constraint firstItem="UGa-hI-iqx" firstAttribute="top" secondItem="r1a-fi-tZ0" secondAttribute="top" constant="120" id="YlJ-XZ-rCM"/>
@@ -365,6 +416,9 @@
         <image name="call_pip_icon" width="24" height="24"/>
         <image name="call_video_mute_off_icon" width="48" height="48"/>
         <image name="camera_switch" width="24" height="24"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemGreenColor">
             <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

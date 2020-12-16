@@ -23,7 +23,11 @@ class CallService: NSObject {
     
     private var callVCs: [String: CallViewController] = [:]
     private var callBackgroundTasks: [String: MXBackgroundTask] = [:]
-    private weak var presentedCallVC: CallViewController?
+    private weak var presentedCallVC: CallViewController? {
+        didSet {
+            updateOnHoldCall()
+        }
+    }
     private weak var inBarCallVC: CallViewController?
     private var uiOperationQueue: OperationQueue = .main
     private var isStarted: Bool = false
@@ -40,6 +44,15 @@ class CallService: NSObject {
             }
             return !call.isOnHold
         }.first
+    }
+    
+    private var onHoldCallVCs: [CallViewController] {
+        return callVCs.values.filter { (callVC) -> Bool in
+            guard let call = callVC.mxCall else {
+                return false
+            }
+            return call.isOnHold
+        }
     }
     
     private var numberOfPausedCalls: UInt {
@@ -84,11 +97,32 @@ class CallService: NSObject {
     
     //  MARK: - Private
     
+    private func updateOnHoldCall() {
+        guard let presentedCallVC = presentedCallVC else {
+            return
+        }
+        
+        if onHoldCallVCs.isEmpty {
+            //  no on hold calls, clear the call
+            presentedCallVC.mxCallOnHold = nil
+        } else {
+            for callVC in onHoldCallVCs where callVC != presentedCallVC {
+                //  do not set the same call (can happen in case of two on hold calls)
+                presentedCallVC.mxCallOnHold = callVC.mxCall
+                break
+            }
+        }
+    }
+    
     private func shouldHandleCall(_ call: MXCall) -> Bool {
         if let delegate = delegate, !delegate.callService(self, shouldHandleNewCall: call) {
             return false
         }
         return callVCs.count < maximumNumberOfConcurrentCalls
+    }
+    
+    private func callHolded(withCallId callId: String) {
+        updateOnHoldCall()
     }
     
     private func endCall(withCallId callId: String) {
@@ -100,6 +134,9 @@ class CallService: NSObject {
             guard let self = self else {
                 return
             }
+            
+            self.updateOnHoldCall()
+            
             self.callVCs.removeValue(forKey: callId)
             callVC.destroy()
             self.callBackgroundTasks[callId]?.stop()
@@ -238,9 +275,11 @@ class CallService: NSObject {
         case .onHold:
             NSLog("[CallService] callStateChanged: call holded: \(call.callId)")
             callTimer.fire()
+            callHolded(withCallId: call.callId)
         case .remotelyOnHold:
             NSLog("[CallService] callStateChanged: call remotely holded: \(call.callId)")
             callTimer.fire()
+            callHolded(withCallId: call.callId)
         case .ended:
             NSLog("[CallService] callStateChanged: call ended: \(call.callId)")
             endCall(withCallId: call.callId)
