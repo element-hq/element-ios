@@ -72,7 +72,7 @@
 "auth_register" = "Register";
 "auth_submit" = "Submit";
 "auth_skip" = "Skip";
-"auth_login_single_sign_on" = "Sign in with single sign-on";
+"auth_login_single_sign_on" = "Sign In";
 "auth_send_reset_email" = "Send Reset Email";
 "auth_return_to_login" = "Return to login screen";
 "auth_user_id_placeholder" = "Email or user name";
