@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * AuthVC: Update SSO button wording.
 
 🐛 Bugfix
  * Refresh account details on NSE runs (#3719).
