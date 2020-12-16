@@ -294,6 +294,9 @@
     // Listen to the event sent state changes
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventDidChangeSentState:) name:kMXEventDidChangeSentStateNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventDidChangeIdentifier:) name:kMXEventDidChangeIdentifierNotification object:nil];
+    
+    // Show / hide actions button in document preview according BuildSettings
+    self.allowActionsInDocumentPreview = BuildSettings.messageDetailsAllowShare;
 }
 
 - (void)viewDidLoad

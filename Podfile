@@ -11,7 +11,7 @@ use_frameworks!
 # - `{ {kit spec hash} => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for each repo. Used by Fastfile during CI
 #
 # Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
-$matrixKitVersion = '= 0.13.2'
+$matrixKitVersion = '= 0.13.3'
 # $matrixKitVersion = :local
 # $matrixKitVersion = {'develop' => 'develop'}
 
@@ -35,7 +35,6 @@ end
 # Method to import the right MatrixKit flavour
 def import_MatrixKit
   pod 'MatrixSDK', $matrixSDKVersionSpec
-  pod 'MatrixSDK/SwiftSupport', $matrixSDKVersionSpec
   pod 'MatrixSDK/JingleCallStack', $matrixSDKVersionSpec
   pod 'MatrixKit', $matrixKitVersionSpec
 end
@@ -43,7 +42,6 @@ end
 # Method to import the right MatrixKit/AppExtension flavour
 def import_MatrixKitAppExtension
   pod 'MatrixSDK', $matrixSDKVersionSpec
-  pod 'MatrixSDK/SwiftSupport', $matrixSDKVersionSpec
   pod 'MatrixKit/AppExtension', $matrixKitVersionSpec
 end
 
