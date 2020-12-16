@@ -216,6 +216,8 @@ final class EnterPinCodeViewController: UIViewController {
             self.renderConfirmPinToDisable()
         case .inactive:
             self.renderInactive()
+        case .changePin:
+            self.renderChangePin()
         }
     }
     
@@ -334,6 +336,17 @@ final class EnterPinCodeViewController: UIViewController {
         self.mainStackView.isHidden = true
         self.notAllowedPinView.isHidden = true
         self.explanatoryLabel.isHidden = true
+    }
+    
+    private func renderChangePin() {
+        self.inactiveView.isHidden = true
+        self.mainStackView.isHidden = false
+        self.logoImageView.isHidden = true
+        self.informationLabel.text = VectorL10n.pinProtectionConfirmPinToChange
+        self.explanatoryLabel.isHidden = true
+        self.forgotPinButton.isHidden = true
+        self.bottomView.isHidden = false
+        self.notAllowedPinView.isHidden = true
     }
     
     private func renderPlaceholdersCount(_ count: Int, error: Bool = false) {

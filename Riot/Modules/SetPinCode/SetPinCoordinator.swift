@@ -64,6 +64,8 @@ final class SetPinCoordinator: SetPinCoordinatorType {
             return createSetupBiometricsCoordinator()
         case .inactive:
             return createEnterPinCodeCoordinator()
+        case .changePin:
+            return createEnterPinCodeCoordinator()
         }
     }
     

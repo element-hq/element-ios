@@ -2,7 +2,7 @@ Changes to be released in next version
 =================================================
 
 ✨ Features
- * 
+ * Change Pin inside the app (#3881)
 
 🙌 Improvements
  * AuthVC: Update SSO button wording.
