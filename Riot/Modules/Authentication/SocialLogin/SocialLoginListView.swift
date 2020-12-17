@@ -55,8 +55,7 @@ final class SocialLoginListView: UIView, NibLoadable {
     
     static func instantiate() -> SocialLoginListView {
         let view = SocialLoginListView.loadFromNib()
-        view.theme = ThemeService.shared().theme
-        view.backgroundColor = .red
+        view.theme = ThemeService.shared().theme        
         return view
     }
     
