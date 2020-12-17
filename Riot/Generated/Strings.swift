@@ -4266,6 +4266,30 @@ internal enum VectorL10n {
   internal static var skip: String { 
     return VectorL10n.tr("Vector", "skip") 
   }
+  /// Continue with %@
+  internal static func socialLoginButtonTitleContinue(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "social_login_button_title_continue", p1)
+  }
+  /// Sign In with %@
+  internal static func socialLoginButtonTitleSignIn(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "social_login_button_title_sign_in", p1)
+  }
+  /// Sign Up with %@
+  internal static func socialLoginButtonTitleSignUp(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "social_login_button_title_sign_up", p1)
+  }
+  /// Continue with
+  internal static var socialLoginListTitleContinue: String { 
+    return VectorL10n.tr("Vector", "social_login_list_title_continue") 
+  }
+  /// Or login with
+  internal static var socialLoginListTitleSignIn: String { 
+    return VectorL10n.tr("Vector", "social_login_list_title_sign_in") 
+  }
+  /// Or register with
+  internal static var socialLoginListTitleSignUp: String { 
+    return VectorL10n.tr("Vector", "social_login_list_title_sign_up") 
+  }
   /// Start
   internal static var start: String { 
     return VectorL10n.tr("Vector", "start") 
