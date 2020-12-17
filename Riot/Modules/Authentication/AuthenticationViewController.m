@@ -27,7 +27,11 @@
 
 #import "Riot-Swift.h"
 
-@interface AuthenticationViewController () <AuthFallBackViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, SetPinCoordinatorBridgePresenterDelegate>
+static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
+
+@interface AuthenticationViewController () <AuthFallBackViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, SetPinCoordinatorBridgePresenterDelegate,
+    SocialLoginListViewDelegate
+>
 {
     /**
      The default country code used to initialize the mobile phone number input.
@@ -62,6 +66,12 @@
 @property (nonatomic, strong) KeyVerificationCoordinatorBridgePresenter *keyVerificationCoordinatorBridgePresenter;
 @property (nonatomic, strong) SetPinCoordinatorBridgePresenter *setPinCoordinatorBridgePresenter;
 @property (nonatomic, strong) KeyboardAvoider *keyboardAvoider;
+
+@property (weak, nonatomic) IBOutlet UIView *socialLoginContainerView;
+@property (nonatomic, weak) SocialLoginListView *socialLoginListView;
+
+// Current SSO flow containing Identity Providers. Used for `socialLoginListView`
+@property (nonatomic, strong) MXLoginSSOFlow *currentLoginSSOFlow;
 
 @end
 
@@ -377,8 +387,10 @@
         }
     }
     
+    [self updateAuthInputViewVisibility];
     [self updateForgotPwdButtonVisibility];
     [self updateSoftLogoutClearDataContainerVisibility];
+    [self updateSocialLoginViewVisibility];
 }
 
 - (void)setAuthInputsView:(MXKAuthInputsView *)authInputsView
@@ -420,6 +432,21 @@
     // Restore here the actual content view height.
     // Indeed this height has been modified according to the authInputsView height in the default implementation of MXKAuthenticationViewController.
     [self refreshContentViewHeightConstraint];
+}
+
+- (void)updateAuthInputViewVisibility
+{
+    BOOL hideAuthInputView = NO;
+    
+    // Hide input view when there is only social login actions to present
+    if ((self.authType == MXKAuthenticationTypeLogin || self.authType == MXKAuthenticationTypeRegister)
+        && self.currentLoginSSOFlow
+        && !self.isAuthSessionContainsPasswordFlow)
+    {
+        hideAuthInputView = YES;
+    }
+    
+    self.authInputsView.hidden = hideAuthInputView;
 }
 
 - (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled
@@ -692,7 +719,8 @@
  */
 - (MXAuthenticationSession*)handleSupportedFlowsInAuthenticationSession:(MXAuthenticationSession *)authSession
 {
-    MXLoginFlow *ssoFlow;
+    MXLoginSSOFlow *ssoFlow;
+    MXLoginFlow *passwordFlow;
     NSMutableArray *supportedFlows = [NSMutableArray array];
 
     for (MXLoginFlow *flow in authSession.flows)
@@ -704,20 +732,30 @@
             [supportedFlows addObject:flow];
         }
 
-        // Prioritise SSO over other flows
-        if ([flow.type isEqualToString:kMXLoginFlowTypeSSO]
-            || [flow.type isEqualToString:kMXLoginFlowTypeCAS])
+        if ([flow.type isEqualToString:kMXLoginFlowTypePassword])
+        {
+            passwordFlow = flow;
+        }
+
+        if ([flow isKindOfClass:MXLoginSSOFlow.class])
         {
             NSLog(@"[AuthenticationVC] handleSupportedFlowsInAuthenticationSession: Prioritise flow %@", flow.type);
-            ssoFlow = flow;
-            break;
+            ssoFlow = (MXLoginSSOFlow *)flow;
         }
     }
 
+    // Prioritise SSO over other flows
     if (ssoFlow)
     {
         [supportedFlows removeAllObjects];
         [supportedFlows addObject:ssoFlow];
+
+        // If the SSO contains Identity Providers list and password
+        // Display both social login and password input
+        if (ssoFlow.identityProviders.count && passwordFlow)
+        {
+            [supportedFlows addObject:passwordFlow];
+        }
     }
 
     if (supportedFlows.count != authSession.flows.count)
@@ -740,7 +778,12 @@
     authSession = [self handleSupportedFlowsInAuthenticationSession:authSession];
     
     [super handleAuthenticationSession:authSession];
-
+    
+    self.currentLoginSSOFlow = [self logginSSOFlowWithProvidersFromFlows:authSession.flows];
+    
+    [self updateAuthInputViewVisibility];
+    [self updateSocialLoginViewVisibility];
+        
     AuthInputsView *authInputsview;
     if ([self.authInputsView isKindOfClass:AuthInputsView.class])
     {
@@ -752,7 +795,7 @@
     [self updateForgotPwdButtonVisibility];
     [self updateSoftLogoutClearDataContainerVisibility];
 
-    self.submitButton.hidden = authInputsview.isSingleSignOnRequired;
+    self.submitButton.hidden = authInputsview.isSingleSignOnRequired || authInputsview.isHidden;
 
     // Bind ssoButton again if self.authInputsView has changed
     [authInputsview.ssoButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -763,6 +806,54 @@
         // That makes softLogoutClearDataContainer appear upper in the screen
         [self.submitButton removeFromSuperview];
     }
+    
+    [self refreshContentViewHeightConstraint];
+}
+
+- (BOOL)isAuthSessionContainsPasswordFlow
+{
+    BOOL containsPassword = NO;
+    
+    if (self.authInputsView.authSession)
+    {
+        containsPassword = [self containsPasswordFlowInFlows:self.authInputsView.authSession.flows];
+    }
+    
+    return containsPassword;
+}
+
+- (BOOL)containsPasswordFlowInFlows:(NSArray<MXLoginFlow*>*)loginFlows
+{
+    for (MXLoginFlow *loginFlow in loginFlows)
+    {
+        if ([loginFlow.type isEqualToString:kMXLoginFlowTypePassword])
+        {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+- (MXLoginSSOFlow*)logginSSOFlowWithProvidersFromFlows:(NSArray<MXLoginFlow*>*)loginFlows
+{
+    MXLoginSSOFlow *ssoFlowWithProviders;
+    
+    for (MXLoginFlow *loginFlow in loginFlows)
+    {
+        if ([loginFlow isKindOfClass:MXLoginSSOFlow.class])
+        {
+            MXLoginSSOFlow *ssoFlow = (MXLoginSSOFlow *)loginFlow;
+            
+            if (ssoFlow.identityProviders.count)
+            {
+                ssoFlowWithProviders = ssoFlow;
+                break;
+            }
+        }
+    }
+    
+    return ssoFlowWithProviders;
 }
 
 - (IBAction)onButtonPressed:(id)sender
@@ -958,7 +1049,7 @@
     
     BOOL showForgotPasswordButton = NO;
 
-    if (BuildSettings.authScreenShowForgotPassword)
+    if (BuildSettings.authScreenShowForgotPassword && authInputsview.isHidden == NO)
     {
         showForgotPasswordButton = (self.authType == MXKAuthenticationTypeLogin) && !authInputsview.isSingleSignOnRequired;
     }
@@ -1054,6 +1145,17 @@
     // Refresh content view height by considering the options container display.
     CGFloat constant = self.optionsContainer.frame.origin.y + 10;
     
+    if (self.authInputsView.isHidden == NO)
+    {
+        self.authInputContainerViewMinHeightConstraint.constant = kAuthInputContainerViewMinHeightConstraintConstant;
+        self.authInputContainerViewHeightConstraint.constant = self.authInputsView.viewHeightConstraint.constant;
+    }
+    else
+    {
+        self.authInputContainerViewMinHeightConstraint.constant = 0;
+        self.authInputContainerViewHeightConstraint.constant = 0;
+    }
+    
     if (!self.optionsContainer.isHidden)
     {
         constant += self.serverOptionsContainer.frame.origin.y;
@@ -1079,8 +1181,15 @@
         // The soft logout clear data section adds more height
         constant += self.softLogoutClearDataContainer.frame.size.height;
     }
+    
+    if (self.isSocialLoginViewShown)
+    {
+        constant += [self socialLoginViewHeightFittingWidth:self.contentView.frame.size.width];
+    }
 
     self.contentViewHeightConstraint.constant = constant;
+    
+    [self.view layoutIfNeeded];
 }
 
 - (void)hideCustomServers:(BOOL)hidden
@@ -1148,7 +1257,7 @@
         self.customServersContainer.hidden = NO;
         
         // Refresh content view height
-        self.contentViewHeightConstraint.constant += self.customServersContainer.frame.size.height;
+        [self refreshContentViewHeightConstraint];
 
         // Scroll to display server options
         CGPoint offset = self.authenticationScrollView.contentOffset;
@@ -1186,11 +1295,6 @@
     // Override here the handling of the authInputsView height change.
     if ([@"viewHeightConstraint.constant" isEqualToString:keyPath])
     {
-        self.authInputContainerViewHeightConstraint.constant = self.authInputsView.viewHeightConstraint.constant;
-        
-        // Force to render the view
-        [self.view layoutIfNeeded];
-        
         // Refresh content view height by considering the updated frame of the options container.
         [self refreshContentViewHeightConstraint];
     }
@@ -1494,6 +1598,95 @@
     //  then, just close the enter pin screen
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.setPinCoordinatorBridgePresenter = nil;
+}
+
+#pragma mark - Social login view management
+
+- (BOOL)isSocialLoginViewShown
+{
+    return self.socialLoginListView.superview
+    && !self.socialLoginListView.isHidden
+    && self.currentLoginSSOFlow.identityProviders.count;
+}
+
+- (CGFloat)socialLoginViewHeightFittingWidth:(CGFloat)width
+{
+    NSArray<MXLoginSSOIdentityProvider*> *identityProviders =  self.currentLoginSSOFlow.identityProviders;
+    
+    if (!identityProviders.count && self.socialLoginListView)
+    {
+        return 0.0;
+    }
+    
+    return [SocialLoginListView contentViewHeightWithIdentityProviders:identityProviders mode:self.socialLoginListView.mode fitting:self.contentView.frame.size.width];
+}
+
+- (void)showSocialLoginViewWithLoginSSOFlow:(MXLoginSSOFlow*)loginSSOFlow andMode:(SocialLoginButtonMode)mode
+{
+    SocialLoginListView *listView = self.socialLoginListView;
+    
+    if (!listView)
+    {
+        listView = [SocialLoginListView instantiate];
+        [self.socialLoginContainerView vc_addSubViewMatchingParent:listView];
+        self.socialLoginListView = listView;
+        listView.delegate = self;
+    }
+    
+    [listView updateWith:loginSSOFlow.identityProviders mode:mode];
+    
+    [self refreshContentViewHeightConstraint];
+}
+
+- (void)hideSocialLoginView
+{
+    [self.socialLoginListView removeFromSuperview];
+    [self refreshContentViewHeightConstraint];
+}
+
+- (void)updateSocialLoginViewVisibility
+{
+    SocialLoginButtonMode socialLoginButtonMode = SocialLoginButtonModeContinue;
+    
+    BOOL showSocialLoginView = self.currentLoginSSOFlow ? YES : NO;
+    
+    switch (self.authType)
+    {
+        case MXKAuthenticationTypeForgotPassword:
+            showSocialLoginView = NO;
+            break;
+        case MXKAuthenticationTypeRegister:
+            socialLoginButtonMode = SocialLoginButtonModeSignUp;
+            break;
+        case MXKAuthenticationTypeLogin:
+            if (((AuthInputsView*)self.authInputsView).isSingleSignOnRequired)
+            {
+                socialLoginButtonMode = SocialLoginButtonModeContinue;
+            }
+            else
+            {
+                socialLoginButtonMode = SocialLoginButtonModeSignIn;
+            }
+            break;
+        default:
+            break;
+    }
+    
+    if (showSocialLoginView)
+    {
+        [self showSocialLoginViewWithLoginSSOFlow:self.currentLoginSSOFlow andMode:socialLoginButtonMode];
+    }
+    else
+    {
+        [self hideSocialLoginView];
+    }
+}
+
+#pragma mark - SocialLoginListViewDelegate
+
+- (void)socialLoginListView:(SocialLoginListView *)socialLoginListView didTapSocialButtonWithIdentifier:(NSString *)identifier
+{
+    // TODO: Show SSO authentication for the Identity Provider
 }
 
 @end
