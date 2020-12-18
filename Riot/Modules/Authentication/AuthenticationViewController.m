@@ -30,7 +30,8 @@
 static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
 @interface AuthenticationViewController () <AuthFallBackViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, SetPinCoordinatorBridgePresenterDelegate,
-    SocialLoginListViewDelegate
+    SocialLoginListViewDelegate,
+    SSOAuthenticationPresenterDelegate
 >
 {
     /**
@@ -69,6 +70,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
 @property (weak, nonatomic) IBOutlet UIView *socialLoginContainerView;
 @property (nonatomic, weak) SocialLoginListView *socialLoginListView;
+
+@property (nonatomic, strong) SSOAuthenticationPresenter *ssoAuthenticationPresenter;
 
 // Current SSO flow containing Identity Providers. Used for `socialLoginListView`
 @property (nonatomic, strong) MXLoginSSOFlow *currentLoginSSOFlow;
@@ -1686,7 +1689,69 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
 - (void)socialLoginListView:(SocialLoginListView *)socialLoginListView didTapSocialButtonWithIdentifier:(NSString *)identifier
 {
-    // TODO: Show SSO authentication for the Identity Provider
+    [self presentSSOAuthenticationForIdentityProviderIdentifier:identifier];
+}
+
+#pragma mark - SSOIdentityProviderAuthenticationPresenter
+
+- (void)presentSSOAuthenticationForIdentityProviderIdentifier:(NSString*)identityProviderIdentifier
+{
+    NSString *homeServerStringURL = self.homeServerTextField.text;
+    
+    if (!homeServerStringURL)
+    {
+        return;
+    }
+    
+    SSOAuthenticationService *ssoAuthenticationService = [[SSOAuthenticationService alloc] initWithHomeserverStringURL:homeServerStringURL];
+    
+    SSOAuthenticationPresenter *presenter = [[SSOAuthenticationPresenter alloc] initWithSsoAuthenticationService:ssoAuthenticationService];
+    
+    presenter.delegate = self;
+    
+    [presenter presentForIdentityProviderIdentifier:identityProviderIdentifier from:self animated:YES];
+
+    self.ssoAuthenticationPresenter = presenter;
+}
+
+- (void)presentDefaultSSOAuthentication
+{
+    [self presentSSOAuthenticationForIdentityProviderIdentifier:nil];
+}
+
+- (void)dismissSSOAuthenticationPresenter
+{
+    [self.ssoAuthenticationPresenter dismissWithAnimated:YES completion:nil];
+    self.ssoAuthenticationPresenter = nil;
+}
+
+// TODO: Move to SDK
+- (void)loginWithToken:(NSString*)loginToken
+{
+    NSDictionary *parameters = @{
+        @"type" : kMXLoginFlowTypeToken,
+        @"token": loginToken
+    };
+    
+    [self loginWithParameters:parameters];
+}
+
+#pragma mark - SSOAuthenticationPresenterDelegate
+
+- (void)ssoAuthenticationPresenterDidCancel:(SSOAuthenticationPresenter *)presenter
+{
+    [self dismissSSOAuthenticationPresenter];
+}
+
+- (void)ssoAuthenticationPresenter:(SSOAuthenticationPresenter *)presenter authenticationDidFailWithError:(NSError *)error
+{
+    [self dismissSSOAuthenticationPresenter];
+}
+
+- (void)ssoAuthenticationPresenter:(SSOAuthenticationPresenter *)presenter authenticationSucceededWithToken:(NSString *)token
+{
+    [self dismissSSOAuthenticationPresenter];
+    [self loginWithToken:token];
 }
 
 @end
