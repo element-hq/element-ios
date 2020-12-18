@@ -66,7 +66,7 @@ NSString *FallBackViewControllerJavascriptOnLogin = @"window.matrixLogin.onLogin
     // The created UserAgent would look like this (on iPhone 6, IOS 12.4): "Mozilla/5.0 (iPhone; CPU iPhone OS 12_4)"
     NSString *model =  [[UIDevice currentDevice] model];
     NSString *systemVersion = [[[UIDevice currentDevice] systemVersion] stringByReplacingOccurrencesOfString:@"." withString:@"_"];
-    webView.customUserAgent = [NSString stringWithFormat:@"Mozilla/5.0 (%@; CPU %@ OS %@)", model, model, systemVersion];
+    webView.customUserAgent = [NSString stringWithFormat:@"Mozilla/5.0 (%@; CPU iPhone OS %@)", model, systemVersion];
 
     [self clearCookies];
 }
