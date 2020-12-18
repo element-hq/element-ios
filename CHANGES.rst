@@ -1,4 +1,4 @@
-Changes in 1.1.3 (2020-12-16)
+Changes in 1.1.3 (2020-12-18)
 =================================================
 
 ✨ Features
@@ -6,6 +6,7 @@ Changes in 1.1.3 (2020-12-16)
 
 🙌 Improvements
  * AuthVC: Update SSO button wording.
+ * Log NSE memory footprint for debugging purposes.
 
 🐛 Bugfix
  * Refresh account details on NSE runs (#3719).
@@ -24,6 +25,7 @@ Others
 
 Improvements:
  * Upgrade MatrixKit version ([v0.13.3](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.3)).
+ * Upgrade MatrixKit version ([v0.13.4](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.4)).
 
 Changes in 1.1.2 (2020-12-02)
 =================================================
