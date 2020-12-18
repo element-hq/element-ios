@@ -20,6 +20,8 @@ import MatrixSDK
 
 class NotificationService: UNNotificationServiceExtension {
     
+    //  MARK: - Properties
+    
     /// Content handlers. Keys are eventId's
     private var contentHandlers: [String: ((UNNotificationContent) -> Void)] = [:]
     
@@ -43,6 +45,8 @@ class NotificationService: UNNotificationServiceExtension {
     private var pushNotificationStore: PushNotificationStore = PushNotificationStore()
     private let localAuthenticationService = LocalAuthenticationService(pinCodePreferences: .shared)
     
+    //  MARK: - Method Overrides
+    
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         // Set static application settings
         configuration.setupSettings()
@@ -56,12 +60,13 @@ class NotificationService: UNNotificationServiceExtension {
         setupLogger()
         
         NSLog("[NotificationService] Instance: \(self), thread: \(Thread.current)")
-
+        logMemory()
+        
         UNUserNotificationCenter.current().removeUnwantedNotifications()
         
         let userInfo = request.content.userInfo
         NSLog("[NotificationService] Payload came: \(userInfo)")
-
+        
         //  check if this is a Matrix notification
         guard let roomId = userInfo["room_id"] as? String, let eventId = userInfo["event_id"] as? String else {
             //  it's not a Matrix notification, do not change the content
@@ -96,10 +101,17 @@ class NotificationService: UNNotificationServiceExtension {
         // Use this as an opportunity to deliver your "best attempt" at modified content, otherwise the original push payload will be used.
         
         NSLog("[NotificationService] serviceExtensionTimeWillExpire")
+        logMemory()
         //  No-op here. If the process is killed by the OS due to time limit, it will also show the notification with the original content.
     }
     
-    func setupLogger() {
+    //  MARK: - Private
+    
+    private func logMemory() {
+        NSLog("[NotificationService] Memory footprint: \(Memory.formattedMemoryFootprint())")
+    }
+    
+    private func setupLogger() {
         if !NotificationService.isLoggerInitialized {
             if isatty(STDERR_FILENO) == 0 {
                 MXLogger.setSubLogName("nse")
@@ -109,7 +121,7 @@ class NotificationService: UNNotificationServiceExtension {
         }
     }
     
-    func setup(withRoomId roomId: String, eventId: String, completion: @escaping () -> Void) {
+    private func setup(withRoomId roomId: String, eventId: String, completion: @escaping () -> Void) {
         MXKAccountManager.shared()?.forceReloadAccounts()
         self.userAccount = MXKAccountManager.shared()?.activeAccounts.first
         if let userAccount = userAccount {
@@ -127,7 +139,7 @@ class NotificationService: UNNotificationServiceExtension {
     /// - Parameters:
     ///   - eventId: Event identifier to mutate best attempt content
     ///   - roomId: Room identifier to fetch display name
-    func preprocessPayload(forEventId eventId: String, roomId: String) {
+    private func preprocessPayload(forEventId eventId: String, roomId: String) {
         if localAuthenticationService.isProtectionSet {
             NSLog("[NotificationService] preprocessPayload: Do not preprocess because app protection is set")
             return
@@ -141,7 +153,7 @@ class NotificationService: UNNotificationServiceExtension {
         }
     }
     
-    func fetchEvent(withEventId eventId: String, roomId: String, allowSync: Bool = true) {
+    private func fetchEvent(withEventId eventId: String, roomId: String, allowSync: Bool = true) {
         NSLog("[NotificationService] fetchEvent")
         
         NotificationService.backgroundSyncService.event(withEventId: eventId,
@@ -155,7 +167,7 @@ class NotificationService: UNNotificationServiceExtension {
                                                                 NSLog("[NotificationService] fetchEvent: error: \(error)")
                                                                 self.fallbackToBestAttemptContent(forEventId: eventId)
                                                             }
-        })
+                                                        })
     }
     
     private func processEvent(_ event: MXEvent) {
@@ -163,7 +175,7 @@ class NotificationService: UNNotificationServiceExtension {
             self.fallbackToBestAttemptContent(forEventId: event.eventId)
             return
         }
-
+        
         self.notificationContent(forEvent: event, forAccount: userAccount) { (notificationContent) in
             var isUnwantedNotification = false
             
@@ -359,12 +371,12 @@ class NotificationService: UNNotificationServiceExtension {
         })
     }
     
-    func notificationContent(withTitle title: String?,
-                             body: String?,
-                             threadIdentifier: String?,
-                             userId: String?,
-                             event: MXEvent,
-                             pushRule: MXPushRule?) -> UNNotificationContent {
+    private func notificationContent(withTitle title: String?,
+                                     body: String?,
+                                     threadIdentifier: String?,
+                                     userId: String?,
+                                     event: MXEvent,
+                                     pushRule: MXPushRule?) -> UNNotificationContent {
         let notificationContent = UNMutableNotificationContent()
         
         if let title = title {
@@ -387,7 +399,7 @@ class NotificationService: UNNotificationServiceExtension {
         return notificationContent
     }
     
-    func notificationUserInfo(forEvent event: MXEvent, andUserId userId: String?) -> [AnyHashable: Any] {
+    private func notificationUserInfo(forEvent event: MXEvent, andUserId userId: String?) -> [AnyHashable: Any] {
         var notificationUserInfo: [AnyHashable: Any] = [
             "type": "full",
             "room_id": event.roomId as Any,
@@ -399,7 +411,7 @@ class NotificationService: UNNotificationServiceExtension {
         return notificationUserInfo
     }
     
-    func notificationSoundName(fromPushRule pushRule: MXPushRule?) -> String? {
+    private func notificationSoundName(fromPushRule pushRule: MXPushRule?) -> String? {
         var soundName: String?
         
         // Set sound name based on the value provided in action of MXPushRule
@@ -418,7 +430,7 @@ class NotificationService: UNNotificationServiceExtension {
         return soundName
     }
     
-    func notificationCategoryIdentifier(forEvent event: MXEvent) -> String? {
+    private func notificationCategoryIdentifier(forEvent event: MXEvent) -> String? {
         let isNotificationContentShown = (!event.isEncrypted || self.showDecryptedContentInNotifications)
             && !localAuthenticationService.isProtectionSet
         
