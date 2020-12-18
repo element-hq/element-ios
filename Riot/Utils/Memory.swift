@@ -16,9 +16,11 @@
 
 import Foundation
 
+/// Util class to log memory footprint and allocate memory for debugging purposes.
 @objcMembers
 class Memory: NSObject {
     
+    /// Memory formatter, uses exact 2 fraction digits and no grouping
     private static var numberFormatter: NumberFormatter {
         let formatter = NumberFormatter()
         formatter.alwaysShowsDecimalSeparator = true
@@ -29,11 +31,16 @@ class Memory: NSObject {
         return formatter
     }
     
+    /// Details: https://developer.apple.com/forums/thread/105088
+    /// - Returns: Current memory footprint
     private static func memoryFootprint() -> Float? {
-        // The `TASK_VM_INFO_COUNT` and `TASK_VM_INFO_REV1_COUNT` macros are too
-        // complex for the Swift C importer, so we have to define them ourselves.
+        //  The `TASK_VM_INFO_COUNT` and `TASK_VM_INFO_REV1_COUNT` macros are too
+        //  complex for the Swift C importer, so we have to define them ourselves.
         let TASK_VM_INFO_COUNT = mach_msg_type_number_t(MemoryLayout<task_vm_info_data_t>.size / MemoryLayout<integer_t>.size)
-        let TASK_VM_INFO_REV1_COUNT = mach_msg_type_number_t(MemoryLayout.offset(of: \task_vm_info_data_t.min_address)! / MemoryLayout<integer_t>.size)
+        guard let offset = MemoryLayout.offset(of: \task_vm_info_data_t.min_address) else {
+            return nil
+        }
+        let TASK_VM_INFO_REV1_COUNT = mach_msg_type_number_t(offset / MemoryLayout<integer_t>.size)
         var info = task_vm_info_data_t()
         var count = TASK_VM_INFO_COUNT
         let kr = withUnsafeMutablePointer(to: &info) { infoPtr in
@@ -41,29 +48,31 @@ class Memory: NSObject {
                 task_info(mach_task_self_, task_flavor_t(TASK_VM_INFO), intPtr, &count)
             }
         }
-        guard
-            kr == KERN_SUCCESS,
-            count >= TASK_VM_INFO_REV1_COUNT
-        else { return nil }
+        guard kr == KERN_SUCCESS, count >= TASK_VM_INFO_REV1_COUNT else {
+            return nil
+        }
         
-        let usedBytes = Float(info.phys_footprint)
-        return usedBytes
+        return Float(info.phys_footprint)
     }
     
+    /// Formatted memory footprint for debugging purposes
+    /// - Returns: Memory footprint in MBs as a readable string
     static func formattedMemoryFootprint() -> String {
-        let usedBytes: UInt64? = UInt64(self.memoryFootprint() ?? 0)
-        let usedMB = Double(usedBytes ?? 0) / 1024 / 1024
+        let usedBytes = UInt64(self.memoryFootprint() ?? 0)
+        let usedMB = Double(usedBytes) / 1024 / 1024
         guard let formattedStr = numberFormatter.string(from: NSNumber(value: usedMB)) else {
             return ""
         }
         return "\(formattedStr) MB"
     }
     
-    //  For testing purposes
+    /// Allocates some memory
+    /// - Parameter numberOfBytes: Amount of memory to be allocated, in number of bytes
     static func allocateMemoryOfSize(numberOfBytes: Int) {
         var buffer = [UInt8](repeating: 0, count: numberOfBytes)
         for i in 0 ..< numberOfBytes {
             buffer[i] = UInt8(i % 7)
         }
     }
+    
 }

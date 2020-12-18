@@ -60,6 +60,8 @@ class NotificationService: UNNotificationServiceExtension {
         setupLogger()
         
         NSLog("[NotificationService] Instance: \(self), thread: \(Thread.current)")
+        
+        //  log memory at the beginning of the process
         logMemory()
         
         UNUserNotificationCenter.current().removeUnwantedNotifications()
@@ -101,7 +103,6 @@ class NotificationService: UNNotificationServiceExtension {
         // Use this as an opportunity to deliver your "best attempt" at modified content, otherwise the original push payload will be used.
         
         NSLog("[NotificationService] serviceExtensionTimeWillExpire")
-        logMemory()
         //  No-op here. If the process is killed by the OS due to time limit, it will also show the notification with the original content.
     }
     
@@ -199,6 +200,9 @@ class NotificationService: UNNotificationServiceExtension {
             //  clear maps
             self.contentHandlers.removeValue(forKey: event.eventId)
             self.bestAttemptContents.removeValue(forKey: event.eventId)
+            
+            //  log memory again at the end of the process
+            self.logMemory()
         }
     }
     
