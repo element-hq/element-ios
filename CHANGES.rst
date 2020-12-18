@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Log NSE memory footprint for debugging purposes.
 
 🐛 Bugfix
  * 
