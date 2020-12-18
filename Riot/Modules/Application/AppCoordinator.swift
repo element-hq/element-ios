@@ -55,6 +55,13 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     func start() {
         self.showSplitView(session: self.mainSession)
     }
+    
+    func open(url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        // TODO: Implement an CustomURLSchemeParser.
+        // TODO: Handle element://connect for SSO redirect and check for a unique id to avoid security issue.
+        // As said in the Apple documentation be careful on security issues (see https://developer.apple.com/documentation/xcode/allowing_apps_and_websites_to_link_to_your_content/defining_a_custom_url_scheme_for_your_app)
+        return false
+    }
         
     // MARK: - Private methods
     
