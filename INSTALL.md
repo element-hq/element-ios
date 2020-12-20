@@ -135,7 +135,7 @@ $ open Riot.xcworkspace
 
 ### Configure project
 
-You may need to change the bundle identifier and app group identifier to be unique to get Xcode to build the app. Make sure to change the bundle identifier,  application group identifier and app name in the `project.yml` file to your new identifiers.
+You may need to change the bundle identifier and app group identifier to be unique to get Xcode to build the app. Make sure to change the bundle identifier, application group identifier and app name in the `project.yml` file to your new identifiers.
 
 Each target has its own YAML file in the folder Targets folder.
 
@@ -176,5 +176,4 @@ Or you can use the wrapper script located at `/Tools/Release/buildRelease.sh`. F
 And then indicate a branch or a tag like this:
 
 `$ ./buildRelease.sh <tag or branch>`
-
 
