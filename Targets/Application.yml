@@ -79,8 +79,6 @@ targets:
         - "Modules/Room/EmojiPicker/Data/EmojiMart/EmojiJSONStore.swift"
         - "Modules/KeyBackup/Recover/Loading"
         - "Modules/KeyBackup/Setup/RecoveryKey"
-        - "**/*.strings" # Exclude all strings files
-    - path: ../Riot/Assets/en.lproj/Vector.strings # except Vector.strings
     - path: ../Riot/SupportingFiles/App-Common.xcconfig
       buildPhase: resources
     type: application

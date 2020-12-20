@@ -23,7 +23,11 @@ settingGroups:
     SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER: "Vector Share Extension: App Store"
     SIRI_INTENTS_PROVISIONING_PROFILE: 18a66f93-ffe1-4008-b343-58350cc65023
     SIRI_INTENTS_PROVISIONING_PROFILE_SPECIFIER: "Vector Siri Intents: App Store"
-
+fileGroups:
+    - README.md
+    - CHANGES.rst
+    - AUTHORS.rst
+    - Podfile
 settings:
   base:
     IPHONEOS_DEPLOYMENT_TARGET: 11.0
@@ -92,8 +96,8 @@ options:
   createIntermediateGroups: true
   postGenCommand: sh createWorkspace.sh
 include:
-  - path: Targets/Riot.yml
-  - path: Targets/RiotTests.yml
-  - path: Targets/RiotShareExtension.yml
+  - path: Targets/Application.yml
+  - path: Targets/ApplicationTests.yml
+  - path: Targets/ShareExtension.yml
   - path: Targets/SiriIntents.yml
-  - path: Targets/RiotNSE.yml
+  - path: Targets/NotificationServiceExtension.yml

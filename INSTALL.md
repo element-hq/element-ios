@@ -33,11 +33,6 @@ You can directly install XcodeGen with [Homebrew](https://brew.sh) or RubyGems:
 ```
 $ brew install xcodegen
 ```
-or
-
-```
-$ gem install xcodegen
-```
 
 ### Install bundler (optional)
 
@@ -81,7 +76,7 @@ Assuming you have already completed the **Install dependencies** instructions fr
 
 Each time you edit `$matrixKitVersion` variable in the `Podfile` you will have to run the `pod install` command.
 
-## Generate Xcode project
+## Generate Xcode workspace
 
 In order to get rid of git conflicts, the `Riot.xcodeproj` is not pushed into the git repository anymore but generated using `XcodeGen`. To generate the `xcodeproj` file simply run the following command line in the `Riot` folder:
 

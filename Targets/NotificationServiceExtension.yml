@@ -48,6 +48,7 @@ targets:
     - path: ../Riot/Managers/LocalAuthentication/LocalAuthenticationService.swift
     - path: ../Config/Configurable.swift
     - path: ../Riot/Utils/Constants.swift
+    - path: ../Riot/Utils/Memory.swift
     - path: ../RiotNSE/NSE-Common.xcconfig
       buildPhase: resources
     settings:
