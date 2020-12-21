@@ -85,9 +85,6 @@ import UIKit
     /// Color to tint the search background image
     var matrixSearchBackgroundImageTintColor: UIColor { get }
     
-    /// Color for background of the call screen
-    var callBackgroundColor: UIColor { get }
-
     // MARK: - Customisation methods
 
     
