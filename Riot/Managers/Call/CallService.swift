@@ -373,6 +373,24 @@ extension CallService: MXKCallViewControllerDelegate {
         }
     }
     
+    func callViewControllerDidTap(onHoldCall callViewController: MXKCallViewController!) {
+        guard let callOnHold = callViewController.mxCallOnHold else {
+            return
+        }
+        guard let onHoldCallVC = callVCs[callOnHold.callId] else {
+            return
+        }
+        
+        if callOnHold.state == .onHold {
+            //  call is on hold locally, switch calls
+            callViewController.mxCall.hold(true)
+            callOnHold.hold(false)
+        }
+        
+        //  switch screens
+        presentCallVC(onHoldCallVC)
+    }
+    
 }
 
 //  MARK: - OperationQueue Extension
