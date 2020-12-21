@@ -127,10 +127,10 @@ DEPENDENCIES:
   - KeychainAccess (~> 4.2.1)
   - KTCenterFlowLayout (~> 1.3.1)
   - MatomoTracker (~> 7.2.2)
-  - MatrixKit (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `develop`)
-  - MatrixKit/AppExtension (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `develop`)
-  - MatrixSDK (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `develop`)
-  - MatrixSDK/JingleCallStack (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `develop`)
+  - MatrixKit (= 0.13.4)
+  - MatrixKit/AppExtension (= 0.13.4)
+  - MatrixSDK
+  - MatrixSDK/JingleCallStack
   - OLMKit
   - ReadMoreTextView (~> 3.0.1)
   - Reusable (~> 4.1)
@@ -164,6 +164,8 @@ SPEC REPOS:
     - LoggerAPI
     - Logging
     - MatomoTracker
+    - MatrixKit
+    - MatrixSDK
     - OLMKit
     - ReadMoreTextView
     - Realm
@@ -174,22 +176,6 @@ SPEC REPOS:
     - SwiftLint
     - zxcvbn-ios
     - ZXingObjC
-
-EXTERNAL SOURCES:
-  MatrixKit:
-    :branch: develop
-    :git: https://github.com/matrix-org/matrix-ios-kit.git
-  MatrixSDK:
-    :branch: develop
-    :git: https://github.com/matrix-org/matrix-ios-sdk.git
-
-CHECKOUT OPTIONS:
-  MatrixKit:
-    :commit: 9344a98d28277c4bd3e932aebf99b0cff7d15917
-    :git: https://github.com/matrix-org/matrix-ios-kit.git
-  MatrixSDK:
-    :commit: 29d1255d97c719880106a1639a390180fa5dd205
-    :git: https://github.com/matrix-org/matrix-ios-sdk.git
 
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
@@ -226,6 +212,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 39eb6c37f8951d721a1e4be5eb71e192b965c4f0
+PODFILE CHECKSUM: 198d9f0614bcf132a6aa31bdf8c1beb0360fdea7
 
 COCOAPODS: 1.10.0
