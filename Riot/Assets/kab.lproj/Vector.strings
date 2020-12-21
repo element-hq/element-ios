@@ -1,1 +1,780 @@
 
+
+
+"key_backup_setup_passphrase_set_passphrase_action" = "Sbadu tafyirt tuffirt";
+"key_backup_setup_passphrase_confirm_passphrase_invalid" = "Tafyirt tuffirt ur temṣada ara";
+"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "Sentem tafyirt tuffirt";
+"key_backup_setup_passphrase_confirm_passphrase_title" = "Sentem";
+"key_backup_setup_passphrase_passphrase_placeholder" = "Sekcem tafyirt tuffirt";
+"key_backup_setup_passphrase_passphrase_title" = "Anekcum";
+"key_backup_setup_intro_manual_export_action" = "Sifeḍ s ufus tisura";
+"key_backup_setup_intro_manual_export_info" = "(Leqqayen)";
+"key_backup_setup_intro_setup_action_without_existing_backup" = "Bdu aseqdec n uḥraz n tsarut";
+"key_backup_setup_intro_info" = "Iznan deg texxamt yettwawgelhen, ttusɣelsen s uwgelhen n yixef ɣer yixef. Ala kečč·kemm d uɣerwaḍ (yiɣeryaḍen) i yesɛan tisura i tɣuri n yiznan-a.\n\nAḥraz aɣelsan n tsura-inek·inem i akken tḍemneḍ ur ak·am-ttruḥun ara.";
+
+// Intro
+
+"key_backup_setup_intro_title" = "Ur ttamdal ara akk iznan iwgelhanen";
+"key_backup_setup_skip_alert_skip_action" = "Zgel";
+"key_backup_setup_skip_alert_title" = "Tebɣiḍ s tidet?";
+
+
+// MARK: Key backup setup
+
+"key_backup_setup_title" = "Aḥraz n tsarut";
+"secure_backup_setup_banner_subtitle" = "Seḥbiber iman-ik·im mgal asruḥu n unekcum ɣer yiznann & yisefka yettwawgelhen";
+
+// Banner
+
+"secure_backup_setup_banner_title" = "Aḥraz aɣelsan";
+"secure_key_backup_setup_cancel_alert_message" = "Ma yella teffɣeḍ tura, yezmer ad ak·am-ruḥen yiznan yettwawgelhen d yisefka ma yella tesruḥeḍ anekcum ɣer yinekcam-inek·inem.\n\nTzemreḍ ad tesbaduḍ aḥraz aɣelsan rnu ad tesferkeḍ tisura-inek·inem melmi i tebɣiḍ deg yiɣewwaren.";
+"secure_key_backup_setup_intro_use_security_passphrase_info" = "Sekcem tafyirt n tɣellist ara tissineḍ kan kečč·kemm, syen sirew tasarut i uḥraz.";
+"secure_key_backup_setup_intro_use_security_key_info" = "Sirew tasarut n tɣellist ara tḥerzeḍ deg wadeg yettwaḍemnen, am yimsefrak n wawalen uufiren neɣ deg usenduq.";
+"secure_key_backup_setup_intro_use_security_key_title" = "Seqdec tasarut n tɣellist";
+"secure_key_backup_setup_intro_info" = "Seḥbiber iman-ik·im ɣef uḍegger n unekcum ɣer yiznann & yisefka yettwawgelhe s uḥraz n tsura n uwgelhen ɣef uqeddac-inek·inem.";
+
+// MARK: Secure backup setup
+
+// Intro
+
+"secure_key_backup_setup_intro_title" = "Aḥraz aɣelsan";
+"rerequest_keys_alert_message" = "Ma ulac aɣilif err Element deg yibenk-nniḍen i izemren ad yekkes awgelhen i yiznan, akken ad yizmir ad yazen tisura ɣer tɣimit-a.";
+"deactivate_account_password_alert_title" = "Sens amiḍan";
+"deactivate_account_validate_action" = "Sens amiḍan";
+"deactivate_account_forget_messages_information_part2_emphasize" = "Asmigel";
+
+// Deactivate account
+
+"deactivate_account_title" = "Sens amiḍan";
+"service_terms_modal_description_for_integration_manager" = "Seqdec abuḍen, tileggiyin, iwiǧiten d yikemmusen n yistikar";
+"service_terms_modal_description_for_identity_server_2" = "Ad d-yettwaf s tiliɣri neɣ s yimayl";
+"service_terms_modal_description_for_identity_server_1" = "Af-d wiyaḍ s tiliɣri neɣ s yimayl";
+"service_terms_modal_decline_button" = "Agwi";
+"service_terms_modal_accept_button" = "Qbel";
+"gdpr_consent_not_given_alert_review_now_action" = "Senqed tura";
+"e2e_room_key_request_ignore_request" = "Anef i tuttra";
+"e2e_room_key_request_share_without_verifying" = "Bḍu war asenqed";
+"room_widget_permission_room_id_permission" = "Asulay n texxamt";
+"room_widget_permission_widget_id_permission" = "Asulay n yiwiǧit";
+"room_widget_permission_theme_permission" = "Asentel-inek·inem";
+"room_widget_permission_user_id_permission" = "Asulay-ik·m n useqdac";
+"room_widget_permission_avatar_url_permission" = "URL n avatar-inek·inem";
+"room_widget_permission_display_name_permission" = "Isem-ik·im yettwaskanen";
+"room_widget_permission_creator_info_title" = "Awiǧit-a yettwarna sɣur:";
+
+// Room widget permissions
+"room_widget_permission_title" = "Sali awiǧit";
+
+// Widget Picker
+"widget_picker_title" = "Imsidaf";
+"widget_integration_missing_user_id" = "Ixuṣṣ usulay_aseqdac deg usuter.";
+"widget_integration_missing_room_id" = "Ixuṣṣ usulay_taxxamt deg usuter.";
+"widget_integration_no_permission_in_room" = "Ur tesεiḍ ara tasiregt ad tgeḍ ayagi deg texxamt-a.";
+"widget_integration_must_be_in_room" = "Ulac-ik/ikem deg texxamt-a.";
+"widget_integration_positive_power_level" = "Ilaq ad yili uswir n tezmert d ummid ufrir.";
+"widget_integration_room_not_recognised" = "Taxxamt-a ur tṣeggem ara.";
+"widget_integration_failed_to_send_request" = "Tuzna n usuter ur teddi ara.";
+"widget_integration_unable_to_create" = "Timerna n uwiǧit ulamek.";
+
+// Widget Integration Manager
+"widget_integration_need_to_be_able_to_invite" = "Tesriḍ ad tizmireḍ ad d-tnecdeḍ iseqdacen ad gen ayagi.";
+"widget_menu_remove" = "Kkes i meṛṛa";
+"widget_menu_revoke_permission" = "Sefesex anekcum i nekk";
+"widget_menu_open_outside" = "Ldi deg yiminig";
+"widget_menu_refresh" = "Smiren";
+"widget_creation_failure" = "Timerna n uwiǧit ur teddi ara";
+"widget_no_power_to_manage" = "Tesriḍ ad tesɛuḍ tisirag i wakken ad tesferkeḍ iwiǧiten deg texxamt-a";
+"bug_report_send" = "Azen";
+"bug_report_progress_uploading" = "Asali n uneqqis";
+"bug_report_progress_zipping" = "Alqaḍ n yiɣmisen";
+"bug_report_send_screenshot" = "Azen tuṭṭfa n ugdil";
+"bug_report_send_logs" = "Azen iɣmisen";
+"bug_report_description" = "Ttxil-k·m glem-d abug. Acu i txedmeḍ? Acu i terǧiḍ? Acu yeḍran?";
+"e2e_key_backup_wrong_version_button_wasme" = "D nekk";
+"e2e_key_backup_wrong_version_button_settings" = "Iɣewwaren";
+
+// Key backup wrong version
+"e2e_key_backup_wrong_version_title" = "Aḥraz n tsarut amaynut";
+
+// No VoIP support
+"no_voip_title" = "Asiwel i d-ikecmen";
+"call_no_stun_server_error_title" = "Ur yeddi ara usiwel ssebba n uqeddac ur nettuswel ara akken iwata";
+"do_not_ask_again" = "Ur sutur ara tikelt-nniḍen";
+"yesterday" = "Iḍelli";
+"today" = "Ass-a";
+"you" = "Kečč / kem";
+
+// Others
+"or" = "neɣ";
+"event_formatter_message_edited_mention" = "(yettwaẓreg)";
+"directory_server_type_homeserver" = "Aru aqeddac agejdan i wakken ad d-tbedreḍ tixxamin tizuyaz seg-s";
+
+// Directory
+"directory_title" = "Akaram";
+
+// Image picker
+"image_picker_action_camera" = "Ṭṭef-d tawlaft";
+"media_picker_select" = "Fren";
+"media_picker_library" = "Tamkarḍit";
+
+// Media picker
+"media_picker_title" = "Tamkarḍit n imidyaten";
+"receipt_status_read" = "Ɣer: ";
+
+// Read Receipts
+"read_receipts_list" = "Ɣeṛ tabdart n wawwaḍ";
+
+// Group rooms
+"group_rooms_filter_rooms" = "Sizdeg tixxamin ɣer temɣiwent";
+"group_participants_invited_section" = "YETTWANCED";
+"group_participants_filter_members" = "Sizdeg imttekkiyen n texxamt";
+"group_participants_invite_prompt_title" = "Asentem";
+"group_participants_remove_prompt_title" = "Asentem";
+"group_home_one_room_format" = "1 texxamt";
+
+// Group Home
+"group_home_one_member_format" = "1 uɛeggal";
+"group_details_rooms" = "Timɣiwent";
+"group_details_people" = "Imdanen";
+"group_details_home" = "Agejdan";
+"room_details_copy_room_address" = "Tansa n unɣal n texxamt";
+"room_details_copy_room_id" = "Asulay n unɣal n texxamt";
+"room_details_unset_main_address" = "Tansa tagejdant ur tettusbadu ara";
+"room_details_set_main_address" = "Sbadu tansa tagejdant";
+"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Wgelhen i usenqed n tɣimiyinkan";
+"room_details_advanced_room_id_for_dm" = "Asulay:";
+"room_details_advanced_section" = "Talqayt";
+"room_details_banned_users_section" = "Iseqdacen i yettwagin";
+"room_details_addresses_invalid_address_prompt_title" = "Amasal n yismawen yettwamudden d arameɣtu";
+"room_details_new_address" = "Rnu tansa tamaynut";
+"room_details_no_local_addresses" = "Taxxamt-a ur tesɛi ara tansiwin tidiganin";
+"room_details_addresses_section" = "Tansiwin";
+"room_details_history_section_prompt_msg" = "Isnifal n unekcum ɣer umazray ad ddun deg yiznan i d-iteddun deg texxamt-a. Timeẓriwt n umazray yellan ur yettbeddil ara.";
+"room_details_history_section_members_only_since_joined" = "Iɛeggalen kan (segmi ara d-ttwarnun)";
+"room_details_history_section_members_only_since_invited" = "Iɛeggalen kan (segmi ara d-ttwanecden)";
+"room_details_history_section_members_only" = "Iɛeggalen kan (segmi yebda ufran n textiṛit-a)";
+"room_details_history_section_anyone" = "Yal yiwen";
+"room_details_history_section" = "Anwa i izemren ad d-iɣer amazray?";
+"room_details_access_section_directory_toggle" = "Err taxxamt-a deg tebdart n ukaram n texxamt";
+"room_details_access_section_anyone" = "Yal win·tin yessnen aseɣwen n texxamt rnu-d ɣer-sen inebgawen";
+"room_details_access_section_anyone_apart_from_guest" = "Yal win·tin yessnen aseɣwen n texxamt slid inebgawen";
+"room_details_access_section_invited_only" = "Ala imdanen i d-yettusnubegten";
+"room_details_access_section" = "Anwa i izemren ad d-yernu ɣer texxamt-a?";
+"room_details_direct_chat" = "Adiwenni uslig";
+"room_details_low_priority_tag" = "Tazwart taddayt";
+"room_details_favourite_tag" = "Asmenyif";
+"room_details_topic" = "Asentel";
+"room_details_room_name_for_dm" = "Isem";
+"room_details_room_name" = "Isem n texxamt";
+"room_details_photo_for_dm" = "Tawlaft";
+"room_details_photo" = "Tawlaft n texxamt";
+"room_details_settings" = "Iɣewwaren";
+"room_details_files" = "Isuli-d";
+"room_details_people" = "Imttekkiyen";
+"room_details_title_for_dm" = "Ifatusen";
+
+
+// Room Details
+"room_details_title" = "Talqayt n texxamt";
+"identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "Ɣas akken ffeɣ seg tuqqna";
+"identity_server_settings_alert_disconnect_button" = "Ffeɣ seg tuqqna";
+"identity_server_settings_alert_disconnect_title" = "Ffeɣ seg tuqqna n uqeddac n timagit";
+"identity_server_settings_alert_change_title" = "Snifel aqeddac n timagit";
+"identity_server_settings_alert_no_terms_title" = "Timagit n uqeddac ulac ɣer-s tiwtilin n yimeẓla";
+"identity_server_settings_disconnect" = "Ffeɣ seg tuqqna";
+"identity_server_settings_change" = "Beddel";
+"identity_server_settings_add" = "Rnu";
+
+// Identity server settings
+"identity_server_settings_title" = "Aqeddac n timagit";
+"manage_session_sign_out" = "Ffeɣ seg tɣimit-a";
+"manage_session_not_trusted" = "Ur yettwattkal ara";
+"manage_session_name" = "Isem n tɣimit";
+"security_settings_secure_backup_delete" = "Kkes";
+"security_settings_secure_backup_setup" = "Sbadu";
+"security_settings_secure_backup_description" = "Seḥbiber iman-ik·im ɣef uḍegger n unekcum ɣer yiznann & yisefka yettwawgelhe s uḥraz n tsura n uwgelhen ɣef uqeddac-inek·inem.";
+
+
+// Security settings
+"security_settings_title" = "Taɣellist";
+"settings_discovery_three_pid_details_revoke_action" = "Ḥwi";
+"settings_discovery_three_pid_details_share_action" = "Bḍu";
+"settings_discovery_three_pid_details_title_email" = "Sefrek imayl";
+"settings_devices_description" = "Isem n tiɣimit tazayezt yettban i yimdanen wukud tettmeslayeḍ";
+"settings_key_backup_delete_confirmation_prompt_msg" = "Tettḥeqqeḍ? Ad tesruḥeḍ iznan-ik•im yettwawgelhen ma tisura-k•m ur klisent ara akken ilaq.";
+"settings_key_backup_delete_confirmation_prompt_title" = "Kkes aḥraz";
+"settings_key_backup_button_connect" = "Qqen tiɣimit-a ɣer uḥraz n tsarut";
+"settings_key_backup_button_delete" = "Kkes aḥraz";
+"settings_key_backup_button_restore" = "Tiririt seg uḥraz";
+"settings_key_backup_button_create" = "Bdu aseqdec n uḥraz n tsarut";
+"settings_key_backup_info_progress_done" = "Akk tisura ttwaḥerzent";
+"settings_key_backup_info_none" = "Tisura-inek·inem ur ttwaḥrazent ara seg tɣimit-a.";
+"settings_key_backup_info" = "Iznan yettwawgelhen ttuḥerzen s uwgelhen n yixef ɣer yixef. Ala kečč d uɣerwaḍ (yiɣerwaḍen) i yesεan tisura akken ad ɣren iznan-a.";
+"settings_deactivate_my_account" = "Sens amiḍan-inu";
+"settings_crypto_blacklist_unverified_devices" = "Wgelhen i usenqed n tɣimiyinkan";
+"settings_add_3pid_invalid_password_message" = "Yir awal uffir";
+"settings_add_3pid_password_title_msidsn" = "Rnu uṭṭun n tiliɣri";
+"settings_password_updated" = "Amiḍan-ik·im yettwalqem";
+"settings_enable_rageshake" = "Zelzel reffu i tuzna n wabug";
+"settings_privacy_policy" = "Tasertit n tbaḍnit";
+"settings_copyright" = "Izerfan ttwaḥerzen";
+"settings_labs_create_conference_with_jitsi" = "Rnu isaragen s usiwel s jitsi";
+"settings_labs_e2e_encryption" = "Awgelhen seg yixef ɣer yixef";
+"settings_contacts_phonebook_country" = "Tamurt n udlis n tiliɣri";
+"settings_ui_theme_black" = "Aberkan";
+"settings_ui_theme_dark" = "Aberkan";
+"settings_ui_theme_light" = "Aceɛlal";
+"settings_ui_theme_auto" = "Automatique";
+"settings_ui_theme" = "Asentel";
+"settings_ui_language" = "Tutlayt";
+"settings_integrations_allow_button" = "Sefrek imsidf";
+"settings_calls_stun_server_fallback_button" = "Sireg aqeddac n tallalt n yisawalen n usellek";
+"settings_pin_rooms_with_unread" = "Reṣṣi tixxamin yesεan iznan ur nettwaɣra ara";
+"settings_pin_rooms_with_missed_notif" = "Reṣṣi tixxamin s yilɣa i ixuṣṣen";
+"settings_three_pids_management_information_part2" = "Tagrut";
+"settings_change_password" = "Beddel awal n uffir";
+"settings_add_phone_number" = "Rnu uṭṭun n tiliɣri";
+"settings_phone_number" = "Tiliɣri";
+"settings_add_email_address" = "Rnu tansa n yimayl";
+"settings_email_address_placeholder" = "Sekcem tansa email inek(m)";
+"settings_email_address" = "Imayl";
+"settings_remove_prompt_title" = "Asentem";
+"settings_first_name" = "Isem";
+"settings_display_name" = "Sken isem";
+"settings_profile_picture" = "Tawlaft n umaɣnu";
+"settings_sign_out_confirmation" = "Tebɣiḍ s tidet?";
+"settings_sign_out" = "Ffeɣ";
+"settings_devices" = "TIƔIMIYIN";
+"settings_clear_cache" = "Sfeḍ takatut tuffirt";
+"settings_report_bug" = "Ini ɣef wabug";
+
+// Settings
+"settings_title" = "Iɣewwaren";
+"room_preview_try_join_an_unknown_room_default" = "taxxamt";
+"room_preview_subtitle" = "Tagi d taskant n texxamt-a. Amyigew gar texxamin yensa.";
+"room_title_one_member" = "1 uɛeggal";
+"unknown_devices_call_anyway" = "Ɣas siwel kan";
+"unknown_devices_send_anyway" = "Ɣas azen kan";
+
+// Unknown devices
+"unknown_devices_alert_title" = "Taxxamt ideg llant tɣimiyin tarussanin";
+"external_link_confirmation_title" = "Senqed tikkelt-nniḍen aseɣwen-a";
+"media_type_accessibility_sticker" = "Astiker";
+"media_type_accessibility_file" = "Afaylu";
+"media_type_accessibility_location" = "Adig";
+"media_type_accessibility_video" = "Ividyuten";
+"media_type_accessibility_audio" = "Ameslaw";
+"media_type_accessibility_image" = "Tugna";
+"room_accessibility_call" = "Siwel";
+"room_accessibility_upload" = "Sali";
+"room_accessibility_integrations" = "Imsidaf";
+"room_accessibility_search" = "Nadi";
+"room_message_edits_history_title" = "Tiẓrigin n yizen";
+"room_resource_limit_exceeded_message_contact_2_link" = "nermes anedbal n umeẓlu-inek·inem";
+"room_predecessor_information" = "Taxxamt-a d akemmel n udiwenni-nniḍen.";
+"room_replacement_link" = "Adiwenni yettkemmil dagi.";
+"room_replacement_information" = "Taxxamt-a ad tettusmelsi, dayen d tarurmidt.";
+"room_action_reply" = "Err";
+"room_action_send_sticker" = "Azen astiker";
+"room_action_camera" = "Ṭṭef-d tawlaft neɣ tavidyut";
+"room_event_action_reaction_show_less" = "Sken-d drus";
+"room_event_action_reaction_show_all" = "Sken akk";
+"room_event_action_edit" = "Ẓreg";
+"room_event_action_reply" = "Err";
+"room_event_action_cancel_download" = "Sefsex Asider";
+"room_event_action_delete" = "Kkes";
+"room_event_action_resend" = "Ɛawed azen";
+"room_event_action_save" = "Sekles";
+"room_event_action_report_prompt_reason" = "Taɣzint i tuzna n ugbur-a";
+"room_event_action_report" = "Agbur n uneqqis";
+"room_event_action_view_decrypted_source" = "Senqed taɣbalut tawgelhent";
+"room_event_action_view_source" = "Wali aɣbalu";
+"room_event_action_permalink" = "Aseɣwen imezgi";
+"room_event_action_share" = "Bḍu";
+"room_event_action_more" = "Ugar";
+"room_event_action_redact" = "Sfeḍ";
+"room_event_action_quote" = "Tanebdurt";
+"room_event_action_copy" = "Nɣel";
+"room_delete_unsent_messages" = "Kkes iznan ur yettwaznen ara";
+"room_resend_unsent_messages" = "Wennez iznan ur yettwaznen ara";
+"room_prompt_resend" = "Wennez kullec";
+"room_ongoing_conference_call_close" = "Mdel";
+"room_offline_notification" = "Tṛuḥ tuqqna ɣer uqeddac.";
+"room_message_reply_to_short_placeholder" = "Azen tiririt…";
+"room_message_short_placeholder" = "Azen izen…";
+"encrypted_room_message_reply_to_placeholder" = "Azen tiririt yettuwgelhen…";
+"encrypted_room_message_placeholder" = "Azen izen yettuwgelhen…";
+"room_do_not_have_permission_to_post" = "Ur tesεiḍ ara tasiregt ad d-tsuffɣeḍ deg texxamt-a";
+"room_message_reply_to_placeholder" = "Azen tiririt (ur yettwawgelhen ara)…";
+"room_message_placeholder" = "Azen izen (ur yettwawgelhen ara)…";
+"room_new_messages_notification" = "%d yiznan imaynuten";
+"room_new_message_notification" = "%d Izen amaynut";
+"room_member_power_level_short_custom" = "Sagen";
+"room_member_power_level_short_moderator" = "Atrar";
+"room_member_power_level_short_admin" = "Anedbal";
+"room_participants_security_information_room_encrypted" = "Iznan deg texxamt-a ttwawgelhen seg yixef ɣer yixef.\n\nIznan-inek·inem ttwasɣellsen s yizekṛunen, rnu ala kečč d uɣerwaḍ i yesɛan tisura tasufin i tweldaywt-nsen.";
+"room_participants_security_information_room_not_encrypted" = "Iznan deg texxamt-a ur ttwawgelhen ara seg yixef ɣer yixef.";
+"room_participants_security_loading" = "Yessalay-d…";
+"room_participants_action_security_status_loading" = "Yessalay-d…";
+"room_participants_action_security_status_warning" = "Asmigel";
+"room_participants_action_security_status_verify" = "Senqed";
+"room_participants_action_security_status_verified" = "Yettwasenqed";
+"room_participants_action_mention" = "Abder";
+"room_participants_action_set_admin" = "Eg anebdal";
+"room_participants_action_set_moderator" = "Eg amaẓrag";
+"room_participants_action_set_default_power_level" = "Wennez aseqdac amagnu";
+"room_participants_action_unban" = "Asefsex n tigtin";
+"room_participants_action_remove" = "Kkes si texxamt-a";
+"room_participants_action_leave" = "Ffeɣ si texxamt-a";
+"room_participants_action_invite" = "Nced";
+"room_participants_action_section_security" = "Taɣellist";
+"room_participants_action_section_other" = "Tixtiṛiyin";
+"room_participants_action_section_devices" = "Tiɣimiyin";
+"room_participants_ago" = "aya";
+"room_participants_now" = "tura";
+"room_participants_idle" = "Arurmid";
+"room_participants_unknown" = "D arussin";
+"room_participants_offline" = "Beṛṛa n tuqqna";
+"room_participants_online" = "Srid";
+"room_participants_invited_section" = "YETTWANCED";
+"room_participants_invite_malformed_id" = "Asulay ur yemsil ara akken iwata. Ilaq ad yili d tansa n yimayl neɣ d asulay n Matrix am '@localpart:domain'";
+"room_participants_filter_room_members" = "Sizdeg iɛeggalen n texxamt";
+"room_participants_invite_prompt_title" = "Asentem";
+"room_participants_remove_prompt_title" = "Asentem";
+"room_participants_leave_prompt_msg" = "S tidet tebɣiḍ ad teǧǧeḍ taxxamt?";
+"room_participants_leave_prompt_title_for_dm" = "Ffeɣ";
+"room_participants_leave_prompt_title" = "Ffeɣ seg texxamt";
+
+// Chat participants
+"room_participants_title" = "Imttekkiyen";
+"contacts_address_book_matrix_users_toggle" = "Iseqdacen kan n Matrix";
+"directory_searching_title" = "Anadi n ukaram…";
+
+// Directory
+"directory_cell_title" = "Nadi akaram";
+"search_in_progress" = "Anadi…";
+"search_no_result" = "Ulac igmad";
+"search_default_placeholder" = "Nadi";
+"search_files" = "Ifuyla";
+"search_people" = "Imdanen";
+"search_messages" = "Iznan";
+
+// Search
+"search_rooms" = "Timɣiwent";
+
+// Groups tab
+"group_invite_section" = "INEBGAWEN";
+"rooms_empty_view_title" = "Timɣiwent";
+
+// Rooms tab
+"room_directory_no_public_room" = "Ulac tixxamin tizuyaz yellan";
+"people_empty_view_title" = "Imdanen";
+"people_no_conversation" = "Ulac idiwenniyen";
+
+// People tab
+"people_invites_section" = "INEBGAWEN";
+"room_recents_join_room_prompt" = "Aru asulay n texxamt neɣ isem yettunefken i texxamt";
+"room_recents_join_room_title" = "Rnu ɣer texxamt";
+"room_recents_join_room" = "Rnu ɣer texxamt";
+"room_recents_create_empty_room" = "Rnu taxxamt";
+"room_recents_start_chat_with" = "Bdu adiwenni";
+"room_recents_invites_section" = "INEBGAWEN";
+"room_recents_low_priority_section" = "TAZWART TADDAYT";
+"room_recents_no_conversation" = "Ulac tixxamin";
+"room_recents_conversations_section" = "TIXXAMIN";
+"room_recents_people_section" = "IMDANEN";
+"room_recents_directory_section_network" = "Aẓeṭṭa";
+"room_creation_make_private" = "Err-it d uslig";
+"room_creation_privacy" = "Tabaḍnit";
+"room_creation_appearance_name" = "Isem";
+"room_creation_appearance" = "Timeẓri";
+"room_creation_account" = "Amiḍan";
+
+// Chat creation
+"room_creation_title" = "Adiwenni amaynut";
+
+// Errors
+"error_user_already_logged_in" = "Yettban-d am wakken tettaɛraḍeḍ ad teqqneḍ ɣer uqeddac agejdan-nniḍen. Tebɣiḍ ad teffɣeḍ?";
+"auth_softlogout_clear_data_sign_out" = "Ffeɣ seg tuqqna";
+"auth_softlogout_clear_data_sign_out_title" = "Tebɣiḍ s tidet?";
+"auth_softlogout_clear_data_button" = "Sfeḍ meṛṛa isefka";
+"auth_softlogout_clear_data" = "Sfeḍ isefka udmawanen";
+"auth_softlogout_recover_encryption_keys" = "Kcem i wakken ad d-terreḍ tisura n uwgelhen i d-yettwakelsen ɣef yibenk-a kan. Tesriḍ-tent i tɣuri n meṛṛa iznan-inek·inem iɣelsanen ɣef yal ibenk.";
+"auth_softlogout_sign_in" = "Kcem";
+"auth_softlogout_signed_out" = "Aql-ak·akem teffɣeḍ";
+"auth_autodiscover_invalid_response" = "Tiririt n usnirem n uqeddac agejdan d tarameɣtut";
+"auth_accept_policies" = "Ttxil-k·m senqed syen qbel tisertiyin n uqeddac-a agejdan:";
+"auth_reset_password_success_message" = "Awal-ik·im uffir yettuwennez.\n\nAql-ak·akem teffɣeḍ seg meṛṛa tiɣimiyin syen ur d-teṭṭifeḍ ara akk ilɣa n Push. I wakken ad talseḍ armad n yilɣa, kcem tikkelt-nniḍen ɣer yal ibenk.";
+"auth_reset_password_error_unauthorized" = "Asenqed n tansa n yimayl ur yeddi ara: wali ma yella tsateḍ ɣef useɣwen yellan deg yimayl";
+"auth_reset_password_next_step_button" = "Sneqdeɣ tansa-inu n yimayl";
+"auth_reset_password_missing_password" = "Awal uffir amaynut ilaq ad yettusekcem.";
+"auth_reset_password_missing_email" = "Tansa n yimayl i icudden ɣer umiḍan-ik·im ilaq ad tettwasekcem.";
+"auth_reset_password_message" = "I uwennez n wawal-ik·im uffir, sekcem tansa n yimayl i icudden ɣer umiḍan-ik·im:";
+"auth_msisdn_validation_error" = "Asenqed n wuṭṭun n tilifun ur yeddi ara.";
+"auth_msisdn_validation_title" = "Asenqed yettṛaǧu";
+"auth_email_validation_message" = "Ttxil-k·m seqdec imayl-ik·im i wakken ad tkemmleḍ ajerred";
+"auth_use_server_options" = "Seqdec tixtiṛiyin n uqeddac udmawan (leqqayen)";
+"auth_forgot_password" = "Tettuḍ awal uffir?";
+"auth_username_in_use" = "Isem n useqdac yettuseqdac";
+"auth_password_dont_match" = "Awalen uffiren ur mṣadan ara";
+"auth_email_is_required" = "Ulac aqeddac n timagit yettusiwlen, ɣef waya ur tettizmireḍ ara ad ternuḍ tansa n yimayl i wakken ad twennzeḍ awal-ik·im uffir ɣer sdat.";
+"auth_phone_in_use" = "Uṭṭun-agi n tilifun yettuseqddac yakan";
+"auth_email_in_use" = "Tansa-agi n yimayl tettuseqdac yakan";
+"auth_missing_email_or_phone" = "Txuṣṣ tansa n yimayl neɣ uṭṭun n tiliɣri";
+"auth_missing_phone" = "Ixuṣṣ wuṭṭun n tiliɣri";
+"auth_missing_email" = "Txuṣṣ tansa n yimayl";
+"auth_add_email_phone_message_2" = "Sbadu imayl i tririt n umiḍan. Seqdec ɣer sadt imayl neɣ uṭṭun n tiliɣri i wakken ad yishil ad ak·akem-id-afen yimdanen i ak·akem-yessnen.";
+"auth_add_phone_message_2" = "Sbadu uṭṭun n tiliɣri, syen ɣer sdat ad yishil ad t-afen yimdanen i ak·akem-yessnen.";
+"auth_add_email_message_2" = "Sbadu imayl i tririt n umiḍan, syen ɣer sdat ad yishil ad tt-afen yimdanen i ak·akem-yessnen.";
+"auth_missing_password" = "Ixuṣ wawal uffir";
+"auth_invalid_password" = "Awal uffir wezzil aṭas (ma drus 6)";
+"auth_invalid_user_name" = "Ismawen n yiseqdacen ilaq ad sɛun kan isekkilen, imḍanen, agazen, ijerriden n tuqqna d yidduren n uderrer";
+"auth_invalid_login_param" = "Isem n uqeddac d/neɣ awal uffir d arameɣtu";
+"auth_repeat_new_password_placeholder" = "Sentem awal-ik·im uffir amaynut";
+"auth_repeat_password_placeholder" = "Ales i wawal uffir";
+"auth_phone_placeholder" = "Uṭṭun n tiliɣri";
+"auth_optional_phone_placeholder" = "Uṭṭun n tiliɣri (d afrayan)";
+"auth_email_placeholder" = "Tansa n l'email";
+"auth_optional_email_placeholder" = "Tansa n yimayl (d tafrayan)";
+"auth_user_name_placeholder" = "Isem n useqdac";
+"auth_new_password_placeholder" = "Awal uffir amaynut";
+"auth_password_placeholder" = "Mot de passe";
+"auth_user_id_placeholder" = "Imayl neɣ isem n useqdac";
+"auth_return_to_login" = "Uɣal ɣer ugdil n tuqqna";
+"auth_send_reset_email" = "Azen imayl n uwennez";
+"room_info_list_section_other" = "Nniḍen";
+
+// MARK: - Room Info
+
+"room_info_list_one_member" = "1 uɛeggal";
+"create_room_section_header_address" = "Tansa n texxamt";
+"create_room_placeholder_topic" = "Asentel";
+"create_room_placeholder_name" = "Isem";
+"create_room_section_header_name" = "Isem n texxamt";
+
+// MARK: - Create Room
+
+"create_room_title" = "Taxxamt tamaynut";
+
+// MARK: - Searchable Directory View Controller
+
+"searchable_directory_create_new_room" = "Rnu taxxamt tamaynut";
+"biometrics_cant_unlocked_alert_message_retry" = "Ɛreḍ tikkelt-nniḍen";
+"pin_protection_kick_user_alert_message" = "Aṭas n tuccḍiwin, telliḍ teffɣeḍ seg tuqqna";
+"pin_protection_settings_enable_pin" = "Rmed PIN";
+"pin_protection_settings_section_footer" = "I uwennez n PIN-inek·inem, tesriḍ ad talseḍ anekcum syen rnu yiwen.";
+"pin_protection_mismatch_error_message" = "Ɛreḍ tikelt nniḍen";
+"pin_protection_reset_alert_action_reset" = "Wennez";
+"pin_protection_enter_pin" = "Sekcem PIN inek·inem";
+"pin_protection_confirm_pin_to_disable" = "Sentem PIN i wakken ad tsenseḍ PIN";
+"major_update_done_action" = "Awi-t";
+"major_update_learn_more_action" = "Issin ugar";
+
+// MARK: - Cross-signing
+
+// Banner
+
+"cross_signing_setup_banner_title" = "Swel awgelhen";
+"secrets_reset_reset_action" = "Wennez";
+"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Sentem tafyirt tuffirt";
+"secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Sentem";
+"secrets_setup_recovery_passphrase_confirm_information" = "Sekcem tafyirt-inek·inem n tɣellist tikkelt-nniḍen i usentem-ines.";
+"secrets_setup_recovery_passphrase_validate_action" = "Immed";
+"secrets_setup_recovery_passphrase_information" = "Sekcem tafyirt n tɣellist ara tissineḍ kan keččini·kemmini, tettuseqdac i wakken ad teḍmen tuffriwin deg uqeddac-ik·im.";
+
+// Recovery passphrase
+
+"secrets_setup_recovery_passphrase_title" = "Sbadu tafyirt taɣelsant";
+"secrets_setup_recovery_key_storage_alert_title" = "Eǧǧ-it d aɣelasn";
+"secrets_setup_recovery_key_done_action" = "Immed";
+"secrets_setup_recovery_key_export_action" = "Sekles";
+"secrets_setup_recovery_key_loading" = "Yessalay-d…";
+
+// MARK: - Secrets set up
+
+// Recovery Key
+
+"secrets_setup_recovery_key_title" = "Sekles tasarut-ik·im n tɣellist";
+"secrets_recovery_with_key_recovery_key_placeholder" = "Sekcem tasarut tririt";
+"secrets_recovery_with_key_recovery_key_title" = "Anekcum";
+
+// Recover with key
+
+"secrets_recovery_with_key_title" = "Tasarut tririt";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "seqdec tasarut-ik·im n tririt";
+"secrets_recovery_with_passphrase_passphrase_title" = "Anekcum";
+
+// Recover with passphrase
+
+"secrets_recovery_with_passphrase_title" = "Tefyirt tuffirt n tririt";
+"user_verification_session_details_verify_action_other_user" = "Yettwasenqed s ufus";
+"user_verification_session_details_verify_action_current_user_manually" = "Senqed s ufus s ttawil n uḍris";
+"user_verification_session_details_additional_information_untrusted_current_user" = "Ma yella ur teqqineḍ ara ɣer tɣimit-a, amiḍan-ik·im yezmer ad yettwaker.";
+"user_verification_session_details_additional_information_untrusted_other_user" = "Imi mazal useqdac-a ur yettkil ara ɣef tɣimit-a, iznan yettwaznen seg-s d wid i d-yettwaznen qer-s ad sɛun tacreḍt n lemḥadra. Neɣ ma ulac, tzemreḍ ad tent-tesneqdeḍ s ufus.";
+"user_verification_session_details_information_trusted_current_user" = "Tiɣimit-a tettwattkal i yiznan iɣelsanen acku tesneqdeḍ-tt:";
+"user_verification_session_details_untrusted_title" = "Ur yettwattkal ara";
+
+// Session details
+
+"user_verification_session_details_trusted_title" = "Yettwattkal";
+"user_verification_sessions_list_session_untrusted" = "Ur yettwattkal ara";
+"user_verification_sessions_list_session_trusted" = "Yettwattkal";
+"user_verification_sessions_list_table_title" = "Tiɣimiyin";
+"user_verification_sessions_list_user_trust_level_unknown_title" = "D arussin";
+"user_verification_sessions_list_user_trust_level_warning_title" = "Asmigel";
+
+// Sessions list
+
+"user_verification_sessions_list_user_trust_level_trusted_title" = "Yettwattkal";
+"user_verification_start_additional_information" = "I wakken ad tḍemneḍ taɣellistik·im, eg ayagi s timmad-ik·im neɣ seqdec abrid n teywalt iɣef ara tettekleḍ.";
+
+// MARK: - User verification
+
+// Start
+
+"user_verification_start_verify_action" = "Bdu asenqed";
+
+// Scanned
+"key_verification_scan_confirmation_scanned_title" = "Qrib ad ifakk!";
+
+// MARK: Scan confirmation
+
+// Scanning
+"key_verification_scan_confirmation_scanning_title" = "Qrib ad tawḍeḍ! Deg uṛaǧu n usentem…";
+"key_verification_verify_qr_code_start_emoji_action" = "Senqed s yimujit";
+"key_verification_verify_qr_code_scan_code_action" = "Siggez tangalt-a";
+"key_verification_verify_qr_code_emoji_information" = "Senqed s userwes s yimujiten asufen.";
+
+// MARK: QR code
+
+"key_verification_verify_qr_code_title" = "Senqed s usiggez";
+"key_verification_tile_conclusion_done_title" = "Yettwasenqed";
+"key_verification_tile_request_incoming_approval_decline" = "Agwi";
+"key_verification_tile_request_incoming_approval_accept" = "Qbel";
+"key_verification_tile_request_status_accepted" = "Tqebleḍ";
+"key_verification_tile_request_status_cancelled_by_me" = "Tesfesxeḍ";
+"key_verification_tile_request_status_expired" = "Yemmut";
+"key_verification_tile_request_status_waiting" = "Yettaru…";
+
+// MARK: - Key Verification
+
+"key_verification_bootstrap_not_setup_title" = "Tuccḍa";
+
+// MARK: Reaction history
+"reaction_history_title" = "Tisedmirin";
+"emoji_picker_flags_category" = "Anayen";
+"emoji_picker_symbols_category" = "Izamulen";
+"emoji_picker_objects_category" = "Tiɣawsiwin";
+"emoji_picker_places_category" = "Inig & Imukan";
+"emoji_picker_activity_category" = "Irmad";
+"emoji_picker_foods_category" = "Učči d tissit";
+"emoji_picker_nature_category" = "Iɣersiwen & ugama";
+"emoji_picker_people_category" = "Acmumeḥ & Imdanen";
+
+// MARK: Emoji picker
+"emoji_picker_title" = "Tisedmirin";
+"device_verification_emoji_pin" = "Amessak";
+"device_verification_emoji_folder" = "Akaram";
+"device_verification_emoji_headphones" = "Wennez";
+"device_verification_emoji_anchor" = "Tamdeyt";
+"device_verification_emoji_bell" = "Anayna";
+"device_verification_emoji_trumpet" = "Lɣiḍa";
+"device_verification_emoji_guitar" = "Tagitaṛt";
+"device_verification_emoji_ball" = "Balles";
+"device_verification_emoji_trophy" = "Arraz";
+"device_verification_emoji_rocket" = "Timeẓdit";
+"device_verification_emoji_aeroplane" = "Asafag";
+"device_verification_emoji_bicycle" = "Azlalam";
+"device_verification_emoji_train" = "Tamacint";
+"device_verification_emoji_flag" = "Anay";
+"device_verification_emoji_telephone" = "Tiliγri";
+"device_verification_emoji_hammer" = "Tafḍist";
+"device_verification_emoji_key" = "Tasarutt";
+"device_verification_emoji_lock" = "Sekkeṛ";
+"device_verification_emoji_scissors" = "Timqestin";
+"device_verification_emoji_paperclip" = "Tamessakt n lkaɣeḍ";
+"device_verification_emoji_pencil" = "Akeryun";
+"device_verification_emoji_book" = "Adlis";
+"device_verification_emoji_gift" = "Asefk";
+"device_verification_emoji_clock" = "Tamrint";
+"device_verification_emoji_hourglass" = "Amasrag";
+"device_verification_emoji_umbrella" = "Tasiwant";
+"device_verification_emoji_thumbs up" = "Adebbuz d asawen";
+"device_verification_emoji_santa" = "Santa";
+"device_verification_emoji_spanner" = "Tasarut";
+"device_verification_emoji_glasses" = "Tisekkadin";
+"device_verification_emoji_hat" = "Acapun";
+"device_verification_emoji_robot" = "Aṛubut";
+"device_verification_emoji_smiley" = "Acmumeḥ";
+"device_verification_emoji_heart" = "Ul";
+"device_verification_emoji_cake" = "Angul";
+"device_verification_emoji_pizza" = "Tapizzat";
+"device_verification_emoji_corn" = "Akbal";
+"device_verification_emoji_strawberry" = "Tazwelt";
+"device_verification_emoji_apple" = "Tatteffaḥt";
+"device_verification_emoji_banana" = "Tabanant";
+"device_verification_emoji_fire" = "Times";
+"device_verification_emoji_cloud" = "Agu";
+"device_verification_emoji_moon" = "Ayyur";
+"device_verification_emoji_globe" = "Amaḍal";
+"device_verification_emoji_mushroom" = "Agersal";
+"device_verification_emoji_cactus" = "Akermus";
+"device_verification_emoji_tree" = "Aseklu";
+"device_verification_emoji_flower" = "Ajeǧǧig";
+"device_verification_emoji_butterfly" = "Aferteṭṭu";
+"device_verification_emoji_octopus" = "Azayz";
+"device_verification_emoji_fish" = "Lḥut";
+"device_verification_emoji_turtle" = "Afekrun";
+"device_verification_emoji_penguin" = "Awarfus";
+"device_verification_emoji_rooster" = "Ayaziḍ";
+"device_verification_emoji_panda" = "Apunda";
+"device_verification_emoji_rabbit" = "Awtul";
+"device_verification_emoji_elephant" = "Ilu";
+"device_verification_emoji_pig" = "Ilef";
+"device_verification_emoji_unicorn" = "Azara";
+"device_verification_emoji_horse" = "Aεewdiw";
+"device_verification_emoji_lion" = "Izem";
+"device_verification_emoji_cat" = "Amcic";
+
+// MARK: Emoji
+"device_verification_emoji_dog" = "Aqjun";
+
+// User
+
+"key_verification_verified_user_information" = "Iznan akked useqdac-a ttwawgelhen seg yixef ɣer yixef yerna ur yezmir wis tlata ad ten-iɣer.";
+"device_verification_verified_got_it_button" = "Awi-t";
+
+// MARK: Verified
+
+// Device
+
+"device_verification_verified_title" = "Yettwasenqed!";
+
+// Device
+
+"device_verification_verify_wait_partner" = "Aṛaǧu n usentem sɣur bab-is…";
+"key_verification_manually_verify_device_validate_action" = "Senqed";
+"key_verification_manually_verify_device_additional_information" = "Ma yella ur mṣadan ara, taɣellist n teywalt-ik·im tezmer ad tettwaker.";
+"key_verification_manually_verify_device_key_title" = "Tasarut n tɣimit";
+"key_verification_manually_verify_device_id_title" = "Asulay n tqimit";
+"key_verification_manually_verify_device_name_title" = "Isem n tɣimit";
+"key_verification_manually_verify_device_instruction" = "Sentem s userwes gar wayen i d-iteddun d yiɣewwaren n useqdac deg tɣimit-ik·im tayeḍ:";
+
+// MARK: Manually Verify Device
+
+"key_verification_manually_verify_device_title" = "Senqed s ufus s ttawil n uḍris";
+"key_verification_verify_sas_additional_information" = "I tɣellist meqqren, seqdec ttawilat-nniḍen yettwattkalen n teywalt neɣ eg aya s timmad-ik·im.";
+"key_verification_verify_sas_validate_action" = "Msaḍan";
+"key_verification_verify_sas_cancel_action" = "Ur msaḍan ara";
+
+// MARK: Verify
+
+"key_verification_verify_sas_title_emoji" = "Serwes imujiten";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Seqdec tasarut n uɛeddi";
+"device_verification_self_verify_wait_new_sign_in_title" = "Senqed anekcam-a";
+"key_verification_self_verify_unverified_sessions_alert_validate_action" = "Senqed";
+"key_verification_self_verify_current_session_alert_validate_action" = "Senqed";
+
+// Current session
+
+"key_verification_self_verify_current_session_alert_title" = "Asenqed n tɣimit";
+"device_verification_self_verify_start_waiting" = "Yettaru…";
+"device_verification_self_verify_start_information" = "Seqdec tiɣimit-a i usenqed tiɣimit-ik·im tamaynut, ayen ara tt-yeǧǧen ad tekcem ɣer yiznan yettwawgelhen.";
+"device_verification_self_verify_start_verify_action" = "Bdu asenqed";
+"device_verification_self_verify_alert_validate_action" = "Senqed";
+
+// MARK: Self verification start
+
+// New login
+"device_verification_self_verify_alert_title" = "Anekcam amaynut. D kečč/kemm?";
+"device_verification_start_verify_button" = "Bdu asenqed";
+"device_verification_incoming_description_2" = "Aselken n tɣimit-a ad yettucreḍ fell-as tettwattkal, yerna ad tettucreḍ ula d tiɣimit-ik·im tettwattkal i bab-is.";
+"device_verification_incoming_description_1" = "Senqed tiɣimit-a i wakken ad tcerḍeḍ fell-as tettwaḍman. Attkal ɣef tɣimiyin n yimendiden yettakk-ak·am-d lehna n uqerru mi ara tesseqdaceḍ iznan yettwawgelhen seg yixef ɣer yixef.";
+
+// Mark: Incoming
+"device_verification_incoming_title" = "Tuttra n usenqed i d-ikecmen";
+"device_verification_cancelled" = "Wayeḍ issefsex asenqed.";
+"device_verification_security_advice_emoji" = "Serwes imujit ufrin, s uḍman ad d-banen deg yiwen usemizwer.";
+"key_verification_this_session_title" = "Asenqed n tɣimit";
+
+// MARK: - Device Verification
+"key_verification_other_session_title" = "Asenqed n tɣimit";
+"sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Ur bɣiɣ ara izan-inu iwgelhanen";
+"sign_out_key_backup_in_progress_alert_title" = "Akles n tsura yetteddu. Ma teffɣeḍ tura, ad tesruḥeḍ anekcum ɣer yiznan-ik•im yettwawgelhen.";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_backup_action" = "Sekles";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_sign_out_action" = "Ffeɣ seg tuqqna";
+"sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "Ur bɣiɣ ara izan-inu iwgelhanen";
+"sign_out_existing_key_backup_alert_sign_out_action" = "Ffeɣ seg tuqqna";
+
+// MARK: Sign out warning
+
+"sign_out_existing_key_backup_alert_title" = "D tidet tebɣiḍ ad teffɣeḍ?";
+"key_backup_recover_done_action" = "Immed";
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Tesruḥeḍ tasarut-ik·im n tririt? Tzemreḍ ad tesbaduḍ yiwet seg yiɣewwaren.";
+"key_backup_recover_from_recovery_key_recover_action" = "Serreḥ i umazray";
+"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Sekcem tasarut tririt";
+"key_backup_recover_from_recovery_key_recovery_key_title" = "Anekcum";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "seqdec tasarut-ik·im n tririt";
+"key_backup_recover_from_passphrase_recover_action" = "Serreḥ i umazray";
+"key_backup_recover_from_passphrase_passphrase_title" = "Anekcum";
+"key_backup_recover_invalid_passphrase" = "Aḥraz ur yezmir ara ad yekkes awgelhen s tefyirt-a tuffirt: ttxil-k·m selken ma yella d tafyirt tuffirt tameɣtut i teskecmeḍ.";
+"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Tasarut tririt";
+"key_backup_setup_success_from_passphrase_done_action" = "Immed";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Sekles tasarut n tririt";
+
+// Success
+
+"key_backup_setup_success_title" = "Tammug akken iwata!";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "(Leqqayen) Sbadu s tsarut n tririt";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "Neɣ; dmen aḥrazen-inek·inem s tefyirt tuffirt n uɛeddi, yettwaskelsen deg wadeg aɣelsan.";
+"auth_login_single_sign_on" = "Qqen s unekcum asuf";
+"auth_skip" = "Zgel";
+"auth_submit" = "Azen";
+"auth_register" = "Jerred";
+
+// Authentication
+"auth_login" = "Qqen";
+"less" = "Drus";
+"more" = "Ugar";
+"joined" = "Ikcemed deg";
+"skip" = "Zgel";
+"close" = "Mdel";
+"sending" = "Tuzzna";
+"collapse" = "fneẓ";
+"rename" = "Beddel isem";
+"later" = "Ticki";
+"video" = "Ividyuten";
+"voice" = "Taɣect";
+"camera" = "Takamiṛatt";
+"preview" = "Taskant";
+"accept" = "Qbel";
+"decline" = "Agwi";
+"join" = "Rnu";
+"save" = "Sekles";
+"cancel" = "Sefsex";
+"off" = "Sens";
+"on" = "Rmed";
+"retry" = "Ɛreḍ tikkelt-nniḍen";
+"invite" = "Snubget";
+"remove" = "Kkes";
+"leave" = "Ffeɣ";
+"start" = "Bdu";
+"create" = "Rnu";
+"continue" = "Kemmel";
+"back" = "Uɣal ɣer deffir";
+"next" = "Ayen i d-iteddun";
+
+// Actions
+"view" = "Wali";
+"warning" = "Γur-k·m";
+"title_groups" = "Timɣiwnin";
+"title_rooms" = "Tixxamin";
+"title_people" = "Imdanen";
+"title_favourites" = "Ismenyifen";
+
+// Titles
+"title_home" = "Agejdan";
+
+// MARK: - Home
+
+"home_empty_view_title" = "Ansuf ɣer %@,\n%@";
