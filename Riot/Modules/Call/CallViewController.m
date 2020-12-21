@@ -33,12 +33,11 @@
     // Current alert (if any).
     UIAlertController *currentAlert;
     
-    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
-    id kThemeServiceDidChangeThemeNotificationObserver;
-
     // Flag to compute self.shouldPromptForStunServerFallback
     BOOL promptForStunServerFallback;
 }
+
+@property (nonatomic, strong) id<Theme> overriddenTheme;
 
 @end
 
@@ -107,40 +106,36 @@
     
     [self updateLocalPreviewLayout];
     
-    // Observe user interface theme change.
-    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        [self userInterfaceThemeDidChange];
-        
-    }];
-    [self userInterfaceThemeDidChange];
+    [self configureUserInterface];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return ThemeService.shared.theme.statusBarStyle;
+    return self.overriddenTheme.statusBarStyle;
 }
 
-- (void)userInterfaceThemeDidChange
+- (void)configureUserInterface
 {
-    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    if (@available(iOS 13.0, *)) {
+        self.overrideUserInterfaceStyle = self.overriddenTheme.userInterfaceStyle;
+    }
+    
+    [self.overriddenTheme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    self.barTitleColor = ThemeService.shared.theme.textPrimaryColor;
-    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
+    self.barTitleColor = self.overriddenTheme.textPrimaryColor;
+    self.activityIndicator.backgroundColor = self.overriddenTheme.overlayBackgroundColor;
     
     self.backToAppButton.tintColor = [UIColor whiteColor];
     self.cameraSwitchButton.tintColor = [UIColor whiteColor];
     self.callerNameLabel.textColor = [UIColor whiteColor];
     self.callStatusLabel.textColor = [UIColor whiteColor];
-    [self.resumeButton setTitleColor:ThemeService.shared.theme.tintColor forState:UIControlStateNormal];
+    [self.resumeButton setTitleColor:self.overriddenTheme.tintColor
+                            forState:UIControlStateNormal];
     
-    self.localPreviewContainerView.layer.borderColor = ThemeService.shared.theme.tintColor.CGColor;
+    self.localPreviewContainerView.layer.borderColor = self.overriddenTheme.tintColor.CGColor;
     self.localPreviewContainerView.layer.borderWidth = 2;
     self.localPreviewContainerView.layer.cornerRadius = 5;
     self.localPreviewContainerView.clipsToBounds = YES;
-    
-    self.view.backgroundColor = ThemeService.shared.theme.callBackgroundColor;
-    self.remotePreviewContainerView.backgroundColor = ThemeService.shared.theme.callBackgroundColor;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -155,17 +150,6 @@
 }
 
 #pragma mark - override MXKViewController
-
-- (void)destroy
-{
-    [super destroy];
-    
-    if (kThemeServiceDidChangeThemeNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
-        kThemeServiceDidChangeThemeNotificationObserver = nil;
-    }
-}
 
 - (UIView *)createIncomingCallView
 {
@@ -351,6 +335,15 @@
 
 #pragma mark - Properties
 
+- (id<Theme>)overriddenTheme
+{
+    if (_overriddenTheme == nil)
+    {
+        _overriddenTheme = [DarkTheme new];
+    }
+    return _overriddenTheme;
+}
+
 - (void)setMxCall:(MXCall *)mxCall
 {
     [super setMxCall:mxCall];
@@ -369,15 +362,21 @@
     if (self.peer)
     {
         // Use the vector style placeholder
-        return [AvatarGenerator generateAvatarForMatrixItem:self.peer.userId withDisplayName:self.peer.displayname size:self.callerImageViewWidthConstraint.constant andFontSize:fontSize];
+        return [AvatarGenerator generateAvatarForMatrixItem:self.peer.userId
+                                            withDisplayName:self.peer.displayname
+                                                       size:self.callerImageViewWidthConstraint.constant
+                                                andFontSize:fontSize];
     }
     else if (self.mxCall.room)
     {
-        return [AvatarGenerator generateAvatarForMatrixItem:self.mxCall.room.roomId withDisplayName:self.mxCall.room.summary.displayname size:self.callerImageViewWidthConstraint.constant andFontSize:fontSize];
+        return [AvatarGenerator generateAvatarForMatrixItem:self.mxCall.room.roomId
+                                            withDisplayName:self.mxCall.room.summary.displayname
+                                                       size:self.callerImageViewWidthConstraint.constant
+                                                andFontSize:fontSize];
     }
     
     return [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
-                      withColor:ThemeService.shared.theme.tintColor];
+                      withColor:self.overriddenTheme.tintColor];
 }
 
 - (void)updatePeerInfoDisplay
@@ -402,9 +401,17 @@
     
     self.callerNameLabel.text = peerDisplayName;
     
+    self.blurredCallerImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.callerImageView.contentMode = UIViewContentModeScaleAspectFill;
     if (peerAvatarURL)
     {
+        // Retrieve the avatar in full resolution
+        [self.blurredCallerImageView setImageURI:peerAvatarURL
+                                        withType:nil
+                             andImageOrientation:UIImageOrientationUp
+                                    previewImage:self.picturePlaceholder
+                                    mediaManager:self.mainSession.mediaManager];
+        
         // Retrieve the avatar in full resolution
         [self.callerImageView setImageURI:peerAvatarURL
                                  withType:nil
@@ -414,6 +421,7 @@
     }
     else
     {
+        self.blurredCallerImageView.image = self.picturePlaceholder;
         self.callerImageView.image = self.picturePlaceholder;
     }
 }
