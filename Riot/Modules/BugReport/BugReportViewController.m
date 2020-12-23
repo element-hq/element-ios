@@ -133,6 +133,9 @@
         
     }];
     [self userInterfaceThemeDidChange];
+    
+    UIGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backgroundViewTapped)];
+    [self.view addGestureRecognizer:recognizer];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -448,6 +451,11 @@
 - (IBAction)onSendScreenshotTap:(id)sender
 {
     self.sendScreenshot = !self.sendScreenshot;
+}
+
+- (void)backgroundViewTapped {
+    // Dismiss keyboard if user taps on background view: https://github.com/vector-im/element-ios/issues/3819
+    [self.bugReportDescriptionTextView resignFirstResponder];
 }
 
 @end

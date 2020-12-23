@@ -8,7 +8,7 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
- * 
+ * Crash report cannot be submitted (on small phones) #3819
 
 ⚠️ API Changes
  * 
