@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Added "Continue in background" button to bug report screen
 
 🐛 Bugfix
  * 
