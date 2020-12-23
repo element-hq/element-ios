@@ -778,3 +778,5 @@
 // MARK: - Home
 
 "home_empty_view_title" = "Ansuf ɣer %@,\n%@";
+"create_room_enable_encryption" = "Rmed awgelhen";
+"create_room_section_header_encryption" = "Awgelhen n texxamt";
