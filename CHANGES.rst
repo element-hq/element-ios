@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Show user id in the room invite preview screen (#3839)
 
 🐛 Bugfix
  * 
