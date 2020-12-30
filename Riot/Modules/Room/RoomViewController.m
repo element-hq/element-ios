@@ -500,16 +500,6 @@
         
         [self setBubbleTableViewContentOffset:CGPointMake(-self.bubblesTableView.mxk_adjustedContentInset.left, -self.bubblesTableView.mxk_adjustedContentInset.top) animated:YES];
     }];
-    
-    if ([self.roomDataSource.roomId isEqualToString:[LegacyAppDelegate theDelegate].lastNavigatedRoomIdFromPush])
-    {
-        [self startActivityIndicator];
-        [self.roomDataSource reload];
-        [LegacyAppDelegate theDelegate].lastNavigatedRoomIdFromPush = nil;
-        
-        notificationTaskProfile = [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:AnalyticsNoficationsTimeToDisplayContent
-                                                                                          category:AnalyticsNoficationsCategory];
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated

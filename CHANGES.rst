@@ -20,7 +20,7 @@ Changes to be released in next version
  * 
 
 Others
- * 
+ * Removed AppDelegate.lastNavigatedRoomIdFromPush patch (#3871)
 
 Changes in 1.1.3 (2020-12-18)
 =================================================
