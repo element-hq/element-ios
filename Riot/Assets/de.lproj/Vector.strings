@@ -1066,7 +1066,7 @@
 "key_verification_self_verify_unverified_sessions_alert_message" = "Verifiziere alle deine Sitzungen, um sicher zu stellen, dass dein Konto & deine Nachrichten sicher sind.";
 "key_verification_self_verify_unverified_sessions_alert_validate_action" = "Überprüfung";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verifiziere diese Sitzung";
-"device_verification_self_verify_wait_additional_information" = "oder einen anderen Matrix Client der Cross-signing fähig ist";
+"device_verification_self_verify_wait_additional_information" = "Dies funktioniert mit Element oder einem anderen Matrix Client, der Cross-Signing unterstützt.";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Wiederherstellungsschlüssel verwenden";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Nutze eine Wiederherstellungsmethode";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "Falls du keinen Zugang zu einer existierenden Sitzung hast";
@@ -1242,3 +1242,12 @@
 "secrets_reset_warning_message" = "Du wirst ohne Nachrichtenverlauf, Nachrichten, vertraute Geräte oder vertraute Benutzer neu-starten.";
 "secrets_reset_warning_title" = "Falls du alles zurücksetzt";
 "secrets_reset_information" = "Tu dies nur, wenn du kein anderes Gerät hast, mit dem du dieses Gerät überprüfen kannst.";
+
+// MARK: - Home
+
+"home_empty_view_title" = "Willkommen bei %@,\n%@";
+"secrets_setup_recovery_passphrase_summary_information" = "Erinnere dich an deine Sicherheitsphrase. Sie kann zum entschlüsseln der Nachrichten & Daten verwendet werden.";
+"secrets_setup_recovery_passphrase_summary_title" = "Sichere deine Sicherheitsphrase";
+"rooms_empty_view_title" = "Räume";
+"people_empty_view_information" = "Sicher kommunizieren mit allen. Drücke + um Leute hinzuzufügen.";
+"people_empty_view_title" = "Leute";
