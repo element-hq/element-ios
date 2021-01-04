@@ -53,7 +53,7 @@
                         <view contentMode="scaleAspectFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="COl-Go-cPy" customClass="MXKImageView">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ifq-Xw-aqp">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
@@ -268,7 +268,7 @@
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </view>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="call_paused_icon" translatesAutoresizingMaskIntoConstraints="NO" id="rjn-DE-i10">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="call_paused_white_icon" translatesAutoresizingMaskIntoConstraints="NO" id="rjn-DE-i10">
                                             <rect key="frame" x="28" y="28" width="24" height="24"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="24" id="0mx-Ei-dTR"/>
@@ -333,52 +333,29 @@
                             <subviews>
                                 <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="uFS-C2-TxV" userLabel="OnHold Caller Image View" customClass="MXKImageView">
                                     <rect key="frame" x="0.0" y="0.0" width="79" height="106"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                                 <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cg1-q9-6Fj">
                                     <rect key="frame" x="0.0" y="0.0" width="79" height="106"/>
                                     <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Srl-Hh-nfo">
                                         <rect key="frame" x="0.0" y="0.0" width="79" height="106"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        <subviews>
-                                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Jg-ZK-2ZW">
-                                                <rect key="frame" x="0.0" y="0.0" width="79" height="106"/>
-                                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="9Pa-IK-BSi">
-                                                    <rect key="frame" x="0.0" y="0.0" width="79" height="106"/>
-                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                </view>
-                                                <vibrancyEffect>
-                                                    <blurEffect style="dark"/>
-                                                </vibrancyEffect>
-                                            </visualEffectView>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="call_paused_icon" translatesAutoresizingMaskIntoConstraints="NO" id="p8r-Y5-kMV">
-                                                <rect key="frame" x="29.5" y="43" width="20" height="20"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="20" id="ZOV-dL-X9D"/>
-                                                    <constraint firstAttribute="width" constant="20" id="cc5-U0-eRA"/>
-                                                </constraints>
-                                            </imageView>
-                                        </subviews>
-                                        <constraints>
-                                            <constraint firstItem="p8r-Y5-kMV" firstAttribute="centerX" secondItem="Srl-Hh-nfo" secondAttribute="centerX" id="0jG-BZ-wxV"/>
-                                            <constraint firstItem="4Jg-ZK-2ZW" firstAttribute="top" secondItem="Srl-Hh-nfo" secondAttribute="top" id="Ene-bQ-vtc"/>
-                                            <constraint firstItem="p8r-Y5-kMV" firstAttribute="centerY" secondItem="Srl-Hh-nfo" secondAttribute="centerY" id="Gwx-CR-e8u"/>
-                                            <constraint firstAttribute="trailing" secondItem="4Jg-ZK-2ZW" secondAttribute="trailing" id="cjP-W9-vpq"/>
-                                            <constraint firstItem="4Jg-ZK-2ZW" firstAttribute="leading" secondItem="Srl-Hh-nfo" secondAttribute="leading" id="eqh-LL-TVM"/>
-                                            <constraint firstAttribute="bottom" secondItem="4Jg-ZK-2ZW" secondAttribute="bottom" id="lWn-ap-8l2"/>
-                                        </constraints>
                                     </view>
                                     <blurEffect style="dark"/>
                                 </visualEffectView>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="call_paused_white_icon" translatesAutoresizingMaskIntoConstraints="NO" id="p8r-Y5-kMV">
+                                    <rect key="frame" x="29" y="43" width="20" height="20"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                </imageView>
                             </subviews>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
-                                <constraint firstAttribute="trailing" secondItem="uFS-C2-TxV" secondAttribute="trailing" id="8Av-i6-yhT"/>
-                                <constraint firstAttribute="bottom" secondItem="uFS-C2-TxV" secondAttribute="bottom" id="9bR-x7-eA2"/>
+                                <constraint firstAttribute="bottom" secondItem="uFS-C2-TxV" secondAttribute="bottom" id="7v7-cD-AXn"/>
+                                <constraint firstItem="uFS-C2-TxV" firstAttribute="leading" secondItem="OG1-NY-jaP" secondAttribute="leading" id="BA6-vS-01v"/>
                                 <constraint firstItem="Cg1-q9-6Fj" firstAttribute="top" secondItem="OG1-NY-jaP" secondAttribute="top" id="Ih1-LP-PpU"/>
-                                <constraint firstItem="uFS-C2-TxV" firstAttribute="leading" secondItem="OG1-NY-jaP" secondAttribute="leading" id="PAn-v0-Plu"/>
                                 <constraint firstAttribute="bottom" secondItem="Cg1-q9-6Fj" secondAttribute="bottom" id="PIq-Du-OhC"/>
-                                <constraint firstItem="uFS-C2-TxV" firstAttribute="top" secondItem="OG1-NY-jaP" secondAttribute="top" id="Pnc-s9-53l"/>
+                                <constraint firstAttribute="trailing" secondItem="uFS-C2-TxV" secondAttribute="trailing" id="Wo9-fk-DWB"/>
+                                <constraint firstItem="uFS-C2-TxV" firstAttribute="top" secondItem="OG1-NY-jaP" secondAttribute="top" id="cc1-J0-9OE"/>
                                 <constraint firstItem="Cg1-q9-6Fj" firstAttribute="leading" secondItem="OG1-NY-jaP" secondAttribute="leading" id="g1g-vg-vIR"/>
                                 <constraint firstAttribute="trailing" secondItem="Cg1-q9-6Fj" secondAttribute="trailing" id="sF5-lG-ieH"/>
                             </constraints>
@@ -472,7 +449,7 @@
         <image name="call_hangup_icon" width="24.5" height="26"/>
         <image name="call_hangup_large" width="40" height="40"/>
         <image name="call_more_icon" width="24" height="24"/>
-        <image name="call_paused_icon" width="24" height="24"/>
+        <image name="call_paused_white_icon" width="20" height="20"/>
         <image name="call_pip_icon" width="24" height="24"/>
         <image name="call_video_mute_off_icon" width="48" height="48"/>
         <image name="camera_switch" width="24" height="24"/>

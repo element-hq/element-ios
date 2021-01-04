@@ -26,6 +26,7 @@ internal enum Asset {
     internal static let callHangupLarge = ImageAsset(name: "call_hangup_large")
     internal static let callMoreIcon = ImageAsset(name: "call_more_icon")
     internal static let callPausedIcon = ImageAsset(name: "call_paused_icon")
+    internal static let callPausedWhiteIcon = ImageAsset(name: "call_paused_white_icon")
     internal static let callPipIcon = ImageAsset(name: "call_pip_icon")
     internal static let callSpeakerOffIcon = ImageAsset(name: "call_speaker_off_icon")
     internal static let callSpeakerOnIcon = ImageAsset(name: "call_speaker_on_icon")
