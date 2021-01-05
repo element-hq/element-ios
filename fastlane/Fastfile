@@ -114,6 +114,8 @@ platform :ios do
 
     xcargs = xcargs_hash.map { |k, v| "#{k}=#{v.shellescape}" }.join(" ")
 
+    xcodegen(spec: "project.yml")
+    
     # Clear derived data
     clear_derived_data(derived_data_path: ENV["DERIVED_DATA_PATH"])
 
@@ -122,8 +124,6 @@ platform :ios do
     disable_automatic_code_signing
     update_project_provisioning_profiles
 
-    xcodegen(spec: "project.yml")
-    
     # Update build number
     update_build_number(build_number: build_number)
 
