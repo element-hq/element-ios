@@ -347,7 +347,6 @@
 		B190F55D22CE5A9700AEB493 /* EditHistorySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B190F55C22CE5A9600AEB493 /* EditHistorySection.swift */; };
 		B1945CC4258A81FB0020D8D6 /* ThemeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16DC23B258A7D13004DAB1A /* ThemeService.swift */; };
 		B1945CC5258A81FE0020D8D6 /* ThemeIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16DC23D258A8025004DAB1A /* ThemeIdentifier.swift */; };
-		B1945CC7258B77530020D8D6 /* SocialLoginDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1945CC6258B77520020D8D6 /* SocialLoginDataSource.swift */; };
 		B1945CC9258C04F30020D8D6 /* SSOAuthenticationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1945CC8258C04F20020D8D6 /* SSOAuthenticationPresenter.swift */; };
 		B1945CCB258C24500020D8D6 /* SSOAuthentificationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1945CCA258C244F0020D8D6 /* SSOAuthentificationSession.swift */; };
 		B1963B2B228F1C4900CBA17F /* BubbleReactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1963B25228F1C4800CBA17F /* BubbleReactionsView.swift */; };
@@ -6677,7 +6676,6 @@
 				B16D6354257D8FB0008BDC97 /* SocialLoginButtonFactory.swift in Sources */,
 				B10A3E9924FE86AF007C380F /* SplitViewCoordinator.swift in Sources */,
 				B1BEE72A23DF38B20003A4CB /* UserVerificationSessionStatusCell.swift in Sources */,
-				B1945CC7258B77530020D8D6 /* SocialLoginDataSource.swift in Sources */,
 				B1C45A8A232A8C2600165425 /* SettingsIdentityServerCoordinatorBridgePresenter.swift in Sources */,
 				B1C7822F2500EAF500337EB9 /* TabBarCoordinator.swift in Sources */,
 				B1B557DE20EF5FBB00210D55 /* FilesSearchTableViewCell.m in Sources */,
