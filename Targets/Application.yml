@@ -79,6 +79,68 @@ targets:
         - "Modules/Room/EmojiPicker/Data/EmojiMart/EmojiJSONStore.swift"
         - "Modules/KeyBackup/Recover/Loading"
         - "Modules/KeyBackup/Setup/RecoveryKey"
+        - "**/*.strings" # Exclude all strings files
+
+    # Add separately localizable files
+    - path: ../Riot/Assets/en.lproj/InfoPlist.strings
+    - path: ../Riot/Assets/en.lproj/Localizable.strings
+    - path: ../Riot/Assets/en.lproj/Vector.strings
+    - path: ../Riot/Assets/fr.lproj/InfoPlist.strings
+    - path: ../Riot/Assets/fr.lproj/Localizable.strings
+    - path: ../Riot/Assets/fr.lproj/Vector.strings
+    - path: ../Riot/Assets/de.lproj/InfoPlist.strings
+    - path: ../Riot/Assets/de.lproj/Localizable.strings
+    - path: ../Riot/Assets/de.lproj/Vector.strings
+    - path: ../Riot/Assets/sq.lproj/InfoPlist.strings
+    - path: ../Riot/Assets/sq.lproj/Localizable.strings
+    - path: ../Riot/Assets/sq.lproj/Vector.strings
+    - path: ../Riot/Assets/vi.lproj/InfoPlist.strings
+    - path: ../Riot/Assets/vi.lproj/Localizable.strings
+    - path: ../Riot/Assets/vi.lproj/Vector.strings
+    - path: ../Riot/Assets/eu.lproj/InfoPlist.strings
+    - path: ../Riot/Assets/eu.lproj/Localizable.strings
+    - path: ../Riot/Assets/eu.lproj/Vector.strings
+    - path: ../Riot/Assets/bg.lproj/InfoPlist.strings
+    - path: ../Riot/Assets/bg.lproj/Localizable.strings
+    - path: ../Riot/Assets/bg.lproj/Vector.strings
+    - path: ../Riot/Assets/nl.lproj/InfoPlist.strings
+    - path: ../Riot/Assets/nl.lproj/Localizable.strings
+    - path: ../Riot/Assets/nl.lproj/Vector.strings
+    - path: ../Riot/Assets/ca.lproj/InfoPlist.strings
+    - path: ../Riot/Assets/ca.lproj/Localizable.strings
+    - path: ../Riot/Assets/ca.lproj/Vector.strings
+    - path: ../Riot/Assets/zh_Hans.lproj/InfoPlist.strings
+    - path: ../Riot/Assets/zh_Hans.lproj/Localizable.strings
+    - path: ../Riot/Assets/zh_Hans.lproj/Vector.strings
+    - path: ../Riot/Assets/ru.lproj/InfoPlist.strings
+    - path: ../Riot/Assets/ru.lproj/Localizable.strings
+    - path: ../Riot/Assets/ru.lproj/Vector.strings
+    - path: ../Riot/Assets/zh_Hant.lproj/InfoPlist.strings
+    - path: ../Riot/Assets/zh_Hant.lproj/Localizable.strings
+    - path: ../Riot/Assets/zh_Hant.lproj/Vector.strings
+    - path: ../Riot/Assets/es.lproj/InfoPlist.strings
+    - path: ../Riot/Assets/es.lproj/Localizable.strings
+    - path: ../Riot/Assets/es.lproj/Vector.strings
+    - path: ../Riot/Assets/ja.lproj/InfoPlist.strings
+    - path: ../Riot/Assets/ja.lproj/Localizable.strings
+    - path: ../Riot/Assets/ja.lproj/Vector.strings
+    - path: ../Riot/Assets/hu.lproj/InfoPlist.strings
+    - path: ../Riot/Assets/hu.lproj/Localizable.strings
+    - path: ../Riot/Assets/hu.lproj/Vector.strings
+    - path: ../Riot/Assets/pl.lproj/InfoPlist.strings
+    - path: ../Riot/Assets/pl.lproj/Localizable.strings
+    - path: ../Riot/Assets/pl.lproj/Vector.strings
+    - path: ../Riot/Assets/cy.lproj/InfoPlist.strings
+    - path: ../Riot/Assets/cy.lproj/Localizable.strings
+    - path: ../Riot/Assets/cy.lproj/Vector.strings
+    - path: ../Riot/Assets/it.lproj/InfoPlist.strings
+    - path: ../Riot/Assets/it.lproj/Localizable.strings
+    - path: ../Riot/Assets/it.lproj/Vector.strings
+    - path: ../Riot/Assets/et.lproj/InfoPlist.strings
+    - path: ../Riot/Assets/et.lproj/Localizable.strings
+    - path: ../Riot/Assets/et.lproj/Vector.strings
+    - path: ../Riot/Assets/is.lproj/Vector.strings
+
     - path: ../Riot/SupportingFiles/App-Common.xcconfig
       buildPhase: resources
     type: application

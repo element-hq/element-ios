@@ -94,6 +94,7 @@ options:
   groupSortPosition: bottom
   transitivelyLinkDependencies: false
   createIntermediateGroups: true
+  useBaseInternationalization: true
   postGenCommand: sh createWorkspace.sh
 include:
   - path: Targets/Application.yml
