@@ -1002,9 +1002,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         [super onButtonPressed:self.submitButton];
     }
     else if (sender == ((AuthInputsView*)self.authInputsView).ssoButton)
-    {
-        // Do SSO using the fallback URL
-        [self showAuthenticationFallBackView];
+    {        
+        [self presentDefaultSSOAuthentication];
     }
     else if (sender == self.softLogoutClearDataButton)
     {
