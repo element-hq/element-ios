@@ -76,6 +76,9 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 // Current SSO flow containing Identity Providers. Used for `socialLoginListView`
 @property (nonatomic, strong) MXLoginSSOFlow *currentLoginSSOFlow;
 
+// Current SSO transaction id used to identify and validate the SSO authentication callback
+@property (nonatomic, strong) NSString *ssoCallbackTxnId;
+
 @end
 
 @implementation AuthenticationViewController
@@ -556,6 +559,21 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     {
         [self.authVCDelegate authenticationViewControllerDidDismiss:self];
     }
+}
+
+- (BOOL)continueSSOLoginWithToken:(NSString*)loginToken txnId:(NSString*)txnId
+{
+    // Check if transaction id is the same as expected
+    if (loginToken &&
+        txnId && self.ssoCallbackTxnId
+        && [txnId isEqualToString:self.ssoCallbackTxnId])
+    {
+        [self loginWithToken:loginToken];
+        return YES;
+    }
+        
+    NSLog(@"[AuthenticationVC] Fail to continue SSO login");
+    return NO;
 }
 
 #pragma mark - Fallback URL display
@@ -1709,8 +1727,12 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     
     presenter.delegate = self;
     
-    [presenter presentForIdentityProviderIdentifier:identityProviderIdentifier from:self animated:YES];
-
+    // Generate a unique identifier that will identify the success callback URL
+    NSString *transactionId = [MXTools generateTransactionId];
+    
+    [presenter presentForIdentityProviderIdentifier:identityProviderIdentifier with: transactionId from:self animated:YES];
+    
+    self.ssoCallbackTxnId = transactionId;
     self.ssoAuthenticationPresenter = presenter;
 }
 

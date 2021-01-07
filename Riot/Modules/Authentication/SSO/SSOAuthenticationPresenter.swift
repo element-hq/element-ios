@@ -58,18 +58,18 @@ final class SSOAuthenticationPresenter: NSObject {
     // MARK: - Public
     
     func present(forIdentityProviderIdentifier identityProviderIdentifier: String?,
+                 with transactionId: String,
                  from presentingViewController: UIViewController,
                  animated: Bool) {
-        guard let authenticationURL = self.ssoAuthenticationService.authenticationURL(for: identityProviderIdentifier) else {
+        guard let authenticationURL = self.ssoAuthenticationService.authenticationURL(for: identityProviderIdentifier, transactionId: transactionId) else {
             self.delegate?.ssoAuthenticationPresenter(self, authenticationDidFailWithError: SSOAuthenticationPresenterError.failToLoadAuthenticationURL)
              return
         }
         
         self.presentingViewController = presentingViewController
         
-        // SFAuthenticationSession and ASWebAuthenticationSession doesn't work with guided access (rdar://40809553)
+        // SFAuthenticationSession and ASWebAuthenticationSession doesn't work with guided access (rdar://48376122)
         if UIAccessibility.isGuidedAccessEnabled {
-            // TODO: Support callback URL scheme in AppDelegate in this case
             self.presentSafariViewController(with: authenticationURL, animated: animated)
         } else {
             self.startAuthenticationSession(with: authenticationURL)
