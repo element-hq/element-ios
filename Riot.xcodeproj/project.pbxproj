@@ -318,6 +318,7 @@
 		B169331520F3CAFC00746532 /* PublicRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B169330F20F3CAFC00746532 /* PublicRoomTableViewCell.xib */; };
 		B169331620F3CAFC00746532 /* PublicRoomsDirectoryDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B169331220F3CAFC00746532 /* PublicRoomsDirectoryDataSource.m */; };
 		B169331720F3CBE000746532 /* RecentCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932F920F3C51900746532 /* RecentCellData.m */; };
+		B16C028D25A71CA3008CA7B1 /* CustomSchemeURLConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16C028C25A71CA3008CA7B1 /* CustomSchemeURLConstants.swift */; };
 		B16D6354257D8FB0008BDC97 /* SocialLoginButtonFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D6353257D8FB0008BDC97 /* SocialLoginButtonFactory.swift */; };
 		B16DC22B2587DC35004DAB1A /* SSOAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16DC22A2587DC35004DAB1A /* SSOAuthenticationService.swift */; };
 		B16DC235258A723B004DAB1A /* SourceImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16DC234258A723B004DAB1A /* SourceImage.swift */; };
@@ -360,6 +361,10 @@
 		B197B7C6243DE947005ABBF3 /* EncryptionTrustLevelBadgeImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B197B7C5243DE947005ABBF3 /* EncryptionTrustLevelBadgeImageHelper.swift */; };
 		B19EFA3921F8BB2C00FC070E /* KeyBackupRecoverCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19EFA3821F8BB2C00FC070E /* KeyBackupRecoverCoordinatorType.swift */; };
 		B19EFA3B21F8BB4100FC070E /* KeyBackupRecoverCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19EFA3A21F8BB4100FC070E /* KeyBackupRecoverCoordinator.swift */; };
+		B1A15BD425A4BAA800BDCA36 /* CustomSchemeURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A15BD325A4BAA800BDCA36 /* CustomSchemeURLParser.swift */; };
+		B1A15BD625A526A200BDCA36 /* URLComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A15BD525A526A200BDCA36 /* URLComponents.swift */; };
+		B1A15BD925A6652800BDCA36 /* DeepLinkOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A15BD825A6652800BDCA36 /* DeepLinkOption.swift */; };
+		B1A15BDB25A6680E00BDCA36 /* SSOURLConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A15BDA25A6680E00BDCA36 /* SSOURLConstants.swift */; };
 		B1A5B33E227ADF2A004CBA85 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A5B33D227ADF2A004CBA85 /* UIImage.swift */; };
 		B1A67946257559CF00BB0C69 /* RootTabEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11F4D2025681500009F1586 /* RootTabEmptyView.swift */; };
 		B1A67947257559D500BB0C69 /* RootTabEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B11F4D1E256814E5009F1586 /* RootTabEmptyView.xib */; };
@@ -1427,6 +1432,7 @@
 		B169331020F3CAFC00746532 /* PublicRoomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicRoomTableViewCell.h; sourceTree = "<group>"; };
 		B169331220F3CAFC00746532 /* PublicRoomsDirectoryDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublicRoomsDirectoryDataSource.m; sourceTree = "<group>"; };
 		B169331320F3CAFC00746532 /* PublicRoomsDirectoryDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicRoomsDirectoryDataSource.h; sourceTree = "<group>"; };
+		B16C028C25A71CA3008CA7B1 /* CustomSchemeURLConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSchemeURLConstants.swift; sourceTree = "<group>"; };
 		B16D6353257D8FB0008BDC97 /* SocialLoginButtonFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginButtonFactory.swift; sourceTree = "<group>"; };
 		B16DC22A2587DC35004DAB1A /* SSOAuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSOAuthenticationService.swift; sourceTree = "<group>"; };
 		B16DC234258A723B004DAB1A /* SourceImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceImage.swift; sourceTree = "<group>"; };
@@ -1468,6 +1474,10 @@
 		B197B7C5243DE947005ABBF3 /* EncryptionTrustLevelBadgeImageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionTrustLevelBadgeImageHelper.swift; sourceTree = "<group>"; };
 		B19EFA3821F8BB2C00FC070E /* KeyBackupRecoverCoordinatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverCoordinatorType.swift; sourceTree = "<group>"; };
 		B19EFA3A21F8BB4100FC070E /* KeyBackupRecoverCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverCoordinator.swift; sourceTree = "<group>"; };
+		B1A15BD325A4BAA800BDCA36 /* CustomSchemeURLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSchemeURLParser.swift; sourceTree = "<group>"; };
+		B1A15BD525A526A200BDCA36 /* URLComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLComponents.swift; sourceTree = "<group>"; };
+		B1A15BD825A6652800BDCA36 /* DeepLinkOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkOption.swift; sourceTree = "<group>"; };
+		B1A15BDA25A6680E00BDCA36 /* SSOURLConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSOURLConstants.swift; sourceTree = "<group>"; };
 		B1A5B33D227ADF2A004CBA85 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		B1A6805324B7C65200E312CC /* MajorUpdateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MajorUpdateManager.swift; sourceTree = "<group>"; };
 		B1A68592229E807800D6C09A /* RoomBubbleCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomBubbleCellLayout.swift; sourceTree = "<group>"; };
@@ -3259,6 +3269,7 @@
 			isa = PBXGroup;
 			children = (
 				B1945CC8258C04F20020D8D6 /* SSOAuthenticationPresenter.swift */,
+				B1A15BDA25A6680E00BDCA36 /* SSOURLConstants.swift */,
 				B16DC22A2587DC35004DAB1A /* SSOAuthenticationService.swift */,
 				B12742B9258C46DC00731DA6 /* SSOAuthentificationSessionProtocol.swift */,
 				B1945CCA258C244F0020D8D6 /* SSOAuthentificationSession.swift */,
@@ -3399,6 +3410,16 @@
 			path = KeyVerification;
 			sourceTree = "<group>";
 		};
+		B1A15BD725A664F400BDCA36 /* DeepLink */ = {
+			isa = PBXGroup;
+			children = (
+				B1A15BD825A6652800BDCA36 /* DeepLinkOption.swift */,
+				B16C028C25A71CA3008CA7B1 /* CustomSchemeURLConstants.swift */,
+				B1A15BD325A4BAA800BDCA36 /* CustomSchemeURLParser.swift */,
+			);
+			path = DeepLink;
+			sourceTree = "<group>";
+		};
 		B1A6805224B7C60900E312CC /* MajorUpdate */ = {
 			isa = PBXGroup;
 			children = (
@@ -3517,6 +3538,7 @@
 				B1A6C10523881ECB002882FD /* SlidingModal */,
 				32DB556722FDADE50016329E /* ServiceTerms */,
 				B1550FC52420E8F400CE097B /* QRCode */,
+				B1A15BD725A664F400BDCA36 /* DeepLink */,
 				B1B556CD20EE6C4C00210D55 /* Common */,
 			);
 			path = Modules;
@@ -5522,6 +5544,7 @@
 				ECAE7AED24EFDD1F002FA813 /* MXSessionState.swift */,
 				ECF57A4F250913E4004BBF9D /* MXKTableViewCellWithLabelAndSwitch.swift */,
 				ECF57A5625091ECC004BBF9D /* MXKTableViewCellWithTextView.swift */,
+				B1A15BD525A526A200BDCA36 /* URLComponents.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -6442,6 +6465,7 @@
 				B16DC23C258A7D13004DAB1A /* ThemeService.swift in Sources */,
 				B110872521F098F0003554A5 /* ActivityIndicatorPresenter.swift in Sources */,
 				32242F1521E8FBA900725742 /* DarkTheme.swift in Sources */,
+				B1A15BD625A526A200BDCA36 /* URLComponents.swift in Sources */,
 				B1D211E222BD193C00D939BD /* ReactionsMenuViewModel.swift in Sources */,
 				EC2B4EF124A1EEBD005EB739 /* DataProtectionHelper.swift in Sources */,
 				B16DC23A258A75B7004DAB1A /* SocialLoginButtonViewData.swift in Sources */,
@@ -6504,6 +6528,7 @@
 				B1B9DEE822EB34EF0065E677 /* ReactionHistoryCoordinatorType.swift in Sources */,
 				EC711B7424A63B37008F830C /* SecretsSetupRecoveryKeyViewModelType.swift in Sources */,
 				B14F143122144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewState.swift in Sources */,
+				B16C028D25A71CA3008CA7B1 /* CustomSchemeURLConstants.swift in Sources */,
 				32DB557F22FDADE50016329E /* ServiceTermsModalScreenCoordinator.swift in Sources */,
 				EC31F014251B53AD00D407DA /* RoomInfoBasicView.swift in Sources */,
 				EC1CA85F24C1DEC400DE9EBF /* EnterPinCodeViewModelType.swift in Sources */,
@@ -6765,6 +6790,7 @@
 				B12D7A0223E2462200FACEDC /* UserVerificationStartViewAction.swift in Sources */,
 				EC85D7372477DD97002C44C9 /* LocalContactsSectionHeaderContainerView.m in Sources */,
 				B1DCC61A22E5E17100625807 /* EmojiPickerViewController.swift in Sources */,
+				B1A15BD425A4BAA800BDCA36 /* CustomSchemeURLParser.swift in Sources */,
 				ECFBD5C9250A7AAF00DD5F5A /* RoomsDirectoryCoordinator.swift in Sources */,
 				B1963B32228F1C6B00CBA17F /* BubbleReactionsViewModelType.swift in Sources */,
 				EC1CA89A24C9C9A200DE9EBF /* SetupBiometricsCoordinatorType.swift in Sources */,
@@ -6774,6 +6800,7 @@
 				EC1CA87524C8259700DE9EBF /* KeychainStore.swift in Sources */,
 				B1B5575220EE6C4D00210D55 /* RoomKeyRequestViewController.m in Sources */,
 				32A6001A22C661100042C1D9 /* EditHistoryCoordinator.swift in Sources */,
+				B1A15BDB25A6680E00BDCA36 /* SSOURLConstants.swift in Sources */,
 				F083BD1E1E7009ED00A9B29C /* LegacyAppDelegate.m in Sources */,
 				B1B558E620EF768F00210D55 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				B1B4E9BD24D4701F004D5C33 /* BubbleCellReactionsDisplayable.swift in Sources */,
@@ -6933,6 +6960,7 @@
 				EC85D73E2477DDD0002C44C9 /* PushNotificationService.m in Sources */,
 				32BF995121FA29DC00698084 /* SettingsKeyBackupViewModelType.swift in Sources */,
 				B190F55922CE356800AEB493 /* EditHistoryHeaderView.swift in Sources */,
+				B1A15BD925A6652800BDCA36 /* DeepLinkOption.swift in Sources */,
 				32F6B96A2270623100BBA352 /* KeyVerificationDataLoadingViewState.swift in Sources */,
 				B1945CC9258C04F30020D8D6 /* SSOAuthenticationPresenter.swift in Sources */,
 				32BF995321FA2A1300698084 /* SettingsKeyBackupViewState.swift in Sources */,
