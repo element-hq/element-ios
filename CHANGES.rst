@@ -2,10 +2,10 @@ Changes to be released in next version
 =================================================
 
 ✨ Features
- * 
+ * AuthVC: Add social login (#3846).
 
 🙌 Improvements
- * 
+ * AuthVC: SSO authentication now use redirect URL instead of fallback page (#3846).
 
 🐛 Bugfix
  * 
