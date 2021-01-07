@@ -27,39 +27,23 @@ final class SSOAuthenticationService: NSObject {
     
     // MARK: - Constants
     
-    private enum SSOURLPath {
-        static let redirect = "/_matrix/client/r0/login/sso/redirect"
-        static let unstableRedirect = "/_matrix/client/unstable/org.matrix.msc2858/login/sso/redirect/"
-    }
-    
-    private enum SSOURLParameters {
-        static let callbackLoginToken = "loginToken"
-        static let redirectURL = "redirectUrl"
-    }
-    
-    // TODO: Move this constant
-    private enum ApplicationSchemePathes {
-        static let connect = "connect"
-    }
-    
     // MARK: - Properties
     
     private let homeserverStringURL: String
         
-    lazy var callBackURLScheme: String? = {
-        return self.buildCallBackURLScheme()
-    }()
+    let callBackURLScheme: String?
     
     // MARK: - Setup
     
     init(homeserverStringURL: String) {
-        self.homeserverStringURL = homeserverStringURL        
+        self.homeserverStringURL = homeserverStringURL
+        self.callBackURLScheme = BuildSettings.applicationURLScheme
         super.init()
     }
     
     // MARK: - Public
     
-    func authenticationURL(for identityProvider: String?) -> URL? {                
+    func authenticationURL(for identityProvider: String?, transactionId: String) -> URL? {
         guard var authenticationComponent = URLComponents(string: self.homeserverStringURL) else {
             return nil
         }
@@ -67,17 +51,17 @@ final class SSOAuthenticationService: NSObject {
         let ssoRedirectPath: String
         
         if let identityProvider = identityProvider {
-            ssoRedirectPath = SSOURLPath.unstableRedirect + identityProvider
+            ssoRedirectPath = SSOURLConstants.Pathes.unstableRedirect + identityProvider
         } else {
-            ssoRedirectPath = SSOURLPath.redirect
+            ssoRedirectPath = SSOURLConstants.Pathes.redirect
         }
         
         authenticationComponent.path = ssoRedirectPath
         
         var queryItems: [URLQueryItem] = []
         
-        if let callBackURLScheme = self.callBackURLScheme {
-            queryItems.append(URLQueryItem(name: SSOURLParameters.redirectURL, value: callBackURLScheme))
+        if let callBackURLScheme = self.buildCallBackURL(with: transactionId) {
+            queryItems.append(URLQueryItem(name: SSOURLConstants.Parameters.redirectURL, value: callBackURLScheme))
         }
         
         authenticationComponent.queryItems = queryItems
@@ -89,19 +73,21 @@ final class SSOAuthenticationService: NSObject {
         guard let components = URLComponents(string: url.absoluteString) else {
             return nil
         }
-        let tokenQueryItem = components.queryItems?.first(where: { $0.name == SSOURLParameters.callbackLoginToken })
-        return tokenQueryItem?.value
+        return components.vc_getQueryItemValue(for: SSOURLConstants.Parameters.callbackLoginToken)
     }
     
     // MARK: - Private
     
-    private func buildCallBackURLScheme() -> String? {
-        guard let appScheme = BuildSettings.applicationURLScheme else {
+    private func buildCallBackURL(with transactionId: String) -> String? {
+        guard let callBackURLScheme = self.callBackURLScheme else {
             return nil
         }
         var urlComponents = URLComponents()
-        urlComponents.scheme = appScheme
-        urlComponents.host = ApplicationSchemePathes.connect        
+        urlComponents.scheme = callBackURLScheme
+        urlComponents.host = CustomSchemeURLConstants.Hosts.connect
+        
+        // Transaction id is used to indentify the request
+        urlComponents.queryItems = [URLQueryItem(name: CustomSchemeURLConstants.Parameters.transactionId, value: transactionId)]
         return urlComponents.string
     }
 }
