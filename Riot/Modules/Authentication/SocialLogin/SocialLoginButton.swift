@@ -60,17 +60,10 @@ final class SocialLoginButton: UIButton, Themable {
     private func commonInit() {
         self.clipsToBounds = true
         self.layer.masksToBounds = true
+        self.layer.cornerRadius = Constants.cornerRadius
         self.titleLabel?.font = UIFont.systemFont(ofSize: Constants.fontSize)
         self.imageEdgeInsets.right = Constants.imageEdgeInsetRight
         self.update(theme: ThemeService.shared().theme)
-    }
-    
-    // MARK: - Life cycle
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        self.layer.cornerRadius = Constants.cornerRadius
     }
     
     // MARK: - Public
