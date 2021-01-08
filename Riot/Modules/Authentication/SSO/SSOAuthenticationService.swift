@@ -51,9 +51,9 @@ final class SSOAuthenticationService: NSObject {
         let ssoRedirectPath: String
         
         if let identityProvider = identityProvider {
-            ssoRedirectPath = SSOURLConstants.Pathes.unstableRedirect + identityProvider
+            ssoRedirectPath = SSOURLConstants.Paths.unstableRedirect + identityProvider
         } else {
-            ssoRedirectPath = SSOURLConstants.Pathes.redirect
+            ssoRedirectPath = SSOURLConstants.Paths.redirect
         }
         
         authenticationComponent.path = ssoRedirectPath
