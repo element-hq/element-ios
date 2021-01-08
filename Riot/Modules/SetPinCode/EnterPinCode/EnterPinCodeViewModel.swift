@@ -138,9 +138,9 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
                     if initialPin.isEmpty && currentPin != pinCodePreferences.pin {
                         //  no match
                         updateAfterUnlockFailed()
-                    } else {
+                    } else if initialPin.isEmpty {
                         //  match or already unlocked
-                        if initialPin.isEmpty {
+                        
                             // the user can choose a new Pin code
                             initialPin = currentPin
                             currentPin.removeAll()
@@ -149,7 +149,6 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
                             //  choosing pin
                             updateAfterPinSet()
                         }
-                    }
                 default:
                     break
                 }
