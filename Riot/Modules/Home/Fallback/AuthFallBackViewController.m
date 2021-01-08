@@ -60,7 +60,13 @@ NSString *FallBackViewControllerJavascriptOnLogin = @"window.matrixLogin.onLogin
     
     // Due to https://developers.googleblog.com/2016/08/modernizing-oauth-interactions-in-native-apps.html, we hack
     // the user agent to bypass the limitation of Google, as a quick fix (a proper solution will be to use the SSO SDK)
-    webView.customUserAgent = @"Mozilla/5.0";
+    // There is a bug in Webkit (fixed in iOS 13), that treats cookies with SameSite=None as SameSite=Strict.
+    // Therefore SSO Server return different Cookie properties, depending on the iOS Version.
+    // (see: https://bugs.webkit.org/show_bug.cgi?id=198181)
+    // The created UserAgent would look like this (on iPhone 6, IOS 12.4): "Mozilla/5.0 (iPhone; CPU iPhone OS 12_4)"
+    NSString *model =  [[UIDevice currentDevice] model];
+    NSString *systemVersion = [[[UIDevice currentDevice] systemVersion] stringByReplacingOccurrencesOfString:@"." withString:@"_"];
+    webView.customUserAgent = [NSString stringWithFormat:@"Mozilla/5.0 (%@; CPU iPhone OS %@)", model, systemVersion];
 
     [self clearCookies];
 }
