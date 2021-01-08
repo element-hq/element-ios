@@ -76,7 +76,7 @@
 "room_creation_make_public_prompt_title" = "Diesen Chat öffentlich machen?";
 "room_creation_keep_private" = "Privat lassen";
 "room_creation_make_private" = "Mache privat";
-"room_creation_wait_for_creation" = "Ein wurde wurde bereits erstellt. Bitte warten.";
+"room_creation_wait_for_creation" = "Es wird gerade schon ein Raum erstellt. Bitte warten.";
 // Room recents
 "room_recents_directory_section" = "RAUM VERZEICHNIS";
 "room_recents_directory_section_network" = "Netzwerk";
@@ -125,7 +125,7 @@
 "room_participants_remove_prompt_msg" = "Bist du sicher, dass du %@ aus dem Chat entfernen möchtest?";
 "room_participants_invite_prompt_title" = "Bestätigung";
 "room_participants_invite_prompt_msg" = "Bist du sicher, dass du %@ in diesen Chat einladen möchtest?";
-"room_participants_filter_room_members" = "Filtere Raum-Mitglieder";
+"room_participants_filter_room_members" = "Mitglieder filtern";
 "room_participants_invite_malformed_id_title" = "Fehler beim Einladen";
 "room_participants_invited_section" = "EINGELADEN";
 "room_participants_online" = "Online";
@@ -255,9 +255,9 @@
 "room_details_access_section_anyone" = "Jeder, der den Raum-Link kennt - auch Gäste";
 "room_details_history_section" = "Wer kann die Historie lesen?";
 "room_details_history_section_anyone" = "Jeder";
-"room_details_history_section_members_only" = "Nur Teilnehmer (ab dem Selektieren dieser Option)";
-"room_details_history_section_members_only_since_invited" = "Nur Teilnehmer (seitdem sie eingeladen wurden)";
-"room_details_history_section_members_only_since_joined" = "Nur Teilnehmer (seitdem sie beigetreten sind)";
+"room_details_history_section_members_only" = "Nur Mitglieder (seit diese Option ausgewählt ist)";
+"room_details_history_section_members_only_since_invited" = "Nur Mitglieder (ab ihrer Einladung)";
+"room_details_history_section_members_only_since_joined" = "Nur Mitglieder (Ab ihrem Beitritt)";
 "room_details_history_section_prompt_title" = "Datenschutz-Warnung";
 "room_details_addresses_section" = "Adressen";
 "room_details_no_local_addresses" = "Dieser Raum hat keine lokalen Adressen";
@@ -307,7 +307,7 @@
 "room_warning_about_encryption" = "Ende-zu-Ende Verschlüsselung ist in Beta und ist evtl. nicht zuverlässig.\n\nMan sollte noch nicht darauf vertrauen, dass die Daten sicher sind.\n\nGeräte werden Nachrichten von vor dem Beitritt des Raumes nicht entschlüsseln können.\n\nVerschlüsselte Nachrichten sind nicht lesbar auf Clients, die Verschlüsselung noch nicht implementiert haben.";
 "unknown_devices_alert" = "Dieser Raum enthält unbekannte Sitzungen, die nicht verifiziert wurden.\nDas bedeutet, es gibt keine Garantie, dass sie dem/r angegebenen Benutzer!n gehören.\nWir empfehlen eine Überprüfung für jedes Gerät, bevor du weitermachst. Du kannst die Nachricht auch ohne Verifizierung erneut senden.";
 "room_preview_unlinked_email_warning" = "Diese Einladung wurde an %@ gesendet, welche diesem Konto nicht zugeordnet ist. Möglicherweise möchtest du dich mit einem anderen Konto anmelden oder diese E-Mail zu deinem Konto hinzufügen.";
-"room_preview_try_join_an_unknown_room" = "Du versuchst auf %@ zuzugreifen.  Möchtest du dem Raum beitreten um teilzunehmen?";
+"room_preview_try_join_an_unknown_room" = "Du versuchst auf %@ zuzugreifen. Möchtest du dem Raum beitreten um teilzunehmen?";
 "settings_config_identity_server" = "Identitätsserver ist %@";
 "settings_labs" = "Labor";
 "settings_sign_out_e2e_warn" = "Du wirst die Ende-zu-Ende Schlüssel verlieren. Du kannst dann auf diesem Gerät in verschlüsselten Räumen keine alten Nachrichten mehr lesen.";
@@ -390,9 +390,9 @@
 "e2e_enabling_on_app_update" = "Element unterstützt nun Ende-zu-Ende Verschlüsselung. Um sie zu aktivieren musst du dich erneut anmelden.\n\nDu kannst sie nun aktivieren oder später in den Einstellungen.";
 "e2e_need_log_in_again" = "Du musst dich erneut anmelden um Ende-zu-Ende Schlüssel für diese Sitzung zu erstellen und zum Server zu senden.\nDies ist nur einmal notwendig.";
 // Bug report
-"bug_report_title" = "Bug Report";
+"bug_report_title" = "Fehlermeldung";
 "bug_report_description" = "Beschreibe den Fehler. Was hast du gemacht? Was hast du erwartet? Was ist tatsächlich passiert?";
-"bug_crash_report_title" = "Crash Report";
+"bug_crash_report_title" = "Absturzmeldung";
 "bug_crash_report_description" = "Bitte beschreibe was du vor dem Absturz gemacht hast:";
 "bug_report_logs_description" = "Um Probleme analysieren zu können werden Log-Daten dieses Clients mit dem Bug Report gesendet. Wenn du nur den Text oben senden willst, bitte abwählen:";
 "bug_report_send_logs" = "Sende Log-Daten";
@@ -468,7 +468,7 @@
 "e2e_room_key_request_start_verification" = "Starte Verifikation…";
 "e2e_room_key_request_share_without_verifying" = "Teile ohne zu verifizieren";
 "e2e_room_key_request_ignore_request" = "Ignoriere Anfrage";
-"title_groups" = "Communities";
+"title_groups" = "Communitys";
 // Groups tab
 "group_invite_section" = "EINLADUNGEN";
 "group_section" = "COMMUNITIES";
@@ -626,7 +626,7 @@
 "key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Gebe Wiederherstellungsschlüssel ein";
 "key_backup_recover_from_recovery_key_recover_action" = "Historie entschlüsseln";
 "key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Hast du deinen Wiederherstellungsschlüssel verloren? Du kannst in den Einstellungen einen neuen einrichten.";
-"key_backup_recover_success_info" = "Sicherung wiederhergestellt";
+"key_backup_recover_success_info" = "Sicherung wiederhergestellt!";
 "key_backup_recover_done_action" = "Erledigt";
 "key_backup_setup_banner_title" = "Verliere niemals verschlüsselte Nachrichten";
 "key_backup_setup_banner_subtitle" = "Beginne Schlüsselsicherung zu nutzen";
@@ -1107,7 +1107,7 @@
 "key_verification_scan_confirmation_scanned_device_information" = "Zeigt das andere Gerät das gleiche Schild an?";
 "user_verification_session_details_verify_action_current_user_manually" = "Überprüfe manuell mit einem Text";
 "secrets_recovery_with_passphrase_title" = "Wiederherstellungs-Passphrase";
-"secrets_recovery_with_passphrase_information_default" = "Gib deine Wiederherstellungspassphrase ein, um auf auf deine Nachrichtenhistorie und deine Cross-Signing-Identität zuzugreifen. Die Cross-Signing-Identität ermöglicht dir andere Sitzungen zu verifizieren.";
+"secrets_recovery_with_passphrase_information_default" = "Gib deine Wiederherstellungs-Passphrase ein, um auf deine verschlüsselten Nachrichten und deine Cross-Signing-Identität zuzugreifen. Mit der Cross-Signing-Identität kannst du andere Sitzungen verifizieren.";
 "secrets_recovery_with_passphrase_information_verify_device" = "Nutze deinen Wiederherstellungsphrase um dieses Gerät zu verifizieren.";
 "secrets_recovery_with_passphrase_passphrase_placeholder" = "Gib die Wiederherstellungspassphrase ein";
 "secrets_recovery_with_passphrase_recover_action" = "Nutze Passphrase";
@@ -1117,7 +1117,7 @@
 "secrets_recovery_with_passphrase_invalid_passphrase_title" = "Auf sicheren Speicher kann nicht zugegriffen werden";
 "secrets_recovery_with_passphrase_invalid_passphrase_message" = "Bitte stell sicher, dass du die korrekte Wiederherstellungspassphrase eingegeben hast.";
 "secrets_recovery_with_key_title" = "Wiederherstellungsschlüssel";
-"secrets_recovery_with_key_information_default" = "Gib deine Wiederherstellungspassphrase ein, um auf auf deine Nachrichtenhistorie und deine Cross-Signing-Identität zuzugreifen. Die Cross-Signing-Identität ermöglicht dir andere Sitzungen zu verifizieren.";
+"secrets_recovery_with_key_information_default" = "Gib deinen Wiederherstellungs-Schlüssel ein, um auf deine verschlüsselten Nachrichten und deine Cross-Signing-Identität zuzugreifen. Mit der Cross-Signing-Identität kannst du andere Sitzungen verifizieren.";
 "secrets_recovery_with_key_information_verify_device" = "Nutze deinen Wiederherstellungsschlüssel um dieses Gerät zu verifizieren.";
 "secrets_recovery_with_key_recovery_key_placeholder" = "Wiederherstellungsschlüssel eingeben";
 "secrets_recovery_with_key_recover_action" = "Schlüssel benutzen";
@@ -1251,3 +1251,10 @@
 "rooms_empty_view_title" = "Räume";
 "people_empty_view_information" = "Sicher kommunizieren mit allen. Drücke + um Leute hinzuzufügen.";
 "people_empty_view_title" = "Leute";
+
+// MARK: - Favourites
+
+"favourites_empty_view_title" = "Lieblingsräume und -nutzer";
+"favourites_empty_view_information" = "Um einen Lieblingschat hinzuzufügen, halte diesen gedrückt und wähle den Stern aus. Du findest deine Lieblingschats gesammelt hier.";
+"home_empty_view_information" = "Die sichere Chat-App für Teams, Freunde und Organisationen. Tippe unten auf das +, um Leute und Räume hinzuzufügen.";
+"rooms_empty_view_information" = "Noch keine Chat-Räume vorhanden. Tippe auf das +, um einem Raum beizutreten oder einen neuen zu erstellen.";
