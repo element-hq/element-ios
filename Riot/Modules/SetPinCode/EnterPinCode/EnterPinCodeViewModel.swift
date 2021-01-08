@@ -227,16 +227,13 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
             firstPin = currentPin
             currentPin.removeAll()
             update(viewState: .confirmPin)
-        } else {
-            //  check first and second pins
-            if firstPin == currentPin {
+        } else if firstPin == currentPin { //  check first and second pins        
                 //  complete with a little delay
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     self.coordinatorDelegate?.enterPinCodeViewModel(self, didCompleteWithPin: self.firstPin)
                 }
-            } else {
+        } else {
                 update(viewState: .pinsDontMatch)
-            }
         }
     }
 }
