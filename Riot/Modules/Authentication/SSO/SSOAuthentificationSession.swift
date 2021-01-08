@@ -49,7 +49,7 @@ final class SSOAuthentificationSession: SSOAuthentificationSessionProtocol {
         self.contextProvider = contextProvider
     }
     
-    func authenticate(with url: URL, callbackURLScheme: String?, completionHandler: @escaping SSOAuthentificationSessionCompletionHandler) {
+    func authenticate(with url: URL, callbackURLScheme: String?, completionHandler: @escaping SSOAuthenticationSessionCompletionHandler) {
         
         let authentificationSession = ASWebAuthenticationSession(url: url, callbackURLScheme: callbackURLScheme) { (callbackURL, error) in
                         

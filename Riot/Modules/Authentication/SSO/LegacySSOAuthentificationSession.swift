@@ -31,7 +31,7 @@ final class LegacySSOAuthentificationSession: SSOAuthentificationSessionProtocol
     func setContextProvider(_ contextProvider: SSOAuthenticationSessionContextProviding) {
     }
     
-    func authenticate(with url: URL, callbackURLScheme: String?, completionHandler: @escaping SSOAuthentificationSessionCompletionHandler) {
+    func authenticate(with url: URL, callbackURLScheme: String?, completionHandler: @escaping SSOAuthenticationSessionCompletionHandler) {
         
         let authentificationSession = SFAuthenticationSession(url: url, callbackURLScheme: callbackURLScheme) { (callbackURL, error) in
                         

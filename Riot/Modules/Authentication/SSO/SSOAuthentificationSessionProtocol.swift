@@ -21,7 +21,7 @@ enum SSOAuthentificationSessionError: Error {
 }
 
 /// A completion handler the session calls when it completes successfully, or when the user cancels the session.
-public typealias SSOAuthentificationSessionCompletionHandler = (URL?, Error?) -> Void
+public typealias SSOAuthenticationSessionCompletionHandler = (URL?, Error?) -> Void
 
 /// An interface the session uses to ask a delegate for a presentation context.
 protocol SSOAuthenticationSessionContextProviding {
@@ -42,5 +42,5 @@ protocol SSOAuthentificationSessionProtocol {
     ///   - url: A URL with the http or https scheme pointing to the authentication webpage.
     ///   - callbackURLScheme: The custom URL scheme that the app expects in the callback URL.
     ///   - completionHandler: A completion handler the session calls when it completes successfully, or when the user cancels the session.
-    func authenticate(with url: URL, callbackURLScheme: String?, completionHandler: @escaping SSOAuthentificationSessionCompletionHandler)
+    func authenticate(with url: URL, callbackURLScheme: String?, completionHandler: @escaping SSOAuthenticationSessionCompletionHandler)
 }
