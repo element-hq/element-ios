@@ -21,6 +21,10 @@ import MatrixKit
 /// Service to manage call screens and call bar UI management.
 class CallService: NSObject {
     
+    private enum Constants {
+        static let pipAnimationDuration: TimeInterval = 0.25
+    }
+    
     private var callVCs: [String: CallViewController] = [:]
     private var callBackgroundTasks: [String: MXBackgroundTask] = [:]
     private weak var presentedCallVC: CallViewController? {
@@ -29,6 +33,7 @@ class CallService: NSObject {
         }
     }
     private weak var inBarCallVC: CallViewController?
+    private weak var pipCallVC: CallViewController?
     private var uiOperationQueue: OperationQueue = .main
     private var isStarted: Bool = false
     private var callTimer: Timer!
@@ -156,6 +161,14 @@ class CallService: NSObject {
             //  this call currently in the status bar,
             //  first present it and then dismiss it
             presentCallVC(callVC)
+        }
+        if pipCallVC == callVC {
+            //  this call currently in the PiP mode,
+            //  first present it by exiting PiP mode and then dismiss it
+            exitPipCallVC(callVC) {
+                self.dismissCallVC(callVC, completion: completion)
+            }
+            return
         }
         dismissCallVC(callVC, completion: completion)
     }
@@ -293,6 +306,9 @@ class CallService: NSObject {
     private func presentCallVC(_ callVC: CallViewController, completion: (() -> Void)? = nil) {
         NSLog("[CallService] presentCallVC: call: \(String(describing: callVC.mxCall?.callId))")
         
+        //  do not use PiP transitions here, as we really want to present the screen
+        callVC.transitioningDelegate = nil
+        
         if let inBarCallVC = inBarCallVC {
             dismissCallBar(for: inBarCallVC)
         }
@@ -303,6 +319,9 @@ class CallService: NSObject {
         
         let operation = CallVCPresentOperation(service: self, callVC: callVC) { [weak self] in
             self?.presentedCallVC = callVC
+            if callVC == self?.pipCallVC {
+                self?.pipCallVC = nil
+            }
             completion?()
         }
         uiOperationQueue.addOperation(operation)
@@ -311,10 +330,45 @@ class CallService: NSObject {
     private func dismissCallVC(_ callVC: CallViewController, completion: (() -> Void)? = nil) {
         NSLog("[CallService] dismissCallVC: call: \(String(describing: callVC.mxCall?.callId))")
         
+        //  do not use PiP transitions here, as we really want to dismiss the screen
+        callVC.transitioningDelegate = nil
+        
         let operation = CallVCDismissOperation(service: self, callVC: callVC) { [weak self] in
             if callVC == self?.presentedCallVC {
                 self?.presentedCallVC = nil
             }
+            completion?()
+        }
+        uiOperationQueue.addOperation(operation)
+    }
+    
+    private func enterPipCallVC(_ callVC: CallViewController, completion: (() -> Void)? = nil) {
+        NSLog("[CallService] enterPipCallVC: call: \(String(describing: callVC.mxCall?.callId))")
+        
+        //  assign self as transitioning delegate
+        callVC.transitioningDelegate = self
+        
+        let operation = CallVCEnterPipOperation(service: self, callVC: callVC) { [weak self] in
+            self?.pipCallVC = callVC
+            if callVC == self?.presentedCallVC {
+                self?.presentedCallVC = nil
+            }
+            completion?()
+        }
+        uiOperationQueue.addOperation(operation)
+    }
+    
+    private func exitPipCallVC(_ callVC: CallViewController, completion: (() -> Void)? = nil) {
+        NSLog("[CallService] exitPipCallVC: call: \(String(describing: callVC.mxCall?.callId))")
+        
+        //  assign self as transitioning delegate
+        callVC.transitioningDelegate = self
+        
+        let operation = CallVCExitPipOperation(service: self, callVC: callVC) { [weak self] in
+            if callVC == self?.pipCallVC {
+                self?.pipCallVC = nil
+            }
+            self?.presentedCallVC = callVC
             completion?()
         }
         uiOperationQueue.addOperation(operation)
@@ -391,6 +445,50 @@ extension CallService: MXKCallViewControllerDelegate {
         presentCallVC(onHoldCallVC)
     }
     
+    func callViewControllerDidTapPiPButton(_ callViewController: MXKCallViewController!) {
+        guard let callVC = callViewController as? CallViewController else {
+            //  this call screen is not handled by this service
+            return
+        }
+        
+        //  sanity check
+        //  do not enter PiP mode if not a video call
+        guard callVC.mxCall.isVideoCall else { return }
+        
+        //  go to pip mode here
+        enterPipCallVC(callVC)
+    }
+    
+}
+
+//  MARK: - UIViewControllerTransitioningDelegate
+
+extension CallService: UIViewControllerTransitioningDelegate {
+    
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return PiPAnimator(animationDuration: Constants.pipAnimationDuration,
+                           animationType: .exit,
+                           pipViewDelegate: nil)
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return PiPAnimator(animationDuration: Constants.pipAnimationDuration,
+                           animationType: .enter,
+                           pipViewDelegate: self)
+    }
+    
+}
+
+//  MARK: - PiPViewDelegate
+
+extension CallService: PiPViewDelegate {
+    
+    func pipViewDidTap(_ view: PiPView) {
+        guard let pipCallVC = pipCallVC else { return }
+        
+        exitPipCallVC(pipCallVC)
+    }
+    
 }
 
 //  MARK: - OperationQueue Extension
@@ -398,14 +496,16 @@ extension CallService: MXKCallViewControllerDelegate {
 extension OperationQueue {
     
     var containsPresentCallVCOperation: Bool {
-        return operations.contains { (operation) -> Bool in
-            return operation is CallVCPresentOperation
-        }
+        return containsOperation(ofType: CallVCPresentOperation.self)
     }
     
     var containsPresentCallBarOperation: Bool {
+        return containsOperation(ofType: CallBarPresentOperation.self)
+    }
+    
+    private func containsOperation(ofType type: Operation.Type) -> Bool {
         return operations.contains { (operation) -> Bool in
-            return operation is CallBarPresentOperation
+            return operation.isKind(of: type.self)
         }
     }
     

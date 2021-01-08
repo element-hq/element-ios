@@ -28,7 +28,7 @@
 
 #import "IncomingCallView.h"
 
-@interface CallViewController ()
+@interface CallViewController () <PictureInPicturable>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
@@ -38,6 +38,7 @@
 }
 
 @property (nonatomic, strong) id<Theme> overriddenTheme;
+@property (nonatomic, assign) BOOL inPiP;
 
 @end
 
@@ -471,6 +472,53 @@
     {
         [super onButtonPressed:sender];
     }
+}
+
+- (void)setInPiP:(BOOL)inPiP
+{
+    _inPiP = inPiP;
+    
+    if (_inPiP)
+    {
+        self.overlayContainerView.hidden = YES;
+        self.callerImageView.hidden = YES;
+        self.callerNameLabel.hidden = YES;
+        self.callStatusLabel.hidden = YES;
+        self.localPreviewContainerView.hidden = YES;
+        self.localPreviewActivityView.hidden = YES;
+    }
+    else
+    {
+        self.localPreviewContainerView.hidden = NO;
+        self.callerImageView.hidden = NO;
+        self.callerNameLabel.hidden = NO;
+        self.callStatusLabel.hidden = NO;
+        
+        //  show controls when coming back from PiP mode
+        [self showOverlayContainer:YES];
+    }
+}
+
+- (void)showOverlayContainer:(BOOL)isShown
+{
+    if (self.inPiP)
+    {
+        return;
+    }
+    
+    [super showOverlayContainer:isShown];
+}
+
+#pragma mark - PictureInPicturable
+
+- (void)enterPiP
+{
+    self.inPiP = YES;
+}
+
+- (void)exitPiP
+{
+    self.inPiP = NO;
 }
 
 @end

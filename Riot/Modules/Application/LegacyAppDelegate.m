@@ -4466,7 +4466,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     if (activeCallViewController)
     {
-        //  TODO: Add timer for active call duration
         if (numberOfPausedCalls == 0)
         {
             //  only one active
@@ -4512,6 +4511,32 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         completion();
     }
+}
+
+- (void)callService:(CallService *)service enterPipForCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
+{
+    // Check whether the call view controller is actually presented
+    if (viewController.presentingViewController)
+    {
+        [viewController dismissViewControllerAnimated:YES completion:completion];
+    }
+    else
+    {
+        if (completion)
+        {
+            completion();
+        }
+    }
+}
+
+- (void)callService:(CallService *)service exitPipForCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
+{
+    if (@available(iOS 13.0, *))
+    {
+        viewController.modalPresentationStyle = UIModalPresentationFullScreen;
+    }
+    
+    [self presentViewController:viewController animated:YES completion:completion];
 }
 
 #pragma mark - CallBarDelegate

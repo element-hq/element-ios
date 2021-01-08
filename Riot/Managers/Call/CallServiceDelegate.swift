@@ -36,9 +36,14 @@ protocol CallServiceDelegate: class {
                      numberOfPausedCalls: UInt,
                      completion:(() -> Void)?)
     func callService(_ service: CallService,
-                     updateCallBarFor activeCallViewController: CallViewController?,
-                     numberOfPausedCalls: UInt,
-                     completion:(() -> Void)?)
-    func callService(_ service: CallService,
                      dismissCallBar completion:(() -> Void)?)
+    
+    //  PiP
+    func callService(_ service: CallService,
+                     enterPipForCallViewController viewController: CallViewController,
+                     completion:(() -> Void)?)
+    
+    func callService(_ service: CallService,
+                     exitPipForCallViewController viewController: CallViewController,
+                     completion:(() -> Void)?)
 }
