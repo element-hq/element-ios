@@ -3,6 +3,7 @@ Changes to be released in next version
 
 ✨ Features
  * AuthVC: Add social login (#3846).
+ * Invite friends: Add the ability to invite friends outside of Element in a few places (#3840).
 
 🙌 Improvements
  * Show user id in the room invite preview screen (#3839)
