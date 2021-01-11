@@ -408,7 +408,7 @@
                 break;
         }
 
-        self->_sendingProgress.progress = progress.fractionCompleted;
+        self.sendingProgress.progress = progress.fractionCompleted;
 
     } success:^{
 
