@@ -21,7 +21,7 @@ import UIKit
 @objcMembers
 class DefaultTheme: NSObject, Theme {
 
-    var identifier: String = "default"
+    var identifier: String = ThemeIdentifier.light.rawValue
     
     var backgroundColor: UIColor = UIColor(rgb: 0xFFFFFF)
 

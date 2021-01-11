@@ -56,7 +56,7 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
     func isEncryptionAvailableForData(ofType dataType: String) -> Bool {
         return dataType == MXKContactManagerDataType
             || dataType == MXKAccountManagerDataType
-            || dataType == MXRealmCryptoStoreDataType
+//            || dataType == MXRealmCryptoStoreDataType
     }
             
     func hasKeyForData(ofType dataType: String) -> Bool {
@@ -65,8 +65,8 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
             return keychainStore.containsObject(forKey: EncryptionKeyManager.contactsIv) && keychainStore.containsObject(forKey: EncryptionKeyManager.contactsAesKey)
         case MXKAccountManagerDataType:
             return keychainStore.containsObject(forKey: EncryptionKeyManager.accountIv) && keychainStore.containsObject(forKey: EncryptionKeyManager.accountAesKey)
-        case MXRealmCryptoStoreDataType:
-            return keychainStore.containsObject(forKey: EncryptionKeyManager.realmCryptoKey)
+//        case MXRealmCryptoStoreDataType:
+//            return keychainStore.containsObject(forKey: EncryptionKeyManager.realmCryptoKey)
         default:
             return false
         }
@@ -84,10 +84,10 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
                let aesKey = try? keychainStore.data(forKey: EncryptionKeyManager.accountAesKey) {
                 return MXAesKeyData(iv: ivKey, key: aesKey)
             }
-        case MXRealmCryptoStoreDataType:
-            if let key = try? keychainStore.data(forKey: EncryptionKeyManager.realmCryptoKey) {
-                return MXRawDataKey(key: key)
-            }
+//        case MXRealmCryptoStoreDataType:
+//            if let key = try? keychainStore.data(forKey: EncryptionKeyManager.realmCryptoKey) {
+//                return MXRawDataKey(key: key)
+//            }
         default:
             return nil
         }

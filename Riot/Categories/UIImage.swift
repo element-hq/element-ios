@@ -57,6 +57,31 @@ extension UIImage {
         return newImage
     }
     
+    // Based on https://stackoverflow.com/a/31314494
+    @objc func vc_resized(with targetSize: CGSize) -> UIImage? {
+        let size = self.size
+
+        let widthRatio  = targetSize.width/size.width
+        let heightRatio = targetSize.height/size.height
+
+        // Figure out what our orientation is, and use that to form the rectangle
+        let newSize: CGSize
+        if widthRatio > heightRatio {
+            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
+        } else {
+            newSize = CGSize(width: size.width * widthRatio, height: size.height * widthRatio)
+        }
+
+        let rect = CGRect(origin: .zero, size: newSize)
+
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 0)
+        draw(in: rect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return newImage
+    }
+    
     @objc func vc_notRenderedImage() -> UIImage {
         if let cgImage = cgImage {
             return NotRenderedImage(cgImage: cgImage, scale: UIScreen.main.scale, orientation: .up)
