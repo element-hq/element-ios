@@ -1454,6 +1454,14 @@ internal enum VectorL10n {
   internal static var invite: String { 
     return VectorL10n.tr("Vector", "invite") 
   }
+  /// Invite friends
+  internal static var inviteFriendsAction: String { 
+    return VectorL10n.tr("Vector", "invite_friends_action") 
+  }
+  /// Hey, talk to me on Element: %@
+  internal static func inviteFriendsShareText(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "invite_friends_share_text", p1)
+  }
   /// Join
   internal static var join: String { 
     return VectorL10n.tr("Vector", "join") 
