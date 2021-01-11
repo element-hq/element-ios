@@ -2,6 +2,7 @@ Changes to be released in next version
 =================================================
 
 ✨ Features
+ * Change Pin inside the app (#3881)
  * AuthVC: Add social login (#3846).
 
 🙌 Improvements

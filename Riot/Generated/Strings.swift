@@ -2062,6 +2062,10 @@ internal enum VectorL10n {
   internal static var pinProtectionConfirmPin: String { 
     return VectorL10n.tr("Vector", "pin_protection_confirm_pin") 
   }
+  /// Confirm PIN to change PIN
+  internal static var pinProtectionConfirmPinToChange: String { 
+    return VectorL10n.tr("Vector", "pin_protection_confirm_pin_to_change") 
+  }
   /// Confirm PIN to disable PIN
   internal static var pinProtectionConfirmPinToDisable: String { 
     return VectorL10n.tr("Vector", "pin_protection_confirm_pin_to_disable") 
@@ -2109,6 +2113,10 @@ internal enum VectorL10n {
   /// Reset PIN
   internal static var pinProtectionResetAlertTitle: String { 
     return VectorL10n.tr("Vector", "pin_protection_reset_alert_title") 
+  }
+  /// Change PIN
+  internal static var pinProtectionSettingsChangePin: String { 
+    return VectorL10n.tr("Vector", "pin_protection_settings_change_pin") 
   }
   /// Enable PIN
   internal static var pinProtectionSettingsEnablePin: String { 
