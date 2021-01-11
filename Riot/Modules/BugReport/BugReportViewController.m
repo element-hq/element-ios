@@ -397,7 +397,7 @@
         switch (state)
         {
             case MXBugReportStateProgressZipping:
-                self->_sendingLabel.text = NSLocalizedStringFromTable(@"bug_report_progress_zipping", @"Vector", nil);
+                self.sendingLabel.text = NSLocalizedStringFromTable(@"bug_report_progress_zipping", @"Vector", nil);
                 break;
 
             case MXBugReportStateProgressUploading:
