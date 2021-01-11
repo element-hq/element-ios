@@ -4649,4 +4649,19 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
+#pragma mark - Authentication
+
+- (BOOL)continueSSOLoginWithToken:(NSString*)loginToken txnId:(NSString*)txnId
+{
+    AuthenticationViewController *authVC = self.masterTabBarController.authViewController;
+    
+    if (!authVC)
+    {
+        NSLog(@"[AppDelegate] Fail to continue SSO login");
+        return NO;
+    }
+    
+    return [authVC continueSSOLoginWithToken:loginToken txnId:txnId];
+}
+
 @end

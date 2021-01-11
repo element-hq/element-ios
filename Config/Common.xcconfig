@@ -27,3 +27,5 @@ KEYCHAIN_ACCESS_GROUP = $(AppIdentifierPrefix)$(BASE_BUNDLE_IDENTIFIER).keychain
 
 //Make Xcode 12 and fastlane(xcodebuild) happy while some pods are not updated
 EXCLUDED_ARCHS[sdk=iphonesimulator*] = arm64
+
+APPLICATION_SCHEME = element

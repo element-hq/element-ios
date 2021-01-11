@@ -3,9 +3,36 @@ Changes to be released in next version
 
 ✨ Features
  * Change Pin inside the app (#3881)
+ * AuthVC: Add social login (#3846).
+
+🙌 Improvements
+ * Show user id in the room invite preview screen (#3839)
+ * AuthVC: SSO authentication now use redirect URL instead of fallback page (#3846).
+
+🐛 Bugfix
+ * Crash report cannot be submitted (on small phones) #3819
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Changes in 1.1.3 (2020-12-18)
+=================================================
+
+✨ Features
+ * 
 
 🙌 Improvements
  * AuthVC: Update SSO button wording.
+ * Log NSE memory footprint for debugging purposes.
 
 🐛 Bugfix
  * Refresh account details on NSE runs (#3719).
@@ -21,6 +48,10 @@ Changes to be released in next version
 
 Others
  * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.13.3](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.3)).
+ * Upgrade MatrixKit version ([v0.13.4](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.4)).
 
 Changes in 1.1.2 (2020-12-02)
 =================================================

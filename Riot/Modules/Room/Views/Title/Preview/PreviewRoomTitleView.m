@@ -217,7 +217,8 @@
             //                        self.roomMembers.text = nil;
             //                    }
 
-            self.previewLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_invitation_format", @"Vector", nil), inviter];
+            NSString *displayName = [inviter isEqualToString:inviterUserId] ? inviter : [NSString stringWithFormat:@"%@ (%@)", inviter, inviterUserId];
+            self.previewLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_invitation_format", @"Vector", nil), displayName];
         };
 
         [self.mxRoom members:^(MXRoomMembers *roomMembers) {
