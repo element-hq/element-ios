@@ -6,6 +6,7 @@ Changes to be released in next version
  * AuthVC: Add social login (#3846).
 
 🙌 Improvements
+ * Bug report: Add "Continue in background" button  (#3816).
  * Show user id in the room invite preview screen (#3839)
  * AuthVC: SSO authentication now use redirect URL instead of fallback page (#3846).
 

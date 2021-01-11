@@ -864,6 +864,7 @@ Tap the + to start adding people.";
 "bug_report_progress_zipping" = "Collecting logs";
 "bug_report_progress_uploading" = "Uploading report";
 "bug_report_send" = "Send";
+"bug_report_background_mode" = "Continue in background";
 
 // Widget
 "widget_no_integrations_server_configured" = "No integrations server configured";

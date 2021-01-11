@@ -378,6 +378,10 @@ internal enum VectorL10n {
   internal static var bugCrashReportTitle: String { 
     return VectorL10n.tr("Vector", "bug_crash_report_title") 
   }
+  /// Continue in background
+  internal static var bugReportBackgroundMode: String { 
+    return VectorL10n.tr("Vector", "bug_report_background_mode") 
+  }
   /// Please describe the bug. What did you do? What did you expect to happen? What actually happened?
   internal static var bugReportDescription: String { 
     return VectorL10n.tr("Vector", "bug_report_description") 
