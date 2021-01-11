@@ -401,7 +401,7 @@
                 break;
 
             case MXBugReportStateProgressUploading:
-                self->_sendingLabel.text = NSLocalizedStringFromTable(@"bug_report_progress_uploading", @"Vector", nil);
+                self.sendingLabel.text = NSLocalizedStringFromTable(@"bug_report_progress_uploading", @"Vector", nil);
                 break;
 
             default:
