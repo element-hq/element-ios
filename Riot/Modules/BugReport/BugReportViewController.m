@@ -414,7 +414,7 @@
 
         self->bugReportRestClient = nil;
 
-        if (self->_reportCrash)
+        if (self.reportCrash)
         {
             // Erase the crash log
             [MXLogger deleteCrashLog];
