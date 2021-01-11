@@ -319,6 +319,10 @@
 		B169331620F3CAFC00746532 /* PublicRoomsDirectoryDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B169331220F3CAFC00746532 /* PublicRoomsDirectoryDataSource.m */; };
 		B169331720F3CBE000746532 /* RecentCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932F920F3C51900746532 /* RecentCellData.m */; };
 		B16C028D25A71CA3008CA7B1 /* CustomSchemeURLConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16C028C25A71CA3008CA7B1 /* CustomSchemeURLConstants.swift */; };
+		B16C029025ABC428008CA7B1 /* CustomRoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16C028F25ABC427008CA7B1 /* CustomRoundedButton.swift */; };
+		B16C029225ABCD31008CA7B1 /* InviteFriendsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16C029125ABCD31008CA7B1 /* InviteFriendsPresenter.swift */; };
+		B16C029425ACAEFC008CA7B1 /* InviteFriendsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16C029325ACAEFB008CA7B1 /* InviteFriendsHeaderView.swift */; };
+		B16C029625ACAFCF008CA7B1 /* InviteFriendsHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B16C029525ACAFCF008CA7B1 /* InviteFriendsHeaderView.xib */; };
 		B16D6354257D8FB0008BDC97 /* SocialLoginButtonFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D6353257D8FB0008BDC97 /* SocialLoginButtonFactory.swift */; };
 		B16DC22B2587DC35004DAB1A /* SSOAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16DC22A2587DC35004DAB1A /* SSOAuthenticationService.swift */; };
 		B16DC235258A723B004DAB1A /* SourceImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16DC234258A723B004DAB1A /* SourceImage.swift */; };
@@ -1433,6 +1437,10 @@
 		B169331220F3CAFC00746532 /* PublicRoomsDirectoryDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublicRoomsDirectoryDataSource.m; sourceTree = "<group>"; };
 		B169331320F3CAFC00746532 /* PublicRoomsDirectoryDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicRoomsDirectoryDataSource.h; sourceTree = "<group>"; };
 		B16C028C25A71CA3008CA7B1 /* CustomSchemeURLConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSchemeURLConstants.swift; sourceTree = "<group>"; };
+		B16C028F25ABC427008CA7B1 /* CustomRoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRoundedButton.swift; sourceTree = "<group>"; };
+		B16C029125ABCD31008CA7B1 /* InviteFriendsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteFriendsPresenter.swift; sourceTree = "<group>"; };
+		B16C029325ACAEFB008CA7B1 /* InviteFriendsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteFriendsHeaderView.swift; sourceTree = "<group>"; };
+		B16C029525ACAFCF008CA7B1 /* InviteFriendsHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InviteFriendsHeaderView.xib; sourceTree = "<group>"; };
 		B16D6353257D8FB0008BDC97 /* SocialLoginButtonFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginButtonFactory.swift; sourceTree = "<group>"; };
 		B16DC22A2587DC35004DAB1A /* SSOAuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSOAuthenticationService.swift; sourceTree = "<group>"; };
 		B16DC234258A723B004DAB1A /* SourceImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceImage.swift; sourceTree = "<group>"; };
@@ -3319,6 +3327,8 @@
 		B183226923F59F3E0035B2E8 /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				EC85D6AD2477DC89002C44C9 /* RoundedButton.swift */,
+				B16C028F25ABC427008CA7B1 /* CustomRoundedButton.swift */,
 				B183226A23F59F4F0035B2E8 /* Close */,
 			);
 			path = Buttons;
@@ -3328,7 +3338,6 @@
 			isa = PBXGroup;
 			children = (
 				B183226B23F59F810035B2E8 /* CloseButton.swift */,
-				EC85D6AD2477DC89002C44C9 /* RoundedButton.swift */,
 			);
 			path = Close;
 			sourceTree = "<group>";
@@ -3896,6 +3905,8 @@
 				B1B556E120EE6C4C00210D55 /* StartChatViewController.h */,
 				B1B556E220EE6C4C00210D55 /* StartChatViewController.m */,
 				B1B556E320EE6C4C00210D55 /* StartChatViewController.xib */,
+				B16C029325ACAEFB008CA7B1 /* InviteFriendsHeaderView.swift */,
+				B16C029525ACAFCF008CA7B1 /* InviteFriendsHeaderView.xib */,
 			);
 			path = StartChat;
 			sourceTree = "<group>";
@@ -3915,6 +3926,7 @@
 			children = (
 				B1B556E920EE6C4C00210D55 /* PeopleViewController.h */,
 				B1B556E820EE6C4C00210D55 /* PeopleViewController.m */,
+				B16C029125ABCD31008CA7B1 /* InviteFriendsPresenter.swift */,
 				B1B5597120EFB02900210D55 /* Views */,
 			);
 			path = People;
@@ -5940,6 +5952,7 @@
 				B1B558F120EF768F00210D55 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				B1B557CB20EF5D8000210D55 /* DirectoryServerTableViewCell.xib in Resources */,
 				B1B558EC20EF768F00210D55 /* RoomMembershipCollapsedBubbleCell.xib in Resources */,
+				B16C029625ACAFCF008CA7B1 /* InviteFriendsHeaderView.xib in Resources */,
 				EC711BAD24A63B58008F830C /* SecureBackupSetupIntroViewController.storyboard in Resources */,
 				B1B558D720EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				EC711B7724A63B37008F830C /* SecretsSetupRecoveryKeyViewController.storyboard in Resources */,
@@ -6867,6 +6880,7 @@
 				EC9A3EC524E1616900A8CFAE /* PushNotificationStore.swift in Sources */,
 				B1B558F020EF768F00210D55 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				926FA53F1F4C132000F826C2 /* MXSession+Riot.m in Sources */,
+				B16C029025ABC428008CA7B1 /* CustomRoundedButton.swift in Sources */,
 				EC711B8324A63B37008F830C /* SecretsSetupRecoveryPassphraseCoordinator.swift in Sources */,
 				B125FE23231D5E4300B72806 /* SettingsDiscoveryViewState.swift in Sources */,
 				B1B5593820EF7BAC00210D55 /* TableViewCellWithLabelAndLargeTextView.m in Sources */,
@@ -6889,6 +6903,7 @@
 				B1DCC61822E5E17100625807 /* EmojiPickerViewState.swift in Sources */,
 				ECF57A4D25090C23004BBF9D /* EnterNewRoomDetailsCoordinator.swift in Sources */,
 				B1B336BF242B933700F95EC4 /* KeyVerificationSelfVerifyStartViewController.swift in Sources */,
+				B16C029425ACAEFC008CA7B1 /* InviteFriendsHeaderView.swift in Sources */,
 				B1CE83E32422817200D07506 /* VerifyEmojiCollectionViewCell.swift in Sources */,
 				B1C562DB228C0BB00037F12A /* RoomContextualMenuAction.swift in Sources */,
 				B1B5574720EE6C4D00210D55 /* UsersDevicesViewController.m in Sources */,
@@ -7004,6 +7019,7 @@
 				B125FE1B231D5BF200B72806 /* SettingsDiscoveryTableViewSection.swift in Sources */,
 				B18DEDD5243377C10075FEF7 /* KeyVerificationSelfVerifyWaitViewModel.swift in Sources */,
 				EC711B8B24A63B37008F830C /* SecretsRecoveryWithPassphraseViewState.swift in Sources */,
+				B16C029225ABCD31008CA7B1 /* InviteFriendsPresenter.swift in Sources */,
 				ECAE7AE524EC0E01002FA813 /* TableViewSections.swift in Sources */,
 				B1CE83DA2422817200D07506 /* KeyVerificationVerifyByScanningViewModel.swift in Sources */,
 				32242F0921E8B05F00725742 /* UIColor.swift in Sources */,
