@@ -22,6 +22,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.DeviceVerificationStartViewController>(storyboard: DeviceVerificationStartViewController.self)
   }
+  internal enum DialpadViewController: StoryboardType {
+    internal static let storyboardName = "DialpadViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.DialpadViewController>(storyboard: DialpadViewController.self)
+  }
   internal enum EditHistoryViewController: StoryboardType {
     internal static let storyboardName = "EditHistoryViewController"
 

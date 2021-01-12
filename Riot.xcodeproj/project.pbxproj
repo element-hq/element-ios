@@ -901,6 +901,8 @@
 		EC85D754247C0F5B002C44C9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D753247C0F5B002C44C9 /* Constants.swift */; };
 		EC85D755247C0F84002C44C9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D753247C0F5B002C44C9 /* Constants.swift */; };
 		EC85D757247E700F002C44C9 /* NSEMemoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D756247E700F002C44C9 /* NSEMemoryStore.swift */; };
+		EC87CFC925ADC10D00DB0A71 /* DialpadViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC87CFC725ADC10D00DB0A71 /* DialpadViewController.storyboard */; };
+		EC87CFCA25ADC10D00DB0A71 /* DialpadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC87CFC825ADC10D00DB0A71 /* DialpadViewController.swift */; };
 		EC9A3EC524E1616900A8CFAE /* PushNotificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9A3EC424E1616900A8CFAE /* PushNotificationStore.swift */; };
 		EC9A3EC624E1632C00A8CFAE /* PushNotificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9A3EC424E1616900A8CFAE /* PushNotificationStore.swift */; };
 		EC9A3EC724E1634100A8CFAE /* KeyValueStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA87124C823E700DE9EBF /* KeyValueStore.swift */; };
@@ -2159,6 +2161,8 @@
 		EC85D750247C0E8F002C44C9 /* UNUserNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNUserNotificationCenter.swift; sourceTree = "<group>"; };
 		EC85D753247C0F5B002C44C9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		EC85D756247E700F002C44C9 /* NSEMemoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSEMemoryStore.swift; sourceTree = "<group>"; };
+		EC87CFC725ADC10D00DB0A71 /* DialpadViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DialpadViewController.storyboard; sourceTree = "<group>"; };
+		EC87CFC825ADC10D00DB0A71 /* DialpadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialpadViewController.swift; sourceTree = "<group>"; };
 		EC9A3EC424E1616900A8CFAE /* PushNotificationStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushNotificationStore.swift; sourceTree = "<group>"; };
 		EC9E9B052575AF5C0007C0A0 /* CallVCPresentOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVCPresentOperation.swift; sourceTree = "<group>"; };
 		EC9E9B072575AF730007C0A0 /* CallVCDismissOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVCDismissOperation.swift; sourceTree = "<group>"; };
@@ -3830,6 +3834,7 @@
 		B1B556DC20EE6C4C00210D55 /* Call */ = {
 			isa = PBXGroup;
 			children = (
+				EC87CFC625ADC10D00DB0A71 /* Dialpad */,
 				B1B556DD20EE6C4C00210D55 /* CallViewController.h */,
 				B1B556DF20EE6C4C00210D55 /* CallViewController.m */,
 				B1B556DE20EE6C4C00210D55 /* CallViewController.xib */,
@@ -5228,6 +5233,15 @@
 			path = RiotNSE;
 			sourceTree = "<group>";
 		};
+		EC87CFC625ADC10D00DB0A71 /* Dialpad */ = {
+			isa = PBXGroup;
+			children = (
+				EC87CFC725ADC10D00DB0A71 /* DialpadViewController.storyboard */,
+				EC87CFC825ADC10D00DB0A71 /* DialpadViewController.swift */,
+			);
+			path = Dialpad;
+			sourceTree = "<group>";
+		};
 		EC9E9B042575AF460007C0A0 /* Operations */ = {
 			isa = PBXGroup;
 			children = (
@@ -5909,6 +5923,7 @@
 				B1B5574D20EE6C4D00210D55 /* MediaPickerViewController.xib in Resources */,
 				B1B5575020EE6C4D00210D55 /* AuthenticationViewController.xib in Resources */,
 				B1C45A85232A8C2600165425 /* SettingsIdentityServerViewController.storyboard in Resources */,
+				EC87CFC925ADC10D00DB0A71 /* DialpadViewController.storyboard in Resources */,
 				B14F142E22144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewController.storyboard in Resources */,
 				32DB557B22FDADE50016329E /* ServiceTermsModalScreenViewController.storyboard in Resources */,
 				B1B5574320EE6C4D00210D55 /* CallViewController.xib in Resources */,
@@ -7007,6 +7022,7 @@
 				B1DB4F06223015080065DBFA /* Character.swift in Sources */,
 				EC1CA87724C82D0E00DE9EBF /* MemoryStore.swift in Sources */,
 				B1B9DEEE22EB34EF0065E677 /* ReactionHistoryViewAction.swift in Sources */,
+				EC87CFCA25ADC10D00DB0A71 /* DialpadViewController.swift in Sources */,
 				EC711BB624A63C11008F830C /* AuthenticatedSessionViewControllerFactory.swift in Sources */,
 				B1C543A4239E98E400DCA1FA /* KeyVerificationCellInnerContentView.swift in Sources */,
 				B10A3E8E24FE4368007C380F /* ElementView.swift in Sources */,
