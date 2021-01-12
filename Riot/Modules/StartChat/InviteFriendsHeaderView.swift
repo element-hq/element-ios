@@ -50,7 +50,7 @@ final class InviteFriendsHeaderView: UIView, NibLoadable, Themable {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.button.setTitle(VectorL10n.inviteFriendsAction, for: .normal)
+        self.button.setTitle(VectorL10n.inviteFriendsAction(BuildSettings.bundleDisplayName), for: .normal)
         self.button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
     }
     

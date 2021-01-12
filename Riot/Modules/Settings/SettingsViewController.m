@@ -1726,7 +1726,7 @@ TableViewSectionsDelegate>
         {
             MXKTableViewCell *inviteFriendsCell = [self getDefaultTableViewCell:tableView];
 
-            inviteFriendsCell.textLabel.text = NSLocalizedStringFromTable(@"invite_friends_action", @"Vector", nil);
+            inviteFriendsCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"invite_friends_action", @"Vector", nil), BuildSettings.bundleDisplayName];
             
             UIImage *shareActionImage = [[UIImage imageNamed:@"share_action_button"] vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
             UIImageView *accessoryView = [[UIImageView alloc] initWithImage:shareActionImage];
