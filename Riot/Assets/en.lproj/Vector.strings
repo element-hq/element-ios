@@ -1547,4 +1547,4 @@ Tap the + to start adding people.";
 // MARK: - Invite friends
 
 "invite_friends_action" = "Invite friends";
-"invite_friends_share_text" = "Hey, talk to me on Element: %@";
+"invite_friends_share_text" = "Hey, talk to me on %@: %@";
