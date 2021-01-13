@@ -99,10 +99,34 @@ class DialpadViewController: UIViewController {
         titleLabel.text = VectorL10n.dialpadTitle
         self.registerThemeServiceDidChangeThemeNotification()
         self.update(theme: self.theme)
+        
+        //  force orientation to portrait if phone
+        if UIDevice.current.isPhone {
+            UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+        }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.theme.statusBarStyle
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        //  limit orientation to portrait only for phone
+        if UIDevice.current.isPhone {
+            return .portrait
+        }
+        return super.supportedInterfaceOrientations
+    }
+    
+    override var shouldAutorotate: Bool {
+        return false
+    }
+    
+    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        if UIDevice.current.isPhone {
+            return .portrait
+        }
+        return super.preferredInterfaceOrientationForPresentation
     }
     
     // MARK: - Private
