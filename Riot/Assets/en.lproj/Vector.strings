@@ -183,6 +183,7 @@
 "room_recents_join_room" = "Join room";
 "room_recents_join_room_title" = "Join a room";
 "room_recents_join_room_prompt" = "Type a room id or a room alias";
+"room_recents_dialpad" = "Dial pad";
 
 // People tab
 "people_invites_section" = "INVITES";
@@ -1533,6 +1534,9 @@ Tap the + to start adding people.";
 "room_info_list_one_member" = "1 member";
 "room_info_list_several_members" = "%@ members";
 "room_info_list_section_other" = "Other";
+
+// MARK: - Dial Pad
+"dialpad_title" = "Dial pad";
 
 // MARK: - Home
 

@@ -1042,6 +1042,10 @@ internal enum VectorL10n {
   internal static var deviceVerificationVerifyWaitPartner: String { 
     return VectorL10n.tr("Vector", "device_verification_verify_wait_partner") 
   }
+  /// Dial pad
+  internal static var dialpadTitle: String { 
+    return VectorL10n.tr("Vector", "dialpad_title") 
+  }
   /// %tu rooms
   internal static func directoryCellDescription(_ p1: Int) -> String {
     return VectorL10n.tr("Vector", "directory_cell_description", p1)
@@ -3077,6 +3081,10 @@ internal enum VectorL10n {
   /// Create room
   internal static var roomRecentsCreateEmptyRoom: String { 
     return VectorL10n.tr("Vector", "room_recents_create_empty_room") 
+  }
+  /// Dial pad
+  internal static var roomRecentsDialpad: String { 
+    return VectorL10n.tr("Vector", "room_recents_dialpad") 
   }
   /// ROOM DIRECTORY
   internal static var roomRecentsDirectorySection: String { 
