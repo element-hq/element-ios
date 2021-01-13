@@ -51,6 +51,7 @@ internal enum Asset {
     internal static let revealPasswordButton = ImageAsset(name: "reveal_password_button")
     internal static let selectionTick = ImageAsset(name: "selection_tick")
     internal static let selectionUntick = ImageAsset(name: "selection_untick")
+    internal static let shareActionButton = ImageAsset(name: "share_action_button")
     internal static let shrinkIcon = ImageAsset(name: "shrink_icon")
     internal static let smartphone = ImageAsset(name: "smartphone")
     internal static let startChat = ImageAsset(name: "start_chat")

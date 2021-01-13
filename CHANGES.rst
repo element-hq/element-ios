@@ -4,6 +4,7 @@ Changes to be released in next version
 ✨ Features
  * Change Pin inside the app (#3881)
  * AuthVC: Add social login (#3846).
+ * Invite friends: Add the ability to invite friends outside of Element in a few places (#3840).
 
 🙌 Improvements
  * Bug report: Add "Continue in background" button  (#3816).

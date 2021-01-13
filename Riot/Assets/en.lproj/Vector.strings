@@ -1546,3 +1546,8 @@ Tap the + to start adding people.";
 
 "favourites_empty_view_title" = "Favourite rooms and people";
 "favourites_empty_view_information" = "You can favourite a few ways - the quickest is just to press and hold. Tap the star and they’ll automatically appear here for safe keeping.";
+
+// MARK: - Invite friends
+
+"invite_friends_action" = "Invite friends to %@";
+"invite_friends_share_text" = "Hey, talk to me on %@: %@";

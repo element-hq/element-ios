@@ -1458,6 +1458,14 @@ internal enum VectorL10n {
   internal static var invite: String { 
     return VectorL10n.tr("Vector", "invite") 
   }
+  /// Invite friends to %@
+  internal static func inviteFriendsAction(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "invite_friends_action", p1)
+  }
+  /// Hey, talk to me on %@: %@
+  internal static func inviteFriendsShareText(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "invite_friends_share_text", p1, p2)
+  }
   /// Join
   internal static var join: String { 
     return VectorL10n.tr("Vector", "join") 
