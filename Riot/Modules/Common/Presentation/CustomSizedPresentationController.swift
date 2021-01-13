@@ -16,7 +16,10 @@
 
 import UIKit
 
-/// Controller for custom sized presentations. By default, presented view controller will be sized as both half of the screen in width and height, and will be centered to the screen. Implement `CustomSizedPresentable` in presented view controller to change that if needed. This class can also be set as `transitioningDelegate` as presented view controller, as it's conforming `UIViewControllerTransitioningDelegate`.
+/// Controller for custom sized presentations.
+/// By default, presented view controller will be sized as both half of the screen in width and height, and will be centered to the screen.
+/// Implement `CustomSizedPresentable` in presented view controller to change that if needed.
+/// This class can also be set as `transitioningDelegate` as presented view controller, as it's conforming `UIViewControllerTransitioningDelegate`.
 @objcMembers
 class CustomSizedPresentationController: UIPresentationController {
     
@@ -227,7 +230,11 @@ class CustomSizedPresentationController: UIPresentationController {
 extension CustomSizedPresentationController: UIViewControllerTransitioningDelegate {
     
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        return CustomSizedPresentationController(presentedViewController: presented, presenting: presenting)
+        let controller = CustomSizedPresentationController(presentedViewController: presented, presenting: presenting)
+        controller.cornerRadius = cornerRadius
+        controller.dimColor = dimColor
+        controller.dismissOnBackgroundTap = dismissOnBackgroundTap
+        return controller
     }
     
 }
