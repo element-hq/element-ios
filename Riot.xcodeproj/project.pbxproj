@@ -903,6 +903,10 @@
 		EC85D757247E700F002C44C9 /* NSEMemoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D756247E700F002C44C9 /* NSEMemoryStore.swift */; };
 		EC87CFC925ADC10D00DB0A71 /* DialpadViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC87CFC725ADC10D00DB0A71 /* DialpadViewController.storyboard */; };
 		EC87CFCA25ADC10D00DB0A71 /* DialpadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC87CFC825ADC10D00DB0A71 /* DialpadViewController.swift */; };
+		EC87CFCD25ADC3D200DB0A71 /* DialpadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC87CFCC25ADC3D200DB0A71 /* DialpadButton.swift */; };
+		EC87CFCF25ADC57600DB0A71 /* DialpadActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC87CFCE25ADC57600DB0A71 /* DialpadActionButton.swift */; };
+		EC87CFD425AF427800DB0A71 /* CustomSizedPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC87CFD325AF427800DB0A71 /* CustomSizedPresentationController.swift */; };
+		EC87CFD825AF6AD000DB0A71 /* CustomSizedPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC87CFD725AF6AD000DB0A71 /* CustomSizedPresentable.swift */; };
 		EC9A3EC524E1616900A8CFAE /* PushNotificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9A3EC424E1616900A8CFAE /* PushNotificationStore.swift */; };
 		EC9A3EC624E1632C00A8CFAE /* PushNotificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9A3EC424E1616900A8CFAE /* PushNotificationStore.swift */; };
 		EC9A3EC724E1634100A8CFAE /* KeyValueStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA87124C823E700DE9EBF /* KeyValueStore.swift */; };
@@ -2163,6 +2167,10 @@
 		EC85D756247E700F002C44C9 /* NSEMemoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSEMemoryStore.swift; sourceTree = "<group>"; };
 		EC87CFC725ADC10D00DB0A71 /* DialpadViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DialpadViewController.storyboard; sourceTree = "<group>"; };
 		EC87CFC825ADC10D00DB0A71 /* DialpadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialpadViewController.swift; sourceTree = "<group>"; };
+		EC87CFCC25ADC3D200DB0A71 /* DialpadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialpadButton.swift; sourceTree = "<group>"; };
+		EC87CFCE25ADC57600DB0A71 /* DialpadActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialpadActionButton.swift; sourceTree = "<group>"; };
+		EC87CFD325AF427800DB0A71 /* CustomSizedPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSizedPresentationController.swift; sourceTree = "<group>"; };
+		EC87CFD725AF6AD000DB0A71 /* CustomSizedPresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSizedPresentable.swift; sourceTree = "<group>"; };
 		EC9A3EC424E1616900A8CFAE /* PushNotificationStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushNotificationStore.swift; sourceTree = "<group>"; };
 		EC9E9B052575AF5C0007C0A0 /* CallVCPresentOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVCPresentOperation.swift; sourceTree = "<group>"; };
 		EC9E9B072575AF730007C0A0 /* CallVCDismissOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVCDismissOperation.swift; sourceTree = "<group>"; };
@@ -3772,6 +3780,7 @@
 		B1B556CD20EE6C4C00210D55 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				EC87CFD225AF426000DB0A71 /* Presentation */,
 				EC51E78E2510B7B900AAE7DB /* TableView */,
 				ECF57A5F25093B04004BBF9D /* SectionHeaders */,
 				ECF57A5C2509264B004BBF9D /* Views */,
@@ -5238,8 +5247,27 @@
 			children = (
 				EC87CFC725ADC10D00DB0A71 /* DialpadViewController.storyboard */,
 				EC87CFC825ADC10D00DB0A71 /* DialpadViewController.swift */,
+				EC87CFCB25ADC3C200DB0A71 /* Views */,
 			);
 			path = Dialpad;
+			sourceTree = "<group>";
+		};
+		EC87CFCB25ADC3C200DB0A71 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				EC87CFCC25ADC3D200DB0A71 /* DialpadButton.swift */,
+				EC87CFCE25ADC57600DB0A71 /* DialpadActionButton.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		EC87CFD225AF426000DB0A71 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				EC87CFD325AF427800DB0A71 /* CustomSizedPresentationController.swift */,
+				EC87CFD725AF6AD000DB0A71 /* CustomSizedPresentable.swift */,
+			);
+			path = Presentation;
 			sourceTree = "<group>";
 		};
 		EC9E9B042575AF460007C0A0 /* Operations */ = {
@@ -6426,6 +6454,7 @@
 				3232ABA3225730E100AD6A5C /* DeviceVerificationStartCoordinatorType.swift in Sources */,
 				3232AB4D2256558300AD6A5C /* TemplateScreenCoordinatorType.swift in Sources */,
 				B1B5581720EF625800210D55 /* PreviewRoomTitleView.m in Sources */,
+				EC87CFD825AF6AD000DB0A71 /* CustomSizedPresentable.swift in Sources */,
 				B1DCC63F22E9A3AE00625807 /* EmojiItem+EmojiMart.swift in Sources */,
 				B1DCC61C22E5E17100625807 /* EmojiPickerViewAction.swift in Sources */,
 				B1098BDF21ECE09F000DDA48 /* Strings.swift in Sources */,
@@ -6556,6 +6585,7 @@
 				3232AB4E2256558300AD6A5C /* TemplateScreenViewModelType.swift in Sources */,
 				32DB557D22FDADE50016329E /* ServiceTermsModalScreenCoordinatorType.swift in Sources */,
 				B1B5590520EF768F00210D55 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
+				EC87CFD425AF427800DB0A71 /* CustomSizedPresentationController.swift in Sources */,
 				3232ABA5225730E100AD6A5C /* DeviceVerificationStartViewModelType.swift in Sources */,
 				B1B336C1242B933700F95EC4 /* KeyVerificationSelfVerifyStartCoordinatorType.swift in Sources */,
 				EC85D71B2477DCD7002C44C9 /* KeyVerificationScanConfirmationCoordinatorType.swift in Sources */,
@@ -6661,6 +6691,7 @@
 				B12676892523E4D100BE6B98 /* SecretsResetViewAction.swift in Sources */,
 				B1B5573820EE6C4D00210D55 /* GroupParticipantsViewController.m in Sources */,
 				EC51E7B02514D2E100AAE7DB /* RoomInfoCoordinatorType.swift in Sources */,
+				EC87CFCF25ADC57600DB0A71 /* DialpadActionButton.swift in Sources */,
 				3232ABAB225730E100AD6A5C /* KeyVerificationCoordinator.swift in Sources */,
 				B1BEE73B23DF44A60003A4CB /* UserVerificationSessionsStatusCoordinator.swift in Sources */,
 				B1B5583E20EF6E7F00210D55 /* GroupRoomTableViewCell.m in Sources */,
@@ -6670,6 +6701,7 @@
 				EC85D73A2477DDB8002C44C9 /* DirectorySectionHeaderContainerView.m in Sources */,
 				ECFBD5E3250B6CAB00DD5F5A /* ChooseAvatarTableViewCellVM.swift in Sources */,
 				EC711B8524A63B37008F830C /* SecretsRecoveryWithPassphraseCoordinator.swift in Sources */,
+				EC87CFCD25ADC3D200DB0A71 /* DialpadButton.swift in Sources */,
 				32863A5C2384074C00D07C4A /* RiotSettingAllowedWidgets.swift in Sources */,
 				EC711B8724A63B37008F830C /* SecretsRecoveryWithPassphraseViewModelType.swift in Sources */,
 				B1B9DEDA22E9B7350065E677 /* SerializationService.swift in Sources */,
