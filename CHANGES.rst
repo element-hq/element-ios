@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * VoIP: Implement DTMF on call screen (#3929).
 
 🐛 Bugfix
  * 
