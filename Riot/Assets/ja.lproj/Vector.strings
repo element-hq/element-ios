@@ -333,7 +333,7 @@
 "room_details_settings" = "設定";
 "room_details_photo" = "部屋の画像アイコン";
 "room_details_room_name" = "部屋名";
-"room_details_topic" = "部屋の説明";
+"room_details_topic" = "トピック";
 "room_details_favourite_tag" = "お気に入り";
 "room_details_low_priority_tag" = "低優先度";
 "room_details_mute_notifs" = "発言があっても通知しない";
@@ -568,3 +568,28 @@
 "auth_softlogout_clear_data_sign_out" = "サインアウト";
 "room_message_unable_open_link_error_message" = "リンクを開くことができません。";
 "user_verification_session_details_verify_action_other_user" = "手動で確認";
+"room_info_list_section_other" = "その他";
+"room_info_list_several_members" = "%@ 人のメンバー";
+
+// MARK: - Room Info
+
+"room_info_list_one_member" = "1 人のメンバー";
+"create_room_placeholder_address" = "#testroom:matrix.org";
+"create_room_section_header_address" = "部屋のアドレス";
+"create_room_show_in_directory" = "この部屋をディレクトリに掲載する";
+"create_room_section_footer_type" = "プライベートな部屋は、部屋に招待された人のみ参加できます。";
+"create_room_type_public" = "公開された部屋";
+"create_room_type_private" = "プライベートな部屋";
+"create_room_section_header_type" = "部屋の種類";
+"create_room_section_footer_encryption" = "暗号化はあとから無効にすることはできません。";
+"create_room_section_header_encryption" = "部屋の暗号化";
+"create_room_placeholder_topic" = "トピック";
+"create_room_section_header_topic" = "部屋のトピック (任意)";
+"create_room_placeholder_name" = "名前";
+"create_room_section_header_name" = "部屋の名前";
+
+// MARK: - Create Room
+
+"create_room_title" = "新しい部屋";
+"create_room_enable_encryption" = "暗号化を有効にする";
+"room_details_room_name_for_dm" = "名前";

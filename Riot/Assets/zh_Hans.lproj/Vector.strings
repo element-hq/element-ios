@@ -252,7 +252,7 @@
 "settings_labs" = "实验室";
 "settings_devices" = "会话";
 "settings_cryptography" = "加密";
-"settings_sign_out" = "注销";
+"settings_sign_out" = "退出";
 "settings_sign_out_confirmation" = "你确定？";
 "settings_sign_out_e2e_warn" = "您将丢失所有端对端加密密钥。这意味着在此设备上您将再也无法阅读已加密聊天室里的旧消息。";
 "settings_profile_picture" = "档案图片";
@@ -503,18 +503,18 @@
 "room_resource_limit_exceeded_message_contact_1" = " 请 ";
 "room_resource_limit_exceeded_message_contact_2_link" = "联系您的服务管理员";
 "room_resource_limit_exceeded_message_contact_3" = " 以继续使用本服务。";
-"settings_deactivate_account" = "注销账户";
+"settings_deactivate_account" = "停用帐户";
 "settings_labs_room_members_lazy_loading" = "延迟加载聊天室成员";
 "settings_labs_room_members_lazy_loading_error_message" = "您的主服务器尚不支持延迟加载聊天室成员。请稍后再试。";
-"settings_deactivate_my_account" = "注销我的账户";
+"settings_deactivate_my_account" = "停用我的帐户";
 "event_formatter_jitsi_widget_added" = "VoIP 会议已被 %@ 添加";
 "event_formatter_rerequest_keys_part1_link" = "重新请求加密密钥";
 "event_formatter_rerequest_keys_part2" = " （从您的其他会话中）。";
 "homeserver_connection_lost" = "无法连接至主服务器。";
 "call_jitsi_error" = "电话会议加入失败。";
 "deactivate_account_forget_messages_information_part2_emphasize" = "警告";
-"deactivate_account_validate_action" = "注销账户";
-"deactivate_account_password_alert_title" = "注销账户";
+"deactivate_account_validate_action" = "停用账户";
+"deactivate_account_password_alert_title" = "停用账户";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "请求已发送";
 "settings_callkit_info" = "在锁屏上接收来电。在系统通话记录中查看你的Element通话。如果启用iCloud，此通话记录将与苹果公司共享。";
@@ -579,13 +579,13 @@
 // GDPR
 "gdpr_consent_not_given_alert_message" = "要继续使用该 %@ 主服务器，您必须查看并同意其服务条款和条件。";
 "gdpr_consent_not_given_alert_review_now_action" = "立即查看";
-"deactivate_account_title" = "注销账户";
+"deactivate_account_title" = "停用帐户";
 "deactivate_account_informations_part1" = "这将使您的账号永久无法使用。 您将无法登录，也无法重新注册相同的用户 ID 。 这将导致您的账号离开其参与的所有聊天室，并且会从您的身份服务器中删除您的账号详细信息。 ";
 "deactivate_account_informations_part2_emphasize" = "此项操作无法逆转。";
-"deactivate_account_informations_part3" = "\n\n正在注销您的账号 ";
+"deactivate_account_informations_part3" = "\n\n正在停用您的账号 ";
 "deactivate_account_informations_part4_emphasize" = "默认情况下不会导致我们忘记您发送的消息。 ";
 "deactivate_account_informations_part5" = "如果您希望我们忘记您的消息，请勾选下面的框\n\nMatrix中的消息可见性与电子邮件类似。 我们忘记您的消息意味着您已发送的消息将不会再与任何新用户或未注册用户共享，但已有权访问这些消息的注册用户仍可访问其副本。";
-"deactivate_account_forget_messages_information_part1" = "当我的账号注销时请忘记我所有的已发送消息（";
+"deactivate_account_forget_messages_information_part1" = "当我的帐户被停用时，请忘记我发送的所有消息（";
 "deactivate_account_forget_messages_information_part3" = ": 这会导致将来加入的用户看到的是一段不完整的对话）";
 "deactivate_account_password_alert_message" = "要继续，请输入您的密码";
 "rerequest_keys_alert_message" = "请在另一台可以解密消息的设备上启动Element，这样它就可以将密钥发送到此会话。";
@@ -1094,3 +1094,13 @@
 "secrets_recovery_with_key_recover_action" = "使用密钥";
 "secrets_recovery_with_key_invalid_recovery_key_title" = "无法访问机密存储";
 "secrets_recovery_with_key_invalid_recovery_key_message" = "请验证您输入的恢复密钥是否正确。";
+"rooms_empty_view_information" = "房间非常适合任何群聊，无论是私人的还是公共的。点击+以查找现有房间，或新建房间。";
+"security_settings_user_password_description" = "通过输入您的帐户密码确认您的身份";
+"rooms_empty_view_title" = "聊天室";
+"people_empty_view_information" = "与任何人安全聊天。点击+开始添加人员。";
+"people_empty_view_title" = "用户";
+"less" = "较小地";
+"more" = "更多";
+"switch" = "开关";
+"joined" = "已加入";
+"store_promotional_text" = "在开放网络上保护隐私的聊天和协作应用程序。分散权力让你掌控一切。没有数据挖掘，没有后门，也没有第三方访问。";
