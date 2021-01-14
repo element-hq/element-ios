@@ -20,7 +20,8 @@ import UIKit
 import libPhoneNumber_iOS
 
 @objc protocol DialpadViewControllerDelegate: class {
-    func dialpadViewControllerDidTapCall(_ viewController: DialpadViewController, withPhoneNumber phoneNumber: String)
+    @objc optional func dialpadViewControllerDidTapCall(_ viewController: DialpadViewController,
+                                                        withPhoneNumber phoneNumber: String)
     func dialpadViewControllerDidTapClose(_ viewController: DialpadViewController)
     
     @objc optional func dialpadViewControllerDidTapDigit(_ viewController: DialpadViewController, digit: String)
@@ -314,7 +315,7 @@ class DialpadViewController: UIViewController {
     }
     
     @IBAction private func callButtonAction(_ sender: DialpadActionButton) {
-        delegate?.dialpadViewControllerDidTapCall(self, withPhoneNumber: rawPhoneNumber)
+        delegate?.dialpadViewControllerDidTapCall?(self, withPhoneNumber: rawPhoneNumber)
     }
     
 }
