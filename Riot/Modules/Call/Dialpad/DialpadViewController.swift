@@ -22,6 +22,8 @@ import libPhoneNumber_iOS
 @objc protocol DialpadViewControllerDelegate: class {
     func dialpadViewControllerDidTapCall(_ viewController: DialpadViewController, withPhoneNumber phoneNumber: String)
     func dialpadViewControllerDidTapClose(_ viewController: DialpadViewController)
+    
+    @objc optional func dialpadViewControllerDidTapDigit(_ viewController: DialpadViewController, digit: String)
 }
 
 @objcMembers
@@ -231,6 +233,10 @@ class DialpadViewController: UIViewController {
     
     @IBAction private func digitButtonAction(_ sender: DialpadButton) {
         let digit = sender.title(for: .normal) ?? ""
+        
+        defer {
+            delegate?.dialpadViewControllerDidTapDigit?(self, digit: digit)
+        }
         
         if !configuration.editingEnabled {
             phoneNumber += digit
