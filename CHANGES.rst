@@ -12,7 +12,8 @@ Changes to be released in next version
  * AuthVC: SSO authentication now use redirect URL instead of fallback page (#3846).
 
 🐛 Bugfix
- * Crash report cannot be submitted (on small phones) #3819
+ * Crash report cannot be submitted (on small phones) (#3819)
+ * Prevent navigation controller from pushing same view controller (#3924)
 
 ⚠️ API Changes
  * 
