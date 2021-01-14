@@ -183,7 +183,6 @@
 "room_recents_join_room" = "Join room";
 "room_recents_join_room_title" = "Join a room";
 "room_recents_join_room_prompt" = "Type a room id or a room alias";
-"room_recents_dialpad" = "Dial pad";
 
 // People tab
 "people_invites_section" = "INVITES";
@@ -377,6 +376,8 @@ Tap the + to start adding people.";
 "room_accessibility_upload" = "Upload";
 "room_accessibility_call" = "Call";
 "room_accessibility_hangup" = "Hang up";
+"room_place_voice_call" = "Voice call";
+"room_open_dialpad" = "Dial pad";
 
 "media_type_accessibility_image" = "Image";
 "media_type_accessibility_audio" = "Audio";

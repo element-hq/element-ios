@@ -2818,6 +2818,10 @@ internal enum VectorL10n {
   internal static func roomOngoingConferenceCallWithClose(_ p1: String, _ p2: String, _ p3: String) -> String {
     return VectorL10n.tr("Vector", "room_ongoing_conference_call_with_close", p1, p2, p3)
   }
+  /// Dial pad
+  internal static var roomOpenDialpad: String { 
+    return VectorL10n.tr("Vector", "room_open_dialpad") 
+  }
   /// Ban from this room
   internal static var roomParticipantsActionBan: String { 
     return VectorL10n.tr("Vector", "room_participants_action_ban") 
@@ -3038,6 +3042,10 @@ internal enum VectorL10n {
   internal static var roomParticipantsUnknown: String { 
     return VectorL10n.tr("Vector", "room_participants_unknown") 
   }
+  /// Voice call
+  internal static var roomPlaceVoiceCall: String { 
+    return VectorL10n.tr("Vector", "room_place_voice_call") 
+  }
   /// This room is a continuation of another conversation.
   internal static var roomPredecessorInformation: String { 
     return VectorL10n.tr("Vector", "room_predecessor_information") 
@@ -3081,10 +3089,6 @@ internal enum VectorL10n {
   /// Create room
   internal static var roomRecentsCreateEmptyRoom: String { 
     return VectorL10n.tr("Vector", "room_recents_create_empty_room") 
-  }
-  /// Dial pad
-  internal static var roomRecentsDialpad: String { 
-    return VectorL10n.tr("Vector", "room_recents_dialpad") 
   }
   /// ROOM DIRECTORY
   internal static var roomRecentsDirectorySection: String { 
