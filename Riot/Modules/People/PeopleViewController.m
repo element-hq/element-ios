@@ -489,13 +489,11 @@
 {
     DialpadViewController *controller = [DialpadViewController instantiate];
     controller.delegate = self;
-    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-    {
-        self.customSizedPresentationController = [[CustomSizedPresentationController alloc] initWithPresentedViewController:controller presentingViewController:self];
-        self.customSizedPresentationController.dismissOnBackgroundTap = NO;
-        
-        controller.transitioningDelegate = self.customSizedPresentationController;
-    }
+    self.customSizedPresentationController = [[CustomSizedPresentationController alloc] initWithPresentedViewController:controller presentingViewController:self];
+    self.customSizedPresentationController.dismissOnBackgroundTap = NO;
+    self.customSizedPresentationController.cornerRadius = 16;
+    
+    controller.transitioningDelegate = self.customSizedPresentationController;
     [self presentViewController:controller animated:YES completion:nil];
 }
 
@@ -503,7 +501,7 @@
 
 - (void)dialpadViewControllerDidTapCall:(DialpadViewController *)viewController withPhoneNumber:(NSString *)phoneNumber
 {
-    if (self.mainSession.callManager && phoneNumber)
+    if (self.mainSession.callManager && phoneNumber.length > 0)
     {
         [self startActivityIndicator];
         

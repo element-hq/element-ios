@@ -56,6 +56,7 @@ class DialpadViewController: UIViewController {
     
     private enum Constants {
         static let sizeOniPad: CGSize = CGSize(width: 375, height: 667)
+        static let additionalTopInset: CGFloat = 20
     }
     
     private var wasCursorAtTheEnd: Bool = true
@@ -202,6 +203,14 @@ class DialpadViewController: UIViewController {
     private func registerThemeServiceDidChangeThemeNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
     }
+    
+    private func topSafeAreaInset() -> CGFloat {
+        guard let window = UIApplication.shared.keyWindow else {
+            return Constants.additionalTopInset
+        }
+        
+        return window.safeAreaInsets.top + Constants.additionalTopInset
+    }
 
     // MARK: - Actions
     
@@ -292,7 +301,21 @@ class DialpadViewController: UIViewController {
 extension DialpadViewController: CustomSizedPresentable {
     
     func customSize(withParentContainerSize containerSize: CGSize) -> CGSize {
+        if UIDevice.current.isPhone {
+            return CGSize(width: containerSize.width, height: containerSize.height - topSafeAreaInset())
+        }
         return Constants.sizeOniPad
+    }
+    
+    func position(withParentContainerSize containerSize: CGSize) -> CGPoint {
+        let mySize = customSize(withParentContainerSize: containerSize)
+        
+        if UIDevice.current.isPhone {
+            return CGPoint(x: 0, y: topSafeAreaInset())
+        }
+        
+        return CGPoint(x: (containerSize.width - mySize.width)/2,
+                       y: (containerSize.height - mySize.height)/2)
     }
     
 }
