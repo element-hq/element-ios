@@ -110,8 +110,8 @@
 "room_participants_action_security_status_verified" = "Verifitseeritud";
 "room_participants_action_security_status_verify" = "Verifitseeri";
 "room_participants_action_security_status_warning" = "Hoiatus";
-"room_participants_action_security_status_loading" = "Laeme…";
-"room_participants_security_loading" = "Laeme…";
+"room_participants_action_security_status_loading" = "Laadime…";
+"room_participants_security_loading" = "Laadime…";
 "room_participants_security_information_room_not_encrypted" = "See jututuba ei ole läbivalt krüptitud.";
 "room_participants_security_information_room_encrypted" = "Sõnumid siin jututoas kasutavad läbivat krüptimist.\n\nSinu sõnumid on turvatud ning ainult sinul ja saaja(te)l on unikaalsed võtmed selliste sõnumite lugemiseks.";
 // Chat
@@ -289,7 +289,7 @@
 "room_message_edits_history_title" = "Sõnumite muutmised";
 "room_accessibility_search" = "Otsing";
 "room_accessibility_integrations" = "Lõiminguid";
-"room_accessibility_upload" = "Lae üles";
+"room_accessibility_upload" = "Laadi üles";
 "room_accessibility_call" = "Helista";
 "room_accessibility_hangup" = "Lõpeta kõne";
 "media_type_accessibility_image" = "Pilt";
@@ -543,7 +543,7 @@
 "settings_crypto_export" = "Ekspordi võtmed";
 "settings_crypto_blacklist_unverified_devices" = "Kasuta krüptimist vaid verifitseeritud sessioonides";
 "settings_deactivate_my_account" = "Eemalda minu konto kasutusest";
-"security_settings_crypto_sessions_loading" = "Laen sessioone…";
+"security_settings_crypto_sessions_loading" = "Laadin sessioone…";
 "security_settings_user_password_description" = "Tuvasta oma isik sisestades salasõna";
 // Manage session
 "manage_session_title" = "Halda sessiooni";
@@ -837,7 +837,7 @@
 "key_verification_bootstrap_not_setup_message" = "Sa pead esmalt kasutusele võtma risttunnustamise.";
 "key_verification_tile_request_incoming_title" = "Verifitseerimispäring";
 "key_verification_tile_request_outgoing_title" = "Verifitseerimispäring on saadetud";
-"key_verification_tile_request_status_data_loading" = "Laeme andmeid…";
+"key_verification_tile_request_status_data_loading" = "Laadime andmeid…";
 "key_verification_tile_request_status_waiting" = "Ootan…";
 "key_verification_tile_request_status_expired" = "Aegunud";
 "key_verification_tile_request_status_cancelled_by_me" = "Sa tühistasid";
@@ -1057,7 +1057,7 @@
 "secrets_recovery_with_key_invalid_recovery_key_message" = "Palun kontrolli, et sa sisestasid õige taastevõtme.";
 "secrets_setup_recovery_key_title" = "Salvesta turvavõti";
 "secrets_setup_recovery_key_information" = "Salvesta oma taastevõti turvalisse kohta. Seda saab kasutada sinu krüptitud sõnumite ja andmete lugemiseks.";
-"secrets_setup_recovery_key_loading" = "Laeme…";
+"secrets_setup_recovery_key_loading" = "Laadime…";
 "secrets_setup_recovery_key_export_action" = "Salvesta";
 "secrets_setup_recovery_key_done_action" = "Valmis";
 "secrets_setup_recovery_key_storage_alert_title" = "Hoia seda turvaliselt";
@@ -1119,7 +1119,7 @@
 "bug_report_send_logs" = "Saada logikirjed";
 "bug_report_send_screenshot" = "Saada ekraanipilt";
 "bug_report_progress_zipping" = "Kogun logisid";
-"bug_report_progress_uploading" = "Laen üles veakirjeldust";
+"bug_report_progress_uploading" = "Laadin üles veakirjeldust";
 "bug_report_send" = "Saada";
 // Widget
 "widget_no_integrations_server_configured" = "Vidinate haldusserver ei ole seadistatud";
@@ -1208,4 +1208,13 @@
 
 // MARK: - Home
 
-"home_empty_view_title" = "Tere tulemast kasutama suhtlusrakendust Element,\n%@";
+"home_empty_view_title" = "Tere tulemast suhtlusrakendusse %@,\n%@";
+"favourites_empty_view_information" = "Lemmikuid saad lisada mitmel viisil - neist kõgi lihtsam on see, et vajutad nime ja hoiad seda mõne hetke. Vali siis tähega ikoon ja ongi lisatud.";
+
+// MARK: - Favourites
+
+"favourites_empty_view_title" = "Lemmikjututoad ja -inimesed";
+"rooms_empty_view_information" = "Jututoad sobivad igasuguste rühmavestluste jaoks, olgu need siis avalikud või privaatsed. Olemasolevate jututubade otsimiseks või uute lisamiseks klõpsi + ikooni.";
+"rooms_empty_view_title" = "Jututoad";
+"people_empty_view_information" = "Suhltle turvaliselt kellega soovid. Inimeste lisamiseks klõpsi + ikooni.";
+"people_empty_view_title" = "Inimesed";
