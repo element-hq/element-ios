@@ -138,7 +138,7 @@
 "client_desktop_name" = "Element Desktop";
 "client_web_name" = "Element Web";
 "client_ios_name" = "Element iOS";
-"auth_login_single_sign_on" = "Увійти за допомогою єдиного входу";
+"auth_login_single_sign_on" = "Увійти";
 "room_creation_invite_another_user" = "Пошук / запрошення по ідентифікатору користувача, імені або адреси електронної пошти";
 "room_creation_error_invite_user_by_email_without_identity_server" = "Сервер ідентифікації не налаштовано, тому ви не можете додати учасника з е-поштою.";
 // Room recents
