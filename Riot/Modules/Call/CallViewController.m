@@ -28,7 +28,7 @@
 
 #import "IncomingCallView.h"
 
-@interface CallViewController () <PictureInPicturable>
+@interface CallViewController () <PictureInPicturable, DialpadViewControllerDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
@@ -39,6 +39,8 @@
 
 @property (nonatomic, strong) id<Theme> overriddenTheme;
 @property (nonatomic, assign) BOOL inPiP;
+
+@property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
 
 @end
 
@@ -507,6 +509,41 @@
     }
     
     [super showOverlayContainer:isShown];
+}
+
+#pragma mark - DTMF
+
+- (void)openDialpad
+{
+    DialpadConfiguration *config = [[DialpadConfiguration alloc] initWithShowsBackspaceButton:NO
+                                                                              showsCallButton:NO
+                                                                            formattingEnabled:NO
+                                                                               editingEnabled:NO];
+    DialpadViewController *controller = [DialpadViewController instantiateWithConfiguration:config];
+    controller.delegate = self;
+    self.customSizedPresentationController = [[CustomSizedPresentationController alloc] initWithPresentedViewController:controller presentingViewController:self];
+    self.customSizedPresentationController.dismissOnBackgroundTap = NO;
+    self.customSizedPresentationController.cornerRadius = 16;
+    
+    controller.transitioningDelegate = self.customSizedPresentationController;
+    [self presentViewController:controller animated:YES completion:nil];
+}
+
+#pragma mark - DialpadViewControllerDelegate
+
+- (void)dialpadViewControllerDidTapClose:(DialpadViewController *)viewController
+{
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+    self.customSizedPresentationController = nil;
+}
+
+- (void)dialpadViewControllerDidTapDigit:(DialpadViewController *)viewController digit:(NSString *)digit
+{
+    BOOL result = [self.mxCall sendDTMF:digit
+                               duration:0
+                           interToneGap:0];
+    
+    NSLog(@"[CallViewController] Sending DTMF tones %@", result ? @"succeeded": @"failed");
 }
 
 #pragma mark - PictureInPicturable
