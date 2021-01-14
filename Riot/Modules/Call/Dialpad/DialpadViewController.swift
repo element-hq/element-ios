@@ -37,6 +37,7 @@ class DialpadViewController: UIViewController {
             //  avoid showing keyboard on text field
             phoneNumberTextField.inputView = UIView()
             phoneNumberTextField.inputAccessoryView = UIView()
+            phoneNumberTextField.isUserInteractionEnabled = configuration.editingEnabled
         }
     }
     @IBOutlet private weak var lineView: UIView!
@@ -44,11 +45,13 @@ class DialpadViewController: UIViewController {
     @IBOutlet private weak var backspaceButton: DialpadActionButton! {
         didSet {
             backspaceButton.type = .backspace
+            backspaceButton.isHidden = !configuration.showsBackspaceButton
         }
     }
     @IBOutlet private weak var callButton: DialpadActionButton! {
         didSet {
             callButton.type = .call
+            callButton.isHidden = !configuration.showsCallButton
         }
     }
     
@@ -64,10 +67,12 @@ class DialpadViewController: UIViewController {
     /// Phone number as formatted
     private var phoneNumber: String = "" {
         willSet {
-            wasCursorAtTheEnd = isCursorAtTheEnd()
+            if configuration.editingEnabled {
+                wasCursorAtTheEnd = isCursorAtTheEnd()
+            }
         } didSet {
             phoneNumberTextField.text = phoneNumber
-            if wasCursorAtTheEnd {
+            if configuration.editingEnabled && wasCursorAtTheEnd {
                 moveCursorToTheEnd()
             }
         }
@@ -77,6 +82,7 @@ class DialpadViewController: UIViewController {
         return phoneNumber.vc_removingAllWhitespaces()
     }
     private var theme: Theme!
+    private var configuration: DialpadConfiguration!
     
     // MARK: Public
     
@@ -84,9 +90,10 @@ class DialpadViewController: UIViewController {
     
     // MARK: - Setup
     
-    class func instantiate() -> DialpadViewController {
+    class func instantiate(withConfiguration configuration: DialpadConfiguration = .default) -> DialpadViewController {
         let viewController = StoryboardScene.DialpadViewController.initialScene.instantiate()
         viewController.theme = ThemeService.shared().theme
+        viewController.configuration = configuration
         return viewController
     }
     
@@ -155,7 +162,7 @@ class DialpadViewController: UIViewController {
     }
     
     private func reformatPhoneNumber() {
-        guard let phoneNumberUtil = NBPhoneNumberUtil.sharedInstance() else {
+        guard configuration.formattingEnabled, let phoneNumberUtil = NBPhoneNumberUtil.sharedInstance() else {
             //  no formatter
             return
         }
@@ -225,6 +232,11 @@ class DialpadViewController: UIViewController {
     @IBAction private func digitButtonAction(_ sender: DialpadButton) {
         let digit = sender.title(for: .normal) ?? ""
         
+        if !configuration.editingEnabled {
+            phoneNumber += digit
+            return
+        }
+        
         if let selectedRange = phoneNumberTextField.selectedTextRange {
             if isCursorAtTheEnd() {
                 phoneNumber += digit
@@ -251,6 +263,11 @@ class DialpadViewController: UIViewController {
     
     @IBAction private func backspaceButtonAction(_ sender: DialpadActionButton) {
         if phoneNumber.isEmpty {
+            return
+        }
+        
+        if !configuration.editingEnabled {
+            phoneNumber.removeLast()
             return
         }
         

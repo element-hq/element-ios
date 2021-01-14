@@ -907,6 +907,7 @@
 		EC87CFCF25ADC57600DB0A71 /* DialpadActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC87CFCE25ADC57600DB0A71 /* DialpadActionButton.swift */; };
 		EC87CFD425AF427800DB0A71 /* CustomSizedPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC87CFD325AF427800DB0A71 /* CustomSizedPresentationController.swift */; };
 		EC87CFD825AF6AD000DB0A71 /* CustomSizedPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC87CFD725AF6AD000DB0A71 /* CustomSizedPresentable.swift */; };
+		EC87CFDA25B0813A00DB0A71 /* DialpadConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC87CFD925B0813A00DB0A71 /* DialpadConfiguration.swift */; };
 		EC9A3EC524E1616900A8CFAE /* PushNotificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9A3EC424E1616900A8CFAE /* PushNotificationStore.swift */; };
 		EC9A3EC624E1632C00A8CFAE /* PushNotificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9A3EC424E1616900A8CFAE /* PushNotificationStore.swift */; };
 		EC9A3EC724E1634100A8CFAE /* KeyValueStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA87124C823E700DE9EBF /* KeyValueStore.swift */; };
@@ -2171,6 +2172,7 @@
 		EC87CFCE25ADC57600DB0A71 /* DialpadActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialpadActionButton.swift; sourceTree = "<group>"; };
 		EC87CFD325AF427800DB0A71 /* CustomSizedPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSizedPresentationController.swift; sourceTree = "<group>"; };
 		EC87CFD725AF6AD000DB0A71 /* CustomSizedPresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSizedPresentable.swift; sourceTree = "<group>"; };
+		EC87CFD925B0813A00DB0A71 /* DialpadConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialpadConfiguration.swift; sourceTree = "<group>"; };
 		EC9A3EC424E1616900A8CFAE /* PushNotificationStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushNotificationStore.swift; sourceTree = "<group>"; };
 		EC9E9B052575AF5C0007C0A0 /* CallVCPresentOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVCPresentOperation.swift; sourceTree = "<group>"; };
 		EC9E9B072575AF730007C0A0 /* CallVCDismissOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVCDismissOperation.swift; sourceTree = "<group>"; };
@@ -5247,6 +5249,7 @@
 			children = (
 				EC87CFC725ADC10D00DB0A71 /* DialpadViewController.storyboard */,
 				EC87CFC825ADC10D00DB0A71 /* DialpadViewController.swift */,
+				EC87CFD925B0813A00DB0A71 /* DialpadConfiguration.swift */,
 				EC87CFCB25ADC3C200DB0A71 /* Views */,
 			);
 			path = Dialpad;
@@ -6987,6 +6990,7 @@
 				32F6B96A2270623100BBA352 /* KeyVerificationDataLoadingViewState.swift in Sources */,
 				32BF995321FA2A1300698084 /* SettingsKeyBackupViewState.swift in Sources */,
 				ECFBD5FB250FA59B00DD5F5A /* RoomCreationEventsModalViewAction.swift in Sources */,
+				EC87CFDA25B0813A00DB0A71 /* DialpadConfiguration.swift in Sources */,
 				B18DEDDB243377C10075FEF7 /* KeyVerificationSelfVerifyWaitViewAction.swift in Sources */,
 				32B94DF9228EC26400716A26 /* ReactionsMenuViewAction.swift in Sources */,
 				B1B5599420EFC5E400210D55 /* DecryptionFailureTracker.m in Sources */,
