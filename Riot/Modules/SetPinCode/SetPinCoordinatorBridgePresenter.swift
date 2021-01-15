@@ -29,6 +29,7 @@ import Foundation
     case setupBiometricsFromSettings
     case confirmBiometricsToDeactivate
     case inactive
+    case changePin
 }
 
 @objc protocol SetPinCoordinatorBridgePresenterDelegate {

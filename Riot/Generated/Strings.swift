@@ -378,6 +378,10 @@ internal enum VectorL10n {
   internal static var bugCrashReportTitle: String { 
     return VectorL10n.tr("Vector", "bug_crash_report_title") 
   }
+  /// Continue in background
+  internal static var bugReportBackgroundMode: String { 
+    return VectorL10n.tr("Vector", "bug_report_background_mode") 
+  }
   /// Please describe the bug. What did you do? What did you expect to happen? What actually happened?
   internal static var bugReportDescription: String { 
     return VectorL10n.tr("Vector", "bug_report_description") 
@@ -1454,6 +1458,14 @@ internal enum VectorL10n {
   internal static var invite: String { 
     return VectorL10n.tr("Vector", "invite") 
   }
+  /// Invite friends to %@
+  internal static func inviteFriendsAction(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "invite_friends_action", p1)
+  }
+  /// Hey, talk to me on %@: %@
+  internal static func inviteFriendsShareText(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "invite_friends_share_text", p1, p2)
+  }
   /// Join
   internal static var join: String { 
     return VectorL10n.tr("Vector", "join") 
@@ -2062,6 +2074,10 @@ internal enum VectorL10n {
   internal static var pinProtectionConfirmPin: String { 
     return VectorL10n.tr("Vector", "pin_protection_confirm_pin") 
   }
+  /// Confirm PIN to change PIN
+  internal static var pinProtectionConfirmPinToChange: String { 
+    return VectorL10n.tr("Vector", "pin_protection_confirm_pin_to_change") 
+  }
   /// Confirm PIN to disable PIN
   internal static var pinProtectionConfirmPinToDisable: String { 
     return VectorL10n.tr("Vector", "pin_protection_confirm_pin_to_disable") 
@@ -2109,6 +2125,10 @@ internal enum VectorL10n {
   /// Reset PIN
   internal static var pinProtectionResetAlertTitle: String { 
     return VectorL10n.tr("Vector", "pin_protection_reset_alert_title") 
+  }
+  /// Change PIN
+  internal static var pinProtectionSettingsChangePin: String { 
+    return VectorL10n.tr("Vector", "pin_protection_settings_change_pin") 
   }
   /// Enable PIN
   internal static var pinProtectionSettingsEnablePin: String { 
@@ -4265,6 +4285,30 @@ internal enum VectorL10n {
   /// Skip
   internal static var skip: String { 
     return VectorL10n.tr("Vector", "skip") 
+  }
+  /// Continue with %@
+  internal static func socialLoginButtonTitleContinue(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "social_login_button_title_continue", p1)
+  }
+  /// Sign In with %@
+  internal static func socialLoginButtonTitleSignIn(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "social_login_button_title_sign_in", p1)
+  }
+  /// Sign Up with %@
+  internal static func socialLoginButtonTitleSignUp(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "social_login_button_title_sign_up", p1)
+  }
+  /// Continue with
+  internal static var socialLoginListTitleContinue: String { 
+    return VectorL10n.tr("Vector", "social_login_list_title_continue") 
+  }
+  /// Or login with
+  internal static var socialLoginListTitleSignIn: String { 
+    return VectorL10n.tr("Vector", "social_login_list_title_sign_in") 
+  }
+  /// Or register with
+  internal static var socialLoginListTitleSignUp: String { 
+    return VectorL10n.tr("Vector", "social_login_list_title_sign_up") 
   }
   /// Start
   internal static var start: String { 

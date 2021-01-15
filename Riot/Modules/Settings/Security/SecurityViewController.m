@@ -71,6 +71,7 @@ enum {
 enum {
     PIN_CODE_SETTING,
     PIN_CODE_DESCRIPTION,
+    PIN_CODE_CHANGE,
     PIN_CODE_BIOMETRICS,
     PIN_CODE_COUNT
 };
@@ -315,7 +316,10 @@ TableViewSectionsDelegate>
     // Rows
     [pinCodeSection addRowWithTag:PIN_CODE_SETTING];
     [pinCodeSection addRowWithTag:PIN_CODE_DESCRIPTION];
-    
+    if ([PinCodePreferences shared].isPinSet) {
+        [pinCodeSection addRowWithTag:PIN_CODE_CHANGE];
+    }
+
     if ([PinCodePreferences shared].isBiometricsAvailable)
     {
         [pinCodeSection addRowWithTag:PIN_CODE_BIOMETRICS];
@@ -1293,6 +1297,10 @@ TableViewSectionsDelegate>
                 cell = [self descriptionCellForTableView:tableView withText:nil];
             }
         }
+        else if (indexPath.row == PIN_CODE_CHANGE)
+        {
+            cell = [self buttonCellWithTitle:NSLocalizedStringFromTable(@"pin_protection_settings_change_pin", @"Vector", nil) action:@selector(changePinCode:  ) forTableView:tableView atIndexPath:indexPath];
+        }
         else if (indexPath.row == PIN_CODE_BIOMETRICS)
         {
             MXKTableViewCellWithLabelAndSwitch *switchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
@@ -1703,6 +1711,14 @@ TableViewSectionsDelegate>
 - (void)enableBiometricsSwitchValueChanged:(UISwitch *)sender
 {
     SetPinCoordinatorViewMode viewMode = sender.isOn ? SetPinCoordinatorViewModeSetupBiometricsFromSettings : SetPinCoordinatorViewModeConfirmBiometricsToDeactivate;
+    self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:self.mainSession viewMode:viewMode];
+    self.setPinCoordinatorBridgePresenter.delegate = self;
+    [self.setPinCoordinatorBridgePresenter presentFrom:self animated:YES];
+}
+
+- (void)changePinCode:(UIButton *)sender
+{
+    SetPinCoordinatorViewMode viewMode = SetPinCoordinatorViewModeChangePin;
     self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:self.mainSession viewMode:viewMode];
     self.setPinCoordinatorBridgePresenter.delegate = self;
     [self.setPinCoordinatorBridgePresenter presentFrom:self animated:YES];
