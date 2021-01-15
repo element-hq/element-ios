@@ -32,4 +32,5 @@ enum EnterPinCodeViewState {
     case forgotPin              //  after pin has been set, user tapped forgot pin
     case confirmPinToDisable    //  after pin has been set, confirm pin to disable pin
     case inactive               //  inactive state, only used when app is not active
+    case changePin              //  pin is set, user tapped change pin from settings
 }

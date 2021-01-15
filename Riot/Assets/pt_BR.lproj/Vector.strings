@@ -1235,8 +1235,17 @@
 "secrets_recovery_reset_action_part_2" = "Redefinir tudo";
 "secrets_setup_recovery_passphrase_summary_information" = "Lembre-se da sua frase de segurança. Ela pode ser usada para desbloquear suas mensagens e dados criptografados.";
 "secrets_setup_recovery_passphrase_summary_title" = "Salve a sua frase de segurança";
-"home_empty_view_information" = "O aplicativo de conversas seguro e completo para equipes, amigos e organizações. Toque no botão \"+\" abaixo para adicionar pessoas e salas.";
+"home_empty_view_information" = "O aplicativo de conversas seguro e completo para equipes, amigos e organizações. Toque no botão + abaixo para adicionar pessoas e salas.";
 
 // MARK: - Home
 
-"home_empty_view_title" = "Boas-vindas ao Element,\n%@";
+"home_empty_view_title" = "Boas-vindas ao %@,\n%@";
+"people_empty_view_title" = "Pessoas";
+"favourites_empty_view_information" = "Você pode adicionar aos favoritos de algumas maneiras - a mais rápida é simplesmente pressionar e segurar. Toque na estrela e eles aparecerão automaticamente aqui, para fins de segurança.";
+
+// MARK: - Favourites
+
+"favourites_empty_view_title" = "Salas e pessoas favoritas";
+"rooms_empty_view_information" = "Salas são ótimas para qualquer conversa em grupo, privada ou pública. Toque em + para encontrar salas existentes ou crie novas.";
+"rooms_empty_view_title" = "Salas";
+"people_empty_view_information" = "Converse com segurança com qualquer pessoa. Toque em + para começar a adicionar pessoas.";

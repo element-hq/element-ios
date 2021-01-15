@@ -33,6 +33,7 @@
 
 @property (nonatomic) BOOL sendLogs;
 @property (nonatomic) BOOL sendScreenshot;
+@property (nonatomic) BOOL isSendingLogs;
 
 @property (weak, nonatomic) IBOutlet UIView *overlayView;
 
@@ -95,6 +96,8 @@
     [_cancelButton setTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] forState:UIControlStateHighlighted];
     [_sendButton setTitle:NSLocalizedStringFromTable(@"bug_report_send", @"Vector", nil) forState:UIControlStateNormal];
     [_sendButton setTitle:NSLocalizedStringFromTable(@"bug_report_send", @"Vector", nil) forState:UIControlStateHighlighted];
+    [_backgroundButton setTitle:NSLocalizedStringFromTable(@"bug_report_background_mode", @"Vector", nil) forState:UIControlStateNormal];
+    [_backgroundButton setTitle:NSLocalizedStringFromTable(@"bug_report_background_mode", @"Vector", nil) forState:UIControlStateHighlighted];
 
     // Do not send empty report
     _sendButton.enabled = NO;;
@@ -133,6 +136,9 @@
         
     }];
     [self userInterfaceThemeDidChange];
+    
+    UIGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backgroundViewTapped)];
+    [self.view addGestureRecognizer:recognizer];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -160,6 +166,7 @@
     
     self.sendButton.tintColor = ThemeService.shared.theme.tintColor;
     self.cancelButton.tintColor = ThemeService.shared.theme.tintColor;
+    self.backgroundButton.tintColor = ThemeService.shared.theme.tintColor;
     
     _bugReportDescriptionTextView.layer.borderColor = ThemeService.shared.theme.headerBackgroundColor.CGColor;
     
@@ -236,6 +243,15 @@
     }
 }
 
+- (void)setIsSendingLogs:(BOOL)isSendingLogs
+{
+    _isSendingLogs = isSendingLogs;
+    
+    _sendButton.hidden = isSendingLogs;
+    _sendingContainer.hidden = !isSendingLogs;
+    _backgroundButton.hidden = !isSendingLogs;
+}
+
 #pragma mark - MXKViewController
 - (void)dismissKeyboard
 {
@@ -277,8 +293,7 @@
 
 - (IBAction)onSendButtonPress:(id)sender
 {
-    _sendButton.hidden = YES;
-    _sendingContainer.hidden = NO;
+    self.isSendingLogs = YES;
 
     // Setup data to send
     bugReportRestClient = [[MXBugReportRestClient alloc] initWithBugReportEndpoint:BuildSettings.bugReportEndpointUrlString];
@@ -373,45 +388,75 @@
         [bugReportDescription appendFormat:@"\n\n\n--------------------------------------------------------------------------------\n\n%@", crashLog];
     }
 
+    // starting a background task to have a bit of extra time in case of user forgets about the report and sends the app to background
+    __block UIBackgroundTaskIdentifier operationBackgroundId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+            [[UIApplication sharedApplication] endBackgroundTask:operationBackgroundId];
+            operationBackgroundId = UIBackgroundTaskInvalid;
+        }];
+    
     // Submit
     [bugReportRestClient sendBugReport:bugReportDescription sendLogs:_sendLogs sendCrashLog:_reportCrash sendFiles:files attachGitHubLabels:gitHubLabels progress:^(MXBugReportState state, NSProgress *progress) {
 
         switch (state)
         {
             case MXBugReportStateProgressZipping:
-                _sendingLabel.text = NSLocalizedStringFromTable(@"bug_report_progress_zipping", @"Vector", nil);
+                self.sendingLabel.text = NSLocalizedStringFromTable(@"bug_report_progress_zipping", @"Vector", nil);
                 break;
 
             case MXBugReportStateProgressUploading:
-                _sendingLabel.text = NSLocalizedStringFromTable(@"bug_report_progress_uploading", @"Vector", nil);
+                self.sendingLabel.text = NSLocalizedStringFromTable(@"bug_report_progress_uploading", @"Vector", nil);
                 break;
 
             default:
                 break;
         }
 
-        _sendingProgress.progress = progress.fractionCompleted;
+        self.sendingProgress.progress = progress.fractionCompleted;
 
     } success:^{
 
-        bugReportRestClient = nil;
+        self->bugReportRestClient = nil;
 
-        if (_reportCrash)
+        if (self.reportCrash)
         {
             // Erase the crash log
             [MXLogger deleteCrashLog];
         }
 
         [self dismissViewControllerAnimated:YES completion:nil];
+        
+        if (operationBackgroundId != UIBackgroundTaskInvalid)
+        {
+            [[UIApplication sharedApplication] endBackgroundTask:operationBackgroundId];
+            operationBackgroundId = UIBackgroundTaskInvalid;
+        }
 
     } failure:^(NSError *error) {
 
-        bugReportRestClient = nil;
+        if (self.presentingViewController)
+        {
+            self->bugReportRestClient = nil;
 
-        [[AppDelegate theDelegate] showErrorAsAlert:error];
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
 
-        _sendButton.hidden = NO;
-        _sendingContainer.hidden = YES;
+            self.isSendingLogs = NO;
+        }
+        else
+        {
+            [[[UIApplication sharedApplication].windows firstObject].rootViewController presentViewController:self animated:YES completion:^{
+                self->bugReportRestClient = nil;
+
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+
+                self.isSendingLogs = NO;
+            }];
+        }
+        
+        if (operationBackgroundId != UIBackgroundTaskInvalid)
+        {
+            [[UIApplication sharedApplication] endBackgroundTask:operationBackgroundId];
+            operationBackgroundId = UIBackgroundTaskInvalid;
+        }
     }];
 }
 
@@ -424,8 +469,7 @@
         [bugReportRestClient cancel];
         bugReportRestClient = nil;
 
-        _sendButton.hidden = NO;
-        _sendingContainer.hidden = YES;
+        self.isSendingLogs = NO;
     }
     else
     {
@@ -448,6 +492,17 @@
 - (IBAction)onSendScreenshotTap:(id)sender
 {
     self.sendScreenshot = !self.sendScreenshot;
+}
+
+- (IBAction)onBackgroundTap:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:^{}];
+}
+
+- (void)backgroundViewTapped
+{
+    // Dismiss keyboard if user taps on background view: https://github.com/vector-im/element-ios/issues/3819
+    [self.bugReportDescriptionTextView resignFirstResponder];
 }
 
 @end

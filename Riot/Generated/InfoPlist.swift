@@ -21,6 +21,7 @@ internal enum InfoPlist {
   internal static let cfBundlePackageType: String = _document["CFBundlePackageType"]
   internal static let cfBundleShortVersionString: String = _document["CFBundleShortVersionString"]
   internal static let cfBundleSignature: String = _document["CFBundleSignature"]
+  internal static let cfBundleURLTypes: [[String: Any]] = _document["CFBundleURLTypes"]
   internal static let cfBundleVersion: String = _document["CFBundleVersion"]
   internal static let itsAppUsesNonExemptEncryption: Bool = _document["ITSAppUsesNonExemptEncryption"]
   internal static let itsEncryptionExportComplianceCode: String = _document["ITSEncryptionExportComplianceCode"]

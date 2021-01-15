@@ -76,7 +76,8 @@ enum
     USER_SETTINGS_SURNAME_INDEX,
     USER_SETTINGS_ADD_EMAIL_INDEX,
     USER_SETTINGS_ADD_PHONENUMBER_INDEX,
-    USER_SETTINGS_THREEPIDS_INFORMATION_INDEX
+    USER_SETTINGS_THREEPIDS_INFORMATION_INDEX,
+    USER_SETTINGS_INVITE_FRIENDS_INDEX
 };
 
 enum
@@ -246,6 +247,8 @@ TableViewSectionsDelegate>
 
 @property (nonatomic, strong) TableViewSections *tableViewSections;
 
+@property (nonatomic, strong) InviteFriendsPresenter *inviteFriendsPresenter;
+
 @end
 
 @implementation SettingsViewController
@@ -313,6 +316,9 @@ TableViewSectionsDelegate>
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_THREEPIDS_INFORMATION_INDEX];
     }
+    
+    [sectionUserSettings addRowWithTag:USER_SETTINGS_INVITE_FRIENDS_INDEX];
+    
     sectionUserSettings.headerTitle = NSLocalizedStringFromTable(@"settings_user_settings", @"Vector", nil);
     [tmpSections addObject:sectionUserSettings];
     
@@ -1716,6 +1722,18 @@ TableViewSectionsDelegate>
             
             cell = threePidsInformationCell;
         }
+        else if (row == USER_SETTINGS_INVITE_FRIENDS_INDEX)
+        {
+            MXKTableViewCell *inviteFriendsCell = [self getDefaultTableViewCell:tableView];
+
+            inviteFriendsCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"invite_friends_action", @"Vector", nil), BuildSettings.bundleDisplayName];
+            
+            UIImage *shareActionImage = [[UIImage imageNamed:@"share_action_button"] vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
+            UIImageView *accessoryView = [[UIImageView alloc] initWithImage:shareActionImage];
+            inviteFriendsCell.accessoryView = accessoryView;
+            
+            cell = inviteFriendsCell;
+        }
         else if (row == USER_SETTINGS_CHANGE_PASSWORD_INDEX)
         {
             MXKTableViewCellWithLabelAndTextField *passwordCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
@@ -2415,6 +2433,11 @@ TableViewSectionsDelegate>
                     [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
                 }
             }
+        }
+        else if (section == SECTION_TAG_USER_SETTINGS && row == USER_SETTINGS_INVITE_FRIENDS_INDEX)
+        {
+            UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+            [self showInviteFriendsFromSourceView:selectedCell];
         }
         else if (section == SECTION_TAG_DISCOVERY)
         {
@@ -3558,6 +3581,21 @@ TableViewSectionsDelegate>
     deactivateAccountViewController.delegate = self;
     
     self.deactivateAccountViewController = deactivateAccountViewController;
+}
+
+- (void)showInviteFriendsFromSourceView:(UIView*)sourceView
+{
+    if (!self.inviteFriendsPresenter)
+    {
+        self.inviteFriendsPresenter = [InviteFriendsPresenter new];
+    }
+    
+    NSString *userId = self.mainSession.myUser.userId;
+    
+    [self.inviteFriendsPresenter presentFor:userId
+                                       from:self
+                                 sourceView:sourceView
+                                   animated:YES];
 }
 
 #pragma mark - TextField listener

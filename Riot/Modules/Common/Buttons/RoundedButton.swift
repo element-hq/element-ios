@@ -16,14 +16,12 @@
 
 import UIKit
 
-final class RoundedButton: UIButton, Themable {
+final class RoundedButton: CustomRoundedButton, Themable {
     
     // MARK: - Constants
     
     private enum Constants {
         static let backgroundColorAlpha: CGFloat = 0.2
-        static let cornerRadius: CGFloat = 6.0
-        static let fontSize: CGFloat = 17.0
     }
     
     // MARK: - Properties
@@ -45,15 +43,7 @@ final class RoundedButton: UIButton, Themable {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.layer.masksToBounds = true
-        self.titleLabel?.font = UIFont.systemFont(ofSize: Constants.fontSize)
         self.update(theme: ThemeService.shared().theme)
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        self.layer.cornerRadius = Constants.cornerRadius
     }
     
     // MARK: - Private

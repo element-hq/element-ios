@@ -28,6 +28,7 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
     private var originalViewMode: SetPinCoordinatorViewMode
     private var viewMode: SetPinCoordinatorViewMode
     
+    private var initialPin: String = ""
     private var firstPin: String = ""
     private var currentPin: String = "" {
         didSet {
@@ -116,49 +117,12 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
                 switch viewMode {
                 case .setPin, .setPinAfterLogin, .setPinAfterRegister:
                     //  choosing pin
-                    if firstPin.isEmpty {
-                        //  check if this PIN is allowed
-                        if pinCodePreferences.notAllowedPINs.contains(currentPin) {
-                            viewMode = .notAllowedPin
-                            update(viewState: .notAllowedPin)
-                            return
-                        }
-                        //  go to next screen
-                        firstPin = currentPin
-                        currentPin.removeAll()
-                        update(viewState: .confirmPin)
-                    } else {
-                        //  check first and second pins
-                        if firstPin == currentPin {
-                            //  complete with a little delay
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                self.coordinatorDelegate?.enterPinCodeViewModel(self, didCompleteWithPin: self.firstPin)
-                            }
-                        } else {
-                            update(viewState: .pinsDontMatch)
-                        }
-                    }
+                    updateAfterPinSet()
                 case .unlock, .confirmPinToDeactivate:
                     //  unlocking
                     if currentPin != pinCodePreferences.pin {
                         //  no match
-                        numberOfFailuresDuringEnterPIN += 1
-                        pinCodePreferences.numberOfPinFailures += 1
-                        if viewMode == .unlock && localAuthenticationService.shouldLogOutUser() {
-                            //  log out user
-                            self.coordinatorDelegate?.enterPinCodeViewModelDidCompleteWithReset(self, dueToTooManyErrors: true)
-                            return
-                        }
-                        if numberOfFailuresDuringEnterPIN < pinCodePreferences.allowedNumberOfTrialsBeforeAlert {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                self.viewDelegate?.enterPinCodeViewModel(self, didUpdateViewState: .wrongPin)
-                                self.currentPin.removeAll()
-                            }
-                        } else {
-                            viewDelegate?.enterPinCodeViewModel(self, didUpdateViewState: .wrongPinTooManyTimes)
-                            numberOfFailuresDuringEnterPIN = 0
-                            currentPin.removeAll()
-                        }
+                        updateAfterUnlockFailed()
                     } else {
                         //  match
                         //  we can use biometrics anymore, if set
@@ -169,6 +133,22 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
                             self.coordinatorDelegate?.enterPinCodeViewModelDidComplete(self)
                         }
                     }
+                case .changePin:
+                    //  unlocking
+                    if initialPin.isEmpty && currentPin != pinCodePreferences.pin {
+                        //  no match
+                        updateAfterUnlockFailed()
+                    } else if initialPin.isEmpty {
+                        //  match or already unlocked
+                        
+                            // the user can choose a new Pin code
+                            initialPin = currentPin
+                            currentPin.removeAll()
+                            update(viewState: .choosePin)
+                        } else {
+                            //  choosing pin
+                            updateAfterPinSet()
+                        }
                 default:
                     break
                 }
@@ -185,6 +165,8 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
             return .choosePinAfterLogin
         case .setPinAfterRegister:
             return .choosePinAfterRegister
+        case .changePin:
+            return .changePin
         default:
             return .inactive
         }
@@ -201,6 +183,8 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
             update(viewState: .confirmPinToDisable)
         case .inactive:
             update(viewState: .inactive)
+        case .changePin:
+            update(viewState: .changePin)
         default:
             break
         }
@@ -208,5 +192,47 @@ final class EnterPinCodeViewModel: EnterPinCodeViewModelType {
     
     private func update(viewState: EnterPinCodeViewState) {
         self.viewDelegate?.enterPinCodeViewModel(self, didUpdateViewState: viewState)
+    }
+    
+    private func updateAfterUnlockFailed() {
+        numberOfFailuresDuringEnterPIN += 1
+        pinCodePreferences.numberOfPinFailures += 1
+        if viewMode == .unlock && localAuthenticationService.shouldLogOutUser() {
+            //  log out user
+            self.coordinatorDelegate?.enterPinCodeViewModelDidCompleteWithReset(self, dueToTooManyErrors: true)
+            return
+        }
+        if numberOfFailuresDuringEnterPIN < pinCodePreferences.allowedNumberOfTrialsBeforeAlert {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.viewDelegate?.enterPinCodeViewModel(self, didUpdateViewState: .wrongPin)
+                self.currentPin.removeAll()
+            }
+        } else {
+            viewDelegate?.enterPinCodeViewModel(self, didUpdateViewState: .wrongPinTooManyTimes)
+            numberOfFailuresDuringEnterPIN = 0
+            currentPin.removeAll()
+        }
+    }
+    
+    private func updateAfterPinSet() {
+        if firstPin.isEmpty {
+            //  check if this PIN is allowed
+            if pinCodePreferences.notAllowedPINs.contains(currentPin) {
+                viewMode = .notAllowedPin
+                update(viewState: .notAllowedPin)
+                return
+            }
+            //  go to next screen
+            firstPin = currentPin
+            currentPin.removeAll()
+            update(viewState: .confirmPin)
+        } else if firstPin == currentPin { //  check first and second pins        
+                //  complete with a little delay
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    self.coordinatorDelegate?.enterPinCodeViewModel(self, didCompleteWithPin: self.firstPin)
+                }
+        } else {
+                update(viewState: .pinsDontMatch)
+        }
     }
 }

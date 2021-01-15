@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -20,14 +18,15 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="200"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="l6d-Uv-u3V">
-                    <rect key="frame" x="10" y="10" width="590" height="158"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="l6d-Uv-u3V" customClass="AutosizedTableView" customModule="Riot" customModuleProvider="target">
+                    <rect key="frame" x="10" y="10" width="590" height="120"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                 </tableView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pgo-gb-fHn">
-                    <rect key="frame" x="180" y="168" width="240" height="32"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pgo-gb-fHn">
+                    <rect key="frame" x="180" y="130" width="240" height="50"/>
                     <constraints>
+                        <constraint firstAttribute="height" constant="50" id="DI6-20-rgc"/>
                         <constraint firstAttribute="width" constant="240" id="pZU-Wt-tc1"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
@@ -42,14 +41,15 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
+                <constraint firstItem="l6d-Uv-u3V" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="0BA-Gy-gXH"/>
                 <constraint firstItem="pgo-gb-fHn" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="8T5-O0-con"/>
-                <constraint firstAttribute="bottom" secondItem="pgo-gb-fHn" secondAttribute="bottom" id="MP0-f7-neR"/>
+                <constraint firstAttribute="bottom" secondItem="pgo-gb-fHn" secondAttribute="bottom" constant="20" id="MP0-f7-neR"/>
                 <constraint firstAttribute="trailing" secondItem="l6d-Uv-u3V" secondAttribute="trailing" id="QFo-tz-WHJ"/>
                 <constraint firstItem="l6d-Uv-u3V" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="fUE-f8-ZPG"/>
-                <constraint firstAttribute="top" secondItem="l6d-Uv-u3V" secondAttribute="top" constant="-10" id="iAm-3I-sHR"/>
                 <constraint firstItem="l6d-Uv-u3V" firstAttribute="bottom" secondItem="pgo-gb-fHn" secondAttribute="top" id="kaa-aS-QqM"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="139" y="117"/>
         </view>
     </objects>
 </document>
