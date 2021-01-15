@@ -1065,7 +1065,7 @@
 "security_settings_complete_security_alert_message" = "Először be kell fejezned ennek a munkamenetnek a biztonsági beállítását.";
 "security_settings_coming_soon" = "Bocsánat. Element iOS-n ez a művelet egyenlőre nem érhető el. Kérlek használj másik Matrix klienst a beállításához. Element iOS használni fogja.";
 "device_verification_self_verify_wait_new_sign_in_title" = "Belépés ellenőrzése";
-"device_verification_self_verify_wait_additional_information" = "vagy másik eszközök közötti hitelesítésre alkalmas Matrix kliensre";
+"device_verification_self_verify_wait_additional_information" = "Ez Elementtel vagy más eszközök közötti hitelesítést támogató Matrix klienssel működik.";
 // MARK: - Device Verification
 "key_verification_other_session_title" = "Munkamenet hitelesítése";
 "key_verification_new_session_title" = "Új munkamenet ellenőrzése";
@@ -1265,3 +1265,19 @@
 
 "secrets_recovery_reset_action_part_1" = "Elfelejtetted vagy elveszett minden visszaállítási lehetőség? ";
 "less" = "Kevesebb";
+"favourites_empty_view_information" = "Többféle módon lehet kedvencnek beállítani - a leggyorsabb, ha rányomsz és nyomva tartod. Koppints a csillagra és automatikusan megjelennek itt.";
+"home_empty_view_information" = "A minden az egyben csevegő alkalmazás csapatoknak, barátoknak és szervezeteknek. Emberek és szobák hozzáadásához koppints a + jelre.";
+
+// MARK: - Home
+
+"home_empty_view_title" = "Üdv itt: %@,\n%@";
+"secrets_setup_recovery_passphrase_summary_information" = "Jegyezd meg a Biztonsági Kifejezést. A titkosított üzenetek és adatokhoz való hozzáféréshez használható.";
+"rooms_empty_view_information" = "A szobák megfelelnek bármilyen zárt vagy nyilvános csoportnak. Létező szobák megtalálásához vagy új készítéséhez koppints a + jelre.";
+"people_empty_view_information" = "Beszélj biztonságosan bárkivel. Emberek hozzáadásához koppints a + jelre.";
+
+// MARK: - Favourites
+
+"favourites_empty_view_title" = "Kedvenc szobák és emberek";
+"secrets_setup_recovery_passphrase_summary_title" = "Biztonsági kifejezés mentése";
+"rooms_empty_view_title" = "Szobák";
+"people_empty_view_title" = "Emberek";

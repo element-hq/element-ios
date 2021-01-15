@@ -236,3 +236,4 @@
 "settings_phone_number" = "Телефон";
 "settings_add_email_address" = "Додати адресу електронної пошти";
 "settings_email_address_placeholder" = "Введіть вашу адресу електронної пошти";
+"room_title_one_active_member" = "%@/%@ активний учасник";

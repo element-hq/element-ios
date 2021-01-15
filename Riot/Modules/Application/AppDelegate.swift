@@ -101,6 +101,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.legacyAppDelegate.applicationDidReceiveMemoryWarning(application)
     }
     
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        return self.appCoordinator.open(url: url, options: options)
+    }
+    
     // MARK: User Activity Continuation
     
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {

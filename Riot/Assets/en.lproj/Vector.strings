@@ -80,7 +80,7 @@
 "auth_register" = "Register";
 "auth_submit" = "Submit";
 "auth_skip" = "Skip";
-"auth_login_single_sign_on" = "Sign in with single sign-on";
+"auth_login_single_sign_on" = "Sign In";
 "auth_send_reset_email" = "Send Reset Email";
 "auth_return_to_login" = "Return to login screen";
 "auth_user_id_placeholder" = "Email or user name";
@@ -146,6 +146,16 @@
 "auth_softlogout_clear_data_sign_out_title" = "Are you sure?";
 "auth_softlogout_clear_data_sign_out_msg" = "Are you sure you want to clear all data currently stored on this device? Sign in again to access your account data and messages.";
 "auth_softlogout_clear_data_sign_out" = "Sign out";
+
+// Social login
+
+"social_login_list_title_continue" = "Continue with";
+"social_login_list_title_sign_in" = "Or login with";
+"social_login_list_title_sign_up" = "Or register with";
+
+"social_login_button_title_continue" = "Continue with %@";
+"social_login_button_title_sign_in" = "Sign In with %@";
+"social_login_button_title_sign_up" = "Sign Up with %@";
 
 // Errors
 "error_user_already_logged_in" = "It looks like you’re trying to connect to another homeserver. Do you want to sign out?";
@@ -864,6 +874,7 @@ Tap the + to start adding people.";
 "bug_report_progress_zipping" = "Collecting logs";
 "bug_report_progress_uploading" = "Uploading report";
 "bug_report_send" = "Send";
+"bug_report_background_mode" = "Continue in background";
 
 // Widget
 "widget_no_integrations_server_configured" = "No integrations server configured";
@@ -1470,6 +1481,7 @@ Tap the + to start adding people.";
 "pin_protection_choose_pin" = "Create a PIN for security";
 "pin_protection_confirm_pin" = "Confirm your PIN";
 "pin_protection_confirm_pin_to_disable" = "Confirm PIN to disable PIN";
+"pin_protection_confirm_pin_to_change" = "Confirm PIN to change PIN";
 "pin_protection_enter_pin" = "Enter your PIN";
 "pin_protection_forgot_pin" = "Forgot PIN";
 "pin_protection_reset_alert_title" = "Reset PIN";
@@ -1482,6 +1494,7 @@ Tap the + to start adding people.";
 "pin_protection_settings_section_footer" = "To reset your PIN, you'll need to re-login and create a new one.";
 "pin_protection_settings_enabled_forced" = "PIN enabled";
 "pin_protection_settings_enable_pin" = "Enable PIN";
+"pin_protection_settings_change_pin" = "Change PIN";
 "pin_protection_not_allowed_pin" = "For security reasons, this PIN isn’t available. Please try another PIN";
 "pin_protection_explanatory" = "Setting up a PIN lets you protect data like messages and contacts, so only you can access them by entering the PIN at the start of the app.";
 "pin_protection_kick_user_alert_message" = "Too many errors, you've been logged out";
@@ -1543,3 +1556,8 @@ Tap the + to start adding people.";
 
 "favourites_empty_view_title" = "Favourite rooms and people";
 "favourites_empty_view_information" = "You can favourite a few ways - the quickest is just to press and hold. Tap the star and they’ll automatically appear here for safe keeping.";
+
+// MARK: - Invite friends
+
+"invite_friends_action" = "Invite friends to %@";
+"invite_friends_share_text" = "Hey, talk to me on %@: %@";

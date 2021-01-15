@@ -609,8 +609,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     
     _isAppForeground = YES;
-    
-    [self configurePinCodeScreenFor:application createIfRequired:NO];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -1101,9 +1099,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)pushNotificationService:(PushNotificationService *)pushNotificationService shouldNavigateToRoomWithId:(NSString *)roomId
 {
-    [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:AnalyticsNoficationsTimeToDisplayContent
-                                                            category:AnalyticsNoficationsCategory];
-    
     _lastNavigatedRoomIdFromPush = roomId;
     [self navigateToRoomById:roomId];
 }
@@ -4551,6 +4546,21 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         [self presentJitsiViewController:nil];
     }
+}
+    
+#pragma mark - Authentication
+
+- (BOOL)continueSSOLoginWithToken:(NSString*)loginToken txnId:(NSString*)txnId
+{
+    AuthenticationViewController *authVC = self.masterTabBarController.authViewController;
+    
+    if (!authVC)
+    {
+        NSLog(@"[AppDelegate] Fail to continue SSO login");
+        return NO;
+    }
+    
+    return [authVC continueSSOLoginWithToken:loginToken txnId:txnId];
 }
 
 @end

@@ -1238,3 +1238,17 @@
 "secrets_recovery_reset_action_part_2" = "Reimposta tutto";
 "secrets_setup_recovery_passphrase_summary_information" = "Ricorda la tua frase di sicurezza. Può essere usata per sbloccare i tuoi messaggi e dati cifrati.";
 "secrets_setup_recovery_passphrase_summary_title" = "Salva la tua frase di sicurezza";
+"favourites_empty_view_information" = "Puoi preferire in diversi modi - il più veloce è tenendo premuto. Tocca la stella e appariranno qui automaticamente per tenerle al sicuro.";
+
+// MARK: - Favourites
+
+"favourites_empty_view_title" = "Stanze e persone preferite";
+"home_empty_view_information" = "L'app all-in-one di chat sicure per team, amici e organizzazioni. Tocca il pulsante + qua sotto per aggiungere persone e stanze.";
+
+// MARK: - Home
+
+"home_empty_view_title" = "Benvenuti su %@,\n%@";
+"rooms_empty_view_information" = "Le stanze sono ottime per chat di gruppo, private o pubbliche. Tocca il + per trovare quelle esistenti o crearne di nuove.";
+"rooms_empty_view_title" = "Stanze";
+"people_empty_view_information" = "Chatta in modo sicuro con chiunque. Tocca il + per aggiungere persone.";
+"people_empty_view_title" = "Persone";

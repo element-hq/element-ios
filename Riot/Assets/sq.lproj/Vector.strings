@@ -1252,3 +1252,17 @@
 "secrets_recovery_reset_action_part_2" = "Riktheni gjithçka te parazgjedhjet";
 "secrets_setup_recovery_passphrase_summary_information" = "Mbani mend Frazën tuaj të Sigurisë. Mund të përdoret për të shkyçur mesazhet & të dhëna tuajat të fshehtëzuara.";
 "secrets_setup_recovery_passphrase_summary_title" = "Ruani Frazën tuaj të Sigurisë";
+"favourites_empty_view_information" = "Dikujt ose diçkaje mund t’i vini shenjë si i parapëlqyer me disa mënyra - më e shpejta është thjesht ta shtypni dhe ta mbani të shtypur. Prekni yllin dhe do të shfaqen këtu, për ruajtje të sigurt.";
+
+// MARK: - Favourites
+
+"favourites_empty_view_title" = "Dhoma dhe persona të parapëlqyer";
+"home_empty_view_information" = "Aplikacioni “all-in-one” për fjalosje të sigurt, me ekipe, shokë dhe ente. Prekni butonin + më poshtë, që të shtoni persona dhe dhoma.";
+
+// MARK: - Home
+
+"home_empty_view_title" = "Mirë se vini te %@,\n%@";
+"rooms_empty_view_information" = "Dhomat janë të goditura për çfarëdo fjalosjeje në grup, private ose publike. Prekni + që të gjeni dhoma ekzistuese, ose të krijoni të reja.";
+"rooms_empty_view_title" = "Dhoma";
+"people_empty_view_information" = "Fjalosuni në mënyrë të sigurt me këdo. Prekni + që të filloni të shtoni persona.";
+"people_empty_view_title" = "Njerëz";
