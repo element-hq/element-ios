@@ -14,6 +14,7 @@ Changes to be released in next version
 🐛 Bugfix
  * Crash report cannot be submitted (on small phones) (#3819)
  * Prevent navigation controller from pushing same view controller (#3924)
+ * AuthVC: Fix recaptcha view cropping (#3940).
 
 ⚠️ API Changes
  * 
