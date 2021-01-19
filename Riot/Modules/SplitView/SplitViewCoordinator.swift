@@ -28,7 +28,7 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
     private let splitViewController: UISplitViewController
     
     private weak var masterPresentable: SplitViewMasterPresentable?
-    private weak var detailNavigationController: UINavigationController?
+    private var detailNavigationController: UINavigationController?
     
     private weak var tabBarCoordinator: TabBarCoordinatorType?
     
