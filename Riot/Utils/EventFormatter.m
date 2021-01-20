@@ -168,30 +168,43 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         }
     }
     
-    if (event.eventType == MXEventTypeRoomCreate)
+    switch (event.eventType)
     {
-        MXRoomCreateContent *createContent = [MXRoomCreateContent modelFromJSON:event.content];
-        
-        NSString *roomPredecessorId = createContent.roomPredecessorInfo.roomId;
-        
-        if (roomPredecessorId)
+        case MXEventTypeRoomCreate:
         {
-            return [self roomCreatePredecessorAttributedStringWithPredecessorRoomId:roomPredecessorId];
+            MXRoomCreateContent *createContent = [MXRoomCreateContent modelFromJSON:event.content];
+            
+            NSString *roomPredecessorId = createContent.roomPredecessorInfo.roomId;
+            
+            if (roomPredecessorId)
+            {
+                return [self roomCreatePredecessorAttributedStringWithPredecessorRoomId:roomPredecessorId];
+            }
+            else
+            {
+                NSAttributedString *string = [super attributedStringFromEvent:event withRoomState:roomState error:error];
+                NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:@"· "];
+                [result appendAttributedString:string];
+                return result;
+            }
         }
-        else
-        {
-            NSAttributedString *string = [super attributedStringFromEvent:event withRoomState:roomState error:error];
-            NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:@"· "];
-            [result appendAttributedString:string];
-            return result;
-        }
-    }
-    
-    // Make event types MXEventTypeKeyVerificationCancel and MXEventTypeKeyVerificationDone visible in timeline.
-    // TODO: Find another way to keep them visible and avoid instantiate empty NSMutableAttributedString.
-    if (event.eventType == MXEventTypeKeyVerificationCancel || event.eventType == MXEventTypeKeyVerificationDone)
-    {
-        return [NSMutableAttributedString new];
+            break;
+        case MXEventTypeCallCandidates:
+        case MXEventTypeCallAnswer:
+        case MXEventTypeCallSelectAnswer:
+        case MXEventTypeCallHangup:
+        case MXEventTypeCallNegotiate:
+        case MXEventTypeCallReplaces:
+        case MXEventTypeCallRejectReplacement:
+            //  Do not show call events except invite and reject in timeline
+            return nil;
+        case MXEventTypeKeyVerificationCancel:
+        case MXEventTypeKeyVerificationDone:
+            // Make event types MXEventTypeKeyVerificationCancel and MXEventTypeKeyVerificationDone visible in timeline.
+            // TODO: Find another way to keep them visible and avoid instantiate empty NSMutableAttributedString.
+            return [NSMutableAttributedString new];
+        default:
+            break;
     }
     
     NSAttributedString *attributedString = [super attributedStringFromEvent:event withRoomState:roomState error:error];
