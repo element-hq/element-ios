@@ -892,6 +892,9 @@
 		EC711BB124A63B58008F830C /* SecureBackupBannerPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC711BA624A63B58008F830C /* SecureBackupBannerPreferences.swift */; };
 		EC711BB324A63B58008F830C /* SecureBackupBannerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC711BA824A63B58008F830C /* SecureBackupBannerCell.xib */; };
 		EC711BB624A63C11008F830C /* AuthenticatedSessionViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC711BB524A63C11008F830C /* AuthenticatedSessionViewControllerFactory.swift */; };
+		EC757B1B25B5B63C00DF5787 /* CallBubbleCellBaseContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC757B1A25B5B63C00DF5787 /* CallBubbleCellBaseContentView.swift */; };
+		EC757B1D25B5B64800DF5787 /* CallBubbleCellBaseContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC757B1C25B5B64800DF5787 /* CallBubbleCellBaseContentView.xib */; };
+		EC757B1F25B7741D00DF5787 /* RoomBubbleCellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC757B1E25B7741D00DF5787 /* RoomBubbleCellData.swift */; };
 		EC7749C925A47E2600AB1295 /* CallVCEnterPipOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7749C825A47E2600AB1295 /* CallVCEnterPipOperation.swift */; };
 		EC7749CB25A48E7500AB1295 /* CallVCExitPipOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7749CA25A48E7500AB1295 /* CallVCExitPipOperation.swift */; };
 		EC7749CD25A48F6100AB1295 /* PiPAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7749CC25A48F6100AB1295 /* PiPAnimator.swift */; };
@@ -925,6 +928,9 @@
 		EC85D752247C0F52002C44C9 /* UNUserNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D750247C0E8F002C44C9 /* UNUserNotificationCenter.swift */; };
 		EC85D754247C0F5B002C44C9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D753247C0F5B002C44C9 /* Constants.swift */; };
 		EC85D755247C0F84002C44C9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D753247C0F5B002C44C9 /* Constants.swift */; };
+		EC8A542A25B1CDB5004E0802 /* RoomBaseCallBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8A542825B1CDB5004E0802 /* RoomBaseCallBubbleCell.swift */; };
+		EC8A542B25B1CDB5004E0802 /* RoomBaseCallBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC8A542925B1CDB5004E0802 /* RoomBaseCallBubbleCell.xib */; };
+		EC8A542F25B1CE5C004E0802 /* RoomDirectCallStatusBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8A542E25B1CE5C004E0802 /* RoomDirectCallStatusBubbleCell.swift */; };
 		EC9A3EC524E1616900A8CFAE /* PushNotificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9A3EC424E1616900A8CFAE /* PushNotificationStore.swift */; };
 		EC9A3EC624E1632C00A8CFAE /* PushNotificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9A3EC424E1616900A8CFAE /* PushNotificationStore.swift */; };
 		EC9A3EC724E1634100A8CFAE /* KeyValueStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA87124C823E700DE9EBF /* KeyValueStore.swift */; };
@@ -2172,6 +2178,9 @@
 		EC711BA624A63B58008F830C /* SecureBackupBannerPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureBackupBannerPreferences.swift; sourceTree = "<group>"; };
 		EC711BA824A63B58008F830C /* SecureBackupBannerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecureBackupBannerCell.xib; sourceTree = "<group>"; };
 		EC711BB524A63C11008F830C /* AuthenticatedSessionViewControllerFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticatedSessionViewControllerFactory.swift; sourceTree = "<group>"; };
+		EC757B1A25B5B63C00DF5787 /* CallBubbleCellBaseContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallBubbleCellBaseContentView.swift; sourceTree = "<group>"; };
+		EC757B1C25B5B64800DF5787 /* CallBubbleCellBaseContentView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CallBubbleCellBaseContentView.xib; sourceTree = "<group>"; };
+		EC757B1E25B7741D00DF5787 /* RoomBubbleCellData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomBubbleCellData.swift; sourceTree = "<group>"; };
 		EC7749C825A47E2600AB1295 /* CallVCEnterPipOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallVCEnterPipOperation.swift; sourceTree = "<group>"; };
 		EC7749CA25A48E7500AB1295 /* CallVCExitPipOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallVCExitPipOperation.swift; sourceTree = "<group>"; };
 		EC7749CC25A48F6100AB1295 /* PiPAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiPAnimator.swift; sourceTree = "<group>"; };
@@ -2208,6 +2217,9 @@
 		EC85D74E2477E614002C44C9 /* RiotNSE.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RiotNSE.entitlements; sourceTree = "<group>"; };
 		EC85D750247C0E8F002C44C9 /* UNUserNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNUserNotificationCenter.swift; sourceTree = "<group>"; };
 		EC85D753247C0F5B002C44C9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		EC8A542825B1CDB5004E0802 /* RoomBaseCallBubbleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomBaseCallBubbleCell.swift; sourceTree = "<group>"; };
+		EC8A542925B1CDB5004E0802 /* RoomBaseCallBubbleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomBaseCallBubbleCell.xib; sourceTree = "<group>"; };
+		EC8A542E25B1CE5C004E0802 /* RoomDirectCallStatusBubbleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomDirectCallStatusBubbleCell.swift; sourceTree = "<group>"; };
 		EC9A3EC424E1616900A8CFAE /* PushNotificationStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushNotificationStore.swift; sourceTree = "<group>"; };
 		EC9E9B052575AF5C0007C0A0 /* CallVCPresentOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVCPresentOperation.swift; sourceTree = "<group>"; };
 		EC9E9B072575AF730007C0A0 /* CallVCDismissOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVCDismissOperation.swift; sourceTree = "<group>"; };
@@ -4406,6 +4418,7 @@
 		B1B5583F20EF768E00210D55 /* BubbleCells */ = {
 			isa = PBXGroup;
 			children = (
+				EC8A542625B1CBBD004E0802 /* Call */,
 				ECFBD5E6250F97FC00DD5F5A /* RoomCreationCollapsedBubbleCell.h */,
 				ECFBD5E9250F97FC00DD5F5A /* RoomCreationCollapsedBubbleCell.m */,
 				ECFBD5E4250F97FC00DD5F5A /* RoomCreationCollapsedBubbleCell.xib */,
@@ -5323,6 +5336,26 @@
 			path = RiotNSE;
 			sourceTree = "<group>";
 		};
+		EC8A542625B1CBBD004E0802 /* Call */ = {
+			isa = PBXGroup;
+			children = (
+				EC8A542825B1CDB5004E0802 /* RoomBaseCallBubbleCell.swift */,
+				EC8A542925B1CDB5004E0802 /* RoomBaseCallBubbleCell.xib */,
+				EC757B1A25B5B63C00DF5787 /* CallBubbleCellBaseContentView.swift */,
+				EC757B1C25B5B64800DF5787 /* CallBubbleCellBaseContentView.xib */,
+				EC8A542725B1CD27004E0802 /* Direct */,
+			);
+			path = Call;
+			sourceTree = "<group>";
+		};
+		EC8A542725B1CD27004E0802 /* Direct */ = {
+			isa = PBXGroup;
+			children = (
+				EC8A542E25B1CE5C004E0802 /* RoomDirectCallStatusBubbleCell.swift */,
+			);
+			path = Direct;
+			sourceTree = "<group>";
+		};
 		EC9E9B042575AF460007C0A0 /* Operations */ = {
 			isa = PBXGroup;
 			children = (
@@ -5625,6 +5658,7 @@
 				ECF57A4F250913E4004BBF9D /* MXKTableViewCellWithLabelAndSwitch.swift */,
 				ECF57A5625091ECC004BBF9D /* MXKTableViewCellWithTextView.swift */,
 				B1A15BD525A526A200BDCA36 /* URLComponents.swift */,
+				EC757B1E25B7741D00DF5787 /* RoomBubbleCellData.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -6029,6 +6063,7 @@
 				F083BDE81E7009ED00A9B29C /* message.caf in Resources */,
 				B1107ECA2200B09F0038014B /* KeyBackupRecoverSuccessViewController.storyboard in Resources */,
 				B1B9DEF522EB426D0065E677 /* ReactionHistoryViewCell.xib in Resources */,
+				EC8A542B25B1CDB5004E0802 /* RoomBaseCallBubbleCell.xib in Resources */,
 				B1550FCA2420E8F500CE097B /* QRCodeReaderViewController.storyboard in Resources */,
 				B1B5579C20EF575B00210D55 /* ForgotPasswordInputsView.xib in Resources */,
 				F083BE011E7009ED00A9B29C /* third_party_licenses.html in Resources */,
@@ -6102,6 +6137,7 @@
 				B1B557AD20EF5A6D00210D55 /* DeviceView.xib in Resources */,
 				B1B5573920EE6C4D00210D55 /* GroupRoomsViewController.xib in Resources */,
 				B1B5597620EFB02A00210D55 /* InviteRecentTableViewCell.xib in Resources */,
+				EC757B1D25B5B64800DF5787 /* CallBubbleCellBaseContentView.xib in Resources */,
 				B1B558FB20EF768F00210D55 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				EC711B8C24A63B37008F830C /* SecretsRecoveryWithPassphraseViewController.storyboard in Resources */,
 				EC85D7192477DCD7002C44C9 /* KeyVerificationScanConfirmationViewController.storyboard in Resources */,
@@ -6883,6 +6919,7 @@
 				EC9E9B102575B33E0007C0A0 /* CallServiceDelegate.swift in Sources */,
 				B1B5573520EE6C4D00210D55 /* GroupDetailsViewController.m in Sources */,
 				B12D7A0223E2462200FACEDC /* UserVerificationStartViewAction.swift in Sources */,
+				EC757B1B25B5B63C00DF5787 /* CallBubbleCellBaseContentView.swift in Sources */,
 				EC85D7372477DD97002C44C9 /* LocalContactsSectionHeaderContainerView.m in Sources */,
 				B1DCC61A22E5E17100625807 /* EmojiPickerViewController.swift in Sources */,
 				B1A15BD425A4BAA800BDCA36 /* CustomSchemeURLParser.swift in Sources */,
@@ -6944,6 +6981,7 @@
 				ECF57A85250A64F0004BBF9D /* PlaceholderedTextView.swift in Sources */,
 				B1B4E9C424D47207004D5C33 /* BubbleReactionsViewModelBuilder.swift in Sources */,
 				EC85D72A2477DCF2002C44C9 /* KeyVerificationManuallyVerifyViewModel.swift in Sources */,
+				EC8A542F25B1CE5C004E0802 /* RoomDirectCallStatusBubbleCell.swift in Sources */,
 				B12742BC258C472800731DA6 /* LegacySSOAuthentificationSession.swift in Sources */,
 				B1BEE74A23E093260003A4CB /* UserVerificationSessionStatusCoordinatorType.swift in Sources */,
 				3232ABA4225730E100AD6A5C /* DeviceVerificationStartViewAction.swift in Sources */,
@@ -6966,6 +7004,7 @@
 				B16C029025ABC428008CA7B1 /* CustomRoundedButton.swift in Sources */,
 				EC711B8324A63B37008F830C /* SecretsSetupRecoveryPassphraseCoordinator.swift in Sources */,
 				B125FE23231D5E4300B72806 /* SettingsDiscoveryViewState.swift in Sources */,
+				EC757B1F25B7741D00DF5787 /* RoomBubbleCellData.swift in Sources */,
 				B1B5593820EF7BAC00210D55 /* TableViewCellWithLabelAndLargeTextView.m in Sources */,
 				B1DCC62222E60BE000625807 /* EmojiPickerItemViewData.swift in Sources */,
 				B1BEE74723E093260003A4CB /* UserVerificationSessionStatusViewModelType.swift in Sources */,
@@ -7010,6 +7049,7 @@
 				ECB5D98F255420F8000AD89C /* Keychain.swift in Sources */,
 				B1B557BF20EF5B4500210D55 /* DisabledRoomInputToolbarView.m in Sources */,
 				B1B5578620EF564900210D55 /* GroupTableViewCellWithSwitch.m in Sources */,
+				EC8A542A25B1CDB5004E0802 /* RoomBaseCallBubbleCell.swift in Sources */,
 				B1098BE821ECFE52000DDA48 /* Coordinator.swift in Sources */,
 				B11291EC238D704C0077B478 /* FloatingPoint.swift in Sources */,
 				B1B557E920EF60F500210D55 /* MessagesSearchResultTextMsgBubbleCell.m in Sources */,
