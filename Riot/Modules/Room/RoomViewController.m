@@ -362,6 +362,10 @@
     [self.bubblesTableView registerClass:RoomCreationCollapsedBubbleCell.class forCellReuseIdentifier:RoomCreationCollapsedBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomCreationWithPaginationCollapsedBubbleCell.class forCellReuseIdentifier:RoomCreationWithPaginationCollapsedBubbleCell.defaultReuseIdentifier];
     
+    //  call cells
+    [self.bubblesTableView registerClass:RoomIncomingDirectCallBubbleCell.class forCellReuseIdentifier:RoomIncomingDirectCallBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomDirectCallStatusBubbleCell.class forCellReuseIdentifier:RoomDirectCallStatusBubbleCell.defaultReuseIdentifier];
+    
     [self vc_removeBackTitle];
     
     // Replace the default input toolbar view.
@@ -1979,6 +1983,10 @@
         else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreateConfiguration)
         {
             cellViewClass = bubbleData.isPaginationFirstBubble ? RoomCreationWithPaginationCollapsedBubbleCell.class : RoomCreationCollapsedBubbleCell.class;
+        }
+        else if (bubbleData.tag == RoomBubbleCellDataTagCall)
+        {
+            cellViewClass = RoomDirectCallStatusBubbleCell.class;
         }
         else if (bubbleData.isIncoming)
         {
