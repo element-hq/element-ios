@@ -2158,6 +2158,10 @@
                         }
                     }
                 }
+                else if (bubbleData.tag == RoomBubbleCellDataTagCall)
+                {
+                    //  TODO: Implement after design decisions
+                }
                 else
                 {
                     // Show contextual menu on single tap if bubble is not collapsed
