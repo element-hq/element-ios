@@ -33,6 +33,7 @@ NSString *const kMXKRoomBubbleCellLongPressOnReactionView = @"kMXKRoomBubbleCell
 NSString *const kMXKRoomBubbleCellEventIdKey = @"kMXKRoomBubbleCellEventIdKey";
 NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestAcceptPressed = @"kMXKRoomBubbleCellKeyVerificationAcceptPressed";
 NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed = @"kMXKRoomBubbleCellKeyVerificationDeclinePressed";
+NSString *const kMXKRoomBubbleCellCallBackButtonPressed = @"kMXKRoomBubbleCellCallBackButtonPressed";
 
 @implementation MXKRoomBubbleTableViewCell (Riot)
 
