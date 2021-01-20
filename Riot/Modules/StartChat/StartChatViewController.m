@@ -20,7 +20,7 @@
 #import "Riot-Swift.h"
 #import "MXSession+Riot.h"
 
-@interface StartChatViewController () <UITableViewDataSource, UISearchBarDelegate, ContactsTableViewControllerDelegate>
+@interface StartChatViewController () <UITableViewDataSource, UISearchBarDelegate, ContactsTableViewControllerDelegate, InviteFriendsHeaderViewDelegate>
 {
     // The contact used to describe the current user.
     MXKContact *userContact;
@@ -45,6 +45,9 @@
 @property (weak, nonatomic) IBOutlet UIView *searchBarHeader;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBarView;
 @property (weak, nonatomic) IBOutlet UIView *searchBarHeaderBorder;
+
+@property (nonatomic, strong) InviteFriendsPresenter *inviteFriendsPresenter;
+@property (nonatomic, weak) InviteFriendsHeaderView *inviteFriendsHeaderView;
 
 @end
 
@@ -124,6 +127,32 @@
     
     // Redirect table data source
     self.contactsTableView.dataSource = self;
+    
+    [self setupInviteFriendsHeaderView];
+}
+
+- (void)setupInviteFriendsHeaderView
+{
+    InviteFriendsHeaderView *inviteFriendsHeaderView = [InviteFriendsHeaderView instantiate];
+    inviteFriendsHeaderView.delegate = self;
+    self.contactsTableView.tableHeaderView = inviteFriendsHeaderView;
+    
+    self.inviteFriendsHeaderView = inviteFriendsHeaderView;
+}
+
+- (void)showInviteFriendsHeaderView:(BOOL)show
+{
+    if (show)
+    {
+        if (!self.inviteFriendsHeaderView)
+        {
+            [self setupInviteFriendsHeaderView];
+        }
+    }
+    else
+    {
+        self.contactsTableView.tableHeaderView = nil;
+    }
 }
 
 - (void)userInterfaceThemeDidChange
@@ -143,6 +172,8 @@
     {
         [self.contactsTableView reloadData];
     }
+    
+    [self.inviteFriendsHeaderView updateWithTheme:ThemeService.shared.theme];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -203,6 +234,12 @@
     [self searchBarCancelButtonClicked:_searchBarView];
 }
 
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    [self.contactsTableView vc_relayoutHeaderView];
+}
+
 #pragma mark -
 
 - (void)setIsAddParticipantSearchBarEditing:(BOOL)isAddParticipantSearchBarEditing
@@ -259,15 +296,37 @@
     
     if (userContact)
     {
-        contactsDataSource.ignoredContactsByMatrixId[self.mainSession.myUser.userId] = userContact;
+        if (self.mainSession.myUser.userId)
+        {
+            contactsDataSource.ignoredContactsByMatrixId[self.mainSession.myUser.userId] = userContact;
+        }
     }
 }
+
+- (void)showInviteFriendsFromSourceView:(UIView*)sourceView
+{
+    if (!self.inviteFriendsPresenter)
+    {
+        self.inviteFriendsPresenter = [InviteFriendsPresenter new];
+    }
+    
+    NSString *userId = self.mainSession.myUser.userId;
+    
+    [self.inviteFriendsPresenter presentFor:userId
+                                       from:self
+                                 sourceView:sourceView
+                                   animated:YES];
+}
+
 
 #pragma mark - UITableView data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSInteger count = 0;
+    
+    // Do not show invite friends action when a participant is selected
+    [self showInviteFriendsHeaderView:!participants.count];
     
     if (_isAddParticipantSearchBarEditing)
     {
@@ -711,6 +770,14 @@
     
     // Refresh display by leaving search session
     [self searchBarCancelButtonClicked:_searchBarView];
+}
+
+#pragma mark - InviteFriendsHeaderViewDelegate
+
+- (void)inviteFriendsHeaderView:(InviteFriendsHeaderView *)headerView didTapButton:(UIButton *)button
+
+{
+    [self showInviteFriendsFromSourceView:button];
 }
 
 @end

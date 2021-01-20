@@ -24,6 +24,8 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     // MARK: - Constants
     
     // MARK: - Properties
+    
+    private let customSchemeURLParser: CustomSchemeURLParser
   
     // MARK: Private
     
@@ -48,12 +50,26 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     
     init(router: RootRouterType) {
         self.rootRouter = router
+        self.customSchemeURLParser = CustomSchemeURLParser()
     }
     
     // MARK: - Public methods
     
     func start() {
         self.showSplitView(session: self.mainSession)
+        NSLog("[AppCoordinator] Showed split view")
+    }
+    
+    func open(url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        // NOTE: As said in the Apple documentation be careful on security issues with Custom Scheme URL (see https://developer.apple.com/documentation/xcode/allowing_apps_and_websites_to_link_to_your_content/defining_a_custom_url_scheme_for_your_app)
+        
+        do {
+            let deepLinkOption = try self.customSchemeURLParser.parse(url: url, options: options)
+            return self.handleDeepLinkOption(deepLinkOption)
+        } catch {
+            NSLog("[AppCoordinator] Custom scheme URL parsing failed with error: \(error)")
+            return false
+        }
     }
         
     // MARK: - Private methods
@@ -86,12 +102,26 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         // FIXME: Present an error on coordinator.toPresentable()
         self.legacyAppDelegate.showError(asAlert: error)
     }
+    
+    private func handleDeepLinkOption(_ deepLinkOption: DeepLinkOption) -> Bool {
+        
+        let canOpenLink: Bool
+        
+        switch deepLinkOption {
+        case .connect(let loginToken, let transactionId):
+            canOpenLink = self.legacyAppDelegate.continueSSOLogin(withToken: loginToken, txnId: transactionId)
+        }
+        
+        return canOpenLink
+    }
 }
 
 // MARK: - LegacyAppDelegateDelegate
 extension AppCoordinator: LegacyAppDelegateDelegate {
             
     func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, wantsToPopToHomeViewControllerAnimated animated: Bool, completion: (() -> Void)!) {
+        
+        NSLog("[AppCoordinator] wantsToPopToHomeViewControllerAnimated")
         
         self.splitViewCoordinator?.popToHome(animated: animated, completion: completion)
     }
