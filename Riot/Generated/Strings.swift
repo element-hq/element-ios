@@ -1206,6 +1206,30 @@ internal enum VectorL10n {
   internal static var errorUserAlreadyLoggedIn: String { 
     return VectorL10n.tr("Vector", "error_user_already_logged_in") 
   }
+  /// Call back
+  internal static var eventFormatterCallBack: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_back") 
+  }
+  /// This call has ended
+  internal static var eventFormatterCallHasEnded: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_has_ended") 
+  }
+  /// Video call
+  internal static var eventFormatterCallVideo: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_video") 
+  }
+  /// Voice call
+  internal static var eventFormatterCallVoice: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_voice") 
+  }
+  /// You're currently in this call
+  internal static var eventFormatterCallYouCurrentlyIn: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_you_currently_in") 
+  }
+  /// You declined this call
+  internal static var eventFormatterCallYouDeclined: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_you_declined") 
+  }
   /// VoIP conference added by %@
   internal static func eventFormatterJitsiWidgetAdded(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_jitsi_widget_added", p1)

@@ -807,6 +807,12 @@ Tap the + to start adding people.";
 "event_formatter_rerequest_keys_part1_link" = "Re-request encryption keys";
 "event_formatter_rerequest_keys_part2" = " from your other sessions.";
 "event_formatter_message_edited_mention" = "(edited)";
+"event_formatter_call_voice" = "Voice call";
+"event_formatter_call_video" = "Video call";
+"event_formatter_call_has_ended" = "This call has ended";
+"event_formatter_call_you_currently_in" = "You're currently in this call";
+"event_formatter_call_you_declined" = "You declined this call";
+"event_formatter_call_back" = "Call back";
 
 // Events formatter with you
 "event_formatter_widget_added_by_you" = "You added the widget: %@";
