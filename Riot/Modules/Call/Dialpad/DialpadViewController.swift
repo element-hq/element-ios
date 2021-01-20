@@ -315,6 +315,7 @@ class DialpadViewController: UIViewController {
     }
     
     @IBAction private func callButtonAction(_ sender: DialpadActionButton) {
+        phoneNumber = phoneNumberTextField.text ?? ""
         delegate?.dialpadViewControllerDidTapCall?(self, withPhoneNumber: rawPhoneNumber)
     }
     
