@@ -363,7 +363,6 @@
     [self.bubblesTableView registerClass:RoomCreationWithPaginationCollapsedBubbleCell.class forCellReuseIdentifier:RoomCreationWithPaginationCollapsedBubbleCell.defaultReuseIdentifier];
     
     //  call cells
-    [self.bubblesTableView registerClass:RoomIncomingDirectCallBubbleCell.class forCellReuseIdentifier:RoomIncomingDirectCallBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomDirectCallStatusBubbleCell.class forCellReuseIdentifier:RoomDirectCallStatusBubbleCell.defaultReuseIdentifier];
     
     [self vc_removeBackTitle];
