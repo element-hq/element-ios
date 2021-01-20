@@ -55,4 +55,14 @@
     return [super preferredInterfaceOrientationForPresentation];
 }
 
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if ([self.viewControllers indexOfObject:viewController] != NSNotFound)
+    {
+        NSLog(@"[RiotNavigationController] pushViewController: is pushing same view controller %@\n%@", viewController, [NSThread callStackSymbols]);
+        return;
+    }
+    [super pushViewController:viewController animated:animated];
+}
+
 @end

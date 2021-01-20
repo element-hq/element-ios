@@ -20,6 +20,11 @@ internal typealias AssetImageTypeAlias = ImageAsset.Image
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 internal enum Asset {
   internal enum Images {
+    internal static let socialLoginButtonApple = ImageAsset(name: "social_login_button_apple")
+    internal static let socialLoginButtonFacebook = ImageAsset(name: "social_login_button_facebook")
+    internal static let socialLoginButtonGithub = ImageAsset(name: "social_login_button_github")
+    internal static let socialLoginButtonGoogle = ImageAsset(name: "social_login_button_google")
+    internal static let socialLoginButtonTwitter = ImageAsset(name: "social_login_button_twitter")
     internal static let callAudioMuteOffIcon = ImageAsset(name: "call_audio_mute_off_icon")
     internal static let callAudioMuteOnIcon = ImageAsset(name: "call_audio_mute_on_icon")
     internal static let callChatIcon = ImageAsset(name: "call_chat_icon")
@@ -52,6 +57,7 @@ internal enum Asset {
     internal static let revealPasswordButton = ImageAsset(name: "reveal_password_button")
     internal static let selectionTick = ImageAsset(name: "selection_tick")
     internal static let selectionUntick = ImageAsset(name: "selection_untick")
+    internal static let shareActionButton = ImageAsset(name: "share_action_button")
     internal static let shrinkIcon = ImageAsset(name: "shrink_icon")
     internal static let smartphone = ImageAsset(name: "smartphone")
     internal static let startChat = ImageAsset(name: "start_chat")
