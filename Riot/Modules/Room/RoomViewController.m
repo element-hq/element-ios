@@ -2290,6 +2290,13 @@
                 [self showReactionHistoryForEventId:tappedEventId animated:YES];
             }
         }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellCallBackButtonPressed])
+        {
+            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
+            
+            [self roomInputToolbarView:self.inputToolbarView placeCallWithVideo2:eventContent.isVideoCall];
+        }
         else
         {
             // Keep default implementation for other actions
