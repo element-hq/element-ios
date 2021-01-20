@@ -2,18 +2,13 @@ Changes to be released in next version
 =================================================
 
 ✨ Features
- * Change Pin inside the app (#3881)
- * AuthVC: Add social login (#3846).
- * Invite friends: Add the ability to invite friends outside of Element in a few places (#3840).
+ * 
 
 🙌 Improvements
- * Bug report: Add "Continue in background" button  (#3816).
- * Show user id in the room invite preview screen (#3839)
- * AuthVC: SSO authentication now use redirect URL instead of fallback page (#3846).
+ * 
 
 🐛 Bugfix
- * Crash report cannot be submitted (on small phones) (#3819)
- * Prevent navigation controller from pushing same view controller (#3924)
+ * Navigation: Unable to open a room from a room list (#3863).
 
 ⚠️ API Changes
  * 
@@ -26,6 +21,66 @@ Changes to be released in next version
 
 Others
  * 
+
+Changes in 1.1.5 (2021-01-18)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.13.7](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.7)).
+
+Changes in 1.1.4 (2021-01-15)
+=================================================
+
+✨ Features
+ * Change Pin inside the app (#3881)
+ * AuthVC: Add social login (#3846).
+ * Invite friends: Add the ability to invite friends outside of Element in a few places (#3840).
+
+🙌 Improvements
+ * Bug report: Add "Continue in background" button  (#3816).
+ * Show user id in the room invite preview screen (#3839)
+ * AuthVC: SSO authentication now use redirect URL instead of fallback page (#3846).
+
+🐛 Bugfix
+ * Crash report cannot be submitted (on small phones) (#3819)
+ * Prevent navigation controller from pushing same view controller (#3924)
+ * AuthVC: Fix recaptcha view cropping (#3940).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.13.6](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.6)).
 
 Changes in 1.1.3 (2020-12-18)
 =================================================
