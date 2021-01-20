@@ -278,6 +278,8 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     {
         MXEvent *roomCreateEvent = [events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type == %@", kMXEventTypeStringRoomCreate]].firstObject;
         
+        MXEvent *callInviteEvent = [events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type == %@", kMXEventTypeStringCallInvite]].firstObject;
+        
         if (roomCreateEvent)
         {
             MXKEventFormatterError tmpError;
@@ -299,6 +301,11 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
             }];
             [result appendAttributedString:linkMore];
             return result;
+        }
+        else if (callInviteEvent)
+        {
+            //  return a non-nil value
+            return [NSMutableAttributedString new];
         }
         else if (events[0].eventType == MXEventTypeRoomMember)
         {
