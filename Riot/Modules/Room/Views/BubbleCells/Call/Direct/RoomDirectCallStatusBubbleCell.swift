@@ -73,8 +73,12 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
          .remotelyOnHold:
             statusTextView.text = VectorL10n.eventFormatterCallYouCurrentlyIn
         case .ringing:
-            //  TODO: Waiting for design decision here
-            statusTextView.text = nil
+            if call.isIncoming {
+                //  should not be here
+                statusTextView.text = nil
+            } else {
+                statusTextView.text = VectorL10n.eventFormatterCallYouCurrentlyIn
+            }
         case .ended:
             switch call.endReason {
             case .unknown,

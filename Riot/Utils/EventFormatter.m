@@ -26,6 +26,7 @@
 #import "DecryptionFailureTracker.h"
 
 #import "EventFormatter+DTCoreTextFix.h"
+#import <MatrixSDK/MatrixSDK.h>
 
 #pragma mark - Constants definitions
 
@@ -198,6 +199,18 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         case MXEventTypeCallRejectReplacement:
             //  Do not show call events except invite and reject in timeline
             return nil;
+        case MXEventTypeCallInvite:
+        {
+            MXCallInviteEventContent *content = [MXCallInviteEventContent modelFromJSON:event.content];
+            MXCall *call = [mxSession.callManager callWithCallId:content.callId];
+            if (call && call.isIncoming && call.state == MXCallStateRinging)
+            {
+                //  incoming call UI will be handled by CallKit (or incoming call screen if CallKit disabled)
+                //  do not show a bubble for this case
+                return nil;
+            }
+        }
+            break;
         case MXEventTypeKeyVerificationCancel:
         case MXEventTypeKeyVerificationDone:
             // Make event types MXEventTypeKeyVerificationCancel and MXEventTypeKeyVerificationDone visible in timeline.
