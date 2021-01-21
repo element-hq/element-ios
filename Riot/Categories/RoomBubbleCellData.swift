@@ -16,7 +16,7 @@
 
 import Foundation
 
-extension RoomBubbleCellData {
+@objc extension RoomBubbleCellData {
     
     /// Gathers all collapsable events in both directions (previous and next)
     /// - Returns: Array of events containing collapsable events in both sides.
