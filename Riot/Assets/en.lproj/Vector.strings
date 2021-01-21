@@ -1552,6 +1552,13 @@ Tap the + to start adding people.";
 // MARK: - Dial Pad
 "dialpad_title" = "Dial pad";
 
+// MARK: - Call Transfer
+"call_transfer_title" = "Transfer";
+"call_transfer_users" = "Users";
+"call_transfer_dialpad" = "Dial pad";
+"call_transfer_contacts_recent" = "Recent";
+"call_transfer_contacts_all" = "All";
+
 // MARK: - Home
 
 "home_empty_view_title" = "Welcome to %@,\n%@";
