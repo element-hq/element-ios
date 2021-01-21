@@ -321,6 +321,7 @@ class CallService: NSObject {
     
     @objc
     private func callTileTapped(_ notification: Notification) {
+        NSLog("[CallService] callTileTapped")
         guard let bubbleData = notification.object as? RoomBubbleCellData else {
             return
         }
@@ -332,6 +333,8 @@ class CallService: NSObject {
         guard let callEventContent = MXCallEventContent(fromJSON: randomEvent.content) else {
             return
         }
+        
+        NSLog("[CallService] callTileTapped: for call: \(callEventContent.callId)")
         
         guard let session = sessions.first else { return }
         
