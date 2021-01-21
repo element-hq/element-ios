@@ -1961,6 +1961,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         // Register the session to the widgets manager
         [[WidgetManager sharedManager] addMatrixSession:mxSession];
         
+        // register the session to the call service
+        [_callService addMatrixSession:mxSession];
+        
         [mxSessionArray addObject:mxSession];
         
         // Do the one time check on device id
@@ -1974,6 +1977,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     // Update home data sources
     [_masterTabBarController removeMatrixSession:mxSession];
+    
+    // remove session from the call service
+    [_callService removeMatrixSession:mxSession];
 
     // Update the widgets manager
     [[WidgetManager sharedManager] removeMatrixSession:mxSession]; 

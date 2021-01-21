@@ -25,6 +25,7 @@ class CallService: NSObject {
         static let pipAnimationDuration: TimeInterval = 0.25
     }
     
+    private var sessions: [MXSession] = []
     private var callVCs: [String: CallViewController] = [:]
     private var callBackgroundTasks: [String: MXBackgroundTask] = [:]
     private weak var presentedCallVC: CallViewController? {
@@ -76,6 +77,16 @@ class CallService: NSObject {
     
     /// Delegate object
     weak var delegate: CallServiceDelegate?
+    
+    func addMatrixSession(_ session: MXSession) {
+        sessions.append(session)
+    }
+    
+    func removeMatrixSession(_ session: MXSession) {
+        if let index = sessions.firstIndex(of: session) {
+            sessions.remove(at: index)
+        }
+    }
     
     /// Start the service
     func start() {
