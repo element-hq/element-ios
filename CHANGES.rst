@@ -6,6 +6,7 @@ Changes to be released in next version
 
 🙌 Improvements
  * VoIP: Implement DTMF on call screen (#3929).
+ * VoIP: Implement call transfer screen (#3962).
 
 🐛 Bugfix
  * Navigation: Unable to open a room from a room list (#3863).
