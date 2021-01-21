@@ -515,10 +515,12 @@
 
 - (void)openDialpad
 {
-    DialpadConfiguration *config = [[DialpadConfiguration alloc] initWithShowsBackspaceButton:NO
-                                                                              showsCallButton:NO
-                                                                            formattingEnabled:NO
-                                                                               editingEnabled:NO];
+    DialpadConfiguration *config = [[DialpadConfiguration alloc] initWithShowsTitle:YES
+                                                                   showsCloseButton:YES
+                                                               showsBackspaceButton:NO
+                                                                    showsCallButton:NO
+                                                                  formattingEnabled:NO
+                                                                     editingEnabled:NO];
     DialpadViewController *controller = [DialpadViewController instantiateWithConfiguration:config];
     controller.delegate = self;
     self.customSizedPresentationController = [[CustomSizedPresentationController alloc] initWithPresentedViewController:controller presentingViewController:self];
