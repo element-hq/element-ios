@@ -28,7 +28,7 @@
 
 #import "IncomingCallView.h"
 
-@interface CallViewController () <PictureInPicturable, DialpadViewControllerDelegate>
+@interface CallViewController () <PictureInPicturable, DialpadViewControllerDelegate, CallTransferMainViewControllerDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
@@ -531,6 +531,17 @@
     [self presentViewController:controller animated:YES completion:nil];
 }
 
+#pragma mark - Call Transfer
+
+- (void)openCallTransfer
+{
+    CallTransferMainViewController *controller = [CallTransferMainViewController instantiateWithSession:self.mainSession];
+    controller.delegate = self;
+    
+    UINavigationController *navController = [[RiotNavigationController alloc] initWithRootViewController:controller];
+    [self presentViewController:navController animated:YES completion:nil];
+}
+
 #pragma mark - DialpadViewControllerDelegate
 
 - (void)dialpadViewControllerDidTapClose:(DialpadViewController *)viewController
@@ -541,11 +552,52 @@
 
 - (void)dialpadViewControllerDidTapDigit:(DialpadViewController *)viewController digit:(NSString *)digit
 {
+    if (digit.length == 0)
+    {
+        return;
+    }
     BOOL result = [self.mxCall sendDTMF:digit
                                duration:0
                            interToneGap:0];
     
     NSLog(@"[CallViewController] Sending DTMF tones %@", result ? @"succeeded": @"failed");
+}
+
+#pragma mark - CallTransferMainViewControllerDelegate
+
+- (void)callTransferMainViewControllerDidComplete:(CallTransferMainViewController *)viewController consult:(BOOL)consult contact:(MXKContact *)contact phoneNumber:(NSString *)phoneNumber
+{
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+    
+    if (contact)
+    {
+        NSString *targetUserId = contact.matrixIdentifiers.firstObject;
+
+        MXUserModel *targetUser = [[MXUserModel alloc] initWithUserId:targetUserId
+                                                          displayname:contact.displayName
+                                                            avatarUrl:contact.matrixAvatarURL];
+        MXUserModel *transfereeUser = [[MXUserModel alloc] initWithUser:self.peer];
+
+        [self.mainSession.callManager transferCall:self.mxCall
+                                                to:targetUser
+                                    withTransferee:transfereeUser
+                                      consultFirst:consult
+                                           success:^(NSString * _Nonnull newCallId){
+            NSLog(@"Call transfer succeeded with new call ID: %@", newCallId);
+        } failure:^(NSError * _Nullable error) {
+            NSLog(@"Call transfer failed with error: %@", error);
+        }];
+    }
+    else if (phoneNumber)
+    {
+        //  TODO: Implement phone number lookup on call transfers
+    }
+
+}
+
+- (void)callTransferMainViewControllerDidCancel:(CallTransferMainViewController *)viewController
+{
+    [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - PictureInPicturable
