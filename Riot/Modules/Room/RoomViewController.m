@@ -123,6 +123,8 @@
 
 #import "Riot-Swift.h"
 
+NSString *const kRoomCallTileTapped = @"RoomCallTileTapped";
+
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
@@ -2159,7 +2161,11 @@
                 }
                 else if (bubbleData.tag == RoomBubbleCellDataTagCall)
                 {
-                    //  TODO: Implement after design decisions
+                    if ([bubbleData isKindOfClass:[RoomBubbleCellData class]])
+                    {
+                        //  post notification `RoomCallTileTapped`
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kRoomCallTileTapped object:bubbleData];
+                    }
                 }
                 else
                 {
