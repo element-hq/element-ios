@@ -22,7 +22,7 @@ import libPhoneNumber_iOS
 @objc protocol DialpadViewControllerDelegate: class {
     @objc optional func dialpadViewControllerDidTapCall(_ viewController: DialpadViewController,
                                                         withPhoneNumber phoneNumber: String)
-    func dialpadViewControllerDidTapClose(_ viewController: DialpadViewController)
+    @objc optional func dialpadViewControllerDidTapClose(_ viewController: DialpadViewController)
     
     @objc optional func dialpadViewControllerDidTapDigit(_ viewController: DialpadViewController, digit: String)
 }
@@ -32,8 +32,23 @@ class DialpadViewController: UIViewController {
     
     // MARK: Outlets
     
-    @IBOutlet private weak var closeButton: UIButton!
-    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var phoneNumberTextFieldTopConstraint: NSLayoutConstraint! {
+        didSet {
+            if !configuration.showsTitle && !configuration.showsCloseButton {
+                phoneNumberTextFieldTopConstraint.constant = 0
+            }
+        }
+    }
+    @IBOutlet private weak var closeButton: UIButton! {
+        didSet {
+            closeButton.isHidden = !configuration.showsCloseButton
+        }
+    }
+    @IBOutlet private weak var titleLabel: UILabel! {
+        didSet {
+            titleLabel.isHidden = !configuration.showsTitle
+        }
+    }
     @IBOutlet private weak var phoneNumberTextField: UITextField! {
         didSet {
             phoneNumberTextField.text = nil
@@ -55,6 +70,11 @@ class DialpadViewController: UIViewController {
         didSet {
             callButton.type = .call
             callButton.isHidden = !configuration.showsCallButton
+        }
+    }
+    @IBOutlet private weak var spaceButton: UIButton! {
+        didSet {
+            spaceButton.isHidden = !configuration.showsBackspaceButton || !configuration.showsCallButton
         }
     }
     
@@ -81,7 +101,7 @@ class DialpadViewController: UIViewController {
         }
     }
     /// Phone number as non-formatted
-    private var rawPhoneNumber: String {
+    var rawPhoneNumber: String {
         return phoneNumber.vc_removingAllWhitespaces()
     }
     private var theme: Theme!
@@ -229,7 +249,7 @@ class DialpadViewController: UIViewController {
     }
     
     @IBAction private func closeButtonAction(_ sender: UIButton) {
-        delegate?.dialpadViewControllerDidTapClose(self)
+        delegate?.dialpadViewControllerDidTapClose?(self)
     }
     
     @IBAction private func digitButtonAction(_ sender: DialpadButton) {
@@ -269,6 +289,10 @@ class DialpadViewController: UIViewController {
     }
     
     @IBAction private func backspaceButtonAction(_ sender: DialpadActionButton) {
+        defer {
+            delegate?.dialpadViewControllerDidTapDigit?(self, digit: "")
+        }
+        
         if phoneNumber.isEmpty {
             return
         }
