@@ -48,6 +48,8 @@ class NotificationService: UNNotificationServiceExtension {
     //  MARK: - Method Overrides
     
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
+        let userInfo = request.content.userInfo
+
         // Set static application settings
         configuration.setupSettings()
         
@@ -59,15 +61,16 @@ class NotificationService: UNNotificationServiceExtension {
         //  setup logs
         setupLogger()
         
+        NSLog(" ")
+        NSLog(" ")
+        NSLog("################################################################################")
         NSLog("[NotificationService] Instance: \(self), thread: \(Thread.current)")
+        NSLog("[NotificationService] Payload came: \(userInfo)")
         
         //  log memory at the beginning of the process
         logMemory()
         
         UNUserNotificationCenter.current().removeUnwantedNotifications()
-        
-        let userInfo = request.content.userInfo
-        NSLog("[NotificationService] Payload came: \(userInfo)")
         
         //  check if this is a Matrix notification
         guard let roomId = userInfo["room_id"] as? String, let eventId = userInfo["event_id"] as? String else {
@@ -105,6 +108,12 @@ class NotificationService: UNNotificationServiceExtension {
         NSLog("[NotificationService] serviceExtensionTimeWillExpire")
         //  No-op here. If the process is killed by the OS due to time limit, it will also show the notification with the original content.
     }
+    
+    deinit {
+        NSLog("[NotificationService] deinit for \(self)");
+        NSLog(" ")
+    }
+    
     
     //  MARK: - Private
     
@@ -203,6 +212,9 @@ class NotificationService: UNNotificationServiceExtension {
             
             //  log memory again at the end of the process
             self.logMemory()
+            
+            // We are done for this push
+            NSLog("--------------------------------------------------------------------------------")
         }
     }
     
