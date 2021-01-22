@@ -36,6 +36,8 @@ final class CallTransferSelectContactViewController: UIViewController {
     
     private enum Constants {
         static let maxNumberOfRecentContacts: UInt = 10
+        static let sectionHeaderHeightDefault: CGFloat = 30.0
+        static let sectionHeaderHeightHidden: CGFloat = 0.01
     }
     
     private var session: MXSession!
@@ -235,6 +237,20 @@ extension CallTransferSelectContactViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sections[section].header
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if sections[section].header != nil {
+            return Constants.sectionHeaderHeightDefault
+        }
+        return Constants.sectionHeaderHeightHidden
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if sections[section].header != nil {
+            return Constants.sectionHeaderHeightDefault
+        }
+        return Constants.sectionHeaderHeightHidden
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
