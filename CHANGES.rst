@@ -9,6 +9,7 @@ Changes to be released in next version
 
 🐛 Bugfix
  * Navigation: Unable to open a room from a room list (#3863).
+ * AuthVC: Fix social login layout issue.
 
 ⚠️ API Changes
  * 
