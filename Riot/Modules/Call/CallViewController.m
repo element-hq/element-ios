@@ -569,10 +569,27 @@
 {
     [viewController dismissViewControllerAnimated:YES completion:nil];
     
-    if (contact)
-    {
-        NSString *targetUserId = contact.matrixIdentifiers.firstObject;
-
+    void(^failureBlock)(NSError *_Nullable) = ^(NSError *error) {
+        [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
+        
+        MXWeakify(self);
+        
+        self->currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"call_transfer_error_title"]
+                                                                 message:[NSBundle mxk_localizedStringForKey:@"call_transfer_error_message"]
+                                                          preferredStyle:UIAlertControllerStyleAlert];
+        
+        [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                               style:UIAlertActionStyleDefault
+                                                             handler:^(UIAlertAction * action) {
+            
+            MXStrongifyAndReturnIfNil(self);
+            self->currentAlert = nil;
+        }]];
+        
+        [self presentViewController:self->currentAlert animated:YES completion:nil];
+    };
+    
+    void(^continueBlock)(NSString *_Nonnull) = ^(NSString *targetUserId) {
         MXUserModel *targetUser = [[MXUserModel alloc] initWithUserId:targetUserId
                                                           displayname:contact.displayName
                                                             avatarUrl:contact.matrixAvatarURL];
@@ -586,13 +603,25 @@
             NSLog(@"Call transfer succeeded with new call ID: %@", newCallId);
         } failure:^(NSError * _Nullable error) {
             NSLog(@"Call transfer failed with error: %@", error);
+            failureBlock(error);
         }];
+    };
+    
+    if (contact)
+    {
+        continueBlock(contact.matrixIdentifiers.firstObject);
     }
     else if (phoneNumber)
     {
-        //  TODO: Implement phone number lookup on call transfers
+        MXWeakify(self);
+        [self.mainSession.callManager getThirdPartyUserFrom:phoneNumber success:^(MXThirdPartyUserInstance * _Nonnull user) {
+            MXStrongifyAndReturnIfNil(self);
+            
+            continueBlock(user.userId);
+        } failure:^(NSError * _Nullable error) {
+            failureBlock(error);
+        }];
     }
-
 }
 
 - (void)callTransferMainViewControllerDidCancel:(CallTransferMainViewController *)viewController
