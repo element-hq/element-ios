@@ -61,7 +61,7 @@ final class CallTransferSelectContactViewController: UIViewController {
     
     private struct Row {
         var contact: MXKContact
-        var accessoryType: UITableViewCell.AccessoryType = .checkmark
+        var accessoryType: UITableViewCell.AccessoryType = .none
     }
     
     private struct Section {
@@ -137,22 +137,21 @@ final class CallTransferSelectContactViewController: UIViewController {
         let recentsSection = Section(header: VectorL10n.callTransferContactsRecent, rows: recentRows)
         tmpSections.append(recentsSection)
         
+        let sectionOffset = tmpSections.count
+        
         for section in 0..<contactsDataSource.numberOfSections(in: mainTableView) {
             var rows: [Row] = []
             for row in 0..<contactsDataSource.tableView(mainTableView, numberOfRowsInSection: section) {
                 let sourceIndexPath = IndexPath(row: row, section: section)
-                let tableIndexPath = IndexPath(row: row, section: section + tmpSections.count)
+                let tableIndexPath = IndexPath(row: row, section: section + sectionOffset)
                 let accessoryType: UITableViewCell.AccessoryType = tableIndexPath == selectedIndexPath ? .checkmark : .none
                 if let contact = contactsDataSource.contact(at: sourceIndexPath) {
                     rows.append(Row(contact: contact,
                                     accessoryType: accessoryType))
                 }
             }
-            if !rows.isEmpty {
-                let sectionTitle = contactsDataSource.tableView(mainTableView, titleForHeaderInSection: section)
-                tmpSections.append(Section(header: sectionTitle, rows: rows))
-                //VectorL10n.callTransferContactsAll
-            }
+            let sectionTitle = rows.isEmpty ? nil : contactsDataSource.tableView(mainTableView, titleForHeaderInSection: section)
+            tmpSections.append(Section(header: sectionTitle, rows: rows))
         }
         
         sections = tmpSections
