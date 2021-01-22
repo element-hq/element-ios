@@ -97,6 +97,12 @@ final class CallTransferSelectContactViewController: UIViewController {
         updateSections()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        MXKContactManager.shared().refreshLocalContacts()
+    }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.theme.statusBarStyle
     }
