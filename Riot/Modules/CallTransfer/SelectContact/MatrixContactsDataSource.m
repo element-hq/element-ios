@@ -27,4 +27,16 @@
     return self;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if (section == filteredLocalContactsSection)
+    {
+        return NSLocalizedStringFromTable(@"contacts_address_book_section", @"Vector", nil);
+    }
+    else
+    {
+        return NSLocalizedStringFromTable(@"call_transfer_contacts_all", @"Vector", nil);
+    }
+}
+
 @end
