@@ -34,13 +34,21 @@ final class CallTransferSelectContactViewController: UIViewController {
     
     // MARK: Private
     
+    private enum Constants {
+        static let maxNumberOfRecentContacts: UInt = 10
+    }
+    
     private var session: MXSession!
     private var theme: Theme!
     private var contactsDataSource: ContactsDataSource! {
         didSet {
+            for userId in ignoredUserIds {
+                contactsDataSource.ignoredContactsByMatrixId[userId] = MXKContact()
+            }
             contactsDataSource.delegate = self
         }
     }
+    private var ignoredUserIds: [String] = []
     private var selectedIndexPath: IndexPath?
     
     private lazy var mainSearchBar: UISearchBar = {
@@ -73,11 +81,12 @@ final class CallTransferSelectContactViewController: UIViewController {
     
     // MARK: - Setup
     
-    class func instantiate(withSession session: MXSession) -> CallTransferSelectContactViewController {
+    class func instantiate(withSession session: MXSession, ignoredUserIds: [String] = []) -> CallTransferSelectContactViewController {
         let viewController = StoryboardScene.CallTransferSelectContactViewController.initialScene.instantiate()
         viewController.session = session
-        viewController.theme = ThemeService.shared().theme
+        viewController.ignoredUserIds = ignoredUserIds
         viewController.contactsDataSource = MatrixContactsDataSource(matrixSession: session)
+        viewController.theme = ThemeService.shared().theme
         return viewController
     }
     
@@ -112,23 +121,39 @@ final class CallTransferSelectContactViewController: UIViewController {
     private func updateSections() {
         var tmpSections: [Section] = []
         
+        let users = session.callManager.getRecentCalledUsers(Constants.maxNumberOfRecentContacts,
+                                                             ignoredUserIds: ignoredUserIds)
+        var recentRows: [Row] = []
+        for (index, user) in users.enumerated() {
+            let indexPath = IndexPath(row: index, section: 0)
+            let accessoryType: UITableViewCell.AccessoryType = indexPath == selectedIndexPath ? .checkmark : .none
+            let row = Row(contact: MXKContact(matrixContactWithDisplayName: user.displayname,
+                                              matrixID: user.userId,
+                                              andMatrixAvatarURL: user.avatarUrl),
+                          accessoryType: accessoryType)
+            
+            recentRows.append(row)
+        }
+        let recentsSection = Section(header: VectorL10n.callTransferContactsRecent, rows: recentRows)
+        tmpSections.append(recentsSection)
+        
         for section in 0..<contactsDataSource.numberOfSections(in: mainTableView) {
             var rows: [Row] = []
             for row in 0..<contactsDataSource.tableView(mainTableView, numberOfRowsInSection: section) {
-                let indexPath = IndexPath(row: row, section: section)
-                let accessoryType: UITableViewCell.AccessoryType = indexPath == selectedIndexPath ? .checkmark : .none
-                if let contact = contactsDataSource.contact(at: indexPath) {
+                let sourceIndexPath = IndexPath(row: row, section: section)
+                let tableIndexPath = IndexPath(row: row, section: section + tmpSections.count)
+                let accessoryType: UITableViewCell.AccessoryType = tableIndexPath == selectedIndexPath ? .checkmark : .none
+                if let contact = contactsDataSource.contact(at: sourceIndexPath) {
                     rows.append(Row(contact: contact,
                                     accessoryType: accessoryType))
                 }
             }
             if !rows.isEmpty {
-                tmpSections.append(Section(header: VectorL10n.callTransferContactsAll, rows: rows))
+                let sectionTitle = contactsDataSource.tableView(mainTableView, titleForHeaderInSection: section)
+                tmpSections.append(Section(header: sectionTitle, rows: rows))
+                //VectorL10n.callTransferContactsAll
             }
         }
-        
-        let recentsSection = Section(header: VectorL10n.callTransferContactsRecent, rows: [])
-        tmpSections.insert(recentsSection, at: 0)
         
         sections = tmpSections
     }

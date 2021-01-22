@@ -535,7 +535,7 @@
 
 - (void)openCallTransfer
 {
-    CallTransferMainViewController *controller = [CallTransferMainViewController instantiateWithSession:self.mainSession];
+    CallTransferMainViewController *controller = [CallTransferMainViewController instantiateWithSession:self.mainSession ignoredUserIds:@[self.peer.userId]];
     controller.delegate = self;
     
     UINavigationController *navController = [[RiotNavigationController alloc] initWithRootViewController:controller];

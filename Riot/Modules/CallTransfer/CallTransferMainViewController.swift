@@ -61,10 +61,11 @@ final class CallTransferMainViewController: UIViewController {
         }
     }
     private var session: MXSession!
+    private var ignoredUserIds: [String] = []
     private var theme: Theme!
     
     private lazy var contactsVC: CallTransferSelectContactViewController = {
-        let controller = CallTransferSelectContactViewController.instantiate(withSession: session)
+        let controller = CallTransferSelectContactViewController.instantiate(withSession: session, ignoredUserIds: ignoredUserIds)
         controller.delegate = self
         return controller
     }()
@@ -84,9 +85,10 @@ final class CallTransferMainViewController: UIViewController {
     
     // MARK: - Setup
     
-    class func instantiate(withSession session: MXSession) -> CallTransferMainViewController {
+    class func instantiate(withSession session: MXSession, ignoredUserIds: [String] = []) -> CallTransferMainViewController {
         let viewController = StoryboardScene.CallTransferMainViewController.initialScene.instantiate()
         viewController.session = session
+        viewController.ignoredUserIds = ignoredUserIds
         viewController.theme = ThemeService.shared().theme
         return viewController
     }
@@ -145,7 +147,7 @@ final class CallTransferMainViewController: UIViewController {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.bottomBgView.backgroundColor = theme.headerBackgroundColor
+        self.bottomBgView.backgroundColor = theme.backgroundColor
         self.consultButton.tintColor = theme.tintColor
         self.consultButton.setTitleColor(theme.textPrimaryColor, for: .normal)
         self.connectButton.update(theme: theme)
