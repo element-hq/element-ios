@@ -27,3 +27,4 @@
 #import "JitsiWidgetData.h"
 #import "InviteRecentTableViewCell.h"
 #import "CallViewController.h"
+#import "MatrixContactsDataSource.h"

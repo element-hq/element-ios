@@ -77,7 +77,7 @@ final class CallTransferSelectContactViewController: UIViewController {
         let viewController = StoryboardScene.CallTransferSelectContactViewController.initialScene.instantiate()
         viewController.session = session
         viewController.theme = ThemeService.shared().theme
-        viewController.contactsDataSource = ContactsDataSource(matrixSession: session)
+        viewController.contactsDataSource = MatrixContactsDataSource(matrixSession: session)
         return viewController
     }
     
