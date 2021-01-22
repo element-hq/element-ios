@@ -117,10 +117,13 @@ final class CallTransferMainViewController: UIViewController {
     private func updateConnectButton() {
         if selectedContact != nil {
             connectButton.isEnabled = true
+            connectButton.alpha = 1
         } else if let phoneNumber = phoneNumber, !phoneNumber.isEmpty {
             connectButton.isEnabled = true
+            connectButton.alpha = 1
         } else {
             connectButton.isEnabled = false
+            connectButton.alpha = 0.4
         }
     }
     
@@ -129,6 +132,8 @@ final class CallTransferMainViewController: UIViewController {
             self?.cancelButtonAction()
         }
         self.navigationItem.leftBarButtonItem = cancelBarButtonItem
+        
+        updateConnectButton()
         
         addChild(contactsVC)
         addChild(dialpadVC)
@@ -147,7 +152,7 @@ final class CallTransferMainViewController: UIViewController {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.bottomBgView.backgroundColor = theme.backgroundColor
+        self.bottomBgView.backgroundColor = theme.baseColor
         self.consultButton.tintColor = theme.tintColor
         self.consultButton.setTitleColor(theme.textPrimaryColor, for: .normal)
         self.connectButton.update(theme: theme)
