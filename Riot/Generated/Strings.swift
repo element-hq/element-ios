@@ -474,6 +474,14 @@ internal enum VectorL10n {
   internal static var callTransferDialpad: String { 
     return VectorL10n.tr("Vector", "call_transfer_dialpad") 
   }
+  /// Call transfer failed
+  internal static var callTransferErrorMessage: String { 
+    return VectorL10n.tr("Vector", "call_transfer_error_message") 
+  }
+  /// Error
+  internal static var callTransferErrorTitle: String { 
+    return VectorL10n.tr("Vector", "call_transfer_error_title") 
+  }
   /// Transfer
   internal static var callTransferTitle: String { 
     return VectorL10n.tr("Vector", "call_transfer_title") 

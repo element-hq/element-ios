@@ -1558,6 +1558,8 @@ Tap the + to start adding people.";
 "call_transfer_dialpad" = "Dial pad";
 "call_transfer_contacts_recent" = "Recent";
 "call_transfer_contacts_all" = "All";
+"call_transfer_error_title" = "Error";
+"call_transfer_error_message" = "Call transfer failed";
 
 // MARK: - Home
 
