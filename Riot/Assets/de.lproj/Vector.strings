@@ -1065,7 +1065,7 @@
 "key_verification_self_verify_unverified_sessions_alert_title" = "Überprüfe, wo du angemeldet bist";
 "key_verification_self_verify_unverified_sessions_alert_message" = "Verifiziere alle deine Sitzungen, um sicher zu stellen, dass dein Konto & deine Nachrichten sicher sind.";
 "key_verification_self_verify_unverified_sessions_alert_validate_action" = "Überprüfung";
-"device_verification_self_verify_wait_new_sign_in_title" = "Verifiziere diese Sitzung";
+"device_verification_self_verify_wait_new_sign_in_title" = "Diese Anmeldung verifizieren";
 "device_verification_self_verify_wait_additional_information" = "Dies funktioniert mit Element oder einem anderen Matrix Client, der Cross-Signing unterstützt.";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Wiederherstellungsschlüssel verwenden";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Nutze eine Wiederherstellungsmethode";
