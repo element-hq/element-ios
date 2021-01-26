@@ -154,7 +154,7 @@
 "room_two_users_are_typing" = "%@ & %@ tippen…";
 "room_many_users_are_typing" = "%@, %@ & andere tippen…";
 "room_message_placeholder" = "Nachricht senden (unverschlüsselt)…";
-"encrypted_room_message_placeholder" = "Verschlüsselte Nachricht senden…";
+"encrypted_room_message_placeholder" = "Verschlüsselte Nachricht…";
 "room_message_short_placeholder" = "Sende eine Nachricht…";
 "room_offline_notification" = "Verbindung zum Server wurde unterbrochen.";
 "room_unsent_messages_notification" = "Nachrichten wurden nicht gesendet. Jetzt %@ oder %@?";
@@ -1168,7 +1168,7 @@
 "pin_protection_settings_enabled_forced" = "PIN aktiviert";
 "pin_protection_settings_enable_pin" = "PIN aktivieren";
 "biometrics_mode_touch_id" = "Touch-ID";
-"biometrics_mode_face_id" = "Gesicht-ID";
+"biometrics_mode_face_id" = "Face ID";
 "biometrics_settings_enable_x" = "%@ aktivieren";
 "biometrics_setup_title_x" = "%@ aktivieren";
 "biometrics_setup_enable_button_title_x" = "%@ aktivieren";
