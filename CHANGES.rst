@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Avoid megolm share requests if the device is not verified (#3969)
 
 🐛 Bugfix
  * Navigation: Unable to open a room from a room list (#3863).

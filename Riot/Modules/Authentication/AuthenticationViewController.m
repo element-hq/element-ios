@@ -1379,18 +1379,23 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 - (void)sessionStateDidChangeNotification:(NSNotification*)notification
 {
     MXSession *session = (MXSession*)notification.object;
-    
-    if (session.state == MXSessionStateRunning)
+
+    if (session.state == MXSessionStateStoreDataReady)
     {
-        [self unregisterSessionStateChangeNotification];
-        
         if (session.crypto.crossSigning)
         {
             // Do not make key share requests while the "Complete security" is not complete.
             // If the device is self-verified, the SDK will restore the existing key backup.
             // Then, it  will re-enable outgoing key share requests
             [session.crypto setOutgoingKeyRequestsEnabled:NO onComplete:nil];
-            
+        }
+    }
+    else if (session.state == MXSessionStateRunning)
+    {
+        [self unregisterSessionStateChangeNotification];
+        
+        if (session.crypto.crossSigning)
+        {
             [session.crypto.crossSigning refreshStateWithSuccess:^(BOOL stateUpdated) {
 
                 NSLog(@"[AuthenticationVC] sessionStateDidChange: crossSigning.state: %@", @(session.crypto.crossSigning.state));
@@ -1600,14 +1605,13 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
 - (void)keyVerificationCoordinatorBridgePresenterDelegateDidComplete:(KeyVerificationCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
 {
+    // Set outgoing key requests back
+    [coordinatorBridgePresenter.session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
     [self dismiss];
 }
 
 - (void)keyVerificationCoordinatorBridgePresenterDelegateDidCancel:(KeyVerificationCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
 {
-    // Set outgoing key requests back
-    [coordinatorBridgePresenter.session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
-    
     [self dismiss];
 }
 

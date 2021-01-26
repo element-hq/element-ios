@@ -405,6 +405,15 @@
 
 - (void)onMatrixSessionStateDidChange:(NSNotification *)notif
 {
+    MXSession *session = (MXSession*)notif.object;
+    if (session.state == MXSessionStateStoreDataReady)
+    {
+        if (session.crypto.crossSigning && session.crypto.crossSigning.state == MXCrossSigningStateCrossSigningExists)
+        {
+            [session.crypto setOutgoingKeyRequestsEnabled:NO onComplete:nil];
+        }
+    }
+    
     [self refreshTabBarBadges];
 }
 

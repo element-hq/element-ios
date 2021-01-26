@@ -33,7 +33,6 @@
 #import "ContactDetailsViewController.h"
 
 #import "BugReportViewController.h"
-#import "RoomKeyRequestViewController.h"
 #import "DecryptionFailureTracker.h"
 
 #import <MatrixKit/MatrixKit.h>
@@ -128,11 +127,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
      */
     id roomKeyRequestObserver;
     id roomKeyRequestCancellationObserver;
-
-    /**
-     If any the currently displayed sharing key dialog
-     */
-    RoomKeyRequestViewController *roomKeyRequestViewController;
 
     /**
      Incoming key verification requests observers
@@ -3727,80 +3721,31 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 
     [mxSession.crypto pendingKeyRequests:^(MXUsersDevicesMap<NSArray<MXIncomingRoomKeyRequest *> *> *pendingKeyRequests) {
+        
+        NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: pendingKeyRequests.count: %lu",
+              pendingKeyRequests.count);
 
-        NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: pendingKeyRequests.count: %@. Already displayed: %@",
-              @(pendingKeyRequests.count),
-              roomKeyRequestViewController ? @"YES" : @"NO");
-
-        if (roomKeyRequestViewController)
-        {
-            // Check if the current RoomKeyRequestViewController is still valid
-            MXSession *currentMXSession = roomKeyRequestViewController.mxSession;
-            NSString *currentUser = roomKeyRequestViewController.device.userId;
-            NSString *currentDevice = roomKeyRequestViewController.device.deviceId;
-
-            NSArray<MXIncomingRoomKeyRequest *> *currentPendingRequest = [pendingKeyRequests objectForDevice:currentDevice forUser:currentUser];
-
-            if (currentMXSession == mxSession && currentPendingRequest.count == 0)
-            {
-                NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Cancel current dialog");
-
-                // The key request has been probably cancelled, remove the popup
-                [roomKeyRequestViewController hide];
-                roomKeyRequestViewController = nil;
-            }
-        }
-
-        if (!roomKeyRequestViewController && pendingKeyRequests.count)
+        if (pendingKeyRequests.count)
         {
             // Pick the first coming user/device pair
             NSString *userId = pendingKeyRequests.userIds.firstObject;
             NSString *deviceId = [pendingKeyRequests deviceIdsForUser:userId].firstObject;
-
+            
             // Give the client a chance to refresh the device list
             [mxSession.crypto downloadKeys:@[userId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap, NSDictionary<NSString *,MXCrossSigningInfo *> *crossSigningKeysMap) {
-
                 MXDeviceInfo *deviceInfo = [usersDevicesInfoMap objectForDevice:deviceId forUser:userId];
-                if (deviceInfo)
+                if (deviceInfo && deviceInfo.trustLevel.isVerified)
                 {
-                    BOOL wasNewDevice = (deviceInfo.trustLevel.localVerificationStatus == MXDeviceUnknown);
-
-                    void (^openDialog)(void) = ^void()
-                    {
-                        NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Open dialog for %@", deviceInfo);
-
-                        roomKeyRequestViewController = [[RoomKeyRequestViewController alloc] initWithDeviceInfo:deviceInfo wasNewDevice:wasNewDevice andMatrixSession:mxSession onComplete:^{
-
-                            roomKeyRequestViewController = nil;
-
-                            // Check next pending key request, if any
-                            [self checkPendingRoomKeyRequests];
-                        }];
-
-                        [roomKeyRequestViewController show];
-                    };
-
-                    // If the device was new before, it's not any more.
-                    if (wasNewDevice)
-                    {
-                        [mxSession.crypto setDeviceVerification:MXDeviceUnverified forDevice:deviceId ofUser:userId success:openDialog failure:nil];
-                    }
-                    else
-                    {
-                        openDialog();
-                    }
-                }
-                else
-                {
-                    NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: No details found for device %@:%@", userId, deviceId);
-
-                    // Ignore this device to avoid to loop on it
-                    [mxSession.crypto ignoreAllPendingKeyRequestsFromUser:userId andDevice:deviceId onComplete:^{
-                        // And check next requests
+                    [mxSession.crypto acceptAllPendingKeyRequestsFromUser:userId andDevice:deviceId onComplete:^{
                         [self checkPendingRoomKeyRequests];
                     }];
                 }
-
+                else
+                {
+                    [mxSession.crypto ignoreAllPendingKeyRequestsFromUser:userId andDevice:deviceId onComplete:^{
+                        [self checkPendingRoomKeyRequests];
+                    }];
+                }
             } failure:^(NSError *error) {
                 // Retry later
                 NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Failed to download device keys. Retry");
@@ -3972,6 +3917,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)keyVerificationCoordinatorBridgePresenterDelegateDidComplete:(KeyVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
 {
+    [coordinatorBridgePresenter.session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
     [self dismissKeyVerificationCoordinatorBridgePresenter];
 }
 
