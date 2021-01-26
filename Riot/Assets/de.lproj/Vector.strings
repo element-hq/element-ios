@@ -1168,7 +1168,7 @@
 "pin_protection_settings_enabled_forced" = "PIN aktiviert";
 "pin_protection_settings_enable_pin" = "PIN aktivieren";
 "biometrics_mode_touch_id" = "Touch-ID";
-"biometrics_mode_face_id" = "Face ID";
+"biometrics_mode_face_id" = "Face-ID";
 "biometrics_settings_enable_x" = "%@ aktivieren";
 "biometrics_setup_title_x" = "%@ aktivieren";
 "biometrics_setup_enable_button_title_x" = "%@ aktivieren";
