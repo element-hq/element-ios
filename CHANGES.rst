@@ -1,3 +1,27 @@
+Changes to be released in next version
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
 Changes in 1.1.6 (2021-01-27)
 =================================================
 
