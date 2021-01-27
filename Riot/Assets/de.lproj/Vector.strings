@@ -88,7 +88,7 @@
 "room_recents_invites_section" = "EINLADUNGEN";
 "room_recents_start_chat_with" = "Starte Chat";
 "room_recents_create_empty_room" = "Erstelle Raum";
-"room_recents_join_room" = "Trete Raum bei";
+"room_recents_join_room" = "Tritt Raum bei";
 "room_recents_join_room_title" = "Trete einem Raum bei";
 // People tab
 "people_invites_section" = "EINLADUNGEN";
@@ -154,7 +154,7 @@
 "room_two_users_are_typing" = "%@ & %@ tippen…";
 "room_many_users_are_typing" = "%@, %@ & andere tippen…";
 "room_message_placeholder" = "Nachricht senden (unverschlüsselt)…";
-"encrypted_room_message_placeholder" = "Verschlüsselte Nachricht senden…";
+"encrypted_room_message_placeholder" = "Verschlüsselte Nachricht…";
 "room_message_short_placeholder" = "Sende eine Nachricht…";
 "room_offline_notification" = "Verbindung zum Server wurde unterbrochen.";
 "room_unsent_messages_notification" = "Nachrichten wurden nicht gesendet. Jetzt %@ oder %@?";
@@ -534,7 +534,7 @@
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Anfrage gesendet";
 "rerequest_keys_alert_message" = "Bitte öffne Element auf einem anderen Gerät, das die Nachricht entschlüsseln kann, damit es die Schlüssel an diese Sitzung senden kann.";
-"room_message_reply_to_placeholder" = "Sende eine unverschlüsselte Antwort…";
+"room_message_reply_to_placeholder" = "Antwort senden (unverschlüsselt)…";
 "encrypted_room_message_reply_to_placeholder" = "Sende eine verschlüsselte Antwort…";
 "room_message_reply_to_short_placeholder" = "Sende eine Antwort…";
 "room_replacement_information" = "Dieser Raum wurde ersetzt und ist nicht länger aktiv.";
@@ -654,7 +654,7 @@
 // String for App Store
 "store_short_description" = "Sicherer, dezentralisierter Chat/VoIP";
 "store_full_description" = "Element ist die neue Art von Messenger- und Kooperations-App, die:\n\n1. dir die Kontrolle gibt deine Privatsphäre zu schützen,\n2. dir die Kommunikation mit anderen Personen im Matrix-Netzwerk und darüber hinaus Integration in Apps wie Slack ermöglicht,\n3. dich vor Werbung, Datenerfassung, Hintertüren und ummauerten Gärten schützt,\n4. dich durch End-to-End-Verschlüsselung absichert und mit Cross-Signing andere zu überprüfen.\n\nElement unterscheidet sich grundlegend von anderen Messaging- und Kooperations-Diensten, da es dezentralisiert und open-source ist.\n\nMit Element kannst du dich selbst hosten oder einen Host auswählen, sodass du Datenschutz, Eigentum und Kontrolle über deine Daten und Konversationen hast. Du erhältst Zugriff auf ein offenes Netzwerk und bist nicht auf Element-Nutzer beschränkt. Und es ist sehr sicher.\n\nElement ist in der Lage, all dies zu tun, da es mit Matrix arbeitet - dem Standard für offene, dezentrale Kommunikation.\n\nMit Element hast du die Kontrolle, indem du auswählen kannst, wer deine Konversationen hostet. In der Element-App kannst du verschiedene Hosts auswählen:\n\n1. Hole dir ein kostenloses Konto auf dem öffentlichen Server von matrix.org\n2. Hoste dein Konto selbst, indem du einen Server auf deiner eigenen Hardware ausführst\n3. Melde dich für ein Konto auf einem benutzerdefinierten Server an, indem du einfach die Hosting-Plattform von Element Matrix Services abonnierst\n\nWarum Element?\n\nBESITZE DEINE DATEN: Du entscheidest, wo deine Daten und Nachrichten aufbewahrt werden sollen. Du besitzt und kontrollierst sie, nicht irgendeine MEGACORP, die deine Daten verwertet oder Dritten Zugriff gewährt.\n\nOPEN MESSAGING UND ZUSAMMENARBEIT: Du kannst mit allen anderen Mitgliedern des Matrix-Netzwerks chatten, unabhängig davon, ob sie Element oder eine andere Matrix-App verwenden, sogar selbst wenn sie ein anderes Messaging-System wie Slack, IRC oder XMPP verwenden.\n\nSUPERSICHER: Echte End-to-End-Verschlüsselung (nur diejenigen in der Konversation können Nachrichten entschlüsseln) und Cross-Signing, um die Geräte der Konversationsteilnehmer zu überprüfen.\n\nVOLLSTÄNDIGE KOMMUNIKATION: Messaging, Sprach- und Videoanrufe, Dateifreigabe, Bildschirmfreigabe und eine ganze Reihe von Integrationen, Bots und Widgets. Baue Räume, Gemeinschaften, bleib in Kontakt und erledige Dinge.\n\nÜBERALL, WO Du BIST: Bleibe mit dem vollständig synchronisierten Nachrichtenverlauf auf all deinen Geräten und im Internet (unter https://element.io/app) unabhängig voneinander in Kontakt.";
-"auth_login_single_sign_on" = "Anmelden mit Single Sign-On";
+"auth_login_single_sign_on" = "Anmelden";
 "auth_autodiscover_invalid_response" = "Ungültige Antwort beim Entdecken des Heimservers";
 "room_message_unable_open_link_error_message" = "Konnte Link nicht öffnen.";
 "room_event_action_reply" = "Antworten";
@@ -1065,7 +1065,7 @@
 "key_verification_self_verify_unverified_sessions_alert_title" = "Überprüfe, wo du angemeldet bist";
 "key_verification_self_verify_unverified_sessions_alert_message" = "Verifiziere alle deine Sitzungen, um sicher zu stellen, dass dein Konto & deine Nachrichten sicher sind.";
 "key_verification_self_verify_unverified_sessions_alert_validate_action" = "Überprüfung";
-"device_verification_self_verify_wait_new_sign_in_title" = "Verifiziere diese Sitzung";
+"device_verification_self_verify_wait_new_sign_in_title" = "Diese Anmeldung verifizieren";
 "device_verification_self_verify_wait_additional_information" = "Dies funktioniert mit Element oder einem anderen Matrix Client, der Cross-Signing unterstützt.";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Wiederherstellungsschlüssel verwenden";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Nutze eine Wiederherstellungsmethode";
@@ -1168,7 +1168,7 @@
 "pin_protection_settings_enabled_forced" = "PIN aktiviert";
 "pin_protection_settings_enable_pin" = "PIN aktivieren";
 "biometrics_mode_touch_id" = "Touch-ID";
-"biometrics_mode_face_id" = "Gesicht-ID";
+"biometrics_mode_face_id" = "Face-ID";
 "biometrics_settings_enable_x" = "%@ aktivieren";
 "biometrics_setup_title_x" = "%@ aktivieren";
 "biometrics_setup_enable_button_title_x" = "%@ aktivieren";
@@ -1258,3 +1258,20 @@
 "favourites_empty_view_information" = "Um einen Lieblingschat hinzuzufügen, halte diesen gedrückt und wähle den Stern aus. Du findest deine Lieblingschats gesammelt hier.";
 "home_empty_view_information" = "Die sichere Chat-App für Teams, Freunde und Organisationen. Tippe unten auf das +, um Leute und Räume hinzuzufügen.";
 "rooms_empty_view_information" = "Noch keine Chat-Räume vorhanden. Tippe auf das +, um einem Raum beizutreten oder einen neuen zu erstellen.";
+"invite_friends_share_text" = "Hey! Sprich mit mir auf %@: %@";
+
+// MARK: - Invite friends
+
+"invite_friends_action" = "Freunde zu %@ einladen";
+"pin_protection_settings_change_pin" = "PIN ändern";
+"pin_protection_confirm_pin_to_change" = "PIN bestätigen um PIN zu ändern";
+"bug_report_background_mode" = "Im Hintergrund fortfahren";
+"social_login_button_title_sign_up" = "Registrieren mit %@";
+"social_login_button_title_sign_in" = "Anmelden mit %@";
+"social_login_button_title_continue" = "Weiter mit %@";
+"social_login_list_title_sign_up" = "Oder Registrieren mit";
+"social_login_list_title_sign_in" = "Oder Anmelden mit";
+
+// Social login
+
+"social_login_list_title_continue" = "Weiter mit";

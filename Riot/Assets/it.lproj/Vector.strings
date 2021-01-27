@@ -77,7 +77,7 @@
 "later" = "Più avanti";
 "sending" = "Inviando";
 "auth_submit" = "Invia";
-"auth_login_single_sign_on" = "Accedi con single sign-on";
+"auth_login_single_sign_on" = "Accedi";
 "auth_untrusted_id_server" = "L'affidabilità dell'Identity Server non è stata accertata";
 "auth_password_dont_match" = "Le password non corrispondono";
 "auth_username_in_use" = "Nome utente in uso";
@@ -1252,3 +1252,20 @@
 "rooms_empty_view_title" = "Stanze";
 "people_empty_view_information" = "Chatta in modo sicuro con chiunque. Tocca il + per aggiungere persone.";
 "people_empty_view_title" = "Persone";
+"invite_friends_share_text" = "Ehi, parliamoci su %@: %@";
+
+// MARK: - Invite friends
+
+"invite_friends_action" = "Invita amici in %@";
+"pin_protection_settings_change_pin" = "Cambia PIN";
+"pin_protection_confirm_pin_to_change" = "Conferma il PIN per modificarlo";
+"bug_report_background_mode" = "Continua in secondo piano";
+"social_login_button_title_sign_up" = "Registrati con %@";
+"social_login_button_title_sign_in" = "Accedi con %@";
+"social_login_button_title_continue" = "Continua con %@";
+"social_login_list_title_sign_up" = "O registrati con";
+"social_login_list_title_sign_in" = "O accedi con";
+
+// Social login
+
+"social_login_list_title_continue" = "Continua con";
