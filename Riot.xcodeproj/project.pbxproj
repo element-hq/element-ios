@@ -454,6 +454,7 @@
 		B1B5574F20EE6C4D00210D55 /* RoomsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556F820EE6C4C00210D55 /* RoomsViewController.m */; };
 		B1B5575020EE6C4D00210D55 /* AuthenticationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556FB20EE6C4C00210D55 /* AuthenticationViewController.xib */; };
 		B1B5575120EE6C4D00210D55 /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556FC20EE6C4C00210D55 /* AuthenticationViewController.m */; };
+		B1B5575220EE6C4D00210D55 /* RoomKeyRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556FE20EE6C4C00210D55 /* RoomKeyRequestViewController.m */; };
 		B1B5575920EE6C4D00210D55 /* HomeMessagesSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5570F20EE6C4C00210D55 /* HomeMessagesSearchViewController.m */; };
 		B1B5575A20EE6C4D00210D55 /* UnifiedSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5571120EE6C4C00210D55 /* UnifiedSearchViewController.m */; };
 		B1B5575B20EE6C4D00210D55 /* HomeFilesSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5571420EE6C4C00210D55 /* HomeFilesSearchViewController.m */; };
@@ -1608,6 +1609,8 @@
 		B1B556FA20EE6C4C00210D55 /* AuthenticationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationViewController.h; sourceTree = "<group>"; };
 		B1B556FB20EE6C4C00210D55 /* AuthenticationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthenticationViewController.xib; sourceTree = "<group>"; };
 		B1B556FC20EE6C4C00210D55 /* AuthenticationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationViewController.m; sourceTree = "<group>"; };
+		B1B556FE20EE6C4C00210D55 /* RoomKeyRequestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomKeyRequestViewController.m; sourceTree = "<group>"; };
+		B1B556FF20EE6C4C00210D55 /* RoomKeyRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomKeyRequestViewController.h; sourceTree = "<group>"; };
 		B1B5570E20EE6C4C00210D55 /* HomeMessagesSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeMessagesSearchViewController.h; sourceTree = "<group>"; };
 		B1B5570F20EE6C4C00210D55 /* HomeMessagesSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeMessagesSearchViewController.m; sourceTree = "<group>"; };
 		B1B5571020EE6C4C00210D55 /* UnifiedSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnifiedSearchViewController.h; sourceTree = "<group>"; };
@@ -3536,6 +3539,7 @@
 				B1C3361A22F328AE0021BA8D /* Camera */,
 				B1B556E420EE6C4C00210D55 /* UserDevices */,
 				B1B5596B20EFA85C00210D55 /* EncryptionInfo */,
+				B1B556FD20EE6C4C00210D55 /* RoomKeyRequest */,
 				B1B556B020EE6C4C00210D55 /* BugReport */,
 				B1098BE921ECFE64000DDA48 /* KeyBackup */,
 				B1550FCF242148FA00CE097B /* KeyVerification */,
@@ -3969,6 +3973,15 @@
 				B1B5579220EF575A00210D55 /* Views */,
 			);
 			path = Authentication;
+			sourceTree = "<group>";
+		};
+		B1B556FD20EE6C4C00210D55 /* RoomKeyRequest */ = {
+			isa = PBXGroup;
+			children = (
+				B1B556FF20EE6C4C00210D55 /* RoomKeyRequestViewController.h */,
+				B1B556FE20EE6C4C00210D55 /* RoomKeyRequestViewController.m */,
+			);
+			path = RoomKeyRequest;
 			sourceTree = "<group>";
 		};
 		B1B5570C20EE6C4C00210D55 /* GlobalSearch */ = {
@@ -6798,6 +6811,7 @@
 				B1098BFA21ECFE65000DDA48 /* KeyBackupSetupPassphraseViewModel.swift in Sources */,
 				EC51E7A62514D2E100AAE7DB /* RoomInfoCoordinatorBridgePresenter.swift in Sources */,
 				EC1CA87524C8259700DE9EBF /* KeychainStore.swift in Sources */,
+				B1B5575220EE6C4D00210D55 /* RoomKeyRequestViewController.m in Sources */,
 				32A6001A22C661100042C1D9 /* EditHistoryCoordinator.swift in Sources */,
 				B1A15BDB25A6680E00BDCA36 /* SSOURLConstants.swift in Sources */,
 				F083BD1E1E7009ED00A9B29C /* LegacyAppDelegate.m in Sources */,
