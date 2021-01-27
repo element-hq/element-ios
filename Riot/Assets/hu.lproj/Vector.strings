@@ -673,7 +673,7 @@
 "key_backup_setup_intro_manual_export_action" = "Kulcsok kimentése kézzel";
 // String for App Store
 "store_short_description" = "Biztonságos elosztott csevegés/VoIP";
-"auth_login_single_sign_on" = "Bejelentkezés egyszeri bejelentkezéssel";
+"auth_login_single_sign_on" = "Bejelentkezés";
 "room_message_unable_open_link_error_message" = "A linket nem lehet megnyitni.";
 "store_full_description" = "Element egy újfajta csevegő és együttműködést segítő alkalmazás ami:\n\n1. Visszaadja az irányítást neked, hogy megvédd a magánéleted információit\n2. Lépj kapcsolatba bárkivel a Matrix hálózatban, és azon túl alkalmazások integrálásával mint amilyen például a slack\n3. Megvéd a hirdetőktől, adatbányászoktól, hátsó kapuktól és fallal védett rendszerektől\n4. Végpontok közötti titkosítással véd, ahol egymás személyazonosságát ellenőrizhetitek\n\nElement a többi üzenetküldő és kollaborációs alkalmazástól teljesen eltérő abban a tekintetben, hogy elosztott és nyílt forrású rendszer.\n\nElement megengedi, hogy saját magadnak üzemeltess szervert vagy válassz szervert tetszés szerint - így biztonságban vagy te vagy a tulajdonosa az üzeneteidnek és te irányítod az adatokat és a beszélgetéseket. Egy nyílt hálózathoz enged hozzáférést; tehát nem csak más Element felhasználókkal beszélgethetsz. És nagyon biztonságos.\n\nElement mindezt a Matrix miatt tudja ami egy szabványos nyílt és elosztott kommunikációs rendszer.\n\nElement visszaadja az irányítást azzal, hogy kiválaszthatod ki kezelje a beszélgetéseidet. Az Element alkalmazásból különbözőképpen választhatod ki a szerverd:\n\n1. Kérj egy ingyenes fiókot a matrix.org nyilvános szerveren\n2. Saját szervert is üzemeltethetsz a fiókodnak saját hardveren\n3. Jelentkezz egy fiókért egy egyedi szerveren az Element Matrix Services hosting platformra való feliratkozással\n\nMiért válasz az Elementet?\n\nAZ ADATOD A TULAJDONOD: Te döntöd el hol tárolod az adataidat és üzeneteidet. A tiéd és nálad az irányítás és nem valami NAGYVÁLLALATNÁL ami elemzi az adataidat és odaadja másoknak.\n\nNYILT ÜZENETKÜLDÉS ÉS KOLLABORÁCIÓ: Bárkivel beszélgethetsz a Matrix hálózaton, akár az Elementet használja akár más Matrix alkalmazást vagy akár másik üzenetküldő rendszert használ mint például a Slack, IRC vagy XMPP.\n\nSZUPER-BIZTONSÁGOS: Igazi végpontok közötti titkosítás (csak a beszélgetés résztvevői tudják visszafejteni az üzenetet), és kereszt aláírásokkal lehet a beszélgetésben résztvevő eszközöket ellenőrizni.\n\nTELJES KOMMUNIKÁCIÓ: Üzenetküldés, hang és videó hívások, fájl megosztás, képernyő megosztás és egy csomó egyéb integráció, botok és kisalkalmazások. Építs szobákat, közösségeket, maradj kapcsolatban és vigyél véghez dolgokat. \n\nBÁRHOL VAGY: Maradj kapcsolatban akárhol vagy az összes üzeneteddel minden eszközödön vagy a weben a https://element.io/app -pal.";
 "auth_autodiscover_invalid_response" = "Matrix szerver felderítésénél érvénytelen válasz érkezett";
@@ -1281,3 +1281,20 @@
 "secrets_setup_recovery_passphrase_summary_title" = "Biztonsági kifejezés mentése";
 "rooms_empty_view_title" = "Szobák";
 "people_empty_view_title" = "Emberek";
+"invite_friends_share_text" = "Üdvözlöm! Beszélhet velem itt: %@, %@";
+
+// MARK: - Invite friends
+
+"invite_friends_action" = "Barátok meghívása ide: %@";
+"pin_protection_settings_change_pin" = "PIN megváltoztatása";
+"pin_protection_confirm_pin_to_change" = "A PIN megváltoztatásához írd be a PIN kódot";
+"bug_report_background_mode" = "Folytatás a háttérben";
+"social_login_button_title_sign_up" = "Fiókkészítés ezzel: %@";
+"social_login_button_title_sign_in" = "Bejelentkezés ezzel: %@";
+"social_login_button_title_continue" = "Folytatás ezzel: %@";
+"social_login_list_title_sign_up" = "Vagy fiókkészítés ezzel:";
+"social_login_list_title_sign_in" = "Vagy bejelentkezés ezzel:";
+
+// Social login
+
+"social_login_list_title_continue" = "Folytatás ezzel:";

@@ -1104,3 +1104,12 @@
 "switch" = "开关";
 "joined" = "已加入";
 "store_promotional_text" = "在开放网络上保护隐私的聊天和协作应用程序。分散权力让你掌控一切。没有数据挖掘，没有后门，也没有第三方访问。";
+"social_login_button_title_sign_up" = "以 %@ 方式登录";
+"social_login_button_title_sign_in" = "以 %@ 方式登录";
+"social_login_button_title_continue" = "继续 %@ 以其他方式登录";
+"social_login_list_title_sign_in" = "利用社交媒体登录";
+"social_login_list_title_sign_up" = "利用社交媒体注册";
+
+// Social login
+
+"social_login_list_title_continue" = "以其他方式登录";
