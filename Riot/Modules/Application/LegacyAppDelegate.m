@@ -3770,7 +3770,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 MXDeviceInfo *deviceInfo = [usersDevicesInfoMap objectForDevice:deviceId forUser:userId];
                 if (deviceInfo)
                 {
-                    if (!mxSession.crypto.crossSigning || mxSession.crypto.crossSigning.state != MXCrossSigningStateCrossSigningExists)
+                    if (!mxSession.crypto.crossSigning || mxSession.crypto.crossSigning.state == MXCrossSigningStateNotBootstrapped)
                     {
                         BOOL wasNewDevice = (deviceInfo.trustLevel.localVerificationStatus == MXDeviceUnknown);
                         
