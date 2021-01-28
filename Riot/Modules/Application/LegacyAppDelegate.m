@@ -2333,6 +2333,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 case MXSessionStateSyncInProgress:
                     // Stay in launching during the first server sync if the store is empty.
                     isLaunching = (mainSession.rooms.count == 0 && launchAnimationContainerView);
+                    
+                    if (mainSession.crypto.crossSigning && mainSession.crypto.crossSigning.state == MXCrossSigningStateCrossSigningExists)
+                    {
+                        [mainSession.crypto setOutgoingKeyRequestsEnabled:NO onComplete:nil];
+                    }
                     break;
                 default:
                     isLaunching = NO;
@@ -3730,8 +3735,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [mxSession.crypto pendingKeyRequests:^(MXUsersDevicesMap<NSArray<MXIncomingRoomKeyRequest *> *> *pendingKeyRequests) {
         
         MXStrongifyAndReturnIfNil(self);
-        NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: pendingKeyRequests.count: %@. Already displayed: %@",
-               @(pendingKeyRequests.count),
+        NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: cross-signing state: %ld, pendingKeyRequests.count: %@. Already displayed: %@",
+              mxSession.crypto.crossSigning.state,
+              @(pendingKeyRequests.count),
               self->roomKeyRequestViewController ? @"YES" : @"NO");
 
         if (!mxSession.crypto.crossSigning || mxSession.crypto.crossSigning.state == MXCrossSigningStateNotBootstrapped)
