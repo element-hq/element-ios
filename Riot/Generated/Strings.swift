@@ -954,7 +954,7 @@ internal enum VectorL10n {
   internal static var deviceVerificationSelfVerifyStartWaiting: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_start_waiting") 
   }
-  /// This works with Element and other cross-signing capable Matrix cients.
+  /// This works with Element and other cross-signing capable Matrix clients.
   internal static var deviceVerificationSelfVerifyWaitAdditionalInformation: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_additional_information") 
   }

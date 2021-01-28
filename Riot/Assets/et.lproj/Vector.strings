@@ -215,7 +215,7 @@
 "client_web_name" = "Element Web";
 "client_ios_name" = "Element iOS";
 "client_android_name" = "Element Android";
-"auth_login_single_sign_on" = "Logi sisse ühekordse sisselogimise abil";
+"auth_login_single_sign_on" = "Logi sisse";
 // Room recents
 "room_recents_directory_section" = "JUTUTUBADE LOEND";
 "room_recents_directory_section_network" = "Võrk";
@@ -1218,3 +1218,20 @@
 "rooms_empty_view_title" = "Jututoad";
 "people_empty_view_information" = "Suhltle turvaliselt kellega soovid. Inimeste lisamiseks klõpsi + ikooni.";
 "people_empty_view_title" = "Inimesed";
+"invite_friends_share_text" = "Suhtle minuga %@ vahendusel: %@";
+
+// MARK: - Invite friends
+
+"invite_friends_action" = "Kutsu sõpru kasutama rakendust %@";
+"pin_protection_settings_change_pin" = "Muuda PIN-koodi";
+"pin_protection_confirm_pin_to_change" = "PIN-koodi muutmiseks korda PIN-koodi";
+"bug_report_background_mode" = "Jätka taustal";
+"social_login_button_title_sign_up" = "Loo konto kasutades %@ teenust";
+"social_login_button_title_sign_in" = "Logi sisse kasutades %@ teenust";
+"social_login_button_title_continue" = "Jätka kasutades %@ teenust";
+"social_login_list_title_sign_up" = "Või registreeru kasutajaks kasutades";
+"social_login_list_title_sign_in" = "Või logi sisse kasutades";
+
+// Social login
+
+"social_login_list_title_continue" = "Jätka kasutades";

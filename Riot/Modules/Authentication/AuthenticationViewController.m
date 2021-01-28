@@ -79,6 +79,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 // Current SSO transaction id used to identify and validate the SSO authentication callback
 @property (nonatomic, strong) NSString *ssoCallbackTxnId;
 
+@property (nonatomic, getter = isFirstViewAppearing) BOOL firstViewAppearing;
+
 @end
 
 @implementation AuthenticationViewController
@@ -110,6 +112,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     defaultCountryCode = @"GB";
     
     didCheckFalseAuthScreenDisplay = NO;
+    
+    _firstViewAppearing = YES;
 }
 
 - (void)viewDidLoad
@@ -302,6 +306,11 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 {
     [super viewDidAppear:animated];
     
+    if (self.isFirstViewAppearing)
+    {
+        self.firstViewAppearing = NO;
+    }
+    
     if (self.keyVerificationCoordinatorBridgePresenter)
     {
         return;
@@ -331,6 +340,16 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     [_keyboardAvoider stopAvoiding];
     
     [super viewDidDisappear:animated];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    
+    if (self.isFirstViewAppearing)
+    {
+        [self refreshContentViewHeightConstraint];
+    }
 }
 
 - (void)destroy
@@ -1162,6 +1181,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
 - (void)refreshContentViewHeightConstraint
 {
+    [self.view layoutIfNeeded];
+    
     // Refresh content view height by considering the options container display.
     CGFloat constant = self.optionsContainer.frame.origin.y + 10;
     
@@ -1174,6 +1195,18 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     {
         self.authInputContainerViewMinHeightConstraint.constant = 0;
         self.authInputContainerViewHeightConstraint.constant = 0;
+    }
+        
+    // FIX: When authInputsView present recaptcha the height is not taken into account, add it manually here.
+    AuthInputsView *authInputsview;
+    if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+    {
+        authInputsview = (AuthInputsView*)self.authInputsView;
+        
+        if (!authInputsview.recaptchaContainer.hidden)
+        {
+            constant+=authInputsview.frame.size.height;
+        }
     }
     
     if (!self.optionsContainer.isHidden)
