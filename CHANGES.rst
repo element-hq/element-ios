@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Social login: Handle new identity provider brand field in order to customize buttons (#3980).
 
 🐛 Bugfix
  * 
