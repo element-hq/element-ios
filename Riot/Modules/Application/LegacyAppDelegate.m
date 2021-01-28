@@ -3734,7 +3734,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                @(pendingKeyRequests.count),
               self->roomKeyRequestViewController ? @"YES" : @"NO");
 
-        if (!mxSession.crypto.crossSigning)
+        if (!mxSession.crypto.crossSigning || mxSession.crypto.crossSigning.state != MXCrossSigningStateCrossSigningExists)
         {
             if (self->roomKeyRequestViewController)
             {
@@ -3770,7 +3770,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 MXDeviceInfo *deviceInfo = [usersDevicesInfoMap objectForDevice:deviceId forUser:userId];
                 if (deviceInfo)
                 {
-                    if (!mxSession.crypto.crossSigning)
+                    if (!mxSession.crypto.crossSigning || mxSession.crypto.crossSigning.state != MXCrossSigningStateCrossSigningExists)
                     {
                         BOOL wasNewDevice = (deviceInfo.trustLevel.localVerificationStatus == MXDeviceUnknown);
                         
