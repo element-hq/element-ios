@@ -3734,7 +3734,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                @(pendingKeyRequests.count),
               self->roomKeyRequestViewController ? @"YES" : @"NO");
 
-        if (!mxSession.crypto.crossSigning || mxSession.crypto.crossSigning.state != MXCrossSigningStateCrossSigningExists)
+        if (!mxSession.crypto.crossSigning || mxSession.crypto.crossSigning.state == MXCrossSigningStateNotBootstrapped)
         {
             if (self->roomKeyRequestViewController)
             {
