@@ -16,6 +16,7 @@
 
 import Foundation
 import MatrixKit
+import MatrixSDK
 
 /// AppConfiguration is CommonConfiguration plus configurations dedicated to the app
 class AppConfiguration: CommonConfiguration {
@@ -39,7 +40,7 @@ class AppConfiguration: CommonConfiguration {
         MXKAppSettings.standard()?.hidePreJoinedUndecryptableEvents = true
         
         // Send shared key each time the user enter a room
-        MXKAppSettings.standard()?.sendSharedKeyWhenEnterRoom = true
+        MXKAppSettings.standard()?.outboundGroupSessionKeySharingStrategy = [.whenTyping, .whenEnteringRoom];
         
         // Enable long press on event in bubble cells
         MXKRoomBubbleTableViewCell.disableLongPressGesture(onEvent: false)
