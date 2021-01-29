@@ -49,3 +49,5 @@
 "major_update_title" = "Riot on nyt Element";
 "major_update_learn_more_action" = "Lue lisää";
 "major_update_done_action" = "Selvä";
+"room_member_power_level_short_moderator" = "Valvoja";
+"room_member_power_level_moderator_in" = "Valvoja %@:ssä";

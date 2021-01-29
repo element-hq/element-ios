@@ -936,8 +936,6 @@
 		ECB5D98F255420F8000AD89C /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB5D98E255420F8000AD89C /* Keychain.swift */; };
 		ECB5D9902554221F000AD89C /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB5D98E255420F8000AD89C /* Keychain.swift */; };
 		ECDC15F224AF41D2003437CF /* FormattedBodyParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC15F124AF41D2003437CF /* FormattedBodyParser.swift */; };
-		ECE36F7F258B578300122124 /* Memory.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE36F7E258B578300122124 /* Memory.swift */; };
-		ECE36F80258B579900122124 /* Memory.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECE36F7E258B578300122124 /* Memory.swift */; };
 		ECF57A4425090C23004BBF9D /* CreateRoomCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A3825090C23004BBF9D /* CreateRoomCoordinatorBridgePresenter.swift */; };
 		ECF57A4525090C23004BBF9D /* CreateRoomCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A3925090C23004BBF9D /* CreateRoomCoordinatorType.swift */; };
 		ECF57A4625090C23004BBF9D /* CreateRoomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A3A25090C23004BBF9D /* CreateRoomCoordinator.swift */; };
@@ -2200,7 +2198,6 @@
 		ECB101352477D00700CF8C11 /* UniversalLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UniversalLink.m; sourceTree = "<group>"; };
 		ECB5D98E255420F8000AD89C /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		ECDC15F124AF41D2003437CF /* FormattedBodyParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattedBodyParser.swift; sourceTree = "<group>"; };
-		ECE36F7E258B578300122124 /* Memory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Memory.swift; sourceTree = "<group>"; };
 		ECF57A3825090C23004BBF9D /* CreateRoomCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateRoomCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
 		ECF57A3925090C23004BBF9D /* CreateRoomCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateRoomCoordinatorType.swift; sourceTree = "<group>"; };
 		ECF57A3A25090C23004BBF9D /* CreateRoomCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateRoomCoordinator.swift; sourceTree = "<group>"; };
@@ -5601,7 +5598,6 @@
 				EC2B4EF024A1EEBD005EB739 /* DataProtectionHelper.swift */,
 				ECDC15F124AF41D2003437CF /* FormattedBodyParser.swift */,
 				B158E72025485B9E000A7F75 /* Base32Coder.swift */,
-				ECE36F7E258B578300122124 /* Memory.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -6321,7 +6317,6 @@
 				EC9A3EC624E1632C00A8CFAE /* PushNotificationStore.swift in Sources */,
 				EC31F0952521FC4600D407DA /* PinCodePreferences.swift in Sources */,
 				32FD757424D2BEF700BA7B37 /* InfoPlist.swift in Sources */,
-				ECE36F80258B579900122124 /* Memory.swift in Sources */,
 				ECB5D9902554221F000AD89C /* Keychain.swift in Sources */,
 				EC31F09C2524AE1400D407DA /* BiometricsAuthenticationPresenter.swift in Sources */,
 				EC85D752247C0F52002C44C9 /* UNUserNotificationCenter.swift in Sources */,
@@ -6909,7 +6904,6 @@
 				B1B5574720EE6C4D00210D55 /* UsersDevicesViewController.m in Sources */,
 				B1098BFF21ECFE65000DDA48 /* PasswordStrengthView.swift in Sources */,
 				ECFBD5D2250A7AAF00DD5F5A /* ShowDirectoryViewState.swift in Sources */,
-				ECE36F7F258B578300122124 /* Memory.swift in Sources */,
 				B1B558D220EF768F00210D55 /* RoomEncryptedDataBubbleCell.m in Sources */,
 				B10A3E8F24FE4368007C380F /* Timeline_1.swift in Sources */,
 				EC711BB024A63B58008F830C /* SecureBackupBannerCell.swift in Sources */,
@@ -7475,7 +7469,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.1.6;
+				CURRENT_PROJECT_VERSION = 1.1.7;
 				DEFINES_MODULE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -7495,7 +7489,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.1.6;
+				MARKETING_VERSION = 1.1.7;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -7534,7 +7528,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 1.1.6;
+				CURRENT_PROJECT_VERSION = 1.1.7;
 				DEFINES_MODULE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -7547,7 +7541,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.1.6;
+				MARKETING_VERSION = 1.1.7;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;

@@ -79,6 +79,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 // Current SSO transaction id used to identify and validate the SSO authentication callback
 @property (nonatomic, strong) NSString *ssoCallbackTxnId;
 
+@property (nonatomic, getter = isFirstViewAppearing) BOOL firstViewAppearing;
+
 @end
 
 @implementation AuthenticationViewController
@@ -110,6 +112,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     defaultCountryCode = @"GB";
     
     didCheckFalseAuthScreenDisplay = NO;
+    
+    _firstViewAppearing = YES;
 }
 
 - (void)viewDidLoad
@@ -302,6 +306,11 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 {
     [super viewDidAppear:animated];
     
+    if (self.isFirstViewAppearing)
+    {
+        self.firstViewAppearing = NO;
+    }
+    
     if (self.keyVerificationCoordinatorBridgePresenter)
     {
         return;
@@ -331,6 +340,16 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     [_keyboardAvoider stopAvoiding];
     
     [super viewDidDisappear:animated];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    
+    if (self.isFirstViewAppearing)
+    {
+        [self refreshContentViewHeightConstraint];
+    }
 }
 
 - (void)destroy
