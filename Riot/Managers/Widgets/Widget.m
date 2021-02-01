@@ -56,7 +56,6 @@
     NSString *userId = self.mxSession.myUser.userId;
     NSString *displayName = self.mxSession.myUser.displayname ? self.mxSession.myUser.displayname : self.mxSession.myUser.userId;
     NSString *avatarUrl = self.mxSession.myUser.avatarUrl ? self.mxSession.myUser.avatarUrl : @"";
-    NSString *roomId = self.roomId;
     NSString *widgetId = self.widgetId;
 
     // Escape everything to build a valid URL string
@@ -64,14 +63,19 @@
     userId = [MXTools encodeURIComponent:userId];
     displayName = [MXTools encodeURIComponent:displayName];
     avatarUrl = [MXTools encodeURIComponent:avatarUrl];
-    roomId = [MXTools encodeURIComponent:roomId];
     widgetId = [MXTools encodeURIComponent:widgetId];
 
     widgetUrl = [widgetUrl stringByReplacingOccurrencesOfString:@"$matrix_user_id" withString:userId];
     widgetUrl = [widgetUrl stringByReplacingOccurrencesOfString:@"$matrix_display_name" withString:displayName];
     widgetUrl = [widgetUrl stringByReplacingOccurrencesOfString:@"$matrix_avatar_url" withString:avatarUrl];
-    widgetUrl = [widgetUrl stringByReplacingOccurrencesOfString:@"$matrix_room_id" withString:roomId];
     widgetUrl = [widgetUrl stringByReplacingOccurrencesOfString:@"$matrix_widget_id" withString:widgetId];
+    
+    if (self.roomId)
+    {
+        NSString *roomId = [MXTools encodeURIComponent:self.roomId];
+        widgetUrl = [widgetUrl stringByReplacingOccurrencesOfString:@"$matrix_room_id" withString:roomId];
+    }
+
 
     // Integrate widget data into widget url
     for (NSString *key in _data)
