@@ -6,6 +6,7 @@ Changes to be released in next version
 
 🙌 Improvements
  * Social login: Handle new identity provider brand field in order to customize buttons (#3980).
+ * Widgets: Support $matrix_room_id and $matrix_widget_id parameters (#3987).
 
 🐛 Bugfix
  * 
