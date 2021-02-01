@@ -3996,7 +3996,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)keyVerificationCoordinatorBridgePresenterDelegateDidComplete:(KeyVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
 {
-    [coordinatorBridgePresenter.session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+    MXCrypto *crypto = coordinatorBridgePresenter.session.crypto;
+    if (!crypto.backup.hasPrivateKeyInCryptoStore || !crypto.backup.enabled)
+    {
+        NSLog(@"[AppDelegate][MXKeyVerification] requestAllPrivateKeys: Request key backup private keys");
+        [crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+    }
     [self dismissKeyVerificationCoordinatorBridgePresenter];
 }
 

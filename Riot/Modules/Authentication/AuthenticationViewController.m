@@ -1624,8 +1624,12 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
 - (void)keyVerificationCoordinatorBridgePresenterDelegateDidComplete:(KeyVerificationCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
 {
-    // Set outgoing key requests back
-    [coordinatorBridgePresenter.session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+    MXCrypto *crypto = coordinatorBridgePresenter.session.crypto;
+    if (!crypto.backup.hasPrivateKeyInCryptoStore || !crypto.backup.enabled)
+    {
+        NSLog(@"[AuthenticationVC][MXKeyVerification] requestAllPrivateKeys: Request key backup private keys");
+        [crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+    }
     [self dismiss];
 }
 
