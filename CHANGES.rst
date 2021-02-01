@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Added capability to setup the application from server (#3934)
 
 🐛 Bugfix
  * 

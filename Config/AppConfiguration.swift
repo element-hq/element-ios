@@ -40,7 +40,7 @@ class AppConfiguration: CommonConfiguration {
         MXKAppSettings.standard()?.hidePreJoinedUndecryptableEvents = true
         
         // Send shared key each time the user enter a room
-        MXKAppSettings.standard()?.outboundGroupSessionKeySharingStrategy = [.whenTyping, .whenEnteringRoom];
+        MXKAppSettings.standard()?.outboundGroupSessionKeySharingStrategy = .whenTyping;
         
         // Enable long press on event in bubble cells
         MXKRoomBubbleTableViewCell.disableLongPressGesture(onEvent: false)

@@ -487,6 +487,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         [self configurePinCodeScreenFor:application createIfRequired:YES];
     });
     
+    [[RemoteSettings shared] requestWithSuccess:^{
+        NSLog(@"succes");
+    } failure:^(NSError * _Nonnull error) {
+        NSLog(@"error: %@", error);
+    }];
+
     return YES;
 }
 
