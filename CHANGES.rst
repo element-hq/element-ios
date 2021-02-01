@@ -8,7 +8,7 @@ Changes to be released in next version
  * Social login: Handle new identity provider brand field in order to customize buttons (#3980).
 
 🐛 Bugfix
- * 
+ * Push: Fix PushKit crashes due to undecryptable call invites (#3986).
 
 ⚠️ API Changes
  * 
