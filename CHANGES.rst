@@ -5,10 +5,12 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
+ * Social login: Handle new identity provider brand field in order to customize buttons (#3980).
+ * Widgets: Support $matrix_room_id and $matrix_widget_id parameters (#3987).
  * Added capability to setup the application from server (#3934)
 
 🐛 Bugfix
- * 
+ * Push: Fix PushKit crashes due to undecryptable call invites (#3986).
 
 ⚠️ API Changes
  * 
