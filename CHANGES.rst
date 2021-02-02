@@ -7,6 +7,7 @@ Changes to be released in next version
 🙌 Improvements
  * Social login: Handle new identity provider brand field in order to customize buttons (#3980).
  * Widgets: Support $matrix_room_id and $matrix_widget_id parameters (#3987).
+ * matrix.to: Support room preview when the permalink has parameters (like "via=").
 
 🐛 Bugfix
  * Push: Fix PushKit crashes due to undecryptable call invites (#3986).

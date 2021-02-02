@@ -1444,40 +1444,32 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                             // FIXME: In case of multi-account, ask the user which one to use
                             MXKAccount* account = accountManager.activeAccounts.firstObject;
                             
-                            RoomPreviewData *roomPreviewData;
+                            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias
+                                                                                            andSession:account.mxSession];
                             if (queryParams)
                             {
+                                roomPreviewData.viaServers = queryParams[@"via"];
+                            }
+                            
+                            // Is it a link to an event of a room?
+                            // If yes, the event will be displayed once the room is joined
+                            roomPreviewData.eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
+                            
+                            // Try to get more information about the room before opening its preview
+                            [roomPreviewData peekInRoom:^(BOOL succeeded) {
+                                
                                 // Note: the activity indicator will not disappear if the session is not ready
                                 [homeViewController stopActivityIndicator];
                                 
-                                roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias emailInvitationParams:queryParams andSession:account.mxSession];
-                                roomPreviewData.viaServers = queryParams[@"via"];
+                                // If no data is available for this room, we name it with the known room alias (if any).
+                                if (!succeeded && universalLinkFragmentPendingRoomAlias[roomIdOrAlias])
+                                {
+                                    roomPreviewData.roomName = universalLinkFragmentPendingRoomAlias[roomIdOrAlias];
+                                }
+                                universalLinkFragmentPendingRoomAlias = nil;
+                                
                                 [self showRoomPreview:roomPreviewData];
-                            }
-                            else
-                            {
-                                roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias andSession:account.mxSession];
-                                
-                                // Is it a link to an event of a room?
-                                // If yes, the event will be displayed once the room is joined
-                                roomPreviewData.eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
-                                
-                                // Try to get more information about the room before opening its preview
-                                [roomPreviewData peekInRoom:^(BOOL succeeded) {
-                                    
-                                    // Note: the activity indicator will not disappear if the session is not ready
-                                    [homeViewController stopActivityIndicator];
-                                    
-                                    // If no data is available for this room, we name it with the known room alias (if any).
-                                    if (!succeeded && universalLinkFragmentPendingRoomAlias[roomIdOrAlias])
-                                    {
-                                        roomPreviewData.roomName = universalLinkFragmentPendingRoomAlias[roomIdOrAlias];
-                                    }
-                                    universalLinkFragmentPendingRoomAlias = nil;
-                                    
-                                    [self showRoomPreview:roomPreviewData];
-                                }];
-                            }
+                            }];
                         }
                         
                     }
