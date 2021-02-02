@@ -23,6 +23,7 @@ internal enum Asset {
     internal static let socialLoginButtonApple = ImageAsset(name: "social_login_button_apple")
     internal static let socialLoginButtonFacebook = ImageAsset(name: "social_login_button_facebook")
     internal static let socialLoginButtonGithub = ImageAsset(name: "social_login_button_github")
+    internal static let socialLoginButtonGitlab = ImageAsset(name: "social_login_button_gitlab")
     internal static let socialLoginButtonGoogle = ImageAsset(name: "social_login_button_google")
     internal static let socialLoginButtonTwitter = ImageAsset(name: "social_login_button_twitter")
     internal static let callAudioMuteOffIcon = ImageAsset(name: "call_audio_mute_off_icon")
