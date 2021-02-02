@@ -135,7 +135,7 @@
                                         <constraint firstItem="54b-4O-ip9" firstAttribute="top" secondItem="xWb-IJ-v7F" secondAttribute="top" constant="8" id="Ddp-gU-nLY"/>
                                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="54b-4O-ip9" secondAttribute="trailing" constant="8" id="VEQ-w9-9Ln"/>
                                         <constraint firstAttribute="centerY" secondItem="30E-gm-z6O" secondAttribute="centerY" id="ctL-D3-bgP"/>
-                                        <constraint firstAttribute="height" constant="200" id="e04-1Y-4gZ"/>
+                                        <constraint firstAttribute="height" priority="750" constant="200" id="e04-1Y-4gZ"/>
                                         <constraint firstItem="wIH-Kd-r7q" firstAttribute="top" secondItem="54b-4O-ip9" secondAttribute="bottom" constant="5" id="grf-0I-rwT"/>
                                         <constraint firstItem="54b-4O-ip9" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="xWb-IJ-v7F" secondAttribute="leading" constant="8" id="phW-Yy-zN7"/>
                                         <constraint firstAttribute="centerX" secondItem="wIH-Kd-r7q" secondAttribute="centerX" id="rTd-Qc-xrD"/>
@@ -410,7 +410,7 @@ Clear it if you're finished using this device, or want to sign in to another acc
                                         <constraint firstItem="AJ2-lJ-NUq" firstAttribute="centerY" secondItem="k3J-Eg-itz" secondAttribute="centerY" id="dcE-Vs-7Rt"/>
                                         <constraint firstAttribute="trailing" secondItem="FIn-2w-e6H" secondAttribute="trailing" id="kFj-6g-v3H"/>
                                         <constraint firstItem="vX2-5Y-rQc" firstAttribute="leading" secondItem="Gg0-TE-OGb" secondAttribute="leading" id="kYN-Lj-zYP"/>
-                                        <constraint firstAttribute="height" constant="300" id="lXv-gM-CjN"/>
+                                        <constraint firstAttribute="height" priority="700" constant="300" id="lXv-gM-CjN"/>
                                         <constraint firstItem="k3J-Eg-itz" firstAttribute="top" secondItem="Gg0-TE-OGb" secondAttribute="top" constant="33" id="mor-t9-7Ke"/>
                                         <constraint firstItem="FIn-2w-e6H" firstAttribute="top" secondItem="k3J-Eg-itz" secondAttribute="bottom" constant="5" id="oTS-5o-MMW"/>
                                         <constraint firstItem="wEJ-AF-rdH" firstAttribute="leading" secondItem="Gg0-TE-OGb" secondAttribute="leading" constant="11" id="sax-RY-aOJ"/>

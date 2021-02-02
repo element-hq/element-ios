@@ -119,7 +119,11 @@ final class SocialLoginListView: UIView, NibLoadable {
         
         // Order alphabeticaly by Identity Provider identifier
         let sortedIdentityProviders = identityProviders.sorted { (firstIdentityProvider, secondIdentityProvider) -> Bool in
-            firstIdentityProvider.identifier < secondIdentityProvider.identifier
+            if let firstIdentityProviderBrand = firstIdentityProvider.brand, let secondIdentityProviderBrand = secondIdentityProvider.brand {
+                return firstIdentityProviderBrand < secondIdentityProviderBrand
+            } else {
+                return firstIdentityProvider.identifier < secondIdentityProvider.identifier
+            }
         }
         
         for identityProvider in sortedIdentityProviders {
