@@ -11,6 +11,7 @@ Changes to be released in next version
 🐛 Bugfix
  * Push: Fix PushKit crashes due to undecryptable call invites (#3986).
  * matrix.to: Cannot open links with query parameters (#3990).
+ * matrix.to: Cannot open/preview a new room given by alias (#3991).
 
 ⚠️ API Changes
  * 
