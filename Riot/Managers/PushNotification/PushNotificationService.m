@@ -551,9 +551,12 @@ Matrix session observer used to detect new opened sessions.
             
             if ([lastCallInvite.eventId isEqualToString:eventId])
             {
+                //  We're using this dispatch_group to continue event stream after cache fully processed.
                 dispatch_group_t dispatchGroup = dispatch_group_create();
                 
                 dispatch_group_enter(dispatchGroup);
+                //  Not continuing in completion block here, because PushKit mandates reporting a new call in the same run loop.
+                //  'handleBackgroundSyncCacheIfRequiredWithCompletion' is processing to-device events synchronously.
                 [session handleBackgroundSyncCacheIfRequiredWithCompletion:^{
                     dispatch_group_leave(dispatchGroup);
                 }];
@@ -565,6 +568,7 @@ Matrix session observer used to detect new opened sessions.
                     return;
                 }
                 
+                //  process the call invite synchronously
                 [session.callManager handleCallEvent:lastCallInvite];
                 MXCall *call = [session.callManager callWithCallId:lastCallInvite.content[@"call_id"]];
                 if (call)
