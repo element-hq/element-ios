@@ -5,11 +5,13 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
+ * Social login: Handle new identity provider brand field in order to customize buttons (#3980).
+ * Widgets: Support $matrix_room_id and $matrix_widget_id parameters (#3987).
  * VoIP: Implement DTMF on call screen (#3929).
  * VoIP: Implement call transfer screen (#3962).
 
 🐛 Bugfix
- * Navigation: Unable to open a room from a room list (#3863).
+ * Push: Fix PushKit crashes due to undecryptable call invites (#3986).
 
 ⚠️ API Changes
  * 
@@ -22,6 +24,34 @@ Changes to be released in next version
 
 Others
  * 
+
+Changes in 1.1.6 (2021-01-27)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * Navigation: Unable to open a room from a room list (#3863).
+ * AuthVC: Fix social login layout issue.
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.13.8](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.8)).
 
 Changes in 1.1.5 (2021-01-18)
 =================================================

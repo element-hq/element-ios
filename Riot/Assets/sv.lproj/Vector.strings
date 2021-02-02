@@ -407,7 +407,7 @@
 "client_desktop_name" = "Element Skrivbord";
 "client_web_name" = "Element Webb";
 "auth_submit" = "Skicka";
-"auth_login_single_sign_on" = "Logga in med externt konto";
+"auth_login_single_sign_on" = "Logga in";
 "auth_send_reset_email" = "Skicka återställningsmeddelande";
 "auth_return_to_login" = "Gå tillbaka till inloggningsskärmen";
 "auth_home_server_placeholder" = "URL (t.ex. https://matrix.org)";
@@ -1217,3 +1217,20 @@
 "rooms_empty_view_title" = "Rum";
 "people_empty_view_information" = "Chatta säkert med vem som helst. Tryck på + för att börja lägga till folk.";
 "people_empty_view_title" = "Personer";
+"invite_friends_share_text" = "Hallå där, prata med mig på %@: %@";
+
+// MARK: - Invite friends
+
+"invite_friends_action" = "Bjud in vänner till %@";
+"pin_protection_settings_change_pin" = "Byt PIN-kod";
+"pin_protection_confirm_pin_to_change" = "Bekräfta PIN-kod för att fortsätta";
+"bug_report_background_mode" = "Fortsätt i bakgrunden";
+"social_login_button_title_sign_up" = "Skapa konto med %@";
+"social_login_button_title_sign_in" = "Logga in med %@";
+"social_login_button_title_continue" = "Fortsätt med %@";
+"social_login_list_title_sign_up" = "Eller registrera med";
+"social_login_list_title_sign_in" = "Eller logga in med";
+
+// Social login
+
+"social_login_list_title_continue" = "Fortsätt med";
