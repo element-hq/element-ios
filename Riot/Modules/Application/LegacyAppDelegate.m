@@ -1146,9 +1146,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         [[NSNotificationCenter defaultCenter] postNotificationName:AppDelegateUniversalLinkDidChangeNotification object:nil];
     }
 
-    if ([webURL.path isEqualToString:@"/"])
+    if ([self handleServerProvionningLink:webURL])
     {
-        return [self handleServerProvionningLink:webURL];
+        return YES;
     }
     
     NSString *validateEmailSubmitTokenPath = @"validate/email/submitToken";
