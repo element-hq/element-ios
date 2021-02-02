@@ -486,12 +486,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     dispatch_async(dispatch_get_main_queue(), ^{
         [self configurePinCodeScreenFor:application createIfRequired:YES];
     });
-    
-    [[RemoteSettings shared] requestWithSuccess:^{
-        NSLog(@"succes");
-    } failure:^(NSError * _Nonnull error) {
-        NSLog(@"error: %@", error);
-    }];
 
     return YES;
 }
@@ -632,6 +626,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self.pushNotificationService applicationDidBecomeActive];
     
     [self configurePinCodeScreenFor:application createIfRequired:NO];
+    
+    [[RemoteSettings shared] requestWithSuccess:^{
+        NSLog(@"succes");
+    } failure:^(NSError * _Nonnull error) {
+        NSLog(@"error: %@", error);
+    }];
 }
 
 - (void)configurePinCodeScreenFor:(UIApplication *)application

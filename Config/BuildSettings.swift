@@ -210,6 +210,9 @@ final class BuildSettings: NSObject {
     /// Indicates should the app log out the user when number of biometrics failures reaches `maxAllowedNumberOfBiometricsFailures`. Defaults to `false`
     static let logOutUserWhenBiometricsFailuresExceeded: Bool = false
     
+    /// Indicates if and when the outbound Group session key should be shared. Default when the user is typing
+    static let outboundGroupSessionKeySharingStrategyKey: MXKKeySharingStrategy = .whenTyping
+    
     // MARK: - General Settings Screen
     
     static let settingsScreenShowUserFirstName: Bool = false
