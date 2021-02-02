@@ -34,18 +34,7 @@ class SocialLoginButtonFactory {
         let defaultStyle: SocialLoginButtonStyle
         var styles: [String: SocialLoginButtonStyle] = [:]
         
-        switch identityProvider.identifier {
-        case "google":
-            (defaultStyle, styles) = self.buildGoogleButtonStyles()
-        case "facebook":
-            (defaultStyle, styles) = self.buildFacebookButtonStyles()
-        case "github":
-            (defaultStyle, styles) = self.buildGitHubButtonStyles()
-        case "apple":
-            (defaultStyle, styles) = self.buildAppleButtonStyles()
-        case "twitter":
-            (defaultStyle, styles) = self.buildTwitterButtonStyles()
-        default:
+        let buildDefaultButtonStyles: () -> (SocialLoginButtonStyle, [String: SocialLoginButtonStyle]) = {
             let image: SourceImage?
             
             if let imageStringURL = identityProvider.icon, let imageURL = URL(string: imageStringURL) {
@@ -54,7 +43,30 @@ class SocialLoginButtonFactory {
                 image = nil
             }
             
-            (defaultStyle, styles) = self.buildDefaultButtonStyles(with: image)
+            return self.buildDefaultButtonStyles(with: image)
+        }
+                                
+        if let idpBrandIdentifier = identityProvider.brand {
+            let idpBrand = MXLoginSSOIdentityProviderBrand(rawValue: idpBrandIdentifier)
+
+            switch idpBrand {
+            case .gitlab:
+                (defaultStyle, styles) = self.buildGitLabButtonStyles()
+            case .github:
+                (defaultStyle, styles) = self.buildGitHubButtonStyles()
+            case .apple:
+                (defaultStyle, styles) = self.buildAppleButtonStyles()
+            case .google:
+                (defaultStyle, styles) = self.buildGoogleButtonStyles()
+            case .facebook:
+                (defaultStyle, styles) = self.buildFacebookButtonStyles()
+            case .twitter:
+                (defaultStyle, styles) = self.buildTwitterButtonStyles()
+            default:
+                (defaultStyle, styles) = buildDefaultButtonStyles()
+            }
+        } else {
+            (defaultStyle, styles) = buildDefaultButtonStyles()
         }
         
         let title = self.buildButtonTitle(with: identityProvider.name, mode: mode)
@@ -196,6 +208,31 @@ class SocialLoginButtonFactory {
         }
         
         let darkStyle = SocialLoginButtonStyle(logo: darkImage,
+                                               titleColor: .white,
+                                               backgroundColor: .black,
+                                               borderColor: .white)
+        
+        let defaultStyle: SocialLoginButtonStyle = lightStyle
+        
+        let styles: [String: SocialLoginButtonStyle] = [
+            ThemeIdentifier.light.rawValue: lightStyle,
+            ThemeIdentifier.dark.rawValue: darkStyle,
+            ThemeIdentifier.black.rawValue: darkStyle
+        ]
+        
+        return (defaultStyle, styles)
+    }
+    
+    private func buildGitLabButtonStyles() -> (SocialLoginButtonStyle, [String: SocialLoginButtonStyle]) {
+                
+        let logo: SourceImage = .local(Asset.Images.socialLoginButtonGitlab.image)
+        
+        let lightStyle = SocialLoginButtonStyle(logo: logo,
+                                                titleColor: .black,
+                                                backgroundColor: .white,
+                                                borderColor: .black)
+        
+        let darkStyle = SocialLoginButtonStyle(logo: logo,
                                                titleColor: .white,
                                                backgroundColor: .black,
                                                borderColor: .white)
