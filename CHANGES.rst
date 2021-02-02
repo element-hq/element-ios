@@ -9,7 +9,7 @@ Changes to be released in next version
  * Widgets: Support $matrix_room_id and $matrix_widget_id parameters (#3987).
 
 🐛 Bugfix
- * 
+ * Push: Fix PushKit crashes due to undecryptable call invites (#3986).
 
 ⚠️ API Changes
  * 
