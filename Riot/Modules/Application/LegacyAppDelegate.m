@@ -1255,6 +1255,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     NSLog(@"[AppDelegate] Universal link: handleUniversalLinkFragment: %@", fragment);
     
+    // Make sure we have plain utf8 character for separators
+    fragment = [fragment stringByRemovingPercentEncoding];
+    NSLog(@"[AppDelegate] Universal link: handleUniversalLinkFragment: %@", fragment);
+    
     // The app manages only one universal link at a time
     // Discard any pending one
     [self resetPendingUniversalLink];
