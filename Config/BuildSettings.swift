@@ -211,7 +211,7 @@ final class BuildSettings: NSObject {
     static let logOutUserWhenBiometricsFailuresExceeded: Bool = false
     
     /// Indicates if and when the outbound Group session key should be shared. Default when the user is typing
-    static let outboundGroupSessionKeySharingStrategyKey: MXKKeySharingStrategy = .whenTyping
+    static let outboundGroupSessionKeyPreSharingStrategyKey: MXKKeyPreSharingStrategy = .whenTyping
     
     // MARK: - General Settings Screen
     

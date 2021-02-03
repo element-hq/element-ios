@@ -33,9 +33,11 @@ import MatrixSDK
         case unknownRemoteError
     }
     
-    static let lastUpdateKey = "remote_settings_last_update_time"
-    static let cacheEntryKey = "remote_settings_cache"
-    static let outboundGroupSessionKeySharingStrategyKey = "outbound_group_session_key_sharing_strategy"
+    enum cacheDataKey: String {
+        case outboundGroupSessionKeyPreSharingStrategy = "outbound_group_session_key_pre_sharing_strategy"
+    }
+    private static let lastUpdateKey = "remote_settings_last_update_time"
+    private static let cacheEntryKey = "remote_settings_cache"
 
     /// singleton
     static let shared = RemoteSettings()
@@ -78,29 +80,28 @@ import MatrixSDK
         }
     }
     
-    subscript(key: String!) -> String? {
-        return cachedData()?[key] as? String
+    subscript(key: cacheDataKey!) -> String? {
+        return cachedData()?[key.rawValue] as? String
     }
     
-    subscript(key: String!) -> Int? {
-        return cachedData()?[key] as? Int
+    subscript(key: cacheDataKey!) -> Int? {
+        return cachedData()?[key.rawValue] as? Int
     }
     
-    subscript(key: String!) -> UInt? {
-        return cachedData()?[key] as? UInt
+    subscript(key: cacheDataKey!) -> UInt? {
+        return cachedData()?[key.rawValue] as? UInt
     }
     
-    subscript(key: String!) -> MXKKeySharingStrategy? {
+    subscript(key: cacheDataKey!) -> MXKKeyPreSharingStrategy? {
         let value: UInt? = self[key]
         if let value = value {
-            return MXKKeySharingStrategy(rawValue: value)
+            return MXKKeyPreSharingStrategy(rawValue: value)
         }
         return nil
     }
     
     private func cachedData() -> [String : Any]? {
         return UserDefaults.standard.dictionary(forKey: RemoteSettings.cacheEntryKey)
-//        return (UserDefaults.standard.object(forKey: RemoteSettings.cacheEntryKey) as? [AnyHashable : Any])
     }
     
     private func isCacheValid() -> Bool {
