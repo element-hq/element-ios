@@ -126,7 +126,8 @@ class NotificationService: UNNotificationServiceExtension {
         if !NotificationService.isLoggerInitialized {
             if isatty(STDERR_FILENO) == 0 {
                 MXLogger.setSubLogName("nse")
-                MXLogger.redirectNSLog(toFiles: true, numberOfFiles: 100, sizeLimit: 10 * 1024 * 1024)
+                let sizeLimit: UInt = 10 * 1024 * 1024; // 10MB
+                MXLogger.redirectNSLog(toFiles: true, numberOfFiles: 100, sizeLimit: sizeLimit)
             }
             NotificationService.isLoggerInitialized = true
         }
