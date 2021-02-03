@@ -1,3 +1,38 @@
+Changes in 1.1.7 (2021-02-03)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Social login: Handle new identity provider brand field in order to customize buttons (#3980).
+ * Widgets: Support $matrix_room_id and $matrix_widget_id parameters (#3987).
+ * matrix.to: Support room preview when the permalink has parameters (like "via=").
+ * Avoid megolm share requests if the device is not verified (#3969)
+ * Handle User-Interactive Authentication fallback (#3995).
+
+🐛 Bugfix
+ * Push: Fix PushKit crashes due to undecryptable call invites (#3986).
+ * matrix.to: Cannot open links with query parameters (#3990).
+ * matrix.to: Cannot open/preview a new room given by alias (#3991).
+ * matrix.to: The app does not open a permalink from matrix.to (#3993).
+ * Logs: Add a size limitation so that we can upload them in bug reports (#3903).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.13.9](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.9)).
+
 Changes in 1.1.6 (2021-01-27)
 =================================================
 

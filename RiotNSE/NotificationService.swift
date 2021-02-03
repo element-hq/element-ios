@@ -111,6 +111,7 @@ class NotificationService: UNNotificationServiceExtension {
     
     deinit {
         NSLog("[NotificationService] deinit for \(self)");
+        self.logMemory()
         NSLog(" ")
     }
     
@@ -118,14 +119,15 @@ class NotificationService: UNNotificationServiceExtension {
     //  MARK: - Private
     
     private func logMemory() {
-        NSLog("[NotificationService] Memory footprint: \(Memory.formattedMemoryFootprint())")
+        NSLog("[NotificationService] Memory: footprint: \(MXMemory.formattedMemoryFootprint()) - available: \(MXMemory.formattedMemoryAvailable())")
     }
     
     private func setupLogger() {
         if !NotificationService.isLoggerInitialized {
             if isatty(STDERR_FILENO) == 0 {
                 MXLogger.setSubLogName("nse")
-                MXLogger.redirectNSLog(toFiles: true)
+                let sizeLimit: UInt = 10 * 1024 * 1024; // 10MB
+                MXLogger.redirectNSLog(toFiles: true, numberOfFiles: 100, sizeLimit: sizeLimit)
             }
             NotificationService.isLoggerInitialized = true
         }
@@ -136,7 +138,11 @@ class NotificationService: UNNotificationServiceExtension {
         self.userAccount = MXKAccountManager.shared()?.activeAccounts.first
         if let userAccount = userAccount {
             if NotificationService.backgroundSyncService == nil {
+                NSLog("[NotificationService] setup: MXBackgroundSyncService init: BEFORE")
+                self.logMemory()
                 NotificationService.backgroundSyncService = MXBackgroundSyncService(withCredentials: userAccount.mxCredentials)
+                NSLog("[NotificationService] setup: MXBackgroundSyncService init: AFTER")
+                self.logMemory()
             }
             completion()
         } else {
@@ -209,9 +215,6 @@ class NotificationService: UNNotificationServiceExtension {
             //  clear maps
             self.contentHandlers.removeValue(forKey: event.eventId)
             self.bestAttemptContents.removeValue(forKey: event.eventId)
-            
-            //  log memory again at the end of the process
-            self.logMemory()
             
             // We are done for this push
             NSLog("--------------------------------------------------------------------------------")
