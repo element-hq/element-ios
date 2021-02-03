@@ -121,6 +121,9 @@
 #import "EventFormatter.h"
 #import <MatrixKit/MXKSlashCommands.h>
 
+#import "SettingsViewController.h"
+#import "SecurityViewController.h"
+
 #import "Riot-Swift.h"
 
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
@@ -5000,6 +5003,13 @@
 {
     MXWeakify(self);
     __block UIAlertController *alert;
+    
+    // Force device verification if session has cross-signing activated and device is not yet verified
+    if (self.mainSession.crypto.crossSigning && self.mainSession.crypto.crossSigning.state == MXCrossSigningStateCrossSigningExists)
+    {
+        [self presentReviewUnverifiedSessionsAlert];
+        return;
+    }
 
     // Make the re-request
     [self.mainSession.crypto reRequestRoomKeyForEvent:event];
@@ -5045,6 +5055,37 @@
 
     [self presentViewController:currentAlert animated:YES completion:nil];
 }
+
+- (void)presentReviewUnverifiedSessionsAlert
+{
+    NSLog(@"[MasterTabBarController] presentReviewUnverifiedSessionsAlertWithSession");
+
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
+
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"key_verification_self_verify_unverified_sessions_alert_title", @"Vector", nil)
+                                                                   message:NSLocalizedStringFromTable(@"key_verification_self_verify_unverified_sessions_alert_message", @"Vector", nil)
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"key_verification_self_verify_unverified_sessions_alert_validate_action", @"Vector", nil)
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * action) {
+                                                [self showSettingsSecurityScreen];
+                                            }]];
+
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
+                                              style:UIAlertActionStyleCancel
+                                            handler:nil]];
+
+    [self presentViewController:alert animated:YES completion:nil];
+
+    currentAlert = alert;
+}
+
+- (void)showSettingsSecurityScreen
+{
+    [[AppDelegate theDelegate] presentCompleteSecurityForSession: self.mainSession];
+}
+
 
 #pragma mark Tombstone event
 
