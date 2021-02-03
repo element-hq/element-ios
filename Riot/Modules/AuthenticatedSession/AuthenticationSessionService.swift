@@ -179,9 +179,9 @@ final class AuthenticationSessionService: NSObject {
     func authenticationFallbackURL(for flowIdentifier: String, sessionId: String) -> URL? {
         guard let homeserverStringURL = self.session.matrixRestClient.credentials.homeServer, let homeserverURL = URL(string: homeserverStringURL) else {
             return nil
-        }
+        }                
         
-        let fallbackPath =  "/_matrix/client/r0/auth/\(flowIdentifier)/fallback/web?session=\(sessionId)"
+        let fallbackPath =  "\(kMXAPIPrefixPathR0)/auth/\(flowIdentifier)/fallback/web?session=\(sessionId)"
         
         return URL(string: fallbackPath, relativeTo: homeserverURL)
     }
