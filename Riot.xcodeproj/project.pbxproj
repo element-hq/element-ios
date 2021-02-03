@@ -963,6 +963,12 @@
 		ECB5D98F255420F8000AD89C /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB5D98E255420F8000AD89C /* Keychain.swift */; };
 		ECB5D9902554221F000AD89C /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB5D98E255420F8000AD89C /* Keychain.swift */; };
 		ECC4C82F256FA7520010BA44 /* CallService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC4C82E256FA7520010BA44 /* CallService.swift */; };
+		ECD95ACF25CAB5C300E92D6F /* RoomBubbleCellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD95ACE25CAB5C300E92D6F /* RoomBubbleCellData.swift */; };
+		ECD95AD725CAB5D100E92D6F /* CallBubbleCellBaseContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECD95AD125CAB5D100E92D6F /* CallBubbleCellBaseContentView.xib */; };
+		ECD95AD825CAB5D100E92D6F /* RoomDirectCallStatusBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD95AD325CAB5D100E92D6F /* RoomDirectCallStatusBubbleCell.swift */; };
+		ECD95AD925CAB5D100E92D6F /* RoomBaseCallBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECD95AD425CAB5D100E92D6F /* RoomBaseCallBubbleCell.xib */; };
+		ECD95ADA25CAB5D100E92D6F /* RoomBaseCallBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD95AD525CAB5D100E92D6F /* RoomBaseCallBubbleCell.swift */; };
+		ECD95ADB25CAB5D100E92D6F /* CallBubbleCellBaseContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD95AD625CAB5D100E92D6F /* CallBubbleCellBaseContentView.swift */; };
 		ECDC15F224AF41D2003437CF /* FormattedBodyParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC15F124AF41D2003437CF /* FormattedBodyParser.swift */; };
 		ECF57A4425090C23004BBF9D /* CreateRoomCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A3825090C23004BBF9D /* CreateRoomCoordinatorBridgePresenter.swift */; };
 		ECF57A4525090C23004BBF9D /* CreateRoomCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A3925090C23004BBF9D /* CreateRoomCoordinatorType.swift */; };
@@ -2252,6 +2258,12 @@
 		ECB101352477D00700CF8C11 /* UniversalLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UniversalLink.m; sourceTree = "<group>"; };
 		ECB5D98E255420F8000AD89C /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		ECC4C82E256FA7520010BA44 /* CallService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallService.swift; sourceTree = "<group>"; };
+		ECD95ACE25CAB5C300E92D6F /* RoomBubbleCellData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomBubbleCellData.swift; sourceTree = "<group>"; };
+		ECD95AD125CAB5D100E92D6F /* CallBubbleCellBaseContentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallBubbleCellBaseContentView.xib; sourceTree = "<group>"; };
+		ECD95AD325CAB5D100E92D6F /* RoomDirectCallStatusBubbleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomDirectCallStatusBubbleCell.swift; sourceTree = "<group>"; };
+		ECD95AD425CAB5D100E92D6F /* RoomBaseCallBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomBaseCallBubbleCell.xib; sourceTree = "<group>"; };
+		ECD95AD525CAB5D100E92D6F /* RoomBaseCallBubbleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomBaseCallBubbleCell.swift; sourceTree = "<group>"; };
+		ECD95AD625CAB5D100E92D6F /* CallBubbleCellBaseContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallBubbleCellBaseContentView.swift; sourceTree = "<group>"; };
 		ECDC15F124AF41D2003437CF /* FormattedBodyParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattedBodyParser.swift; sourceTree = "<group>"; };
 		ECF57A3825090C23004BBF9D /* CreateRoomCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateRoomCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
 		ECF57A3925090C23004BBF9D /* CreateRoomCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateRoomCoordinatorType.swift; sourceTree = "<group>"; };
@@ -4431,6 +4443,7 @@
 		B1B5583F20EF768E00210D55 /* BubbleCells */ = {
 			isa = PBXGroup;
 			children = (
+				ECD95AD025CAB5D100E92D6F /* Call */,
 				ECFBD5E6250F97FC00DD5F5A /* RoomCreationCollapsedBubbleCell.h */,
 				ECFBD5E9250F97FC00DD5F5A /* RoomCreationCollapsedBubbleCell.m */,
 				ECFBD5E4250F97FC00DD5F5A /* RoomCreationCollapsedBubbleCell.xib */,
@@ -5461,6 +5474,26 @@
 			path = Call;
 			sourceTree = "<group>";
 		};
+		ECD95AD025CAB5D100E92D6F /* Call */ = {
+			isa = PBXGroup;
+			children = (
+				ECD95AD125CAB5D100E92D6F /* CallBubbleCellBaseContentView.xib */,
+				ECD95AD225CAB5D100E92D6F /* Direct */,
+				ECD95AD425CAB5D100E92D6F /* RoomBaseCallBubbleCell.xib */,
+				ECD95AD525CAB5D100E92D6F /* RoomBaseCallBubbleCell.swift */,
+				ECD95AD625CAB5D100E92D6F /* CallBubbleCellBaseContentView.swift */,
+			);
+			path = Call;
+			sourceTree = "<group>";
+		};
+		ECD95AD225CAB5D100E92D6F /* Direct */ = {
+			isa = PBXGroup;
+			children = (
+				ECD95AD325CAB5D100E92D6F /* RoomDirectCallStatusBubbleCell.swift */,
+			);
+			path = Direct;
+			sourceTree = "<group>";
+		};
 		ECF57A3725090C23004BBF9D /* CreateRoom */ = {
 			isa = PBXGroup;
 			children = (
@@ -5666,6 +5699,7 @@
 		F083BBE41E7009EC00A9B29C /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				ECD95ACE25CAB5C300E92D6F /* RoomBubbleCellData.swift */,
 				ECFBD5D9250A7ABD00DD5F5A /* MXThirdPartyProtocolInstance.swift */,
 				EC711B4524A63B13008F830C /* MXRecoveryService.swift */,
 				ECB1012E2477CFDB00CF8C11 /* UIDevice.swift */,
@@ -6088,6 +6122,7 @@
 				B1B558C220EF768F00210D55 /* RoomIncomingEncryptedTextMsgBubbleCell.xib in Resources */,
 				B1B558F620EF768F00210D55 /* RoomOutgoingTextMsgBubbleCell.xib in Resources */,
 				B1B5574D20EE6C4D00210D55 /* MediaPickerViewController.xib in Resources */,
+				ECD95AD925CAB5D100E92D6F /* RoomBaseCallBubbleCell.xib in Resources */,
 				B1B5575020EE6C4D00210D55 /* AuthenticationViewController.xib in Resources */,
 				B1C45A85232A8C2600165425 /* SettingsIdentityServerViewController.storyboard in Resources */,
 				B14F142E22144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewController.storyboard in Resources */,
@@ -6137,6 +6172,7 @@
 				3232AB1522564D9100AD6A5C /* flat-swift4-vector.stencil in Resources */,
 				F083BDE61E7009ED00A9B29C /* busy.mp3 in Resources */,
 				EC711BB324A63B58008F830C /* SecureBackupBannerCell.xib in Resources */,
+				ECD95AD725CAB5D100E92D6F /* CallBubbleCellBaseContentView.xib in Resources */,
 				B1B5574C20EE6C4D00210D55 /* MediaAlbumContentViewController.xib in Resources */,
 				32607D6F243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewController.storyboard in Resources */,
 				EC757B2625B85C7F00DF5787 /* DialpadViewController.storyboard in Resources */,
@@ -6613,6 +6649,7 @@
 				B1C3361C22F32B4A0021BA8D /* SingleImagePickerPresenter.swift in Sources */,
 				B1B5572F20EE6C4D00210D55 /* ReadReceiptsViewController.m in Sources */,
 				B1BD71BC238E8F9600BA92E2 /* WidgetPermissionViewController.swift in Sources */,
+				ECD95AD825CAB5D100E92D6F /* RoomDirectCallStatusBubbleCell.swift in Sources */,
 				B1B558CB20EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				B10A3E9824FE86AF007C380F /* SplitViewCoordinatorType.swift in Sources */,
 				B11291EA238D35590077B478 /* SlidingModalPresentable.swift in Sources */,
@@ -6885,6 +6922,7 @@
 				B1C7822F2500EAF500337EB9 /* TabBarCoordinator.swift in Sources */,
 				B1B557DE20EF5FBB00210D55 /* FilesSearchTableViewCell.m in Sources */,
 				B1B5574020EE6C4D00210D55 /* SegmentedViewController.m in Sources */,
+				ECD95ACF25CAB5C300E92D6F /* RoomBubbleCellData.swift in Sources */,
 				ECF57A4C25090C23004BBF9D /* EnterNewRoomDetailsViewAction.swift in Sources */,
 				EC711BAE24A63B58008F830C /* SecureBackupSetupCoordinator.swift in Sources */,
 				B1B5599320EFC5E400210D55 /* DecryptionFailure.m in Sources */,
@@ -7092,6 +7130,7 @@
 				EC85D6AE2477DC89002C44C9 /* RoundedButton.swift in Sources */,
 				B1CE83D72422817200D07506 /* KeyVerificationVerifyByScanningViewModelType.swift in Sources */,
 				3232ABA1225730E100AD6A5C /* KeyVerificationCoordinatorType.swift in Sources */,
+				ECD95ADA25CAB5D100E92D6F /* RoomBaseCallBubbleCell.swift in Sources */,
 				B1C562D9228C0B760037F12A /* RoomContextualMenuItem.swift in Sources */,
 				B1C543B223A2913F00DCA1FA /* KeyVerificationConclusionBubbleCell.swift in Sources */,
 				323AB947232BD74600C1451F /* AuthFallBackViewController.m in Sources */,
@@ -7210,6 +7249,7 @@
 				B109D6F1222D8C400061B6D9 /* UIApplication.swift in Sources */,
 				ECFBD5D6250A7AAF00DD5F5A /* ShowDirectoryViewAction.swift in Sources */,
 				EC711BB124A63B58008F830C /* SecureBackupBannerPreferences.swift in Sources */,
+				ECD95ADB25CAB5D100E92D6F /* CallBubbleCellBaseContentView.swift in Sources */,
 				ECF57A4625090C23004BBF9D /* CreateRoomCoordinator.swift in Sources */,
 				ECFBD5DC250A82B200DD5F5A /* TextViewTableViewHeaderFooterView.swift in Sources */,
 				B1BEE73723DF44A60003A4CB /* UserVerificationSessionsStatusViewState.swift in Sources */,

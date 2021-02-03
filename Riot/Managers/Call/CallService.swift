@@ -25,6 +25,7 @@ class CallService: NSObject {
         static let pipAnimationDuration: TimeInterval = 0.25
     }
     
+    private var sessions: [MXSession] = []
     private var callVCs: [String: CallViewController] = [:]
     private var callBackgroundTasks: [String: MXBackgroundTask] = [:]
     private weak var presentedCallVC: CallViewController? {
@@ -76,6 +77,16 @@ class CallService: NSObject {
     
     /// Delegate object
     weak var delegate: CallServiceDelegate?
+    
+    func addMatrixSession(_ session: MXSession) {
+        sessions.append(session)
+    }
+    
+    func removeMatrixSession(_ session: MXSession) {
+        if let index = sessions.firstIndex(of: session) {
+            sessions.remove(at: index)
+        }
+    }
     
     /// Start the service
     func start() {
@@ -217,6 +228,10 @@ class CallService: NSObject {
                                                selector: #selector(callStateChanged(_:)),
                                                name: NSNotification.Name(rawValue: kMXCallStateDidChange),
                                                object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(callTileTapped(_:)),
+                                               name: NSNotification.Name(rawValue: kRoomCallTileTapped),
+                                               object: nil)
         
         isStarted = true
     }
@@ -231,6 +246,9 @@ class CallService: NSObject {
                                                   object: nil)
         NotificationCenter.default.removeObserver(self,
                                                   name: NSNotification.Name(rawValue: kMXCallStateDidChange),
+                                                  object: nil)
+        NotificationCenter.default.removeObserver(self,
+                                                  name: NSNotification.Name(rawValue: kRoomCallTileTapped),
                                                   object: nil)
         
         isStarted = false
@@ -299,6 +317,40 @@ class CallService: NSObject {
         default:
             break
         }
+    }
+    
+    @objc
+    private func callTileTapped(_ notification: Notification) {
+        NSLog("[CallService] callTileTapped")
+        guard let bubbleData = notification.object as? RoomBubbleCellData else {
+            return
+        }
+        
+        guard let randomEvent = bubbleData.allLinkedEvents().randomElement() else {
+            return
+        }
+        
+        guard let callEventContent = MXCallEventContent(fromJSON: randomEvent.content) else {
+            return
+        }
+        
+        NSLog("[CallService] callTileTapped: for call: \(callEventContent.callId)")
+        
+        guard let session = sessions.first else { return }
+        
+        guard let call = session.callManager.call(withCallId: callEventContent.callId) else {
+            return
+        }
+        
+        if call.state == .ended {
+            return
+        }
+        
+        guard let callVC = callVCs[call.callId] else {
+            return
+        }
+        
+        presentCallVC(callVC)
     }
     
     //  MARK: - Call Screens
