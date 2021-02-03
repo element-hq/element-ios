@@ -44,8 +44,6 @@ final class SecretsResetViewController: UIViewController {
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
     
-    private var authenticatedSessionFactory: AuthenticatedSessionViewControllerFactory?
-
     // MARK: - Setup
     
     class func instantiate(with viewModel: SecretsResetViewModelType) -> SecretsResetViewController {
@@ -134,8 +132,6 @@ final class SecretsResetViewController: UIViewController {
             self.renderLoading()
         case .resetDone:
             self.renderLoaded()
-        case .showAuthentication(authData: let authData):
-            self.showAuthentication(authData: authData)
         case .error(let error):
             self.render(error: error)
         }
@@ -152,33 +148,6 @@ final class SecretsResetViewController: UIViewController {
     private func render(error: Error) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
-    }
-
-    private func showAuthentication(authData: SecretsResetAuthData) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        
-        let authenticatedSessionFactory = authData.authenticatedSessionViewControllerFactory
-        
-        authenticatedSessionFactory.viewController(forPath: authData.path, httpMethod: authData.httpMethod, title: nil, message: VectorL10n.secretsResetAuthenticationMessage, onViewController: { [weak self] (viewController) in
-            guard let self = self else {
-                return
-            }
-            self.present(viewController, animated: true, completion: nil)
-        }, onAuthenticated: { [weak self] (authInfo) in
-            guard let self = self else {
-                return
-            }
-            self.viewModel.process(viewAction: .authenticationInfoEntered(authInfo))
-        }, onCancelled: {
-            
-        }, onFailure: { [weak self] (error) in
-            guard let self = self else {
-                return
-            }
-            self.render(error: error)
-        })
-        
-        self.authenticatedSessionFactory = authenticatedSessionFactory
     }
     
     // MARK: - Actions

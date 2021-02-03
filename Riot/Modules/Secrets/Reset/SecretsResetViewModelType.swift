@@ -23,6 +23,7 @@ protocol SecretsResetViewModelViewDelegate: class {
 }
 
 protocol SecretsResetViewModelCoordinatorDelegate: class {
+    func secretsResetViewModel(_ viewModel: SecretsResetViewModelType, needsToAuthenticateWith authenticationSessionParamaters: AuthenticationSessionParameters)
     func secretsResetViewModelDidResetSecrets(_ viewModel: SecretsResetViewModelType)
     func secretsResetViewModelDidCancel(_ viewModel: SecretsResetViewModelType)
 }
@@ -33,5 +34,6 @@ protocol SecretsResetViewModelType {
     var viewDelegate: SecretsResetViewModelViewDelegate? { get set }
     var coordinatorDelegate: SecretsResetViewModelCoordinatorDelegate? { get set }
     
+    func update(viewState: SecretsResetViewState)    
     func process(viewAction: SecretsResetViewAction)
 }
