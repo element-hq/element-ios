@@ -83,3 +83,15 @@
 /* Sticker from a specific person, not referencing a room. */
 "STICKER_FROM_USER" = "%@ heeft een sticker gestuurd";
 "KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ wil verifiëren";
+"MESSAGE_PROTECTED" = "Nieuw Bericht";
+
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "Bericht in %@";
+
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "Bericht van %@";
+
+/** Notification messages **/
+
+/* New message indicator on unknown room */
+"MESSAGE" = "Bericht";
