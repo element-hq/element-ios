@@ -547,15 +547,28 @@ Matrix session observer used to detect new opened sessions.
             //  when we have a VoIP push while the application is killed, session.callManager will not be ready yet. Configure it.
             [[AppDelegate theDelegate] configureCallManagerIfRequiredForSession:session];
             
-            if (lastCallInvite.isEncrypted)
-            {
-                [session decryptEvent:lastCallInvite inTimeline:nil];
-            }
-            
             NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: lastCallInvite: %@", lastCallInvite);
             
             if ([lastCallInvite.eventId isEqualToString:eventId])
             {
+                //  We're using this dispatch_group to continue event stream after cache fully processed.
+                dispatch_group_t dispatchGroup = dispatch_group_create();
+                
+                dispatch_group_enter(dispatchGroup);
+                //  Not continuing in completion block here, because PushKit mandates reporting a new call in the same run loop.
+                //  'handleBackgroundSyncCacheIfRequiredWithCompletion' is processing to-device events synchronously.
+                [session handleBackgroundSyncCacheIfRequiredWithCompletion:^{
+                    dispatch_group_leave(dispatchGroup);
+                }];
+                
+                if (lastCallInvite.isEncrypted && ![session decryptEvent:lastCallInvite inTimeline:nil])
+                {
+                    NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Failed to decrypt the call invite event: %@", eventId);
+                    completion();
+                    return;
+                }
+                
+                //  process the call invite synchronously
                 [session.callManager handleCallEvent:lastCallInvite];
                 MXCall *call = [session.callManager callWithCallId:lastCallInvite.content[@"call_id"]];
                 if (call)
@@ -563,8 +576,11 @@ Matrix session observer used to detect new opened sessions.
                     [session.callManager.callKitAdapter reportIncomingCall:call];
                     NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Reporting new call in room %@ for the event: %@", roomId, eventId);
                     
-                    //  After reporting the call, we can continue async. Launch a background sync to handle call answers/declines on other devices of the user.
-                    [self launchBackgroundSync];
+                    //  Wait for the sync response in cache to be processed for data integrity.
+                    dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
+                        //  After reporting the call, we can continue async. Launch a background sync to handle call answers/declines on other devices of the user.
+                        [self launchBackgroundSync];
+                    });
                 }
                 else
                 {
