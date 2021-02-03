@@ -19,8 +19,7 @@ import Foundation
 final class KeyVerificationService {
     
     private let cameraAccessManager: CameraAccessManager
-    
-    private var authenticatedSessionFactory: AuthenticatedSessionViewControllerFactory?
+        
     private var supportSetupKeyVerificationByUser: [String: Bool] = [:] // Cached server response
     
     init() {

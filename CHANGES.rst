@@ -9,6 +9,7 @@ Changes to be released in next version
  * Widgets: Support $matrix_room_id and $matrix_widget_id parameters (#3987).
  * matrix.to: Support room preview when the permalink has parameters (like "via=").
  * Avoid megolm share requests if the device is not verified (#3969)
+ * Handle User-Interactive Authentication fallback (#3995).
 
 🐛 Bugfix
  * Push: Fix PushKit crashes due to undecryptable call invites (#3986).

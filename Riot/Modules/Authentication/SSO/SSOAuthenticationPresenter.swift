@@ -68,11 +68,17 @@ final class SSOAuthenticationPresenter: NSObject {
         
         self.presentingViewController = presentingViewController
         
-        // SFAuthenticationSession and ASWebAuthenticationSession doesn't work with guided access (rdar://48376122)
-        if UIAccessibility.isGuidedAccessEnabled {
-            self.presentSafariViewController(with: authenticationURL, animated: animated)
+        // NOTE: By using SFAuthenticationSession the consent alert show product name instead of display name. Fallback to SFSafariViewController instead in order to not disturb users with "Riot" wording at the moment.
+        // (https://stackoverflow.com/questions/49860338/why-does-sfauthenticationsession-consent-alert-show-xcode-project-name-instead-o)
+        if #available(iOS 13.0, *) {
+            // SFAuthenticationSession and ASWebAuthenticationSession doesn't work with guided access (rdar://48376122)
+            if UIAccessibility.isGuidedAccessEnabled {
+                self.presentSafariViewController(with: authenticationURL, animated: animated)
+            } else {
+                self.startAuthenticationSession(with: authenticationURL)
+            }
         } else {
-            self.startAuthenticationSession(with: authenticationURL)
+            self.presentSafariViewController(with: authenticationURL, animated: animated)
         }
     }
     
