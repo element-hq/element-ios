@@ -15,6 +15,7 @@ Changes to be released in next version
  * matrix.to: Cannot open links with query parameters (#3990).
  * matrix.to: Cannot open/preview a new room given by alias (#3991).
  * matrix.to: The app does not open a permalink from matrix.to (#3993).
+ * Logs: Add a size limitation so that we can upload them in bug reports (#3903).
 
 ⚠️ API Changes
  * 

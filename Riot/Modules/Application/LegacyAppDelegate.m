@@ -254,7 +254,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // Redirect NSLogs to files only if we are not debugging
     if (!isatty(STDERR_FILENO))
     {
-        [MXLogger redirectNSLogToFiles:YES numberOfFiles:50];
+        [MXLogger redirectNSLogToFiles:YES numberOfFiles:50 sizeLimit:(100 * 1024 * 1024)];
     }
 
     NSLog(@"[AppDelegate] initialize: Done");
