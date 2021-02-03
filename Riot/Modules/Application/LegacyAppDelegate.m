@@ -1146,9 +1146,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         [[NSNotificationCenter defaultCenter] postNotificationName:AppDelegateUniversalLinkDidChangeNotification object:nil];
     }
 
-    if ([webURL.path isEqualToString:@"/"])
+    if ([self handleServerProvionningLink:webURL])
     {
-        return [self handleServerProvionningLink:webURL];
+        return YES;
     }
     
     NSString *validateEmailSubmitTokenPath = @"validate/email/submitToken";
@@ -1253,6 +1253,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     BOOL continueUserActivity = NO;
     MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
     
+    NSLog(@"[AppDelegate] Universal link: handleUniversalLinkFragment: %@", fragment);
+    
+    // Make sure we have plain utf8 character for separators
+    fragment = [fragment stringByRemovingPercentEncoding];
     NSLog(@"[AppDelegate] Universal link: handleUniversalLinkFragment: %@", fragment);
     
     // The app manages only one universal link at a time
@@ -1376,9 +1380,27 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                                                                 withString:[MXTools encodeURIComponent:roomId]
                                             ];
                                     
-                                    universalLinkFragmentPendingRoomAlias = @{roomId: roomIdOrAlias};
+                                    // The previous operation can fail because of percent encoding
+                                    // TBH we are not clean on data inputs. For the moment, just give another try with no encoding
+                                    // TODO: Have a dedicated module and tests to handle universal links (matrix.to, email link, etc)
+                                    if ([newUniversalLinkFragment isEqualToString:fragment])
+                                    {
+                                        newUniversalLinkFragment =
+                                        [fragment stringByReplacingOccurrencesOfString:roomIdOrAlias
+                                                                            withString:[MXTools encodeURIComponent:roomId]];
+                                    }
                                     
-                                    [self handleUniversalLinkFragment:newUniversalLinkFragment];
+                                    if (![newUniversalLinkFragment isEqualToString:fragment])
+                                    {
+                                        universalLinkFragmentPendingRoomAlias = @{roomId: roomIdOrAlias};
+                                        
+                                        [self handleUniversalLinkFragment:newUniversalLinkFragment];
+                                    }
+                                    else
+                                    {
+                                        // Do not continue. Else we will loop forever
+                                        NSLog(@"[AppDelegate] Universal link: Error: Cannot resolve alias in %@ to the room id %@", fragment, roomId);
+                                    }
                                 }
                                 
                             } failure:^(NSError *error) {
@@ -1422,40 +1444,32 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                             // FIXME: In case of multi-account, ask the user which one to use
                             MXKAccount* account = accountManager.activeAccounts.firstObject;
                             
-                            RoomPreviewData *roomPreviewData;
+                            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias
+                                                                                            andSession:account.mxSession];
                             if (queryParams)
                             {
+                                roomPreviewData.viaServers = queryParams[@"via"];
+                            }
+                            
+                            // Is it a link to an event of a room?
+                            // If yes, the event will be displayed once the room is joined
+                            roomPreviewData.eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
+                            
+                            // Try to get more information about the room before opening its preview
+                            [roomPreviewData peekInRoom:^(BOOL succeeded) {
+                                
                                 // Note: the activity indicator will not disappear if the session is not ready
                                 [homeViewController stopActivityIndicator];
                                 
-                                roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias emailInvitationParams:queryParams andSession:account.mxSession];
-                                roomPreviewData.viaServers = queryParams[@"via"];
+                                // If no data is available for this room, we name it with the known room alias (if any).
+                                if (!succeeded && universalLinkFragmentPendingRoomAlias[roomIdOrAlias])
+                                {
+                                    roomPreviewData.roomName = universalLinkFragmentPendingRoomAlias[roomIdOrAlias];
+                                }
+                                universalLinkFragmentPendingRoomAlias = nil;
+                                
                                 [self showRoomPreview:roomPreviewData];
-                            }
-                            else
-                            {
-                                roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias andSession:account.mxSession];
-                                
-                                // Is it a link to an event of a room?
-                                // If yes, the event will be displayed once the room is joined
-                                roomPreviewData.eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
-                                
-                                // Try to get more information about the room before opening its preview
-                                [roomPreviewData peekInRoom:^(BOOL succeeded) {
-                                    
-                                    // Note: the activity indicator will not disappear if the session is not ready
-                                    [homeViewController stopActivityIndicator];
-                                    
-                                    // If no data is available for this room, we name it with the known room alias (if any).
-                                    if (!succeeded && universalLinkFragmentPendingRoomAlias[roomIdOrAlias])
-                                    {
-                                        roomPreviewData.roomName = universalLinkFragmentPendingRoomAlias[roomIdOrAlias];
-                                    }
-                                    universalLinkFragmentPendingRoomAlias = nil;
-                                    
-                                    [self showRoomPreview:roomPreviewData];
-                                }];
-                            }
+                            }];
                         }
                         
                     }
