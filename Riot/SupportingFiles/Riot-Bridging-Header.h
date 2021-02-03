@@ -26,3 +26,4 @@
 #import "RoomSettingsViewController.h"
 #import "JitsiWidgetData.h"
 #import "InviteRecentTableViewCell.h"
+#import "AuthFallBackViewController.h"
