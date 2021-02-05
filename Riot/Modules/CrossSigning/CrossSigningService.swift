@@ -19,8 +19,12 @@ import Foundation
 @objcMembers
 final class CrossSigningService: NSObject {
     
-    private var authenticatedSessionFactory: AuthenticatedSessionViewControllerFactory?
+    // MARK - Properties
+    
     private var supportSetupKeyVerificationByUser: [String: Bool] = [:] // Cached server response
+    private var authenticationSessionService: AuthenticationSessionService?
+    
+    // MARK - Public
     
     @discardableResult
     func canSetupCrossSigning(for session: MXSession, success: @escaping ((Bool) -> Void), failure: @escaping ((Error) -> Void)) -> MXHTTPOperation? {
@@ -39,25 +43,24 @@ final class CrossSigningService: NSObject {
             return nil
         }
         
-        let authenticatedSessionFactory = AuthenticatedSessionViewControllerFactory(session: session)
+        let authenticationSessionService = AuthenticationSessionService(session: session)
         
-        self.authenticatedSessionFactory = authenticatedSessionFactory
+        self.authenticationSessionService = authenticationSessionService
+                
+        let authenticationSessionParameters = self.setupCrossSigningAuthenticationSessionParameters()
         
-        let path = "\(kMXAPIPrefixPathUnstable)/keys/device_signing/upload"
-        
-        return authenticatedSessionFactory.hasSupport(forPath: path, httpMethod: "POST", success: { [weak self] succeeded in
-            guard let self = self else {
-                return
-            }
-            self.authenticatedSessionFactory = nil
-            self.supportSetupKeyVerificationByUser[userId] = succeeded
-            success(succeeded)
-            }, failure: { [weak self] error in
-                guard let self = self else {
-                    return
-                }
-                self.authenticatedSessionFactory = nil
+        return authenticationSessionService.canAuthenticate(for: authenticationSessionParameters) { (result) in
+            switch result {
+            case .success(let succeeded):
+                success(succeeded)
+            case .failure(let error):
                 failure(error)
-        })
+            }
+        }
+    }
+    
+    func setupCrossSigningAuthenticationSessionParameters() -> AuthenticationSessionParameters {
+        let path = "\(kMXAPIPrefixPathUnstable)/keys/device_signing/upload"
+        return AuthenticationSessionParameters(path: path, httpMethod: "POST")
     }
 }

@@ -18,15 +18,8 @@
 
 import Foundation
 
-struct SecretsResetAuthData {
-    let path: String
-    let httpMethod: String
-    let authenticatedSessionViewControllerFactory: AuthenticatedSessionViewControllerFactory
-}
-
 /// SecretsResetViewController view state
 enum SecretsResetViewState {
-    case showAuthentication(authData: SecretsResetAuthData)
     case resetting
     case resetDone
     case error(Error)
