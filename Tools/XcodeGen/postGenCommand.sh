@@ -1,8 +1,5 @@
 #!/bin/bash
+
+# This script is invoked by xcodegen for running post commands
+
 cp IDETemplateMacros.plist Riot.xcodeproj/xcshareddata/
-# if [ $(gem list bundler -i) ]; then
-# 	bundle install
-# 	bundle exec pod install
-# else
-# 	pod install
-# fi
