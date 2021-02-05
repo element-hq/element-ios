@@ -64,6 +64,7 @@ platform :ios do
 
   desc "Build the app for simulator to ensure it compiles"
   lane :build do |options|
+    xcodegen(spec: "project.yml")
     cocoapods
 
     app_name = "Riot"
