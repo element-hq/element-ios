@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Cross-signing: Setup cross-signing without authentication parameters when a grace period is enabled after login (#4006).
 
 🐛 Bugfix
  * 
