@@ -353,6 +353,7 @@
     {
         //  shift more button to left
         self.moreButtonLeadingConstraint.constant = 8.0;
+        [self.view layoutIfNeeded];
     }
 }
 
