@@ -18,17 +18,17 @@ import Foundation
 
 class CallBarDismissOperation: AsyncOperation {
     
-    private var service: CallService
+    private var presenter: CallPresenter
     private var completion: (() -> Void)?
     
-    init(service: CallService,
+    init(presenter: CallPresenter,
          completion: (() -> Void)? = nil) {
-        self.service = service
+        self.presenter = presenter
         self.completion = completion
     }
     
     override func main() {
-        service.delegate?.callService(service, dismissCallBar: {
+        presenter.delegate?.callPresenter(presenter, dismissCallBar: {
             self.finish()
             self.completion?()
         })

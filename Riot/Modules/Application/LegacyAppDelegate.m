@@ -90,7 +90,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
 NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUniversalLinkDidChangeNotification";
 
-@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate, CallServiceDelegate, CallBarDelegate>
+@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate, CallPresenterDelegate, CallBarDelegate>
 {
     /**
      Reachability observer
@@ -224,7 +224,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 @property (nonatomic, strong) PushNotificationService *pushNotificationService;
 @property (nonatomic, strong) PushNotificationStore *pushNotificationStore;
 @property (nonatomic, strong) LocalAuthenticationService *localAuthenticationService;
-@property (nonatomic, strong) CallService *callService;
+@property (nonatomic, strong) CallPresenter *callPresenter;
 
 @property (nonatomic, strong) MajorUpdateManager *majorUpdateManager;
 
@@ -454,8 +454,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
     self.localAuthenticationService = [[LocalAuthenticationService alloc] initWithPinCodePreferences:[PinCodePreferences shared]];
     
-    self.callService = [[CallService alloc] init];
-    self.callService.delegate = self;
+    self.callPresenter = [[CallPresenter alloc] init];
+    self.callPresenter.delegate = self;
 
     self.pushNotificationStore = [PushNotificationStore new];
     self.pushNotificationService = [[PushNotificationService alloc] initWithPushNotificationStore:self.pushNotificationStore];
@@ -1757,7 +1757,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         else if (mxSession.state == MXSessionStateStoreDataReady)
         {
             //  start the call service
-            [self.callService start];
+            [self.callPresenter start];
             
             // Look for the account related to this session.
             NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
@@ -1992,7 +1992,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     if (!mxSessionArray.count)
     {
         //  if no session left, stop the call service
-        [self.callService stop];
+        [self.callPresenter stop];
     }
 }
 
@@ -4409,15 +4409,15 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-#pragma mark - CallServiceDelegate
+#pragma mark - CallPresenterDelegate
 
-- (BOOL)callService:(CallService *)service shouldHandleNewCall:(MXCall *)call
+- (BOOL)callPresenter:(CallPresenter *)presenter shouldHandleNewCall:(MXCall *)call
 {
     //  Ignore the call if a call is already in progress
     return _jitsiViewController == nil;
 }
 
-- (void)callService:(CallService *)service presentCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
+- (void)callPresenter:(CallPresenter *)presenter presentCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
 {
     if (@available(iOS 13.0, *))
     {
@@ -4427,7 +4427,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self presentViewController:viewController animated:YES completion:completion];
 }
 
-- (void)callService:(CallService *)service dismissCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
+- (void)callPresenter:(CallPresenter *)presenter dismissCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
 {
     // Check whether the call view controller is actually presented
     if (viewController.presentingViewController)
@@ -4455,7 +4455,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)callService:(CallService *)service presentCallBarFor:(CallViewController *)activeCallViewController numberOfPausedCalls:(NSUInteger)numberOfPausedCalls completion:(void (^)(void))completion
+- (void)callPresenter:(CallPresenter *)presenter presentCallBarFor:(CallViewController *)activeCallViewController numberOfPausedCalls:(NSUInteger)numberOfPausedCalls completion:(void (^)(void))completion
 {
     NSString *btnTitle;
     
@@ -4498,7 +4498,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)callService:(CallService *)service dismissCallBar:(void (^)(void))completion
+- (void)callPresenter:(CallPresenter *)presenter dismissCallBar:(void (^)(void))completion
 {
     [self removeCallStatusBar];
     
@@ -4508,7 +4508,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)callService:(CallService *)service enterPipForCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
+- (void)callPresenter:(CallPresenter *)presenter enterPipForCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
 {
     // Check whether the call view controller is actually presented
     if (viewController.presentingViewController)
@@ -4524,7 +4524,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)callService:(CallService *)service exitPipForCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
+- (void)callPresenter:(CallPresenter *)presenter exitPipForCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
 {
     if (@available(iOS 13.0, *))
     {
@@ -4538,7 +4538,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)callBarDidTapReturnButton:(CallBar *)callBar
 {
-    if ([_callService callStatusBarButtonTapped])
+    if ([_callPresenter callStatusBarButtonTapped])
     {
         return;
     }

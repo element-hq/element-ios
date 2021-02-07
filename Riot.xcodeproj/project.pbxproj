@@ -934,7 +934,7 @@
 		EC9E9B0A2575AF8A0007C0A0 /* CallBarPresentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9E9B092575AF8A0007C0A0 /* CallBarPresentOperation.swift */; };
 		EC9E9B0C2575AF9B0007C0A0 /* CallBarDismissOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9E9B0B2575AF9B0007C0A0 /* CallBarDismissOperation.swift */; };
 		EC9E9B0E2575AFB80007C0A0 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9E9B0D2575AFB80007C0A0 /* AsyncOperation.swift */; };
-		EC9E9B102575B33E0007C0A0 /* CallServiceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9E9B0F2575B33E0007C0A0 /* CallServiceDelegate.swift */; };
+		EC9E9B102575B33E0007C0A0 /* CallPresenterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9E9B0F2575B33E0007C0A0 /* CallPresenterDelegate.swift */; };
 		EC9E9B112575B3960007C0A0 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DB4F0A223131600065DBFA /* String.swift */; };
 		EC9E9B122575B3A70007C0A0 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DB4F05223015080065DBFA /* Character.swift */; };
 		EC9E9B1425767C460007C0A0 /* CallBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9E9B1325767C460007C0A0 /* CallBar.swift */; };
@@ -950,7 +950,7 @@
 		ECB101362477D00700CF8C11 /* UniversalLink.m in Sources */ = {isa = PBXBuildFile; fileRef = ECB101352477D00700CF8C11 /* UniversalLink.m */; };
 		ECB5D98F255420F8000AD89C /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB5D98E255420F8000AD89C /* Keychain.swift */; };
 		ECB5D9902554221F000AD89C /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB5D98E255420F8000AD89C /* Keychain.swift */; };
-		ECC4C82F256FA7520010BA44 /* CallService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC4C82E256FA7520010BA44 /* CallService.swift */; };
+		ECC4C82F256FA7520010BA44 /* CallPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC4C82E256FA7520010BA44 /* CallPresenter.swift */; };
 		ECDC15F224AF41D2003437CF /* FormattedBodyParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC15F124AF41D2003437CF /* FormattedBodyParser.swift */; };
 		ECF57A4425090C23004BBF9D /* CreateRoomCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A3825090C23004BBF9D /* CreateRoomCoordinatorBridgePresenter.swift */; };
 		ECF57A4525090C23004BBF9D /* CreateRoomCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A3925090C23004BBF9D /* CreateRoomCoordinatorType.swift */; };
@@ -2212,7 +2212,7 @@
 		EC9E9B092575AF8A0007C0A0 /* CallBarPresentOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallBarPresentOperation.swift; sourceTree = "<group>"; };
 		EC9E9B0B2575AF9B0007C0A0 /* CallBarDismissOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallBarDismissOperation.swift; sourceTree = "<group>"; };
 		EC9E9B0D2575AFB80007C0A0 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
-		EC9E9B0F2575B33E0007C0A0 /* CallServiceDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallServiceDelegate.swift; sourceTree = "<group>"; };
+		EC9E9B0F2575B33E0007C0A0 /* CallPresenterDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallPresenterDelegate.swift; sourceTree = "<group>"; };
 		EC9E9B1325767C460007C0A0 /* CallBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallBar.swift; sourceTree = "<group>"; };
 		EC9E9B1625767D4B0007C0A0 /* CallBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CallBar.xib; sourceTree = "<group>"; };
 		ECAE7AE424EC0E01002FA813 /* TableViewSections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewSections.swift; sourceTree = "<group>"; };
@@ -2226,7 +2226,7 @@
 		ECB101342477D00700CF8C11 /* UniversalLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UniversalLink.h; sourceTree = "<group>"; };
 		ECB101352477D00700CF8C11 /* UniversalLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UniversalLink.m; sourceTree = "<group>"; };
 		ECB5D98E255420F8000AD89C /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
-		ECC4C82E256FA7520010BA44 /* CallService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallService.swift; sourceTree = "<group>"; };
+		ECC4C82E256FA7520010BA44 /* CallPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallPresenter.swift; sourceTree = "<group>"; };
 		ECDC15F124AF41D2003437CF /* FormattedBodyParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattedBodyParser.swift; sourceTree = "<group>"; };
 		ECF57A3825090C23004BBF9D /* CreateRoomCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateRoomCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
 		ECF57A3925090C23004BBF9D /* CreateRoomCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateRoomCoordinatorType.swift; sourceTree = "<group>"; };
@@ -5364,8 +5364,8 @@
 		ECC4C82D256FA73E0010BA44 /* Call */ = {
 			isa = PBXGroup;
 			children = (
-				ECC4C82E256FA7520010BA44 /* CallService.swift */,
-				EC9E9B0F2575B33E0007C0A0 /* CallServiceDelegate.swift */,
+				ECC4C82E256FA7520010BA44 /* CallPresenter.swift */,
+				EC9E9B0F2575B33E0007C0A0 /* CallPresenterDelegate.swift */,
 				EC9E9B0D2575AFB80007C0A0 /* AsyncOperation.swift */,
 				EC7749CC25A48F6100AB1295 /* PiPAnimator.swift */,
 				EC7749D025A5C58000AB1295 /* PiPView.swift */,
@@ -6715,7 +6715,7 @@
 				B157FAA623264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsViewController.swift in Sources */,
 				B126768A2523E4D100BE6B98 /* SecretsResetViewModel.swift in Sources */,
 				B1DCC62422E60CA900625807 /* EmojiPickerCategoryViewData.swift in Sources */,
-				ECC4C82F256FA7520010BA44 /* CallService.swift in Sources */,
+				ECC4C82F256FA7520010BA44 /* CallPresenter.swift in Sources */,
 				EC7749D125A5C58000AB1295 /* PiPView.swift in Sources */,
 				B1550FCB2420E8F500CE097B /* QRCodeReaderViewController.swift in Sources */,
 				B124BBD725645F3F0028996D /* RoomIdComponents.swift in Sources */,
@@ -6875,7 +6875,7 @@
 				EC1CA89624C9C9A200DE9EBF /* SetupBiometricsCoordinator.swift in Sources */,
 				EC711B9024A63B37008F830C /* SecretsRecoveryWithKeyCoordinator.swift in Sources */,
 				B1A6C10723881EF2002882FD /* SlidingModalPresenter.swift in Sources */,
-				EC9E9B102575B33E0007C0A0 /* CallServiceDelegate.swift in Sources */,
+				EC9E9B102575B33E0007C0A0 /* CallPresenterDelegate.swift in Sources */,
 				B1B5573520EE6C4D00210D55 /* GroupDetailsViewController.m in Sources */,
 				B12D7A0223E2462200FACEDC /* UserVerificationStartViewAction.swift in Sources */,
 				EC85D7372477DD97002C44C9 /* LocalContactsSectionHeaderContainerView.m in Sources */,
