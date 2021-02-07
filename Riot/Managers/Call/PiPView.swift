@@ -85,10 +85,12 @@ class PiPView: UIView {
             if let contentView = contentView {
                 contentView.isUserInteractionEnabled = false
                 addSubview(contentView)
-                contentView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
-                contentView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
-                contentView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
-                contentView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
+NSLayoutConstraint.activate([
+                    contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
+                    contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
+                    contentView.topAnchor.constraint(equalTo: topAnchor),
+                    contentView.bottomAnchor.constraint(equalTo: bottomAnchor)
+                ])
             }
         }
     }
