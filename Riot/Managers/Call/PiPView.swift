@@ -59,6 +59,7 @@ class PiPView: UIView {
     private lazy var panGestureRecognizer: UIPanGestureRecognizer = {
         return UIPanGestureRecognizer(target: self, action: #selector(panned(_:)))
     }()
+    private var rotationObserver: NSObjectProtocol?
     
     init() {
         super.init(frame: .zero)
@@ -116,6 +117,12 @@ class PiPView: UIView {
         }
     }
     
+    deinit {
+        if let rotationObserver = rotationObserver {
+            NotificationCenter.default.removeObserver(rotationObserver)
+        }
+    }
+    
     //  MARK: - Private
     
     private func setup() {
@@ -124,7 +131,7 @@ class PiPView: UIView {
         layer.cornerRadius = cornerRadius
         addGestureRecognizer(tapGestureRecognizer)
         addGestureRecognizer(panGestureRecognizer)
-        _ = NotificationCenter.default.addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: nil) { [weak self] (_) in
+        rotationObserver = NotificationCenter.default.addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: nil) { [weak self] (_) in
             guard let self = self else { return }
             guard self.superview != nil else { return }
             self.move(to: self.position, animated: true)
