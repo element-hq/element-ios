@@ -126,8 +126,8 @@
     self.barTitleColor = self.overriddenTheme.textPrimaryColor;
     self.activityIndicator.backgroundColor = self.overriddenTheme.overlayBackgroundColor;
     
-    self.backToAppButton.tintColor = [UIColor whiteColor];
-    self.cameraSwitchButton.tintColor = [UIColor whiteColor];
+    self.backToAppButton.tintColor = self.overriddenTheme.callScreenButtonTintColor;
+    self.cameraSwitchButton.tintColor = self.overriddenTheme.callScreenButtonTintColor;
     self.callerNameLabel.textColor = self.overriddenTheme.baseTextPrimaryColor;
     self.callStatusLabel.textColor = self.overriddenTheme.baseTextPrimaryColor;
     [self.resumeButton setTitleColor:self.overriddenTheme.tintColor
