@@ -128,8 +128,8 @@
     
     self.backToAppButton.tintColor = [UIColor whiteColor];
     self.cameraSwitchButton.tintColor = [UIColor whiteColor];
-    self.callerNameLabel.textColor = [UIColor whiteColor];
-    self.callStatusLabel.textColor = [UIColor whiteColor];
+    self.callerNameLabel.textColor = self.overriddenTheme.baseTextPrimaryColor;
+    self.callStatusLabel.textColor = self.overriddenTheme.baseTextPrimaryColor;
     [self.resumeButton setTitleColor:self.overriddenTheme.tintColor
                             forState:UIControlStateNormal];
     
