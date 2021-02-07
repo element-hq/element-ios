@@ -36,7 +36,7 @@ class CallPresenter: NSObject {
     private weak var pipCallVC: CallViewController?
     private var uiOperationQueue: OperationQueue = .main
     private var isStarted: Bool = false
-    private var callTimer: Timer!
+    private var callTimer: Timer?
     
     private var isCallKitEnabled: Bool {
         MXCallKitAdapter.callKitAvailable() && MXKAppSettings.standard()?.isCallKitEnabled == true
@@ -184,7 +184,7 @@ class CallPresenter: NSObject {
     }
     
     private func stopCallTimer() {
-        callTimer.invalidate()
+        callTimer?.invalidate()
         callTimer = nil
     }
     
@@ -284,14 +284,14 @@ class CallPresenter: NSObject {
             }
         case .connected:
             NSLog("[CallService] callStateChanged: call connected: \(call.callId)")
-            callTimer.fire()
+            callTimer?.fire()
         case .onHold:
             NSLog("[CallService] callStateChanged: call holded: \(call.callId)")
-            callTimer.fire()
+            callTimer?.fire()
             callHolded(withCallId: call.callId)
         case .remotelyOnHold:
             NSLog("[CallService] callStateChanged: call remotely holded: \(call.callId)")
-            callTimer.fire()
+            callTimer?.fire()
             callHolded(withCallId: call.callId)
         case .ended:
             NSLog("[CallService] callStateChanged: call ended: \(call.callId)")
