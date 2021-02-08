@@ -1,4 +1,5 @@
 name: RiotShareExtension
+
 schemes:
   RiotShareExtension:
     analyze:
@@ -24,48 +25,16 @@ schemes:
     test:
       config: Debug
       disableMainThreadChecker: true
+
 targets:
   RiotShareExtension:
     platform: iOS
+    type: app-extension
+
     configFiles:
       Debug: ../RiotShareExtension/SupportingFiles/ShareExtension-Debug.xcconfig
       Release: ../RiotShareExtension/SupportingFiles/ShareExtension-Release.xcconfig
 
-    sources:
-    - path: ../RiotShareExtension
-    - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
-    - path: ../Riot/Categories/Bundle.swift
-    - path: ../Riot/Managers/Theme/Themes/DefaultTheme.swift
-    - path: ../Riot/Managers/Theme/ThemeService.m
-    - path: ../Riot/Utils/AvatarGenerator.m
-    - path: ../Riot/Generated/InfoPlist.swift
-    - path: ../Config/BuildSettings.swift
-    - path: ../Riot/Categories/Character.swift
-    - path: ../Riot/Managers/Theme/Themes/BlackTheme.swift
-    - path: ../Riot/Categories/MXRoom+Riot.m
-    - path: ../Config/Configurable.swift
-    - path: ../Config/CommonConfiguration.swift
-    - path: ../Riot/Utils/UserNameColorGenerator.swift
-    - path: ../Riot/Categories/MXRoomSummary+Riot.m
-    - path: ../Riot/Managers/Theme/Theme.swift
-    - path: ../Riot/Managers/Settings/RiotSettings.swift
-    - path: ../Riot/Categories/UIColor.swift
-    - path: ../Riot/Managers/Theme/Themes/DarkTheme.swift
-    - path: ../Riot/Categories/UISearchBar.swift
-    - path: ../Riot/Categories/String.swift
-    - path: ../Riot/Modules/Common/Recents/CellData/RecentCellData.m
-    - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.xib
-      buildPhase: resources
-    - path: ../Riot/Assets/en.lproj/Vector.strings
-      buildPhase: resources
-    - path: ../Riot/Assets/SharedImages.xcassets
-      buildPhase: resources
-    type: app-extension
-    postbuildScripts:
-    - name: Embed Precompiled Frameworks
-      runOnlyWhenInstalling: false
-      script: echo "Skipping, nothing to be embedded."
-      shell: /bin/sh
     settings:
       groups:
         - appDefault
@@ -105,3 +74,39 @@ targets:
           DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
           PROVISIONING_PROFILE: $(SHARE_EXTENSION_PROVISIONING_PROFILE)
           PROVISIONING_PROFILE_SPECIFIER: $(SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER)
+
+    postbuildScripts:
+    - name: Embed Precompiled Frameworks
+      runOnlyWhenInstalling: false
+      script: echo "Skipping, nothing to be embedded."
+      shell: /bin/sh
+
+    sources:
+    - path: ../RiotShareExtension
+    - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
+    - path: ../Riot/Categories/Bundle.swift
+    - path: ../Riot/Managers/Theme/Themes/DefaultTheme.swift
+    - path: ../Riot/Managers/Theme/ThemeService.m
+    - path: ../Riot/Utils/AvatarGenerator.m
+    - path: ../Riot/Generated/InfoPlist.swift
+    - path: ../Config/BuildSettings.swift
+    - path: ../Riot/Categories/Character.swift
+    - path: ../Riot/Managers/Theme/Themes/BlackTheme.swift
+    - path: ../Riot/Categories/MXRoom+Riot.m
+    - path: ../Config/Configurable.swift
+    - path: ../Config/CommonConfiguration.swift
+    - path: ../Riot/Utils/UserNameColorGenerator.swift
+    - path: ../Riot/Categories/MXRoomSummary+Riot.m
+    - path: ../Riot/Managers/Theme/Theme.swift
+    - path: ../Riot/Managers/Settings/RiotSettings.swift
+    - path: ../Riot/Categories/UIColor.swift
+    - path: ../Riot/Managers/Theme/Themes/DarkTheme.swift
+    - path: ../Riot/Categories/UISearchBar.swift
+    - path: ../Riot/Categories/String.swift
+    - path: ../Riot/Modules/Common/Recents/CellData/RecentCellData.m
+    - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.xib
+      buildPhase: resources
+    - path: ../Riot/Assets/en.lproj/Vector.strings
+      buildPhase: resources
+    - path: ../Riot/Assets/SharedImages.xcassets
+      buildPhase: resources
