@@ -27,6 +27,10 @@ schemes:
 targets:
   RiotShareExtension:
     platform: iOS
+    configFiles:
+      Debug: ../RiotShareExtension/SupportingFiles/ShareExtension-Debug.xcconfig
+      Release: ../RiotShareExtension/SupportingFiles/ShareExtension-Release.xcconfig
+
     sources:
     - path: ../RiotShareExtension
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
@@ -53,8 +57,6 @@ targets:
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.xib
       buildPhase: resources
     - path: ../Riot/Assets/en.lproj/Vector.strings
-      buildPhase: resources
-    - path: ../RiotShareExtension/SupportingFiles/ShareExtension-Common.xcconfig
       buildPhase: resources
     - path: ../Riot/Assets/SharedImages.xcassets
       buildPhase: resources

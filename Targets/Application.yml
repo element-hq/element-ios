@@ -25,6 +25,9 @@ schemes:
       - RiotTests
 targets:
   Riot:
+    configFiles:
+      Debug: ../Riot/SupportingFiles/App-Debug.xcconfig
+      Release: ../Riot/SupportingFiles/App-Release.xcconfig
     dependencies:
     - target: RiotShareExtension
     - target: SiriIntents
@@ -141,9 +144,6 @@ targets:
     - path: ../Riot/Assets/et.lproj/Vector.strings
     - path: ../Riot/Assets/is.lproj/Vector.strings
 
-    - path: ../Riot/SupportingFiles/App-Common.xcconfig
-      buildPhase: resources
-    type: application
     preBuildScripts:
     - name: ⚠️ SwiftLint
       runOnlyWhenInstalling: false

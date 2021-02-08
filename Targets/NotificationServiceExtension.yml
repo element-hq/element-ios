@@ -28,6 +28,10 @@ targets:
   RiotNSE:
     platform: iOS
     type: app-extension
+    configFiles:
+      Debug: ../RiotNSE/NSE-Debug.xcconfig
+      Release: ../RiotNSE/NSE-Release.xcconfig
+
     sources: 
     - path: ../RiotNSE
     - path: ../Riot/Managers/Settings/RiotSettings.swift
@@ -49,8 +53,7 @@ targets:
     - path: ../Config/Configurable.swift
     - path: ../Riot/Utils/Constants.swift
     - path: ../Riot/Utils/Memory.swift
-    - path: ../RiotNSE/NSE-Common.xcconfig
-      buildPhase: resources
+
     settings:
       groups:
         - appDefault
