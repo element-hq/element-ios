@@ -150,8 +150,8 @@
 // Social login
 
 "social_login_list_title_continue" = "Continue with";
-"social_login_list_title_sign_in" = "Or login with";
-"social_login_list_title_sign_up" = "Or register with";
+"social_login_list_title_sign_in" = "Or";
+"social_login_list_title_sign_up" = "Or";
 
 "social_login_button_title_continue" = "Continue with %@";
 "social_login_button_title_sign_in" = "Sign In with %@";

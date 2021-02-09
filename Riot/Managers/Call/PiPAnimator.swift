@@ -23,6 +23,10 @@ import Foundation
 
 @objcMembers
 class PiPAnimator: NSObject {
+    
+    private enum Constants {
+        static let pipViewScale: CGFloat = 0.3
+    }
 
     let animationDuration: TimeInterval
     let animationType: PiPAnimationType
@@ -58,7 +62,7 @@ class PiPAnimator: NSObject {
         pipView.delegate = pipViewDelegate
         keyWindow.addSubview(pipView)
         
-        let transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
+        let transform = CGAffineTransform(scaleX: Constants.pipViewScale, y: Constants.pipViewScale)
         let targetRect = fromVC.view.bounds.applying(transform)
         
         let animator = UIViewPropertyAnimator(duration: animationDuration, dampingRatio: 1) {

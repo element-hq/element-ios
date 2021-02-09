@@ -16,22 +16,16 @@
 
 import Foundation
 
-class CallBarDismissOperation: AsyncOperation {
+/// AuthenticationSessionParameters represents authenticated API endpoint parameters.
+@objcMembers
+class AuthenticationSessionParameters: NSObject {
     
-    private var presenter: CallPresenter
-    private var completion: (() -> Void)?
+    let path: String
+    let httpMethod: String
     
-    init(presenter: CallPresenter,
-         completion: (() -> Void)? = nil) {
-        self.presenter = presenter
-        self.completion = completion
+    init(path: String, httpMethod: String) {
+        self.path = path
+        self.httpMethod = httpMethod
+        super.init()
     }
-    
-    override func main() {
-        presenter.delegate?.callPresenter(presenter, dismissCallBar: {
-            self.finish()
-            self.completion?()
-        })
-    }
-    
 }

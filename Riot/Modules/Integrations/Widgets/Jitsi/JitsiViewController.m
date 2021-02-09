@@ -19,7 +19,7 @@
 #import "Riot-Swift.h"
 
 #if __has_include(<MatrixSDK/MXJingleCallStack.h>)
-@import JitsiMeet;
+@import JitsiMeetSDK;
 
 static const NSString *kJitsiDataErrorKey = @"error";
 
