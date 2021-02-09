@@ -37,7 +37,6 @@ targets:
       base:
         ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: $(inherited)
         BUNDLE_LOADER: $(TEST_HOST)
-        CLANG_ENABLE_MODULES: YES
         CODE_SIGN_STYLE: Manual
         FRAMEWORK_SEARCH_PATHS: $(SDKROOT)/Developer/Library/Frameworks $(inherited)
         INFOPLIST_FILE: RiotTests/Info.plist
@@ -48,7 +47,6 @@ targets:
         TEST_HOST: $(BUILT_PRODUCTS_DIR)/Riot.app/Riot
       configs:
         Debug:
-          GCC_PREPROCESSOR_DEFINITIONS: DEBUG=1 $(inherited)
           SWIFT_OPTIMIZATION_LEVEL: -Onone
         Release:
           PROVISIONING_PROFILE: $(RIOT_PROVISIONING_PROFILE)

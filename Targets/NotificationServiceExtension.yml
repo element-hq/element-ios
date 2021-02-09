@@ -51,7 +51,6 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: $(BASE_BUNDLE_IDENTIFIER).nse
         PRODUCT_NAME: RiotNSE
         SKIP_INSTALL: YES
-        TARGETED_DEVICE_FAMILY: 1,2
       configs:
         Debug:
           CODE_SIGN_IDENTITY: iPhone Developer

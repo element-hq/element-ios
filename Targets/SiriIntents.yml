@@ -47,7 +47,6 @@ targets:
         CODE_SIGN_ENTITLEMENTS: SiriIntents/SiriIntents.entitlements
         ENABLE_BITCODE: NO
         FRAMEWORK_SEARCH_PATHS: $(inherited)
-        GCC_PREPROCESSOR_DEFINITIONS: $(inherited)
         HEADER_SEARCH_PATHS: $(inherited)
         INFOPLIST_FILE: SiriIntents/Info.plist
         LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks
