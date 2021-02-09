@@ -19,11 +19,6 @@ import Foundation
 extension RecentsViewController {
     
     @objc func canShowRoomPreview(for room: MXRoom) -> Bool {
-        // Do not show room preview if room is not direct
-        guard room.isDirect else {
-            return false
-        }
-        
         let membershipTransitionState = room.summary.membershipTransitionState
         
         // NOTE: For the moment do not offer the possibility to show room preview when invitation action is in progress
