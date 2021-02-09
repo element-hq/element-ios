@@ -90,7 +90,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
 NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUniversalLinkDidChangeNotification";
 
-@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate, CallServiceDelegate, CallBarDelegate>
+@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate, CallPresenterDelegate, CallBarDelegate>
 {
     /**
      Reachability observer
@@ -224,7 +224,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 @property (nonatomic, strong) PushNotificationService *pushNotificationService;
 @property (nonatomic, strong) PushNotificationStore *pushNotificationStore;
 @property (nonatomic, strong) LocalAuthenticationService *localAuthenticationService;
-@property (nonatomic, strong) CallService *callService;
+@property (nonatomic, strong) CallPresenter *callPresenter;
 
 @property (nonatomic, strong) MajorUpdateManager *majorUpdateManager;
 
@@ -244,7 +244,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // Redirect NSLogs to files only if we are not debugging
     if (!isatty(STDERR_FILENO))
     {
-        [MXLogger redirectNSLogToFiles:YES numberOfFiles:50];
+        NSUInteger sizeLimit = 100 * 1024 * 1024; // 100MB
+        [MXLogger redirectNSLogToFiles:YES numberOfFiles:50 sizeLimit:sizeLimit];
     }
 
     NSLog(@"[AppDelegate] initialize: Done");
@@ -454,8 +455,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
     self.localAuthenticationService = [[LocalAuthenticationService alloc] initWithPinCodePreferences:[PinCodePreferences shared]];
     
-    self.callService = [[CallService alloc] init];
-    self.callService.delegate = self;
+    self.callPresenter = [[CallPresenter alloc] init];
+    self.callPresenter.delegate = self;
 
     self.pushNotificationStore = [PushNotificationStore new];
     self.pushNotificationService = [[PushNotificationService alloc] initWithPushNotificationStore:self.pushNotificationStore];
@@ -1138,9 +1139,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         [[NSNotificationCenter defaultCenter] postNotificationName:AppDelegateUniversalLinkDidChangeNotification object:nil];
     }
 
-    if ([webURL.path isEqualToString:@"/"])
+    if ([self handleServerProvionningLink:webURL])
     {
-        return [self handleServerProvionningLink:webURL];
+        return YES;
     }
     
     NSString *validateEmailSubmitTokenPath = @"validate/email/submitToken";
@@ -1245,6 +1246,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     BOOL continueUserActivity = NO;
     MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
     
+    NSLog(@"[AppDelegate] Universal link: handleUniversalLinkFragment: %@", fragment);
+    
+    // Make sure we have plain utf8 character for separators
+    fragment = [fragment stringByRemovingPercentEncoding];
     NSLog(@"[AppDelegate] Universal link: handleUniversalLinkFragment: %@", fragment);
     
     // The app manages only one universal link at a time
@@ -1368,9 +1373,27 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                                                                 withString:[MXTools encodeURIComponent:roomId]
                                             ];
                                     
-                                    universalLinkFragmentPendingRoomAlias = @{roomId: roomIdOrAlias};
+                                    // The previous operation can fail because of percent encoding
+                                    // TBH we are not clean on data inputs. For the moment, just give another try with no encoding
+                                    // TODO: Have a dedicated module and tests to handle universal links (matrix.to, email link, etc)
+                                    if ([newUniversalLinkFragment isEqualToString:fragment])
+                                    {
+                                        newUniversalLinkFragment =
+                                        [fragment stringByReplacingOccurrencesOfString:roomIdOrAlias
+                                                                            withString:[MXTools encodeURIComponent:roomId]];
+                                    }
                                     
-                                    [self handleUniversalLinkFragment:newUniversalLinkFragment];
+                                    if (![newUniversalLinkFragment isEqualToString:fragment])
+                                    {
+                                        universalLinkFragmentPendingRoomAlias = @{roomId: roomIdOrAlias};
+                                        
+                                        [self handleUniversalLinkFragment:newUniversalLinkFragment];
+                                    }
+                                    else
+                                    {
+                                        // Do not continue. Else we will loop forever
+                                        NSLog(@"[AppDelegate] Universal link: Error: Cannot resolve alias in %@ to the room id %@", fragment, roomId);
+                                    }
                                 }
                                 
                             } failure:^(NSError *error) {
@@ -1414,40 +1437,32 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                             // FIXME: In case of multi-account, ask the user which one to use
                             MXKAccount* account = accountManager.activeAccounts.firstObject;
                             
-                            RoomPreviewData *roomPreviewData;
+                            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias
+                                                                                            andSession:account.mxSession];
                             if (queryParams)
                             {
+                                roomPreviewData.viaServers = queryParams[@"via"];
+                            }
+                            
+                            // Is it a link to an event of a room?
+                            // If yes, the event will be displayed once the room is joined
+                            roomPreviewData.eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
+                            
+                            // Try to get more information about the room before opening its preview
+                            [roomPreviewData peekInRoom:^(BOOL succeeded) {
+                                
                                 // Note: the activity indicator will not disappear if the session is not ready
                                 [homeViewController stopActivityIndicator];
                                 
-                                roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias emailInvitationParams:queryParams andSession:account.mxSession];
-                                roomPreviewData.viaServers = queryParams[@"via"];
+                                // If no data is available for this room, we name it with the known room alias (if any).
+                                if (!succeeded && universalLinkFragmentPendingRoomAlias[roomIdOrAlias])
+                                {
+                                    roomPreviewData.roomName = universalLinkFragmentPendingRoomAlias[roomIdOrAlias];
+                                }
+                                universalLinkFragmentPendingRoomAlias = nil;
+                                
                                 [self showRoomPreview:roomPreviewData];
-                            }
-                            else
-                            {
-                                roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias andSession:account.mxSession];
-                                
-                                // Is it a link to an event of a room?
-                                // If yes, the event will be displayed once the room is joined
-                                roomPreviewData.eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
-                                
-                                // Try to get more information about the room before opening its preview
-                                [roomPreviewData peekInRoom:^(BOOL succeeded) {
-                                    
-                                    // Note: the activity indicator will not disappear if the session is not ready
-                                    [homeViewController stopActivityIndicator];
-                                    
-                                    // If no data is available for this room, we name it with the known room alias (if any).
-                                    if (!succeeded && universalLinkFragmentPendingRoomAlias[roomIdOrAlias])
-                                    {
-                                        roomPreviewData.roomName = universalLinkFragmentPendingRoomAlias[roomIdOrAlias];
-                                    }
-                                    universalLinkFragmentPendingRoomAlias = nil;
-                                    
-                                    [self showRoomPreview:roomPreviewData];
-                                }];
-                            }
+                            }];
                         }
                         
                     }
@@ -1757,7 +1772,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         else if (mxSession.state == MXSessionStateStoreDataReady)
         {
             //  start the call service
-            [self.callService start];
+            [self.callPresenter start];
             
             // Look for the account related to this session.
             NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
@@ -1998,7 +2013,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     if (!mxSessionArray.count)
     {
         //  if no session left, stop the call service
-        [self.callService stop];
+        [self.callPresenter stop];
     }
 }
 
@@ -2224,6 +2239,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 case MXSessionStateSyncInProgress:
                     // Stay in launching during the first server sync if the store is empty.
                     isLaunching = (mainSession.rooms.count == 0 && launchAnimationContainerView);
+                    
+                    if (mainSession.crypto.crossSigning && mainSession.crypto.crossSigning.state == MXCrossSigningStateCrossSigningExists)
+                    {
+                        [mainSession.crypto setOutgoingKeyRequestsEnabled:NO onComplete:nil];
+                    }
                     break;
                 default:
                     isLaunching = NO;
@@ -3492,81 +3512,100 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         return;
     }
 
+    MXWeakify(self);
     [mxSession.crypto pendingKeyRequests:^(MXUsersDevicesMap<NSArray<MXIncomingRoomKeyRequest *> *> *pendingKeyRequests) {
-
-        NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: pendingKeyRequests.count: %@. Already displayed: %@",
+        
+        MXStrongifyAndReturnIfNil(self);
+        NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: cross-signing state: %ld, pendingKeyRequests.count: %@. Already displayed: %@",
+              mxSession.crypto.crossSigning.state,
               @(pendingKeyRequests.count),
-              roomKeyRequestViewController ? @"YES" : @"NO");
+              self->roomKeyRequestViewController ? @"YES" : @"NO");
 
-        if (roomKeyRequestViewController)
+        if (!mxSession.crypto.crossSigning || mxSession.crypto.crossSigning.state == MXCrossSigningStateNotBootstrapped)
         {
-            // Check if the current RoomKeyRequestViewController is still valid
-            MXSession *currentMXSession = roomKeyRequestViewController.mxSession;
-            NSString *currentUser = roomKeyRequestViewController.device.userId;
-            NSString *currentDevice = roomKeyRequestViewController.device.deviceId;
-
-            NSArray<MXIncomingRoomKeyRequest *> *currentPendingRequest = [pendingKeyRequests objectForDevice:currentDevice forUser:currentUser];
-
-            if (currentMXSession == mxSession && currentPendingRequest.count == 0)
+            if (self->roomKeyRequestViewController)
             {
-                NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Cancel current dialog");
+                // Check if the current RoomKeyRequestViewController is still valid
+                MXSession *currentMXSession = self->roomKeyRequestViewController.mxSession;
+                NSString *currentUser = self->roomKeyRequestViewController.device.userId;
+                NSString *currentDevice = self->roomKeyRequestViewController.device.deviceId;
 
-                // The key request has been probably cancelled, remove the popup
-                [roomKeyRequestViewController hide];
-                roomKeyRequestViewController = nil;
+                NSArray<MXIncomingRoomKeyRequest *> *currentPendingRequest = [pendingKeyRequests objectForDevice:currentDevice forUser:currentUser];
+
+                if (currentMXSession == mxSession && currentPendingRequest.count == 0)
+                {
+                    NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Cancel current dialog");
+
+                    // The key request has been probably cancelled, remove the popup
+                    [self->roomKeyRequestViewController hide];
+                    self->roomKeyRequestViewController = nil;
+                }
             }
         }
 
-        if (!roomKeyRequestViewController && pendingKeyRequests.count)
+        if (!self->roomKeyRequestViewController && pendingKeyRequests.count)
         {
             // Pick the first coming user/device pair
             NSString *userId = pendingKeyRequests.userIds.firstObject;
             NSString *deviceId = [pendingKeyRequests deviceIdsForUser:userId].firstObject;
-
+            
             // Give the client a chance to refresh the device list
+            MXWeakify(self);
             [mxSession.crypto downloadKeys:@[userId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap, NSDictionary<NSString *,MXCrossSigningInfo *> *crossSigningKeysMap) {
-
+                
+                MXStrongifyAndReturnIfNil(self);
                 MXDeviceInfo *deviceInfo = [usersDevicesInfoMap objectForDevice:deviceId forUser:userId];
                 if (deviceInfo)
                 {
-                    BOOL wasNewDevice = (deviceInfo.trustLevel.localVerificationStatus == MXDeviceUnknown);
-
-                    void (^openDialog)(void) = ^void()
+                    if (!mxSession.crypto.crossSigning || mxSession.crypto.crossSigning.state == MXCrossSigningStateNotBootstrapped)
                     {
-                        NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Open dialog for %@", deviceInfo);
+                        BOOL wasNewDevice = (deviceInfo.trustLevel.localVerificationStatus == MXDeviceUnknown);
+                        
+                        void (^openDialog)(void) = ^void()
+                        {
+                            NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Open dialog for %@", deviceInfo);
 
-                        roomKeyRequestViewController = [[RoomKeyRequestViewController alloc] initWithDeviceInfo:deviceInfo wasNewDevice:wasNewDevice andMatrixSession:mxSession onComplete:^{
+                            self->roomKeyRequestViewController = [[RoomKeyRequestViewController alloc] initWithDeviceInfo:deviceInfo wasNewDevice:wasNewDevice andMatrixSession:mxSession onComplete:^{
 
-                            roomKeyRequestViewController = nil;
+                                self->roomKeyRequestViewController = nil;
 
-                            // Check next pending key request, if any
+                                // Check next pending key request, if any
+                                [self checkPendingRoomKeyRequests];
+                            }];
+
+                            [self->roomKeyRequestViewController show];
+                        };
+
+                        // If the device was new before, it's not any more.
+                        if (wasNewDevice)
+                        {
+                            [mxSession.crypto setDeviceVerification:MXDeviceUnverified forDevice:deviceId ofUser:userId success:openDialog failure:nil];
+                        }
+                        else
+                        {
+                            openDialog();
+                        }
+                    }
+                    else if (deviceInfo.trustLevel.isVerified)
+                    {
+                        [mxSession.crypto acceptAllPendingKeyRequestsFromUser:userId andDevice:deviceId onComplete:^{
                             [self checkPendingRoomKeyRequests];
                         }];
-
-                        [roomKeyRequestViewController show];
-                    };
-
-                    // If the device was new before, it's not any more.
-                    if (wasNewDevice)
-                    {
-                        [mxSession.crypto setDeviceVerification:MXDeviceUnverified forDevice:deviceId ofUser:userId success:openDialog failure:nil];
                     }
                     else
                     {
-                        openDialog();
+                        [mxSession.crypto ignoreAllPendingKeyRequestsFromUser:userId andDevice:deviceId onComplete:^{
+                            [self checkPendingRoomKeyRequests];
+                        }];
                     }
                 }
                 else
                 {
                     NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: No details found for device %@:%@", userId, deviceId);
-
-                    // Ignore this device to avoid to loop on it
                     [mxSession.crypto ignoreAllPendingKeyRequestsFromUser:userId andDevice:deviceId onComplete:^{
-                        // And check next requests
                         [self checkPendingRoomKeyRequests];
                     }];
                 }
-
             } failure:^(NSError *error) {
                 // Retry later
                 NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Failed to download device keys. Retry");
@@ -3738,6 +3777,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)keyVerificationCoordinatorBridgePresenterDelegateDidComplete:(KeyVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
 {
+    MXCrypto *crypto = coordinatorBridgePresenter.session.crypto;
+    if (!crypto.backup.hasPrivateKeyInCryptoStore || !crypto.backup.enabled)
+    {
+        NSLog(@"[AppDelegate][MXKeyVerification] requestAllPrivateKeys: Request key backup private keys");
+        [crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+    }
     [self dismissKeyVerificationCoordinatorBridgePresenter];
 }
 
@@ -4415,15 +4460,15 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-#pragma mark - CallServiceDelegate
+#pragma mark - CallPresenterDelegate
 
-- (BOOL)callService:(CallService *)service shouldHandleNewCall:(MXCall *)call
+- (BOOL)callPresenter:(CallPresenter *)presenter shouldHandleNewCall:(MXCall *)call
 {
     //  Ignore the call if a call is already in progress
     return _jitsiViewController == nil;
 }
 
-- (void)callService:(CallService *)service presentCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
+- (void)callPresenter:(CallPresenter *)presenter presentCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
 {
     if (@available(iOS 13.0, *))
     {
@@ -4433,7 +4478,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self presentViewController:viewController animated:YES completion:completion];
 }
 
-- (void)callService:(CallService *)service dismissCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
+- (void)callPresenter:(CallPresenter *)presenter dismissCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
 {
     // Check whether the call view controller is actually presented
     if (viewController.presentingViewController)
@@ -4461,7 +4506,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)callService:(CallService *)service presentCallBarFor:(CallViewController *)activeCallViewController numberOfPausedCalls:(NSUInteger)numberOfPausedCalls completion:(void (^)(void))completion
+- (void)callPresenter:(CallPresenter *)presenter presentCallBarFor:(CallViewController *)activeCallViewController numberOfPausedCalls:(NSUInteger)numberOfPausedCalls completion:(void (^)(void))completion
 {
     NSString *btnTitle;
     
@@ -4504,7 +4549,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)callService:(CallService *)service dismissCallBar:(void (^)(void))completion
+- (void)callPresenter:(CallPresenter *)presenter dismissCallBar:(void (^)(void))completion
 {
     [self removeCallStatusBar];
     
@@ -4514,7 +4559,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)callService:(CallService *)service enterPipForCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
+- (void)callPresenter:(CallPresenter *)presenter enterPipForCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
 {
     // Check whether the call view controller is actually presented
     if (viewController.presentingViewController)
@@ -4530,7 +4575,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)callService:(CallService *)service exitPipForCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
+- (void)callPresenter:(CallPresenter *)presenter exitPipForCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
 {
     if (@available(iOS 13.0, *))
     {
@@ -4544,7 +4589,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)callBarDidTapReturnButton:(CallBar *)callBar
 {
-    if ([_callService callStatusBarButtonTapped])
+    if ([_callPresenter callStatusBarButtonTapped])
     {
         return;
     }

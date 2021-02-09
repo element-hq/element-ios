@@ -126,10 +126,10 @@
     self.barTitleColor = self.overriddenTheme.textPrimaryColor;
     self.activityIndicator.backgroundColor = self.overriddenTheme.overlayBackgroundColor;
     
-    self.backToAppButton.tintColor = [UIColor whiteColor];
-    self.cameraSwitchButton.tintColor = [UIColor whiteColor];
-    self.callerNameLabel.textColor = [UIColor whiteColor];
-    self.callStatusLabel.textColor = [UIColor whiteColor];
+    self.backToAppButton.tintColor = self.overriddenTheme.callScreenButtonTintColor;
+    self.cameraSwitchButton.tintColor = self.overriddenTheme.callScreenButtonTintColor;
+    self.callerNameLabel.textColor = self.overriddenTheme.baseTextPrimaryColor;
+    self.callStatusLabel.textColor = self.overriddenTheme.baseTextPrimaryColor;
     [self.resumeButton setTitleColor:self.overriddenTheme.tintColor
                             forState:UIControlStateNormal];
     
@@ -353,6 +353,7 @@
     {
         //  shift more button to left
         self.moreButtonLeadingConstraint.constant = 8.0;
+        [self.view layoutIfNeeded];
     }
 }
 
