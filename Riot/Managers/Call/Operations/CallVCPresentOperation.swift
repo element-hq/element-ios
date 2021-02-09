@@ -18,20 +18,20 @@ import Foundation
 
 class CallVCPresentOperation: AsyncOperation {
     
-    private var service: CallService
+    private var presenter: CallPresenter
     private var callVC: CallViewController
     private var completion: (() -> Void)?
     
-    init(service: CallService,
+    init(presenter: CallPresenter,
          callVC: CallViewController,
          completion: (() -> Void)? = nil) {
-        self.service = service
+        self.presenter = presenter
         self.callVC = callVC
         self.completion = completion
     }
     
     override func main() {
-        service.delegate?.callService(service, presentCallViewController: callVC, completion: {
+        presenter.delegate?.callPresenter(presenter, presentCallViewController: callVC, completion: {
             self.finish()
             self.completion?()
         })

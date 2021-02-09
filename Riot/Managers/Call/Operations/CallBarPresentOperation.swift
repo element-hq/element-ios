@@ -18,23 +18,23 @@ import Foundation
 
 class CallBarPresentOperation: AsyncOperation {
     
-    private var service: CallService
+    private var presenter: CallPresenter
     private var activeCallVC: CallViewController?
     private var numberOfPausedCalls: UInt
     private var completion: (() -> Void)?
     
-    init(service: CallService,
+    init(presenter: CallPresenter,
          activeCallVC: CallViewController?,
          numberOfPausedCalls: UInt,
          completion: (() -> Void)? = nil) {
-        self.service = service
+        self.presenter = presenter
         self.activeCallVC = activeCallVC
         self.numberOfPausedCalls = numberOfPausedCalls
         self.completion = completion
     }
     
     override func main() {
-        service.delegate?.callService(service, presentCallBarFor: activeCallVC, numberOfPausedCalls: numberOfPausedCalls, completion: {
+        presenter.delegate?.callPresenter(presenter, presentCallBarFor: activeCallVC, numberOfPausedCalls: numberOfPausedCalls, completion: {
             self.finish()
             self.completion?()
         })

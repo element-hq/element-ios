@@ -4394,11 +4394,11 @@ internal enum VectorL10n {
   internal static var socialLoginListTitleContinue: String { 
     return VectorL10n.tr("Vector", "social_login_list_title_continue") 
   }
-  /// Or login with
+  /// Or
   internal static var socialLoginListTitleSignIn: String { 
     return VectorL10n.tr("Vector", "social_login_list_title_sign_in") 
   }
-  /// Or register with
+  /// Or
   internal static var socialLoginListTitleSignUp: String { 
     return VectorL10n.tr("Vector", "social_login_list_title_sign_up") 
   }
