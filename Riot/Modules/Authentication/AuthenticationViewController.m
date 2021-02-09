@@ -79,6 +79,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 // Current SSO transaction id used to identify and validate the SSO authentication callback
 @property (nonatomic, strong) NSString *ssoCallbackTxnId;
 
+@property (nonatomic, strong) CrossSigningService *crossSigningService;
+
 @property (nonatomic, getter = isFirstViewAppearing) BOOL firstViewAppearing;
 
 @end
@@ -114,6 +116,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     didCheckFalseAuthScreenDisplay = NO;
     
     _firstViewAppearing = YES;
+    
+    self.crossSigningService = [CrossSigningService new];
 }
 
 - (void)viewDidLoad
@@ -1445,10 +1449,15 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
                             }
                             else
                             {
-                                NSLog(@"[AuthenticationVC] sessionStateDidChange: Do not know how to bootstrap cross-signing. Skip it.");
-                                
-                                [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
-                                [self dismiss];
+                                // Try to setup cross-signing without authentication parameters in case if a grace period is enabled
+                                [self.crossSigningService setupCrossSigningWithoutAuthenticationFor:session success:^{
+                                    NSLog(@"[AuthenticationVC] sessionStateDidChange: Bootstrap succeeded without credentials");
+                                    [self dismiss];
+                                } failure:^(NSError * _Nonnull error) {
+                                    NSLog(@"[AuthenticationVC] sessionStateDidChange: Do not know how to bootstrap cross-signing. Skip it.");
+                                    [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+                                    [self dismiss];
+                                }];
                             }
                         }
                         else
