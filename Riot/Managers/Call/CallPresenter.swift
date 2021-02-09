@@ -19,7 +19,7 @@ import MatrixKit
 
 @objcMembers
 /// Service to manage call screens and call bar UI management.
-class CallService: NSObject {
+class CallPresenter: NSObject {
     
     private enum Constants {
         static let pipAnimationDuration: TimeInterval = 0.25
@@ -36,7 +36,7 @@ class CallService: NSObject {
     private weak var pipCallVC: CallViewController?
     private var uiOperationQueue: OperationQueue = .main
     private var isStarted: Bool = false
-    private var callTimer: Timer!
+    private var callTimer: Timer?
     
     private var isCallKitEnabled: Bool {
         MXCallKitAdapter.callKitAvailable() && MXKAppSettings.standard()?.isCallKitEnabled == true
@@ -75,7 +75,7 @@ class CallService: NSObject {
     let maximumNumberOfConcurrentCalls: UInt = 2
     
     /// Delegate object
-    weak var delegate: CallServiceDelegate?
+    weak var delegate: CallPresenterDelegate?
     
     /// Start the service
     func start() {
@@ -120,7 +120,7 @@ class CallService: NSObject {
     }
     
     private func shouldHandleCall(_ call: MXCall) -> Bool {
-        if let delegate = delegate, !delegate.callService(self, shouldHandleNewCall: call) {
+        if let delegate = delegate, !delegate.callPresenter(self, shouldHandleNewCall: call) {
             return false
         }
         return callVCs.count < maximumNumberOfConcurrentCalls
@@ -184,7 +184,7 @@ class CallService: NSObject {
     }
     
     private func stopCallTimer() {
-        callTimer.invalidate()
+        callTimer?.invalidate()
         callTimer = nil
     }
     
@@ -284,14 +284,14 @@ class CallService: NSObject {
             }
         case .connected:
             NSLog("[CallService] callStateChanged: call connected: \(call.callId)")
-            callTimer.fire()
+            callTimer?.fire()
         case .onHold:
             NSLog("[CallService] callStateChanged: call holded: \(call.callId)")
-            callTimer.fire()
+            callTimer?.fire()
             callHolded(withCallId: call.callId)
         case .remotelyOnHold:
             NSLog("[CallService] callStateChanged: call remotely holded: \(call.callId)")
-            callTimer.fire()
+            callTimer?.fire()
             callHolded(withCallId: call.callId)
         case .ended:
             NSLog("[CallService] callStateChanged: call ended: \(call.callId)")
@@ -317,7 +317,7 @@ class CallService: NSObject {
             dismissCallVC(presentedCallVC)
         }
         
-        let operation = CallVCPresentOperation(service: self, callVC: callVC) { [weak self] in
+        let operation = CallVCPresentOperation(presenter: self, callVC: callVC) { [weak self] in
             self?.presentedCallVC = callVC
             if callVC == self?.pipCallVC {
                 self?.pipCallVC = nil
@@ -333,7 +333,7 @@ class CallService: NSObject {
         //  do not use PiP transitions here, as we really want to dismiss the screen
         callVC.transitioningDelegate = nil
         
-        let operation = CallVCDismissOperation(service: self, callVC: callVC) { [weak self] in
+        let operation = CallVCDismissOperation(presenter: self, callVC: callVC) { [weak self] in
             if callVC == self?.presentedCallVC {
                 self?.presentedCallVC = nil
             }
@@ -348,7 +348,7 @@ class CallService: NSObject {
         //  assign self as transitioning delegate
         callVC.transitioningDelegate = self
         
-        let operation = CallVCEnterPipOperation(service: self, callVC: callVC) { [weak self] in
+        let operation = CallVCEnterPipOperation(presenter: self, callVC: callVC) { [weak self] in
             self?.pipCallVC = callVC
             if callVC == self?.presentedCallVC {
                 self?.presentedCallVC = nil
@@ -364,7 +364,7 @@ class CallService: NSObject {
         //  assign self as transitioning delegate
         callVC.transitioningDelegate = self
         
-        let operation = CallVCExitPipOperation(service: self, callVC: callVC) { [weak self] in
+        let operation = CallVCExitPipOperation(presenter: self, callVC: callVC) { [weak self] in
             if callVC == self?.pipCallVC {
                 self?.pipCallVC = nil
             }
@@ -381,7 +381,7 @@ class CallService: NSObject {
 
         let activeCallVC = self.activeCallVC
         
-        let operation = CallBarPresentOperation(service: self, activeCallVC: activeCallVC, numberOfPausedCalls: numberOfPausedCalls) { [weak self] in
+        let operation = CallBarPresentOperation(presenter: self, activeCallVC: activeCallVC, numberOfPausedCalls: numberOfPausedCalls) { [weak self] in
             //  active calls are more prior to paused ones.
             //  So, if user taps the bar when we have one active and one paused calls, we navigate to the active one.
             if !isUpdateOnly {
@@ -395,7 +395,7 @@ class CallService: NSObject {
     private func dismissCallBar(for callVC: CallViewController, completion: (() -> Void)? = nil) {
         NSLog("[CallService] dismissCallBar: call: \(String(describing: callVC.mxCall?.callId))")
         
-        let operation = CallBarDismissOperation(service: self) { [weak self] in
+        let operation = CallBarDismissOperation(presenter: self) { [weak self] in
             if callVC == self?.inBarCallVC {
                 self?.inBarCallVC = nil
             }
@@ -409,7 +409,7 @@ class CallService: NSObject {
 
 //  MARK: - MXKCallViewControllerDelegate
 
-extension CallService: MXKCallViewControllerDelegate {
+extension CallPresenter: MXKCallViewControllerDelegate {
     
     func dismiss(_ callViewController: MXKCallViewController!, completion: (() -> Void)!) {
         guard let callVC = callViewController as? CallViewController else {
@@ -463,7 +463,7 @@ extension CallService: MXKCallViewControllerDelegate {
 
 //  MARK: - UIViewControllerTransitioningDelegate
 
-extension CallService: UIViewControllerTransitioningDelegate {
+extension CallPresenter: UIViewControllerTransitioningDelegate {
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return PiPAnimator(animationDuration: Constants.pipAnimationDuration,
@@ -481,7 +481,7 @@ extension CallService: UIViewControllerTransitioningDelegate {
 
 //  MARK: - PiPViewDelegate
 
-extension CallService: PiPViewDelegate {
+extension CallPresenter: PiPViewDelegate {
     
     func pipViewDidTap(_ view: PiPView) {
         guard let pipCallVC = pipCallVC else { return }

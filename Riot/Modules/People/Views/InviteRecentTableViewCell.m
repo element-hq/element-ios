@@ -80,11 +80,7 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
 
 - (void)onRightButtonPressed:(id)sender
 {
-    MXRoom *room = roomCellData.roomSummary.room;
-    
-    NSString *actionIdentifier = room.isDirect ? kInviteRecentTableViewCellAcceptButtonPressed : kInviteRecentTableViewCellPreviewButtonPressed;
-    
-    [self notifyDelegateWithActionIdentifier:actionIdentifier];
+    [self notifyDelegateWithActionIdentifier:kInviteRecentTableViewCellAcceptButtonPressed];
 }
 
 - (void)notifyDelegateWithActionIdentifier:(NSString*)actionIdentifier

@@ -16,8 +16,8 @@
 
 import Foundation
 
-#if canImport(JitsiMeet)
-import JitsiMeet
+#if canImport(JitsiMeetSDK)
+import JitsiMeetSDK
 
 enum JitsiServiceError: Error {
     case widgetContentCreationFailed
