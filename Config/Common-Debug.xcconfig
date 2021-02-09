@@ -32,3 +32,8 @@ GCC_DYNAMIC_NO_PIC = NO
 GCC_PREPROCESSOR_DEFINITIONS = DEBUG=1 $(inherited)
 GCC_SYMBOLS_PRIVATE_EXTERN = NO
 
+
+// Code signing: Use the development team for all targets
+CODE_SIGN_IDENTITY = iPhone Developer
+CODE_SIGN_STYLE = Automatic
+PROVISIONING_PROFILE_SPECIFIER = ""

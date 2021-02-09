@@ -25,3 +25,8 @@ MTL_ENABLE_DEBUG_INFO = NO
 VALIDATE_PRODUCT = YES
 
 SWIFT_COMPILATION_MODE = wholemodule
+
+
+// Code signing: Manual
+CODE_SIGN_IDENTITY = iPhone Distribution
+CODE_SIGN_STYLE = Manual

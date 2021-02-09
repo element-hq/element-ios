@@ -34,20 +34,6 @@ targets:
     configFiles:
       Debug: ../RiotNSE/NSE-Debug.xcconfig
       Release: ../RiotNSE/NSE-Release.xcconfig
-
-    settings:
-      base:
-      configs:
-        Debug:
-          CODE_SIGN_IDENTITY: iPhone Developer
-          CODE_SIGN_STYLE: Automatic
-          PROVISIONING_PROFILE_SPECIFIER: ""
-        Release:
-          CODE_SIGN_IDENTITY: iPhone Distribution
-          CODE_SIGN_STYLE: Manual
-          COPY_PHASE_STRIP: NO
-          PROVISIONING_PROFILE: $(NSE_PROVISIONING_PROFILE)
-          PROVISIONING_PROFILE_SPECIFIER: $(NSE_PROVISIONING_PROFILE_SPECIFIER)
   
     postbuildScripts:
     - name: Embed Precompiled Frameworks

@@ -36,7 +36,6 @@ targets:
     settings:
       base:
         BUNDLE_LOADER: $(TEST_HOST)
-        CODE_SIGN_STYLE: Manual
         FRAMEWORK_SEARCH_PATHS: $(SDKROOT)/Developer/Library/Frameworks $(inherited)
         INFOPLIST_FILE: RiotTests/Info.plist
         LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @loader_path/Frameworks

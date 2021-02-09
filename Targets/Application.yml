@@ -38,20 +38,6 @@ targets:
     configFiles:
       Debug: ../Riot/SupportingFiles/App-Debug.xcconfig
       Release: ../Riot/SupportingFiles/App-Release.xcconfig
-      
-    settings:
-      base:
-      configs:
-        Debug:
-          CODE_SIGN_IDENTITY: iPhone Developer
-          CODE_SIGN_IDENTITY[sdk=iphoneos*]: iPhone Developer
-          CODE_SIGN_STYLE: Automatic
-          PROVISIONING_PROFILE_SPECIFIER: 
-        Release:
-          CODE_SIGN_IDENTITY: iPhone Distribution
-          CODE_SIGN_STYLE: Manual
-          PROVISIONING_PROFILE: $(RIOT_PROVISIONING_PROFILE)
-          PROVISIONING_PROFILE_SPECIFIER: $(RIOT_PROVISIONING_PROFILE_SPECIFIER)
 
     preBuildScripts:
     - name: ⚠️ SwiftLint
@@ -80,6 +66,7 @@ targets:
         - "**/*.strings" # Exclude all strings files
 
     # Add separately localizable files
+    # Once a language has enough translations (>80%), it must be declared here
     - path: ../Riot/Assets/en.lproj/InfoPlist.strings
     - path: ../Riot/Assets/en.lproj/Localizable.strings
     - path: ../Riot/Assets/en.lproj/Vector.strings

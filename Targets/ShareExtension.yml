@@ -35,20 +35,6 @@ targets:
       Debug: ../RiotShareExtension/SupportingFiles/ShareExtension-Debug.xcconfig
       Release: ../RiotShareExtension/SupportingFiles/ShareExtension-Release.xcconfig
 
-    settings:
-      base:
-      configs:
-        Debug:
-          CODE_SIGN_IDENTITY: iPhone Developer
-          CODE_SIGN_STYLE: Automatic
-          PROVISIONING_PROFILE_SPECIFIER: ""
-        Release:
-          CODE_SIGN_IDENTITY: iPhone Distribution
-          CODE_SIGN_STYLE: Manual
-          COPY_PHASE_STRIP: NO
-          PROVISIONING_PROFILE: $(SHARE_EXTENSION_PROVISIONING_PROFILE)
-          PROVISIONING_PROFILE_SPECIFIER: $(SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER)
-
     postbuildScripts:
     - name: Embed Precompiled Frameworks
       runOnlyWhenInstalling: false

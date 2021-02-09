@@ -19,3 +19,8 @@
 
 #include "SiriIntents-Common.xcconfig"
 #include "Pods/Target Support Files/Pods-RiotPods-SiriIntents/Pods-RiotPods-SiriIntents.release.xcconfig"
+
+PROVISIONING_PROFILE = $(SIRI_INTENTS_PROVISIONING_PROFILE)
+PROVISIONING_PROFILE_SPECIFIER = $(SIRI_INTENTS_PROVISIONING_PROFILE_SPECIFIER)
+
+COPY_PHASE_STRIP: NO
