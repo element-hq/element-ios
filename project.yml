@@ -53,8 +53,6 @@ settings:
     GCC_WARN_UNUSED_FUNCTION: YES
     GCC_WARN_UNUSED_VARIABLE: YES
   debug:
-    CODE_SIGN_IDENTITY: iPhone Developer
-    CODE_SIGN_IDENTITY[sdk=iphoneos*]: iPhone Developer
     COPY_PHASE_STRIP: NO
     ENABLE_TESTABILITY: YES
     GCC_DYNAMIC_NO_PIC: NO
@@ -64,8 +62,6 @@ settings:
     MTL_ENABLE_DEBUG_INFO: YES
     ONLY_ACTIVE_ARCH: YES
   release:
-    CODE_SIGN_IDENTITY: iPhone Distribution
-    CODE_SIGN_IDENTITY[sdk=iphoneos*]: iPhone Distribution
     COPY_PHASE_STRIP: YES
     ENABLE_NS_ASSERTIONS: NO
     MTL_ENABLE_DEBUG_INFO: NO
