@@ -62,6 +62,10 @@ import UIKit
     var placeholderTextColor: UIColor { get }
 
     var selectedBackgroundColor: UIColor { get }
+    
+    // MARK: - Call Screen Specific Colors
+    
+    var callScreenButtonTintColor: UIColor { get }
 
     // MARK: - Appearance and style
 

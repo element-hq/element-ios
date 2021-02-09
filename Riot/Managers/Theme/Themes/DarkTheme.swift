@@ -79,6 +79,7 @@ class DarkTheme: NSObject, Theme {
 
     var placeholderTextColor: UIColor = UIColor(rgb: 0xA1B2D1) // Use secondary text color
     var selectedBackgroundColor: UIColor = UIColor(rgb: 0x040506)
+    var callScreenButtonTintColor: UIColor = UIColor(rgb: 0xFFFFFF)
     var overlayBackgroundColor: UIColor = UIColor(white: 0.7, alpha: 0.5)
     var matrixSearchBackgroundImageTintColor: UIColor = UIColor(rgb: 0x7E7E7E)
     
