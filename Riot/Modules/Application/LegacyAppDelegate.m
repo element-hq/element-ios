@@ -1977,7 +1977,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         [[WidgetManager sharedManager] addMatrixSession:mxSession];
         
         // register the session to the call service
-        [_callService addMatrixSession:mxSession];
+        [_callPresenter addMatrixSession:mxSession];
         
         [mxSessionArray addObject:mxSession];
         
@@ -1994,7 +1994,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [_masterTabBarController removeMatrixSession:mxSession];
     
     // remove session from the call service
-    [_callService removeMatrixSession:mxSession];
+    [_callPresenter removeMatrixSession:mxSession];
 
     // Update the widgets manager
     [[WidgetManager sharedManager] removeMatrixSession:mxSession]; 
