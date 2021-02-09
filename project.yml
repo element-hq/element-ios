@@ -95,7 +95,7 @@ options:
   transitivelyLinkDependencies: false
   createIntermediateGroups: true
   useBaseInternationalization: true
-  postGenCommand: sh createWorkspace.sh
+  postGenCommand: sh Tools/XcodeGen/postGenCommand.sh
 include:
   - path: Targets/Application.yml
   - path: Targets/ApplicationTests.yml

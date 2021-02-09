@@ -1,4 +1,5 @@
 name: SiriIntents
+
 schemes:
   SiriIntents:
     analyze:
@@ -24,27 +25,19 @@ schemes:
     test:
       config: Debug
       disableMainThreadChecker: true
+
 targets:
   SiriIntents:
     platform: iOS
     type: app-extension
-    sources:
-    - path: ../SiriIntents
-    - path: ../Riot/Generated/InfoPlist.swift
-    - path: ../Riot/Categories/Bundle.swift
-    - path: ../Config/CommonConfiguration.swift
-    - path: ../Config/BuildSettings.swift
-    - path: ../Config/Configurable.swift
-    - path: ../Riot/Managers/Settings/RiotSettings.swift
-    - path: ../SiriIntents/SiriIntents-Common.xcconfig
-      buildPhase: resources
+
     dependencies:
     - sdk: Intents.framework
-    postbuildScripts:
-    - name: Embed Precompiled Frameworks
-      runOnlyWhenInstalling: false
-      script: echo "Skipping, nothing to be embedded."
-      shell: /bin/sh
+
+    configFiles:
+      Debug: ../SiriIntents/SiriIntents-Debug.xcconfig
+      Release: ../SiriIntents/SiriIntents-Release.xcconfig
+
     settings:
       groups:
         - appDefault
@@ -81,3 +74,18 @@ targets:
           DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
           PROVISIONING_PROFILE: $(SIRI_INTENTS_PROVISIONING_PROFILE)
           PROVISIONING_PROFILE_SPECIFIER: $(SIRI_INTENTS_PROVISIONING_PROFILE_SPECIFIER)
+
+    postbuildScripts:
+    - name: Embed Precompiled Frameworks
+      runOnlyWhenInstalling: false
+      script: echo "Skipping, nothing to be embedded."
+      shell: /bin/sh
+
+    sources:
+    - path: ../SiriIntents
+    - path: ../Riot/Generated/InfoPlist.swift
+    - path: ../Riot/Categories/Bundle.swift
+    - path: ../Config/CommonConfiguration.swift
+    - path: ../Config/BuildSettings.swift
+    - path: ../Config/Configurable.swift
+    - path: ../Riot/Managers/Settings/RiotSettings.swift

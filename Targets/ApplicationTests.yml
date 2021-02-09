@@ -1,4 +1,5 @@
 name: RiotTests
+
 schemes:
   RiotTests:
     analyze:
@@ -23,16 +24,15 @@ schemes:
       disableMainThreadChecker: true
       targets:
       - RiotTests
+
 targets:
   RiotTests:
+    type: bundle.unit-test
+    platform: iOS
+
     dependencies:
     - target: Riot
-    platform: iOS
-    postbuildScripts:
-    - name: Embed Precompiled Frameworks
-      runOnlyWhenInstalling: false
-      script: echo "Skipping, nothing to be embedded."
-      shell: /bin/sh
+
     settings:
       groups:
         - appDefault
@@ -55,5 +55,11 @@ targets:
         Release:
           PROVISIONING_PROFILE: $(RIOT_PROVISIONING_PROFILE)
           PROVISIONING_PROFILE_SPECIFIER: $(RIOT_PROVISIONING_PROFILE_SPECIFIER)
+
+    postbuildScripts:
+    - name: Embed Precompiled Frameworks
+      runOnlyWhenInstalling: false
+      script: echo "Skipping, nothing to be embedded."
+      shell: /bin/sh
+
     sources: [../RiotTests]
-    type: bundle.unit-test
