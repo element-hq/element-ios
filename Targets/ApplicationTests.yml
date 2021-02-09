@@ -35,7 +35,6 @@ targets:
 
     settings:
       base:
-        ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: $(inherited)
         BUNDLE_LOADER: $(TEST_HOST)
         CODE_SIGN_STYLE: Manual
         FRAMEWORK_SEARCH_PATHS: $(SDKROOT)/Developer/Library/Frameworks $(inherited)

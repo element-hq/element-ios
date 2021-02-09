@@ -41,22 +41,14 @@ targets:
       
     settings:
       base:
-        ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: $(inherited)
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         CODE_SIGN_ENTITLEMENTS: Riot/SupportingFiles/Riot.entitlements
         ENABLE_BITCODE: NO
-        FRAMEWORK_SEARCH_PATHS: $(inherited)
-        HEADER_SEARCH_PATHS: $(inherited)
         INFOPLIST_FILE: Riot/SupportingFiles/Info.plist
         LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks
-        LIBRARY_SEARCH_PATHS: $(inherited)
-        OTHER_CFLAGS: $(inherited)
-        OTHER_LDFLAGS: $(inherited)
-        OTHER_SWIFT_FLAGS: $(inherited)
         PRODUCT_BUNDLE_IDENTIFIER: $(BASE_BUNDLE_IDENTIFIER)
         PRODUCT_NAME: Riot
         SWIFT_OBJC_BRIDGING_HEADER: $(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/Riot-Bridging-Header.h
-        USER_HEADER_SEARCH_PATHS: $(inherited)
 
       configs:
         Debug:

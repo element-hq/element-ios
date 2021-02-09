@@ -40,24 +40,16 @@ targets:
 
     settings:
       base:
-        ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: $(inherited)
         CLANG_ANALYZER_NONNULL: YES
         CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION: YES_AGGRESSIVE
         CLANG_WARN_DOCUMENTATION_COMMENTS: YES
         CODE_SIGN_ENTITLEMENTS: SiriIntents/SiriIntents.entitlements
         ENABLE_BITCODE: NO
-        FRAMEWORK_SEARCH_PATHS: $(inherited)
-        HEADER_SEARCH_PATHS: $(inherited)
         INFOPLIST_FILE: SiriIntents/Info.plist
         LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks
-        LIBRARY_SEARCH_PATHS: $(inherited)
-        OTHER_CFLAGS: $(inherited)
-        OTHER_LDFLAGS: $(inherited)
-        OTHER_SWIFT_FLAGS: $(inherited)
         PRODUCT_BUNDLE_IDENTIFIER: $(BASE_BUNDLE_IDENTIFIER).SiriIntents
         PRODUCT_NAME: SiriIntents
         SKIP_INSTALL: YES
-        USER_HEADER_SEARCH_PATHS: $(inherited)
       configs:
         Debug:
           CODE_SIGN_IDENTITY: iPhone Developer

@@ -37,7 +37,6 @@ targets:
 
     settings:
       base:
-        ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: $(inherited)
         APPLICATION_EXTENSION_API_ONLY: YES
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         CLANG_ANALYZER_NONNULL: YES
@@ -45,19 +44,12 @@ targets:
         CLANG_WARN_DOCUMENTATION_COMMENTS: YES
         CODE_SIGN_ENTITLEMENTS: RiotShareExtension/SupportingFiles/RiotShareExtension.entitlements
         ENABLE_BITCODE: NO
-        FRAMEWORK_SEARCH_PATHS: $(inherited)
         GCC_PREPROCESSOR_DEFINITIONS: $(inherited) IS_SHARE_EXTENSION=1
-        HEADER_SEARCH_PATHS: $(inherited)
         INFOPLIST_FILE: RiotShareExtension/SupportingFiles/Info.plist
         LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks
-        LIBRARY_SEARCH_PATHS: $(inherited)
-        OTHER_CFLAGS: $(inherited)
-        OTHER_LDFLAGS: $(inherited)
-        OTHER_SWIFT_FLAGS: $(inherited)
         PRODUCT_NAME: RiotShareExtension
         SKIP_INSTALL: YES
         SWIFT_OBJC_BRIDGING_HEADER: $(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/RiotShareExtension-Bridging-Header.h
-        USER_HEADER_SEARCH_PATHS: $(inherited)
         PRODUCT_BUNDLE_IDENTIFIER: $(BASE_BUNDLE_IDENTIFIER).shareExtension
       configs:
         Debug:
