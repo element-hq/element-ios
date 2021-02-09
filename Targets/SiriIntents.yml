@@ -40,11 +40,7 @@ targets:
 
     settings:
       base:
-        CLANG_ANALYZER_NONNULL: YES
-        CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION: YES_AGGRESSIVE
-        CLANG_WARN_DOCUMENTATION_COMMENTS: YES
         CODE_SIGN_ENTITLEMENTS: SiriIntents/SiriIntents.entitlements
-        ENABLE_BITCODE: NO
         INFOPLIST_FILE: SiriIntents/Info.plist
         LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks
         PRODUCT_BUNDLE_IDENTIFIER: $(BASE_BUNDLE_IDENTIFIER).SiriIntents
@@ -54,13 +50,11 @@ targets:
         Debug:
           CODE_SIGN_IDENTITY: iPhone Developer
           CODE_SIGN_STYLE: Automatic
-          DEBUG_INFORMATION_FORMAT: dwarf
           PROVISIONING_PROFILE_SPECIFIER: ""
         Release:
           CODE_SIGN_IDENTITY: iPhone Distribution
           CODE_SIGN_STYLE: Manual
           COPY_PHASE_STRIP: NO
-          DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
           PROVISIONING_PROFILE: $(SIRI_INTENTS_PROVISIONING_PROFILE)
           PROVISIONING_PROFILE_SPECIFIER: $(SIRI_INTENTS_PROVISIONING_PROFILE_SPECIFIER)
 

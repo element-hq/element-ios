@@ -39,11 +39,7 @@ targets:
       base:
         APPLICATION_EXTENSION_API_ONLY: YES
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
-        CLANG_ANALYZER_NONNULL: YES
-        CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION: YES_AGGRESSIVE
-        CLANG_WARN_DOCUMENTATION_COMMENTS: YES
         CODE_SIGN_ENTITLEMENTS: RiotShareExtension/SupportingFiles/RiotShareExtension.entitlements
-        ENABLE_BITCODE: NO
         GCC_PREPROCESSOR_DEFINITIONS: $(inherited) IS_SHARE_EXTENSION=1
         INFOPLIST_FILE: RiotShareExtension/SupportingFiles/Info.plist
         LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks
@@ -55,13 +51,11 @@ targets:
         Debug:
           CODE_SIGN_IDENTITY: iPhone Developer
           CODE_SIGN_STYLE: Automatic
-          DEBUG_INFORMATION_FORMAT: dwarf
           PROVISIONING_PROFILE_SPECIFIER: ""
         Release:
           CODE_SIGN_IDENTITY: iPhone Distribution
           CODE_SIGN_STYLE: Manual
           COPY_PHASE_STRIP: NO
-          DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
           PROVISIONING_PROFILE: $(SHARE_EXTENSION_PROVISIONING_PROFILE)
           PROVISIONING_PROFILE_SPECIFIER: $(SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER)
 

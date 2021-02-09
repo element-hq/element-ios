@@ -43,7 +43,6 @@ targets:
       base:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         CODE_SIGN_ENTITLEMENTS: Riot/SupportingFiles/Riot.entitlements
-        ENABLE_BITCODE: NO
         INFOPLIST_FILE: Riot/SupportingFiles/Info.plist
         LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks
         PRODUCT_BUNDLE_IDENTIFIER: $(BASE_BUNDLE_IDENTIFIER)
@@ -56,7 +55,6 @@ targets:
           CODE_SIGN_IDENTITY[sdk=iphoneos*]: iPhone Developer
           CODE_SIGN_STYLE: Automatic
           PROVISIONING_PROFILE_SPECIFIER: 
-          SWIFT_OPTIMIZATION_LEVEL: -Onone
         Release:
           CODE_SIGN_IDENTITY: iPhone Distribution
           CODE_SIGN_STYLE: Manual
