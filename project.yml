@@ -25,8 +25,8 @@ options:
   postGenCommand: sh Tools/XcodeGen/postGenCommand.sh
 
 include:
-  - path: Targets/Application.yml
-  - path: Targets/ApplicationTests.yml
-  - path: Targets/ShareExtension.yml
-  - path: Targets/SiriIntents.yml
-  - path: Targets/NotificationServiceExtension.yml
+  - path: Riot/Application.yml
+  - path: RiotTests/ApplicationTests.yml
+  - path: RiotShareExtension/ShareExtension.yml
+  - path: SiriIntents/SiriIntents.yml
+  - path: RiotNSE/NotificationServiceExtension.yml

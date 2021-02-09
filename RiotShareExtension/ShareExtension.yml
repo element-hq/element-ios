@@ -32,8 +32,8 @@ targets:
     type: app-extension
 
     configFiles:
-      Debug: ../RiotShareExtension/SupportingFiles/ShareExtension-Debug.xcconfig
-      Release: ../RiotShareExtension/SupportingFiles/ShareExtension-Release.xcconfig
+      Debug: SupportingFiles/ShareExtension-Debug.xcconfig
+      Release: SupportingFiles/ShareExtension-Release.xcconfig
 
     postbuildScripts:
     - name: Embed Precompiled Frameworks
@@ -42,7 +42,7 @@ targets:
       shell: /bin/sh
 
     sources:
-    - path: ../RiotShareExtension
+    - path: .
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
     - path: ../Riot/Categories/Bundle.swift
     - path: ../Riot/Managers/Theme/Themes/DefaultTheme.swift

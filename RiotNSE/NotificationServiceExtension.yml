@@ -32,8 +32,8 @@ targets:
     type: app-extension
 
     configFiles:
-      Debug: ../RiotNSE/NSE-Debug.xcconfig
-      Release: ../RiotNSE/NSE-Release.xcconfig
+      Debug: NSE-Debug.xcconfig
+      Release: NSE-Release.xcconfig
   
     postbuildScripts:
     - name: Embed Precompiled Frameworks
@@ -42,7 +42,7 @@ targets:
       shell: /bin/sh
 
     sources: 
-    - path: ../RiotNSE
+    - path: .
     - path: ../Riot/Managers/Settings/RiotSettings.swift
     - path: ../Config/BuildSettings.swift
     - path: ../Riot/Utils/DataProtectionHelper.swift

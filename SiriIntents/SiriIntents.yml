@@ -35,8 +35,8 @@ targets:
     - sdk: Intents.framework
 
     configFiles:
-      Debug: ../SiriIntents/SiriIntents-Debug.xcconfig
-      Release: ../SiriIntents/SiriIntents-Release.xcconfig
+      Debug: SiriIntents-Debug.xcconfig
+      Release: SiriIntents-Release.xcconfig
 
     postbuildScripts:
     - name: Embed Precompiled Frameworks
@@ -45,7 +45,7 @@ targets:
       shell: /bin/sh
 
     sources:
-    - path: ../SiriIntents
+    - path: .
     - path: ../Riot/Generated/InfoPlist.swift
     - path: ../Riot/Categories/Bundle.swift
     - path: ../Config/CommonConfiguration.swift
