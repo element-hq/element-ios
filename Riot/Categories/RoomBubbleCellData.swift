@@ -26,9 +26,9 @@ import Foundation
         //  add prev linked events
         var prevBubbleData = prevCollapsableCellData
         while prevBubbleData != nil {
-            // swiftlint:disable force_unwrapping
-            result.append(contentsOf: prevBubbleData!.events)
-            // swiftlint:enable force_unwrapping
+            if let events = prevBubbleData?.events {
+                result.append(contentsOf: events)
+            }
             prevBubbleData = prevBubbleData?.prevCollapsableCellData
         }
         
@@ -38,9 +38,9 @@ import Foundation
         //  add next linked events
         var nextBubbleData = nextCollapsableCellData
         while nextBubbleData != nil {
-            // swiftlint:disable force_unwrapping
-            result.append(contentsOf: nextBubbleData!.events)
-            // swiftlint:enable force_unwrapping
+            if let events = nextBubbleData?.events {
+                result.append(contentsOf: events)
+            }
             nextBubbleData = nextBubbleData?.nextCollapsableCellData
         }
         
