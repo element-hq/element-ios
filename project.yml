@@ -1,38 +1,25 @@
+name: Riot
 attributes:
   ORGANIZATIONNAME: matrix.org
+
 configs:
   Debug: debug
   Release: release
-name: Riot
+
 settingGroups:
   appDefault:
-    CURRENT_PROJECT_VERSION: 20200826151407
     SWIFT_VERSION: 5.3.1
-    BUNDLE_DISPLAY_NAME: Element
-    APPLICATION_GROUP_IDENTIFIER: group.im.vector
-    BASE_BUNDLE_IDENTIFIER: im.vector.app
-    KEYCHAIN_ACCESS_GROUP: $(AppIdentifierPrefix)$(BASE_BUNDLE_IDENTIFIER).keychain.shared
     LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks
-    DEVELOPMENT_TEAM: 7J4U792NQT
 
-    RIOT_PROVISIONING_PROFILE: f65e7447-b8a3-46cc-8fba-fa60e55e2511
-    RIOT_PROVISIONING_PROFILE_SPECIFIER: Vector App Store
-    NSE_PROVISIONING_PROFILE: 31dc9316-e029-47fd-81f5-778db07d76a2
-    NSE_PROVISIONING_PROFILE_SPECIFIER: "Vector NSE: App Store"
-    SHARE_EXTENSION_PROVISIONING_PROFILE: 1a3be143-50c7-4ae2-834e-00596a053141
-    SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER: "Vector Share Extension: App Store"
-    SIRI_INTENTS_PROVISIONING_PROFILE: 18a66f93-ffe1-4008-b343-58350cc65023
-    SIRI_INTENTS_PROVISIONING_PROFILE_SPECIFIER: "Vector Siri Intents: App Store"
 fileGroups:
     - README.md
     - CHANGES.rst
     - AUTHORS.rst
     - Podfile
+
 settings:
   base:
     IPHONEOS_DEPLOYMENT_TARGET: 11.0
-    MARKETING_VERSION: 1.1.3
-    CURRENT_PROJECT_VERSION: 1.1.3
     SDKROOT: iphoneos
     TARGETED_DEVICE_FAMILY: 1,2
     ALWAYS_SEARCH_USER_PATHS: NO
@@ -89,6 +76,7 @@ settings:
     MTL_ENABLE_DEBUG_INFO: NO
     SWIFT_COMPILATION_MODE: wholemodule
     VALIDATE_PRODUCT: YES
+
 options:
   defaultConfig: Release
   groupSortPosition: bottom
@@ -96,6 +84,7 @@ options:
   createIntermediateGroups: true
   useBaseInternationalization: true
   postGenCommand: sh Tools/XcodeGen/postGenCommand.sh
+
 include:
   - path: Targets/Application.yml
   - path: Targets/ApplicationTests.yml
