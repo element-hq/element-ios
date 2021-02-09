@@ -18,6 +18,9 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 
 
+// This file defines base project settings.
+// Targets (App, extensions) xcconfig files automatically include it.
+
 // Application constants
 KEYCHAIN_ACCESS_GROUP = $(AppIdentifierPrefix)$(BASE_BUNDLE_IDENTIFIER).keychain.shared
 
