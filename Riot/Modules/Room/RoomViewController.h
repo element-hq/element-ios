@@ -30,7 +30,7 @@
 /**
  Notification string used to indicate call tile tapped in a room. Notification object will be the `RoomBubbleCellData` object.
  */
-extern NSString *const kRoomCallTileTapped;
+extern NSNotificationName const RoomCallTileTappedNotification;
 
 @interface RoomViewController : MXKRoomViewController
 

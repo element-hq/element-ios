@@ -230,7 +230,7 @@ class CallService: NSObject {
                                                object: nil)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(callTileTapped(_:)),
-                                               name: NSNotification.Name(rawValue: kRoomCallTileTapped),
+                                               name: .RoomCallTileTapped,
                                                object: nil)
         
         isStarted = true
@@ -248,7 +248,7 @@ class CallService: NSObject {
                                                   name: NSNotification.Name(rawValue: kMXCallStateDidChange),
                                                   object: nil)
         NotificationCenter.default.removeObserver(self,
-                                                  name: NSNotification.Name(rawValue: kRoomCallTileTapped),
+                                                  name: .RoomCallTileTapped,
                                                   object: nil)
         
         isStarted = false

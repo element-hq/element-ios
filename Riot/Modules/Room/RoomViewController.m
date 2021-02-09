@@ -123,7 +123,7 @@
 
 #import "Riot-Swift.h"
 
-NSString *const kRoomCallTileTapped = @"RoomCallTileTapped";
+NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNotification";
 
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
@@ -2164,7 +2164,7 @@ NSString *const kRoomCallTileTapped = @"RoomCallTileTapped";
                     if ([bubbleData isKindOfClass:[RoomBubbleCellData class]])
                     {
                         //  post notification `RoomCallTileTapped`
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kRoomCallTileTapped object:bubbleData];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:RoomCallTileTappedNotification object:bubbleData];
                     }
                 }
                 else
