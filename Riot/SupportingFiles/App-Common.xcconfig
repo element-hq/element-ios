@@ -20,4 +20,13 @@
 #include "Config/AppIdentifiers.xcconfig"
 #include "Config/Common.xcconfig"
 
+PRODUCT_NAME = Riot
 PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER)
+
+INFOPLIST_FILE = Riot/SupportingFiles/Info.plist
+ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon
+
+CODE_SIGN_ENTITLEMENTS = Riot/SupportingFiles/Riot.entitlements
+
+SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/Riot-Bridging-Header.h
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks

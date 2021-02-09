@@ -37,11 +37,6 @@ targets:
 
     settings:
       base:
-        CODE_SIGN_ENTITLEMENTS: RiotNSE/RiotNSE.entitlements
-        INFOPLIST_FILE: RiotNSE/Info.plist
-        PRODUCT_BUNDLE_IDENTIFIER: $(BASE_BUNDLE_IDENTIFIER).nse
-        PRODUCT_NAME: RiotNSE
-        SKIP_INSTALL: YES
       configs:
         Debug:
           CODE_SIGN_IDENTITY: iPhone Developer

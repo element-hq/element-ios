@@ -20,4 +20,11 @@
 #include "Config/AppIdentifiers.xcconfig"
 #include "Config/Common.xcconfig"
 
+PRODUCT_NAME = RiotNSE
 PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER).nse
+
+INFOPLIST_FILE = RiotNSE/Info.plist
+
+CODE_SIGN_ENTITLEMENTS = RiotNSE/RiotNSE.entitlements
+
+SKIP_INSTALL = YES
