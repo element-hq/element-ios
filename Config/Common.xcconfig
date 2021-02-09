@@ -17,7 +17,13 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
+
+// Application constants
 KEYCHAIN_ACCESS_GROUP = $(AppIdentifierPrefix)$(BASE_BUNDLE_IDENTIFIER).keychain.shared
 
-//Make Xcode 12 and fastlane(xcodebuild) happy while some pods are not updated
+// Build settings
+SWIFT_VERSION = 5.3.1
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks
+
+// Make Xcode 12 and fastlane(xcodebuild) happy while some pods are not updated
 EXCLUDED_ARCHS[sdk=iphonesimulator*] = arm64

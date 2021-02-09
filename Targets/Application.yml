@@ -40,8 +40,6 @@ targets:
       Release: ../Riot/SupportingFiles/App-Release.xcconfig
       
     settings:
-      groups:
-        - appDefault
       base:
         ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: $(inherited)
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon

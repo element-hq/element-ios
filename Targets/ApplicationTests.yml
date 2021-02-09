@@ -34,8 +34,6 @@ targets:
     - target: Riot
 
     settings:
-      groups:
-        - appDefault
       base:
         ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: $(inherited)
         BUNDLE_LOADER: $(TEST_HOST)

@@ -6,11 +6,6 @@ configs:
   Debug: debug
   Release: release
 
-settingGroups:
-  appDefault:
-    SWIFT_VERSION: 5.3.1
-    LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks
-
 fileGroups:
     - README.md
     - CHANGES.rst

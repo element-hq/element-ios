@@ -36,8 +36,6 @@ targets:
       Release: ../RiotNSE/NSE-Release.xcconfig
 
     settings:
-      groups:
-        - appDefault
       base:
         CLANG_ANALYZER_NONNULL: YES
         CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION: YES_AGGRESSIVE

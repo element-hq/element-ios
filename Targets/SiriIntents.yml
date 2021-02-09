@@ -39,8 +39,6 @@ targets:
       Release: ../SiriIntents/SiriIntents-Release.xcconfig
 
     settings:
-      groups:
-        - appDefault
       base:
         ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: $(inherited)
         CLANG_ANALYZER_NONNULL: YES
