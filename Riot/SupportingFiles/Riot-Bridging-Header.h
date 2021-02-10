@@ -28,3 +28,4 @@
 #import "InviteRecentTableViewCell.h"
 #import "AuthFallBackViewController.h"
 #import "CallViewController.h"
+#import "MatrixContactsDataSource.h"

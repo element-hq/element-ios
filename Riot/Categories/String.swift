@@ -43,4 +43,10 @@ extension String {
     static var vc_unique: String {
         return ProcessInfo.processInfo.globallyUniqueString
     }
+    
+    /// Returns a new string by removing all whitespaces from the receiver object
+    /// - Returns: New string without whitespaces from the receiver
+    func vc_removingAllWhitespaces() -> String {
+        return components(separatedBy: .whitespaces).joined()
+    }
 }

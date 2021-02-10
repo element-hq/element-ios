@@ -131,7 +131,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate>
 {
     
     // The preview header
@@ -230,6 +230,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
 @property (nonatomic, strong) RoomMessageURLParser *roomMessageURLParser;
 @property (nonatomic, strong) RoomCreationModalCoordinatorBridgePresenter *roomCreationModalCoordinatorBridgePresenter;
 @property (nonatomic, strong) RoomInfoCoordinatorBridgePresenter *roomInfoCoordinatorBridgePresenter;
+@property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
 
 @end
 
@@ -1659,6 +1660,50 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     [memberViewController displayRoomMember:member withMatrixRoom:self.roomDataSource.room];
     
     [self.navigationController pushViewController:memberViewController animated:YES];
+}
+
+#pragma mark - Dialpad
+
+- (void)openDialpad
+{
+    DialpadViewController *controller = [DialpadViewController instantiateWithConfiguration:[DialpadConfiguration default]];
+    controller.delegate = self;
+    self.customSizedPresentationController = [[CustomSizedPresentationController alloc] initWithPresentedViewController:controller presentingViewController:self];
+    self.customSizedPresentationController.dismissOnBackgroundTap = NO;
+    self.customSizedPresentationController.cornerRadius = 16;
+    
+    controller.transitioningDelegate = self.customSizedPresentationController;
+    [self presentViewController:controller animated:YES completion:nil];
+}
+
+#pragma mark - DialpadViewControllerDelegate
+
+- (void)dialpadViewControllerDidTapCall:(DialpadViewController *)viewController withPhoneNumber:(NSString *)phoneNumber
+{
+    if (self.mainSession.callManager && phoneNumber.length > 0)
+    {
+        [self startActivityIndicator];
+        
+        [viewController dismissViewControllerAnimated:YES completion:^{
+            MXWeakify(self);
+            [self.mainSession.callManager placeCallAgainst:phoneNumber withVideo:NO success:^(MXCall * _Nonnull call) {
+                MXStrongifyAndReturnIfNil(self);
+                [self stopActivityIndicator];
+                self.customSizedPresentationController = nil;
+                
+                //  do nothing extra here. UI will be handled automatically by the CallService.
+            } failure:^(NSError * _Nullable error) {
+                MXStrongifyAndReturnIfNil(self);
+                [self stopActivityIndicator];
+            }];
+        }];
+    }
+}
+
+- (void)dialpadViewControllerDidTapClose:(DialpadViewController *)viewController
+{
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+    self.customSizedPresentationController = nil;
 }
 
 #pragma mark - Hide/Show preview header
@@ -3328,21 +3373,85 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
      manualChangeMessageForAudio:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], appDisplayName]
      manualChangeMessageForVideo:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"camera_access_not_granted_for_call"], appDisplayName]
        showPopUpInViewController:self completionHandler:^(BOOL granted) {
+        
+        if (weakSelf)
+        {
+            typeof(self) self = weakSelf;
+            
+            if (granted)
+            {
+                if (video)
+                {
+                    [self roomInputToolbarView:toolbarView placeCallWithVideo2:video];
+                }
+                else
+                {
+                    [self showVoiceCallActionSheetWith:toolbarView];
+                }
+            }
+            else
+            {
+                NSLog(@"RoomViewController: Warning: The application does not have the permission to place the call");
+            }
+        }
+    }];
+}
 
-           if (weakSelf)
-           {
-               typeof(self) self = weakSelf;
+- (void)showVoiceCallActionSheetWith:(MXKRoomInputToolbarView *)toolbarView
+{
+    // Ask the user the kind of the call: voice or dialpad?
+    currentAlert = [UIAlertController alertControllerWithTitle:nil
+                                                       message:nil
+                                                preferredStyle:UIAlertControllerStyleActionSheet];
 
-               if (granted)
-               {
-                   [self roomInputToolbarView:toolbarView placeCallWithVideo2:video];
-               }
-               else
-               {
-                   NSLog(@"RoomViewController: Warning: The application does not have the perssion to place the call");
-               }
-           }
-       }];
+    __weak typeof(self) weakSelf = self;
+    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_place_voice_call", @"Vector", nil)
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       
+                                                       if (weakSelf)
+                                                       {
+                                                           typeof(self) self = weakSelf;
+                                                           self->currentAlert = nil;
+                                                           
+                                                           [self roomInputToolbarView:toolbarView placeCallWithVideo2:NO];
+                                                       }
+                                                       
+                                                   }]];
+    
+    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_open_dialpad", @"Vector", nil)
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * action) {
+                                                          
+                                                          if (weakSelf)
+                                                          {
+                                                              typeof(self) self = weakSelf;
+                                                              self->currentAlert = nil;
+                                                              
+                                                              [self openDialpad];
+                                                          }
+                                                          
+                                                      }]];
+    
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:^(UIAlertAction * action) {
+                                                          
+                                                          if (weakSelf)
+                                                          {
+                                                              typeof(self) self = weakSelf;
+                                                              self->currentAlert = nil;
+                                                          }
+                                                          
+                                                      }]];
+    
+    if ([toolbarView isKindOfClass:[RoomInputToolbarView class]])
+    {
+        RoomInputToolbarView *toolbar = (RoomInputToolbarView *)toolbarView;
+        [currentAlert popoverPresentationController].sourceView = toolbar.voiceCallButton;
+        [currentAlert popoverPresentationController].sourceRect = toolbar.voiceCallButton.bounds;
+    }
+    [self presentViewController:currentAlert animated:YES completion:nil];
 }
 
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView placeCallWithVideo2:(BOOL)video
