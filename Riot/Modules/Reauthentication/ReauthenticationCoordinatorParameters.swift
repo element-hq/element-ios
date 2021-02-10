@@ -23,8 +23,9 @@ class ReauthenticationCoordinatorParameters: NSObject {
     /// The Matrix session
     let session: MXSession
     
-    /// The presenter used to show authentication screen(s)
-    let presenter: Presentable
+    /// The presenter used to show authentication screen(s).
+    /// Note: Use UIViewController instead of Presentable for ObjC compatibility.
+    let presenter: UIViewController
     
     /// The title to use in the authentication screen if present.
     let title: String?
@@ -36,7 +37,7 @@ class ReauthenticationCoordinatorParameters: NSObject {
     let authenticatedEndpointRequest: AuthenticatedEndpointRequest
     
     init(session: MXSession,
-         presenter: Presentable,
+         presenter: UIViewController,
          title: String?,
          message: String?,
          authenticatedEndpointRequest: AuthenticatedEndpointRequest) {
