@@ -28,7 +28,7 @@
 
 #import "IncomingCallView.h"
 
-@interface CallViewController () <PictureInPicturable>
+@interface CallViewController () <PictureInPicturable, DialpadViewControllerDelegate, CallTransferMainViewControllerDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
@@ -39,6 +39,8 @@
 
 @property (nonatomic, strong) id<Theme> overriddenTheme;
 @property (nonatomic, assign) BOOL inPiP;
+
+@property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
 
 @end
 
@@ -508,6 +510,124 @@
     }
     
     [super showOverlayContainer:isShown];
+}
+
+#pragma mark - DTMF
+
+- (void)openDialpad
+{
+    DialpadConfiguration *config = [[DialpadConfiguration alloc] initWithShowsTitle:YES
+                                                                   showsCloseButton:YES
+                                                               showsBackspaceButton:NO
+                                                                    showsCallButton:NO
+                                                                  formattingEnabled:NO
+                                                                     editingEnabled:NO];
+    DialpadViewController *controller = [DialpadViewController instantiateWithConfiguration:config];
+    controller.delegate = self;
+    self.customSizedPresentationController = [[CustomSizedPresentationController alloc] initWithPresentedViewController:controller presentingViewController:self];
+    self.customSizedPresentationController.dismissOnBackgroundTap = NO;
+    self.customSizedPresentationController.cornerRadius = 16;
+    
+    controller.transitioningDelegate = self.customSizedPresentationController;
+    [self presentViewController:controller animated:YES completion:nil];
+}
+
+#pragma mark - Call Transfer
+
+- (void)openCallTransfer
+{
+    CallTransferMainViewController *controller = [CallTransferMainViewController instantiateWithSession:self.mainSession ignoredUserIds:@[self.peer.userId]];
+    controller.delegate = self;
+    
+    UINavigationController *navController = [[RiotNavigationController alloc] initWithRootViewController:controller];
+    [self presentViewController:navController animated:YES completion:nil];
+}
+
+#pragma mark - DialpadViewControllerDelegate
+
+- (void)dialpadViewControllerDidTapClose:(DialpadViewController *)viewController
+{
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+    self.customSizedPresentationController = nil;
+}
+
+- (void)dialpadViewControllerDidTapDigit:(DialpadViewController *)viewController digit:(NSString *)digit
+{
+    if (digit.length == 0)
+    {
+        return;
+    }
+    BOOL result = [self.mxCall sendDTMF:digit
+                               duration:0
+                           interToneGap:0];
+    
+    NSLog(@"[CallViewController] Sending DTMF tones %@", result ? @"succeeded": @"failed");
+}
+
+#pragma mark - CallTransferMainViewControllerDelegate
+
+- (void)callTransferMainViewControllerDidComplete:(CallTransferMainViewController *)viewController consult:(BOOL)consult contact:(MXKContact *)contact phoneNumber:(NSString *)phoneNumber
+{
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+    
+    void(^failureBlock)(NSError *_Nullable) = ^(NSError *error) {
+        [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
+        
+        MXWeakify(self);
+        
+        self->currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"call_transfer_error_title"]
+                                                                 message:[NSBundle mxk_localizedStringForKey:@"call_transfer_error_message"]
+                                                          preferredStyle:UIAlertControllerStyleAlert];
+        
+        [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                               style:UIAlertActionStyleDefault
+                                                             handler:^(UIAlertAction * action) {
+            
+            MXStrongifyAndReturnIfNil(self);
+            self->currentAlert = nil;
+        }]];
+        
+        [self presentViewController:self->currentAlert animated:YES completion:nil];
+    };
+    
+    void(^continueBlock)(NSString *_Nonnull) = ^(NSString *targetUserId) {
+        MXUserModel *targetUser = [[MXUserModel alloc] initWithUserId:targetUserId
+                                                          displayname:contact.displayName
+                                                            avatarUrl:contact.matrixAvatarURL];
+        MXUserModel *transfereeUser = [[MXUserModel alloc] initWithUser:self.peer];
+
+        [self.mainSession.callManager transferCall:self.mxCall
+                                                to:targetUser
+                                    withTransferee:transfereeUser
+                                      consultFirst:consult
+                                           success:^(NSString * _Nonnull newCallId){
+            NSLog(@"Call transfer succeeded with new call ID: %@", newCallId);
+        } failure:^(NSError * _Nullable error) {
+            NSLog(@"Call transfer failed with error: %@", error);
+            failureBlock(error);
+        }];
+    };
+    
+    if (contact)
+    {
+        continueBlock(contact.matrixIdentifiers.firstObject);
+    }
+    else if (phoneNumber)
+    {
+        MXWeakify(self);
+        [self.mainSession.callManager getThirdPartyUserFrom:phoneNumber success:^(MXThirdPartyUserInstance * _Nonnull user) {
+            MXStrongifyAndReturnIfNil(self);
+            
+            continueBlock(user.userId);
+        } failure:^(NSError * _Nullable error) {
+            failureBlock(error);
+        }];
+    }
+}
+
+- (void)callTransferMainViewControllerDidCancel:(CallTransferMainViewController *)viewController
+{
+    [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - PictureInPicturable

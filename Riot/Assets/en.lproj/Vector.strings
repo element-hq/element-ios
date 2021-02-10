@@ -386,6 +386,8 @@ Tap the + to start adding people.";
 "room_accessibility_upload" = "Upload";
 "room_accessibility_call" = "Call";
 "room_accessibility_hangup" = "Hang up";
+"room_place_voice_call" = "Voice call";
+"room_open_dialpad" = "Dial pad";
 
 "media_type_accessibility_image" = "Image";
 "media_type_accessibility_audio" = "Audio";
@@ -1546,6 +1548,18 @@ Tap the + to start adding people.";
 "room_info_list_one_member" = "1 member";
 "room_info_list_several_members" = "%@ members";
 "room_info_list_section_other" = "Other";
+
+// MARK: - Dial Pad
+"dialpad_title" = "Dial pad";
+
+// MARK: - Call Transfer
+"call_transfer_title" = "Transfer";
+"call_transfer_users" = "Users";
+"call_transfer_dialpad" = "Dial pad";
+"call_transfer_contacts_recent" = "Recent";
+"call_transfer_contacts_all" = "All";
+"call_transfer_error_title" = "Error";
+"call_transfer_error_message" = "Call transfer failed";
 
 // MARK: - Home
 

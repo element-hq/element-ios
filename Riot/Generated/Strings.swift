@@ -462,6 +462,34 @@ internal enum VectorL10n {
   internal static func callNoStunServerErrorUseFallbackButton(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "call_no_stun_server_error_use_fallback_button", p1)
   }
+  /// All
+  internal static var callTransferContactsAll: String { 
+    return VectorL10n.tr("Vector", "call_transfer_contacts_all") 
+  }
+  /// Recent
+  internal static var callTransferContactsRecent: String { 
+    return VectorL10n.tr("Vector", "call_transfer_contacts_recent") 
+  }
+  /// Dial pad
+  internal static var callTransferDialpad: String { 
+    return VectorL10n.tr("Vector", "call_transfer_dialpad") 
+  }
+  /// Call transfer failed
+  internal static var callTransferErrorMessage: String { 
+    return VectorL10n.tr("Vector", "call_transfer_error_message") 
+  }
+  /// Error
+  internal static var callTransferErrorTitle: String { 
+    return VectorL10n.tr("Vector", "call_transfer_error_title") 
+  }
+  /// Transfer
+  internal static var callTransferTitle: String { 
+    return VectorL10n.tr("Vector", "call_transfer_title") 
+  }
+  /// Users
+  internal static var callTransferUsers: String { 
+    return VectorL10n.tr("Vector", "call_transfer_users") 
+  }
   /// 1 active call (%@) · %@ paused calls
   internal static func callbarActiveAndMultiplePaused(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "callbar_active_and_multiple_paused", p1, p2)
@@ -1045,6 +1073,10 @@ internal enum VectorL10n {
   /// Waiting for partner to confirm…
   internal static var deviceVerificationVerifyWaitPartner: String { 
     return VectorL10n.tr("Vector", "device_verification_verify_wait_partner") 
+  }
+  /// Dial pad
+  internal static var dialpadTitle: String { 
+    return VectorL10n.tr("Vector", "dialpad_title") 
   }
   /// %tu rooms
   internal static func directoryCellDescription(_ p1: Int) -> String {
@@ -2834,6 +2866,10 @@ internal enum VectorL10n {
   internal static func roomOngoingConferenceCallWithClose(_ p1: String, _ p2: String, _ p3: String) -> String {
     return VectorL10n.tr("Vector", "room_ongoing_conference_call_with_close", p1, p2, p3)
   }
+  /// Dial pad
+  internal static var roomOpenDialpad: String { 
+    return VectorL10n.tr("Vector", "room_open_dialpad") 
+  }
   /// Ban from this room
   internal static var roomParticipantsActionBan: String { 
     return VectorL10n.tr("Vector", "room_participants_action_ban") 
@@ -3053,6 +3089,10 @@ internal enum VectorL10n {
   /// Unknown
   internal static var roomParticipantsUnknown: String { 
     return VectorL10n.tr("Vector", "room_participants_unknown") 
+  }
+  /// Voice call
+  internal static var roomPlaceVoiceCall: String { 
+    return VectorL10n.tr("Vector", "room_place_voice_call") 
   }
   /// This room is a continuation of another conversation.
   internal static var roomPredecessorInformation: String { 
