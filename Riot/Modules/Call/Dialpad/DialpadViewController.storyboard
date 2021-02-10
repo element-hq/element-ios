@@ -291,6 +291,8 @@
                         <outlet property="digitsStackView" destination="fnQ-jm-HT2" id="ltK-Bg-hwY"/>
                         <outlet property="lineView" destination="iak-30-PMd" id="T6L-kl-Dsy"/>
                         <outlet property="phoneNumberTextField" destination="iWR-Bv-qzs" id="ezn-FP-ihl"/>
+                        <outlet property="phoneNumberTextFieldTopConstraint" destination="nkS-49-CiR" id="Anh-q0-26b"/>
+                        <outlet property="spaceButton" destination="Xig-ln-gBC" id="tJi-AD-WOu"/>
                         <outlet property="titleLabel" destination="ObS-Bw-Z12" id="0ZH-xI-zhw"/>
                     </connections>
                 </viewController>

@@ -35,6 +35,7 @@ Changes in 1.1.7 (2021-02-03)
  * Avoid megolm share requests if the device is not verified (#3969)
  * Handle User-Interactive Authentication fallback (#3995).
  * VoIP: Implement DTMF on call screen (#3929).
+ * VoIP: Implement call transfer screen (#3962).
 
 🐛 Bugfix
  * Push: Fix PushKit crashes due to undecryptable call invites (#3986).

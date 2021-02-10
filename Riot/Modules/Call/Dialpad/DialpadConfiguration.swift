@@ -20,6 +20,12 @@ import Foundation
 @objcMembers
 class DialpadConfiguration: NSObject {
     
+    /// Option for a dial pad to show the title or not.
+    var showsTitle: Bool
+    
+    /// Option for a dial pad to show the close button or not.
+    var showsCloseButton: Bool
+    
     /// Option for a dial pad to show the backspace button or not.
     var showsBackspaceButton: Bool
     
@@ -35,10 +41,14 @@ class DialpadConfiguration: NSObject {
     /// Default configuration object. All options are enabled by default.
     static let `default`: DialpadConfiguration = DialpadConfiguration()
     
-    init(showsBackspaceButton: Bool = true,
+    init(showsTitle: Bool = true,
+         showsCloseButton: Bool = true,
+         showsBackspaceButton: Bool = true,
          showsCallButton: Bool = true,
          formattingEnabled: Bool = true,
          editingEnabled: Bool = true) {
+        self.showsTitle = showsTitle
+        self.showsCloseButton = showsCloseButton
         self.showsBackspaceButton = showsBackspaceButton
         self.showsCallButton = showsCallButton
         self.formattingEnabled = formattingEnabled
