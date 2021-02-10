@@ -274,7 +274,7 @@ class DialpadViewController: UIViewController {
     }
     
     @IBAction private func digitButtonAction(_ sender: DialpadButton) {
-        let digit = sender.title(for: .normal) ?? ""
+        let digit = Constants.digitButtonViewDatas[sender.tag]?.title ?? ""
         
         defer {
             delegate?.dialpadViewControllerDidTapDigit?(self, digit: digit)
