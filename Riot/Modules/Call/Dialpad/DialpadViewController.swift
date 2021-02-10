@@ -60,6 +60,7 @@ class DialpadViewController: UIViewController {
     }
     @IBOutlet private weak var lineView: UIView!
     @IBOutlet private weak var digitsStackView: UIStackView!
+    @IBOutlet private var digitButtons: [DialpadButton]!
     @IBOutlet private weak var backspaceButton: DialpadActionButton! {
         didSet {
             backspaceButton.type = .backspace
@@ -83,6 +84,20 @@ class DialpadViewController: UIViewController {
     private enum Constants {
         static let sizeOniPad: CGSize = CGSize(width: 375, height: 667)
         static let additionalTopInset: CGFloat = 20
+        static let digitButtonViewDatas: [Int: DialpadButton.ViewData] = [
+            -2: .init(title: "#"),
+            -1: .init(title: "*"),
+            0: .init(title: "0", subtitle: "+"),
+            1: .init(title: "1", showsSubtitleSpace: true),
+            2: .init(title: "2", subtitle: "ABC"),
+            3: .init(title: "3", subtitle: "DEF"),
+            4: .init(title: "4", subtitle: "GHI"),
+            5: .init(title: "5", subtitle: "JKL"),
+            6: .init(title: "6", subtitle: "MNO"),
+            7: .init(title: "7", subtitle: "PQRS"),
+            8: .init(title: "8", subtitle: "TUV"),
+            9: .init(title: "9", subtitle: "WXYZ")
+        ]
     }
     
     private var wasCursorAtTheEnd: Bool = true
@@ -134,6 +149,12 @@ class DialpadViewController: UIViewController {
         //  force orientation to portrait if phone
         if UIDevice.current.isPhone {
             UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+        }
+        
+        for button in digitButtons {
+            if let viewData = Constants.digitButtonViewDatas[button.tag] {
+                button.render(withViewData: viewData)
+            }
         }
     }
     

@@ -171,7 +171,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="dvZ-XT-zLP">
                                                 <rect key="frame" x="53.5" y="299" width="268" height="93.5"/>
                                                 <subviews>
-                                                    <button opaque="NO" tag="-99" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hh8-U6-dJT" customClass="DialpadButton" customModule="Riot" customModuleProvider="target">
+                                                    <button opaque="NO" tag="-1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hh8-U6-dJT" customClass="DialpadButton" customModule="Riot" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="12.5" width="68" height="68"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="68" id="4mU-dy-vEa"/>
@@ -196,7 +196,7 @@
                                                             <action selector="digitButtonAction:" destination="dBQ-CG-VDL" eventType="touchUpInside" id="Irt-qu-feP"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" tag="-1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Izh-vM-Fao" customClass="DialpadButton" customModule="Riot" customModuleProvider="target">
+                                                    <button opaque="NO" tag="-2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Izh-vM-Fao" customClass="DialpadButton" customModule="Riot" customModuleProvider="target">
                                                         <rect key="frame" x="200" y="12.5" width="68" height="68"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="68" id="4J4-8u-YKL"/>
@@ -213,7 +213,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="xzj-PF-Bxu">
                                                 <rect key="frame" x="53.5" y="398.5" width="268" height="93.5"/>
                                                 <subviews>
-                                                    <button opaque="NO" tag="-99" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SVW-fH-Ey6" customClass="DialpadActionButton" customModule="Riot" customModuleProvider="target">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SVW-fH-Ey6" customClass="DialpadActionButton" customModule="Riot" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="12.5" width="68" height="68"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="68" id="L2l-Qz-R8A"/>
@@ -238,7 +238,7 @@
                                                             <action selector="callButtonAction:" destination="dBQ-CG-VDL" eventType="touchUpInside" id="TOV-1D-XQj"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" userInteractionEnabled="NO" tag="-1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xig-ln-gBC">
+                                                    <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xig-ln-gBC">
                                                         <rect key="frame" x="200" y="12.5" width="68" height="68"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="68" id="WLJ-xL-89j"/>
@@ -294,6 +294,18 @@
                         <outlet property="phoneNumberTextFieldTopConstraint" destination="nkS-49-CiR" id="Anh-q0-26b"/>
                         <outlet property="spaceButton" destination="Xig-ln-gBC" id="tJi-AD-WOu"/>
                         <outlet property="titleLabel" destination="ObS-Bw-Z12" id="0ZH-xI-zhw"/>
+                        <outletCollection property="digitButtons" destination="Dum-9Z-dKh" collectionClass="NSMutableArray" id="mnM-oA-G7N"/>
+                        <outletCollection property="digitButtons" destination="TIL-aL-5ij" collectionClass="NSMutableArray" id="4Ge-8g-ooV"/>
+                        <outletCollection property="digitButtons" destination="Yrk-zC-XL5" collectionClass="NSMutableArray" id="123-Qp-rzG"/>
+                        <outletCollection property="digitButtons" destination="JfX-9z-x4y" collectionClass="NSMutableArray" id="cPo-i1-bbI"/>
+                        <outletCollection property="digitButtons" destination="hI1-sM-NT5" collectionClass="NSMutableArray" id="b8d-5A-i6e"/>
+                        <outletCollection property="digitButtons" destination="cMg-az-Zgx" collectionClass="NSMutableArray" id="J0I-Qb-Zj6"/>
+                        <outletCollection property="digitButtons" destination="EF6-7Y-DhC" collectionClass="NSMutableArray" id="r8I-vD-jSM"/>
+                        <outletCollection property="digitButtons" destination="4Od-gu-C4x" collectionClass="NSMutableArray" id="XFt-db-l5O"/>
+                        <outletCollection property="digitButtons" destination="Rgd-Tt-xlI" collectionClass="NSMutableArray" id="aGQ-Ef-eBC"/>
+                        <outletCollection property="digitButtons" destination="hh8-U6-dJT" collectionClass="NSMutableArray" id="EaB-Ug-qsx"/>
+                        <outletCollection property="digitButtons" destination="4Rc-ls-1wr" collectionClass="NSMutableArray" id="cUp-yg-U48"/>
+                        <outletCollection property="digitButtons" destination="Izh-vM-Fao" collectionClass="NSMutableArray" id="Gfp-Fl-LMb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bLY-II-iJ3" userLabel="First Responder" sceneMemberID="firstResponder"/>
