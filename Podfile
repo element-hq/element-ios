@@ -111,6 +111,9 @@ post_install do |installer|
       if target.name.include? 'ReadMoreTextView'
         config.build_settings['SWIFT_VERSION'] = '5.2'
       end
+
+      # Stop Xcode 12 complaining about old IPHONEOS_DEPLOYMENT_TARGET from pods 
+      config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
     end
   end
 end
