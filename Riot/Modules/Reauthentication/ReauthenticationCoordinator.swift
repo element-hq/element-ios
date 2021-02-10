@@ -30,9 +30,9 @@ final class ReauthenticationCoordinator: ReauthenticationCoordinatorType {
     // MARK: Private
     
     private let parameters: ReauthenticationCoordinatorParameters
-    private let authenticationSessionService: AuthenticationSessionService
+    private let userInteractiveAuthenticationService: UserInteractiveAuthenticationService
     private let authenticationParametersBuilder: AuthenticationParametersBuilder
-    private let authenticatedSessionViewControllerFactory: AuthenticatedSessionViewControllerFactory
+    private let uiaViewControllerFactory: UserInteractiveAuthenticationViewControllerFactory
     
     private var ssoAuthenticationPresenter: SSOAuthenticationPresenter?
     
@@ -55,32 +55,32 @@ final class ReauthenticationCoordinator: ReauthenticationCoordinatorType {
     
     init(parameters: ReauthenticationCoordinatorParameters) {
         self.parameters = parameters
-        self.authenticationSessionService = AuthenticationSessionService(session: parameters.session)
+        self.userInteractiveAuthenticationService = UserInteractiveAuthenticationService(session: parameters.session)
         self.authenticationParametersBuilder = AuthenticationParametersBuilder()
-        self.authenticatedSessionViewControllerFactory = AuthenticatedSessionViewControllerFactory()
+        self.uiaViewControllerFactory = UserInteractiveAuthenticationViewControllerFactory()
     }    
     
     // MARK: - Public methods
     
     func start() {
         
-        self.authenticationSessionService.authenticationSession(for: self.parameters.authenticationSessionParameters) { (result) in
+        self.userInteractiveAuthenticationService.authenticatedEndpointStatus(for: self.parameters.authenticatedEndpointRequest) { (result) in
             
             switch result {
-            case .success(let authenticationSessionResult):
+            case .success(let authenticatedEnpointStatus):
                 
-                switch authenticationSessionResult {
+                switch authenticatedEnpointStatus {
                 case .authenticationNotNeeded:
                     NSLog("[ReauthenticationCoordinator] No need to login again")
                     self.delegate?.reauthenticationCoordinatorDidComplete(self, withAuthenticationParameters: nil)
                 case .authenticationNeeded(let authenticationSession):
-                    if self.authenticationSessionService.hasPasswordFlow(inFlows: authenticationSession.flows) {
+                    if self.userInteractiveAuthenticationService.hasPasswordFlow(inFlows: authenticationSession.flows) {
                         self.showPasswordAuthentication(with: authenticationSession)
-                    } else if let authenticationFallbackURL = self.authenticationSessionService.firstUncompletedStageAuthenticationFallbackURL(for: authenticationSession) {
+                    } else if let authenticationFallbackURL = self.userInteractiveAuthenticationService.firstUncompletedStageAuthenticationFallbackURL(for: authenticationSession) {
                         
                         self.showFallbackAuthentication(with: authenticationFallbackURL, authenticationSession: authenticationSession)
                     } else {
-                        self.delegate?.reauthenticationCoordinator(self, didFailWithError: AuthenticationSessionServiceError.flowNotSupported)
+                        self.delegate?.reauthenticationCoordinator(self, didFailWithError: UserInteractiveAuthenticationServiceError.flowNotSupported)
                     }
                 }
             case .failure(let error):
@@ -100,7 +100,7 @@ final class ReauthenticationCoordinator: ReauthenticationCoordinatorType {
             return
         }
         
-        let passwordViewController = self.authenticatedSessionViewControllerFactory.createPasswordViewController(title: self.parameters.title, message: self.parameters.message) { [weak self] (password) in
+        let passwordViewController = self.uiaViewControllerFactory.createPasswordViewController(title: self.parameters.title, message: self.parameters.message) { [weak self] (password) in
          
             guard let self = self else {
                 return

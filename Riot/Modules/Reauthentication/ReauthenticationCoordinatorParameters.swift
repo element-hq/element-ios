@@ -32,18 +32,18 @@ class ReauthenticationCoordinatorParameters: NSObject {
     /// The message to use in the authentication screen if present.
     let message: String?
     
-    /// The authenticated API endpoint parameters
-    let authenticationSessionParameters: AuthenticationSessionParameters
+    /// The authenticated API endpoint request
+    let authenticatedEndpointRequest: AuthenticatedEndpointRequest
     
     init(session: MXSession,
          presenter: Presentable,
          title: String?,
          message: String?,
-         authenticationSessionParameters: AuthenticationSessionParameters) {
+         authenticatedEndpointRequest: AuthenticatedEndpointRequest) {
         self.session = session
         self.presenter = presenter
         self.title = title
         self.message = message
-        self.authenticationSessionParameters = authenticationSessionParameters
+        self.authenticatedEndpointRequest = authenticatedEndpointRequest
     }
 }
