@@ -69,7 +69,6 @@ class PiPAnimator: NSObject {
             pipView.transform = transform
             
             pipView.move(in: keyWindow,
-                         to: .bottomLeft,
                          targetSize: targetRect.size)
         }
         

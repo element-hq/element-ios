@@ -17,9 +17,9 @@
 import UIKit
 
 @objc enum PiPViewPosition: Int {
-    case bottomLeft     // default value
+    case bottomLeft
     case bottomRight
-    case topRight
+    case topRight       // default value
     case topLeft
 }
 
@@ -97,7 +97,7 @@ NSLayoutConstraint.activate([
     }
     
     func move(in view: UIView? = nil,
-              to position: PiPViewPosition = .bottomLeft,
+              to position: PiPViewPosition = .topRight,
               targetSize: CGSize? = nil,
               animated: Bool = false,
               completion: ((Bool) -> Void)? = nil) {
