@@ -12,6 +12,16 @@ import UIKit
 
 // swiftlint:disable explicit_type_interface identifier_name line_length type_body_length type_name
 internal enum StoryboardScene {
+  internal enum CallTransferMainViewController: StoryboardType {
+    internal static let storyboardName = "CallTransferMainViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.CallTransferMainViewController>(storyboard: CallTransferMainViewController.self)
+  }
+  internal enum CallTransferSelectContactViewController: StoryboardType {
+    internal static let storyboardName = "CallTransferSelectContactViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.CallTransferSelectContactViewController>(storyboard: CallTransferSelectContactViewController.self)
+  }
   internal enum DeviceVerificationIncomingViewController: StoryboardType {
     internal static let storyboardName = "DeviceVerificationIncomingViewController"
 

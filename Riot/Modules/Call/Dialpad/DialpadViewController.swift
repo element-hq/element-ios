@@ -20,8 +20,11 @@ import UIKit
 import libPhoneNumber_iOS
 
 @objc protocol DialpadViewControllerDelegate: class {
-    func dialpadViewControllerDidTapCall(_ viewController: DialpadViewController, withPhoneNumber phoneNumber: String)
-    func dialpadViewControllerDidTapClose(_ viewController: DialpadViewController)
+    @objc optional func dialpadViewControllerDidTapCall(_ viewController: DialpadViewController,
+                                                        withPhoneNumber phoneNumber: String)
+    @objc optional func dialpadViewControllerDidTapClose(_ viewController: DialpadViewController)
+    
+    @objc optional func dialpadViewControllerDidTapDigit(_ viewController: DialpadViewController, digit: String)
 }
 
 @objcMembers
@@ -29,14 +32,30 @@ class DialpadViewController: UIViewController {
     
     // MARK: Outlets
     
-    @IBOutlet private weak var closeButton: UIButton!
-    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var phoneNumberTextFieldTopConstraint: NSLayoutConstraint! {
+        didSet {
+            if !configuration.showsTitle && !configuration.showsCloseButton {
+                phoneNumberTextFieldTopConstraint.constant = 0
+            }
+        }
+    }
+    @IBOutlet private weak var closeButton: UIButton! {
+        didSet {
+            closeButton.isHidden = !configuration.showsCloseButton
+        }
+    }
+    @IBOutlet private weak var titleLabel: UILabel! {
+        didSet {
+            titleLabel.isHidden = !configuration.showsTitle
+        }
+    }
     @IBOutlet private weak var phoneNumberTextField: UITextField! {
         didSet {
             phoneNumberTextField.text = nil
             //  avoid showing keyboard on text field
             phoneNumberTextField.inputView = UIView()
             phoneNumberTextField.inputAccessoryView = UIView()
+            phoneNumberTextField.isUserInteractionEnabled = configuration.editingEnabled
         }
     }
     @IBOutlet private weak var lineView: UIView!
@@ -44,11 +63,18 @@ class DialpadViewController: UIViewController {
     @IBOutlet private weak var backspaceButton: DialpadActionButton! {
         didSet {
             backspaceButton.type = .backspace
+            backspaceButton.isHidden = !configuration.showsBackspaceButton
         }
     }
     @IBOutlet private weak var callButton: DialpadActionButton! {
         didSet {
             callButton.type = .call
+            callButton.isHidden = !configuration.showsCallButton
+        }
+    }
+    @IBOutlet private weak var spaceButton: UIButton! {
+        didSet {
+            spaceButton.isHidden = !configuration.showsBackspaceButton || !configuration.showsCallButton
         }
     }
     
@@ -64,19 +90,22 @@ class DialpadViewController: UIViewController {
     /// Phone number as formatted
     private var phoneNumber: String = "" {
         willSet {
-            wasCursorAtTheEnd = isCursorAtTheEnd()
+            if configuration.editingEnabled {
+                wasCursorAtTheEnd = isCursorAtTheEnd()
+            }
         } didSet {
             phoneNumberTextField.text = phoneNumber
-            if wasCursorAtTheEnd {
+            if configuration.editingEnabled && wasCursorAtTheEnd {
                 moveCursorToTheEnd()
             }
         }
     }
     /// Phone number as non-formatted
-    private var rawPhoneNumber: String {
+    var rawPhoneNumber: String {
         return phoneNumber.vc_removingAllWhitespaces()
     }
     private var theme: Theme!
+    private var configuration: DialpadConfiguration!
     
     // MARK: Public
     
@@ -84,9 +113,10 @@ class DialpadViewController: UIViewController {
     
     // MARK: - Setup
     
-    class func instantiate() -> DialpadViewController {
+    class func instantiate(withConfiguration configuration: DialpadConfiguration = .default) -> DialpadViewController {
         let viewController = StoryboardScene.DialpadViewController.initialScene.instantiate()
         viewController.theme = ThemeService.shared().theme
+        viewController.configuration = configuration
         return viewController
     }
     
@@ -155,7 +185,7 @@ class DialpadViewController: UIViewController {
     }
     
     private func reformatPhoneNumber() {
-        guard let phoneNumberUtil = NBPhoneNumberUtil.sharedInstance() else {
+        guard configuration.formattingEnabled, let phoneNumberUtil = NBPhoneNumberUtil.sharedInstance() else {
             //  no formatter
             return
         }
@@ -219,11 +249,20 @@ class DialpadViewController: UIViewController {
     }
     
     @IBAction private func closeButtonAction(_ sender: UIButton) {
-        delegate?.dialpadViewControllerDidTapClose(self)
+        delegate?.dialpadViewControllerDidTapClose?(self)
     }
     
     @IBAction private func digitButtonAction(_ sender: DialpadButton) {
         let digit = sender.title(for: .normal) ?? ""
+        
+        defer {
+            delegate?.dialpadViewControllerDidTapDigit?(self, digit: digit)
+        }
+        
+        if !configuration.editingEnabled {
+            phoneNumber += digit
+            return
+        }
         
         if let selectedRange = phoneNumberTextField.selectedTextRange {
             if isCursorAtTheEnd() {
@@ -250,7 +289,16 @@ class DialpadViewController: UIViewController {
     }
     
     @IBAction private func backspaceButtonAction(_ sender: DialpadActionButton) {
+        defer {
+            delegate?.dialpadViewControllerDidTapDigit?(self, digit: "")
+        }
+        
         if phoneNumber.isEmpty {
+            return
+        }
+        
+        if !configuration.editingEnabled {
+            phoneNumber.removeLast()
             return
         }
         
@@ -291,7 +339,8 @@ class DialpadViewController: UIViewController {
     }
     
     @IBAction private func callButtonAction(_ sender: DialpadActionButton) {
-        delegate?.dialpadViewControllerDidTapCall(self, withPhoneNumber: rawPhoneNumber)
+        phoneNumber = phoneNumberTextField.text ?? ""
+        delegate?.dialpadViewControllerDidTapCall?(self, withPhoneNumber: rawPhoneNumber)
     }
     
 }

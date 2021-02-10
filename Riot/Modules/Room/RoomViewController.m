@@ -1661,7 +1661,7 @@
 
 - (void)openDialpad
 {
-    DialpadViewController *controller = [DialpadViewController instantiate];
+    DialpadViewController *controller = [DialpadViewController instantiateWithConfiguration:[DialpadConfiguration default]];
     controller.delegate = self;
     self.customSizedPresentationController = [[CustomSizedPresentationController alloc] initWithPresentedViewController:controller presentingViewController:self];
     self.customSizedPresentationController.dismissOnBackgroundTap = NO;
