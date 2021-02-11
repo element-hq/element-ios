@@ -161,6 +161,52 @@ final class UserInteractiveAuthenticationService: NSObject {
         })
     }
     
+    /// Check if a request error ask for User-Interactive Authentication.
+    /// - Parameter error: A request error.
+    /// - Returns: An AuthenticatedEndpointStatus if the error can indicates authentication status or nil for other errors
+    func getAuthenticatedEndpointStatus(fromRequestError error: Error) -> AuthenticatedEndpointStatus? {
+        
+        guard let urlResponse = MXHTTPOperation.urlResponse(fromError: error) else {
+            return nil
+        }
+        
+        var status: AuthenticatedEndpointStatus?
+        
+        switch urlResponse.statusCode {
+        case 400:
+            status = .authenticationNotNeeded
+        case 401:
+            let nsError = error as NSError
+            if let jsonResponse = nsError.userInfo[MXHTTPClientErrorResponseDataKey] as? [AnyHashable: Any], let authenticationSession = MXAuthenticationSession(fromJSON: jsonResponse) {
+                status = .authenticationNeeded(authenticationSession)
+            }
+        default:
+            break
+        }
+        
+        return status
+    }
+    
+    /// Check if a request error ask for User-Interactive Authentication.
+    /// Note: ObjC compatible.
+    /// - Parameters:
+    ///   - error: A request error.
+    ///   - success: The closure executed the operation succeed. Get an MXAuthenticationSession if authentication is required or nil if there is no authentication needed.
+    ///   - failure: The closure executed the operation fails.
+    func authenticationSession(fromRequestError error: Error, success: @escaping (MXAuthenticationSession?) -> Void, failure: @escaping (Error) -> Void) {
+        
+        if let authenticatedEndpointStatus = self.getAuthenticatedEndpointStatus(fromRequestError: error) {
+            
+            if case .authenticationNeeded(let authenticationSession) = authenticatedEndpointStatus {
+                success(authenticationSession)
+            } else {
+                success(nil)
+            }
+        } else {
+            failure(error)
+        }
+    }
+    
     /// Get the authentication fallback URL for the first uncompleted stage found.
     /// - Parameter authenticationSession: An authentication session for a given request.
     /// - Returns: The fallback URL for the first uncompleted stage found.
