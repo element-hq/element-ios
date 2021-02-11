@@ -17,10 +17,5 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-#include "NSE-Common.xcconfig"
-#include "Pods/Target Support Files/Pods-RiotPods-RiotNSE/Pods-RiotPods-RiotNSE.release.xcconfig"
-
-PROVISIONING_PROFILE = $(NSE_PROVISIONING_PROFILE)
-PROVISIONING_PROFILE_SPECIFIER = $(NSE_PROVISIONING_PROFILE_SPECIFIER)
-
-COPY_PHASE_STRIP = NO
+#include "Common.xcconfig"
+#include "Pods/Target Support Files/Pods-RiotPods-RiotNSE/Pods-RiotPods-RiotNSE.debug.xcconfig"

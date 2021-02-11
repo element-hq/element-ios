@@ -32,8 +32,8 @@ targets:
     type: app-extension
 
     configFiles:
-      Debug: SupportingFiles/ShareExtension-Debug.xcconfig
-      Release: SupportingFiles/ShareExtension-Release.xcconfig
+      Debug: Debug.xcconfig
+      Release: Release.xcconfig
 
     postbuildScripts:
     - name: Embed Precompiled Frameworks

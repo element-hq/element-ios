@@ -35,8 +35,8 @@ targets:
     - sdk: Intents.framework
 
     configFiles:
-      Debug: SiriIntents-Debug.xcconfig
-      Release: SiriIntents-Release.xcconfig
+      Debug: Debug.xcconfig
+      Release: Release.xcconfig
 
     postbuildScripts:
     - name: Embed Precompiled Frameworks

@@ -17,8 +17,10 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-#include "App-Common.xcconfig"
-#include "Pods/Target Support Files/Pods-RiotPods-Riot/Pods-RiotPods-Riot.release.xcconfig"
+#include "Common.xcconfig"
+#include "Pods/Target Support Files/Pods-RiotPods-SiriIntents/Pods-RiotPods-SiriIntents.release.xcconfig"
 
-PROVISIONING_PROFILE = $(RIOT_PROVISIONING_PROFILE)
-PROVISIONING_PROFILE_SPECIFIER = $(RIOT_PROVISIONING_PROFILE_SPECIFIER)
+PROVISIONING_PROFILE = $(SIRI_INTENTS_PROVISIONING_PROFILE)
+PROVISIONING_PROFILE_SPECIFIER = $(SIRI_INTENTS_PROVISIONING_PROFILE_SPECIFIER)
+
+COPY_PHASE_STRIP = NO

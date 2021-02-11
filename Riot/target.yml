@@ -36,8 +36,8 @@ targets:
     - target: RiotNSE
 
     configFiles:
-      Debug: SupportingFiles/App-Debug.xcconfig
-      Release: SupportingFiles/App-Release.xcconfig
+      Debug: Debug.xcconfig
+      Release: Release.xcconfig
 
     preBuildScripts:
     - name: ⚠️ SwiftLint

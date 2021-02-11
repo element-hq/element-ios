@@ -32,8 +32,8 @@ targets:
     type: app-extension
 
     configFiles:
-      Debug: NSE-Debug.xcconfig
-      Release: NSE-Release.xcconfig
+      Debug: Debug.xcconfig
+      Release: Release.xcconfig
   
     postbuildScripts:
     - name: Embed Precompiled Frameworks
