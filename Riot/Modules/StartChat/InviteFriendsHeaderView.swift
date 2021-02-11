@@ -1,0 +1,76 @@
+// 
+// Copyright 2020 New Vector Ltd
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+import UIKit
+import Reusable
+
+@objc
+protocol InviteFriendsHeaderViewDelegate: class {
+    func inviteFriendsHeaderView(_ headerView: InviteFriendsHeaderView, didTapButton button: UIButton)
+}
+
+@objcMembers
+final class InviteFriendsHeaderView: UIView, NibLoadable, Themable {
+    
+    // MARK: - Constants
+    
+    private enum Constants {
+        static let buttonHighlightedAlpha: CGFloat = 0.2
+    }
+    
+    // MARK: - Properties
+    
+    @IBOutlet private weak var button: CustomRoundedButton!
+    
+    weak var delegate: InviteFriendsHeaderViewDelegate?
+    
+    // MARK: - Setup
+    
+    static func instantiate() -> InviteFriendsHeaderView {
+        let view = InviteFriendsHeaderView.loadFromNib()
+        view.update(theme: ThemeService.shared().theme)
+        return view
+    }
+    
+    // MARK: - Life cycle
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        self.button.setTitle(VectorL10n.inviteFriendsAction(BuildSettings.bundleDisplayName), for: .normal)
+        self.button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+    }
+    
+    // MARK: - Public
+    
+    func update(theme: Theme) {
+        self.backgroundColor = theme.backgroundColor
+        
+        self.button.setTitleColor(theme.baseTextPrimaryColor, for: .normal)
+        self.button.setTitleColor(theme.baseTextPrimaryColor.withAlphaComponent(Constants.buttonHighlightedAlpha), for: .highlighted)
+        self.button.vc_setBackgroundColor(theme.tintColor, for: .normal)
+        
+        let buttonImage = Asset.Images.shareActionButton.image.vc_tintedImage(usingColor: theme.baseIconPrimaryColor)
+        
+        self.button.setImage(buttonImage, for: .normal)
+    }
+    
+    // MARK: - Action
+    
+    @objc private func buttonAction(_ sender: UIButton) {
+        self.delegate?.inviteFriendsHeaderView(self, didTapButton: button)
+    }
+}

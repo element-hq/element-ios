@@ -22,6 +22,159 @@ Changes to be released in next version
 Others
  * 
 
+Changes in 1.2.0 (2021-02-11)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Cross-signing: Setup cross-signing without authentication parameters when a grace period is enabled after login (#4006).
+ * VoIP: Implement DTMF on call screen (#3929).
+ * VoIP: Implement call transfer screen (#3962).
+ * VoIP: Implement call tiles on timeline (#3955).
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.14.0](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.0)).
+
+Changes in 1.1.7 (2021-02-03)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Social login: Handle new identity provider brand field in order to customize buttons (#3980).
+ * Widgets: Support $matrix_room_id and $matrix_widget_id parameters (#3987).
+ * matrix.to: Support room preview when the permalink has parameters (like "via=").
+ * Avoid megolm share requests if the device is not verified (#3969)
+ * Handle User-Interactive Authentication fallback (#3995).
+
+🐛 Bugfix
+ * Push: Fix PushKit crashes due to undecryptable call invites (#3986).
+ * matrix.to: Cannot open links with query parameters (#3990).
+ * matrix.to: Cannot open/preview a new room given by alias (#3991).
+ * matrix.to: The app does not open a permalink from matrix.to (#3993).
+ * Logs: Add a size limitation so that we can upload them in bug reports (#3903).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.13.9](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.9)).
+
+Changes in 1.1.6 (2021-01-27)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * Navigation: Unable to open a room from a room list (#3863).
+ * AuthVC: Fix social login layout issue.
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.13.8](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.8)).
+
+Changes in 1.1.5 (2021-01-18)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.13.7](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.7)).
+
+Changes in 1.1.4 (2021-01-15)
+=================================================
+
+✨ Features
+ * Change Pin inside the app (#3881)
+ * AuthVC: Add social login (#3846).
+ * Invite friends: Add the ability to invite friends outside of Element in a few places (#3840).
+
+🙌 Improvements
+ * Bug report: Add "Continue in background" button  (#3816).
+ * Show user id in the room invite preview screen (#3839)
+ * AuthVC: SSO authentication now use redirect URL instead of fallback page (#3846).
+
+🐛 Bugfix
+ * Crash report cannot be submitted (on small phones) (#3819)
+ * Prevent navigation controller from pushing same view controller (#3924)
+ * AuthVC: Fix recaptcha view cropping (#3940).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.13.6](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.6)).
+
 Changes in 1.1.3 (2020-12-18)
 =================================================
 

@@ -138,7 +138,7 @@
 "client_desktop_name" = "Element Desktop";
 "client_web_name" = "Element Web";
 "client_ios_name" = "Element iOS";
-"auth_login_single_sign_on" = "Увійти за допомогою єдиного входу";
+"auth_login_single_sign_on" = "Увійти";
 "room_creation_invite_another_user" = "Пошук / запрошення по ідентифікатору користувача, імені або адреси електронної пошти";
 "room_creation_error_invite_user_by_email_without_identity_server" = "Сервер ідентифікації не налаштовано, тому ви не можете додати учасника з е-поштою.";
 // Room recents
@@ -236,3 +236,49 @@
 "settings_phone_number" = "Телефон";
 "settings_add_email_address" = "Додати адресу електронної пошти";
 "settings_email_address_placeholder" = "Введіть вашу адресу електронної пошти";
+"room_title_one_active_member" = "%@/%@ активний учасник";
+
+// Group Details
+"group_details_title" = "Подробиці спільноти";
+"group_details_home" = "Домівка";
+"group_participants_invite_prompt_title" = "Підтвердження";
+"group_participants_remove_prompt_title" = "Підтвердження";
+"group_participants_leave_prompt_msg" = "Ви впевнені, що хочете покинути групу?";
+"group_participants_leave_prompt_title" = "Покинути групу";
+
+// Group participants
+"group_participants_add_participant" = "Додати учасника";
+"room_title_members" = "%@ учасників";
+"room_info_list_several_members" = "%@ учасників";
+"group_invitation_format" = "%@ запрошує вас приєднатися до спільноти";
+"group_home_multi_rooms_format" = "%tu кімнат";
+"group_home_one_room_format" = "1 кімната";
+"group_home_multi_members_format" = "%tu учасників";
+"room_title_one_member" = "1 учасник";
+
+// MARK: - Room Info
+
+"room_info_list_one_member" = "1 учасник";
+
+// Group Home
+"group_home_one_member_format" = "1 учасник";
+"group_details_rooms" = "Кімнати";
+"rooms_empty_view_title" = "Кімнати";
+"group_details_people" = "Люди";
+"people_empty_view_title" = "Люди";
+"social_login_button_title_sign_up" = "Приєднатися через %@";
+"social_login_button_title_sign_in" = "Увійти через %@";
+"social_login_list_title_sign_up" = "Або зареєструватися через";
+"social_login_list_title_sign_in" = "Або увійти через";
+"settings_discovery_three_pid_details_revoke_action" = "Відкликати";
+"settings_discovery_three_pid_details_share_action" = "Поділитися";
+"room_event_action_share" = "Поділитися";
+"social_login_button_title_continue" = "Продовжити з %@";
+
+// Social login
+
+"social_login_list_title_continue" = "Продовжити з";
+"less" = "Менше";
+"room_event_action_more" = "Більше";
+"more" = "Більше";
+"joined" = "Долучається";

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -42,6 +42,7 @@
                 <outlet property="rightBarButtonItem" destination="Kwt-KN-aVL" id="Y3F-wA-tf8"/>
                 <outlet property="serverOptionsContainer" destination="FIn-2w-e6H" id="Z0e-NN-3LY"/>
                 <outlet property="skipButton" destination="wEJ-AF-rdH" id="smu-MS-2IY"/>
+                <outlet property="socialLoginContainerView" destination="TjK-XL-dQS" id="Rte-h1-blp"/>
                 <outlet property="softLogoutClearDataButton" destination="ZRO-C2-hH1" id="PDa-aM-Hso"/>
                 <outlet property="softLogoutClearDataContainer" destination="vX2-5Y-rQc" id="mgK-41-cnX"/>
                 <outlet property="softLogoutClearDataLabel" destination="QYL-Lo-tmH" id="ks9-5X-xfs"/>
@@ -111,7 +112,7 @@
                                             <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wIH-Kd-r7q" userLabel="retryButton">
+                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wIH-Kd-r7q" userLabel="retryButton">
                                             <rect key="frame" x="165" y="46.666666666666686" width="45" height="30"/>
                                             <accessibility key="accessibilityConfiguration" identifier="AuthenticationVCRetryButton"/>
                                             <constraints>
@@ -134,7 +135,7 @@
                                         <constraint firstItem="54b-4O-ip9" firstAttribute="top" secondItem="xWb-IJ-v7F" secondAttribute="top" constant="8" id="Ddp-gU-nLY"/>
                                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="54b-4O-ip9" secondAttribute="trailing" constant="8" id="VEQ-w9-9Ln"/>
                                         <constraint firstAttribute="centerY" secondItem="30E-gm-z6O" secondAttribute="centerY" id="ctL-D3-bgP"/>
-                                        <constraint firstAttribute="height" constant="200" id="e04-1Y-4gZ"/>
+                                        <constraint firstAttribute="height" priority="750" constant="200" id="e04-1Y-4gZ"/>
                                         <constraint firstItem="wIH-Kd-r7q" firstAttribute="top" secondItem="54b-4O-ip9" secondAttribute="bottom" constant="5" id="grf-0I-rwT"/>
                                         <constraint firstItem="54b-4O-ip9" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="xWb-IJ-v7F" secondAttribute="leading" constant="8" id="phW-Yy-zN7"/>
                                         <constraint firstAttribute="centerX" secondItem="wIH-Kd-r7q" secondAttribute="centerX" id="rTd-Qc-xrD"/>
@@ -144,7 +145,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gg0-TE-OGb">
                                     <rect key="frame" x="0.0" y="360" width="375" height="300"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AJ2-lJ-NUq">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AJ2-lJ-NUq">
                                             <rect key="frame" x="19" y="33" width="122" height="30"/>
                                             <accessibility key="accessibilityConfiguration" identifier="AuthenticationVCForgotPasswordButton"/>
                                             <constraints>
@@ -164,7 +165,7 @@
                                                 <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="UVJ-Re-xe2"/>
                                             </connections>
                                         </button>
-                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wEJ-AF-rdH">
+                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wEJ-AF-rdH">
                                             <rect key="frame" x="11" y="33" width="106" height="30"/>
                                             <color key="backgroundColor" red="0.028153735480000001" green="0.82494870580000002" blue="0.051896891280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <accessibility key="accessibilityConfiguration" identifier="AuthenticationVCSkipButton"/>
@@ -181,7 +182,7 @@
                                                 <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="iEr-Vf-f6P"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k3J-Eg-itz" userLabel="SubmitBtn">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k3J-Eg-itz" userLabel="SubmitBtn">
                                             <rect key="frame" x="258" y="33" width="106" height="30"/>
                                             <color key="backgroundColor" red="0.028153735480000001" green="0.82494870580000002" blue="0.051896891280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <accessibility key="accessibilityConfiguration" identifier="AuthenticationVCLoginButton"/>
@@ -366,7 +367,7 @@ Clear it if you're finished using this device, or want to sign in to another acc
                                                     <nil key="highlightedColor"/>
                                                     <string key="userLabel">Clear personal data  Warning: Your personal data (including encryption keys) is still stored on this device.  Clear it if you're finished using this device, or want to sign in to another account.</string>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZRO-C2-hH1">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZRO-C2-hH1">
                                                     <rect key="frame" x="245" y="129" width="119" height="30"/>
                                                     <color key="backgroundColor" red="0.4624713659286499" green="0.81734329462051392" blue="0.47220504283905029" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
@@ -409,11 +410,18 @@ Clear it if you're finished using this device, or want to sign in to another acc
                                         <constraint firstItem="AJ2-lJ-NUq" firstAttribute="centerY" secondItem="k3J-Eg-itz" secondAttribute="centerY" id="dcE-Vs-7Rt"/>
                                         <constraint firstAttribute="trailing" secondItem="FIn-2w-e6H" secondAttribute="trailing" id="kFj-6g-v3H"/>
                                         <constraint firstItem="vX2-5Y-rQc" firstAttribute="leading" secondItem="Gg0-TE-OGb" secondAttribute="leading" id="kYN-Lj-zYP"/>
-                                        <constraint firstAttribute="height" constant="300" id="lXv-gM-CjN"/>
+                                        <constraint firstAttribute="height" priority="700" constant="300" id="lXv-gM-CjN"/>
                                         <constraint firstItem="k3J-Eg-itz" firstAttribute="top" secondItem="Gg0-TE-OGb" secondAttribute="top" constant="33" id="mor-t9-7Ke"/>
                                         <constraint firstItem="FIn-2w-e6H" firstAttribute="top" secondItem="k3J-Eg-itz" secondAttribute="bottom" constant="5" id="oTS-5o-MMW"/>
                                         <constraint firstItem="wEJ-AF-rdH" firstAttribute="leading" secondItem="Gg0-TE-OGb" secondAttribute="leading" constant="11" id="sax-RY-aOJ"/>
                                         <constraint firstItem="AJ2-lJ-NUq" firstAttribute="leading" secondItem="Gg0-TE-OGb" secondAttribute="leading" constant="19" id="xFm-Bs-yzw"/>
+                                    </constraints>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TjK-XL-dQS">
+                                    <rect key="frame" x="0.0" y="660" width="375" height="0.0"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" priority="750" id="mIX-QF-Tmn"/>
                                     </constraints>
                                 </view>
                             </subviews>
@@ -422,14 +430,19 @@ Clear it if you're finished using this device, or want to sign in to another acc
                             <constraints>
                                 <constraint firstAttribute="height" constant="485" id="6v6-fz-e8o"/>
                                 <constraint firstItem="Gg0-TE-OGb" firstAttribute="width" secondItem="rhx-dD-4EJ" secondAttribute="width" id="EBX-KN-pRT"/>
+                                <constraint firstItem="TjK-XL-dQS" firstAttribute="leading" secondItem="rhx-dD-4EJ" secondAttribute="leading" id="MId-fr-A7b"/>
+                                <constraint firstAttribute="bottom" secondItem="TjK-XL-dQS" secondAttribute="bottom" id="PKr-aT-3Qe"/>
+                                <constraint firstItem="TjK-XL-dQS" firstAttribute="top" secondItem="Gg0-TE-OGb" secondAttribute="bottom" id="Sfy-Zn-JkS"/>
                                 <constraint firstItem="Gg0-TE-OGb" firstAttribute="top" secondItem="rhx-dD-4EJ" secondAttribute="top" priority="250" constant="384" id="UEM-Mh-0H9"/>
                                 <constraint firstItem="xWb-IJ-v7F" firstAttribute="leading" secondItem="rhx-dD-4EJ" secondAttribute="leading" id="YnP-Nk-QxR"/>
                                 <constraint firstItem="Gg0-TE-OGb" firstAttribute="top" secondItem="xWb-IJ-v7F" secondAttribute="bottom" id="aGH-m3-xL3"/>
+                                <constraint firstAttribute="trailing" secondItem="TjK-XL-dQS" secondAttribute="trailing" id="d1j-OA-Wwm"/>
                                 <constraint firstAttribute="trailing" secondItem="xWb-IJ-v7F" secondAttribute="trailing" id="hko-ol-XDd"/>
                                 <constraint firstItem="xWb-IJ-v7F" firstAttribute="top" secondItem="rhx-dD-4EJ" secondAttribute="top" constant="160" id="khR-Uj-OTH"/>
                                 <constraint firstItem="d8r-TX-pwX" firstAttribute="top" secondItem="rhx-dD-4EJ" secondAttribute="top" constant="35" id="l68-Ta-YKg"/>
                                 <constraint firstAttribute="centerX" secondItem="d8r-TX-pwX" secondAttribute="centerX" id="l6k-EH-Yb8"/>
                                 <constraint firstItem="Gg0-TE-OGb" firstAttribute="leading" secondItem="rhx-dD-4EJ" secondAttribute="leading" id="rS3-go-zbf"/>
+                                <constraint firstItem="TjK-XL-dQS" firstAttribute="width" secondItem="rhx-dD-4EJ" secondAttribute="width" id="zIZ-fl-i3i"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -449,7 +462,7 @@ Clear it if you're finished using this device, or want to sign in to another acc
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q1e-Wg-6t7" userLabel="Authentication Fallback ContentView">
                     <rect key="frame" x="0.0" y="44" width="375" height="734"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9qj-5c-Sfb">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9qj-5c-Sfb">
                             <rect key="frame" x="317" y="5" width="50" height="35"/>
                             <accessibility key="accessibilityConfiguration" identifier="AuthenticationVCCancelAuthFallbackButton"/>
                             <constraints>
@@ -480,6 +493,7 @@ Clear it if you're finished using this device, or want to sign in to another acc
                     </constraints>
                 </view>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="3h8-75-kcp"/>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <accessibility key="accessibilityConfiguration" identifier="AuthenticationVCView"/>
             <constraints>
@@ -502,7 +516,6 @@ Clear it if you're finished using this device, or want to sign in to another acc
                 <constraint firstItem="izX-ya-hXh" firstAttribute="top" secondItem="k7D-Gy-yBR" secondAttribute="bottom" id="y2h-1T-TZ4"/>
                 <constraint firstItem="k7D-Gy-yBR" firstAttribute="leading" secondItem="5rn-KE-plm" secondAttribute="leading" id="z6D-6L-5Ud"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="3h8-75-kcp"/>
             <point key="canvasLocation" x="138.40000000000001" y="153.69458128078819"/>
         </view>
     </objects>

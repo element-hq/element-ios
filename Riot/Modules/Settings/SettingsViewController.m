@@ -76,7 +76,8 @@ enum
     USER_SETTINGS_SURNAME_INDEX,
     USER_SETTINGS_ADD_EMAIL_INDEX,
     USER_SETTINGS_ADD_PHONENUMBER_INDEX,
-    USER_SETTINGS_THREEPIDS_INFORMATION_INDEX
+    USER_SETTINGS_THREEPIDS_INFORMATION_INDEX,
+    USER_SETTINGS_INVITE_FRIENDS_INDEX
 };
 
 enum
@@ -246,6 +247,10 @@ TableViewSectionsDelegate>
 
 @property (nonatomic, strong) TableViewSections *tableViewSections;
 
+@property (nonatomic, strong) InviteFriendsPresenter *inviteFriendsPresenter;
+
+@property (nonatomic, strong) CrossSigningSetupCoordinatorBridgePresenter *crossSigningSetupCoordinatorBridgePresenter;
+
 @end
 
 @implementation SettingsViewController
@@ -313,6 +318,9 @@ TableViewSectionsDelegate>
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_THREEPIDS_INFORMATION_INDEX];
     }
+    
+    [sectionUserSettings addRowWithTag:USER_SETTINGS_INVITE_FRIENDS_INDEX];
+    
     sectionUserSettings.headerTitle = NSLocalizedStringFromTable(@"settings_user_settings", @"Vector", nil);
     [tmpSections addObject:sectionUserSettings];
     
@@ -1716,6 +1724,18 @@ TableViewSectionsDelegate>
             
             cell = threePidsInformationCell;
         }
+        else if (row == USER_SETTINGS_INVITE_FRIENDS_INDEX)
+        {
+            MXKTableViewCell *inviteFriendsCell = [self getDefaultTableViewCell:tableView];
+
+            inviteFriendsCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"invite_friends_action", @"Vector", nil), BuildSettings.bundleDisplayName];
+            
+            UIImage *shareActionImage = [[UIImage imageNamed:@"share_action_button"] vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
+            UIImageView *accessoryView = [[UIImageView alloc] initWithImage:shareActionImage];
+            inviteFriendsCell.accessoryView = accessoryView;
+            
+            cell = inviteFriendsCell;
+        }
         else if (row == USER_SETTINGS_CHANGE_PASSWORD_INDEX)
         {
             MXKTableViewCellWithLabelAndTextField *passwordCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
@@ -2415,6 +2435,11 @@ TableViewSectionsDelegate>
                     [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
                 }
             }
+        }
+        else if (section == SECTION_TAG_USER_SETTINGS && row == USER_SETTINGS_INVITE_FRIENDS_INDEX)
+        {
+            UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+            [self showInviteFriendsFromSourceView:selectedCell];
         }
         else if (section == SECTION_TAG_DISCOVERY)
         {
@@ -3560,6 +3585,21 @@ TableViewSectionsDelegate>
     self.deactivateAccountViewController = deactivateAccountViewController;
 }
 
+- (void)showInviteFriendsFromSourceView:(UIView*)sourceView
+{
+    if (!self.inviteFriendsPresenter)
+    {
+        self.inviteFriendsPresenter = [InviteFriendsPresenter new];
+    }
+    
+    NSString *userId = self.mainSession.myUser.userId;
+    
+    [self.inviteFriendsPresenter presentFor:userId
+                                       from:self
+                                 sourceView:sourceView
+                                   animated:YES];
+}
+
 #pragma mark - TextField listener
 
 - (IBAction)textFieldDidChange:(id)sender
@@ -3991,58 +4031,42 @@ TableViewSectionsDelegate>
                            message:(NSString*)message
                            success:(void (^)(void))success
                            failure:(void (^)(NSError *error))failure
-{
-    __block UIViewController *viewController;
-    [self startActivityIndicator];
-    
-    // Get credentials to set up cross-signing
-    NSString *path = [NSString stringWithFormat:@"%@/keys/device_signing/upload", kMXAPIPrefixPathUnstable];
-    _authenticatedSessionViewControllerFactory = [[AuthenticatedSessionViewControllerFactory alloc] initWithSession:self.mainSession];
-    [_authenticatedSessionViewControllerFactory viewControllerForPath:path
-                                                           httpMethod:@"POST"
-                                                                title:title
-                                                              message:message
-                                                     onViewController:^(UIViewController * _Nonnull theViewController)
-     {
-         viewController = theViewController;
-         [self presentViewController:viewController animated:YES completion:nil];
-         
-     } onAuthenticated:^(NSDictionary * _Nonnull authParams) {
-         
-         [viewController dismissViewControllerAnimated:NO completion:nil];
-         viewController = nil;
-         
-         MXCrossSigning *crossSigning = self.mainSession.crypto.crossSigning;
-         if (crossSigning)
-         {
-             [crossSigning setupWithAuthParams:authParams success:^{
-                 [self stopActivityIndicator];
-                 success();
-             } failure:^(NSError * _Nonnull error) {
-                 [self stopActivityIndicator];
-                 
-                 [[AppDelegate theDelegate] showErrorAsAlert:error];
-                 failure(error);
-             }];
-         }
-         
-     } onCancelled:^{
-         [self stopActivityIndicator];
-         
-         [viewController dismissViewControllerAnimated:NO completion:nil];
-         viewController = nil;
-         failure(nil);
-     } onFailure:^(NSError * _Nonnull error) {
-         
-         [self stopActivityIndicator];
-         [[AppDelegate theDelegate] showErrorAsAlert:error];
-         
-         [viewController dismissViewControllerAnimated:NO completion:nil];
-         viewController = nil;
-         failure(error);
-     }];
-}
 
+{
+    [self startActivityIndicator];
+    self.view.userInteractionEnabled = NO;
+    
+    MXWeakify(self);
+    
+    void (^animationCompletion)(void) = ^void () {
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self stopActivityIndicator];
+        self.view.userInteractionEnabled = YES;
+        [self.crossSigningSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:^{}];
+        self.crossSigningSetupCoordinatorBridgePresenter = nil;
+    };
+    
+    CrossSigningSetupCoordinatorBridgePresenter *crossSigningSetupCoordinatorBridgePresenter = [[CrossSigningSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+        
+    [crossSigningSetupCoordinatorBridgePresenter presentWith:title
+                                                     message:message
+                                                        from:self
+                                                    animated:YES
+                                                     success:^{
+        animationCompletion();
+        success();
+    } cancel:^{
+        animationCompletion();
+        failure(nil);
+    } failure:^(NSError * _Nonnull error) {
+        animationCompletion();
+        [[AppDelegate theDelegate] showErrorAsAlert:error];
+        failure(error);
+    }];
+    
+    self.crossSigningSetupCoordinatorBridgePresenter = crossSigningSetupCoordinatorBridgePresenter;
+}
 
 #pragma mark - SingleImagePickerPresenterDelegate
 

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="dBQ-CG-VDL">
+    <device id="retina6_5" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Call Transfer Main View Controller-->
+        <scene sceneID="EyC-m5-6uM">
+            <objects>
+                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="dBQ-CG-VDL" customClass="CallTransferMainViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ht4-fu-3rS">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ivb-NU-kFo">
+                                <rect key="frame" x="0.0" y="44" width="414" height="56"/>
+                                <subviews>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="BQy-Hx-23Q">
+                                        <rect key="frame" x="18" y="12.666666666666664" width="378" height="32"/>
+                                        <segments>
+                                            <segment title="Users"/>
+                                            <segment title="Dial pad"/>
+                                        </segments>
+                                        <connections>
+                                            <action selector="segmentedControlValueChanged:" destination="dBQ-CG-VDL" eventType="valueChanged" id="xas-5X-YIb"/>
+                                        </connections>
+                                    </segmentedControl>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="BQy-Hx-23Q" firstAttribute="centerY" secondItem="ivb-NU-kFo" secondAttribute="centerY" id="3bo-xx-XQO"/>
+                                    <constraint firstItem="BQy-Hx-23Q" firstAttribute="leading" secondItem="ivb-NU-kFo" secondAttribute="leading" constant="18" id="4fL-rC-m02"/>
+                                    <constraint firstAttribute="trailing" secondItem="BQy-Hx-23Q" secondAttribute="trailing" constant="18" id="O8K-YL-fBV"/>
+                                    <constraint firstAttribute="height" constant="56" id="gVH-Xy-3uB"/>
+                                    <constraint firstItem="BQy-Hx-23Q" firstAttribute="centerX" secondItem="ivb-NU-kFo" secondAttribute="centerX" id="uzE-ji-fqt"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b0y-K0-cMv">
+                                <rect key="frame" x="0.0" y="100" width="414" height="698"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mNr-eP-dbL">
+                                <rect key="frame" x="0.0" y="798" width="414" height="98"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WjD-md-81g">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="64"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GUZ-FS-Td0">
+                                                <rect key="frame" x="8" y="10" width="218" height="44"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" id="CL2-cJ-Hq0"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <inset key="contentEdgeInsets" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
+                                                <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                <state key="normal" title="Consult first" image="selection_untick">
+                                                    <color key="titleColor" systemColor="labelColor"/>
+                                                </state>
+                                                <state key="selected" image="selection_tick"/>
+                                                <connections>
+                                                    <action selector="consultButtonAction:" destination="dBQ-CG-VDL" eventType="touchUpInside" id="Cmf-Xv-er5"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GPr-un-yKK" customClass="RoundedButton" customModule="Riot" customModuleProvider="target">
+                                                <rect key="frame" x="242" y="10" width="156" height="44"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" id="IIn-jW-9iZ"/>
+                                                    <constraint firstAttribute="width" constant="156" id="a8K-gK-zdi"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="Connect"/>
+                                                <connections>
+                                                    <action selector="connectButtonAction:" destination="dBQ-CG-VDL" eventType="touchUpInside" id="JDN-12-LLC"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="GPr-un-yKK" firstAttribute="centerY" secondItem="WjD-md-81g" secondAttribute="centerY" id="GU0-T5-6wb"/>
+                                            <constraint firstItem="GUZ-FS-Td0" firstAttribute="leading" secondItem="WjD-md-81g" secondAttribute="leading" constant="8" id="H5w-Lf-dIb"/>
+                                            <constraint firstAttribute="height" constant="64" id="Ie3-WQ-ARI"/>
+                                            <constraint firstAttribute="trailing" secondItem="GPr-un-yKK" secondAttribute="trailing" constant="16" id="XUO-J8-2LK"/>
+                                            <constraint firstItem="GPr-un-yKK" firstAttribute="leading" secondItem="GUZ-FS-Td0" secondAttribute="trailing" constant="16" id="aKo-Ey-1cF"/>
+                                            <constraint firstItem="GUZ-FS-Td0" firstAttribute="centerY" secondItem="WjD-md-81g" secondAttribute="centerY" id="fcx-xi-SWI"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="WjD-md-81g" secondAttribute="trailing" id="0Bj-es-XW6"/>
+                                    <constraint firstItem="WjD-md-81g" firstAttribute="top" secondItem="mNr-eP-dbL" secondAttribute="top" id="Hfy-g6-fWh"/>
+                                    <constraint firstItem="WjD-md-81g" firstAttribute="top" secondItem="mNr-eP-dbL" secondAttribute="top" id="Zgs-Dq-QcE"/>
+                                    <constraint firstItem="WjD-md-81g" firstAttribute="leading" secondItem="mNr-eP-dbL" secondAttribute="leading" id="w1Q-xn-Pdr"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6ex-OQ-2sZ"/>
+                        <color key="backgroundColor" red="0.94509803921568625" green="0.96078431372549022" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="ivb-NU-kFo" firstAttribute="trailing" secondItem="6ex-OQ-2sZ" secondAttribute="trailing" id="8VB-uR-ky0"/>
+                            <constraint firstItem="ivb-NU-kFo" firstAttribute="leading" secondItem="6ex-OQ-2sZ" secondAttribute="leading" id="A8z-qE-R6n"/>
+                            <constraint firstAttribute="trailing" secondItem="mNr-eP-dbL" secondAttribute="trailing" id="DUd-Km-Bwd"/>
+                            <constraint firstItem="mNr-eP-dbL" firstAttribute="top" secondItem="b0y-K0-cMv" secondAttribute="bottom" id="Eac-dV-Vn0"/>
+                            <constraint firstItem="6ex-OQ-2sZ" firstAttribute="trailing" secondItem="b0y-K0-cMv" secondAttribute="trailing" id="Qo1-yS-ctz"/>
+                            <constraint firstAttribute="bottom" secondItem="mNr-eP-dbL" secondAttribute="bottom" id="VTQ-2Y-tHP"/>
+                            <constraint firstItem="b0y-K0-cMv" firstAttribute="leading" secondItem="6ex-OQ-2sZ" secondAttribute="leading" id="b4o-2l-yIe"/>
+                            <constraint firstItem="b0y-K0-cMv" firstAttribute="top" secondItem="ivb-NU-kFo" secondAttribute="bottom" id="cKV-r0-vsE"/>
+                            <constraint firstItem="6ex-OQ-2sZ" firstAttribute="bottom" secondItem="WjD-md-81g" secondAttribute="bottom" id="e9A-aJ-Ziy"/>
+                            <constraint firstItem="mNr-eP-dbL" firstAttribute="leading" secondItem="Ht4-fu-3rS" secondAttribute="leading" id="qST-XX-Cds"/>
+                            <constraint firstItem="ivb-NU-kFo" firstAttribute="top" secondItem="6ex-OQ-2sZ" secondAttribute="top" id="sun-63-fyH"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="bottomBgView" destination="mNr-eP-dbL" id="1aq-Xb-xlJ"/>
+                        <outlet property="connectButton" destination="GPr-un-yKK" id="6Wy-xb-P7t"/>
+                        <outlet property="consultButton" destination="GUZ-FS-Td0" id="wXK-Ut-bJ5"/>
+                        <outlet property="containerView" destination="b0y-K0-cMv" id="GDc-7P-W2U"/>
+                        <outlet property="segmentedControl" destination="BQy-Hx-23Q" id="6Oe-r5-yNn"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bLY-II-iJ3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1703.2" y="254.12293853073464"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="selection_tick" width="22" height="22"/>
+        <image name="selection_untick" width="22" height="22"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

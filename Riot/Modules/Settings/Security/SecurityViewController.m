@@ -71,6 +71,7 @@ enum {
 enum {
     PIN_CODE_SETTING,
     PIN_CODE_DESCRIPTION,
+    PIN_CODE_CHANGE,
     PIN_CODE_BIOMETRICS,
     PIN_CODE_COUNT
 };
@@ -138,6 +139,7 @@ TableViewSectionsDelegate>
 @property (nonatomic, strong) SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
 @property (nonatomic, strong) AuthenticatedSessionViewControllerFactory *authenticatedSessionViewControllerFactory;
 @property (nonatomic, strong) SetPinCoordinatorBridgePresenter *setPinCoordinatorBridgePresenter;
+@property (nonatomic, strong) CrossSigningSetupCoordinatorBridgePresenter *crossSigningSetupCoordinatorBridgePresenter;
 
 @end
 
@@ -315,7 +317,10 @@ TableViewSectionsDelegate>
     // Rows
     [pinCodeSection addRowWithTag:PIN_CODE_SETTING];
     [pinCodeSection addRowWithTag:PIN_CODE_DESCRIPTION];
-    
+    if ([PinCodePreferences shared].isPinSet) {
+        [pinCodeSection addRowWithTag:PIN_CODE_CHANGE];
+    }
+
     if ([PinCodePreferences shared].isBiometricsAvailable)
     {
         [pinCodeSection addRowWithTag:PIN_CODE_BIOMETRICS];
@@ -755,59 +760,42 @@ TableViewSectionsDelegate>
 - (void)setupCrossSigningWithTitle:(NSString*)title
                            message:(NSString*)message
                            success:(void (^)(void))success
-                             failure:(void (^)(NSError *error))failure
+                           failure:(void (^)(NSError *error))failure
+
 {
-    __block UIViewController *viewController;
     [self startActivityIndicator];
     
-    // Get credentials to set up cross-signing
-    NSString *path = [NSString stringWithFormat:@"%@/keys/device_signing/upload", kMXAPIPrefixPathUnstable];
-    _authenticatedSessionViewControllerFactory = [[AuthenticatedSessionViewControllerFactory alloc] initWithSession:self.mainSession];
-    [_authenticatedSessionViewControllerFactory viewControllerForPath:path
-                                                           httpMethod:@"POST"
-                                                                title:title
-                                                              message:message
-                                                     onViewController:^(UIViewController * _Nonnull theViewController)
-     {
-         viewController = theViewController;
-         [self presentViewController:viewController animated:YES completion:nil];
-         
-     } onAuthenticated:^(NSDictionary * _Nonnull authParams) {
-         
-         [viewController dismissViewControllerAnimated:NO completion:nil];
-         viewController = nil;
-         
-         MXCrossSigning *crossSigning = self.mainSession.crypto.crossSigning;
-         if (crossSigning)
-         {
-             [crossSigning setupWithAuthParams:authParams success:^{
-                 [self stopActivityIndicator];
-                 [self reloadData];
-                 success();
-             } failure:^(NSError * _Nonnull error) {
-                 [self stopActivityIndicator];
-                 [self reloadData];
-                 
-                 [[AppDelegate theDelegate] showErrorAsAlert:error];
-                 failure(error);
-             }];
-         }
-
-     } onCancelled:^{
-         [self stopActivityIndicator];
-         
-         [viewController dismissViewControllerAnimated:NO completion:nil];
-         viewController = nil;
-         failure(nil);
-     } onFailure:^(NSError * _Nonnull error) {
-         
-         [self stopActivityIndicator];
-         [[AppDelegate theDelegate] showErrorAsAlert:error];
-         
-         [viewController dismissViewControllerAnimated:NO completion:nil];
-         viewController = nil;
-         failure(error);
+    MXWeakify(self);
+    
+    void (^animationCompletion)(void) = ^void () {
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self stopActivityIndicator];
+        [self.crossSigningSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:^{}];
+        self.crossSigningSetupCoordinatorBridgePresenter = nil;
+    };
+    
+    CrossSigningSetupCoordinatorBridgePresenter *crossSigningSetupCoordinatorBridgePresenter = [[CrossSigningSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+        
+    [crossSigningSetupCoordinatorBridgePresenter presentWith:title
+                                                     message:message
+                                                        from:self
+                                                    animated:YES
+                                                     success:^{
+        animationCompletion();
+        [self reloadData];
+        success();
+    } cancel:^{
+        animationCompletion();
+        failure(nil);
+    } failure:^(NSError * _Nonnull error) {
+        animationCompletion();
+        [self reloadData];
+        [[AppDelegate theDelegate] showErrorAsAlert:error];
+        failure(error);
     }];
+    
+    self.crossSigningSetupCoordinatorBridgePresenter = crossSigningSetupCoordinatorBridgePresenter;
 }
 
 - (void)resetCrossSigning:(id)sender
@@ -1293,6 +1281,10 @@ TableViewSectionsDelegate>
                 cell = [self descriptionCellForTableView:tableView withText:nil];
             }
         }
+        else if (indexPath.row == PIN_CODE_CHANGE)
+        {
+            cell = [self buttonCellWithTitle:NSLocalizedStringFromTable(@"pin_protection_settings_change_pin", @"Vector", nil) action:@selector(changePinCode:  ) forTableView:tableView atIndexPath:indexPath];
+        }
         else if (indexPath.row == PIN_CODE_BIOMETRICS)
         {
             MXKTableViewCellWithLabelAndSwitch *switchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
@@ -1703,6 +1695,14 @@ TableViewSectionsDelegate>
 - (void)enableBiometricsSwitchValueChanged:(UISwitch *)sender
 {
     SetPinCoordinatorViewMode viewMode = sender.isOn ? SetPinCoordinatorViewModeSetupBiometricsFromSettings : SetPinCoordinatorViewModeConfirmBiometricsToDeactivate;
+    self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:self.mainSession viewMode:viewMode];
+    self.setPinCoordinatorBridgePresenter.delegate = self;
+    [self.setPinCoordinatorBridgePresenter presentFrom:self animated:YES];
+}
+
+- (void)changePinCode:(UIButton *)sender
+{
+    SetPinCoordinatorViewMode viewMode = SetPinCoordinatorViewModeChangePin;
     self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:self.mainSession viewMode:viewMode];
     self.setPinCoordinatorBridgePresenter.delegate = self;
     [self.setPinCoordinatorBridgePresenter presentFrom:self animated:YES];

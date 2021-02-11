@@ -23,7 +23,7 @@ final class DataProtectionHelper {
     /// - Returns: true if the state detected
     static func isDeviceInRebootedAndLockedState(appGroupIdentifier: String? = nil) -> Bool {
         
-        let dummyString = String.unique
+        let dummyString = String.vc_unique
         guard let dummyData = dummyString.data(using: .utf8) else {
             return true
         }
@@ -38,7 +38,7 @@ final class DataProtectionHelper {
             }
 
             //  add a unique filename
-            url = url.appendingPathComponent(String.unique)
+            url = url.appendingPathComponent(String.vc_unique)
 
             try dummyData.write(to: url, options: .completeFileProtectionUntilFirstUserAuthentication)
             let readData = try Data(contentsOf: url)
@@ -51,15 +51,6 @@ final class DataProtectionHelper {
             return true
         }
         return false
-    }
-    
-}
-
-extension String {
-    
-    /// Returns a globally unique string
-    static var unique: String {
-        return ProcessInfo.processInfo.globallyUniqueString
     }
     
 }

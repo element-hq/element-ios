@@ -52,6 +52,17 @@ final class BuildSettings: NSObject {
         return keychainAccessGroup
     }
     
+    static var applicationURLScheme: String? {
+        guard let urlTypes = Bundle.app.object(forInfoDictionaryKey: "CFBundleURLTypes") as? [AnyObject],
+              let urlTypeDictionary = urlTypes.first as? [String: AnyObject],
+              let urlSchemes = urlTypeDictionary["CFBundleURLSchemes"] as? [AnyObject],
+              let externalURLScheme = urlSchemes.first as? String else {
+            return nil
+        }
+        
+        return externalURLScheme
+    }
+    
     static var pushKitAppIdProd: String {
         return baseBundleIdentifier + ".ios.voip.prod"
     }
@@ -123,7 +134,7 @@ final class BuildSettings: NSObject {
     
     // MARK: - VoIP
     static var allowVoIPUsage: Bool {
-        #if canImport(JitsiMeet)
+        #if canImport(JitsiMeetSDK)
         return true
         #else
         return false

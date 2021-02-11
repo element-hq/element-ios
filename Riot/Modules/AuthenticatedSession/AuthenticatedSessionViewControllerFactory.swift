@@ -15,167 +15,24 @@
  */
 import Foundation
 
-enum AuthenticatedSessionViewControllerFactoryError: Int, Error, CustomNSError {
-    case flowNotSupported = 0
-    
-    // MARK: - CustomNSError
-    
-    static let errorDomain = "AuthenticatedSessionViewControllerFactoryErrorDomain"
-    
-    var errorCode: Int { return self.rawValue }
-    
-    var errorUserInfo: [String: Any] {
-        let userInfo: [String: Any]
-
-        switch self {
-        case .flowNotSupported:
-            userInfo = [NSLocalizedDescriptionKey: VectorL10n.authenticatedSessionFlowNotSupported]
-        }
-        return userInfo
-    }
-}
-
 /// This class creates view controllers that can handle an authentication flow for given requests.
 @objcMembers
 final class AuthenticatedSessionViewControllerFactory: NSObject {
-    
-    // MARK: - Constants
-    
-    // MARK: - Properties
-    
-    // MARK: Private
-    
-    private let session: MXSession
-    
-    
-    // MARK: Public
-    
-    // MARK: - Setup
-    
-    init(session: MXSession) {
-        self.session = session
-    }
-    
-    
-    // MARK: - Public methods
-    
-    /// Create a view controller to handle an authentication flow for a given request.
-    ///
-    /// - Parameters:
-    ///   - path: the request path.
-    ///   - httpMethod: the request http method.
-    ///   - title: the title to use in the view controller.
-    ///   - message: the information to display in the view controller.
-    ///   - onViewController: the block called when the view controller is ready. The caller must display it.
-    ///   - onAuthenticated: the block called when the user finished to enter their credentials.
-    ///   - onCancelled: the block called when the user cancelled the authentication.
-    ///   - onFailure: the blocked called on error.
-    @discardableResult
-    func viewController(forPath path: String,
-                        httpMethod: String,
-                        title: String?,
-                        message: String?,
-                        onViewController: @escaping (UIViewController) -> Void,
-                        onAuthenticated: @escaping ([String: Any]) -> Void,
-                        onCancelled: @escaping () -> Void,
-                        onFailure: @escaping (Error) -> Void) -> MXHTTPOperation {
         
-        // Get the authentication flow required for this API
-        return session.matrixRestClient.authSessionForRequest(withMethod: httpMethod, path: path, parameters: [:], success: { [weak self] (authenticationSession) in
-            guard let self = self else {
-                return
-            }
-            
-            guard let authenticationSession = authenticationSession, let flows = authenticationSession.flows else {
-                onFailure(AuthenticatedSessionViewControllerFactoryError.flowNotSupported)
-                return
-            }
-            
-            // Return the corresponding VC
-            if self.hasPasswordFlow(inFlows: flows) {
-                let authViewController = self.createPasswordViewController(title: title,
-                                                                           message: message,
-                                                                           authenticationSession: authenticationSession,
-                                                                           onAuthenticated: onAuthenticated,
-                                                                           onCancelled: onCancelled,
-                                                                           onFailure: onFailure)
-                onViewController(authViewController)
-            } else {
-                // Flow not supported yet
-                onFailure(AuthenticatedSessionViewControllerFactoryError.flowNotSupported)
-            }
-            
-        }, failure: { (error) in
-            guard let error = error else {
-                return
-            }
-            
-            onFailure(error)
-        })
-    }
-    
-    /// Check if we support the authentication flow for a given request.
-    ///
-    /// - Parameters:
-    ///   - path: the request path.
-    ///   - httpMethod: the request http method.
-    ///   - onCancelled: the block called when the user cancelled the authentication.
-    ///   - onFailure: the blocked called on error.
-    func hasSupport(forPath path: String,
-                    httpMethod: String,
-                    success: @escaping (Bool) -> Void,
-                    failure: @escaping (Error) -> Void) -> MXHTTPOperation {
-        
-        // Get the authentication flow required for this API
-        return session.matrixRestClient.authSessionForRequest(withMethod: httpMethod, path: path, parameters: [:], success: { [weak self] (authenticationSession) in
-            guard let self = self else {
-                return
-            }
-            
-            guard let authenticationSession = authenticationSession, let flows = authenticationSession.flows else {
-                success(false)
-                return
-            }
-            
-            // Return the corresponding VC
-            if self.hasPasswordFlow(inFlows: flows) {
-                success(true)
-            } else {
-                // Flow not supported yet
-                success(false)
-            }
-            
-            }, failure: { (error) in
-                guard let error = error else {
-                    return
-                }
-                
-                failure(error)
-        })
-    }
-    
-    
-    // MARK: - Private methods
-    
     // MARK: - Password flow
     
-    private func hasPasswordFlow(inFlows flows: [MXLoginFlow]) -> Bool {
-        for flow in flows {
-            if flow.type == kMXLoginFlowTypePassword || flow.stages.contains(kMXLoginFlowTypePassword) {
-                return true
-            }
-        }
-        
-        return false
-    }
-    
-    private func createPasswordViewController(
+    /// Create a view controller to handle a password authentication.
+    /// - Parameters:
+    ///   - title: the title to use in the view controller.
+    ///   - message: the information to display in the view controller.
+    ///   - onPasswordEntered: the closure called when the enter the password.
+    ///   - onCancelled: the closure called when the user cancelled the authentication.
+    /// - Returns: the password authentication view controller
+    func createPasswordViewController(
                         title: String?,
                         message: String?,
-                        authenticationSession: MXAuthenticationSession,
-                        onAuthenticated: @escaping ([String: Any]) -> Void,
-                        onCancelled: @escaping () -> Void,
-                        onFailure: @escaping (Error) -> Void) -> UIViewController {
+                        onPasswordEntered: @escaping (String) -> Void,
+                        onCancelled: @escaping () -> Void) -> UIViewController {
         
         // Use a simple UIAlertController as before
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -196,29 +53,9 @@ final class AuthenticatedSessionViewControllerFactory: NSObject {
                 // Should not happen
                 return
             }
-            
-            guard let authParams = self.createAuthParams(password: password, authenticationSession: authenticationSession) else {
-                onFailure(AuthenticatedSessionViewControllerFactoryError.flowNotSupported)
-                return
-            }
-            
-            onAuthenticated(authParams)
+            onPasswordEntered(password)
         }))
         
         return alertController
-    }
-    
-    private func createAuthParams(password: String,
-                                  authenticationSession: MXAuthenticationSession) -> [String: Any]? {
-        guard let userId = self.session.myUserId, let session = authenticationSession.session  else {
-            return nil
-        }
-            
-        return [
-            "type": kMXLoginFlowTypePassword,
-            "session": session,
-            "user": userId,
-            "password": password
-        ]
     }
 }

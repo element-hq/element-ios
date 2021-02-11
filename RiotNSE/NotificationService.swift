@@ -48,6 +48,8 @@ class NotificationService: UNNotificationServiceExtension {
     //  MARK: - Method Overrides
     
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
+        let userInfo = request.content.userInfo
+
         // Set static application settings
         configuration.setupSettings()
         
@@ -59,15 +61,16 @@ class NotificationService: UNNotificationServiceExtension {
         //  setup logs
         setupLogger()
         
+        NSLog(" ")
+        NSLog(" ")
+        NSLog("################################################################################")
         NSLog("[NotificationService] Instance: \(self), thread: \(Thread.current)")
+        NSLog("[NotificationService] Payload came: \(userInfo)")
         
         //  log memory at the beginning of the process
         logMemory()
         
         UNUserNotificationCenter.current().removeUnwantedNotifications()
-        
-        let userInfo = request.content.userInfo
-        NSLog("[NotificationService] Payload came: \(userInfo)")
         
         //  check if this is a Matrix notification
         guard let roomId = userInfo["room_id"] as? String, let eventId = userInfo["event_id"] as? String else {
@@ -106,17 +109,25 @@ class NotificationService: UNNotificationServiceExtension {
         //  No-op here. If the process is killed by the OS due to time limit, it will also show the notification with the original content.
     }
     
+    deinit {
+        NSLog("[NotificationService] deinit for \(self)");
+        self.logMemory()
+        NSLog(" ")
+    }
+    
+    
     //  MARK: - Private
     
     private func logMemory() {
-        NSLog("[NotificationService] Memory footprint: \(Memory.formattedMemoryFootprint())")
+        NSLog("[NotificationService] Memory: footprint: \(MXMemory.formattedMemoryFootprint()) - available: \(MXMemory.formattedMemoryAvailable())")
     }
     
     private func setupLogger() {
         if !NotificationService.isLoggerInitialized {
             if isatty(STDERR_FILENO) == 0 {
                 MXLogger.setSubLogName("nse")
-                MXLogger.redirectNSLog(toFiles: true)
+                let sizeLimit: UInt = 10 * 1024 * 1024; // 10MB
+                MXLogger.redirectNSLog(toFiles: true, numberOfFiles: 100, sizeLimit: sizeLimit)
             }
             NotificationService.isLoggerInitialized = true
         }
@@ -127,7 +138,11 @@ class NotificationService: UNNotificationServiceExtension {
         self.userAccount = MXKAccountManager.shared()?.activeAccounts.first
         if let userAccount = userAccount {
             if NotificationService.backgroundSyncService == nil {
+                NSLog("[NotificationService] setup: MXBackgroundSyncService init: BEFORE")
+                self.logMemory()
                 NotificationService.backgroundSyncService = MXBackgroundSyncService(withCredentials: userAccount.mxCredentials)
+                NSLog("[NotificationService] setup: MXBackgroundSyncService init: AFTER")
+                self.logMemory()
             }
             completion()
         } else {
@@ -201,8 +216,8 @@ class NotificationService: UNNotificationServiceExtension {
             self.contentHandlers.removeValue(forKey: event.eventId)
             self.bestAttemptContents.removeValue(forKey: event.eventId)
             
-            //  log memory again at the end of the process
-            self.logMemory()
+            // We are done for this push
+            NSLog("--------------------------------------------------------------------------------")
         }
     }
     

@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina5_5" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BugReportViewController">
             <connections>
+                <outlet property="backgroundButton" destination="e1n-Fk-J6e" id="eti-D3-osK"/>
                 <outlet property="bugDescriptionContainer" destination="M04-Ch-cFF" id="E7E-0k-dhp"/>
                 <outlet property="bugReportDescriptionTextView" destination="ssD-te-07G" id="r4D-TY-eeM"/>
                 <outlet property="cancelButton" destination="GP9-vI-fCd" id="EAP-ww-j9T"/>
@@ -53,29 +52,36 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7U4-br-xRl">
                                     <rect key="frame" x="10" y="148" width="394" height="440"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z8A-7B-jAi">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z8A-7B-jAi">
                                             <rect key="frame" x="338" y="390" width="36" height="30"/>
                                             <state key="normal" title="Send"/>
                                             <connections>
                                                 <action selector="onSendButtonPress:" destination="-1" eventType="touchUpInside" id="nL7-1U-dd6"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GP9-vI-fCd">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GP9-vI-fCd">
                                             <rect key="frame" x="20" y="390" width="48" height="30"/>
                                             <state key="normal" title="Cancel"/>
                                             <connections>
                                                 <action selector="onCancelButtonPressed:" destination="-1" eventType="touchUpInside" id="97W-bS-g6F"/>
                                             </connections>
                                         </button>
+                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1n-Fk-J6e">
+                                            <rect key="frame" x="210" y="390" width="164" height="30"/>
+                                            <state key="normal" title="Continue in bakcground"/>
+                                            <connections>
+                                                <action selector="onBackgroundTap:" destination="-1" eventType="touchUpInside" id="b6Y-E1-HMp"/>
+                                            </connections>
+                                        </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bug Report" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wQK-Os-GcK">
-                                            <rect key="frame" x="152" y="20" width="91" height="21"/>
+                                            <rect key="frame" x="152.33333333333334" y="20" width="89.666666666666657" height="21"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M04-Ch-cFF">
-                                            <rect key="frame" x="0.0" y="48.666666666666657" width="394" height="333"/>
+                                            <rect key="frame" x="0.0" y="49" width="394" height="333"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="pop up explanation" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q2l-Yi-SlQ">
                                                     <rect key="frame" x="20" y="0.0" width="354" height="15.666666666666666"/>
@@ -90,7 +96,7 @@
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="log bla bla" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ggt-kq-Zy9">
-                                                    <rect key="frame" x="20" y="253.33333333333334" width="354" height="15.666666666666657"/>
+                                                    <rect key="frame" x="20" y="253.33333333333329" width="354" height="15.666666666666657"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -170,14 +176,14 @@
                                             <rect key="frame" x="0.0" y="49" width="394" height="333"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Uploading report" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yBc-B9-RaA">
-                                                    <rect key="frame" x="132" y="136.33333333333331" width="129.66666666666663" height="20.333333333333343"/>
+                                                    <rect key="frame" x="132.66666666666666" y="136.33333333333331" width="128.99999999999997" height="20.333333333333343"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="cEm-mn-WCS">
-                                                    <rect key="frame" x="20" y="165" width="354" height="2"/>
+                                                    <rect key="frame" x="20" y="164.66666666666669" width="354" height="4"/>
                                                 </progressView>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -192,6 +198,7 @@
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="e1n-Fk-J6e" secondAttribute="trailing" constant="20" symbolic="YES" id="3ut-bP-I79"/>
                                         <constraint firstAttribute="trailing" secondItem="M04-Ch-cFF" secondAttribute="trailing" id="44e-Ev-6yY"/>
                                         <constraint firstItem="M04-Ch-cFF" firstAttribute="top" secondItem="wQK-Os-GcK" secondAttribute="bottom" constant="8" symbolic="YES" id="9XY-Ey-3ha"/>
                                         <constraint firstItem="M04-Ch-cFF" firstAttribute="leading" secondItem="7U4-br-xRl" secondAttribute="leading" id="BM2-hk-Kaf"/>
@@ -200,6 +207,7 @@
                                         <constraint firstAttribute="height" relation="lessThanOrEqual" constant="440" id="JJv-yi-CzO"/>
                                         <constraint firstAttribute="bottom" secondItem="GP9-vI-fCd" secondAttribute="bottom" constant="20" symbolic="YES" id="KLD-Ci-d3w"/>
                                         <constraint firstItem="wQK-Os-GcK" firstAttribute="top" secondItem="7U4-br-xRl" secondAttribute="top" constant="20" symbolic="YES" id="NWD-tl-Klm"/>
+                                        <constraint firstAttribute="bottom" secondItem="e1n-Fk-J6e" secondAttribute="bottom" constant="20" symbolic="YES" id="P0M-nx-1v3"/>
                                         <constraint firstItem="LNe-Lp-3ex" firstAttribute="top" secondItem="wQK-Os-GcK" secondAttribute="bottom" constant="8" symbolic="YES" id="RDy-f3-TJi"/>
                                         <constraint firstItem="wQK-Os-GcK" firstAttribute="centerX" secondItem="7U4-br-xRl" secondAttribute="centerX" id="RVC-sI-Oz5"/>
                                         <constraint firstAttribute="trailing" secondItem="z8A-7B-jAi" secondAttribute="trailing" constant="20" symbolic="YES" id="b4D-p2-P7o"/>
@@ -248,6 +256,7 @@
                 <constraint firstItem="4fS-3N-tbW" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="nn7-gx-g9q"/>
                 <constraint firstAttribute="trailing" secondItem="CXZ-fI-kPd" secondAttribute="trailing" id="yzo-vl-3Ep"/>
             </constraints>
+            <point key="canvasLocation" x="-196" y="113"/>
         </view>
     </objects>
     <resources>
