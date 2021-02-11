@@ -27,6 +27,11 @@
 
 #import "UIViewController+RiotSearch.h"
 
+/**
+ Notification string used to indicate call tile tapped in a room. Notification object will be the `RoomBubbleCellData` object.
+ */
+extern NSNotificationName const RoomCallTileTappedNotification;
+
 @interface RoomViewController : MXKRoomViewController
 
 // The preview header

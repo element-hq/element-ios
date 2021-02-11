@@ -64,6 +64,14 @@
 "more" = "More";
 "less" = "Less";
 
+// Call Bar
+"callbar_only_single_active" = "Active call (%@)";
+"callbar_active_and_single_paused" = "1 active call (%@) · 1 paused call";
+"callbar_active_and_multiple_paused" = "1 active call (%@) · %@ paused calls";
+"callbar_only_single_paused" = "Paused call";
+"callbar_only_multiple_paused" = "%@ paused calls";
+"callbar_return" = "Return";
+
 // Accessibility
 "accessibility_checkbox_label" = "checkbox";
 
@@ -378,6 +386,8 @@ Tap the + to start adding people.";
 "room_accessibility_upload" = "Upload";
 "room_accessibility_call" = "Call";
 "room_accessibility_hangup" = "Hang up";
+"room_place_voice_call" = "Voice call";
+"room_open_dialpad" = "Dial pad";
 
 "media_type_accessibility_image" = "Image";
 "media_type_accessibility_audio" = "Audio";
@@ -799,6 +809,12 @@ Tap the + to start adding people.";
 "event_formatter_rerequest_keys_part1_link" = "Re-request encryption keys";
 "event_formatter_rerequest_keys_part2" = " from your other sessions.";
 "event_formatter_message_edited_mention" = "(edited)";
+"event_formatter_call_voice" = "Voice call";
+"event_formatter_call_video" = "Video call";
+"event_formatter_call_has_ended" = "This call has ended";
+"event_formatter_call_you_currently_in" = "You're currently in this call";
+"event_formatter_call_you_declined" = "You declined this call";
+"event_formatter_call_back" = "Call back";
 
 // Events formatter with you
 "event_formatter_widget_added_by_you" = "You added the widget: %@";
@@ -835,6 +851,8 @@ Tap the + to start adding people.";
 "call_no_stun_server_error_message_1" ="Please ask the administrator of your homeserver %@ to configure a TURN server in order for calls to work reliably.";
 "call_no_stun_server_error_message_2" ="Alternatively, you can try to use the public server at %@, but this will not be as reliable, and it will share your IP address with that server. You can also manage this in Settings";
 "call_no_stun_server_error_use_fallback_button" = "Try using %@";
+
+"call_actions_unhold" = "Resume";
 
 // No VoIP support
 "no_voip_title" = "Incoming call";
@@ -1536,6 +1554,18 @@ Tap the + to start adding people.";
 "room_info_list_one_member" = "1 member";
 "room_info_list_several_members" = "%@ members";
 "room_info_list_section_other" = "Other";
+
+// MARK: - Dial Pad
+"dialpad_title" = "Dial pad";
+
+// MARK: - Call Transfer
+"call_transfer_title" = "Transfer";
+"call_transfer_users" = "Users";
+"call_transfer_dialpad" = "Dial pad";
+"call_transfer_contacts_recent" = "Recent";
+"call_transfer_contacts_all" = "All";
+"call_transfer_error_title" = "Error";
+"call_transfer_error_message" = "Call transfer failed";
 
 // MARK: - Home
 
