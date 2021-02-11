@@ -538,7 +538,7 @@ Tap the + to start adding people.";
 "settings_add_3pid_password_title_email" = "Add email adress";
 "settings_add_3pid_password_title_msidsn" = "Add phone number";
 "settings_add_3pid_password_message" = "To continue, please enter your password";
-"settings_add_3pid_invalid_password_message" = "Invalid password";
+"settings_add_3pid_invalid_password_message" = "Invalid credentials";
 
 "settings_crypto_device_name" = "Session name: ";
 "settings_crypto_device_id" = "\nSession ID: ";
