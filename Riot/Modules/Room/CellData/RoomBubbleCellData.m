@@ -129,6 +129,18 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
                 self.collapsed = YES;
             }
                 break;
+            case MXEventTypeCallInvite:
+            case MXEventTypeCallReject:
+            {
+                self.tag = RoomBubbleCellDataTagCall;
+                
+                // Call events can be collapsed together
+                self.collapsable = YES;
+                
+                // Collapse them by default
+                self.collapsed = YES;
+            }
+                break;
             default:
                 break;
         }
@@ -232,6 +244,17 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
     else if (self.tag == RoomBubbleCellDataTagRoomCreateConfiguration && cellData.tag == RoomBubbleCellDataTagRoomCreateConfiguration)
     {
         return YES;
+    }
+    else if (self.tag == RoomBubbleCellDataTagCall && cellData.tag == RoomBubbleCellDataTagCall)
+    {
+        //  Check if the same call
+        MXEvent * event1 = self.events.firstObject;
+        MXCallEventContent *eventContent1 = [MXCallEventContent modelFromJSON:event1.content];
+
+        MXEvent * event2 = cellData.events.firstObject;
+        MXCallEventContent *eventContent2 = [MXCallEventContent modelFromJSON:event2.content];
+
+        return [eventContent1.callId isEqualToString:eventContent2.callId];
     }
     
     if (self.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor || cellData.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor)
@@ -711,6 +734,9 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
             // One single bubble per membership event
             shouldAddEvent = NO;
             break;
+        case RoomBubbleCellDataTagCall:
+            shouldAddEvent = NO;
+            break;
         case RoomBubbleCellDataTagRoomCreateConfiguration:
             shouldAddEvent = NO;
             break;
@@ -753,6 +779,10 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
             case MXEventTypeRoomGuestAccess:
             case MXEventTypeRoomAvatar:
             case MXEventTypeRoomJoinRules:
+                shouldAddEvent = NO;
+                break;
+            case MXEventTypeCallInvite:
+            case MXEventTypeCallReject:
                 shouldAddEvent = NO;
                 break;
             default:

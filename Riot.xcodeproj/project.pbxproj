@@ -795,6 +795,7 @@
 		B1F9072F255CE06000DD14E5 /* InviteRecentTableViewCell+ButtonViewsUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F9072E255CE06000DD14E5 /* InviteRecentTableViewCell+ButtonViewsUpdate.swift */; };
 		B1FDF56021F5FE5500BA3834 /* KeyBackupSetupPassphraseViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FDF55F21F5FE5500BA3834 /* KeyBackupSetupPassphraseViewAction.swift */; };
 		DB1392A2332C3CAF6C9962EF /* Pods_RiotPods_RiotNSE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D418D054E4032F2CFA8B51 /* Pods_RiotPods_RiotNSE.framework */; };
+		EC0E250425BACFE900217CA6 /* MatrixContactsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = EC0E250325BACFE900217CA6 /* MatrixContactsDataSource.m */; };
 		EC1CA85F24C1DEC400DE9EBF /* EnterPinCodeViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA85124C1DEC400DE9EBF /* EnterPinCodeViewModelType.swift */; };
 		EC1CA86024C1DEC400DE9EBF /* EnterPinCodeViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA85224C1DEC400DE9EBF /* EnterPinCodeViewAction.swift */; };
 		EC1CA86124C1DEC400DE9EBF /* EnterPinCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA85324C1DEC400DE9EBF /* EnterPinCodeViewModel.swift */; };
@@ -855,6 +856,10 @@
 		EC51E7AF2514D2E100AAE7DB /* RoomInfoListViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC51E7A42514D2E100AAE7DB /* RoomInfoListViewAction.swift */; };
 		EC51E7B02514D2E100AAE7DB /* RoomInfoCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC51E7A52514D2E100AAE7DB /* RoomInfoCoordinatorType.swift */; };
 		EC619C1924DAD96000663A80 /* UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC619C1824DAD96000663A80 /* UIScrollView.swift */; };
+		EC6D9D2625B9A5CE00B79D10 /* CallTransferSelectContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6D9D2425B9A5CE00B79D10 /* CallTransferSelectContactViewController.swift */; };
+		EC6D9D2725B9A5CE00B79D10 /* CallTransferSelectContactViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC6D9D2525B9A5CE00B79D10 /* CallTransferSelectContactViewController.storyboard */; };
+		EC6D9D2A25B9A61800B79D10 /* CallTransferMainViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC6D9D2825B9A61800B79D10 /* CallTransferMainViewController.storyboard */; };
+		EC6D9D2B25B9A61800B79D10 /* CallTransferMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6D9D2925B9A61800B79D10 /* CallTransferMainViewController.swift */; };
 		EC711B4624A63B13008F830C /* MXRecoveryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC711B4524A63B13008F830C /* MXRecoveryService.swift */; };
 		EC711B7424A63B37008F830C /* SecretsSetupRecoveryKeyViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC711B4A24A63B36008F830C /* SecretsSetupRecoveryKeyViewModelType.swift */; };
 		EC711B7524A63B37008F830C /* SecretsSetupRecoveryKeyCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC711B4B24A63B36008F830C /* SecretsSetupRecoveryKeyCoordinatorType.swift */; };
@@ -905,6 +910,18 @@
 		EC711BB124A63B58008F830C /* SecureBackupBannerPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC711BA624A63B58008F830C /* SecureBackupBannerPreferences.swift */; };
 		EC711BB324A63B58008F830C /* SecureBackupBannerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC711BA824A63B58008F830C /* SecureBackupBannerCell.xib */; };
 		EC711BB624A63C11008F830C /* AuthenticatedSessionViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC711BB524A63C11008F830C /* AuthenticatedSessionViewControllerFactory.swift */; };
+		EC757B2625B85C7F00DF5787 /* DialpadViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC757B2125B85C7F00DF5787 /* DialpadViewController.storyboard */; };
+		EC757B2725B85C7F00DF5787 /* DialpadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC757B2225B85C7F00DF5787 /* DialpadViewController.swift */; };
+		EC757B2825B85C7F00DF5787 /* DialpadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC757B2425B85C7F00DF5787 /* DialpadButton.swift */; };
+		EC757B2925B85C7F00DF5787 /* DialpadActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC757B2525B85C7F00DF5787 /* DialpadActionButton.swift */; };
+		EC757B2D25B864DA00DF5787 /* CustomSizedPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC757B2B25B864DA00DF5787 /* CustomSizedPresentable.swift */; };
+		EC757B2E25B864DA00DF5787 /* CustomSizedPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC757B2C25B864DA00DF5787 /* CustomSizedPresentationController.swift */; };
+		EC757B3025B8671100DF5787 /* DialpadConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC757B2F25B8671000DF5787 /* DialpadConfiguration.swift */; };
+		EC7749C925A47E2600AB1295 /* CallVCEnterPipOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7749C825A47E2600AB1295 /* CallVCEnterPipOperation.swift */; };
+		EC7749CB25A48E7500AB1295 /* CallVCExitPipOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7749CA25A48E7500AB1295 /* CallVCExitPipOperation.swift */; };
+		EC7749CD25A48F6100AB1295 /* PiPAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7749CC25A48F6100AB1295 /* PiPAnimator.swift */; };
+		EC7749D125A5C58000AB1295 /* PiPView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7749D025A5C58000AB1295 /* PiPView.swift */; };
+		EC7749D325A5C75400AB1295 /* PictureInPicturable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7749D225A5C75400AB1295 /* PictureInPicturable.swift */; };
 		EC85D6AE2477DC89002C44C9 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D6AD2477DC89002C44C9 /* RoundedButton.swift */; };
 		EC85D7142477DCD7002C44C9 /* KeyVerificationScanConfirmationViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D70C2477DCD7002C44C9 /* KeyVerificationScanConfirmationViewState.swift */; };
 		EC85D7152477DCD7002C44C9 /* KeyVerificationScanConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D70D2477DCD7002C44C9 /* KeyVerificationScanConfirmationViewController.swift */; };
@@ -937,6 +954,16 @@
 		EC9A3EC624E1632C00A8CFAE /* PushNotificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9A3EC424E1616900A8CFAE /* PushNotificationStore.swift */; };
 		EC9A3EC724E1634100A8CFAE /* KeyValueStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA87124C823E700DE9EBF /* KeyValueStore.swift */; };
 		EC9A3EC824E1634800A8CFAE /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1CA87424C8259700DE9EBF /* KeychainStore.swift */; };
+		EC9E9B062575AF5C0007C0A0 /* CallVCPresentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9E9B052575AF5C0007C0A0 /* CallVCPresentOperation.swift */; };
+		EC9E9B082575AF730007C0A0 /* CallVCDismissOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9E9B072575AF730007C0A0 /* CallVCDismissOperation.swift */; };
+		EC9E9B0A2575AF8A0007C0A0 /* CallBarPresentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9E9B092575AF8A0007C0A0 /* CallBarPresentOperation.swift */; };
+		EC9E9B0C2575AF9B0007C0A0 /* CallBarDismissOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9E9B0B2575AF9B0007C0A0 /* CallBarDismissOperation.swift */; };
+		EC9E9B0E2575AFB80007C0A0 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9E9B0D2575AFB80007C0A0 /* AsyncOperation.swift */; };
+		EC9E9B102575B33E0007C0A0 /* CallPresenterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9E9B0F2575B33E0007C0A0 /* CallPresenterDelegate.swift */; };
+		EC9E9B112575B3960007C0A0 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DB4F0A223131600065DBFA /* String.swift */; };
+		EC9E9B122575B3A70007C0A0 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DB4F05223015080065DBFA /* Character.swift */; };
+		EC9E9B1425767C460007C0A0 /* CallBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9E9B1325767C460007C0A0 /* CallBar.swift */; };
+		EC9E9B1725767D4B0007C0A0 /* CallBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC9E9B1625767D4B0007C0A0 /* CallBar.xib */; };
 		ECAE7AE524EC0E01002FA813 /* TableViewSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAE7AE424EC0E01002FA813 /* TableViewSections.swift */; };
 		ECAE7AE724EC15F7002FA813 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAE7AE624EC15F7002FA813 /* Section.swift */; };
 		ECAE7AE924EC1888002FA813 /* Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAE7AE824EC1888002FA813 /* Row.swift */; };
@@ -948,6 +975,13 @@
 		ECB101362477D00700CF8C11 /* UniversalLink.m in Sources */ = {isa = PBXBuildFile; fileRef = ECB101352477D00700CF8C11 /* UniversalLink.m */; };
 		ECB5D98F255420F8000AD89C /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB5D98E255420F8000AD89C /* Keychain.swift */; };
 		ECB5D9902554221F000AD89C /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB5D98E255420F8000AD89C /* Keychain.swift */; };
+		ECC4C82F256FA7520010BA44 /* CallPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC4C82E256FA7520010BA44 /* CallPresenter.swift */; };
+		ECD6240F25D45FBB00DC0A0B /* CallBubbleCellBaseContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECD6240925D45FBB00DC0A0B /* CallBubbleCellBaseContentView.xib */; };
+		ECD6241025D45FBB00DC0A0B /* RoomDirectCallStatusBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD6240B25D45FBB00DC0A0B /* RoomDirectCallStatusBubbleCell.swift */; };
+		ECD6241125D45FBB00DC0A0B /* RoomBaseCallBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECD6240C25D45FBB00DC0A0B /* RoomBaseCallBubbleCell.xib */; };
+		ECD6241225D45FBB00DC0A0B /* RoomBaseCallBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD6240D25D45FBB00DC0A0B /* RoomBaseCallBubbleCell.swift */; };
+		ECD6241325D45FBB00DC0A0B /* CallBubbleCellBaseContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD6240E25D45FBB00DC0A0B /* CallBubbleCellBaseContentView.swift */; };
+		ECD6241525D45FC600DC0A0B /* RoomBubbleCellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD6241425D45FC600DC0A0B /* RoomBubbleCellData.swift */; };
 		ECDC15F224AF41D2003437CF /* FormattedBodyParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC15F124AF41D2003437CF /* FormattedBodyParser.swift */; };
 		ECF57A4425090C23004BBF9D /* CreateRoomCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A3825090C23004BBF9D /* CreateRoomCoordinatorBridgePresenter.swift */; };
 		ECF57A4525090C23004BBF9D /* CreateRoomCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF57A3925090C23004BBF9D /* CreateRoomCoordinatorType.swift */; };
@@ -2067,6 +2101,8 @@
 		BABB6681FBD79219B1213D6C /* Pods-RiotTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotTests.debug.xcconfig"; path = "Target Support Files/Pods-RiotTests/Pods-RiotTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E2599D0ECB8DD206624E450B /* Pods-RiotPods-SiriIntents.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-SiriIntents.release.xcconfig"; path = "Target Support Files/Pods-RiotPods-SiriIntents/Pods-RiotPods-SiriIntents.release.xcconfig"; sourceTree = "<group>"; };
 		E4D418D054E4032F2CFA8B51 /* Pods_RiotPods_RiotNSE.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_RiotNSE.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC0E250225BACFE900217CA6 /* MatrixContactsDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MatrixContactsDataSource.h; sourceTree = "<group>"; };
+		EC0E250325BACFE900217CA6 /* MatrixContactsDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MatrixContactsDataSource.m; sourceTree = "<group>"; };
 		EC1CA85124C1DEC400DE9EBF /* EnterPinCodeViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterPinCodeViewModelType.swift; sourceTree = "<group>"; };
 		EC1CA85224C1DEC400DE9EBF /* EnterPinCodeViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterPinCodeViewAction.swift; sourceTree = "<group>"; };
 		EC1CA85324C1DEC400DE9EBF /* EnterPinCodeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterPinCodeViewModel.swift; sourceTree = "<group>"; };
@@ -2130,6 +2166,10 @@
 		EC51E7A42514D2E100AAE7DB /* RoomInfoListViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomInfoListViewAction.swift; sourceTree = "<group>"; };
 		EC51E7A52514D2E100AAE7DB /* RoomInfoCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomInfoCoordinatorType.swift; sourceTree = "<group>"; };
 		EC619C1824DAD96000663A80 /* UIScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollView.swift; sourceTree = "<group>"; };
+		EC6D9D2425B9A5CE00B79D10 /* CallTransferSelectContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallTransferSelectContactViewController.swift; sourceTree = "<group>"; };
+		EC6D9D2525B9A5CE00B79D10 /* CallTransferSelectContactViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CallTransferSelectContactViewController.storyboard; sourceTree = "<group>"; };
+		EC6D9D2825B9A61800B79D10 /* CallTransferMainViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CallTransferMainViewController.storyboard; sourceTree = "<group>"; };
+		EC6D9D2925B9A61800B79D10 /* CallTransferMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallTransferMainViewController.swift; sourceTree = "<group>"; };
 		EC711B4524A63B13008F830C /* MXRecoveryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MXRecoveryService.swift; sourceTree = "<group>"; };
 		EC711B4A24A63B36008F830C /* SecretsSetupRecoveryKeyViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryKeyViewModelType.swift; sourceTree = "<group>"; };
 		EC711B4B24A63B36008F830C /* SecretsSetupRecoveryKeyCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryKeyCoordinatorType.swift; sourceTree = "<group>"; };
@@ -2180,6 +2220,18 @@
 		EC711BA624A63B58008F830C /* SecureBackupBannerPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureBackupBannerPreferences.swift; sourceTree = "<group>"; };
 		EC711BA824A63B58008F830C /* SecureBackupBannerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecureBackupBannerCell.xib; sourceTree = "<group>"; };
 		EC711BB524A63C11008F830C /* AuthenticatedSessionViewControllerFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticatedSessionViewControllerFactory.swift; sourceTree = "<group>"; };
+		EC757B2125B85C7F00DF5787 /* DialpadViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DialpadViewController.storyboard; sourceTree = "<group>"; };
+		EC757B2225B85C7F00DF5787 /* DialpadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialpadViewController.swift; sourceTree = "<group>"; };
+		EC757B2425B85C7F00DF5787 /* DialpadButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialpadButton.swift; sourceTree = "<group>"; };
+		EC757B2525B85C7F00DF5787 /* DialpadActionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialpadActionButton.swift; sourceTree = "<group>"; };
+		EC757B2B25B864DA00DF5787 /* CustomSizedPresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSizedPresentable.swift; sourceTree = "<group>"; };
+		EC757B2C25B864DA00DF5787 /* CustomSizedPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSizedPresentationController.swift; sourceTree = "<group>"; };
+		EC757B2F25B8671000DF5787 /* DialpadConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialpadConfiguration.swift; sourceTree = "<group>"; };
+		EC7749C825A47E2600AB1295 /* CallVCEnterPipOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallVCEnterPipOperation.swift; sourceTree = "<group>"; };
+		EC7749CA25A48E7500AB1295 /* CallVCExitPipOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallVCExitPipOperation.swift; sourceTree = "<group>"; };
+		EC7749CC25A48F6100AB1295 /* PiPAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiPAnimator.swift; sourceTree = "<group>"; };
+		EC7749D025A5C58000AB1295 /* PiPView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiPView.swift; sourceTree = "<group>"; };
+		EC7749D225A5C75400AB1295 /* PictureInPicturable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureInPicturable.swift; sourceTree = "<group>"; };
 		EC85D6AD2477DC89002C44C9 /* RoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		EC85D70C2477DCD7002C44C9 /* KeyVerificationScanConfirmationViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationScanConfirmationViewState.swift; sourceTree = "<group>"; };
 		EC85D70D2477DCD7002C44C9 /* KeyVerificationScanConfirmationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationScanConfirmationViewController.swift; sourceTree = "<group>"; };
@@ -2212,6 +2264,14 @@
 		EC85D750247C0E8F002C44C9 /* UNUserNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNUserNotificationCenter.swift; sourceTree = "<group>"; };
 		EC85D753247C0F5B002C44C9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		EC9A3EC424E1616900A8CFAE /* PushNotificationStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushNotificationStore.swift; sourceTree = "<group>"; };
+		EC9E9B052575AF5C0007C0A0 /* CallVCPresentOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVCPresentOperation.swift; sourceTree = "<group>"; };
+		EC9E9B072575AF730007C0A0 /* CallVCDismissOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVCDismissOperation.swift; sourceTree = "<group>"; };
+		EC9E9B092575AF8A0007C0A0 /* CallBarPresentOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallBarPresentOperation.swift; sourceTree = "<group>"; };
+		EC9E9B0B2575AF9B0007C0A0 /* CallBarDismissOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallBarDismissOperation.swift; sourceTree = "<group>"; };
+		EC9E9B0D2575AFB80007C0A0 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
+		EC9E9B0F2575B33E0007C0A0 /* CallPresenterDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallPresenterDelegate.swift; sourceTree = "<group>"; };
+		EC9E9B1325767C460007C0A0 /* CallBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallBar.swift; sourceTree = "<group>"; };
+		EC9E9B1625767D4B0007C0A0 /* CallBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CallBar.xib; sourceTree = "<group>"; };
 		ECAE7AE424EC0E01002FA813 /* TableViewSections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewSections.swift; sourceTree = "<group>"; };
 		ECAE7AE624EC15F7002FA813 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		ECAE7AE824EC1888002FA813 /* Row.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Row.swift; sourceTree = "<group>"; };
@@ -2223,6 +2283,13 @@
 		ECB101342477D00700CF8C11 /* UniversalLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UniversalLink.h; sourceTree = "<group>"; };
 		ECB101352477D00700CF8C11 /* UniversalLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UniversalLink.m; sourceTree = "<group>"; };
 		ECB5D98E255420F8000AD89C /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
+		ECC4C82E256FA7520010BA44 /* CallPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallPresenter.swift; sourceTree = "<group>"; };
+		ECD6240925D45FBB00DC0A0B /* CallBubbleCellBaseContentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallBubbleCellBaseContentView.xib; sourceTree = "<group>"; };
+		ECD6240B25D45FBB00DC0A0B /* RoomDirectCallStatusBubbleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomDirectCallStatusBubbleCell.swift; sourceTree = "<group>"; };
+		ECD6240C25D45FBB00DC0A0B /* RoomBaseCallBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomBaseCallBubbleCell.xib; sourceTree = "<group>"; };
+		ECD6240D25D45FBB00DC0A0B /* RoomBaseCallBubbleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomBaseCallBubbleCell.swift; sourceTree = "<group>"; };
+		ECD6240E25D45FBB00DC0A0B /* CallBubbleCellBaseContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallBubbleCellBaseContentView.swift; sourceTree = "<group>"; };
+		ECD6241425D45FC600DC0A0B /* RoomBubbleCellData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomBubbleCellData.swift; sourceTree = "<group>"; };
 		ECDC15F124AF41D2003437CF /* FormattedBodyParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattedBodyParser.swift; sourceTree = "<group>"; };
 		ECF57A3825090C23004BBF9D /* CreateRoomCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateRoomCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
 		ECF57A3925090C23004BBF9D /* CreateRoomCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateRoomCoordinatorType.swift; sourceTree = "<group>"; };
@@ -3555,6 +3622,7 @@
 		B1B5567620EE6C4C00210D55 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				EC6D9D2325B9A5CE00B79D10 /* CallTransfer */,
 				ECF57A3725090C23004BBF9D /* CreateRoom */,
 				B1BB648724FD07B3008238AE /* Application */,
 				B10A3E9524FE86AE007C380F /* SplitView */,
@@ -3876,6 +3944,7 @@
 		B1B556CD20EE6C4C00210D55 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				EC757B2A25B864DA00DF5787 /* Presentation */,
 				EC51E78E2510B7B900AAE7DB /* TableView */,
 				ECF57A5F25093B04004BBF9D /* SectionHeaders */,
 				ECF57A5C2509264B004BBF9D /* Views */,
@@ -3938,6 +4007,7 @@
 		B1B556DC20EE6C4C00210D55 /* Call */ = {
 			isa = PBXGroup;
 			children = (
+				EC757B2025B85C7F00DF5787 /* Dialpad */,
 				B1B556DD20EE6C4C00210D55 /* CallViewController.h */,
 				B1B556DF20EE6C4C00210D55 /* CallViewController.m */,
 				B1B556DE20EE6C4C00210D55 /* CallViewController.xib */,
@@ -4170,6 +4240,7 @@
 				B1B5577B20EE84BE00210D55 /* CircleButton.m */,
 				B1B5577A20EE84BD00210D55 /* IncomingCallView.h */,
 				B1B5577C20EE84BF00210D55 /* IncomingCallView.m */,
+				EC9E9B1525767D3A0007C0A0 /* CallBar */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -4422,6 +4493,7 @@
 		B1B5583F20EF768E00210D55 /* BubbleCells */ = {
 			isa = PBXGroup;
 			children = (
+				ECD6240825D45FBB00DC0A0B /* Call */,
 				ECFBD5E6250F97FC00DD5F5A /* RoomCreationCollapsedBubbleCell.h */,
 				ECFBD5E9250F97FC00DD5F5A /* RoomCreationCollapsedBubbleCell.m */,
 				ECFBD5E4250F97FC00DD5F5A /* RoomCreationCollapsedBubbleCell.xib */,
@@ -4660,6 +4732,7 @@
 		B1B5597C20EFC3DF00210D55 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				ECC4C82D256FA73E0010BA44 /* Call */,
 				EC1CA87824C8840B00DE9EBF /* LocalAuthentication */,
 				EC1CA87324C8257F00DE9EBF /* KeyValueStorage */,
 				B185145324B7CF9500EE19EA /* AppVersion */,
@@ -5132,6 +5205,35 @@
 			path = RoomInfo;
 			sourceTree = "<group>";
 		};
+		EC6D9D2325B9A5CE00B79D10 /* CallTransfer */ = {
+			isa = PBXGroup;
+			children = (
+				EC6D9D2925B9A61800B79D10 /* CallTransferMainViewController.swift */,
+				EC6D9D2825B9A61800B79D10 /* CallTransferMainViewController.storyboard */,
+				EC6D9D2C25B9D07400B79D10 /* SelectContact */,
+			);
+			path = CallTransfer;
+			sourceTree = "<group>";
+		};
+		EC6D9D2C25B9D07400B79D10 /* SelectContact */ = {
+			isa = PBXGroup;
+			children = (
+				EC6D9D2425B9A5CE00B79D10 /* CallTransferSelectContactViewController.swift */,
+				EC6D9D2525B9A5CE00B79D10 /* CallTransferSelectContactViewController.storyboard */,
+				EC6D9D2D25B9D08000B79D10 /* Cells */,
+				EC0E250225BACFE900217CA6 /* MatrixContactsDataSource.h */,
+				EC0E250325BACFE900217CA6 /* MatrixContactsDataSource.m */,
+			);
+			path = SelectContact;
+			sourceTree = "<group>";
+		};
+		EC6D9D2D25B9D08000B79D10 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		EC711B4724A63B36008F830C /* Secrets */ = {
 			isa = PBXGroup;
 			children = (
@@ -5280,6 +5382,35 @@
 			path = AuthenticatedSession;
 			sourceTree = "<group>";
 		};
+		EC757B2025B85C7F00DF5787 /* Dialpad */ = {
+			isa = PBXGroup;
+			children = (
+				EC757B2F25B8671000DF5787 /* DialpadConfiguration.swift */,
+				EC757B2125B85C7F00DF5787 /* DialpadViewController.storyboard */,
+				EC757B2225B85C7F00DF5787 /* DialpadViewController.swift */,
+				EC757B2325B85C7F00DF5787 /* Views */,
+			);
+			path = Dialpad;
+			sourceTree = "<group>";
+		};
+		EC757B2325B85C7F00DF5787 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				EC757B2425B85C7F00DF5787 /* DialpadButton.swift */,
+				EC757B2525B85C7F00DF5787 /* DialpadActionButton.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		EC757B2A25B864DA00DF5787 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				EC757B2B25B864DA00DF5787 /* CustomSizedPresentable.swift */,
+				EC757B2C25B864DA00DF5787 /* CustomSizedPresentationController.swift */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
 		EC85D70B2477DCD7002C44C9 /* ScanConfirmation */ = {
 			isa = PBXGroup;
 			children = (
@@ -5342,6 +5473,28 @@
 			path = RiotNSE;
 			sourceTree = "<group>";
 		};
+		EC9E9B042575AF460007C0A0 /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				EC9E9B052575AF5C0007C0A0 /* CallVCPresentOperation.swift */,
+				EC7749C825A47E2600AB1295 /* CallVCEnterPipOperation.swift */,
+				EC7749CA25A48E7500AB1295 /* CallVCExitPipOperation.swift */,
+				EC9E9B072575AF730007C0A0 /* CallVCDismissOperation.swift */,
+				EC9E9B092575AF8A0007C0A0 /* CallBarPresentOperation.swift */,
+				EC9E9B0B2575AF9B0007C0A0 /* CallBarDismissOperation.swift */,
+			);
+			path = Operations;
+			sourceTree = "<group>";
+		};
+		EC9E9B1525767D3A0007C0A0 /* CallBar */ = {
+			isa = PBXGroup;
+			children = (
+				EC9E9B1325767C460007C0A0 /* CallBar.swift */,
+				EC9E9B1625767D4B0007C0A0 /* CallBar.xib */,
+			);
+			path = CallBar;
+			sourceTree = "<group>";
+		};
 		ECAE7AEA24EC223D002FA813 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -5359,6 +5512,40 @@
 				ECB5D98E255420F8000AD89C /* Keychain.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		ECC4C82D256FA73E0010BA44 /* Call */ = {
+			isa = PBXGroup;
+			children = (
+				ECC4C82E256FA7520010BA44 /* CallPresenter.swift */,
+				EC9E9B0F2575B33E0007C0A0 /* CallPresenterDelegate.swift */,
+				EC9E9B0D2575AFB80007C0A0 /* AsyncOperation.swift */,
+				EC7749CC25A48F6100AB1295 /* PiPAnimator.swift */,
+				EC7749D025A5C58000AB1295 /* PiPView.swift */,
+				EC7749D225A5C75400AB1295 /* PictureInPicturable.swift */,
+				EC9E9B042575AF460007C0A0 /* Operations */,
+			);
+			path = Call;
+			sourceTree = "<group>";
+		};
+		ECD6240825D45FBB00DC0A0B /* Call */ = {
+			isa = PBXGroup;
+			children = (
+				ECD6240925D45FBB00DC0A0B /* CallBubbleCellBaseContentView.xib */,
+				ECD6240A25D45FBB00DC0A0B /* Direct */,
+				ECD6240C25D45FBB00DC0A0B /* RoomBaseCallBubbleCell.xib */,
+				ECD6240D25D45FBB00DC0A0B /* RoomBaseCallBubbleCell.swift */,
+				ECD6240E25D45FBB00DC0A0B /* CallBubbleCellBaseContentView.swift */,
+			);
+			path = Call;
+			sourceTree = "<group>";
+		};
+		ECD6240A25D45FBB00DC0A0B /* Direct */ = {
+			isa = PBXGroup;
+			children = (
+				ECD6240B25D45FBB00DC0A0B /* RoomDirectCallStatusBubbleCell.swift */,
+			);
+			path = Direct;
 			sourceTree = "<group>";
 		};
 		ECF57A3725090C23004BBF9D /* CreateRoom */ = {
@@ -5567,6 +5754,7 @@
 		F083BBE41E7009EC00A9B29C /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				ECD6241425D45FC600DC0A0B /* RoomBubbleCellData.swift */,
 				ECFBD5D9250A7ABD00DD5F5A /* MXThirdPartyProtocolInstance.swift */,
 				EC711B4524A63B13008F830C /* MXRecoveryService.swift */,
 				ECB1012E2477CFDB00CF8C11 /* UIDevice.swift */,
@@ -5929,6 +6117,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC6D9D2A25B9A61800B79D10 /* CallTransferMainViewController.storyboard in Resources */,
 				B1B5590220EF768F00210D55 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				B1B558CA20EF768F00210D55 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				B152C73522DF599C0041315A /* apple_emojis_data.json in Resources */,
@@ -5988,6 +6177,7 @@
 				B1B558C220EF768F00210D55 /* RoomIncomingEncryptedTextMsgBubbleCell.xib in Resources */,
 				B1B558F620EF768F00210D55 /* RoomOutgoingTextMsgBubbleCell.xib in Resources */,
 				B1B5574D20EE6C4D00210D55 /* MediaPickerViewController.xib in Resources */,
+				ECD6241125D45FBB00DC0A0B /* RoomBaseCallBubbleCell.xib in Resources */,
 				B1B5575020EE6C4D00210D55 /* AuthenticationViewController.xib in Resources */,
 				B1C45A85232A8C2600165425 /* SettingsIdentityServerViewController.storyboard in Resources */,
 				B14F142E22144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewController.storyboard in Resources */,
@@ -6037,10 +6227,13 @@
 				3232AB1522564D9100AD6A5C /* flat-swift4-vector.stencil in Resources */,
 				F083BDE61E7009ED00A9B29C /* busy.mp3 in Resources */,
 				EC711BB324A63B58008F830C /* SecureBackupBannerCell.xib in Resources */,
+				ECD6240F25D45FBB00DC0A0B /* CallBubbleCellBaseContentView.xib in Resources */,
 				B1B5574C20EE6C4D00210D55 /* MediaAlbumContentViewController.xib in Resources */,
 				32607D6F243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewController.storyboard in Resources */,
+				EC757B2625B85C7F00DF5787 /* DialpadViewController.storyboard in Resources */,
 				B1B557E820EF60F500210D55 /* MessagesSearchResultTextMsgBubbleCell.xib in Resources */,
 				B1B558D920EF768F00210D55 /* RoomOutgoingEncryptedAttachmentBubbleCell.xib in Resources */,
+				EC6D9D2725B9A5CE00B79D10 /* CallTransferSelectContactViewController.storyboard in Resources */,
 				B1B5573020EE6C4D00210D55 /* BugReportViewController.xib in Resources */,
 				B169329B20F39E6300746532 /* Main.storyboard in Resources */,
 				B1CE83DB2422817200D07506 /* KeyVerificationVerifyByScanningViewController.storyboard in Resources */,
@@ -6112,6 +6305,7 @@
 				B1C562E5228C7C8D0037F12A /* RoomContextualMenuViewController.storyboard in Resources */,
 				3232ABA2225730E100AD6A5C /* DeviceVerificationStartViewController.storyboard in Resources */,
 				3284A35120A07C210044F922 /* postMessageAPI.js in Resources */,
+				EC9E9B1725767D4B0007C0A0 /* CallBar.xib in Resources */,
 				EC1CA8D424D8103400DE9EBF /* App-Common.xcconfig in Resources */,
 				B1B557A220EF58AD00210D55 /* ContactTableViewCell.xib in Resources */,
 				ECFBD5CE250A7AAF00DD5F5A /* DirectoryNetworkTableHeaderFooterView.xib in Resources */,
@@ -6376,11 +6570,13 @@
 				EC31F09C2524AE1400D407DA /* BiometricsAuthenticationPresenter.swift in Sources */,
 				EC85D752247C0F52002C44C9 /* UNUserNotificationCenter.swift in Sources */,
 				EC9A3EC724E1634100A8CFAE /* KeyValueStore.swift in Sources */,
+				EC9E9B122575B3A70007C0A0 /* Character.swift in Sources */,
 				32FD757A24D2C9BA00BA7B37 /* Bundle.swift in Sources */,
 				EC31F0962521FC5300D407DA /* Strings.swift in Sources */,
 				EC31F0972521FC6300D407DA /* Images.swift in Sources */,
 				EC9A3EC824E1634800A8CFAE /* KeychainStore.swift in Sources */,
 				EC31F0942521FC3700D407DA /* LocalAuthenticationService.swift in Sources */,
+				EC9E9B112575B3960007C0A0 /* String.swift in Sources */,
 				32FD755B24D15C7A00BA7B37 /* Configurable.swift in Sources */,
 				EC85D755247C0F84002C44C9 /* Constants.swift in Sources */,
 			);
@@ -6433,6 +6629,7 @@
 				EC1CA86924C1DEC400DE9EBF /* SetPinCoordinator.swift in Sources */,
 				B1B5574B20EE6C4D00210D55 /* MediaAlbumContentViewController.m in Sources */,
 				ECFBD5CC250A7AAF00DD5F5A /* DirectoryRoomTableViewCell.swift in Sources */,
+				ECD6241325D45FBB00DC0A0B /* CallBubbleCellBaseContentView.swift in Sources */,
 				EC49F5F92515016F003894A6 /* RoomInfoBasicViewData.swift in Sources */,
 				B1B5598820EFC3E000210D55 /* WidgetManager.m in Sources */,
 				B1DB4F0E22316FFF0065DBFA /* UserNameColorGenerator.swift in Sources */,
@@ -6451,6 +6648,7 @@
 				B1BEE74D23E093260003A4CB /* UserVerificationSessionStatusCoordinator.swift in Sources */,
 				B1B5574820EE6C4D00210D55 /* PeopleViewController.m in Sources */,
 				B1B5598720EFC3E000210D55 /* Widget.m in Sources */,
+				EC7749CD25A48F6100AB1295 /* PiPAnimator.swift in Sources */,
 				B1BD71C1238EA92100BA92E2 /* WidgetPermissionViewModel.swift in Sources */,
 				B1B557E320EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.m in Sources */,
 				B1CE9F062216FB09000FAE6A /* EncryptionKeysExportPresenter.swift in Sources */,
@@ -6490,6 +6688,7 @@
 				ECFBD5D0250A7AAF00DD5F5A /* ShowDirectoryViewModel.swift in Sources */,
 				B1B5598620EFC3E000210D55 /* RiotSettings.swift in Sources */,
 				B1CE83D52422817200D07506 /* KeyVerificationVerifyByScanningViewController.swift in Sources */,
+				EC757B2725B85C7F00DF5787 /* DialpadViewController.swift in Sources */,
 				EC711B8D24A63B37008F830C /* SecretsRecoveryGoal.swift in Sources */,
 				3232ABA3225730E100AD6A5C /* DeviceVerificationStartCoordinatorType.swift in Sources */,
 				3232AB4D2256558300AD6A5C /* TemplateScreenCoordinatorType.swift in Sources */,
@@ -6560,6 +6759,7 @@
 				32BF995721FB07A400698084 /* SettingsKeyBackupTableViewSection.swift in Sources */,
 				3291DC8D23E0BFF10009732F /* SecurityViewController.m in Sources */,
 				B18DEDD4243377C10075FEF7 /* KeyVerificationSelfVerifyWaitViewModelType.swift in Sources */,
+				EC7749CB25A48E7500AB1295 /* CallVCExitPipOperation.swift in Sources */,
 				B1C45A88232A8C2600165425 /* SettingsIdentityServerViewState.swift in Sources */,
 				B1C782302500EAF500337EB9 /* TabBarCoordinatorType.swift in Sources */,
 				B1C782322500F96700337EB9 /* SplitViewPresentable.swift in Sources */,
@@ -6582,6 +6782,7 @@
 				B1B5573E20EE6C4D00210D55 /* RiotNavigationController.m in Sources */,
 				B1B5593B20EF7BAC00210D55 /* TableViewCellWithCheckBoxAndLabel.m in Sources */,
 				B1B5581A20EF625800210D55 /* ExpandedRoomTitleView.m in Sources */,
+				EC9E9B1425767C460007C0A0 /* CallBar.swift in Sources */,
 				B1107EC82200B0720038014B /* KeyBackupRecoverSuccessViewController.swift in Sources */,
 				B1BEE74C23E093260003A4CB /* UserVerificationSessionStatusViewController.swift in Sources */,
 				EC711BAB24A63B58008F830C /* SecureBackupSetupIntroViewController.swift in Sources */,
@@ -6599,6 +6800,7 @@
 				B16C028D25A71CA3008CA7B1 /* CustomSchemeURLConstants.swift in Sources */,
 				32DB557F22FDADE50016329E /* ServiceTermsModalScreenCoordinator.swift in Sources */,
 				EC31F014251B53AD00D407DA /* RoomInfoBasicView.swift in Sources */,
+				EC7749D325A5C75400AB1295 /* PictureInPicturable.swift in Sources */,
 				EC1CA85F24C1DEC400DE9EBF /* EnterPinCodeViewModelType.swift in Sources */,
 				B1098C1121ED07E4000DDA48 /* NavigationRouterType.swift in Sources */,
 				B1B5573D20EE6C4D00210D55 /* WebViewViewController.m in Sources */,
@@ -6610,6 +6812,7 @@
 				B1A6C109238828A6002882FD /* SlidingModalPresentationDelegate.swift in Sources */,
 				ECAE7AEE24EFDD1F002FA813 /* MXSessionState.swift in Sources */,
 				EC31F012251B4DBD00D407DA /* RoomInfoListViewData.swift in Sources */,
+				EC0E250425BACFE900217CA6 /* MatrixContactsDataSource.m in Sources */,
 				32DB557722FDADE50016329E /* ServiceTermsModalCoordinator.swift in Sources */,
 				ECF57A4B25090C23004BBF9D /* EnterNewRoomDetailsViewModel.swift in Sources */,
 				B185145B24B8C98200EE19EA /* MajorUpdateViewController.swift in Sources */,
@@ -6675,6 +6878,7 @@
 				B10A3E9324FE8254007C380F /* AppCoordinator.swift in Sources */,
 				B1B5572A20EE6C4D00210D55 /* RoomMemberDetailsViewController.m in Sources */,
 				EC3B066C24AC6ADE000DF9BF /* CrossSigningSetupBannerCell.swift in Sources */,
+				EC757B3025B8671100DF5787 /* DialpadConfiguration.swift in Sources */,
 				ECF57A4E25090C23004BBF9D /* EnterNewRoomDetailsViewModelType.swift in Sources */,
 				B1B5590120EF768F00210D55 /* RoomMembershipExpandedWithPaginationTitleBubbleCell.m in Sources */,
 				32F6B96B2270623100BBA352 /* KeyVerificationDataLoadingViewAction.swift in Sources */,
@@ -6690,6 +6894,7 @@
 				B1CE83D92422817200D07506 /* KeyVerificationVerifyByScanningViewAction.swift in Sources */,
 				B1C45A8B232A8C2600165425 /* SettingsIdentityServerViewModel.swift in Sources */,
 				EC711B8224A63B37008F830C /* SecretsSetupRecoveryPassphraseViewModelType.swift in Sources */,
+				ECD6241025D45FBB00DC0A0B /* RoomDirectCallStatusBubbleCell.swift in Sources */,
 				B12D7A0123E2462200FACEDC /* UserVerificationStartViewModel.swift in Sources */,
 				B1622D2525BF784300C73AE2 /* AuthenticationParametersBuilder.swift in Sources */,
 				B12C56EF2396CB5E00FAC6DE /* RoomMessageURLParser.swift in Sources */,
@@ -6701,6 +6906,8 @@
 				B157FAA623264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsViewController.swift in Sources */,
 				B126768A2523E4D100BE6B98 /* SecretsResetViewModel.swift in Sources */,
 				B1DCC62422E60CA900625807 /* EmojiPickerCategoryViewData.swift in Sources */,
+				ECC4C82F256FA7520010BA44 /* CallPresenter.swift in Sources */,
+				EC7749D125A5C58000AB1295 /* PiPView.swift in Sources */,
 				B1550FCB2420E8F500CE097B /* QRCodeReaderViewController.swift in Sources */,
 				B124BBD725645F3F0028996D /* RoomIdComponents.swift in Sources */,
 				324A2056225FC571004FE8B0 /* DeviceVerificationIncomingCoordinator.swift in Sources */,
@@ -6713,6 +6920,7 @@
 				B1BEE74B23E093260003A4CB /* UserVerificationSessionStatusViewAction.swift in Sources */,
 				B1098C1021ED07E4000DDA48 /* Presentable.swift in Sources */,
 				B1BEE73923DF44A60003A4CB /* UserVerificationSessionsStatusViewController.swift in Sources */,
+				EC757B2825B85C7F00DF5787 /* DialpadButton.swift in Sources */,
 				B1B558E020EF768F00210D55 /* RoomOutgoingTextMsgBubbleCell.m in Sources */,
 				EC711B7824A63B37008F830C /* SecretsSetupRecoveryKeyViewModel.swift in Sources */,
 				B1C562E3228C7C8D0037F12A /* RoomContextualMenuPresenter.swift in Sources */,
@@ -6752,6 +6960,7 @@
 				B1B5572520EE6C4D00210D55 /* RoomMessagesSearchViewController.m in Sources */,
 				B197B7C6243DE947005ABBF3 /* EncryptionTrustLevelBadgeImageHelper.swift in Sources */,
 				EC51E7A82514D2E100AAE7DB /* RoomInfoListViewController.swift in Sources */,
+				EC9E9B0A2575AF8A0007C0A0 /* CallBarPresentOperation.swift in Sources */,
 				B12D79FD23E2462200FACEDC /* UserVerificationStartViewModelType.swift in Sources */,
 				B1C543AE23A286A000DCA1FA /* KeyVerificationRequestStatusBubbleCell.swift in Sources */,
 				B139C22121FE5D9D00BB68EC /* KeyBackupRecoverFromPassphraseViewState.swift in Sources */,
@@ -6767,6 +6976,7 @@
 				EC711B7524A63B37008F830C /* SecretsSetupRecoveryKeyCoordinatorType.swift in Sources */,
 				B1DCC63722E8541700625807 /* EmojiStore.swift in Sources */,
 				3232ABA6225730E100AD6A5C /* DeviceVerificationStartViewController.swift in Sources */,
+				EC757B2D25B864DA00DF5787 /* CustomSizedPresentable.swift in Sources */,
 				B16932EA20F3C39000746532 /* UnifiedSearchRecentsDataSource.m in Sources */,
 				B16D6354257D8FB0008BDC97 /* SocialLoginButtonFactory.swift in Sources */,
 				B10A3E9924FE86AF007C380F /* SplitViewCoordinator.swift in Sources */,
@@ -6784,6 +6994,7 @@
 				B125FE1F231D5DF700B72806 /* SettingsDiscoveryViewModelType.swift in Sources */,
 				EC85D7162477DCD7002C44C9 /* KeyVerificationScanConfirmationViewAction.swift in Sources */,
 				EC711BAF24A63B58008F830C /* SecureBackupSetupCoordinatorType.swift in Sources */,
+				EC9E9B082575AF730007C0A0 /* CallVCDismissOperation.swift in Sources */,
 				ECFBD5D4250A7AAF00DD5F5A /* ShowDirectoryCoordinatorType.swift in Sources */,
 				B1622D2325BF2E6500C73AE2 /* AuthenticationSessionParameters.swift in Sources */,
 				EC1CA89C24C9C9A200DE9EBF /* SetupBiometricsViewModel.swift in Sources */,
@@ -6801,6 +7012,7 @@
 				B1B5583120EF66BA00210D55 /* RoomIdOrAliasTableViewCell.m in Sources */,
 				B1CA3A2921EF692B000D1D89 /* UIView.swift in Sources */,
 				B1A6C10D23882D1D002882FD /* SlidingModalPresentationController.swift in Sources */,
+				EC757B2925B85C7F00DF5787 /* DialpadActionButton.swift in Sources */,
 				32A6001D22C661100042C1D9 /* EditHistoryCoordinatorType.swift in Sources */,
 				F083BDFA1E7009ED00A9B29C /* RoomPreviewData.m in Sources */,
 				B1B557B420EF5AEF00210D55 /* EventDetailsView.m in Sources */,
@@ -6811,11 +7023,14 @@
 				B1CE83E22422817200D07506 /* KeyVerificationVerifyBySASViewState.swift in Sources */,
 				EC51E7AF2514D2E100AAE7DB /* RoomInfoListViewAction.swift in Sources */,
 				B1DCC62822E60CE300625807 /* EmojiCategory.swift in Sources */,
+				EC7749C925A47E2600AB1295 /* CallVCEnterPipOperation.swift in Sources */,
 				B14084CC23BF9DE90010F692 /* KeyVerificationConclusionWithPaginationTitleBubbleCell.swift in Sources */,
 				B1CE83D62422817200D07506 /* KeyVerificationVerifyByScanningCoordinator.swift in Sources */,
 				B1B5578F20EF568D00210D55 /* GroupTableViewCell.m in Sources */,
 				32D5D16023E1EE2700E3E37C /* ManageSessionViewController.m in Sources */,
+				EC9E9B062575AF5C0007C0A0 /* CallVCPresentOperation.swift in Sources */,
 				B1B5573220EE6C4D00210D55 /* GroupHomeViewController.m in Sources */,
+				EC757B2E25B864DA00DF5787 /* CustomSizedPresentationController.swift in Sources */,
 				B1B5595220EF9A8700210D55 /* RecentTableViewCell.m in Sources */,
 				B158253B2475350A00604D79 /* EventFormatter+DTCoreTextFix.m in Sources */,
 				EC711B9824A63B37008F830C /* SecretsRecoveryCoordinatorBridgePresenter.swift in Sources */,
@@ -6858,6 +7073,8 @@
 				EC1CA89624C9C9A200DE9EBF /* SetupBiometricsCoordinator.swift in Sources */,
 				EC711B9024A63B37008F830C /* SecretsRecoveryWithKeyCoordinator.swift in Sources */,
 				B1A6C10723881EF2002882FD /* SlidingModalPresenter.swift in Sources */,
+				ECD6241225D45FBB00DC0A0B /* RoomBaseCallBubbleCell.swift in Sources */,
+				EC9E9B102575B33E0007C0A0 /* CallPresenterDelegate.swift in Sources */,
 				B1B5573520EE6C4D00210D55 /* GroupDetailsViewController.m in Sources */,
 				B12D7A0223E2462200FACEDC /* UserVerificationStartViewAction.swift in Sources */,
 				EC85D7372477DD97002C44C9 /* LocalContactsSectionHeaderContainerView.m in Sources */,
@@ -6898,11 +7115,13 @@
 				B169746B25C21BDC00E6B3FB /* CrossSigningSetupCoordinator.swift in Sources */,
 				EC711B8024A63B37008F830C /* SecretsSetupRecoveryPassphraseViewState.swift in Sources */,
 				B1C45A89232A8C2600165425 /* SettingsIdentityServerViewController.swift in Sources */,
+				EC6D9D2B25B9A61800B79D10 /* CallTransferMainViewController.swift in Sources */,
 				EC85D7152477DCD7002C44C9 /* KeyVerificationScanConfirmationViewController.swift in Sources */,
 				ECFBD5FE250FA59B00DD5F5A /* RoomCreationEventsModalViewModel.swift in Sources */,
 				B14F143322144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyViewModel.swift in Sources */,
 				B1B336C0242B933700F95EC4 /* KeyVerificationSelfVerifyStartViewModelType.swift in Sources */,
 				32A6001822C661100042C1D9 /* EditHistoryViewModel.swift in Sources */,
+				EC9E9B0C2575AF9B0007C0A0 /* CallBarDismissOperation.swift in Sources */,
 				32607D6E243E0A55006674CC /* KeyBackupRecoverFromPrivateKeyViewModelType.swift in Sources */,
 				B1B558D020EF768F00210D55 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				B1B558CF20EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
@@ -6993,6 +7212,7 @@
 				B1098C0D21ED07E4000DDA48 /* NavigationRouter.swift in Sources */,
 				EC711B8E24A63B37008F830C /* SecretsRecoveryMode.swift in Sources */,
 				B110872321F098F0003554A5 /* ActivityIndicatorPresenterType.swift in Sources */,
+				EC6D9D2625B9A5CE00B79D10 /* CallTransferSelectContactViewController.swift in Sources */,
 				B139C22321FF01B200BB68EC /* KeyBackupRecoverFromPassphraseCoordinatorType.swift in Sources */,
 				B14084CE23BFA0990010F692 /* KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell.swift in Sources */,
 				B14F143222144F6500FA0595 /* KeyBackupRecoverFromRecoveryKeyCoordinator.swift in Sources */,
@@ -7047,6 +7267,7 @@
 				F083BDF91E7009ED00A9B29C /* RoomEmailInvitation.m in Sources */,
 				B17DA77B25C8B085003FA4C1 /* ReauthFallBackViewController.swift in Sources */,
 				EC85D7272477DCF2002C44C9 /* KeyVerificationManuallyVerifyViewController.swift in Sources */,
+				ECD6241525D45FC600DC0A0B /* RoomBubbleCellData.swift in Sources */,
 				ECFBD5CF250A7AAF00DD5F5A /* DirectoryNetworkTableHeaderFooterView.swift in Sources */,
 				B1D211E422C18E3800D939BD /* ReactionsMenuViewModelType.swift in Sources */,
 				324A2055225FC571004FE8B0 /* DeviceVerificationIncomingViewModelType.swift in Sources */,
@@ -7085,6 +7306,7 @@
 				32242F0921E8B05F00725742 /* UIColor.swift in Sources */,
 				B16932E720F3C37100746532 /* HomeMessagesSearchDataSource.m in Sources */,
 				B1B4E9C224D471FD004D5C33 /* BubbleReactionsViewSizer.m in Sources */,
+				EC9E9B0E2575AFB80007C0A0 /* AsyncOperation.swift in Sources */,
 				B12D79FF23E2462200FACEDC /* UserVerificationStartViewState.swift in Sources */,
 				B1B558CE20EF768F00210D55 /* RoomOutgoingEncryptedAttachmentBubbleCell.m in Sources */,
 				B1B5577D20EE84BF00210D55 /* CircleButton.m in Sources */,

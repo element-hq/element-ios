@@ -28,20 +28,19 @@
 
 #import "IncomingCallView.h"
 
-@interface CallViewController ()
+@interface CallViewController () <PictureInPicturable, DialpadViewControllerDelegate, CallTransferMainViewControllerDelegate>
 {
-    // Display a gradient view above the screen
-    CAGradientLayer* gradientMaskLayer;
-    
     // Current alert (if any).
     UIAlertController *currentAlert;
     
-    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
-    id kThemeServiceDidChangeThemeNotificationObserver;
-
     // Flag to compute self.shouldPromptForStunServerFallback
     BOOL promptForStunServerFallback;
 }
+
+@property (nonatomic, strong) id<Theme> overriddenTheme;
+@property (nonatomic, assign) BOOL inPiP;
+
+@property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
 
 @end
 
@@ -63,26 +62,22 @@
 {
     [super viewDidLoad];
     
-    UIColor *unselectedColor = ThemeService.shared.theme.tabBarUnselectedItemTintColor;
-    UIColor *selectedColor = ThemeService.shared.theme.tintColor;
-    
     // Back button
     
-    UIImage *backButtonImage = [[UIImage imageNamed:@"back_icon"] vc_tintedImageUsingColor:selectedColor];
+    UIImage *backButtonImage = [UIImage imageNamed:@"back_icon"];
     [self.backToAppButton setImage:backButtonImage forState:UIControlStateNormal];
     [self.backToAppButton setImage:backButtonImage forState:UIControlStateHighlighted];
     
     // Camera switch
     
-    UIImage *cameraSwitchButtonImage = [[UIImage imageNamed:@"camera_switch"] vc_tintedImageUsingColor:selectedColor];
+    UIImage *cameraSwitchButtonImage = [UIImage imageNamed:@"camera_switch"];
     [self.cameraSwitchButton setImage:cameraSwitchButtonImage forState:UIControlStateNormal];
     [self.cameraSwitchButton setImage:cameraSwitchButtonImage forState:UIControlStateHighlighted];
     
     // Audio mute
     
-    UIImage *audioMuteOffButtonImage = [[UIImage imageNamed:@"call_audio_mute_off_icon"] vc_tintedImageUsingColor:unselectedColor];
-    
-    UIImage *audioMuteOnButtonImage = [[UIImage imageNamed:@"call_audio_mute_on_icon"] vc_tintedImageUsingColor:unselectedColor];
+    UIImage *audioMuteOffButtonImage = [UIImage imageNamed:@"call_audio_mute_off_icon"];
+    UIImage *audioMuteOnButtonImage = [UIImage imageNamed:@"call_audio_mute_on_icon"];
     
     [self.audioMuteButton setImage:audioMuteOffButtonImage forState:UIControlStateNormal];
     [self.audioMuteButton setImage:audioMuteOffButtonImage forState:UIControlStateHighlighted];
@@ -90,123 +85,60 @@
     
     // Video mute
     
-    UIImage *videoOffButtonImage = [[UIImage imageNamed:@"call_video_mute_off_icon"] vc_tintedImageUsingColor:unselectedColor];
-    UIImage *videoOnButtonImage = [[UIImage imageNamed:@"call_video_mute_on_icon"] vc_tintedImageUsingColor:unselectedColor];
+    UIImage *videoOffButtonImage = [UIImage imageNamed:@"call_video_mute_off_icon"];
+    UIImage *videoOnButtonImage = [UIImage imageNamed:@"call_video_mute_on_icon"];
     
     [self.videoMuteButton setImage:videoOffButtonImage forState:UIControlStateNormal];
     [self.videoMuteButton setImage:videoOffButtonImage forState:UIControlStateHighlighted];
     [self.videoMuteButton setImage:videoOnButtonImage forState:UIControlStateSelected];
     
-    // Speaker
+    //  More
     
-    UIImage *speakerOffButtonImage = [[UIImage imageNamed:@"call_speaker_off_icon"] vc_tintedImageUsingColor:unselectedColor];
-    UIImage *speakerOnButtonImage = [[UIImage imageNamed:@"call_speaker_on_icon"] vc_tintedImageUsingColor:unselectedColor];
-    [self.speakerButton setImage:speakerOffButtonImage forState:UIControlStateNormal];
-    [self.speakerButton setImage:speakerOnButtonImage forState:UIControlStateSelected];
+    UIImage *moreButtonImage = [UIImage imageNamed:@"call_more_icon"];
     
-    // Chat
-    
-    UIImage *chatButtonImage = [[UIImage imageNamed:@"call_chat_icon"] vc_tintedImageUsingColor:unselectedColor];
-    [self.chatButton setImage:chatButtonImage forState:UIControlStateNormal];
-    [self.chatButton setImage:chatButtonImage forState:UIControlStateHighlighted];
+    [self.moreButton setImage:moreButtonImage forState:UIControlStateNormal];
     
     // Hang up
     
-    UIImage *hangUpButtonImage = [[UIImage imageNamed:@"call_hangup_large"] vc_tintedImageUsingColor:ThemeService.shared.theme.noticeColor];
+    UIImage *hangUpButtonImage = [UIImage imageNamed:@"call_hangup_large"];
     
     [self.endCallButton setTitle:nil forState:UIControlStateNormal];
     [self.endCallButton setTitle:nil forState:UIControlStateHighlighted];
     [self.endCallButton setImage:hangUpButtonImage forState:UIControlStateNormal];
     [self.endCallButton setImage:hangUpButtonImage forState:UIControlStateHighlighted];
     
-    // Define caller image view size
-    CGSize size = [[UIScreen mainScreen] bounds].size;
-    CGFloat minSize = MIN(size.width, size.height);
-    self.callerImageViewWidthConstraint.constant = minSize / 2;
-    
     [self updateLocalPreviewLayout];
     
-    // Observe user interface theme change.
-    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        [self userInterfaceThemeDidChange];
-        
-    }];
-    [self userInterfaceThemeDidChange];
+    [self configureUserInterface];
 }
 
-- (void)userInterfaceThemeDidChange
+- (UIStatusBarStyle)preferredStatusBarStyle
 {
-    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    return self.overriddenTheme.statusBarStyle;
+}
 
-    self.barTitleColor = ThemeService.shared.theme.textPrimaryColor;
-    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
+- (void)configureUserInterface
+{
+    if (@available(iOS 13.0, *)) {
+        self.overrideUserInterfaceStyle = self.overriddenTheme.userInterfaceStyle;
+    }
     
-    self.callerNameLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
-    self.callStatusLabel.textColor = ThemeService.shared.theme.baseTextSecondaryColor;
+    [self.overriddenTheme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+
+    self.barTitleColor = self.overriddenTheme.textPrimaryColor;
+    self.activityIndicator.backgroundColor = self.overriddenTheme.overlayBackgroundColor;
     
-    self.localPreviewContainerView.layer.borderColor = ThemeService.shared.theme.tintColor.CGColor;
+    self.backToAppButton.tintColor = self.overriddenTheme.callScreenButtonTintColor;
+    self.cameraSwitchButton.tintColor = self.overriddenTheme.callScreenButtonTintColor;
+    self.callerNameLabel.textColor = self.overriddenTheme.baseTextPrimaryColor;
+    self.callStatusLabel.textColor = self.overriddenTheme.baseTextPrimaryColor;
+    [self.resumeButton setTitleColor:self.overriddenTheme.tintColor
+                            forState:UIControlStateNormal];
+    
+    self.localPreviewContainerView.layer.borderColor = self.overriddenTheme.tintColor.CGColor;
     self.localPreviewContainerView.layer.borderWidth = 2;
     self.localPreviewContainerView.layer.cornerRadius = 5;
     self.localPreviewContainerView.clipsToBounds = YES;
-    
-    self.remotePreviewContainerView.backgroundColor = ThemeService.shared.theme.backgroundColor;
-    
-    if (gradientMaskLayer)
-    {
-        [gradientMaskLayer removeFromSuperlayer];
-    }
-    
-    // Add a gradient mask programatically at the top of the screen (background of the call information (name, status))
-    gradientMaskLayer = [CAGradientLayer layer];
-    
-    // Consider the grayscale components of the ThemeService.shared.theme.backgroundColor.
-    CGFloat white = 1.0;
-    [ThemeService.shared.theme.backgroundColor getWhite:&white alpha:nil];
-    
-    CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
-    CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
-    
-    gradientMaskLayer.colors = @[(__bridge id) opaqueWhiteColor, (__bridge id) transparentWhiteColor];
-    
-    gradientMaskLayer.bounds = CGRectMake(0, 0, self.callContainerView.frame.size.width, self.callContainerView.frame.size.height + 20);
-    gradientMaskLayer.anchorPoint = CGPointZero;
-    
-    // CAConstraint is not supported on IOS.
-    // it seems only being supported on Mac OS.
-    // so viewDidLayoutSubviews will refresh the layout bounds.
-    [self.gradientMaskContainerView.layer addSublayer:gradientMaskLayer];
-    
-    self.callControlsBackgroundView.backgroundColor = ThemeService.shared.theme.baseColor;
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    // Hide the status bar on the call view controller.
-    return YES;
-}
-
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    
-    // sanity check
-    if (gradientMaskLayer)
-    {
-        CGRect currentBounds = gradientMaskLayer.bounds;
-        CGRect newBounds = CGRectMake(0, 0, self.callContainerView.frame.size.width, self.callContainerView.frame.size.height + 20);
-        
-        // check if there is an update
-        if (!CGSizeEqualToSize(currentBounds.size, newBounds.size))
-        {
-            newBounds.origin = CGPointZero;
-            gradientMaskLayer.bounds = newBounds;
-        }
-    }
-    
-    // The caller image view is circular
-    self.callerImageView.layer.cornerRadius = self.callerImageViewWidthConstraint.constant / 2;
-    self.callerImageView.clipsToBounds = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -222,23 +154,37 @@
 
 #pragma mark - override MXKViewController
 
-- (void)destroy
-{
-    [super destroy];
-    
-    if (kThemeServiceDidChangeThemeNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
-        kThemeServiceDidChangeThemeNotificationObserver = nil;
-    }
-    
-    [gradientMaskLayer removeFromSuperlayer];
-    gradientMaskLayer = nil;
-}
-
 - (UIView *)createIncomingCallView
 {
-    return nil;
+    if ([MXCallKitAdapter callKitAvailable])
+    {
+        return nil;
+    }
+    
+    NSString *callInfo;
+    if (self.mxCall.isVideoCall)
+        callInfo = NSLocalizedStringFromTable(@"call_incoming_video", @"Vector", nil);
+    else
+        callInfo = NSLocalizedStringFromTable(@"call_incoming_voice", @"Vector", nil);
+    
+    IncomingCallView *incomingCallView = [[IncomingCallView alloc] initWithCallerAvatar:self.peer.avatarUrl
+                                                                           mediaManager:self.mainSession.mediaManager
+                                                                       placeholderImage:self.picturePlaceholder
+                                                                             callerName:self.peer.displayname
+                                                                               callInfo:callInfo];
+    
+    // Incoming call is retained by call vc so use weak to avoid retain cycle
+    __weak typeof(self) weakSelf = self;
+    
+    incomingCallView.onAnswer = ^{
+        [weakSelf onButtonPressed:weakSelf.answerCallButton];
+    };
+    
+    incomingCallView.onReject = ^{
+        [weakSelf onButtonPressed:weakSelf.rejectCallButton];
+    };
+    
+    return incomingCallView;
 }
 
 #pragma mark - MXCallDelegate
@@ -250,7 +196,7 @@
     [self checkStunServerFallbackWithCallState:state];
 }
 
-- (void)call:(MXCall *)call didEncounterError:(NSError *)error
+- (void)call:(MXCall *)call didEncounterError:(NSError *)error reason:(MXCallHangupReason)reason
 {
     if ([error.domain isEqualToString:MXEncryptingErrorDomain]
         && error.code == MXEncryptingErrorUnknownDeviceCode)
@@ -296,7 +242,7 @@
                                                                    else
                                                                    {
                                                                        // Ignore the call
-                                                                       [call hangup];
+                                                                       [call hangupWithReason:reason];
                                                                    }
                                                                }];
                                                                
@@ -350,7 +296,7 @@
     }
     else
     {
-        [super call:call didEncounterError:error];
+        [super call:call didEncounterError:error reason:reason];
     }
 }
 
@@ -392,6 +338,27 @@
 
 #pragma mark - Properties
 
+- (id<Theme>)overriddenTheme
+{
+    if (_overriddenTheme == nil)
+    {
+        _overriddenTheme = [DarkTheme new];
+    }
+    return _overriddenTheme;
+}
+
+- (void)setMxCall:(MXCall *)mxCall
+{
+    [super setMxCall:mxCall];
+    
+    if (self.videoMuteButton.isHidden)
+    {
+        //  shift more button to left
+        self.moreButtonLeadingConstraint.constant = 8.0;
+        [self.view layoutIfNeeded];
+    }
+}
+
 - (UIImage*)picturePlaceholder
 {
     CGFloat fontSize = floor(self.callerImageViewWidthConstraint.constant * 0.7);
@@ -399,22 +366,21 @@
     if (self.peer)
     {
         // Use the vector style placeholder
-        return [AvatarGenerator generateAvatarForMatrixItem:self.peer.userId withDisplayName:self.peer.displayname size:self.callerImageViewWidthConstraint.constant andFontSize:fontSize];
+        return [AvatarGenerator generateAvatarForMatrixItem:self.peer.userId
+                                            withDisplayName:self.peer.displayname
+                                                       size:self.callerImageViewWidthConstraint.constant
+                                                andFontSize:fontSize];
     }
     else if (self.mxCall.room)
     {
-        return [AvatarGenerator generateAvatarForMatrixItem:self.mxCall.room.roomId withDisplayName:self.mxCall.room.summary.displayname size:self.callerImageViewWidthConstraint.constant andFontSize:fontSize];
+        return [AvatarGenerator generateAvatarForMatrixItem:self.mxCall.room.roomId
+                                            withDisplayName:self.mxCall.room.summary.displayname
+                                                       size:self.callerImageViewWidthConstraint.constant
+                                                andFontSize:fontSize];
     }
     
     return [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
-                      withColor:ThemeService.shared.theme.tintColor];
-}
-
-- (void)setMxCall:(MXCall *)call
-{
-    [super setMxCall:call];
-    
-    self.callerImageView.hidden = self.mxCall.isVideoCall;
+                      withColor:self.overriddenTheme.tintColor];
 }
 
 - (void)updatePeerInfoDisplay
@@ -439,9 +405,17 @@
     
     self.callerNameLabel.text = peerDisplayName;
     
+    self.blurredCallerImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.callerImageView.contentMode = UIViewContentModeScaleAspectFill;
     if (peerAvatarURL)
     {
+        // Retrieve the avatar in full resolution
+        [self.blurredCallerImageView setImageURI:peerAvatarURL
+                                        withType:nil
+                             andImageOrientation:UIImageOrientationUp
+                                    previewImage:self.picturePlaceholder
+                                    mediaManager:self.mainSession.mediaManager];
+        
         // Retrieve the avatar in full resolution
         [self.callerImageView setImageURI:peerAvatarURL
                                  withType:nil
@@ -451,15 +425,9 @@
     }
     else
     {
+        self.blurredCallerImageView.image = self.picturePlaceholder;
         self.callerImageView.image = self.picturePlaceholder;
     }
-}
-
-- (void)showOverlayContainer:(BOOL)isShown
-{
-    [super showOverlayContainer:isShown];
-    
-    self.gradientMaskContainerView.hidden = self.overlayContainerView.isHidden;
 }
 
 #pragma mark - Sounds
@@ -507,6 +475,171 @@
     {
         [super onButtonPressed:sender];
     }
+}
+
+- (void)setInPiP:(BOOL)inPiP
+{
+    _inPiP = inPiP;
+    
+    if (_inPiP)
+    {
+        self.overlayContainerView.hidden = YES;
+        self.callerImageView.hidden = YES;
+        self.callerNameLabel.hidden = YES;
+        self.callStatusLabel.hidden = YES;
+        self.localPreviewContainerView.hidden = YES;
+        self.localPreviewActivityView.hidden = YES;
+    }
+    else
+    {
+        self.localPreviewContainerView.hidden = NO;
+        self.callerImageView.hidden = NO;
+        self.callerNameLabel.hidden = NO;
+        self.callStatusLabel.hidden = NO;
+        
+        //  show controls when coming back from PiP mode
+        [self showOverlayContainer:YES];
+    }
+}
+
+- (void)showOverlayContainer:(BOOL)isShown
+{
+    if (self.inPiP)
+    {
+        return;
+    }
+    
+    [super showOverlayContainer:isShown];
+}
+
+#pragma mark - DTMF
+
+- (void)openDialpad
+{
+    DialpadConfiguration *config = [[DialpadConfiguration alloc] initWithShowsTitle:YES
+                                                                   showsCloseButton:YES
+                                                               showsBackspaceButton:NO
+                                                                    showsCallButton:NO
+                                                                  formattingEnabled:NO
+                                                                     editingEnabled:NO];
+    DialpadViewController *controller = [DialpadViewController instantiateWithConfiguration:config];
+    controller.delegate = self;
+    self.customSizedPresentationController = [[CustomSizedPresentationController alloc] initWithPresentedViewController:controller presentingViewController:self];
+    self.customSizedPresentationController.dismissOnBackgroundTap = NO;
+    self.customSizedPresentationController.cornerRadius = 16;
+    
+    controller.transitioningDelegate = self.customSizedPresentationController;
+    [self presentViewController:controller animated:YES completion:nil];
+}
+
+#pragma mark - Call Transfer
+
+- (void)openCallTransfer
+{
+    CallTransferMainViewController *controller = [CallTransferMainViewController instantiateWithSession:self.mainSession ignoredUserIds:@[self.peer.userId]];
+    controller.delegate = self;
+    
+    UINavigationController *navController = [[RiotNavigationController alloc] initWithRootViewController:controller];
+    [self presentViewController:navController animated:YES completion:nil];
+}
+
+#pragma mark - DialpadViewControllerDelegate
+
+- (void)dialpadViewControllerDidTapClose:(DialpadViewController *)viewController
+{
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+    self.customSizedPresentationController = nil;
+}
+
+- (void)dialpadViewControllerDidTapDigit:(DialpadViewController *)viewController digit:(NSString *)digit
+{
+    if (digit.length == 0)
+    {
+        return;
+    }
+    BOOL result = [self.mxCall sendDTMF:digit
+                               duration:0
+                           interToneGap:0];
+    
+    NSLog(@"[CallViewController] Sending DTMF tones %@", result ? @"succeeded": @"failed");
+}
+
+#pragma mark - CallTransferMainViewControllerDelegate
+
+- (void)callTransferMainViewControllerDidComplete:(CallTransferMainViewController *)viewController consult:(BOOL)consult contact:(MXKContact *)contact phoneNumber:(NSString *)phoneNumber
+{
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+    
+    void(^failureBlock)(NSError *_Nullable) = ^(NSError *error) {
+        [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
+        
+        MXWeakify(self);
+        
+        self->currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"call_transfer_error_title"]
+                                                                 message:[NSBundle mxk_localizedStringForKey:@"call_transfer_error_message"]
+                                                          preferredStyle:UIAlertControllerStyleAlert];
+        
+        [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                               style:UIAlertActionStyleDefault
+                                                             handler:^(UIAlertAction * action) {
+            
+            MXStrongifyAndReturnIfNil(self);
+            self->currentAlert = nil;
+        }]];
+        
+        [self presentViewController:self->currentAlert animated:YES completion:nil];
+    };
+    
+    void(^continueBlock)(NSString *_Nonnull) = ^(NSString *targetUserId) {
+        MXUserModel *targetUser = [[MXUserModel alloc] initWithUserId:targetUserId
+                                                          displayname:contact.displayName
+                                                            avatarUrl:contact.matrixAvatarURL];
+        MXUserModel *transfereeUser = [[MXUserModel alloc] initWithUser:self.peer];
+
+        [self.mainSession.callManager transferCall:self.mxCall
+                                                to:targetUser
+                                    withTransferee:transfereeUser
+                                      consultFirst:consult
+                                           success:^(NSString * _Nonnull newCallId){
+            NSLog(@"Call transfer succeeded with new call ID: %@", newCallId);
+        } failure:^(NSError * _Nullable error) {
+            NSLog(@"Call transfer failed with error: %@", error);
+            failureBlock(error);
+        }];
+    };
+    
+    if (contact)
+    {
+        continueBlock(contact.matrixIdentifiers.firstObject);
+    }
+    else if (phoneNumber)
+    {
+        MXWeakify(self);
+        [self.mainSession.callManager getThirdPartyUserFrom:phoneNumber success:^(MXThirdPartyUserInstance * _Nonnull user) {
+            MXStrongifyAndReturnIfNil(self);
+            
+            continueBlock(user.userId);
+        } failure:^(NSError * _Nullable error) {
+            failureBlock(error);
+        }];
+    }
+}
+
+- (void)callTransferMainViewControllerDidCancel:(CallTransferMainViewController *)viewController
+{
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - PictureInPicturable
+
+- (void)enterPiP
+{
+    self.inPiP = YES;
+}
+
+- (void)exitPiP
+{
+    self.inPiP = NO;
 }
 
 @end

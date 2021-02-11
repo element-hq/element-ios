@@ -428,7 +428,6 @@
 
 - (void)onPlusButtonPressed
 {
-    //  directly open the new chat screen
     [self performSegueWithIdentifier:@"presentStartChat" sender:self];
 }
 
