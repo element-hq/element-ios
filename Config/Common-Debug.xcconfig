@@ -18,6 +18,7 @@
 // Targets (App, extensions) xcconfig files automatically include it for Debug build.
 
 #include "Common.xcconfig"
+#include "Common-Warnings.xcconfig"
 
 ONLY_ACTIVE_ARCH = YES
 COPY_PHASE_STRIP = NO
