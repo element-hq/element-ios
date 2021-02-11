@@ -126,6 +126,8 @@
 
 #import "Riot-Swift.h"
 
+NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNotification";
+
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
@@ -365,6 +367,9 @@
     
     [self.bubblesTableView registerClass:RoomCreationCollapsedBubbleCell.class forCellReuseIdentifier:RoomCreationCollapsedBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomCreationWithPaginationCollapsedBubbleCell.class forCellReuseIdentifier:RoomCreationWithPaginationCollapsedBubbleCell.defaultReuseIdentifier];
+    
+    //  call cells
+    [self.bubblesTableView registerClass:RoomDirectCallStatusBubbleCell.class forCellReuseIdentifier:RoomDirectCallStatusBubbleCell.defaultReuseIdentifier];
     
     [self vc_removeBackTitle];
     
@@ -2028,6 +2033,10 @@
         {
             cellViewClass = bubbleData.isPaginationFirstBubble ? RoomCreationWithPaginationCollapsedBubbleCell.class : RoomCreationCollapsedBubbleCell.class;
         }
+        else if (bubbleData.tag == RoomBubbleCellDataTagCall)
+        {
+            cellViewClass = RoomDirectCallStatusBubbleCell.class;
+        }
         else if (bubbleData.isIncoming)
         {
             if (bubbleData.isAttachmentWithThumbnail)
@@ -2198,6 +2207,14 @@
                         }
                     }
                 }
+                else if (bubbleData.tag == RoomBubbleCellDataTagCall)
+                {
+                    if ([bubbleData isKindOfClass:[RoomBubbleCellData class]])
+                    {
+                        //  post notification `RoomCallTileTapped`
+                        [[NSNotificationCenter defaultCenter] postNotificationName:RoomCallTileTappedNotification object:bubbleData];
+                    }
+                }
                 else
                 {
                     // Show contextual menu on single tap if bubble is not collapsed
@@ -2329,6 +2346,13 @@
             {
                 [self showReactionHistoryForEventId:tappedEventId animated:YES];
             }
+        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellCallBackButtonPressed])
+        {
+            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
+            
+            [self roomInputToolbarView:self.inputToolbarView placeCallWithVideo2:eventContent.isVideoCall];
         }
         else
         {
