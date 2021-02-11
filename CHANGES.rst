@@ -6,6 +6,9 @@ Changes in 1.2.0 (2021-02-11)
 
 🙌 Improvements
  * Cross-signing: Setup cross-signing without authentication parameters when a grace period is enabled after login (#4006).
+ * VoIP: Implement DTMF on call screen (#3929).
+ * VoIP: Implement call transfer screen (#3962).
+ * VoIP: Implement call tiles on timeline (#3955).
 
 🐛 Bugfix
  * 
@@ -37,8 +40,6 @@ Changes in 1.1.7 (2021-02-03)
  * matrix.to: Support room preview when the permalink has parameters (like "via=").
  * Avoid megolm share requests if the device is not verified (#3969)
  * Handle User-Interactive Authentication fallback (#3995).
- * VoIP: Implement DTMF on call screen (#3929).
- * VoIP: Implement call transfer screen (#3962).
 
 🐛 Bugfix
  * Push: Fix PushKit crashes due to undecryptable call invites (#3986).
@@ -129,7 +130,6 @@ Changes in 1.1.4 (2021-01-15)
  * Bug report: Add "Continue in background" button  (#3816).
  * Show user id in the room invite preview screen (#3839)
  * AuthVC: SSO authentication now use redirect URL instead of fallback page (#3846).
- * VoIP: Implement call tiles on timeline (#3955).
 
 🐛 Bugfix
  * Crash report cannot be submitted (on small phones) (#3819)
