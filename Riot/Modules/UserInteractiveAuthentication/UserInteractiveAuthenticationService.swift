@@ -16,13 +16,13 @@
 
 import Foundation
 
-/// AuthenticationSessionService errors
-enum AuthenticationSessionServiceError: Int, Error {
+/// UserInteractiveAuthenticationService errors
+enum UserInteractiveAuthenticationServiceError: Int, Error {
     case flowNotSupported = 0
 }
 
-extension AuthenticationSessionServiceError: CustomNSError {
-    static let errorDomain = "AuthenticationSessionServiceErrorDomain"
+extension UserInteractiveAuthenticationServiceError: CustomNSError {
+    static let errorDomain = "UserInteractiveAuthenticationServiceErrorDomain"
     
     var errorCode: Int {
         return self.rawValue
@@ -39,15 +39,15 @@ extension AuthenticationSessionServiceError: CustomNSError {
     }
 }
 
-/// AuthenticationSessionResult indicates the success state after checking if an API endpoint needs authentication
-enum AuthenticationSessionResult {
+/// AuthenticatedEndpointStatus indicates the success status after checking if an API endpoint needs authentication
+enum AuthenticatedEndpointStatus {
     case authenticationNotNeeded
     case authenticationNeeded(_ authenticationSession: MXAuthenticationSession)
 }
 
-/// AuthenticationSessionService enables to check if an API endpoint needs authentication.
+/// UserInteractiveAuthenticationService enables to check if an API endpoint needs authentication.
 @objcMembers
-final class AuthenticationSessionService: NSObject {
+final class UserInteractiveAuthenticationService: NSObject {
     
     // MARK: - Constants
     
@@ -70,23 +70,23 @@ final class AuthenticationSessionService: NSObject {
     
     /// Check if API endpoint requires authentication and get authentication session if needed
     /// - Parameters:
-    ///   - authenticationSessionParameters: API endpoint parameters
-    ///   - completion: The closure executed the operation completes. AuthenticationSessionResult indicates
+    ///   - request: Authenticated API endpoint request.
+    ///   - completion: The closure executed the operation completes. AuthenticatedEndpointStatus indicates if authentication is needed or not.
     /// - Returns: A `MXHTTPOperation` instance.
     @discardableResult
-    func authenticationSession(for authenticationSessionParameters: AuthenticationSessionParameters, completion: @escaping (Result<AuthenticationSessionResult, Error>) -> Void) -> MXHTTPOperation {
+    func authenticatedEndpointStatus(for request: AuthenticatedEndpointRequest, completion: @escaping (Result<AuthenticatedEndpointStatus, Error>) -> Void) -> MXHTTPOperation {
         
-        return self.authenticationSession(for: authenticationSessionParameters) { (authenticationSession) in
+        return self.authenticationSession(with: request) { (authenticationSession) in
             
-            let authenticationResult: AuthenticationSessionResult
+            let status: AuthenticatedEndpointStatus
             
             if let authenticationSession = authenticationSession {
-                authenticationResult = .authenticationNeeded(authenticationSession)
+                status = .authenticationNeeded(authenticationSession)
             } else {
-                authenticationResult = .authenticationNotNeeded
+                status = .authenticationNotNeeded
             }
             
-            completion(.success(authenticationResult))
+            completion(.success(status))
         } failure: { (error) in
             completion(.failure(error))
         }
@@ -94,13 +94,13 @@ final class AuthenticationSessionService: NSObject {
     
     /// Check if API endpoint requires authentication.
     /// - Parameters:
-    ///   - authenticationSessionParameters: API endpoint parameters
+    ///   - request: Authenticated API endpoint request.
     ///   - completion: The closure executed the operation completes.
     /// - Returns: A `MXHTTPOperation` instance.
     @discardableResult
-    func canAuthenticate(for authenticationSessionParameters: AuthenticationSessionParameters, completion: @escaping (Result<Bool, Error>) -> Void) -> MXHTTPOperation {
+    func canAuthenticate(with request: AuthenticatedEndpointRequest, completion: @escaping (Result<Bool, Error>) -> Void) -> MXHTTPOperation {
         
-        return self.authenticationSession(for: authenticationSessionParameters) { (result) in
+        return self.authenticatedEndpointStatus(for: request) { (result) in
             switch result {
             case .success(let authenticationSessionResult):
                 let canAuthenticate: Bool
@@ -122,16 +122,16 @@ final class AuthenticationSessionService: NSObject {
     /// Check if API endpoint requires authentication.
     /// This method is compatible with Objective-C
     /// - Parameters:
-    ///   - authenticationSessionParameters: API endpoint parameters
+    ///   - request: Authenticated API endpoint request.
     ///   - success: The closure executed the operation succeed. Get an MXAuthenticationSession if authentication is required or nil if there is no authentication needed.
     ///   - failure: The closure executed the operation fails.
     /// - Returns: A `MXHTTPOperation` instance.
     @discardableResult
-    func authenticationSession(for authenticationSessionParameters: AuthenticationSessionParameters,
+    func authenticationSession(with request: AuthenticatedEndpointRequest,
                                success: @escaping (MXAuthenticationSession?) -> Void,
                                failure: @escaping (Error) -> Void) -> MXHTTPOperation {
         // Get the authentication flow required for this API
-        return self.session.matrixRestClient.authSessionForRequest(withMethod: authenticationSessionParameters.httpMethod, path: authenticationSessionParameters.path, parameters: [:], success: { [weak self] (authenticationSession) in
+        return self.session.matrixRestClient.authSessionForRequest(withMethod: request.httpMethod, path: request.path, parameters: [:], success: { [weak self] (authenticationSession) in
             guard let self = self else {
                 return
             }
@@ -146,7 +146,7 @@ final class AuthenticationSessionService: NSObject {
                         success(authenticationSession)
                     } else {
                         // Flow not supported
-                        failure(AuthenticationSessionServiceError.flowNotSupported)
+                        failure(UserInteractiveAuthenticationServiceError.flowNotSupported)
                     }
                 }
             } else {
