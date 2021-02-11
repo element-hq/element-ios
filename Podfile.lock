@@ -47,7 +47,7 @@ PODS:
   - GBDeviceInfo/Core (6.4.0)
   - GZIP (1.3.0)
   - HPGrowingTextView (1.1)
-  - JitsiMeetSDK (2.11.0)
+  - JitsiMeetSDK (3.1.0)
   - KeychainAccess (4.2.1)
   - KituraContracts (1.2.1):
     - LoggerAPI (~> 1.7)
@@ -60,36 +60,36 @@ PODS:
   - MatomoTracker (7.2.2):
     - MatomoTracker/Core (= 7.2.2)
   - MatomoTracker/Core (7.2.2)
-  - MatrixKit (0.13.9):
+  - MatrixKit (0.14.0):
     - Down (~> 0.9.3)
     - DTCoreText (~> 1.6.23)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.13.9)
-    - MatrixSDK (= 0.17.11)
-  - MatrixKit/AppExtension (0.13.9):
+    - MatrixKit/Core (= 0.14.0)
+    - MatrixSDK (= 0.18.0)
+  - MatrixKit/AppExtension (0.14.0):
     - Down (~> 0.9.3)
     - DTCoreText (~> 1.6.23)
     - DTCoreText/Extension
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.17.11)
-  - MatrixKit/Core (0.13.9):
+    - MatrixSDK (= 0.18.0)
+  - MatrixKit/Core (0.14.0):
     - Down (~> 0.9.3)
     - DTCoreText (~> 1.6.23)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.17.11)
-  - MatrixSDK (0.17.11):
-    - MatrixSDK/Core (= 0.17.11)
-  - MatrixSDK/Core (0.17.11):
+    - MatrixSDK (= 0.18.0)
+  - MatrixSDK (0.18.0):
+    - MatrixSDK/Core (= 0.18.0)
+  - MatrixSDK/Core (0.18.0):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.3.0)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.1.0)
     - Realm (= 10.1.4)
-  - MatrixSDK/JingleCallStack (0.17.11):
-    - JitsiMeetSDK (= 2.11.0)
+  - MatrixSDK/JingleCallStack (0.18.0):
+    - JitsiMeetSDK (= 3.1.0)
     - MatrixSDK/Core
   - OLMKit (3.1.0):
     - OLMKit/olmc (= 3.1.0)
@@ -127,8 +127,8 @@ DEPENDENCIES:
   - KeychainAccess (~> 4.2.1)
   - KTCenterFlowLayout (~> 1.3.1)
   - MatomoTracker (~> 7.2.2)
-  - MatrixKit (= 0.13.9)
-  - MatrixKit/AppExtension (= 0.13.9)
+  - MatrixKit (= 0.14.0)
+  - MatrixKit/AppExtension (= 0.14.0)
   - MatrixSDK
   - MatrixSDK/JingleCallStack
   - OLMKit
@@ -190,7 +190,7 @@ SPEC CHECKSUMS:
   GBDeviceInfo: f29249891446a392e64b9c9bbef9554aad2a6beb
   GZIP: 416858efbe66b41b206895ac6dfd5493200d95b3
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
-  JitsiMeetSDK: ddc915b751b0166aa4fdfee938bd60cc87aff9f3
+  JitsiMeetSDK: 330e694130d6e67126e5a031b9ab1807f446ab3b
   KeychainAccess: 9b07f665298d13c3a85881bd3171f6f49b8151c1
   KituraContracts: e845e60dc8627ad0a76fa55ef20a45451d8f830b
   KTCenterFlowLayout: 6e02b50ab2bd865025ae82fe266ed13b6d9eaf97
@@ -199,8 +199,8 @@ SPEC CHECKSUMS:
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
   MatomoTracker: a59ec4da0f580be57bdc6baa708a71a86532a832
-  MatrixKit: 655625979013f387d351b828103465b4c6899333
-  MatrixSDK: 55e0b78c2a5cdb48bdcff9f21c159f57fd803dc3
+  MatrixKit: df1015cef07d0d01b975cbf74ebd6a144e845d04
+  MatrixSDK: e71064106a64aca924e9b7e76b7f5c50d36cd30f
   OLMKit: 4ee0159d63feeb86d836fdcfefe418e163511639
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
   Realm: 80f4fb2971ccb9adc27a47d0955ae8e533a7030b
@@ -212,6 +212,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 26a42f7550dcb03d4048e4bb54cd711adda25e07
+PODFILE CHECKSUM: 911a1ef6f99d67013adcf34808bfb57a57d24886
 
 COCOAPODS: 1.10.0
