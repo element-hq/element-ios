@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "call_video_mute_off_icon.png",
+      "filename" : "Video Off.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "call_video_mute_off_icon@2x.png",
+      "filename" : "Video Off@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "call_video_mute_off_icon@3x.png",
+      "filename" : "Video Off@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
@@ -21,6 +21,6 @@
     "version" : 1
   },
   "properties" : {
-    "template-rendering-intent" : "template"
+    "template-rendering-intent" : "original"
   }
 }

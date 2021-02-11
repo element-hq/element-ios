@@ -29,6 +29,7 @@
 
 @protocol Configurable;
 @protocol LegacyAppDelegateDelegate;
+@class CallBar;
 
 #pragma mark - Notifications
 /**
@@ -50,7 +51,11 @@ extern NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey;
  */
 extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 
-@interface LegacyAppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate, JitsiViewControllerDelegate>
+@interface LegacyAppDelegate : UIResponder <
+UIApplicationDelegate,
+UISplitViewControllerDelegate,
+UINavigationControllerDelegate,
+JitsiViewControllerDelegate>
 {
     // background sync management
     void (^_completionHandler)(UIBackgroundFetchResult);
@@ -234,7 +239,7 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
  Call status window displayed when user goes back to app during a call.
  */
 @property (nonatomic, readonly) UIWindow* callStatusBarWindow;
-@property (nonatomic, readonly) UIButton* callStatusBarButton;
+@property (nonatomic, readonly) CallBar* callBar;
 
 #pragma mark - App version management
 

@@ -418,6 +418,10 @@ internal enum VectorL10n {
   internal static var bugReportTitle: String { 
     return VectorL10n.tr("Vector", "bug_report_title") 
   }
+  /// Resume
+  internal static var callActionsUnhold: String { 
+    return VectorL10n.tr("Vector", "call_actions_unhold") 
+  }
   /// There is already a call in progress.
   internal static var callAlreadyDisplayed: String { 
     return VectorL10n.tr("Vector", "call_already_displayed") 
@@ -457,6 +461,58 @@ internal enum VectorL10n {
   /// Try using %@
   internal static func callNoStunServerErrorUseFallbackButton(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "call_no_stun_server_error_use_fallback_button", p1)
+  }
+  /// All
+  internal static var callTransferContactsAll: String { 
+    return VectorL10n.tr("Vector", "call_transfer_contacts_all") 
+  }
+  /// Recent
+  internal static var callTransferContactsRecent: String { 
+    return VectorL10n.tr("Vector", "call_transfer_contacts_recent") 
+  }
+  /// Dial pad
+  internal static var callTransferDialpad: String { 
+    return VectorL10n.tr("Vector", "call_transfer_dialpad") 
+  }
+  /// Call transfer failed
+  internal static var callTransferErrorMessage: String { 
+    return VectorL10n.tr("Vector", "call_transfer_error_message") 
+  }
+  /// Error
+  internal static var callTransferErrorTitle: String { 
+    return VectorL10n.tr("Vector", "call_transfer_error_title") 
+  }
+  /// Transfer
+  internal static var callTransferTitle: String { 
+    return VectorL10n.tr("Vector", "call_transfer_title") 
+  }
+  /// Users
+  internal static var callTransferUsers: String { 
+    return VectorL10n.tr("Vector", "call_transfer_users") 
+  }
+  /// 1 active call (%@) · %@ paused calls
+  internal static func callbarActiveAndMultiplePaused(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "callbar_active_and_multiple_paused", p1, p2)
+  }
+  /// 1 active call (%@) · 1 paused call
+  internal static func callbarActiveAndSinglePaused(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "callbar_active_and_single_paused", p1)
+  }
+  /// %@ paused calls
+  internal static func callbarOnlyMultiplePaused(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "callbar_only_multiple_paused", p1)
+  }
+  /// Active call (%@)
+  internal static func callbarOnlySingleActive(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "callbar_only_single_active", p1)
+  }
+  /// Paused call
+  internal static var callbarOnlySinglePaused: String { 
+    return VectorL10n.tr("Vector", "callbar_only_single_paused") 
+  }
+  /// Return
+  internal static var callbarReturn: String { 
+    return VectorL10n.tr("Vector", "callbar_return") 
   }
   /// Camera
   internal static var camera: String { 
@@ -1018,6 +1074,10 @@ internal enum VectorL10n {
   internal static var deviceVerificationVerifyWaitPartner: String { 
     return VectorL10n.tr("Vector", "device_verification_verify_wait_partner") 
   }
+  /// Dial pad
+  internal static var dialpadTitle: String { 
+    return VectorL10n.tr("Vector", "dialpad_title") 
+  }
   /// %tu rooms
   internal static func directoryCellDescription(_ p1: Int) -> String {
     return VectorL10n.tr("Vector", "directory_cell_description", p1)
@@ -1177,6 +1237,30 @@ internal enum VectorL10n {
   /// It looks like you’re trying to connect to another homeserver. Do you want to sign out?
   internal static var errorUserAlreadyLoggedIn: String { 
     return VectorL10n.tr("Vector", "error_user_already_logged_in") 
+  }
+  /// Call back
+  internal static var eventFormatterCallBack: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_back") 
+  }
+  /// This call has ended
+  internal static var eventFormatterCallHasEnded: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_has_ended") 
+  }
+  /// Video call
+  internal static var eventFormatterCallVideo: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_video") 
+  }
+  /// Voice call
+  internal static var eventFormatterCallVoice: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_voice") 
+  }
+  /// You're currently in this call
+  internal static var eventFormatterCallYouCurrentlyIn: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_you_currently_in") 
+  }
+  /// You declined this call
+  internal static var eventFormatterCallYouDeclined: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_you_declined") 
   }
   /// VoIP conference added by %@
   internal static func eventFormatterJitsiWidgetAdded(_ p1: String) -> String {
@@ -2806,6 +2890,10 @@ internal enum VectorL10n {
   internal static func roomOngoingConferenceCallWithClose(_ p1: String, _ p2: String, _ p3: String) -> String {
     return VectorL10n.tr("Vector", "room_ongoing_conference_call_with_close", p1, p2, p3)
   }
+  /// Dial pad
+  internal static var roomOpenDialpad: String { 
+    return VectorL10n.tr("Vector", "room_open_dialpad") 
+  }
   /// Ban from this room
   internal static var roomParticipantsActionBan: String { 
     return VectorL10n.tr("Vector", "room_participants_action_ban") 
@@ -3025,6 +3113,10 @@ internal enum VectorL10n {
   /// Unknown
   internal static var roomParticipantsUnknown: String { 
     return VectorL10n.tr("Vector", "room_participants_unknown") 
+  }
+  /// Voice call
+  internal static var roomPlaceVoiceCall: String { 
+    return VectorL10n.tr("Vector", "room_place_voice_call") 
   }
   /// This room is a continuation of another conversation.
   internal static var roomPredecessorInformation: String { 

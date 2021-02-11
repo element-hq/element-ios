@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="CallBar" customModule="Riot" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eee-sW-qFO">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="voice_call_hangon_icon" translatesAutoresizingMaskIntoConstraints="NO" id="cuO-6F-uXq">
+                            <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="cuO-6F-uXq" secondAttribute="height" multiplier="1:1" id="CgQ-jX-f2t"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4TV-K4-7lO">
+                            <rect key="frame" x="44" y="4" width="311" height="36"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Return" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YXg-I7-CI9">
+                            <rect key="frame" x="363" y="8" width="43" height="28"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UUZ-sl-L6q">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
+                            <connections>
+                                <action selector="returnButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="VJx-cV-NtX"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="cuO-6F-uXq" firstAttribute="leading" secondItem="eee-sW-qFO" secondAttribute="leading" id="1Md-B3-CA1"/>
+                        <constraint firstItem="UUZ-sl-L6q" firstAttribute="leading" secondItem="eee-sW-qFO" secondAttribute="leading" id="7o1-9c-HSw"/>
+                        <constraint firstAttribute="bottom" secondItem="cuO-6F-uXq" secondAttribute="bottom" id="Fe6-FC-Lkh"/>
+                        <constraint firstItem="UUZ-sl-L6q" firstAttribute="top" secondItem="eee-sW-qFO" secondAttribute="top" id="HSs-7b-rXw"/>
+                        <constraint firstAttribute="bottom" secondItem="UUZ-sl-L6q" secondAttribute="bottom" id="MgQ-Px-CRu"/>
+                        <constraint firstItem="4TV-K4-7lO" firstAttribute="leading" secondItem="cuO-6F-uXq" secondAttribute="trailing" id="Pfy-hd-a8d"/>
+                        <constraint firstAttribute="trailing" secondItem="UUZ-sl-L6q" secondAttribute="trailing" id="aqk-h6-34r"/>
+                        <constraint firstAttribute="bottom" secondItem="4TV-K4-7lO" secondAttribute="bottom" constant="4" id="cij-lT-Nw6"/>
+                        <constraint firstItem="YXg-I7-CI9" firstAttribute="top" secondItem="eee-sW-qFO" secondAttribute="top" constant="8" id="eeh-aD-h1f"/>
+                        <constraint firstAttribute="height" constant="44" id="g8Q-T8-geN"/>
+                        <constraint firstItem="YXg-I7-CI9" firstAttribute="leading" secondItem="4TV-K4-7lO" secondAttribute="trailing" constant="8" id="i0d-jI-AXQ"/>
+                        <constraint firstItem="4TV-K4-7lO" firstAttribute="top" secondItem="eee-sW-qFO" secondAttribute="top" constant="4" id="lfW-G9-DaP"/>
+                        <constraint firstAttribute="trailing" secondItem="YXg-I7-CI9" secondAttribute="trailing" constant="8" id="nYT-hS-nah"/>
+                        <constraint firstItem="cuO-6F-uXq" firstAttribute="top" secondItem="eee-sW-qFO" secondAttribute="top" id="v7k-1F-UR7"/>
+                        <constraint firstAttribute="bottom" secondItem="YXg-I7-CI9" secondAttribute="bottom" constant="8" id="vMX-6A-4b2"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" red="0.011764705882352941" green="0.70196078431372544" blue="0.50588235294117645" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="eee-sW-qFO" secondAttribute="trailing" id="8uk-4g-uhK"/>
+                <constraint firstAttribute="bottom" secondItem="eee-sW-qFO" secondAttribute="bottom" id="dPh-ko-WYf"/>
+                <constraint firstItem="eee-sW-qFO" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="tfp-6O-DDi"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="callIcon" destination="cuO-6F-uXq" id="A3y-xa-XHu"/>
+                <outlet property="returnButton" destination="UUZ-sl-L6q" id="baV-ub-2f1"/>
+                <outlet property="returnLabel" destination="YXg-I7-CI9" id="KyV-MP-AbM"/>
+                <outlet property="titleLabel" destination="4TV-K4-7lO" id="ZkY-wt-1OH"/>
+            </connections>
+            <point key="canvasLocation" x="137.68115942028987" y="-187.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="voice_call_hangon_icon" width="24" height="24"/>
+    </resources>
+</document>
