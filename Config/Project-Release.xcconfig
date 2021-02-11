@@ -17,8 +17,8 @@
 // This file defines project settings for Release.
 // Targets (App, extensions) xcconfig files automatically include it for Release build.
 
-#include "Common.xcconfig"
-#include "Common-Warnings.xcconfig"
+#include "Project.xcconfig"
+#include "Project-Warnings.xcconfig"
 
 COPY_PHASE_STRIP = YES
 ENABLE_NS_ASSERTIONS = NO

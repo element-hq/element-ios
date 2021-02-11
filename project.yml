@@ -13,8 +13,8 @@ fileGroups:
     - Podfile
 
 configFiles:
-  Debug: Config/Common-Debug.xcconfig
-  Release: Config/Common-Release.xcconfig
+  Debug: Config/Project-Debug.xcconfig
+  Release: Config/Project-Release.xcconfig
 
 options:
   defaultConfig: Release
