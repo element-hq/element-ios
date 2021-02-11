@@ -17,5 +17,14 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-#include "ShareExtension-Common.xcconfig"
-#include "Pods/Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension.debug.xcconfig"
+#include "Config/AppIdentifiers.xcconfig"
+
+PRODUCT_NAME=  SiriIntents
+PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER).SiriIntents
+
+INFOPLIST_FILE = SiriIntents/Info.plist
+
+CODE_SIGN_ENTITLEMENTS = SiriIntents/SiriIntents.entitlements
+
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks    
+SKIP_INSTALL = YES

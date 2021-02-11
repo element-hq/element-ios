@@ -1,94 +1,21 @@
+name: Riot
 attributes:
   ORGANIZATIONNAME: matrix.org
+
 configs:
   Debug: debug
   Release: release
-name: Riot
-settingGroups:
-  appDefault:
-    CURRENT_PROJECT_VERSION: 20200826151407
-    SWIFT_VERSION: 5.3.1
-    BUNDLE_DISPLAY_NAME: Element
-    APPLICATION_GROUP_IDENTIFIER: group.im.vector
-    BASE_BUNDLE_IDENTIFIER: im.vector.app
-    KEYCHAIN_ACCESS_GROUP: $(AppIdentifierPrefix)$(BASE_BUNDLE_IDENTIFIER).keychain.shared
-    LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks
-    DEVELOPMENT_TEAM: 7J4U792NQT
 
-    RIOT_PROVISIONING_PROFILE: f65e7447-b8a3-46cc-8fba-fa60e55e2511
-    RIOT_PROVISIONING_PROFILE_SPECIFIER: Vector App Store
-    NSE_PROVISIONING_PROFILE: 31dc9316-e029-47fd-81f5-778db07d76a2
-    NSE_PROVISIONING_PROFILE_SPECIFIER: "Vector NSE: App Store"
-    SHARE_EXTENSION_PROVISIONING_PROFILE: 1a3be143-50c7-4ae2-834e-00596a053141
-    SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER: "Vector Share Extension: App Store"
-    SIRI_INTENTS_PROVISIONING_PROFILE: 18a66f93-ffe1-4008-b343-58350cc65023
-    SIRI_INTENTS_PROVISIONING_PROFILE_SPECIFIER: "Vector Siri Intents: App Store"
 fileGroups:
     - README.md
     - CHANGES.rst
     - AUTHORS.rst
     - Podfile
-settings:
-  base:
-    IPHONEOS_DEPLOYMENT_TARGET: 11.0
-    MARKETING_VERSION: 1.1.3
-    CURRENT_PROJECT_VERSION: 1.1.3
-    SDKROOT: iphoneos
-    TARGETED_DEVICE_FAMILY: 1,2
-    ALWAYS_SEARCH_USER_PATHS: NO
-    CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED: YES
-    CLANG_CXX_LANGUAGE_STANDARD: gnu++0x
-    CLANG_CXX_LIBRARY: libc++
-    CLANG_ENABLE_MODULES: YES
-    CLANG_ENABLE_OBJC_ARC: YES
-    CLANG_WARN__DUPLICATE_METHOD_MATCH: YES
-    CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING: YES
-    CLANG_WARN_BOOL_CONVERSION: YES
-    CLANG_WARN_COMMA: YES
-    CLANG_WARN_CONSTANT_CONVERSION: YES
-    CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS: YES
-    CLANG_WARN_DIRECT_OBJC_ISA_USAGE: YES_ERROR
-    CLANG_WARN_EMPTY_BODY: YES
-    CLANG_WARN_ENUM_CONVERSION: YES
-    CLANG_WARN_INFINITE_RECURSION: YES
-    CLANG_WARN_INT_CONVERSION: YES
-    CLANG_WARN_NON_LITERAL_NULL_CONVERSION: YES
-    CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF: YES
-    CLANG_WARN_OBJC_LITERAL_CONVERSION: YES
-    CLANG_WARN_OBJC_ROOT_CLASS: YES_ERROR
-    CLANG_WARN_RANGE_LOOP_ANALYSIS: YES
-    CLANG_WARN_STRICT_PROTOTYPES: YES
-    CLANG_WARN_SUSPICIOUS_MOVE: YES
-    CLANG_WARN_UNREACHABLE_CODE: YES
-    DEFINES_MODULE: YES
-    ENABLE_STRICT_OBJC_MSGSEND: YES
-    GCC_C_LANGUAGE_STANDARD: gnu99
-    GCC_NO_COMMON_BLOCKS: YES
-    GCC_WARN_64_TO_32_BIT_CONVERSION: YES
-    GCC_WARN_ABOUT_RETURN_TYPE: YES_ERROR
-    GCC_WARN_UNDECLARED_SELECTOR: YES
-    GCC_WARN_UNINITIALIZED_AUTOS: YES_AGGRESSIVE
-    GCC_WARN_UNUSED_FUNCTION: YES
-    GCC_WARN_UNUSED_VARIABLE: YES
-  debug:
-    CODE_SIGN_IDENTITY: iPhone Developer
-    CODE_SIGN_IDENTITY[sdk=iphoneos*]: iPhone Developer
-    COPY_PHASE_STRIP: NO
-    ENABLE_TESTABILITY: YES
-    GCC_DYNAMIC_NO_PIC: NO
-    GCC_OPTIMIZATION_LEVEL: 0
-    GCC_PREPROCESSOR_DEFINITIONS: DEBUG=1 $(inherited)
-    GCC_SYMBOLS_PRIVATE_EXTERN: NO
-    MTL_ENABLE_DEBUG_INFO: YES
-    ONLY_ACTIVE_ARCH: YES
-  release:
-    CODE_SIGN_IDENTITY: iPhone Distribution
-    CODE_SIGN_IDENTITY[sdk=iphoneos*]: iPhone Distribution
-    COPY_PHASE_STRIP: YES
-    ENABLE_NS_ASSERTIONS: NO
-    MTL_ENABLE_DEBUG_INFO: NO
-    SWIFT_COMPILATION_MODE: wholemodule
-    VALIDATE_PRODUCT: YES
+
+configFiles:
+  Debug: Config/Project-Debug.xcconfig
+  Release: Config/Project-Release.xcconfig
+
 options:
   defaultConfig: Release
   groupSortPosition: bottom
@@ -96,9 +23,10 @@ options:
   createIntermediateGroups: true
   useBaseInternationalization: true
   postGenCommand: sh Tools/XcodeGen/postGenCommand.sh
+
 include:
-  - path: Targets/Application.yml
-  - path: Targets/ApplicationTests.yml
-  - path: Targets/ShareExtension.yml
-  - path: Targets/SiriIntents.yml
-  - path: Targets/NotificationServiceExtension.yml
+  - path: Riot/target.yml
+  - path: RiotTests/target.yml
+  - path: RiotShareExtension/target.yml
+  - path: SiriIntents/target.yml
+  - path: RiotNSE/target.yml

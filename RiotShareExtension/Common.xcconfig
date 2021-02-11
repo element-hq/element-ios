@@ -17,5 +17,18 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-#include "ShareExtension-Common.xcconfig"
-#include "Pods/Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension.release.xcconfig"
+#include "Config/AppIdentifiers.xcconfig"
+
+PRODUCT_NAME = RiotShareExtension
+PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER).shareExtension
+
+INFOPLIST_FILE = RiotShareExtension/SupportingFiles/Info.plist
+ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon
+
+CODE_SIGN_ENTITLEMENTS = RiotShareExtension/SupportingFiles/RiotShareExtension.entitlements
+        
+APPLICATION_EXTENSION_API_ONLY = YES
+SKIP_INSTALL = YES
+SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/RiotShareExtension-Bridging-Header.h
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) IS_SHARE_EXTENSION=1
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks

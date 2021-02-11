@@ -17,13 +17,8 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-BUNDLE_DISPLAY_NAME = Element
+#include "Common.xcconfig"
+#include "Pods/Target Support Files/Pods-RiotPods-Riot/Pods-RiotPods-Riot.release.xcconfig"
 
-APPLICATION_GROUP_IDENTIFIER = group.im.vector
-
-BASE_BUNDLE_IDENTIFIER = im.vector.app
-
-KEYCHAIN_ACCESS_GROUP = $(AppIdentifierPrefix)$(BASE_BUNDLE_IDENTIFIER).keychain.shared
-
-//Make Xcode 12 and fastlane(xcodebuild) happy while some pods are not updated
-EXCLUDED_ARCHS[sdk=iphonesimulator*] = arm64
+PROVISIONING_PROFILE = $(RIOT_PROVISIONING_PROFILE)
+PROVISIONING_PROFILE_SPECIFIER = $(RIOT_PROVISIONING_PROFILE_SPECIFIER)
