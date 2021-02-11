@@ -49,10 +49,4 @@ targets:
           PROVISIONING_PROFILE: $(RIOT_PROVISIONING_PROFILE)
           PROVISIONING_PROFILE_SPECIFIER: $(RIOT_PROVISIONING_PROFILE_SPECIFIER)
 
-    postbuildScripts:
-    - name: Embed Precompiled Frameworks
-      runOnlyWhenInstalling: false
-      script: echo "Skipping, nothing to be embedded."
-      shell: /bin/sh
-
     sources: .

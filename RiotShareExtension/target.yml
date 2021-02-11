@@ -35,12 +35,6 @@ targets:
       Debug: Debug.xcconfig
       Release: Release.xcconfig
 
-    postbuildScripts:
-    - name: Embed Precompiled Frameworks
-      runOnlyWhenInstalling: false
-      script: echo "Skipping, nothing to be embedded."
-      shell: /bin/sh
-
     sources:
     - path: .
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
