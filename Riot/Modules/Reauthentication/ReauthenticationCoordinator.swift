@@ -63,8 +63,17 @@ final class ReauthenticationCoordinator: ReauthenticationCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        
-        self.userInteractiveAuthenticationService.authenticatedEndpointStatus(for: self.parameters.authenticatedEndpointRequest) { (result) in
+        if let authenticatedEndpointRequest = self.parameters.authenticatedEndpointRequest {
+            self.start(with: authenticatedEndpointRequest)
+        } else if let authenticationSession = self.parameters.authenticationSession {
+            self.start(with: authenticationSession)
+        } else {
+            fatalError("[ReauthenticationCoordinator] Should not happen. Missing authentication parameters")
+        }
+    }
+    
+    private func start(with authenticatedEndpointRequest: AuthenticatedEndpointRequest) {
+        self.userInteractiveAuthenticationService.authenticatedEndpointStatus(for: authenticatedEndpointRequest) { (result) in
             
             switch result {
             case .success(let authenticatedEnpointStatus):
@@ -74,18 +83,22 @@ final class ReauthenticationCoordinator: ReauthenticationCoordinatorType {
                     NSLog("[ReauthenticationCoordinator] No need to login again")
                     self.delegate?.reauthenticationCoordinatorDidComplete(self, withAuthenticationParameters: nil)
                 case .authenticationNeeded(let authenticationSession):
-                    if self.userInteractiveAuthenticationService.hasPasswordFlow(inFlows: authenticationSession.flows) {
-                        self.showPasswordAuthentication(with: authenticationSession)
-                    } else if let authenticationFallbackURL = self.userInteractiveAuthenticationService.firstUncompletedStageAuthenticationFallbackURL(for: authenticationSession) {
-                        
-                        self.showFallbackAuthentication(with: authenticationFallbackURL, authenticationSession: authenticationSession)
-                    } else {
-                        self.delegate?.reauthenticationCoordinator(self, didFailWithError: UserInteractiveAuthenticationServiceError.flowNotSupported)
-                    }
+                    self.start(with: authenticationSession)
                 }
             case .failure(let error):
                 self.delegate?.reauthenticationCoordinator(self, didFailWithError: error)
             }
+        }
+    }
+    
+    private func start(with authenticationSession: MXAuthenticationSession) {
+        if self.userInteractiveAuthenticationService.hasPasswordFlow(inFlows: authenticationSession.flows) {
+            self.showPasswordAuthentication(with: authenticationSession)
+        } else if let authenticationFallbackURL = self.userInteractiveAuthenticationService.firstUncompletedStageAuthenticationFallbackURL(for: authenticationSession) {
+            
+            self.showFallbackAuthentication(with: authenticationFallbackURL, authenticationSession: authenticationSession)
+        } else {
+            self.delegate?.reauthenticationCoordinator(self, didFailWithError: UserInteractiveAuthenticationServiceError.flowNotSupported)
         }
     }
     
