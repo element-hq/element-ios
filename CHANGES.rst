@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Podfile: Use MatrixKit for all targets and remove MatrixKit/AppExtension.
 
 🐛 Bugfix
  * 
