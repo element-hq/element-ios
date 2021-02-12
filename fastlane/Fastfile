@@ -110,7 +110,6 @@ platform :ios do
     # Generate xcodebuild additional arguments
     xcargs_hash = {
       "GCC_PREPROCESSOR_DEFINITIONS" => "$(GCC_PREPROCESSOR_DEFINITIONS) #{additional_preprocessor_definitions}",
-      "-UseNewBuildSystem" => "NO",
     }
 
     xcargs = xcargs_hash.map { |k, v| "#{k}=#{v.shellescape}" }.join(" ")
