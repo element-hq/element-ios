@@ -5,7 +5,9 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Podfile: Use MatrixKit for all targets and remove MatrixKit/AppExtension.
+ * Fastlane: Use the "New Build System" to build releases.
+ * Fastlane: Re-enable parallelised builds.
 
 🐛 Bugfix
  * 
