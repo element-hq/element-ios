@@ -8,7 +8,7 @@ Changes to be released in next version
  * User-Interactive Authentication: Add UIA support for device deletion and add user 3PID action (#4016).
 
 🐛 Bugfix
- * 
+ * VoIP: Show dial pad option only if PSTN is supported (#4029).
 
 ⚠️ API Changes
  * 
