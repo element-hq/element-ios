@@ -805,11 +805,6 @@ TableViewSectionsDelegate>
     onReadyToDestroyHandler = nil;
 }
 
-- (MXSession*)currentSession
-{
-    return [AppDelegate theDelegate].mxSessions.firstObject;
-}
-
 -(void)setNewEmailEditingEnabled:(BOOL)newEmailEditingEnabled
 {
     if (newEmailEditingEnabled != _newEmailEditingEnabled)
@@ -941,7 +936,7 @@ TableViewSectionsDelegate>
             [self->currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"retry", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                 self->currentAlert = nil;
                 
-                [self showAuthenticationIfNeededForAdding:kMX3PIDMediumEmail withSession:self.currentSession completion:^(NSDictionary *authParams) {
+                [self showAuthenticationIfNeededForAdding:kMX3PIDMediumEmail withSession:self.mainSession completion:^(NSDictionary *authParams) {
                     [self tryFinaliseAddEmailSession:threePidAddSession withAuthenticationParameters:authParams threePidAddManager:threePidAddManager];
                 }];
             }]];
@@ -1072,7 +1067,7 @@ TableViewSectionsDelegate>
             [self->currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"retry", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                 self->currentAlert = nil;
                 
-                [self showAuthenticationIfNeededForAdding:kMX3PIDMediumMSISDN withSession:self.currentSession completion:^(NSDictionary *authParams) {
+                [self showAuthenticationIfNeededForAdding:kMX3PIDMediumMSISDN withSession:self.mainSession completion:^(NSDictionary *authParams) {
                     [self finaliseAddPhoneNumberSession:threePidAddSession withToken:token andAuthenticationParameters:authParams message:message threePidAddManager:threePidAddManager];
                 }];
             }]];
@@ -1234,7 +1229,7 @@ TableViewSectionsDelegate>
 
 - (UserInteractiveAuthenticationService*)createUserInteractiveAuthenticationService
 {
-    MXSession *session = self.currentSession;
+    MXSession *session = self.mainSession;
     UserInteractiveAuthenticationService *userInteractiveAuthenticationService;
     
     if (session)
@@ -1443,7 +1438,7 @@ TableViewSectionsDelegate>
         return cell;
     }
     
-    MXSession* session = self.currentSession;
+    MXSession* session = self.mainSession;
     MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
 
     if (section == SECTION_TAG_SIGN_OUT)
@@ -2461,7 +2456,7 @@ TableViewSectionsDelegate>
         }
         else if (section == SECTION_TAG_IGNORED_USERS)
         {
-            MXSession* session = self.currentSession;
+            MXSession* session = self.mainSession;
 
             NSString *ignoredUserId = session.ignoredUsers[row];
 
@@ -2482,7 +2477,7 @@ TableViewSectionsDelegate>
                                                                        typeof(self) self = weakSelf;
                                                                        self->currentAlert = nil;
                                                                        
-                                                                       MXSession* session = self.currentSession;
+                                                                       MXSession* session = self.mainSession;
                                                                        
                                                                        // Remove the member from the ignored user list
                                                                        [self startActivityIndicator];
@@ -3259,7 +3254,7 @@ TableViewSectionsDelegate>
     // Dismiss the keyboard
     [newEmailTextField resignFirstResponder];
 
-    MXSession* session = self.currentSession;
+    MXSession* session = self.mainSession;
 
     [self showAuthenticationIfNeededForAdding:kMX3PIDMediumEmail withSession:session completion:^(NSDictionary *authParams) {
         [self startActivityIndicator];
@@ -3366,7 +3361,7 @@ TableViewSectionsDelegate>
     // Dismiss the keyboard
     [newPhoneNumberCell.mxkTextField resignFirstResponder];
 
-    MXSession* session = self.currentSession;
+    MXSession* session = self.mainSession;
 
     NSString *e164 = [[NBPhoneNumberUtil sharedInstance] format:newPhoneNumber numberFormat:NBEPhoneNumberFormatE164 error:nil];
     NSString *msisdn;
@@ -3445,7 +3440,7 @@ TableViewSectionsDelegate>
 {
     if ([AppDelegate theDelegate].mxSessions.count > 0)
     {
-        MXSession* session = self.currentSession;
+        MXSession* session = self.mainSession;
         MXMyUser* myUser = session.myUser;
         
         BOOL saveButtonEnabled = (nil != newAvatarImage);
