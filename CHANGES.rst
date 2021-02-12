@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * User-Interactive Authentication: Add UIA support for device deletion and add user 3PID action (#4016).
 
 🐛 Bugfix
  * 
