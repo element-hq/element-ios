@@ -1,3 +1,31 @@
+Changes in 1.2.1 (2021-02-12)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * User-Interactive Authentication: Add UIA support for device deletion and add user 3PID action (#4016).
+
+🐛 Bugfix
+ * NSE: Wait for VoIP push request if any before calling contentHandler (#4018).
+ * VoIP: Show dial pad option only if PSTN is supported (#4029).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.14.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.1)).
+
 Changes in 1.2.0 (2021-02-11)
 =================================================
 

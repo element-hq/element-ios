@@ -17,7 +17,7 @@ import Foundation
 
 /// This class creates view controllers that can handle an authentication flow for given requests.
 @objcMembers
-final class AuthenticatedSessionViewControllerFactory: NSObject {
+final class UserInteractiveAuthenticationViewControllerFactory: NSObject {
         
     // MARK: - Password flow
     

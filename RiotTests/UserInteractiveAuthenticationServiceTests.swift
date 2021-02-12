@@ -18,7 +18,7 @@ import XCTest
 
 @testable import Riot
 
-class AuthenticationSessionServiceTests: XCTestCase {
+class UserInteractiveAuthenticationServiceTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -45,7 +45,7 @@ class AuthenticationSessionServiceTests: XCTestCase {
         authenticationSession.flows = [flow1, flow2]
 
         let mxSession = MXSession()
-        let authenticationSessionService = AuthenticationSessionService(session: mxSession)
+        let authenticationSessionService = UserInteractiveAuthenticationService(session: mxSession)
     
         let firstUncompletedStage = authenticationSessionService.firstUncompletedFlowIdentifier(in: authenticationSession)
         

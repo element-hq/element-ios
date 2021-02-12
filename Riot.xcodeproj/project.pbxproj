@@ -280,12 +280,12 @@
 		B158253B2475350A00604D79 /* EventFormatter+DTCoreTextFix.m in Sources */ = {isa = PBXBuildFile; fileRef = B158253A2475350A00604D79 /* EventFormatter+DTCoreTextFix.m */; };
 		B158E72125485B9E000A7F75 /* Base32Coder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B158E72025485B9E000A7F75 /* Base32Coder.swift */; };
 		B158E72325485EAB000A7F75 /* JitsiJWTTokenBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B158E72225485EAB000A7F75 /* JitsiJWTTokenBuilder.swift */; };
-		B1622D1825BF1A0000C73AE2 /* AuthenticationSessionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1622D1725BF1A0000C73AE2 /* AuthenticationSessionService.swift */; };
+		B1622D1825BF1A0000C73AE2 /* UserInteractiveAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1622D1725BF1A0000C73AE2 /* UserInteractiveAuthenticationService.swift */; };
 		B1622D1D25BF2B6800C73AE2 /* ReauthenticationCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1622D1A25BF2B6800C73AE2 /* ReauthenticationCoordinatorBridgePresenter.swift */; };
 		B1622D1E25BF2B6800C73AE2 /* ReauthenticationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1622D1B25BF2B6800C73AE2 /* ReauthenticationCoordinator.swift */; };
 		B1622D1F25BF2B6800C73AE2 /* ReauthenticationCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1622D1C25BF2B6800C73AE2 /* ReauthenticationCoordinatorType.swift */; };
 		B1622D2125BF2B7B00C73AE2 /* ReauthenticationCoordinatorParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1622D2025BF2B7B00C73AE2 /* ReauthenticationCoordinatorParameters.swift */; };
-		B1622D2325BF2E6500C73AE2 /* AuthenticationSessionParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1622D2225BF2E6500C73AE2 /* AuthenticationSessionParameters.swift */; };
+		B1622D2325BF2E6500C73AE2 /* AuthenticatedEndpointRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1622D2225BF2E6500C73AE2 /* AuthenticatedEndpointRequest.swift */; };
 		B1622D2525BF784300C73AE2 /* AuthenticationParametersBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1622D2425BF784300C73AE2 /* AuthenticationParametersBuilder.swift */; };
 		B1664BC520F4E67600808783 /* FallbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1664BAD20F4E67500808783 /* FallbackViewController.xib */; };
 		B1664BC620F4E67600808783 /* FallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1664BAE20F4E67500808783 /* FallbackViewController.m */; };
@@ -343,7 +343,7 @@
 		B16DC23E258A8025004DAB1A /* ThemeIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16DC23D258A8025004DAB1A /* ThemeIdentifier.swift */; };
 		B17982FF2119FED2001FD722 /* GDPRConsentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17982FE2119FED2001FD722 /* GDPRConsentViewController.swift */; };
 		B1798302211B13B3001FD722 /* OnBoardingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1798301211B13B3001FD722 /* OnBoardingManager.swift */; };
-		B17DA77925C81A2B003FA4C1 /* AuthenticationSessionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17DA77825C81A2B003FA4C1 /* AuthenticationSessionServiceTests.swift */; };
+		B17DA77925C81A2B003FA4C1 /* UserInteractiveAuthenticationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17DA77825C81A2B003FA4C1 /* UserInteractiveAuthenticationServiceTests.swift */; };
 		B17DA77B25C8B085003FA4C1 /* ReauthFallBackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17DA77A25C8B085003FA4C1 /* ReauthFallBackViewController.swift */; };
 		B183226623F55D6B0035B2E8 /* CameraAccessManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B183226523F55D6B0035B2E8 /* CameraAccessManager.swift */; };
 		B183226823F561380035B2E8 /* CameraAccessAlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B183226723F561380035B2E8 /* CameraAccessAlertPresenter.swift */; };
@@ -909,7 +909,7 @@
 		EC711BB024A63B58008F830C /* SecureBackupBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC711BA524A63B58008F830C /* SecureBackupBannerCell.swift */; };
 		EC711BB124A63B58008F830C /* SecureBackupBannerPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC711BA624A63B58008F830C /* SecureBackupBannerPreferences.swift */; };
 		EC711BB324A63B58008F830C /* SecureBackupBannerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC711BA824A63B58008F830C /* SecureBackupBannerCell.xib */; };
-		EC711BB624A63C11008F830C /* AuthenticatedSessionViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC711BB524A63C11008F830C /* AuthenticatedSessionViewControllerFactory.swift */; };
+		EC711BB624A63C11008F830C /* UserInteractiveAuthenticationViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC711BB524A63C11008F830C /* UserInteractiveAuthenticationViewControllerFactory.swift */; };
 		EC757B2625B85C7F00DF5787 /* DialpadViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC757B2125B85C7F00DF5787 /* DialpadViewController.storyboard */; };
 		EC757B2725B85C7F00DF5787 /* DialpadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC757B2225B85C7F00DF5787 /* DialpadViewController.swift */; };
 		EC757B2825B85C7F00DF5787 /* DialpadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC757B2425B85C7F00DF5787 /* DialpadButton.swift */; };
@@ -1395,12 +1395,12 @@
 		B158253A2475350A00604D79 /* EventFormatter+DTCoreTextFix.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "EventFormatter+DTCoreTextFix.m"; sourceTree = "<group>"; };
 		B158E72025485B9E000A7F75 /* Base32Coder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base32Coder.swift; sourceTree = "<group>"; };
 		B158E72225485EAB000A7F75 /* JitsiJWTTokenBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JitsiJWTTokenBuilder.swift; sourceTree = "<group>"; };
-		B1622D1725BF1A0000C73AE2 /* AuthenticationSessionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationSessionService.swift; sourceTree = "<group>"; };
+		B1622D1725BF1A0000C73AE2 /* UserInteractiveAuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInteractiveAuthenticationService.swift; sourceTree = "<group>"; };
 		B1622D1A25BF2B6800C73AE2 /* ReauthenticationCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReauthenticationCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
 		B1622D1B25BF2B6800C73AE2 /* ReauthenticationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReauthenticationCoordinator.swift; sourceTree = "<group>"; };
 		B1622D1C25BF2B6800C73AE2 /* ReauthenticationCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReauthenticationCoordinatorType.swift; sourceTree = "<group>"; };
 		B1622D2025BF2B7B00C73AE2 /* ReauthenticationCoordinatorParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReauthenticationCoordinatorParameters.swift; sourceTree = "<group>"; };
-		B1622D2225BF2E6500C73AE2 /* AuthenticationSessionParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationSessionParameters.swift; sourceTree = "<group>"; };
+		B1622D2225BF2E6500C73AE2 /* AuthenticatedEndpointRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatedEndpointRequest.swift; sourceTree = "<group>"; };
 		B1622D2425BF784300C73AE2 /* AuthenticationParametersBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationParametersBuilder.swift; sourceTree = "<group>"; };
 		B1664BAD20F4E67500808783 /* FallbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FallbackViewController.xib; sourceTree = "<group>"; };
 		B1664BAE20F4E67500808783 /* FallbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FallbackViewController.m; sourceTree = "<group>"; };
@@ -1506,7 +1506,7 @@
 		B16DC23D258A8025004DAB1A /* ThemeIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeIdentifier.swift; sourceTree = "<group>"; };
 		B17982FE2119FED2001FD722 /* GDPRConsentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDPRConsentViewController.swift; sourceTree = "<group>"; };
 		B1798301211B13B3001FD722 /* OnBoardingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingManager.swift; sourceTree = "<group>"; };
-		B17DA77825C81A2B003FA4C1 /* AuthenticationSessionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationSessionServiceTests.swift; sourceTree = "<group>"; };
+		B17DA77825C81A2B003FA4C1 /* UserInteractiveAuthenticationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInteractiveAuthenticationServiceTests.swift; sourceTree = "<group>"; };
 		B17DA77A25C8B085003FA4C1 /* ReauthFallBackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReauthFallBackViewController.swift; sourceTree = "<group>"; };
 		B183226523F55D6B0035B2E8 /* CameraAccessManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraAccessManager.swift; sourceTree = "<group>"; };
 		B183226723F561380035B2E8 /* CameraAccessAlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraAccessAlertPresenter.swift; sourceTree = "<group>"; };
@@ -2219,7 +2219,7 @@
 		EC711BA524A63B58008F830C /* SecureBackupBannerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureBackupBannerCell.swift; sourceTree = "<group>"; };
 		EC711BA624A63B58008F830C /* SecureBackupBannerPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureBackupBannerPreferences.swift; sourceTree = "<group>"; };
 		EC711BA824A63B58008F830C /* SecureBackupBannerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecureBackupBannerCell.xib; sourceTree = "<group>"; };
-		EC711BB524A63C11008F830C /* AuthenticatedSessionViewControllerFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticatedSessionViewControllerFactory.swift; sourceTree = "<group>"; };
+		EC711BB524A63C11008F830C /* UserInteractiveAuthenticationViewControllerFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInteractiveAuthenticationViewControllerFactory.swift; sourceTree = "<group>"; };
 		EC757B2125B85C7F00DF5787 /* DialpadViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DialpadViewController.storyboard; sourceTree = "<group>"; };
 		EC757B2225B85C7F00DF5787 /* DialpadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialpadViewController.swift; sourceTree = "<group>"; };
 		EC757B2425B85C7F00DF5787 /* DialpadButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialpadButton.swift; sourceTree = "<group>"; };
@@ -3628,7 +3628,7 @@
 				B10A3E9524FE86AE007C380F /* SplitView */,
 				EC1CA84F24C1DEC400DE9EBF /* SetPinCode */,
 				EC3B066324AC6ADD000DF9BF /* CrossSigning */,
-				EC711BB424A63C11008F830C /* AuthenticatedSession */,
+				EC711BB424A63C11008F830C /* UserInteractiveAuthentication */,
 				EC711B9A24A63B58008F830C /* SecureBackup */,
 				EC711B4724A63B36008F830C /* Secrets */,
 				B1560DA024B65A9500490F50 /* LaunchLoading */,
@@ -5371,15 +5371,15 @@
 			path = Banners;
 			sourceTree = "<group>";
 		};
-		EC711BB424A63C11008F830C /* AuthenticatedSession */ = {
+		EC711BB424A63C11008F830C /* UserInteractiveAuthentication */ = {
 			isa = PBXGroup;
 			children = (
-				EC711BB524A63C11008F830C /* AuthenticatedSessionViewControllerFactory.swift */,
-				B1622D1725BF1A0000C73AE2 /* AuthenticationSessionService.swift */,
-				B1622D2225BF2E6500C73AE2 /* AuthenticationSessionParameters.swift */,
+				EC711BB524A63C11008F830C /* UserInteractiveAuthenticationViewControllerFactory.swift */,
+				B1622D1725BF1A0000C73AE2 /* UserInteractiveAuthenticationService.swift */,
+				B1622D2225BF2E6500C73AE2 /* AuthenticatedEndpointRequest.swift */,
 				B1622D2425BF784300C73AE2 /* AuthenticationParametersBuilder.swift */,
 			);
-			path = AuthenticatedSession;
+			path = UserInteractiveAuthentication;
 			sourceTree = "<group>";
 		};
 		EC757B2025B85C7F00DF5787 /* Dialpad */ = {
@@ -5689,7 +5689,7 @@
 				F083BB041E7005FD00A9B29C /* RiotTests.m */,
 				B152C73022DF561E0041315A /* EmojiServiceTests.swift */,
 				B1562CE42541D113002F8436 /* JitsiWellKnownTests.swift */,
-				B17DA77825C81A2B003FA4C1 /* AuthenticationSessionServiceTests.swift */,
+				B17DA77825C81A2B003FA4C1 /* UserInteractiveAuthenticationServiceTests.swift */,
 				F083BB071E70067700A9B29C /* Supporting Files */,
 			);
 			path = RiotTests;
@@ -6770,7 +6770,7 @@
 				B1B5571A20EE6C4D00210D55 /* SettingsViewController.m in Sources */,
 				B1CE9EFD22148703000FAE6A /* SignOutAlertPresenter.swift in Sources */,
 				32F6B9692270623100BBA352 /* KeyVerificationDataLoadingCoordinator.swift in Sources */,
-				B1622D1825BF1A0000C73AE2 /* AuthenticationSessionService.swift in Sources */,
+				B1622D1825BF1A0000C73AE2 /* UserInteractiveAuthenticationService.swift in Sources */,
 				B125FE1D231D5DE400B72806 /* SettingsDiscoveryViewModel.swift in Sources */,
 				32863A5A2384070300D07C4A /* RiotSharedSettings.swift in Sources */,
 				B1B5594720EF7BD000210D55 /* RoomCollectionViewCell.m in Sources */,
@@ -6996,7 +6996,7 @@
 				EC711BAF24A63B58008F830C /* SecureBackupSetupCoordinatorType.swift in Sources */,
 				EC9E9B082575AF730007C0A0 /* CallVCDismissOperation.swift in Sources */,
 				ECFBD5D4250A7AAF00DD5F5A /* ShowDirectoryCoordinatorType.swift in Sources */,
-				B1622D2325BF2E6500C73AE2 /* AuthenticationSessionParameters.swift in Sources */,
+				B1622D2325BF2E6500C73AE2 /* AuthenticatedEndpointRequest.swift in Sources */,
 				EC1CA89C24C9C9A200DE9EBF /* SetupBiometricsViewModel.swift in Sources */,
 				B157FAA323264AE900EBFBD4 /* SettingsDiscoveryThreePidDetailsViewState.swift in Sources */,
 				B1098BF921ECFE65000DDA48 /* KeyBackupSetupCoordinator.swift in Sources */,
@@ -7330,7 +7330,7 @@
 				EC1CA87724C82D0E00DE9EBF /* MemoryStore.swift in Sources */,
 				B169746F25C21C1900E6B3FB /* CrossSigningSetupCoordinatorParameters.swift in Sources */,
 				B1B9DEEE22EB34EF0065E677 /* ReactionHistoryViewAction.swift in Sources */,
-				EC711BB624A63C11008F830C /* AuthenticatedSessionViewControllerFactory.swift in Sources */,
+				EC711BB624A63C11008F830C /* UserInteractiveAuthenticationViewControllerFactory.swift in Sources */,
 				B1C543A4239E98E400DCA1FA /* KeyVerificationCellInnerContentView.swift in Sources */,
 				B10A3E8E24FE4368007C380F /* ElementView.swift in Sources */,
 				B1CE83B62422812100D07506 /* KeyVerificationCoordinatorBridgePresenter.swift in Sources */,
@@ -7357,7 +7357,7 @@
 				32FD754D24D06EBF00BA7B37 /* RiotSettings.swift in Sources */,
 				B1562CE52541D113002F8436 /* JitsiWellKnownTests.swift in Sources */,
 				32FD757124D2BEF700BA7B37 /* InfoPlist.swift in Sources */,
-				B17DA77925C81A2B003FA4C1 /* AuthenticationSessionServiceTests.swift in Sources */,
+				B17DA77925C81A2B003FA4C1 /* UserInteractiveAuthenticationServiceTests.swift in Sources */,
 				32FD756524D2AD5100BA7B37 /* BuildSettings.swift in Sources */,
 				32FD755524D0754500BA7B37 /* AppConfiguration.swift in Sources */,
 				32FD755124D074C700BA7B37 /* CommonConfiguration.swift in Sources */,
@@ -7759,7 +7759,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.2.0;
+				CURRENT_PROJECT_VERSION = 1.2.1;
 				DEFINES_MODULE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -7779,7 +7779,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.2.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -7818,7 +7818,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 1.2.0;
+				CURRENT_PROJECT_VERSION = 1.2.1;
 				DEFINES_MODULE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -7831,7 +7831,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.2.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
