@@ -3384,9 +3384,13 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
                 {
                     [self roomInputToolbarView:toolbarView placeCallWithVideo2:video];
                 }
-                else
+                else if (self.mainSession.callManager.supportsPSTN)
                 {
                     [self showVoiceCallActionSheetWith:toolbarView];
+                }
+                else
+                {
+                    [self roomInputToolbarView:toolbarView placeCallWithVideo2:NO];
                 }
             }
             else

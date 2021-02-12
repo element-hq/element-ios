@@ -59,13 +59,13 @@ final class SecretsResetCoordinator: SecretsResetCoordinatorType {
     
     // MARK: - Private
     
-    private func showAuthentication(with authenticationSessionParameters: AuthenticationSessionParameters) {
+    private func showAuthentication(with request: AuthenticatedEndpointRequest) {
         
         let reauthenticationCoordinatorParameters =  ReauthenticationCoordinatorParameters(session: self.session,
                                                                                            presenter: self.toPresentable(),
                                                                                            title: nil,
                                                                                            message: VectorL10n.secretsResetAuthenticationMessage,
-                                                                                           authenticationSessionParameters: authenticationSessionParameters)
+                                                                                           authenticatedEndpointRequest: request)
         
         let coordinator = ReauthenticationCoordinator(parameters: reauthenticationCoordinatorParameters)
         coordinator.delegate = self
@@ -77,8 +77,8 @@ final class SecretsResetCoordinator: SecretsResetCoordinatorType {
 // MARK: - SecretsResetViewModelCoordinatorDelegate
 extension SecretsResetCoordinator: SecretsResetViewModelCoordinatorDelegate {
     
-    func secretsResetViewModel(_ viewModel: SecretsResetViewModelType, needsToAuthenticateWith authenticationSessionParamaters: AuthenticationSessionParameters) {
-        self.showAuthentication(with: authenticationSessionParamaters)
+    func secretsResetViewModel(_ viewModel: SecretsResetViewModelType, needsToAuthenticateWith request: AuthenticatedEndpointRequest) {
+        self.showAuthentication(with: request)
     }
     
     func secretsResetViewModelDidResetSecrets(_ viewModel: SecretsResetViewModelType) {
