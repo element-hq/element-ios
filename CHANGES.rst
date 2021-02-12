@@ -8,7 +8,7 @@ Changes to be released in next version
  * User-Interactive Authentication: Add UIA support for device deletion and add user 3PID action (#4016).
 
 🐛 Bugfix
- * 
+ * NSE: Wait for VoIP push request if any before calling contentHandler (#4018).
 
 ⚠️ API Changes
  * 
