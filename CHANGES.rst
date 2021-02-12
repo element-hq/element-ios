@@ -9,6 +9,7 @@ Changes to be released in next version
 
 🐛 Bugfix
  * NSE: Wait for VoIP push request if any before calling contentHandler (#4018).
+ * VoIP: Show dial pad option only if PSTN is supported (#4029).
 
 ⚠️ API Changes
  * 
