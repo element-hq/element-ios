@@ -909,7 +909,7 @@
 		EC711BB024A63B58008F830C /* SecureBackupBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC711BA524A63B58008F830C /* SecureBackupBannerCell.swift */; };
 		EC711BB124A63B58008F830C /* SecureBackupBannerPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC711BA624A63B58008F830C /* SecureBackupBannerPreferences.swift */; };
 		EC711BB324A63B58008F830C /* SecureBackupBannerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC711BA824A63B58008F830C /* SecureBackupBannerCell.xib */; };
-		EC711BB624A63C11008F830C /* AuthenticatedSessionViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC711BB524A63C11008F830C /* AuthenticatedSessionViewControllerFactory.swift */; };
+		EC711BB624A63C11008F830C /* UserInteractiveAuthenticationViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC711BB524A63C11008F830C /* UserInteractiveAuthenticationViewControllerFactory.swift */; };
 		EC757B2625B85C7F00DF5787 /* DialpadViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC757B2125B85C7F00DF5787 /* DialpadViewController.storyboard */; };
 		EC757B2725B85C7F00DF5787 /* DialpadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC757B2225B85C7F00DF5787 /* DialpadViewController.swift */; };
 		EC757B2825B85C7F00DF5787 /* DialpadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC757B2425B85C7F00DF5787 /* DialpadButton.swift */; };
@@ -922,7 +922,6 @@
 		EC7749CD25A48F6100AB1295 /* PiPAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7749CC25A48F6100AB1295 /* PiPAnimator.swift */; };
 		EC7749D125A5C58000AB1295 /* PiPView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7749D025A5C58000AB1295 /* PiPView.swift */; };
 		EC7749D325A5C75400AB1295 /* PictureInPicturable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7749D225A5C75400AB1295 /* PictureInPicturable.swift */; };
-		EC711BB624A63C11008F830C /* UserInteractiveAuthenticationViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC711BB524A63C11008F830C /* UserInteractiveAuthenticationViewControllerFactory.swift */; };
 		EC85D6AE2477DC89002C44C9 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D6AD2477DC89002C44C9 /* RoundedButton.swift */; };
 		EC85D7142477DCD7002C44C9 /* KeyVerificationScanConfirmationViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D70C2477DCD7002C44C9 /* KeyVerificationScanConfirmationViewState.swift */; };
 		EC85D7152477DCD7002C44C9 /* KeyVerificationScanConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC85D70D2477DCD7002C44C9 /* KeyVerificationScanConfirmationViewController.swift */; };
@@ -2220,7 +2219,7 @@
 		EC711BA524A63B58008F830C /* SecureBackupBannerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureBackupBannerCell.swift; sourceTree = "<group>"; };
 		EC711BA624A63B58008F830C /* SecureBackupBannerPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureBackupBannerPreferences.swift; sourceTree = "<group>"; };
 		EC711BA824A63B58008F830C /* SecureBackupBannerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecureBackupBannerCell.xib; sourceTree = "<group>"; };
-		EC711BB524A63C11008F830C /* AuthenticatedSessionViewControllerFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticatedSessionViewControllerFactory.swift; sourceTree = "<group>"; };
+		EC711BB524A63C11008F830C /* UserInteractiveAuthenticationViewControllerFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInteractiveAuthenticationViewControllerFactory.swift; sourceTree = "<group>"; };
 		EC757B2125B85C7F00DF5787 /* DialpadViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DialpadViewController.storyboard; sourceTree = "<group>"; };
 		EC757B2225B85C7F00DF5787 /* DialpadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialpadViewController.swift; sourceTree = "<group>"; };
 		EC757B2425B85C7F00DF5787 /* DialpadButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialpadButton.swift; sourceTree = "<group>"; };
@@ -2233,7 +2232,6 @@
 		EC7749CC25A48F6100AB1295 /* PiPAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiPAnimator.swift; sourceTree = "<group>"; };
 		EC7749D025A5C58000AB1295 /* PiPView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiPView.swift; sourceTree = "<group>"; };
 		EC7749D225A5C75400AB1295 /* PictureInPicturable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureInPicturable.swift; sourceTree = "<group>"; };
-		EC711BB524A63C11008F830C /* UserInteractiveAuthenticationViewControllerFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInteractiveAuthenticationViewControllerFactory.swift; sourceTree = "<group>"; };
 		EC85D6AD2477DC89002C44C9 /* RoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		EC85D70C2477DCD7002C44C9 /* KeyVerificationScanConfirmationViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationScanConfirmationViewState.swift; sourceTree = "<group>"; };
 		EC85D70D2477DCD7002C44C9 /* KeyVerificationScanConfirmationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyVerificationScanConfirmationViewController.swift; sourceTree = "<group>"; };
