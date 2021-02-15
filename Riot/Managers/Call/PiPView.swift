@@ -148,19 +148,30 @@ NSLayoutConstraint.activate([
         }
         let targetSize = targetSize ?? frame.size
         
+        var superviewWidth: CGFloat = 0
+        var superviewHeight: CGFloat = 0
+        
+        if UIDevice.current.orientation.isPortrait {
+            superviewWidth = min(view.bounds.width, view.bounds.height)
+            superviewHeight = max(view.bounds.width, view.bounds.height)
+        } else {
+            superviewWidth = max(view.bounds.width, view.bounds.height)
+            superviewHeight = min(view.bounds.width, view.bounds.height)
+        }
+        
         switch position {
         case .bottomLeft:
             let origin = CGPoint(x: margins.horizontal + view.safeAreaInsets.left,
-                                 y: view.bounds.height - view.safeAreaInsets.bottom - targetSize.height - margins.vertical)
+                                 y: superviewHeight - view.safeAreaInsets.bottom - targetSize.height - margins.vertical)
             return CGRect(origin: origin,
                           size: targetSize)
         case .bottomRight:
-            let origin = CGPoint(x: view.bounds.width - view.safeAreaInsets.right - margins.horizontal - targetSize.width,
-                                 y: view.bounds.height - view.safeAreaInsets.bottom - targetSize.height - margins.vertical)
+            let origin = CGPoint(x: superviewWidth - view.safeAreaInsets.right - margins.horizontal - targetSize.width,
+                                 y: superviewHeight - view.safeAreaInsets.bottom - targetSize.height - margins.vertical)
             return CGRect(origin: origin,
                           size: targetSize)
         case .topRight:
-            let origin = CGPoint(x: view.bounds.width - view.safeAreaInsets.right - margins.horizontal - targetSize.width,
+            let origin = CGPoint(x: superviewWidth - view.safeAreaInsets.right - margins.horizontal - targetSize.width,
                                  y: margins.vertical + view.safeAreaInsets.top)
             return CGRect(origin: origin,
                           size: targetSize)
