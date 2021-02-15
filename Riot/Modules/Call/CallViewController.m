@@ -521,7 +521,8 @@
                                                                showsBackspaceButton:NO
                                                                     showsCallButton:NO
                                                                   formattingEnabled:NO
-                                                                     editingEnabled:NO];
+                                                                     editingEnabled:NO
+                                                                          playTones:YES];
     DialpadViewController *controller = [DialpadViewController instantiateWithConfiguration:config];
     controller.delegate = self;
     self.customSizedPresentationController = [[CustomSizedPresentationController alloc] initWithPresentedViewController:controller presentingViewController:self];

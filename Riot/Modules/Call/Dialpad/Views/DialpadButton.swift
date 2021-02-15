@@ -21,11 +21,13 @@ class DialpadButton: UIButton {
     
     struct ViewData {
         var title: String
+        var tone: SystemSoundID
         var subtitle: String?
         var showsSubtitleSpace: Bool
         
-        init(title: String, subtitle: String? = nil, showsSubtitleSpace: Bool = false) {
+        init(title: String, tone: SystemSoundID, subtitle: String? = nil, showsSubtitleSpace: Bool = false) {
             self.title = title
+            self.tone = tone
             self.subtitle = subtitle
             self.showsSubtitleSpace = showsSubtitleSpace
         }
