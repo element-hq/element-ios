@@ -3249,13 +3249,13 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [_callBar.heightAnchor constraintEqualToAnchor:_callStatusBarWindow.heightAnchor].active = YES;
 
     _callStatusBarWindow.hidden = NO;
-    [self statusBarDidChangeFrame];
+    [self deviceOrientationDidChange];
     
-    // We need to listen to the system status bar size change events to refresh the root controller frame.
+    // We need to listen to the device orientation change events to refresh the root controller frame.
     // Else the navigation bar position will be wrong.
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(statusBarDidChangeFrame)
-                                                 name:UIApplicationDidChangeStatusBarFrameNotification
+                                             selector:@selector(deviceOrientationDidChange)
+                                                 name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
 }
 
@@ -3263,8 +3263,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     if (_callStatusBarWindow)
     {
-        // No more need to listen to system status bar changes
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
+        // No more need to listen to device orientation changes
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
         
         // Hide & destroy it
         _callStatusBarWindow.hidden = YES;
@@ -3272,11 +3272,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         _callBar = nil;
         _callStatusBarWindow = nil;
         
-        [self statusBarDidChangeFrame];
+        [self deviceOrientationDidChange];
     }
 }
 
-- (void)statusBarDidChangeFrame
+- (void)deviceOrientationDidChange
 {
     UIApplication *app = [UIApplication sharedApplication];
     UIViewController *rootController = app.keyWindow.rootViewController;
@@ -3288,30 +3288,20 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         CGFloat callStatusBarHeight = [self calculateCallStatusBarHeight];
 
-        UIInterfaceOrientation statusBarOrientation = [UIApplication sharedApplication].statusBarOrientation;
+        UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
+        CGFloat width;
         
-        switch (statusBarOrientation)
+        if (UIDeviceOrientationIsPortrait(deviceOrientation))
         {
-            case UIInterfaceOrientationLandscapeLeft:
-            {
-                _callStatusBarWindow.frame = CGRectMake(-rootControllerFrame.size.width / 2, -callStatusBarHeight / 2, rootControllerFrame.size.width, callStatusBarHeight);
-                _callStatusBarWindow.transform = CGAffineTransformMake(0, -1, 1, 0, callStatusBarHeight / 2, rootControllerFrame.size.width / 2);
-                break;
-            }
-            case UIInterfaceOrientationLandscapeRight:
-            {
-                _callStatusBarWindow.frame = CGRectMake(-rootControllerFrame.size.width / 2, -callStatusBarHeight / 2, rootControllerFrame.size.width, callStatusBarHeight);
-                _callStatusBarWindow.transform = CGAffineTransformMake(0, 1, -1, 0, rootControllerFrame.size.height - callStatusBarHeight / 2, rootControllerFrame.size.width / 2);
-                break;
-            }
-            default:
-            {
-                _callStatusBarWindow.transform = CGAffineTransformIdentity;
-                _callStatusBarWindow.frame = CGRectMake(0, 0, rootControllerFrame.size.width, callStatusBarHeight);
-                break;
-            }
+            width = MIN(rootControllerFrame.size.width, rootControllerFrame.size.height);
         }
-
+        else
+        {
+            width = MAX(rootControllerFrame.size.width, rootControllerFrame.size.height);
+        }
+        
+        _callStatusBarWindow.frame = CGRectMake(0, 0, width, callStatusBarHeight);
+        
         // Apply the vertical offset due to call status bar
         rootControllerFrame.origin.y = callStatusBarHeight;
         rootControllerFrame.size.height -= callStatusBarHeight;
