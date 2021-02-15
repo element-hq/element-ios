@@ -116,6 +116,7 @@ class PiPAnimator: NSObject {
         animator.addCompletion { (position) in
             
             toVC.additionalSafeAreaInsets = .zero
+            toVC.view.frame = context.finalFrame(for: toVC)
             toVC.view.isHidden = false
             
             snapshot.removeFromSuperview()
