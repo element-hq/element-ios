@@ -33,10 +33,7 @@ class CallBubbleCellBaseContentView: UIView {
     
     @IBOutlet weak var bottomContainerView: UIView!
     
-    private var _theme: Theme?
-    private var theme: Theme {
-        return _theme ?? ThemeService.shared().theme
-    }
+    private var theme: Theme = ThemeService.shared().theme
     
     func render(_ cellData: MXKCellData) {
         guard let bubbleCellData = cellData as? RoomBubbleCellData else {
@@ -105,7 +102,7 @@ extension CallBubbleCellBaseContentView: NibLoadable {
 extension CallBubbleCellBaseContentView: Themable {
     
     func update(theme: Theme) {
-        _theme = theme
+        self.theme = theme
         
         paginationLabel.textColor = theme.tintColor
         paginationSeparatorView.backgroundColor = theme.tintColor

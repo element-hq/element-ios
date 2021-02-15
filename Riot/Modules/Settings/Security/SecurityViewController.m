@@ -137,7 +137,6 @@ TableViewSectionsDelegate>
 @property (nonatomic) BOOL isLoadingDevices;
 @property (nonatomic, strong) MXKeyBackupVersion *currentkeyBackupVersion;
 @property (nonatomic, strong) SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
-@property (nonatomic, strong) AuthenticatedSessionViewControllerFactory *authenticatedSessionViewControllerFactory;
 @property (nonatomic, strong) SetPinCoordinatorBridgePresenter *setPinCoordinatorBridgePresenter;
 @property (nonatomic, strong) CrossSigningSetupCoordinatorBridgePresenter *crossSigningSetupCoordinatorBridgePresenter;
 

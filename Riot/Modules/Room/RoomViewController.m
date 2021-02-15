@@ -126,7 +126,7 @@
 
 #import "Riot-Swift.h"
 
-NSString *const kRoomCallTileTapped = @"RoomCallTileTapped";
+NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNotification";
 
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
@@ -2212,7 +2212,7 @@ NSString *const kRoomCallTileTapped = @"RoomCallTileTapped";
                     if ([bubbleData isKindOfClass:[RoomBubbleCellData class]])
                     {
                         //  post notification `RoomCallTileTapped`
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kRoomCallTileTapped object:bubbleData];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:RoomCallTileTappedNotification object:bubbleData];
                     }
                 }
                 else
@@ -3384,9 +3384,13 @@ NSString *const kRoomCallTileTapped = @"RoomCallTileTapped";
                 {
                     [self roomInputToolbarView:toolbarView placeCallWithVideo2:video];
                 }
-                else
+                else if (self.mainSession.callManager.supportsPSTN)
                 {
                     [self showVoiceCallActionSheetWith:toolbarView];
+                }
+                else
+                {
+                    [self roomInputToolbarView:toolbarView placeCallWithVideo2:NO];
                 }
             }
             else
