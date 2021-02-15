@@ -107,6 +107,12 @@
     [self.endCallButton setImage:hangUpButtonImage forState:UIControlStateNormal];
     [self.endCallButton setImage:hangUpButtonImage forState:UIControlStateHighlighted];
     
+    //  force orientation to portrait if phone
+    if ([UIDevice currentDevice].isPhone)
+    {
+        [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationPortrait] forKey:@"orientation"];
+    }
+    
     [self updateLocalPreviewLayout];
     
     [self configureUserInterface];
@@ -150,6 +156,30 @@
     }
     
     [super viewWillDisappear:animated];
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
+    //  limit orientation to portrait only for phone
+    if ([UIDevice currentDevice].isPhone)
+    {
+        return UIInterfaceOrientationMaskPortrait;
+    }
+    return [super supportedInterfaceOrientations];
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    if ([UIDevice currentDevice].isPhone)
+    {
+        return UIInterfaceOrientationPortrait;
+    }
+    return [super preferredInterfaceOrientationForPresentation];
+}
+
+- (BOOL)shouldAutorotate
+{
+    return NO;
 }
 
 #pragma mark - override MXKViewController
