@@ -11,6 +11,7 @@ fileGroups:
     - CHANGES.rst
     - AUTHORS.rst
     - Podfile
+    - project.yml
 
 configFiles:
   Debug: Config/Project-Debug.xcconfig
