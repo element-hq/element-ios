@@ -181,7 +181,11 @@ class CallPresenter: NSObject {
             }
             return
         }
-        dismissCallVC(callVC, completion: completion)
+        if callVC.isDisplayingAlert {
+            completion()
+        } else {
+            dismissCallVC(callVC, completion: completion)
+        }
     }
     
     //  MARK: - Timer
