@@ -32,17 +32,11 @@ $matrixKitVersionSpec = $matrixKitVersion
 $matrixSDKVersionSpec = {}
 end
 
-# Method to import the right MatrixKit flavour
+# Method to import the MatrixKit
 def import_MatrixKit
   pod 'MatrixSDK', $matrixSDKVersionSpec
   pod 'MatrixSDK/JingleCallStack', $matrixSDKVersionSpec
   pod 'MatrixKit', $matrixKitVersionSpec
-end
-
-# Method to import the right MatrixKit/AppExtension flavour
-def import_MatrixKitAppExtension
-  pod 'MatrixSDK', $matrixSDKVersionSpec
-  pod 'MatrixKit/AppExtension', $matrixKitVersionSpec
 end
 
 ########################################
@@ -81,15 +75,15 @@ abstract_target 'RiotPods' do
   end
 
   target "RiotShareExtension" do
-    import_MatrixKitAppExtension
+    import_MatrixKit
   end
 
   target "SiriIntents" do
-    import_MatrixKitAppExtension
+    import_MatrixKit
   end
 
   target "RiotNSE" do
-    import_MatrixKitAppExtension
+    import_MatrixKit
   end
 
 end
@@ -111,6 +105,9 @@ post_install do |installer|
       if target.name.include? 'ReadMoreTextView'
         config.build_settings['SWIFT_VERSION'] = '5.2'
       end
+
+      # Stop Xcode 12 complaining about old IPHONEOS_DEPLOYMENT_TARGET from pods 
+      config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
     end
   end
 end

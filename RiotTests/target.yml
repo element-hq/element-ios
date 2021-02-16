@@ -1,0 +1,52 @@
+name: RiotTests
+
+schemes:
+  RiotTests:
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+    build:
+      targets:
+        RiotTests:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Release
+    run:
+      config: Debug
+      disableMainThreadChecker: true
+    test:
+      config: Debug
+      disableMainThreadChecker: true
+      targets:
+      - RiotTests
+
+targets:
+  RiotTests:
+    type: bundle.unit-test
+    platform: iOS
+
+    dependencies:
+    - target: Riot
+
+    settings:
+      base:
+        BUNDLE_LOADER: $(TEST_HOST)
+        FRAMEWORK_SEARCH_PATHS: $(SDKROOT)/Developer/Library/Frameworks $(inherited)
+        INFOPLIST_FILE: Info.plist
+        LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @loader_path/Frameworks
+        PRODUCT_BUNDLE_IDENTIFIER: org.matrix.$(PRODUCT_NAME:rfc1034identifier)
+        PRODUCT_NAME: RiotTests
+        SWIFT_OBJC_BRIDGING_HEADER: RiotTests-Bridging-Header.h
+        TEST_HOST: $(BUILT_PRODUCTS_DIR)/Riot.app/Riot
+      configs:
+        Debug:
+        Release:
+          PROVISIONING_PROFILE: $(RIOT_PROVISIONING_PROFILE)
+          PROVISIONING_PROFILE_SPECIFIER: $(RIOT_PROVISIONING_PROFILE_SPECIFIER)
+
+    sources: .
