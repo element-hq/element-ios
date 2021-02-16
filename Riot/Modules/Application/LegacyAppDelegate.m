@@ -4473,7 +4473,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // Check whether the call view controller is actually presented
     if (viewController.presentingViewController)
     {
-        [viewController dismissViewControllerAnimated:YES completion:^{
+        [viewController.presentingViewController dismissViewControllerAnimated:YES completion:^{
             
             if (viewController.shouldPromptForStunServerFallback)
             {
