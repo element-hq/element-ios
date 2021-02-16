@@ -56,13 +56,9 @@ targets:
         - "Release"
         - "Templates/*.sh"
     - path: ../Config
-      excludes:
-        - "AppConfig.swift"
     - path: .
       excludes:
         - "Modules/Room/EmojiPicker/Data/EmojiMart/EmojiJSONStore.swift"
-        - "Modules/KeyBackup/Recover/Loading"
-        - "Modules/KeyBackup/Setup/RecoveryKey"
         - "**/*.strings" # Exclude all strings files
 
     # Add separately localizable files
