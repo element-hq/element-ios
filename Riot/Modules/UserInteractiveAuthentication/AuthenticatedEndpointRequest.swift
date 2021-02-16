@@ -16,9 +16,9 @@
 
 import Foundation
 
-/// AuthenticationSessionParameters represents authenticated API endpoint parameters.
+/// AuthenticatedEndpointRequest represents authenticated API endpoint request.
 @objcMembers
-class AuthenticationSessionParameters: NSObject {
+class AuthenticatedEndpointRequest: NSObject {
     
     let path: String
     let httpMethod: String

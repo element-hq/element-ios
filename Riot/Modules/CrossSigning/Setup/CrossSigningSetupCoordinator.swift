@@ -56,13 +56,13 @@ final class CrossSigningSetupCoordinator: CrossSigningSetupCoordinatorType {
 
     private func showReauthentication() {
         
-        let authenticationSessionParameters = self.crossSigningService.setupCrossSigningAuthenticationSessionParameters()
+        let setupCrossSigningRequest = self.crossSigningService.setupCrossSigningRequest()
         
         let reauthenticationParameters = ReauthenticationCoordinatorParameters(session: parameters.session,
                                                                                presenter: parameters.presenter,
                                                                                title: parameters.title,
                                                                                message: parameters.message,
-                                                                               authenticationSessionParameters: authenticationSessionParameters)
+                                                                               authenticatedEndpointRequest: setupCrossSigningRequest)
         
         let coordinator = ReauthenticationCoordinator(parameters: reauthenticationParameters)
         coordinator.delegate = self

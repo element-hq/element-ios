@@ -35,33 +35,37 @@ final class ReauthenticationCoordinatorBridgePresenter: NSObject {
     // MARK: - Properties
     
     // MARK: Private
-    
-    private let parameters: ReauthenticationCoordinatorParameters
+        
     private var coordinator: ReauthenticationCoordinator?
     
     // MARK: Public
     
-    weak var delegate: ReauthenticationCoordinatorBridgePresenterDelegate?
-    
-    // MARK: - Setup
-    
-    init(parameters: ReauthenticationCoordinatorParameters) {
-        self.parameters = parameters
-        super.init()
-    }
+    private var didComplete: ((_ authenticationParameters: [String: Any]?) -> Void)?
+    private var didCancel: (() -> Void)?
+    private var didFail: ((Error) -> Void)?
     
     // MARK: - Public
     
-    func present(from viewController: UIViewController, animated: Bool) {
-        let reauthenticationCoordinator = ReauthenticationCoordinator(parameters: self.parameters)
-        reauthenticationCoordinator.delegate = self
-        viewController.present(reauthenticationCoordinator.toPresentable(), animated: animated, completion: nil)
-        reauthenticationCoordinator.start()
+    func present(with parameters: ReauthenticationCoordinatorParameters,
+                 animated: Bool,
+                 success: @escaping ([String: Any]?) -> Void,
+                 cancel: @escaping () -> Void,
+                 failure: @escaping (Error) -> Void) {
         
-        self.coordinator = reauthenticationCoordinator
+        self.didComplete = success
+        self.didCancel = cancel
+        self.didFail = failure
+        
+        let coordinator = ReauthenticationCoordinator(parameters: parameters)
+        coordinator.delegate = self
+        coordinator.start()
+        
+        self.coordinator = coordinator
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
+        self.resetCompletions()
+        
         guard let coordinator = self.coordinator else {
             return
         }
@@ -73,19 +77,27 @@ final class ReauthenticationCoordinatorBridgePresenter: NSObject {
             }
         }
     }
+    
+    // MARK - Private
+    
+    private func resetCompletions() {
+        self.didComplete = nil
+        self.didCancel = nil
+        self.didFail = nil
+    }
 }
 
 // MARK: - ReauthenticationCoordinatorDelegate
 extension ReauthenticationCoordinatorBridgePresenter: ReauthenticationCoordinatorDelegate {
     func reauthenticationCoordinatorDidComplete(_ coordinator: ReauthenticationCoordinatorType, withAuthenticationParameters authenticationParameters: [String: Any]?) {
-        self.delegate?.reauthenticationCoordinatorBridgePresenterDidComplete(self, withAuthenticationParameters: authenticationParameters)
+        self.didComplete?(authenticationParameters)
     }
     
     func reauthenticationCoordinatorDidCancel(_ coordinator: ReauthenticationCoordinatorType) {
-        self.delegate?.reauthenticationCoordinatorBridgePresenterDidCancel(self)
+        self.didCancel?()
     }
     
     func reauthenticationCoordinator(_ coordinator: ReauthenticationCoordinatorType, didFailWithError error: Error) {
-        self.delegate?.reauthenticationCoordinatorBridgePresenter(self, didFailWithError: error)
+        self.didFail?(error)
     }
 }

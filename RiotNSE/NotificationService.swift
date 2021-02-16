@@ -25,6 +25,9 @@ class NotificationService: UNNotificationServiceExtension {
     /// Content handlers. Keys are eventId's
     private var contentHandlers: [String: ((UNNotificationContent) -> Void)] = [:]
     
+    /// Flags to indicate there is an ongoing VoIP Push request for events. Keys are eventId's
+    private var ongoingVoIPPushRequests: [String: Bool] = [:]
+    
     private var userAccount: MXKAccount?
     
     /// Best attempt contents. Will be updated incrementally, if something fails during the process, this best attempt content will be showed as notification. Keys are eventId's
@@ -210,14 +213,23 @@ class NotificationService: UNNotificationServiceExtension {
                 isUnwantedNotification = true
             }
             
-            NSLog("[NotificationService] processEvent: Calling content handler for: \(String(describing: event.eventId)), isUnwanted: \(isUnwantedNotification)")
-            self.contentHandlers[event.eventId]?(content)
-            //  clear maps
-            self.contentHandlers.removeValue(forKey: event.eventId)
-            self.bestAttemptContents.removeValue(forKey: event.eventId)
+            //  modify the best attempt content, to be able to use in future
+            self.bestAttemptContents[event.eventId] = content
             
-            // We are done for this push
-            NSLog("--------------------------------------------------------------------------------")
+            if self.ongoingVoIPPushRequests[event.eventId] == true {
+                //  There is an ongoing VoIP Push request for this event, wait for it to be completed.
+                //  When it completes, it'll continue with the bestAttemptContent.
+                return
+            } else {
+                NSLog("[NotificationService] processEvent: Calling content handler for: \(String(describing: event.eventId)), isUnwanted: \(isUnwantedNotification)")
+                self.contentHandlers[event.eventId]?(content)
+                //  clear maps
+                self.contentHandlers.removeValue(forKey: event.eventId)
+                self.bestAttemptContents.removeValue(forKey: event.eventId)
+                
+                // We are done for this push
+                NSLog("--------------------------------------------------------------------------------")
+            }
         }
     }
     
@@ -234,6 +246,9 @@ class NotificationService: UNNotificationServiceExtension {
         //  clear maps
         contentHandlers.removeValue(forKey: eventId)
         bestAttemptContents.removeValue(forKey: eventId)
+        
+        // We are done for this push
+        NSLog("--------------------------------------------------------------------------------")
     }
     
     private func notificationContent(forEvent event: MXEvent, forAccount account: MXKAccount, onComplete: @escaping (UNNotificationContent?) -> Void) {
@@ -477,12 +492,24 @@ class NotificationService: UNNotificationServiceExtension {
         
         pushNotificationStore.lastCallInvite = event
         
+        ongoingVoIPPushRequests[event.eventId] = true
+        
         let appId = BuildSettings.pushKitAppId
         
-        pushGatewayRestClient.notifyApp(withId: appId, pushToken: token, eventId: event.eventId, roomId: event.roomId, eventType: nil, sender: event.sender, success: { (rejected) in
+        pushGatewayRestClient.notifyApp(withId: appId, pushToken: token, eventId: event.eventId, roomId: event.roomId, eventType: nil, sender: event.sender, success: { [weak self] (rejected) in
             NSLog("[NotificationService] sendVoipPush succeeded, rejected tokens: \(rejected)")
-        }) { (error) in
+            
+            guard let self = self else { return }
+            self.ongoingVoIPPushRequests.removeValue(forKey: event.eventId)
+            
+            self.fallbackToBestAttemptContent(forEventId: event.eventId)
+        }) { [weak self] (error) in
             NSLog("[NotificationService] sendVoipPush failed with error: \(error)")
+            
+            guard let self = self else { return }
+            self.ongoingVoIPPushRequests.removeValue(forKey: event.eventId)
+            
+            self.fallbackToBestAttemptContent(forEventId: event.eventId)
         }
     }
     
