@@ -31,6 +31,7 @@ internal enum Asset {
     internal static let callChatIcon = ImageAsset(name: "call_chat_icon")
     internal static let callDialpadBackspaceIcon = ImageAsset(name: "call_dialpad_backspace_icon")
     internal static let callDialpadCallIcon = ImageAsset(name: "call_dialpad_call_icon")
+    internal static let callGoToChatIcon = ImageAsset(name: "call_go_to_chat_icon")
     internal static let callHangupLarge = ImageAsset(name: "call_hangup_large")
     internal static let callMoreIcon = ImageAsset(name: "call_more_icon")
     internal static let callPausedIcon = ImageAsset(name: "call_paused_icon")
