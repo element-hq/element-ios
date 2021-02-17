@@ -82,7 +82,7 @@
                 <view opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="6gQ-zo-2Zw" userLabel="Local Preview Container">
                     <rect key="frame" x="20" y="464" width="79" height="106"/>
                     <subviews>
-                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5XG-md-r93" userLabel="Local Preview Video View">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5XG-md-r93" userLabel="Local Preview Video View">
                             <rect key="frame" x="0.0" y="0.0" width="79" height="106"/>
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
