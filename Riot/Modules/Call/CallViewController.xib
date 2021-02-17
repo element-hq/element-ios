@@ -189,10 +189,10 @@
                             </constraints>
                         </view>
                         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nk9-Un-LVP" userLabel="Call Control Container View">
-                            <rect key="frame" x="0.0" y="798" width="414" height="64"/>
+                            <rect key="frame" x="0.0" y="794" width="414" height="68"/>
                             <subviews>
                                 <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fxP-zM-kfT">
-                                    <rect key="frame" x="85" y="0.0" width="72" height="72"/>
+                                    <rect key="frame" x="93" y="0.0" width="68" height="68"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <accessibility key="accessibilityConfiguration" identifier="CallVCAudioMuteButton"/>
                                     <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="13"/>
@@ -208,10 +208,9 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lVK-d8-Dqf" userLabel="End Call Button">
-                                    <rect key="frame" x="169" y="-2" width="76" height="76"/>
+                                    <rect key="frame" x="173" y="0.0" width="68" height="68"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" identifier="CallVCEndCallButton"/>
-                                    <inset key="contentEdgeInsets" minX="4" minY="4" maxX="4" maxY="4"/>
                                     <state key="normal" image="call_hangup_large">
                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
@@ -222,7 +221,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UHM-u9-ODN">
-                                    <rect key="frame" x="257" y="2" width="68" height="68"/>
+                                    <rect key="frame" x="253" y="0.0" width="68" height="68"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <accessibility key="accessibilityConfiguration" identifier="CallVCVideoMuteButton"/>
                                     <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="13"/>
@@ -238,7 +237,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xCi-hD-FBs">
-                                    <rect key="frame" x="329" y="8" width="48" height="48"/>
+                                    <rect key="frame" x="325" y="10" width="48" height="48"/>
                                     <accessibility key="accessibilityConfiguration" identifier="CallVCChatButton"/>
                                     <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="13"/>
                                     <inset key="contentEdgeInsets" minX="12" minY="12" maxX="12" maxY="12"/>
@@ -260,10 +259,10 @@
                                 <constraint firstItem="UHM-u9-ODN" firstAttribute="leading" secondItem="lVK-d8-Dqf" secondAttribute="trailing" constant="12" id="4l8-GS-LMC"/>
                                 <constraint firstItem="lVK-d8-Dqf" firstAttribute="centerX" secondItem="nk9-Un-LVP" secondAttribute="centerX" id="C77-dh-aGp"/>
                                 <constraint firstItem="xCi-hD-FBs" firstAttribute="leading" secondItem="lVK-d8-Dqf" secondAttribute="trailing" constant="84" id="Erd-Js-vLN"/>
-                                <constraint firstItem="fxP-zM-kfT" firstAttribute="centerY" secondItem="nk9-Un-LVP" secondAttribute="centerY" constant="4" id="FXE-lL-Q91"/>
-                                <constraint firstItem="UHM-u9-ODN" firstAttribute="centerY" secondItem="nk9-Un-LVP" secondAttribute="centerY" constant="4" id="aOF-7c-8gC"/>
-                                <constraint firstAttribute="height" constant="64" id="eS5-qj-HTc"/>
-                                <constraint firstItem="lVK-d8-Dqf" firstAttribute="centerY" secondItem="nk9-Un-LVP" secondAttribute="centerY" constant="4" id="hY9-ut-lPv"/>
+                                <constraint firstItem="fxP-zM-kfT" firstAttribute="centerY" secondItem="nk9-Un-LVP" secondAttribute="centerY" id="FXE-lL-Q91"/>
+                                <constraint firstItem="UHM-u9-ODN" firstAttribute="centerY" secondItem="nk9-Un-LVP" secondAttribute="centerY" id="aOF-7c-8gC"/>
+                                <constraint firstAttribute="height" constant="68" id="eS5-qj-HTc"/>
+                                <constraint firstItem="lVK-d8-Dqf" firstAttribute="centerY" secondItem="nk9-Un-LVP" secondAttribute="centerY" id="hY9-ut-lPv"/>
                                 <constraint firstItem="lVK-d8-Dqf" firstAttribute="leading" secondItem="fxP-zM-kfT" secondAttribute="trailing" constant="12" id="jZa-SH-3LK"/>
                                 <constraint firstItem="xCi-hD-FBs" firstAttribute="centerY" secondItem="nk9-Un-LVP" secondAttribute="centerY" id="orn-eU-ogl"/>
                             </constraints>
@@ -449,7 +448,7 @@
                 <constraint firstItem="JAR-tn-sGN" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ck8-BX-Uyq"/>
                 <constraint firstItem="UGa-hI-iqx" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="dzn-mw-OrJ"/>
                 <constraint firstItem="sOu-ER-kOe" firstAttribute="top" secondItem="r1a-fi-tZ0" secondAttribute="top" id="iV6-LV-kcn"/>
-                <constraint firstItem="r1a-fi-tZ0" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="6gQ-zo-2Zw" secondAttribute="bottom" constant="74" id="jCm-3K-6ah"/>
+                <constraint firstItem="r1a-fi-tZ0" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="6gQ-zo-2Zw" secondAttribute="bottom" constant="80" id="jCm-3K-6ah"/>
                 <constraint firstItem="Tjb-57-yB1" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="mW3-RA-hx2"/>
                 <constraint firstItem="VWv-s0-46r" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="pzW-oL-TS7"/>
                 <constraint firstAttribute="trailing" secondItem="Tjb-57-yB1" secondAttribute="trailing" id="rXn-dm-69F"/>
@@ -461,7 +460,7 @@
     </objects>
     <resources>
         <image name="back_icon" width="14" height="23"/>
-        <image name="call_audio_mute_off_icon" width="72" height="72"/>
+        <image name="call_audio_mute_off_icon" width="68" height="68"/>
         <image name="call_go_to_chat_icon" width="24" height="24"/>
         <image name="call_hangup_icon" width="24.5" height="26"/>
         <image name="call_hangup_large" width="68" height="68"/>
