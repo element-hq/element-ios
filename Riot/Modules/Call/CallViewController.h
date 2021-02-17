@@ -30,6 +30,7 @@
 
 //  Effect views
 @property (weak, nonatomic) IBOutlet MXKImageView *blurredCallerImageView;
+@property (weak, nonatomic) IBOutlet UIView *switchCameraGradientContainerView;
 
 // At the end of call, this flag indicates if the prompt to use the fallback should be displayed
 @property (nonatomic) BOOL shouldPromptForStunServerFallback;
