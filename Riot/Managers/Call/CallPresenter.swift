@@ -478,8 +478,13 @@ extension CallPresenter: MXKCallViewControllerDelegate {
             //  wait for the call state changes, will be handled there
             return
         } else {
-            dismissCallVC(callVC)
-            self.presentCallBar(for: callVC, completion: completion)
+            if callVC.mxCall.isVideoCall {
+                //  go to pip mode here
+                enterPipCallVC(callVC, completion: completion)
+            } else {
+                dismissCallVC(callVC)
+                self.presentCallBar(for: callVC, completion: completion)
+            }
         }
     }
     
@@ -499,20 +504,6 @@ extension CallPresenter: MXKCallViewControllerDelegate {
         
         //  switch screens
         presentCallVC(onHoldCallVC)
-    }
-    
-    func callViewControllerDidTapPiPButton(_ callViewController: MXKCallViewController!) {
-        guard let callVC = callViewController as? CallViewController else {
-            //  this call screen is not handled by this service
-            return
-        }
-        
-        //  sanity check
-        //  do not enter PiP mode if not a video call
-        guard callVC.mxCall.isVideoCall else { return }
-        
-        //  go to pip mode here
-        enterPipCallVC(callVC)
     }
     
 }
