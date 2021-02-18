@@ -76,7 +76,7 @@
 "room_creation_make_public_prompt_title" = "Diesen Chat öffentlich machen?";
 "room_creation_keep_private" = "Privat lassen";
 "room_creation_make_private" = "Mache privat";
-"room_creation_wait_for_creation" = "Ein wurde wurde bereits erstellt. Bitte warten.";
+"room_creation_wait_for_creation" = "Es wird gerade schon ein Raum erstellt. Bitte warten.";
 // Room recents
 "room_recents_directory_section" = "RAUM VERZEICHNIS";
 "room_recents_directory_section_network" = "Netzwerk";
@@ -88,7 +88,7 @@
 "room_recents_invites_section" = "EINLADUNGEN";
 "room_recents_start_chat_with" = "Starte Chat";
 "room_recents_create_empty_room" = "Erstelle Raum";
-"room_recents_join_room" = "Trete Raum bei";
+"room_recents_join_room" = "Tritt Raum bei";
 "room_recents_join_room_title" = "Trete einem Raum bei";
 // People tab
 "people_invites_section" = "EINLADUNGEN";
@@ -125,7 +125,7 @@
 "room_participants_remove_prompt_msg" = "Bist du sicher, dass du %@ aus dem Chat entfernen möchtest?";
 "room_participants_invite_prompt_title" = "Bestätigung";
 "room_participants_invite_prompt_msg" = "Bist du sicher, dass du %@ in diesen Chat einladen möchtest?";
-"room_participants_filter_room_members" = "Filtere Raum-Mitglieder";
+"room_participants_filter_room_members" = "Mitglieder filtern";
 "room_participants_invite_malformed_id_title" = "Fehler beim Einladen";
 "room_participants_invited_section" = "EINGELADEN";
 "room_participants_online" = "Online";
@@ -154,7 +154,7 @@
 "room_two_users_are_typing" = "%@ & %@ tippen…";
 "room_many_users_are_typing" = "%@, %@ & andere tippen…";
 "room_message_placeholder" = "Nachricht senden (unverschlüsselt)…";
-"encrypted_room_message_placeholder" = "Verschlüsselte Nachricht senden…";
+"encrypted_room_message_placeholder" = "Verschlüsselte Nachricht…";
 "room_message_short_placeholder" = "Sende eine Nachricht…";
 "room_offline_notification" = "Verbindung zum Server wurde unterbrochen.";
 "room_unsent_messages_notification" = "Nachrichten wurden nicht gesendet. Jetzt %@ oder %@?";
@@ -255,9 +255,9 @@
 "room_details_access_section_anyone" = "Jeder, der den Raum-Link kennt - auch Gäste";
 "room_details_history_section" = "Wer kann die Historie lesen?";
 "room_details_history_section_anyone" = "Jeder";
-"room_details_history_section_members_only" = "Nur Teilnehmer (ab dem Selektieren dieser Option)";
-"room_details_history_section_members_only_since_invited" = "Nur Teilnehmer (seitdem sie eingeladen wurden)";
-"room_details_history_section_members_only_since_joined" = "Nur Teilnehmer (seitdem sie beigetreten sind)";
+"room_details_history_section_members_only" = "Nur Mitglieder (seit diese Option ausgewählt ist)";
+"room_details_history_section_members_only_since_invited" = "Nur Mitglieder (ab ihrer Einladung)";
+"room_details_history_section_members_only_since_joined" = "Nur Mitglieder (Ab ihrem Beitritt)";
 "room_details_history_section_prompt_title" = "Datenschutz-Warnung";
 "room_details_addresses_section" = "Adressen";
 "room_details_no_local_addresses" = "Dieser Raum hat keine lokalen Adressen";
@@ -307,7 +307,7 @@
 "room_warning_about_encryption" = "Ende-zu-Ende Verschlüsselung ist in Beta und ist evtl. nicht zuverlässig.\n\nMan sollte noch nicht darauf vertrauen, dass die Daten sicher sind.\n\nGeräte werden Nachrichten von vor dem Beitritt des Raumes nicht entschlüsseln können.\n\nVerschlüsselte Nachrichten sind nicht lesbar auf Clients, die Verschlüsselung noch nicht implementiert haben.";
 "unknown_devices_alert" = "Dieser Raum enthält unbekannte Sitzungen, die nicht verifiziert wurden.\nDas bedeutet, es gibt keine Garantie, dass sie dem/r angegebenen Benutzer!n gehören.\nWir empfehlen eine Überprüfung für jedes Gerät, bevor du weitermachst. Du kannst die Nachricht auch ohne Verifizierung erneut senden.";
 "room_preview_unlinked_email_warning" = "Diese Einladung wurde an %@ gesendet, welche diesem Konto nicht zugeordnet ist. Möglicherweise möchtest du dich mit einem anderen Konto anmelden oder diese E-Mail zu deinem Konto hinzufügen.";
-"room_preview_try_join_an_unknown_room" = "Du versuchst auf %@ zuzugreifen.  Möchtest du dem Raum beitreten um teilzunehmen?";
+"room_preview_try_join_an_unknown_room" = "Du versuchst auf %@ zuzugreifen. Möchtest du dem Raum beitreten um teilzunehmen?";
 "settings_config_identity_server" = "Identitätsserver ist %@";
 "settings_labs" = "Labor";
 "settings_sign_out_e2e_warn" = "Du wirst die Ende-zu-Ende Schlüssel verlieren. Du kannst dann auf diesem Gerät in verschlüsselten Räumen keine alten Nachrichten mehr lesen.";
@@ -390,9 +390,9 @@
 "e2e_enabling_on_app_update" = "Element unterstützt nun Ende-zu-Ende Verschlüsselung. Um sie zu aktivieren musst du dich erneut anmelden.\n\nDu kannst sie nun aktivieren oder später in den Einstellungen.";
 "e2e_need_log_in_again" = "Du musst dich erneut anmelden um Ende-zu-Ende Schlüssel für diese Sitzung zu erstellen und zum Server zu senden.\nDies ist nur einmal notwendig.";
 // Bug report
-"bug_report_title" = "Bug Report";
+"bug_report_title" = "Fehlermeldung";
 "bug_report_description" = "Beschreibe den Fehler. Was hast du gemacht? Was hast du erwartet? Was ist tatsächlich passiert?";
-"bug_crash_report_title" = "Crash Report";
+"bug_crash_report_title" = "Absturzmeldung";
 "bug_crash_report_description" = "Bitte beschreibe was du vor dem Absturz gemacht hast:";
 "bug_report_logs_description" = "Um Probleme analysieren zu können werden Log-Daten dieses Clients mit dem Bug Report gesendet. Wenn du nur den Text oben senden willst, bitte abwählen:";
 "bug_report_send_logs" = "Sende Log-Daten";
@@ -468,7 +468,7 @@
 "e2e_room_key_request_start_verification" = "Starte Verifikation…";
 "e2e_room_key_request_share_without_verifying" = "Teile ohne zu verifizieren";
 "e2e_room_key_request_ignore_request" = "Ignoriere Anfrage";
-"title_groups" = "Communities";
+"title_groups" = "Communitys";
 // Groups tab
 "group_invite_section" = "EINLADUNGEN";
 "group_section" = "COMMUNITIES";
@@ -534,7 +534,7 @@
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Anfrage gesendet";
 "rerequest_keys_alert_message" = "Bitte öffne Element auf einem anderen Gerät, das die Nachricht entschlüsseln kann, damit es die Schlüssel an diese Sitzung senden kann.";
-"room_message_reply_to_placeholder" = "Sende eine unverschlüsselte Antwort…";
+"room_message_reply_to_placeholder" = "Antwort senden (unverschlüsselt)…";
 "encrypted_room_message_reply_to_placeholder" = "Sende eine verschlüsselte Antwort…";
 "room_message_reply_to_short_placeholder" = "Sende eine Antwort…";
 "room_replacement_information" = "Dieser Raum wurde ersetzt und ist nicht länger aktiv.";
@@ -626,7 +626,7 @@
 "key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Gebe Wiederherstellungsschlüssel ein";
 "key_backup_recover_from_recovery_key_recover_action" = "Historie entschlüsseln";
 "key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Hast du deinen Wiederherstellungsschlüssel verloren? Du kannst in den Einstellungen einen neuen einrichten.";
-"key_backup_recover_success_info" = "Sicherung wiederhergestellt";
+"key_backup_recover_success_info" = "Sicherung wiederhergestellt!";
 "key_backup_recover_done_action" = "Erledigt";
 "key_backup_setup_banner_title" = "Verliere niemals verschlüsselte Nachrichten";
 "key_backup_setup_banner_subtitle" = "Beginne Schlüsselsicherung zu nutzen";
@@ -654,7 +654,7 @@
 // String for App Store
 "store_short_description" = "Sicherer, dezentralisierter Chat/VoIP";
 "store_full_description" = "Element ist die neue Art von Messenger- und Kooperations-App, die:\n\n1. dir die Kontrolle gibt deine Privatsphäre zu schützen,\n2. dir die Kommunikation mit anderen Personen im Matrix-Netzwerk und darüber hinaus Integration in Apps wie Slack ermöglicht,\n3. dich vor Werbung, Datenerfassung, Hintertüren und ummauerten Gärten schützt,\n4. dich durch End-to-End-Verschlüsselung absichert und mit Cross-Signing andere zu überprüfen.\n\nElement unterscheidet sich grundlegend von anderen Messaging- und Kooperations-Diensten, da es dezentralisiert und open-source ist.\n\nMit Element kannst du dich selbst hosten oder einen Host auswählen, sodass du Datenschutz, Eigentum und Kontrolle über deine Daten und Konversationen hast. Du erhältst Zugriff auf ein offenes Netzwerk und bist nicht auf Element-Nutzer beschränkt. Und es ist sehr sicher.\n\nElement ist in der Lage, all dies zu tun, da es mit Matrix arbeitet - dem Standard für offene, dezentrale Kommunikation.\n\nMit Element hast du die Kontrolle, indem du auswählen kannst, wer deine Konversationen hostet. In der Element-App kannst du verschiedene Hosts auswählen:\n\n1. Hole dir ein kostenloses Konto auf dem öffentlichen Server von matrix.org\n2. Hoste dein Konto selbst, indem du einen Server auf deiner eigenen Hardware ausführst\n3. Melde dich für ein Konto auf einem benutzerdefinierten Server an, indem du einfach die Hosting-Plattform von Element Matrix Services abonnierst\n\nWarum Element?\n\nBESITZE DEINE DATEN: Du entscheidest, wo deine Daten und Nachrichten aufbewahrt werden sollen. Du besitzt und kontrollierst sie, nicht irgendeine MEGACORP, die deine Daten verwertet oder Dritten Zugriff gewährt.\n\nOPEN MESSAGING UND ZUSAMMENARBEIT: Du kannst mit allen anderen Mitgliedern des Matrix-Netzwerks chatten, unabhängig davon, ob sie Element oder eine andere Matrix-App verwenden, sogar selbst wenn sie ein anderes Messaging-System wie Slack, IRC oder XMPP verwenden.\n\nSUPERSICHER: Echte End-to-End-Verschlüsselung (nur diejenigen in der Konversation können Nachrichten entschlüsseln) und Cross-Signing, um die Geräte der Konversationsteilnehmer zu überprüfen.\n\nVOLLSTÄNDIGE KOMMUNIKATION: Messaging, Sprach- und Videoanrufe, Dateifreigabe, Bildschirmfreigabe und eine ganze Reihe von Integrationen, Bots und Widgets. Baue Räume, Gemeinschaften, bleib in Kontakt und erledige Dinge.\n\nÜBERALL, WO Du BIST: Bleibe mit dem vollständig synchronisierten Nachrichtenverlauf auf all deinen Geräten und im Internet (unter https://element.io/app) unabhängig voneinander in Kontakt.";
-"auth_login_single_sign_on" = "Anmelden mit Single Sign-On";
+"auth_login_single_sign_on" = "Anmelden";
 "auth_autodiscover_invalid_response" = "Ungültige Antwort beim Entdecken des Heimservers";
 "room_message_unable_open_link_error_message" = "Konnte Link nicht öffnen.";
 "room_event_action_reply" = "Antworten";
@@ -1065,8 +1065,8 @@
 "key_verification_self_verify_unverified_sessions_alert_title" = "Überprüfe, wo du angemeldet bist";
 "key_verification_self_verify_unverified_sessions_alert_message" = "Verifiziere alle deine Sitzungen, um sicher zu stellen, dass dein Konto & deine Nachrichten sicher sind.";
 "key_verification_self_verify_unverified_sessions_alert_validate_action" = "Überprüfung";
-"device_verification_self_verify_wait_new_sign_in_title" = "Verifiziere diese Sitzung";
-"device_verification_self_verify_wait_additional_information" = "oder einen anderen Matrix Client der Cross-signing fähig ist";
+"device_verification_self_verify_wait_new_sign_in_title" = "Diese Anmeldung verifizieren";
+"device_verification_self_verify_wait_additional_information" = "Dies funktioniert mit Element oder einem anderen Matrix Client, der Cross-Signing unterstützt.";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Wiederherstellungsschlüssel verwenden";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Nutze eine Wiederherstellungsmethode";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "Falls du keinen Zugang zu einer existierenden Sitzung hast";
@@ -1107,7 +1107,7 @@
 "key_verification_scan_confirmation_scanned_device_information" = "Zeigt das andere Gerät das gleiche Schild an?";
 "user_verification_session_details_verify_action_current_user_manually" = "Überprüfe manuell mit einem Text";
 "secrets_recovery_with_passphrase_title" = "Wiederherstellungs-Passphrase";
-"secrets_recovery_with_passphrase_information_default" = "Gib deine Wiederherstellungspassphrase ein, um auf auf deine Nachrichtenhistorie und deine Cross-Signing-Identität zuzugreifen. Die Cross-Signing-Identität ermöglicht dir andere Sitzungen zu verifizieren.";
+"secrets_recovery_with_passphrase_information_default" = "Gib deine Wiederherstellungs-Passphrase ein, um auf deine verschlüsselten Nachrichten und deine Cross-Signing-Identität zuzugreifen. Mit der Cross-Signing-Identität kannst du andere Sitzungen verifizieren.";
 "secrets_recovery_with_passphrase_information_verify_device" = "Nutze deinen Wiederherstellungsphrase um dieses Gerät zu verifizieren.";
 "secrets_recovery_with_passphrase_passphrase_placeholder" = "Gib die Wiederherstellungspassphrase ein";
 "secrets_recovery_with_passphrase_recover_action" = "Nutze Passphrase";
@@ -1117,7 +1117,7 @@
 "secrets_recovery_with_passphrase_invalid_passphrase_title" = "Auf sicheren Speicher kann nicht zugegriffen werden";
 "secrets_recovery_with_passphrase_invalid_passphrase_message" = "Bitte stell sicher, dass du die korrekte Wiederherstellungspassphrase eingegeben hast.";
 "secrets_recovery_with_key_title" = "Wiederherstellungsschlüssel";
-"secrets_recovery_with_key_information_default" = "Gib deine Wiederherstellungspassphrase ein, um auf auf deine Nachrichtenhistorie und deine Cross-Signing-Identität zuzugreifen. Die Cross-Signing-Identität ermöglicht dir andere Sitzungen zu verifizieren.";
+"secrets_recovery_with_key_information_default" = "Gib deinen Wiederherstellungs-Schlüssel ein, um auf deine verschlüsselten Nachrichten und deine Cross-Signing-Identität zuzugreifen. Mit der Cross-Signing-Identität kannst du andere Sitzungen verifizieren.";
 "secrets_recovery_with_key_information_verify_device" = "Nutze deinen Wiederherstellungsschlüssel um dieses Gerät zu verifizieren.";
 "secrets_recovery_with_key_recovery_key_placeholder" = "Wiederherstellungsschlüssel eingeben";
 "secrets_recovery_with_key_recover_action" = "Schlüssel benutzen";
@@ -1168,7 +1168,7 @@
 "pin_protection_settings_enabled_forced" = "PIN aktiviert";
 "pin_protection_settings_enable_pin" = "PIN aktivieren";
 "biometrics_mode_touch_id" = "Touch-ID";
-"biometrics_mode_face_id" = "Gesicht-ID";
+"biometrics_mode_face_id" = "Face-ID";
 "biometrics_settings_enable_x" = "%@ aktivieren";
 "biometrics_setup_title_x" = "%@ aktivieren";
 "biometrics_setup_enable_button_title_x" = "%@ aktivieren";
@@ -1242,3 +1242,36 @@
 "secrets_reset_warning_message" = "Du wirst ohne Nachrichtenverlauf, Nachrichten, vertraute Geräte oder vertraute Benutzer neu-starten.";
 "secrets_reset_warning_title" = "Falls du alles zurücksetzt";
 "secrets_reset_information" = "Tu dies nur, wenn du kein anderes Gerät hast, mit dem du dieses Gerät überprüfen kannst.";
+
+// MARK: - Home
+
+"home_empty_view_title" = "Willkommen bei %@,\n%@";
+"secrets_setup_recovery_passphrase_summary_information" = "Erinnere dich an deine Sicherheitsphrase. Sie kann zum entschlüsseln der Nachrichten & Daten verwendet werden.";
+"secrets_setup_recovery_passphrase_summary_title" = "Sichere deine Sicherheitsphrase";
+"rooms_empty_view_title" = "Räume";
+"people_empty_view_information" = "Sicher kommunizieren mit allen. Drücke + um Leute hinzuzufügen.";
+"people_empty_view_title" = "Leute";
+
+// MARK: - Favourites
+
+"favourites_empty_view_title" = "Lieblingsräume und -nutzer";
+"favourites_empty_view_information" = "Um einen Lieblingschat hinzuzufügen, halte diesen gedrückt und wähle den Stern aus. Du findest deine Lieblingschats gesammelt hier.";
+"home_empty_view_information" = "Die sichere Chat-App für Teams, Freunde und Organisationen. Tippe unten auf das +, um Leute und Räume hinzuzufügen.";
+"rooms_empty_view_information" = "Noch keine Chat-Räume vorhanden. Tippe auf das +, um einem Raum beizutreten oder einen neuen zu erstellen.";
+"invite_friends_share_text" = "Hey! Sprich mit mir auf %@: %@";
+
+// MARK: - Invite friends
+
+"invite_friends_action" = "Freunde zu %@ einladen";
+"pin_protection_settings_change_pin" = "PIN ändern";
+"pin_protection_confirm_pin_to_change" = "PIN bestätigen um PIN zu ändern";
+"bug_report_background_mode" = "Im Hintergrund fortfahren";
+"social_login_button_title_sign_up" = "Registrieren mit %@";
+"social_login_button_title_sign_in" = "Anmelden mit %@";
+"social_login_button_title_continue" = "Weiter mit %@";
+"social_login_list_title_sign_up" = "Oder Registrieren mit";
+"social_login_list_title_sign_in" = "Oder Anmelden mit";
+
+// Social login
+
+"social_login_list_title_continue" = "Weiter mit";

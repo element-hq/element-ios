@@ -1,0 +1,67 @@
+
+
+
+
+/* Look, stuff's happened, alright? Just open the app. */
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@ nye meldinger i %@, %@ og andre";
+
+/* Multiple messages in two rooms */
+"MSGS_IN_TWO_ROOMS" = "%@ nye meldinger i %@ og %@";
+
+/* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
+"MSGS_FROM_TWO_PLUS_USERS" = "%@ nye meldinger fra %@, %@ og andre";
+
+/* Multiple unread messages from three people */
+"MSGS_FROM_THREE_USERS" = "%@ nye meldinger fra %@, %@ og %@";
+
+/* Multiple unread messages from two people */
+"MSGS_FROM_TWO_USERS" = "%@ nye meldinger fra %@ og %@";
+
+/* Multiple unread messages from a specific person, not referencing a room */
+"MSGS_FROM_USER" = "%@ nye meldinger i %@";
+
+/** Coalesced messages **/
+
+/* Multiple unread messages in a room */
+"UNREAD_IN_ROOM" = "%@ nye meldinger i %@";
+"MESSAGE_PROTECTED" = "Ny Melding";
+
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "Melding i %@";
+
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "Melding fra %@";
+
+/** Notification messages **/
+
+/* New message indicator on unknown room */
+"MESSAGE" = "Melding";
+
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@ sendte et klistremerke";
+
+/** Image Messages **/
+
+/* New action message from a specific person, not referencing a room. */
+"IMAGE_FROM_USER" = "%@ sendte et bilde %@";
+
+/* New action message from a specific person in a named room. */
+"ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
+
+/* New action message from a specific person, not referencing a room. */
+"ACTION_FROM_USER" = "* %@ %@";
+
+/* New message from a specific person in a named room. Content included. */
+"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ i %@: %@";
+
+/** Single, unencrypted messages (where we can include the content */
+
+/* New message from a specific person, not referencing a room. Content included. */
+"MSG_FROM_USER_WITH_CONTENT" = "%@: %@";
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ i %@";
+
+/** Single, end-to-end encrypted messages (ie. we don't know what they say) */
+
+/* New message from a specific person, not referencing a room */
+"MSG_FROM_USER" = "%@ sendte en melding";

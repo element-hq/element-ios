@@ -57,6 +57,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     
     func start() {
         self.showSplitView(session: self.mainSession)
+        NSLog("[AppCoordinator] Showed split view")
     }
     
     func open(url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
@@ -119,6 +120,8 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
 extension AppCoordinator: LegacyAppDelegateDelegate {
             
     func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, wantsToPopToHomeViewControllerAnimated animated: Bool, completion: (() -> Void)!) {
+        
+        NSLog("[AppCoordinator] wantsToPopToHomeViewControllerAnimated")
         
         self.splitViewCoordinator?.popToHome(animated: animated, completion: completion)
     }

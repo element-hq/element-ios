@@ -48,6 +48,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 
+@property (weak, nonatomic) IBOutlet UIButton *backgroundButton;
+
 + (instancetype)bugReportViewController;
 
 - (void)showInViewController:(UIViewController*)viewController;

@@ -26,6 +26,7 @@ final class SecretsResetViewModel: SecretsResetViewModelType {
 
     private let session: MXSession
     private let recoveryService: MXRecoveryService
+    private let crossSigningService: CrossSigningService
     
     // MARK: Public
 
@@ -37,6 +38,7 @@ final class SecretsResetViewModel: SecretsResetViewModelType {
     init(session: MXSession) {
         self.session = session
         self.recoveryService = session.crypto.recoveryService
+        self.crossSigningService = CrossSigningService()
     }
     
     // MARK: - Public
@@ -47,8 +49,8 @@ final class SecretsResetViewModel: SecretsResetViewModelType {
             break
         case .reset:
             self.askAuthentication()
-        case .authenticationInfoEntered(let authInfo):
-            self.resetSecrets(with: authInfo)
+        case .authenticationInfoEntered(let authParameters):
+            self.resetSecrets(with: authParameters)
         case .cancel:
             self.coordinatorDelegate?.secretsResetViewModelDidCancel(self)
         }
@@ -56,18 +58,18 @@ final class SecretsResetViewModel: SecretsResetViewModelType {
     
     // MARK: - Private
     
-    private func update(viewState: SecretsResetViewState) {
+    func update(viewState: SecretsResetViewState) {
         self.viewDelegate?.secretsResetViewModel(self, didUpdateViewState: viewState)
     }
     
-    private func resetSecrets(with authInfo: [String: Any]) {
+    private func resetSecrets(with authParameters: [String: Any]) {
         guard let crossSigning = self.session.crypto.crossSigning else {
             return
         }
         NSLog("[SecretsResetViewModel] resetSecrets")
 
         self.update(viewState: .resetting)
-        crossSigning.setup(withAuthParams: authInfo, success: { [weak self] in
+        crossSigning.setup(withAuthParams: authParameters, success: { [weak self] in
             guard let self = self else {
                 return
             }
@@ -93,12 +95,8 @@ final class SecretsResetViewModel: SecretsResetViewModelType {
         })
     }
     
-    // NOTE: Use a Coordinator instead of AuthenticatedSessionViewControllerFactory and delegate the presentation to SecretsResetCoordinator
     private func askAuthentication() {
-        let path = "\(kMXAPIPrefixPathUnstable)/keys/device_signing/upload"
-        let authenticatedSessionFactory = AuthenticatedSessionViewControllerFactory(session: self.session)
-        let authData = SecretsResetAuthData(path: path, httpMethod: "POST", authenticatedSessionViewControllerFactory: authenticatedSessionFactory)
-        
-        self.update(viewState: .showAuthentication(authData: authData))
+        let setupCrossSigningRequest = self.crossSigningService.setupCrossSigningRequest()
+        self.coordinatorDelegate?.secretsResetViewModel(self, needsToAuthenticateWith: setupCrossSigningRequest)
     }
 }

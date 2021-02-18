@@ -559,7 +559,7 @@
 // String for App Store
 "store_short_description" = "Conversas e chamadas: seguras e descentralizadas";
 "store_full_description" = "O Element é um novo tipo de aplicativo de comunicação e colaboração que:↵\n↵\n1. Coloca você no controle de sua privacidade;↵\n2. Permite que você se comunique com qualquer pessoa na rede Matrix, e até mais além, integrando-se a aplicativos como o Slack;↵\n3. Protege você de publicidade, mineração de dados, backdoors e ecossistemas fechados;↵\n4. Protege você por meio da criptografia de ponta a ponta, com autoverificação para confirmar outras pessoas.↵\n↵\nO Element é completamente diferente de outros aplicativos de mensagens e colaboração porque é descentralizado e de código aberto.↵\n↵\nO Element permite que você use seu próprio servidor - ou escolha uma alternativa de armazenamento - para ter privacidade, propriedade e controle de seus dados e conversas. Dá acesso a uma rede aberta; para que você não fique falando apenas com outros usuários do Element. E é muito seguro.↵\n↵\nO Element é capaz de fazer tudo isso porque opera na rede Matrix - o padrão para comunicação aberta e descentralizada.↵\n↵\nO Element coloca você no controle, permitindo escolher quem armazena suas conversas. No aplicativo do Element, você pode optar por armazenar de diferentes maneiras:↵\n↵\n1. Obtenha uma conta gratuita no servidor público matrix.org↵\n2. Armazene sua conta automaticamente, executando um servidor em seu próprio hardware↵\n3. Inscreva-se em uma conta para um servidor personalizado, basta se inscrever na plataforma de armazenamento do Element Matrix Services↵\n↵\nPor que escolher o Element?↵\n↵\nPOSSUA SEUS DADOS: você decide onde guardar seus dados e mensagens. Você os possui e controla, e não alguma MEGA CORPORAÇÃO que vende seus dados ou dá acesso a terceiros.↵\n↵\nMENSAGEM ABERTA E COLABORAÇÃO: você pode conversar com qualquer outra pessoa na rede Matrix, esteja ela usando o Element ou outro aplicativo que se conecta na rede Matrix. E mesmo se estiverem usando um sistema de mensagens diferente, como Slack, IRC ou XMPP.↵\n↵\nSUPER SEGURO: criptografia real de ponta a ponta (somente aqueles na conversa podem descriptografar as mensagens) e autoverificação para confirmar os aparelhos dos participantes da conversa.↵\n↵\nCOMUNICAÇÃO COMPLETA: mensagens, chamadas de voz e de vídeo, compartilhamento de arquivos, compartilhamento de tela e um monte de integrações, bots e widgets. Crie salas, comunidades, mantenha contato e faça as coisas acontecerem.↵\n↵\nONDE QUER QUE VOCÊ ESTEJA: mantenha contato onde quer que você esteja, com o histórico de mensagens totalmente sincronizado em todos os seus aparelhos e no navegador de internet em https://element.io/app.";
-"auth_login_single_sign_on" = "Entre com o logon único";
+"auth_login_single_sign_on" = "Entrar";
 "auth_autodiscover_invalid_response" = "Resposta de descoberta inválida no servidor local";
 "room_message_unable_open_link_error_message" = "Não foi possível abrir o link.";
 "settings_key_backup" = "BACKUP DA CHAVE";
@@ -1235,8 +1235,34 @@
 "secrets_recovery_reset_action_part_2" = "Redefinir tudo";
 "secrets_setup_recovery_passphrase_summary_information" = "Lembre-se da sua frase de segurança. Ela pode ser usada para desbloquear suas mensagens e dados criptografados.";
 "secrets_setup_recovery_passphrase_summary_title" = "Salve a sua frase de segurança";
-"home_empty_view_information" = "O aplicativo de conversas seguro e completo para equipes, amigos e organizações. Toque no botão \"+\" abaixo para adicionar pessoas e salas.";
+"home_empty_view_information" = "O aplicativo de conversas seguro e completo para equipes, amigos e organizações. Toque no botão + abaixo para adicionar pessoas e salas.";
 
 // MARK: - Home
 
-"home_empty_view_title" = "Boas-vindas ao Element,\n%@";
+"home_empty_view_title" = "Boas-vindas ao %@,\n%@";
+"people_empty_view_title" = "Pessoas";
+"favourites_empty_view_information" = "Você pode adicionar aos favoritos de algumas maneiras - a mais rápida é simplesmente pressionar e segurar. Toque na estrela e eles aparecerão automaticamente aqui, para fins de segurança.";
+
+// MARK: - Favourites
+
+"favourites_empty_view_title" = "Salas e pessoas favoritas";
+"rooms_empty_view_information" = "Salas são ótimas para qualquer conversa em grupo, privada ou pública. Toque em + para encontrar salas existentes ou crie novas.";
+"rooms_empty_view_title" = "Salas";
+"people_empty_view_information" = "Converse com segurança com qualquer pessoa. Toque em + para começar a adicionar pessoas.";
+"invite_friends_share_text" = "Ei, converse comigo no %@: %@";
+
+// MARK: - Invite friends
+
+"invite_friends_action" = "Convidar amigos para o %@";
+"pin_protection_settings_change_pin" = "Alterar o PIN";
+"pin_protection_confirm_pin_to_change" = "Confirme o PIN para alterá-lo";
+"bug_report_background_mode" = "Continuar em segundo plano";
+"social_login_button_title_sign_up" = "Registrar-se com %@";
+"social_login_button_title_sign_in" = "Entrar com %@";
+"social_login_button_title_continue" = "Continuar com %@";
+"social_login_list_title_sign_up" = "Ou registrar-se com";
+"social_login_list_title_sign_in" = "Ou entrar com";
+
+// Social login
+
+"social_login_list_title_continue" = "Continuar com";

@@ -25,6 +25,9 @@ class NotificationService: UNNotificationServiceExtension {
     /// Content handlers. Keys are eventId's
     private var contentHandlers: [String: ((UNNotificationContent) -> Void)] = [:]
     
+    /// Flags to indicate there is an ongoing VoIP Push request for events. Keys are eventId's
+    private var ongoingVoIPPushRequests: [String: Bool] = [:]
+    
     private var userAccount: MXKAccount?
     
     /// Best attempt contents. Will be updated incrementally, if something fails during the process, this best attempt content will be showed as notification. Keys are eventId's
@@ -48,6 +51,8 @@ class NotificationService: UNNotificationServiceExtension {
     //  MARK: - Method Overrides
     
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
+        let userInfo = request.content.userInfo
+
         // Set static application settings
         configuration.setupSettings()
         
@@ -59,15 +64,16 @@ class NotificationService: UNNotificationServiceExtension {
         //  setup logs
         setupLogger()
         
+        NSLog(" ")
+        NSLog(" ")
+        NSLog("################################################################################")
         NSLog("[NotificationService] Instance: \(self), thread: \(Thread.current)")
+        NSLog("[NotificationService] Payload came: \(userInfo)")
         
         //  log memory at the beginning of the process
         logMemory()
         
         UNUserNotificationCenter.current().removeUnwantedNotifications()
-        
-        let userInfo = request.content.userInfo
-        NSLog("[NotificationService] Payload came: \(userInfo)")
         
         //  check if this is a Matrix notification
         guard let roomId = userInfo["room_id"] as? String, let eventId = userInfo["event_id"] as? String else {
@@ -106,17 +112,25 @@ class NotificationService: UNNotificationServiceExtension {
         //  No-op here. If the process is killed by the OS due to time limit, it will also show the notification with the original content.
     }
     
+    deinit {
+        NSLog("[NotificationService] deinit for \(self)");
+        self.logMemory()
+        NSLog(" ")
+    }
+    
+    
     //  MARK: - Private
     
     private func logMemory() {
-        NSLog("[NotificationService] Memory footprint: \(Memory.formattedMemoryFootprint())")
+        NSLog("[NotificationService] Memory: footprint: \(MXMemory.formattedMemoryFootprint()) - available: \(MXMemory.formattedMemoryAvailable())")
     }
     
     private func setupLogger() {
         if !NotificationService.isLoggerInitialized {
             if isatty(STDERR_FILENO) == 0 {
                 MXLogger.setSubLogName("nse")
-                MXLogger.redirectNSLog(toFiles: true)
+                let sizeLimit: UInt = 10 * 1024 * 1024; // 10MB
+                MXLogger.redirectNSLog(toFiles: true, numberOfFiles: 100, sizeLimit: sizeLimit)
             }
             NotificationService.isLoggerInitialized = true
         }
@@ -127,7 +141,11 @@ class NotificationService: UNNotificationServiceExtension {
         self.userAccount = MXKAccountManager.shared()?.activeAccounts.first
         if let userAccount = userAccount {
             if NotificationService.backgroundSyncService == nil {
+                NSLog("[NotificationService] setup: MXBackgroundSyncService init: BEFORE")
+                self.logMemory()
                 NotificationService.backgroundSyncService = MXBackgroundSyncService(withCredentials: userAccount.mxCredentials)
+                NSLog("[NotificationService] setup: MXBackgroundSyncService init: AFTER")
+                self.logMemory()
             }
             completion()
         } else {
@@ -195,14 +213,23 @@ class NotificationService: UNNotificationServiceExtension {
                 isUnwantedNotification = true
             }
             
-            NSLog("[NotificationService] processEvent: Calling content handler for: \(String(describing: event.eventId)), isUnwanted: \(isUnwantedNotification)")
-            self.contentHandlers[event.eventId]?(content)
-            //  clear maps
-            self.contentHandlers.removeValue(forKey: event.eventId)
-            self.bestAttemptContents.removeValue(forKey: event.eventId)
+            //  modify the best attempt content, to be able to use in future
+            self.bestAttemptContents[event.eventId] = content
             
-            //  log memory again at the end of the process
-            self.logMemory()
+            if self.ongoingVoIPPushRequests[event.eventId] == true {
+                //  There is an ongoing VoIP Push request for this event, wait for it to be completed.
+                //  When it completes, it'll continue with the bestAttemptContent.
+                return
+            } else {
+                NSLog("[NotificationService] processEvent: Calling content handler for: \(String(describing: event.eventId)), isUnwanted: \(isUnwantedNotification)")
+                self.contentHandlers[event.eventId]?(content)
+                //  clear maps
+                self.contentHandlers.removeValue(forKey: event.eventId)
+                self.bestAttemptContents.removeValue(forKey: event.eventId)
+                
+                // We are done for this push
+                NSLog("--------------------------------------------------------------------------------")
+            }
         }
     }
     
@@ -219,6 +246,9 @@ class NotificationService: UNNotificationServiceExtension {
         //  clear maps
         contentHandlers.removeValue(forKey: eventId)
         bestAttemptContents.removeValue(forKey: eventId)
+        
+        // We are done for this push
+        NSLog("--------------------------------------------------------------------------------")
     }
     
     private func notificationContent(forEvent event: MXEvent, forAccount account: MXKAccount, onComplete: @escaping (UNNotificationContent?) -> Void) {
@@ -462,12 +492,24 @@ class NotificationService: UNNotificationServiceExtension {
         
         pushNotificationStore.lastCallInvite = event
         
+        ongoingVoIPPushRequests[event.eventId] = true
+        
         let appId = BuildSettings.pushKitAppId
         
-        pushGatewayRestClient.notifyApp(withId: appId, pushToken: token, eventId: event.eventId, roomId: event.roomId, eventType: nil, sender: event.sender, success: { (rejected) in
+        pushGatewayRestClient.notifyApp(withId: appId, pushToken: token, eventId: event.eventId, roomId: event.roomId, eventType: nil, sender: event.sender, success: { [weak self] (rejected) in
             NSLog("[NotificationService] sendVoipPush succeeded, rejected tokens: \(rejected)")
-        }) { (error) in
+            
+            guard let self = self else { return }
+            self.ongoingVoIPPushRequests.removeValue(forKey: event.eventId)
+            
+            self.fallbackToBestAttemptContent(forEventId: event.eventId)
+        }) { [weak self] (error) in
             NSLog("[NotificationService] sendVoipPush failed with error: \(error)")
+            
+            guard let self = self else { return }
+            self.ongoingVoIPPushRequests.removeValue(forKey: event.eventId)
+            
+            self.fallbackToBestAttemptContent(forEventId: event.eventId)
         }
     }
     

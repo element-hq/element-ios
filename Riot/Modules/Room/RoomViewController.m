@@ -121,12 +121,17 @@
 #import "EventFormatter.h"
 #import <MatrixKit/MXKSlashCommands.h>
 
+#import "SettingsViewController.h"
+#import "SecurityViewController.h"
+
 #import "Riot-Swift.h"
+
+NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNotification";
 
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate>
 {
     
     // The preview header
@@ -225,6 +230,7 @@
 @property (nonatomic, strong) RoomMessageURLParser *roomMessageURLParser;
 @property (nonatomic, strong) RoomCreationModalCoordinatorBridgePresenter *roomCreationModalCoordinatorBridgePresenter;
 @property (nonatomic, strong) RoomInfoCoordinatorBridgePresenter *roomInfoCoordinatorBridgePresenter;
+@property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
 
 @end
 
@@ -361,6 +367,9 @@
     
     [self.bubblesTableView registerClass:RoomCreationCollapsedBubbleCell.class forCellReuseIdentifier:RoomCreationCollapsedBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomCreationWithPaginationCollapsedBubbleCell.class forCellReuseIdentifier:RoomCreationWithPaginationCollapsedBubbleCell.defaultReuseIdentifier];
+    
+    //  call cells
+    [self.bubblesTableView registerClass:RoomDirectCallStatusBubbleCell.class forCellReuseIdentifier:RoomDirectCallStatusBubbleCell.defaultReuseIdentifier];
     
     [self vc_removeBackTitle];
     
@@ -1653,6 +1662,50 @@
     [self.navigationController pushViewController:memberViewController animated:YES];
 }
 
+#pragma mark - Dialpad
+
+- (void)openDialpad
+{
+    DialpadViewController *controller = [DialpadViewController instantiateWithConfiguration:[DialpadConfiguration default]];
+    controller.delegate = self;
+    self.customSizedPresentationController = [[CustomSizedPresentationController alloc] initWithPresentedViewController:controller presentingViewController:self];
+    self.customSizedPresentationController.dismissOnBackgroundTap = NO;
+    self.customSizedPresentationController.cornerRadius = 16;
+    
+    controller.transitioningDelegate = self.customSizedPresentationController;
+    [self presentViewController:controller animated:YES completion:nil];
+}
+
+#pragma mark - DialpadViewControllerDelegate
+
+- (void)dialpadViewControllerDidTapCall:(DialpadViewController *)viewController withPhoneNumber:(NSString *)phoneNumber
+{
+    if (self.mainSession.callManager && phoneNumber.length > 0)
+    {
+        [self startActivityIndicator];
+        
+        [viewController dismissViewControllerAnimated:YES completion:^{
+            MXWeakify(self);
+            [self.mainSession.callManager placeCallAgainst:phoneNumber withVideo:NO success:^(MXCall * _Nonnull call) {
+                MXStrongifyAndReturnIfNil(self);
+                [self stopActivityIndicator];
+                self.customSizedPresentationController = nil;
+                
+                //  do nothing extra here. UI will be handled automatically by the CallService.
+            } failure:^(NSError * _Nullable error) {
+                MXStrongifyAndReturnIfNil(self);
+                [self stopActivityIndicator];
+            }];
+        }];
+    }
+}
+
+- (void)dialpadViewControllerDidTapClose:(DialpadViewController *)viewController
+{
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+    self.customSizedPresentationController = nil;
+}
+
 #pragma mark - Hide/Show preview header
 
 - (void)showPreviewHeader:(BOOL)isVisible
@@ -1980,6 +2033,10 @@
         {
             cellViewClass = bubbleData.isPaginationFirstBubble ? RoomCreationWithPaginationCollapsedBubbleCell.class : RoomCreationCollapsedBubbleCell.class;
         }
+        else if (bubbleData.tag == RoomBubbleCellDataTagCall)
+        {
+            cellViewClass = RoomDirectCallStatusBubbleCell.class;
+        }
         else if (bubbleData.isIncoming)
         {
             if (bubbleData.isAttachmentWithThumbnail)
@@ -2150,6 +2207,14 @@
                         }
                     }
                 }
+                else if (bubbleData.tag == RoomBubbleCellDataTagCall)
+                {
+                    if ([bubbleData isKindOfClass:[RoomBubbleCellData class]])
+                    {
+                        //  post notification `RoomCallTileTapped`
+                        [[NSNotificationCenter defaultCenter] postNotificationName:RoomCallTileTappedNotification object:bubbleData];
+                    }
+                }
                 else
                 {
                     // Show contextual menu on single tap if bubble is not collapsed
@@ -2281,6 +2346,13 @@
             {
                 [self showReactionHistoryForEventId:tappedEventId animated:YES];
             }
+        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellCallBackButtonPressed])
+        {
+            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
+            
+            [self roomInputToolbarView:self.inputToolbarView placeCallWithVideo2:eventContent.isVideoCall];
         }
         else
         {
@@ -3301,21 +3373,89 @@
      manualChangeMessageForAudio:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], appDisplayName]
      manualChangeMessageForVideo:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"camera_access_not_granted_for_call"], appDisplayName]
        showPopUpInViewController:self completionHandler:^(BOOL granted) {
+        
+        if (weakSelf)
+        {
+            typeof(self) self = weakSelf;
+            
+            if (granted)
+            {
+                if (video)
+                {
+                    [self roomInputToolbarView:toolbarView placeCallWithVideo2:video];
+                }
+                else if (self.mainSession.callManager.supportsPSTN)
+                {
+                    [self showVoiceCallActionSheetWith:toolbarView];
+                }
+                else
+                {
+                    [self roomInputToolbarView:toolbarView placeCallWithVideo2:NO];
+                }
+            }
+            else
+            {
+                NSLog(@"RoomViewController: Warning: The application does not have the permission to place the call");
+            }
+        }
+    }];
+}
 
-           if (weakSelf)
-           {
-               typeof(self) self = weakSelf;
+- (void)showVoiceCallActionSheetWith:(MXKRoomInputToolbarView *)toolbarView
+{
+    // Ask the user the kind of the call: voice or dialpad?
+    currentAlert = [UIAlertController alertControllerWithTitle:nil
+                                                       message:nil
+                                                preferredStyle:UIAlertControllerStyleActionSheet];
 
-               if (granted)
-               {
-                   [self roomInputToolbarView:toolbarView placeCallWithVideo2:video];
-               }
-               else
-               {
-                   NSLog(@"RoomViewController: Warning: The application does not have the perssion to place the call");
-               }
-           }
-       }];
+    __weak typeof(self) weakSelf = self;
+    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_place_voice_call", @"Vector", nil)
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       
+                                                       if (weakSelf)
+                                                       {
+                                                           typeof(self) self = weakSelf;
+                                                           self->currentAlert = nil;
+                                                           
+                                                           [self roomInputToolbarView:toolbarView placeCallWithVideo2:NO];
+                                                       }
+                                                       
+                                                   }]];
+    
+    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_open_dialpad", @"Vector", nil)
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * action) {
+                                                          
+                                                          if (weakSelf)
+                                                          {
+                                                              typeof(self) self = weakSelf;
+                                                              self->currentAlert = nil;
+                                                              
+                                                              [self openDialpad];
+                                                          }
+                                                          
+                                                      }]];
+    
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:^(UIAlertAction * action) {
+                                                          
+                                                          if (weakSelf)
+                                                          {
+                                                              typeof(self) self = weakSelf;
+                                                              self->currentAlert = nil;
+                                                          }
+                                                          
+                                                      }]];
+    
+    if ([toolbarView isKindOfClass:[RoomInputToolbarView class]])
+    {
+        RoomInputToolbarView *toolbar = (RoomInputToolbarView *)toolbarView;
+        [currentAlert popoverPresentationController].sourceView = toolbar.voiceCallButton;
+        [currentAlert popoverPresentationController].sourceRect = toolbar.voiceCallButton.bounds;
+    }
+    [self presentViewController:currentAlert animated:YES completion:nil];
 }
 
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView placeCallWithVideo2:(BOOL)video
@@ -5000,6 +5140,13 @@
 {
     MXWeakify(self);
     __block UIAlertController *alert;
+    
+    // Force device verification if session has cross-signing activated and device is not yet verified
+    if (self.mainSession.crypto.crossSigning && self.mainSession.crypto.crossSigning.state == MXCrossSigningStateCrossSigningExists)
+    {
+        [self presentReviewUnverifiedSessionsAlert];
+        return;
+    }
 
     // Make the re-request
     [self.mainSession.crypto reRequestRoomKeyForEvent:event];
@@ -5045,6 +5192,37 @@
 
     [self presentViewController:currentAlert animated:YES completion:nil];
 }
+
+- (void)presentReviewUnverifiedSessionsAlert
+{
+    NSLog(@"[MasterTabBarController] presentReviewUnverifiedSessionsAlertWithSession");
+
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
+
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"key_verification_self_verify_unverified_sessions_alert_title", @"Vector", nil)
+                                                                   message:NSLocalizedStringFromTable(@"key_verification_self_verify_unverified_sessions_alert_message", @"Vector", nil)
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"key_verification_self_verify_unverified_sessions_alert_validate_action", @"Vector", nil)
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * action) {
+                                                [self showSettingsSecurityScreen];
+                                            }]];
+
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
+                                              style:UIAlertActionStyleCancel
+                                            handler:nil]];
+
+    [self presentViewController:alert animated:YES completion:nil];
+
+    currentAlert = alert;
+}
+
+- (void)showSettingsSecurityScreen
+{
+    [[AppDelegate theDelegate] presentCompleteSecurityForSession: self.mainSession];
+}
+
 
 #pragma mark Tombstone event
 

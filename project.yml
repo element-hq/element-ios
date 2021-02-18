@@ -1,0 +1,33 @@
+name: Riot
+attributes:
+  ORGANIZATIONNAME: matrix.org
+
+configs:
+  Debug: debug
+  Release: release
+
+fileGroups:
+    - README.md
+    - CHANGES.rst
+    - AUTHORS.rst
+    - Podfile
+    - project.yml
+
+configFiles:
+  Debug: Config/Project-Debug.xcconfig
+  Release: Config/Project-Release.xcconfig
+
+options:
+  defaultConfig: Release
+  groupSortPosition: bottom
+  transitivelyLinkDependencies: false
+  createIntermediateGroups: true
+  useBaseInternationalization: true
+  postGenCommand: sh Tools/XcodeGen/postGenCommand.sh
+
+include:
+  - path: Riot/target.yml
+  - path: RiotTests/target.yml
+  - path: RiotShareExtension/target.yml
+  - path: SiriIntents/target.yml
+  - path: RiotNSE/target.yml

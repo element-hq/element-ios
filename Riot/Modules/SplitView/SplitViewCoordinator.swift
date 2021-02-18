@@ -28,7 +28,7 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
     private let splitViewController: UISplitViewController
     
     private weak var masterPresentable: SplitViewMasterPresentable?
-    private weak var detailNavigationController: UINavigationController?
+    private var detailNavigationController: UINavigationController?
     
     private weak var tabBarCoordinator: TabBarCoordinatorType?
     
@@ -162,7 +162,10 @@ extension SplitViewCoordinator: TabBarCoordinatorDelegate {
 /// MARK: - SplitViewMasterPresentableDelegate
 extension SplitViewCoordinator: SplitViewMasterPresentableDelegate {
     func splitViewMasterPresentable(_ presentable: Presentable, wantsToDisplay detailPresentable: Presentable) {
+        NSLog("[SplitViewCoordinator] splitViewMasterPresentable: \(presentable) wantsToDisplay detailPresentable: \(detailPresentable)")
+        
         guard let detailNavigationController = self.detailNavigationController else {
+            NSLog("[SplitViewCoordinator] splitViewMasterPresentable: Failed to display because detailNavigationController is nil")
             return
         }
         

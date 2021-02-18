@@ -73,7 +73,7 @@
 /**
  The room id of the widget.
  */
-@property (nonatomic, readonly, nonnull) NSString *roomId;
+@property (nonatomic, readonly, nullable) NSString *roomId;
 
 /**
  Create a Widget instance from a widget event.

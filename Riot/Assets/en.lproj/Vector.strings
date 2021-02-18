@@ -64,6 +64,14 @@
 "more" = "More";
 "less" = "Less";
 
+// Call Bar
+"callbar_only_single_active" = "Active call (%@)";
+"callbar_active_and_single_paused" = "1 active call (%@) · 1 paused call";
+"callbar_active_and_multiple_paused" = "1 active call (%@) · %@ paused calls";
+"callbar_only_single_paused" = "Paused call";
+"callbar_only_multiple_paused" = "%@ paused calls";
+"callbar_return" = "Return";
+
 // Accessibility
 "accessibility_checkbox_label" = "checkbox";
 
@@ -142,8 +150,8 @@
 // Social login
 
 "social_login_list_title_continue" = "Continue with";
-"social_login_list_title_sign_in" = "Or login with";
-"social_login_list_title_sign_up" = "Or register with";
+"social_login_list_title_sign_in" = "Or";
+"social_login_list_title_sign_up" = "Or";
 
 "social_login_button_title_continue" = "Continue with %@";
 "social_login_button_title_sign_in" = "Sign In with %@";
@@ -378,6 +386,8 @@ Tap the + to start adding people.";
 "room_accessibility_upload" = "Upload";
 "room_accessibility_call" = "Call";
 "room_accessibility_hangup" = "Hang up";
+"room_place_voice_call" = "Voice call";
+"room_open_dialpad" = "Dial pad";
 
 "media_type_accessibility_image" = "Image";
 "media_type_accessibility_audio" = "Audio";
@@ -528,7 +538,7 @@ Tap the + to start adding people.";
 "settings_add_3pid_password_title_email" = "Add email adress";
 "settings_add_3pid_password_title_msidsn" = "Add phone number";
 "settings_add_3pid_password_message" = "To continue, please enter your password";
-"settings_add_3pid_invalid_password_message" = "Invalid password";
+"settings_add_3pid_invalid_password_message" = "Invalid credentials";
 
 "settings_crypto_device_name" = "Session name: ";
 "settings_crypto_device_id" = "\nSession ID: ";
@@ -799,6 +809,12 @@ Tap the + to start adding people.";
 "event_formatter_rerequest_keys_part1_link" = "Re-request encryption keys";
 "event_formatter_rerequest_keys_part2" = " from your other sessions.";
 "event_formatter_message_edited_mention" = "(edited)";
+"event_formatter_call_voice" = "Voice call";
+"event_formatter_call_video" = "Video call";
+"event_formatter_call_has_ended" = "This call has ended";
+"event_formatter_call_you_currently_in" = "You're currently in this call";
+"event_formatter_call_you_declined" = "You declined this call";
+"event_formatter_call_back" = "Call back";
 
 // Events formatter with you
 "event_formatter_widget_added_by_you" = "You added the widget: %@";
@@ -836,6 +852,8 @@ Tap the + to start adding people.";
 "call_no_stun_server_error_message_2" ="Alternatively, you can try to use the public server at %@, but this will not be as reliable, and it will share your IP address with that server. You can also manage this in Settings";
 "call_no_stun_server_error_use_fallback_button" = "Try using %@";
 
+"call_actions_unhold" = "Resume";
+
 // No VoIP support
 "no_voip_title" = "Incoming call";
 "no_voip" = "%@ is calling you but %@ does not support calls yet.\nYou can ignore this notification and answer the call from another device or you can reject it.";
@@ -864,6 +882,7 @@ Tap the + to start adding people.";
 "bug_report_progress_zipping" = "Collecting logs";
 "bug_report_progress_uploading" = "Uploading report";
 "bug_report_send" = "Send";
+"bug_report_background_mode" = "Continue in background";
 
 // Widget
 "widget_no_integrations_server_configured" = "No integrations server configured";
@@ -1148,7 +1167,7 @@ Tap the + to start adding people.";
 "device_verification_self_verify_wait_title" = "Complete security";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verify this login";
 "device_verification_self_verify_wait_information" = "Verify this session from one of your other sessions, granting it access to encrypted messages.\n\nUse the latest Element on your other devices:";
-"device_verification_self_verify_wait_additional_information" = "This works with Element and other cross-signing capable Matrix cients.";
+"device_verification_self_verify_wait_additional_information" = "This works with Element and other cross-signing capable Matrix clients.";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Use Recovery Key";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Use Recovery Passphrase or Key";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "If you can't access an existing session";
@@ -1536,6 +1555,18 @@ Tap the + to start adding people.";
 "room_info_list_several_members" = "%@ members";
 "room_info_list_section_other" = "Other";
 
+// MARK: - Dial Pad
+"dialpad_title" = "Dial pad";
+
+// MARK: - Call Transfer
+"call_transfer_title" = "Transfer";
+"call_transfer_users" = "Users";
+"call_transfer_dialpad" = "Dial pad";
+"call_transfer_contacts_recent" = "Recent";
+"call_transfer_contacts_all" = "All";
+"call_transfer_error_title" = "Error";
+"call_transfer_error_message" = "Call transfer failed";
+
 // MARK: - Home
 
 "home_empty_view_title" = "Welcome to %@,\n%@";
@@ -1545,3 +1576,8 @@ Tap the + to start adding people.";
 
 "favourites_empty_view_title" = "Favourite rooms and people";
 "favourites_empty_view_information" = "You can favourite a few ways - the quickest is just to press and hold. Tap the star and they’ll automatically appear here for safe keeping.";
+
+// MARK: - Invite friends
+
+"invite_friends_action" = "Invite friends to %@";
+"invite_friends_share_text" = "Hey, talk to me on %@: %@";

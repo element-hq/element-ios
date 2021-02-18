@@ -1,0 +1,10 @@
+
+
+
+"NSContactsUsageDescription" = "Akken ad d-tafeḍ inermisen i yesseqdacen Matrix, Element yezmer ad yazen tansiwin imayl d wuṭṭunen n tiliɣri n umedlis-ik•im n tansiwin i uqeddac-ik•im n tmagit Matrix. Ma yettwasefrak, isefka udmawanen ad ẓden send tizzna - ttxil senqed tabaḍnit n uqeddac-ik•im n tmagit i wugar n yisallen.";
+"NSFaceIDUsageDescription" = "Asulay n wudem tettwaseqdac iwakken ad tkecmeḍ ɣer usnas-ik•im.";
+"NSCalendarsUsageDescription" = "Ẓer timliliyin-ik•im yettwaɣewsen deg usnas.";
+"NSMicrophoneUsageDescription" = "Aswaḍ yettwaseqdac i tuṭṭfa n tvidyutin d yisawalen.";
+"NSPhotoLibraryUsageDescription" = "Tamkerḍit n tewlafin tettwaseqdac i tizzna n tewlafin d tvidyutin.";
+// Permissions usage explanations
+"NSCameraUsageDescription" = "Takamirat tettwaseqdac i tuṭṭfa n tewlafin d tvidyutin, daɣen i yisawalen s tvidyut.";
