@@ -28,7 +28,7 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
     private static let contactsAesKey: KeyValueStoreKey = "contactsAesKey"
     private static let accountIv: KeyValueStoreKey = "accountIv"
     private static let accountAesKey: KeyValueStoreKey = "accountAesKey"
-    private static let realmCryptoKey: KeyValueStoreKey = "realmCryptoKey"
+    private static let cryptoOlmPickleKey: KeyValueStoreKey = "cryptoOlmPickleKey"
 
     private let keychainStore: KeyValueStore = KeychainStore(withKeychain: Keychain(service: keychainService, accessGroup: BuildSettings.keychainAccessGroup))
 
@@ -42,13 +42,13 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
         generateAesKeyIfNotExists(forKey: EncryptionKeyManager.accountAesKey)
         generateIvIfNotExists(forKey: EncryptionKeyManager.contactsIv)
         generateAesKeyIfNotExists(forKey: EncryptionKeyManager.contactsAesKey)
-        generateKeyIfNotExists(forKey: EncryptionKeyManager.realmCryptoKey, size: 64)
+        generateKeyIfNotExists(forKey: EncryptionKeyManager.cryptoOlmPickleKey, size: 32)
 
         assert(keychainStore.containsObject(forKey: EncryptionKeyManager.contactsIv), "[EncryptionKeyManager] initKeys: Failed to generate IV for acount")
         assert(keychainStore.containsObject(forKey: EncryptionKeyManager.contactsAesKey), "[EncryptionKeyManager] initKeys: Failed to generate AES Key for acount")
         assert(keychainStore.containsObject(forKey: EncryptionKeyManager.contactsIv), "[EncryptionKeyManager] initKeys: Failed to generate IV for contacts")
         assert(keychainStore.containsObject(forKey: EncryptionKeyManager.contactsAesKey), "[EncryptionKeyManager] initKeys: Failed to generate AES Key for contacts")
-        assert(keychainStore.containsObject(forKey: EncryptionKeyManager.realmCryptoKey), "[EncryptionKeyManager] initKeys: Failed to generate Key for realmCrypto")
+        assert(keychainStore.containsObject(forKey: EncryptionKeyManager.cryptoOlmPickleKey), "[EncryptionKeyManager] initKeys: Failed to generate Key for olm pickle key")
     }
     
     // MARK: - MXKeyProviderDelegate
@@ -56,7 +56,7 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
     func isEncryptionAvailableForData(ofType dataType: String) -> Bool {
         return dataType == MXKContactManagerDataType
             || dataType == MXKAccountManagerDataType
-//            || dataType == MXRealmCryptoStoreDataType
+            || dataType == MXCryptoOlmPickleKeyDataType
     }
             
     func hasKeyForData(ofType dataType: String) -> Bool {
@@ -65,8 +65,8 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
             return keychainStore.containsObject(forKey: EncryptionKeyManager.contactsIv) && keychainStore.containsObject(forKey: EncryptionKeyManager.contactsAesKey)
         case MXKAccountManagerDataType:
             return keychainStore.containsObject(forKey: EncryptionKeyManager.accountIv) && keychainStore.containsObject(forKey: EncryptionKeyManager.accountAesKey)
-//        case MXRealmCryptoStoreDataType:
-//            return keychainStore.containsObject(forKey: EncryptionKeyManager.realmCryptoKey)
+        case MXCryptoOlmPickleKeyDataType:
+            return keychainStore.containsObject(forKey: EncryptionKeyManager.cryptoOlmPickleKey)
         default:
             return false
         }
@@ -84,10 +84,10 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
                let aesKey = try? keychainStore.data(forKey: EncryptionKeyManager.accountAesKey) {
                 return MXAesKeyData(iv: ivKey, key: aesKey)
             }
-//        case MXRealmCryptoStoreDataType:
-//            if let key = try? keychainStore.data(forKey: EncryptionKeyManager.realmCryptoKey) {
-//                return MXRawDataKey(key: key)
-//            }
+        case MXCryptoOlmPickleKeyDataType:
+            if let key = try? keychainStore.data(forKey: EncryptionKeyManager.cryptoOlmPickleKey) {
+                return MXRawDataKey(key: key)
+            }
         default:
             return nil
         }
