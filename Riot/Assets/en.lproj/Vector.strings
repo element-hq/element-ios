@@ -655,7 +655,7 @@ Tap the + to start adding people.";
 "identity_server_settings_add" = "Add";
 "identity_server_settings_change" = "Change";
 
-"identity_server_settings_disconnect_info" = "Disconnecting from your identity server will mean you won’t be discoverable by other users and  be able to invite others by email or phone.";
+"identity_server_settings_disconnect_info" = "Disconnecting from your identity server will mean you won’t be discoverable by other users and be able to invite others by email or phone.";
 "identity_server_settings_disconnect" = "Disconnect";
 
 "identity_server_settings_alert_no_terms_title" = "Identity server has no terms of services";
