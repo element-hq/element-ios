@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- *
+ * RoomVC: Add quick actions in timeline on room creation (#3776).
 
 🐛 Bugfix
  * 
