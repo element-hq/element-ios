@@ -148,6 +148,8 @@ extern NSString *const kMXKRoomBubbleCellCallBackButtonPressed;
  */
 + (CGFloat)attachmentBubbleCellHeightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth;
 
+- (IBAction)onProgressLongPressGesture:(UILongPressGestureRecognizer*)recognizer;
+
 /**
  Blur the view by adding a transparent overlay. Default is NO.
  */
@@ -162,5 +164,10 @@ extern NSString *const kMXKRoomBubbleCellCallBackButtonPressed;
  The marker view displayed in front of the marked component (if any).
  */
 @property (nonatomic) UIView *markerView;
+
+/**
+ Message tick views (sending, sent) displayed alongside the related component.
+ */
+@property (nonatomic) NSArray *messageStatusViews;
 
 @end

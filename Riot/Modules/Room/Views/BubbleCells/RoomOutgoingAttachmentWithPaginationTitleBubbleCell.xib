@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,7 +13,7 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="120"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WmY-Jw-mqv" id="ef1-Tq-U3Z">
-                <rect key="frame" x="0.0" y="0.0" width="600" height="119.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="600" height="120"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SFg-55-RF4" userLabel="Pagination Title View">
@@ -70,7 +67,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="5IE-JS-uf3" userLabel="Attachment View" customClass="MXKImageView">
-                        <rect key="frame" x="56" y="75" width="192" height="34"/>
+                        <rect key="frame" x="56" y="75" width="192" height="35"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration" identifier="AttachmentView"/>
                         <constraints>
@@ -87,7 +84,7 @@
                         </constraints>
                     </imageView>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Cot-3X-2cU" userLabel="Play Icon Image View">
-                        <rect key="frame" x="136" y="76" width="32" height="32"/>
+                        <rect key="frame" x="136" y="76.5" width="32" height="32"/>
                         <accessibility key="accessibilityConfiguration" identifier="PlayIconImageView"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="32" id="8io-Wk-GzF"/>
@@ -95,13 +92,13 @@
                         </constraints>
                     </imageView>
                     <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="jmK-pe-WZd">
-                        <rect key="frame" x="142" y="82" width="20" height="20"/>
+                        <rect key="frame" x="142" y="82.5" width="20" height="20"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="ActivityIndicator"/>
                         </userDefinedRuntimeAttributes>
                     </activityIndicatorView>
                     <view hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IOg-Kt-8vW">
-                        <rect key="frame" x="515" y="54" width="70" height="65"/>
+                        <rect key="frame" x="515" y="54" width="70" height="66"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration" identifier="BubbleInfoContainer"/>
                         <constraints>
@@ -109,38 +106,15 @@
                         </constraints>
                     </view>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fdx-qs-8en" userLabel="ProgressView">
-                        <rect key="frame" x="487" y="57" width="100" height="70"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="rate" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="4" preferredMaxLayoutWidth="100" translatesAutoresizingMaskIntoConstraints="NO" id="eU5-iK-u8i" userLabel="Progress stats">
-                                <rect key="frame" x="0.0" y="60" width="100" height="10"/>
-                                <accessibility key="accessibilityConfiguration" identifier="ProgressStats"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="8"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hJj-TC-pxK" customClass="MXKPieChartView">
-                                <rect key="frame" x="30" y="0.0" width="40" height="40"/>
-                                <accessibility key="accessibilityConfiguration" identifier="ProgressChartView"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="Cpt-s4-tlK"/>
-                                    <constraint firstAttribute="height" constant="40" id="Jb4-9E-tG0"/>
-                                </constraints>
-                            </view>
-                        </subviews>
+                        <rect key="frame" x="487" y="50" width="100" height="70"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="height" constant="70" id="5w2-Hm-hZx"/>
-                            <constraint firstAttribute="centerX" secondItem="eU5-iK-u8i" secondAttribute="centerX" id="APi-aE-mLc"/>
-                            <constraint firstItem="eU5-iK-u8i" firstAttribute="leading" secondItem="fdx-qs-8en" secondAttribute="leading" id="Njw-3a-E9Y"/>
-                            <constraint firstAttribute="bottom" secondItem="eU5-iK-u8i" secondAttribute="bottom" id="QMO-g9-QVE"/>
-                            <constraint firstAttribute="centerX" secondItem="hJj-TC-pxK" secondAttribute="centerX" id="laR-Vg-ol3"/>
-                            <constraint firstItem="hJj-TC-pxK" firstAttribute="top" secondItem="fdx-qs-8en" secondAttribute="top" id="ovD-8p-4dP"/>
                             <constraint firstAttribute="width" constant="100" id="ryE-fW-SgG"/>
-                            <constraint firstAttribute="trailing" secondItem="eU5-iK-u8i" secondAttribute="trailing" id="teG-8q-BOX"/>
                         </constraints>
                     </view>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3b7-4a-YL0">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="119"/>
+                        <rect key="frame" x="8" y="3" width="584" height="114"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y8m-dS-1Df">
@@ -155,6 +129,7 @@
                     <constraint firstItem="y8m-dS-1Df" firstAttribute="trailing" secondItem="q9c-0p-QyP" secondAttribute="trailing" id="6XL-SF-Mbj"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="leading" secondItem="hgp-Z5-rAj" secondAttribute="trailing" constant="13" id="6mM-Ag-m0K"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="75" id="96U-67-5TP"/>
+                    <constraint firstAttribute="bottom" secondItem="fdx-qs-8en" secondAttribute="bottom" id="AeT-4F-mKp"/>
                     <constraint firstAttribute="trailing" secondItem="q9c-0p-QyP" secondAttribute="trailing" constant="85" id="Bkh-h2-JOQ"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="centerY" secondItem="Cot-3X-2cU" secondAttribute="centerY" id="H5t-l6-fL1"/>
                     <constraint firstItem="SFg-55-RF4" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="56" id="I4N-5Q-LFe"/>
@@ -175,7 +150,6 @@
                     <constraint firstItem="hgp-Z5-rAj" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="13" id="tuw-aU-ncu"/>
                     <constraint firstItem="y8m-dS-1Df" firstAttribute="bottom" secondItem="q9c-0p-QyP" secondAttribute="bottom" constant="6" id="tvi-jE-y62"/>
                     <constraint firstItem="y8m-dS-1Df" firstAttribute="leading" secondItem="q9c-0p-QyP" secondAttribute="leading" constant="-10" id="ucU-Df-AZJ"/>
-                    <constraint firstItem="5IE-JS-uf3" firstAttribute="centerY" secondItem="fdx-qs-8en" secondAttribute="centerY" id="v0F-Ts-14P"/>
                     <constraint firstItem="SFg-55-RF4" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="10" id="wJX-7V-bJB"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="top" secondItem="K9X-gn-noF" secondAttribute="top" id="wkX-zQ-iQS"/>
                     <constraint firstAttribute="bottomMargin" secondItem="3b7-4a-YL0" secondAttribute="bottom" constant="-8" id="wpa-8Z-Gy3"/>
@@ -200,12 +174,11 @@
                 <outlet property="paginationTitleView" destination="SFg-55-RF4" id="mbP-6I-gOn"/>
                 <outlet property="pictureView" destination="hgp-Z5-rAj" id="rKM-QG-RJN"/>
                 <outlet property="playIconView" destination="Cot-3X-2cU" id="KEF-KK-Og1"/>
-                <outlet property="progressChartView" destination="hJj-TC-pxK" id="Zz3-s5-Qqr"/>
                 <outlet property="progressView" destination="fdx-qs-8en" id="V7E-pn-Xze"/>
-                <outlet property="statsLabel" destination="eU5-iK-u8i" id="MSm-kU-RSY"/>
                 <outlet property="userNameLabel" destination="q9c-0p-QyP" id="JId-R7-LoM"/>
                 <outlet property="userNameTapGestureMaskView" destination="y8m-dS-1Df" id="0Nv-To-W4c"/>
             </connections>
+            <point key="canvasLocation" x="-26" y="113"/>
         </tableViewCell>
     </objects>
 </document>

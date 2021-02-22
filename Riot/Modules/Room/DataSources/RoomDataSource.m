@@ -28,6 +28,36 @@
 #import "MXRoom+Riot.h"
 
 
+@interface CellDataComponentIndexPair : NSObject
+@property (nonatomic, readonly) MXKCellData *cellData;
+@property (nonatomic, readonly) NSInteger componentIndex;
+
++ (instancetype)pairWithCellData:(MXKCellData *)cellData componentIndex:(NSInteger)componentIndex;
+- (instancetype)initWithCellData:(MXKCellData *)cellData componentIndex:(NSInteger)componentIndex;
+
+@end
+
+@implementation CellDataComponentIndexPair
+
++ (instancetype)pairWithCellData:(MXKCellData *)cellData componentIndex:(NSInteger)componentIndex
+{
+    return [[CellDataComponentIndexPair alloc] initWithCellData:cellData componentIndex:componentIndex];
+}
+
+- (instancetype)initWithCellData:(MXKCellData *)cellData componentIndex:(NSInteger)componentIndex
+{
+    self = [super init];
+    
+    if (self)
+    {
+        _cellData = cellData;
+        _componentIndex = componentIndex;
+    }
+    
+    return self;
+}
+
+@end
 
 @interface RoomDataSource() <BubbleReactionsViewModelDelegate>
 {
@@ -47,6 +77,9 @@
 @property (nonatomic, readonly) id<RoomDataSourceDelegate> roomDataSourceDelegate;
 
 @property(nonatomic, readwrite) RoomEncryptionTrustLevel encryptionTrustLevel;
+
+@property (nonatomic) CellDataComponentIndexPair *preparingCell;
+@property (nonatomic) CellDataComponentIndexPair *sentCell;
 
 @end
 
@@ -242,6 +275,8 @@
                     break;
                 }
             }
+            
+            [self updateStatusInfo];
         }
     }
     
@@ -600,6 +635,8 @@
         bubbleCell.isAutoAnimatedGif = (cellData.attachment && cellData.attachment.type == MXKAttachmentTypeSticker);
 
         [self setupAccessibilityForCell:bubbleCell withCellData:cellData];
+        
+        [self updateTickViewForBubbleCell:bubbleCell withCellData:cellData];
     }
 
     return cell;
@@ -961,6 +998,136 @@
 - (void)bubbleReactionsViewModel:(BubbleReactionsViewModel *)viewModel didLongPressForEventId:(NSString *)eventId
 {
     [self.delegate dataSource:self didRecognizeAction:kMXKRoomBubbleCellLongPressOnReactionView inCell:nil userInfo:@{ kMXKRoomBubbleCellEventIdKey: eventId }];
+}
+
+#pragma mark - Message status management
+
+- (void)updateStatusInfo
+{
+    self.preparingCell = nil;
+    self.sentCell = nil;
+
+    NSInteger bubbleIndex = bubbles.count;
+    while (bubbleIndex--)
+    {
+        RoomBubbleCellData *cellData = bubbles[bubbleIndex];
+        
+        // We are interested only by outgoing messages
+        if (cellData.senderId != self.mxSession.credentials.userId)
+        {
+            continue;
+        }
+        
+        NSInteger componentIndex = cellData.bubbleComponents.count;
+        while (componentIndex--) {
+            MXKRoomBubbleComponent *component = cellData.bubbleComponents[componentIndex];
+            NSArray<MXReceiptData*> *receipts = cellData.readReceipts[component.event.eventId];
+            if (receipts.count)
+            {
+                return;
+            }
+            
+            MXEventSentState eventState = component.event.sentState;
+            
+            if (self.sentCell == nil && eventState == MXEventSentStateSent)
+            {
+                self.sentCell = [CellDataComponentIndexPair pairWithCellData:cellData componentIndex:componentIndex];
+                return;
+            }
+
+            if (self.preparingCell == nil
+                && (eventState == MXEventSentStatePreparing
+                || eventState == MXEventSentStateEncrypting
+                || eventState == MXEventSentStateSending))
+            {
+                if (!cellData.attachment || eventState == MXEventSentStateSending)
+                {
+                    self.preparingCell = [CellDataComponentIndexPair pairWithCellData:cellData componentIndex:componentIndex];
+                }
+            }
+        }
+    }
+}
+
+- (void)updateTickViewForBubbleCell:(MXKRoomBubbleTableViewCell *)cell withCellData:(RoomBubbleCellData *)cellData
+{
+    for (UIView *tickView in cell.messageStatusViews)
+    {
+        [tickView removeFromSuperview];
+    }
+    cell.messageStatusViews = nil;
+    
+    NSMutableArray *statusViews = [NSMutableArray new];
+    UIView *tickView = nil;
+    if (cellData == self.preparingCell.cellData)
+    {
+        UIImage *image = [UIImage imageNamed:@"sending_message_tick"];
+        image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        tickView = [[UIImageView alloc] initWithImage:image];
+        tickView.tintColor = ThemeService.shared.theme.messageTickColor;
+
+        tickView.frame = CGRectMake(cell.contentView.bounds.size.width - tickView.frame.size.width - 2 * RoomBubbleCellLayout.readReceiptsViewRightMargin, cell.contentView.bounds.size.height - tickView.frame.size.height, tickView.frame.size.width, tickView.frame.size.height);
+        
+        [statusViews addObject:tickView];
+        [cell.contentView addSubview:tickView];
+    }
+    
+    if (cellData == self.sentCell.cellData)
+    {
+        UIImage *image = [UIImage imageNamed:@"sent_message_tick"];
+        image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        tickView = [[UIImageView alloc] initWithImage:image];
+        tickView.tintColor = ThemeService.shared.theme.messageTickColor;
+
+        tickView.frame = CGRectMake(cell.contentView.bounds.size.width - tickView.frame.size.width - 2 * RoomBubbleCellLayout.readReceiptsViewRightMargin, [cell bottomPositionOfEvent:cellData.bubbleComponents[self.sentCell.componentIndex].event.eventId] - tickView.frame.size.height, tickView.frame.size.width, tickView.frame.size.height);
+        
+        [statusViews addObject:tickView];
+        [cell.contentView addSubview:tickView];
+    }
+    
+    if (cellData.attachment)
+    {
+        MXKRoomBubbleComponent *component = cellData.bubbleComponents.firstObject;
+        if (component.event.sentState == MXEventSentStateUploading
+            || component.event.sentState == MXEventSentStateEncrypting
+            || component.event.sentState == MXEventSentStatePreparing)
+        {
+            UIView *progressContentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+            CircleProgressView *progressView = [[CircleProgressView alloc] initWithFrame:CGRectMake(24, 24, 16, 16)];
+            progressView.lineColor = ThemeService.shared.theme.messageTickColor;
+            [progressContentView addSubview:progressView];
+
+            tickView = progressContentView;
+
+            tickView.frame = CGRectMake(cell.contentView.bounds.size.width - tickView.frame.size.width - 2 * RoomBubbleCellLayout.readReceiptsViewRightMargin, cell.contentView.bounds.size.height - tickView.frame.size.height, tickView.frame.size.width, tickView.frame.size.height);
+            [statusViews addObject:tickView];
+            [cell.contentView addSubview:tickView];
+            
+            [progressView startAnimating];
+            
+            UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:cell action:@selector(onProgressLongPressGesture:)];
+            [tickView addGestureRecognizer:longPress];
+        }
+    }
+    
+    for (MXKRoomBubbleComponent *component in cellData.bubbleComponents)
+    {
+        if (component.event.sentState == MXEventSentStateFailed)
+        {
+            tickView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"error_message_tick"]];
+            
+            tickView.frame = CGRectMake(cell.contentView.bounds.size.width - tickView.frame.size.width - 2 * RoomBubbleCellLayout.readReceiptsViewRightMargin, [cell bottomPositionOfEvent:component.event.eventId] - tickView.frame.size.height, tickView.frame.size.width, tickView.frame.size.height);
+            
+            [statusViews addObject:tickView];
+            [cell.contentView addSubview:tickView];
+        }
+    }
+    
+    
+    if (statusViews.count)
+    {
+        cell.messageStatusViews = statusViews;
+    }
 }
 
 @end

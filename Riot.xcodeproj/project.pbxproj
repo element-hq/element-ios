@@ -145,6 +145,7 @@
 		32FD757924D2C9BA00BA7B37 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD757524D2C9BA00BA7B37 /* Bundle.swift */; };
 		32FD757A24D2C9BA00BA7B37 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FD757524D2C9BA00BA7B37 /* Bundle.swift */; };
 		32FDC1CD2386CD390084717A /* RiotSettingIntegrationProvisioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32FDC1CC2386CD390084717A /* RiotSettingIntegrationProvisioning.swift */; };
+		3A8B4A2E25E2E668007EEBC3 /* CircleProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8B4A2D25E2E668007EEBC3 /* CircleProgressView.swift */; };
 		3AF393339D2D566CE14AC200 /* Pods_RiotTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 129EB7E27E7E4AC3F5F098F5 /* Pods_RiotTests.framework */; };
 		405FD41D306133A48D9B5AA1 /* Pods_RiotPods_Riot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ACF09217ADF1D7E7A35BC02 /* Pods_RiotPods_Riot.framework */; };
 		670966FEFE120D865FD8A5B6 /* Pods_RiotPods_SiriIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51187E952D5CECF6D6F5A28E /* Pods_RiotPods_SiriIntents.framework */; };
@@ -1244,6 +1245,7 @@
 		32FD757524D2C9BA00BA7B37 /* Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		32FDC1CC2386CD390084717A /* RiotSettingIntegrationProvisioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiotSettingIntegrationProvisioning.swift; sourceTree = "<group>"; };
 		3942DD65EBEB7AE647C6392A /* Pods-RiotPods-SiriIntents.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-SiriIntents.debug.xcconfig"; path = "Target Support Files/Pods-RiotPods-SiriIntents/Pods-RiotPods-SiriIntents.debug.xcconfig"; sourceTree = "<group>"; };
+		3A8B4A2D25E2E668007EEBC3 /* CircleProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleProgressView.swift; sourceTree = "<group>"; };
 		3D78489021AC9E6400B98A7D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3D78489121AC9E6500B98A7D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3D78489221AC9E6500B98A7D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Vector.strings; sourceTree = "<group>"; };
@@ -2763,6 +2765,14 @@
 				32FD756324D2AD5100BA7B37 /* BuildSettings.swift */,
 			);
 			path = Config;
+			sourceTree = "<group>";
+		};
+		3A8B4A2C25E2E636007EEBC3 /* CircleProgressView */ = {
+			isa = PBXGroup;
+			children = (
+				3A8B4A2D25E2E668007EEBC3 /* CircleProgressView.swift */,
+			);
+			path = CircleProgressView;
 			sourceTree = "<group>";
 		};
 		4220F60B660591FD80AF3428 /* Pods */ = {
@@ -4314,6 +4324,7 @@
 		B1B557AE20EF5AEF00210D55 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3A8B4A2C25E2E636007EEBC3 /* CircleProgressView */,
 				B1B557EA20EF61C000210D55 /* Title */,
 				B1B557B520EF5B4400210D55 /* InputToolbar */,
 				B1B557AF20EF5AEF00210D55 /* Event */,
@@ -6620,6 +6631,7 @@
 				ECF57A4425090C23004BBF9D /* CreateRoomCoordinatorBridgePresenter.swift in Sources */,
 				B1B4E9BB24D46EB4004D5C33 /* SizingViewHeightStore.swift in Sources */,
 				32DB557C22FDADE50016329E /* ServiceTermsModalScreenViewModelType.swift in Sources */,
+				3A8B4A2E25E2E668007EEBC3 /* CircleProgressView.swift in Sources */,
 				B16932FA20F3C51A00746532 /* RecentCellData.m in Sources */,
 				EC85D72B2477DCF2002C44C9 /* KeyVerificationManuallyVerifyCoordinatorType.swift in Sources */,
 				B16932F220F3C49E00746532 /* GroupsDataSource.m in Sources */,
