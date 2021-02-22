@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- *
+ * Home: Show room directory on join room action (#3775).
 
 🐛 Bugfix
  * 
