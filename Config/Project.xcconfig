@@ -1,0 +1,48 @@
+// 
+// Copyright 2020 Vector Creations Ltd
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+
+// This file defines base project settings.
+// Targets (App, extensions) xcconfig files automatically include it.
+
+// Application constants
+KEYCHAIN_ACCESS_GROUP = $(AppIdentifierPrefix)$(BASE_BUNDLE_IDENTIFIER).keychain.shared
+
+// Build settings
+IPHONEOS_DEPLOYMENT_TARGET = 11.0
+SDKROOT = iphoneos
+TARGETED_DEVICE_FAMILY = 1,2
+SWIFT_VERSION = 5.3.1
+ENABLE_BITCODE = NO
+
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks
+ALWAYS_SEARCH_USER_PATHS = NO
+DEFINES_MODULE = YES
+ENABLE_STRICT_OBJC_MSGSEND = YES
+GCC_NO_COMMON_BLOCKS = YES
+
+// Make Xcode 12 and fastlane(xcodebuild) happy while some pods are not updated
+EXCLUDED_ARCHS[sdk=iphonesimulator*] = arm64
+
+CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES
+CLANG_ANALYZER_NONNULL = YES
+CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE
+
+CLANG_ENABLE_MODULES = YES
+CLANG_ENABLE_OBJC_ARC = YES

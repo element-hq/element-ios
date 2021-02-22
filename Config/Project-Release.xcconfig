@@ -1,5 +1,5 @@
 // 
-// Copyright 2020 Vector Creations Ltd
+// Copyright 2021 Vector Creations Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,8 +14,20 @@
 // limitations under the License.
 //
 
-// Configuration settings file format documentation can be found at:
-// https://help.apple.com/xcode/#/dev745c5c974
+// This file defines project settings for Release.
+// Targets (App, extensions) xcconfig files automatically include it for Release build.
 
-#include "SiriIntents-Common.xcconfig"
-#include "Pods/Target Support Files/Pods-RiotPods-SiriIntents/Pods-RiotPods-SiriIntents.debug.xcconfig"
+#include "Project.xcconfig"
+#include "Project-Warnings.xcconfig"
+
+COPY_PHASE_STRIP = YES
+ENABLE_NS_ASSERTIONS = NO
+MTL_ENABLE_DEBUG_INFO = NO
+VALIDATE_PRODUCT = YES
+
+SWIFT_COMPILATION_MODE = wholemodule
+
+
+// Code signing: Manual
+CODE_SIGN_IDENTITY = iPhone Distribution
+CODE_SIGN_STYLE = Manual
