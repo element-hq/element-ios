@@ -165,6 +165,16 @@
  */
 - (void)muteEditedRoomNotifications:(BOOL)mute;
 
+/**
+ Show room directory.
+ */
+- (void)showRoomDirectory;
+
+/**
+ Show a public room.
+ */
+- (void)openPublicRoom:(MXPublicRoom *)publicRoom;
+
 #pragma mark - Scrolling
 
 /**
