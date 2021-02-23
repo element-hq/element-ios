@@ -46,3 +46,5 @@ targets:
     - path: ../Config/BuildSettings.swift
     - path: ../Config/Configurable.swift
     - path: ../Riot/Managers/Settings/RiotSettings.swift
+    - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
+    - path: ../Riot/Managers/KeyValueStorage

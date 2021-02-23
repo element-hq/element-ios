@@ -2,7 +2,7 @@ Changes to be released in next version
 =================================================
 
 ✨ Features
- * 
+ * Enable encryption for accounts, contacts and keys in the crypto database (#3867).
 
 🙌 Improvements
  * Home: Show room directory on join room action (#3775).
