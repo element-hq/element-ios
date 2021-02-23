@@ -997,7 +997,7 @@
 // Insert the room creation intro cell at the begining
 - (void)insertRoomCreationIntroCellDataIfNeeded
 {
-    if (self.showRoomCreationCell)
+    @synchronized(bubbles)
     {
         NSUInteger existingRoomCreationCellDataIndex = [self roomBubbleDataIndexWithTag:RoomBubbleCellDataTagRoomCreationIntro];
         
@@ -1006,40 +1006,51 @@
             [bubbles removeObjectAtIndex:existingRoomCreationCellDataIndex];
         }
         
-        NSUInteger roomCreationConfigCellDataIndex = [self roomBubbleDataIndexWithTag:RoomBubbleCellDataTagRoomCreateConfiguration];
-        
-        // Only add room creation intro cell if `bubbles` array contains the room creation event
-        if (roomCreationConfigCellDataIndex != NSNotFound)
+        if (self.showRoomCreationCell)
         {
-            MXEvent *event = [MXEvent new];
-            MXRoomState *roomState = [MXRoomState new];
-            RoomBubbleCellData *roomBubbleCellData = [[RoomBubbleCellData alloc] initWithEvent:event andRoomState:roomState andRoomDataSource:self];
-            roomBubbleCellData.tag = RoomBubbleCellDataTagRoomCreationIntro;
+            NSUInteger roomCreationConfigCellDataIndex = [self roomBubbleDataIndexWithTag:RoomBubbleCellDataTagRoomCreateConfiguration];
             
-            [bubbles insertObject:roomBubbleCellData atIndex:0];
+            // Only add room creation intro cell if `bubbles` array contains the room creation event
+            if (roomCreationConfigCellDataIndex != NSNotFound)
+            {
+                RoomBubbleCellData *roomBubbleCellData = self.roomCreationCellData;
                 
-            self.roomCreationCellData = roomBubbleCellData;
+                if (!roomBubbleCellData)
+                {
+                    MXEvent *event = [MXEvent new];
+                    MXRoomState *roomState = [MXRoomState new];
+                    RoomBubbleCellData *roomBubbleCellData = [[RoomBubbleCellData alloc] initWithEvent:event andRoomState:roomState andRoomDataSource:self];
+                    roomBubbleCellData.tag = RoomBubbleCellDataTagRoomCreationIntro;
+                    
+                    self.roomCreationCellData = roomBubbleCellData;
+                }
+                
+                [bubbles insertObject:roomBubbleCellData atIndex:0];
+            }
         }
-    }
-    else
-    {
-        self.roomCreationCellData = nil;
+        else
+        {
+            self.roomCreationCellData = nil;
+        }
     }
 }
 
 - (NSUInteger)roomBubbleDataIndexWithTag:(RoomBubbleCellDataTag)tag
 {
-    return [bubbles indexOfObjectPassingTest:^BOOL(id<MXKRoomBubbleCellDataStoring>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if ([obj isKindOfClass:RoomBubbleCellData.class])
-        {
-            RoomBubbleCellData *roomBubbleCellData = (RoomBubbleCellData*)obj;
-            if (roomBubbleCellData.tag == tag)
+    @synchronized(bubbles)
+    {    
+        return [bubbles indexOfObjectPassingTest:^BOOL(id<MXKRoomBubbleCellDataStoring>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([obj isKindOfClass:RoomBubbleCellData.class])
             {
-                return YES;
+                RoomBubbleCellData *roomBubbleCellData = (RoomBubbleCellData*)obj;
+                if (roomBubbleCellData.tag == tag)
+                {
+                    return YES;
+                }
             }
-        }
-        return NO;
-    }];
+            return NO;
+        }];
+    }
 }
 
 @end
