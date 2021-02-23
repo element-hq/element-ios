@@ -274,8 +274,9 @@ platform :ios do
   private_lane :update_build_number do |options|
     build_number = options[:build_number]
 
-    increment_build_number_in_xcodeproj(
-      build_number: build_number,
+    update_file_content(
+      "../Config/AppIdentifiers.xcconfig",
+      /(CURRENT_PROJECT_VERSION\s*=)\s*.*/ => "\\1 #{build_number}"
     )
   end
 
@@ -336,3 +337,16 @@ platform :ios do
         .last # Latest ref found, in "version:refname" semantic order
   end
 end
+
+  # Update an arbitrary file by applying some RegExp replacements to its content
+  #
+  # @param [String] file The path to the file that needs replacing
+  # @param [Hash<RegExp, String>] replacements A list of replacements to apply
+  #
+  def update_file_content(file, replacements)
+    content = File.read(file)
+    replacements.each do |pattern, replacement|
+      content.gsub!(pattern, replacement)
+    end
+    File.write(file, content)
+  end
