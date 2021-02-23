@@ -3,7 +3,180 @@ Changes to be released in next version
 
 ✨ Features
 
+🙌 Improvements
  * Enable encryption for contacts, accounts, and crypto database (#3867)
+ * Home: Show room directory on join room action (#3775).
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * XcodeGen: .xcodeproj files are now built from readable yml file: [New Build instructions](README.md#build-instructions) (#3812).
+ * Podfile: Use MatrixKit for all targets and remove MatrixKit/AppExtension.
+ * Fastlane: Use the "New Build System" to build releases.
+ * Fastlane: Re-enable parallelised builds.
+
+Others
+ * 
+
+Changes in 1.2.1 (2021-02-12)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * User-Interactive Authentication: Add UIA support for device deletion and add user 3PID action (#4016).
+
+🐛 Bugfix
+ * NSE: Wait for VoIP push request if any before calling contentHandler (#4018).
+ * VoIP: Show dial pad option only if PSTN is supported (#4029).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.14.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.1)).
+
+Changes in 1.2.0 (2021-02-11)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Cross-signing: Setup cross-signing without authentication parameters when a grace period is enabled after login (#4006).
+ * VoIP: Implement DTMF on call screen (#3929).
+ * VoIP: Implement call transfer screen (#3962).
+ * VoIP: Implement call tiles on timeline (#3955).
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.14.0](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.0)).
+
+Changes in 1.1.7 (2021-02-03)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Social login: Handle new identity provider brand field in order to customize buttons (#3980).
+ * Widgets: Support $matrix_room_id and $matrix_widget_id parameters (#3987).
+ * matrix.to: Support room preview when the permalink has parameters (like "via=").
+ * Avoid megolm share requests if the device is not verified (#3969)
+ * Handle User-Interactive Authentication fallback (#3995).
+
+🐛 Bugfix
+ * Push: Fix PushKit crashes due to undecryptable call invites (#3986).
+ * matrix.to: Cannot open links with query parameters (#3990).
+ * matrix.to: Cannot open/preview a new room given by alias (#3991).
+ * matrix.to: The app does not open a permalink from matrix.to (#3993).
+ * Logs: Add a size limitation so that we can upload them in bug reports (#3903).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.13.9](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.9)).
+
+Changes in 1.1.6 (2021-01-27)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * Navigation: Unable to open a room from a room list (#3863).
+ * AuthVC: Fix social login layout issue.
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.13.8](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.8)).
+
+Changes in 1.1.5 (2021-01-18)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.13.7](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.7)).
+
+Changes in 1.1.4 (2021-01-15)
+=================================================
+
+✨ Features
  * Change Pin inside the app (#3881)
  * AuthVC: Add social login (#3846).
  * Invite friends: Add the ability to invite friends outside of Element in a few places (#3840).
