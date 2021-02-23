@@ -2850,7 +2850,7 @@ internal enum VectorL10n {
   internal static var roomIntroCellInformationRoomWithoutTopicSentence2Part1: String { 
     return VectorL10n.tr("Vector", "room_intro_cell_information_room_without_topic_sentence2_part1") 
   }
-  /// to let people know what this room is about.
+  ///  to let people know what this room is about.
   internal static var roomIntroCellInformationRoomWithoutTopicSentence2Part2: String { 
     return VectorL10n.tr("Vector", "room_intro_cell_information_room_without_topic_sentence2_part2") 
   }

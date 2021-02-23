@@ -150,7 +150,7 @@ final class RoomCreationIntroCellContentView: UIView, NibLoadable, Themable {
         attributedString.append(firstSentencePart2)
         attributedString.append(firstSentencePart3)
                         
-        if let topic = topic {
+        if let topic = topic, topic.isEmpty == false {
             attributedString.append(NSAttributedString(string: VectorL10n.roomIntroCellInformationRoomWithTopicSentence2(topic), attributes: informationTextDefaultAttributes))
         } else {
             let secondSentencePart1 = NSAttributedString(string: VectorL10n.roomIntroCellInformationRoomWithoutTopicSentence2Part1, attributes: [.foregroundColor: self.theme.tintColor])
@@ -196,7 +196,7 @@ final class RoomCreationIntroCellContentView: UIView, NibLoadable, Themable {
         
         if case DiscussionType.room(topic: let topic) = viewData.dicussionType {
             // There is no topic defined
-            if topic == nil {
+            if topic.isEmptyOrNil {
                 self.didTapTopic?()
             }
         }
