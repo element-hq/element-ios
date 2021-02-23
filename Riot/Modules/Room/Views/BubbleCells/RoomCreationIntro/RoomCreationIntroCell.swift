@@ -54,14 +54,6 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
         super.setupViews()
     }
     
-    // MARK: - Life cycle
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
     // MARK: - Public
     
     func update(theme: Theme) {
