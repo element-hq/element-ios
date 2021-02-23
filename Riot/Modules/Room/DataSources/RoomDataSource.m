@@ -78,7 +78,7 @@
 
 @property(nonatomic, readwrite) RoomEncryptionTrustLevel encryptionTrustLevel;
 
-@property (nonatomic) CellDataComponentIndexPair *sentCell;
+@property (nonatomic, strong) CellDataComponentIndexPair *sentCell;
 
 @end
 
@@ -1072,40 +1072,8 @@
         image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         tickView = [[UIImageView alloc] initWithImage:image];
         tickView.tintColor = ThemeService.shared.theme.messageTickColor;
-
-        CGRect componentFrame = [cell componentFrameInContentViewForIndex: self.sentCell.componentIndex];
-
-        tickView.frame = CGRectMake(cell.contentView.bounds.size.width - tickView.frame.size.width - 2 * RoomBubbleCellLayout.readReceiptsViewRightMargin, CGRectGetMaxY(componentFrame) - tickView.frame.size.height, tickView.frame.size.width, tickView.frame.size.height);
-        
         [statusViews addObject:tickView];
-        [cell.contentView addSubview:tickView];
-    }
-    
-    if (cellData.attachment)
-    {
-        MXKRoomBubbleComponent *component = cellData.bubbleComponents.firstObject;
-        if (component.event.sentState == MXEventSentStateUploading
-            || component.event.sentState == MXEventSentStateEncrypting
-            || component.event.sentState == MXEventSentStatePreparing)
-        {
-            UIView *progressContentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
-            CircleProgressView *progressView = [[CircleProgressView alloc] initWithFrame:CGRectMake(24, 24, 16, 16)];
-            progressView.lineColor = ThemeService.shared.theme.messageTickColor;
-            [progressContentView addSubview:progressView];
-
-            tickView = progressContentView;
-
-            CGRect componentFrame = [cell componentFrameInContentViewForIndex: 0];
-
-            tickView.frame = CGRectMake(cell.contentView.bounds.size.width - tickView.frame.size.width - 2 * RoomBubbleCellLayout.readReceiptsViewRightMargin, CGRectGetMaxY(componentFrame) - tickView.frame.size.height, tickView.frame.size.width, tickView.frame.size.height);
-            [statusViews addObject:tickView];
-            [cell.contentView addSubview:tickView];
-            
-            [progressView startAnimating];
-            
-            UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:cell action:@selector(onProgressLongPressGesture:)];
-            [tickView addGestureRecognizer:longPress];
-        }
+        [self addTickView:tickView toCell:cell atIndex:self.sentCell.componentIndex];
     }
     
     NSInteger index = cellData.bubbleComponents.count;
@@ -1119,30 +1087,38 @@
                 || component.event.sentState == MXEventSentStatePreparing
                 || component.event.sentState == MXEventSentStateSending)
             {
-                if (!cell.attachmentView || component.event.sentState == MXEventSentStateSending) {
+                if (cellData.attachment && component.event.sentState != MXEventSentStateSending)
+                {
+                    UIView *progressContentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+                    CircleProgressView *progressView = [[CircleProgressView alloc] initWithFrame:CGRectMake(24, 24, 16, 16)];
+                    progressView.lineColor = ThemeService.shared.theme.messageTickColor;
+                    [progressContentView addSubview:progressView];
+
+                    tickView = progressContentView;
+
+                    [progressView startAnimating];
+                    
+                    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:cell action:@selector(onProgressLongPressGesture:)];
+                    [tickView addGestureRecognizer:longPress];
+                }
+                else
+                {
                     UIImage *image = [UIImage imageNamed:@"sending_message_tick"];
                     image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
                     tickView = [[UIImageView alloc] initWithImage:image];
                     tickView.tintColor = ThemeService.shared.theme.messageTickColor;
-
-                    CGRect componentFrame = [cell componentFrameInContentViewForIndex: index];
-
-                    tickView.frame = CGRectMake(cell.contentView.bounds.size.width - tickView.frame.size.width - 2 * RoomBubbleCellLayout.readReceiptsViewRightMargin, CGRectGetMaxY(componentFrame) - tickView.frame.size.height, tickView.frame.size.width, tickView.frame.size.height);
-
-                    [statusViews addObject:tickView];
-                    [cell.contentView addSubview:tickView];
                 }
+
+                [statusViews addObject:tickView];
+                [self addTickView:tickView toCell:cell atIndex:index];
             }
         }
         
         if (component.event.sentState == MXEventSentStateFailed)
         {
             tickView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"error_message_tick"]];
-
-            tickView.frame = CGRectMake(cell.contentView.bounds.size.width - tickView.frame.size.width - 2 * RoomBubbleCellLayout.readReceiptsViewRightMargin, [cell bottomPositionOfEvent:component.event.eventId] - tickView.frame.size.height, tickView.frame.size.width, tickView.frame.size.height);
-            
             [statusViews addObject:tickView];
-            [cell.contentView addSubview:tickView];
+            [self addTickView:tickView toCell:cell atIndex:index];
         }
     }
     
@@ -1151,6 +1127,15 @@
     {
         cell.messageStatusViews = statusViews;
     }
+}
+
+- (void)addTickView:(UIView *)tickView toCell:(MXKRoomBubbleTableViewCell *)cell atIndex:(NSInteger)index
+{
+    CGRect componentFrame = [cell componentFrameInContentViewForIndex: index];
+
+    tickView.frame = CGRectMake(cell.contentView.bounds.size.width - tickView.frame.size.width - 2 * RoomBubbleCellLayout.readReceiptsViewRightMargin, CGRectGetMaxY(componentFrame) - tickView.frame.size.height, tickView.frame.size.width, tickView.frame.size.height);
+
+    [cell.contentView addSubview:tickView];
 }
 
 @end
