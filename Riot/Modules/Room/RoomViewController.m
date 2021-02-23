@@ -1666,69 +1666,32 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
 
 - (void)showRoomAvatarChange
 {
-    [self showRoomDetailsWithTabIndex:2 roomSettingsField:RoomSettingsViewControllerFieldAvatar];
+    [self showRoomInfoWithInitialSection:RoomInfoSectionChangeAvatar];
 }
 
 - (void)showAddParticipants
 {
-    [self showRoomDetailsWithTabIndex:0 roomSettingsField:RoomSettingsViewControllerFieldNone];
+    [self showRoomInfoWithInitialSection:RoomInfoSectionAddParticipants];
 }
 
 - (void)showRoomTopicChange
 {
-    [self showRoomDetailsWithTabIndex:2 roomSettingsField:RoomSettingsViewControllerFieldTopic];
+    [self showRoomInfoWithInitialSection:RoomInfoSectionChangeTopic];
 }
 
-- (void)showRoomDetailsWithTabIndex:(NSUInteger)tabIndex roomSettingsField:(RoomSettingsViewControllerField)settingsField
+- (void)showRoomInfo
 {
-    MXSession* session = self.roomDataSource.mxSession;
-    NSString* roomId = self.roomDataSource.roomId;
-    NSMutableArray* viewControllers = [[NSMutableArray alloc] init];
-    NSMutableArray* titles = [[NSMutableArray alloc] init];
-    
-    // members tab
-    [titles addObject: NSLocalizedStringFromTable(@"room_details_people", @"Vector", nil)];
-    RoomParticipantsViewController* participantsViewController = [RoomParticipantsViewController roomParticipantsViewController];
-    participantsViewController.delegate = self;
-    participantsViewController.enableMention = YES;
-    participantsViewController.showCancelBarButtonItem = YES;
-    participantsViewController.mxRoom = [session roomWithRoomId:roomId];
-    [viewControllers addObject:participantsViewController];
-    
-    // Files tab
-    [titles addObject: NSLocalizedStringFromTable(@"room_details_files", @"Vector", nil)];
-    RoomFilesViewController *roomFilesViewController = [RoomFilesViewController roomViewController];
-    // @TODO (async-state): This call should be synchronous. Every thing will be fine
-    __block MXKRoomDataSource *roomFilesDataSource;
-    [MXKRoomDataSource loadRoomDataSourceWithRoomId:roomId andMatrixSession:session onComplete:^(id roomDataSource) {
-        roomFilesDataSource = roomDataSource;
-    }];
-    roomFilesDataSource.filterMessagesWithURL = YES;
-    [roomFilesDataSource finalizeInitialization];
-    // Give the data source ownership to the room files view controller.
-    roomFilesViewController.hasRoomDataSourceOwnership = YES;
-    roomFilesViewController.showCancelBarButtonItem = YES;
-    [roomFilesViewController displayRoom:roomFilesDataSource];
-    [viewControllers addObject:roomFilesViewController];
-    
-    // Settings tab
-    [titles addObject: NSLocalizedStringFromTable(@"room_details_settings", @"Vector", nil)];
-    RoomSettingsViewController *settingsViewController = [RoomSettingsViewController roomSettingsViewController];
-    [settingsViewController initWithSession:session andRoomId:roomId];
-    settingsViewController.selectedRoomSettingsField = settingsField;
-    [viewControllers addObject:settingsViewController];
+    [self showRoomInfoWithInitialSection:RoomInfoSectionNone];
+}
 
-    SegmentedViewController* segmentedViewController = [SegmentedViewController segmentedViewController];
+- (void)showRoomInfoWithInitialSection:(RoomInfoSection)roomInfoSection
+{
+    RoomInfoCoordinatorParameters *parameters = [[RoomInfoCoordinatorParameters alloc] initWithSession:self.roomDataSource.mxSession room:self.roomDataSource.room initialSection:roomInfoSection];
     
-    segmentedViewController.title = NSLocalizedStringFromTable(@"room_details_title", @"Vector", nil);
-    [segmentedViewController initWithTitles:titles viewControllers:viewControllers defaultSelected:tabIndex];
+    self.roomInfoCoordinatorBridgePresenter = [[RoomInfoCoordinatorBridgePresenter alloc] initWithParameters:parameters];
     
-    // Add the current session to be able to observe its state change.
-    [segmentedViewController addMatrixSession:session];
-            
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:segmentedViewController];
-    
-    [self presentViewController:navigationController animated:YES completion:nil];
+    self.roomInfoCoordinatorBridgePresenter.delegate = self;
+    [self.roomInfoCoordinatorBridgePresenter presentFrom:self animated:YES];
 }
 
 #pragma mark - Dialpad
@@ -3929,9 +3892,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     
     if (tappedView == titleView.titleMask)
     {
-        self.roomInfoCoordinatorBridgePresenter = [[RoomInfoCoordinatorBridgePresenter alloc] initWithSession:self.roomDataSource.mxSession room:self.roomDataSource.room];
-        self.roomInfoCoordinatorBridgePresenter.delegate = self;
-        [self.roomInfoCoordinatorBridgePresenter presentFrom:self animated:YES];
+        [self showRoomInfo];
     }
     else if (tappedView == previewHeader.rightButton)
     {
