@@ -218,7 +218,7 @@
     [self.roomDataSourceDelegate roomDataSource:self didUpdateEncryptionTrustLevel:self.encryptionTrustLevel];
 }
 
-- (void)roomDidChange
+- (void)roomDidSet
 {
     [self enableRoomCreationIntroCellDisplayIfNeeded];
 }
@@ -1013,9 +1013,7 @@
             // Only add room creation intro cell if `bubbles` array contains the room creation event
             if (roomCreationConfigCellDataIndex != NSNotFound)
             {
-                RoomBubbleCellData *roomBubbleCellData = self.roomCreationCellData;
-                
-                if (!roomBubbleCellData)
+                if (!self.roomCreationCellData)
                 {
                     MXEvent *event = [MXEvent new];
                     MXRoomState *roomState = [MXRoomState new];
@@ -1025,7 +1023,7 @@
                     self.roomCreationCellData = roomBubbleCellData;
                 }
                 
-                [bubbles insertObject:roomBubbleCellData atIndex:0];
+                [bubbles insertObject:self.roomCreationCellData atIndex:0];
             }
         }
         else
@@ -1038,7 +1036,7 @@
 - (NSUInteger)roomBubbleDataIndexWithTag:(RoomBubbleCellDataTag)tag
 {
     @synchronized(bubbles)
-    {    
+    {
         return [bubbles indexOfObjectPassingTest:^BOOL(id<MXKRoomBubbleCellDataStoring>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             if ([obj isKindOfClass:RoomBubbleCellData.class])
             {
