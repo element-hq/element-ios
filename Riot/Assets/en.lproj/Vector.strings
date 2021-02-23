@@ -1581,3 +1581,25 @@ Tap the + to start adding people.";
 
 "invite_friends_action" = "Invite friends to %@";
 "invite_friends_share_text" = "Hey, talk to me on %@: %@";
+
+// Mark: - Room avatar view
+
+"room_avatar_view_accessibility_label" = "avatar";
+"room_avatar_view_accessibility_hint" = "Change room avatar";
+
+// Mark: - Room creation introduction cell
+
+"room_intro_cell_add_participants_action" = "Add people";
+
+"room_intro_cell_information_room_sentence1_part1" = "This is the begining of ";
+"room_intro_cell_information_room_sentence1_part3" = ". ";
+
+"room_intro_cell_information_room_with_topic_sentence2" = "Topic: %@";
+"room_intro_cell_information_room_without_topic_sentence2_part1" = "Add a topic";
+"room_intro_cell_information_room_without_topic_sentence2_part2" = " to let people know what this room is about.";
+
+"room_intro_cell_information_dm_sentence1_part1" = "This is the begining of your direct message with ";
+"room_intro_cell_information_dm_sentence1_part3" = ". ";
+
+"room_intro_cell_information_dm_sentence2" = "Only the two of you are in this conversation, no one else can join.";
+"room_intro_cell_information_multiple_dm_sentence2" = "Only you are in this conversation, unless any of you invites someone to join.";
