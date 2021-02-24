@@ -1,4 +1,4 @@
-Changes to be released in next version
+Changes in 6.6.6 (2021-02-24)
 =================================================
 
 ✨ Features
@@ -25,6 +25,9 @@ Changes to be released in next version
 
 Others
  * 
+
+Improvements:
+
 
 Changes in 1.2.1 (2021-02-12)
 =================================================
