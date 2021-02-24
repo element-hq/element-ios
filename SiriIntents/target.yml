@@ -1,0 +1,50 @@
+name: SiriIntents
+
+schemes:
+  SiriIntents:
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+    build:
+      targets:
+        SiriIntents:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Release
+    run:
+      askForAppToLaunch: true
+      config: Debug
+      debugEnabled: false
+      disableMainThreadChecker: true
+      launchAutomaticallySubstyle: 2
+    test:
+      config: Debug
+      disableMainThreadChecker: true
+
+targets:
+  SiriIntents:
+    platform: iOS
+    type: app-extension
+
+    dependencies:
+    - sdk: Intents.framework
+
+    configFiles:
+      Debug: Debug.xcconfig
+      Release: Release.xcconfig
+
+    sources:
+    - path: .
+    - path: ../Riot/Generated/InfoPlist.swift
+    - path: ../Riot/Categories/Bundle.swift
+    - path: ../Config/CommonConfiguration.swift
+    - path: ../Config/BuildSettings.swift
+    - path: ../Config/Configurable.swift
+    - path: ../Riot/Managers/Settings/RiotSettings.swift
+    - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
+    - path: ../Riot/Managers/KeyValueStorage

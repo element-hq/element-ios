@@ -17,5 +17,5 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-#include "SiriIntents-Common.xcconfig"
-#include "Pods/Target Support Files/Pods-RiotPods-SiriIntents/Pods-RiotPods-SiriIntents.release.xcconfig"
+#include "Common.xcconfig"
+#include "Pods/Target Support Files/Pods-RiotPods-RiotNSE/Pods-RiotPods-RiotNSE.debug.xcconfig"

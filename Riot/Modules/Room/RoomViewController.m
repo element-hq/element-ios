@@ -371,6 +371,8 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     //  call cells
     [self.bubblesTableView registerClass:RoomDirectCallStatusBubbleCell.class forCellReuseIdentifier:RoomDirectCallStatusBubbleCell.defaultReuseIdentifier];
     
+    [self.bubblesTableView registerClass:RoomCreationIntroCell.class forCellReuseIdentifier:RoomCreationIntroCell.defaultReuseIdentifier];    
+    
     [self vc_removeBackTitle];
     
     // Replace the default input toolbar view.
@@ -1662,6 +1664,36 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     [self.navigationController pushViewController:memberViewController animated:YES];
 }
 
+- (void)showRoomAvatarChange
+{
+    [self showRoomInfoWithInitialSection:RoomInfoSectionChangeAvatar];
+}
+
+- (void)showAddParticipants
+{
+    [self showRoomInfoWithInitialSection:RoomInfoSectionAddParticipants];
+}
+
+- (void)showRoomTopicChange
+{
+    [self showRoomInfoWithInitialSection:RoomInfoSectionChangeTopic];
+}
+
+- (void)showRoomInfo
+{
+    [self showRoomInfoWithInitialSection:RoomInfoSectionNone];
+}
+
+- (void)showRoomInfoWithInitialSection:(RoomInfoSection)roomInfoSection
+{
+    RoomInfoCoordinatorParameters *parameters = [[RoomInfoCoordinatorParameters alloc] initWithSession:self.roomDataSource.mxSession room:self.roomDataSource.room initialSection:roomInfoSection];
+    
+    self.roomInfoCoordinatorBridgePresenter = [[RoomInfoCoordinatorBridgePresenter alloc] initWithParameters:parameters];
+    
+    self.roomInfoCoordinatorBridgePresenter.delegate = self;
+    [self.roomInfoCoordinatorBridgePresenter presentFrom:self animated:YES];
+}
+
 #pragma mark - Dialpad
 
 - (void)openDialpad
@@ -1987,6 +2019,10 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
         if (bubbleData.hasNoDisplay)
         {
             cellViewClass = RoomEmptyBubbleCell.class;
+        }
+        else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreationIntro)
+        {
+            cellViewClass = RoomCreationIntroCell.class;
         }
         else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor)
         {
@@ -2353,6 +2389,18 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
             MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
             
             [self roomInputToolbarView:self.inputToolbarView placeCallWithVideo2:eventContent.isVideoCall];
+        }
+        else if ([actionIdentifier isEqualToString:RoomCreationIntroCell.tapOnAvatarView])
+        {
+            [self showRoomAvatarChange];
+        }
+        else if ([actionIdentifier isEqualToString:RoomCreationIntroCell.tapOnAddParticipants])
+        {
+            [self showAddParticipants];
+        }
+        else if ([actionIdentifier isEqualToString:RoomCreationIntroCell.tapOnAddTopic])
+        {
+            [self showRoomTopicChange];
         }
         else
         {
@@ -3844,9 +3892,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     
     if (tappedView == titleView.titleMask)
     {
-        self.roomInfoCoordinatorBridgePresenter = [[RoomInfoCoordinatorBridgePresenter alloc] initWithSession:self.roomDataSource.mxSession room:self.roomDataSource.room];
-        self.roomInfoCoordinatorBridgePresenter.delegate = self;
-        [self.roomInfoCoordinatorBridgePresenter presentFrom:self animated:YES];
+        [self showRoomInfo];
     }
     else if (tappedView == previewHeader.rightButton)
     {

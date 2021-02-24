@@ -1,0 +1,64 @@
+name: RiotShareExtension
+
+schemes:
+  RiotShareExtension:
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+    build:
+      targets:
+        RiotShareExtension:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Release
+    run:
+      askForAppToLaunch: true
+      config: Debug
+      debugEnabled: false
+      disableMainThreadChecker: true
+      launchAutomaticallySubstyle: 2
+    test:
+      config: Debug
+      disableMainThreadChecker: true
+
+targets:
+  RiotShareExtension:
+    platform: iOS
+    type: app-extension
+
+    configFiles:
+      Debug: Debug.xcconfig
+      Release: Release.xcconfig
+
+    sources:
+    - path: .
+    - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
+    - path: ../Riot/Categories/Bundle.swift
+    - path: ../Riot/Managers/Theme/
+    - path: ../Riot/Utils/AvatarGenerator.m
+    - path: ../Riot/Generated/InfoPlist.swift
+    - path: ../Config/BuildSettings.swift
+    - path: ../Riot/Categories/Character.swift
+    - path: ../Riot/Categories/MXRoom+Riot.m
+    - path: ../Config/Configurable.swift
+    - path: ../Config/CommonConfiguration.swift
+    - path: ../Riot/Utils/UserNameColorGenerator.swift
+    - path: ../Riot/Categories/MXRoomSummary+Riot.m
+    - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
+    - path: ../Riot/Managers/KeyValueStorage
+    - path: ../Riot/Managers/Settings/RiotSettings.swift
+    - path: ../Riot/Categories/UIColor.swift
+    - path: ../Riot/Categories/UISearchBar.swift
+    - path: ../Riot/Categories/String.swift
+    - path: ../Riot/Modules/Common/Recents/CellData/RecentCellData.m
+    - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.xib
+      buildPhase: resources
+    - path: ../Riot/Assets/en.lproj/Vector.strings
+      buildPhase: resources
+    - path: ../Riot/Assets/SharedImages.xcassets
+      buildPhase: resources

@@ -1,0 +1,60 @@
+name: RiotNSE
+
+schemes:
+  RiotNSE:
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+    build:
+      targets:
+        RiotNSE:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Release
+    run:
+      askForAppToLaunch: true
+      config: Debug
+      debugEnabled: false
+      disableMainThreadChecker: true
+      launchAutomaticallySubstyle: 2
+    test:
+      config: Debug
+      disableMainThreadChecker: true
+
+targets:
+  RiotNSE:
+    platform: iOS
+    type: app-extension
+
+    configFiles:
+      Debug: Debug.xcconfig
+      Release: Release.xcconfig
+
+    sources: 
+    - path: .
+    - path: ../Riot/Managers/Settings/RiotSettings.swift
+    - path: ../Config/BuildSettings.swift
+    - path: ../Riot/Utils/DataProtectionHelper.swift
+    - path: ../Config/CommonConfiguration.swift
+    - path: ../Riot/Managers/PushNotification/PushNotificationStore.swift
+    - path: ../Riot/Modules/SetPinCode/PinCodePreferences.swift
+    - path: ../Riot/Generated/InfoPlist.swift
+    - path: ../Riot/Managers/KeyValueStorage/Extensions/Keychain.swift
+    - path: ../Riot/Modules/SetPinCode/SetupBiometrics/BiometricsAuthenticationPresenter.swift
+    - path: ../Riot/Categories/UNUserNotificationCenter.swift
+    - path: ../Riot/Managers/KeyValueStorage/KeyValueStore.swift
+    - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
+    - path: ../Riot/Categories/Bundle.swift
+    - path: ../Riot/Generated/Strings.swift
+    - path: ../Riot/Generated/Images.swift
+    - path: ../Riot/Managers/KeyValueStorage/KeychainStore.swift
+    - path: ../Riot/Managers/LocalAuthentication/LocalAuthenticationService.swift
+    - path: ../Config/Configurable.swift
+    - path: ../Riot/Utils/Constants.swift
+    - path: ../Riot/Categories/String.swift
+    - path: ../Riot/Categories/Character.swift

@@ -1,5 +1,5 @@
 // 
-// Copyright 2020 Vector Creations Ltd
+// Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,8 +14,11 @@
 // limitations under the License.
 //
 
-// Configuration settings file format documentation can be found at:
-// https://help.apple.com/xcode/#/dev745c5c974
+import Foundation
 
-#include "App-Common.xcconfig"
-#include "Pods/Target Support Files/Pods-RiotPods-Riot/Pods-RiotPods-Riot.release.xcconfig"
+struct RoomAvatarViewData {
+    let roomId: String
+    let roomDisplayName: String?
+    let avatarUrl: String?
+    let mediaManager: MXMediaManager
+}

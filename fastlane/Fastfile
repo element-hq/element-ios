@@ -64,6 +64,7 @@ platform :ios do
 
   desc "Build the app for simulator to ensure it compiles"
   lane :build do |options|
+    xcodegen(spec: "project.yml")
     cocoapods
 
     app_name = "Riot"
@@ -109,11 +110,12 @@ platform :ios do
     # Generate xcodebuild additional arguments
     xcargs_hash = {
       "GCC_PREPROCESSOR_DEFINITIONS" => "$(GCC_PREPROCESSOR_DEFINITIONS) #{additional_preprocessor_definitions}",
-      "-UseNewBuildSystem" => "NO",
     }
 
     xcargs = xcargs_hash.map { |k, v| "#{k}=#{v.shellescape}" }.join(" ")
 
+    xcodegen(spec: "project.yml")
+    
     # Clear derived data
     clear_derived_data(derived_data_path: ENV["DERIVED_DATA_PATH"])
 
@@ -124,11 +126,6 @@ platform :ios do
 
     # Update build number
     update_build_number(build_number: build_number)
-
-    # On Xcode 10 with 'Parallelize Build' option on, archive randomly fails with error title "** ARCHIVE FAILED **" for various reasons.
-    # Errors only occur on CocoaPods frameworks and the observed command that failed are CodeSign, CpHeader, CpResource, SetOwnerAndGroup.
-    # To make archive reliable disable 'Parallelize Build' option of scheme ENV["SCHEME"] for the moment.
-    disable_parallelize_builds
 
     # Perform a pod install
     cocoapods(repo_update: true)
@@ -277,8 +274,9 @@ platform :ios do
   private_lane :update_build_number do |options|
     build_number = options[:build_number]
 
-    increment_build_number_in_xcodeproj(
-      build_number: build_number,
+    update_file_content(
+      "../Config/AppIdentifiers.xcconfig",
+      /(CURRENT_PROJECT_VERSION\s*=)\s*.*/ => "\\1 #{build_number}"
     )
   end
 
@@ -298,17 +296,6 @@ platform :ios do
     end
 
     preprocessor_definitions
-  end
-
-  desc "Disable 'Parallelize Build' option of build action of main scheme"
-  private_lane :disable_parallelize_builds do
-    project_path = "../#{ENV["PROJECT_PATH"]}"
-    scheme_name = ENV["SCHEME"]
-
-    scheme_path = Xcodeproj::XCScheme.shared_data_dir(project_path) + "#{scheme_name}.xcscheme"
-    scheme = Xcodeproj::XCScheme.new(scheme_path)
-    scheme.build_action.xml_element.attributes["parallelizeBuildables"] = "NO"
-    scheme.save_as(project_path, scheme_name)
   end
 
   desc "Edit the Podfile in order to point MatrixKit and MatrixSDK to the appropriate branches."
@@ -350,3 +337,16 @@ platform :ios do
         .last # Latest ref found, in "version:refname" semantic order
   end
 end
+
+  # Update an arbitrary file by applying some RegExp replacements to its content
+  #
+  # @param [String] file The path to the file that needs replacing
+  # @param [Hash<RegExp, String>] replacements A list of replacements to apply
+  #
+  def update_file_content(file, replacements)
+    content = File.read(file)
+    replacements.each do |pattern, replacement|
+      content.gsub!(pattern, replacement)
+    end
+    File.write(file, content)
+  end

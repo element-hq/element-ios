@@ -27,7 +27,8 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
     RoomBubbleCellDataTagKeyVerificationRequestIncomingApproval,
     RoomBubbleCellDataTagKeyVerificationRequest,
     RoomBubbleCellDataTagKeyVerificationConclusion,
-    RoomBubbleCellDataTagCall
+    RoomBubbleCellDataTagCall,
+    RoomBubbleCellDataTagRoomCreationIntro
 };
 
 /**

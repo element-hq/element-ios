@@ -1,5 +1,5 @@
 // 
-// Copyright 2020 Vector Creations Ltd
+// Copyright 2020 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,18 +14,16 @@
 // limitations under the License.
 //
 
-// Configuration settings file format documentation can be found at:
-// https://help.apple.com/xcode/#/dev745c5c974
+import Foundation
 
-BUNDLE_DISPLAY_NAME = Element
+enum DiscussionType {
+    case directMessage
+    case multipleDirectMessage
+    case room(topic: String?)
+}
 
-APPLICATION_GROUP_IDENTIFIER = group.im.vector
-
-BASE_BUNDLE_IDENTIFIER = im.vector.app
-
-KEYCHAIN_ACCESS_GROUP = $(AppIdentifierPrefix)$(BASE_BUNDLE_IDENTIFIER).keychain.shared
-
-//Make Xcode 12 and fastlane(xcodebuild) happy while some pods are not updated
-EXCLUDED_ARCHS[sdk=iphonesimulator*] = arm64
-
-APPLICATION_SCHEME = element
+struct RoomCreationIntroViewData {
+    let dicussionType: DiscussionType
+    let roomDisplayName: String
+    let avatarViewData: RoomAvatarViewData
+}
