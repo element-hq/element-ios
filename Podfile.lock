@@ -18,7 +18,7 @@ PODS:
   - BlueECC (1.2.5)
   - BlueRSA (1.0.34)
   - DGCollectionViewLeftAlignFlowLayout (1.0.4)
-  - Down (0.9.4)
+  - Down (0.9.5)
   - DTCoreText (1.6.25):
     - DTCoreText/Core (= 1.6.25)
     - DTFoundation/Core (~> 1.7.5)
@@ -55,28 +55,28 @@ PODS:
   - MatomoTracker (7.2.2):
     - MatomoTracker/Core (= 7.2.2)
   - MatomoTracker/Core (7.2.2)
-  - MatrixKit (0.14.1):
+  - MatrixKit (0.14.2):
     - Down (~> 0.9.3)
     - DTCoreText (~> 1.6.23)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.14.1)
-    - MatrixSDK (= 0.18.1)
-  - MatrixKit/Core (0.14.1):
+    - MatrixKit/Core (= 0.14.2)
+    - MatrixSDK (= 0.18.2)
+  - MatrixKit/Core (0.14.2):
     - Down (~> 0.9.3)
     - DTCoreText (~> 1.6.23)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.18.1)
-  - MatrixSDK (0.18.1):
-    - MatrixSDK/Core (= 0.18.1)
-  - MatrixSDK/Core (0.18.1):
+    - MatrixSDK (= 0.18.2)
+  - MatrixSDK (0.18.2):
+    - MatrixSDK/Core (= 0.18.2)
+  - MatrixSDK/Core (0.18.2):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.3.0)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.2.2)
     - Realm (= 10.1.4)
-  - MatrixSDK/JingleCallStack (0.18.1):
+  - MatrixSDK/JingleCallStack (0.18.2):
     - JitsiMeetSDK (= 3.1.0)
     - MatrixSDK/Core
   - OLMKit (3.2.2):
@@ -115,7 +115,7 @@ DEPENDENCIES:
   - KeychainAccess (~> 4.2.1)
   - KTCenterFlowLayout (~> 1.3.1)
   - MatomoTracker (~> 7.2.2)
-  - MatrixKit (= 0.14.1)
+  - MatrixKit (= 0.14.2)
   - MatrixSDK
   - MatrixSDK/JingleCallStack
   - OLMKit
@@ -170,7 +170,7 @@ SPEC CHECKSUMS:
   BlueECC: 0d18e93347d3ec6d41416de21c1ffa4d4cd3c2cc
   BlueRSA: 6f9776d62d9773502415a7db3bcbb2bbb3f71fc3
   DGCollectionViewLeftAlignFlowLayout: a0fa58797373ded039cafba8133e79373d048399
-  Down: 276f2c3eeeaf30345873bdad25f44b2640fcfa3a
+  Down: 7321a72d0747ed0061dce948bcff518fcb6df2bd
   DTCoreText: e92f4cf6b36d9d71ce4436d12cf089d74ab0596b
   DTFoundation: e7781d9fd2f202bfd451fbbf8cab71ce83b46498
   FlowCommoniOS: e9353819a19764c8cafd3fa7efb98b00c9f68e7e
@@ -186,8 +186,8 @@ SPEC CHECKSUMS:
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
   MatomoTracker: a59ec4da0f580be57bdc6baa708a71a86532a832
-  MatrixKit: 267c3235abae2e3878e41a57bda32ec4899118e6
-  MatrixSDK: 7d5faf810eab02a189df64aef28583c8bed81f5c
+  MatrixKit: fe2cb13d657005c04c681e85a20566fe50681edf
+  MatrixSDK: b37cb20c40c77d1f64af2427f3c547611f8b5ec8
   OLMKit: 20d1c564033a1ae7148f8f599378d4c798363905
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
   Realm: 80f4fb2971ccb9adc27a47d0955ae8e533a7030b
@@ -199,6 +199,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: f8d8c8ff72ddc828b223c66425ec17184f06c9cc
+PODFILE CHECKSUM: ccdf4fe07649c999bdcab6812125f610580edb47
 
 COCOAPODS: 1.10.0
