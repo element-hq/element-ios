@@ -28,6 +28,8 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
     private let room: MXRoom
+    private let initialSection: RoomInfoSection
+    private weak var roomSettingsViewController: RoomSettingsViewController?
     
     private lazy var segmentedViewController: SegmentedViewController = {
         let controller = SegmentedViewController()
@@ -68,6 +70,8 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         ], defaultSelected: 0)
         controller.addMatrixSession(self.session)
         
+        self.roomSettingsViewController = settings
+        
         _ = controller.view
         
         return controller
@@ -82,10 +86,11 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
     
     // MARK: - Setup
     
-    init(session: MXSession, room: MXRoom) {
+    init(parameters: RoomInfoCoordinatorParameters) {
         self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
-        self.session = session
-        self.room = room
+        self.session = parameters.session
+        self.room = parameters.room
+        self.initialSection = parameters.initialSection
     }    
     
     // MARK: - Public methods
@@ -96,8 +101,19 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         rootCoordinator.start()
 
         self.add(childCoordinator: rootCoordinator)
-
+        
         self.navigationRouter.setRootModule(rootCoordinator)
+        
+        switch initialSection {
+        case .addParticipants:
+            self.showRoomDetails(with: .members, animated: false)
+        case .changeAvatar:
+            self.showRoomDetails(with: .settings(RoomSettingsViewControllerFieldAvatar), animated: false)
+        case .changeTopic:
+            self.showRoomDetails(with: .settings(RoomSettingsViewControllerFieldTopic), animated: false)
+        case .none:
+            break
+        }
     }
     
     func toPresentable() -> UIViewController {
@@ -111,14 +127,23 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         coordinator.delegate = self
         return coordinator
     }
+    
+    private func showRoomDetails(with target: RoomInfoListTarget, animated: Bool) {
+        segmentedViewController.selectedIndex = target.tabIndex
+        
+        if case .settings(let roomSettingsField) = target {
+            roomSettingsViewController?.selectedRoomSettingsField = roomSettingsField
+        }
+        
+        navigationRouter.push(segmentedViewController, animated: animated, popCompletion: nil)
+    }
 }
 
 // MARK: - RoomInfoListCoordinatorDelegate
 extension RoomInfoCoordinator: RoomInfoListCoordinatorDelegate {
     
     func roomInfoListCoordinator(_ coordinator: RoomInfoListCoordinatorType, wantsToNavigateTo target: RoomInfoListTarget) {
-        segmentedViewController.selectedIndex = target.rawValue
-        navigationRouter.push(segmentedViewController, animated: true, popCompletion: nil)
+        self.showRoomDetails(with: target, animated: true)
     }
     
     func roomInfoListCoordinatorDidCancel(_ coordinator: RoomInfoListCoordinatorType) {

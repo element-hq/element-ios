@@ -217,6 +217,11 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
         return YES;
     }
     
+    if (self.tag == RoomBubbleCellDataTagRoomCreationIntro)
+    {
+        return NO;
+    }
+    
     return [super hasNoDisplay];
 }
 

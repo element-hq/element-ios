@@ -21,4 +21,6 @@ limitations under the License.
  */
 @interface RoomFilesViewController : MXKRoomViewController
 
+@property (nonatomic) BOOL showCancelBarButtonItem;
+
 @end

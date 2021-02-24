@@ -50,3 +50,10 @@ extension String {
         return components(separatedBy: .whitespaces).joined()
     }
 }
+
+extension Optional where Wrapped == String {
+    
+    var isEmptyOrNil: Bool {
+        return self?.isEmpty ?? true
+    }
+}
