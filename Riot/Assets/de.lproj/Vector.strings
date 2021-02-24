@@ -686,8 +686,9 @@
 "device_verification_emoji_unicorn" = "Einhorn";
 "device_verification_emoji_pig" = "Schwein";
 "device_verification_emoji_elephant" = "Elefant";
-"device_verification_emoji_rabbit" = "Kaninchen";
+"device_verification_emoji_rabbit" = "Hase";
 "device_verification_emoji_panda" = "Panda";
+"device_verification_emoji_rooster" = "Hahn";
 "device_verification_emoji_penguin" = "Pinguin";
 "device_verification_emoji_turtle" = "Schildkröte";
 "device_verification_emoji_fish" = "Fisch";
@@ -697,6 +698,7 @@
 "device_verification_emoji_tree" = "Baum";
 "device_verification_emoji_cactus" = "Kaktus";
 "device_verification_emoji_mushroom" = "Pilz";
+"device_verification_emoji_globe" = "Globus";
 "device_verification_emoji_moon" = "Mond";
 "device_verification_emoji_cloud" = "Wolke";
 "device_verification_emoji_fire" = "Feuer";
@@ -707,17 +709,23 @@
 "device_verification_emoji_pizza" = "Pizza";
 "device_verification_emoji_cake" = "Kuchen";
 "device_verification_emoji_heart" = "Herz";
+"device_verification_emoji_smiley" = "Lächeln";
 "device_verification_emoji_robot" = "Roboter";
 "device_verification_emoji_hat" = "Hut";
 "device_verification_emoji_glasses" = "Brille";
-"device_verification_emoji_santa" = "Nikolaus";
+"device_verification_emoji_spanner" = "Schraubenschlüssel";
+"device_verification_emoji_santa" = "Weihnachtsmann";
+"device_verification_emoji_thumbs up" = "Daumen hoch";
 "device_verification_emoji_umbrella" = "Regenschirm";
+"device_verification_emoji_hourglass" = "Sanduhr";
+"device_verification_emoji_clock" = "Uhr";
 "device_verification_emoji_gift" = "Geschenk";
 "device_verification_emoji_light bulb" = "Glühbirne";
 "device_verification_emoji_book" = "Buch";
+"device_verification_emoji_pencil" = "Bleistift";
 "device_verification_emoji_paperclip" = "Büroklammer";
 "device_verification_emoji_scissors" = "Schere";
-"device_verification_emoji_padlock" = "Schloss";
+"device_verification_emoji_lock" = "Schloss";
 "device_verification_emoji_key" = "Schlüssel";
 "device_verification_emoji_hammer" = "Hammer";
 "device_verification_emoji_telephone" = "Telefon";
@@ -733,6 +741,8 @@
 "device_verification_emoji_bell" = "Glocke";
 "device_verification_emoji_anchor" = "Anker";
 "device_verification_emoji_headphones" = "Kopfhörer";
+"device_verification_emoji_folder" = "Ordner";
+"device_verification_emoji_pin" = "Stecknadel";
 "close" = "Schließen";
 "auth_softlogout_signed_out" = "Du bist abgemeldet";
 "auth_softlogout_sign_in" = "Einloggen";
@@ -769,17 +779,7 @@
 "device_verification_verified_title" = "Verifiziert!";
 "device_verification_verified_description_1" = "Du hast diese Sitzung erfolgreich verifiziert.";
 "device_verification_verified_description_2" = "Verschlüsselte Nachrichten mit diesem/r Benutzer!n werden durchgehend verschlüsselt und können von Dritten nicht gelesen werden.";
-"device_verification_emoji_rooster" = "Hahn";
-"device_verification_emoji_globe" = "Globus";
-"device_verification_emoji_smiley" = "Lächeln";
-"device_verification_emoji_spanner" = "Schraubenschlüssel";
-"device_verification_emoji_thumbs up" = "Daumen hoch";
-"device_verification_emoji_hourglass" = "Sanduhr";
-"device_verification_emoji_clock" = "Uhr";
-"device_verification_emoji_pencil" = "Bleistift";
-"device_verification_emoji_lock" = "sperren";
-"device_verification_emoji_folder" = "Ordner";
-"device_verification_emoji_pin" = "Stift";
+
 // MARK: File upload
 "file_upload_error_title" = "Datei hochladen";
 "file_upload_error_unsupported_file_type_message" = "Dateityp wird nicht unterstützt.";
