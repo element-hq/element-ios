@@ -2722,6 +2722,14 @@ internal enum VectorL10n {
   internal static var roomEventActionDelete: String { 
     return VectorL10n.tr("Vector", "room_event_action_delete") 
   }
+  /// Are you sure you want to delete this unsent message?
+  internal static var roomEventActionDeleteConfirmationMessage: String { 
+    return VectorL10n.tr("Vector", "room_event_action_delete_confirmation_message") 
+  }
+  /// Delete unsent message
+  internal static var roomEventActionDeleteConfirmationTitle: String { 
+    return VectorL10n.tr("Vector", "room_event_action_delete_confirmation_title") 
+  }
   /// Edit
   internal static var roomEventActionEdit: String { 
     return VectorL10n.tr("Vector", "room_event_action_edit") 

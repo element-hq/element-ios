@@ -5336,147 +5336,22 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
 
 - (NSArray<RoomContextualMenuItem*>*)contextualMenuItemsForEvent:(MXEvent*)event andCell:(id<MXKCellRendering>)cell
 {
-    NSString *eventId = event.eventId;
-    MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
-    MXKAttachment *attachment = roomBubbleTableViewCell.bubbleData.attachment;
-    
-    MXWeakify(self);
-    
-    // Copy action
-    
-    BOOL isCopyActionEnabled = !attachment || attachment.type != MXKAttachmentTypeSticker;
-    
-    if (attachment && !BuildSettings.messageDetailsAllowCopyMedia)
+    if (event.sentState == MXEventSentStateFailed)
     {
-        isCopyActionEnabled = NO;
+        return @[
+            [self resendMenuItemWithEvent:event],
+            [self deleteMenuItemWithEvent:event],
+            [self editMenuItemWithEvent:event],
+            [self copyMenuItemWithEvent:event andCell:cell]
+        ];
     }
     
-    if (isCopyActionEnabled)
-    {
-        switch (event.eventType) {
-            case MXEventTypeRoomMessage:
-            {
-                NSString *messageType = event.content[@"msgtype"];
-                
-                if ([messageType isEqualToString:kMXMessageTypeKeyVerificationRequest])
-                {
-                    isCopyActionEnabled = NO;
-                }
-                break;
-            }
-            case MXEventTypeKeyVerificationStart:
-            case MXEventTypeKeyVerificationAccept:
-            case MXEventTypeKeyVerificationKey:
-            case MXEventTypeKeyVerificationMac:
-            case MXEventTypeKeyVerificationDone:
-            case MXEventTypeKeyVerificationCancel:
-                isCopyActionEnabled = NO;
-                break;
-            default:
-                break;
-        }
-    }
-    
-    RoomContextualMenuItem *copyMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionCopy];
-    copyMenuItem.isEnabled = isCopyActionEnabled;
-    copyMenuItem.action = ^{
-        MXStrongifyAndReturnIfNil(self);
-        
-        if (!attachment)
-        {
-            NSArray *components = roomBubbleTableViewCell.bubbleData.bubbleComponents;
-            MXKRoomBubbleComponent *selectedComponent;
-            for (selectedComponent in components)
-            {
-                if ([selectedComponent.event.eventId isEqualToString:event.eventId])
-                {
-                    break;
-                }
-                selectedComponent = nil;
-            }
-            NSString *textMessage = selectedComponent.textMessage;
-            
-            if (textMessage)
-            {
-                MXKPasteboardManager.shared.pasteboard.string = textMessage;
-            }
-            else
-            {
-                NSLog(@"[RoomViewController] Contextual menu copy failed. Text is nil for room id/event id: %@/%@", selectedComponent.event.roomId, selectedComponent.event.eventId);
-            }
-            
-            [self hideContextualMenuAnimated:YES];
-        }
-        else if (attachment.type != MXKAttachmentTypeSticker)
-        {
-            [self hideContextualMenuAnimated:YES completion:^{
-                [self startActivityIndicator];
-                
-                [attachment copy:^{
-                    
-                    [self stopActivityIndicator];
-                    
-                } failure:^(NSError *error) {
-                    
-                    [self stopActivityIndicator];
-                    
-                    //Alert user
-                    [[AppDelegate theDelegate] showErrorAsAlert:error];
-                }];
-                
-                // Start animation in case of download during attachment preparing
-                [roomBubbleTableViewCell startProgressUI];
-            }];
-        }
-    };
-    
-    // Reply action
-    
-    RoomContextualMenuItem *replyMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionReply];
-    replyMenuItem.isEnabled = [self.roomDataSource canReplyToEventWithId:eventId];
-    replyMenuItem.action = ^{
-        MXStrongifyAndReturnIfNil(self);
-        
-        [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
-        [self selectEventWithId:eventId inputToolBarSendMode:RoomInputToolbarViewSendModeReply showTimestamp:NO];
-
-        // And display the keyboard
-        [self.inputToolbarView becomeFirstResponder];
-    };
-    
-    // Edit action
-    
-    RoomContextualMenuItem *editMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionEdit];
-    editMenuItem.action = ^{
-        MXStrongifyAndReturnIfNil(self);
-        [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
-        [self editEventContentWithId:eventId];
-
-        // And display the keyboard
-        [self.inputToolbarView becomeFirstResponder];
-    };
-    
-    editMenuItem.isEnabled = [self.roomDataSource canEditEventWithId:eventId];
-    
-    // More action
-    
-    RoomContextualMenuItem *moreMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionMore];
-    moreMenuItem.action = ^{
-        MXStrongifyAndReturnIfNil(self);
-        [self hideContextualMenuAnimated:YES completion:nil];
-        [self showAdditionalActionsMenuForEvent:event inCell:cell animated:YES];
-    };
-    
-    // Actions list
-    
-    NSArray<RoomContextualMenuItem*> *actionItems = @[
-                                                      copyMenuItem,
-                                                      replyMenuItem,
-                                                      editMenuItem,
-                                                      moreMenuItem
-                                                      ];
-    
-    return actionItems;
+    return @[
+        [self copyMenuItemWithEvent:event andCell:cell],
+        [self replyMenuItemWithEvent:event],
+        [self editMenuItemWithEvent:event],
+        [self moreMenuItemWithEvent:event andCell:cell]
+    ];
 }
 
 - (void)showContextualMenuForEvent:(MXEvent*)event fromSingleTapGesture:(BOOL)usedSingleTapGesture cell:(id<MXKCellRendering>)cell animated:(BOOL)animated
@@ -5583,6 +5458,197 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     self.inputToolbarView.editable = !enableOverlayContainerUserInteractions;
     self.bubblesTableView.scrollsToTop = !enableOverlayContainerUserInteractions;
     self.overlayContainerView.userInteractionEnabled = enableOverlayContainerUserInteractions;
+}
+
+- (RoomContextualMenuItem *)resendMenuItemWithEvent:(MXEvent*)event
+{
+    MXWeakify(self);
+    
+    RoomContextualMenuItem *resendMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionResend];
+    resendMenuItem.action = ^{
+        MXStrongifyAndReturnIfNil(self);
+        [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
+        [self cancelEventSelection];
+        [self.roomDataSource resendEventWithEventId:event.eventId success:nil failure:nil];
+    };
+
+    return resendMenuItem;
+}
+
+- (RoomContextualMenuItem *)deleteMenuItemWithEvent:(MXEvent*)event
+{
+    MXWeakify(self);
+    
+    RoomContextualMenuItem *deleteMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionDelete];
+    deleteMenuItem.action = ^{
+        MXStrongifyAndReturnIfNil(self);
+        
+        MXWeakify(self);
+        [self hideContextualMenuAnimated:YES cancelEventSelection:YES completion:^{
+            MXStrongifyAndReturnIfNil(self);
+            
+            self->currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_event_action_delete_confirmation_title", @"Vector", nil)  message:NSLocalizedStringFromTable(@"room_event_action_delete_confirmation_message", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
+            
+            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            }]];
+            
+            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"delete"] style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+                [self.roomDataSource removeEventWithEventId:event.eventId];
+            }]];
+            
+            [self presentViewController:self->currentAlert animated:YES completion:nil];
+        }];
+    };
+
+    return deleteMenuItem;
+}
+
+- (RoomContextualMenuItem *)editMenuItemWithEvent:(MXEvent*)event
+{
+    MXWeakify(self);
+    
+    RoomContextualMenuItem *editMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionEdit];
+    editMenuItem.action = ^{
+        MXStrongifyAndReturnIfNil(self);
+        [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
+        [self editEventContentWithId:event.eventId];
+
+        // And display the keyboard
+        [self.inputToolbarView becomeFirstResponder];
+    };
+    
+    editMenuItem.isEnabled = [self.roomDataSource canEditEventWithId:event.eventId];
+    
+    return editMenuItem;
+}
+
+- (RoomContextualMenuItem *)copyMenuItemWithEvent:(MXEvent*)event andCell:(id<MXKCellRendering>)cell
+{
+    MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
+    MXKAttachment *attachment = roomBubbleTableViewCell.bubbleData.attachment;
+
+    MXWeakify(self);
+    
+    BOOL isCopyActionEnabled = !attachment || attachment.type != MXKAttachmentTypeSticker;
+    
+    if (attachment && !BuildSettings.messageDetailsAllowCopyMedia)
+    {
+        isCopyActionEnabled = NO;
+    }
+    
+    if (isCopyActionEnabled)
+    {
+        switch (event.eventType) {
+            case MXEventTypeRoomMessage:
+            {
+                NSString *messageType = event.content[@"msgtype"];
+                
+                if ([messageType isEqualToString:kMXMessageTypeKeyVerificationRequest])
+                {
+                    isCopyActionEnabled = NO;
+                }
+                break;
+            }
+            case MXEventTypeKeyVerificationStart:
+            case MXEventTypeKeyVerificationAccept:
+            case MXEventTypeKeyVerificationKey:
+            case MXEventTypeKeyVerificationMac:
+            case MXEventTypeKeyVerificationDone:
+            case MXEventTypeKeyVerificationCancel:
+                isCopyActionEnabled = NO;
+                break;
+            default:
+                break;
+        }
+    }
+    
+    RoomContextualMenuItem *copyMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionCopy];
+    copyMenuItem.isEnabled = isCopyActionEnabled;
+    copyMenuItem.action = ^{
+        MXStrongifyAndReturnIfNil(self);
+        
+        if (!attachment)
+        {
+            NSArray *components = roomBubbleTableViewCell.bubbleData.bubbleComponents;
+            MXKRoomBubbleComponent *selectedComponent;
+            for (selectedComponent in components)
+            {
+                if ([selectedComponent.event.eventId isEqualToString:event.eventId])
+                {
+                    break;
+                }
+                selectedComponent = nil;
+            }
+            NSString *textMessage = selectedComponent.textMessage;
+            
+            if (textMessage)
+            {
+                MXKPasteboardManager.shared.pasteboard.string = textMessage;
+            }
+            else
+            {
+                NSLog(@"[RoomViewController] Contextual menu copy failed. Text is nil for room id/event id: %@/%@", selectedComponent.event.roomId, selectedComponent.event.eventId);
+            }
+            
+            [self hideContextualMenuAnimated:YES];
+        }
+        else if (attachment.type != MXKAttachmentTypeSticker)
+        {
+            [self hideContextualMenuAnimated:YES completion:^{
+                [self startActivityIndicator];
+                
+                [attachment copy:^{
+                    
+                    [self stopActivityIndicator];
+                    
+                } failure:^(NSError *error) {
+                    
+                    [self stopActivityIndicator];
+                    
+                    //Alert user
+                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                }];
+                
+                // Start animation in case of download during attachment preparing
+                [roomBubbleTableViewCell startProgressUI];
+            }];
+        }
+    };
+
+    return copyMenuItem;
+}
+
+- (RoomContextualMenuItem *)replyMenuItemWithEvent:(MXEvent*)event
+{
+    MXWeakify(self);
+    
+    RoomContextualMenuItem *replyMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionReply];
+    replyMenuItem.isEnabled = [self.roomDataSource canReplyToEventWithId:event.eventId];
+    replyMenuItem.action = ^{
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
+        [self selectEventWithId:event.eventId inputToolBarSendMode:RoomInputToolbarViewSendModeReply showTimestamp:NO];
+
+        // And display the keyboard
+        [self.inputToolbarView becomeFirstResponder];
+    };
+    
+    return replyMenuItem;
+}
+
+- (RoomContextualMenuItem *)moreMenuItemWithEvent:(MXEvent*)event andCell:(id<MXKCellRendering>)cell
+{
+    MXWeakify(self);
+    
+    RoomContextualMenuItem *moreMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionMore];
+    moreMenuItem.action = ^{
+        MXStrongifyAndReturnIfNil(self);
+        [self hideContextualMenuAnimated:YES completion:nil];
+        [self showAdditionalActionsMenuForEvent:event inCell:cell animated:YES];
+    };
+
+    return moreMenuItem;
 }
 
 #pragma mark - RoomContextualMenuViewControllerDelegate
