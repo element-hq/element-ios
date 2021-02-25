@@ -22,6 +22,37 @@ Changes to be released in next version
 Others
  * 
 
+Changes in 1.2.2 (2021-02-24)
+=================================================
+
+✨ Features
+ * Enable encryption for accounts, contacts and keys in the crypto database (#3867).
+
+🙌 Improvements
+ * Home: Show room directory on join room action (#3775).
+ * RoomVC: Add quick actions in timeline on room creation (#3776).
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * XcodeGen: .xcodeproj files are now built from readable yml file: [New Build instructions](README.md#build-instructions) (#3812).
+ * Podfile: Use MatrixKit for all targets and remove MatrixKit/AppExtension.
+ * Fastlane: Use the "New Build System" to build releases.
+ * Fastlane: Re-enable parallelised builds.
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.14.2](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.2)).
+
 Changes in 1.2.1 (2021-02-12)
 =================================================
 

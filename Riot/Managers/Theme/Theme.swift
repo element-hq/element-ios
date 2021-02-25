@@ -84,6 +84,8 @@ import UIKit
 
 
     // MARK: - Colors not defined in the design palette
+    
+    var secondaryCircleButtonBackgroundColor: UIColor { get }
 
     /// fading behind dialog modals
     var overlayBackgroundColor: UIColor { get }

@@ -27,7 +27,8 @@ out/
 #
 Pods/
 
-# Do not track our workspace since it is created by CocoaPods
+## Ignore project files as we generate them with xcodegen (https://github.com/yonaskolb/XcodeGen)
+*.xcodeproj
 *.xcworkspace
 
 # Fastlane

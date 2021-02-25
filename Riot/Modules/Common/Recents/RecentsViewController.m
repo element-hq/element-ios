@@ -34,7 +34,7 @@
 
 #import "Riot-Swift.h"
 
-@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate>
+@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -67,6 +67,8 @@
 }
 
 @property (nonatomic, strong) CreateRoomCoordinatorBridgePresenter *createRoomCoordinatorBridgePresenter;
+
+@property (nonatomic, strong) RoomsDirectoryCoordinatorBridgePresenter *roomsDirectoryCoordinatorBridgePresenter;
 
 @end
 
@@ -854,6 +856,18 @@
 - (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled
 {
     self.view.userInteractionEnabled = userInteractionEnabled;
+}
+
+- (RecentsDataSource*)recentsDataSource
+{
+    RecentsDataSource* recentsDataSource = nil;
+    
+    if ([self.dataSource isKindOfClass:[RecentsDataSource class]])
+    {
+        recentsDataSource = (RecentsDataSource*)self.dataSource;
+    }
+    
+    return recentsDataSource;
 }
 
 #pragma mark - MXKDataSourceDelegate
@@ -1783,73 +1797,58 @@
 
 - (void)joinARoom
 {
-    [currentAlert dismissViewControllerAnimated:NO completion:nil];
-    
-    __weak typeof(self) weakSelf = self;
-    
-    // Prompt the user to type a room id or room alias
-    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_recents_join_room_title", @"Vector", nil)
-                                                       message:NSLocalizedStringFromTable(@"room_recents_join_room_prompt", @"Vector", nil)
-                                                preferredStyle:UIAlertControllerStyleAlert];
-    
-    [currentAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        
-        textField.secureTextEntry = NO;
-        textField.placeholder = nil;
-        textField.keyboardType = UIKeyboardTypeDefault;
-    }];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                     style:UIAlertActionStyleCancel
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
-                                                           self->currentAlert = nil;
-                                                       }
-                                                       
-                                                   }]];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil)
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
-                                                           
-                                                           NSString *roomAliasOrId = [self->currentAlert textFields].firstObject.text;
-                                                           
-                                                           self->currentAlert = nil;
-                                                           
-                                                           [self.activityIndicator startAnimating];
+    [self showRoomDirectory];
+}
 
-                                                           // TODO
-                                                           self->currentRequest = [self.mainSession joinRoom:roomAliasOrId viaServers:nil success:^(MXRoom *room) {
-                                                               
-                                                               self->currentRequest = nil;
-                                                               [self.activityIndicator stopAnimating];
-                                                               
-                                                               // Show the room
-                                                               [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession];
-                                                               
-                                                           } failure:^(NSError *error) {
-                                                               
-                                                               NSLog(@"[RecentsViewController] Join joinARoom (%@) failed", roomAliasOrId);
-                                                               
-                                                               self->currentRequest = nil;
-                                                               [self.activityIndicator stopAnimating];
-                                                               
-                                                               // Alert user
-                                                               [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                           }];
-                                                       }
-                                                       
-                                                   }]];
+- (void)showRoomDirectory
+{
+    if (!self.self.mainSession)
+    {
+        NSLog(@"[RecentsViewController] Fail to show room directory, session is nil");
+        return;
+    }
     
-    [currentAlert mxk_setAccessibilityIdentifier:@"RecentsVCJoinARoomAlert"];
-    [self presentViewController:currentAlert animated:YES completion:nil];
+    self.roomsDirectoryCoordinatorBridgePresenter = [[RoomsDirectoryCoordinatorBridgePresenter alloc] initWithSession:self.mainSession dataSource:[self.recentsDataSource.publicRoomsDirectoryDataSource copy]];
+    self.roomsDirectoryCoordinatorBridgePresenter.delegate = self;
+    [self.roomsDirectoryCoordinatorBridgePresenter presentFrom:self animated:YES];
+}
+
+- (void)openPublicRoom:(MXPublicRoom *)publicRoom
+{
+    if (!self.recentsDataSource)
+    {
+        NSLog(@"[RecentsViewController] Fail to open public room, dataSource is not kind of class MXKRecentsDataSource");
+        return;
+    }
+    
+    // Check whether the user has already joined the selected public room
+    if ([self.recentsDataSource.publicRoomsDirectoryDataSource.mxSession roomWithRoomId:publicRoom.roomId])
+    {
+        // Open the public room
+        [[AppDelegate theDelegate] showRoom:publicRoom.roomId andEventId:nil withMatrixSession:self.recentsDataSource.publicRoomsDirectoryDataSource.mxSession restoreInitialDisplay:NO];
+    }
+    else
+    {
+        // Preview the public room
+        if (publicRoom.worldReadable)
+        {
+            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithPublicRoom:publicRoom andSession:self.recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
+            
+            [self startActivityIndicator];
+
+            // Try to get more information about the room before opening its preview
+            [roomPreviewData peekInRoom:^(BOOL succeeded) {
+                [self stopActivityIndicator];
+
+                [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];
+            }];
+        }
+        else
+        {
+            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithPublicRoom:publicRoom andSession:self.recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
+            [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];
+        }
+    }
 }
 
 #pragma mark - Table view scrolling
@@ -2050,6 +2049,30 @@
 - (BOOL)shouldShowEmptyView
 {
     return NO;
+}
+
+#pragma mark - RoomsDirectoryCoordinatorBridgePresenterDelegate
+
+- (void)roomsDirectoryCoordinatorBridgePresenterDelegateDidComplete:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.roomsDirectoryCoordinatorBridgePresenter = nil;
+}
+
+- (void)roomsDirectoryCoordinatorBridgePresenterDelegate:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectRoom:(MXPublicRoom *)room
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self openPublicRoom:room];
+    }];
+    self.roomsDirectoryCoordinatorBridgePresenter = nil;
+}
+
+- (void)roomsDirectoryCoordinatorBridgePresenterDelegateDidTapCreateNewRoom:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self createNewRoom];
+    }];
+    self.roomsDirectoryCoordinatorBridgePresenter = nil;
 }
 
 @end

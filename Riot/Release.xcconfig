@@ -17,6 +17,8 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-#include "Config/Common.xcconfig"
+#include "Common.xcconfig"
+#include "Pods/Target Support Files/Pods-RiotPods-Riot/Pods-RiotPods-Riot.release.xcconfig"
 
-PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER)
+PROVISIONING_PROFILE = $(RIOT_PROVISIONING_PROFILE)
+PROVISIONING_PROFILE_SPECIFIER = $(RIOT_PROVISIONING_PROFILE_SPECIFIER)

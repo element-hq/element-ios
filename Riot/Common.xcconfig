@@ -17,5 +17,15 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-#include "NSE-Common.xcconfig"
-#include "Pods/Target Support Files/Pods-RiotPods-RiotNSE/Pods-RiotPods-RiotNSE.release.xcconfig"
+#include "Config/AppIdentifiers.xcconfig"
+
+PRODUCT_NAME = Riot
+PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER)
+
+INFOPLIST_FILE = Riot/SupportingFiles/Info.plist
+ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon
+
+CODE_SIGN_ENTITLEMENTS = Riot/SupportingFiles/Riot.entitlements
+
+SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/Riot-Bridging-Header.h
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks

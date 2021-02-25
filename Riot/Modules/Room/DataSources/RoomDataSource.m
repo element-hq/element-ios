@@ -80,6 +80,10 @@
 
 @property (nonatomic, strong) CellDataComponentIndexPair *sentCell;
 
+@property (nonatomic) RoomBubbleCellData *roomCreationCellData;
+
+@property (nonatomic) BOOL showRoomCreationCell;
+
 @end
 
 @implementation RoomDataSource
@@ -237,6 +241,7 @@
     }
     
     [self fetchEncryptionTrustedLevel];
+    [self enableRoomCreationIntroCellDisplayIfNeeded];
 }
 
 - (void)fetchEncryptionTrustedLevel
@@ -245,6 +250,10 @@
     [self.roomDataSourceDelegate roomDataSource:self didUpdateEncryptionTrustLevel:self.encryptionTrustLevel];
 }
 
+- (void)roomDidSet
+{
+    [self enableRoomCreationIntroCellDisplayIfNeeded];
+}
 
 #pragma  mark -
 
@@ -257,6 +266,8 @@
         // Enable the containsLastMessage flag for the cell data which contains the last message.
         @synchronized(bubbles)
         {
+            [self insertRoomCreationIntroCellDataIfNeeded];
+            
             // Reset first all cell data
             for (RoomBubbleCellData *cellData in bubbles)
             {
@@ -1137,6 +1148,83 @@
     tickView.frame = CGRectMake(cell.contentView.bounds.size.width - tickView.frame.size.width - 2 * RoomBubbleCellLayout.readReceiptsViewRightMargin, CGRectGetMaxY(componentFrame) - tickView.frame.size.height, tickView.frame.size.width, tickView.frame.size.height);
 
     [cell.contentView addSubview:tickView];
+}
+
+#pragma mark - Room creation intro cell
+
+- (BOOL)canShowRoomCreationIntroCell
+{
+    NSString* userId = self.mxSession.myUser.userId;
+
+    if (!userId || !self.isLive || self.isPeeking)
+    {
+        return NO;
+    }
+    
+    // Room creation cell is only shown for the creator
+    return [self.room.summary.creatorUserId isEqualToString:userId];
+}
+
+- (void)enableRoomCreationIntroCellDisplayIfNeeded
+{
+    self.showRoomCreationCell = [self canShowRoomCreationIntroCell];
+}
+
+// Insert the room creation intro cell at the begining
+- (void)insertRoomCreationIntroCellDataIfNeeded
+{
+    @synchronized(bubbles)
+    {
+        NSUInteger existingRoomCreationCellDataIndex = [self roomBubbleDataIndexWithTag:RoomBubbleCellDataTagRoomCreationIntro];
+        
+        if (existingRoomCreationCellDataIndex != NSNotFound)
+        {
+            [bubbles removeObjectAtIndex:existingRoomCreationCellDataIndex];
+        }
+        
+        if (self.showRoomCreationCell)
+        {
+            NSUInteger roomCreationConfigCellDataIndex = [self roomBubbleDataIndexWithTag:RoomBubbleCellDataTagRoomCreateConfiguration];
+            
+            // Only add room creation intro cell if `bubbles` array contains the room creation event
+            if (roomCreationConfigCellDataIndex != NSNotFound)
+            {
+                if (!self.roomCreationCellData)
+                {
+                    MXEvent *event = [MXEvent new];
+                    MXRoomState *roomState = [MXRoomState new];
+                    RoomBubbleCellData *roomBubbleCellData = [[RoomBubbleCellData alloc] initWithEvent:event andRoomState:roomState andRoomDataSource:self];
+                    roomBubbleCellData.tag = RoomBubbleCellDataTagRoomCreationIntro;
+                    
+                    self.roomCreationCellData = roomBubbleCellData;
+                }
+                
+                [bubbles insertObject:self.roomCreationCellData atIndex:0];
+            }
+        }
+        else
+        {
+            self.roomCreationCellData = nil;
+        }
+    }
+}
+
+- (NSUInteger)roomBubbleDataIndexWithTag:(RoomBubbleCellDataTag)tag
+{
+    @synchronized(bubbles)
+    {
+        return [bubbles indexOfObjectPassingTest:^BOOL(id<MXKRoomBubbleCellDataStoring>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([obj isKindOfClass:RoomBubbleCellData.class])
+            {
+                RoomBubbleCellData *roomBubbleCellData = (RoomBubbleCellData*)obj;
+                if (roomBubbleCellData.tag == tag)
+                {
+                    return YES;
+                }
+            }
+            return NO;
+        }];
+    }
 }
 
 @end
