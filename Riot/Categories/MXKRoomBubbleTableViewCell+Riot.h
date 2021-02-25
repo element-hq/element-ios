@@ -172,6 +172,4 @@ extern NSString *const kMXKRoomBubbleCellCallBackButtonPressed;
  */
 @property (nonatomic) NSArray *messageStatusViews;
 
-@property (nonatomic, assign) CircleProgressView *circleProgressView;
-
 @end

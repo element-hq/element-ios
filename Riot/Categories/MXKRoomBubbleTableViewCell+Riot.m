@@ -462,16 +462,6 @@ NSString *const kMXKRoomBubbleCellCallBackButtonPressed = @"kMXKRoomBubbleCellCa
     return objc_getAssociatedObject(self, @selector(messageStatusViews));
 }
 
-- (void)setCircleProgressView:(CircleProgressView *)view
-{
-    objc_setAssociatedObject(self, @selector(circleProgressView), view, OBJC_ASSOCIATION_ASSIGN);
-}
-
--(CircleProgressView *)circleProgressView
-{
-    return objc_getAssociatedObject(self, @selector(circleProgressView));
-}
-
 - (void)updateUserNameColor
 {
     static UserNameColorGenerator *userNameColorGenerator;
@@ -783,16 +773,6 @@ NSString *const kMXKRoomBubbleCellCallBackButtonPressed = @"kMXKRoomBubbleCellCa
     if (recognizer.state == UIGestureRecognizerStateBegan && self.delegate)
     {
         [self.delegate cell:self didRecognizeAction:kMXKRoomBubbleCellLongPressOnProgressView userInfo:nil];
-    }
-}
-
-- (void)updateProgressUI:(NSDictionary*)statisticsDict
-{
-    NSNumber* progressNumber = [statisticsDict valueForKey:kMXMediaLoaderProgressValueKey];
-    
-    if (progressNumber)
-    {
-        self.circleProgressView.value = progressNumber.floatValue;
     }
 }
 
