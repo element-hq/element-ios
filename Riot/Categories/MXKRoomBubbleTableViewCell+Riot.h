@@ -16,6 +16,8 @@
 
 #import <MatrixKit/MatrixKit.h>
 
+@class CircleProgressView;
+
 /**
  Action identifier used when the user pressed edit button displayed in front of a selected event.
  
@@ -169,5 +171,7 @@ extern NSString *const kMXKRoomBubbleCellCallBackButtonPressed;
  Message tick views (sending, sent) displayed alongside the related component.
  */
 @property (nonatomic) NSArray *messageStatusViews;
+
+@property (nonatomic, assign) CircleProgressView *circleProgressView;
 
 @end

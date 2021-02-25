@@ -18,7 +18,7 @@ import UIKit
 
 @IBDesignable
 @objcMembers
-class CircleProgressView: UIView {
+class CircleProgressView: MXKPieChartView {
     // MARK: - Constants
     
     private static let minStrokeEnd: CGFloat = 0.000000000001
@@ -40,6 +40,14 @@ class CircleProgressView: UIView {
         didSet {
             stopAnimating()
             strokeEnd = max(min(value, CircleProgressView.maxStrokeEnd), CircleProgressView.minStrokeEnd)
+        }
+    }
+    override var progress: CGFloat {
+        get {
+            return value
+        }
+        set {
+            value = newValue
         }
     }
 

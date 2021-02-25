@@ -1093,6 +1093,7 @@
                     CircleProgressView *progressView = [[CircleProgressView alloc] initWithFrame:CGRectMake(24, 24, 16, 16)];
                     progressView.lineColor = ThemeService.shared.theme.messageTickColor;
                     [progressContentView addSubview:progressView];
+                    cell.progressChartView = progressView;
 
                     tickView = progressContentView;
 
