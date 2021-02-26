@@ -1034,12 +1034,6 @@
     {
         RoomBubbleCellData *cellData = bubbles[bubbleIndex];
         
-        // We are interested only by outgoing messages
-        if (![cellData.senderId isEqualToString: self.mxSession.credentials.userId])
-        {
-            continue;
-        }
-        
         NSInteger componentIndex = cellData.bubbleComponents.count;
         while (componentIndex--) {
             MXKRoomBubbleComponent *component = cellData.bubbleComponents[componentIndex];
