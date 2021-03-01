@@ -8,7 +8,7 @@ Changes in 1.2.4 (2021-03-01)
  * 
 
 🐛 Bugfix
- * 
+ * Social login: Fix a crash when selecting a social login provider.
 
 ⚠️ API Changes
  * 
