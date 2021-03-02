@@ -452,6 +452,16 @@ NSString *const kMXKRoomBubbleCellCallBackButtonPressed = @"kMXKRoomBubbleCellCa
     return objc_getAssociatedObject(self, @selector(markerView));
 }
 
+- (void)setMessageStatusViews:(NSArray *)arrayOfViews
+{
+    objc_setAssociatedObject(self, @selector(messageStatusViews), arrayOfViews, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+-(NSArray *)messageStatusViews
+{
+    return objc_getAssociatedObject(self, @selector(messageStatusViews));
+}
+
 - (void)updateUserNameColor
 {
     static UserNameColorGenerator *userNameColorGenerator;
@@ -756,6 +766,14 @@ NSString *const kMXKRoomBubbleCellCallBackButtonPressed = @"kMXKRoomBubbleCellCa
     
     // Store the created button
     self.editButton = editButton;
+}
+
+- (IBAction)onProgressLongPressGesture:(UILongPressGestureRecognizer*)recognizer
+{
+    if (recognizer.state == UIGestureRecognizerStateBegan && self.delegate)
+    {
+        [self.delegate cell:self didRecognizeAction:kMXKRoomBubbleCellLongPressOnProgressView userInfo:nil];
+    }
 }
 
 @end
