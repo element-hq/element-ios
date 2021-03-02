@@ -1,4 +1,4 @@
-Changes to be released in next version
+Changes in 1.2.4 (2021-03-01)
 =================================================
 
 ✨ Features
@@ -8,7 +8,7 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
- * 
+ * Social login: Fix a crash when selecting a social login provider.
 
 ⚠️ API Changes
  * 
@@ -21,6 +21,9 @@ Changes to be released in next version
 
 Others
  * 
+
+Improvements:
+
 
 Changes in 1.2.3 (2021-02-26)
 =================================================
