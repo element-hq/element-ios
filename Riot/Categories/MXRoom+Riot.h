@@ -19,6 +19,13 @@
 
 #import "UserEncryptionTrustLevel.h"
 
+typedef NS_ENUM(NSUInteger, MXRoomSentStatus)
+{
+    MXRoomSentStatusOk,
+    MXRoomSentStatusSentFailed,
+    MXRoomSentStatusSentFailedDueToUnknownDevices
+};
+
 /**
  Define a `MXRoom` category at Riot level.
  */
@@ -43,6 +50,9 @@
  Observer when a rules deletion succeeds.
  */
 @property (nonatomic) id notificationCenterDidUpdateObserver;
+
+/// Check if all messages have been sent.
+@property (nonatomic, readonly) MXRoomSentStatus sentStatus;
 
 /**
  Update the room tag.

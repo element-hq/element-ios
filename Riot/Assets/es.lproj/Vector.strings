@@ -216,8 +216,8 @@
 "room_message_short_placeholder" = "Enviar un mensaje…";
 "room_message_reply_to_short_placeholder" = "Enviar una respuesta…";
 "room_offline_notification" = "Se perdió la conexión con el servidor.";
-"room_unsent_messages_notification" = "Los mensajes no se enviaron. ¿%@ o %@ ahora?";
-"room_unsent_messages_unknown_devices_notification" = "No se envió el mensaje debido a dispositivos desconocidos presentes. ¿%@ o %@ ahora?";
+"room_unsent_messages_notification" = "Los mensajes no se enviaron.";
+"room_unsent_messages_unknown_devices_notification" = "No se envió el mensaje debido a dispositivos desconocidos presentes.";
 "room_recents_server_notice_section" = "ALERTAS DE SISTEMA";
 "room_ongoing_conference_call" = "Llamada de conferencia en curso. Unirse con %@ o %@.";
 "room_ongoing_conference_call_with_close" = "Llamada de conferencia en curso. Unirse con %@ o %@. %@ la.";

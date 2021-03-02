@@ -1294,6 +1294,18 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                 // Sort each rooms collection by considering first the rooms with some missed notifs, the rooms with unread, then the others.
                 comparator = ^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
                     
+                    if (recentCellData1.roomSummary.room.sentStatus != MXRoomSentStatusOk
+                        && recentCellData2.roomSummary.room.sentStatus == MXRoomSentStatusOk)
+                    {
+                        return NSOrderedAscending;
+                    }
+                    
+                    if (recentCellData2.roomSummary.room.sentStatus != MXRoomSentStatusOk
+                        && recentCellData1.roomSummary.room.sentStatus == MXRoomSentStatusOk)
+                    {
+                        return NSOrderedDescending;
+                    }
+                    
                     if (recentCellData1.highlightCount)
                     {
                         if (recentCellData2.highlightCount)
@@ -1351,6 +1363,18 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                 // Sort each rooms collection by considering first the rooms with some unread messages then the others.
                 comparator = ^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
                     
+                    if (recentCellData1.roomSummary.room.sentStatus != MXRoomSentStatusOk
+                        && recentCellData2.roomSummary.room.sentStatus == MXRoomSentStatusOk)
+                    {
+                        return NSOrderedAscending;
+                    }
+                    
+                    if (recentCellData2.roomSummary.room.sentStatus != MXRoomSentStatusOk
+                        && recentCellData1.roomSummary.room.sentStatus == MXRoomSentStatusOk)
+                    {
+                        return NSOrderedDescending;
+                    }
+                    
                     if (recentCellData1.hasUnread)
                     {
                         if (recentCellData2.hasUnread)
@@ -1388,6 +1412,24 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                 
                 return [session compareRoomsByTag:kMXRoomTagFavourite room1:recentCellData1.roomSummary.room room2:recentCellData2.roomSummary.room];
                 
+            }];
+        } else if (conversationCellDataArray.count > 0 && (_recentsDataSourceMode == RecentsDataSourceModeRooms || _recentsDataSourceMode == RecentsDataSourceModePeople))
+        {
+            [conversationCellDataArray sortUsingComparator:^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
+                
+                if (recentCellData1.roomSummary.room.sentStatus != MXRoomSentStatusOk
+                    && recentCellData2.roomSummary.room.sentStatus == MXRoomSentStatusOk)
+                {
+                    return NSOrderedAscending;
+                }
+                
+                if (recentCellData2.roomSummary.room.sentStatus != MXRoomSentStatusOk
+                    && recentCellData1.roomSummary.room.sentStatus == MXRoomSentStatusOk)
+                {
+                    return NSOrderedDescending;
+                }
+
+                return NSOrderedAscending;
             }];
         }
     }

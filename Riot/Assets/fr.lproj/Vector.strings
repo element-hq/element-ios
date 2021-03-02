@@ -195,8 +195,8 @@
 "encrypted_room_message_placeholder" = "Envoyer un message chiffré…";
 "room_message_short_placeholder" = "Envoyer un message…";
 "room_offline_notification" = "La connexion au serveur a été perdue.";
-"room_unsent_messages_notification" = "Messages non envoyés. %@ ou %@ maintenant ?";
-"room_unsent_messages_unknown_devices_notification" = "Message non envoyé car des sessions inconnues sont présentes. %@ ou %@ maintenant ?";
+"room_unsent_messages_notification" = "Messages non envoyés.";
+"room_unsent_messages_unknown_devices_notification" = "Message non envoyé car des sessions inconnues sont présentes.";
 "room_ongoing_conference_call" = "Téléconférence en cours. Rejoindre en %@ ou %@.";
 "room_prompt_resend" = "Tout renvoyer";
 "room_prompt_cancel" = "tout annuler";

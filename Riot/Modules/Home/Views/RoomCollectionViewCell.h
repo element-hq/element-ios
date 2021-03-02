@@ -15,6 +15,7 @@
  */
 
 #import <MatrixKit/MatrixKit.h>
+#import "BadgeLabel.h"
 
 /**
  'RoomCollectionViewCell' class is used to display a room in a collection view.
@@ -38,9 +39,7 @@
 @property (weak, nonatomic) IBOutlet MXKImageView *roomAvatar;
 @property (weak, nonatomic) IBOutlet UIImageView *encryptedRoomIcon;
 
-@property (weak, nonatomic) IBOutlet UILabel *missedNotifAndUnreadBadgeLabel;
-@property (weak, nonatomic) IBOutlet UIView  *missedNotifAndUnreadBadgeBgView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *missedNotifAndUnreadBadgeBgViewWidthConstraint;
+@property (weak, nonatomic) IBOutlet BadgeLabel *badgeLabel;
 
 @property (nonatomic, readonly) NSString *roomId;
 

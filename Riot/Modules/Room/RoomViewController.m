@@ -4618,32 +4618,14 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
 
 -(BOOL)checkUnsentMessages
 {
-    BOOL hasUnsent = NO;
-    BOOL hasUnsentDueToUnknownDevices = NO;
-    
+    MXRoomSentStatus sentStatus = MXRoomSentStatusOk;
     if ([self.activitiesView isKindOfClass:RoomActivitiesView.class])
     {
-        NSArray<MXEvent*> *outgoingMsgs = self.roomDataSource.room.outgoingMessages;
-        
-        for (MXEvent *event in outgoingMsgs)
+        sentStatus = self.roomDataSource.room.sentStatus;
+
+        if (sentStatus != MXRoomSentStatusOk)
         {
-            if (event.sentState == MXEventSentStateFailed)
-            {
-                hasUnsent = YES;
-                
-                // Check if the error is due to unknown devices
-                if ([event.sentError.domain isEqualToString:MXEncryptingErrorDomain]
-                    && event.sentError.code == MXEncryptingErrorUnknownDeviceCode)
-                {
-                    hasUnsentDueToUnknownDevices = YES;
-                    break;
-                }
-            }
-        }
-        
-        if (hasUnsent)
-        {
-            NSString *notification = hasUnsentDueToUnknownDevices ?
+            NSString *notification = sentStatus == MXRoomSentStatusSentFailedDueToUnknownDevices ?
             NSLocalizedStringFromTable(@"room_unsent_messages_unknown_devices_notification", @"Vector", nil) :
             NSLocalizedStringFromTable(@"room_unsent_messages_notification", @"Vector", nil);
             
@@ -4713,7 +4695,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
         }
     }
     
-    return hasUnsent;
+    return sentStatus != MXRoomSentStatusOk;
 }
 
 - (void)eventDidChangeSentState:(NSNotification *)notif
@@ -4851,19 +4833,32 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
 
 - (void)cancelAllUnsentMessages
 {
-    // Remove unsent event ids
-    for (NSUInteger index = 0; index < self.roomDataSource.room.outgoingMessages.count;)
-    {
-        MXEvent *event = self.roomDataSource.room.outgoingMessages[index];
-        if (event.sentState == MXEventSentStateFailed)
+    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_unsent_messages_cancel_title", @"Vector", nil) message:NSLocalizedStringFromTable(@"room_unsent_messages_cancel_message", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
+
+    MXWeakify(self);
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+        MXStrongifyAndReturnIfNil(self);
+        self->currentAlert = nil;
+    }]];
+    
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"delete"] style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+        MXStrongifyAndReturnIfNil(self);
+        // Remove unsent event ids
+        for (NSUInteger index = 0; index < self.roomDataSource.room.outgoingMessages.count;)
         {
-            [self.roomDataSource removeEventWithEventId:event.eventId];
+            MXEvent *event = self.roomDataSource.room.outgoingMessages[index];
+            if (event.sentState == MXEventSentStateFailed)
+            {
+                [self.roomDataSource removeEventWithEventId:event.eventId];
+            }
+            else
+            {
+                index ++;
+            }
         }
-        else
-        {
-            index ++;
-        }
-    }
+    }]];
+
+    [self presentViewController:currentAlert animated:YES completion:nil];
 }
 
 # pragma mark - Encryption Information view
