@@ -148,6 +148,8 @@
     
     // Reset searches
     [recentsDataSource searchWithPatterns:nil];
+    // TODO: Notify RiotSettings.shared.showNSFWPublicRooms change for iPad as viewWillAppear may not be called
+    recentsDataSource.publicRoomsDirectoryDataSource.showNSFWRooms = RiotSettings.shared.showNSFWPublicRooms;
     
     [self updateSearch];
 }
