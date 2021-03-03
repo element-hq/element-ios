@@ -55,28 +55,28 @@ PODS:
   - MatomoTracker (7.2.2):
     - MatomoTracker/Core (= 7.2.2)
   - MatomoTracker/Core (7.2.2)
-  - MatrixKit (0.14.3):
+  - MatrixKit (0.14.4):
     - Down (~> 0.9.3)
     - DTCoreText (~> 1.6.23)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.14.3)
-    - MatrixSDK (= 0.18.3)
-  - MatrixKit/Core (0.14.3):
+    - MatrixKit/Core (= 0.14.4)
+    - MatrixSDK (= 0.18.4)
+  - MatrixKit/Core (0.14.4):
     - Down (~> 0.9.3)
     - DTCoreText (~> 1.6.23)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.18.3)
-  - MatrixSDK (0.18.3):
-    - MatrixSDK/Core (= 0.18.3)
-  - MatrixSDK/Core (0.18.3):
+    - MatrixSDK (= 0.18.4)
+  - MatrixSDK (0.18.4):
+    - MatrixSDK/Core (= 0.18.4)
+  - MatrixSDK/Core (0.18.4):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.3.0)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.2.2)
     - Realm (= 10.1.4)
-  - MatrixSDK/JingleCallStack (0.18.3):
+  - MatrixSDK/JingleCallStack (0.18.4):
     - JitsiMeetSDK (= 3.1.0)
     - MatrixSDK/Core
   - OLMKit (3.2.2):
@@ -115,7 +115,7 @@ DEPENDENCIES:
   - KeychainAccess (~> 4.2.1)
   - KTCenterFlowLayout (~> 1.3.1)
   - MatomoTracker (~> 7.2.2)
-  - MatrixKit (= 0.14.3)
+  - MatrixKit (= 0.14.4)
   - MatrixSDK
   - MatrixSDK/JingleCallStack
   - OLMKit
@@ -186,8 +186,8 @@ SPEC CHECKSUMS:
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
   MatomoTracker: a59ec4da0f580be57bdc6baa708a71a86532a832
-  MatrixKit: 93f4cac34b6007d7b1a933bfb54a6861021fc9f7
-  MatrixSDK: 5614040637b366f721a4ac0895bcdf07120ad718
+  MatrixKit: fad56170110b7248cfdd5bf210f944c6fad04162
+  MatrixSDK: d2cb905cf6afa5df63c5a76f7678456723923af5
   OLMKit: 20d1c564033a1ae7148f8f599378d4c798363905
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
   Realm: 80f4fb2971ccb9adc27a47d0955ae8e533a7030b
@@ -199,6 +199,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 7a43b794a6a755e3235826542c0d65cf05496281
+PODFILE CHECKSUM: c98fd507efbe607a5821e154e941210a093f54f9
 
 COCOAPODS: 1.10.0
