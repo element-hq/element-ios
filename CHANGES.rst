@@ -1,11 +1,11 @@
-Changes to be released in next version
+Changes in 1.2.5 (2021-03-03)
 =================================================
 
 ✨ Features
  * 
 
 🙌 Improvements
- * 
+ * Settings: Add option to show NSFW public rooms (off by default).
 
 🐛 Bugfix
  * 
