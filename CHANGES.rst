@@ -3,6 +3,7 @@ Changes to be released in next version
 
 ✨ Features
  * Improve the status of send messages (sending, sent, received, failed) (#4014)
+ * Retrying & deleting failed messages (#4013)
 
 🙌 Improvements
  * 
