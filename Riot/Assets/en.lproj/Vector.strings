@@ -596,6 +596,7 @@ Tap the + to start adding people.";
 "settings_identity_server_no_is" = "No identity server configured";
 "settings_identity_server_no_is_description" = "You are not currently using an identity server. To discover and be discoverable by existing contacts you know, add one above.";
 
+"settings_show_NSFW_public_rooms" = "Show NSFW public rooms";
 
 // Security settings
 "security_settings_title" = "Security";
