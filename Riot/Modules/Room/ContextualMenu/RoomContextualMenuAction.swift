@@ -39,7 +39,7 @@ import Foundation
         case .more:
             title = VectorL10n.roomEventActionMore
         case .resend:
-            title = VectorL10n.roomEventActionResend
+            title = VectorL10n.retry
         case .delete:
             title = VectorL10n.roomEventActionDelete
         }

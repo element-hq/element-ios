@@ -121,7 +121,7 @@
     
     [self.resendButton.layer setCornerRadius:5];
     self.resendButton.clipsToBounds = YES;
-    [self.resendButton setTitle:NSLocalizedStringFromTable(@"room_event_action_resend", @"Vector", nil) forState:UIControlStateNormal];
+    [self.resendButton setTitle:NSLocalizedStringFromTable(@"retry", @"Vector", nil) forState:UIControlStateNormal];
     self.resendButton.backgroundColor = ThemeService.shared.theme.tintColor;
     
     UIImage *image = [[UIImage imageNamed:@"room_context_menu_delete"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -129,6 +129,7 @@
     self.deleteButton.tintColor = ThemeService.shared.theme.warningColor;
     
     self.unsentMessageLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.unsentMessagesContentView.backgroundColor = ThemeService.shared.theme.backgroundColor;
 }
 
 #pragma mark -

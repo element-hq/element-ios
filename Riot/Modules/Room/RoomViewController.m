@@ -2433,7 +2433,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     // Add actions for a failed event
     if (selectedEvent.sentState == MXEventSentStateFailed)
     {
-        [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_resend", @"Vector", nil)
+        [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"retry", @"Vector", nil)
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
                                                            

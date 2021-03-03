@@ -80,6 +80,8 @@
 
 @property (nonatomic, strong) CellDataComponentIndexPair *sentCell;
 
+@property (nonatomic, strong) NSMutableSet *failedEventIds;
+
 @property (nonatomic) RoomBubbleCellData *roomCreationCellData;
 
 @property (nonatomic) BOOL showRoomCreationCell;
@@ -1028,6 +1030,11 @@
 - (void)updateStatusInfo
 {
     self.sentCell = nil;
+    
+    if (!self.failedEventIds)
+    {
+        self.failedEventIds = [NSMutableSet new];
+    }
 
     NSInteger bubbleIndex = bubbles.count;
     while (bubbleIndex--)
@@ -1037,13 +1044,19 @@
         NSInteger componentIndex = cellData.bubbleComponents.count;
         while (componentIndex--) {
             MXKRoomBubbleComponent *component = cellData.bubbleComponents[componentIndex];
+            MXEventSentState eventState = component.event.sentState;
+            
+            if (eventState == MXEventSentStateFailed)
+            {
+                [self.failedEventIds addObject:component.event.eventId];
+                continue;
+            }
+            
             NSArray<MXReceiptData*> *receipts = cellData.readReceipts[component.event.eventId];
             if (receipts.count)
             {
                 return;
             }
-            
-            MXEventSentState eventState = component.event.sentState;
             
             if (self.sentCell == nil && eventState == MXEventSentStateSent)
             {
@@ -1092,7 +1105,7 @@
                 || component.event.sentState == MXEventSentStatePreparing
                 || component.event.sentState == MXEventSentStateSending)
             {
-                if (cellData.attachment && component.event.sentState != MXEventSentStateSending)
+                if ([self.failedEventIds containsObject:component.event.eventId] || ( cellData.attachment && component.event.sentState != MXEventSentStateSending))
                 {
                     UIView *progressContentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
                     CircleProgressView *progressView = [[CircleProgressView alloc] initWithFrame:CGRectMake(24, 24, 16, 16)];
