@@ -22,6 +22,9 @@ Changes in 1.2.5 (2021-03-03)
 Others
  * 
 
+Improvements:
+ * Upgrade MatrixKit version ([v0.14.4](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.4)).
+
 Changes in 1.2.4 (2021-03-01)
 =================================================
 
