@@ -36,6 +36,7 @@ final class RiotSettings: NSObject {
         static let hideVerifyThisSessionAlert = "hideVerifyThisSessionAlert"
         static let hideReviewSessionsAlert = "hideReviewSessionsAlert"
         static let matrixApps = "matrixApps"
+        static let showNSFWPublicRooms = "showNSFWPublicRooms"
     }
     
     static let shared = RiotSettings()
@@ -116,6 +117,15 @@ final class RiotSettings: NSObject {
             return defaults.bool(forKey: UserDefaultsKeys.pinRoomsWithUnreadMessages)
         } set {
             defaults.set(newValue, forKey: UserDefaultsKeys.pinRoomsWithUnreadMessages)
+        }
+    }
+    
+    /// Indicate to show Not Safe For Work public rooms.
+    var showNSFWPublicRooms: Bool {
+        get {
+            return defaults.bool(forKey: UserDefaultsKeys.showNSFWPublicRooms)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.showNSFWPublicRooms)
         }
     }
     
