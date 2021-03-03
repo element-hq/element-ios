@@ -15,7 +15,6 @@
  */
 
 #import <MatrixKit/MatrixKit.h>
-#import "BadgeLabel.h"
 
 /**
  `RecentTableViewCell` instances display a room in the context of the recents list.

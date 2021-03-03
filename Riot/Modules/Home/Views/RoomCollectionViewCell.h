@@ -15,7 +15,8 @@
  */
 
 #import <MatrixKit/MatrixKit.h>
-#import "BadgeLabel.h"
+
+@class BadgeLabel;
 
 /**
  'RoomCollectionViewCell' class is used to display a room in a collection view.
