@@ -26,6 +26,8 @@
 // Time in seconds from which public rooms data is considered as obsolete
 double const kPublicRoomsDirectoryDataExpiration = 10;
 
+static NSString *const kNSFWKeyword = @"nsfw";
+
 #pragma mark - PublicRoomsDirectoryDataSource
 
 @interface PublicRoomsDirectoryDataSource ()
@@ -153,6 +155,16 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     }
 }
 
+- (void)setShowNSFWRooms:(BOOL)showNSFWRooms
+{
+    if (showNSFWRooms != _showNSFWRooms)
+    {
+        _showNSFWRooms = showNSFWRooms;
+        
+        [self resetPagination];
+    }
+}
+
 - (NSIndexPath*)cellIndexPathWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)matrixSession
 {
     NSIndexPath *indexPath = nil;
@@ -234,11 +246,22 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
             typeof(self) self = weakSelf;
 
             self->publicRoomsRequest = nil;
+            
+            NSArray<MXPublicRoom*> *publicRooms;
+            
+            if (self.showNSFWRooms)
+            {
+                publicRooms = publicRoomsResponse.chunk;
+            }
+            else
+            {
+                publicRooms = [self filterPublicRooms:publicRoomsResponse.chunk containingKeyword:kNSFWKeyword];
+            }
 
-            [self->rooms addObjectsFromArray:publicRoomsResponse.chunk];
+            [self->rooms addObjectsFromArray:publicRooms];
             self->nextBatch = publicRoomsResponse.nextBatch;
 
-            if (!self->_searchPattern)
+            if (!self->_searchPattern || !self.showNSFWRooms)
             {
                 // When there is no search, we can use totalRoomCountEstimate returned by the server
                 self->_roomsCount = publicRoomsResponse.totalRoomCountEstimate;
@@ -254,7 +277,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
             // Detect pagination end
             if (!publicRoomsResponse.nextBatch)
             {
-                _hasReachedPaginationEnd = YES;
+                self->_hasReachedPaginationEnd = YES;
             }
 
             [self setState:MXKDataSourceStateReady];
@@ -308,6 +331,22 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     {
         [self.delegate dataSource:self didStateChange:state];
     }
+}
+
+- (NSArray<MXPublicRoom*>*)filterPublicRooms:(NSArray<MXPublicRoom*>*)publicRooms containingKeyword:(NSString*)keyword
+{
+    NSMutableArray *filteredRooms = [NSMutableArray new];
+
+    for (MXPublicRoom *publicRoom in publicRooms)
+    {
+        if (NO == [[publicRoom.name lowercaseString] containsString:keyword]
+            && NO == [[publicRoom.topic lowercaseString] containsString:keyword])
+        {
+            [filteredRooms addObject:publicRoom];
+        }
+    }
+    
+    return filteredRooms;
 }
 
 #pragma mark - UITableViewDataSource
