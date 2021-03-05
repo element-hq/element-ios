@@ -8,7 +8,7 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
- * 
+ * Emoji store: Include short name when searching emojis (#4063).
 
 ⚠️ API Changes
  * 
