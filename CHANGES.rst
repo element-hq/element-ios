@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * RoomVC: Cancel event selection on room if only a selected event exists.
 
 🐛 Bugfix
  * 
