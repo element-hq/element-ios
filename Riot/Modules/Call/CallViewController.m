@@ -387,18 +387,6 @@
     return _overriddenTheme;
 }
 
-- (void)setMxCall:(MXCall *)mxCall
-{
-    [super setMxCall:mxCall];
-    
-    if (self.videoMuteButton.isHidden)
-    {
-        //  shift more button to left
-        self.moreButtonLeadingConstraint.constant = 8.0;
-        [self.view layoutIfNeeded];
-    }
-}
-
 - (UIImage*)picturePlaceholder
 {
     CGFloat fontSize = floor(self.callerImageViewWidthConstraint.constant * 0.7);

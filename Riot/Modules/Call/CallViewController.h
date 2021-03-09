@@ -26,7 +26,6 @@
 @property (weak, nonatomic) IBOutlet UIView *callControlsBackgroundView;
 
 @property (unsafe_unretained, nonatomic) IBOutlet NSLayoutConstraint *callerImageViewWidthConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *moreButtonLeadingConstraint;
 
 //  Effect views
 @property (weak, nonatomic) IBOutlet MXKImageView *blurredCallerImageView;
