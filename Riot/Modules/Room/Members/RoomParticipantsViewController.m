@@ -520,7 +520,15 @@
     // Check whether the view controller is currently displayed inside a segmented view controller or not.
     UIViewController* topViewController = ((self.parentViewController) ? self.parentViewController : self);
     topViewController.navigationItem.rightBarButtonItem = nil;
-    topViewController.navigationItem.leftBarButtonItem = nil;
+    
+    if (self.showCancelBarButtonItem)
+    {
+        topViewController.navigationItem.leftBarButtonItem  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancel:)];
+    }
+    else
+    {
+        topViewController.navigationItem.leftBarButtonItem = nil;
+    }
 }
 
 - (void)onAddParticipantButtonPressed
@@ -1461,6 +1469,11 @@
             }
         }
     }
+}
+
+- (void)onCancel:(id)sender
+{
+    [self withdrawViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark -

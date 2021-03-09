@@ -48,6 +48,7 @@ targets:
     - path: ../Riot/Modules/SetPinCode/SetupBiometrics/BiometricsAuthenticationPresenter.swift
     - path: ../Riot/Categories/UNUserNotificationCenter.swift
     - path: ../Riot/Managers/KeyValueStorage/KeyValueStore.swift
+    - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
     - path: ../Riot/Categories/Bundle.swift
     - path: ../Riot/Generated/Strings.swift
     - path: ../Riot/Generated/Images.swift

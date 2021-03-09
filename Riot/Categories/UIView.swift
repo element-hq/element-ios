@@ -54,4 +54,14 @@ extension UIView {
         shake.timingFunction = CAMediaTimingFunction(name: .easeOut)
         layer.add(shake, forKey: "position")
     }
+    
+    @objc func vc_setupAccessibilityTraitsButton(withTitle title: String, hint: String, isEnabled: Bool) {
+        self.isAccessibilityElement = true
+        self.accessibilityLabel = title
+        self.accessibilityHint = hint
+        self.accessibilityTraits = .button
+        if !isEnabled {
+            self.accessibilityTraits.insert(.notEnabled)
+        }
+    }
 }

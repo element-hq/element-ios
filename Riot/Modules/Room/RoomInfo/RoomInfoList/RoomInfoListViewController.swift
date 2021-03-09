@@ -148,7 +148,7 @@ final class RoomInfoListViewController: UIViewController {
         var tmpSections: [Section] = []
         
         let rowSettings = Row(type: .default, icon: Asset.Images.settingsIcon.image, text: VectorL10n.roomDetailsSettings, accessoryType: .disclosureIndicator) {
-            self.viewModel.process(viewAction: .navigate(target: .settings))
+            self.viewModel.process(viewAction: .navigate(target: .settings()))
         }
         let text = viewData.numberOfMembers == 1 ? VectorL10n.roomInfoListOneMember : VectorL10n.roomInfoListSeveralMembers(String(viewData.numberOfMembers))
         let rowMembers = Row(type: .default, icon: Asset.Images.userIcon.image, text: text, accessoryType: .disclosureIndicator) {

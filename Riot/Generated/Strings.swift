@@ -2318,6 +2318,14 @@ internal enum VectorL10n {
   internal static var roomActionSendSticker: String { 
     return VectorL10n.tr("Vector", "room_action_send_sticker") 
   }
+  /// Change room avatar
+  internal static var roomAvatarViewAccessibilityHint: String { 
+    return VectorL10n.tr("Vector", "room_avatar_view_accessibility_hint") 
+  }
+  /// avatar
+  internal static var roomAvatarViewAccessibilityLabel: String { 
+    return VectorL10n.tr("Vector", "room_avatar_view_accessibility_label") 
+  }
   /// You need permission to manage conference call in this room
   internal static var roomConferenceCallNoPower: String { 
     return VectorL10n.tr("Vector", "room_conference_call_no_power") 
@@ -2805,6 +2813,46 @@ internal enum VectorL10n {
   /// %@ members
   internal static func roomInfoListSeveralMembers(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "room_info_list_several_members", p1)
+  }
+  /// Add people
+  internal static var roomIntroCellAddParticipantsAction: String { 
+    return VectorL10n.tr("Vector", "room_intro_cell_add_participants_action") 
+  }
+  /// This is the begining of your direct message with 
+  internal static var roomIntroCellInformationDmSentence1Part1: String { 
+    return VectorL10n.tr("Vector", "room_intro_cell_information_dm_sentence1_part1") 
+  }
+  /// . 
+  internal static var roomIntroCellInformationDmSentence1Part3: String { 
+    return VectorL10n.tr("Vector", "room_intro_cell_information_dm_sentence1_part3") 
+  }
+  /// Only the two of you are in this conversation, no one else can join.
+  internal static var roomIntroCellInformationDmSentence2: String { 
+    return VectorL10n.tr("Vector", "room_intro_cell_information_dm_sentence2") 
+  }
+  /// Only you are in this conversation, unless any of you invites someone to join.
+  internal static var roomIntroCellInformationMultipleDmSentence2: String { 
+    return VectorL10n.tr("Vector", "room_intro_cell_information_multiple_dm_sentence2") 
+  }
+  /// This is the begining of 
+  internal static var roomIntroCellInformationRoomSentence1Part1: String { 
+    return VectorL10n.tr("Vector", "room_intro_cell_information_room_sentence1_part1") 
+  }
+  /// . 
+  internal static var roomIntroCellInformationRoomSentence1Part3: String { 
+    return VectorL10n.tr("Vector", "room_intro_cell_information_room_sentence1_part3") 
+  }
+  /// Topic: %@
+  internal static func roomIntroCellInformationRoomWithTopicSentence2(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_intro_cell_information_room_with_topic_sentence2", p1)
+  }
+  /// Add a topic
+  internal static var roomIntroCellInformationRoomWithoutTopicSentence2Part1: String { 
+    return VectorL10n.tr("Vector", "room_intro_cell_information_room_without_topic_sentence2_part1") 
+  }
+  ///  to let people know what this room is about.
+  internal static var roomIntroCellInformationRoomWithoutTopicSentence2Part2: String { 
+    return VectorL10n.tr("Vector", "room_intro_cell_information_room_without_topic_sentence2_part2") 
   }
   /// Jump to first unread message
   internal static var roomJumpToFirstUnread: String { 
@@ -4229,6 +4277,10 @@ internal enum VectorL10n {
   /// Show decrypted content
   internal static var settingsShowDecryptedContent: String { 
     return VectorL10n.tr("Vector", "settings_show_decrypted_content") 
+  }
+  /// Show NSFW public rooms
+  internal static var settingsShowNSFWPublicRooms: String { 
+    return VectorL10n.tr("Vector", "settings_show_NSFW_public_rooms") 
   }
   /// Sign Out
   internal static var settingsSignOut: String { 
