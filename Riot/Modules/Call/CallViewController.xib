@@ -190,9 +190,13 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fxP-zM-kfT">
-                                    <rect key="frame" x="93" y="0.0" width="68" height="68"/>
+                                    <rect key="frame" x="111" y="6" width="56" height="56"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <accessibility key="accessibilityConfiguration" identifier="CallVCAudioMuteButton"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="56" id="2za-pq-LeK"/>
+                                        <constraint firstAttribute="height" constant="56" id="WzU-Gl-l7E"/>
+                                    </constraints>
                                     <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="13"/>
                                     <state key="normal" image="call_audio_mute_off_icon">
                                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -206,9 +210,13 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lVK-d8-Dqf" userLabel="End Call Button">
-                                    <rect key="frame" x="173" y="0.0" width="68" height="68"/>
+                                    <rect key="frame" x="179" y="6" width="56" height="56"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" identifier="CallVCEndCallButton"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="56" id="dOZ-Rv-ioc"/>
+                                        <constraint firstAttribute="height" constant="56" id="ry3-Rb-qxA"/>
+                                    </constraints>
                                     <state key="normal" image="call_hangup_large">
                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
@@ -219,9 +227,13 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UHM-u9-ODN">
-                                    <rect key="frame" x="253" y="0.0" width="68" height="68"/>
+                                    <rect key="frame" x="247" y="6" width="56" height="56"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <accessibility key="accessibilityConfiguration" identifier="CallVCVideoMuteButton"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="56" id="jA5-Bg-GZa"/>
+                                        <constraint firstAttribute="height" constant="56" id="tJ7-KN-uzF"/>
+                                    </constraints>
                                     <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="13"/>
                                     <state key="normal" image="call_video_mute_off_icon">
                                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
