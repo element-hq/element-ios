@@ -157,11 +157,29 @@
                                         <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="yKw-Aj-XkE"/>
                                     </connections>
                                 </button>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" text="Name" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IW8-8P-mS3">
+                                    <rect key="frame" x="184" y="4" width="46.5" height="20.5"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="CallVCCallerNameLabel"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" text="Duration" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="29y-MK-OWH">
+                                    <rect key="frame" x="182" y="32.5" width="50" height="14.5"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="CallVCCallStatusLabel"/>
+                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
+                                <constraint firstItem="IW8-8P-mS3" firstAttribute="centerX" secondItem="sOu-ER-kOe" secondAttribute="centerX" id="EaP-Ir-ft9"/>
+                                <constraint firstItem="IW8-8P-mS3" firstAttribute="top" secondItem="sOu-ER-kOe" secondAttribute="top" constant="4" id="Wwm-db-dYV"/>
                                 <constraint firstItem="nff-fB-sTq" firstAttribute="leading" secondItem="sOu-ER-kOe" secondAttribute="leading" constant="10" id="guD-oo-Tl5"/>
+                                <constraint firstItem="29y-MK-OWH" firstAttribute="top" secondItem="IW8-8P-mS3" secondAttribute="bottom" constant="8" id="iXL-M7-wEB"/>
                                 <constraint firstItem="nff-fB-sTq" firstAttribute="centerY" secondItem="sOu-ER-kOe" secondAttribute="centerY" id="vP7-sN-t5g"/>
+                                <constraint firstItem="29y-MK-OWH" firstAttribute="centerX" secondItem="sOu-ER-kOe" secondAttribute="centerX" id="yrO-M6-IFX"/>
                                 <constraint firstAttribute="height" constant="54" id="zsh-GQ-fv2"/>
                             </constraints>
                         </view>
@@ -280,7 +298,7 @@
                             </constraints>
                         </view>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Zc0-eq-2kY">
-                            <rect key="frame" x="167" y="364" width="80" height="168"/>
+                            <rect key="frame" x="167" y="311.5" width="80" height="117"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FNb-tG-f7m">
                                     <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
@@ -315,22 +333,8 @@
                                         <constraint firstAttribute="width" constant="80" id="wqp-O7-7Yc"/>
                                     </constraints>
                                 </view>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" text="Name" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IW8-8P-mS3">
-                                    <rect key="frame" x="17" y="88" width="46.5" height="20.5"/>
-                                    <accessibility key="accessibilityConfiguration" identifier="CallVCCallerNameLabel"/>
-                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" text="Duration" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="29y-MK-OWH">
-                                    <rect key="frame" x="15" y="116.5" width="50" height="14.5"/>
-                                    <accessibility key="accessibilityConfiguration" identifier="CallVCCallStatusLabel"/>
-                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OaQ-Ki-dbe">
-                                    <rect key="frame" x="13" y="139" width="54" height="29"/>
+                                    <rect key="frame" x="13" y="88" width="54" height="29"/>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
                                     <color key="tintColor" systemColor="systemGreenColor"/>
                                     <state key="normal" title="Resume"/>
@@ -348,7 +352,7 @@
                         <constraint firstItem="nk9-Un-LVP" firstAttribute="leading" secondItem="JAR-tn-sGN" secondAttribute="leading" id="9wq-Y2-kZa"/>
                         <constraint firstItem="sOu-ER-kOe" firstAttribute="leading" secondItem="JAR-tn-sGN" secondAttribute="leading" id="INI-a4-QCn"/>
                         <constraint firstAttribute="trailing" secondItem="sOu-ER-kOe" secondAttribute="trailing" id="LEA-qC-Gko"/>
-                        <constraint firstItem="Zc0-eq-2kY" firstAttribute="centerY" secondItem="JAR-tn-sGN" secondAttribute="centerY" id="ju3-Ix-AGc"/>
+                        <constraint firstItem="Zc0-eq-2kY" firstAttribute="centerY" secondItem="JAR-tn-sGN" secondAttribute="centerY" constant="-78" id="ju3-Ix-AGc"/>
                         <constraint firstAttribute="trailing" secondItem="nk9-Un-LVP" secondAttribute="trailing" id="yES-yI-i3m"/>
                     </constraints>
                 </view>
