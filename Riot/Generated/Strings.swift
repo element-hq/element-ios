@@ -4294,6 +4294,10 @@ internal enum VectorL10n {
   internal static var settingsShowDecryptedContent: String { 
     return VectorL10n.tr("Vector", "settings_show_decrypted_content") 
   }
+  /// Show NSFW public rooms
+  internal static var settingsShowNSFWPublicRooms: String { 
+    return VectorL10n.tr("Vector", "settings_show_NSFW_public_rooms") 
+  }
   /// Sign Out
   internal static var settingsSignOut: String { 
     return VectorL10n.tr("Vector", "settings_sign_out") 
