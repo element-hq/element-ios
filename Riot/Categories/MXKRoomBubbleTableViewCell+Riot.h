@@ -153,6 +153,11 @@ extern NSString *const kMXKRoomBubbleCellCallBackButtonPressed;
 - (IBAction)onProgressLongPressGesture:(UILongPressGestureRecognizer*)recognizer;
 
 /**
+ update tick view(s) according to the current sent state.
+ */
+- (void)updateTickView;
+
+/**
  Blur the view by adding a transparent overlay. Default is NO.
  */
 @property(nonatomic) BOOL blurred;
