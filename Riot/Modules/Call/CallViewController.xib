@@ -157,8 +157,19 @@
                                         <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="yKw-Aj-XkE"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iiz-W1-oNW" userLabel="Switch Camera Btn">
-                                    <rect key="frame" x="360" y="5" width="44" height="44"/>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="nff-fB-sTq" firstAttribute="leading" secondItem="sOu-ER-kOe" secondAttribute="leading" constant="10" id="guD-oo-Tl5"/>
+                                <constraint firstItem="nff-fB-sTq" firstAttribute="centerY" secondItem="sOu-ER-kOe" secondAttribute="centerY" id="vP7-sN-t5g"/>
+                                <constraint firstAttribute="height" constant="54" id="zsh-GQ-fv2"/>
+                            </constraints>
+                        </view>
+                        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nk9-Un-LVP" userLabel="Call Control Container View">
+                            <rect key="frame" x="0.0" y="794" width="414" height="68"/>
+                            <subviews>
+                                <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iiz-W1-oNW" userLabel="Chat Button">
+                                    <rect key="frame" x="24" y="12" width="44" height="44"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" identifier="CallVCCameraSwitchButton"/>
                                     <constraints>
@@ -178,19 +189,6 @@
                                         <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="UaC-FO-rmW"/>
                                     </connections>
                                 </button>
-                            </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstAttribute="trailing" secondItem="Iiz-W1-oNW" secondAttribute="trailing" constant="10" id="YYf-d4-U5q"/>
-                                <constraint firstItem="nff-fB-sTq" firstAttribute="leading" secondItem="sOu-ER-kOe" secondAttribute="leading" constant="10" id="guD-oo-Tl5"/>
-                                <constraint firstItem="Iiz-W1-oNW" firstAttribute="centerY" secondItem="sOu-ER-kOe" secondAttribute="centerY" id="ns9-vB-ywU"/>
-                                <constraint firstItem="nff-fB-sTq" firstAttribute="centerY" secondItem="sOu-ER-kOe" secondAttribute="centerY" id="vP7-sN-t5g"/>
-                                <constraint firstAttribute="height" constant="54" id="zsh-GQ-fv2"/>
-                            </constraints>
-                        </view>
-                        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nk9-Un-LVP" userLabel="Call Control Container View">
-                            <rect key="frame" x="0.0" y="794" width="414" height="68"/>
-                            <subviews>
                                 <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fxP-zM-kfT">
                                     <rect key="frame" x="93" y="0.0" width="68" height="68"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -257,9 +255,11 @@
                             <accessibility key="accessibilityConfiguration" identifier="CallVCCallControlContainerView"/>
                             <constraints>
                                 <constraint firstItem="UHM-u9-ODN" firstAttribute="leading" secondItem="lVK-d8-Dqf" secondAttribute="trailing" constant="12" id="4l8-GS-LMC"/>
+                                <constraint firstItem="Iiz-W1-oNW" firstAttribute="leading" secondItem="nk9-Un-LVP" secondAttribute="leading" constant="24" id="6Ac-bF-DKJ"/>
                                 <constraint firstItem="lVK-d8-Dqf" firstAttribute="centerX" secondItem="nk9-Un-LVP" secondAttribute="centerX" id="C77-dh-aGp"/>
                                 <constraint firstItem="xCi-hD-FBs" firstAttribute="leading" secondItem="lVK-d8-Dqf" secondAttribute="trailing" constant="84" id="Erd-Js-vLN"/>
                                 <constraint firstItem="fxP-zM-kfT" firstAttribute="centerY" secondItem="nk9-Un-LVP" secondAttribute="centerY" id="FXE-lL-Q91"/>
+                                <constraint firstItem="Iiz-W1-oNW" firstAttribute="centerY" secondItem="nk9-Un-LVP" secondAttribute="centerY" id="WGS-jR-0O2"/>
                                 <constraint firstItem="UHM-u9-ODN" firstAttribute="centerY" secondItem="nk9-Un-LVP" secondAttribute="centerY" id="aOF-7c-8gC"/>
                                 <constraint firstAttribute="height" constant="68" id="eS5-qj-HTc"/>
                                 <constraint firstItem="lVK-d8-Dqf" firstAttribute="centerY" secondItem="nk9-Un-LVP" secondAttribute="centerY" id="hY9-ut-lPv"/>
