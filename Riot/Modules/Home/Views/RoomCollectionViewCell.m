@@ -117,7 +117,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
         
         // Notify unreads and bing
         if (roomCellData.roomSummary.room.summary.membership == MXMembershipInvite
-                 || roomCellData.roomSummary.room.sentStatus != MXRoomSentStatusOk)
+                 || roomCellData.roomSummary.room.sentStatus != RoomSentStatusOk)
         {
             self.badgeLabel.hidden = NO;
             self.badgeLabel.badgeColor = ThemeService.shared.theme.noticeColor;

@@ -658,22 +658,22 @@
 
 #pragma mark - Unread messages
 
-- (MXRoomSentStatus)sentStatus
+- (RoomSentStatus)sentStatus
 {
-    MXRoomSentStatus status = MXRoomSentStatusOk;
+    RoomSentStatus status = RoomSentStatusOk;
     NSArray<MXEvent*> *outgoingMsgs = self.outgoingMessages;
 
     for (MXEvent *event in outgoingMsgs)
     {
         if (event.sentState == MXEventSentStateFailed)
         {
-            status = MXRoomSentStatusSentFailed;
+            status = RoomSentStatusSentFailed;
 
             // Check if the error is due to unknown devices
             if ([event.sentError.domain isEqualToString:MXEncryptingErrorDomain]
                 && event.sentError.code == MXEncryptingErrorUnknownDeviceCode)
             {
-                status = MXRoomSentStatusSentFailedDueToUnknownDevices;
+                status = RoomSentStatusSentFailedDueToUnknownDevices;
                 break;
             }
         }

@@ -103,7 +103,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
             self.lastEventDescription.text = roomCellData.lastEventTextMessage;
         }
         
-        self.unsentImageView.hidden = roomCellData.roomSummary.room.sentStatus == MXRoomSentStatusOk;
+        self.unsentImageView.hidden = roomCellData.roomSummary.room.sentStatus == RoomSentStatusOk;
         self.lastEventDecriptionLabelTrailingConstraint.constant = self.unsentImageView.hidden ? 10 : 30;
 
         // Notify unreads and bing

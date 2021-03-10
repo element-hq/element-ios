@@ -4618,14 +4618,14 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
 
 -(BOOL)checkUnsentMessages
 {
-    MXRoomSentStatus sentStatus = MXRoomSentStatusOk;
+    RoomSentStatus sentStatus = RoomSentStatusOk;
     if ([self.activitiesView isKindOfClass:RoomActivitiesView.class])
     {
         sentStatus = self.roomDataSource.room.sentStatus;
 
-        if (sentStatus != MXRoomSentStatusOk)
+        if (sentStatus != RoomSentStatusOk)
         {
-            NSString *notification = sentStatus == MXRoomSentStatusSentFailedDueToUnknownDevices ?
+            NSString *notification = sentStatus == RoomSentStatusSentFailedDueToUnknownDevices ?
             NSLocalizedStringFromTable(@"room_unsent_messages_unknown_devices_notification", @"Vector", nil) :
             NSLocalizedStringFromTable(@"room_unsent_messages_notification", @"Vector", nil);
             
@@ -4695,7 +4695,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
         }
     }
     
-    return sentStatus != MXRoomSentStatusOk;
+    return sentStatus != RoomSentStatusOk;
 }
 
 - (void)eventDidChangeSentState:(NSNotification *)notif

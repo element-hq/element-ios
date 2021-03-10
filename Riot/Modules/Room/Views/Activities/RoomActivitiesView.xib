@@ -68,23 +68,23 @@
                                     <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UwY-F8-8nJ">
-                                    <rect key="frame" x="467" y="14" width="24" height="24"/>
+                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UwY-F8-8nJ">
+                                    <rect key="frame" x="477" y="14" width="24" height="24"/>
                                     <state key="normal" image="room_context_menu_delete"/>
                                     <connections>
                                         <action selector="onCancelSendingPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="nCu-h1-Hek"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d0g-ev-lDj">
-                                    <rect key="frame" x="503" y="12" width="85" height="28"/>
+                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d0g-ev-lDj">
+                                    <rect key="frame" x="513" y="12" width="75" height="28"/>
                                     <color key="backgroundColor" red="0.028153735480000001" green="0.82494870580000002" blue="0.051896891280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" identifier="LeftButton"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="28" id="LhJ-4D-OZI"/>
-                                        <constraint firstAttribute="width" constant="85" id="n0H-1z-udV"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="6" maxY="0.0"/>
+                                    <inset key="contentEdgeInsets" minX="12" minY="0.0" maxX="8" maxY="0.0"/>
+                                    <inset key="imageEdgeInsets" minX="-10" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     <state key="normal" title="Retry" image="room_activities_retry">
                                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>

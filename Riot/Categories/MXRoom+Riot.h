@@ -19,11 +19,11 @@
 
 #import "UserEncryptionTrustLevel.h"
 
-typedef NS_ENUM(NSUInteger, MXRoomSentStatus)
+typedef NS_ENUM(NSUInteger, RoomSentStatus)
 {
-    MXRoomSentStatusOk,
-    MXRoomSentStatusSentFailed,
-    MXRoomSentStatusSentFailedDueToUnknownDevices
+    RoomSentStatusOk,
+    RoomSentStatusSentFailed,
+    RoomSentStatusSentFailedDueToUnknownDevices
 };
 
 /**
@@ -52,7 +52,7 @@ typedef NS_ENUM(NSUInteger, MXRoomSentStatus)
 @property (nonatomic) id notificationCenterDidUpdateObserver;
 
 /// Check if all messages have been sent.
-@property (nonatomic, readonly) MXRoomSentStatus sentStatus;
+@property (nonatomic, readonly) RoomSentStatus sentStatus;
 
 /**
  Update the room tag.
