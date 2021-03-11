@@ -1,1 +1,9 @@
 
+
+"NSFaceIDUsageDescription" = "Identigilo de vizaĝo uziĝas por aliri vian aplikaĵon.";
+"NSCalendarsUsageDescription" = "Vidu viajn planitajn renkontiĝojn en la aplikaĵo.";
+"NSContactsUsageDescription" = "Por trovi kontaktojn, kiuj jam estas ĉe Matrix, Element povas sendi retpoŝtadresojn kaj telefonnumerojn el via adresaro al via elektita identigila servilo de Matrix. Kiam eblas, personaj datumoj estas haketitaj antaŭ forsendo – bonvolu kontroli la politikon pri privateco de via identiga servilo por pliaj detaloj.";
+"NSMicrophoneUsageDescription" = "La mikrofono estas uzata por filmi, kaj ankaŭ por voki.";
+"NSPhotoLibraryUsageDescription" = "La fotujo estas uzata por sendi fotojn kaj filmojn.";
+// Permissions usage explanations
+"NSCameraUsageDescription" = "La filmilo estas uzata por foti kaj filmi, kaj ankaŭ por vidvoki.";
