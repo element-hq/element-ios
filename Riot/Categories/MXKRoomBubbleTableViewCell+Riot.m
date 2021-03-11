@@ -669,7 +669,7 @@ NSString *const kMXKRoomBubbleCellCallBackButtonPressed = @"kMXKRoomBubbleCellCa
     return rowHeight;
 }
 
-- (void)updateTickView
+- (void)updateTickViewWithFailedEventIds:(NSSet *)failedEventIds
 {
     for (UIView *tickView in self.messageStatusViews)
     {
@@ -679,6 +679,7 @@ NSString *const kMXKRoomBubbleCellCallBackButtonPressed = @"kMXKRoomBubbleCellCa
     
     NSMutableArray *statusViews = [NSMutableArray new];
     UIView *tickView = nil;
+
     if ([bubbleData isKindOfClass:RoomBubbleCellData.class]
         && ((RoomBubbleCellData*)bubbleData).componentIndexOfSentMessageTick >= 0)
     {
@@ -701,7 +702,7 @@ NSString *const kMXKRoomBubbleCellCallBackButtonPressed = @"kMXKRoomBubbleCellCa
                 || component.event.sentState == MXEventSentStatePreparing
                 || component.event.sentState == MXEventSentStateSending)
             {
-                if (bubbleData.attachment && component.event.sentState != MXEventSentStateSending)
+                if ([failedEventIds containsObject:component.event.eventId] || (bubbleData.attachment && component.event.sentState != MXEventSentStateSending))
                 {
                     UIView *progressContentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
                     CircleProgressView *progressView = [[CircleProgressView alloc] initWithFrame:CGRectMake(24, 24, 16, 16)];

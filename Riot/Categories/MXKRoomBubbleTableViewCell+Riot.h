@@ -155,7 +155,7 @@ extern NSString *const kMXKRoomBubbleCellCallBackButtonPressed;
 /**
  update tick view(s) according to the current sent state.
  */
-- (void)updateTickView;
+- (void)updateTickViewWithFailedEventIds:(NSSet *)failedEventIds;
 
 /**
  Blur the view by adding a transparent overlay. Default is NO.

@@ -47,6 +47,8 @@
 
 @property(nonatomic, readwrite) RoomEncryptionTrustLevel encryptionTrustLevel;
 
+@property (nonatomic, strong) NSMutableSet *failedEventIds;
+
 @property (nonatomic) RoomBubbleCellData *roomCreationCellData;
 
 @property (nonatomic) BOOL showRoomCreationCell;
@@ -619,7 +621,7 @@
         // We are interested only by outgoing messages
         if ([cellData.senderId isEqualToString: self.mxSession.credentials.userId])
         {
-            [bubbleCell updateTickView];
+            [bubbleCell updateTickViewWithFailedEventIds:self.failedEventIds];
         }
     }
 
@@ -999,6 +1001,11 @@
 
 - (void)updateStatusInfo
 {
+    if (!self.failedEventIds)
+    {
+        self.failedEventIds = [NSMutableSet new];
+    }
+
     NSInteger bubbleIndex = bubbles.count;
     while (bubbleIndex--)
     {
@@ -1007,13 +1014,19 @@
         NSInteger componentIndex = cellData.bubbleComponents.count;
         while (componentIndex--) {
             MXKRoomBubbleComponent *component = cellData.bubbleComponents[componentIndex];
+            MXEventSentState eventState = component.event.sentState;
+            
+            if (eventState == MXEventSentStateFailed)
+            {
+                [self.failedEventIds addObject:component.event.eventId];
+                continue;
+            }
+            
             NSArray<MXReceiptData*> *receipts = cellData.readReceipts[component.event.eventId];
             if (receipts.count)
             {
                 return;
             }
-            
-            MXEventSentState eventState = component.event.sentState;
             
             if (eventState == MXEventSentStateSent)
             {

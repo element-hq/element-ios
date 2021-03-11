@@ -204,8 +204,8 @@
 "encrypted_room_message_placeholder" = "Stuur een versleuteld bericht…";
 "room_message_short_placeholder" = "Stuur een bericht…";
 "room_offline_notification" = "De verbinding met de server is verbroken.";
-"room_unsent_messages_notification" = "Berichten niet verstuurd. Nu %@ of %@?";
-"room_unsent_messages_unknown_devices_notification" = "Bericht is niet verstuurd doordat er onbekende apparaten aanwezig zijn. Nu %@ of %@?";
+"room_unsent_messages_notification" = "Berichten niet verstuurd.";
+"room_unsent_messages_unknown_devices_notification" = "Bericht is niet verstuurd doordat er onbekende apparaten aanwezig zijn.";
 "room_ongoing_conference_call" = "Er is een vergadergesprek gaande. Neem deel met %@ of %@.";
 "room_prompt_resend" = "alles opnieuw versturen";
 "room_prompt_cancel" = "alles annuleren";
