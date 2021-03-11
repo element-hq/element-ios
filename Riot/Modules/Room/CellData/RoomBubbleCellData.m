@@ -131,6 +131,8 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
             }
                 break;
             case MXEventTypeCallInvite:
+            case MXEventTypeCallAnswer:
+            case MXEventTypeCallHangup:
             case MXEventTypeCallReject:
             {
                 self.tag = RoomBubbleCellDataTagCall;
@@ -788,6 +790,8 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
                 shouldAddEvent = NO;
                 break;
             case MXEventTypeCallInvite:
+            case MXEventTypeCallAnswer:
+            case MXEventTypeCallHangup:
             case MXEventTypeCallReject:
                 shouldAddEvent = NO;
                 break;
