@@ -191,9 +191,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         }
             break;
         case MXEventTypeCallCandidates:
-        case MXEventTypeCallAnswer:
         case MXEventTypeCallSelectAnswer:
-        case MXEventTypeCallHangup:
         case MXEventTypeCallNegotiate:
         case MXEventTypeCallReplaces:
         case MXEventTypeCallRejectReplacement:
