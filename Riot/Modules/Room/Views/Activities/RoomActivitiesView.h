@@ -30,6 +30,11 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainHeightConstraint;
 
+@property (weak, nonatomic) IBOutlet UIView *unsentMessagesContentView;
+@property (weak, nonatomic) IBOutlet UIButton *resendButton;
+@property (weak, nonatomic) IBOutlet UIButton *deleteButton;
+@property (weak, nonatomic) IBOutlet UILabel *unsentMessageLabel;
+
 /**
  Notify that some messages are not sent.
  Replace the current notification if any.

@@ -53,6 +53,7 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
     if (self)
     {
         _eventsToShowAllReactions = [NSMutableSet set];
+        _componentIndexOfSentMessageTick = -1;
     }
     return self;
 }

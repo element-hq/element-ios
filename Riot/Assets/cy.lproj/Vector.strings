@@ -237,8 +237,8 @@
 "room_message_short_placeholder" = "Anfon neges…";
 "room_message_reply_to_short_placeholder" = "Anfon ateb…";
 "room_offline_notification" = "Collwyd cysylltedd â'r gweinydd.";
-"room_unsent_messages_notification" = "Negeseuon heb eu hanfon. %@ neu %@ rwan?";
-"room_unsent_messages_unknown_devices_notification" = "Ni anfonwyd neges oherwydd bod sesiynau anhysbys yn bresennol. %@ neu %@ rwan?";
+"room_unsent_messages_notification" = "Negeseuon heb eu hanfon.";
+"room_unsent_messages_unknown_devices_notification" = "Ni anfonwyd neges oherwydd bod sesiynau anhysbys yn bresennol.";
 "room_ongoing_conference_call" = "Galwad gynhadledd ar y gweill. Ymunwch fel %@ neu %@.";
 "room_ongoing_conference_call_with_close" = "Galwad gynhadledd ar y gweill. Ymunwch fel %@ neu %@. %@ o.";
 "room_ongoing_conference_call_close" = "Cau";

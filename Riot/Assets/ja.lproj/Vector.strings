@@ -200,8 +200,8 @@
 "encrypted_room_message_placeholder" = "暗号文を送信…";
 "room_message_short_placeholder" = "ここに送信文を入力…";
 "room_offline_notification" = "サーバとの接続が失われました.";
-"room_unsent_messages_notification" = "文章が送信できませんでした。現在 %@ または %@ ?";
-"room_unsent_messages_unknown_devices_notification" = "未知のセッションが存在するために文章が送信されませんでした。現在%@ or %@ ？";
+"room_unsent_messages_notification" = "文章が送信できませんでした.";
+"room_unsent_messages_unknown_devices_notification" = "未知のセッションが存在するために文章が送信されませんでした.";
 "room_ongoing_conference_call" = "会議通話実施中。 %@ または %@で参加してください。";
 "room_ongoing_conference_call_with_close" = "会議通話実施中。%@または%@で参加してください。 %@。";
 "room_ongoing_conference_call_close" = "閉じる";

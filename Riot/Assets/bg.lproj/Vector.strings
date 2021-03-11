@@ -209,8 +209,8 @@
 "encrypted_room_message_placeholder" = "Изпрати шифровано съобщение…";
 "room_message_short_placeholder" = "Изпрати съобщение…";
 "room_offline_notification" = "Връзката със сървъра е изгубена.";
-"room_unsent_messages_notification" = "Съобщенията не са изпратени. %@ или %@?";
-"room_unsent_messages_unknown_devices_notification" = "Съобщението не е изпратено поради наличието на непознати сесии. %@ или %@?";
+"room_unsent_messages_notification" = "Съобщенията не са изпратени.";
+"room_unsent_messages_unknown_devices_notification" = "Съобщението не е изпратено поради наличието на непознати сесии.";
 "room_ongoing_conference_call" = "Текущ групов разговор. Присъедини се с %@ или %@.";
 "room_ongoing_conference_call_with_close" = "Текущ групов разговор. Присъедини се с %@ или %@. %@ го.";
 "room_ongoing_conference_call_close" = "Затвори";

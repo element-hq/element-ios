@@ -157,8 +157,8 @@
 "encrypted_room_message_placeholder" = "Verschlüsselte Nachricht…";
 "room_message_short_placeholder" = "Sende eine Nachricht…";
 "room_offline_notification" = "Verbindung zum Server wurde unterbrochen.";
-"room_unsent_messages_notification" = "Nachrichten wurden nicht gesendet. Jetzt %@ oder %@?";
-"room_unsent_messages_unknown_devices_notification" = "Nachrichten wurden nicht gesendet, da unbekannte Sitzungen vorhanden waren. Jetzt %@ oder %@?";
+"room_unsent_messages_notification" = "Nachrichten wurden nicht gesendet.";
+"room_unsent_messages_unknown_devices_notification" = "Nachrichten wurden nicht gesendet, da unbekannte Sitzungen vorhanden waren.";
 "room_prompt_resend" = "alle erneut senden";
 "room_prompt_cancel" = "alles abbrechen";
 "room_resend_unsent_messages" = "Ungesendete Nachrichten erneut senden";

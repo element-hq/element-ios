@@ -401,8 +401,8 @@
 "room_participants_remove_prompt_msg" = "Ertu viss um að þú viljir fjarlægja %@ úr þessu spjalli?";
 "room_participants_invite_prompt_msg" = "Ertu viss um að þú viljir bjóða %@ á þetta spjall?";
 "room_participants_invite_malformed_id" = "Rangt formað auðkenni. Ætti að vera tölvupóstfang eða Matrix-auðkenni á borð við'@sérheiti:lén'";
-"room_unsent_messages_notification" = "Skilaboð ekki send. %@ eða %@ núna?";
-"room_unsent_messages_unknown_devices_notification" = "Skilaboð ekki send vegna þess að vart var við óþekkt tæki. %@ eða %@ núna?";
+"room_unsent_messages_notification" = "Skilaboð ekki send.";
+"room_unsent_messages_unknown_devices_notification" = "Skilaboð ekki send vegna þess að vart var við óþekkt tæki.";
 "room_ongoing_conference_call" = "Símafundur í gangi. Taka þátt með %@ eða %@.";
 "room_ongoing_conference_call_with_close" = "Símafundur í gangi. Taka þátt með %@ eða %@. %@ því.";
 "room_conference_call_no_power" = "Þú þarft aðgangsheimildir til að sýsla með símafundi á þessari spjallrás";

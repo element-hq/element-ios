@@ -28,7 +28,6 @@
 #import "MXRoom+Riot.h"
 
 
-
 @interface RoomDataSource() <BubbleReactionsViewModelDelegate>
 {
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
@@ -47,6 +46,8 @@
 @property (nonatomic, readonly) id<RoomDataSourceDelegate> roomDataSourceDelegate;
 
 @property(nonatomic, readwrite) RoomEncryptionTrustLevel encryptionTrustLevel;
+
+@property (nonatomic, strong) NSMutableSet *failedEventIds;
 
 @property (nonatomic) RoomBubbleCellData *roomCreationCellData;
 
@@ -240,6 +241,7 @@
             for (RoomBubbleCellData *cellData in bubbles)
             {
                 cellData.containsLastMessage = NO;
+                cellData.componentIndexOfSentMessageTick = -1;
             }
 
             // The cell containing the last message is the last one with an actual display.
@@ -253,6 +255,8 @@
                     break;
                 }
             }
+            
+            [self updateStatusInfo];
         }
     }
     
@@ -609,8 +613,16 @@
         
         // Auto animate the sticker in case of animated gif
         bubbleCell.isAutoAnimatedGif = (cellData.attachment && cellData.attachment.type == MXKAttachmentTypeSticker);
+        
+        [self applyMaskToAttachmentViewOfBubbleCell: bubbleCell];
 
         [self setupAccessibilityForCell:bubbleCell withCellData:cellData];
+        
+        // We are interested only by outgoing messages
+        if ([cellData.senderId isEqualToString: self.mxSession.credentials.userId])
+        {
+            [bubbleCell updateTickViewWithFailedEventIds:self.failedEventIds];
+        }
     }
 
     return cell;
@@ -972,6 +984,57 @@
 - (void)bubbleReactionsViewModel:(BubbleReactionsViewModel *)viewModel didLongPressForEventId:(NSString *)eventId
 {
     [self.delegate dataSource:self didRecognizeAction:kMXKRoomBubbleCellLongPressOnReactionView inCell:nil userInfo:@{ kMXKRoomBubbleCellEventIdKey: eventId }];
+}
+
+- (void)applyMaskToAttachmentViewOfBubbleCell:(MXKRoomBubbleTableViewCell *)cell
+{
+    if (cell.attachmentView && !cell.attachmentView.layer.mask)
+    {
+        UIBezierPath *myClippingPath = [UIBezierPath bezierPathWithRoundedRect:cell.attachmentView.bounds cornerRadius:6];
+        CAShapeLayer *mask = [CAShapeLayer layer];
+        mask.path = myClippingPath.CGPath;
+        cell.attachmentView.layer.mask = mask;
+    }
+}
+
+#pragma mark - Message status management
+
+- (void)updateStatusInfo
+{
+    if (!self.failedEventIds)
+    {
+        self.failedEventIds = [NSMutableSet new];
+    }
+
+    NSInteger bubbleIndex = bubbles.count;
+    while (bubbleIndex--)
+    {
+        RoomBubbleCellData *cellData = bubbles[bubbleIndex];
+        
+        NSInteger componentIndex = cellData.bubbleComponents.count;
+        while (componentIndex--) {
+            MXKRoomBubbleComponent *component = cellData.bubbleComponents[componentIndex];
+            MXEventSentState eventState = component.event.sentState;
+            
+            if (eventState == MXEventSentStateFailed)
+            {
+                [self.failedEventIds addObject:component.event.eventId];
+                continue;
+            }
+            
+            NSArray<MXReceiptData*> *receipts = cellData.readReceipts[component.event.eventId];
+            if (receipts.count)
+            {
+                return;
+            }
+            
+            if (eventState == MXEventSentStateSent)
+            {
+                cellData.componentIndexOfSentMessageTick = componentIndex;
+                return;
+            }
+        }
+    }
 }
 
 #pragma mark - Room creation intro cell
