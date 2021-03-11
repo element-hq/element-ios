@@ -268,8 +268,8 @@
 "people_empty_view_title" = "Люди";
 "social_login_button_title_sign_up" = "Приєднатися через %@";
 "social_login_button_title_sign_in" = "Увійти через %@";
-"social_login_list_title_sign_up" = "Або зареєструватися через";
-"social_login_list_title_sign_in" = "Або увійти через";
+"social_login_list_title_sign_up" = "Або";
+"social_login_list_title_sign_in" = "Або";
 "settings_discovery_three_pid_details_revoke_action" = "Відкликати";
 "settings_discovery_three_pid_details_share_action" = "Поділитися";
 "room_event_action_share" = "Поділитися";
