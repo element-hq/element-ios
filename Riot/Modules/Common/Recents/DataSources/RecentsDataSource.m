@@ -1146,6 +1146,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     _missedFavouriteDiscussionsCount = _missedHighlightFavouriteDiscussionsCount = 0;
     _missedDirectDiscussionsCount = _missedHighlightDirectDiscussionsCount = 0;
     _missedGroupDiscussionsCount = _missedHighlightGroupDiscussionsCount = 0;
+    _unsentMessagesDirectDiscussionsCount = 0;
+    _unsentMessagesGroupDiscussionsCount = 0;
     
     secureBackupBannerSection = directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = serverNoticeSection = invitesSection = -1;
     
@@ -1279,6 +1281,18 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                 else
                 {
                     _missedGroupDiscussionsCount ++;
+                }
+            }
+            
+            if (room.sentStatus != RoomSentStatusOk)
+            {
+                if (room.isDirect)
+                {
+                    _unsentMessagesDirectDiscussionsCount ++;
+                }
+                else
+                {
+                    _unsentMessagesGroupDiscussionsCount ++;
                 }
             }
             
