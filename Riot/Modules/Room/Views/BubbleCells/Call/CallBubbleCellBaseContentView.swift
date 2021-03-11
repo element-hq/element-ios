@@ -19,6 +19,11 @@ import Reusable
 
 class CallBubbleCellBaseContentView: UIView {
     
+    private enum Constants {
+        static let callSummaryWithBottomViewHeight: CGFloat = 20
+        static let callSummaryStandaloneViewHeight: CGFloat = 20 + 64
+    }
+    
     @IBOutlet private weak var paginationTitleView: UIView!
     @IBOutlet private weak var paginationLabel: UILabel!
     @IBOutlet private weak var paginationSeparatorView: UIView!
@@ -28,12 +33,33 @@ class CallBubbleCellBaseContentView: UIView {
     @IBOutlet private weak var callerNameLabel: UILabel!
     @IBOutlet private weak var callIconView: UIImageView!
     @IBOutlet private weak var callTypeLabel: UILabel!
+    @IBOutlet private weak var dotLabel: UILabel!
+    @IBOutlet private weak var callStatusLabel: UILabel!
+    @IBOutlet private weak var callSummaryHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var bubbleOverlayContainer: UIView!
     
     @IBOutlet weak var bottomContainerView: UIView!
     
+    var statusText: String? {
+        didSet {
+            dotLabel.isHidden = statusText == nil
+            callStatusLabel.text = statusText
+        }
+    }
+    
     private var theme: Theme = ThemeService.shared().theme
+    
+    func relayoutCallSummary() {
+        if bottomContainerView.subviews.isEmpty {
+            callSummaryHeightConstraint.constant = Constants.callSummaryStandaloneViewHeight
+        } else {
+            callSummaryHeightConstraint.constant = Constants.callSummaryWithBottomViewHeight
+        }
+        
+        setNeedsLayout()
+        layoutIfNeeded()
+    }
     
     func render(_ cellData: MXKCellData) {
         guard let bubbleCellData = cellData as? RoomBubbleCellData else {
@@ -110,6 +136,8 @@ extension CallBubbleCellBaseContentView: Themable {
         bgView.backgroundColor = theme.headerBackgroundColor
         callIconView.tintColor = theme.textSecondaryColor
         callTypeLabel.textColor = theme.textSecondaryColor
+        dotLabel.textColor = theme.textSecondaryColor
+        callStatusLabel.textColor = theme.textSecondaryColor
         
         if let bottomContainerView = bottomContainerView as? Themable {
             bottomContainerView.update(theme: theme)
