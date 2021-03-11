@@ -1238,13 +1238,29 @@ internal enum VectorL10n {
   internal static var errorUserAlreadyLoggedIn: String { 
     return VectorL10n.tr("Vector", "error_user_already_logged_in") 
   }
+  /// Answer
+  internal static var eventFormatterCallAnswer: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_answer") 
+  }
   /// Call back
   internal static var eventFormatterCallBack: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_back") 
   }
-  /// This call has ended
-  internal static var eventFormatterCallHasEnded: String { 
-    return VectorL10n.tr("Vector", "event_formatter_call_has_ended") 
+  /// Connection failed
+  internal static var eventFormatterCallConnectionFailed: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_connection_failed") 
+  }
+  /// Decline
+  internal static var eventFormatterCallDecline: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_decline") 
+  }
+  /// This call has ended %@
+  internal static func eventFormatterCallHasEnded(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "event_formatter_call_has_ended", p1)
+  }
+  /// RETRY
+  internal static var eventFormatterCallRetry: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_retry") 
   }
   /// Video call
   internal static var eventFormatterCallVideo: String { 
@@ -1254,13 +1270,17 @@ internal enum VectorL10n {
   internal static var eventFormatterCallVoice: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_voice") 
   }
-  /// You're currently in this call
+  /// Active call
   internal static var eventFormatterCallYouCurrentlyIn: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_you_currently_in") 
   }
   /// You declined this call
   internal static var eventFormatterCallYouDeclined: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_you_declined") 
+  }
+  /// You missed this call
+  internal static var eventFormatterCallYouMissed: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_you_missed") 
   }
   /// VoIP conference added by %@
   internal static func eventFormatterJitsiWidgetAdded(_ p1: String) -> String {
