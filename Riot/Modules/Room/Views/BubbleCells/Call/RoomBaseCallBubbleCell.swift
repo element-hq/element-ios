@@ -42,10 +42,26 @@ class RoomBaseCallBubbleCell: MXKRoomBubbleTableViewCell {
         updateBottomContentView()
     }
 
-    //  Properties to override
-    private(set) var bottomContentView: UIView?
+    //  Bottom content view. Will be spanned in bottomContainerView
+    var bottomContentView: UIView? {
+        didSet {
+            updateBottomContentView()
+        }
+    }
     
-    func updateBottomContentView() {
+    var statusText: String? {
+        get {
+            return innerContentView.statusText
+        } set {
+            innerContentView.statusText = newValue
+        }
+    }
+    
+    private func updateBottomContentView() {
+        defer {
+            innerContentView.relayoutCallSummary()
+        }
+        
         innerContentView.bottomContainerView.vc_removeAllSubviews()
         
         guard let bottomContentView = bottomContentView else { return }
