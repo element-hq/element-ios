@@ -2826,7 +2826,7 @@ internal enum VectorL10n {
   internal static var roomIntroCellAddParticipantsAction: String { 
     return VectorL10n.tr("Vector", "room_intro_cell_add_participants_action") 
   }
-  /// This is the begining of your direct message with 
+  /// This is the beginning of your direct message with 
   internal static var roomIntroCellInformationDmSentence1Part1: String { 
     return VectorL10n.tr("Vector", "room_intro_cell_information_dm_sentence1_part1") 
   }
@@ -2842,7 +2842,7 @@ internal enum VectorL10n {
   internal static var roomIntroCellInformationMultipleDmSentence2: String { 
     return VectorL10n.tr("Vector", "room_intro_cell_information_multiple_dm_sentence2") 
   }
-  /// This is the begining of 
+  /// This is the beginning of 
   internal static var roomIntroCellInformationRoomSentence1Part1: String { 
     return VectorL10n.tr("Vector", "room_intro_cell_information_room_sentence1_part1") 
   }
