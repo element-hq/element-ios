@@ -204,8 +204,8 @@
 "encrypted_room_message_placeholder" = "Envia un missatge encriptat…";
 "room_message_short_placeholder" = "Envia un missatge…";
 "room_offline_notification" = "S'ha perdut la connexió amb el servidor.";
-"room_unsent_messages_notification" = "Missatges no enviats. %@ o %@ ara?";
-"room_unsent_messages_unknown_devices_notification" = "El missatge no s'ha enviat perquè hi ha presents dispositius desconeguts. %@ o %@ ara?";
+"room_unsent_messages_notification" = "Missatges no enviats.";
+"room_unsent_messages_unknown_devices_notification" = "El missatge no s'ha enviat perquè hi ha presents dispositius desconeguts.";
 "room_ongoing_conference_call" = "Conferència en curs. Unir-te com a %@ o %@.";
 "room_ongoing_conference_call_with_close" = "Conferència en curs. Unir-te com a %@ o %@. %@.";
 "room_ongoing_conference_call_close" = "Tancar";

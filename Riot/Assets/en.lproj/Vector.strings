@@ -328,8 +328,10 @@ Tap the + to start adding people.";
 "room_message_short_placeholder" = "Send a message…";
 "room_message_reply_to_short_placeholder" = "Send a reply…";
 "room_offline_notification" = "Connectivity to the server has been lost.";
-"room_unsent_messages_notification" = "Messages not sent. %@ or %@ now?";
-"room_unsent_messages_unknown_devices_notification" = "Message not sent due to unknown sessions being present. %@ or %@ now?";
+"room_unsent_messages_notification" = "Messages failed to send.";
+"room_unsent_messages_unknown_devices_notification" = "Message failed to send due to unknown sessions being present.";
+"room_unsent_messages_cancel_title" = "Delete unsent messages";
+"room_unsent_messages_cancel_message" = "Are you sure you want to delete all unsent messages in this room?";
 "room_ongoing_conference_call" = "Ongoing conference call. Join as %@ or %@.";
 "room_ongoing_conference_call_with_close" = "Ongoing conference call. Join as %@ or %@. %@ it.";
 "room_ongoing_conference_call_close" = "Close";
@@ -354,6 +356,8 @@ Tap the + to start adding people.";
 "room_event_action_save" = "Save";
 "room_event_action_resend" = "Resend";
 "room_event_action_delete" = "Delete";
+"room_event_action_delete_confirmation_title" = "Delete unsent message";
+"room_event_action_delete_confirmation_message" = "Are you sure you want to delete this unsent message?";
 "room_event_action_cancel_send" = "Cancel Send";
 "room_event_action_cancel_download" = "Cancel Download";
 "room_event_action_view_encryption" = "Encryption Information";
@@ -1592,14 +1596,14 @@ Tap the + to start adding people.";
 
 "room_intro_cell_add_participants_action" = "Add people";
 
-"room_intro_cell_information_room_sentence1_part1" = "This is the begining of ";
+"room_intro_cell_information_room_sentence1_part1" = "This is the beginning of ";
 "room_intro_cell_information_room_sentence1_part3" = ". ";
 
 "room_intro_cell_information_room_with_topic_sentence2" = "Topic: %@";
 "room_intro_cell_information_room_without_topic_sentence2_part1" = "Add a topic";
 "room_intro_cell_information_room_without_topic_sentence2_part2" = " to let people know what this room is about.";
 
-"room_intro_cell_information_dm_sentence1_part1" = "This is the begining of your direct message with ";
+"room_intro_cell_information_dm_sentence1_part1" = "This is the beginning of your direct message with ";
 "room_intro_cell_information_dm_sentence1_part3" = ". ";
 
 "room_intro_cell_information_dm_sentence2" = "Only the two of you are in this conversation, no one else can join.";

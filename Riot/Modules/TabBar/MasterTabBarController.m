@@ -888,21 +888,43 @@
                     withBadgeColor:(recentsDataSource.missedHighlightFavouriteDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
     
     // Update the badge on People and Rooms tabs
-    [self setMissedDiscussionsCount:recentsDataSource.missedDirectDiscussionsCount
-                       onTabBarItem:TABBAR_PEOPLE_INDEX
-                     withBadgeColor:(recentsDataSource.missedHighlightDirectDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
-    [self setMissedDiscussionsCount:recentsDataSource.missedGroupDiscussionsCount
-                       onTabBarItem:TABBAR_ROOMS_INDEX
-                     withBadgeColor:(recentsDataSource.missedHighlightGroupDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
+    if (recentsDataSource.unsentMessagesDirectDiscussionsCount)
+    {
+        [self setBadgeValue:@"!"
+                           onTabBarItem:TABBAR_PEOPLE_INDEX
+                         withBadgeColor:ThemeService.shared.theme.noticeColor];
+    }
+    else
+    {
+        [self setMissedDiscussionsCount:recentsDataSource.missedDirectDiscussionsCount
+                           onTabBarItem:TABBAR_PEOPLE_INDEX
+                         withBadgeColor:(recentsDataSource.missedHighlightDirectDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
+    }
+    
+    if (recentsDataSource.unsentMessagesGroupDiscussionsCount)
+    {
+        [self setMissedDiscussionsCount:recentsDataSource.unsentMessagesGroupDiscussionsCount
+                           onTabBarItem:TABBAR_ROOMS_INDEX
+                         withBadgeColor:ThemeService.shared.theme.noticeColor];
+    }
+    else
+    {
+        [self setMissedDiscussionsCount:recentsDataSource.missedGroupDiscussionsCount
+                           onTabBarItem:TABBAR_ROOMS_INDEX
+                         withBadgeColor:(recentsDataSource.missedHighlightGroupDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
+    }
 }
 
 - (void)setMissedDiscussionsCount:(NSUInteger)count onTabBarItem:(NSUInteger)index withBadgeColor:(UIColor*)badgeColor
 {
-    if (count)
+    [self setBadgeValue:count ? [self tabBarBadgeStringValue:count] : nil onTabBarItem:index withBadgeColor:badgeColor];
+}
+
+- (void)setBadgeValue:(NSString *)value onTabBarItem:(NSUInteger)index withBadgeColor:(UIColor*)badgeColor
+{
+    if (value)
     {
-        NSString *badgeValue = [self tabBarBadgeStringValue:count];
-        
-        self.tabBar.items[index].badgeValue = badgeValue;
+        self.tabBar.items[index].badgeValue = value;
         
         self.tabBar.items[index].badgeColor = badgeColor;
         

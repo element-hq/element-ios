@@ -1,0 +1,113 @@
+
+
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "العُضو %@ في %@";
+
+/** Single, unencrypted messages (where we can include the content */
+
+/* New message from a specific person, not referencing a room. Content included. */
+"MSG_FROM_USER_WITH_CONTENT" = "العُضو %@: %@";
+
+/* New action message from a specific person, not referencing a room. */
+"ACTION_FROM_USER" = "* %@ %@";
+
+/** Key verification **/
+
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "إنَّ %@ يُريدُ التَّحَقُّق";
+
+/* Incoming named video conference invite from a specific person */
+"VIDEO_CONF_NAMED_FROM_USER" = "مُكالَمَة مَرئيَّة جَماعِيَّة مِن %@: %@";
+
+/* Incoming named voice conference invite from a specific person */
+"VOICE_CONF_NAMED_FROM_USER" = "مُحادَثَة جَماعِيَّة مِن %@: '%@'";
+
+/* Incoming unnamed video conference invite from a specific person */
+"VIDEO_CONF_FROM_USER" = "مُكالَمَة مَرئيَّة جَماعِيَّة مِن %@";
+
+/* Incoming unnamed voice conference invite from a specific person */
+"VOICE_CONF_FROM_USER" = "مُحادَثَة جَماعِيَّة مِن %@";
+
+/* Incoming one-to-one video call */
+"VIDEO_CALL_FROM_USER" = "مُكالَمَة مَرئيَّة مِن %@";
+
+/** Calls **/
+
+/* Incoming one-to-one voice call */
+"VOICE_CALL_FROM_USER" = "مُكالَمَة مِن %@";
+
+/* A user has invited you to a named room */
+"USER_INVITE_TO_NAMED_ROOM" = "لَقَد دَعاكَ %@ إلى %@";
+
+/* A user has invited you to an (unamed) group chat */
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "لَقَد دَعاكَ %@ إلى مُحادَثَة جَماعِيَّة";
+
+/** Invites **/
+
+/* A user has invited you to a chat */
+"USER_INVITE_TO_CHAT" = "لَقَد دَعاكَ %@ إلى مُحادَثَة";
+
+/* Look, stuff's happened, alright? Just open the app. */
+"MSGS_IN_TWO_PLUS_ROOMS" = "عَدَد %@ رِسالَة جَديدَة في %@، %@ وَأُخرَى";
+
+/* Multiple messages in two rooms */
+"MSGS_IN_TWO_ROOMS" = "عَدَد %@ رِسالَة جَديدَة في %@ وَ %@";
+
+/* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
+"MSGS_FROM_TWO_PLUS_USERS" = "عَدَد %@ رِسالَة جَديدَة مِن %@، %@ وَآخرُون";
+
+/* Multiple unread messages from three people */
+"MSGS_FROM_THREE_USERS" = "عَدَد %@ رِسالَة جَديدَة مِن %@، %@ وَ %@";
+
+/* Multiple unread messages from two people */
+"MSGS_FROM_TWO_USERS" = "عَدَد %@ رِسالَة جَديدَة مِن %@ وَ %@";
+
+/* Multiple unread messages from a specific person, not referencing a room */
+"MSGS_FROM_USER" = "عَدَد %@ رِسالَة جَديدَة في %@";
+
+/** Coalesced messages **/
+
+/* Multiple unread messages in a room */
+"UNREAD_IN_ROOM" = "عَدَد %@ رِسالَة جَديدَة في %@";
+"MESSAGE_PROTECTED" = "رِسالَة جَديدَة";
+
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "رِسالَة في %@";
+
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "رِسالَة مِن %@";
+
+/** Notification messages **/
+
+/* New message indicator on unknown room */
+"MESSAGE" = "رِسالة";
+
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "لَقَد أرسَلَ %@ مُلصَق";
+
+/* A single unread message */
+"SINGLE_UNREAD" = "أنتَ قَد اِستَلَمتَ رِسالَة";
+
+/* A single unread message in a room */
+"SINGLE_UNREAD_IN_ROOM" = "أنتَ قَد اِستَلَمتَ رِسالَة في %@";
+
+/* New action message from a specific person in a named room. */
+"IMAGE_FROM_USER_IN_ROOM" = "لَقَد نَشَرَ %@ صُّورَة %@ في %@";
+
+/** Image Messages **/
+
+/* New action message from a specific person, not referencing a room. */
+"IMAGE_FROM_USER" = "لَقَد أرسَلَ %@ صُّورة %@";
+
+/* New action message from a specific person in a named room. */
+"ACTION_FROM_USER_IN_ROOM" = "العُضو %@: * %@ %@";
+
+/* New message from a specific person in a named room. Content included. */
+"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "العُضو %@ في %@: %@";
+
+/* New message from a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM" = "لَقَد نَشَرَ %@ في %@";
+
+/** Single, end-to-end encrypted messages (ie. we don't know what they say) */
+
+/* New message from a specific person, not referencing a room */
+"MSG_FROM_USER" = "لَقَد أرسَلَ %@ رِسالة";

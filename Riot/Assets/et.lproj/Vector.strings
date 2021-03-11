@@ -242,8 +242,8 @@
 "room_message_short_placeholder" = "Saada sõnum…";
 "room_message_reply_to_short_placeholder" = "Saada vastus…";
 "room_offline_notification" = "Ühendus sinu serveriga on katkenud.";
-"room_unsent_messages_notification" = "Sõnumid pole saadetud. %@ või %@ nüüd?";
-"room_unsent_messages_unknown_devices_notification" = "Kuna leidub tundmatuid sessioone, siis sõnumid pole saadetud. %@ või %@ nüüd?";
+"room_unsent_messages_notification" = "Sõnumid pole saadetud.";
+"room_unsent_messages_unknown_devices_notification" = "Kuna leidub tundmatuid sessioone, siis sõnumid pole saadetud.";
 "room_ongoing_conference_call" = "Konverentsikõne on käsil. Liitu kas %@ või %@.";
 "room_ongoing_conference_call_with_close" = "Konverentsikõne on käsil. Liitu kas %@ või %@. %@ seda.";
 "room_ongoing_conference_call_close" = "Sulge";

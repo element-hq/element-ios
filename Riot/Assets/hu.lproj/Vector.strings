@@ -210,8 +210,8 @@
 "room_message_short_placeholder" = "Üzenet küldése…";
 "room_message_reply_to_short_placeholder" = "Válasz küldése…";
 "room_offline_notification" = "A szerverrel megszakadt a kapcsolat.";
-"room_unsent_messages_notification" = "Üzenet nincs elküldve. Most %@ vagy %@?";
-"room_unsent_messages_unknown_devices_notification" = "Az üzenet nincs elküldve, mert ismeretlen munkamenet van jelen. Most %@ vagy %@?";
+"room_unsent_messages_notification" = "Üzenet nincs elküldve.";
+"room_unsent_messages_unknown_devices_notification" = "Az üzenet nincs elküldve, mert ismeretlen munkamenet van jelen.";
 "room_ongoing_conference_call" = "Konferencia hívás van folyamatban. Csatlakozol mint %@ vagy %@.";
 "room_ongoing_conference_call_with_close" = "Konferencia hívás van folyamatban. Csatlakozol mint %@ vagy %@. %@.";
 "room_ongoing_conference_call_close" = "Bezár";

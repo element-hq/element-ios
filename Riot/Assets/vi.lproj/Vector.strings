@@ -200,8 +200,8 @@
 "encrypted_room_message_placeholder" = "Gửi tin nhắn đã mã hoá…";
 "room_message_short_placeholder" = "Gửi tin nhắn…";
 "room_offline_notification" = "Kết nối tới máy chủ thất bại.";
-"room_unsent_messages_notification" = "Các tin nhắn chưa được gửi. %@ hoặc %@ ngay bây giờ?";
-"room_unsent_messages_unknown_devices_notification" = "Các tin nhắn chưa được gửi tới các thiết bị không xác định hiện hành. %@ hoặc %@ ngay bây giờ?";
+"room_unsent_messages_notification" = "Các tin nhắn chưa được gửi.";
+"room_unsent_messages_unknown_devices_notification" = "Các tin nhắn chưa được gửi tới các thiết bị không xác định hiện hành.";
 "room_ongoing_conference_call" = "Cuộc gọi hội nghị đang diễn ra. Tham gia như %@ hoặc %@.";
 "room_ongoing_conference_call_with_close" = "Cuộc gọi hội nghị đang diễn ra. Tham gia như %@ hoặc %@. %@ nó.";
 "room_ongoing_conference_call_close" = "Đóng";
