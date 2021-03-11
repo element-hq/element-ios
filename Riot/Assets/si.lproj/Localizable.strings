@@ -1,0 +1,19 @@
+
+
+"MESSAGE_PROTECTED" = "නව පණිවිඩය";
+
+/** Notification messages **/
+
+/* New message indicator on unknown room */
+"MESSAGE" = "පණිවිඩය";
+
+/* New action message from a specific person in a named room. */
+"ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
+
+/* New action message from a specific person, not referencing a room. */
+"ACTION_FROM_USER" = "* %@ %@";
+
+/** Single, unencrypted messages (where we can include the content */
+
+/* New message from a specific person, not referencing a room. Content included. */
+"MSG_FROM_USER_WITH_CONTENT" = "%@: %@";

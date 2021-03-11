@@ -4,4 +4,4 @@
 "NSMicrophoneUsageDescription" = "Das Mikrofon wird verwendet, um Videos aufzunehmen sowie Gespräche zu führen.";
 "NSContactsUsageDescription" = "Element kann E-Mail-Adressen und Telefonnummern aus deinem Adressbuch zu deinem Matrix-Identitätsserver schicken, um Kontakte zu finden, die bereits Matrix verwenden. Wenn verfügbar, werden persönliche Daten vor dem Versand gehasht. Für weitere Informationen schaue bitte in die Datenschutzerklärung deines Identitätsservers.";
 "NSCalendarsUsageDescription" = "Sieh dir deine geplanten Meetings in der App an.";
-"NSFaceIDUsageDescription" = "Face ID wird zum Zugriff auf deine App verwendet.";
+"NSFaceIDUsageDescription" = "Face-ID wird zum Zugriff auf deine App verwendet.";

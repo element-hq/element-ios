@@ -52,6 +52,8 @@ class DefaultTheme: NSObject, Theme {
 
     var warningColor: UIColor = UIColor(rgb: 0xFF4B55)
 
+    var messageTickColor: UIColor = UIColor(rgb: 0xC1C6CD)
+
     var avatarColors: [UIColor] = [
         UIColor(rgb: 0x03B381),
         UIColor(rgb: 0x368BD6),

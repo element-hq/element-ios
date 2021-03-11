@@ -656,4 +656,30 @@
     return objc_getAssociatedObject(self, @selector(notificationCenterDidUpdateObserver));
 }
 
+#pragma mark - Unread messages
+
+- (RoomSentStatus)sentStatus
+{
+    RoomSentStatus status = RoomSentStatusOk;
+    NSArray<MXEvent*> *outgoingMsgs = self.outgoingMessages;
+
+    for (MXEvent *event in outgoingMsgs)
+    {
+        if (event.sentState == MXEventSentStateFailed)
+        {
+            status = RoomSentStatusSentFailed;
+
+            // Check if the error is due to unknown devices
+            if ([event.sentError.domain isEqualToString:MXEncryptingErrorDomain]
+                && event.sentError.code == MXEncryptingErrorUnknownDeviceCode)
+            {
+                status = RoomSentStatusSentFailedDueToUnknownDevices;
+                break;
+            }
+        }
+    }
+    
+    return status;
+}
+
 @end

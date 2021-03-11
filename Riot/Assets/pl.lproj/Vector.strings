@@ -392,7 +392,7 @@
 "contacts_address_book_no_contact" = "Brak lokalnych kontaktów";
 "auth_msisdn_validation_error" = "Nie można zweryfikować numeru telefonu.";
 "room_participants_invite_malformed_id" = "Uszkodzony ID. Powinien być adres e-mail lub Matrix ID podobny do '@localpart:domain'";
-"room_unsent_messages_notification" = "Wiadomość nie została wysłana. Czy %@ lub %@ teraz?";
+"room_unsent_messages_notification" = "Wiadomość nie została wysłana.";
 "room_ongoing_conference_call_with_close" = "Przychodzące połączenie grupowe. Dołącz z %@ lub z %@. %@ to.";
 "directory_search_results_title" = "Przeglądaj wyniki katalogów";
 "room_event_action_kick_prompt_reason" = "Powód wyrzucenia użytkownika";

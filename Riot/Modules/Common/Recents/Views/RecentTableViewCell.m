@@ -20,6 +20,7 @@
 #import "AvatarGenerator.h"
 
 #import "MXEvent.h"
+#import "MXRoom+Riot.h"
 
 #import "ThemeService.h"
 #import "Riot-Swift.h"
@@ -102,6 +103,9 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
             self.lastEventDescription.text = roomCellData.lastEventTextMessage;
         }
         
+        self.unsentImageView.hidden = roomCellData.roomSummary.room.sentStatus == RoomSentStatusOk;
+        self.lastEventDecriptionLabelTrailingConstraint.constant = self.unsentImageView.hidden ? 10 : 30;
+
         // Notify unreads and bing
         if (roomCellData.hasUnread)
         {

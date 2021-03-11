@@ -216,8 +216,8 @@
 "room_message_short_placeholder" = "Invia un messaggio…";
 "room_message_reply_to_short_placeholder" = "Invia una risposta…";
 "room_offline_notification" = "La connessione al server è stata persa.";
-"room_unsent_messages_notification" = "Messaggi non inviati. %1$s o %2$s ora?";
-"room_unsent_messages_unknown_devices_notification" = "Messaggi non inviati a causa della presenza di sessioni sconosciute. %1$s o %2$s ora?";
+"room_unsent_messages_notification" = "Messaggi non inviati.";
+"room_unsent_messages_unknown_devices_notification" = "Messaggi non inviati a causa della presenza di sessioni sconosciute.";
 "room_ongoing_conference_call" = "Avvio conferenza. Unisciti come %@ o %@.";
 "room_ongoing_conference_call_with_close" = "Avvio conferenza. Unisciti come %@ o %@. %@.";
 "room_ongoing_conference_call_close" = "Chiudi";

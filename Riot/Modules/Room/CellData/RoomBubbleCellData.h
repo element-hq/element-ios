@@ -88,6 +88,11 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
 @property(nonatomic) BOOL isKeyVerificationOperationPending;
 
 /**
+ Index of the component which needs a sent tick displayed. -1 if none.
+ */
+@property(nonatomic) NSInteger componentIndexOfSentMessageTick;
+
+/**
  Indicate to update additional content height.
  */
 - (void)setNeedsUpdateAdditionalContentHeight;
