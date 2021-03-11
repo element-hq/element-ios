@@ -18,5 +18,6 @@
 "NSCameraUsageDescription" = "De camera wordt gebruikt om foto’s en video’s te maken, en voor videogesprekken.";
 "NSPhotoLibraryUsageDescription" = "De fotogalerij wordt gebruikt om foto’s en video’s te versturen.";
 "NSMicrophoneUsageDescription" = "De microfoon wordt gebruikt om video’s te maken, en voor spraakoproepen.";
-"NSContactsUsageDescription" = "Om u te kunnen tonen welke van uw contacten reeds Matrix gebruiken, kan Element de e-mailadressen en telefoonnummers in uw adresboek naar uw gekozen Matrix-identiteitsserver sturen. Waar mogelijk worden persoonlijke gegevens gehasht voor verzenden - bekijk het privacybeleid van uw identiteitsserver voor meer informatie.";
+"NSContactsUsageDescription" = "Om u te kunnen tonen welke van uw contacten reeds Matrix gebruiken, kan Element de e-mailadressen en telefoonnummers in uw adresboek naar uw gekozen Matrix-identiteitsserver sturen. Waar mogelijk worden persoonlijke gegevens gehasht voor verzending - bekijk het privacybeleid van uw identiteitsserver voor meer informatie.";
 "NSCalendarsUsageDescription" = "Bekijk uw geplande afspraken in de app.";
+"NSFaceIDUsageDescription" = "Face ID wordt gebruikt om toegang te krijgen tot uw app.";

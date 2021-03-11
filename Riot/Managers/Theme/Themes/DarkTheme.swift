@@ -84,6 +84,8 @@ class DarkTheme: NSObject, Theme {
     var matrixSearchBackgroundImageTintColor: UIColor = UIColor(rgb: 0x7E7E7E)
     var secondaryCircleButtonBackgroundColor: UIColor = UIColor(rgb: 0xE3E8F0)
     
+    var messageTickColor: UIColor = .white
+
     func applyStyle(onTabBar tabBar: UITabBar) {
         tabBar.unselectedItemTintColor = self.tabBarUnselectedItemTintColor
         tabBar.tintColor = self.tintColor

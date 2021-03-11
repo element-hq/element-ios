@@ -185,8 +185,8 @@
 "encrypted_room_message_placeholder" = "Отправить зашифрованное сообщение…";
 "room_message_short_placeholder" = "Отправить сообщение…";
 "room_offline_notification" = "Связь с сервером потеряна.";
-"room_unsent_messages_notification" = "Сообщения не отправлены. %@ или %@ сейчас?";
-"room_unsent_messages_unknown_devices_notification" = "Сообщение не отправлено из-за присутствия неизвестных сеансов. %@ или %@ сейчас?";
+"room_unsent_messages_notification" = "Сообщения не отправлены.";
+"room_unsent_messages_unknown_devices_notification" = "Сообщение не отправлено из-за присутствия неизвестных сеансов.";
 "room_ongoing_conference_call" = "Текущий групповой вызов. Войти как %@ или %@.";
 "room_prompt_resend" = "Отправить все";
 "room_prompt_cancel" = "отменить все";

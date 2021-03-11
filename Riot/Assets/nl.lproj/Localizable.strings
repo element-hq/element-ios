@@ -19,7 +19,7 @@
 /* New message from a specific person, not referencing a room */
 "MSG_FROM_USER" = "%@ heeft een bericht gestuurd";
 /* New message from a specific person in a named room */
-"MSG_FROM_USER_IN_ROOM" = "%@ geplaatst in %@";
+"MSG_FROM_USER_IN_ROOM" = "%@ heeft een bericht in %@ geplaatst";
 /** Single, unencrypted messages (where we can include the content */
 
 /* New message from a specific person, not referencing a room. Content included. */
@@ -33,7 +33,7 @@
 /** Image Messages **/
 
 /* New action message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@ heeft een afbeelding %@ gestuurd";
+"IMAGE_FROM_USER" = "%@ heeft een afbeelding gestuurd %@";
 /* New action message from a specific person in a named room. */
 "IMAGE_FROM_USER_IN_ROOM" = "%@ heeft een afbeelding %@ in %@ geplaatst";
 /** Coalesced messages **/
@@ -83,3 +83,15 @@
 /* Sticker from a specific person, not referencing a room. */
 "STICKER_FROM_USER" = "%@ heeft een sticker gestuurd";
 "KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ wil verifiëren";
+"MESSAGE_PROTECTED" = "Nieuw Bericht";
+
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "Bericht in %@";
+
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "Bericht van %@";
+
+/** Notification messages **/
+
+/* New message indicator on unknown room */
+"MESSAGE" = "Bericht";

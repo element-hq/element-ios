@@ -63,6 +63,8 @@ import UIKit
 
     var selectedBackgroundColor: UIColor { get }
     
+    var messageTickColor: UIColor { get }
+    
     // MARK: - Call Screen Specific Colors
     
     var callScreenButtonTintColor: UIColor { get }

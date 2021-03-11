@@ -1146,6 +1146,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     _missedFavouriteDiscussionsCount = _missedHighlightFavouriteDiscussionsCount = 0;
     _missedDirectDiscussionsCount = _missedHighlightDirectDiscussionsCount = 0;
     _missedGroupDiscussionsCount = _missedHighlightGroupDiscussionsCount = 0;
+    _unsentMessagesDirectDiscussionsCount = 0;
+    _unsentMessagesGroupDiscussionsCount = 0;
     
     secureBackupBannerSection = directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = serverNoticeSection = invitesSection = -1;
     
@@ -1282,6 +1284,18 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                 }
             }
             
+            if (room.sentStatus != RoomSentStatusOk)
+            {
+                if (room.isDirect)
+                {
+                    _unsentMessagesDirectDiscussionsCount ++;
+                }
+                else
+                {
+                    _unsentMessagesGroupDiscussionsCount ++;
+                }
+            }
+            
         }
         
         if (_recentsDataSourceMode == RecentsDataSourceModeHome)
@@ -1294,6 +1308,18 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             {
                 // Sort each rooms collection by considering first the rooms with some missed notifs, the rooms with unread, then the others.
                 comparator = ^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
+                    
+                    if (recentCellData1.roomSummary.room.sentStatus != RoomSentStatusOk
+                        && recentCellData2.roomSummary.room.sentStatus == RoomSentStatusOk)
+                    {
+                        return NSOrderedAscending;
+                    }
+                    
+                    if (recentCellData2.roomSummary.room.sentStatus != RoomSentStatusOk
+                        && recentCellData1.roomSummary.room.sentStatus == RoomSentStatusOk)
+                    {
+                        return NSOrderedDescending;
+                    }
                     
                     if (recentCellData1.highlightCount)
                     {
@@ -1352,6 +1378,18 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                 // Sort each rooms collection by considering first the rooms with some unread messages then the others.
                 comparator = ^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
                     
+                    if (recentCellData1.roomSummary.room.sentStatus != RoomSentStatusOk
+                        && recentCellData2.roomSummary.room.sentStatus == RoomSentStatusOk)
+                    {
+                        return NSOrderedAscending;
+                    }
+                    
+                    if (recentCellData2.roomSummary.room.sentStatus != RoomSentStatusOk
+                        && recentCellData1.roomSummary.room.sentStatus == RoomSentStatusOk)
+                    {
+                        return NSOrderedDescending;
+                    }
+                    
                     if (recentCellData1.hasUnread)
                     {
                         if (recentCellData2.hasUnread)
@@ -1389,6 +1427,25 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                 
                 return [session compareRoomsByTag:kMXRoomTagFavourite room1:recentCellData1.roomSummary.room room2:recentCellData2.roomSummary.room];
                 
+            }];
+        }
+        else if (conversationCellDataArray.count > 0 && (_recentsDataSourceMode == RecentsDataSourceModeRooms || _recentsDataSourceMode == RecentsDataSourceModePeople))
+        {
+            [conversationCellDataArray sortUsingComparator:^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
+                
+                if (recentCellData1.roomSummary.room.sentStatus != RoomSentStatusOk
+                    && recentCellData2.roomSummary.room.sentStatus == RoomSentStatusOk)
+                {
+                    return NSOrderedAscending;
+                }
+                
+                if (recentCellData2.roomSummary.room.sentStatus != RoomSentStatusOk
+                    && recentCellData1.roomSummary.room.sentStatus == RoomSentStatusOk)
+                {
+                    return NSOrderedDescending;
+                }
+
+                return NSOrderedAscending;
             }];
         }
     }

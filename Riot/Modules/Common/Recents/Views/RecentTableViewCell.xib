@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,7 +13,7 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="74"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="L2L-l5-wPx" id="aXz-IR-jj5">
-                <rect key="frame" x="0.0" y="0.0" width="600" height="73.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="600" height="74"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e7r-zL-9bw" userLabel="Bing indicator">
@@ -55,7 +53,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LastEventDescription" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dQt-mN-T6b">
-                        <rect key="frame" x="69" y="39" width="521" height="20"/>
+                        <rect key="frame" x="69" y="39" width="501" height="20"/>
                         <accessibility key="accessibilityConfiguration" identifier="LastEventDescription"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="e6p-DU-3ny"/>
@@ -101,8 +99,16 @@
                             <constraint firstAttribute="width" constant="16" id="i9u-Bs-pBy"/>
                         </constraints>
                     </imageView>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="error_icon" translatesAutoresizingMaskIntoConstraints="NO" id="F6K-PV-15f">
+                        <rect key="frame" x="574" y="41" width="16" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="16" id="dkD-bq-4ND"/>
+                            <constraint firstAttribute="height" constant="16" id="lNd-8B-gRr"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="F6K-PV-15f" firstAttribute="trailing" secondItem="360-Go-RcG" secondAttribute="trailing" id="3qB-Na-Eqs"/>
                     <constraint firstItem="8CY-Ku-0qh" firstAttribute="centerX" secondItem="RX5-eD-c3c" secondAttribute="centerX" id="FVh-1h-VkB"/>
                     <constraint firstItem="360-Go-RcG" firstAttribute="leading" secondItem="OeZ-wN-eil" secondAttribute="trailing" constant="8" id="KuE-8m-e9A"/>
                     <constraint firstItem="e7r-zL-9bw" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" id="PUW-if-ewh"/>
@@ -114,10 +120,11 @@
                     <constraint firstAttribute="trailing" secondItem="360-Go-RcG" secondAttribute="trailing" constant="10" id="YqC-WC-Wqe"/>
                     <constraint firstItem="NAZ-zd-MHS" firstAttribute="centerY" secondItem="dQt-mN-T6b" secondAttribute="centerY" constant="2" id="c6L-cn-sJL"/>
                     <constraint firstItem="OeZ-wN-eil" firstAttribute="centerY" secondItem="360-Go-RcG" secondAttribute="centerY" id="fYc-th-Nay"/>
+                    <constraint firstItem="F6K-PV-15f" firstAttribute="centerY" secondItem="dQt-mN-T6b" secondAttribute="centerY" id="iMe-h4-M1a"/>
                     <constraint firstItem="dQt-mN-T6b" firstAttribute="top" secondItem="Lg1-xQ-AGn" secondAttribute="bottom" constant="4" id="iaT-57-GOs"/>
                     <constraint firstItem="RX5-eD-c3c" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="15" id="mga-fG-I0L"/>
                     <constraint firstItem="NAZ-zd-MHS" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" constant="44" id="ofi-HP-uke"/>
-                    <constraint firstAttribute="trailing" secondItem="dQt-mN-T6b" secondAttribute="trailing" constant="10" id="t2m-pb-5zd"/>
+                    <constraint firstAttribute="trailing" secondItem="dQt-mN-T6b" secondAttribute="trailing" constant="30" id="t2m-pb-5zd"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="14" id="tY3-6V-A3B"/>
                     <constraint firstItem="RX5-eD-c3c" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" constant="13" id="tgy-cX-Wxm"/>
                     <constraint firstItem="8CY-Ku-0qh" firstAttribute="centerY" secondItem="RX5-eD-c3c" secondAttribute="centerY" id="ukJ-yz-Kit"/>
@@ -129,6 +136,7 @@
                 <outlet property="directRoomBorderView" destination="8CY-Ku-0qh" id="vKk-ZO-TQq"/>
                 <outlet property="encryptedRoomIcon" destination="NAZ-zd-MHS" id="ZsH-Zr-Q4K"/>
                 <outlet property="lastEventDate" destination="360-Go-RcG" id="Y0L-Dj-ZVn"/>
+                <outlet property="lastEventDecriptionLabelTrailingConstraint" destination="t2m-pb-5zd" id="cxp-7Z-bEg"/>
                 <outlet property="lastEventDescription" destination="dQt-mN-T6b" id="MSz-h1-cAL"/>
                 <outlet property="missedNotifAndUnreadBadgeBgView" destination="OeZ-wN-eil" id="tVo-8Z-hc2"/>
                 <outlet property="missedNotifAndUnreadBadgeBgViewWidthConstraint" destination="86T-0d-rAI" id="KLF-Du-rHT"/>
@@ -136,10 +144,13 @@
                 <outlet property="missedNotifAndUnreadIndicator" destination="e7r-zL-9bw" id="jWE-0y-BMv"/>
                 <outlet property="roomAvatar" destination="RX5-eD-c3c" id="dIC-8p-inL"/>
                 <outlet property="roomTitle" destination="Lg1-xQ-AGn" id="q7Q-TM-5C8"/>
+                <outlet property="unsentImageView" destination="F6K-PV-15f" id="EnH-mb-j6s"/>
             </connections>
+            <point key="canvasLocation" x="-131.19999999999999" y="81.859070464767626"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="e2e_verified" width="10" height="12"/>
+        <image name="error_icon" width="16" height="16"/>
     </resources>
 </document>

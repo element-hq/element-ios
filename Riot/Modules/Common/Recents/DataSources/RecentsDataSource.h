@@ -180,6 +180,11 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
 @property (nonatomic, readonly) NSUInteger missedHighlightDirectDiscussionsCount;
 
 /**
+ The current number of the direct chats with unsent messages.
+ */
+@property (nonatomic, readonly) NSUInteger unsentMessagesDirectDiscussionsCount;
+
+/**
  The current number of the group chats with missed notifications, including the invites.
  */
 @property (nonatomic, readonly) NSUInteger missedGroupDiscussionsCount;
@@ -188,5 +193,10 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
  The current number of the group chats with unread highlighted messages.
  */
 @property (nonatomic, readonly) NSUInteger missedHighlightGroupDiscussionsCount;
+
+/**
+ The current number of the group chats with unsent messages.
+ */
+@property (nonatomic, readonly) NSUInteger unsentMessagesGroupDiscussionsCount;
 
 @end

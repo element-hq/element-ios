@@ -30,4 +30,7 @@
 @property (weak, nonatomic) IBOutlet UIView  *missedNotifAndUnreadBadgeBgView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *missedNotifAndUnreadBadgeBgViewWidthConstraint;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *lastEventDecriptionLabelTrailingConstraint;
+@property (weak, nonatomic) IBOutlet UIImageView *unsentImageView;
+
 @end

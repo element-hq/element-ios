@@ -1,12 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,11 +13,11 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="40"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WmY-Jw-mqv" id="ef1-Tq-U3Z">
-                <rect key="frame" x="0.0" y="0.0" width="600" height="39"/>
+                <rect key="frame" x="0.0" y="0.0" width="600" height="40"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="5IE-JS-uf3" userLabel="Attachment View" customClass="MXKImageView">
-                        <rect key="frame" x="56" y="3" width="192" height="33"/>
+                        <rect key="frame" x="56" y="3" width="192" height="34"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration" identifier="AttachmentView"/>
                         <constraints>
@@ -45,7 +42,7 @@
                         </constraints>
                     </imageView>
                     <view hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IOg-Kt-8vW">
-                        <rect key="frame" x="515" y="3" width="70" height="36"/>
+                        <rect key="frame" x="515" y="3" width="70" height="37"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration" identifier="BubbleInfoContainer"/>
                         <constraints>
@@ -53,44 +50,33 @@
                         </constraints>
                     </view>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fdx-qs-8en" userLabel="ProgressView">
-                        <rect key="frame" x="487" y="-15.5" width="100" height="70"/>
+                        <rect key="frame" x="487" y="3" width="100" height="34"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="rate" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="4" preferredMaxLayoutWidth="100" translatesAutoresizingMaskIntoConstraints="NO" id="eU5-iK-u8i" userLabel="Progress stats">
-                                <rect key="frame" x="0.0" y="60" width="100" height="10"/>
-                                <accessibility key="accessibilityConfiguration" identifier="ProgressStats"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="8"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hJj-TC-pxK" customClass="MXKPieChartView">
-                                <rect key="frame" x="30" y="0.0" width="40" height="40"/>
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hJj-TC-pxK" customClass="CircleProgressView" customModule="Riot" customModuleProvider="target">
+                                <rect key="frame" x="84" y="18" width="16" height="16"/>
                                 <accessibility key="accessibilityConfiguration" identifier="ProgressChartView"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="Cpt-s4-tlK"/>
-                                    <constraint firstAttribute="height" constant="40" id="Jb4-9E-tG0"/>
+                                    <constraint firstAttribute="width" constant="16" id="Cpt-s4-tlK"/>
+                                    <constraint firstAttribute="height" constant="16" id="Jb4-9E-tG0"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="70" id="5w2-Hm-hZx"/>
-                            <constraint firstAttribute="centerX" secondItem="eU5-iK-u8i" secondAttribute="centerX" id="APi-aE-mLc"/>
-                            <constraint firstItem="eU5-iK-u8i" firstAttribute="leading" secondItem="fdx-qs-8en" secondAttribute="leading" id="Njw-3a-E9Y"/>
-                            <constraint firstAttribute="bottom" secondItem="eU5-iK-u8i" secondAttribute="bottom" id="QMO-g9-QVE"/>
-                            <constraint firstAttribute="centerX" secondItem="hJj-TC-pxK" secondAttribute="centerX" id="laR-Vg-ol3"/>
-                            <constraint firstItem="hJj-TC-pxK" firstAttribute="top" secondItem="fdx-qs-8en" secondAttribute="top" id="ovD-8p-4dP"/>
+                            <constraint firstAttribute="trailing" secondItem="hJj-TC-pxK" secondAttribute="trailing" id="9Ig-QL-eeA"/>
+                            <constraint firstAttribute="bottom" secondItem="hJj-TC-pxK" secondAttribute="bottom" id="bfS-zB-FMB"/>
                             <constraint firstAttribute="width" constant="100" id="ryE-fW-SgG"/>
-                            <constraint firstAttribute="trailing" secondItem="eU5-iK-u8i" secondAttribute="trailing" id="teG-8q-BOX"/>
                         </constraints>
                     </view>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WiZ-KM-lSH">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="39"/>
+                        <rect key="frame" x="8" y="3" width="584" height="34"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                 </subviews>
                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="3" id="96U-67-5TP"/>
+                    <constraint firstItem="hJj-TC-pxK" firstAttribute="bottom" secondItem="5IE-JS-uf3" secondAttribute="bottom" id="AF6-HL-Xfw"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="centerY" secondItem="Cot-3X-2cU" secondAttribute="centerY" id="H5t-l6-fL1"/>
                     <constraint firstItem="WiZ-KM-lSH" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="topMargin" constant="-8" id="ICD-ch-XIt"/>
                     <constraint firstAttribute="trailingMargin" secondItem="WiZ-KM-lSH" secondAttribute="trailing" constant="-8" id="QZK-47-doo"/>
@@ -99,11 +85,11 @@
                     <constraint firstItem="IOg-Kt-8vW" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="3" id="XSL-TG-m62"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leading" constant="56" id="bSL-lG-ued"/>
                     <constraint firstAttribute="trailing" secondItem="IOg-Kt-8vW" secondAttribute="trailing" constant="15" id="hQV-lO-7aQ"/>
+                    <constraint firstItem="fdx-qs-8en" firstAttribute="top" secondItem="5IE-JS-uf3" secondAttribute="top" id="lNc-m9-BWs"/>
                     <constraint firstAttribute="bottomMargin" secondItem="WiZ-KM-lSH" secondAttribute="bottom" constant="-8" id="ofs-BR-F97"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="leading" secondItem="K9X-gn-noF" secondAttribute="leading" id="p93-5h-lvW"/>
                     <constraint firstItem="WiZ-KM-lSH" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leadingMargin" constant="-8" id="qKa-jp-T43"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="centerX" secondItem="Cot-3X-2cU" secondAttribute="centerX" id="sF7-QL-vdj"/>
-                    <constraint firstItem="5IE-JS-uf3" firstAttribute="centerY" secondItem="fdx-qs-8en" secondAttribute="centerY" id="v0F-Ts-14P"/>
                     <constraint firstItem="5IE-JS-uf3" firstAttribute="top" secondItem="K9X-gn-noF" secondAttribute="top" id="wkX-zQ-iQS"/>
                     <constraint firstAttribute="trailing" secondItem="fdx-qs-8en" secondAttribute="trailing" constant="13" id="xKk-Gz-moE"/>
                 </constraints>
@@ -123,8 +109,8 @@
                 <outlet property="playIconView" destination="Cot-3X-2cU" id="KEF-KK-Og1"/>
                 <outlet property="progressChartView" destination="hJj-TC-pxK" id="Zz3-s5-Qqr"/>
                 <outlet property="progressView" destination="fdx-qs-8en" id="V7E-pn-Xze"/>
-                <outlet property="statsLabel" destination="eU5-iK-u8i" id="MSm-kU-RSY"/>
             </connections>
+            <point key="canvasLocation" x="34" y="113"/>
         </tableViewCell>
     </objects>
 </document>

@@ -189,8 +189,8 @@
 "encrypted_room_message_placeholder" = "发送加密消息…";
 "room_message_short_placeholder" = "发送消息…";
 "room_offline_notification" = "到服务器的连接已经丢失。";
-"room_unsent_messages_notification" = "消息没有发送。现在 %@ 或 %@ ？";
-"room_unsent_messages_unknown_devices_notification" = "由于未知会话在线所以消息没有发送。现在 %@ 或 %@？";
+"room_unsent_messages_notification" = "消息没有发送。";
+"room_unsent_messages_unknown_devices_notification" = "由于未知会话在线所以消息没有发送。";
 "room_ongoing_conference_call" = "收到会议通话。以 %@ 或 %@ 加入。";
 "room_prompt_resend" = "全部重新发送";
 "room_prompt_cancel" = "全部取消";
