@@ -144,7 +144,6 @@
                                         <constraint firstAttribute="width" constant="44" id="yAh-Gb-GtB"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="13"/>
-                                    <inset key="titleEdgeInsets" minX="-69" minY="61" maxX="0.0" maxY="0.0"/>
                                     <state key="normal" image="back_icon">
                                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -156,8 +155,8 @@
                                         <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="yKw-Aj-XkE"/>
                                     </connections>
                                 </button>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" text="Name" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IW8-8P-mS3">
-                                    <rect key="frame" x="183.66666666666666" y="4" width="46.666666666666657" height="20.333333333333332"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" text="Name" textAlignment="center" lineBreakMode="middleTruncation" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IW8-8P-mS3">
+                                    <rect key="frame" x="54" y="4" width="306" height="20.333333333333332"/>
                                     <accessibility key="accessibilityConfiguration" identifier="CallVCCallerNameLabel"/>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -173,12 +172,13 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstItem="IW8-8P-mS3" firstAttribute="centerX" secondItem="sOu-ER-kOe" secondAttribute="centerX" id="EaP-Ir-ft9"/>
+                                <constraint firstAttribute="trailing" secondItem="IW8-8P-mS3" secondAttribute="trailing" constant="54" id="KKK-Wz-1w3"/>
                                 <constraint firstItem="IW8-8P-mS3" firstAttribute="top" secondItem="sOu-ER-kOe" secondAttribute="top" constant="4" id="Wwm-db-dYV"/>
                                 <constraint firstItem="nff-fB-sTq" firstAttribute="leading" secondItem="sOu-ER-kOe" secondAttribute="leading" constant="10" id="guD-oo-Tl5"/>
                                 <constraint firstItem="29y-MK-OWH" firstAttribute="top" secondItem="IW8-8P-mS3" secondAttribute="bottom" constant="8" id="iXL-M7-wEB"/>
                                 <constraint firstItem="nff-fB-sTq" firstAttribute="centerY" secondItem="sOu-ER-kOe" secondAttribute="centerY" id="vP7-sN-t5g"/>
                                 <constraint firstItem="29y-MK-OWH" firstAttribute="centerX" secondItem="sOu-ER-kOe" secondAttribute="centerX" id="yrO-M6-IFX"/>
+                                <constraint firstItem="IW8-8P-mS3" firstAttribute="leading" secondItem="nff-fB-sTq" secondAttribute="trailing" id="zfx-8Q-WF1"/>
                                 <constraint firstAttribute="height" constant="54" id="zsh-GQ-fv2"/>
                             </constraints>
                         </view>

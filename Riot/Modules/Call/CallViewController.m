@@ -413,26 +413,19 @@
 
 - (void)updatePeerInfoDisplay
 {
-    NSString *peerDisplayName;
-    NSString *peerAvatarURL;
+    [super updatePeerInfoDisplay];
     
+    NSString *peerAvatarURL;
+
     if (self.peer)
     {
-        peerDisplayName = [self.peer displayname];
-        if (!peerDisplayName.length)
-        {
-            peerDisplayName = self.peer.userId;
-        }
         peerAvatarURL = self.peer.avatarUrl;
     }
     else if (self.mxCall.isConferenceCall)
     {
-        peerDisplayName = self.mxCall.room.summary.displayname;
         peerAvatarURL = self.mxCall.room.summary.avatar;
     }
-    
-    self.callerNameLabel.text = peerDisplayName;
-    
+
     self.blurredCallerImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.callerImageView.contentMode = UIViewContentModeScaleAspectFill;
     if (peerAvatarURL)
@@ -443,7 +436,7 @@
                              andImageOrientation:UIImageOrientationUp
                                     previewImage:self.picturePlaceholder
                                     mediaManager:self.mainSession.mediaManager];
-        
+
         // Retrieve the avatar in full resolution
         [self.callerImageView setImageURI:peerAvatarURL
                                  withType:nil
