@@ -4,18 +4,16 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="CallBubbleCellBaseContentView" customModule="Riot" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="189"/>
-            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iN0-l3-epB" customClass="CallBubbleCellBaseContentView" customModule="Riot" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="202"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="pdr-Jo-LHQ">
-                    <rect key="frame" x="54" y="0.0" width="344" height="183"/>
+                    <rect key="frame" x="54" y="0.0" width="344" height="196"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H6S-AE-DTm" userLabel="Pagination Title View">
                             <rect key="frame" x="0.0" y="0.0" width="344" height="24"/>
@@ -48,10 +46,10 @@
                             </constraints>
                         </view>
                         <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="155-SF-bbg">
-                            <rect key="frame" x="0.0" y="30" width="344" height="153"/>
+                            <rect key="frame" x="0.0" y="30" width="344" height="166"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="rRX-FX-vnm">
-                                    <rect key="frame" x="0.0" y="0.0" width="344" height="153"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="344" height="166"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2TD-ng-0tw">
                                             <rect key="frame" x="52" y="0.0" width="240" height="16"/>
@@ -116,7 +114,7 @@
                                             </constraints>
                                         </stackView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ce0-Kh-hec">
-                                            <rect key="frame" x="0.0" y="108" width="344" height="45"/>
+                                            <rect key="frame" x="0.0" y="108" width="344" height="58"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </view>
                                     </subviews>
@@ -130,10 +128,10 @@
                             </subviews>
                             <color key="backgroundColor" red="0.95294117649999999" green="0.97254901959999995" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
-                                <constraint firstItem="rRX-FX-vnm" firstAttribute="top" secondItem="155-SF-bbg" secondAttribute="top" id="45L-cH-SuQ"/>
-                                <constraint firstItem="rRX-FX-vnm" firstAttribute="leading" secondItem="155-SF-bbg" secondAttribute="leading" id="50U-vN-RJD"/>
-                                <constraint firstAttribute="trailing" secondItem="rRX-FX-vnm" secondAttribute="trailing" id="5QQ-uv-5Pb"/>
-                                <constraint firstAttribute="bottom" secondItem="rRX-FX-vnm" secondAttribute="bottom" id="Dlh-3F-Elp"/>
+                                <constraint firstAttribute="bottom" secondItem="rRX-FX-vnm" secondAttribute="bottom" id="6PS-rl-tHZ"/>
+                                <constraint firstItem="rRX-FX-vnm" firstAttribute="top" secondItem="155-SF-bbg" secondAttribute="top" id="TAm-cE-z5p"/>
+                                <constraint firstAttribute="trailing" secondItem="rRX-FX-vnm" secondAttribute="trailing" id="rvf-M8-YaT"/>
+                                <constraint firstItem="rRX-FX-vnm" firstAttribute="leading" secondItem="155-SF-bbg" secondAttribute="leading" id="vc3-QF-AQD"/>
                             </constraints>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -144,18 +142,17 @@
                     </subviews>
                 </stackView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Fb-Sw-AW5">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="189"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="202"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
             </subviews>
-            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="8Fb-Sw-AW5" secondAttribute="bottom" id="1bC-yu-IPf"/>
-                <constraint firstItem="8Fb-Sw-AW5" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="3j3-0h-Bsx"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="pdr-Jo-LHQ" secondAttribute="trailing" constant="16" id="7xn-GF-gTt"/>
-                <constraint firstItem="pdr-Jo-LHQ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="54" id="96R-ah-got"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="8Fb-Sw-AW5" secondAttribute="trailing" id="SEd-5d-C8r"/>
+                <constraint firstAttribute="bottom" secondItem="8Fb-Sw-AW5" secondAttribute="bottom" id="1bC-yu-IPf"/>
+                <constraint firstItem="8Fb-Sw-AW5" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="3j3-0h-Bsx"/>
+                <constraint firstAttribute="trailing" secondItem="pdr-Jo-LHQ" secondAttribute="trailing" constant="16" id="7xn-GF-gTt"/>
+                <constraint firstItem="pdr-Jo-LHQ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="54" id="96R-ah-got"/>
+                <constraint firstAttribute="trailing" secondItem="8Fb-Sw-AW5" secondAttribute="trailing" id="SEd-5d-C8r"/>
                 <constraint firstAttribute="bottom" secondItem="pdr-Jo-LHQ" secondAttribute="bottom" constant="6" id="TYc-7V-K67"/>
                 <constraint firstItem="8Fb-Sw-AW5" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Ywq-vx-otD"/>
                 <constraint firstItem="pdr-Jo-LHQ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="fgy-XO-coX"/>
@@ -176,7 +173,7 @@
                 <outlet property="paginationSeparatorView" destination="YdR-PH-eGM" id="aK7-LF-awm"/>
                 <outlet property="paginationTitleView" destination="H6S-AE-DTm" id="yep-a0-QYq"/>
             </connections>
-            <point key="canvasLocation" x="44.927536231884062" y="-144.97767857142856"/>
+            <point key="canvasLocation" x="44.927536231884062" y="-138.95089285714286"/>
         </view>
     </objects>
     <resources>

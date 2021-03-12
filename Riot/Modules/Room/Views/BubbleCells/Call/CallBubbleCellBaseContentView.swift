@@ -56,9 +56,6 @@ class CallBubbleCellBaseContentView: UIView {
         } else {
             callSummaryHeightConstraint.constant = Constants.callSummaryWithBottomViewHeight
         }
-        
-        setNeedsLayout()
-        layoutIfNeeded()
     }
     
     func render(_ cellData: MXKCellData) {
