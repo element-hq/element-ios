@@ -2,6 +2,30 @@ Changes to be released in next version
 =================================================
 
 ✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Changes in 1.2.6 (2021-03-11)
+=================================================
+
+✨ Features
  * Improve the status of send messages (sending, sent, received, failed) (#4014)
  * Retrying & deleting failed messages (#4013)
 
@@ -22,6 +46,9 @@ Changes to be released in next version
 
 Others
  * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.14.5](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.5)).
 
 Changes in 1.2.5 (2021-03-03)
 =================================================
