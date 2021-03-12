@@ -2390,6 +2390,22 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
             
             [self roomInputToolbarView:self.inputToolbarView placeCallWithVideo2:eventContent.isVideoCall];
         }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellCallDeclineButtonPressed])
+        {
+            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
+            
+            MXCall *call = [self.mainSession.callManager callWithCallId:eventContent.callId];
+            [call hangup];
+        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellCallAnswerButtonPressed])
+        {
+            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
+            
+            MXCall *call = [self.mainSession.callManager callWithCallId:eventContent.callId];
+            [call answer];
+        }
         else if ([actionIdentifier isEqualToString:RoomCreationIntroCell.tapOnAvatarView])
         {
             [self showRoomAvatarChange];
