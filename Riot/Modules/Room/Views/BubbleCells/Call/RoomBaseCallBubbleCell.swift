@@ -36,10 +36,7 @@ class RoomBaseCallBubbleCell: MXKRoomBubbleTableViewCell {
     override func setupViews() {
         super.setupViews()
         
-        self.contentView.vc_removeAllSubviews()
         self.contentView.vc_addSubViewMatchingParent(innerContentView)
-        
-        updateBottomContentView()
     }
 
     //  Bottom content view. Will be spanned in bottomContainerView
