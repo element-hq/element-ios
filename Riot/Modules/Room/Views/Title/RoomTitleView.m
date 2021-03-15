@@ -54,8 +54,8 @@
 {
     [super layoutSubviews];
 
-    self.roomDetailsIconImageView.image = self.roomDetailsIconImageView.image;
-    
+    self.pictureView.layer.cornerRadius = self.pictureView.bounds.size.width / 2.;
+
     if (self.superview)
     {
         // Force the title view layout by adding 2 new constraints on the UINavigationBarContentView instance.
@@ -84,7 +84,7 @@
 
     self.backgroundColor = UIColor.clearColor;
     self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? ThemeService.shared.theme.textPrimaryColor : ThemeService.shared.theme.textSecondaryColor);
-    self.roomDetailsIconImageView.tintColor = ThemeService.shared.theme.textPrimaryColor;
+    self.typingLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
 }
 
 - (void)setRoomPreviewData:(RoomPreviewData *)roomPreviewData
@@ -131,6 +131,36 @@
     {
         [self.tapGestureDelegate roomTitleView:self recognizeTapGesture:tapGestureRecognizer];
     }
+}
+
+- (void)setTypingNotificationString:(NSString *)typingNotificationString
+{
+    if (typingNotificationString.length > 0)
+    {
+        self.typingLabel.text = typingNotificationString;
+        [self layoutIfNeeded];
+
+        [UIView animateWithDuration:.3 animations:^{
+            self.typingLabel.alpha = 1;
+            self.displayNameCenterYConstraint.constant = -8;
+            [self layoutIfNeeded];
+        }];
+    }
+    else
+    {
+        [UIView animateWithDuration:.3 animations:^{
+            self.typingLabel.alpha = 0;
+            self.displayNameCenterYConstraint.constant = 0;
+            [self layoutIfNeeded];
+        } completion:^(BOOL finished) {
+            self.typingLabel.text = nil;
+        }];
+    }
+}
+
+- (NSString *)typingNotificationString
+{
+    return self.typingLabel.text;
 }
 
 @end

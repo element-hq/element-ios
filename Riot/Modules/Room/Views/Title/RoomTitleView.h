@@ -35,9 +35,11 @@
 @interface RoomTitleView : MXKRoomTitleView <UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *titleMask;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *displayNameCenterXConstraint;
-@property (weak, nonatomic) IBOutlet UIImageView *roomDetailsIconImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *badgeImageView;
+@property (weak, nonatomic) IBOutlet MXKImageView *pictureView;
+@property (weak, nonatomic) IBOutlet UILabel *missedDiscussionsBadgeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *typingLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *displayNameCenterYConstraint;
 
 /**
  The room preview data may be used when mxRoom instance is not available
@@ -48,6 +50,11 @@
  The tap gesture delegate.
  */
 @property (nonatomic) id<RoomTitleViewTapGestureDelegate> tapGestureDelegate;
+
+/**
+ the typing notification string to be displayed (default nil if notification is hidden).
+ */
+@property (copy, nonatomic) NSString *typingNotificationString;
 
 /**
  The method used to handle the gesture recognized by a receiver.

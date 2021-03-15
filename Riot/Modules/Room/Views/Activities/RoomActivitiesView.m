@@ -292,9 +292,12 @@
     }
     else
     {
+        self.unsentMessagesContentView.hidden = YES;
+        
         // We keep the current message if any
         [self resetIcon];
         
+        self.messageLabel.text = nil;
         self.iconImageView.image = [UIImage imageNamed:@"scrolldown"];
         self.iconImageView.tintColor = ThemeService.shared.theme.textPrimaryColor;
     }

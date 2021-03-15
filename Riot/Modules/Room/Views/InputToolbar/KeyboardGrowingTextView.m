@@ -38,4 +38,10 @@
     }
 }
 
+- (void)setMaxHeight:(int)height
+{
+    maxHeight = MIN(height, 112);
+    maxNumberOfLines = 0;
+}
+
 @end

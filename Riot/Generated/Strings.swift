@@ -2294,6 +2294,10 @@ internal enum VectorL10n {
   internal static var roomAccessibilityUpload: String { 
     return VectorL10n.tr("Vector", "room_accessibility_upload") 
   }
+  /// Video Call
+  internal static var roomAccessibilityVideoCall: String { 
+    return VectorL10n.tr("Vector", "room_accessibility_video_call") 
+  }
   /// Scroll to bottom
   internal static var roomAccessiblityScrollToBottom: String { 
     return VectorL10n.tr("Vector", "room_accessiblity_scroll_to_bottom") 
@@ -2614,6 +2618,10 @@ internal enum VectorL10n {
   internal static var roomDetailsHistorySectionPromptTitle: String { 
     return VectorL10n.tr("Vector", "room_details_history_section_prompt_title") 
   }
+  /// Integrations
+  internal static var roomDetailsIntegrations: String { 
+    return VectorL10n.tr("Vector", "room_details_integrations") 
+  }
   /// Low priority
   internal static var roomDetailsLowPriorityTag: String { 
     return VectorL10n.tr("Vector", "room_details_low_priority_tag") 
@@ -2665,6 +2673,10 @@ internal enum VectorL10n {
   /// Do you want to save changes?
   internal static var roomDetailsSaveChangesPrompt: String { 
     return VectorL10n.tr("Vector", "room_details_save_changes_prompt") 
+  }
+  /// Search room
+  internal static var roomDetailsSearch: String { 
+    return VectorL10n.tr("Vector", "room_details_search") 
   }
   /// Set as Main Address
   internal static var roomDetailsSetMainAddress: String { 

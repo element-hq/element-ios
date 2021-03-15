@@ -18,11 +18,13 @@
 
 import Foundation
 
-enum RoomInfoListTarget {
+enum RoomInfoListTarget: Equatable {
     case settings(_ field: RoomSettingsViewControllerField = RoomSettingsViewControllerFieldNone)
     case members
     case uploads
-    
+    case integrations
+    case search
+
     var tabIndex: UInt {
         let tabIndex: UInt
         
@@ -33,6 +35,10 @@ enum RoomInfoListTarget {
             tabIndex = 1
         case .settings:
             tabIndex = 2
+        case .integrations:
+            tabIndex = 3
+        case .search:
+            tabIndex = 4
         }
         
         return tabIndex

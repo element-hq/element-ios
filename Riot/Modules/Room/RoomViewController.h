@@ -46,6 +46,7 @@ extern NSNotificationName const RoomCallTileTappedNotification;
 @property (weak, nonatomic) IBOutlet UILabel *jumpToLastUnreadLabel;
 @property (weak, nonatomic) IBOutlet UIButton *resetReadMarkerButton;
 @property (weak, nonatomic) IBOutlet UIView *jumpToLastUnreadBannerSeparatorView;
+@property (weak, nonatomic) IBOutlet UIVisualEffectView *inputBackgroundView;
 
 /**
  Preview data for a room invitation received by email, or a link to a room.

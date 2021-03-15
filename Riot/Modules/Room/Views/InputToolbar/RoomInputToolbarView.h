@@ -74,11 +74,6 @@ typedef enum : NSUInteger
 
 @property (weak, nonatomic) IBOutlet UIView *mainToolbarView;
 
-@property (weak, nonatomic) IBOutlet UIView *separatorView;
-@property (strong, nonatomic) IBOutlet MXKImageView *pictureView;
-
-@property (strong, nonatomic) IBOutlet UIImageView *encryptedRoomIcon;
-
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainToolbarMinHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainToolbarHeightConstraint;
 
@@ -86,15 +81,8 @@ typedef enum : NSUInteger
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *messageComposerContainerTrailingConstraint;
 
 @property (weak, nonatomic) IBOutlet UIButton *attachMediaButton;
-@property (weak, nonatomic) IBOutlet UIButton *voiceCallButton;
-@property (weak, nonatomic) IBOutlet UIButton *hangupCallButton;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *voiceCallButtonWidthConstraint;
-
-/**
- Tell whether the call option is supported. YES by default.
- */
-@property (nonatomic) BOOL supportCallOption;
+@property (weak, nonatomic) IBOutlet UIImageView *inputTextBackgroundView;
 
 /**
  Tell whether the filled data will be sent encrypted. NO by default.
@@ -105,10 +93,5 @@ typedef enum : NSUInteger
  Destination of the message in the composer.
  */
 @property (nonatomic) RoomInputToolbarViewSendMode sendMode;
-
-/**
- Tell whether a call is active.
- */
-@property (nonatomic) BOOL activeCall;
 
 @end
