@@ -18,7 +18,7 @@ PODS:
   - BlueECC (1.2.5)
   - BlueRSA (1.0.34)
   - DGCollectionViewLeftAlignFlowLayout (1.0.4)
-  - Down (0.9.5)
+  - Down (0.10.0)
   - DTCoreText (1.6.25):
     - DTCoreText/Core (= 1.6.25)
     - DTFoundation/Core (~> 1.7.5)
@@ -36,14 +36,14 @@ PODS:
     - DTFoundation/Core
   - DTFoundation/UIKit (1.7.16):
     - DTFoundation/Core
-  - FlowCommoniOS (1.9.2)
-  - GBDeviceInfo (6.4.0):
-    - GBDeviceInfo/Core (= 6.4.0)
-  - GBDeviceInfo/Core (6.4.0)
+  - FlowCommoniOS (1.10.0)
+  - GBDeviceInfo (6.6.0):
+    - GBDeviceInfo/Core (= 6.6.0)
+  - GBDeviceInfo/Core (6.6.0)
   - GZIP (1.3.0)
   - HPGrowingTextView (1.1)
-  - JitsiMeetSDK (3.1.0)
-  - KeychainAccess (4.2.1)
+  - JitsiMeetSDK (3.2.0)
+  - KeychainAccess (4.2.2)
   - KituraContracts (1.2.1):
     - LoggerAPI (~> 1.7)
   - KTCenterFlowLayout (1.3.1)
@@ -52,32 +52,32 @@ PODS:
   - LoggerAPI (1.9.200):
     - Logging (~> 1.1)
   - Logging (1.4.0)
-  - MatomoTracker (7.2.2):
-    - MatomoTracker/Core (= 7.2.2)
-  - MatomoTracker/Core (7.2.2)
-  - MatrixKit (0.14.4):
-    - Down (~> 0.9.3)
-    - DTCoreText (~> 1.6.23)
+  - MatomoTracker (7.4.1):
+    - MatomoTracker/Core (= 7.4.1)
+  - MatomoTracker/Core (7.4.1)
+  - MatrixKit (0.14.5):
+    - Down (~> 0.10.0)
+    - DTCoreText (~> 1.6.25)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.14.4)
-    - MatrixSDK (= 0.18.4)
-  - MatrixKit/Core (0.14.4):
-    - Down (~> 0.9.3)
-    - DTCoreText (~> 1.6.23)
+    - MatrixKit/Core (= 0.14.5)
+    - MatrixSDK (= 0.18.5)
+  - MatrixKit/Core (0.14.5):
+    - Down (~> 0.10.0)
+    - DTCoreText (~> 1.6.25)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.18.4)
-  - MatrixSDK (0.18.4):
-    - MatrixSDK/Core (= 0.18.4)
-  - MatrixSDK/Core (0.18.4):
+    - MatrixSDK (= 0.18.5)
+  - MatrixSDK (0.18.5):
+    - MatrixSDK/Core (= 0.18.5)
+  - MatrixSDK/Core (0.18.5):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.3.0)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.2.2)
-    - Realm (= 10.1.4)
-  - MatrixSDK/JingleCallStack (0.18.4):
-    - JitsiMeetSDK (= 3.1.0)
+    - Realm (= 10.7.2)
+  - MatrixSDK/JingleCallStack (0.18.5):
+    - JitsiMeetSDK (= 3.2.0)
     - MatrixSDK/Core
   - OLMKit (3.2.2):
     - OLMKit/olmc (= 3.2.2)
@@ -85,9 +85,9 @@ PODS:
   - OLMKit/olmc (3.2.2)
   - OLMKit/olmcpp (3.2.2)
   - ReadMoreTextView (3.0.1)
-  - Realm (10.1.4):
-    - Realm/Headers (= 10.1.4)
-  - Realm/Headers (10.1.4)
+  - Realm (10.7.2):
+    - Realm/Headers (= 10.7.2)
+  - Realm/Headers (10.7.2)
   - Reusable (4.1.1):
     - Reusable/Storyboard (= 4.1.1)
     - Reusable/View (= 4.1.1)
@@ -95,13 +95,13 @@ PODS:
   - Reusable/View (4.1.1)
   - SwiftBase32 (0.9.0)
   - SwiftGen (6.4.0)
-  - SwiftJWT (3.5.3):
+  - SwiftJWT (3.6.200):
     - BlueCryptor (~> 1.0)
     - BlueECC (~> 1.1)
     - BlueRSA (~> 1.0)
-    - KituraContracts (~> 1.1)
+    - KituraContracts (~> 1.2)
     - LoggerAPI (~> 1.7)
-  - SwiftLint (0.40.3)
+  - SwiftLint (0.43.0)
   - zxcvbn-ios (1.0.4)
   - ZXingObjC (3.6.5):
     - ZXingObjC/All (= 3.6.5)
@@ -109,13 +109,13 @@ PODS:
 
 DEPENDENCIES:
   - DGCollectionViewLeftAlignFlowLayout (~> 1.0.4)
-  - FlowCommoniOS (~> 1.9.0)
-  - GBDeviceInfo (~> 6.4.0)
+  - FlowCommoniOS (~> 1.10.0)
+  - GBDeviceInfo (~> 6.6.0)
   - HPGrowingTextView
-  - KeychainAccess (~> 4.2.1)
+  - KeychainAccess (~> 4.2.2)
   - KTCenterFlowLayout (~> 1.3.1)
-  - MatomoTracker (~> 7.2.2)
-  - MatrixKit (= 0.14.4)
+  - MatomoTracker (~> 7.4.1)
+  - MatrixKit (= 0.14.5)
   - MatrixSDK
   - MatrixSDK/JingleCallStack
   - OLMKit
@@ -123,8 +123,8 @@ DEPENDENCIES:
   - Reusable (~> 4.1)
   - SwiftBase32 (~> 0.9.0)
   - SwiftGen (~> 6.3)
-  - SwiftJWT (~> 3.5.3)
-  - SwiftLint (~> 0.40.3)
+  - SwiftJWT (~> 3.6.200)
+  - SwiftLint (~> 0.43.0)
   - zxcvbn-ios
   - ZXingObjC (~> 3.6.5)
 
@@ -170,35 +170,35 @@ SPEC CHECKSUMS:
   BlueECC: 0d18e93347d3ec6d41416de21c1ffa4d4cd3c2cc
   BlueRSA: 6f9776d62d9773502415a7db3bcbb2bbb3f71fc3
   DGCollectionViewLeftAlignFlowLayout: a0fa58797373ded039cafba8133e79373d048399
-  Down: 7321a72d0747ed0061dce948bcff518fcb6df2bd
+  Down: 01f155f9d7e99673c667efd2218709c3b9a8bc13
   DTCoreText: e92f4cf6b36d9d71ce4436d12cf089d74ab0596b
   DTFoundation: e7781d9fd2f202bfd451fbbf8cab71ce83b46498
-  FlowCommoniOS: e9353819a19764c8cafd3fa7efb98b00c9f68e7e
-  GBDeviceInfo: f29249891446a392e64b9c9bbef9554aad2a6beb
+  FlowCommoniOS: bcdf81a5f30717e711af08a8c812eb045411ba94
+  GBDeviceInfo: ed0db16230d2fa280e1cbb39a5a7f60f6946aaec
   GZIP: 416858efbe66b41b206895ac6dfd5493200d95b3
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
-  JitsiMeetSDK: 330e694130d6e67126e5a031b9ab1807f446ab3b
-  KeychainAccess: 9b07f665298d13c3a85881bd3171f6f49b8151c1
+  JitsiMeetSDK: 9ba504480e831b3bfc85c34555f70a0a84626fa2
+  KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
   KituraContracts: e845e60dc8627ad0a76fa55ef20a45451d8f830b
   KTCenterFlowLayout: 6e02b50ab2bd865025ae82fe266ed13b6d9eaf97
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
-  MatomoTracker: a59ec4da0f580be57bdc6baa708a71a86532a832
-  MatrixKit: fad56170110b7248cfdd5bf210f944c6fad04162
-  MatrixSDK: d2cb905cf6afa5df63c5a76f7678456723923af5
+  MatomoTracker: 24a846c9d3aa76933183fe9d47fd62c9efa863fb
+  MatrixKit: f77c5aa1a236331665d3b1f25ed37ed8758eb23f
+  MatrixSDK: 013859281629b8cccd3a8af1dec48f36335c058c
   OLMKit: 20d1c564033a1ae7148f8f599378d4c798363905
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
-  Realm: 80f4fb2971ccb9adc27a47d0955ae8e533a7030b
+  Realm: e523da9ade306c5ae87e85dc09fdef148d3e1cc1
   Reusable: 53a9acf5c536f229b31b5865782414b508252ddb
   SwiftBase32: 9399c25a80666dc66b51e10076bf591e3bbb8f17
   SwiftGen: 67860cc7c3cfc2ed25b9b74cfd55495fc89f9108
-  SwiftJWT: 9a47a71090cae25767078756b5810e3b630aa9a7
-  SwiftLint: dfd554ff0dff17288ee574814ccdd5cea85d76f7
+  SwiftJWT: 88c412708f58c169d431d344c87bc79a87c830ae
+  SwiftLint: 0c645fdc6feed3e390c1701ab3cc669f88b42752
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: c98fd507efbe607a5821e154e941210a093f54f9
+PODFILE CHECKSUM: 442355a7d44d6f0b26a287702404a221cffb03f5
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.10.1
