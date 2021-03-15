@@ -673,7 +673,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
                 previewHeader.mainHeaderBackgroundHeightConstraint.constant = mainHeaderBackgroundHeight;
                 
                 // Force the layout of previewHeader to update the position of 'bottomBorderView' which
-                // is used to define the actual  of the preview container.
+                // is used to define the actual height of the preview container.
                 [previewHeader layoutIfNeeded];
             }
         }
@@ -1288,10 +1288,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
 
 - (void)setShowMissedDiscussionsBadge:(BOOL)showMissedDiscussionsBadge
 {
-    BOOL toto = [UIDevice currentDevice].userInterfaceIdiom !=
-    UIUserInterfaceIdiomPhone || !showMissedDiscussionsBadge;
-    missedDiscussionsBadgeLabel.hidden = [UIDevice currentDevice].userInterfaceIdiom !=
-    UIUserInterfaceIdiomPhone || !showMissedDiscussionsBadge;
+    missedDiscussionsBadgeLabel.hidden = !showMissedDiscussionsBadge;
 }
 
 #pragma mark - Internals
@@ -1633,7 +1630,6 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     self.roomInfoCoordinatorBridgePresenter = [[RoomInfoCoordinatorBridgePresenter alloc] initWithParameters:parameters];
     
     self.roomInfoCoordinatorBridgePresenter.delegate = self;
-//    [self.roomInfoCoordinatorBridgePresenter presentFrom:self animated:true];
     [self.roomInfoCoordinatorBridgePresenter pushFrom:self.navigationController animated:YES];
 }
 
