@@ -140,7 +140,7 @@
         self.typingLabel.text = typingNotificationString;
         [self layoutIfNeeded];
 
-        [UIView animateWithDuration:.3 animations:^{
+        [UIView animateWithDuration:.1 animations:^{
             self.typingLabel.alpha = 1;
             self.displayNameCenterYConstraint.constant = -8;
             [self layoutIfNeeded];
@@ -148,7 +148,7 @@
     }
     else
     {
-        [UIView animateWithDuration:.3 animations:^{
+        [UIView animateWithDuration:.1 animations:^{
             self.typingLabel.alpha = 0;
             self.displayNameCenterYConstraint.constant = 0;
             [self layoutIfNeeded];
