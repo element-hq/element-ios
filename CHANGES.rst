@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Pods: Update FlowCommoniOS, GBDeviceInfo, KeychainAccess, MatomoTracker, SwiftJWT, SwiftLint (#4120).
 
 🐛 Bugfix
  * 
