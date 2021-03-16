@@ -71,15 +71,37 @@ class RoomBaseCallBubbleCell: MXKRoomBubbleTableViewCell {
     
     //  MARK: - Overrides
     
+    override var bubbleInfoContainer: UIView! {
+        get {
+            guard let infoContainer = innerContentView.bubbleInfoContainer else {
+                fatalError("[RoomBaseCallBubbleCell] bubbleInfoContainer should not be used before set")
+            }
+            return infoContainer
+        } set {
+            super.bubbleInfoContainer = newValue
+        }
+    }
+    
     override var bubbleOverlayContainer: UIView! {
         get {
             guard let overlayContainer = innerContentView.bubbleOverlayContainer else {
                 fatalError("[RoomBaseCallBubbleCell] bubbleOverlayContainer should not be used before set")
             }
             return overlayContainer
+        } set {
+            super.bubbleOverlayContainer = newValue
+        }
+    }
+    
+    override var bubbleInfoContainerTopConstraint: NSLayoutConstraint! {
+        get {
+            guard let infoContainerTopConstraint = innerContentView.bubbleInfoContainerTopConstraint else {
+                fatalError("[RoomBaseCallBubbleCell] bubbleInfoContainerTopConstraint should not be used before set")
+            }
+            return infoContainerTopConstraint
         }
         set {
-            super.bubbleOverlayContainer = newValue
+            super.bubbleInfoContainerTopConstraint = newValue
         }
     }
     

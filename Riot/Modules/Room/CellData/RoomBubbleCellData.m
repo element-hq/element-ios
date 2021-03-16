@@ -64,6 +64,8 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
     
     if (self)
     {
+        self.displayTimestampForSelectedComponentOnLeftWhenPossible = YES;
+        
         switch (event.eventType)
         {
             case MXEventTypeRoomMember:
@@ -142,6 +144,9 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
                 
                 // Collapse them by default
                 self.collapsed = YES;
+                
+                // Show timestamps always on right
+                self.displayTimestampForSelectedComponentOnLeftWhenPossible = NO;
             }
                 break;
             default:

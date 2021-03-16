@@ -37,7 +37,9 @@ class CallBubbleCellBaseContentView: UIView {
     @IBOutlet private weak var callStatusLabel: UILabel!
     @IBOutlet private weak var callSummaryHeightConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var bubbleInfoContainer: UIView!
     @IBOutlet weak var bubbleOverlayContainer: UIView!
+    @IBOutlet weak var bubbleInfoContainerTopConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var bottomContainerView: UIView!
     

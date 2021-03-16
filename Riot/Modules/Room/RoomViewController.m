@@ -2249,6 +2249,9 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
                     {
                         //  post notification `RoomCallTileTapped`
                         [[NSNotificationCenter defaultCenter] postNotificationName:RoomCallTileTappedNotification object:bubbleData];
+                        
+                        preventBubblesTableViewScroll = YES;
+                        [self selectEventWithId:tappedEvent.eventId];
                     }
                 }
                 else
