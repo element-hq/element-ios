@@ -165,11 +165,11 @@
 "client_android_name" = "Element Android";
 "store_promotional_text" = "Додаток для чату та сумісної роботи, що зберігає конфіденційність у відкритій мережі. Децентралізований, щоб надати вам контроль над даними. Без обробки даних, без бекдорів, без доступу для третіх сторін.";
 "settings_three_pids_management_information_part3" = ".";
-"settings_three_pids_management_information_part1" = "Керування адресами електронної пошти чи номерами телефонів, які ви можете використовувати для входу або відновлення акаунту. Контролюйте хто і як може вас знайти ";
+"settings_three_pids_management_information_part1" = "Керуйте звідси адресами е-пошти чи номерами телефонів, які можна застосовувати для входу або відновлення облікового запису. Контролюйте хто і як може вас знайти ";
 "contacts_address_book_no_identity_server" = "Сервер ідентифікації не налаштований";
 "auth_autodiscover_invalid_response" = "Неправильна відповідь виявлення домашнього сервера";
 "settings_key_backup" = "РЕЗЕРВНА КОПІЯ КЛЮЧІВ";
-"settings_deactivate_account" = "ДЕАКТИВУВАТИ АКАУНТ";
+"settings_deactivate_account" = "ДЕАКТИВУВАТИ ОБЛІКОВИЙ ЗАПИС";
 "group_section" = "СПІЛЬНОТИ";
 
 // Groups tab
@@ -282,3 +282,9 @@
 "room_event_action_more" = "Більше";
 "more" = "Більше";
 "joined" = "Долучається";
+"secrets_setup_recovery_key_export_action" = "Зберегти";
+"room_event_action_save" = "Зберегти";
+"room_event_action_delete" = "Видалити";
+"security_settings_secure_backup_delete" = "Видалити";
+"security_settings_secure_backup_synchronise" = "Синхронізувати";
+"security_settings_secure_backup_setup" = "Налаштувати";
