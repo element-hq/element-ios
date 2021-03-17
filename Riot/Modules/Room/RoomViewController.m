@@ -2429,6 +2429,34 @@ NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTi
             MXCall *call = [self.mainSession.callManager callWithCallId:eventContent.callId];
             [call answer];
         }
+        else if ([actionIdentifier isEqualToString:RoomGroupCallStatusBubbleCell.joinAction] ||
+                 [actionIdentifier isEqualToString:RoomGroupCallStatusBubbleCell.answerAction])
+        {
+            MXWeakify(self);
+            NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
+
+            // Check app permissions first
+            [MXKTools checkAccessForCall:YES
+             manualChangeMessageForAudio:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], appDisplayName]
+             manualChangeMessageForVideo:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"camera_access_not_granted_for_call"], appDisplayName]
+               showPopUpInViewController:self completionHandler:^(BOOL granted) {
+                
+                MXStrongifyAndReturnIfNil(self);
+                if (granted)
+                {
+                    // Present the Jitsi view controller
+                    Widget *jitsiWidget = [self->customizedRoomDataSource jitsiWidget];
+                    if (jitsiWidget)
+                    {
+                        [[AppDelegate theDelegate] displayJitsiViewControllerWithWidget:jitsiWidget andVideo:YES];
+                    }
+                }
+                else
+                {
+                    NSLog(@"[RoomVC] didRecognizeAction:inCell:userInfo Warning: The application does not have the permission to join/answer the group call");
+                }
+            }];
+        }
         else if ([actionIdentifier isEqualToString:RoomCreationIntroCell.tapOnAvatarView])
         {
             [self showRoomAvatarChange];
