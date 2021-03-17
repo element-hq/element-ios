@@ -360,9 +360,9 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         self.subTitleTextColor = ThemeService.shared.theme.textSecondaryColor;
         self.prefixTextColor = ThemeService.shared.theme.textSecondaryColor;
         self.bingTextColor = ThemeService.shared.theme.noticeColor;
-        self.encryptingTextColor = ThemeService.shared.theme.tintColor;
-        self.sendingTextColor = ThemeService.shared.theme.textSecondaryColor;
-        self.errorTextColor = ThemeService.shared.theme.warningColor;
+        self.encryptingTextColor = ThemeService.shared.theme.textPrimaryColor;
+        self.sendingTextColor = ThemeService.shared.theme.textPrimaryColor;
+        self.errorTextColor = ThemeService.shared.theme.textPrimaryColor;
         self.showEditionMention = YES;
         self.editionMentionTextColor = ThemeService.shared.theme.textSecondaryColor;
         

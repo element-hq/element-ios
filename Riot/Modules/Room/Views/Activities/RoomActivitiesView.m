@@ -118,64 +118,51 @@
     {
         self.messageLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     }
+    
+    [self.resendButton.layer setCornerRadius:5];
+    self.resendButton.clipsToBounds = YES;
+    [self.resendButton setTitle:NSLocalizedStringFromTable(@"retry", @"Vector", nil) forState:UIControlStateNormal];
+    self.resendButton.backgroundColor = ThemeService.shared.theme.tintColor;
+    
+    UIImage *image = [[UIImage imageNamed:@"room_context_menu_delete"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.deleteButton setImage:image forState:UIControlStateNormal];
+    self.deleteButton.tintColor = ThemeService.shared.theme.warningColor;
+    
+    self.unsentMessageLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.unsentMessagesContentView.backgroundColor = ThemeService.shared.theme.backgroundColor;
 }
 
 #pragma mark -
 
+- (IBAction)onCancelSendingPressed:(id)sender
+{
+    void (^onCancelLinkPressed)(void) = objc_getAssociatedObject(self.deleteButton, "onCancelLinkPressed");
+    if (onCancelLinkPressed)
+    {
+        onCancelLinkPressed ();
+    }
+}
+
+- (IBAction)onResendMessagesPressed:(id)sender
+{
+    void (^onResendLinkPressed)(void) = objc_getAssociatedObject(self.resendButton, "onResendLinkPressed");
+    if (onResendLinkPressed)
+    {
+        onResendLinkPressed();
+    }
+}
+
 - (void)displayUnsentMessagesNotification:(NSString*)notification withResendLink:(void (^)(void))onResendLinkPressed andCancelLink:(void (^)(void))onCancelLinkPressed andIconTapGesture:(void (^)(void))onIconTapGesture
 {
     [self reset];
-
+    
     if (onResendLinkPressed && onCancelLinkPressed)
     {
-        NSString *resendLink = NSLocalizedStringFromTable(@"room_prompt_resend", @"Vector", nil);
-        NSString *cancelLink = NSLocalizedStringFromTable(@"room_prompt_cancel", @"Vector", nil);
-
-        NSString *notif = [NSString stringWithFormat:notification, resendLink, cancelLink];
-        NSMutableAttributedString *tappableNotif = [[NSMutableAttributedString alloc] initWithString:notif];
+        self.unsentMessagesContentView.hidden = NO;
+        self.unsentMessageLabel.text = notification;
         
-        objc_setAssociatedObject(self.messageTextView, "onResendLinkPressed", [onResendLinkPressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        objc_setAssociatedObject(self.messageTextView, "onCancelLinkPressed", [onCancelLinkPressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-
-        NSRange range = [notif rangeOfString:resendLink];
-        [tappableNotif addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:range];
-        [tappableNotif addAttribute:NSLinkAttributeName value:@"onResendLink" range:range];
-
-        range = [notif rangeOfString:cancelLink];
-        [tappableNotif addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:range];
-        [tappableNotif addAttribute:NSLinkAttributeName value:@"onCancelLink" range:range];
-        
-        NSRange wholeString = NSMakeRange(0, tappableNotif.length);
-        [tappableNotif addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.warningColor range:wholeString];
-        [tappableNotif addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:wholeString];
-        
-        self.messageTextView.attributedText = tappableNotif;
-        self.messageTextView.tintColor = ThemeService.shared.theme.warningColor;
-        self.messageTextView.hidden = NO;
-        self.messageTextView.backgroundColor = [UIColor clearColor];
-    }
-    else
-    {
-        self.messageLabel.text = notification;
-        self.messageLabel.textColor = ThemeService.shared.theme.warningColor;
-        self.messageLabel.hidden = NO;
-    }
-    
-    self.iconImageView.image = [UIImage imageNamed:@"error"];
-    self.iconImageView.tintColor = ThemeService.shared.theme.tintColor;
-    self.iconImageView.hidden = NO;
-    
-    if (onIconTapGesture)
-    {
-        objc_setAssociatedObject(self.iconImageView, "onIconTapGesture", [onIconTapGesture copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        
-        // Listen to icon tap
-        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onIconTap:)];
-        [tapGesture setNumberOfTouchesRequired:1];
-        [tapGesture setNumberOfTapsRequired:1];
-        [tapGesture setDelegate:self];
-        [self.iconImageView addGestureRecognizer:tapGesture];
-        self.iconImageView.userInteractionEnabled = YES;
+        objc_setAssociatedObject(self.resendButton, "onResendLinkPressed", [onResendLinkPressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        objc_setAssociatedObject(self.deleteButton, "onCancelLinkPressed", [onCancelLinkPressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
 
     [self checkHeight:YES];
@@ -517,6 +504,7 @@
 - (void)reset
 {
     self.separatorView.hidden = NO;
+    self.unsentMessagesContentView.hidden = YES;
 
     self.backgroundColor = UIColor.clearColor;
 

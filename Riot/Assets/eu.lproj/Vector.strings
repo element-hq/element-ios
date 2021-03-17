@@ -286,8 +286,8 @@
 "room_two_users_are_typing" = "%@ eta %@ idazten ari dira…";
 "room_many_users_are_typing" = "%@, %@, eta beste batzuk idazten ari dira…";
 "room_message_short_placeholder" = "Bidali mezu bat…";
-"room_unsent_messages_notification" = "Bidali gabeko mezuak daude. %@ edo %@ orain?";
-"room_unsent_messages_unknown_devices_notification" = "Mezua ez da bidali saio ezezagunak daudelako. %@ edo %@ orain?";
+"room_unsent_messages_notification" = "Bidali gabeko mezuak daude.";
+"room_unsent_messages_unknown_devices_notification" = "Mezua ez da bidali saio ezezagunak daudelako.";
 "room_ongoing_conference_call" = "Konferentzia deia abioan. Elkartu %@ edo %@ erabiliz.";
 "room_event_action_more" = "Gehiago";
 "room_event_action_save" = "Gorde";

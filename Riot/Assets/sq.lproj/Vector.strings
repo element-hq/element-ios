@@ -173,7 +173,7 @@
 "encrypted_room_message_placeholder" = "Dërgoni një mesazhi të fshehtëzuar…";
 "room_message_short_placeholder" = "Dërgoni një mesazh…";
 "room_offline_notification" = "Humbi lidhja me shërbyesin.";
-"room_unsent_messages_notification" = "Mesazhet s’u dërguan. %@ apo %@ tani?";
+"room_unsent_messages_notification" = "Mesazhet s’u dërguan.";
 "room_ongoing_conference_call_close" = "Mbylle";
 "room_prompt_resend" = "Ridërgoji krejt";
 "room_prompt_cancel" = "anuloji krejt";

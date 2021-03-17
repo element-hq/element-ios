@@ -22,6 +22,7 @@
 #import "Riot-Swift.h"
 
 #import "MXRoomSummary+Riot.h"
+#import "MXRoom+Riot.h"
 
 #import "MXTools.h"
 
@@ -41,10 +42,6 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
     // Round room image view
     [_roomAvatar.layer setCornerRadius:_roomAvatar.frame.size.width / 2];
     _roomAvatar.clipsToBounds = YES;
-    
-    // Initialize unread count badge
-    [_missedNotifAndUnreadBadgeBgView.layer setCornerRadius:10];
-    _missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 0;
     
     // Disable the user interaction on the room avatar.
     self.roomAvatar.userInteractionEnabled = NO;
@@ -69,7 +66,6 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
     self.roomTitle.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.roomTitle1.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.roomTitle2.textColor = ThemeService.shared.theme.textPrimaryColor;
-    self.missedNotifAndUnreadBadgeLabel.textColor = ThemeService.shared.theme.baseTextPrimaryColor;
     
     // Prepare direct room border
     CGColorRef directRoomBorderColor = CGColorCreateCopyWithAlpha(ThemeService.shared.theme.tintColor.CGColor, kDirectRoomBorderColorAlpha);
@@ -94,8 +90,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
 - (void)render:(MXKCellData *)cellData
 {
     // Hide by default missed notifications and unread widgets
-    self.missedNotifAndUnreadBadgeBgView.hidden = YES;
-    self.missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 0;
+    self.badgeLabel.hidden = YES;
     
     roomCellData = (id<MXKRecentCellDataStoring>)cellData;
     if (roomCellData)
@@ -121,31 +116,24 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
         }
         
         // Notify unreads and bing
-        if (roomCellData.hasUnread)
+        if (roomCellData.roomSummary.room.summary.membership == MXMembershipInvite
+                 || roomCellData.roomSummary.room.sentStatus != RoomSentStatusOk)
         {
-            if (0 < roomCellData.notificationCount)
-            {
-                self.missedNotifAndUnreadBadgeBgView.hidden = NO;
-                self.missedNotifAndUnreadBadgeBgView.backgroundColor = roomCellData.highlightCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor;
-                
-                self.missedNotifAndUnreadBadgeLabel.text = roomCellData.notificationCountStringValue;
-                [self.missedNotifAndUnreadBadgeLabel sizeToFit];
-                
-                self.missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = self.missedNotifAndUnreadBadgeLabel.frame.size.width + 18;
-            }
-            
+            self.badgeLabel.hidden = NO;
+            self.badgeLabel.badgeColor = ThemeService.shared.theme.noticeColor;
+            self.badgeLabel.text = @"!";
+
             // Use bold font for the room title
             self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightBold];
         }
-        else if (roomCellData.roomSummary.room.summary.membership == MXMembershipInvite)
+        else if (roomCellData.hasUnread)
         {
-            self.missedNotifAndUnreadBadgeBgView.hidden = NO;
-            self.missedNotifAndUnreadBadgeBgView.backgroundColor = ThemeService.shared.theme.noticeColor;
-            
-            self.missedNotifAndUnreadBadgeLabel.text = @"!";
-            [self.missedNotifAndUnreadBadgeLabel sizeToFit];
-            
-            self.missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = self.missedNotifAndUnreadBadgeLabel.frame.size.width + 18;
+            if (0 < roomCellData.notificationCount)
+            {
+                self.badgeLabel.hidden = NO;
+                self.badgeLabel.badgeColor = roomCellData.highlightCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor;
+                self.badgeLabel.text = roomCellData.notificationCountStringValue;
+            }
             
             // Use bold font for the room title
             self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightBold];
