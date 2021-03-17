@@ -21,7 +21,7 @@ class CallBubbleCellBaseContentView: UIView {
     
     private enum Constants {
         static let callSummaryWithBottomViewHeight: CGFloat = 20
-        static let callSummaryStandaloneViewHeight: CGFloat = 20 + 64
+        static let callSummaryStandaloneViewHeight: CGFloat = 20 + 44
     }
     
     @IBOutlet private weak var paginationTitleView: UIView!
@@ -29,11 +29,11 @@ class CallBubbleCellBaseContentView: UIView {
     @IBOutlet private weak var paginationSeparatorView: UIView!
     
     @IBOutlet private weak var bgView: UIView!
-    @IBOutlet private weak var avatarImageView: MXKImageView!
-    @IBOutlet private weak var callerNameLabel: UILabel!
-    @IBOutlet private weak var callIconView: UIImageView!
-    @IBOutlet private weak var callTypeLabel: UILabel!
-    @IBOutlet private weak var dotLabel: UILabel!
+    @IBOutlet weak var avatarImageView: MXKImageView!
+    @IBOutlet weak var callerNameLabel: UILabel!
+    @IBOutlet weak var callIconView: UIImageView!
+    @IBOutlet weak var callTypeLabel: UILabel!
+    @IBOutlet weak var dotLabel: UILabel!
     @IBOutlet private weak var callStatusLabel: UILabel!
     @IBOutlet private weak var callSummaryHeightConstraint: NSLayoutConstraint!
     
@@ -50,7 +50,7 @@ class CallBubbleCellBaseContentView: UIView {
         }
     }
     
-    private var theme: Theme = ThemeService.shared().theme
+    private(set) var theme: Theme = ThemeService.shared().theme
     
     func relayoutCallSummary() {
         if bottomContainerView.subviews.isEmpty {
@@ -73,49 +73,6 @@ class CallBubbleCellBaseContentView: UIView {
         }
         
         avatarImageView.enableInMemoryCache = true
-        
-        if bubbleCellData.senderId == bubbleCellData.mxSession.myUserId {
-            //  event sent by my user, no means in displaying our own avatar and display name
-            if let directUserId = bubbleCellData.mxSession.directUserId(inRoom: bubbleCellData.roomId) {
-                let user = bubbleCellData.mxSession.user(withUserId: directUserId)
-                
-                let placeholder = AvatarGenerator.generateAvatar(forMatrixItem: directUserId,
-                                                                 withDisplayName: user?.displayname)
-                
-                avatarImageView.setImageURI(user?.avatarUrl,
-                                            withType: nil,
-                                            andImageOrientation: .up,
-                                            toFitViewSize: avatarImageView.frame.size,
-                                            with: MXThumbnailingMethodCrop,
-                                            previewImage: placeholder,
-                                            mediaManager: bubbleCellData.mxSession.mediaManager)
-                avatarImageView.defaultBackgroundColor = .clear
-                
-                callerNameLabel.text = user?.displayname
-            }
-        } else {
-            avatarImageView.setImageURI(bubbleCellData.senderAvatarUrl,
-                                        withType: nil,
-                                        andImageOrientation: .up,
-                                        toFitViewSize: avatarImageView.frame.size,
-                                        with: MXThumbnailingMethodCrop,
-                                        previewImage: bubbleCellData.senderAvatarPlaceholder,
-                                        mediaManager: bubbleCellData.mxSession.mediaManager)
-            avatarImageView.defaultBackgroundColor = .clear
-            
-            callerNameLabel.text = bubbleCellData.senderDisplayName
-        }
-        
-        let events = bubbleCellData.allLinkedEvents()
-        
-        guard let event = events.first(where: { $0.eventType == .callInvite }) else {
-            return
-        }
-        
-        let callInviteEventContent = MXCallInviteEventContent(fromJSON: event.content)
-        let isVideoCall = callInviteEventContent?.isVideoCall() ?? false
-        callIconView.image = isVideoCall ? Asset.Images.callVideoIcon.image.vc_tintedImage(usingColor: theme.textSecondaryColor) : Asset.Images.voiceCallHangonIcon.image.vc_tintedImage(usingColor: theme.textSecondaryColor)
-        callTypeLabel.text = isVideoCall ? VectorL10n.eventFormatterCallVideo : VectorL10n.eventFormatterCallVoice
     }
 
 }

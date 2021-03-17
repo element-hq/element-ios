@@ -1258,7 +1258,7 @@ internal enum VectorL10n {
   internal static func eventFormatterCallHasEnded(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_call_has_ended", p1)
   }
-  /// RETRY
+  /// Retry
   internal static var eventFormatterCallRetry: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_retry") 
   }
@@ -1281,6 +1281,10 @@ internal enum VectorL10n {
   /// You missed this call
   internal static var eventFormatterCallYouMissed: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_you_missed") 
+  }
+  /// You started a call
+  internal static var eventFormatterCallYouStarted: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_you_started") 
   }
   /// VoIP conference added by %@
   internal static func eventFormatterJitsiWidgetAdded(_ p1: String) -> String {

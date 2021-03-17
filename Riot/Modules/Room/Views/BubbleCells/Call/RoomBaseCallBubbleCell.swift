@@ -19,7 +19,7 @@ import Reusable
 
 class RoomBaseCallBubbleCell: MXKRoomBubbleTableViewCell {
     
-    fileprivate lazy var innerContentView: CallBubbleCellBaseContentView = {
+    lazy var innerContentView: CallBubbleCellBaseContentView = {
         return CallBubbleCellBaseContentView.loadFromNib()
     }()
     

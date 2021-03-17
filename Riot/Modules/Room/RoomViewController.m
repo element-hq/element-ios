@@ -2389,14 +2389,14 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
                 [self showReactionHistoryForEventId:tappedEventId animated:YES];
             }
         }
-        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellCallBackButtonPressed])
+        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusBubbleCell.callBackAction])
         {
             MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
             MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
             
             [self roomInputToolbarView:self.inputToolbarView placeCallWithVideo2:eventContent.isVideoCall];
         }
-        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellCallDeclineButtonPressed])
+        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusBubbleCell.declineAction])
         {
             MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
             MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
@@ -2404,7 +2404,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
             MXCall *call = [self.mainSession.callManager callWithCallId:eventContent.callId];
             [call hangup];
         }
-        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellCallAnswerButtonPressed])
+        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusBubbleCell.answerAction])
         {
             MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
             MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];

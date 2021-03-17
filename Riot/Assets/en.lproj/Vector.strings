@@ -816,6 +816,7 @@ Tap the + to start adding people.";
 "event_formatter_message_edited_mention" = "(edited)";
 "event_formatter_call_voice" = "Voice call";
 "event_formatter_call_video" = "Video call";
+"event_formatter_call_you_started" = "You started a call";
 "event_formatter_call_has_ended" = "This call has ended %@";
 "event_formatter_call_you_currently_in" = "Active call";
 "event_formatter_call_you_declined" = "You declined this call";
@@ -824,7 +825,7 @@ Tap the + to start adding people.";
 "event_formatter_call_back" = "Call back";
 "event_formatter_call_decline" = "Decline";
 "event_formatter_call_answer" = "Answer";
-"event_formatter_call_retry" = "RETRY";
+"event_formatter_call_retry" = "Retry";
 
 // Events formatter with you
 "event_formatter_widget_added_by_you" = "You added the widget: %@";

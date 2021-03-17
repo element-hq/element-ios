@@ -59,27 +59,6 @@ extern NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestAcceptPre
 extern NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed;
 
 /**
- Action identifier used when the user pressed "Call back" button for a declined call.
- 
- The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the invite event of the declined call.
- */
-extern NSString *const kMXKRoomBubbleCellCallBackButtonPressed;
-
-/**
- Action identifier used when the user pressed "Decline" button for an incoming call.
- 
- The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the invite event of the call.
- */
-extern NSString *const kMXKRoomBubbleCellCallDeclineButtonPressed;
-
-/**
- Action identifier used when the user pressed "Answer" button for an incoming call.
- 
- The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the invite event of the call.
- */
-extern NSString *const kMXKRoomBubbleCellCallAnswerButtonPressed;
-
-/**
  Define a `MXKRoomBubbleTableViewCell` category at Riot level to handle bubble customisation.
  */
 @interface MXKRoomBubbleTableViewCell (Riot)

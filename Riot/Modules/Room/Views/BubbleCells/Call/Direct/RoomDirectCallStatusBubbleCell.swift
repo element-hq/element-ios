@@ -19,7 +19,20 @@ import UIKit
 /// The number of milliseconds in one second.
 private let MSEC_PER_SEC: TimeInterval = 1000
 
+@objcMembers
 class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
+    
+    /// Action identifier used when the user pressed "Call back" button for a declined call.
+    /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the invite event of the declined call.
+    static let callBackAction: String = "RoomDirectCallStatusBubbleCell.CallBack"
+    
+    /// Action identifier used when the user pressed "Answer" button for an incoming call.
+    /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the invite event of the call.
+    static let answerAction: String = "RoomDirectCallStatusBubbleCell.Answer"
+    
+    /// Action identifier used when the user pressed "Decline" button for an incoming call.
+    /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the invite event of the call.
+    static let declineAction: String = "RoomDirectCallStatusBubbleCell.Decline"
     
     private var callDurationString: String = ""
     private var isVideoCall: Bool = false
@@ -137,15 +150,21 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
     
     private func configure(withCall call: MXCall) {
         switch call.state {
-        case .connected,
-         .fledgling,
-         .waitLocalMedia,
-         .createOffer,
-         .inviteSent,
-         .createAnswer,
-         .connecting,
-         .onHold,
-         .remotelyOnHold:
+        case .fledgling,
+            .waitLocalMedia,
+            .createOffer,
+            .inviteSent,
+            .connecting:
+            viewState = .active
+            if call.isIncoming {
+                statusText = VectorL10n.eventFormatterCallYouCurrentlyIn
+            } else {
+                statusText = VectorL10n.eventFormatterCallYouStarted
+            }
+        case .createAnswer,
+             .connected,
+             .onHold,
+             .remotelyOnHold:
             viewState = .active
             statusText = VectorL10n.eventFormatterCallYouCurrentlyIn
         case .ringing:
@@ -243,21 +262,21 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
     @objc
     private func callBackAction(_ sender: CallTileActionButton) {
         self.delegate?.cell(self,
-                            didRecognizeAction: kMXKRoomBubbleCellCallBackButtonPressed,
+                            didRecognizeAction: Self.callBackAction,
                             userInfo: actionUserInfo)
     }
     
     @objc
     private func declineCallAction(_ sender: CallTileActionButton) {
         self.delegate?.cell(self,
-                            didRecognizeAction: kMXKRoomBubbleCellCallDeclineButtonPressed,
+                            didRecognizeAction: Self.declineAction,
                             userInfo: actionUserInfo)
     }
     
     @objc
     private func answerCallAction(_ sender: CallTileActionButton) {
         self.delegate?.cell(self,
-                            didRecognizeAction: kMXKRoomBubbleCellCallAnswerButtonPressed,
+                            didRecognizeAction: Self.answerAction,
                             userInfo: actionUserInfo)
     }
     
@@ -278,13 +297,49 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
             return
         }
         
+        if bubbleCellData.senderId == bubbleCellData.mxSession.myUserId {
+            //  event sent by my user, no means in displaying our own avatar and display name
+            if let directUserId = bubbleCellData.mxSession.directUserId(inRoom: bubbleCellData.roomId) {
+                let user = bubbleCellData.mxSession.user(withUserId: directUserId)
+                
+                let placeholder = AvatarGenerator.generateAvatar(forMatrixItem: directUserId,
+                                                                 withDisplayName: user?.displayname)
+                
+                innerContentView.avatarImageView.setImageURI(user?.avatarUrl,
+                                            withType: nil,
+                                            andImageOrientation: .up,
+                                            toFitViewSize: innerContentView.avatarImageView.frame.size,
+                                            with: MXThumbnailingMethodCrop,
+                                            previewImage: placeholder,
+                                            mediaManager: bubbleCellData.mxSession.mediaManager)
+                innerContentView.avatarImageView.defaultBackgroundColor = .clear
+                
+                innerContentView.callerNameLabel.text = user?.displayname
+            }
+        } else {
+            innerContentView.avatarImageView.setImageURI(bubbleCellData.senderAvatarUrl,
+                                        withType: nil,
+                                        andImageOrientation: .up,
+                                        toFitViewSize: innerContentView.avatarImageView.frame.size,
+                                        with: MXThumbnailingMethodCrop,
+                                        previewImage: bubbleCellData.senderAvatarPlaceholder,
+                                        mediaManager: bubbleCellData.mxSession.mediaManager)
+            innerContentView.avatarImageView.defaultBackgroundColor = .clear
+            
+            innerContentView.callerNameLabel.text = bubbleCellData.senderDisplayName
+        }
+        
         guard let callInviteEventContent = MXCallInviteEventContent(fromJSON: inviteEvent.content) else {
             return
         }
-        self.isVideoCall = callInviteEventContent.isVideoCall()
-        self.callDurationString = readableCallDuration(from: events)
-        self.isIncoming = inviteEvent.sender != bubbleCellData.mxSession.myUserId
-        self.callInviteEvent = inviteEvent
+        isVideoCall = callInviteEventContent.isVideoCall()
+        callDurationString = readableCallDuration(from: events)
+        isIncoming = inviteEvent.sender != bubbleCellData.mxSession.myUserId
+        callInviteEvent = inviteEvent
+        innerContentView.callIconView.image = self.callTypeIcon.vc_tintedImage(usingColor: innerContentView.theme.textSecondaryColor)
+        innerContentView.callTypeLabel.text = isVideoCall ?
+            VectorL10n.eventFormatterCallVideo :
+            VectorL10n.eventFormatterCallVoice
         
         let callId = callInviteEventContent.callId
         guard let call = bubbleCellData.mxSession.callManager.call(withCallId: callId) else {
