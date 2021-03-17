@@ -4575,6 +4575,18 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self presentViewController:viewController animated:YES completion:completion];
 }
 
+- (void)callPresenter:(CallPresenter *)presenter presentGroupCallViewController:(JitsiViewController *)viewController completion:(void (^)(void))completion
+{
+    [self removeCallStatusBar];
+    
+    if (@available(iOS 13.0, *))
+    {
+        viewController.modalPresentationStyle = UIModalPresentationFullScreen;
+    }
+
+    [self presentViewController:viewController animated:YES completion:completion];
+}
+
 #pragma mark - CallBarDelegate
 
 - (void)callBarDidTapReturnButton:(CallBar *)callBar

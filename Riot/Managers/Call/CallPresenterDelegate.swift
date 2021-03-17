@@ -46,4 +46,9 @@ protocol CallPresenterDelegate: class {
     func callPresenter(_ presenter: CallPresenter,
                        exitPipForCallViewController viewController: CallViewController,
                        completion:(() -> Void)?)
+    
+    //  Group Calls
+    func callPresenter(_ presenter: CallPresenter,
+                       presentGroupCallViewController viewController: JitsiViewController,
+                       completion:(() -> Void)?)
 }

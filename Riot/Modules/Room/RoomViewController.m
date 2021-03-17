@@ -127,6 +127,7 @@
 #import "Riot-Swift.h"
 
 NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNotification";
+NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTileTappedNotification";
 
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
@@ -2257,6 +2258,17 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
                     {
                         //  post notification `RoomCallTileTapped`
                         [[NSNotificationCenter defaultCenter] postNotificationName:RoomCallTileTappedNotification object:bubbleData];
+                        
+                        preventBubblesTableViewScroll = YES;
+                        [self selectEventWithId:tappedEvent.eventId];
+                    }
+                }
+                else if (bubbleData.tag == RoomBubbleCellDataTagGroupCall)
+                {
+                    if ([bubbleData isKindOfClass:[RoomBubbleCellData class]])
+                    {
+                        //  post notification `RoomGroupCallTileTapped`
+                        [[NSNotificationCenter defaultCenter] postNotificationName:RoomGroupCallTileTappedNotification object:bubbleData];
                         
                         preventBubblesTableViewScroll = YES;
                         [self selectEventWithId:tappedEvent.eventId];

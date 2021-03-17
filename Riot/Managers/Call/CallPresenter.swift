@@ -33,8 +33,14 @@ class CallPresenter: NSObject {
             updateOnHoldCall()
         }
     }
+    private weak var presentedGroupCallVC: JitsiViewController? {
+        didSet {
+            updateOnHoldCall()
+        }
+    }
     private weak var inBarCallVC: CallViewController?
     private weak var pipCallVC: CallViewController?
+    private weak var pipGroupCallVC: JitsiViewController?
     private var uiOperationQueue: OperationQueue = .main
     private var isStarted: Bool = false
     private var callTimer: Timer?
@@ -236,6 +242,10 @@ class CallPresenter: NSObject {
                                                selector: #selector(callTileTapped(_:)),
                                                name: .RoomCallTileTapped,
                                                object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(groupCallTileTapped(_:)),
+                                               name: .RoomGroupCallTileTapped,
+                                               object: nil)
         
         isStarted = true
     }
@@ -253,6 +263,9 @@ class CallPresenter: NSObject {
                                                   object: nil)
         NotificationCenter.default.removeObserver(self,
                                                   name: .RoomCallTileTapped,
+                                                  object: nil)
+        NotificationCenter.default.removeObserver(self,
+                                                  name: .RoomGroupCallTileTapped,
                                                   object: nil)
         
         isStarted = false
@@ -326,6 +339,7 @@ class CallPresenter: NSObject {
     @objc
     private func callTileTapped(_ notification: Notification) {
         NSLog("[CallService] callTileTapped")
+        
         guard let bubbleData = notification.object as? RoomBubbleCellData else {
             return
         }
@@ -355,6 +369,40 @@ class CallPresenter: NSObject {
         }
         
         presentCallVC(callVC)
+    }
+    
+    @objc
+    private func groupCallTileTapped(_ notification: Notification) {
+        NSLog("[CallService] groupCallTileTapped")
+        
+        guard let bubbleData = notification.object as? RoomBubbleCellData else {
+            return
+        }
+        
+        guard let randomEvent = bubbleData.allLinkedEvents().randomElement() else {
+            return
+        }
+        
+        guard randomEvent.eventType == .custom,
+                (randomEvent.type == kWidgetMatrixEventTypeString ||
+                    randomEvent.type == kWidgetModularEventTypeString) else {
+            return
+        }
+        
+        guard let session = sessions.first else { return }
+        
+        guard let widget = Widget(widgetEvent: randomEvent, inMatrixSession: session) else {
+            return
+        }
+        
+        NSLog("[CallService] groupCallTileTapped: for call: \(widget.widgetId)")
+        
+        guard let jitsiVC = AppDelegate.theDelegate().jitsiViewController,
+              jitsiVC.widget.widgetId == widget.widgetId else {
+            return
+        }
+        
+        presentGroupCallVC(jitsiVC)
     }
     
     //  MARK: - Call Screens
@@ -458,6 +506,32 @@ class CallPresenter: NSObject {
             completion?()
         }
         
+        uiOperationQueue.addOperation(operation)
+    }
+    
+    //  MARK - Group Calls
+    
+    private func presentGroupCallVC(_ callVC: JitsiViewController, completion: (() -> Void)? = nil) {
+        NSLog("[CallService] presentGroupCallVC: call: \(callVC.widget.widgetId)")
+        
+        //  do not use PiP transitions here, as we really want to present the screen
+        callVC.transitioningDelegate = nil
+        
+        if let inBarCallVC = inBarCallVC {
+            dismissCallBar(for: inBarCallVC)
+        }
+        
+        if let presentedCallVC = presentedCallVC {
+            dismissCallVC(presentedCallVC)
+        }
+        
+        let operation = GroupCallVCPresentOperation(presenter: self, callVC: callVC) { [weak self] in
+            self?.presentedGroupCallVC = callVC
+            if callVC == self?.pipGroupCallVC {
+                self?.pipGroupCallVC = nil
+            }
+            completion?()
+        }
         uiOperationQueue.addOperation(operation)
     }
     
