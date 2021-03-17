@@ -148,6 +148,22 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
                 // Show timestamps always on right
                 self.displayTimestampForSelectedComponentOnLeftWhenPossible = NO;
             }
+            case MXEventTypeCustom:
+            {
+                if ([event.type isEqualToString:kWidgetMatrixEventTypeString]
+                    || [event.type isEqualToString:kWidgetModularEventTypeString])
+                {
+                    Widget *widget = [[Widget alloc] initWithWidgetEvent:event inMatrixSession:roomDataSource.mxSession];
+                    if ([widget.type isEqualToString:kWidgetTypeJitsiV1] ||
+                        [widget.type isEqualToString:kWidgetTypeJitsiV2])
+                    {
+                        self.tag = RoomBubbleCellDataTagGroupCall;
+                        
+                        // Show timestamps always on right
+                        self.displayTimestampForSelectedComponentOnLeftWhenPossible = NO;
+                    }
+                }
+            }
                 break;
             default:
                 break;
@@ -160,8 +176,6 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
 
         // Reset attributedTextMessage to force reset MXKRoomCellData parameters
         self.attributedTextMessage = nil;
-        
-        self.displayTimestampForSelectedComponentOnLeftWhenPossible = YES;
     }
     
     return self;
@@ -750,7 +764,13 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
         case RoomBubbleCellDataTagCall:
             shouldAddEvent = NO;
             break;
+        case RoomBubbleCellDataTagGroupCall:
+            shouldAddEvent = NO;
+            break;
         case RoomBubbleCellDataTagRoomCreateConfiguration:
+            shouldAddEvent = NO;
+            break;
+        case RoomBubbleCellDataTagRoomCreationIntro:
             shouldAddEvent = NO;
             break;
         default:
@@ -800,6 +820,20 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
             case MXEventTypeCallReject:
                 shouldAddEvent = NO;
                 break;
+            case MXEventTypeCustom:
+            {
+                if ([event.type isEqualToString:kWidgetMatrixEventTypeString]
+                    || [event.type isEqualToString:kWidgetModularEventTypeString])
+                {
+                    Widget *widget = [[Widget alloc] initWithWidgetEvent:event inMatrixSession:roomDataSource.mxSession];
+                    if ([widget.type isEqualToString:kWidgetTypeJitsiV1] ||
+                        [widget.type isEqualToString:kWidgetTypeJitsiV2])
+                    {
+                        shouldAddEvent = NO;
+                    }
+                }
+                break;
+            }
             default:
                 break;
         }

@@ -1,0 +1,299 @@
+// 
+// Copyright 2021 New Vector Ltd
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+import UIKit
+
+/// The number of milliseconds in one second.
+private let MSEC_PER_SEC: TimeInterval = 1000
+
+@objcMembers
+class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
+    
+    /// Action identifier used when the user pressed "Join" button for an active call.
+    /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the invite event of the declined call.
+    static let joinAction: String = "RoomGroupCallStatusBubbleCell.Join"
+    
+    /// Action identifier used when the user pressed "Answer" button for an incoming call.
+    /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the invite event of the call.
+    static let answerAction: String = "RoomGroupCallStatusBubbleCell.Answer"
+    
+    /// Action identifier used when the user pressed "Decline" button for an incoming call.
+    /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the invite event of the call.
+    static let declineAction: String = "RoomGroupCallStatusBubbleCell.Decline"
+
+    private var callDurationString: String = ""
+    private var isIncoming: Bool = false
+    private var widgetEvent: MXEvent!
+    private var widgetId: String!
+    private var viewState: ViewState = .unknown {
+        didSet {
+            updateBottomContentView()
+        }
+    }
+    
+    private enum Constants {
+        static let secondsToDisplayAnswerDeclineOptions: TimeInterval = 30
+        static let secondsToNotDisplayJoinForOutgoing: TimeInterval = 30
+    }
+    
+    private enum ViewState {
+        case unknown
+        case ringing
+        case active
+        case declined
+        case ended
+    }
+    
+    private static var callDurationFormatter: DateComponentsFormatter {
+        let formatter = DateComponentsFormatter()
+        formatter.zeroFormattingBehavior = .dropAll
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.unitsStyle = .abbreviated
+        return formatter
+    }
+    
+    override func update(theme: Theme) {
+        super.update(theme: theme)
+        if let themable = bottomContentView as? Themable {
+            themable.update(theme: theme)
+        }
+    }
+    
+    private func updateBottomContentView() {
+        bottomContentView = bottomView(for: viewState)
+    }
+    
+    private var callTypeIcon: UIImage {
+        //  always return a video call icon
+        return Asset.Images.callVideoIcon.image
+    }
+    
+    private var isJoined: Bool {
+        return widgetId != nil &&
+            AppDelegate.theDelegate().jitsiViewController?.widget.widgetId == widgetId
+    }
+    
+    private var actionUserInfo: [AnyHashable: Any]? {
+        if let event = widgetEvent {
+            return [kMXKRoomBubbleCellEventKey: event]
+        }
+        return nil
+    }
+    
+    private func bottomView(for state: ViewState) -> UIView? {
+        switch state {
+        case .unknown:
+            return nil
+        case .ringing:
+            let view = HorizontalButtonsContainerView.loadFromNib()
+            
+            view.firstButton.style = .negative
+            view.firstButton.setTitle(VectorL10n.eventFormatterCallDecline, for: .normal)
+            view.firstButton.setImage(Asset.Images.voiceCallHangupIcon.image, for: .normal)
+            view.firstButton.removeTarget(nil, action: nil, for: .touchUpInside)
+            view.firstButton.addTarget(self, action: #selector(declineCallAction(_:)), for: .touchUpInside)
+            
+            view.secondButton.style = .positive
+            view.secondButton.setTitle(VectorL10n.eventFormatterCallAnswer, for: .normal)
+            view.secondButton.setImage(callTypeIcon, for: .normal)
+            view.secondButton.removeTarget(nil, action: nil, for: .touchUpInside)
+            view.secondButton.addTarget(self, action: #selector(answerCallAction(_:)), for: .touchUpInside)
+            
+            return view
+        case .active:
+            if isJoined {
+                //  user currently in the group call, do not show a join button
+                return nil
+            }
+            let view = HorizontalButtonsContainerView.loadFromNib()
+            view.secondButton.isHidden = true
+            
+            view.firstButton.style = .positive
+            view.firstButton.setTitle(VectorL10n.eventFormatterGroupCallJoin, for: .normal)
+            view.firstButton.setImage(callTypeIcon, for: .normal)
+            view.firstButton.removeTarget(nil, action: nil, for: .touchUpInside)
+            view.firstButton.addTarget(self, action: #selector(joinAction(_:)), for: .touchUpInside)
+            
+            return view
+        case .declined:
+            let view = HorizontalButtonsContainerView.loadFromNib()
+            view.secondButton.isHidden = true
+            
+            view.firstButton.style = .positive
+            view.firstButton.setTitle(VectorL10n.eventFormatterGroupCallJoin, for: .normal)
+            view.firstButton.setImage(callTypeIcon, for: .normal)
+            view.firstButton.removeTarget(nil, action: nil, for: .touchUpInside)
+            view.firstButton.addTarget(self, action: #selector(joinAction(_:)), for: .touchUpInside)
+            
+            return view
+        case .ended:
+            return nil
+        }
+    }
+    
+    //  MARK: - Actions
+    
+    @objc
+    private func joinAction(_ sender: CallTileActionButton) {
+        self.delegate?.cell(self,
+                            didRecognizeAction: Self.joinAction,
+                            userInfo: actionUserInfo)
+    }
+    
+    @objc
+    private func declineCallAction(_ sender: CallTileActionButton) {
+        self.delegate?.cell(self,
+                            didRecognizeAction: Self.declineAction,
+                            userInfo: actionUserInfo)
+    }
+    
+    @objc
+    private func answerCallAction(_ sender: CallTileActionButton) {
+        self.delegate?.cell(self,
+                            didRecognizeAction: Self.answerAction,
+                            userInfo: actionUserInfo)
+    }
+    
+    //  MARK: - MXKCellRendering
+    
+    override func render(_ cellData: MXKCellData!) {
+        super.render(cellData)
+        
+        viewState = .unknown
+        
+        guard let bubbleCellData = cellData as? RoomBubbleCellData else {
+            return
+        }
+        
+        let events = bubbleCellData.allLinkedEvents()
+        
+        NSLog("[RoomGroupCallStatusBubbleCell] render: \(events.count) events: \(events)")
+        
+        guard let widgetEvent = events
+                .first(where: {
+                    $0.eventType == .custom &&
+                        ($0.type == kWidgetMatrixEventTypeString || $0.type == kWidgetModularEventTypeString)
+                }) else {
+            return
+        }
+        
+        guard let widgetId = widgetEvent.stateKey else {
+            return
+        }
+        
+        guard let room = bubbleCellData.mxSession.room(withRoomId: widgetEvent.roomId) else {
+            return
+        }
+        
+        callDurationString = readableCallDuration(from: widgetEvent, endEvent: nil)
+        isIncoming = widgetEvent.sender != bubbleCellData.mxSession.myUserId
+        self.widgetEvent = widgetEvent
+        self.widgetId = widgetId
+        innerContentView.callIconView.image = Asset.Images.tabGroups.image
+            .vc_tintedImage(usingColor: innerContentView.theme.textSecondaryColor)
+        innerContentView.callTypeLabel.text = VectorL10n.eventFormatterGroupCall
+        
+        if isIncoming && !isJoined &&
+            TimeInterval(widgetEvent.age)/MSEC_PER_SEC < Constants.secondsToDisplayAnswerDeclineOptions {
+            innerContentView.callerNameLabel.text = VectorL10n.eventFormatterGroupCallIncoming(bubbleCellData.senderDisplayName, room.summary.displayname)
+            
+            innerContentView.avatarImageView.setImageURI(bubbleCellData.senderAvatarUrl,
+                                        withType: nil,
+                                        andImageOrientation: .up,
+                                        toFitViewSize: innerContentView.avatarImageView.frame.size,
+                                        with: MXThumbnailingMethodCrop,
+                                        previewImage: bubbleCellData.senderAvatarPlaceholder,
+                                        mediaManager: bubbleCellData.mxSession.mediaManager)
+            
+            viewState = .ringing
+        } else {
+            innerContentView.callerNameLabel.text = room.summary.displayname
+            
+            room.summary.setRoomAvatarImageIn(innerContentView.avatarImageView)
+        }
+        
+        innerContentView.avatarImageView.defaultBackgroundColor = .clear
+        
+        room.state { (roomState) in
+            guard let widgets = WidgetManager.shared()?.widgets(ofTypes: [
+                kWidgetTypeJitsiV1,
+                kWidgetTypeJitsiV2
+            ],
+            in: room,
+            with: roomState) else {
+                self.viewState = .ended
+                self.statusText = VectorL10n.eventFormatterCallHasEnded(self.callDurationString)
+                return
+            }
+            
+            let removeWidgetEvent = roomState?.stateEvents
+                .filter({ $0.stateKey == widgetId })
+                .first(where: { $0.content.isEmpty })
+            self.callDurationString = self.readableCallDuration(from: widgetEvent,
+                                                                endEvent: removeWidgetEvent)
+
+            guard let widget = widgets.first(where: { $0.widgetId == widgetId }) else {
+                self.viewState = .ended
+                self.statusText = VectorL10n.eventFormatterCallHasEnded(self.callDurationString)
+                return
+            }
+
+            if widget.isActive {
+                if !self.isIncoming &&
+                            TimeInterval(widgetEvent.age)/MSEC_PER_SEC < Constants.secondsToNotDisplayJoinForOutgoing {
+                    self.viewState = .active
+                    self.statusText = VectorL10n.eventFormatterCallYouStarted
+                } else if self.isIncoming && !self.isJoined &&
+                            TimeInterval(widgetEvent.age)/MSEC_PER_SEC < Constants.secondsToDisplayAnswerDeclineOptions {
+                    
+                    self.viewState = .ringing
+                    self.statusText = nil
+                } else {
+                    self.viewState = .active
+                    self.statusText = VectorL10n.eventFormatterCallYouCurrentlyIn
+                }
+            } else {
+                self.viewState = .ended
+                self.statusText = VectorL10n.eventFormatterCallHasEnded(self.callDurationString)
+            }
+        }
+    }
+    
+    private func callDuration(from startEvent: MXEvent?, endEvent: MXEvent?) -> TimeInterval {
+        guard let startDate = startEvent?.originServerTs else {
+            //  never started
+            return 0
+        }
+        guard let endDate = endEvent?.originServerTs else {
+            //  not ended yet, compute the diff from now
+            return (NSTimeIntervalSince1970 - TimeInterval(startDate))/MSEC_PER_SEC
+        }
+        
+        //  ended, compute the diff between two dates
+        return TimeInterval(endDate - startDate)/MSEC_PER_SEC
+    }
+    
+    private func readableCallDuration(from startEvent: MXEvent?, endEvent: MXEvent?) -> String {
+        let duration = callDuration(from: startEvent, endEvent: endEvent)
+        
+        if duration <= 0 {
+            return ""
+        }
+        
+        return RoomGroupCallStatusBubbleCell.callDurationFormatter.string(from: duration) ?? ""
+    }
+
+}

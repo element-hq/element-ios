@@ -370,6 +370,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     
     //  call cells
     [self.bubblesTableView registerClass:RoomDirectCallStatusBubbleCell.class forCellReuseIdentifier:RoomDirectCallStatusBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomGroupCallStatusBubbleCell.class forCellReuseIdentifier:RoomGroupCallStatusBubbleCell.defaultReuseIdentifier];
     
     [self.bubblesTableView registerClass:RoomCreationIntroCell.class forCellReuseIdentifier:RoomCreationIntroCell.defaultReuseIdentifier];    
     
@@ -2075,6 +2076,10 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
         else if (bubbleData.tag == RoomBubbleCellDataTagCall)
         {
             cellViewClass = RoomDirectCallStatusBubbleCell.class;
+        }
+        else if (bubbleData.tag == RoomBubbleCellDataTagGroupCall)
+        {
+            cellViewClass = RoomGroupCallStatusBubbleCell.class;
         }
         else if (bubbleData.isIncoming)
         {

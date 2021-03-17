@@ -127,14 +127,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                                 || [activeWidget.type isEqualToString:kWidgetTypeJitsiV2])
                             {
                                 // This was a jitsi widget
-                                if (isEventSenderMyUser)
-                                {
-                                    displayText = NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_removed_by_you", @"Vector", nil);
-                                }
-                                else
-                                {
-                                    displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_removed", @"Vector", nil), senderDisplayName];
-                                }
+                                return nil;
                             }
                             else
                             {
