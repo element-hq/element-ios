@@ -17,14 +17,23 @@
 import UIKit
 import Reusable
 
-class HorizontalButtonsContainerView: UIStackView {
+class HorizontalButtonsContainerView: UIView {
+    
+    private enum Constants {
+        static let stackViewTopMargin: CGFloat = 8
+        static let stackViewBottomMargin: CGFloat = 16
+    }
 
+    @IBOutlet weak private var stackView: UIStackView!
+    
     @IBOutlet weak var firstButton: CallTileActionButton!
     @IBOutlet weak var secondButton: CallTileActionButton!
     
-    required init(coder: NSCoder) {
-        super.init(coder: coder)
-        translatesAutoresizingMaskIntoConstraints = false
+    override var intrinsicContentSize: CGSize {
+        var result = stackView.intrinsicContentSize
+        result.width = self.frame.width
+        result.height += Constants.stackViewTopMargin + Constants.stackViewBottomMargin
+        return result
     }
 
 }
