@@ -9,6 +9,7 @@ Changes to be released in next version
 
 🐛 Bugfix
  * RoomVC: Fix timeline blink on sending.
+ * RoomVC: Fix not visible last bubble issue.
 
 ⚠️ API Changes
  * 
