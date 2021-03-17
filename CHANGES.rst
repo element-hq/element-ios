@@ -6,10 +6,9 @@ Changes to be released in next version
 
 🙌 Improvements
  * Pods: Update FlowCommoniOS, GBDeviceInfo, KeychainAccess, MatomoTracker, SwiftJWT, SwiftLint (#4120).
- * RoomVC: Cancel event selection on room if only a selected event exists.
 
 🐛 Bugfix
- * 
+ * RoomVC: Fix timeline blink on sending.
 
 ⚠️ API Changes
  * 
