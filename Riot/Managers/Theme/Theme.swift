@@ -39,6 +39,7 @@ import UIKit
 
     var textPrimaryColor: UIColor { get }
     var textSecondaryColor: UIColor { get }
+    var textTertiaryColor: UIColor { get }
 
     var tintColor: UIColor { get }
     var tintBackgroundColor: UIColor { get }
@@ -62,8 +63,6 @@ import UIKit
     var placeholderTextColor: UIColor { get }
 
     var selectedBackgroundColor: UIColor { get }
-    
-    var messageTickColor: UIColor { get }
     
     // MARK: - Call Screen Specific Colors
     
