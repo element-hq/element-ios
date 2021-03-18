@@ -3025,6 +3025,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
                 self->_jitsiViewController.delegate = self;
                 [self presentJitsiViewController:nil];
+                
+                [self.callPresenter startJitsiCallWithWidget:jitsiWidget];
 
             } failure:^(NSError *error) {
 
@@ -3062,6 +3064,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     if (jitsiViewController == _jitsiViewController)
     {
+        [_callPresenter endJitsiCallWithWidget:_jitsiViewController.widget];
+        
         [_jitsiViewController dismissViewControllerAnimated:YES completion:completion];
         _jitsiViewController = nil;
 
@@ -3075,7 +3079,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         [_jitsiViewController dismissViewControllerAnimated:YES completion:^{
 
-            MXRoom *room = [_jitsiViewController.widget.mxSession roomWithRoomId:_jitsiViewController.widget.roomId];
+            MXRoom *room = [self.jitsiViewController.widget.mxSession roomWithRoomId:self.jitsiViewController.widget.roomId];
             NSString *btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"active_call_details", @"Vector", nil), room.summary.displayname];
             [self updateCallStatusBar:btnTitle];
 
