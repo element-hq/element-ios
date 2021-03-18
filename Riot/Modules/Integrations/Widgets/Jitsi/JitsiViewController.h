@@ -59,6 +59,11 @@
            failure:(void (^)(NSError *error))failure;
 
 /**
+ Set audio muted for the Jitsi call.
+ */
+- (void)setAudioMuted:(BOOL)muted;
+
+/**
  Hang up the jitsi conference call in progress.
  */
 - (void)hangup;

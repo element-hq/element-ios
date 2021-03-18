@@ -157,6 +157,11 @@ static const NSString *kJitsiDataErrorKey = @"error";
     }];
 }
 
+- (void)setAudioMuted:(BOOL)muted
+{
+    [self.jitsiMeetView setAudioMuted:muted];
+}
+
 - (void)hangup
 {
     [self.jitsiMeetView leave];
