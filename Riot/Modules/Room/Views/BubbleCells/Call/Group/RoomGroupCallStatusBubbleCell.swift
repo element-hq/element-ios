@@ -208,20 +208,24 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
         
         if isIncoming && !isJoined &&
             TimeInterval(widgetEvent.age)/MSEC_PER_SEC < Constants.secondsToDisplayAnswerDeclineOptions {
-            innerContentView.callerNameLabel.text = VectorL10n.eventFormatterGroupCallIncoming(bubbleCellData.senderDisplayName, room.summary.displayname)
-            
-            innerContentView.avatarImageView.setImageURI(bubbleCellData.senderAvatarUrl,
-                                        withType: nil,
-                                        andImageOrientation: .up,
-                                        toFitViewSize: innerContentView.avatarImageView.frame.size,
-                                        with: MXThumbnailingMethodCrop,
-                                        previewImage: bubbleCellData.senderAvatarPlaceholder,
-                                        mediaManager: bubbleCellData.mxSession.mediaManager)
             
             if JitsiService.shared.isWidgetDeclined(withId: widgetId) {
+                innerContentView.callerNameLabel.text = room.summary.displayname
+                room.summary.setRoomAvatarImageIn(innerContentView.avatarImageView)
+                
                 viewState = .declined
                 statusText = VectorL10n.eventFormatterCallYouDeclined
             } else {
+                innerContentView.callerNameLabel.text = VectorL10n.eventFormatterGroupCallIncoming(bubbleCellData.senderDisplayName, room.summary.displayname)
+                
+                innerContentView.avatarImageView.setImageURI(bubbleCellData.senderAvatarUrl,
+                                            withType: nil,
+                                            andImageOrientation: .up,
+                                            toFitViewSize: innerContentView.avatarImageView.frame.size,
+                                            with: MXThumbnailingMethodCrop,
+                                            previewImage: bubbleCellData.senderAvatarPlaceholder,
+                                            mediaManager: bubbleCellData.mxSession.mediaManager)
+                
                 viewState = .ringing
                 statusText = nil
             }
