@@ -17,12 +17,23 @@
 import Foundation
 import MatrixKit
 
+// swiftlint:disable file_length
+
+#if canImport(JitsiMeetSDK)
+import JitsiMeetSDK
+import CallKit
+#endif
+
+/// The number of milliseconds in one second.
+private let MSEC_PER_SEC: TimeInterval = 1000
+
 @objcMembers
 /// Service to manage call screens and call bar UI management.
 class CallPresenter: NSObject {
     
     private enum Constants {
         static let pipAnimationDuration: TimeInterval = 0.25
+        static let groupCallInviteLifetime: TimeInterval = 30
     }
     
     private var sessions: [MXSession] = []
@@ -44,6 +55,11 @@ class CallPresenter: NSObject {
     private var uiOperationQueue: OperationQueue = .main
     private var isStarted: Bool = false
     private var callTimer: Timer?
+    #if canImport(JitsiMeetSDK)
+    private var widgetEventsListener: Any?
+    /// Jitsi calls map. Keys are CallKit call UUIDs, values are corresponding widgets.
+    private var jitsiCalls: [UUID: Widget] = [:]
+    #endif
     
     private var isCallKitEnabled: Bool {
         MXCallKitAdapter.callKitAvailable() && MXKAppSettings.standard()?.isCallKitEnabled == true
@@ -115,6 +131,121 @@ class CallPresenter: NSObject {
             return true
         }
         return false
+    }
+    
+    func startJitsiCall(withWidget widget: Widget) {
+        if self.jitsiCalls.first(where: { $0.value.widgetId == widget.widgetId })?.key != nil {
+            //  this Jitsi call is already managed by this class, no need to report the call again
+            return
+        }
+        
+        guard let roomId = widget.roomId else {
+            return
+        }
+        
+        guard let session = sessions.first else {
+            return
+        }
+        
+        guard let room = session.room(withRoomId: roomId) else {
+            return
+        }
+        
+        let newUUID = UUID()
+        let handle = CXHandle(type: .generic, value: roomId)
+        let startCallAction = CXStartCallAction(call: newUUID, handle: handle)
+        let transaction = CXTransaction(action: startCallAction)
+        JMCallKitProxy.request(transaction) { (error) in
+            if error == nil {
+                JMCallKitProxy.reportCallUpdate(with: newUUID,
+                                                handle: roomId,
+                                                displayName: room.summary.displayname,
+                                                hasVideo: true)
+                JMCallKitProxy.reportOutgoingCall(with: newUUID, connectedAt: nil)
+
+                self.jitsiCalls[newUUID] = widget
+            }
+        }
+    }
+    
+    func endJitsiCall(withWidget widget: Widget) {
+        guard let uuid = self.jitsiCalls.first(where: { $0.value.widgetId == widget.widgetId })?.key else {
+            //  this Jitsi call is not managed by this class
+            return
+        }
+        
+        let endCallAction = CXEndCallAction(call: uuid)
+        let transaction = CXTransaction(action: endCallAction)
+        JMCallKitProxy.request(transaction) { (error) in
+            if error == nil {
+                self.jitsiCalls.removeValue(forKey: uuid)
+            }
+        }
+    }
+    
+    func processWidgetEvent(_ event: MXEvent, inSession session: MXSession) {
+        guard JMCallKitProxy.isProviderConfigured() else {
+            //  CallKit proxy is not configured, no benefit in parsing the event
+            return
+        }
+        
+        guard let widget = Widget(widgetEvent: event, inMatrixSession: session) else {
+            return
+        }
+        
+        if self.jitsiCalls.first(where: { $0.value.widgetId == widget.widgetId })?.key != nil {
+            //  this Jitsi call is already managed by this class, no need to report the call again
+            return
+        }
+        
+        if widget.isActive {
+            guard widget.type == kWidgetTypeJitsiV1 || widget.type == kWidgetTypeJitsiV2 else {
+                //  not a Jitsi widget, ignore
+                return
+            }
+            
+            if let jitsiVC = AppDelegate.theDelegate().jitsiViewController,
+               jitsiVC.widget.widgetId == widget.widgetId {
+                //  this is already the Jitsi call we have atm
+                return
+            }
+            
+            if TimeInterval(event.age)/MSEC_PER_SEC > Constants.groupCallInviteLifetime {
+                //  too late to process the event
+                return
+            }
+            
+            //  an active Jitsi widget
+            let newUUID = UUID()
+            
+            //  assume this Jitsi call will survive
+            self.jitsiCalls[newUUID] = widget
+            
+            if event.sender == session.myUserId {
+                //  outgoing call
+                JMCallKitProxy.reportOutgoingCall(with: newUUID, connectedAt: nil)
+            } else {
+                //  incoming call
+                let user = session.user(withUserId: event.sender)
+                let displayName = NSString.localizedUserNotificationString(forKey: "GROUP_CALL_FROM_USER",
+                                                                           arguments: [user?.displayname as Any])
+                JMCallKitProxy.reportNewIncomingCall(UUID: newUUID,
+                                                     handle: widget.roomId,
+                                                     displayName: displayName,
+                                                     hasVideo: true) { (error) in
+                    if error != nil {
+                        self.jitsiCalls.removeValue(forKey: newUUID)
+                    }
+                }
+            }
+        } else {
+            guard let uuid = self.jitsiCalls.first(where: { $0.value.widgetId == widget.widgetId })?.key else {
+                //  this Jitsi call is not managed by this class
+                return
+            }
+            JMCallKitProxy.reportCall(with: uuid, endedAt: nil, reason: .remoteEnded)
+            self.jitsiCalls.removeValue(forKey: uuid)
+        }
     }
     
     //  MARK: - Private
@@ -230,6 +361,10 @@ class CallPresenter: NSObject {
             return
         }
         
+        defer {
+            isStarted = true
+        }
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(newCall(_:)),
                                                name: NSNotification.Name(rawValue: kMXCallManagerNewCall),
@@ -247,12 +382,34 @@ class CallPresenter: NSObject {
                                                name: .RoomGroupCallTileTapped,
                                                object: nil)
         
-        isStarted = true
+        #if canImport(JitsiMeetSDK)
+        JMCallKitProxy.addListener(self)
+        
+        guard let session = sessions.first else {
+            return
+        }
+        
+        widgetEventsListener = session.listenToEvents([
+            MXEventType(identifier: kWidgetMatrixEventTypeString),
+            MXEventType(identifier: kWidgetModularEventTypeString)
+        ]) { (event, direction, _) in
+            if direction == .backwards {
+                //  ignore backwards events
+                return
+            }
+            
+            self.processWidgetEvent(event, inSession: session)
+        }
+        #endif
     }
     
     private func removeCallObservers() {
         guard isStarted else {
             return
+        }
+        
+        defer {
+            isStarted = false
         }
         
         NotificationCenter.default.removeObserver(self,
@@ -268,7 +425,18 @@ class CallPresenter: NSObject {
                                                   name: .RoomGroupCallTileTapped,
                                                   object: nil)
         
-        isStarted = false
+        #if canImport(JitsiMeetSDK)
+        JMCallKitProxy.removeListener(self)
+        
+        guard let session = sessions.first else {
+            return
+        }
+        
+        if let widgetEventsListener = widgetEventsListener {
+            session.removeListener(widgetEventsListener)
+        }
+        widgetEventsListener = nil
+        #endif
     }
     
     @objc
@@ -631,3 +799,65 @@ extension OperationQueue {
     }
     
 }
+
+#if canImport(JitsiMeetSDK)
+//  MARK: - JMCallKitListener
+
+extension CallPresenter: JMCallKitListener {
+    
+    func providerDidReset() {
+        
+    }
+    
+    func performAnswerCall(UUID: UUID) {
+        guard let widget = jitsiCalls[UUID] else {
+            return
+        }
+        
+        AppDelegate.theDelegate().displayJitsiViewController(with: widget, andVideo: true)
+    }
+    
+    func performEndCall(UUID: UUID) {
+        guard let widget = jitsiCalls[UUID] else {
+            return
+        }
+        
+        if let jitsiVC = AppDelegate.theDelegate().jitsiViewController, jitsiVC.widget.widgetId == widget.widgetId {
+            //  hangup an active call
+            jitsiVC.hangup()
+            AppDelegate.theDelegate().jitsiViewController(jitsiVC, dismissViewJitsiController: nil)
+        } else {
+            //  decline incoming call
+            JitsiService.shared.declineWidget(withId: widget.widgetId)
+        }
+    }
+    
+    func performSetMutedCall(UUID: UUID, isMuted: Bool) {
+        guard let widget = jitsiCalls[UUID] else {
+            return
+        }
+        
+        if let jitsiVC = AppDelegate.theDelegate().jitsiViewController, jitsiVC.widget.widgetId == widget.widgetId {
+            //  mute the active Jitsi call
+            jitsiVC.setAudioMuted(isMuted)
+        }
+    }
+    
+    func performStartCall(UUID: UUID, isVideo: Bool) {
+        
+    }
+    
+    func providerDidActivateAudioSession(session: AVAudioSession) {
+        
+    }
+
+    func providerDidDeactivateAudioSession(session: AVAudioSession) {
+        
+    }
+
+    func providerTimedOutPerformingAction(action: CXAction) {
+        
+    }
+    
+}
+#endif
