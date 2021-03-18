@@ -960,7 +960,7 @@
 "key_verification_tile_request_status_cancelled_by_me" = "Du hast abgebrochen";
 "key_verification_tile_request_status_cancelled" = "%@ abgebrochen";
 "key_verification_tile_request_status_accepted" = "Du hast akzeptiert";
-"key_verification_tile_request_incoming_approval_accept" = "Akzeptieren";
+"key_verification_tile_request_incoming_approval_accept" = "Annehmen";
 "key_verification_tile_request_incoming_approval_decline" = "Ablehnen";
 "key_verification_tile_conclusion_done_title" = "Verifiziert";
 "key_verification_tile_conclusion_warning_title" = "Nicht vertrauenswürdige Anmeldung";
@@ -1052,7 +1052,7 @@
 "secure_backup_setup_banner_title" = "Sichere Datensicherung";
 "secure_backup_setup_banner_subtitle" = "Absicherung gegen den Zugriffsverlust auf verschlüsselte Nachrichten und Daten";
 // Recover from private key
-"key_backup_recover_from_private_key_info" = "Backup wird wiederhergestellt…";
+"key_backup_recover_from_private_key_info" = "Sicherung wird wiederhergestellt…";
 "sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Richte sichere Datensicherung ein";
 // MARK: - Device Verification
 "key_verification_other_session_title" = "Sitzung verifizieren";
