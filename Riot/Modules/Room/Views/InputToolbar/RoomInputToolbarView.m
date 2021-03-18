@@ -86,6 +86,8 @@
     growingTextView.textColor = ThemeService.shared.theme.textPrimaryColor;
     growingTextView.tintColor = ThemeService.shared.theme.tintColor;
     
+    growingTextView.internalTextView.showsVerticalScrollIndicator = NO;
+    
     growingTextView.internalTextView.keyboardAppearance = ThemeService.shared.theme.keyboardAppearance;
     if (growingTextView.isFirstResponder)
     {
@@ -187,7 +189,7 @@
     {
         [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:8 options:UIViewAnimationOptionCurveEaseIn animations:^{
             self.rightInputToolbarButton.alpha = 1;
-            self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.rightInputToolbarButton.frame.origin.x + 4;
+            self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.rightInputToolbarButton.frame.origin.x + 12;
             [self layoutIfNeeded];
         } completion:^(BOOL finished) {
         }];
@@ -196,7 +198,7 @@
     {
         [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:8 options:UIViewAnimationOptionCurveEaseIn animations:^{
             self.rightInputToolbarButton.alpha = 0;
-            self.messageComposerContainerTrailingConstraint.constant = 8;
+            self.messageComposerContainerTrailingConstraint.constant = 12;
             [self layoutIfNeeded];
         } completion:^(BOOL finished) {
         }];

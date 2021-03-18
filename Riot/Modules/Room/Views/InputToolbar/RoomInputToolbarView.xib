@@ -10,20 +10,31 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="RoomInputToolbarView">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="46"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="60"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a84-Vc-6ud" userLabel="MainToolBar View">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="46"/>
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="60"/>
                     <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hga-l8-Wua" userLabel="attach Button">
+                            <rect key="frame" x="12" y="12" width="46" height="36"/>
+                            <accessibility key="accessibilityConfiguration" identifier="AttachButton"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="46" id="O2T-T8-EjV"/>
+                            </constraints>
+                            <state key="normal" image="upload_icon"/>
+                            <connections>
+                                <action selector="onTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="WbU-WH-gwL"/>
+                            </connections>
+                        </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QWp-NV-uh5" userLabel="Message Composer Container">
-                            <rect key="frame" x="62" y="4" width="530" height="38"/>
+                            <rect key="frame" x="70" y="10" width="518" height="40"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="input_text_background" translatesAutoresizingMaskIntoConstraints="NO" id="uH7-Q7-hpZ">
-                                    <rect key="frame" x="0.0" y="0.0" width="530" height="40"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="518" height="42"/>
                                 </imageView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wgb-ON-N29" customClass="KeyboardGrowingTextView">
-                                    <rect key="frame" x="0.0" y="1" width="530" height="38"/>
+                                    <rect key="frame" x="4" y="1" width="510" height="40"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" identifier="GrowingTextView"/>
                                 </view>
@@ -31,50 +42,35 @@
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstItem="wgb-ON-N29" firstAttribute="top" secondItem="QWp-NV-uh5" secondAttribute="top" constant="1" id="0jt-Ye-2DW"/>
-                                <constraint firstAttribute="trailing" secondItem="wgb-ON-N29" secondAttribute="trailing" id="30f-rE-CKj"/>
-                                <constraint firstItem="uH7-Q7-hpZ" firstAttribute="leading" secondItem="wgb-ON-N29" secondAttribute="leading" id="AV7-0I-eqc"/>
-                                <constraint firstItem="wgb-ON-N29" firstAttribute="leading" secondItem="QWp-NV-uh5" secondAttribute="leading" id="N7q-ch-iRz"/>
+                                <constraint firstAttribute="trailing" secondItem="wgb-ON-N29" secondAttribute="trailing" constant="4" id="30f-rE-CKj"/>
+                                <constraint firstItem="uH7-Q7-hpZ" firstAttribute="leading" secondItem="QWp-NV-uh5" secondAttribute="leading" id="Fli-kz-OcS"/>
+                                <constraint firstItem="wgb-ON-N29" firstAttribute="leading" secondItem="QWp-NV-uh5" secondAttribute="leading" constant="4" id="N7q-ch-iRz"/>
                                 <constraint firstItem="uH7-Q7-hpZ" firstAttribute="top" secondItem="wgb-ON-N29" secondAttribute="top" constant="-1" id="TH3-h8-9e9"/>
-                                <constraint firstItem="uH7-Q7-hpZ" firstAttribute="trailing" secondItem="wgb-ON-N29" secondAttribute="trailing" id="YkL-m0-I7G"/>
                                 <constraint firstAttribute="bottom" secondItem="wgb-ON-N29" secondAttribute="bottom" constant="-1" id="fFG-SH-Hjh"/>
                                 <constraint firstItem="uH7-Q7-hpZ" firstAttribute="bottom" secondItem="wgb-ON-N29" secondAttribute="bottom" constant="1" id="mAh-nF-xXj"/>
+                                <constraint firstAttribute="trailing" secondItem="uH7-Q7-hpZ" secondAttribute="trailing" id="wS9-oU-alv"/>
                             </constraints>
                         </view>
                         <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G8Z-CM-tGs" userLabel="send Button">
-                            <rect key="frame" x="550" y="6" width="46" height="36"/>
+                            <rect key="frame" x="552" y="12" width="36" height="36"/>
                             <accessibility key="accessibilityConfiguration" identifier="SendButton"/>
-                            <constraints>
-                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="46" id="KnT-92-5v2"/>
-                            </constraints>
                             <state key="normal" image="send_icon"/>
                             <connections>
                                 <action selector="onTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="Y9g-uz-rAz"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hga-l8-Wua" userLabel="attach Button">
-                            <rect key="frame" x="10" y="0.0" width="46" height="46"/>
-                            <accessibility key="accessibilityConfiguration" identifier="AttachButton"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="46" id="O2T-T8-EjV"/>
-                                <constraint firstAttribute="width" secondItem="Hga-l8-Wua" secondAttribute="height" multiplier="1:1" id="f0T-3f-BJu"/>
-                            </constraints>
-                            <state key="normal" image="upload_icon"/>
-                            <connections>
-                                <action selector="onTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="WbU-WH-gwL"/>
-                            </connections>
-                        </button>
                     </subviews>
                     <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="46" id="1FO-iu-urG"/>
-                        <constraint firstItem="Hga-l8-Wua" firstAttribute="leading" secondItem="a84-Vc-6ud" secondAttribute="leading" constant="10" id="31r-fn-347"/>
-                        <constraint firstItem="QWp-NV-uh5" firstAttribute="leading" secondItem="a84-Vc-6ud" secondAttribute="leading" constant="62" id="ErD-eB-stF"/>
-                        <constraint firstAttribute="bottom" secondItem="Hga-l8-Wua" secondAttribute="bottom" id="KTO-RJ-mKf"/>
-                        <constraint firstAttribute="bottom" secondItem="QWp-NV-uh5" secondAttribute="bottom" constant="4" id="NGr-2o-sOP"/>
-                        <constraint firstAttribute="trailing" secondItem="G8Z-CM-tGs" secondAttribute="trailing" constant="4" id="Sua-LC-3yW"/>
-                        <constraint firstItem="QWp-NV-uh5" firstAttribute="top" secondItem="a84-Vc-6ud" secondAttribute="top" constant="4" id="WyZ-3i-OHi"/>
-                        <constraint firstAttribute="height" constant="46" id="Yjj-ua-rbe"/>
-                        <constraint firstAttribute="trailing" secondItem="QWp-NV-uh5" secondAttribute="trailing" constant="8" id="hXO-cY-Jgz"/>
-                        <constraint firstAttribute="bottom" secondItem="G8Z-CM-tGs" secondAttribute="bottom" constant="4" id="vpk-lw-TnO"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="60" id="1FO-iu-urG"/>
+                        <constraint firstItem="Hga-l8-Wua" firstAttribute="leading" secondItem="a84-Vc-6ud" secondAttribute="leading" constant="12" id="31r-fn-347"/>
+                        <constraint firstItem="G8Z-CM-tGs" firstAttribute="centerY" secondItem="a84-Vc-6ud" secondAttribute="centerY" id="Fsw-LO-vgm"/>
+                        <constraint firstItem="QWp-NV-uh5" firstAttribute="leading" secondItem="Hga-l8-Wua" secondAttribute="trailing" constant="12" id="M9f-je-3zO"/>
+                        <constraint firstAttribute="bottom" secondItem="QWp-NV-uh5" secondAttribute="bottom" constant="10" id="NGr-2o-sOP"/>
+                        <constraint firstAttribute="trailing" secondItem="G8Z-CM-tGs" secondAttribute="trailing" constant="12" id="Sua-LC-3yW"/>
+                        <constraint firstItem="QWp-NV-uh5" firstAttribute="top" secondItem="a84-Vc-6ud" secondAttribute="top" constant="10" id="WyZ-3i-OHi"/>
+                        <constraint firstItem="Hga-l8-Wua" firstAttribute="centerY" secondItem="a84-Vc-6ud" secondAttribute="centerY" id="YND-k2-HMH"/>
+                        <constraint firstAttribute="height" constant="60" id="Yjj-ua-rbe"/>
+                        <constraint firstAttribute="trailing" secondItem="QWp-NV-uh5" secondAttribute="trailing" constant="12" id="hXO-cY-Jgz"/>
                     </constraints>
                 </view>
             </subviews>
@@ -98,7 +94,6 @@
                 <outlet property="mainToolbarView" destination="a84-Vc-6ud" id="5p3-Ft-0gv"/>
                 <outlet property="messageComposerContainer" destination="QWp-NV-uh5" id="APR-B5-ogC"/>
                 <outlet property="messageComposerContainerBottomConstraint" destination="NGr-2o-sOP" id="oez-6D-IKA"/>
-                <outlet property="messageComposerContainerLeadingConstraint" destination="ErD-eB-stF" id="Ha9-DG-Nw2"/>
                 <outlet property="messageComposerContainerTopConstraint" destination="WyZ-3i-OHi" id="OcO-1f-bNA"/>
                 <outlet property="messageComposerContainerTrailingConstraint" destination="hXO-cY-Jgz" id="lHZ-MU-vyC"/>
                 <outlet property="rightInputToolbarButton" destination="G8Z-CM-tGs" id="NCk-5m-aNF"/>
