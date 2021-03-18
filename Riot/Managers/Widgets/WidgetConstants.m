@@ -1,5 +1,5 @@
 // 
-// Copyright 2020 Vector Creations Ltd
+// Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,17 +14,14 @@
 // limitations under the License.
 //
 
-// Configuration settings file format documentation can be found at:
-// https://help.apple.com/xcode/#/dev745c5c974
+#import "WidgetConstants.h"
 
-#include "Config/AppIdentifiers.xcconfig"
+NSString *const kWidgetMatrixEventTypeString  = @"m.widget";
+NSString *const kWidgetModularEventTypeString = @"im.vector.modular.widgets";
+NSString *const kWidgetTypeJitsiV1 = @"jitsi";
+NSString *const kWidgetTypeJitsiV2 = @"m.jitsi";
+NSString *const kWidgetTypeStickerPicker = @"m.stickerpicker";
 
-PRODUCT_NAME = RiotNSE
-PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER).nse
+@implementation WidgetConstants
 
-INFOPLIST_FILE = RiotNSE/Info.plist
-
-CODE_SIGN_ENTITLEMENTS = RiotNSE/RiotNSE.entitlements
-
-SKIP_INSTALL = YES
-SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/RiotNSE-Bridging-Header.h
+@end
