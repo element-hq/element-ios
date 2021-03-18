@@ -299,7 +299,7 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
         }
         
         //  ended, compute the diff between two dates
-        return TimeInterval(endDate - startDate)/MSEC_PER_SEC
+        return TimeInterval(max(0, Double(endDate) - Double(startDate)))/MSEC_PER_SEC
     }
     
     private func readableCallDuration(from startEvent: MXEvent?, endEvent: MXEvent?) -> String {
