@@ -23,15 +23,15 @@ private let MSEC_PER_SEC: TimeInterval = 1000
 class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
     
     /// Action identifier used when the user pressed "Join" button for an active call.
-    /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the invite event of the declined call.
+    /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the widget event of the call.
     static let joinAction: String = "RoomGroupCallStatusBubbleCell.Join"
     
     /// Action identifier used when the user pressed "Answer" button for an incoming call.
-    /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the invite event of the call.
+    /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the widget event of the call.
     static let answerAction: String = "RoomGroupCallStatusBubbleCell.Answer"
     
     /// Action identifier used when the user pressed "Decline" button for an incoming call.
-    /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the invite event of the call.
+    /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the widget event of the call.
     static let declineAction: String = "RoomGroupCallStatusBubbleCell.Decline"
 
     private var callDurationString: String = ""
@@ -218,7 +218,13 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
                                         previewImage: bubbleCellData.senderAvatarPlaceholder,
                                         mediaManager: bubbleCellData.mxSession.mediaManager)
             
-            viewState = .ringing
+            if JitsiService.shared.isWidgetDeclined(withId: widgetId) {
+                viewState = .declined
+                statusText = VectorL10n.eventFormatterCallYouDeclined
+            } else {
+                viewState = .ringing
+                statusText = nil
+            }
         } else {
             innerContentView.callerNameLabel.text = room.summary.displayname
             
@@ -227,7 +233,8 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
         
         innerContentView.avatarImageView.defaultBackgroundColor = .clear
         
-        room.state { (roomState) in
+        room.state { [weak self] (roomState) in
+            guard let self = self else { return }
             guard let widgets = WidgetManager.shared()?.widgets(ofTypes: [
                 kWidgetTypeJitsiV1,
                 kWidgetTypeJitsiV2
@@ -259,8 +266,13 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
                 } else if self.isIncoming && !self.isJoined &&
                             TimeInterval(widgetEvent.age)/MSEC_PER_SEC < Constants.secondsToDisplayAnswerDeclineOptions {
                     
-                    self.viewState = .ringing
-                    self.statusText = nil
+                    if JitsiService.shared.isWidgetDeclined(withId: widgetId) {
+                        self.viewState = .declined
+                        self.statusText = VectorL10n.eventFormatterCallYouDeclined
+                    } else {
+                        self.viewState = .ringing
+                        self.statusText = nil
+                    }
                 } else {
                     self.viewState = .active
                     self.statusText = VectorL10n.eventFormatterCallYouCurrentlyIn

@@ -61,6 +61,10 @@ final class JitsiService: NSObject {
     
     private var httpClients: [String: MXHTTPClient] = [:]
     
+    /// Holds widgetIds for declined group calls. Made a map to speed up lookups.
+    /// Values are useless, not used with false values.
+    private var declinedJitsiWidgets: [String: Bool] = [:]
+    
     // MARK: - Setup
     
     private override init() {
@@ -68,6 +72,18 @@ final class JitsiService: NSObject {
     }
     
     // MARK: - Public
+    
+    func declineWidget(withId widgetId: String) {
+        declinedJitsiWidgets[widgetId] = true
+    }
+    
+    func resetDeclineForWidget(withId widgetId: String) {
+        declinedJitsiWidgets.removeValue(forKey: widgetId)
+    }
+    
+    func isWidgetDeclined(withId widgetId: String) -> Bool {
+        return declinedJitsiWidgets[widgetId] == true
+    }
     
     // MARK: Configuration
     

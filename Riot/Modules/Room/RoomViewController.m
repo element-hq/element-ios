@@ -2474,6 +2474,19 @@ NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTi
                     NSLog(@"[RoomVC] didRecognizeAction:inCell:userInfo Warning: The application does not have the permission to join/answer the group call");
                 }
             }];
+            
+            MXEvent *widgetEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            Widget *widget = [[Widget alloc] initWithWidgetEvent:widgetEvent
+                                                 inMatrixSession:customizedRoomDataSource.mxSession];
+            [[JitsiService shared] resetDeclineForWidgetWithId:widget.widgetId];
+        }
+        else if ([actionIdentifier isEqualToString:RoomGroupCallStatusBubbleCell.declineAction])
+        {
+            MXEvent *widgetEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            Widget *widget = [[Widget alloc] initWithWidgetEvent:widgetEvent
+                                                 inMatrixSession:customizedRoomDataSource.mxSession];
+            [[JitsiService shared] declineWidgetWithId:widget.widgetId];
+            [self reloadBubblesTable:YES];
         }
         else if ([actionIdentifier isEqualToString:RoomCreationIntroCell.tapOnAvatarView])
         {
