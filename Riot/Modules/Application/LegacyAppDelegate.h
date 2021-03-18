@@ -30,6 +30,7 @@
 @protocol Configurable;
 @protocol LegacyAppDelegateDelegate;
 @class CallBar;
+@class CallPresenter;
 
 #pragma mark - Notifications
 /**
@@ -116,6 +117,11 @@ JitsiViewControllerDelegate>
 
 // Build Settings
 @property (nonatomic, readonly) id<Configurable> configuration;
+
+/**
+ Call presenter instance. May be nil unless at least one session initialized.
+ */
+@property (nonatomic, strong, readonly) CallPresenter *callPresenter;
 
 + (instancetype)theDelegate;
 

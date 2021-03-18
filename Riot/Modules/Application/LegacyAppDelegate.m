@@ -224,7 +224,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 @property (nonatomic, strong) PushNotificationService *pushNotificationService;
 @property (nonatomic, strong) PushNotificationStore *pushNotificationStore;
 @property (nonatomic, strong) LocalAuthenticationService *localAuthenticationService;
-@property (nonatomic, strong) CallPresenter *callPresenter;
+@property (nonatomic, strong, readwrite) CallPresenter *callPresenter;
 
 @property (nonatomic, strong) MajorUpdateManager *majorUpdateManager;
 
