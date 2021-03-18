@@ -196,6 +196,9 @@ NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTi
     // Tell whether the view controller is appeared or not.
     BOOL isAppeared;
     
+    // Tell whether the room has a Jitsi call or not.
+    BOOL hasJitsiCall;
+    
     // The right bar button items back up.
     NSArray<UIBarButtonItem *> *rightBarButtonItems;
 
@@ -601,6 +604,14 @@ NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTi
     }];
     [self refreshMissedDiscussionsCount:YES];
     self.keyboardHeight = MAX(self.keyboardHeight, 0);
+    
+    if (hasJitsiCall &&
+        ![[AppDelegate theDelegate].jitsiViewController.widget.roomId isEqualToString:self.roomDataSource.roomId])
+    {
+        //  the room had a Jitsi call before, but not now
+        hasJitsiCall = NO;
+        [self reloadBubblesTable:YES];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -629,6 +640,13 @@ NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTi
     {
         [[NSNotificationCenter defaultCenter] removeObserver:mxEventDidDecryptNotificationObserver];
         mxEventDidDecryptNotificationObserver = nil;
+    }
+    
+    JitsiViewController *jitsiVC = [AppDelegate theDelegate].jitsiViewController;
+    if ([jitsiVC.widget.roomId isEqualToString:self.roomDataSource.roomId])
+    {
+        hasJitsiCall = YES;
+        [self reloadBubblesTable:YES];
     }
 }
 
