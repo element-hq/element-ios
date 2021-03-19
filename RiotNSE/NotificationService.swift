@@ -373,6 +373,18 @@ class NotificationService: UNNotificationServiceExtension {
                     }
                     
                     notificationBody = NSString.localizedUserNotificationString(forKey: "STICKER_FROM_USER", arguments: [eventSenderName as Any])
+                case .custom:
+                    if event.type == kWidgetMatrixEventTypeString || event.type == kWidgetModularEventTypeString {
+                        if let content = event.content, let type = content["type"] as? String {
+                            if type == kWidgetTypeJitsiV1 || type == kWidgetTypeJitsiV2 {
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "VIDEO_CONF_FROM_USER", arguments: [eventSenderName as Any])
+                                
+                                // call notifications should stand out from normal messages, so we don't stack them
+                                threadIdentifier = nil
+                                self.sendVoipPush(forEvent: event)
+                            }
+                        }
+                    }
                 default:
                     break
                 }
