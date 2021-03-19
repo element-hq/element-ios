@@ -1,0 +1,27 @@
+name: Simulator
+
+on:
+  # Triggers the workflow on any pull request and push to develop
+  push:
+    branches: [ develop ]
+  pull_request:
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    runs-on: macos-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Setup
+        run: bundle install
+        
+      - name: Use right MatrixKit and MatrixSDK versions
+        run: bundle exec fastlane point_dependencies_to_pending_releases
+
+      - name: Build iOS simulator
+        run: bundle exec fastlane build
