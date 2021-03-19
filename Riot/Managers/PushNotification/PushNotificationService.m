@@ -568,23 +568,37 @@ Matrix session observer used to detect new opened sessions.
                     return;
                 }
                 
-                //  process the call invite synchronously
-                [session.callManager handleCallEvent:lastCallInvite];
-                MXCall *call = [session.callManager callWithCallId:lastCallInvite.content[@"call_id"]];
-                if (call)
+                if (lastCallInvite.eventType == MXEventTypeCallInvite)
                 {
-                    [session.callManager.callKitAdapter reportIncomingCall:call];
-                    NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Reporting new call in room %@ for the event: %@", roomId, eventId);
-                    
-                    //  Wait for the sync response in cache to be processed for data integrity.
-                    dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
-                        //  After reporting the call, we can continue async. Launch a background sync to handle call answers/declines on other devices of the user.
-                        [self launchBackgroundSync];
-                    });
+                    //  process the call invite synchronously
+                    [session.callManager handleCallEvent:lastCallInvite];
+                    MXCall *call = [session.callManager callWithCallId:lastCallInvite.content[@"call_id"]];
+                    if (call)
+                    {
+                        [session.callManager.callKitAdapter reportIncomingCall:call];
+                        NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Reporting new call in room %@ for the event: %@", roomId, eventId);
+                        
+                        //  Wait for the sync response in cache to be processed for data integrity.
+                        dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
+                            //  After reporting the call, we can continue async. Launch a background sync to handle call answers/declines on other devices of the user.
+                            [self launchBackgroundSync];
+                        });
+                    }
+                    else
+                    {
+                        NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Error on call object on room %@ for the event: %@", roomId, eventId);
+                    }
+                }
+                else if ([lastCallInvite.type isEqualToString:kWidgetMatrixEventTypeString] ||
+                         [lastCallInvite.type isEqualToString:kWidgetModularEventTypeString])
+                {
+                    [[AppDelegate theDelegate].callPresenter processWidgetEvent:lastCallInvite
+                                                                      inSession:session];
                 }
                 else
                 {
-                    NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Error on call object on room %@ for the event: %@", roomId, eventId);
+                    //  It's a serious error. There is nothing to avoid iOS to kill us here.
+                    NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: We have an unknown type of event for %@. There is something wrong.", eventId);
                 }
             }
             else
