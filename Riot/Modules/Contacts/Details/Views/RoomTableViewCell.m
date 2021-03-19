@@ -66,8 +66,6 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
     self.titleLabel.text = room.summary.displayname;
     
     self.directRoomBorderView.hidden = !room.isDirect;
-    
-    self.encryptedRoomIcon.hidden = !room.summary.isEncrypted;
 }
 
 - (void)prepareForReuse
@@ -75,7 +73,6 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
     [super prepareForReuse];
     
     self.directRoomBorderView.hidden = YES;
-    self.encryptedRoomIcon.hidden = YES;
 }
 
 + (CGFloat)cellHeight

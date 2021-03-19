@@ -70,50 +70,13 @@
         }  
         
         self.directRoomBorderView.hidden = !roomCellData.roomSummary.isDirect;
-        
-        if (roomCellData.roomSummary.isEncrypted)
-        {
-            self.encryptedRoomIcon.hidden = NO;
-            self.encryptedRoomIcon.image = [self shieldImageForTrustLevel:roomCellData.roomSummary.roomEncryptionTrustLevel];
-        }
-        else
-        {
-            self.encryptedRoomIcon.hidden = YES;
-        }
+        self.encryptedRoomIcon.hidden = YES;
     }
 }
 
 + (CGFloat)cellHeight
 {
     return 74;
-}
-
-- (UIImage*)shieldImageForTrustLevel:(RoomEncryptionTrustLevel)roomEncryptionTrustLevel
-{
-    UIImage *shieldImage;
-    
-    NSString *encryptionIconName;
-    switch (roomEncryptionTrustLevel)
-    {
-        case RoomEncryptionTrustLevelWarning:
-            encryptionIconName = @"encryption_warning";
-            break;
-        case RoomEncryptionTrustLevelNormal:
-            encryptionIconName = @"encryption_normal";
-            break;
-        case RoomEncryptionTrustLevelTrusted:
-            encryptionIconName = @"encryption_trusted";
-            break;
-        case RoomEncryptionTrustLevelUnknown:
-            encryptionIconName = @"encryption_normal";
-            break;
-    }
-    
-    if (encryptionIconName)
-    {
-        shieldImage = [UIImage imageNamed:encryptionIconName];
-    }
-    return shieldImage;
 }
 
 @end
