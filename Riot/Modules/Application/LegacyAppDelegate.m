@@ -3011,13 +3011,13 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 #ifdef CALL_STACK_JINGLE
     if (!_jitsiViewController)
     {
-        MXWeakify(self);
-        [self checkPermissionForNativeWidget:jitsiWidget fromUrl:JitsiService.shared.serverURL completion:^(BOOL granted) {
-            MXStrongifyAndReturnIfNil(self);
-            if (!granted)
-            {
-                return;
-            }
+//        MXWeakify(self);
+//        [self checkPermissionForNativeWidget:jitsiWidget fromUrl:JitsiService.shared.serverURL completion:^(BOOL granted) {
+//            MXStrongifyAndReturnIfNil(self);
+//            if (!granted)
+//            {
+//                return;
+//            }
 
             self->_jitsiViewController = [JitsiViewController jitsiViewController];
 
@@ -3034,7 +3034,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
                 [self showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"call_jitsi_error", @"Vector", nil)];
             }];
-        }];
+//        }];
     }
     else
     {
