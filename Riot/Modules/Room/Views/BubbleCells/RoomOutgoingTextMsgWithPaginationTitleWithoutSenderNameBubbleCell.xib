@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,7 +13,7 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="105"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WmY-Jw-mqv" id="ef1-Tq-U3Z">
-                <rect key="frame" x="0.0" y="0.0" width="600" height="104.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="600" height="105"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vWC-jH-xa5" userLabel="Pagination Title View">
@@ -58,7 +56,7 @@
                         </constraints>
                     </view>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="text message" translatesAutoresizingMaskIntoConstraints="NO" id="HTH-5n-MSU" customClass="MXKMessageTextView">
-                        <rect key="frame" x="51" y="47" width="102" height="57.5"/>
+                        <rect key="frame" x="51" y="47" width="102" height="58"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration" identifier="MessageTextView"/>
                         <constraints>
@@ -70,7 +68,7 @@
                         <dataDetectorType key="dataDetectorTypes" link="YES"/>
                     </textView>
                     <view hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IOg-Kt-8vW">
-                        <rect key="frame" x="515" y="47" width="70" height="57.5"/>
+                        <rect key="frame" x="515" y="47" width="70" height="58"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration" identifier="BubbleInfoContainer"/>
                         <constraints>
@@ -78,7 +76,7 @@
                         </constraints>
                     </view>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gJu-zj-Vro">
-                        <rect key="frame" x="12" y="3" width="576" height="99"/>
+                        <rect key="frame" x="8" y="3" width="584" height="99"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                 </subviews>
@@ -90,7 +88,7 @@
                     <constraint firstAttribute="trailingMargin" secondItem="gJu-zj-Vro" secondAttribute="trailing" constant="-8" id="Dja-ge-KXl"/>
                     <constraint firstAttribute="bottomMargin" secondItem="gJu-zj-Vro" secondAttribute="bottom" constant="-8" id="H7m-2I-p8c"/>
                     <constraint firstItem="gJu-zj-Vro" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="topMargin" constant="-8" id="LAr-tM-asT"/>
-                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="HTH-5n-MSU" secondAttribute="trailing" constant="15" id="Shz-6S-kGd"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="HTH-5n-MSU" secondAttribute="trailing" constant="25" id="Shz-6S-kGd"/>
                     <constraint firstAttribute="bottom" secondItem="IOg-Kt-8vW" secondAttribute="bottom" id="TPw-iE-nii"/>
                     <constraint firstItem="IOg-Kt-8vW" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="top" constant="47" id="XSL-TG-m62"/>
                     <constraint firstAttribute="trailing" secondItem="vWC-jH-xa5" secondAttribute="trailing" constant="10" id="bFO-Fe-amS"/>
@@ -120,6 +118,7 @@
                 <outlet property="paginationTitleView" destination="vWC-jH-xa5" id="T7w-0e-WWX"/>
                 <outlet property="pictureView" destination="hgp-Z5-rAj" id="rKM-QG-RJN"/>
             </connections>
+            <point key="canvasLocation" x="-128" y="113"/>
         </tableViewCell>
     </objects>
 </document>
