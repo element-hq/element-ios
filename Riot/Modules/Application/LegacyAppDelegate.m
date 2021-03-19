@@ -225,6 +225,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 @property (nonatomic, strong) PushNotificationStore *pushNotificationStore;
 @property (nonatomic, strong) LocalAuthenticationService *localAuthenticationService;
 @property (nonatomic, strong, readwrite) CallPresenter *callPresenter;
+@property (nonatomic, strong, readwrite) JitsiViewController *jitsiViewController;
 
 @property (nonatomic, strong) MajorUpdateManager *majorUpdateManager;
 
@@ -3011,30 +3012,22 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 #ifdef CALL_STACK_JINGLE
     if (!_jitsiViewController)
     {
-//        MXWeakify(self);
-//        [self checkPermissionForNativeWidget:jitsiWidget fromUrl:JitsiService.shared.serverURL completion:^(BOOL granted) {
-//            MXStrongifyAndReturnIfNil(self);
-//            if (!granted)
-//            {
-//                return;
-//            }
-
-            self->_jitsiViewController = [JitsiViewController jitsiViewController];
-
-            [self->_jitsiViewController openWidget:jitsiWidget withVideo:video success:^{
-
-                self->_jitsiViewController.delegate = self;
-                [self presentJitsiViewController:nil];
-                
-                [self.callPresenter startJitsiCallWithWidget:jitsiWidget];
-
-            } failure:^(NSError *error) {
-
-                self->_jitsiViewController = nil;
-
-                [self showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"call_jitsi_error", @"Vector", nil)];
-            }];
-//        }];
+        _jitsiViewController = [JitsiViewController jitsiViewController];
+        
+        MXWeakify(self);
+        [_jitsiViewController openWidget:jitsiWidget withVideo:video success:^{
+            MXStrongifyAndReturnIfNil(self);
+            self.jitsiViewController.delegate = self;
+            [self presentJitsiViewController:nil];
+            
+            [self.callPresenter startJitsiCallWithWidget:jitsiWidget];
+            
+        } failure:^(NSError *error) {
+            MXStrongifyAndReturnIfNil(self);
+            self.jitsiViewController = nil;
+            
+            [self showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"call_jitsi_error", @"Vector", nil)];
+        }];
     }
     else
     {

@@ -237,7 +237,7 @@ JitsiViewControllerDelegate>
 /**
  The current Jitsi view controller being displayed.
  */
-@property (nonatomic, readonly) JitsiViewController *jitsiViewController;
+@property (nonatomic, strong, readonly) JitsiViewController *jitsiViewController;
 
 #pragma mark - Call status handling
 
