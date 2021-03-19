@@ -55,8 +55,8 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 @interface LegacyAppDelegate : UIResponder <
 UIApplicationDelegate,
 UISplitViewControllerDelegate,
-UINavigationControllerDelegate,
-JitsiViewControllerDelegate>
+UINavigationControllerDelegate
+>
 {
     // background sync management
     void (^_completionHandler)(UIBackgroundFetchResult);
@@ -223,21 +223,6 @@ JitsiViewControllerDelegate>
  @return YES in case of processing success.
  */
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment;
-
-#pragma mark - Jitsi call
-
-/**
- Open the Jitsi view controller from a widget.
-
- @param jitsiWidget the jitsi widget.
- @param video to indicate voice or video call.
- */
-- (void)displayJitsiViewControllerWithWidget:(Widget*)jitsiWidget andVideo:(BOOL)video;
-
-/**
- The current Jitsi view controller being displayed.
- */
-@property (nonatomic, strong, readonly) JitsiViewController *jitsiViewController;
 
 #pragma mark - Call status handling
 

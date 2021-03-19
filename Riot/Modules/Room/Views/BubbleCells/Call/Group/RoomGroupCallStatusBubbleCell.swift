@@ -83,7 +83,7 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
     
     private var isJoined: Bool {
         return widgetId != nil &&
-            AppDelegate.theDelegate().jitsiViewController?.widget.widgetId == widgetId
+            AppDelegate.theDelegate().callPresenter.jitsiVC?.widget.widgetId == widgetId
     }
     
     private var actionUserInfo: [AnyHashable: Any]? {

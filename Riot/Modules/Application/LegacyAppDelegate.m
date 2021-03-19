@@ -225,7 +225,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 @property (nonatomic, strong) PushNotificationStore *pushNotificationStore;
 @property (nonatomic, strong) LocalAuthenticationService *localAuthenticationService;
 @property (nonatomic, strong, readwrite) CallPresenter *callPresenter;
-@property (nonatomic, strong, readwrite) JitsiViewController *jitsiViewController;
 
 @property (nonatomic, strong) MajorUpdateManager *majorUpdateManager;
 
@@ -3005,86 +3004,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-#pragma mark - Jitsi call
-
-- (void)displayJitsiViewControllerWithWidget:(Widget*)jitsiWidget andVideo:(BOOL)video
-{
-#ifdef CALL_STACK_JINGLE
-    if (!_jitsiViewController)
-    {
-        _jitsiViewController = [JitsiViewController jitsiViewController];
-        
-        MXWeakify(self);
-        [_jitsiViewController openWidget:jitsiWidget withVideo:video success:^{
-            MXStrongifyAndReturnIfNil(self);
-            self.jitsiViewController.delegate = self;
-            [self presentJitsiViewController:nil];
-            
-            [self.callPresenter startJitsiCallWithWidget:jitsiWidget];
-            
-        } failure:^(NSError *error) {
-            MXStrongifyAndReturnIfNil(self);
-            self.jitsiViewController = nil;
-            
-            [self showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"call_jitsi_error", @"Vector", nil)];
-        }];
-    }
-    else
-    {
-        [self showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"call_already_displayed", @"Vector", nil)];
-    }
-#else
-    [self showAlertWithTitle:nil message:[NSBundle mxk_localizedStringForKey:@"not_supported_yet"]];
-#endif
-}
-
-- (void)presentJitsiViewController:(void (^)(void))completion
-{
-    [self removeCallStatusBar];
-
-    if (_jitsiViewController)
-    {
-        if (@available(iOS 13.0, *))
-        {
-            _jitsiViewController.modalPresentationStyle = UIModalPresentationFullScreen;
-        }
-
-        [self presentViewController:_jitsiViewController animated:YES completion:completion];
-    }
-}
-
-- (void)jitsiViewController:(JitsiViewController *)jitsiViewController dismissViewJitsiController:(void (^)(void))completion
-{
-    if (jitsiViewController == _jitsiViewController)
-    {
-        [_callPresenter endJitsiCallWithWidget:_jitsiViewController.widget];
-        
-        [_jitsiViewController dismissViewControllerAnimated:YES completion:completion];
-        _jitsiViewController = nil;
-
-        [self removeCallStatusBar];
-    }
-}
-
-- (void)jitsiViewController:(JitsiViewController *)jitsiViewController goBackToApp:(void (^)(void))completion
-{
-    if (jitsiViewController == _jitsiViewController)
-    {
-        [_jitsiViewController dismissViewControllerAnimated:YES completion:^{
-
-            MXRoom *room = [self.jitsiViewController.widget.mxSession roomWithRoomId:self.jitsiViewController.widget.roomId];
-            NSString *btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"active_call_details", @"Vector", nil), room.summary.displayname];
-            [self updateCallStatusBar:btnTitle];
-
-            if (completion)
-            {
-                completion();
-            }
-        }];
-    }
-}
-
-
 #pragma mark - Native Widget Permission
 
 - (void)checkPermissionForNativeWidget:(Widget*)widget fromUrl:(NSURL*)url completion:(void (^)(BOOL granted))completion
@@ -4449,12 +4368,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 #pragma mark - CallPresenterDelegate
 
-- (BOOL)callPresenter:(CallPresenter *)presenter shouldHandleNewCall:(MXCall *)call
-{
-    //  Ignore the call if a call is already in progress
-    return _jitsiViewController == nil;
-}
-
 - (void)callPresenter:(CallPresenter *)presenter presentCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
 {
     if (@available(iOS 13.0, *))
@@ -4493,26 +4406,39 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)callPresenter:(CallPresenter *)presenter presentCallBarFor:(CallViewController *)activeCallViewController numberOfPausedCalls:(NSUInteger)numberOfPausedCalls completion:(void (^)(void))completion
+- (void)callPresenter:(CallPresenter *)presenter presentCallBarFor:(UIViewController *)activeCallViewController numberOfPausedCalls:(NSUInteger)numberOfPausedCalls completion:(void (^)(void))completion
 {
     NSString *btnTitle;
     
     if (activeCallViewController)
     {
+        NSString *callStatus = @"";
+        if ([activeCallViewController isKindOfClass:[CallViewController class]])
+        {
+            CallViewController *activeCallVC = (CallViewController *)activeCallViewController;
+            callStatus = activeCallVC.callStatusLabel.text;
+        }
+        else if ([activeCallViewController isKindOfClass:[JitsiViewController class]])
+        {
+            JitsiViewController *jitsiVC = (JitsiViewController *)activeCallViewController;
+            MXRoom *room = [jitsiVC.widget.mxSession roomWithRoomId:jitsiVC.widget.roomId];
+            callStatus = room.summary.displayname;
+        }
+        
         if (numberOfPausedCalls == 0)
         {
             //  only one active
-            btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"callbar_only_single_active", @"Vector", nil), activeCallViewController.callStatusLabel.text];
+            btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"callbar_only_single_active", @"Vector", nil), callStatus];
         }
         else if (numberOfPausedCalls == 1)
         {
             //  one active and one paused
-            btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"callbar_active_and_single_paused", @"Vector", nil), activeCallViewController.callStatusLabel.text];
+            btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"callbar_active_and_single_paused", @"Vector", nil), callStatus];
         }
         else
         {
             //  one active and multiple paused
-            btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"callbar_active_and_multiple_paused", @"Vector", nil), activeCallViewController.callStatusLabel.text, @(numberOfPausedCalls)];
+            btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"callbar_active_and_multiple_paused", @"Vector", nil), callStatus, @(numberOfPausedCalls)];
         }
     }
     else
@@ -4584,18 +4510,34 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self presentViewController:viewController animated:YES completion:completion];
 }
 
+- (void)callPresenter:(CallPresenter *)presenter dismissGroupCallViewController:(JitsiViewController *)viewController completion:(void (^)(void))completion
+{
+    // Check whether the call view controller is actually presented
+    if (viewController.presentingViewController)
+    {
+        [viewController.presentingViewController dismissViewControllerAnimated:YES completion:^{
+            
+            if (completion)
+            {
+                completion();
+            }
+            
+        }];
+    }
+    else
+    {
+        if (completion)
+        {
+            completion();
+        }
+    }
+}
+
 #pragma mark - CallBarDelegate
 
 - (void)callBarDidTapReturnButton:(CallBar *)callBar
 {
-    if ([_callPresenter callStatusBarButtonTapped])
-    {
-        return;
-    }
-    else if (_jitsiViewController)
-    {
-        [self presentJitsiViewController:nil];
-    }
+    [_callPresenter callStatusBarButtonTapped];
 }
     
 #pragma mark - Authentication

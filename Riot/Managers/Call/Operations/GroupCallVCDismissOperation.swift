@@ -16,25 +16,22 @@
 
 import Foundation
 
-class CallBarPresentOperation: AsyncOperation {
+class GroupCallVCDismissOperation: AsyncOperation {
     
     private var presenter: CallPresenter
-    private var activeCallVC: UIViewController?
-    private var numberOfPausedCalls: UInt
+    private var callVC: JitsiViewController
     private var completion: (() -> Void)?
     
     init(presenter: CallPresenter,
-         activeCallVC: UIViewController?,
-         numberOfPausedCalls: UInt,
+         callVC: JitsiViewController,
          completion: (() -> Void)? = nil) {
         self.presenter = presenter
-        self.activeCallVC = activeCallVC
-        self.numberOfPausedCalls = numberOfPausedCalls
+        self.callVC = callVC
         self.completion = completion
     }
     
     override func main() {
-        presenter.delegate?.callPresenter(presenter, presentCallBarFor: activeCallVC, numberOfPausedCalls: numberOfPausedCalls, completion: {
+        presenter.delegate?.callPresenter(presenter, dismissGroupCallViewController: callVC, completion: {
             self.finish()
             self.completion?()
         })

@@ -18,10 +18,6 @@ import Foundation
 
 @objc
 protocol CallPresenterDelegate: class {
-    //  New call
-    func callPresenter(_ presenter: CallPresenter,
-                       shouldHandleNewCall call: MXCall) -> Bool
-    
     //  Call screens
     func callPresenter(_ presenter: CallPresenter,
                        presentCallViewController viewController: CallViewController,
@@ -32,7 +28,7 @@ protocol CallPresenterDelegate: class {
     
     //  Call Bar
     func callPresenter(_ presenter: CallPresenter,
-                       presentCallBarFor activeCallViewController: CallViewController?,
+                       presentCallBarFor activeCallViewController: UIViewController?,
                        numberOfPausedCalls: UInt,
                        completion:(() -> Void)?)
     func callPresenter(_ presenter: CallPresenter,
@@ -50,5 +46,8 @@ protocol CallPresenterDelegate: class {
     //  Group Calls
     func callPresenter(_ presenter: CallPresenter,
                        presentGroupCallViewController viewController: JitsiViewController,
+                       completion:(() -> Void)?)
+    func callPresenter(_ presenter: CallPresenter,
+                       dismissGroupCallViewController viewController: JitsiViewController,
                        completion:(() -> Void)?)
 }

@@ -606,7 +606,7 @@ NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTi
     self.keyboardHeight = MAX(self.keyboardHeight, 0);
     
     if (hasJitsiCall &&
-        ![[AppDelegate theDelegate].jitsiViewController.widget.roomId isEqualToString:self.roomDataSource.roomId])
+        ![[AppDelegate theDelegate].callPresenter.jitsiVC.widget.roomId isEqualToString:self.roomDataSource.roomId])
     {
         //  the room had a Jitsi call before, but not now
         hasJitsiCall = NO;
@@ -642,7 +642,7 @@ NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTi
         mxEventDidDecryptNotificationObserver = nil;
     }
     
-    JitsiViewController *jitsiVC = [AppDelegate theDelegate].jitsiViewController;
+    JitsiViewController *jitsiVC = [AppDelegate theDelegate].callPresenter.jitsiVC;
     if ([jitsiVC.widget.roomId isEqualToString:self.roomDataSource.roomId])
     {
         hasJitsiCall = YES;
@@ -1477,7 +1477,7 @@ NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTi
         // conference call in the current room
         MXCall *callInRoom = [self.roomDataSource.mxSession.callManager callInRoom:self.roomDataSource.roomId];
         if ((callInRoom && callInRoom.state != MXCallStateEnded)
-            || [[AppDelegate theDelegate].jitsiViewController.widget.roomId isEqualToString:self.roomDataSource.roomId])
+            || [[AppDelegate theDelegate].callPresenter.jitsiVC.widget.roomId isEqualToString:self.roomDataSource.roomId])
         {
             roomInputToolbarView.activeCall = YES;
         }
@@ -2466,7 +2466,7 @@ NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTi
                     Widget *jitsiWidget = [self->customizedRoomDataSource jitsiWidget];
                     if (jitsiWidget)
                     {
-                        [[AppDelegate theDelegate] displayJitsiViewControllerWithWidget:jitsiWidget andVideo:YES];
+                        [[AppDelegate theDelegate].callPresenter displayJitsiCallWithWidget:jitsiWidget];
                     }
                 }
                 else
@@ -3612,7 +3612,7 @@ NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTi
     Widget *jitsiWidget = [customizedRoomDataSource jitsiWidget];
     if (jitsiWidget)
     {
-        [[AppDelegate theDelegate] displayJitsiViewControllerWithWidget:jitsiWidget andVideo:video];
+        [[AppDelegate theDelegate].callPresenter displayJitsiCallWithWidget:jitsiWidget];
     }
 
     // If enabled, create the conf using jitsi widget and open it directly
@@ -3630,7 +3630,7 @@ NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTi
                  typeof(self) self = weakSelf;
                  [self stopActivityIndicator];
 
-                 [[AppDelegate theDelegate] displayJitsiViewControllerWithWidget:jitsiWidget andVideo:video];
+                 [[AppDelegate theDelegate].callPresenter displayJitsiCallWithWidget:jitsiWidget];
              }
          }
                                                        failure:^(NSError *error)
@@ -3704,9 +3704,10 @@ NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTi
     {
         [callInRoom hangup];
     }
-    else if ([[AppDelegate theDelegate].jitsiViewController.widget.roomId isEqualToString:self.roomDataSource.roomId])
+    else if ([[AppDelegate theDelegate].callPresenter.jitsiVC.widget.roomId isEqualToString:self.roomDataSource.roomId])
     {
-        [[AppDelegate theDelegate].jitsiViewController hangup];
+        [[AppDelegate theDelegate].callPresenter endActiveJitsiCall];
+        [self reloadBubblesTable:YES];
     }
 
     [self refreshActivitiesViewDisplay];
@@ -4442,7 +4443,7 @@ NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTi
             // The room has an active jitsi widget
             // Show it in the banner if the user is not already in
             LegacyAppDelegate *appDelegate = [AppDelegate theDelegate];
-            if ([appDelegate.jitsiViewController.widget.widgetId isEqualToString:jitsiWidget.widgetId])
+            if ([appDelegate.callPresenter.jitsiVC.widget.widgetId isEqualToString:jitsiWidget.widgetId])
             {
                 if ([self checkUnsentMessages] == NO)
                 {
@@ -4469,7 +4470,7 @@ NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTi
                                if (granted)
                                {
                                    // Present the Jitsi view controller
-                                   [appDelegate displayJitsiViewControllerWithWidget:jitsiWidget andVideo:video];
+                                   [appDelegate.callPresenter displayJitsiCallWithWidget:jitsiWidget];
                                }
                                else
                                {
