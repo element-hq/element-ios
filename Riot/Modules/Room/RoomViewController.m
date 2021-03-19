@@ -1184,7 +1184,10 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
         }];
     }
     
-    [self cancelEventSelection];
+    if (customizedRoomDataSource.selectedEventId)
+    {
+        [self cancelEventSelection];
+    }
 }
 
 - (void)setRoomTitleViewClass:(Class)roomTitleViewClass
