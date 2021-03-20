@@ -14,13 +14,13 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a84-Vc-6ud" userLabel="MainToolBar View">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="60"/>
+                    <rect key="frame" x="0.0" y="2" width="600" height="58"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hga-l8-Wua" userLabel="attach Button">
-                            <rect key="frame" x="12" y="12" width="46" height="36"/>
+                            <rect key="frame" x="12" y="10" width="36" height="36"/>
                             <accessibility key="accessibilityConfiguration" identifier="AttachButton"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="46" id="O2T-T8-EjV"/>
+                                <constraint firstAttribute="width" constant="36" id="O2T-T8-EjV"/>
                             </constraints>
                             <state key="normal" image="upload_icon"/>
                             <connections>
@@ -28,13 +28,13 @@
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QWp-NV-uh5" userLabel="Message Composer Container">
-                            <rect key="frame" x="70" y="10" width="518" height="40"/>
+                            <rect key="frame" x="60" y="9" width="528" height="36"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="input_text_background" translatesAutoresizingMaskIntoConstraints="NO" id="uH7-Q7-hpZ">
-                                    <rect key="frame" x="0.0" y="0.0" width="518" height="42"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="528" height="38"/>
                                 </imageView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wgb-ON-N29" customClass="KeyboardGrowingTextView">
-                                    <rect key="frame" x="4" y="1" width="510" height="40"/>
+                                    <rect key="frame" x="4" y="1" width="520" height="36"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" identifier="GrowingTextView"/>
                                 </view>
@@ -52,7 +52,7 @@
                             </constraints>
                         </view>
                         <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G8Z-CM-tGs" userLabel="send Button">
-                            <rect key="frame" x="552" y="12" width="36" height="36"/>
+                            <rect key="frame" x="552" y="10" width="36" height="36"/>
                             <accessibility key="accessibilityConfiguration" identifier="SendButton"/>
                             <state key="normal" image="send_icon"/>
                             <connections>
@@ -61,15 +61,15 @@
                         </button>
                     </subviews>
                     <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="60" id="1FO-iu-urG"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="58" id="1FO-iu-urG"/>
                         <constraint firstItem="Hga-l8-Wua" firstAttribute="leading" secondItem="a84-Vc-6ud" secondAttribute="leading" constant="12" id="31r-fn-347"/>
-                        <constraint firstItem="G8Z-CM-tGs" firstAttribute="centerY" secondItem="a84-Vc-6ud" secondAttribute="centerY" id="Fsw-LO-vgm"/>
                         <constraint firstItem="QWp-NV-uh5" firstAttribute="leading" secondItem="Hga-l8-Wua" secondAttribute="trailing" constant="12" id="M9f-je-3zO"/>
-                        <constraint firstAttribute="bottom" secondItem="QWp-NV-uh5" secondAttribute="bottom" constant="10" id="NGr-2o-sOP"/>
+                        <constraint firstAttribute="bottom" secondItem="QWp-NV-uh5" secondAttribute="bottom" constant="13" id="NGr-2o-sOP"/>
                         <constraint firstAttribute="trailing" secondItem="G8Z-CM-tGs" secondAttribute="trailing" constant="12" id="Sua-LC-3yW"/>
-                        <constraint firstItem="QWp-NV-uh5" firstAttribute="top" secondItem="a84-Vc-6ud" secondAttribute="top" constant="10" id="WyZ-3i-OHi"/>
-                        <constraint firstItem="Hga-l8-Wua" firstAttribute="centerY" secondItem="a84-Vc-6ud" secondAttribute="centerY" id="YND-k2-HMH"/>
-                        <constraint firstAttribute="height" constant="60" id="Yjj-ua-rbe"/>
+                        <constraint firstItem="QWp-NV-uh5" firstAttribute="top" secondItem="a84-Vc-6ud" secondAttribute="top" constant="9" id="WyZ-3i-OHi"/>
+                        <constraint firstAttribute="bottom" secondItem="G8Z-CM-tGs" secondAttribute="bottom" constant="12" id="Yam-dS-zwr"/>
+                        <constraint firstAttribute="height" constant="58" id="Yjj-ua-rbe"/>
+                        <constraint firstAttribute="bottom" secondItem="Hga-l8-Wua" secondAttribute="bottom" constant="12" id="b0G-CY-AmP"/>
                         <constraint firstAttribute="trailing" secondItem="QWp-NV-uh5" secondAttribute="trailing" constant="12" id="hXO-cY-Jgz"/>
                     </constraints>
                 </view>

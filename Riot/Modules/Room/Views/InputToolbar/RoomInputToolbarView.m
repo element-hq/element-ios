@@ -85,7 +85,7 @@
     growingTextView.font = [UIFont systemFontOfSize:15];
     growingTextView.textColor = ThemeService.shared.theme.textPrimaryColor;
     growingTextView.tintColor = ThemeService.shared.theme.tintColor;
-    
+    growingTextView.placeholderColor = ThemeService.shared.theme.textTertiaryColor;
     growingTextView.internalTextView.showsVerticalScrollIndicator = NO;
     
     growingTextView.internalTextView.keyboardAppearance = ThemeService.shared.theme.keyboardAppearance;
@@ -100,6 +100,19 @@
     UIImage *image = [UIImage imageNamed:@"input_text_background"];
     image = [image resizableImageWithCapInsets:UIEdgeInsetsMake(9, 15, 10, 16)];
     self.inputTextBackgroundView.image = image;
+    self.inputTextBackgroundView.tintColor = ThemeService.shared.theme.roomInputTextBorder;
+    
+    if ([ThemeService.shared.themeId isEqualToString:@"light"])
+    {
+        [self.attachMediaButton setImage:[UIImage imageNamed:@"upload_icon"] forState:UIControlStateNormal];
+    }
+    else if ([ThemeService.shared.themeId isEqualToString:@"dark"] || [ThemeService.shared.themeId isEqualToString:@"black"])
+    {
+        [self.attachMediaButton setImage:[UIImage imageNamed:@"upload_icon_dark"] forState:UIControlStateNormal];
+    }
+    else if (@available(iOS 12.0, *) && ThemeService.shared.theme.userInterfaceStyle == UIUserInterfaceStyleDark) {
+        [self.attachMediaButton setImage:[UIImage imageNamed:@"upload_icon_dark"] forState:UIControlStateNormal];
+    }
 }
 
 #pragma mark -
@@ -187,21 +200,15 @@
     
     if (self.rightInputToolbarButton.isEnabled && !self.rightInputToolbarButton.alpha)
     {
-        [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:8 options:UIViewAnimationOptionCurveEaseIn animations:^{
-            self.rightInputToolbarButton.alpha = 1;
-            self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.rightInputToolbarButton.frame.origin.x + 12;
-            [self layoutIfNeeded];
-        } completion:^(BOOL finished) {
-        }];
+        self.rightInputToolbarButton.alpha = 1;
+        self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.rightInputToolbarButton.frame.origin.x + 12;
+        [self layoutIfNeeded];
     }
     else if (!self.rightInputToolbarButton.isEnabled && self.rightInputToolbarButton.alpha)
     {
-        [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:8 options:UIViewAnimationOptionCurveEaseIn animations:^{
-            self.rightInputToolbarButton.alpha = 0;
-            self.messageComposerContainerTrailingConstraint.constant = 12;
-            [self layoutIfNeeded];
-        } completion:^(BOOL finished) {
-        }];
+        self.rightInputToolbarButton.alpha = 0;
+        self.messageComposerContainerTrailingConstraint.constant = 12;
+        [self layoutIfNeeded];
     }
 }
 

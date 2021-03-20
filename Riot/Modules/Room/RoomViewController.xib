@@ -29,6 +29,8 @@
                 <outlet property="roomInputToolbarContainer" destination="nLd-BP-JAE" id="1dp-P1-0js"/>
                 <outlet property="roomInputToolbarContainerBottomConstraint" destination="omU-sm-3bK" id="qaT-Ej-BdE"/>
                 <outlet property="roomInputToolbarContainerHeightConstraint" destination="5eD-Fm-RDb" id="6ny-5w-1UA"/>
+                <outlet property="scrollToBottomBadgeLabel" destination="QHs-rM-UU8" id="wk7-PQ-9Jm"/>
+                <outlet property="scrollToBottomButton" destination="Ih9-EU-BOU" id="Wwg-gS-Sfp"/>
                 <outlet property="view" destination="iN0-l3-epB" id="ieV-u7-rXU"/>
             </connections>
         </placeholder>
@@ -130,6 +132,19 @@
                         <constraint firstItem="ISb-UT-u0O" firstAttribute="centerY" secondItem="Vlz-UJ-Jz8" secondAttribute="centerY" id="w7t-WC-VjP"/>
                     </constraints>
                 </view>
+                <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ih9-EU-BOU" userLabel="scroll Button">
+                    <rect key="frame" x="327" y="570" width="32" height="32"/>
+                    <state key="normal" image="scrolldown"/>
+                    <connections>
+                        <action selector="scrollToBottomAction:" destination="-1" eventType="touchUpInside" id="TOf-aY-J6a"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QHs-rM-UU8" userLabel="scroll badge" customClass="BadgeLabel" customModule="Riot" customModuleProvider="target">
+                    <rect key="frame" x="334" y="562.5" width="18" height="15.5"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="11"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XX4-n6-hCm" userLabel="Activities Container">
                     <rect key="frame" x="0.0" y="626" width="375" height="0.0"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -158,12 +173,16 @@
                 <constraint firstAttribute="bottom" secondItem="BGD-sd-SQR" secondAttribute="bottom" constant="41" id="1SD-y2-oTg"/>
                 <constraint firstItem="S6r-bo-jxw" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="5eM-eJ-khq"/>
                 <constraint firstItem="lPR-zi-UZr" firstAttribute="trailing" secondItem="QpJ-1u-4ii" secondAttribute="trailing" id="6no-fN-liL"/>
+                <constraint firstItem="QpJ-1u-4ii" firstAttribute="trailing" secondItem="Ih9-EU-BOU" secondAttribute="trailing" constant="16" id="6rq-lR-0sB"/>
                 <constraint firstItem="54r-18-K1g" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="7Ft-EV-Br0"/>
                 <constraint firstItem="gt1-EO-UVY" firstAttribute="leading" secondItem="QpJ-1u-4ii" secondAttribute="leading" id="8Ff-Ot-h3F"/>
                 <constraint firstItem="S6r-bo-jxw" firstAttribute="leading" secondItem="QpJ-1u-4ii" secondAttribute="leading" id="Bcq-e4-B0D"/>
                 <constraint firstItem="BGD-sd-SQR" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="ECb-mP-EOG"/>
                 <constraint firstAttribute="trailing" secondItem="BGD-sd-SQR" secondAttribute="trailing" id="EGD-cX-OGq"/>
+                <constraint firstItem="XX4-n6-hCm" firstAttribute="top" secondItem="Ih9-EU-BOU" secondAttribute="bottom" constant="24" id="GUp-ZU-6h3"/>
                 <constraint firstItem="lPR-zi-UZr" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="HJy-rU-H5H"/>
+                <constraint firstItem="QHs-rM-UU8" firstAttribute="centerX" secondItem="Ih9-EU-BOU" secondAttribute="centerX" id="K8X-wJ-hkh"/>
+                <constraint firstItem="QHs-rM-UU8" firstAttribute="centerY" secondItem="Ih9-EU-BOU" secondAttribute="top" id="KL4-OU-cP6"/>
                 <constraint firstItem="gt1-EO-UVY" firstAttribute="trailing" secondItem="QpJ-1u-4ii" secondAttribute="trailing" id="L9A-P5-xeT"/>
                 <constraint firstItem="XX4-n6-hCm" firstAttribute="leading" secondItem="QpJ-1u-4ii" secondAttribute="leading" id="Os4-cU-eQb"/>
                 <constraint firstItem="XX4-n6-hCm" firstAttribute="bottom" secondItem="nLd-BP-JAE" secondAttribute="top" id="QO8-nF-xys"/>
@@ -184,8 +203,14 @@
             <point key="canvasLocation" x="136.80000000000001" y="152.47376311844079"/>
         </view>
     </objects>
+    <designables>
+        <designable name="QHs-rM-UU8">
+            <size key="intrinsicContentSize" width="17.5" height="15.5"/>
+        </designable>
+    </designables>
     <resources>
         <image name="cancel" width="20" height="20"/>
+        <image name="scrolldown" width="32" height="32"/>
         <image name="scrollup" width="30" height="30"/>
     </resources>
 </document>
