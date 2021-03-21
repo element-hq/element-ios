@@ -209,7 +209,7 @@
 "settings_ignored_users" = "IGNORIERTE NUTZER";
 "settings_contacts" = "LOKALE KONTAKTE";
 "settings_advanced" = "ERWEITERT";
-"settings_other" = "ANDERES";
+"settings_other" = "WEITERES";
 "settings_devices" = "SITZUNGEN";
 "settings_cryptography" = "VERSCHLÜSSELUNG";
 "settings_sign_out" = "Abmelden";
@@ -817,7 +817,7 @@
 "auth_reset_password_error_is_required" = "Es ist kein Identitätsserver konfiguriert: Füge einen in die Serveroptionen ein, um dein Kennwort zurückzusetzen.";
 // Errors
 "error_user_already_logged_in" = "Du versuchst anscheinend, eine Verbindung zu einem anderen Heimserver herzustellen. Möchtest du dich abmelden?";
-"contacts_address_book_no_identity_server" = "Kein Integrationsserver konfiguriert";
+"contacts_address_book_no_identity_server" = "Kein Identitätsserver konfiguriert";
 "room_participants_remove_third_party_invite_prompt_msg" = "Möchtest du diese Einladung wirklich widerrufen?";
 "room_accessiblity_scroll_to_bottom" = "Zum Seitenende springen";
 "room_accessibility_search" = "Suchen";
@@ -1147,7 +1147,7 @@
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Bestätigen";
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Passphrase bestätigen";
 "cross_signing_setup_banner_title" = "Verschlüsselung einrichten";
-"cross_signing_setup_banner_subtitle" = "Verifiziere deine anderen Geräte einfacher";
+"cross_signing_setup_banner_subtitle" = "Verifiziere deine weiteren Geräte bequemer";
 "major_update_title" = "Riot ist jetzt Element";
 "major_update_information" = "Wir sind begeistert unsere Namensänderung mitteilen zu können! Deine App ist auf dem neusten Stand und du bist mit deinem Konto angemeldet.";
 "major_update_learn_more_action" = "Mehr erfahren";
@@ -1325,3 +1325,5 @@
 
 // Call Bar
 "callbar_only_single_active" = "Laufender Anruf (%@)";
+"room_event_action_delete_confirmation_message" = "Möchtest Du die nicht gesendete Nachricht wirklich löschen?";
+"room_event_action_delete_confirmation_title" = "Nicht gesendete Nachricht löschen";
