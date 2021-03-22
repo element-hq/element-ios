@@ -370,6 +370,8 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     
     [self.bubblesTableView registerClass:RoomCreationIntroCell.class forCellReuseIdentifier:RoomCreationIntroCell.defaultReuseIdentifier];
     
+    [self.bubblesTableView registerNib:[UINib nibWithNibName:@"RoomTypingBubbleCell" bundle:nil] forCellReuseIdentifier:RoomTypingBubbleCell.cellIdentifier];
+    
     [self vc_removeBackTitle];
     
     // Replace the default input toolbar view.
@@ -4025,54 +4027,29 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
 
 - (void)refreshTypingNotification
 {
-    if ([self.titleView isKindOfClass:RoomTitleView.class])
+    RoomDataSource *roomDataSource = (RoomDataSource *) self.roomDataSource;
+    BOOL needsUpdate = currentTypingUsers.count != roomDataSource.currentTypingUsers.count;
+
+    NSMutableArray *typingUsers = [NSMutableArray new];
+    for (NSUInteger i = 0 ; i < currentTypingUsers.count ; i++) {
+        NSString *userId = currentTypingUsers[i];
+        MXRoomMember* member = [self.roomDataSource.roomState.members memberWithUserId:userId];
+        [typingUsers addObject:member];
+        needsUpdate = needsUpdate || member.userId != ((MXRoomMember *) roomDataSource.currentTypingUsers[i]).userId;
+    }
+
+    if (needsUpdate)
     {
-        RoomTitleView *titleView = (RoomTitleView *)self.titleView;
-        
-        // Prepare here typing notification
-        NSString* text = nil;
-        NSUInteger count = currentTypingUsers.count;
-        
-        // get the room member names
-        NSMutableArray *names = [[NSMutableArray alloc] init];
-        
-        // keeps the only the first two users
-        for(int i = 0; i < MIN(count, 2); i++)
+        roomDataSource.currentTypingUsers = typingUsers;
+        [self.bubblesTableView reloadData];
+        if (self.isScrollToBottomHidden)
         {
-            NSString* name = currentTypingUsers[i];
-            
-            MXRoomMember* member = [self.roomDataSource.roomState.members memberWithUserId:name];
-            
-            if (member && member.displayname.length)
+            NSInteger count = [self.roomDataSource tableView:self.bubblesTableView numberOfRowsInSection:0];
+            if (count)
             {
-                name = member.displayname;
-            }
-            
-            // sanity check
-            if (name)
-            {
-                [names addObject:name];
+                [self scrollBubblesTableViewToBottomAnimated:YES];
             }
         }
-        
-        if (0 == names.count)
-        {
-            // something to do ?
-        }
-        else if (1 == names.count)
-        {
-            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_one_user_is_typing", @"Vector", nil), names[0]];
-        }
-        else if (2 == names.count)
-        {
-            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_two_users_are_typing", @"Vector", nil), names[0], names[1]];
-        }
-        else
-        {
-            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_many_users_are_typing", @"Vector", nil), names[0], names[1]];
-        }
-        
-        titleView.typingNotificationString = text;
     }
 }
 

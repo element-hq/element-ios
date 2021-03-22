@@ -49,6 +49,11 @@
 @property(nonatomic, readonly) RoomEncryptionTrustLevel encryptionTrustLevel;
 
 /**
+ List of members who are typing in the room.
+ */
+@property(nonatomic, nullable) NSArray *currentTypingUsers;
+
+/**
  Check if there is an active jitsi widget in the room and return it.
 
  @return a widget representating the active jitsi conference in the room. Else, nil.

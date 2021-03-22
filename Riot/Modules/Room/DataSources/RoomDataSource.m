@@ -53,6 +53,8 @@
 
 @property (nonatomic) BOOL showRoomCreationCell;
 
+@property (nonatomic) NSInteger typingCellIndex;
+
 @end
 
 @implementation RoomDataSource
@@ -185,6 +187,16 @@
     [self setNeedsUpdateAdditionalContentHeightForCellData:cellData];
 }
 
+- (CGFloat)cellHeightAtIndex:(NSInteger)index withMaximumWidth:(CGFloat)maxWidth
+{
+    if (index == self.typingCellIndex)
+    {
+        return 24;
+    }
+    
+    return [super cellHeightAtIndex:index withMaximumWidth:maxWidth];
+}
+
 - (void)setNeedsUpdateAdditionalContentHeightForCellData:(id<MXKRoomBubbleCellDataStoring>)cellData
 {
     RoomBubbleCellData *roomBubbleCellData;
@@ -261,16 +273,37 @@
             [self updateStatusInfo];
         }
         
-        //  we may have changed the number of bubbles in this block, consider that change
-        return bubbles.count;
+        if (self.currentTypingUsers.count == 0)
+        {
+            //  we may have changed the number of bubbles in this block, consider that change
+            return bubbles.count;
+        }
+        
+        self.typingCellIndex = bubbles.count;
+        return bubbles.count + 1;
     }
     
-    //  leave it as is, if coming as 0 from super
-    return count;
+    if (self.currentTypingUsers.count == 0)
+    {
+        self.typingCellIndex = -1;
+
+        //  leave it as is, if coming as 0 from super
+        return count;
+    }
+    
+    self.typingCellIndex = count;
+    return count + 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.row == self.typingCellIndex)
+    {
+        RoomTypingBubbleCell *cell = [tableView dequeueReusableCellWithIdentifier:RoomTypingBubbleCell.cellIdentifier forIndexPath:indexPath];
+        [cell updateTypingUsers:_currentTypingUsers mediaManager:self.mxSession.mediaManager];
+        return cell;
+    }
+    
     // Do cell data customization that needs to be done before [MXKRoomBubbleTableViewCell render]
     RoomBubbleCellData *roomBubbleCellData = [self cellDataAtIndex:indexPath.row];
 
