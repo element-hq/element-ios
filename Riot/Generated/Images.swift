@@ -113,6 +113,7 @@ internal enum Asset {
     internal static let roomContextMenuReply = ImageAsset(name: "room_context_menu_reply")
     internal static let roomContextMenuRetry = ImageAsset(name: "room_context_menu_retry")
     internal static let inputTextBackground = ImageAsset(name: "input_text_background")
+    internal static let saveIcon = ImageAsset(name: "save_icon")
     internal static let sendIcon = ImageAsset(name: "send_icon")
     internal static let uploadIcon = ImageAsset(name: "upload_icon")
     internal static let uploadIconDark = ImageAsset(name: "upload_icon_dark")

@@ -135,6 +135,27 @@
     _sendMode = sendMode;
 
     [self updatePlaceholder];
+    [self updateToolbarButtonLabel];
+}
+
+- (void)updateToolbarButtonLabel
+{
+    UIImage *buttonImage;
+
+    switch (_sendMode)
+    {
+        case RoomInputToolbarViewSendModeReply:
+            buttonImage = [UIImage imageNamed:@"send_icon"];
+            break;
+        case RoomInputToolbarViewSendModeEdit:
+            buttonImage = [UIImage imageNamed:@"save_icon"];
+            break;
+        default:
+            buttonImage = [UIImage imageNamed:@"send_icon"];
+            break;
+    }
+
+    [self.rightInputToolbarButton setImage:buttonImage forState:UIControlStateNormal];
 }
 
 - (void)updatePlaceholder

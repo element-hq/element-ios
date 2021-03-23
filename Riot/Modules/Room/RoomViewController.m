@@ -465,14 +465,14 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     self.scrollToBottomButton.layer.shadowRadius = 6;
     self.scrollToBottomButton.layer.shadowOffset = CGSizeMake(0, 4);
 
+    self.inputBackgroundView.backgroundColor = [ThemeService.shared.theme.searchBackgroundColor colorWithAlphaComponent:0.98];
+    
     if ([ThemeService.shared.themeId isEqualToString:@"light"])
     {
-        self.inputBackgroundView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
         [self.scrollToBottomButton setImage:[UIImage imageNamed:@"scrolldown"] forState:UIControlStateNormal];
     }
     else if ([ThemeService.shared.themeId isEqualToString:@"dark"] || [ThemeService.shared.themeId isEqualToString:@"black"])
     {
-        self.inputBackgroundView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
         [self.scrollToBottomButton setImage:[UIImage imageNamed:@"scrolldown_dark"] forState:UIControlStateNormal];
     }
     else if (@available(iOS 12.0, *) && ThemeService.shared.theme.userInterfaceStyle == UIUserInterfaceStyleDark) {
