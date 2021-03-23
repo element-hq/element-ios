@@ -117,6 +117,12 @@
 
 #pragma mark -
 
+- (void)setTextMessage:(NSString *)textMessage
+{
+    [self updateSendButtonWithMessage:textMessage];
+    [super setTextMessage:textMessage];
+}
+
 - (void)setIsEncryptionEnabled:(BOOL)isEncryptionEnabled
 {
     _isEncryptionEnabled = isEncryptionEnabled;
@@ -188,6 +194,14 @@
 
 #pragma mark - HPGrowingTextView delegate
 
+- (BOOL)growingTextView:(HPGrowingTextView *)growingTextView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    NSString *newText = [growingTextView.text stringByReplacingCharactersInRange:range withString:text];
+    [self updateSendButtonWithMessage:newText];
+    
+    return YES;
+}
+
 - (void)growingTextViewDidChange:(HPGrowingTextView *)hpGrowingTextView
 {
     // Clean the carriage return added on return press
@@ -197,19 +211,6 @@
     }
     
     [super growingTextViewDidChange:hpGrowingTextView];
-    
-    if (self.rightInputToolbarButton.isEnabled && !self.rightInputToolbarButton.alpha)
-    {
-        self.rightInputToolbarButton.alpha = 1;
-        self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.rightInputToolbarButton.frame.origin.x + 12;
-        [self layoutIfNeeded];
-    }
-    else if (!self.rightInputToolbarButton.isEnabled && self.rightInputToolbarButton.alpha)
-    {
-        self.rightInputToolbarButton.alpha = 0;
-        self.messageComposerContainerTrailingConstraint.constant = 12;
-        [self layoutIfNeeded];
-    }
 }
 
 - (void)growingTextView:(HPGrowingTextView *)hpGrowingTextView willChangeHeight:(float)height
@@ -337,6 +338,21 @@
     }
     
     [super destroy];
+}
+
+- (void)updateSendButtonWithMessage:(NSString *)textMessage
+{
+    if (textMessage.length)
+    {
+        self.rightInputToolbarButton.alpha = 1;
+        self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.rightInputToolbarButton.frame.origin.x + 12;
+    }
+    else
+    {
+        self.rightInputToolbarButton.alpha = 0;
+        self.messageComposerContainerTrailingConstraint.constant = 12;
+    }
+    [self layoutIfNeeded];
 }
 
 #pragma mark - Clipboard - Handle image/data paste from general pasteboard
