@@ -11,6 +11,7 @@ Changes to be released in next version
 🐛 Bugfix
  * RoomVC: Fix timeline blink on sending.
  * RoomVC: Fix not visible last bubble issue.
+ * Room directory: Fix crash (#4137).
 
 ⚠️ API Changes
  * 
