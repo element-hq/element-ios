@@ -40,6 +40,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *missedDiscussionsBadgeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *typingLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *displayNameCenterYConstraint;
+@property (weak, nonatomic) IBOutlet UIView *dotView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *missedDiscussionsBadgeLabelLeadingConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *pictureViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *pictureViewWidthConstraint;
 
 /**
  The room preview data may be used when mxRoom instance is not available
@@ -60,5 +64,10 @@
  The method used to handle the gesture recognized by a receiver.
  */
 - (void)reportTapGesture:(UITapGestureRecognizer*)tapGestureRecognizer;
+
+/**
+ update the layout of the title view according to the target orientation
+ */
+- (void)updateLayoutForOrientation:(UIInterfaceOrientation)orientation;
 
 @end

@@ -2906,6 +2906,10 @@ internal enum VectorL10n {
   internal static var roomMemberPowerLevelShortModerator: String { 
     return VectorL10n.tr("Vector", "room_member_power_level_short_moderator") 
   }
+  /// Editing
+  internal static var roomMessageEditing: String { 
+    return VectorL10n.tr("Vector", "room_message_editing") 
+  }
   /// Message edits
   internal static var roomMessageEditsHistoryTitle: String { 
     return VectorL10n.tr("Vector", "room_message_edits_history_title") 
@@ -2921,6 +2925,10 @@ internal enum VectorL10n {
   /// Send a reply…
   internal static var roomMessageReplyToShortPlaceholder: String { 
     return VectorL10n.tr("Vector", "room_message_reply_to_short_placeholder") 
+  }
+  /// Replying to %@
+  internal static func roomMessageReplyingTo(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_message_replying_to", p1)
   }
   /// Send a message…
   internal static var roomMessageShortPlaceholder: String { 
