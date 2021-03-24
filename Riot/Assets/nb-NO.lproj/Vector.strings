@@ -206,7 +206,7 @@
 "identity_server_settings_alert_change_title" = "Bytt ut identitetstjener";
 "identity_server_settings_alert_disconnect_button" = "Koble fra";
 "room_details_people" = "Medlemmer";
-"room_details_files" = "Filer";
+"room_details_files" = "Filopplastinger";
 "room_details_settings" = "Instillinger";
 "room_details_room_name" = "Rommets navn";
 "room_details_topic" = "Emne";
@@ -308,7 +308,7 @@
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_sign_out_action" = "Logg av";
 // MARK: - Device Verification
 "device_verification_title" = "Verifiser økten";
-"device_verification_self_verify_alert_title" = "Ny innlogging";
+"device_verification_self_verify_alert_title" = "Ny innlogging. Var dette deg?";
 "device_verification_self_verify_alert_cancel_action" = "Det var ikke meg";
 "device_verification_self_verify_start_verify_action" = "Begynn verifisering";
 "device_verification_self_verify_start_waiting" = "Venter …";
@@ -400,7 +400,7 @@
 "user_verification_session_details_verify_action_current_user" = "Bekreft";
 // String for App Store
 "store_short_description" = "Sikker desentralisert chat/IP-telefoni";
-"store_full_description" = "Kommuniser. På din måte.\n\nEn chatte-app som er fleksibel og fullstendig under din kontroll. Riot lar deg kommunisere slik du vil. Laget for [matrix] - standarden for åpen, desentralisert kommunikasjon.\n\nSkaff deg en gratis matrix.org-konto og din egen server på https://modular.im, eller bruk en annen Matrix-server.\n\nHvorfor velge Riot.im?\n\nKOMPLETT KOMMUNIKASJON: Bygg et eget rom til laget ditt, vennene dine, samfunnet ditt - akkurat på den måten du ønsker! Chat, del filer, legg til widgeter og foreta tale- og videosamtaler - alt sammen helt gratis.\n\nKRAFTIGE INTEGRASJONER: Bruk Riot.im med verktøyene du kjenner og elsker. Med Riot.im kan du til og med chatte med brukere og grupper på andre chatte-apper.\n\nPRIVAT OG SIKKER: Hold samtalene hemmelige. Topp moderne ende-til-ende-kryptering sikrer at privat kommunikasjon forblir privat.\n\nÅPEN, IKKE LUKKET: Åpen kildekode, og bygd på Matrix. Ei dine egne data ved å være vert for din egen server, eller velg en server du stoler på.\n\nUansett hvor du er: Hold kontakten hvor enn du er med synkronisert meldingshistorikk på alle enhetene dine, samt på nettet på https://riot.im.";
+"store_full_description" = "Element er en ny type melding og samhandlings app som:\n\n1. Setter deg i førersetet for å kontrollere personlig informasjon\n2. Lar deg kommunisere med alle brukere i Matrix-nettverket, i tillegg til brukere i tilknyttede nettverk slik som Slack\n3. Beskytter deg fra annonser, datainnhenting, bakdører og lukkede nettverk. \n4. Beskytter deg gjennom at kommunikasjonen er ende-til-ende-kryptert, og at motparten er verifisert. \n\nElement er veldig annerledes enn andre melding og samhandlingsapper ved at det er en desentralisert løsning og laget som åpen kildekode.\n\nElement lar deg sette opp en egen tjener eller velge en offentlig tjener - slik at du kan beskytte tilgang og eierskap til dine data og samtaler. Det gir deg tilgang tiI et åpent nettverk slik at du ikke er begrenset til å kommunisere kun med Element brukere. Og det er veldig sikkert.\n\nElement gjør dette mulig ved at det opererer i Matrix - standarden for åpen og desentralisert kommunikasjon. \n\nElement setter deg selv i førersetet ved å la deg bestemme hvor dine samtaler skal befinne seg. Fra Element appen kan du velge forskjellige opsjoner/verter:\n\n1. Få en gratis konto på den offentlige matrix.org tjeneren. \n2. Sett opp en egen tjener for din konto på egne maskiner\n3. Registrer deg og opprett en egen tjener og konto på Element Matrix Services platformen.\n\nHvorfor velge Element?\n\nEI DINE EGNE DATA: Du bestemmer hvor dine data og meldinger oppbevares. Du eier og kontrollerer det, ikke et stort MEGACORP som samler dine data og tilbyr de til tredjeparter.\n\nÅPEN KOMMUNIKASJON OG SAMHANDLING: Du kan melde med hvem som helst i Matrix nettverket; uavhengig om de bruker Element eller en annen Matrix app, og uavhengig av om de bruker andre meldingssystemer slik som Slack, IRC eller XMPP.\n\nSUPER-SIKKER: Sann ende-til-ende-kryptering (kun de i som deltar i samtalen kan dekryptere meldinger), and kryss-signering for å sikre at alle enheter i samtalen er verifisert. \n\nKOMPLETT KOMMUNIKASJONSLØSNING: Meldinger, tale og videosamtaler, fildeling, skjermdeling og en hele rekke integrasjoner, bots og widgets. Bygg rom og samfunn, hold kontakt, og få ting gjort.\n\nOVERALT DU ER: Hold deg oppdatert uansett hvor du er, og med en fullt synkronisert meldingshistorikk, på tvers av alle enhetene dine og på web, hos https://element.io/app.";
 "title_favourites" = "Favoritter";
 "on" = "På";
 "skip" = "Hopp over";
@@ -411,7 +411,7 @@
 "client_web_name" = "Riot Web";
 "client_ios_name" = "Element iOS";
 "client_android_name" = "Element Android";
-"auth_login_single_sign_on" = "Logg inn med én innlogging";
+"auth_login_single_sign_on" = "Logg inn";
 "auth_invalid_login_param" = "Feil brukernavn og/eller passord";
 "auth_invalid_user_name" = "Brukernavn kan bare inneholde bokstaver, tall, punktum, bindestrek og understrek";
 "auth_invalid_password" = "Passordet er for kort (minimum 6 tegn)";
@@ -648,8 +648,8 @@
 "room_conference_call_no_power" = "Du trenger tillatelse for å administrere konferansesamtaler i dette rommet";
 "room_ongoing_conference_call_with_close" = "Pågående konferansesamtale. Bli med som %@ eller %@. %@ det.";
 "room_ongoing_conference_call" = "Pågående konferansesamtale. Bli med som %@ eller %@.";
-"room_unsent_messages_unknown_devices_notification" = "Meldingen ble ikke sendt på grunn av ukjente økter. %@ eller %@ nå?";
-"room_unsent_messages_notification" = "Meldinger ikke sendt. %@ eller %@ nå?";
+"room_unsent_messages_unknown_devices_notification" = "Meldingen ble ikke sendt på grunn av ukjente økter.";
+"room_unsent_messages_notification" = "Meldinger ikke sendt.";
 "room_offline_notification" = "Tilkoblingen til serveren har gått tapt.";
 "encrypted_room_message_reply_to_placeholder" = "Send et kryptert svar…";
 "encrypted_room_message_placeholder" = "Send en kryptert melding…";
@@ -726,7 +726,7 @@
 "auth_autodiscover_invalid_response" = "Ugyldig svar på hjemmeserver";
 "auth_accept_policies" = "Vennligst gjennomgå og godta retningslinjene til denne hjemmeserveren:";
 "auth_add_email_and_phone_warning" = "Registrering med e-post og telefonnummer på en gang støttes ikke ennå før api eksisterer. Bare telefonnummeret blir tatt i betraktning. Du kan legge til e-postmeldingen din i profilen din i innstillingene.";
-"auth_reset_password_success_message" = "Passordet ditt har blitt tilbakestilt.\n\nDu er logget ut av alle økter og vil ikke lenger motta push-varsler. For å aktivere varsler på nytt, logg på på nytt på hver enhet.";
+"auth_reset_password_success_message" = "Passordet ditt har blitt tilbakestilt.\n\nDu er logget ut av alle økter og vil ikke lenger motta push-varsler. For å aktivere varsler på nytt, logg inn på nytt på hver enhet.";
 "auth_reset_password_error_is_required" = "Ingen identitetsserver er konfigurert: legg til en i serveralternativene for å tilbakestille passordet ditt.";
 "auth_reset_password_error_not_found" = "E-postadressen din ser ikke ut til å være tilknyttet en Matrix-ID på denne hjemmeserveren.";
 "auth_reset_password_error_unauthorized" = "Kunne ikke bekrefte e-postadressen: sørg for at du har klikket på lenken i e-posten";
@@ -745,3 +745,43 @@
 "auth_email_is_required" = "Ingen identitetsserver er konfigurert, så du kan ikke legge til en e-postadresse for å tilbakestille passordet ditt i fremtiden.";
 "active_call_details" = "Aktiv samtale (%@)";
 "active_call" = "Aktiv samtale";
+
+// MARK: - Invite friends
+
+"invite_friends_action" = "Inviter venner til %@";
+"home_empty_view_information" = "Alt-i-ett sikker chat-app for team, venner og organisasjoner. Tapp på + knappen under for å legge til personer og rom.";
+
+// MARK: - Home
+
+"home_empty_view_title" = "Velkommen til %@,\n%@";
+"room_member_power_level_admin_in" = "Admin i %@";
+"room_participants_action_section_direct_chats" = "Direktesamtaler";
+"contacts_user_directory_offline_section" = "Brukerliste (frakoblet)";
+"contacts_user_directory_section" = "Brukerliste";
+"directory_searching_title" = "Søker i katalog…";
+"directory_search_results_more_than" = ">%tu resultater funnet for %@";
+"directory_search_results_title" = "Utforsk listeresultater";
+"directory_cell_description" = "%tu rom";
+
+// Directory
+"directory_cell_title" = "Utforsk liste";
+
+// Room recents
+"room_recents_directory_section" = "Romliste";
+"social_login_button_title_sign_up" = "Registrer deg med %@";
+"social_login_button_title_sign_in" = "Logg inn med %@";
+"social_login_button_title_continue" = "Fortsett med %@";
+"social_login_list_title_sign_up" = "Eller";
+"social_login_list_title_sign_in" = "Eller";
+
+// Social login
+
+"social_login_list_title_continue" = "Fortsett med";
+"callbar_return" = "Returner";
+"callbar_only_multiple_paused" = "%@ pausede samtaler";
+"callbar_only_single_paused" = "Pauset samtale";
+"callbar_active_and_multiple_paused" = "1 aktiv samtale (%@) · %@ pausede samtaler";
+"callbar_active_and_single_paused" = "1 aktiv samtale (%@) · 1 pauset samtale";
+
+// Call Bar
+"callbar_only_single_active" = "Aktiv samtale (%@)";

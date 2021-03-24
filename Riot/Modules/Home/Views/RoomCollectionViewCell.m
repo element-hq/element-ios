@@ -147,16 +147,6 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
         
         self.directRoomBorderView.hidden = !roomCellData.roomSummary.room.isDirect;
         
-        if (roomCellData.roomSummary.isEncrypted)
-        {
-            self.encryptedRoomIcon.hidden = NO;
-            self.encryptedRoomIcon.image = [EncryptionTrustLevelBadgeImageHelper roomBadgeImageFor:roomCellData.roomSummary.roomEncryptionTrustLevel];
-        }
-        else
-        {
-            self.encryptedRoomIcon.hidden = YES;
-        }
-        
         [roomCellData.roomSummary setRoomAvatarImageIn:self.roomAvatar];
     }
 }

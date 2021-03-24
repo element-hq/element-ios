@@ -97,7 +97,7 @@ extension DirectoryRoomTableViewCell: Themable {
         numberOfUsersLabel.textColor = theme.textSecondaryColor
         topicLabel.textColor = theme.textSecondaryColor
         
-        if viewModel.isJoined {
+        if let viewModel = viewModel, viewModel.isJoined {
             joinButton.backgroundColor = theme.backgroundColor
             joinButton.tintColor = theme.textSecondaryColor
             joinButton.layer.borderWidth = 1.0

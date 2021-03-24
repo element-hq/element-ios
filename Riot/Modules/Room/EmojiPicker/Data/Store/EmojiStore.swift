@@ -43,6 +43,10 @@ final class EmojiStore {
                 
                 // Do not use `String.localizedCaseInsensitiveContains` here as EmojiItem data is not localized for the moment
                 
+                if emojiItem.shortName.vc_caseInsensitiveContains(searchText) {
+                    return true
+                }
+
                 if emojiItem.name.vc_caseInsensitiveContains(searchText) {
                     return true
                 }
