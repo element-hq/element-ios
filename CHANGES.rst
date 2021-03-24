@@ -63,7 +63,7 @@ Changes in 1.2.5 (2021-03-03)
  * Settings: Add option to show NSFW public rooms (off by default).
 
 🐛 Bugfix
- * 
+ * Emoji store: Include short name when searching emojis (#4063).
 
 ⚠️ API Changes
  * 
