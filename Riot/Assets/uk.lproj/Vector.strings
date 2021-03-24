@@ -288,3 +288,13 @@
 "security_settings_secure_backup_delete" = "Видалити";
 "security_settings_secure_backup_synchronise" = "Синхронізувати";
 "security_settings_secure_backup_setup" = "Налаштувати";
+"people_empty_view_information" = "Безпечно спілкуйтеся з будь-ким. Торкніться +, щоб додати співрозмовників.";
+"callbar_return" = "Повернути";
+"callbar_only_multiple_paused" = "%@ викликів у очікуванні";
+"callbar_only_single_paused" = "Виклики в очікуванні";
+"callbar_active_and_multiple_paused" = "1 активний виклик (%@) · %@ викликів у очікуванні";
+"callbar_active_and_single_paused" = "1 активний виклик (%@) · 1 виклик в очікуванні";
+
+// Call Bar
+"callbar_only_single_active" = "Активний виклик (%@)";
+"switch" = "Перемкнути";
