@@ -5,12 +5,10 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * Pods: Update FlowCommoniOS, GBDeviceInfo, KeychainAccess, MatomoTracker, SwiftJWT, SwiftLint (#4120).
- * Room lists: Remove shields on room avatars (#4115).
+ * 
 
 🐛 Bugfix
- * RoomVC: Fix timeline blink on sending.
- * RoomVC: Fix not visible last bubble issue.
+ * 
 
 ⚠️ API Changes
  * 
@@ -23,6 +21,36 @@ Changes to be released in next version
 
 Others
  * 
+
+Changes in 1.2.7 (2021-03-24)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Pods: Update FlowCommoniOS, GBDeviceInfo, KeychainAccess, MatomoTracker, SwiftJWT, SwiftLint (#4120).
+ * Room lists: Remove shields on room avatars (#4115).
+
+🐛 Bugfix
+ * RoomVC: Fix timeline blink on sending.
+ * RoomVC: Fix not visible last bubble issue.
+ * Room directory: Fix crash (#4137).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.14.6](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.6)).
 
 Changes in 1.2.6 (2021-03-11)
 =================================================
@@ -63,7 +91,7 @@ Changes in 1.2.5 (2021-03-03)
  * Settings: Add option to show NSFW public rooms (off by default).
 
 🐛 Bugfix
- * 
+ * Emoji store: Include short name when searching emojis (#4063).
 
 ⚠️ API Changes
  * 
