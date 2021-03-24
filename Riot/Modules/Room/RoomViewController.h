@@ -48,7 +48,7 @@ extern NSNotificationName const RoomCallTileTappedNotification;
 @property (weak, nonatomic) IBOutlet UILabel *jumpToLastUnreadLabel;
 @property (weak, nonatomic) IBOutlet UIButton *resetReadMarkerButton;
 @property (weak, nonatomic) IBOutlet UIView *jumpToLastUnreadBannerSeparatorView;
-@property (weak, nonatomic) IBOutlet UIVisualEffectView *inputBackgroundView;
+@property (weak, nonatomic) IBOutlet UIView *inputBackgroundView;
 @property (weak, nonatomic) IBOutlet UIButton *scrollToBottomButton;
 @property (weak, nonatomic) IBOutlet BadgeLabel *scrollToBottomBadgeLabel;
 

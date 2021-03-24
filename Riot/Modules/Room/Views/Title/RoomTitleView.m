@@ -47,6 +47,8 @@
         [tap setDelegate:self];
         [self.titleMask addGestureRecognizer:tap];
         self.titleMask.userInteractionEnabled = YES;
+        self.dotView.layer.masksToBounds = YES;
+        self.dotView.layer.cornerRadius = CGRectGetMidX(self.dotView.bounds);
     }
 }
 
@@ -85,6 +87,8 @@
     self.backgroundColor = UIColor.clearColor;
     self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? ThemeService.shared.theme.textPrimaryColor : ThemeService.shared.theme.textSecondaryColor);
     self.typingLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
+    self.dotView.backgroundColor = ThemeService.shared.theme.warningColor;
+    self.missedDiscussionsBadgeLabel.textColor = ThemeService.shared.theme.tintColor;
 }
 
 - (void)setRoomPreviewData:(RoomPreviewData *)roomPreviewData
@@ -130,6 +134,28 @@
     if (self.tapGestureDelegate)
     {
         [self.tapGestureDelegate roomTitleView:self recognizeTapGesture:tapGestureRecognizer];
+    }
+}
+
+- (void)updateLayoutForOrientation:(UIInterfaceOrientation)orientation
+{
+    if (UIInterfaceOrientationIsLandscape(orientation))
+    {
+        self.missedDiscussionsBadgeLabel.font = [UIFont systemFontOfSize:10];
+        self.missedDiscussionsBadgeLabelLeadingConstraint.constant = -24;
+        self.pictureViewWidthConstraint.constant = 28;
+        self.pictureViewHeightConstraint.constant = 28;
+        self.displayNameTextField.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+        self.typingLabel.font = [UIFont systemFontOfSize:10];
+    }
+    else
+    {
+        self.missedDiscussionsBadgeLabel.font = [UIFont systemFontOfSize:15];
+        self.missedDiscussionsBadgeLabelLeadingConstraint.constant = -32;
+        self.pictureViewWidthConstraint.constant = 32;
+        self.pictureViewHeightConstraint.constant = 32;
+        self.displayNameTextField.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
+        self.typingLabel.font = [UIFont systemFontOfSize:12];
     }
 }
 

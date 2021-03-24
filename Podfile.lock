@@ -55,28 +55,28 @@ PODS:
   - MatomoTracker (7.4.1):
     - MatomoTracker/Core (= 7.4.1)
   - MatomoTracker/Core (7.4.1)
-  - MatrixKit (0.14.5):
+  - MatrixKit (0.14.6):
     - Down (~> 0.10.0)
     - DTCoreText (~> 1.6.25)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.14.5)
-    - MatrixSDK (= 0.18.5)
-  - MatrixKit/Core (0.14.5):
+    - MatrixKit/Core (= 0.14.6)
+    - MatrixSDK (= 0.18.6)
+  - MatrixKit/Core (0.14.6):
     - Down (~> 0.10.0)
     - DTCoreText (~> 1.6.25)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.18.5)
-  - MatrixSDK (0.18.5):
-    - MatrixSDK/Core (= 0.18.5)
-  - MatrixSDK/Core (0.18.5):
+    - MatrixSDK (= 0.18.6)
+  - MatrixSDK (0.18.6):
+    - MatrixSDK/Core (= 0.18.6)
+  - MatrixSDK/Core (0.18.6):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.3.0)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.2.2)
     - Realm (= 10.7.2)
-  - MatrixSDK/JingleCallStack (0.18.5):
+  - MatrixSDK/JingleCallStack (0.18.6):
     - JitsiMeetSDK (= 3.2.0)
     - MatrixSDK/Core
   - OLMKit (3.2.2):
@@ -115,7 +115,7 @@ DEPENDENCIES:
   - KeychainAccess (~> 4.2.2)
   - KTCenterFlowLayout (~> 1.3.1)
   - MatomoTracker (~> 7.4.1)
-  - MatrixKit (= 0.14.5)
+  - MatrixKit (= 0.14.6)
   - MatrixSDK
   - MatrixSDK/JingleCallStack
   - OLMKit
@@ -186,8 +186,8 @@ SPEC CHECKSUMS:
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
   MatomoTracker: 24a846c9d3aa76933183fe9d47fd62c9efa863fb
-  MatrixKit: f77c5aa1a236331665d3b1f25ed37ed8758eb23f
-  MatrixSDK: 013859281629b8cccd3a8af1dec48f36335c058c
+  MatrixKit: 0bf9eb5a4375d829f7d8daf2b0995f630468b825
+  MatrixSDK: 4437d3c4299b06954809e2eaa96f9193703e920e
   OLMKit: 20d1c564033a1ae7148f8f599378d4c798363905
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
   Realm: e523da9ade306c5ae87e85dc09fdef148d3e1cc1
@@ -199,6 +199,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 442355a7d44d6f0b26a287702404a221cffb03f5
+PODFILE CHECKSUM: 44dae827997fc5fc1a07fabc00a4870eb94a9956
 
 COCOAPODS: 1.10.1
