@@ -120,6 +120,8 @@
 
     if (self.room.summary.isEncrypted)
     {
+        // Make sure we have the trust shield value
+        [self.room.summary enableTrustTracking:YES];
         [self fetchEncryptionTrustedLevel];
     }
 }
@@ -258,8 +260,12 @@
             
             [self updateStatusInfo];
         }
+        
+        //  we may have changed the number of bubbles in this block, consider that change
+        return bubbles.count;
     }
     
+    //  leave it as is, if coming as 0 from super
     return count;
 }
 
