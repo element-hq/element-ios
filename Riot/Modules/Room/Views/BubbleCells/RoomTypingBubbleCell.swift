@@ -36,20 +36,16 @@ class RoomTypingBubbleCell: UITableViewCell {
     
     // MARK: - Lifecycle
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        additionalUsersLabel?.textColor = ThemeService.shared().theme.textSecondaryColor
-        dotsView?.highlightedDotColor = ThemeService.shared().theme.textTertiaryColor
-        dotsView?.dotColor = ThemeService.shared().theme.tabBarUnselectedItemTintColor
-    }
-    
     override func prepareForReuse() {
         super.prepareForReuse()
         
         for pictureView in userPictureViews {
             pictureView.removeFromSuperview()
         }
+        
+        additionalUsersLabel?.textColor = ThemeService.shared().theme.textSecondaryColor
+        dotsView?.highlightedDotColor = ThemeService.shared().theme.textTertiaryColor
+        dotsView?.dotColor = ThemeService.shared().theme.textSecondaryColor
     }
     
     override func layoutSubviews() {
