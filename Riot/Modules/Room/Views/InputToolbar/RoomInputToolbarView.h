@@ -18,6 +18,8 @@
 
 #import "MediaPickerViewController.h"
 
+@class RoomActionsBar;
+
 /**
  Destination of the message in the composer
  */
@@ -30,34 +32,6 @@ typedef enum : NSUInteger
 
 
 @protocol RoomInputToolbarViewDelegate <MXKRoomInputToolbarViewDelegate>
-
-/**
- Tells the delegate that the user wants to display the sticker picker.
-
- @param toolbarView the room input toolbar view.
- */
-- (void)roomInputToolbarViewPresentStickerPicker:(MXKRoomInputToolbarView*)toolbarView;
-
-/**
- Tells the delegate that the user wants to send external files.
- 
- @param toolbarView the room input toolbar view
- */
-- (void)roomInputToolbarViewDidTapFileUpload:(MXKRoomInputToolbarView*)toolbarView;
-
-/**
- Tells the delegate that the user wants to take photo or video with camera.
- 
- @param toolbarView the room input toolbar view
- */
-- (void)roomInputToolbarViewDidTapCamera:(MXKRoomInputToolbarView*)toolbarView;
-
-/**
- Tells the delegate that the user wants to show media library.
- 
- @param toolbarView the room input toolbar view
- */
-- (void)roomInputToolbarViewDidTapMediaLibrary:(MXKRoomInputToolbarView*)toolbarView;
 
 /**
  Tells the delegate that the user wants to cancel the current edition / reply.
@@ -95,6 +69,7 @@ typedef enum : NSUInteger
 @property (weak, nonatomic) IBOutlet UIImageView *inputContextImageView;
 @property (weak, nonatomic) IBOutlet UILabel *inputContextLabel;
 @property (weak, nonatomic) IBOutlet UIButton *inputContextButton;
+@property (weak, nonatomic) IBOutlet RoomActionsBar *actionsBar;
 
 /**
  Tell whether the filled data will be sent encrypted. NO by default.
@@ -110,5 +85,10 @@ typedef enum : NSUInteger
  Destination of the message in the composer.
  */
 @property (nonatomic) RoomInputToolbarViewSendMode sendMode;
+
+/**
+ YES if action menu is opened. NO otherwise
+ */
+@property (nonatomic, getter=isActionMenuOpened) BOOL actionMenuOpened;
 
 @end

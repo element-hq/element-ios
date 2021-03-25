@@ -120,6 +120,7 @@ const double RoomInputToolbarViewContextBarHeight = 30;
     self.inputContextImageView.tintColor = ThemeService.shared.theme.textSecondaryColor;
     self.inputContextLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.inputContextButton.tintColor = ThemeService.shared.theme.textSecondaryColor;
+    [self.actionsBar customizeViewRendering];
 }
 
 #pragma mark -
@@ -142,6 +143,7 @@ const double RoomInputToolbarViewContextBarHeight = 30;
     RoomInputToolbarViewSendMode previousMode = _sendMode;
     _sendMode = sendMode;
 
+    self.actionMenuOpened = NO;
     [self updatePlaceholder];
     [self updateToolbarButtonLabelWithPreviousMode: previousMode];
 }
@@ -329,92 +331,7 @@ const double RoomInputToolbarViewContextBarHeight = 30;
 {
     if (button == self.attachMediaButton)
     {
-        // Check whether media attachment is supported
-        if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:presentViewController:)])
-        {
-            // Ask the user the kind of the call: voice or video?
-            actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-
-            __weak typeof(self) weakSelf = self;
-            
-            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_camera", @"Vector", nil)
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
-                                                              
-                                                              if (weakSelf)
-                                                              {
-                                                                  typeof(self) self = weakSelf;
-                                                                  self->actionSheet = nil;
-                                                                  
-                                                                  [self.delegate roomInputToolbarViewDidTapCamera:self];
-                                                              }
-                                                          }]];
-            
-            
-            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_send_photo_or_video", @"Vector", nil)
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
-
-                                                              if (weakSelf)
-                                                              {
-                                                                  typeof(self) self = weakSelf;
-                                                                  self->actionSheet = nil;
-
-                                                                  [self.delegate roomInputToolbarViewDidTapMediaLibrary:self];
-                                                              }
-
-                                                          }]];
-
-            if (BuildSettings.allowSendingStickers)
-            {
-                [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_send_sticker", @"Vector", nil)
-                                                                style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction * action) {
-                    
-                    if (weakSelf)
-                    {
-                        typeof(self) self = weakSelf;
-                        self->actionSheet = nil;
-                        
-                        [self.delegate roomInputToolbarViewPresentStickerPicker:self];
-                    }
-                    
-                }]];
-            }
-            
-            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_send_file", @"Vector", nil)
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
-                                                              
-                                                              if (weakSelf)
-                                                              {
-                                                                  typeof(self) self = weakSelf;
-                                                                  self->actionSheet = nil;
-                                                                  
-                                                                  [self.delegate roomInputToolbarViewDidTapFileUpload:self];
-                                                              }
-                                                          }]];
-
-            [actionSheet addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                            style:UIAlertActionStyleCancel
-                                                          handler:^(UIAlertAction * action) {
-
-                                                              if (weakSelf)
-                                                              {
-                                                                  typeof(self) self = weakSelf;
-                                                                  self->actionSheet = nil;
-                                                              }
-
-                                                          }]];
-
-            [actionSheet popoverPresentationController].sourceView = self.attachMediaButton;
-            [actionSheet popoverPresentationController].sourceRect = self.attachMediaButton.bounds;
-            [self.window.rootViewController presentViewController:actionSheet animated:YES completion:nil];
-        }
-        else
-        {
-            NSLog(@"[RoomInputToolbarView] Attach media is not supported");
-        }
+        self.actionMenuOpened = !self.isActionMenuOpened;
     }
 
     [super onTouchUpInside:button];
@@ -443,7 +360,53 @@ const double RoomInputToolbarViewContextBarHeight = 30;
         self.rightInputToolbarButton.alpha = 0;
         self.messageComposerContainerTrailingConstraint.constant = 12;
     }
+    
     [self layoutIfNeeded];
+}
+
+#pragma mark - properties
+
+- (void)setActionMenuOpened:(BOOL)actionMenuOpened
+{
+    if (_actionMenuOpened != actionMenuOpened)
+    {
+        _actionMenuOpened = actionMenuOpened;
+        
+        if (_actionMenuOpened) {
+            self.actionsBar.hidden = NO;
+            [self.actionsBar animateWithShowIn:_actionMenuOpened completion:nil];
+        }
+        else
+        {
+            [self.actionsBar animateWithShowIn:_actionMenuOpened completion:^(BOOL finished) {
+                self.actionsBar.hidden = YES;
+            }];
+        }
+        
+        [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:0.45 initialSpringVelocity:5 options:UIViewAnimationOptionCurveEaseIn animations:^{
+            self.attachMediaButton.transform = actionMenuOpened ? CGAffineTransformMakeRotation(M_PI * 3 / 4) : CGAffineTransformIdentity;
+        } completion:^(BOOL finished) {
+        }];
+        
+        [UIView animateWithDuration:.2 delay:_actionMenuOpened ? 0 : .1 options:UIViewAnimationOptionCurveEaseIn animations:^{
+            self->messageComposerContainer.alpha = actionMenuOpened ? 0 : 1;
+            self.rightInputToolbarButton.alpha = self->growingTextView.text.length == 0 || actionMenuOpened ? 0 : 1;
+        } completion:^(BOOL finished) {
+        }];
+        
+        [UIView animateWithDuration:.3 animations:^{
+            if (actionMenuOpened)
+            {
+                self.mainToolbarHeightConstraint.constant = self.mainToolbarMinHeightConstraint.constant;
+            }
+            else
+            {
+                [self->growingTextView refreshHeight];
+            }
+            [self layoutIfNeeded];
+            [self.delegate roomInputToolbarView:self heightDidChanged:self.mainToolbarHeightConstraint.constant completion:nil];
+        }];
+    }
 }
 
 #pragma mark - Clipboard - Handle image/data paste from general pasteboard
