@@ -1,5 +1,5 @@
 /* New message from a specific person, not referencing a room */
-"MSG_FROM_USER" = "%@发送了一条消息";
+"MSG_FROM_USER" = "%@ 发送了一条消息";
 /* New message from a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM" = "%@ 在 %@ 发送了消息";
 /* New message from a specific person, not referencing a room. Content included. */
@@ -27,11 +27,11 @@
 /* Multiple unread messages from three people */
 "MSGS_FROM_THREE_USERS" = "%@ 条未读消息 (来自 %@、%@ 和 %@)";
 /* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
-"MSGS_FROM_TWO_PLUS_USERS" = "%@ 条未读消息 (来自 %@、%@ 及更多)";
+"MSGS_FROM_TWO_PLUS_USERS" = "%@ 条未读消息 (来自 %@、%@ 与其他)";
 /* Multiple messages in two rooms */
 "MSGS_IN_TWO_ROOMS" = "%@ 条未读消息 (来自聊天室 %@ 和 %@)";
 /* Look, stuff's happened, alright? Just open the app. */
-"MSGS_IN_TWO_PLUS_ROOMS" = "%@ 条未读消息 (来自聊天室 %@、%@ 和更多)";
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@ 条未读消息 (来自 %@、%@ 与其他)";
 /* A user has invited you to a chat */
 "USER_INVITE_TO_CHAT" = "%@ 邀请您加入私聊";
 /* A user has invited you to an (unamed) group chat */
@@ -54,4 +54,16 @@
 "MSG_FROM_USER_IN_ROOM_TITLE" = "%@（来自 %@）";
 /* Sticker from a specific person, not referencing a room. */
 "STICKER_FROM_USER" = "%@发送了一张贴图";
-"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@想要验证";
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ 想要验证";
+"MESSAGE_PROTECTED" = "未读消息";
+
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "%@ 中的消息";
+
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "来自 %@ 的消息";
+
+/** Notification messages **/
+
+/* New message indicator on unknown room */
+"MESSAGE" = "消息";
