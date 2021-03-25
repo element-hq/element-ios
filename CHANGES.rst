@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Show target user avatars for collapsed membership changes (#4102).
 
 🐛 Bugfix
  * 
