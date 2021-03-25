@@ -71,6 +71,9 @@ class DefaultTheme: NSObject, Theme {
         UIColor(rgb: 0x74D12C)
     ]
     
+    var bubbleIncomingColor: UIColor = UIColor(rgb: 0xD3F9BA)
+    var bubbleOutgoingColor: UIColor = UIColor(rgb: 0xF7F4ED)
+
     var statusBarStyle: UIStatusBarStyle {
         if #available(iOS 13.0, *) {
             return .darkContent

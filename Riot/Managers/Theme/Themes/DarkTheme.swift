@@ -68,6 +68,9 @@ class DarkTheme: NSObject, Theme {
         UIColor(rgb: 0x5C56F5),
         UIColor(rgb: 0x74D12C)
     ]
+    
+    var bubbleIncomingColor: UIColor = UIColor(rgb: 0x214708)
+    var bubbleOutgoingColor: UIColor = UIColor(rgb: 0x5F5C55)
 
     var statusBarStyle: UIStatusBarStyle = .lightContent
     var scrollBarStyle: UIScrollView.IndicatorStyle = .white

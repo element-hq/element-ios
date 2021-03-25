@@ -116,6 +116,7 @@ enum
 {
     USER_INTERFACE_LANGUAGE_INDEX = 0,
     USER_INTERFACE_THEME_INDEX,
+    USER_INTERFACE_BUBBLE_INDEX
 };
 
 enum
@@ -418,6 +419,7 @@ TableViewSectionsDelegate>
     Section *sectionUserInterface = [Section sectionWithTag:SECTION_TAG_USER_INTERFACE];
     [sectionUserInterface addRowWithTag:USER_INTERFACE_LANGUAGE_INDEX];
     [sectionUserInterface addRowWithTag:USER_INTERFACE_THEME_INDEX];
+    [sectionUserInterface addRowWithTag:USER_INTERFACE_BUBBLE_INDEX];
     sectionUserInterface.headerTitle = NSLocalizedStringFromTable(@"settings_user_interface", @"Vector", nil);
     [tmpSections addObject: sectionUserInterface];
     
@@ -1986,6 +1988,19 @@ TableViewSectionsDelegate>
             [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
+        else if (row == USER_INTERFACE_BUBBLE_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            labelAndSwitchCell.mxkLabel.text = @"Chat Bubble Enabled";
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.bubbleStyle;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+            labelAndSwitchCell.mxkSwitch.enabled = true;
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleBubble:) forControlEvents:UIControlEventTouchUpInside];
+            
+            
+            cell = labelAndSwitchCell;
+        }
     }
     else if (section == SECTION_TAG_IGNORED_USERS)
     {
@@ -2985,6 +3000,14 @@ TableViewSectionsDelegate>
             }
         }];
     }
+}
+
+- (void)toggleBubble:(id)sender
+{
+    UISwitch *switchButton = (UISwitch*)sender;
+    RiotSettings.shared.bubbleStyle = switchButton.isOn;
+    [self.tableView reloadData];
+
 }
 
 - (void)markAllAsRead:(id)sender

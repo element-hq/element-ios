@@ -67,6 +67,11 @@ import UIKit
     // MARK: - Call Screen Specific Colors
     
     var callScreenButtonTintColor: UIColor { get }
+    
+   /// Color for bubble
+    
+    var bubbleIncomingColor: UIColor { get }
+    var bubbleOutgoingColor: UIColor { get }
 
     // MARK: - Appearance and style
 

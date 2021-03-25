@@ -4370,6 +4370,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         MXKAccount *currentAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
         RiotSettings.shared.showDecryptedContentInNotifications = currentAccount.showDecryptedContentInNotifications;
     }
+    
+    if(!RiotSettings.shared.isbubbleStyleHasBeenSetOnce) {
+        RiotSettings.shared.bubbleStyle = YES;
+    }
 }
 
 #pragma mark - App version management

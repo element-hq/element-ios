@@ -212,4 +212,18 @@ final class RiotSettings: NSObject {
             defaults.set(newValue, forKey: UserDefaultsKeys.matrixApps)
         }
     }
+    
+    var bubbleStyle: Bool {
+        get {
+            return defaults.bool(forKey: UserDefaultsKeys.bubbleStyle)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.bubbleStyle)
+        }
+    }
+    
+    
+    /// Indicate if `bubbleStyle` settings has been set once.
+    var isbubbleStyleHasBeenSetOnce: Bool {
+        return defaults.object(forKey: UserDefaultsKeys.bubbleStyle) != nil
+    }
 }

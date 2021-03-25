@@ -147,6 +147,8 @@ internal enum Asset {
     internal static let tabHome = ImageAsset(name: "tab_home")
     internal static let tabPeople = ImageAsset(name: "tab_people")
     internal static let tabRooms = ImageAsset(name: "tab_rooms")
+    internal static let chatBubbleReceived = ImageAsset(name: "chat_bubble_received")
+    internal static let chatBubbleSent = ImageAsset(name: "chat_bubble_sent")
     internal static let launchScreenLogo = ImageAsset(name: "launch_screen_logo")
   }
   internal enum SharedImages {

@@ -26,7 +26,7 @@
 #import "Riot-Swift.h"
 
 #import "MXRoom+Riot.h"
-
+#import "RoomEmptyBubbleCell.h"
 
 @interface RoomDataSource() <BubbleReactionsViewModelDelegate>
 {
@@ -629,9 +629,147 @@
         {
             [bubbleCell updateTickViewWithFailedEventIds:self.failedEventIds];
         }
+        if (RiotSettings.shared.bubbleStyle) {
+            [self bubbleStyleForCell:bubbleCell cellData:cellData];
+        }
     }
 
     return cell;
+}
+
+- (void) bubbleStyleForCell:(MXKRoomBubbleTableViewCell *)bubbleCell cellData:(RoomBubbleCellData *)cellData {
+    [[bubbleCell viewWithTag:9898] removeFromSuperview];
+    NSArray  *containsMessage = [cellData.events filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(MXEvent  *evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        switch (evaluatedObject.eventType) {
+            case MXEventTypeCallInvite:
+            case MXEventTypeCallCandidates:
+            case MXEventTypeCallAnswer:
+            case MXEventTypeCallHangup:
+            case MXEventTypeRoomMessage:
+                return YES;
+            default:
+                return  NO;
+        }
+    }]];
+    
+    if (containsMessage.count > 0) {
+        NSString *imageName = cellData.isIncoming ? @"chat_bubble_received" : @"chat_bubble_sent";
+        UIImage *image = [[[UIImage imageNamed:imageName] resizableImageWithCapInsets:UIEdgeInsetsMake(17, 21, 17, 21)] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        UIImageView *bubbleView = [[UIImageView alloc] initWithImage:image];
+        bubbleView.layer.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5].CGColor;
+        bubbleView.layer.shadowOffset = CGSizeMake(1.5, 1.5);
+        bubbleView.layer.shadowOpacity = 1.0;
+        bubbleView.layer.shadowRadius = 3.0;
+        
+        bubbleView.tag = 9898;
+        bubbleView.tintColor = cellData.isIncoming ? ThemeService.shared.theme.bubbleIncomingColor : ThemeService.shared.theme.bubbleOutgoingColor ;
+        bubbleView.translatesAutoresizingMaskIntoConstraints = NO;
+        [bubbleCell insertSubview:bubbleView atIndex:0];
+        if (bubbleCell.messageTextView) {
+            [bubbleView.leadingAnchor constraintEqualToAnchor: bubbleCell.messageTextView.leadingAnchor constant:-8].active = YES;
+            [bubbleView.widthAnchor constraintGreaterThanOrEqualToAnchor:bubbleCell.messageTextView.widthAnchor constant:15].active = YES;
+
+            NSLayoutYAxisAnchor *topAnchor = bubbleCell.userNameLabel ? bubbleCell.userNameLabel.topAnchor : bubbleCell.messageTextView.topAnchor;
+            [bubbleView.topAnchor constraintEqualToAnchor:topAnchor constant:-4].active = YES;
+            [bubbleView.heightAnchor constraintEqualToAnchor:bubbleCell.messageTextView.heightAnchor constant:12].active = YES;
+            bubbleCell.msgTextViewWidthConstraint.active = NO;
+            NSLayoutConstraint *messageWidthAnchor =  [bubbleCell.messageTextView.widthAnchor constraintGreaterThanOrEqualToConstant:90];
+            messageWidthAnchor.active = YES;
+            [bubbleCell.temperaryContentViewConstraints addObject:messageWidthAnchor];
+            
+            for (NSLayoutConstraint *constraint in bubbleCell.contentView.constraints) {
+                if (cellData.isIncoming) {
+                    if (constraint.firstAttribute == NSLayoutAttributeTrailing && constraint.secondItem == bubbleCell.messageTextView) {
+                        constraint.constant = 83;
+                    }
+                    if (constraint.firstAttribute == NSLayoutAttributeTrailing && constraint.secondItem == bubbleCell.userNameLabel) {
+                        constraint.active = NO;
+                    }
+                    } else {
+                        if (constraint.firstAttribute == NSLayoutAttributeLeading && constraint.firstItem == bubbleCell.pictureView) {
+                            constraint.active = NO;
+                            
+                        }
+                        if (constraint.firstAttribute == NSLayoutAttributeLeading && constraint.firstItem == bubbleCell.messageTextView) {
+                            constraint.active = NO;
+
+                        }
+                    }
+            }
+            
+        } else if (bubbleCell.attachmentView && (cellData.isAttachmentWithThumbnail || cellData.isAttachmentWithIcon) && ![bubbleCell isMemberOfClass:RoomEmptyBubbleCell.class]) {
+            for (NSLayoutConstraint *constraint in bubbleCell.contentView.constraints) {
+                    if (constraint.firstAttribute == NSLayoutAttributeLeading && constraint.firstItem == bubbleCell.attachmentView) {
+                        constraint.active = cellData.isIncoming;
+                    }
+            }
+        
+            [bubbleView.leadingAnchor constraintEqualToAnchor: bubbleCell.attachmentView.leadingAnchor constant:-15].active = YES;
+            [bubbleView.widthAnchor constraintGreaterThanOrEqualToAnchor:bubbleCell.attachmentView.widthAnchor constant:17].active = YES;
+            [bubbleView.topAnchor constraintEqualToAnchor:bubbleCell.attachmentView.topAnchor constant:-4].active = YES;
+            [bubbleView.heightAnchor constraintEqualToAnchor:bubbleCell.attachmentView.heightAnchor constant:5].active = YES;
+            bubbleCell.attachViewBottomConstraint.constant = 9;
+            bubbleCell.attachmentView.layer.cornerRadius = 15;
+            bubbleCell.attachmentView.layer.masksToBounds = YES;
+        }
+        
+        if (cellData.isIncoming) {
+            if (!bubbleCell.attachmentView) {
+                [bubbleView.widthAnchor constraintGreaterThanOrEqualToAnchor:bubbleCell.userNameLabel.widthAnchor constant:15].active = YES;
+            }
+            
+        } else {
+            if (bubbleCell.pictureView) {
+                bubbleCell.pictureView.hidden = YES;
+            }
+            if (bubbleCell.userNameLabel) {
+                bubbleCell.userNameLabel.hidden = YES;
+                bubbleCell.userNameLabel.constraints.firstObject.active = NO;
+                bubbleCell.userNameLabel.text = @"";
+            }
+            if (bubbleCell.messageTextView) {
+                NSLayoutConstraint *messageTextViewLeading = [bubbleCell.messageTextView.leadingAnchor constraintGreaterThanOrEqualToAnchor:bubbleCell.contentView.leadingAnchor constant:95];
+                messageTextViewLeading.active = YES;
+                [bubbleCell.temperaryContentViewConstraints addObject:messageTextViewLeading];
+                
+                NSLayoutConstraint *messageTextViewTrailing =  [bubbleCell.messageTextView.trailingAnchor constraintEqualToAnchor:bubbleCell.contentView.trailingAnchor constant:-15];
+                messageTextViewTrailing.active = YES;
+                [bubbleCell.temperaryContentViewConstraints addObject:messageTextViewTrailing];
+
+            }
+            if (bubbleCell.attachmentView) {
+                NSLayoutConstraint *attachmentTrailing = [bubbleCell.attachmentView.trailingAnchor constraintEqualToAnchor:bubbleCell.contentView.trailingAnchor constant:-25];
+                attachmentTrailing.active = YES;
+                [bubbleCell.temperaryContentViewConstraints addObject:attachmentTrailing];
+            }
+        }
+        
+    } else {
+        for (NSLayoutConstraint *constraint in bubbleCell.contentView.constraints) {
+            if (cellData.isIncoming) {
+                if (constraint.firstAttribute == NSLayoutAttributeTrailing && constraint.secondItem == bubbleCell.messageTextView) {
+                    constraint.constant = 15;
+                }
+                if (constraint.firstAttribute == NSLayoutAttributeTrailing && constraint.secondItem == bubbleCell.userNameLabel) {
+                    constraint.active = YES;
+                }
+                } else {
+                    if (constraint.firstAttribute == NSLayoutAttributeLeading && constraint.firstItem == bubbleCell.pictureView) {
+                        constraint.active = YES;
+                    }
+                    if (constraint.firstAttribute == NSLayoutAttributeLeading && constraint.firstItem == bubbleCell.messageTextView && constraint.secondItem == bubbleCell.contentView) {
+                        constraint.active = YES;
+                    }
+                }
+        }
+            bubbleCell.pictureView.hidden = NO;
+            if (bubbleCell.userNameLabel) {
+                bubbleCell.userNameLabel.hidden = NO;
+                bubbleCell.userNameLabel.constraints.firstObject.active = YES;
+                bubbleCell.userNameLabel.text = cellData.senderDisplayName;
+            }
+    }
+    [bubbleCell layoutSubviews];
 }
 
 - (RoomBubbleCellData*)roomBubbleCellDataForEventId:(NSString*)eventId
