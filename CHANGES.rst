@@ -1,3 +1,30 @@
+Changes in 1.2.8 (2021-03-26)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * Xcodegen: Unit tests are broken (#4152).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+
+
 Changes in 1.2.7 (2021-03-24)
 =================================================
 
