@@ -8,7 +8,7 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
- * 
+ * Xcodegen: Unit tests are broken (#4152).
 
 ⚠️ API Changes
  * 
