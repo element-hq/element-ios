@@ -33,15 +33,19 @@ targets:
     dependencies:
     - target: Riot
 
+    configFiles:
+      Debug: Debug.xcconfig
+      Release: Release.xcconfig
+
     settings:
       base:
         BUNDLE_LOADER: $(TEST_HOST)
         FRAMEWORK_SEARCH_PATHS: $(SDKROOT)/Developer/Library/Frameworks $(inherited)
-        INFOPLIST_FILE: Info.plist
+        INFOPLIST_FILE: RiotTests/Info.plist
         LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @loader_path/Frameworks
         PRODUCT_BUNDLE_IDENTIFIER: org.matrix.$(PRODUCT_NAME:rfc1034identifier)
         PRODUCT_NAME: RiotTests
-        SWIFT_OBJC_BRIDGING_HEADER: RiotTests-Bridging-Header.h
+        SWIFT_OBJC_BRIDGING_HEADER: RiotTests/RiotTests-Bridging-Header.h
         TEST_HOST: $(BUILT_PRODUCTS_DIR)/Riot.app/Riot
       configs:
         Debug:
@@ -49,4 +53,14 @@ targets:
           PROVISIONING_PROFILE: $(RIOT_PROVISIONING_PROFILE)
           PROVISIONING_PROFILE_SPECIFIER: $(RIOT_PROVISIONING_PROFILE_SPECIFIER)
 
-    sources: .
+    sources:
+    - path: .
+    - path: ../Config/Configurable.swift
+    - path: ../Config/BuildSettings.swift
+    - path: ../Config/AppConfiguration.swift
+    - path: ../Config/CommonConfiguration.swift
+    - path: ../Riot/Categories/Bundle.swift
+    - path: ../Riot/Generated/InfoPlist.swift
+    - path: ../Riot/Managers/Settings/RiotSettings.swift
+    - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
+    - path: ../Riot/Managers/KeyValueStorage/
