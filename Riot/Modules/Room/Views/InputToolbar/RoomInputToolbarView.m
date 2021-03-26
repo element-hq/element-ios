@@ -372,6 +372,8 @@ const double RoomInputToolbarViewContextBarHeight = 30;
     {
         _actionMenuOpened = actionMenuOpened;
         
+        self->growingTextView.internalTextView.selectedTextRange = nil;
+
         if (_actionMenuOpened) {
             self.actionsBar.hidden = NO;
             [self.actionsBar animateWithShowIn:_actionMenuOpened completion:nil];
