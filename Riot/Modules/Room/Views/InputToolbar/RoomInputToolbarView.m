@@ -350,6 +350,8 @@ const double RoomInputToolbarViewContextBarHeight = 30;
 
 - (void)updateSendButtonWithMessage:(NSString *)textMessage
 {
+    self.actionMenuOpened = NO;
+    
     if (textMessage.length)
     {
         self.rightInputToolbarButton.alpha = 1;
@@ -372,7 +374,13 @@ const double RoomInputToolbarViewContextBarHeight = 30;
     {
         _actionMenuOpened = actionMenuOpened;
         
-        self->growingTextView.internalTextView.selectedTextRange = nil;
+        if (self->growingTextView.internalTextView.selectedRange.length > 0)
+        {
+            NSRange range = self->growingTextView.internalTextView.selectedRange;
+            range.location = range.location + range.length;
+            range.length = 0;
+            self->growingTextView.internalTextView.selectedRange = range;
+        }
 
         if (_actionMenuOpened) {
             self.actionsBar.hidden = NO;
