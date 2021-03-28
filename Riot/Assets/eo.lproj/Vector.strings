@@ -128,8 +128,8 @@
 "room_conference_call_no_power" = "Vi bezonas permeson administri grupvokojn en ĉi tiu ĉambro";
 "room_ongoing_conference_call_close" = "Fermi";
 "room_ongoing_conference_call" = "Daŭranta grupa voko. Aliĝi kiel %@ aŭ %@.";
-"room_unsent_messages_unknown_devices_notification" = "Mesaĝoj ne sendiĝis pro ĉeesto de nekonataj salutaĵoj. Ĉu %@ aŭ %@ nun?";
-"room_unsent_messages_notification" = "Mesaĝoj ne sendiĝis. Ĉu %@ aŭ %@ nun?";
+"room_unsent_messages_unknown_devices_notification" = "Mesaĝoj ne sendiĝis pro ĉeesto de nekonataj salutaĵoj.";
+"room_unsent_messages_notification" = "Mesaĝoj ne sendiĝis.";
 "room_offline_notification" = "Konekto al la servilo perdiĝis.";
 "room_accessiblity_scroll_to_bottom" = "Moviĝi ĝis planko";
 "encrypted_room_message_placeholder" = "Sendi mesaĝon ĉifritan…";
@@ -964,7 +964,7 @@
 //"settings_join_leave_rooms" = "When people join or leave rooms";
 //"settings_call_invitations" = "Call invitations";
 
-"settings_enable_callkit" = "";
+"settings_enable_callkit" = "Integraj vokoj";
 "settings_ui_theme_picker_title" = "Elektu haŭton";
 "settings_ui_theme_black" = "Nigra";
 "settings_ui_theme_dark" = "Malluma";
@@ -1075,3 +1075,223 @@
 "room_resource_limit_exceeded_message_contact_3" = " por ke vi daŭre uzu la servilon.";
 "room_resource_limit_exceeded_message_contact_2_link" = "kontaktu vian serviladministranton";
 "room_resource_limit_exceeded_message_contact_1" = " Bonvole ";
+"room_intro_cell_information_dm_sentence1_part3" = ". ";
+"room_intro_cell_information_dm_sentence2" = "Sole la paro de vi ĉeestas ĉi tiu ĉambro, neniu alia povas eniri.";
+"room_intro_cell_information_multiple_dm_sentence2" = "Sole vi ĉeestas ĉi tiu ĉambro, krom se oni invitas aliulon.";
+"device_verification_security_advice_emoji" = "Komparu la unikajn bildosignojn, certigante, ke ili aperas samorde.";
+"key_verification_user_title" = "Kontrolu ĝin";
+"key_verification_this_session_title" = "Kontrolu ĉi tiun salutaĵon";
+"key_verification_new_session_title" = "Kontrolu vian novan salutaĵon";
+
+// MARK: - Device Verification
+"key_verification_other_session_title" = "Kontrolu salutaĵon";
+"sign_out_key_backup_in_progress_alert_cancel_action" = "Mi atendos";
+"sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Mi ne volas miajn ĉifritajn mesaĝojn";
+"sign_out_key_backup_in_progress_alert_title" = "Savkopiado progresas. Se vi adiaŭos nun, vi perdos aliron al viaj ĉifritaj mesaĝoj.";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_backup_action" = "Savkopii";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_sign_out_action" = "Adiaŭi";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_message" = "Vi perdos aliron al viaj ĉifritaj mesaĝoj, se vi ne savkopios viajn ŝlosilojn antaŭ adiaŭo.";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "Vi perdos viajn ĉifritajn mesaĝojn";
+"sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "Mi ne volas miajn ĉifritajn mesaĝojn";
+"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Ekuzi sekuran savkopiadon";
+"sign_out_non_existing_key_backup_alert_title" = "Vi perdos aliron al viaj ĉifritaj mesaĝoj se vi nun adiaŭos";
+"sign_out_existing_key_backup_alert_sign_out_action" = "Adiaŭi";
+
+// MARK: Sign out warning
+
+"sign_out_existing_key_backup_alert_title" = "Ĉu vi certe volas adiaŭi?";
+"key_backup_recover_done_action" = "Finite";
+
+// Success
+
+"key_backup_recover_success_info" = "Savkopio rehaviĝis!";
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Ĉu vi perdis vian rehavan ŝlosilon? Vi povas agordi novan per la Agordoj.";
+"key_backup_recover_from_recovery_key_recover_action" = "Malŝlosi historion";
+"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Enigu rehavan ŝlosilon";
+"key_backup_recover_from_recovery_key_recovery_key_title" = "Enigu";
+
+// Recover from recovery key
+
+"key_backup_recover_from_recovery_key_info" = "Uzu vian rehavan ŝlosilon por malŝlosi vian historion de sekuraj mesaĝoj";
+"large_badge_value_k_format" = "%.1fK";
+"image_picker_action_library" = "Elekti el vidaŭdaĵujo";
+"media_picker_library" = "Vidaŭdaĵujo";
+"room_details_advanced_section" = "Altnivelaj";
+"room_details_banned_users_section" = "Forbaritaj uzantoj";
+"room_details_flair_invalid_id_prompt_msg" = "%@ ne estas valida identigilo por komunumo";
+"room_details_flair_invalid_id_prompt_title" = "Nevalida formo";
+"room_details_new_flair_placeholder" = "Aldoni novan identigilon de komunumo (ekz. +io%@)";
+"room_details_flair_section" = "Montri insignon por komunumoj";
+"room_details_addresses_disable_main_address_prompt_msg" = "Vi havos neniun specifitan ĉefan adreson. La implicita ĉefadreso por ĉi tiu ĉambro elektiĝos hazarde";
+"room_details_access_section_for_dm" = "Kiu rajtas aliri ĉi tion?";
+"room_details_access_section" = "Kiu rajtas aliri ĉi tiun ĉambron?";
+"room_details_direct_chat" = "Rekta babilo";
+"room_details_mute_notifs" = "Silentigi sciigojn";
+"room_details_low_priority_tag" = "Malalta prioritato";
+"room_details_favourite_tag" = "Elstarigita";
+"room_details_topic" = "Temo";
+"room_details_room_name_for_dm" = "Nomo";
+"room_details_room_name" = "Nomo de ĉambro";
+"room_details_photo_for_dm" = "Bildo";
+"room_details_photo" = "Bildo de ĉambro";
+"room_details_settings" = "Agordoj";
+"room_details_files" = "Alŝutoj";
+"room_details_people" = "Ĉambranoj";
+"room_details_title_for_dm" = "Detaloj";
+
+
+// Room Details
+"room_details_title" = "Detaloj pri ĉambro";
+"identity_server_settings_alert_error_invalid_identity_server" = "%@ ne estas valida identiga servilo.";
+"identity_server_settings_alert_error_terms_not_accepted" = "Vi devas akcepti la uzokondiĉojn de %@, por uzi ĝin kiel identiga servilo.";
+"identity_server_settings_alert_disconnect" = "Ĉu malkonektu de la identiga servilo %@?";
+"identity_server_settings_alert_disconnect_title" = "Malkonektu identigan servilon";
+"identity_server_settings_alert_change" = "Ĉu malkonektu de identiga servilo %1$@ kaj anstataŭe konektu al %@$A?";
+"identity_server_settings_alert_change_title" = "Ŝanĝu identigan servilon";
+"identity_server_settings_alert_no_terms" = "Via elektita identiga servilo ne havas uzokondiĉojn. Daŭrigu nur se vi fidas la posedanton de tiu servilo.";
+"identity_server_settings_alert_no_terms_title" = "Identiga servilo ne havas uzokondiĉojn";
+"identity_server_settings_disconnect" = "Malkonekti";
+"identity_server_settings_disconnect_info" = "Malkonektinte de via identiga servilo, vi ne troviĝus al aliaj uzantoj per, nek povos inviti uzantojn per, retpoŝtadresoj aŭ telefonnumeroj.";
+"identity_server_settings_change" = "Ŝanĝi";
+"identity_server_settings_add" = "Aldoni";
+"identity_server_settings_place_holder" = "Enigu identigan servilon";
+"identity_server_settings_no_is_description" = "Vi nun ne uzas identigan servilon. Por troviĝi de kaj trovi jamajn kontaktojn, aldonu tian servilon ĉi-supre.";
+"identity_server_settings_description" = "Vi uzas %@ por trovi kaj troviĝi de jamaj kontaktoj, kiujn vi konas.";
+
+// Identity server settings
+"identity_server_settings_title" = "Identiga Servilo";
+
+// AuthenticatedSessionViewControllerFactory
+"authenticated_session_flow_not_supported" = "Ĉi tiu programo ne subtenas la identigan metodon de via hejmservilo.";
+"manage_session_sign_out" = "Adiaŭi al ĉi tiu salutaĵo";
+"manage_session_not_trusted" = "Nefidataj";
+"manage_session_trusted" = "Fidataj de vi";
+"manage_session_name" = "Nomo de salutaĵo";
+"manage_session_info" = "INFORMOJ DE SALUTAĴO";
+
+// Manage session
+"manage_session_title" = "Administru salutaĵon";
+"security_settings_user_password_description" = "Konfirmi vian identon per enigo de via pasvorto";
+"security_settings_coming_soon" = "Bedaŭron. Ĉi tiu funkcio ne jam estas subtenata por Element iOS. Bonvolu uzi alian Matrix klienton por agordi ĝin. Element iOS sekvos ĝin.";
+"security_settings_complete_security_alert_message" = "Vi kompletigu sekurigon je ĉi tiu salutaĵo unue.";
+"security_settings_complete_security_alert_title" = "Kompletigi sekurigon";
+"security_settings_blacklist_unverified_devices_description" = "Kontroli ĉiujn salutaĵojn de uzanto, por marki ilin fidata kaj sendi mesaĝojn al ĝi.";
+"security_settings_blacklist_unverified_devices" = "Neniam sendi mesaĝojn al nefidatajn salutaĵojn";
+"security_settings_advanced" = "ALTNIVELAJ";
+"security_settings_export_keys_manually" = "Elporti ŝlosilojn permane";
+"security_settings_cryptography" = "KRIPTOGRAFIO";
+"security_settings_crosssigning_complete_security" = "Kompletigi sekurigon";
+"security_settings_crosssigning_reset" = "Restarigi delegan subskribadon";
+"security_settings_crosssigning_bootstrap" = "Praŝargi delegan subskribadon";
+"security_settings_crosssigning_info_ok" = "Delega subskribado estas ŝaltita.";
+"security_settings_crosssigning_info_trusted" = "Delega subskribado estas ŝaltita. Vi povas fidi aliajn uzantojn kaj viajn salutaĵojn per delegaj subskriboj, sed vi ne povas delege subskribi de ĉi tiu salutaĵo, ĉar mankas al ĝi ŝlosiloj privataj por delegaj subskriboj.";
+"security_settings_crosssigning_info_exists" = "Via konto havas identon de delega subskribado, sed ne jam estas fidata de ĉi tiu salutaĵo. Kompletigu la sekurigon de ĉi tiu salutaĵo.";
+"security_settings_crosssigning_info_not_bootstrapped" = "Delega subskribado ne jam agordiĝis.";
+"security_settings_crosssigning" = "DELEGAJ SUBSKRIBOJ";
+"security_settings_backup" = "SAVKOPIADO DE MESAĜOJ";
+"security_settings_secure_backup_delete" = "Forigi";
+"security_settings_secure_backup_synchronise" = "Speguli";
+"security_settings_secure_backup_setup" = "Agordi";
+"security_settings_secure_backup_description" = "Malhelpu perdon de aliro al ĉifritaj mesaĝoj kaj datumoj per savkopiado de ĉifraj ŝlosiloj al via servilo.";
+"security_settings_secure_backup" = "SAVKOPIADO";
+"security_settings_crypto_sessions_description_2" = "Se vi ne konas salutaĵojn, ŝanĝu vian pasvorton kaj restarigu savkopiadon.";
+"security_settings_crypto_sessions_loading" = "Enlegante salutaĵojn…";
+"security_settings_crypto_sessions" = "MIAJ SALUTAĴOJ";
+
+// Security settings
+"security_settings_title" = "Sekureco";
+"settings_show_NSFW_public_rooms" = "Montru publikajn ĉambrojn konsternajn";
+"settings_identity_server_no_is_description" = "Vi uzas neniun identigan servilon. Por trovi kaj troviĝi de jamaj kontaktoj, kiujn vi konas, aldonu servilon supre.";
+"settings_identity_server_no_is" = "Neniu identiga servilo estas agordita";
+"settings_identity_server_description" = "Uzante la identigan servilon supre agorditan, vi povas trovi kaj troviĝi de jamaj kontaktoj, kiujn vi konas.";
+"settings_discovery_three_pid_details_enter_sms_code_action" = "Enigu SMS aktivigan kodon";
+"settings_discovery_three_pid_details_cancel_email_validation_action" = "Nuligi retpoŝtan kontrolon";
+"settings_discovery_three_pid_details_revoke_action" = "Senvalidigi";
+"settings_discovery_three_pid_details_share_action" = "Kunhavigi";
+"settings_discovery_three_pid_details_information_phone_number" = "Agordu ĉi tiun telefonnumeron, per kiu aliaj uzantoj povas trovi kaj inviti vin al ĉambroj. Aldonu aŭ forigu telefonnumerojn ĉe Kontoj.";
+"settings_discovery_three_pid_details_title_phone_number" = "Agordu telefonnumeron";
+"settings_discovery_three_pid_details_information_email" = "Agordu ĉi tiun retpoŝtadreson, per kiu aliaj uzantoj povas trovi kaj inviti vin al ĉambroj. Aldonu aŭ forigu retpoŝtadresojn ĉe Kontoj.";
+"settings_discovery_three_pid_details_title_email" = "Agordu retpoŝtadreson";
+"settings_discovery_error_message" = "Eraris iel. Bonvolu reprovi.";
+"settings_discovery_three_pids_management_information_part3" = ".";
+"settings_discovery_three_pids_management_information_part2" = "Agordoj de uzanto";
+"settings_discovery_three_pids_management_information_part1" = "Agordu la retpoŝtadresojn kaj telefonnumerojn per kiuj aliaj uzantoj povas trovi kaj inviti vin al ĉambroj. Aldonu aŭ forigu retpoŝtadresojn aŭ telefonnumerojn de ĉi tiu listo en ";
+"settings_discovery_terms_not_signed" = "Konsentu la uzokondiĉojn de la identiga servilo (%@) por trovebligi vin per retpoŝtadreso aŭ telefonnumero.";
+"settings_discovery_no_identity_server" = "Vi nun ne uzas identigan servilon. Por trovi kaj troviĝi de jamaj kontaktoj, kiujn vi konas, aldonu servilon.";
+"settings_devices_description" = "Prezenta nomo de salutaĵo videblas al personoj kunbabilataj";
+"settings_key_backup_delete_confirmation_prompt_msg" = "Ĉu vi certas? Vi perdos aliron al viaj ĉifritaj mesaĝoj, se vi ne savkopios viajn ŝlosilojn.";
+"settings_key_backup_delete_confirmation_prompt_title" = "Forigi savkopion";
+"settings_key_backup_button_connect" = "Konekti ĉi tiu salutaĵo savkopionte";
+"settings_key_backup_button_delete" = "Forigi savkopion";
+"settings_key_backup_button_restore" = "Rehavigi per savkopio";
+"settings_key_backup_button_create" = "Komenci savkopiojn";
+"settings_key_backup_info_trust_signature_invalid_device_unverified" = "Savkopio havas nevalidan subskribon de %@";
+"settings_key_backup_info_trust_signature_invalid_device_verified" = "Savkopio havas nevalidan subskribon de %@";
+"settings_key_backup_info_trust_signature_valid_device_unverified" = "Savkopio havas subskribon de %@";
+"settings_key_backup_info_trust_signature_valid_device_verified" = "Savkopio havas validan subskribon de %@";
+"settings_key_backup_info_trust_signature_valid" = "Savkopio havas validan subskribon de ĉi salutaĵo";
+"settings_key_backup_info_trust_signature_unknown" = "Savkopio havas subskribon de salutaĵo kun la identigilo: %@";
+"settings_key_backup_info_progress_done" = "Ĉiuj ŝlosiloj estas savkopiitaj";
+"settings_key_backup_info_progress" = "Savkopiante %@ ŝlosilojn…";
+"settings_key_backup_info_not_valid" = "Ĉi tiu salutaĵo ne savkopias viajn ŝlosilojn, sed vi havas restantan kopion kiun vi povas alreveni kaj uzi ekde nun.";
+"settings_key_backup_info_valid" = "Ĉi tiu salutaĵo savkopias viajn ŝlosilojn.";
+"settings_key_backup_info_algorithm" = "Algoritmo: %@";
+"settings_key_backup_info_version" = "Savkopia Versio: %@";
+"settings_key_backup_info_signout_warning" = "Konektu ĉi tiun salutaĵon savkopie antaŭ ol vi adiaŭas, por eviti la perdiĝon de ŝlosiloj nurlokaj.";
+"settings_key_backup_info_none" = "Viaj ŝlosiloj estas nesavkopiataj por ĉi tiu salutaĵo.";
+"settings_key_backup_info_checking" = "Kontrolante…";
+"settings_key_backup_info" = "Mesaĝoj en ĉifritaj ĉambroj estas sekurigitaj per tutvoja ĉifrado. Nur vi kaj la adresato(j) havas la ŝlosilojn por malĉifri tiujn ĉi mesaĝojn.";
+"settings_deactivate_my_account" = "Malŝalti mian konton";
+"settings_crypto_blacklist_unverified_devices" = "Ĉifri nur al kontrolitaj salutaĵoj";
+"settings_crypto_export" = "Elporti ŝlosilojn";
+"settings_crypto_device_key" = "\nŜlosilo de salutaĵo:\n";
+"settings_crypto_device_id" = "\nIdentigilo de salutaĵo: ";
+"settings_crypto_device_name" = "Nomo de salutaĵo: ";
+"settings_add_3pid_invalid_password_message" = "Nevalida pasvorto";
+"settings_add_3pid_password_message" = "Por daŭrigi, bonvolu enigi vian pasvorton";
+"settings_add_3pid_password_title_msidsn" = "Aldoni telefonnumeron";
+"settings_add_3pid_password_title_email" = "Aldoni retpoŝtadreson";
+"settings_password_updated" = "Via pasvorto ĝisdatiĝis";
+"settings_fail_to_update_password" = "Eraris ĝisdatigante pasvorton";
+"settings_confirm_password" = "Konfirmu pasvorton";
+"settings_global_settings_info" = "Ĉieaj sciigoj uzeblas per via retkliento %@";
+"settings_fail_to_update_profile" = "Eraris ĝisdatigante profilon";
+"room_open_dialpad" = "Ciferilo";
+"room_place_voice_call" = "Voĉvoko";
+"room_event_action_delete_confirmation_message" = "Ĉu vi certas, ke vi volas forigi ĉi tiun nesenditan mesaĝon?";
+"room_event_action_delete_confirmation_title" = "Forigi nesenditan mesaĝon";
+"room_ongoing_conference_call_with_close" = "Daŭranta grupa voko. Aliĝi kiel %@ aŭ %@. %@.";
+"room_unsent_messages_cancel_message" = "Ĉu vi certas, ke vi volas forigi ĉiujn nesenditajn mesaĝojn en ĉi tiu ĉambro?";
+"room_unsent_messages_cancel_title" = "Forigi nesenditajn mesaĝojn";
+"room_member_power_level_short_moderator" = "Reg";
+"room_participants_security_loading" = "Enlegante…";
+"room_participants_action_security_status_loading" = "Enlegante…";
+"room_participants_filter_room_members_for_dm" = "Filtri ĉambranojn";
+"room_participants_add_participant" = "Aldoni partoprenanton";
+"contacts_user_directory_offline_section" = "KATALOGO DE UZANTOJ (nefunkcia)";
+"contacts_address_book_permission_denied" = "Vi ne permesis al Element aliri viajn lokajn kontaktojn";
+"rooms_empty_view_information" = "Ĉambroj taŭgas por ajna grupbabilo, privata aŭ publika. Premu la + por trovi ekzistantaj ĉambroj, aŭ fari novajn.";
+"rooms_empty_view_title" = "Ĉambroj";
+"people_empty_view_information" = "Sekure babili kun iu ajn.Premu la + por inviti personojn.";
+"people_empty_view_title" = "Homoj";
+"social_login_button_title_sign_up" = "Registriĝi per %@";
+"social_login_button_title_sign_in" = "Saluti per %@";
+"social_login_button_title_continue" = "Saluti per %@";
+"social_login_list_title_sign_up" = "Aŭ registriĝi per";
+"social_login_list_title_sign_in" = "Aŭ saluti per";
+
+// Social login
+
+"social_login_list_title_continue" = "Saluti per";
+"callbar_return" = "Reveni";
+"callbar_only_multiple_paused" = "%@ paŭzigitaj vokoj";
+"callbar_only_single_paused" = "Paŭzigita voko";
+"callbar_active_and_multiple_paused" = "1 aktiva voko (%@) · %@ paŭzigitaj vokoj";
+"callbar_active_and_single_paused" = "1 aktiva voko (%@) · 1 paŭzigita voko";
+
+// Call Bar
+"callbar_only_single_active" = "Aktiva voko (%@)";
+"less" = "Malpli";
+"more" = "Pli";
+"switch" = "Baskuli";
+"store_promotional_text" = "Privatecgardanta babila kaj kunlabora programo, uzanta malferman reton. Ĝi estas malcentra, do vi estas la stiranto. Neniu datumamasanto nek kaŝenirejo.";
