@@ -1479,3 +1479,7 @@
 // MARK: - Call Transfer
 "call_transfer_title" = "Transdono";
 "room_intro_cell_information_dm_sentence1_part1" = "Ĉi tie komencas historio de viaj rektaj mesaĝoj kun ";
+"call_transfer_dialpad" = "Ciferplato";
+
+// MARK: - Dial Pad
+"dialpad_title" = "Ciferplato";
