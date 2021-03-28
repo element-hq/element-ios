@@ -305,7 +305,7 @@
 "auth_untrusted_id_server" = "La identiga servilo ne estas fidata";
 "auth_phone_is_required" = "Neniu identiga servilo estas agordita, do vi ne povas agordi telefonnumeron por laŭbezona rehavo de konto.";
 "auth_email_is_required" = "Neniu identiga servilo estas agordita, do vi ne povas agordi retpoŝtadreson por laŭbezona rehavo de konto.";
-"auth_phone_in_use" = "Ĉi tiu telefonnumero jam estas uzata.";
+"auth_phone_in_use" = "Ĉi tiu telefonnumero jam estas uzata";
 "auth_email_in_use" = "Ĉi tiu retpoŝtadreso jam estas uzata";
 "auth_add_email_phone_message_2" = "Agordu retpoŝtadreson por rehavo de konto. Uzu poste retpoŝtadreson aŭ telefonon por esti laŭplaĉe trovebla de personoj, kiuj vin konas.";
 "auth_add_phone_message_2" = "Agordu telefonon, por via (laŭplaĉa) trovebleco de personoj, kiuj vin konas.";
@@ -313,7 +313,7 @@
 "joined" = "Aliĝita";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Uzi rehavajn pasfrazon aŭ ŝlosilon";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Uzi rehavan ŝlosilon";
-"device_verification_self_verify_wait_additional_information" = "Ĉi tio funkcias por Element kaj aliaj klientoj kapablaj je delegaj subskriboj";
+"device_verification_self_verify_wait_additional_information" = "Ĉi tio funkcias por Element kaj aliaj klientoj kapablaj je delegaj subskriboj.";
 "device_verification_self_verify_wait_information" = "Kontrolu ĉi tiun saluton per unu el viaj aliaj salutaĵoj, dononte al ĝi aliron al ĉifritaj mesaĝoj.\n\nUzu la plej freŝan version de Element per viaj aliaj aparatoj:";
 "device_verification_self_verify_wait_new_sign_in_title" = "Kontrolu ĉi tiun saluton";
 
@@ -1077,7 +1077,7 @@
 "room_resource_limit_exceeded_message_contact_1" = " Bonvole ";
 "room_intro_cell_information_dm_sentence1_part3" = ". ";
 "room_intro_cell_information_dm_sentence2" = "Sole la paro de vi ĉeestas ĉi tiu ĉambro, neniu alia povas eniri.";
-"room_intro_cell_information_multiple_dm_sentence2" = "Sole vi ĉeestas ĉi tiu ĉambro, krom se oni invitas aliulon.";
+"room_intro_cell_information_multiple_dm_sentence2" = "Sole vi ĉeestas ĉi tiun ĉambron, krom se oni invitas aliulon.";
 "device_verification_security_advice_emoji" = "Komparu la unikajn bildosignojn, certigante, ke ili aperas samorde.";
 "key_verification_user_title" = "Kontrolu ĝin";
 "key_verification_this_session_title" = "Kontrolu ĉi tiun salutaĵon";
@@ -1473,3 +1473,9 @@
 "room_details_access_section_anyone_apart_from_guest" = "Ĉiu, kiu konas la ligilon de la ĉambro, krom gastoj";
 "room_details_access_section_invited_only" = "Nur personoj, kiuj invitiĝis";
 "store_full_description" = "Element estas nova speco de mesaĝilo kaj kunlabora aplikaĵo, kiu:\n\n1. Stirigas vin por konservi vian privatecon\n2. Lasas vin komuniki kun ĉiu en la reto de Matrix, kaj eĉ ekstere, per kuniĝo kun aliaj aplikaĵoj, kiel ekzemple Slack\n3. Protektas vin de reklamoj, datumkolektado, kaŝenirejoj, kaj muritaj ĝardenoj\n4. Sekurigas vin per tutvoja ĉifrado, kun delegaj subskriboj por kontroli aliulojn\n\nElement tute malsamas de aliaj mesaĝiloj kaj kunlaboriloj, ĉar ĝi estas federa kaj malfermitkoda.\n\nElement lasas vin gastigi vin mem – aŭ elekti alian gastiganton – por ke vi havu privatecon, regon kaj kontrolon de viaj datumoj kaj interparoloj. Ĝi donas al vi aliron al malfermita reto, por ke via komunikado ne limiĝu al nur aliaj uzantoj de Element. Kaj ĝi estas tre sekura.\n\nElement povas fari ĉi ĉion, ĉar ĝi funkcias per Matrix – publika normo por malfermita, sencentra komunikado. \n\n\nElement lasas vi elekti, kiu gastigos viajn interparolojn. Per la aplikaĵo Element, vi povas elekti diversajn specojn de gastigado:\n\n1. Akiri senpagan konton ĉe la publika servilo matrix.org\n2. Memgastiĝi per via propra servilo ĉe via propra aparato\n3. Registriĝi ĉe propra servilo per simpla pagaliĝo al la gastiga platformo «Element Matrix Services»\n\nKial Element?\n\nPOSEDU VIAJN DATUMOJN: Vi decidu, kie vi tenu viajn datumojn kaj mesaĝojn. Vi posedas kaj regas ilin, ne iu granda komerca firmao, kiu kolektas viajn datumojn aŭ donas aliron al aliuloj.\n\nMALFERMAJ MESAĜADO KAJ KUNLABORADO: Vi povas babili kun ĉiu alia en la reto de Matrix, ĉu ĝi uzas Elementon aŭ alian aplikaĵon de Matrix, kaj eĉ se ĝi uzas tute alian mesaĝilon, kiel ekzemple Slack, IRC, aŭ XMPP.\n\nTRE SEKURA: Vera tutvoja ĉifrado (nur la interparolantoj povas malĉifri siajn mesaĝojn), kaj delegaj subskriboj por kontroli la aparatojn de partoprenantoj.\n\nSENMANKA KOMUNIKADO: Mesaĝoj, voĉvokoj kaj vidvokoj, havigado de dosieroj, ekrano, kaj multaj diversaj kunigoj, robotoj kaj fenestraĵoj. Kreu ĉambrojn, komunumojn, komuniku kaj kunlaboru.\n\nĈIE KUN VI: Tenu vin ĝisdata per historio de mesaĝoj plene spegulita trans ĉiuj viaj aparatoj, kaj sur la reto per https://app.element.io.";
+"directory_server_all_native_rooms" = "Ĉiuj ĉambroj, propraj al Matrix";
+"call_transfer_error_message" = "Malsukcesis transdono de voko";
+
+// MARK: - Call Transfer
+"call_transfer_title" = "Transdono";
+"room_intro_cell_information_dm_sentence1_part1" = "Ĉi tie komencas historio de viaj rektaj mesaĝoj kun ";
