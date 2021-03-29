@@ -4109,9 +4109,22 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
 
     if (needsUpdate)
     {
+        BOOL needsReload = roomDataSource.currentTypingUsers == nil;
         roomDataSource.currentTypingUsers = typingUsers;
-        [self.bubblesTableView reloadData];
-        if (self.isScrollToBottomHidden)
+        if (needsReload)
+        {
+            [self.bubblesTableView reloadData];
+        }
+        else
+        {
+            NSInteger count = [self.roomDataSource tableView:self.bubblesTableView numberOfRowsInSection:0];
+            NSIndexPath *lastIndexPath = [NSIndexPath indexPathForRow:count - 1 inSection:0];
+            [self.bubblesTableView reloadRowsAtIndexPaths:@[lastIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+        
+        if (self.isScrollToBottomHidden
+            && !self.bubblesTableView.isDragging
+            && !self.bubblesTableView.isDecelerating)
         {
             NSInteger count = [self.roomDataSource tableView:self.bubblesTableView numberOfRowsInSection:0];
             if (count)

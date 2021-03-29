@@ -273,7 +273,7 @@
             [self updateStatusInfo];
         }
         
-        if (self.currentTypingUsers.count == 0)
+        if (!self.currentTypingUsers)
         {
             self.typingCellIndex = -1;
             
@@ -285,7 +285,7 @@
         return bubbles.count + 1;
     }
     
-    if (self.currentTypingUsers.count == 0)
+    if (!self.currentTypingUsers)
     {
         self.typingCellIndex = -1;
 

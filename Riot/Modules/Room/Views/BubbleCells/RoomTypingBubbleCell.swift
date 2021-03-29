@@ -51,6 +51,8 @@ class RoomTypingBubbleCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
 
+        self.dotsView?.isHidden = userPictureViews.count == 0
+
         guard userPictureViews.count > 0 else {
             return
         }
