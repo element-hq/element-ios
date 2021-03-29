@@ -77,6 +77,7 @@ import UIKit
 
         var currentX: CGFloat = 0
         for button in actionButtons {
+            button.transform = CGAffineTransform.identity
             button.frame = CGRect(x: currentX, y: 0, width: self.bounds.height, height: self.bounds.height)
             currentX = button.frame.maxX + itemSpacing
         }
@@ -98,7 +99,7 @@ import UIKit
                 button.transform = CGAffineTransform(translationX: 0, y: self.bounds.height)
             }
             for (index, button) in actionButtons.enumerated() {
-                UIView.animate(withDuration: 0.32, delay: 0.05 * Double(index), usingSpringWithDamping: 0.5, initialSpringVelocity: 7, options: .curveEaseInOut) {
+                UIView.animate(withDuration: 0.38, delay: 0.05 * Double(index), usingSpringWithDamping: 0.5, initialSpringVelocity: 7, options: .curveEaseInOut) {
                     button.transform = CGAffineTransform.identity
                 } completion: { (finished) in
                     completion?(finished)
@@ -106,7 +107,7 @@ import UIKit
             }
         } else {
             for (index, button) in actionButtons.enumerated() {
-                UIView.animate(withDuration: 0.2, delay: 0.05 * Double(index), options: .curveEaseInOut) {
+                UIView.animate(withDuration: 0.3, delay: 0.05 * Double(index), options: .curveEaseInOut) {
                     button.transform = CGAffineTransform(translationX: 0, y: self.bounds.height)
                 } completion: { (finished) in
                     completion?(finished)
