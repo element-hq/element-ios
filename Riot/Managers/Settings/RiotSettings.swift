@@ -37,6 +37,9 @@ final class RiotSettings: NSObject {
         static let hideReviewSessionsAlert = "hideReviewSessionsAlert"
         static let matrixApps = "matrixApps"
         static let showNSFWPublicRooms = "showNSFWPublicRooms"
+        static let accountManagedExternally = "accountManagedExternally"
+        static let inviteFriendsNotAllowed = "inviteFriendsNotAllowed"
+        static let callsSettingsManagedExternally = "callsSettingsManagedExternally"
     }
     
     static let shared = RiotSettings()
@@ -210,6 +213,30 @@ final class RiotSettings: NSObject {
             return defaults.bool(forKey: UserDefaultsKeys.matrixApps)
         } set {
             defaults.set(newValue, forKey: UserDefaultsKeys.matrixApps)
+        }
+    }
+    
+    var inviteFriendsNotAllowed: Bool {
+        get {
+            return defaults.bool(forKey: UserDefaultsKeys.inviteFriendsNotAllowed)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.inviteFriendsNotAllowed)
+        }
+    }
+    
+    var accountManagedExternally: Bool {
+        get {
+            return defaults.bool(forKey: UserDefaultsKeys.accountManagedExternally)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.accountManagedExternally)
+        }
+    }
+    
+    var callsSettingsManagedExternally: Bool {
+        get {
+            return defaults.bool(forKey: UserDefaultsKeys.callsSettingsManagedExternally)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.callsSettingsManagedExternally)
         }
     }
 }

@@ -300,7 +300,10 @@ TableViewSectionsDelegate>
     Section *sectionUserSettings = [Section sectionWithTag:SECTION_TAG_USER_SETTINGS];
     [sectionUserSettings addRowWithTag:USER_SETTINGS_PROFILE_PICTURE_INDEX];
     [sectionUserSettings addRowWithTag:USER_SETTINGS_DISPLAYNAME_INDEX];
-    [sectionUserSettings addRowWithTag:USER_SETTINGS_CHANGE_PASSWORD_INDEX];
+    if (!RiotSettings.shared.accountManagedExternally)
+    {
+        [sectionUserSettings addRowWithTag:USER_SETTINGS_CHANGE_PASSWORD_INDEX];
+    }
     if (BuildSettings.settingsScreenShowUserFirstName)
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_FIRST_NAME_INDEX];
@@ -332,8 +335,10 @@ TableViewSectionsDelegate>
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_THREEPIDS_INFORMATION_INDEX];
     }
-    
-    [sectionUserSettings addRowWithTag:USER_SETTINGS_INVITE_FRIENDS_INDEX];
+    if (!RiotSettings.shared.inviteFriendsNotAllowed)
+    {
+        [sectionUserSettings addRowWithTag:USER_SETTINGS_INVITE_FRIENDS_INDEX];
+    }
     
     sectionUserSettings.headerTitle = NSLocalizedStringFromTable(@"settings_user_settings", @"Vector", nil);
     [tmpSections addObject:sectionUserSettings];
@@ -352,7 +357,8 @@ TableViewSectionsDelegate>
     sectionNotificationSettings.headerTitle = NSLocalizedStringFromTable(@"settings_notifications_settings", @"Vector", nil);
     [tmpSections addObject:sectionNotificationSettings];
     
-    if (BuildSettings.allowVoIPUsage && BuildSettings.stunServerFallbackUrlString)
+    if (BuildSettings.allowVoIPUsage && BuildSettings.stunServerFallbackUrlString
+        && !RiotSettings.shared.callsSettingsManagedExternally)
     {
         Section *sectionCalls = [Section sectionWithTag:SECTION_TAG_CALLS];
         [sectionCalls addRowWithTag:CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX];
@@ -432,9 +438,18 @@ TableViewSectionsDelegate>
     Section *sectionOther = [Section sectionWithTag:SECTION_TAG_OTHER];
     [sectionOther addRowWithTag:OTHER_VERSION_INDEX];
     [sectionOther addRowWithTag:OTHER_OLM_VERSION_INDEX];
-    [sectionOther addRowWithTag:OTHER_COPYRIGHT_INDEX];
-    [sectionOther addRowWithTag:OTHER_TERM_CONDITIONS_INDEX];
-    [sectionOther addRowWithTag:OTHER_PRIVACY_INDEX];
+    if (BuildSettings.applicationCopyrightUrlString.length)
+    {
+        [sectionOther addRowWithTag:OTHER_COPYRIGHT_INDEX];
+    }
+    if (BuildSettings.applicationTermsConditionsUrlString.length)
+    {
+        [sectionOther addRowWithTag:OTHER_TERM_CONDITIONS_INDEX];
+    }
+    if (BuildSettings.applicationPrivacyPolicyUrlString.length)
+    {
+        [sectionOther addRowWithTag:OTHER_PRIVACY_INDEX];
+    }
     [sectionOther addRowWithTag:OTHER_THIRD_PARTY_INDEX];
     [sectionOther addRowWithTag:OTHER_SHOW_NSFW_ROOMS_INDEX];
     

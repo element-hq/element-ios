@@ -1514,7 +1514,7 @@ internal enum VectorL10n {
   internal static var identityServerSettingsDisconnect: String { 
     return VectorL10n.tr("Vector", "identity_server_settings_disconnect") 
   }
-  /// Disconnecting from your identity server will mean you won’t be discoverable by other users and  be able to invite others by email or phone.
+  /// Disconnecting from your identity server will mean you won’t be discoverable by other users and be able to invite others by email or phone.
   internal static var identityServerSettingsDisconnectInfo: String { 
     return VectorL10n.tr("Vector", "identity_server_settings_disconnect_info") 
   }
