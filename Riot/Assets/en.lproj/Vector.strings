@@ -65,12 +65,13 @@
 "less" = "Less";
 
 // Call Bar
-"callbar_only_single_active" = "Active call (%@)";
+"callbar_only_single_active" = "Tap to return to the call (%@)";
 "callbar_active_and_single_paused" = "1 active call (%@) · 1 paused call";
 "callbar_active_and_multiple_paused" = "1 active call (%@) · %@ paused calls";
 "callbar_only_single_paused" = "Paused call";
 "callbar_only_multiple_paused" = "%@ paused calls";
 "callbar_return" = "Return";
+"callbar_only_single_active_group" = "Tap to Join the group call (%@)";
 
 // Accessibility
 "accessibility_checkbox_label" = "checkbox";

@@ -502,9 +502,13 @@ internal enum VectorL10n {
   internal static func callbarOnlyMultiplePaused(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "callbar_only_multiple_paused", p1)
   }
-  /// Active call (%@)
+  /// Tap to return to the call (%@)
   internal static func callbarOnlySingleActive(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "callbar_only_single_active", p1)
+  }
+  /// Tap to Join the group call (%@)
+  internal static func callbarOnlySingleActiveGroup(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "callbar_only_single_active_group", p1)
   }
   /// Paused call
   internal static var callbarOnlySinglePaused: String { 
