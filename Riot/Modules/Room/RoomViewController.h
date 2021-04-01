@@ -37,6 +37,16 @@ extern NSNotificationName const RoomCallTileTappedNotification;
  */
 extern NSNotificationName const RoomGroupCallTileTappedNotification;
 
+/**
+ Notification string used to indicate the view of a 'RoomViewController' instance did appear. Notification object will be 'RoomViewController' instance.
+ */
+extern NSNotificationName const RoomViewControllerViewDidAppearNotification;
+
+/**
+ Notification string used to indicate the view of a 'RoomViewController' instance did disappear. Notification object will be 'RoomViewController' instance.
+ */
+extern NSNotificationName const RoomViewControllerViewDidDisappearNotification;
+
 @interface RoomViewController : MXKRoomViewController
 
 // The preview header

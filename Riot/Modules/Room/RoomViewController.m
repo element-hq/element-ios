@@ -128,6 +128,8 @@
 
 NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNotification";
 NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTileTappedNotification";
+NSNotificationName const RoomViewControllerViewDidAppearNotification = @"RoomViewControllerViewDidAppearNotification";
+NSNotificationName const RoomViewControllerViewDidDisappearNotification = @"RoomViewControllerViewDidDisappearNotification";
 
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
@@ -612,6 +614,9 @@ NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTi
         hasJitsiCall = NO;
         [self reloadBubblesTable:YES];
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:RoomViewControllerViewDidAppearNotification
+                                                        object:self];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -648,6 +653,8 @@ NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTi
         hasJitsiCall = YES;
         [self reloadBubblesTable:YES];
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:RoomViewControllerViewDidDisappearNotification
+                                                        object:self];
 }
 
 - (void)viewDidLayoutSubviews
@@ -655,7 +662,7 @@ NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTi
     [super viewDidLayoutSubviews];
     
     UIEdgeInsets contentInset = self.bubblesTableView.contentInset;
-    contentInset.bottom = self.bottomLayoutGuide.length;
+    contentInset.bottom = self.view.safeAreaInsets.bottom;
     self.bubblesTableView.contentInset = contentInset;
     
     // Check here whether a subview has been added or removed
@@ -716,6 +723,12 @@ NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTi
         self.edgesForExtendedLayout = UIRectEdgeLeft | UIRectEdgeBottom | UIRectEdgeRight;
 
         self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.bubblesTableView.mxk_adjustedContentInset.top; // no expanded
+    }
+    
+    //  stay at the bottom if already was
+    if (self.isBubblesTableScrollViewAtTheBottom)
+    {
+        [self scrollBubblesTableViewToBottomAnimated:NO];
     }
     
     [self refreshMissedDiscussionsCount:YES];
