@@ -4560,7 +4560,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)callBarDidTap:(CallBar *)callBar
 {
-    [_callPresenter callStatusBarButtonTapped];
+    [_callPresenter callStatusBarTapped];
 }
     
 #pragma mark - Authentication

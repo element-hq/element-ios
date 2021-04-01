@@ -125,7 +125,7 @@ class CallPresenter: NSObject {
     }
     
     /// Method to be called when the call status bar is tapped.
-    func callStatusBarButtonTapped() {
+    func callStatusBarTapped() {
         if let callVC = (inBarCallVC ?? activeCallVC) as? CallViewController {
             dismissCallBar(for: callVC)
             presentCallVC(callVC)
