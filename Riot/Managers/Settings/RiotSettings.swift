@@ -47,6 +47,7 @@ final class RiotSettings: NSObject {
         static let settingsSecurityScreenShowCryptographyInfo = "settingsSecurityScreenShowCryptographyInfo"
         static let settingsSecurityScreenShowCryptographyExport = "settingsSecurityScreenShowCryptographyExport"
         static let settingsSecurityScreenShowAdvancedUnverifiedDevices = "settingsSecurityScreenShowAdvancedBlacklistUnverifiedDevices"
+        static let allowInviteExernalUsers = "allowInviteExernalUsers"
     }
     
     static let shared = RiotSettings()
@@ -72,6 +73,7 @@ final class RiotSettings: NSObject {
         defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowCryptographyInfo)
         defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowCryptographyExport)
         defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowAdvancedUnverifiedDevices)
+        defaults.removeObject(forKey: UserDefaultsKeys.allowInviteExernalUsers)
     }
     
     // MARK: Servers
@@ -236,6 +238,19 @@ final class RiotSettings: NSObject {
         }
     }
     
+    // MARK: Features
+
+    var allowInviteExernalUsers: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.allowInviteExernalUsers) != nil else {
+                return BuildSettings.allowInviteExernalUsers
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.allowInviteExernalUsers)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.allowInviteExernalUsers)
+        }
+    }
+
     // MARK: General Settings
     
     var settingsScreenShowChangePassword: Bool {
