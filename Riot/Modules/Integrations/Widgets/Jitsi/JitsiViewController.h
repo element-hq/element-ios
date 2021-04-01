@@ -74,6 +74,11 @@
 @property (nonatomic, readonly) Widget *widget;
 
 /**
+ Total duration of the call. In milliseconds.
+ */
+@property (nonatomic, readonly) NSUInteger callDuration;
+
+/**
  The delegate for the view controller.
  */
 @property (nonatomic) id<JitsiViewControllerDelegate> delegate;

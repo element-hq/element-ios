@@ -167,6 +167,23 @@ static const NSString *kJitsiDataErrorKey = @"error";
     [self.jitsiMeetView leave];
 }
 
+- (NSUInteger)callDuration
+{
+    MXEvent *widgetEvent = self.widget.widgetEvent;
+    if (widgetEvent)
+    {
+        if (widgetEvent.originServerTs == kMXUndefinedTimestamp)
+        {
+            return 0;
+        }
+        else
+        {
+            return (uint64_t)[NSDate date].timeIntervalSince1970*1000 - widgetEvent.originServerTs;
+        }
+    }
+    return 0;
+}
+
 #pragma mark - Private
 
 // Fill Jitsi data based on Matrix Widget V2 widget data
