@@ -32,6 +32,9 @@ protocol CallPresenterDelegate: class {
                        numberOfPausedCalls: UInt,
                        completion:(() -> Void)?)
     func callPresenter(_ presenter: CallPresenter,
+                       updateCallBarFor activeCallViewController: UIViewController?,
+                       numberOfPausedCalls: UInt)
+    func callPresenter(_ presenter: CallPresenter,
                        dismissCallBar completion:(() -> Void)?)
     
     //  PiP
