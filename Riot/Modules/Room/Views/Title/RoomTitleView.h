@@ -44,6 +44,8 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *missedDiscussionsBadgeLabelLeadingConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pictureViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pictureViewWidthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *dotViewCenterXConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *dotViewCenterYConstraint;
 
 /**
  The room preview data may be used when mxRoom instance is not available
