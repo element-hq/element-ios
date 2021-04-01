@@ -227,7 +227,17 @@ final class BuildSettings: NSObject {
     static let settingsScreenAllowChangingCrashUsageDataSettings: Bool = true
     static let settingsScreenAllowBugReportingManually: Bool = true
     static let settingsScreenAllowDeactivatingAccount: Bool = true
-    
+    static let settingsScreenShowChangePassword:Bool = true
+    static let settingsScreenShowInviteFriends:Bool = true
+    static let settingsScreenShowEnableStunServerFallback: Bool = true
+    static let settingsSecurityScreenShowSessions:Bool = true
+    static let settingsSecurityScreenShowSetupBackup:Bool = true
+    static let settingsSecurityScreenShowRestoreBackup:Bool = true
+    static let settingsSecurityScreenShowDeleteBackup:Bool = true
+    static let settingsSecurityScreenShowCryptographyInfo:Bool = true
+    static let settingsSecurityScreenShowCryptographyExport:Bool = true
+    static let settingsSecurityScreenShowAdvancedUnverifiedDevices:Bool = true
+
     // MARK: - Timeline settings
     static let roomInputToolbarCompressionMode = MXKRoomInputToolbarCompressionModePrompt
     

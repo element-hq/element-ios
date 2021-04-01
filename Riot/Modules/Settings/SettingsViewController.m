@@ -300,7 +300,7 @@ TableViewSectionsDelegate>
     Section *sectionUserSettings = [Section sectionWithTag:SECTION_TAG_USER_SETTINGS];
     [sectionUserSettings addRowWithTag:USER_SETTINGS_PROFILE_PICTURE_INDEX];
     [sectionUserSettings addRowWithTag:USER_SETTINGS_DISPLAYNAME_INDEX];
-    if (!RiotSettings.shared.accountManagedExternally)
+    if (RiotSettings.shared.settingsScreenShowChangePassword)
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_CHANGE_PASSWORD_INDEX];
     }
@@ -335,7 +335,7 @@ TableViewSectionsDelegate>
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_THREEPIDS_INFORMATION_INDEX];
     }
-    if (!RiotSettings.shared.inviteFriendsNotAllowed)
+    if (RiotSettings.shared.settingsScreenShowInviteFriends)
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_INVITE_FRIENDS_INDEX];
     }
@@ -357,14 +357,21 @@ TableViewSectionsDelegate>
     sectionNotificationSettings.headerTitle = NSLocalizedStringFromTable(@"settings_notifications_settings", @"Vector", nil);
     [tmpSections addObject:sectionNotificationSettings];
     
-    if (BuildSettings.allowVoIPUsage && BuildSettings.stunServerFallbackUrlString
-        && !RiotSettings.shared.callsSettingsManagedExternally)
+    if (BuildSettings.allowVoIPUsage && BuildSettings.stunServerFallbackUrlString)
     {
         Section *sectionCalls = [Section sectionWithTag:SECTION_TAG_CALLS];
-        [sectionCalls addRowWithTag:CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX];
-        [sectionCalls addRowWithTag:CALLS_STUN_SERVER_FALLBACK_DESCRIPTION_INDEX];
         sectionCalls.headerTitle = NSLocalizedStringFromTable(@"settings_calls_settings", @"Vector", nil);
-        [tmpSections addObject:sectionCalls];
+
+        if (RiotSettings.shared.settingsScreenShowEnableStunServerFallback)
+        {
+            [sectionCalls addRowWithTag:CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX];
+            [sectionCalls addRowWithTag:CALLS_STUN_SERVER_FALLBACK_DESCRIPTION_INDEX];
+        }
+        
+        if (sectionCalls.rows.count)
+        {
+            [tmpSections addObject:sectionCalls];
+        }
     }
     
     if (BuildSettings.settingsScreenShowDiscoverySettings)
