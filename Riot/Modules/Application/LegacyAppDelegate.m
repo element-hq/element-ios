@@ -4535,7 +4535,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 #pragma mark - CallBarDelegate
 
-- (void)callBarDidTapReturnButton:(CallBar *)callBar
+- (void)callBarDidTap:(CallBar *)callBar
 {
     [_callPresenter callStatusBarButtonTapped];
 }
