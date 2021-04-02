@@ -23,6 +23,8 @@
 #import "DirectoryServerPickerViewController.h"
 #import "MXSession+Riot.h"
 #import "RoomFilesViewController.h"
+#import "RoomSearchViewController.h"
+#import "IntegrationManagerViewController.h"
 #import "RoomSettingsViewController.h"
 #import "JitsiWidgetData.h"
 #import "InviteRecentTableViewCell.h"

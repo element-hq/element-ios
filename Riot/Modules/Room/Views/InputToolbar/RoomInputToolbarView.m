@@ -27,6 +27,8 @@
 #import "WidgetManager.h"
 #import "IntegrationManagerViewController.h"
 
+const double RoomInputToolbarViewContextBarHeight = 30;
+
 @interface RoomInputToolbarView()
 {
     // The intermediate action sheet
@@ -60,14 +62,12 @@
 {
     [super awakeFromNib];
     
-    _supportCallOption = YES;
     _sendMode = RoomInputToolbarViewSendModeSend;
-    
-    self.rightInputToolbarButton.hidden = YES;
-    
-    [self.rightInputToolbarButton setTitleColor:ThemeService.shared.theme.tintColor forState:UIControlStateNormal];
-    [self.rightInputToolbarButton setTitleColor:ThemeService.shared.theme.tintColor forState:UIControlStateHighlighted];
-    
+    self.inputContextViewHeightConstraint.constant = 0;
+
+    [self.rightInputToolbarButton setTitle:nil forState:UIControlStateNormal];
+    [self.rightInputToolbarButton setTitle:nil forState:UIControlStateHighlighted];
+
     self.isEncryptionEnabled = _isEncryptionEnabled;
 }
 
@@ -80,8 +80,6 @@
     // Remove default toolbar background color
     self.backgroundColor = [UIColor clearColor];
     
-    self.separatorView.backgroundColor = ThemeService.shared.theme.lineBreakColor;
-        
     // Custom the growingTextView display
     growingTextView.layer.cornerRadius = 0;
     growingTextView.layer.borderWidth = 0;
@@ -90,6 +88,8 @@
     growingTextView.font = [UIFont systemFontOfSize:15];
     growingTextView.textColor = ThemeService.shared.theme.textPrimaryColor;
     growingTextView.tintColor = ThemeService.shared.theme.tintColor;
+    growingTextView.placeholderColor = ThemeService.shared.theme.textTertiaryColor;
+    growingTextView.internalTextView.showsVerticalScrollIndicator = NO;
     
     growingTextView.internalTextView.keyboardAppearance = ThemeService.shared.theme.keyboardAppearance;
     if (growingTextView.isFirstResponder)
@@ -99,33 +99,35 @@
     }
 
     self.attachMediaButton.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_upload", @"Vector", nil);
-    self.voiceCallButton.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_call", @"Vector", nil);
-    self.hangupCallButton.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_hangup", @"Vector", nil);
     
-    self.hangupCallButton.tintColor = ThemeService.shared.theme.noticeColor;
-    self.voiceCallButton.tintColor = ThemeService.shared.theme.tintColor;
-    self.attachMediaButton.tintColor = ThemeService.shared.theme.tintColor;
+    UIImage *image = [UIImage imageNamed:@"input_text_background"];
+    image = [image resizableImageWithCapInsets:UIEdgeInsetsMake(9, 15, 10, 16)];
+    self.inputTextBackgroundView.image = image;
+    self.inputTextBackgroundView.tintColor = ThemeService.shared.theme.roomInputTextBorder;
+    
+    if ([ThemeService.shared.themeId isEqualToString:@"light"])
+    {
+        [self.attachMediaButton setImage:[UIImage imageNamed:@"upload_icon"] forState:UIControlStateNormal];
+    }
+    else if ([ThemeService.shared.themeId isEqualToString:@"dark"] || [ThemeService.shared.themeId isEqualToString:@"black"])
+    {
+        [self.attachMediaButton setImage:[UIImage imageNamed:@"upload_icon_dark"] forState:UIControlStateNormal];
+    }
+    else if (@available(iOS 12.0, *) && ThemeService.shared.theme.userInterfaceStyle == UIUserInterfaceStyleDark) {
+        [self.attachMediaButton setImage:[UIImage imageNamed:@"upload_icon_dark"] forState:UIControlStateNormal];
+    }
+    
+    self.inputContextImageView.tintColor = ThemeService.shared.theme.textSecondaryColor;
+    self.inputContextLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
+    self.inputContextButton.tintColor = ThemeService.shared.theme.textSecondaryColor;
 }
 
 #pragma mark -
 
-- (void)setSupportCallOption:(BOOL)supportCallOption
+- (void)setTextMessage:(NSString *)textMessage
 {
-    if (_supportCallOption != supportCallOption)
-    {
-        _supportCallOption = supportCallOption;
-        
-        if (supportCallOption)
-        {
-            self.voiceCallButtonWidthConstraint.constant = 46;
-        }
-        else
-        {
-            self.voiceCallButtonWidthConstraint.constant = 0;
-        }
-        
-        [self setNeedsUpdateConstraints];
-    }
+    [self updateSendButtonWithMessage:textMessage];
+    [super setTextMessage:textMessage];
 }
 
 - (void)setIsEncryptionEnabled:(BOOL)isEncryptionEnabled
@@ -137,31 +139,77 @@
 
 - (void)setSendMode:(RoomInputToolbarViewSendMode)sendMode
 {
+    RoomInputToolbarViewSendMode previousMode = _sendMode;
     _sendMode = sendMode;
 
     [self updatePlaceholder];
-    [self updateToolbarButtonLabel];
+    [self updateToolbarButtonLabelWithPreviousMode: previousMode];
 }
 
-- (void)updateToolbarButtonLabel
+- (void)updateToolbarButtonLabelWithPreviousMode:(RoomInputToolbarViewSendMode)previousMode
 {
-    NSString *title;
+    UIImage *buttonImage;
 
+    double updatedHeight = self.mainToolbarHeightConstraint.constant;
+    
     switch (_sendMode)
     {
         case RoomInputToolbarViewSendModeReply:
-            title = NSLocalizedStringFromTable(@"room_action_reply", @"Vector", nil);
+            buttonImage = [UIImage imageNamed:@"send_icon"];
+            self.inputContextImageView.image = [UIImage imageNamed:@"input_reply_icon"];
+            self.inputContextLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_message_replying_to", @"Vector", nil), self.eventSenderDisplayName];
+
+            self.inputContextViewHeightConstraint.constant = RoomInputToolbarViewContextBarHeight;
+            updatedHeight += RoomInputToolbarViewContextBarHeight;
+            self->growingTextView.maxHeight -= RoomInputToolbarViewContextBarHeight;
             break;
         case RoomInputToolbarViewSendModeEdit:
-            title = NSLocalizedStringFromTable(@"save", @"Vector", nil);
+            buttonImage = [UIImage imageNamed:@"save_icon"];
+            self.inputContextImageView.image = [UIImage imageNamed:@"input_edit_icon"];
+            self.inputContextLabel.text = NSLocalizedStringFromTable(@"room_message_editing", @"Vector", nil);
+
+            self.inputContextViewHeightConstraint.constant = RoomInputToolbarViewContextBarHeight;
+            updatedHeight += RoomInputToolbarViewContextBarHeight;
+            self->growingTextView.maxHeight -= RoomInputToolbarViewContextBarHeight;
             break;
         default:
-            title = [NSBundle mxk_localizedStringForKey:@"send"];
+            buttonImage = [UIImage imageNamed:@"send_icon"];
+
+            if (previousMode != _sendMode)
+            {
+                updatedHeight -= RoomInputToolbarViewContextBarHeight;
+                self->growingTextView.maxHeight += RoomInputToolbarViewContextBarHeight;
+            }
+            self.inputContextViewHeightConstraint.constant = 0;
             break;
     }
+    
+    [self.rightInputToolbarButton setImage:buttonImage forState:UIControlStateNormal];
+    
+    if (self.maxHeight && updatedHeight > self.maxHeight)
+    {
+        growingTextView.maxHeight -= updatedHeight - self.maxHeight;
+        updatedHeight = self.maxHeight;
+    }
 
-    [self.rightInputToolbarButton setTitle:title forState:UIControlStateNormal];
-    [self.rightInputToolbarButton setTitle:title forState:UIControlStateHighlighted];
+    if (updatedHeight < self.mainToolbarMinHeightConstraint.constant)
+    {
+        updatedHeight = self.mainToolbarMinHeightConstraint.constant;
+    }
+
+    if (self.mainToolbarHeightConstraint.constant != updatedHeight)
+    {
+        [UIView animateWithDuration:.3 animations:^{
+            self.mainToolbarHeightConstraint.constant = updatedHeight;
+            [self layoutIfNeeded];
+            
+            // Update toolbar superview
+            if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:heightDidChanged:completion:)])
+            {
+                [self.delegate roomInputToolbarView:self heightDidChanged:updatedHeight completion:nil];
+            }
+        }];
+    }
 }
 
 - (void)updatePlaceholder
@@ -219,18 +267,25 @@
     self.placeholder = placeholder;
 }
 
-- (void)setActiveCall:(BOOL)activeCall
-{
-    if (_activeCall != activeCall)
-    {
-        _activeCall = activeCall;
+#pragma mark - Actions
 
-        self.voiceCallButton.hidden = (_activeCall || !self.rightInputToolbarButton.hidden);
-        self.hangupCallButton.hidden = (!_activeCall || !self.rightInputToolbarButton.hidden);
+- (IBAction)cancelAction:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(roomInputToolbarViewDidTapCancel:)])
+    {
+        [self.delegate roomInputToolbarViewDidTapCancel:self];
     }
 }
 
 #pragma mark - HPGrowingTextView delegate
+
+- (BOOL)growingTextView:(HPGrowingTextView *)growingTextView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    NSString *newText = [growingTextView.text stringByReplacingCharactersInRange:range withString:text];
+    [self updateSendButtonWithMessage:newText];
+    
+    return YES;
+}
 
 - (void)growingTextViewDidChange:(HPGrowingTextView *)hpGrowingTextView
 {
@@ -241,32 +296,19 @@
     }
     
     [super growingTextViewDidChange:hpGrowingTextView];
-    
-    if (self.rightInputToolbarButton.isEnabled && self.rightInputToolbarButton.isHidden)
-    {
-        self.rightInputToolbarButton.hidden = NO;
-        self.attachMediaButton.hidden = YES;
-        self.voiceCallButton.hidden = YES;
-        self.hangupCallButton.hidden = YES;
-        
-        self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.rightInputToolbarButton.frame.origin.x + 4;
-    }
-    else if (!self.rightInputToolbarButton.isEnabled && !self.rightInputToolbarButton.isHidden)
-    {
-        self.rightInputToolbarButton.hidden = YES;
-        self.attachMediaButton.hidden = NO;
-        self.voiceCallButton.hidden = _activeCall;
-        self.hangupCallButton.hidden = !_activeCall;
-        
-        self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.attachMediaButton.frame.origin.x + 4;
-    }
 }
 
 - (void)growingTextView:(HPGrowingTextView *)hpGrowingTextView willChangeHeight:(float)height
 {
     // Update height of the main toolbar (message composer)
-    CGFloat updatedHeight = height + (self.messageComposerContainerTopConstraint.constant + self.messageComposerContainerBottomConstraint.constant);
+    CGFloat updatedHeight = height + (self.messageComposerContainerTopConstraint.constant + self.messageComposerContainerBottomConstraint.constant) + self.inputContextViewHeightConstraint.constant;
     
+    if (self.maxHeight && updatedHeight > self.maxHeight)
+    {
+        hpGrowingTextView.maxHeight -= updatedHeight - self.maxHeight;
+        updatedHeight = self.maxHeight;
+    }
+
     if (updatedHeight < self.mainToolbarMinHeightConstraint.constant)
     {
         updatedHeight = self.mainToolbarMinHeightConstraint.constant;
@@ -374,66 +416,6 @@
             NSLog(@"[RoomInputToolbarView] Attach media is not supported");
         }
     }
-    else if (button == self.voiceCallButton)
-    {
-        if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:placeCallWithVideo:)])
-        {
-            // Ask the user the kind of the call: voice or video?
-            actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-
-            __weak typeof(self) weakSelf = self;
-            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"voice", @"Vector", nil)
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-                                                               
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-                                                                   self->actionSheet = nil;
-                                                                   
-                                                                   [self.delegate roomInputToolbarView:self placeCallWithVideo:NO];
-                                                               }
-                                                               
-                                                           }]];
-            
-            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"video", @"Vector", nil)
-                                                                style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction * action) {
-                                                                  
-                                                                  if (weakSelf)
-                                                                  {
-                                                                      typeof(self) self = weakSelf;
-                                                                      self->actionSheet = nil;
-                                                                      
-                                                                      [self.delegate roomInputToolbarView:self placeCallWithVideo:YES];
-                                                                  }
-                                                                  
-                                                              }]];
-            
-            [actionSheet addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                                style:UIAlertActionStyleCancel
-                                                              handler:^(UIAlertAction * action) {
-                                                                  
-                                                                  if (weakSelf)
-                                                                  {
-                                                                      typeof(self) self = weakSelf;
-                                                                      self->actionSheet = nil;
-                                                                  }
-                                                                  
-                                                              }]];
-            
-            [actionSheet popoverPresentationController].sourceView = self.voiceCallButton;
-            [actionSheet popoverPresentationController].sourceRect = self.voiceCallButton.bounds;
-            [self.window.rootViewController presentViewController:actionSheet animated:YES completion:nil];
-        }
-    }
-    else if (button == self.hangupCallButton)
-    {
-        if ([self.delegate respondsToSelector:@selector(roomInputToolbarViewHangupCall:)])
-        {
-            [self.delegate roomInputToolbarViewHangupCall:self];
-        }
-    }
 
     [super onTouchUpInside:button];
 }
@@ -447,6 +429,21 @@
     }
     
     [super destroy];
+}
+
+- (void)updateSendButtonWithMessage:(NSString *)textMessage
+{
+    if (textMessage.length)
+    {
+        self.rightInputToolbarButton.alpha = 1;
+        self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.rightInputToolbarButton.frame.origin.x + 12;
+    }
+    else
+    {
+        self.rightInputToolbarButton.alpha = 0;
+        self.messageComposerContainerTrailingConstraint.constant = 12;
+    }
+    [self layoutIfNeeded];
 }
 
 #pragma mark - Clipboard - Handle image/data paste from general pasteboard

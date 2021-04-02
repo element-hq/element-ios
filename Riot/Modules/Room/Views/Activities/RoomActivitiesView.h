@@ -74,16 +74,6 @@
 - (void)displayOngoingConferenceCall:(void (^)(BOOL video))ongoingConferenceCallPressed onClosePressed:(void (^)(void))ongoingConferenceCallClosePressed;
 
 /**
- Display a "scroll to bottom" icon.
- Replace the current notification if any.
- 
- @param newMessagesCount the count of the unread messages.
- @param onIconTapGesture block called when user taps on notification icon.
- */
-- (void)displayScrollToBottomIcon:(NSUInteger)newMessagesCount onIconTapGesture:(void (^)(void))onIconTapGesture;
-
-
-/**
  Notify that the a room is obsolete and a replacement room is available.
  
  @param onRoomReplacementLinkTapped block called when user selects the room replacement link.
