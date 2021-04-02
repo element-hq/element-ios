@@ -1418,7 +1418,7 @@ NSNotificationName const RoomViewControllerViewDidDisappearNotification = @"Room
     MXCall *callInRoom = [self.roomDataSource.mxSession.callManager callInRoom:self.roomDataSource.roomId];
     
     return (callInRoom && callInRoom.state != MXCallStateEnded)
-    || [[AppDelegate theDelegate].callPresenter.jitsiVC.widget.roomId isEqualToString:self.roomDataSource.roomId];
+    || customizedRoomDataSource.jitsiWidget;
 }
 
 - (void)refreshRoomTitle
@@ -1441,14 +1441,19 @@ NSNotificationName const RoomViewControllerViewDidDisappearNotification = @"Room
             UIEdgeInsets itemInsets = UIEdgeInsetsMake(0, -5, 0, 5);
             if (self.supportCallOption)
             {
-                UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"voice_call_hangon_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(onVoiceCallPressed:)];
-                item.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_call", @"Vector", nil);
-                item.imageInsets = UIEdgeInsetsMake(0, -5, 0, 5);
-                [rightBarButtonItems addObject:item];
+                if (self.roomDataSource.room.isDirect)
+                {
+                    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"voice_call_hangon_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(onVoiceCallPressed:)];
+                    item.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_call", @"Vector", nil);
+                    item.imageInsets = UIEdgeInsetsMake(0, -5, 0, 5);
+                    item.enabled = !self.isCallActive;
+                    [rightBarButtonItems addObject:item];
+                }
                 
-                item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"video_call"] style:UIBarButtonItemStylePlain target:self action:@selector(onVideoCallPressed:)];
-                item.imageInsets = UIEdgeInsetsMake(0, 10, 0, -10);
+                UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"video_call"] style:UIBarButtonItemStylePlain target:self action:@selector(onVideoCallPressed:)];
+                item.imageInsets = rightBarButtonItems.count ? UIEdgeInsetsMake(0, 10, 0, -10) : itemInsets;
                 item.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_video_call", @"Vector", nil);
+                item.enabled = !self.isCallActive;
                 [rightBarButtonItems addObject:item];
                 itemInsets = UIEdgeInsetsMake(0, 20, 0, -20);
             }
