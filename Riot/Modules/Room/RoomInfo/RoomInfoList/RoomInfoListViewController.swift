@@ -157,11 +157,19 @@ final class RoomInfoListViewController: UIViewController {
         let rowUploads = Row(type: .default, icon: Asset.Images.scrollup.image, text: VectorL10n.roomDetailsFiles, accessoryType: .disclosureIndicator) {
             self.viewModel.process(viewAction: .navigate(target: .uploads))
         }
+        let rowSearch = Row(type: .default, icon: Asset.Images.searchIcon.image, text: VectorL10n.roomDetailsSearch, accessoryType: .disclosureIndicator) {
+            self.viewModel.process(viewAction: .navigate(target: .search))
+        }
+        let rowIntegrations = Row(type: .default, icon: Asset.Images.integrationsIcon.image, text: VectorL10n.roomDetailsIntegrations, accessoryType: .disclosureIndicator) {
+            self.viewModel.process(viewAction: .navigate(target: .integrations))
+        }
         
         let sectionSettings = Section(header: VectorL10n.roomInfoListSectionOther,
                                       rows: [rowSettings,
+                                             rowIntegrations,
                                              rowMembers,
-                                             rowUploads],
+                                             rowUploads,
+                                             rowSearch],
                                       footer: nil)
         
         let leaveTitle = viewData.basicInfoViewData.isDirect ?
@@ -205,7 +213,9 @@ final class RoomInfoListViewController: UIViewController {
     }
     
     private func setupViews() {
-        self.navigationItem.rightBarButtonItem = MXKBarButtonItem(customView: closeButton)
+        if navigationController?.viewControllers.count ?? 0 <= 1 {
+            self.navigationItem.rightBarButtonItem = MXKBarButtonItem(customView: closeButton)
+        }
         
         self.title = ""
         

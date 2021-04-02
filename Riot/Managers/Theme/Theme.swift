@@ -70,6 +70,7 @@ import UIKit
 
     // MARK: - Appearance and style
 
+    var roomInputTextBorder: UIColor { get }
 
     /// Status bar style to use
     var statusBarStyle: UIStatusBarStyle { get }
