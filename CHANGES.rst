@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Make the application settings more configurable (#4171)
 
 🐛 Bugfix
  * 
