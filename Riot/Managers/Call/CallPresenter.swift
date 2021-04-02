@@ -43,14 +43,13 @@ class CallPresenter: NSObject {
     /// Call background tasks map. Keys are callIds.
     private var callBackgroundTasks: [String: MXBackgroundTask] = [:]
     /// Actively presented direct call view controller.
-    private weak var presentedCallVC: CallViewController? {
+    private weak var presentedCallVC: UIViewController? {
         didSet {
             updateOnHoldCall()
         }
     }
     private weak var inBarCallVC: UIViewController?
-    private weak var pipCallVC: CallViewController?
-    private weak var pipGroupCallVC: JitsiViewController?
+    private weak var pipCallVC: UIViewController?
     /// UI operation queue for various UI operations
     private var uiOperationQueue: OperationQueue = .main
     /// Flag to indicate whether the presenter is active.
@@ -140,9 +139,9 @@ class CallPresenter: NSObject {
         }
         if let jitsiVC = jitsiVC {
             dismissCallBar(for: jitsiVC)
-            presentGroupCallVC(jitsiVC)
+            presentCallVC(jitsiVC)
         }
-        if let temporaryJitsiVC = temporaryJitsiVC, !uiOperationQueue.containsPresentGroupCallVCOperation {
+        if let temporaryJitsiVC = temporaryJitsiVC, !uiOperationQueue.containsPresentCallVCOperation {
             dismissCallBar(for: temporaryJitsiVC)
             displayJitsiCall(withWidget: temporaryJitsiVC.widget)
         }
@@ -161,7 +160,7 @@ class CallPresenter: NSObject {
                 guard let self = self else { return }
                 if let jitsiVC = self.jitsiVC {
                     jitsiVC.delegate = self
-                    self.presentGroupCallVC(jitsiVC)
+                    self.presentCallVC(jitsiVC)
                     self.startJitsiCall(withWidget: widget)
                 }
             }, failure: { [weak self] (error) in
@@ -174,7 +173,7 @@ class CallPresenter: NSObject {
         
         if let jitsiVC = jitsiVC, jitsiVC.widget.widgetId == widget.widgetId {
             if jitsiVC.widget.widgetId == widget.widgetId {
-                self.presentGroupCallVC(jitsiVC)
+                self.presentCallVC(jitsiVC)
             } else {
                 //  end previous Jitsi call first
                 endActiveJitsiCall()
@@ -239,7 +238,7 @@ class CallPresenter: NSObject {
         }
         
         if let jitsiVC = jitsiVC {
-            dismissGroupCallVC(jitsiVC)
+            dismissCallVC(jitsiVC)
             jitsiVC.hangup()
         }
         
@@ -322,7 +321,7 @@ class CallPresenter: NSObject {
     //  MARK: - Private
     
     private func updateOnHoldCall() {
-        guard let presentedCallVC = presentedCallVC else {
+        guard let presentedCallVC = presentedCallVC as? CallViewController else {
             return
         }
         
@@ -390,6 +389,14 @@ class CallPresenter: NSObject {
             completion()
         } else {
             dismissCallVC(callVC, completion: completion)
+        }
+    }
+    
+    private func logCallVC(_ callVC: UIViewController, log: String) {
+        if let callVC = callVC as? CallViewController {
+            NSLog("[CallPresenter] \(log): call: \(String(describing: callVC.mxCall?.callId))")
+        } else if let callVC = callVC as? JitsiViewController {
+            NSLog("[CallPresenter] \(log): call: \(callVC.widget.widgetId)")
         }
     }
     
@@ -657,7 +664,7 @@ class CallPresenter: NSObject {
             return
         }
         
-        presentGroupCallVC(jitsiVC)
+        presentCallVC(jitsiVC)
     }
     
     @objc
@@ -685,7 +692,7 @@ class CallPresenter: NSObject {
                     guard let self = self else { return }
                     self.temporaryJitsiVC = newJitsiVC
                     newJitsiVC.delegate = self
-                    self.presentCallBar(for: newJitsiVC)
+                    self.presentCallBar(for: newJitsiVC, isTemporary: true)
                 } failure: { (error) in
                     
                 }
@@ -719,8 +726,8 @@ class CallPresenter: NSObject {
     
     //  MARK: - Call Screens
     
-    private func presentCallVC(_ callVC: CallViewController, completion: (() -> Void)? = nil) {
-        NSLog("[CallPresenter] presentCallVC: call: \(String(describing: callVC.mxCall?.callId))")
+    private func presentCallVC(_ callVC: UIViewController, completion: (() -> Void)? = nil) {
+        logCallVC(callVC, log: "presentCallVC")
         
         //  do not use PiP transitions here, as we really want to present the screen
         callVC.transitioningDelegate = nil
@@ -743,8 +750,8 @@ class CallPresenter: NSObject {
         uiOperationQueue.addOperation(operation)
     }
     
-    private func dismissCallVC(_ callVC: CallViewController, completion: (() -> Void)? = nil) {
-        NSLog("[CallPresenter] dismissCallVC: call: \(String(describing: callVC.mxCall?.callId))")
+    private func dismissCallVC(_ callVC: UIViewController, completion: (() -> Void)? = nil) {
+        logCallVC(callVC, log: "dismissCallVC")
         
         //  do not use PiP transitions here, as we really want to dismiss the screen
         callVC.transitioningDelegate = nil
@@ -758,8 +765,8 @@ class CallPresenter: NSObject {
         uiOperationQueue.addOperation(operation)
     }
     
-    private func enterPipCallVC(_ callVC: CallViewController, completion: (() -> Void)? = nil) {
-        NSLog("[CallPresenter] enterPipCallVC: call: \(String(describing: callVC.mxCall?.callId))")
+    private func enterPipCallVC(_ callVC: UIViewController, completion: (() -> Void)? = nil) {
+        logCallVC(callVC, log: "enterPipCallVC")
         
         //  assign self as transitioning delegate
         callVC.transitioningDelegate = self
@@ -774,8 +781,8 @@ class CallPresenter: NSObject {
         uiOperationQueue.addOperation(operation)
     }
     
-    private func exitPipCallVC(_ callVC: CallViewController, completion: (() -> Void)? = nil) {
-        NSLog("[CallPresenter] exitPipCallVC: call: \(String(describing: callVC.mxCall?.callId))")
+    private func exitPipCallVC(_ callVC: UIViewController, completion: (() -> Void)? = nil) {
+        logCallVC(callVC, log: "exitPipCallVC")
         
         //  assign self as transitioning delegate
         callVC.transitioningDelegate = self
@@ -792,19 +799,17 @@ class CallPresenter: NSObject {
     
     //  MARK: - Call Bar
     
-    private func presentCallBar(for callVC: UIViewController?, completion: (() -> Void)? = nil) {
-        if let callVC = callVC as? CallViewController {
-            NSLog("[CallPresenter] presentCallBar: call: \(String(describing: callVC.mxCall?.callId))")
-        } else if let callVC = callVC as? JitsiViewController {
-            NSLog("[CallPresenter] presentCallBar: call: \(callVC.widget.widgetId)")
-        }
+    private func presentCallBar(for callVC: UIViewController, isTemporary: Bool = false, completion: (() -> Void)? = nil) {
+        logCallVC(callVC, log: "presentCallBar")
 
         let activeCallVC = self.activeCallVC
         
         let operation = CallBarPresentOperation(presenter: self, activeCallVC: activeCallVC, numberOfPausedCalls: numberOfPausedCalls) { [weak self] in
-            //  active calls are more prior to paused ones.
-            //  So, if user taps the bar when we have one active and one paused call, we navigate to the active one.
-            self?.inBarCallVC = activeCallVC ?? callVC
+            if !isTemporary {
+                //  active calls are more prior to paused ones.
+                //  So, if user taps the bar when we have one active and one paused call, we navigate to the active one.
+                self?.inBarCallVC = activeCallVC ?? callVC
+            }
             completion?()
         }
         uiOperationQueue.addOperation(operation)
@@ -818,11 +823,7 @@ class CallPresenter: NSObject {
     }
     
     private func dismissCallBar(for callVC: UIViewController, completion: (() -> Void)? = nil) {
-        if let callVC = callVC as? CallViewController {
-            NSLog("[CallPresenter] dismissCallBar: call: \(String(describing: callVC.mxCall?.callId))")
-        } else if let callVC = callVC as? JitsiViewController {
-            NSLog("[CallPresenter] dismissCallBar: call: \(callVC.widget.widgetId)")
-        }
+        logCallVC(callVC, log: "dismissCallBar")
         
         let operation = CallBarDismissOperation(presenter: self) { [weak self] in
             if callVC == self?.inBarCallVC {
@@ -831,42 +832,6 @@ class CallPresenter: NSObject {
             completion?()
         }
         
-        uiOperationQueue.addOperation(operation)
-    }
-    
-    //  MARK - Group Calls
-    
-    private func presentGroupCallVC(_ callVC: JitsiViewController, completion: (() -> Void)? = nil) {
-        NSLog("[CallPresenter] presentGroupCallVC: call: \(callVC.widget.widgetId)")
-        
-        //  do not use PiP transitions here, as we really want to present the screen
-        callVC.transitioningDelegate = nil
-        
-        if let inBarCallVC = inBarCallVC {
-            dismissCallBar(for: inBarCallVC)
-        }
-        
-        if let presentedCallVC = presentedCallVC {
-            dismissCallVC(presentedCallVC)
-        }
-        
-        let operation = GroupCallVCPresentOperation(presenter: self, callVC: callVC) { [weak self] in
-            self?.jitsiVC = callVC
-            if callVC == self?.pipGroupCallVC {
-                self?.pipGroupCallVC = nil
-            }
-            completion?()
-        }
-        uiOperationQueue.addOperation(operation)
-    }
-    
-    private func dismissGroupCallVC(_ callVC: JitsiViewController, completion: (() -> Void)? = nil) {
-        NSLog("[CallPresenter] dismissGroupCallVC: call: \(callVC.widget.widgetId)")
-        
-        //  do not use PiP transitions here, as we really want to dismiss the screen
-        callVC.transitioningDelegate = nil
-        
-        let operation = GroupCallVCDismissOperation(presenter: self, callVC: callVC, completion: completion)
         uiOperationQueue.addOperation(operation)
     }
     
@@ -959,10 +924,6 @@ extension OperationQueue {
         return containsOperation(ofType: CallBarPresentOperation.self)
     }
     
-    var containsPresentGroupCallVCOperation: Bool {
-        return containsOperation(ofType: GroupCallVCPresentOperation.self)
-    }
-    
     private func containsOperation(ofType type: Operation.Type) -> Bool {
         return operations.contains { (operation) -> Bool in
             return operation.isKind(of: type.self)
@@ -995,7 +956,7 @@ extension CallPresenter: JMCallKitListener {
         
         if let jitsiVC = jitsiVC, jitsiVC.widget.widgetId == widget.widgetId {
             //  hangup an active call
-            dismissGroupCallVC(jitsiVC)
+            dismissCallVC(jitsiVC)
             endActiveJitsiCall()
         } else {
             //  decline incoming call
@@ -1044,8 +1005,7 @@ extension CallPresenter: JitsiViewControllerDelegate {
     
     func jitsiViewController(_ jitsiViewController: JitsiViewController!, goBackToApp completion: (() -> Void)!) {
         if jitsiViewController == jitsiVC || jitsiViewController == temporaryJitsiVC {
-            dismissGroupCallVC(jitsiViewController)
-            self.presentCallBar(for: jitsiViewController, completion: completion)
+            enterPipCallVC(jitsiViewController)
         }
     }
     

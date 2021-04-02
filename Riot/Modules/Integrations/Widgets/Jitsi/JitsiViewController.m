@@ -277,6 +277,20 @@ static const NSString *kJitsiDataErrorKey = @"error";
     // Nothing to do
 }
 
+- (void)participantLeft:(NSDictionary *)data
+{
+    //  TODO: End call with some logic like below?
+    
+    /*
+    [self.jitsiMeetView retrieveParticipantsInfo:^(NSArray * _Nullable participants) {
+        if (participants.count == 1)
+        {
+            
+        }
+    }];
+    */
+}
+
 - (void)conferenceTerminated:(NSDictionary *)data
 {
     if (data[kJitsiDataErrorKey] != nil)

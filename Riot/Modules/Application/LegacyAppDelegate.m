@@ -4378,16 +4378,20 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self presentViewController:viewController animated:YES completion:completion];
 }
 
-- (void)callPresenter:(CallPresenter *)presenter dismissCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
+- (void)callPresenter:(CallPresenter *)presenter dismissCallViewController:(UIViewController *)viewController completion:(void (^)(void))completion
 {
     // Check whether the call view controller is actually presented
     if (viewController.presentingViewController)
     {
         [viewController.presentingViewController dismissViewControllerAnimated:YES completion:^{
             
-            if (viewController.shouldPromptForStunServerFallback)
+            if ([viewController isKindOfClass:CallViewController.class])
             {
-                [self promptForStunServerFallback];
+                CallViewController *callVC = (CallViewController *)viewController;
+                if (callVC.shouldPromptForStunServerFallback)
+                {
+                    [self promptForStunServerFallback];
+                }
             }
             
             if (completion)
@@ -4497,7 +4501,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)callPresenter:(CallPresenter *)presenter enterPipForCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
+- (void)callPresenter:(CallPresenter *)presenter enterPipForCallViewController:(UIViewController *)viewController completion:(void (^)(void))completion
 {
     // Check whether the call view controller is actually presented
     if (viewController.presentingViewController)
@@ -4513,7 +4517,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)callPresenter:(CallPresenter *)presenter exitPipForCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
+- (void)callPresenter:(CallPresenter *)presenter exitPipForCallViewController:(UIViewController *)viewController completion:(void (^)(void))completion
 {
     if (@available(iOS 13.0, *))
     {
@@ -4521,39 +4525,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     
     [self presentViewController:viewController animated:YES completion:completion];
-}
-
-- (void)callPresenter:(CallPresenter *)presenter presentGroupCallViewController:(JitsiViewController *)viewController completion:(void (^)(void))completion
-{
-    if (@available(iOS 13.0, *))
-    {
-        viewController.modalPresentationStyle = UIModalPresentationFullScreen;
-    }
-
-    [self presentViewController:viewController animated:YES completion:completion];
-}
-
-- (void)callPresenter:(CallPresenter *)presenter dismissGroupCallViewController:(JitsiViewController *)viewController completion:(void (^)(void))completion
-{
-    // Check whether the call view controller is actually presented
-    if (viewController.presentingViewController)
-    {
-        [viewController.presentingViewController dismissViewControllerAnimated:YES completion:^{
-            
-            if (completion)
-            {
-                completion();
-            }
-            
-        }];
-    }
-    else
-    {
-        if (completion)
-        {
-            completion();
-        }
-    }
 }
 
 #pragma mark - CallBarDelegate

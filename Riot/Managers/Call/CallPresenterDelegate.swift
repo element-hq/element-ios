@@ -20,10 +20,10 @@ import Foundation
 protocol CallPresenterDelegate: class {
     //  Call screens
     func callPresenter(_ presenter: CallPresenter,
-                       presentCallViewController viewController: CallViewController,
+                       presentCallViewController viewController: UIViewController,
                        completion:(() -> Void)?)
     func callPresenter(_ presenter: CallPresenter,
-                       dismissCallViewController viewController: CallViewController,
+                       dismissCallViewController viewController: UIViewController,
                        completion:(() -> Void)?)
     
     //  Call Bar
@@ -39,18 +39,10 @@ protocol CallPresenterDelegate: class {
     
     //  PiP
     func callPresenter(_ presenter: CallPresenter,
-                       enterPipForCallViewController viewController: CallViewController,
+                       enterPipForCallViewController viewController: UIViewController,
                        completion:(() -> Void)?)
     
     func callPresenter(_ presenter: CallPresenter,
-                       exitPipForCallViewController viewController: CallViewController,
-                       completion:(() -> Void)?)
-    
-    //  Group Calls
-    func callPresenter(_ presenter: CallPresenter,
-                       presentGroupCallViewController viewController: JitsiViewController,
-                       completion:(() -> Void)?)
-    func callPresenter(_ presenter: CallPresenter,
-                       dismissGroupCallViewController viewController: JitsiViewController,
+                       exitPipForCallViewController viewController: UIViewController,
                        completion:(() -> Void)?)
 }
