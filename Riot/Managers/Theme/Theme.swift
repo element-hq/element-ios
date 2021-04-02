@@ -39,6 +39,7 @@ import UIKit
 
     var textPrimaryColor: UIColor { get }
     var textSecondaryColor: UIColor { get }
+    var textTertiaryColor: UIColor { get }
 
     var tintColor: UIColor { get }
     var tintBackgroundColor: UIColor { get }
@@ -63,14 +64,13 @@ import UIKit
 
     var selectedBackgroundColor: UIColor { get }
     
-    var messageTickColor: UIColor { get }
-    
     // MARK: - Call Screen Specific Colors
     
     var callScreenButtonTintColor: UIColor { get }
 
     // MARK: - Appearance and style
 
+    var roomInputTextBorder: UIColor { get }
 
     /// Status bar style to use
     var statusBarStyle: UIStatusBarStyle { get }

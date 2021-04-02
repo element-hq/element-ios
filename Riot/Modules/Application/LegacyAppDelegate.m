@@ -2136,6 +2136,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self logoutSendingRequestServer:YES completion:^(BOOL isLoggedOut) {
         if (completion)
         {
+            if (isLoggedOut)
+            {
+                [RiotSettings.shared reset];
+            }
             completion (YES);
         }
     }];

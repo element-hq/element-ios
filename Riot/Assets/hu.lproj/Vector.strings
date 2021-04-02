@@ -1292,9 +1292,61 @@
 "social_login_button_title_sign_up" = "Fiókkészítés ezzel: %@";
 "social_login_button_title_sign_in" = "Bejelentkezés ezzel: %@";
 "social_login_button_title_continue" = "Folytatás ezzel: %@";
-"social_login_list_title_sign_up" = "Vagy fiókkészítés ezzel:";
-"social_login_list_title_sign_in" = "Vagy bejelentkezés ezzel:";
+"social_login_list_title_sign_up" = "Vagy";
+"social_login_list_title_sign_in" = "Vagy";
 
 // Social login
 
 "social_login_list_title_continue" = "Folytatás ezzel:";
+"settings_show_NSFW_public_rooms" = "Nyilvános kifogásolható tartalmakat tartalmazó szobák megjelenítése";
+"room_intro_cell_information_multiple_dm_sentence2" = "Csak önök vannak ebben a beszélgetésben, hacsak nem hívnak meg mást.";
+"room_intro_cell_information_dm_sentence2" = "Csak ketten vannak ebben a beszélgetésben, senki más nem tud csatlakozni hozzá.";
+"room_intro_cell_information_dm_sentence1_part3" = ". ";
+"room_intro_cell_information_dm_sentence1_part1" = "Ez a közvetlen beszélgetés kezdete vele: ";
+"room_intro_cell_information_room_without_topic_sentence2_part2" = " hogy a többiek tudják, miről van szó ebben a szobában.";
+"room_intro_cell_information_room_without_topic_sentence2_part1" = "Téma megadása";
+"room_intro_cell_information_room_with_topic_sentence2" = "Téma: %@";
+"room_intro_cell_information_room_sentence1_part3" = ". ";
+"room_intro_cell_information_room_sentence1_part1" = "Ez a kezdete ennek: ";
+
+// Mark: - Room creation introduction cell
+
+"room_intro_cell_add_participants_action" = "Felhasználók meghívása";
+"room_avatar_view_accessibility_hint" = "Szoba profilkép megváltoztatása";
+
+// Mark: - Room avatar view
+
+"room_avatar_view_accessibility_label" = "profilkép";
+"call_transfer_error_message" = "Hívás átadás nem sikerült";
+"call_transfer_error_title" = "Hiba";
+"call_transfer_contacts_all" = "Mind";
+"call_transfer_contacts_recent" = "Legutóbbi";
+"call_transfer_dialpad" = "Tárcsázó számlap";
+"call_transfer_users" = "Felhasználók";
+
+// MARK: - Call Transfer
+"call_transfer_title" = "Átadás";
+
+// MARK: - Dial Pad
+"dialpad_title" = "Tárcsázó számlap";
+"call_actions_unhold" = "Folytatás";
+"event_formatter_call_back" = "Visszahívás";
+"event_formatter_call_you_declined" = "Elutasította ezt a hívást";
+"event_formatter_call_you_currently_in" = "Jelenleg ebben a hívásban van";
+"event_formatter_call_has_ended" = "Hívás befejeződött";
+"event_formatter_call_video" = "Videóhívás";
+"event_formatter_call_voice" = "Hang hívás";
+"room_open_dialpad" = "Tárcsázó számlap";
+"room_place_voice_call" = "Hang hívás";
+"room_event_action_delete_confirmation_message" = "Biztosan el szeretné távolítani ezt az elküldetlen üzenetet?";
+"room_event_action_delete_confirmation_title" = "Elküldetlen üzenet törlése";
+"room_unsent_messages_cancel_message" = "Biztos, hogy törli az összes el nem küldött üzenetet a szobában?";
+"room_unsent_messages_cancel_title" = "El nem küldött üzenetek törlése";
+"callbar_return" = "Visszatérés";
+"callbar_only_multiple_paused" = "%@ hívás tartásban";
+"callbar_only_single_paused" = "Hívás tartásban";
+"callbar_active_and_multiple_paused" = "1 aktív hívás (%@) · %@ hívás tartásban";
+"callbar_active_and_single_paused" = "1 aktív hívás (%@) · 1 hívás tartásban";
+
+// Call Bar
+"callbar_only_single_active" = "Aktív hívás (%@)";

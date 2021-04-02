@@ -86,8 +86,13 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
     
     // MARK: - Setup
     
-    init(parameters: RoomInfoCoordinatorParameters) {
-        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
+    init(parameters: RoomInfoCoordinatorParameters, navigationRouter: NavigationRouterType? = nil) {
+        if let navigationRouter = navigationRouter {
+            self.navigationRouter = navigationRouter
+        } else {
+            self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
+        }
+
         self.session = parameters.session
         self.room = parameters.room
         self.initialSection = parameters.initialSection
@@ -102,8 +107,12 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
 
         self.add(childCoordinator: rootCoordinator)
         
-        self.navigationRouter.setRootModule(rootCoordinator)
-        
+        if self.navigationRouter.modules.isEmpty == false {
+            self.navigationRouter.push(rootCoordinator.toPresentable(), animated: true, popCompletion: nil)
+        } else {
+            self.navigationRouter.setRootModule(rootCoordinator)
+        }
+
         switch initialSection {
         case .addParticipants:
             self.showRoomDetails(with: .members, animated: false)
@@ -129,13 +138,29 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
     }
     
     private func showRoomDetails(with target: RoomInfoListTarget, animated: Bool) {
-        segmentedViewController.selectedIndex = target.tabIndex
-        
-        if case .settings(let roomSettingsField) = target {
-            roomSettingsViewController?.selectedRoomSettingsField = roomSettingsField
+        switch target {
+        case .integrations:
+            if let modularVC = IntegrationManagerViewController(for: session, inRoom: room.roomId, screen: kIntegrationManagerMainScreen, widgetId: nil) {
+                navigationRouter.present(modularVC, animated: true)
+            }
+        case .search:
+            MXKRoomDataSourceManager.sharedManager(forMatrixSession: session)?.roomDataSource(forRoom: self.room.roomId, create: false, onComplete: { (roomDataSource) in
+                guard let dataSource = roomDataSource else { return }
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                if let search = storyboard.instantiateViewController(withIdentifier: "RoomSearch") as? RoomSearchViewController {
+                    search.roomDataSource = dataSource
+                    self.navigationRouter.push(search, animated: animated, popCompletion: nil)
+                }
+            })
+        default:
+            segmentedViewController.selectedIndex = target.tabIndex
+            
+            if case .settings(let roomSettingsField) = target {
+                roomSettingsViewController?.selectedRoomSettingsField = roomSettingsField
+            }
+            
+            navigationRouter.push(segmentedViewController, animated: animated, popCompletion: nil)
         }
-        
-        navigationRouter.push(segmentedViewController, animated: animated, popCompletion: nil)
     }
 }
 

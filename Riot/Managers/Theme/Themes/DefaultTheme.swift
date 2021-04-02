@@ -35,11 +35,12 @@ class DefaultTheme: NSObject, Theme {
 
     var headerBackgroundColor: UIColor = UIColor(rgb: 0xF5F7FA)
     var headerBorderColor: UIColor  = UIColor(rgb: 0xE9EDF1)
-    var headerTextPrimaryColor: UIColor = UIColor(rgb: 0x171910)
-    var headerTextSecondaryColor: UIColor = UIColor(rgb: 0x8F97A3)
+    var headerTextPrimaryColor: UIColor = UIColor(rgb: 0x17191C)
+    var headerTextSecondaryColor: UIColor = UIColor(rgb: 0x737D8C)
 
-    var textPrimaryColor: UIColor = UIColor(rgb: 0x171910)
-    var textSecondaryColor: UIColor = UIColor(rgb: 0x8F97A3)
+    var textPrimaryColor: UIColor = UIColor(rgb: 0x17191C)
+    var textSecondaryColor: UIColor = UIColor(rgb: 0x737D8C)
+    var textTertiaryColor: UIColor = UIColor(rgb: 0x8D99A5)
 
     var tintColor: UIColor = UIColor(displayP3Red: 0.05098039216, green: 0.7450980392, blue: 0.5450980392, alpha: 1.0)
     var tintBackgroundColor: UIColor = UIColor(rgb: 0xe9fff9)
@@ -51,8 +52,8 @@ class DefaultTheme: NSObject, Theme {
     var noticeSecondaryColor: UIColor = UIColor(rgb: 0x61708B)
 
     var warningColor: UIColor = UIColor(rgb: 0xFF4B55)
-
-    var messageTickColor: UIColor = UIColor(rgb: 0xC1C6CD)
+    
+    var roomInputTextBorder: UIColor = UIColor(rgb: 0xE3E8F0)
 
     var avatarColors: [UIColor] = [
         UIColor(rgb: 0x03B381),

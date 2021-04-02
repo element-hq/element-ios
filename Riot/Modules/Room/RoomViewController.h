@@ -27,6 +27,8 @@
 
 #import "UIViewController+RiotSearch.h"
 
+@class BadgeLabel;
+
 /**
  Notification string used to indicate call tile tapped in a room. Notification object will be the `RoomBubbleCellData` object.
  */
@@ -61,6 +63,9 @@ extern NSNotificationName const RoomViewControllerViewDidDisappearNotification;
 @property (weak, nonatomic) IBOutlet UILabel *jumpToLastUnreadLabel;
 @property (weak, nonatomic) IBOutlet UIButton *resetReadMarkerButton;
 @property (weak, nonatomic) IBOutlet UIView *jumpToLastUnreadBannerSeparatorView;
+@property (weak, nonatomic) IBOutlet UIView *inputBackgroundView;
+@property (weak, nonatomic) IBOutlet UIButton *scrollToBottomButton;
+@property (weak, nonatomic) IBOutlet BadgeLabel *scrollToBottomBadgeLabel;
 
 /**
  Preview data for a room invitation received by email, or a link to a room.
@@ -86,6 +91,8 @@ extern NSNotificationName const RoomViewControllerViewDidDisappearNotification;
  Action used to handle some buttons.
  */
 - (IBAction)onButtonPressed:(id)sender;
+
+- (IBAction)scrollToBottomAction:(id)sender;
 
 @end
 

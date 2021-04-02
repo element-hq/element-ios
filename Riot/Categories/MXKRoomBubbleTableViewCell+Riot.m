@@ -685,7 +685,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
         UIImage *image = [UIImage imageNamed:@"sent_message_tick"];
         image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         tickView = [[UIImageView alloc] initWithImage:image];
-        tickView.tintColor = ThemeService.shared.theme.messageTickColor;
+        tickView.tintColor = ThemeService.shared.theme.textTertiaryColor;
         [statusViews addObject:tickView];
         [self addTickView:tickView atIndex:((RoomBubbleCellData*)bubbleData).componentIndexOfSentMessageTick];
     }
@@ -705,7 +705,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
                 {
                     UIView *progressContentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
                     CircleProgressView *progressView = [[CircleProgressView alloc] initWithFrame:CGRectMake(24, 24, 16, 16)];
-                    progressView.lineColor = ThemeService.shared.theme.messageTickColor;
+                    progressView.lineColor = ThemeService.shared.theme.textTertiaryColor;
                     [progressContentView addSubview:progressView];
                     self.progressChartView = progressView;
 
@@ -721,7 +721,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
                     UIImage *image = [UIImage imageNamed:@"sending_message_tick"];
                     image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
                     tickView = [[UIImageView alloc] initWithImage:image];
-                    tickView.tintColor = ThemeService.shared.theme.messageTickColor;
+                    tickView.tintColor = ThemeService.shared.theme.textTertiaryColor;
                 }
 
                 [statusViews addObject:tickView];

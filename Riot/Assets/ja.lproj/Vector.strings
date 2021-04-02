@@ -593,3 +593,11 @@
 "create_room_title" = "新しい部屋";
 "create_room_enable_encryption" = "暗号化を有効にする";
 "room_details_room_name_for_dm" = "名前";
+"room_participants_security_information_room_encrypted_for_dm" = "ここで送受信されるメッセージはエンドツーエンド暗号化されます。\n\nメッセージは安全に保護されており、あなたと宛先のみがメッセージの閲覧に必要な鍵を所持します。";
+"room_participants_security_information_room_not_encrypted_for_dm" = "ここで送受信されるメッセージはエンドツーエンド暗号化されません。";
+
+// Mark: - Room creation introduction cell
+
+"room_intro_cell_add_participants_action" = "参加者を追加";
+"room_participants_security_information_room_encrypted" = "この部屋で送受信されるメッセージはエンドツーエンド暗号化されます。\n\nメッセージは安全に保護されており、この部屋の参加者のみがメッセージの閲覧に必要な鍵を所持します。";
+"room_participants_security_information_room_not_encrypted" = "この部屋で送受信されるメッセージはエンドツーエンド暗号化されません。";

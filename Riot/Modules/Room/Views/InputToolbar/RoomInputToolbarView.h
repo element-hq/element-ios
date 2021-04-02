@@ -59,6 +59,13 @@ typedef enum : NSUInteger
  */
 - (void)roomInputToolbarViewDidTapMediaLibrary:(MXKRoomInputToolbarView*)toolbarView;
 
+/**
+ Tells the delegate that the user wants to cancel the current edition / reply.
+ 
+ @param toolbarView the room input toolbar view
+ */
+- (void)roomInputToolbarViewDidTapCancel:(MXKRoomInputToolbarView*)toolbarView;
+
 @end
 
 /**
@@ -74,11 +81,6 @@ typedef enum : NSUInteger
 
 @property (weak, nonatomic) IBOutlet UIView *mainToolbarView;
 
-@property (weak, nonatomic) IBOutlet UIView *separatorView;
-@property (strong, nonatomic) IBOutlet MXKImageView *pictureView;
-
-@property (strong, nonatomic) IBOutlet UIImageView *encryptedRoomIcon;
-
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainToolbarMinHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainToolbarHeightConstraint;
 
@@ -86,15 +88,13 @@ typedef enum : NSUInteger
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *messageComposerContainerTrailingConstraint;
 
 @property (weak, nonatomic) IBOutlet UIButton *attachMediaButton;
-@property (weak, nonatomic) IBOutlet UIButton *voiceCallButton;
-@property (weak, nonatomic) IBOutlet UIButton *hangupCallButton;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *voiceCallButtonWidthConstraint;
+@property (weak, nonatomic) IBOutlet UIImageView *inputTextBackgroundView;
 
-/**
- Tell whether the call option is supported. YES by default.
- */
-@property (nonatomic) BOOL supportCallOption;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *inputContextViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet UIImageView *inputContextImageView;
+@property (weak, nonatomic) IBOutlet UILabel *inputContextLabel;
+@property (weak, nonatomic) IBOutlet UIButton *inputContextButton;
 
 /**
  Tell whether the filled data will be sent encrypted. NO by default.
@@ -102,13 +102,13 @@ typedef enum : NSUInteger
 @property (nonatomic) BOOL isEncryptionEnabled;
 
 /**
+ Sender of the event being edited / replied.
+ */
+@property (nonatomic, strong) NSString *eventSenderDisplayName;
+
+/**
  Destination of the message in the composer.
  */
 @property (nonatomic) RoomInputToolbarViewSendMode sendMode;
-
-/**
- Tell whether a call is active.
- */
-@property (nonatomic) BOOL activeCall;
 
 @end
