@@ -715,7 +715,6 @@ class CallPresenter: NSObject {
            let jitsiWidget = roomDataSource.jitsiWidget(),
            let temporaryJitsiVC = temporaryJitsiVC,
            temporaryJitsiVC.widget.widgetId == jitsiWidget.widgetId,
-           jitsiVC?.widget.widgetId != jitsiWidget.widgetId,
            inBarCallVC == nil {
             dismissCallBar(for: temporaryJitsiVC) { [weak self] in
                 guard let self = self else { return }
