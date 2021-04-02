@@ -6,6 +6,7 @@ Changes to be released in next version
 
 🙌 Improvements
  * Make the application settings more configurable (#4171)
+ * Possibility to lock some room creation parameters from settings (#4181)
 
 🐛 Bugfix
  * 

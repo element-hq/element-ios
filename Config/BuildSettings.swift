@@ -241,6 +241,23 @@ final class BuildSettings: NSObject {
     // MARK: - Timeline settings
     static let roomInputToolbarCompressionMode = MXKRoomInputToolbarCompressionModePrompt
     
+    // MARK: - Room Creation Screen
+    
+    enum ForcedEncryptionMode: String {
+        case none = "none"
+        case disabled = "disabled"
+        case enabled = "enabled"
+    }
+    
+    enum ForcedRoomType: String {
+        case none = "none"
+        case privateRoom = "privateRoom"
+        case publicRoom = "publicRoom"
+    }
+    
+    static let roomCreationScreenForcedEncryptionMode: ForcedEncryptionMode = .none
+    static let roomCreationScreenForcedRoomType: ForcedRoomType = .none
+
     // MARK: - Room Settings Screen
     
     static let roomSettingsScreenShowLowPriorityOption: Bool = true

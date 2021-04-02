@@ -47,6 +47,8 @@ final class RiotSettings: NSObject {
         static let settingsSecurityScreenShowCryptographyInfo = "settingsSecurityScreenShowCryptographyInfo"
         static let settingsSecurityScreenShowCryptographyExport = "settingsSecurityScreenShowCryptographyExport"
         static let settingsSecurityScreenShowAdvancedUnverifiedDevices = "settingsSecurityScreenShowAdvancedBlacklistUnverifiedDevices"
+        static let roomCreationScreenForcedEncryptionMode = "roomCreationScreenForcedEncryptionMode"
+        static let roomCreationScreenForcedRoomType = "roomCreationScreenForcedRoomType"
     }
     
     static let shared = RiotSettings()
@@ -236,6 +238,26 @@ final class RiotSettings: NSObject {
         }
     }
     
+    // MARK: - Room Creation Screen
+    
+    var roomCreationScreenForcedEncryptionMode: BuildSettings.ForcedEncryptionMode {
+        get {
+            let rawValue = defaults.string(forKey: UserDefaultsKeys.roomCreationScreenForcedEncryptionMode) ?? BuildSettings.roomCreationScreenForcedEncryptionMode.rawValue
+            return BuildSettings.ForcedEncryptionMode(rawValue: rawValue) ?? .none
+        } set {
+            defaults.set(newValue.rawValue, forKey: UserDefaultsKeys.roomCreationScreenForcedEncryptionMode)
+        }
+    }
+
+    var roomCreationScreenForcedRoomType: BuildSettings.ForcedRoomType {
+        get {
+            let rawValue = defaults.string(forKey: UserDefaultsKeys.roomCreationScreenForcedRoomType) ?? BuildSettings.roomCreationScreenForcedRoomType.rawValue
+            return BuildSettings.ForcedRoomType(rawValue: rawValue) ?? .none
+        } set {
+            defaults.set(newValue.rawValue, forKey: UserDefaultsKeys.roomCreationScreenForcedRoomType)
+        }
+    }
+
     // MARK: General Settings
     
     var settingsScreenShowChangePassword: Bool {
