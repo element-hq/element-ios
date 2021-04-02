@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "input_text_background.png",
+      "filename" : "input_close_icon.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "input_text_background@2x.png",
+      "filename" : "input_close_icon@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "input_text_background@3x.png",
+      "filename" : "input_close_icon@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

@@ -27,6 +27,8 @@
 #import "WidgetManager.h"
 #import "IntegrationManagerViewController.h"
 
+const double RoomInputToolbarViewContextBarHeight = 30;
+
 @interface RoomInputToolbarView()
 {
     // The intermediate action sheet
@@ -61,7 +63,8 @@
     [super awakeFromNib];
     
     _sendMode = RoomInputToolbarViewSendModeSend;
-    
+    self.inputContextViewHeightConstraint.constant = 0;
+
     [self.rightInputToolbarButton setTitle:nil forState:UIControlStateNormal];
     [self.rightInputToolbarButton setTitle:nil forState:UIControlStateHighlighted];
 
@@ -85,7 +88,7 @@
     growingTextView.font = [UIFont systemFontOfSize:15];
     growingTextView.textColor = ThemeService.shared.theme.textPrimaryColor;
     growingTextView.tintColor = ThemeService.shared.theme.tintColor;
-    
+    growingTextView.placeholderColor = ThemeService.shared.theme.textTertiaryColor;
     growingTextView.internalTextView.showsVerticalScrollIndicator = NO;
     
     growingTextView.internalTextView.keyboardAppearance = ThemeService.shared.theme.keyboardAppearance;
@@ -100,9 +103,32 @@
     UIImage *image = [UIImage imageNamed:@"input_text_background"];
     image = [image resizableImageWithCapInsets:UIEdgeInsetsMake(9, 15, 10, 16)];
     self.inputTextBackgroundView.image = image;
+    self.inputTextBackgroundView.tintColor = ThemeService.shared.theme.roomInputTextBorder;
+    
+    if ([ThemeService.shared.themeId isEqualToString:@"light"])
+    {
+        [self.attachMediaButton setImage:[UIImage imageNamed:@"upload_icon"] forState:UIControlStateNormal];
+    }
+    else if ([ThemeService.shared.themeId isEqualToString:@"dark"] || [ThemeService.shared.themeId isEqualToString:@"black"])
+    {
+        [self.attachMediaButton setImage:[UIImage imageNamed:@"upload_icon_dark"] forState:UIControlStateNormal];
+    }
+    else if (@available(iOS 12.0, *) && ThemeService.shared.theme.userInterfaceStyle == UIUserInterfaceStyleDark) {
+        [self.attachMediaButton setImage:[UIImage imageNamed:@"upload_icon_dark"] forState:UIControlStateNormal];
+    }
+    
+    self.inputContextImageView.tintColor = ThemeService.shared.theme.textSecondaryColor;
+    self.inputContextLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
+    self.inputContextButton.tintColor = ThemeService.shared.theme.textSecondaryColor;
 }
 
 #pragma mark -
+
+- (void)setTextMessage:(NSString *)textMessage
+{
+    [self updateSendButtonWithMessage:textMessage];
+    [super setTextMessage:textMessage];
+}
 
 - (void)setIsEncryptionEnabled:(BOOL)isEncryptionEnabled
 {
@@ -113,9 +139,77 @@
 
 - (void)setSendMode:(RoomInputToolbarViewSendMode)sendMode
 {
+    RoomInputToolbarViewSendMode previousMode = _sendMode;
     _sendMode = sendMode;
 
     [self updatePlaceholder];
+    [self updateToolbarButtonLabelWithPreviousMode: previousMode];
+}
+
+- (void)updateToolbarButtonLabelWithPreviousMode:(RoomInputToolbarViewSendMode)previousMode
+{
+    UIImage *buttonImage;
+
+    double updatedHeight = self.mainToolbarHeightConstraint.constant;
+    
+    switch (_sendMode)
+    {
+        case RoomInputToolbarViewSendModeReply:
+            buttonImage = [UIImage imageNamed:@"send_icon"];
+            self.inputContextImageView.image = [UIImage imageNamed:@"input_reply_icon"];
+            self.inputContextLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_message_replying_to", @"Vector", nil), self.eventSenderDisplayName];
+
+            self.inputContextViewHeightConstraint.constant = RoomInputToolbarViewContextBarHeight;
+            updatedHeight += RoomInputToolbarViewContextBarHeight;
+            self->growingTextView.maxHeight -= RoomInputToolbarViewContextBarHeight;
+            break;
+        case RoomInputToolbarViewSendModeEdit:
+            buttonImage = [UIImage imageNamed:@"save_icon"];
+            self.inputContextImageView.image = [UIImage imageNamed:@"input_edit_icon"];
+            self.inputContextLabel.text = NSLocalizedStringFromTable(@"room_message_editing", @"Vector", nil);
+
+            self.inputContextViewHeightConstraint.constant = RoomInputToolbarViewContextBarHeight;
+            updatedHeight += RoomInputToolbarViewContextBarHeight;
+            self->growingTextView.maxHeight -= RoomInputToolbarViewContextBarHeight;
+            break;
+        default:
+            buttonImage = [UIImage imageNamed:@"send_icon"];
+
+            if (previousMode != _sendMode)
+            {
+                updatedHeight -= RoomInputToolbarViewContextBarHeight;
+                self->growingTextView.maxHeight += RoomInputToolbarViewContextBarHeight;
+            }
+            self.inputContextViewHeightConstraint.constant = 0;
+            break;
+    }
+    
+    [self.rightInputToolbarButton setImage:buttonImage forState:UIControlStateNormal];
+    
+    if (self.maxHeight && updatedHeight > self.maxHeight)
+    {
+        growingTextView.maxHeight -= updatedHeight - self.maxHeight;
+        updatedHeight = self.maxHeight;
+    }
+
+    if (updatedHeight < self.mainToolbarMinHeightConstraint.constant)
+    {
+        updatedHeight = self.mainToolbarMinHeightConstraint.constant;
+    }
+
+    if (self.mainToolbarHeightConstraint.constant != updatedHeight)
+    {
+        [UIView animateWithDuration:.3 animations:^{
+            self.mainToolbarHeightConstraint.constant = updatedHeight;
+            [self layoutIfNeeded];
+            
+            // Update toolbar superview
+            if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:heightDidChanged:completion:)])
+            {
+                [self.delegate roomInputToolbarView:self heightDidChanged:updatedHeight completion:nil];
+            }
+        }];
+    }
 }
 
 - (void)updatePlaceholder
@@ -173,7 +267,25 @@
     self.placeholder = placeholder;
 }
 
+#pragma mark - Actions
+
+- (IBAction)cancelAction:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(roomInputToolbarViewDidTapCancel:)])
+    {
+        [self.delegate roomInputToolbarViewDidTapCancel:self];
+    }
+}
+
 #pragma mark - HPGrowingTextView delegate
+
+- (BOOL)growingTextView:(HPGrowingTextView *)growingTextView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    NSString *newText = [growingTextView.text stringByReplacingCharactersInRange:range withString:text];
+    [self updateSendButtonWithMessage:newText];
+    
+    return YES;
+}
 
 - (void)growingTextViewDidChange:(HPGrowingTextView *)hpGrowingTextView
 {
@@ -184,32 +296,19 @@
     }
     
     [super growingTextViewDidChange:hpGrowingTextView];
-    
-    if (self.rightInputToolbarButton.isEnabled && !self.rightInputToolbarButton.alpha)
-    {
-        [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:8 options:UIViewAnimationOptionCurveEaseIn animations:^{
-            self.rightInputToolbarButton.alpha = 1;
-            self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.rightInputToolbarButton.frame.origin.x + 12;
-            [self layoutIfNeeded];
-        } completion:^(BOOL finished) {
-        }];
-    }
-    else if (!self.rightInputToolbarButton.isEnabled && self.rightInputToolbarButton.alpha)
-    {
-        [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:8 options:UIViewAnimationOptionCurveEaseIn animations:^{
-            self.rightInputToolbarButton.alpha = 0;
-            self.messageComposerContainerTrailingConstraint.constant = 12;
-            [self layoutIfNeeded];
-        } completion:^(BOOL finished) {
-        }];
-    }
 }
 
 - (void)growingTextView:(HPGrowingTextView *)hpGrowingTextView willChangeHeight:(float)height
 {
     // Update height of the main toolbar (message composer)
-    CGFloat updatedHeight = height + (self.messageComposerContainerTopConstraint.constant + self.messageComposerContainerBottomConstraint.constant);
+    CGFloat updatedHeight = height + (self.messageComposerContainerTopConstraint.constant + self.messageComposerContainerBottomConstraint.constant) + self.inputContextViewHeightConstraint.constant;
     
+    if (self.maxHeight && updatedHeight > self.maxHeight)
+    {
+        hpGrowingTextView.maxHeight -= updatedHeight - self.maxHeight;
+        updatedHeight = self.maxHeight;
+    }
+
     if (updatedHeight < self.mainToolbarMinHeightConstraint.constant)
     {
         updatedHeight = self.mainToolbarMinHeightConstraint.constant;
@@ -330,6 +429,21 @@
     }
     
     [super destroy];
+}
+
+- (void)updateSendButtonWithMessage:(NSString *)textMessage
+{
+    if (textMessage.length)
+    {
+        self.rightInputToolbarButton.alpha = 1;
+        self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.rightInputToolbarButton.frame.origin.x + 12;
+    }
+    else
+    {
+        self.rightInputToolbarButton.alpha = 0;
+        self.messageComposerContainerTrailingConstraint.constant = 12;
+    }
+    [self layoutIfNeeded];
 }
 
 #pragma mark - Clipboard - Handle image/data paste from general pasteboard

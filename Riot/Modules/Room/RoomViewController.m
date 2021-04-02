@@ -155,8 +155,8 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     // Missed discussions badge
     NSUInteger missedDiscussionsCount;
     NSUInteger missedHighlightCount;
-    UIBarButtonItem *missedDiscussionsButton;
     UILabel *missedDiscussionsBadgeLabel;
+    UIView *missedDiscussionsDotView;
     
     // Potential encryption details view.
     EncryptionInfoView *encryptionInfoView;
@@ -227,6 +227,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
 @property (nonatomic, strong) RoomInfoCoordinatorBridgePresenter *roomInfoCoordinatorBridgePresenter;
 @property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
 @property (nonatomic, getter=isActivitiesViewExpanded) BOOL activitiesViewExpanded;
+@property (nonatomic, getter=isScrollToBottomHidden) BOOL scrollToBottomHidden;
 
 @end
 
@@ -291,7 +292,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     formattedBodyParser = [FormattedBodyParser new];
     
     _showMissedDiscussionsBadge = YES;
-    
+    _scrollToBottomHidden = YES;
     
     // Listen to the event sent state changes
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventDidChangeSentState:) name:kMXEventDidChangeSentStateNotification object:nil];
@@ -409,15 +410,6 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
         
     }];
     [self userInterfaceThemeDidChange];
-    
-    if ([ThemeService.shared.themeId isEqualToString:@"light"])
-    {
-        self.inputBackgroundView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-    }
-    else if ([ThemeService.shared.themeId isEqualToString:@"dark"] || [ThemeService.shared.themeId isEqualToString:@"black"])
-    {
-        self.inputBackgroundView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-    }
 }
 
 - (void)userInterfaceThemeDidChange
@@ -454,10 +446,6 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     
     self.previewHeaderContainer.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     
-    missedDiscussionsBadgeLabel.textColor = ThemeService.shared.theme.baseTextPrimaryColor;
-    missedDiscussionsBadgeLabel.font = [UIFont boldSystemFontOfSize:14];
-    missedDiscussionsBadgeLabel.backgroundColor = [UIColor clearColor];
-    
     // Check the table view style to select its bg color.
     self.bubblesTableView.backgroundColor = ((self.bubblesTableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.backgroundColor : ThemeService.shared.theme.headerBackgroundColor);
     self.bubblesTableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
@@ -467,6 +455,27 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     {
         [self.bubblesTableView reloadData];
     }
+    
+    self.scrollToBottomButton.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.scrollToBottomButton.layer.shadowOpacity = 0.2;
+    self.scrollToBottomButton.layer.shadowRadius = 6;
+    self.scrollToBottomButton.layer.shadowOffset = CGSizeMake(0, 4);
+
+    self.inputBackgroundView.backgroundColor = [ThemeService.shared.theme.searchBackgroundColor colorWithAlphaComponent:0.98];
+    
+    if ([ThemeService.shared.themeId isEqualToString:@"light"])
+    {
+        [self.scrollToBottomButton setImage:[UIImage imageNamed:@"scrolldown"] forState:UIControlStateNormal];
+    }
+    else if ([ThemeService.shared.themeId isEqualToString:@"dark"] || [ThemeService.shared.themeId isEqualToString:@"black"])
+    {
+        [self.scrollToBottomButton setImage:[UIImage imageNamed:@"scrolldown_dark"] forState:UIControlStateNormal];
+    }
+    else if (@available(iOS 12.0, *) && ThemeService.shared.theme.userInterfaceStyle == UIUserInterfaceStyleDark) {
+        [self.scrollToBottomButton setImage:[UIImage imageNamed:@"scrolldown_dark"] forState:UIControlStateNormal];
+    }
+    
+    self.scrollToBottomBadgeLabel.badgeColor = ThemeService.shared.theme.tintColor;
     
     [self setNeedsStatusBarAppearanceUpdate];
 }
@@ -701,6 +710,19 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
 {
+    if ([self.titleView isKindOfClass:RoomTitleView.class])
+    {
+        RoomTitleView *roomTitleView = (RoomTitleView*)self.titleView;
+        if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
+        {
+            [roomTitleView updateLayoutForOrientation:UIInterfaceOrientationPortrait];
+        }
+        else
+        {
+            [roomTitleView updateLayoutForOrientation:UIInterfaceOrientationLandscapeLeft];
+        }
+    }
+
     // Hide the expanded header or the preview in case of iPad and iPhone 6 plus.
     // On these devices, the display mode of the splitviewcontroller may change during screen rotation.
     // It may correspond to an overlay mode in portrait and a side-by-side mode in landscape.
@@ -1122,7 +1144,9 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
 - (void)setKeyboardHeight:(CGFloat)keyboardHeight
 {
     [super setKeyboardHeight:keyboardHeight];
-    
+
+    self.inputToolbarView.maxHeight = round(([UIScreen mainScreen].bounds.size.height - keyboardHeight) * 0.7);
+
     // Make the activity indicator follow the keyboard
     // At runtime, this creates a smooth animation
     CGPoint activityIndicatorCenter = self.activityIndicator.center;
@@ -1200,6 +1224,14 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     titleView.delegate = self;
     titleView.mxRoom = self.roomDataSource.room;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:titleView];
+    
+    if ([titleView isKindOfClass:RoomTitleView.class])
+    {
+        RoomTitleView *roomTitleView = (RoomTitleView*)self.titleView;
+        missedDiscussionsBadgeLabel = roomTitleView.missedDiscussionsBadgeLabel;
+        missedDiscussionsDotView = roomTitleView.dotView;
+        [roomTitleView updateLayoutForOrientation:[UIApplication sharedApplication].statusBarOrientation];
+    }
 
     [self updateViewControllerAppearanceOnRoomDataSourceState];
     
@@ -1276,7 +1308,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     [super destroy];
 }
 
-#pragma mark -
+#pragma mark - Properties
 
 -(void)setActivitiesViewExpanded:(BOOL)activitiesViewExpanded
 {
@@ -1292,6 +1324,20 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
 - (void)setShowMissedDiscussionsBadge:(BOOL)showMissedDiscussionsBadge
 {
     missedDiscussionsBadgeLabel.hidden = !showMissedDiscussionsBadge;
+    missedDiscussionsDotView.hidden = !showMissedDiscussionsBadge;
+}
+
+- (void)setScrollToBottomHidden:(BOOL)scrollToBottomHidden
+{
+    if (_scrollToBottomHidden != scrollToBottomHidden)
+    {
+        _scrollToBottomHidden = scrollToBottomHidden;
+    }
+    
+    [UIView animateWithDuration:.2 animations:^{
+        self.scrollToBottomBadgeLabel.alpha = (scrollToBottomHidden || !self.scrollToBottomBadgeLabel.text) ? 0 : 1;
+        self.scrollToBottomButton.alpha = scrollToBottomHidden ? 0 : 1;
+    }];
 }
 
 #pragma mark - Internals
@@ -1392,8 +1438,6 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
             [self.roomDataSource.room.summary setRoomAvatarImageIn:userPictureView];
         }
         
-        missedDiscussionsBadgeLabel = ((RoomTitleView*)self.titleView).missedDiscussionsBadgeLabel;
-
         [self refreshMissedDiscussionsCount:YES];
     }
     
@@ -1442,11 +1486,28 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     }
 }
 
-- (void)setInputToolBarSendMode:(RoomInputToolbarViewSendMode)sendMode
+- (void)setInputToolBarSendMode:(RoomInputToolbarViewSendMode)sendMode forEventWithId:(NSString *)eventId
 {
     if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:[RoomInputToolbarView class]])
     {
         RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
+        if (eventId)
+        {
+            MXEvent *event = [self.roomDataSource eventWithEventId:eventId];
+            MXRoomMember * roomMember = [self.roomDataSource.roomState.members memberWithUserId:event.sender];
+            if (roomMember.displayname.length)
+            {
+                roomInputToolbarView.eventSenderDisplayName = roomMember.displayname;
+            }
+            else
+            {
+                roomInputToolbarView.eventSenderDisplayName = event.sender;
+            }
+        }
+        else
+        {
+            roomInputToolbarView.eventSenderDisplayName = nil;
+        }
         roomInputToolbarView.sendMode = sendMode;
     }
 }
@@ -3135,7 +3196,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
 
 - (void)selectEventWithId:(NSString*)eventId inputToolBarSendMode:(RoomInputToolbarViewSendMode)inputToolBarSendMode showTimestamp:(BOOL)showTimestamp
 {
-    [self setInputToolBarSendMode:inputToolBarSendMode];
+    [self setInputToolBarSendMode:inputToolBarSendMode forEventWithId:eventId];
     
     customizedRoomDataSource.showBubbleDateTimeOnSelection = showTimestamp;
     customizedRoomDataSource.selectedEventId = eventId;
@@ -3146,7 +3207,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
 
 - (void)cancelEventSelection
 {
-    [self setInputToolBarSendMode:RoomInputToolbarViewSendModeSend];
+    [self setInputToolBarSendMode:RoomInputToolbarViewSendModeSend forEventWithId:nil];
     
     if (currentAlert)
     {
@@ -3601,6 +3662,11 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     [self showMediaPickerAnimated:YES];
 }
 
+- (void)roomInputToolbarViewDidTapCancel:(MXKRoomInputToolbarView*)toolbarView
+{
+    [self cancelEventSelection];
+}
+
 #pragma mark - RoomParticipantsViewControllerDelegate
 
 - (void)roomParticipantsViewController:(RoomParticipantsViewController *)roomParticipantsViewController mention:(MXRoomMember*)member
@@ -3645,6 +3711,11 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
                                                                                              inRoom:self.roomDataSource.roomId];
     
     [widgetPicker showInViewController:self];
+}
+
+- (void)scrollToBottomAction:(id)sender
+{
+    [self goBackToLive];
 }
 
 - (IBAction)onButtonPressed:(id)sender
@@ -4360,15 +4431,12 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
                 // Retrieve the unread messages count
                 NSUInteger unreadCount = self.roomDataSource.room.summary.localUnreadEventCount;
                 
-                self.activitiesViewExpanded = YES;
-                [roomActivitiesView displayScrollToBottomIcon:unreadCount onIconTapGesture:^{
-                    
-                    [self goBackToLive];
-                    
-                }];
+                self.scrollToBottomBadgeLabel.text = unreadCount ? [NSString stringWithFormat:@"%lu", unreadCount] : nil;
+                self.scrollToBottomHidden = NO;
             }
             else if (serverNotices.usageLimit && serverNotices.usageLimit.isServerNoticeUsageLimit)
             {
+                self.scrollToBottomHidden = YES;
                 self.activitiesViewExpanded = YES;
                 [roomActivitiesView showResourceUsageLimitNotice:serverNotices.usageLimit onAdminContactTapped:^(NSURL *adminContactURL) {
                     [[UIApplication sharedApplication] vc_open:adminContactURL completionHandler:^(BOOL success) {
@@ -4381,6 +4449,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
             }
             else
             {
+                self.scrollToBottomHidden = YES;
                 self.activitiesViewExpanded = NO;
                 [self refreshTypingNotification];
             }
@@ -4438,16 +4507,15 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
 - (void)refreshMissedDiscussionsCount:(BOOL)force
 {
     // Ignore this action when no room is displayed
-    if (!self.roomDataSource || !missedDiscussionsBadgeLabel)
+    if (!self.roomDataSource || !missedDiscussionsBadgeLabel
+        || [UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPhone
+        || ([[UIScreen mainScreen] nativeBounds].size.height > 2532 && UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)))
     {
+        self.showMissedDiscussionsBadge = NO;
         return;
     }
     
-    if ([UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPhone)
-    {
-        missedDiscussionsBadgeLabel.text = nil;
-        return;
-    }
+    self.showMissedDiscussionsBadge = YES;
     
     NSUInteger highlightCount = 0;
     NSUInteger missedCount = [[AppDelegate theDelegate].masterTabBarController missedDiscussionsCount];
@@ -4494,7 +4562,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
                 missedDiscussionsBadgeLabel.text = [NSString stringWithFormat:@"%tu", missedCount];
             }
             
-            missedDiscussionsBadgeLabel.textColor = highlightCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.tintColor;
+            missedDiscussionsDotView.alpha = highlightCount == 0 ? 0 : 1;
         }
         else
         {

@@ -40,7 +40,7 @@ class BadgeLabel: UILabel {
         }
     }
     
-    @IBInspectable var padding: CGSize = CGSize(width: 10, height: 2) {
+    @IBInspectable var padding: CGSize = CGSize(width: 10, height: 3) {
         didSet {
             invalidateIntrinsicContentSize()
         }
