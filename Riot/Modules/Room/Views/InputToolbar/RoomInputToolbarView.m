@@ -201,7 +201,7 @@ const double RoomInputToolbarViewContextBarHeight = 30;
 
     if (self.mainToolbarHeightConstraint.constant != updatedHeight)
     {
-        [UIView animateWithDuration:.3 animations:^{
+        [UIView animateWithDuration:.15 animations:^{
             self.mainToolbarHeightConstraint.constant = updatedHeight;
             [self layoutIfNeeded];
             
