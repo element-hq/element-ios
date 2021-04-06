@@ -114,7 +114,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
                                footer: nil)
         
         var section3: Section?
-        if RiotSettings.shared.roomCreationScreenForcedEncryptionMode == .none {
+        if RiotSettings.shared.roomCreationScreenAllowEncryptionConfiguration {
             let row_3_0 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.isEncrypted, onValueChanged: { (theSwitch) in
                 self.viewModel.roomCreationParameters.isEncrypted = theSwitch.isOn
             }), text: VectorL10n.createRoomEnableEncryption, accessoryType: .none) {
@@ -126,7 +126,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         }
         
         var section4: Section?
-        if RiotSettings.shared.roomCreationScreenForcedRoomType == .none {
+        if RiotSettings.shared.roomCreationScreenAllowRoomTypeConfiguration {
             let row_4_0 = Row(type: .default, text: VectorL10n.createRoomTypePrivate, accessoryType: viewModel.roomCreationParameters.isPublic ? .none : .checkmark) {
                 self.viewModel.roomCreationParameters.isPublic = false
                 self.updateSections()

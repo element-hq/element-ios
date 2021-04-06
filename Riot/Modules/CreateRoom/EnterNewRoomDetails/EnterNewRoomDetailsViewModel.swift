@@ -39,8 +39,8 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
     
     init(session: MXSession) {
         self.session = session
-        roomCreationParameters.isEncrypted = session.vc_isE2EByDefaultEnabledByHSAdmin() &&  RiotSettings.shared.roomCreationScreenForcedEncryptionMode != .disabled
-        roomCreationParameters.isPublic = RiotSettings.shared.roomCreationScreenForcedRoomType == .publicRoom
+        roomCreationParameters.isEncrypted = session.vc_isE2EByDefaultEnabledByHSAdmin() &&  RiotSettings.shared.roomCreationScreenEncryptionEnabled
+        roomCreationParameters.isPublic = RiotSettings.shared.roomCreationScreenRoomIsPublic
     }
     
     deinit {

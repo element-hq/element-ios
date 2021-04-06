@@ -47,8 +47,10 @@ final class RiotSettings: NSObject {
         static let settingsSecurityScreenShowCryptographyInfo = "settingsSecurityScreenShowCryptographyInfo"
         static let settingsSecurityScreenShowCryptographyExport = "settingsSecurityScreenShowCryptographyExport"
         static let settingsSecurityScreenShowAdvancedUnverifiedDevices = "settingsSecurityScreenShowAdvancedBlacklistUnverifiedDevices"
-        static let roomCreationScreenForcedEncryptionMode = "roomCreationScreenForcedEncryptionMode"
-        static let roomCreationScreenForcedRoomType = "roomCreationScreenForcedRoomType"
+        static let roomCreationScreenAllowEncryptionConfiguration = "roomCreationScreenAllowEncryptionConfiguration"
+        static let roomCreationScreenEncryptionEnabled = "roomCreationScreenEncryptionEnabled"
+        static let roomCreationScreenAllowRoomTypeConfiguration = "roomCreationScreenAllowRoomTypeConfiguration"
+        static let roomCreationScreenRoomIsPublic = "roomCreationScreenRoomIsPublic"
     }
     
     static let shared = RiotSettings()
@@ -239,22 +241,45 @@ final class RiotSettings: NSObject {
     }
     
     // MARK: - Room Creation Screen
-    
-    var roomCreationScreenForcedEncryptionMode: BuildSettings.ForcedEncryptionMode {
+
+    var roomCreationScreenAllowEncryptionConfiguration: Bool {
         get {
-            let rawValue = defaults.string(forKey: UserDefaultsKeys.roomCreationScreenForcedEncryptionMode) ?? BuildSettings.roomCreationScreenForcedEncryptionMode.rawValue
-            return BuildSettings.ForcedEncryptionMode(rawValue: rawValue) ?? .none
+            guard defaults.object(forKey: UserDefaultsKeys.roomCreationScreenAllowEncryptionConfiguration) != nil else {
+                return BuildSettings.roomCreationScreenAllowEncryptionConfiguration
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomCreationScreenAllowEncryptionConfiguration)
         } set {
-            defaults.set(newValue.rawValue, forKey: UserDefaultsKeys.roomCreationScreenForcedEncryptionMode)
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomCreationScreenAllowEncryptionConfiguration)
         }
     }
-
-    var roomCreationScreenForcedRoomType: BuildSettings.ForcedRoomType {
+    var roomCreationScreenEncryptionEnabled: Bool {
         get {
-            let rawValue = defaults.string(forKey: UserDefaultsKeys.roomCreationScreenForcedRoomType) ?? BuildSettings.roomCreationScreenForcedRoomType.rawValue
-            return BuildSettings.ForcedRoomType(rawValue: rawValue) ?? .none
+            guard defaults.object(forKey: UserDefaultsKeys.roomCreationScreenEncryptionEnabled) != nil else {
+                return BuildSettings.roomCreationScreenEncryptionEnabled
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomCreationScreenEncryptionEnabled)
         } set {
-            defaults.set(newValue.rawValue, forKey: UserDefaultsKeys.roomCreationScreenForcedRoomType)
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomCreationScreenEncryptionEnabled)
+        }
+    }
+    var roomCreationScreenAllowRoomTypeConfiguration: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomCreationScreenAllowRoomTypeConfiguration) != nil else {
+                return BuildSettings.roomCreationScreenAllowRoomTypeConfiguration
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomCreationScreenAllowRoomTypeConfiguration)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomCreationScreenAllowRoomTypeConfiguration)
+        }
+    }
+    var roomCreationScreenRoomIsPublic: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomCreationScreenRoomIsPublic) != nil else {
+                return BuildSettings.roomCreationScreenRoomIsPublic
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomCreationScreenRoomIsPublic)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomCreationScreenRoomIsPublic)
         }
     }
 
