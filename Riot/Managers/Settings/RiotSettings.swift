@@ -27,7 +27,6 @@ final class RiotSettings: NSObject {
         static let identityServerUrlString = "identityserverurl"
         static let enableCrashReport = "enableCrashReport"
         static let enableRageShake = "enableRageShake"
-        static let createConferenceCallsWithJitsi = "createConferenceCallsWithJitsi"
         static let userInterfaceTheme = "userInterfaceTheme"
         static let notificationsShowDecryptedContent = "showDecryptedContent"
         static let pinRoomsWithMissedNotifications = "pinRoomsWithMissedNotif"
@@ -187,14 +186,6 @@ final class RiotSettings: NSObject {
     
     // MARK: Labs
     
-    var createConferenceCallsWithJitsi: Bool {
-        get {
-            return defaults.bool(forKey: UserDefaultsKeys.createConferenceCallsWithJitsi)
-        } set {
-            defaults.set(newValue, forKey: UserDefaultsKeys.createConferenceCallsWithJitsi)
-        }
-    }
-
     // MARK: Calls
 
     /// Indicate if `allowStunServerFallback` settings has been set once.

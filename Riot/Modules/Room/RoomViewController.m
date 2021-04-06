@@ -3616,9 +3616,8 @@ NSNotificationName const RoomViewControllerViewDidDisappearNotification = @"Room
         [[AppDelegate theDelegate].callPresenter displayJitsiCallWithWidget:jitsiWidget];
     }
     
-    // If enabled, create the conf using jitsi widget and open it directly
-    else if (RiotSettings.shared.createConferenceCallsWithJitsi
-             && self.roomDataSource.room.summary.membersCount.joined > 2)
+    // Create the conf using jitsi widget and open it directly
+    else if (self.roomDataSource.room.summary.membersCount.joined > 2)
     {
         [self startActivityIndicator];
         

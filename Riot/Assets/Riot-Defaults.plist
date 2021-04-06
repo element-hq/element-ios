@@ -20,8 +20,6 @@
 	<false/>
 	<key>syncLocalContacts</key>
 	<false/>
-	<key>createConferenceCallsWithJitsi</key>
-	<true/>
 	<key>enableRageShake</key>
 	<true/>
 	<key>maxAllowedMediaCacheSize</key>

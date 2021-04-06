@@ -142,11 +142,6 @@ enum
 
 enum
 {
-    LABS_USE_JITSI_WIDGET_INDEX = 0,
-};
-
-enum
-{
     SECURITY_BUTTON_INDEX = 0,
 };
 
@@ -480,9 +475,11 @@ TableViewSectionsDelegate>
     if (BuildSettings.settingsScreenShowLabSettings)
     {
         Section *sectionLabs = [Section sectionWithTag:SECTION_TAG_LABS];
-        [sectionLabs addRowWithTag:LABS_USE_JITSI_WIDGET_INDEX];
         sectionLabs.headerTitle = NSLocalizedStringFromTable(@"settings_labs", @"Vector", nil);
-        [tmpSections addObject:sectionLabs];
+        if (sectionLabs.hasAnyRows)
+        {
+            [tmpSections addObject:sectionLabs];
+        }
     }
     
     if ([groupsDataSource numberOfSectionsInTableView:self.tableView] && groupsDataSource.joinedGroupsSection != -1)
@@ -2244,18 +2241,7 @@ TableViewSectionsDelegate>
     }
     else if (section == SECTION_TAG_LABS)
     {
-        if (row == LABS_USE_JITSI_WIDGET_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_create_conference_with_jitsi", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.createConferenceCallsWithJitsi;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleJitsiForConference:) forControlEvents:UIControlEventTouchUpInside];
-
-            cell = labelAndSwitchCell;
-        }
+        
     }
     else if (section == SECTION_TAG_FLAIR)
     {
@@ -2941,18 +2927,6 @@ TableViewSectionsDelegate>
         RiotSettings.shared.enableRageShake = switchButton.isOn;
 
         [self updateSections];
-    }
-}
-
-- (void)toggleJitsiForConference:(id)sender
-{
-    if (sender && [sender isKindOfClass:UISwitch.class])
-    {
-        UISwitch *switchButton = (UISwitch*)sender;
-        
-        RiotSettings.shared.createConferenceCallsWithJitsi = switchButton.isOn;
-
-        [self.tableView reloadData];
     }
 }
 
