@@ -32,9 +32,16 @@ class RoomTypingBubbleCell: UITableViewCell {
     // MARK: - members
     
     private var userPictureViews: Array<MXKImageView> = Array()
-    private var typingUsers: Array<MXRoomMember> = Array()
     
     // MARK: - Lifecycle
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        additionalUsersLabel?.textColor = ThemeService.shared().theme.textSecondaryColor
+        dotsView?.highlightedDotColor = ThemeService.shared().theme.textTertiaryColor
+        dotsView?.dotColor = ThemeService.shared().theme.textSecondaryColor
+    }
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -97,7 +104,22 @@ class RoomTypingBubbleCell: UITableViewCell {
             self.contentView.addSubview(pictureView)
         }
         
-        additionalUsersLabel?.text = typingUsers.count <= 4 ? nil : "+\(typingUsers.count - 4)"
+        switch typingUsers.count {
+        case 0:
+            additionalUsersLabel?.text = nil
+        case 1:
+            additionalUsersLabel?.text = firstUserNameFor(typingUsers)
+        default:
+            additionalUsersLabel?.text = VectorL10n.roomMultipleTypingNotification(firstUserNameFor(typingUsers) ?? "")
+        }
         self.setNeedsLayout()
+    }
+    
+    private func firstUserNameFor(_ typingUsers: Array<MXRoomMember>) -> String? {
+        guard let firstUser = typingUsers.first else {
+            return nil
+        }
+        
+        return firstUser.displayname.isEmptyOrNil ? firstUser.userId : firstUser.displayname
     }
 }
