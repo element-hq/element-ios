@@ -195,6 +195,8 @@ final class BuildSettings: NSObject {
     
     static let allowLocalContactsAccess: Bool = true
     
+    static let allowInviteExernalUsers: Bool = true
+    
     // MARK: - Feature Specifics
     
     /// Not allowed pin codes. User won't be able to select one of the pin in the list.
