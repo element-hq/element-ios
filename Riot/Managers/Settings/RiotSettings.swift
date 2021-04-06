@@ -48,7 +48,7 @@ final class RiotSettings: NSObject {
         static let settingsSecurityScreenShowCryptographyExport = "settingsSecurityScreenShowCryptographyExport"
         static let settingsSecurityScreenShowAdvancedUnverifiedDevices = "settingsSecurityScreenShowAdvancedBlacklistUnverifiedDevices"
         static let roomCreationScreenAllowEncryptionConfiguration = "roomCreationScreenAllowEncryptionConfiguration"
-        static let roomCreationScreenEncryptionEnabled = "roomCreationScreenEncryptionEnabled"
+        static let roomCreationScreenRoomIsEncrypted = "roomCreationScreenRoomIsEncrypted"
         static let roomCreationScreenAllowRoomTypeConfiguration = "roomCreationScreenAllowRoomTypeConfiguration"
         static let roomCreationScreenRoomIsPublic = "roomCreationScreenRoomIsPublic"
     }
@@ -252,14 +252,14 @@ final class RiotSettings: NSObject {
             defaults.set(newValue, forKey: UserDefaultsKeys.roomCreationScreenAllowEncryptionConfiguration)
         }
     }
-    var roomCreationScreenEncryptionEnabled: Bool {
+    var roomCreationScreenRoomIsEncrypted: Bool {
         get {
-            guard defaults.object(forKey: UserDefaultsKeys.roomCreationScreenEncryptionEnabled) != nil else {
-                return BuildSettings.roomCreationScreenEncryptionEnabled
+            guard defaults.object(forKey: UserDefaultsKeys.roomCreationScreenRoomIsEncrypted) != nil else {
+                return BuildSettings.roomCreationScreenRoomIsEncrypted
             }
-            return defaults.bool(forKey: UserDefaultsKeys.roomCreationScreenEncryptionEnabled)
+            return defaults.bool(forKey: UserDefaultsKeys.roomCreationScreenRoomIsEncrypted)
         } set {
-            defaults.set(newValue, forKey: UserDefaultsKeys.roomCreationScreenEncryptionEnabled)
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomCreationScreenRoomIsEncrypted)
         }
     }
     var roomCreationScreenAllowRoomTypeConfiguration: Bool {

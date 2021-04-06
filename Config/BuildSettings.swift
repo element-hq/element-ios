@@ -244,7 +244,7 @@ final class BuildSettings: NSObject {
     // MARK: - Room Creation Screen
     
     static let roomCreationScreenAllowEncryptionConfiguration: Bool = true
-    static let roomCreationScreenEncryptionEnabled: Bool = true
+    static let roomCreationScreenRoomIsEncrypted: Bool = true
     static let roomCreationScreenAllowRoomTypeConfiguration: Bool = true
     static let roomCreationScreenRoomIsPublic: Bool = false
 
