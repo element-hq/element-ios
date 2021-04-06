@@ -113,38 +113,50 @@ final class EnterNewRoomDetailsViewController: UIViewController {
                                rows: [row_2_0],
                                footer: nil)
         
-        let row_3_0 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.isEncrypted, onValueChanged: { (theSwitch) in
-            self.viewModel.roomCreationParameters.isEncrypted = theSwitch.isOn
-        }), text: VectorL10n.createRoomEnableEncryption, accessoryType: .none) {
-            // no-op
-        }
-        let section3 = Section(header: VectorL10n.createRoomSectionHeaderEncryption,
-                               rows: [row_3_0],
-                               footer: VectorL10n.createRoomSectionFooterEncryption)
-        
-        let row_4_0 = Row(type: .default, text: VectorL10n.createRoomTypePrivate, accessoryType: viewModel.roomCreationParameters.isPublic ? .none : .checkmark) {
-            self.viewModel.roomCreationParameters.isPublic = false
-            self.updateSections()
-        }
-        let row_4_1 = Row(type: .default, text: VectorL10n.createRoomTypePublic, accessoryType: viewModel.roomCreationParameters.isPublic ? .checkmark : .none) {
-            self.viewModel.roomCreationParameters.isPublic = true
-            self.updateSections()
-            //  scroll bottom to show user new fields
-            DispatchQueue.main.async {
-                self.mainTableView.scrollToRow(at: IndexPath(row: 0, section: 6), at: .bottom, animated: true)
+        var section3: Section?
+        if RiotSettings.shared.roomCreationScreenAllowEncryptionConfiguration {
+            let row_3_0 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.isEncrypted, onValueChanged: { (theSwitch) in
+                self.viewModel.roomCreationParameters.isEncrypted = theSwitch.isOn
+            }), text: VectorL10n.createRoomEnableEncryption, accessoryType: .none) {
+                // no-op
             }
+            section3 = Section(header: VectorL10n.createRoomSectionHeaderEncryption,
+                                   rows: [row_3_0],
+                                   footer: VectorL10n.createRoomSectionFooterEncryption)
         }
-        let section4 = Section(header: VectorL10n.createRoomSectionHeaderType,
-                               rows: [row_4_0, row_4_1],
-                               footer: VectorL10n.createRoomSectionFooterType)
+        
+        var section4: Section?
+        if RiotSettings.shared.roomCreationScreenAllowRoomTypeConfiguration {
+            let row_4_0 = Row(type: .default, text: VectorL10n.createRoomTypePrivate, accessoryType: viewModel.roomCreationParameters.isPublic ? .none : .checkmark) {
+                self.viewModel.roomCreationParameters.isPublic = false
+                self.updateSections()
+            }
+            let row_4_1 = Row(type: .default, text: VectorL10n.createRoomTypePublic, accessoryType: viewModel.roomCreationParameters.isPublic ? .checkmark : .none) {
+                self.viewModel.roomCreationParameters.isPublic = true
+                self.updateSections()
+                //  scroll bottom to show user new fields
+                DispatchQueue.main.async {
+                    self.mainTableView.scrollToRow(at: IndexPath(row: 0, section: 6), at: .bottom, animated: true)
+                }
+            }
+            section4 = Section(header: VectorL10n.createRoomSectionHeaderType,
+                                   rows: [row_4_0, row_4_1],
+                                   footer: VectorL10n.createRoomSectionFooterType)
+        }
         
         var tmpSections: [Section] = [
             section0,
             section1,
-            section2,
-            section3,
-            section4
+            section2
         ]
+        
+        if let section3 = section3 {
+            tmpSections.append(section3)
+        }
+        
+        if let section4 = section4 {
+            tmpSections.append(section4)
+        }
         
         if viewModel.roomCreationParameters.isPublic {
             let row_5_0 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.showInDirectory, onValueChanged: { (theSwitch) in
