@@ -51,6 +51,7 @@ final class RiotSettings: NSObject {
         static let roomCreationScreenRoomIsEncrypted = "roomCreationScreenRoomIsEncrypted"
         static let roomCreationScreenAllowRoomTypeConfiguration = "roomCreationScreenAllowRoomTypeConfiguration"
         static let roomCreationScreenRoomIsPublic = "roomCreationScreenRoomIsPublic"
+        static let allowInviteExernalUsers = "allowInviteExernalUsers"
     }
     
     static let shared = RiotSettings()
@@ -76,6 +77,7 @@ final class RiotSettings: NSObject {
         defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowCryptographyInfo)
         defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowCryptographyExport)
         defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowAdvancedUnverifiedDevices)
+        defaults.removeObject(forKey: UserDefaultsKeys.allowInviteExernalUsers)
     }
     
     // MARK: Servers
@@ -280,6 +282,19 @@ final class RiotSettings: NSObject {
             return defaults.bool(forKey: UserDefaultsKeys.roomCreationScreenRoomIsPublic)
         } set {
             defaults.set(newValue, forKey: UserDefaultsKeys.roomCreationScreenRoomIsPublic)
+        }
+    }
+
+    // MARK: Features
+
+    var allowInviteExernalUsers: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.allowInviteExernalUsers) != nil else {
+                return BuildSettings.allowInviteExernalUsers
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.allowInviteExernalUsers)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.allowInviteExernalUsers)
         }
     }
 
