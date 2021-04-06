@@ -950,6 +950,10 @@
     }];
 }
 
+- (void)resetTypingNotification {
+    self.currentTypingUsers = nil;
+}
+
 #pragma - Accessibility
 
 - (void)setupAccessibilityForCell:(MXKRoomBubbleTableViewCell *)cell withCellData:(RoomBubbleCellData*)cellData

@@ -98,6 +98,8 @@
                                      success:(void(^)(void))success
                                      failure:(void(^)(NSError*))failure;
 
+- (void)resetTypingNotification;
+
 @end
 
 @protocol RoomDataSourceDelegate <MXKDataSourceDelegate>

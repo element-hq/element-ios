@@ -511,6 +511,12 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
         [self refreshRoomInputToolbar];
     }
     
+    // Reset typing notification in order to remove the allocated space
+    if ([self.roomDataSource isKindOfClass:RoomDataSource.class])
+    {
+        [((RoomDataSource*)self.roomDataSource) resetTypingNotification];
+    }
+
     [self listenTypingNotifications];
     [self listenCallNotifications];
     [self listenWidgetNotifications];
@@ -1338,6 +1344,17 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
         _scrollToBottomHidden = scrollToBottomHidden;
     }
     
+    if (!_scrollToBottomHidden && [self.roomDataSource isKindOfClass:RoomDataSource.class])
+    {
+        RoomDataSource *roomDataSource = (RoomDataSource *) self.roomDataSource;
+        if (roomDataSource.currentTypingUsers && !roomDataSource.currentTypingUsers.count)
+        {
+            [roomDataSource resetTypingNotification];
+            NSInteger count = [roomDataSource tableView:self.bubblesTableView numberOfRowsInSection:0];
+            [self.bubblesTableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:count inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+        }
+    }
+
     [UIView animateWithDuration:.2 animations:^{
         self.scrollToBottomBadgeLabel.alpha = (scrollToBottomHidden || !self.scrollToBottomBadgeLabel.text) ? 0 : 1;
         self.scrollToBottomButton.alpha = scrollToBottomHidden ? 0 : 1;
