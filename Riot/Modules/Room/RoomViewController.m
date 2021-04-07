@@ -286,7 +286,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
 {
     [super finalizeInit];
     
-    self.resizeComposerAnimationDuration = 0.15;
+    self.resizeComposerAnimationDuration = 0.05;
     
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;

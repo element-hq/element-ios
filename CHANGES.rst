@@ -10,6 +10,7 @@ Changes to be released in next version
  * Possibility to lock some room creation parameters from settings (#4181)
  * Enable / disable external friends invite (#4173)
  * Composer update - UI enhancements (#4133)
+ * Increase grow/shrink animation speed in new composer (#4187)
 
 🐛 Bugfix
  * if you start typing while the new attachment sending mode is on, the send button appears (#4155)
