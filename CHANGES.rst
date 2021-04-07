@@ -2,15 +2,20 @@ Changes to be released in next version
 =================================================
 
 ✨ Features
- * 
+ * Composer Update - Typing and sending a message (#4085)
+ * Switching composer between text mode & action mode (#4087)
 
 🙌 Improvements
  * Make the application settings more configurable (#4171)
  * Possibility to lock some room creation parameters from settings (#4181)
  * Enable / disable external friends invite (#4173)
+ * Composer update - UI enhancements (#4133)
 
 🐛 Bugfix
- * 
+ * if you start typing while the new attachment sending mode is on, the send button appears (#4155)
+ * The final frames of the appearance animation of the new composer buttons are missing (#4160)
+ * Crash in [RoomViewController setupActions] (#4162)
+ * too much vertical whitespace when replying (#4164)
 
 ⚠️ API Changes
  * 
