@@ -22,7 +22,12 @@ import JitsiMeetSDK
 enum JitsiServiceError: Error {
     case widgetContentCreationFailed
     case emptyResponse
+    case noWellKnown
     case unknown
+}
+
+private enum HTTPStatusCodes {
+    static let notFound: Int = 404
 }
 
 /// JitsiService enables to abstract and configure Jitsi Meet SDK
@@ -120,6 +125,11 @@ final class JitsiService: NSObject {
                 completion(.failure(error))
             }
         }, failure: { (error) in
+            if let urlResponse = MXHTTPOperation.urlResponse(fromError: error),
+               urlResponse.statusCode == HTTPStatusCodes.notFound {
+                completion(.failure(JitsiServiceError.noWellKnown))
+                return
+            }
             completion(.failure(error ?? JitsiServiceError.unknown))
         })
     }
@@ -127,20 +137,37 @@ final class JitsiService: NSObject {
     /// Create Jitsi widget content
     @discardableResult
     func createJitsiWidgetContent(jitsiServerURL: URL, roomID: String, isAudioOnly: Bool, success: @escaping ([String: Any]) -> Void, failure: @escaping ((Error) -> Void)) -> MXHTTPOperation? {
+        guard let serverDomain = jitsiServerURL.host else {
+            failure(JitsiServiceError.widgetContentCreationFailed)
+            return nil
+        }
+        
         return self.getWellKnown(for: jitsiServerURL) { (result) in
+            var continueOperation: Bool = false
+            var authType: JitsiAuthenticationType?
+            
             switch result {
             case .success(let jitsiWellKnown):
-                if let serverDomain = jitsiServerURL.host, let widgetContent = self.createJitsiWidgetContent(serverDomain: serverDomain,
-                                                                                                             authenticationType: jitsiWellKnown.authenticationType,
-                                                                                                             roomID: roomID,
-                                                                                                             isAudioOnly: isAudioOnly) {
-                    success(widgetContent)
-                } else {
-                    failure(JitsiServiceError.widgetContentCreationFailed)
-                }
+                authType = jitsiWellKnown.authenticationType
+                continueOperation = true
             case .failure(let error):
                 NSLog("[JitsiService] Fail to get Jitsi Well Known with error: \(error)")
-                failure(error)
+                if let error = error as? JitsiServiceError, error == .noWellKnown {
+                    //  no well-known, continue with no auth
+                    continueOperation = true
+                } else {
+                    failure(error)
+                }
+            }
+            
+            if continueOperation,
+               let widgetContent = self.createJitsiWidgetContent(serverDomain: serverDomain,
+                                                                 authenticationType: authType,
+                                                                 roomID: roomID,
+                                                                 isAudioOnly: isAudioOnly) {
+                success(widgetContent)
+            } else {
+                failure(JitsiServiceError.widgetContentCreationFailed)
             }
         }
     }
