@@ -393,7 +393,7 @@ const double RoomInputToolbarViewContextBarHeight = 30;
             }];
         }
         
-        [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:0.45 initialSpringVelocity:5 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:0.45 initialSpringVelocity:7 options:UIViewAnimationOptionCurveEaseIn animations:^{
             self.attachMediaButton.transform = actionMenuOpened ? CGAffineTransformMakeRotation(M_PI * 3 / 4) : CGAffineTransformIdentity;
         } completion:^(BOOL finished) {
         }];
