@@ -1721,6 +1721,10 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
 }
 
 - (void)setupActions {
+    if (![self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+        return;
+    }
+    
     RoomInputToolbarView *roomInputView = ((RoomInputToolbarView *) self.inputToolbarView);
     __weak typeof(self) weakSelf = self;
     roomInputView.actionsBar.actionItems = @[
@@ -1728,7 +1732,9 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
             if (weakSelf)
             {
                 typeof(self) self = weakSelf;
-                roomInputView.actionMenuOpened = NO;
+                if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                    ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+                }
                 [self showCameraControllerAnimated:YES];
             }
         }],
@@ -1736,7 +1742,9 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
             if (weakSelf)
             {
                 typeof(self) self = weakSelf;
-                roomInputView.actionMenuOpened = NO;
+                if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                    ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+                }
                 [self showMediaPickerAnimated:YES];
             }
         }],
@@ -1744,7 +1752,9 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
             if (weakSelf)
             {
                 typeof(self) self = weakSelf;
-                roomInputView.actionMenuOpened = NO;
+                if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                    ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+                }
                 [self roomInputToolbarViewPresentStickerPicker];
             }
         }],
@@ -1752,7 +1762,9 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
             if (weakSelf)
             {
                 typeof(self) self = weakSelf;
-                roomInputView.actionMenuOpened = NO;
+                if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                    ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+                }
                 [self roomInputToolbarViewDidTapFileUpload];
             }
         }],
