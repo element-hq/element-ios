@@ -46,7 +46,7 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
         self.rootRouter = router
         self.session = session
         
-        let splitViewController = UISplitViewController()
+        let splitViewController = RiotSplitViewController()
         splitViewController.preferredDisplayMode = .allVisible
         self.splitViewController = splitViewController
     }
