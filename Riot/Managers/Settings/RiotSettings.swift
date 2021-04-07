@@ -46,6 +46,11 @@ final class RiotSettings: NSObject {
         static let settingsSecurityScreenShowCryptographyInfo = "settingsSecurityScreenShowCryptographyInfo"
         static let settingsSecurityScreenShowCryptographyExport = "settingsSecurityScreenShowCryptographyExport"
         static let settingsSecurityScreenShowAdvancedUnverifiedDevices = "settingsSecurityScreenShowAdvancedBlacklistUnverifiedDevices"
+        static let roomCreationScreenAllowEncryptionConfiguration = "roomCreationScreenAllowEncryptionConfiguration"
+        static let roomCreationScreenRoomIsEncrypted = "roomCreationScreenRoomIsEncrypted"
+        static let roomCreationScreenAllowRoomTypeConfiguration = "roomCreationScreenAllowRoomTypeConfiguration"
+        static let roomCreationScreenRoomIsPublic = "roomCreationScreenRoomIsPublic"
+        static let allowInviteExernalUsers = "allowInviteExernalUsers"
     }
     
     static let shared = RiotSettings()
@@ -71,6 +76,7 @@ final class RiotSettings: NSObject {
         defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowCryptographyInfo)
         defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowCryptographyExport)
         defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowAdvancedUnverifiedDevices)
+        defaults.removeObject(forKey: UserDefaultsKeys.allowInviteExernalUsers)
     }
     
     // MARK: Servers
@@ -227,6 +233,62 @@ final class RiotSettings: NSObject {
         }
     }
     
+    // MARK: - Room Creation Screen
+
+    var roomCreationScreenAllowEncryptionConfiguration: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomCreationScreenAllowEncryptionConfiguration) != nil else {
+                return BuildSettings.roomCreationScreenAllowEncryptionConfiguration
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomCreationScreenAllowEncryptionConfiguration)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomCreationScreenAllowEncryptionConfiguration)
+        }
+    }
+    var roomCreationScreenRoomIsEncrypted: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomCreationScreenRoomIsEncrypted) != nil else {
+                return BuildSettings.roomCreationScreenRoomIsEncrypted
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomCreationScreenRoomIsEncrypted)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomCreationScreenRoomIsEncrypted)
+        }
+    }
+    var roomCreationScreenAllowRoomTypeConfiguration: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomCreationScreenAllowRoomTypeConfiguration) != nil else {
+                return BuildSettings.roomCreationScreenAllowRoomTypeConfiguration
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomCreationScreenAllowRoomTypeConfiguration)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomCreationScreenAllowRoomTypeConfiguration)
+        }
+    }
+    var roomCreationScreenRoomIsPublic: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomCreationScreenRoomIsPublic) != nil else {
+                return BuildSettings.roomCreationScreenRoomIsPublic
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomCreationScreenRoomIsPublic)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomCreationScreenRoomIsPublic)
+        }
+    }
+
+    // MARK: Features
+
+    var allowInviteExernalUsers: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.allowInviteExernalUsers) != nil else {
+                return BuildSettings.allowInviteExernalUsers
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.allowInviteExernalUsers)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.allowInviteExernalUsers)
+        }
+    }
+
     // MARK: General Settings
     
     var settingsScreenShowChangePassword: Bool {

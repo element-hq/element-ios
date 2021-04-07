@@ -133,6 +133,12 @@
 
 - (void)setupInviteFriendsHeaderView
 {
+    if (!RiotSettings.shared.allowInviteExernalUsers)
+    {
+        self.contactsTableView.tableHeaderView = nil;
+        return;
+    }
+    
     InviteFriendsHeaderView *inviteFriendsHeaderView = [InviteFriendsHeaderView instantiate];
     inviteFriendsHeaderView.delegate = self;
     self.contactsTableView.tableHeaderView = inviteFriendsHeaderView;
