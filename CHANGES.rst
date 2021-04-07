@@ -11,6 +11,7 @@ Changes to be released in next version
  * Possibility to lock some room creation parameters from settings (#4181)
  * Enable / disable external friends invite (#4173)
  * Composer update - UI enhancements (#4133)
+ * Increase grow/shrink animation speed in new composer (#4187)
  * Limit typing notifications timeline jumps (#4176)
  * Consider displaying names in typing notifications (#4175)
 
@@ -19,6 +20,7 @@ Changes to be released in next version
  * The final frames of the appearance animation of the new composer buttons are missing (#4160)
  * Crash in [RoomViewController setupActions] (#4162)
  * too much vertical whitespace when replying (#4164)
+ * Black theme uses dark background for composer (#4192)
  * vertical layout of typing notifs can go wonky (#4159)
  * Crash in [RoomViewController refreshTypingNotification] (#4161)
 
