@@ -228,10 +228,6 @@ class CallPresenter: NSObject {
             //  there is no active Jitsi call
             return
         }
-        guard let uuid = self.jitsiCalls.first(where: { $0.value.widgetId == widget.widgetId })?.key else {
-            //  this Jitsi call is not managed by this class
-            return
-        }
         
         if let inBarCallVC = inBarCallVC {
             dismissCallBar(for: inBarCallVC)
@@ -243,6 +239,11 @@ class CallPresenter: NSObject {
         }
         
         jitsiVC = nil
+        
+        guard let uuid = self.jitsiCalls.first(where: { $0.value.widgetId == widget.widgetId })?.key else {
+            //  this Jitsi call is not managed by this class
+            return
+        }
         
         let endCallAction = CXEndCallAction(call: uuid)
         let transaction = CXTransaction(action: endCallAction)
@@ -309,6 +310,15 @@ class CallPresenter: NSObject {
                 }
             }
         } else {
+            if let temporaryJitsiVC = temporaryJitsiVC,
+               temporaryJitsiVC.widget.widgetId == widget.widgetId,
+               inBarCallVC == nil {
+                //  the removed widget is for the temporary Jitsi call, remove call bar
+                dismissCallBar(for: temporaryJitsiVC) { [weak self] in
+                    guard let self = self else { return }
+                    self.temporaryJitsiVC = nil
+                }
+            }
             guard let uuid = self.jitsiCalls.first(where: { $0.value.widgetId == widget.widgetId })?.key else {
                 //  this Jitsi call is not managed by this class
                 return
@@ -711,11 +721,23 @@ class CallPresenter: NSObject {
             return
         }
         
+        guard let temporaryJitsiVC = temporaryJitsiVC else {
+            //  no temporary Jitsi call
+            return
+        }
+        
         if let roomDataSource = roomVC.roomDataSource as? RoomDataSource,
-           let jitsiWidget = roomDataSource.jitsiWidget(),
-           let temporaryJitsiVC = temporaryJitsiVC,
-           temporaryJitsiVC.widget.widgetId == jitsiWidget.widgetId,
-           inBarCallVC == nil {
+           let jitsiWidget = roomDataSource.jitsiWidget() {
+            //  there is still an active widget
+            if temporaryJitsiVC.widget.widgetId == jitsiWidget.widgetId,
+               inBarCallVC == nil {
+                dismissCallBar(for: temporaryJitsiVC) { [weak self] in
+                    guard let self = self else { return }
+                    self.temporaryJitsiVC = nil
+                }
+            }
+        } else {
+            //  no active widget, dismiss the temporary Jitsi call
             dismissCallBar(for: temporaryJitsiVC) { [weak self] in
                 guard let self = self else { return }
                 self.temporaryJitsiVC = nil
