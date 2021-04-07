@@ -1520,7 +1520,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
         {
             MXEvent *event = [self.roomDataSource eventWithEventId:eventId];
             MXRoomMember * roomMember = [self.roomDataSource.roomState.members memberWithUserId:event.sender];
-            if (roomMember)
+            if (roomMember.displayname.length)
             {
                 roomInputToolbarView.eventSenderDisplayName = roomMember.displayname;
             }

@@ -37,6 +37,21 @@ final class RiotSettings: NSObject {
         static let hideReviewSessionsAlert = "hideReviewSessionsAlert"
         static let matrixApps = "matrixApps"
         static let showNSFWPublicRooms = "showNSFWPublicRooms"
+        static let settingsScreenShowChangePassword = "settingsScreenShowChangePassword"
+        static let settingsScreenShowInviteFriends = "settingsScreenShowInviteFriends"
+        static let settingsScreenShowEnableStunServerFallback = "settingsScreenShowEnableStunServerFallback"
+        static let settingsSecurityScreenShowSessions = "settingsSecurityScreenShowSessions"
+        static let settingsSecurityScreenShowSetupBackup = "settingsSecurityScreenShowSetupBackup"
+        static let settingsSecurityScreenShowRestoreBackup = "settingsSecurityScreenShowRestoreBackup"
+        static let settingsSecurityScreenShowDeleteBackup = "settingsSecurityScreenShowDeleteBackup"
+        static let settingsSecurityScreenShowCryptographyInfo = "settingsSecurityScreenShowCryptographyInfo"
+        static let settingsSecurityScreenShowCryptographyExport = "settingsSecurityScreenShowCryptographyExport"
+        static let settingsSecurityScreenShowAdvancedUnverifiedDevices = "settingsSecurityScreenShowAdvancedBlacklistUnverifiedDevices"
+        static let roomCreationScreenAllowEncryptionConfiguration = "roomCreationScreenAllowEncryptionConfiguration"
+        static let roomCreationScreenRoomIsEncrypted = "roomCreationScreenRoomIsEncrypted"
+        static let roomCreationScreenAllowRoomTypeConfiguration = "roomCreationScreenAllowRoomTypeConfiguration"
+        static let roomCreationScreenRoomIsPublic = "roomCreationScreenRoomIsPublic"
+        static let allowInviteExernalUsers = "allowInviteExernalUsers"
     }
     
     static let shared = RiotSettings()
@@ -50,6 +65,20 @@ final class RiotSettings: NSObject {
     }()
     
     // MARK: - Public
+    
+    func reset() {
+        defaults.removeObject(forKey: UserDefaultsKeys.settingsScreenShowChangePassword)
+        defaults.removeObject(forKey: UserDefaultsKeys.settingsScreenShowInviteFriends)
+        defaults.removeObject(forKey: UserDefaultsKeys.settingsScreenShowEnableStunServerFallback)
+        defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowSessions)
+        defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowSetupBackup)
+        defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowRestoreBackup)
+        defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowDeleteBackup)
+        defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowCryptographyInfo)
+        defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowCryptographyExport)
+        defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowAdvancedUnverifiedDevices)
+        defaults.removeObject(forKey: UserDefaultsKeys.allowInviteExernalUsers)
+    }
     
     // MARK: Servers
     
@@ -210,6 +239,165 @@ final class RiotSettings: NSObject {
             return defaults.bool(forKey: UserDefaultsKeys.matrixApps)
         } set {
             defaults.set(newValue, forKey: UserDefaultsKeys.matrixApps)
+        }
+    }
+    
+    // MARK: - Room Creation Screen
+
+    var roomCreationScreenAllowEncryptionConfiguration: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomCreationScreenAllowEncryptionConfiguration) != nil else {
+                return BuildSettings.roomCreationScreenAllowEncryptionConfiguration
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomCreationScreenAllowEncryptionConfiguration)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomCreationScreenAllowEncryptionConfiguration)
+        }
+    }
+    var roomCreationScreenRoomIsEncrypted: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomCreationScreenRoomIsEncrypted) != nil else {
+                return BuildSettings.roomCreationScreenRoomIsEncrypted
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomCreationScreenRoomIsEncrypted)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomCreationScreenRoomIsEncrypted)
+        }
+    }
+    var roomCreationScreenAllowRoomTypeConfiguration: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomCreationScreenAllowRoomTypeConfiguration) != nil else {
+                return BuildSettings.roomCreationScreenAllowRoomTypeConfiguration
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomCreationScreenAllowRoomTypeConfiguration)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomCreationScreenAllowRoomTypeConfiguration)
+        }
+    }
+    var roomCreationScreenRoomIsPublic: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomCreationScreenRoomIsPublic) != nil else {
+                return BuildSettings.roomCreationScreenRoomIsPublic
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomCreationScreenRoomIsPublic)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomCreationScreenRoomIsPublic)
+        }
+    }
+
+    // MARK: Features
+
+    var allowInviteExernalUsers: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.allowInviteExernalUsers) != nil else {
+                return BuildSettings.allowInviteExernalUsers
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.allowInviteExernalUsers)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.allowInviteExernalUsers)
+        }
+    }
+
+    // MARK: General Settings
+    
+    var settingsScreenShowChangePassword: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.settingsScreenShowChangePassword) != nil else {
+                return BuildSettings.settingsScreenShowChangePassword
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.settingsScreenShowChangePassword)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.settingsScreenShowChangePassword)
+        }
+    }
+    var settingsScreenShowInviteFriends: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.settingsScreenShowInviteFriends) != nil else {
+                return BuildSettings.settingsScreenShowInviteFriends
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.settingsScreenShowInviteFriends)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.settingsScreenShowInviteFriends)
+        }
+    }
+    var settingsScreenShowEnableStunServerFallback: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.settingsScreenShowInviteFriends) != nil else {
+                return BuildSettings.settingsScreenShowEnableStunServerFallback
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.settingsScreenShowEnableStunServerFallback)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.settingsScreenShowEnableStunServerFallback)
+        }
+    }
+    var settingsSecurityScreenShowSessions: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.settingsSecurityScreenShowSessions) != nil else {
+                return BuildSettings.settingsSecurityScreenShowSessions
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.settingsSecurityScreenShowSessions)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.settingsSecurityScreenShowSessions)
+        }
+    }
+    var settingsSecurityScreenShowSetupBackup: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.settingsSecurityScreenShowSetupBackup) != nil else {
+                return BuildSettings.settingsSecurityScreenShowSetupBackup
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.settingsSecurityScreenShowSetupBackup)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.settingsSecurityScreenShowSetupBackup)
+        }
+    }
+    var settingsSecurityScreenShowRestoreBackup: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.settingsSecurityScreenShowRestoreBackup) != nil else {
+                return BuildSettings.settingsSecurityScreenShowRestoreBackup
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.settingsSecurityScreenShowRestoreBackup)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.settingsSecurityScreenShowRestoreBackup)
+        }
+    }
+    var settingsSecurityScreenShowDeleteBackup: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.settingsSecurityScreenShowDeleteBackup) != nil else {
+                return BuildSettings.settingsSecurityScreenShowDeleteBackup
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.settingsSecurityScreenShowDeleteBackup)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.settingsSecurityScreenShowDeleteBackup)
+        }
+    }
+    var settingsSecurityScreenShowCryptographyInfo: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.settingsSecurityScreenShowCryptographyInfo) != nil else {
+                return BuildSettings.settingsSecurityScreenShowCryptographyInfo
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.settingsSecurityScreenShowCryptographyInfo)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.settingsSecurityScreenShowCryptographyInfo)
+        }
+    }
+    var settingsSecurityScreenShowCryptographyExport: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.settingsSecurityScreenShowCryptographyExport) != nil else {
+                return BuildSettings.settingsSecurityScreenShowCryptographyExport
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.settingsSecurityScreenShowCryptographyExport)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.settingsSecurityScreenShowCryptographyExport)
+        }
+    }
+    var settingsSecurityScreenShowAdvancedUnverifiedDevices: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.settingsSecurityScreenShowAdvancedUnverifiedDevices) != nil else {
+                return BuildSettings.settingsSecurityScreenShowAdvancedUnverifiedDevices
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.settingsSecurityScreenShowAdvancedUnverifiedDevices)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.settingsSecurityScreenShowAdvancedUnverifiedDevices)
         }
     }
 }
