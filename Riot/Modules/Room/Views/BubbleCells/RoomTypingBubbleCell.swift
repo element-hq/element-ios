@@ -82,7 +82,7 @@ class RoomTypingBubbleCell: UITableViewCell {
     
     // MARK: - Business methods
     
-    func updateTypingUsers(_ typingUsers: Array<MXRoomMember>, mediaManager: MXMediaManager) {
+    func updateTypingUsers(_ typingUsers: Array<TypingUserInfo>, mediaManager: MXMediaManager) {
         for pictureView in userPictureViews {
             pictureView.removeFromSuperview()
         }
@@ -97,7 +97,7 @@ class RoomTypingBubbleCell: UITableViewCell {
             pictureView.layer.masksToBounds = true
             pictureView.layer.cornerRadius = pictureView.bounds.midX
             
-            let defaultavatarImage = AvatarGenerator.generateAvatar(forMatrixItem: user.userId, withDisplayName: user.displayname)
+            let defaultavatarImage = AvatarGenerator.generateAvatar(forMatrixItem: user.userId, withDisplayName: user.displayName)
             pictureView.setImageURI(user.avatarUrl, withType: nil, andImageOrientation: .up, toFitViewSize: pictureView.bounds.size, with: MXThumbnailingMethodCrop, previewImage: defaultavatarImage, mediaManager: mediaManager)
             
             userPictureViews.append(pictureView)
@@ -115,11 +115,11 @@ class RoomTypingBubbleCell: UITableViewCell {
         self.setNeedsLayout()
     }
     
-    private func firstUserNameFor(_ typingUsers: Array<MXRoomMember>) -> String? {
+    private func firstUserNameFor(_ typingUsers: Array<TypingUserInfo>) -> String? {
         guard let firstUser = typingUsers.first else {
             return nil
         }
         
-        return firstUser.displayname.isEmptyOrNil ? firstUser.userId : firstUser.displayname
+        return firstUser.displayName.isEmptyOrNil ? firstUser.userId : firstUser.displayName
     }
 }

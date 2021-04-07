@@ -124,6 +124,8 @@
 #import "SettingsViewController.h"
 #import "SecurityViewController.h"
 
+#import "TypingUserInfo.h"
+
 #import "Riot-Swift.h"
 
 NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNotification";
@@ -4134,8 +4136,17 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     for (NSUInteger i = 0 ; i < currentTypingUsers.count ; i++) {
         NSString *userId = currentTypingUsers[i];
         MXRoomMember* member = [self.roomDataSource.roomState.members memberWithUserId:userId];
-        [typingUsers addObject:member];
-        needsUpdate = needsUpdate || member.userId != ((MXRoomMember *) roomDataSource.currentTypingUsers[i]).userId;
+        TypingUserInfo *userInfo;
+        if (member)
+        {
+            userInfo = [[TypingUserInfo alloc] initWithMember: member];
+        }
+        else
+        {
+            userInfo = [[TypingUserInfo alloc] initWithUserId: userId];
+        }
+        [typingUsers addObject:userInfo];
+        needsUpdate = needsUpdate || userInfo.userId != ((MXRoomMember *) roomDataSource.currentTypingUsers[i]).userId;
     }
 
     if (needsUpdate)
