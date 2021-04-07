@@ -16,6 +16,7 @@ Changes to be released in next version
  * The final frames of the appearance animation of the new composer buttons are missing (#4160)
  * Crash in [RoomViewController setupActions] (#4162)
  * too much vertical whitespace when replying (#4164)
+ * Black theme uses dark background for composer (#4192)
 
 ⚠️ API Changes
  * 

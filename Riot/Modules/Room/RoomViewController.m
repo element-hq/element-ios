@@ -465,7 +465,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     self.scrollToBottomButton.layer.shadowRadius = 6;
     self.scrollToBottomButton.layer.shadowOffset = CGSizeMake(0, 4);
 
-    self.inputBackgroundView.backgroundColor = [ThemeService.shared.theme.searchBackgroundColor colorWithAlphaComponent:0.98];
+    self.inputBackgroundView.backgroundColor = [ThemeService.shared.theme.backgroundColor colorWithAlphaComponent:0.98];
     
     if ([ThemeService.shared.themeId isEqualToString:@"light"])
     {
