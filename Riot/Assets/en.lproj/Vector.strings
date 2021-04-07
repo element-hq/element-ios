@@ -828,12 +828,12 @@ Tap the + to start adding people.";
 "event_formatter_call_you_declined" = "You declined this call";
 "event_formatter_call_you_missed" = "You missed this call";
 "event_formatter_call_connection_failed" = "Connection failed";
-"event_formatter_call_back" = "Call back";
-"event_formatter_call_decline" = "Decline";
-"event_formatter_call_answer" = "Answer";
-"event_formatter_call_retry" = "Retry";
+"event_formatter_call_back" = "CALL BACK";
+"event_formatter_call_decline" = "DECLINE";
+"event_formatter_call_answer" = "ANSWER";
+"event_formatter_call_retry" = "RETRY";
 "event_formatter_group_call" = "Group call";
-"event_formatter_group_call_join" = "Join";
+"event_formatter_group_call_join" = "JOIN";
 "event_formatter_group_call_incoming" = "%@ in %@";
 
 // Events formatter with you

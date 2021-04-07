@@ -1242,11 +1242,11 @@ internal enum VectorL10n {
   internal static var errorUserAlreadyLoggedIn: String { 
     return VectorL10n.tr("Vector", "error_user_already_logged_in") 
   }
-  /// Answer
+  /// ANSWER
   internal static var eventFormatterCallAnswer: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_answer") 
   }
-  /// Call back
+  /// CALL BACK
   internal static var eventFormatterCallBack: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_back") 
   }
@@ -1254,7 +1254,7 @@ internal enum VectorL10n {
   internal static var eventFormatterCallConnectionFailed: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_connection_failed") 
   }
-  /// Decline
+  /// DECLINE
   internal static var eventFormatterCallDecline: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_decline") 
   }
@@ -1262,7 +1262,7 @@ internal enum VectorL10n {
   internal static func eventFormatterCallHasEnded(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_call_has_ended", p1)
   }
-  /// Retry
+  /// RETRY
   internal static var eventFormatterCallRetry: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_retry") 
   }
@@ -1298,7 +1298,7 @@ internal enum VectorL10n {
   internal static func eventFormatterGroupCallIncoming(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_group_call_incoming", p1, p2)
   }
-  /// Join
+  /// JOIN
   internal static var eventFormatterGroupCallJoin: String { 
     return VectorL10n.tr("Vector", "event_formatter_group_call_join") 
   }
