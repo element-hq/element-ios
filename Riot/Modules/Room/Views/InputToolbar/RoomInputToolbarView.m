@@ -27,7 +27,7 @@
 #import "WidgetManager.h"
 #import "IntegrationManagerViewController.h"
 
-const double RoomInputToolbarViewContextBarHeight = 30;
+const double RoomInputToolbarViewContextBarHeight = 20;
 
 @interface RoomInputToolbarView()
 {
