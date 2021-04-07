@@ -499,7 +499,7 @@
     
     if (section == searchInputSection)
     {
-        count = 1;
+        count = RiotSettings.shared.allowInviteExernalUsers ? 1 : 0;
     }
     else if (section == filteredLocalContactsSection && !(shrinkedSectionsBitMask & CONTACTSDATASOURCE_LOCALCONTACTS_BITWISE))
     {
