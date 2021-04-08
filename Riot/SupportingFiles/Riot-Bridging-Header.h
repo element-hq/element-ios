@@ -31,3 +31,4 @@
 #import "AuthFallBackViewController.h"
 #import "CallViewController.h"
 #import "MatrixContactsDataSource.h"
+#import "TypingUserInfo.h"

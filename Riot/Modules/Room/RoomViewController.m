@@ -124,6 +124,8 @@
 #import "SettingsViewController.h"
 #import "SecurityViewController.h"
 
+#import "TypingUserInfo.h"
+
 #import "Riot-Swift.h"
 
 NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNotification";
@@ -373,6 +375,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     [self.bubblesTableView registerClass:RoomCreationIntroCell.class forCellReuseIdentifier:RoomCreationIntroCell.defaultReuseIdentifier];
     
+    [self.bubblesTableView registerNib:RoomTypingBubbleCell.nib forCellReuseIdentifier:RoomTypingBubbleCell.defaultReuseIdentifier];
+    
     [self vc_removeBackTitle];
     
     // Replace the default input toolbar view.
@@ -512,6 +516,12 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [self refreshRoomInputToolbar];
     }
     
+    // Reset typing notification in order to remove the allocated space
+    if ([self.roomDataSource isKindOfClass:RoomDataSource.class])
+    {
+        [((RoomDataSource*)self.roomDataSource) resetTypingNotification];
+    }
+
     [self listenTypingNotifications];
     [self listenCallNotifications];
     [self listenWidgetNotifications];
@@ -1339,6 +1349,17 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         _scrollToBottomHidden = scrollToBottomHidden;
     }
     
+    if (!_scrollToBottomHidden && [self.roomDataSource isKindOfClass:RoomDataSource.class])
+    {
+        RoomDataSource *roomDataSource = (RoomDataSource *) self.roomDataSource;
+        if (roomDataSource.currentTypingUsers && !roomDataSource.currentTypingUsers.count)
+        {
+            [roomDataSource resetTypingNotification];
+            NSInteger count = [self.bubblesTableView numberOfRowsInSection:0];
+            [self.bubblesTableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:count - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+        }
+    }
+
     [UIView animateWithDuration:.2 animations:^{
         self.scrollToBottomBadgeLabel.alpha = (scrollToBottomHidden || !self.scrollToBottomBadgeLabel.text) ? 0 : 1;
         self.scrollToBottomButton.alpha = scrollToBottomHidden ? 0 : 1;
@@ -4091,54 +4112,51 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)refreshTypingNotification
 {
-    if ([self.titleView isKindOfClass:RoomTitleView.class])
-    {
-        RoomTitleView *titleView = (RoomTitleView *)self.titleView;
-        
-        // Prepare here typing notification
-        NSString* text = nil;
-        NSUInteger count = currentTypingUsers.count;
-        
-        // get the room member names
-        NSMutableArray *names = [[NSMutableArray alloc] init];
-        
-        // keeps the only the first two users
-        for(int i = 0; i < MIN(count, 2); i++)
+    RoomDataSource *roomDataSource = (RoomDataSource *) self.roomDataSource;
+    BOOL needsUpdate = currentTypingUsers.count != roomDataSource.currentTypingUsers.count;
+
+    NSMutableArray *typingUsers = [NSMutableArray new];
+    for (NSUInteger i = 0 ; i < currentTypingUsers.count ; i++) {
+        NSString *userId = currentTypingUsers[i];
+        MXRoomMember* member = [self.roomDataSource.roomState.members memberWithUserId:userId];
+        TypingUserInfo *userInfo;
+        if (member)
         {
-            NSString* name = currentTypingUsers[i];
-            
-            MXRoomMember* member = [self.roomDataSource.roomState.members memberWithUserId:name];
-            
-            if (member && member.displayname.length)
-            {
-                name = member.displayname;
-            }
-            
-            // sanity check
-            if (name)
-            {
-                [names addObject:name];
-            }
-        }
-        
-        if (0 == names.count)
-        {
-            // something to do ?
-        }
-        else if (1 == names.count)
-        {
-            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_one_user_is_typing", @"Vector", nil), names[0]];
-        }
-        else if (2 == names.count)
-        {
-            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_two_users_are_typing", @"Vector", nil), names[0], names[1]];
+            userInfo = [[TypingUserInfo alloc] initWithMember: member];
         }
         else
         {
-            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_many_users_are_typing", @"Vector", nil), names[0], names[1]];
+            userInfo = [[TypingUserInfo alloc] initWithUserId: userId];
+        }
+        [typingUsers addObject:userInfo];
+        needsUpdate = needsUpdate || userInfo.userId != ((MXRoomMember *) roomDataSource.currentTypingUsers[i]).userId;
+    }
+
+    if (needsUpdate)
+    {
+        BOOL needsReload = roomDataSource.currentTypingUsers == nil;
+        roomDataSource.currentTypingUsers = typingUsers;
+        if (needsReload)
+        {
+            [self.bubblesTableView reloadData];
+        }
+        else
+        {
+            NSInteger count = [self.bubblesTableView numberOfRowsInSection:0];
+            NSIndexPath *lastIndexPath = [NSIndexPath indexPathForRow:count - 1 inSection:0];
+            [self.bubblesTableView reloadRowsAtIndexPaths:@[lastIndexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
         
-        titleView.typingNotificationString = text;
+        if (self.isScrollToBottomHidden
+            && !self.bubblesTableView.isDragging
+            && !self.bubblesTableView.isDecelerating)
+        {
+            NSInteger count = [self.bubblesTableView numberOfRowsInSection:0];
+            if (count)
+            {
+                [self scrollBubblesTableViewToBottomAnimated:YES];
+            }
+        }
     }
 }
 
