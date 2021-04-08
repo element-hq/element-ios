@@ -17,7 +17,7 @@
 import UIKit
 
 @objcMembers
-@objc class RoomActionsBar: UIScrollView {
+class RoomActionsBar: UIScrollView {
     // MARK: - Properties
     
     var itemSpacing: CGFloat = 20 {
