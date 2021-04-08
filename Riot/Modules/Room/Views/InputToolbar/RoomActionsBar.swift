@@ -63,7 +63,7 @@ import UIKit
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        self.showsHorizontalScrollIndicator = false
+        setupView()
     }
     
     override func layoutSubviews() {
