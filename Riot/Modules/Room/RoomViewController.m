@@ -127,6 +127,7 @@
 #import "Riot-Swift.h"
 
 NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNotification";
+const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
@@ -286,6 +287,8 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
 {
     [super finalizeInit];
     
+    self.resizeComposerAnimationDuration = kResizeComposerAnimationDuration;
+    
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
@@ -410,6 +413,8 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
         
     }];
     [self userInterfaceThemeDidChange];
+    
+    [self setupActions];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -461,7 +466,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     self.scrollToBottomButton.layer.shadowRadius = 6;
     self.scrollToBottomButton.layer.shadowOffset = CGSizeMake(0, 4);
 
-    self.inputBackgroundView.backgroundColor = [ThemeService.shared.theme.searchBackgroundColor colorWithAlphaComponent:0.98];
+    self.inputBackgroundView.backgroundColor = [ThemeService.shared.theme.backgroundColor colorWithAlphaComponent:0.98];
     
     if ([ThemeService.shared.themeId isEqualToString:@"light"])
     {
@@ -1695,6 +1700,122 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     
     self.roomInfoCoordinatorBridgePresenter.delegate = self;
     [self.roomInfoCoordinatorBridgePresenter pushFrom:self.navigationController animated:YES];
+}
+
+- (void)setupActions {
+    if (![self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+        return;
+    }
+    
+    RoomInputToolbarView *roomInputView = ((RoomInputToolbarView *) self.inputToolbarView);
+    MXWeakify(self);
+    roomInputView.actionsBar.actionItems = @[
+        [[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_camera"] andAction:^{
+            MXStrongifyAndReturnIfNil(self);
+            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+            }
+            [self showCameraControllerAnimated:YES];
+        }],
+        [[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_media_library"] andAction:^{
+            MXStrongifyAndReturnIfNil(self);
+            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+            }
+            [self showMediaPickerAnimated:YES];
+        }],
+        [[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_sticker"] andAction:^{
+            MXStrongifyAndReturnIfNil(self);
+            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+            }
+            [self roomInputToolbarViewPresentStickerPicker];
+        }],
+        [[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_file"] andAction:^{
+            MXStrongifyAndReturnIfNil(self);
+            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+            }
+            [self roomInputToolbarViewDidTapFileUpload];
+        }],
+    ];
+}
+
+- (void)roomInputToolbarViewPresentStickerPicker
+{
+    // Search for the sticker picker widget in the user account
+    Widget *widget = [[WidgetManager sharedManager] userWidgets:self.roomDataSource.mxSession ofTypes:@[kWidgetTypeStickerPicker]].firstObject;
+    
+    if (widget)
+    {
+        // Display the widget
+        [widget widgetUrl:^(NSString * _Nonnull widgetUrl) {
+            
+            StickerPickerViewController *stickerPickerVC = [[StickerPickerViewController alloc] initWithUrl:widgetUrl forWidget:widget];
+            
+            stickerPickerVC.roomDataSource = self.roomDataSource;
+            
+            [self.navigationController pushViewController:stickerPickerVC animated:YES];
+        } failure:^(NSError * _Nonnull error) {
+            
+            NSLog(@"[RoomVC] Cannot display widget %@", widget);
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+        }];
+    }
+    else
+    {
+        // The Sticker picker widget is not installed yet. Propose the user to install it
+        MXWeakify(self);
+
+        [currentAlert dismissViewControllerAnimated:NO completion:nil];
+        
+        NSString *alertMessage = [NSString stringWithFormat:@"%@\n%@",
+                                  NSLocalizedStringFromTable(@"widget_sticker_picker_no_stickerpacks_alert", @"Vector", nil),
+                                  NSLocalizedStringFromTable(@"widget_sticker_picker_no_stickerpacks_alert_add_now", @"Vector", nil)
+                                  ];
+        
+        currentAlert = [UIAlertController alertControllerWithTitle:nil message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
+        
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"]
+                                                         style:UIAlertActionStyleCancel
+                                                       handler:^(UIAlertAction * action)
+                                 {
+            MXStrongifyAndReturnIfNil(self);
+            self->currentAlert = nil;
+            
+        }]];
+        
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"]
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * action)
+                                 {
+            MXStrongifyAndReturnIfNil(self);
+            self->currentAlert = nil;
+            
+            // Show the sticker picker settings screen
+            IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc]
+                                                           initForMXSession:self.roomDataSource.mxSession
+                                                           inRoom:self.roomDataSource.roomId
+                                                           screen:[IntegrationManagerViewController screenForWidget:kWidgetTypeStickerPicker]
+                                                           widgetId:nil];
+            
+            [self presentViewController:modularVC animated:NO completion:nil];
+        }]];
+        
+        [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCStickerPickerAlert"];
+        [self presentViewController:currentAlert animated:YES completion:nil];
+    }
+}
+
+- (void)roomInputToolbarViewDidTapFileUpload
+{
+    MXKDocumentPickerPresenter *documentPickerPresenter = [MXKDocumentPickerPresenter new];
+    documentPickerPresenter.delegate = self;
+    
+    NSArray<MXKUTI*> *allowedUTIs = @[MXKUTI.data];
+    [documentPickerPresenter presentDocumentPickerWith:allowedUTIs from:self animated:YES completion:nil];
+    
+    self.documentPickerPresenter = documentPickerPresenter;
 }
 
 #pragma mark - Dialpad
@@ -3321,80 +3442,6 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
-#pragma mark - RoomInputToolbarViewDelegate
-
-- (void)roomInputToolbarViewPresentStickerPicker:(MXKRoomInputToolbarView*)toolbarView
-{
-    // Search for the sticker picker widget in the user account
-    Widget *widget = [[WidgetManager sharedManager] userWidgets:self.roomDataSource.mxSession ofTypes:@[kWidgetTypeStickerPicker]].firstObject;
-    
-    if (widget)
-    {
-        // Display the widget
-        [widget widgetUrl:^(NSString * _Nonnull widgetUrl) {
-            
-            StickerPickerViewController *stickerPickerVC = [[StickerPickerViewController alloc] initWithUrl:widgetUrl forWidget:widget];
-            
-            stickerPickerVC.roomDataSource = self.roomDataSource;
-            
-            [self.navigationController pushViewController:stickerPickerVC animated:YES];
-        } failure:^(NSError * _Nonnull error) {
-            
-            NSLog(@"[RoomVC] Cannot display widget %@", widget);
-            [[AppDelegate theDelegate] showErrorAsAlert:error];
-        }];
-    }
-    else
-    {
-        // The Sticker picker widget is not installed yet. Propose the user to install it
-        __weak typeof(self) weakSelf = self;
-        
-        [currentAlert dismissViewControllerAnimated:NO completion:nil];
-        
-        NSString *alertMessage = [NSString stringWithFormat:@"%@\n%@",
-                                  NSLocalizedStringFromTable(@"widget_sticker_picker_no_stickerpacks_alert", @"Vector", nil),
-                                  NSLocalizedStringFromTable(@"widget_sticker_picker_no_stickerpacks_alert_add_now", @"Vector", nil)
-                                  ];
-        
-        currentAlert = [UIAlertController alertControllerWithTitle:nil message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
-        
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"]
-                                                         style:UIAlertActionStyleCancel
-                                                       handler:^(UIAlertAction * action)
-                                 {
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
-                self->currentAlert = nil;
-            }
-            
-        }]];
-        
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action)
-                                 {
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
-                self->currentAlert = nil;
-                
-                // Show the sticker picker settings screen
-                IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc]
-                                                               initForMXSession:self.roomDataSource.mxSession
-                                                               inRoom:self.roomDataSource.roomId
-                                                               screen:[IntegrationManagerViewController screenForWidget:kWidgetTypeStickerPicker]
-                                                               widgetId:nil];
-                
-                [self presentViewController:modularVC animated:NO completion:nil];
-            }
-        }]];
-        
-        [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCStickerPickerAlert"];
-        [self presentViewController:currentAlert animated:YES completion:nil];
-    }
-}
-
 #pragma mark - VoIP
 
 - (void)placeCallWithVideo:(BOOL)video
@@ -3639,27 +3686,6 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
             self->savedInputToolbarPlaceholder = nil;
         }];
     }
-}
-
-- (void)roomInputToolbarViewDidTapFileUpload:(MXKRoomInputToolbarView *)toolbarView
-{
-    MXKDocumentPickerPresenter *documentPickerPresenter = [MXKDocumentPickerPresenter new];
-    documentPickerPresenter.delegate = self;
-    
-    NSArray<MXKUTI*> *allowedUTIs = @[MXKUTI.data];
-    [documentPickerPresenter presentDocumentPickerWith:allowedUTIs from:self animated:YES completion:nil];
-    
-    self.documentPickerPresenter = documentPickerPresenter;
-}
-
-- (void)roomInputToolbarViewDidTapCamera:(MXKRoomInputToolbarView*)toolbarView
-{
-    [self showCameraControllerAnimated:YES];
-}
-
-- (void)roomInputToolbarViewDidTapMediaLibrary:(MXKRoomInputToolbarView*)toolbarView
-{
-    [self showMediaPickerAnimated:YES];
 }
 
 - (void)roomInputToolbarViewDidTapCancel:(MXKRoomInputToolbarView*)toolbarView
