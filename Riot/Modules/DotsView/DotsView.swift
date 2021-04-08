@@ -144,7 +144,7 @@ class DotsView: UIView {
         CATransaction.commit()
     }
     
-    func fireTimer() {
+    @objc private func fireTimer() {
         if Date().timeIntervalSince(lastUpdateDate) >= updateInterval {
             self.highlightedDotIndex = (self.highlightedDotIndex + 1) % self.numberOfDots
         }
