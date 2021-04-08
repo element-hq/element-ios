@@ -147,7 +147,6 @@
         self.pictureViewHeightConstraint.constant = 28;
         self.displayNameTextField.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
         self.typingLabel.font = [UIFont systemFontOfSize:10];
-        self.dotViewCenterXConstraint.constant = 3;
         self.dotViewCenterYConstraint.constant = -2;
     }
     else
@@ -158,7 +157,6 @@
         self.pictureViewHeightConstraint.constant = 32;
         self.displayNameTextField.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
         self.typingLabel.font = [UIFont systemFontOfSize:12];
-        self.dotViewCenterXConstraint.constant = 0;
         self.dotViewCenterYConstraint.constant = -1;
    }
 }
