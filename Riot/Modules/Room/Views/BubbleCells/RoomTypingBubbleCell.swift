@@ -17,14 +17,15 @@
 import UIKit
 
 @objcMembers
-class RoomTypingBubbleCell: UITableViewCell, Themable {
+class RoomTypingBubbleCell: MXKTableViewCell, Themable {
     // MARK: - Constants
     
-    static let cellIdentifier = "RoomTypingBubbleCell"
-    private static let maxPictureCount = 4
-    private static let pictureSize: CGFloat = 24
-    private static let pictureMaxMargin: CGFloat = 16
-    private static let pictureMinMargin: CGFloat = 8
+    private enum Constants {
+        static let maxPictureCount = 4
+        static let pictureSize: CGFloat = 24
+        static let pictureMaxMargin: CGFloat = 16
+        static let pictureMinMargin: CGFloat = 8
+    }
 
     // MARK: - Outlets
     
@@ -51,8 +52,6 @@ class RoomTypingBubbleCell: UITableViewCell, Themable {
         for pictureView in userPictureViews {
             pictureView.removeFromSuperview()
         }
-        
-        update(theme: ThemeService.shared().theme)
     }
     
     override func layoutSubviews() {
@@ -69,15 +68,32 @@ class RoomTypingBubbleCell: UITableViewCell, Themable {
         var pictureViewsMaxX: CGFloat = 0
         var xOffset: CGFloat = 0
         for pictureView in userPictureViews {
-            pictureView.center = CGPoint(x: RoomTypingBubbleCell.pictureMaxMargin + xOffset + pictureView.bounds.midX, y: self.bounds.midY)
+            pictureView.center = CGPoint(x: Constants.pictureMaxMargin + xOffset + pictureView.bounds.midX, y: self.bounds.midY)
             xOffset += round(pictureView.bounds.maxX * 2 / 3)
             pictureViewsMaxX = pictureView.frame.maxX
         }
         
-        let leftMagin: CGFloat = pictureViewsMaxX + (userPictureViews.count == 1 ? RoomTypingBubbleCell.pictureMaxMargin : RoomTypingBubbleCell.pictureMinMargin)
+        let leftMagin: CGFloat = pictureViewsMaxX + (userPictureViews.count == 1 ? Constants.pictureMaxMargin : Constants.pictureMinMargin)
         additionalUsersLabelLeadingConstraint.constant = leftMagin
         
         dotsViewLeadingConstraint?.constant = additionalUsersLabel.text.isEmptyOrNil == true ? leftMagin : leftMagin + 8 + additionalUsersLabel.frame.width
+    }
+    
+    // MARK: - Overrides
+    
+    override class func defaultReuseIdentifier() -> String {
+        return String(describing: self)
+    }
+    
+    override class func nib() -> UINib {
+        return UINib(nibName: String(describing: self), bundle: nil)
+    }
+    
+    override func customizeRendering() {
+        super.customizeRendering()
+        
+        let theme = ThemeService.shared().theme
+        self.update(theme: theme)
     }
     
     // MARK: - Themable
@@ -98,11 +114,11 @@ class RoomTypingBubbleCell: UITableViewCell, Themable {
         userPictureViews = []
         
         for user in typingUsers {
-            if userPictureViews.count >= RoomTypingBubbleCell.maxPictureCount {
+            if userPictureViews.count >= Constants.maxPictureCount {
                 break
             }
 
-            let pictureView = MXKImageView(frame: CGRect(x: 0, y: 0, width: RoomTypingBubbleCell.pictureSize, height: RoomTypingBubbleCell.pictureSize))
+            let pictureView = MXKImageView(frame: CGRect(x: 0, y: 0, width: Constants.pictureSize, height: Constants.pictureSize))
             pictureView.layer.masksToBounds = true
             pictureView.layer.cornerRadius = pictureView.bounds.midX
             

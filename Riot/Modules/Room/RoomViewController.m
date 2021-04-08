@@ -374,7 +374,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
     
     [self.bubblesTableView registerClass:RoomCreationIntroCell.class forCellReuseIdentifier:RoomCreationIntroCell.defaultReuseIdentifier];
     
-    [self.bubblesTableView registerNib:[UINib nibWithNibName:@"RoomTypingBubbleCell" bundle:nil] forCellReuseIdentifier:RoomTypingBubbleCell.cellIdentifier];
+    [self.bubblesTableView registerNib:RoomTypingBubbleCell.nib forCellReuseIdentifier:RoomTypingBubbleCell.defaultReuseIdentifier];
     
     [self vc_removeBackTitle];
     
