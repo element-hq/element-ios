@@ -337,8 +337,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         if ((aState == MXKDataSourceStateReady) && dataSource.mxSession.myUser.userId)
         {
             // Register the room tags updates to refresh the favorites order
+            MXWeakify(self);
             id roomTagsListener = [dataSource.mxSession listenToEventsOfTypes:@[kMXEventTypeStringRoomTag]
                                                                 onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {
+
+                                                                    MXStrongifyAndReturnIfNil(self);
 
                                                                     // Consider only live event
                                                                     if (direction == MXTimelineDirectionForwards)
