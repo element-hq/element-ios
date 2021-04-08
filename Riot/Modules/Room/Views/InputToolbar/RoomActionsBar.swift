@@ -58,7 +58,7 @@ import UIKit
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.showsHorizontalScrollIndicator = false
+        setupView()
     }
 
     required init?(coder: NSCoder) {
