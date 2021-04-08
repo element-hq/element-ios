@@ -21,7 +21,7 @@ Changes to be released in next version
  * Crash in [RoomViewController setupActions] (#4162)
  * too much vertical whitespace when replying (#4164)
  * Black theme uses dark background for composer (#4192)
- * vertical layout of typing notifs can go wonky (#4159)
+ * Vertical layout of typing notifs can go wonky (#4159)
  * Crash in [RoomViewController refreshTypingNotification] (#4161)
 
 ⚠️ API Changes
