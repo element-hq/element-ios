@@ -17,7 +17,7 @@
 import UIKit
 
 @objcMembers
-@objc class RoomActionItem: NSObject {
+class RoomActionItem: NSObject {
     let image: UIImage
     let action: (() -> Void)
 
