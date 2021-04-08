@@ -17,7 +17,7 @@
 import UIKit
 
 @objcMembers
-class RoomActionsBar: UIScrollView {
+class RoomActionsBar: UIScrollView, Themable {
     // MARK: - Properties
     
     var itemSpacing: CGFloat = 20 {
@@ -26,9 +26,9 @@ class RoomActionsBar: UIScrollView {
         }
     }
     
-    var actionItems: Array<RoomActionItem> = [] {
+    var actionItems: [RoomActionItem] = [] {
         didSet {
-            var actionButtons: Array<UIButton> = []
+            var actionButtons: [UIButton] = []
             for (index, item) in actionItems.enumerated() {
                 let button = UIButton(type: .custom)
                 button.setImage(item.image, for: .normal)
@@ -44,7 +44,7 @@ class RoomActionsBar: UIScrollView {
         }
     }
     
-    private var actionButtons: Array<UIButton> = [] {
+    private var actionButtons: [UIButton] = [] {
         willSet {
             for button in actionButtons {
                 button.removeFromSuperview()
@@ -85,13 +85,15 @@ class RoomActionsBar: UIScrollView {
         self.contentSize = CGSize(width: currentX - itemSpacing, height: self.bounds.height)
     }
     
-    // MARK: - Business methods
+    // MARK: - Themable
     
-    func customizeViewRendering() {
+    func update(theme: Theme) {
         for button in actionButtons {
-            button.tintColor = ThemeService.shared().theme.tintColor
+            button.tintColor = theme.tintColor
         }
     }
+    
+    // MARK: - Business methods
     
     func animate(showIn: Bool, completion: ((Bool) -> Void)? = nil) {
         if showIn {

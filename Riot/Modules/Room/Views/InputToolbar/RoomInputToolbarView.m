@@ -27,7 +27,13 @@
 #import "WidgetManager.h"
 #import "IntegrationManagerViewController.h"
 
-const double RoomInputToolbarViewContextBarHeight = 24;
+const double kContextBarHeight = 24;
+const NSTimeInterval kSendModeAnimationDuration = .15;
+const NSTimeInterval kActionMenuAttachButtonAnimationDuration = .4;
+const CGFloat kActionMenuAttachButtonSpringVelocity = 7;
+const CGFloat kActionMenuAttachButtonSpringDamping = .45;
+const NSTimeInterval kActionMenuContentAlphaAnimationDuration = .2;
+const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
 @interface RoomInputToolbarView()
 {
@@ -120,7 +126,7 @@ const double RoomInputToolbarViewContextBarHeight = 24;
     self.inputContextImageView.tintColor = ThemeService.shared.theme.textSecondaryColor;
     self.inputContextLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.inputContextButton.tintColor = ThemeService.shared.theme.textSecondaryColor;
-    [self.actionsBar customizeViewRendering];
+    [self.actionsBar updateWithTheme:ThemeService.shared.theme];
 }
 
 #pragma mark -
@@ -161,26 +167,26 @@ const double RoomInputToolbarViewContextBarHeight = 24;
             self.inputContextImageView.image = [UIImage imageNamed:@"input_reply_icon"];
             self.inputContextLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_message_replying_to", @"Vector", nil), self.eventSenderDisplayName];
 
-            self.inputContextViewHeightConstraint.constant = RoomInputToolbarViewContextBarHeight;
-            updatedHeight += RoomInputToolbarViewContextBarHeight;
-            self->growingTextView.maxHeight -= RoomInputToolbarViewContextBarHeight;
+            self.inputContextViewHeightConstraint.constant = kContextBarHeight;
+            updatedHeight += kContextBarHeight;
+            self->growingTextView.maxHeight -= kContextBarHeight;
             break;
         case RoomInputToolbarViewSendModeEdit:
             buttonImage = [UIImage imageNamed:@"save_icon"];
             self.inputContextImageView.image = [UIImage imageNamed:@"input_edit_icon"];
             self.inputContextLabel.text = NSLocalizedStringFromTable(@"room_message_editing", @"Vector", nil);
 
-            self.inputContextViewHeightConstraint.constant = RoomInputToolbarViewContextBarHeight;
-            updatedHeight += RoomInputToolbarViewContextBarHeight;
-            self->growingTextView.maxHeight -= RoomInputToolbarViewContextBarHeight;
+            self.inputContextViewHeightConstraint.constant = kContextBarHeight;
+            updatedHeight += kContextBarHeight;
+            self->growingTextView.maxHeight -= kContextBarHeight;
             break;
         default:
             buttonImage = [UIImage imageNamed:@"send_icon"];
 
             if (previousMode != _sendMode)
             {
-                updatedHeight -= RoomInputToolbarViewContextBarHeight;
-                self->growingTextView.maxHeight += RoomInputToolbarViewContextBarHeight;
+                updatedHeight -= kContextBarHeight;
+                self->growingTextView.maxHeight += kContextBarHeight;
             }
             self.inputContextViewHeightConstraint.constant = 0;
             break;
@@ -201,7 +207,7 @@ const double RoomInputToolbarViewContextBarHeight = 24;
 
     if (self.mainToolbarHeightConstraint.constant != updatedHeight)
     {
-        [UIView animateWithDuration:.15 animations:^{
+        [UIView animateWithDuration:kSendModeAnimationDuration animations:^{
             self.mainToolbarHeightConstraint.constant = updatedHeight;
             [self layoutIfNeeded];
             
@@ -393,18 +399,16 @@ const double RoomInputToolbarViewContextBarHeight = 24;
             }];
         }
         
-        [UIView animateWithDuration:.4 delay:0 usingSpringWithDamping:0.45 initialSpringVelocity:7 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [UIView animateWithDuration:kActionMenuAttachButtonAnimationDuration delay:0 usingSpringWithDamping:kActionMenuAttachButtonSpringDamping initialSpringVelocity:kActionMenuAttachButtonSpringVelocity options:UIViewAnimationOptionCurveEaseIn animations:^{
             self.attachMediaButton.transform = actionMenuOpened ? CGAffineTransformMakeRotation(M_PI * 3 / 4) : CGAffineTransformIdentity;
-        } completion:^(BOOL finished) {
-        }];
+        } completion:nil];
         
-        [UIView animateWithDuration:.2 delay:_actionMenuOpened ? 0 : .1 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [UIView animateWithDuration:kActionMenuContentAlphaAnimationDuration delay:_actionMenuOpened ? 0 : .1 options:UIViewAnimationOptionCurveEaseIn animations:^{
             self->messageComposerContainer.alpha = actionMenuOpened ? 0 : 1;
             self.rightInputToolbarButton.alpha = self->growingTextView.text.length == 0 || actionMenuOpened ? 0 : 1;
-        } completion:^(BOOL finished) {
-        }];
+        } completion:nil];
         
-        [UIView animateWithDuration:.3 animations:^{
+        [UIView animateWithDuration:kActionMenuComposerHeightAnimationDuration animations:^{
             if (actionMenuOpened)
             {
                 self.mainToolbarHeightConstraint.constant = self.mainToolbarMinHeightConstraint.constant;
