@@ -16,7 +16,7 @@ Changes to be released in next version
  * If you start typing while the new attachment sending mode is on, the send button appears (#4155)
  * The final frames of the appearance animation of the new composer buttons are missing (#4160)
  * Crash in [RoomViewController setupActions] (#4162)
- * too much vertical whitespace when replying (#4164)
+ * Too much vertical whitespace when replying (#4164)
  * Black theme uses dark background for composer (#4192)
 
 ⚠️ API Changes
