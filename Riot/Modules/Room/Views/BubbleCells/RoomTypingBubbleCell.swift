@@ -89,13 +89,6 @@ class RoomTypingBubbleCell: MXKTableViewCell, Themable {
         return UINib(nibName: String(describing: self), bundle: nil)
     }
     
-    override func customizeRendering() {
-        super.customizeRendering()
-        
-        let theme = ThemeService.shared().theme
-        self.update(theme: theme)
-    }
-    
     // MARK: - Themable
     
     func update(theme: Theme) {
