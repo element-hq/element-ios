@@ -18,13 +18,13 @@ import UIKit
 
 @objcMembers
 @objc class RoomActionItem: NSObject {
-    var image: UIImage!
-    var action: (() -> Void)!
+    let image: UIImage
+    let action: (() -> Void)
 
     init(image: UIImage, andAction action: @escaping () -> Void) {
-        super.init()
-        
         self.image = image
         self.action = action
+        
+        super.init()
     }
 }
