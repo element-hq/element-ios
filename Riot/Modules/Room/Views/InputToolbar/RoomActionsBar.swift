@@ -121,9 +121,7 @@ import UIKit
     // MARK: - Private methods
     
     @objc private func buttonAction(_ sender: UIButton) {
-        if let action = actionItems[sender.tag].action {
-            action()
-        }
+        actionItems[sender.tag].action()
     }
     
     private func setupView() {
