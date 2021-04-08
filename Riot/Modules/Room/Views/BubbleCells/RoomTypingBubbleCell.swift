@@ -31,7 +31,7 @@ class RoomTypingBubbleCell: UITableViewCell {
 
     // MARK: - members
     
-    private var userPictureViews: Array<MXKImageView> = Array()
+    private var userPictureViews: [MXKImageView] = []
     
     // MARK: - Lifecycle
     
