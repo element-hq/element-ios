@@ -1354,8 +1354,8 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
         if (roomDataSource.currentTypingUsers && !roomDataSource.currentTypingUsers.count)
         {
             [roomDataSource resetTypingNotification];
-            NSInteger count = [roomDataSource tableView:self.bubblesTableView numberOfRowsInSection:0];
-            [self.bubblesTableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:count inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+            NSInteger count = [self.bubblesTableView numberOfRowsInSection:0];
+            [self.bubblesTableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:count - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
         }
     }
 
@@ -4159,7 +4159,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
         }
         else
         {
-            NSInteger count = [self.roomDataSource tableView:self.bubblesTableView numberOfRowsInSection:0];
+            NSInteger count = [self.bubblesTableView numberOfRowsInSection:0];
             NSIndexPath *lastIndexPath = [NSIndexPath indexPathForRow:count - 1 inSection:0];
             [self.bubblesTableView reloadRowsAtIndexPaths:@[lastIndexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
@@ -4168,7 +4168,7 @@ NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNo
             && !self.bubblesTableView.isDragging
             && !self.bubblesTableView.isDecelerating)
         {
-            NSInteger count = [self.roomDataSource tableView:self.bubblesTableView numberOfRowsInSection:0];
+            NSInteger count = [self.bubblesTableView numberOfRowsInSection:0];
             if (count)
             {
                 [self scrollBubblesTableViewToBottomAnimated:YES];

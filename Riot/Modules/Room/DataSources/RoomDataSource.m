@@ -27,6 +27,7 @@
 
 #import "MXRoom+Riot.h"
 
+const CGFloat kTypingCellHeight = 24;
 
 @interface RoomDataSource() <BubbleReactionsViewModelDelegate>
 {
@@ -191,7 +192,7 @@
 {
     if (index == self.typingCellIndex)
     {
-        return 24;
+        return kTypingCellHeight;
     }
     
     return [super cellHeightAtIndex:index withMaximumWidth:maxWidth];

@@ -21,15 +21,9 @@ import UIKit
 class DotsView: UIView {
     // MARK: - Public properties
     
-    @IBInspectable var highlightedDotColor: UIColor = .darkGray {
-        didSet {
-        }
-    }
+    @IBInspectable var highlightedDotColor: UIColor = .darkGray
     
-    @IBInspectable var dotColor: UIColor = .lightGray {
-        didSet {
-        }
-    }
+    @IBInspectable var dotColor: UIColor = .lightGray
     
     @IBInspectable var dotMaxWidth: CGFloat = 10 {
         didSet {

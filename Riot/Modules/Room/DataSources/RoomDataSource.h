@@ -21,6 +21,8 @@
 
 #import "MXRoomSummary+Riot.h"
 
+#import "TypingUserInfo.h"
+
 @protocol RoomDataSourceDelegate;
 
 /**
@@ -51,7 +53,7 @@
 /**
  List of members who are typing in the room.
  */
-@property(nonatomic, nullable) NSArray *currentTypingUsers;
+@property(nonatomic, nullable) NSArray<TypingUserInfo *> *currentTypingUsers;
 
 /**
  Check if there is an active jitsi widget in the room and return it.
