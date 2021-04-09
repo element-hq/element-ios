@@ -336,7 +336,7 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
         callDurationString = readableCallDuration(from: events)
         isIncoming = inviteEvent.sender != bubbleCellData.mxSession.myUserId
         callInviteEvent = inviteEvent
-        innerContentView.callIconView.image = self.callTypeIcon.vc_tintedImage(usingColor: innerContentView.theme.textSecondaryColor)
+        innerContentView.callIconView.image = self.callTypeIcon
         innerContentView.callTypeLabel.text = isVideoCall ?
             VectorL10n.eventFormatterCallVideo :
             VectorL10n.eventFormatterCallVoice

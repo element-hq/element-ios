@@ -203,7 +203,6 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
         self.widgetEvent = widgetEvent
         self.widgetId = widgetId
         innerContentView.callIconView.image = Asset.Images.tabGroups.image
-            .vc_tintedImage(usingColor: innerContentView.theme.textSecondaryColor)
         innerContentView.callTypeLabel.text = VectorL10n.eventFormatterGroupCall
         
         if isIncoming && !isJoined &&
