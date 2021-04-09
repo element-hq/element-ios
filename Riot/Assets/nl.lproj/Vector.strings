@@ -1184,7 +1184,7 @@
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Herstelsleutel gebruiken";
 "device_verification_self_verify_wait_additional_information" = "Dit werkt met Element en andere Matrix-apps die kruislings ondertekenen ondersteunen.";
 "device_verification_self_verify_wait_information" = "Verifieer deze sessie vanaf een van uw andere sessies, om toegang te krijgen tot de versleutelde berichten.\n\nGebruik de laatste versie van Element op uw andere apparaten:";
-"device_verification_self_verify_wait_new_sign_in_title" = "Verifieer deze aanmelding";
+"device_verification_self_verify_wait_new_sign_in_title" = "Verifieer deze login";
 
 // MARK: Self verification wait
 
@@ -1312,7 +1312,7 @@
 "identity_server_settings_alert_no_terms" = "De door u gekozen identiteitsserver heeft geen dienstvoorwaarden. Ga alleen door, wanneer u de eigenaar van de server vertrouwd.";
 "identity_server_settings_alert_no_terms_title" = "De identiteitsserver heeft geen dienstvoorwaarden";
 "identity_server_settings_disconnect" = "Verbinding verbreken";
-"identity_server_settings_disconnect_info" = "De verbinding met uw identiteitsserver verbreken zal ertoe leiden dat u niet door andere gebruikers gevonden zal kunnen worden, en dat u anderen niet via e-mail of telefoon zal kunnen uitnodigen.";
+"identity_server_settings_disconnect_info" = "De verbinding met uw identiteitsserver verbreken zal ertoe leiden dat u niet door andere mensen gevonden zal kunnen worden, en dat u anderen niet via e-mail of telefoon zal kunnen uitnodigen.";
 "identity_server_settings_change" = "Wijzigen";
 "identity_server_settings_add" = "Toevoegen";
 "identity_server_settings_place_holder" = "Voer een identiteitsserver in";
