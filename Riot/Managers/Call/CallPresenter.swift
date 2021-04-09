@@ -32,7 +32,7 @@ private let MSEC_PER_SEC: TimeInterval = 1000
 class CallPresenter: NSObject {
     
     private enum Constants {
-        static let pipAnimationDuration: TimeInterval = 0
+        static let pipAnimationDuration: TimeInterval = 0.25
         static let groupCallInviteLifetime: TimeInterval = 30
     }
     
