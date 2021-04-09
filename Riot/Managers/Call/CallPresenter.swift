@@ -297,6 +297,10 @@ class CallPresenter: NSObject {
                 JMCallKitProxy.reportOutgoingCall(with: newUUID, connectedAt: nil)
             } else {
                 //  incoming call
+                guard RiotSettings.shared.enableRingingForGroupCalls else {
+                    //  do not ring for Jitsi calls
+                    return
+                }
                 let user = session.user(withUserId: event.sender)
                 let displayName = NSString.localizedUserNotificationString(forKey: "GROUP_CALL_FROM_USER",
                                                                            arguments: [user?.displayname as Any])

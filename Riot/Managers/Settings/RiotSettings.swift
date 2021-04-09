@@ -51,6 +51,7 @@ final class RiotSettings: NSObject {
         static let roomCreationScreenAllowRoomTypeConfiguration = "roomCreationScreenAllowRoomTypeConfiguration"
         static let roomCreationScreenRoomIsPublic = "roomCreationScreenRoomIsPublic"
         static let allowInviteExernalUsers = "allowInviteExernalUsers"
+        static let enableRingingForGroupCalls = "enableRingingForGroupCalls"
     }
     
     static let shared = RiotSettings()
@@ -191,6 +192,15 @@ final class RiotSettings: NSObject {
     }
     
     // MARK: Labs
+    
+    /// Indicates if CallKit ringing is enabled for group calls. This setting does not disable the CallKit integration for group calls, only relates to ringing.
+    var enableRingingForGroupCalls: Bool {
+        get {
+            return defaults.bool(forKey: UserDefaultsKeys.enableRingingForGroupCalls)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.enableRingingForGroupCalls)
+        }
+    }
     
     // MARK: Calls
 

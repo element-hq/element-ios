@@ -142,6 +142,11 @@ enum
 
 enum
 {
+    LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX = 0
+};
+
+enum
+{
     SECURITY_BUTTON_INDEX = 0,
 };
 
@@ -475,6 +480,7 @@ TableViewSectionsDelegate>
     if (BuildSettings.settingsScreenShowLabSettings)
     {
         Section *sectionLabs = [Section sectionWithTag:SECTION_TAG_LABS];
+        [sectionLabs addRowWithTag:LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX];
         sectionLabs.headerTitle = NSLocalizedStringFromTable(@"settings_labs", @"Vector", nil);
         if (sectionLabs.hasAnyRows)
         {
@@ -2241,7 +2247,18 @@ TableViewSectionsDelegate>
     }
     else if (section == SECTION_TAG_LABS)
     {
-        
+        if (row == LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_enable_ringing_for_group_calls", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.enableRingingForGroupCalls;
+            labelAndSwitchCell.mxkSwitch.tintColor = ThemeService.shared.theme.tintColor;
+            
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableRingingForGroupCalls:) forControlEvents:UIControlEventValueChanged];
+            
+            cell = labelAndSwitchCell;
+        }
     }
     else if (section == SECTION_TAG_FLAIR)
     {
@@ -2927,6 +2944,16 @@ TableViewSectionsDelegate>
         RiotSettings.shared.enableRageShake = switchButton.isOn;
 
         [self updateSections];
+    }
+}
+
+- (void)toggleEnableRingingForGroupCalls:(UISwitch *)sender
+{
+    if (sender)
+    {
+        RiotSettings.shared.enableRingingForGroupCalls = sender.isOn;
+        
+        [self.tableView reloadData];
     }
 }
 

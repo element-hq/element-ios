@@ -4266,6 +4266,10 @@ internal enum VectorL10n {
   internal static var settingsLabsE2eEncryptionPromptMessage: String { 
     return VectorL10n.tr("Vector", "settings_labs_e2e_encryption_prompt_message") 
   }
+  /// Ring for group calls
+  internal static var settingsLabsEnableRingingForGroupCalls: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enable_ringing_for_group_calls") 
+  }
   /// React to messages with emoji
   internal static var settingsLabsMessageReaction: String { 
     return VectorL10n.tr("Vector", "settings_labs_message_reaction") 
