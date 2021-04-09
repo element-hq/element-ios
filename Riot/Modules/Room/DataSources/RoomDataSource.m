@@ -27,6 +27,7 @@
 
 #import "MXRoom+Riot.h"
 
+const CGFloat kTypingCellHeight = 24;
 
 @interface RoomDataSource() <BubbleReactionsViewModelDelegate>
 {
@@ -52,6 +53,8 @@
 @property (nonatomic) RoomBubbleCellData *roomCreationCellData;
 
 @property (nonatomic) BOOL showRoomCreationCell;
+
+@property (nonatomic) NSInteger typingCellIndex;
 
 @end
 
@@ -185,6 +188,16 @@
     [self setNeedsUpdateAdditionalContentHeightForCellData:cellData];
 }
 
+- (CGFloat)cellHeightAtIndex:(NSInteger)index withMaximumWidth:(CGFloat)maxWidth
+{
+    if (index == self.typingCellIndex)
+    {
+        return kTypingCellHeight;
+    }
+    
+    return [super cellHeightAtIndex:index withMaximumWidth:maxWidth];
+}
+
 - (void)setNeedsUpdateAdditionalContentHeightForCellData:(id<MXKRoomBubbleCellDataStoring>)cellData
 {
     RoomBubbleCellData *roomBubbleCellData;
@@ -261,16 +274,40 @@
             [self updateStatusInfo];
         }
         
-        //  we may have changed the number of bubbles in this block, consider that change
-        return bubbles.count;
+        if (!self.currentTypingUsers)
+        {
+            self.typingCellIndex = -1;
+            
+            //  we may have changed the number of bubbles in this block, consider that change
+            return bubbles.count;
+        }
+        
+        self.typingCellIndex = bubbles.count;
+        return bubbles.count + 1;
     }
     
-    //  leave it as is, if coming as 0 from super
-    return count;
+    if (!self.currentTypingUsers)
+    {
+        self.typingCellIndex = -1;
+
+        //  leave it as is, if coming as 0 from super
+        return count;
+    }
+    
+    self.typingCellIndex = count;
+    return count + 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.row == self.typingCellIndex)
+    {
+        RoomTypingBubbleCell *cell = [tableView dequeueReusableCellWithIdentifier:RoomTypingBubbleCell.defaultReuseIdentifier forIndexPath:indexPath];
+        [cell updateWithTheme:ThemeService.shared.theme];
+        [cell updateTypingUsers:_currentTypingUsers mediaManager:self.mxSession.mediaManager];
+        return cell;
+    }
+    
     // Do cell data customization that needs to be done before [MXKRoomBubbleTableViewCell render]
     RoomBubbleCellData *roomBubbleCellData = [self cellDataAtIndex:indexPath.row];
 
@@ -915,6 +952,10 @@
             failure(error);
         }
     }];
+}
+
+- (void)resetTypingNotification {
+    self.currentTypingUsers = nil;
 }
 
 #pragma - Accessibility

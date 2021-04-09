@@ -2978,6 +2978,10 @@ internal enum VectorL10n {
   internal static var roomMessageUnableOpenLinkErrorMessage: String { 
     return VectorL10n.tr("Vector", "room_message_unable_open_link_error_message") 
   }
+  /// %@ and others
+  internal static func roomMultipleTypingNotification(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_multiple_typing_notification", p1)
+  }
   /// %d new message
   internal static func roomNewMessageNotification(_ p1: Int) -> String {
     return VectorL10n.tr("Vector", "room_new_message_notification", p1)

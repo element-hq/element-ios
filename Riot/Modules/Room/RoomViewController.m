@@ -124,12 +124,15 @@
 #import "SettingsViewController.h"
 #import "SecurityViewController.h"
 
+#import "TypingUserInfo.h"
+
 #import "Riot-Swift.h"
 
 NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNotification";
 NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTileTappedNotification";
 NSNotificationName const RoomViewControllerViewDidAppearNotification = @"RoomViewControllerViewDidAppearNotification";
 NSNotificationName const RoomViewControllerViewDidDisappearNotification = @"RoomViewControllerViewDidDisappearNotification";
+const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
@@ -295,6 +298,8 @@ NSNotificationName const RoomViewControllerViewDidDisappearNotification = @"Room
 {
     [super finalizeInit];
     
+    self.resizeComposerAnimationDuration = kResizeComposerAnimationDuration;
+    
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
@@ -380,6 +385,8 @@ NSNotificationName const RoomViewControllerViewDidDisappearNotification = @"Room
     
     [self.bubblesTableView registerClass:RoomCreationIntroCell.class forCellReuseIdentifier:RoomCreationIntroCell.defaultReuseIdentifier];
     
+    [self.bubblesTableView registerNib:RoomTypingBubbleCell.nib forCellReuseIdentifier:RoomTypingBubbleCell.defaultReuseIdentifier];
+    
     [self vc_removeBackTitle];
     
     // Replace the default input toolbar view.
@@ -420,6 +427,8 @@ NSNotificationName const RoomViewControllerViewDidDisappearNotification = @"Room
         
     }];
     [self userInterfaceThemeDidChange];
+    
+    [self setupActions];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -471,7 +480,7 @@ NSNotificationName const RoomViewControllerViewDidDisappearNotification = @"Room
     self.scrollToBottomButton.layer.shadowRadius = 6;
     self.scrollToBottomButton.layer.shadowOffset = CGSizeMake(0, 4);
 
-    self.inputBackgroundView.backgroundColor = [ThemeService.shared.theme.searchBackgroundColor colorWithAlphaComponent:0.98];
+    self.inputBackgroundView.backgroundColor = [ThemeService.shared.theme.backgroundColor colorWithAlphaComponent:0.98];
     
     if ([ThemeService.shared.themeId isEqualToString:@"light"])
     {
@@ -517,6 +526,12 @@ NSNotificationName const RoomViewControllerViewDidDisappearNotification = @"Room
         [self refreshRoomInputToolbar];
     }
     
+    // Reset typing notification in order to remove the allocated space
+    if ([self.roomDataSource isKindOfClass:RoomDataSource.class])
+    {
+        [((RoomDataSource*)self.roomDataSource) resetTypingNotification];
+    }
+
     [self listenTypingNotifications];
     [self listenCallNotifications];
     [self listenWidgetNotifications];
@@ -1370,6 +1385,17 @@ NSNotificationName const RoomViewControllerViewDidDisappearNotification = @"Room
         _scrollToBottomHidden = scrollToBottomHidden;
     }
     
+    if (!_scrollToBottomHidden && [self.roomDataSource isKindOfClass:RoomDataSource.class])
+    {
+        RoomDataSource *roomDataSource = (RoomDataSource *) self.roomDataSource;
+        if (roomDataSource.currentTypingUsers && !roomDataSource.currentTypingUsers.count)
+        {
+            [roomDataSource resetTypingNotification];
+            NSInteger count = [self.bubblesTableView numberOfRowsInSection:0];
+            [self.bubblesTableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:count - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+        }
+    }
+
     [UIView animateWithDuration:.2 animations:^{
         self.scrollToBottomBadgeLabel.alpha = (scrollToBottomHidden || !self.scrollToBottomBadgeLabel.text) ? 0 : 1;
         self.scrollToBottomButton.alpha = scrollToBottomHidden ? 0 : 1;
@@ -1736,6 +1762,122 @@ NSNotificationName const RoomViewControllerViewDidDisappearNotification = @"Room
     
     self.roomInfoCoordinatorBridgePresenter.delegate = self;
     [self.roomInfoCoordinatorBridgePresenter pushFrom:self.navigationController animated:YES];
+}
+
+- (void)setupActions {
+    if (![self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+        return;
+    }
+    
+    RoomInputToolbarView *roomInputView = ((RoomInputToolbarView *) self.inputToolbarView);
+    MXWeakify(self);
+    roomInputView.actionsBar.actionItems = @[
+        [[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_camera"] andAction:^{
+            MXStrongifyAndReturnIfNil(self);
+            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+            }
+            [self showCameraControllerAnimated:YES];
+        }],
+        [[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_media_library"] andAction:^{
+            MXStrongifyAndReturnIfNil(self);
+            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+            }
+            [self showMediaPickerAnimated:YES];
+        }],
+        [[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_sticker"] andAction:^{
+            MXStrongifyAndReturnIfNil(self);
+            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+            }
+            [self roomInputToolbarViewPresentStickerPicker];
+        }],
+        [[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_file"] andAction:^{
+            MXStrongifyAndReturnIfNil(self);
+            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+            }
+            [self roomInputToolbarViewDidTapFileUpload];
+        }],
+    ];
+}
+
+- (void)roomInputToolbarViewPresentStickerPicker
+{
+    // Search for the sticker picker widget in the user account
+    Widget *widget = [[WidgetManager sharedManager] userWidgets:self.roomDataSource.mxSession ofTypes:@[kWidgetTypeStickerPicker]].firstObject;
+    
+    if (widget)
+    {
+        // Display the widget
+        [widget widgetUrl:^(NSString * _Nonnull widgetUrl) {
+            
+            StickerPickerViewController *stickerPickerVC = [[StickerPickerViewController alloc] initWithUrl:widgetUrl forWidget:widget];
+            
+            stickerPickerVC.roomDataSource = self.roomDataSource;
+            
+            [self.navigationController pushViewController:stickerPickerVC animated:YES];
+        } failure:^(NSError * _Nonnull error) {
+            
+            NSLog(@"[RoomVC] Cannot display widget %@", widget);
+            [[AppDelegate theDelegate] showErrorAsAlert:error];
+        }];
+    }
+    else
+    {
+        // The Sticker picker widget is not installed yet. Propose the user to install it
+        MXWeakify(self);
+
+        [currentAlert dismissViewControllerAnimated:NO completion:nil];
+        
+        NSString *alertMessage = [NSString stringWithFormat:@"%@\n%@",
+                                  NSLocalizedStringFromTable(@"widget_sticker_picker_no_stickerpacks_alert", @"Vector", nil),
+                                  NSLocalizedStringFromTable(@"widget_sticker_picker_no_stickerpacks_alert_add_now", @"Vector", nil)
+                                  ];
+        
+        currentAlert = [UIAlertController alertControllerWithTitle:nil message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
+        
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"]
+                                                         style:UIAlertActionStyleCancel
+                                                       handler:^(UIAlertAction * action)
+                                 {
+            MXStrongifyAndReturnIfNil(self);
+            self->currentAlert = nil;
+            
+        }]];
+        
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"]
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * action)
+                                 {
+            MXStrongifyAndReturnIfNil(self);
+            self->currentAlert = nil;
+            
+            // Show the sticker picker settings screen
+            IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc]
+                                                           initForMXSession:self.roomDataSource.mxSession
+                                                           inRoom:self.roomDataSource.roomId
+                                                           screen:[IntegrationManagerViewController screenForWidget:kWidgetTypeStickerPicker]
+                                                           widgetId:nil];
+            
+            [self presentViewController:modularVC animated:NO completion:nil];
+        }]];
+        
+        [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCStickerPickerAlert"];
+        [self presentViewController:currentAlert animated:YES completion:nil];
+    }
+}
+
+- (void)roomInputToolbarViewDidTapFileUpload
+{
+    MXKDocumentPickerPresenter *documentPickerPresenter = [MXKDocumentPickerPresenter new];
+    documentPickerPresenter.delegate = self;
+    
+    NSArray<MXKUTI*> *allowedUTIs = @[MXKUTI.data];
+    [documentPickerPresenter presentDocumentPickerWith:allowedUTIs from:self animated:YES completion:nil];
+    
+    self.documentPickerPresenter = documentPickerPresenter;
 }
 
 #pragma mark - Dialpad
@@ -3437,80 +3579,6 @@ NSNotificationName const RoomViewControllerViewDidDisappearNotification = @"Room
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
-#pragma mark - RoomInputToolbarViewDelegate
-
-- (void)roomInputToolbarViewPresentStickerPicker:(MXKRoomInputToolbarView*)toolbarView
-{
-    // Search for the sticker picker widget in the user account
-    Widget *widget = [[WidgetManager sharedManager] userWidgets:self.roomDataSource.mxSession ofTypes:@[kWidgetTypeStickerPicker]].firstObject;
-    
-    if (widget)
-    {
-        // Display the widget
-        [widget widgetUrl:^(NSString * _Nonnull widgetUrl) {
-            
-            StickerPickerViewController *stickerPickerVC = [[StickerPickerViewController alloc] initWithUrl:widgetUrl forWidget:widget];
-            
-            stickerPickerVC.roomDataSource = self.roomDataSource;
-            
-            [self.navigationController pushViewController:stickerPickerVC animated:YES];
-        } failure:^(NSError * _Nonnull error) {
-            
-            NSLog(@"[RoomVC] Cannot display widget %@", widget);
-            [[AppDelegate theDelegate] showErrorAsAlert:error];
-        }];
-    }
-    else
-    {
-        // The Sticker picker widget is not installed yet. Propose the user to install it
-        __weak typeof(self) weakSelf = self;
-        
-        [currentAlert dismissViewControllerAnimated:NO completion:nil];
-        
-        NSString *alertMessage = [NSString stringWithFormat:@"%@\n%@",
-                                  NSLocalizedStringFromTable(@"widget_sticker_picker_no_stickerpacks_alert", @"Vector", nil),
-                                  NSLocalizedStringFromTable(@"widget_sticker_picker_no_stickerpacks_alert_add_now", @"Vector", nil)
-                                  ];
-        
-        currentAlert = [UIAlertController alertControllerWithTitle:nil message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
-        
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"]
-                                                         style:UIAlertActionStyleCancel
-                                                       handler:^(UIAlertAction * action)
-                                 {
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
-                self->currentAlert = nil;
-            }
-            
-        }]];
-        
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action)
-                                 {
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
-                self->currentAlert = nil;
-                
-                // Show the sticker picker settings screen
-                IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc]
-                                                               initForMXSession:self.roomDataSource.mxSession
-                                                               inRoom:self.roomDataSource.roomId
-                                                               screen:[IntegrationManagerViewController screenForWidget:kWidgetTypeStickerPicker]
-                                                               widgetId:nil];
-                
-                [self presentViewController:modularVC animated:NO completion:nil];
-            }
-        }]];
-        
-        [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCStickerPickerAlert"];
-        [self presentViewController:currentAlert animated:YES completion:nil];
-    }
-}
-
 #pragma mark - VoIP
 
 - (void)placeCallWithVideo:(BOOL)video
@@ -3755,27 +3823,6 @@ NSNotificationName const RoomViewControllerViewDidDisappearNotification = @"Room
             self->savedInputToolbarPlaceholder = nil;
         }];
     }
-}
-
-- (void)roomInputToolbarViewDidTapFileUpload:(MXKRoomInputToolbarView *)toolbarView
-{
-    MXKDocumentPickerPresenter *documentPickerPresenter = [MXKDocumentPickerPresenter new];
-    documentPickerPresenter.delegate = self;
-    
-    NSArray<MXKUTI*> *allowedUTIs = @[MXKUTI.data];
-    [documentPickerPresenter presentDocumentPickerWith:allowedUTIs from:self animated:YES completion:nil];
-    
-    self.documentPickerPresenter = documentPickerPresenter;
-}
-
-- (void)roomInputToolbarViewDidTapCamera:(MXKRoomInputToolbarView*)toolbarView
-{
-    [self showCameraControllerAnimated:YES];
-}
-
-- (void)roomInputToolbarViewDidTapMediaLibrary:(MXKRoomInputToolbarView*)toolbarView
-{
-    [self showMediaPickerAnimated:YES];
 }
 
 - (void)roomInputToolbarViewDidTapCancel:(MXKRoomInputToolbarView*)toolbarView
@@ -4181,54 +4228,51 @@ NSNotificationName const RoomViewControllerViewDidDisappearNotification = @"Room
 
 - (void)refreshTypingNotification
 {
-    if ([self.titleView isKindOfClass:RoomTitleView.class])
-    {
-        RoomTitleView *titleView = (RoomTitleView *)self.titleView;
-        
-        // Prepare here typing notification
-        NSString* text = nil;
-        NSUInteger count = currentTypingUsers.count;
-        
-        // get the room member names
-        NSMutableArray *names = [[NSMutableArray alloc] init];
-        
-        // keeps the only the first two users
-        for(int i = 0; i < MIN(count, 2); i++)
+    RoomDataSource *roomDataSource = (RoomDataSource *) self.roomDataSource;
+    BOOL needsUpdate = currentTypingUsers.count != roomDataSource.currentTypingUsers.count;
+
+    NSMutableArray *typingUsers = [NSMutableArray new];
+    for (NSUInteger i = 0 ; i < currentTypingUsers.count ; i++) {
+        NSString *userId = currentTypingUsers[i];
+        MXRoomMember* member = [self.roomDataSource.roomState.members memberWithUserId:userId];
+        TypingUserInfo *userInfo;
+        if (member)
         {
-            NSString* name = currentTypingUsers[i];
-            
-            MXRoomMember* member = [self.roomDataSource.roomState.members memberWithUserId:name];
-            
-            if (member && member.displayname.length)
-            {
-                name = member.displayname;
-            }
-            
-            // sanity check
-            if (name)
-            {
-                [names addObject:name];
-            }
-        }
-        
-        if (0 == names.count)
-        {
-            // something to do ?
-        }
-        else if (1 == names.count)
-        {
-            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_one_user_is_typing", @"Vector", nil), names[0]];
-        }
-        else if (2 == names.count)
-        {
-            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_two_users_are_typing", @"Vector", nil), names[0], names[1]];
+            userInfo = [[TypingUserInfo alloc] initWithMember: member];
         }
         else
         {
-            text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_many_users_are_typing", @"Vector", nil), names[0], names[1]];
+            userInfo = [[TypingUserInfo alloc] initWithUserId: userId];
+        }
+        [typingUsers addObject:userInfo];
+        needsUpdate = needsUpdate || userInfo.userId != ((MXRoomMember *) roomDataSource.currentTypingUsers[i]).userId;
+    }
+
+    if (needsUpdate)
+    {
+        BOOL needsReload = roomDataSource.currentTypingUsers == nil;
+        roomDataSource.currentTypingUsers = typingUsers;
+        if (needsReload)
+        {
+            [self.bubblesTableView reloadData];
+        }
+        else
+        {
+            NSInteger count = [self.bubblesTableView numberOfRowsInSection:0];
+            NSIndexPath *lastIndexPath = [NSIndexPath indexPathForRow:count - 1 inSection:0];
+            [self.bubblesTableView reloadRowsAtIndexPaths:@[lastIndexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
         
-        titleView.typingNotificationString = text;
+        if (self.isScrollToBottomHidden
+            && !self.bubblesTableView.isDragging
+            && !self.bubblesTableView.isDecelerating)
+        {
+            NSInteger count = [self.bubblesTableView numberOfRowsInSection:0];
+            if (count)
+            {
+                [self scrollBubblesTableViewToBottomAnimated:YES];
+            }
+        }
     }
 }
 
