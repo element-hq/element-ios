@@ -102,7 +102,7 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="46" id="LuF-W3-nmg"/>
+                                <constraint firstAttribute="height" constant="24" id="LuF-W3-nmg"/>
                                 <constraint firstAttribute="bottom" secondItem="QPM-9v-fDU" secondAttribute="bottom" id="Pvs-4X-IjN"/>
                                 <constraint firstAttribute="trailing" secondItem="QPM-9v-fDU" secondAttribute="trailing" id="lFs-G2-cuc"/>
                             </constraints>
