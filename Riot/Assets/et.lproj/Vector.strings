@@ -1287,3 +1287,9 @@
 
 // Call Bar
 "callbar_only_single_active" = "Kõne on käsil (%@)";
+"room_details_integrations" = "Lõiminguid";
+"room_details_search" = "Otsi jututoast";
+"room_multiple_typing_notification" = "%@ ja muud kasutajad";
+"room_accessibility_video_call" = "Videokõne";
+"room_message_replying_to" = "Vastan sõnumile %@";
+"room_message_editing" = "Muudan sõnumit";
