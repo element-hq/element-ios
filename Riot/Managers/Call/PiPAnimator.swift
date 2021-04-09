@@ -66,21 +66,14 @@ class PiPAnimator: NSObject {
         let transform = CGAffineTransform(scaleX: scale, y: scale)
         let targetSize = Constants.pipViewSize
         
-        let animator = UIViewPropertyAnimator(duration: animationDuration, dampingRatio: 1) {
-            pipView.transform = transform
-            
-            pipView.move(in: keyWindow,
-                         targetSize: targetSize)
+        pipView.transform = transform
+        pipView.move(in: keyWindow,
+                     targetSize: targetSize)
+    
+        if let pipable = fromVC as? PictureInPicturable {
+            pipable.enterPiP?()
         }
-        
-        animator.addCompletion { (position) in
-            if let pipable = fromVC as? PictureInPicturable {
-                pipable.enterPiP?()
-            }
-            fromVC.dismiss(animated: false, completion: nil)
-        }
-
-        animator.startAnimation()
+        fromVC.dismiss(animated: false, completion: nil)
     }
     
     private func exitAnimation(context: UIViewControllerContextTransitioning) {
@@ -108,27 +101,17 @@ class PiPAnimator: NSObject {
         pipView.contentView = nil
         pipView.removeFromSuperview()
         
-        snapshot.frame = pipView.frame
+        snapshot.frame = context.finalFrame(for: toVC)
+        toVC.additionalSafeAreaInsets = .zero
+        toVC.view.frame = context.finalFrame(for: toVC)
+        toVC.view.isHidden = false
         
-        let animator = UIViewPropertyAnimator(duration: animationDuration, dampingRatio: 1) {
-            snapshot.frame = context.finalFrame(for: toVC)
+        snapshot.removeFromSuperview()
+        if let pipable = toVC as? PictureInPicturable {
+            pipable.exitPiP?()
         }
         
-        animator.addCompletion { (position) in
-            
-            toVC.additionalSafeAreaInsets = .zero
-            toVC.view.frame = context.finalFrame(for: toVC)
-            toVC.view.isHidden = false
-            
-            snapshot.removeFromSuperview()
-            if let pipable = toVC as? PictureInPicturable {
-                pipable.exitPiP?()
-            }
-            
-            context.completeTransition(!context.transitionWasCancelled)
-        }
-
-        animator.startAnimation()
+        context.completeTransition(!context.transitionWasCancelled)
     }
 }
 
