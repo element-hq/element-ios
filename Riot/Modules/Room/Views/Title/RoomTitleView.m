@@ -47,6 +47,8 @@
         [tap setDelegate:self];
         [self.titleMask addGestureRecognizer:tap];
         self.titleMask.userInteractionEnabled = YES;
+        self.dotView.layer.masksToBounds = YES;
+        self.dotView.layer.cornerRadius = CGRectGetMidX(self.dotView.bounds);
     }
 }
 
@@ -54,8 +56,8 @@
 {
     [super layoutSubviews];
 
-    self.roomDetailsIconImageView.image = self.roomDetailsIconImageView.image;
-    
+    self.pictureView.layer.cornerRadius = self.pictureView.bounds.size.width / 2.;
+
     if (self.superview)
     {
         // Force the title view layout by adding 2 new constraints on the UINavigationBarContentView instance.
@@ -84,7 +86,9 @@
 
     self.backgroundColor = UIColor.clearColor;
     self.displayNameTextField.textColor = (self.mxRoom.summary.displayname.length ? ThemeService.shared.theme.textPrimaryColor : ThemeService.shared.theme.textSecondaryColor);
-    self.roomDetailsIconImageView.tintColor = ThemeService.shared.theme.textPrimaryColor;
+    self.typingLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
+    self.dotView.backgroundColor = ThemeService.shared.theme.warningColor;
+    self.missedDiscussionsBadgeLabel.textColor = ThemeService.shared.theme.tintColor;
 }
 
 - (void)setRoomPreviewData:(RoomPreviewData *)roomPreviewData
@@ -131,6 +135,60 @@
     {
         [self.tapGestureDelegate roomTitleView:self recognizeTapGesture:tapGestureRecognizer];
     }
+}
+
+- (void)updateLayoutForOrientation:(UIInterfaceOrientation)orientation
+{
+    if (UIInterfaceOrientationIsLandscape(orientation))
+    {
+        self.missedDiscussionsBadgeLabel.font = [UIFont systemFontOfSize:10];
+        self.missedDiscussionsBadgeLabelLeadingConstraint.constant = -24;
+        self.pictureViewWidthConstraint.constant = 28;
+        self.pictureViewHeightConstraint.constant = 28;
+        self.displayNameTextField.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+        self.typingLabel.font = [UIFont systemFontOfSize:10];
+        self.dotViewCenterYConstraint.constant = -2;
+    }
+    else
+    {
+        self.missedDiscussionsBadgeLabel.font = [UIFont systemFontOfSize:15];
+        self.missedDiscussionsBadgeLabelLeadingConstraint.constant = -32;
+        self.pictureViewWidthConstraint.constant = 32;
+        self.pictureViewHeightConstraint.constant = 32;
+        self.displayNameTextField.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
+        self.typingLabel.font = [UIFont systemFontOfSize:12];
+        self.dotViewCenterYConstraint.constant = -1;
+   }
+}
+
+- (void)setTypingNotificationString:(NSString *)typingNotificationString
+{
+    if (typingNotificationString.length > 0)
+    {
+        self.typingLabel.text = typingNotificationString;
+        [self layoutIfNeeded];
+
+        [UIView animateWithDuration:.1 animations:^{
+            self.typingLabel.alpha = 1;
+            self.displayNameCenterYConstraint.constant = -8;
+            [self layoutIfNeeded];
+        }];
+    }
+    else
+    {
+        [UIView animateWithDuration:.1 animations:^{
+            self.typingLabel.alpha = 0;
+            self.displayNameCenterYConstraint.constant = 0;
+            [self layoutIfNeeded];
+        } completion:^(BOOL finished) {
+            self.typingLabel.text = nil;
+        }];
+    }
+}
+
+- (NSString *)typingNotificationString
+{
+    return self.typingLabel.text;
 }
 
 @end

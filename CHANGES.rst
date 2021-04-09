@@ -1,3 +1,44 @@
+Changes in 1.3.0 (2021-04-09)
+=================================================
+
+✨ Features
+ * Composer Update - Typing and sending a message (#4085)
+ * Switching composer between text mode & action mode (#4087)
+ * Explore typing notifications inspired by web (#4134)
+
+🙌 Improvements
+ * Make the application settings more configurable (#4171)
+ * Possibility to lock some room creation parameters from settings (#4181)
+ * Enable / disable external friends invite (#4173)
+ * Composer update - UI enhancements (#4133)
+ * Increase grow/shrink animation speed in new composer (#4187)
+ * Limit typing notifications timeline jumps (#4176)
+ * Consider displaying names in typing notifications (#4175)
+
+🐛 Bugfix
+ * If you start typing while the new attachment sending mode is on, the send button appears (#4155)
+ * The final frames of the appearance animation of the new composer buttons are missing (#4160)
+ * Crash in [RoomViewController setupActions] (#4162)
+ * Too much vertical whitespace when replying (#4164)
+ * Black theme uses dark background for composer (#4192)
+ * Vertical layout of typing notifs can go wonky (#4159)
+ * Crash in [RoomViewController refreshTypingNotification] (#4161)
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.14.7](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.7)).
+
 Changes in 1.2.8 (2021-03-26)
 =================================================
 
@@ -61,6 +102,7 @@ Changes in 1.2.6 (2021-03-11)
 ✨ Features
  * Improve the status of send messages (sending, sent, received, failed) (#4014)
  * Retrying & deleting failed messages (#4013)
+ * Composer Update - Typing and sending a message (#4085)
 
 🙌 Improvements
  * 

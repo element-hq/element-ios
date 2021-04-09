@@ -37,7 +37,7 @@
 // Authentication
 "auth_login" = "Увійти";
 "auth_register" = "Зареєструватися";
-"auth_submit" = "Відправити";
+"auth_submit" = "Надіслати";
 "auth_skip" = "Пропустити";
 "auth_send_reset_email" = "Надіслати лист для відновлення";
 "auth_return_to_login" = "Повернутися на екран входу";
@@ -161,7 +161,7 @@
 "people_conversation_section" = "БАЛАЧКИ";
 "people_no_conversation" = "Нема балачок";
 "room_participants_leave_prompt_msg_for_dm" = "Ви впевненні, що бажаєте залишити?";
-"room_participants_leave_prompt_title_for_dm" = "Залишити";
+"room_participants_leave_prompt_title_for_dm" = "Вийти";
 "client_android_name" = "Element Android";
 "store_promotional_text" = "Додаток для чату та сумісної роботи, що зберігає конфіденційність у відкритій мережі. Децентралізований, щоб надати вам контроль над даними. Без обробки даних, без бекдорів, без доступу для третіх сторін.";
 "settings_three_pids_management_information_part3" = ".";
@@ -288,3 +288,40 @@
 "security_settings_secure_backup_delete" = "Видалити";
 "security_settings_secure_backup_synchronise" = "Синхронізувати";
 "security_settings_secure_backup_setup" = "Налаштувати";
+"people_empty_view_information" = "Безпечно спілкуйтеся з будь-ким. Торкніться +, щоб додати співрозмовників.";
+"callbar_return" = "Повернути";
+"callbar_only_multiple_paused" = "%@ викликів у очікуванні";
+"callbar_only_single_paused" = "Виклики в очікуванні";
+"callbar_active_and_multiple_paused" = "1 активний виклик (%@) · %@ викликів у очікуванні";
+"callbar_active_and_single_paused" = "1 активний виклик (%@) · 1 виклик в очікуванні";
+
+// Call Bar
+"callbar_only_single_active" = "Активний виклик (%@)";
+"switch" = "Перемкнути";
+"room_event_action_resend" = "Повторно надіслати";
+"room_event_action_redact" = "Вилучити";
+"room_event_action_quote" = "Цитувати";
+"room_event_action_copy" = "Копіювати";
+"bug_report_send" = "Надіслати";
+"room_details_topic" = "Тема";
+"room_details_room_name_for_dm" = "Назва";
+"create_room_placeholder_topic" = "Тема";
+"create_room_section_header_topic" = "Тема кімнати (необов'язково)";
+"create_room_placeholder_name" = "Назва";
+"create_room_section_header_name" = "Назва кімнати";
+
+// MARK: - Create Room
+
+"create_room_title" = "Нова кімната";
+"searchable_directory_search_placeholder" = "Ім'я або ID";
+"searchable_directory_x_network" = "%@ мережа";
+
+// MARK: - Searchable Directory View Controller
+
+"searchable_directory_create_new_room" = "Створити нову кімнату";
+"biometrics_cant_unlocked_alert_message_retry" = "Повторити";
+"key_backup_setup_skip_alert_skip_action" = "Пропустити";
+"room_participants_action_remove" = "Вилучити з цієї кімнати";
+"room_participants_action_leave" = "Вийти з цієї кімнати";
+"room_participants_action_invite" = "Запросити";
+"room_ongoing_conference_call_close" = "Закрити";
