@@ -86,10 +86,10 @@
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DsK-QY-Lz0">
-                            <rect key="frame" x="0.0" y="84" width="90" height="46"/>
+                            <rect key="frame" x="0.0" y="106" width="90" height="24"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QPM-9v-fDU">
-                                    <rect key="frame" x="60" y="16" width="30" height="30"/>
+                                    <rect key="frame" x="60" y="-6" width="30" height="30"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="A1c-u0-AXO"/>
                                         <constraint firstAttribute="width" constant="30" id="pzQ-Xn-q0G"/>
@@ -183,7 +183,7 @@
                             </constraints>
                         </view>
                         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nk9-Un-LVP" userLabel="Call Control Container View">
-                            <rect key="frame" x="0.0" y="794" width="414" height="68"/>
+                            <rect key="frame" x="0.0" y="774" width="414" height="68"/>
                             <subviews>
                                 <button opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iiz-W1-oNW" userLabel="Chat Button">
                                     <rect key="frame" x="12" y="7" width="48" height="48"/>
@@ -452,7 +452,7 @@
                 <constraint firstItem="6gQ-zo-2Zw" firstAttribute="leading" secondItem="r1a-fi-tZ0" secondAttribute="leading" priority="750" constant="20" id="Qvg-FG-sBr"/>
                 <constraint firstItem="VWv-s0-46r" firstAttribute="leading" secondItem="r1a-fi-tZ0" secondAttribute="leading" id="SNc-WF-jXg"/>
                 <constraint firstItem="4TX-46-pAi" firstAttribute="top" secondItem="r1a-fi-tZ0" secondAttribute="top" constant="56" id="TQG-q5-eS7"/>
-                <constraint firstItem="r1a-fi-tZ0" firstAttribute="bottom" secondItem="nk9-Un-LVP" secondAttribute="bottom" id="VpW-QU-xiw"/>
+                <constraint firstItem="r1a-fi-tZ0" firstAttribute="bottom" secondItem="nk9-Un-LVP" secondAttribute="bottom" constant="20" id="VpW-QU-xiw"/>
                 <constraint firstItem="r1a-fi-tZ0" firstAttribute="trailing" secondItem="JAR-tn-sGN" secondAttribute="trailing" id="Xcc-jT-zbd"/>
                 <constraint firstItem="UGa-hI-iqx" firstAttribute="top" secondItem="r1a-fi-tZ0" secondAttribute="top" constant="120" id="YlJ-XZ-rCM"/>
                 <constraint firstItem="Tjb-57-yB1" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="aKy-Ol-bhc"/>
