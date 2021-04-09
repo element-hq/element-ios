@@ -79,17 +79,17 @@
                     <accessibility key="accessibilityConfiguration" identifier="CallVCRemotePreviewContainerView"/>
                 </view>
                 <view opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="6gQ-zo-2Zw" userLabel="Local Preview Container">
-                    <rect key="frame" x="20" y="464" width="79" height="106"/>
+                    <rect key="frame" x="20" y="464" width="90" height="130"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5XG-md-r93" userLabel="Local Preview Video View">
-                            <rect key="frame" x="0.0" y="0.0" width="79" height="106"/>
+                            <rect key="frame" x="0.0" y="0.0" width="90" height="130"/>
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DsK-QY-Lz0">
-                            <rect key="frame" x="0.0" y="60" width="79" height="46"/>
+                            <rect key="frame" x="0.0" y="84" width="90" height="46"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QPM-9v-fDU">
-                                    <rect key="frame" x="49" y="16" width="30" height="30"/>
+                                    <rect key="frame" x="60" y="16" width="30" height="30"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="A1c-u0-AXO"/>
                                         <constraint firstAttribute="width" constant="30" id="pzQ-Xn-q0G"/>
@@ -108,7 +108,7 @@
                             </constraints>
                         </view>
                         <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Bhz-hS-5B6">
-                            <rect key="frame" x="21" y="34.666666666666686" width="37" height="37"/>
+                            <rect key="frame" x="26.666666666666664" y="46.666666666666686" width="37" height="37"/>
                         </activityIndicatorView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -121,8 +121,8 @@
                         <constraint firstAttribute="trailing" secondItem="DsK-QY-Lz0" secondAttribute="trailing" id="ZbL-0k-X3Z"/>
                         <constraint firstItem="5XG-md-r93" firstAttribute="leading" secondItem="6gQ-zo-2Zw" secondAttribute="leading" id="aQX-E8-wvE"/>
                         <constraint firstItem="5XG-md-r93" firstAttribute="top" secondItem="6gQ-zo-2Zw" secondAttribute="top" id="aWP-oA-jDd"/>
-                        <constraint firstAttribute="height" constant="106" id="dZW-ZL-5rV"/>
-                        <constraint firstAttribute="width" constant="79" id="gyu-kv-SLy"/>
+                        <constraint firstAttribute="height" constant="130" id="dZW-ZL-5rV"/>
+                        <constraint firstAttribute="width" constant="90" id="gyu-kv-SLy"/>
                         <constraint firstItem="Bhz-hS-5B6" firstAttribute="centerY" secondItem="6gQ-zo-2Zw" secondAttribute="centerY" id="jTh-Rj-Eew"/>
                         <constraint firstAttribute="bottom" secondItem="5XG-md-r93" secondAttribute="bottom" id="phV-bf-EXl"/>
                         <constraint firstAttribute="trailing" secondItem="5XG-md-r93" secondAttribute="trailing" id="t7q-e1-042"/>
