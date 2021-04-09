@@ -18,6 +18,8 @@
 
 #import "MediaPickerViewController.h"
 
+@class RoomActionsBar;
+
 /**
  Destination of the message in the composer
  */
@@ -32,32 +34,11 @@ typedef enum : NSUInteger
 @protocol RoomInputToolbarViewDelegate <MXKRoomInputToolbarViewDelegate>
 
 /**
- Tells the delegate that the user wants to display the sticker picker.
-
- @param toolbarView the room input toolbar view.
- */
-- (void)roomInputToolbarViewPresentStickerPicker:(MXKRoomInputToolbarView*)toolbarView;
-
-/**
- Tells the delegate that the user wants to send external files.
+ Tells the delegate that the user wants to cancel the current edition / reply.
  
  @param toolbarView the room input toolbar view
  */
-- (void)roomInputToolbarViewDidTapFileUpload:(MXKRoomInputToolbarView*)toolbarView;
-
-/**
- Tells the delegate that the user wants to take photo or video with camera.
- 
- @param toolbarView the room input toolbar view
- */
-- (void)roomInputToolbarViewDidTapCamera:(MXKRoomInputToolbarView*)toolbarView;
-
-/**
- Tells the delegate that the user wants to show media library.
- 
- @param toolbarView the room input toolbar view
- */
-- (void)roomInputToolbarViewDidTapMediaLibrary:(MXKRoomInputToolbarView*)toolbarView;
+- (void)roomInputToolbarViewDidTapCancel:(MXKRoomInputToolbarView*)toolbarView;
 
 @end
 
@@ -74,11 +55,6 @@ typedef enum : NSUInteger
 
 @property (weak, nonatomic) IBOutlet UIView *mainToolbarView;
 
-@property (weak, nonatomic) IBOutlet UIView *separatorView;
-@property (strong, nonatomic) IBOutlet MXKImageView *pictureView;
-
-@property (strong, nonatomic) IBOutlet UIImageView *encryptedRoomIcon;
-
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainToolbarMinHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainToolbarHeightConstraint;
 
@@ -86,15 +62,14 @@ typedef enum : NSUInteger
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *messageComposerContainerTrailingConstraint;
 
 @property (weak, nonatomic) IBOutlet UIButton *attachMediaButton;
-@property (weak, nonatomic) IBOutlet UIButton *voiceCallButton;
-@property (weak, nonatomic) IBOutlet UIButton *hangupCallButton;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *voiceCallButtonWidthConstraint;
+@property (weak, nonatomic) IBOutlet UIImageView *inputTextBackgroundView;
 
-/**
- Tell whether the call option is supported. YES by default.
- */
-@property (nonatomic) BOOL supportCallOption;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *inputContextViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet UIImageView *inputContextImageView;
+@property (weak, nonatomic) IBOutlet UILabel *inputContextLabel;
+@property (weak, nonatomic) IBOutlet UIButton *inputContextButton;
+@property (weak, nonatomic) IBOutlet RoomActionsBar *actionsBar;
 
 /**
  Tell whether the filled data will be sent encrypted. NO by default.
@@ -102,13 +77,18 @@ typedef enum : NSUInteger
 @property (nonatomic) BOOL isEncryptionEnabled;
 
 /**
+ Sender of the event being edited / replied.
+ */
+@property (nonatomic, strong) NSString *eventSenderDisplayName;
+
+/**
  Destination of the message in the composer.
  */
 @property (nonatomic) RoomInputToolbarViewSendMode sendMode;
 
 /**
- Tell whether a call is active.
+ YES if action menu is opened. NO otherwise
  */
-@property (nonatomic) BOOL activeCall;
+@property (nonatomic, getter=isActionMenuOpened) BOOL actionMenuOpened;
 
 @end

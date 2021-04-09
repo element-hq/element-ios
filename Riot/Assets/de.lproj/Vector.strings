@@ -755,7 +755,7 @@
 "widget_integrations_server_failed_to_connect" = "Verbindung zum Integrationsserver fehlgeschlagen";
 "device_verification_security_advice" = "Für maximale Sicherheit empfehlen wir, dies persönlich zu tun oder ein anderes vertrauenswürdiges Kommunikationsmittel zu verwenden";
 "device_verification_incoming_description_1" = "Überprüfe diese Sitzung, um sie als vertrauenswürdig zu markieren. Sitzungen von Partnern zu vertrauen gibt dir zusätzliche Sicherheit bei der Verwendung von Ende-zu-Ende verschlüsselten Nachrichten.";
-"device_verification_incoming_description_2" = "Wenn du diese Sitzung verifizierst, wird es sie vertrauenswürdig und für dein Gegenüber als vertrauenswürdig gekennzeichnet.";
+"device_verification_incoming_description_2" = "Wenn du diese Sitzung verifizierst, wird sie für dich und für dein Gegenüber als vertrauenswürdig gekennzeichnet.";
 // MARK: Start
 "device_verification_start_title" = "Verifizieren durch Vergleichen eines kurzen Textes";
 "device_verification_start_wait_partner" = "Warten auf Annahme durch Partner…";
@@ -1058,7 +1058,7 @@
 "key_verification_other_session_title" = "Sitzung verifizieren";
 "key_verification_new_session_title" = "Neue Sitzung verifizieren";
 "key_verification_this_session_title" = "Verifiziere diese Sitzung";
-"device_verification_security_advice_emoji" = "Vergleiche die einzigartigen Emoji und stell sicher, dass sie in derselben Reihenfolge angezeigt werden.";
+"device_verification_security_advice_emoji" = "Vergleiche die einzigartigen Emojis und kontrolliere, dass sie in derselben Reihenfolge angezeigt werden.";
 "device_verification_security_advice_number" = "Vergleiche die Zahlen und stell sicher, dass sie in derselben Reihenfolge angezeigt werden.";
 "key_verification_self_verify_current_session_alert_title" = "Verifiziere diese Sitzung";
 "key_verification_self_verify_current_session_alert_message" = "Andere Benutzer vertrauen ihr vielleicht nicht.";

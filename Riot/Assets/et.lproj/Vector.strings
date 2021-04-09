@@ -559,7 +559,7 @@
 "identity_server_settings_place_holder" = "Sisesta isikutuvastusserver";
 "identity_server_settings_add" = "Lisa";
 "identity_server_settings_change" = "Muuda";
-"identity_server_settings_disconnect_info" = "Isikutuvastusserveri kasutamise lõpetamine tähendab, et sa ei ole leitav teiste kasutajate poolt ega sulle ei saa telefoninumbri või e-posti aadressi alusel kutset saata. Küll aga saab kutset saata Matrix'i kasutajatunnuse alusel.";
+"identity_server_settings_disconnect_info" = "Isikutuvastusserveri kasutamise lõpetamine tähendab, et sa ei ole leitav nende kasutajate poolt, kes tahavad sulle telefoninumbri või e-posti aadressi alusel kutset saata. Küll aga saab alati kutset saata Matrix'i kasutajatunnuse alusel.";
 "room_details_history_section_prompt_msg" = "Kui muudad seda, kes saavad selle jututoa ajalugu lugeda, siis kehtib see vaid tulevaste sõnumite kohta. Senise ajaloo nähtavus sellega ei muutu.";
 // Read Receipts
 "read_receipts_list" = "Lugemisteatiste loend";
