@@ -130,7 +130,16 @@ class RoomBaseCallBubbleCell: MXKRoomBubbleTableViewCell {
         }
         cell.render(cellData)
         
-        return cell.contentView.systemLayoutSizeFitting(fittingSize).height
+        //  we need to add suitable height manually for read receipts view, as adding of them is not handled in the render method
+        var readReceiptsHeight: CGFloat = 0
+        if let bubbleCellData = cellData as? RoomBubbleCellData,
+           bubbleCellData.showBubbleReceipts,
+           bubbleCellData.readReceipts.count > 0 {
+            readReceiptsHeight = cell.innerContentView.readReceiptsContainerView.systemLayoutSizeFitting(fittingSize).height
+                + cell.innerContentView.interItemSpacing
+        }
+        
+        return cell.contentView.systemLayoutSizeFitting(fittingSize).height + readReceiptsHeight
     }
     
 }

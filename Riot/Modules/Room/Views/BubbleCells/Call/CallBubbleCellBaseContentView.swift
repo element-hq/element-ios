@@ -46,6 +46,9 @@ class CallBubbleCellBaseContentView: UIView {
     
     @IBOutlet weak var bottomContainerView: UIView!
     
+    /// Inter-item spacing in the main content stack view
+    let interItemSpacing: CGFloat = 8
+    
     var statusText: String? {
         didSet {
             dotLabel.isHidden = statusText == nil
