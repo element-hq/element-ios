@@ -146,7 +146,29 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NR7-X3-ty9">
+                            <rect key="frame" x="0.0" y="214" width="344" height="12"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8R3-S9-yAK">
+                                    <rect key="frame" x="194" y="0.0" width="150" height="12"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="150" id="zJh-xY-kM0"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="8R3-S9-yAK" secondAttribute="bottom" id="5Ep-68-kOk"/>
+                                <constraint firstAttribute="height" constant="12" id="DIz-l1-rQS"/>
+                                <constraint firstItem="8R3-S9-yAK" firstAttribute="top" secondItem="NR7-X3-ty9" secondAttribute="top" id="jei-Aj-tlK"/>
+                                <constraint firstAttribute="trailing" secondItem="8R3-S9-yAK" secondAttribute="trailing" id="pUG-Ee-meE"/>
+                            </constraints>
+                        </view>
                     </subviews>
+                    <constraints>
+                        <constraint firstItem="NR7-X3-ty9" firstAttribute="width" secondItem="pdr-Jo-LHQ" secondAttribute="width" id="Owx-yH-6kR"/>
+                    </constraints>
                 </stackView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Fb-Sw-AW5">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="220"/>
@@ -181,6 +203,8 @@
                 <outlet property="paginationLabel" destination="GQH-kh-LXA" id="Mww-Ps-yv1"/>
                 <outlet property="paginationSeparatorView" destination="YdR-PH-eGM" id="aK7-LF-awm"/>
                 <outlet property="paginationTitleView" destination="H6S-AE-DTm" id="yep-a0-QYq"/>
+                <outlet property="readReceiptsContainerView" destination="NR7-X3-ty9" id="ryw-i0-0Ff"/>
+                <outlet property="readReceiptsContentView" destination="8R3-S9-yAK" id="bO0-cF-i4x"/>
             </connections>
             <point key="canvasLocation" x="44.927536231884062" y="-132.25446428571428"/>
         </view>

@@ -135,6 +135,18 @@ class RoomBaseCallBubbleCell: MXKRoomBubbleTableViewCell {
     
 }
 
+extension RoomBaseCallBubbleCell: BubbleCellReadReceiptsDisplayable {
+    
+    func addReadReceiptsView(_ readReceiptsView: UIView) {
+        innerContentView.addReadReceiptsView(readReceiptsView)
+    }
+    
+    func removeReadReceiptsView() {
+        innerContentView.removeReadReceiptsView()
+    }
+    
+}
+
 extension RoomBaseCallBubbleCell: Themable {
     
     func update(theme: Theme) {
@@ -143,6 +155,6 @@ extension RoomBaseCallBubbleCell: Themable {
     
 }
 
-extension RoomBaseCallBubbleCell: NibLoadable, Reusable {
+extension RoomBaseCallBubbleCell: NibReusable {
     
 }

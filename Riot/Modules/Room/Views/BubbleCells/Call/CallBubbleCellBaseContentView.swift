@@ -41,6 +41,9 @@ class CallBubbleCellBaseContentView: UIView {
     @IBOutlet weak var bubbleOverlayContainer: UIView!
     @IBOutlet weak var bubbleInfoContainerTopConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var readReceiptsContainerView: UIView!
+    @IBOutlet weak var readReceiptsContentView: UIView!
+    
     @IBOutlet weak var bottomContainerView: UIView!
     
     var statusText: String? {
@@ -51,6 +54,14 @@ class CallBubbleCellBaseContentView: UIView {
     }
     
     private(set) var theme: Theme = ThemeService.shared().theme
+    
+    private var showReadReceipts: Bool {
+        get {
+            return !self.readReceiptsContainerView.isHidden
+        } set {
+            self.readReceiptsContainerView.isHidden = !newValue
+        }
+    }
     
     func relayoutCallSummary() {
         if bottomContainerView.subviews.isEmpty {
@@ -101,4 +112,20 @@ extension CallBubbleCellBaseContentView: Themable {
         }
     }
     
+}
+
+// MARK: - BubbleCellReadReceiptsDisplayable
+
+extension CallBubbleCellBaseContentView: BubbleCellReadReceiptsDisplayable {
+    
+    func addReadReceiptsView(_ readReceiptsView: UIView) {
+        self.readReceiptsContentView.vc_removeAllSubviews()
+        self.readReceiptsContentView.vc_addSubViewMatchingParent(readReceiptsView)
+        self.showReadReceipts = true
+    }
+    
+    func removeReadReceiptsView() {
+        self.showReadReceipts = false
+        self.readReceiptsContentView.vc_removeAllSubviews()
+    }
 }
