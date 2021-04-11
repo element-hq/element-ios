@@ -1030,7 +1030,7 @@ extension CallPresenter: JitsiViewControllerDelegate {
     
     func jitsiViewController(_ jitsiViewController: JitsiViewController!, goBackToApp completion: (() -> Void)!) {
         if jitsiViewController == jitsiVC || jitsiViewController == temporaryJitsiVC {
-            enterPipCallVC(jitsiViewController)
+            enterPipCallVC(jitsiViewController, completion: completion)
         }
     }
     
