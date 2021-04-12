@@ -18,8 +18,8 @@ import UIKit
 
 @objc enum PiPViewPosition: Int {
     case bottomLeft
-    case bottomRight
-    case topRight       // default value
+    case bottomRight    //  default value
+    case topRight
     case topLeft
 }
 
@@ -48,7 +48,7 @@ class PiPView: UIView {
             layer.cornerRadius = cornerRadius
         }
     }
-    var position: PiPViewPosition = .bottomLeft
+    var position: PiPViewPosition = .bottomRight
     weak var delegate: PiPViewDelegate?
     
     private var originalCenter: CGPoint = .zero
@@ -97,7 +97,7 @@ NSLayoutConstraint.activate([
     }
     
     func move(in view: UIView? = nil,
-              to position: PiPViewPosition = .topRight,
+              to position: PiPViewPosition = .bottomRight,
               targetSize: CGSize? = nil,
               animated: Bool = false,
               completion: ((Bool) -> Void)? = nil) {
