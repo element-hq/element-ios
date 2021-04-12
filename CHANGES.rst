@@ -2,6 +2,30 @@ Changes to be released in next version
 =================================================
 
 ✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Changes in 1.3.0 (2021-04-09)
+=================================================
+
+✨ Features
  * Composer Update - Typing and sending a message (#4085)
  * Switching composer between text mode & action mode (#4087)
  * Explore typing notifications inspired by web (#4134)
@@ -35,6 +59,9 @@ Changes to be released in next version
 
 Others
  * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.14.7](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.7)).
 
 Changes in 1.2.8 (2021-03-26)
 =================================================
