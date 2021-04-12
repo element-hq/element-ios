@@ -32,12 +32,12 @@ import UIKit
 class PiPView: UIView {
     
     private enum Defaults {
-        static let margins: UIOffset = UIOffset(horizontal: 20, vertical: 20)
+        static let margins: UIEdgeInsets = UIEdgeInsets(top: 64, left: 20, bottom: 64, right: 20)
         static let cornerRadius: CGFloat = 8
         static let animationDuration: TimeInterval = 0.25
     }
     
-    var margins: UIOffset = Defaults.margins {
+    var margins: UIEdgeInsets = Defaults.margins {
         didSet {
             guard self.superview != nil else { return }
             self.move(to: self.position, animated: true)
@@ -161,23 +161,23 @@ NSLayoutConstraint.activate([
         
         switch position {
         case .bottomLeft:
-            let origin = CGPoint(x: margins.horizontal + view.safeAreaInsets.left,
-                                 y: superviewHeight - view.safeAreaInsets.bottom - targetSize.height - margins.vertical)
+            let origin = CGPoint(x: margins.left + view.safeAreaInsets.left,
+                                 y: superviewHeight - view.safeAreaInsets.bottom - targetSize.height - margins.bottom)
             return CGRect(origin: origin,
                           size: targetSize)
         case .bottomRight:
-            let origin = CGPoint(x: superviewWidth - view.safeAreaInsets.right - margins.horizontal - targetSize.width,
-                                 y: superviewHeight - view.safeAreaInsets.bottom - targetSize.height - margins.vertical)
+            let origin = CGPoint(x: superviewWidth - view.safeAreaInsets.right - margins.right - targetSize.width,
+                                 y: superviewHeight - view.safeAreaInsets.bottom - targetSize.height - margins.bottom)
             return CGRect(origin: origin,
                           size: targetSize)
         case .topRight:
-            let origin = CGPoint(x: superviewWidth - view.safeAreaInsets.right - margins.horizontal - targetSize.width,
-                                 y: margins.vertical + view.safeAreaInsets.top)
+            let origin = CGPoint(x: superviewWidth - view.safeAreaInsets.right - margins.right - targetSize.width,
+                                 y: margins.top + view.safeAreaInsets.top)
             return CGRect(origin: origin,
                           size: targetSize)
         case .topLeft:
-            let origin = CGPoint(x: margins.horizontal + view.safeAreaInsets.left,
-                                 y: margins.vertical + view.safeAreaInsets.top)
+            let origin = CGPoint(x: margins.left + view.safeAreaInsets.left,
+                                 y: margins.top + view.safeAreaInsets.top)
             return CGRect(origin: origin,
                           size: targetSize)
         }
