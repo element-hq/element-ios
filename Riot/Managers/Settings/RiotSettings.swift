@@ -52,6 +52,7 @@ final class RiotSettings: NSObject {
         static let roomCreationScreenAllowRoomTypeConfiguration = "roomCreationScreenAllowRoomTypeConfiguration"
         static let roomCreationScreenRoomIsPublic = "roomCreationScreenRoomIsPublic"
         static let allowInviteExernalUsers = "allowInviteExernalUsers"
+        static let roomsAllowToJoinPublicRooms = "roomsAllowToJoinPublicRooms"
     }
     
     static let shared = RiotSettings()
@@ -242,6 +243,18 @@ final class RiotSettings: NSObject {
         }
     }
     
+    // MARK: -  Rooms Screen
+    var roomsAllowToJoinPublicRooms: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomsAllowToJoinPublicRooms) != nil else {
+                return BuildSettings.roomsAllowToJoinPublicRooms
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomsAllowToJoinPublicRooms)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomsAllowToJoinPublicRooms)
+        }
+    }
+
     // MARK: - Room Creation Screen
 
     var roomCreationScreenAllowEncryptionConfiguration: Bool {

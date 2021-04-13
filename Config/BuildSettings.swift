@@ -153,6 +153,8 @@ final class BuildSettings: NSObject {
         "matrix.org"
     ]
     
+    // MARK: -  Rooms Screen
+    static let roomsAllowToJoinPublicRooms: Bool = true
     
     // MARK: - Analytics
     static let analyticsServerUrl = URL(string: "https://piwik.riot.im/piwik.php")
