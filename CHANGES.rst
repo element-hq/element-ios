@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Make room settings screen configurable dynamically (#4219).
 
 🐛 Bugfix
  * 
