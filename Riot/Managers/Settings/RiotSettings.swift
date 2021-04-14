@@ -79,6 +79,7 @@ final class RiotSettings: NSObject {
         defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowCryptographyExport)
         defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowAdvancedUnverifiedDevices)
         defaults.removeObject(forKey: UserDefaultsKeys.allowInviteExernalUsers)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomsAllowToJoinPublicRooms)
     }
     
     // MARK: Servers
