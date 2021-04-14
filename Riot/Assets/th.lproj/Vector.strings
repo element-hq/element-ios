@@ -1,2 +1,128 @@
 // String for App Store
 "store_short_description" = "แชท/VoIP แบบกระจายศูนย์ที่ปลอดภัย";
+"group_section" = "ชุมชน";
+"auth_softlogout_clear_data_sign_out_title" = "คุณแน่ใจหรือไม่?";
+"collapse" = "ยุบ";
+"room_participants_action_remove" = "เอาออกจากห้องนี้";
+"room_participants_action_leave" = "ออกจากห้องนี้";
+"room_participants_action_invite" = "เชิญ";
+"room_participants_action_section_security" = "ความปลอดภัย";
+"room_participants_action_section_other" = "ตัวเลือก";
+"room_participants_offline" = "ออฟไลน์";
+"room_participants_online" = "ออนไลน์";
+"room_participants_leave_prompt_title_for_dm" = "ออก";
+"room_participants_leave_prompt_title" = "ออกจากห้อง";
+"search_no_result" = "ไม่มีผลลัพธ์";
+
+// Directory
+"directory_cell_title" = "เรียกดูไดเรกทอรี";
+"search_in_progress" = "กำลังค้นหา…";
+"search_default_placeholder" = "ค้นหา";
+"search_files" = "ไฟล์";
+"search_people" = "ผู้คน";
+"search_messages" = "ข้อความ";
+
+// Search
+"search_rooms" = "ห้อง";
+"rooms_empty_view_title" = "ห้อง";
+"people_empty_view_title" = "ผู้คน";
+"people_no_conversation" = "ไม่มีการสนทนา";
+"people_conversation_section" = "การสนทนา";
+"room_recents_join_room_title" = "เข้าร่วมห้อง";
+"room_recents_join_room" = "เข้าร่วมห้อง";
+"room_recents_create_empty_room" = "สร้างห้อง";
+"room_recents_start_chat_with" = "เริ่มแชท";
+"room_recents_no_conversation" = "ไม่มีห้อง";
+
+// Room recents
+"room_recents_directory_section" = "ไดเรกทอรีห้อง";
+"room_recents_conversations_section" = "ห้อง";
+"room_recents_people_section" = "ผู้คน";
+"room_recents_favourites_section" = "รายการโปรด";
+"room_recents_directory_section_network" = "เครือข่าย";
+"auth_softlogout_sign_in" = "ลงชื่อเข้า";
+"room_creation_privacy" = "ความเป็นส่วนตัว";
+"room_creation_appearance_name" = "ชื่อ";
+"room_creation_appearance" = "ลักษณะที่ปรากฏ";
+"room_creation_account" = "บัญชี";
+
+// Chat creation
+"room_creation_title" = "แชทใหม่";
+"social_login_button_title_sign_up" = "ลงทะเบียนด้วย %@";
+"social_login_button_title_sign_in" = "ลงชื่อเข้าด้วย %@";
+"social_login_button_title_continue" = "ดำเนินการต่อด้วย %@";
+"social_login_list_title_sign_up" = "หรือ";
+"social_login_list_title_sign_in" = "หรือ";
+
+// Social login
+
+"social_login_list_title_continue" = "ดำเนินการต่อด้วย";
+"auth_softlogout_clear_data_sign_out" = "ลงชื่อออก";
+"auth_softlogout_clear_data_button" = "ล้างข้อมูลทั้งหมด";
+"auth_forgot_password" = "ลืมรหัสผ่าน?";
+"auth_identity_server_placeholder" = "URL (เช่น https://vector.im)";
+"auth_home_server_placeholder" = "URL (เช่น https://matrix.org)";
+"auth_repeat_new_password_placeholder" = "ยืนยันรหัสผ่านใหม่ของคุณ";
+"accept" = "ยอมรับ";
+"decline" = "ปฏิเสธ";
+"auth_phone_placeholder" = "หมายเลขโทรศัพท์";
+"auth_email_placeholder" = "ที่อยู่อีเมล";
+"auth_user_name_placeholder" = "ชื่อผู้ใช้";
+"auth_new_password_placeholder" = "รหัสผ่านใหม่";
+"auth_password_placeholder" = "รหัสผ่าน";
+"auth_user_id_placeholder" = "อีเมลหรือชื่อผู้ใช้";
+"auth_login_single_sign_on" = "ลงชื่อเข้า";
+"auth_skip" = "ข้าม";
+"auth_submit" = "ส่ง";
+"auth_register" = "ลงทะเบียน";
+
+// Authentication
+"auth_login" = "เข้าสู่ระบบ";
+"skip" = "ข้าม";
+"close" = "ปิด";
+"later" = "ภายหลัง";
+"rename" = "เปลี่ยนชื่อ";
+"video" = "วิดีโอ";
+"voice" = "เสียง";
+"camera" = "กล้อง";
+"leave" = "ออก";
+"join" = "เข้าร่วม";
+"save" = "บันทึก";
+"cancel" = "ยกเลิก";
+"off" = "ปิด";
+"on" = "เปิด";
+"invite" = "เชิญ";
+"remove" = "เอาออก";
+"start" = "เริ่ม";
+"create" = "สร้าง";
+"continue" = "ดำเนินการต่อ";
+"back" = "ย้อนกลับ";
+"next" = "ถัดไป";
+
+// Actions
+"view" = "ดู";
+"warning" = "คำเตือน";
+"title_groups" = "ชุมชน";
+"title_rooms" = "ห้อง";
+"title_people" = "ผู้คน";
+"title_favourites" = "รายการโปรด";
+
+// Titles
+"title_home" = "หน้าแรก";
+"directory_searching_title" = "กำลังค้นหาไดเรกทอรี…";
+"room_member_power_level_short_moderator" = "ผู้ควบคุม";
+"room_many_users_are_typing" = "%@, %@ และอื่น ๆ กำลังพิมพ์…";
+"room_participants_action_unban" = "เลิกห้าม";
+"room_member_power_level_short_custom" = "กำหนดเอง";
+"room_event_action_resend" = "ส่งใหม่";
+"room_participants_action_unignore" = "แสดงข้อความทั้งหมดจากผู้ใช้นี้";
+"room_message_unable_open_link_error_message" = "ไม่สามารถเปิดลิงก์";
+"room_event_action_delete" = "ลบ";
+"room_one_user_is_typing" = "%@ กำลังพิมพ์…";
+"room_participants_action_section_admin_tools" = "เครื่องมือผู้ดูแล";
+"room_event_action_save" = "บันทึก";
+"room_two_users_are_typing" = "%@ และ %@ กำลังพิมพ์…";
+"room_member_power_level_short_admin" = "ผู้ดูแล";
+"room_new_messages_notification" = "%d ข้อความใหม่";
+"room_new_message_notification" = "%d ข้อความใหม่";
+"room_participants_action_ignore" = "ซ่อนข้อความทั้งหมดจากผู้ใช้นี้";

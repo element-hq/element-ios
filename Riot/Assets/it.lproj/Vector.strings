@@ -1321,3 +1321,9 @@
 
 // Call Bar
 "callbar_only_single_active" = "Chiamata attiva (%@)";
+"room_details_integrations" = "Integrazioni";
+"room_details_search" = "Cerca stanza";
+"room_multiple_typing_notification" = "%@ e altri";
+"room_accessibility_video_call" = "Videochiamata";
+"room_message_editing" = "Modifica";
+"room_message_replying_to" = "Risposta a %@";

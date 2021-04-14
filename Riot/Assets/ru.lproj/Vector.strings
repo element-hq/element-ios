@@ -874,7 +874,7 @@
 "settings_add_3pid_password_title_email" = "Добавить адрес электронной почты";
 "settings_add_3pid_password_title_msidsn" = "Добавить номер телефона";
 "settings_add_3pid_password_message" = "Для продолжения, задайте пароль";
-"settings_add_3pid_invalid_password_message" = "Недействительный пароль";
+"settings_add_3pid_invalid_password_message" = "Недействительные данные";
 "settings_discovery_three_pid_details_title_phone_number" = "Управление номера телефона";
 "settings_identity_server_no_is" = "Сервер идентификации не настроен";
 "identity_server_settings_disconnect" = "Разъединить";
@@ -1278,8 +1278,8 @@
 
 "social_login_list_title_continue" = "Продолжить с";
 "social_login_button_title_continue" = "Продолжить с %@";
-"social_login_list_title_sign_up" = "Или зарегистрируйтесь через";
-"social_login_list_title_sign_in" = "Или войдите через";
+"social_login_list_title_sign_up" = "Или";
+"social_login_list_title_sign_in" = "Или";
 "room_intro_cell_information_multiple_dm_sentence2" = "Только вы находитесь в этом разговоре, если только кто-то из вас не пригласит кого-то присоединиться.";
 "room_intro_cell_information_dm_sentence2" = "Только двое из вас в этом разговоре, никто другой не может присоединиться.";
 "room_intro_cell_information_dm_sentence1_part3" = ". ";
@@ -1332,3 +1332,9 @@
 
 // Call Bar
 "callbar_only_single_active" = "Активный вызов (%@)";
+"room_details_integrations" = "Интеграции";
+"room_details_search" = "Искать комнату";
+"room_multiple_typing_notification" = "%@ и другие";
+"room_accessibility_video_call" = "Видео вызов";
+"room_message_replying_to" = "В ответ %@";
+"room_message_editing" = "Редактирование";
