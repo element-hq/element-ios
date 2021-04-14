@@ -719,8 +719,11 @@ class CallPresenter: NSObject {
         guard let roomVC = notification.object as? RoomViewController else {
             return
         }
+        guard let roomDataSource = roomVC.roomDataSource else {
+            return
+        }
         
-        if roomVC.roomDataSource.room.isDirect {
+        if roomDataSource.room.isDirect {
             //  no handling for direct rooms
             return
         }
