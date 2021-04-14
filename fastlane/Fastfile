@@ -28,15 +28,19 @@ platform :ios do
   desc "Builds an adhoc ipa"
   lane :adhoc do |options|
     options[:adhoc] = true
-    build_number = generate_build_number()
-    options = { build_number: build_number }.merge(options)
+    if !options.has_key?(:build_number)
+      build_number = generate_build_number()
+      options = { build_number: build_number }.merge(options)
+    end
     build_release(options)
   end
 
   desc "Builds an ipa for the App Store"
   lane :app_store do |options|
-    build_number = generate_build_number()
-    options = { build_number: build_number }.merge(options)
+    if !options.has_key?(:build_number)
+      build_number = generate_build_number()
+      options = { build_number: build_number }.merge(options)
+    end
     build_release(options)
   end
 
