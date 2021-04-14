@@ -1450,3 +1450,9 @@
 "switch" = "Wissel";
 "joined" = "Toegetreden";
 "store_promotional_text" = "Privacy-beschermende chat- en samenwerkingsapp, op een open netwerk. Gedecentraliseerd, zodat u de controle hebt. Geen datamining, geen achterdeurtjes en geen toegang voor derden.";
+"room_details_integrations" = "Integraties";
+"room_details_search" = "Zoek in gesprek";
+"room_multiple_typing_notification" = "%@ en anderen";
+"room_accessibility_video_call" = "Video-oproep";
+"room_message_replying_to" = "Antwoord aan %@";
+"room_message_editing" = "Bewerken";

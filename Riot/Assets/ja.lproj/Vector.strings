@@ -601,3 +601,9 @@
 "room_intro_cell_add_participants_action" = "参加者を追加";
 "room_participants_security_information_room_encrypted" = "この部屋で送受信されるメッセージはエンドツーエンド暗号化されます。\n\nメッセージは安全に保護されており、この部屋の参加者のみがメッセージの閲覧に必要な鍵を所持します。";
 "room_participants_security_information_room_not_encrypted" = "この部屋で送受信されるメッセージはエンドツーエンド暗号化されません。";
+"room_intro_cell_information_dm_sentence1_part3" = ". ";
+"callbar_active_and_single_paused" = "ひとつのアクティブな通話 (%@) · ひとつの一時停止された通話";
+
+// Call Bar
+"callbar_only_single_active" = "アクティブな通話(%@)";
+"settings_add_3pid_password_title_msidsn" = "電話番号の追加する";

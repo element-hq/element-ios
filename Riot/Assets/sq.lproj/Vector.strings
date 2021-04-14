@@ -1339,3 +1339,8 @@
 
 // Call Bar
 "callbar_only_single_active" = "Thirrje aktive (%@)";
+"room_details_integrations" = "Integrime";
+"room_multiple_typing_notification" = "%@ dhe të tjerë";
+"room_accessibility_video_call" = "Thirrje Video";
+"room_message_replying_to" = "Në përgjigje të %@";
+"room_message_editing" = "Përpunim";
