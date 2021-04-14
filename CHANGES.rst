@@ -8,7 +8,7 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
- * 
+ * Self-verification: Fix compatibility with Element-Web (#4217).
 
 ⚠️ API Changes
  * 
