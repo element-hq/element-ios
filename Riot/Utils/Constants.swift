@@ -16,9 +16,13 @@
 
 import Foundation
 
-enum Constants {
+@objcMembers
+class Constants: NSObject {
     
-    static let toBeRemovedNotificationCategoryIdentifier = "TO_BE_REMOVED"
-    static let callInviteNotificationCategoryIdentifier = "CALL_INVITE"
+    static let toBeRemovedNotificationCategoryIdentifier: String = "TO_BE_REMOVED"
+    static let callInviteNotificationCategoryIdentifier: String = "CALL_INVITE"
+    
+    /// Notification userInfo key to present a notification even if the app is on foreground. Value should be set as a Bool for this key.
+    static let userInfoKeyPresentNotificationAlways: String = "ALWAYS_PRESENT_NOTIFICATION"
     
 }

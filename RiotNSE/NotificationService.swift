@@ -269,6 +269,7 @@ class NotificationService: UNNotificationServiceExtension {
             case .success(let roomState):
                 var notificationTitle: String?
                 var notificationBody: String?
+                var additionalUserInfo: [AnyHashable: Any]?
                 
                 var threadIdentifier: String? = roomId
                 let eventSenderName = roomState.members.memberName(event.sender)
@@ -384,6 +385,8 @@ class NotificationService: UNNotificationServiceExtension {
                                 //  only send VoIP pushes if ringing is enabled for group calls
                                 if RiotSettings.shared.enableRingingForGroupCalls {
                                     self.sendVoipPush(forEvent: event)
+                                } else {
+                                    additionalUserInfo = [Constants.userInfoKeyPresentNotificationAlways: true]
                                 }
                             }
                         }
@@ -409,7 +412,8 @@ class NotificationService: UNNotificationServiceExtension {
                                                                    threadIdentifier: threadIdentifier,
                                                                    userId: currentUserId,
                                                                    event: event,
-                                                                   pushRule: pushRule)
+                                                                   pushRule: pushRule,
+                                                                   additionalInfo: additionalUserInfo)
                 
                 NSLog("[NotificationService] notificationContentForEvent: Calling onComplete.")
                 onComplete(notificationContent)
@@ -425,7 +429,8 @@ class NotificationService: UNNotificationServiceExtension {
                                      threadIdentifier: String?,
                                      userId: String?,
                                      event: MXEvent,
-                                     pushRule: MXPushRule?) -> UNNotificationContent {
+                                     pushRule: MXPushRule?,
+                                     additionalInfo: [AnyHashable: Any]? = nil) -> UNNotificationContent {
         let notificationContent = UNMutableNotificationContent()
         
         if let title = title {
@@ -443,12 +448,16 @@ class NotificationService: UNNotificationServiceExtension {
         if let soundName = notificationSoundName(fromPushRule: pushRule) {
             notificationContent.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: soundName))
         }
-        notificationContent.userInfo = notificationUserInfo(forEvent: event, andUserId: userId)
+        notificationContent.userInfo = notificationUserInfo(forEvent: event,
+                                                            andUserId: userId,
+                                                            additionalInfo: additionalInfo)
         
         return notificationContent
     }
     
-    private func notificationUserInfo(forEvent event: MXEvent, andUserId userId: String?) -> [AnyHashable: Any] {
+    private func notificationUserInfo(forEvent event: MXEvent,
+                                      andUserId userId: String?,
+                                      additionalInfo: [AnyHashable: Any]? = nil) -> [AnyHashable: Any] {
         var notificationUserInfo: [AnyHashable: Any] = [
             "type": "full",
             "room_id": event.roomId as Any,
@@ -456,6 +465,11 @@ class NotificationService: UNNotificationServiceExtension {
         ]
         if let userId = userId {
             notificationUserInfo["user_id"] = userId
+        }
+        if let additionalInfo = additionalInfo {
+            for (key, value) in additionalInfo {
+                notificationUserInfo[key] = value
+            }
         }
         return notificationUserInfo
     }
