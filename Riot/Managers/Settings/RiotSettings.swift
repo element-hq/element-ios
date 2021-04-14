@@ -86,6 +86,14 @@ final class RiotSettings: NSObject {
         defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowCryptographyExport)
         defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowAdvancedUnverifiedDevices)
         defaults.removeObject(forKey: UserDefaultsKeys.allowInviteExernalUsers)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenShowLowPriorityOption)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenShowDirectChatOption)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenAllowChangingAccessSettings)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenAllowChangingHistorySettings)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenShowAddressSettings)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenShowFlairSettings)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenShowAdvancedSettings)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenAdvancedShowEncryptToVerifiedOption)
     }
     
     // MARK: Servers
