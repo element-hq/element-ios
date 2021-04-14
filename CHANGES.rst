@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Add detailed membership change summaries à la element-web.
 
 🐛 Bugfix
  * 

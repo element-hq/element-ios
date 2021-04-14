@@ -42,6 +42,11 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
      The calendar used to retrieve the today date.
      */
     NSCalendar *calendar;
+
+    /**
+     The formatter for membership change events.
+     */
+    MemberEventFormatter *memberEventFormatter;
 }
 @end
 
@@ -323,8 +328,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         else if (events[0].eventType == MXEventTypeRoomMember)
         {
             // This is a series for cells tagged with RoomBubbleCellDataTagMembership
-            // TODO: Build a complete summary like Riot-web
-            displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_member_updates", @"Vector", nil), events.count];
+            displayText = [memberEventFormatter aggregateAndGenerateSummaryWithEvents:events];
         }
     }
 
@@ -343,6 +347,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     if (self)
     {
         calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+        memberEventFormatter = [[MemberEventFormatter alloc] init];
         
         // Use the secondary bg color to set the background color in the default CSS.
         NSUInteger bgColor = [MXKTools rgbValueWithColor:ThemeService.shared.theme.headerBackgroundColor];
