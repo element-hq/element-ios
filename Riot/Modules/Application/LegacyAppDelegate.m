@@ -3934,6 +3934,18 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         [self.incomingKeyVerificationRequestAlertController dismissViewControllerAnimated:NO completion:nil];
     }
     
+    if (self.userNewSignInAlertController
+        && [session.myUserId isEqualToString:senderId])
+    {
+        // If it is a self verification for my device, we can discard the new signin alert.
+        // Note: It will not work well with several devices to verify at the same time.
+        NSLog(@"[AppDelegate] presentNewKeyVerificationRequest: Remove the alert for new sign in detected");
+        [self.userNewSignInAlertController dismissViewControllerAnimated:NO completion:^{
+            self.userNewSignInAlertController = nil;
+            [self presentNewKeyVerificationRequestAlertForSession:session senderName:senderName senderId:senderId request:keyVerificationRequest];
+        }];
+    }
+    
     NSString *senderInfo;
     
     if (senderName)
@@ -3955,7 +3967,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         }
     };
 
-    
+    /// ooo
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"key_verification_tile_request_incoming_title", @"Vector", nil)
                                                                                              message:senderInfo
                                                                                       preferredStyle:UIAlertControllerStyleAlert];
@@ -4093,6 +4105,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
      
     [self presentViewController:alert animated:YES completion:nil];
     
+    //// ooo
     self.userNewSignInAlertController = alert;
 }
 
