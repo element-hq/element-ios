@@ -1364,3 +1364,9 @@
 "switch" = "Basculer";
 "joined" = "Arrivé";
 "store_promotional_text" = "Application de messagerie et collaboration respectueuse de la vie privée, sur un réseau ouvert. Décentralisée pour vous donner le contrôle. Pas d’extraction de vos données, pas de porte dérobée, pas d’accès réservé à des tiers.";
+"room_details_search" = "Rechercher dans le salon";
+"room_details_integrations" = "Intégrations";
+"room_multiple_typing_notification" = "%@ et d’autres";
+"room_accessibility_video_call" = "Appel vidéo";
+"room_message_replying_to" = "Réponse à %@";
+"room_message_editing" = "Modification";

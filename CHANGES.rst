@@ -1,3 +1,30 @@
+Changes in 1.3.1 (2021-04-14)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.14.8](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.8)).
+
 Changes in 1.3.0 (2021-04-09)
 =================================================
 

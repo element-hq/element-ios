@@ -1286,3 +1286,9 @@
 
 // Call Bar
 "callbar_only_single_active" = "Aktivt samtal (%@)";
+"room_accessibility_video_call" = "Videosamtal";
+"room_message_editing" = "Redigerar";
+"room_message_replying_to" = "Svarar på %@";
+"room_multiple_typing_notification" = "%@ och andra";
+"room_details_search" = "Sök i rum";
+"room_details_integrations" = "Integrationer";
