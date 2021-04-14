@@ -109,3 +109,20 @@
 
 // Titles
 "title_home" = "หน้าแรก";
+"directory_searching_title" = "กำลังค้นหาไดเรกทอรี…";
+"room_member_power_level_short_moderator" = "ผู้ควบคุม";
+"room_many_users_are_typing" = "%@, %@ และอื่น ๆ กำลังพิมพ์…";
+"room_participants_action_unban" = "เลิกห้าม";
+"room_member_power_level_short_custom" = "กำหนดเอง";
+"room_event_action_resend" = "ส่งใหม่";
+"room_participants_action_unignore" = "แสดงข้อความทั้งหมดจากผู้ใช้นี้";
+"room_message_unable_open_link_error_message" = "ไม่สามารถเปิดลิงก์";
+"room_event_action_delete" = "ลบ";
+"room_one_user_is_typing" = "%@ กำลังพิมพ์…";
+"room_participants_action_section_admin_tools" = "เครื่องมือผู้ดูแล";
+"room_event_action_save" = "บันทึก";
+"room_two_users_are_typing" = "%@ และ %@ กำลังพิมพ์…";
+"room_member_power_level_short_admin" = "ผู้ดูแล";
+"room_new_messages_notification" = "%d ข้อความใหม่";
+"room_new_message_notification" = "%d ข้อความใหม่";
+"room_participants_action_ignore" = "ซ่อนข้อความทั้งหมดจากผู้ใช้นี้";
