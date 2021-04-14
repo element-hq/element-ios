@@ -2,5 +2,6 @@
 "NSCameraUsageDescription" = "摄像头权限用于拍摄照片、录制视频或进行视频聊天。";
 "NSPhotoLibraryUsageDescription" = "照片库访问权限用于发送图片与视频。";
 "NSMicrophoneUsageDescription" = "麦克风权限用于录制视频或进行通话。";
-"NSContactsUsageDescription" = "为了发现已在使用Matrix的联系人，Element可以把你地址簿里的邮箱地址和电话号码发送到你所选择的Matrix身份认证服务器。如果支持的话，个人数据在发送前会被哈希处理–请检查你的身份认证服务器的隐私条款以获取详细信息。";
+"NSContactsUsageDescription" = "为了发现已在使用 Matrix 的联系人，Element 可以把你地址簿里的邮箱地址和电话号码发送到你所选择的 Matrix 身份认证服务器。如果支持的话，个人数据在发送前会被哈希处理——请检查你的身份认证服务器的隐私政策以获取详细信息。";
 "NSCalendarsUsageDescription" = "在此应用中查看你计划的会议。";
+"NSFaceIDUsageDescription" = "Face ID 权限用于访问您的应用。";
