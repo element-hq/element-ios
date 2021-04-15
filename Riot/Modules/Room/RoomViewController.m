@@ -2678,6 +2678,23 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
     MXKAttachment *attachment = roomBubbleTableViewCell.bubbleData.attachment;
     
+    BOOL isJitsiCallEvent = NO;
+    switch (selectedEvent.eventType) {
+        case MXEventTypeCustom:
+            if ([selectedEvent.type isEqualToString:kWidgetMatrixEventTypeString]
+                || [selectedEvent.type isEqualToString:kWidgetModularEventTypeString])
+            {
+                Widget *widget = [[Widget alloc] initWithWidgetEvent:selectedEvent inMatrixSession:self.roomDataSource.mxSession];
+                if ([widget.type isEqualToString:kWidgetTypeJitsiV1] ||
+                    [widget.type isEqualToString:kWidgetTypeJitsiV2])
+                {
+                    isJitsiCallEvent = YES;
+                }
+            }
+        default:
+            break;
+    }
+    
     if (currentAlert)
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
@@ -2763,26 +2780,29 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }]];
         }
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_quote", @"Vector", nil)
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
-            
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
+        if (!isJitsiCallEvent)
+        {
+            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_quote", @"Vector", nil)
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
                 
-                [self cancelEventSelection];
+                if (weakSelf)
+                {
+                    typeof(self) self = weakSelf;
+                    
+                    [self cancelEventSelection];
+                    
+                    // Quote the message a la Markdown into the input toolbar composer
+                    self.inputToolbarView.textMessage = [NSString stringWithFormat:@"%@\n>%@\n\n", self.inputToolbarView.textMessage, selectedComponent.textMessage];
+                    
+                    // And display the keyboard
+                    [self.inputToolbarView becomeFirstResponder];
+                }
                 
-                // Quote the message a la Markdown into the input toolbar composer
-                self.inputToolbarView.textMessage = [NSString stringWithFormat:@"%@\n>%@\n\n", self.inputToolbarView.textMessage, selectedComponent.textMessage];
-                
-                // And display the keyboard
-                [self.inputToolbarView becomeFirstResponder];
-            }
-            
-        }]];
+            }]];
+        }
         
-        if (BuildSettings.messageDetailsAllowShare)
+        if (!isJitsiCallEvent && BuildSettings.messageDetailsAllowShare)
         {
             [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_share", @"Vector", nil)
                                                              style:UIAlertActionStyleDefault
@@ -3201,7 +3221,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }]];
         }
         
-        if (self.roomDataSource.room.summary.isEncrypted)
+        if (!isJitsiCallEvent && self.roomDataSource.room.summary.isEncrypted)
         {
             [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_view_encryption", @"Vector", nil)
                                                              style:UIAlertActionStyleDefault
@@ -5576,6 +5596,17 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             case MXEventTypeKeyVerificationCancel:
                 isCopyActionEnabled = NO;
                 break;
+            case MXEventTypeCustom:
+                if ([event.type isEqualToString:kWidgetMatrixEventTypeString]
+                    || [event.type isEqualToString:kWidgetModularEventTypeString])
+                {
+                    Widget *widget = [[Widget alloc] initWithWidgetEvent:event inMatrixSession:self.roomDataSource.mxSession];
+                    if ([widget.type isEqualToString:kWidgetTypeJitsiV1] ||
+                        [widget.type isEqualToString:kWidgetTypeJitsiV2])
+                    {
+                        isCopyActionEnabled = NO;
+                    }
+                }
             default:
                 break;
         }
