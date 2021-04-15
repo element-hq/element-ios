@@ -2274,21 +2274,29 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         
         if (mainSession.crypto.crossSigning)
         {
-            NSLog(@"[AppDelegate] handleAppState: crossSigning.state: %@", @(mainSession.crypto.crossSigning.state));
-            
-            switch (mainSession.crypto.crossSigning.state)
-            {
-                case MXCrossSigningStateCrossSigningExists:
-                    NSLog(@"[AppDelegate] handleAppState: presentVerifyCurrentSessionAlertIfNeededWithSession");
-                    [_masterTabBarController presentVerifyCurrentSessionAlertIfNeededWithSession:mainSession];
-                    break;
-                case MXCrossSigningStateCanCrossSign:
-                    NSLog(@"[AppDelegate] handleAppState: presentReviewUnverifiedSessionsAlertIfNeededWithSession");
-                    [_masterTabBarController presentReviewUnverifiedSessionsAlertIfNeededWithSession:mainSession];
-                    break;
-                default:
-                    break;
-            }
+            // Get the up-to-date cross-signing state
+            MXWeakify(self);
+            [mainSession.crypto.crossSigning refreshStateWithSuccess:^(BOOL stateUpdated) {
+                MXStrongifyAndReturnIfNil(self);
+                
+                NSLog(@"[AppDelegate] handleAppState: crossSigning.state: %@", @(mainSession.crypto.crossSigning.state));
+                
+                switch (mainSession.crypto.crossSigning.state)
+                {
+                    case MXCrossSigningStateCrossSigningExists:
+                        NSLog(@"[AppDelegate] handleAppState: presentVerifyCurrentSessionAlertIfNeededWithSession");
+                        [self.masterTabBarController presentVerifyCurrentSessionAlertIfNeededWithSession:mainSession];
+                        break;
+                    case MXCrossSigningStateCanCrossSign:
+                        NSLog(@"[AppDelegate] handleAppState: presentReviewUnverifiedSessionsAlertIfNeededWithSession");
+                        [self.masterTabBarController presentReviewUnverifiedSessionsAlertIfNeededWithSession:mainSession];
+                        break;
+                    default:
+                        break;
+                }
+            } failure:^(NSError * _Nonnull error) {
+                NSLog(@"[AppDelegate] handleAppState: crossSigning.state: %@. Error: %@", @(mainSession.crypto.crossSigning.state), error);
+            }];
         }
         
         // TODO: We should wait that cross-signing screens are done before going further but it seems fine. Those screens
