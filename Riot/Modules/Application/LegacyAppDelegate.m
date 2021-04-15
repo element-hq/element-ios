@@ -4113,7 +4113,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
      
     [self presentViewController:alert animated:YES completion:nil];
     
-    //// ooo
     self.userNewSignInAlertController = alert;
 }
 
