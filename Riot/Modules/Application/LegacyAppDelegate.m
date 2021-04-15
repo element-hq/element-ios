@@ -3975,7 +3975,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         }
     };
 
-    /// ooo
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"key_verification_tile_request_incoming_title", @"Vector", nil)
                                                                                              message:senderInfo
                                                                                       preferredStyle:UIAlertControllerStyleAlert];
