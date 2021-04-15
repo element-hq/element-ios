@@ -78,6 +78,11 @@ final class RiotSettings: NSObject {
         defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowCryptographyInfo)
         defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowCryptographyExport)
         defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowAdvancedUnverifiedDevices)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomCreationScreenAllowEncryptionConfiguration)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomCreationScreenRoomIsEncrypted)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomCreationScreenAllowRoomTypeConfiguration)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomCreationScreenRoomIsPublic)
+        defaults.removeObject(forKey: UserDefaultsKeys.allowInviteExernalUsers)
         defaults.removeObject(forKey: UserDefaultsKeys.allowInviteExernalUsers)
         defaults.removeObject(forKey: UserDefaultsKeys.roomsAllowToJoinPublicRooms)
     }
