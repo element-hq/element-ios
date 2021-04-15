@@ -65,13 +65,6 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
         return formatter
     }
     
-    override func update(theme: Theme) {
-        super.update(theme: theme)
-        if let themable = bottomContentView as? Themable {
-            themable.update(theme: theme)
-        }
-    }
-    
     private func updateBottomContentView() {
         bottomContentView = bottomView(for: viewState)
     }
@@ -202,8 +195,8 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
         isIncoming = widgetEvent.sender != bubbleCellData.mxSession.myUserId
         self.widgetEvent = widgetEvent
         self.widgetId = widgetId
-        innerContentView.callIconView.image = Asset.Images.tabGroups.image
-        innerContentView.callTypeLabel.text = VectorL10n.eventFormatterGroupCall
+        innerContentView.callIconView.image = Asset.Images.callVideoIcon.image
+        innerContentView.callTypeLabel.text = VectorL10n.eventFormatterCallVideo
         
         if isIncoming && !isJoined &&
             TimeInterval(widgetEvent.age)/MSEC_PER_SEC < Constants.secondsToDisplayAnswerDeclineOptions {

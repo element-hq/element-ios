@@ -160,6 +160,9 @@ extension RoomBaseCallBubbleCell: Themable {
     
     func update(theme: Theme) {
         innerContentView.update(theme: theme)
+        if let themable = bottomContentView as? Themable {
+            themable.update(theme: theme)
+        }
     }
     
 }

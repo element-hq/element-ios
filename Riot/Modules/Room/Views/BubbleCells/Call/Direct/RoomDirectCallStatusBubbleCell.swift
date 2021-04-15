@@ -62,13 +62,6 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
         return formatter
     }
     
-    override func update(theme: Theme) {
-        super.update(theme: theme)
-        if let themable = bottomContentView as? Themable {
-            themable.update(theme: theme)
-        }
-    }
-    
     private func updateBottomContentView() {
         bottomContentView = bottomView(for: viewState)
     }
