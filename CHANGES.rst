@@ -9,6 +9,7 @@ Changes to be released in next version
 
 🐛 Bugfix
  * Self-verification: Fix compatibility with Element-Web (#4217).
+ * Notifications: Fix sender display name that can miss (#4222). 
 
 ⚠️ API Changes
  * 
