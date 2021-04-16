@@ -41,11 +41,11 @@
 /* Incoming unnamed voice conference invite from a specific person */
 "VOICE_CONF_FROM_USER" = "Gruppen-Anruf von %@";
 /* Incoming unnamed video conference invite from a specific person */
-"VIDEO_CONF_FROM_USER" = "Video-Gruppen-Anruf von %@";
+"VIDEO_CONF_FROM_USER" = "Videogruppenanruf von %@";
 /* Incoming named voice conference invite from a specific person */
 "VOICE_CONF_NAMED_FROM_USER" = "Gruppen-Anruf von %@: '%@'";
 /* Incoming named video conference invite from a specific person */
-"VIDEO_CONF_NAMED_FROM_USER" = "Video-Gruppen-Anruf von %@: '%@'";
+"VIDEO_CONF_NAMED_FROM_USER" = "Videogruppenanruf von %@: '%@'";
 /* A single unread message in a room */
 "SINGLE_UNREAD_IN_ROOM" = "Du hast eine Nachricht in %@ bekommen";
 /* A single unread message */
