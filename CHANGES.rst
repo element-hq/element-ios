@@ -8,7 +8,7 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
- * 
+ * RoomVC: Crash in refreshTypingNotification (#4230).
 
 ⚠️ API Changes
  * 
