@@ -28,7 +28,7 @@ class CallTileActionButton: UIButton {
     
     private enum Constants {
         static let cornerRadius: CGFloat = 8.0
-        static let fontSize: CGFloat = 13.0
+        static let fontSize: CGFloat = 17.0
         static let contentEdgeInsets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
         static let spaceBetweenImageAndTitle: CGFloat = 8
         static let imageSize: CGSize = CGSize(width: 16, height: 16)
