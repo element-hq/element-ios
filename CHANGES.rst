@@ -1,3 +1,30 @@
+Changes in 1.3.4 (2021-04-19)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * RoomVC: Crash in refreshTypingNotification (#4230).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+
+
 Changes in 1.3.3 (2021-04-16)
 =================================================
 
