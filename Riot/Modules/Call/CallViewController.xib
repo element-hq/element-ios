@@ -38,7 +38,6 @@
                 <outlet property="rejectCallButton" destination="H4g-11-Y8d" id="8aM-2q-Lv7"/>
                 <outlet property="remotePreviewContainerView" destination="Tjb-57-yB1" id="MaR-IC-ZKw"/>
                 <outlet property="resumeButton" destination="OaQ-Ki-dbe" id="23i-sp-y3f"/>
-                <outlet property="switchCameraGradientContainerView" destination="DsK-QY-Lz0" id="Bp9-AN-ad7"/>
                 <outlet property="videoMuteButton" destination="UHM-u9-ODN" id="bfQ-lc-WMB"/>
                 <outlet property="view" destination="iN0-l3-epB" id="JDF-cz-roW"/>
             </connections>

@@ -145,16 +145,6 @@
     self.localPreviewContainerView.layer.borderWidth = 2;
     self.localPreviewContainerView.layer.cornerRadius = 5;
     self.localPreviewContainerView.clipsToBounds = YES;
-    
-    CAGradientLayer *gradient = [CAGradientLayer layer];
-
-    gradient.frame = self.switchCameraGradientContainerView.bounds;
-    gradient.colors = @[
-        (id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
-        (id)[UIColor colorWithWhite:0.0 alpha:1.0].CGColor
-    ];
-    
-    [self.switchCameraGradientContainerView.layer insertSublayer:gradient atIndex:0];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
