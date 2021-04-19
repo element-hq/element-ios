@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * Enable / Disable VoIP feature in Rooms (#4236).
+ * RoomVC: Enable / Disable VoIP feature in Rooms (#4236).
 
 🐛 Bugfix
  * 
