@@ -4379,7 +4379,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         viewController.modalPresentationStyle = UIModalPresentationFullScreen;
     }
     
-    [self presentViewController:viewController animated:YES completion:completion];
+    [self presentViewController:viewController animated:NO completion:completion];
 }
 
 - (void)callPresenter:(CallPresenter *)presenter dismissCallViewController:(UIViewController *)viewController completion:(void (^)(void))completion
@@ -4387,7 +4387,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // Check whether the call view controller is actually presented
     if (viewController.presentingViewController)
     {
-        [viewController.presentingViewController dismissViewControllerAnimated:YES completion:^{
+        [viewController.presentingViewController dismissViewControllerAnimated:NO completion:^{
             
             if ([viewController isKindOfClass:CallViewController.class])
             {
@@ -4537,7 +4537,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     [_callPresenter callStatusBarTapped];
 }
-    
+
 #pragma mark - Authentication
 
 - (BOOL)continueSSOLoginWithToken:(NSString*)loginToken txnId:(NSString*)txnId
