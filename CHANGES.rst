@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Add `gitter.im` to list of default room directories
 
 🐛 Bugfix
  * 
