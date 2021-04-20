@@ -53,6 +53,13 @@ final class RiotSettings: NSObject {
         static let roomCreationScreenRoomIsPublic = "roomCreationScreenRoomIsPublic"
         static let allowInviteExernalUsers = "allowInviteExernalUsers"
         static let roomsAllowToJoinPublicRooms = "roomsAllowToJoinPublicRooms"
+        static let homeScreenShowFavouritesTab = "homeScreenShowFavouritesTab"
+        static let homeScreenShowPeopleTab = "homeScreenShowPeopleTab"
+        static let homeScreenShowRoomsTab = "homeScreenShowRoomsTab"
+        static let homeScreenShowCommunitiesTab = "homeScreenShowCommunitiesTab"
+        static let roomScreenAllowVoIPForDirectRoom = "roomScreenAllowVoIPForDirectRoom"
+        static let roomScreenAllowVoIPForNonDirectRoom = "roomScreenAllowVoIPForNonDirectRoom"
+        static let unifiedSearchScreenShowPublicDirectory = "unifiedSearchScreenShowPublicDirectory"
     }
     
     static let shared = RiotSettings()
@@ -250,6 +257,7 @@ final class RiotSettings: NSObject {
     }
     
     // MARK: -  Rooms Screen
+    
     var roomsAllowToJoinPublicRooms: Bool {
         get {
             guard defaults.object(forKey: UserDefaultsKeys.roomsAllowToJoinPublicRooms) != nil else {
@@ -258,6 +266,29 @@ final class RiotSettings: NSObject {
             return defaults.bool(forKey: UserDefaultsKeys.roomsAllowToJoinPublicRooms)
         } set {
             defaults.set(newValue, forKey: UserDefaultsKeys.roomsAllowToJoinPublicRooms)
+        }
+    }
+
+    // MARK: - Room Screen
+    
+    var roomScreenAllowVoIPForDirectRoom: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomScreenAllowVoIPForDirectRoom) != nil else {
+                return BuildSettings.roomScreenAllowVoIPForDirectRoom
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomScreenAllowVoIPForDirectRoom)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomScreenAllowVoIPForDirectRoom)
+        }
+    }
+    var roomScreenAllowVoIPForNonDirectRoom: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomScreenAllowVoIPForNonDirectRoom) != nil else {
+                return BuildSettings.roomScreenAllowVoIPForNonDirectRoom
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomScreenAllowVoIPForNonDirectRoom)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomScreenAllowVoIPForNonDirectRoom)
         }
     }
 
@@ -314,6 +345,49 @@ final class RiotSettings: NSObject {
             return defaults.bool(forKey: UserDefaultsKeys.allowInviteExernalUsers)
         } set {
             defaults.set(newValue, forKey: UserDefaultsKeys.allowInviteExernalUsers)
+        }
+    }
+    
+    // MARK: - Main Tabs
+    
+    var homeScreenShowFavouritesTab: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.homeScreenShowFavouritesTab) != nil else {
+                return BuildSettings.homeScreenShowFavouritesTab
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.homeScreenShowFavouritesTab)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.homeScreenShowFavouritesTab)
+        }
+    }
+    var homeScreenShowPeopleTab: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.homeScreenShowPeopleTab) != nil else {
+                return BuildSettings.homeScreenShowPeopleTab
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.homeScreenShowPeopleTab)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.homeScreenShowPeopleTab)
+        }
+    }
+    var homeScreenShowRoomsTab: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.homeScreenShowRoomsTab) != nil else {
+                return BuildSettings.homeScreenShowRoomsTab
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.homeScreenShowRoomsTab)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.homeScreenShowRoomsTab)
+        }
+    }
+    var homeScreenShowCommunitiesTab: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.homeScreenShowCommunitiesTab) != nil else {
+                return BuildSettings.homeScreenShowCommunitiesTab
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.homeScreenShowCommunitiesTab)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.homeScreenShowCommunitiesTab)
         }
     }
 
@@ -419,4 +493,18 @@ final class RiotSettings: NSObject {
             defaults.set(newValue, forKey: UserDefaultsKeys.settingsSecurityScreenShowAdvancedUnverifiedDevices)
         }
     }
+    
+    // Mark: - Unified Search
+    
+    var unifiedSearchScreenShowPublicDirectory: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.unifiedSearchScreenShowPublicDirectory) != nil else {
+                return BuildSettings.unifiedSearchScreenShowPublicDirectory
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.unifiedSearchScreenShowPublicDirectory)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.unifiedSearchScreenShowPublicDirectory)
+        }
+    }
+    
 }
