@@ -6,6 +6,7 @@ Changes to be released in next version
 
 🙌 Improvements
  * MasterTabBarController: Show/Hide Home Screen tabs (#4234).
+ * DirectoryRecentTableViewCell: Do not use "directory_search_results_more_than" string when there is no rooms and the search is on.
 
 🐛 Bugfix
  * PublicRoomsDirectoryDataSource: Fix search when NSFW filter is off.
