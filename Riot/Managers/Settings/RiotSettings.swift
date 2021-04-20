@@ -56,6 +56,9 @@ final class RiotSettings: NSObject {
         static let homeScreenShowPeopleTab = "homeScreenShowPeopleTab"
         static let homeScreenShowRoomsTab = "homeScreenShowRoomsTab"
         static let homeScreenShowCommunitiesTab = "homeScreenShowCommunitiesTab"
+        static let roomScreenAllowVoIPForDirectRoom = "roomScreenAllowVoIPForDirectRoom"
+        static let roomScreenAllowVoIPForNonDirectRoom = "roomScreenAllowVoIPForNonDirectRoom"
+        static let unifiedSearchScreenShowPublicDirectory = "unifiedSearchScreenShowPublicDirectory"
     }
     
     static let shared = RiotSettings()
@@ -246,6 +249,29 @@ final class RiotSettings: NSObject {
         }
     }
     
+    // MARK: - Room Screen
+    
+    var roomScreenAllowVoIPForDirectRoom: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomScreenAllowVoIPForDirectRoom) != nil else {
+                return BuildSettings.roomScreenAllowVoIPForDirectRoom
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomScreenAllowVoIPForDirectRoom)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomScreenAllowVoIPForDirectRoom)
+        }
+    }
+    var roomScreenAllowVoIPForNonDirectRoom: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomScreenAllowVoIPForNonDirectRoom) != nil else {
+                return BuildSettings.roomScreenAllowVoIPForNonDirectRoom
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomScreenAllowVoIPForNonDirectRoom)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomScreenAllowVoIPForNonDirectRoom)
+        }
+    }
+
     // MARK: - Room Creation Screen
 
     var roomCreationScreenAllowEncryptionConfiguration: Bool {
@@ -447,4 +473,18 @@ final class RiotSettings: NSObject {
             defaults.set(newValue, forKey: UserDefaultsKeys.settingsSecurityScreenShowAdvancedUnverifiedDevices)
         }
     }
+    
+    // Mark: - Unified Search
+    
+    var unifiedSearchScreenShowPublicDirectory: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.unifiedSearchScreenShowPublicDirectory) != nil else {
+                return BuildSettings.unifiedSearchScreenShowPublicDirectory
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.unifiedSearchScreenShowPublicDirectory)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.unifiedSearchScreenShowPublicDirectory)
+        }
+    }
+    
 }

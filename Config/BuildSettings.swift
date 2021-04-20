@@ -150,7 +150,8 @@ final class BuildSettings: NSObject {
     static let publicRoomsAllowServerChange: Bool = true
     // List of homeservers for the public rooms directory
     static let publicRoomsDirectoryServers = [
-        "matrix.org"
+        "matrix.org",
+        "gitter.im"
     ]
     
     
@@ -256,6 +257,11 @@ final class BuildSettings: NSObject {
     static let roomCreationScreenRoomIsEncrypted: Bool = true
     static let roomCreationScreenAllowRoomTypeConfiguration: Bool = true
     static let roomCreationScreenRoomIsPublic: Bool = false
+    
+    // MARK: - Room Screen
+    
+    static let roomScreenAllowVoIPForDirectRoom: Bool = true
+    static let roomScreenAllowVoIPForNonDirectRoom: Bool = true
 
     // MARK: - Room Settings Screen
     
@@ -286,4 +292,7 @@ final class BuildSettings: NSObject {
     static let authScreenShowPhoneNumber = true
     static let authScreenShowForgotPassword = true
     static let authScreenShowCustomServerOptions = true
+    
+    // Mark: - Unified Search
+    static let unifiedSearchScreenShowPublicDirectory = true
 }
