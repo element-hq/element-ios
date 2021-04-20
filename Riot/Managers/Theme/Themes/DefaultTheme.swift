@@ -52,8 +52,8 @@ class DefaultTheme: NSObject, Theme {
     var noticeSecondaryColor: UIColor = UIColor(rgb: 0x61708B)
 
     var warningColor: UIColor = UIColor(rgb: 0xFF4B55)
-
-    var messageTickColor: UIColor = UIColor(rgb: 0xC1C6CD)
+    
+    var roomInputTextBorder: UIColor = UIColor(rgb: 0xE3E8F0)
 
     var avatarColors: [UIColor] = [
         UIColor(rgb: 0x03B381),

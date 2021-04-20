@@ -5,12 +5,14 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * Pods: Update FlowCommoniOS, GBDeviceInfo, KeychainAccess, MatomoTracker, SwiftJWT, SwiftLint (#4120).
- * Room lists: Remove shields on room avatars (#4115).
+ * Add `gitter.im` to list of default room directories
+ * MasterTabBarController: Show/Hide Home Screen tabs (#4234).
+ * RoomVC: Enable / Disable VoIP feature in Rooms (#4236).
+ * UnifiedSearchRecentsDataSource: Show/Hide public directory (#4242).
+ * DirectoryRecentTableViewCell: Do not use "directory_search_results_more_than" string when there is no rooms and the search is on.
 
 🐛 Bugfix
- * RoomVC: Fix timeline blink on sending.
- * RoomVC: Fix not visible last bubble issue.
+ * PublicRoomsDirectoryDataSource: Fix search when NSFW filter is off.
 
 ⚠️ API Changes
  * 
@@ -24,12 +26,220 @@ Changes to be released in next version
 Others
  * 
 
+Changes in 1.3.4 (2021-04-19)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * RoomVC: Crash in refreshTypingNotification (#4230).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+
+
+Changes in 1.3.3 (2021-04-16)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.14.9](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.9)).
+
+Changes in 1.3.2 (2021-04-16)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * Self-verification: Fix compatibility with Element-Web (#4217).
+ * Notifications: Fix sender display name that can miss (#4222). 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.14.9](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.9)).
+
+Changes in 1.3.1 (2021-04-14)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.14.8](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.8)).
+
+Changes in 1.3.0 (2021-04-09)
+=================================================
+
+✨ Features
+ * Composer Update - Typing and sending a message (#4085)
+ * Switching composer between text mode & action mode (#4087)
+ * Explore typing notifications inspired by web (#4134)
+
+🙌 Improvements
+ * Make the application settings more configurable (#4171)
+ * Possibility to lock some room creation parameters from settings (#4181)
+ * Enable / disable external friends invite (#4173)
+ * Composer update - UI enhancements (#4133)
+ * Increase grow/shrink animation speed in new composer (#4187)
+ * Limit typing notifications timeline jumps (#4176)
+ * Consider displaying names in typing notifications (#4175)
+
+🐛 Bugfix
+ * If you start typing while the new attachment sending mode is on, the send button appears (#4155)
+ * The final frames of the appearance animation of the new composer buttons are missing (#4160)
+ * Crash in [RoomViewController setupActions] (#4162)
+ * Too much vertical whitespace when replying (#4164)
+ * Black theme uses dark background for composer (#4192)
+ * Vertical layout of typing notifs can go wonky (#4159)
+ * Crash in [RoomViewController refreshTypingNotification] (#4161)
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.14.7](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.7)).
+
+Changes in 1.2.8 (2021-03-26)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * Xcodegen: Unit tests are broken (#4152).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+
+
+Changes in 1.2.7 (2021-03-24)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Pods: Update FlowCommoniOS, GBDeviceInfo, KeychainAccess, MatomoTracker, SwiftJWT, SwiftLint (#4120).
+ * Room lists: Remove shields on room avatars (#4115).
+
+🐛 Bugfix
+ * RoomVC: Fix timeline blink on sending.
+ * RoomVC: Fix not visible last bubble issue.
+ * Room directory: Fix crash (#4137).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.14.6](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.6)).
+
 Changes in 1.2.6 (2021-03-11)
 =================================================
 
 ✨ Features
  * Improve the status of send messages (sending, sent, received, failed) (#4014)
  * Retrying & deleting failed messages (#4013)
+ * Composer Update - Typing and sending a message (#4085)
 
 🙌 Improvements
  * 
@@ -62,7 +272,7 @@ Changes in 1.2.5 (2021-03-03)
  * Settings: Add option to show NSFW public rooms (off by default).
 
 🐛 Bugfix
- * 
+ * Emoji store: Include short name when searching emojis (#4063).
 
 ⚠️ API Changes
  * 

@@ -476,7 +476,7 @@
 "room_participants_remove_third_party_invite_msg" = "Heqja e ftesave nga palë të treta nuk mbulohet ende, derisa të kihet API";
 "room_participants_invite_malformed_id" = "ID e keqformuar. Duhet të jetë një adresë email ose ID Matrix, si '@localpart:domain'";
 "room_participants_action_ban" = "Dëboje nga kjo dhomë";
-"room_unsent_messages_unknown_devices_notification" = "Mesazhi s’u dërgua, për shkak të pranisë së sesioneve të panjohur. %@ ose %@ tani?";
+"room_unsent_messages_unknown_devices_notification" = "Mesazhi s’u dërgua, për shkak të pranisë së sesioneve të panjohur.";
 "room_ongoing_conference_call" = "Thirrje konference që po zhvillohet. Merrni pjesë si %@ ose %@.";
 "room_ongoing_conference_call_with_close" = "Thirrje konference që po zhvillohet. Merrni pjesë si %@ ose %@. %@.";
 "room_conference_call_no_power" = "Ju duhen leje për të administruar thirrje konferencë në këtë dhomë";
@@ -853,7 +853,7 @@
 "settings_add_3pid_password_title_email" = "Shtoni adresë email";
 "settings_add_3pid_password_title_msidsn" = "Shtoni numër telefoni";
 "settings_add_3pid_password_message" = "Që të vazhdohet, ju lutemi, jepni fjalëkalimin tuaj";
-"settings_add_3pid_invalid_password_message" = "Fjalëkalim i pavlefshëm";
+"settings_add_3pid_invalid_password_message" = "Kredenciale të pavlefshme";
 "settings_devices_description" = "Emri publik i një sesioni është i dukshëm për persona me të cilët komunikoni";
 "settings_discovery_no_identity_server" = "S’po përdorni ndonjë shërbyes identitetesh. Që të jeni i zbulueshëm nga kontakte ekzistuese që njihni, shtoni një të tillë.";
 "settings_discovery_terms_not_signed" = "Pajtohuni me Kushtet e Shërbimit të Shërbyesit të Identiteteve që t’i lejoni vetes të jeni i zbulueshëm përmes adrese email ose numri telefoni.";
@@ -1266,3 +1266,81 @@
 "rooms_empty_view_title" = "Dhoma";
 "people_empty_view_information" = "Fjalosuni në mënyrë të sigurt me këdo. Prekni + që të filloni të shtoni persona.";
 "people_empty_view_title" = "Njerëz";
+"room_intro_cell_information_multiple_dm_sentence2" = "Në këtë bisedë jeni vetëm ju, veç nëse cilido prej jush fton dikë tjetër të vijë.";
+"room_intro_cell_information_dm_sentence2" = "Në këtë bisedë gjenden vetëm ju të dy, s’mund të vijë tjetërkush.";
+"room_intro_cell_information_dm_sentence1_part3" = ". ";
+"room_intro_cell_information_dm_sentence1_part1" = "Ky është fillimi i mesazhit tuaj të drejtpërdrejtë me ";
+"room_intro_cell_information_room_without_topic_sentence2_part2" = " që t’u bëni me dije njerëzve se për çfarë është kjo dhomë.";
+"room_intro_cell_information_room_without_topic_sentence2_part1" = "Shtoni një temë";
+"room_intro_cell_information_room_with_topic_sentence2" = "Temë: %@";
+"room_intro_cell_information_room_sentence1_part3" = ". ";
+"room_intro_cell_information_room_sentence1_part1" = "Ky është fillimi i ";
+
+// Mark: - Room creation introduction cell
+
+"room_intro_cell_add_participants_action" = "Shtoni persona";
+"room_avatar_view_accessibility_hint" = "Ndryshoni avatar dhome";
+
+// Mark: - Room avatar view
+
+"room_avatar_view_accessibility_label" = "avatar";
+"invite_friends_share_text" = "Hej, bisedoni me mua në %@: %@";
+
+// MARK: - Invite friends
+
+"invite_friends_action" = "Ftoni shokë te %@";
+"call_transfer_error_message" = "S’u arrit të shpërngulej thirrje";
+"call_transfer_error_title" = "Gabim";
+"call_transfer_contacts_all" = "Krejt";
+"call_transfer_contacts_recent" = "Së fundi";
+"call_transfer_dialpad" = "Numërator";
+"call_transfer_users" = "Përdorues";
+
+// MARK: - Call Transfer
+"call_transfer_title" = "Shpërngule";
+
+// MARK: - Dial Pad
+"dialpad_title" = "Numërator";
+"pin_protection_settings_change_pin" = "Ndryshoni PIN-in";
+"pin_protection_confirm_pin_to_change" = "Ripohoni PIN-in që të ndryshohet PIN";
+"secrets_recovery_with_key_recovery_key_title" = "Jepeni";
+"secrets_recovery_with_passphrase_passphrase_title" = "Jepeni";
+"bug_report_background_mode" = "Vazhdo në prapaskenë";
+"call_actions_unhold" = "Rimerre";
+"event_formatter_call_back" = "Ktheji thirrjen";
+"event_formatter_call_you_declined" = "Hodhët poshtë këtë thirrje";
+"event_formatter_call_you_currently_in" = "Gjendeni në këtë thirrje";
+"event_formatter_call_has_ended" = "Kjo thirrje ka përfunduar";
+"event_formatter_call_video" = "Thirrje video";
+"event_formatter_call_voice" = "Thirrje audio";
+"security_settings_crosssigning_reset" = "Rikthe te parazgjedhjet <em>cross-signing</em>";
+"security_settings_crosssigning" = "<em>CROSS-SIGNING</em>";
+"settings_show_NSFW_public_rooms" = "Shfaq dhoma publike NSFW";
+"room_open_dialpad" = "Numërator";
+"room_place_voice_call" = "Thirrje audio";
+"room_event_action_delete_confirmation_message" = "Jeni i sigurt se doni të fshihet ky mesazh i padërguar?";
+"room_event_action_delete_confirmation_title" = "Fshi mesazh të padërguar";
+"room_unsent_messages_cancel_message" = "Jeni i sigurt se doni të fshihen krejt mesazhet e padërguar në këtë dhomë?";
+"room_unsent_messages_cancel_title" = "Fshi mesazhet e padërguar";
+"social_login_button_title_sign_up" = "Regjistrohuni me %@";
+"social_login_button_title_sign_in" = "Hyni me %@";
+"social_login_button_title_continue" = "Vazhdo me %@";
+"social_login_list_title_sign_up" = "Ose";
+"social_login_list_title_sign_in" = "Ose";
+
+// Social login
+
+"social_login_list_title_continue" = "Vazhdoni me";
+"callbar_return" = "Rimerre";
+"callbar_only_multiple_paused" = "%@ thirrje të ndalura";
+"callbar_only_single_paused" = "Thirrje e ndalur";
+"callbar_active_and_multiple_paused" = "1 thirrje aktive (%@) · %@ thirrje të ndalura";
+"callbar_active_and_single_paused" = "1 thirrje aktive (%@) · 1 thirrje e ndalur";
+
+// Call Bar
+"callbar_only_single_active" = "Thirrje aktive (%@)";
+"room_details_integrations" = "Integrime";
+"room_multiple_typing_notification" = "%@ dhe të tjerë";
+"room_accessibility_video_call" = "Thirrje Video";
+"room_message_replying_to" = "Në përgjigje të %@";
+"room_message_editing" = "Përpunim";

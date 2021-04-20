@@ -210,8 +210,8 @@
 "room_message_short_placeholder" = "Digite uma mensagem…";
 "room_message_reply_to_short_placeholder" = "Digite sua resposta…";
 "room_offline_notification" = "A conectividade com o servidor foi perdida.";
-"room_unsent_messages_notification" = "Mensagens não enviadas. %@ ou %@ agora?";
-"room_unsent_messages_unknown_devices_notification" = "Mensagem não enviada devido à presença de sessões desconhecidas. %@ ou %@ agora?";
+"room_unsent_messages_notification" = "Falha ao enviar mensagens.";
+"room_unsent_messages_unknown_devices_notification" = "Mensagem não enviada devido à presença de sessões desconhecidas.";
 "room_ongoing_conference_call" = "Chamada em grupo em andamento. Junte-se como %@ ou %@.";
 "room_ongoing_conference_call_with_close" = "Chamada em grupo em andamento. Junte-se como %@ ou %@. %@ isto.";
 "room_ongoing_conference_call_close" = "Fechar";
@@ -861,7 +861,7 @@
 "settings_labs_message_reaction" = "Adicionar reações em mensagens";
 "settings_add_3pid_password_title_msidsn" = "Adicionar número de telefone";
 "settings_add_3pid_password_message" = "Para continuar, por favor, digite sua senha";
-"settings_add_3pid_invalid_password_message" = "Senha inválida";
+"settings_add_3pid_invalid_password_message" = "Credenciais inválidas";
 "settings_key_backup_button_connect" = "Autorize esta sessão a fazer o backup de chaves";
 "settings_discovery_no_identity_server" = "No momento, você não está usando um servidor de identidade. Para descobrir e ser descoberto pelos contatos existentes, adicione um abaixo.";
 "settings_discovery_error_message" = "Um erro ocorreu. Por favor, tente novamente mais tarde.";
@@ -1260,9 +1260,61 @@
 "social_login_button_title_sign_up" = "Registrar-se com %@";
 "social_login_button_title_sign_in" = "Entrar com %@";
 "social_login_button_title_continue" = "Continuar com %@";
-"social_login_list_title_sign_up" = "Ou registrar-se com";
-"social_login_list_title_sign_in" = "Ou entrar com";
+"social_login_list_title_sign_up" = "Ou";
+"social_login_list_title_sign_in" = "Ou";
 
 // Social login
 
 "social_login_list_title_continue" = "Continuar com";
+"room_avatar_view_accessibility_hint" = "Alterar a imagem da sala";
+
+// Mark: - Room avatar view
+
+"room_avatar_view_accessibility_label" = "imagem";
+"call_transfer_contacts_all" = "Todos";
+"call_transfer_contacts_recent" = "Recente";
+"call_transfer_users" = "Pessoas";
+"event_formatter_call_has_ended" = "Essa chamada foi encerrada";
+"room_intro_cell_information_multiple_dm_sentence2" = "Somente vocês estão nesta conversa, ao menos até que convidem alguém para participar.";
+"room_intro_cell_information_dm_sentence2" = "Apenas vocês dois/duas estão nesta conversa, ninguém mais pode entrar.";
+"room_intro_cell_information_dm_sentence1_part3" = ". ";
+"room_intro_cell_information_dm_sentence1_part1" = "Este é o início de sua conversa com ";
+"room_intro_cell_information_room_without_topic_sentence2_part2" = " para que as pessoas saibam do que se trata essa sala.";
+"room_intro_cell_information_room_without_topic_sentence2_part1" = "Adicionar uma descrição";
+"room_intro_cell_information_room_with_topic_sentence2" = "Descrição: %@";
+"room_intro_cell_information_room_sentence1_part3" = ". ";
+"room_intro_cell_information_room_sentence1_part1" = "Este é o começo de ";
+
+// Mark: - Room creation introduction cell
+
+"room_intro_cell_add_participants_action" = "Adicionar pessoas";
+"call_transfer_error_message" = "Falha ao transferir a chamada";
+"call_transfer_error_title" = "Erro";
+"call_transfer_dialpad" = "Teclado de discagem";
+
+// MARK: - Call Transfer
+"call_transfer_title" = "Transferir";
+
+// MARK: - Dial Pad
+"dialpad_title" = "Teclado de discagem";
+"call_actions_unhold" = "Retomar";
+"event_formatter_call_back" = "Ligar de volta";
+"event_formatter_call_you_declined" = "Você recusou esta chamada";
+"event_formatter_call_you_currently_in" = "Você está nesta chamada";
+"event_formatter_call_video" = "Chamada de vídeo";
+"event_formatter_call_voice" = "Chamada de voz";
+"settings_show_NSFW_public_rooms" = "Exibir salas públicas com conteúdo sensível";
+"room_open_dialpad" = "Teclado de discagem";
+"room_place_voice_call" = "Chamada de voz";
+"room_event_action_delete_confirmation_message" = "Tem certeza de que deseja excluir esta mensagem não enviada?";
+"room_event_action_delete_confirmation_title" = "Excluir mensagem não enviada";
+"room_unsent_messages_cancel_message" = "Tem certeza de que deseja excluir todas as mensagens não enviadas nesta sala?";
+"room_unsent_messages_cancel_title" = "Excluir mensagens não enviadas";
+"callbar_return" = "Retornar";
+"callbar_only_multiple_paused" = "%@ chamadas pausadas";
+"callbar_only_single_paused" = "Chamada pausada";
+"callbar_active_and_multiple_paused" = "1 chamada em andamento (%@) · %@ chamadas pausadas";
+"callbar_active_and_single_paused" = "1 chamada em andamento (%@) · 1 chamada pausada";
+
+// Call Bar
+"callbar_only_single_active" = "Chamada em andamento (%@)";

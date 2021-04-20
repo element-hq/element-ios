@@ -246,7 +246,7 @@
 // Room Preview
 "room_preview_invitation_format" = "あなたは %@ さんに呼ばれてこの部屋へ参加しました";
 "room_preview_subtitle" = "これは部屋の下見です。発言があっても部屋は更新されません。";
-"room_preview_unlinked_email_warning" = "このアカウントに関連付けられていない %@ 宛に招待が送信されました。別のアカウントでログインするか、この電子メールアドレスをこのアカウントに追加することができます。";
+"room_preview_unlinked_email_warning" = "このアカウントに関連付けられていない %@ 宛に招待が送信されました。別のアカウントでログインするか、メールアドレスをこのアカウントに追加することができます。";
 "room_preview_try_join_an_unknown_room" = "あなたは %@ へ接続しようとしています。この会議に参加しますか？";
 "room_preview_try_join_an_unknown_room_default" = "部屋";
 // Settings
@@ -291,7 +291,7 @@
 "settings_global_settings_info" = "あなたの %@ webクライアント上で、全体の通知設定が可能です";
 "settings_pin_rooms_with_missed_notif" = "通知の届かなかった部屋をピン止めする";
 "settings_on_denied_notification" = "%@で通知されないように設定されています。あなたの端末設定で許可してください";
-"settings_callkit_info" = "画面がロックされているときに着信がありました。Elementの着信はシステムの通話履歴で確認してください。 iCloudが有効になっている場合、この通話履歴はAppleと共有されます。";
+"settings_callkit_info" = "画面がロックされているときに着信がありました。Elementの着信はシステムの通話履歴で確認できます。 iCloudが有効になっている場合、この通話履歴はAppleと共有されます。";
 "settings_ui_language" = "言語";
 "settings_ui_theme" = "外観";
 "settings_ui_theme_auto" = "自動";
@@ -322,14 +322,14 @@
 "settings_fail_to_update_password" = "パスワードの更新に失敗しました";
 "settings_password_updated" = "あなたのパスワードは更新されました";
 "settings_crypto_device_name" = "セッション名: ";
-"settings_crypto_device_id" = "\n装置固有ID: ";
+"settings_crypto_device_id" = "\nセッションID: ";
 "settings_crypto_device_key" = "\n端末鍵: ";
 "settings_crypto_export" = "暗号鍵を外部へ保存";
-"settings_crypto_blacklist_unverified_devices" = "認証された端末のみで暗号化";
+"settings_crypto_blacklist_unverified_devices" = "検証されたセッションのみで暗号化";
 // Room Details
 "room_details_title" = "部屋の詳細";
 "room_details_people" = "参加者";
-"room_details_files" = "添付ファイル";
+"room_details_files" = "アップロード";
 "room_details_settings" = "設定";
 "room_details_photo" = "部屋の画像アイコン";
 "room_details_room_name" = "部屋名";
@@ -365,7 +365,7 @@
 "room_details_advanced_enable_e2e_encryption" = "暗号化を開始(警告: 部屋の暗号を中止することはできません！)";
 "room_details_advanced_e2e_encryption_enabled" = "この部屋の発言は暗号化されています";
 "room_details_advanced_e2e_encryption_disabled" = "この部屋の発言は暗号化されていません。";
-"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "認証された端末のみで暗号化";
+"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "検証されたセッションのみで暗号化";
 "room_details_fail_to_update_avatar" = "部屋のアイコン画像の更新に失敗しました";
 "room_details_fail_to_update_room_name" = "部屋名の更新に失敗しました";
 "room_details_fail_to_update_topic" = "部屋の説明の更新に失敗しました";
@@ -424,8 +424,8 @@
 // Call
 "call_incoming_voice_prompt" = "%@ さんから通話の着信中";
 "call_incoming_video_prompt" = "%@ さんから映像つき通話の着信中";
-"call_incoming_voice" = "通話着信中...";
-"call_incoming_video" = "映像つき通話の着信中...";
+"call_incoming_voice" = "通話着信中…";
+"call_incoming_video" = "ビデオ通話の着信中…";
 "call_already_displayed" = "すでに通話中です。";
 "call_jitsi_error" = "会議通話への参加に失敗しました。";
 // No VoIP support
@@ -434,8 +434,8 @@
 // Crash report
 "google_analytics_use_prompt" = "匿名の誤動作報告と使用状況データを自動的に報告して%@の改善に役立てますか？";
 // Crypto
-"e2e_enabling_on_app_update" = "Elementはend-to-end暗号化をサポートするようになりましたが、再度有効にするにはログインする必要があります。\n\nアプリの設定から再ログインできます。今すぐ、または後からでも構いません。";
-"e2e_need_log_in_again" = "この端末のエンドツーエンド暗号鍵を生成し、接続先サーバに公開鍵を送信するには、再度ログインする必要があります。\n一度回線を切断します。ご不便おかけしてすみません。";
+"e2e_enabling_on_app_update" = "Elementはエンドツーエンド暗号化をサポートするようになりましたが、有効にするには再びログインする必要があります。\n\nアプリの設定から再ログインできます。今すぐ、または後からでも構いません。";
+"e2e_need_log_in_again" = "このセッションのエンドツーエンド暗号化キーを生成し、公開キーをホームサーバーに送信するには、再度ログインする必要があります。\nこれは一度だけです。 ご不便おかけしてすみません。";
 // Bug report
 "bug_report_title" = "不具合報告";
 "bug_report_description" = "誤動作の内容と状況の説明をお願い致します。あなたは何をしましたか？何が起こると思いますか？実際何が起こったのですか？";
@@ -526,7 +526,7 @@
 // Group rooms
 "group_rooms_filter_rooms" = "コミュニティルームをフィルタリング";
 "event_formatter_rerequest_keys_part1_link" = "暗号鍵の再要求";
-"event_formatter_rerequest_keys_part2" = " あなたの他の端末から。";
+"event_formatter_rerequest_keys_part2" = " あなたの他のセッションから。";
 "homeserver_connection_lost" = "ホームサーバーに接続できませんでした。";
 "widget_sticker_picker_no_stickerpacks_alert" = "現在、ステッカーパックを有効にしていません。";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "今すぐ追加しますか？";
@@ -593,3 +593,436 @@
 "create_room_title" = "新しい部屋";
 "create_room_enable_encryption" = "暗号化を有効にする";
 "room_details_room_name_for_dm" = "名前";
+"room_participants_security_information_room_encrypted_for_dm" = "ここで送受信されるメッセージはエンドツーエンド暗号化されます。\n\nメッセージは安全に保護されており、あなたと宛先のみがメッセージの閲覧に必要な鍵を所持します。";
+"room_participants_security_information_room_not_encrypted_for_dm" = "ここで送受信されるメッセージはエンドツーエンド暗号化されません。";
+
+// Mark: - Room creation introduction cell
+
+"room_intro_cell_add_participants_action" = "参加者を追加";
+"room_participants_security_information_room_encrypted" = "この部屋で送受信されるメッセージはエンドツーエンド暗号化されます。\n\nメッセージは安全に保護されており、この部屋の参加者のみがメッセージの閲覧に必要な鍵を所持します。";
+"room_participants_security_information_room_not_encrypted" = "この部屋で送受信されるメッセージはエンドツーエンド暗号化されません。";
+"room_intro_cell_information_dm_sentence1_part3" = ". ";
+"callbar_active_and_single_paused" = "ひとつのアクティブな通話 (%@) · ひとつの一時停止された通話";
+
+// Call Bar
+"callbar_only_single_active" = "アクティブな通話(%@)";
+"settings_add_3pid_password_title_msidsn" = "電話番号の追加する";
+"device_verification_emoji_scissors" = "ハサミ";
+"device_verification_emoji_paperclip" = "ペーパークリップ";
+"device_verification_emoji_pencil" = "鉛筆";
+"device_verification_emoji_book" = "本";
+"device_verification_emoji_light bulb" = "電球";
+"device_verification_emoji_gift" = "ギフト";
+"device_verification_emoji_clock" = "時計";
+"device_verification_emoji_hourglass" = "スバ時計";
+"device_verification_emoji_umbrella" = "雨";
+"device_verification_emoji_thumbs up" = "親指を立てる";
+"device_verification_emoji_spanner" = "スパナ";
+"device_verification_emoji_santa" = "サンタ";
+"device_verification_emoji_glasses" = "メガネ";
+"device_verification_emoji_hat" = "ハット";
+"device_verification_emoji_robot" = "ロボット";
+"device_verification_emoji_smiley" = "笑顔";
+"device_verification_emoji_heart" = "ハート";
+"device_verification_emoji_cake" = "ケーキ";
+"device_verification_emoji_pizza" = "ピザ";
+
+// Room widget permissions
+"room_widget_permission_title" = "ウィジェットを読み込む";
+"widget_picker_manage_integrations" = "インテグレーションを管理する…";
+
+// Widget Picker
+"widget_picker_title" = "インテグレーションマネージャー";
+"widget_integration_manager_disabled" = "設定でインテグレーションマネージャーを有効にする必要があります";
+"widget_menu_remove" = "すべて取り除く";
+"widget_menu_revoke_permission" = "アクセスを取り消す";
+"widget_menu_open_outside" = "ブラウザを開く";
+"widget_menu_refresh" = "リフレッシュ";
+"widget_integrations_server_failed_to_connect" = "インテグレーションサーバーへの説を句が失敗しました";
+
+// Widget
+"widget_no_integrations_server_configured" = "インテグレーションサーバーが設定されていません";
+"bug_report_background_mode" = "バックグラウンドで継続する";
+"e2e_key_backup_wrong_version_button_wasme" = "これはわたしです";
+"e2e_key_backup_wrong_version_button_settings" = "設定";
+"e2e_key_backup_wrong_version" = "新しいメッセージキーのバックアップが検出されました。\n\nこれがあなたによるものでばい場合は、設定から新しいパスフレーズを設定してください。";
+
+// Key backup wrong version
+"e2e_key_backup_wrong_version_title" = "新しいキーのバックアップ";
+"call_no_stun_server_error_use_fallback_button" = "%@を使ってみてください";
+"call_actions_unhold" = "やり直す";
+"call_no_stun_server_error_message_2" = "代わりに、%@のパブリックサーバーを使用することもできますが、これは信頼性が低くあなたのIPアドレスがそのサーバーと共有されてしまいます。これは、設定から管理することができます";
+"call_no_stun_server_error_message_1" = "通話を確実に機能させるためには、ホームサーバー%@の管理者にTURNサーバーの設定を依頼してください。";
+"call_no_stun_server_error_title" = "サーバーの設定が間違っているため通話に失敗しました";
+"room_does_not_exist" = "%@は存在しません";
+"photo_library_access_not_granted" = "%@はフォトライブラリにアクセスする権限がありません";
+"camera_unavailable" = "お使いの端末ではカメラを利用できません";
+"event_formatter_widget_removed_by_you" = "ウィジェットを削除しました: %@";
+"event_formatter_jitsi_widget_removed_by_you" = "VoIPカンファレンスを削除しました";
+"event_formatter_jitsi_widget_added_by_you" = "VoIPカンファレンスを追加しました";
+
+// Events formatter with you
+"event_formatter_widget_added_by_you" = "ウィジェットを追加しました: %@";
+"event_formatter_call_back" = "かけ直す";
+"event_formatter_call_you_declined" = "通話を拒否しました";
+"event_formatter_call_you_currently_in" = "通話中です";
+"event_formatter_call_has_ended" = "通話は有効です";
+"event_formatter_call_video" = "ビデオ通話";
+"event_formatter_call_voice" = "音声通話";
+"event_formatter_message_edited_mention" = "（編集済み）";
+"image_picker_action_library" = "ライブラリを選ぶ";
+
+// Image picker
+"image_picker_action_camera" = "写真を撮る";
+
+// Media picker
+"media_picker_title" = "メディアライブラリ";
+"room_details_advanced_e2e_encryption_disabled_for_dm" = "ここは暗号化が有効ではありません。";
+"room_details_advanced_e2e_encryption_enabled_for_dm" = "ここは暗号化が有効です";
+"room_details_advanced_room_id_for_dm" = "ID:";
+"room_details_no_local_addresses_for_dm" = "ここにはローカルアドレスがありません";
+"room_details_access_section_directory_toggle_for_dm" = "ルームディレクトリに掲載する";
+"room_details_access_section_anyone_apart_from_guest_for_dm" = "ゲスト以外のリンクを知っている人";
+"room_details_access_section_anyone_for_dm" = "ゲストを含め、リンクを知っている人なら誰でも";
+"room_details_access_section_for_dm" = "誰がアクセスできるのか？";
+"room_details_photo_for_dm" = "写真";
+"room_details_integrations" = "インテグレーション";
+"room_details_search" = "部屋（ルーム）を探す";
+"room_details_title_for_dm" = "詳細";
+"identity_server_settings_alert_error_invalid_identity_server" = "%@は有効なIDサーバーではありません。";
+"identity_server_settings_alert_error_terms_not_accepted" = "IDサーバーとして設定するには%@の条件を受け入れる必要があります。";
+"identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "とにかく切断する";
+"identity_server_settings_alert_disconnect_still_sharing_3pid" = "あなたはまだIDサーバー%@で個人データを共有しています。\n\n切断する前にメールアドレスと電話番号をIDサーバーから削除することをお勧めします。";
+"identity_server_settings_alert_disconnect_button" = "接続を解除";
+"identity_server_settings_alert_disconnect" = "IDサーバー%@を接続解除しますか？";
+"identity_server_settings_alert_disconnect_title" = "IDサーバーを接続解除";
+"identity_server_settings_alert_change" = "IDサーバー%1$@を切断し、代わりに %2$@に接続しますか？";
+"identity_server_settings_alert_change_title" = "IDサーバーを変更する";
+"identity_server_settings_alert_no_terms" = "選択したIDサーバーには利用規約がありません。そのサーバーの所有者を信頼できる場合にのみ続行してください。";
+"identity_server_settings_alert_no_terms_title" = "IDサーバーには利用規約がありません";
+"identity_server_settings_disconnect" = "接続を解除";
+"identity_server_settings_disconnect_info" = "IDサーバーとの接続を解除すると、他のユーザーから発見されなくなり、メールや電話で他のユーザーを招待することができるようになります。";
+"identity_server_settings_change" = "変更する";
+"identity_server_settings_add" = "追加する";
+"identity_server_settings_place_holder" = "IDサーバーを入力する";
+"identity_server_settings_no_is_description" = "現在、ID サーバーを使用していません。知り合いを発見したり、発見できるようにするには、上記に追加してください。";
+"identity_server_settings_description" = "あなたは%@を使って、あなたの知り合いを発見し、また向こうから発見できるようにしています。";
+"security_settings_complete_security_alert_title" = "セキュリティを完了します";
+"security_settings_crosssigning_complete_security" = "セキュリティーを完了する";
+"security_settings_crosssigning_bootstrap" = "独立したクロス署名";
+"settings_devices_description" = "セッションのパブリックネームはコミュニケーションをとる相手に表示されます";
+"settings_key_backup_delete_confirmation_prompt_title" = "バックアップの削除";
+"settings_key_backup_info_valid" = "このセッションは鍵のバックアップをされています。";
+"settings_key_backup_info_algorithm" = "アルゴリズム: %@";
+"settings_key_backup_info_version" = "キーのバックアップバージョン: %@";
+"settings_key_backup_info_none" = "あなたのキーはこのセッションからバックアップされていません。";
+"settings_key_backup_info_checking" = "確認中…";
+"settings_add_3pid_password_message" = "続けるにはパスワードを入力してください";
+"settings_add_3pid_invalid_password_message" = "無効な認証情報";
+"settings_add_3pid_password_title_email" = "メールアドレスを追加する";
+"settings_integrations_allow_description" = "インテグレーションマネージャー（%@）を使用して、ボット、ブリッジ、ウィジェット、ステッカーパックを管理します。\n\n設定データを受け取り、お客様に代わってウィジェットの変更、ルーム招待の送信、権限の設定を行うことができます。";
+"settings_integrations_allow_button" = "マネージインテグレーション";
+"settings_calls_stun_server_fallback_button" = "フォールバックコールアシストサーバを許可する";
+"settings_key_backup" = "キーのバックアップ";
+"settings_integrations" = "インテグレーション";
+"settings_discovery_settings" = "ディスカバリー";
+"room_multiple_typing_notification" = "%@とその他のユーザーが入力中です";
+"external_link_confirmation_message" = "リンク%@は別のサイトに移動します: %@\n\n本当に続けますか？";
+"room_event_action_delete_confirmation_title" = "未送信メッセージを削除";
+"room_unsent_messages_cancel_message" = "この部屋にある未送信のメッセージをすべて削除してもよろしいですか？";
+"room_unsent_messages_cancel_title" = "未送信メッセージを削除";
+"room_message_replying_to" = "%@に返信中";
+"room_message_editing" = "編集中";
+"room_accessiblity_scroll_to_bottom" = "いちばん下までスクロール";
+"room_member_power_level_short_custom" = "カスタム";
+"room_member_power_level_short_moderator" = "モデレーター";
+"room_member_power_level_custom_in" = "カスタム (%@) in %@";
+"room_member_power_level_short_admin" = "管理者";
+"room_member_power_level_moderator_in" = "モデレーターは%@";
+"room_member_power_level_admin_in" = "管理者は%@";
+"room_participants_security_loading" = "読み込み中…";
+"room_participants_action_security_status_loading" = "読み込み中…";
+"room_participants_action_security_status_warning" = "警告";
+"room_participants_action_security_status_complete_security" = "セキュリティーを完了する";
+"room_participants_action_security_status_verify" = "検証";
+"room_participants_action_security_status_verified" = "検証済み";
+"room_participants_action_section_security" = "セキュリティ";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "IDサーバーが設定されていないため、メールアドレスを使って連絡先とチャットを開始することができません。";
+"room_participants_filter_room_members_for_dm" = "メンバーをフィルター";
+"room_participants_remove_third_party_invite_prompt_msg" = "招待を取り消してよろしいですか？";
+"room_participants_leave_prompt_msg_for_dm" = "退出してよろしいですか？";
+"room_participants_leave_prompt_title_for_dm" = "退出する";
+"contacts_address_book_no_identity_server" = "IDサーバーが設定されていません";
+"rooms_empty_view_information" = "ルームはプライベートでもパブリックでも、あらゆるグループチャットに最適です。+をタップすると既にある部屋を探したり、新しい部屋を作ることができます。";
+"rooms_empty_view_title" = "ルーム";
+"people_empty_view_information" = "誰とでも安全にチャットできます。＋をタップすると会話相手を追加できます。";
+"people_empty_view_title" = "人々";
+"room_creation_error_invite_user_by_email_without_identity_server" = "IDサーバーが設定されていないため、メールで参加者を追加することができません。";
+
+// Errors
+"error_user_already_logged_in" = "他のホームサーバーに接続しようとしているようですね。サインアウトしますか？";
+"social_login_button_title_sign_up" = "%@でサインアップ";
+"social_login_button_title_sign_in" = "%@でサインイン";
+"social_login_button_title_continue" = "続きはこちら%@";
+"social_login_list_title_sign_up" = "もしくは";
+"social_login_list_title_sign_in" = "もしくは";
+
+// Social login
+
+"social_login_list_title_continue" = "続きはこちら";
+"auth_softlogout_clear_data_sign_out_msg" = "このデバイスに現在保存されているすべてのデータを消去してよろしいですか？再びサインインするとアカウントデータやメッセージにアクセスできます。";
+"auth_softlogout_clear_data_sign_out_title" = "本当によろしいですか？";
+"auth_softlogout_clear_data_button" = "すべてのデータをクリアする";
+"auth_softlogout_clear_data_message_2" = "このデバイスの使用を終了する場合や、別のアカウントにサインインしたい場合は、クリアしてください。";
+"auth_softlogout_clear_data_message_1" = "警告: 個人データ（暗号化キーを含む）がこのデバイスにまだ保存されています。";
+"callbar_return" = "かけ直す";
+"callbar_active_and_multiple_paused" = "1つのアクティブな通話(%@) · %@ 通話の一時停止";
+"callbar_only_multiple_paused" = "%@ 通話の一時停止";
+"callbar_only_single_paused" = "通話の一時停止";
+"store_promotional_text" = "オープンネットワーク上でプライバシーを保護したチャットアプリ。あなた自身でコントロールできるように非中央集権化（分散化）されています。データマイニング、バックドア、サードパーティによるアクセスはありません。";
+"auth_softlogout_clear_data" = "個人データをクリアする";
+"auth_softlogout_recover_encryption_keys" = "サインインして、このデバイスにのみ保存されている暗号化キーを復元します。どのデバイスでも、あなたのセキュアなメッセージをすべて読むために必要です。";
+"auth_softlogout_reason" = "ホームサーバー(%1$@)の管理者が%2$@(%3$@)からサインアウトさせました。";
+"auth_softlogout_sign_in" = "サインイン";
+"auth_softlogout_signed_out" = "サインアウトしました";
+"auth_autodiscover_invalid_response" = "無効なホームサーバー発見レスポンス";
+"auth_accept_policies" = "このホームサーバーのポリシーを確認して同意してください:";
+"auth_reset_password_error_is_required" = "IDサーバーが設定されていません: パスワードをリセットするためにサーバーオプションに追加してください。";
+"auth_forgot_password_error_no_configured_identity_server" = "IDサーバーが設定されていません: パスワードをリセットするためにIDサーバーを追加してください。";
+"auth_phone_is_required" = "IDサーバーが設定されていないので、パスワードをリセットするために電話番号を追加することはできません。";
+"auth_email_is_required" = "IDサーバーが設定されていないので、パスワードをリセットするためにメールアドレスを追加することはできません。";
+"auth_add_email_phone_message_2" = "アカウント回復のためにメールを設定します。これを行うとメールアドレスや電話番号を使って、あなたのことを知っている人が発見できるようになります。";
+"auth_add_phone_message_2" = "電話番号を設定し、オプションとして自分を知っている人が発見できるようにします。";
+"auth_add_email_message_2" = "アカウント回復のためにメールを設定し、オプションとして自分のことを知っている人が発見できるようにします。";
+"less" = "たたむ";
+"more" = "もっと";
+"switch" = "切り替え";
+"joined" = "参加済み";
+"skip" = "スキップ";
+
+// Identity server settings
+"identity_server_settings_title" = "IDサーバー";
+
+// AuthenticatedSessionViewControllerFactory
+"authenticated_session_flow_not_supported" = "このアプリは、ホームサーバーの認証機構をサポートしていません。";
+"manage_session_sign_out" = "セッションからサインアウト";
+"manage_session_not_trusted" = "信頼できない";
+"manage_session_trusted" = "信頼済み";
+"manage_session_name" = "セッション名";
+"manage_session_info" = "セッションの情報";
+
+// Manage session
+"manage_session_title" = "セッションを管理";
+"security_settings_user_password_description" = "アカウントのパスワードを入力して本人確認を行う";
+"security_settings_coming_soon" = "申し訳ありません。このアクションはElement iOSではまだ利用できません。他のMatrixクライアントを使って設定してください。将来的にはElement iOSでも実装される予定です。";
+"security_settings_complete_security_alert_message" = "現在のセッションのセキュリティを完了させる必要があります。";
+"security_settings_blacklist_unverified_devices_description" = "すべてのセッションを検証して、信頼できるものとしてマークしメッセージを送信します。";
+"security_settings_blacklist_unverified_devices" = "信頼していないセッションにはメッセージを送信しない";
+"security_settings_advanced" = "上級者向け";
+"security_settings_export_keys_manually" = "手動でキーをエクスポートする";
+"security_settings_cryptography" = "暗号技術";
+"security_settings_crosssigning_reset" = "クロス署名をリセット";
+"security_settings_crosssigning_info_ok" = "クロス署名が有効です。";
+"security_settings_crosssigning_info_trusted" = "クロス署名が有効になっています。クロス署名に基づいて他のユーザーや自分の他のセッションを信頼することはできますが、このセッションにはクロス署名用の秘密鍵がないため、このセッションからクロス署名を行うことはできません。このセッションのセキュリティを完了してください。";
+"security_settings_crosssigning_info_exists" = "アカウントにはクロス署名IDがありますが、このセッションはまだ信頼されていません。 このセッションのセキュリティを完了してください。";
+"security_settings_crosssigning_info_not_bootstrapped" = "クロス署名がまだ行われていません。";
+"security_settings_crosssigning" = "クロス署名";
+"security_settings_backup" = "メッセージのバックアップ";
+"security_settings_secure_backup_delete" = "削除";
+"security_settings_secure_backup_synchronise" = "同期";
+"security_settings_secure_backup_setup" = "セットアップ";
+"security_settings_secure_backup_description" = "暗号化キーをサーバーにバックアップすることにより、暗号化されたメッセージとデータへのアクセスが失われるのを防ぎます。";
+"security_settings_secure_backup" = "安全なバックアップ";
+"security_settings_crypto_sessions_description_2" = "ログインが認識されない場合は、パスワードを変更してバックアップをリセットしてください。";
+"security_settings_crypto_sessions_loading" = "セッションを読み込み中…";
+"security_settings_crypto_sessions" = "セッション";
+
+// Security settings
+"security_settings_title" = "セキュリティ";
+"settings_show_NSFW_public_rooms" = "NSFWパブリックルームを表示する";
+"settings_identity_server_no_is_description" = "現在、ID サーバーを使用していません。知り合いを発見したり発見されるようにするには1つ連絡先を追加します。";
+"settings_identity_server_no_is" = "IDサーバーが設定されていません";
+"settings_identity_server_description" = "上記で設定したIDサーバーを使って、自分の知り合いを発見したり、発見されたりすることができます。";
+"settings_discovery_three_pid_details_enter_sms_code_action" = "SMSアクティベーションコードを入力する";
+"settings_discovery_three_pid_details_cancel_email_validation_action" = "メールの検証をキャンセル";
+"settings_discovery_three_pid_details_revoke_action" = "取り消し";
+"settings_discovery_three_pid_details_share_action" = "共有";
+"settings_discovery_three_pid_details_title_email" = "メールアドレスを管理する";
+"settings_discovery_three_pid_details_title_phone_number" = "電話番号を管理する";
+"settings_discovery_three_pid_details_information_phone_number" = "他のユーザーがあなたを発見したり、ルームに招待する際に使用できる電話番号の設定を管理します。アカウントへ電話番号の追加や削除ができます。";
+"settings_discovery_three_pid_details_information_email" = "他のユーザーがあなたを発見したり、ルームに招待する際に使用できるメールアドレスの設定を管理します。アカウントへメールアドレスの追加や削除ができます。";
+"settings_discovery_error_message" = "エラーが発生しました。再試行してください。";
+"settings_discovery_three_pids_management_information_part3" = "。";
+"settings_discovery_three_pids_management_information_part2" = "ユーザー設定";
+"settings_discovery_three_pids_management_information_part1" = "他のユーザーがあなたを発見したり、部屋に招待する際に使用するメールアドレスや電話番号を管理できます。このリストにメールアドレスや電話番号を追加したり、削除したりすることができます。 ";
+"settings_discovery_terms_not_signed" = "メールアドレスや電話番号で自分を発見できるようにするには、IDサーバー（%@）の利用規約に同意する必要があります。";
+"settings_discovery_no_identity_server" = "現在、IDサーバーを使用していません。知り合いがあなたを発見できるようにするには、IDサーバーを追加してください。";
+"settings_key_backup_delete_confirmation_prompt_msg" = "よろしいですか？鍵が適切にバックアップされていないと、暗号化されたメッセージを失うことがあります。";
+"settings_key_backup_button_connect" = "このセッションをキーバックアップに接続する";
+"settings_key_backup_button_delete" = "バックアップの消去";
+"settings_key_backup_button_restore" = "バックアップからの復旧";
+"settings_key_backup_button_create" = "キーバックアップをする";
+"settings_key_backup_info_trust_signature_invalid_device_unverified" = "バックアップには%@からの無効な署名があります";
+"settings_key_backup_info_trust_signature_invalid_device_verified" = "バックアップには%@からの無効な署名があります";
+"settings_key_backup_info_trust_signature_valid_device_unverified" = "バックアップには%@からの署名があります";
+"settings_key_backup_info_trust_signature_valid_device_verified" = "バックアップには%@による有効な署名があります";
+"settings_key_backup_info_trust_signature_valid" = "バックアップにはこのセッションの有効な署名があります";
+"settings_key_backup_info_trust_signature_unknown" = "バックアップにはID: %@によるセッションの署名があります";
+"settings_key_backup_info_progress_done" = "キーのバックアップが完了しました";
+"settings_key_backup_info_progress" = "%@のキーをバックアップしています…";
+"settings_key_backup_info_not_valid" = "このセッションではキーをバックアップしていませんが、復元して今後追加できる既存のバックアップがあります。";
+"settings_key_backup_info_signout_warning" = "このデバイスにのみ存在するキーの消失を防ぐために、サインアウトする前にこのセッションをキーバックアップに接続してください。";
+"settings_key_backup_info" = "暗号化されたメッセージはエンドツーエンドで暗号化されています。送信者と受信者だけがこのメッセージを読むための鍵を持っています。";
+"settings_labs_message_reaction" = "絵文字でメッセージに反応する";
+"settings_calls_stun_server_fallback_description" = "ホームサーバーがフォールバックコールアシストサーバーを提供していない場合は％@を許可します（IPアドレスは通話中に共有されます）。";
+"settings_security" = "セキュリティー";
+"settings_three_pids_management_information_part3" = "。";
+"settings_three_pids_management_information_part2" = "ディスカバリー";
+"store_full_description" = "Elementはまったく新しいタイプのメッセンジャーアプリです。\n\n1. あなた自身がプライバシーをコントロールすることを可能にします。\n2. Matrixネットワークにいる誰とでも通信できることはもちろん、Slackなどのアプリとの連携によって他のネットワークとも通信ができます。\n3. 広告、データ収集、バックドア、ユーザーの囲い込みから逃れることができます。\n4. エンドツーエンド暗号化とクロス署名によってあなたを保護します。\n\nElementは非中央集権型でオープンソースであるため、他のメッセンジャーアプリとは完全に異なっています。\n\nElementはあなた自身でサーバーをホストすることも、サーバーを選ぶこともできます。これによってあなたのデータと会話に関するプライバシーや所有権はあなた自身で管理できるようになります。さらに、あなたは他のElementユーザーと話せるだけでなくオープンネットワークへのアクセスも可能です。とてもセキュアです。\n\nElementは、オープンな分散型通信の標準規格であるMatrixで動作するため、これらすべてを実現することができています。\n\nElementではあなたの会話をどのサーバーでホストするか決めることができます。アプリでは、さまざまな方法で選択できます。\n\n1. matrix.orgの公開サーバーで無料のアカウントを取得します。\n2. あなた自身のハードウェアでサーバーを動かし、アカウントを管理します。\n3. Element Matrix Servicesのホスティングプラットフォームに登録することで、カスタムサーバー上のアカウントを取得できます。\n\nなぜElementを選ぶべきなのか？\n\nデータの所有権: 自分でデータやメッセージを保管する場所を決めることができます。あなたが所有権を持ってコントロールすることで、第三者にあなたのデータを渡したり、ビッグデータを収集する巨大テック企業に依存する必要がなくなります。\n\n開かれたネットワークと共同作業: Matrixネットワーク内の他の誰とでも、あるいはElementや他のMatrixアプリを使っているかどうかに関わらず、またSlack、IRC、XMPPのような他のメッセージングシステムを使っているかどうかに関わらず、チャットすることができます。\n\nはるかに安全: 本物のエンドツーエンド暗号化（会話に参加している者のみがメッセージを読める）と会話参加者の真正性を確認するためクロス署名によって。\n\n完全なるコミュニケーションの訪れ: テキスト、音声通話、ビデオ通話、ファイル共有、画面共有、連携機能、ボット、ウィジェットなどのコミュニケーションに必要な機能の全てが実装されています。ルームやコミュニティを立ち上げて連絡を取り合い、物事をスムーズに成し遂げることができます。\n\nいつでもどこでも！: すべてのデバイスとウェブ（https://app.element.io）でメッセージの履歴が完全に同期されるため、どこにいても連絡を取ることができます。";
+"user_verification_session_details_additional_information_untrusted_other_user" = "ユーザーがこのセッションを信頼するまでは、セッションとの間で送受信されるメッセージには警告が表示されます。また、手動で検証することもできます。";
+"user_verification_session_details_information_untrusted_other_user" = " 新しいセッションを使ってサインインしました:";
+"user_verification_session_details_information_untrusted_current_user" = "このセッションを検証することで、信頼できるものとしてマークし、暗号化されたメッセージへのアクセスを許可します。";
+"user_verification_session_details_information_trusted_other_user_part2" = " 検証済み:";
+"user_verification_session_details_information_trusted_other_user_part1" = "このセッションは安全なものとして信頼されています。なぜなら ";
+"user_verification_session_details_information_trusted_current_user" = "このセッションは、検証されたため安全なものとして信頼されています。";
+"user_verification_session_details_untrusted_title" = "信頼できない";
+
+// Session details
+
+"user_verification_session_details_trusted_title" = "信頼済み";
+"user_verification_sessions_list_session_untrusted" = "信頼できない";
+"user_verification_sessions_list_session_trusted" = "信頼済み";
+"user_verification_sessions_list_table_title" = "セッション一覧";
+"user_verification_sessions_list_information" = "この部屋にいるこのユーザーとのメッセージはエンドツーエンドで暗号化されており第三者が読み取ることはできません。";
+"user_verification_sessions_list_user_trust_level_unknown_title" = "未知";
+"user_verification_sessions_list_user_trust_level_warning_title" = "警告";
+
+// Sessions list
+
+"user_verification_sessions_list_user_trust_level_trusted_title" = "信頼済み";
+"user_verification_start_additional_information" = "安心してご利用いただくために、直接お会いするか、別の方法でご連絡ください。";
+"user_verification_start_waiting_partner" = "%@を待っています…";
+"user_verification_start_information_part2" = " 両方のデバイスでワンタイムコードを確認します。";
+"user_verification_start_information_part1" = "セキュリティを高めるために ";
+
+// MARK: - User verification
+
+// Start
+
+"user_verification_start_verify_action" = "検証を開始する";
+"key_verification_scan_confirmation_scanned_device_information" = "もう一方のデバイスにも同じシールドが表示されていますか？";
+"key_verification_scan_confirmation_scanned_user_information" = "%@は同じシールドを表示していますか？";
+
+// Scanned
+"key_verification_scan_confirmation_scanned_title" = "まもなくです！";
+"key_verification_scan_confirmation_scanning_device_waiting_other" = "他のデバイスを待っています…";
+
+// MARK: Scan confirmation
+
+// Scanning
+"key_verification_scan_confirmation_scanning_title" = "もう少しです。確認を待っています…";
+"key_verification_scan_confirmation_scanning_user_waiting_other" = "%@を待っています…";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "QRコードの認証に成功しました。";
+"key_verification_verify_qr_code_scan_other_code_success_title" = "コードが有効になりました！";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "相手がQRコードを読み取ってくれましたか？";
+"key_verification_verify_qr_code_start_emoji_action" = "絵文字による検証";
+"key_verification_verify_qr_code_cannot_scan_action" = "スキャンできませんか？";
+"key_verification_verify_qr_code_scan_code_action" = "コードを読み取る";
+"key_verification_verify_qr_code_emoji_information" = "ユニークな絵文字を比較して検証します。";
+"key_verification_verify_qr_code_information_other_device" = "以下のコードをスキャンして確認してください:";
+"key_verification_verify_qr_code_information" = "コードをスキャンして、お互いをしっかりと確認します。";
+
+// MARK: QR code
+
+"key_verification_verify_qr_code_title" = "スキャンして確認する";
+
+// Incoming key verification request
+
+"key_verification_incoming_request_incoming_alert_message" = "%@は検証を求めています";
+"key_verification_tile_conclusion_warning_title" = "信頼されていないサインイン";
+"key_verification_tile_conclusion_done_title" = "検証済み";
+"key_verification_tile_request_incoming_approval_decline" = "却下";
+"key_verification_tile_request_incoming_approval_accept" = "承認";
+"key_verification_tile_request_status_accepted" = "あなたは承認しました";
+"key_verification_tile_request_status_cancelled" = "%@はキャンセルしました";
+"key_verification_tile_request_status_cancelled_by_me" = "あなたはキャンセルしました";
+"key_verification_tile_request_status_expired" = "期限切れ";
+"key_verification_tile_request_status_waiting" = "お待ちください…";
+"key_verification_tile_request_status_data_loading" = "日時を読み込み…";
+"key_verification_tile_request_outgoing_title" = "検証の送信";
+
+// Tiles
+
+"key_verification_tile_request_incoming_title" = "検証リクエスト";
+"key_verification_bootstrap_not_setup_message" = "まずはクロス署名を行う必要があります。";
+
+// MARK: - Key Verification
+
+"key_verification_bootstrap_not_setup_title" = "エラー";
+"error_not_supported_on_mobile" = "%@モバイルからはできません。";
+
+
+// Generic errors
+"error_invite_3pid_with_no_identity_server" = "メールで招待するために設定からIDサーバーを追加します。";
+
+// MARK: Reaction history
+"reaction_history_title" = "リアクションの履歴";
+"emoji_picker_places_category" = "旅と場所";
+"emoji_picker_flags_category" = "国旗";
+"emoji_picker_symbols_category" = "シンボル";
+"emoji_picker_objects_category" = "オブジェクト";
+"emoji_picker_foods_category" = "食べ物と飲み物";
+"emoji_picker_nature_category" = "動物と自然";
+"emoji_picker_people_category" = "笑顔とみんな";
+
+// MARK: Emoji picker
+"emoji_picker_title" = "ピッカー";
+
+// MARK: File upload
+"file_upload_error_title" = "ファイルのアップロードエラー";
+"file_upload_error_unsupported_file_type_message" = "ファイルのタイプがサポートされていません。";
+"device_verification_emoji_pin" = "ピン";
+"device_verification_emoji_folder" = "フォルダー";
+"device_verification_emoji_headphones" = "ヘッドフォン";
+"device_verification_emoji_anchor" = "アンカー";
+"device_verification_emoji_bell" = "ベル";
+"device_verification_emoji_trumpet" = "トランペット";
+"device_verification_emoji_guitar" = "ギター";
+"device_verification_emoji_ball" = "ボール";
+"device_verification_emoji_trophy" = "トロフィー";
+"device_verification_emoji_rocket" = "ロケット";
+"device_verification_emoji_aeroplane" = "飛行機";
+"device_verification_emoji_bicycle" = "自転車";
+"device_verification_emoji_train" = "電車";
+"device_verification_emoji_flag" = "フラグ";
+"device_verification_emoji_telephone" = "テレフォン";
+"device_verification_emoji_hammer" = "ハンマー";
+"device_verification_emoji_key" = "鍵";
+"device_verification_emoji_lock" = "錠";
+"settings_three_pids_management_information_part1" = "ログインやアカウントの回復に使用できるメールアドレスや電話番号をここで管理します。誰があなたのことを発見できるかを管理する ";
+"settings_identity_server_settings" = "IDサーバー";
+"external_link_confirmation_title" = "このリンクを再確認してください";
+"media_type_accessibility_sticker" = "スティッカー";
+"media_type_accessibility_file" = "ファイル";
+"media_type_accessibility_location" = "場所";
+"media_type_accessibility_video" = "動画";
+"media_type_accessibility_audio" = "音声";
+"media_type_accessibility_image" = "画像";
+"room_open_dialpad" = "ダイヤルパッド";
+"room_place_voice_call" = "ビデオ通話";
+"room_accessibility_hangup" = "通話を切る";
+"room_event_action_delete_confirmation_message" = "この未送信メッセージを削除してもよろしいですか？";
+"room_accessibility_video_call" = "ビデオ通話";
+"room_accessibility_call" = "通話";
+"room_accessibility_integrations" = "統合";
+"room_accessibility_search" = "検索";
+"room_accessibility_upload" = "アップロード";
+"room_message_edits_history_title" = "メッセージを編集";
+"room_action_reply" = "返信";
+"room_action_send_file" = "ファイルを送る";
+"room_action_camera" = "写真やビデオの撮影";
+"room_event_action_reaction_history" = "反応の履歴";
+"room_event_action_reaction_show_less" = "すべて閉じる";
+"room_event_action_reaction_show_all" = "すべてを見る";
+"room_event_action_edit" = "編集";
+"room_event_action_reply" = "返信";

@@ -340,7 +340,7 @@
 "settings_add_3pid_password_title_email" = "Lägg till e-postadress";
 "settings_add_3pid_password_title_msidsn" = "Lägg till telefonnummer";
 "settings_add_3pid_password_message" = "För att fortsätta, ange ditt lösenord";
-"settings_add_3pid_invalid_password_message" = "Ogiltigt lösenord";
+"settings_add_3pid_invalid_password_message" = "Ogiltiga uppgifter";
 "settings_crypto_export" = "Exportera nycklar";
 "settings_crypto_blacklist_unverified_devices" = "Kryptera endast till verifierade sessioner";
 "settings_deactivate_my_account" = "Inaktivera mitt konto";
@@ -438,7 +438,7 @@
 "room_participants_security_information_room_encrypted" = "Meddelanden i det här rummet är totalsträckskrypterade.\n\nDina meddelanden är säkrade med lås och bara du och mottagaren har de unika nycklarna för att låsa upp dem.";
 "room_accessiblity_scroll_to_bottom" = "Scrolla till botten";
 "room_do_not_have_permission_to_post" = "Du har inte behörighet att posta till det här rummet";
-"room_unsent_messages_notification" = "Meddelanden skickades inte. %@ eller %@ nu?";
+"room_unsent_messages_notification" = "Meddelanden misslyckades att skickas.";
 "room_conference_call_no_power" = "Du behöver behörighet för att hantera gruppsamtal i det här rummet";
 "room_prompt_resend" = "Skicka alla igen";
 "room_accessibility_call" = "Ring";
@@ -641,7 +641,7 @@
 "group_section" = "GEMENSKAPER";
 "directory_search_fail" = "Misslyckades att hämta data";
 "room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Ingen identitetsserver är konfigurerad så du kan inte starta en chatt med en kontakt med en e-postadress.";
-"room_unsent_messages_unknown_devices_notification" = "Meddelandet skickades inte eftersom okända sessioner var närvarande. %@ eller %@ nu?";
+"room_unsent_messages_unknown_devices_notification" = "Meddelandet misslyckades att skickas eftersom okända sessioner var närvarande.";
 "room_resend_unsent_messages" = "Skicka oskickade meddelanden igen";
 "room_warning_about_encryption" = "Totalsträckskryptering är i beta, och kanske inte är pålitligt.\n\nDu bör inte ännu lita på att den säkrar data.\n\nEnheter kommer inte att kunna avkryptera historik från innan de gick med i rummet.\n\nKrypterade meddelanden kommer inte vara synliga på klienter som inte ännu stöder kryptering.";
 "room_resource_limit_exceeded_message_contact_1" = " Vänligen ";
@@ -1228,9 +1228,67 @@
 "social_login_button_title_sign_up" = "Skapa konto med %@";
 "social_login_button_title_sign_in" = "Logga in med %@";
 "social_login_button_title_continue" = "Fortsätt med %@";
-"social_login_list_title_sign_up" = "Eller registrera med";
-"social_login_list_title_sign_in" = "Eller logga in med";
+"social_login_list_title_sign_up" = "Eller";
+"social_login_list_title_sign_in" = "Eller";
 
 // Social login
 
 "social_login_list_title_continue" = "Fortsätt med";
+"room_intro_cell_information_multiple_dm_sentence2" = "Bara ni är i den här konversationen, om inte nån av er bjuder in nån att gå med.";
+"room_intro_cell_information_dm_sentence2" = "Bara ni två är i den här konversationen, ingen annan kan gå med.";
+"room_intro_cell_information_dm_sentence1_part3" = ". ";
+"room_intro_cell_information_dm_sentence1_part1" = "Det här är början på ditt direktmeddelande med ";
+"room_intro_cell_information_room_without_topic_sentence2_part2" = " för att låta folk veta vad rummet handlar om.";
+"room_intro_cell_information_room_without_topic_sentence2_part1" = "Lägg till ett ämne";
+"room_intro_cell_information_room_with_topic_sentence2" = "Ämne: %@";
+"room_intro_cell_information_room_sentence1_part3" = ". ";
+"room_intro_cell_information_room_sentence1_part1" = "Detta är början på ";
+
+// Mark: - Room creation introduction cell
+
+"room_intro_cell_add_participants_action" = "Lägg till personer";
+"room_avatar_view_accessibility_hint" = "Byt rumsavatar";
+
+// Mark: - Room avatar view
+
+"room_avatar_view_accessibility_label" = "avatar";
+"call_transfer_error_message" = "Samtalsöverföring misslyckades";
+"call_transfer_error_title" = "Fel";
+"call_transfer_contacts_all" = "Alla";
+"call_transfer_contacts_recent" = "Nyliga";
+"call_transfer_dialpad" = "Knappsats";
+"call_transfer_users" = "Användare";
+
+// MARK: - Call Transfer
+"call_transfer_title" = "Överför";
+
+// MARK: - Dial Pad
+"dialpad_title" = "Knappsats";
+"call_actions_unhold" = "Återuppta";
+"event_formatter_call_back" = "Ring tillbaka";
+"event_formatter_call_you_declined" = "Du avslog det här samtalet";
+"event_formatter_call_you_currently_in" = "Du är för närvarande i det här samtalet";
+"event_formatter_call_has_ended" = "Det här samtalet har avslutats";
+"event_formatter_call_video" = "Videosamtal";
+"event_formatter_call_voice" = "Röstsamtal";
+"settings_show_NSFW_public_rooms" = "Visa NSFW offentliga rum";
+"room_open_dialpad" = "Knappsats";
+"room_place_voice_call" = "Röstsamtal";
+"room_event_action_delete_confirmation_message" = "Är du säker på att du vill radera det här oskickade meddelandet?";
+"room_event_action_delete_confirmation_title" = "Radera oskickat meddelande";
+"room_unsent_messages_cancel_message" = "Är du säker på att du vill radera alla oskickade meddelanden i det här rummet?";
+"room_unsent_messages_cancel_title" = "Radera oskickade meddelanden";
+"callbar_return" = "Återgå";
+"callbar_only_multiple_paused" = "%@ pausade samtal";
+"callbar_only_single_paused" = "Pausat samtal";
+"callbar_active_and_multiple_paused" = "1 aktivt samtal (%@) · %@ pausade samtal";
+"callbar_active_and_single_paused" = "1 aktivt samtal (%@) · 1 pausat samtal";
+
+// Call Bar
+"callbar_only_single_active" = "Aktivt samtal (%@)";
+"room_accessibility_video_call" = "Videosamtal";
+"room_message_editing" = "Redigerar";
+"room_message_replying_to" = "Svarar på %@";
+"room_multiple_typing_notification" = "%@ och andra";
+"room_details_search" = "Sök i rum";
+"room_details_integrations" = "Integrationer";

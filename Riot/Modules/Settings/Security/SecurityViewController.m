@@ -329,42 +329,60 @@ TableViewSectionsDelegate>
     
     // Crypto sessions section
         
-    Section *sessionsSection = [Section sectionWithTag:SECTION_CRYPTO_SESSIONS];
-    
-    sessionsSection.headerTitle = NSLocalizedStringFromTable(@"security_settings_crypto_sessions", @"Vector", nil);
-        
-    NSUInteger sessionsSectionRowsCount;
-    
-    if (self.showLoadingDevicesInformation)
+    if (RiotSettings.shared.settingsSecurityScreenShowSessions)
     {
-        sessionsSectionRowsCount = 2;
-    } else {
-        sessionsSectionRowsCount = devicesArray.count + 1;
-    }
+        Section *sessionsSection = [Section sectionWithTag:SECTION_CRYPTO_SESSIONS];
+        
+        sessionsSection.headerTitle = NSLocalizedStringFromTable(@"security_settings_crypto_sessions", @"Vector", nil);
+            
+        NSUInteger sessionsSectionRowsCount;
+        
+        if (self.showLoadingDevicesInformation)
+        {
+            sessionsSectionRowsCount = 2;
+        }
+        else
+        {
+            sessionsSectionRowsCount = devicesArray.count + 1;
+        }
 
-    [sessionsSection addRowsWithCount:sessionsSectionRowsCount];
-    
-    [sections addObject:sessionsSection];
+        [sessionsSection addRowsWithCount:sessionsSectionRowsCount];
+        
+        [sections addObject:sessionsSection];
+    }
     
     // Secure backup
     
-    
     Section *secureBackupSection = [Section sectionWithTag:SECTION_SECURE_BACKUP];
     secureBackupSection.headerTitle = NSLocalizedStringFromTable(@"security_settings_secure_backup", @"Vector", nil);
-    
+
     [secureBackupSection addRowsWithCount:[self numberOfRowsInSecureBackupSection]];
-    
-    [sections addObject:secureBackupSection];
+
+    if (secureBackupSection.rows.count)
+    {
+        [sections addObject:secureBackupSection];
+    }
     
     // Cryptograhpy
     
     Section *cryptograhpySection = [Section sectionWithTag:SECTION_CRYPTOGRAPHY];
     cryptograhpySection.headerTitle = NSLocalizedStringFromTable(@"security_settings_cryptography", @"Vector", nil);
     
-    [cryptograhpySection addRowsWithCount:CRYPTOGRAPHY_COUNT];
+    if (RiotSettings.shared.settingsSecurityScreenShowCryptographyInfo)
+    {
+        [cryptograhpySection addRowWithTag:CRYPTOGRAPHY_INFO];
+    }
     
-    [sections addObject:cryptograhpySection];
-    
+    if (RiotSettings.shared.settingsSecurityScreenShowCryptographyExport)
+    {
+        [cryptograhpySection addRowWithTag:CRYPTOGRAPHY_EXPORT];
+    }
+
+    if (cryptograhpySection.rows.count)
+    {
+        [sections addObject:cryptograhpySection];
+    }
+
 #ifdef CROSS_SIGNING_AND_BACKUP_DEV
     
     // Cross-Signing
@@ -392,11 +410,17 @@ TableViewSectionsDelegate>
     Section *advancedSection = [Section sectionWithTag:SECTION_ADVANCED];
     advancedSection.headerTitle = NSLocalizedStringFromTable(@"security_settings_advanced", @"Vector", nil);
     
-    [advancedSection addRowWithTag:ADVANCED_BLACKLIST_UNVERIFIED_DEVICES];
-    [advancedSection addRowWithTag:ADVANCED_BLACKLIST_UNVERIFIED_DEVICES_DESCRIPTION];
+    if (RiotSettings.shared.settingsSecurityScreenShowAdvancedUnverifiedDevices)
+    {
+        [advancedSection addRowWithTag:ADVANCED_BLACKLIST_UNVERIFIED_DEVICES];
+        [advancedSection addRowWithTag:ADVANCED_BLACKLIST_UNVERIFIED_DEVICES_DESCRIPTION];
+    }
     
-    [sections addObject:advancedSection];
-        
+    if (advancedSection.rows.count)
+    {
+        [sections addObject:advancedSection];
+    }
+
     // Update sections
     
     self.tableViewSections.sections = sections;
@@ -853,28 +877,36 @@ TableViewSectionsDelegate>
 - (void)refreshSecureBackupSectionData
 {
     MXRecoveryService *recoveryService =  self.mainSession.crypto.recoveryService;
+    NSMutableArray *secureBackupSectionState = [NSMutableArray new];
     if (recoveryService.hasRecovery)
     {
-        secureBackupSectionState = @[
-                                     @(SECURE_BACKUP_RESTORE),
-                                     @(SECURE_BACKUP_DELETE),
-                                     @(SECURE_BACKUP_DESCRIPTION),
-                                     //@(SECURE_BACKUP_MANAGE_MANUALLY),
-                                     ];
+        if (RiotSettings.shared.settingsSecurityScreenShowRestoreBackup)
+        {
+            [secureBackupSectionState addObject:@(SECURE_BACKUP_RESTORE)];
+        }
+        if (RiotSettings.shared.settingsSecurityScreenShowDeleteBackup)
+        {
+            [secureBackupSectionState addObject:@(SECURE_BACKUP_DELETE)];
+        }
     }
     else
     {
-        secureBackupSectionState = @[
-                                     @(SECURE_BACKUP_SETUP),
-                                     @(SECURE_BACKUP_DESCRIPTION),
-                                     //@(SECURE_BACKUP_MANAGE_MANUALLY),
-                                     ];
+        if (RiotSettings.shared.settingsSecurityScreenShowSetupBackup)
+        {
+            [secureBackupSectionState addObject:@(SECURE_BACKUP_SETUP)];
+        }
     }
     
+    if (secureBackupSectionState.count)
+    {
+        [secureBackupSectionState addObject:@(SECURE_BACKUP_DESCRIPTION)];
+    }
+
 #ifdef CROSS_SIGNING_AND_BACKUP_DEV
-    secureBackupSectionState = [@[@(SECURE_BACKUP_INFO)] arrayByAddingObjectsFromArray:secureBackupSectionState];
+    [secureBackupSectionState addObject:@(SECURE_BACKUP_INFO)];
 #endif
     
+    self->secureBackupSectionState = secureBackupSectionState;
 }
 
 - (NSUInteger)secureBackupSectionEnumForRow:(NSUInteger)row

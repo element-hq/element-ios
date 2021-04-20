@@ -322,6 +322,8 @@ Tap the + to start adding people.";
 "room_message_placeholder" = "Send a message (unencrypted)…";
 "room_message_reply_to_placeholder" = "Send a reply (unencrypted)…";
 "room_message_unable_open_link_error_message" = "Unable to open the link.";
+"room_message_editing" = "Editing";
+"room_message_replying_to" = "Replying to %@";
 "room_do_not_have_permission_to_post" = "You do not have permission to post to this room";
 "encrypted_room_message_placeholder" = "Send an encrypted message…";
 "encrypted_room_message_reply_to_placeholder" = "Send an encrypted reply…";
@@ -389,6 +391,7 @@ Tap the + to start adding people.";
 "room_accessibility_integrations" = "Integrations";
 "room_accessibility_upload" = "Upload";
 "room_accessibility_call" = "Call";
+"room_accessibility_video_call" = "Video Call";
 "room_accessibility_hangup" = "Hang up";
 "room_place_voice_call" = "Voice call";
 "room_open_dialpad" = "Dial pad";
@@ -402,6 +405,8 @@ Tap the + to start adding people.";
 
 "external_link_confirmation_title" = "Double-check this link";
 "external_link_confirmation_message" = "The link %@ is taking you to another site: %@\n\nAre you sure you want to continue?";
+
+"room_multiple_typing_notification" = "%@ and others";
 
 // Unknown devices
 "unknown_devices_alert_title" = "Room contains unknown sessions";
@@ -660,7 +665,7 @@ Tap the + to start adding people.";
 "identity_server_settings_add" = "Add";
 "identity_server_settings_change" = "Change";
 
-"identity_server_settings_disconnect_info" = "Disconnecting from your identity server will mean you won’t be discoverable by other users and  be able to invite others by email or phone.";
+"identity_server_settings_disconnect_info" = "Disconnecting from your identity server will mean you won’t be discoverable by other users and be able to invite others by email or phone.";
 "identity_server_settings_disconnect" = "Disconnect";
 
 "identity_server_settings_alert_no_terms_title" = "Identity server has no terms of services";
@@ -684,6 +689,8 @@ Tap the + to start adding people.";
 "room_details_title_for_dm" = "Details";
 "room_details_people" = "Members";
 "room_details_files" = "Uploads";
+"room_details_search" = "Search room";
+"room_details_integrations" = "Integrations";
 "room_details_settings" = "Settings";
 "room_details_photo" = "Room Photo";
 "room_details_photo_for_dm" = "Photo";

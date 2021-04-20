@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -34,14 +34,6 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
-                        <rightBarButtonItems>
-                            <barButtonItem image="search_icon" id="wyR-qv-IxC" userLabel="Menu Bar Button Item">
-                                <inset key="imageInsets" minX="-5" minY="0.0" maxX="5" maxY="0.0"/>
-                            </barButtonItem>
-                            <barButtonItem image="integrations_icon" id="cal-D0-6Fw">
-                                <inset key="imageInsets" minX="10" minY="0.0" maxX="-10" maxY="0.0"/>
-                            </barButtonItem>
-                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="roomTitleViewContainer" destination="aas-th-FW1" id="SFz-1s-ywg"/>
@@ -96,7 +88,7 @@
         <!--Room Search View Controller-->
         <scene sceneID="rUg-1s-vHX">
             <objects>
-                <viewController id="KDg-aD-xlK" customClass="RoomSearchViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RoomSearch" id="KDg-aD-xlK" customClass="RoomSearchViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="F5n-wr-hGG"/>
                         <viewControllerLayoutGuide type="bottom" id="BxE-Q4-YjP"/>
@@ -320,7 +312,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="egL-pK-Xhr">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
                         <connections>
                             <outlet property="dataSource" destination="taU-5Q-sdv" id="Ipf-IM-E39"/>
                             <outlet property="delegate" destination="taU-5Q-sdv" id="kIU-uT-h9Y"/>
@@ -589,11 +581,10 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="mhb-l9-pM3"/>
-        <segue reference="ziz-Xl-QVg"/>
+        <segue reference="Tfl-tq-LQp"/>
+        <segue reference="f5u-Y1-7nt"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="integrations_icon" width="24" height="24"/>
         <image name="launch_screen_logo" width="240" height="240"/>
         <image name="search_icon" width="24" height="24"/>
         <image name="settings_icon" width="24" height="24"/>
@@ -602,5 +593,8 @@
         <image name="tab_home" width="20" height="23.5"/>
         <image name="tab_people" width="24" height="24"/>
         <image name="tab_rooms" width="24" height="24"/>
+        <systemColor name="groupTableViewBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

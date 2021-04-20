@@ -109,6 +109,8 @@ final class BuildSettings: NSObject {
     
     
     // MARK: - Legal URLs
+    
+    // Note: Set empty strings to hide the related entry in application settings
     static let applicationCopyrightUrlString = "https://element.io/copyright"
     static let applicationPrivacyPolicyUrlString = "https://element.io/privacy"
     static let applicationTermsConditionsUrlString = "https://element.io/terms-of-service"
@@ -148,7 +150,8 @@ final class BuildSettings: NSObject {
     static let publicRoomsAllowServerChange: Bool = true
     // List of homeservers for the public rooms directory
     static let publicRoomsDirectoryServers = [
-        "matrix.org"
+        "matrix.org",
+        "gitter.im"
     ]
     
     
@@ -193,6 +196,8 @@ final class BuildSettings: NSObject {
     
     static let allowLocalContactsAccess: Bool = true
     
+    static let allowInviteExernalUsers: Bool = true
+    
     // MARK: - Feature Specifics
     
     /// Not allowed pin codes. User won't be able to select one of the pin in the list.
@@ -210,6 +215,13 @@ final class BuildSettings: NSObject {
     /// Indicates should the app log out the user when number of biometrics failures reaches `maxAllowedNumberOfBiometricsFailures`. Defaults to `false`
     static let logOutUserWhenBiometricsFailuresExceeded: Bool = false
     
+    // MARK: - Main Tabs
+    
+    static let homeScreenShowFavouritesTab: Bool = true
+    static let homeScreenShowPeopleTab: Bool = true
+    static let homeScreenShowRoomsTab: Bool = true
+    static let homeScreenShowCommunitiesTab: Bool = true
+
     // MARK: - General Settings Screen
     
     static let settingsScreenShowUserFirstName: Bool = false
@@ -225,10 +237,32 @@ final class BuildSettings: NSObject {
     static let settingsScreenAllowChangingCrashUsageDataSettings: Bool = true
     static let settingsScreenAllowBugReportingManually: Bool = true
     static let settingsScreenAllowDeactivatingAccount: Bool = true
-    
+    static let settingsScreenShowChangePassword:Bool = true
+    static let settingsScreenShowInviteFriends:Bool = true
+    static let settingsScreenShowEnableStunServerFallback: Bool = true
+    static let settingsSecurityScreenShowSessions:Bool = true
+    static let settingsSecurityScreenShowSetupBackup:Bool = true
+    static let settingsSecurityScreenShowRestoreBackup:Bool = true
+    static let settingsSecurityScreenShowDeleteBackup:Bool = true
+    static let settingsSecurityScreenShowCryptographyInfo:Bool = true
+    static let settingsSecurityScreenShowCryptographyExport:Bool = true
+    static let settingsSecurityScreenShowAdvancedUnverifiedDevices:Bool = true
+
     // MARK: - Timeline settings
     static let roomInputToolbarCompressionMode = MXKRoomInputToolbarCompressionModePrompt
     
+    // MARK: - Room Creation Screen
+    
+    static let roomCreationScreenAllowEncryptionConfiguration: Bool = true
+    static let roomCreationScreenRoomIsEncrypted: Bool = true
+    static let roomCreationScreenAllowRoomTypeConfiguration: Bool = true
+    static let roomCreationScreenRoomIsPublic: Bool = false
+    
+    // MARK: - Room Screen
+    
+    static let roomScreenAllowVoIPForDirectRoom: Bool = true
+    static let roomScreenAllowVoIPForNonDirectRoom: Bool = true
+
     // MARK: - Room Settings Screen
     
     static let roomSettingsScreenShowLowPriorityOption: Bool = true
@@ -258,4 +292,7 @@ final class BuildSettings: NSObject {
     static let authScreenShowPhoneNumber = true
     static let authScreenShowForgotPassword = true
     static let authScreenShowCustomServerOptions = true
+    
+    // Mark: - Unified Search
+    static let unifiedSearchScreenShowPublicDirectory = true
 }

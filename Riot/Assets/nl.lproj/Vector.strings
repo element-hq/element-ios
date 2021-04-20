@@ -320,7 +320,7 @@
 "settings_password_updated" = "Uw wachtwoord is bijgewerkt";
 "settings_crypto_device_name" = "Apparaatnaam: ";
 "settings_crypto_device_id" = "\nApparaats-ID: ";
-"settings_crypto_device_key" = "\nApparaatssleutel: ";
+"settings_crypto_device_key" = "\nApparaatssleutel:\n";
 "settings_crypto_export" = "Sleutels exporteren";
 "settings_crypto_blacklist_unverified_devices" = "Alleen naar geverifieerde apparaten versleutelen";
 // Room Details
@@ -566,7 +566,7 @@
 "room_message_reply_to_short_placeholder" = "Stuur een antwoord…";
 // String for App Store
 "store_short_description" = "Veilig en gedecentraliseerd chatten en bellen";
-"store_full_description" = "Communiceer op uw manier.\n\nEen chat-app, onder uw controle en heel flexibel. Element laat u communiceren zoals u dat wilt. Gemaakt voor [matrix] - de standaard voor open, gedecentraliseerde communicatie.\n\nMaak een gratis account aan op matrix.org, verkrijg uw eigen server op https://ems.element.io, of gebruik een andere Matrix-server.\n\nWaarom zou ik voor Element kiezen?\n\n• VOLLEDIGE COMMUNICATIE: maak gesprekken aan rond uw teams, uw vrienden, uw gemeenschap - hoe u maar wilt! Chat, deel bestanden, voeg widgets toe en maak stem- en video-oproepen - allemaal volledig gratis.\n\n• KRACHTIGE INTEGRATIE: gebruik Element met de hulpmiddelen waarmee u vertrouwd bent. Met Element kunt u zelfs chatten met gebruikers en groepen op andere chat-apps.\n\n• PRIVÉ EN VEILIG: houd uw gesprekken geheim. Eind-tot-eind-versleuteling van de bovenste plank zorgt ervoor dat uw privécommunicatie ook privé blijft.\n\n• OPEN, NIET GESLOTEN: vrije software, gebouwd op Matrix. Wees baas over uw eigen gegevens door uw eigen server te gebruiken, of te kiezen voor een andere server die u vertrouwt.\n\n• WAAR U OOK BENT: houd contact waar u ook bent met volledig gesynchroniseerde berichtgeschiedenis op al uw apparaten, en online op https://app.element.io.";
+"store_full_description" = "Element is een nieuw type messenger en samenwerkings app die:\n\n1. U de controle geeft om uw privacy te behouden\n2. U laat communiceren met iedereen in het Matrix-netwerk, en zelfs daarbuiten door integratie met apps zoals Slack\n3. Beschermt u tegen reclame, datamining, achterdeurtjes en ommuurde netwerken\n4. Beveiligt u door eind-tot-eind versleuteling, met kruislings ondertekenen om anderen te verifiëren\n\nElement is compleet anders dan andere messengers en samenwerkings-apps, omdat het gedecentraliseerd en open source is.\n\nMet Element kunt u zelf hosten - of een host kiezen - zodat u privacy, eigendom en controle heeft over uw gegevens en gesprekken. Het geeft u toegang tot een open netwerk; u zit dus niet vast aan het praten met alleen andere Element-gebruikers. En het is zeer veilig.\n\nElement is hiertoe in staat omdat het werkt op basis van Matrix - de standaard voor open, gedecentraliseerde communicatie. \n\nElement geeft u de controle door u te laten kiezen wie uw gesprekken host. Vanuit de Element app kunt u kiezen om op verschillende manieren te hosten:\n\n1. Neem een gratis account op de publieke server matrix.org\n2. Host het zelf, uw account door draait op uw eigen server\n3. Laat ons het hosten, meld u aan voor een account op een aangepaste server bij het Element Matrix Services hosting platform\n\nWaarom kiest u voor Element?\n\nEIGENAAR VAN UW GEGEVENS: U bepaalt waar uw gegevens en berichten worden bewaard. U bent de eigenaar en heeft de controle, niet een of andere MEGACORP die uw gegevens mijnt of toegang geeft aan derden.\n\nOPEN MESSAGING EN SAMENWERKING: U kunt met iedereen in het Matrix-netwerk chatten, of ze nu Element of een andere Matrix-app gebruiken, en zelfs als ze een ander messaging-systeem gebruiken zoals Slack, IRC of XMPP.\n\nSUPER-VEILIG: Echte eind-tot-eind versleuteling (alleen degenen in de conversatie kunnen berichten ontsleutelen), en kruislings ondertekenen om de apparaten van gespreksdeelnemers te verifiëren.\n\nCOMPLETE COMMUNICATIE: Berichten, spraak- en videogesprekken, bestandsdeling, schermdeling en een heleboel integraties, bots en widgets. Bouw gesprekken, gemeenschappen, blijf in contact en krijg het gedaan.\n\nOVERAL WAAR U BENT: Blijf in contact waar u ook bent met volledig gesynchroniseerde berichtgeschiedenis op al uw apparaten en op het web op https://element.io/app.";
 "auth_login_single_sign_on" = "Aanmelden met enkele aanmelding";
 "auth_accept_policies" = "Gelieve het beleid van deze thuisserver te lezen en aanvaarden:";
 "auth_autodiscover_invalid_response" = "Ongeldig thuisserverontdekkingsantwoord";
@@ -866,3 +866,593 @@
 "auth_email_is_required" = "Er is geen identiteitsserver geconfigureerd, dus u kunt geen e-mailadres toevoegen om uw wachtwoord in de toekomst opnieuw in te stellen.";
 "auth_phone_is_required" = "Er is geen identiteitsserver geconfigureerd, dus u kunt geen telefoonnummer toevoegen om uw wachtwoord in de toekomst opnieuw in te stellen.";
 "auth_reset_password_error_is_required" = "Geen identiteitsserver ingesteld: voeg er één toe bij server opties om uw wachtwoord te wijzigen.";
+
+// MARK: - Secrets set up
+
+// Recovery Key
+
+"secrets_setup_recovery_key_title" = "Sla uw veiligheidssleutel op";
+"secure_key_backup_setup_intro_use_security_key_info" = "Genereer een veiligheidssleutel, die op een veilige plek opgeslagen kan worden zoals een wachtwoordmanager.";
+"secure_key_backup_setup_intro_use_security_key_title" = "Gebruik een veiligheidssleutel";
+"secrets_setup_recovery_passphrase_summary_information" = "Onthoud uw veiligheidswachtwoord. Het kan gebruikt worden voor het ontgrendelen van uw versleutelde berichten en data.";
+"secrets_setup_recovery_passphrase_summary_title" = "Sla uw veiligheidswachtwoord op";
+"secrets_setup_recovery_passphrase_confirm_information" = "Voer uw veiligheidswachtwoord opnieuw in om het te bevestigen.";
+"secrets_setup_recovery_passphrase_information" = "Voer een veiligheidswachtwoord in die alleen u kent om uw gegevens te beveiligen op uw server.";
+
+// Recovery passphrase
+
+"secrets_setup_recovery_passphrase_title" = "Veiligheidswachtwoord instellen";
+"secure_key_backup_setup_intro_use_security_passphrase_info" = "Voer een veiligheidswachtwoord in die alleen u weet, en genereer een veiligheidssleutel voor uw back-up.";
+"secure_key_backup_setup_intro_use_security_passphrase_title" = "Gebruik een veiligheidswachtwoord";
+"secrets_setup_recovery_key_storage_alert_message" = "✓ Print het en bewaar het op een veilige plek\n✓ Sla het op een USB-sleutel of back-upschijf op\n✓ Kopieer het naar uw persoonlijke cloud opslag";
+"room_intro_cell_information_multiple_dm_sentence2" = "Alleen u bent in dit gesprek, tenzij u iemand uitnodigd voor dit gesprek.";
+"room_intro_cell_information_dm_sentence2" = "Alleen u twee zijn in dit gesprek, niemand anders kan deelnemen.";
+"room_intro_cell_information_dm_sentence1_part3" = ". ";
+"room_intro_cell_information_dm_sentence1_part1" = "Dit is het begin van uw directe gesprek met ";
+"room_intro_cell_information_room_without_topic_sentence2_part2" = " om personen te laten weten waar dit gesprek over gaat.";
+"room_intro_cell_information_room_without_topic_sentence2_part1" = "Voeg een onderwerp toe";
+"room_intro_cell_information_room_with_topic_sentence2" = "Onderwerp: %@";
+"room_intro_cell_information_room_sentence1_part3" = ". ";
+"room_intro_cell_information_room_sentence1_part1" = "Dit is het begin van ";
+
+// Mark: - Room creation introduction cell
+
+"room_intro_cell_add_participants_action" = "Personen toevoegen";
+"room_avatar_view_accessibility_hint" = "Gespreksfoto wijzigen";
+
+// Mark: - Room avatar view
+
+"room_avatar_view_accessibility_label" = "profielfoto";
+"invite_friends_share_text" = "Hoi, start een gesprek met me op %@: %@";
+
+// MARK: - Invite friends
+
+"invite_friends_action" = "Vrienden tot %@ uitnodigen";
+"favourites_empty_view_information" = "U kunt op een paar manieren favorieten maken - de snelste is om een gesprek ingedrukt te houden. Tik op de ster en ze verschijnen hier automatisch om veilig te bewaren.";
+
+// MARK: - Favourites
+
+"favourites_empty_view_title" = "Favoriete gesprekken en personen";
+"home_empty_view_information" = "De alles-in-één veilige chat app voor teams, vrienden en organisaties. Klik op de onderstaande + knop om gesprekken te starten met personen en groepen.";
+
+// MARK: - Home
+
+"home_empty_view_title" = "Welkom bij %@,\n%@";
+"call_transfer_error_message" = "Oproepdoorschakelen mislukt";
+"call_transfer_error_title" = "Fout";
+"call_transfer_contacts_all" = "Alles";
+"call_transfer_contacts_recent" = "Recent";
+"call_transfer_dialpad" = "Kiestoetsen";
+"call_transfer_users" = "Gebruikers";
+
+// MARK: - Call Transfer
+"call_transfer_title" = "Doorschakelen";
+
+// MARK: - Dial Pad
+"dialpad_title" = "Kiestoetsen";
+"room_info_list_section_other" = "Overige";
+
+// MARK: - Room Info
+
+"room_info_list_one_member" = "1 persoon";
+"room_info_list_several_members" = "%@ personen";
+"create_room_placeholder_address" = "#testroom:matrix.org";
+"create_room_section_header_address" = "Adres";
+"create_room_show_in_directory" = "Gesprek weergeven in de catalogus";
+"create_room_section_footer_type" = "Mensen kunnen alleen met een uitnodiging deelnemen aan een privégesprek.";
+"create_room_type_public" = "Openbaar gesprek";
+"create_room_type_private" = "Privégesprek";
+"create_room_section_header_type" = "Type gesprek";
+"create_room_section_footer_encryption" = "Versleuteling kan achteraf niet worden uitgeschakeld.";
+"create_room_enable_encryption" = "Versleuteling inschakelen";
+"create_room_section_header_encryption" = "Gespreksversleuteling";
+"create_room_placeholder_topic" = "Onderwerp";
+"create_room_section_header_topic" = "Onderwerp (optioneel)";
+"create_room_placeholder_name" = "Naam";
+"create_room_section_header_name" = "Naam";
+
+// MARK: - Create Room
+
+"create_room_title" = "Nieuw Gesprek";
+"searchable_directory_search_placeholder" = "Naam of ID";
+"searchable_directory_x_network" = "%@-netwerk";
+
+// MARK: - Searchable Directory View Controller
+
+"searchable_directory_create_new_room" = "Maak een nieuw gesprek";
+"biometrics_cant_unlocked_alert_message_retry" = "Opnieuw proberen";
+"biometrics_cant_unlocked_alert_message_login" = "Log opnieuw in";
+"biometrics_cant_unlocked_alert_message_x" = "Gebruik %@ om te ontgrendelen of log opnieuw in en schakel %@ opnieuw in";
+"biometrics_cant_unlocked_alert_title" = "Kan uw app niet ontgrendelen";
+"biometrics_usage_reason" = "Authenticatie is nodig om toegang te krijgen tot uw app";
+"biometrics_desetup_disable_button_title_x" = "%@ uitschakelen";
+"biometrics_desetup_title_x" = "%@ uitschakelen";
+"biometrics_setup_subtitle" = "Bespaar uzelf tijd";
+"biometrics_setup_enable_button_title_x" = "%@ inschakelen";
+"biometrics_setup_title_x" = "%@ inschakelen";
+"biometrics_settings_enable_x" = "%@ inschakelen";
+"biometrics_mode_face_id" = "Face ID";
+
+// MARK: - Biometrics Protection
+
+"biometrics_mode_touch_id" = "Touch ID";
+"pin_protection_kick_user_alert_message" = "Te veel fouten, u bent uitgelogd";
+"pin_protection_explanatory" = "Met een PIN beschermt u uw data zoals uw berichten en contacten. Zo heeft alleen u toegang na het invoeren van uw PIN bij het opstarten van de app.";
+"pin_protection_not_allowed_pin" = "Om beveiligingsredenen is deze PIN niet beschikbaar. Probeer een andere PIN";
+"pin_protection_settings_change_pin" = "PIN wijzigen";
+"pin_protection_settings_enable_pin" = "PIN inschakelen";
+"pin_protection_settings_enabled_forced" = "PIN ingeschakeld";
+"pin_protection_settings_section_footer" = "Om uw PIN opnieuw in te stellen moet u straks opnieuw inloggen en een nieuwe PIN aanmaken.";
+"pin_protection_settings_section_header_x" = "PIN en %@";
+"pin_protection_mismatch_too_many_times_error_message" = "Als u uw PIN bent vergeten, klik op de PIN vergeten-knop.";
+"pin_protection_mismatch_error_message" = "Probeer het opnieuw";
+"pin_protection_mismatch_error_title" = "PIN's zijn niet hetzelfde";
+"pin_protection_reset_alert_action_reset" = "Opnieuw instellen";
+"pin_protection_reset_alert_message" = "Om uw PIN opnieuw in te stellen moet u strak opnieuw inloggen en een nieuwe PIN aanmaken";
+"pin_protection_reset_alert_title" = "PIN opnieuw instellen";
+"pin_protection_forgot_pin" = "PIN vergeten";
+"pin_protection_enter_pin" = "Voor uw PIN in";
+"pin_protection_confirm_pin_to_change" = "Bevestig uw PIN om uw PIN te wijzigen";
+"pin_protection_confirm_pin_to_disable" = "Bevestig uw PIN om uw PIN uit te schakelen";
+"pin_protection_confirm_pin" = "Bevestig uw PIN";
+"pin_protection_choose_pin" = "Maak een PIN voor uw veiligheid";
+"pin_protection_choose_pin_welcome_after_register" = "Welkom.";
+
+// MARK: - PIN Protection
+
+"pin_protection_choose_pin_welcome_after_login" = "Welkom terug.";
+"major_update_done_action" = "Ik snap het";
+"major_update_learn_more_action" = "Leer meer";
+"major_update_information" = "We zijn enthousiast om onze nieuwe naam aan te kondigen! Uw app is up-to-date en u bent ingelogd op uw account.";
+
+// MARK: - Major update
+
+"major_update_title" = "Riot is nu Element";
+"cross_signing_setup_banner_subtitle" = "Verifieer uw andere apparaat gemakkelijker";
+
+// MARK: - Cross-signing
+
+// Banner
+
+"cross_signing_setup_banner_title" = "Versleuteling instellen";
+"secrets_reset_authentication_message" = "Geef het wachtwoord van uw account om te bevestigen";
+"secrets_reset_reset_action" = "Opnieuw instellen";
+"secrets_reset_warning_message" = "U zult opnieuw starten zonder geschiedenis, berichten, vertrouwde apparaten en vertrouwde gebruikers.";
+"secrets_reset_warning_title" = "Als u alles terugzet";
+"secrets_reset_information" = "Doe dit alleen, wanneer u geen ander apparaat heeft om dit apparaat mee te verifiëren.";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "Alles terugzetten";
+"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Wachtwoord bevestigen";
+"secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Bevestigen";
+"secrets_setup_recovery_passphrase_validate_action" = "Klaar";
+"secrets_setup_recovery_passphrase_additional_information" = "Gebruik niet het wachtwoord van uw account.";
+"secrets_setup_recovery_key_storage_alert_title" = "Bewaar hem op een veilige plaats";
+"secrets_setup_recovery_key_done_action" = "Klaar";
+"secrets_setup_recovery_key_export_action" = "Opslaan";
+"secrets_setup_recovery_key_loading" = "Laden…";
+"secrets_setup_recovery_key_information" = "Bewaar uw Herstelsleutel op een veilige plek. Het kan gebruikt worden voor het ontgrendelen van uw versleutelde berichten en data.";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "Verifieer dat u de juiste herstelsleutel heeft ingevoerd.";
+"secrets_recovery_with_key_invalid_recovery_key_title" = "Geen toegang tot geheime opslag";
+"secrets_recovery_with_key_recover_action" = "Gebruik sleutel";
+"secrets_recovery_with_key_recovery_key_placeholder" = "Voer de herstelsleutel in";
+"secrets_recovery_with_key_recovery_key_title" = "Invoeren";
+"secrets_recovery_with_key_information_verify_device" = "Gebruik uw herstelsleutel om dit apparaat te verifiëren.";
+"secrets_recovery_with_key_information_default" = "Ontvang toegang tot uw versleutelde berichtengeschiedenis en uw kruislings ondertekenen ID voor het verifiëren van andere sessie door het invoeren van uw Herstelsleutel.";
+
+// Recover with key
+
+"secrets_recovery_with_key_title" = "Herstelsleutel";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Verifieer dat u het juiste Herstelwachtwoord heeft ingevoerd.";
+"secrets_recovery_with_passphrase_invalid_passphrase_title" = "Geen toegang tot geheime opslag";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "uw Herstelsleutel gebruiken";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Herstelwachtwoord vergeten? Dan kunt u ";
+"secrets_recovery_with_passphrase_recover_action" = "Gebruik Wachtwoord";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Voer uw Herstelwachtwoord in";
+"secrets_recovery_with_passphrase_passphrase_title" = "Invoeren";
+"secrets_recovery_with_passphrase_information_verify_device" = "Gebruik uw Herstelwachtwoord om dit apparaat te verifiëren.";
+"secrets_recovery_with_passphrase_information_default" = "Ontvang toegang tot uw versleutelde berichtengeschiedenis en uw kruislings ondertekenen ID voor het verifiëren van andere sessies door het invoeren van uw Herstelwachtwoord.";
+
+// Recover with passphrase
+
+"secrets_recovery_with_passphrase_title" = "Herstelwachtwoord";
+"secrets_recovery_reset_action_part_2" = "Alles terugzetten";
+
+// MARK: - Secrets recovery
+
+"secrets_recovery_reset_action_part_1" = "Alle herstelopties vergeten of verloren? ";
+"user_verification_session_details_verify_action_other_user" = "Handmatig verifiëren";
+"user_verification_session_details_verify_action_current_user_manually" = "Handmatig middels een tekst";
+"user_verification_session_details_verify_action_current_user" = "Interactief Verifiëren";
+"user_verification_session_details_additional_information_untrusted_current_user" = "Als u zich niet heeft aangemeld bij deze sessie, is uw account wellicht geschonden.";
+"user_verification_session_details_additional_information_untrusted_other_user" = "Totdat deze persoon de sessie vertrouwd zijn berichten gelabeld met een waarschuwing. Een alternatief is handmatig verifiëren.";
+"user_verification_session_details_information_untrusted_other_user" = " heeft zich in een nieuwe sessie aangemeld:";
+"user_verification_session_details_information_untrusted_current_user" = "Verifieer deze sessie om het als vertrouwd te markeren en het toegang te geven tot versleutelde berichten:";
+"user_verification_session_details_information_trusted_other_user_part2" = " verifieer het:";
+"user_verification_session_details_information_trusted_other_user_part1" = "Deze sessie is vertrouwd voor veilige communicatie omdat ";
+"user_verification_session_details_information_trusted_current_user" = "Deze sessie is vertrouwd voor veilige communicatie omdat u het heeft geverifieerd:";
+"user_verification_session_details_untrusted_title" = "Niet vertrouwd";
+
+// Session details
+
+"user_verification_session_details_trusted_title" = "Vertrouwd";
+"user_verification_sessions_list_session_untrusted" = "Niet vertrouwd";
+"user_verification_sessions_list_session_trusted" = "Vertrouwd";
+"user_verification_sessions_list_table_title" = "Sessies";
+"user_verification_sessions_list_information" = "Berichten met deze gebruiker zijn eind-tot-eind versleuteld en kunnen niet door derde partijen gelezen worden.";
+"user_verification_sessions_list_user_trust_level_unknown_title" = "Onbekend";
+"user_verification_sessions_list_user_trust_level_warning_title" = "Waarschuwing";
+
+// Sessions list
+
+"user_verification_sessions_list_user_trust_level_trusted_title" = "Vertrouwd";
+"user_verification_start_additional_information" = "Doe dit voor de zekerheid onder vier ogen, of gebruik een andere manier om te communiceren.";
+"user_verification_start_waiting_partner" = "Wachten op %@…";
+"user_verification_start_information_part2" = " door een eenmalige code op beide apparaten te controleren.";
+"user_verification_start_information_part1" = "Voor extra veiligheid, verifieer ";
+
+// MARK: - User verification
+
+// Start
+
+"user_verification_start_verify_action" = "Verificatie starten";
+"key_verification_scan_confirmation_scanned_device_information" = "Toont het andere apparaat hetzelfde schild?";
+"key_verification_scan_confirmation_scanned_user_information" = "Toont %@ hetzelfde schild?";
+
+// Scanned
+"key_verification_scan_confirmation_scanned_title" = "Bijna klaar!";
+"key_verification_scan_confirmation_scanning_device_waiting_other" = "Wachten op het andere apparaat…";
+"key_verification_scan_confirmation_scanning_user_waiting_other" = "Wachten op %@…";
+
+// MARK: Scan confirmation
+
+// Scanning
+"key_verification_scan_confirmation_scanning_title" = "Bijna klaar! Wachten op bevestiging…";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "De QR-code is gevalideerd.";
+"key_verification_verify_qr_code_scan_other_code_success_title" = "Code gevalideerd!";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "Heeft de andere gebruiker de QR-code gescand?";
+"key_verification_verify_qr_code_start_emoji_action" = "Verifiëren met emoji";
+"key_verification_verify_qr_code_cannot_scan_action" = "Scannen niet mogelijk?";
+"key_verification_verify_qr_code_scan_code_action" = "Scan hun code";
+"key_verification_verify_qr_code_emoji_information" = "Verifieer door unieke emoji te vergelijken.";
+"key_verification_verify_qr_code_information_other_device" = "Scan de code hieronder om te verifiëren:";
+"key_verification_verify_qr_code_information" = "Scan de code om elkaar veilig te verifiëren.";
+
+// MARK: QR code
+
+"key_verification_verify_qr_code_title" = "Verifiëren met scan";
+
+// Incoming key verification request
+
+"key_verification_incoming_request_incoming_alert_message" = "%@ wil verifiëren";
+"key_verification_tile_conclusion_warning_title" = "Niet-vertrouwde aanmelding";
+"key_verification_tile_conclusion_done_title" = "Geverifieerd";
+"key_verification_tile_request_incoming_approval_decline" = "Weigeren";
+"key_verification_tile_request_incoming_approval_accept" = "Aanvaarden";
+"key_verification_tile_request_status_accepted" = "U heeft aanvaard";
+"key_verification_tile_request_status_cancelled" = "%@ heeft geannuleerd";
+"key_verification_tile_request_status_cancelled_by_me" = "U heeft geannuleerd";
+"key_verification_tile_request_status_expired" = "Verlopen";
+"key_verification_tile_request_status_waiting" = "Wachten…";
+"key_verification_tile_request_status_data_loading" = "Gegevens laden…";
+"key_verification_tile_request_outgoing_title" = "Verificatie verstuurd";
+
+// Tiles
+
+"key_verification_tile_request_incoming_title" = "Verificatieverzoek";
+"key_verification_bootstrap_not_setup_message" = "U moet kruislings ondertekenen eerst instellen.";
+
+// MARK: - Key Verification
+
+"key_verification_bootstrap_not_setup_title" = "Fout";
+"error_not_supported_on_mobile" = "U kunt dit niet doen vanaf de mobiele %@.";
+
+
+// Generic errors
+"error_invite_3pid_with_no_identity_server" = "Voeg een identiteitsserver toe in uw instellingen, om per e-mail uit te kunnen nodigen.";
+
+// User
+
+"key_verification_verified_user_information" = "Berichten met deze gebruikers zijn eind-tot-eind versleuteld en kunnen niet door derde partijen gelezen worden.";
+"key_verification_verified_this_session_information" = "U kunt nu veilig uw berichten op dit apparaat lezen. Andere gebruikers weten dat zij u kunnen vertrouwen.";
+"key_verification_verified_new_session_information" = "U kunt nu veilig uw berichten op uw andere apparaat lezen. Andere gebruikers weten dat zij u kunnen vertrouwen.";
+"key_verification_verified_other_session_information" = "U kunt nu veilig uw berichten in uw andere sessie lezen. Andere gebruikers weten dat zij u kunnen vertrouwen.";
+"key_verification_verified_new_session_title" = "Nieuwe sessie geverifieerd!";
+"key_verification_manually_verify_device_validate_action" = "Verifiëren";
+"key_verification_manually_verify_device_additional_information" = "Als deze niet overeenkomen, dan wordt deze sessie mogelijk door iemand anders onderschept.";
+"key_verification_manually_verify_device_key_title" = "Sessiesleutel";
+"key_verification_manually_verify_device_id_title" = "Sessie-ID";
+"key_verification_manually_verify_device_name_title" = "Sessienaam";
+"key_verification_manually_verify_device_instruction" = "Om te verifiëren dat deze sessie vertrouwd kan worden, contacteert u de eigenaar via een andere methode (bv. persoonlijk of via een telefoontje) en vraagt u hem/haar of de sleutel die hij/zij ziet in zijn/haar Gebruikersinstellingen van deze sessie overeenkomt met de sleutel hieronder:";
+
+// MARK: Manually Verify Device
+
+"key_verification_manually_verify_device_title" = "Handmatig middels een tekst";
+"key_verification_verify_sas_additional_information" = "Gebruik voor de ultieme veiligheid een ander vertrouwd communicatiemiddel of doe dit persoonlijk.";
+"key_verification_verify_sas_validate_action" = "Ze komen overeen";
+"key_verification_verify_sas_cancel_action" = "Ze komen niet overeen";
+"key_verification_verify_sas_title_number" = "Vergelijk nummers";
+
+// MARK: Verify
+
+"key_verification_verify_sas_title_emoji" = "Vergelijk de emoji's";
+"device_verification_self_verify_wait_recover_secrets_checking_availability" = "Controleren op andere verificatie mogelijkheden...";
+"device_verification_self_verify_wait_recover_secrets_additional_information" = "Wanneer u geen toegang meer heeft tot een bestaande sessie";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Uw Herstelwachtwoord of -sleutel gebruiken";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Herstelsleutel gebruiken";
+"device_verification_self_verify_wait_additional_information" = "Dit werkt met Element en andere Matrix-apps die kruislings ondertekenen ondersteunen.";
+"device_verification_self_verify_wait_information" = "Verifieer deze sessie vanaf een van uw andere sessies, om toegang te krijgen tot de versleutelde berichten.\n\nGebruik de laatste versie van Element op uw andere apparaten:";
+"device_verification_self_verify_wait_new_sign_in_title" = "Verifieer deze login";
+
+// MARK: Self verification wait
+
+"device_verification_self_verify_wait_title" = "Beveiliging afronden";
+"key_verification_self_verify_unverified_sessions_alert_validate_action" = "Nakijken";
+"key_verification_self_verify_unverified_sessions_alert_message" = "Controleer al uw sessies om zeker te zijn dat uw account & berichten veilig zijn.";
+
+// Unverified sessions
+
+"key_verification_self_verify_unverified_sessions_alert_title" = "Kijk na waar u aangemeld bent";
+"key_verification_self_verify_current_session_alert_validate_action" = "Verifiëren";
+"key_verification_self_verify_current_session_alert_message" = "Mogelijk wantrouwen anderen het.";
+
+// Current session
+
+"key_verification_self_verify_current_session_alert_title" = "Deze sessie verifiëren";
+"device_verification_self_verify_start_waiting" = "Wachten…";
+"device_verification_self_verify_start_information" = "Gebruik deze sessie om uw nieuwe sessie te verifiëren, waardoor deze laatste toegang verkrijgt tot versleutelde berichten.";
+"device_verification_self_verify_start_verify_action" = "Verificatie starten";
+"device_verification_self_verify_alert_validate_action" = "Verifiëren";
+"device_verification_self_verify_alert_message" = "Verifieer de nieuwe aanmelding op uw account: %@";
+
+// MARK: Self verification start
+
+// New login
+"device_verification_self_verify_alert_title" = "Nieuwe aanmelding - was u dat?";
+"device_verification_security_advice_number" = "Vergelijk de cijfers en stel vast dat deze in dezelfde volgorde worden weergeven.";
+"device_verification_security_advice_emoji" = "Vergelijk de emoji's en stel vast dat deze in dezelfde volgorde worden weergeven.";
+"key_verification_user_title" = "Verifieer hen";
+"key_verification_this_session_title" = "Deze sessie verifiëren";
+"key_verification_new_session_title" = "Verifieer uw nieuwe sessie";
+
+// MARK: - Device Verification
+"key_verification_other_session_title" = "Sessie verifiëren";
+"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Gebruik uw Veilige Back-up";
+
+// Recover from private key
+"key_backup_recover_from_private_key_info" = "Back-up wordt hersteld…";
+"secure_backup_setup_banner_subtitle" = "Bescherm uzelf tegen toegangsverlies van uw versleutelde berichten en data";
+
+// Banner
+
+"secure_backup_setup_banner_title" = "Veilige Back-up";
+"secure_key_backup_setup_cancel_alert_message" = "Wanneer u nu afbreekt en de toegang tot uw sessies verliest, kunt u de versleutelde berichten en data kwijtraken.\n\nU kunt ook een back-up instellen en uw sleutels beheren in de Instellingen.";
+
+
+// Cancel
+
+"secure_key_backup_setup_cancel_alert_title" = "Weet u het zeker?";
+"secure_key_backup_setup_existing_backup_error_delete_it" = "Verwijder het";
+"secure_key_backup_setup_existing_backup_error_unlock_it" = "Ontsleutelen";
+"secure_key_backup_setup_existing_backup_error_info" = "Ontgrendel het om de Veilige Back-up te gebruiken of verwijder het om een nieuwe berichten back-up te beginnen in de Veilige Back-up.";
+"secure_key_backup_setup_existing_backup_error_title" = "Er bestaat al een back-up voor berichten";
+"secure_key_backup_setup_intro_info" = "Bescherm uzelf tegen het verliezen van uw versleutelde berichten en data door uw versleutelingssleutels te back-uppen op onze server.";
+
+// MARK: Secure backup setup
+
+// Intro
+
+"secure_key_backup_setup_intro_title" = "Veilige Back-up";
+"service_terms_modal_policy_checkbox_accessibility_hint" = "Aanvinken om te aanvaarden %@";
+"service_terms_modal_message_identity_server" = "Aanvaard de gebruikersvoorwaarden van de identiteitsserver (%@), om contacten te vinden.";
+
+// Service terms - Variant for identity server when displayed out of a context
+"service_terms_modal_title_identity_server" = "Contacten ontdekken";
+"service_terms_modal_description_for_identity_server_2" = "Wees vindbaar via telefoonnummer of e-mailadres";
+"service_terms_modal_description_for_identity_server_1" = "Vind anderen via telefoonnummer of e-mailadres";
+"service_terms_modal_decline_button" = "Weigeren";
+"room_widget_permission_room_id_permission" = "Gespreks-ID";
+"room_widget_permission_widget_id_permission" = "Widget-ID";
+"room_widget_permission_theme_permission" = "Uw thema";
+"room_widget_permission_user_id_permission" = "Uw gebruikers-ID";
+"room_widget_permission_avatar_url_permission" = "Uw profielfoto-URL";
+"room_widget_permission_display_name_permission" = "Uw weergavenaam";
+"room_widget_permission_information_title" = "Dit gebruiken kan gegevens delen met %@:\n";
+"room_widget_permission_webview_information_title" = "Dit gebruiken kan cookies toevoegen en gegevens delen met %@:\n";
+"room_widget_permission_creator_info_title" = "Deze widget is toegevoegd door:";
+
+// Room widget permissions
+"room_widget_permission_title" = "Widget laden";
+"widget_picker_manage_integrations" = "Beheer integraties…";
+"widget_integration_manager_disabled" = "U moet een integratebeheerder inschakelen in uw instellingen";
+"widget_menu_remove" = "Verwijderen voor iedereen";
+"widget_menu_revoke_permission" = "Toegang intrekken voor mij";
+"widget_menu_open_outside" = "Openen in browser";
+"widget_menu_refresh" = "Herladen";
+"bug_report_background_mode" = "Op de achtergrond doorgaan";
+"call_actions_unhold" = "Hervatten";
+"call_no_stun_server_error_use_fallback_button" = "Probeer %@ te gebruiken";
+"call_no_stun_server_error_message_2" = "U kunt ook de publieke server op %@ gebruiken, maar dit zal minder betrouwbaar zijn, en zal uw IP-adres met die server delen. U kunt dit ook beheren in de Instellingen";
+"call_no_stun_server_error_message_1" = "Vraag uw thuisserverbeheerder %@ een TURN-server te configureren teneinde oproepen betrouwbaar te doen werken.";
+"call_no_stun_server_error_title" = "Oproep mislukt door verkeerd geconfigureerde server";
+"event_formatter_jitsi_widget_removed_by_you" = "U heeft een VoIP-vergadering verwijderd";
+"event_formatter_jitsi_widget_added_by_you" = "U heeft een VoIP-vergadering toegevoegd";
+"event_formatter_widget_removed_by_you" = "U heeft deze widget verwijderd: %@";
+
+// Events formatter with you
+"event_formatter_widget_added_by_you" = "U heeft deze widget toegevoegd: %@";
+"event_formatter_call_back" = "Terugbellen";
+"event_formatter_call_you_declined" = "U heeft de oproep afgewezen";
+"event_formatter_call_you_currently_in" = "U bent momenteel in deze oproep";
+"event_formatter_call_has_ended" = "Deze oproep is beëindigd";
+"event_formatter_call_video" = "Video-oproep";
+"event_formatter_call_voice" = "Audio-oproep";
+"room_details_advanced_e2e_encryption_disabled_for_dm" = "Versleuteling is hier niet ingeschakeld.";
+"room_details_advanced_e2e_encryption_enabled_for_dm" = "Versleuteling is hier ingeschakeld";
+"room_details_advanced_room_id_for_dm" = "ID:";
+"room_details_no_local_addresses_for_dm" = "Dit heeft geen lokaaladres";
+"room_details_access_section_directory_toggle_for_dm" = "Weergeven in publieke groepsgesprekkencatalogus";
+"room_details_access_section_anyone_for_dm" = "Iedereen die de koppeling kent, inclusief gasten";
+"room_details_access_section_anyone_apart_from_guest_for_dm" = "Iedereen die de koppeling kent, behalve gasten";
+"room_details_access_section_for_dm" = "Wie mag toegang hebben?";
+"room_details_room_name_for_dm" = "Naam";
+"room_details_photo_for_dm" = "Foto";
+"room_details_title_for_dm" = "Details";
+"identity_server_settings_alert_error_invalid_identity_server" = "%@ is geen geldige identiteitsserver.";
+"identity_server_settings_alert_error_terms_not_accepted" = "U moet de voorwaarden van %@ aanvaarden om deze als identiteitsserver in te stellen.";
+"identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "Verbinding toch verbreken";
+"identity_server_settings_alert_disconnect_still_sharing_3pid" = "U deelt nog persoonlijke gegevens op de identiteitsserver %@.\n\nVoordat u de verbinding verbreekt wordt het u aangeraden uw e-mailadressen en telefoonnummers van de identiteitsserver te verwijderen.";
+"identity_server_settings_alert_disconnect_button" = "Verbinding verbreken";
+"identity_server_settings_alert_disconnect" = "Wilt u de verbinding met de identiteitsserver %@ verbreken?";
+"identity_server_settings_alert_disconnect_title" = "Verbinding met identiteitsserver verbreken";
+"identity_server_settings_alert_change" = "Verbinding met identiteitsserver %1$@ verbreken en in plaats daarvan verbinden met %2$@?";
+"identity_server_settings_alert_change_title" = "Identiteitsserver wisselen";
+"identity_server_settings_alert_no_terms" = "De door u gekozen identiteitsserver heeft geen dienstvoorwaarden. Ga alleen door, wanneer u de eigenaar van de server vertrouwd.";
+"identity_server_settings_alert_no_terms_title" = "De identiteitsserver heeft geen dienstvoorwaarden";
+"identity_server_settings_disconnect" = "Verbinding verbreken";
+"identity_server_settings_disconnect_info" = "De verbinding met uw identiteitsserver verbreken zal ertoe leiden dat u niet door andere mensen gevonden zal kunnen worden, en dat u anderen niet via e-mail of telefoon zal kunnen uitnodigen.";
+"identity_server_settings_change" = "Wijzigen";
+"identity_server_settings_add" = "Toevoegen";
+"identity_server_settings_place_holder" = "Voer een identiteitsserver in";
+"identity_server_settings_no_is_description" = "U gebruikt momenteel geen identiteitsserver. Voeg er hierboven één toe om bekenden te kunnen vinden en voor hen vindbaar te zijn.";
+"identity_server_settings_description" = "U gebruikt momenteel %@ om gevonden te kunnen worden en bestaande contacten te ontdekken.";
+
+// Identity server settings
+"identity_server_settings_title" = "Identiteitsserver";
+
+// AuthenticatedSessionViewControllerFactory
+"authenticated_session_flow_not_supported" = "Deze app ondersteunt de verificatiemethode op uw homeserver niet.";
+"manage_session_sign_out" = "Deze sessie afmelden";
+"manage_session_not_trusted" = "Niet vertrouwd";
+"manage_session_trusted" = "Door u vertrouwd";
+"manage_session_name" = "Sessienaam";
+"manage_session_info" = "SESSIE INFO";
+
+// Manage session
+"manage_session_title" = "Beheer sessie";
+"security_settings_user_password_description" = "Bevestig uw identiteit door uw accountwachtwoord in te voeren";
+"security_settings_coming_soon" = "Sorry. Deze actie is nog niet beschikbaar in Element iOS. Gebruik een andere Matrix-app om het in te stellen. Element iOS zal het dan wel gebruiken.";
+"security_settings_complete_security_alert_message" = "U moet de beveiliging van uw huidige sessie nog afronden.";
+"security_settings_complete_security_alert_title" = "Beveiliging afronden";
+"security_settings_blacklist_unverified_devices_description" = "Verifieer alle sessies van een gebruiker om deze als vertrouwd te markeren en berichten naar te zenden.";
+"security_settings_blacklist_unverified_devices" = "Verzend nooit berichten naar niet-vertrouwde sessies";
+"security_settings_advanced" = "GEAVANCEERD";
+"security_settings_export_keys_manually" = "Exporteer sleutels handmatig";
+"security_settings_cryptography" = "CRYPTOGRAFIE";
+"security_settings_crosssigning_complete_security" = "Beveiliging afronden";
+"security_settings_crosssigning_reset" = "Kruislings ondertekenen resetten";
+"security_settings_crosssigning_bootstrap" = "Kruislings ondertekenen instellen";
+"security_settings_crosssigning_info_ok" = "Kruislings ondertekenen is ingeschakeld.";
+"security_settings_crosssigning_info_trusted" = "Kruislings ondertekenen is ingeschakeld. U kunt andere personen en sessies verifiëren met kruislings ondertekenen, maar u kunt dit nog niet vanaf deze sessie doordat de versleutelingssleutel ontbreekt. Rond de beveiliging van deze sessie af.";
+"security_settings_crosssigning_info_exists" = "Uw account heeft een kruislings ondertekenen ID, maar is nog niet geverifieerd door deze sessie. Rond de beveiliging van deze sessie af.";
+"security_settings_crosssigning_info_not_bootstrapped" = "Kruislings ondertekenen is nog niet ingesteld.";
+"security_settings_crosssigning" = "KRUISLINGS ONDERTEKENEN";
+"security_settings_backup" = "BERICHTENBACK-UP";
+"security_settings_secure_backup_delete" = "Verwijderen";
+"security_settings_secure_backup_synchronise" = "Synchroniseren";
+"security_settings_secure_backup_setup" = "Instellen";
+"security_settings_secure_backup_description" = "Een waarborg voor toegang tot uw versleutelde berichten & data door de versleutelingssleutels op te slaan op uw server.";
+"security_settings_secure_backup" = "VEILIGE BACK-UP";
+"security_settings_crypto_sessions_description_2" = "Als u deze inlog niet herkent, verander uw wachtwoord en reset uw Veilige Back-up.";
+"security_settings_crypto_sessions_loading" = "Sessies laden…";
+"security_settings_crypto_sessions" = "MIJN SESSIES";
+
+// Security settings
+"security_settings_title" = "Beveiliging";
+"settings_show_NSFW_public_rooms" = "NSFW openbare gesprekken weergeven";
+"settings_identity_server_no_is_description" = "U gebruikt momenteel geen identiteitsserver. Voeg er hierboven één toe om bekenden te kunnen vinden en voor hen vindbaar te zijn.";
+"settings_identity_server_no_is" = "Geen identiteitsserver geconfigureerd";
+"settings_identity_server_description" = "Met de hierboven ingestelde identiteitsserver kan u uw contacten vinden en bent u vindbaar voor uw contacten.";
+"settings_discovery_three_pid_details_enter_sms_code_action" = "SMS-activeringscode invoeren";
+"settings_discovery_three_pid_details_cancel_email_validation_action" = "E-mailbevestiging afbreken";
+"settings_discovery_three_pid_details_revoke_action" = "Intrekken";
+"settings_discovery_three_pid_details_share_action" = "Delen";
+"settings_discovery_three_pid_details_information_phone_number" = "Beheer de voorkeuren voor dit telefoonnummer, dat andere gebruikers kunnen gebruiken om u te vinden en u uit te nodigen tot gesprekken. Telefoonnummers toevoegen of verwijderen in Accounts.";
+"settings_discovery_three_pid_details_title_phone_number" = "Beheer telefoonnummer";
+"settings_discovery_three_pid_details_information_email" = "Beheer de voorkeuren voor dit e-mailadres, dat andere gebruikers kunnen gebruiken om u te vinden en u uit te nodigen tot gesprekken. E-mailadressen toevoegen of verwijderen in Accounts.";
+"settings_discovery_three_pid_details_title_email" = "E-mail beheren";
+"settings_discovery_error_message" = "Er is een fout opgetreden. Probeer het opnieuw.";
+"settings_discovery_three_pids_management_information_part3" = ".";
+"settings_discovery_three_pids_management_information_part2" = "Gebruikersinstellingen";
+"settings_discovery_three_pids_management_information_part1" = "Beheer e-mailadressen en telefoonnummers die andere gebruikers kunnen gebruiken om u te vinden en u uit te nodigen voor een gesprekken. E-mailadressen of telefoonnummers toevoegen of verwijderen van deze lijst kan in ";
+"settings_discovery_terms_not_signed" = "Aanvaard de gebruikersvoorwaarden van de identiteitsserver (%@) om vindbaar te zijn op e-mailadres of telefoonnummer.";
+"settings_discovery_no_identity_server" = "U gebruikt momenteel geen identiteitsserver. Om door de u bekende contacten vindbaar te zijn, voeg er een toe.";
+"settings_devices_description" = "De publieke naam van een sessie is zichtbaar voor de personen waarmee u communiceert";
+"settings_add_3pid_invalid_password_message" = "Ongeldig wachtwoord";
+"settings_add_3pid_password_message" = "Geef uw wachtwoord om verder te gaan";
+"settings_add_3pid_password_title_msidsn" = "Telefoonnummer toevoegen";
+"settings_add_3pid_password_title_email" = "E-mailadres toevoegen";
+"settings_integrations_allow_description" = "Gebruik een integratiebeheerder om bots, bruggen, widgets en stickerpakketten te beheren.\n\nIntegratiebeheerders ontvangen configuratiedata en kunnen widgets aanpassen, gespreksuitnodigingen versturen en bestuursniveaus instellen namens u.";
+"settings_integrations_allow_button" = "Beheer integraties";
+"settings_calls_stun_server_fallback_description" = "Sta de terugvalserver voor oproepbijstand %@ toe wanneer uw homeserver er geen aanbiedt (uw IP-adres wordt gedeeld gedurende een oproep).";
+"settings_calls_stun_server_fallback_button" = "Terugvalserver voor oproepen toestaan";
+"settings_security" = "BEVEILIGING";
+"settings_three_pids_management_information_part3" = ".";
+"settings_three_pids_management_information_part2" = "Ontdekken";
+"settings_three_pids_management_information_part1" = "Beheer hier de e-mailadressen en telefoonnummers die u kunt gebruiken om zich aan te melden, of om uw account te herstellen. Controleer wie u vinden kan in ";
+"settings_integrations" = "INTEGRATIES";
+"settings_identity_server_settings" = "IDENTITEITSSERVER";
+"settings_discovery_settings" = "ONTDEKKEN";
+"external_link_confirmation_message" = "Deze koppeling %@ brengt u naar een andere website: %@\n\nWeet u zeker dat u door wilt gaan?";
+"external_link_confirmation_title" = "Controleer deze koppeling";
+"room_open_dialpad" = "Kiestoetsen";
+"room_place_voice_call" = "Audio-oproep";
+"room_event_action_delete_confirmation_message" = "Weet u zeker dat u alle niet verzonden berichten wilt verwijderen?";
+"room_event_action_delete_confirmation_title" = "Niet verzonden berichten verwijderen";
+"room_unsent_messages_cancel_message" = "Weet u zeker dat u alle niet verzonden berichten in dit gesprek wilt verwijderen?";
+"room_unsent_messages_cancel_title" = "Niet verzonden berichten verwijderen";
+"room_member_power_level_short_custom" = "Aangepast";
+"room_member_power_level_short_moderator" = "Mod";
+"room_member_power_level_short_admin" = "Beheerder";
+"room_member_power_level_custom_in" = "Aangepast (%@) in %@";
+"room_member_power_level_moderator_in" = "Moderator in %@";
+"room_member_power_level_admin_in" = "Beheerder in %@";
+"room_participants_security_information_room_encrypted_for_dm" = "Berichten zijn hier eind-tot-eind versleuteld.\n\nUw berichten zijn met een digitale sleutel beveiligd, alleen u en de ontvanger hebben de unieke sleutels om deze berichten te ontgrendelen.";
+"room_participants_security_information_room_encrypted" = "Berichten in dit gesprek zijn eind-tot-eind versleuteld.\n\nUw berichten zijn met een digitale sleutel beveiligd, alleen u en de ontvanger hebben de unieke sleutels om deze berichten te ontgrendelen.";
+"room_participants_security_information_room_not_encrypted_for_dm" = "Berichten zijn hier niet eind-tot-eind versleuteld.";
+"room_participants_security_information_room_not_encrypted" = "Berichten in dit gesprek zijn niet eind-tot-eind versleuteld.";
+"room_participants_security_loading" = "Laden…";
+"room_participants_action_security_status_loading" = "Laden…";
+"room_participants_action_security_status_warning" = "Waarschuwing";
+"room_participants_action_security_status_complete_security" = "Complete beveiliging";
+"room_participants_action_security_status_verify" = "Verifiëren";
+"room_participants_action_security_status_verified" = "Geverifieerd";
+"room_participants_action_section_security" = "Beveiliging";
+"room_participants_filter_room_members_for_dm" = "Deelnemers filteren";
+"room_participants_leave_prompt_msg_for_dm" = "Weet u zeker dat u het gesprek wilt verlaten?";
+"room_participants_leave_prompt_title_for_dm" = "Verlaten";
+"contacts_address_book_no_identity_server" = "Geen identiteitsserver geconfigureerd";
+"rooms_empty_view_information" = "Groepsgesprekken zijn geschikt voor alle gesprekken, privé of publiek. Klik op de + om de bestaande groepen te verkennen of maak een nieuwe.";
+"rooms_empty_view_title" = "Gesprekken";
+"people_empty_view_information" = "Veilig communiceren met iedereen. Druk op + om personen toe te voegen.";
+"people_empty_view_title" = "Personen";
+"social_login_button_title_sign_up" = "Registreren met %@";
+"social_login_button_title_sign_in" = "Aanmelden met %@";
+"social_login_button_title_continue" = "Doorgaan met %@";
+"social_login_list_title_sign_up" = "Of";
+"social_login_list_title_sign_in" = "Of";
+
+// Social login
+
+"social_login_list_title_continue" = "Doorgaan met";
+"callbar_return" = "Terug";
+"callbar_only_multiple_paused" = "%@ oproepen in de wacht";
+"callbar_only_single_paused" = "Oproep in de wacht";
+"callbar_active_and_multiple_paused" = "1 oproep actief (%@) · %@ oproepen in de wacht";
+"callbar_active_and_single_paused" = "1 oproep actief (%@) · 1 oproep in de wacht";
+
+// Call Bar
+"callbar_only_single_active" = "Oproep actief (%@)";
+"less" = "Minder";
+"more" = "Meer";
+"switch" = "Wissel";
+"joined" = "Toegetreden";
+"store_promotional_text" = "Privacy-beschermende chat- en samenwerkingsapp, op een open netwerk. Gedecentraliseerd, zodat u de controle hebt. Geen datamining, geen achterdeurtjes en geen toegang voor derden.";
+"room_details_integrations" = "Integraties";
+"room_details_search" = "Zoek in gesprek";
+"room_multiple_typing_notification" = "%@ en anderen";
+"room_accessibility_video_call" = "Video-oproep";
+"room_message_replying_to" = "Antwoord aan %@";
+"room_message_editing" = "Bewerken";

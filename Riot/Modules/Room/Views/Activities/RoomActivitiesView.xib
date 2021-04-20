@@ -128,7 +128,7 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <accessibility key="accessibilityConfiguration" identifier="RoomExtrasInfosView"/>
             <constraints>
                 <constraint firstItem="qhJ-5H-64e" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="4o2-V9-a4L"/>

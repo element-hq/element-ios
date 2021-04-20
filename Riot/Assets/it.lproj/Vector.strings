@@ -886,7 +886,7 @@
 "settings_add_3pid_password_title_email" = "Aggiungi indirizzo email";
 "settings_add_3pid_password_title_msidsn" = "Aggiungi numero di telefono";
 "settings_add_3pid_password_message" = "Per continuare, inserisci la tua password";
-"settings_add_3pid_invalid_password_message" = "Password non valida";
+"settings_add_3pid_invalid_password_message" = "Credenziali non valide";
 "error_not_supported_on_mobile" = "Non puoi farlo da %@ mobile.";
 "widget_menu_refresh" = "Ricarica";
 "widget_menu_open_outside" = "Apri nel browser";
@@ -1263,9 +1263,67 @@
 "social_login_button_title_sign_up" = "Registrati con %@";
 "social_login_button_title_sign_in" = "Accedi con %@";
 "social_login_button_title_continue" = "Continua con %@";
-"social_login_list_title_sign_up" = "O registrati con";
-"social_login_list_title_sign_in" = "O accedi con";
+"social_login_list_title_sign_up" = "O";
+"social_login_list_title_sign_in" = "O";
 
 // Social login
 
 "social_login_list_title_continue" = "Continua con";
+"room_intro_cell_information_multiple_dm_sentence2" = "Ci sei solo tu in questa conversazione, a meno che uno di voi non inviti qualcuno.";
+"room_intro_cell_information_dm_sentence2" = "Solo voi due siete in questa conversazione, nessun altro può unirsi.";
+"room_intro_cell_information_dm_sentence1_part3" = ". ";
+"room_intro_cell_information_dm_sentence1_part1" = "Questo è l'inizio dei tuoi messaggi diretti con ";
+"room_intro_cell_information_room_without_topic_sentence2_part2" = " per far sapere alle persone di cosa parla questa stanza.";
+"room_intro_cell_information_room_without_topic_sentence2_part1" = "Aggiungi un argomento";
+"room_intro_cell_information_room_with_topic_sentence2" = "Argomento: %@";
+"room_intro_cell_information_room_sentence1_part3" = ". ";
+"room_intro_cell_information_room_sentence1_part1" = "Questo è l'inizio di ";
+
+// Mark: - Room creation introduction cell
+
+"room_intro_cell_add_participants_action" = "Aggiungi persone";
+"room_avatar_view_accessibility_hint" = "Cambia avatar stanza";
+
+// Mark: - Room avatar view
+
+"room_avatar_view_accessibility_label" = "avatar";
+"call_transfer_error_message" = "Trasferimento chiamata fallito";
+"call_transfer_error_title" = "Errore";
+"call_transfer_contacts_all" = "Tutti";
+"call_transfer_contacts_recent" = "Recenti";
+"call_transfer_dialpad" = "Tastierino numerico";
+"call_transfer_users" = "Utenti";
+
+// MARK: - Call Transfer
+"call_transfer_title" = "Trasferisci";
+
+// MARK: - Dial Pad
+"dialpad_title" = "Tastierino numerico";
+"call_actions_unhold" = "Riprendi";
+"event_formatter_call_back" = "Richiama";
+"event_formatter_call_you_declined" = "Hai rifiutato questa chiamata";
+"event_formatter_call_you_currently_in" = "Sei attualmente in questa chiamata";
+"event_formatter_call_has_ended" = "Questa chiamata è terminata";
+"event_formatter_call_video" = "Videochiamata";
+"event_formatter_call_voice" = "Telefonata";
+"settings_show_NSFW_public_rooms" = "Mostra stanze pubbliche per adulti";
+"room_open_dialpad" = "Tastierino numerico";
+"room_place_voice_call" = "Telefonata";
+"room_event_action_delete_confirmation_message" = "Vuoi veramente eliminare questo messaggio non inviato?";
+"room_event_action_delete_confirmation_title" = "Elimina messaggio non inviato";
+"room_unsent_messages_cancel_title" = "Elimina messaggi non inviati";
+"room_unsent_messages_cancel_message" = "Vuoi veramente eliminare tutti i messaggi non inviati in questa stanza?";
+"callbar_return" = "Torna";
+"callbar_only_multiple_paused" = "%@ chiamate in pausa";
+"callbar_only_single_paused" = "Chiamata in pausa";
+"callbar_active_and_multiple_paused" = "1 chiamata attiva (%@) · %@ chiamate in pausa";
+"callbar_active_and_single_paused" = "1 chiamata attiva (%@) · 1 chiamata in pausa";
+
+// Call Bar
+"callbar_only_single_active" = "Chiamata attiva (%@)";
+"room_details_integrations" = "Integrazioni";
+"room_details_search" = "Cerca stanza";
+"room_multiple_typing_notification" = "%@ e altri";
+"room_accessibility_video_call" = "Videochiamata";
+"room_message_editing" = "Modifica";
+"room_message_replying_to" = "Risposta a %@";
