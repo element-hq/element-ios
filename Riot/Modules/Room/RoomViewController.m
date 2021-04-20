@@ -1400,7 +1400,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (BOOL)supportCallOption
 {
-    return BuildSettings.allowVoIPUsage && self.roomDataSource.mxSession.callManager && self.roomDataSource.room.summary.membersCount.joined >= 2;
+    BOOL callOptionAllowed = (self.roomDataSource.room.isDirect && RiotSettings.shared.roomScreenAllowVoIPForDirectRoom) || (!self.roomDataSource.room.isDirect && RiotSettings.shared.roomScreenAllowVoIPForNonDirectRoom);
+    return callOptionAllowed && BuildSettings.allowVoIPUsage && self.roomDataSource.mxSession.callManager && self.roomDataSource.room.summary.membersCount.joined >= 2;
 }
 
 - (BOOL)isCallActive
@@ -4134,7 +4135,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
     if (needsUpdate)
     {
-        BOOL needsReload = roomDataSource.currentTypingUsers == nil;
+//        BOOL needsReload = roomDataSource.currentTypingUsers == nil;
+        // Quick fix for https://github.com/vector-im/element-ios/issues/4230
+        BOOL needsReload = YES;
         roomDataSource.currentTypingUsers = typingUsers;
         if (needsReload)
         {

@@ -5,7 +5,64 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
+ * Add `gitter.im` to list of default room directories
+ * MasterTabBarController: Show/Hide Home Screen tabs (#4234).
+ * RoomVC: Enable / Disable VoIP feature in Rooms (#4236).
+ * UnifiedSearchRecentsDataSource: Show/Hide public directory (#4242).
+ * DirectoryRecentTableViewCell: Do not use "directory_search_results_more_than" string when there is no rooms and the search is on.
  * Make room settings screen configurable dynamically (#4219).
+
+🐛 Bugfix
+ * PublicRoomsDirectoryDataSource: Fix search when NSFW filter is off.
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Changes in 1.3.4 (2021-04-19)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * RoomVC: Crash in refreshTypingNotification (#4230).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+
+
+Changes in 1.3.3 (2021-04-16)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+>>>>>>> develop
 
 🐛 Bugfix
  * 
@@ -21,6 +78,37 @@ Changes to be released in next version
 
 Others
  * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.14.9](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.9)).
+
+Changes in 1.3.2 (2021-04-16)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * Self-verification: Fix compatibility with Element-Web (#4217).
+ * Notifications: Fix sender display name that can miss (#4222). 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.14.9](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.9)).
 
 Changes in 1.3.1 (2021-04-14)
 =================================================

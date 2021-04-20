@@ -22,6 +22,7 @@
 #import "DirectoryRecentTableViewCell.h"
 
 #import "MXRoom+Riot.h"
+#import "Riot-Swift.h"
 
 @interface UnifiedSearchRecentsDataSource()
 {
@@ -85,7 +86,10 @@
         }
         
         // The public rooms directory cell is then visible whatever the search activity.
-        self.directorySection = sectionsOffset++;
+        if (RiotSettings.shared.unifiedSearchScreenShowPublicDirectory)
+        {
+            self.directorySection = sectionsOffset++;
+        }
         
         if (_hideRecents)
         {
