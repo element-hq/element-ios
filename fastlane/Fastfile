@@ -85,7 +85,7 @@ platform :ios do
     cocoapods
 
     opts = {
-      :clean => true,
+      :clean => false,
       :scheme => "Riot",
       :workspace => "Riot.xcworkspace",
       :configuration => "Debug",
@@ -105,7 +105,7 @@ platform :ios do
     end
   end
 
-  
+
   #### Private ####
 
   desc "Download App Store or Ad-Hoc provisioning profiles"

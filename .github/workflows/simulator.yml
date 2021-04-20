@@ -13,6 +13,7 @@ jobs:
   build:
     name: Build
     runs-on: macos-latest
+
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
@@ -25,3 +26,12 @@ jobs:
 
       - name: Build iOS simulator
         run: bundle exec fastlane build
+
+  test:
+    name: Tests
+    runs-on: macos-latest
+    needs: build
+
+    steps:    
+      - name: Units tests
+        run: bundle exec fastlane test
