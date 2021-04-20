@@ -58,6 +58,7 @@ final class RiotSettings: NSObject {
         static let homeScreenShowCommunitiesTab = "homeScreenShowCommunitiesTab"
         static let roomScreenAllowVoIPForDirectRoom = "roomScreenAllowVoIPForDirectRoom"
         static let roomScreenAllowVoIPForNonDirectRoom = "roomScreenAllowVoIPForNonDirectRoom"
+        static let unifiedSearchScreenShowPublicDirectory = "unifiedSearchScreenShowPublicDirectory"
     }
     
     static let shared = RiotSettings()
@@ -472,4 +473,18 @@ final class RiotSettings: NSObject {
             defaults.set(newValue, forKey: UserDefaultsKeys.settingsSecurityScreenShowAdvancedUnverifiedDevices)
         }
     }
+    
+    // Mark: - Unified Search
+    
+    var unifiedSearchScreenShowPublicDirectory: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.unifiedSearchScreenShowPublicDirectory) != nil else {
+                return BuildSettings.unifiedSearchScreenShowPublicDirectory
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.unifiedSearchScreenShowPublicDirectory)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.unifiedSearchScreenShowPublicDirectory)
+        }
+    }
+    
 }
