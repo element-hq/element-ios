@@ -6,6 +6,7 @@ Changes to be released in next version
 
 🙌 Improvements
  * MasterTabBarController: Show/Hide Home Screen tabs (#4234).
+ * UnifiedSearchRecentsDataSource: Show/Hide public directory (#4242).
 
 🐛 Bugfix
  * 

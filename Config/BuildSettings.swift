@@ -286,4 +286,7 @@ final class BuildSettings: NSObject {
     static let authScreenShowPhoneNumber = true
     static let authScreenShowForgotPassword = true
     static let authScreenShowCustomServerOptions = true
+    
+    // Mark: - Unified Search
+    static let unifiedSearchScreenShowPublicDirectory = true
 }
