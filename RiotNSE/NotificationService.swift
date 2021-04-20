@@ -377,7 +377,8 @@ class NotificationService: UNNotificationServiceExtension {
                             if event.type == kWidgetMatrixEventTypeString || event.type == kWidgetModularEventTypeString {
                                 if let content = event.content, let type = content["type"] as? String {
                                     if type == kWidgetTypeJitsiV1 || type == kWidgetTypeJitsiV2 {
-                                        notificationBody = NSString.localizedUserNotificationString(forKey: "GROUP_CALL_STARTED_IN_ROOM", arguments: [eventSenderName as Any, roomDisplayName as Any])
+                                        notificationBody = NSString.localizedUserNotificationString(forKey: "GROUP_CALL_STARTED", arguments: nil)
+                                        notificationTitle = roomDisplayName
                                         
                                         // call notifications should stand out from normal messages, so we don't stack them
                                         threadIdentifier = nil
