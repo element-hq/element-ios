@@ -62,7 +62,6 @@ Changes in 1.3.3 (2021-04-16)
 
 🙌 Improvements
  * 
->>>>>>> develop
 
 🐛 Bugfix
  * 
