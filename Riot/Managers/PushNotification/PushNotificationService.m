@@ -323,6 +323,20 @@ Matrix session observer used to detect new opened sessions.
 
 #pragma mark - UNUserNotificationCenterDelegate
 
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler
+{
+    if (notification.request.content.userInfo[Constants.userInfoKeyPresentNotificationAlways])
+    {
+        completionHandler(UNNotificationPresentationOptionBadge
+                          | UNNotificationPresentationOptionSound
+                          | UNNotificationPresentationOptionAlert);
+    }
+    else
+    {
+        completionHandler(UNNotificationPresentationOptionNone);
+    }
+}
+
 // iOS 10+, see application:handleActionWithIdentifier:forLocalNotification:withResponseInfo:completionHandler:
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler
 {
