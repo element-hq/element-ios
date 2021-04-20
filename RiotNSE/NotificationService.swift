@@ -385,7 +385,7 @@ class NotificationService: UNNotificationServiceExtension {
                                         if RiotSettings.shared.enableRingingForGroupCalls {
                                             self.sendVoipPush(forEvent: event)
                                         } else {
-                                            additionalUserInfo = [Constants.userInfoKeyPresentNotificationAlways: true]
+                                            additionalUserInfo = [Constants.userInfoKeyPresentNotificationOnForeground: true]
                                         }
                                     }
                                 }

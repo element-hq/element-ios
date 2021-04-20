@@ -325,11 +325,21 @@ Matrix session observer used to detect new opened sessions.
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler
 {
-    if (notification.request.content.userInfo[Constants.userInfoKeyPresentNotificationAlways])
+    NSDictionary *userInfo = notification.request.content.userInfo;
+    if (userInfo[Constants.userInfoKeyPresentNotificationOnForeground])
     {
-        completionHandler(UNNotificationPresentationOptionBadge
-                          | UNNotificationPresentationOptionSound
-                          | UNNotificationPresentationOptionAlert);
+        if (!userInfo[Constants.userInfoKeyPresentNotificationInRoom]
+            && [[AppDelegate theDelegate].visibleRoomId isEqualToString:userInfo[@"room_id"]])
+        {
+            //  do not show the notification when we're in the notified room
+            completionHandler(UNNotificationPresentationOptionNone);
+        }
+        else
+        {
+            completionHandler(UNNotificationPresentationOptionBadge
+                              | UNNotificationPresentationOptionSound
+                              | UNNotificationPresentationOptionAlert);
+        }
     }
     else
     {
