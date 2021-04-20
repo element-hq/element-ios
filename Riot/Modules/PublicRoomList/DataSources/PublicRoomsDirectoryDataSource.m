@@ -261,7 +261,7 @@ static NSString *const kNSFWKeyword = @"nsfw";
             [self->rooms addObjectsFromArray:publicRooms];
             self->nextBatch = publicRoomsResponse.nextBatch;
 
-            if (!self->_searchPattern || !self.showNSFWRooms)
+            if (!self->_searchPattern)
             {
                 // When there is no search, we can use totalRoomCountEstimate returned by the server
                 self->_roomsCount = publicRoomsResponse.totalRoomCountEstimate;
