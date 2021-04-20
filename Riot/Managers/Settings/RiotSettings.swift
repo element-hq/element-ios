@@ -53,7 +53,7 @@ final class RiotSettings: NSObject {
         static let roomCreationScreenRoomIsPublic = "roomCreationScreenRoomIsPublic"
         static let allowInviteExernalUsers = "allowInviteExernalUsers"
         static let roomScreenAllowVoIPForDirectRoom = "roomScreenAllowVoIPForDirectRoom"
-        static let roomScreenAllowVoIPForConferenceRoom = "roomScreenAllowVoIPForConferenceRoom"
+        static let roomScreenAllowVoIPForNonDirectRoom = "roomScreenAllowVoIPForNonDirectRoom"
     }
     
     static let shared = RiotSettings()
@@ -256,14 +256,14 @@ final class RiotSettings: NSObject {
             defaults.set(newValue, forKey: UserDefaultsKeys.roomScreenAllowVoIPForDirectRoom)
         }
     }
-    var roomScreenAllowVoIPForConferenceRoom: Bool {
+    var roomScreenAllowVoIPForNonDirectRoom: Bool {
         get {
-            guard defaults.object(forKey: UserDefaultsKeys.roomScreenAllowVoIPForConferenceRoom) != nil else {
-                return BuildSettings.roomScreenAllowVoIPForConferenceRoom
+            guard defaults.object(forKey: UserDefaultsKeys.roomScreenAllowVoIPForNonDirectRoom) != nil else {
+                return BuildSettings.roomScreenAllowVoIPForNonDirectRoom
             }
-            return defaults.bool(forKey: UserDefaultsKeys.roomScreenAllowVoIPForConferenceRoom)
+            return defaults.bool(forKey: UserDefaultsKeys.roomScreenAllowVoIPForNonDirectRoom)
         } set {
-            defaults.set(newValue, forKey: UserDefaultsKeys.roomScreenAllowVoIPForConferenceRoom)
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomScreenAllowVoIPForNonDirectRoom)
         }
     }
 

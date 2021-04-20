@@ -253,7 +253,7 @@ final class BuildSettings: NSObject {
     // MARK: - Room Screen
     
     static let roomScreenAllowVoIPForDirectRoom: Bool = true
-    static let roomScreenAllowVoIPForConferenceRoom: Bool = true
+    static let roomScreenAllowVoIPForNonDirectRoom: Bool = true
 
     // MARK: - Room Settings Screen
     
