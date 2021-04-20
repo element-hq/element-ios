@@ -5,6 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
+ * Add `gitter.im` to list of default room directories
  * MasterTabBarController: Show/Hide Home Screen tabs (#4234).
  * RoomVC: Enable / Disable VoIP feature in Rooms (#4236).
  * UnifiedSearchRecentsDataSource: Show/Hide public directory (#4242).
