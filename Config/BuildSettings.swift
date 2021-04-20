@@ -256,6 +256,11 @@ final class BuildSettings: NSObject {
     static let roomCreationScreenRoomIsEncrypted: Bool = true
     static let roomCreationScreenAllowRoomTypeConfiguration: Bool = true
     static let roomCreationScreenRoomIsPublic: Bool = false
+    
+    // MARK: - Room Screen
+    
+    static let roomScreenAllowVoIPForDirectRoom: Bool = true
+    static let roomScreenAllowVoIPForNonDirectRoom: Bool = true
 
     // MARK: - Room Settings Screen
     
