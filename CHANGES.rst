@@ -10,6 +10,7 @@ Changes to be released in next version
  * RoomVC: Enable / Disable VoIP feature in Rooms (#4236).
  * UnifiedSearchRecentsDataSource: Show/Hide public directory (#4242).
  * DirectoryRecentTableViewCell: Do not use "directory_search_results_more_than" string when there is no rooms and the search is on.
+ * RoomVC: Show / Hide integrations and actions (#4245).
 
 🐛 Bugfix
  * PublicRoomsDirectoryDataSource: Fix search when NSFW filter is off.
