@@ -60,12 +60,18 @@ final class RiotSettings: NSObject {
         static let roomSettingsScreenShowFlairSettings = "roomSettingsScreenShowFlairSettings"
         static let roomSettingsScreenShowAdvancedSettings = "roomSettingsScreenShowAdvancedSettings"
         static let roomSettingsScreenAdvancedShowEncryptToVerifiedOption = "roomSettingsScreenAdvancedShowEncryptToVerifiedOption"
+        static let roomsAllowToJoinPublicRooms = "roomsAllowToJoinPublicRooms"
         static let homeScreenShowFavouritesTab = "homeScreenShowFavouritesTab"
         static let homeScreenShowPeopleTab = "homeScreenShowPeopleTab"
         static let homeScreenShowRoomsTab = "homeScreenShowRoomsTab"
         static let homeScreenShowCommunitiesTab = "homeScreenShowCommunitiesTab"
         static let roomScreenAllowVoIPForDirectRoom = "roomScreenAllowVoIPForDirectRoom"
         static let roomScreenAllowVoIPForNonDirectRoom = "roomScreenAllowVoIPForNonDirectRoom"
+        static let roomScreenAllowCameraAction = "roomScreenAllowCameraAction"
+        static let roomScreenAllowMediaLibraryAction = "roomScreenAllowMediaLibraryAction"
+        static let roomScreenAllowStickerAction = "roomScreenAllowStickerAction"
+        static let roomScreenAllowFilesAction = "roomScreenAllowFilesAction"
+        static let roomInfoScreenShowIntegrations = "roomInfoScreenShowIntegrations"
         static let unifiedSearchScreenShowPublicDirectory = "unifiedSearchScreenShowPublicDirectory"
     }
     
@@ -92,6 +98,10 @@ final class RiotSettings: NSObject {
         defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowCryptographyInfo)
         defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowCryptographyExport)
         defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowAdvancedUnverifiedDevices)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomCreationScreenAllowEncryptionConfiguration)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomCreationScreenRoomIsEncrypted)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomCreationScreenAllowRoomTypeConfiguration)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomCreationScreenRoomIsPublic)
         defaults.removeObject(forKey: UserDefaultsKeys.allowInviteExernalUsers)
         defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenShowLowPriorityOption)
         defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenShowDirectChatOption)
@@ -101,6 +111,8 @@ final class RiotSettings: NSObject {
         defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenShowFlairSettings)
         defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenShowAdvancedSettings)
         defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenAdvancedShowEncryptToVerifiedOption)
+        defaults.removeObject(forKey: UserDefaultsKeys.allowInviteExernalUsers)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomsAllowToJoinPublicRooms)
     }
     
     // MARK: Servers
@@ -265,6 +277,19 @@ final class RiotSettings: NSObject {
         }
     }
     
+    // MARK: -  Rooms Screen
+    
+    var roomsAllowToJoinPublicRooms: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomsAllowToJoinPublicRooms) != nil else {
+                return BuildSettings.roomsAllowToJoinPublicRooms
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomsAllowToJoinPublicRooms)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomsAllowToJoinPublicRooms)
+        }
+    }
+
     // MARK: - Room Screen
     
     var roomScreenAllowVoIPForDirectRoom: Bool {
@@ -285,6 +310,59 @@ final class RiotSettings: NSObject {
             return defaults.bool(forKey: UserDefaultsKeys.roomScreenAllowVoIPForNonDirectRoom)
         } set {
             defaults.set(newValue, forKey: UserDefaultsKeys.roomScreenAllowVoIPForNonDirectRoom)
+        }
+    }
+    var roomScreenAllowCameraAction: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomScreenAllowCameraAction) != nil else {
+                return BuildSettings.roomScreenAllowCameraAction
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomScreenAllowCameraAction)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomScreenAllowCameraAction)
+        }
+    }
+    var roomScreenAllowMediaLibraryAction: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomScreenAllowMediaLibraryAction) != nil else {
+                return BuildSettings.roomScreenAllowMediaLibraryAction
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomScreenAllowMediaLibraryAction)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomScreenAllowMediaLibraryAction)
+        }
+    }
+    var roomScreenAllowStickerAction: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomScreenAllowStickerAction) != nil else {
+                return BuildSettings.roomScreenAllowStickerAction
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomScreenAllowStickerAction)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomScreenAllowStickerAction)
+        }
+    }
+    var roomScreenAllowFilesAction: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomScreenAllowFilesAction) != nil else {
+                return BuildSettings.roomScreenAllowFilesAction
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomScreenAllowFilesAction)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomScreenAllowFilesAction)
+        }
+    }
+
+    // MARK: - Room Info Screen
+    
+    var roomInfoScreenShowIntegrations: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomInfoScreenShowIntegrations) != nil else {
+                return BuildSettings.roomInfoScreenShowIntegrations
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomInfoScreenShowIntegrations)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomInfoScreenShowIntegrations)
         }
     }
 
