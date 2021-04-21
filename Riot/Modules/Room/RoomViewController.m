@@ -961,14 +961,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         self.eventsAcknowledgementEnabled = YES;
         
-        // Set room title view
-        [self refreshRoomTitle];
-        
         // Store ref on customized room data source
         if ([dataSource isKindOfClass:RoomDataSource.class])
         {
             customizedRoomDataSource = (RoomDataSource*)dataSource;
         }
+        
+        // Set room title view
+        [self refreshRoomTitle];
     }
     else
     {
@@ -1440,6 +1440,17 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     || customizedRoomDataSource.jitsiWidget;
 }
 
+/**
+ Returns a flag for the current user whether it's privileged to add/remove Jitsi widgets to this room.
+ */
+- (BOOL)canEditJitsiWidget
+{
+    MXRoomPowerLevels *powerLevels = [self.roomDataSource.roomState powerLevels];
+    NSInteger requiredPower = [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kWidgetModularEventTypeString];
+    NSInteger myPower = [powerLevels powerLevelOfUserWithUserID:self.roomDataSource.mxSession.myUserId];
+    return myPower >= requiredPower;
+}
+
 - (void)refreshRoomTitle
 {
     NSMutableArray *rightBarButtonItems = nil;
@@ -1472,7 +1483,43 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"video_call"] style:UIBarButtonItemStylePlain target:self action:@selector(onVideoCallPressed:)];
                 item.imageInsets = rightBarButtonItems.count ? UIEdgeInsetsMake(0, 10, 0, -10) : itemInsets;
                 item.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_video_call", @"Vector", nil);
-                item.enabled = !self.isCallActive;
+                if (self.roomDataSource.room.isDirect)
+                {
+                    item.enabled = !self.isCallActive;
+                }
+                else
+                {
+                    if (self.isCallActive)
+                    {
+                        JitsiViewController *jitsiVC = [AppDelegate theDelegate].callPresenter.jitsiVC;
+                        if ([jitsiVC.widget.roomId isEqualToString:self.roomDataSource.roomId])
+                        {
+                            item.enabled = NO;
+                        }
+                        else
+                        {
+                            //  show Join button
+                            CallTileActionButton *button = [[CallTileActionButton alloc] initWithFrame:CGRectMake(0, 0, 81, 30)];
+                            [button setImage:[UIImage imageNamed:@"video_call"] forState:UIControlStateNormal];
+                            [button setTitle:NSLocalizedStringFromTable(@"room_join_group_call", @"Vector", nil) forState:UIControlStateNormal];
+                            [button addTarget:self
+                                       action:@selector(onVideoCallPressed:)
+                             forControlEvents:UIControlEventTouchUpInside];
+                            item.image = nil;
+                            item.customView = button;
+                            item.enabled = YES;
+                        }
+                    }
+                    else
+                    {
+                        if (!self.canEditJitsiWidget)
+                        {
+                            item.image = [[UIImage imageNamed:@"video_call"] vc_withAlpha:0.3];
+                        }
+                        //  item will still be enabled, and when tapped an alert will be displayed to the user
+                        item.enabled = YES;
+                    }
+                }
                 [rightBarButtonItems addObject:item];
                 itemInsets = UIEdgeInsetsMake(0, 20, 0, -20);
             }
@@ -3688,93 +3735,69 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)placeCallWithVideo2:(BOOL)video
 {
-    __weak __typeof(self) weakSelf = self;
-    
-    // If there is already a jitsi widget, join it
     Widget *jitsiWidget = [customizedRoomDataSource jitsiWidget];
     if (jitsiWidget)
     {
+        //  If there is already a Jitsi call, join it
         [[AppDelegate theDelegate].callPresenter displayJitsiCallWithWidget:jitsiWidget];
     }
-    
-    // Create the conf using jitsi widget and open it directly
-    else if (self.roomDataSource.room.summary.membersCount.joined > 2)
-    {
-        [self startActivityIndicator];
-        
-        [[WidgetManager sharedManager] createJitsiWidgetInRoom:self.roomDataSource.room
-                                                     withVideo:video
-                                                       success:^(Widget *jitsiWidget)
-         {
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
-                [self stopActivityIndicator];
-                
-                [[AppDelegate theDelegate].callPresenter displayJitsiCallWithWidget:jitsiWidget];
-            }
-        }
-                                                       failure:^(NSError *error)
-         {
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
-                [self stopActivityIndicator];
-                
-                [self showJitsiErrorAsAlert:error];
-            }
-        }];
-    }
-    // Classic conference call is not supported in encrypted rooms
-    else if (self.roomDataSource.room.summary.isEncrypted && self.roomDataSource.room.summary.membersCount.joined > 2)
-    {
-        [currentAlert dismissViewControllerAnimated:NO completion:nil];
-        
-        currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"room_no_conference_call_in_encrypted_rooms"]  message:nil preferredStyle:UIAlertControllerStyleAlert];
-        
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action)
-                                 {
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
-                self->currentAlert = nil;
-            }
-            
-        }]];
-        
-        [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCCallAlert"];
-        [self presentViewController:currentAlert animated:YES completion:nil];
-    }
-    
-    // In case of conference call, check that the user has enough power level
-    else if (self.roomDataSource.room.summary.membersCount.joined > 2 &&
-             ![MXCallManager canPlaceConferenceCallInRoom:self.roomDataSource.room roomState:self.roomDataSource.roomState])
-    {
-        [currentAlert dismissViewControllerAnimated:NO completion:nil];
-        
-        currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"room_no_power_to_create_conference_call"]  message:nil preferredStyle:UIAlertControllerStyleAlert];
-        
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action)
-                                 {
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
-                self->currentAlert = nil;
-            }
-        }]];
-        
-        [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCCallAlert"];
-        [self presentViewController:currentAlert animated:YES completion:nil];
-    }
-    
-    // Classic 1:1 or group call can be done
     else
     {
-        [self.roomDataSource.room placeCallWithVideo:video success:nil failure:nil];
+        if (self.roomDataSource.room.summary.membersCount.joined == 2 && self.roomDataSource.room.isDirect)
+        {
+            //  Matrix call
+            [self.roomDataSource.room placeCallWithVideo:video success:nil failure:nil];
+        }
+        else
+        {
+            //  Jitsi call
+            if (self.canEditJitsiWidget)
+            {
+                //  User has right to add a Jitsi widget
+                //  Create the Jitsi widget and open it directly
+                [self startActivityIndicator];
+                
+                MXWeakify(self);
+                
+                [[WidgetManager sharedManager] createJitsiWidgetInRoom:self.roomDataSource.room
+                                                             withVideo:video
+                                                               success:^(Widget *jitsiWidget)
+                 {
+                    MXStrongifyAndReturnIfNil(self);
+                    [self stopActivityIndicator];
+                    
+                    [[AppDelegate theDelegate].callPresenter displayJitsiCallWithWidget:jitsiWidget];
+                }
+                                                               failure:^(NSError *error)
+                 {
+                    MXStrongifyAndReturnIfNil(self);
+                    [self stopActivityIndicator];
+                    
+                    [self showJitsiErrorAsAlert:error];
+                }];
+            }
+            else
+            {
+                //  Insufficient privileges to add a Jitsi widget
+                MXWeakify(self);
+                [currentAlert dismissViewControllerAnimated:NO completion:nil];
+                
+                currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"room_no_privileges_to_create_group_call"]
+                                                                   message:nil
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+                
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:^(UIAlertAction * action)
+                                         {
+                    MXStrongifyAndReturnIfNil(self);
+                    self->currentAlert = nil;
+                }]];
+                
+                [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCCallAlert"];
+                [self presentViewController:currentAlert animated:YES completion:nil];
+            }
+        }
     }
 }
 

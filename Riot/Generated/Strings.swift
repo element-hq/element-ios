@@ -2914,6 +2914,10 @@ internal enum VectorL10n {
   internal static var roomIntroCellInformationRoomWithoutTopicSentence2Part2: String { 
     return VectorL10n.tr("Vector", "room_intro_cell_information_room_without_topic_sentence2_part2") 
   }
+  /// Join
+  internal static var roomJoinGroupCall: String { 
+    return VectorL10n.tr("Vector", "room_join_group_call") 
+  }
   /// Jump to first unread message
   internal static var roomJumpToFirstUnread: String { 
     return VectorL10n.tr("Vector", "room_jump_to_first_unread") 
@@ -2989,6 +2993,10 @@ internal enum VectorL10n {
   /// %d new messages
   internal static func roomNewMessagesNotification(_ p1: Int) -> String {
     return VectorL10n.tr("Vector", "room_new_messages_notification", p1)
+  }
+  /// You need to be an admin or a moderator to start a call.
+  internal static var roomNoPrivilegesToCreateGroupCall: String { 
+    return VectorL10n.tr("Vector", "room_no_privileges_to_create_group_call") 
   }
   /// Connectivity to the server has been lost.
   internal static var roomOfflineNotification: String { 
