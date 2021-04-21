@@ -58,6 +58,11 @@ final class RiotSettings: NSObject {
         static let homeScreenShowCommunitiesTab = "homeScreenShowCommunitiesTab"
         static let roomScreenAllowVoIPForDirectRoom = "roomScreenAllowVoIPForDirectRoom"
         static let roomScreenAllowVoIPForNonDirectRoom = "roomScreenAllowVoIPForNonDirectRoom"
+        static let roomScreenAllowCameraAction = "roomScreenAllowCameraAction"
+        static let roomScreenAllowMediaLibraryAction = "roomScreenAllowMediaLibraryAction"
+        static let roomScreenAllowStickerAction = "roomScreenAllowStickerAction"
+        static let roomScreenAllowFilesAction = "roomScreenAllowFilesAction"
+        static let roomInfoScreenShowIntegrations = "roomInfoScreenShowIntegrations"
         static let unifiedSearchScreenShowPublicDirectory = "unifiedSearchScreenShowPublicDirectory"
     }
     
@@ -269,6 +274,59 @@ final class RiotSettings: NSObject {
             return defaults.bool(forKey: UserDefaultsKeys.roomScreenAllowVoIPForNonDirectRoom)
         } set {
             defaults.set(newValue, forKey: UserDefaultsKeys.roomScreenAllowVoIPForNonDirectRoom)
+        }
+    }
+    var roomScreenAllowCameraAction: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomScreenAllowCameraAction) != nil else {
+                return BuildSettings.roomScreenAllowCameraAction
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomScreenAllowCameraAction)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomScreenAllowCameraAction)
+        }
+    }
+    var roomScreenAllowMediaLibraryAction: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomScreenAllowMediaLibraryAction) != nil else {
+                return BuildSettings.roomScreenAllowMediaLibraryAction
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomScreenAllowMediaLibraryAction)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomScreenAllowMediaLibraryAction)
+        }
+    }
+    var roomScreenAllowStickerAction: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomScreenAllowStickerAction) != nil else {
+                return BuildSettings.roomScreenAllowStickerAction
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomScreenAllowStickerAction)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomScreenAllowStickerAction)
+        }
+    }
+    var roomScreenAllowFilesAction: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomScreenAllowFilesAction) != nil else {
+                return BuildSettings.roomScreenAllowFilesAction
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomScreenAllowFilesAction)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomScreenAllowFilesAction)
+        }
+    }
+
+    // MARK: - Room Info Screen
+    
+    var roomInfoScreenShowIntegrations: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomInfoScreenShowIntegrations) != nil else {
+                return BuildSettings.roomInfoScreenShowIntegrations
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomInfoScreenShowIntegrations)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomInfoScreenShowIntegrations)
         }
     }
 
