@@ -40,8 +40,8 @@ jobs:
         run: bundle exec fastlane point_dependencies_to_pending_releases
 
       # Main job
-      - name: Unit tests
-        run: bundle exec fastlane test
+      - name: Build iOS simulator
+        run: bundle exec fastlane build
 
 
   tests:
