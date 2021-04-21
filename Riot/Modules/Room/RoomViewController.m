@@ -1501,7 +1501,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                         {
                             //  show Join button
                             CallTileActionButton *button = [CallTileActionButton new];
-                            [button setImage:[UIImage imageNamed:@"video_call"] forState:UIControlStateNormal];
+                            [button setImage:[UIImage imageNamed:@"call_video_icon"] forState:UIControlStateNormal];
                             [button setTitle:NSLocalizedStringFromTable(@"room_join_group_call", @"Vector", nil) forState:UIControlStateNormal];
                             [button addTarget:self
                                        action:@selector(onVideoCallPressed:)
