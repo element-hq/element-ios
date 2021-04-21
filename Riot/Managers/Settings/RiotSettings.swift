@@ -52,6 +52,7 @@ final class RiotSettings: NSObject {
         static let roomCreationScreenAllowRoomTypeConfiguration = "roomCreationScreenAllowRoomTypeConfiguration"
         static let roomCreationScreenRoomIsPublic = "roomCreationScreenRoomIsPublic"
         static let allowInviteExernalUsers = "allowInviteExernalUsers"
+        static let roomsAllowToJoinPublicRooms = "roomsAllowToJoinPublicRooms"
         static let homeScreenShowFavouritesTab = "homeScreenShowFavouritesTab"
         static let homeScreenShowPeopleTab = "homeScreenShowPeopleTab"
         static let homeScreenShowRoomsTab = "homeScreenShowRoomsTab"
@@ -89,7 +90,13 @@ final class RiotSettings: NSObject {
         defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowCryptographyInfo)
         defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowCryptographyExport)
         defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowAdvancedUnverifiedDevices)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomCreationScreenAllowEncryptionConfiguration)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomCreationScreenRoomIsEncrypted)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomCreationScreenAllowRoomTypeConfiguration)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomCreationScreenRoomIsPublic)
         defaults.removeObject(forKey: UserDefaultsKeys.allowInviteExernalUsers)
+        defaults.removeObject(forKey: UserDefaultsKeys.allowInviteExernalUsers)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomsAllowToJoinPublicRooms)
     }
     
     // MARK: Servers
@@ -254,6 +261,19 @@ final class RiotSettings: NSObject {
         }
     }
     
+    // MARK: -  Rooms Screen
+    
+    var roomsAllowToJoinPublicRooms: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomsAllowToJoinPublicRooms) != nil else {
+                return BuildSettings.roomsAllowToJoinPublicRooms
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomsAllowToJoinPublicRooms)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomsAllowToJoinPublicRooms)
+        }
+    }
+
     // MARK: - Room Screen
     
     var roomScreenAllowVoIPForDirectRoom: Bool {
