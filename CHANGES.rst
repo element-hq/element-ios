@@ -24,7 +24,7 @@ Changes to be released in next version
  * 
     
 🧱 Build
- * 
+ * GH Actions: Start using them for CI to check simulator build and tests.
 
 Others
  * 
