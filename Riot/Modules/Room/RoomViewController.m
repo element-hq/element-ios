@@ -130,8 +130,6 @@
 
 NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNotification";
 NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTileTappedNotification";
-NSNotificationName const RoomViewControllerViewDidAppearNotification = @"RoomViewControllerViewDidAppearNotification";
-NSNotificationName const RoomViewControllerViewDidDisappearNotification = @"RoomViewControllerViewDidDisappearNotification";
 const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
@@ -639,9 +637,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         hasJitsiCall = NO;
         [self reloadBubblesTable:YES];
     }
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:RoomViewControllerViewDidAppearNotification
-                                                        object:self];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -678,8 +673,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         hasJitsiCall = YES;
         [self reloadBubblesTable:YES];
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:RoomViewControllerViewDidDisappearNotification
-                                                        object:self];
 }
 
 - (void)viewDidLayoutSubviews

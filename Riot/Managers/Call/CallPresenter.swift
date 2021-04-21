@@ -65,8 +65,6 @@ class CallPresenter: NSObject {
             updateOnHoldCall()
         }
     }
-    /// Room specific call bar, only visible when related room is on the screen.
-    private var temporaryJitsiVC: JitsiViewController?
     #endif
     
     private var isCallKitEnabled: Bool {
@@ -79,7 +77,7 @@ class CallPresenter: NSObject {
                 return false
             }
             return !call.isOnHold
-        }.first ?? jitsiVC ?? temporaryJitsiVC
+        }.first ?? jitsiVC
     }
     
     private var onHoldCallVCs: [CallViewController] {
@@ -140,10 +138,6 @@ class CallPresenter: NSObject {
         if let jitsiVC = jitsiVC {
             dismissCallBar(for: jitsiVC)
             presentCallVC(jitsiVC)
-        }
-        if let temporaryJitsiVC = temporaryJitsiVC, !uiOperationQueue.containsPresentCallVCOperation {
-            dismissCallBar(for: temporaryJitsiVC)
-            displayJitsiCall(withWidget: temporaryJitsiVC.widget)
         }
     }
     
@@ -314,15 +308,6 @@ class CallPresenter: NSObject {
                 }
             }
         } else {
-            if let temporaryJitsiVC = temporaryJitsiVC,
-               temporaryJitsiVC.widget.widgetId == widget.widgetId,
-               inBarCallVC == nil {
-                //  the removed widget is for the temporary Jitsi call, remove call bar
-                dismissCallBar(for: temporaryJitsiVC) { [weak self] in
-                    guard let self = self else { return }
-                    self.temporaryJitsiVC = nil
-                }
-            }
             guard let uuid = self.jitsiCalls.first(where: { $0.value.widgetId == widget.widgetId })?.key else {
                 //  this Jitsi call is not managed by this class
                 return
@@ -441,8 +426,6 @@ class CallPresenter: NSObject {
             updateCallBar()
         } else if inBarCallVC as? JitsiViewController != nil {
             updateCallBar()
-        } else if temporaryJitsiVC != nil {
-            updateCallBar()
         }
     }
     
@@ -472,14 +455,6 @@ class CallPresenter: NSObject {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(groupCallTileTapped(_:)),
                                                name: .RoomGroupCallTileTapped,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(roomViewDidAppear(_:)),
-                                               name: .RoomViewControllerViewDidAppear,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(roomViewDidDisappear(_:)),
-                                               name: .RoomViewControllerViewDidDisappear,
                                                object: nil)
         
         #if canImport(JitsiMeetSDK)
@@ -524,12 +499,6 @@ class CallPresenter: NSObject {
         NotificationCenter.default.removeObserver(self,
                                                   name: .RoomGroupCallTileTapped,
                                                   object: nil)
-        NotificationCenter.default.removeObserver(self,
-                                                  name: .RoomViewControllerViewDidAppear,
-                                                  object: nil)
-        NotificationCenter.default.removeObserver(self,
-                                                  name: .RoomViewControllerViewDidDisappear,
-                                                  object: nil)
         
         #if canImport(JitsiMeetSDK)
         JMCallKitProxy.removeListener(self)
@@ -543,8 +512,6 @@ class CallPresenter: NSObject {
         }
         widgetEventsListener = nil
         #endif
-        
-        
     }
     
     @objc
@@ -681,77 +648,6 @@ class CallPresenter: NSObject {
         presentCallVC(jitsiVC)
     }
     
-    @objc
-    private func roomViewDidAppear(_ notification: Notification) {
-        guard let roomVC = notification.object as? RoomViewController else {
-            return
-        }
-        
-        if roomVC.roomDataSource.room.isDirect {
-            //  no handling for direct rooms
-            return
-        }
-        
-        guard inBarCallVC as? CallViewController == nil else {
-            //  ensure there is no Matrix call on the call bar, which are more prior to Jitsi calls
-            return
-        }
-        
-        if let roomDataSource = roomVC.roomDataSource as? RoomDataSource,
-           let jitsiWidget = roomDataSource.jitsiWidget() {
-            if jitsiVC?.widget.widgetId != jitsiWidget.widgetId {
-                //  not joined, show call bar for this Jitsi call
-                let newJitsiVC = JitsiViewController()
-                newJitsiVC.openWidget(jitsiWidget, withVideo: true) { [weak self] in
-                    guard let self = self else { return }
-                    self.temporaryJitsiVC = newJitsiVC
-                    newJitsiVC.delegate = self
-                    self.presentCallBar(for: newJitsiVC, isTemporary: true)
-                } failure: { (error) in
-                    
-                }
-            }
-        }
-    }
-    
-    @objc
-    private func roomViewDidDisappear(_ notification: Notification) {
-        guard let roomVC = notification.object as? RoomViewController else {
-            return
-        }
-        guard let roomDataSource = roomVC.roomDataSource else {
-            return
-        }
-        
-        if roomDataSource.room.isDirect {
-            //  no handling for direct rooms
-            return
-        }
-        
-        guard let temporaryJitsiVC = temporaryJitsiVC else {
-            //  no temporary Jitsi call
-            return
-        }
-        
-        if let roomDataSource = roomVC.roomDataSource as? RoomDataSource,
-           let jitsiWidget = roomDataSource.jitsiWidget() {
-            //  there is still an active widget
-            if temporaryJitsiVC.widget.widgetId == jitsiWidget.widgetId,
-               inBarCallVC == nil {
-                dismissCallBar(for: temporaryJitsiVC) { [weak self] in
-                    guard let self = self else { return }
-                    self.temporaryJitsiVC = nil
-                }
-            }
-        } else {
-            //  no active widget, dismiss the temporary Jitsi call
-            dismissCallBar(for: temporaryJitsiVC) { [weak self] in
-                guard let self = self else { return }
-                self.temporaryJitsiVC = nil
-            }
-        }
-    }
-    
     //  MARK: - Call Screens
     
     private func presentCallVC(_ callVC: UIViewController, completion: (() -> Void)? = nil) {
@@ -827,17 +723,15 @@ class CallPresenter: NSObject {
     
     //  MARK: - Call Bar
     
-    private func presentCallBar(for callVC: UIViewController, isTemporary: Bool = false, completion: (() -> Void)? = nil) {
+    private func presentCallBar(for callVC: UIViewController, completion: (() -> Void)? = nil) {
         logCallVC(callVC, log: "presentCallBar")
 
         let activeCallVC = self.activeCallVC
         
         let operation = CallBarPresentOperation(presenter: self, activeCallVC: activeCallVC, numberOfPausedCalls: numberOfPausedCalls) { [weak self] in
-            if !isTemporary {
-                //  active calls are more prior to paused ones.
-                //  So, if user taps the bar when we have one active and one paused call, we navigate to the active one.
-                self?.inBarCallVC = activeCallVC ?? callVC
-            }
+            //  active calls are more prior to paused ones.
+            //  So, if user taps the bar when we have one active and one paused call, we navigate to the active one.
+            self?.inBarCallVC = activeCallVC ?? callVC
             completion?()
         }
         uiOperationQueue.addOperation(operation)
@@ -1026,13 +920,13 @@ extension CallPresenter: JMCallKitListener {
 extension CallPresenter: JitsiViewControllerDelegate {
     
     func jitsiViewController(_ jitsiViewController: JitsiViewController!, dismissViewJitsiController completion: (() -> Void)!) {
-        if jitsiViewController == jitsiVC || jitsiViewController == temporaryJitsiVC {
+        if jitsiViewController == jitsiVC {
             endActiveJitsiCall()
         }
     }
     
     func jitsiViewController(_ jitsiViewController: JitsiViewController!, goBackToApp completion: (() -> Void)!) {
-        if jitsiViewController == jitsiVC || jitsiViewController == temporaryJitsiVC {
+        if jitsiViewController == jitsiVC {
             enterPipCallVC(jitsiViewController, completion: completion)
         }
     }
