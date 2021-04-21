@@ -264,6 +264,14 @@ final class BuildSettings: NSObject {
     
     static let roomScreenAllowVoIPForDirectRoom: Bool = true
     static let roomScreenAllowVoIPForNonDirectRoom: Bool = true
+    static let roomScreenAllowCameraAction: Bool = true
+    static let roomScreenAllowMediaLibraryAction: Bool = true
+    static let roomScreenAllowStickerAction: Bool = true
+    static let roomScreenAllowFilesAction: Bool = true
+
+    // MARK: - Room Info Screen
+    
+    static let roomInfoScreenShowIntegrations: Bool = true
 
     // MARK: - Room Settings Screen
     
