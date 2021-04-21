@@ -84,25 +84,15 @@ platform :ios do
     xcodegen(spec: "project.yml")
     cocoapods
 
-    opts = {
-      :clean => false,
-      :scheme => "Riot",
-      :workspace => "Riot.xcworkspace",
-      :configuration => "Debug",
-      :code_coverage => true,
+    run_tests(
+      workspace: "Riot.xcworkspace",
+      scheme: "Riot",
+      code_coverage: true,
       # Test result configuration
-      :result_bundle => true,
-      :output_directory => "./build/test",
-      :open_report => !is_ci?
-    }
-    begin
-      scan(opts)
-    ensure
-      Dir.chdir("../#{opts[:output_directory]}") do
-        xcresult = "#{opts[:scheme]}.xcresult"
-        sh("zip", "-r", "#{xcresult}.zip", xcresult)
-      end
-    end
+      result_bundle: true,
+      output_directory: "./build/test",
+      open_report: !is_ci?
+    )
   end
 
 
