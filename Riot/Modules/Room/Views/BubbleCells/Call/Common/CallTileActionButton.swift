@@ -40,6 +40,10 @@ class CallTileActionButton: UIButton {
         }
     }
     
+    private var hasImage: Bool {
+        return image(for: .normal) != nil
+    }
+    
     var style: CallTileActionButtonStyle = .positive {
         didSet {
             updateStyle()
@@ -95,18 +99,27 @@ class CallTileActionButton: UIButton {
     
     override var intrinsicContentSize: CGSize {
         var result = super.intrinsicContentSize
+        guard hasImage else {
+            return result
+        }
         result.width += Constants.spaceBetweenImageAndTitle
         return result
     }
     
     override func imageRect(forContentRect contentRect: CGRect) -> CGRect {
         var result = super.imageRect(forContentRect: contentRect)
+        guard hasImage else {
+            return result
+        }
         result.origin.x -= Constants.spaceBetweenImageAndTitle/2
         return result
     }
     
     override func titleRect(forContentRect contentRect: CGRect) -> CGRect {
         var result = super.titleRect(forContentRect: contentRect)
+        guard hasImage else {
+            return result
+        }
         result.origin.x += Constants.spaceBetweenImageAndTitle/2
         return result
     }

@@ -22,17 +22,27 @@ private let MSEC_PER_SEC: TimeInterval = 1000
 @objcMembers
 class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
     
+    private static var className: String {
+        return String(describing: self)
+    }
+    
     /// Action identifier used when the user pressed "Call back" button for a declined call.
     /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the invite event of the declined call.
-    static let callBackAction: String = "RoomDirectCallStatusBubbleCell.CallBack"
+    static var callBackAction: String {
+        return self.className + ".callBack"
+    }
     
     /// Action identifier used when the user pressed "Answer" button for an incoming call.
     /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the invite event of the call.
-    static let answerAction: String = "RoomDirectCallStatusBubbleCell.Answer"
+    static var answerAction: String {
+        return self.className + ".answer"
+    }
     
     /// Action identifier used when the user pressed "Decline" button for an incoming call.
     /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the invite event of the call.
-    static let declineAction: String = "RoomDirectCallStatusBubbleCell.Decline"
+    static var declineAction: String {
+        return self.className + ".decline"
+    }
     
     private var callDurationString: String = ""
     private var isVideoCall: Bool = false

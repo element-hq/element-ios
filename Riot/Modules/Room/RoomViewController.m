@@ -2692,6 +2692,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                                  inMatrixSession:customizedRoomDataSource.mxSession];
             [[JitsiService shared] resetDeclineForWidgetWithId:widget.widgetId];
         }
+        else if ([actionIdentifier isEqualToString:RoomGroupCallStatusBubbleCell.leaveAction])
+        {
+            [[AppDelegate theDelegate].callPresenter endActiveJitsiCall];
+            [self reloadBubblesTable:YES];
+        }
         else if ([actionIdentifier isEqualToString:RoomGroupCallStatusBubbleCell.declineAction])
         {
             MXEvent *widgetEvent = userInfo[kMXKRoomBubbleCellEventKey];

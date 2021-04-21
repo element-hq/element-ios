@@ -1302,6 +1302,10 @@ internal enum VectorL10n {
   internal static var eventFormatterGroupCallJoin: String { 
     return VectorL10n.tr("Vector", "event_formatter_group_call_join") 
   }
+  /// Leave
+  internal static var eventFormatterGroupCallLeave: String { 
+    return VectorL10n.tr("Vector", "event_formatter_group_call_leave") 
+  }
   /// VoIP conference added by %@
   internal static func eventFormatterJitsiWidgetAdded(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_jitsi_widget_added", p1)

@@ -218,22 +218,25 @@ class CallPresenter: NSObject {
     }
     
     func endActiveJitsiCall() {
-        guard let widget = jitsiVC?.widget else {
+        guard let jitsiVC = jitsiVC else {
             //  there is no active Jitsi call
             return
         }
         
-        if let inBarCallVC = inBarCallVC {
-            dismissCallBar(for: inBarCallVC)
+        if pipCallVC == jitsiVC {
+            //  this call currently in the PiP mode,
+            //  first present it by exiting PiP mode and then dismiss it
+            exitPipCallVC(jitsiVC)
         }
         
-        if let jitsiVC = jitsiVC {
-            dismissCallVC(jitsiVC)
-            jitsiVC.hangup()
+        dismissCallVC(jitsiVC)
+        jitsiVC.hangup()
+        
+        self.jitsiVC = nil
+        
+        guard let widget = jitsiVC.widget else {
+            return
         }
-        
-        jitsiVC = nil
-        
         guard let uuid = self.jitsiCalls.first(where: { $0.value.widgetId == widget.widgetId })?.key else {
             //  this Jitsi call is not managed by this class
             return

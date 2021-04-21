@@ -22,17 +22,33 @@ private let MSEC_PER_SEC: TimeInterval = 1000
 @objcMembers
 class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
     
+    private static var className: String {
+        return String(describing: self)
+    }
+    
     /// Action identifier used when the user pressed "Join" button for an active call.
     /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the widget event of the call.
-    static let joinAction: String = "RoomGroupCallStatusBubbleCell.Join"
+    static var joinAction: String {
+        return self.className + ".join"
+    }
+    
+    /// Action identifier used when the user pressed "Leave" button for an active call.
+    /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the widget event of the call.
+    static var leaveAction: String {
+        return self.className + ".leave"
+    }
     
     /// Action identifier used when the user pressed "Answer" button for an incoming call.
     /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the widget event of the call.
-    static let answerAction: String = "RoomGroupCallStatusBubbleCell.Answer"
+    static var answerAction: String {
+        return self.className + ".answer"
+    }
     
     /// Action identifier used when the user pressed "Decline" button for an incoming call.
     /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the widget event of the call.
-    static let declineAction: String = "RoomGroupCallStatusBubbleCell.Decline"
+    static var declineAction: String {
+        return self.className + ".decline"
+    }
 
     private var callDurationString: String = ""
     private var isIncoming: Bool = false
@@ -107,18 +123,24 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
             
             return view
         case .active:
-            if isJoined {
-                //  user currently in the group call, do not show a join button
-                return nil
-            }
             let view = HorizontalButtonsContainerView.loadFromNib()
             view.secondButton.isHidden = true
             
-            view.firstButton.style = .positive
-            view.firstButton.setTitle(VectorL10n.eventFormatterGroupCallJoin, for: .normal)
-            view.firstButton.setImage(callTypeIcon, for: .normal)
-            view.firstButton.removeTarget(nil, action: nil, for: .touchUpInside)
-            view.firstButton.addTarget(self, action: #selector(joinAction(_:)), for: .touchUpInside)
+            if isJoined {
+                //  show a "Leave" button
+                view.firstButton.style = .negative
+                view.firstButton.setTitle(VectorL10n.eventFormatterGroupCallLeave, for: .normal)
+                view.firstButton.setImage(nil, for: .normal)
+                view.firstButton.removeTarget(nil, action: nil, for: .touchUpInside)
+                view.firstButton.addTarget(self, action: #selector(leaveAction(_:)), for: .touchUpInside)
+            } else {
+                //  show a "Join" button
+                view.firstButton.style = .positive
+                view.firstButton.setTitle(VectorL10n.eventFormatterGroupCallJoin, for: .normal)
+                view.firstButton.setImage(callTypeIcon, for: .normal)
+                view.firstButton.removeTarget(nil, action: nil, for: .touchUpInside)
+                view.firstButton.addTarget(self, action: #selector(joinAction(_:)), for: .touchUpInside)
+            }
             
             return view
         case .declined:
@@ -143,6 +165,13 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
     private func joinAction(_ sender: CallTileActionButton) {
         self.delegate?.cell(self,
                             didRecognizeAction: Self.joinAction,
+                            userInfo: actionUserInfo)
+    }
+    
+    @objc
+    private func leaveAction(_ sender: CallTileActionButton) {
+        self.delegate?.cell(self,
+                            didRecognizeAction: Self.leaveAction,
                             userInfo: actionUserInfo)
     }
     
