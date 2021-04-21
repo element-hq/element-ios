@@ -11,6 +11,7 @@ Changes to be released in next version
  * UnifiedSearchRecentsDataSource: Show/Hide public directory (#4242).
  * DirectoryRecentTableViewCell: Do not use "directory_search_results_more_than" string when there is no rooms and the search is on.
  * RecentsVC: Make joining public rooms configurable (#4211).
+ * Make room settings screen configurable dynamically (#4219).
  * RoomVC: Show / Hide integrations and actions (#4245).
 
 🐛 Bugfix

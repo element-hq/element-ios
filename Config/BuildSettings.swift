@@ -282,7 +282,8 @@ final class BuildSettings: NSObject {
     static let roomSettingsScreenShowAddressSettings: Bool = true
     static let roomSettingsScreenShowFlairSettings: Bool = true
     static let roomSettingsScreenShowAdvancedSettings: Bool = true
-    
+    static let roomSettingsScreenAdvancedShowEncryptToVerifiedOption: Bool = true
+
     // MARK: - Message
     static let messageDetailsAllowShare: Bool = true
     static let messageDetailsAllowPermalink: Bool = true

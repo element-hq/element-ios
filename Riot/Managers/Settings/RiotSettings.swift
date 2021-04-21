@@ -52,6 +52,14 @@ final class RiotSettings: NSObject {
         static let roomCreationScreenAllowRoomTypeConfiguration = "roomCreationScreenAllowRoomTypeConfiguration"
         static let roomCreationScreenRoomIsPublic = "roomCreationScreenRoomIsPublic"
         static let allowInviteExernalUsers = "allowInviteExernalUsers"
+        static let roomSettingsScreenShowLowPriorityOption = "roomSettingsScreenShowLowPriorityOption"
+        static let roomSettingsScreenShowDirectChatOption = "roomSettingsScreenShowDirectChatOption"
+        static let roomSettingsScreenAllowChangingAccessSettings = "roomSettingsScreenAllowChangingAccessSettings"
+        static let roomSettingsScreenAllowChangingHistorySettings = "roomSettingsScreenAllowChangingHistorySettings"
+        static let roomSettingsScreenShowAddressSettings = "roomSettingsScreenShowAddressSettings"
+        static let roomSettingsScreenShowFlairSettings = "roomSettingsScreenShowFlairSettings"
+        static let roomSettingsScreenShowAdvancedSettings = "roomSettingsScreenShowAdvancedSettings"
+        static let roomSettingsScreenAdvancedShowEncryptToVerifiedOption = "roomSettingsScreenAdvancedShowEncryptToVerifiedOption"
         static let roomsAllowToJoinPublicRooms = "roomsAllowToJoinPublicRooms"
         static let homeScreenShowFavouritesTab = "homeScreenShowFavouritesTab"
         static let homeScreenShowPeopleTab = "homeScreenShowPeopleTab"
@@ -95,6 +103,14 @@ final class RiotSettings: NSObject {
         defaults.removeObject(forKey: UserDefaultsKeys.roomCreationScreenAllowRoomTypeConfiguration)
         defaults.removeObject(forKey: UserDefaultsKeys.roomCreationScreenRoomIsPublic)
         defaults.removeObject(forKey: UserDefaultsKeys.allowInviteExernalUsers)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenShowLowPriorityOption)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenShowDirectChatOption)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenAllowChangingAccessSettings)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenAllowChangingHistorySettings)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenShowAddressSettings)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenShowFlairSettings)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenShowAdvancedSettings)
+        defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenAdvancedShowEncryptToVerifiedOption)
         defaults.removeObject(forKey: UserDefaultsKeys.allowInviteExernalUsers)
         defaults.removeObject(forKey: UserDefaultsKeys.roomsAllowToJoinPublicRooms)
     }
@@ -552,6 +568,89 @@ final class RiotSettings: NSObject {
         }
     }
     
+    // MARK: - Room Settings Screen
+    
+    var roomSettingsScreenShowLowPriorityOption: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomSettingsScreenShowLowPriorityOption) != nil else {
+                return BuildSettings.roomSettingsScreenShowLowPriorityOption
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomSettingsScreenShowLowPriorityOption)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomSettingsScreenShowLowPriorityOption)
+        }
+    }
+    var roomSettingsScreenShowDirectChatOption: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomSettingsScreenShowDirectChatOption) != nil else {
+                return BuildSettings.roomSettingsScreenShowDirectChatOption
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomSettingsScreenShowDirectChatOption)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomSettingsScreenShowDirectChatOption)
+        }
+    }
+    var roomSettingsScreenAllowChangingAccessSettings: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomSettingsScreenAllowChangingAccessSettings) != nil else {
+                return BuildSettings.roomSettingsScreenAllowChangingAccessSettings
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomSettingsScreenAllowChangingAccessSettings)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomSettingsScreenAllowChangingAccessSettings)
+        }
+    }
+    var roomSettingsScreenAllowChangingHistorySettings: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomSettingsScreenAllowChangingHistorySettings) != nil else {
+                return BuildSettings.roomSettingsScreenAllowChangingHistorySettings
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomSettingsScreenAllowChangingHistorySettings)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomSettingsScreenAllowChangingHistorySettings)
+        }
+    }
+    var roomSettingsScreenShowAddressSettings: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomSettingsScreenShowAddressSettings) != nil else {
+                return BuildSettings.roomSettingsScreenShowAddressSettings
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomSettingsScreenShowAddressSettings)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomSettingsScreenShowAddressSettings)
+        }
+    }
+    var roomSettingsScreenShowFlairSettings: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomSettingsScreenShowFlairSettings) != nil else {
+                return BuildSettings.roomSettingsScreenShowFlairSettings
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomSettingsScreenShowFlairSettings)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomSettingsScreenShowFlairSettings)
+        }
+    }
+    var roomSettingsScreenShowAdvancedSettings: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomSettingsScreenShowAdvancedSettings) != nil else {
+                return BuildSettings.roomSettingsScreenShowAdvancedSettings
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomSettingsScreenShowAdvancedSettings)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomSettingsScreenShowAdvancedSettings)
+        }
+    }
+    var roomSettingsScreenAdvancedShowEncryptToVerifiedOption: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomSettingsScreenAdvancedShowEncryptToVerifiedOption) != nil else {
+                return BuildSettings.roomSettingsScreenAdvancedShowEncryptToVerifiedOption
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomSettingsScreenAdvancedShowEncryptToVerifiedOption)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomSettingsScreenAdvancedShowEncryptToVerifiedOption)
+        }
+    }
+
     // Mark: - Unified Search
     
     var unifiedSearchScreenShowPublicDirectory: Bool {
