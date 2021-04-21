@@ -1429,7 +1429,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (BOOL)supportCallOption
 {
-    return BuildSettings.allowVoIPUsage && self.roomDataSource.mxSession.callManager && self.roomDataSource.room.summary.membersCount.joined >= 2;
+    BOOL callOptionAllowed = (self.roomDataSource.room.isDirect && RiotSettings.shared.roomScreenAllowVoIPForDirectRoom) || (!self.roomDataSource.room.isDirect && RiotSettings.shared.roomScreenAllowVoIPForNonDirectRoom);
+    return callOptionAllowed && BuildSettings.allowVoIPUsage && self.roomDataSource.mxSession.callManager && self.roomDataSource.room.summary.membersCount.joined >= 2;
 }
 
 - (BOOL)isCallActive
@@ -1811,36 +1812,48 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     RoomInputToolbarView *roomInputView = ((RoomInputToolbarView *) self.inputToolbarView);
     MXWeakify(self);
-    roomInputView.actionsBar.actionItems = @[
-        [[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_camera"] andAction:^{
+    NSMutableArray *actionItems = [NSMutableArray new];
+    if (RiotSettings.shared.roomScreenAllowCameraAction)
+    {
+        [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_camera"] andAction:^{
             MXStrongifyAndReturnIfNil(self);
             if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
                 ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
             }
             [self showCameraControllerAnimated:YES];
-        }],
-        [[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_media_library"] andAction:^{
+        }]];
+    }
+    if (RiotSettings.shared.roomScreenAllowMediaLibraryAction)
+    {
+        [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_media_library"] andAction:^{
             MXStrongifyAndReturnIfNil(self);
             if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
                 ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
             }
             [self showMediaPickerAnimated:YES];
-        }],
-        [[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_sticker"] andAction:^{
+        }]];
+    }
+    if (RiotSettings.shared.roomScreenAllowStickerAction)
+    {
+        [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_sticker"] andAction:^{
             MXStrongifyAndReturnIfNil(self);
             if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
                 ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
             }
             [self roomInputToolbarViewPresentStickerPicker];
-        }],
-        [[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_file"] andAction:^{
+        }]];
+    }
+    if (RiotSettings.shared.roomScreenAllowFilesAction)
+    {
+        [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_file"] andAction:^{
             MXStrongifyAndReturnIfNil(self);
             if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
                 ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
             }
             [self roomInputToolbarViewDidTapFileUpload];
-        }],
-    ];
+        }]];
+    }
+    roomInputView.actionsBar.actionItems = actionItems;
 }
 
 - (void)roomInputToolbarViewPresentStickerPicker

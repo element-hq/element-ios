@@ -5,10 +5,17 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
+ * Add `gitter.im` to list of default room directories
  * MasterTabBarController: Show/Hide Home Screen tabs (#4234).
+ * RoomVC: Enable / Disable VoIP feature in Rooms (#4236).
+ * UnifiedSearchRecentsDataSource: Show/Hide public directory (#4242).
+ * DirectoryRecentTableViewCell: Do not use "directory_search_results_more_than" string when there is no rooms and the search is on.
+ * RecentsVC: Make joining public rooms configurable (#4211).
+ * Make room settings screen configurable dynamically (#4219).
+ * RoomVC: Show / Hide integrations and actions (#4245).
 
 🐛 Bugfix
- * 
+ * PublicRoomsDirectoryDataSource: Fix search when NSFW filter is off.
 
 ⚠️ API Changes
  * 
