@@ -48,21 +48,26 @@ class CallTileActionButton: UIButton {
     
     // MARK: Setup
     
+    init() {
+        super.init(frame: .zero)
+        commonInit()
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.commonInit()
+        commonInit()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        self.commonInit()
+        commonInit()
     }
     
     private func commonInit() {
-        self.contentEdgeInsets = Constants.contentEdgeInsets
-        self.layer.masksToBounds = true
-        self.titleLabel?.font = UIFont.systemFont(ofSize: Constants.fontSize)
-        self.layer.cornerRadius = Constants.cornerRadius
+        contentEdgeInsets = Constants.contentEdgeInsets
+        layer.masksToBounds = true
+        titleLabel?.font = UIFont.systemFont(ofSize: Constants.fontSize)
+        layer.cornerRadius = Constants.cornerRadius
         setImage(image(for: .normal)?.vc_resized(with: Constants.imageSize)?.withRenderingMode(.alwaysTemplate), for: .normal)
         updateStyle()
     }
@@ -70,13 +75,13 @@ class CallTileActionButton: UIButton {
     private func updateStyle() {
         switch style {
         case .positive:
-            self.vc_setBackgroundColor(theme.tintColor, for: .normal)
-            self.tintColor = theme.baseTextPrimaryColor
+            vc_setBackgroundColor(theme.tintColor, for: .normal)
+            tintColor = theme.baseTextPrimaryColor
         case .negative:
-            self.vc_setBackgroundColor(theme.noticeColor, for: .normal)
-            self.tintColor = theme.baseTextPrimaryColor
+            vc_setBackgroundColor(theme.noticeColor, for: .normal)
+            tintColor = theme.baseTextPrimaryColor
         case .custom(let bgColor, let tintColor):
-            self.vc_setBackgroundColor(bgColor, for: .normal)
+            vc_setBackgroundColor(bgColor, for: .normal)
             self.tintColor = tintColor
         }
     }

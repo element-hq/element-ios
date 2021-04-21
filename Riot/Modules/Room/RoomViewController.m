@@ -1500,13 +1500,13 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                         else
                         {
                             //  show Join button
-                            CallTileActionButton *button = [[CallTileActionButton alloc] initWithFrame:CGRectMake(0, 0, 81, 30)];
+                            CallTileActionButton *button = [CallTileActionButton new];
                             [button setImage:[UIImage imageNamed:@"video_call"] forState:UIControlStateNormal];
                             [button setTitle:NSLocalizedStringFromTable(@"room_join_group_call", @"Vector", nil) forState:UIControlStateNormal];
                             [button addTarget:self
                                        action:@selector(onVideoCallPressed:)
                              forControlEvents:UIControlEventTouchUpInside];
-                            item.image = nil;
+                            button.contentEdgeInsets = UIEdgeInsetsMake(4, 12, 4, 12);
                             item.customView = button;
                             item.enabled = YES;
                         }
