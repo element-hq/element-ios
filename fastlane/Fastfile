@@ -84,6 +84,23 @@ platform :ios do
     )
   end
 
+  desc "Run tests"
+  lane :test do
+    xcodegen(spec: "project.yml")
+    cocoapods
+
+    run_tests(
+      workspace: "Riot.xcworkspace",
+      scheme: "Riot",
+      code_coverage: true,
+      # Test result configuration
+      result_bundle: true,
+      output_directory: "./build/test",
+      open_report: !is_ci?
+    )
+  end
+
+
   #### Private ####
 
   desc "Download App Store or Ad-Hoc provisioning profiles"

@@ -16,6 +16,8 @@ Changes to be released in next version
 
 🐛 Bugfix
  * PublicRoomsDirectoryDataSource: Fix search when NSFW filter is off.
+ * RoomVC: Fix navigation issue when a room left.
+ * RoomVC: Fix a crash when scroll to bottom tapped on a left room.
 
 ⚠️ API Changes
  * 
@@ -24,7 +26,7 @@ Changes to be released in next version
  * 
     
 🧱 Build
- * 
+ * GH Actions: Start using them for CI to check simulator build and tests.
 
 Others
  * 

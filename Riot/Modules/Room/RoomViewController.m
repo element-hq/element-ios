@@ -4548,11 +4548,20 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             // Note: we check if `currentEventIdAtTableBottom` is set to know whether the table has been rendered at least once.
             if (!self.roomDataSource.isLive || (currentEventIdAtTableBottom && [self isBubblesTableScrollViewAtTheBottom] == NO))
             {
-                // Retrieve the unread messages count
-                NSUInteger unreadCount = self.roomDataSource.room.summary.localUnreadEventCount;
-                
-                self.scrollToBottomBadgeLabel.text = unreadCount ? [NSString stringWithFormat:@"%lu", unreadCount] : nil;
-                self.scrollToBottomHidden = NO;
+                if (self.roomDataSource.room)
+                {
+                    // Retrieve the unread messages count
+                    NSUInteger unreadCount = self.roomDataSource.room.summary.localUnreadEventCount;
+                    
+                    self.scrollToBottomBadgeLabel.text = unreadCount ? [NSString stringWithFormat:@"%lu", unreadCount] : nil;
+                    self.scrollToBottomHidden = NO;
+                }
+                else
+                {
+                    //  will be here for left rooms
+                    self.scrollToBottomBadgeLabel.text = nil;
+                    self.scrollToBottomHidden = YES;
+                }
             }
             else if (serverNotices.usageLimit && serverNotices.usageLimit.isServerNoticeUsageLimit)
             {

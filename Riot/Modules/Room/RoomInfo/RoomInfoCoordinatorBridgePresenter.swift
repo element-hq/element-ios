@@ -33,6 +33,12 @@ final class RoomInfoCoordinatorBridgePresenter: NSObject {
     
     private let coordinatorParameters: RoomInfoCoordinatorParameters
     private var coordinator: RoomInfoCoordinator?
+    private var navigationType: NavigationType = .present
+    
+    private enum NavigationType {
+        case present
+        case push
+    }
     
     // MARK: Public
     
@@ -61,6 +67,7 @@ final class RoomInfoCoordinatorBridgePresenter: NSObject {
         roomInfoCoordinator.start()
         
         self.coordinator = roomInfoCoordinator
+        self.navigationType = .present
     }
     
     func push(from navigationController: UINavigationController, animated: Bool) {
@@ -71,13 +78,27 @@ final class RoomInfoCoordinatorBridgePresenter: NSObject {
         roomInfoCoordinator.start()
         
         self.coordinator = roomInfoCoordinator
+        self.navigationType = .push
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
         guard let coordinator = self.coordinator else {
             return
         }
-        coordinator.toPresentable().dismiss(animated: animated) {
+        switch navigationType {
+        case .present:
+            coordinator.toPresentable().dismiss(animated: animated) {
+                self.coordinator = nil
+
+                if let completion = completion {
+                    completion()
+                }
+            }
+        case .push:
+            guard let navigationController = coordinator.toPresentable() as? UINavigationController else {
+                return
+            }
+            navigationController.popViewController(animated: animated)
             self.coordinator = nil
 
             if let completion = completion {
