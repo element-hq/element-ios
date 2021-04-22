@@ -130,6 +130,8 @@
         
     }];
     [self userInterfaceThemeDidChange];
+    
+    [self updateTabs];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -880,38 +882,75 @@
 
 #pragma mark -
 
+- (void)updateTabs
+{
+    if (RiotSettings.shared.homeScreenShowCommunitiesTab && RiotSettings.shared.homeScreenShowRoomsTab
+        && RiotSettings.shared.homeScreenShowPeopleTab && RiotSettings.shared.homeScreenShowFavouritesTab)
+    {
+        return;
+    }
+    
+    NSMutableArray *newTabs = [NSMutableArray arrayWithArray:self.viewControllers];
+    if (!RiotSettings.shared.homeScreenShowCommunitiesTab)
+    {
+        [newTabs removeObjectAtIndex:TABBAR_GROUPS_INDEX];
+    }
+    if (!RiotSettings.shared.homeScreenShowRoomsTab)
+    {
+        [newTabs removeObjectAtIndex:TABBAR_ROOMS_INDEX];
+    }
+    if (!RiotSettings.shared.homeScreenShowPeopleTab)
+    {
+        [newTabs removeObjectAtIndex:TABBAR_PEOPLE_INDEX];
+    }
+    if (!RiotSettings.shared.homeScreenShowFavouritesTab)
+    {
+        [newTabs removeObjectAtIndex:TABBAR_FAVOURITES_INDEX];
+    }
+    self.viewControllers = newTabs;
+}
+
 - (void)refreshTabBarBadges
 {
     // Use a middle dot to signal missed notif in favourites
-    [self setMissedDiscussionsMark:(recentsDataSource.missedFavouriteDiscussionsCount? @"\u00B7": nil)
-                      onTabBarItem:TABBAR_FAVOURITES_INDEX
-                    withBadgeColor:(recentsDataSource.missedHighlightFavouriteDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
+    if (RiotSettings.shared.homeScreenShowFavouritesTab)
+    {
+        [self setMissedDiscussionsMark:(recentsDataSource.missedFavouriteDiscussionsCount? @"\u00B7": nil)
+                          onTabBarItem:TABBAR_FAVOURITES_INDEX
+                        withBadgeColor:(recentsDataSource.missedHighlightFavouriteDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
+    }
     
     // Update the badge on People and Rooms tabs
-    if (recentsDataSource.unsentMessagesDirectDiscussionsCount)
+    if (RiotSettings.shared.homeScreenShowPeopleTab)
     {
-        [self setBadgeValue:@"!"
-                           onTabBarItem:TABBAR_PEOPLE_INDEX
-                         withBadgeColor:ThemeService.shared.theme.noticeColor];
-    }
-    else
-    {
-        [self setMissedDiscussionsCount:recentsDataSource.missedDirectDiscussionsCount
-                           onTabBarItem:TABBAR_PEOPLE_INDEX
-                         withBadgeColor:(recentsDataSource.missedHighlightDirectDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
+        if (recentsDataSource.unsentMessagesDirectDiscussionsCount)
+        {
+            [self setBadgeValue:@"!"
+                               onTabBarItem:TABBAR_PEOPLE_INDEX
+                             withBadgeColor:ThemeService.shared.theme.noticeColor];
+        }
+        else
+        {
+            [self setMissedDiscussionsCount:recentsDataSource.missedDirectDiscussionsCount
+                               onTabBarItem:TABBAR_PEOPLE_INDEX
+                             withBadgeColor:(recentsDataSource.missedHighlightDirectDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
+        }
     }
     
-    if (recentsDataSource.unsentMessagesGroupDiscussionsCount)
+    if (RiotSettings.shared.homeScreenShowRoomsTab)
     {
-        [self setMissedDiscussionsCount:recentsDataSource.unsentMessagesGroupDiscussionsCount
-                           onTabBarItem:TABBAR_ROOMS_INDEX
-                         withBadgeColor:ThemeService.shared.theme.noticeColor];
-    }
-    else
-    {
-        [self setMissedDiscussionsCount:recentsDataSource.missedGroupDiscussionsCount
-                           onTabBarItem:TABBAR_ROOMS_INDEX
-                         withBadgeColor:(recentsDataSource.missedHighlightGroupDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
+        if (recentsDataSource.unsentMessagesGroupDiscussionsCount)
+        {
+            [self setMissedDiscussionsCount:recentsDataSource.unsentMessagesGroupDiscussionsCount
+                               onTabBarItem:TABBAR_ROOMS_INDEX
+                             withBadgeColor:ThemeService.shared.theme.noticeColor];
+        }
+        else
+        {
+            [self setMissedDiscussionsCount:recentsDataSource.missedGroupDiscussionsCount
+                               onTabBarItem:TABBAR_ROOMS_INDEX
+                             withBadgeColor:(recentsDataSource.missedHighlightGroupDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
+        }
     }
 }
 
@@ -922,39 +961,47 @@
 
 - (void)setBadgeValue:(NSString *)value onTabBarItem:(NSUInteger)index withBadgeColor:(UIColor*)badgeColor
 {
-    if (value)
+    NSInteger itemIndex = [self indexOfTabItemWithTag:index];
+    if (itemIndex != NSNotFound)
     {
-        self.tabBar.items[index].badgeValue = value;
-        
-        self.tabBar.items[index].badgeColor = badgeColor;
-        
-        [self.tabBar.items[index] setBadgeTextAttributes:@{
-                                                           NSForegroundColorAttributeName: ThemeService.shared.theme.baseTextPrimaryColor
-                                                           }
-                                                forState:UIControlStateNormal];
-    }
-    else
-    {
-        self.tabBar.items[index].badgeValue = nil;
+        if (value)
+        {
+            self.tabBar.items[itemIndex].badgeValue = value;
+            
+            self.tabBar.items[itemIndex].badgeColor = badgeColor;
+            
+            [self.tabBar.items[itemIndex] setBadgeTextAttributes:@{
+                                                               NSForegroundColorAttributeName: ThemeService.shared.theme.baseTextPrimaryColor
+                                                               }
+                                                    forState:UIControlStateNormal];
+        }
+        else
+        {
+            self.tabBar.items[itemIndex].badgeValue = nil;
+        }
     }
 }
 
 - (void)setMissedDiscussionsMark:(NSString*)mark onTabBarItem:(NSUInteger)index withBadgeColor:(UIColor*)badgeColor
 {
-    if (mark)
+    NSInteger itemIndex = [self indexOfTabItemWithTag:index];
+    if (itemIndex != NSNotFound)
     {
-        self.tabBar.items[index].badgeValue = mark;
-                
-        self.tabBar.items[index].badgeColor = badgeColor;
-        
-        [self.tabBar.items[index] setBadgeTextAttributes:@{
-                                                           NSForegroundColorAttributeName: ThemeService.shared.theme.baseTextPrimaryColor
-                                                           }
-                                                forState:UIControlStateNormal];
-    }
-    else
-    {
-        self.tabBar.items[index].badgeValue = nil;
+        if (mark)
+        {
+            self.tabBar.items[itemIndex].badgeValue = mark;
+                    
+            self.tabBar.items[itemIndex].badgeColor = badgeColor;
+            
+            [self.tabBar.items[itemIndex] setBadgeTextAttributes:@{
+                                                               NSForegroundColorAttributeName: ThemeService.shared.theme.baseTextPrimaryColor
+                                                               }
+                                                    forState:UIControlStateNormal];
+        }
+        else
+        {
+            self.tabBar.items[itemIndex].badgeValue = nil;
+        }
     }
 }
 
@@ -973,6 +1020,19 @@
     }
     
     return badgeValue;
+}
+
+- (NSInteger)indexOfTabItemWithTag:(NSUInteger)tag
+{
+    for (int i = 0 ; i < self.tabBar.items.count ; i++)
+    {
+        if (self.tabBar.items[i].tag == tag)
+        {
+            return i;
+        }
+    }
+    
+    return NSNotFound;
 }
 
 #pragma mark -

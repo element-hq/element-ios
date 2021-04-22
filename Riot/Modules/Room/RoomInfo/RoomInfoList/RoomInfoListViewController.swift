@@ -164,12 +164,17 @@ final class RoomInfoListViewController: UIViewController {
             self.viewModel.process(viewAction: .navigate(target: .integrations))
         }
         
+        var rows = [rowSettings]
+        if (RiotSettings.shared.roomInfoScreenShowIntegrations)
+        {
+            rows.append(rowIntegrations)
+        }
+        rows.append(rowMembers)
+        rows.append(rowUploads)
+        rows.append(rowSearch)
+
         let sectionSettings = Section(header: VectorL10n.roomInfoListSectionOther,
-                                      rows: [rowSettings,
-                                             rowIntegrations,
-                                             rowMembers,
-                                             rowUploads,
-                                             rowSearch],
+                                      rows: rows,
                                       footer: nil)
         
         let leaveTitle = viewData.basicInfoViewData.isDirect ?

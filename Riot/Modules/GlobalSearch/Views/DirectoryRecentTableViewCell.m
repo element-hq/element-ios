@@ -54,7 +54,7 @@
                 self.titleLabel.text = NSLocalizedStringFromTable(@"directory_search_results_title", @"Vector", nil);
 
                 // Do we need to display like ">20 results found" or "18 results found"?
-                NSString *descriptionLabel = publicRoomsDirectoryDataSource.moreThanRoomsCount ? NSLocalizedStringFromTable(@"directory_search_results_more_than", @"Vector", nil) : NSLocalizedStringFromTable(@"directory_search_results", @"Vector", nil);
+                NSString *descriptionLabel = (publicRoomsDirectoryDataSource.moreThanRoomsCount && publicRoomsDirectoryDataSource.roomsCount > 0) ? NSLocalizedStringFromTable(@"directory_search_results_more_than", @"Vector", nil) : NSLocalizedStringFromTable(@"directory_search_results", @"Vector", nil);
 
                 self.descriptionLabel.text = [NSString stringWithFormat:descriptionLabel,
                                               publicRoomsDirectoryDataSource.roomsCount,

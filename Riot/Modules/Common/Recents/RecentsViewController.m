@@ -1808,9 +1808,16 @@
         return;
     }
     
-    self.roomsDirectoryCoordinatorBridgePresenter = [[RoomsDirectoryCoordinatorBridgePresenter alloc] initWithSession:self.mainSession dataSource:[self.recentsDataSource.publicRoomsDirectoryDataSource copy]];
-    self.roomsDirectoryCoordinatorBridgePresenter.delegate = self;
-    [self.roomsDirectoryCoordinatorBridgePresenter presentFrom:self animated:YES];
+    if (RiotSettings.shared.roomsAllowToJoinPublicRooms)
+    {
+        self.roomsDirectoryCoordinatorBridgePresenter = [[RoomsDirectoryCoordinatorBridgePresenter alloc] initWithSession:self.mainSession dataSource:[self.recentsDataSource.publicRoomsDirectoryDataSource copy]];
+        self.roomsDirectoryCoordinatorBridgePresenter.delegate = self;
+        [self.roomsDirectoryCoordinatorBridgePresenter presentFrom:self animated:YES];
+    }
+    else
+    {
+        [self createNewRoom];
+    }
 }
 
 - (void)openPublicRoom:(MXPublicRoom *)publicRoom

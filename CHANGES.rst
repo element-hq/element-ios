@@ -1,3 +1,39 @@
+Changes in 1.3.5 (2021-04-22)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Add `gitter.im` to list of default room directories
+ * MasterTabBarController: Show/Hide Home Screen tabs (#4234).
+ * RoomVC: Enable / Disable VoIP feature in Rooms (#4236).
+ * UnifiedSearchRecentsDataSource: Show/Hide public directory (#4242).
+ * DirectoryRecentTableViewCell: Do not use "directory_search_results_more_than" string when there is no rooms and the search is on.
+ * RecentsVC: Make joining public rooms configurable (#4211).
+ * Make room settings screen configurable dynamically (#4219).
+ * RoomVC: Show / Hide integrations and actions (#4245).
+
+🐛 Bugfix
+ * PublicRoomsDirectoryDataSource: Fix search when NSFW filter is off.
+ * RoomVC: Fix navigation issue when a room left.
+ * RoomVC: Fix a crash when scroll to bottom tapped on a left room.
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * GH Actions: Start using them for CI to check simulator build and tests.
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.14.10](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.10)).
+
 Changes in 1.3.4 (2021-04-19)
 =================================================
 
