@@ -524,7 +524,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_NAME];
     [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_TOPIC];
     [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_TAG];
-    if (BuildSettings.roomSettingsScreenShowDirectChatOption)
+    if (RiotSettings.shared.roomSettingsScreenShowDirectChatOption)
     {
         [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_DIRECT_CHAT];
     }
@@ -532,7 +532,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE];
     [tmpSections addObject:sectionMain];
     
-    if (BuildSettings.roomSettingsScreenAllowChangingAccessSettings)
+    if (RiotSettings.shared.roomSettingsScreenAllowChangingAccessSettings)
     {
         Section *sectionAccess = [Section sectionWithTag:SECTION_TAG_ACCESS];
         [sectionAccess addRowWithTag:ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_INVITED_ONLY];
@@ -565,7 +565,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         [tmpSections addObject:sectionAccess];
     }
     
-    if (BuildSettings.roomSettingsScreenAllowChangingHistorySettings)
+    if (RiotSettings.shared.roomSettingsScreenAllowChangingHistorySettings)
     {
         Section *sectionHistory = [Section sectionWithTag:SECTION_TAG_HISTORY];
         [sectionHistory addRowWithTag:ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_ANYONE];
@@ -576,7 +576,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         [tmpSections addObject:sectionHistory];
     }
     
-    if (BuildSettings.roomSettingsScreenShowAddressSettings)
+    if (RiotSettings.shared.roomSettingsScreenShowAddressSettings)
     {
         Section *sectionAddresses = [Section sectionWithTag:SECTION_TAG_ADDRESSES];
         if (localAddressesCount)
@@ -595,7 +595,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         [tmpSections addObject:sectionAddresses];
     }
     
-    if (BuildSettings.roomSettingsScreenShowFlairSettings)
+    if (RiotSettings.shared.roomSettingsScreenShowFlairSettings)
     {
         Section *sectionFlair = [Section sectionWithTag:SECTION_TAG_FLAIR];
         
@@ -636,7 +636,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         [tmpSections addObject:sectionBannedUsers];
     }
     
-    if (BuildSettings.roomSettingsScreenShowAdvancedSettings)
+    if (RiotSettings.shared.roomSettingsScreenShowAdvancedSettings)
     {
         Section *sectionAdvanced = [Section sectionWithTag:SECTION_TAG_BANNED_ADVANCED];
         
@@ -645,7 +645,10 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         {
             if (mxRoom.summary.isEncrypted)
             {
-                [sectionAdvanced addRowWithTag:ROOM_SETTINGS_ADVANCED_ENCRYPT_TO_VERIFIED];
+                if (RiotSettings.shared.roomSettingsScreenAdvancedShowEncryptToVerifiedOption)
+                {
+                    [sectionAdvanced addRowWithTag:ROOM_SETTINGS_ADVANCED_ENCRYPT_TO_VERIFIED];
+                }
                 [sectionAdvanced addRowWithTag:ROOM_SETTINGS_ADVANCED_ENCRYPTION_ENABLED];
             }
             else
@@ -2351,7 +2354,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         }
         else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_TAG)
         {
-            if (BuildSettings.roomSettingsScreenShowLowPriorityOption)
+            if (RiotSettings.shared.roomSettingsScreenShowLowPriorityOption)
             {
                 //  show a muti-checkbox cell
                 roomTagCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithCheckBoxes defaultReuseIdentifier] forIndexPath:indexPath];

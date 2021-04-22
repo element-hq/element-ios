@@ -22,7 +22,7 @@ class EmojiServiceTests: XCTestCase {
     
     // MARK: - Constants
     
-    private let defaultTimeout: TimeInterval = 1.5
+    private let defaultTimeout: TimeInterval = 10
     
     enum ExpectedEmojiCategory: Int {
         case people
