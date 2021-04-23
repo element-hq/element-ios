@@ -4298,6 +4298,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (NSUInteger)widgetsCount:(BOOL)includeUserWidgets
 {
+    if (!RiotSettings.shared.roomInfoScreenShowIntegrations)
+    {
+        return 0;
+    }
+
     NSUInteger widgetsCount = [[WidgetManager sharedManager] widgetsNotOfTypes:@[kWidgetTypeJitsiV1, kWidgetTypeJitsiV2]
                                                                         inRoom:self.roomDataSource.room
                                                                  withRoomState:self.roomDataSource.roomState].count;

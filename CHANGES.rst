@@ -8,7 +8,7 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
- * 
+ * RoomVC: Widget navigation button still visible with settings set to integration disabled (#4261).
 
 ⚠️ API Changes
  * 
