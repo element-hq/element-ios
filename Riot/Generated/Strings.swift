@@ -3382,6 +3382,10 @@ internal enum VectorL10n {
   internal static var roomResourceUsageLimitReachedMessageContact3: String { 
     return VectorL10n.tr("Vector", "room_resource_usage_limit_reached_message_contact_3") 
   }
+  /// Slide to end the call for everyone
+  internal static var roomSlideToEndGroupCall: String { 
+    return VectorL10n.tr("Vector", "room_slide_to_end_group_call") 
+  }
   /// Invite members
   internal static var roomTitleInviteMembers: String { 
     return VectorL10n.tr("Vector", "room_title_invite_members") 

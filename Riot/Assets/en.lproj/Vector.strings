@@ -313,6 +313,7 @@ Tap the + to start adding people.";
 "room_member_power_level_short_custom" = "Custom";
 
 // Chat
+"room_slide_to_end_group_call" = "Slide to end the call for everyone";
 "room_jump_to_first_unread" = "Jump to first unread message";
 "room_accessiblity_scroll_to_bottom" = "Scroll to bottom";
 "room_new_message_notification" = "%d new message";
