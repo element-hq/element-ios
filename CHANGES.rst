@@ -8,7 +8,7 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
- * 
+ * RiotSettings: clear cache resets RiotSettings (#4259).
 
 ⚠️ API Changes
  * 
