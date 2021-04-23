@@ -135,7 +135,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate>
 {
     
     // The preview header
@@ -220,6 +220,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 }
 
 @property (nonatomic, weak) IBOutlet UIView *overlayContainerView;
+@property (nonatomic, strong) RemoveJitsiWidgetView *removeJitsiWidgetView;
 
 
 @property (nonatomic, strong) RoomContextualMenuViewController *roomContextualMenuViewController;
@@ -387,6 +388,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     [self vc_removeBackTitle];
     
+    [self setupRemoveJitsiWidgetRemoveView];
+    
     // Replace the default input toolbar view.
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
     [self updateRoomInputToolbarViewClassIfNeeded];
@@ -455,6 +458,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
+    [self.removeJitsiWidgetView updateWithTheme:ThemeService.shared.theme];
+    
     // Prepare jump to last unread banner
     self.jumpToLastUnreadBannerContainer.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.jumpToLastUnreadImageView.tintColor = ThemeService.shared.theme.textPrimaryColor;
@@ -517,6 +522,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     // Refresh the room title view
     [self refreshRoomTitle];
+    
+    //  refresh remove Jitsi widget view
+    [self refreshRemoveJitsiWidgetView];
     
     // Refresh tool bar if the room data source is set.
     if (self.roomDataSource)
@@ -1396,6 +1404,18 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 }
 
 #pragma mark - Internals
+
+- (void)setupRemoveJitsiWidgetRemoveView
+{
+    self.removeJitsiWidgetView = [RemoveJitsiWidgetView instantiate];
+    self.removeJitsiWidgetView.delegate = self;
+    
+    [self.removeJitsiWidgetContainer vc_addSubViewMatchingParent:self.removeJitsiWidgetView];
+    
+    self.removeJitsiWidgetContainer.hidden = YES;
+    
+    [self refreshRemoveJitsiWidgetView];
+}
 
 - (void)forceLayoutRefresh
 {
@@ -4422,17 +4442,20 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)listenWidgetNotifications
 {
+    MXWeakify(self);
+    
     kMXKWidgetManagerDidUpdateWidgetObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kWidgetManagerDidUpdateWidgetNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         Widget *widget = notif.object;
         if (widget.mxSession == self.roomDataSource.mxSession
-            && [widget.roomId isEqualToString:customizedRoomDataSource.roomId])
+            && [widget.roomId isEqualToString:self->customizedRoomDataSource.roomId])
         {
-            // Jitsi conference widget existence is shown in the bottom bar
-            // Update the bar
-            [self refreshActivitiesViewDisplay];
-            [self refreshRoomInputToolbar];
+            //  Call button update
             [self refreshRoomTitle];
+            //  Remove Jitsi widget view update
+            [self refreshRemoveJitsiWidgetView];
         }
     }];
 }
@@ -4479,8 +4502,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         {
             [roomActivitiesView removeGestureRecognizer:roomActivitiesView.gestureRecognizers[0]];
         }
-        
-        Widget *jitsiWidget = [customizedRoomDataSource jitsiWidget];
         
         if ([self.roomDataSource.mxSession.syncError.errcode isEqualToString:kMXErrCodeStringResourceLimitExceeded])
         {
@@ -5080,6 +5101,32 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 
             });
         }
+    }
+}
+
+- (void)refreshRemoveJitsiWidgetView
+{
+    if (self.roomDataSource.isLive && !self.roomDataSource.isPeeking)
+    {
+        Widget *jitsiWidget = [customizedRoomDataSource jitsiWidget];
+        
+        if (jitsiWidget && self.canEditJitsiWidget)
+        {
+            [self.removeJitsiWidgetView reset];
+            self.removeJitsiWidgetContainer.hidden = NO;
+            self.removeJitsiWidgetView.delegate = self;
+        }
+        else
+        {
+            self.removeJitsiWidgetContainer.hidden = YES;
+            self.removeJitsiWidgetView.delegate = nil;
+        }
+    }
+    else
+    {
+        [self.removeJitsiWidgetView reset];
+        self.removeJitsiWidgetContainer.hidden = YES;
+        self.removeJitsiWidgetView.delegate = self;
     }
 }
 
@@ -6026,6 +6073,39 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.roomInfoCoordinatorBridgePresenter = nil;
+}
+
+#pragma mark - RemoveJitsiWidgetViewDelegate
+
+- (void)removeJitsiWidgetViewDidCompleteSliding:(RemoveJitsiWidgetView *)view
+{
+    view.delegate = nil;
+    Widget *jitsiWidget = [customizedRoomDataSource jitsiWidget];
+    
+    [self startActivityIndicator];
+    
+    //  close the widget
+    MXWeakify(self);
+    
+    [[WidgetManager sharedManager] closeWidget:jitsiWidget.widgetId
+                                        inRoom:self.roomDataSource.room
+                                       success:^{
+        MXStrongifyAndReturnIfNil(self);
+        [self stopActivityIndicator];
+        //  we can wait for kWidgetManagerDidUpdateWidgetNotification, but we want to be faster
+        self.removeJitsiWidgetContainer.hidden = YES;
+        self.removeJitsiWidgetView.delegate = nil;
+        
+        //  end active call if exists
+        if ([[AppDelegate theDelegate].callPresenter.jitsiVC.widget.widgetId isEqualToString:jitsiWidget.widgetId])
+        {
+            [[AppDelegate theDelegate].callPresenter endActiveJitsiCall];
+        }
+    } failure:^(NSError *error) {
+        MXStrongifyAndReturnIfNil(self);
+        [self showJitsiErrorAsAlert:error];
+        [self stopActivityIndicator];
+    }];
 }
 
 @end

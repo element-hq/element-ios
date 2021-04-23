@@ -57,6 +57,9 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 @property (weak, nonatomic) IBOutlet UIButton *scrollToBottomButton;
 @property (weak, nonatomic) IBOutlet BadgeLabel *scrollToBottomBadgeLabel;
 
+// Remove Jitsi widget container
+@property (weak, nonatomic) IBOutlet UIView *removeJitsiWidgetContainer;
+
 /**
  Preview data for a room invitation received by email, or a link to a room.
  */
