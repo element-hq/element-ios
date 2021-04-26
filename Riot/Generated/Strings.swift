@@ -2922,7 +2922,7 @@ internal enum VectorL10n {
   internal static var roomJoinGroupCall: String { 
     return VectorL10n.tr("Vector", "room_join_group_call") 
   }
-  /// Jump to first unread message
+  /// Jump to unread
   internal static var roomJumpToFirstUnread: String { 
     return VectorL10n.tr("Vector", "room_jump_to_first_unread") 
   }
