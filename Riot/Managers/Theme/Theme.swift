@@ -93,6 +93,9 @@ import UIKit
     /// Color to tint the search background image
     var matrixSearchBackgroundImageTintColor: UIColor { get }
     
+    /// Color to use in shadows. Should be contrast to `backgroundColor`.
+    var shadowColor: UIColor { get }
+    
     // MARK: - Customisation methods
 
     

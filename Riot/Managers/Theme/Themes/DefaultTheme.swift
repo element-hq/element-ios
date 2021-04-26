@@ -97,6 +97,8 @@ class DefaultTheme: NSObject, Theme {
     
     var secondaryCircleButtonBackgroundColor: UIColor = UIColor(rgb: 0xE3E8F0)
     
+    var shadowColor: UIColor = UIColor(rgb: 0x000000)
+    
     func applyStyle(onTabBar tabBar: UITabBar) {
         tabBar.unselectedItemTintColor = self.tabBarUnselectedItemTintColor
         tabBar.tintColor = self.tintColor
