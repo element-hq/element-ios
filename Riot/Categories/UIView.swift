@@ -64,4 +64,16 @@ extension UIView {
             self.accessibilityTraits.insert(.notEnabled)
         }
     }
+    
+    @objc func vc_addShadow(withColor color: UIColor, offset: CGSize, radius: CGFloat, opacity: CGFloat) {
+        layer.shadowColor = color.cgColor
+        layer.shadowOpacity = Float(opacity)
+        layer.shadowRadius = radius
+        layer.shadowOffset = offset
+    }
+    
+    @objc func vc_removeShadow() {
+        layer.shadowColor = UIColor.clear.cgColor
+    }
+    
 }
