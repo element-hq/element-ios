@@ -5,6 +5,30 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Changes in 1.3.5 (2021-04-22)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
  * Add `gitter.im` to list of default room directories
  * MasterTabBarController: Show/Hide Home Screen tabs (#4234).
  * RoomVC: Enable / Disable VoIP feature in Rooms (#4236).
@@ -30,6 +54,9 @@ Changes to be released in next version
 
 Others
  * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.14.10](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.10)).
 
 Changes in 1.3.4 (2021-04-19)
 =================================================
