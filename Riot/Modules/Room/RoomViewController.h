@@ -47,12 +47,11 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 
 // The jump to last unread banner
 @property (weak, nonatomic) IBOutlet UIView *jumpToLastUnreadBannerContainer;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *jumpToLastUnreadBannerContainerTopConstraint;
+@property (weak, nonatomic) IBOutlet UIView *jumpToLastUnreadBanner;
 @property (weak, nonatomic) IBOutlet UIImageView *jumpToLastUnreadImageView;
 @property (weak, nonatomic) IBOutlet UIButton *jumpToLastUnreadButton;
 @property (weak, nonatomic) IBOutlet UILabel *jumpToLastUnreadLabel;
 @property (weak, nonatomic) IBOutlet UIButton *resetReadMarkerButton;
-@property (weak, nonatomic) IBOutlet UIView *jumpToLastUnreadBannerSeparatorView;
 @property (weak, nonatomic) IBOutlet UIView *inputBackgroundView;
 @property (weak, nonatomic) IBOutlet UIButton *scrollToBottomButton;
 @property (weak, nonatomic) IBOutlet BadgeLabel *scrollToBottomBadgeLabel;

@@ -461,10 +461,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self.removeJitsiWidgetView updateWithTheme:ThemeService.shared.theme];
     
     // Prepare jump to last unread banner
-    self.jumpToLastUnreadBannerContainer.backgroundColor = ThemeService.shared.theme.backgroundColor;
-    self.jumpToLastUnreadImageView.tintColor = ThemeService.shared.theme.textPrimaryColor;
+    self.jumpToLastUnreadBanner.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.jumpToLastUnreadImageView.tintColor = ThemeService.shared.theme.tintColor;
     self.jumpToLastUnreadLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
-    self.jumpToLastUnreadBannerSeparatorView.backgroundColor = ThemeService.shared.theme.lineBreakColor;
+    self.resetReadMarkerButton.tintColor = ThemeService.shared.theme.tabBarUnselectedItemTintColor;
+    [self.jumpToLastUnreadBanner vc_addShadowWithColor:ThemeService.shared.theme.shadowColor
+                                                offset:CGSizeMake(0, 4)
+                                                radius:6
+                                               opacity:0.2];
     
     self.previewHeaderContainer.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     
@@ -478,10 +482,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [self.bubblesTableView reloadData];
     }
     
-    self.scrollToBottomButton.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.scrollToBottomButton.layer.shadowOpacity = 0.2;
-    self.scrollToBottomButton.layer.shadowRadius = 6;
-    self.scrollToBottomButton.layer.shadowOffset = CGSizeMake(0, 4);
+    [self.scrollToBottomButton vc_addShadowWithColor:ThemeService.shared.theme.shadowColor
+                                              offset:CGSizeMake(0, 4)
+                                              radius:6
+                                             opacity:0.2];
 
     self.inputBackgroundView.backgroundColor = [ThemeService.shared.theme.backgroundColor colorWithAlphaComponent:0.98];
     
@@ -740,15 +744,12 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         self.previewHeaderContainerHeightConstraint.constant = frame.origin.y + frame.size.height;
         
         self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.mxk_adjustedContentInset.top;
-        self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant;
     }
     else
     {
         // In non expanded header mode, the navigation bar is opaque
         // The table view must not display behind it
         self.edgesForExtendedLayout = UIRectEdgeLeft | UIRectEdgeBottom | UIRectEdgeRight;
-        
-        self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.bubblesTableView.mxk_adjustedContentInset.top; // no expanded
     }
     
     //  stay at the bottom if already was
@@ -2094,7 +2095,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                              animations:^{
                 
                 self.bubblesTableViewTopConstraint.constant = 0;
-                self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.bubblesTableView.mxk_adjustedContentInset.top;
                 
                 // Force to render the view
                 [self forceLayoutRefresh];
@@ -2213,7 +2213,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                          animations:^{
             
             self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.mxk_adjustedContentInset.top;
-            self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant;
             
             previewHeader.roomAvatar.alpha = 1;
             
