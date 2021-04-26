@@ -467,8 +467,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     self.resetReadMarkerButton.tintColor = ThemeService.shared.theme.tabBarUnselectedItemTintColor;
     [self.jumpToLastUnreadBanner vc_addShadowWithColor:ThemeService.shared.theme.shadowColor
                                                 offset:CGSizeMake(0, 4)
-                                                radius:6
-                                               opacity:0.2];
+                                                radius:24
+                                               opacity:0.12];
     
     self.previewHeaderContainer.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     
