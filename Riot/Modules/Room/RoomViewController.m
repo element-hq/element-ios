@@ -131,6 +131,7 @@
 NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNotification";
 NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTileTappedNotification";
 const NSTimeInterval kResizeComposerAnimationDuration = .05;
+const NSUInteger kJumptoUnreadBannerBgColorForDarkMode = 0x394049;
 
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
@@ -461,14 +462,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self.removeJitsiWidgetView updateWithTheme:ThemeService.shared.theme];
     
     // Prepare jump to last unread banner
-    self.jumpToLastUnreadBanner.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.jumpToLastUnreadImageView.tintColor = ThemeService.shared.theme.tintColor;
     self.jumpToLastUnreadLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.resetReadMarkerButton.tintColor = ThemeService.shared.theme.tabBarUnselectedItemTintColor;
-    [self.jumpToLastUnreadBanner vc_addShadowWithColor:ThemeService.shared.theme.shadowColor
-                                                offset:CGSizeMake(0, 4)
-                                                radius:24
-                                               opacity:0.12];
     
     self.previewHeaderContainer.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     
@@ -489,16 +485,22 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
     self.inputBackgroundView.backgroundColor = [ThemeService.shared.theme.backgroundColor colorWithAlphaComponent:0.98];
     
-    if ([ThemeService.shared.themeId isEqualToString:@"light"])
+    if (ThemeService.shared.isCurrentThemeDark)
+    {
+        [self.scrollToBottomButton setImage:[UIImage imageNamed:@"scrolldown_dark"] forState:UIControlStateNormal];
+
+        self.jumpToLastUnreadBanner.backgroundColor = [[UIColor alloc] initWithRgb:kJumptoUnreadBannerBgColorForDarkMode];
+        [self.jumpToLastUnreadBanner vc_removeShadow];
+    }
+    else
     {
         [self.scrollToBottomButton setImage:[UIImage imageNamed:@"scrolldown"] forState:UIControlStateNormal];
-    }
-    else if ([ThemeService.shared.themeId isEqualToString:@"dark"] || [ThemeService.shared.themeId isEqualToString:@"black"])
-    {
-        [self.scrollToBottomButton setImage:[UIImage imageNamed:@"scrolldown_dark"] forState:UIControlStateNormal];
-    }
-    else if (@available(iOS 12.0, *) && ThemeService.shared.theme.userInterfaceStyle == UIUserInterfaceStyleDark) {
-        [self.scrollToBottomButton setImage:[UIImage imageNamed:@"scrolldown_dark"] forState:UIControlStateNormal];
+        
+        self.jumpToLastUnreadBanner.backgroundColor = ThemeService.shared.theme.backgroundColor;
+        [self.jumpToLastUnreadBanner vc_addShadowWithColor:ThemeService.shared.theme.shadowColor
+                                                    offset:CGSizeMake(0, 4)
+                                                    radius:24
+                                                   opacity:0.12];
     }
     
     self.scrollToBottomBadgeLabel.badgeColor = ThemeService.shared.theme.tintColor;

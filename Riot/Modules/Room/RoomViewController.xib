@@ -56,7 +56,7 @@
                     </constraints>
                 </view>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="fmF-ad-erE">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="0.0"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="76"/>
                     <subviews>
                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hB3-nR-MVR">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
@@ -65,13 +65,13 @@
                                 <constraint firstAttribute="height" constant="54" id="QJx-Yo-mCC"/>
                             </constraints>
                         </view>
-                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S6H-Az-RCM">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S6H-Az-RCM">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="76"/>
                             <subviews>
-                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S6r-bo-jxw">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S6r-bo-jxw">
                                     <rect key="frame" x="91" y="16" width="193.5" height="44"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="scrollup" translatesAutoresizingMaskIntoConstraints="NO" id="Vlz-UJ-Jz8">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="room_scroll_up" translatesAutoresizingMaskIntoConstraints="NO" id="Vlz-UJ-Jz8">
                                             <rect key="frame" x="14" y="10" width="24" height="24"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="24" id="JCI-mP-w3F"/>
@@ -97,7 +97,7 @@
                                                 <constraint firstAttribute="width" secondItem="c4g-BY-xOo" secondAttribute="height" multiplier="1:1" id="DG6-tf-YUj"/>
                                             </constraints>
                                             <inset key="imageEdgeInsets" minX="14" minY="14" maxX="14" maxY="14"/>
-                                            <state key="normal" image="cancel"/>
+                                            <state key="normal" image="new_close"/>
                                             <connections>
                                                 <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="8by-6v-ZGR"/>
                                             </connections>
@@ -216,9 +216,9 @@
         </designable>
     </designables>
     <resources>
-        <image name="cancel" width="20" height="20"/>
+        <image name="new_close" width="16" height="16"/>
+        <image name="room_scroll_up" width="24" height="24"/>
         <image name="scrolldown" width="32" height="32"/>
-        <image name="scrollup" width="30" height="30"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
