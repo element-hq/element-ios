@@ -5,7 +5,8 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Add Jitsi widget remove banner for privileged users.
+ * Update "Jump to unread" banner to a pill style button.
 
 🐛 Bugfix
  * 
