@@ -499,8 +499,8 @@ const NSUInteger kJumptoUnreadBannerBgColorForDarkMode = 0x394049;
         self.jumpToLastUnreadBanner.backgroundColor = ThemeService.shared.theme.backgroundColor;
         [self.jumpToLastUnreadBanner vc_addShadowWithColor:ThemeService.shared.theme.shadowColor
                                                     offset:CGSizeMake(0, 4)
-                                                    radius:24
-                                                   opacity:0.12];
+                                                    radius:8
+                                                   opacity:0.1];
     }
     
     self.scrollToBottomBadgeLabel.badgeColor = ThemeService.shared.theme.tintColor;
