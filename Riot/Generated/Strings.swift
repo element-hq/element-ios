@@ -1250,6 +1250,10 @@ internal enum VectorL10n {
   internal static var eventFormatterCallBack: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_back") 
   }
+  /// Connecting...
+  internal static var eventFormatterCallConnecting: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_connecting") 
+  }
   /// Connection failed
   internal static var eventFormatterCallConnectionFailed: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_connection_failed") 
@@ -1265,6 +1269,10 @@ internal enum VectorL10n {
   /// Retry
   internal static var eventFormatterCallRetry: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_retry") 
+  }
+  /// Ringing...
+  internal static var eventFormatterCallRinging: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_ringing") 
   }
   /// Video call
   internal static var eventFormatterCallVideo: String { 
@@ -1285,10 +1293,6 @@ internal enum VectorL10n {
   /// You missed this call
   internal static var eventFormatterCallYouMissed: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_you_missed") 
-  }
-  /// You started a call
-  internal static var eventFormatterCallYouStarted: String { 
-    return VectorL10n.tr("Vector", "event_formatter_call_you_started") 
   }
   /// Group call
   internal static var eventFormatterGroupCall: String { 

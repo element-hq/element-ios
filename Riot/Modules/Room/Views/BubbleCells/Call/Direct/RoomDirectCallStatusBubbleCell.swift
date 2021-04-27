@@ -156,13 +156,18 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
         case .fledgling,
             .waitLocalMedia,
             .createOffer,
-            .inviteSent,
             .connecting:
             viewState = .active
             if call.isIncoming {
                 statusText = VectorL10n.eventFormatterCallYouCurrentlyIn
             } else {
-                statusText = VectorL10n.eventFormatterCallYouStarted
+                statusText = VectorL10n.eventFormatterCallConnecting
+            }
+        case .inviteSent:
+            if call.isIncoming {
+                statusText = VectorL10n.eventFormatterCallYouCurrentlyIn
+            } else {
+                statusText = VectorL10n.eventFormatterCallRinging
             }
         case .createAnswer,
              .connected,

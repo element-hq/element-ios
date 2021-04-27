@@ -62,7 +62,6 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
     
     private enum Constants {
         static let secondsToDisplayAnswerDeclineOptions: TimeInterval = 30
-        static let secondsToNotDisplayJoinForOutgoing: TimeInterval = 30
     }
     
     private enum ViewState {
@@ -284,11 +283,10 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
             }
 
             if widget.isActive {
-                if !self.isIncoming &&
-                            TimeInterval(widgetEvent.age)/MSEC_PER_SEC < Constants.secondsToNotDisplayJoinForOutgoing {
+                if !self.isIncoming {
                     self.viewState = .active
-                    self.statusText = VectorL10n.eventFormatterCallYouStarted
-                } else if self.isIncoming && !self.isJoined &&
+                    self.statusText = VectorL10n.eventFormatterCallYouCurrentlyIn
+                } else if !self.isJoined &&
                             TimeInterval(widgetEvent.age)/MSEC_PER_SEC < Constants.secondsToDisplayAnswerDeclineOptions {
                     
                     if JitsiService.shared.isWidgetDeclined(withId: widgetId) {
