@@ -56,7 +56,7 @@
                     </constraints>
                 </view>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="fmF-ad-erE">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="76"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="0.0"/>
                     <subviews>
                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hB3-nR-MVR">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
@@ -65,10 +65,10 @@
                                 <constraint firstAttribute="height" constant="54" id="QJx-Yo-mCC"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S6H-Az-RCM">
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S6H-Az-RCM">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="76"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S6r-bo-jxw">
+                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S6r-bo-jxw">
                                     <rect key="frame" x="93" y="16" width="189.5" height="44"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="room_scroll_up" translatesAutoresizingMaskIntoConstraints="NO" id="Vlz-UJ-Jz8">
