@@ -44,6 +44,12 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
         return self.className + ".decline"
     }
     
+    /// Action identifier used when the user pressed "End call" button for an incoming call.
+    /// The `userInfo` dictionary contains an `MXEvent` object under the `kMXKRoomBubbleCellEventKey` key, representing the invite event of the call.
+    static var endCallAction: String {
+        return self.className + ".endCall"
+    }
+    
     private var callDurationString: String = ""
     private var isVideoCall: Bool = false
     private var isIncoming: Bool = false
@@ -112,7 +118,16 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
             
             return view
         case .active:
-            return nil
+            let view = HorizontalButtonsContainerView.loadFromNib()
+            view.secondButton.isHidden = true
+            
+            view.firstButton.style = .negative
+            view.firstButton.setTitle(VectorL10n.eventFormatterCallEndCall, for: .normal)
+            view.firstButton.setImage(Asset.Images.voiceCallHangupIcon.image, for: .normal)
+            view.firstButton.removeTarget(nil, action: nil, for: .touchUpInside)
+            view.firstButton.addTarget(self, action: #selector(endCallAction(_:)), for: .touchUpInside)
+            
+            return view
         case .declined:
             let view = HorizontalButtonsContainerView.loadFromNib()
             view.secondButton.isHidden = true
@@ -285,6 +300,13 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
     private func answerCallAction(_ sender: CallTileActionButton) {
         self.delegate?.cell(self,
                             didRecognizeAction: Self.answerAction,
+                            userInfo: actionUserInfo)
+    }
+    
+    @objc
+    private func endCallAction(_ sender: CallTileActionButton) {
+        self.delegate?.cell(self,
+                            didRecognizeAction: Self.endCallAction,
                             userInfo: actionUserInfo)
     }
     

@@ -1262,6 +1262,10 @@ internal enum VectorL10n {
   internal static var eventFormatterCallDecline: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_decline") 
   }
+  /// End call
+  internal static var eventFormatterCallEndCall: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_end_call") 
+  }
   /// Ended %@
   internal static func eventFormatterCallHasEnded(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_call_has_ended", p1)

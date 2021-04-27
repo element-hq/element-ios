@@ -838,6 +838,7 @@ Tap the + to start adding people.";
 "event_formatter_call_decline" = "Decline";
 "event_formatter_call_answer" = "Answer";
 "event_formatter_call_retry" = "Retry";
+"event_formatter_call_end_call" = "End call";
 "event_formatter_group_call" = "Group call";
 "event_formatter_group_call_join" = "Join";
 "event_formatter_group_call_leave" = "Leave";
