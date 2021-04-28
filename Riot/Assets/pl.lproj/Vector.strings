@@ -524,7 +524,7 @@
 "settings_key_backup_button_delete" = "Usuń kopię zapasową";
 "settings_key_backup_delete_confirmation_prompt_title" = "Usuń kopię zapasową";
 "auth_login_single_sign_on" = "Zaloguj się za pomocą SSO";
-"auth_autodiscover_invalid_response" = "Nieprawidłowa odpowiedź na wykrycie serwera domowego";
+"auth_autodiscover_invalid_response" = "Nie udało się odnaleźć serwera domowego";
 "settings_key_backup_button_create" = "Zacznij korzystać z kopii zapasowej kluczy";
 "settings_key_backup_button_restore" = "Przywróć z kopii zapasowej";
 "room_details_fail_to_update_avatar" = "Nie udało się zaaktualizować zdjęcia pokoju";
