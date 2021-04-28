@@ -1472,7 +1472,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             UIEdgeInsets itemInsets = UIEdgeInsetsMake(0, -5, 0, 5);
             if (self.supportCallOption)
             {
-                if (self.roomDataSource.room.isDirect)
+                if (self.roomDataSource.room.summary.membersCount.joined == 2 && self.roomDataSource.room.isDirect)
                 {
                     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"voice_call_hangon_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(onVoiceCallPressed:)];
                     item.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_call", @"Vector", nil);
@@ -1484,12 +1484,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"video_call"] style:UIBarButtonItemStylePlain target:self action:@selector(onVideoCallPressed:)];
                 item.imageInsets = rightBarButtonItems.count ? UIEdgeInsetsMake(0, 10, 0, -10) : itemInsets;
                 item.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_video_call", @"Vector", nil);
-                if (self.roomDataSource.room.isDirect)
+                if (self.roomDataSource.room.summary.membersCount.joined == 2 && self.roomDataSource.room.isDirect)
                 {
+                    //  Matrix call
                     item.enabled = !self.isCallActive;
                 }
                 else
                 {
+                    //  Jitsi call
                     if (self.isCallActive)
                     {
                         JitsiViewController *jitsiVC = [AppDelegate theDelegate].callPresenter.jitsiVC;
