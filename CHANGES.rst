@@ -8,7 +8,8 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
- * 
+ * RoomVC: Avoid navigation to integration management using integration popup with settings set to integration disabled (#4261).
+ * RiotSettings: Logging out resets RiotSettings (#4259).
 
 ⚠️ API Changes
  * 
