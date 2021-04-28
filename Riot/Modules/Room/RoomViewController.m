@@ -1410,6 +1410,17 @@ const NSUInteger kJumpToUnreadCloseButtonTintColorForDarkMode = 0x6F7882;
 
 #pragma mark - Internals
 
+- (UIBarButtonItem *)videoCallBarButtonItem
+{
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"video_call"]
+                                                             style:UIBarButtonItemStylePlain
+                                                            target:self
+                                                            action:@selector(onVideoCallPressed:)];
+    item.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_video_call", @"Vector", nil);
+    
+    return item;
+}
+
 - (void)setupRemoveJitsiWidgetRemoveView
 {
     self.removeJitsiWidgetView = [RemoveJitsiWidgetView instantiate];
@@ -1493,36 +1504,38 @@ const NSUInteger kJumpToUnreadCloseButtonTintColorForDarkMode = 0x6F7882;
         if (self.roomDataSource.isLive)
         {
             rightBarButtonItems = [NSMutableArray new];
+            BOOL hasCustomJoinButton = NO;
             
-            UIEdgeInsets itemInsets = UIEdgeInsetsMake(0, -5, 0, 5);
             if (self.supportCallOption)
             {
                 if (self.roomDataSource.room.summary.membersCount.joined == 2 && self.roomDataSource.room.isDirect)
                 {
-                    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"voice_call_hangon_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(onVoiceCallPressed:)];
-                    item.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_call", @"Vector", nil);
-                    item.imageInsets = UIEdgeInsetsMake(0, -5, 0, 5);
-                    item.enabled = !self.isCallActive;
-                    [rightBarButtonItems addObject:item];
-                }
-                
-                UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"video_call"] style:UIBarButtonItemStylePlain target:self action:@selector(onVideoCallPressed:)];
-                item.imageInsets = rightBarButtonItems.count ? UIEdgeInsetsMake(0, 10, 0, -10) : itemInsets;
-                item.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_video_call", @"Vector", nil);
-                if (self.roomDataSource.room.summary.membersCount.joined == 2 && self.roomDataSource.room.isDirect)
-                {
-                    //  Matrix call
-                    item.enabled = !self.isCallActive;
+                    //  voice call button for Matrix call
+                    UIBarButtonItem *itemVoice = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"voice_call_hangon_icon"]
+                                                                                  style:UIBarButtonItemStylePlain
+                                                                                 target:self
+                                                                                 action:@selector(onVoiceCallPressed:)];
+                    itemVoice.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_call", @"Vector", nil);
+                    itemVoice.enabled = !self.isCallActive;
+                    [rightBarButtonItems addObject:itemVoice];
+                    
+                    //  video call button for Matrix call
+                    UIBarButtonItem *itemVideo = [self videoCallBarButtonItem];
+                    itemVideo.enabled = !self.isCallActive;
+                    [rightBarButtonItems addObject:itemVideo];
                 }
                 else
                 {
-                    //  Jitsi call
+                    //  video call button for Jitsi call
                     if (self.isCallActive)
                     {
                         JitsiViewController *jitsiVC = [AppDelegate theDelegate].callPresenter.jitsiVC;
                         if ([jitsiVC.widget.roomId isEqualToString:self.roomDataSource.roomId])
                         {
+                            //  show a disabled call button
+                            UIBarButtonItem *item = [self videoCallBarButtonItem];
                             item.enabled = NO;
+                            [rightBarButtonItems addObject:item];
                         }
                         else
                         {
@@ -1534,29 +1547,39 @@ const NSUInteger kJumpToUnreadCloseButtonTintColorForDarkMode = 0x6F7882;
                                        action:@selector(onVideoCallPressed:)
                              forControlEvents:UIControlEventTouchUpInside];
                             button.contentEdgeInsets = UIEdgeInsetsMake(4, 12, 4, 12);
-                            item.customView = button;
-                            item.enabled = YES;
+                            UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
+                            item.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_video_call", @"Vector", nil);
+                            [rightBarButtonItems addObject:item];
+                            
+                            hasCustomJoinButton = YES;
                         }
                     }
                     else
                     {
+                        //  show a video call button
+                        //  item will still be enabled, and when tapped an alert will be displayed to the user
+                        UIBarButtonItem *item = [self videoCallBarButtonItem];
                         if (!self.canEditJitsiWidget)
                         {
                             item.image = [[UIImage imageNamed:@"video_call"] vc_withAlpha:0.3];
                         }
-                        //  item will still be enabled, and when tapped an alert will be displayed to the user
-                        item.enabled = YES;
+                        [rightBarButtonItems addObject:item];
                     }
                 }
-                [rightBarButtonItems addObject:item];
-                itemInsets = UIEdgeInsetsMake(0, 20, 0, -20);
             }
             
             if ([self widgetsCount:NO])
             {
-                UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"integrations_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(onIntegrationsPressed:)];
-                item.imageInsets = itemInsets;
+                UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"integrations_icon"]
+                                                                         style:UIBarButtonItemStylePlain
+                                                                        target:self
+                                                                        action:@selector(onIntegrationsPressed:)];
                 item.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_integrations", @"Vector", nil);
+                if (hasCustomJoinButton)
+                {
+                    item.imageInsets = UIEdgeInsetsMake(0, -5, 0, -5);
+                    item.landscapeImagePhoneInsets = UIEdgeInsetsMake(0, -5, 0, -5);
+                }
                 [rightBarButtonItems addObject:item];
             }
             
