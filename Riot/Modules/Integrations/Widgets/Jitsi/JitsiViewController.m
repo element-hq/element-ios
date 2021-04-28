@@ -27,6 +27,11 @@ static const NSString *kJitsiDataErrorKey = @"error";
  */
 static NSString * _Nonnull kRCTSafeAreaViewClassName = @"RCTSafeAreaView";
 
+/*
+ Some feature flags defined in https://github.com/jitsi/jitsi-meet/blob/master/react/features/base/flags/constants.js
+ */
+static NSString * _Nonnull kJitsiFeatureFlagChatEnabled = @"chat.enabled";
+
 @interface JitsiViewController () <PictureInPicturable, JitsiMeetViewDelegate>
 
 // The jitsi-meet SDK view
@@ -268,6 +273,7 @@ static NSString * _Nonnull kRCTSafeAreaViewClassName = @"RCTSafeAreaView";
                                                                      andEmail:nil
                                                                     andAvatar:avatarUrl];
             builder.token = self.jwtToken;
+            [builder setFeatureFlag:kJitsiFeatureFlagChatEnabled withBoolean:NO];
         }];
         
         [self.jitsiMeetView join:jitsiMeetConferenceOptions];
