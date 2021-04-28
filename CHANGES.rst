@@ -19,7 +19,7 @@ Changes to be released in next version
  * 
     
 🧱 Build
- * 
+ * GH Actions: Make jobs use the right version of MatrixKit and MatrixSDK.
 
 Others
  * 
