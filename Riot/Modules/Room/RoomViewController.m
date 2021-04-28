@@ -1541,8 +1541,10 @@ const NSUInteger kJumpToUnreadCloseButtonTintColorForDarkMode = 0x6F7882;
                         {
                             //  show Join button
                             CallTileActionButton *button = [CallTileActionButton new];
-                            [button setImage:[UIImage imageNamed:@"call_video_icon"] forState:UIControlStateNormal];
-                            [button setTitle:NSLocalizedStringFromTable(@"room_join_group_call", @"Vector", nil) forState:UIControlStateNormal];
+                            [button setImage:[UIImage imageNamed:@"call_video_icon"]
+                                    forState:UIControlStateNormal];
+                            [button setTitle:NSLocalizedStringFromTable(@"room_join_group_call", @"Vector", nil)
+                                    forState:UIControlStateNormal];
                             [button addTarget:self
                                        action:@selector(onVideoCallPressed:)
                              forControlEvents:UIControlEventTouchUpInside];
