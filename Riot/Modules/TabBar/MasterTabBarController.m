@@ -64,6 +64,9 @@
     
     // The groups data source
     GroupsDataSource *groupsDataSource;
+
+    // All tabs deinfed in the storyboard
+    NSArray *initalTabs;
 }
 
 @property(nonatomic,getter=isHidden) BOOL hidden;
@@ -131,7 +134,7 @@
     }];
     [self userInterfaceThemeDidChange];
     
-    [self updateTabs];
+    initalTabs = [NSArray arrayWithArray:self.viewControllers];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -161,6 +164,8 @@
     
     // Show the tab bar view controller content only when a user is logged in.
     self.hidden = ([MXKAccountManager sharedManager].accounts.count == 0);
+    
+    [self updateTabs];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -884,13 +889,7 @@
 
 - (void)updateTabs
 {
-    if (RiotSettings.shared.homeScreenShowCommunitiesTab && RiotSettings.shared.homeScreenShowRoomsTab
-        && RiotSettings.shared.homeScreenShowPeopleTab && RiotSettings.shared.homeScreenShowFavouritesTab)
-    {
-        return;
-    }
-    
-    NSMutableArray *newTabs = [NSMutableArray arrayWithArray:self.viewControllers];
+    NSMutableArray *newTabs = [NSMutableArray arrayWithArray:initalTabs];
     if (!RiotSettings.shared.homeScreenShowCommunitiesTab)
     {
         [newTabs removeObjectAtIndex:TABBAR_GROUPS_INDEX];
