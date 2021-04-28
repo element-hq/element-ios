@@ -131,7 +131,8 @@
 NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNotification";
 NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTileTappedNotification";
 const NSTimeInterval kResizeComposerAnimationDuration = .05;
-const NSUInteger kJumptoUnreadBannerBgColorForDarkMode = 0x394049;
+const NSUInteger kJumpToUnreadBannerBgColorForDarkMode = 0x21262C;
+const NSUInteger kJumpToUnreadCloseButtonTintColorForDarkMode = 0x6F7882;
 
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
@@ -464,7 +465,6 @@ const NSUInteger kJumptoUnreadBannerBgColorForDarkMode = 0x394049;
     // Prepare jump to last unread banner
     self.jumpToLastUnreadImageView.tintColor = ThemeService.shared.theme.tintColor;
     self.jumpToLastUnreadLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
-    self.resetReadMarkerButton.tintColor = ThemeService.shared.theme.tabBarUnselectedItemTintColor;
     
     self.previewHeaderContainer.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     
@@ -489,8 +489,9 @@ const NSUInteger kJumptoUnreadBannerBgColorForDarkMode = 0x394049;
     {
         [self.scrollToBottomButton setImage:[UIImage imageNamed:@"scrolldown_dark"] forState:UIControlStateNormal];
 
-        self.jumpToLastUnreadBanner.backgroundColor = [[UIColor alloc] initWithRgb:kJumptoUnreadBannerBgColorForDarkMode];
+        self.jumpToLastUnreadBanner.backgroundColor = [[UIColor alloc] initWithRgb:kJumpToUnreadBannerBgColorForDarkMode];
         [self.jumpToLastUnreadBanner vc_removeShadow];
+        self.resetReadMarkerButton.tintColor = [[UIColor alloc] initWithRgb:kJumpToUnreadCloseButtonTintColorForDarkMode];
     }
     else
     {
@@ -501,6 +502,7 @@ const NSUInteger kJumptoUnreadBannerBgColorForDarkMode = 0x394049;
                                                     offset:CGSizeMake(0, 4)
                                                     radius:8
                                                    opacity:0.1];
+        self.resetReadMarkerButton.tintColor = ThemeService.shared.theme.tabBarUnselectedItemTintColor;
     }
     
     self.scrollToBottomBadgeLabel.badgeColor = ThemeService.shared.theme.tintColor;
