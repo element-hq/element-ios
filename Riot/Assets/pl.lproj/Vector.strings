@@ -708,7 +708,7 @@
 "emoji_picker_flags_category" = "Flagi";
 // MARK: Reaction history
 "reaction_history_title" = "Reakcje";
-"auth_forgot_password_error_no_configured_identity_server" = "Brak skonfigurowanego serwera tożsamości: dodaj serwer tożsamości, aby zresetować hasło.";
+"auth_forgot_password_error_no_configured_identity_server" = "Brak skonfigurowanego serwera uwierzytelniania: dodaj serwer tożsamości, aby zresetować hasło.";
 "auth_softlogout_signed_out" = "Zostałeś(-aś) wylogowany(-a)";
 "auth_softlogout_reason" = "Administrator serwera domowego (%1$@) wylogował Cię z Twojego konta %2$@ (%3$@).";
 "auth_softlogout_recover_encryption_keys" = "Zaloguj się aby odzyskać klucze szyfrujące zapisane na tym urządzeniu. Potrzebujesz ich aby odczytać wszystkie swoje zaszyfrowane wiadomości na którymkolwiek z Twoich urządzeń.";
@@ -811,7 +811,7 @@
 "switch" = "Przełącz";
 "more" = "Więcej";
 // Accessibility
-"accessibility_checkbox_label" = "pole wyboru";
+"accessibility_checkbox_label" = "przełącznik";
 // MARK: Clients
 "client_desktop_name" = "Element Desktop";
 "client_web_name" = "Element Web";
@@ -1417,3 +1417,7 @@
 
 // Call Bar
 "callbar_only_single_active" = "Aktywne połączenie (%@)";
+"auth_email_is_required" = "Brak skonfigurowanego serwera uwierzytelniania, nie możesz dodać adresu e-mail na wypadek konieczności zresetowania hasła.";
+"auth_add_email_phone_message_2" = "Ustaw adres e-mail na wypadek konieczności przywracania dostępu do konta, dodatkowo adres ten lub numer telefonu może być wykorzystany przez Twoich znajomych do znalezienia Twojego profilu.";
+"auth_add_phone_message_2" = "Ustaw numer telefonu, numer ten może być wykorzystany przez Twoich znajomych do znalezienia Twojego profilu.";
+"auth_add_email_message_2" = "Ustaw adres e-mail na wypadek konieczności przywracania dostępu do konta, dodatkowo adres ten może być wykorzystany przez Twoich znajomych do znalezienia Twojego profilu.";
