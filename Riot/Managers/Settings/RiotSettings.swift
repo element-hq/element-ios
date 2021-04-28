@@ -85,36 +85,6 @@ final class RiotSettings: NSObject {
         return userDefaults
     }()
     
-    // MARK: - Public
-    
-    func reset() {
-        defaults.removeObject(forKey: UserDefaultsKeys.settingsScreenShowChangePassword)
-        defaults.removeObject(forKey: UserDefaultsKeys.settingsScreenShowInviteFriends)
-        defaults.removeObject(forKey: UserDefaultsKeys.settingsScreenShowEnableStunServerFallback)
-        defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowSessions)
-        defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowSetupBackup)
-        defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowRestoreBackup)
-        defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowDeleteBackup)
-        defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowCryptographyInfo)
-        defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowCryptographyExport)
-        defaults.removeObject(forKey: UserDefaultsKeys.settingsSecurityScreenShowAdvancedUnverifiedDevices)
-        defaults.removeObject(forKey: UserDefaultsKeys.roomCreationScreenAllowEncryptionConfiguration)
-        defaults.removeObject(forKey: UserDefaultsKeys.roomCreationScreenRoomIsEncrypted)
-        defaults.removeObject(forKey: UserDefaultsKeys.roomCreationScreenAllowRoomTypeConfiguration)
-        defaults.removeObject(forKey: UserDefaultsKeys.roomCreationScreenRoomIsPublic)
-        defaults.removeObject(forKey: UserDefaultsKeys.allowInviteExernalUsers)
-        defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenShowLowPriorityOption)
-        defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenShowDirectChatOption)
-        defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenAllowChangingAccessSettings)
-        defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenAllowChangingHistorySettings)
-        defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenShowAddressSettings)
-        defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenShowFlairSettings)
-        defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenShowAdvancedSettings)
-        defaults.removeObject(forKey: UserDefaultsKeys.roomSettingsScreenAdvancedShowEncryptToVerifiedOption)
-        defaults.removeObject(forKey: UserDefaultsKeys.allowInviteExernalUsers)
-        defaults.removeObject(forKey: UserDefaultsKeys.roomsAllowToJoinPublicRooms)
-    }
-    
     // MARK: Servers
     
     var homeserverUrlString: String {
