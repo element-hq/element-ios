@@ -1355,8 +1355,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         if (roomDataSource.currentTypingUsers && !roomDataSource.currentTypingUsers.count)
         {
             [roomDataSource resetTypingNotification];
-            NSInteger count = [self.bubblesTableView numberOfRowsInSection:0];
-            [self.bubblesTableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:count - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+            [self.bubblesTableView reloadData];
         }
     }
 
