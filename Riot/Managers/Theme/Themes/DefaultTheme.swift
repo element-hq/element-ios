@@ -99,6 +99,8 @@ class DefaultTheme: NSObject, Theme {
     
     var shadowColor: UIColor = UIColor(rgb: 0x000000)
     
+    var callTileBackgroundColor: UIColor = UIColor(rgb: 0xF4F6FA)
+    
     func applyStyle(onTabBar tabBar: UITabBar) {
         tabBar.unselectedItemTintColor = self.tabBarUnselectedItemTintColor
         tabBar.tintColor = self.tintColor

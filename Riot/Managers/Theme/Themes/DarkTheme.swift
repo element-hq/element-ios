@@ -89,6 +89,8 @@ class DarkTheme: NSObject, Theme {
     
     var shadowColor: UIColor = UIColor(rgb: 0xFFFFFF)
     
+    var callTileBackgroundColor: UIColor = UIColor(rgb: 0x394049)
+    
     var messageTickColor: UIColor = .white
 
     func applyStyle(onTabBar tabBar: UITabBar) {
