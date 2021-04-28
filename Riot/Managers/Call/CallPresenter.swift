@@ -614,7 +614,11 @@ class CallPresenter: NSObject {
             return
         }
         
-        presentCallVC(callVC)
+        if callVC == pipCallVC {
+            exitPipCallVC(callVC)
+        } else {
+            presentCallVC(callVC)
+        }
     }
     
     @objc
@@ -648,7 +652,11 @@ class CallPresenter: NSObject {
             return
         }
         
-        presentCallVC(jitsiVC)
+        if jitsiVC == pipCallVC {
+            exitPipCallVC(jitsiVC)
+        } else {
+            presentCallVC(jitsiVC)
+        }
     }
     
     //  MARK: - Call Screens
