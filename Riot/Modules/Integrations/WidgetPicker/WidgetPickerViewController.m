@@ -78,18 +78,21 @@
         }
 
         // Link to the integration manager
-        alertAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"widget_picker_manage_integrations", @"Vector", nil)
-                                               style:UIAlertActionStyleDefault
-                                             handler:^(UIAlertAction * _Nonnull action)
-                       {
-                           IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc] initForMXSession:self->mxSession
-                                                                                                                             inRoom:self->roomId
-                                                                                                                             screen:kIntegrationManagerMainScreen
-                                                                                                                           widgetId:nil];
+        if (RiotSettings.shared.roomInfoScreenShowIntegrations)
+        {
+            alertAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"widget_picker_manage_integrations", @"Vector", nil)
+                                                   style:UIAlertActionStyleDefault
+                                                 handler:^(UIAlertAction * _Nonnull action)
+                           {
+                               IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc] initForMXSession:self->mxSession
+                                                                                                                                 inRoom:self->roomId
+                                                                                                                                 screen:kIntegrationManagerMainScreen
+                                                                                                                               widgetId:nil];
 
-                           [mxkViewController presentViewController:modularVC animated:NO completion:nil];
-                       }];
-        [self.alertController addAction:alertAction];
+                               [mxkViewController presentViewController:modularVC animated:NO completion:nil];
+                           }];
+            [self.alertController addAction:alertAction];
+        }
 
         // Cancel
         alertAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
