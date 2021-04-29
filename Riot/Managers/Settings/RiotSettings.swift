@@ -60,6 +60,8 @@ final class RiotSettings: NSObject {
         static let roomSettingsScreenShowFlairSettings = "roomSettingsScreenShowFlairSettings"
         static let roomSettingsScreenShowAdvancedSettings = "roomSettingsScreenShowAdvancedSettings"
         static let roomSettingsScreenAdvancedShowEncryptToVerifiedOption = "roomSettingsScreenAdvancedShowEncryptToVerifiedOption"
+        static let settingsScreenShowNotificationDecodedContentOption = "settingsScreenShowNotificationDecodedContentOption"
+        static let settingsScreenShowNsfwRoomsOption = "settingsScreenShowNsfwRoomsOption"
         static let roomsAllowToJoinPublicRooms = "roomsAllowToJoinPublicRooms"
         static let homeScreenShowFavouritesTab = "homeScreenShowFavouritesTab"
         static let homeScreenShowPeopleTab = "homeScreenShowPeopleTab"
@@ -479,6 +481,26 @@ final class RiotSettings: NSObject {
             return defaults.bool(forKey: UserDefaultsKeys.settingsScreenShowEnableStunServerFallback)
         } set {
             defaults.set(newValue, forKey: UserDefaultsKeys.settingsScreenShowEnableStunServerFallback)
+        }
+    }
+    var settingsScreenShowNotificationDecodedContentOption: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.settingsScreenShowNotificationDecodedContentOption) != nil else {
+                return BuildSettings.settingsScreenShowNotificationDecodedContentOption
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.settingsScreenShowNotificationDecodedContentOption)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.settingsScreenShowNotificationDecodedContentOption)
+        }
+    }
+    var settingsScreenShowNsfwRoomsOption: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.settingsScreenShowNsfwRoomsOption) != nil else {
+                return BuildSettings.settingsScreenShowNsfwRoomsOption
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.settingsScreenShowNsfwRoomsOption)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.settingsScreenShowNsfwRoomsOption)
         }
     }
     var settingsSecurityScreenShowSessions: Bool {
