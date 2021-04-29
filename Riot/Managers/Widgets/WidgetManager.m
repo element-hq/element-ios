@@ -285,7 +285,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     // Riot-Web still uses V1 type
     NSString *widgetId = [NSString stringWithFormat:@"%@_%@_%@", kWidgetTypeJitsiV1, room.mxSession.myUser.userId, @((uint64_t)([[NSDate date] timeIntervalSince1970] * 1000))];
     
-    NSURL *preferredJitsiServerUrl = BuildSettings.jitsiServerUrl;
+    NSURL *preferredJitsiServerUrl = [room.mxSession vc_homeserverConfiguration].jitsi.serverURL;
 
     JitsiService *jitsiService = JitsiService.shared;
     
