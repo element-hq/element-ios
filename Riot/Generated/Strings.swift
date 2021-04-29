@@ -1250,7 +1250,7 @@ internal enum VectorL10n {
   internal static var eventFormatterCallBack: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_back") 
   }
-  /// Connecting...
+  /// Connecting…
   internal static var eventFormatterCallConnecting: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_connecting") 
   }
@@ -1274,7 +1274,7 @@ internal enum VectorL10n {
   internal static var eventFormatterCallRetry: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_retry") 
   }
-  /// Ringing...
+  /// Ringing…
   internal static var eventFormatterCallRinging: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_ringing") 
   }
