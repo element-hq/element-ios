@@ -83,7 +83,7 @@ class VectorWellKnownTests: XCTestCase {
         let expectedE2EEEByDefaultEnabled = false
         
         let wellKnownDictionary: [String: Any] = [
-            "im.vector.riot.e2ee" : [
+            "io.element.e2ee" : [
                 "default" : expectedE2EEEByDefaultEnabled
             ]
         ]
