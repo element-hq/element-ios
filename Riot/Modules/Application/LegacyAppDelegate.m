@@ -228,6 +228,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 @property (nonatomic, strong) MajorUpdateManager *majorUpdateManager;
 
+@property (nonatomic, strong) SpaceFeatureUnavailablePresenter *spaceFeatureUnavailablePresenter;
+
 @end
 
 @implementation LegacyAppDelegate
@@ -2740,6 +2742,24 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession restoreInitialDisplay:(BOOL)restoreInitialDisplay completion:(void (^)(void))completion
 {
+    if (roomId && mxSession)
+    {
+        MXRoom *room = [mxSession roomWithRoomId:roomId];
+        
+        if (room.summary.roomType == MXRoomTypeSpace)
+        {
+            // Indicates that spaces are not supported
+            [self showSpaceLinkNotAvailable];
+            
+            if (completion)
+            {
+                completion();
+            }
+            
+            return;
+        }
+    }
+    
     void (^selectRoom)(void) = ^() {
         // Select room to display its details (dispatch this action in order to let TabBarController end its refresh)
         [self.masterTabBarController selectRoomWithId:roomId andEventId:eventId inMatrixSession:mxSession completion:^{
@@ -4631,6 +4651,18 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     
     return [authVC continueSSOLoginWithToken:loginToken txnId:txnId];
+}
+
+#pragma mark - Spaces
+
+- (void)showSpaceLinkNotAvailable
+{
+    if (!self.spaceFeatureUnavailablePresenter)
+    {
+        self.spaceFeatureUnavailablePresenter = [SpaceFeatureUnavailablePresenter new];
+    }
+    
+    [self.spaceFeatureUnavailablePresenter presentSpaceLinkUnavailableFrom:self animated:YES];
 }
 
 @end
