@@ -11,6 +11,7 @@ Changes to be released in next version
  * RoomVC: Avoid navigation to integration management using integration popup with settings set to integration disabled (#4261).
  * RiotSettings: Logging out resets RiotSettings (#4259).
  * RoomVC: Crash in `setScrollToBottomHidden` method (#4270).
+ * Notifications: Make them work in debug mode (#4274).
 
 ⚠️ API Changes
  * 
