@@ -1615,3 +1615,11 @@ Tap the + to start adding people.";
 
 "room_intro_cell_information_dm_sentence2" = "Only the two of you are in this conversation, no one else can join.";
 "room_intro_cell_information_multiple_dm_sentence2" = "Only you are in this conversation, unless any of you invites someone to join.";
+
+// Mark: - Spaces
+
+"space_feature_unavailable_title" = "Not available";
+"space_feature_unavailable_instructions" = "Use your computer to open the link. If you do, we’ll let you know when the feature comes to iOS.";
+"space_feature_unavailable_invite_info" = "You’re trying to manage a Space invite. Spaces are currently only available in beta on web, or Android";
+"space_feature_unavailable_space_link" = "You’re trying to open a link to a Space. Spaces are currently only available in beta on web, or Android";
+"space_feature_unavailable_share_link_action" = "Share link";
