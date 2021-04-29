@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * RoomMemberDetailsVC: Enable / disable "Hide all messages from this user" from settings (#4281).
 
 🐛 Bugfix
  * RoomVC: Avoid navigation to integration management using integration popup with settings set to integration disabled (#4261).
