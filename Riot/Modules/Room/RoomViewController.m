@@ -5368,7 +5368,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         ];
     }
     
-    BOOL showMoreOption = ([event.wireType isEqual:kMXEventTypeStringRoomMember] && RiotSettings.shared.roomContextualMenuShowMoreOptionForStates) || (![event.wireType isEqual:kMXEventTypeStringRoomMember] && RiotSettings.shared.roomContextualMenuShowMoreOptionForMessages);
+    BOOL showMoreOption = (event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForStates) || (!event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForMessages);
     
     if (showMoreOption)
     {
