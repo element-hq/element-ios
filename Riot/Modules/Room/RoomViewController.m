@@ -2987,7 +2987,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }
         }
         
-        if (![selectedEvent.sender isEqualToString:self.mainSession.myUser.userId])
+        if (![selectedEvent.sender isEqualToString:self.mainSession.myUser.userId] && RiotSettings.shared.roomContextualMenuShowReportContentOption)
         {
             [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_report", @"Vector", nil)
                                                              style:UIAlertActionStyleDefault
@@ -5368,12 +5368,25 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         ];
     }
     
-    return @[
-        [self copyMenuItemWithEvent:event andCell:cell],
-        [self replyMenuItemWithEvent:event],
-        [self editMenuItemWithEvent:event],
-        [self moreMenuItemWithEvent:event andCell:cell]
-    ];
+    BOOL showMoreOption = (event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForStates) || (!event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForMessages);
+    
+    if (showMoreOption)
+    {
+        return @[
+            [self copyMenuItemWithEvent:event andCell:cell],
+            [self replyMenuItemWithEvent:event],
+            [self editMenuItemWithEvent:event],
+            [self moreMenuItemWithEvent:event andCell:cell]
+        ];
+    }
+    else
+    {
+        return @[
+            [self copyMenuItemWithEvent:event andCell:cell],
+            [self replyMenuItemWithEvent:event],
+            [self editMenuItemWithEvent:event]
+        ];
+    }
 }
 
 - (void)showContextualMenuForEvent:(MXEvent*)event fromSingleTapGesture:(BOOL)usedSingleTapGesture cell:(id<MXKCellRendering>)cell animated:(BOOL)animated
