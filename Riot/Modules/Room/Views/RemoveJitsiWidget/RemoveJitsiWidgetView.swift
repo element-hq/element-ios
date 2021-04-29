@@ -75,13 +75,13 @@ class RemoveJitsiWidgetView: UIView {
                 hangupImage.tintColor = theme.noticeColor
             } else {
                 hangupView.backgroundColor = theme.noticeColor
-                hangupImage.tintColor = theme.backgroundColor
+                hangupImage.tintColor = theme.callScreenButtonTintColor
             }
             slidingViewLeadingConstraint.constant = percentage * slidingView.frame.width
         case .completed:
             arrowsView.isAnimating = false
             hangupView.backgroundColor = theme.noticeColor
-            hangupImage.tintColor = theme.backgroundColor
+            hangupImage.tintColor = theme.callScreenButtonTintColor
         }
     }
     
