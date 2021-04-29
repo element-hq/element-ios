@@ -31,7 +31,11 @@ class DialpadActionButton: DialpadButton {
         switch type {
         case .backspace:
             backgroundColor = .clear
-            tintColor = theme.noticeSecondaryColor
+            if theme.identifier == ThemeIdentifier.light.rawValue {
+                tintColor = theme.textSecondaryColor
+            } else {
+                tintColor = theme.textTertiaryColor
+            }
         case .call:
             backgroundColor = theme.tintColor
             tintColor = .white
