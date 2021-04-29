@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Spaces: Hide spaces from room list and home but keep space invites (#4252).
 
 🐛 Bugfix
  * RoomVC: Avoid navigation to integration management using integration popup with settings set to integration disabled (#4261).
