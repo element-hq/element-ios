@@ -9,6 +9,10 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+env:
+  # Make the git branch for a PR available to our Fastfile
+  MX_GIT_BRANCH: ${{ github.event.pull_request.head.ref }}
+
 jobs:
   build:
     name: Build
@@ -39,7 +43,7 @@ jobs:
           bundle config path vendor/bundle
           bundle install --jobs 4 --retry 3    
       - name: Use right MatrixKit and MatrixSDK versions
-        run: bundle exec fastlane point_dependencies_to_pending_releases
+        run: bundle exec fastlane point_dependencies_to_related_branches
 
       # Main step
       - name: Build iOS simulator
@@ -75,7 +79,7 @@ jobs:
           bundle config path vendor/bundle
           bundle install --jobs 4 --retry 3    
       - name: Use right MatrixKit and MatrixSDK versions
-        run: bundle exec fastlane point_dependencies_to_pending_releases
+        run: bundle exec fastlane point_dependencies_to_related_branches
 
       # Main step
       - name: Unit tests
