@@ -535,7 +535,7 @@
 "event_formatter_rerequest_keys_part2" = " zure beste saioetatik.";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Eskaria bidalita";
-"rerequest_keys_alert_message" = "Abiatu Element mezua deszifratu dezakeen beste gailuren batean handik hona gakoak bidali ahal izateko.";
+"rerequest_keys_alert_message" = "Abiatu %@ mezua deszifratu dezakeen beste gailuren batean handik hona gakoak bidali ahal izateko.";
 "room_message_reply_to_placeholder" = "Bidali erantzun bat (zifratu gabea)…";
 "encrypted_room_message_reply_to_placeholder" = "Bidali zifratutako erantzun bat…";
 "room_message_reply_to_short_placeholder" = "Bidali erantzun bat…";

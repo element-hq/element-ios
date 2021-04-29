@@ -551,7 +551,7 @@
 "deactivate_account_password_alert_message" = "Per a continuar si us plau introdueix la teva contrasenya";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Sol·licitud enviada";
-"rerequest_keys_alert_message" = "Inicia Element en un altre dispositiu que pugui desxifrar el missatge per que pugui enviar les claus a aquest dispositiu.";
+"rerequest_keys_alert_message" = "Inicia %@ en un altre dispositiu que pugui desxifrar el missatge per que pugui enviar les claus a aquest dispositiu.";
 // String for App Store
 "store_short_description" = "Xat/VoIP segur i descentralitzat";
 "close" = "Tanca";

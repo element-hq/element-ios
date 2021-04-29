@@ -5240,6 +5240,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }];
     
     // Show the explanation dialog
+    NSString *message = [NSString stringWithFormat:NSLocalizedStringFromTable(@"rerequest_keys_alert_message", @"Vector", nil), BuildSettings.bundleDisplayName];
     alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"rerequest_keys_alert_title", @"Vector", nil)
                                                 message:NSLocalizedStringFromTable(@"rerequest_keys_alert_message", @"Vector", nil)
                                          preferredStyle:UIAlertControllerStyleAlert];

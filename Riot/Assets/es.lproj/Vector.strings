@@ -66,7 +66,7 @@
 "deactivate_account_password_alert_message" = "Para continuar, ingresa tu contraseña por favor";
 "deactivate_account_forget_messages_information_part2_emphasize" = "Advertencia";
 "deactivate_account_informations_part2_emphasize" = "Esta acción es irreversible.";
-"rerequest_keys_alert_message" = "Por favor, inicia Element en otro dispositivo que pueda descifrar el mensaje para que pueda enviar las claves a este dispositivo.";
+"rerequest_keys_alert_message" = "Por favor, inicia %@ en otro dispositivo que pueda descifrar el mensaje para que pueda enviar las claves a este dispositivo.";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Solicitud Enviada";
 "auth_password_dont_match" = "Las contraseñas no coinciden";

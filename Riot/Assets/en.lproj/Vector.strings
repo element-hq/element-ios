@@ -993,7 +993,7 @@ Tap the + to start adding people.";
 
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Request Sent";
-"rerequest_keys_alert_message" = "Please launch Element on another device that can decrypt the message so it can send the keys to this session.";
+"rerequest_keys_alert_message" = "Please launch %@ on another device that can decrypt the message so it can send the keys to this session.";
 
 // MARK: Secure backup setup
 

@@ -353,7 +353,7 @@
 "deactivate_account_password_alert_message" = "Aby kontynuować, proszę wprowadzić swoje hasło";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Prośba wysłana";
-"rerequest_keys_alert_message" = "Uruchom proszę Element na innym urządzeniu, które może odszyfrować wiadomość, aby wysłać klucze do tego urządzenia.";
+"rerequest_keys_alert_message" = "Uruchom proszę %@ na innym urządzeniu, które może odszyfrować wiadomość, aby wysłać klucze do tego urządzenia.";
 "on" = "Włączone";
 "video" = "Obraz";
 "auth_forgot_password" = "Zapomniałeś(-aś) hasło?";

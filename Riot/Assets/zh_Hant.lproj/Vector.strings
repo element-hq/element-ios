@@ -502,7 +502,7 @@
 "widget_creation_failure" = "建立 Widget 失敗";
 "widget_sticker_picker_no_stickerpacks_alert" = "您目前沒有啟用任何貼圖。";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "現在新增一些嗎?";
-"rerequest_keys_alert_message" = "請在其他可解密訊息的裝置開啟 Element 以將密鑰傳送到此工作階段。";
+"rerequest_keys_alert_message" = "請在其他可解密訊息的裝置開啟 %@ 以將密鑰傳送到此工作階段。";
 "bug_report_description" = "請描述此錯誤。您做了什麼? 本來應該發生什麼? 以及實際發生什麼?";
 "bug_crash_report_description" = "請描述您在崩潰前做了什麼:";
 "bug_report_logs_description" = "為了診斷問題，此用戶端的記錄檔將會隨此錯誤報告送出。 如果您只想傳送上面的文字，請取消:";

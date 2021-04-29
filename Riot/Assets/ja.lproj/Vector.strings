@@ -554,7 +554,7 @@
 "deactivate_account_password_alert_message" = "続行するには、パスワードを入力してください";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "リクエスト送信";
-"rerequest_keys_alert_message" = "この端末にキーを送信できるように、メッセージを復号化できる別の端末でElementを起動してください。";
+"rerequest_keys_alert_message" = "この端末にキーを送信できるように、メッセージを復号化できる別の端末で%@を起動してください。";
 "room_event_action_ban_prompt_reason" = "このユーザーをブロックする理由";
 "room_resource_limit_exceeded_message_contact_1" = " Please ";
 "settings_ui_theme_black" = "Black";

@@ -588,7 +588,7 @@
 "deactivate_account_forget_messages_information_part1" = "当我的帐户被停用时，请忘记我发送的所有消息（";
 "deactivate_account_forget_messages_information_part3" = ": 这会导致将来加入的用户看到的是一段不完整的对话）";
 "deactivate_account_password_alert_message" = "要继续，请输入您的密码";
-"rerequest_keys_alert_message" = "请在另一台可以解密消息的设备上启动Element，这样它就可以将密钥发送到此会话。";
+"rerequest_keys_alert_message" = "请在另一台可以解密消息的设备上启动%@，这样它就可以将密钥发送到此会话。";
 "key_backup_setup_title" = "密钥备份";
 "key_backup_setup_skip_alert_title" = "您确定吗？";
 "key_backup_setup_skip_alert_message" = "如果您登出或丢失设备，可能会丢失安全消息。";

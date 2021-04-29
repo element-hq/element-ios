@@ -2262,9 +2262,9 @@ internal enum VectorL10n {
   internal static var rename: String { 
     return VectorL10n.tr("Vector", "rename") 
   }
-  /// Please launch Element on another device that can decrypt the message so it can send the keys to this session.
-  internal static var rerequestKeysAlertMessage: String { 
-    return VectorL10n.tr("Vector", "rerequest_keys_alert_message") 
+  /// Please launch %@ on another device that can decrypt the message so it can send the keys to this session.
+  internal static func rerequestKeysAlertMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "rerequest_keys_alert_message", p1)
   }
   /// Request Sent
   internal static var rerequestKeysAlertTitle: String { 

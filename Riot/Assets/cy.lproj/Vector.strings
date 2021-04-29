@@ -703,7 +703,7 @@
 "deactivate_account_password_alert_message" = "I barhau, rhowch eich cyfrinair os gwelwch yn dda";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Anfonwyd y Cais";
-"rerequest_keys_alert_message" = "Lansiwch Element ar ddyfais arall a all ddadgryptio'r neges fel y gall anfon yr allweddi i'r sesiwn hon.";
+"rerequest_keys_alert_message" = "Lansiwch %@ ar ddyfais arall a all ddadgryptio'r neges fel y gall anfon yr allweddi i'r sesiwn hon.";
 "key_backup_setup_title" = "Allweddi Wrth Gefn";
 "key_backup_setup_skip_alert_title" = "Ydych chi'n siwr?";
 "key_backup_setup_skip_alert_message" = "Efallai y byddwch chi'n colli negeseuon diogel os byddwch chi'n allgofnodi neu'n colli'ch dyfais.";

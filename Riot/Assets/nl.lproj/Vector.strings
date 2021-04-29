@@ -543,7 +543,7 @@
 "deactivate_account_forget_messages_information_part2_emphasize" = "Waarschuwing";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Aanvraag verstuurd";
-"rerequest_keys_alert_message" = "Start Element op een ander apparaat dat het bericht kan ontsleutelen, zodat het de sleutels kan sturen naar dit apparaat.";
+"rerequest_keys_alert_message" = "Start %@ op een ander apparaat dat het bericht kan ontsleutelen, zodat het de sleutels kan sturen naar dit apparaat.";
 "settings_deactivate_my_account" = "Mijn account deactiveren";
 "event_formatter_rerequest_keys_part1_link" = "Versleutelingssleutels opnieuw aanvragen";
 "event_formatter_rerequest_keys_part2" = " van uw andere apparaten.";
