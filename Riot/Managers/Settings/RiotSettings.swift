@@ -72,6 +72,7 @@ final class RiotSettings: NSObject {
         static let roomScreenAllowStickerAction = "roomScreenAllowStickerAction"
         static let roomScreenAllowFilesAction = "roomScreenAllowFilesAction"
         static let roomInfoScreenShowIntegrations = "roomInfoScreenShowIntegrations"
+        static let roomMemberScreenShowIgnore = "roomMemberScreenShowIgnore"
         static let unifiedSearchScreenShowPublicDirectory = "unifiedSearchScreenShowPublicDirectory"
     }
     
@@ -333,6 +334,19 @@ final class RiotSettings: NSObject {
             return defaults.bool(forKey: UserDefaultsKeys.roomInfoScreenShowIntegrations)
         } set {
             defaults.set(newValue, forKey: UserDefaultsKeys.roomInfoScreenShowIntegrations)
+        }
+    }
+
+    // MARK: - Room Member Screen
+    
+    var roomMemberScreenShowIgnore: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomMemberScreenShowIgnore) != nil else {
+                return BuildSettings.roomMemberScreenShowIgnore
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomMemberScreenShowIgnore)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomMemberScreenShowIgnore)
         }
     }
 
