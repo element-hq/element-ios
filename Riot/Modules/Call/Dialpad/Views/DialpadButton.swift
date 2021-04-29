@@ -20,10 +20,10 @@ import UIKit
 class DialpadButton: UIButton {
     
     struct ViewData {
-        var title: String
-        var tone: SystemSoundID
-        var subtitle: String?
-        var showsSubtitleSpace: Bool
+        let title: String
+        let tone: SystemSoundID
+        let subtitle: String?
+        let showsSubtitleSpace: Bool
         
         init(title: String, tone: SystemSoundID, subtitle: String? = nil, showsSubtitleSpace: Bool = false) {
             self.title = title
