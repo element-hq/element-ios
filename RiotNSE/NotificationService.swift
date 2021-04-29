@@ -374,21 +374,19 @@ class NotificationService: UNNotificationServiceExtension {
                             
                             notificationBody = NSString.localizedUserNotificationString(forKey: "STICKER_FROM_USER", arguments: [eventSenderName as Any])
                         case .custom:
-                            if event.type == kWidgetMatrixEventTypeString || event.type == kWidgetModularEventTypeString {
-                                if let content = event.content, let type = content["type"] as? String {
-                                    if type == kWidgetTypeJitsiV1 || type == kWidgetTypeJitsiV2 {
-                                        notificationBody = NSString.localizedUserNotificationString(forKey: "GROUP_CALL_STARTED", arguments: nil)
-                                        notificationTitle = roomDisplayName
-                                        
-                                        // call notifications should stand out from normal messages, so we don't stack them
-                                        threadIdentifier = nil
-                                        //  only send VoIP pushes if ringing is enabled for group calls
-                                        if RiotSettings.shared.enableRingingForGroupCalls {
-                                            self.sendVoipPush(forEvent: event)
-                                        } else {
-                                            additionalUserInfo = [Constants.userInfoKeyPresentNotificationOnForeground: true]
-                                        }
-                                    }
+                            if (event.type == kWidgetMatrixEventTypeString || event.type == kWidgetModularEventTypeString),
+                               let type = event.content?["type"] as? String,
+                               (type == kWidgetTypeJitsiV1 || type == kWidgetTypeJitsiV2) {
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "GROUP_CALL_STARTED", arguments: nil)
+                                notificationTitle = roomDisplayName
+                                
+                                // call notifications should stand out from normal messages, so we don't stack them
+                                threadIdentifier = nil
+                                //  only send VoIP pushes if ringing is enabled for group calls
+                                if RiotSettings.shared.enableRingingForGroupCalls {
+                                    self.sendVoipPush(forEvent: event)
+                                } else {
+                                    additionalUserInfo = [Constants.userInfoKeyPresentNotificationOnForeground: true]
                                 }
                             }
                         default:
