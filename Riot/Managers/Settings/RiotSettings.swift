@@ -71,6 +71,9 @@ final class RiotSettings: NSObject {
         static let roomScreenAllowMediaLibraryAction = "roomScreenAllowMediaLibraryAction"
         static let roomScreenAllowStickerAction = "roomScreenAllowStickerAction"
         static let roomScreenAllowFilesAction = "roomScreenAllowFilesAction"
+        static let roomContextualMenuShowMoreOptionForMessages = "roomContextualMenuShowMoreOptionForMessages"
+        static let roomContextualMenuShowMoreOptionForStates = "roomContextualMenuShowMoreOptionForStates"
+        static let roomContextualMenuShowReportContentOption = "roomContextualMenuShowReportContentOption"
         static let roomInfoScreenShowIntegrations = "roomInfoScreenShowIntegrations"
         static let roomMemberScreenShowIgnore = "roomMemberScreenShowIgnore"
         static let unifiedSearchScreenShowPublicDirectory = "unifiedSearchScreenShowPublicDirectory"
@@ -321,6 +324,39 @@ final class RiotSettings: NSObject {
             return defaults.bool(forKey: UserDefaultsKeys.roomScreenAllowFilesAction)
         } set {
             defaults.set(newValue, forKey: UserDefaultsKeys.roomScreenAllowFilesAction)
+        }
+    }
+    
+    // MARK: - Room Contextual Menu
+
+    var roomContextualMenuShowMoreOptionForMessages: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomContextualMenuShowMoreOptionForMessages) != nil else {
+                return BuildSettings.roomContextualMenuShowMoreOptionForMessages
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomContextualMenuShowMoreOptionForMessages)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomContextualMenuShowMoreOptionForMessages)
+        }
+    }
+    var roomContextualMenuShowMoreOptionForStates: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomContextualMenuShowMoreOptionForStates) != nil else {
+                return BuildSettings.roomContextualMenuShowMoreOptionForStates
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomContextualMenuShowMoreOptionForStates)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomContextualMenuShowMoreOptionForStates)
+        }
+    }
+    var roomContextualMenuShowReportContentOption: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.roomContextualMenuShowReportContentOption) != nil else {
+                return BuildSettings.roomContextualMenuShowReportContentOption
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.roomContextualMenuShowReportContentOption)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.roomContextualMenuShowReportContentOption)
         }
     }
 

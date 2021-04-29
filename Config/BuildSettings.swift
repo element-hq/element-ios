@@ -268,6 +268,12 @@ final class BuildSettings: NSObject {
     static let roomScreenAllowMediaLibraryAction: Bool = true
     static let roomScreenAllowStickerAction: Bool = true
     static let roomScreenAllowFilesAction: Bool = true
+    
+    // MARK: - Room Contextual Menu
+
+    static let roomContextualMenuShowMoreOptionForMessages: Bool = true
+    static let roomContextualMenuShowMoreOptionForStates: Bool = true
+    static let roomContextualMenuShowReportContentOption: Bool = true
 
     // MARK: - Room Info Screen
     
