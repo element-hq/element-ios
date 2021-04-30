@@ -34,8 +34,6 @@ public class DefaultColors: Colors {
     
     public let separator: UIColor = UIColor(rgb: 0xE3E8F0)
     
-    public let toast: UIColor = UIColor(rgb: 0xF4F6FA)
-    
     public let tile: UIColor = UIColor(rgb: 0xF3F8FD)
     
     public let navigation: UIColor = UIColor(rgb: 0xF4F6FA)

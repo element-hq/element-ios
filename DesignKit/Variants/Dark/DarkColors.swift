@@ -34,8 +34,6 @@ public class DarkColors: Colors {
     
     public let separator: UIColor = UIColor(rgb: 0x21262C)
     
-    public let toast: UIColor = UIColor(rgb: 0xFFFFFF)
-    
     public let tile: UIColor = UIColor(rgb: 0x394049)
     
     public let navigation: UIColor = UIColor(rgb: 0x21262C)

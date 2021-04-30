@@ -20,28 +20,45 @@ import UIKit
 /// Colors at https://www.figma.com/file/X4XTH9iS2KGJ2wFKDqkyed/Compound?node-id=1255%3A1104
 @objc public protocol Colors {
     
+    /// - Focused/Active states
+    /// - CTAs
     var accent: UIColor { get }
     
+    /// - Error messages
+    /// - Content requiring user attention
+    /// - Notification, alerts
     var alert: UIColor { get }
     
+    /// - Text
+    /// - Icons
     var primaryContent: UIColor { get }
     
+    /// - Text
+    /// - Icons
     var secondaryContent: UIColor { get }
     
+    /// - Text
+    /// - Icons
     var tertiaryContent: UIColor { get }
     
+    /// - Text
+    /// - Icons
     var quarterlyContent: UIColor { get }
     
+    /// Separating line
     var separator: UIColor { get }
     
-    var toast: UIColor { get }
-    
+    //  Cards, tiles
     var tile: UIColor { get }
     
+    /// Top navigation background on iOS
     var navigation: UIColor { get }
     
+    /// Background UI color
     var background: UIColor { get }
     
+    /// - Names in chat timeline
+    /// - Avatars default states that include first name letter
     var namesAndAvatars: [UIColor] { get }
     
 }
