@@ -16,6 +16,7 @@
 
 import Foundation
 import UIKit
+import DesignKit
 
 /// Color constants for the dark theme
 @objcMembers
@@ -137,4 +138,14 @@ class DarkTheme: NSObject, Theme {
         button.tintColor = self.tintColor
         button.setTitleColor(self.tintColor, for: .normal)
     }
+}
+
+//  MARK: - Theme v2
+
+extension DarkTheme: ThemeV2 {
+    
+    var colors: Colors {
+        return DarkColors()
+    }
+    
 }

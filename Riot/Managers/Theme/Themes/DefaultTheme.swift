@@ -16,6 +16,7 @@
 
 import Foundation
 import UIKit
+import DesignKit
 
 /// Color constants for the default theme
 @objcMembers
@@ -144,4 +145,14 @@ class DefaultTheme: NSObject, Theme {
         button.tintColor = self.tintColor
         button.setTitleColor(self.tintColor, for: .normal)
     }
+}
+
+//  MARK: - Theme v2
+
+extension DefaultTheme: ThemeV2 {
+    
+    var colors: Colors {
+        return DefaultColors()
+    }
+    
 }
