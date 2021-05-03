@@ -557,7 +557,7 @@
 "secrets_setup_recovery_key_loading" = "Laster…";
 "secrets_setup_recovery_key_export_action" = "Lagre";
 "secrets_setup_recovery_key_done_action" = "Fullført";
-"secrets_setup_recovery_key_storage_alert_title" = "Hold det trygt";
+"secrets_setup_recovery_key_storage_alert_title" = "Oppbevar trygt";
 "secrets_setup_recovery_passphrase_validate_action" = "Fullført";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Bekreft";
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Bekreft passordfrasen";
@@ -630,7 +630,7 @@
 "room_resource_usage_limit_reached_message_1_default" = "Denne hjemmeserveren har overskredet en av sine ressursgrenser så ";
 "room_resource_limit_exceeded_message_contact_3" = " for å fortsette å bruke denne tjenesten.";
 "room_resource_limit_exceeded_message_contact_2_link" = "kontakt tjenesteadministratoren";
-"room_resource_limit_exceeded_message_contact_1" = " Vær så snill ";
+"room_resource_limit_exceeded_message_contact_1" = " Vennligst ";
 "room_predecessor_link" = "Trykk her for å se eldre meldinger.";
 "room_predecessor_information" = "Dette rommet er en fortsettelse av en annen samtale.";
 "room_replacement_information" = "Dette rommet er erstattet og er ikke lenger aktivt.";
@@ -785,3 +785,33 @@
 
 // Call Bar
 "callbar_only_single_active" = "Aktiv samtale (%@)";
+"secrets_setup_recovery_key_information" = "Oppbevar din sikkerhetsnøkkel trygt. Den kan brukes til å å tilgang til dine sikrede meldinger og data.";
+
+// MARK: - Secrets set up
+
+// Recovery Key
+
+"secrets_setup_recovery_key_title" = "Lagre din sikkerhetsnøkkel";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "Vennligst sjekk at du har tastet riktig sikkerhetsnøkkel.";
+"secrets_recovery_with_key_invalid_recovery_key_title" = "Ugyldig sikkerhetsnøkkel, ingen tilgang til sikret lagringsområde";
+"secrets_recovery_with_key_recover_action" = "Bruk sikkerhetsnøkkel";
+"secrets_setup_recovery_key_storage_alert_message" = "✓ Skriv ut og oppbevar på et trygt sted\n✓ Lagre på en USB minnepenn, eller ekstern sikkerhetskopi\n✓ Kopièr til din personlige skylagring";
+"secrets_recovery_with_passphrase_invalid_passphrase_title" = "Feil sikkerhetsfrase, ingen tilgang til sikret lagringsområde";
+"secrets_recovery_with_key_information_verify_device" = "Bruk din sikkerhetsnøkkel for å bekrefte denne enheten.";
+"secrets_recovery_with_key_information_default" = "Få tilgang til dine sikrede meldinger og identitetsnøkkelen som brukes for å bekrefte andre sesjoner, ved å taste inn din sikkerhetsnøkkel.";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Vennligst sjekk at du har tastet riktig sikkerhetsfrase.";
+"room_open_dialpad" = "Nummertastatur";
+"settings_labs" = "LABS";
+"room_place_voice_call" = "Lydsamtale";
+"settings_pin_rooms_with_unread" = "Feste rom med uleste meldinger";
+"settings_global_settings_info" = "Globale varslingsinnstillinger er tilgjengelige på din %@ nettleserklient";
+"room_multiple_typing_notification" = "%@ og andre";
+"room_event_action_delete_confirmation_message" = "Er du sikker på at du vil slette denne usendte meldingen?";
+"external_link_confirmation_message" = "Lenken %@ bringer deg til et annet nettsted: %@\n\nEr du sikker på at du vil fortsette?";
+"room_accessibility_video_call" = "Videosamtale";
+"room_event_action_delete_confirmation_title" = "Slett usendt melding";
+"room_unsent_messages_cancel_message" = "Er du sikker på at du vil slette alle usendte meldinger i dette rommet?";
+"room_unsent_messages_cancel_title" = "Slett usendte meldinger";
+"room_message_replying_to" = "Svarer til %@";
+"room_message_editing" = "Redigerer";
+"room_member_power_level_custom_in" = "Tilpasset (%@) av %@";
