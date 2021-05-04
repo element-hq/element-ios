@@ -131,8 +131,6 @@
 NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNotification";
 NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTileTappedNotification";
 const NSTimeInterval kResizeComposerAnimationDuration = .05;
-const NSUInteger kJumpToUnreadBannerBgColorForDarkMode = 0x21262C;
-const NSUInteger kJumpToUnreadCloseButtonTintColorForDarkMode = 0x6F7882;
 
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
@@ -489,20 +487,20 @@ const NSUInteger kJumpToUnreadCloseButtonTintColorForDarkMode = 0x6F7882;
     {
         [self.scrollToBottomButton setImage:[UIImage imageNamed:@"scrolldown_dark"] forState:UIControlStateNormal];
 
-        self.jumpToLastUnreadBanner.backgroundColor = [[UIColor alloc] initWithRgb:kJumpToUnreadBannerBgColorForDarkMode];
+        self.jumpToLastUnreadBanner.backgroundColor = ThemeService.shared.theme.colors.navigation;
         [self.jumpToLastUnreadBanner vc_removeShadow];
-        self.resetReadMarkerButton.tintColor = [[UIColor alloc] initWithRgb:kJumpToUnreadCloseButtonTintColorForDarkMode];
+        self.resetReadMarkerButton.tintColor = ThemeService.shared.theme.colors.quarterlyContent;
     }
     else
     {
         [self.scrollToBottomButton setImage:[UIImage imageNamed:@"scrolldown"] forState:UIControlStateNormal];
         
-        self.jumpToLastUnreadBanner.backgroundColor = ThemeService.shared.theme.backgroundColor;
+        self.jumpToLastUnreadBanner.backgroundColor = ThemeService.shared.theme.colors.background;
         [self.jumpToLastUnreadBanner vc_addShadowWithColor:ThemeService.shared.theme.shadowColor
                                                     offset:CGSizeMake(0, 4)
                                                     radius:8
                                                    opacity:0.1];
-        self.resetReadMarkerButton.tintColor = ThemeService.shared.theme.tabBarUnselectedItemTintColor;
+        self.resetReadMarkerButton.tintColor = ThemeService.shared.theme.colors.tertiaryContent;
     }
     
     self.scrollToBottomBadgeLabel.badgeColor = ThemeService.shared.theme.tintColor;
