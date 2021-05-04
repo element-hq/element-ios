@@ -1188,7 +1188,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                 }
                 else
                 {
-                    [conversationCellDataArray addObject:recentCellDataStoring];
+                    // Hide spaces from home (keep space invites)
+                    if (room.summary.roomType != MXRoomTypeSpace)
+                    {
+                        [conversationCellDataArray addObject:recentCellDataStoring];
+                    }
                 }
             }
             else if (_recentsDataSourceMode == RecentsDataSourceModeFavourites)
@@ -1219,12 +1223,12 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                 // Consider only non direct rooms.
                 if (!room.isDirect)
                 {
-                    // Keep only the invites, the favourites and the rooms without tag
+                    // Keep only the invites, the favourites and the rooms without tag and room type different from space
                     if (room.summary.membership == MXMembershipInvite)
                     {
                         [invitesCellDataArray addObject:recentCellDataStoring];
                     }
-                    else if (!room.accountData.tags.count || room.accountData.tags[kMXRoomTagFavourite])
+                    else if ((!room.accountData.tags.count || room.accountData.tags[kMXRoomTagFavourite]) && room.summary.roomType != MXRoomTypeSpace)
                     {
                         [conversationCellDataArray addObject:recentCellDataStoring];
                     }
