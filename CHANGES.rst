@@ -10,6 +10,7 @@ Changes to be released in next version
  * RoomVC: Show / Hide More and Report Content contextual menu from settings (#4285).
  * SettingsVC: Show / hide NSFW and decrypted content options from build settings (#4290).
  * RoomVC: Tweaked Scroll to Bottom FAB button (#4272).
+ * RoomVC: Back button chevron looks really weird (#4158).
 
 🐛 Bugfix
  * RoomVC: Avoid navigation to integration management using integration popup with settings set to integration disabled (#4261).

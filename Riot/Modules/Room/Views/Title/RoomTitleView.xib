@@ -14,7 +14,7 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SUm-iW-DRR">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="SUm-iW-DRR">
                     <rect key="frame" x="-24" y="22" width="0.0" height="0.0"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <nil key="textColor"/>
@@ -73,6 +73,7 @@
                 <constraint firstAttribute="bottom" secondItem="sD9-l7-azQ" secondAttribute="bottom" id="4rX-5O-LrO"/>
                 <constraint firstItem="yTB-Be-bLN" firstAttribute="centerX" secondItem="SUm-iW-DRR" secondAttribute="trailing" id="7H4-kh-c2g"/>
                 <constraint firstItem="sD9-l7-azQ" firstAttribute="leading" secondItem="BkF-x3-7fX" secondAttribute="leading" id="AJc-Aa-sht"/>
+                <constraint firstItem="LDd-c1-ILP" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="SUm-iW-DRR" secondAttribute="trailing" constant="3" id="BWU-cv-q38"/>
                 <constraint firstItem="SUm-iW-DRR" firstAttribute="centerY" secondItem="BkF-x3-7fX" secondAttribute="centerY" id="Blv-SJ-r6v"/>
                 <constraint firstItem="Ky3-cy-HAx" firstAttribute="bottom" secondItem="LDd-c1-ILP" secondAttribute="bottom" id="HZy-1x-eyX"/>
                 <constraint firstAttribute="trailing" secondItem="6uH-I3-RQg" secondAttribute="trailing" id="Kb4-Vb-TTr"/>

@@ -127,6 +127,7 @@
 #import "TypingUserInfo.h"
 
 #import "Riot-Swift.h"
+#import "NSString+Riot.h"
 
 NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNotification";
 const NSTimeInterval kResizeComposerAnimationDuration = .05;
@@ -4620,15 +4621,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         if (missedCount)
         {
             // Refresh missed discussions count label
-            if (missedCount > 99)
-            {
-                missedDiscussionsBadgeLabel.text = @"99+";
-            }
-            else
-            {
-                missedDiscussionsBadgeLabel.text = [NSString stringWithFormat:@"%tu", missedCount];
-            }
-            
+            missedDiscussionsBadgeLabel.text = [NSString stringSuffixedWithNumber:@(missedCount)];
             missedDiscussionsDotView.alpha = highlightCount == 0 ? 0 : 1;
         }
         else

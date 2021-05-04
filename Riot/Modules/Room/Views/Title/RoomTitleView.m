@@ -141,7 +141,7 @@
 {
     if (UIInterfaceOrientationIsLandscape(orientation))
     {
-        self.missedDiscussionsBadgeLabel.font = [UIFont systemFontOfSize:10];
+        self.missedDiscussionsBadgeLabel.font = [UIFont systemFontOfSize:12];
         self.missedDiscussionsBadgeLabelLeadingConstraint.constant = -24;
         self.pictureViewWidthConstraint.constant = 28;
         self.pictureViewHeightConstraint.constant = 28;
