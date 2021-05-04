@@ -1621,5 +1621,6 @@ Tap the + to start adding people.";
 "space_feature_unavailable_title" = "Not available";
 "space_feature_unavailable_general_info" = "Spaces are only available in Beta on Web, desktop or Android";
 "space_feature_unavailable_invite_info" = "You’re trying to manage a Space invite. Please use your computer to manage the space invite";
+"space_feature_unavailable_open_space" = "You’re trying to open a Space. Please use your computer to open the space";
 "space_feature_unavailable_space_link_info" = "You’re trying to open a link to a Space. Please use your computer to open the link";
 "space_feature_unavailable_share_link_action" = "Share link";

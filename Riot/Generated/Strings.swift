@@ -4498,9 +4498,13 @@ internal enum VectorL10n {
   internal static var spaceFeatureUnavailableGeneralInfo: String { 
     return VectorL10n.tr("Vector", "space_feature_unavailable_general_info") 
   }
-  /// You’re trying to manage a Space invite.
+  /// You’re trying to manage a Space invite. Please use your computer to manage the space invite
   internal static var spaceFeatureUnavailableInviteInfo: String { 
     return VectorL10n.tr("Vector", "space_feature_unavailable_invite_info") 
+  }
+  /// You’re trying to open a Space. Please use your computer to open the space
+  internal static var spaceFeatureUnavailableOpenSpace: String { 
+    return VectorL10n.tr("Vector", "space_feature_unavailable_open_space") 
   }
   /// Share link
   internal static var spaceFeatureUnavailableShareLinkAction: String { 

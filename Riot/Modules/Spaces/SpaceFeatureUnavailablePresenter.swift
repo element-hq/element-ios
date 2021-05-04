@@ -23,10 +23,22 @@ final class SpaceFeatureUnavailablePresenter: NSObject {
     // MARK: - Constants
     
     // MARK: - Properties
+    
+    private let webAppURL: URL
             
     // MARK: Private
     
     private weak var presentingViewController: UIViewController?
+    
+    // MARK: - Setup
+    
+    override init() {
+        guard let webAppURL = URL(string: BuildSettings.applicationWebAppUrlString) else {
+            fatalError("webAppURL is invalid")
+        }
+        self.webAppURL = webAppURL
+        super.init()
+    }
         
     // MARK: - Public
     
@@ -47,11 +59,7 @@ final class SpaceFeatureUnavailablePresenter: NSObject {
     }
     
     func presentInvitesUnavailable(from presentingViewController: UIViewController, animated: Bool) {
-        guard let webAppURL = URL(string: BuildSettings.applicationWebAppUrlString) else {
-            return
-        }
-        
-        let viewData = SpaceFeatureUnavailableViewData(informationText: VectorL10n.spaceFeatureUnavailableInviteInfo, shareLink: webAppURL)
+        let viewData = SpaceFeatureUnavailableViewData(informationText: VectorL10n.spaceFeatureUnavailableInviteInfo, shareLink: self.webAppURL)
         
         self.presentUnavailableFeature(with: viewData, from: presentingViewController, animated: animated)
     }
@@ -59,6 +67,12 @@ final class SpaceFeatureUnavailablePresenter: NSObject {
     func presentSpaceLinkUnavailable(with spaceLinkURL: URL, from presentingViewController: UIViewController, animated: Bool) {
         
         let viewData = SpaceFeatureUnavailableViewData(informationText: VectorL10n.spaceFeatureUnavailableSpaceLinkInfo, shareLink: spaceLinkURL)
+        
+        self.presentUnavailableFeature(with: viewData, from: presentingViewController, animated: animated)
+    }
+    
+    func presentOpenSpaceUnavailable(from presentingViewController: UIViewController, animated: Bool) {
+        let viewData = SpaceFeatureUnavailableViewData(informationText: VectorL10n.spaceFeatureUnavailableOpenSpace, shareLink: self.webAppURL)
         
         self.presentUnavailableFeature(with: viewData, from: presentingViewController, animated: animated)
     }
