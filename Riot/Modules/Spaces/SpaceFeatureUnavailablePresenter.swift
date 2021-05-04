@@ -30,11 +30,11 @@ final class SpaceFeatureUnavailablePresenter: NSObject {
         
     // MARK: - Public
     
-    func presentUnavailableFeature(with informationText: String,
-                                           from presentingViewController: UIViewController,
-                                           animated: Bool) {
+    func presentUnavailableFeature(with viewData: SpaceFeatureUnavailableViewData,
+                                   from presentingViewController: UIViewController,
+                                   animated: Bool) {
         
-        let spaceFeatureUnavailableVC = SpaceFeatureUnaivableViewController.instantiate()
+        let spaceFeatureUnavailableVC = SpaceFeatureUnaivableViewController.instantiate(with: viewData)
         
         let navigationVC = RiotNavigationController(rootViewController: spaceFeatureUnavailableVC)
         
@@ -47,10 +47,19 @@ final class SpaceFeatureUnavailablePresenter: NSObject {
     }
     
     func presentInvitesUnavailable(from presentingViewController: UIViewController, animated: Bool) {
-        self.presentUnavailableFeature(with: VectorL10n.spaceFeatureUnavailableInviteInfo, from: presentingViewController, animated: animated)
+        guard let webAppURL = URL(string: BuildSettings.applicationWebAppUrlString) else {
+            return
+        }
+        
+        let viewData = SpaceFeatureUnavailableViewData(informationText: VectorL10n.spaceFeatureUnavailableInviteInfo, shareLink: webAppURL)
+        
+        self.presentUnavailableFeature(with: viewData, from: presentingViewController, animated: animated)
     }
     
-    func presentSpaceLinkUnavailable(from presentingViewController: UIViewController, animated: Bool) {
-        self.presentUnavailableFeature(with: VectorL10n.spaceFeatureUnavailableSpaceLink, from: presentingViewController, animated: animated)
+    func presentSpaceLinkUnavailable(with spaceLinkURL: URL, from presentingViewController: UIViewController, animated: Bool) {
+        
+        let viewData = SpaceFeatureUnavailableViewData(informationText: VectorL10n.spaceFeatureUnavailableSpaceLinkInfo, shareLink: spaceLinkURL)
+        
+        self.presentUnavailableFeature(with: viewData, from: presentingViewController, animated: animated)
     }
 }
