@@ -439,10 +439,6 @@ class CallPresenter: NSObject {
             return
         }
         
-        defer {
-            isStarted = true
-        }
-        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(newCall(_:)),
                                                name: NSNotification.Name(rawValue: kMXCallManagerNewCall),
@@ -459,6 +455,8 @@ class CallPresenter: NSObject {
                                                selector: #selector(groupCallTileTapped(_:)),
                                                name: .RoomGroupCallTileTapped,
                                                object: nil)
+        
+        isStarted = true
         
         #if canImport(JitsiMeetSDK)
         JMCallKitProxy.addListener(self)
@@ -486,10 +484,6 @@ class CallPresenter: NSObject {
             return
         }
         
-        defer {
-            isStarted = false
-        }
-        
         NotificationCenter.default.removeObserver(self,
                                                   name: NSNotification.Name(rawValue: kMXCallManagerNewCall),
                                                   object: nil)
@@ -502,6 +496,8 @@ class CallPresenter: NSObject {
         NotificationCenter.default.removeObserver(self,
                                                   name: .RoomGroupCallTileTapped,
                                                   object: nil)
+        
+        isStarted = false
         
         #if canImport(JitsiMeetSDK)
         JMCallKitProxy.removeListener(self)

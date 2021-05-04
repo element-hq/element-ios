@@ -5,6 +5,12 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
+ * Jitsi: Use Jitsi server from homeserver's Well Known, if present, to create conferences (#3158).
+ * RoomMemberDetailsVC: Enable / disable "Hide all messages from this user" from settings (#4281).
+ * RoomVC: Show / Hide More and Report Content contextual menu from settings (#4285).
+ * SettingsVC: Show / hide NSFW and decrypted content options from build settings (#4290).
+ * RoomVC: Tweaked Scroll to Bottom FAB button (#4272).
+ * DesignKit: Introduce a new framework to manage design components.
  * Add Jitsi widget remove banner for privileged users.
  * Update "Jump to unread" banner to a pill style button.
 
