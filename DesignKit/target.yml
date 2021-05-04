@@ -1,0 +1,33 @@
+name: DesignKit
+
+schemes:
+  DesignKit:
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+    build:
+      targets:
+        DesignKit:
+        - running
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Release
+    run:
+      config: Debug
+      disableMainThreadChecker: true
+
+targets:
+  DesignKit:
+    type: framework
+    platform: iOS
+    
+    configFiles:
+      Debug: Debug.xcconfig
+      Release: Release.xcconfig
+
+    sources:
+      - path: .
+      - path: ../Riot/Categories/UIColor.swift

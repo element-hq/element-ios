@@ -350,7 +350,10 @@ TableViewSectionsDelegate>
     
     Section *sectionNotificationSettings = [Section sectionWithTag:SECTION_TAG_NOTIFICATIONS];
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX];
-    [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT];
+    if (RiotSettings.shared.settingsScreenShowNotificationDecodedContentOption)
+    {
+        [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT];
+    }
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX];
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX];
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_PIN_UNREAD_INDEX];
@@ -458,7 +461,10 @@ TableViewSectionsDelegate>
         [sectionOther addRowWithTag:OTHER_PRIVACY_INDEX];
     }
     [sectionOther addRowWithTag:OTHER_THIRD_PARTY_INDEX];
-    [sectionOther addRowWithTag:OTHER_SHOW_NSFW_ROOMS_INDEX];
+    if (RiotSettings.shared.settingsScreenShowNsfwRoomsOption)
+    {
+        [sectionOther addRowWithTag:OTHER_SHOW_NSFW_ROOMS_INDEX];
+    }
     
     if (BuildSettings.settingsScreenAllowChangingCrashUsageDataSettings)
     {
