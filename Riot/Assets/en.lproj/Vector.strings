@@ -1619,7 +1619,7 @@ Tap the + to start adding people.";
 // Mark: - Spaces
 
 "space_feature_unavailable_title" = "Not available";
-"space_feature_unavailable_instructions" = "Use your computer to open the link. If you do, we’ll let you know when the feature comes to iOS.";
-"space_feature_unavailable_invite_info" = "You’re trying to manage a Space invite. Spaces are currently only available in beta on web, or Android";
-"space_feature_unavailable_space_link" = "You’re trying to open a link to a Space. Spaces are currently only available in beta on web, or Android";
+"space_feature_unavailable_general_info" = "Spaces are only available in Beta on Web, desktop or Android";
+"space_feature_unavailable_invite_info" = "You’re trying to manage a Space invite. Please use your computer to manage the space invite";
+"space_feature_unavailable_space_link_info" = "You’re trying to open a link to a Space. Please use your computer to open the link";
 "space_feature_unavailable_share_link_action" = "Share link";

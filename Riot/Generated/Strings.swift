@@ -4494,11 +4494,11 @@ internal enum VectorL10n {
   internal static var socialLoginListTitleSignUp: String { 
     return VectorL10n.tr("Vector", "social_login_list_title_sign_up") 
   }
-  /// Use your computer to open the link. If you do, we’ll let you know when the feature comes to iOS.
-  internal static var spaceFeatureUnavailableInstructions: String { 
-    return VectorL10n.tr("Vector", "space_feature_unavailable_instructions") 
+  /// Spaces are only available in Beta on Web, desktop or Android
+  internal static var spaceFeatureUnavailableGeneralInfo: String { 
+    return VectorL10n.tr("Vector", "space_feature_unavailable_general_info") 
   }
-  /// You’re trying to manage a Space invite. Spaces are currently only available in beta on web, or Android
+  /// You’re trying to manage a Space invite.
   internal static var spaceFeatureUnavailableInviteInfo: String { 
     return VectorL10n.tr("Vector", "space_feature_unavailable_invite_info") 
   }
@@ -4506,9 +4506,9 @@ internal enum VectorL10n {
   internal static var spaceFeatureUnavailableShareLinkAction: String { 
     return VectorL10n.tr("Vector", "space_feature_unavailable_share_link_action") 
   }
-  /// You’re trying to open a link to a Space. Spaces are currently only available in beta on web, or Android
-  internal static var spaceFeatureUnavailableSpaceLink: String { 
-    return VectorL10n.tr("Vector", "space_feature_unavailable_space_link") 
+  /// You’re trying to open a link to a Space. Please use your computer to open the link
+  internal static var spaceFeatureUnavailableSpaceLinkInfo: String { 
+    return VectorL10n.tr("Vector", "space_feature_unavailable_space_link_info") 
   }
   /// Not available
   internal static var spaceFeatureUnavailableTitle: String { 
