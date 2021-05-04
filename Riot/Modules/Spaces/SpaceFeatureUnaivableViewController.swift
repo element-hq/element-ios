@@ -16,6 +16,11 @@
 
 import UIKit
 
+struct SpaceFeatureUnavailableViewData {    
+    let informationText: String
+    let shareLink: URL
+}
+
 final class SpaceFeatureUnaivableViewController: UIViewController {
 
     // MARK: - Constants
@@ -30,18 +35,20 @@ final class SpaceFeatureUnaivableViewController: UIViewController {
         
     @IBOutlet private weak var artworkImageView: UIImageView!
     @IBOutlet private weak var informationLabel: UILabel!
-    @IBOutlet private weak var instructionsLabel: UILabel!
+    @IBOutlet private weak var generalInfoLabel: UILabel!
     @IBOutlet private weak var shareButton: CustomRoundedButton!
     
     // MARK: Private
  
     private var theme: Theme!
+    private var viewData: SpaceFeatureUnavailableViewData!
     
     // MARK: - Setup
     
-    @objc class func instantiate() -> SpaceFeatureUnaivableViewController {
+    class func instantiate(with viewData: SpaceFeatureUnavailableViewData) -> SpaceFeatureUnaivableViewController {
         let viewController = StoryboardScene.SpaceFeatureUnaivableViewController.initialScene.instantiate()
         viewController.theme = ThemeService.shared().theme
+        viewController.viewData = viewData
         return viewController
     }
     
@@ -72,7 +79,9 @@ final class SpaceFeatureUnaivableViewController: UIViewController {
     
     private func setupViews() {
         self.title = VectorL10n.spaceFeatureUnavailableTitle
-        self.instructionsLabel.text = VectorL10n.spaceFeatureUnavailableInstructions
+        
+        self.informationLabel.text = self.viewData.informationText
+        self.generalInfoLabel.text = VectorL10n.spaceFeatureUnavailableGeneralInfo
         
         self.shareButton.titleLabel?.font = UIFont.systemFont(ofSize: 17.0, weight: .medium)
         self.shareButton.setTitle(VectorL10n.spaceFeatureUnavailableShareLinkAction, for: .normal)
@@ -90,7 +99,7 @@ final class SpaceFeatureUnaivableViewController: UIViewController {
         }
         
         self.informationLabel.textColor = theme.textPrimaryColor
-        self.instructionsLabel.textColor = theme.textSecondaryColor
+        self.generalInfoLabel.textColor = theme.textSecondaryColor
         
         // Artwork image view
         
@@ -109,12 +118,14 @@ final class SpaceFeatureUnaivableViewController: UIViewController {
         self.shareButton.setImage(buttonImage, for: .normal)
     }
     
+    func fill(informationText: String, shareLink: URL) {
+        self.informationLabel.text = informationText
+    }
+    
     // MARK: - Private
     
     private func shareWebAppURL() {
-        guard let webAppURL = URL(string: BuildSettings.applicationWebAppUrlString) else {
-            return
-        }
+        let webAppURL = self.viewData.shareLink
         
         // Set up activity view controller
         let activityItems: [Any] = [ webAppURL ]
