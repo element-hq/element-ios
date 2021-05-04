@@ -152,7 +152,7 @@ class DefaultTheme: NSObject, Theme {
 extension DefaultTheme: ThemeV2 {
     
     var colors: Colors {
-        return DefaultColors()
+        return LightColors()
     }
     
 }

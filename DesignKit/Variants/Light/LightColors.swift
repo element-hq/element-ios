@@ -17,8 +17,8 @@
 import Foundation
 import UIKit
 
-/// Default (light) theme colors. Will be a struct when things are more Swifty.
-public class DefaultColors: Colors {
+/// Light theme colors. Will be a struct when things are more Swifty.
+public class LightColors: Colors {
     
     public let accent: UIColor = UIColor(rgb: 0x0DBD8B)
     
