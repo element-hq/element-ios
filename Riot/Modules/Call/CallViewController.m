@@ -140,6 +140,8 @@
     self.callStatusLabel.textColor = self.overriddenTheme.baseTextPrimaryColor;
     [self.resumeButton setTitleColor:self.overriddenTheme.tintColor
                             forState:UIControlStateNormal];
+    [self.transferButton setTitleColor:self.overriddenTheme.tintColor
+                              forState:UIControlStateNormal];
     
     self.localPreviewContainerView.layer.borderColor = self.overriddenTheme.tintColor.CGColor;
     self.localPreviewContainerView.layer.borderWidth = 2;

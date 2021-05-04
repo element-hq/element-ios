@@ -38,6 +38,7 @@
                 <outlet property="rejectCallButton" destination="H4g-11-Y8d" id="8aM-2q-Lv7"/>
                 <outlet property="remotePreviewContainerView" destination="Tjb-57-yB1" id="MaR-IC-ZKw"/>
                 <outlet property="resumeButton" destination="OaQ-Ki-dbe" id="23i-sp-y3f"/>
+                <outlet property="transferButton" destination="wqv-Uf-iNe" id="jua-io-h9q"/>
                 <outlet property="videoMuteButton" destination="UHM-u9-ODN" id="bfQ-lc-WMB"/>
                 <outlet property="view" destination="iN0-l3-epB" id="JDF-cz-roW"/>
             </connections>
@@ -335,6 +336,15 @@
                                     <state key="normal" title="Resume"/>
                                     <connections>
                                         <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="pJG-7Q-UTa"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wqv-Uf-iNe" userLabel="Transfer">
+                                    <rect key="frame" x="11.5" y="176" width="57" height="29"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
+                                    <color key="tintColor" systemColor="systemGreenColor"/>
+                                    <state key="normal" title="Transfer"/>
+                                    <connections>
+                                        <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="KUu-CC-dnC"/>
                                     </connections>
                                 </button>
                             </subviews>
