@@ -103,7 +103,7 @@ extension CallBubbleCellBaseContentView: Themable {
         paginationLabel.textColor = theme.tintColor
         paginationSeparatorView.backgroundColor = theme.tintColor
         
-        bgView.backgroundColor = theme.callTileBackgroundColor
+        bgView.backgroundColor = theme.colors.tile
         callerNameLabel.textColor = theme.textPrimaryColor
         callIconView.tintColor = theme.textTertiaryColor
         callTypeLabel.textColor = theme.textSecondaryColor

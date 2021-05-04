@@ -97,9 +97,6 @@ import DesignKit
     /// Color to use in shadows. Should be contrast to `backgroundColor`.
     var shadowColor: UIColor { get }
     
-    /// Color for background of call tiles.
-    var callTileBackgroundColor: UIColor { get }
-    
     // MARK: - Customisation methods
 
     
