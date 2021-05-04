@@ -145,14 +145,10 @@ class DefaultTheme: NSObject, Theme {
         button.tintColor = self.tintColor
         button.setTitleColor(self.tintColor, for: .normal)
     }
-}
-
-//  MARK: - Theme v2
-
-extension DefaultTheme: ThemeV2 {
     
-    var colors: Colors {
+    ///  MARK: - Theme v2
+    
+    lazy var colors: Colors = {
         return LightColors()
-    }
-    
+    }()
 }
