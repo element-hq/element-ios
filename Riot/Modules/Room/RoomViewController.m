@@ -3173,10 +3173,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         {
             shouldDoAction = NO;
             
-            // iOS Patch: fix vector.im urls before using it
-            NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
-            
-            [[AppDelegate theDelegate] handleUniversalLinkFragment:fixedURL.fragment];
+            [[AppDelegate theDelegate] handleUniversalLinkURL:url];
         }
         // Open a detail screen about the clicked user
         else if ([MXTools isMatrixUserIdentifier:absoluteURLString])
@@ -3215,7 +3212,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             
             // Open the room or preview it
             NSString *fragment = [NSString stringWithFormat:@"/room/%@", [MXTools encodeURIComponent:roomIdOrAlias]];
-            [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
+            [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment fromURL:url];
         }
         // Preview the clicked group
         else if ([MXTools isMatrixGroupIdentifier:absoluteURLString])
@@ -3224,7 +3221,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             
             // Open the group or preview it
             NSString *fragment = [NSString stringWithFormat:@"/group/%@", [MXTools encodeURIComponent:absoluteURLString]];
-            [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
+            [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment fromURL:url];
         }
         else if ([absoluteURLString hasPrefix:EventFormatterOnReRequestKeysLinkAction])
         {
