@@ -218,6 +218,23 @@ JitsiViewControllerDelegate>
  */
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment;
 
+/**
+ Process the fragment part of a vector.im link.
+
+ @param fragment the fragment part of the universal link.
+ @param universalLinkURL the unprocessed the universal link URL (optional).
+ @return YES in case of processing success.
+ */
+- (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL;
+
+/**
+ Process the URL of a vector.im link.
+
+ @param universalLinkURL the universal link URL.
+ @return YES in case of processing success.
+ */
+- (BOOL)handleUniversalLinkURL:(NSURL*)universalLinkURL;
+
 #pragma mark - Jitsi call
 
 /**
