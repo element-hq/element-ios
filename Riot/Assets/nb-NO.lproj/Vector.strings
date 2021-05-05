@@ -858,3 +858,5 @@
 "room_details_photo_for_dm" = "Bilde";
 "room_details_photo" = "Rombilde";
 "settings_flair" = "Vis brukervalg hvor tillat";
+"settings_on_denied_notification" = "Varsler er ikke tillat for %@, vennligst tillat dem i enhetens innstillinger";
+"settings_pin_rooms_with_missed_notif" = "Fest rom med tapte varsler";
