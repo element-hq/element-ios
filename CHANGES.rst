@@ -13,6 +13,7 @@ Changes to be released in next version
  * DesignKit: Introduce a new framework to manage design components.
  * Add Jitsi widget remove banner for privileged users.
  * Update "Jump to unread" banner to a pill style button.
+ * CallVC: Add transfer button.
 
 🐛 Bugfix
  * RoomVC: Avoid navigation to integration management using integration popup with settings set to integration disabled (#4261).

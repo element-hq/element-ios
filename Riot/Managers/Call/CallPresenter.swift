@@ -528,6 +528,15 @@ class CallPresenter: NSObject {
         }
         newCallVC.playRingtone = !isCallKitEnabled
         newCallVC.delegate = self
+        
+        if !call.isIncoming {
+            //  put other native calls on hold
+            callVCs.values.forEach({ $0.mxCall.hold(true) })
+            
+            //  terminate Jitsi calls
+            endActiveJitsiCall()
+        }
+        
         callVCs[call.callId] = newCallVC
         
         if UIApplication.shared.applicationState == .background && call.isIncoming {
