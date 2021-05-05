@@ -1,7 +1,7 @@
 // Permissions usage explanations
-"NSCameraUsageDescription" = "La cámara se utiliza para tomar fotos y vídeos, realizar llamadas de vídeo.";
-"NSPhotoLibraryUsageDescription" = "La biblioteca de fotos se utiliza para enviar fotos y vídeos.";
-"NSMicrophoneUsageDescription" = "El micrófono se utiliza para tomar vídeos, realizar llamadas.";
+"NSCameraUsageDescription" = "La cámara se usa para sacar fotos, vídeos y hacer videollamadas.";
+"NSPhotoLibraryUsageDescription" = "La biblioteca de fotos se usa para enviar fotos y vídeos.";
+"NSMicrophoneUsageDescription" = "El micrófono se usa para grabar vídeos y realizar llamadas.";
 "NSContactsUsageDescription" = "Para mostrarte cuáles de tus contactos ya utilizan Matrix, Element puede enviar las direcciones de correo electrónico y números telefónicos de tu agenda de contactos a tu Servidor de Identidad de Matrix. En los casos que se puede, tu información personal se cifra antes de ser enviada - por favor consulta la política de privacidad de tu Servidor de Identidad.";
 "NSFaceIDUsageDescription" = "Face ID se usa para acceder a tu aplicación.";
 "NSCalendarsUsageDescription" = "Mostrar tus reuniones en la aplicación.";
