@@ -2930,7 +2930,7 @@ internal enum VectorL10n {
   internal static var roomJoinGroupCall: String { 
     return VectorL10n.tr("Vector", "room_join_group_call") 
   }
-  /// Jump to first unread message
+  /// Jump to unread
   internal static var roomJumpToFirstUnread: String { 
     return VectorL10n.tr("Vector", "room_jump_to_first_unread") 
   }
@@ -3389,6 +3389,10 @@ internal enum VectorL10n {
   ///  to get this limit increased.
   internal static var roomResourceUsageLimitReachedMessageContact3: String { 
     return VectorL10n.tr("Vector", "room_resource_usage_limit_reached_message_contact_3") 
+  }
+  /// Slide to end the call for everyone
+  internal static var roomSlideToEndGroupCall: String { 
+    return VectorL10n.tr("Vector", "room_slide_to_end_group_call") 
   }
   /// Invite members
   internal static var roomTitleInviteMembers: String { 
