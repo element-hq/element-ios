@@ -233,10 +233,15 @@ class DialpadViewController: UIViewController {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        titleLabel.textColor = theme.noticeSecondaryColor
+        if theme.identifier == ThemeIdentifier.light.rawValue {
+            titleLabel.textColor = theme.noticeSecondaryColor
+            closeButton.setBackgroundImage(Asset.Images.closeButton.image.vc_tintedImage(usingColor: theme.tabBarUnselectedItemTintColor), for: .normal)
+        } else {
+            titleLabel.textColor = theme.baseTextSecondaryColor
+            closeButton.setBackgroundImage(Asset.Images.closeButton.image.vc_tintedImage(usingColor: theme.baseTextSecondaryColor), for: .normal)
+        }
         phoneNumberTextField.textColor = theme.textPrimaryColor
         lineView.backgroundColor = theme.lineBreakColor
-        closeButton.setBackgroundImage(Asset.Images.closeButton.image.vc_tintedImage(usingColor: theme.tabBarUnselectedItemTintColor), for: .normal)
         
         updateThemesOfAllButtons(in: digitsStackView, with: theme)
     }
