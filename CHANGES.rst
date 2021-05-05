@@ -20,6 +20,7 @@ Changes to be released in next version
  * RiotSettings: Logging out resets RiotSettings (#4259).
  * RoomVC: Crash in `setScrollToBottomHidden` method (#4270).
  * Notifications: Make them work in debug mode (#4274).
+ * VoIP: Fix call bar layout issue (#4300).
 
 ⚠️ API Changes
  * 
