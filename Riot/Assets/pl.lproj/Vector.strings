@@ -27,7 +27,7 @@
 "active_call_details" = "Aktywne połączenie (%@)";
 "later" = "Później";
 "rename" = "Zmień nazwę";
-"collapse" = "Zwiń";
+"collapse" = "zwiń";
 "send_to" = "Wyślij do %@";
 "sending" = "Wysyłanie";
 // Authentication
@@ -37,20 +37,20 @@
 "auth_skip" = "Pomiń";
 "auth_send_reset_email" = "Wyślij e-mail resetujący hasło";
 "auth_return_to_login" = "Wróć do ekranu logowania";
-"auth_user_id_placeholder" = "Nazwa użytkownika lub e-mail";
+"auth_user_id_placeholder" = "E-mail lub nazwa użytkownika";
 "auth_password_placeholder" = "Hasło";
 "auth_new_password_placeholder" = "Nowe hasło";
 "auth_user_name_placeholder" = "Nazwa użytkownika";
 "auth_optional_email_placeholder" = "Adres e-mail (opcjonalnie)";
 "auth_email_placeholder" = "Adres e-mail";
-"auth_optional_phone_placeholder" = "Numer telefonu komórkowego (opcjonalne)";
+"auth_optional_phone_placeholder" = "Numer telefonu komórkowego (opcjonalnie)";
 "auth_phone_placeholder" = "Numer telefonu";
 "auth_repeat_password_placeholder" = "Powtórz hasło";
 "auth_repeat_new_password_placeholder" = "Potwierdź swoje nowe hasło";
 "auth_home_server_placeholder" = "URL (np. https://matrix.org)";
-"auth_identity_server_placeholder" = "Adres URL (np. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (np. https://matrix.org)";
 "auth_invalid_login_param" = "Nieprawidłowa nazwa użytkownika i/lub hasło";
-"auth_invalid_user_name" = "Nazwa użytkownika może zawierać tylko litery, cyfry, kropki, myślniki i podkreślenia";
+"auth_invalid_user_name" = "Nazwa użytkownika może jedynie zawierać litery, cyfry, kropki, myślniki i podkreślenia";
 "auth_invalid_email" = "To nie wygląda na poprawny adres e-mail";
 "auth_invalid_phone" = "To nie wygląda na poprawny numer telefonu";
 "auth_missing_password" = "Brak hasła";
@@ -340,7 +340,7 @@
 "e2e_room_key_request_share_without_verifying" = "Udostępnij bez weryfikacji";
 "gdpr_consent_not_given_alert_review_now_action" = "Zapoznaj się teraz";
 "deactivate_account_title" = "Dezaktywuj konto";
-"deactivate_account_informations_part1" = "To sprawi, że Twoje konto stanie się na stałe niezdatne do użytku. Nie będziesz mógł się zalogować i nikt nie będzie mógł ponownie zarejestrować tego samego identyfikatora użytkownika. Spowoduje to, że Twoje konto opuści wszystkie pokoje, w których uczestniczy, i usunie dane Twojego konta z serwera uwierzytelniania. ";
+"deactivate_account_informations_part1" = "To sprawi, że Twoje konto stanie się na stałe niezdatne do użytku. Nie będziesz mógł się zalogować i nikt nie będzie mógł ponownie zarejestrować tego samego identyfikatora użytkownika. Spowoduje to, że Twoje konto opuści wszystkie pokoje, w których uczestniczy, i usunie dane Twojego konta z serwera tożsamości. ";
 "deactivate_account_informations_part2_emphasize" = "Ta czynność jest nieodwracalna.";
 "deactivate_account_informations_part3" = "\n\nDezaktywacja konta ";
 "deactivate_account_informations_part4_emphasize" = "domyślnie nie powoduje zapomnienia wysłanych przez Ciebie wiadomości. ";
@@ -381,8 +381,8 @@
 "room_ongoing_conference_call" = "W tym pokoju dostępna jest konferencja. Dołącz wybierając %@ lub %@.";
 "room_title_one_active_member" = "%@/%@ aktywnych uczestników";
 "next" = "Następny";
-"auth_untrusted_id_server" = "Brak zaufania dla serwera uwierzytelniania";
-"room_creation_appearance_picture" = "Obraz pokoju rozmów (opcjonalne)";
+"auth_untrusted_id_server" = "Niezaufany serwer tożsamości";
+"room_creation_appearance_picture" = "Obraz pokoju rozmów (opcjonalnie)";
 "room_creation_private_room" = "Ten pokój rozmów jest prywatny";
 "room_creation_public_room" = "Ten pokój rozmów jest publiczny";
 "room_creation_make_public" = "Ustaw jako publiczny";
@@ -471,7 +471,7 @@
 "do_not_ask_again" = "Nie pytaj ponownie";
 "start" = "Start";
 "settings_config_home_server" = "Serwerem domowym jest %@";
-"settings_config_identity_server" = "Serwerem uwierzytelniania jest %@";
+"settings_config_identity_server" = "Serwerem tożsamości jest %@";
 "settings_remove_email_prompt_msg" = "Czy na pewno chcesz usunąć adres e-mail %@?";
 "settings_remove_phone_prompt_msg" = "Czy na pewno chcesz usunąć numer telefonu %@?";
 "settings_labs_room_members_lazy_loading_error_message" = "Twój serwer nie obsługuje jeszcze powolnego ładowania członków pokoju. Spróbuj później.";
@@ -523,7 +523,7 @@
 "settings_key_backup_info_progress_done" = "Utworzono kopię zapasową wszystkich kluczy";
 "settings_key_backup_button_delete" = "Usuń kopię zapasową";
 "settings_key_backup_delete_confirmation_prompt_title" = "Usuń kopię zapasową";
-"auth_login_single_sign_on" = "Zaloguj się za pomocą SSO";
+"auth_login_single_sign_on" = "Zaloguj się";
 "auth_autodiscover_invalid_response" = "Nie udało się odnaleźć serwera domowego";
 "settings_key_backup_button_create" = "Zacznij korzystać z kopii zapasowej kluczy";
 "settings_key_backup_button_restore" = "Przywróć z kopii zapasowej";
@@ -708,7 +708,7 @@
 "emoji_picker_flags_category" = "Flagi";
 // MARK: Reaction history
 "reaction_history_title" = "Reakcje";
-"auth_forgot_password_error_no_configured_identity_server" = "Brak skonfigurowanego serwera uwierzytelniania: dodaj serwer tożsamości, aby zresetować hasło.";
+"auth_forgot_password_error_no_configured_identity_server" = "Brak skonfigurowanego serwera tożsamości: dodaj serwer tożsamości, aby zresetować hasło.";
 "auth_softlogout_signed_out" = "Zostałeś(-aś) wylogowany(-a)";
 "auth_softlogout_reason" = "Administrator serwera domowego (%1$@) wylogował Cię z Twojego konta %2$@ (%3$@).";
 "auth_softlogout_recover_encryption_keys" = "Zaloguj się aby odzyskać klucze szyfrujące zapisane na tym urządzeniu. Potrzebujesz ich aby odczytać wszystkie swoje zaszyfrowane wiadomości na którymkolwiek z Twoich urządzeń.";
@@ -717,10 +717,10 @@
 "auth_softlogout_clear_data_message_2" = "Wyczyść je, jeżeli nie będziesz już używać tego urządzenia, lub jeśli planujesz zalogować się na inne konto.";
 "auth_softlogout_clear_data_sign_out_title" = "Czy jesteś pewien/pewna?";
 "auth_softlogout_clear_data_sign_out_msg" = "Czy napewno chcesz wyczyścić wszystkie dane znajdujące się na tym urządzeniu? Zaloguj się ponownie, aby mieć dostęp do swojego konta, oraz wiadomości.";
-"room_creation_error_invite_user_by_email_without_identity_server" = "Brak skonfigurowanego serwera uwierzytelniania, więc nie możesz dodać uczestnika przy użyciu adresu e-mail.";
+"room_creation_error_invite_user_by_email_without_identity_server" = "Brak skonfigurowanego serwera tożsamości, więc nie możesz dodać uczestnika przy użyciu adresu e-mail.";
 "room_participants_remove_third_party_invite_msg" = "Usuwanie zaproszeń nie jest wspierane przez obecną wersję API";
 "room_participants_invited_section" = "ZAPROSZENI";
-"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Brak skonfigurowanego serwera uwierzytelniania, więc nie możesz rozpocząć rozmowy z tą osobą używając adresu e-mail.";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Brak skonfigurowanego serwera tożsamości, więc nie możesz rozpocząć rozmowy z tą osobą używając adresu e-mail.";
 "room_message_unable_open_link_error_message" = "Nie udało się otworzyć adresu.";
 "room_conference_call_no_power" = "Nie masz wystarczających uprawnień, aby zarządzać połączeniami konferencyjnymi w tym pokoju";
 "room_event_action_reaction_history" = "Historia reakcji";
@@ -846,7 +846,7 @@
 "external_link_confirmation_title" = "Sprawdź dokładnie ten link";
 "external_link_confirmation_message" = "Link %@ przeniesie Cię na inną stronę: %@\n\nJesteś pewny(-a), że chcesz kontynuować?";
 "settings_discovery_settings" = "ODKRYWANIE";
-"settings_identity_server_settings" = "SERWER UWIERZYTELNIANIA";
+"settings_identity_server_settings" = "SERWER TOŻSAMOŚCI";
 "settings_integrations" = "INTEGRACJE";
 "settings_three_pids_management_information_part2" = "Odkrywanie";
 "settings_three_pids_management_information_part3" = ".";
@@ -866,7 +866,7 @@
 "settings_discovery_three_pid_details_revoke_action" = "Unieważnij";
 "settings_discovery_three_pid_details_cancel_email_validation_action" = "Przerwij walidacje adresu e-mail";
 "settings_discovery_three_pid_details_enter_sms_code_action" = "Wprowadź kod aktywacyjny SMS";
-"settings_identity_server_no_is" = "Nieskonfigurowany serwer uwierzytelniania";
+"settings_identity_server_no_is" = "Nieskonfigurowany serwer tożsamości";
 // Security settings
 "security_settings_title" = "Bezpieczeństwo";
 "security_settings_crypto_sessions" = "MOJE SESJE";
@@ -879,7 +879,7 @@
 "security_settings_crosssigning" = "CROSS-SIGNING";
 "security_settings_crosssigning_info_not_bootstrapped" = "Cross-signing nie został jeszcze skonfigurowany.";
 "room_info_list_section_other" = "Inne";
-"auth_phone_is_required" = "Brak skonfigurowanego serwera uwierzytelniania, nie możesz dodać numeru telefonu na wypadek konieczności zresetowania hasła.";
+"auth_phone_is_required" = "Brak skonfigurowanego serwera tożsamości, nie możesz dodać numeru telefonu na wypadek konieczności zresetowania hasła.";
 "less" = "Mniej";
 "room_intro_cell_information_multiple_dm_sentence2" = "Tylko Ty bierzesz udział w tej rozmowie, dopóki kogoś nie zaprosisz.";
 "room_intro_cell_information_dm_sentence2" = "Tylko wy dwoje uczestniczycie w tej rozmowie, nikt inny nie może się przyłączyć.";
@@ -1151,7 +1151,7 @@
 
 
 // Generic errors
-"error_invite_3pid_with_no_identity_server" = "Dodaj serwer uwierzytelniania w ustawieniach, aby zapraszać przez e-mail.";
+"error_invite_3pid_with_no_identity_server" = "Dodaj serwer tożsamości w ustawieniach, aby zapraszać przez e-mail.";
 
 // User
 
@@ -1249,7 +1249,7 @@
 
 "secure_key_backup_setup_intro_title" = "Bezpieczna kopia zapasowa";
 "service_terms_modal_policy_checkbox_accessibility_hint" = "Zaznacz, aby zaakceptować %@";
-"service_terms_modal_message_identity_server" = "Zaakceptuj warunki serwera uwierzytelniania (%@), aby móc wyszukiwać kontakty.";
+"service_terms_modal_message_identity_server" = "Zaakceptuj warunki serwera tożsamości (%@), aby móc wyszukiwać kontakty.";
 
 // Service terms - Variant for identity server when displayed out of a context
 "service_terms_modal_title_identity_server" = "Odkrywanie kontaktów";
@@ -1307,27 +1307,27 @@
 "room_details_integrations" = "Integracje";
 "room_details_search" = "Wyszukaj w pokoju";
 "room_details_title_for_dm" = "Szczegóły pokoju";
-"identity_server_settings_alert_error_invalid_identity_server" = "%@ nie jest prawidłowym serwerem uwierzytelniania.";
-"identity_server_settings_alert_error_terms_not_accepted" = "Musisz zaakceptować warunki %@, aby ustawić go jako serwer uwierzytelniania.";
+"identity_server_settings_alert_error_invalid_identity_server" = "%@ nie jest prawidłowym serwerem tożsamości.";
+"identity_server_settings_alert_error_terms_not_accepted" = "Musisz zaakceptować warunki %@, aby ustawić go jako serwer tożsamości.";
 "identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "Odłącz mimo wszystko";
-"identity_server_settings_alert_disconnect_still_sharing_3pid" = "Nadal udostępniasz swoje dane personalne na serwerze uwierzytelniania %@. \n\nZalecamy usunięcie adresów e-mail i numerów telefonów z serwera uwierzytelniania przed rozłączeniem.";
+"identity_server_settings_alert_disconnect_still_sharing_3pid" = "Nadal udostępniasz swoje dane personalne na serwerze tożsamości %@. \n\nZalecamy usunięcie adresów e-mail i numerów telefonów z serwera tożsamości przed rozłączeniem.";
 "identity_server_settings_alert_disconnect_button" = "Odłącz";
-"identity_server_settings_alert_disconnect" = "Odłączyć się od serwera uwierzytelniania %@?";
-"identity_server_settings_alert_disconnect_title" = "Odłącz serwer uwierzytelniania";
-"identity_server_settings_alert_change" = "Odłączyć się od serwera uwierzytelniania %1$@ i zamiast tego połączyć się z %2$@?";
-"identity_server_settings_alert_change_title" = "Zmień serwer uwierzytelniania";
-"identity_server_settings_alert_no_terms" = "Wybrany serwer uwierzytelniania nie ma żadnych warunków korzystania z usługi. Kontynuuj tylko wtedy, gdy ufasz właścicielowi serwera.";
-"identity_server_settings_alert_no_terms_title" = "Serwer uwierzytelniania nie ma warunków świadczenia usług";
+"identity_server_settings_alert_disconnect" = "Odłączyć się od serwera tożsamości %@?";
+"identity_server_settings_alert_disconnect_title" = "Odłącz serwer tożsamości";
+"identity_server_settings_alert_change" = "Odłączyć się od serwera tożsamości %1$@ i zamiast tego połączyć się z %2$@?";
+"identity_server_settings_alert_change_title" = "Zmień serwer tożsamości";
+"identity_server_settings_alert_no_terms" = "Wybrany serwer tożsamości nie ma żadnych warunków korzystania z usługi. Kontynuuj tylko wtedy, gdy ufasz właścicielowi serwera.";
+"identity_server_settings_alert_no_terms_title" = "Serwer tożsamości nie ma warunków świadczenia usług";
 "identity_server_settings_disconnect" = "Odłącz";
-"identity_server_settings_disconnect_info" = "Odłączenie się od serwera uwierzytelniania oznacza, że nie będziesz mógł być znaleziony przez innych użytkowników oraz nie będziesz mógł zapraszać innych przez e-mail lub telefon.";
+"identity_server_settings_disconnect_info" = "Odłączenie się od serwera tożsamości oznacza, że nie będziesz mógł być znaleziony przez innych użytkowników oraz nie będziesz mógł zapraszać innych przez e-mail lub telefon.";
 "identity_server_settings_change" = "Zmień";
 "identity_server_settings_add" = "Dodaj";
-"identity_server_settings_place_holder" = "Wprowadź serwer uwierzytelniania";
-"identity_server_settings_no_is_description" = "Obecnie nie używasz serwera uwierzytelniania. Dodaj go powyżej, aby móc wyszukiwać i być znajdywanym przez istniejące kontakty.";
+"identity_server_settings_place_holder" = "Wprowadź serwer tożsamości";
+"identity_server_settings_no_is_description" = "Obecnie nie używasz serwera tożsamości. Dodaj go powyżej, aby móc wyszukiwać i być znajdywanym przez istniejące kontakty.";
 "identity_server_settings_description" = "Obecnie używasz %@ do wyszukiwania i bycia znalezionym przez kontakty, które znasz.";
 
 // Identity server settings
-"identity_server_settings_title" = "Serwer Uwierzytelniania";
+"identity_server_settings_title" = "Serwer Tożsamości";
 
 // AuthenticatedSessionViewControllerFactory
 "authenticated_session_flow_not_supported" = "Ta aplikacja nie obsługuje mechanizmu uwierzytelniania na Twoim serwerze domowym.";
@@ -1363,13 +1363,13 @@
 "secrets_setup_recovery_passphrase_information" = "Wprowadź unikalne hasło odzyskiwania. Będzie ono używane do zabezpieczenia Twojej kopii kluczy przechowywanej na serwerze.";
 "secrets_recovery_with_key_invalid_recovery_key_message" = "Sprawdź, czy wprowadziłeś(-aś) poprawny klucz odzyskiwania.";
 "secure_key_backup_setup_intro_use_security_passphrase_info" = "Wprowadź unikalne hasło i wygeneruj klucz odzyskiwania.";
-"settings_identity_server_no_is_description" = "Obecnie nie używasz serwera uwierzytelniania. Dodaj go powyżej, aby móc wyszukiwać kontakty i być znalezionym przez osoby, które znasz.";
-"settings_identity_server_description" = "Korzystając z serwera uwierzytelniania ustawionego powyżej, możesz wyszukiwać kontakty i być znalezionym przez osoby, które znasz.";
+"settings_identity_server_no_is_description" = "Obecnie nie używasz serwera tożsamości. Dodaj go powyżej, aby móc wyszukiwać kontakty i być znalezionym przez osoby, które znasz.";
+"settings_identity_server_description" = "Korzystając z serwera tożsamości ustawionego powyżej, możesz wyszukiwać kontakty i być znalezionym przez osoby, które znasz.";
 "settings_discovery_three_pid_details_information_phone_number" = "Zarządzaj preferencjami dla tego numeru telefonu, którego mogą używać inni użytkownicy, aby Cię znaleźć i zapraszać do pokojów. Dodaj lub usuń numery telefonów w ustawieniach konta.";
 "settings_discovery_three_pid_details_information_email" = "Zarządzaj preferencjami dla tego adresu e-mail, którego mogą używać inni użytkownicy, aby Cię znaleźć i zapraszać do pokojów. Dodaj lub usuń adresy e-mail w ustawieniach konta.";
 "settings_discovery_three_pids_management_information_part1" = "Wybierz, które adresy e-mail lub numery telefonów mogą posłużyć innym użytkownikom do znalezienia Ciebie i zaproszenia do pokoju. Dodaj lub usuń adresy e-mail lub numery telefonów z tej listy w ";
-"settings_discovery_terms_not_signed" = "Zaakceptuj warunki korzystania z usługi serwera uwierzytelniania (%@), aby umożliwić innym osobom wyszukiwanie Ciebie za pomocą adresu e-mail lub numeru telefonu.";
-"settings_discovery_no_identity_server" = "Obecnie nie używasz serwera uwierzytelniania. Pomyśl o tym, aby go dodać by móc być odnalezionym przez osoby, które znasz.";
+"settings_discovery_terms_not_signed" = "Zaakceptuj warunki korzystania z usługi serwera tożsamości (%@), aby umożliwić innym osobom wyszukiwanie Ciebie za pomocą adresu e-mail lub numeru telefonu.";
+"settings_discovery_no_identity_server" = "Obecnie nie używasz serwera tożsamości. Pomyśl o tym, aby go dodać by móc być odnalezionym przez osoby, które znasz.";
 "settings_devices_description" = "Publiczna nazwa sesji jest widoczna dla osób, z którymi się komunikujesz";
 "settings_integrations_allow_description" = "Użyj Menedżera Integracji (%@) do zarządzania botami, mostami, widżetami i pakietami naklejek.\n\nMenedżerowie integracji otrzymują dane konfiguracyjne i mogą modyfikować widżety, wysyłać zaproszenia do pokojów i ustawiać poziomy mocy w Twoim imieniu.";
 "settings_calls_stun_server_fallback_description" = "Zezwalaj na użycie rezerwowego serwera połączeń %@ w przypadku, gdy Twój serwer domowy go nie oferuje (Twój adres IP będzie udostępniany podczas połączenia).";
@@ -1390,7 +1390,7 @@
 "room_participants_filter_room_members_for_dm" = "Filtruj uczestników pokoju";
 "room_participants_leave_prompt_msg_for_dm" = "Czy napewno chcesz opuścić pokój?";
 "room_participants_leave_prompt_title_for_dm" = "Opuść pokój";
-"contacts_address_book_no_identity_server" = "Brak skonfigurowanego serwera uwierzytelniania";
+"contacts_address_book_no_identity_server" = "Brak skonfigurowanego serwera tożsamości";
 "rooms_empty_view_information" = "Pokoje świetnie nadają się do publicznych lub prywatnych czatów grupowych. Dotknij (+), aby wyszukać istniejące pokoje lub stworzyć nowe.";
 "rooms_empty_view_title" = "Pokoje";
 "people_empty_view_information" = "Dotknij (+), aby rozpocząć bezpieczną komunikację.";
@@ -1408,7 +1408,7 @@
 "social_login_button_title_sign_up" = "Zarejestruj się używając %@";
 "social_login_list_title_sign_up" = "Lub";
 "social_login_list_title_sign_in" = "Lub";
-"auth_reset_password_error_is_required" = "Brak skonfigurowanego serwera uwierzytelniania: dodaj go w ustawieniach, aby zresetować hasło.";
+"auth_reset_password_error_is_required" = "Brak skonfigurowanego serwera tożsamości: dodaj go w ustawieniach, aby zresetować hasło.";
 "callbar_return" = "Powrót";
 "callbar_only_multiple_paused" = "%@ wstrzymanych połączeń";
 "callbar_only_single_paused" = "Wstrzymane połączenie";
@@ -1417,7 +1417,7 @@
 
 // Call Bar
 "callbar_only_single_active" = "Aktywne połączenie (%@)";
-"auth_email_is_required" = "Brak skonfigurowanego serwera uwierzytelniania, nie możesz dodać adresu e-mail na wypadek konieczności zresetowania hasła.";
+"auth_email_is_required" = "Brak skonfigurowanego serwera tożsamości, nie możesz dodać adresu e-mail na wypadek konieczności zresetowania hasła.";
 "auth_add_email_phone_message_2" = "Ustaw adres e-mail na wypadek konieczności przywracania dostępu do konta, dodatkowo adres ten lub numer telefonu może być wykorzystany przez Twoich znajomych do znalezienia Twojego profilu.";
 "auth_add_phone_message_2" = "Ustaw numer telefonu, numer ten może być wykorzystany przez Twoich znajomych do znalezienia Twojego profilu.";
 "auth_add_email_message_2" = "Ustaw adres e-mail na wypadek konieczności przywracania dostępu do konta, dodatkowo adres ten może być wykorzystany przez Twoich znajomych do znalezienia Twojego profilu.";
