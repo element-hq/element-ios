@@ -36,7 +36,10 @@ class CallBarPresentOperation: AsyncOperation {
     override func main() {
         presenter.delegate?.callPresenter(presenter, presentCallBarFor: activeCallVC, numberOfPausedCalls: numberOfPausedCalls, completion: {
             self.finish()
-            self.completion?()
+            //  wait for the next life cycle to detect status bar layout updates
+            DispatchQueue.main.async {
+                self.completion?()
+            }
         })
     }
     
