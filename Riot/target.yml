@@ -34,6 +34,7 @@ targets:
     - target: RiotShareExtension
     - target: SiriIntents
     - target: RiotNSE
+    - target: DesignKit
 
     configFiles:
       Debug: Debug.xcconfig
