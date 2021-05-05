@@ -38,6 +38,9 @@ class DialpadConfiguration: NSObject {
     /// Option for a dial pad to enable editing on typed text or not.
     var editingEnabled: Bool
     
+    /// Option for a dial pad to play tones when digits tapped or not.
+    var playTones: Bool
+    
     /// Default configuration object. All options are enabled by default.
     static let `default`: DialpadConfiguration = DialpadConfiguration()
     
@@ -46,13 +49,15 @@ class DialpadConfiguration: NSObject {
          showsBackspaceButton: Bool = true,
          showsCallButton: Bool = true,
          formattingEnabled: Bool = true,
-         editingEnabled: Bool = true) {
+         editingEnabled: Bool = true,
+         playTones: Bool = true) {
         self.showsTitle = showsTitle
         self.showsCloseButton = showsCloseButton
         self.showsBackspaceButton = showsBackspaceButton
         self.showsCallButton = showsCallButton
         self.formattingEnabled = formattingEnabled
         self.editingEnabled = editingEnabled
+        self.playTones = playTones
         super.init()
     }
     

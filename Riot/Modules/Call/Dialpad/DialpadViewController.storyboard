@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="dBQ-CG-VDL">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="dBQ-CG-VDL">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -171,7 +171,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="dvZ-XT-zLP">
                                                 <rect key="frame" x="53.5" y="299" width="268" height="93.5"/>
                                                 <subviews>
-                                                    <button opaque="NO" tag="-99" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hh8-U6-dJT" customClass="DialpadButton" customModule="Riot" customModuleProvider="target">
+                                                    <button opaque="NO" tag="-1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hh8-U6-dJT" customClass="DialpadButton" customModule="Riot" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="12.5" width="68" height="68"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="68" id="4mU-dy-vEa"/>
@@ -196,7 +196,7 @@
                                                             <action selector="digitButtonAction:" destination="dBQ-CG-VDL" eventType="touchUpInside" id="Irt-qu-feP"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" tag="-1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Izh-vM-Fao" customClass="DialpadButton" customModule="Riot" customModuleProvider="target">
+                                                    <button opaque="NO" tag="-2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Izh-vM-Fao" customClass="DialpadButton" customModule="Riot" customModuleProvider="target">
                                                         <rect key="frame" x="200" y="12.5" width="68" height="68"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="68" id="4J4-8u-YKL"/>
@@ -213,18 +213,13 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="xzj-PF-Bxu">
                                                 <rect key="frame" x="53.5" y="398.5" width="268" height="93.5"/>
                                                 <subviews>
-                                                    <button opaque="NO" tag="-99" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SVW-fH-Ey6" customClass="DialpadActionButton" customModule="Riot" customModuleProvider="target">
+                                                    <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SVW-fH-Ey6">
                                                         <rect key="frame" x="0.0" y="12.5" width="68" height="68"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="68" id="L2l-Qz-R8A"/>
                                                             <constraint firstAttribute="width" constant="68" id="nEw-2X-e3a"/>
                                                         </constraints>
                                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
-                                                        <state key="normal" image="call_dialpad_backspace_icon"/>
-                                                        <connections>
-                                                            <action selector="backspaceButtonAction:" destination="dBQ-CG-VDL" eventType="touchUpInside" id="3MX-35-8Jg"/>
-                                                        </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B17-BJ-SiW" customClass="DialpadActionButton" customModule="Riot" customModuleProvider="target">
                                                         <rect key="frame" x="100" y="12.5" width="68" height="68"/>
@@ -238,13 +233,19 @@
                                                             <action selector="callButtonAction:" destination="dBQ-CG-VDL" eventType="touchUpInside" id="TOV-1D-XQj"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" userInteractionEnabled="NO" tag="-1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xig-ln-gBC">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xig-ln-gBC" customClass="DialpadActionButton" customModule="Riot" customModuleProvider="target">
                                                         <rect key="frame" x="200" y="12.5" width="68" height="68"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="68" id="WLJ-xL-89j"/>
                                                             <constraint firstAttribute="width" constant="68" id="afw-C4-e8i"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="28"/>
+                                                        <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
+                                                        <state key="normal" image="call_dialpad_backspace_icon"/>
+                                                        <connections>
+                                                            <action selector="backspaceButtonAction:" destination="dBQ-CG-VDL" eventType="touchUpInside" id="ONz-mt-4D3"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                             </stackView>
@@ -285,15 +286,27 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="backspaceButton" destination="SVW-fH-Ey6" id="s2W-oS-a90"/>
+                        <outlet property="backspaceButton" destination="Xig-ln-gBC" id="kKQ-7z-fVM"/>
                         <outlet property="callButton" destination="B17-BJ-SiW" id="rmo-gK-pkv"/>
                         <outlet property="closeButton" destination="6Yp-ue-lX3" id="xc1-ue-iUo"/>
                         <outlet property="digitsStackView" destination="fnQ-jm-HT2" id="ltK-Bg-hwY"/>
                         <outlet property="lineView" destination="iak-30-PMd" id="T6L-kl-Dsy"/>
                         <outlet property="phoneNumberTextField" destination="iWR-Bv-qzs" id="ezn-FP-ihl"/>
                         <outlet property="phoneNumberTextFieldTopConstraint" destination="nkS-49-CiR" id="Anh-q0-26b"/>
-                        <outlet property="spaceButton" destination="Xig-ln-gBC" id="tJi-AD-WOu"/>
+                        <outlet property="spaceButton" destination="SVW-fH-Ey6" id="WJd-w7-YxB"/>
                         <outlet property="titleLabel" destination="ObS-Bw-Z12" id="0ZH-xI-zhw"/>
+                        <outletCollection property="digitButtons" destination="Dum-9Z-dKh" collectionClass="NSMutableArray" id="mnM-oA-G7N"/>
+                        <outletCollection property="digitButtons" destination="TIL-aL-5ij" collectionClass="NSMutableArray" id="4Ge-8g-ooV"/>
+                        <outletCollection property="digitButtons" destination="Yrk-zC-XL5" collectionClass="NSMutableArray" id="123-Qp-rzG"/>
+                        <outletCollection property="digitButtons" destination="JfX-9z-x4y" collectionClass="NSMutableArray" id="cPo-i1-bbI"/>
+                        <outletCollection property="digitButtons" destination="hI1-sM-NT5" collectionClass="NSMutableArray" id="b8d-5A-i6e"/>
+                        <outletCollection property="digitButtons" destination="cMg-az-Zgx" collectionClass="NSMutableArray" id="J0I-Qb-Zj6"/>
+                        <outletCollection property="digitButtons" destination="EF6-7Y-DhC" collectionClass="NSMutableArray" id="r8I-vD-jSM"/>
+                        <outletCollection property="digitButtons" destination="4Od-gu-C4x" collectionClass="NSMutableArray" id="XFt-db-l5O"/>
+                        <outletCollection property="digitButtons" destination="Rgd-Tt-xlI" collectionClass="NSMutableArray" id="aGQ-Ef-eBC"/>
+                        <outletCollection property="digitButtons" destination="hh8-U6-dJT" collectionClass="NSMutableArray" id="EaB-Ug-qsx"/>
+                        <outletCollection property="digitButtons" destination="4Rc-ls-1wr" collectionClass="NSMutableArray" id="cUp-yg-U48"/>
+                        <outletCollection property="digitButtons" destination="Izh-vM-Fao" collectionClass="NSMutableArray" id="Gfp-Fl-LMb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bLY-II-iJ3" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -19,12 +19,12 @@ import Foundation
 class CallBarPresentOperation: AsyncOperation {
     
     private var presenter: CallPresenter
-    private var activeCallVC: CallViewController?
+    private var activeCallVC: UIViewController?
     private var numberOfPausedCalls: UInt
     private var completion: (() -> Void)?
     
     init(presenter: CallPresenter,
-         activeCallVC: CallViewController?,
+         activeCallVC: UIViewController?,
          numberOfPausedCalls: UInt,
          completion: (() -> Void)? = nil) {
         self.presenter = presenter
