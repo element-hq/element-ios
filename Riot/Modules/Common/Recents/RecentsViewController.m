@@ -947,14 +947,7 @@
     {
         // Retrieve the invited room
         MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
-                
-        if (invitedRoom.summary.roomType == MXRoomTypeSpace)
-        {
-            // Indicates that spaces are not supported
-            [self showSpaceInviteNotAvailable];
-            return;
-        }
-                        
+        
         [self cancelEditionMode:isRefreshPending];
         
         // Decline the invitation
