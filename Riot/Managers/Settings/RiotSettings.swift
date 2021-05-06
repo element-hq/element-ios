@@ -73,6 +73,7 @@ final class RiotSettings: NSObject {
         static let roomScreenAllowFilesAction = "roomScreenAllowFilesAction"
         static let roomInfoScreenShowIntegrations = "roomInfoScreenShowIntegrations"
         static let unifiedSearchScreenShowPublicDirectory = "unifiedSearchScreenShowPublicDirectory"
+        static let hideSpaceBetaAnnounce = "hideSpaceBetaAnnounce"
     }
     
     static let shared = RiotSettings()
@@ -634,4 +635,13 @@ final class RiotSettings: NSObject {
         }
     }
     
+    // MARK: - Beta
+    
+    var hideSpaceBetaAnnounce: Bool {
+        get {
+            return defaults.bool(forKey: UserDefaultsKeys.hideSpaceBetaAnnounce)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.hideSpaceBetaAnnounce)
+        }
+    }
 }
